@@ -1,2 +1,2 @@
 # solon
-a api boot
+一件插件式的微框架
