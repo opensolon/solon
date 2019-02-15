@@ -55,7 +55,7 @@ public class DemoController{
 
 /*rpc服务*/ 
 // - interface
-@XClient("demorpc,http://127.0.0.1/demo/")
+@XClient("http://127.0.0.1/demo/") // 或 demorpc （使用water提供的注册服务；当然也可以改成别的...）
 public interface DemoRpc{
     void setName(Integer user_id,String name);
 }
@@ -70,10 +70,10 @@ public class DemoService implements DemoRpc{
 }
 
 // - client - 简单示例
-DemoRpc client = new XProxy().create(DemoRpc.class);
+DemoRpc client = new XProxy().create(DemoRpc.class); //@XClient("http://127.0.0.1/demo/")
 client.setName(1,'');
 
-// - client - 使用WATER负载示例
-DemoRpc client = XWaterUpstream.xclient(DemoRpc.class);
+// - client - 使用WATER负载示例 （可以自己写个别的负载）
+DemoRpc client = XWaterUpstream.xclient(DemoRpc.class); //@XClient("demorpc")
 client.setName(1,'');
 ```
