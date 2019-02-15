@@ -49,7 +49,7 @@ public class App{
 /*mvc控制器*/
 @XController
 public class DemoController{
-    @XMappinge("/hallo/{u_u}")
+    @XMapping("/hallo/{u_u}")
     public ModelAndView hallo(String u_u){
         return new ModelAndView("hallo");
     }
@@ -63,7 +63,7 @@ public interface DemoRpc{
 }
 
 // - server
-@XMappinge("/demo/*")
+@XMapping("/demo/*")
 @XService(remoting = true)
 public class DemoService implements DemoRpc{
     public void setName(Integer user_id,String name){
