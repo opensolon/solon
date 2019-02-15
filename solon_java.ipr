@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="demo" />
+        <module name="solon" />
+        <module name="solon.boot.jetty" />
+        <module name="solon.boot.jetty.jsp" />
+        <module name="solon.boot.jettyall" />
+        <module name="solon.boot.jlhttp" />
+        <module name="solon.extend.aopx" />
+        <module name="solon.extend.rockuapi" />
+        <module name="solon.extend.staticfiles" />
+        <module name="solon.extend.stop" />
+        <module name="solon.extend.wateradpter" />
+        <module name="solon.extend.yaml" />
+        <module name="solon.view.fastjson" />
+        <module name="solon.view.freemarker" />
+        <module name="solon.view.jsp" />
+        <module name="solon.view.velocity" />
+        <module name="solon.wrap.api-jetty" />
+        <module name="solon.wrap.api-jlhttp" />
+        <module name="solon.wrap.mvc-jetty" />
+        <module name="solon.wrap.mvc-jetty.jsp" />
+        <module name="solon.wrap.mvc-jlhttp" />
+        <module name="solon.wrap.rpc-jetty" />
+        <module name="solon.wrap.rpc-jlhttp" />
+        <module name="solonclient" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="demo" target="1.8" />
+      <module name="demo_api" target="1.8" />
+      <module name="demo_mvc" target="1.8" />
+      <module name="demo_plug_server" target="1.8" />
+      <module name="demo_rpc_customer" target="1.8" />
+      <module name="demo_rpc_gateway" target="1.8" />
+      <module name="demo_rpc_provider" target="1.8" />
+      <module name="demo_water" target="1.8" />
+      <module name="solon" target="1.8" />
+      <module name="solon.boot.jetty" target="1.8" />
+      <module name="solon.boot.jetty.jsp" target="1.8" />
+      <module name="solon.boot.jettyall" target="1.8" />
+      <module name="solon.boot.jlhttp" target="1.8" />
+      <module name="solon.boot.undertow" target="1.8" />
+      <module name="solon.extend.aopx" target="1.8" />
+      <module name="solon.extend.inject" target="1.8" />
+      <module name="solon.extend.rockuapi" target="1.8" />
+      <module name="solon.extend.staticfiles" target="1.8" />
+      <module name="solon.extend.stop" target="1.8" />
+      <module name="solon.extend.wateradpter" target="1.8" />
+      <module name="solon.extend.yaml" target="1.8" />
+      <module name="solon.view.fastjson" target="1.8" />
+      <module name="solon.view.freemarker" target="1.8" />
+      <module name="solon.view.jsp" target="1.8" />
+      <module name="solon.view.snack3" target="1.8" />
+      <module name="solon.view.velocity" target="1.8" />
+      <module name="solon.wrap.api-jetty" target="1.8" />
+      <module name="solon.wrap.api-jlhttp" target="1.8" />
+      <module name="solon.wrap.mvc-jetty" target="1.8" />
+      <module name="solon.wrap.mvc-jetty.jsp" target="1.8" />
+      <module name="solon.wrap.mvc-jlhttp" target="1.8" />
+      <module name="solon.wrap.rpc-jetty" target="1.8" />
+      <module name="solon.wrap.rpc-jlhttp" target="1.8" />
+      <module name="solon_java" target="1.5" />
+      <module name="solon_wrap" target="1.5" />
+      <module name="solonclient" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="Encoding" addBOMForNewFiles="with NO BOM">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/demo" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solon" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solon.boot.jetty" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solon.boot.jetty.jsp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solon.boot.jettyall" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solon.boot.jlhttp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solon.extend.aopx" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solon.extend.rockuapi" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solon.extend.staticfiles" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solon.extend.stop" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solon.extend.wateradpter" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solon.extend.yaml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solon.view.fastjson" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solon.view.freemarker" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solon.view.jsp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solon.view.snack3" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solon.view.snack3" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solon.view.snack3" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solon.view.velocity" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solonclient" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/wrap" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/wrap/solon.wrap.api-jetty" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/wrap/solon.wrap.api-jlhttp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/wrap/solon.wrap.mvc-jetty" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/wrap/solon.wrap.mvc-jetty.jsp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/wrap/solon.wrap.mvc-jlhttp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/wrap/solon.wrap.rpc-jetty" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/wrap/solon.wrap.rpc-jlhttp" charset="UTF-8" />
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="InspectionProjectProfileManager">
+    <profile version="1.0">
+      <option name="myName" value="Project Default" />
+    </profile>
+    <version value="1.0" />
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="demo" options="-parameters" />
+      <module name="demo_api" options="-parameters" />
+      <module name="demo_mvc" options="-parameters" />
+      <module name="demo_plug_server" options="-parameters" />
+      <module name="demo_rpc_customer" options="-parameters" />
+      <module name="demo_rpc_gateway" options="-parameters" />
+      <module name="demo_rpc_provider" options="-parameters" />
+      <module name="demo_water" options="-parameters" />
+      <module name="solon" options="-parameters" />
+      <module name="solon.boot.jetty" options="" />
+      <module name="solon.boot.jettyall" options="" />
+      <module name="solon.boot.jlhttp" options="" />
+      <module name="solon.extend.aopx" options="-parameters" />
+      <module name="solon.extend.inject" options="-parameters" />
+      <module name="solon.extend.rockuapi" options="-parameters" />
+      <module name="solon.extend.staticfiles" options="-parameters" />
+      <module name="solon.extend.stop" options="-parameters" />
+      <module name="solon.view.fastjson" options="-parameters" />
+      <module name="solon.view.freemarker" options="-parameters" />
+      <module name="solon.view.jsp" options="-parameters" />
+      <module name="solon.view.snack3" options="-parameters" />
+      <module name="solon.view.velocity" options="-parameters" />
+      <module name="solon.wrap.api-jetty" options="" />
+      <module name="solon.wrap.api-jlhttp" options="" />
+      <module name="solon.wrap.mvc-jetty" options="" />
+      <module name="solon.wrap.mvc-jlhttp" options="" />
+      <module name="solon.wrap.rpc-jetty" options="" />
+      <module name="solon.wrap.rpc-jlhttp" options="" />
+      <module name="solonclient" options="-parameters" />
+    </option>
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="Palette2">
+    <group name="Swing">
+      <item class="com.intellij.uiDesigner.HSpacer" tooltip-text="Horizontal Spacer" icon="/com/intellij/uiDesigner/icons/hspacer.png" removable="false" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="1" hsize-policy="6" anchor="0" fill="1" />
+      </item>
+      <item class="com.intellij.uiDesigner.VSpacer" tooltip-text="Vertical Spacer" icon="/com/intellij/uiDesigner/icons/vspacer.png" removable="false" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="6" hsize-policy="1" anchor="0" fill="2" />
+      </item>
+      <item class="javax.swing.JPanel" icon="/com/intellij/uiDesigner/icons/panel.png" removable="false" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3" />
+      </item>
+      <item class="javax.swing.JScrollPane" icon="/com/intellij/uiDesigner/icons/scrollPane.png" removable="false" auto-create-binding="false" can-attach-label="true">
+        <default-constraints vsize-policy="7" hsize-policy="7" anchor="0" fill="3" />
+      </item>
+      <item class="javax.swing.JButton" icon="/com/intellij/uiDesigner/icons/button.png" removable="false" auto-create-binding="true" can-attach-label="false">
+        <default-constraints vsize-policy="0" hsize-policy="3" anchor="0" fill="1" />
+        <initial-values>
+          <property name="text" value="Button" />
+        </initial-values>
+      </item>
+      <item class="javax.swing.JRadioButton" icon="/com/intellij/uiDesigner/icons/radioButton.png" removable="false" auto-create-binding="true" can-attach-label="false">
+        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
+        <initial-values>
+          <property name="text" value="RadioButton" />
+        </initial-values>
+      </item>
+      <item class="javax.swing.JCheckBox" icon="/com/intellij/uiDesigner/icons/checkBox.png" removable="false" auto-create-binding="true" can-attach-label="false">
+        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
+        <initial-values>
+          <property name="text" value="CheckBox" />
+        </initial-values>
+      </item>
+      <item class="javax.swing.JLabel" icon="/com/intellij/uiDesigner/icons/label.png" removable="false" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="0" hsize-policy="0" anchor="8" fill="0" />
+        <initial-values>
+          <property name="text" value="Label" />
+        </initial-values>
+      </item>
+      <item class="javax.swing.JTextField" icon="/com/intellij/uiDesigner/icons/textField.png" removable="false" auto-create-binding="true" can-attach-label="true">
+        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
+          <preferred-size width="150" height="-1" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JPasswordField" icon="/com/intellij/uiDesigner/icons/passwordField.png" removable="false" auto-create-binding="true" can-attach-label="true">
+        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
+          <preferred-size width="150" height="-1" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JFormattedTextField" icon="/com/intellij/uiDesigner/icons/formattedTextField.png" removable="false" auto-create-binding="true" can-attach-label="true">
+        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
+          <preferred-size width="150" height="-1" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JTextArea" icon="/com/intellij/uiDesigner/icons/textArea.png" removable="false" auto-create-binding="true" can-attach-label="true">
+        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+          <preferred-size width="150" height="50" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JTextPane" icon="/com/intellij/uiDesigner/icons/textPane.png" removable="false" auto-create-binding="true" can-attach-label="true">
+        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+          <preferred-size width="150" height="50" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JEditorPane" icon="/com/intellij/uiDesigner/icons/editorPane.png" removable="false" auto-create-binding="true" can-attach-label="true">
+        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+          <preferred-size width="150" height="50" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JComboBox" icon="/com/intellij/uiDesigner/icons/comboBox.png" removable="false" auto-create-binding="true" can-attach-label="true">
+        <default-constraints vsize-policy="0" hsize-policy="2" anchor="8" fill="1" />
+      </item>
+      <item class="javax.swing.JTable" icon="/com/intellij/uiDesigner/icons/table.png" removable="false" auto-create-binding="true" can-attach-label="false">
+        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+          <preferred-size width="150" height="50" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JList" icon="/com/intellij/uiDesigner/icons/list.png" removable="false" auto-create-binding="true" can-attach-label="false">
+        <default-constraints vsize-policy="6" hsize-policy="2" anchor="0" fill="3">
+          <preferred-size width="150" height="50" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JTree" icon="/com/intellij/uiDesigner/icons/tree.png" removable="false" auto-create-binding="true" can-attach-label="false">
+        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+          <preferred-size width="150" height="50" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JTabbedPane" icon="/com/intellij/uiDesigner/icons/tabbedPane.png" removable="false" auto-create-binding="true" can-attach-label="false">
+        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
+          <preferred-size width="200" height="200" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JSplitPane" icon="/com/intellij/uiDesigner/icons/splitPane.png" removable="false" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
+          <preferred-size width="200" height="200" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JSpinner" icon="/com/intellij/uiDesigner/icons/spinner.png" removable="false" auto-create-binding="true" can-attach-label="true">
+        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
+      </item>
+      <item class="javax.swing.JSlider" icon="/com/intellij/uiDesigner/icons/slider.png" removable="false" auto-create-binding="true" can-attach-label="false">
+        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
+      </item>
+      <item class="javax.swing.JSeparator" icon="/com/intellij/uiDesigner/icons/separator.png" removable="false" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3" />
+      </item>
+      <item class="javax.swing.JProgressBar" icon="/com/intellij/uiDesigner/icons/progressbar.png" removable="false" auto-create-binding="true" can-attach-label="false">
+        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1" />
+      </item>
+      <item class="javax.swing.JToolBar" icon="/com/intellij/uiDesigner/icons/toolbar.png" removable="false" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1">
+          <preferred-size width="-1" height="20" />
+        </default-constraints>
+      </item>
+      <item class="javax.swing.JToolBar$Separator" icon="/com/intellij/uiDesigner/icons/toolbarSeparator.png" removable="false" auto-create-binding="false" can-attach-label="false">
+        <default-constraints vsize-policy="0" hsize-policy="0" anchor="0" fill="1" />
+      </item>
+      <item class="javax.swing.JScrollBar" icon="/com/intellij/uiDesigner/icons/scrollbar.png" removable="false" auto-create-binding="true" can-attach-label="false">
+        <default-constraints vsize-policy="6" hsize-policy="0" anchor="0" fill="2" />
+      </item>
+    </group>
+  </component>
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/demo/demo.iml" filepath="$PROJECT_DIR$/demo/demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/solon/solon.iml" filepath="$PROJECT_DIR$/solon/solon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/solon.boot.jetty/solon.boot.jetty.iml" filepath="$PROJECT_DIR$/solon.boot.jetty/solon.boot.jetty.iml" />
+      <module fileurl="file://$PROJECT_DIR$/solon.boot.jetty.jsp/solon.boot.jetty.jsp.iml" filepath="$PROJECT_DIR$/solon.boot.jetty.jsp/solon.boot.jetty.jsp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/solon.boot.jettyall/solon.boot.jettyall.iml" filepath="$PROJECT_DIR$/solon.boot.jettyall/solon.boot.jettyall.iml" />
+      <module fileurl="file://$PROJECT_DIR$/solon.boot.jlhttp/solon.boot.jlhttp.iml" filepath="$PROJECT_DIR$/solon.boot.jlhttp/solon.boot.jlhttp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/solon.extend.aopx/solon.extend.aopx.iml" filepath="$PROJECT_DIR$/solon.extend.aopx/solon.extend.aopx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/solon.extend.rockuapi/solon.extend.rockuapi.iml" filepath="$PROJECT_DIR$/solon.extend.rockuapi/solon.extend.rockuapi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/solon.extend.staticfiles/solon.extend.staticfiles.iml" filepath="$PROJECT_DIR$/solon.extend.staticfiles/solon.extend.staticfiles.iml" />
+      <module fileurl="file://$PROJECT_DIR$/solon.extend.stop/solon.extend.stop.iml" filepath="$PROJECT_DIR$/solon.extend.stop/solon.extend.stop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/solon.extend.wateradpter/solon.extend.wateradpter.iml" filepath="$PROJECT_DIR$/solon.extend.wateradpter/solon.extend.wateradpter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/solon.extend.yaml/solon.extend.yaml.iml" filepath="$PROJECT_DIR$/solon.extend.yaml/solon.extend.yaml.iml" />
+      <module fileurl="file://$PROJECT_DIR$/solon.view.fastjson/solon.view.fastjson.iml" filepath="$PROJECT_DIR$/solon.view.fastjson/solon.view.fastjson.iml" />
+      <module fileurl="file://$PROJECT_DIR$/solon.view.freemarker/solon.view.freemarker.iml" filepath="$PROJECT_DIR$/solon.view.freemarker/solon.view.freemarker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/solon.view.jsp/solon.view.jsp.iml" filepath="$PROJECT_DIR$/solon.view.jsp/solon.view.jsp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/solon.view.velocity/solon.view.velocity.iml" filepath="$PROJECT_DIR$/solon.view.velocity/solon.view.velocity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wrap/solon.wrap.api-jetty/solon.wrap.api-jetty.iml" filepath="$PROJECT_DIR$/wrap/solon.wrap.api-jetty/solon.wrap.api-jetty.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wrap/solon.wrap.api-jlhttp/solon.wrap.api-jlhttp.iml" filepath="$PROJECT_DIR$/wrap/solon.wrap.api-jlhttp/solon.wrap.api-jlhttp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wrap/solon.wrap.mvc-jetty/solon.wrap.mvc-jetty.iml" filepath="$PROJECT_DIR$/wrap/solon.wrap.mvc-jetty/solon.wrap.mvc-jetty.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wrap/solon.wrap.mvc-jetty.jsp/solon.wrap.mvc-jetty.jsp.iml" filepath="$PROJECT_DIR$/wrap/solon.wrap.mvc-jetty.jsp/solon.wrap.mvc-jetty.jsp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wrap/solon.wrap.mvc-jlhttp/solon.wrap.mvc-jlhttp.iml" filepath="$PROJECT_DIR$/wrap/solon.wrap.mvc-jlhttp/solon.wrap.mvc-jlhttp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wrap/solon.wrap.rpc-jetty/solon.wrap.rpc-jetty.iml" filepath="$PROJECT_DIR$/wrap/solon.wrap.rpc-jetty/solon.wrap.rpc-jetty.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wrap/solon.wrap.rpc-jlhttp/solon.wrap.rpc-jlhttp.iml" filepath="$PROJECT_DIR$/wrap/solon.wrap.rpc-jlhttp/solon.wrap.rpc-jlhttp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/solon_java.iml" filepath="$PROJECT_DIR$/solon_java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wrap/solon_wrap.iml" filepath="$PROJECT_DIR$/wrap/solon_wrap.iml" />
+      <module fileurl="file://$PROJECT_DIR$/solonclient/solonclient.iml" filepath="$PROJECT_DIR$/solonclient/solonclient.iml" />
+    </modules>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+  </component>
+  <component name="libraryTable">
+    <library name="Maven: com.alibaba:fastjson:1.2.29">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.29/fastjson-1.2.29.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.29/fastjson-1.2.29-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.29/fastjson-1.2.29-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.squareup.okhttp3:okhttp:3.11.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/squareup/okhttp3/okhttp/3.11.0/okhttp-3.11.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/squareup/okhttp3/okhttp/3.11.0/okhttp-3.11.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/squareup/okhttp3/okhttp/3.11.0/okhttp-3.11.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.squareup.okio:okio:1.14.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/squareup/okio/okio/1.14.0/okio-1.14.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/squareup/okio/okio/1.14.0/okio-1.14.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/squareup/okio/okio/1.14.0/okio-1.14.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: commons-codec:commons-codec:1.10">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-codec/commons-codec/1.10/commons-codec-1.10.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-codec/commons-codec/1.10/commons-codec-1.10-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-codec/commons-codec/1.10/commons-codec-1.10-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.annotation:javax.annotation-api:1.2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/annotation/javax.annotation-api/1.2/javax.annotation-api-1.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/annotation/javax.annotation-api/1.2/javax.annotation-api-1.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/annotation/javax.annotation-api/1.2/javax.annotation-api-1.2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.servlet:javax.servlet-api:3.1.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.websocket:javax.websocket-api:1.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/websocket/javax.websocket-api/1.0/javax.websocket-api-1.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/websocket/javax.websocket-api/1.0/javax.websocket-api-1.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/websocket/javax.websocket-api/1.0/javax.websocket-api-1.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: lib.sponge:rockrpcclient:1.0.9">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/lib/sponge/rockrpcclient/1.0.9/rockrpcclient-1.0.9.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/lib/sponge/rockrpcclient/1.0.9/rockrpcclient-1.0.9-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/lib/sponge/rockrpcclient/1.0.9/rockrpcclient-1.0.9-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.apache.commons:commons-lang3:3.5">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.5/commons-lang3-3.5.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.5/commons-lang3-3.5-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.5/commons-lang3-3.5-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.apache.taglibs:taglibs-standard-impl:1.2.5">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/taglibs/taglibs-standard-impl/1.2.5/taglibs-standard-impl-1.2.5.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/taglibs/taglibs-standard-impl/1.2.5/taglibs-standard-impl-1.2.5-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/taglibs/taglibs-standard-impl/1.2.5/taglibs-standard-impl-1.2.5-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.apache.taglibs:taglibs-standard-spec:1.2.5">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/taglibs/taglibs-standard-spec/1.2.5/taglibs-standard-spec-1.2.5.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/taglibs/taglibs-standard-spec/1.2.5/taglibs-standard-spec-1.2.5-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/taglibs/taglibs-standard-spec/1.2.5/taglibs-standard-spec-1.2.5-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.apache.velocity:velocity-engine-core:2.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/velocity/velocity-engine-core/2.0/velocity-engine-core-2.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/velocity/velocity-engine-core/2.0/velocity-engine-core-2.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/velocity/velocity-engine-core/2.0/velocity-engine-core-2.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.eclipse.jdt:ecj:3.12.3">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jdt/ecj/3.12.3/ecj-3.12.3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jdt/ecj/3.12.3/ecj-3.12.3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jdt/ecj/3.12.3/ecj-3.12.3-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.eclipse.jetty.aggregate:jetty-all:9.2.14.v20151106">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/aggregate/jetty-all/9.2.14.v20151106/jetty-all-9.2.14.v20151106.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/aggregate/jetty-all/9.2.14.v20151106/jetty-all-9.2.14.v20151106-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/aggregate/jetty-all/9.2.14.v20151106/jetty-all-9.2.14.v20151106-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.eclipse.jetty.toolchain:jetty-schemas:3.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/toolchain/jetty-schemas/3.1/jetty-schemas-3.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/toolchain/jetty-schemas/3.1/jetty-schemas-3.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/toolchain/jetty-schemas/3.1/jetty-schemas-3.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.eclipse.jetty:apache-jsp:9.4.12.v20180830">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/apache-jsp/9.4.12.v20180830/apache-jsp-9.4.12.v20180830.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/apache-jsp/9.4.12.v20180830/apache-jsp-9.4.12.v20180830-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/apache-jsp/9.4.12.v20180830/apache-jsp-9.4.12.v20180830-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.eclipse.jetty:jetty-annotations:9.4.12.v20180830">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-annotations/9.4.12.v20180830/jetty-annotations-9.4.12.v20180830.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-annotations/9.4.12.v20180830/jetty-annotations-9.4.12.v20180830-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-annotations/9.4.12.v20180830/jetty-annotations-9.4.12.v20180830-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.eclipse.jetty:jetty-http:9.4.12.v20180830">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-http/9.4.12.v20180830/jetty-http-9.4.12.v20180830.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-http/9.4.12.v20180830/jetty-http-9.4.12.v20180830-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-http/9.4.12.v20180830/jetty-http-9.4.12.v20180830-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.eclipse.jetty:jetty-io:9.4.12.v20180830">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-io/9.4.12.v20180830/jetty-io-9.4.12.v20180830.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-io/9.4.12.v20180830/jetty-io-9.4.12.v20180830-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-io/9.4.12.v20180830/jetty-io-9.4.12.v20180830-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.eclipse.jetty:jetty-jndi:9.4.12.v20180830">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-jndi/9.4.12.v20180830/jetty-jndi-9.4.12.v20180830.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-jndi/9.4.12.v20180830/jetty-jndi-9.4.12.v20180830-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-jndi/9.4.12.v20180830/jetty-jndi-9.4.12.v20180830-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.eclipse.jetty:jetty-plus:9.4.12.v20180830">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-plus/9.4.12.v20180830/jetty-plus-9.4.12.v20180830.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-plus/9.4.12.v20180830/jetty-plus-9.4.12.v20180830-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-plus/9.4.12.v20180830/jetty-plus-9.4.12.v20180830-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.eclipse.jetty:jetty-security:9.4.12.v20180830">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-security/9.4.12.v20180830/jetty-security-9.4.12.v20180830.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-security/9.4.12.v20180830/jetty-security-9.4.12.v20180830-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-security/9.4.12.v20180830/jetty-security-9.4.12.v20180830-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.eclipse.jetty:jetty-server:9.4.12.v20180830">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-server/9.4.12.v20180830/jetty-server-9.4.12.v20180830.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-server/9.4.12.v20180830/jetty-server-9.4.12.v20180830-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-server/9.4.12.v20180830/jetty-server-9.4.12.v20180830-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.eclipse.jetty:jetty-servlet:9.4.12.v20180830">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-servlet/9.4.12.v20180830/jetty-servlet-9.4.12.v20180830.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-servlet/9.4.12.v20180830/jetty-servlet-9.4.12.v20180830-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-servlet/9.4.12.v20180830/jetty-servlet-9.4.12.v20180830-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.eclipse.jetty:jetty-util:9.4.12.v20180830">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-util/9.4.12.v20180830/jetty-util-9.4.12.v20180830.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-util/9.4.12.v20180830/jetty-util-9.4.12.v20180830-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-util/9.4.12.v20180830/jetty-util-9.4.12.v20180830-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.eclipse.jetty:jetty-webapp:9.4.12.v20180830">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-webapp/9.4.12.v20180830/jetty-webapp-9.4.12.v20180830.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-webapp/9.4.12.v20180830/jetty-webapp-9.4.12.v20180830-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-webapp/9.4.12.v20180830/jetty-webapp-9.4.12.v20180830-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.eclipse.jetty:jetty-xml:9.4.12.v20180830">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-xml/9.4.12.v20180830/jetty-xml-9.4.12.v20180830.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-xml/9.4.12.v20180830/jetty-xml-9.4.12.v20180830-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-xml/9.4.12.v20180830/jetty-xml-9.4.12.v20180830-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.freemarker:freemarker:2.3.28">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/freemarker/freemarker/2.3.28/freemarker-2.3.28.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/freemarker/freemarker/2.3.28/freemarker-2.3.28-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/freemarker/freemarker/2.3.28/freemarker-2.3.28-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.mortbay.jasper:apache-el:8.5.24.2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mortbay/jasper/apache-el/8.5.24.2/apache-el-8.5.24.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mortbay/jasper/apache-el/8.5.24.2/apache-el-8.5.24.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mortbay/jasper/apache-el/8.5.24.2/apache-el-8.5.24.2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.mortbay.jasper:apache-jsp:8.5.24.2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mortbay/jasper/apache-jsp/8.5.24.2/apache-jsp-8.5.24.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mortbay/jasper/apache-jsp/8.5.24.2/apache-jsp-8.5.24.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mortbay/jasper/apache-jsp/8.5.24.2/apache-jsp-8.5.24.2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.noear:bcfclient:0.0.39">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/noear/bcfclient/0.0.39/bcfclient-0.0.39.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/noear/bcfclient/0.0.39/bcfclient-0.0.39-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/noear/bcfclient/0.0.39/bcfclient-0.0.39-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.noear:snacks:1.1.5">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/noear/snacks/1.1.5/snacks-1.1.5.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/noear/snacks/1.1.5/snacks-1.1.5-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/noear/snacks/1.1.5/snacks-1.1.5-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.noear:waterclient:0.2.6">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/noear/waterclient/0.2.6/waterclient-0.2.6.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/noear/waterclient/0.2.6/waterclient-0.2.6-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/noear/waterclient/0.2.6/waterclient-0.2.6-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.noear:weed3:3.0.5.13">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/noear/weed3/3.0.5.13/weed3-3.0.5.13.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/noear/weed3/3.0.5.13/weed3-3.0.5.13-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/noear/weed3/3.0.5.13/weed3-3.0.5.13-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.ow2.asm:asm-analysis:6.2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/ow2/asm/asm-analysis/6.2/asm-analysis-6.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/ow2/asm/asm-analysis/6.2/asm-analysis-6.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/ow2/asm/asm-analysis/6.2/asm-analysis-6.2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.ow2.asm:asm-commons:6.2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/ow2/asm/asm-commons/6.2/asm-commons-6.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/ow2/asm/asm-commons/6.2/asm-commons-6.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/ow2/asm/asm-commons/6.2/asm-commons-6.2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.ow2.asm:asm-tree:6.2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/ow2/asm/asm-tree/6.2/asm-tree-6.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/ow2/asm/asm-tree/6.2/asm-tree-6.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/ow2/asm/asm-tree/6.2/asm-tree-6.2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.ow2.asm:asm:6.2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/ow2/asm/asm/6.2/asm-6.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/ow2/asm/asm/6.2/asm-6.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/ow2/asm/asm/6.2/asm-6.2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.slf4j:slf4j-api:1.7.25">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.yaml:snakeyaml:1.17">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/yaml/snakeyaml/1.17/snakeyaml-1.17.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/yaml/snakeyaml/1.17/snakeyaml-1.17-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/yaml/snakeyaml/1.17/snakeyaml-1.17-sources.jar!/" />
+      </SOURCES>
+    </library>
+  </component>
+</project>

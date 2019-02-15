@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.noear</groupId>
+    <artifactId>solon_java</artifactId>
+    <version>1.0.x</version>
+    <packaging>pom</packaging>
+
+    <name>solon_java</name>
+    <description>Java project for solon</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+
+        <solon.ver>1.0.1-m6</solon.ver>
+        <solon.boot.jlhttp.ver>1.0.1-m4</solon.boot.jlhttp.ver>
+        <solon.boot.jetty.ver>1.0.1-m3</solon.boot.jetty.ver>
+        <solon.boot.jetty.jsp.ver>1.0.1-m5</solon.boot.jetty.jsp.ver>
+        <solon.boot.jettyall.ver>1.0.1-m1</solon.boot.jettyall.ver>
+
+        <solon.extend.staticfiles.ver>1.0.1-m1</solon.extend.staticfiles.ver>
+        <solon.extend.wateradpter.ver>1.0.1-m9</solon.extend.wateradpter.ver>
+        <solon.extend.rockuapi.ver>1.0.1-m3</solon.extend.rockuapi.ver>
+
+        <solon.view.fastjson.ver>1.0.1-m2</solon.view.fastjson.ver>
+        <solon.view.freemarker.ver>1.0.1-m4</solon.view.freemarker.ver>
+        <solon.view.velocity.ver>1.0.1-m3</solon.view.velocity.ver>
+        <solon.view.jsp.ver>1.0.1-m3</solon.view.jsp.ver>
+
+        <solonclient.ver>1.0.1-m2</solonclient.ver>
+
+        <solon.extend.yaml.ver>1.0.0-m2</solon.extend.yaml.ver>
+        <solon.extend.stop.ver>1.0.0-m1</solon.extend.stop.ver>
+
+        <okhttp.ver>3.11.0</okhttp.ver>
+        <weed3.ver>3.0.5.13</weed3.ver>
+        <snacks.ver>1.1.5</snacks.ver>
+        <waterclient.ver>0.2.6</waterclient.ver>
+        <bcfclient.ver>0.0.39</bcfclient.ver>
+
+        <rockrpcclient.ver>1.0.9</rockrpcclient.ver>
+
+    </properties>
+
+    <modules>
+        <module>demo</module>
+        
+        <module>solon</module>
+        <module>solon.boot.jetty</module>
+        <module>solon.boot.jetty.jsp</module>
+        <module>solon.boot.jettyall</module>
+        <module>solon.boot.jlhttp</module>
+
+        <module>solon.view.freemarker</module>
+        <module>solon.view.fastjson</module>
+        <module>solon.view.jsp</module>
+        <module>solon.view.velocity</module>
+
+        <module>solon.extend.rockuapi</module>
+        <module>solon.extend.staticfiles</module>
+        <module>solon.extend.wateradpter</module>
+        <module>solon.extend.yaml</module>
+        <module>solon.extend.stop</module>
+        <module>solon.extend.aopx</module>
+
+        <module>solonclient</module>
+
+        <module>wrap</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>weed3</artifactId>
+                <version>${weed3.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>snacks</artifactId>
+                <version>${snacks.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>waterclient</artifactId>
+                <version>${waterclient.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>bcfclient</artifactId>
+                <version>${bcfclient.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>lib.sponge</groupId>
+                <artifactId>rockrpcclient</artifactId>
+                <version>${rockrpcclient.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.10</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.29</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>2.3.28</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-engine-core</artifactId>
+                <version>2.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <id>nexus-zm</id>
+            <name>Nexus zm</name>
+            <url>http://maven.data.zm/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
+</project>

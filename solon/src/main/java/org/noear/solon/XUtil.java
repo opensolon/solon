@@ -1,0 +1,151 @@
+package org.noear.solon;
+
+import java.io.*;
+import java.net.URL;
+import java.util.*;
+
+/**
+ * 内部专用工具
+ * */
+public class XUtil {
+    /** 生成UGID*/
+    public static String guid(){
+        return UUID.randomUUID().toString().replaceAll("-","");
+    }
+
+    /** 检查字符串是否为空*/
+    public static boolean isEmpty(String s) {
+        return s == null || s.length() == 0;
+    }
+
+    /** 获取第一项或者null */
+    public static <T> T firstOrNull(List<T> list){
+        if(list.size()>0){
+            return list.get(0);
+        }else{
+            return null;
+        }
+    }
+
+    /** 编译路由表达式 */
+    public static String expCompile(String path) {
+        //替换特殊符号
+        String p = path;
+
+        p = p.replace(".", "\\.");
+        p = p.replace("$", "\\$");
+
+        //替换中间的**值
+        p = p.replace("**", ".+?");
+
+        //替换*值
+        p = p.replace("*", "[^/]+");
+
+        //替换{x}值
+        if (p.indexOf("{") >= 0) {
+            p = p.replaceAll("\\{.+?\\}", "([^/]+?)");//不采用group name,可解决_的问题
+        }
+
+        if (p.startsWith("/") == false) {
+            p = "/" + p;
+        }
+
+        //整合并输出
+        return "^" + p + "$";
+    }
+
+    /** 根据字符串加载为一个类*/
+    public static Class<?> loadClass(String className) {
+        try {
+            return Class.forName(className);
+        }catch (Exception ex) {
+            return null;
+        }
+    }
+
+    /** 根据字段串加载为一个对象 */
+    public static <T> T newClass(String className) {
+        try {
+            Class clz = Class.forName(className);
+            return (T) clz.newInstance();
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    /** 获取资源URL集*/
+    public static Enumeration<URL> getResources(String name) throws IOException{
+        Enumeration<URL> urls = XUtil.class.getClassLoader().getResources(name);
+        if (urls == null || urls.hasMoreElements()==false) {
+            ClassLoader loader = Thread.currentThread().getContextClassLoader();
+            if (loader != null) {
+                urls = loader.getResources(name);
+            } else {
+                urls = ClassLoader.getSystemResources(name);
+            }
+        }
+
+        return urls;
+    }
+
+    /** 获取资源URL*/
+    public static URL getResource(String name) {
+        URL url = XUtil.class.getResource(name);
+        if (url == null) {
+            ClassLoader loader = Thread.currentThread().getContextClassLoader();
+            if (loader != null) {
+                url = loader.getResource(name);
+            } else {
+                url = ClassLoader.getSystemResource(name);
+            }
+        }
+
+        return url;
+    }
+
+    /** 获取异常的完整内容*/
+    public static String getFullStackTrace(Exception ex){
+        StringWriter sw = new StringWriter();
+        ex.printStackTrace(new PrintWriter(sw, true));
+        return sw.getBuffer().toString();
+    }
+
+    /** 合并两个路径*/
+    public static String mergePath(String path1, String path2) {
+        if (XUtil.isEmpty(path1)) {
+            if (path2.startsWith("/")) {
+                return path2;
+            } else {
+                return "/" + path2;
+            }
+        }
+
+        if (path1.startsWith("/") == false) {
+            path1 = "/" + path1;
+        }
+
+        if(XUtil.isEmpty(path2)){
+            return path1;
+        }
+
+        if (path2.startsWith("/")) {
+            path2 = path2.substring(1);
+        }
+
+        if (path1.endsWith("/")) {
+            return path1 + path2;
+        } else {
+            if (path1.endsWith("*")) {
+                int idx = path1.lastIndexOf('/') + 1;
+                if (idx < 1) {
+                    return path2;
+                } else {
+                    return path1.substring(0, idx) + path2;
+                }
+            } else {
+                return path1 + "/" + path2;
+            }
+        }
+    }
+}
