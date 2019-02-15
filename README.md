@@ -36,7 +36,7 @@ public class App{
     }
 }
 ```
-* Web bean示例
+* Web 示例（aop,mvc,rpc）
 ```java
 public class App{
     public static void main(String[] args){
@@ -62,7 +62,7 @@ public interface DemoRpc{
 
 // - server
 @XMappinge("/demo/*")
-@XService
+@XService(remoting = true)
 public class DemoService implements DemoRpc{
     public void setName(Integer user_id,String name){
         
