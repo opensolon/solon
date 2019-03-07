@@ -87,11 +87,11 @@ public abstract class XContext {
     public abstract String param(String key);
     public abstract String param(String key, String def);
     public abstract int paramAsInt(String key);
-    public int paramAsInt(String key, int def){return Integer.parseInt(param(key,"0"));}
+    public int paramAsInt(String key, int def){return Integer.parseInt(param(key,String.valueOf(def)));}
     public abstract long paramAsLong(String key);
-    public long paramAsLong(String key, long def){return Long.parseLong(param(key,"0"));}
+    public long paramAsLong(String key, long def){return Long.parseLong(param(key,String.valueOf(def)));}
     public abstract double paramAsDouble(String key);
-    public double paramAsDouble(String key, double def){return Double.parseDouble(param(key,"0"));}
+    public double paramAsDouble(String key, double def){return Double.parseDouble(param(key,String.valueOf(def)));}
     public abstract XMap paramMap();
     public abstract void paramSet(String key,String val);
     public <T> T paramAsEntity(Class<T> clz) throws Exception{
@@ -140,7 +140,7 @@ public abstract class XContext {
     }
     public void outputAsHtml(String html) throws IOException{
         contentType("text/html;charset=utf-8");
-        if(html.indexOf("<html")<0) {
+        if(html.startsWith("<html") == false) {
             StringBuilder sb = new StringBuilder();
             sb.append("<!doctype html>");
             sb.append("<html>");
