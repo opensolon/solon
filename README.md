@@ -1,4 +1,8 @@
-### 插件式Web微框架(40kb)
+还没有上传中央仓库，外人还不方便用。（不会搞，得找人请教一下...）
+<br/>
+源码中的小部分扩展未搞完。
+
+### 插件式Web微框架(主框架50kb，根据需求组合不同的插件或扩展)
 #### 框架实现效果
 * 1.实现boot（*类似spring boot）
 * 2.实现微框架（*类似javalin）
@@ -34,7 +38,7 @@ public class App{
     }
 }
 ```
-* Web bean示例
+* Web 示例（aop,mvc,rpc）
 ```java
 public class App{
     public static void main(String[] args){
@@ -45,7 +49,7 @@ public class App{
 /*mvc控制器*/
 @XController
 public class DemoController{
-    @XMappinge("/hallo/{u_u}")
+    @XMapping("/hallo/{u_u}")
     public ModelAndView hallo(String u_u){
         return new ModelAndView("hallo");
     }
@@ -53,14 +57,14 @@ public class DemoController{
 
 /*rpc服务*/ 
 // - interface
-@XClient("demorpc,http://127.0.0.1/demo/")
+@XClient("http://127.0.0.1/demo/") // 或 demorpc （使用water提供的注册服务；当然也可以改成别的...）
 public interface DemoRpc{
     void setName(Integer user_id,String name);
 }
 
 // - server
-@XMappinge("/demo/*")
-@XService
+@XMapping("/demo/*")
+@XService(remoting = true)
 public class DemoService implements DemoRpc{
     public void setName(Integer user_id,String name){
         
@@ -68,10 +72,10 @@ public class DemoService implements DemoRpc{
 }
 
 // - client - 简单示例
-DemoRpc client = new XProxy().create(DemoRpc.class);
+DemoRpc client = new XProxy().create(DemoRpc.class); //@XClient("http://127.0.0.1/demo/")
 client.setName(1,'');
 
-// - client - 使用WATER负载示例
-DemoRpc client = XWaterUpstream.xclient(DemoRpc.class);
+// - client - 使用WATER负载示例 （可以自己写个别的负载）
+DemoRpc client = XWaterUpstream.xclient(DemoRpc.class); //@XClient("demorpc")
 client.setName(1,'');
 ```
