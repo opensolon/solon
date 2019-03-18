@@ -25,6 +25,12 @@ XService（WEB服务者），所有公有函数为XAction<br/>
 XMapping：印射注解，支持path var。可注解到web bean或XAction或XHandler<br/>
 XAfter：后置处理注解。可注解到web bean或XAction<br/>
 XBefore：前置处理注解。可注解到web bean或XAction<br/>
+
+#### 已有框架说明
+| solon | S | S |
+| --- | --- | --- |
+| solon.boot.jlhttp | B | b |
+
 #### 简单示例
 * 微框架示例
 ```xml
