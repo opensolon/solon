@@ -1,5 +1,6 @@
 package org.noear.solon.extend.staticfiles;
 
+import com.sun.javafx.css.Rule;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.*;
@@ -8,8 +9,9 @@ import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.util.Date;
+import java.util.regex.Pattern;
 
-class XResourceHandlerPlugin implements XHandler, XPlugin {
+class XResourceHandler implements XHandler {
     private static final String CACHE_CONTROL = "Cache-Control";
     private static final String LAST_MODIFIED = "Last-Modified";
 
@@ -18,8 +20,9 @@ class XResourceHandlerPlugin implements XHandler, XPlugin {
     private String _debugBaseUri;
     private String _baseUri;
     private XStaticFiles staticFiles =  XStaticFiles.instance();
+    private Pattern _rule;
 
-    public XResourceHandlerPlugin(String baseUri) {
+    public XResourceHandler(String baseUri) {
         _baseUri = baseUri;
         _isdebug = XApp.global().prop().argx().getInt("debug") == 1;
 
@@ -27,11 +30,10 @@ class XResourceHandlerPlugin implements XHandler, XPlugin {
             String dirroot = XUtil.getResource("/").toString().replace("target/classes/", "");
             _debugBaseUri = dirroot + "src/main/resources"+_baseUri;
         }
-    }
 
-    @Override
-    public void start(XApp app) {
-        app.before("/**(" + String.join("|", staticFiles.keySet()) + ")", XMethod.GET, this);
+        String expr = "(" + String.join("|", staticFiles.keySet()) + ")$";
+
+        _rule = Pattern.compile(expr, Pattern.CASE_INSENSITIVE);
     }
 
     public URL getResource(String path) throws Exception{
@@ -51,6 +53,14 @@ class XResourceHandlerPlugin implements XHandler, XPlugin {
     @Override
     public void handle(XContext context) throws Exception {
         if (context.getHandled()) {
+            return;
+        }
+
+        if(XMethod.GET.equals( context.method()) == false){
+            return;
+        }
+
+        if(_rule.matcher(context.path()).find()==false){
             return;
         }
 

@@ -8,14 +8,15 @@ import java.io.StringWriter;
 public class XRenderUtil {
     public static String reander(String template, Object model) throws Exception {
         StringWriter writer = new StringWriter();
-        Configuration configuration = new Configuration(Configuration.VERSION_2_3_28);
-        configuration.setNumberFormat("#");
+        Configuration cfg = new Configuration(Configuration.VERSION_2_3_28);
+        cfg.setNumberFormat("#");
+        cfg.setDefaultEncoding("utf-8");
 
         StringTemplateLoader stringLoader = new StringTemplateLoader();
         stringLoader.putTemplate("template", template);
-        configuration.setTemplateLoader(stringLoader);
+        cfg.setTemplateLoader(stringLoader);
 
-        Template tmpl = configuration.getTemplate("template", "utf-8");
+        Template tmpl = cfg.getTemplate("template", "utf-8");
 
         tmpl.process(model, writer);
         return writer.toString();

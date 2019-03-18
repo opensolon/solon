@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon.extend.aopx</artifactId>
-    <version>1.0.1-m1</version>
+    <version>1.0.0-m1</version>
     <packaging>jar</packaging>
 
     <name>solon.extend.aopx</name>

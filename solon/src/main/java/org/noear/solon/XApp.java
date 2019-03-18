@@ -22,15 +22,15 @@ import java.util.*;
  * ///保持手写和注解两种体验方案::
  *
  * ///关于Bean扫描和加载机制::
- * @XBean 为一般bean,会被加载 (仅支持类级别)
- * @XController, @XInterceptor, @XService 为特定bean,会被加载 (仅支持类级别)
+ * #XBean 为一般bean,会被加载 (仅支持类级别)
+ * #XController, #XInterceptor, #XService 为特定bean,会被加载 (仅支持类级别)
  *
- * 其中：@XController (控制器), @XInterceptor (拦截器), @XService(服务)  会自动注入到 XApp.router
+ * 其中：#XController (控制器), #XInterceptor (拦截器), #XService(服务)  会自动注入到 XApp.router
  *      //这三者最终都会转换为：XAction
  *
- * 其中：@XBean 加在 XHandler上， 会自动注入到 XApp.router
- *      @XBean 加在 XPlugin上，会自运注入到 XApp.plug()
- *      @XBean 加在普通类上，会自动注入到 XApp.beans
+ * 其中：#XBean 加在 XHandler上， 会自动注入到 XApp.router
+ *      #XBean 加在 XPlugin上，会自运注入到 XApp.plug()
+ *      #XBean 加在普通类上，会自动注入到 XApp.beans
  *
  * ///插件(XPlugin)的作用::
  * 1.扩展框架机能
@@ -51,7 +51,7 @@ import java.util.*;
 public class XApp implements XHandler {
     private static XApp _global;
 
-    /**唯一实例*/
+    /** 唯一实例 */
     public static XApp global(){
         return _global;
     }
@@ -112,16 +112,14 @@ public class XApp implements XHandler {
     private XRender _render = (d,c)->{if(d!=null){c.output(d.toString());}};
 
     /** 路由器 */
-    private XRouter<XHandler> _router;
+    private final XRouter<XHandler> _router=  new XRouter();
     /** 端口 */
-    private int _port;
+    private final int _port;
     /** 属性配置 */
-    private XProperties _prop;
+    private final XProperties _prop;
 
     protected XApp(String[] args) {
-        _router = new XRouter();
         _prop = new XProperties(args);
-
         _port = _prop.serverPort();
     }
 
@@ -165,6 +163,10 @@ public class XApp implements XHandler {
     //
     //////////////////////////////////////////////
 
+    public XHandler matched(XContext context, int type){
+        return _router.matched(context,type);
+    }
+
     /** 前置监听 */
     public void before( String expr, String method, XHandler handler) {
         _router.add(expr, XEndpoint.before, method, handler);
@@ -180,29 +182,29 @@ public class XApp implements XHandler {
         _router.add(expr, XEndpoint.main, method, handler);
     }
 
-    //添加所有方法的监听
+    /** 添加所有方法的监听 */
     public void all(String path, XHandler handler) {
         add(path, XMethod.ALL, handler);
     }
 
     //http
 
-    //添加GET方法的监听
+    /** 添加GET方法的监听 */
     public void get(String path, XHandler handler) {
         add(path, XMethod.GET, handler);
     }
 
-    //添加POST方法的监听
+    /** 添加POST方法的监听 */
     public void post(String path, XHandler handler) {
         add(path, XMethod.POST, handler);
     }
 
-    //添加PUT方法的监听
+    /** 添加PUT方法的监听 */
     public void put(String path, XHandler handler) {
         add(path, XMethod.PUT, handler);
     }
 
-    //添加DELETE方法的监听
+    /** 添加DELETE方法的监听 */
     public void delete(String path, XHandler handler) {
         add(path, XMethod.DELETE, handler);
     }
@@ -215,52 +217,30 @@ public class XApp implements XHandler {
         return _threadLocal.get();
     }
 
+    /** XApp Handler */
+    private XHandler _handler = new XAppHandler(this);
+    public XHandler handlerGet(){
+        return _handler;
+    }
+
+    public void handlerSet(XHandler handler) {
+        if (handler != null) {
+            _handler = handler;
+        }
+    }
+
     /** 统一代理入口 */
     @Override
     public void handle(XContext context) throws Exception {
         try {
             //设置当前线程上下文
-
             _threadLocal.set(context);
-            boolean _handled = false;
 
-            //前置处理
-            do_handle(context, XEndpoint.before);
-
-            //主体处理
-            if (context.getHandled() == false) {
-                _handled = do_handle(context, XEndpoint.main);
-            }
-
-            //后置处理
-            do_handle(context, XEndpoint.after); //前后不能反
-
-            //汇总状态
-            if (_handled) {
-                if (context.status() < 1) {
-                    context.status(200);
-                }
-                context.setHandled(true);
-            }
-
-            if (context.status() < 1) {
-                context.status(404);
-            }
+            _handler.handle(context);
 
         } finally {
             //移除当前线程上下文
             _threadLocal.remove();
-        }
-    }
-
-    private boolean do_handle(XContext context, int endpoint) throws Exception {
-        XHandler handler = _router.matched(context, endpoint);
-
-        if (handler != null) {
-            handler.handle(context);
-            return true;
-        } else {
-            return false;
         }
     }
 }

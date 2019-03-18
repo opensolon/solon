@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon.wrap.mvc-jetty.jsp</artifactId>
-    <version>1.0.1-m8</version>
+    <version>1.0.2-m1</version>
     <packaging>jar</packaging>
 
     <description>Java project for solon.mvc</description>
@@ -26,8 +26,14 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jetty.jsp</artifactId>
-            <version>${solon.boot.jetty.jsp.ver}</version>
+            <artifactId>solon.boot.jetty</artifactId>
+            <version>${solon.boot.jetty.ver}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.jetty.jsp</artifactId>
+            <version>${solon.extend.jetty.jsp.ver}</version>
         </dependency>
 
         <dependency>

@@ -58,7 +58,7 @@ public class JtHttpContext extends XContext{
 
     @Override
     public String path() {
-        return _request.getPathInfo();
+        return _request.getRequestURI();
     }
 
     @Override

@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon.wrap.api-jetty</artifactId>
-    <version>1.0.1-m11</version>
+    <version>1.0.2-m1</version>
     <packaging>jar</packaging>
 
     <description>Java project for solon.api</description>

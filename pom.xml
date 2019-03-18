@@ -17,30 +17,32 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.0.1-m6</solon.ver>
-        <solon.boot.jlhttp.ver>1.0.1-m4</solon.boot.jlhttp.ver>
-        <solon.boot.jetty.ver>1.0.1-m3</solon.boot.jetty.ver>
-        <solon.boot.jetty.jsp.ver>1.0.1-m5</solon.boot.jetty.jsp.ver>
-        <solon.boot.jettyall.ver>1.0.1-m1</solon.boot.jettyall.ver>
+        <solon.ver>1.0.2-m1</solon.ver>
 
-        <solon.extend.staticfiles.ver>1.0.1-m1</solon.extend.staticfiles.ver>
-        <solon.extend.wateradpter.ver>1.0.1-m9</solon.extend.wateradpter.ver>
-        <solon.extend.rockuapi.ver>1.0.1-m3</solon.extend.rockuapi.ver>
+        <solon.boot.jlhttp.ver>1.0.2-m1</solon.boot.jlhttp.ver>
+        <solon.boot.jetty.ver>1.0.2-m1</solon.boot.jetty.ver>
 
-        <solon.view.fastjson.ver>1.0.1-m2</solon.view.fastjson.ver>
-        <solon.view.freemarker.ver>1.0.1-m4</solon.view.freemarker.ver>
-        <solon.view.velocity.ver>1.0.1-m3</solon.view.velocity.ver>
-        <solon.view.jsp.ver>1.0.1-m3</solon.view.jsp.ver>
+        <solon.extend.staticfiles.ver>1.0.2-m1</solon.extend.staticfiles.ver>
+        <solon.extend.wateradpter.ver>1.0.2-m1</solon.extend.wateradpter.ver>
+        <solon.extend.rockuapi.ver>1.0.2-m1</solon.extend.rockuapi.ver>
 
-        <solonclient.ver>1.0.1-m2</solonclient.ver>
+        <solon.extend.jetty.jsp.ver>1.0.2-m1</solon.extend.jetty.jsp.ver>
 
-        <solon.extend.yaml.ver>1.0.0-m2</solon.extend.yaml.ver>
-        <solon.extend.stop.ver>1.0.0-m1</solon.extend.stop.ver>
+        <solon.view.fastjson.ver>1.0.2-m1</solon.view.fastjson.ver>
+        <solon.view.freemarker.ver>1.0.2-m1</solon.view.freemarker.ver>
+        <solon.view.velocity.ver>1.0.2-m1</solon.view.velocity.ver>
+        <solon.view.jsp.ver>1.0.2-m1</solon.view.jsp.ver>
+
+        <solonclient.ver>1.0.2-m1</solonclient.ver>
+
+        <!--<solon.extend.yaml.ver>1.0.0-m2</solon.extend.yaml.ver>-->
+        <!--<solon.extend.stop.ver>1.0.0-m1</solon.extend.stop.ver>-->
+        <!--<solon.extend.aopx.ver>1.0.0-m1</solon.extend.aopx.ver>-->
 
         <okhttp.ver>3.11.0</okhttp.ver>
         <weed3.ver>3.0.5.13</weed3.ver>
         <snacks.ver>1.1.5</snacks.ver>
-        <waterclient.ver>0.2.6</waterclient.ver>
+        <waterclient.ver>0.2.8</waterclient.ver>
         <bcfclient.ver>0.0.39</bcfclient.ver>
 
         <rockrpcclient.ver>1.0.9</rockrpcclient.ver>
@@ -52,8 +54,6 @@
         
         <module>solon</module>
         <module>solon.boot.jetty</module>
-        <module>solon.boot.jetty.jsp</module>
-        <module>solon.boot.jettyall</module>
         <module>solon.boot.jlhttp</module>
 
         <module>solon.view.freemarker</module>
@@ -67,6 +67,7 @@
         <module>solon.extend.yaml</module>
         <module>solon.extend.stop</module>
         <module>solon.extend.aopx</module>
+        <module>solon.extend.jetty.jsp</module>
 
         <module>solonclient</module>
 

@@ -1,4 +1,4 @@
-package org.noear.solon.boot.jetty.jsp;
+package org.noear.solon.boot.jetty;
 
 import org.eclipse.jetty.server.Request;
 import org.noear.solon.XApp;
@@ -40,7 +40,7 @@ public class JspHttpContextServlet extends HttpServlet {
     private void call(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         XApp xapp = XApp.global();
-        JspHttpContext context = new JspHttpContext(request,response);
+        JtHttpContext context = new JtHttpContext(request,response);
         context.contentType("text/plain;charset=UTF-8");
 
         try {

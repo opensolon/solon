@@ -2,35 +2,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <artifactId>solon_java</artifactId>
-        <groupId>org.noear</groupId>
-        <version>1.0.x</version>
-    </parent>
-
-    <artifactId>solon.boot.jetty.jsp</artifactId>
-    <version>1.0.1-m5</version>
+    <groupId>org.noear</groupId>
+    <artifactId>solon.extend.jetty.jsp</artifactId>
+    <version>1.0.2-m1</version>
     <packaging>jar</packaging>
 
-    <name>solon.boot.jetty.jsp</name>
-    <description>Java project for solon.boot.jetty</description>
+    <name>solon.extend.jetty.jsp</name>
+    <description>java project for solon.extend.jetty.jsp</description>
+
+    <parent>
+        <groupId>org.noear</groupId>
+        <artifactId>solon_java</artifactId>
+        <version>1.0.x</version>
+    </parent>
 
     <properties>
         <jetty-version>9.4.12.v20180830</jetty-version>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
-            <version>${solon.ver}</version>
-            <scope>provided</scope>
-        </dependency>
 
-        <!-- jetty http begin -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -53,7 +46,6 @@
             <version>${jetty-version}</version>
             <type>pom</type>
         </dependency>
-        <!-- jetty http end -->
 
     </dependencies>
 
@@ -94,5 +86,11 @@
 
     </build>
 
-
+    <repositories>
+        <repository>
+            <id>nexus-zm</id>
+            <name>Nexus zm</name>
+            <url>http://maven.data.zm/repository/maven-public/</url>
+        </repository>
+    </repositories>
 </project>

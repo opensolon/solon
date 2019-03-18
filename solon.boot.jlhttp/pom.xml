@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon.boot.jlhttp</artifactId>
-    <version>1.0.1-m4</version>
+    <version>1.0.2-m1</version>
     <packaging>jar</packaging>
 
     <name>solon.boot.jlhttp</name>

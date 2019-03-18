@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon.view.jsp</artifactId>
-    <version>1.0.1-m3</version>
+    <version>1.0.2-m1</version>
     <packaging>jar</packaging>
 
     <name>solon.view.jsp</name>

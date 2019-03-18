@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon.wrap.rpc-jlhttp</artifactId>
-    <version>1.0.1-m8</version>
+    <version>1.0.2-m1</version>
     <packaging>jar</packaging>
 
     <description>Java project for solon.rpc</description>
