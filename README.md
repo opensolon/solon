@@ -26,7 +26,7 @@ XMapping：印射注解，支持path var。可注解到web bean或XAction或XHan
 XAfter：后置处理注解。可注解到web bean或XAction<br/>
 XBefore：前置处理注解。可注解到web bean或XAction<br/>
 
-#### 已有框架说明
+#### 组件说明
 | 组件 | 说明 |
 | --- | --- |
 | org.noear:solon:1.0.2 | 主框架 |
