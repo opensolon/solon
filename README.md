@@ -83,6 +83,12 @@ public class App{
   <version>1.0.2</version>
 </dependency>
 ```
+```
+//路径说明
+resources/application.properties 为应用配置文件
+resources/static/ 为静态文件根目标
+resources/WEB-INF/view/ 为视图文件根目标
+```
 ```java
 public class App{
     public static void main(String[] args){
