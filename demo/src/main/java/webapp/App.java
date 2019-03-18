@@ -1,11 +1,6 @@
 package webapp;
 
-import noear.water.utils.HttpUtil;
 import org.noear.solon.XApp;
-import org.noear.solon.core.Aop;
-import org.noear.solon.core.AopFactory;
-import webapp.demo6_aop.XConfig;
-import webapp.demo7_test.TestController;
 
 public class App {
     public static void main(String[] args) {
@@ -13,28 +8,9 @@ public class App {
 
         //手动添加一个路由监听demo
         app.get("/test", (c) -> c.output(c.path()));
-
-//        try {
-//            test();
-//        }catch (Exception ex){
-//            ex.printStackTrace();
-//        }
-
     }
 
-    public static void test() throws Exception{
-        long time_start = System.currentTimeMillis();
-        for (int i=0; i<1000; i++){
-            String txt = HttpUtil.getString("http://localhost:8080/test");
-            System.out.println(txt);
-        }
-
-        long time_end= System.currentTimeMillis();
-
-        System.out.println("times::" + (time_end - time_start));
-    }
-
-    private static void demo(String[] args){
+    private static void main2(String[] args){
 
         //重写式扩展
 //        Aop.factorySet(new AopFactory(){

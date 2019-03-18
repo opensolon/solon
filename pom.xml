@@ -23,9 +23,6 @@
         <solon.boot.jetty.ver>1.0.2-m1</solon.boot.jetty.ver>
 
         <solon.extend.staticfiles.ver>1.0.2-m1</solon.extend.staticfiles.ver>
-        <solon.extend.wateradpter.ver>1.0.2-m1</solon.extend.wateradpter.ver>
-        <solon.extend.rockuapi.ver>1.0.2-m1</solon.extend.rockuapi.ver>
-
         <solon.extend.jetty.jsp.ver>1.0.2-m1</solon.extend.jetty.jsp.ver>
 
         <solon.view.fastjson.ver>1.0.2-m1</solon.view.fastjson.ver>
@@ -35,17 +32,10 @@
 
         <solonclient.ver>1.0.2-m1</solonclient.ver>
 
-        <!--<solon.extend.yaml.ver>1.0.0-m2</solon.extend.yaml.ver>-->
-        <!--<solon.extend.stop.ver>1.0.0-m1</solon.extend.stop.ver>-->
-        <!--<solon.extend.aopx.ver>1.0.0-m1</solon.extend.aopx.ver>-->
 
         <okhttp.ver>3.11.0</okhttp.ver>
         <weed3.ver>3.0.5.13</weed3.ver>
         <snacks.ver>1.1.5</snacks.ver>
-        <waterclient.ver>0.2.8</waterclient.ver>
-        <bcfclient.ver>0.0.39</bcfclient.ver>
-
-        <rockrpcclient.ver>1.0.9</rockrpcclient.ver>
 
     </properties>
 
@@ -61,17 +51,11 @@
         <module>solon.view.jsp</module>
         <module>solon.view.velocity</module>
 
-        <module>solon.extend.rockuapi</module>
         <module>solon.extend.staticfiles</module>
-        <module>solon.extend.wateradpter</module>
-        <module>solon.extend.yaml</module>
-        <module>solon.extend.stop</module>
-        <module>solon.extend.aopx</module>
         <module>solon.extend.jetty.jsp</module>
 
         <module>solonclient</module>
 
-        <module>wrap</module>
     </modules>
 
     <dependencyManagement>
