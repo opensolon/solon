@@ -36,7 +36,7 @@ XBefore：前置处理注解。可注解到web bean或XAction<br/>
 | org.noear:solon.extend.staticfiles:1.0.2 | 扩展插件,添加静态文件支持 |
 | org.noear:solon.view.fastjson:1.0.2 | 视图插件，对 fastjson 适配，输出json视图 |
 | org.noear:solon.view.freemarker:1.0.2 | 视图插件，对 fastjson 和 freemarker 适配，输出json或html |
-| org.noear:solon.view.jsp:1.0.2 | 视图插件，对 fastjson 和 jsp 适配，输出json或html（需要：solon.extend.jetty.jsp 支持） |
+| org.noear:solon.view.jsp:1.0.2 | 视图插件，对 fastjson 和 jsp 适配，输出json或html |
 | org.noear:solon.view.velocity:1.0.2 | 视图插件，对 fastjson 和 velocity 适配，输出json或html |
 | org.noear:solonclient:1.0.2 | rpc client 框架，与solon 的 rpc service 配对 |
 
