@@ -27,12 +27,13 @@ XAfter：后置处理注解。可注解到web bean或XAction<br/>
 XBefore：前置处理注解。可注解到web bean或XAction<br/>
 #### 简单示例
 * 微框架示例
-```pom
+```xml
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon</artifactId>
   <version>1.0.2</version>
 </dependency>
+
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon.boot.jlhttp</artifactId>
@@ -48,6 +49,25 @@ public class App{
 }
 ```
 * Web 示例（aop,mvc,rpc）
+```xml
+<dependency>
+  <groupId>org.noear</groupId>
+  <artifactId>solon</artifactId>
+  <version>1.0.2</version>
+</dependency>
+
+<dependency>
+  <groupId>org.noear</groupId>
+  <artifactId>solon.boot.jlhttp</artifactId>
+  <version>1.0.2</version>
+</dependency>
+
+<dependency>
+  <groupId>org.noear</groupId>
+  <artifactId>solon.view.freemarker</artifactId>
+  <version>1.0.2</version>
+</dependency>
+```
 ```java
 public class App{
     public static void main(String[] args){
