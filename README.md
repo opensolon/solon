@@ -27,7 +27,7 @@ XAfter：后置处理注解。可注解到web bean或XAction<br/>
 XBefore：前置处理注解。可注解到web bean或XAction<br/>
 #### 简单示例
 * 微框架示例
-```xml
+```pom
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon</artifactId>
