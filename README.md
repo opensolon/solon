@@ -5,7 +5,7 @@
 * 2.实现微框架（*类似javalin）
 * 3.实现mvc（*类似spring mvc）
 * 4.实现rpc
-* 5.实现微服务架构（结合water治理平台）
+* 5.实现微服务架构（结合water治理平台）//此项目不涉及
 #### 主要组成
 * 1.XApp，管理总线，所有内容都交汇于此
 * 2.XPlugin，通用插件接口
@@ -29,16 +29,16 @@ XBefore：前置处理注解。可注解到web bean或XAction<br/>
 #### 组件说明
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon:1.0.2 | 主框架 |
-| org.noear:solon.boot.jlhttp:1.0.2 | boot插件,对jlhttp适配（不支持session） |
-| org.noear:solon.boot.jetty:1.0.2 | boot插件,对jetty适配 |
-| org.noear:solon.extend.jetty.jsp:1.0.2 | 扩展插件,为jetty添加jsp支持 |
-| org.noear:solon.extend.staticfiles:1.0.2 | 扩展插件,添加静态文件支持 |
-| org.noear:solon.view.fastjson:1.0.2 | 视图插件，对 fastjson 适配，输出json视图 |
-| org.noear:solon.view.freemarker:1.0.2 | 视图插件，对 fastjson 和 freemarker 适配，输出json或html |
-| org.noear:solon.view.jsp:1.0.2 | 视图插件，对 fastjson 和 jsp 适配，输出json或html |
-| org.noear:solon.view.velocity:1.0.2 | 视图插件，对 fastjson 和 velocity 适配，输出json或html |
-| org.noear:solonclient:1.0.2 | rpc client 框架，与solon 的 rpc service 配对 |
+| org.noear:solon:1.0.2 | 48k，主框架 |
+| org.noear:solon.boot.jlhttp:1.0.2 | 58k，boot插件,对jlhttp适配（不支持session） |
+| org.noear:solon.boot.jetty:1.0.2 | 1.5m，boot插件,对jetty适配 |
+| org.noear:solon.extend.jetty.jsp:1.0.2 | 6m，扩展插件,为jetty添加jsp支持 |
+| org.noear:solon.extend.staticfiles:1.0.2 | 8k，扩展插件,添加静态文件支持 |
+| org.noear:solon.view.fastjson:1.0.2 | 0.5m，视图插件，对 fastjson 适配，输出json视图 |
+| org.noear:solon.view.freemarker:1.0.2 | 2.0m，视图插件，对 fastjson 和 freemarker 适配，输出json或html |
+| org.noear:solon.view.jsp:1.0.2 | 0.5m，视图插件，对 fastjson 和 jsp 适配，输出json或html |
+| org.noear:solon.view.velocity:1.0.2 | 1.4m，视图插件，对 fastjson 和 velocity 适配，输出json或html |
+| org.noear:solonclient:1.0.2 | 11k，rpc client 框架，与solon 的 rpc service 配对 |
 
 #### 简单示例
 * 微框架示例
@@ -82,6 +82,12 @@ public class App{
   <artifactId>solon.view.freemarker</artifactId> <!-- 可以换成：.velocity 或 .jsp 或自己定义个插件 -->
   <version>1.0.2</version>
 </dependency>
+```
+```
+//资源路径说明
+resources/application.properties 为应用配置文件
+resources/static/ 为静态文件根目标
+resources/WEB-INF/view/ 为视图文件根目标 （把视图放数据库里也成...自己适配下）
 ```
 ```java
 public class App{
