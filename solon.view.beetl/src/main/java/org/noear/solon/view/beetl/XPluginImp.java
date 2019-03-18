@@ -12,8 +12,8 @@ public class XPluginImp implements XPlugin {
 
         Aop.beanOnloaded(() -> {
             Aop.beanForeach((k, v) -> {
-                if (k.startsWith("ftl:")) {
-                    render.setSharedVariable(k.split(":")[1], v.raw());
+                if (k.startsWith("tag:")) {
+                    render.registerTag(k.split(":")[1], v.clz());
                 }
             });
         });

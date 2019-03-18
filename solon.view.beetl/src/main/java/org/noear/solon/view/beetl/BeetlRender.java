@@ -75,6 +75,14 @@ public class BeetlRender implements XRender {
 
     }
 
+    public void registerTag(String name,Class<?> tag) {
+        try {
+            gt.registerTag(name,tag);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
     public void setSharedVariable(String name,Object value) {
         try {
             gt.getSharedVars().put(name,value);
