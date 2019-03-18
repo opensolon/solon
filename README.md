@@ -51,7 +51,7 @@ XBefore：前置处理注解。可注解到web bean或XAction<br/>
 
 <dependency>
   <groupId>org.noear</groupId>
-  <artifactId>solon.boot.jlhttp</artifactId><!-- 可以换成：solon.boot.jetty 或自己定义个插件 -->
+  <artifactId>solon.boot.jlhttp</artifactId><!-- 可以换成：.jetty 或自己定义个插件 -->
   <version>1.0.2</version>
 </dependency>
 ```
@@ -73,13 +73,13 @@ public class App{
 
 <dependency>
   <groupId>org.noear</groupId>
-  <artifactId>solon.boot.jlhttp</artifactId> <!-- 可以换成：solon.boot.jetty 或自己定义个插件 -->
+  <artifactId>solon.boot.jlhttp</artifactId> <!-- 可以换成：.jetty 或自己定义个插件 -->
   <version>1.0.2</version>
 </dependency>
 
 <dependency>
   <groupId>org.noear</groupId>
-  <artifactId>solon.view.freemarker</artifactId> <!-- 可以换成：solon.view.velocity 或 .jsp 或自己定义个插件 -->
+  <artifactId>solon.view.freemarker</artifactId> <!-- 可以换成：.velocity 或 .jsp 或自己定义个插件 -->
   <version>1.0.2</version>
 </dependency>
 ```
