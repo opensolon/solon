@@ -5,6 +5,9 @@ import org.noear.solon.XUtil;
 import org.noear.solon.core.XHandlerLink;
 import org.noear.solon.core.XPlugin;
 
+/**
+ * 插件
+ * */
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {

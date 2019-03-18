@@ -38,7 +38,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <javadocExecutable>/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/bin/javadoc</javadocExecutable>
     </properties>
 
 

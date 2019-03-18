@@ -1,6 +1,5 @@
 package org.noear.solon.extend.staticfiles;
 
-import com.sun.javafx.css.Rule;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.*;
