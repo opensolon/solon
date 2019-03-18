@@ -27,9 +27,11 @@ XAfter：后置处理注解。可注解到web bean或XAction<br/>
 XBefore：前置处理注解。可注解到web bean或XAction<br/>
 
 #### 已有框架说明
-| solon | S | S |
-| --- | --- | --- |
-| solon.boot.jlhttp | B | b |
+| 组件 | 说明 |
+| --- | --- |
+| org.noear:solon:1.0.2 | 主框架 |
+| org.noear:solon.boot.jlhttp:1.0.2 | boot插件,对jlhttp适配（不支持session） |
+| org.noear:solon.boot.jetty:1.0.2 | boot插件,对jetty适配 |
 
 #### 简单示例
 * 微框架示例
