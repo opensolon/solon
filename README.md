@@ -38,7 +38,7 @@ XBefore：前置处理注解。可注解到web bean或XAction<br/>
 | org.noear:solon.view.freemarker:1.0.2 | 2.0m，视图插件，对 fastjson 和 freemarker 适配，输出json或html |
 | org.noear:solon.view.jsp:1.0.2 | 0.5m，视图插件，对 fastjson 和 jsp 适配，输出json或html |
 | org.noear:solon.view.velocity:1.0.2 | 1.4m，视图插件，对 fastjson 和 velocity 适配，输出json或html |
-| org.noear:solonclient:1.0.2 | rpc client 框架，与solon 的 rpc service 配对 |
+| org.noear:solonclient:1.0.2 | 11k，rpc client 框架，与solon 的 rpc service 配对 |
 
 #### 简单示例
 * 微框架示例
