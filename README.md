@@ -1,6 +1,3 @@
-还没有上传中央仓库，外人还不方便用。（不会搞，得找人请教一下...）
-<br/>
-源码中的小部分扩展未搞完。
 
 ### 插件式Web微框架(主框架50kb，根据需求组合不同的插件或扩展)
 #### 框架实现效果
@@ -30,6 +27,18 @@ XAfter：后置处理注解。可注解到web bean或XAction<br/>
 XBefore：前置处理注解。可注解到web bean或XAction<br/>
 #### 简单示例
 * 微框架示例
+```xml
+<dependency>
+  <groupId>org.noear</groupId>
+  <artifactId>solon</artifactId>
+  <version>1.0.2</version>
+</dependency>
+<dependency>
+  <groupId>org.noear</groupId>
+  <artifactId>solon.boot.jlhttp</artifactId>
+  <version>1.0.2</version>
+</dependency>
+```
 ```java
 public class App{
     public static void main(String[] args){
