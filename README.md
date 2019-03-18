@@ -87,7 +87,7 @@ public class App{
 //资源路径说明
 resources/application.properties 为应用配置文件
 resources/static/ 为静态文件根目标
-resources/WEB-INF/view/ 为视图文件根目标
+resources/WEB-INF/view/ 为视图文件根目标 （把视图放数据库里也成...自己适配下）
 ```
 ```java
 public class App{
