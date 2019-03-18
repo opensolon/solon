@@ -12,7 +12,7 @@ public class XPluginImp implements XPlugin {
 
         Aop.beanOnloaded(() -> {
             Aop.beanForeach((k, v) -> {
-                if (k.startsWith("ftl:")) {
+                if (k.startsWith("tag:")) {
                     render.setSharedVariable(k.split(":")[1], v.raw());
                 }
             });
