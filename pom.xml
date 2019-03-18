@@ -28,6 +28,7 @@
         <solon.view.fastjson.ver>1.0.2</solon.view.fastjson.ver>
         <solon.view.freemarker.ver>1.0.2</solon.view.freemarker.ver>
         <solon.view.velocity.ver>1.0.2</solon.view.velocity.ver>
+        <solon.view.enjoy.ver>1.0.2</solon.view.enjoy.ver>
         <solon.view.jsp.ver>1.0.2</solon.view.jsp.ver>
 
         <solonclient.ver>1.0.2</solonclient.ver>
@@ -50,6 +51,8 @@
         <module>solon.view.fastjson</module>
         <module>solon.view.jsp</module>
         <module>solon.view.velocity</module>
+        <module>solon.view.enjoy</module>
+        <module>solon.view.beetl</module>
 
         <module>solon.extend.staticfiles</module>
         <module>solon.extend.jetty.jsp</module>
