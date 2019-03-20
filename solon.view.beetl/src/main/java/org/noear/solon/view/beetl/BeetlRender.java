@@ -138,10 +138,8 @@ public class BeetlRender implements XRender {
 
         cxt.contentType("text/html;charset=utf-8");
 
-        PrintWriter writer = new PrintWriter(cxt.outputStream());
-
         Template template = gt.getTemplate(mv.view(), "utf-8");
         template.binding(mv.model());
-        template.renderTo(writer);
+        template.renderTo(cxt.outputStream());
     }
 }

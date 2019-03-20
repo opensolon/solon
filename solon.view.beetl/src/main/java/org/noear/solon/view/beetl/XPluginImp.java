@@ -1,5 +1,6 @@
 package org.noear.solon.view.beetl;
 
+import org.beetl.core.Tag;
 import org.noear.solon.XApp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XPlugin;
@@ -12,8 +13,12 @@ public class XPluginImp implements XPlugin {
 
         Aop.beanOnloaded(() -> {
             Aop.beanForeach((k, v) -> {
-                if (k.startsWith("tag:")) {
-                    render.registerTag(k.split(":")[1], v.clz());
+                if (k.startsWith("btl:")) {
+                    if(Tag.class.isAssignableFrom(v.clz())) {
+                        render.registerTag(k.split(":")[1], v.clz());
+                    }else{
+                        render.setSharedVariable(k.split(":")[1], v.raw());
+                    }
                 }
             });
         });
