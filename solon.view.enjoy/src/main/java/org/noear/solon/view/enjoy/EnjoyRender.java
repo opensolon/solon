@@ -2,8 +2,11 @@ package org.noear.solon.view.enjoy;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.jfinal.template.Directive;
 import com.jfinal.template.Engine;
 import com.jfinal.template.Template;
+import com.jfinal.template.source.ClassPathSourceFactory;
+import com.jfinal.template.source.FileSourceFactory;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.XRender;
@@ -15,7 +18,7 @@ import java.io.PrintWriter;
 import java.net.URI;
 
 public class EnjoyRender implements XRender {
-    Engine engine = new Engine();
+    Engine engine = Engine.use();
 
     private String _baseUri ="/WEB-INF/view/";
     //不要要入参，方便后面多视图混用
@@ -43,8 +46,9 @@ public class EnjoyRender implements XRender {
 
             try {
                 if (dir.exists()) {
-                    engine.setBaseTemplatePath(dir_str);
-                    //cfg.setDirectoryForTemplateLoading(dir);
+                    engine.setDevMode(true);
+                    engine.setBaseTemplatePath(dir.getPath());
+                    engine.setSourceFactory(new FileSourceFactory());
                 }else{
                     initForRuntime();
                 }
@@ -52,19 +56,23 @@ public class EnjoyRender implements XRender {
                 ex.printStackTrace();
             }
         }
-
-//        engine.setNumberFormat("#");
-//        engine.setDefaultEncoding("utf-8");
     }
 
     private void initForRuntime(){
         try {
             engine.setBaseTemplatePath(_baseUri);
+            engine.setSourceFactory(new ClassPathSourceFactory());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
 
-        //cfg.setCacheStorage(new freemarker.cache.MruCacheStorage(0, Integer.MAX_VALUE));
+    public void addDirective(String name, Class<? extends Directive> clz){
+        try {
+            engine.addDirective(name, clz);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     public void setSharedVariable(String name,Object value) {
@@ -115,7 +123,7 @@ public class EnjoyRender implements XRender {
     }
 
     public void render_mav(ModelAndView mv, XContext cxt) throws Exception {
-        if(XUtil.isEmpty(mv.view())){
+        if (XUtil.isEmpty(mv.view())) {
             render_obj(mv, cxt);
             return;
         }
@@ -127,5 +135,6 @@ public class EnjoyRender implements XRender {
         Template template = engine.getTemplate(mv.view());
 
         template.render(mv.model(), writer);
+        writer.flush();
     }
 }

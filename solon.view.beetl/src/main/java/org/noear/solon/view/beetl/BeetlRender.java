@@ -14,7 +14,6 @@ import org.noear.solon.core.ModelAndView;
 import org.noear.solon.core.XContext;
 
 import java.io.File;
-import java.io.PrintWriter;
 import java.net.URI;
 
 public class BeetlRender implements XRender {
