@@ -1,5 +1,6 @@
 
 ### 插件式Web微框架(主框架50kb，根据需求组合不同的插件或扩展)
+
 #### 框架实现效果
 * 1.实现boot（*类似spring boot）
 * 2.实现微框架（*类似javalin）
@@ -26,7 +27,7 @@ XMapping：印射注解，支持path var。可注解到web bean或XAction或XHan
 XAfter：后置处理注解。可注解到web bean或XAction<br/>
 XBefore：前置处理注解。可注解到web bean或XAction<br/>
 
-#### 组件说明
+#### 组件说明 <a href="https://search.maven.org/search?q=solon" target='_blank'>maven-central v1.0.2</a>
 | 组件 | 说明 |
 | --- | --- |
 | org.noear:solon:1.0.2 | 48k，主框架 |
@@ -38,6 +39,7 @@ XBefore：前置处理注解。可注解到web bean或XAction<br/>
 | org.noear:solon.view.freemarker:1.0.2 | 2.0m，视图插件，对 fastjson 和 freemarker 适配，输出json或html |
 | org.noear:solon.view.jsp:1.0.2 | 0.5m，视图插件，对 fastjson 和 jsp 适配，输出json或html |
 | org.noear:solon.view.velocity:1.0.2 | 1.4m，视图插件，对 fastjson 和 velocity 适配，输出json或html |
+| org.noear:solon.view.beetl:1.0.2-SNAPSHOT | 1.3m，视图插件，对 fastjson 和 beetl 适配，输出json或html |
 | org.noear:solonclient:1.0.2 | 11k，rpc client 框架，与solon 的 rpc service 配对 |
 
 #### 简单示例
