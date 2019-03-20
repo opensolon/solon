@@ -1,6 +1,5 @@
 
 ### 插件式Web微框架(主框架50kb，根据需求组合不同的插件或扩展)
-<a href="https://search.maven.org/search?q=solon" rel="nofollow">maven-central v1.0.2</a>
 
 #### 框架实现效果
 * 1.实现boot（*类似spring boot）
@@ -28,7 +27,7 @@ XMapping：印射注解，支持path var。可注解到web bean或XAction或XHan
 XAfter：后置处理注解。可注解到web bean或XAction<br/>
 XBefore：前置处理注解。可注解到web bean或XAction<br/>
 
-#### 组件说明
+#### 组件说明 <a href="https://search.maven.org/search?q=solon" target='_blank'>maven-central v1.0.2</a>
 | 组件 | 说明 |
 | --- | --- |
 | org.noear:solon:1.0.2 | 48k，主框架 |
