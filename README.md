@@ -132,3 +132,9 @@ client.setName(1,'');
 DemoRpc client = XWaterUpstream.xclient(DemoRpc.class); //@XClient("demorpc")
 client.setName(1,'');
 ```
+* 获取应用配置
+```java
+Aop.prop().get("app_key"); //=>String
+Aop.prop().getInt("app_id",0); //=>int
+Aop.prop().getProp("xxx.datasource"); //=>Properties
+```
