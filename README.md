@@ -1,5 +1,7 @@
 
 ### 插件式Web微框架(主框架50kb，根据需求组合不同的插件或扩展)
+<a href="https://search.maven.org/search?q=solon" rel="nofollow">maven-central v1.0.2</a>
+
 #### 框架实现效果
 * 1.实现boot（*类似spring boot）
 * 2.实现微框架（*类似javalin）
