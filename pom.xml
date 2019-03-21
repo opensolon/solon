@@ -46,6 +46,8 @@
         <module>solon</module>
         <module>solon.boot.jetty</module>
         <module>solon.boot.jlhttp</module>
+        <module>solon.boot.smartsocket</module>
+        <module>solon.boot.websocket</module>
 
         <module>solon.view.freemarker</module>
         <module>solon.view.fastjson</module>
