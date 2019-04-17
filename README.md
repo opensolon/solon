@@ -33,6 +33,10 @@ XBefore：前置处理注解。可注解到web bean或XAction<br/>
 | org.noear:solon:1.0.2 | 48k，主框架 |
 | org.noear:solon.boot.jlhttp:1.0.2 | 58k，boot插件,对jlhttp适配（不支持session） |
 | org.noear:solon.boot.jetty:1.0.2 | 1.5m，boot插件,对jetty适配 |
+| org.noear:solon.boot.smartsocket | *.*m，boot插件,提供socket服务(未提交仓库) |
+| org.noear:solon.boot.websocket | *.*m，boot插件,提供websocket服务(未提交仓库) |
+| org.noear:solon.boot.jetty:1.0.2 | 1.5m，boot插件,对jetty适配 |
+| org.noear:solon.boot.jetty:1.0.2 | 1.5m，boot插件,对jetty适配 |
 | org.noear:solon.extend.jetty.jsp:1.0.2 | 6m，扩展插件,为jetty添加jsp支持 |
 | org.noear:solon.extend.staticfiles:1.0.2 | 8k，扩展插件,添加静态文件支持 |
 | org.noear:solon.view.fastjson:1.0.2 | 0.5m，视图插件，对 fastjson 适配，输出json视图 |
