@@ -168,12 +168,5 @@
 
     </build>
 
-    <repositories>
-        <repository>
-            <id>nexus-zm</id>
-            <name>Nexus zm</name>
-            <url>http://maven.data.zm/repository/maven-public/</url>
-        </repository>
-    </repositories>
 
 </project>
