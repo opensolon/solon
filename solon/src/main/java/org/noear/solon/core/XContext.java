@@ -58,6 +58,11 @@ public abstract class XContext {
     public abstract URI uri();
     /**获取请求的URI路径*/
     public abstract String path();
+    /**获取请求的URI路径变量,根据路径表达式*/
+    public XMap pathMap(String expr) {
+        return XUtil.pathVarMap(path(),expr);
+    }
+
     /**获取请求的URI路径并大写*/
     private String _pathAsUpper;
     public String pathAsUpper() {
@@ -140,7 +145,7 @@ public abstract class XContext {
     }
     public void outputAsHtml(String html) throws IOException{
         contentType("text/html;charset=utf-8");
-        if(html.startsWith("<html") == false) {
+        if(html.startsWith("<") == false) {
             StringBuilder sb = new StringBuilder();
             sb.append("<!doctype html>");
             sb.append("<html>");

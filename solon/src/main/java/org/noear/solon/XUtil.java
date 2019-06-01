@@ -1,8 +1,12 @@
 package org.noear.solon;
 
+import org.noear.solon.core.XMap;
+
 import java.io.*;
 import java.net.URL;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 内部专用工具
@@ -147,5 +151,35 @@ public class XUtil {
                 return path1 + "/" + path2;
             }
         }
+    }
+
+    private static Pattern _pkr = Pattern.compile("\\{([^\\\\}]+)\\}");
+
+    public static XMap pathVarMap(String path, String expr) {
+        XMap _map = new XMap();
+
+        //支持path变量
+        if (expr.indexOf("{") >= 0) {
+            Matcher pm = _pkr.matcher(expr);
+
+            List<String> _pks = new ArrayList<>();
+
+            while (pm.find()) {
+                _pks.add(pm.group(1));
+            }
+
+            if (_pks.size() > 0) {
+                Pattern _pr = Pattern.compile(XUtil.expCompile(expr), Pattern.CASE_INSENSITIVE);
+
+                pm = _pr.matcher(path);
+                if (pm.find()) {
+                    for (int i = 0, len = _pks.size(); i < len; i++) {
+                        _map.put(_pks.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
+                    }
+                }
+            }
+        }
+
+        return _map;
     }
 }
