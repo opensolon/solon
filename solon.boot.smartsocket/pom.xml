@@ -9,8 +9,28 @@
     <version>1.0.2-m1</version>
     <packaging>jar</packaging>
 
-    <name>${artifactId}</name>
-    <description>Java project for ${artifactId}</description>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>Java project for solon</description>
+    <url>https://github.com/noear/solon</url>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>noear</name>
+            <email>noear@live.cn</email>
+            <organization>noear.org</organization>
+            <organizationUrl>http://www.noear.org</organizationUrl>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:git@github.com:noear/solon.git</connection>
+        <developerConnection>scm:git:git@github.com:noear/solon.git</developerConnection>
+        <url>https://github.com/noear/solon</url>
+    </scm>
 
     <parent>
         <groupId>org.noear</groupId>
@@ -18,7 +38,6 @@
         <version>1.0.x</version>
     </parent>
 
-    <!-- 下面的代码可复制到另一个新项目 -->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -49,6 +68,73 @@
 
     </dependencies>
 
+    <profiles>
+
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <!-- Source -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Javadoc -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.10.3</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration>
+                                    <additionalparam>-Xdoclint:none</additionalparam>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- GPG -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>oss</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                </snapshotRepository>
+                <repository>
+                    <id>oss</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
+
     <build>
         <finalName>${project.artifactId}</finalName>
 
@@ -73,25 +159,17 @@
                     </descriptorRefs>
                 </configuration>
                 <executions>
-                <execution>
-                <id>make-assembly</id>
-                <phase>package</phase>
-                <goals>
-                <goal>single</goal>
-                </goals>
-                </execution>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
-
     </build>
 
-    <repositories>
-        <repository>
-            <id>nexus-zm</id>
-            <name>Nexus zm</name>
-            <url>http://maven.data.zm/repository/maven-public/</url>
-        </repository>
-    </repositories>
 
 </project>
