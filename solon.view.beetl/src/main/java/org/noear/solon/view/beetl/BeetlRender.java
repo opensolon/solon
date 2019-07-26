@@ -126,6 +126,7 @@ public class BeetlRender implements XRender {
                     SerializerFeature.DisableCircularReferenceDetect);
         }
 
+        ctx.attrSet("output", txt);
         ctx.outputAsJson(txt);
     }
 
@@ -137,7 +138,7 @@ public class BeetlRender implements XRender {
 
         cxt.contentType("text/html;charset=utf-8");
 
-        Template template = gt.getTemplate(mv.view(), "utf-8");
+        Template template = gt.getTemplate(mv.view());
         template.binding(mv.model());
         template.renderTo(cxt.outputStream());
     }

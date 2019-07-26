@@ -36,6 +36,7 @@ public class FastjsonRender implements XRender {
                     SerializerFeature.DisableCircularReferenceDetect);
         }
 
+        ctx.attrSet("output", txt);
         ctx.outputAsJson(txt);
     }
 }

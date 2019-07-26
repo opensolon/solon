@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon.view.beetl</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.2.2</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -63,7 +63,7 @@
         <dependency>
             <groupId>com.ibeetl</groupId>
             <artifactId>beetl</artifactId>
-            <version>2.9.3</version>
+            <version>3.0.7.RELEASE</version>
         </dependency>
 
     </dependencies>

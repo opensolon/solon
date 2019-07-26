@@ -1,9 +1,7 @@
 package org.noear.solon.extend.staticfiles;
 
 import java.util.HashMap;
-/**
- * 静态文件印射
- * */
+
 public class XStaticFiles extends HashMap<String,String> {
     private XStaticFiles() {
         super();

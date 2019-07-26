@@ -17,21 +17,22 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.0.2</solon.ver>
+        <solon.ver>1.0.2.7</solon.ver>
 
-        <solon.boot.jlhttp.ver>1.0.2</solon.boot.jlhttp.ver>
-        <solon.boot.jetty.ver>1.0.2</solon.boot.jetty.ver>
+<!--        <solon.boot.jetty.ver>1.0.2.3</solon.boot.jetty.ver>-->
+<!--        <solon.boot.jlhttp.ver>1.0.2.3</solon.boot.jlhttp.ver>-->
 
-        <solon.extend.staticfiles.ver>1.0.2</solon.extend.staticfiles.ver>
-        <solon.extend.jetty.jsp.ver>1.0.2</solon.extend.jetty.jsp.ver>
 
-        <solon.view.fastjson.ver>1.0.2</solon.view.fastjson.ver>
-        <solon.view.freemarker.ver>1.0.2</solon.view.freemarker.ver>
-        <solon.view.velocity.ver>1.0.2</solon.view.velocity.ver>
-        <solon.view.enjoy.ver>1.0.2</solon.view.enjoy.ver>
-        <solon.view.jsp.ver>1.0.2</solon.view.jsp.ver>
+<!--        <solon.extend.staticfiles.ver>1.0.2</solon.extend.staticfiles.ver>-->
+<!--        <solon.extend.jetty.jsp.ver>1.0.2</solon.extend.jetty.jsp.ver>-->
 
-        <solonclient.ver>1.0.2</solonclient.ver>
+<!--        <solon.view.fastjson.ver>1.0.2</solon.view.fastjson.ver>-->
+<!--        <solon.view.freemarker.ver>1.0.2</solon.view.freemarker.ver>-->
+<!--        <solon.view.velocity.ver>1.0.2</solon.view.velocity.ver>-->
+<!--        <solon.view.enjoy.ver>1.0.2</solon.view.enjoy.ver>-->
+<!--        <solon.view.jsp.ver>1.0.2</solon.view.jsp.ver>-->
+
+<!--        <solonclient.ver>1.0.2</solonclient.ver>-->
 
 
         <okhttp.ver>3.11.0</okhttp.ver>
@@ -48,6 +49,7 @@
         <module>solon.boot.jlhttp</module>
         <module>solon.boot.smartsocket</module>
         <module>solon.boot.websocket</module>
+        <module>solon.boot.undertow</module>
 
         <module>solon.view.freemarker</module>
         <module>solon.view.fastjson</module>
@@ -58,6 +60,7 @@
 
         <module>solon.extend.staticfiles</module>
         <module>solon.extend.jetty.jsp</module>
+        <module>solon.extend.undertow.jsp</module>
 
         <module>solonclient</module>
 

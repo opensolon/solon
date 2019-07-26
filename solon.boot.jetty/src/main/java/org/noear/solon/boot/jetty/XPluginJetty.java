@@ -39,11 +39,11 @@ final class XPluginJetty implements XPlugin {
 
         try {
             _server.start();
+            app.onStop(this::stop);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        app.onStop(this::stop);
     }
 
     public void stop(){

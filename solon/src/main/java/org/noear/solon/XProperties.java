@@ -19,10 +19,10 @@ public final class XProperties extends Properties{
         super();
     }
 
-    public XProperties(String[] args) {
+    public XProperties(XMap args) {
         this();
 
-        _args = XMap.from(args);
+        _args = args;
 
         do_loadFile();
 

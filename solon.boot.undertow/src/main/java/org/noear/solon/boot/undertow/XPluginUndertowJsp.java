@@ -50,7 +50,7 @@ public class XPluginUndertowJsp implements XPlugin {
 
 
     public void setupJsp(XApp app) throws ServletException {
-        final String KEY = "io.undertow.message";
+        final String KEY = "io.message";
 
         final ServletContainer container = ServletContainer.Factory.newInstance();
         ClassLoader jspClassLoader = new URLClassLoader(new URL[0], app.getClass().getClassLoader());

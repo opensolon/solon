@@ -18,7 +18,6 @@ public class XMap extends LinkedHashMap<String, String> {
         super(map);
     }
 
-
     public static XMap from(String[] args) {
         XMap d = new XMap();
 
@@ -42,6 +41,7 @@ public class XMap extends LinkedHashMap<String, String> {
 
         return d;
     }
+
 
     public int getInt(String key) {
         String temp = get(key);

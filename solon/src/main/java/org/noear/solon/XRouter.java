@@ -3,10 +3,13 @@ package org.noear.solon;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XEndpoint;
 import org.noear.solon.core.XMethod;
+import sun.misc.Regexp;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * 通用路由器
@@ -26,7 +29,7 @@ public class XRouter<T> {
     }
 
     /** 区配目标（根据上上文） */
-    public T matched(XContext context, int type) {
+    public T matchOne(XContext context, int type) {
         String path = context.path();
         String method = context.method();
 
@@ -37,6 +40,16 @@ public class XRouter<T> {
         }
 
         return null;
+    }
+
+    public List<T> matchAll(XContext context, int type) {
+        String path = context.path();
+        String method = context.method();
+
+        return _list.stream()
+                .filter(l->l.matches(type, method, path))
+                .map(l->l.h)
+                .collect(Collectors.toList());
     }
 
     //路由监听

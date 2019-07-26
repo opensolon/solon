@@ -11,15 +11,28 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JlHttpContext extends XContext {
     private HTTPServer.Request _request;
     private HTTPServer.Response _response;
+    protected Map<String,List<XFile>> _fileMap;
 
     public JlHttpContext(HTTPServer.Request request, HTTPServer.Response response) {
         _request = request;
         _response = response;
+
+        //文件上传需要
+        if (isMultipart()) {
+            try {
+                _fileMap = new HashMap<>();
+                MultipartUtil.buildParamsAndFiles(this);
+            }catch (Throwable ex){
+                ex.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -170,7 +183,12 @@ public class JlHttpContext extends XContext {
     @Override
     public List<XFile> files(String key) throws Exception {
         if (isMultipartFormData()){
-            return MultipartUtil.getUploadedFiles(this, key);
+            List<XFile> temp = _fileMap.get(key);
+            if(temp == null){
+                return new ArrayList<>();
+            }else{
+                return temp;
+            }
         }  else {
             return new ArrayList<>();
         }

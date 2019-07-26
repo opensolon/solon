@@ -1,15 +1,16 @@
 package org.noear.solon.core;
 
-import org.noear.solon.XApp;
+import org.noear.solon.XRouter;
 
 /**
  * XApp Handler
  * */
-public class XAppHandler implements XHandler {
-    private XApp _app;
-    public XAppHandler(XApp app){
-        _app = app;
+public class XRouterHandler implements XHandler {
+    private XRouter<XHandler> _router;
+    public XRouterHandler(XRouter<XHandler> router){
+        _router = router;
     }
+
 
     @Override
     public void handle(XContext context) throws Exception {
@@ -44,8 +45,8 @@ public class XAppHandler implements XHandler {
         }
     }
 
-    private boolean do_try_handle(XContext context, int endpoint) throws Exception {
-        XHandler handler = _app.matched(context, endpoint);
+    protected boolean do_try_handle(XContext context, int endpoint) throws Exception {
+        XHandler handler = _router.matchOne(context, endpoint);
 
         if (handler != null) {
             handler.handle(context);

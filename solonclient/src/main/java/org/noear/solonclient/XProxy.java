@@ -20,11 +20,13 @@ public class XProxy {
     private  String _url;
     private String _result;
 
+    /** 设置请求地址 */
     public XProxy url(String url){
         _url = url;
         return this;
     }
 
+    /** 设置请求地址 */
     public XProxy url(String url, String fun){
         if (url.indexOf("{fun}") > 0) {
             _url = url.replace("{fun}", fun);
@@ -52,10 +54,12 @@ public class XProxy {
         return this;
     }
 
+    /** 获取结果（以string形式） */
     public String getString(){
         return _result;
     }
 
+    /** 获取结果（返序列化为object） */
     public   <T> T getObject(Class<T> returnType) {
         Object returnVal = null;
         try {
@@ -83,11 +87,21 @@ public class XProxy {
     //////////////////////////////////
     private XProxy.Fun1<String,String> _upstream;
     private String _sev;
+    private Map<String, String> _headers = new HashMap<>();
 
+    /** 设置全局头信息 */
+    public XProxy headerAdd(String name, String value){
+        _headers.put(name,value);
+        return this;
+    }
+
+    /** 设置服务端 */
     public XProxy sev(String sev){
         _sev = sev;
         return this;
     }
+
+
 
     /** 创建接口调用代理客户端 */
     public  <T> T create(Class<?> clz ) {
@@ -136,6 +150,9 @@ public class XProxy {
 
         //构建headers
         Map<String, String> headers = new HashMap<>();
+        //>>添加全局header
+        headers.putAll(_headers);
+        //>>添加接口header
         if (c_meta.headers() != null) {
             for (String h : c_meta.headers()) {
                 String[] ss = h.split("=");

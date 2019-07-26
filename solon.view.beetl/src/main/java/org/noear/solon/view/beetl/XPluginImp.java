@@ -1,6 +1,6 @@
 package org.noear.solon.view.beetl;
 
-import org.beetl.core.Tag;
+import org.beetl.core.tag.Tag;
 import org.noear.solon.XApp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XPlugin;

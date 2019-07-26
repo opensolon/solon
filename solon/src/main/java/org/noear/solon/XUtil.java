@@ -47,7 +47,10 @@ public class XUtil {
 
         //替换{x}值
         if (p.indexOf("{") >= 0) {
-            p = p.replaceAll("\\{.+?\\}", "([^/]+?)");//不采用group name,可解决_的问题
+            if(p.indexOf("_}")>0){
+                p = p.replaceAll("\\{[^\\}]+?\\_\\}", "(.+?)");
+            }
+            p = p.replaceAll("\\{[^\\}]+?\\}", "([^/]+?)");//不采用group name,可解决_的问题
         }
 
         if (p.startsWith("/") == false) {

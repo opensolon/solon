@@ -5,6 +5,7 @@ import org.noear.solon.XUtil;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XFile;
 
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,17 +14,27 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 
 public class JtHttpContext extends XContext{
     private HttpServletRequest _request;
     private HttpServletResponse _response;
+    protected Map<String,List<XFile>> _fileMap;
 
     public JtHttpContext(HttpServletRequest request, HttpServletResponse response) {
         _request = request;
         _response = response;
+
+        //文件上传需要
+        if (isMultipart()) {
+            try {
+                _fileMap = new HashMap<>();
+
+                MultipartUtil.buildParamsAndFiles(this);
+            } catch (Throwable ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -102,12 +113,13 @@ public class JtHttpContext extends XContext{
 
     @Override
     public String param(String key) {
-        return paramMap().get(key);
+        return param(key,null);
     }
 
     @Override
     public String param(String key, String def) {
-        String temp = paramMap().get(key);
+        String temp = paramMap().get(key); //因为会添加参数，所以必须用这个
+
         if(XUtil.isEmpty(temp)){
             return def;
         }else{
@@ -156,7 +168,12 @@ public class JtHttpContext extends XContext{
     @Override
     public List<XFile> files(String key) throws Exception{
          if (isMultipartFormData()){
-             return MultipartUtil.getUploadedFiles(this, key);
+             List<XFile> temp = _fileMap.get(key);
+             if(temp == null){
+                 return new ArrayList<>();
+             }else{
+                 return temp;
+             }
          }  else {
              return new ArrayList<>();
          }

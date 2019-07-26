@@ -103,6 +103,7 @@ public class VelocityRenderImp implements XRender {
                     SerializerFeature.DisableCircularReferenceDetect);
         }
 
+        ctx.attrSet("output", txt);
         ctx.outputAsJson(txt);
     }
 

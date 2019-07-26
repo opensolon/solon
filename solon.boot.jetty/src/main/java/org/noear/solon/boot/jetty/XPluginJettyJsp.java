@@ -57,8 +57,16 @@ final class XPluginJettyJsp implements XPlugin {
             }
 
             _server.start();
-
+            app.onStop(this::stop);
         } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void stop(){
+        try {
+            _server.stop();
+        }catch (Exception ex){
             ex.printStackTrace();
         }
     }

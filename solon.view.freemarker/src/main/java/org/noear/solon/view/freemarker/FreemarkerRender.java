@@ -109,6 +109,7 @@ public class FreemarkerRender implements XRender {
                     SerializerFeature.DisableCircularReferenceDetect);
         }
 
+        ctx.attrSet("output", txt);
         ctx.outputAsJson(txt);
     }
 

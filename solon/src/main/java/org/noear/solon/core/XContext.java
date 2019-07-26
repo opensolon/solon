@@ -36,9 +36,21 @@ public abstract class XContext {
     public abstract String ip();
     /**是否为分段上传*/
     public boolean isMultipart() {
-        return contentType().toLowerCase().contains("multipart/");
+        String temp = contentType();
+        if(temp==null){
+            return false;
+        }else {
+            return temp.toLowerCase().contains("multipart/");
+        }
     }
-    public boolean isMultipartFormData(){return contentType().toLowerCase().contains("multipart/form-data");}
+    public boolean isMultipartFormData() {
+        String temp = contentType();
+        if (temp == null) {
+            return false;
+        } else {
+            return temp.toLowerCase().contains("multipart/form-data");
+        }
+    }
 
     /**获取请求方法*/
     public abstract String method();

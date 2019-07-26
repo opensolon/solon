@@ -75,8 +75,13 @@ class XActionUtil {
             }else {
                 return method.invoke(obj, args.toArray());
             }
-        }catch (InvocationTargetException ex){
-            throw  (Exception)ex.getCause();
+        }catch (InvocationTargetException ex) {
+            Throwable ex2 = ex.getCause();
+            if(ex2 instanceof Error){
+                throw  new RuntimeException(ex2);
+            }else{
+                throw (Exception)ex2;
+            }
         }
     }
 

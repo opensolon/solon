@@ -45,12 +45,16 @@ public class BeanWebWrap{
         }
     }
 
-    protected static void do_loadHandler(XApp app, BeanWrap bw, XMapping cxm) {
+    protected void do_loadHandler(XApp app, BeanWrap bw, XMapping cxm) {
         if (cxm == null) {
             throw new RuntimeException(bw.clz().getName() + " No XMapping!");
         }
 
-        app.add(cxm.value(), cxm.method(), bw.raw());
+        switch (_poi){
+            case XEndpoint.before:app.before(cxm.value(), cxm.method(), bw.raw());break;
+            case XEndpoint.after:app.after(cxm.value(), cxm.method(), bw.raw());break;
+            default:app.add(cxm.value(), cxm.method(), bw.raw());
+        }
     }
 
     private void do_loadAction(XApp app) {
