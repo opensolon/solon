@@ -30,9 +30,9 @@ XBefore：前置处理注解。可注解到web bean或XAction<br/>
 #### 组件说明 <a href="https://search.maven.org/search?q=solon" target='_blank'>maven-central v1.0.2</a>
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon:1.0.2.1 | 48k，主框架 |
-| org.noear:solon.boot.jlhttp:1.0.2 | 58k，boot插件,对jlhttp适配（不支持session） |
-| org.noear:solon.boot.jetty:1.0.2 | 1.5m，boot插件,对jetty适配 |
+| org.noear:solon:1.0.2.7 | 48k，主框架 |
+| org.noear:solon.boot.jlhttp:1.0.2.4 | 58k，boot插件,对jlhttp适配（不支持session） |
+| org.noear:solon.boot.jetty:1.0.2.4 | 1.5m，boot插件,对jetty适配 |
 | org.noear:solon.boot.smartsocket | *.*m，boot插件,提供socket服务(未提交仓库) |
 | org.noear:solon.boot.websocket | *.*m，boot插件,提供websocket服务(未提交仓库) |
 | org.noear:solon.boot.jetty:1.0.2 | 1.5m，boot插件,对jetty适配 |
@@ -53,13 +53,13 @@ XBefore：前置处理注解。可注解到web bean或XAction<br/>
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon</artifactId>
-  <version>1.0.2.1</version>
+  <version>1.0.2.7</version>
 </dependency>
 
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon.boot.jlhttp</artifactId><!-- 可以换成：.jetty 或自己定义个插件 -->
-  <version>1.0.2</version>
+  <version>1.0.2.4</version>
 </dependency>
 ```
 ```java
@@ -75,19 +75,19 @@ public class App{
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.2.7</version>
 </dependency>
 
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon.boot.jlhttp</artifactId> <!-- 可以换成：.jetty 或自己定义个插件 -->
-  <version>1.0.2</version>
+  <version>1.0.2.4</version>
 </dependency>
 
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon.view.freemarker</artifactId> <!-- 可以换成：.velocity 或 .jsp 或自己定义个插件 -->
-  <version>1.0.2</version>
+  <version>1.0.2.1</version>
 </dependency>
 ```
 ```
