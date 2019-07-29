@@ -7,6 +7,7 @@
 * 3.实现mvc（*类似spring mvc）
 * 4.实现rpc（*类似dobbo）
 * 5.实现微服务架构（结合water治理平台）//此项目不涉及
+* 6.很强的可定制性（最近用solon搞了示例：https://github.com/noear/jWitter）
 #### 主要组成
 * 1.XApp，管理总线，所有内容都交汇于此
 * 2.XPlugin，通用插件接口
