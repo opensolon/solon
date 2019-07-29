@@ -35,17 +35,15 @@ XBefore：前置处理注解。可注解到web bean或XAction<br/>
 | org.noear:solon.boot.jetty:1.0.2.4 | 1.5m，boot插件,对jetty适配 |
 | org.noear:solon.boot.smartsocket | *.*m，boot插件,提供socket服务(未提交仓库) |
 | org.noear:solon.boot.websocket | *.*m，boot插件,提供websocket服务(未提交仓库) |
-| org.noear:solon.boot.jetty:1.0.2 | 1.5m，boot插件,对jetty适配 |
-| org.noear:solon.boot.jetty:1.0.2 | 1.5m，boot插件,对jetty适配 |
-| org.noear:solon.extend.jetty.jsp:1.0.2 | 6m，扩展插件,为jetty添加jsp支持 |
-| org.noear:solon.extend.staticfiles:1.0.2 | 8k，扩展插件,添加静态文件支持 |
-| org.noear:solon.view.fastjson:1.0.2 | 0.5m，视图插件，对 fastjson 适配，输出json视图 |
+| org.noear:solon.extend.jetty.jsp:1.0.2.1 | 6m，扩展插件,为jetty添加jsp支持 |
+| org.noear:solon.extend.staticfiles:1.0.2.1 | 8k，扩展插件,添加静态文件支持 |
+| org.noear:solon.view.fastjson:1.0.2.1 | 0.5m，视图插件，对 fastjson 适配，输出json视图 |
 | org.noear:solon.view.freemarker:1.0.2 | 2.0m，视图插件，对 fastjson 和 freemarker 适配，输出json或html |
-| org.noear:solon.view.jsp:1.0.2 | 0.5m，视图插件，对 fastjson 和 jsp 适配，输出json或html |
-| org.noear:solon.view.velocity:1.0.2 | 1.4m，视图插件，对 fastjson 和 velocity 适配，输出json或html |
-| org.noear:solon.view.beetl:1.0.2 | 1.3m，视图插件，对 fastjson 和 beetl 适配，输出json或html |
-| org.noear:solon.view.enjoy:1.0.2 | 0.7m，视图插件，对 fastjson 和 enjoy 适配，输出json或html |
-| org.noear:solonclient:1.0.2 | 11k，rpc client 框架，与solon 的 rpc service 配对 |
+| org.noear:solon.view.jsp:1.0.2.1 | 0.5m，视图插件，对 fastjson 和 jsp 适配，输出json或html |
+| org.noear:solon.view.velocity:1.0.2.1 | 1.4m，视图插件，对 fastjson 和 velocity 适配，输出json或html |
+| org.noear:solon.view.beetl:1.0.2.1 | 1.3m，视图插件，对 fastjson 和 beetl 适配，输出json或html |
+| org.noear:solon.view.enjoy:1.0.2.1 | 0.7m，视图插件，对 fastjson 和 enjoy 适配，输出json或html |
+| org.noear:solonclient:1.0.2.2 | 11k，rpc client 框架，与solon 的 rpc service 配对 |
 
 #### 简单示例
 * 微框架示例
