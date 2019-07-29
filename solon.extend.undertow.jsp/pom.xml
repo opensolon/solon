@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon.extend.undertow.jsp</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.2.1</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -31,12 +31,6 @@
         <developerConnection>scm:git:git@github.com:noear/solon.git</developerConnection>
         <url>https://github.com/noear/solon</url>
     </scm>
-
-    <parent>
-        <groupId>org.noear</groupId>
-        <artifactId>solon_java</artifactId>
-        <version>1.0.x</version>
-    </parent>
 
     <properties>
         <jetty-version>9.4.12.v20180830</jetty-version>
@@ -171,11 +165,4 @@
 
     </build>
 
-    <repositories>
-        <repository>
-            <id>nexus-zm</id>
-            <name>Nexus zm</name>
-            <url>http://maven.data.zm/repository/maven-public/</url>
-        </repository>
-    </repositories>
 </project>

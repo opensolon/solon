@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon.boot.smartsocket</artifactId>
-    <version>1.0.2-m1</version>
+    <version>1.0.2.1</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -32,13 +32,6 @@
         <url>https://github.com/noear/solon</url>
     </scm>
 
-    <parent>
-        <groupId>org.noear</groupId>
-        <artifactId>solon_java</artifactId>
-        <version>1.0.x</version>
-    </parent>
-
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -49,7 +42,7 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
-            <version>${solon.ver}</version>
+            <version>1.0.2.7</version>
             <scope>provided</scope>
         </dependency>
 

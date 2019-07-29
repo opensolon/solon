@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon.boot.undertow</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.2.1</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -47,17 +47,12 @@
         <version.junit>4.12</version.junit>
     </properties>
 
-    <parent>
-        <groupId>org.noear</groupId>
-        <artifactId>solon_java</artifactId>
-        <version>1.0.x</version>
-    </parent>
 
     <dependencies>
        <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
-            <version>${solon.ver}</version>
+           <version>1.0.2.7</version>
             <scope>provided</scope>
         </dependency>
 

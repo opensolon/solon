@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon.view.velocity</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.2.1</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -38,18 +38,13 @@
         <java.version>1.8</java.version>
     </properties>
 
-    <parent>
-        <groupId>org.noear</groupId>
-        <artifactId>solon_java</artifactId>
-        <version>1.0.x</version>
-    </parent>
 
     <dependencies>
 
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
-            <version>${solon.ver}</version>
+            <version>1.0.2.7</version>
             <scope>provided</scope>
         </dependency>
 
@@ -171,12 +166,4 @@
         </plugins>
 
     </build>
-
-    <distributionManagement>
-        <repository>
-            <id>internal-nexus</id>
-            <name>Maven Repository Manager running on maven.data.zm</name>
-            <url>http://maven.data.zm/repository/maven-3rd/</url>
-        </repository>
-    </distributionManagement>
 </project>

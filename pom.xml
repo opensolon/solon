@@ -19,8 +19,8 @@
 
         <solon.ver>1.0.2.7</solon.ver>
 
-<!--        <solon.boot.jetty.ver>1.0.2.3</solon.boot.jetty.ver>-->
-<!--        <solon.boot.jlhttp.ver>1.0.2.3</solon.boot.jlhttp.ver>-->
+        <solon.boot.jetty.ver>1.0.2.3</solon.boot.jetty.ver>
+        <solon.boot.jlhttp.ver>1.0.2.3</solon.boot.jlhttp.ver>
 
 
 <!--        <solon.extend.staticfiles.ver>1.0.2</solon.extend.staticfiles.ver>-->
@@ -32,7 +32,7 @@
 <!--        <solon.view.enjoy.ver>1.0.2</solon.view.enjoy.ver>-->
 <!--        <solon.view.jsp.ver>1.0.2</solon.view.jsp.ver>-->
 
-<!--        <solonclient.ver>1.0.2</solonclient.ver>-->
+        <solonclient.ver>1.0.2</solonclient.ver>
 
 
         <okhttp.ver>3.11.0</okhttp.ver>
