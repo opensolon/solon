@@ -3,12 +3,10 @@ package org.noear.solon;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XEndpoint;
 import org.noear.solon.core.XMethod;
-import sun.misc.Regexp;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**

@@ -167,7 +167,7 @@ public class XApp implements XHandler {
     private final XProperties _prop;
 
     protected XApp(XMap args) {
-        _prop = new XProperties(args);
+        _prop = new XProperties().load(args);
         _port = _prop.serverPort();
 
         //顺序不能换

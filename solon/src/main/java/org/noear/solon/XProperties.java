@@ -15,22 +15,22 @@ public final class XProperties extends Properties{
     private XMap _args;
     private List<String> _plugs = new ArrayList<>();
 
-    private XProperties(){
+    public XProperties(){
         super();
     }
 
-    public XProperties(XMap args) {
-        this();
-
+    public XProperties load(XMap args){
         _args = args;
 
         do_loadFile();
 
         _args.forEach((k, v) -> {
-            if (k.indexOf("server.") >= 0) {
+            if (k.indexOf(".") >= 0) {
                 setProperty(k, v);
             }
         });
+
+        return this;
     }
 
     private void do_loadFile() {
@@ -147,6 +147,23 @@ public final class XProperties extends Properties{
         }
 
         return prop;
+    }
+
+    public XMap getXmap(String key) {
+        XMap map = new XMap();
+
+        String key2 = key + ".";
+        int idx2 = key2.length();
+
+        String keyStr = null;
+        for (Map.Entry<Object, Object> kv : this.entrySet()) {
+            keyStr = kv.getKey().toString();
+            if (keyStr.startsWith(key2)) {
+                map.put(keyStr.substring(idx2), kv.getValue().toString());
+            }
+        }
+
+        return map;
     }
 
     /**获取服务端口(默认:8080)*/
