@@ -108,7 +108,7 @@ public class XApp implements XHandler {
 
         //4.再加载bean
         if (source != null) {
-            Aop.beanLoad(source);
+            _global.loadBean(source);
         }
 
         long time_end = System.currentTimeMillis();
@@ -129,6 +129,13 @@ public class XApp implements XHandler {
     }
 
     //////////////////////////////////
+
+    /**
+     * 加载Bean
+     * */
+    public void loadBean(Class<?> source){
+        Aop.beanLoad(source);
+    }
 
     /**
      * 共享变量（一般用于插件之间）
