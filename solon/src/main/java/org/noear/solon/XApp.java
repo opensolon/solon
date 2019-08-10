@@ -153,6 +153,19 @@ public class XApp implements XHandler {
     public <T> T sharedGet(String key){
         return (T)_shared.get(key);
     }
+    public <T> void sharedGet(String key,Act1<T> event) {
+        Object tmp = _shared.get(key);
+        if (tmp != null) {
+            event.run((T) tmp);
+        } else {
+            onSharedAdd((k, v) -> {
+                if (k.equals(key)) {
+                    event.run((T) v);
+                }
+            });
+        }
+    }
+
     public void onSharedAdd(Act2<String,Object> event){
         _onSharedAdd_event.add(event);
     }

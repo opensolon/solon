@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * 通用路由器
  * */
 public class XRouter<T> {
-    private List<XListener<T>> _list = new ArrayList<>();
+    private final List<XListener<T>> _list = new ArrayList<>();
 
 
     /** 添加路由关系 */
@@ -24,6 +24,11 @@ public class XRouter<T> {
     /** 添加路由关系 */
     public void add( String path, int type, String method, T handler) {
         _list.add(new XListener(XUtil.expCompile(path), type, method, handler));
+    }
+
+    /** 清空路由关系 */
+    public void clear(){
+        _list.clear();
     }
 
     /** 区配目标（根据上上文） */
