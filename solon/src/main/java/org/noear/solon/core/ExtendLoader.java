@@ -9,9 +9,20 @@ import java.util.Properties;
 /** 外部扩展加载器（对于动态扩展） */
 public class ExtendLoader {
     private static final ExtendLoader _g = new ExtendLoader();
-    public static void load(String filePath, XMap map) {
-        File file = new File(filePath);
+
+    /**
+     * 加载扩展文件夹（或文件）
+     * */
+    public static void load(String path, XMap map) {
+        File file = new File(path);
         _g.do_load(file, map);
+    }
+
+    /**
+     * 加载扩展具体的jar文件
+     * */
+    public static void loadJar(File file) {
+        _g.do_loadFile(file, null);
     }
 
     private Method addURL;
@@ -37,24 +48,26 @@ public class ExtendLoader {
         if (file.isDirectory()) {
             File[] tmps = file.listFiles();
             for (File tmp : tmps) {
-                loadFile(tmp, map);
+                do_loadFile(tmp, map);
             }
         } else {
-            loadFile(file, map);
+            do_loadFile(file, map);
         }
     }
 
 
-    private void loadFile(File file, XMap map){
-        if(file.isFile()) {
+    private void do_loadFile(File file, XMap map) {
+        if (file.isFile()) {
             String path = file.getAbsolutePath();
             try {
+                //尝试加载jar包
                 if (path.endsWith(".jar") || path.endsWith(".zip")) {
                     addURL.invoke(urlLoader, new Object[]{file.toURI().toURL()});
                     return;
                 }
 
-                if (path.endsWith(".properties")) {
+                //如果map不为null；尝试加载配置
+                if (map != null && path.endsWith(".properties")) {
                     Properties prop = new Properties();
                     prop.load(file.toURI().toURL().openStream());
                     prop.forEach((k, v) -> {
@@ -62,7 +75,7 @@ public class ExtendLoader {
                     });
                     return;
                 }
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }

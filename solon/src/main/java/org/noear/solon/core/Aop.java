@@ -31,6 +31,13 @@ public class Aop {
     public static void put(String key, BeanWrap wrap) {
         _f.put(key, wrap);
     }
+
+    //::添加bean
+    /** 添加bean（key + obj） */
+    public static void put(String key, Object obj) {
+        _f.put(key, new BeanWrap().build(obj.getClass(), obj));
+    }
+
     /** 添加bean（clz + obj） */
     public static void put(Class<?> clz, Object obj){_f.wrap(clz, obj);}
 

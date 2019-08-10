@@ -140,7 +140,21 @@ public class XApp implements XHandler {
     /**
      * 共享变量（一般用于插件之间）
      * */
-    public final Map<String,Object> shared=new HashMap<>();
+    private final Set<Act2<String,Object>> _onSharedAdd_event=new HashSet<>();
+    private final Map<String,Object> _shared=new HashMap<>();
+    public void sharedAdd(String key,Object obj) {
+        _shared.put(key, obj);
+        _onSharedAdd_event.forEach(fun->{
+            fun.run(key,obj);
+        });
+    }
+    public void onSharedAdd(Act2<String,Object> event){
+        _onSharedAdd_event.add(event);
+    }
+
+    public Map<String,Object> shared(){
+        return Collections.unmodifiableMap(_shared);
+    }
 
     /**
      * 停目事件
