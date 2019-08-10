@@ -142,18 +142,27 @@ public class XApp implements XHandler {
      * */
     private final Set<Act2<String,Object>> _onSharedAdd_event=new HashSet<>();
     private final Map<String,Object> _shared=new HashMap<>();
+    private Map<String,Object> _shared_unmod;
+
     public void sharedAdd(String key,Object obj) {
         _shared.put(key, obj);
         _onSharedAdd_event.forEach(fun->{
             fun.run(key,obj);
         });
     }
+    public <T> T sharedGet(String key){
+        return (T)_shared.get(key);
+    }
     public void onSharedAdd(Act2<String,Object> event){
         _onSharedAdd_event.add(event);
     }
 
     public Map<String,Object> shared(){
-        return Collections.unmodifiableMap(_shared);
+        if(_shared_unmod == null) {
+            _shared_unmod = Collections.unmodifiableMap(_shared);
+        }
+
+        return _shared_unmod;
     }
 
     /**
