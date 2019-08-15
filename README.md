@@ -33,7 +33,7 @@ XBefore：前置处理注解。可注解到web bean或XAction<br/>
 | --- | --- |
 | org.noear:solon:1.0.2.13 | 50k，主框架 |
 | org.noear:solon.boot.jlhttp:1.0.2.4 | 58k，boot插件,对jlhttp适配（不支持session） |
-| org.noear:solon.boot.jetty:1.0.2.4 | 1.5m，boot插件,对jetty适配 |
+| org.noear:solon.boot.jetty:1.0.2.5 | 1.5m，boot插件,对jetty适配 |
 | org.noear:solon.boot.smartsocket | *.*m，boot插件,提供socket服务(未提交仓库) |
 | org.noear:solon.boot.websocket | *.*m，boot插件,提供websocket服务(未提交仓库) |
 | org.noear:solon.boot.undertow:1.0.2.1 | 3.7m，boot插件,对undertow适配 |
@@ -54,7 +54,7 @@ XBefore：前置处理注解。可注解到web bean或XAction<br/>
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon</artifactId>
-  <version>1.0.2.9</version>
+  <version>1.0.2.13</version>
 </dependency>
 
 <dependency>
@@ -76,7 +76,7 @@ public class App{
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon</artifactId>
-  <version>1.0.2.7</version>
+  <version>1.0.2.13</version>
 </dependency>
 
 <dependency>
