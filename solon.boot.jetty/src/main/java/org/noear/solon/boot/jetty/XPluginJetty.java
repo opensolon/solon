@@ -35,6 +35,12 @@ final class XPluginJetty implements XPlugin {
                     _server.setAttribute(key, v);
                 }
             });
+
+            props.onChange((k,v)->{
+                if (k.indexOf(".jetty.") > 0) {
+                    _server.setAttribute(k, v);
+                }
+            });
         }
 
         try {
