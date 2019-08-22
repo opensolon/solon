@@ -2,6 +2,7 @@ package org.noear.solon;
 
 import org.noear.solon.core.XMap;
 import org.noear.solon.core.XScaner;
+import org.noear.solon.ext.Act2;
 
 import java.net.URL;
 import java.util.*;
@@ -86,6 +87,22 @@ public final class XProperties extends Properties{
         }
     }
 
+    private Set<Act2<String,String>> _changeEvent = new HashSet<>();
+
+    public void onChange(Act2<String,String> event){
+        _changeEvent.add(event);
+    }
+
+    @Override
+    public synchronized Object setProperty(String key, String value) {
+        Object obj = super.setProperty(key, value);
+
+        _changeEvent.forEach(event->{
+            event.run(key,value);
+        });
+
+        return obj;
+    }
 
     /**获取启动参数*/
     public XMap argx() {

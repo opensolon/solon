@@ -150,9 +150,7 @@ public class XApp implements XHandler {
             fun.run(key,obj);
         });
     }
-    public <T> T sharedGet(String key){
-        return (T)_shared.get(key);
-    }
+
     public <T> void sharedGet(String key,Act1<T> event) {
         Object tmp = _shared.get(key);
         if (tmp != null) {

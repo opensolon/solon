@@ -4,6 +4,7 @@ import org.noear.solon.core.XMap;
 
 import java.io.*;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -163,6 +164,13 @@ public class XUtil {
 
         //支持path变量
         if (expr.indexOf("{") >= 0) {
+            String path2 = null;
+            try{
+                path2 =URLDecoder.decode(path, "utf-8");
+            }catch (Exception ex){
+                path2 = path;
+            }
+
             Matcher pm = _pkr.matcher(expr);
 
             List<String> _pks = new ArrayList<>();
@@ -174,7 +182,7 @@ public class XUtil {
             if (_pks.size() > 0) {
                 Pattern _pr = Pattern.compile(XUtil.expCompile(expr), Pattern.CASE_INSENSITIVE);
 
-                pm = _pr.matcher(path);
+                pm = _pr.matcher(path2);
                 if (pm.find()) {
                     for (int i = 0, len = _pks.size(); i < len; i++) {
                         _map.put(_pks.get(i), pm.group(i + 1));//不采用group name,可解决_的问题

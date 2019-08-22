@@ -3,6 +3,7 @@ package org.noear.solon.core;
 import org.noear.solon.XUtil;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /*
@@ -33,6 +34,30 @@ public class XMap extends LinkedHashMap<String, String> {
                 } else {
                     if (i + 1 < len) {
                         d.put(arg, args[i + 1]);
+                    }
+                    i++;
+                }
+            }
+        }
+
+        return d;
+    }
+
+    public static XMap from(List<String> args) {
+        XMap d = new XMap();
+
+        if (args != null) {
+            int len = args.size();
+
+            for (int i = 0; i < len; i++) {
+                String arg = args.get(i).replaceAll("-*", "");
+
+                if (arg.indexOf("=") > 0) {
+                    String[] ss = arg.split("=");
+                    d.put(ss[0], ss[1]);
+                } else {
+                    if (i + 1 < len) {
+                        d.put(arg, args.get(i + 1));
                     }
                     i++;
                 }
