@@ -332,17 +332,6 @@ public class XApp implements XHandler {
         add(path, XMethod.DELETE, handler);
     }
 
-
-    /////////////////////////////
-    /**
-     * 当前上下文处理
-     */
-    private final static ThreadLocal<XContext> _threadLocal = new ThreadLocal<>();
-
-    public static XContext currentContext() {
-        return _threadLocal.get();
-    }
-
     /**
      * XApp Handler
      */
@@ -365,7 +354,7 @@ public class XApp implements XHandler {
     public void handle(XContext context) throws Exception {
         try {
             //设置当前线程上下文
-            _threadLocal.set(context);
+            XContextUtil.currentSet(context);
 
             _handler.handle(context);
 
@@ -375,7 +364,7 @@ public class XApp implements XHandler {
             }
         } finally {
             //移除当前线程上下文
-            _threadLocal.remove();
+            XContextUtil.currentRemove();
         }
     }
 

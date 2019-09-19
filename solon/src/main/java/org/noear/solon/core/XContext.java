@@ -20,7 +20,7 @@ public abstract class XContext {
     /**获取当前线程的上下文*/
     @XNote("获取当前线程的上下文")
     public static XContext current(){
-        return XApp.currentContext();
+        return XContextUtil.current();
     }
 
     /**是否已处理*/
@@ -267,6 +267,10 @@ public abstract class XContext {
     @XNote("设置自定义特性")
     public void attrSet(String key, Object val){
         _attrMap.put(key,val);
+    }
+    @XNote("设置自定义特性")
+    public void attrSet(Map<String,Object> map){
+        _attrMap.putAll(map);
     }
     /**清除上下文特性*/
     @XNote("清空自定义特性")
