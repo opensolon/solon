@@ -251,11 +251,18 @@ public abstract class XContext {
     @XNote("设置输出状态")
     public abstract void status(int status) throws IOException;
 
-    private Map<String,Object> _attrMap = new HashMap<>();
+    private Map<String,Object> _attrMap = null;
+    private Map<String,Object> attrMap(){//改为懒加载
+        if(_attrMap == null){
+            _attrMap = new HashMap<>();
+        }
+
+        return _attrMap;
+    }
     /**获取自定义特性*/
     @XNote("获取自定义特性")
     public <T> T attr(String key, T def){
-        Object val = _attrMap.get(key);
+        Object val = attrMap().get(key);
 
         if(val == null) {
             return def;
@@ -266,15 +273,15 @@ public abstract class XContext {
     /**设置上下文特性*/
     @XNote("设置自定义特性")
     public void attrSet(String key, Object val){
-        _attrMap.put(key,val);
+        attrMap().put(key,val);
     }
     @XNote("设置自定义特性")
     public void attrSet(Map<String,Object> map){
-        _attrMap.putAll(map);
+        attrMap().putAll(map);
     }
     /**清除上下文特性*/
     @XNote("清空自定义特性")
     public void attrClear(){
-        _attrMap.clear();
+        attrMap().clear();
     }
 }
