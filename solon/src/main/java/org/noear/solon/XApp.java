@@ -305,28 +305,35 @@ public class XApp implements XHandler {
     //http
 
     /**
-     * 添加GET方法的监听
+     * 添加GET方法的监听（REST.select 从服务端获取一或多项资源）
      */
     public void get(String path, XHandler handler) {
         add(path, XMethod.GET, handler);
     }
 
     /**
-     * 添加POST方法的监听
+     * 添加POST方法的监听（REST.create 在服务端新建一项资源）
      */
     public void post(String path, XHandler handler) {
         add(path, XMethod.POST, handler);
     }
 
     /**
-     * 添加PUT方法的监听
+     * 添加PUT方法的监听（REST.update 客户端提供改变后的完整资源）
      */
     public void put(String path, XHandler handler) {
         add(path, XMethod.PUT, handler);
     }
 
     /**
-     * 添加DELETE方法的监听
+     * 添加PATCH方法的监听（REST.update 客户端提供改变的属性）
+     */
+    public void patch(String path, XHandler handler) {
+        add(path, XMethod.PATCH, handler);
+    }
+
+    /**
+     * 添加DELETE方法的监听（REST.delete 从服务端删除资源）
      */
     public void delete(String path, XHandler handler) {
         add(path, XMethod.DELETE, handler);
