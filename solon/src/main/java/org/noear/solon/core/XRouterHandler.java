@@ -6,14 +6,14 @@ import org.noear.solon.XRouter;
  * XApp Handler
  * */
 public class XRouterHandler implements XHandler {
-    private XRouter<XHandler> _router;
-    public XRouterHandler(XRouter<XHandler> router){
+    private XRouter _router;
+    public XRouterHandler(XRouter router){
         _router = router;
     }
 
 
     @Override
-    public void handle(XContext context) throws Exception {
+    public void handle(XContext context) throws Throwable {
         //可能上级链已完成处理
         if (context.getHandled()) {
             return;
@@ -21,16 +21,17 @@ public class XRouterHandler implements XHandler {
 
         boolean _handled = false;
 
-        //前置处理
-        do_try_handle(context, XEndpoint.before);
+        //前置处理（支持多代理）
+        do_try_handle_multiple(context, XEndpoint.before);
 
         //主体处理
         if (context.getHandled() == false) {
-            _handled = do_try_handle(context, XEndpoint.main);
+            //（仅支持唯一代理）
+            _handled = do_try_handle_one(context, XEndpoint.main);
         }
 
-        //后置处理
-        do_try_handle(context, XEndpoint.after); //前后不能反 （后置处理由内部进行状态控制）
+        //后置处理（支持多代理）
+        do_try_handle_multiple(context, XEndpoint.after); //前后不能反 （后置处理由内部进行状态控制）
 
         //汇总状态
         if (_handled) {
@@ -45,7 +46,7 @@ public class XRouterHandler implements XHandler {
         }
     }
 
-    protected boolean do_try_handle(XContext context, int endpoint) throws Exception {
+    protected boolean do_try_handle_one(XContext context, int endpoint) throws Throwable {
         XHandler handler = _router.matchOne(context, endpoint);
 
         if (handler != null) {
@@ -53,6 +54,12 @@ public class XRouterHandler implements XHandler {
             return true;
         } else {
             return false;
+        }
+    }
+
+    protected void do_try_handle_multiple(XContext context, int endpoint) throws Throwable {
+        for(XHandler handler: _router.matchAll(context,endpoint)){
+            handler.handle(context);
         }
     }
 }

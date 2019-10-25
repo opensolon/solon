@@ -15,7 +15,7 @@ public final class XPluginImp implements XPlugin {
     public  void start(XApp app) {
         long time_start = System.currentTimeMillis();
 
-        JlHttpContextHandler _handler = new JlHttpContextHandler(true, app);
+        JlHttpContextHandler _handler = new JlHttpContextHandler( app);
 
         _server.setPort(app.port());
         _server.setExecutor(new ThreadPoolExecutor(
@@ -30,10 +30,11 @@ public final class XPluginImp implements XPlugin {
         host.setDirectoryIndex(null);
 
         host.addContext("/", _handler,
-                XMethod.GET,
-                XMethod.POST,
-                XMethod.PUT,
-                XMethod.DELETE);
+                XMethod.GET.name,
+                XMethod.POST.name,
+                XMethod.PUT.name,
+                XMethod.DELETE.name,
+                XMethod.PATCH.name);
 
         System.out.println("oejs.Server:main: JlHttpServer 2.4");
 

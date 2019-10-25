@@ -13,9 +13,9 @@ public class JtHttpContextHandler extends AbstractHandler {
     protected XApp xapp;
     protected boolean debug;
 
-    public JtHttpContextHandler(boolean debug, XApp xapp) {
+    public JtHttpContextHandler(XApp xapp) {
         this.xapp = xapp;
-        this.debug = debug;
+        this.debug = xapp.prop().argx().getInt("debug") == 1;
     }
 
     @Override
@@ -30,16 +30,12 @@ public class JtHttpContextHandler extends AbstractHandler {
             if(context.getHandled() && context.status() != 404){
                 baseRequest.setHandled(true);
             }
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             ex.printStackTrace();
 
-            if(this.debug) {
-                baseRequest.setHandled(true);
-                ex.printStackTrace(response.getWriter());
-                response.setStatus(500);
-            }else{
-                throw new ServletException(ex);
-            }
+            baseRequest.setHandled(true);
+            ex.printStackTrace(response.getWriter());
+            response.setStatus(500);
         }
     }
 }

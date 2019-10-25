@@ -6,6 +6,7 @@ import org.noear.solon.boot.undertow.ext.MultipartUtil;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XFile;
 import org.noear.solon.core.XMap;
+import org.noear.solon.core.XSessionState;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,23 @@ public class UtHttpServletContext extends XContext {
         _request = request;
         _response = response;
         _exchange = exchange;
+
+        sessionStateInit(new XSessionState() {
+            @Override
+            public String sessionId() {
+                return _request.getRequestedSessionId();
+            }
+
+            @Override
+            public Object sessionGet(String key) {
+                return _request.getSession().getAttribute(key);
+            }
+
+            @Override
+            public void sessionSet(String key, Object val) {
+                _request.getSession().setAttribute(key, val);
+            }
+        });
     }
 
     @Override
@@ -262,22 +280,6 @@ public class UtHttpServletContext extends XContext {
                  .setAttribute(key, val);
 
      }*/
-    @Override
-    public String sessionId() {
-        return _request.getRequestedSessionId();
-    }
-
-    @Override
-    public Object session(String key) {
-        return _request.getSession().getAttribute(key);
-    }
-
-    @Override
-    public void sessionSet(String key, Object val) {
-        _request.getSession().setAttribute(key, val);
-    }
-
-
     //====================================
 
     @Override
@@ -297,28 +299,36 @@ public class UtHttpServletContext extends XContext {
 
 
     @Override
-    public OutputStream outputStream() throws IOException {
+    public OutputStream outputStream() throws IOException{
         return _response.getOutputStream();
     }
 
     @Override
-    public void output(String str) throws IOException {
-        PrintWriter writer = _response.getWriter();
-        writer.write(str);
-        writer.flush();
+    public void output(String str) {
+        try {
+            PrintWriter writer = _response.getWriter();
+            writer.write(str);
+            writer.flush();
+        }catch (Throwable ex){
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
-    public void output(InputStream stream) throws IOException {
-        OutputStream out = _response.getOutputStream();
+    public void output(InputStream stream)  {
+        try {
+            OutputStream out = _response.getOutputStream();
 
-        byte[] buff = new byte[100];
-        int rc = 0;
-        while ((rc = stream.read(buff, 0, 100)) > 0) {
-            out.write(buff, 0, rc);
+            byte[] buff = new byte[100];
+            int rc = 0;
+            while ((rc = stream.read(buff, 0, 100)) > 0) {
+                out.write(buff, 0, rc);
+            }
+
+            out.flush();
+        }catch (Throwable ex){
+            throw new RuntimeException(ex);
         }
-
-        out.flush();
     }
 
     @Override
@@ -359,12 +369,16 @@ public class UtHttpServletContext extends XContext {
     }
 
     @Override
-    public void redirect(String url) throws IOException {
-        _response.sendRedirect(url);
+    public void redirect(String url)  {
+        try {
+            _response.sendRedirect(url);
+        }catch (Throwable ex){
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
-    public void redirect(String url, int code) throws IOException {
+    public void redirect(String url, int code) {
         status(code);
         _response.setHeader("Location", url);
     }
@@ -375,7 +389,7 @@ public class UtHttpServletContext extends XContext {
     }
 
     @Override
-    public void status(int status) throws IOException {
+    public void status(int status)  {
         _response.setStatus(status);
     }
 }

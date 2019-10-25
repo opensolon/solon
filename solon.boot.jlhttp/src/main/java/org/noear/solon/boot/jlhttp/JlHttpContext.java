@@ -253,34 +253,6 @@ public class JlHttpContext extends XContext {
     }
     private XMap _headerMap;
 
-    private static final String _session_id_key = "JLSESSIONID";
-
-
-    private String _sessionId;
-    @Override
-    public String sessionId(){
-        if(_sessionId == null) {
-            _sessionId = cookie(_session_id_key);
-
-            if (XUtil.isEmpty(_sessionId)) {
-                _sessionId = XUtil.guid() + ".jlhttp";//生成的用_开头，可直接识别是不是ua
-            }
-
-            cookieSet(_session_id_key, _sessionId, 60 * 60 * 2); //每次都更新cookie//2小时
-        }
-        return _sessionId;
-    }
-
-    @Override
-    public Object session(String key) {
-        return null;
-    }
-
-    @Override
-    public void sessionSet(String key, Object val) {
-
-    }
-
     //=================================
 
     @Override
@@ -307,24 +279,32 @@ public class JlHttpContext extends XContext {
     }
 
     @Override
-    public void output(String str) throws IOException {
-        OutputStream out = outputStream;
+    public void output(String str) {
+        try {
+            OutputStream out = outputStream;
 
-        out.write(str.getBytes(_charset));
-        out.flush();
+            out.write(str.getBytes(_charset));
+            out.flush();
+        }catch (Throwable ex){
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
-    public void output(InputStream stream) throws IOException {
-        OutputStream out = outputStream;
+    public void output(InputStream stream) {
+        try {
+            OutputStream out = outputStream;
 
-        byte[] buff = new byte[100];
-        int rc = 0;
-        while ((rc = stream.read(buff, 0, 100)) > 0) {
-            out.write(buff, 0, rc);
+            byte[] buff = new byte[100];
+            int rc = 0;
+            while ((rc = stream.read(buff, 0, 100)) > 0) {
+                out.write(buff, 0, rc);
+            }
+
+            out.flush();
+        }catch (Throwable ex){
+            throw new RuntimeException(ex);
         }
-
-        out.flush();
     }
 
     protected ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -376,14 +356,18 @@ public class JlHttpContext extends XContext {
     }
 
     @Override
-    public void redirect(String url) throws IOException {
+    public void redirect(String url)  {
         redirect(url,302);
     }
 
     @Override
-    public void redirect(String url, int code) throws IOException {
-        headerSet("Location", url);
-        _response.sendHeaders(code);
+    public void redirect(String url, int code) {
+        try {
+            headerSet("Location", url);
+            _response.sendHeaders(code);
+        }catch (Throwable ex){
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
@@ -393,7 +377,7 @@ public class JlHttpContext extends XContext {
     private int _status = 200;
 
     @Override
-    public void status(int status) throws IOException {
+    public void status(int status) {
         _status = status;
         //_response.sendHeaders(status); //jlhttp 的 状态，由 上下文代理 负责
     }

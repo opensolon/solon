@@ -11,6 +11,7 @@ import org.noear.solon.boot.undertow.ext.MultipartUtil;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XFile;
 import org.noear.solon.core.XMap;
+import org.noear.solon.core.XSessionState;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -38,6 +39,33 @@ public class UtHttpExchangeContext extends XContext {
         _request = request;
         _response = response;
         _exchange = exchange;
+
+        sessionStateInit(new XSessionState() {
+            @Override
+            public String sessionId() {
+                SessionManager sm = _exchange.getAttachment(SessionManager.ATTACHMENT_KEY);
+                SessionConfig sc = _exchange.getAttachment(SessionConfig.ATTACHMENT_KEY);
+                return sm.getSession(_exchange, sc).getId();
+            }
+
+            @Override
+            public Object sessionGet(String key) {
+                SessionConfig sc = _exchange.getAttachment(SessionConfig.ATTACHMENT_KEY);
+
+                return _exchange
+                        .getAttachment(SessionManager.ATTACHMENT_KEY)
+                        .getSession(_exchange, sc).getAttribute(key);
+            }
+
+            @Override
+            public void sessionSet(String key, Object val) {
+                SessionConfig sc = _exchange.getAttachment(SessionConfig.ATTACHMENT_KEY);
+
+                _exchange.getAttachment(SessionManager.ATTACHMENT_KEY)
+                        .getSession(_exchange, sc)
+                        .setAttribute(key, val);
+            }
+        });
     }
 
     @Override
@@ -294,31 +322,7 @@ public class UtHttpExchangeContext extends XContext {
 
     private XMap _headerMap;
 
-    @Override
-    public String sessionId() {
-        SessionManager sm = _exchange.getAttachment(SessionManager.ATTACHMENT_KEY);
-        SessionConfig sc = _exchange.getAttachment(SessionConfig.ATTACHMENT_KEY);
-        return sm.getSession(_exchange, sc).getId();
-    }
 
-    @Override
-    public Object session(String key) {
-        SessionConfig sc = _exchange.getAttachment(SessionConfig.ATTACHMENT_KEY);
-
-        return _exchange
-                .getAttachment(SessionManager.ATTACHMENT_KEY)
-                .getSession(_exchange, sc).getAttribute(key);
-    }
-
-    @Override
-    public void sessionSet(String key, Object val) {
-        SessionConfig sc = _exchange.getAttachment(SessionConfig.ATTACHMENT_KEY);
-
-        _exchange.getAttachment(SessionManager.ATTACHMENT_KEY)
-                .getSession(_exchange, sc)
-                .setAttribute(key, val);
-
-    }
 
     //====================================
 
@@ -329,21 +333,16 @@ public class UtHttpExchangeContext extends XContext {
 
     @Override
     public void charset(String charset) {
-        if (_response instanceof HttpServletResponse) {
-            ((HttpServletResponse) _response).setCharacterEncoding(charset);
-        } else {
-            //todo _exchange mode
-        }
+//        if (_response instanceof HttpServletResponse) {
+            _response.setCharacterEncoding(charset);
+//        }
     }
 
     @Override
     public void contentType(String contentType) {
-        if (_response instanceof HttpServletResponse) {
-            ((HttpServletResponse) _response).setContentType(contentType);
-        } else {
-            //todo _exchange mode
-
-        }
+//        if (_response instanceof HttpServletResponse) {
+            _response.setContentType(contentType);
+//        }
     }
 
 
@@ -353,23 +352,27 @@ public class UtHttpExchangeContext extends XContext {
     }
 
     @Override
-    public void output(String str) throws IOException {
+    public void output(String str)  {
         PrintWriter writer = new PrintWriter(_exchange.getOutputStream());
         writer.write(str);
         writer.flush();
     }
 
     @Override
-    public void output(InputStream stream) throws IOException {
-        OutputStream out = _exchange.getOutputStream();
+    public void output(InputStream stream) {
+        try {
+            OutputStream out = _exchange.getOutputStream();
 
-        byte[] buff = new byte[100];
-        int rc = 0;
-        while ((rc = stream.read(buff, 0, 100)) > 0) {
-            out.write(buff, 0, rc);
+            byte[] buff = new byte[100];
+            int rc = 0;
+            while ((rc = stream.read(buff, 0, 100)) > 0) {
+                out.write(buff, 0, rc);
+            }
+
+            out.flush();
+        }catch (Throwable ex){
+            throw new RuntimeException(ex);
         }
-
-        out.flush();
     }
 
     @Override
@@ -420,17 +423,18 @@ public class UtHttpExchangeContext extends XContext {
     }
 
     @Override
-    public void redirect(String url) throws IOException {
+    public void redirect(String url) {
         if (_response instanceof HttpServletResponse) {
-            ((HttpServletResponse) _response).sendRedirect(url);
-        } else {
-            //todo _exchange mode
-
+            try {
+                ((HttpServletResponse) _response).sendRedirect(url);
+            }catch (Throwable ex){
+                throw new RuntimeException(ex);
+            }
         }
     }
 
     @Override
-    public void redirect(String url, int code) throws IOException {
+    public void redirect(String url, int code) {
         status(code);
         if (_response instanceof HttpServletResponse) {
             ((HttpServletResponse) _response).setHeader("Location", url);
@@ -443,11 +447,11 @@ public class UtHttpExchangeContext extends XContext {
 
     @Override
     public int status() {
-        return _exchange.getResponseCode();
+        return _exchange.getStatusCode();
     }
 
     @Override
-    public void status(int status) throws IOException {
-        _exchange.setResponseCode(status);
+    public void status(int status) {
+        _exchange.setStatusCode(status);
     }
 }

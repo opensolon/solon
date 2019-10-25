@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 
 
 /**
- * 后置处理
+ * 触发器：后置处理
  * */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

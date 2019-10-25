@@ -12,7 +12,7 @@ public final class XPluginImp implements XPlugin {
     public  void start(XApp app) {
         int _port = 10000 + app.port();
 
-        SsContextHandler contextHandler = new SsContextHandler(true, app);
+        SsContextHandler contextHandler = new SsContextHandler(app);
 
         SsProtocol protocol = new SsProtocol();
         SsProcessor processor = new SsProcessor(contextHandler);

@@ -7,6 +7,7 @@ import org.smartboot.socket.transport.AioSession;
 import java.io.*;
 import java.util.Map;
 
+@SuppressWarnings("unchecked")
 public class SsProcessor implements MessageProcessor<byte[]> {
     private SsContextHandler _contextHandler;
     public SsProcessor(SsContextHandler contextHandler){

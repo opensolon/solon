@@ -2,6 +2,7 @@ package org.noear.solon.view.freemarker;
 
 import org.noear.solon.XApp;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.XRenderManager;
 import org.noear.solon.core.XPlugin;
 
 public class XPluginImp implements XPlugin {
@@ -18,6 +19,6 @@ public class XPluginImp implements XPlugin {
             });
         });
 
-        app.renderSet(render);
+        XRenderManager.register(render);
     }
 }

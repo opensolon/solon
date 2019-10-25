@@ -1,7 +1,6 @@
 package org.noear.solon;
 
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.XRender;
 import org.noear.solon.core.*;
 import org.noear.solon.ext.Act1;
 import org.noear.solon.ext.Act2;
@@ -9,34 +8,35 @@ import org.noear.solon.ext.Act2;
 import java.util.*;
 
 /**
- * 插件式Web微框架(50kb-)
+ * 插件式微型Web框架(70kb)
  *
- * 整个框架主要有几部份组成：
- * 1.通用微框架体系
+ * 框架主要有几部份组成：
+ * 1.微框架体系
  * 2.插件体系
- * 3.简易注解体系(可实现 mvc,prc) //Bean分为：普通Bean和Web Bean
+ * 3.注解体系(为 mvc, prc 提供支持) //Bean分为：普通Bean和Web Bean
  *
  * ///设计目标::
- * 1.更高的性能（不支持字段级注入）
- * 2.更轻量的结构
- * 3.为Spring之后提供另一个选择
+ * 1.更高的性能（弱化字段级注入，减少不必要的反射）
+ * 2.更轻量的结构、更强的扩展性
+ * 3.为Spring之外提供另一个选择
  *
  * ///保持手写和注解两种体验方案::
  *
  * ///关于Bean扫描和加载机制::
  * #XBean 为一般bean,会被加载 (仅支持类级别)
- * #XController, #XInterceptor, #XService 为特定bean,会被加载 (仅支持类级别)
+ * #XController, #XInterceptor 为特定bean,会被加载 (仅支持类级别)
  *
- * 其中：#XController (控制器), #XInterceptor (拦截器), #XService(服务)  会自动注入到 XApp.router
+ * 其中：#XController (控制器), #XInterceptor (拦截器), #XBean(remoting=true)(服务)  会自动注入到 XApp.router
  *      //这三者最终都会转换为：XAction
  *
- * 其中：#XBean 加在 XHandler上， 会自动注入到 XApp.router
+ * 其中：#XController 加在 XHandler上， 会自动注入到 XApp.router
  *      #XBean 加在 XPlugin上，会自运注入到 XApp.plug()
  *      #XBean 加在普通类上，会自动注入到 XApp.beans
  *
  * ///插件(XPlugin)的作用::
  * 1.扩展框架机能
- * 2.让业务开发时分散、打包时合并；
+ * 2.按需定制架构
+ * 3.可让业务开发时分散、打包时合并；
  *
  * ///XMapping的策略
  * 1.与Spring保持相近
@@ -88,7 +88,7 @@ public class XApp implements XHandler {
         System.out.println("solon.boot:: start begin");
 
         //2.尝试加载扩展文件夹
-        if(argx.containsKey("extend")){
+        if (argx.containsKey("extend")) {
             ExtendLoader.load(argx.get("extend"), argx);
         }
 
@@ -110,6 +110,12 @@ public class XApp implements XHandler {
         if (source != null) {
             _global.loadBean(source);
         }
+
+        //5.加载渲染器
+        XMap map = _global.prop().getXmap("solon.view.mapping");
+        map.forEach((k, v) -> {
+            XRenderManager.mapping("." + k, v);
+        });
 
         long time_end = System.currentTimeMillis();
         System.out.println("solon.boot:: start end @" + (time_end - time_start) + "ms");
@@ -177,24 +183,16 @@ public class XApp implements XHandler {
     }
 
     /**
-     * 停目事件
+     * 停止事件
      */
     private Set<Runnable> _stopEvent = new LinkedHashSet<>();
-    /**
-     * 渲染器
-     */
-    private XRender _render = (d, c) -> {
-        if (d != null) {
-            c.output(d.toString());
-        }
-    };
 
     /**
      * 路由器
      */
-    private final XRouter<XHandler> _router;
+    private final XRouter _router;
 
-    public XRouter<XHandler> router() {
+    public XRouter router() {
         return _router;
     }
 
@@ -238,28 +236,6 @@ public class XApp implements XHandler {
         return _prop;
     }
 
-    ///////////////////////////////////////////////
-
-    /**
-     * 获取视图渲染器
-     */
-    public XRender render() {
-        return _render;
-    }
-
-    /**
-     * 渲染数据
-     */
-    public void render(Object obj, XContext ctx) throws Exception {
-        render().render(obj, ctx);
-    }
-
-    /**
-     * 设置视图渲染器
-     */
-    public void renderSet(XRender render) {
-        _render = render;
-    }
 
     /**
      * 插入插件
@@ -277,29 +253,35 @@ public class XApp implements XHandler {
     /**
      * 前置监听
      */
-    public void before(String expr, String method, XHandler handler) {
+    public void before(String expr, XMethod method, XHandler handler) {
         _router.add(expr, XEndpoint.before, method, handler);
+    }
+    public void before(String expr, XMethod method, int index, XHandler handler) {
+        _router.add(expr, XEndpoint.before, method, index, handler);
     }
 
     /**
      * 重置监听
      */
-    public void after(String expr, String method, XHandler handler) {
+    public void after(String expr, XMethod method, XHandler handler) {
         _router.add(expr, XEndpoint.after, method, handler);
+    }
+    public void after(String expr, XMethod method, int index, XHandler handler) {
+        _router.add(expr, XEndpoint.after, method, index, handler);
     }
 
     /**
      * 主体监听
      */
-    public void add(String expr, String method, XHandler handler) {
+    public void add(String expr, XMethod method, XHandler handler) {
         _router.add(expr, XEndpoint.main, method, handler);
     }
 
     /**
-     * 添加所有方法的监听
+     * 添加所有方法的监听（GET,POST,PUT,PATCH,DELETE,HEAD）
      */
     public void all(String path, XHandler handler) {
-        add(path, XMethod.ALL, handler);
+        add(path, XMethod.HTTP, handler);
     }
 
     //http
@@ -358,7 +340,7 @@ public class XApp implements XHandler {
      * 统一代理入口
      */
     @Override
-    public void handle(XContext context) throws Exception {
+    public void handle(XContext context) throws Throwable {
         try {
             //设置当前线程上下文
             XContextUtil.currentSet(context);
@@ -366,8 +348,10 @@ public class XApp implements XHandler {
             _handler.handle(context);
 
         } catch (Throwable ex) {
-            if (_onExceptionEvent != null) {
-                _onExceptionEvent.run(context, ex);
+            if (_onErrorEvent != null) {
+                _onErrorEvent.run(context, ex);
+            }else {
+                throw ex;
             }
         } finally {
             //移除当前线程上下文
@@ -375,10 +359,10 @@ public class XApp implements XHandler {
         }
     }
 
-    private Act2<XContext,Throwable> _onExceptionEvent;
+    private Act2<XContext,Throwable> _onErrorEvent;
 
-    public XApp onException(Act2<XContext,Throwable> event) {
-        _onExceptionEvent = event;
+    public XApp onError(Act2<XContext,Throwable> event) {
+        _onErrorEvent = event;
         return this;
     }
 }

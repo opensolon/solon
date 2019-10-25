@@ -6,9 +6,9 @@ public class SsContextHandler {
     protected XApp xapp;
     protected boolean debug;
 
-    public SsContextHandler(boolean debug, XApp xapp) {
+    public SsContextHandler(XApp xapp) {
         this.xapp = xapp;
-        this.debug = debug;
+        this.debug = xapp.prop().argx().getInt("debug") == 1;
     }
 
     public void handle(SsRequest request, SsResponse response) {
@@ -19,7 +19,7 @@ public class SsContextHandler {
 
             xapp.handle(context);
 
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             ex.printStackTrace();
             ex.printStackTrace(response.getWriter());
             response.setStatus(500);

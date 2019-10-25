@@ -13,6 +13,37 @@ public class XContextEmpty extends XContext {
         return new XContextEmpty();
     }
 
+    public XContextEmpty(){
+        sessionStateInit(new XSessionState() {
+            @Override
+            public String sessionId() {
+                return null;
+            }
+
+            @Override
+            public Object sessionGet(String key) {
+                return sessionMap().get(key);
+            }
+
+            @Override
+            public void sessionSet(String key, Object val) {
+                sessionMap().put(key,val);
+            }
+        });
+    }
+
+
+    private Map<String,Object> _sessionMap = null;
+    public Map<String,Object> sessionMap(){
+        if(_sessionMap == null){
+            _sessionMap = new HashMap<>();
+        }
+
+        return _sessionMap;
+    }
+
+
+
     @Override
     public Object request() {
         return null;
@@ -155,30 +186,6 @@ public class XContextEmpty extends XContext {
         return _headerMap;
     }
 
-    private Map<String,Object> _sessionMap = null;
-    public Map<String,Object> sessionMap(){
-        if(_sessionMap == null){
-            _sessionMap = new HashMap<>();
-        }
-
-        return _sessionMap;
-    }
-
-    @Override
-    public String sessionId() {
-        return null;
-    }
-
-    @Override
-    public Object session(String key) {
-        return sessionMap().get(key);
-    }
-
-    @Override
-    public void sessionSet(String key, Object val) {
-        sessionMap().put(key,val);
-    }
-
     @Override
     public Object response() {
         return null;
@@ -195,17 +202,17 @@ public class XContextEmpty extends XContext {
     }
 
     @Override
-    public void output(String str) throws IOException {
+    public void output(String str) {
 
     }
 
     @Override
-    public void output(InputStream stream) throws IOException {
+    public void output(InputStream stream) {
 
     }
 
     @Override
-    public OutputStream outputStream() throws IOException {
+    public OutputStream outputStream() {
         return null;
     }
 
@@ -235,12 +242,12 @@ public class XContextEmpty extends XContext {
     }
 
     @Override
-    public void redirect(String url) throws IOException {
+    public void redirect(String url) {
 
     }
 
     @Override
-    public void redirect(String url, int code) throws IOException {
+    public void redirect(String url, int code) {
 
     }
 
@@ -251,7 +258,7 @@ public class XContextEmpty extends XContext {
     }
 
     @Override
-    public void status(int status) throws IOException {
+    public void status(int status)  {
         _status = status;
     }
 }

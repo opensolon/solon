@@ -22,9 +22,9 @@ public class UtHttpExchangeHandler implements HttpHandler {
     protected XApp xapp;
     protected boolean debug;
 
-    public UtHttpExchangeHandler(boolean debug, XApp xapp) {
+    public UtHttpExchangeHandler(XApp xapp) {
         this.xapp = xapp;
-        this.debug = debug;
+        this.debug = xapp.prop().argx().getInt("debug") == 1;
     }
 
 
@@ -54,27 +54,26 @@ public class UtHttpExchangeHandler implements HttpHandler {
         context.contentType("text/plain;charset=UTF-8");
 
         try {
-            if (exchange.getRequestURI() != null && !exchange.getRequestURI().endsWith(".jsp"))
+            if (exchange.getRequestURI() != null && !exchange.getRequestURI().endsWith(".jsp")) {
                 xapp.handle(context);
+            }
 
             if (context.getHandled() && context.status() != 404) {
                 //end the handler
                 exchange.endExchange();
+            }else{
+                exchange.endExchange();
             }
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             ex.printStackTrace();
 
-            if (this.debug) {
-                exchange.endExchange();
-                ex.printStackTrace(response.getWriter());
-                exchange.setResponseCode(500);
-                //exchange.setStatusCode(500);
-            } else {
-                throw new ServletException(ex);
-            }
+            exchange.endExchange();
+            ex.printStackTrace(response.getWriter());
+            exchange.setStatusCode(500);
+
         }
         // The root handler returns normally without completing the exchange
-        exchange.endExchange();
+//        exchange.endExchange();
     }
 
 }

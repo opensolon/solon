@@ -12,22 +12,22 @@ import java.util.regex.Pattern;
 /**
  * mvc:动作
  * */
-public class XAction extends XHandlerAide implements XHandler, XRender {
+public class XAction extends XHandlerAide implements XHandler {
     private BeanWrap _c_bw;//
-    private boolean _c_rpc;
+    private boolean _c_remoting;
     private Method _m;
+    private String _produces;
 
-    private Pattern _pr;
+    private PathAnalyzer _pr;
     private List<String> _pks;
     private static Pattern _pkr = Pattern.compile("\\{([^\\\\}]+)\\}");
 
-    private XRender _reader;
-
-    public XAction(BeanWrap beanWrap, XRender reader, boolean is_rpc, Method method, String path) {
+    public XAction(BeanWrap beanWrap, boolean is_remoting, String produces, Method method, String path) {
         _c_bw = beanWrap;
-        _c_rpc = is_rpc;
+        _c_remoting = is_remoting;
         _m = method;
-        _reader = reader;
+
+        _produces = produces;
 
         //支持path变量
         if (path.indexOf("{") >= 0) {
@@ -38,36 +38,30 @@ public class XAction extends XHandlerAide implements XHandler, XRender {
             }
 
             if (_pks.size() > 0) {
-                _pr = Pattern.compile(XUtil.expCompile(path), Pattern.CASE_INSENSITIVE);
+                _pr = new PathAnalyzer(path);
             }
         }
     }
 
     @Override
-    public void render(Object obj, XContext ctx) throws Exception {
-        if (obj != null) {
-            if (_reader == null) {
-                XApp.global().render(obj, ctx);
-            } else {
-                _reader.render(obj, ctx);
-            }
-        }
-    }
-
-    @Override
-    public void handle(XContext x) throws Exception {
-        if(_c_rpc) {
-            x.attrSet("solon.reader.source", "service");
+    public void handle(XContext x) throws Throwable {
+        if(_c_remoting) {
+            x.attrSet("solon.reader.mode", "serialize");
         }
 
         try{
+            if(XUtil.isEmpty(_produces) == false){
+                x.contentType(_produces);
+            }
+
             do_handle(x);
         }catch (Exception ex){
-            render(ex, x);
+            x.render(ex);
         }
     }
 
-    private void do_handle(XContext x) throws Exception {
+    private void do_handle(XContext x) throws Throwable {
+        //前置处理
         for (XHandler h : _before) {
             h.handle(x);
         }
@@ -82,9 +76,10 @@ public class XAction extends XHandlerAide implements XHandler, XRender {
                 }
             }
 
-            render(XActionUtil.exeMethod(_c_bw.get(), _m, x), x);
+           x.render(XActionUtil.exeMethod(_c_bw.get(), _m, x));
         }
 
+        //后置处理
         for (XHandler h : _after) {
             h.handle(x);
         }

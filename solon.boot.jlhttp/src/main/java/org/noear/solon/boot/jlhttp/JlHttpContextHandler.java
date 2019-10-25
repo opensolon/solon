@@ -9,9 +9,9 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
     protected XApp xapp;
     protected boolean debug;
 
-    public JlHttpContextHandler(boolean debug, XApp xapp) {
+    public JlHttpContextHandler(XApp xapp) {
         this.xapp = xapp;
-        this.debug = debug;
+        this.debug = xapp.prop().argx().getInt("debug") == 1;
     }
 
     @Override
@@ -31,17 +31,12 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
 
         try {
             xapp.handle(context);
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             ex.printStackTrace();
 
             context.status(500);
             context.setHandled(true);
-
-            if (this.debug) {
-                context.output(XUtil.getFullStackTrace(ex));
-            } else {
-                throw new IOException(ex);
-            }
+            context.output(XUtil.getFullStackTrace(ex));
         }
 
         if (context.getHandled() && context.status() != 404) {

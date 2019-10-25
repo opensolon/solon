@@ -1,6 +1,5 @@
 package org.noear.solon.core;
 
-import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XNote;
 
@@ -16,7 +15,6 @@ import java.util.Map;
  * 通用上下文接口
  * */
 public abstract class XContext {
-
     /**获取当前线程的上下文*/
     @XNote("获取当前线程的上下文")
     public static XContext current(){
@@ -172,15 +170,30 @@ public abstract class XContext {
     @XNote("获取所有HEADER并转为map")
     public abstract XMap headerMap();
 
+    /**SESSION_STATE对象*/
+    @XNote("SESSION_STATE对象")
+    private XSessionState _sessionState = XSessionStateDefault.global;
+    public void sessionStateInit(XSessionState sessionState){
+        if(_sessionState == null || _sessionState.replaceable()){
+            _sessionState = sessionState;
+        }
+    }
+
     /**获取SESSION_ID*/
     @XNote("获取SESSION_ID")
-    public abstract String sessionId();
+    public final String sessionId(){
+        return _sessionState.sessionId();
+    }
     /**获取SESSION状态*/
     @XNote("获取SESSION状态")
-    public abstract Object session(String key);
+    public final Object session(String key){
+        return _sessionState.sessionGet(key);
+    }
     /**设置SESSION状态*/
     @XNote("设置SESSION状态")
-    public abstract void sessionSet(String key, Object val);
+    public final void sessionSet(String key, Object val){
+        _sessionState.sessionSet(key,val);
+    }
 
     //======================
     /**获取输出对象*/
@@ -195,20 +208,20 @@ public abstract class XContext {
 
     /**输出内容*/
     @XNote("输出内容:字符串")
-    public abstract void output(String str) throws IOException;
+    public abstract void output(String str);
     @XNote("输出内容:异常对象")
-    public void output(Exception ex) throws IOException{ output(XUtil.getFullStackTrace(ex)); }
+    public void output(Exception ex) { output(XUtil.getFullStackTrace(ex)); }
     @XNote("输出内容:stream")
-    public abstract void output(InputStream stream) throws IOException;
+    public abstract void output(InputStream stream);
     @XNote("获取输出流")
     public abstract OutputStream outputStream() throws IOException;
     @XNote("输出json")
-    public void outputAsJson(String json) throws IOException{
+    public void outputAsJson(String json) {
         contentType("application/json;charset=utf-8");
         output(json);
     }
     @XNote("输出html")
-    public void outputAsHtml(String html) throws IOException{
+    public void outputAsHtml(String html){
         contentType("text/html;charset=utf-8");
         if(html.startsWith("<") == false) {
             StringBuilder sb = new StringBuilder();
@@ -240,16 +253,16 @@ public abstract class XContext {
 
     /**跳转地址*/
     @XNote("跳转地址")
-    public abstract void redirect(String url) throws IOException;
+    public abstract void redirect(String url);
     @XNote("跳转地址")
-    public abstract void redirect(String url, int code) throws IOException;
+    public abstract void redirect(String url, int code);
 
     /**获取输出状态*/
     @XNote("获取输出状态")
     public abstract int status();
     /**设置输出状态*/
     @XNote("设置输出状态")
-    public abstract void status(int status) throws IOException;
+    public abstract void status(int status);
 
     private Map<String,Object> _attrMap = null;
     private Map<String,Object> attrMap(){//改为懒加载
@@ -283,5 +296,13 @@ public abstract class XContext {
     @XNote("清空自定义特性")
     public void attrClear(){
         attrMap().clear();
+    }
+
+    /**
+     * 渲染数据
+     */
+    @XNote("渲染数据")
+    public void render(Object obj) throws Throwable {
+        XRenderManager.global.render(obj, this);
     }
 }

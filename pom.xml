@@ -51,8 +51,10 @@
         <module>solon.boot.websocket</module>
         <module>solon.boot.undertow</module>
 
-        <module>solon.view.freemarker</module>
         <module>solon.view.fastjson</module>
+        <module>solon.view.snack3</module>
+
+        <module>solon.view.freemarker</module>
         <module>solon.view.jsp</module>
         <module>solon.view.velocity</module>
         <module>solon.view.enjoy</module>

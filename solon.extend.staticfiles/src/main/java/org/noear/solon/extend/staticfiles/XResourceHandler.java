@@ -55,7 +55,7 @@ class XResourceHandler implements XHandler {
             return;
         }
 
-        if(XMethod.GET.equals( context.method()) == false){
+        if(XMethod.GET.name.equals( context.method()) == false){
             return;
         }
 

@@ -1,5 +1,6 @@
 package org.noear.solon;
 
+import org.noear.solon.core.PathAnalyzer;
 import org.noear.solon.core.XMap;
 
 import java.io.*;
@@ -30,36 +31,6 @@ public class XUtil {
         }else{
             return null;
         }
-    }
-
-    /** 编译路由表达式 */
-    public static String expCompile(String path) {
-        //替换特殊符号
-        String p = path;
-
-        p = p.replace(".", "\\.");
-        p = p.replace("$", "\\$");
-
-        //替换中间的**值
-        p = p.replace("**", ".+?");
-
-        //替换*值
-        p = p.replace("*", "[^/]+");
-
-        //替换{x}值
-        if (p.indexOf("{") >= 0) {
-            if(p.indexOf("_}")>0){
-                p = p.replaceAll("\\{[^\\}]+?\\_\\}", "(.+?)");
-            }
-            p = p.replaceAll("\\{[^\\}]+?\\}", "([^/]+?)");//不采用group name,可解决_的问题
-        }
-
-        if (p.startsWith("/") == false) {
-            p = "/" + p;
-        }
-
-        //整合并输出
-        return "^" + p + "$";
     }
 
     /** 根据字符串加载为一个类*/
@@ -113,7 +84,7 @@ public class XUtil {
     }
 
     /** 获取异常的完整内容*/
-    public static String getFullStackTrace(Exception ex){
+    public static String getFullStackTrace(Throwable ex){
         StringWriter sw = new StringWriter();
         ex.printStackTrace(new PrintWriter(sw, true));
         return sw.getBuffer().toString();
@@ -180,7 +151,8 @@ public class XUtil {
             }
 
             if (_pks.size() > 0) {
-                Pattern _pr = Pattern.compile(XUtil.expCompile(expr), Pattern.CASE_INSENSITIVE);
+                PathAnalyzer _pr = new PathAnalyzer(expr);
+                //Pattern _pr = Pattern.compile(XUtil.expCompile(expr), Pattern.CASE_INSENSITIVE);
 
                 pm = _pr.matcher(path2);
                 if (pm.find()) {

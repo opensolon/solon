@@ -34,7 +34,7 @@ public class XNav extends XHandlerAide implements XHandler {
     }
 
     @Override
-    public void handle(XContext c) throws Exception {
+    public void handle(XContext c) throws Throwable {
         XHandler m = _main.get(c.pathAsUpper());
 
         if(m != null) {

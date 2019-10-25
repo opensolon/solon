@@ -10,7 +10,7 @@ public class XHandlerLink implements XHandler {
     public XHandler nextNode;
 
     @Override
-    public void handle(XContext context) throws Exception {
+    public void handle(XContext context) throws Throwable {
         if(node == null || context.getHandled()){
             return;
         }

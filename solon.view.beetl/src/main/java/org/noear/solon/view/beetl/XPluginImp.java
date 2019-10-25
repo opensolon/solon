@@ -3,6 +3,7 @@ package org.noear.solon.view.beetl;
 import org.beetl.core.tag.Tag;
 import org.noear.solon.XApp;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.XRenderManager;
 import org.noear.solon.core.XPlugin;
 
 public class XPluginImp implements XPlugin {
@@ -23,6 +24,6 @@ public class XPluginImp implements XPlugin {
             });
         });
 
-        app.renderSet(render);
+        XRenderManager.register(render);
     }
 }

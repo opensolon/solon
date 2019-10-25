@@ -1,87 +1,65 @@
 package org.noear.solon;
 
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XEndpoint;
-import org.noear.solon.core.XMethod;
+import org.noear.solon.core.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
  * 通用路由器
  * */
-public class XRouter<T> {
-    private final List<XListener<T>> _list = new ArrayList<>();
-
+public class XRouter {
+    private final XListenerList[] _list = {new XListenerList(),new XListenerList(), new XListenerList()};
 
     /** 添加路由关系 */
-    public void add( String path, T handler) {
-        add(path, XEndpoint.main, XMethod.ALL, handler);
+    public void add( String path, XHandler handler) {
+        add(path, XEndpoint.main, XMethod.HTTP, handler);
     }
 
     /** 添加路由关系 */
-    public void add( String path, int type, String method, T handler) {
-        _list.add(new XListener(XUtil.expCompile(path), type, method, handler));
+    public void add( String path, int endpoint, XMethod method, XHandler handler) {
+        add(path, endpoint, method, 0, handler);
+    }
+
+    public void add( String path, int endpoint, XMethod method, int index, XHandler handler) {
+        _list[endpoint].add(new XListener(path, method, index, handler));
     }
 
     /** 清空路由关系 */
     public void clear(){
-        _list.clear();
+        _list[0].clear();
+        _list[1].clear();
+        _list[2].clear();
     }
 
     /** 区配目标（根据上上文） */
-    public T matchOne(XContext context, int type) {
+    public XHandler matchOne(XContext context, int endpoint) {
         String path = context.path();
-        String method = context.method();
+        XMethod method = XMethod.valueOf(context.method());
 
-        for (XListener<T> l : _list) {
-            if (l.matches(type, method, path)) {
-                return l.h;
+        for (XListener l : _list[endpoint]) {
+            if (l.matches(method, path)) {
+                return l.handler;
             }
         }
 
         return null;
     }
 
-    public List<T> matchAll(XContext context, int type) {
+    public List<XHandler> matchAll(XContext context, int endpoint) {
         String path = context.path();
-        String method = context.method();
+        XMethod method = XMethod.valueOf(context.method());
 
-        return _list.stream()
-                .filter(l->l.matches(type, method, path))
-                .map(l->l.h)
+        return _list[endpoint].stream()
+                .filter(l->l.matches(method, path))
+                .sorted(Comparator.comparingInt(l->l.index))
+                .map(l->l.handler)
                 .collect(Collectors.toList());
     }
 
-    //路由监听
-    class XListener<T> {
-        public XListener(String r,  int t, String m, T h) {
-            this.r = Pattern.compile(r, Pattern.CASE_INSENSITIVE);
-            this.t = t;
-            this.m = m;
-            this.h = h;
-        }
+    public static class  XListenerList extends ArrayList<XListener>{
 
-        private int t; //类型
-        private Pattern r; //规则
-        private String m; //方式
-        protected T h;//代理
-
-        protected boolean matches(int t, String m, String p) {
-            if (this.t == t) {
-                if (XMethod.ALL.equals(this.m)) { //不是null时，不能用==
-                    if (XMethod.isAll(m)) {
-                        return r.matcher(p).find();
-                    }
-                } else {
-                    if (m.equals(this.m)) {
-                        return r.matcher(p).find();
-                    }
-                }
-            }
-            return false;
-        }
     }
 }

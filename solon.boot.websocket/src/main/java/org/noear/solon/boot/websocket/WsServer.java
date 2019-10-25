@@ -10,6 +10,7 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
+@SuppressWarnings("unchecked")
 public class WsServer extends WebSocketServer {
     private WsContextHandler _contextHandler;
 

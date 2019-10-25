@@ -10,7 +10,7 @@ public class XPluginImp implements XPlugin {
         int _port = 10000 + app.port();
         long time_start = System.currentTimeMillis();
 
-        WsContextHandler contextHandler = new WsContextHandler(true, app);
+        WsContextHandler contextHandler = new WsContextHandler(app);
 
         System.out.println("oejs.Server:main: WebSocket");
 

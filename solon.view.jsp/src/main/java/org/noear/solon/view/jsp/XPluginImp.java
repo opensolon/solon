@@ -1,6 +1,7 @@
 package org.noear.solon.view.jsp;
 
 import org.noear.solon.XApp;
+import org.noear.solon.core.XRenderManager;
 import org.noear.solon.core.XPlugin;
 
 public class XPluginImp implements XPlugin {
@@ -8,6 +9,6 @@ public class XPluginImp implements XPlugin {
     public void start(XApp app) {
         JspRender render = new JspRender();
 
-        app.renderSet(render);
+        XRenderManager.register(render);
     }
 }

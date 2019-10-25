@@ -10,30 +10,35 @@ import org.noear.solon.core.XRender;
 public class FastjsonRender implements XRender {
 
     @Override
-    public void render(Object obj, XContext ctx) throws Exception {
-        boolean is_rpc = "service".equals(ctx.attr("solon.reader.source",null ));
-
-        if(is_rpc == false){
-            if(obj instanceof String){
-                ctx.output((String) obj);
-                return;
-            }
-
-            if(obj instanceof Exception){
-                throw (Exception) obj;
-            }
-        }
-
+    public void render(Object obj, XContext ctx) throws Throwable {
+        boolean is_serialize = "serialize".equals(ctx.attr("solon.reader.mode", null));
         String txt = null;
-        if (is_rpc) {
+
+        if(is_serialize){
+            //序列化处理
+            //
             txt = JSON.toJSONString(obj,
                     SerializerFeature.BrowserCompatible,
                     SerializerFeature.WriteClassName,
                     SerializerFeature.DisableCircularReferenceDetect);
-        } else {
-            txt = JSON.toJSONString(obj,
-                    SerializerFeature.BrowserCompatible,
-                    SerializerFeature.DisableCircularReferenceDetect);
+        }else{
+            //非序列化处理
+            //
+            if(obj == null){
+                return;
+            }
+
+            if(obj instanceof Throwable){
+                throw (Throwable) obj;
+            }
+
+            if(obj instanceof String){
+                txt = (String)obj;
+            }else{
+                txt = JSON.toJSONString(obj,
+                        SerializerFeature.BrowserCompatible,
+                        SerializerFeature.DisableCircularReferenceDetect);
+            }
         }
 
         ctx.attrSet("output", txt);

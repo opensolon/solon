@@ -20,7 +20,7 @@ final class XPluginJetty implements XPlugin {
             s_handler.setMaxInactiveInterval(s_timeout);
         }
 
-        JtHttpContextHandler _handler = new JtHttpContextHandler(true, app);
+        JtHttpContextHandler _handler = new JtHttpContextHandler( app);
         s_handler.setHandler(_handler);
 
         _server = new Server(app.port());

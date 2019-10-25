@@ -45,7 +45,7 @@ public class UnderServlet extends HttpServlet {
             if(context.getHandled() && context.status() != 404){
               return;
             }
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             ex.printStackTrace();
 
             if( UnderTowConfig.debug) {

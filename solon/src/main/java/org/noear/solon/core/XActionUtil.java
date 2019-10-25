@@ -2,6 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XParam;
+import org.noear.solon.core.utils.TypeUtil;
 
 import java.lang.reflect.*;
 import java.text.SimpleDateFormat;
@@ -25,7 +26,7 @@ class XActionUtil {
         for (Field f : fields) {
             String key = f.getName();
             if (map.containsKey(key)) {
-                Object val = change(f,f.getType(),key, map.get(key), ctx);
+                Object val = TypeUtil.change(f,f.getType(),key, map.get(key), ctx);
                 f.set(obj,val);
             }
         }
@@ -65,7 +66,7 @@ class XActionUtil {
                             }
                         }
                     } else {
-                        args.add(change(p, pt, pn, pv, ctx));
+                        args.add(TypeUtil.change(p, pt, pn, pv, ctx));
                     }
                 }
             }
@@ -83,54 +84,5 @@ class XActionUtil {
                 throw (Exception)ex2;
             }
         }
-    }
-
-    /** 类型转换 */
-    protected static Object change(AnnotatedElement p , Class<?> type, String key, String val, XContext ctx) throws Exception {
-        if (String.class == (type)) {
-            return val;
-        }
-
-        if(val.length()==0){
-            return null;
-        }
-
-        if (Integer.class == (type) || type == Integer.TYPE) {
-            return Integer.parseInt(val);
-        }
-
-        if (Long.class == (type) || type == Long.TYPE) {
-            return Long.parseLong(val);
-        }
-
-        if (Double.class == (type) || type == Double.TYPE) {
-            return Double.parseDouble(val);
-        }
-
-        if (Float.class == (type) || type == Float.TYPE) {
-            return Float.parseFloat(val);
-        }
-
-        if (Boolean.class == (type) || type == Boolean.TYPE) {
-            return Boolean.parseBoolean(val);
-        }
-
-        if(Date.class == (type)) {
-            XParam xd = p.getAnnotation(XParam.class);
-            if (xd != null && XUtil.isEmpty(xd.value()) == false) {
-                SimpleDateFormat fm = new SimpleDateFormat(xd.value());
-                return fm.parse(val);
-            }
-        }
-
-        if(String[].class == (type)){
-            if(ctx == null){
-                return null;
-            }else {
-                return ctx.paramValues(key);
-            }
-        }
-
-        throw new RuntimeException("不支持类型:" + type.getName());
     }
 }

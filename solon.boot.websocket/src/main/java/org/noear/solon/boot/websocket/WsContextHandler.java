@@ -6,9 +6,9 @@ public class WsContextHandler {
     protected XApp xapp;
     protected boolean debug;
 
-    public WsContextHandler(boolean debug, XApp xapp) {
+    public WsContextHandler(XApp xapp) {
         this.xapp = xapp;
-        this.debug = debug;
+        this.debug = xapp.prop().argx().getInt("debug") == 1;
     }
 
     public void handle(WsRequest request, WsResponse response) {
@@ -19,7 +19,7 @@ public class WsContextHandler {
 
             xapp.handle(context);
 
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             ex.printStackTrace();
             ex.printStackTrace(response.getWriter());
             response.setStatus(500);

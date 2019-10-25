@@ -3,12 +3,13 @@ package org.noear.solon.view.velocity;
 import org.apache.velocity.runtime.directive.Directive;
 import org.noear.solon.XApp;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.XRenderManager;
 import org.noear.solon.core.XPlugin;
 
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        VelocityRenderImp render = new VelocityRenderImp();
+        VelocityRender render = new VelocityRender();
 
         Aop.beanOnloaded(() -> {
             Aop.beanForeach((k, v) -> {
@@ -22,6 +23,6 @@ public class XPluginImp implements XPlugin {
             });
         });
 
-        app.renderSet(render);
+        XRenderManager.global.register(render);
     }
 }

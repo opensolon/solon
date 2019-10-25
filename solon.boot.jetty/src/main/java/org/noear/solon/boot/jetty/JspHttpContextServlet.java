@@ -49,7 +49,7 @@ public class JspHttpContextServlet extends HttpServlet {
             if(context.getHandled() && context.status() != 404) {
                 ((Request)request).setHandled(true);
             }
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             ex.printStackTrace();
 
             if(xapp.prop().argx().getInt("debug") == 1) {

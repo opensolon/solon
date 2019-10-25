@@ -3,6 +3,7 @@ package org.noear.solon.view.enjoy;
 import com.jfinal.template.Directive;
 import org.noear.solon.XApp;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.XRenderManager;
 import org.noear.solon.core.XPlugin;
 
 @SuppressWarnings("unchecked")
@@ -25,6 +26,6 @@ public class XPluginImp implements XPlugin {
             });
         });
 
-        app.renderSet(render);
+        XRenderManager.register(render);
     }
 }

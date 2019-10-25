@@ -3,6 +3,7 @@ package org.noear.solon.core;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.*;
+import org.noear.solon.core.utils.TypeUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -22,26 +23,26 @@ public class AopFactory extends AopFactoryBase{
     /** 初始化（独立出 initialize，方便重写） */
     protected void initialize(){
 
-        beanLoaderAdd(XBean.class,(bw,anno)->{
+        beanLoaderAdd(XBean.class,(bw, anno)->{
             if (XPlugin.class.isAssignableFrom(bw.clz())) { //如果是插件，则插入
                 XApp.global().plug(bw.raw());
             } else {
-                Aop.put(anno.value(), bw);
-            }
-        });
+                if(XUtil.isEmpty(anno.value()) == false) {
+                    Aop.put(anno.value(), bw);
+                }
 
-        beanLoaderAdd( XService.class,(bw,anno)->{
-            if (anno.remoting()) {
-                BeanWebWrap bww = new BeanWebWrap(bw);
-                bww.rpcSet(true);
-                bww.load(XApp.global());
-            }
+                if (anno.remoting()) {
+                    BeanWebWrap bww = new BeanWebWrap(bw);
+                    bww.remotingSet(true);
+                    bww.load(XApp.global());
+                }
 
-            Class<?>[] list = bw.clz().getInterfaces();
-            for (Class<?> c : list) {
-                if (c.getName().contains("java.") == false) {
-                    clzMapping.put(c, bw.clz());
-                    beanNotice(c, bw);//通知子类订阅
+                Class<?>[] list = bw.clz().getInterfaces();
+                for (Class<?> c : list) {
+                    if (c.getName().contains("java.") == false) {
+                        clzMapping.put(c, bw.clz());
+                        beanNotice(c, bw);//通知子类订阅
+                    }
                 }
             }
         });
@@ -83,19 +84,25 @@ public class AopFactory extends AopFactoryBase{
 
     //::注入
     /** 为一个对象注入（可以重写） */
-    public void inject(Object obj){
+    public void inject(Object obj) {
         Field[] fields = obj.getClass().getDeclaredFields();
-        for(Field f : fields){
+        for (Field f : fields) {
             XInject xi = f.getAnnotation(XInject.class);
-            if(xi != null){
-                if(XUtil.isEmpty(xi.value())){
-                    Aop.getAsyn(f.getType(), (bw)->{
-                        fieldSet(obj,f, bw.get());
+            if (xi != null) {
+                if (XUtil.isEmpty(xi.value())) {
+                    Aop.getAsyn(f.getType(), (bw) -> {
+                        fieldSet(obj, f, bw.get());
                     });
-                }else{
-                    Aop.getAsyn(xi.value(), (bw)->{
-                        fieldSet(obj,f, bw.get());
-                    });
+                } else {
+                    String val = Aop.prop().get(xi.value());
+                    if (XUtil.isEmpty(val) == false) {
+                        Object val2 = TypeUtil.change(f.getType(), val);
+                        fieldSet(obj, f, val2);
+                    } else {
+                        Aop.getAsyn(xi.value(), (bw) -> {
+                            fieldSet(obj, f, bw.get());
+                        });
+                    }
                 }
             }
         }
@@ -104,6 +111,7 @@ public class AopFactory extends AopFactoryBase{
     /** 设置字段值 */
     protected static void fieldSet(Object obj, Field f, Object  val) {
         try {
+            f.setAccessible(true);
             f.set(obj, val);
         } catch (Exception ex) {
             throw new RuntimeException(ex);

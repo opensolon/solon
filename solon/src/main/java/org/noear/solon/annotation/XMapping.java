@@ -19,5 +19,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface XMapping {
     String value() default "";
-    String method() default XMethod.ALL;
+    XMethod[] method() default {XMethod.HTTP};
+    String produces() default "";
+    int index() default 0;//顺序位
 }

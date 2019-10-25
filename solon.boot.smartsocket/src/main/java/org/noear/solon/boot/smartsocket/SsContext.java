@@ -211,20 +211,6 @@ public class SsContext extends XContext{
         return new XMap(_request.getHeaders());
     }
 
-    @Override
-    public String sessionId() {
-        return null;
-    }
-
-    @Override
-    public Object session(String key){
-        return null;
-    }
-    @Override
-    public void sessionSet(String key, Object val) {
-
-    }
-
     //==============
 
     @Override
@@ -248,21 +234,29 @@ public class SsContext extends XContext{
     }
 
     @Override
-    public void output(String str) throws IOException {
-        _response.getOutputStream().write(str.getBytes(_response.getCharacterEncoding()));
+    public void output(String str)  {
+        try {
+            _response.getOutputStream().write(str.getBytes(_response.getCharacterEncoding()));
+        }catch (Throwable ex){
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
-    public void output(InputStream stream) throws IOException {
-        OutputStream out = _response.getOutputStream();
+    public void output(InputStream stream)  {
+        try {
+            OutputStream out = _response.getOutputStream();
 
-        byte[] buff = new byte[100];
-        int rc = 0;
-        while ((rc = stream.read(buff, 0, 100)) > 0) {
-            out.write(buff, 0, rc);
+            byte[] buff = new byte[100];
+            int rc = 0;
+            while ((rc = stream.read(buff, 0, 100)) > 0) {
+                out.write(buff, 0, rc);
+            }
+
+            out.flush();
+        }catch (Throwable ex){
+            throw new RuntimeException(ex);
         }
-
-        out.flush();
     }
 
     @Override
@@ -292,12 +286,12 @@ public class SsContext extends XContext{
     }
 
     @Override
-    public void redirect(String url) throws IOException {
-        redirect(url,301);
+    public void redirect(String url)  {
+        redirect(url,302);
     }
 
     @Override
-    public void redirect(String url, int code) throws IOException {
+    public void redirect(String url, int code)  {
         headerSet("Location", url);
         _response.setStatus(code);
     }
@@ -308,7 +302,7 @@ public class SsContext extends XContext{
     }
 
     @Override
-    public void status(int status) throws IOException {
+    public void status(int status) {
         _response.setStatus(status);
     }
 }
