@@ -32,7 +32,7 @@ XMapping：映射注解，支持path var。可注解到web bean或XAction或XHan
 XAfter：解发器（后置处理注解）。可注解到web bean或XAction<br/>
 XBefore：解发器（前置处理注解）。可注解到web bean或XAction<br/>
 
-#### 组件说明 <a href="https://search.maven.org/search?q=solon" target='_blank'>maven-central v1.0.2</a>
+#### 组件说明 <a href="https://search.maven.org/search?q=solon" target='_blank'>maven-central v1.0.3</a>
 | 组件 | 说明 |
 | --- | --- |
 | org.noear:solon:1.0.3 | 66k，主框架 |
