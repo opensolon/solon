@@ -7,7 +7,7 @@ import org.noear.solon.core.ModelAndView;
 
 @XSingleton(false)
 @XController
-public class ViewController {
+public class ViewControllerHtm {
     @XMapping("/demo9/view/htm")
     public ModelAndView dock(){
         ModelAndView model = new ModelAndView("dock.htm");

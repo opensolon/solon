@@ -1,13 +1,17 @@
-package webapp.demo2_mvc;
+package webapp.demo3_upload;
 
 import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
+import org.noear.solon.annotation.XParam;
 import org.noear.solon.annotation.XSingleton;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XFile;
+import webapp.models.UserModel;
+
+import java.util.Date;
 
 @XSingleton(false)
-@XMapping("/demo2/upload")
+@XMapping("/demo3/upload")
 @XController
 public class UploadController {
 
