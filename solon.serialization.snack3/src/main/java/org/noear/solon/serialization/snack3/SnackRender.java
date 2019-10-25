@@ -1,4 +1,4 @@
-package org.noear.solon.view.snack3;
+package org.noear.solon.serialization.snack3;
 
 import org.noear.snack.ONode;
 import org.noear.solon.core.XContext;

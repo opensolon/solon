@@ -1,4 +1,4 @@
-package org.noear.solon.view.fastjson;
+package org.noear.solon.serialization.fastjson;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;

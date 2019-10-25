@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.noear</groupId>
-    <artifactId>solon.view.snack3</artifactId>
+    <artifactId>solon.serialization.fastjson</artifactId>
     <version>1.0.3</version>
     <packaging>jar</packaging>
 
@@ -48,14 +48,14 @@
         </dependency>
         
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>snack3</artifactId>
-            <version>3.0.14.3</version>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.29</version>
         </dependency>
     </dependencies>
 
-
     <profiles>
+
         <profile>
             <id>release</id>
             <build>
@@ -156,6 +156,5 @@
                 </executions>
             </plugin>
         </plugins>
-
     </build>
 </project>

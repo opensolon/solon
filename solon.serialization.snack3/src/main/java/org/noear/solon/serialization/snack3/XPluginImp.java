@@ -1,4 +1,4 @@
-package org.noear.solon.view.snack3;
+package org.noear.solon.serialization.snack3;
 
 import org.noear.solon.XApp;
 import org.noear.solon.core.XRenderManager;

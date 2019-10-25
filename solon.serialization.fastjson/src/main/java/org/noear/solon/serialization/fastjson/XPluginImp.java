@@ -1,4 +1,4 @@
-package org.noear.solon.view.fastjson;
+package org.noear.solon.serialization.fastjson;
 
 import org.noear.solon.XApp;
 import org.noear.solon.core.XRenderManager;
