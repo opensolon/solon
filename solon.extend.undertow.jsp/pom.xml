@@ -33,7 +33,7 @@
     </scm>
 
     <properties>
-        <jetty-version>9.4.12.v20180830</jetty-version>
+
     </properties>
 
     <dependencies>

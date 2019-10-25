@@ -30,25 +30,36 @@
             <artifactId>solonclient</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.undertow</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.undertow.jsp</artifactId>
-        </dependency>
-
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.jetty</artifactId>-->
+<!--            <artifactId>solon.boot.jlhttp</artifactId>-->
 <!--        </dependency>-->
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.extend.jetty.jsp</artifactId>-->
+<!--            <artifactId>solon.boot.undertow</artifactId>-->
 <!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.extend.undertow.jsp</artifactId>-->
+<!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.jetty</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.jetty.jsp</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.view.jsp</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
@@ -58,10 +69,6 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.serialization.fastjson</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.view.jsp</artifactId>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
