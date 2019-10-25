@@ -26,11 +26,11 @@
 * 特定web bean注解：需配置-parameters<br/>
 XController（WEB控制者），加注@XMapping的公有函数为XAction<br/>
 XInterceptor（WEB拦截者），加注@XMapping的公有函数为XAction<br/> 
-XService（WEB服务者），所有公有函数为XAction<br/>
+
 * 特定web bean 的附助注解：<br/>
-XMapping：印射注解，支持path var。可注解到web bean或XAction或XHandler<br/>
-XAfter：后置处理注解。可注解到web bean或XAction<br/>
-XBefore：前置处理注解。可注解到web bean或XAction<br/>
+XMapping：映射注解，支持path var。可注解到web bean或XAction或XHandler<br/>
+XAfter：解发器（后置处理注解）。可注解到web bean或XAction<br/>
+XBefore：解发器（前置处理注解）。可注解到web bean或XAction<br/>
 
 #### 组件说明 <a href="https://search.maven.org/search?q=solon" target='_blank'>maven-central v1.0.2</a>
 | 组件 | 说明 |
@@ -133,7 +133,7 @@ public interface DemoRpc{
 
 // - server
 @XMapping("/demo/*")
-@XService(remoting = true)
+@XB(remoting = true)
 public class DemoService implements DemoRpc{
     public void setName(Integer user_id,String name){
         
