@@ -3,7 +3,7 @@
 
 # solon for java
 
-### 插件式微型Web框架(主框架50kb，根据需求组合不同的插件或扩展；支持jdk8)
+### 插件式微型Web框架(主框架66kb，根据需求组合不同的插件或扩展；支持jdk8)
 
 #### 框架实现效果
 * 1.实现boot（*类似spring boot）
@@ -35,22 +35,23 @@ XBefore：前置处理注解。可注解到web bean或XAction<br/>
 #### 组件说明 <a href="https://search.maven.org/search?q=solon" target='_blank'>maven-central v1.0.2</a>
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon:1.0.2.13 | 50k，主框架 |
-| org.noear:solon.boot.jlhttp:1.0.2.4 | 58k，boot插件,对jlhttp适配（不支持session） |
-| org.noear:solon.boot.jetty:1.0.2.5 | 1.5m，boot插件,对jetty适配 |
+| org.noear:solon:1.0.3 | 66k，主框架 |
+| org.noear:solon.boot.jlhttp:1.0.3 | 58k，boot插件,对jlhttp适配（不支持session） |
+| org.noear:solon.boot.jetty:1.0.3 | 1.5m，boot插件,对jetty适配 |
 | org.noear:solon.boot.smartsocket | *.*m，boot插件,提供socket服务(未提交仓库) |
 | org.noear:solon.boot.websocket | *.*m，boot插件,提供websocket服务(未提交仓库) |
-| org.noear:solon.boot.undertow:1.0.2.1 | 3.7m，boot插件,对undertow适配 |
-| org.noear:solon.extend.jetty.jsp:1.0.2.1 | 6m，扩展插件,为jetty添加jsp支持（不建议使用jsp） |
-| org.noear:solon.extend.undertow.jsp:1.0.2.1 | 5.6m，扩展插件,为undertow添加jsp支持（不建议使用jsp） |
-| org.noear:solon.extend.staticfiles:1.0.2.1 | 8k，扩展插件,添加静态文件支持 |
-| org.noear:solon.view.fastjson:1.0.2.3 | 0.5m，视图插件，对 fastjson 适配，输出json视图 |
-| org.noear:solon.view.freemarker:1.0.2.1 | 2.0m，视图插件，对 fastjson 和 freemarker 适配，输出json或html |
-| org.noear:solon.view.jsp:1.0.2.1 | 0.5m，视图插件，对 fastjson 和 jsp 适配，输出json或html |
-| org.noear:solon.view.velocity:1.0.2.1 | 1.4m，视图插件，对 fastjson 和 velocity 适配，输出json或html |
-| org.noear:solon.view.beetl:1.0.2.3 | 1.3m，视图插件，对 fastjson 和 beetl 适配，输出json或html |
-| org.noear:solon.view.enjoy:1.0.2.1 | 0.7m，视图插件，对 fastjson 和 enjoy 适配，输出json或html |
-| org.noear:solonclient:1.0.2.3 | 11k，rpc client 框架，与solon 的 rpc service 配对 |
+| org.noear:solon.boot.undertow:1.0.3 | 3.7m，boot插件,对undertow适配 |
+| org.noear:solon.extend.jetty.jsp:1.0.3 | 6m，扩展插件,为jetty添加jsp支持（不建议使用jsp） |
+| org.noear:solon.extend.undertow.jsp:1.0.3 | 5.6m，扩展插件,为undertow添加jsp支持（不建议使用jsp） |
+| org.noear:solon.extend.staticfiles:1.0.3 | 8k，扩展插件,添加静态文件支持 |
+| org.noear:solon.serialization.fastjson:1.0.3 | 0.5m，视图插件，对 fastjson 适配，输出json视图 或 序列化输出 |
+| org.noear:solon.serialization.snack3:1.0.3 | 61kb，视图插件，对 snack3 适配，输出json视图 或 序列化输出 |
+| org.noear:solon.view.freemarker:1.0.3 | 2.0m，视图插件，对 freemarker 适配，输出html |
+| org.noear:solon.view.jsp:1.0.3 | 0.5m，视图插件，对 jsp 适配，输出html |
+| org.noear:solon.view.velocity:1.0.3 | 1.4m，视图插件，对 velocity 适配，输出html |
+| org.noear:solon.view.beetl:1.0.3 | 1.3m，视图插件，对 beetl 适配，输出html |
+| org.noear:solon.view.enjoy:1.0.3 | 0.7m，视图插件，对 enjoy 适配，输出html |
+| org.noear:solonclient:1.0.3 | 11k，rpc client 框架，与solon 的 rpc service 配对 |
 
 #### 简单示例
 * 微框架示例
@@ -58,13 +59,13 @@ XBefore：前置处理注解。可注解到web bean或XAction<br/>
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon</artifactId>
-  <version>1.0.2.13</version>
+  <version>1.0.3</version>
 </dependency>
 
 <dependency>
   <groupId>org.noear</groupId>
-  <artifactId>solon.boot.jlhttp</artifactId><!-- 可以换成：.jetty 或自己定义个插件 -->
-  <version>1.0.2.4</version>
+  <artifactId>solon.boot.jlhttp</artifactId><!-- 可以换成：.jetty 或 .undertow 或自己定义个插件 -->
+  <version>1.0.3</version>
 </dependency>
 ```
 ```java
@@ -80,19 +81,19 @@ public class App{
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon</artifactId>
-  <version>1.0.2.13</version>
+  <version>1.0.3</version>
 </dependency>
 
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon.boot.jlhttp</artifactId> <!-- 可以换成：.jetty 或自己定义个插件 -->
-  <version>1.0.2.4</version>
+  <version>1.0.3</version>
 </dependency>
 
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon.view.freemarker</artifactId> <!-- 可以换成：.velocity 或 .jsp 或自己定义个插件 -->
-  <version>1.0.2.1</version>
+  <version>1.0.3</version>
 </dependency>
 ```
 ```
