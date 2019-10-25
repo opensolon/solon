@@ -4,6 +4,7 @@ import org.noear.solon.annotation.XMapping;
 import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XSingleton;
 import org.noear.solon.core.XContext;
+import org.noear.solon.core.XMethod;
 
 @XSingleton(false)
 @XMapping("/demo2/mapping")
@@ -12,6 +13,17 @@ public class MappingController {
     //支持与父XMapping叠国路径
     @XMapping("a")
     public String test_a(XContext context) {
+        return context.path();
+    }
+
+    @XMapping(value = "post", method = {XMethod.POST})
+    public String test_post(XContext context) {
+        return context.path();
+    }
+
+
+    @XMapping(value = "post_get", method = {XMethod.POST, XMethod.GET})
+    public String test_post_get(XContext context) {
         return context.path();
     }
 

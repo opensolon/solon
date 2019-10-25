@@ -1,13 +1,12 @@
 package webapp.demo5_rpc.rpc_provider;
 
+import org.noear.solon.annotation.XBean;
 import org.noear.solon.annotation.XMapping;
-import org.noear.solon.annotation.XController;
-import org.noear.solon.annotation.XService;
 import org.noear.solon.core.XContext;
 import webapp.demo5_rpc.rockapi;
 
 @XMapping("/demo5/test")
-@XService(remoting = true)
+@XBean(remoting = true)
 public class rockservice implements rockapi {
 
     public Object test1(Integer a){

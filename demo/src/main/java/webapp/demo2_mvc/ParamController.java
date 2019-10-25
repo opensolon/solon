@@ -29,13 +29,13 @@ public class ParamController {
 
     //支持字符串数组参数（暂时只支持字符串数据）
     @XMapping("f")
-    public String[] test_f(XContext context, String[] names) throws Exception{
-        return names;
+    public String[] test_f(XContext context, String[] aaa, String ccc) throws Exception{
+        return aaa;
     }
 
     //支持上传文件参数
     @XMapping("g")
-    public String test_g(XContext context, XFile file) throws Exception{
+    public String test_g(XContext context,  String title, XFile file,  String label) throws Exception{
         return context.path();
     }
     

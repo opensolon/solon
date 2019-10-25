@@ -6,11 +6,10 @@ public class App {
     public static void main(String[] args) {
         XApp app = XApp.start(App.class, args);
 
-        //手动添加一个路由监听demo
-        app.get("/test", (c) -> c.output(c.path()));
+
     }
 
-    private static void main2(String[] args){
+    private static void demo(String[] args){
 
         //重写式扩展
 //        Aop.factorySet(new AopFactory(){

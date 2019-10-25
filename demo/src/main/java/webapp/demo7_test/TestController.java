@@ -6,7 +6,7 @@ import org.noear.solon.core.XContext;
 
 @XController
 public class TestController {
-    @XMapping("/test")
+    @XMapping("/demo7/test")
     public void test(XContext c) throws Exception{
         c.output(c.path());
     }

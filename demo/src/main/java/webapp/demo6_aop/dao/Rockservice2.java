@@ -1,10 +1,9 @@
 package webapp.demo6_aop.dao;
 
 import org.noear.solon.annotation.XBean;
-import org.noear.solon.annotation.XService;
 import org.noear.solon.core.XContext;
 
-@XService
+@XBean
 public class Rockservice2 implements Rockapi {
 
     public String test1(Integer a){

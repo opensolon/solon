@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.noear</groupId>
-    <artifactId>solon.boot.undertow</artifactId>
+    <artifactId>solon.boot.tomcat</artifactId>
     <version>1.0.3</version>
     <packaging>jar</packaging>
 
@@ -32,72 +32,38 @@
         <url>https://github.com/noear/solon</url>
     </scm>
 
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <undertow-version>2.0.1.Final</undertow-version>
-        <version.org.jboss.logging.jboss-logging>3.3.1.Final</version.org.jboss.logging.jboss-logging>
-        <version.org.jboss.logging.jboss-logging-tools>2.1.0.Final</version.org.jboss.logging.jboss-logging-tools>
-        <version.org.jboss.logmanager>2.0.7.Final</version.org.jboss.logmanager>
-        <version.org.glassfish.javax.el>3.0.1-b08</version.org.glassfish.javax.el>
-        <version.org.jboss.spec.javax.servlet.jboss-servlet-api_3.1_spec>1.0.1.Final</version.org.jboss.spec.javax.servlet.jboss-servlet-api_3.1_spec>
-        <version.org.jboss.spec.javax.servlet.jsp.jboss-jsp-api_2.3_spec>1.0.2.Final</version.org.jboss.spec.javax.servlet.jsp.jboss-jsp-api_2.3_spec>
-        <version.org.eclipse.jdt.core.compiler.ecj>4.6.1</version.org.eclipse.jdt.core.compiler.ecj>
-        <version.io.undertow>1.4.20.Final</version.io.undertow>
-        <version.org.apache.httpcomponents>4.5.3</version.org.apache.httpcomponents>
-        <version.junit>4.12</version.junit>
+        <tomcat.version>8.5.23</tomcat.version>
     </properties>
 
-
     <dependencies>
-       <dependency>
+        <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
-           <version>1.0.3</version>
+            <version>1.0.3</version>
             <scope>provided</scope>
         </dependency>
 
         <!-- server core begin -->
-       <dependency>
-            <groupId>io.undertow</groupId>
-            <artifactId>undertow-core</artifactId>
-            <version>${undertow-version}</version>
-        </dependency>
         <dependency>
-            <groupId>io.undertow</groupId>
-            <artifactId>undertow-servlet</artifactId>
-            <version>${undertow-version}</version>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>${tomcat.version}</version>
         </dependency>
         <!-- server core end -->
 
-        <!--jsp try start-->
+        <!--jsp started-->
         <dependency>
-            <groupId>io.undertow.jastow</groupId>
-            <artifactId>jastow</artifactId>
-            <version>2.0.4.Final</version>
-            <!--不排除这两依赖maven会根据引用顺序采用依赖-->
-            <exclusions>
-                <exclusion>
-                    <groupId>io.undertow</groupId>
-                    <artifactId>undertow-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>io.undertow</groupId>
-                    <artifactId>undertow-servlet</artifactId>
-                </exclusion>
-            </exclusions>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.undertow</groupId>
-            <artifactId>undertow-jsp</artifactId>
-            <version>1.0.0.Beta27</version>
-            <scope>provided</scope>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <version>${tomcat.version}</version>
+          <!--  <scope>provided</scope>-->
         </dependency>
 
-        <!--jsp try end-->
+        <!--jsp ended -->
     </dependencies>
 
     <profiles>
@@ -202,4 +168,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

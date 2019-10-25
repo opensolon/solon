@@ -22,13 +22,16 @@
 
     <modules>
         <module>demo</module>
-        
+
+        <module>solon-parent</module>
+
         <module>solon</module>
         <module>solon.boot.jetty</module>
         <module>solon.boot.jlhttp</module>
         <module>solon.boot.smartsocket</module>
         <module>solon.boot.websocket</module>
         <module>solon.boot.undertow</module>
+        <module>solon.boot.tomcat</module>
 
         <module>solon.serialization.fastjson</module>
         <module>solon.serialization.snack3</module>
