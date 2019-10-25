@@ -11,7 +11,7 @@
 * 3.实现mvc（*类似spring mvc）
 * 4.实现rpc（*类似dobbo）
 * 5.实现微服务架构（结合water治理平台）//此项目不涉及
-* 6.很强的可定制性（最近用solon搞了示例：https://github.com/noear/jWitter ）
+* 6.很强的可定制性（最近用solon搞了嵌入式FaaS引擎：https://github.com/noear/solonjt ）
 #### 主要组成
 * 1.XApp，管理总线，所有内容都交汇于此
 * 2.XPlugin，通用插件接口
@@ -88,6 +88,12 @@ public class App{
   <groupId>org.noear</groupId>
   <artifactId>solon.boot.jlhttp</artifactId> <!-- 可以换成：.jetty 或自己定义个插件 -->
   <version>1.0.3</version>
+</dependency>
+
+<dependency>
+    <groupId>org.noear</groupId>
+    <artifactId>solon.serialization.fastjson</artifactId>
+    <version>1.0.3</version>
 </dependency>
 
 <dependency>
