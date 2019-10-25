@@ -41,8 +41,7 @@
         <solon.boot.jetty.ver>1.0.3</solon.boot.jetty.ver>
         <solon.boot.jlhttp.ver>1.0.3</solon.boot.jlhttp.ver>
 
-        <solon.extend.staticfiles.ver>1.03</solon.extend.staticfiles.ver>
-
+        <solon.extend.staticfiles.ver>1.0.3</solon.extend.staticfiles.ver>
         <solon.extend.jetty.jsp.ver>1.0.3</solon.extend.jetty.jsp.ver>
         <solon.extend.undertow.jsp.ver>1.0.3</solon.extend.undertow.jsp.ver>
 
@@ -59,6 +58,7 @@
 
         <weed3.ver>3.2.1.4</weed3.ver>
         <snack3.ver>3.0.14.4</snack3.ver>
+        <fastjson.ver>1.2.29</fastjson.ver>
     </properties>
 
     <dependencyManagement>
@@ -147,6 +147,12 @@
                 <groupId>org.noear</groupId>
                 <artifactId>snack3</artifactId>
                 <version>${snack3.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.ver}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
