@@ -56,6 +56,9 @@
         <solon.view.beetl.ver>1.0.3</solon.view.beetl.ver>
 
         <solonclient.ver>1.0.3</solonclient.ver>
+
+        <weed3.ver>3.2.1.4</weed3.ver>
+        <snack3.ver>3.0.14.4</snack3.ver>
     </properties>
 
     <dependencyManagement>
@@ -131,6 +134,19 @@
                 <groupId>org.noear</groupId>
                 <artifactId>solonclient</artifactId>
                 <version>${solonclient.ver}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>weed3</artifactId>
+                <version>${weed3.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>snack3</artifactId>
+                <version>${snack3.ver}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
