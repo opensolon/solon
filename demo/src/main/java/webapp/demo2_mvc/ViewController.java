@@ -16,4 +16,13 @@ public class ViewController {
 
         return model;
     }
+
+    @XMapping("/demo2/json")
+    public ModelAndView dock2(){
+        ModelAndView model = new ModelAndView();
+        model.put("title","dock");
+        model.put("msg","你好 world! in XController");
+
+        return model;
+    }
 }
