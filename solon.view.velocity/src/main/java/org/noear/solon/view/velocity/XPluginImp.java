@@ -23,6 +23,7 @@ public class XPluginImp implements XPlugin {
             });
         });
 
-        XRenderManager.global.register(render);
+        XRenderManager.register(render);
+        XRenderManager.mapping(".vm",render);
     }
 }
