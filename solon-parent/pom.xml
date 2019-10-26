@@ -37,7 +37,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.0.3.4</solon.ver>
+        <solon.ver>1.0.3.5</solon.ver>
         <solon.boot.jetty.ver>1.0.3</solon.boot.jetty.ver>
         <solon.boot.jlhttp.ver>1.0.3</solon.boot.jlhttp.ver>
         <solon.boot.undertow.ver>1.0.3</solon.boot.undertow.ver>
