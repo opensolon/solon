@@ -51,6 +51,7 @@
 
         <solon.serialization.fastjson.ver>1.0.3</solon.serialization.fastjson.ver>
         <solon.serialization.snack3.ver>1.0.3</solon.serialization.snack3.ver>
+        <solon.serialization.jackson.ver>1.0.3</solon.serialization.jackson.ver>
 
         <solon.view.freemarker.ver>1.0.3.4</solon.view.freemarker.ver>
         <solon.view.jsp.ver>1.0.3.4</solon.view.jsp.ver>
@@ -130,6 +131,11 @@
                 <groupId>org.noear</groupId>
                 <artifactId>solon.serialization.snack3</artifactId>
                 <version>${solon.serialization.snack3.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.serialization.jackson</artifactId>
+                <version>${solon.serialization.jackson.ver}</version>
             </dependency>
 
 
