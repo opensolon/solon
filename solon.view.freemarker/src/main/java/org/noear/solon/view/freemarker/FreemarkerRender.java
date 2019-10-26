@@ -4,6 +4,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.core.Aop;
 import org.noear.solon.core.XRender;
 import org.noear.solon.core.ModelAndView;
 import org.noear.solon.core.XContext;
@@ -26,27 +27,10 @@ public class FreemarkerRender implements XRender {
         }
 
 
-        if (XApp.global().prop().argx().getInt("debug") == 0) {
-            initForRuntime();
+        if (Aop.prop().argx().getInt("debug") == 0) {
+            forRelease();
         }else {
-            //添加调试模式
-            String dirroot = XUtil.getResource("/").toString().replace("target/classes/", "");
-            String dir_str = dirroot + "src/main/resources"+_baseUri;
-            File dir = new File(URI.create(dir_str));
-            if (!dir.exists()) {
-                dir_str = dirroot + "src/main/webapp"+_baseUri;
-                dir = new File(URI.create(dir_str));
-            }
-
-            try {
-                if (dir.exists()) {
-                    cfg.setDirectoryForTemplateLoading(dir);
-                }else{
-                    initForRuntime();
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            forDebug();
         }
 
         cfg.setNumberFormat("#");
@@ -57,7 +41,31 @@ public class FreemarkerRender implements XRender {
         });
     }
 
-    private void initForRuntime(){
+    //尝试 调试模式 进行实始化
+    private void forDebug(){
+        String dirroot = XUtil.getResource("/").toString().replace("target/classes/", "");
+        String dir_str = dirroot + "src/main/resources"+_baseUri;
+        File dir = new File(URI.create(dir_str));
+        if (!dir.exists()) {
+            dir_str = dirroot + "src/main/webapp"+_baseUri;
+            dir = new File(URI.create(dir_str));
+        }
+
+        try {
+            if (dir.exists()) {
+                cfg.setDirectoryForTemplateLoading(dir);
+            }else{
+                //如果没有找到文件，则使用发行模式
+                //
+                forRelease();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    //使用 发布模式 进行实始化
+    private void forRelease(){
         try {
             cfg.setClassForTemplateLoading(this.getClass(), _baseUri);
         } catch (Exception ex) {
