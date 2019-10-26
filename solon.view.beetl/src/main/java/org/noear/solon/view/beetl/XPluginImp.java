@@ -10,11 +10,11 @@ public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
 
-        BeetlRender render = new BeetlRender();
+        BeetlRender render =  BeetlRender.global();
 
         Aop.beanOnloaded(() -> {
             Aop.beanForeach((k, v) -> {
-                if (k.startsWith("btl:")) {
+                if (k.startsWith("beetl:")) {
                     if(Tag.class.isAssignableFrom(v.clz())) {
                         render.registerTag(k.split(":")[1], v.clz());
                     }else{

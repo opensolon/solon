@@ -16,6 +16,18 @@ import java.io.PrintWriter;
 import java.net.URI;
 
 public class EnjoyRender implements XRender {
+
+    private static EnjoyRender _global;
+    public static EnjoyRender global(){
+        if(_global==null){
+            _global = new EnjoyRender();
+        }
+
+        return _global;
+    }
+
+
+
     Engine engine = Engine.use();
 
     private String _baseUri ="/WEB-INF/view/";

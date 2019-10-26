@@ -39,6 +39,8 @@
         <module>solon.view.freemarker</module>
         <module>solon.view.jsp</module>
         <module>solon.view.velocity</module>
+        <module>solon.view.thymeleaf</module>
+
         <module>solon.view.enjoy</module>
         <module>solon.view.beetl</module>
 

@@ -11,11 +11,11 @@ public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
 
-        EnjoyRender render = new EnjoyRender();
+        EnjoyRender render =  EnjoyRender.global();
 
         Aop.beanOnloaded(() -> {
             Aop.beanForeach((k, v) -> {
-                if (k.startsWith("em:")) {
+                if (k.startsWith("enjoy:")) {
                     if(Directive.class.isAssignableFrom(v.clz())){
                         render.addDirective(k.split(":")[1], (Class<? extends Directive>)v.clz());
                     }else{

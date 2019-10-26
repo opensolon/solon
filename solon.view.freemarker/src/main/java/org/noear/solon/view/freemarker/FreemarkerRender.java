@@ -14,6 +14,17 @@ import java.io.PrintWriter;
 import java.net.URI;
 
 public class FreemarkerRender implements XRender {
+    private static FreemarkerRender _global;
+    public static FreemarkerRender global(){
+        if(_global==null){
+            _global = new FreemarkerRender();
+        }
+
+        return _global;
+    }
+
+
+
     Configuration cfg = new Configuration(Configuration.VERSION_2_3_28);
 
     private String _baseUri ="/WEB-INF/view/";

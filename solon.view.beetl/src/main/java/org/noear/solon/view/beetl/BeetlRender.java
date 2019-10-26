@@ -15,6 +15,19 @@ import java.io.File;
 import java.net.URI;
 
 public class BeetlRender implements XRender {
+
+    private static BeetlRender _global;
+    public static BeetlRender global(){
+        if(_global==null){
+            _global = new BeetlRender();
+        }
+
+        return _global;
+    }
+
+
+
+
     Configuration cfg = null;
     GroupTemplate gt  = null;
 

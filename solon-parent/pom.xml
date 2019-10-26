@@ -55,6 +55,7 @@
         <solon.view.freemarker.ver>1.0.3.4</solon.view.freemarker.ver>
         <solon.view.jsp.ver>1.0.3.4</solon.view.jsp.ver>
         <solon.view.velocity.ver>1.0.3.4</solon.view.velocity.ver>
+        <solon.view.thymeleaf.ver>1.0.3.1</solon.view.thymeleaf.ver>
 
         <solon.view.enjoy.ver>1.0.3.1</solon.view.enjoy.ver>
         <solon.view.beetl.ver>1.0.3.1</solon.view.beetl.ver>
@@ -146,6 +147,11 @@
                 <groupId>org.noear</groupId>
                 <artifactId>solon.view.velocity</artifactId>
                 <version>${solon.view.velocity.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.view.thymeleaf</artifactId>
+                <version>${solon.view.thymeleaf.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>

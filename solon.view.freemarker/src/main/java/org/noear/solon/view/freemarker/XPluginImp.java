@@ -9,7 +9,7 @@ public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
 
-        FreemarkerRender render = new FreemarkerRender();
+        FreemarkerRender render = FreemarkerRender.global();
 
         Aop.beanOnloaded(() -> {
             Aop.beanForeach((k, v) -> {
@@ -20,6 +20,6 @@ public class XPluginImp implements XPlugin {
         });
 
         XRenderManager.register(render);
-        XRenderManager.mapping(".ftl",render);
+        XRenderManager.mapping(".ftl", render);
     }
 }
