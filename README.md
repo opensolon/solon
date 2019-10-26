@@ -38,8 +38,8 @@ XBefore：解发器（前置处理注解）。可注解到web bean或XAction<br/
 
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon-parent:1.0.3.2 | 框架版本管理 |
-| org.noear:solon:1.0.3.2 | 66k，主框架 |
+| org.noear:solon-parent:1.0.3.3 | 框架版本管理 |
+| org.noear:solon:1.0.3.3 | 66k，主框架 |
 
 ##### 插件
 
@@ -56,6 +56,10 @@ XBefore：解发器（前置处理注解）。可注解到web bean或XAction<br/
 | 静态文件支持插件 | 说明 |
 | --- | --- |
 | org.noear:solon.extend.staticfiles:1.0.3 | 8k，扩展插件,添加静态文件支持 |
+
+| 分布式Session支持插件 | 说明 |
+| --- | --- |
+| org.noear:solon.extend.redissessionstate:1.0.3 | 18k，扩展插件,添加分布式session支持（1.其于redis构建；2.仍通过ctx上的接口使用） |
 
 | 序列化插件 | 说明 |
 | --- | --- |
