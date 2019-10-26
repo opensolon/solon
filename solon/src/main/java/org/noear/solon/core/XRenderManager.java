@@ -49,7 +49,7 @@ public class XRenderManager implements XRender {
         //suffix=.ftl
         _mapping.put(suffix, render);
 
-        PrintUtil.blueln("solon:: view load:"+ render.getClass().getSimpleName());
+        PrintUtil.blueln("solon:: view mapping: " + suffix + "=" + render.getClass().getSimpleName());
     }
 
     /**
@@ -66,6 +66,8 @@ public class XRenderManager implements XRender {
         }
 
         _mapping.put(suffix, render);
+
+        PrintUtil.blueln("solon:: view mapping: " + suffix + "=" +className);
     }
 
     /**
