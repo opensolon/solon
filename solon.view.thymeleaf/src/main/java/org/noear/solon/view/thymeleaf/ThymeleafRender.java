@@ -20,6 +20,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ThymeleafRender implements XRender {
+    private static ThymeleafRender _global;
+    public static ThymeleafRender global(){
+        if(_global==null){
+            _global = new ThymeleafRender();
+        }
+
+        return _global;
+    }
+
+
+
     private TemplateEngine _engine = new TemplateEngine();
 
     private Map<String,Object> _sharedVariable = new HashMap<>();
