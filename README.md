@@ -77,16 +77,20 @@ XBefore：解发器（前置处理注解）。可注解到web bean或XAction<br/
 #### 简单示例
 * 微框架示例
 ```xml
+<parent>
+    <groupId>org.noear</groupId>
+    <artifactId>solon-parent</artifactId>
+    <version>1.0.3</version>
+</parent>
+
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon</artifactId>
-  <version>1.0.3</version>
 </dependency>
 
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon.boot.jlhttp</artifactId><!-- 可以换成：.jetty 或 .undertow 或自己定义个插件 -->
-  <version>1.0.3</version>
 </dependency>
 ```
 ```java
@@ -99,28 +103,30 @@ public class App{
 ```
 * Web 示例（aop,mvc,rpc）
 ```xml
+<parent>
+    <groupId>org.noear</groupId>
+    <artifactId>solon-parent</artifactId>
+    <version>1.0.3</version>
+</parent>
+
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon</artifactId>
-  <version>1.0.3</version>
 </dependency>
 
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon.boot.jlhttp</artifactId> <!-- 可以换成：.jetty 或自己定义个插件 -->
-  <version>1.0.3</version>
 </dependency>
 
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>solon.serialization.fastjson</artifactId>
-    <version>1.0.3</version>
 </dependency>
 
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon.view.freemarker</artifactId> <!-- 可以换成：.velocity 或 .jsp 或自己定义个插件 -->
-  <version>1.0.3</version>
 </dependency>
 ```
 ```
