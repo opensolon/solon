@@ -17,5 +17,7 @@ public class XPluginImp implements XPlugin {
         app.before("*", XMethod.HTTP,(c)->{
             sessionState.updateSessionID();
         });
+
+        System.out.println("solon:: Redis session state is loaded");
     }
 }

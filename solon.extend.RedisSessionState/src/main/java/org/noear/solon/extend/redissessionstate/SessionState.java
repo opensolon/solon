@@ -1,6 +1,8 @@
 package org.noear.solon.extend.redissessionstate;
 
 import org.noear.snack.ONode;
+import org.noear.snack.core.Constants;
+import org.noear.snack.core.Feature;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XContext;
@@ -11,7 +13,7 @@ import org.noear.solon.extend.redissessionstate.util.IDUtil;
 import org.noear.solon.extend.redissessionstate.util.RedisX;
 
 public class SessionState implements XSessionState {
-    public final static String SESSIONID_KEY = "solon.id";
+    public final static String SESSIONID_KEY = "SOLONID";
     public final static String SESSIONID_MD5(){return SESSIONID_KEY+"2";}
     public final static String SESSIONID_encrypt = "&L8e!@T0";
 
@@ -19,7 +21,7 @@ public class SessionState implements XSessionState {
     public SessionState(){
         XMap map = Aop.prop().getXmap("solon.session.state.redis");
 
-        if(map.size() < 5){
+        if(map.size() < 4){
             throw new RuntimeException("Error configuration: solon.session.state.redis");
         }
 
@@ -28,10 +30,10 @@ public class SessionState implements XSessionState {
 
         redisX = new RedisX(
                 map.get("server"),
-                map.get("user"),
                 map.get("password"),
                 map.getInt("db"),
                 map.getInt("maxTotaol"));
+
     }
 
     //
@@ -44,12 +46,11 @@ public class SessionState implements XSessionState {
         return XContext.current().cookie(key);
     }
     public  void   cookieSet(String key, String val) {
-        if(XUtil.isEmpty(_domain)){
-            XContext.current().cookieSet(key, val,  _expiry);
-        }else{
-            XContext.current().cookieSet(key, val, _domain, _expiry);
+        if (XUtil.isEmpty(_domain)) {
+            _domain = XContext.current().uri().getHost();
         }
 
+        XContext.current().cookieSet(key, val, _domain, _expiry);
     }
 
     protected void updateSessionID() {
@@ -66,6 +67,13 @@ public class SessionState implements XSessionState {
     //
     // session control
     //
+
+
+    @Override
+    public boolean replaceable() {
+        return false;
+    }
+
     @Override
     public String sessionId() {
         String skey = cookieGet(SESSIONID_KEY);
@@ -93,7 +101,7 @@ public class SessionState implements XSessionState {
 
         Object val = null;
         try {
-            val = ONode.deserialize(tmp, Object.class);
+            val = ONode.deserialize(tmp, Object.class, serialize_cum);
         }catch (Exception ex){
             throw new RuntimeException("Session state deserialization error: "+ key);
         }
@@ -105,7 +113,7 @@ public class SessionState implements XSessionState {
     public void sessionSet(String key, Object val) {
         String tmp = null;
         try {
-            tmp = ONode.serialize(val);
+            tmp = ONode.serialize(val, serialize_cum);
         }catch (Exception ex){
             throw new RuntimeException("Session state serialization error: "+ key);
         }
@@ -114,4 +122,9 @@ public class SessionState implements XSessionState {
 
         redisX.open0((ru)->ru.key(sessionId()).expire(_expiry).hashSet(key,json));
     }
+
+    public static final Constants serialize_cum = Constants.of(
+            Feature.WriteClassName).build(c-> {
+        c.null_string = null;
+    });
 }

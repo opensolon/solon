@@ -12,11 +12,11 @@ public class RedisX {
     private JedisPool _jedisPool;
     private static final Object lock = "";
 
-    public RedisX(String server, String user, String password, int db, int maxTotaol) {
-        doinit(server, user, password, db, maxTotaol);
+    public RedisX(String server, String password, int db, int maxTotaol) {
+        doinit(server, password, db, maxTotaol);
     }
 
-    private void doinit(String server, String user, String password, int db, int maxTotaol) {
+    private void doinit(String server, String password, int db, int maxTotaol) {
         JedisPoolConfig config = new JedisPoolConfig();
 
         int maxIdle = maxTotaol / 5;
