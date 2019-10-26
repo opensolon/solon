@@ -40,7 +40,7 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon-parent:1.0.3.4 | 框架版本管理 |
+| org.noear:solon-parent:1.0.3.5 | 框架版本管理 |
 | org.noear:solon:1.0.3.4 | 66k，主框架 |
 
 ##### 插件
@@ -67,6 +67,7 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 | --- | --- |
 | org.noear:solon.serialization.fastjson:1.0.3 | 0.5m，视图插件，对 fastjson 适配，输出json视图 或 序列化输出 |
 | org.noear:solon.serialization.snack3:1.0.3 | 61kb，视图插件，对 snack3 适配，输出json视图 或 序列化输出 |
+| org.noear:solon.serialization.jackson:1.0.3 | 1.7m，视图插件，对 jackson 适配，输出json视图 或 序列化输出 |
 
 | 视图插件 | 说明（可置多个视图插件） |
 | --- | --- |
@@ -87,7 +88,7 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.4</version>
+    <version>1.0.3.5</version>
 </parent>
 
 <dependency>
@@ -113,7 +114,7 @@ public class App{
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.4</version>
+    <version>1.0.3.5</version>
 </parent>
 
 <dependency>
