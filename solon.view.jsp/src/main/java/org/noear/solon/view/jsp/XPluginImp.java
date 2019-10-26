@@ -17,5 +17,6 @@ public class XPluginImp implements XPlugin {
         JspRender render = new JspRender();
 
         XRenderManager.register(render);
+        XRenderManager.mapping(".jsp",render);
     }
 }
