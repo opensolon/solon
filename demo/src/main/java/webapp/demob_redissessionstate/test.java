@@ -1,6 +1,5 @@
 package webapp.demob_redissessionstate;
 
-import org.noear.snack.ONode;
 import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.XContext;
@@ -21,5 +20,9 @@ public class test  {
         Object v1 = ctx.session("v1");
         Object v2 = ctx.session("v2");
         Object v3 = ctx.session("v3");
+
+        ctx.output(String.valueOf(v1) + "<br/>");
+        ctx.output(String.valueOf(v2) + "<br/>");
+        ctx.output(String.valueOf(v3) + "<br/>");
     }
 }
