@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.2</version>
+    <version>1.0.3.3</version>
     <packaging>pom</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -37,13 +37,15 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.0.3.2</solon.ver>
+        <solon.ver>1.0.3.3</solon.ver>
         <solon.boot.jetty.ver>1.0.3</solon.boot.jetty.ver>
         <solon.boot.jlhttp.ver>1.0.3</solon.boot.jlhttp.ver>
         <solon.boot.undertow.ver>1.0.3</solon.boot.undertow.ver>
         <solon.boot.tomcat.ver>1.0.3</solon.boot.tomcat.ver>
 
         <solon.extend.staticfiles.ver>1.0.3</solon.extend.staticfiles.ver>
+        <solon.extend.redissessionstate.ver>1.0.3</solon.extend.redissessionstate.ver>
+
         <solon.extend.jetty.jsp.ver>1.0.3</solon.extend.jetty.jsp.ver>
         <solon.extend.undertow.jsp.ver>1.0.3</solon.extend.undertow.jsp.ver>
 
@@ -98,6 +100,13 @@
                 <artifactId>solon.extend.staticfiles</artifactId>
                 <version>${solon.extend.staticfiles.ver}</version>
             </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.extend.redissessionstate</artifactId>
+                <version>${solon.extend.redissessionstate.ver}</version>
+            </dependency>
+
+
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.jetty.jsp</artifactId>

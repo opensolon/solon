@@ -15,7 +15,7 @@ public class test  {
         ctx.sessionSet("v3", 121212l);
     }
 
-    @XMapping("/demob/getval")
+    @XMapping(value = "/demob/getval", produces = "text/html;charset=utf-8")
     public void getVal(XContext ctx){
         Object v1 = ctx.session("v1");
         Object v2 = ctx.session("v2");
