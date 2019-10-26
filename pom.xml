@@ -43,6 +43,9 @@
         <module>solon.view.beetl</module>
 
         <module>solon.extend.staticfiles</module>
+        <module>solon.extend.redissessionstate</module>
+
+
         <module>solon.extend.jetty.jsp</module>
         <module>solon.extend.undertow.jsp</module>
 

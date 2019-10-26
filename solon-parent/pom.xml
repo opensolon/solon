@@ -61,6 +61,8 @@
         <weed3.ver>3.2.1.4</weed3.ver>
         <snack3.ver>3.0.14.4</snack3.ver>
         <fastjson.ver>1.2.29</fastjson.ver>
+        <jedis.ver>2.9.0</jedis.ver>
+        <okhttp.ver>3.11.0</okhttp.ver>
     </properties>
 
     <dependencyManagement>
@@ -170,6 +172,18 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp.ver}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

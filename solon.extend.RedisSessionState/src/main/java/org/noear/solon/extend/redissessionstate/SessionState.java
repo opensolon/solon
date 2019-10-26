@@ -23,6 +23,9 @@ public class SessionState implements XSessionState {
             throw new RuntimeException("Error configuration: solon.session.state.redis");
         }
 
+        _expiry = Aop.prop().getInt("solon.session.state.expiry",_expiry);
+        _domain = Aop.prop().get("solon.session.state.domain",_domain);
+
         redisX = new RedisX(
                 map.get("server"),
                 map.get("user"),
@@ -34,20 +37,31 @@ public class SessionState implements XSessionState {
     //
     // cookies control
     //
-    public  int expiry(){
-        return 12;
-    }
-    public  String domain(){
-        return "";
-    }
+    private int _expiry =  60 * 60 * 2;
+    private String _domain=null;
+
     public  String cookieGet(String key){
         return XContext.current().cookie(key);
     }
     public  void   cookieSet(String key, String val) {
-        XContext.current().cookieSet(key, val, domain(), -1);
+        if(XUtil.isEmpty(_domain)){
+            XContext.current().cookieSet(key, val,  _expiry);
+        }else{
+            XContext.current().cookieSet(key, val, _domain, _expiry);
+        }
+
     }
 
+    protected void updateSessionID() {
+        String skey = cookieGet(SESSIONID_KEY);
 
+        if (XUtil.isEmpty(skey) == false) {
+            cookieSet(SESSIONID_KEY, skey);
+            cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_encrypt));
+
+            redisX.open0((ru)->ru.key(sessionId()).expire(_expiry).delay());
+        }
+    }
 
     //
     // session control
@@ -71,7 +85,7 @@ public class SessionState implements XSessionState {
 
     @Override
     public Object sessionGet(String key) {
-        String tmp = redisX.open1((ru) -> ru.key(sessionId()).expire(expiry()).hashGet(key));
+        String tmp = redisX.open1((ru) -> ru.key(sessionId()).expire(_expiry).hashGet(key));
 
         if(tmp == null){
             return tmp;
@@ -98,6 +112,6 @@ public class SessionState implements XSessionState {
 
         String json = tmp;
 
-        redisX.open0((ru)->ru.key(sessionId()).expire(expiry()).hashSet(key,json));
+        redisX.open0((ru)->ru.key(sessionId()).expire(_expiry).hashSet(key,json));
     }
 }
