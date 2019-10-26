@@ -22,8 +22,8 @@
 * 7.XBean***，轻量级bean体系
 #### 五个注解说明
 注解主要分为：普通、特定、附助三类注解，实动时会被加载；原则上，只被应用在启动时。。。其它注解可借助lombok框架。
-* 普通bean注解：
-XBean (组件注解)，可加注在类上
+* 普通bean注解：<br/>
+XBean (组件注解，可加注在类上)，remoting=true 时，开启rpc服务
 
 * 特定web bean注解：需配置-parameters<br/>
 XController（WEB控制器），加注@XMapping的公有函数为XAction<br/>
