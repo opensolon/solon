@@ -33,34 +33,45 @@ XAfter：解发器（后置处理注解）。可注解到web bean或XAction<br/>
 XBefore：解发器（前置处理注解）。可注解到web bean或XAction<br/>
 
 #### 组件说明 <a href="https://search.maven.org/search?q=solon" target='_blank'>maven-central v1.0.3</a>
+
+##### 主框架
+
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon-parent:1.0.3 | 主框架 |
+| org.noear:solon-parent:1.0.3 | 框架版本管理 |
 | org.noear:solon:1.0.3.1 | 66k，主框架 |
 
-| boot组件 | 说明 |
+##### 插件
+
+| boot插件 | 说明 |
 | --- | --- |
 | org.noear:solon.boot.jlhttp:1.0.3 | 58k，boot插件,对jlhttp适配（不支持session） |
 | org.noear:solon.boot.jetty:1.0.3 | 1.5m，boot插件,对jetty适配 |
+| org.noear:solon.extend.jetty.jsp:1.0.3 | 6m，扩展插件,为jetty添加jsp支持（不建议使用jsp） |
+| org.noear:solon.boot.undertow:1.0.3 | 3.7m，boot插件,对undertow适配 |
+| org.noear:solon.extend.undertow.jsp:1.0.3 | 5.6m，扩展插件,为undertow添加jsp支持（不建议使用jsp） |
 | org.noear:solon.boot.smartsocket | *.*m，boot插件,提供socket服务(未提交仓库) |
 | org.noear:solon.boot.websocket | *.*m，boot插件,提供websocket服务(未提交仓库) |
-| org.noear:solon.boot.undertow:1.0.3 | 3.7m，boot插件,对undertow适配 |
-| org.noear:solon.extend.jetty.jsp:1.0.3 | 6m，扩展插件,为jetty添加jsp支持（不建议使用jsp） |
-| org.noear:solon.extend.undertow.jsp:1.0.3 | 5.6m，扩展插件,为undertow添加jsp支持（不建议使用jsp） |
+
+| 静态文件支持插件 | 说明 |
+| --- | --- |
 | org.noear:solon.extend.staticfiles:1.0.3 | 8k，扩展插件,添加静态文件支持 |
 
-| 序列化组件 | 说明 |
+| 序列化插件 | 说明 |
 | --- | --- |
 | org.noear:solon.serialization.fastjson:1.0.3 | 0.5m，视图插件，对 fastjson 适配，输出json视图 或 序列化输出 |
 | org.noear:solon.serialization.snack3:1.0.3 | 61kb，视图插件，对 snack3 适配，输出json视图 或 序列化输出 |
 
-| 视图组件 | 说明 |
+| 视图插件 | 说明（可置多个视图插件） |
 | --- | --- |
 | org.noear:solon.view.freemarker:1.0.3 | 2.0m，视图插件，对 freemarker 适配，输出html |
 | org.noear:solon.view.jsp:1.0.3.1 | 0.5m，视图插件，对 jsp 适配，输出html |
 | org.noear:solon.view.velocity:1.0.3 | 1.4m，视图插件，对 velocity 适配，输出html |
 | org.noear:solon.view.beetl:1.0.3 | 1.3m，视图插件，对 beetl 适配，输出html |
 | org.noear:solon.view.enjoy:1.0.3 | 0.7m，视图插件，对 enjoy 适配，输出html |
+
+| RPC CLINET | 说明 |
+| --- | --- |
 | org.noear:solonclient:1.0.3 | 11k，rpc client 框架，与solon 的 rpc service 配对 |
 
 #### 简单示例
