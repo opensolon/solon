@@ -11,3 +11,4 @@
 9.XMapping 的 XMethod 改为多选模式
 a.将XApp.render 转移到  XContext.render
 b.模板引擎 添加 XApp.share() 同步支持
+c.增加扩展文件夹加载支持
