@@ -173,7 +173,7 @@ public abstract class XContext {
     /**SESSION_STATE对象*/
     @XNote("SESSION_STATE对象")
     private XSessionState _sessionState = XSessionStateDefault.global;
-    public void sessionStateInit(XSessionState sessionState){
+    protected void sessionStateInit(XSessionState sessionState){
         if(_sessionState == null || _sessionState.replaceable()){
             _sessionState = sessionState;
         }
