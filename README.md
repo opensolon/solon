@@ -40,8 +40,8 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon-parent:1.0.3.3 | 框架版本管理 |
-| org.noear:solon:1.0.3.3 | 66k，主框架 |
+| org.noear:solon-parent:1.0.3.4 | 框架版本管理 |
+| org.noear:solon:1.0.3.4 | 66k，主框架 |
 
 ##### 插件
 
@@ -70,11 +70,11 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | 视图插件 | 说明（可置多个视图插件） |
 | --- | --- |
-| org.noear:solon.view.freemarker:1.0.3 | 2.0m，视图插件，对 freemarker 适配，输出html |
-| org.noear:solon.view.jsp:1.0.3.1 | 0.5m，视图插件，对 jsp 适配，输出html |
-| org.noear:solon.view.velocity:1.0.3 | 1.4m，视图插件，对 velocity 适配，输出html |
-| org.noear:solon.view.beetl:1.0.3 | 1.3m，视图插件，对 beetl 适配，输出html |
-| org.noear:solon.view.enjoy:1.0.3 | 0.7m，视图插件，对 enjoy 适配，输出html |
+| org.noear:solon.view.freemarker:1.0.3.4 | 2.0m，视图插件，对 freemarker 适配，输出html |
+| org.noear:solon.view.jsp:1.0.3.1.4 | 0.5m，视图插件，对 jsp 适配，输出html |
+| org.noear:solon.view.velocity:1.0.3.4 | 1.4m，视图插件，对 velocity 适配，输出html |
+| org.noear:solon.view.beetl:1.0.3.1 | 1.3m，视图插件，对 beetl 适配，输出html |
+| org.noear:solon.view.enjoy:1.0.3.1 | 0.7m，视图插件，对 enjoy 适配，输出html |
 
 | RPC CLINET | 说明 |
 | --- | --- |
@@ -86,7 +86,7 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.3</version>
+    <version>1.0.3.4</version>
 </parent>
 
 <dependency>
@@ -112,7 +112,7 @@ public class App{
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.3</version>
+    <version>1.0.3.4</version>
 </parent>
 
 <dependency>
