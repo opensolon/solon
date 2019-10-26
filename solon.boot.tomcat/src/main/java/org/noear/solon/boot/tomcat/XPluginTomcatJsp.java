@@ -93,15 +93,15 @@ public class XPluginTomcatJsp implements XPlugin {
         try {
 
             String dirroot = XUtil.getResource("/").toString();
-            System.out.println("jspDir is "+dirroot);
+            //System.out.println("jspDir is "+dirroot);
             File dir = new File(URI.create(dirroot));
-            System.out.println("jspFile is "+dir);
+            //System.out.println("jspFile is "+dir);
             if (!dir.exists()) {
                 dirroot = dirroot + "src/main/webapp";
                 dir = new File(URI.create(dirroot));
             }
-            InputStream resource_stream = jspClassLoader.getResourceAsStream("");
-            System.out.println("res_stream:"+resource_stream);
+            //InputStream resource_stream = jspClassLoader.getResourceAsStream("");
+            //System.out.println("res_stream:"+resource_stream);
             return dir;
         } catch (Exception e) {
             throw new RuntimeException(e);

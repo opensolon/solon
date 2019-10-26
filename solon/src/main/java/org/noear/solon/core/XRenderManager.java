@@ -1,6 +1,7 @@
 package org.noear.solon.core;
 
 import org.noear.solon.XUtil;
+import org.noear.solon.ext.PrintUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class XRenderManager implements XRender {
         _def = render;
         _lib.put(render.getClass().getSimpleName(), render);
 
-        System.out.println("solon:: view load:"+ render.getClass().getSimpleName());
+        PrintUtil.blueln("solon:: view load:"+ render.getClass().getSimpleName());
     }
 
     /**
@@ -46,7 +47,7 @@ public class XRenderManager implements XRender {
         //suffix=.ftl
         _mapping.put(suffix, render);
 
-        System.out.println("solon:: view load:"+ render.getClass().getSimpleName());
+        PrintUtil.blueln("solon:: view load:"+ render.getClass().getSimpleName());
     }
 
     /**
@@ -57,7 +58,7 @@ public class XRenderManager implements XRender {
     public static void mapping(String suffix, String classSimpleName) {
         XRender render = _lib.get(classSimpleName);
         if (render == null) {
-            System.out.println("solon:: "+classSimpleName + " not exists!");
+            PrintUtil.redln("solon:: "+classSimpleName + " not exists!");
             return;
             //throw new RuntimeException(classSimpleName + " not exists!");
         }

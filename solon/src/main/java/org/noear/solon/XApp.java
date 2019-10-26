@@ -4,6 +4,7 @@ import org.noear.solon.core.Aop;
 import org.noear.solon.core.*;
 import org.noear.solon.ext.Act1;
 import org.noear.solon.ext.Act2;
+import org.noear.solon.ext.PrintUtil;
 
 import java.util.*;
 
@@ -85,7 +86,7 @@ public class XApp implements XHandler {
         }
 
         long time_start = System.currentTimeMillis();
-        System.out.println("solon.plugin:: Start loading");
+        PrintUtil.blueln("solon.plugin:: Start loading");
 
         //2.尝试加载扩展文件夹
         if (argx.containsKey("extend")) {
@@ -118,7 +119,7 @@ public class XApp implements XHandler {
         });
 
         long time_end = System.currentTimeMillis();
-        System.out.println("solon.plugin:: End loading @" + (time_end - time_start) + "ms");
+        PrintUtil.blueln("solon.plugin:: End loading @" + (time_end - time_start) + "ms");
 
         return _global;
     }

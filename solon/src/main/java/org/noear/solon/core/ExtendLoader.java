@@ -1,5 +1,7 @@
 package org.noear.solon.core;
 
+import org.noear.solon.XUtil;
+
 import java.io.File;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -14,8 +16,10 @@ public class ExtendLoader {
      * 加载扩展文件夹（或文件）
      * */
     public static void load(String path, XMap map) {
-        File file = new File(path);
-        _g.do_load(file, map);
+        if(XUtil.isEmpty(path) == false) {
+            File file = new File(path);
+            _g.do_load(file, map);
+        }
     }
 
     /**

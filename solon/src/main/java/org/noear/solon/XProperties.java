@@ -3,6 +3,7 @@ package org.noear.solon;
 import org.noear.solon.core.XMap;
 import org.noear.solon.core.XScaner;
 import org.noear.solon.ext.Act2;
+import org.noear.solon.ext.PrintUtil;
 
 import java.net.URL;
 import java.util.*;
@@ -57,7 +58,7 @@ public final class XProperties extends Properties{
 
     private void do_loadPlug(URL url){
         try {
-            System.out.println(url);
+            PrintUtil.blueln(url);
 
             XProperties p = new XProperties();
             p.load(url.openStream());
