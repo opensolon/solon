@@ -39,11 +39,11 @@ public final class XProperties extends Properties{
         //1.加载文件的配置
         do_loadProp("application.properties");
 
-        //2.再加载代码的配置
+        //2.再加载System的配置
         System.getProperties().forEach((k, v) -> {
             String key = k.toString();
 
-            if (key.indexOf("server.") >= 0) {
+            if ( key.startsWith("solon.") || key.indexOf("server.") >= 0) {
                 setProperty(key, String.valueOf(v));
             }
         });
