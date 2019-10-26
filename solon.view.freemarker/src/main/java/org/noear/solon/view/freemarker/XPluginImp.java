@@ -20,5 +20,6 @@ public class XPluginImp implements XPlugin {
         });
 
         XRenderManager.register(render);
+        XRenderManager.mapping(".ftl",render);
     }
 }
