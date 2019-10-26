@@ -34,8 +34,10 @@ public class XRenderManager implements XRender {
     public static void register(XRender render) {
         _def = render;
         _lib.put(render.getClass().getSimpleName(), render);
+        _lib.put(render.getClass().getName(), render);
 
         PrintUtil.blueln("solon:: view load:"+ render.getClass().getSimpleName());
+        PrintUtil.blueln("solon:: view load:"+ render.getClass().getName());
     }
 
     /**
@@ -55,10 +57,10 @@ public class XRenderManager implements XRender {
      *
      * @param suffix = .ftl
      */
-    public static void mapping(String suffix, String classSimpleName) {
-        XRender render = _lib.get(classSimpleName);
+    public static void mapping(String suffix, String className) {
+        XRender render = _lib.get(className);
         if (render == null) {
-            PrintUtil.redln("solon:: "+classSimpleName + " not exists!");
+            PrintUtil.redln("solon:: "+className + " not exists!");
             return;
             //throw new RuntimeException(classSimpleName + " not exists!");
         }

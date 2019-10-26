@@ -37,7 +37,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.0.3</solon.ver>
+        <solon.ver>1.0.3.1</solon.ver>
         <solon.boot.jetty.ver>1.0.3</solon.boot.jetty.ver>
         <solon.boot.jlhttp.ver>1.0.3</solon.boot.jlhttp.ver>
         <solon.boot.undertow.ver>1.0.3</solon.boot.undertow.ver>
@@ -51,7 +51,7 @@
         <solon.serialization.snack3.ver>1.0.3</solon.serialization.snack3.ver>
 
         <solon.view.freemarker.ver>1.0.3</solon.view.freemarker.ver>
-        <solon.view.jsp.ver>1.0.3</solon.view.jsp.ver>
+        <solon.view.jsp.ver>1.0.3.1</solon.view.jsp.ver>
         <solon.view.velocity.ver>1.0.3</solon.view.velocity.ver>
         <solon.view.enjoy.ver>1.0.3</solon.view.enjoy.ver>
         <solon.view.beetl.ver>1.0.3</solon.view.beetl.ver>
@@ -111,12 +111,12 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.serialization.fastjson</artifactId>
-                <version>${solon.ver}</version>
+                <version>${solon.serialization.fastjson.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.serialization.snack3</artifactId>
-                <version>${solon.ver}</version>
+                <version>${solon.serialization.snack3.ver}</version>
             </dependency>
 
 
