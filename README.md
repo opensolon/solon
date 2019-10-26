@@ -86,7 +86,7 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.3</version>
+    <version>1.0.3.4</version>
 </parent>
 
 <dependency>
@@ -112,7 +112,7 @@ public class App{
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.3</version>
+    <version>1.0.3.4</version>
 </parent>
 
 <dependency>
