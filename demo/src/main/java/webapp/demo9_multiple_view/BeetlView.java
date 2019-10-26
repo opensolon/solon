@@ -7,10 +7,10 @@ import org.noear.solon.core.ModelAndView;
 
 @XSingleton(false)
 @XController
-public class ViewControllerHtm {
-    @XMapping("/demo9/view/htm")
+public class BeetlView {
+    @XMapping("/demo9/view/beetl")
     public ModelAndView dock(){
-        ModelAndView model = new ModelAndView("dock.htm");
+        ModelAndView model = new ModelAndView("beetl.htm");
         model.put("title","dock");
         model.put("msg","你好 world! in XController");
 

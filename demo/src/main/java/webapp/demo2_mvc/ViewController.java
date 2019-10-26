@@ -10,7 +10,7 @@ import org.noear.solon.core.ModelAndView;
 public class ViewController {
     @XMapping("/demo2/view")
     public ModelAndView dock(){
-        ModelAndView model = new ModelAndView("dock.htm");
+        ModelAndView model = new ModelAndView("dock.ftl");
         model.put("title","dock");
         model.put("msg","你好 world! in XController");
 

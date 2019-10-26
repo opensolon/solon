@@ -83,6 +83,10 @@
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>solon.view.thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon.view.enjoy</artifactId>
         </dependency>
         <dependency>
