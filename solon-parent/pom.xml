@@ -41,6 +41,7 @@
         <solon.boot.jetty.ver>1.0.3</solon.boot.jetty.ver>
         <solon.boot.jlhttp.ver>1.0.3</solon.boot.jlhttp.ver>
         <solon.boot.undertow.ver>1.0.3</solon.boot.undertow.ver>
+        <solon.boot.tomcat.ver>1.0.3</solon.boot.tomcat.ver>
 
         <solon.extend.staticfiles.ver>1.0.3</solon.extend.staticfiles.ver>
         <solon.extend.jetty.jsp.ver>1.0.3</solon.extend.jetty.jsp.ver>
@@ -73,6 +74,11 @@
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.jlhttp</artifactId>
                 <version>${solon.boot.jlhttp.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.boot.tomcat</artifactId>
+                <version>${solon.boot.tomcat.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>

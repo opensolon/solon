@@ -34,7 +34,7 @@ public class XRenderManager implements XRender {
         _def = render;
         _lib.put(render.getClass().getSimpleName(), render);
 
-        System.out.println("solon.boot:: view load:"+ render.getClass().getSimpleName());
+        System.out.println("solon:: view load:"+ render.getClass().getSimpleName());
     }
 
     /**
@@ -46,7 +46,7 @@ public class XRenderManager implements XRender {
         //suffix=.ftl
         _mapping.put(suffix, render);
 
-        System.out.println("solon.boot:: view load:"+ render.getClass().getSimpleName());
+        System.out.println("solon:: view load:"+ render.getClass().getSimpleName());
     }
 
     /**
@@ -57,7 +57,9 @@ public class XRenderManager implements XRender {
     public static void mapping(String suffix, String classSimpleName) {
         XRender render = _lib.get(classSimpleName);
         if (render == null) {
-            throw new RuntimeException(classSimpleName + " not exists!");
+            System.out.println("solon:: "+classSimpleName + " not exists!");
+            return;
+            //throw new RuntimeException(classSimpleName + " not exists!");
         }
 
         _mapping.put(suffix, render);

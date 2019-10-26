@@ -9,6 +9,7 @@ public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
         if(XUtil.loadClass("javax/servlet/ServletResponse")==null){
+            System.out.println("solon:: javax/servlet/ServletResponse not exists! JspRender failed to load." );
             return;
         }
 

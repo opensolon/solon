@@ -85,7 +85,7 @@ public class XApp implements XHandler {
         }
 
         long time_start = System.currentTimeMillis();
-        System.out.println("solon.boot:: start begin");
+        System.out.println("solon.plugin:: Start loading");
 
         //2.尝试加载扩展文件夹
         if (argx.containsKey("extend")) {
@@ -118,7 +118,7 @@ public class XApp implements XHandler {
         });
 
         long time_end = System.currentTimeMillis();
-        System.out.println("solon.boot:: start end @" + (time_end - time_start) + "ms");
+        System.out.println("solon.plugin:: End loading @" + (time_end - time_start) + "ms");
 
         return _global;
     }
