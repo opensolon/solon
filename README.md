@@ -1,5 +1,5 @@
 
-` QQ交流群：22200020 `
+` QQ交流群：22200020 （同时招募项目参与人员：开发者，测试者，网官设计师等...）` 
 
 # solon for java
 
@@ -22,15 +22,17 @@
 * 7.XBean***，轻量级bean体系
 #### 五个注解说明
 注解主要分为：普通、特定、附助三类注解，实动时会被加载；原则上，只被应用在启动时。。。其它注解可借助lombok框架。
-* 普通bean注解：XBean，令可加注在类上
+* 普通bean注解：<br/>
+XBean (组件注解，可加注在类上)，remoting=true 时，开启rpc服务
+
 * 特定web bean注解：需配置-parameters<br/>
-XController（WEB控制者），加注@XMapping的公有函数为XAction<br/>
-XInterceptor（WEB拦截者），加注@XMapping的公有函数为XAction<br/> 
+XController（WEB控制器），加注@XMapping的公有函数为XAction<br/>
+XInterceptor（WEB拦截器，支持多个排序），加注@XMapping的公有函数为XAction<br/> 
 
 * 特定web bean 的附助注解：<br/>
-XMapping：映射注解，支持path var。可注解到web bean或XAction或XHandler<br/>
-XAfter：解发器（后置处理注解）。可注解到web bean或XAction<br/>
-XBefore：解发器（前置处理注解）。可注解到web bean或XAction<br/>
+XMapping：（映射注解，支持path var）。可注解到web bean或XAction或XHandler<br/>
+XAfter：（后置解发器）。可注解到web bean或XAction<br/>
+XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 #### 组件说明 <a href="https://search.maven.org/search?q=solon" target='_blank'>maven-central v1.0.3</a>
 
@@ -38,8 +40,8 @@ XBefore：解发器（前置处理注解）。可注解到web bean或XAction<br/
 
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon-parent:1.0.3.2 | 框架版本管理 |
-| org.noear:solon:1.0.3.2 | 66k，主框架 |
+| org.noear:solon-parent:1.0.3.3 | 框架版本管理 |
+| org.noear:solon:1.0.3.3 | 66k，主框架 |
 
 ##### 插件
 
@@ -47,15 +49,19 @@ XBefore：解发器（前置处理注解）。可注解到web bean或XAction<br/
 | --- | --- |
 | org.noear:solon.boot.jlhttp:1.0.3 | 58k，boot插件,对jlhttp适配（不支持session） |
 | org.noear:solon.boot.jetty:1.0.3 | 1.5m，boot插件,对jetty适配 |
-| org.noear:solon.extend.jetty.jsp:1.0.3 | 6m，扩展插件,为jetty添加jsp支持（不建议使用jsp） |
-| org.noear:solon.boot.undertow:1.0.3 | 3.7m，boot插件,对undertow适配 |
-| org.noear:solon.extend.undertow.jsp:1.0.3 | 5.6m，扩展插件,为undertow添加jsp支持（不建议使用jsp） |
+| org.noear:solon.extend.jetty.jsp:1.0.3 | 6m，扩展插件,为jetty添加jsp支持（不建议使用jsp）（网友@khb提供） |
+| org.noear:solon.boot.undertow:1.0.3 | 3.7m，boot插件,对undertow适配（网友@tyk提供） |
+| org.noear:solon.extend.undertow.jsp:1.0.3 | 5.6m，扩展插件,为undertow添加jsp支持（不建议使用jsp）（网友@tyk提供） |
 | org.noear:solon.boot.smartsocket | *.*m，boot插件,提供socket服务(未提交仓库) |
 | org.noear:solon.boot.websocket | *.*m，boot插件,提供websocket服务(未提交仓库) |
 
 | 静态文件支持插件 | 说明 |
 | --- | --- |
 | org.noear:solon.extend.staticfiles:1.0.3 | 8k，扩展插件,添加静态文件支持 |
+
+| 分布式Session支持插件 | 说明 |
+| --- | --- |
+| org.noear:solon.extend.redissessionstate:1.0.3 | 18k，扩展插件,添加分布式session支持（1.其于redis构建；2.仍通过ctx上的接口使用） |
 
 | 序列化插件 | 说明 |
 | --- | --- |
@@ -80,7 +86,7 @@ XBefore：解发器（前置处理注解）。可注解到web bean或XAction<br/
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.3.3</version>
 </parent>
 
 <dependency>
@@ -106,7 +112,7 @@ public class App{
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.3.3</version>
 </parent>
 
 <dependency>
