@@ -22,15 +22,17 @@
 * 7.XBean***，轻量级bean体系
 #### 五个注解说明
 注解主要分为：普通、特定、附助三类注解，实动时会被加载；原则上，只被应用在启动时。。。其它注解可借助lombok框架。
-* 普通bean注解：XBean，令可加注在类上
+* 普通bean注解：
+XBean (组件注解)，可加注在类上
+
 * 特定web bean注解：需配置-parameters<br/>
-XController（WEB控制者），加注@XMapping的公有函数为XAction<br/>
-XInterceptor（WEB拦截者），加注@XMapping的公有函数为XAction<br/> 
+XController（WEB控制器），加注@XMapping的公有函数为XAction<br/>
+XInterceptor（WEB拦截器，支持多个排序），加注@XMapping的公有函数为XAction<br/> 
 
 * 特定web bean 的附助注解：<br/>
-XMapping：映射注解，支持path var。可注解到web bean或XAction或XHandler<br/>
-XAfter：解发器（后置处理注解）。可注解到web bean或XAction<br/>
-XBefore：解发器（前置处理注解）。可注解到web bean或XAction<br/>
+XMapping：（映射注解，支持path var）。可注解到web bean或XAction或XHandler<br/>
+XAfter：（后置解发器）。可注解到web bean或XAction<br/>
+XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 #### 组件说明 <a href="https://search.maven.org/search?q=solon" target='_blank'>maven-central v1.0.3</a>
 
