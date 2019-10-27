@@ -13,4 +13,6 @@ public class UserModel {
 
     @XParam("yyyy-MM-dd")
     public Date date;
+
+    public long[] aaa;
 }
