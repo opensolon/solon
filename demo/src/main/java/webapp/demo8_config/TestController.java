@@ -9,6 +9,7 @@ import org.noear.solon.core.XContext;
 public class TestController {
     @XInject("config")
     private ConfigDemo config;
+
     @XMapping("/demo8/config_inject")
     public void test(XContext c) throws Throwable{
         c.render(config);

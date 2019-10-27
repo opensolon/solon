@@ -15,7 +15,11 @@ public class ConfigDemo {
     @XInject("paasword")
     public int paasword;
 
+    @XInject("demo8.test")
+    public Properties test;
+
     //获取方式（复杂的请用这种方式）
+    //
     public String nameuser_2 = Aop.prop().get("username");
 
     public Properties dbcfg = Aop.prop().getProp("demo8.test");
