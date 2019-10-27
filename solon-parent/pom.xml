@@ -50,7 +50,7 @@
         <solon.extend.undertow.jsp.ver>1.0.3</solon.extend.undertow.jsp.ver>
 
         <solon.serialization.fastjson.ver>1.0.3</solon.serialization.fastjson.ver>
-        <solon.serialization.snack3.ver>1.0.3</solon.serialization.snack3.ver>
+        <solon.serialization.snack3.ver>1.0.3.1</solon.serialization.snack3.ver>
         <solon.serialization.jackson.ver>1.0.3</solon.serialization.jackson.ver>
 
         <solon.view.freemarker.ver>1.0.3.4</solon.view.freemarker.ver>
