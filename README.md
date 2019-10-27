@@ -41,7 +41,7 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 | 组件 | 说明 |
 | --- | --- |
 | org.noear:solon-parent:1.0.3.5 | 框架版本管理 |
-| org.noear:solon:1.0.3.4 | 66k，主框架 |
+| org.noear:solon:1.0.3.5 | 66k，主框架 |
 
 ##### 插件
 
