@@ -56,6 +56,12 @@ public class SessionState implements XSessionState {
     // session control
     //
 
+
+    @Override
+    public boolean replaceable() {
+        return false;
+    }
+
     @Override
     public String sessionId() {
         String skey = cookieGet(SESSIONID_KEY);

@@ -18,6 +18,6 @@ public class XPluginImp implements XPlugin {
             sessionState.updateSessionID();
         });
 
-        System.out.println("solon:: Redis session state is loaded");
+        System.out.println("solon:: Local session state is loaded");
     }
 }
