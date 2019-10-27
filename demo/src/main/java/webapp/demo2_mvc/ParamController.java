@@ -17,7 +17,7 @@ public class ParamController {
     //支持post和get参数
     @XMapping("d/*")
     public String test_d(XContext context, String name) {
-        return context.path();
+        return name;
     }
 
 
@@ -28,26 +28,36 @@ public class ParamController {
     }
 
     //支持字符串数组参数（暂时只支持字符串数据）
-    @XMapping("f")
+    @XMapping("array_str")
     public String[] test_f(XContext context, String[] aaa, String ccc) throws Exception{
         return aaa;
     }
 
+    @XMapping("array_Int")
+    public Object test_f2(XContext context, Integer[] aaa, String ccc) throws Exception{
+        return aaa;
+    }
+
+    @XMapping("array_int")
+    public Object test_f3(XContext context, int[] aaa, String ccc) throws Exception{
+        return aaa;
+    }
+
     //支持上传文件参数
-    @XMapping("g")
+    @XMapping("file")
     public String test_g(XContext context,  String title, XFile file,  String label) throws Exception{
         return context.path();
     }
     
     //支持模型参数（要加@XParam申明，如安其字段里有日期类型，要加XParam指定格式）
-    @XMapping("h1")
-    public String test_h1(XContext context, @XParam UserModel model) throws Exception{
-        return context.path();
+    @XMapping("model")
+    public void test_h1(XContext context, UserModel model) throws Throwable {
+        context.render(model);
     }
 
     //支持时间参数（要加XParam指定格式）
-    @XMapping("h2")
-    public String test_h2(XContext context, @XParam("yyyy-MM-dd") Date date) throws Exception{
-        return context.path();
+    @XMapping("date")
+    public Date test_h2(XContext context, @XParam("yyyy-MM-dd") Date date) throws Exception{
+        return date;
     }
 }

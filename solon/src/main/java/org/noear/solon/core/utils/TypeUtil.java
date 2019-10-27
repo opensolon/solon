@@ -7,9 +7,14 @@ import org.noear.solon.core.XContext;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 
 public class TypeUtil {
+    private static final String date_def_format = "yyyy-MM-dd HH:mm:ss";
+
     public static Object changeOfCtx(AnnotatedElement p, Class<?> type, String key, String val, XContext ctx) {
         if (String.class == (type)) {
             return val;
@@ -27,13 +32,19 @@ public class TypeUtil {
 
         if (Date.class == (type) && p != null) {
             XParam xd = p.getAnnotation(XParam.class);
+            String format = null;
+
             if (xd != null && XUtil.isEmpty(xd.value()) == false) {
-                SimpleDateFormat fm = new SimpleDateFormat(xd.value());
-                try {
-                    return fm.parse(val);
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
+                format = xd.value();
+            }else{
+                format = date_def_format;
+            }
+
+            SimpleDateFormat fm = new SimpleDateFormat(format);
+            try {
+                return fm.parse(val);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             }
         }
 
@@ -96,7 +107,7 @@ public class TypeUtil {
         return s.isAssignableFrom(t);
     }
 
-    public static Object change(Class<?> type, String val) {
+    public static Object changeOfPop(Class<?> type, String val) {
         if (String.class == (type)) {
             return val;
         }
@@ -111,7 +122,7 @@ public class TypeUtil {
         }
 
         if (Date.class == (type)) {
-            SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat fm = new SimpleDateFormat(date_def_format);
             try {
                 return fm.parse(val);
             } catch (Exception ex) {
@@ -145,6 +156,21 @@ public class TypeUtil {
 
         if (Boolean.class == (type) || type == Boolean.TYPE) {
             return Boolean.parseBoolean(val);
+        }
+
+        if(LocalDate.class == type){
+            //as "2007-12-03", not null
+            return LocalDate.parse(val);
+        }
+
+        if(LocalTime.class == type){
+            //as "10:15:30", not null
+            return LocalTime.parse(val);
+        }
+
+        if(LocalDateTime.class == type){
+            //as "2007-12-03T10:15:30", not null
+            return LocalDateTime.parse(val);
         }
 
         return null;

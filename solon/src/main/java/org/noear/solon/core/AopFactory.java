@@ -106,7 +106,7 @@ public class AopFactory extends AopFactoryBase{
                         String val = Aop.prop().get(xi.value());
 
                         if (XUtil.isEmpty(val) == false) {
-                            Object val2 = TypeUtil.change(f.getType(), val);
+                            Object val2 = TypeUtil.changeOfPop(f.getType(), val);
                             fieldSet(obj, f, val2);
                         } else {
                             //如果没有配置，则找bean

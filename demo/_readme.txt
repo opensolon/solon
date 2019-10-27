@@ -20,3 +20,7 @@
 * a.将XApp.render(obj,ctx) 转移到  XContext.render(obj)（使用更自然）
 * b.模板引擎 添加 XApp.share() 同步支持（可以通过共享对象接口，为所有引擎动态添加变量）
 * c.增加扩展文件夹加载支持（运行时,如要加载额外的配置或jar包，可通过机制此实现）
+* d.强化mvc参数注入能放：
+* d.1.强化模型接收参数，不再需要 XParam 注解
+* d.2.强化数组接收参数，支持常见基础类型（String,short,int,long,float,double）
+* d.3.增加LocalTime,LocalDate,LocalDatetime注入支持
