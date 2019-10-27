@@ -14,7 +14,7 @@ public class XPluginImp implements XPlugin {
 
         XSessionStateDefault.global = sessionState;
 
-        app.before("*", XMethod.HTTP,(c)->{
+        app.before("**", XMethod.HTTP,(c)->{
             sessionState.updateSessionID();
         });
 
