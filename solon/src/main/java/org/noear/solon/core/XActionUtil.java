@@ -5,9 +5,7 @@ import org.noear.solon.annotation.XParam;
 import org.noear.solon.core.utils.TypeUtil;
 
 import java.lang.reflect.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +24,7 @@ class XActionUtil {
         for (Field f : fields) {
             String key = f.getName();
             if (map.containsKey(key)) {
-                Object val = TypeUtil.change(f,f.getType(),key, map.get(key), ctx);
+                Object val = TypeUtil.changeOfCtx(f,f.getType(),key, map.get(key), ctx);
                 f.set(obj,val);
             }
         }
@@ -40,33 +38,38 @@ class XActionUtil {
             Parameter[] pSet = method.getParameters();
             List<Object> args = new ArrayList<>();
 
+            //p 参数
+            //pt 参数原类型
             for (Parameter p : pSet) {
                 Class<?> pt = p.getType();
 
                 if (XContext.class.equals(pt)) {
+                    //如果是 XContext 类型
                     args.add(ctx);
                 }else {
                     String pn = p.getName();
                     String pv = ctx.param(pn);
 
                     if (pv == null) {
+                        //
+                        // 没有从ctx.param 直接找到值
+                        //
                         if(XFile.class == pt){
+                            //1.如果是 XFile 类型
                             XFile file = ctx.file(pn);
                             args.add(file);
                         }else {
-                            XParam xd = p.getAnnotation(XParam.class);
-                            if (xd != null || pt.getAnnotation(XParam.class) != null) {
-                                if (xd != null && XUtil.isEmpty(xd.value()) == false) {
-                                    args.add(null);
-                                } else {
-                                    args.add(params2Entity(ctx, pt));
-                                }
-                            } else {
+                            if(pt.getName().startsWith("java.")){
+                                //如果是基本类型，则为null
                                 args.add(null);
+                            }else{
+                                //尝试转为模型
+                                args.add(params2Entity(ctx, pt));
                             }
                         }
                     } else {
-                        args.add(TypeUtil.change(p, pt, pn, pv, ctx));
+                        //如果拿到了肯体的参数值，则开始转换
+                        args.add(TypeUtil.changeOfCtx(p, pt, pn, pv, ctx));
                     }
                 }
             }

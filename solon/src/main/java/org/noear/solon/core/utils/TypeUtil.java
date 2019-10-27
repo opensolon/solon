@@ -5,11 +5,12 @@ import org.noear.solon.annotation.XParam;
 import org.noear.solon.core.XContext;
 
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TypeUtil {
-    public static Object change(AnnotatedElement p, Class<?> type, String key, String val, XContext ctx) {
+    public static Object changeOfCtx(AnnotatedElement p, Class<?> type, String key, String val, XContext ctx) {
         if (String.class == (type)) {
             return val;
         }
@@ -36,17 +37,63 @@ public class TypeUtil {
             }
         }
 
-        if (String[].class == (type)) {
-            if (ctx == null) {
+        if(type.isArray()){
+            String[] ary = ctx.paramValues(key);
+            if(ary == null){
                 return null;
-            } else {
-                return ctx.paramValues(key);
+            }
+
+            int len = ary.length;
+
+            if (is(String[].class, type)) {
+                return ary;
+            } else if (is(short[].class, type)) {
+                short[] ary2 = new short[len];
+                for (int i = 0; i < len; i++) {
+                    ary2[i] = Short.parseShort(ary[i]);
+                }
+                return ary2;
+            } else if (is(int[].class, type) ) {
+                int[] ary2 = new int[len];
+                for (int i = 0; i < len; i++) {
+                    ary2[i] = Integer.parseInt(ary[i]);
+                }
+                return ary2;
+            } else if (is(long[].class, type)) {
+                long[] ary2 = new long[len];
+                for (int i = 0; i < len; i++) {
+                    ary2[i] = Long.parseLong(ary[i]);
+                }
+                return ary2;
+            }  else if (is(float[].class, type) ) {
+                float[] ary2 = new float[len];
+                for (int i = 0; i < len; i++) {
+                    ary2[i] = Float.parseFloat(ary[i]);
+                }
+                return ary2;
+            } else if (is(double[].class, type)) {
+                double[] ary2 = new double[len];
+                for (int i = 0; i < len; i++) {
+                    ary2[i] = Double.parseDouble(ary[i]);
+                }
+                return ary2;
+            } else if (is(Object[].class, type)) {
+                Class<?> c = type.getComponentType();
+                Object[] ary2 = (Object[])Array.newInstance(c,len);
+                for (int i = 0; i < len; i++) {
+                    ary2[i] = do_change(c, ary[i]);
+                }
+                return ary2;
             }
         }
 
+
+
         throw new RuntimeException("不支持类型:" + type.getName());
+    }
 
-
+    private static boolean is(Class<?> s, Class<?> t){
+        return s.isAssignableFrom(t);
     }
 
     public static Object change(Class<?> type, String val) {
@@ -76,6 +123,10 @@ public class TypeUtil {
     }
 
     public static Object do_change(Class<?> type, String val) {
+        if (Short.class == (type) || type == Short.TYPE) {
+            return Short.parseShort(val);
+        }
+
         if (Integer.class == (type) || type == Integer.TYPE) {
             return Integer.parseInt(val);
         }
