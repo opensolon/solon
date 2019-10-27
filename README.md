@@ -61,8 +61,8 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | Session插件 | 说明（可将boot插件的session，自动换掉） |
 | --- | --- |
-| org.noear:solon.extend.redissessionstate:1.0.3 | 18k，扩展插件,分布式session（其于redis构建） |
-| org.noear:solon.extend.localsessionstate:1.0.3 | 18k，扩展插件,本地session |
+| org.noear:solon.extend.redissessionstate:1.0.3.1 | 18k，扩展插件,分布式session（其于redis构建） |
+| org.noear:solon.extend.localsessionstate:1.0.3.1 | 18k，扩展插件,本地session |
 
 | 序列化插件 | 说明 |
 | --- | --- |
