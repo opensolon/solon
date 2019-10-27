@@ -43,14 +43,14 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.3.6</version>
             <scope>provided</scope>
         </dependency>
         
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>snack3</artifactId>
-            <version>3.0.14.4</version>
+            <version>3.0.14.5</version>
         </dependency>
     </dependencies>
 
