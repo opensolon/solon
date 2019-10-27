@@ -47,6 +47,7 @@
 
         <module>solon.extend.staticfiles</module>
         <module>solon.extend.redissessionstate</module>
+        <module>solon.extend.localsessionstate</module>
 
 
         <module>solon.extend.jetty.jsp</module>
