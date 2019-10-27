@@ -44,8 +44,9 @@
         <solon.boot.tomcat.ver>1.0.3</solon.boot.tomcat.ver>
 
         <solon.extend.staticfiles.ver>1.0.3</solon.extend.staticfiles.ver>
-        <solon.extend.redissessionstate.ver>1.0.3</solon.extend.redissessionstate.ver>
-        <solon.extend.localsessionstate.ver>1.0.3</solon.extend.localsessionstate.ver>
+
+        <solon.extend.redissessionstate.ver>1.0.3.1</solon.extend.redissessionstate.ver>
+        <solon.extend.localsessionstate.ver>1.0.3.1</solon.extend.localsessionstate.ver>
 
         <solon.extend.jetty.jsp.ver>1.0.3</solon.extend.jetty.jsp.ver>
         <solon.extend.undertow.jsp.ver>1.0.3</solon.extend.undertow.jsp.ver>

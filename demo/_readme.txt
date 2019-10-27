@@ -10,6 +10,8 @@
 ##### 1.0.3 更新记录::
 * 1.增加渲染管理器，通过它来实现多模板引擎共存效果（就是支持多视图共存）
 * 2.添加XSessionState接口，以实现session 可切换效果（如切换为分布式Session）
+* 2.1.添加LocalSessionState插件，嵌入式session（可为不支持session的服务添加）
+* 2.2.添加RedisSessionState插件，分布式session
 * 3.优化路径路由器
 * 4.XMethod 改为 enum 类型
 * 5.拦截器，添加多路拦截和排序支持
