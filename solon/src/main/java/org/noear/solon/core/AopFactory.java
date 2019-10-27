@@ -9,6 +9,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Aop 处理工厂（可以被继承重写）
@@ -90,18 +91,29 @@ public class AopFactory extends AopFactoryBase{
             XInject xi = f.getAnnotation(XInject.class);
             if (xi != null) {
                 if (XUtil.isEmpty(xi.value())) {
+                    //如果没有name,使用类型进行获取 bean
                     Aop.getAsyn(f.getType(), (bw) -> {
                         fieldSet(obj, f, bw.get());
                     });
                 } else {
-                    String val = Aop.prop().get(xi.value());
-                    if (XUtil.isEmpty(val) == false) {
-                        Object val2 = TypeUtil.change(f.getType(), val);
-                        fieldSet(obj, f, val2);
-                    } else {
-                        Aop.getAsyn(xi.value(), (bw) -> {
-                            fieldSet(obj, f, bw.get());
-                        });
+                    //如果有name
+                    if(Properties.class == f.getType()){
+                        //如果是 Properties，只尝试从配置获取
+                        Properties val = Aop.prop().getProp(xi.value());
+                        fieldSet(obj, f, val);
+                    }else{
+                        //如果是单值，先尝试获取配置
+                        String val = Aop.prop().get(xi.value());
+
+                        if (XUtil.isEmpty(val) == false) {
+                            Object val2 = TypeUtil.change(f.getType(), val);
+                            fieldSet(obj, f, val2);
+                        } else {
+                            //如果没有配置，则找bean
+                            Aop.getAsyn(xi.value(), (bw) -> {
+                                fieldSet(obj, f, bw.get());
+                            });
+                        }
                     }
                 }
             }
