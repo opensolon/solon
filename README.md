@@ -40,14 +40,14 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon-parent:1.0.3.5 | 框架版本管理 |
-| org.noear:solon:1.0.3.5 | 66k，主框架 |
+| org.noear:solon-parent:1.0.3.6 | 框架版本管理 |
+| org.noear:solon:1.0.3.6 | 70k，主框架 |
 
 ##### 插件
 
 | boot插件 | 说明 |
 | --- | --- |
-| org.noear:solon.boot.jlhttp:1.0.3 | 58k，boot插件,对jlhttp适配（不支持session） |
+| org.noear:solon.boot.jlhttp:1.0.3 | 58k，boot插件,对jlhttp适配（不自带session；可通过session插件提供支持） |
 | org.noear:solon.boot.jetty:1.0.3 | 1.5m，boot插件,对jetty适配 |
 | org.noear:solon.extend.jetty.jsp:1.0.3 | 6m，扩展插件,为jetty添加jsp支持（不建议使用jsp）（网友@khb提供） |
 | org.noear:solon.boot.undertow:1.0.3 | 3.7m，boot插件,对undertow适配（网友@tyk提供） |
@@ -59,14 +59,15 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 | --- | --- |
 | org.noear:solon.extend.staticfiles:1.0.3 | 8k，扩展插件,添加静态文件支持 |
 
-| 分布式Session支持插件 | 说明 |
+| Session插件 | 说明（可将boot插件的session，自动换掉） |
 | --- | --- |
-| org.noear:solon.extend.redissessionstate:1.0.3 | 18k，扩展插件,添加分布式session支持（1.其于redis构建；2.仍通过ctx上的接口使用） |
+| org.noear:solon.extend.redissessionstate:1.0.3.1 | 18k，扩展插件,分布式session（其于redis构建） |
+| org.noear:solon.extend.localsessionstate:1.0.3.1 | 18k，扩展插件,本地session |
 
 | 序列化插件 | 说明 |
 | --- | --- |
 | org.noear:solon.serialization.fastjson:1.0.3 | 0.5m，视图插件，对 fastjson 适配，输出json视图 或 序列化输出 |
-| org.noear:solon.serialization.snack3:1.0.3 | 61kb，视图插件，对 snack3 适配，输出json视图 或 序列化输出 |
+| org.noear:solon.serialization.snack3:1.0.3.1 | 61kb，视图插件，对 snack3 适配，输出json视图 或 序列化输出 |
 | org.noear:solon.serialization.jackson:1.0.3 | 1.7m，视图插件，对 jackson 适配，输出json视图 或 序列化输出 |
 
 | 视图插件 | 说明（可置多个视图插件） |
