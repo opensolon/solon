@@ -9,7 +9,6 @@
     <version>1.0.3.1</version>
     <packaging>jar</packaging>
 
-
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Java project for solon</description>
     <url>https://github.com/noear/solon</url>
