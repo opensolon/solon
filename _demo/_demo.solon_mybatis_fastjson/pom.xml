@@ -7,7 +7,7 @@
     <groupId>org.noear</groupId>
     <artifactId>_demo.solon_mybatis_fastjson</artifactId>
     <version>1.0.0</version>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <name>${artifactId}</name>
     <description>java project for solon demo</description>
@@ -15,7 +15,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.0.3.6</version>
+        <version>1.0.3.7</version>
     </parent>
 
     <dependencies>
@@ -41,6 +41,12 @@
             <artifactId>mybatis</artifactId>
             <version>3.5.3</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>3.3.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -53,6 +59,17 @@
                 <configuration>
                     <verbose>true</verbose>
                     <overwrite>true</overwrite>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <compilerArgument>-parameters</compilerArgument>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
         </plugins>

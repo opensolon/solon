@@ -4,7 +4,11 @@ import org.noear.solon.XApp;
 
 public class App {
     public static void main(String[] args){
-        XApp.start(App.class,args);
+        XApp app = XApp.start(App.class,args);
+
+        app.get("/",(c)->{
+            c.render("nav.htm", null);
+        });
 
         /*
         *  测试用到的表结构

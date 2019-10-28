@@ -6,6 +6,7 @@ import org.noear.solon.annotation.XSingleton;
 
 import org.noear.solon.core.ModelAndView;
 import webapp.dso.*;
+import webapp.model.AppxModel;
 
 @XSingleton(true)
 @XController
@@ -24,7 +25,7 @@ public class DemoController {
     public ModelAndView demo3() throws Exception{
         ModelAndView mv = new ModelAndView("view.ftl");
 
-        mv.put("map",DbUtil.db2.call("@webapp.demo.dso.appx_get").getMap());
+        mv.put("map",DbUtil.db2.call("@webapp.dso.appx_get").getMap());
 
         return mv;
     }
@@ -48,7 +49,7 @@ public class DemoController {
     }
 
     @XMapping("/demo6/json")
-    public Object demo6() throws Exception{
+    public AppxModel demo6() throws Exception{
         SqlMapper2 tmp = DbUtil.db2.mapper(SqlMapper2.class);
 
         return tmp.appx_get2(1);
@@ -59,7 +60,7 @@ public class DemoController {
         return
         DbUtil.db2.call("select * from appx where app_id = @app_id limit 1")
                 .set("app_id",1)
-                .getMap();
+                .getItem(AppxModel.class);
     }
 
     @XMapping("/demo7/json")
