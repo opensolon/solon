@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mapper namespace="webapp.dso" :db="db">
+  <sql id="appx_get" :return="Map" :note="随便取条数据">
+      select * from appx limit 1;
+  </sql>
+
+    <sql id="appx_get2" :return="Map" :note="根据id取条数据">
+        select * from appx where app_id=@{app_id:int} limit 1;
+    </sql>
+</mapper>
