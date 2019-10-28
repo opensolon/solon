@@ -21,7 +21,8 @@
     </properties>
 
     <modules>
-        <module>test</module>
+        <module>_demo</module>
+        <module>_test</module>
 
         <module>solon-parent</module>
 
