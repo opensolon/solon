@@ -16,7 +16,10 @@ public class ModelAndView extends LinkedHashMap{
     }
     public ModelAndView(String view, Map<String, ?> model) {
         this(view);
-        this.putAll(model);
+
+        if (model != null) {
+            this.putAll(model);
+        }
     }
 
     /*视图*/

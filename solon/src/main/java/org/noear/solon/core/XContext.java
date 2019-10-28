@@ -303,6 +303,12 @@ public abstract class XContext {
      */
     @XNote("渲染数据")
     public void render(Object obj) throws Throwable {
+        //ModelAndView or Data
         XRenderManager.global.render(obj, this);
+    }
+
+    @XNote("渲染数据")
+    public void render(String view, Map<String,?> data) throws Throwable {
+        XRenderManager.global.render(new ModelAndView(view,data), this);
     }
 }
