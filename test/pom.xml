@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.noear</groupId>
-    <artifactId>demo</artifactId>
+    <artifactId>test</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>demo</name>
-    <description>java project for solon demo</description>
+    <name>test</name>
+    <description>java project for solon test</description>
 
     <parent>
         <groupId>org.noear</groupId>
