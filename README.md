@@ -3,7 +3,7 @@
 
 # solon for java
 
-### 插件式微型Web框架(主框架66kb，根据需求组合不同的插件或扩展；支持jdk8)
+### 插件式微型Web框架(主框架70kb，根据需求组合不同的插件或扩展；支持jdk8)
 
 #### 框架实现效果
 * 1.实现boot（*类似spring boot）
@@ -40,8 +40,8 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon-parent:1.0.3.6 | 框架版本管理 |
-| org.noear:solon:1.0.3.6 | 70k，主框架 |
+| org.noear:solon-parent:1.0.3.7 | 框架版本管理 |
+| org.noear:solon:1.0.3.7 | 70k，主框架 |
 
 ##### 插件
 
