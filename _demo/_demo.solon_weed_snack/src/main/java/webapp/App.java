@@ -1,9 +1,14 @@
 package webapp;
 
 import org.noear.solon.XApp;
+import org.noear.weed.cache.ICacheServiceEx;
+import org.noear.weed.cache.LocalCache;
 
 public class App {
     public static void main(String[] args){
+
+        ICacheServiceEx cache = new LocalCache("test",60).nameSet("test");
+
         XApp app = XApp.start(App.class,args);
 
         app.get("/",(c)->{

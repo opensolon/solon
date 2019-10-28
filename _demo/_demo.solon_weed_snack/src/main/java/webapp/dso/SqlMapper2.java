@@ -11,10 +11,10 @@ public interface SqlMapper2 {
     @Sql("select app_id from appx limit 1")
     int appx_get() throws Exception;
 
-    @Sql("select * from appx where app_id = @app_id limit 1")
+    @Sql(value = "select * from appx where app_id = @app_id limit 1", caching = "test", cacheTag = "app_${app_id}")
     AppxModel appx_get2(int app_id) throws Exception;
 
-    @Sql("select * from ${tb} where app_id = @{app_id} limit 1")
+    @Sql(value = "select * from ${tb} where app_id = @{app_id} limit 1" , cacheClear = "test")
     Map<String,Object> appx_get3(String tb, int app_id) throws Exception;
 
     @Sql("select * from appx limit 4")
