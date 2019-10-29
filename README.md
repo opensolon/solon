@@ -9,7 +9,7 @@
 * 0.采用Handler + Context 基础架构（*类似spring webflux）
 * 1.实现boot（*类似spring boot；可切换各种boot插件）
 * 2.实现微框架（*类似javalin）
-* 3.实现mvc（*类似spring mvc；支持多模板同存）
+* 3.实现mvc（*类似spring mvc；可支持多模板同存）
 * 4.实现rpc（*类似dobbo）
 * 5.实现微服务架构（结合water治理平台）//此项目不涉及
 * 6.很强的可定制性（最近用solon搞了嵌入式FaaS引擎：https://github.com/noear/solonjt ）
