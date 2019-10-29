@@ -312,6 +312,8 @@ public class SmartHttpContext extends XContext {
 
     //jlhttp 需要先输出 header ，但是 header 后面可能会有变化；所以不直接使用  response.getOutputStream()
     protected void close() throws IOException{
+        _response.setHttpStatus(HttpStatus.valueOf(status()));
+        _response.setContentLength(outputStream.size());
         outputStream.writeTo(_response.getOutputStream());
         _response.getOutputStream().close();
     }

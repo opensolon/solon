@@ -44,11 +44,10 @@ public class SmartHttpContextHandler extends HttpHandle {
         }
 
         if (context.getHandled() && context.status() != 404) {
-            response.setHttpStatus(HttpStatus.valueOf(context.status()));
             context.close();
         } else {
+            context.status(404);
             context.output(URL_404);
-            response.setHttpStatus(HttpStatus.valueOf(404));
             context.close();
         }
     }
