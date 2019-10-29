@@ -37,7 +37,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <undertow-version>2.0.1.Final</undertow-version>
+        <undertow-version>2.0.27.Final</undertow-version>
         <version.org.jboss.logging.jboss-logging>3.3.1.Final</version.org.jboss.logging.jboss-logging>
         <version.org.jboss.logging.jboss-logging-tools>2.1.0.Final</version.org.jboss.logging.jboss-logging-tools>
         <version.org.jboss.logmanager>2.0.7.Final</version.org.jboss.logmanager>
