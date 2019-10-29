@@ -19,9 +19,10 @@
     </parent>
 
     <modules>
+        <module>_demo.solon_db_mybatis_fastjson</module>
+        <module>_demo.solon_db_weed_snack</module>
         <module>_demo.solon_helloworld</module>
-        <module>_demo.solon_mybatis_fastjson</module>
-        <module>_demo.solon_weed_snack</module>
+        <module>_demo.solon_mvc</module>
     </modules>
 
 </project>

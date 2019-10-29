@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.noear</groupId>
-    <artifactId>_demo.solon_weed_snack</artifactId>
+    <artifactId>_demo.solon_db_weed_snack</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 

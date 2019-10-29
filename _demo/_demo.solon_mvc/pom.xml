@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.noear</groupId>
-    <artifactId>_demo.solon_mybatis_fastjson</artifactId>
+    <artifactId>_demo.solon_mvc</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
@@ -23,44 +23,37 @@
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
         </dependency>
+        <!-- 添加http插件 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.boot.jlhttp</artifactId>
         </dependency>
+        <!-- 添加序列化插件（即提供json输出支持） -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.jackson</artifactId>
+            <artifactId>solon.serialization.snack3</artifactId>
         </dependency>
+        <!-- 添加序模板插件（即提供视图输出支持） -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.view.beetl</artifactId>
+        </dependency>
+        <!-- 静态文件插件（即提供静态文件支持） -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.extend.staticfiles</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>3.5.3</version>
-        </dependency>
 
         <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>3.3.1</version>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.14.4</version>
         </dependency>
     </dependencies>
 
     <build>
-        <finalName>${project.artifactId}</finalName>
         <plugins>
-            <plugin>
-                <groupId>org.mybatis.generator</groupId>
-                <artifactId>mybatis-generator-maven-plugin</artifactId>
-                <version>1.3.2</version>
-                <configuration>
-                    <verbose>true</verbose>
-                    <overwrite>true</overwrite>
-                </configuration>
-            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
