@@ -13,7 +13,7 @@ import java.time.LocalTime;
 import java.util.Date;
 
 public class TypeUtil {
-    private static final String date_def_format = "yyyy-MM-dd HH:mm:ss";
+    private static final SimpleDateFormat date_def_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     public static Object changeOfCtx(AnnotatedElement p, Class<?> type, String key, String val, XContext ctx) {
         if (String.class == (type)) {
@@ -32,17 +32,16 @@ public class TypeUtil {
 
         if (Date.class == (type) && p != null) {
             XParam xd = p.getAnnotation(XParam.class);
-            String format = null;
+            SimpleDateFormat format = null;
 
             if (xd != null && XUtil.isEmpty(xd.value()) == false) {
-                format = xd.value();
+                format = new SimpleDateFormat(xd.value());
             }else{
                 format = date_def_format;
             }
 
-            SimpleDateFormat fm = new SimpleDateFormat(format);
             try {
-                return fm.parse(val);
+                return format.parse(val);
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
@@ -122,9 +121,8 @@ public class TypeUtil {
         }
 
         if (Date.class == (type)) {
-            SimpleDateFormat fm = new SimpleDateFormat(date_def_format);
             try {
-                return fm.parse(val);
+                return date_def_format.parse(val);
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }

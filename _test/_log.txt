@@ -27,3 +27,4 @@
 * d.1.强化模型接收参数，不再需要 XParam 注解
 * d.2.强化数组接收参数，支持常见基础类型（String,short,int,long,float,double）
 * d.3.增加LocalTime,LocalDate,LocalDatetime注入支持
+* d.4.强化Date接收参数，如果是yyyy-MM-ddTHH:mm:ss

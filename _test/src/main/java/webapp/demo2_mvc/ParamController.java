@@ -57,7 +57,7 @@ public class ParamController {
 
     //支持时间参数（要加XParam指定格式）
     @XMapping("date")
-    public Date test_h2(XContext context, @XParam("yyyy-MM-dd") Date date) throws Exception{
-        return date;
+    public Object test_h2(XContext context, @XParam("yyyy-MM-dd") Date date, Date date2) throws Exception{
+        return date + " # " + date2;
     }
 }
