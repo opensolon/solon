@@ -65,7 +65,7 @@
 
         <solonclient.ver>1.0.3</solonclient.ver>
 
-        <weed3.ver>3.2.1.9</weed3.ver>
+        <weed3.ver>3.2.2</weed3.ver>
         <snack3.ver>3.0.14.5</snack3.ver>
         <fastjson.ver>1.2.29</fastjson.ver>
         <jedis.ver>2.9.0</jedis.ver>

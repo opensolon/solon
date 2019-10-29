@@ -19,6 +19,7 @@
     </parent>
 
     <modules>
+        <module>_demo.solon_helloworld</module>
         <module>_demo.solon_mybatis_fastjson</module>
         <module>_demo.solon_weed_snack</module>
     </modules>
