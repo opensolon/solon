@@ -6,9 +6,9 @@
 ### 插件式微型Web框架(主框架70kb，根据需求组合不同的插件或扩展；支持jdk8)
 
 #### 框架实现效果
-* 0.采用Handler + Context 基础架构（可能有点像现在的 spring webflux）
+* 0.采用Handler + Context 基础架构（*类似spring webflux）
 * 1.实现boot（*类似spring boot；可切换各种boot插件）
-* 2.实现微框架（*类似javalin；handler + context）
+* 2.实现微框架（*类似javalin）
 * 3.实现mvc（*类似spring mvc；支持多模板同存）
 * 4.实现rpc（*类似dobbo）
 * 5.实现微服务架构（结合water治理平台）//此项目不涉及
