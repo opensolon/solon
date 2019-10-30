@@ -20,7 +20,10 @@ public enum XMethod {
     CONNECT("CONNECT", 13),//用于代理进行传输
 
     //http all
-    HTTP("HTTP", 20);
+    HTTP("HTTP", 20),
+
+    //web socket
+    SEND("SEND", 21);
 
     public final String name;
     public final int code;

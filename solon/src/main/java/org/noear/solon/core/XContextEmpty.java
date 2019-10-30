@@ -90,7 +90,7 @@ public class XContextEmpty extends XContext {
     }
 
     @Override
-    public String body() throws IOException {
+    public String body()  {
         return null;
     }
 

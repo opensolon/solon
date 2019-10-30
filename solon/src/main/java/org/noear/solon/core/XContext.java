@@ -311,4 +311,12 @@ public abstract class XContext {
     public void render(String view, Map<String,?> data) throws Throwable {
         XRenderManager.global.render(new ModelAndView(view,data), this);
     }
+
+    //一些特殊的boot才有效
+    @XNote("提交响应")
+    protected void commit() throws IOException{}
+
+    //一些特殊的boot才有效
+    @XNote("关闭响应")
+    public void close() throws IOException{}
 }
