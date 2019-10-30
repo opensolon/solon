@@ -276,13 +276,13 @@ public class SmartHttpContext extends XContext {
 
     @Override
     public OutputStream outputStream() throws IOException{
-        return outputStream;
+        return _outputStream;
     }
 
     @Override
     public void output(String str) {
         try {
-            OutputStream out = outputStream;
+            OutputStream out = _outputStream;
 
             out.write(str.getBytes(_charset));
             out.flush();
@@ -294,7 +294,7 @@ public class SmartHttpContext extends XContext {
     @Override
     public void output(InputStream stream) {
         try {
-            OutputStream out = outputStream;
+            OutputStream out = _outputStream;
 
             byte[] buff = new byte[100];
             int rc = 0;
@@ -308,7 +308,7 @@ public class SmartHttpContext extends XContext {
         }
     }
 
-    protected ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    protected ByteArrayOutputStream _outputStream = new ByteArrayOutputStream();
 
 
     @Override
@@ -316,16 +316,6 @@ public class SmartHttpContext extends XContext {
         _response.getHeaders().replace(key, val);
     }
 
-
-    @Override
-    public void cookieSet(String key, String val, int maxAge) {
-        cookieSet(key, val, null, maxAge);
-    }
-
-    @Override
-    public void cookieSet(String key, String val, String domain, int maxAge) {
-        cookieSet(key, val, domain, "/", maxAge);
-    }
 
     @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
@@ -381,8 +371,8 @@ public class SmartHttpContext extends XContext {
     @Override
     protected void commit() throws IOException{
         _response.setHttpStatus(HttpStatus.valueOf(status()));
-        _response.setContentLength(outputStream.size());
-        outputStream.writeTo(_response.getOutputStream());
+        _response.setContentLength(_outputStream.size());
+        _outputStream.writeTo(_response.getOutputStream());
         _response.getOutputStream().close();
     }
 

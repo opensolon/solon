@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon.boot.smarthttp</artifactId>
-    <version>1.0.3-b2</version>
+    <version>1.0.3-b1</version>
     <packaging>jar</packaging>
 
 
@@ -24,7 +24,7 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
-            <version>1.0.3.9</version>
+            <version>1.0.3.10</version>
             <scope>provided</scope>
         </dependency>
 
