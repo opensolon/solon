@@ -30,7 +30,6 @@
         <module>solon.boot.jetty</module>
         <module>solon.boot.jlhttp</module>
         <module>solon.boot.smarthttp</module>
-        <module>solon.boot.smartsocket</module>
         <module>solon.boot.websocket</module>
         <module>solon.boot.undertow</module>
         <module>solon.boot.tomcat</module>
