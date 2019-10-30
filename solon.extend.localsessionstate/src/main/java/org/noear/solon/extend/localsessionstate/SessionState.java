@@ -70,29 +70,27 @@ public class SessionState implements XSessionState {
 
     @Override
     public String sessionId() {
-        if(_sessionId != null){
-            return _sessionId;
-        }
-
-        String skey = cookieGet(SESSIONID_KEY);
-        String smd5 = cookieGet(SESSIONID_MD5());
-
-        if(_sessionId == null) {
-            if (XUtil.isEmpty(skey) == false && XUtil.isEmpty(smd5) == false) {
-                if (EncryptUtil.md5(skey + SESSIONID_encrypt).equals(smd5)) {
-                    _sessionId = skey;
-                }
-            }
-        }
-
-        if(_sessionId == null) {
-            skey = IDUtil.guid();
-            cookieSet(SESSIONID_KEY, skey);
-            cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_encrypt));
-            _sessionId = skey;
+        if(_sessionId == null){
+            _sessionId = sessionId_get();
         }
 
         return _sessionId;
+    }
+
+    private String sessionId_get() {
+        String skey = cookieGet(SESSIONID_KEY);
+        String smd5 = cookieGet(SESSIONID_MD5());
+
+        if(XUtil.isEmpty(skey)==false && XUtil.isEmpty(smd5)==false) {
+            if (EncryptUtil.md5(skey + SESSIONID_encrypt).equals(smd5)) {
+                return skey;
+            }
+        }
+
+        skey = IDUtil.guid();
+        cookieSet(SESSIONID_KEY,skey);
+        cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_encrypt));
+        return skey;
     }
 
     @Override
