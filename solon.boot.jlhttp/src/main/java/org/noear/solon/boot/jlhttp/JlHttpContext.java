@@ -160,11 +160,6 @@ public class JlHttpContext extends XContext {
     }
 
     @Override
-    public void paramSet(String key, String val) {
-        paramMap().put(key, val);
-    }
-
-    @Override
     public List<XFile> files(String key) throws Exception {
         if (isMultipartFormData()){
             List<XFile> temp = _fileMap.get(key);

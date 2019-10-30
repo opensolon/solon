@@ -147,6 +147,8 @@ public class JtHttpContext extends XContext{
         }
     }
 
+
+    private XMap _paramMap;
     @Override
     public XMap paramMap() {
         if(_paramMap == null){
@@ -163,12 +165,7 @@ public class JtHttpContext extends XContext{
 
         return _paramMap;
     }
-    private XMap _paramMap;
 
-    @Override
-    public void paramSet(String key, String val) {
-        paramMap().put(key, val);
-    }
 
     @Override
     public List<XFile> files(String key) throws Exception{

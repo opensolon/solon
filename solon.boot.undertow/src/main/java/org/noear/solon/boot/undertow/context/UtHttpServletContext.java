@@ -292,20 +292,6 @@ public class UtHttpServletContext extends XContext {
     }
 
     @Override
-    public void cookieSet(String key, String val, int maxAge) {
-        Cookie c = new Cookie(key, val);
-        c.setPath("/");
-        c.setMaxAge(maxAge);
-
-        _response.addCookie(c);
-    }
-
-    @Override
-    public void cookieSet(String key, String val, String domain, int maxAge) {
-        cookieSet(key, val, domain, "/", maxAge);
-    }
-
-    @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
         Cookie c = new Cookie(key, val);
         c.setPath(path);

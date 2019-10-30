@@ -133,11 +133,6 @@ public class NettyHttpContext extends XContext {
     }
 
     @Override
-    public void paramSet(String key, String val) {
-        paramMap().put(key,val);
-    }
-
-    @Override
     public List<XFile> files(String key) throws Exception {
         return _request_parse.fileMap.get(key);
     }
@@ -285,15 +280,6 @@ public class NettyHttpContext extends XContext {
         if (domain != null) {
             sb.append("domain=").append(domain.toLowerCase()).append(";");
         }
-
-        _response.headers().add(SET_COOKIE, sb.toString());
-    }
-
-    @Override
-    public void cookieRemove(String key) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(key).append("=;");
-        sb.append("max-age=0;");
 
         _response.headers().add(SET_COOKIE, sb.toString());
     }

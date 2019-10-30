@@ -149,22 +149,6 @@ public class SmartHttpContext extends XContext {
         }
     }
 
-    @Override
-    public int paramAsInt(String key) {
-        return Integer.parseInt(param(key,"0"));
-    }
-
-    @Override
-    public long paramAsLong(String key) {
-        return Long.parseLong(param(key,"0"));
-    }
-
-    @Override
-    public double paramAsDouble(String key) {
-        return Double.parseDouble(param(key,"0"));
-    }
-
-
     private XMap _paramMap;
     @Override
     public XMap paramMap() {
@@ -179,11 +163,6 @@ public class SmartHttpContext extends XContext {
         }
 
         return _paramMap;
-    }
-
-    @Override
-    public void paramSet(String key, String val) {
-        paramMap().put(key, val);
     }
 
     @Override
@@ -334,11 +313,6 @@ public class SmartHttpContext extends XContext {
         }
 
         _response.setHeader("Set-Cookie", sb.toString());
-    }
-
-    @Override
-    public void cookieRemove(String key) {
-        cookieSet(key,"",0);
     }
 
     @Override
