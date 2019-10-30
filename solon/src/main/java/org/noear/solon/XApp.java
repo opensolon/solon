@@ -323,6 +323,13 @@ public class XApp implements XHandler {
     }
 
     /**
+     * 添加SEND方法的监听（on web send）
+     */
+    public void send(String path, XHandler handler){
+        add(path, XMethod.SEND, handler);
+    }
+
+    /**
      * XApp Handler
      */
     private XHandler _handler = null;
