@@ -7,7 +7,7 @@
 
 #### 框架实现效果
 * 0.采用Handler + Context 基础架构（*类似spring webflux）
-* 1.实现boot（*类似spring boot；可切换各种boot插件）
+* 1.实现boot（*类似spring boot；可切换各种boot插件；支持http,websocket,socket）
 * 2.实现微框架（*类似javalin）
 * 3.实现mvc（*类似spring mvc；可支持多模板同存）
 * 4.实现rpc（*类似dobbo）
