@@ -309,11 +309,7 @@ public class JlHttpContext extends XContext {
 
     protected ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-    //jlhttp 需要先输出 header ，但是 header 后面可能会有变化；所以不直接使用  response.getOutputStream()
-    protected void close() throws IOException{
-        outputStream.writeTo(_response.getOutputStream());
-        _response.getOutputStream().close();
-    }
+
 
     @Override
     public void headerSet(String key, String val) {
@@ -380,6 +376,14 @@ public class JlHttpContext extends XContext {
     public void status(int status) {
         _status = status;
         //_response.sendHeaders(status); //jlhttp 的 状态，由 上下文代理 负责
+    }
+
+
+    //jlhttp 需要先输出 header ，但是 header 后面可能会有变化；所以不直接使用  response.getOutputStream()
+    @Override
+    protected void commit() throws IOException{
+        outputStream.writeTo(_response.getOutputStream());
+        _response.getOutputStream().close();
     }
 
 }

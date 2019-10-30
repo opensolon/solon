@@ -44,7 +44,7 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
                 response.sendHeaders(context.status());
             }
 
-            context.close();
+            context.commit();
 
             return 0;
         } else {

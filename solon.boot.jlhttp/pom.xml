@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon.boot.jlhttp</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.3.2</version>
     <packaging>jar</packaging>
 
 
@@ -43,7 +43,7 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.3.9</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -138,15 +138,6 @@
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
