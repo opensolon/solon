@@ -8,6 +8,6 @@ public class App {
         XApp.start(App.class, args);
 
         //web socket test
-        WsDemoClientTest.test();
+        //WsDemoClientTest.test();
     }
 }
