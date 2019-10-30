@@ -25,13 +25,13 @@ public class WsServer extends WebSocketServer {
     }
 
     @Override
-    public void onOpen(WebSocket conn, ClientHandshake clientHandshake) {
-
+    public void onOpen(WebSocket conn, ClientHandshake shake) {
+        System.out.println(shake.getResourceDescriptor());
     }
 
     @Override
     public void onClose(WebSocket conn, int i, String s, boolean b) {
-
+        System.out.println("关了");
     }
 
     @Override

@@ -66,7 +66,7 @@ public class WsContext extends XContextEmpty {
 
     @Override
     public String url() {
-        return "/";
+        return _socket.getResourceDescriptor();
     }
 
     @Override

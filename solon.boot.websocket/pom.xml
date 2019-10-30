@@ -54,12 +54,6 @@
             <artifactId>Java-WebSocket</artifactId>
             <version>1.4.0</version>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>javax.websocket</groupId>-->
-<!--            <artifactId>javax.websocket-api</artifactId>-->
-<!--            <version>1.1</version>-->
-<!--        </dependency>-->
     </dependencies>
 
     <profiles>
@@ -152,15 +146,6 @@
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
