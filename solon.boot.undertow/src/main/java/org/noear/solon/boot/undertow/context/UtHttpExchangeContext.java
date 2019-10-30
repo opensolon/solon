@@ -40,32 +40,34 @@ public class UtHttpExchangeContext extends XContext {
         _response = response;
         _exchange = exchange;
 
-        sessionStateInit(new XSessionState() {
-            @Override
-            public String sessionId() {
-                SessionManager sm = _exchange.getAttachment(SessionManager.ATTACHMENT_KEY);
-                SessionConfig sc = _exchange.getAttachment(SessionConfig.ATTACHMENT_KEY);
-                return sm.getSession(_exchange, sc).getId();
-            }
+        if(sessionState().replaceable()) {
+            sessionStateInit(new XSessionState() {
+                @Override
+                public String sessionId() {
+                    SessionManager sm = _exchange.getAttachment(SessionManager.ATTACHMENT_KEY);
+                    SessionConfig sc = _exchange.getAttachment(SessionConfig.ATTACHMENT_KEY);
+                    return sm.getSession(_exchange, sc).getId();
+                }
 
-            @Override
-            public Object sessionGet(String key) {
-                SessionConfig sc = _exchange.getAttachment(SessionConfig.ATTACHMENT_KEY);
+                @Override
+                public Object sessionGet(String key) {
+                    SessionConfig sc = _exchange.getAttachment(SessionConfig.ATTACHMENT_KEY);
 
-                return _exchange
-                        .getAttachment(SessionManager.ATTACHMENT_KEY)
-                        .getSession(_exchange, sc).getAttribute(key);
-            }
+                    return _exchange
+                            .getAttachment(SessionManager.ATTACHMENT_KEY)
+                            .getSession(_exchange, sc).getAttribute(key);
+                }
 
-            @Override
-            public void sessionSet(String key, Object val) {
-                SessionConfig sc = _exchange.getAttachment(SessionConfig.ATTACHMENT_KEY);
+                @Override
+                public void sessionSet(String key, Object val) {
+                    SessionConfig sc = _exchange.getAttachment(SessionConfig.ATTACHMENT_KEY);
 
-                _exchange.getAttachment(SessionManager.ATTACHMENT_KEY)
-                        .getSession(_exchange, sc)
-                        .setAttribute(key, val);
-            }
-        });
+                    _exchange.getAttachment(SessionManager.ATTACHMENT_KEY)
+                            .getSession(_exchange, sc)
+                            .setAttribute(key, val);
+                }
+            });
+        }
     }
 
     @Override
@@ -189,21 +191,6 @@ public class UtHttpExchangeContext extends XContext {
         } else {
             return temp;
         }
-    }
-
-    @Override
-    public int paramAsInt(String key) {
-        return Integer.parseInt(param(key, "0"));
-    }
-
-    @Override
-    public long paramAsLong(String key) {
-        return Long.parseLong(param(key, "0"));
-    }
-
-    @Override
-    public double paramAsDouble(String key) {
-        return Double.parseDouble(param(key, "0"));
     }
 
     @Override
@@ -385,41 +372,17 @@ public class UtHttpExchangeContext extends XContext {
     }
 
     @Override
-    public void cookieSet(String key, String val, int maxAge) {
-        Cookie c = new Cookie(key, val);
-        c.setPath("/");
-        c.setMaxAge(maxAge);
-
-        if (_response instanceof HttpServletResponse) {
-            ((HttpServletResponse) _response).addCookie(c);
-        } else {
-            _exchange.setResponseCookie(new CookieImpl(key, val).setMaxAge(maxAge));
-        }
-
-    }
-
-    @Override
-    public void cookieSet(String key, String val, String domain, int maxAge) {
-        cookieSet(key, val, domain, "/", maxAge);
-    }
-
-    @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
-        Cookie c = new Cookie(key, val);
+        CookieImpl c = new CookieImpl(key, val);
+
         c.setPath(path);
         c.setMaxAge(maxAge);
-        c.setDomain(domain);
 
-        cookieSet(key, val, maxAge);
-    }
+        if (domain != null) {
+            c.setDomain(domain);
+        }
 
-    @Override
-    public void cookieRemove(String key) {
-        Cookie c = new Cookie(key, "");
-        c.setPath("/");
-        c.setMaxAge(0);
-
-        _exchange.setResponseCookie(new CookieImpl("key").setMaxAge(0));
+        _exchange.setResponseCookie(c);
     }
 
     @Override

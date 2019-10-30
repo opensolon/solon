@@ -31,22 +31,24 @@ public class UtHttpServletContext extends XContext {
         _response = response;
         _exchange = exchange;
 
-        sessionStateInit(new XSessionState() {
-            @Override
-            public String sessionId() {
-                return _request.getRequestedSessionId();
-            }
+        if(sessionState().replaceable()) {
+            sessionStateInit(new XSessionState() {
+                @Override
+                public String sessionId() {
+                    return _request.getRequestedSessionId();
+                }
 
-            @Override
-            public Object sessionGet(String key) {
-                return _request.getSession().getAttribute(key);
-            }
+                @Override
+                public Object sessionGet(String key) {
+                    return _request.getSession().getAttribute(key);
+                }
 
-            @Override
-            public void sessionSet(String key, Object val) {
-                _request.getSession().setAttribute(key, val);
-            }
-        });
+                @Override
+                public void sessionSet(String key, Object val) {
+                    _request.getSession().setAttribute(key, val);
+                }
+            });
+        }
     }
 
     @Override
@@ -140,21 +142,6 @@ public class UtHttpServletContext extends XContext {
     }
 
     @Override
-    public int paramAsInt(String key) {
-        return Integer.parseInt(param(key, "0"));
-    }
-
-    @Override
-    public long paramAsLong(String key) {
-        return Long.parseLong(param(key, "0"));
-    }
-
-    @Override
-    public double paramAsDouble(String key) {
-        return Double.parseDouble(param(key, "0"));
-    }
-
-    @Override
     public XMap paramMap() {
         if (_paramMap == null) {
             _paramMap = new XMap();
@@ -173,10 +160,6 @@ public class UtHttpServletContext extends XContext {
 
     private XMap _paramMap;
 
-    @Override
-    public void paramSet(String key, String val) {
-        paramMap().put(key, val);
-    }
 
     @Override
     public List<XFile> files(String key) throws Exception {
@@ -254,34 +237,6 @@ public class UtHttpServletContext extends XContext {
 
     private XMap _headerMap;
 
-    /* @Override
-     public String sessionId() {
-
-         SessionManager sm = _exchange.getAttachment(SessionManager.ATTACHMENT_KEY);
-         SessionConfig sc = _exchange.getAttachment(SessionConfig.ATTACHMENT_KEY);
-         return sm.getSession(_exchange, sc).getId();
-     }
-
-     @Override
-     public Object session(String key) {
-         SessionConfig sc = _exchange.getAttachment(SessionConfig.ATTACHMENT_KEY);
-
-         return _exchange
-                 .getAttachment(SessionManager.ATTACHMENT_KEY)
-                 .getSession(_exchange, sc).getAttribute(key);
-     }
-
-     @Override
-     public void sessionSet(String key, Object val) {
-         SessionConfig sc = _exchange.getAttachment(SessionConfig.ATTACHMENT_KEY);
-
-         _exchange.getAttachment(SessionManager.ATTACHMENT_KEY)
-                 .getSession(_exchange, sc)
-                 .setAttribute(key, val);
-
-     }*/
-    //====================================
-
     @Override
     public Object response() {
         return _response;
@@ -355,18 +310,12 @@ public class UtHttpServletContext extends XContext {
         Cookie c = new Cookie(key, val);
         c.setPath(path);
         c.setMaxAge(maxAge);
-        c.setDomain(domain);
+        if (domain != null) {
+            c.setDomain(domain);
+        }
         _response.addCookie(c);
     }
 
-    @Override
-    public void cookieRemove(String key) {
-        Cookie c = new Cookie(key, "");
-        c.setPath("/");
-        c.setMaxAge(0);
-
-        _response.addCookie(c);
-    }
 
     @Override
     public void redirect(String url)  {
