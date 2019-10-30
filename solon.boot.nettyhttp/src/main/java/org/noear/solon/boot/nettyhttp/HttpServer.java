@@ -1,7 +1,6 @@
 package org.noear.solon.boot.nettyhttp;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -26,9 +25,6 @@ import java.net.InetSocketAddress;
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new HttpServerInitializer());
 
-        ChannelFuture f = bootstrap.bind(new InetSocketAddress(port)).sync();
-
-        System.out.println("NettyHttpServer start up on port : " + port);
-        //f.channel().closeFuture().sync();
+       bootstrap.bind(new InetSocketAddress(port)).sync();
     }
 }
