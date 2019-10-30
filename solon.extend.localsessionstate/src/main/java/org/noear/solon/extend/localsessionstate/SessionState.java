@@ -9,6 +9,9 @@ import org.noear.solon.extend.localsessionstate.util.IDUtil;
 import org.noear.solon.extend.localsessionstate.util.ScheduledStore;
 
 
+/**
+ * 它会是个单例，不能有上下文数据
+ * */
 public class SessionState implements XSessionState {
     public final static String SESSIONID_KEY = "SOLONID";
     public final static String SESSIONID_MD5(){return SESSIONID_KEY+"2";}
