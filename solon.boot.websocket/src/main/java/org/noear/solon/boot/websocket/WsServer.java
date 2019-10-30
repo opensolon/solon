@@ -21,7 +21,7 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onStart() {
-
+        System.out.println("开了");
     }
 
     @Override
@@ -37,24 +37,21 @@ public class WsServer extends WebSocketServer {
     @Override
     public void onMessage(WebSocket conn, String data) {
         try {
-            do_onMessage(conn, data.getBytes("utf-8"));
-        }catch (Exception ex){
+            _contextHandler.handle(conn, data.getBytes("UTF-8"), true);
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     @Override
     public void onMessage(WebSocket conn, ByteBuffer data) {
-        do_onMessage(conn, data.array());
-    }
-
-    public void do_onMessage(WebSocket socket, byte[] message) {
         try {
-            _contextHandler.handle(socket, message);
+            _contextHandler.handle(conn, data.array(), false);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
+
 
 
 

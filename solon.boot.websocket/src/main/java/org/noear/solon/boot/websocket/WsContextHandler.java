@@ -14,9 +14,9 @@ public class WsContextHandler {
         this.debug = xapp.prop().argx().getInt("debug") == 1;
     }
 
-    public void handle(WebSocket socket, byte[] message) {
+    public void handle(WebSocket socket, byte[] message, boolean messageIsString) {
 
-        WsContext context = new WsContext(socket, message);
+        WsContext context = new WsContext(socket, message, messageIsString);
 
         try {
             xapp.handle(context);
@@ -25,6 +25,10 @@ public class WsContextHandler {
             ex.printStackTrace(new PrintWriter(context.outputStream()));
         }
 
-        context.commit();
+        try {
+            context.commit();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 }

@@ -18,10 +18,12 @@ public class WsContext extends XContextEmpty {
     private InetSocketAddress _inetSocketAddress;
     private WebSocket _socket;
     private byte[] _message;
-    public WsContext(WebSocket socket, byte[] message){
+    private boolean _messageIsString;
+    public WsContext(WebSocket socket, byte[] message, boolean messageIsString){
         _socket = socket;
         _message = message;
         _inetSocketAddress = socket.getRemoteSocketAddress();
+        _messageIsString = messageIsString;
     }
 
     @Override
@@ -80,7 +82,7 @@ public class WsContext extends XContextEmpty {
     }
 
     @Override
-    public String body() throws IOException {
+    public String body()  {
         return new String(_message, _charset);
     }
 
@@ -136,8 +138,19 @@ public class WsContext extends XContextEmpty {
         }
     }
 
-    public void commit(){
-        _socket.send(_outputStream.toByteArray());
+    @Override
+    protected void commit() throws IOException {
+        if (_socket.isOpen()) {
+            if (_messageIsString) {
+                _socket.send(new String(_outputStream.toByteArray()));
+            } else {
+                _socket.send(_outputStream.toByteArray());
+            }
+        }
     }
 
+    @Override
+    public void close() throws IOException {
+        _socket.close();
+    }
 }
