@@ -16,7 +16,7 @@ class HttpServerInitializer  extends ChannelInitializer<SocketChannel> {
 
         pipeline.addLast(new HttpServerCodec());// http 编解码
         pipeline.addLast(new StringDecoder(Charset.forName("UTF-8")));
-        pipeline.addLast("httpAggregator", new HttpObjectAggregator(HttpServerConfig.maxContentLength)); // http 消息聚合器                                                                     512*1024为接收的最大contentlength
+        pipeline.addLast("httpAggregator", new HttpObjectAggregator(XServerProp.request_maxRequestSize)); // http 消息聚合器                                                                     512*1024为接收的最大contentlength
         pipeline.addLast(new HttpRequestHandler());// 请求处理器
 
     }
