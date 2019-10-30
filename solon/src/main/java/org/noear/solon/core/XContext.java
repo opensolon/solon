@@ -171,12 +171,14 @@ public abstract class XContext {
     public abstract XMap headerMap();
 
     /**SESSION_STATE对象*/
-    @XNote("SESSION_STATE对象")
     private XSessionState _sessionState = XSessionStateDefault.global;
     protected void sessionStateInit(XSessionState sessionState){
-        if(_sessionState == null || _sessionState.replaceable()){
+        if(_sessionState.replaceable()){
             _sessionState = sessionState;
         }
+    }
+    protected XSessionState sessionState(){
+        return _sessionState;
     }
 
     /**获取SESSION_ID*/
