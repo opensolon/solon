@@ -15,10 +15,14 @@ public class SessionState implements XSessionState {
     public final static String SESSIONID_encrypt = "&L8e!@T0";
 
     private final ScheduledStore _store;
-    public SessionState(){
+    public SessionState() {
+        if (XServerProp.session_timeout > 0) {
+            _expiry = XServerProp.session_timeout;
+        }
 
-        _expiry = Aop.prop().getInt("solon.session.state.expiry",_expiry);
-        _domain = Aop.prop().get("solon.session.state.domain",_domain);
+        if (XServerProp.session_state_domain != null) {
+            _domain = XServerProp.session_state_domain;
+        }
 
         _store = new ScheduledStore(_expiry);
 
@@ -62,21 +66,33 @@ public class SessionState implements XSessionState {
         return false;
     }
 
+    private String _sessionId;
+
     @Override
     public String sessionId() {
+        if(_sessionId != null){
+            return _sessionId;
+        }
+
         String skey = cookieGet(SESSIONID_KEY);
         String smd5 = cookieGet(SESSIONID_MD5());
 
-        if(XUtil.isEmpty(skey)==false && XUtil.isEmpty(smd5)==false) {
-            if (EncryptUtil.md5(skey + SESSIONID_encrypt).equals(smd5)) {
-                return skey;
+        if(_sessionId == null) {
+            if (XUtil.isEmpty(skey) == false && XUtil.isEmpty(smd5) == false) {
+                if (EncryptUtil.md5(skey + SESSIONID_encrypt).equals(smd5)) {
+                    _sessionId = skey;
+                }
             }
         }
 
-        skey = IDUtil.guid();
-        cookieSet(SESSIONID_KEY,skey);
-        cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_encrypt));
-        return skey;
+        if(_sessionId == null) {
+            skey = IDUtil.guid();
+            cookieSet(SESSIONID_KEY, skey);
+            cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_encrypt));
+            _sessionId = skey;
+        }
+
+        return _sessionId;
     }
 
     @Override

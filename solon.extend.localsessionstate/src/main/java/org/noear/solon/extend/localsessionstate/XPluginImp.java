@@ -10,6 +10,8 @@ import org.noear.solon.core.XSessionStateDefault;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
+        XServerProp.init();
+
         SessionState sessionState = new SessionState();
 
         XSessionStateDefault.global = sessionState;
