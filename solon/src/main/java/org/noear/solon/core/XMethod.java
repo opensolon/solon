@@ -19,10 +19,10 @@ public enum XMethod {
     OPTIONS("OPTIONS", 12), //获取服务器支持的HTTP请求方法
     CONNECT("CONNECT", 13),//用于代理进行传输
 
-    //http general all
+    /** http general all */
     HTTP("HTTP", 20),
 
-    //web socket
+    /** web socket send */
     SEND("SEND", 31);
 
     public final String name;
