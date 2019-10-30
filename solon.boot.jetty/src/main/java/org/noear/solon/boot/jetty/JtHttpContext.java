@@ -89,7 +89,7 @@ public class JtHttpContext extends XContext{
 
     @Override
     public String path() {
-        return _request.getRequestURI();
+        return uri().getPath();
     }
 
     @Override

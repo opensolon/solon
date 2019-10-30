@@ -66,12 +66,13 @@ public class SessionState implements XSessionState {
         return false;
     }
 
-    private String _sessionId;
-
     @Override
     public String sessionId() {
+        String _sessionId = XContext.current().attr("sessionId",null);
+
         if(_sessionId == null){
             _sessionId = sessionId_get();
+            XContext.current().attrSet("sessionId",_sessionId);
         }
 
         return _sessionId;

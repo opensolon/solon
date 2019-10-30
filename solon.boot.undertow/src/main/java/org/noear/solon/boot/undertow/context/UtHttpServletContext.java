@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URI;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -84,7 +85,7 @@ public class UtHttpServletContext extends XContext {
 
     @Override
     public String path() {
-        return _request.getRequestURI();
+        return uri().getPath();
     }
 
     @Override

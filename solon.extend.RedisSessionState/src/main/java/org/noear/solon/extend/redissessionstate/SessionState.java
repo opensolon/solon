@@ -12,6 +12,9 @@ import org.noear.solon.extend.redissessionstate.util.EncryptUtil;
 import org.noear.solon.extend.redissessionstate.util.IDUtil;
 import org.noear.solon.extend.redissessionstate.util.RedisX;
 
+/**
+ * 它会是个单例，不能有上下文数据
+ * */
 public class SessionState implements XSessionState {
     public final static String SESSIONID_KEY = "SOLONID";
     public final static String SESSIONID_MD5(){return SESSIONID_KEY+"2";}
@@ -19,14 +22,19 @@ public class SessionState implements XSessionState {
 
     private final RedisX redisX;
     public SessionState(){
-        XMap map = Aop.prop().getXmap("solon.session.state.redis");
+        XMap map = Aop.prop().getXmap("server.session.state.redis");
 
         if(map.size() < 4){
             throw new RuntimeException("Error configuration: solon.session.state.redis");
         }
 
-        _expiry = Aop.prop().getInt("solon.session.state.expiry",_expiry);
-        _domain = Aop.prop().get("solon.session.state.domain",_domain);
+        if (XServerProp.session_timeout > 0) {
+            _expiry = XServerProp.session_timeout;
+        }
+
+        if (XServerProp.session_state_domain != null) {
+            _domain = XServerProp.session_state_domain;
+        }
 
         redisX = new RedisX(
                 map.get("server"),
@@ -76,6 +84,17 @@ public class SessionState implements XSessionState {
 
     @Override
     public String sessionId() {
+        String _sessionId = XContext.current().attr("sessionId",null);
+
+        if(_sessionId == null){
+            _sessionId = sessionId_get();
+            XContext.current().attrSet("sessionId",_sessionId);
+        }
+
+        return _sessionId;
+    }
+
+    private String sessionId_get() {
         String skey = cookieGet(SESSIONID_KEY);
         String smd5 = cookieGet(SESSIONID_MD5());
 
