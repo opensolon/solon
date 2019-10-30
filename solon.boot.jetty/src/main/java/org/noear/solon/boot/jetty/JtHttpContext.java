@@ -25,22 +25,25 @@ public class JtHttpContext extends XContext{
         _request = request;
         _response = response;
 
-        sessionStateInit(new XSessionState() {
-            @Override
-            public String sessionId() {
-                return _request.getRequestedSessionId();
-            }
+        if(sessionState().replaceable()){
+            sessionStateInit(new XSessionState() {
+                @Override
+                public String sessionId() {
+                    return _request.getRequestedSessionId();
+                }
 
-            @Override
-            public Object sessionGet(String key) {
-                return _request.getSession().getAttribute(key);
-            }
+                @Override
+                public Object sessionGet(String key) {
+                    return _request.getSession().getAttribute(key);
+                }
 
-            @Override
-            public void sessionSet(String key, Object val) {
-                _request.getSession().setAttribute(key,val);
-            }
-        });
+                @Override
+                public void sessionSet(String key, Object val) {
+                    _request.getSession().setAttribute(key,val);
+                }
+            });
+        }
+
 
         //文件上传需要
         if (isMultipart()) {
@@ -142,21 +145,6 @@ public class JtHttpContext extends XContext{
         }else{
             return temp;
         }
-    }
-
-    @Override
-    public int paramAsInt(String key) {
-        return Integer.parseInt(param(key,"0"));
-    }
-
-    @Override
-    public long paramAsLong(String key) {
-        return Long.parseLong(param(key,"0"));
-    }
-
-    @Override
-    public double paramAsDouble(String key) {
-        return Double.parseDouble(param(key,"0"));
     }
 
     @Override
@@ -321,34 +309,13 @@ public class JtHttpContext extends XContext{
     }
 
     @Override
-    public void cookieSet(String key, String val, int maxAge) {
-        Cookie c = new Cookie(key,val);
-        c.setPath("/");
-        c.setMaxAge(maxAge);
-
-        _response.addCookie(c);
-    }
-
-    @Override
-    public void cookieSet(String key, String val, String domain, int maxAge) {
-        cookieSet(key,val,domain,"/",maxAge);
-    }
-
-    @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
         Cookie c = new Cookie(key,val);
         c.setPath(path);
         c.setMaxAge(maxAge);
-        c.setDomain(domain);
-        _response.addCookie(c);
-    }
-
-    @Override
-    public void cookieRemove(String key) {
-        Cookie c = new Cookie(key,"");
-        c.setPath("/");
-        c.setMaxAge(0);
-
+        if(domain != null) {
+            c.setDomain(domain);
+        }
         _response.addCookie(c);
     }
 
