@@ -15,7 +15,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.0.3.8</version>
+        <version>1.0.3.9</version>
     </parent>
 
     <dependencies>
@@ -33,6 +33,12 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.boot.smarthttp</artifactId>
+            <version>1.0.3-b1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.websocket</artifactId>
             <version>1.0.3-b1</version>
         </dependency>
 
