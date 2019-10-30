@@ -8,8 +8,10 @@ public class App {
         XApp app = XApp.start(App.class, args);
 
 
+        //web socket send 监听
 //        app.send("/seb/test",(c)->{
-//            c.output("收到了...");
+//            String msg = c.body();
+//            c.output("收到了...:" + msg);
 //        });
 
         //web socket test
