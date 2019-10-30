@@ -5,7 +5,7 @@ import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XHandler;
 
-@XMapping("/demoa/test")
+@XMapping("/demoa/trigger")
 @XController
 public class demoa_handler implements XHandler {
     @Override

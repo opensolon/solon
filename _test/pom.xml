@@ -32,9 +32,15 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.smarthttp</artifactId>
-            <version>1.0.3-b1</version>
+            <artifactId>solon.boot.nettyhttp</artifactId>
+            <version>1.0.3-b2</version>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.smarthttp</artifactId>-->
+<!--            <version>1.0.3-b1</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.noear</groupId>
@@ -81,10 +87,10 @@
 <!--            <groupId>org.noear</groupId>-->
 <!--            <artifactId>solon.extend.redissessionstate</artifactId>-->
 <!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.extend.localsessionstate</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.localsessionstate</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
