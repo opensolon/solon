@@ -7,7 +7,7 @@
     <groupId>org.noear</groupId>
     <artifactId>solon.extend.jetty.jsp</artifactId>
     <version>1.0.3.2</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Java project for solon</description>
