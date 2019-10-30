@@ -98,17 +98,11 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
   <artifactId>solon</artifactId>
 </dependency>
 
-<!-- http 服务插件；可以换成：.jetty 或 .undertow 或自己定义个 -->
+<!-- http boot 插件；可以换成：.jetty 或 .undertow 或自己定义个 -->
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon.boot.jlhttp</artifactId>
 </dependency>
-
-<!-- web socket 服务插件；或自己定义个 -->
-<!-- <dependency> 
-  <groupId>org.noear</groupId>
-  <artifactId>solon.boot.websocket</artifactId>
-</dependency> -->
 ```
 ```java
 public class App{
@@ -118,7 +112,7 @@ public class App{
         //http get 监听
         app.get("/hallo_http",(c)->c.output("hallo world!"));
         
-        //web socket send 监听
+        //web socket send 监听（需添加：solon.boot.websocket 插件）
         //app.send("/hello_ws",(c)->c.output("hallo world!"));
     }
 }
@@ -174,7 +168,7 @@ public class DemoController{
     }
     
     /*
-    //for web socket (需添加相关插件)
+    //for web socket （需添加：solon.boot.websocket 插件）
     @XMapping(value="/hallo/{u_u}", method = XMethod.SEND)
     public ModelAndView hallo_ws(String u_u){
         return new ModelAndView("hallo");
