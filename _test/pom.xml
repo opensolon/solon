@@ -31,23 +31,23 @@
         </dependency>
 
 
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.websocket</artifactId>-->
+<!--            <version>1.0.3.2</version>-->
+<!--        </dependency>-->
+
+
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.websocket</artifactId>
-            <version>1.0.3.2</version>
+            <artifactId>solon.boot.smarthttp</artifactId>
+            <version>1.0.3-b1</version>
         </dependency>
-
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.smarthttp</artifactId>-->
-<!--            <version>1.0.3-b1</version>-->
+<!--            <artifactId>solon.boot.nettyhttp</artifactId>-->
 <!--        </dependency>-->
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.nettyhttp</artifactId>
-        </dependency>
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
@@ -75,10 +75,10 @@
 <!--        </dependency>-->
 
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.view.jsp</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.view.jsp</artifactId>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.noear</groupId>
