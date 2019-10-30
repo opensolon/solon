@@ -7,7 +7,7 @@
 
 #### 框架实现效果
 * 0.采用Handler + Context 基础架构（*类似spring webflux）
-* 1.实现boot（*类似spring boot；可切换各种boot插件）
+* 1.实现boot（*类似spring boot；可切换各种boot插件；支持http,websocket,socket）
 * 2.实现微框架（*类似javalin）
 * 3.实现mvc（*类似spring mvc；可支持多模板同存）
 * 4.实现rpc（*类似dobbo）
@@ -41,44 +41,44 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon-parent:1.0.3.8 | 框架版本管理 |
-| org.noear:solon:1.0.3.8 | 70k，主框架 |
+| org.noear:solon-parent:1.0.3.9 | 框架版本管理 |
+| org.noear:solon:1.0.3.9 | 70k，主框架 |
 
 ##### 插件
 
 | boot插件 | 说明 |
 | --- | --- |
-| org.noear:solon.boot.jlhttp:1.0.3 | 58k，boot插件,对jlhttp适配（不自带session；可通过session插件提供支持） |
-| org.noear:solon.boot.jetty:1.0.3 | 1.5m，boot插件,对jetty适配 |
-| org.noear:solon.extend.jetty.jsp:1.0.3 | 6m，扩展插件,为jetty添加jsp支持（不建议使用jsp）（网友@khb提供） |
-| org.noear:solon.boot.undertow:1.0.3 | 3.7m，boot插件,对undertow适配（网友@tyk提供） |
-| org.noear:solon.extend.undertow.jsp:1.0.3 | 5.6m，扩展插件,为undertow添加jsp支持（不建议使用jsp）（网友@tyk提供） |
-| org.noear:solon.boot.smartsocket | *.*m，boot插件,提供socket服务(未提交仓库) |
-| org.noear:solon.boot.websocket | *.*m，boot插件,提供websocket服务(未提交仓库) |
+| org.noear:solon.boot.jlhttp:1.0.3.2 | boot插件,对jlhttp适配,提供http服务（不自带session；可通过session插件提供支持） |
+| org.noear:solon.boot.smarthttp:1.0.3-b2 | boot插件,对smart-http适配,提供http服务（基于AIO实现） |
+| org.noear:solon.boot.jetty:1.0.3.2 | boot插件,对jetty适配,提供http服务 |
+| org.noear:solon.extend.jetty.jsp:1.0.3.2 | 扩展插件,为jetty添加jsp支持（不建议使用jsp）（网友@khb提供） |
+| org.noear:solon.boot.undertow:1.0.3.2 | boot插件,对undertow适配,提供http服务（网友@tyk提供） |
+| org.noear:solon.extend.undertow.jsp:1.0.3.2 | 扩展插件,为undertow添加jsp支持（不建议使用jsp）（网友@tyk提供） |
+| org.noear:solon.boot.websocket:1.0.3.2 | boot插件,对java-websocket适配，提供websocket服务 |
 
 | 静态文件支持插件 | 说明 |
 | --- | --- |
-| org.noear:solon.extend.staticfiles:1.0.3 | 8k，扩展插件,添加静态文件支持 |
+| org.noear:solon.extend.staticfiles:1.0.3.2 | 扩展插件,添加静态文件支持 |
 
 | Session插件 | 说明（可将boot插件的session，自动换掉） |
 | --- | --- |
-| org.noear:solon.extend.redissessionstate:1.0.3.1 | 18k，扩展插件,分布式session（其于redis构建） |
-| org.noear:solon.extend.localsessionstate:1.0.3.1 | 18k，扩展插件,本地session |
+| org.noear:solon.extend.redissessionstate:1.0.3.2 | 扩展插件,分布式session（其于redis构建） |
+| org.noear:solon.extend.localsessionstate:1.0.3.2 | 扩展插件,本地session |
 
 | 序列化插件 | 说明 |
 | --- | --- |
-| org.noear:solon.serialization.fastjson:1.0.3 | 0.5m，视图插件，对 fastjson 适配，输出json视图 或 序列化输出 |
-| org.noear:solon.serialization.snack3:1.0.3.1 | 61kb，视图插件，对 snack3 适配，输出json视图 或 序列化输出 |
-| org.noear:solon.serialization.jackson:1.0.3 | 1.7m，视图插件，对 jackson 适配，输出json视图 或 序列化输出 |
+| org.noear:solon.serialization.fastjson:1.0.3.2 | 视图插件，对 fastjson 适配，输出json视图 或 序列化输出 |
+| org.noear:solon.serialization.snack3:1.0.3.2 | 视图插件，对 snack3 适配，输出json视图 或 序列化输出 |
+| org.noear:solon.serialization.jackson:1.0.3.2 | 视图插件，对 jackson 适配，输出json视图 或 序列化输出 |
 
 | 视图插件 | 说明（可置多个视图插件） |
 | --- | --- |
-| org.noear:solon.view.freemarker:1.0.3.4 | 2.0m，视图插件，对 freemarker 适配，输出html |
-| org.noear:solon.view.jsp:1.0.3.1.4 | 0.5m，视图插件，对 jsp 适配，输出html |
-| org.noear:solon.view.velocity:1.0.3.4 | 1.4m，视图插件，对 velocity 适配，输出html |
-| org.noear:solon.view.thymeleaf:1.0.3.1 | 2.3m，视图插件，对 thymeleaf 适配，输出html |
-| org.noear:solon.view.beetl:1.0.3.1 | 1.3m，视图插件，对 beetl 适配，输出html |
-| org.noear:solon.view.enjoy:1.0.3.1 | 0.7m，视图插件，对 enjoy 适配，输出html |
+| org.noear:solon.view.freemarker:1.0.3.5 | 视图插件，对 freemarker 适配，输出html |
+| org.noear:solon.view.jsp:1.0.3.1.5 | 视图插件，对 jsp 适配，输出html |
+| org.noear:solon.view.velocity:1.0.3.5 | 视图插件，对 velocity 适配，输出html |
+| org.noear:solon.view.thymeleaf:1.0.3.5 | 视图插件，对 thymeleaf 适配，输出html |
+| org.noear:solon.view.beetl:1.0.3.5 | 视图插件，对 beetl 适配，输出html |
+| org.noear:solon.view.enjoy:1.0.3.5 | 视图插件，对 enjoy 适配，输出html |
 
 | RPC CLINET | 说明 |
 | --- | --- |
@@ -90,7 +90,7 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.8</version>
+    <version>1.0.3.9</version>
 </parent>
 
 <dependency>
@@ -98,16 +98,22 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
   <artifactId>solon</artifactId>
 </dependency>
 
+<!-- http boot 插件；可以换成：.smarthttp 或 .jetty 或 .undertow 或自己定义个 -->
 <dependency>
   <groupId>org.noear</groupId>
-  <artifactId>solon.boot.jlhttp</artifactId><!-- 可以换成：.jetty 或 .undertow 或自己定义个插件 -->
+  <artifactId>solon.boot.jlhttp</artifactId>
 </dependency>
 ```
 ```java
 public class App{
     public static void main(String[] args){
         XApp app = XApp.start(App.class,args);
-        app.get("/hallo",(c)->c.output("hallo world!"));
+        
+        //http get 监听
+        app.get("/hallo_http",(c)->c.output("hallo world!"));
+        
+        //web socket send 监听（需添加：solon.boot.websocket 插件）
+        //app.send("/hello_ws",(c)->c.output("hallo world!"));
     }
 }
 ```
@@ -116,7 +122,7 @@ public class App{
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.8</version>
+    <version>1.0.3.9</version>
 </parent>
 
 <dependency>
@@ -155,10 +161,19 @@ public class App{
 /*mvc控制器*/
 @XController
 public class DemoController{
+    //for http
     @XMapping("/hallo/{u_u}")
     public ModelAndView hallo(String u_u){
         return new ModelAndView("hallo");
     }
+    
+    /*
+    //for web socket （需添加：solon.boot.websocket 插件）
+    @XMapping(value="/hallo/{u_u}", method = XMethod.SEND)
+    public ModelAndView hallo_ws(String u_u){
+        return new ModelAndView("hallo");
+    }
+    */
 }
 
 /*rpc服务*/ 
