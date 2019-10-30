@@ -2,7 +2,7 @@ package webapp.demoe_websocket;
 
 import java.net.URI;
 
-public class WsDemoTest {
+public class WsDemoClientTest {
     public static void test() {
         try {
             Thread.sleep(1000);

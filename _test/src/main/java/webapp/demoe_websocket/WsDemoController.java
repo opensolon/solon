@@ -18,7 +18,7 @@ public class WsDemoController {
         if(msg.equals("close")){
             ctx.output("它叫我关了："+ msg);
             System.out.println("它叫我关了："+ msg+"!!!");
-            ctx.close();
+            ctx.close();//关掉
         }else{
             ctx.output("我收到了："+ msg);
         }
