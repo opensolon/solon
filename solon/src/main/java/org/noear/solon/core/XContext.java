@@ -255,7 +255,7 @@ public abstract class XContext {
     public abstract void cookieSet(String key, String val, String domain, String path,int maxAge);
     /**移徐COOKIE*/
     @XNote("移徐COOKIE")
-    public abstract void cookieRemove(String key);
+    public void cookieRemove(String key){cookieSet(key,"",0);}
 
     /**跳转地址*/
     @XNote("跳转地址")
