@@ -188,4 +188,9 @@ public final class XProperties extends Properties{
     public int serverPort() {
         return getInt(server_port, 8080);
     }
+
+    /** 是否为debug mode */
+    public boolean isDebugMode(){
+        return argx().getInt("debug") == 1;
+    }
 }
