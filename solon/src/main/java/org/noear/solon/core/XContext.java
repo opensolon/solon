@@ -140,7 +140,7 @@ public abstract class XContext {
     @XNote("获取所有参数并转为map")
     public abstract XMap paramMap();
     @XNote("设置参数")
-    public abstract void paramSet(String key,String val);
+    public void paramSet(String key,String val){paramMap().put(key,val);}
     @XNote("获取所有参数并转为class")
     public <T> T paramAsEntity(Class<T> clz) throws Exception{
         return (T)XActionUtil.params2Entity(this, clz);

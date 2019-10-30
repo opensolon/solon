@@ -114,21 +114,6 @@ public class XContextEmpty extends XContext {
         return paramMap().getOrDefault(key, def);
     }
 
-    @Override
-    public int paramAsInt(String key) {
-        return paramMap().getInt(key);
-    }
-
-    @Override
-    public long paramAsLong(String key) {
-        return paramMap().getLong(key);
-    }
-
-    @Override
-    public double paramAsDouble(String key) {
-        return paramMap().getDouble(key);
-    }
-
     private XMap _paramMap = null;
     @Override
     public XMap paramMap() {
@@ -136,11 +121,6 @@ public class XContextEmpty extends XContext {
             _paramMap = new XMap();
         }
         return _paramMap;
-    }
-
-    @Override
-    public void paramSet(String key, String val) {
-        paramMap().put(key,val);
     }
 
     @Override
@@ -222,23 +202,8 @@ public class XContextEmpty extends XContext {
     }
 
     @Override
-    public void cookieSet(String key, String val, int maxAge) {
-        cookieMap().put(key,val);
-    }
-
-    @Override
-    public void cookieSet(String key, String val, String domain, int maxAge) {
-        cookieMap().put(key,val);
-    }
-
-    @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
         cookieMap().put(key,val);
-    }
-
-    @Override
-    public void cookieRemove(String key) {
-        cookieMap().remove(key);
     }
 
     @Override
