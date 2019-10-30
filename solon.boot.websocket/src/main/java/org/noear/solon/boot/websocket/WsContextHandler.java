@@ -1,6 +1,9 @@
 package org.noear.solon.boot.websocket;
 
+import org.java_websocket.WebSocket;
 import org.noear.solon.XApp;
+
+import java.io.PrintWriter;
 
 public class WsContextHandler {
     protected XApp xapp;
@@ -11,18 +14,17 @@ public class WsContextHandler {
         this.debug = xapp.prop().argx().getInt("debug") == 1;
     }
 
-    public void handle(WsRequest request, WsResponse response) {
+    public void handle(WebSocket socket, byte[] message) {
+
+        WsContext context = new WsContext(socket, message);
+
         try {
-            WsContext context = new WsContext(request, response);
-
-            context.contentType("text/plain;charset=UTF-8");
-
             xapp.handle(context);
-
         } catch (Throwable ex) {
             ex.printStackTrace();
-            ex.printStackTrace(response.getWriter());
-            response.setStatus(500);
+            ex.printStackTrace(new PrintWriter(context.outputStream()));
         }
+
+        context.commit();
     }
 }

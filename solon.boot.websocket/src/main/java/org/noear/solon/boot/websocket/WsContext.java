@@ -1,38 +1,35 @@
 package org.noear.solon.boot.websocket;
 
-import org.noear.solon.core.XMap;
+import org.java_websocket.WebSocket;
+import org.noear.solon.core.*;
 import org.noear.solon.XUtil;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XFile;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
+import java.net.InetSocketAddress;
 import java.net.URI;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WsContext extends XContext{
+public class WsContext extends XContextEmpty {
 
-    private WsRequest _request;
-    private WsResponse _response;
-
-    public WsContext(WsRequest request, WsResponse response){
-        this._request = request;
-        this._response = response;
-    }
-
-    @Override
-    public Object request() {
-        return _request;
+    private Charset _charset = Charset.forName("UTF-8");
+    private InetSocketAddress _inetSocketAddress;
+    private WebSocket _socket;
+    private byte[] _message;
+    public WsContext(WebSocket socket, byte[] message){
+        _socket = socket;
+        _message = message;
+        _inetSocketAddress = socket.getRemoteSocketAddress();
     }
 
     @Override
     public String ip() {
-        if(_request.getRemoteAddr() == null)
+        if(_inetSocketAddress == null)
             return null;
         else
-            return _request.getRemoteAddr().getAddress().toString();
+            return _inetSocketAddress.getAddress().toString();
     }
 
     @Override
@@ -42,18 +39,18 @@ public class WsContext extends XContext{
 
     @Override
     public String method() {
-        return _request.getMethod();
+        return "SEND";
     }
 
     @Override
     public String protocol() {
-        return _request.getProtocol();
+        return "ws";
     }
 
     @Override
     public URI uri() {
         if(_uri == null) {
-            _uri = URI.create(_request.getRequestUrl());
+            _uri = URI.create(url());
         }
 
         return _uri;
@@ -69,160 +66,39 @@ public class WsContext extends XContext{
 
     @Override
     public String url() {
-        return _request.getRequestUrl();
+        return "/";
     }
 
     @Override
     public long contentLength() {
-        try {
-            if (_request.getBody() != null) {
-                return _request.getBody().available();
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
         return 0;
     }
 
     @Override
     public String contentType() {
-        return header("Content-Type");
+        return null;
     }
 
     @Override
     public String body() throws IOException {
-        InputStream inpStream = bodyAsStream();
-
-        StringBuilder content = new StringBuilder();
-        byte[] b = new byte[1024];
-        int lens = -1;
-        while ((lens = inpStream.read(b)) > 0) {
-            content.append(new String(b, 0, lens));
-        }
-
-        return content.toString();
+        return new String(_message, _charset);
     }
 
     @Override
     public InputStream bodyAsStream() throws IOException {
-        return _request.getBody();
+        return new ByteArrayInputStream(_message);
     }
-
-    @Override
-    public String[] paramValues(String key) {
-        return paramMap().values().toArray(new String[]{});
-    }
-
-    @Override
-    public String param(String key) {
-        return paramMap().get(key);
-    }
-
-    @Override
-    public String param(String key, String def) {
-        try {
-            String temp = paramMap().get(key);
-
-            if(XUtil.isEmpty(temp)){
-                return def;
-            }else{
-                return temp;
-            }
-        }catch (Exception ex){
-            ex.printStackTrace();
-
-            return def;
-        }
-    }
-
-    @Override
-    public int paramAsInt(String key) {
-        return Integer.parseInt(param(key,"0"));
-    }
-
-    @Override
-    public long paramAsLong(String key) {
-        return Long.parseLong(param(key,"0"));
-    }
-
-    @Override
-    public double paramAsDouble(String key) {
-        return Double.parseDouble(param(key,"0"));
-    }
-
-    private XMap _paramMap;
-    @Override
-    public XMap paramMap() {
-        if(_paramMap!=null){
-            _paramMap = new XMap();
-
-            try {
-                _paramMap.putAll(_request.getParams());
-            }catch (Exception ex){
-                ex.printStackTrace();
-            }
-        }
-
-        return _paramMap;
-    }
-
-    @Override
-    public void paramSet(String key, String val) {
-        paramMap().put(key, val);
-    }
-
-    @Override
-    public List<XFile> files(String key) {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public String cookie(String key) {
-        return null;
-    }
-
-    @Override
-    public String cookie(String key, String def) {
-        return null;
-    }
-
-    @Override
-    public XMap cookieMap() {
-        return null;
-    }
-
-    @Override
-    public String header(String key) {
-        return _request.header(key);
-    }
-
-    @Override
-    public String header(String key, String def) {
-        String temp = _request.header(key);
-
-        if (temp == null)
-            return def;
-        else
-            return temp;
-    }
-
-    @Override
-    public XMap headerMap() {
-        return new XMap(_request.getHeaders());
-    }
-
 
     //==============
 
     @Override
     public Object response() {
-        return _response;
+        return null;
     }
 
     @Override
     public void charset(String charset) {
-        _response.setCharacterEncoding(charset);
+        _charset = Charset.forName(charset);
     }
 
     @Override
@@ -230,16 +106,18 @@ public class WsContext extends XContext{
         headerSet("Content-Type",contentType );
     }
 
+    ByteArrayOutputStream _outputStream = new ByteArrayOutputStream();
+
     @Override
     public OutputStream outputStream() {
-        return _response.getOutputStream();
+        return _outputStream;
     }
 
     @Override
     public void output(String str)  {
         try {
-            _response.getOutputStream().write(str.getBytes(_response.getCharacterEncoding()));
-        }catch (Throwable ex){
+            _outputStream.write(str.getBytes(_charset));
+        }catch (Exception ex){
             throw new RuntimeException(ex);
         }
     }
@@ -247,64 +125,19 @@ public class WsContext extends XContext{
     @Override
     public void output(InputStream stream) {
         try {
-            OutputStream out = _response.getOutputStream();
-
             byte[] buff = new byte[100];
             int rc = 0;
             while ((rc = stream.read(buff, 0, 100)) > 0) {
-                out.write(buff, 0, rc);
+                _outputStream.write(buff, 0, rc);
             }
 
-            out.flush();
         }catch (Throwable ex){
             throw new RuntimeException(ex);
         }
     }
 
-    @Override
-    public void headerSet(String key, String val) {
-        _response.headerSet(key,val);
+    public void commit(){
+        _socket.send(_outputStream.toByteArray());
     }
 
-
-    @Override
-    public void cookieSet(String key, String val, int maxAge) {
-
-    }
-
-    @Override
-    public void cookieSet(String key, String val, String domain, int maxAge) {
-
-    }
-
-    @Override
-    public void cookieSet(String key, String val, String domain, String path, int maxAge) {
-
-    }
-
-    @Override
-    public void cookieRemove(String key) {
-
-    }
-
-    @Override
-    public void redirect(String url) {
-        redirect(url,302);
-    }
-
-    @Override
-    public void redirect(String url, int code) {
-        headerSet("Location", url);
-        _response.setStatus(code);
-    }
-
-    @Override
-    public int status() {
-        return _response.getStatus();
-    }
-
-    @Override
-    public void status(int status)  {
-        _response.setStatus(status);
-    }
 }

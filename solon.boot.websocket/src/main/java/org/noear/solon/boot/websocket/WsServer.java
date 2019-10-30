@@ -36,7 +36,11 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onMessage(WebSocket conn, String data) {
-
+        try {
+            do_onMessage(conn, data.getBytes("utf-8"));
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -44,45 +48,11 @@ public class WsServer extends WebSocketServer {
         do_onMessage(conn, data.array());
     }
 
-    public void do_onMessage(WebSocket conn, byte[] msg) {
-        ObjectInput objectInput = null;
-        ObjectOutput objectOutput = null;
-
+    public void do_onMessage(WebSocket socket, byte[] message) {
         try {
-            objectInput = new ObjectInputStream(new ByteArrayInputStream(msg));
-            Map<String, Object> rpcxMsg = (Map<String, Object>) objectInput.readObject();
-            WsRequest request = new WsRequest(rpcxMsg);
-            WsResponse response = new WsResponse(request);
-
-            request.setRemoteAddr(conn.getRemoteSocketAddress());
-
-            _contextHandler.handle(request, response);
-
-            response.close();
-
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            objectOutput = new ObjectOutputStream(byteArrayOutputStream);
-            objectOutput.writeObject(response.message());
-
-            conn.send(byteArrayOutputStream.toByteArray());
-//            conn.close();
+            _contextHandler.handle(socket, message);
         } catch (Exception ex) {
             ex.printStackTrace();
-        } finally {
-            if (objectInput != null) {
-                try {
-                    objectInput.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (objectOutput != null) {
-                try {
-                    objectOutput.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 
