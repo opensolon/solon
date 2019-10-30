@@ -29,6 +29,6 @@ import java.net.InetSocketAddress;
         ChannelFuture f = bootstrap.bind(new InetSocketAddress(port)).sync();
 
         System.out.println("NettyHttpServer start up on port : " + port);
-        f.channel().closeFuture().sync();
+        //f.channel().closeFuture().sync();
     }
 }
