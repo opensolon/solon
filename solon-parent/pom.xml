@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.11</version>
+    <version>1.0.3.12</version>
     <packaging>pom</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -37,7 +37,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.0.3.11</solon.ver>
+        <solon.ver>1.0.3.12</solon.ver>
         <solon.boot.jetty.ver>1.0.3.3</solon.boot.jetty.ver>
         <solon.boot.jlhttp.ver>1.0.3.3</solon.boot.jlhttp.ver>
         <solon.boot.nettyhttp.ver>1.0.3.3</solon.boot.nettyhttp.ver>
