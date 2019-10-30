@@ -41,6 +41,7 @@
         <solon.boot.jetty.ver>1.0.3.2</solon.boot.jetty.ver>
         <solon.boot.jlhttp.ver>1.0.3.2</solon.boot.jlhttp.ver>
         <solon.boot.undertow.ver>1.0.3.2</solon.boot.undertow.ver>
+        <solon.boot.websocket.ver>1.0.3.2</solon.boot.websocket.ver>
 
         <solon.extend.staticfiles.ver>1.0.3.2</solon.extend.staticfiles.ver>
 
@@ -97,6 +98,11 @@
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.undertow</artifactId>
                 <version>${solon.boot.undertow.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.boot.websocket</artifactId>
+                <version>${solon.boot.websocket.ver}</version>
             </dependency>
 
             <dependency>
