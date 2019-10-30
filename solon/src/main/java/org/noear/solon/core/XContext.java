@@ -126,15 +126,15 @@ public abstract class XContext {
     @XNote("获取参数")
     public abstract String param(String key, String def);
     @XNote("获取参数并转为int")
-    public abstract int paramAsInt(String key);
+    public int paramAsInt(String key){return paramAsInt(key,0);}
     @XNote("获取参数并转为int")
     public int paramAsInt(String key, int def){return Integer.parseInt(param(key,String.valueOf(def)));}
     @XNote("获取参数并转为long")
-    public abstract long paramAsLong(String key);
+    public long paramAsLong(String key){return paramAsLong(key,0);}
     @XNote("获取参数并转为long")
     public long paramAsLong(String key, long def){return Long.parseLong(param(key,String.valueOf(def)));}
     @XNote("获取参数并转为double")
-    public abstract double paramAsDouble(String key);
+    public double paramAsDouble(String key){return paramAsDouble(key,0);}
     @XNote("获取参数并转为double")
     public double paramAsDouble(String key, double def){return Double.parseDouble(param(key,String.valueOf(def)));}
     @XNote("获取所有参数并转为map")
@@ -242,9 +242,13 @@ public abstract class XContext {
 
     /**设置COOKIE*/
     @XNote("设置COOKIE")
-    public abstract void cookieSet(String key, String val, int maxAge);
+    public void cookieSet(String key, String val, int maxAge){
+        cookieSet(key, val, null, maxAge);
+    }
     @XNote("设置COOKIE")
-    public abstract void cookieSet(String key, String val, String domain, int maxAge);
+    public void cookieSet(String key, String val, String domain, int maxAge){
+        cookieSet(key, val, domain, "/", maxAge);
+    }
     @XNote("设置COOKIE")
     public abstract void cookieSet(String key, String val, String domain, String path,int maxAge);
     /**移徐COOKIE*/
