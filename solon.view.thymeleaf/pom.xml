@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon.view.thymeleaf</artifactId>
-    <version>1.0.3.1</version>
+    <version>1.0.3.5</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -149,15 +149,6 @@
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
