@@ -143,22 +143,6 @@ public class JlHttpContext extends XContext {
         }
     }
 
-    @Override
-    public int paramAsInt(String key) {
-        return Integer.parseInt(param(key,"0"));
-    }
-
-    @Override
-    public long paramAsLong(String key) {
-        return Long.parseLong(param(key,"0"));
-    }
-
-    @Override
-    public double paramAsDouble(String key) {
-        return Double.parseDouble(param(key,"0"));
-    }
-
-
     private XMap _paramMap;
     @Override
     public XMap paramMap() {
@@ -318,16 +302,6 @@ public class JlHttpContext extends XContext {
 
 
     @Override
-    public void cookieSet(String key, String val, int maxAge) {
-        cookieSet(key, val, null, maxAge);
-    }
-
-    @Override
-    public void cookieSet(String key, String val, String domain, int maxAge) {
-        cookieSet(key, val, domain, "/", maxAge);
-    }
-
-    @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
 
         StringBuilder sb = new StringBuilder();
@@ -344,11 +318,6 @@ public class JlHttpContext extends XContext {
         }
 
         _response.getHeaders().add("Set-Cookie", sb.toString());
-    }
-
-    @Override
-    public void cookieRemove(String key) {
-        cookieSet(key,"",0);
     }
 
     @Override
