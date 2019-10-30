@@ -98,7 +98,7 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
   <artifactId>solon</artifactId>
 </dependency>
 
-<!-- http boot 插件；可以换成：.jetty 或 .undertow 或自己定义个 -->
+<!-- http boot 插件；可以换成：.smarthttp 或 .jetty 或 .undertow 或自己定义个 -->
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon.boot.jlhttp</artifactId>
