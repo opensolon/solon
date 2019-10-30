@@ -8,11 +8,13 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 @SuppressWarnings("unchecked")
 public class WsServer extends WebSocketServer {
     private WsContextHandler _contextHandler;
+    private Charset def_charset = Charset.forName("UTF-8");
 
     public WsServer(int port, WsContextHandler contextHandler) throws UnknownHostException {
         super(new InetSocketAddress(port));
@@ -21,23 +23,23 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onStart() {
-        System.out.println("开了");
+        System.out.println("WsServer: onStart...");
     }
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake shake) {
-        System.out.println(shake.getResourceDescriptor());
+        System.out.println("WsServer: onOpen=" + shake.getResourceDescriptor());
     }
 
     @Override
     public void onClose(WebSocket conn, int i, String s, boolean b) {
-        System.out.println("关了");
+        System.out.println("WsServer: onClose...");
     }
 
     @Override
     public void onMessage(WebSocket conn, String data) {
         try {
-            _contextHandler.handle(conn, data.getBytes("UTF-8"), true);
+            _contextHandler.handle(conn, data.getBytes(def_charset), true);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -52,14 +54,10 @@ public class WsServer extends WebSocketServer {
         }
     }
 
-
-
-
     @Override
     public void onError(WebSocket conn, Exception ex) {
+        System.out.println("WsServer: onError:");
         ex.printStackTrace();
     }
-
-
 
 }

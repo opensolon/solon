@@ -2,15 +2,11 @@ package org.noear.solon.boot.websocket;
 
 import org.java_websocket.WebSocket;
 import org.noear.solon.core.*;
-import org.noear.solon.XUtil;
 
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
 
 public class WsContext extends XContextEmpty {
 
