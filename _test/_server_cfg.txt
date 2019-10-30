@@ -1,0 +1,12 @@
+server.port=8080
+
+server.request.maxRequestSize=2Mb //kb,mb
+
+
+server.session.timeout=3600 //unit:SESSIONS(60*60)
+server.session.state.domain=noear.org
+
+server.session.state.redis.server=redis.dev.zmapi.cn:6379
+server.session.state.redis.password=AVsVSKd1
+server.session.state.redis.db=31
+server.session.state.redis.maxTotaol=200

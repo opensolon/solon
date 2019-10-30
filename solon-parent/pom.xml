@@ -50,8 +50,8 @@
 
         <solon.extend.staticfiles.ver>1.0.3.2</solon.extend.staticfiles.ver>
 
-        <solon.extend.redissessionstate.ver>1.0.3.3</solon.extend.redissessionstate.ver>
-        <solon.extend.localsessionstate.ver>1.0.3.3</solon.extend.localsessionstate.ver>
+        <solon.extend.redissessionstate.ver>1.0.3.4</solon.extend.redissessionstate.ver>
+        <solon.extend.localsessionstate.ver>1.0.3.4</solon.extend.localsessionstate.ver>
 
 
         <solon.serialization.fastjson.ver>1.0.3.2</solon.serialization.fastjson.ver>

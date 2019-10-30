@@ -15,7 +15,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.0.3.10</version>
+        <version>1.0.3.11</version>
     </parent>
 
     <dependencies>
@@ -30,11 +30,13 @@
             <artifactId>solonclient</artifactId>
         </dependency>
 
+
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.nettyhttp</artifactId>
+            <artifactId>solon.boot.websocket</artifactId>
             <version>1.0.3.2</version>
         </dependency>
+
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
@@ -44,8 +46,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.websocket</artifactId>
-            <version>1.0.3-b1</version>
+            <artifactId>solon.boot.nettyhttp</artifactId>
         </dependency>
 
 <!--        <dependency>-->
@@ -139,6 +140,12 @@
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.10</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.java-websocket</groupId>
+            <artifactId>Java-WebSocket</artifactId>
+            <version>1.4.0</version>
         </dependency>
 
     </dependencies>
