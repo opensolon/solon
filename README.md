@@ -49,12 +49,12 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 | boot插件 | 说明 |
 | --- | --- |
 | org.noear:solon.boot.jlhttp:1.0.3.2 | boot插件,对jlhttp适配,提供http服务（不自带session；可通过session插件提供支持） |
+| org.noear:solon.boot.smarthttp:1.0.3-b2 | boot插件,对smart-http适配,提供http服务（基于AIO实现） |
 | org.noear:solon.boot.jetty:1.0.3.2 | boot插件,对jetty适配,提供http服务 |
 | org.noear:solon.extend.jetty.jsp:1.0.3.2 | 扩展插件,为jetty添加jsp支持（不建议使用jsp）（网友@khb提供） |
 | org.noear:solon.boot.undertow:1.0.3.2 | boot插件,对undertow适配,提供http服务（网友@tyk提供） |
 | org.noear:solon.extend.undertow.jsp:1.0.3.2 | 扩展插件,为undertow添加jsp支持（不建议使用jsp）（网友@tyk提供） |
 | org.noear:solon.boot.websocket:1.0.3.2 | boot插件,对java-websocket适配，提供websocket服务 |
-| org.noear:solon.boot.smarthttp:1.0.3-b2 | boot插件,对smart-http适配,提供http服务（基于AIO实现） |
 
 | 静态文件支持插件 | 说明 |
 | --- | --- |
