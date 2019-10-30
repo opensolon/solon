@@ -48,14 +48,14 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | boot插件 | 说明 |
 | --- | --- |
-| org.noear:solon.boot.jlhttp:1.0.3.2 | boot插件,对jlhttp适配,提供http服务（不自带session；可通过session插件提供支持） |
-| org.noear:solon.boot.smarthttp:1.0.3-b2 | boot插件,对smart-http适配,提供http服务（基于AIO实现） |
-| org.noear:solon.boot.nteeyhttp:1.0.3.2 | boot插件,对Netty适配,提供http服务 |
-| org.noear:solon.boot.jetty:1.0.3.2 | boot插件,对jetty适配,提供http服务 |
-| org.noear:solon.extend.jetty.jsp:1.0.3.2 | 扩展插件,为jetty添加jsp支持（不建议使用jsp）（网友@khb提供） |
-| org.noear:solon.boot.undertow:1.0.3.2 | boot插件,对undertow适配,提供http服务（网友@tyk提供） |
-| org.noear:solon.extend.undertow.jsp:1.0.3.2 | 扩展插件,为undertow添加jsp支持（不建议使用jsp）（网友@tyk提供） |
-| org.noear:solon.boot.websocket:1.0.3.2 | boot插件,对java-websocket适配，提供websocket服务 |
+| org.noear:solon.boot.jlhttp:1.0.3.2 | boot插件,对`jlhttp`适配,提供`http`服务（不自带session；可通过session插件提供支持） |
+| org.noear:solon.boot.smarthttp:1.0.3-b2 | boot插件,对`smart-http`适配,提供`http`服务（基于AIO实现） |
+| org.noear:solon.boot.nteeyhttp:1.0.3.2 | boot插件,对`Netty`适配,提供`http`服务 |
+| org.noear:solon.boot.jetty:1.0.3.2 | boot插件,对`jetty`适配,提供`http`服务 |
+| org.noear:solon.extend.jetty.jsp:1.0.3.2 | 扩展插件,为`jetty`添加`jsp`支持（不建议使用jsp）（网友@khb提供） |
+| org.noear:solon.boot.undertow:1.0.3.2 | boot插件,对`undertow`适配,提供`http`服务（网友@tyk提供） |
+| org.noear:solon.extend.undertow.jsp:1.0.3.2 | 扩展插件,为`undertow`添加`jsp`支持（不建议使用jsp）（网友@tyk提供） |
+| org.noear:solon.boot.websocket:1.0.3.2 | boot插件,对`java-websocket`适配，提供`websocket`服务 |
 
 | 静态文件支持插件 | 说明 |
 | --- | --- |
@@ -63,27 +63,27 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | Session插件 | 说明（可将boot插件的session，自动换掉） |
 | --- | --- |
-| org.noear:solon.extend.redissessionstate:1.0.3.2 | 扩展插件,分布式session（其于redis构建） |
-| org.noear:solon.extend.localsessionstate:1.0.3.2 | 扩展插件,本地session |
+| org.noear:solon.extend.redissessionstate:1.0.3.2 | 扩展插件,分布式`session`（其于`redis`构建） |
+| org.noear:solon.extend.localsessionstate:1.0.3.2 | 扩展插件,本地`session` |
 
 | 序列化插件 | 说明 |
 | --- | --- |
-| org.noear:solon.serialization.fastjson:1.0.3.2 | 视图插件，对 fastjson 适配，输出json视图 或 序列化输出 |
-| org.noear:solon.serialization.snack3:1.0.3.2 | 视图插件，对 snack3 适配，输出json视图 或 序列化输出 |
-| org.noear:solon.serialization.jackson:1.0.3.2 | 视图插件，对 jackson 适配，输出json视图 或 序列化输出 |
+| org.noear:solon.serialization.fastjson:1.0.3.2 | 视图插件，对 `fastjson` 适配，输出`json`视图 或 序列化输出 |
+| org.noear:solon.serialization.snack3:1.0.3.2 | 视图插件，对 `snack3` 适配，输出`json`视图 或 序列化输出 |
+| org.noear:solon.serialization.jackson:1.0.3.2 | 视图插件，对 `jackson` 适配，输出`json`视图 或 序列化输出 |
 
 | 视图插件 | 说明（可置多个视图插件） |
 | --- | --- |
-| org.noear:solon.view.freemarker:1.0.3.5 | 视图插件，对 freemarker 适配，输出html |
-| org.noear:solon.view.jsp:1.0.3.1.5 | 视图插件，对 jsp 适配，输出html |
-| org.noear:solon.view.velocity:1.0.3.5 | 视图插件，对 velocity 适配，输出html |
-| org.noear:solon.view.thymeleaf:1.0.3.5 | 视图插件，对 thymeleaf 适配，输出html |
-| org.noear:solon.view.beetl:1.0.3.5 | 视图插件，对 beetl 适配，输出html |
-| org.noear:solon.view.enjoy:1.0.3.5 | 视图插件，对 enjoy 适配，输出html |
+| org.noear:solon.view.freemarker:1.0.3.5 | 视图插件，对 `freemarker` 适配，输出`html` |
+| org.noear:solon.view.jsp:1.0.3.1.5 | 视图插件，对 `jsp` 适配，输出`html` |
+| org.noear:solon.view.velocity:1.0.3.5 | 视图插件，对 `velocity` 适配，输出`html` |
+| org.noear:solon.view.thymeleaf:1.0.3.5 | 视图插件，对 `thymeleaf` 适配，输出`html` |
+| org.noear:solon.view.beetl:1.0.3.5 | 视图插件，对 `beetl` 适配，输出`html` |
+| org.noear:solon.view.enjoy:1.0.3.5 | 视图插件，对 `enjoy` 适配，输出`html` |
 
 | RPC CLINET | 说明 |
 | --- | --- |
-| org.noear:solonclient:1.0.3 | 11k，rpc client 框架，与solon 的 rpc service 配对 |
+| org.noear:solonclient:1.0.3 | 11k，`rpc` client 框架，与solon 的 rpc service 配对 |
 
 #### 简单示例
 * 微框架示例
