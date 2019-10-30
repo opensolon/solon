@@ -86,11 +86,6 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.boot.tomcat</artifactId>
-                <version>${solon.boot.tomcat.ver}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>solon.boot.jetty</artifactId>
                 <version>${solon.boot.jetty.ver}</version>
             </dependency>
