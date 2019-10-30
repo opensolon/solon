@@ -98,16 +98,28 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
   <artifactId>solon</artifactId>
 </dependency>
 
+<!-- http 服务插件；可以换成：.jetty 或 .undertow 或自己定义个 -->
 <dependency>
   <groupId>org.noear</groupId>
-  <artifactId>solon.boot.jlhttp</artifactId><!-- 可以换成：.jetty 或 .undertow 或自己定义个插件 -->
+  <artifactId>solon.boot.jlhttp</artifactId>
 </dependency>
+
+<!-- web socket 服务插件；或自己定义个 -->
+<!-- <dependency> 
+  <groupId>org.noear</groupId>
+  <artifactId>solon.boot.websocket</artifactId>
+</dependency> -->
 ```
 ```java
 public class App{
     public static void main(String[] args){
         XApp app = XApp.start(App.class,args);
-        app.get("/hallo",(c)->c.output("hallo world!"));
+        
+        //http get 监听
+        app.get("/hallo_http",(c)->c.output("hallo world!"));
+        
+        //web socket send 监听
+        //app.send("/hello_ws",(c)->c.output("hallo world!"));
     }
 }
 ```
@@ -155,10 +167,19 @@ public class App{
 /*mvc控制器*/
 @XController
 public class DemoController{
+    //for http
     @XMapping("/hallo/{u_u}")
     public ModelAndView hallo(String u_u){
         return new ModelAndView("hallo");
     }
+    
+    /*
+    //for web socket (需添加相关插件)
+    @XMapping(value="/hallo/{u_u}", method = XMethod.SEND)
+    public ModelAndView hallo_ws(String u_u){
+        return new ModelAndView("hallo");
+    }
+    */
 }
 
 /*rpc服务*/ 
