@@ -12,12 +12,10 @@ final class XPluginJetty implements XPlugin {
     @Override
     public void start(XApp app) {
         XProperties props = app.prop();
-
-        int s_timeout = props.getInt("server.session.timeout", 0);
         SessionHandler s_handler = new SessionHandler();
 
-        if (s_timeout > 0) {
-            s_handler.setMaxInactiveInterval(s_timeout);
+        if (XServerProp.session_timeout > 0) {
+            s_handler.setMaxInactiveInterval(XServerProp.session_timeout);
         }
 
         JtHttpContextHandler _handler = new JtHttpContextHandler( app);
@@ -27,6 +25,8 @@ final class XPluginJetty implements XPlugin {
         _server.setSessionIdManager(new DefaultSessionIdManager(_server));
         _server.setHandler(s_handler);
 
+        _server.setAttribute("org.eclipse.jetty.server.Request.maxFormContentSize",
+                XServerProp.request_maxRequestSize);
 
         if (props != null) {
             props.forEach((k, v) -> {

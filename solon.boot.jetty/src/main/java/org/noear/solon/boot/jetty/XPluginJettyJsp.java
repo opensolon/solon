@@ -9,6 +9,7 @@ import org.eclipse.jetty.util.resource.ResourceCollection;
 import org.noear.solon.XApp;
 import org.noear.solon.XProperties;
 import org.noear.solon.XUtil;
+import org.noear.solon.annotation.XSingleton;
 import org.noear.solon.core.XPlugin;
 
 import java.io.File;
@@ -28,7 +29,6 @@ final class XPluginJettyJsp implements XPlugin {
 
         XProperties props = app.prop();
 
-        int s_timeout = props.getInt("server.session.timeout", 0);
 
         try {
 
@@ -37,8 +37,8 @@ final class XPluginJettyJsp implements XPlugin {
             servletContextHandler.setBaseResource(new ResourceCollection(getResourceURLs()));
             servletContextHandler.addServlet(JspHttpContextServlet.class, "/");
 
-            if(s_timeout>0) {
-                servletContextHandler.getSessionHandler().setMaxInactiveInterval(s_timeout);
+            if(XServerProp.session_timeout >0) {
+                servletContextHandler.getSessionHandler().setMaxInactiveInterval(XServerProp.session_timeout);
             }
 
             enableJspSupport(servletContextHandler);
@@ -46,6 +46,9 @@ final class XPluginJettyJsp implements XPlugin {
             _server = new Server(app.port());
             _server.setSessionIdManager(new DefaultSessionIdManager(_server));
             _server.setHandler(servletContextHandler);
+
+            _server.setAttribute("org.eclipse.jetty.server.Request.maxFormContentSize",
+                    XServerProp.request_maxRequestSize);
 
             if (props != null) {
                 props.forEach((k, v) -> {

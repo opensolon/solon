@@ -10,6 +10,8 @@ public final class XPluginImp implements XPlugin {
     public void start(XApp app) {
        Class<?> jspClz = XUtil.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
 
+       XServerProp.init();
+
        if(jspClz == null){
            _server = new XPluginJetty();
        }else{
