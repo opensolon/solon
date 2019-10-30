@@ -20,6 +20,11 @@ public class WsServer extends WebSocketServer {
     }
 
     @Override
+    public void onStart() {
+
+    }
+
+    @Override
     public void onOpen(WebSocket conn, ClientHandshake clientHandshake) {
 
     }
@@ -87,5 +92,7 @@ public class WsServer extends WebSocketServer {
     public void onError(WebSocket conn, Exception ex) {
         ex.printStackTrace();
     }
+
+
 
 }
