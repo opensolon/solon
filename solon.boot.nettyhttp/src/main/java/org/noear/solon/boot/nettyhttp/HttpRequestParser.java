@@ -15,6 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 对 Request 的参数进行解析
+ * */
 class HttpRequestParser {
     private final FullHttpRequest _request;
 
