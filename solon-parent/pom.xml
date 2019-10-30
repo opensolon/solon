@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.10</version>
+    <version>1.0.3.11</version>
     <packaging>pom</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -37,20 +37,22 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.0.3.10</solon.ver>
-        <solon.boot.jetty.ver>1.0.3.2</solon.boot.jetty.ver>
-        <solon.boot.jlhttp.ver>1.0.3.2</solon.boot.jlhttp.ver>
-        <solon.boot.undertow.ver>1.0.3.2</solon.boot.undertow.ver>
-        <solon.boot.websocket.ver>1.0.3.2</solon.boot.websocket.ver>
-        <solon.boot.nettyhttp.ver>1.0.3.2</solon.boot.nettyhttp.ver>
-
-        <solon.extend.staticfiles.ver>1.0.3.2</solon.extend.staticfiles.ver>
-
-        <solon.extend.redissessionstate.ver>1.0.3.2</solon.extend.redissessionstate.ver>
-        <solon.extend.localsessionstate.ver>1.0.3.2</solon.extend.localsessionstate.ver>
+        <solon.ver>1.0.3.11</solon.ver>
+        <solon.boot.jetty.ver>1.0.3.3</solon.boot.jetty.ver>
+        <solon.boot.jlhttp.ver>1.0.3.3</solon.boot.jlhttp.ver>
+        <solon.boot.nettyhttp.ver>1.0.3.3</solon.boot.nettyhttp.ver>
+        <solon.boot.undertow.ver>1.0.3.3</solon.boot.undertow.ver>
+        <solon.boot.websocket.ver>1.0.3.3</solon.boot.websocket.ver>
 
         <solon.extend.jetty.jsp.ver>1.0.3.2</solon.extend.jetty.jsp.ver>
         <solon.extend.undertow.jsp.ver>1.0.3.2</solon.extend.undertow.jsp.ver>
+
+
+        <solon.extend.staticfiles.ver>1.0.3.2</solon.extend.staticfiles.ver>
+
+        <solon.extend.redissessionstate.ver>1.0.3.3</solon.extend.redissessionstate.ver>
+        <solon.extend.localsessionstate.ver>1.0.3.3</solon.extend.localsessionstate.ver>
+
 
         <solon.serialization.fastjson.ver>1.0.3.2</solon.serialization.fastjson.ver>
         <solon.serialization.snack3.ver>1.0.3.2</solon.serialization.snack3.ver>
