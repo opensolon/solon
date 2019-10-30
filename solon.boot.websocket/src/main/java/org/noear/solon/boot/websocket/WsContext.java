@@ -23,6 +23,11 @@ public class WsContext extends XContextEmpty {
     }
 
     @Override
+    public Object request() {
+        return _socket;
+    }
+
+    @Override
     public String ip() {
         if(_inetSocketAddress == null)
             return null;
@@ -91,7 +96,7 @@ public class WsContext extends XContextEmpty {
 
     @Override
     public Object response() {
-        return null;
+        return _socket;
     }
 
     @Override
