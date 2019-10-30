@@ -8,7 +8,7 @@ import org.noear.solon.XApp;
 
 import static io.netty.handler.codec.http.HttpUtil.is100ContinueExpected;
 
-public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
+ class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private XApp app = XApp.global();
 
     @Override

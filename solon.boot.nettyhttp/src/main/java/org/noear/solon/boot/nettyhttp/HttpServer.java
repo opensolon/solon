@@ -10,7 +10,7 @@ import io.netty.handler.logging.LoggingHandler;
 
 import java.net.InetSocketAddress;
 
-public class HttpServer {
+ class HttpServer {
     int port ;
 
     public HttpServer(int port){
