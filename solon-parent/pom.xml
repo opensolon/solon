@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.12</version>
+    <version>1.0.3.13</version>
     <packaging>pom</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -38,10 +38,11 @@
         <java.version>1.8</java.version>
 
         <solon.ver>1.0.3.12</solon.ver>
-        <solon.boot.jetty.ver>1.0.3.3</solon.boot.jetty.ver>
-        <solon.boot.jlhttp.ver>1.0.3.3</solon.boot.jlhttp.ver>
-        <solon.boot.nettyhttp.ver>1.0.3.3</solon.boot.nettyhttp.ver>
-        <solon.boot.undertow.ver>1.0.3.3</solon.boot.undertow.ver>
+        <solon.boot.jetty.ver>1.0.3.4</solon.boot.jetty.ver>
+        <solon.boot.jlhttp.ver>1.0.3.4</solon.boot.jlhttp.ver>
+        <solon.boot.nettyhttp.ver>1.0.3.4</solon.boot.nettyhttp.ver>
+        <solon.boot.undertow.ver>1.0.3.4</solon.boot.undertow.ver>
+
         <solon.boot.websocket.ver>1.0.3.3</solon.boot.websocket.ver>
 
         <solon.extend.jetty.jsp.ver>1.0.3.2</solon.extend.jetty.jsp.ver>
