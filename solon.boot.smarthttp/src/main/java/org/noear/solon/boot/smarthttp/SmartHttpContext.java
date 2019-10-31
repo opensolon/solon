@@ -313,7 +313,9 @@ public class SmartHttpContext extends XContext {
             sb.append("path=").append(path).append(";");
         }
 
-        sb.append("max-age=").append(maxAge).append(";");
+        if (maxAge >= 0) {
+            sb.append("max-age=").append(maxAge).append(";");
+        }
 
         if (domain != null) {
             sb.append("domain=").append(domain.toLowerCase()).append(";");
