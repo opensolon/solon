@@ -23,6 +23,7 @@ public class JtHttpContextHandler extends AbstractHandler {
 
         JtHttpContext context = new JtHttpContext(request,response);
         context.contentType("text/plain;charset=UTF-8");
+        context.headerSet("solon.boot","jetty 9.4/1.0.3.4");
 
         try {
             xapp.handle(context);
