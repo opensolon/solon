@@ -249,7 +249,14 @@ public class SmartHttpContext extends XContext {
 
     @Override
     public void contentType(String contentType) {
-        headerSet("Content-Type",contentType );
+        if (_charset != null) {
+            if (contentType.indexOf(";") < 0) {
+                headerSet("Content-Type", contentType + ";charset=" + _charset);
+                return;
+            }
+        }
+
+        headerSet("Content-Type", contentType);
     }
 
 
