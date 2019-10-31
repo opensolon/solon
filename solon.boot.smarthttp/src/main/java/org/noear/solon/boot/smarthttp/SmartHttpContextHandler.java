@@ -32,6 +32,7 @@ public class SmartHttpContextHandler extends HttpHandle {
 
         SmartHttpContext context = new SmartHttpContext(request, response);
         context.contentType("text/plain;charset=UTF-8");
+        context.headerSet("solon.boot","smart http 1.0.3.4");
 
         try {
             xapp.handle(context);

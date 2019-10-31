@@ -79,9 +79,18 @@ public class NettyHttpContext extends XContext {
         return uri().getPath();
     }
 
+    private String _url;
     @Override
     public String url() {
-        return _request.uri();
+        if (_url == null) {
+            _url = _request.getUri();
+
+            if (_url != null && _url.startsWith("/")) {
+                _url = "http://" + header("Host") + _url;
+            }
+        }
+
+        return _url;
     }
 
     @Override
@@ -287,7 +296,9 @@ public class NettyHttpContext extends XContext {
             sb.append("path=").append(path).append(";");
         }
 
-        sb.append("max-age=").append(maxAge).append(";");
+        if (maxAge >= 0) {
+            sb.append("max-age=").append(maxAge).append(";");
+        }
 
         if (domain != null) {
             sb.append("domain=").append(domain.toLowerCase()).append(";");

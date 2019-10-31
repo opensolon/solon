@@ -31,6 +31,7 @@ public class TCHttpContextHandler extends HttpServlet {
 
         TCHttpContext context = new TCHttpContext(request, response);
         context.contentType("text/plain;charset=UTF-8");
+        context.headerSet("solon.boot","tomcat 8.5/1.0.3.4");
 
         try {
             xapp.handle(context);

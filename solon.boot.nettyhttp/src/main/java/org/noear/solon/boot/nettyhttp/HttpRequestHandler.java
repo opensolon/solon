@@ -32,6 +32,7 @@ import static io.netty.handler.codec.http.HttpUtil.is100ContinueExpected;
 
          NettyHttpContext context = new NettyHttpContext(ctx,req,response);
          context.contentType("text/plain;charset=UTF-8");//默认
+        context.headerSet("solon.boot","netty http 4.1/1.0.3.4");
 
          try {
              app.handle(context);
