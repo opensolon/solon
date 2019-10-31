@@ -13,10 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SmartHttpContext extends XContext {
     private HttpRequest _request;
@@ -196,9 +193,21 @@ public class SmartHttpContext extends XContext {
 
     @Override
     public XMap cookieMap() {
-        if(_cookieMap == null){
+        if (_cookieMap == null) {
             _cookieMap = new XMap();
-            //_cookieMap = new XMap(_request.getHeader("Cookie"));
+
+            String _cookieMapStr = header("Cookie");
+            if (_cookieMapStr != null) {
+                String[] cookies = _cookieMapStr.split(";");
+
+                for (String c1 : cookies) {
+                    String[] ss = c1.trim().split("=");
+                    if (ss.length == 2) {
+                        _cookieMap.put(ss[0].trim(), ss[1].trim());
+                    }
+
+                }
+            }
         }
 
         return _cookieMap;
