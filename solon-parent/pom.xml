@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.13</version>
+    <version>1.0.3.14</version>
     <packaging>pom</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -51,12 +51,12 @@
 
         <solon.extend.staticfiles.ver>1.0.3.2</solon.extend.staticfiles.ver>
 
-        <solon.extend.redissessionstate.ver>1.0.3.4</solon.extend.redissessionstate.ver>
         <solon.extend.localsessionstate.ver>1.0.3.4</solon.extend.localsessionstate.ver>
+        <solon.extend.redissessionstate.ver>1.0.3.5</solon.extend.redissessionstate.ver>
 
 
         <solon.serialization.fastjson.ver>1.0.3.2</solon.serialization.fastjson.ver>
-        <solon.serialization.snack3.ver>1.0.3.2</solon.serialization.snack3.ver>
+        <solon.serialization.snack3.ver>1.0.3.3</solon.serialization.snack3.ver>
         <solon.serialization.jackson.ver>1.0.3.2</solon.serialization.jackson.ver>
 
         <solon.view.freemarker.ver>1.0.3.5</solon.view.freemarker.ver>
@@ -70,7 +70,7 @@
         <solonclient.ver>1.0.3</solonclient.ver>
 
         <weed3.ver>3.2.2</weed3.ver>
-        <snack3.ver>3.0.14.5</snack3.ver>
+        <snack3.ver>3.1.0</snack3.ver>
         <fastjson.ver>1.2.29</fastjson.ver>
         <jedis.ver>2.9.0</jedis.ver>
         <okhttp.ver>3.11.0</okhttp.ver>
