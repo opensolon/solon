@@ -1,5 +1,6 @@
 package org.noear.solon.boot.nettyhttp;
 
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.cookie.Cookie;
 import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
@@ -8,6 +9,7 @@ import org.noear.solon.core.XFile;
 import org.noear.solon.core.XMap;
 
 import java.io.*;
+import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +24,11 @@ public class NettyHttpContext extends XContext {
     private final HttpRequestParser _request_parse;
     private final FullHttpRequest _request;
     private final FullHttpResponse _response;
-    public NettyHttpContext(FullHttpRequest request, FullHttpResponse response) {
+    private final ChannelHandlerContext _channel;
+    public NettyHttpContext(ChannelHandlerContext channel, FullHttpRequest request, FullHttpResponse response) {
         _request = request;
         _response = response;
+        _channel = channel;
         try {
             _request_parse = new HttpRequestParser(request).parse();
         }catch (Exception ex){
@@ -37,9 +41,18 @@ public class NettyHttpContext extends XContext {
         return _request;
     }
 
+    private String _ip;
     @Override
     public String ip() {
-        return header("ip");
+        if(_ip == null) {
+            _ip = _request.headers().get("X-Forwarded-For");
+            if (_ip == null) {
+                InetSocketAddress insocket = (InetSocketAddress) _channel.channel().remoteAddress();
+                _ip = insocket.getAddress().getHostAddress();
+            }
+        }
+
+        return _ip;
     }
 
     @Override

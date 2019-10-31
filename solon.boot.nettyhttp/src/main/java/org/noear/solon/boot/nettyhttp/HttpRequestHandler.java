@@ -30,7 +30,7 @@ import static io.netty.handler.codec.http.HttpUtil.is100ContinueExpected;
                 HttpVersion.HTTP_1_1,
                 HttpResponseStatus.OK);
 
-         NettyHttpContext context = new NettyHttpContext(req,response);
+         NettyHttpContext context = new NettyHttpContext(ctx,req,response);
          context.contentType("text/plain;charset=UTF-8");//默认
 
          try {
