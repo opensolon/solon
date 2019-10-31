@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon.boot.nettyhttp</artifactId>
-    <version>1.0.3.3</version>
+    <version>1.0.3.4</version>
     <packaging>jar</packaging>
 
 

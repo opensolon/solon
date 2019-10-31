@@ -216,13 +216,12 @@ public class NettyHttpContext extends XContext {
     public void contentType(String contentType) {
         if (_charset != null) {
             if (contentType.indexOf(";") < 0) {
-                _response.headers().set(HttpHeaderNames.CONTENT_TYPE, contentType + ";charset=" + _charset);
+                headerSet("Content-Type", contentType + ";charset=" + _charset);
                 return;
             }
-
         }
 
-        _response.headers().set(HttpHeaderNames.CONTENT_TYPE, contentType);
+        headerSet("Content-Type", contentType);
     }
 
     @Override
