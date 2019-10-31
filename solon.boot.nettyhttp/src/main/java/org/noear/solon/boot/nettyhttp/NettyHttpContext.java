@@ -83,7 +83,7 @@ public class NettyHttpContext extends XContext {
     @Override
     public String url() {
         if (_url == null) {
-            _url = _request.getUri();
+            _url = _request.uri();
 
             if (_url != null && _url.startsWith("/")) {
                 _url = "http://" + header("Host") + _url;
