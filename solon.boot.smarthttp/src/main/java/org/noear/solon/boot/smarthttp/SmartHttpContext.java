@@ -12,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.*;
 
@@ -39,9 +40,18 @@ public class SmartHttpContext extends XContext {
         return _request;
     }
 
+    private String _ip;
     @Override
     public String ip() {
-        return _request.getHeader("IP");
+        if(_ip == null) {
+            _ip = header("X-Forwarded-For");
+//            if (_ip == null) {
+//                InetSocketAddress insocket = (InetSocketAddress) _channel.channel().remoteAddress();
+//                _ip = insocket.getAddress().getHostAddress();
+//            }
+        }
+
+        return _ip;
     }
 
     @Override
