@@ -13,7 +13,7 @@ public class App1 {
         XApp.start(App1.class,args);
     }
 
-    @XMapping("/helloworld")
+    @XMapping("/")
     public String helloworld(){
         return "hello world!";
     }
