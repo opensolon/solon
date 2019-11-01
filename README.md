@@ -41,21 +41,22 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon-parent:1.0.3.12 | 框架版本管理 |
+| org.noear:solon-parent:1.0.3.13 | 框架版本管理 |
 | org.noear:solon:1.0.3.12 | 70k，主框架 |
 
 ##### 插件
 
 | boot插件 | 说明 |
 | --- | --- |
-| org.noear:solon.boot.jlhttp:1.0.3.3 | boot插件,对`jlhttp`适配,提供`http`服务（不自带session；可通过session插件提供支持） |
-| org.noear:solon.boot.smarthttp:1.0.3-b1 | boot插件,对`smart-http`适配,提供`http`服务（基于AIO实现） |
-| org.noear:solon.boot.nteeyhttp:1.0.3.3 | boot插件,对`Netty`适配,提供`http`服务 |
-| org.noear:solon.boot.jetty:1.0.3.3 | boot插件,对`jetty`适配,提供`http`服务 |
-| org.noear:solon.boot.undertow:1.0.3.3 | boot插件,对`undertow`适配,提供`http`服务（网友@tyk提供） |
-| org.noear:solon.boot.websocket:1.0.3.3 | boot插件,对`java-websocket`适配，提供`websocket`服务 |
+| org.noear:solon.boot.jlhttp:1.0.3.4 | boot插件,对`jlhttp`适配,提供`http`服务（不自带session；可通过session插件提供支持） |
+| org.noear:solon.boot.nteeyhttp:1.0.3.4 | boot插件,对`Netty`适配,提供`http`服务 |
+| org.noear:solon.boot.jetty:1.0.3.4 | boot插件,对`jetty`适配,提供`http`服务 |
+| org.noear:solon.boot.undertow:1.0.3.4 | boot插件,对`undertow`适配,提供`http`服务（网友@tyk提供） |
+| org.noear:solon.boot.websocket:1.0.3.4 | boot插件,对`java-websocket`适配，提供`websocket`服务 |
 | org.noear:solon.extend.jetty.jsp:1.0.3.2 | 扩展插件,为`jetty`添加`jsp`支持（不建议使用jsp）（网友@khb提供） |
 | org.noear:solon.extend.undertow.jsp:1.0.3.2 | 扩展插件,为`undertow`添加`jsp`支持（不建议使用jsp）（网友@tyk提供） |
+| org.noear:solon.boot.smarthttp:1.0.3-b1 | boot插件,对`smart-http`适配,提供`http`服务（基于AIO实现） |
+| org.noear:solon.boot.tomcat:1.0.3-b1 | boot插件,对`tomcat`适配,提供`http`服务 |
 
 
 | 静态文件支持插件 | 说明 |
@@ -92,7 +93,7 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.12</version>
+    <version>1.0.3.13</version>
 </parent>
 
 <dependency>
@@ -124,7 +125,7 @@ public class App{
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.12</version>
+    <version>1.0.3.13</version>
 </parent>
 
 <dependency>
