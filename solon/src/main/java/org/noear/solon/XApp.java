@@ -100,11 +100,8 @@ public class XApp implements XHandler {
         }
 
         //3.然后加载插件（顺序不能乱）
-        for (String p : _global.prop().plugs()) {
-            XPlugin p1 = XUtil.newClass(p);
-            if (p1 != null) {
-                _global.plug(p1);
-            }
+        for (XPluginEntity p : _global.prop().plugs()) {
+           p.load();
         }
 
         //4.再加载bean

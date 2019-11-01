@@ -2,6 +2,7 @@ package org.noear.solon;
 
 import org.noear.solon.core.PathAnalyzer;
 import org.noear.solon.core.XMap;
+import org.noear.solon.core.XPropertiesLoader;
 
 import java.io.*;
 import java.net.URL;
@@ -81,6 +82,14 @@ public class XUtil {
         }
 
         return url;
+    }
+
+    public static Properties getProperties(URL url){
+        try {
+            return XPropertiesLoader.global.load(url);
+        }catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
     }
 
     /** 获取异常的完整内容*/

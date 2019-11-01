@@ -1,10 +1,13 @@
 package org.noear.solon;
 
 import org.noear.solon.core.XMap;
+import org.noear.solon.core.XPluginEntity;
 import org.noear.solon.core.XScaner;
 import org.noear.solon.ext.Act2;
 import org.noear.solon.ext.PrintUtil;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.net.URL;
 import java.util.*;
 
@@ -15,7 +18,7 @@ public final class XProperties extends Properties{
     public static final String server_port = "server.port";
 
     private XMap _args;
-    private List<String> _plugs = new ArrayList<>();
+    private List<XPluginEntity> _plugs = new ArrayList<>();
 
     public XProperties(){
         super();
@@ -35,9 +38,18 @@ public final class XProperties extends Properties{
         return this;
     }
 
+    public XProperties load(URL url) {
+        Properties prop = XUtil.getProperties(url);
+        if (prop != null) {
+            putAll(prop);
+        }
+
+        return this;
+    }
+
     private void do_loadFile() {
         //1.加载文件的配置
-        do_loadProp("application.properties");
+        load(XUtil.getResource("application.properties")); //可能会是：
 
         //2.再加载System的配置
         System.getProperties().forEach((k, v) -> {
@@ -54,37 +66,28 @@ public final class XProperties extends Properties{
                 .stream()
                 .map(k -> XUtil.getResource(k))
                 .forEach(url -> do_loadPlug(url));
+
+        if(_plugs!=null) {
+            _plugs.sort(Comparator.comparingInt(p1 -> p1.priority));
+        }
     }
 
     private void do_loadPlug(URL url){
         try {
             PrintUtil.blueln(url);
 
-            XProperties p = new XProperties();
-            p.load(url.openStream());
+            XProperties p = new XProperties().load(url);
 
             String temp = p.get("solon.plugin");
             if (XUtil.isEmpty(temp) == false) {
-                boolean prio = p.getBool("solon.plugin.priority",false);
-                if(prio) {
-                    _plugs.add(0,temp);
-                }else{
-                    _plugs.add(temp);
-                }
+                XPluginEntity ent = new XPluginEntity();
+                ent.plugin = temp;
+                ent.priority = - p.getInt("solon.plugin.priority", 0);
+
+                _plugs.add(ent);
             }
         }catch (Exception ex){
             throw new RuntimeException(ex);
-        }
-    }
-
-    private void do_loadProp(String fileName) {
-        try {
-            URL temp = XUtil.getResource(fileName);
-            if (temp != null) {
-                load(temp.openStream());
-            }
-        }catch (Exception ex){
-            ex.printStackTrace();
         }
     }
 
@@ -111,7 +114,7 @@ public final class XProperties extends Properties{
     }
 
     /**获取插件列表*/
-    public List<String> plugs(){
+    public List<XPluginEntity> plugs(){
         return _plugs;
     }
 
