@@ -28,3 +28,14 @@ server.session.state.redis:
   password: AVsVSKd1
   db: 31
   maxTotaol: 200
+
+custom:
+  li:
+    - 12
+    - 13
+  li2:
+    - bbb:
+        - wefwef
+        - ddd
+    - ccc
+    - ddd

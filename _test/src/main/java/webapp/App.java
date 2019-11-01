@@ -8,13 +8,13 @@ public class App {
         XApp app = XApp.start(App.class, args);
 
 
-        //web socket send 监听
+//        //web socket send 监听
 //        app.send("/seb/test",(c)->{
 //            String msg = c.body();
 //            c.output("收到了...:" + msg);
 //        });
-
-        //web socket test
-        //WsDemoClientTest.test();
+//
+//        //web socket test
+//        WsDemoClientTest.test();
     }
 }
