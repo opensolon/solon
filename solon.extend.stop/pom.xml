@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon.extend.stop</artifactId>
-    <version>1.0.3-m1</version>
+    <version>1.0.3-b1</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
