@@ -28,14 +28,18 @@ public class PropertiesYaml extends Properties {
         }
 
         if (tmp instanceof List) {
-            put(prefix,tmp);
+            do_put(prefix, tmp);
             return;
         }
 
-        if (prefix.startsWith(".")) {
-            setProperty(prefix.substring(1), String.valueOf(tmp));
+        do_put(prefix, String.valueOf(tmp));
+    }
+
+    private void do_put(String key, Object val){
+        if (key.startsWith(".")) {
+            put(key.substring(1), val);
         } else {
-            setProperty(prefix, String.valueOf(tmp));
+            put(key, val);
         }
     }
 }
