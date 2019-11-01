@@ -18,12 +18,16 @@ public class PropertiesLoaderEx extends XPropertiesLoader {
         String fileName = url.toString();
 
         if (fileName.endsWith(".properties")) {
+            System.out.println(url);
+
             Properties tmp = new Properties();
             tmp.load(url.openStream());
             return tmp;
         }
 
         if (fileName.endsWith(".yml")) {
+            System.out.println(url);
+
             PropertiesYaml tmp = new PropertiesYaml();
             tmp.loadYml(url.openStream());
             return tmp;

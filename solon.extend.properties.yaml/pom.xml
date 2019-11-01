@@ -43,7 +43,7 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
-            <version>1.0.3.12</version>
+            <version>1.0.3.15</version>
             <scope>provided</scope>
         </dependency>
 
