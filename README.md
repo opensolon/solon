@@ -41,8 +41,8 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon-parent:1.0.3.14 | 框架版本管理 |
-| org.noear:solon:1.0.3.12 | 70k，主框架 |
+| org.noear:solon-parent:1.0.3.15 | 框架版本管理 |
+| org.noear:solon:1.0.3.15 | 70k，主框架 |
 
 ##### 插件
 
@@ -61,12 +61,16 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | 静态文件支持插件 | 说明 |
 | --- | --- |
-| org.noear:solon.extend.staticfiles:1.0.3.2 | 扩展插件,添加静态文件支持 |
+| org.noear:solon.extend.staticfiles:1.0.3.2 | 扩展插件,添加静态文件支持（监视 resources/static 文件夹） |
+
+| Yaml配置支持插件 | 说明 |
+| --- | --- |
+| solon.extend.properties.yaml:1.0.3 | 扩展插件,添加yml配置文件支持 |
 
 | Session插件 | 说明（可将boot插件的session，自动换掉） |
 | --- | --- |
-| org.noear:solon.extend.localsessionstate:1.0.3.4 | 扩展插件,本地`session` |
-| org.noear:solon.extend.redissessionstate:1.0.3.5 | 扩展插件,分布式`session`（其于`redis`构建） |
+| org.noear:solon.extend.sessionstate.local:1.0.3 | 扩展插件,本地`session` |
+| org.noear:solon.extend.sessionstate.redis:1.0.3 | 扩展插件,分布式`session`（其于`redis`构建） |
 
 | 序列化插件 | 说明 |
 | --- | --- |
