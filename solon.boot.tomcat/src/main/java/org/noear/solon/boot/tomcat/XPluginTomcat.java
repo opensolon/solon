@@ -8,13 +8,16 @@ import org.noear.solon.XApp;
 import org.noear.solon.XProperties;
 import org.noear.solon.core.XPlugin;
 
+import java.io.Closeable;
+import java.io.IOException;
+
 
 /**
  * @Created by: Yukai
  * @Date: 2019/3/28 15:49
  * @Description : Yukai is so handsome xxD
  */
-public class XPluginTomcat implements XPlugin {
+public class XPluginTomcat implements XPlugin, Closeable {
     private static Tomcat tomcat;
 
     @Override
@@ -38,20 +41,8 @@ public class XPluginTomcat implements XPlugin {
         } catch (LifecycleException e) {
             e.printStackTrace();
         }
-
-        app.onStop(this::stop);
         //Tomcat运行需要进入阻塞阶段，这里新开一个线程维护
         new Thread(() -> tomcat.getServer().await()).start();
-    }
-
-
-
-    public void stop() {
-        try {
-            tomcat.stop();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
     public static Tomcat getInstance() {
@@ -74,4 +65,15 @@ public class XPluginTomcat implements XPlugin {
         return context;
     }
 
+    @Override
+    public void close() throws IOException {
+        try {
+            if (tomcat != null) {
+                tomcat.stop();
+                tomcat = null;
+            }
+        }catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
+    }
 }

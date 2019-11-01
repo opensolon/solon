@@ -10,7 +10,9 @@ import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.XPlugin;
 
+import java.io.Closeable;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -23,7 +25,7 @@ import java.net.URLClassLoader;
  * @Date: 2019/3/28 15:49
  * @Description : Yukai is so handsome xxD
  */
-public class XPluginTomcatJsp implements XPlugin {
+public class XPluginTomcatJsp implements XPlugin, Closeable {
     private static Tomcat tomcat;
 
     @Override
@@ -60,18 +62,9 @@ public class XPluginTomcatJsp implements XPlugin {
         } catch (LifecycleException e) {
             e.printStackTrace();
         }
-        app.onStop(this::stop);
+
         //Tomcat运行需要进入阻塞阶段，这里新开一个线程维护
         new Thread(() -> tomcat.getServer().await()).start();
-    }
-
-
-    public void stop() {
-        try {
-            tomcat.stop();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
     public static Tomcat getInstance() {
@@ -118,5 +111,16 @@ public class XPluginTomcatJsp implements XPlugin {
         }
     }
 
+    @Override
+    public void close() throws IOException {
+        try {
+            if (tomcat != null) {
+                tomcat.stop();
+                tomcat = null;
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
 }

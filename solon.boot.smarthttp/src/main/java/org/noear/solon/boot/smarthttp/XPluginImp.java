@@ -8,16 +8,18 @@ import org.smartboot.http.server.decode.HttpRequestProtocol;
 import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.transport.AioQuickServer;
 
+import java.io.Closeable;
 import java.io.IOException;
 
-public final class XPluginImp implements XPlugin {
+public final class XPluginImp implements XPlugin, Closeable {
 
+    AioQuickServer<Http11Request> _server;
 
     @Override
-    public  void start(XApp app) {
+    public void start(XApp app) {
         long time_start = System.currentTimeMillis();
 
-        SmartHttpContextHandler _handler = new SmartHttpContextHandler( app);
+        SmartHttpContextHandler _handler = new SmartHttpContextHandler(app);
 
         HttpMessageProcessor processor = new HttpMessageProcessor("./");
         processor.route("*", _handler);
@@ -35,22 +37,23 @@ public final class XPluginImp implements XPlugin {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-        app.onStop(this::stop);
     }
 
-    public void stop() {
-
-    }
-
-    public static void http(MessageProcessor<Http11Request> processor, int port) {
+    public void http(MessageProcessor<Http11Request> processor, int port) {
         // 定义服务器接受的消息类型以及各类消息对应的处理器
-        AioQuickServer<Http11Request> server = new AioQuickServer<Http11Request>(port, new HttpRequestProtocol(), processor);
-        server.setReadBufferSize(1024);
+        _server = new AioQuickServer<Http11Request>(port, new HttpRequestProtocol(), processor);
+        _server.setReadBufferSize(1024);
         try {
-            server.start();
+            _server.start();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void close() throws IOException {
+        if (_server != null) {
+            _server.shutdown();
         }
     }
 }
