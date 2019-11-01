@@ -61,7 +61,7 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | 静态文件支持插件 | 说明 |
 | --- | --- |
-| org.noear:solon.extend.staticfiles:1.0.3.2 | 扩展插件,添加静态文件支持 |
+| org.noear:solon.extend.staticfiles:1.0.3.2 | 扩展插件,添加静态文件支持（监视 resources/static 文件夹） |
 
 | Yaml配置支持插件 | 说明 |
 | --- | --- |
