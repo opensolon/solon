@@ -4,13 +4,14 @@ import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 
 public class XPluginEntity {
-    public String plugin;//classFullName
+    public String className;//classFullName
     public int priority = 0;
+    public XPlugin plugin;
 
     public void load(){
-        XPlugin p1 = XUtil.newClass(plugin);
-        if (p1 != null) {
-            XApp.global().plug(p1);
+        plugin = XUtil.newClass(className);
+        if (plugin != null) {
+            XApp.global().plug(plugin);
         }
     }
 }

@@ -79,7 +79,7 @@ public final class XProperties extends Properties{
             String temp = p.get("solon.plugin");
             if (XUtil.isEmpty(temp) == false) {
                 XPluginEntity ent = new XPluginEntity();
-                ent.plugin = temp;
+                ent.className = temp;
                 ent.priority = - p.getInt("solon.plugin.priority", 0);
 
                 _plugs.add(ent);
