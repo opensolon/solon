@@ -100,9 +100,7 @@ public class XApp implements XHandler {
         }
 
         //3.然后加载插件（顺序不能乱）
-        for (XPluginEntity p : _global.prop().plugs()) {
-           p.load();
-        }
+        _global.prop().plugs().forEach(p->p.start());
 
         //4.再加载bean
         if (source != null) {
@@ -129,7 +127,7 @@ public class XApp implements XHandler {
             return;
         }
 
-        _global._stopEvent.forEach(f -> f.run());
+        _global.prop().plugs().forEach(p->p.stop());
     }
 
     //////////////////////////////////
@@ -181,11 +179,6 @@ public class XApp implements XHandler {
     }
 
     /**
-     * 停止事件
-     */
-    private Set<Runnable> _stopEvent = new LinkedHashSet<>();
-
-    /**
      * 路由器
      */
     private final XRouter _router;
@@ -211,13 +204,6 @@ public class XApp implements XHandler {
         _router = new XRouter();
 
         _handler = new XRouterHandler(_router);
-    }
-
-    /**
-     * 注删停止事件
-     */
-    public void onStop(Runnable event) {
-        _stopEvent.add(event);
     }
 
     /**

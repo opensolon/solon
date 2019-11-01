@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon</artifactId>
-    <version>1.0.3.15</version>
+    <version>1.0.3.16</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>

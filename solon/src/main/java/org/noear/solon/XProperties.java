@@ -151,6 +151,10 @@ public final class XProperties extends Properties{
         }
     }
 
+    public Object getRaw(String key){
+        return super.get(key);
+    }
+
     public Properties getProp(String key) {
         Properties prop = new Properties();
 
