@@ -5,10 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.noear</groupId>
-    <artifactId>solon.extend.localsessionstate</artifactId>
-    <version>1.0.3.4</version>
+    <artifactId>solon.extend.stop</artifactId>
+    <version>1.0.3-m1</version>
     <packaging>jar</packaging>
-
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Java project for solon</description>
@@ -33,22 +32,13 @@
         <url>https://github.com/noear/solon</url>
     </scm>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
-    </properties>
-
-
     <dependencies>
-
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
-            <version>1.0.3.11</version>
+            <version>1.0.3.12</version>
             <scope>provided</scope>
         </dependency>
-
     </dependencies>
 
     <profiles>
@@ -126,7 +116,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <compilerArgument>-parameters</compilerArgument>
                     <source>1.8</source>
                     <target>1.8</target>
                     <encoding>UTF-8</encoding>
@@ -146,4 +135,5 @@
         </plugins>
 
     </build>
+
 </project>

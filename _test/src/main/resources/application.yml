@@ -1,0 +1,30 @@
+demo6:
+  test:
+    aaa: 121212
+    bbb: 12
+
+demo8.test:
+  url: jdbc:mysql://127.0.0.1/user
+  username: root
+  paasword: 12
+
+username: noear
+paasword: 1234
+
+solon.view.mapping.htm: BeetlRender
+solon.view.mapping.html: EnjoyRender
+
+water:
+  host: http://water.zmapi.cn/
+  adapter:
+    service_name: 1212
+    alarm_mobile: 18658857337
+    msg_subscriber_id: bbb
+    msg_signature_key: xxx
+    cache_service: webapp.dao.CacheUtil.data2
+
+server.session.state.redis:
+  server: redis.dev.zmapi.cn:6379
+  password: AVsVSKd1
+  db: 31
+  maxTotaol: 200

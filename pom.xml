@@ -48,8 +48,12 @@
         <module>solon.view.beetl</module>
 
         <module>solon.extend.staticfiles</module>
-        <module>solon.extend.redissessionstate</module>
-        <module>solon.extend.localsessionstate</module>
+
+        <module>solon.extend.sessionstate.redis</module>
+        <module>solon.extend.sessionstate.local</module>
+
+        <module>solon.extend.properties.yaml</module>
+        <module>solon.extend.stop</module>
 
 
         <module>solon.extend.jetty.jsp</module>

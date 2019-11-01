@@ -15,7 +15,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.0.3.14</version>
+        <version>1.0.3.15</version>
     </parent>
 
     <dependencies>
@@ -29,6 +29,8 @@
             <groupId>org.noear</groupId>
             <artifactId>solonclient</artifactId>
         </dependency>
+
+
 
 
 <!--        <dependency>-->
@@ -86,11 +88,11 @@
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.extend.redissessionstate</artifactId>-->
+<!--            <artifactId>solon.extend.sessionstate.redis</artifactId>-->
 <!--        </dependency>-->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.localsessionstate</artifactId>
+            <artifactId>solon.extend.sessionstate.local</artifactId>
         </dependency>
 
         <dependency>
@@ -120,6 +122,7 @@
         </dependency>
 
 
+
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>weed3</artifactId>
@@ -146,6 +149,14 @@
             <groupId>org.java-websocket</groupId>
             <artifactId>Java-WebSocket</artifactId>
             <version>1.4.0</version>
+        </dependency>
+
+
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.properties.yaml</artifactId>
+            <version>1.0.3</version>
         </dependency>
 
     </dependencies>
