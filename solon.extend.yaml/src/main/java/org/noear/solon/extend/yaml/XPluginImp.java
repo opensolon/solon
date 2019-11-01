@@ -5,15 +5,13 @@ import org.noear.solon.XUtil;
 import org.noear.solon.core.XPlugin;
 import org.noear.solon.core.XPropertiesLoader;
 
-import java.util.Properties;
-
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
+        //切换配置加载器
         XPropertiesLoader.global = PropertiesLoaderEx.g;
 
-        Properties prop = XUtil.getProperties("application.yml");
-
-        app.prop().putAll(prop);
+        //尝试.yml的配置加载
+        app.prop().load(XUtil.getResource("application.yml"));
     }
 }

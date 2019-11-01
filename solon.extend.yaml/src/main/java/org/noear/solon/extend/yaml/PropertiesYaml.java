@@ -28,9 +28,7 @@ public class PropertiesYaml extends Properties {
         }
 
         if (tmp instanceof List) {
-            ((List<Object>) tmp).forEach((v) -> {
-                do_load(prefix, v);
-            });
+            put(prefix,tmp);
             return;
         }
 
