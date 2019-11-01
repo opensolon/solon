@@ -6,9 +6,8 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon.extend.sessionstate.redis</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.3.2</version>
     <packaging>jar</packaging>
-
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Java project for solon</description>
@@ -45,7 +44,7 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
-            <version>1.0.3.11</version>
+            <version>1.0.3.16</version>
             <scope>provided</scope>
         </dependency>
 
