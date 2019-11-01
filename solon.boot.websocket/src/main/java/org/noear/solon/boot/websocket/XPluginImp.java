@@ -3,8 +3,11 @@ package org.noear.solon.boot.websocket;
 import org.noear.solon.XApp;
 import org.noear.solon.core.XPlugin;
 
-public class XPluginImp implements XPlugin {
-    private   WsServer server = null;
+import java.io.Closeable;
+import java.io.IOException;
+
+public class XPluginImp implements XPlugin, Closeable {
+    private   WsServer _server = null;
     @Override
     public void start(XApp app) {
         int _port = 10000 + app.port();
@@ -15,9 +18,9 @@ public class XPluginImp implements XPlugin {
         System.out.println("oejs.Server:main: WebSocket");
 
         try {
-            server  =new WsServer(_port, contextHandler);
+            _server  =new WsServer(_port, contextHandler);
 
-            server.start();
+            _server.start();
 
             long time_end = System.currentTimeMillis();
 
@@ -25,6 +28,17 @@ public class XPluginImp implements XPlugin {
             System.out.println("oejs.Server:main: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void close() throws IOException {
+        if(_server != null){
+            try {
+                _server.stop();
+            }catch (Exception ex){
+                throw new RuntimeException(ex);
+            }
         }
     }
 }

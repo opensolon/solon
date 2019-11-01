@@ -12,6 +12,7 @@ import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XSingleton;
 import org.noear.solon.core.XPlugin;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -20,32 +21,29 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Properties;
 
-final class XPluginJettyJsp implements XPlugin {
+final class XPluginJettyJsp implements XPlugin, Closeable {
 
     private Server _server = null;
 
     @Override
     public void start(XApp app) {
-
         XProperties props = app.prop();
 
-
         try {
-
-            ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-            servletContextHandler.setContextPath("/");
-            servletContextHandler.setBaseResource(new ResourceCollection(getResourceURLs()));
-            servletContextHandler.addServlet(JspHttpContextServlet.class, "/");
+            ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+            handler.setContextPath("/");
+            handler.setBaseResource(new ResourceCollection(getResourceURLs()));
+            handler.addServlet(JspHttpContextServlet.class, "/");
 
             if(XServerProp.session_timeout >0) {
-                servletContextHandler.getSessionHandler().setMaxInactiveInterval(XServerProp.session_timeout);
+                handler.getSessionHandler().setMaxInactiveInterval(XServerProp.session_timeout);
             }
 
-            enableJspSupport(servletContextHandler);
+            enableJspSupport(handler);
 
             _server = new Server(app.port());
             _server.setSessionIdManager(new DefaultSessionIdManager(_server));
-            _server.setHandler(servletContextHandler);
+            _server.setHandler(handler);
 
             _server.setAttribute("org.eclipse.jetty.server.Request.maxFormContentSize",
                     XServerProp.request_maxRequestSize);
@@ -66,21 +64,12 @@ final class XPluginJettyJsp implements XPlugin {
             }
 
             _server.start();
-            app.onStop(this::stop);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public void stop(){
-        try {
-            _server.stop();
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
-
-    private void enableJspSupport(ServletContextHandler servletContextHandler) throws IOException {
+    private void enableJspSupport(ServletContextHandler handler) throws IOException {
         // Establish Scratch directory for the servlet context (used by JSP compilation)
         File tempDir = new File(System.getProperty("java.io.tmpdir"));
         File scratchDir = new File(tempDir.toString(), "solon.boot.jetty.jsp");
@@ -90,17 +79,17 @@ final class XPluginJettyJsp implements XPlugin {
                 throw new IOException("Unable to create scratch directory: " + scratchDir);
             }
         }
-        servletContextHandler.setAttribute("javax.servlet.context.tempdir", scratchDir);
+        handler.setAttribute("javax.servlet.context.tempdir", scratchDir);
 
         // Set Classloader of Context to be sane (needed for JSTL)
         // JSP requires a non-System classloader, this simply wraps the
         // embedded System classloader in a way that makes it suitable
         // for JSP to use
         ClassLoader jspClassLoader = new URLClassLoader(new URL[0], this.getClass().getClassLoader());
-        servletContextHandler.setClassLoader(jspClassLoader);
+        handler.setClassLoader(jspClassLoader);
 
         // Manually call JettyJasperInitializer on context startup
-        servletContextHandler.addBean(new JspStarter(servletContextHandler));
+        handler.addBean(new JspStarter(handler));
 
         // Create / Register JSP Servlet (must be named "jsp" per spec)
         ServletHolder holderJsp = new ServletHolder("jsp", JettyJspServlet.class);
@@ -109,7 +98,7 @@ final class XPluginJettyJsp implements XPlugin {
         Properties properties = XApp.global().prop().getProp("solon.jetty.jsp");
         properties.forEach((k, v) -> holderJsp.setInitParameter((String)k, (String)v));
 
-        servletContextHandler.addServlet(holderJsp, "*.jsp");
+        handler.addServlet(holderJsp, "*.jsp");
     }
 
     private String[] getResourceURLs() throws FileNotFoundException {
@@ -146,6 +135,18 @@ final class XPluginJettyJsp implements XPlugin {
             return new URL(path);
         } catch (MalformedURLException e) {
             return null;
+        }
+    }
+
+    @Override
+    public void close() throws IOException {
+        try {
+            if (_server != null) {
+                _server.stop();
+                _server = null;
+            }
+        }catch (Exception ex){
+            throw  new RuntimeException(ex);
         }
     }
 }

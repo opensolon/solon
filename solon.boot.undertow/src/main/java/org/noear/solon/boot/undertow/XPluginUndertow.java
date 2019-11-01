@@ -14,13 +14,15 @@ import org.noear.solon.core.XPlugin;
 
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
+import java.io.Closeable;
+import java.io.IOException;
 
 /**
  * @Created by: Yukai
  * @Date: 2019/3/28 15:49
  * @Description : Yukai is so handsome xxD
  */
-public class XPluginUndertow implements XPlugin {
+public class XPluginUndertow implements XPlugin, Closeable {
     // singleton
     private static Undertow.Builder serverBuilder = null;
     private Undertow _server = null;
@@ -50,8 +52,6 @@ public class XPluginUndertow implements XPlugin {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-        app.onStop(this::stop);
     }
 
 
@@ -92,11 +92,11 @@ public class XPluginUndertow implements XPlugin {
         return serverBuilder;
     }
 
-    public void stop() {
-        try {
+    @Override
+    public void close() throws IOException {
+        if (_server != null) {
             _server.stop();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            _server = null;
         }
     }
 }

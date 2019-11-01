@@ -20,6 +20,8 @@ import org.noear.solon.core.XPlugin;
 
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
+import java.io.Closeable;
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
@@ -29,7 +31,7 @@ import java.util.HashMap;
  * @Date: 2019/3/28 15:50
  * @Description : Yukai is so handsome xxD
  */
-public class XPluginUndertowJsp implements XPlugin {
+public class XPluginUndertowJsp implements XPlugin, Closeable {
     private static Undertow.Builder serverBuilder = null;
     private static Undertow _server = null;
 
@@ -85,7 +87,6 @@ public class XPluginUndertowJsp implements XPlugin {
 
         _server = serverBuilder.build();
 
-        app.onStop(this::stop);
         //************************* init server end********************
         System.setProperty(KEY, "Hello JSP!");
     }
@@ -103,11 +104,11 @@ public class XPluginUndertowJsp implements XPlugin {
         return serverBuilder;
     }
 
-    public void stop() {
-        try {
+    @Override
+    public void close() throws IOException {
+        if (_server != null) {
             _server.stop();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            _server = null;
         }
     }
 }

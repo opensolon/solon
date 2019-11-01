@@ -1,16 +1,19 @@
 package org.noear.solon.boot.nettyhttp;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 
  class HttpServer {
-    int port ;
+    private int port ;
+    private ChannelFuture _server;
 
     public HttpServer(int port){
         this.port = port;
@@ -25,6 +28,13 @@ import java.net.InetSocketAddress;
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new HttpServerInitializer());
 
-       bootstrap.bind(new InetSocketAddress(port)).sync();
+        _server = bootstrap.bind(new InetSocketAddress(port)).sync();
+    }
+
+    public void stop() throws IOException {
+        if(_server != null) {
+            _server.channel().close();
+            _server = null;
+        }
     }
 }

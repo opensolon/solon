@@ -4,7 +4,10 @@ import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.XPlugin;
 
-public final class XPluginImp implements XPlugin {
+import java.io.Closeable;
+import java.io.IOException;
+
+public final class XPluginImp implements XPlugin, Closeable {
     private XPlugin _server = null;
 
     @Override
@@ -26,5 +29,12 @@ public final class XPluginImp implements XPlugin {
         }
         _server.start(app);
         System.err.println("undertow::start end @" + (System.currentTimeMillis() - start_before) + "ms");
+    }
+
+    @Override
+    public void close() throws IOException {
+        if(_server != null){
+            ((Closeable)_server).close();
+        }
     }
 }

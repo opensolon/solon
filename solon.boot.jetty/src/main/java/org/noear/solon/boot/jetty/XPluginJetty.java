@@ -7,7 +7,10 @@ import org.noear.solon.XApp;
 import org.noear.solon.XProperties;
 import org.noear.solon.core.XPlugin;
 
-final class XPluginJetty implements XPlugin {
+import java.io.Closeable;
+import java.io.IOException;
+
+final class XPluginJetty implements XPlugin, Closeable {
     private Server _server = null;
     @Override
     public void start(XApp app) {
@@ -45,19 +48,21 @@ final class XPluginJetty implements XPlugin {
 
         try {
             _server.start();
-            app.onStop(this::stop);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
     }
 
-    public void stop(){
+    @Override
+    public void close() throws IOException {
         try {
-            _server.stop();
-        }catch (Exception ex){
-            ex.printStackTrace();
+            if (_server != null) {
+                _server.stop();
+                _server = null;
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
     }
-
 }

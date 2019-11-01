@@ -4,7 +4,10 @@ import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.XPlugin;
 
-public final class XPluginImp implements XPlugin {
+import java.io.Closeable;
+import java.io.IOException;
+
+public final class XPluginImp implements XPlugin , Closeable {
     private XPlugin _server = null;
     @Override
     public void start(XApp app) {
@@ -26,5 +29,12 @@ public final class XPluginImp implements XPlugin {
         long time_end = System.currentTimeMillis();
 
         System.out.println("oejs.Server:main: Started @" + (time_end - time_start) + "ms");
+    }
+
+    @Override
+    public void close() throws IOException {
+        if (_server != null) {
+            ((Closeable) _server).close();
+        }
     }
 }

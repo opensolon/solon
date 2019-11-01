@@ -3,7 +3,10 @@ package org.noear.solon.boot.nettyhttp;
 import org.noear.solon.XApp;
 import org.noear.solon.core.XPlugin;
 
-public class XPluginImp implements XPlugin {
+import java.io.Closeable;
+import java.io.IOException;
+
+public class XPluginImp implements XPlugin, Closeable {
     HttpServer _server;
     @Override
     public void start(XApp app) {
@@ -25,5 +28,10 @@ public class XPluginImp implements XPlugin {
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    public void close() throws IOException {
+        _server.stop();
     }
 }

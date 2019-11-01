@@ -4,11 +4,13 @@ import org.noear.solon.XApp;
 import org.noear.solon.core.XMethod;
 import org.noear.solon.core.XPlugin;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public final class XPluginImp implements XPlugin {
+public final class XPluginImp implements XPlugin, Closeable {
     private HTTPServer _server = new HTTPServer();
 
     @Override
@@ -48,12 +50,14 @@ public final class XPluginImp implements XPlugin {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-        app.onStop(this::stop);
     }
 
-    public void stop() {
-        _server.stop();
+    @Override
+    public void close() throws IOException {
+        if(_server != null) {
+            _server.stop();
+            _server = null;
+        }
     }
 }
 
