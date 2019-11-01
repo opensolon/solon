@@ -74,8 +74,6 @@ public final class XProperties extends Properties{
 
     private void do_loadPlug(URL url){
         try {
-            PrintUtil.blueln(url);
-
             XProperties p = new XProperties().load(url);
 
             String temp = p.get("solon.plugin");

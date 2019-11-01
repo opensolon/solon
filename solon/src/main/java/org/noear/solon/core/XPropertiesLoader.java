@@ -16,6 +16,8 @@ public class XPropertiesLoader {
         String fileName = url.toString();
 
         if (fileName.endsWith(".properties")) {
+            System.out.println(url);
+
             Properties tmp = new XProperties();
             tmp.load(url.openStream());
             return tmp;
