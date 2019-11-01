@@ -33,9 +33,3 @@ custom:
   li:
     - 12
     - 13
-  li2:
-    - bbb:
-        - wefwef
-        - ddd
-    - ccc
-    - ddd
