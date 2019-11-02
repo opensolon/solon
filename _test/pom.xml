@@ -15,7 +15,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.0.3.16</version>
+        <version>1.0.3.17</version>
     </parent>
 
     <dependencies>
@@ -41,23 +41,28 @@
         </dependency>
 
 
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.websocket</artifactId>-->
+<!--        </dependency>-->
+
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.websocket</artifactId>
+            <artifactId>solon.boot.smarthttp</artifactId>
+            <version>1.0.3-b1</version>
         </dependency>
-
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.smarthttp</artifactId>-->
-<!--            <version>1.0.3-b1</version>-->
+<!--            <artifactId>solon.boot.nettyhttp</artifactId>-->
 <!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.nettyhttp</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.reactor-netty</artifactId>-->
+<!--            <version>1.0.3-b1</version>-->
+<!--        </dependency>-->
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
@@ -100,10 +105,16 @@
             <artifactId>solon.extend.sessionstate.local</artifactId>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.serialization.fastjson</artifactId>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.fastjson</artifactId>
+            <artifactId>solon.serialization.snack3</artifactId>
         </dependency>
+
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
 <!--            <artifactId>solon.serialization.jackson</artifactId>-->
@@ -155,9 +166,6 @@
             <artifactId>Java-WebSocket</artifactId>
             <version>1.4.0</version>
         </dependency>
-
-
-
 
     </dependencies>
 
