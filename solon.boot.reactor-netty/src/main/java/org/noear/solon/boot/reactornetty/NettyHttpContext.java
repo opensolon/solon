@@ -1,9 +1,8 @@
 package org.noear.solon.boot.reactornetty;
 
-import io.netty.channel.ChannelHandlerContext;
+import io.netty.buffer.ByteBufOutputStream;
+import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.*;
-import io.netty.handler.codec.http.cookie.Cookie;
-import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XFile;
 import org.noear.solon.core.XMap;
@@ -15,19 +14,16 @@ import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import static io.netty.handler.codec.http.HttpHeaderNames.COOKIE;
 import static io.netty.handler.codec.http.HttpHeaderNames.SET_COOKIE;
 
 
 public class NettyHttpContext extends XContext {
     private final HttpServerRequest _request;
     private final HttpServerResponse _response;
-    public NettyHttpContext(ChannelHandlerContext channel, HttpServerRequest request, HttpServerResponse response) {
+    public NettyHttpContext(HttpServerRequest request, HttpServerResponse response) {
         _request = request;
         _response = response;
-
     }
 
     @Override
@@ -56,7 +52,7 @@ public class NettyHttpContext extends XContext {
 
     @Override
     public String protocol() {
-        return "";
+        return _request.version().protocolName();
     }
 
     private URI _uri;
@@ -80,7 +76,7 @@ public class NettyHttpContext extends XContext {
             _url = _request.uri();
 
             if (_url != null && _url.startsWith("/")) {
-                _url = "http://" + header("Host") + _url;
+                _url = _request.scheme()+"://" + header("Host") + _url;
             }
         }
 
@@ -99,7 +95,7 @@ public class NettyHttpContext extends XContext {
 
     @Override
     public String body() throws IOException {
-        return null;//_request.receiveContent();
+        return _request.receiveContent().blockFirst().toString();
     }
 
     @Override
@@ -276,7 +272,7 @@ public class NettyHttpContext extends XContext {
         }
     }
 
-    protected ByteArrayOutputStream _outputStream = new ByteArrayOutputStream();
+    protected ByteBufOutputStream _outputStream = new ByteBufOutputStream(Unpooled.buffer());
 
     @Override
     public void headerSet(String key, String val) {
@@ -332,6 +328,7 @@ public class NettyHttpContext extends XContext {
 
     @Override
     protected void commit() throws IOException{
+        //_response.send();
         //_response.content().writeBytes(_outputStream.toByteArray());
     }
 }

@@ -3,6 +3,7 @@ package org.noear.solon.boot.reactornetty;
 import org.noear.solon.XApp;
 import org.noear.solon.core.XPlugin;
 import reactor.netty.DisposableServer;
+import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.server.HttpServer;
 
 import java.io.Closeable;
@@ -19,9 +20,14 @@ public class XPluginImp implements XPlugin, Closeable {
         try {
             System.out.println("oejs.Server:main: Reactornetty 0.9");
 
+            HttpRequestHandler handler = new HttpRequestHandler();
+
             _server = HttpServer.create()
+                    .compress(true)
+                    .protocol(HttpProtocol.HTTP11)
+                    .host("localhost")
                     .port(app.port())
-                    .handle(new HttpRequestHandler())
+                    .handle(handler)
                     .bindNow();
 
             long time_end = System.currentTimeMillis();
@@ -35,6 +41,7 @@ public class XPluginImp implements XPlugin, Closeable {
 
     @Override
     public void close() throws IOException {
-        _server.dispose();
+        _server.onDispose()
+                .block();
     }
 }
