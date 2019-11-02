@@ -5,6 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import org.noear.solon.XApp;
+import org.noear.solon.XUtil;
 
 import static io.netty.handler.codec.http.HttpUtil.is100ContinueExpected;
 
@@ -38,6 +39,10 @@ import static io.netty.handler.codec.http.HttpUtil.is100ContinueExpected;
              app.handle(context);
          }catch (Throwable ex){
              ex.printStackTrace();
+
+             context.status(500);
+             context.setHandled(true);
+             context.output(XUtil.getFullStackTrace(ex));
          }
 
          try{
