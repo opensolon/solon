@@ -212,7 +212,7 @@ public abstract class XContext {
     @XNote("输出内容:字符串")
     public abstract void output(String str);
     @XNote("输出内容:异常对象")
-    public void output(Exception ex) { output(XUtil.getFullStackTrace(ex)); }
+    public void output(Throwable ex) { output(XUtil.getFullStackTrace(ex)); }
     @XNote("输出内容:stream")
     public abstract void output(InputStream stream);
     @XNote("获取输出流")

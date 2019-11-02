@@ -51,7 +51,7 @@ public class XRouterHandler implements XHandler {
 
         if (handler != null) {
             handler.handle(context);
-            return true;
+            return context.status() != 404;
         } else {
             return false;
         }
