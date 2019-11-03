@@ -365,7 +365,7 @@ public class SmartHttpContext extends XContext {
         _response.setHttpStatus(HttpStatus.valueOf(status()));
         _response.setContentLength(_outputStream.size());
         _outputStream.writeTo(_response.getOutputStream());
-        _response.getOutputStream().close();
+        //_response.getOutputStream().close();
     }
 
 }
