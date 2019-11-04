@@ -2,7 +2,7 @@ package webapp.demo5_rpc;
 
 import org.noear.solonclient.annotation.XClient;
 
-@XClient("http://localhost:8080/demo5/test")
+@XClient("demo:/demo5/test/")
 public interface rockapi {
 
     Object test1(Integer a);
