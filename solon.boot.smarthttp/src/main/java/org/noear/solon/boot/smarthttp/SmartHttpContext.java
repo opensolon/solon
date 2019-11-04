@@ -77,9 +77,18 @@ public class SmartHttpContext extends XContext {
         return uri().getPath();
     }
 
+    private String _url;
     @Override
     public String url() {
-        return _request.getRequestURI();
+        if (_url == null) {
+            _url = _request.getRequestURI();
+
+            if (_url.indexOf("://") < 0) {
+                _url = "http://" + header("Host") + _url;
+            }
+        }
+
+        return _url;
     }
 
     @Override
