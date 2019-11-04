@@ -34,11 +34,24 @@ public class XProxy {
             if(fun == null){
                 _url = url;
             }else {
-                if (url.endsWith("/")) {
-                    _url = url + fun;
-                } else {
-                    _url = url + "/" + fun;
+                StringBuilder sb = new StringBuilder(200);
+
+                sb.append(url);
+                if(url.endsWith("/")){
+                    if(fun.startsWith("/")){
+                        sb.append(fun.substring(1));
+                    }else{
+                        sb.append(fun);
+                    }
+                }else{
+                    if(fun.startsWith("/")){
+                        sb.append(fun);
+                    }else{
+                        sb.append("/").append(fun);
+                    }
                 }
+
+                _url = sb.toString();
             }
         }
         return this;
@@ -162,6 +175,17 @@ public class XProxy {
 
         String url = null;
         if (_sev.indexOf("://") < 0) {
+            if(_sev.indexOf(":")>0) {
+                String[] ss = _sev.split(":");
+
+                _sev = ss[0];
+                if (ss[1].endsWith("/")) {
+                    fun = ss[1] + fun;
+                } else {
+                    fun = ss[1] + "/" + fun;
+                }
+            }
+
             url = _upstream.run(_sev);
         } else {
             url = _sev;
