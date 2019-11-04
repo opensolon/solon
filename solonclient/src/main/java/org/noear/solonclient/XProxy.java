@@ -60,7 +60,7 @@ public class XProxy {
     /** 执行完成呼叫 */
     public XProxy call(Map<String,String> headers, Map<String, String> args) {
         try {
-            _result = HttpUtil.postString(_url, args, headers);
+            _result = HttpUtils.http(_url).data(args).headers(headers).post();
         }catch (Exception ex){
             throw new RuntimeException(ex);
         }
@@ -98,7 +98,7 @@ public class XProxy {
     // 下面为动态代理部分
     //
     //////////////////////////////////
-    private XProxy.Fun1<String,String> _upstream;
+    private HttpUpstream _upstream;
     private String _sev;
     private Map<String, String> _headers = new HashMap<>();
 
@@ -186,7 +186,7 @@ public class XProxy {
                 }
             }
 
-            url = _upstream.run(_sev);
+            url = _upstream.getTarget(_sev);
         } else {
             url = _sev;
         }
@@ -198,7 +198,7 @@ public class XProxy {
                 .getObject(method.getReturnType());
     }
 
-    public XProxy upstream(XProxy.Fun1<String,String> upstream){
+    public XProxy upstream(HttpUpstream upstream){
         _upstream = upstream;
         return this;
     }
@@ -206,9 +206,5 @@ public class XProxy {
 
     private static boolean isEmpty(String str) {
         return str == null || str.length() == 0;
-    }
-
-    public interface Fun1<R,T>{
-        R run(R r);
     }
 }
