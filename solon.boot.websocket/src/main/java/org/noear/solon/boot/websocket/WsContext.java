@@ -47,7 +47,7 @@ public class WsContext extends XContextEmpty {
 
     @Override
     public String protocol() {
-        return "ws";
+        return "WS";
     }
 
     @Override

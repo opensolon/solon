@@ -12,7 +12,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.*;
 
@@ -78,9 +77,18 @@ public class SmartHttpContext extends XContext {
         return uri().getPath();
     }
 
+    private String _url;
     @Override
     public String url() {
-        return _request.getRequestURI();
+        if (_url == null) {
+            _url = _request.getRequestURI();
+
+            if (_url.indexOf("://") < 0) {
+                _url = "http://" + header("Host") + _url;
+            }
+        }
+
+        return _url;
     }
 
     @Override
@@ -119,19 +127,7 @@ public class SmartHttpContext extends XContext {
 
     @Override
     public String[] paramValues(String key) {
-        List<String> list = new ArrayList<>();
-        try {
-            for (String[] kv : _request.getParameterList()) {
-                if (key.equals(kv[0])) {
-                    list.add(kv[1]);
-                }
-            }
-        }catch (Exception ex){
-            ex.printStackTrace();
-            return null;
-        }
-
-        return list.toArray(new String[]{});
+        return _request.getParameterValues(key);
     }
 
     @Override
@@ -163,7 +159,10 @@ public class SmartHttpContext extends XContext {
             _paramMap = new XMap();
 
             try {
-                _paramMap.putAll(_request.getParameterMap());
+                for(Map.Entry<String,String[]> entry:_request.getParameters().entrySet()){
+                    _paramMap.put(entry.getKey(),entry.getValue()[0]);
+                }
+//                _paramMap.putAll(_request.getParameters());
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -245,7 +244,7 @@ public class SmartHttpContext extends XContext {
         if(_headerMap == null) {
             _headerMap = new XMap();
 
-            _headerMap.putAll(_request.getHeadMap());
+            _headerMap.putAll(_request.getHeaders());
         }
 
         return _headerMap;
@@ -375,7 +374,7 @@ public class SmartHttpContext extends XContext {
         _response.setHttpStatus(HttpStatus.valueOf(status()));
         _response.setContentLength(_outputStream.size());
         _outputStream.writeTo(_response.getOutputStream());
-        _response.getOutputStream().close();
+        //_response.getOutputStream().close();
     }
 
 }

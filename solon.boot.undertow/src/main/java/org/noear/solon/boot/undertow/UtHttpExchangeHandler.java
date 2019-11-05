@@ -63,14 +63,15 @@ public class UtHttpExchangeHandler implements HttpHandler {
                 //end the handler
                 exchange.endExchange();
             }else{
+                exchange.setStatusCode(404);
                 exchange.endExchange();
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
 
-            exchange.endExchange();
             ex.printStackTrace(response.getWriter());
             exchange.setStatusCode(500);
+            exchange.endExchange();
 
         }
         // The root handler returns normally without completing the exchange

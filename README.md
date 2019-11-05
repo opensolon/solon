@@ -87,9 +87,9 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 | org.noear:solon.view.beetl:1.0.3.5 | 视图插件，对 `beetl` 适配，输出`html` |
 | org.noear:solon.view.enjoy:1.0.3.5 | 视图插件，对 `enjoy` 适配，输出`html` |
 
-| RPC CLINET | 说明 |
+| rpc client | 说明 |
 | --- | --- |
-| org.noear:solonclient:1.0.3 | 11k，`rpc` client 框架，与solon 的 rpc service 配对 |
+| org.noear:solonclient:1.0.3.1 | 11k，`rpc` client 框架，与solon 的 rpc service 配对 |
 
 #### 简单示例
 * 微框架示例
