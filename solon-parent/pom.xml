@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.16</version>
+    <version>1.0.3.17</version>
     <packaging>pom</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -38,10 +38,10 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.0.3.16</solon.ver>
+        <solon.ver>1.0.3.17</solon.ver>
         <solon.boot.jetty.ver>1.0.3.5</solon.boot.jetty.ver>
         <solon.boot.jlhttp.ver>1.0.3.5</solon.boot.jlhttp.ver>
-        <solon.boot.nettyhttp.ver>1.0.3.5</solon.boot.nettyhttp.ver>
+        <solon.boot.nettyhttp.ver>1.0.3.6</solon.boot.nettyhttp.ver>
         <solon.boot.undertow.ver>1.0.3.5</solon.boot.undertow.ver>
 
         <solon.boot.websocket.ver>1.0.3.5</solon.boot.websocket.ver>
@@ -51,7 +51,7 @@
 
 
         <solon.extend.staticfiles.ver>1.0.3.2</solon.extend.staticfiles.ver>
-        <solon.extend.properties.yaml.ver>1.0.3.2</solon.extend.properties.yaml.ver>
+        <solon.extend.properties.yaml.ver>1.0.3.4</solon.extend.properties.yaml.ver>
 
         <solon.extend.sessionstate.local.ver>1.0.3.2</solon.extend.sessionstate.local.ver>
         <solon.extend.sessionstate.redis.ver>1.0.3.2</solon.extend.sessionstate.redis.ver>
@@ -69,7 +69,7 @@
         <solon.view.enjoy.ver>1.0.3.5</solon.view.enjoy.ver>
         <solon.view.beetl.ver>1.0.3.5</solon.view.beetl.ver>
 
-        <solonclient.ver>1.0.3</solonclient.ver>
+        <solonclient.ver>1.0.3.1</solonclient.ver>
 
         <weed3.ver>3.2.2</weed3.ver>
         <snack3.ver>3.1.0</snack3.ver>

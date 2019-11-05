@@ -61,6 +61,5 @@
         <module>solon.extend.undertow.jsp</module>
 
         <module>solonclient</module>
-
     </modules>
 </project>
