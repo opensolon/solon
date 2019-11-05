@@ -41,15 +41,15 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon-parent:1.0.3.16 | 框架版本管理 |
-| org.noear:solon:1.0.3.16 | 70k，主框架 |
+| org.noear:solon-parent:1.0.3.17 | 框架版本管理 |
+| org.noear:solon:1.0.3.17 | 70k，主框架 |
 
 ##### 插件
 
 | boot插件 | 说明 |
 | --- | --- |
 | org.noear:solon.boot.jlhttp:1.0.3.5 | boot插件,对`jlhttp`适配,提供`http`服务（不自带session；可通过session插件提供支持） |
-| org.noear:solon.boot.nteeyhttp:1.0.3.5 | boot插件,对`Netty`适配,提供`http`服务 |
+| org.noear:solon.boot.nteeyhttp:1.0.3.6 | boot插件,对`Netty`适配,提供`http`服务 |
 | org.noear:solon.boot.jetty:1.0.3.5 | boot插件,对`jetty`适配,提供`http`服务 |
 | org.noear:solon.boot.undertow:1.0.3.5 | boot插件,对`undertow`适配,提供`http`服务（网友@tyk提供） |
 | org.noear:solon.boot.websocket:1.0.3.5 | boot插件,对`java-websocket`适配，提供`websocket`服务 |
@@ -65,7 +65,7 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | Yaml配置支持插件 | 说明 |
 | --- | --- |
-| org.noear:solon.extend.properties.yaml:1.0.3.2 | 扩展插件,添加yml配置文件支持 |
+| org.noear:solon.extend.properties.yaml:1.0.3.4 | 扩展插件,添加yml配置文件支持 |
 
 | Session插件 | 说明（可将boot插件的session，自动换掉） |
 | --- | --- |
@@ -89,7 +89,7 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | rpc client | 说明 |
 | --- | --- |
-| org.noear:solonclient:1.0.3.1 | 11k，`rpc` client 框架，与solon 的 rpc service 配对 |
+| org.noear:solonclient:1.0.3.2 | 11k，`rpc` client 框架，与solon 的 rpc service 配对 |
 
 #### 简单示例
 * 微框架示例
