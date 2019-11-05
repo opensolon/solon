@@ -176,9 +176,10 @@ public class XUtil {
     }
 
     public static String buildExt(String ext_dir) {
-        String fileName = "application.properties";
-
-        URL temp = XUtil.getResource(fileName);
+        URL temp = XUtil.getResource("application.properties");
+        if(temp == null){
+            temp = XUtil.getResource("application.yml");
+        }
 
         if (temp == null) {
             return null;

@@ -8,7 +8,6 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Properties;
 
 /** 外部扩展加载器（对于动态扩展） */
 public class ExtendLoader {
@@ -23,9 +22,9 @@ public class ExtendLoader {
                 path = XUtil.buildExt(path);
             }
 
-            if (path != null) {
-                PrintUtil.blueln(path);
+            PrintUtil.blueln("solon.extend: " + path);
 
+            if (path != null) {
                 File file = new File(path);
                 _g.do_load(file);
             }
@@ -84,7 +83,7 @@ public class ExtendLoader {
                 if (path.endsWith(".properties")) {
                     XApp.global().prop().load(file.toURI().toURL());
 
-                    PrintUtil.blueln("loaded "+path);
+                    PrintUtil.blueln("loaded: "+path);
                     return;
                 }
 
@@ -95,7 +94,7 @@ public class ExtendLoader {
 
                     XApp.global().prop().load(file.toURI().toURL());
 
-                    PrintUtil.blueln("loaded " + path);
+                    PrintUtil.blueln("loaded: " + path);
                     return;
                 }
             } catch (Exception ex) {
