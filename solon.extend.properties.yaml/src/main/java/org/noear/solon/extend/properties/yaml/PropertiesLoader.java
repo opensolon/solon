@@ -9,6 +9,16 @@ public class PropertiesLoader extends XPropertiesLoader {
 
     public static final PropertiesLoader g = new PropertiesLoader();
 
+
+    @Override
+    public boolean isSupport(String suffix) {
+        if (suffix == null) {
+            return false;
+        }
+
+        return suffix.endsWith(".properties") || suffix.endsWith(".yml");
+    }
+
     @Override
     public Properties load(URL url) throws Exception {
         if (url == null) {

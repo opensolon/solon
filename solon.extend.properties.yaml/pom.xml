@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon.extend.properties.yaml</artifactId>
-    <version>1.0.3.3</version>
+    <version>1.0.3.4</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -43,7 +43,7 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
-            <version>1.0.3.16</version>
+            <version>1.0.3.17</version>
             <scope>provided</scope>
         </dependency>
 
