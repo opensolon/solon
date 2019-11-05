@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.concurrent.*;
 
 public class ScheduledStore {
-    private String _cacheKeyHead;
     private int _defaultSeconds;
 
     private Map<String, Entity> _data = new ConcurrentHashMap<>();   //缓存存储器
