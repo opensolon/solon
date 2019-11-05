@@ -174,4 +174,32 @@ public class XUtil {
 
         return _map;
     }
+
+    public static String buildExt(String ext_dir) {
+        String fileName = "application.properties";
+
+        URL temp = XUtil.getResource(fileName);
+
+        if (temp == null) {
+            return null;
+        } else {
+            String uri = temp.toString();
+            if (uri.startsWith("file:/")) {
+                uri = uri.substring(5, uri.length() - 30);
+            } else {
+                int idx = uri.indexOf("jar!/");
+                idx = uri.lastIndexOf("/", idx) + 1;
+
+                uri = uri.substring(9, idx);
+            }
+
+            uri = uri + ext_dir+ "/";
+            File dir = new File(uri);
+            if (dir.exists() == false) {
+                dir.mkdir();
+            }
+
+            return uri;
+        }
+    }
 }

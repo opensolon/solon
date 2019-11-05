@@ -47,6 +47,18 @@ public final class XProperties extends Properties{
         return this;
     }
 
+    protected void plugsScan() {
+        //3.查找插件配置（如果出错，让它抛出异常）
+        XScaner.scan("solonplugin", ".properties")
+                .stream()
+                .map(k -> XUtil.getResource(k))
+                .forEach(url -> do_loadPlug(url));
+
+        if (_plugs != null) {
+            _plugs.sort(Comparator.comparingInt(p1 -> p1.priority));
+        }
+    }
+
     private void do_loadFile() {
         //1.加载文件的配置
         load(XUtil.getResource("application.properties")); //可能会是：
@@ -59,17 +71,6 @@ public final class XProperties extends Properties{
                 setProperty(key, String.valueOf(v));
             }
         });
-
-
-        //3.查找插件配置（如果出错，让它抛出异常）
-        XScaner.scan("solonplugin", ".properties")
-                .stream()
-                .map(k -> XUtil.getResource(k))
-                .forEach(url -> do_loadPlug(url));
-
-        if(_plugs!=null) {
-            _plugs.sort(Comparator.comparingInt(p1 -> p1.priority));
-        }
     }
 
     private void do_loadPlug(URL url){

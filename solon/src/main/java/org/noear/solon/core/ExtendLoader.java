@@ -16,9 +16,15 @@ public class ExtendLoader {
      * 加载扩展文件夹（或文件）
      * */
     public static void load(String path, XMap map) {
-        if(XUtil.isEmpty(path) == false) {
-            File file = new File(path);
-            _g.do_load(file, map);
+        if (XUtil.isEmpty(path) == false) {
+            if (path.indexOf("/") < 0) {
+                path = XUtil.buildExt(path);
+            }
+
+            if (path != null) {
+                File file = new File(path);
+                _g.do_load(file, map);
+            }
         }
     }
 

@@ -88,18 +88,26 @@ public class XApp implements XHandler {
         long time_start = System.currentTimeMillis();
         PrintUtil.blueln("solon.plugin:: Start loading");
 
-        //2.尝试加载扩展文件夹
-        if (argx.containsKey("extend")) {
-            ExtendLoader.load(argx.get("extend"), argx);
-        }
-
+        //1.初始化应用
         _global = new XApp(argx);
 
+        //2.尝试加载扩展文件夹
+        String _extend = argx.get("extend");
+        if(XUtil.isEmpty(_extend)){
+            _extend = _global.prop().get("solon.extend");
+        }
+
+        ExtendLoader.load(_extend, argx);
+
+        //3.1.尝试扫描插件
+        _global.prop().plugsScan();
+
+        //3.2.尝试预构建
         if (builder != null) {
             builder.run(_global);
         }
 
-        //3.然后加载插件（顺序不能乱）
+        //3.3.尝试加载插件（顺序不能乱）
         _global.prop().plugs().forEach(p->p.start());
 
         //4.再加载bean
@@ -107,7 +115,7 @@ public class XApp implements XHandler {
             _global.loadBean(source);
         }
 
-        //5.加载渲染器
+        //6.加载渲染关系
         XMap map = _global.prop().getXmap("solon.view.mapping");
         map.forEach((k, v) -> {
             XRenderManager.mapping("." + k, v);
