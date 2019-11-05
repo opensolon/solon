@@ -1,6 +1,8 @@
 package org.noear.solon.core;
 
+import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.ext.PrintUtil;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -15,15 +17,17 @@ public class ExtendLoader {
     /**
      * 加载扩展文件夹（或文件）
      * */
-    public static void load(String path, XMap map) {
+    public static void load(String path) {
         if (XUtil.isEmpty(path) == false) {
             if (path.indexOf("/") < 0) {
                 path = XUtil.buildExt(path);
             }
 
             if (path != null) {
+                PrintUtil.blueln(path);
+
                 File file = new File(path);
-                _g.do_load(file, map);
+                _g.do_load(file);
             }
         }
     }
@@ -32,7 +36,7 @@ public class ExtendLoader {
      * 加载扩展具体的jar文件
      * */
     public static void loadJar(File file) {
-        _g.do_loadFile(file, null);
+        _g.do_loadFile(file);
     }
 
     private Method addURL;
@@ -50,7 +54,7 @@ public class ExtendLoader {
     }
 
     /** 如果是目录的话，只处理一级 */
-    private void do_load(File file, XMap map) {
+    private void do_load(File file) {
         if (file.exists() == false) {
             return;
         }
@@ -58,15 +62,15 @@ public class ExtendLoader {
         if (file.isDirectory()) {
             File[] tmps = file.listFiles();
             for (File tmp : tmps) {
-                do_loadFile(tmp, map);
+                do_loadFile(tmp);
             }
         } else {
-            do_loadFile(file, map);
+            do_loadFile(file);
         }
     }
 
 
-    private void do_loadFile(File file, XMap map) {
+    private void do_loadFile(File file) {
         if (file.isFile()) {
             String path = file.getAbsolutePath();
             try {
@@ -77,12 +81,21 @@ public class ExtendLoader {
                 }
 
                 //如果map不为null；尝试加载配置
-                if (map != null && path.endsWith(".properties")) {
-                    Properties prop = new Properties();
-                    prop.load(file.toURI().toURL().openStream());
-                    prop.forEach((k, v) -> {
-                        map.put(k.toString(), v.toString().trim());
-                    });
+                if (path.endsWith(".properties")) {
+                    XApp.global().prop().load(file.toURI().toURL());
+
+                    PrintUtil.blueln("loaded "+path);
+                    return;
+                }
+
+                if (path.endsWith(".yml")) {
+                    if (XPropertiesLoader.global.isSupport(path) == false) {
+                        throw new RuntimeException("Do not support the *.yml");
+                    }
+
+                    XApp.global().prop().load(file.toURI().toURL());
+
+                    PrintUtil.blueln("loaded " + path);
                     return;
                 }
             } catch (Exception ex) {

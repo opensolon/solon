@@ -97,7 +97,7 @@ public class XApp implements XHandler {
             _extend = _global.prop().get("solon.extend");
         }
 
-        ExtendLoader.load(_extend, argx);
+        ExtendLoader.load(_extend);
 
         //3.1.尝试扫描插件
         _global.prop().plugsScan();
