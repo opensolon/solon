@@ -5,9 +5,9 @@ import org.noear.solon.core.XPropertiesLoader;
 import java.net.URL;
 import java.util.Properties;
 
-public class PropertiesLoaderEx extends XPropertiesLoader {
+public class PropertiesLoader extends XPropertiesLoader {
 
-    public static final PropertiesLoaderEx g = new PropertiesLoaderEx();
+    public static final PropertiesLoader g = new PropertiesLoader();
 
     @Override
     public Properties load(URL url) throws Exception {
