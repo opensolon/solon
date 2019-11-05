@@ -35,9 +35,12 @@ public final class XProperties extends Properties{
     }
 
     public XProperties load(URL url) {
-        Properties prop = XUtil.getProperties(url);
-        if (prop != null) {
-            putAll(prop);
+        if(url != null) {
+            Properties prop = XUtil.getProperties(url);
+
+            if (prop != null) {
+                putAll(prop);
+            }
         }
 
         return this;
@@ -57,7 +60,8 @@ public final class XProperties extends Properties{
 
     private void do_loadFile() {
         //1.加载文件的配置
-        load(XUtil.getResource("application.properties")); //可能会是：
+        load(XUtil.getResource("application.properties"));
+        load(XUtil.getResource("application.yml"));
 
         //2.再加载System的配置
         System.getProperties().forEach((k, v) -> {
