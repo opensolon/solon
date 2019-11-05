@@ -9,49 +9,49 @@ import org.noear.solon.XUtil;
 
 import static io.netty.handler.codec.http.HttpUtil.is100ContinueExpected;
 
- class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
-     private XApp app = XApp.global();
+class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
+    private XApp app = XApp.global();
 
-     @Override
-     public void channelReadComplete(ChannelHandlerContext ctx) {
-         ctx.flush();
-     }
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) {
+        ctx.flush();
+    }
 
-     @Override
-     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest req) throws Exception {
-         //100 Continue
-         if (is100ContinueExpected(req)) {
-             ctx.write(new DefaultFullHttpResponse(
-                     HttpVersion.HTTP_1_1,
-                     HttpResponseStatus.CONTINUE));
-         }
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest req) throws Exception {
+        //100 Continue
+        if (is100ContinueExpected(req)) {
+            ctx.write(new DefaultFullHttpResponse(
+                    HttpVersion.HTTP_1_1,
+                    HttpResponseStatus.CONTINUE));
+        }
 
-         // 创建http响应
-         FullHttpResponse response = new DefaultFullHttpResponse(
-                 HttpVersion.HTTP_1_1,
-                 HttpResponseStatus.OK);
+        // 创建http响应
+        FullHttpResponse response = new DefaultFullHttpResponse(
+                HttpVersion.HTTP_1_1,
+                HttpResponseStatus.OK);
 
-         NtHttpContext context = new NtHttpContext(ctx, req, response);
-         context.contentType("text/plain;charset=UTF-8");//默认
-         context.headerSet("solon.boot", "netty http 4.1/1.0.3.4");
+        NtHttpContext context = new NtHttpContext(ctx, req, response);
+        context.contentType("text/plain;charset=UTF-8");//默认
+        context.headerSet("solon.boot", "netty http 4.1/1.0.3.4");
 
-         try {
-             app.handle(context);
-         } catch (Throwable ex) {
-             ex.printStackTrace();
+        try {
+            app.handle(context);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
 
-             context.status(500);
-             context.setHandled(true);
-             context.output(XUtil.getFullStackTrace(ex));
-         }
+            context.status(500);
+            context.setHandled(true);
+            context.output(XUtil.getFullStackTrace(ex));
+        }
 
-         try {
-             context.commit();
-         } catch (Exception ex) {
-             ex.printStackTrace();
-         }
+        try {
+            context.commit();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
-         // 将html write到客户端
-         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
-     }
- }
+        // 将html write到客户端
+        ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+    }
+}
