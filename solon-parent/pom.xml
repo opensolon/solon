@@ -71,7 +71,6 @@
 
         <solonclient.ver>1.0.3.2</solonclient.ver>
 
-        <weed3.ver>3.2.2</weed3.ver>
         <snack3.ver>3.1.0</snack3.ver>
         <fastjson.ver>1.2.29</fastjson.ver>
         <jedis.ver>2.9.0</jedis.ver>
@@ -198,13 +197,6 @@
                 <groupId>org.noear</groupId>
                 <artifactId>solonclient</artifactId>
                 <version>${solonclient.ver}</version>
-            </dependency>
-
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>weed3</artifactId>
-                <version>${weed3.ver}</version>
             </dependency>
 
             <dependency>
