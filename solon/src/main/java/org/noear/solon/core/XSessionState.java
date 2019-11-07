@@ -14,4 +14,7 @@ public interface XSessionState {
 
     /** 设置SESSION状态 */
     void sessionSet(String key, Object val);
+
+    /** 清除SESSION状态 */
+    default void sessionClear(){}
 }
