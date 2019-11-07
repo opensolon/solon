@@ -196,6 +196,8 @@ public abstract class XContext {
     public final void sessionSet(String key, Object val){
         _sessionState.sessionSet(key,val);
     }
+    @XNote("清空SESSION状态")
+    public final void sessionClear(){_sessionState.sessionClear();}
 
     //======================
     /**获取输出对象*/
