@@ -8,7 +8,6 @@ import org.noear.solon.core.Aop;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XMap;
 import org.noear.solon.core.XSessionState;
-import org.noear.solon.extend.sessionstate.redis.util.*;
 
 /**
  * 它会是个单例，不能有上下文数据
@@ -138,6 +137,11 @@ public class SessionState implements XSessionState {
         String json = tmp;
 
         redisX.open0((ru)->ru.key(sessionId()).expire(_expiry).hashSet(key,json));
+    }
+
+    @Override
+    public void sessionClear() {
+        redisX.open0((ru)->ru.key(sessionId()).delete());
     }
 
     public static final Constants serialize_cum = Constants.of(

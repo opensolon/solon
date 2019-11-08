@@ -1,8 +1,8 @@
-package org.noear.solon.extend.sessionstate.redis.util;
+package org.noear.solon.extend.sessionstate.redis;
 
 import java.util.UUID;
 
-public class IDUtil {
+class IDUtil {
     public static String guid() {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }

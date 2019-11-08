@@ -1,4 +1,4 @@
-package org.noear.solon.extend.sessionstate.redis.util;
+package org.noear.solon.extend.sessionstate.redis;
 
 import org.noear.solon.XUtil;
 import redis.clients.jedis.*;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class RedisX {
+class RedisX {
     private JedisPool _jedisPool;
     private static final Object lock = "";
 
