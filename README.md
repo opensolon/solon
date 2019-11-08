@@ -81,7 +81,7 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 | 视图插件 | 说明（可置多个视图插件） |
 | --- | --- |
 | org.noear:solon.view.freemarker:1.0.3.5 | 视图插件，对 `freemarker` 适配，输出`html` |
-| org.noear:solon.view.jsp:1.0.3.1.5 | 视图插件，对 `jsp` 适配，输出`html` |
+| org.noear:solon.view.jsp:1.0.3.5 | 视图插件，对 `jsp` 适配，输出`html` |
 | org.noear:solon.view.velocity:1.0.3.5 | 视图插件，对 `velocity` 适配，输出`html` |
 | org.noear:solon.view.thymeleaf:1.0.3.5 | 视图插件，对 `thymeleaf` 适配，输出`html` |
 | org.noear:solon.view.beetl:1.0.3.5 | 视图插件，对 `beetl` 适配，输出`html` |
