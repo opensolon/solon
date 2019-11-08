@@ -8,9 +8,9 @@ public enum XMethod {
     GET("GET", 1), //获取资源
     POST("POST", 2), //新建资源
 
-    PUT("PUT", 3), //修改资源 //客户端提供改变后的完整资源
+    PUT("PUT", 3), //修改资源 //客户端要提供改变后的完整资源
     DELETE("DELETE", 4), //删除资源
-    PATCH("PATCH", 5), //修改资源 //客户端提供改变的局部属性
+    PATCH("PATCH", 5), //修改资源 //客户端只提供改变的局部属性
 
     HEAD("HEAD", 6), //相当于GET，但不返回内容
 
