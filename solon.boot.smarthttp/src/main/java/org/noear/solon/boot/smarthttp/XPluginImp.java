@@ -3,11 +3,6 @@ package org.noear.solon.boot.smarthttp;
 import org.noear.solon.XApp;
 import org.noear.solon.core.XPlugin;
 import org.smartboot.http.HttpBootstrap;
-import org.smartboot.http.server.HttpMessageProcessor;
-import org.smartboot.http.server.decode.Http11Request;
-import org.smartboot.http.server.decode.HttpRequestProtocol;
-import org.smartboot.socket.MessageProcessor;
-import org.smartboot.socket.transport.AioQuickServer;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -26,7 +21,7 @@ public final class XPluginImp implements XPlugin, Closeable {
         _server.pipeline().next(_handler);
 
 
-        System.out.println("oejs.Server:main: SmaertHttpServer 1.0.beta");
+        System.out.println("oejs.Server:main: SmaertHttpServer 1.0.11");
 
         try {
 

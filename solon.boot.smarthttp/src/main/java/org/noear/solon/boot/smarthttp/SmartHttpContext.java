@@ -44,10 +44,9 @@ public class SmartHttpContext extends XContext {
     public String ip() {
         if(_ip == null) {
             _ip = header("X-Forwarded-For");
-//            if (_ip == null) {
-//                InetSocketAddress insocket = (InetSocketAddress) _channel.channel().remoteAddress();
-//                _ip = insocket.getAddress().getHostAddress();
-//            }
+            if (_ip == null) {
+                _ip = _request.getRemoteAddr();
+            }
         }
 
         return _ip;
@@ -81,10 +80,24 @@ public class SmartHttpContext extends XContext {
     @Override
     public String url() {
         if (_url == null) {
-            _url = _request.getRequestURI();
+            _url = _request.getRequestURL();
 
-            if (_url.indexOf("://") < 0) {
-                _url = "http://" + header("Host") + _url;
+            if (_url != null && _url.startsWith("/")) {
+                String host = header("Host");
+
+                if (host == null) {
+                    host = header(":authority");
+                    String scheme = header(":scheme");
+
+                    if (scheme != null) {
+                        _url = "https://" + host + _url;
+                    } else {
+                        _url = scheme + "://" + host + _url;
+                    }
+
+                } else {
+                    _url = "http://" + host + _url;
+                }
             }
         }
 
@@ -317,7 +330,8 @@ public class SmartHttpContext extends XContext {
 
     @Override
     public void headerSet(String key, String val) {
-        _response.getHeaders().replace(key, val);
+        //用put才有效
+        _response.getHeaders().put(key, val);
     }
 
 
@@ -351,7 +365,7 @@ public class SmartHttpContext extends XContext {
     public void redirect(String url, int code) {
         try {
             headerSet("Location", url);
-            _response.setHttpStatus(HttpStatus.valueOf(code));
+            status(code);
         }catch (Throwable ex){
             throw new RuntimeException(ex);
         }

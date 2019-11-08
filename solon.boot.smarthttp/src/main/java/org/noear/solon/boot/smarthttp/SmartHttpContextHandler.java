@@ -32,7 +32,7 @@ public class SmartHttpContextHandler extends HttpHandle {
 
         SmartHttpContext context = new SmartHttpContext(request, response);
         context.contentType("text/plain;charset=UTF-8");
-        context.headerSet("solon.boot","smart http 1.0.3.4");
+        context.headerSet("solon.boot","smart http 1.0.11/1.0.3.5");
 
         try {
             xapp.handle(context);
@@ -48,16 +48,7 @@ public class SmartHttpContextHandler extends HttpHandle {
             context.commit();
         } else {
             context.status(404);
-            context.output(URL_404);
             context.commit();
         }
     }
-
-    private static final String URL_404 =
-            "<html>" +
-                    "<head>" +
-                    "<title>smart-http 404</title>" +
-                    "</head>" +
-                    "<body><h1>smart-http 找不到你所请求的地址资源，404</h1></body>" +
-                    "</html>";
 }
