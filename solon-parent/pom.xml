@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.17</version>
+    <version>1.0.3.18</version>
     <packaging>pom</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -38,13 +38,14 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.0.3.17</solon.ver>
-        <solon.boot.jetty.ver>1.0.3.5</solon.boot.jetty.ver>
-        <solon.boot.jlhttp.ver>1.0.3.5</solon.boot.jlhttp.ver>
+        <solon.ver>1.0.3.18</solon.ver>
+        <solon.boot.jetty.ver>1.0.3.6</solon.boot.jetty.ver>
+        <solon.boot.jlhttp.ver>1.0.3.6</solon.boot.jlhttp.ver>
         <solon.boot.nettyhttp.ver>1.0.3.6</solon.boot.nettyhttp.ver>
-        <solon.boot.undertow.ver>1.0.3.5</solon.boot.undertow.ver>
+        <solon.boot.undertow.ver>1.0.3.6</solon.boot.undertow.ver>
+        <solon.boot.smarthttp.ver>1.0.3.6</solon.boot.smarthttp.ver>
 
-        <solon.boot.websocket.ver>1.0.3.5</solon.boot.websocket.ver>
+        <solon.boot.websocket.ver>1.0.3.6</solon.boot.websocket.ver>
 
         <solon.extend.jetty.jsp.ver>1.0.3.2</solon.extend.jetty.jsp.ver>
         <solon.extend.undertow.jsp.ver>1.0.3.2</solon.extend.undertow.jsp.ver>
@@ -53,8 +54,8 @@
         <solon.extend.staticfiles.ver>1.0.3.2</solon.extend.staticfiles.ver>
         <solon.extend.properties.yaml.ver>1.0.3.4</solon.extend.properties.yaml.ver>
 
-        <solon.extend.sessionstate.local.ver>1.0.3.2</solon.extend.sessionstate.local.ver>
-        <solon.extend.sessionstate.redis.ver>1.0.3.2</solon.extend.sessionstate.redis.ver>
+        <solon.extend.sessionstate.local.ver>1.0.3.3</solon.extend.sessionstate.local.ver>
+        <solon.extend.sessionstate.redis.ver>1.0.3.3</solon.extend.sessionstate.redis.ver>
 
 
         <solon.serialization.fastjson.ver>1.0.3.2</solon.serialization.fastjson.ver>
@@ -103,6 +104,11 @@
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.undertow</artifactId>
                 <version>${solon.boot.undertow.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.boot.smarthttp</artifactId>
+                <version>${solon.boot.smarthttp.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>

@@ -11,9 +11,7 @@ import org.noear.solonclient.XProxy;
 public class rpctest implements XHandler {
     @Override
     public void handle(XContext ctx) throws Throwable {
-        rockapi client = new XProxy()
-                .upstream(name -> "http://localhost:8080/")
-                .create(rockapi.class);
+        rockapi client = new XProxy().upstream(name -> "http://localhost:8080/").create(rockapi.class);
 
         Object val = client.test1(12);
         if (val == null) {

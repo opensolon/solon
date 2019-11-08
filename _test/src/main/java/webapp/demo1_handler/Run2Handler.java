@@ -13,9 +13,10 @@ public class Run2Handler extends XNav {
     public Run2Handler() {
         before(c->{if(false){}});
 
-        add("send", (c)->{c.output(c.path());});
-        add("test", (c)->{c.output(c.path());});
-        add("dock", (c)->{c.output(c.path());});
+        add("send", (c)->{c.output(c.url());});
+        add("test", (c)->{c.output(c.url());});
+        add("dock", (c)->{c.output(c.url());});
+        add("ip", (c)->{c.output(c.ip());});
 
         after(c->{});
     }

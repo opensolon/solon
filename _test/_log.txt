@@ -1,4 +1,9 @@
 
+
+XSessionState 添加 sessionClear()
+
+--
+
 ### 1.0.3 主要更新::
 * 1.支持多视图共存（即一个项目里可同时使有用jsp,freemarker...多个模板）
 * 2.支持Session可切换（如切换为分布式Session）

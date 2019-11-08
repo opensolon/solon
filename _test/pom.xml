@@ -15,7 +15,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.0.3.17</version>
+        <version>1.0.3.18</version>
     </parent>
 
     <dependencies>
@@ -40,17 +40,17 @@
             <artifactId>solon.extend.properties.yaml</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.websocket</artifactId>-->
-<!--        </dependency>-->
-
-
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.smarthttp</artifactId>
-            <version>1.0.3-b1</version>
+            <artifactId>solon.boot.websocket</artifactId>
         </dependency>
+
+
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.smarthttp</artifactId>-->
+<!--            <version>1.0.3.1</version>-->
+<!--        </dependency>-->
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
@@ -68,15 +68,15 @@
 <!--            <artifactId>solon.boot.jlhttp</artifactId>-->
 <!--        </dependency>-->
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.undertow</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.undertow</artifactId>
+        </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.extend.undertow.jsp</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.undertow.jsp</artifactId>
+        </dependency>
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
