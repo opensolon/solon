@@ -1,10 +1,10 @@
-package org.noear.solon.extend.sessionstate.local.util;
+package org.noear.solon.extend.sessionstate.local;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.*;
 
-public class ScheduledStore {
+class ScheduledStore {
     private int _defaultSeconds;
 
     private Map<String, Entity> _data = new ConcurrentHashMap<>();   //缓存存储器
@@ -56,7 +56,7 @@ public class ScheduledStore {
         return null;
     }
 
-    public void remove(String block, String key) {
+    public void remove(String block) {
         Entity entity = _data.get(block);
         if (entity != null) {
             if (entity.future != null) {

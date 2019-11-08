@@ -3,9 +3,6 @@ package org.noear.solon.extend.sessionstate.local;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XSessionState;
-import org.noear.solon.extend.sessionstate.local.util.EncryptUtil;
-import org.noear.solon.extend.sessionstate.local.util.IDUtil;
-import org.noear.solon.extend.sessionstate.local.util.ScheduledStore;
 
 
 /**
@@ -13,10 +10,15 @@ import org.noear.solon.extend.sessionstate.local.util.ScheduledStore;
  * */
 public class SessionState implements XSessionState {
     public final static String SESSIONID_KEY = "SOLONID";
-    public final static String SESSIONID_MD5(){return SESSIONID_KEY+"2";}
+
+    public final static String SESSIONID_MD5() {
+        return SESSIONID_KEY + "2";
+    }
+
     public final static String SESSIONID_encrypt = "&L8e!@T0";
 
     private final ScheduledStore _store;
+
     public SessionState() {
         if (XServerProp.session_timeout > 0) {
             _expiry = XServerProp.session_timeout;
@@ -33,13 +35,14 @@ public class SessionState implements XSessionState {
     //
     // cookies control
     //
-    private int _expiry =  60 * 60 * 2;
-    private String _domain=null;
+    private int _expiry = 60 * 60 * 2;
+    private String _domain = null;
 
-    public  String cookieGet(String key){
+    public String cookieGet(String key) {
         return XContext.current().cookie(key);
     }
-    public  void   cookieSet(String key, String val) {
+
+    public void cookieSet(String key, String val) {
         if (XUtil.isEmpty(_domain)) {
             _domain = XContext.current().uri().getHost();
         }
@@ -70,11 +73,11 @@ public class SessionState implements XSessionState {
 
     @Override
     public String sessionId() {
-        String _sessionId = XContext.current().attr("sessionId",null);
+        String _sessionId = XContext.current().attr("sessionId", null);
 
-        if(_sessionId == null){
+        if (_sessionId == null) {
             _sessionId = sessionId_get();
-            XContext.current().attrSet("sessionId",_sessionId);
+            XContext.current().attrSet("sessionId", _sessionId);
         }
 
         return _sessionId;
@@ -84,25 +87,30 @@ public class SessionState implements XSessionState {
         String skey = cookieGet(SESSIONID_KEY);
         String smd5 = cookieGet(SESSIONID_MD5());
 
-        if(XUtil.isEmpty(skey)==false && XUtil.isEmpty(smd5)==false) {
+        if (XUtil.isEmpty(skey) == false && XUtil.isEmpty(smd5) == false) {
             if (EncryptUtil.md5(skey + SESSIONID_encrypt).equals(smd5)) {
                 return skey;
             }
         }
 
         skey = IDUtil.guid();
-        cookieSet(SESSIONID_KEY,skey);
+        cookieSet(SESSIONID_KEY, skey);
         cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_encrypt));
         return skey;
     }
 
     @Override
     public Object sessionGet(String key) {
-        return _store.get(sessionId(),key);
+        return _store.get(sessionId(), key);
     }
 
     @Override
     public void sessionSet(String key, Object val) {
-        _store.put(sessionId(),key,val);
+        _store.put(sessionId(), key, val);
+    }
+
+    @Override
+    public void sessionClear() {
+        _store.remove(sessionId());
     }
 }

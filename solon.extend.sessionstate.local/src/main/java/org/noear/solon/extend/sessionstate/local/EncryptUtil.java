@@ -1,9 +1,9 @@
-package org.noear.solon.extend.sessionstate.local.util;
+package org.noear.solon.extend.sessionstate.local;
 
 
 import java.security.MessageDigest;
 
-public class EncryptUtil {
+class EncryptUtil {
     private static final char[] _hexDigits = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
     public static String md5(String cleanData){
