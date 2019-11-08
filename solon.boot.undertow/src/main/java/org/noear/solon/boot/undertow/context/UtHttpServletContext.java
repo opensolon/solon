@@ -57,9 +57,18 @@ public class UtHttpServletContext extends XContext {
         return _request;
     }
 
+    private String _ip;
     @Override
     public String ip() {
-        return _request.getRemoteAddr();
+        if(_ip == null) {
+            _ip = header("X-Forwarded-For");
+
+            if (_ip == null) {
+                _ip = _request.getRemoteAddr();
+            }
+        }
+
+        return _ip;
     }
 
     @Override
