@@ -9,7 +9,7 @@ import org.noear.solon.XUtil;
 
 import static io.netty.handler.codec.http.HttpUtil.is100ContinueExpected;
 
-class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
+class NtHttpContextHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private XApp app = XApp.global();
 
     @Override
@@ -33,7 +33,7 @@ class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
         NtHttpContext context = new NtHttpContext(ctx, req, response);
         context.contentType("text/plain;charset=UTF-8");//默认
-        context.headerSet("solon.boot", "netty http 4.1/1.0.3.4");
+        context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
 
         try {
             app.handle(context);

@@ -10,6 +10,10 @@ import java.io.IOException;
 public final class XPluginImp implements XPlugin, Closeable {
     private XPlugin _server = null;
 
+    public static String solon_boot_ver(){
+        return "tomcat 8.5.23/1.0.3-b1";
+    }
+
     @Override
     public void start(XApp app) {
         long start_before = System.currentTimeMillis();

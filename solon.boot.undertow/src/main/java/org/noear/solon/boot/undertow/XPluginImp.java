@@ -10,6 +10,11 @@ import java.io.IOException;
 public final class XPluginImp implements XPlugin, Closeable {
     private XPlugin _server = null;
 
+
+    public static String solon_boot_ver(){
+        return "undertow 2.0/1.0.3.6";
+    }
+
     @Override
     public void start(XApp app) {
         long start_before = System.currentTimeMillis();

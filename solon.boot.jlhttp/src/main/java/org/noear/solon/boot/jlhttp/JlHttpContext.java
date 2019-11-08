@@ -5,6 +5,7 @@ import org.noear.solon.XUtil;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XFile;
 
+import javax.sound.sampled.FloatControl;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,9 +41,18 @@ public class JlHttpContext extends XContext {
         return _request;
     }
 
+    private String _ip;
     @Override
     public String ip() {
-        return _request.getRemoteAddr();
+        if(_ip == null) {
+            _ip = header("X-Forwarded-For");
+
+            if (_ip == null) {
+                _ip = _request.getRemoteAddr();
+            }
+        }
+
+        return _ip;
     }
 
     @Override
@@ -57,7 +67,7 @@ public class JlHttpContext extends XContext {
 
     @Override
     public URI uri() {
-        return _request.getOriginalUri();
+        return URI.create(url());
     }
 
     @Override
@@ -65,9 +75,36 @@ public class JlHttpContext extends XContext {
         return uri().getPath();
     }
 
+    private String _url;
     @Override
     public String url() {
-        return uri().toString();
+        if(_url == null){
+            _url = _request.getURI().toString();
+
+            if (_url != null && _url.startsWith("/")) {
+                String host = header("Host");
+
+                if (host == null) {
+                    host = header(":authority");
+                    String scheme = header(":scheme");
+
+                    if(host == null){
+                        host = "localhost";
+                    }
+
+                    if (scheme != null) {
+                        _url = "https://" + host + _url;
+                    } else {
+                        _url = scheme + "://" + host + _url;
+                    }
+
+                } else {
+                    _url = "http://" + host + _url;
+                }
+            }
+        }
+
+        return _url;
     }
 
     @Override

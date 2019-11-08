@@ -46,6 +46,7 @@ public class NtHttpContext extends XContext {
     public String ip() {
         if(_ip == null) {
             _ip = _request.headers().get("X-Forwarded-For");
+
             if (_ip == null) {
                 InetSocketAddress insocket = (InetSocketAddress) _channel.channel().remoteAddress();
                 _ip = insocket.getAddress().getHostAddress();
@@ -91,6 +92,10 @@ public class NtHttpContext extends XContext {
                 if (host == null) {
                     host = header(":authority");
                     String scheme = header(":scheme");
+
+                    if(host == null){
+                        host = "localhost";
+                    }
 
                     if (scheme != null) {
                         _url = "https://" + host + _url;

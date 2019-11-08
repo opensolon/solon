@@ -2,6 +2,7 @@ package org.noear.solon.boot.smarthttp;
 
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.core.XPlugin;
 import org.smartboot.http.HttpRequest;
 import org.smartboot.http.HttpResponse;
 import org.smartboot.http.enums.HttpStatus;
@@ -32,7 +33,7 @@ public class SmartHttpContextHandler extends HttpHandle {
 
         SmartHttpContext context = new SmartHttpContext(request, response);
         context.contentType("text/plain;charset=UTF-8");
-        context.headerSet("solon.boot","smart http 1.0.11/1.0.3.5");
+        context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
 
         try {
             xapp.handle(context);

@@ -44,6 +44,7 @@ public class SmartHttpContext extends XContext {
     public String ip() {
         if(_ip == null) {
             _ip = header("X-Forwarded-For");
+
             if (_ip == null) {
                 _ip = _request.getRemoteAddr();
             }
@@ -88,6 +89,10 @@ public class SmartHttpContext extends XContext {
                 if (host == null) {
                     host = header(":authority");
                     String scheme = header(":scheme");
+
+                    if(host == null){
+                        host = "localhost";
+                    }
 
                     if (scheme != null) {
                         _url = "https://" + host + _url;

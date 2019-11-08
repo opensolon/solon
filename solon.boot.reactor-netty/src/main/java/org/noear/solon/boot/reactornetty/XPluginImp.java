@@ -11,6 +11,11 @@ import java.io.IOException;
 
 public class XPluginImp implements XPlugin, Closeable {
     DisposableServer _server;
+
+    public static String solon_boot_ver(){
+        return "reactor-netty 0.9.1/1.0.3-b1";
+    }
+
     @Override
     public void start(XApp app) {
         XServerProp.init();

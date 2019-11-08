@@ -11,6 +11,10 @@ public final class XPluginImp implements XPlugin, Closeable {
 
     HttpBootstrap _server;
 
+    public static String solon_boot_ver(){
+        return "smart http 1.0.11/1.0.3.6";
+    }
+
     @Override
     public void start(XApp app) {
         long time_start = System.currentTimeMillis();

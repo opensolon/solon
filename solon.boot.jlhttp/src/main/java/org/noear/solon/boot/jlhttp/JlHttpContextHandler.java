@@ -28,7 +28,7 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
 
         JlHttpContext context = new JlHttpContext(request, response);
         context.contentType("text/plain;charset=UTF-8");
-        context.headerSet("solon.boot","jlhttp 2.4/1.0.3.4");
+        context.headerSet("solon.boot",XPluginImp.solon_boot_ver());
 
         try {
             xapp.handle(context);

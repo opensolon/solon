@@ -9,6 +9,12 @@ import java.io.IOException;
 
 public final class XPluginImp implements XPlugin , Closeable {
     private XPlugin _server = null;
+
+    public static String solon_boot_ver(){
+        return "jetty 9.4/1.0.3.6";
+    }
+
+
     @Override
     public void start(XApp app) {
         long time_start = System.currentTimeMillis();
@@ -37,4 +43,6 @@ public final class XPluginImp implements XPlugin , Closeable {
             ((Closeable) _server).close();
         }
     }
+
+
 }

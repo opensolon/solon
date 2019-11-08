@@ -52,7 +52,7 @@ public class UtHttpExchangeHandler implements HttpHandler {
         // UtHttpExchangeContext context = new UtHttpExchangeContext(request, response, exchange);
         UtHttpServletContext context = new UtHttpServletContext(request, response, exchange);
         context.contentType("text/plain;charset=UTF-8");
-        context.headerSet("solon.boot","undertow 2.0/1.0.3.4");
+        context.headerSet("solon.boot",XPluginImp.solon_boot_ver());
 
         try {
             if (exchange.getRequestURI() != null && !exchange.getRequestURI().endsWith(".jsp")) {

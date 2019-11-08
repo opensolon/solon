@@ -13,6 +13,10 @@ import java.util.concurrent.TimeUnit;
 public final class XPluginImp implements XPlugin, Closeable {
     private HTTPServer _server = new HTTPServer();
 
+    public static String solon_boot_ver(){
+        return "jlhttp 2.4/1.0.3.6";
+    }
+
     @Override
     public  void start(XApp app) {
         long time_start = System.currentTimeMillis();

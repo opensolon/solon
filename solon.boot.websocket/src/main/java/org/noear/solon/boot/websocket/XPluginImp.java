@@ -8,6 +8,11 @@ import java.io.IOException;
 
 public class XPluginImp implements XPlugin, Closeable {
     private   WsServer _server = null;
+
+    public static String solon_boot_ver(){
+        return "Java-WebSocket 1.4.0/1.0.3.6";
+    }
+
     @Override
     public void start(XApp app) {
         int _port = 10000 + app.port();
