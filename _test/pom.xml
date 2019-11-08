@@ -51,10 +51,10 @@
 <!--            <artifactId>solon.boot.smarthttp</artifactId>-->
 <!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.nettyhttp</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.nettyhttp</artifactId>-->
+<!--        </dependency>-->
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
@@ -62,10 +62,10 @@
 <!--            <version>1.0.3-b1</version>-->
 <!--        </dependency>-->
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.jlhttp</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.jlhttp</artifactId>
+        </dependency>
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
