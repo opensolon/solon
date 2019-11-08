@@ -10,6 +10,15 @@ import org.noear.solon.core.XSessionStateDefault;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
+        /*
+        *
+        * server.session.state.redis:
+        * server: redis.dev.zmapi.cn:6379
+        * password: AVsVSKd1
+        * db: 31
+        * maxTotaol: 200
+        *
+        * */
         XServerProp.init();
 
         SessionState sessionState = new SessionState();
