@@ -23,4 +23,16 @@ public class ConfigDemo {
     public String nameuser_2 = Aop.prop().get("username");
 
     public Properties dbcfg = Aop.prop().getProp("demo8.test");
+
+    public Properties test2(){
+        return Aop.prop().getProp("demo8.test");
+    }
+
+    public ConfigDemo(){
+        Aop.prop().onChange((k,v)->{
+            if("username".equals(k)){
+                username = v;
+            }
+        });
+    }
 }

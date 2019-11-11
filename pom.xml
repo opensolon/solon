@@ -31,6 +31,7 @@
         <module>solon.boot.jlhttp</module>
         <module>solon.boot.nettyhttp</module>
         <module>solon.boot.reactor-netty</module>
+        <module>solon.boot.rapidoid-http-fast</module>
         <module>solon.boot.smarthttp</module>
         <module>solon.boot.websocket</module>
         <module>solon.boot.undertow</module>
