@@ -19,7 +19,7 @@
 * 3.XRender，通用渲染接口
 * 4.XContext，通用上下文接口
 * 5.XHandler，通用处理接口
-* 6.XAction***，通用动作接口（XHandler+XRender）
+* 6.XAction***，通用动作接口
 * 7.XBean***，轻量级bean体系
 #### 五个注解说明
 注解主要分为：普通、特定、附助三类注解，实动时会被加载；原则上，只被应用在启动时。。。其它注解可借助lombok框架。
