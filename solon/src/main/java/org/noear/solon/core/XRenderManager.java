@@ -36,8 +36,8 @@ public class XRenderManager implements XRender {
         _lib.put(render.getClass().getSimpleName(), render);
         _lib.put(render.getClass().getName(), render);
 
-        PrintUtil.blueln("solon:: view load:"+ render.getClass().getSimpleName());
-        PrintUtil.blueln("solon:: view load:"+ render.getClass().getName());
+        PrintUtil.blueln("solon:: view load:" + render.getClass().getSimpleName());
+        PrintUtil.blueln("solon:: view load:" + render.getClass().getName());
     }
 
     /**
@@ -60,14 +60,14 @@ public class XRenderManager implements XRender {
     public static void mapping(String suffix, String className) {
         XRender render = _lib.get(className);
         if (render == null) {
-            PrintUtil.redln("solon:: "+className + " not exists!");
+            PrintUtil.redln("solon:: " + className + " not exists!");
             return;
             //throw new RuntimeException(classSimpleName + " not exists!");
         }
 
         _mapping.put(suffix, render);
 
-        PrintUtil.blueln("solon:: view mapping: " + suffix + "=" +className);
+        PrintUtil.blueln("solon:: view mapping: " + suffix + "=" + className);
     }
 
     /**
@@ -100,6 +100,11 @@ public class XRenderManager implements XRender {
                 _def.render(mv, ctx);
                 return;
             }
+        }
+
+        if (obj instanceof String) {
+            ctx.output((String) obj);
+            return;
         }
 
         //最后只有 model
