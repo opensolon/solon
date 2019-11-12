@@ -72,7 +72,7 @@
 
         <solonclient.ver>1.0.3.2</solonclient.ver>
 
-        <snack3.ver>3.1.0.1</snack3.ver>
+        <snack3.ver>3.1.0</snack3.ver>
         <fastjson.ver>1.2.29</fastjson.ver>
         <jedis.ver>2.9.0</jedis.ver>
         <okhttp.ver>3.11.0</okhttp.ver>
