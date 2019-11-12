@@ -41,8 +41,8 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon-parent:1.0.3.19 | 框架版本管理 |
-| org.noear:solon:1.0.3.19 | 70k，主框架 |
+| org.noear:solon-parent:1.0.3.20 | 框架版本管理 |
+| org.noear:solon:1.0.3.20 | 70k，主框架 |
 
 ##### 插件
 
@@ -74,9 +74,9 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | 序列化插件 | 说明 |
 | --- | --- |
-| org.noear:solon.serialization.fastjson:1.0.3.4 | 视图插件，对 `fastjson` 适配，输出`json`视图 或 序列化输出 |
-| org.noear:solon.serialization.snack3:1.0.3.4 | 视图插件，对 `snack3` 适配，输出`json`视图 或 序列化输出 |
-| org.noear:solon.serialization.jackson:1.0.3.4 | 视图插件，对 `jackson` 适配，输出`json`视图 或 序列化输出 |
+| org.noear:solon.serialization.fastjson:1.0.3.5 | 视图插件，对 `fastjson` 适配，输出`json`视图 或 序列化输出 |
+| org.noear:solon.serialization.snack3:1.0.3.5 | 视图插件，对 `snack3` 适配，输出`json`视图 或 序列化输出 |
+| org.noear:solon.serialization.jackson:1.0.3.5 | 视图插件，对 `jackson` 适配，输出`json`视图 或 序列化输出 |
 
 | 视图插件 | 说明（可置多个视图插件） |
 | --- | --- |
