@@ -102,6 +102,7 @@ public class XRenderManager implements XRender {
             }
         }
 
+        //string 则直接输出（前面可能已指定contentType）
         if (obj instanceof String) {
             ctx.output((String) obj);
             return;
