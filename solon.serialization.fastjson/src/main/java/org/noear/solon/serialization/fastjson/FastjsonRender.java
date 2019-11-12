@@ -14,14 +14,14 @@ public class FastjsonRender implements XRender {
         boolean is_serialize = "serialize".equals(ctx.attr("solon.reader.mode", null));
         String txt = null;
 
-        if(is_serialize){
+        if (is_serialize) {
             //序列化处理
             //
             txt = JSON.toJSONString(obj,
                     SerializerFeature.BrowserCompatible,
                     SerializerFeature.WriteClassName,
                     SerializerFeature.DisableCircularReferenceDetect);
-        }else {
+        } else {
             //非序列化处理
             //
             if (obj == null) {
@@ -30,6 +30,11 @@ public class FastjsonRender implements XRender {
 
             if (obj instanceof Throwable) {
                 throw (Throwable) obj;
+            }
+
+            if (obj instanceof String) {
+                ctx.output((String) obj); //不能做为json输出
+                return;
             }
 
             txt = JSON.toJSONString(obj,

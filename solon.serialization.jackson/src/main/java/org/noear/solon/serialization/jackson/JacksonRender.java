@@ -27,6 +27,11 @@ public class JacksonRender implements XRender {
                 throw (Throwable) obj;
             }
 
+            if (obj instanceof String) {
+                ctx.output((String) obj); //不能做为json输出
+                return;
+            }
+
             ObjectMapper mapper = new ObjectMapper();
             txt = mapper.writeValueAsString(obj);
         }

@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon.serialization.snack3</artifactId>
-    <version>1.0.3.4</version>
+    <version>1.0.3.5</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -43,7 +43,7 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
-            <version>1.0.3.19</version>
+            <version>1.0.3.20</version>
             <scope>provided</scope>
         </dependency>
         
