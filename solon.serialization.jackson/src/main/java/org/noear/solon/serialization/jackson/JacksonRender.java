@@ -19,7 +19,7 @@ public class JacksonRender implements XRender {
         } else {
             //非序列化处理
             //
-            if(obj == null){
+            if (obj == null) {
                 return;
             }
 
@@ -27,12 +27,8 @@ public class JacksonRender implements XRender {
                 throw (Throwable) obj;
             }
 
-            if (obj instanceof String) {
-                txt = (String)obj;
-            }else{
-                ObjectMapper mapper = new ObjectMapper();
-                txt = mapper.writeValueAsString(obj);
-            }
+            ObjectMapper mapper = new ObjectMapper();
+            txt = mapper.writeValueAsString(obj);
         }
 
         ctx.attrSet("output", txt);

@@ -21,24 +21,20 @@ public class FastjsonRender implements XRender {
                     SerializerFeature.BrowserCompatible,
                     SerializerFeature.WriteClassName,
                     SerializerFeature.DisableCircularReferenceDetect);
-        }else{
+        }else {
             //非序列化处理
             //
-            if(obj == null){
+            if (obj == null) {
                 return;
             }
 
-            if(obj instanceof Throwable){
+            if (obj instanceof Throwable) {
                 throw (Throwable) obj;
             }
 
-            if(obj instanceof String){
-                txt = (String)obj;
-            }else{
-                txt = JSON.toJSONString(obj,
-                        SerializerFeature.BrowserCompatible,
-                        SerializerFeature.DisableCircularReferenceDetect);
-            }
+            txt = JSON.toJSONString(obj,
+                    SerializerFeature.BrowserCompatible,
+                    SerializerFeature.DisableCircularReferenceDetect);
         }
 
         ctx.attrSet("output", txt);

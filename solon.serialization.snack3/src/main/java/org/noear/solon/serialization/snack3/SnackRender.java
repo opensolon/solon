@@ -21,7 +21,7 @@ public class SnackRender implements XRender {
         } else {
             //非序列化处理
             //
-            if(obj == null){
+            if (obj == null) {
                 return;
             }
 
@@ -29,11 +29,7 @@ public class SnackRender implements XRender {
                 throw (Throwable) obj;
             }
 
-            if (obj instanceof String) {
-                txt = (String)obj;
-            }else{
-                txt = ONode.load(obj).toJson();
-            }
+            txt = ONode.load(obj).toJson();
         }
 
         ctx.attrSet("output", txt);
