@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.19</version>
+    <version>1.0.3.20</version>
     <packaging>pom</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -38,7 +38,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.0.3.19</solon.ver>
+        <solon.ver>1.0.3.20</solon.ver>
         <solon.boot.jetty.ver>1.0.3.6</solon.boot.jetty.ver>
         <solon.boot.jlhttp.ver>1.0.3.6</solon.boot.jlhttp.ver>
         <solon.boot.nettyhttp.ver>1.0.3.6</solon.boot.nettyhttp.ver>
@@ -58,9 +58,9 @@
         <solon.extend.sessionstate.redis.ver>1.0.3.3</solon.extend.sessionstate.redis.ver>
 
 
-        <solon.serialization.fastjson.ver>1.0.3.4</solon.serialization.fastjson.ver>
-        <solon.serialization.snack3.ver>1.0.3.4</solon.serialization.snack3.ver>
-        <solon.serialization.jackson.ver>1.0.3.4</solon.serialization.jackson.ver>
+        <solon.serialization.fastjson.ver>1.0.3.5</solon.serialization.fastjson.ver>
+        <solon.serialization.snack3.ver>1.0.3.5</solon.serialization.snack3.ver>
+        <solon.serialization.jackson.ver>1.0.3.5</solon.serialization.jackson.ver>
 
         <solon.view.freemarker.ver>1.0.3.5</solon.view.freemarker.ver>
         <solon.view.jsp.ver>1.0.3.5</solon.view.jsp.ver>
