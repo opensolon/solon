@@ -216,5 +216,6 @@ Aop.prop().getProp("xxx.datasource"); //=>Properties
 
 ### 插件开发说明
 * 新建一个 meven 项目
-* 新建一个 java/{包名}/XPluginImp.java （implements XPlugin）
+* 新建一个 java/{包名}/{插件类}.java （implements XPlugin）
 * 新建一个 resources/`solonplugin`/{包名.properties}
+*    添加配置：solon.plugin={包名}.{插件类}
