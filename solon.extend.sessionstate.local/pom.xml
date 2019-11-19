@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon.extend.sessionstate.local</artifactId>
-    <version>1.0.3.3</version>
+    <version>1.0.3.4</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>

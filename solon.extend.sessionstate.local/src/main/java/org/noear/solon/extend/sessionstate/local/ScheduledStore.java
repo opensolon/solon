@@ -15,23 +15,24 @@ class ScheduledStore {
     }
 
     public void put(String block, String key, Object obj) {
-        Entity entity = _data.get(block);
-        if (entity == null) {
-            entity = new Entity();
-            _data.put(block, entity);
-        }else{
-            if(entity.future != null) {
-                entity.future.cancel(true);
-                entity.future = null;
+        synchronized (block.intern()) {
+            Entity entity = _data.get(block);
+            if (entity == null) {
+                entity = new Entity();
+                _data.put(block, entity);
+            } else {
+                if (entity.future != null) {
+                    entity.future.cancel(true);
+                    entity.future = null;
+                }
             }
+
+            entity.map.put(key, obj);
+
+            entity.future = _exec.schedule(() -> {
+                _data.remove(block);
+            }, _defaultSeconds, TimeUnit.SECONDS);
         }
-
-        entity.map.put(key, obj);
-
-        entity.future = _exec.schedule(() -> {
-            _data.remove(block);
-        }, _defaultSeconds, TimeUnit.SECONDS);
-
     }
 
     public void delay(String block) {
@@ -57,14 +58,16 @@ class ScheduledStore {
     }
 
     public void remove(String block) {
-        Entity entity = _data.get(block);
-        if (entity != null) {
-            if (entity.future != null) {
-                entity.future.cancel(true);
-                entity.future = null;
-            }
+        synchronized (block.intern()) {
+            Entity entity = _data.get(block);
+            if (entity != null) {
+                if (entity.future != null) {
+                    entity.future.cancel(true);
+                    entity.future = null;
+                }
 
-            _data.remove(block);
+                _data.remove(block);
+            }
         }
     }
 
