@@ -1,6 +1,5 @@
 package org.noear.solon.core;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.CaseInsensitiveMap;
 import org.noear.solon.XUtil;
 
 import java.util.LinkedHashMap;
@@ -8,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 /*
-* 应用参数（转换启动命令参数）
+* 可排序，不区分大小写
+*
+* 用于：参数解析，Header，Param 处理
 * */
 public class XMap extends LinkedHashMap<String, String> {
 
@@ -68,30 +69,40 @@ public class XMap extends LinkedHashMap<String, String> {
         return d;
     }
 
+    /**
+     * 不区分大小写
+     * */
     @Override
     public String get(Object key) {
-        if(key == null){
+        if (key == null) {
             return null;
         }
 
-        for(Map.Entry<String,String> kv : this.entrySet()){
-            if(kv.getKey().equalsIgnoreCase(key.toString())){
-                return kv.getValue();
+        for (Map.Entry<String, String> kv : this.entrySet()) {
+            if (kv.getKey() != null) {
+                if (kv.getKey().equalsIgnoreCase(key.toString())) {
+                    return kv.getValue();
+                }
             }
         }
 
         return null;
     }
 
+    /**
+     * 不区分大小写
+     * */
     @Override
     public String getOrDefault(Object key, String defaultValue) {
         if(key == null){
             return defaultValue;
         }
 
-        for(Map.Entry<String,String> kv : this.entrySet()){
-            if(kv.getKey().equalsIgnoreCase(key.toString())){
-                return kv.getValue();
+        for (Map.Entry<String, String> kv : this.entrySet()) {
+            if (kv.getKey() != null) {
+                if (kv.getKey().equalsIgnoreCase(key.toString())) {
+                    return kv.getValue();
+                }
             }
         }
 
