@@ -1,6 +1,5 @@
 package org.noear.solon.extend.sessionstate.local;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.*;
 
@@ -16,42 +15,37 @@ class ScheduledStore {
 
     public void put(String block, String key, Object obj) {
         synchronized (block.intern()) {
-            Entity entity = _data.get(block);
-            if (entity == null) {
-                entity = new Entity();
-                _data.put(block, entity);
+            Entity ent = _data.get(block);
+            if (ent == null) {
+                ent = new Entity();
+                _data.put(block, ent);
             } else {
-                if (entity.future != null) {
-                    entity.future.cancel(true);
-                    entity.future = null;
-                }
+                ent.futureDel();
             }
 
-            entity.map.put(key, obj);
+            ent.map.put(key, obj);
 
-            entity.future = _exec.schedule(() -> {
+            ent.future = _exec.schedule(() -> {
                 _data.remove(block);
             }, _defaultSeconds, TimeUnit.SECONDS);
         }
     }
 
     public void delay(String block) {
-        Entity entity = _data.get(block);
-        if (entity != null) {
-            if (entity.future != null) {
-                entity.future.cancel(true);
-            }
+        Entity ent = _data.get(block);
+        if (ent != null) {
+            ent.futureDel();
 
-            entity.future = _exec.schedule(() -> {
+            ent.future = _exec.schedule(() -> {
                 _data.remove(block);
             }, _defaultSeconds, TimeUnit.SECONDS);
         }
     }
 
     public Object get(String block, String key) {
-        Entity entity = _data.get(block);
-        if (entity != null) {
-            return entity.map.get(key);
+        Entity ent = _data.get(block);
+        if (ent != null) {
+            return ent.map.get(key);
         }
 
         return null;
@@ -59,12 +53,9 @@ class ScheduledStore {
 
     public void remove(String block) {
         synchronized (block.intern()) {
-            Entity entity = _data.get(block);
-            if (entity != null) {
-                if (entity.future != null) {
-                    entity.future.cancel(true);
-                    entity.future = null;
-                }
+            Entity ent = _data.get(block);
+            if (ent != null) {
+                ent.futureDel();
 
                 _data.remove(block);
             }
@@ -72,11 +63,8 @@ class ScheduledStore {
     }
 
     public void clear() {
-        for (Entity val : _data.values()) {
-            if (val.future != null) {
-                val.future.cancel(true);
-                val.future = null;
-            }
+        for (Entity ent : _data.values()) {
+            ent.futureDel();
         }
 
         _data.clear();
@@ -84,7 +72,14 @@ class ScheduledStore {
 
     //存储实体
     private static class Entity {
-        public Map<String,Object> map = new HashMap<>();
+        public Map<String,Object> map = new ConcurrentHashMap<>();
         public Future future;
+
+        protected void futureDel(){
+            if (future != null) {
+                future.cancel(true);
+                future = null;
+            }
+        }
     }
 }
