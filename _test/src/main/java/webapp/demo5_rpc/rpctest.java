@@ -13,7 +13,7 @@ public class rpctest implements XHandler {
     @Override
     public void handle(XContext ctx) throws Throwable {
 
-        String url = "http://localhost:" + XApp.global().port() + "/";
+        String url = "http://localhost:" + XApp.global().port()+"/demo5/rpc";
 
         rockapi client = new XProxy().upstream(name -> url).create(rockapi.class);
 

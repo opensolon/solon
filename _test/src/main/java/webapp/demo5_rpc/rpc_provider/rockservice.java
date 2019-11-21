@@ -26,18 +26,6 @@ public class rockservice implements rockapi {
     }
 
     public Object test5(){
-        return XContext.current().path();
-    }
-
-    public Object test6(){
-        return XContext.current().path();
-    }
-
-    public Object test7(){
-        return XContext.current().path();
-    }
-
-    public Object test8(){
-        return XContext.current().path();
+        return XContext.current().uri();
     }
 }
