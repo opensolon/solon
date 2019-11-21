@@ -55,7 +55,7 @@ public class SmartHttpContext extends XContext {
 
     @Override
     public String method() {
-        return _request.getMethodRange().toString();
+        return _request.getMethod();
     }
 
     @Override
@@ -244,12 +244,12 @@ public class SmartHttpContext extends XContext {
 
     @Override
     public String header(String key) {
-        return _request.getHeader(key);
+        return headerMap().get(key);
     }
 
     @Override
     public String header(String key, String def) {
-        String temp = _request.getHeader(key);
+        String temp = header(key);
 
         if (temp == null)
             return def;
