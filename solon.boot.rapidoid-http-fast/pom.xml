@@ -42,7 +42,7 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
-            <version>1.0.3.18</version>
+            <version>1.0.3.21</version>
             <scope>provided</scope>
         </dependency>
 
