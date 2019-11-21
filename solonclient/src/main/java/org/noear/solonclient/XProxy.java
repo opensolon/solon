@@ -175,18 +175,26 @@ public class XProxy {
 
         String url = null;
         if (_sev.indexOf("://") < 0) {
+            String _pat = null;
             if(_sev.indexOf(":")>0) {
                 String[] ss = _sev.split(":");
 
                 _sev = ss[0];
-                if (ss[1].endsWith("/")) {
-                    fun = ss[1] + fun;
-                } else {
-                    fun = ss[1] + "/" + fun;
-                }
+                _pat = ss[1];
             }
 
             url = _upstream.getTarget(_sev);
+
+            if(_pat != null) {
+                if (url.endsWith(_pat) == false) {
+                    if (_pat.endsWith("/")) {
+                        fun = _pat + fun;
+                    } else {
+                        fun = _pat + "/" + fun;
+                    }
+                }
+            }
+
         } else {
             url = _sev;
         }
