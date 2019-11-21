@@ -39,13 +39,13 @@
         <java.version>1.8</java.version>
 
         <solon.ver>1.0.3.21</solon.ver>
-        <solon.boot.jetty.ver>1.0.3.6</solon.boot.jetty.ver>
-        <solon.boot.jlhttp.ver>1.0.3.6</solon.boot.jlhttp.ver>
+        <solon.boot.jetty.ver>1.0.3.7</solon.boot.jetty.ver>
+        <solon.boot.jlhttp.ver>1.0.3.7</solon.boot.jlhttp.ver>
         <solon.boot.nettyhttp.ver>1.0.3.7</solon.boot.nettyhttp.ver>
-        <solon.boot.undertow.ver>1.0.3.6</solon.boot.undertow.ver>
-        <solon.boot.smarthttp.ver>1.0.3.6</solon.boot.smarthttp.ver>
+        <solon.boot.undertow.ver>1.0.3.7</solon.boot.undertow.ver>
+        <solon.boot.smarthttp.ver>1.0.3.7</solon.boot.smarthttp.ver>
 
-        <solon.boot.websocket.ver>1.0.3.6</solon.boot.websocket.ver>
+        <solon.boot.websocket.ver>1.0.3.7</solon.boot.websocket.ver>
 
         <solon.extend.jetty.jsp.ver>1.0.3.2</solon.extend.jetty.jsp.ver>
         <solon.extend.undertow.jsp.ver>1.0.3.2</solon.extend.undertow.jsp.ver>
