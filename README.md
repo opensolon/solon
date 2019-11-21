@@ -41,19 +41,19 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon-parent:1.0.3.20 | 框架版本管理 |
-| org.noear:solon:1.0.3.20 | 70k，主框架 |
+| org.noear:solon-parent:1.0.3.21 | 框架版本管理 |
+| org.noear:solon:1.0.3.21 | 70k，主框架 |
 
 ##### 插件
 
 | boot插件 | 说明 |
 | --- | --- |
-| org.noear:solon.boot.jlhttp:1.0.3.6 | boot插件,对`jlhttp`适配,提供`http`服务（不自带session；可通过session插件提供支持） |
+| org.noear:solon.boot.jlhttp:1.0.3.7 | boot插件,对`jlhttp`适配,提供`http`服务（不自带session；可通过session插件提供支持） |
 | org.noear:solon.boot.nteeyhttp:1.0.3.7 | boot插件,对`Netty`适配,提供`http`服务 |
-| org.noear:solon.boot.jetty:1.0.3.6 | boot插件,对`jetty`适配,提供`http`服务 |
-| org.noear:solon.boot.undertow:1.0.3.6 | boot插件,对`undertow`适配,提供`http`服务（网友@tyk提供） |
-| org.noear:solon.boot.smarthttp:1.0.3.6 | boot插件,对`smart-http`适配,提供`http`服务（基于AIO实现） |
-| org.noear:solon.boot.websocket:1.0.3.6 | boot插件,对`java-websocket`适配，提供`websocket`服务 |
+| org.noear:solon.boot.jetty:1.0.3.7 | boot插件,对`jetty`适配,提供`http`服务 |
+| org.noear:solon.boot.undertow:1.0.3.7 | boot插件,对`undertow`适配,提供`http`服务（网友@tyk提供） |
+| org.noear:solon.boot.smarthttp:1.0.3.7 | boot插件,对`smart-http`适配,提供`http`服务（基于AIO实现） |
+| org.noear:solon.boot.websocket:1.0.3.7 | boot插件,对`java-websocket`适配，提供`websocket`服务 |
 | org.noear:solon.extend.jetty.jsp:1.0.3.2 | 扩展插件,为`jetty`添加`jsp`支持（不建议使用jsp）（网友@khb提供） |
 | org.noear:solon.extend.undertow.jsp:1.0.3.2 | 扩展插件,为`undertow`添加`jsp`支持（不建议使用jsp）（网友@tyk提供） |
 | org.noear:solon.boot.tomcat:1.0.3-b1 | boot插件,对`tomcat`适配,提供`http`服务 |
@@ -74,9 +74,9 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | 序列化插件 | 说明 |
 | --- | --- |
-| org.noear:solon.serialization.fastjson:1.0.3.5 | 视图插件，对 `fastjson` 适配，输出`json`视图 或 序列化输出 |
-| org.noear:solon.serialization.snack3:1.0.3.5 | 视图插件，对 `snack3` 适配，输出`json`视图 或 序列化输出 |
-| org.noear:solon.serialization.jackson:1.0.3.5 | 视图插件，对 `jackson` 适配，输出`json`视图 或 序列化输出 |
+| org.noear:solon.serialization.fastjson:1.0.3.6 | 视图插件，对 `fastjson` 适配，输出`json`视图 或 序列化输出 |
+| org.noear:solon.serialization.snack3:1.0.3.6 | 视图插件，对 `snack3` 适配，输出`json`视图 或 序列化输出 |
+| org.noear:solon.serialization.jackson:1.0.3.6 | 视图插件，对 `jackson` 适配，输出`json`视图 或 序列化输出 |
 
 | 视图插件 | 说明（可置多个视图插件） |
 | --- | --- |
@@ -89,7 +89,7 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | rpc client | 说明 |
 | --- | --- |
-| org.noear:solonclient:1.0.3.2 | 11k，`rpc` client 框架，与solon 的 rpc service 配对 |
+| org.noear:solonclient:1.0.3.4 | 11k，`rpc` client 框架，与solon 的 rpc service 配对 |
 
 #### 简单示例
 * 微框架示例
@@ -97,7 +97,7 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.19</version>
+    <version>1.0.3.21</version>
 </parent>
 
 <dependency>
@@ -129,7 +129,7 @@ public class App{
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.19</version>
+    <version>1.0.3.21</version>
 </parent>
 
 <dependency>
