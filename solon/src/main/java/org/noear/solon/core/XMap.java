@@ -1,5 +1,6 @@
 package org.noear.solon.core;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.CaseInsensitiveMap;
 import org.noear.solon.XUtil;
 
 import java.util.LinkedHashMap;
@@ -67,6 +68,35 @@ public class XMap extends LinkedHashMap<String, String> {
         return d;
     }
 
+    @Override
+    public String get(Object key) {
+        if(key == null){
+            return null;
+        }
+
+        for(Map.Entry<String,String> kv : this.entrySet()){
+            if(kv.getKey().equalsIgnoreCase(key.toString())){
+                return kv.getValue();
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public String getOrDefault(Object key, String defaultValue) {
+        if(key == null){
+            return defaultValue;
+        }
+
+        for(Map.Entry<String,String> kv : this.entrySet()){
+            if(kv.getKey().equalsIgnoreCase(key.toString())){
+                return kv.getValue();
+            }
+        }
+
+        return defaultValue;
+    }
 
     public int getInt(String key) {
         String temp = get(key);
