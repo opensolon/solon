@@ -48,7 +48,7 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | boot插件 | 说明 |
 | --- | --- |
-| org.noear:solon.boot.jlhttp | boot插件,对`jlhttp`适配,提供`http`服务（不自带session；可通过session插件提供支持） |
+| org.noear:solon.boot.jlhttp | boot插件,对`jlhttp`适配,提供`http`服务（不自带session state） |
 | org.noear:solon.boot.nteeyhttp | boot插件,对`Netty`适配,提供`http`服务 |
 | org.noear:solon.boot.jetty | boot插件,对`jetty`适配,提供`http`服务 |
 | org.noear:solon.boot.undertow | boot插件,对`undertow`适配,提供`http`服务（网友@tyk提供） |
@@ -68,7 +68,7 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 | --- | --- |
 | org.noear:solon.extend.properties.yaml | 扩展插件,添加yml配置文件支持 |
 
-| Session插件 | 说明（可将boot插件的session，自动换掉） |
+| Session插件 | 说明（可将boot插件的session state服务，自动换掉） |
 | --- | --- |
 | org.noear:solon.extend.sessionstate.local | 扩展插件,本地`session` |
 | org.noear:solon.extend.sessionstate.redis | 扩展插件,分布式`session`（其于`redis`构建） |
