@@ -3,7 +3,7 @@
 
 # solon for java
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.eclipsesource.j2v8/j2v8.svg)](https://search.maven.org/search?q=solon)
+[![Maven Central](https://img.shields.io/maven-central/v/org.noear/solon.svg)](https://search.maven.org/search?q=solon)
 
 ### 插件式微型Web框架(主框架70kb，根据需求组合不同的插件或扩展；支持jdk8)
 
