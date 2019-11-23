@@ -13,6 +13,10 @@
     <artifactId>solon.boot.jetty</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <jetty.ver>9.4.12.v20180830</jetty.ver>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
@@ -31,7 +35,7 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>${servlet.ver}</version>
+            <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

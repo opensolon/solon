@@ -44,9 +44,6 @@
         <fastjson.ver>1.2.29</fastjson.ver>
         <jedis.ver>2.9.0</jedis.ver>
         <okhttp.ver>3.11.0</okhttp.ver>
-
-        <jetty.ver>9.4.12.v20180830</jetty.ver>
-        <servlet.ver>3.1.0</servlet.ver>
     </properties>
 
     <dependencyManagement>
