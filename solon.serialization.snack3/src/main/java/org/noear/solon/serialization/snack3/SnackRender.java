@@ -34,7 +34,7 @@ public class SnackRender implements XRender {
                 return;
             }
 
-            txt = ONode.load(obj).toJson();
+            txt = ONode.stringify(obj);
         }
 
         ctx.attrSet("output", txt);
