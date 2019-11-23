@@ -117,7 +117,7 @@ public class SessionState implements XSessionState {
 
         Object val = null;
         try {
-            val = ONode.deserialize(tmp, Object.class, serialize_cum);
+            val = ONode.deserialize(tmp);
         }catch (Exception ex){
             throw new RuntimeException("Session state deserialization error: "+ key);
         }
@@ -129,7 +129,7 @@ public class SessionState implements XSessionState {
     public void sessionSet(String key, Object val) {
         String tmp = null;
         try {
-            tmp = ONode.serialize(val, serialize_cum);
+            tmp = ONode.serialize(val);
         }catch (Exception ex){
             throw new RuntimeException("Session state serialization error: "+ key);
         }
@@ -143,9 +143,4 @@ public class SessionState implements XSessionState {
     public void sessionClear() {
         redisX.open0((ru)->ru.key(sessionId()).delete());
     }
-
-    public static final Constants serialize_cum = Constants.of(
-            Feature.WriteClassName).build(c-> {
-        c.null_string = null;
-    });
 }
