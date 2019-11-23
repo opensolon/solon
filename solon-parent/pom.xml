@@ -297,6 +297,7 @@
         </plugins>
     </build>
     <modules>
+
         <module>../solon</module>
         <module>../solon.boot.jetty</module>
         <module>../solon.boot.jlhttp</module>
