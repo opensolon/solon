@@ -9,10 +9,10 @@ import reactor.netty.http.server.HttpServer;
 import java.io.Closeable;
 import java.io.IOException;
 
-public class XPluginImp implements XPlugin, Closeable {
+public class XPluginImp implements XPlugin {
     DisposableServer _server;
 
-    public static String solon_boot_ver(){
+    public static String solon_boot_ver() {
         return "reactor-netty 0.9.1/1.0.3-b1";
     }
 
@@ -45,8 +45,11 @@ public class XPluginImp implements XPlugin, Closeable {
     }
 
     @Override
-    public void close() throws IOException {
-        _server.onDispose()
-                .block();
+    public void stop() throws Throwable {
+        if (_server != null) {
+            _server.onDispose()
+                    .block();
+            _server = null;
+        }
     }
 }

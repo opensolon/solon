@@ -20,18 +20,26 @@ import java.net.InetSocketAddress;
     }
 
     public void start() throws Exception{
-        ServerBootstrap bootstrap = new ServerBootstrap();
+
         EventLoopGroup boss = new NioEventLoopGroup();
         EventLoopGroup work = new NioEventLoopGroup();
-        bootstrap.group(boss,work)
-                .handler(new LoggingHandler(LogLevel.DEBUG))
-                .channel(NioServerSocketChannel.class)
-                .childHandler(new HttpServerInitializer());
 
-        _server = bootstrap.bind(new InetSocketAddress(port)).sync();
+        try {
+            ServerBootstrap bootstrap = new ServerBootstrap();
+            bootstrap.group(boss, work)
+                    .handler(new LoggingHandler(LogLevel.DEBUG))
+                    .channel(NioServerSocketChannel.class)
+                    .childHandler(new HttpServerInitializer());
+
+            _server = bootstrap.bind(new InetSocketAddress(port)).sync();
+        }finally {
+            _server = null;
+            boss.shutdownGracefully();
+            work.shutdownGracefully();
+        }
     }
 
-    public void stop() throws IOException {
+    public void stop() throws Throwable {
         if(_server != null) {
             _server.channel().close();
             _server = null;

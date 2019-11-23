@@ -6,10 +6,10 @@ import org.noear.solon.core.XPlugin;
 import java.io.Closeable;
 import java.io.IOException;
 
-public class XPluginImp implements XPlugin, Closeable {
-    private   WsServer _server = null;
+public class XPluginImp implements XPlugin {
+    private WsServer _server = null;
 
-    public static String solon_boot_ver(){
+    public static String solon_boot_ver() {
         return "Java-WebSocket 1.4.0/1.0.3.6";
     }
 
@@ -23,7 +23,7 @@ public class XPluginImp implements XPlugin, Closeable {
         System.out.println("oejs.Server:main: WebSocket");
 
         try {
-            _server  =new WsServer(_port, contextHandler);
+            _server = new WsServer(_port, contextHandler);
 
             _server.start();
 
@@ -37,13 +37,10 @@ public class XPluginImp implements XPlugin, Closeable {
     }
 
     @Override
-    public void close() throws IOException {
-        if(_server != null){
-            try {
-                _server.stop();
-            }catch (Exception ex){
-                throw new RuntimeException(ex);
-            }
+    public void stop() throws Throwable {
+        if (_server != null) {
+            _server.stop();
+            _server = null;
         }
     }
 }

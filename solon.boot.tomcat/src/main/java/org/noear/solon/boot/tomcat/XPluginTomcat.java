@@ -17,7 +17,7 @@ import java.io.IOException;
  * @Date: 2019/3/28 15:49
  * @Description : Yukai is so handsome xxD
  */
-public class XPluginTomcat implements XPlugin, Closeable {
+public class XPluginTomcat implements XPlugin {
     private static Tomcat tomcat;
 
     @Override
@@ -66,14 +66,10 @@ public class XPluginTomcat implements XPlugin, Closeable {
     }
 
     @Override
-    public void close() throws IOException {
-        try {
-            if (tomcat != null) {
-                tomcat.stop();
-                tomcat = null;
-            }
-        }catch (Exception ex){
-            throw new RuntimeException(ex);
+    public void stop() throws Throwable {
+        if (tomcat != null) {
+            tomcat.stop();
+            tomcat = null;
         }
     }
 }

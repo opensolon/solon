@@ -6,7 +6,7 @@ import org.noear.solon.core.XPlugin;
 import java.io.Closeable;
 import java.io.IOException;
 
-public final class XPluginImp implements XPlugin, Closeable {
+public final class XPluginImp implements XPlugin {
 
 
     public static String solon_boot_ver(){
@@ -19,7 +19,7 @@ public final class XPluginImp implements XPlugin, Closeable {
     }
 
     @Override
-    public void close() throws IOException {
+    public void stop() throws Throwable {
 
     }
 }

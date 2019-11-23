@@ -21,7 +21,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Properties;
 
-final class XPluginJettyJsp implements XPlugin, Closeable {
+final class XPluginJettyJsp implements XPlugin {
 
     private Server _server = null;
 
@@ -139,14 +139,10 @@ final class XPluginJettyJsp implements XPlugin, Closeable {
     }
 
     @Override
-    public void close() throws IOException {
-        try {
-            if (_server != null) {
-                _server.stop();
-                _server = null;
-            }
-        }catch (Exception ex){
-            throw  new RuntimeException(ex);
+    public void stop() throws Throwable {
+        if (_server != null) {
+            _server.stop();
+            _server = null;
         }
     }
 }

@@ -10,7 +10,7 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public final class XPluginImp implements XPlugin, Closeable {
+public final class XPluginImp implements XPlugin {
     private HTTPServer _server = new HTTPServer();
 
     public static String solon_boot_ver(){
@@ -57,7 +57,7 @@ public final class XPluginImp implements XPlugin, Closeable {
     }
 
     @Override
-    public void close() throws IOException {
+    public void stop() throws Throwable {
         if(_server != null) {
             _server.stop();
             _server = null;

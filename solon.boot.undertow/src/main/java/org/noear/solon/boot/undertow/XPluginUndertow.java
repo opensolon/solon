@@ -22,7 +22,7 @@ import java.io.IOException;
  * @Date: 2019/3/28 15:49
  * @Description : Yukai is so handsome xxD
  */
-public class XPluginUndertow implements XPlugin, Closeable {
+public class XPluginUndertow implements XPlugin {
     // singleton
     private static Undertow.Builder serverBuilder = null;
     private Undertow _server = null;
@@ -93,7 +93,7 @@ public class XPluginUndertow implements XPlugin, Closeable {
     }
 
     @Override
-    public void close() throws IOException {
+    public void stop() throws Throwable {
         if (_server != null) {
             _server.stop();
             _server = null;

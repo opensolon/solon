@@ -22,6 +22,8 @@ public class App {
 
         app.get("/",c->c.redirect("/debug.htm"));
 
+        app.plug((p)->{});
+
 //        //web socket send 监听
 //        app.send("/seb/test",(c)->{
 //            String msg = c.body();

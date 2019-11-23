@@ -10,7 +10,7 @@ import org.noear.solon.core.XPlugin;
 import java.io.Closeable;
 import java.io.IOException;
 
-final class XPluginJetty implements XPlugin, Closeable {
+final class XPluginJetty implements XPlugin {
     private Server _server = null;
     @Override
     public void start(XApp app) {
@@ -55,14 +55,10 @@ final class XPluginJetty implements XPlugin, Closeable {
     }
 
     @Override
-    public void close() throws IOException {
-        try {
-            if (_server != null) {
-                _server.stop();
-                _server = null;
-            }
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+    public void stop() throws Throwable {
+        if (_server != null) {
+            _server.stop();
+            _server = null;
         }
     }
 }

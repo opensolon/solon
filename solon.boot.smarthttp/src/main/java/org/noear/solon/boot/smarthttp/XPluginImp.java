@@ -7,7 +7,7 @@ import org.smartboot.http.HttpBootstrap;
 import java.io.Closeable;
 import java.io.IOException;
 
-public final class XPluginImp implements XPlugin, Closeable {
+public final class XPluginImp implements XPlugin {
 
     HttpBootstrap _server;
 
@@ -43,9 +43,10 @@ public final class XPluginImp implements XPlugin, Closeable {
     }
 
     @Override
-    public void close() throws IOException {
+    public void stop() throws Throwable {
         if (_server != null) {
             _server.shutdown();
+            _server = null;
         }
     }
 }

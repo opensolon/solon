@@ -25,7 +25,7 @@ import java.net.URLClassLoader;
  * @Date: 2019/3/28 15:49
  * @Description : Yukai is so handsome xxD
  */
-public class XPluginTomcatJsp implements XPlugin, Closeable {
+public class XPluginTomcatJsp implements XPlugin {
     private static Tomcat tomcat;
 
     @Override
@@ -112,15 +112,10 @@ public class XPluginTomcatJsp implements XPlugin, Closeable {
     }
 
     @Override
-    public void close() throws IOException {
-        try {
-            if (tomcat != null) {
-                tomcat.stop();
-                tomcat = null;
-            }
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+    public void stop() throws Throwable {
+        if (tomcat != null) {
+            tomcat.stop();
+            tomcat = null;
         }
     }
-
 }

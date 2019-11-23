@@ -31,7 +31,7 @@ import java.util.HashMap;
  * @Date: 2019/3/28 15:50
  * @Description : Yukai is so handsome xxD
  */
-public class XPluginUndertowJsp implements XPlugin, Closeable {
+public class XPluginUndertowJsp implements XPlugin {
     private static Undertow.Builder serverBuilder = null;
     private static Undertow _server = null;
 
@@ -105,7 +105,7 @@ public class XPluginUndertowJsp implements XPlugin, Closeable {
     }
 
     @Override
-    public void close() throws IOException {
+    public void stop() throws Throwable {
         if (_server != null) {
             _server.stop();
             _server = null;

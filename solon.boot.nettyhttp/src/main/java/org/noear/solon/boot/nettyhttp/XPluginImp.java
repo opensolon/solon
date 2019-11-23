@@ -6,7 +6,7 @@ import org.noear.solon.core.XPlugin;
 import java.io.Closeable;
 import java.io.IOException;
 
-public class XPluginImp implements XPlugin, Closeable {
+public class XPluginImp implements XPlugin {
     HttpServer _server;
 
     public static String solon_boot_ver(){
@@ -36,7 +36,10 @@ public class XPluginImp implements XPlugin, Closeable {
     }
 
     @Override
-    public void close() throws IOException {
-        _server.stop();
+    public void stop() throws Throwable {
+        if (_server != null) {
+            _server.stop();
+            _server = null;
+        }
     }
 }

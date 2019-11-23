@@ -19,12 +19,10 @@ public class XPluginEntity {
 
     public void stop(){
         if (plugin != null) {
-            if(plugin instanceof Closeable){
-                try{
-                    ((Closeable) plugin).close();
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                }
+            try {
+                plugin.stop();
+            } catch (Throwable ex) {
+                ex.printStackTrace();
             }
         }
     }
