@@ -3,6 +3,8 @@
 
 # solon for java
 
+[![Maven Central](https://img.shields.io/maven-central/v/com.eclipsesource.j2v8/j2v8.svg)](https://search.maven.org/search?q=solon)
+
 ### 插件式微型Web框架(主框架70kb，根据需求组合不同的插件或扩展；支持jdk8)
 
 #### 框架实现效果
@@ -34,8 +36,6 @@ XInterceptor（WEB拦截器，支持多个排序），加注@XMapping的公有�
 XMapping：（映射注解，支持path var）。可注解到web bean或XAction或XHandler<br/>
 XAfter：（后置解发器）。可注解到web bean或XAction<br/>
 XBefore：（前置解发器）。可注解到web bean或XAction<br/>
-
-#### 组件说明 <a href="https://search.maven.org/search?q=solon" target='_blank'>maven-central v1.0.3</a>
 
 ##### 主框架
 
