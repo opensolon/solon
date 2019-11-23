@@ -13,10 +13,6 @@
     <artifactId>solon.boot.jetty</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <jetty.ver>9.4.12.v20180830</jetty.ver>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>

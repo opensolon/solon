@@ -13,10 +13,6 @@
     <artifactId>solon.extend.jetty.jsp</artifactId>
     <packaging>pom</packaging>
 
-    <properties>
-        <jetty.ver>9.4.12.v20180830</jetty.ver>
-    </properties>
-
     <dependencies>
 
         <dependency>
