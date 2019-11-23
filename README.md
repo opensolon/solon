@@ -1,9 +1,9 @@
 
+[![Maven Central](https://img.shields.io/maven-central/v/org.noear/solon.svg)](https://search.maven.org/search?q=solon)
+
 ` QQ交流群：22200020 （同时招募项目参与人员：开发者，测试者，网官设计师等...）` 
 
 # solon for java
-
-[![Maven Central](https://img.shields.io/maven-central/v/org.noear/solon.svg)](https://search.maven.org/search?q=solon)
 
 ### 插件式微型Web框架(主框架70kb，根据需求组合不同的插件或扩展；支持jdk8)
 
