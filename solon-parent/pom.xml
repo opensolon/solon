@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.21</version>
+    <version>1.0.3.22</version>
     <packaging>pom</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -55,12 +55,12 @@
         <solon.extend.properties.yaml.ver>1.0.3.4</solon.extend.properties.yaml.ver>
 
         <solon.extend.sessionstate.local.ver>1.0.3.3</solon.extend.sessionstate.local.ver>
-        <solon.extend.sessionstate.redis.ver>1.0.3.3</solon.extend.sessionstate.redis.ver>
+        <solon.extend.sessionstate.redis.ver>1.0.3.4</solon.extend.sessionstate.redis.ver>
 
 
         <solon.serialization.fastjson.ver>1.0.3.6</solon.serialization.fastjson.ver>
-        <solon.serialization.snack3.ver>1.0.3.6</solon.serialization.snack3.ver>
         <solon.serialization.jackson.ver>1.0.3.6</solon.serialization.jackson.ver>
+        <solon.serialization.snack3.ver>1.0.3.7</solon.serialization.snack3.ver>
 
         <solon.view.freemarker.ver>1.0.3.5</solon.view.freemarker.ver>
         <solon.view.jsp.ver>1.0.3.5</solon.view.jsp.ver>
@@ -72,7 +72,7 @@
 
         <solonclient.ver>1.0.3.4</solonclient.ver>
 
-        <snack3.ver>3.1.0.3</snack3.ver>
+        <snack3.ver>3.1.3</snack3.ver>
         <fastjson.ver>1.2.29</fastjson.ver>
         <jedis.ver>2.9.0</jedis.ver>
         <okhttp.ver>3.11.0</okhttp.ver>
