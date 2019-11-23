@@ -6,3 +6,6 @@
 ##### 1.0.3.22::
 * 1.snack3升为：3.1.3
 * 2.meven改为parent继承模式
+
+#### 1.0.3.18::
+* 1.XSessionState 添加 sessionClear()
