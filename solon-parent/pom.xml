@@ -9,7 +9,7 @@
     <version>1.0.3.22</version>
     <packaging>pom</packaging>
 
-    <name>${project.groupId}:${project.artifactId}</name>
+    <name>${project.artifactId}</name>
     <description>Java project for solon</description>
     <url>https://github.com/noear/solon</url>
     <licenses>
@@ -38,39 +38,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.0.3.21</solon.ver>
-        <solon.boot.jetty.ver>1.0.3.7</solon.boot.jetty.ver>
-        <solon.boot.jlhttp.ver>1.0.3.7</solon.boot.jlhttp.ver>
-        <solon.boot.nettyhttp.ver>1.0.3.7</solon.boot.nettyhttp.ver>
-        <solon.boot.undertow.ver>1.0.3.7</solon.boot.undertow.ver>
-        <solon.boot.smarthttp.ver>1.0.3.7</solon.boot.smarthttp.ver>
-
-        <solon.boot.websocket.ver>1.0.3.7</solon.boot.websocket.ver>
-
-        <solon.extend.jetty.jsp.ver>1.0.3.2</solon.extend.jetty.jsp.ver>
-        <solon.extend.undertow.jsp.ver>1.0.3.2</solon.extend.undertow.jsp.ver>
-
-
-        <solon.extend.staticfiles.ver>1.0.3.2</solon.extend.staticfiles.ver>
-        <solon.extend.properties.yaml.ver>1.0.3.4</solon.extend.properties.yaml.ver>
-
-        <solon.extend.sessionstate.local.ver>1.0.3.3</solon.extend.sessionstate.local.ver>
-        <solon.extend.sessionstate.redis.ver>1.0.3.4</solon.extend.sessionstate.redis.ver>
-
-
-        <solon.serialization.fastjson.ver>1.0.3.6</solon.serialization.fastjson.ver>
-        <solon.serialization.jackson.ver>1.0.3.6</solon.serialization.jackson.ver>
-        <solon.serialization.snack3.ver>1.0.3.7</solon.serialization.snack3.ver>
-
-        <solon.view.freemarker.ver>1.0.3.5</solon.view.freemarker.ver>
-        <solon.view.jsp.ver>1.0.3.5</solon.view.jsp.ver>
-        <solon.view.velocity.ver>1.0.3.5</solon.view.velocity.ver>
-        <solon.view.thymeleaf.ver>1.0.3.5</solon.view.thymeleaf.ver>
-
-        <solon.view.enjoy.ver>1.0.3.5</solon.view.enjoy.ver>
-        <solon.view.beetl.ver>1.0.3.5</solon.view.beetl.ver>
-
-        <solonclient.ver>1.0.3.4</solonclient.ver>
+        <solon.ver>1.0.3.22</solon.ver>
 
         <snack3.ver>3.1.3</snack3.ver>
         <fastjson.ver>1.2.29</fastjson.ver>
@@ -88,122 +56,123 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.jlhttp</artifactId>
-                <version>${solon.boot.jlhttp.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.nettyhttp</artifactId>
-                <version>${solon.boot.nettyhttp.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.jetty</artifactId>
-                <version>${solon.boot.jetty.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.undertow</artifactId>
-                <version>${solon.boot.undertow.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.smarthttp</artifactId>
-                <version>${solon.boot.smarthttp.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.websocket</artifactId>
-                <version>${solon.boot.websocket.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.staticfiles</artifactId>
-                <version>${solon.extend.staticfiles.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.properties.yaml</artifactId>
-                <version>${solon.extend.properties.yaml.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.sessionstate.redis</artifactId>
-                <version>${solon.extend.sessionstate.redis.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.sessionstate.local</artifactId>
-                <version>${solon.extend.sessionstate.local.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.jetty.jsp</artifactId>
-                <version>${solon.extend.jetty.jsp.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.undertow.jsp</artifactId>
-                <version>${solon.extend.undertow.jsp.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.serialization.fastjson</artifactId>
-                <version>${solon.serialization.fastjson.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.serialization.snack3</artifactId>
-                <version>${solon.serialization.snack3.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.serialization.jackson</artifactId>
-                <version>${solon.serialization.jackson.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.view.freemarker</artifactId>
-                <version>${solon.view.freemarker.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.view.jsp</artifactId>
-                <version>${solon.view.jsp.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.view.velocity</artifactId>
-                <version>${solon.view.velocity.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.view.thymeleaf</artifactId>
-                <version>${solon.view.thymeleaf.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.view.enjoy</artifactId>
-                <version>${solon.view.enjoy.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.view.beetl</artifactId>
-                <version>${solon.view.beetl.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solonclient</artifactId>
-                <version>${solonclient.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
+
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -324,6 +293,44 @@
                 </configuration>
             </plugin>
         </plugins>
-
     </build>
+    <modules>
+        <module>../solon</module>
+        <module>../solon.boot.jetty</module>
+        <module>../solon.boot.jlhttp</module>
+        <module>../solon.boot.nettyhttp</module>
+<!--        <module>../solon.boot.reactor-netty</module>-->
+<!--        <module>../solon.boot.rapidoid-http-fast</module>-->
+        <module>../solon.boot.smarthttp</module>
+        <module>../solon.boot.websocket</module>
+        <module>../solon.boot.undertow</module>
+<!--        <module>../solon.boot.tomcat</module>-->
+
+        <module>../solon.serialization.fastjson</module>
+        <module>../solon.serialization.snack3</module>
+        <module>../solon.serialization.jackson</module>
+
+        <module>../solon.view.freemarker</module>
+        <module>../solon.view.jsp</module>
+        <module>../solon.view.velocity</module>
+        <module>../solon.view.thymeleaf</module>
+
+        <module>../solon.view.enjoy</module>
+        <module>../solon.view.beetl</module>
+
+        <module>../solon.extend.staticfiles</module>
+
+        <module>../solon.extend.sessionstate.redis</module>
+        <module>../solon.extend.sessionstate.local</module>
+
+        <module>../solon.extend.properties.yaml</module>
+<!--        <module>../solon.extend.stop</module>-->
+<!--        <module>../solon.extend.aopx</module>-->
+
+
+        <module>../solon.extend.jetty.jsp</module>
+        <module>../solon.extend.undertow.jsp</module>
+
+        <module>../solonclient</module>
+    </modules>
 </project>
