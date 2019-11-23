@@ -13,10 +13,6 @@
     <artifactId>solon.boot.jetty</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <jetty-version>9.4.12.v20180830</jetty-version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
@@ -28,33 +24,33 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
-            <version>${jetty-version}</version>
+            <version>${jetty.ver}</version>
         </dependency>
         <!-- jetty http end -->
 
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
+            <version>${servlet.ver}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
-            <version>${jetty-version}</version>
+            <version>${jetty.ver}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>apache-jsp</artifactId>
-            <version>${jetty-version}</version>
+            <version>${jetty.ver}</version>
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>apache-jstl</artifactId>
-            <version>${jetty-version}</version>
+            <version>${jetty.ver}</version>
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
