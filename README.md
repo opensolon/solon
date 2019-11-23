@@ -41,55 +41,56 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon-parent:1.0.3.21 | 框架版本管理 |
-| org.noear:solon:1.0.3.21 | 70k，主框架 |
+| org.noear:solon-parent:1.0.3.22 | 框架版本管理 |
+| org.noear:solon | 70k，主框架 |
 
 ##### 插件
 
 | boot插件 | 说明 |
 | --- | --- |
-| org.noear:solon.boot.jlhttp:1.0.3.7 | boot插件,对`jlhttp`适配,提供`http`服务（不自带session；可通过session插件提供支持） |
-| org.noear:solon.boot.nteeyhttp:1.0.3.7 | boot插件,对`Netty`适配,提供`http`服务 |
-| org.noear:solon.boot.jetty:1.0.3.7 | boot插件,对`jetty`适配,提供`http`服务 |
-| org.noear:solon.boot.undertow:1.0.3.7 | boot插件,对`undertow`适配,提供`http`服务（网友@tyk提供） |
-| org.noear:solon.boot.smarthttp:1.0.3.7 | boot插件,对`smart-http`适配,提供`http`服务（基于AIO实现） |
-| org.noear:solon.boot.websocket:1.0.3.7 | boot插件,对`java-websocket`适配，提供`websocket`服务 |
-| org.noear:solon.extend.jetty.jsp:1.0.3.2 | 扩展插件,为`jetty`添加`jsp`支持（不建议使用jsp）（网友@khb提供） |
-| org.noear:solon.extend.undertow.jsp:1.0.3.2 | 扩展插件,为`undertow`添加`jsp`支持（不建议使用jsp）（网友@tyk提供） |
-| org.noear:solon.boot.tomcat:1.0.3-b1 | boot插件,对`tomcat`适配,提供`http`服务 |
-| org.noear:solon.boot.reactor-netty:1.0.3-b1 | boot插件,对`reactor-netty`适配,提供`http`服务 |
+| org.noear:solon.boot.jlhttp | boot插件,对`jlhttp`适配,提供`http`服务（不自带session；可通过session插件提供支持） |
+| org.noear:solon.boot.nteeyhttp | boot插件,对`Netty`适配,提供`http`服务 |
+| org.noear:solon.boot.jetty | boot插件,对`jetty`适配,提供`http`服务 |
+| org.noear:solon.boot.undertow | boot插件,对`undertow`适配,提供`http`服务（网友@tyk提供） |
+| org.noear:solon.boot.smarthttp | boot插件,对`smart-http`适配,提供`http`服务（基于AIO实现） |
+| org.noear:solon.boot.websocket | boot插件,对`java-websocket`适配，提供`websocket`服务 |
+| org.noear:solon.extend.jetty.jsp | 扩展插件,为`jetty`添加`jsp`支持（不建议使用jsp）（网友@khb提供） |
+| org.noear:solon.extend.undertow.jsp | 扩展插件,为`undertow`添加`jsp`支持（不建议使用jsp）（网友@tyk提供） |
+| | |
+| org.noear:solon.boot.tomcat:beta | boot插件,对`tomcat`适配,提供`http`服务 |
+| org.noear:solon.boot.reactor-netty:beta | boot插件,对`reactor-netty`适配,提供`http`服务 |
 
 | 静态文件支持插件 | 说明 |
 | --- | --- |
-| org.noear:solon.extend.staticfiles:1.0.3.2 | 扩展插件,添加静态文件支持（监视 resources/static 文件夹） |
+| org.noear:solon.extend.staticfiles | 扩展插件,添加静态文件支持（监视 resources/static 文件夹） |
 
 | Yaml配置支持插件 | 说明 |
 | --- | --- |
-| org.noear:solon.extend.properties.yaml:1.0.3.4 | 扩展插件,添加yml配置文件支持 |
+| org.noear:solon.extend.properties.yaml | 扩展插件,添加yml配置文件支持 |
 
 | Session插件 | 说明（可将boot插件的session，自动换掉） |
 | --- | --- |
-| org.noear:solon.extend.sessionstate.local:1.0.3.3 | 扩展插件,本地`session` |
-| org.noear:solon.extend.sessionstate.redis:1.0.3.3 | 扩展插件,分布式`session`（其于`redis`构建） |
+| org.noear:solon.extend.sessionstate.local | 扩展插件,本地`session` |
+| org.noear:solon.extend.sessionstate.redis | 扩展插件,分布式`session`（其于`redis`构建） |
 
 | 序列化插件 | 说明 |
 | --- | --- |
-| org.noear:solon.serialization.fastjson:1.0.3.6 | 视图插件，对 `fastjson` 适配，输出`json`视图 或 序列化输出 |
-| org.noear:solon.serialization.snack3:1.0.3.6 | 视图插件，对 `snack3` 适配，输出`json`视图 或 序列化输出 |
-| org.noear:solon.serialization.jackson:1.0.3.6 | 视图插件，对 `jackson` 适配，输出`json`视图 或 序列化输出 |
+| org.noear:solon.serialization.fastjson | 视图插件，对 `fastjson` 适配，输出`json`视图 或 序列化输出 |
+| org.noear:solon.serialization.snack3 | 视图插件，对 `snack3` 适配，输出`json`视图 或 序列化输出 |
+| org.noear:solon.serialization.jackson | 视图插件，对 `jackson` 适配，输出`json`视图 或 序列化输出 |
 
 | 视图插件 | 说明（可置多个视图插件） |
 | --- | --- |
-| org.noear:solon.view.freemarker:1.0.3.5 | 视图插件，对 `freemarker` 适配，输出`html` |
-| org.noear:solon.view.jsp:1.0.3.5 | 视图插件，对 `jsp` 适配，输出`html` |
-| org.noear:solon.view.velocity:1.0.3.5 | 视图插件，对 `velocity` 适配，输出`html` |
-| org.noear:solon.view.thymeleaf:1.0.3.5 | 视图插件，对 `thymeleaf` 适配，输出`html` |
-| org.noear:solon.view.beetl:1.0.3.5 | 视图插件，对 `beetl` 适配，输出`html` |
-| org.noear:solon.view.enjoy:1.0.3.5 | 视图插件，对 `enjoy` 适配，输出`html` |
+| org.noear:solon.view.freemarker | 视图插件，对 `freemarker` 适配，输出`html` |
+| org.noear:solon.view.jsp | 视图插件，对 `jsp` 适配，输出`html` |
+| org.noear:solon.view.velocity | 视图插件，对 `velocity` 适配，输出`html` |
+| org.noear:solon.view.thymeleaf | 视图插件，对 `thymeleaf` 适配，输出`html` |
+| org.noear:solon.view.beetl | 视图插件，对 `beetl` 适配，输出`html` |
+| org.noear:solon.view.enjoy | 视图插件，对 `enjoy` 适配，输出`html` |
 
 | rpc client | 说明 |
 | --- | --- |
-| org.noear:solonclient:1.0.3.4 | 11k，`rpc` client 框架，与solon 的 rpc service 配对 |
+| org.noear:solonclient | 11k，`rpc` client 框架，与solon 的 rpc service 配对 |
 
 #### 简单示例
 * 微框架示例
@@ -97,7 +98,7 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.21</version>
+    <version>1.0.3.22</version>
 </parent>
 
 <dependency>
@@ -129,7 +130,7 @@ public class App{
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.21</version>
+    <version>1.0.3.22</version>
 </parent>
 
 <dependency>
