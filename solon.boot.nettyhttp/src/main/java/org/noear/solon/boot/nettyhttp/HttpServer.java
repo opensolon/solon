@@ -32,7 +32,7 @@ import java.net.InetSocketAddress;
                     .childHandler(new HttpServerInitializer());
 
             _server = bootstrap.bind(new InetSocketAddress(port)).sync();
-        }finally {
+        }catch (Throwable ex){
             _server = null;
             boss.shutdownGracefully();
             work.shutdownGracefully();
