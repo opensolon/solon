@@ -327,7 +327,7 @@
         <module>../solon.extend.sessionstate.local</module>
 
         <module>../solon.extend.properties.yaml</module>
-        <!--        <module>../solon.extend.stop</module>-->
+        <module>../solon.extend.stop</module>
         <!--        <module>../solon.extend.aopx</module>-->
 
 

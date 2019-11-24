@@ -9,3 +9,8 @@ server.session.state.redis.server=redis.dev.zmapi.cn:6379
 server.session.state.redis.password=AVsVSKd1
 server.session.state.redis.db=31
 server.session.state.redis.maxTotaol=200
+
+
+solon.stop.enabled=false
+solon.stop.path=/_run/_stop/
+solon.stop.host=127.0.0.1
