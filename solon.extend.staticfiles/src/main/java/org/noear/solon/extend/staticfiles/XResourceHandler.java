@@ -77,7 +77,7 @@ class XResourceHandler implements XHandler {
 
             if (modified_since != null) {
                 if (modified_since.equals(modified_now)) {
-                    context.headerSet(CACHE_CONTROL, "max-age=6000");
+                    context.headerSet(CACHE_CONTROL, "max-age=6000");//单位秒
                     context.headerSet(LAST_MODIFIED, modified_now);
                     context.status(304);
                     return;
