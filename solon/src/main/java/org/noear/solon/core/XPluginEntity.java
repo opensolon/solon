@@ -10,10 +10,18 @@ public class XPluginEntity {
     public int priority = 0;
     public XPlugin plugin;
 
-    public void start(){
-        plugin = XUtil.newClass(className);
+    public XPluginEntity(){}
+    public XPluginEntity(XPlugin plugin){
+        this.plugin = plugin;
+    }
+
+    public void start() {
+        if (plugin == null) {
+            plugin = XUtil.newClass(className);
+        }
+
         if (plugin != null) {
-            XApp.global().plug(plugin);
+            plugin.start(XApp.global());
         }
     }
 

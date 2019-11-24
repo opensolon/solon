@@ -29,6 +29,11 @@ server.session.state.redis:
   db: 31
   maxTotaol: 200
 
+solon.stop:
+  enabled: true
+  path: /demox/_stop
+  host: localhost
+
 custom:
   li:
     - 12

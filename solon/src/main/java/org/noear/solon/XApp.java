@@ -93,7 +93,7 @@ public class XApp implements XHandler {
 
         //2.尝试加载扩展文件夹
         String _extend = argx.get("extend");
-        if(XUtil.isEmpty(_extend)){
+        if (XUtil.isEmpty(_extend)) {
             _extend = _global.prop().get("solon.extend");
         }
 
@@ -107,8 +107,11 @@ public class XApp implements XHandler {
             builder.run(_global);
         }
 
-        //3.3.尝试加载插件（顺序不能乱）
-        _global.prop().plugs().forEach(p->p.start());
+        //3.3.尝试加载插件（顺序不能乱） //不能用forEach，以免当中有插进来
+        List<XPluginEntity> plugs = _global.prop().plugs();
+        for (int i = 0,len = plugs.size(); i < len; i++) {
+            plugs.get(i).start();
+        }
 
         //4.再加载bean
         if (source != null) {
@@ -233,7 +236,9 @@ public class XApp implements XHandler {
      * 插入插件
      */
     public void plug(XPlugin plugin) {
-        plugin.start(this);
+        XPluginEntity p = new XPluginEntity(plugin);
+        p.start();
+        prop().plugs().add(p);
     }
 
     ///////////////////////////////////////////////

@@ -1,6 +1,7 @@
 package webapp;
 
 import org.noear.solon.XApp;
+import org.noear.solon.core.XPlugin;
 import webapp.demoe_websocket.WsDemoClientTest;
 
 public class App {
@@ -22,7 +23,17 @@ public class App {
 
         app.get("/",c->c.redirect("/debug.htm"));
 
-        app.plug((p)->{});
+        app.plug(new XPlugin() {
+            @Override
+            public void start(XApp app) {
+
+            }
+
+            @Override
+            public void stop() throws Throwable {
+                System.out.println("通知你一下，我现在要停了");
+            }
+        });
 
 //        //web socket send 监听
 //        app.send("/seb/test",(c)->{
