@@ -19,6 +19,5 @@ public class XPluginImp implements XPlugin {
                 }
             });
         }
-
     }
 }
