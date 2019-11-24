@@ -10,7 +10,7 @@ public class XPluginImp implements XPlugin {
     private WsServer _server = null;
 
     public static String solon_boot_ver() {
-        return "Java-WebSocket 1.4.0/1.0.3.6";
+        return "Java-WebSocket 1.4.0/1.0.3.24";
     }
 
     @Override
@@ -20,7 +20,7 @@ public class XPluginImp implements XPlugin {
 
         WsContextHandler contextHandler = new WsContextHandler(app);
 
-        System.out.println("oejs.Server:main: WebSocket");
+        System.out.println("solon.Server:main: WebSocket");
 
         try {
             _server = new WsServer(_port, contextHandler);
@@ -29,8 +29,8 @@ public class XPluginImp implements XPlugin {
 
             long time_end = System.currentTimeMillis();
 
-            System.out.println("oejs.AbstractConnector:main: Started ServerConnector@{HTTP/1.1,[WebSocket]}{0.0.0.0:" + _port + "}");
-            System.out.println("oejs.Server:main: Started @" + (time_end - time_start) + "ms");
+            System.out.println("solon.Connector:main: Started ServerConnector@{HTTP/1.1,[WebSocket]}{0.0.0.0:" + _port + "}");
+            System.out.println("solon.Server:main: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -41,6 +41,8 @@ public class XPluginImp implements XPlugin {
         if (_server != null) {
             _server.stop();
             _server = null;
+
+            System.out.println("solon.Server:main: Has Stopped " + solon_boot_ver());
         }
     }
 }

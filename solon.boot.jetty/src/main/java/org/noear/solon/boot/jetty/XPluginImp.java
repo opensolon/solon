@@ -11,14 +11,14 @@ public final class XPluginImp implements XPlugin {
     private XPlugin _server = null;
 
     public static String solon_boot_ver(){
-        return "jetty 9.4/1.0.3.6";
+        return "jetty 9.4/1.0.3.24";
     }
 
 
     @Override
     public void start(XApp app) {
         long time_start = System.currentTimeMillis();
-        System.out.println("oejs.Server:main: Jetty 9.4");
+        System.out.println("solon.Server:main: Jetty 9.4");
 
        Class<?> jspClz = XUtil.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
 
@@ -34,13 +34,16 @@ public final class XPluginImp implements XPlugin {
 
         long time_end = System.currentTimeMillis();
 
-        System.out.println("oejs.Server:main: Started @" + (time_end - time_start) + "ms");
+        System.out.println("solon.Server:main: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override
     public void stop() throws Throwable {
         if (_server != null) {
             _server.stop();
+            _server = null;
+
+            System.out.println("solon.Server:main: Has Stopped " + solon_boot_ver());
         }
     }
 }

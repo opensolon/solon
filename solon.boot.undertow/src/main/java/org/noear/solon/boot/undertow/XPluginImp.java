@@ -12,7 +12,7 @@ public final class XPluginImp implements XPlugin {
 
 
     public static String solon_boot_ver(){
-        return "undertow 2.0/1.0.3.6";
+        return "undertow 2.0/1.0.3.24";
     }
 
     @Override
@@ -41,6 +41,8 @@ public final class XPluginImp implements XPlugin {
         if (_server != null) {
             _server.stop();
             _server = null;
+
+            System.out.println("solon.Server:main: Has Stopped " + solon_boot_ver());
         }
     }
 }

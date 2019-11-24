@@ -44,6 +44,8 @@ public final class XPluginImp implements XPlugin {
         if(_server != null){
            _server.stop();
             _server = null;
+
+            System.out.println("solon.Server:main: Has Stopped " + solon_boot_ver());
         }
     }
 }
