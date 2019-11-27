@@ -38,9 +38,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.0.3.24</solon.ver>
+        <solon.ver>1.0.3.25</solon.ver>
 
-        <snack3.ver>3.1.3</snack3.ver>
+        <snack3.ver>3.1.5.2</snack3.ver>
         <fastjson.ver>1.2.29</fastjson.ver>
         <jedis.ver>2.9.0</jedis.ver>
         <okhttp.ver>3.11.0</okhttp.ver>

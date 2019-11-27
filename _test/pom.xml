@@ -55,15 +55,15 @@
 <!--            <artifactId>solon.boot.jlhttp</artifactId>-->
 <!--        </dependency>-->
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.smarthttp</artifactId>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.nettyhttp</artifactId>
+            <artifactId>solon.boot.smarthttp</artifactId>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.nettyhttp</artifactId>-->
+<!--        </dependency>-->
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
