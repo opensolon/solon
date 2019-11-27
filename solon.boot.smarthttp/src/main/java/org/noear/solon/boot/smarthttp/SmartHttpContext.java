@@ -82,28 +82,6 @@ public class SmartHttpContext extends XContext {
     public String url() {
         if (_url == null) {
             _url = _request.getRequestURL();
-
-            if (_url != null && _url.startsWith("/")) {
-                String host = header("Host");
-
-                if (host == null) {
-                    host = header(":authority");
-                    String scheme = header(":scheme");
-
-                    if(host == null){
-                        host = "localhost";
-                    }
-
-                    if (scheme != null) {
-                        _url = "https://" + host + _url;
-                    } else {
-                        _url = scheme + "://" + host + _url;
-                    }
-
-                } else {
-                    _url = "http://" + host + _url;
-                }
-            }
         }
 
         return _url;
