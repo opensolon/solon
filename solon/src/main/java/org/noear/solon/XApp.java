@@ -351,9 +351,12 @@ public class XApp implements XHandler {
 
             _handler.handle(context);
 
-            Throwable err = context.attr("error", null);
-            if (err != null) {
-                errorNotice(context, err);
+
+            if (_onErrorEvent != null) {
+                Throwable err = context.attr("error", null);
+                if (err != null) {
+                    errorNotice(context, err);
+                }
             }
         } catch (Throwable ex) {
             errorNotice(context, ex);
