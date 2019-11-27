@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.25</version>
+    <version>1.0.3.26</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -38,15 +38,16 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.0.3.25</solon.ver>
+        <solon.ver>1.0.3.26</solon.ver>
 
-        <snack3.ver>3.1.5.2</snack3.ver>
+        <snack3.ver>3.1.5.3</snack3.ver>
         <fastjson.ver>1.2.29</fastjson.ver>
         <jedis.ver>2.9.0</jedis.ver>
         <okhttp.ver>3.11.0</okhttp.ver>
 
         <jetty.ver>9.4.12.v20180830</jetty.ver>
     </properties>
+
 
     <dependencyManagement>
         <dependencies>
@@ -301,6 +302,8 @@
             </plugin>
         </plugins>
     </build>
+
+
     <modules>
 
         <module>../solon</module>
@@ -340,5 +343,10 @@
         <module>../solon.extend.undertow.jsp</module>
 
         <module>../solonclient</module>
+
+
+        <module>../solon-mvc</module>
+        <module>../solon-api</module>
     </modules>
+
 </project>

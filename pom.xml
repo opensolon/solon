@@ -23,6 +23,8 @@
         <module>_test</module>
 
         <module>solon-parent</module>
+        <module>solon-mvc</module>
+        <module>solon-api</module>
 
         <module>solon</module>
         <module>solon.boot.jetty</module>
