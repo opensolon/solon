@@ -18,7 +18,7 @@ public class XAction extends XHandlerAide implements XHandler {
     private Method _m;
     private String _produces;
 
-    private PathAnalyzer _pr;
+    private PathAnalyzer _pr;//路径分析器
     private List<String> _pks;
     private static Pattern _pkr = Pattern.compile("\\{([^\\\\}]+)\\}");
 
@@ -45,17 +45,18 @@ public class XAction extends XHandlerAide implements XHandler {
 
     @Override
     public void handle(XContext x) throws Throwable {
-        if(_c_remoting) {
+        if (_c_remoting) {
             x.attrSet("solon.reader.mode", "serialize");
         }
 
-        try{
-            if(XUtil.isEmpty(_produces) == false){
+        try {
+            if (XUtil.isEmpty(_produces) == false) {
                 x.contentType(_produces);
             }
 
             do_handle(x);
-        }catch (Exception ex){
+        } catch (Exception ex) {
+            x.attrSet("error", ex);
             x.render(ex);
         }
     }
@@ -67,16 +68,21 @@ public class XAction extends XHandlerAide implements XHandler {
         }
 
         if (x.getHandled() == false) {
-            if (_pr != null) {
-                Matcher pm = _pr.matcher(x.path());
-                if (pm.find()) {
-                    for (int i = 0, len = _pks.size(); i < len; i++) {
-                        x.paramSet(_pks.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
+            try {
+                if (_pr != null) {
+                    Matcher pm = _pr.matcher(x.path());
+                    if (pm.find()) {
+                        for (int i = 0, len = _pks.size(); i < len; i++) {
+                            x.paramSet(_pks.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
+                        }
                     }
                 }
-            }
 
-           x.render(XActionUtil.exeMethod(_c_bw.get(), _m, x));
+                x.render(XActionUtil.exeMethod(_c_bw.get(), _m, x));
+            }catch (Throwable ex){
+                x.attrSet("error", ex);
+                x.render(ex);
+            }
         }
 
         //后置处理
