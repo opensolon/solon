@@ -351,12 +351,14 @@ public class XApp implements XHandler {
 
             _handler.handle(context);
 
-        } catch (Throwable ex) {
-            if (_onErrorEvent != null) {
-                _onErrorEvent.run(context, ex);
-            }else {
-                throw ex;
+            Throwable err = context.attr("error", null);
+            if (err != null) {
+                errorNotice(context, err);
             }
+        } catch (Throwable ex) {
+            errorNotice(context, ex);
+
+            throw ex;
         } finally {
             //移除当前线程上下文
             XContextUtil.currentRemove();
@@ -365,6 +367,15 @@ public class XApp implements XHandler {
 
     private Act2<XContext,Throwable> _onErrorEvent;
 
+    private void errorNotice(XContext ctx,Throwable err) {
+        if (_onErrorEvent != null) {
+            try {
+                _onErrorEvent.run(ctx, err);
+            } catch (Throwable ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
     public XApp onError(Act2<XContext,Throwable> event) {
         _onErrorEvent = event;
         return this;
