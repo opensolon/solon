@@ -344,22 +344,22 @@ public class XApp implements XHandler {
      * 统一代理入口
      */
     @Override
-    public void handle(XContext context) throws Throwable {
+    public void handle(XContext x) throws Throwable {
         try {
             //设置当前线程上下文
-            XContextUtil.currentSet(context);
+            XContextUtil.currentSet(x);
 
-            _handler.handle(context);
+            _handler.handle(x);
 
 
-            if (_onErrorEvent != null) {
-                Throwable err = context.attr("error", null);
+            if(_onErrorEvent!=null) {
+                Throwable err = x.attr("error", null);
                 if (err != null) {
-                    errorNotice(context, err);
+                    doNoticeError(x, err);
                 }
             }
         } catch (Throwable ex) {
-            errorNotice(context, ex);
+            doNoticeError(x, ex);
 
             throw ex;
         } finally {
@@ -370,7 +370,7 @@ public class XApp implements XHandler {
 
     private Act2<XContext,Throwable> _onErrorEvent;
 
-    private void errorNotice(XContext ctx,Throwable err) {
+    private void doNoticeError(XContext ctx,Throwable err) {
         if (_onErrorEvent != null) {
             try {
                 _onErrorEvent.run(ctx, err);
