@@ -55,7 +55,7 @@ public class XAction extends XHandlerAide implements XHandler {
             }
 
             do_handle(x);
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             x.attrSet("error", ex);
             x.render(ex);
         }
