@@ -15,7 +15,7 @@
 * 插件扩展：启动插件 + 扩展插件 + 序列化插件 + 视图插件 + ...
 
 
-#### Hello world
+#### Hello world!
 
 ```java
 //微框架模式
@@ -36,8 +36,8 @@ public class App{
         XApp.start(App.class,args);
     }
   
-    @XMapping
-    public Object home(){
+    @XMapping("/")
+    public Object home(XContext c){
     		return "Hello world!";  
     }
 }
