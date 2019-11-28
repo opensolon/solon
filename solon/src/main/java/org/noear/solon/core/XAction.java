@@ -57,7 +57,7 @@ public class XAction extends XHandlerAide implements XHandler {
         } catch (Throwable ex) {
             x.attrSet("error", ex);
             x.render(ex);
-            XMonitorUtil.sendError(x, ex);
+            XMonitor.sendError(x, ex);
         }
     }
 
@@ -82,7 +82,7 @@ public class XAction extends XHandlerAide implements XHandler {
             }catch (Throwable ex){
                 x.attrSet("error", ex);
                 x.render(ex);
-                XMonitorUtil.sendError(x, ex);
+                XMonitor.sendError(x, ex);
             }
         }
 
