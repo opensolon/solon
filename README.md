@@ -5,29 +5,20 @@
 
 # solon for java
 
-### 插件式微型Web框架，主框架70kb，支持jdk8。组合不同的插件应对不同需求。
+一个插件式微型Web框架
+支持jdk8，主框架70kb。组合不同的插件应对不同需求。
 
 
-
+* 不喜欢配置
 * Handler + Context 架构
 * 控制器 + 拦截器 + 触发器 + 渲染器
-* 插件：启动插件 + 扩展插件 + 序列化插件 + 视图插件
-
-
-
-#### 架构效果
-
-- 0.实现微框架（*类似`javalin`）
-- 1.实现boot（*类似`spring boot`；可切换各种boot插件；支持`http`, `websocket`, `socket`）
-- 2.实现mvc（*类似`spring mvc`；可支持多模板同存）
-- 3.实现rpc（*类似`dobbo`）
-- 4.实现微服务架构（结合water治理平台）
-
+* 插件扩展：启动插件 + 扩展插件 + 序列化插件 + 视图插件 + ...
 
 
 #### Hello world
 
 ```java
+//微框架模式
 public class App{
     public static void main(String[] args){
         XApp app = XApp.start(App.class,args);
@@ -35,7 +26,21 @@ public class App{
         app.get("/",(c)->c.output("Hello world!"));
     }
 }
+```
 
+```java
+//MVC模式
+@XController
+public class App{
+    public static void main(String[] args){
+        XApp.start(App.class,args);
+    }
+  
+    @XMapping
+    public Object home(){
+    		return "Hello world!";  
+    }
+}
 ```
 
 
