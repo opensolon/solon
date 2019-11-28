@@ -14,7 +14,7 @@ public final class XPluginImp implements XPlugin {
     private HTTPServer _server = new HTTPServer();
 
     public static String solon_boot_ver(){
-        return "jlhttp 2.4/1.0.3.24";
+        return "jlhttp 2.4/1.0.3.27";
     }
 
     @Override

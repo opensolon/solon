@@ -12,7 +12,7 @@ public final class XPluginImp implements XPlugin {
     HttpBootstrap _server;
 
     public static String solon_boot_ver(){
-        return "smart http 1.0.11/1.0.3.24";
+        return "smart http 1.0.11/1.0.3.27";
     }
 
     @Override
