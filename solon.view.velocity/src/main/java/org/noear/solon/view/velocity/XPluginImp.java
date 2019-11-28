@@ -7,9 +7,13 @@ import org.noear.solon.core.XRenderManager;
 import org.noear.solon.core.XPlugin;
 
 public class XPluginImp implements XPlugin {
+    public static boolean output_meta = false;
+
     @Override
     public void start(XApp app) {
-        VelocityRender render = new VelocityRender();
+        output_meta = app.prop().getInt("solon.output.meta", 0) > 0;
+
+        VelocityRender render =  VelocityRender.global();
 
         Aop.beanOnloaded(() -> {
             Aop.beanForeach((k, v) -> {

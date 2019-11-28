@@ -10,6 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class JspRender implements XRender {
+    private static JspRender _global;
+    public static JspRender global(){
+        if(_global==null){
+            _global = new JspRender();
+        }
+
+        return _global;
+    }
 
     private String _baseUri ="/WEB-INF/view/";
     //不要要入参，方便后面多视图混用
@@ -39,6 +47,13 @@ public class JspRender implements XRender {
         if(ctx.contentTypeNew() == null) {
             ctx.contentType("text/html;charset=utf-8");
         }
+
+        if(XPluginImp.output_meta){
+            ctx.headerSet("solon.view","JspRender");
+        }
+
+
+
 
         HttpServletResponse response = (HttpServletResponse)ctx.response();
         HttpServletRequest request = (HttpServletRequest)ctx.request();

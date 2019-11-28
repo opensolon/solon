@@ -15,15 +15,16 @@ public class XRenderManager implements XRender {
     private static final Map<String, XRender> _mapping = new HashMap<>();
     private static final Map<String, XRender> _lib = new HashMap<>();
 
+    //默认渲染器
     private static XRender _def = (d, c) -> {
         if (d != null) {
             c.output(d.toString());
         }
     };
+    //数据模型渲染器
+    private static XRender _model = _def;
 
-    private XRenderManager() {
-        mapping(mapping_model, _def);
-    }
+    private XRenderManager() {}
 
     //不能放上面
     public static XRenderManager global = new XRenderManager();
@@ -48,6 +49,10 @@ public class XRenderManager implements XRender {
     public static void mapping(String suffix, XRender render) {
         //suffix=.ftl
         _mapping.put(suffix, render);
+
+        if (mapping_model.equals(suffix)) {
+            _model = render;
+        }
 
         PrintUtil.blueln("solon:: view mapping: " + suffix + "=" + render.getClass().getSimpleName());
     }
@@ -104,6 +109,6 @@ public class XRenderManager implements XRender {
 
         //最后只有 model
         //
-        _mapping.get(mapping_model).render(obj, ctx);
+        _model.render(obj, ctx);
     }
 }

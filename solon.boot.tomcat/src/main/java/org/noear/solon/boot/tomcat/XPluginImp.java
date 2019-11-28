@@ -16,6 +16,8 @@ public final class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
+        XServerProp.init();
+
         long start_before = System.currentTimeMillis();
         String mode = XUtil.loadClass("org.apache.jasper.servlet.JspServlet") == null ? "pure" : "jsp";
         // pure 仅支持返回REST风格的JSON数据，渲染生产HTML页面需要render

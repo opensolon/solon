@@ -17,20 +17,20 @@ public final class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
+        XServerProp.init();
+
         long time_start = System.currentTimeMillis();
         System.out.println("solon.Server:main: Jetty 9.4");
 
-       Class<?> jspClz = XUtil.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
+        Class<?> jspClz = XUtil.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
 
-       XServerProp.init();
+        if (jspClz == null) {
+            _server = new XPluginJetty();
+        } else {
+            _server = new XPluginJettyJsp();
+        }
 
-       if(jspClz == null){
-           _server = new XPluginJetty();
-       }else{
-           _server = new XPluginJettyJsp();
-       }
-
-       _server.start(app);
+        _server.start(app);
 
         long time_end = System.currentTimeMillis();
 

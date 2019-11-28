@@ -19,6 +19,8 @@ public final class XPluginImp implements XPlugin {
 
     @Override
     public  void start(XApp app) {
+        XServerProp.init();
+
         long time_start = System.currentTimeMillis();
 
         JlHttpContextHandler _handler = new JlHttpContextHandler( app);

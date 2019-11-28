@@ -16,6 +16,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VelocityRender implements XRender {
+    private static VelocityRender _global;
+    public static VelocityRender global(){
+        if(_global==null){
+            _global = new VelocityRender();
+        }
+
+        return _global;
+    }
 
     private VelocityEngine velocity = new VelocityEngine();
     private Map<String,Object> _sharedVariable=new HashMap<>();
@@ -84,6 +92,10 @@ public class VelocityRender implements XRender {
     public void render_mav(ModelAndView mv, XContext ctx) throws Exception {
         if(ctx.contentTypeNew() == null) {
             ctx.contentType("text/html;charset=utf-8");
+        }
+
+        if(XPluginImp.output_meta){
+            ctx.headerSet("solon.view","VelocityRender");
         }
 
         String view = mv.view();

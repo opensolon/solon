@@ -115,6 +115,10 @@ public class EnjoyRender implements XRender {
             ctx.contentType("text/html;charset=utf-8");
         }
 
+        if(XPluginImp.output_meta){
+            ctx.headerSet("solon.view","EnjoyRender");
+        }
+
         Template template = engine.getTemplate(mv.view());
 
         PrintWriter writer = new PrintWriter(ctx.outputStream());

@@ -16,8 +16,6 @@ public class JacksonRender implements XRender {
             //
             ObjectMapper mapper = new ObjectMapper();
             txt = mapper.writeValueAsString(obj);
-
-            //ctx.headerSet("solon.serialization","JacksonRender");
         } else {
             //非序列化处理
             //
@@ -36,6 +34,10 @@ public class JacksonRender implements XRender {
 
             ObjectMapper mapper = new ObjectMapper();
             txt = mapper.writeValueAsString(obj);
+        }
+
+        if(XPluginImp.output_meta) {
+            ctx.headerSet("solon.serialization", "JacksonRender");
         }
 
         ctx.attrSet("output", txt);

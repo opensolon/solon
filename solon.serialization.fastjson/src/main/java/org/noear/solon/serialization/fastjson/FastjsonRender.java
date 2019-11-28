@@ -21,8 +21,6 @@ public class FastjsonRender implements XRender {
                     SerializerFeature.BrowserCompatible,
                     SerializerFeature.WriteClassName,
                     SerializerFeature.DisableCircularReferenceDetect);
-
-            //ctx.headerSet("solon.serialization","FastjsonRender");
         } else {
             //非序列化处理
             //
@@ -42,6 +40,10 @@ public class FastjsonRender implements XRender {
             txt = JSON.toJSONString(obj,
                     SerializerFeature.BrowserCompatible,
                     SerializerFeature.DisableCircularReferenceDetect);
+        }
+
+        if(XPluginImp.output_meta) {
+            ctx.headerSet("solon.serialization", "FastjsonRender");
         }
 
         ctx.attrSet("output", txt);

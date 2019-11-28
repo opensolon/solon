@@ -7,8 +7,11 @@ import org.noear.solon.core.XPlugin;
 import org.thymeleaf.processor.element.IElementTagProcessor;
 
 public class XPluginImp implements XPlugin {
+    public static boolean output_meta = false;
+
     @Override
     public void start(XApp app) {
+        output_meta = app.prop().getInt("solon.output.meta", 0) > 0;
 
         ThymeleafRender render = ThymeleafRender.global();
 

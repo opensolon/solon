@@ -27,6 +27,9 @@ server.session.state.redis:
   db: 31
   maxTotaol: 200
 
+#特殊信息输出
+solon.output.meta: 1
+
 solon.stop:
   enabled: true
   path: /demox/_stop

@@ -123,6 +123,10 @@ public class BeetlRender implements XRender {
             ctx.contentType("text/html;charset=utf-8");
         }
 
+        if(XPluginImp.output_meta){
+            ctx.headerSet("solon.view","BeetlRender");
+        }
+
         Template template = gt.getTemplate(mv.view());
         template.binding(mv.model());
         template.renderTo(ctx.outputStream());

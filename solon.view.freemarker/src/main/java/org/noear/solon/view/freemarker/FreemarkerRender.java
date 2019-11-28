@@ -112,6 +112,10 @@ public class FreemarkerRender implements XRender {
             ctx.contentType("text/html;charset=utf-8");
         }
 
+        if(XPluginImp.output_meta){
+            ctx.headerSet("solon.view","FreemarkerRender");
+        }
+
         PrintWriter writer = new PrintWriter(ctx.outputStream());
 
         Template template = cfg.getTemplate(mv.view(), "utf-8");

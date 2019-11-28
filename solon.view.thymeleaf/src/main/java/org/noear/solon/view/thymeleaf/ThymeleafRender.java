@@ -130,6 +130,10 @@ public class ThymeleafRender implements XRender {
             ctx.contentType("text/html;charset=utf-8");
         }
 
+        if(XPluginImp.output_meta){
+            ctx.headerSet("solon.view","ThymeleafRender");
+        }
+
         Context context = new Context();
         context.setVariables(_sharedVariable);
         context.setVariables(mv);
