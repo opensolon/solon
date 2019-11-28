@@ -149,7 +149,7 @@ public class RhfContext extends XContext {
     }
 
     @Override
-    public void contentType(String contentType) {
+    protected void contentTypeDoSet(String contentType) {
 
     }
 

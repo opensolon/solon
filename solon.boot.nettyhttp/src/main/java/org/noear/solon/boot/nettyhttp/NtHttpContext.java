@@ -254,7 +254,7 @@ public class NtHttpContext extends XContext {
     private String _charset = "UTF-8";
 
     @Override
-    public void contentType(String contentType) {
+    protected void contentTypeDoSet(String contentType) {
         if (_charset != null) {
             if (contentType.indexOf(";") < 0) {
                 headerSet("Content-Type", contentType + ";charset=" + _charset);

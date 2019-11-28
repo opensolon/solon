@@ -258,7 +258,7 @@ public class UtHttpServletContext extends XContext {
     }
 
     @Override
-    public void contentType(String contentType) {
+    protected void contentTypeDoSet(String contentType) {
         _response.setContentType(contentType);
     }
 

@@ -208,7 +208,16 @@ public abstract class XContext {
     public abstract void charset(String charset);
     /**设置内容类型*/
     @XNote("设置内容类型")
-    public abstract void contentType(String contentType);
+    public void contentType(String contentType){
+        contentTypeDoSet(contentType);
+        _contentTypeNew = contentType;
+    }
+    @XNote("获取设置的内容类型")
+    public String contentTypeNew(){
+        return _contentTypeNew;
+    }
+    private String _contentTypeNew;
+    protected abstract void contentTypeDoSet(String contentType);
 
     /**输出内容*/
     @XNote("输出内容:字符串")
