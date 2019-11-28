@@ -7,7 +7,7 @@ import org.noear.solon.XApp;
  * */
 public class App0 {
     public static void main(String[] args) {
-        XApp app = XApp.start(App1.class, args);
+        XApp app = XApp.start(App0.class, args);
 
         app.get("/", c -> c.output("hello world!"));
     }

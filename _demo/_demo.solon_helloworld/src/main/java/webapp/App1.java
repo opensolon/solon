@@ -9,12 +9,12 @@ import org.noear.solon.annotation.XMapping;
  * */
 @XController
 public class App1 {
-    public static void main(String[] args){
-        XApp.start(App1.class,args);
+    public static void main(String[] args) {
+        XApp.start(App1.class, args);
     }
 
     @XMapping("/")
-    public String helloworld(){
+    public String helloworld() {
         return "hello world!";
     }
 }

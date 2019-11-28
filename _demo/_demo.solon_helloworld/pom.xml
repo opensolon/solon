@@ -12,25 +12,16 @@
     <name>${artifactId}</name>
     <description>java project for solon demo</description>
 
-    <parent>
-        <groupId>org.noear</groupId>
-        <artifactId>solon-parent</artifactId>
-        <version>1.0.3.30</version>
-    </parent>
-
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
-        </dependency>
-        <!-- 添加http插件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
             <artifactId>solon.boot.jlhttp</artifactId>
+            <version>1.0.3.30</version>
         </dependency>
     </dependencies>
 
     <build>
+        <finalName>${artifactId}</finalName>
         <plugins>
 
             <plugin>
