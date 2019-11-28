@@ -5,37 +5,46 @@
 
 # solon for java
 
-### 插件式微型Web框架(主框架70kb，根据需求组合不同的插件或扩展；支持jdk8)
+### 插件式微型Web框架，主框架70kb，支持jdk8。
 
-#### 框架实现效果
-* 0.采用Handler + Context 基础架构（*类似spring webflux）
-* 1.实现boot（*类似spring boot；可切换各种boot插件；支持http,websocket,socket）
-* 2.实现微框架（*类似javalin）
-* 3.实现mvc（*类似spring mvc；可支持多模板同存）
-* 4.实现rpc（*类似dobbo）
-* 5.实现微服务架构（结合water治理平台）//此项目不涉及
-* 6.很强的可定制性（最近用solon搞了嵌入式FaaS引擎：https://github.com/noear/solonjt ）
-#### 主要组成
-* 1.XApp，管理总线，所有内容都交汇于此
-* 2.XPlugin，通用插件接口（所以扩展都是它的实现）
-* 3.XRender，通用渲染接口
-* 4.XContext，通用上下文接口
-* 5.XHandler，通用处理接口
-* 6.XAction***，通用动作接口
-* 7.XBean***，轻量级bean体系
-#### 五个注解说明
-注解主要分为：普通、特定、附助三类注解，实动时会被加载；原则上，只被应用在启动时。。。其它注解可借助lombok框架。
-* 普通bean注解：<br/>
-XBean (组件注解，可加注在类上)，remoting=true 时，开启rpc服务
+### 组合不同的插件应对不同需求。
 
-* 特定web bean注解：需配置-parameters<br/>
-XController（WEB控制器），加注@XMapping的公有函数为XAction<br/>
-XInterceptor（WEB拦截器，支持多个排序），加注@XMapping的公有函数为XAction<br/> 
 
-* 特定web bean 的附助注解：<br/>
-XMapping：（映射注解，支持path var）。可注解到web bean或XAction或XHandler<br/>
-XAfter：（后置解发器）。可注解到web bean或XAction<br/>
-XBefore：（前置解发器）。可注解到web bean或XAction<br/>
+
+#### 三组概念组成整体架构
+
+* Handler + Context 架构
+* 控制器 + 拦截器 + 触发器 + 渲染器
+* 插件：启动插件 + 扩展插件 + 序列化插件 + 视图插件
+
+
+
+#### 架构效果
+
+- 0.实现微框架（*类似`javalin`）
+- 1.实现boot（*类似`spring boot`；可切换各种boot插件；支持`http`, `websocket`, `socket`）
+- 2.实现mvc（*类似`spring mvc`；可支持多模板同存）
+- 3.实现rpc（*类似`dobbo`）
+- 4.实现微服务架构（结合water治理平台）
+
+
+
+#### Hello world
+
+```java
+public class App{
+    public static void main(String[] args){
+        XApp app = XApp.start(App.class,args);
+        
+        app.get("/",(c)->c.output("Hello world!"));
+    }
+}
+
+```
+
+
+
+#### 框架与插件
 
 ##### 主框架
 
@@ -52,7 +61,7 @@ XBefore：（前置解发器）。可注解到web bean或XAction<br/>
 | --- | --- |
 | org.noear:solon.boot.jlhttp | boot插件,对`jlhttp`适配,提供`http`服务（不自带session state） |
 | org.noear:solon.boot.nteeyhttp | boot插件,对`Netty`适配,提供`http`服务 |
-| org.noear:solon.boot.jetty | boot插件,对`jetty`适配,提供`http`服务 |
+| org.noear:solon.boot.jetty | boot插件,对`jetty`适配,提供`http`服务（网友@khb提供） |
 | org.noear:solon.boot.undertow | boot插件,对`undertow`适配,提供`http`服务（网友@tyk提供） |
 | org.noear:solon.boot.smarthttp | boot插件,对`smart-http`适配,提供`http`服务（基于AIO实现） |
 | org.noear:solon.boot.websocket | boot插件,对`java-websocket`适配，提供`websocket`服务 |
