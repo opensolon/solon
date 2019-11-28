@@ -118,11 +118,13 @@ public class BeetlRender implements XRender {
         }
     }
 
-    public void render_mav(ModelAndView mv, XContext cxt) throws Exception {
-        cxt.contentType("text/html;charset=utf-8");
+    public void render_mav(ModelAndView mv, XContext ctx) throws Exception {
+        if(ctx.contentTypeNew() == null) {
+            ctx.contentType("text/html;charset=utf-8");
+        }
 
         Template template = gt.getTemplate(mv.view());
         template.binding(mv.model());
-        template.renderTo(cxt.outputStream());
+        template.renderTo(ctx.outputStream());
     }
 }

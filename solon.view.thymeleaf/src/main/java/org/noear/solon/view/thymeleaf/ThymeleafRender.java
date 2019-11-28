@@ -126,7 +126,9 @@ public class ThymeleafRender implements XRender {
     }
 
     public void render_mav(ModelAndView mv, XContext ctx) throws Throwable {
-        ctx.contentType("text/html;charset=utf-8");
+        if(ctx.contentTypeNew() == null) {
+            ctx.contentType("text/html;charset=utf-8");
+        }
 
         Context context = new Context();
         context.setVariables(_sharedVariable);

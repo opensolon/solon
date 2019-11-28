@@ -81,8 +81,10 @@ public class VelocityRender implements XRender {
         }
     }
 
-    public void render_mav(ModelAndView mv, XContext cxt) throws Exception {
-        cxt.contentType("text/html;charset=utf-8");
+    public void render_mav(ModelAndView mv, XContext ctx) throws Exception {
+        if(ctx.contentTypeNew() == null) {
+            ctx.contentType("text/html;charset=utf-8");
+        }
 
         String view = mv.view();
 
@@ -94,7 +96,7 @@ public class VelocityRender implements XRender {
         _sharedVariable.forEach((k, v) -> vc.put(k, v));
 
         // 输出流
-        PrintWriter writer = new PrintWriter(cxt.outputStream());
+        PrintWriter writer = new PrintWriter(ctx.outputStream());
         // 转换输出
         t.merge(vc, writer);
         writer.flush();

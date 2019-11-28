@@ -107,10 +107,12 @@ public class FreemarkerRender implements XRender {
         }
     }
 
-    public void render_mav(ModelAndView mv, XContext cxt) throws Throwable {
-        cxt.contentType("text/html;charset=utf-8");
+    public void render_mav(ModelAndView mv, XContext ctx) throws Throwable {
+        if(ctx.contentTypeNew() == null) {
+            ctx.contentType("text/html;charset=utf-8");
+        }
 
-        PrintWriter writer = new PrintWriter(cxt.outputStream());
+        PrintWriter writer = new PrintWriter(ctx.outputStream());
 
         Template template = cfg.getTemplate(mv.view(), "utf-8");
 

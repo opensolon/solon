@@ -35,9 +35,13 @@ public class JspRender implements XRender {
         }
     }
 
-    public void render_mav(ModelAndView mv, XContext context) throws Throwable {
-        HttpServletResponse response = (HttpServletResponse)context.response();
-        HttpServletRequest request = (HttpServletRequest)context.request();
+    public void render_mav(ModelAndView mv, XContext ctx) throws Throwable {
+        if(ctx.contentTypeNew() == null) {
+            ctx.contentType("text/html;charset=utf-8");
+        }
+
+        HttpServletResponse response = (HttpServletResponse)ctx.response();
+        HttpServletRequest request = (HttpServletRequest)ctx.request();
 
         mv.model().forEach(request::setAttribute);
 
