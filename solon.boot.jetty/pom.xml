@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.0.3.29</version>
+        <version>1.0.3.30</version>
     </parent>
 
     <artifactId>solon.boot.jetty</artifactId>
@@ -17,7 +17,6 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
-            <scope>provided</scope>
         </dependency>
 
         <!-- jetty http begin -->
