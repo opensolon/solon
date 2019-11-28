@@ -351,7 +351,7 @@ public class XApp implements XHandler {
 
             _handler.handle(x);
         } catch (Throwable ex) {
-            XMonitor.sendError(x, ex);
+            XMonitorUtil.sendError(x, ex);
             throw ex;
         } finally {
             //移除当前线程上下文
@@ -360,7 +360,7 @@ public class XApp implements XHandler {
     }
 
     public XApp onError(Act2<XContext,Throwable> event) {
-        XMonitor.onError(event);
+        XMonitorUtil.onError(event);
         return this;
     }
 }

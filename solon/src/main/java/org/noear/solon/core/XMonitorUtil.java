@@ -5,7 +5,7 @@ import org.noear.solon.ext.Act2;
 /**
  * 监听器
  * */
-public class XMonitor {
+public class XMonitorUtil {
     private static Act2<XContext,Throwable> _onErrorEvent;
 
     public static void sendError(XContext ctx, Throwable err) {
