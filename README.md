@@ -69,9 +69,6 @@ public class App{
 | org.noear:solon.boot.websocket | boot插件,对`java-websocket`适配，提供`websocket`服务 |
 | org.noear:solon.extend.jetty.jsp | 扩展插件,为`jetty`添加`jsp`支持（不建议使用jsp）（网友@khb提供） |
 | org.noear:solon.extend.undertow.jsp | 扩展插件,为`undertow`添加`jsp`支持（不建议使用jsp）（网友@tyk提供） |
-| | |
-| org.noear:solon.boot.tomcat:beta | boot插件,对`tomcat`适配,提供`http`服务 |
-| org.noear:solon.boot.reactor-netty:beta | boot插件,对`reactor-netty`适配,提供`http`服务 |
 
 | 静态文件支持插件 | 说明 |
 | --- | --- |
