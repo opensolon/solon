@@ -13,12 +13,16 @@ public class XPluginImp implements XPlugin {
 
         Aop.beanOnloaded(() -> {
             Aop.beanForeach((k, v) -> {
-                if (k.startsWith("vm:")) {
+                if (k.startsWith("view:")) { //java view widget
                     if (v.raw() instanceof Directive) {
                         render.loadDirective(v.raw());
-                    } else {
-                        render.setSharedVariable(k.split(":")[1], v.raw());
                     }
+                    return;
+                }
+
+                if(k.startsWith("share:")){ //java share object
+                    render.setSharedVariable(k.split(":")[1], v.raw());
+                    return;
                 }
             });
         });

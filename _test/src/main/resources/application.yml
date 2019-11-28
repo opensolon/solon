@@ -12,7 +12,7 @@ username: noear
 paasword: 1234
 
 solon.view.mapping.htm: BeetlRender
-solon.view.mapping.html: EnjoyRender
+solon.view.mapping.shtm: EnjoyRender
 
 water:
   host: http://water.zmapi.cn/

@@ -15,17 +15,21 @@ public class XPluginImp implements XPlugin {
 
         Aop.beanOnloaded(() -> {
             Aop.beanForeach((k, v) -> {
-                if (k.startsWith("enjoy:")) {
+                if (k.startsWith("view:")) { //java view widget
                     if(Directive.class.isAssignableFrom(v.clz())){
                         render.addDirective(k.split(":")[1], (Class<? extends Directive>)v.clz());
-                    }else{
-                        render.setSharedVariable(k.split(":")[1], v.raw());
                     }
+                    return;
+                }
 
+                if(k.startsWith("share:")){ //java share object
+                    render.setSharedVariable(k.split(":")[1], v.raw());
+                    return;
                 }
             });
         });
 
         XRenderManager.register(render);
+        XRenderManager.mapping(".shtm",render);
     }
 }
