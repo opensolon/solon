@@ -113,10 +113,9 @@ public class EnjoyRender implements XRender {
     public void render_mav(ModelAndView mv, XContext cxt) throws Exception {
         cxt.contentType("text/html;charset=utf-8");
 
-        PrintWriter writer = new PrintWriter(cxt.outputStream());
-
         Template template = engine.getTemplate(mv.view());
 
+        PrintWriter writer = new PrintWriter(cxt.outputStream());
         template.render(mv.model(), writer);
         writer.flush();
     }

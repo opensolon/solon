@@ -84,18 +84,19 @@ public class VelocityRender implements XRender {
     public void render_mav(ModelAndView mv, XContext cxt) throws Exception {
         cxt.contentType("text/html;charset=utf-8");
 
-        String view =  mv.view();
+        String view = mv.view();
 
         //取得velocity的模版
         Template t = velocity.getTemplate(view, getEncoding());
 
         // 取得velocity的上下文context
         VelocityContext vc = new VelocityContext(mv.model());
-        _sharedVariable.forEach((k,v)->vc.put(k, v));
+        _sharedVariable.forEach((k, v) -> vc.put(k, v));
 
         // 输出流
         PrintWriter writer = new PrintWriter(cxt.outputStream());
         // 转换输出
         t.merge(vc, writer);
+        writer.flush();
     }
 }

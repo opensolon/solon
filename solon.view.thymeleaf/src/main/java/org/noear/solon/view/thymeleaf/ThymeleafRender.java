@@ -134,8 +134,7 @@ public class ThymeleafRender implements XRender {
 
 
         PrintWriter writer = new PrintWriter(ctx.outputStream());
-
-        _engine.process(mv.view(), context,writer);
-
+        _engine.process(mv.view(), context, writer);
+        writer.flush();
     }
 }
