@@ -14,7 +14,9 @@
 * 控制器 + 拦截器 + 触发器 + 渲染器
 * 插件扩展：启动插件 + 扩展插件 + 序列化插件 + 视图插件 + ...
 
-#### Hello world!
+#### Hello world：
+
+###### Meven  dependency
 
 ```xml
 <dependency>
@@ -24,8 +26,9 @@
 </dependency>
 ```
 
+###### Handler模式
+
 ```java
-//微框架模式
 public class App{
     public static void main(String[] args){
         XApp app = XApp.start(App.class,args);
@@ -35,8 +38,9 @@ public class App{
 }
 ```
 
+###### Controller模式
+
 ```java
-//MVC模式
 @XController
 public class App{
     public static void main(String[] args){
@@ -51,19 +55,23 @@ public class App{
 ```
 
 
+#### 主框架与插件：
 
-#### 框架与插件
-
-##### 主框架
+###### 主框架
 
 | 组件 | 说明 |
 | --- | --- |
 | org.noear:solon-parent | 框架版本管理 |
 | org.noear:solon | 70k，主框架 |
+
+###### 快速集成包
+
+| 组件 | 说明 |
+| --- | --- |
 | org.noear:solon-mvc | 可进行mvc开发的快速集成包 |
 | org.noear:solon-api | 可进行api 或 rpc 开发的快速集成包 |
 
-##### 插件
+###### 插件
 
 | boot插件 | 说明 |
 | --- | --- |
@@ -111,24 +119,14 @@ public class App{
 | --- | --- |
 | org.noear:solonclient | 11k，`rpc` client 框架，与solon 的 rpc service 配对 |
 
-#### 简单示例
+### 附1：入门示例
 * 微框架示例
 ```xml
-<parent>
-    <groupId>org.noear</groupId>
-    <artifactId>solon-parent</artifactId>
-    <version>1.0.3.30</version>
-</parent>
-
-<dependency>
-  <groupId>org.noear</groupId>
-  <artifactId>solon</artifactId>
-</dependency>
-
 <!-- http boot 插件；可以换成：.smarthttp 或 .jetty 或 .undertow 或自己定义个 -->
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon.boot.jlhttp</artifactId>
+  <version>1.0.3.30</version>
 </dependency>
 ```
 ```java
@@ -137,10 +135,7 @@ public class App{
         XApp app = XApp.start(App.class,args);
         
         //http get 监听
-        app.get("/hallo_http",(c)->c.output("hallo world!"));
-        
-        //web socket send 监听（需添加：solon.boot.websocket 插件）
-        //app.send("/hello_ws",(c)->c.output("hallo world!"));
+        app.get("/",(c)->c.output("hallo world!"));
     }
 }
 ```
@@ -148,44 +143,26 @@ public class App{
 ```xml
 <parent>
     <groupId>org.noear</groupId>
-    <artifactId>solon-parent</artifactId>
+    <artifactId>solon-mvc</artifactId>
     <version>1.0.3.30</version>
 </parent>
-
-<dependency>
-  <groupId>org.noear</groupId>
-  <artifactId>solon</artifactId>
-</dependency>
-
-<dependency>
-  <groupId>org.noear</groupId>
-  <artifactId>solon.boot.jlhttp</artifactId> <!-- 可以换成：.jetty 或自己定义个插件 -->
-</dependency>
-
-<dependency>
-    <groupId>org.noear</groupId>
-    <artifactId>solon.serialization.fastjson</artifactId>
-</dependency>
-
-<dependency>
-  <groupId>org.noear</groupId>
-  <artifactId>solon.view.freemarker</artifactId> <!-- 可以换成：.velocity 或 .jsp 或自己定义个插件 -->
-</dependency>
 ```
 ```
-//资源路径说明
-resources/application.properties 为应用配置文件
+//资源路径说明（不用配置）
+resources/application.properties（或 application.yml） 为应用配置文件
 resources/static/ 为静态文件根目标
-resources/WEB-INF/view/ 为视图文件根目标 （把视图放数据库里也成...自己适配下）
+resources/WEB-INF/view/ 为视图文件根目标
 ```
 ```java
 public class App{
     public static void main(String[] args){
-        XApp.start(App.class,args);
+        XApp.start(App.class, args);
     }
 }
 
-/*mvc控制器*/
+/*
+ * mvc控制器
+ */
 @XController
 public class DemoController{
     //for http
@@ -203,9 +180,11 @@ public class DemoController{
     */
 }
 
-/*rpc服务*/ 
+/*
+ * rpc服务
+ */ 
 // - interface
-@XClient("http://127.0.0.1/demo/") // 或 demorpc （使用water提供的注册服务；当然也可以改成别的...）
+@XClient("rpc:/demo/") // 或 demorpc （使用water提供的注册服务；当然也可以改成别的...）
 public interface DemoRpc{
     void setName(Integer user_id,String name);
 }
@@ -220,11 +199,7 @@ public class DemoService implements DemoRpc{
 }
 
 // - client - 简单示例
-DemoRpc client = new XProxy().create(DemoRpc.class); //@XClient("http://127.0.0.1/demo/")
-client.setName(1,'');
-
-// - client - 使用WATER负载示例 （可以自己写个别的负载）
-DemoRpc client = XWaterUpstream.xclient(DemoRpc.class); //@XClient("demorpc")
+DemoRpc client = new XProxy().upstream(n->"http://127.0.0.1").create(DemoRpc.class); 
 client.setName(1,'');
 ```
 * 获取应用配置
@@ -234,8 +209,8 @@ Aop.prop().getInt("app_id",0); //=>int
 Aop.prop().getProp("xxx.datasource"); //=>Properties
 ```
 
-### 插件开发说明
+### 附2：插件开发说明
 * 新建一个 meven 项目
-* 新建一个 java/{包名}/{插件类}.java （implements XPlugin）
+* 新建一个 java/{包名}/XPluginImp.java （implements XPlugin）
 * 新建一个 resources/`solonplugin`/{包名.properties}
-*    添加配置：solon.plugin={包名}.{插件类}
+*    添加配置：solon.plugin={包名}.XPluginImp
