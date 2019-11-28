@@ -1,6 +1,5 @@
 package org.noear.solon.core;
 
-import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 
 import java.lang.reflect.Method;
@@ -58,6 +57,7 @@ public class XAction extends XHandlerAide implements XHandler {
         } catch (Throwable ex) {
             x.attrSet("error", ex);
             x.render(ex);
+            XMonitor.sendError(x, ex);
         }
     }
 
@@ -82,6 +82,7 @@ public class XAction extends XHandlerAide implements XHandler {
             }catch (Throwable ex){
                 x.attrSet("error", ex);
                 x.render(ex);
+                XMonitor.sendError(x, ex);
             }
         }
 
