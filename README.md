@@ -12,7 +12,7 @@
 * 不喜欢配置
 * Handler + Context 架构
 * 控制器 + 拦截器 + 触发器 + 渲染器
-* 插件扩展：启动插件 + 扩展插件 + 序列化插件 + 视图插件 + ...
+* 插件扩展：启动插件 + 扩展插件 + 序列化插件 + 视图插件(可共存) + ...
 
 ### Hello world：
 
@@ -137,7 +137,7 @@ public class App{
 //资源路径说明（不用配置）
 resources/application.properties（或 application.yml） 为应用配置文件
 resources/static/ 为静态文件根目标
-resources/WEB-INF/view/ 为视图文件根目标
+resources/WEB-INF/view/ 为视图文件根目标（支持多视图共存）
 ```
 ```java
 public class App{
