@@ -19,31 +19,19 @@
     </parent>
 
     <dependencies>
+        <!--
+        solon-api 和 solon-mvc 的区别是：前者没有模板和SessionState
+        -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
+            <artifactId>solon-api</artifactId>
         </dependency>
-        <!-- 添加http插件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jlhttp</artifactId>
-        </dependency>
-        <!-- 添加序列化插件（即提供json输出支持） -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.snack3</artifactId>
-        </dependency>
-        <!-- 添加序模板插件（即提供视图输出支持） -->
+
+        <!-- 添加另一个模板插件 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.view.beetl</artifactId>
         </dependency>
-        <!-- 静态文件插件（即提供静态文件支持） -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.staticfiles</artifactId>
-        </dependency>
-
 
         <dependency>
             <groupId>org.projectlombok</groupId>
