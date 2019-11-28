@@ -14,21 +14,10 @@
 * 控制器 + 拦截器 + 触发器 + 渲染器
 * 插件扩展：启动插件 + 扩展插件 + 序列化插件 + 视图插件 + ...
 
-#### Hello world：
-
-###### Meven  dependency
-
-```xml
-<dependency>
-    <groupId>org.noear</groupId>
-    <artifactId>solon.boot.jlhttp</artifactId>
-    <version>1.0.3.30</version>
-</dependency>
-```
-
-###### Handler模式
+### Hello world：
 
 ```java
+//Handler 模式：
 public class App{
     public static void main(String[] args){
         XApp app = XApp.start(App.class,args);
@@ -36,11 +25,8 @@ public class App{
         app.get("/",(c)->c.output("Hello world!"));
     }
 }
-```
 
-###### Controller模式
-
-```java
+//Controller 模式：
 @XController
 public class App{
     public static void main(String[] args){
@@ -55,7 +41,7 @@ public class App{
 ```
 
 
-#### 主框架与插件：
+### 主框架与插件：
 
 ###### 主框架
 
@@ -209,7 +195,9 @@ Aop.prop().getInt("app_id",0); //=>int
 Aop.prop().getProp("xxx.datasource"); //=>Properties
 ```
 
-### 附2：插件开发说明
+### 附2：更多示例可参考 _test 和 _demo
+
+### 附3：插件开发说明
 * 新建一个 meven 项目
 * 新建一个 java/{包名}/XPluginImp.java （implements XPlugin）
 * 新建一个 resources/`solonplugin`/{包名.properties}
