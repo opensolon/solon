@@ -19,12 +19,7 @@
     </properties>
 
     <modules>
-        <module>_demo</module>
-        <module>_test</module>
-
         <module>solon-parent</module>
-        <module>solon-mvc</module>
-        <module>solon-api</module>
 
         <module>solon</module>
         <module>solon.boot.jetty</module>
@@ -63,5 +58,11 @@
         <module>solon.extend.undertow.jsp</module>
 
         <module>solonclient</module>
+
+        <module>solon-mvc</module>
+        <module>solon-api</module>
+
+        <module>_demo</module>
+        <module>_test</module>
     </modules>
 </project>
