@@ -16,6 +16,10 @@ class HttpRequestHandler implements BiFunction<HttpServerRequest, HttpServerResp
      public Publisher<Void> apply(HttpServerRequest request, HttpServerResponse response) {
 
          NettyHttpContext context = new NettyHttpContext(request,response);
+         context.contentType("text/plain;charset=UTF-8");//默认
+         if(XServerProp.output_meta) {
+             context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
+         }
 
          try {
              app.handle(context);

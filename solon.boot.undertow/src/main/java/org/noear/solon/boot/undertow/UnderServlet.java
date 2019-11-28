@@ -39,6 +39,10 @@ public class UnderServlet extends HttpServlet {
         HttpServerExchange exchange = ((HttpServletRequestImpl) req).getExchange();
         UtHttpServletContext context = new UtHttpServletContext(req, resp,exchange);
         context.contentType("text/plain;charset=UTF-8");
+        if(XServerProp.output_meta) {
+            context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
+        }
+
         try {
             UnderTowConfig.app.handle(context);
 

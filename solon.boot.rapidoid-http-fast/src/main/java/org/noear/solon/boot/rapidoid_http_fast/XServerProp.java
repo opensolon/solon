@@ -1,4 +1,4 @@
-package org.noear.solon.boot.jetty;
+package org.noear.solon.boot.rapidoid_http_fast;
 
 import org.noear.solon.core.Aop;
 

@@ -18,6 +18,7 @@ public class SnackRender implements XRender {
             //序列化处理
             //
             txt = ONode.serialize(obj);
+            //ctx.headerSet("solon.serialization","SnackRender");
         } else {
             //非序列化处理
             //

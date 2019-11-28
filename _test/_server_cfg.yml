@@ -10,6 +10,8 @@ server.session.state.redis.password: AVsVSKd1
 server.session.state.redis.db: 31
 server.session.state.redis.maxTotaol: 200
 
+#特殊信息输出
+solon.output.meta: 1
 
 solon.stop.enabled: false
 solon.stop.path: /_run/_stop/

@@ -33,7 +33,9 @@ class NtHttpContextHandler extends SimpleChannelInboundHandler<FullHttpRequest> 
 
         NtHttpContext context = new NtHttpContext(ctx, req, response);
         context.contentType("text/plain;charset=UTF-8");//默认
-        context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
+        if(XServerProp.output_meta) {
+            context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
+        }
 
         try {
             app.handle(context);

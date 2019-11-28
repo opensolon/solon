@@ -21,6 +21,8 @@ public class FastjsonRender implements XRender {
                     SerializerFeature.BrowserCompatible,
                     SerializerFeature.WriteClassName,
                     SerializerFeature.DisableCircularReferenceDetect);
+
+            //ctx.headerSet("solon.serialization","FastjsonRender");
         } else {
             //非序列化处理
             //
