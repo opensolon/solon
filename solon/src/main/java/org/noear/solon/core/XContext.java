@@ -211,6 +211,7 @@ public abstract class XContext {
     public void contentType(String contentType){
         contentTypeDoSet(contentType);
 
+        //只记录非默认值
         if(XContextUtil.contentTypeDef.equals(contentType) == false) {
             _contentTypeNew = contentType;
         }
