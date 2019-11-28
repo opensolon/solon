@@ -14,8 +14,15 @@
 * 控制器 + 拦截器 + 触发器 + 渲染器
 * 插件扩展：启动插件 + 扩展插件 + 序列化插件 + 视图插件 + ...
 
-
 #### Hello world!
+
+```xml
+<dependency>
+    <groupId>org.noear</groupId>
+    <artifactId>solon.boot.jlhttp</artifactId>
+    <version>1.0.3.30</version>
+</dependency>
+```
 
 ```java
 //微框架模式
