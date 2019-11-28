@@ -210,7 +210,10 @@ public abstract class XContext {
     @XNote("设置内容类型")
     public void contentType(String contentType){
         contentTypeDoSet(contentType);
-        _contentTypeNew = contentType;
+
+        if(XContextUtil.contentTypeDef.equals(contentType) == false) {
+            _contentTypeNew = contentType;
+        }
     }
     @XNote("获取设置的内容类型")
     public String contentTypeNew(){

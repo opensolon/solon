@@ -6,6 +6,8 @@ package org.noear.solon.core;
  * */
 public class XContextUtil {
 
+    public static final String contentTypeDef = "text/plain;charset=UTF-8";
+
     private final static ThreadLocal<XContext> _threadLocal = new ThreadLocal<>();
 
     /** 设置当前线程的上下文 */
