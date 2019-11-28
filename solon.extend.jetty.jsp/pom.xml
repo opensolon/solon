@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>solon.extend.jetty.jsp</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <dependencies>
 

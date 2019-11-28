@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>solon-mvc</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
