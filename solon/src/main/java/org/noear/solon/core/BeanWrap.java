@@ -5,6 +5,7 @@ import org.noear.solon.annotation.XSingleton;
 /**
  * Bean 包装（可以被继承重写）
  * */
+@SuppressWarnings("unchecked")
 public class BeanWrap {
     protected Class<?> _clz;
     protected Object _raw;

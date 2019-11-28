@@ -51,6 +51,7 @@ import java.util.*;
  *          添加XParam，支持XAction模型参数
  * 20190111:添加Aop扩展机制
  * */
+@SuppressWarnings("unchecked")
 public class XApp implements XHandler {
     private static XApp _global;
 

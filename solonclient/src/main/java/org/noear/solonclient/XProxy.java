@@ -12,6 +12,7 @@ import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("unchecked")
 public class XProxy {
     static {
         ParserConfig.getGlobalInstance().setAutoTypeSupport(true);

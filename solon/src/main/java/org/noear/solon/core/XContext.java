@@ -14,6 +14,7 @@ import java.util.Map;
 /**
  * 通用上下文接口
  * */
+@SuppressWarnings("unchecked")
 public abstract class XContext {
     /**获取当前线程的上下文*/
     @XNote("获取当前线程的上下文")

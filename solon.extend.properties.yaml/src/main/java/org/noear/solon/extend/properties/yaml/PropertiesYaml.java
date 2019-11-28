@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Properties;
 
 public class PropertiesYaml extends Properties {
-    public synchronized void loadYml(InputStream inputStream) throws IOException {
+    public synchronized void loadYml(InputStream inputStream) {
         Yaml yaml = new Yaml();
 
         Object tmp = yaml.load(inputStream);
