@@ -14,7 +14,6 @@ import java.util.Properties;
 /**
  * Aop 处理工厂（可以被继承重写）
  * */
-@SuppressWarnings("unchecked")
 public class AopFactory extends AopFactoryBase{
 
     public AopFactory(){
