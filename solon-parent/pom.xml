@@ -186,6 +186,20 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-api</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-mvc</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>snack3</artifactId>
                 <version>${snack3.ver}</version>
             </dependency>

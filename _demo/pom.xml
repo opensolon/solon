@@ -12,11 +12,7 @@
     <name>${artifactId}</name>
     <description>java project for solon demo</description>
 
-    <parent>
-        <groupId>org.noear</groupId>
-        <artifactId>solon-parent</artifactId>
-        <version>1.0.3.7</version>
-    </parent>
+
 
     <modules>
         <module>_demo.solon_db_mybatis_fastjson</module>

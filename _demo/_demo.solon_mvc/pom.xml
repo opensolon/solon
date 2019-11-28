@@ -18,6 +18,8 @@
         <version>1.0.3.27</version>
     </parent>
 
+
+
     <dependencies>
         <!--
         solon-api 和 solon-mvc 的区别是：前者没有模板和SessionState
@@ -27,7 +29,7 @@
             <artifactId>solon-api</artifactId>
         </dependency>
 
-        <!-- 添加另一个模板插件 -->
+        <!-- 添加一个模板插件 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.view.beetl</artifactId>
