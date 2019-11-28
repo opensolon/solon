@@ -128,7 +128,9 @@ public class SmartHttpContext extends XContext {
 
     @Override
     public String param(String key) {
-        return paramMap().get(key);//param(key,null);//默认不能为null
+        //要充许为字符串
+        //默认不能为null
+        return paramMap().get(key);
     }
 
     @Override

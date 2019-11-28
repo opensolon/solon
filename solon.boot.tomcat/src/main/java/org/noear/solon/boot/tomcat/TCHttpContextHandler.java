@@ -3,7 +3,6 @@ package org.noear.solon.boot.tomcat;
 
 
 import org.noear.solon.XApp;
-import org.noear.solon.boot.tomcat.context.TCHttpContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

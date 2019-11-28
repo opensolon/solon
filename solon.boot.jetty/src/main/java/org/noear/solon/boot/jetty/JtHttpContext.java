@@ -142,7 +142,9 @@ public class JtHttpContext extends XContext{
 
     @Override
     public String param(String key) {
-        return param(key,null);
+        //要充许为字符串
+        //默认不能为null
+        return paramMap().get(key);
     }
 
     @Override

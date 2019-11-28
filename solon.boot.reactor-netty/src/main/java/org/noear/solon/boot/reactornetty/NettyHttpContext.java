@@ -117,6 +117,8 @@ public class NettyHttpContext extends XContext {
 
     @Override
     public String param(String key) {
+        //要充许为字符串
+        //默认不能为null
         return paramMap().get(key);
     }
 

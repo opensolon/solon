@@ -1,4 +1,4 @@
-package org.noear.solon.boot.tomcat.context;
+package org.noear.solon.boot.tomcat;
 
 import org.noear.solon.XUtil;
 import org.noear.solon.boot.tomcat.ext.MultipartUtil;
@@ -123,6 +123,8 @@ public class TCHttpContext extends XContext{
 
     @Override
     public String param(String key) {
+        //要充许为字符串
+        //默认不能为null
         return paramMap().get(key);
     }
 
