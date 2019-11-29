@@ -1,7 +1,5 @@
 package org.noear.solon.ext;
 
-import com.sun.istack.internal.Nullable;
-
 import java.io.Serializable;
 import java.util.*;
 
@@ -16,7 +14,7 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
         this((Locale) null);
     }
 
-    public LinkedCaseInsensitiveMap(@Nullable Locale locale) {
+    public LinkedCaseInsensitiveMap(Locale locale) {
         this(16, locale);
     }
 
@@ -26,7 +24,7 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
     }
 
 
-    public LinkedCaseInsensitiveMap(int initialCapacity, @Nullable Locale locale) {
+    public LinkedCaseInsensitiveMap(int initialCapacity,Locale locale) {
         this.targetMap = new LinkedHashMap<String, V>(initialCapacity) {
             @Override
             public boolean containsKey(Object key) {
@@ -79,7 +77,6 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
     }
 
     @Override
-    @Nullable
     public V get(Object key) {
         if (key instanceof String) {
             String caseInsensitiveKey = this.caseInsensitiveKeys.get(convertKey((String) key));
@@ -102,7 +99,7 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
     }
 
     @Override
-    public V put(String key, @Nullable V value) {
+    public V put(String key, V value) {
         String oldKey = this.caseInsensitiveKeys.put(convertKey(key), key);
         if (oldKey != null && !oldKey.equals(key)) {
             this.targetMap.remove(oldKey);
@@ -119,7 +116,6 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
     }
 
     @Override
-    @Nullable
     public V remove(Object key) {
         if (key instanceof String) {
             String caseInsensitiveKey = this.caseInsensitiveKeys.remove(convertKey((String) key));
