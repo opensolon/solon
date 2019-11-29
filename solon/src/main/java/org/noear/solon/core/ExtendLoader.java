@@ -19,12 +19,12 @@ public class ExtendLoader {
     public static void load(String path) {
         if (XUtil.isEmpty(path) == false) {
             if (path.indexOf("/") < 0) {
-                path = XUtil.buildExt(path);
+                path = XUtil.buildExt(path, false);
             }
 
-            PrintUtil.blueln("solon.extend: " + path);
-
             if (path != null) {
+                PrintUtil.blueln("solon.extend: " + path);
+
                 File file = new File(path);
                 _g.do_load(file);
             }

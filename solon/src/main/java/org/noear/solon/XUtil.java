@@ -175,7 +175,7 @@ public class XUtil {
         return _map;
     }
 
-    public static String buildExt(String ext_dir) {
+    public static String buildExt(String ext_dir, boolean autoCreate) {
         URL temp = XUtil.getResource("application.properties");
         if(temp == null){
             temp = XUtil.getResource("application.yml");
@@ -196,8 +196,13 @@ public class XUtil {
 
             uri = uri + ext_dir+ "/";
             File dir = new File(uri);
+
             if (dir.exists() == false) {
-                dir.mkdir();
+                if(autoCreate) {
+                    dir.mkdir();
+                }else{
+                    return null;
+                }
             }
 
             return uri;
