@@ -1,4 +1,8 @@
 
+
+#### 1.0.3.32::
+* 1.添加定时任务支持
+
 ##### 1.0.3.24::
 * 1.XPlugin 添加 defautl stop()接口
 * 2.将插件stop 从Closeable 接口 改为 stop()
