@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.3.31</version>
+    <version>1.0.3.32</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -18,7 +18,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.0.3.31</solon.ver>
+        <solon.ver>1.0.3.32</solon.ver>
 
         <snack3.ver>3.1.5.4</snack3.ver>
         <fastjson.ver>1.2.29</fastjson.ver>
@@ -104,6 +104,11 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.stop</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.extend.schedule</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
@@ -356,6 +361,7 @@
 
         <module>../solon.extend.properties.yaml</module>
         <module>../solon.extend.stop</module>
+        <module>../solon.extend.schedule</module>
         <!--        <module>../solon.extend.aopx</module>-->
 
 

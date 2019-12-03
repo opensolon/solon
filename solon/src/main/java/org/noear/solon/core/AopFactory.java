@@ -30,6 +30,8 @@ public class AopFactory extends AopFactoryBase{
             } else {
                 if(XUtil.isEmpty(anno.value()) == false) {
                     Aop.put(anno.value(), bw);
+                }else{
+                    Aop.put(bw._clz.getName(),bw);
                 }
 
                 if (anno.remoting()) {
