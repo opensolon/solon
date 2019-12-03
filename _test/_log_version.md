@@ -2,6 +2,7 @@
 
 #### 1.0.3.32::
 * 1.添加定时任务支持
+* 2.Xbean注册时，默认用className做为name
 
 ##### 1.0.3.24::
 * 1.XPlugin 添加 defautl stop()接口
