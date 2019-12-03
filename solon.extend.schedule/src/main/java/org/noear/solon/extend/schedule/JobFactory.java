@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JobFactory {
-    private static Map<String, IJob> _jobMap = new HashMap<>();
+    private static Map<String, JobEntity> _jobMap = new HashMap<>();
 
     private static IJobRunner _runner;
 
-    public static void register(IJob job) {
+    public static void register(JobEntity job) {
         if (_jobMap.containsKey(job.getName())) {
             return;
         }
@@ -33,7 +33,7 @@ public class JobFactory {
         if (_runner != null) {
             //运行一次已存在的任务
             //
-            for (IJob task : _jobMap.values()) {
+            for (JobEntity task : _jobMap.values()) {
                 _runner.run(task);
             }
         }
