@@ -129,11 +129,13 @@
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.jetty.jsp</artifactId>
                 <version>${solon.ver}</version>
+                <type>pom</type>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.undertow.jsp</artifactId>
                 <version>${solon.ver}</version>
+                <type>pom</type>
             </dependency>
 
 
@@ -197,14 +199,15 @@
                 <groupId>org.noear</groupId>
                 <artifactId>solon-api</artifactId>
                 <version>${solon.ver}</version>
+                <type>pom</type>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-mvc</artifactId>
                 <version>${solon.ver}</version>
+                <type>pom</type>
             </dependency>
-
 
 
             <dependency>
