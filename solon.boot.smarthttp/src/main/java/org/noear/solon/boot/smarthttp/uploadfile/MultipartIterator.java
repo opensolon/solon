@@ -10,9 +10,6 @@ import java.util.NoSuchElementException;
 
 public class MultipartIterator implements Iterator<MultipartIterator.Part> {
 
-    /**
-     * The {@code Part} class encapsulates a single part of the multipart.
-     */
     public static class Part {
 
         public String name;
@@ -20,41 +17,14 @@ public class MultipartIterator implements Iterator<MultipartIterator.Part> {
         public Headers headers;
         public InputStream body;
 
-        /**
-         * Returns the part's name (form field name).
-         *
-         * @return the part's name
-         */
         public String getName() { return name; }
 
-        /**
-         * Returns the part's filename (original filename entered in file form field).
-         *
-         * @return the part's filename, or null if there is none
-         */
         public String getFilename() { return filename; }
 
-        /**
-         * Returns the part's headers.
-         *
-         * @return the part's headers
-         */
         public Headers getHeaders() { return headers; }
 
-        /**
-         * Returns the part's body (form field value).
-         *
-         * @return the part's body
-         */
         public InputStream getBody() { return body; }
 
-        /***
-         * Returns the part's body as a string. If the part
-         * headers do not specify a charset, UTF-8 is used.
-         *
-         * @return the part's body as a string
-         * @throws IOException if an IO error occurs
-         */
         public String getString() throws IOException {
             String charset = headers.getParams("Content-Type").get("charset");
             return Utils.readToken(body, -1, charset == null ? "UTF-8" : charset, 8192);
@@ -64,14 +34,7 @@ public class MultipartIterator implements Iterator<MultipartIterator.Part> {
     protected final MultipartInputStream in;
     protected boolean next;
 
-    /**
-     * Creates a new MultipartIterator from the given request.
-     *
-     * @param req the multipart/form-data request
-     * @throws IOException if an IO error occurs
-     * @throws IllegalArgumentException if the given request's content type
-     *         is not multipart/form-data, or is missing the boundary
-     */
+
     public MultipartIterator(HttpRequest req) throws IOException {
         Map<String, String> ct = Utils.getHeaderParams(req.getHeader("Content-Type"));
         if (!ct.containsKey("multipart/form-data"))
@@ -111,6 +74,4 @@ public class MultipartIterator implements Iterator<MultipartIterator.Part> {
     public void remove() {
         throw new UnsupportedOperationException();
     }
-
-
 }

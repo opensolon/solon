@@ -15,15 +15,6 @@ public class MultipartInputStream extends FilterInputStream {
     protected int len; // length of found boundary
     protected int state; // initial, started data, start boundary, EOS, last boundary, epilogue
 
-    /**
-     * Constructs a MultipartInputStream with the given underlying stream.
-     *
-     * @param in the underlying multipart stream
-     * @param boundary the multipart boundary
-     * @throws NullPointerException if the given stream or boundary is null
-     * @throws IllegalArgumentException if the given boundary's size is not
-     *         between 1 and 70
-     */
     protected MultipartInputStream(InputStream in, byte[] boundary) {
         super(in);
         int len = boundary.length;
@@ -71,14 +62,6 @@ public class MultipartInputStream extends FilterInputStream {
         return false;
     }
 
-    /**
-     * Advances the stream position to the beginning of the next part.
-     * Data read before calling this method for the first time is the preamble,
-     * and data read after this method returns false is the epilogue.
-     *
-     * @return true if successful, or false if there are no more parts
-     * @throws IOException if an error occurs
-     */
     public boolean nextPart() throws IOException {
         while (skip(buf.length) != 0); // skip current part (until boundary)
         head = tail += len; // the next part starts right after boundary
@@ -91,13 +74,6 @@ public class MultipartInputStream extends FilterInputStream {
         return true;
     }
 
-    /**
-     * Fills the buffer with more data from the underlying stream.
-     *
-     * @return true if there is available data for the current part,
-     *         or false if the current part's end has been reached
-     * @throws IOException if an error occurs or the input format is invalid
-     */
     protected boolean fill() throws IOException {
         // check if we already have more available data
         if (head != tail) // remember that if we continue, head == tail below
@@ -133,12 +109,6 @@ public class MultipartInputStream extends FilterInputStream {
         return tail > head; // available data in current part
     }
 
-    /**
-     * Finds the first (potential) boundary within the buffer's remaining data.
-     * Updates tail, length and state fields accordingly.
-     *
-     * @throws IOException if an error occurs or the input format is invalid
-     */
     protected void findBoundary() throws IOException {
         // see RFC2046#5.1.1 for boundary syntax
         len = 0;
