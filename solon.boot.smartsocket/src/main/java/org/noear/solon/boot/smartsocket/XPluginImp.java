@@ -9,7 +9,7 @@ public final class XPluginImp implements XPlugin {
     private AioQuickServer<String> server;
 
     @Override
-    public  void start(XApp app) {
+    public void start(XApp app) {
         int _port = 10000 + app.port();
 
         SsContextHandler contextHandler = new SsContextHandler(app);
@@ -28,4 +28,11 @@ public final class XPluginImp implements XPlugin {
         }
     }
 
+    @Override
+    public void stop() throws Throwable {
+        if (server != null) {
+            server.shutdown();
+            server = null;
+        }
+    }
 }
