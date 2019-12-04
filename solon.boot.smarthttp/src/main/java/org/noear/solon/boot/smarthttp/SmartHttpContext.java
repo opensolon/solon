@@ -28,6 +28,7 @@ public class SmartHttpContext extends XContext {
         if (isMultipart()) {
             try {
                 _fileMap = new HashMap<>();
+                MultipartUtil.buildParamsAndFiles(this);
             }catch (Throwable ex){
                 ex.printStackTrace();
             }

@@ -27,6 +27,7 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-api</artifactId>
+            <type>pom</type>
         </dependency>
 
         <!-- 添加一个模板插件 -->

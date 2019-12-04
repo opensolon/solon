@@ -1,7 +1,9 @@
-package org.noear.solon.boot.jlhttp;
+package org.noear.solon.boot.smarthttp;
 
 
+import org.noear.solon.boot.smarthttp.uploadfile.MultipartIterator;
 import org.noear.solon.core.XFile;
+import org.smartboot.http.HttpRequest;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,13 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 class MultipartUtil {
-    public static void buildParamsAndFiles(JlHttpContext context) throws IOException{
-        HTTPServer.Request request = (HTTPServer.Request)context.request();
-
-        HTTPServer.MultipartIterator parts = new HTTPServer.MultipartIterator(request);
+    public static void buildParamsAndFiles(SmartHttpContext context) throws IOException{
+        MultipartIterator parts = new MultipartIterator((HttpRequest) context.request());
 
         while (parts.hasNext()){
-            HTTPServer.MultipartIterator.Part part = parts.next();
+            MultipartIterator.Part part = parts.next();
             if(isFile(part) == false){
                 context.paramSet(part.name, part.getString());
             }else{
@@ -26,7 +26,7 @@ class MultipartUtil {
         }
     }
 
-    private static void doBuildFiles(JlHttpContext context, HTTPServer.MultipartIterator.Part part) throws IOException{
+    private static void doBuildFiles(SmartHttpContext context, MultipartIterator.Part part) throws IOException{
         List<XFile> list = context._fileMap.get(part.getName());
         if(list == null){
             list = new ArrayList<>();
@@ -46,11 +46,11 @@ class MultipartUtil {
         }
     }
 
-    private static boolean isField(HTTPServer.MultipartIterator.Part filePart){
+    private static boolean isField(MultipartIterator.Part filePart){
         return filePart.getFilename() == null;
     }
 
-    private static boolean isFile(HTTPServer.MultipartIterator.Part filePart){
+    private static boolean isFile(MultipartIterator.Part filePart){
         return !isField(filePart);
     }
 
