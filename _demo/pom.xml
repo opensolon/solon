@@ -20,6 +20,7 @@
         <module>_demo.solon_db_weed_snack</module>
         <module>_demo.solon_helloworld</module>
         <module>_demo.solon_mvc</module>
+        <module>_demo.solon_mvc_jsp</module>
     </modules>
 
 </project>
