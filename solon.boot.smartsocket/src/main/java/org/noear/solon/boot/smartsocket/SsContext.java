@@ -12,11 +12,11 @@ public class SsContext extends XContextEmpty {
 
     private Charset _charset = Charset.forName("UTF-8");
     private InetSocketAddress _inetSocketAddress;
-    private AioSession<byte[]> _session;
-    private ByteArrayInputStream _inputStream;
-    public SsContext(AioSession<byte[]> session, ByteArrayInputStream inputStream){
+    private AioSession<String> _session;
+    private String _message;
+    public SsContext(AioSession<String> session, String message){
         _session = session;
-        _inputStream = inputStream;
+        _message = message;
         try {
             _inetSocketAddress = session.getRemoteAddress();
         }catch (Exception ex){
@@ -87,21 +87,12 @@ public class SsContext extends XContextEmpty {
 
     @Override
     public String body() throws IOException {
-        InputStream inpStream = _inputStream;
-
-        StringBuilder content = new StringBuilder();
-        byte[] b = new byte[1024];
-        int lens = -1;
-        while ((lens = inpStream.read(b)) > 0) {
-            content.append(new String(b, 0, lens));
-        }
-
-        return content.toString();
+        return _message;
     }
 
     @Override
     public InputStream bodyAsStream() throws IOException {
-        return _inputStream;
+        return null;
     }
 
     //==============
@@ -121,17 +112,16 @@ public class SsContext extends XContextEmpty {
         headerSet("Content-Type",contentType );
     }
 
-    ByteArrayOutputStream _outputStream = new ByteArrayOutputStream();
 
     @Override
     public OutputStream outputStream() {
-        return _outputStream;
+        return _session.writeBuffer();
     }
 
     @Override
     public void output(String str)  {
         try {
-            _outputStream.write(str.getBytes(_charset));
+            outputStream().write(str.getBytes(_charset));
         }catch (Exception ex){
             throw new RuntimeException(ex);
         }
@@ -143,7 +133,7 @@ public class SsContext extends XContextEmpty {
             byte[] buff = new byte[100];
             int rc = 0;
             while ((rc = stream.read(buff, 0, 100)) > 0) {
-                _outputStream.write(buff, 0, rc);
+                outputStream().write(buff, 0, rc);
             }
 
         }catch (Throwable ex){
@@ -154,13 +144,7 @@ public class SsContext extends XContextEmpty {
 
     @Override
     protected void commit() throws IOException {
-//        if (_socket.isOpen()) {
-//            if (_messageIsString) {
-//                _socket.send(new String(_outputStream.toByteArray()));
-//            } else {
-//                _socket.send(_outputStream.toByteArray());
-//            }
-//        }
+
     }
 
     @Override
