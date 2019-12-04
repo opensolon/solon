@@ -22,47 +22,11 @@
     <modules>
         <module>solon-parent</module>
 
-        <module>solon</module>
-        <module>solon.boot.jetty</module>
-        <module>solon.boot.jlhttp</module>
-        <module>solon.boot.nettyhttp</module>
         <module>solon.boot.reactor-netty</module>
         <module>solon.boot.rapidoid-http-fast</module>
-        <module>solon.boot.smarthttp</module>
-        <module>solon.boot.websocket</module>
-        <module>solon.boot.undertow</module>
         <module>solon.boot.tomcat</module>
 
-        <module>solon.serialization.fastjson</module>
-        <module>solon.serialization.snack3</module>
-        <module>solon.serialization.jackson</module>
-
-        <module>solon.view.freemarker</module>
-        <module>solon.view.jsp</module>
-        <module>solon.view.velocity</module>
-        <module>solon.view.thymeleaf</module>
-
-        <module>solon.view.enjoy</module>
-        <module>solon.view.beetl</module>
-
-        <module>solon.extend.staticfiles</module>
-
-        <module>solon.extend.sessionstate.redis</module>
-        <module>solon.extend.sessionstate.local</module>
-
-        <module>solon.extend.properties.yaml</module>
-        <module>solon.extend.stop</module>
         <module>solon.extend.aopx</module>
-        <module>solon.extend.schedule</module>
-
-
-        <module>solon.extend.jetty.jsp</module>
-        <module>solon.extend.undertow.jsp</module>
-
-        <module>solonclient</module>
-
-        <module>solon-mvc</module>
-        <module>solon-api</module>
 
         <module>_demo</module>
         <module>_test</module>

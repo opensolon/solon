@@ -16,7 +16,7 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.boot.jlhttp</artifactId>
-            <version>1.0.3.32</version>
+            <version>1.0.3.33</version>
         </dependency>
     </dependencies>
 
