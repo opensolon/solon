@@ -364,24 +364,7 @@ public class XApp implements XHandler {
         return this;
     }
 
-    private boolean _enableWeb = true;
-    public boolean enableWeb(){return _enableWeb;}
-    public XApp enableWebSet(boolean enable){
-        _enableWeb = enable;
-        return this;
-    }
-
-    private boolean _enableWebSocket = true;
-    public boolean enableWebSocket(){return _enableWebSocket;}
-    public XApp enableWebSocketSet(boolean enable){
-        _enableWebSocket = enable;
-        return this;
-    }
-
-    private boolean _enableSocket = true;
-    public boolean enableSocket(){return _enableSocket;}
-    public XApp enableSocketSet(boolean enable){
-        _enableSocket = enable;
-        return this;
-    }
+    public boolean enableWeb = true;
+    public boolean enableWebSocket = true;
+    public boolean enableSocket = true;
 }

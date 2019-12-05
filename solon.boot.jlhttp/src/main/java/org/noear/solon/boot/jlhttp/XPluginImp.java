@@ -19,7 +19,7 @@ public final class XPluginImp implements XPlugin {
 
     @Override
     public  void start(XApp app) {
-        if(app.enableWeb() == false){
+        if(app.enableWeb == false){
             return;
         }
 
