@@ -5,10 +5,14 @@ public class JobEntity {
     private IJob job;
 
     public JobEntity(String name, IJob job) {
-        this.name = name;
         this.job = job;
+        this.name = job.getName();
 
-        if (name == null) {
+        if (this.name == null) {
+            this.name = name;
+        }
+
+        if (this.name == null) {
             this.name = job.getClass().getSimpleName();
         }
     }
