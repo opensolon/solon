@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public final class XPluginImp implements XPlugin {
-    private HTTPServer _server = new HTTPServer();
+    private HTTPServer _server = null;
 
     public static String solon_boot_ver(){
         return "jlhttp 2.4/1.0.3.27";
@@ -19,7 +19,13 @@ public final class XPluginImp implements XPlugin {
 
     @Override
     public  void start(XApp app) {
+        if(app.enableWeb() == false){
+            return;
+        }
+
         XServerProp.init();
+
+        _server = new HTTPServer();
 
         long time_start = System.currentTimeMillis();
 

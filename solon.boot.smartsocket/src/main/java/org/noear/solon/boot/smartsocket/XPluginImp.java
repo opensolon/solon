@@ -6,10 +6,14 @@ import org.smartboot.socket.transport.AioQuickServer;
 
 public final class XPluginImp implements XPlugin {
 
-    private AioQuickServer<byte[]> server;
+    private AioQuickServer<byte[]> server = null;
 
     @Override
     public void start(XApp app) {
+        if(app.enableSocket() == false){
+            return;
+        }
+
         int _port = 10000 + app.port();
 
         SsContextHandler contextHandler = new SsContextHandler(app);

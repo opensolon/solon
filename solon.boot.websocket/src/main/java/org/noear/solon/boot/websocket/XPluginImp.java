@@ -15,6 +15,11 @@ public class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
+        if(app.enableWebSocket() == false){
+            return;
+        }
+
+
         int _port = 10000 + app.port();
         long time_start = System.currentTimeMillis();
 

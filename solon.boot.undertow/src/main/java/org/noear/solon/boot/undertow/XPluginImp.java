@@ -17,6 +17,11 @@ public final class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
+        if(app.enableWeb() == false){
+            return;
+        }
+
+
         XServerProp.init();
 
         long start_before = System.currentTimeMillis();

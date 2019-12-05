@@ -10,7 +10,7 @@ import java.io.Closeable;
 import java.io.IOException;
 
 public class XPluginImp implements XPlugin {
-    DisposableServer _server;
+    DisposableServer _server = null;
 
     public static String solon_boot_ver() {
         return "reactor-netty 0.9.1/1.0.3-b1";
@@ -18,6 +18,10 @@ public class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
+        if(app.enableWeb() == false){
+            return;
+        }
+
         XServerProp.init();
 
         long time_start = System.currentTimeMillis();

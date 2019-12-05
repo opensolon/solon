@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public final class XPluginImp implements XPlugin {
 
-    HttpBootstrap _server;
+    HttpBootstrap _server = null;
 
     public static String solon_boot_ver(){
         return "smart http 1.0.11/1.0.3.27";
@@ -17,6 +17,10 @@ public final class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
+        if(app.enableWeb() == false){
+            return;
+        }
+
         XServerProp.init();
 
         long time_start = System.currentTimeMillis();
