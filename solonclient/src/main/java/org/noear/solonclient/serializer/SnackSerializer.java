@@ -19,8 +19,7 @@ public class SnackSerializer implements ISerializer {
             if (str == null) {
                 return (T) str;
             }
-            returnVal = ONode.deserialize(str, (new TypeRef<T>() {
-            }).getClass());
+            returnVal = ONode.deserialize(str, clz);
 
         } catch (Exception ex) {
             System.out.println(str);

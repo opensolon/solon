@@ -4,6 +4,10 @@ import org.noear.solon.annotation.XBean;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.XContext;
 import webapp.demo5_rpc.rockapi;
+import webapp.models.UserModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @XMapping("/demo5/test")
 @XBean(remoting = true)
@@ -21,11 +25,32 @@ public class rockservice implements rockapi {
         throw new RuntimeException("xxxx");
     }
 
-    public Object test4(){
-        return XContext.current().path();
+    public UserModel test4() {
+        UserModel m = new UserModel();
+        m.id = 1;
+        m.name = "user 1";
+        m.sex = 1;
+        return m;
     }
 
-    public Object test5(){
-        return XContext.current().uri();
+    public List<UserModel> test5(){
+        List<UserModel> list =new ArrayList<>();
+
+        UserModel m = new UserModel();
+        m.id = 1;
+        m.name = "user 1";
+        m.sex = 1;
+
+        list.add(m);
+
+        m = new UserModel();
+        m.id = 2;
+        m.name = "user 2";
+        m.sex = 0;
+
+        list.add(m);
+
+
+        return list;
     }
 }

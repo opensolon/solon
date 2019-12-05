@@ -12,37 +12,41 @@ import java.util.Map;
 
 public class XProxy {
 
-    private  String _url;
+    private String _url;
     private String _result;
     private ISerializer _serializer = FastjsonSerializer.instance;
 
-    /** 设置请求地址 */
-    public XProxy url(String url){
+    /**
+     * 设置请求地址
+     */
+    public XProxy url(String url) {
         _url = url;
         return this;
     }
 
-    /** 设置请求地址 */
-    public XProxy url(String url, String fun){
+    /**
+     * 设置请求地址
+     */
+    public XProxy url(String url, String fun) {
         if (url.indexOf("{fun}") > 0) {
             _url = url.replace("{fun}", fun);
         } else {
-            if(fun == null){
+            if (fun == null) {
                 _url = url;
-            }else {
+            } else {
                 StringBuilder sb = new StringBuilder(200);
 
                 sb.append(url);
-                if(url.endsWith("/")){
-                    if(fun.startsWith("/")){
+                if (url.endsWith("/")) {
+                    if (fun.startsWith("/")) {
                         sb.append(fun.substring(1));
-                    }else{
+                    } else {
                         sb.append(fun);
                     }
-                }else{
-                    if(fun.startsWith("/")){
+                } else {
+                    if (fun.startsWith("/")) {
                         sb.append(fun);
-                    }else{
+                    } else {
                         sb.append("/").append(fun);
                     }
                 }
@@ -53,23 +57,29 @@ public class XProxy {
         return this;
     }
 
-    /** 执行完成呼叫 */
-    public XProxy call(Map<String,String> headers, Map<String, String> args) {
+    /**
+     * 执行完成呼叫
+     */
+    public XProxy call(Map<String, String> headers, Map<String, String> args) {
         try {
             _result = HttpUtils.http(_url).data(args).headers(headers).post();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
         return this;
     }
 
-    /** 获取结果（以string形式） */
-    public String getString(){
+    /**
+     * 获取结果（以string形式）
+     */
+    public String getString() {
         return _result;
     }
 
-    /** 获取结果（返序列化为object） */
-    public   <T> T getObject(Class<T> returnType) {
+    /**
+     * 获取结果（返序列化为object）
+     */
+    public <T> T getObject(Class<T> returnType) {
         return _serializer.deserialize(_result, returnType);
     }
 
@@ -82,29 +92,36 @@ public class XProxy {
     private String _sev;
     private Map<String, String> _headers = new HashMap<>();
 
-    /** 设置全局头信息 */
-    public XProxy headerAdd(String name, String value){
-        _headers.put(name,value);
+    /**
+     * 设置全局头信息
+     */
+    public XProxy headerAdd(String name, String value) {
+        _headers.put(name, value);
         return this;
     }
 
-    /** 设置服务端 */
-    public XProxy sev(String sev){
+    /**
+     * 设置服务端
+     */
+    public XProxy sev(String sev) {
         _sev = sev;
         return this;
     }
 
 
-
-    /** 创建接口调用代理客户端 */
-    public  <T> T create(Class<?> clz ) {
+    /**
+     * 创建接口调用代理客户端
+     */
+    public <T> T create(Class<?> clz) {
         return (T) Proxy.newProxyInstance(
                 clz.getClassLoader(),
                 new Class[]{clz},
                 (proxy, method, args) -> proxy_call(proxy, method, args));
     }
 
-    /** 执行调用代理 */
+    /**
+     * 执行调用代理
+     */
     private Object proxy_call(Object proxy, Method method, Object[] vals) throws Throwable {
         //调用准备
         String fun = method.getName();
@@ -140,6 +157,9 @@ public class XProxy {
                 args.put(names[i].getName(), vals[i].toString());
             }
         }
+
+        args.put("__t", String.valueOf(System.currentTimeMillis()));
+
 
         //构建headers
         Map<String, String> headers = new HashMap<>();
@@ -190,12 +210,12 @@ public class XProxy {
                 .getObject(method.getReturnType());
     }
 
-    public XProxy upstream(HttpUpstream upstream){
+    public XProxy upstream(HttpUpstream upstream) {
         _upstream = upstream;
         return this;
     }
 
-    public XProxy serializer(ISerializer serializer){
+    public XProxy serializer(ISerializer serializer) {
         _serializer = serializer;
         return this;
     }
