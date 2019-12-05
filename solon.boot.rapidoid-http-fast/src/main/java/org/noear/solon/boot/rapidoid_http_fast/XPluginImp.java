@@ -3,9 +3,6 @@ package org.noear.solon.boot.rapidoid_http_fast;
 import org.noear.solon.XApp;
 import org.noear.solon.core.XPlugin;
 
-import java.io.Closeable;
-import java.io.IOException;
-
 public final class XPluginImp implements XPlugin {
 
 
@@ -15,7 +12,7 @@ public final class XPluginImp implements XPlugin {
 
     @Override
     public  void start(XApp app) {
-        if(app.enableWeb == false){
+        if(app.enableHttp == false){
             return;
         }
     }

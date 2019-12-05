@@ -3,9 +3,6 @@ package org.noear.solon.boot.nettyhttp;
 import org.noear.solon.XApp;
 import org.noear.solon.core.XPlugin;
 
-import java.io.Closeable;
-import java.io.IOException;
-
 public class XPluginImp implements XPlugin {
     HttpServer _server;
 
@@ -15,7 +12,7 @@ public class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
-        if(app.enableWeb == false){
+        if(app.enableHttp == false){
             return;
         }
 

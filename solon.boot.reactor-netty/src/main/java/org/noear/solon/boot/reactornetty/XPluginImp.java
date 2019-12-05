@@ -6,9 +6,6 @@ import reactor.netty.DisposableServer;
 import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.server.HttpServer;
 
-import java.io.Closeable;
-import java.io.IOException;
-
 public class XPluginImp implements XPlugin {
     DisposableServer _server = null;
 
@@ -18,7 +15,7 @@ public class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
-        if(app.enableWeb == false){
+        if(app.enableHttp == false){
             return;
         }
 

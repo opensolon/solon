@@ -4,8 +4,6 @@ import org.noear.solon.XApp;
 import org.noear.solon.core.XMethod;
 import org.noear.solon.core.XPlugin;
 
-import java.io.Closeable;
-import java.io.IOException;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -19,7 +17,7 @@ public final class XPluginImp implements XPlugin {
 
     @Override
     public  void start(XApp app) {
-        if(app.enableWeb == false){
+        if(app.enableHttp == false){
             return;
         }
 

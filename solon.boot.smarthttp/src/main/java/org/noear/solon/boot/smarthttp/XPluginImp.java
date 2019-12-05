@@ -4,9 +4,6 @@ import org.noear.solon.XApp;
 import org.noear.solon.core.XPlugin;
 import org.smartboot.http.HttpBootstrap;
 
-import java.io.Closeable;
-import java.io.IOException;
-
 public final class XPluginImp implements XPlugin {
 
     HttpBootstrap _server = null;
@@ -17,7 +14,7 @@ public final class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
-        if(app.enableWeb == false){
+        if(app.enableHttp == false){
             return;
         }
 

@@ -364,7 +364,7 @@ public class XApp implements XHandler {
         return this;
     }
 
-    public boolean enableWeb = true;
+    public boolean enableHttp = true;
     public boolean enableWebSocket = true;
     public boolean enableSocket = true;
 }
