@@ -9,12 +9,18 @@ import java.util.Date;
 public class JobRunner implements IJobRunner {
     public static IJobRunner global = new JobRunner();
 
-    public void run(JobEntity task) {
-        System.out.print("run::" + task.getName() + "\r\n");
+    public boolean allow(JobEntity task){
+        return true;
+    }
 
-        new Thread(() -> {
-            doRun(task);
-        }).start();
+    public void run(JobEntity task) {
+        if (allow(task)) {
+            System.out.print("run::" + task.getName() + "\r\n");
+
+            new Thread(() -> {
+                doRun(task);
+            }).start();
+        }
     }
 
     protected void doRun(JobEntity task){
