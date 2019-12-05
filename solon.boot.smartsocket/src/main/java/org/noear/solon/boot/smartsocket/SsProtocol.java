@@ -5,22 +5,26 @@ import org.smartboot.socket.transport.AioSession;
 
 import java.nio.ByteBuffer;
 
-public class SsProtocol implements Protocol<String> {
+
+public class SsProtocol implements Protocol<byte[]> {
+
+    private static final int INTEGER_BYTES = Integer.SIZE / Byte.SIZE;
+
     @Override
-    public String decode(ByteBuffer readBuffer, AioSession<String> session) {
-        int remaining = readBuffer.remaining();
-        if (remaining < Integer.BYTES) {
+    public byte[] decode(ByteBuffer data, AioSession<byte[]> session) {
+        int remaining = data.remaining();
+        if (remaining < INTEGER_BYTES) {
             return null;
         }
-        readBuffer.mark();
-        int length = readBuffer.getInt();
-        if (length > readBuffer.remaining()) {
-            readBuffer.reset();
+        int messageSize = data.getInt(data.position());
+        if (messageSize > remaining) {
             return null;
         }
-        byte[] b = new byte[length];
-        readBuffer.get(b);
-        readBuffer.mark();
-        return new String(b);
+        byte[] data2 = new byte[messageSize - INTEGER_BYTES];
+        data.getInt();
+        data.get(data2);
+
+        return data2;
     }
 }
+

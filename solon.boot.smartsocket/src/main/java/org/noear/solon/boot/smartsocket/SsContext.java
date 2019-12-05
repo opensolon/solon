@@ -12,11 +12,13 @@ public class SsContext extends XContextEmpty {
 
     private Charset _charset = Charset.forName("UTF-8");
     private InetSocketAddress _inetSocketAddress;
-    private AioSession<String> _session;
-    private String _message;
-    public SsContext(AioSession<String> session, String message){
+    private AioSession<byte[]> _session;
+    private InputStream _inputStream;
+
+    public SsContext(AioSession<byte[]> session, InputStream inputStream){
         _session = session;
-        _message = message;
+        _inputStream = inputStream;
+
         try {
             _inetSocketAddress = session.getRemoteAddress();
         }catch (Exception ex){
@@ -87,12 +89,21 @@ public class SsContext extends XContextEmpty {
 
     @Override
     public String body() throws IOException {
-        return _message;
+        InputStream inpStream = _inputStream;
+
+        StringBuilder content = new StringBuilder();
+        byte[] b = new byte[1024];
+        int lens = -1;
+        while ((lens = inpStream.read(b)) > 0) {
+            content.append(new String(b, 0, lens));
+        }
+
+        return content.toString();
     }
 
     @Override
     public InputStream bodyAsStream() throws IOException {
-        return null;
+        return _inputStream;
     }
 
     //==============

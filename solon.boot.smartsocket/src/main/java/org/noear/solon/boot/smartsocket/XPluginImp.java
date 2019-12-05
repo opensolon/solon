@@ -6,7 +6,7 @@ import org.smartboot.socket.transport.AioQuickServer;
 
 public final class XPluginImp implements XPlugin {
 
-    private AioQuickServer<String> server;
+    private AioQuickServer<byte[]> server;
 
     @Override
     public void start(XApp app) {
