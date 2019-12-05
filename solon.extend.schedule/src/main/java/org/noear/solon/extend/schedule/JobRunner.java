@@ -7,13 +7,9 @@ import java.util.Date;
  * 任务运行工具
  * */
 public class JobRunner implements IJobRunner {
-    public static final JobRunner g = new JobRunner();
+    public static IJobRunner global = new JobRunner();
 
-    private JobRunner(){
-
-    }
-
-    public  void run(JobEntity task) {
+    public void run(JobEntity task) {
         System.out.print("run::" + task.getName() + "\r\n");
 
         new Thread(() -> {
@@ -21,11 +17,9 @@ public class JobRunner implements IJobRunner {
         }).start();
     }
 
-    private  void doRun(JobEntity task){
+    protected void doRun(JobEntity task){
         while (true) {
             try {
-
-
                 Date time_start = new Date();
                 System.out.print(task.getName() + "::time_start::" + time_start.toString() + "\r\n");
 

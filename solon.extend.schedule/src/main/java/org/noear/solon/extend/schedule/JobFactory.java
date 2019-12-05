@@ -24,7 +24,7 @@ public class JobFactory {
     public static void run(IJobRunner runner) {
         //充许修改一次
         //
-        if(_runner != null){
+        if(_runner != null ){
             return;
         }
 

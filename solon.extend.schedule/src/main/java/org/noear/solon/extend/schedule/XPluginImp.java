@@ -14,7 +14,7 @@ public class XPluginImp implements XPlugin {
                 }
             });
 
-            JobFactory.run(JobRunner.g);
+            JobFactory.run(JobRunner.global);
         });
     }
 }
