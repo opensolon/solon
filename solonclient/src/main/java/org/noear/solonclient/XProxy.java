@@ -1,10 +1,8 @@
 package org.noear.solonclient;
 
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
-import com.alibaba.fastjson.parser.ParserConfig;
 import org.noear.solonclient.annotation.XAlias;
 import org.noear.solonclient.annotation.XClient;
+import org.noear.solonclient.serializer.FastjsonSerializer;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -12,14 +10,11 @@ import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings("unchecked")
 public class XProxy {
-    static {
-        ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
-    }
 
     private  String _url;
     private String _result;
+    private ISerializer _serializer = FastjsonSerializer.instance;
 
     /** 设置请求地址 */
     public XProxy url(String url){
@@ -75,23 +70,7 @@ public class XProxy {
 
     /** 获取结果（返序列化为object） */
     public   <T> T getObject(Class<T> returnType) {
-        Object returnVal = null;
-        try {
-            if (_result == null) {
-                return (T) _result;
-            }
-            returnVal = JSONObject.parseObject(_result, new TypeReference<T>() {});
-
-        }catch (Exception ex){
-            System.out.println(_result);
-            returnVal = ex;
-        }
-
-        if (returnVal != null && Throwable.class.isAssignableFrom(returnVal.getClass())) {
-            throw new RuntimeException((Throwable)returnVal);
-        } else {
-            return (T)returnVal;
-        }
+        return _serializer.deserialize(_result, returnType);
     }
 
     //////////////////////////////////
@@ -207,6 +186,7 @@ public class XProxy {
         return new XProxy()
                 .url(url, fun)
                 .call(headers, args)
+                .serializer(_serializer)
                 .getObject(method.getReturnType());
     }
 
@@ -215,6 +195,10 @@ public class XProxy {
         return this;
     }
 
+    public XProxy serializer(ISerializer serializer){
+        _serializer = serializer;
+        return this;
+    }
 
     private static boolean isEmpty(String str) {
         return str == null || str.length() == 0;
