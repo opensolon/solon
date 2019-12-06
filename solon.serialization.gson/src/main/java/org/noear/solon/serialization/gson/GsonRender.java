@@ -25,7 +25,7 @@ public class GsonRender implements XRender {
         if (is_serialize) {
             //序列化处理
             //
-            txt = serialize.toJson(obj);
+            txt = serialize.toJson(obj, obj.getClass());
         } else {
             //非序列化处理
             //
