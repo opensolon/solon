@@ -6,11 +6,11 @@ import org.noear.solon.core.XContext;
 import org.noear.solon.core.XRender;
 
 public class GsonRender implements XRender {
-    Gson mapper2 = new GsonBuilder()
+    Gson stringify = new GsonBuilder()
             .registerTypeAdapter(java.util.Date.class,new GsonDateStringify())
             .create();//json输出
 
-    Gson mapper1 = new GsonBuilder()
+    Gson serialize = new GsonBuilder()
             .registerTypeAdapter(java.util.Date.class,new GsonDateSerialize())
             .create();//序列化输出
 
@@ -25,7 +25,7 @@ public class GsonRender implements XRender {
         if (is_serialize) {
             //序列化处理
             //
-            txt = mapper1.toJson(obj);
+            txt = serialize.toJson(obj);
         } else {
             //非序列化处理
             //
@@ -42,7 +42,7 @@ public class GsonRender implements XRender {
                 return;
             }
 
-            txt = mapper2.toJson(obj);
+            txt = stringify.toJson(obj);
         }
 
         if(XPluginImp.output_meta) {
