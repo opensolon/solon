@@ -5,6 +5,8 @@ import org.noear.solon.core.XContext;
 import org.noear.solon.core.XRender;
 
 public class JacksonRender implements XRender {
+    ObjectMapper mapper = new ObjectMapper();
+
     @Override
     public void render(Object obj, XContext ctx) throws Throwable {
         boolean is_serialize = "serialize".equals(ctx.attr("solon.reader.mode", null));
@@ -14,7 +16,6 @@ public class JacksonRender implements XRender {
         if (is_serialize) {
             //序列化处理
             //
-            ObjectMapper mapper = new ObjectMapper();
             txt = mapper.writeValueAsString(obj);
         } else {
             //非序列化处理
@@ -32,7 +33,6 @@ public class JacksonRender implements XRender {
                 return;
             }
 
-            ObjectMapper mapper = new ObjectMapper();
             txt = mapper.writeValueAsString(obj);
         }
 
