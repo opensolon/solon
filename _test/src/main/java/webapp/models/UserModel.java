@@ -12,7 +12,7 @@ public class UserModel {
     public transient String _type;
 
     @XParam("yyyy-MM-dd")
-    public Date date;
+    public Date date = new Date();
 
     public long[] aaa;
 }

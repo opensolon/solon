@@ -2,9 +2,8 @@ package webapp;
 
 import org.noear.solon.XApp;
 import org.noear.solon.core.XPlugin;
-import webapp.demoe_websocket.WsDemoClientTest;
 
-public class App {
+public class TestApp {
     public static void main(String[] args) {
         /**
          *
@@ -19,7 +18,7 @@ public class App {
          * http://t1_jetty.test.noear.org
          *
          * */
-        XApp app = XApp.start(App.class, args);
+        XApp app = XApp.start(TestApp.class, args);
 
         app.get("/",c->c.redirect("/debug.htm"));
 

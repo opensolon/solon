@@ -1,12 +1,10 @@
 package webapp.demo8_config;
 
-import org.noear.solon.XApp;
 import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XInject;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XContext;
-import webapp.App;
 
 @XController
 public class TestController {

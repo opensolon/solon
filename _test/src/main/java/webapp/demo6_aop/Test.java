@@ -1,7 +1,7 @@
 package webapp.demo6_aop;
 
 import org.noear.solon.XApp;
-import webapp.App;
+import webapp.TestApp;
 
 public class Test {
     private static void demo(String[] args){
@@ -27,7 +27,7 @@ public class Test {
 //
 //        });
 
-        XApp app = XApp.start(App.class, args);
+        XApp app = XApp.start(TestApp.class, args);
 
         //手动添加一个路由监听demo
         app.get("/", (c) -> c.output("Hallo world!"));
