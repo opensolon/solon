@@ -146,12 +146,17 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.serialization.snack3</artifactId>
+                <artifactId>solon.serialization.gson</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.serialization.jackson</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.serialization.snack3</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
