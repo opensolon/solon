@@ -64,7 +64,7 @@ public class XProxy {
      */
     public XProxy call(Map<String, String> headers, Map<String, String> args) {
         try {
-            _result = _channel.call(this,headers,args);
+            _result = _channel.call(this, headers, args);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -213,7 +213,7 @@ public class XProxy {
 
     /**
      * 设置负载代理
-     * */
+     */
     public XProxy upstream(HttpUpstream upstream) {
         _upstream = upstream;
         return this;
@@ -221,7 +221,7 @@ public class XProxy {
 
     /**
      * 设置序列化器
-     * */
+     */
     public XProxy serializer(ISerializer serializer) {
         _serializer = serializer;
         return this;
@@ -229,7 +229,7 @@ public class XProxy {
 
     /**
      * 设置通信通道
-     * */
+     */
     public XProxy channel(IChannel channel) {
         _channel = channel;
         return this;
@@ -237,12 +237,11 @@ public class XProxy {
 
     /**
      * 设置编码类型
-     * */
+     */
     public XProxy enctype(Enctype enctype) {
         _enctype = enctype;
         return this;
     }
-
 
 
     private static boolean isEmpty(String str) {

@@ -77,7 +77,7 @@ public class HttpUtils {
     }
 
     //@XNote("设置数据提交")
-    public HttpUtils data(Map<String,String> data){
+    public HttpUtils data(Map<String,String> data) {
         if (data != null) {
             tryInitForm();
 
