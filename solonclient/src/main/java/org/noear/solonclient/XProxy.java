@@ -12,10 +12,11 @@ import java.util.Map;
 
 public class XProxy {
 
-    private String _url;
+    protected String _url;
     private String _result;
-    private ISerializer _serializer = FastjsonSerializer.instance;
-    private Enctype _enctype = Enctype.form_data;
+    protected ISerializer _serializer = FastjsonSerializer.instance;
+    protected IChannel _channel = ChannelHttp.instance;
+    protected Enctype _enctype = Enctype.form_data;
 
     /**
      * 设置请求地址
@@ -61,16 +62,9 @@ public class XProxy {
     /**
      * 执行完成呼叫
      */
-    public XProxy call(Map<String, String> headers, Map<String, Object> args) {
+    public XProxy call(Map<String, String> headers, Map<String, String> args) {
         try {
-            if(_enctype == Enctype.form_data) {
-                _result = HttpUtils.http(_url).data(args).headers(headers).post();
-            }else{
-                _result = HttpUtils
-                        .http(_url)
-                        .bodyTxt(_serializer.stringify(args),"application/json")
-                        .headers(headers).post();
-            }
+            _result = _channel.call(this,headers,args);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -158,16 +152,13 @@ public class XProxy {
         }
 
         //构建args
-        Map<String, Object> args = new HashMap<>();
+        Map<String, String> args = new HashMap<>();
         Parameter[] names = method.getParameters();
         for (int i = 0, len = names.length; i < len; i++) {
             if (vals[i] != null) {
-                args.put(names[i].getName(), vals[i]);
+                args.put(names[i].getName(), vals[i].toString());
             }
         }
-
-        args.put("__t", System.currentTimeMillis());
-
 
         //构建headers
         Map<String, String> headers = new HashMap<>();
@@ -214,6 +205,7 @@ public class XProxy {
         return new XProxy()
                 .url(url, fun)
                 .enctype(_enctype)
+                .channel(_channel)
                 .call(headers, args)
                 .serializer(_serializer)
                 .getObject(method.getReturnType());
@@ -232,6 +224,14 @@ public class XProxy {
      * */
     public XProxy serializer(ISerializer serializer) {
         _serializer = serializer;
+        return this;
+    }
+
+    /**
+     * 设置通信通道
+     * */
+    public XProxy channel(IChannel channel) {
+        _channel = channel;
         return this;
     }
 
