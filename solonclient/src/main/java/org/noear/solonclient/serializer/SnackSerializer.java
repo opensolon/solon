@@ -8,6 +8,11 @@ public class SnackSerializer implements ISerializer {
     public static final SnackSerializer instance = new SnackSerializer();
 
     @Override
+    public String stringify(Object obj) {
+        return ONode.stringify(obj);
+    }
+
+    @Override
     public String serialize(Object obj) {
         return ONode.serialize(obj);
     }

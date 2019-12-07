@@ -15,6 +15,7 @@ public class XProxy {
     private String _url;
     private String _result;
     private ISerializer _serializer = FastjsonSerializer.instance;
+    private Enctype _enctype = Enctype.form_data;
 
     /**
      * 设置请求地址
@@ -60,9 +61,16 @@ public class XProxy {
     /**
      * 执行完成呼叫
      */
-    public XProxy call(Map<String, String> headers, Map<String, String> args) {
+    public XProxy call(Map<String, String> headers, Map<String, Object> args) {
         try {
-            _result = HttpUtils.http(_url).data(args).headers(headers).post();
+            if(_enctype == Enctype.form_data) {
+                _result = HttpUtils.http(_url).data(args).headers(headers).post();
+            }else{
+                _result = HttpUtils
+                        .http(_url)
+                        .bodyTxt(_serializer.stringify(args),"application/json")
+                        .headers(headers).post();
+            }
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -150,15 +158,15 @@ public class XProxy {
         }
 
         //构建args
-        Map<String, String> args = new HashMap<>();
+        Map<String, Object> args = new HashMap<>();
         Parameter[] names = method.getParameters();
         for (int i = 0, len = names.length; i < len; i++) {
             if (vals[i] != null) {
-                args.put(names[i].getName(), vals[i].toString());
+                args.put(names[i].getName(), vals[i]);
             }
         }
 
-        args.put("__t", String.valueOf(System.currentTimeMillis()));
+        args.put("__t", System.currentTimeMillis());
 
 
         //构建headers
@@ -205,20 +213,37 @@ public class XProxy {
         //执行调用
         return new XProxy()
                 .url(url, fun)
+                .enctype(_enctype)
                 .call(headers, args)
                 .serializer(_serializer)
                 .getObject(method.getReturnType());
     }
 
+    /**
+     * 设置负载代理
+     * */
     public XProxy upstream(HttpUpstream upstream) {
         _upstream = upstream;
         return this;
     }
 
+    /**
+     * 设置序列化器
+     * */
     public XProxy serializer(ISerializer serializer) {
         _serializer = serializer;
         return this;
     }
+
+    /**
+     * 设置编码类型
+     * */
+    public XProxy enctype(Enctype enctype) {
+        _enctype = enctype;
+        return this;
+    }
+
+
 
     private static boolean isEmpty(String str) {
         return str == null || str.length() == 0;

@@ -14,6 +14,14 @@ public class FastjsonSerializer implements ISerializer {
 
     public static final FastjsonSerializer instance = new FastjsonSerializer();
 
+
+    @Override
+    public String stringify(Object obj) {
+        return JSON.toJSONString(obj,
+                SerializerFeature.BrowserCompatible,
+                SerializerFeature.DisableCircularReferenceDetect);
+    }
+
     @Override
     public String serialize(Object obj) {
         return JSON.toJSONString(obj,
