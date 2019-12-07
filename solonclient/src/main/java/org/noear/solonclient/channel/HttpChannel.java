@@ -1,7 +1,6 @@
 package org.noear.solonclient.channel;
 
 import org.noear.solonclient.Enctype;
-import org.noear.solonclient.HttpUtils;
 import org.noear.solonclient.IChannel;
 import org.noear.solonclient.XProxy;
 

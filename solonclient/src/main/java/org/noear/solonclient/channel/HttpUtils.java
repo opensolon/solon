@@ -1,4 +1,4 @@
-package org.noear.solonclient;
+package org.noear.solonclient.channel;
 
 import okhttp3.*;
 import okhttp3.internal.Util;
