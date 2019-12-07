@@ -2,6 +2,7 @@ package org.noear.solonclient;
 
 import org.noear.solonclient.annotation.XAlias;
 import org.noear.solonclient.annotation.XClient;
+import org.noear.solonclient.channel.HttpChannel;
 import org.noear.solonclient.serializer.FastjsonSerializer;
 
 import java.lang.reflect.Method;
@@ -12,11 +13,15 @@ import java.util.Map;
 
 public class XProxy {
 
-    protected String _url;
+    private String _url;
     private String _result;
-    protected ISerializer _serializer = FastjsonSerializer.instance;
-    protected IChannel _channel = ChannelHttp.instance;
-    protected Enctype _enctype = Enctype.form_data;
+    private ISerializer _serializer = FastjsonSerializer.instance;
+    private IChannel _channel = HttpChannel.instance;
+    private Enctype _enctype = Enctype.form_data;
+
+    public String url(){return _url;}
+    public ISerializer serializer(){return _serializer;}
+    public Enctype enctype(){return _enctype;}
 
     /**
      * 设置请求地址
