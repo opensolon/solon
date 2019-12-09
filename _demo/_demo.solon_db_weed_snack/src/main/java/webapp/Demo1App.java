@@ -4,12 +4,12 @@ import org.noear.solon.XApp;
 import org.noear.weed.cache.ICacheServiceEx;
 import org.noear.weed.cache.LocalCache;
 
-public class App {
+public class Demo1App {
     public static void main(String[] args){
 
         ICacheServiceEx cache = new LocalCache("test",60).nameSet("test");
 
-        XApp app = XApp.start(App.class,args);
+        XApp app = XApp.start(Demo1App.class,args);
 
         app.get("/",(c)->{
             c.render("nav.htm", null);

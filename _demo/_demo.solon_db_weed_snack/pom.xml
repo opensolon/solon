@@ -21,37 +21,20 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
+            <artifactId>solon-mvc</artifactId>
+            <type>pom</type>
         </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jlhttp</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>weed3</artifactId>
-            <version>3.2.2.5</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.view.freemarker</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.snack3</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.staticfiles</artifactId>
+            <version>3.2.3.5</version>
         </dependency>
 
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.41</version>
+            <version>8.0.18</version>
         </dependency>
 
         <dependency>
