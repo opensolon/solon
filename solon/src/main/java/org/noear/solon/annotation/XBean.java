@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 /**
  * 通用组件
  * */
-@Target({ElementType.TYPE})
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface XBean {

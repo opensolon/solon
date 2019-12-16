@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 public class XAction extends XHandlerAide implements XHandler {
     private BeanWrap _c_bw;//
     private boolean _c_remoting;
-    private Method _m;
+    private MethodWrap _m;
     private String _produces;
 
     private PathAnalyzer _pr;//路径分析器
@@ -24,7 +24,7 @@ public class XAction extends XHandlerAide implements XHandler {
     public XAction(BeanWrap beanWrap, boolean is_remoting, String produces, Method method, String path) {
         _c_bw = beanWrap;
         _c_remoting = is_remoting;
-        _m = method;
+        _m = MethodWrap.get(method);
 
         _produces = produces;
 

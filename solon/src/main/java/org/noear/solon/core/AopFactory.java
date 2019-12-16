@@ -7,6 +7,7 @@ import org.noear.solon.core.utils.TypeUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -25,27 +26,16 @@ public class AopFactory extends AopFactoryBase{
     protected void initialize(){
 
         beanLoaderAdd(XBean.class,(bw, anno)->{
-            if (XPlugin.class.isAssignableFrom(bw.clz())) { //如果是插件，则插入
-                XApp.global().plug(bw.raw());
-            } else {
-                if(XUtil.isEmpty(anno.value()) == false) {
-                    Aop.put(anno.value(), bw);
-                }else{
-                    Aop.put(bw._clz.getName(),bw);
-                }
+            loadXBean(bw,anno);
+        });
 
-                if (anno.remoting()) {
-                    BeanWebWrap bww = new BeanWebWrap(bw);
-                    bww.remotingSet(true);
-                    bww.load(XApp.global());
-                }
+        beanLoaderAdd(XConfiguration.class,(bw, anno)->{
+            for(MethodWrap mWrap : ClassWrap.get(bw.clz()).getMethodWraps()) {
+                XBean m_an = mWrap.method.getAnnotation(XBean.class);
 
-                Class<?>[] list = bw.clz().getInterfaces();
-                for (Class<?> c : list) {
-                    if (c.getName().contains("java.") == false) {
-                        clzMapping.put(c, bw.clz());
-                        beanNotice(c, bw);//通知子类订阅
-                    }
+                if (m_an == null && mWrap.getParameters().length == 0) {
+                    Object raw = mWrap.method.invoke(bw.raw());
+                    loadXBean(new BeanWrap().build(raw.getClass(), raw), m_an);
                 }
             }
         });
@@ -59,6 +49,32 @@ public class AopFactory extends AopFactoryBase{
             bww.endpointSet(anno.after() ? XEndpoint.after : XEndpoint.before);
             bww.load(XApp.global());
         });
+    }
+
+    protected void loadXBean(BeanWrap bw, XBean anno){
+        if (XPlugin.class.isAssignableFrom(bw.clz())) { //如果是插件，则插入
+            XApp.global().plug(bw.raw());
+        } else {
+            if(XUtil.isEmpty(anno.value()) == false) {
+                Aop.put(anno.value(), bw);
+            }else{
+                Aop.put(bw.clz().getName(),bw);
+            }
+
+            if (anno.remoting()) {
+                BeanWebWrap bww = new BeanWebWrap(bw);
+                bww.remotingSet(true);
+                bww.load(XApp.global());
+            }
+
+            Class<?>[] list = bw.clz().getInterfaces();
+            for (Class<?> c : list) {
+                if (c.getName().contains("java.") == false) {
+                    clzMapping.put(c, bw.clz());
+                    beanNotice(c, bw);//通知子类订阅
+                }
+            }
+        }
     }
 
     //::包装

@@ -14,28 +14,33 @@ import java.util.Map;
  * */
 class XActionUtil {
 
-    /** 将参数转为实体 */
-    protected static Object params2Entity(XContext ctx, Class<?> clz) throws Exception{
+    /**
+     * 将参数转为实体
+     */
+    protected static Object params2Entity(XContext ctx, Class<?> clz) throws Exception {
         Field[] fields = clz.getDeclaredFields();
 
-        Map<String,String> map = ctx.paramMap();
+        Map<String, String> map = ctx.paramMap();
         Object obj = clz.newInstance();
 
         for (Field f : fields) {
             String key = f.getName();
             if (map.containsKey(key)) {
-                Object val = TypeUtil.changeOfCtx(f,f.getType(),key, map.get(key), ctx);
-                f.set(obj,val);
+                Object val = TypeUtil.changeOfCtx(f, f.getType(), key, map.get(key), ctx);
+                f.set(obj, val);
             }
         }
 
         return obj;
     }
 
-    /** 执行方法 */
-    protected static Object exeMethod(Object obj, Method method, XContext ctx) throws Exception{
+    /**
+     * 执行方法
+     */
+    protected static Object exeMethod(Object obj, MethodWrap mWrap, XContext ctx) throws Exception {
         try {
-            Parameter[] pSet = method.getParameters();
+            Parameter[] pSet = mWrap.getParameters();
+
             List<Object> args = new ArrayList<>();
 
             //p 参数
@@ -46,7 +51,7 @@ class XActionUtil {
                 if (XContext.class.equals(pt)) {
                     //如果是 XContext 类型
                     args.add(ctx);
-                }else {
+                } else {
                     String pn = p.getName();
                     String pv = ctx.param(pn);
 
@@ -54,15 +59,15 @@ class XActionUtil {
                         //
                         // 没有从ctx.param 直接找到值
                         //
-                        if(XFile.class == pt){
+                        if (XFile.class == pt) {
                             //1.如果是 XFile 类型
                             XFile file = ctx.file(pn);
                             args.add(file);
-                        }else {
-                            if(pt.getName().startsWith("java.")){
+                        } else {
+                            if (pt.getName().startsWith("java.")) {
                                 //如果是基本类型，则为null
                                 args.add(null);
-                            }else{
+                            } else {
                                 //尝试转为模型
                                 args.add(params2Entity(ctx, pt));
                             }
@@ -74,17 +79,17 @@ class XActionUtil {
                 }
             }
 
-            if(args.size()==0){
-                return method.invoke(obj);
-            }else {
-                return method.invoke(obj, args.toArray());
+            if (args.size() == 0) {
+                return mWrap.method.invoke(obj);
+            } else {
+                return mWrap.method.invoke(obj, args.toArray());
             }
-        }catch (InvocationTargetException ex) {
+        } catch (InvocationTargetException ex) {
             Throwable ex2 = ex.getCause();
-            if(ex2 instanceof Error){
-                throw  new RuntimeException(ex2);
-            }else{
-                throw (Exception)ex2;
+            if (ex2 instanceof Error) {
+                throw new RuntimeException(ex2);
+            } else {
+                throw (Exception) ex2;
             }
         }
     }
