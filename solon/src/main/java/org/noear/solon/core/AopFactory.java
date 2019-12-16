@@ -72,6 +72,7 @@ public class AopFactory extends AopFactoryBase{
             Class<?>[] list = bw.clz().getInterfaces();
             for (Class<?> c : list) {
                 if (c.getName().contains("java.") == false) {
+                    //建立关系映射
                     clzMapping.put(c, bw.clz());
                     beanNotice(c, bw);//通知子类订阅
                 }
