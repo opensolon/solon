@@ -61,7 +61,7 @@ public class XApp implements XHandler {
         return _global;
     }
 
-    public static XProperties config(){
+    public static XProperties cfg(){
         return global().prop();
     }
 
