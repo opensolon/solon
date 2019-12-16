@@ -1,8 +1,8 @@
 package webapp.demo8_config;
 
+import org.noear.solon.XApp;
 import org.noear.solon.annotation.XBean;
 import org.noear.solon.annotation.XInject;
-import org.noear.solon.core.Aop;
 
 import java.util.Properties;
 
@@ -20,16 +20,16 @@ public class ConfigDemo {
 
     //获取方式（复杂的请用这种方式）
     //
-    public String nameuser_2 = Aop.prop().get("username");
+    public String nameuser_2 = XApp.cfg().get("username");
 
-    public Properties dbcfg = Aop.prop().getProp("demo8.test");
+    public Properties dbcfg = XApp.cfg().getProp("demo8.test");
 
     public Properties test2(){
-        return Aop.prop().getProp("demo8.test");
+        return XApp.cfg().getProp("demo8.test");
     }
 
     public ConfigDemo(){
-        Aop.prop().onChange((k,v)->{
+        XApp.cfg().onChange((k,v)->{
             if("username".equals(k)){
                 username = v;
             }

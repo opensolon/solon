@@ -1,11 +1,10 @@
 package webapp.demo6_aop.dao;
 
+import org.noear.solon.XApp;
 import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.annotation.XInject;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.XContext;
-import webapp.demo6_aop.dao.Rockapi;
 
 import java.util.Properties;
 
@@ -15,9 +14,9 @@ public class Rockservice0 {
     public Rockapi  rockapi1;
     @XInject("rs2")
     public Rockapi  rockapi2;
-    public String   test_aaa = Aop.prop().get("demo6.test.aaa");
-    public int      test_bbb = Aop.prop().getInt("demo6.test.bbb",0);
-    public Properties prop   = Aop.prop().getProp("mytbae.bcf");
+    public String   test_aaa = XApp.cfg().get("demo6.test.aaa");
+    public int      test_bbb = XApp.cfg().getInt("demo6.test.bbb",0);
+    public Properties prop   = XApp.cfg().getProp("mytbae.bcf");
 
     @XMapping("/demo6/test")
     public void test() throws Exception{

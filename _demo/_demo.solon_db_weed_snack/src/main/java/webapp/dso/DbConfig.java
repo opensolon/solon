@@ -1,7 +1,7 @@
 package webapp.dso;
 
 import com.zaxxer.hikari.HikariDataSource;
-import org.noear.solon.core.Aop;
+import org.noear.solon.XApp;
 import org.noear.solon.core.XMap;
 import org.noear.weed.DbContext;
 import org.noear.weed.cache.ICacheServiceEx;
@@ -18,7 +18,7 @@ public class DbConfig {
     //
     //直接配置 数据库上下文
     //
-    public final static DbContext db1 = new DbContext(Aop.prop().getProp("test.db1"))
+    public final static DbContext db1 = new DbContext(XApp.cfg().getProp("test.db1"))
             .objectFormatSet("`%`")
             .fieldFormatSet("`%`");
 
@@ -27,7 +27,7 @@ public class DbConfig {
     //使用连接池 配置 数据库上下文
     //
     private final static HikariDataSource dataSource(){
-        XMap map = Aop.prop().getXmap("test.db2");
+        XMap map = XApp.cfg().getXmap("test.db2");
 
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(map.get("url"));

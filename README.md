@@ -110,7 +110,7 @@ public class App{
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon.boot.jlhttp</artifactId>
-  <version>1.0.3.35</version>
+  <version>1.0.3.36</version>
 </dependency>
 ```
 ```java
@@ -128,7 +128,7 @@ public class App{
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-mvc</artifactId>
-    <version>1.0.3.35</version>
+    <version>1.0.3.36</version>
 </parent>
 ```
 ```
@@ -188,9 +188,9 @@ client.setName(1,'');
 ```
 * 获取应用配置
 ```java
-Aop.prop().get("app_key"); //=>String
-Aop.prop().getInt("app_id",0); //=>int
-Aop.prop().getProp("xxx.datasource"); //=>Properties
+XApp.cfg().get("app_key"); //=>String
+XApp.cfg().getInt("app_id",0); //=>int
+XApp.cfg().getProp("xxx.datasource"); //=>Properties
 ```
 
 ### 附2：更多示例可参考 _test 和 _demo

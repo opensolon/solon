@@ -44,7 +44,7 @@ public class ThymeleafRender implements XRender {
             _baseUri = baseUri;
         }
 
-        if (Aop.prop().argx().getInt("debug") == 0) {
+        if (XApp.cfg().argx().getInt("debug") == 0) {
             forRelease();
         }else {
             forDebug();

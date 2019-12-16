@@ -1,10 +1,8 @@
 package org.noear.solon.extend.sessionstate.redis;
 
 import org.noear.snack.ONode;
-import org.noear.snack.core.Constants;
-import org.noear.snack.core.Feature;
+import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XMap;
 import org.noear.solon.core.XSessionState;
@@ -19,7 +17,7 @@ public class SessionState implements XSessionState {
 
     private final RedisX redisX;
     public SessionState(){
-        XMap map = Aop.prop().getXmap("server.session.state.redis");
+        XMap map = XApp.cfg().getXmap("server.session.state.redis");
 
         if(map.size() < 4){
             throw new RuntimeException("Error configuration: solon.session.state.redis");

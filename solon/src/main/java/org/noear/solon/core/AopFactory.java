@@ -101,11 +101,11 @@ public class AopFactory extends AopFactoryBase{
                     //如果有name
                     if(Properties.class == f.getType()){
                         //如果是 Properties，只尝试从配置获取
-                        Properties val = Aop.prop().getProp(xi.value());
+                        Properties val = XApp.cfg().getProp(xi.value());
                         fieldSet(obj, f, val);
                     }else{
                         //如果是单值，先尝试获取配置
-                        String val = Aop.prop().get(xi.value());
+                        String val = XApp.cfg().get(xi.value());
 
                         if (XUtil.isEmpty(val) == false) {
                             Object val2 = TypeUtil.changeOfPop(f.getType(), val);

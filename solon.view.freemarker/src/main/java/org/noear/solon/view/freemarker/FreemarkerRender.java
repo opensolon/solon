@@ -38,7 +38,7 @@ public class FreemarkerRender implements XRender {
         }
 
 
-        if (Aop.prop().argx().getInt("debug") == 0) {
+        if (XApp.cfg().argx().getInt("debug") == 0) {
             forRelease();
         }else {
             forDebug();

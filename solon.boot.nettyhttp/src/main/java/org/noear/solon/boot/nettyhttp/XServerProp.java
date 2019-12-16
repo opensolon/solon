@@ -1,5 +1,6 @@
 package org.noear.solon.boot.nettyhttp;
 
+import org.noear.solon.XApp;
 import org.noear.solon.core.Aop;
 
 class XServerProp {
@@ -9,7 +10,7 @@ class XServerProp {
     public static boolean output_meta = false;
 
     public static void init() {
-        String tmp = Aop.prop().get("server.request.maxRequestSize", "").trim().toLowerCase();//k数
+        String tmp = XApp.cfg().get("server.request.maxRequestSize", "").trim().toLowerCase();//k数
         if (tmp.endsWith("mb")) {
             int val = Integer.parseInt(tmp.substring(0, tmp.length() - 2));
             request_maxRequestSize = val * 1204 * 1204;
@@ -20,8 +21,8 @@ class XServerProp {
             request_maxRequestSize = Integer.parseInt(tmp) * 1204;
         }
 
-        session_timeout = Aop.prop().getInt("server.session.timeout", 0);
-        session_state_domain = Aop.prop().get("server.session.state.domain");
-        output_meta = Aop.prop().getInt("solon.output.meta", 0) > 0;
+        session_timeout = XApp.cfg().getInt("server.session.timeout", 0);
+        session_state_domain = XApp.cfg().get("server.session.state.domain");
+        output_meta = XApp.cfg().getInt("solon.output.meta", 0) > 0;
     }
 }

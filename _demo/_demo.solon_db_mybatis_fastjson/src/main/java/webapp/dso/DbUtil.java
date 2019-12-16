@@ -24,7 +24,7 @@ public class DbUtil {
     //使用连接池 配置 数据库上下文
     //
     public final static HikariDataSource dataSource(){
-        XMap map = Aop.prop().getXmap("test.db");
+        XMap map = XApp.cfg().getXmap("test.db");
 
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(map.get("url"));
