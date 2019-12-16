@@ -1,4 +1,6 @@
-
+#### 1.0.3.37::
+* 1.添加XConfiguration（实现XBean动态构建能力）
+* 2.添加ClassWrap,MethodWrap优化反射相关性能
 
 #### 1.0.3.32::
 * 1.添加定时任务支持
