@@ -7,6 +7,8 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.apache.ibatis.transaction.TransactionFactory;
+import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.noear.solon.XApp;
 import org.noear.solon.core.XMap;
 
@@ -14,6 +16,18 @@ import java.io.IOException;
 import java.io.Reader;
 
 public class DbUtil {
+    public static SqlSession getSqlSession_cfg() throws IOException {
+        //通过配置文件获取数据库连接信息
+        Reader reader = Resources.getResourceAsReader("mybatis.xml");
+
+        //通过配置信息构建一个SqlSessionFactory
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+
+        //通过SqlSessionFactory打开一个数据库会话
+        SqlSession sqlsession = sqlSessionFactory.openSession();
+        return sqlsession;
+    }
+
 
     //
     //使用连接池 配置 数据库上下文
@@ -29,12 +43,18 @@ public class DbUtil {
         return dataSource;
     }
 
-    public static SqlSession getSqlSession() throws IOException {
-        //通过配置文件获取数据库连接信息
-        Reader reader = Resources.getResourceAsReader("mybatis.xml");
+    public static SqlSession getSqlSession_java() throws IOException {
+        TransactionFactory transactionFactory = new JdbcTransactionFactory();
+        Environment environment = new Environment("development", transactionFactory, dataSource());
+        Configuration configuration = new Configuration(environment);
 
-        //通过配置信息构建一个SqlSessionFactory
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        //添加 typeAliases
+        configuration.getTypeAliasRegistry().registerAliases("webapp.model");
+
+        //添加 mappers
+        configuration.addMappers("webapp.dso.db");
+
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
 
         //通过SqlSessionFactory打开一个数据库会话
         SqlSession sqlsession = sqlSessionFactory.openSession();
