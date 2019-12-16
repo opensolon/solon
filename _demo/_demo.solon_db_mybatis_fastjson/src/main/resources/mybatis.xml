@@ -28,8 +28,9 @@
     <mappers>
         <!-- 注册userMapper.xml文件，
         userMapper.xml位于me.gacl.mapping这个包下，所以resource写成me/gacl/mapping/userMapper.xml-->
-        <mapper resource="mybatis/AppxMapper.xml"/>
-        <!-- <mapper class="com.fpc.Mapping.questionMapperI"/> -->
+        <mapper resource="webapp/dso/db/AppxMapper.xml"/>
+<!--        <mapper class="webapp.dso.db.AppxMapper"/>-->
+<!--        <package name="webapp.dso.db"/>-->
     </mappers>
 
 </configuration>
