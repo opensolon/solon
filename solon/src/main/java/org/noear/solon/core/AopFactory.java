@@ -125,11 +125,11 @@ public class AopFactory extends AopFactoryBase{
                     });
                 } else {
                     //如果有name
-                    if(Properties.class == f.getType()){
+                    if (Properties.class == f.getType()) {
                         //如果是 Properties，只尝试从配置获取
                         Properties val = XApp.cfg().getProp(xi.value());
                         fieldSet(obj, f, val);
-                    }else{
+                    } else {
                         //如果是单值，先尝试获取配置
                         String val = XApp.cfg().get(xi.value());
 
