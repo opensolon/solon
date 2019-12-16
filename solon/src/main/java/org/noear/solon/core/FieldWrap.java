@@ -44,10 +44,12 @@ public class FieldWrap {
 
         try {
             Method getFun = tCls.getMethod(setMethodName);
-            if(getFun !=null) {
+            if (getFun != null) {
                 return getFun;
             }
-        }catch (Throwable ex){
+        } catch (NoSuchMethodException ex) {
+
+        } catch (Throwable ex) {
             ex.printStackTrace();
         }
 
@@ -61,11 +63,12 @@ public class FieldWrap {
 
         try {
             Method setFun = tCls.getMethod(setMethodName, new Class[]{field.getType()});
-            if(setFun !=null) {
+            if (setFun != null) {
                 return setFun;
             }
-        }
-        catch (Throwable ex){
+        } catch (NoSuchMethodException ex) {
+
+        } catch (Throwable ex) {
             ex.printStackTrace();
         }
         return null;
