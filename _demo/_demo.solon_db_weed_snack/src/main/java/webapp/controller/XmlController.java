@@ -12,8 +12,6 @@ import webapp.dso.SqlMapper;
 @XSingleton(true)
 @XController
 public class XmlController {
-
-    DbContext db1 = DbConfig.db1;
     DbContext db2 = DbConfig.db2;
 
 

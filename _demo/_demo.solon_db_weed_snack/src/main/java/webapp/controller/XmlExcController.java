@@ -16,8 +16,6 @@ import java.util.Map;
 @XSingleton(true)
 @XController
 public class XmlExcController {
-
-    DbContext db1 = DbConfig.db1;
     DbContext db2 = DbConfig.db2;
 
 

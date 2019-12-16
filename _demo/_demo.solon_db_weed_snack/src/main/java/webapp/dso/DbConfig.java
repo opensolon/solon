@@ -2,11 +2,14 @@ package webapp.dso;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.noear.solon.XApp;
+import org.noear.solon.annotation.XBean;
+import org.noear.solon.annotation.XConfiguration;
 import org.noear.solon.core.XMap;
 import org.noear.weed.DbContext;
 import org.noear.weed.cache.ICacheServiceEx;
 import org.noear.weed.cache.LocalCache;
 
+@XConfiguration
 public class DbConfig {
 
     //
@@ -18,9 +21,12 @@ public class DbConfig {
     //
     //直接配置 数据库上下文
     //
-    public final static DbContext db1 = new DbContext(XApp.cfg().getProp("test.db1"))
-            .objectFormatSet("`%`")
-            .fieldFormatSet("`%`");
+    @XBean("db1")
+    public DbContext db1(){
+        return new DbContext(XApp.cfg().getProp("test.db1"))
+                .objectFormatSet("`%`")
+                .fieldFormatSet("`%`");
+    }
 
 
     //

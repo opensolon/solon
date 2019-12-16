@@ -10,16 +10,20 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.noear.solon.XApp;
+import org.noear.solon.annotation.XBean;
+import org.noear.solon.annotation.XConfiguration;
 import org.noear.solon.core.XMap;
 
 import java.io.IOException;
 import java.io.Reader;
 
+@XConfiguration
 public class DbUtil {
     /**
      * 使用 xml 配置创建
      * */
-    public static SqlSession getSqlSession_cfg() throws IOException {
+    @XBean
+    public SqlSession getSqlSession_cfg() throws IOException {
         //通过配置文件获取数据库连接信息
         Reader reader = Resources.getResourceAsReader("mybatis.xml");
 
@@ -35,7 +39,8 @@ public class DbUtil {
     /**
      * 使用 java 配置创建
      * */
-    public static SqlSession getSqlSession_java() throws IOException {
+    @XBean("sqlSession2")
+    public SqlSession getSqlSession_java() throws IOException {
         TransactionFactory transactionFactory = new JdbcTransactionFactory();
         Environment environment = new Environment("development", transactionFactory, dataSource_java());
         Configuration configuration = new Configuration(environment);
@@ -53,7 +58,7 @@ public class DbUtil {
         return sqlsession;
     }
 
-    public final static HikariDataSource dataSource_java() {
+    public  HikariDataSource dataSource_java() {
         XMap map = XApp.cfg().getXmap("test.db");
 
         HikariDataSource dataSource = new HikariDataSource();

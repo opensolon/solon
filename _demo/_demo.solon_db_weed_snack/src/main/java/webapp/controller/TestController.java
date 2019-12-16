@@ -1,8 +1,6 @@
 package webapp.controller;
 
-import org.noear.solon.annotation.XController;
-import org.noear.solon.annotation.XMapping;
-import org.noear.solon.annotation.XSingleton;
+import org.noear.solon.annotation.*;
 import org.noear.weed.DbContext;
 import webapp.dso.DbConfig;
 
@@ -10,7 +8,8 @@ import webapp.dso.DbConfig;
 @XSingleton(true)
 @XController
 public class TestController {
-    DbContext db2 = DbConfig.db2;
+    @XInject("db1")
+    DbContext db2;
 
     @XMapping("demo1")
     public Object test(String sql) throws Exception {

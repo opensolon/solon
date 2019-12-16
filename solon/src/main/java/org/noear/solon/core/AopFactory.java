@@ -33,9 +33,12 @@ public class AopFactory extends AopFactoryBase{
             for(MethodWrap mWrap : ClassWrap.get(bw.clz()).getMethodWraps()) {
                 XBean m_an = mWrap.method.getAnnotation(XBean.class);
 
-                if (m_an == null && mWrap.getParameters().length == 0) {
+                if (m_an != null && mWrap.getParameters().length == 0) {
                     Object raw = mWrap.method.invoke(bw.raw());
-                    loadXBean(new BeanWrap().build(raw.getClass(), raw), m_an);
+
+                    Aop.put(mWrap.method.getReturnType(), raw);
+
+                    loadXBean(new BeanWrap().build(mWrap.method.getReturnType(), raw), m_an);
                 }
             }
         });
@@ -79,20 +82,27 @@ public class AopFactory extends AopFactoryBase{
 
     //::包装
     /** 获取一个clz的包装（唯一的） */
-    public BeanWrap wrap(Class<?> clz, Object raw){
-        if(clzMapping.containsKey(clz)){
+    public BeanWrap wrap(Class<?> clz, Object raw) {
+        BeanWrap bw = beanWraps.get(clz);
+
+        if (bw != null) {
+            return bw;
+        }
+
+        if (clzMapping.containsKey(clz)) {
             clz = clzMapping.get(clz);
         }
 
-        BeanWrap bw = beanWraps.get(clz);
-        if(bw == null){
-            if(clz.isInterface() && raw == null){ //如查是interfacle 不能入库；且无实例
+        bw = beanWraps.get(clz);
+
+        if (bw == null) {
+            if (clz.isInterface() && raw == null) { //如查是interfacle 不能入库；且无实例
                 return null;
             }
 
             synchronized (clz) {
                 bw = beanWraps.get(clz);
-                if(bw==null) {
+                if (bw == null) {
                     bw = new BeanWrap().build(clz, raw);
                     beanWraps.put(clz, bw);
                 }
