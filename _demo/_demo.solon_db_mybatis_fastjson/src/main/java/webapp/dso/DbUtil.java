@@ -1,19 +1,24 @@
 package webapp.dso;
 
 import com.zaxxer.hikari.HikariDataSource;
+import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.noear.solon.XApp;
 import org.noear.solon.core.XMap;
+
+import java.io.IOException;
+import java.io.Reader;
 
 public class DbUtil {
 
     //
     //使用连接池 配置 数据库上下文
     //
-    public final static HikariDataSource dataSource(){
+    public final static HikariDataSource dataSource() {
         XMap map = XApp.cfg().getXmap("test.db");
 
         HikariDataSource dataSource = new HikariDataSource();
@@ -24,37 +29,15 @@ public class DbUtil {
         return dataSource;
     }
 
-//    public SqlSessionFactory sqlSessionFactory() throws Exception {
-//        Configuration cfg = new Configuration();
-//        SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(cfg);
-//        return sessionFactory;
-//    }
+    public static SqlSession getSqlSession() throws IOException {
+        //通过配置文件获取数据库连接信息
+        Reader reader = Resources.getResourceAsReader("mybatis.xml");
 
+        //通过配置信息构建一个SqlSessionFactory
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
 
-    public final static SqlSessionFactory sqlSessionFactory() throws Exception{
-        //InputStream is = XUtil.getResource("mybatis.xml").openStream();
-        Configuration cfg = new Configuration();
-        cfg.addLoadedResource("mybatis.xml");
-        cfg.setEnvironment(new Environment("dev", null, dataSource()));
-
-        // 构建sqlSession的工厂
-        SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(cfg);
-        return sessionFactory;
+        //通过SqlSessionFactory打开一个数据库会话
+        SqlSession sqlsession = sqlSessionFactory.openSession();
+        return sqlsession;
     }
-
-//    public class SpringManagedTransactionFactory implements TransactionFactory {
-//        public SpringManagedTransactionFactory() {
-//        }
-//
-//        public Transaction newTransaction(DataSource dataSource, TransactionIsolationLevel level, boolean autoCommit) {
-//            return new SpringManagedTransaction(dataSource);
-//        }
-//
-//        public Transaction newTransaction(Connection conn) {
-//            throw new UnsupportedOperationException("New Spring transactions require a DataSource");
-//        }
-//
-//        public void setProperties(Properties props) {
-//        }
-//    }
 }

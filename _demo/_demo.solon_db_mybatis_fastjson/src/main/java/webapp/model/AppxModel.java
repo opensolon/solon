@@ -1,5 +1,6 @@
 package webapp.model;
 
+
 public class AppxModel {
     public int agroup_id;
     public String note;
