@@ -17,7 +17,7 @@ import java.io.Reader;
 
 public class DbUtil {
     /**
-     * 使用xml配置创建
+     * 使用 xml 配置创建
      * */
     public static SqlSession getSqlSession_cfg() throws IOException {
         //通过配置文件获取数据库连接信息
@@ -33,7 +33,7 @@ public class DbUtil {
 
 
     /**
-     * 使用java配置创建
+     * 使用 java 配置创建
      * */
     public static SqlSession getSqlSession_java() throws IOException {
         TransactionFactory transactionFactory = new JdbcTransactionFactory();
