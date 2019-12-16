@@ -30,10 +30,10 @@ public class AopFactory extends AopFactoryBase{
         });
 
         beanLoaderAdd(XConfiguration.class,(bw, anno)->{
-            for(MethodWrap mWrap : ClassWrap.get(bw.clz()).getMethodWraps()) {
+            for(MethodWrap mWrap : ClassWrap.get(bw.clz()).methodWraps) {
                 XBean m_an = mWrap.method.getAnnotation(XBean.class);
 
-                if (m_an != null && mWrap.getParameters().length == 0) {
+                if (m_an != null && mWrap.parameters.length == 0) {
                     Object raw = mWrap.method.invoke(bw.raw());
 
                     BeanWrap m_bw = Aop.put(mWrap.method.getReturnType(), raw);
@@ -114,7 +114,7 @@ public class AopFactory extends AopFactoryBase{
     //::注入
     /** 为一个对象注入（可以重写） */
     public void inject(Object obj) {
-        Field[] fs = ClassWrap.get(obj.getClass()).getFields();
+        Field[] fs = ClassWrap.get(obj.getClass()).fields;
         for (Field f : fs) {
             XInject xi = f.getAnnotation(XInject.class);
             if (xi != null) {

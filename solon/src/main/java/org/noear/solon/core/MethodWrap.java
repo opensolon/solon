@@ -18,14 +18,10 @@ public class MethodWrap {
     }
 
     public final Method method;
-    private final Parameter[] parameters;
+    public final Parameter[] parameters;
 
     protected MethodWrap(Method m){
         method = m;
         parameters = m.getParameters();
-    }
-
-    public Parameter[] getParameters() {
-        return parameters;
     }
 }

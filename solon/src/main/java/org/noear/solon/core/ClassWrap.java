@@ -19,9 +19,9 @@ public class ClassWrap {
         return cw;
     }
 
-    private final Class<?> clazz;
-    private final List<MethodWrap> methodWraps;
-    private final Field[] fields;
+    public final Class<?> clazz;
+    public final List<MethodWrap> methodWraps;
+    public final Field[] fields;
 
     protected ClassWrap(Class<?> clz ){
         clazz = clz;
@@ -32,13 +32,5 @@ public class ClassWrap {
         }
 
         fields = clz.getDeclaredFields();
-    }
-
-    public List<MethodWrap> getMethodWraps() {
-        return methodWraps;
-    }
-
-    public Field[] getFields() {
-        return fields;
     }
 }

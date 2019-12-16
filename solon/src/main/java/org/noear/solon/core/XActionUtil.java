@@ -39,7 +39,7 @@ class XActionUtil {
      */
     protected static Object exeMethod(Object obj, MethodWrap mWrap, XContext ctx) throws Exception {
         try {
-            Parameter[] pSet = mWrap.getParameters();
+            Parameter[] pSet = mWrap.parameters;
 
             List<Object> args = new ArrayList<>();
 
