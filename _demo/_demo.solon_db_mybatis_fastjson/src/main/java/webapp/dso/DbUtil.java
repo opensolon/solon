@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.io.Reader;
 
 public class DbUtil {
+    /**
+     * 使用xml配置创建
+     * */
     public static SqlSession getSqlSession_cfg() throws IOException {
         //通过配置文件获取数据库连接信息
         Reader reader = Resources.getResourceAsReader("mybatis.xml");
@@ -29,23 +32,12 @@ public class DbUtil {
     }
 
 
-    //
-    //使用连接池 配置 数据库上下文
-    //
-    public final static HikariDataSource dataSource() {
-        XMap map = XApp.cfg().getXmap("test.db");
-
-        HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl(map.get("url"));
-        dataSource.setUsername(map.get("username"));
-        dataSource.setPassword(map.get("password"));
-
-        return dataSource;
-    }
-
+    /**
+     * 使用java配置创建
+     * */
     public static SqlSession getSqlSession_java() throws IOException {
         TransactionFactory transactionFactory = new JdbcTransactionFactory();
-        Environment environment = new Environment("development", transactionFactory, dataSource());
+        Environment environment = new Environment("development", transactionFactory, dataSource_java());
         Configuration configuration = new Configuration(environment);
 
         //添加 typeAliases
@@ -59,5 +51,16 @@ public class DbUtil {
         //通过SqlSessionFactory打开一个数据库会话
         SqlSession sqlsession = sqlSessionFactory.openSession();
         return sqlsession;
+    }
+
+    public final static HikariDataSource dataSource_java() {
+        XMap map = XApp.cfg().getXmap("test.db");
+
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setJdbcUrl(map.get("url"));
+        dataSource.setUsername(map.get("username"));
+        dataSource.setPassword(map.get("password"));
+
+        return dataSource;
     }
 }
