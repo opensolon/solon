@@ -70,6 +70,8 @@ public class Aop {
     }
 
     //::获取配置
+    /** 请改用 XApp.config() */
+    @Deprecated
     public static XProperties prop(){
         return XApp.global().prop();
     }

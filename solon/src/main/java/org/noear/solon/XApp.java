@@ -61,6 +61,10 @@ public class XApp implements XHandler {
         return _global;
     }
 
+    public static XProperties config(){
+        return global().prop();
+    }
+
 
     /**
      * 启动应用（全局只启动一个），执行序列
