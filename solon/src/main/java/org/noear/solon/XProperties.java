@@ -63,9 +63,29 @@ public final class XProperties extends Properties{
         load(XUtil.getResource("application.properties"));
         load(XUtil.getResource("application.yml"));
 
-        //2.再加载System的配置
-        System.getProperties().forEach((k, v) -> {
+        Properties sys_prop = System.getProperties();
+
+        Map<String,Object> _tmp = new HashMap<>();
+
+        //2.同步到 System Properties，让别的框架可以从 System 获取
+        this.forEach((k,v)->{
             String key = k.toString();
+            if(key.indexOf(".") > 0){
+                if(sys_prop.containsKey(k)==false){
+                    sys_prop.put(k,v);
+                    _tmp.put(key,k);
+                }
+            }
+        });
+
+
+        //2.同步 System 的配置
+        sys_prop.forEach((k, v) -> {
+            String key = k.toString();
+
+            if(_tmp.containsKey(key)){
+                return;
+            }
 
             if ( key.startsWith("solon.") || key.indexOf("server.") >= 0) {
                 setProperty(key, String.valueOf(v));
