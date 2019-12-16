@@ -1,26 +1,16 @@
 package webapp.dso;
 
 import com.zaxxer.hikari.HikariDataSource;
-import org.apache.ibatis.builder.xml.XMLMapperBuilder;
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.apache.ibatis.session.TransactionIsolationLevel;
-import org.apache.ibatis.transaction.Transaction;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
-import org.noear.solon.XUtil;
-import org.noear.solon.core.Aop;
+import org.noear.solon.XApp;
 import org.noear.solon.core.XMap;
 
 import javax.sql.DataSource;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
-import java.sql.Connection;
-import java.util.Properties;
 
 public class DbUtil {
 
