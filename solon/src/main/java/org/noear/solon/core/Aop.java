@@ -39,7 +39,7 @@ public class Aop {
     }
 
     /** 添加bean（clz + obj） */
-    public static void put(Class<?> clz, Object obj){_f.wrap(clz, obj);}
+    public static BeanWrap put(Class<?> clz, Object obj){return _f.wrap(clz, obj);}
 
     //::获取bean
     /** 获取bean (key) */

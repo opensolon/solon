@@ -36,9 +36,8 @@ public class AopFactory extends AopFactoryBase{
                 if (m_an != null && mWrap.getParameters().length == 0) {
                     Object raw = mWrap.method.invoke(bw.raw());
 
-                    Aop.put(mWrap.method.getReturnType(), raw);
-
-                    loadXBean(new BeanWrap().build(mWrap.method.getReturnType(), raw), m_an);
+                    BeanWrap m_bw = Aop.put(mWrap.method.getReturnType(), raw);
+                    loadXBean(m_bw, m_an);
                 }
             }
         });
