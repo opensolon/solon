@@ -1,5 +1,6 @@
 package org.noear.solon.core;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class ClassWrap {
 
     private final Class<?> clazz;
     private final List<MethodWrap> methodWraps;
+    private final Field[] fields;
 
     protected ClassWrap(Class<?> clz ){
         clazz = clz;
@@ -28,9 +30,15 @@ public class ClassWrap {
         for(Method m : clz.getDeclaredMethods()){
             methodWraps.add(MethodWrap.get(m));
         }
+
+        fields = clz.getDeclaredFields();
     }
 
     public List<MethodWrap> getMethodWraps() {
         return methodWraps;
+    }
+
+    public Field[] getFields() {
+        return fields;
     }
 }

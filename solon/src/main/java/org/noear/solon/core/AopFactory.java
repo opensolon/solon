@@ -114,8 +114,8 @@ public class AopFactory extends AopFactoryBase{
     //::注入
     /** 为一个对象注入（可以重写） */
     public void inject(Object obj) {
-        Field[] fields = obj.getClass().getDeclaredFields();
-        for (Field f : fields) {
+        Field[] fs = ClassWrap.get(obj.getClass()).getFields();
+        for (Field f : fs) {
             XInject xi = f.getAnnotation(XInject.class);
             if (xi != null) {
                 if (XUtil.isEmpty(xi.value())) {
