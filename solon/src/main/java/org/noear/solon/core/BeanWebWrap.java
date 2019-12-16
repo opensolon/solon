@@ -57,11 +57,8 @@ public class BeanWebWrap{
     }
 
     private void do_loadAction(XApp app) {
-
-
         String c_path = "";
         String m_path;
-
 
         if (_cxm != null) {
             c_path = _cxm.value();
