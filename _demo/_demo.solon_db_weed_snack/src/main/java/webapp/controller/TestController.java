@@ -2,7 +2,11 @@ package webapp.controller;
 
 import org.noear.solon.annotation.*;
 import org.noear.weed.DbContext;
-import webapp.dso.DbConfig;
+import webapp.dso.service.ServiceTest;
+import webapp.dso.service.ServiceTest2;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @XMapping("/test")
 @XSingleton(true)
@@ -11,8 +15,24 @@ public class TestController {
     @XInject("db1")
     DbContext db2;
 
+    @XInject
+    ServiceTest serviceTest;
+
+    @XInject
+    ServiceTest2 serviceTest2;
+
+    @XMapping("demo0")
+    public Object test0(){
+        Map<String,Object> map = new HashMap<>();
+        map.put("serviceTest",serviceTest.test());
+        map.put("serviceTest2",serviceTest2.test());
+
+        return map;
+    }
+
     @XMapping("demo1")
     public Object test(String sql) throws Exception {
+
         //
         // mysql 8.0 才支持
         //
