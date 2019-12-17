@@ -61,10 +61,10 @@ public class Aop {
         return _f.wrap(clz,null).get();
     }
     /** 异步获取bean (clz) */
-    public static void getAsyn(Class<?> clz, Annotation[] annoS, Act1<BeanWrap> callback) {
+    public static void getAsyn(Class<?> clz, Annotation[] fAnnoS, Act1<BeanWrap> callback) {
         BeanWrap wrap = _f.wrap(clz, null);
         if (wrap == null) {
-            Object raw = factory().tryBuildBean(clz, annoS);
+            Object raw = factory().tryBuildBean(clz, fAnnoS);
 
             if(raw == null){
                 _f.beanSubscribe(clz, callback);
