@@ -22,7 +22,7 @@ public class AopFactoryBase {
     protected final Map<Class<?>,Class<?>> clzMapping = new ConcurrentHashMap<>();
     /** clz loaders */
     protected final Map<Class<?>,BeanLoader<?>> beanLoaders = new ConcurrentHashMap<>();
-    protected final Set<BeanBuilder> beanBuilders = new ConcurrentSkipListSet<>();
+    protected final Set<BeanBuilder> beanBuilders = new HashSet<>();
 
     //////////////////////////
     //

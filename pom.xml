@@ -26,8 +26,6 @@
         <module>solon.boot.rapidoid-http-fast</module>
         <module>solon.boot.tomcat</module>
 
-        <module>solon.extend.aopx</module>
-
         <module>_demo</module>
         <module>_test</module>
     </modules>
