@@ -2,6 +2,8 @@ package org.noear.solon.core;
 
 import org.noear.solon.annotation.XSingleton;
 
+import java.util.Objects;
+
 /**
  * Bean 包装（可以被继承重写）
  * */
@@ -45,6 +47,10 @@ public class BeanWrap {
 
     /** bean 新建对象 */
     protected Object _new(){
+        if(_clz.isInterface()){
+            return null;
+        }
+
         try{
             Object obj = _clz.newInstance();
             Aop.factory().inject(obj);

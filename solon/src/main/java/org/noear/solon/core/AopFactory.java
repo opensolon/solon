@@ -15,22 +15,25 @@ import java.util.Properties;
 /**
  * Aop 处理工厂（可以被继承重写）
  * */
-public class AopFactory extends AopFactoryBase{
+public class AopFactory extends AopFactoryBase {
 
-    public AopFactory(){
+    public AopFactory() {
         initialize();
     }
 
     //::初始化
-    /** 初始化（独立出 initialize，方便重写） */
-    protected void initialize(){
 
-        beanLoaderAdd(XBean.class,(bw, anno)->{
-            loadXBean(bw,anno);
+    /**
+     * 初始化（独立出 initialize，方便重写）
+     */
+    protected void initialize() {
+
+        beanLoaderAdd(XBean.class, (clz, bw, anno) -> {
+            loadXBean(bw, anno);
         });
 
-        beanLoaderAdd(XConfiguration.class,(bw, anno)->{
-            for(MethodWrap mWrap : ClassWrap.get(bw.clz()).methodWraps) {
+        beanLoaderAdd(XConfiguration.class, (clz, bw, anno) -> {
+            for (MethodWrap mWrap : ClassWrap.get(bw.clz()).methodWraps) {
                 XBean m_an = mWrap.method.getAnnotation(XBean.class);
 
                 if (m_an != null && mWrap.parameters.length == 0) {
@@ -42,25 +45,25 @@ public class AopFactory extends AopFactoryBase{
             }
         });
 
-        beanLoaderAdd(XController.class,(bw,anno)->{
+        beanLoaderAdd(XController.class, (clz, bw, anno) -> {
             new BeanWebWrap(bw).load(XApp.global());
         });
 
-        beanLoaderAdd(XInterceptor.class,(bw,anno)->{
+        beanLoaderAdd(XInterceptor.class, (clz, bw, anno) -> {
             BeanWebWrap bww = new BeanWebWrap(bw);
             bww.endpointSet(anno.after() ? XEndpoint.after : XEndpoint.before);
             bww.load(XApp.global());
         });
     }
 
-    protected void loadXBean(BeanWrap bw, XBean anno){
+    protected void loadXBean(BeanWrap bw, XBean anno) {
         if (XPlugin.class.isAssignableFrom(bw.clz())) { //如果是插件，则插入
             XApp.global().plug(bw.raw());
         } else {
-            if(XUtil.isEmpty(anno.value()) == false) {
+            if (XUtil.isEmpty(anno.value()) == false) {
                 Aop.put(anno.value(), bw);
-            }else{
-                Aop.put(bw.clz().getName(),bw);
+            } else {
+                Aop.put(bw.clz().getName(), bw);
             }
 
             if (anno.remoting()) {
@@ -81,7 +84,10 @@ public class AopFactory extends AopFactoryBase{
     }
 
     //::包装
-    /** 获取一个clz的包装（唯一的） */
+
+    /**
+     * 获取一个clz的包装（唯一的）
+     */
     public BeanWrap wrap(Class<?> clz, Object raw) {
         BeanWrap bw = beanWraps.get(clz);
 
@@ -97,10 +103,10 @@ public class AopFactory extends AopFactoryBase{
 
         if (bw == null) {
             if (clz.isInterface() && raw == null) { //如查是interfacle 不能入库；且无实例
-               raw = tryBuildBean(clz);
-               if(raw == null){
-                   return null;
-               }
+                raw = tryBuildBean(clz);
+                if (raw == null) {
+                    return null;
+                }
             }
 
             synchronized (clz) {
@@ -115,9 +121,12 @@ public class AopFactory extends AopFactoryBase{
     }
 
     //::注入
-    /** 为一个对象注入（可以重写） */
+
+    /**
+     * 为一个对象注入（可以重写）
+     */
     public void inject(Object obj) {
-        if(obj == null){
+        if (obj == null) {
             return;
         }
 
@@ -157,12 +166,12 @@ public class AopFactory extends AopFactoryBase{
 
     /**
      * 尝试外力构建Bean
-     * */
-    protected Object tryBuildBean(Class<?> clz){
+     */
+    protected Object tryBuildBean(Class<?> clz) {
         Object tmp = null;
-        for(BeanBuilder bb : beanBuilders) {
+        for (BeanBuilder bb : beanBuilders) {
             tmp = bb.build(clz);
-            if(tmp != null){
+            if (tmp != null) {
                 break;
             }
         }
@@ -170,8 +179,10 @@ public class AopFactory extends AopFactoryBase{
         return tmp;
     }
 
-    /** 设置字段值 */
-    protected static void fieldSet(Object obj, Field f, Object  val) {
+    /**
+     * 设置字段值
+     */
+    protected static void fieldSet(Object obj, Field f, Object val) {
         try {
             f.setAccessible(true);
             f.set(obj, val);
@@ -181,9 +192,12 @@ public class AopFactory extends AopFactoryBase{
     }
 
     //::库管理
-    /** 加入到bean库 */
-    public void put(String key, BeanWrap wrap){
-        if(XUtil.isEmpty(key)==false) {
+
+    /**
+     * 加入到bean库
+     */
+    public void put(String key, BeanWrap wrap) {
+        if (XUtil.isEmpty(key) == false) {
             if (beans.containsKey(key) == false) {
                 beans.put(key, wrap);
 
@@ -192,29 +206,36 @@ public class AopFactory extends AopFactoryBase{
         }
     }
 
-    /** 获取一个bean */
+    /**
+     * 获取一个bean
+     */
     public BeanWrap get(String key) {
         return beans.get(key);
     }
 
     //::加载相关
-    /** 添加 bean loader */
+
+    /**
+     * 添加 bean loader
+     */
     public <T extends Annotation> void beanLoaderAdd(Class<T> anno, BeanLoader<T> loader) {
-        beanLoaders.put(anno,loader);
+        beanLoaders.put(anno, loader);
     }
 
-    public void beanBuilderadd(BeanBuilder builder){
+    public void beanBuilderadd(BeanBuilder builder) {
         beanBuilders.add(builder);
     }
 
-    /** 加载 bean 及对应处理 */
+    /**
+     * 加载 bean 及对应处理
+     */
     public void beanLoad(Class<?> source) {
         //确定文件夹名
         String dir = source.getPackage().getName().replace('.', '/');
 
         //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
         List<Class<?>> tmpList = new ArrayList<>();
-        XScaner.scan(dir, n->n.endsWith(".class"))
+        XScaner.scan(dir, n -> n.endsWith(".class"))
                 .stream()
                 .map(name -> {
                     String className = name.substring(0, name.length() - 6);
@@ -223,17 +244,19 @@ public class AopFactory extends AopFactoryBase{
                 .forEach((clz) -> {
                     if (clz != null) {
                         Annotation[] annoSet = clz.getDeclaredAnnotations();
-                        if(annoSet.length>0) {
+                        if (annoSet.length > 0) {
                             tryLoadClasses(clz, annoSet);
                         }
                     }
                 });
 
         //尝试加载事件（不用函数包装，是为了减少代码）
-        loadedEvent.forEach(f->f.run());
+        loadedEvent.forEach(f -> f.run());
     }
 
-    /** 尝试加载一个类 */
+    /**
+     * 尝试加载一个类
+     */
     protected boolean tryLoadClasses(Class<?> clz, Annotation[] annoSet) {
         for (Annotation a : annoSet) {
             BeanLoader loader = beanLoaders.get(a.annotationType());
@@ -247,11 +270,13 @@ public class AopFactory extends AopFactoryBase{
         return false;
     }
 
-    /** 尝试加载一个注解 */
+    /**
+     * 尝试加载一个注解
+     */
     protected <T extends Annotation> void tryLoadAnno(Class<?> clz, T anno, BeanLoader<T> loader) {
         try {
             BeanWrap wrap = wrap(clz, null);
-            loader.handler(wrap, anno);
+            loader.handler(clz, wrap, anno);
 
             beanNotice(clz, wrap);
         } catch (Exception ex) {
