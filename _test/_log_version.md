@@ -1,3 +1,7 @@
+#### 1.0.3.38::
+* 1.优化AopFactory和BeanWrap
+* 2.添加BeanBuilder（协助注入时处理）
+
 #### 1.0.3.37::
 * 1.添加XConfiguration（实现XBean动态构建能力）
 * 2.添加ClassWrap,MethodWrap优化反射相关性能
