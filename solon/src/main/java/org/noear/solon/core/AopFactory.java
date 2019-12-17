@@ -103,10 +103,7 @@ public class AopFactory extends AopFactoryBase {
 
         if (bw == null) {
             if (clz.isInterface() && raw == null) { //如查是interfacle 不能入库；且无实例
-                raw = tryBuildBean(clz);
-                if (raw == null) {
-                    return null;
-                }
+               return null;
             }
 
             synchronized (clz) {
@@ -136,7 +133,7 @@ public class AopFactory extends AopFactoryBase {
             if (xi != null) {
                 if (XUtil.isEmpty(xi.value())) {
                     //如果没有name,使用类型进行获取 bean
-                    Aop.getAsyn(f.getType(), (bw) -> {
+                    Aop.getAsyn(f.getType(), f.getAnnotations(), (bw) -> {
                         fieldSet(obj, f, bw.get());
                     });
                 } else {
@@ -167,10 +164,10 @@ public class AopFactory extends AopFactoryBase {
     /**
      * 尝试外力构建Bean
      */
-    protected Object tryBuildBean(Class<?> clz) {
+    protected Object tryBuildBean(Class<?> clz, Annotation[] annoS) {
         Object tmp = null;
         for (BeanBuilder bb : beanBuilders) {
-            tmp = bb.build(clz);
+            tmp = bb.build(clz, annoS);
             if (tmp != null) {
                 break;
             }
