@@ -216,12 +216,6 @@
                 <type>pom</type>
             </dependency>
 
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon-mvc-beetl</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
-
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -393,7 +387,6 @@
 
 
         <module>../solon-mvc</module>
-        <module>../solon-mvc-beetl</module>
         <module>../solon-api</module>
     </modules>
 
