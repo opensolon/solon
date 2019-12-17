@@ -2,8 +2,6 @@ package org.noear.solon.core;
 
 import org.noear.solon.annotation.XSingleton;
 
-import java.util.Objects;
-
 /**
  * Bean 包装（可以被继承重写）
  * */
