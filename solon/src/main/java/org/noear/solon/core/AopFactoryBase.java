@@ -20,8 +20,11 @@ public class AopFactoryBase {
     protected final Map<String, BeanWrap> beans = new ConcurrentHashMap<>();
     /** clz mapping */
     protected final Map<Class<?>,Class<?>> clzMapping = new ConcurrentHashMap<>();
+
+    //启动时写入
     /** clz loaders */
-    protected final Map<Class<?>,BeanLoader<?>> beanLoaders = new ConcurrentHashMap<>();
+    protected final Map<Class<?>,BeanLoader<?>> beanLoaders = new HashMap<>();
+    /** clz builder */
     protected final Set<BeanBuilder> beanBuilders = new HashSet<>();
 
     //////////////////////////
