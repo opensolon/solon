@@ -164,10 +164,10 @@ public class AopFactory extends AopFactoryBase {
     /**
      * 尝试外力构建Bean
      */
-    protected Object tryBuildBean(Class<?> clz, Annotation[] annoS) {
+    protected Object tryBuildBean(Class<?> clz, Annotation[] fAnnoS) {
         Object tmp = null;
         for (BeanBuilder bb : beanBuilders) {
-            tmp = bb.build(clz, annoS);
+            tmp = bb.build(clz, fAnnoS);
             if (tmp != null) {
                 break;
             }
