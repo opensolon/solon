@@ -97,7 +97,10 @@ public class AopFactory extends AopFactoryBase{
 
         if (bw == null) {
             if (clz.isInterface() && raw == null) { //如查是interfacle 不能入库；且无实例
-                return null;
+               raw = tryBuildBean(clz);
+               if(raw == null){
+                   return null;
+               }
             }
 
             synchronized (clz) {
@@ -152,6 +155,21 @@ public class AopFactory extends AopFactoryBase{
         }
     }
 
+    /**
+     * 尝试外力构建Bean
+     * */
+    protected Object tryBuildBean(Class<?> clz){
+        Object tmp = null;
+        for(BeanBuilder bb : beanBuilders) {
+            tmp = bb.build(clz);
+            if(tmp != null){
+                break;
+            }
+        }
+
+        return tmp;
+    }
+
     /** 设置字段值 */
     protected static void fieldSet(Object obj, Field f, Object  val) {
         try {
@@ -183,6 +201,10 @@ public class AopFactory extends AopFactoryBase{
     /** 添加 bean loader */
     public <T extends Annotation> void beanLoaderAdd(Class<T> anno, BeanLoader<T> loader) {
         beanLoaders.put(anno,loader);
+    }
+
+    public void beanBuilderadd(BeanBuilder builder){
+        beanBuilders.add(builder);
     }
 
     /** 加载 bean 及对应处理 */

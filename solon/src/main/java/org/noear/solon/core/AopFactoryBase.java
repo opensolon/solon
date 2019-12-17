@@ -4,6 +4,7 @@ import org.noear.solon.ext.Act1;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 /** 为 AopFactory 提供存储 支持 */
 public class AopFactoryBase {
@@ -21,6 +22,7 @@ public class AopFactoryBase {
     protected final Map<Class<?>,Class<?>> clzMapping = new ConcurrentHashMap<>();
     /** clz loaders */
     protected final Map<Class<?>,BeanLoader<?>> beanLoaders = new ConcurrentHashMap<>();
+    protected final Set<BeanBuilder> beanBuilders = new ConcurrentSkipListSet<>();
 
     //////////////////////////
     //
