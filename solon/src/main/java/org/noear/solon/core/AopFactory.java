@@ -57,6 +57,8 @@ public class AopFactory extends AopFactoryBase {
     }
 
     protected void loadXBean(BeanWrap bw, XBean anno) {
+        bw._remoting = anno.remoting();
+
         if (XPlugin.class.isAssignableFrom(bw.clz())) { //如果是插件，则插入
             XApp.global().plug(bw.raw());
         } else {

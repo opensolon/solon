@@ -10,6 +10,7 @@ public class BeanWrap {
     protected Class<?> _clz;
     protected Object _raw;
     protected boolean _singleton;
+    protected boolean _remoting;
 
     public BeanWrap() {}
 
@@ -26,6 +27,11 @@ public class BeanWrap {
         }
 
         return this;
+    }
+
+    /** 是否为remoting()组件 */
+    public boolean remoting(){
+        return _remoting;
     }
 
     /** bean类 */
