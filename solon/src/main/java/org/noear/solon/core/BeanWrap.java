@@ -29,7 +29,7 @@ public class BeanWrap {
         return this;
     }
 
-    /** 是否为remoting()组件 */
+    /** is remoting()? */
     public boolean remoting(){
         return _remoting;
     }
