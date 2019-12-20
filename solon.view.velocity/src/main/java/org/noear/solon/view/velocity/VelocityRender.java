@@ -11,7 +11,9 @@ import org.noear.solon.core.ModelAndView;
 import org.noear.solon.core.XRender;
 import org.noear.solon.core.XContext;
 
+import java.io.File;
 import java.io.PrintWriter;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,36 +34,65 @@ public class VelocityRender implements XRender {
 
     //不要要入参，方便后面多视图混用
     //
-    public VelocityRender(){
-        XProperties props = XApp.global().prop();
+    public VelocityRender() {
+        String baseUri = XApp.cfg().get("slon.mvc.view.prefix");
 
-        String baseUri = props.get("slon.mvc.view.prefix");
-
-        if(XUtil.isEmpty(baseUri)==false){
+        if (XUtil.isEmpty(baseUri) == false) {
             _baseUri = baseUri;
         }
 
+
+
+        if (XApp.cfg().isDebugMode()) {
+            forDebug();
+        }else{
+           forRelease();
+        }
+
+        velocity.setProperty(Velocity.ENCODING_DEFAULT, getEncoding());
+        velocity.setProperty(Velocity.INPUT_ENCODING, getEncoding());
+
+        XApp.cfg().forEach((k, v) -> {
+            String key = k.toString();
+            if (key.startsWith("veloci")) {
+                velocity.setProperty(key, v);
+            }
+        });
+
+        velocity.init();
+
+        XApp.global().onSharedAdd((k, v) -> {
+            setSharedVariable(k, v);
+        });
+    }
+
+    private void forDebug(){
+        String dirroot = XUtil.getResource("/").toString().replace("target/classes/", "");
+        String dir_str = dirroot + "src/main/resources"+_baseUri;
+        File dir = new File(URI.create(dir_str));
+        if (!dir.exists()) {
+            dir_str = dirroot + "src/main/webapp"+_baseUri;
+            dir = new File(URI.create(dir_str));
+        }
+
+        try {
+            if (dir.exists()) {
+                velocity.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, dir.getAbsolutePath() + File.separatorChar);
+            }else{
+                //如果没有找到文件，则使用发行模式
+                //
+                forRelease();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void forRelease(){
         String root_path = XUtil.getResource(_baseUri).getPath();
 
         velocity.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, true);
         velocity.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, root_path);
-        velocity.setProperty(Velocity.ENCODING_DEFAULT, getEncoding());
-        velocity.setProperty(Velocity.INPUT_ENCODING, getEncoding());
-
-        if (props != null) {
-            props.forEach((k, v) -> {
-                String key = k.toString();
-                if (key.startsWith("veloci")) {
-                    velocity.setProperty(key, v);
-                }
-            });
-        }
-
-        velocity.init();
-
-        XApp.global().onSharedAdd((k,v)->{
-            setSharedVariable(k,v);
-        });
     }
 
     public void loadDirective(Object obj){
