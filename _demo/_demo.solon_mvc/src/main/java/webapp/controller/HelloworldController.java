@@ -14,7 +14,7 @@ public class HelloworldController {
         m.name = "刘之西东";
         m.sex=1;
 
-        ModelAndView vm = new ModelAndView("helloworld.htm");
+        ModelAndView vm = new ModelAndView("helloworld.ftl");
 
         vm.put("title","demo");
         vm.put("message","hello world!");
