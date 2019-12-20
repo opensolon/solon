@@ -18,6 +18,15 @@
         <version>1.0.3.40</version>
     </parent>
 
+    <!--
+     多模板引擎共存时，模板文件后缀默认对应关系：
+     beetl:       .htm
+     enjoy:       .shtm
+     freemaerker: .ftl
+     jsp:         .jsp
+     thyemeleaf:  .html
+     velocity:    .vm
+     -->
 
 
     <dependencies>
