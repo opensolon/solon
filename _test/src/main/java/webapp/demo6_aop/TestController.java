@@ -24,7 +24,7 @@ public class TestController {
     public int      test_bbb = XApp.cfg().getInt("demo6.test.bbb",0);
     public Properties prop   = XApp.cfg().getProp("mytbae.bcf");
 
-    @XMapping("/demo6/test")
+    @XMapping("/demo6/aop")
     public Object test() throws Exception {
         Map<String, Object> map = new HashMap<>();
 
