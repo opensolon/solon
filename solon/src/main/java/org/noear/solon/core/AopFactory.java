@@ -105,16 +105,11 @@ public class AopFactory extends AopFactoryBase {
 
         if (bw == null) {
             if (clz.isInterface() && raw == null) { //如查是interfacle 不能入库；且无实例
-               return null;
+                return null;
             }
 
-            synchronized (clz) {
-                bw = beanWraps.get(clz);
-                if (bw == null) {
-                    bw = new BeanWrap().build(clz, raw);
-                    beanWraps.put(clz, bw);
-                }
-            }
+            bw = new BeanWrap().build(clz, raw);
+            beanWraps.put(clz, bw);
         }
         return bw;
     }
