@@ -1,3 +1,10 @@
+#### 1.0.3.40::
+* 1.修复添加BeanBuilderAdd名称错误(BeanBuilderadd)
+* 2.修复 thymeleaf, velocity 调试模式支持
+
+#### 1.0.3.39::
+* 1.BeanWrap添加remoting()
+
 #### 1.0.3.38::
 * 1.优化AopFactory和BeanWrap
 * 2.添加BeanBuilder（协助注入时处理）
