@@ -109,7 +109,7 @@ public class AopFactory extends AopFactoryBase {
             }
 
             bw = new BeanWrap().build(clz, raw);
-            beanWraps.put(clz, bw);
+            beanWraps.putIfAbsent(clz, bw);
         }
         return bw;
     }
