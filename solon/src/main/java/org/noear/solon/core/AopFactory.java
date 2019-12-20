@@ -91,18 +91,20 @@ public class AopFactory extends AopFactoryBase {
      * 获取一个clz的包装（唯一的）
      */
     public BeanWrap wrap(Class<?> clz, Object raw) {
+        //1.先用自己的类型找
         BeanWrap bw = beanWraps.get(clz);
 
         if (bw != null) {
             return bw;
         }
 
+        //2.尝试Mapping的类型找
         if (clzMapping.containsKey(clz)) {
             clz = clzMapping.get(clz);
+            bw = beanWraps.get(clz);
         }
 
-        bw = beanWraps.get(clz);
-
+        //3.如果还没有，则尝试构建
         if (bw == null) {
             if (clz.isInterface() && raw == null) { //如查是interfacle 不能入库；且无实例
                 return null;
