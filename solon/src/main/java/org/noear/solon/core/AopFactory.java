@@ -221,7 +221,7 @@ public class AopFactory extends AopFactoryBase {
         beanLoaders.put(anno, loader);
     }
 
-    public void beanBuilderadd(BeanBuilder builder) {
+    public void beanBuilderAdd(BeanBuilder builder) {
         beanBuilders.add(builder);
     }
 
