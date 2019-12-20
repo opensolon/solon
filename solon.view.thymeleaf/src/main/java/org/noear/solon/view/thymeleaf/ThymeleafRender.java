@@ -37,31 +37,31 @@ public class ThymeleafRender implements XRender {
 
     private String _baseUri ="/WEB-INF/view/";
 
-    public ThymeleafRender(){
+    public ThymeleafRender() {
         String baseUri = XApp.global().prop().get("slon.mvc.view.prefix");
 
-        if(XUtil.isEmpty(baseUri)==false){
+        if (XUtil.isEmpty(baseUri) == false) {
             _baseUri = baseUri;
         }
 
-        if (XApp.cfg().argx().getInt("debug") == 0) {
-            forRelease();
-        }else {
+        if (XApp.cfg().isDebugMode()) {
             forDebug();
+        } else {
+            forRelease();
         }
 
 
         try {
-            XApp.global().shared().forEach((k, v)->{
-                setSharedVariable(k,v);
+            XApp.global().shared().forEach((k, v) -> {
+                setSharedVariable(k, v);
             });
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        XApp.global().onSharedAdd((k,v)->{
-            setSharedVariable(k,v);
+        XApp.global().onSharedAdd((k, v) -> {
+            setSharedVariable(k, v);
         });
     }
 
@@ -79,7 +79,7 @@ public class ThymeleafRender implements XRender {
                 FileTemplateResolver _loader = new FileTemplateResolver();
                 _loader.setPrefix(dir.getAbsolutePath() + File.separatorChar);
                 _loader.setTemplateMode(TemplateMode.HTML);
-                _loader.setCacheable(true);
+                _loader.setCacheable(false);//必须为false
                 _loader.setCharacterEncoding("utf-8");
                 _loader.setCacheTTLMs(Long.valueOf(3600000L));
 

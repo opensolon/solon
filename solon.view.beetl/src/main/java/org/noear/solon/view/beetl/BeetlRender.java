@@ -50,9 +50,7 @@ public class BeetlRender implements XRender {
         }
 
 
-        if (XApp.global().prop().argx().getInt("debug") == 0) {
-            initForRuntime();
-        }else {
+        if (XApp.cfg().isDebugMode()) {
             //添加调试模式
             String dirroot = XUtil.getResource("/").toString().replace("target/classes/", "");
             String dir_str = dirroot + "src/main/resources"+_baseUri;
@@ -72,6 +70,8 @@ public class BeetlRender implements XRender {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+        }else{
+            initForRuntime();
         }
 
         XApp.global().onSharedAdd((k,v)->{

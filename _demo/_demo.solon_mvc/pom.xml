@@ -26,20 +26,25 @@
         -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-mvc</artifactId>
+            <artifactId>solon-api</artifactId>
             <type>pom</type>
         </dependency>
 
         <!-- 添加一个模板插件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.view.beetl</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.view.beetl</artifactId>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.view.thymeleaf</artifactId>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.view.enjoy</artifactId>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.projectlombok</groupId>
