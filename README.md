@@ -48,7 +48,7 @@ public class App{
 | 组件 | 说明 |
 | --- | --- |
 | org.noear:solon-parent | 框架版本管理 |
-| org.noear:solon | 70k，主框架 |
+| org.noear:solon | 主框架 |
 
 ###### 快速集成包
 
