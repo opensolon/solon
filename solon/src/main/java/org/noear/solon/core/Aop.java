@@ -46,7 +46,8 @@ public class Aop {
     //::获取bean
     /** 获取bean (key) */
     public static <T> T get(String key) {
-        return _f.get(key).get();
+        BeanWrap bw = _f.get(key);
+        return bw == null ? null : bw.get();
     }
     /** 异步获取bean (key) */
     public static void getAsyn(String key, Act1<BeanWrap> callback) {
@@ -59,7 +60,8 @@ public class Aop {
     }
     /** 获取bean (clz) */
     public static <T> T get(Class<?> clz) {
-        return _f.wrap(clz,null).get();
+        BeanWrap bw = _f.wrap(clz, null);
+        return bw == null ? null : bw.get();
     }
     /** 异步获取bean (clz) */
     public static void getAsyn(Class<?> clz, FieldWrap fw, Act1<BeanWrap> callback) {
@@ -76,6 +78,11 @@ public class Aop {
         } else {
             callback.run(wrap);
         }
+    }
+    /** 尝试注入（建议使用：get(clz) ） */
+    public static <T> T inject(T obj){
+        _f.inject(obj);
+        return obj;
     }
 
     //::bean事件处理
