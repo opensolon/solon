@@ -28,10 +28,6 @@ public class AopFactory extends AopFactoryBase {
      */
     protected void initialize() {
 
-        beanLoaderAdd(XBean.class, (clz, bw, anno) -> {
-            loadXBean(bw, anno);
-        });
-
         beanLoaderAdd(XConfiguration.class, (clz, bw, anno) -> {
             for (MethodWrap mWrap : ClassWrap.get(bw.clz()).methodWraps) {
                 XBean m_an = mWrap.method.getAnnotation(XBean.class);
@@ -43,6 +39,10 @@ public class AopFactory extends AopFactoryBase {
                     loadXBean(m_bw, m_an);
                 }
             }
+        });
+
+        beanLoaderAdd(XBean.class, (clz, bw, anno) -> {
+            loadXBean(bw, anno);
         });
 
         beanLoaderAdd(XController.class, (clz, bw, anno) -> {
@@ -125,13 +125,15 @@ public class AopFactory extends AopFactoryBase {
             return;
         }
 
-        Field[] fs = ClassWrap.get(obj.getClass()).fields;
+        ClassWrap clzWrap = ClassWrap.get(obj.getClass());
+        Field[] fs = clzWrap.fields;
         for (Field f : fs) {
             XInject xi = f.getAnnotation(XInject.class);
             if (xi != null) {
                 if (XUtil.isEmpty(xi.value())) {
                     //如果没有name,使用类型进行获取 bean
-                    Aop.getAsyn(f.getType(), f.getAnnotations(), (bw) -> {
+                    FieldWrap fw = clzWrap.getFieldWrap(f);
+                    Aop.getAsyn(f.getType(), fw, (bw) -> {
                         fieldSet(obj, f, bw.get());
                     });
                 } else {
@@ -162,10 +164,10 @@ public class AopFactory extends AopFactoryBase {
     /**
      * 尝试外力构建Bean
      */
-    protected Object tryBuildBean(Class<?> clz, Annotation[] fAnnoS) {
+    protected Object tryBuildBean(Class<?> clz, FieldWrap fw) {
         Object tmp = null;
         for (BeanBuilder bb : beanBuilders) {
-            tmp = bb.build(clz, fAnnoS);
+            tmp = bb.build(clz, fw);
             if (tmp != null) {
                 break;
             }
@@ -240,7 +242,11 @@ public class AopFactory extends AopFactoryBase {
                     if (clz != null) {
                         Annotation[] annoSet = clz.getDeclaredAnnotations();
                         if (annoSet.length > 0) {
-                            tryLoadClasses(clz, annoSet);
+                            try {
+                                tryLoadClasses(clz, annoSet);
+                            }catch (Throwable ex){
+                                ex.printStackTrace();
+                            }
                         }
                     }
                 });

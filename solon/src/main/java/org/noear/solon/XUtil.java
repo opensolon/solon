@@ -38,7 +38,7 @@ public class XUtil {
     public static Class<?> loadClass(String className) {
         try {
             return Class.forName(className);
-        }catch (Exception ex) {
+        }catch (Throwable ex) {
             return null;
         }
     }

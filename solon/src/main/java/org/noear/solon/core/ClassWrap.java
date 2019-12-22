@@ -10,11 +10,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ClassWrap {
     private static Map<Class<?>, ClassWrap> _cache = new ConcurrentHashMap<>();
 
-    public static ClassWrap get(Class<?> clz){
+    public static ClassWrap get(Class<?> clz) {
         ClassWrap cw = _cache.get(clz);
-        if(cw == null){
+        if (cw == null) {
             cw = new ClassWrap(clz);
-            _cache.putIfAbsent(clz,cw);
+            _cache.putIfAbsent(clz, cw);
         }
         return cw;
     }
@@ -23,14 +23,25 @@ public class ClassWrap {
     public final List<MethodWrap> methodWraps;
     public final Field[] fields;
 
-    protected ClassWrap(Class<?> clz ){
+    protected ClassWrap(Class<?> clz) {
         clazz = clz;
         methodWraps = new ArrayList<>();
 
-        for(Method m : clz.getDeclaredMethods()){
+        for (Method m : clz.getDeclaredMethods()) {
             methodWraps.add(MethodWrap.get(m));
         }
 
         fields = clz.getDeclaredFields();
+    }
+
+    private Map<String, FieldWrap> _fwS = new ConcurrentHashMap<>();
+
+    public FieldWrap getFieldWrap(Field f1) {
+        FieldWrap fw = _fwS.get(f1.getName());
+        if (fw == null) {
+            fw = new FieldWrap(clazz, f1);
+            _fwS.putIfAbsent(f1.getName(), fw);
+        }
+        return fw;
     }
 }
