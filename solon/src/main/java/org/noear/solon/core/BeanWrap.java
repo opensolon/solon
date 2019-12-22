@@ -14,7 +14,7 @@ public class BeanWrap {
 
     public BeanWrap() {}
 
-    public BeanWrap build(Class<?> clz, Object raw){
+    public BeanWrap(Class<?> clz, Object raw){
         _clz = clz;
 
         XSingleton ano = clz.getAnnotation(XSingleton.class);
@@ -25,8 +25,6 @@ public class BeanWrap {
         } else {
             _raw = raw;
         }
-
-        return this;
     }
 
     /** is remoting()? */

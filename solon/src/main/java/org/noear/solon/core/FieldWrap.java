@@ -19,10 +19,14 @@ public class FieldWrap {
 
         type = f1.getType();
         Type tmp = f1.getGenericType();
-        if(tmp instanceof ParameterizedType){
-            genericType = (ParameterizedType)tmp;
-        }else{
+        if (tmp instanceof ParameterizedType) {
+            genericType = (ParameterizedType) tmp;
+        } else {
             genericType = null;
         }
+    }
+
+    public FieldWrapTmp tmp(Object obj) {
+        return new FieldWrapTmp(this, obj);
     }
 }

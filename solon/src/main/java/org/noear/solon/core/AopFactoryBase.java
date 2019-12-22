@@ -46,7 +46,7 @@ public class AopFactoryBase {
     private final Map<Object, Set<Act1<BeanWrap>>> _subs = new ConcurrentHashMap<>();
 
     /** bean订阅 */
-    protected void beanSubscribe(Object key, Act1<BeanWrap> callback) {
+    public void beanSubscribe(Object key, Act1<BeanWrap> callback) {
         Set<Act1<BeanWrap>> e = _subs.get(key);
         if (e == null) {
             e = new HashSet<>();
@@ -57,7 +57,7 @@ public class AopFactoryBase {
     }
 
     /** bean通知 */
-    protected void beanNotice(Object key, BeanWrap wrap) {
+    public void beanNotice(Object key, BeanWrap wrap) {
         Set<Act1<BeanWrap>> e = _subs.get(key);
         if (e != null) {
             e.forEach(f -> f.run(wrap));

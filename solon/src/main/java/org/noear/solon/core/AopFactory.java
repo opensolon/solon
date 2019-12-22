@@ -7,7 +7,6 @@ import org.noear.solon.core.utils.TypeUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -108,7 +107,7 @@ public class AopFactory extends AopFactoryBase {
                 return null;
             }
 
-            bw = new BeanWrap().build(clz, raw);
+            bw = new BeanWrap(clz, raw);
             beanWraps.putIfAbsent(clz, bw);
         }
 
@@ -130,35 +129,36 @@ public class AopFactory extends AopFactoryBase {
         for (Field f : fs) {
             XInject xi = f.getAnnotation(XInject.class);
             if (xi != null) {
+                FieldWrapTmp fwT = clzWrap.getFieldWrap(f).tmp(obj);
+
                 if (XUtil.isEmpty(xi.value())) {
                     //如果没有name,使用类型进行获取 bean
-                    FieldWrap fw = clzWrap.getFieldWrap(f);
-                    Aop.getAsyn(f.getType(), fw, (bw) -> {
-                        fieldSet(obj, f, bw.get());
+                    Aop.getAsyn(f.getType(), fwT, (bw) -> {
+                        fwT.setValue(bw.get());
                     });
                 } else {
                     //如果有name
                     if (Properties.class == f.getType()) {
                         //如果是 Properties，只尝试从配置获取
                         Properties val = XApp.cfg().getProp(xi.value());
-                        fieldSet(obj, f, val);
+                        fwT.setValue(val);
                     } else {
                         //1.如果是单值，先尝试获取BEAN
                         Object tmp = Aop.get(xi.value());
 
                         if (tmp != null) {
-                            fieldSet(obj, f, tmp);
+                            fwT.setValue(tmp);
                         } else {
                             //2.然后尝试获取配置
                             String val = XApp.cfg().get(xi.value());
 
                             if (XUtil.isEmpty(val) == false) {
                                 Object val2 = TypeUtil.changeOfPop(f.getType(), val);
-                                fieldSet(obj, f, val2);
+                                fwT.setValue(val2);
                             } else {
                                 //3.如果没有配置，尝试异步获取BEAN
                                 Aop.getAsyn(xi.value(), (bw) -> {
-                                    fieldSet(obj, f, bw.get());
+                                    fwT.setValue(bw.get());
                                 });
                             }
                         }
@@ -171,28 +171,13 @@ public class AopFactory extends AopFactoryBase {
     /**
      * 尝试外力构建Bean
      */
-    protected Object tryBuildBean(Class<?> clz, FieldWrap fw) {
-        Object tmp = null;
+    protected boolean tryBuildBean(Class<?> clz, FieldWrapTmp fwT) {
         for (BeanBuilder bb : beanBuilders) {
-            tmp = bb.build(clz, fw);
-            if (tmp != null) {
-                break;
+            if(bb.build(clz, fwT)){
+                return true;
             }
         }
-
-        return tmp;
-    }
-
-    /**
-     * 设置字段值
-     */
-    protected static void fieldSet(Object obj, Field f, Object val) {
-        try {
-            f.setAccessible(true);
-            f.set(obj, val);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+        return false;
     }
 
     //::库管理

@@ -1,5 +1,5 @@
 package org.noear.solon.core;
 
 public interface BeanBuilder {
-    Object build(Class<?> clz, FieldWrap fw);
+    boolean build(Class<?> clz, FieldWrapTmp fwT);
 }

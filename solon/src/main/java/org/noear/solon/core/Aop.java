@@ -37,7 +37,7 @@ public class Aop {
     //::添加bean
     /** 添加bean（key + obj） */
     public static void put(String key, Object obj) {
-        _f.put(key, new BeanWrap().build(obj.getClass(), obj));
+        _f.put(key, new BeanWrap(obj.getClass(), obj));
     }
 
     /** 添加bean（clz + obj） */
@@ -64,17 +64,14 @@ public class Aop {
         return bw == null ? null : bw.get();
     }
     /** 异步获取bean (clz) */
-    public static void getAsyn(Class<?> clz, FieldWrap fw, Act1<BeanWrap> callback) {
+    public static void getAsyn(Class<?> clz, FieldWrapTmp fwT, Act1<BeanWrap> callback) {
         BeanWrap wrap = _f.wrap(clz, null);
         if (wrap == null) {
-            Object raw = factory().tryBuildBean(clz, fw);
-
-            if(raw == null){
-                _f.beanSubscribe(clz, callback);
-            }else{
-                callback.run(new BeanWrap().build(clz,raw));
+            if(factory().tryBuildBean(clz, fwT)){
+                return;
             }
 
+            _f.beanSubscribe(clz, callback);
         } else {
             callback.run(wrap);
         }
