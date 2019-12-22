@@ -78,14 +78,6 @@ public class Aop {
         }
     }
 
-    //::获取配置
-    /** 请改用 XApp.cfg() */
-    @Deprecated
-    public static XProperties prop(){
-        return XApp.global().prop();
-    }
-
-
     //::bean事件处理
     /** 加载bean */
     public static void beanLoad(Class<?> source){_f.beanLoad(source);}
