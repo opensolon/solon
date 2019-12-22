@@ -143,17 +143,24 @@ public class AopFactory extends AopFactoryBase {
                         Properties val = XApp.cfg().getProp(xi.value());
                         fieldSet(obj, f, val);
                     } else {
-                        //如果是单值，先尝试获取配置
-                        String val = XApp.cfg().get(xi.value());
+                        //1.如果是单值，先尝试获取BEAN
+                        Object tmp = Aop.get(xi.value());
 
-                        if (XUtil.isEmpty(val) == false) {
-                            Object val2 = TypeUtil.changeOfPop(f.getType(), val);
-                            fieldSet(obj, f, val2);
+                        if (tmp != null) {
+                            fieldSet(obj, f, tmp);
                         } else {
-                            //如果没有配置，则找bean
-                            Aop.getAsyn(xi.value(), (bw) -> {
-                                fieldSet(obj, f, bw.get());
-                            });
+                            //2.然后尝试获取配置
+                            String val = XApp.cfg().get(xi.value());
+
+                            if (XUtil.isEmpty(val) == false) {
+                                Object val2 = TypeUtil.changeOfPop(f.getType(), val);
+                                fieldSet(obj, f, val2);
+                            } else {
+                                //3.如果没有配置，尝试异步获取BEAN
+                                Aop.getAsyn(xi.value(), (bw) -> {
+                                    fieldSet(obj, f, bw.get());
+                                });
+                            }
                         }
                     }
                 }
