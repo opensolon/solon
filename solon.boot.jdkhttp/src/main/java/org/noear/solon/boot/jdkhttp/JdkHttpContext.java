@@ -244,9 +244,9 @@ public class JdkHttpContext extends XContext {
             for (String s : ss) {
                 String[] kv = s.split("=");
                 if (kv.length > 1) {
-                    _cookieMap.put(kv[0], kv[1]);
+                    _cookieMap.put(kv[0].trim(), kv[1].trim());
                 } else {
-                    _cookieMap.put(kv[0], null);
+                    _cookieMap.put(kv[0].trim(), null);
                 }
             }
         }
