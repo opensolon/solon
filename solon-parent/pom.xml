@@ -346,6 +346,7 @@
         <module>../solon</module>
         <module>../solon.boot.jetty</module>
         <module>../solon.boot.jlhttp</module>
+        <module>../solon.boot.jdkhttp</module>
         <module>../solon.boot.nettyhttp</module>
         <!--        <module>../solon.boot.reactor-netty</module>-->
         <!--        <module>../solon.boot.rapidoid-http-fast</module>-->

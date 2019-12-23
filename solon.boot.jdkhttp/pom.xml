@@ -10,23 +10,14 @@
         <version>1.0.3.43</version>
     </parent>
 
-    <artifactId>solon.view.freemarker</artifactId>
+    <artifactId>solon.boot.jdkhttp</artifactId>
     <packaging>jar</packaging>
 
-
     <dependencies>
-
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>2.3.29</version>
-        </dependency>
-
     </dependencies>
 
 </project>
