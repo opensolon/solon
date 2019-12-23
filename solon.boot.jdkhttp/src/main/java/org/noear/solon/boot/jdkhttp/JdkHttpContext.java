@@ -7,6 +7,7 @@ import org.noear.solon.core.XContext;
 import org.noear.solon.core.XFile;
 import org.noear.solon.core.XMap;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -20,7 +21,7 @@ public class JdkHttpContext extends XContext {
 
     private HttpExchange _exchange;
     private Map<String, Object> _parameters;
-    protected Map<String,List<XFile>> _fileMap;
+    protected Map<String, List<XFile>> _fileMap;
 
     public JdkHttpContext(HttpExchange exchange) {
         _exchange = exchange;
@@ -31,7 +32,7 @@ public class JdkHttpContext extends XContext {
             try {
                 _fileMap = new HashMap<>();
                 MultipartUtil.buildParamsAndFiles(this);
-            }catch (Throwable ex){
+            } catch (Throwable ex) {
                 ex.printStackTrace();
             }
         }
@@ -43,9 +44,10 @@ public class JdkHttpContext extends XContext {
     }
 
     private String _ip;
+
     @Override
     public String ip() {
-        if(_ip == null) {
+        if (_ip == null) {
             _ip = header("X-Forwarded-For");
 
             if (_ip == null) {
@@ -77,9 +79,10 @@ public class JdkHttpContext extends XContext {
     }
 
     private String _url;
+
     @Override
     public String url() {
-        if(_url == null){
+        if (_url == null) {
             _url = _exchange.getRequestURI().toString();
 
             if (_url != null && _url.startsWith("/")) {
@@ -89,7 +92,7 @@ public class JdkHttpContext extends XContext {
                     host = header(":authority");
                     String scheme = header(":scheme");
 
-                    if(host == null){
+                    if (host == null) {
                         host = "localhost";
                     }
 
@@ -112,7 +115,7 @@ public class JdkHttpContext extends XContext {
     public long contentLength() {
         try {
             return bodyAsStream().available();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             return 0;
         }
@@ -170,12 +173,12 @@ public class JdkHttpContext extends XContext {
         try {
             String temp = paramMap().get(key);
 
-            if(XUtil.isEmpty(temp)){
+            if (XUtil.isEmpty(temp)) {
                 return def;
-            }else{
+            } else {
                 return temp;
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
 
             return def;
@@ -183,6 +186,7 @@ public class JdkHttpContext extends XContext {
     }
 
     private XMap _paramMap;
+
     @Override
     public XMap paramMap() {
         if (_paramMap == null) {
@@ -203,14 +207,14 @@ public class JdkHttpContext extends XContext {
 
     @Override
     public List<XFile> files(String key) throws Exception {
-        if (isMultipartFormData()){
+        if (isMultipartFormData()) {
             List<XFile> temp = _fileMap.get(key);
-            if(temp == null){
+            if (temp == null) {
                 return new ArrayList<>();
-            }else{
+            } else {
                 return temp;
             }
-        }  else {
+        } else {
             return new ArrayList<>();
         }
     }
@@ -223,16 +227,16 @@ public class JdkHttpContext extends XContext {
     @Override
     public String cookie(String key, String def) {
         String temp = cookieMap().get(key);
-        if(temp == null){
-            return  def;
-        }else{
+        if (temp == null) {
+            return def;
+        } else {
             return temp;
         }
     }
 
     @Override
     public XMap cookieMap() {
-        if(_cookieMap == null) {
+        if (_cookieMap == null) {
             _cookieMap = new XMap();
 
             String tmp = header("Cookie");
@@ -249,6 +253,7 @@ public class JdkHttpContext extends XContext {
 
         return _cookieMap;
     }
+
     private XMap _cookieMap;
 
     @Override
@@ -268,14 +273,14 @@ public class JdkHttpContext extends XContext {
 
     @Override
     public XMap headerMap() {
-        if(_headerMap == null) {
+        if (_headerMap == null) {
             _headerMap = new XMap();
 
             Headers headers = _exchange.getRequestHeaders();
 
             if (headers != null) {
-                headers.forEach((k,l)->{
-                    if(l.size()>0) {
+                headers.forEach((k, l) -> {
+                    if (l.size() > 0) {
                         _headerMap.put(k, l.get(0));
                     }
                 });
@@ -284,6 +289,7 @@ public class JdkHttpContext extends XContext {
 
         return _headerMap;
     }
+
     private XMap _headerMap;
 
     @Override
@@ -295,6 +301,7 @@ public class JdkHttpContext extends XContext {
     public void charset(String charset) {
         _charset = charset;
     }
+
     private String _charset = "UTF-8";
 
     @Override
@@ -316,7 +323,7 @@ public class JdkHttpContext extends XContext {
 
             out.write(str.getBytes(_charset));
             out.flush();
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -333,19 +340,20 @@ public class JdkHttpContext extends XContext {
             }
 
             out.flush();
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
 
+    protected ByteArrayOutputStream _outputStream = new ByteArrayOutputStream();
     @Override
     public OutputStream outputStream() throws IOException {
-        return _exchange.getResponseBody();
+        return _outputStream;
     }
 
     @Override
     public void headerSet(String key, String val) {
-        _exchange.getResponseHeaders().set(key,val);
+        _exchange.getResponseHeaders().set(key, val);
     }
 
     @Override
@@ -371,8 +379,8 @@ public class JdkHttpContext extends XContext {
     }
 
     @Override
-    public void redirect(String url)  {
-        redirect(url,302);
+    public void redirect(String url) {
+        redirect(url, 302);
     }
 
     @Override
@@ -380,7 +388,7 @@ public class JdkHttpContext extends XContext {
         try {
             headerSet("Location", url);
             status(code);
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -391,18 +399,16 @@ public class JdkHttpContext extends XContext {
     }
 
     private int _status = 200;
+
     @Override
     public void status(int status) {
-        try {
-            _status = status;
-            _exchange.sendResponseHeaders(status, 0);
-        }catch (Exception ex){
-            throw new RuntimeException(ex);
-        }
+        _status = status;
     }
 
     @Override
     protected void commit() throws IOException {
-        super.commit();
+        _exchange.sendResponseHeaders(_status,0);
+        _outputStream.writeTo(_exchange.getResponseBody());
+        _exchange.getResponseBody().close();
     }
 }

@@ -14,6 +14,16 @@ public class JdkHttpContextHandler implements HttpHandler {
     }
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+        new Thread(() -> {
+            try {
+                handle_do(exchange);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }).start();
+    }
+
+    private void handle_do(HttpExchange exchange) throws IOException {
         /*
          *
          * lhttp 流程

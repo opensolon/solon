@@ -11,7 +11,7 @@ public final class XPluginImp implements XPlugin {
     private HttpServer _server = null;
 
     public static String solon_boot_ver(){
-        return "jdkhttp jdk8/1.0.4.43";
+        return "jdk http jdk8/1.0.4.43";
     }
 
     @Override
@@ -28,7 +28,7 @@ public final class XPluginImp implements XPlugin {
         JdkHttpContextHandler _handler = new JdkHttpContextHandler(app);
 
 
-        System.out.println("solon.Server:main: JlHttpServer 2.4");
+        System.out.println("solon.Server:main: Sun.net.HttpServer jdk8");
 
         try {
             _server = HttpServer.create(new InetSocketAddress(app.port()), 0);
