@@ -23,7 +23,7 @@
         <dependency>
             <groupId>com.jfinal</groupId>
             <artifactId>enjoy</artifactId>
-            <version>3.6</version>
+            <version>${enjoy.ver}</version>
         </dependency>
 
     </dependencies>

@@ -26,6 +26,7 @@
         <okhttp.ver>3.11.0</okhttp.ver>
 
         <beetl.ver>3.0.15.RELEASE</beetl.ver>
+        <enjoy.ver>4.8</enjoy.ver>
 
         <jetty.ver>9.4.12.v20180830</jetty.ver>
     </properties>
