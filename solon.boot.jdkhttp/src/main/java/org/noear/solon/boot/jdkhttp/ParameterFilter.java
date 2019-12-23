@@ -43,11 +43,16 @@ public class ParameterFilter extends Filter {
             throws IOException {
 
         if ("post".equalsIgnoreCase(exchange.getRequestMethod())) {
+            String ct = exchange.getRequestHeaders().getFirst("Content-Type");
+            if (ct != null && ct.indexOf("multipart/") >= 0) {
+                return;
+            }
+
+
             @SuppressWarnings("unchecked")
-            Map<String, Object> parameters =
-                    (Map<String, Object>) exchange.getAttribute("parameters");
-            InputStreamReader isr =
-                    new InputStreamReader(exchange.getRequestBody(), "utf-8");
+            Map<String, Object> parameters = (Map<String, Object>) exchange.getAttribute("parameters");
+
+            InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String query = br.readLine();
             parseQuery(query, parameters);
