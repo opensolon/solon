@@ -23,13 +23,13 @@ public final class XProperties extends Properties{
     public XProperties load(XMap args){
         _args = args;
 
-        do_loadFile();
-
         _args.forEach((k, v) -> {
             if (k.indexOf(".") >= 0) {
                 setProperty(k, v);
             }
         });
+
+        do_loadFile();
 
         return this;
     }
