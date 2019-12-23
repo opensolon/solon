@@ -220,7 +220,10 @@ public class AopFactory extends AopFactoryBase {
      */
     public void beanLoad(Class<?> source) {
         //确定文件夹名
-        String dir = source.getPackage().getName().replace('.', '/');
+        String dir = "";
+        if(source.getPackage() != null) {
+            dir = source.getPackage().getName().replace('.', '/');
+        }
 
         //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
         List<Class<?>> tmpList = new ArrayList<>();

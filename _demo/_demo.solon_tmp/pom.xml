@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.noear</groupId>
-    <artifactId>_demo.solon_mvc_jsp</artifactId>
+    <artifactId>_demo.solon_tmp</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
@@ -18,35 +18,26 @@
         <version>1.0.3.44</version>
     </parent>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jetty</artifactId>
-        </dependency>
+    <!--
+     多模板引擎共存时，模板文件后缀默认对应关系：
+     beetl:       .htm
+     enjoy:       .shtm
+     freemaerker: .ftl
+     jsp:         .jsp
+     thyemeleaf:  .html
+     velocity:    .vm
+     -->
 
-        <!-- jetty 的 jsp 支持扩展包 -->
+
+    <dependencies>
+        <!--
+        solon-api 和 solon-mvc 的区别是：前者没有模板和SessionState
+        -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.jetty.jsp</artifactId>
+            <artifactId>solon-mvc</artifactId>
             <type>pom</type>
         </dependency>
-
-        <!-- jsp 视图渲染器
-        视图目录：/resources/WEB-INF/view/
-        -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.view.jsp</artifactId>
-        </dependency>
-
-        <!-- 静态文件支持
-        静态目录：/resources/static/
-        -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.staticfiles</artifactId>
-        </dependency>
-
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -56,7 +47,6 @@
     </dependencies>
 
     <build>
-        <finalName>${artifactId}</finalName>
         <plugins>
 
             <plugin>
@@ -80,7 +70,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>webapp.App0</mainClass>
+                            <mainClass>App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

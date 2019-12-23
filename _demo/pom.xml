@@ -20,6 +20,8 @@
         <module>_demo.solon_helloworld</module>
         <module>_demo.solon_mvc</module>
         <module>_demo.solon_mvc_jsp</module>
+
+        <module>_demo.solon_tmp</module>
     </modules>
 
 </project>

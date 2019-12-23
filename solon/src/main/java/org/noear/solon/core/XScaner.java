@@ -60,7 +60,11 @@ public class XScaner {
                 if (f.isDirectory()) {
                     doScanByFile(f, p2, filter, urls);
                 }else {
-                    urls.add(p2);
+                    if(p2.startsWith("/")){
+                        urls.add(p2.substring(1));
+                    }else {
+                        urls.add(p2);
+                    }
                 }
             }
         }
@@ -83,7 +87,11 @@ public class XScaner {
                 continue;
             }
 
-            urls.add(n);
+            if(n.startsWith("/")){
+                urls.add(n.substring(1));
+            }else {
+                urls.add(n);
+            }
         }
     }
 }
