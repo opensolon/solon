@@ -370,6 +370,7 @@
 
         <module>../solon.view.enjoy</module>
         <module>../solon.view.beetl</module>
+<!--        <module>../solon.view.rocker</module>-->
 
         <module>../solon.extend.staticfiles</module>
 

@@ -27,6 +27,7 @@
         <module>solon.boot.tomcat</module>
 
         <module>solon-mvc-beetl</module>
+        <module>solon.view.rocker</module>
 
         <module>_demo</module>
         <module>_test</module>
