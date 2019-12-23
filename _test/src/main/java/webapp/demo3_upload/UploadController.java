@@ -17,8 +17,12 @@ public class UploadController {
 
     //支持上传文件参数（file 变量名，与表单变量名保持一至）
     @XMapping("f1")
-    public String test_f1(XContext context, XFile file) throws Exception{
-        return context.path();
+    public String test_f1(XContext context, XFile file) throws Exception {
+        if (file != null) {
+            return "成功：" + file.name;
+        }
+
+        return "失败：" + context.path();
     }
 
     //支持上传文件参数
