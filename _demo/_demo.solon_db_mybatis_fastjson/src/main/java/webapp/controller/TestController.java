@@ -5,7 +5,6 @@ import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XInject;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.annotation.XSingleton;
-import webapp.dso.DbUtil;
 import webapp.dso.db.AppxMapper;
 import webapp.model.AppxModel;
 

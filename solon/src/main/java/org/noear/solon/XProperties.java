@@ -20,8 +20,10 @@ public final class XProperties extends Properties{
         super();
     }
 
-    public XProperties load(XMap args){
+    public XProperties load(XMap args) {
         _args = args;
+
+        do_loadFile();
 
         _args.forEach((k, v) -> {
             if (k.indexOf(".") >= 0) {
@@ -29,7 +31,9 @@ public final class XProperties extends Properties{
             }
         });
 
-        do_loadFile();
+        if (isDebugMode()) {
+            System.setProperty("debug", "1");
+        }
 
         return this;
     }

@@ -31,11 +31,15 @@ public class AopFactory extends AopFactoryBase {
             for (MethodWrap mWrap : ClassWrap.get(bw.clz()).methodWraps) {
                 XBean m_an = mWrap.method.getAnnotation(XBean.class);
 
-                if (m_an != null && mWrap.parameters.length == 0) {
-                    Object raw = mWrap.method.invoke(bw.raw());
+                if (m_an != null) {
+                    if(mWrap.parameters.length == 0) {
+                        Object raw = mWrap.method.invoke(bw.raw());
 
-                    BeanWrap m_bw = Aop.put(mWrap.method.getReturnType(), raw);
-                    loadXBean(m_bw, m_an);
+                        BeanWrap m_bw = Aop.put(mWrap.method.getReturnType(), raw);
+                        loadXBean(m_bw, m_an);
+                    }else{
+                        throw new RuntimeException("XBean method does not support parameters");
+                    }
                 }
             }
         });
