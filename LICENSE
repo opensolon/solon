@@ -4,7 +4,6 @@
 
    TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 
-
    1. Definitions.
 
       "License" shall mean the terms and conditions for use, reproduction,
