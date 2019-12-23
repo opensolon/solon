@@ -61,6 +61,7 @@ public class App{
 
 | boot插件 | 说明 |
 | --- | --- |
+| org.noear:solon.boot.jdkhttp | boot插件,对JKD自带的`http`适配,提供`http`服务（不自带session state） |
 | org.noear:solon.boot.jlhttp | boot插件,对`jlhttp`适配,提供`http`服务（不自带session state） |
 | org.noear:solon.boot.nteeyhttp | boot插件,对`Netty`适配,提供`http`服务 |
 | org.noear:solon.boot.jetty | boot插件,对`jetty`适配,提供`http`服务（网友@khb提供） |
