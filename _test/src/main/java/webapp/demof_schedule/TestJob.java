@@ -12,6 +12,6 @@ public class TestJob implements IJob {
 
     @Override
     public void exec() throws Throwable {
-        System.out.println("我是定时任务##########,");
+        System.out.println("我是定时任务: TestJob");
     }
 }

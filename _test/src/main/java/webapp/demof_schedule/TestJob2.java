@@ -20,6 +20,6 @@ public class TestJob2 implements IJob {
             return;
         }
 
-        System.out.println("xxxxbbbb");
+        System.out.println("我是定时任务: TestJob2");
     }
 }
