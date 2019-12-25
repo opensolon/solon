@@ -5,7 +5,6 @@ import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XSingleton;
 import org.noear.solon.core.ModelAndView;
 
-@XSingleton(false)
 @XController
 public class ViewController {
     @XMapping("/demo2/view")

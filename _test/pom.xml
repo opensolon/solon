@@ -115,7 +115,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.jsoniter</artifactId>
+            <artifactId>solon.serialization.jackson</artifactId>
         </dependency>
 
 <!--        <dependency>-->
