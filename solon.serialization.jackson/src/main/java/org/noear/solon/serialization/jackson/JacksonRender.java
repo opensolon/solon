@@ -4,8 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XRender;
 
+import static com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping.NON_FINAL;
+
 public class JacksonRender implements XRender {
     ObjectMapper mapper = new ObjectMapper();
+    ObjectMapper mapper_serialize = new ObjectMapper();
+
+    public JacksonRender(){
+        mapper_serialize.enableDefaultTypingAsProperty(NON_FINAL, "@type");
+    }
 
     @Override
     public void render(Object obj, XContext ctx) throws Throwable {
@@ -16,7 +23,7 @@ public class JacksonRender implements XRender {
         if (is_serialize) {
             //序列化处理
             //
-            txt = mapper.writeValueAsString(obj);
+            txt = mapper_serialize.writeValueAsString(obj);
         } else {
             //非序列化处理
             //
