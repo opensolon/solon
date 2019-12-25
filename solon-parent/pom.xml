@@ -367,6 +367,7 @@
         <module>../solon.serialization.jackson</module>
         <module>../solon.serialization.gson</module>
         <module>../solon.serialization.snack3</module>
+        <module>../solon.serialization.jsoniter</module>
 
         <module>../solon.view.freemarker</module>
         <module>../solon.view.jsp</module>
