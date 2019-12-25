@@ -115,8 +115,13 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.fastjson</artifactId>
+            <artifactId>solon.serialization.jsoniter</artifactId>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.serialization.fastjson</artifactId>-->
+<!--        </dependency>-->
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
@@ -154,7 +159,7 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>weed3</artifactId>
-            <version>3.2.4-SNAPSHOT</version>
+            <version>3.2.6.2</version>
         </dependency>
 
         <dependency>

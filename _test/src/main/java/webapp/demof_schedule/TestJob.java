@@ -7,7 +7,7 @@ import org.noear.solon.extend.schedule.IJob;
 public class TestJob implements IJob {
     @Override
     public int getInterval() {
-        return 300;
+        return 30000;
     }
 
     @Override

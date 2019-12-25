@@ -16,7 +16,7 @@ public class TestJob2 implements IJob {
     public void exec() throws Throwable {
         int hour = LocalDateTime.now().getHour();
         if (hour < 6) {
-            //0点到6点，不跑
+            //控制：0点到6点不跑
             return;
         }
 
