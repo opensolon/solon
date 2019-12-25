@@ -119,6 +119,11 @@
                 <artifactId>solon.extend.schedule</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.extend.cron4j</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
 
 
             <dependency>
@@ -386,6 +391,7 @@
         <module>../solon.extend.properties.yaml</module>
         <module>../solon.extend.stop</module>
         <module>../solon.extend.schedule</module>
+        <module>../solon.extend.cron4j</module>
         <!--        <module>../solon.extend.aopx</module>-->
 
 
