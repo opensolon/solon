@@ -4,7 +4,7 @@ import it.sauronsoftware.cron4j.Task;
 import it.sauronsoftware.cron4j.TaskExecutionContext;
 import org.noear.solon.extend.cron4j.Job;
 
-@Job(cron4x = "* * * * *")
+//@Job(cron4x = "* * * * *")
 public class Test2Task implements Runnable {
 
     @Override
