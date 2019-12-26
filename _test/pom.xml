@@ -35,10 +35,10 @@
             <artifactId>solon.extend.staticfiles</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.schedule</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.extend.schedule</artifactId>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.noear</groupId>

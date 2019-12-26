@@ -1,7 +1,7 @@
 package webapp.demof_schedule;
 
 
-import org.noear.solon.extend.schedule.Job;
+//import org.noear.solon.extend.schedule.Job;
 
 //@Job(cron4x = "* * * * *")
 public class TestJob2 implements Runnable {
