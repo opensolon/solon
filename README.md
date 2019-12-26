@@ -50,7 +50,7 @@ public class App{
 | 组件 | 说明 |
 | --- | --- |
 | org.noear:solon-parent | 框架版本管理 |
-| org.noear:solon | 主框架 |
+| org.noear:solon | 主框架（有点像是个壳，可以套在别人身上） |
 
 ###### 快速集成包
 
