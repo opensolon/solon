@@ -1,6 +1,7 @@
 package org.noear.solon.extend.schedule;
 
 import it.sauronsoftware.cron4j.Scheduler;
+import it.sauronsoftware.cron4j.Task;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -26,6 +27,13 @@ public final class JobManager {
         }
     }
 
+    public static void addTask(String cron4, Task task) {
+        _server.schedule(cron4, task);
+    }
+
+    /**
+     * @param cron4x cron4 or 100ms,2s,1m,1h,1d(ms:毫秒；s:秒；m:分；h:小时；d:天)
+     * */
     public static void addJob(String cron4x, Runnable job){
 
         if (cron4x.indexOf(" ") < 0) {
