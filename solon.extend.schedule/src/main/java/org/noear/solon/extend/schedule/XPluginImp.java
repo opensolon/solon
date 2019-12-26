@@ -15,7 +15,10 @@ public class XPluginImp implements XPlugin {
 
         Aop.factory().beanLoaderAdd(Job.class, (clz, bw, anno) -> {
             String cron4x = anno.cron4x();
-            scheduleAdd(cron4x, bw);
+
+            if(anno.enable()) {
+                scheduleAdd(cron4x, bw);
+            }
         });
 
         Aop.beanOnloaded(() -> {

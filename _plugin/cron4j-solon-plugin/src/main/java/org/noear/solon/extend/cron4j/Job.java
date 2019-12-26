@@ -7,5 +7,6 @@ import java.lang.annotation.*;
 @Documented
 public @interface Job {
     String cron4x();
+    boolean enable() default true;
 }
 
