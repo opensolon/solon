@@ -32,8 +32,6 @@ public class XPluginImp implements XPlugin {
         });
     }
 
-
-
     @Override
     public void stop() throws Throwable {
         JobManager.stop();
