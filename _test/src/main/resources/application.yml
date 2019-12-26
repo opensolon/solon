@@ -35,9 +35,9 @@ solon.stop:
   path: /demox/_stop
   host: localhost
 
-#solon.schedule.Task3Run:
-#  cron4x: "*/1 * * * *"
-#  enable: true
+solon.schedule.Task3Run:
+  cron4x: "*/1 * * * *"
+  enable: true
 
 custom:
   li:
