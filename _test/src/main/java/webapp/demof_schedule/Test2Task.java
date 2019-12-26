@@ -5,10 +5,11 @@ import it.sauronsoftware.cron4j.TaskExecutionContext;
 import org.noear.solon.extend.cron4j.Job;
 
 @Job(cron4x = "* * * * *")
-public class Test2Task extends Task {
+public class Test2Task implements Runnable {
 
     @Override
-    public void execute(TaskExecutionContext taskExecutionContext) throws RuntimeException {
+    public void run() {
         System.out.println("我是定时任务: Test2Task(* * * * *)");
+        throw new RuntimeException("异常");
     }
 }

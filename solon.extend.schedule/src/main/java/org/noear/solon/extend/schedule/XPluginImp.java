@@ -7,14 +7,30 @@ import org.noear.solon.core.XPlugin;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        Aop.beanOnloaded(()->{
-            Aop.beanForeach((k,v)->{
-                if(v.raw() instanceof IJob){
-                    JobFactory.register(new JobEntity(k,v.raw()));
-                }
-            });
+        JobManager.init();
 
-            JobFactory.run(JobRunner.global);
+        Aop.factory().beanLoaderAdd(Job.class, (clz, bw, anno) -> {
+
+            //只对Runnable有效
+            if (Runnable.class.isAssignableFrom(clz) == false) {
+                throw new RuntimeException("Job only supported Runnable：" + clz.getName());
+            }
+
+            String cron4x = anno.cron4x();
+
+            JobManager.addJob(cron4x, bw.raw());
+
         });
+
+        Aop.beanOnloaded(() -> {
+            JobManager.start();
+        });
+    }
+
+
+
+    @Override
+    public void stop() throws Throwable {
+        JobManager.stop();
     }
 }

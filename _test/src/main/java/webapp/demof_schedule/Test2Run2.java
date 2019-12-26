@@ -8,5 +8,6 @@ public class Test2Run2 implements Runnable {
     @Override
     public void run() {
         System.out.println("我是定时任务: Test2Run2(200ms)");
+        throw new RuntimeException("异常");
     }
 }
