@@ -12,7 +12,7 @@
 
 * Handler + Context 架构
 * 支持：Http（Serverlet 或 非Serverlet），WebSocket，Socket 接入
-* 支持：MVC，IOC，AOP...（不支持 JSR330，是一个完全独立的环境）
+* 支持：MVC，IOC，AOP...（不支持JSR330，但也更利于跨平台迁移）
 * 概念有：控制器，拦截器，触发器，渲染器；注解，插件
 * 插件扩展：启动插件，扩展插件，序列化插件，视图插件(可共存) 等...
 
