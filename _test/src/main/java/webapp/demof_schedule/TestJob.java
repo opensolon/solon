@@ -1,6 +1,5 @@
 package webapp.demof_schedule;
 
-import org.noear.solon.annotation.XBean;
 import org.noear.solon.extend.schedule.Job;
 
 @Job(cron4x = "2s")
