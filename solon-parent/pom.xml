@@ -119,11 +119,6 @@
                 <artifactId>solon.extend.schedule</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.extend.cron4j</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
 
 
             <dependency>
@@ -250,6 +245,16 @@
                 <groupId>com.squareup.okhttp3</groupId>
                 <artifactId>okhttp</artifactId>
                 <version>${okhttp.ver}</version>
+            </dependency>
+
+
+
+
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>cron4j-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -391,7 +396,6 @@
         <module>../solon.extend.properties.yaml</module>
         <module>../solon.extend.stop</module>
         <module>../solon.extend.schedule</module>
-        <module>../solon.extend.cron4j</module>
         <!--        <module>../solon.extend.aopx</module>-->
 
 
@@ -403,6 +407,8 @@
 
         <module>../solon-mvc</module>
         <module>../solon-api</module>
+
+        <module>../_plugin/cron4j-solon-plugin</module>
 
     </modules>
 

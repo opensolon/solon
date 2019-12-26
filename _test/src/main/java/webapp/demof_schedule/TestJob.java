@@ -3,7 +3,7 @@ package webapp.demof_schedule;
 import org.noear.solon.annotation.XBean;
 import org.noear.solon.extend.schedule.IJob;
 
-@XBean("job:test")
+//@XBean("job:test")
 public class TestJob implements IJob {
     @Override
     public int getInterval() {

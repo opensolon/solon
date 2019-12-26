@@ -199,7 +199,7 @@
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.cron4j</artifactId>
+            <artifactId>cron4j-solon-plugin</artifactId>
             <scope>compile</scope>
         </dependency>
     </dependencies>

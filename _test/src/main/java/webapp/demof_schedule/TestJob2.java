@@ -5,7 +5,7 @@ import org.noear.solon.extend.schedule.IJob;
 
 import java.time.LocalDateTime;
 
-@XBean
+//@XBean
 public class TestJob2 implements IJob {
     @Override
     public int getInterval() {
