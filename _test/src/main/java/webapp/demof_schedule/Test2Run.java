@@ -2,7 +2,7 @@ package webapp.demof_schedule;
 
 import org.noear.solon.extend.cron4j.Job;
 
-@Job(cron4x = "* * * * *")
+//@Job(cron4x = "* * * * *")
 public class Test2Run implements Runnable {
 
     @Override
