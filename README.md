@@ -103,6 +103,10 @@ public class App{
 | --- | --- |
 | org.noear:solonclient | solon rpc client 与solon 的 rpc service 配对 |
 
+| 外部框架适配 | 说明 |
+| --- | --- |
+| org.noear:cron4j-solon-plugin | cron4j 适配 |
+
 ### 附1：入门示例
 * 微框架示例
 ```xml
