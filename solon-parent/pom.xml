@@ -256,6 +256,9 @@
                 <artifactId>cron4j-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+
+
+
         </dependencies>
     </dependencyManagement>
 

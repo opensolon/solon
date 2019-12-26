@@ -24,3 +24,4 @@ solon.view.mapping.ftl: FreemarkerRender
 solon.view.mapping.jsp: JspRender
 solon.view.mapping.html: ThymeleafRender
 solon.view.mapping.vm: org.noear.solon.view.velocity.VelocityRender #全名（一般用简写）
+
