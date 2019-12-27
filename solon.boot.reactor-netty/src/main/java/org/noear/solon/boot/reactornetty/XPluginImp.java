@@ -26,7 +26,7 @@ public class XPluginImp implements XPlugin {
         try {
             System.out.println("solon.Server:main: Reactornetty 0.9");
 
-            HttpRequestHandler handler = new HttpRequestHandler();
+            RnHttpHandler handler = new RnHttpHandler();
 
             //
             // https://projectreactor.io/docs/netty/release/reference/index.html#_starting_and_stopping_2

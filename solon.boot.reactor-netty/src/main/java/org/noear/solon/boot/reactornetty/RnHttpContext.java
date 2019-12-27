@@ -23,12 +23,19 @@ import static io.netty.handler.codec.http.HttpHeaderNames.SET_COOKIE;
 import static io.netty.handler.codec.http.HttpHeaderNames.COOKIE;
 
 
-public class NettyHttpContext extends XContext {
+public class RnHttpContext extends XContext {
     private final HttpServerRequest _request;
     private final HttpServerResponse _response;
-    public NettyHttpContext(HttpServerRequest request, HttpServerResponse response) {
+    private final HttpRequestParser _request_parse;
+    public RnHttpContext(HttpServerRequest request, HttpServerResponse response, HttpRequestParser request_parse) {
         _request = request;
         _response = response;
+
+        try {
+            _request_parse = request_parse.parse();
+        }catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
@@ -110,8 +117,12 @@ public class NettyHttpContext extends XContext {
 
     @Override
     public String[] paramValues(String key) {
-        _request.param(key);
-        return null;
+        List<String> tmp = _request_parse.parmMap.get(key);
+        if(tmp == null){
+            return null;
+        }else{
+            return tmp.toArray(new String[tmp.size()]);
+        }
     }
 
     @Override
@@ -134,13 +145,14 @@ public class NettyHttpContext extends XContext {
     private XMap _paramMap;
     @Override
     public XMap paramMap() {
-        if (_paramMap == null) {
+        if(_paramMap == null){
             _paramMap = new XMap();
 
-            Map<String, String> tmp = _request.params();
-            if (tmp != null) {
-                _paramMap.putAll(tmp);
-            }
+            _request_parse.parmMap.forEach((k,l)->{
+                if(l.size() > 0){
+                    _paramMap.put(k,l.get(0));
+                }
+            });
         }
 
         return _paramMap;
@@ -148,7 +160,7 @@ public class NettyHttpContext extends XContext {
 
     @Override
     public List<XFile> files(String key) throws Exception {
-        return null; //_request_parse.fileMap.get(key);
+        return _request_parse.fileMap.get(key);
     }
 
     @Override
