@@ -64,7 +64,7 @@ class XActionUtil {
                             XFile file = ctx.file(pn);
                             args.add(file);
                         } else {
-                            if (pt.getName().startsWith("java.")) {
+                            if (pt.getName().startsWith("java.") || pt.isArray()) {
                                 //如果是基本类型，则为null
                                 args.add(null);
                             } else {
