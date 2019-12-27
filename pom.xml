@@ -21,15 +21,15 @@
     <modules>
         <module>solon-parent</module>
 
-        <module>solon.boot.reactor-netty</module>
+
         <module>solon.boot.rapidoid-http-fast</module>
         <module>solon.boot.tomcat</module>
 
-        <module>solon-mvc-beetl</module>
         <module>solon.view.rocker</module>
 
         <module>_demo</module>
         <module>_test</module>
+        <module>_testTmp</module>
 
     </modules>
 </project>

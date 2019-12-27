@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>solon-mvc-beetl</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <dependencies>
         <dependency>

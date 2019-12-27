@@ -3,19 +3,24 @@ package org.noear.solon.boot.reactornetty;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
+import io.netty.handler.codec.http.cookie.Cookie;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XFile;
 import org.noear.solon.core.XMap;
 import reactor.netty.http.server.HttpServerRequest;
 import reactor.netty.http.server.HttpServerResponse;
 
+
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static io.netty.handler.codec.http.HttpHeaderNames.SET_COOKIE;
+import static io.netty.handler.codec.http.HttpHeaders.Names.COOKIE;
 
 
 public class NettyHttpContext extends XContext {
@@ -95,23 +100,17 @@ public class NettyHttpContext extends XContext {
 
     @Override
     public String body() throws IOException {
-        return _request.receiveContent().blockFirst().toString();
+        return _request.receiveContent().blockFirst().content().toString();
     }
 
     @Override
     public InputStream bodyAsStream() throws IOException {
-        return null;//new ByteArrayInputStream(_request.receiveContent().blockFir);
+        return new ByteArrayInputStream(_request.receiveContent().blockFirst().content().array());
     }
 
     @Override
     public String[] paramValues(String key) {
         _request.param(key);
-//        List<String> tmp = _request_parse.parmMap.get(key);
-//        if(tmp == null){
-//            return null;
-//        }else{
-//            return tmp.toArray(new String[tmp.size()]);
-//        }
         return null;
     }
 
@@ -135,14 +134,13 @@ public class NettyHttpContext extends XContext {
     private XMap _paramMap;
     @Override
     public XMap paramMap() {
-        if(_paramMap == null){
+        if (_paramMap == null) {
             _paramMap = new XMap();
 
-//            _request_parse.parmMap.forEach((k,l)->{
-//                if(l.size() > 0){
-//                    _paramMap.put(k,l.get(0));
-//                }
-//            });
+            Map<String, String> tmp = _request.params();
+            if (tmp != null) {
+                _paramMap.putAll(tmp);
+            }
         }
 
         return _paramMap;
@@ -174,14 +172,14 @@ public class NettyHttpContext extends XContext {
         if(_cookieMap == null){
             _cookieMap = new XMap();
 
-//            String _cookieMapStr = _request.headers().get(COOKIE);
-//            if (_cookieMapStr != null) {
-//                Set<Cookie> tmp = ServerCookieDecoder.LAX.decode(_cookieMapStr);
-//
-//                for(Cookie c1 :tmp){
-//                    _cookieMap.put(c1.name(),c1.value());
-//                }
-//            }
+            String _cookieMapStr = _request.requestHeaders().get(COOKIE);
+            if (_cookieMapStr != null) {
+                Set<Cookie> tmp = ServerCookieDecoder.LAX.decode(_cookieMapStr);
+
+                for(Cookie c1 :tmp){
+                    _cookieMap.put(c1.name(),c1.value());
+                }
+            }
         }
 
         return _cookieMap;
@@ -189,7 +187,7 @@ public class NettyHttpContext extends XContext {
 
     @Override
     public String header(String key) {
-        return _request.requestHeaders().get(key);
+        return headerMap().get(key);
     }
 
     @Override
@@ -251,7 +249,6 @@ public class NettyHttpContext extends XContext {
             OutputStream out = _outputStream;
 
             out.write(str.getBytes(_charset));
-            out.flush();
         }catch (Throwable ex){
             throw new RuntimeException(ex);
         }
@@ -267,8 +264,6 @@ public class NettyHttpContext extends XContext {
             while ((rc = stream.read(buff, 0, 100)) > 0) {
                 out.write(buff, 0, rc);
             }
-
-            out.flush();
         }catch (Throwable ex){
             throw new RuntimeException(ex);
         }
@@ -326,11 +321,5 @@ public class NettyHttpContext extends XContext {
     public void status(int status) {
         _status = status;
         _response.status(status);
-    }
-
-    @Override
-    protected void commit() throws IOException{
-        //_response.send();
-        //_response.content().writeBytes(_outputStream.toByteArray());
     }
 }

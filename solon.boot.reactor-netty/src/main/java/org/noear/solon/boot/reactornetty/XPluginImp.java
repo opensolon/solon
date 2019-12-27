@@ -15,7 +15,7 @@ public class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
-        if(app.enableHttp == false){
+        if (app.enableHttp == false) {
             return;
         }
 
@@ -28,6 +28,9 @@ public class XPluginImp implements XPlugin {
 
             HttpRequestHandler handler = new HttpRequestHandler();
 
+            //
+            // https://projectreactor.io/docs/netty/release/reference/index.html#_starting_and_stopping_2
+            //
             _server = HttpServer.create()
                     .compress(true)
                     .protocol(HttpProtocol.HTTP11)
@@ -35,6 +38,11 @@ public class XPluginImp implements XPlugin {
                     .port(app.port())
                     .handle(handler)
                     .bindNow();
+
+            new Thread(() -> {
+                _server.onDispose()
+                        .block();
+            }).start();
 
             long time_end = System.currentTimeMillis();
 
@@ -48,8 +56,7 @@ public class XPluginImp implements XPlugin {
     @Override
     public void stop() throws Throwable {
         if (_server != null) {
-            _server.onDispose()
-                    .block();
+            _server.dispose();
             _server = null;
         }
     }

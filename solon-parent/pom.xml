@@ -80,6 +80,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.boot.reactor-netty</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.boot.jetty</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -218,6 +223,13 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-mvc</artifactId>
+                <version>${solon.ver}</version>
+                <type>pom</type>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-mvc-beetl</artifactId>
                 <version>${solon.ver}</version>
                 <type>pom</type>
             </dependency>
@@ -365,6 +377,7 @@
         <module>../solon.boot.jlhttp</module>
         <module>../solon.boot.jdkhttp</module>
         <module>../solon.boot.nettyhttp</module>
+        <module>../solon.boot.reactor-netty</module>
         <!--        <module>../solon.boot.reactor-netty</module>-->
         <!--        <module>../solon.boot.rapidoid-http-fast</module>-->
         <module>../solon.boot.smarthttp</module>
@@ -409,9 +422,11 @@
 
 
         <module>../solon-mvc</module>
+        <module>../solon-mvc-beetl</module>
         <module>../solon-api</module>
 
         <module>../_plugin/cron4j-solon-plugin</module>
+<!--        <module>../_plugin/beetlsql-solon-plugin</module>-->
 
     </modules>
 

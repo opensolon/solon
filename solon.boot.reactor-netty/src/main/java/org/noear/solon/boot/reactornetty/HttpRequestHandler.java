@@ -1,5 +1,6 @@
 package org.noear.solon.boot.reactornetty;
 
+import io.netty.buffer.ByteBuf;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.reactivestreams.Publisher;

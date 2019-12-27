@@ -42,7 +42,12 @@ public class ParameterFilter extends Filter {
     private void parsePostParameters(HttpExchange exchange)
             throws IOException {
 
-        if ("post".equalsIgnoreCase(exchange.getRequestMethod())) {
+        String method = exchange.getRequestMethod();
+
+        if ("POST".equalsIgnoreCase(method)
+                || "PUT".equalsIgnoreCase(method)
+                || "DELETE".equalsIgnoreCase(method)
+                || "PATCH".equalsIgnoreCase(method)) {
             String ct = exchange.getRequestHeaders().getFirst("Content-Type");
             if (ct != null && ct.indexOf("multipart/") >= 0) {
                 return;
