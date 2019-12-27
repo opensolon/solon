@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static io.netty.handler.codec.http.HttpHeaderNames.SET_COOKIE;
-import static io.netty.handler.codec.http.HttpHeaders.Names.COOKIE;
+import static io.netty.handler.codec.http.HttpHeaderNames.COOKIE;
 
 
 public class NettyHttpContext extends XContext {
