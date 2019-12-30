@@ -10,11 +10,10 @@
 支持jdk8，主框架80kb。组合不同的插件应对不同需求。
 
 
-* Handler + Context 架构
-* 支持：Http（Serverlet 或 非Serverlet），WebSocket，Socket 
-* 支持：MVC，IOC，AOP...（不支持JSR330，但也更利于跨平台迁移）
-* 概念有：控制器，拦截器，触发器，渲染器；注解，插件
-* 插件扩展：启动插件，扩展插件，序列化插件，视图插件(可共存) 等...
+* 采用Handler + Context 架构
+* 集成AOP容器
+* 支持Http（Serverlet 或 非Serverlet），WebSocket，Socket信号接口
+* 插件可扩展可切换：启动插件，扩展插件，序列化插件，会话状态插件，视图插件(可共存) 等...
 
 ### Hello world：
 
