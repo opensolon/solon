@@ -1,12 +1,19 @@
 package webapp.demof_schedule;
 
-//import org.noear.solon.extend.schedule.Job;
 
-//@Job(cron4x = "2s")
-public class TestJob implements Runnable {
+import org.noear.solon.annotation.XBean;
+import org.noear.solon.extend.schedule.IJob;
+
+@XBean
+public class TestJob implements IJob {
 
     @Override
-    public void run() {
-        System.out.println("我是定时任务: TestJob(2s)");
+    public int getInterval() {
+        return 1000;
+    }
+
+    @Override
+    public void exec() throws Throwable {
+        System.out.println("我是定时任务: TestJob(1000)");
     }
 }

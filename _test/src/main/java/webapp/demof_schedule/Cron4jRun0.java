@@ -5,7 +5,7 @@ import it.sauronsoftware.cron4j.TaskExecutionContext;
 import org.noear.solon.extend.cron4j.Job;
 
 //@Job(cron4x = "* * * * *")
-public class Test2Task extends Task {
+public class Cron4jRun0 extends Task {
 
     @Override
     public void execute(TaskExecutionContext context) throws RuntimeException {
