@@ -7,10 +7,11 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public class SsContext extends XContextEmpty {
 
-    private Charset _charset = Charset.forName("UTF-8");
+    private Charset _charset = StandardCharsets.UTF_8;
     private InetSocketAddress _inetSocketAddress;
     private AioSession<byte[]> _session;
     private InputStream _inputStream;
