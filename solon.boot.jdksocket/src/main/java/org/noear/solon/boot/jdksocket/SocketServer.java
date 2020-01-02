@@ -9,12 +9,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class SocketServer {
-    ServerSocket server;
+    private ServerSocket server;
+    private SocketProtocol protocol;
     private ExecutorService pool = Executors.newCachedThreadPool();
     private SocketContextHandler handler;
 
     public void setHandler(SocketContextHandler handler){
         this.handler = handler;
+    }
+
+    public void setProtocol(SocketProtocol protocol) {
+        this.protocol = protocol;
     }
 
     public void start(int port)  {
@@ -27,21 +32,23 @@ public class SocketServer {
         }).start();
     }
 
-    private void do_start(int port) throws IOException{
+    private void do_start(int port) throws IOException {
         server = new ServerSocket(port);
 
         System.out.println("Server started, waiting for customer connection...");
 
         while (true) {
-            Socket socket = server.accept();
-            SocketSession session = new SocketSession(socket);
+            Socket connector = server.accept();
+            SocketSession session = new SocketSession(connector);
 
             pool.execute(() -> {
                 while (true) {
-                    SocketMessage msg = session.getMessage();
-                    pool.execute(()->{
-                        handler.handler(session, msg);
-                    });
+                    SocketMessage msg = session.receive(protocol);
+                    if (msg != null) {
+                        pool.execute(() -> {
+                            handler.handler(session, msg);
+                        });
+                    }
                 }
             });
         }

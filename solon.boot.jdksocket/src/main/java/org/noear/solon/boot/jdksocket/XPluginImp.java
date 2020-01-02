@@ -10,6 +10,7 @@ public class XPluginImp implements XPlugin {
 
         long time_start = System.currentTimeMillis();
 
+        SocketProtocol protocol = new SocketProtocol();
         SocketContextHandler handler = new SocketContextHandler(app);
 
         System.out.println("solon.Server:main: java.net.ServerSocket jdk8");
@@ -18,6 +19,7 @@ public class XPluginImp implements XPlugin {
 
         try {
             _server = new SocketServer();
+            _server.setProtocol(protocol);
             _server.setHandler(handler);
 
             _server.start(_port);

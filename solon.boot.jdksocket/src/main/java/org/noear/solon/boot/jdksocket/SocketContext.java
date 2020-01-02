@@ -142,7 +142,7 @@ public class SocketContext extends XContextEmpty {
         if (_session.isOpen()) {
             synchronized (_session) {
                 SocketMessage msg = SocketMessage.wrap(_message.key, _message.resourceDescriptor, _outputStream.toByteArray());
-                _session.writeAndFlush(msg);
+                _session.publish(msg);
             }
         }
     }
