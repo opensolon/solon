@@ -17,10 +17,10 @@ public final class XPluginImp implements XPlugin {
 
         int _port = 20000 + app.port();
 
-        SsContextHandler contextHandler = new SsContextHandler(app);
+        AioContextHandler contextHandler = new AioContextHandler(app);
 
-        SsProtocol protocol = new SsProtocol();
-        SsProcessor processor = new SsProcessor(contextHandler);
+        AioProtocol protocol = new AioProtocol();
+        AioProcessor processor = new AioProcessor(contextHandler);
 
         server = new AioQuickServer<>(_port, protocol, processor);
         server.setBannerEnabled(false);

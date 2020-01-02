@@ -6,11 +6,11 @@ import org.smartboot.socket.transport.AioSession;
 
 import java.io.PrintWriter;
 
-public class SsContextHandler {
+public class AioContextHandler {
     protected XApp xapp;
     protected boolean debug;
 
-    public SsContextHandler(XApp xapp) {
+    public AioContextHandler(XApp xapp) {
         this.xapp = xapp;
         this.debug = xapp.prop().isDebugMode();
     }
@@ -20,7 +20,7 @@ public class SsContextHandler {
             return;
         }
 
-        SsContext context = new SsContext(session, request);
+        AioContext context = new AioContext(session, request);
 
         try {
             xapp.handle(context);

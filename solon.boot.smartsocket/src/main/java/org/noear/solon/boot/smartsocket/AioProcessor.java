@@ -5,10 +5,10 @@ import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.StateMachineEnum;
 import org.smartboot.socket.transport.AioSession;
 
-public class SsProcessor implements MessageProcessor<SocketMessage> {
-    private SsContextHandler _contextHandler;
+public class AioProcessor implements MessageProcessor<SocketMessage> {
+    private AioContextHandler _contextHandler;
 
-    public SsProcessor(SsContextHandler contextHandler) {
+    public AioProcessor(AioContextHandler contextHandler) {
         this._contextHandler = contextHandler;
     }
 

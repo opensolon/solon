@@ -38,7 +38,7 @@ public class TestApp {
 
 
         //socket test
-        SoDemoClientTest.test();
+        SsDemoClientTest.test();
 
 //        //web socket send 监听
 //        app.send("/seb/test",(c)->{

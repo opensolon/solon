@@ -5,6 +5,7 @@ import org.noear.solon.core.SocketMessage;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class SocketSession {
     private final Socket connector;
@@ -18,7 +19,11 @@ public class SocketSession {
     }
 
     public void close() throws IOException {
-        connector.close();
+        synchronized (connector){
+            connector.shutdownInput();
+            connector.shutdownOutput();
+            connector.close();
+        }
     }
 
     public InetAddress getRemoteAddress() {
@@ -28,7 +33,11 @@ public class SocketSession {
     public SocketMessage receive(SocketProtocol protocol) {
         try {
             return protocol.decode(connector, connector.getInputStream());
-        } catch (Throwable ex) {
+        }
+        catch (SocketException ex){
+            return null;
+        }
+        catch (Throwable ex) {
             System.out.println("Decoding failure::");
             ex.printStackTrace();
             return null;

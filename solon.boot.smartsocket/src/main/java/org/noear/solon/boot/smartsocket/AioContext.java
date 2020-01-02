@@ -9,12 +9,12 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.URI;
 
-public class SsContext extends XContextEmpty {
+public class AioContext extends XContextEmpty {
     private InetSocketAddress _inetSocketAddress;
     private AioSession<SocketMessage> _session;
     private SocketMessage _message;
 
-    public SsContext(AioSession<SocketMessage> session, SocketMessage message) {
+    public AioContext(AioSession<SocketMessage> session, SocketMessage message) {
         _session = session;
         _message = message;
 

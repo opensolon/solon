@@ -43,6 +43,10 @@ public class SocketServer {
 
             pool.execute(() -> {
                 while (true) {
+                    if(session.isOpen() == false){
+                        return;
+                    }
+
                     SocketMessage msg = session.receive(protocol);
                     if (msg != null) {
                         pool.execute(() -> {

@@ -1,4 +1,4 @@
-package org.noear.solon.boot.jdksocket;
+package webapp.demoh_socket;
 
 import org.noear.solon.core.SocketMessage;
 

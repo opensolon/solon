@@ -13,7 +13,7 @@ import java.nio.ByteBuffer;
 public class SoDemoClientTest {
 
     public static void test() {
-        //do_test();
+//        do_test();
 
         for(int i=0; i<10; i++){
             new Thread(()->do_test()).start();
@@ -23,18 +23,25 @@ public class SoDemoClientTest {
     private static void do_test(){
         try {
 
-            Socket socket = start();
+            SocketClient client = new SocketClient();
+            client.start();
 
             Thread.sleep(100);
 
-            send(socket,"/demog/中文/1","Hello 世界!", msg->{
+            client.send("/demog/中文/1","Hello 世界!", msg->{
                 System.out.println(msg.toString());
             });
 
 
             Thread.sleep(100);
 
-            send(socket,"/demog/中文/2","Hello 世界2!", msg->{
+            client.send("/demog/中文/2","Hello 世界2!", msg->{
+                System.out.println(msg.toString());
+            });
+
+            Thread.sleep(100);
+
+            client.send("/demog/中文/3","close", msg->{
                 System.out.println(msg.toString());
             });
 
@@ -43,28 +50,10 @@ public class SoDemoClientTest {
         }
     }
 
-    private static void send(Socket socket,String path, String message, Act1<SocketMessage> callback) throws Exception {
-        // 建立连接后获得输出流
-        SocketMessage msg = SocketMessage.wrap(path, message.getBytes("utf-8"));
-
-        synchronized (socket) {
-            socket.getOutputStream().write(msg.encode().array());
-            socket.getOutputStream().flush();
-            msg = getMessage(socket.getInputStream());
-        }
-
-        callback.run(msg);
-    }
 
 
-    private static Socket start() throws Exception{
-        // 要连接的服务端IP地址和端口
-        String host = "127.0.0.1";
-        int port = 20000 + XApp.global().port();
-        // 与服务端建立连接
-        return new Socket(host, port);
 
-    }
+
 
     public static byte[] getBytes(InputStream input) throws IOException {
         if (input == null) {
