@@ -54,6 +54,7 @@ public class SsDemoProcessor implements MessageProcessor<SocketMessage> {
                 SocketMessage msg = SocketMessage.wrap(path, message.getBytes("utf-8"));
                 msgCallback.put(msg.key, callback);
                 session.writeBuffer().writeAndFlush(msg.encode().array());
+//                session.writeBuffer().close();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

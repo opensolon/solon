@@ -5,10 +5,6 @@ import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.StateMachineEnum;
 import org.smartboot.socket.transport.AioSession;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-@SuppressWarnings("unchecked")
 public class SsProcessor implements MessageProcessor<SocketMessage> {
     private SsContextHandler _contextHandler;
 

@@ -7,6 +7,9 @@ import org.smartboot.socket.transport.AioQuickClient;
 public class SsDemoClientTest {
 
     public static void test() {
+
+//        do_test();
+
         for(int i=0; i<10; i++){
             new Thread(()->do_test()).start();
         }
@@ -43,11 +46,11 @@ public class SsDemoClientTest {
             });
 
 
-            Thread.sleep(100);
-
-            processor.send("/demog/中文/3","close", msg->{
-                System.out.println(msg.toString());
-            });
+//            Thread.sleep(100);
+//
+//            processor.send("/demog/中文/3","close", msg->{
+//                System.out.println(msg.toString());
+//            });
 
         } catch (Exception e) {
             e.printStackTrace();

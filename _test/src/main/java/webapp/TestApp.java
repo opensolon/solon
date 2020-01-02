@@ -3,6 +3,7 @@ package webapp;
 import org.noear.solon.XApp;
 import org.noear.solon.core.XPlugin;
 import webapp.demog_socket.SsDemoClientTest;
+import webapp.demoh_socket.SoDemoClientTest;
 
 public class TestApp {
     public static void main(String[] args) {
@@ -37,7 +38,7 @@ public class TestApp {
 
 
         //socket test
-        SsDemoClientTest.test();
+        SoDemoClientTest.test();
 
 //        //web socket send 监听
 //        app.send("/seb/test",(c)->{

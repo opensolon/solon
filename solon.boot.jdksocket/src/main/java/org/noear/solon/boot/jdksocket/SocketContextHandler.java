@@ -12,14 +12,12 @@ public class SocketContextHandler {
         this.xapp = xapp;
     }
 
-    public void handler(SocketSession session) {
-        SocketMessage request = session.getMessage();
-
-        if(request == null){
+    public void handler(SocketSession session, SocketMessage message) {
+        if (message == null) {
             return;
         }
 
-        SocketContext context = new SocketContext(session,request);
+        SocketContext context = new SocketContext(session, message);
 
         try {
             xapp.handle(context);

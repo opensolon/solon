@@ -61,6 +61,8 @@ public final class SocketMessage {
         //1.解码key and uri
         ByteBuffer sb = ByteBuffer.allocate(Math.min(256, buffer.limit()));
 
+        int len0 = buffer.getInt();
+
         String key = readStr(buffer, sb);
         if (key == null) {
             return null;
@@ -72,8 +74,9 @@ public final class SocketMessage {
         }
 
         //2.解码body
-        byte[] bytes = new byte[buffer.limit() - buffer.position()];
-        buffer.get(bytes, 0, buffer.limit() - buffer.position());
+        int len = len0 - buffer.position();
+        byte[] bytes = new byte[len];
+        buffer.get(bytes, 0, len);
 
         SocketMessage msg = new SocketMessage();
         msg.key = key;
@@ -90,15 +93,22 @@ public final class SocketMessage {
         byte[] keyB = key.getBytes(charset);
         byte[] rdB = resourceDescriptor.getBytes(charset);
 
-        int len = keyB.length + rdB.length + content.length + 2 * 2;
+        int len = keyB.length + rdB.length + content.length + 2 * 2 + 4;
 
         ByteBuffer buffer = ByteBuffer.allocate(len);
+
+        //长度
+        buffer.putInt(len);
+
+        //key
         buffer.put(keyB);
         buffer.putChar('\n');
 
+        //resourceDescriptor
         buffer.put(rdB);
         buffer.putChar('\n');
 
+        //content
         buffer.put(content);
 
         return buffer;

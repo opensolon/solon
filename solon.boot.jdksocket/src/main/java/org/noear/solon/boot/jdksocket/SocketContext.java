@@ -139,9 +139,11 @@ public class SocketContext extends XContextEmpty {
 
     @Override
     protected void commit() throws IOException {
-        if (_session.isOpen() == false) {
-            SocketMessage msg =  SocketMessage.wrap(_message.key, _message.resourceDescriptor, _outputStream.toByteArray());
-            _session.writeAndFlush(msg);
+        if (_session.isOpen()) {
+            synchronized (_session) {
+                SocketMessage msg = SocketMessage.wrap(_message.key, _message.resourceDescriptor, _outputStream.toByteArray());
+                _session.writeAndFlush(msg);
+            }
         }
     }
 

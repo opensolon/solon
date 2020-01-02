@@ -15,6 +15,10 @@ public class SsDemoProtocol implements Protocol<SocketMessage> {
 
     @Override
     public SocketMessage decode(ByteBuffer buffer, AioSession<SocketMessage> session) {
+        if(buffer.position() > 0) {
+            buffer.position(0);
+        }
+
         return SocketMessage.decode(buffer);
     }
 }
