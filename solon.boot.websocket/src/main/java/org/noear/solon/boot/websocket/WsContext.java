@@ -42,7 +42,7 @@ public class WsContext extends XContextEmpty {
 
     @Override
     public String method() {
-        return "SEND";
+        return XMethod.SEND.name;
     }
 
     @Override

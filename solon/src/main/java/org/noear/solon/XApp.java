@@ -279,13 +279,20 @@ public class XApp implements XHandler {
     }
 
     /**
-     * 添加所有方法的监听（GET,POST,PUT,PATCH,DELETE,HEAD）
+     * 添加所有方法监听
      */
     public void all(String path, XHandler handler) {
-        add(path, XMethod.HTTP, handler);
+        add(path, XMethod.ALL, handler);
     }
 
     //http
+
+    /**
+     * 添加HTTP所有方法的监听（GET,POST,PUT,PATCH,DELETE,HEAD）
+     */
+    public void http(String path, XHandler handler) {
+        add(path, XMethod.HTTP, handler);
+    }
 
     /**
      * 添加GET方法的监听（REST.select 从服务端获取一或多项资源）
@@ -323,10 +330,17 @@ public class XApp implements XHandler {
     }
 
     /**
-     * 添加SEND方法的监听（on web send）
+     * 添加web socket方法的监听
      */
-    public void send(String path, XHandler handler){
+    public void ws(String path, XHandler handler){
         add(path, XMethod.SEND, handler);
+    }
+
+    /**
+     * 添加socket方法的监听
+     */
+    public void socket(String path, XHandler handler){
+        add(path, XMethod.LISTEN, handler);
     }
 
     /**

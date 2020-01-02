@@ -7,7 +7,8 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.0.4</version>
+        <version>1.0.4.1</version>
+        <relativePath>../solon-parent/pom.xml</relativePath>
     </parent>
 
     <artifactId>solon.view.velocity</artifactId>

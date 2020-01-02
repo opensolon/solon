@@ -23,7 +23,15 @@ public enum XMethod {
     HTTP("HTTP", 20),
 
     /** web socket send */
-    SEND("SEND", 31);
+    SEND("SEND", 31),
+    WEBSOCKET("WEBSOCKET", 31),
+
+    /** socket listen */
+    LISTEN("LISTEN",41),
+    SOCKET("SOCKET", 41),
+
+
+    ALL("ALL", 99);
 
     public final String name;
     public final int code;
