@@ -24,8 +24,6 @@ public final class XPluginImp implements XPlugin {
 
         server = new AioQuickServer<>(_port, protocol, processor);
 
-        //server.setThreadNum(app.prop().rpcxMaxPoolSize());
-
         try {
             server.start();
         } catch (Exception ex) {
