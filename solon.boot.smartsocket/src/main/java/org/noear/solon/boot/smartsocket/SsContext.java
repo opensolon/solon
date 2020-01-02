@@ -1,5 +1,6 @@
 package org.noear.solon.boot.smartsocket;
 
+import org.noear.solon.core.SocketRequest;
 import org.noear.solon.core.XContextEmpty;
 import org.noear.solon.core.XMethod;
 import org.smartboot.socket.transport.AioSession;
@@ -14,12 +15,12 @@ public class SsContext extends XContextEmpty {
 
     private Charset _charset = StandardCharsets.UTF_8;
     private InetSocketAddress _inetSocketAddress;
-    private AioSession<byte[]> _session;
-    private InputStream _inputStream;
+    private AioSession<SocketRequest> _session;
+    private SocketRequest _request;
 
-    public SsContext(AioSession<byte[]> session, InputStream inputStream){
+    public SsContext(AioSession<SocketRequest> session, SocketRequest request){
         _session = session;
-        _inputStream = inputStream;
+        _request = request;
 
         try {
             _inetSocketAddress = session.getRemoteAddress();
@@ -91,7 +92,7 @@ public class SsContext extends XContextEmpty {
 
     @Override
     public String body() throws IOException {
-        InputStream inpStream = _inputStream;
+        InputStream inpStream = _request.message;
 
         StringBuilder content = new StringBuilder();
         byte[] b = new byte[1024];
@@ -105,7 +106,7 @@ public class SsContext extends XContextEmpty {
 
     @Override
     public InputStream bodyAsStream() throws IOException {
-        return _inputStream;
+        return _request.message;
     }
 
     //==============

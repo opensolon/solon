@@ -1,12 +1,13 @@
 package org.noear.solon.boot.smartsocket;
 
 import org.noear.solon.XApp;
+import org.noear.solon.core.SocketRequest;
 import org.noear.solon.core.XPlugin;
 import org.smartboot.socket.transport.AioQuickServer;
 
 public final class XPluginImp implements XPlugin {
 
-    private AioQuickServer<byte[]> server = null;
+    private AioQuickServer<SocketRequest> server = null;
 
     @Override
     public void start(XApp app) {
