@@ -33,12 +33,6 @@ public final class SocketMessage {
 
     }
 
-    /**
-     * 打包
-     * */
-    public static SocketMessage wrap(String resourceDescriptor, String str) {
-        return wrap(resourceDescriptor, str.getBytes(Charset.defaultCharset()));
-    }
 
     /**
      * 打包
