@@ -23,21 +23,23 @@ public class SsDemoClientTest {
                 }
             }
 
-
-            SocketMessage msg = new SocketMessage("/demog/中文/1","Hello 世界!");
-            processor.session.writeBuffer().writeAndFlush(msg.wrap().array());
-
-            Thread.sleep(100);
-
-            msg = new SocketMessage("/demog/中文/2","Hello 世界2!");
-            processor.session.writeBuffer().writeAndFlush(msg.wrap().array());
+            processor.send("/demog/中文/1","Hello 世界!", msg->{
+                System.out.println(msg.contentAsString());
+            });
 
 
             Thread.sleep(100);
 
-            msg = new SocketMessage("/demog/中文/3","close");
-            processor.session.writeBuffer().writeAndFlush(msg.wrap().array());
+            processor.send("/demog/中文/2","Hello 世界2!", msg->{
+                System.out.println(msg.contentAsString());
+            });
 
+
+            Thread.sleep(100);
+
+            processor.send("/demog/中文/3","close", msg->{
+                System.out.println(msg.contentAsString());
+            });
 
         } catch (Exception e) {
             e.printStackTrace();

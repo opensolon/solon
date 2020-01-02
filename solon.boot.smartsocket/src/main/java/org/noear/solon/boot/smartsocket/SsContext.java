@@ -14,13 +14,13 @@ public class SsContext extends XContextEmpty {
     private AioSession<SocketMessage> _session;
     private SocketMessage _message;
 
-    public SsContext(AioSession<SocketMessage> session, SocketMessage message){
+    public SsContext(AioSession<SocketMessage> session, SocketMessage message) {
         _session = session;
         _message = message;
 
         try {
             _inetSocketAddress = session.getRemoteAddress();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -32,7 +32,7 @@ public class SsContext extends XContextEmpty {
 
     @Override
     public String ip() {
-        if(_inetSocketAddress == null)
+        if (_inetSocketAddress == null)
             return null;
         else
             return _inetSocketAddress.getAddress().getHostAddress();
@@ -55,12 +55,13 @@ public class SsContext extends XContextEmpty {
 
     @Override
     public URI uri() {
-        if(_uri == null) {
+        if (_uri == null) {
             _uri = URI.create(url());
         }
 
         return _uri;
     }
+
     private URI _uri;
 
     @Override
@@ -102,21 +103,22 @@ public class SsContext extends XContextEmpty {
 
     @Override
     public void contentType(String contentType) {
-        headerSet("Content-Type",contentType );
+        headerSet("Content-Type", contentType);
     }
 
 
     ByteArrayOutputStream _outputStream = new ByteArrayOutputStream();
+
     @Override
     public OutputStream outputStream() {
         return _outputStream;
     }
 
     @Override
-    public void output(String str)  {
+    public void output(String str) {
         try {
             outputStream().write(str.getBytes(_charset));
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -130,7 +132,7 @@ public class SsContext extends XContextEmpty {
                 outputStream().write(buff, 0, rc);
             }
 
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -138,8 +140,8 @@ public class SsContext extends XContextEmpty {
 
     @Override
     protected void commit() throws IOException {
-        if(_session.isInvalid() == false) {
-            SocketMessage msg = new SocketMessage(_message.resourceDescriptor, _outputStream.toByteArray());
+        if (_session.isInvalid() == false) {
+            SocketMessage msg = new SocketMessage(_message.key, _message.resourceDescriptor, _outputStream.toByteArray());
             _session.writeBuffer().writeAndFlush(msg.wrap().array());
         }
     }

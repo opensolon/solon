@@ -17,14 +17,34 @@ public class SsProtocol implements Protocol<SocketMessage> {
 
     @Override
     public SocketMessage decode(ByteBuffer buffer, AioSession<SocketMessage> session) {
-        //: /\n,最少两个
-        if (buffer.limit() < 2) {
+        //: {key}\n/\n,最少两个
+        if (buffer.limit() < 10) {
             return null;
-            //throw new RuntimeException("Protocol decoding error!");
         }
 
-        //1.解码res
-        ByteBuffer sb = ByteBuffer.allocate(Math.min(256,buffer.limit()));
+        //1.解码key and uri
+        ByteBuffer sb = ByteBuffer.allocate(Math.min(256, buffer.limit()));
+
+        String key = readStr(buffer, sb);
+        if(key == null){
+            return null;
+        }
+
+        String uri = readStr(buffer, sb);
+        if(uri == null){
+            return null;
+        }
+
+        //2.解码body
+        byte[] bytes = new byte[buffer.limit() - buffer.position()];
+        buffer.get(bytes, 0, buffer.limit() - buffer.position());
+
+        return new SocketMessage(key, uri, bytes);
+    }
+
+    private String readStr(ByteBuffer buffer, ByteBuffer sb) {
+        sb.position(0);
+
         while (true) {
             byte c = buffer.get();
 
@@ -37,23 +57,15 @@ public class SsProtocol implements Protocol<SocketMessage> {
             //url 太长了
             if (URL_MAX_LEN < buffer.position()) {
                 return null;
-                //throw new RuntimeException("Protocol decoding error!");
             }
         }
 
         sb.flip();
         if (sb.limit() < 1) {
             return null;
-            //throw new RuntimeException("Protocol decoding error!");
         }
 
-        String uri = new String(sb.array(), 0, sb.limit());
-
-        //2.解码body
-        byte[] bytes = new byte[buffer.limit() - buffer.position()];
-        buffer.get(bytes, 0, buffer.limit() - buffer.position());
-
-        return new SocketMessage(uri, bytes);
+        return new String(sb.array(), 0, sb.limit());
     }
 }
 
