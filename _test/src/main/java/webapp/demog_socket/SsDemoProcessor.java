@@ -9,15 +9,27 @@ import org.smartboot.socket.transport.AioSession;
 @SuppressWarnings("unchecked")
 public class SsDemoProcessor implements MessageProcessor<SocketMessage> {
 
+    public AioSession<SocketMessage> session;
+
     @Override
     public void process(AioSession<SocketMessage> session, SocketMessage request) {
         SsContext ctx = new SsContext(session,request);
 
-        ctx.output("测试");
+        try {
+            System.out.println(ctx.body());
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     @Override
     public void stateEvent(AioSession<SocketMessage> session, StateMachineEnum stateMachineEnum, Throwable throwable) {
+        switch (stateMachineEnum) {
+            case NEW_SESSION:
+                this.session = session;
+                break;
+        }
 
+        System.out.println(stateMachineEnum.name());
     }
 }

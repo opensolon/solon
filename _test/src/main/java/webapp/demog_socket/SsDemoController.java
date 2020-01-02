@@ -8,7 +8,7 @@ import org.noear.solon.core.XMethod;
 @XController
 public class SsDemoController {
 
-    @XMapping(value = "/demog/*", method = XMethod.SOCKET)
+    @XMapping(value = "/demog/**", method = XMethod.SOCKET)
     public void test(XContext ctx) throws Exception {
         if (ctx == null) {
             return;

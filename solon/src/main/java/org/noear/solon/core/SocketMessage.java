@@ -21,10 +21,11 @@ public class SocketMessage {
     }
 
     public ByteBuffer wrap() throws IOException {
-        int len = resourceDescriptor.length() + content.length;
+        byte[] rd = resourceDescriptor.getBytes(charset);
+        int len = rd.length + content.length + 2;
 
         ByteBuffer buffer = ByteBuffer.allocate(len);
-        buffer.put(resourceDescriptor.getBytes(charset));
+        buffer.put(rd);
         buffer.putChar('\n');
         buffer.put(content);
 

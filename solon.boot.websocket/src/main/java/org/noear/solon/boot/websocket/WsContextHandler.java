@@ -5,6 +5,8 @@ import org.noear.solon.XApp;
 import org.noear.solon.core.SocketMessage;
 
 import java.io.PrintWriter;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class WsContextHandler {
     protected XApp xapp;
@@ -16,8 +18,7 @@ public class WsContextHandler {
     }
 
     public void handle(WebSocket socket, byte[] message, boolean messageIsString) {
-
-        SocketMessage request = new SocketMessage(socket.getResourceDescriptor(),message);
+        SocketMessage request = new SocketMessage(socket.getResourceDescriptor(), message);
         WsContext context = new WsContext(socket, request, messageIsString);
 
         try {
@@ -29,7 +30,7 @@ public class WsContextHandler {
 
         try {
             context.commit();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }

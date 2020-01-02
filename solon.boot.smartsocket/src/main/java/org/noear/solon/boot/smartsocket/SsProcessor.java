@@ -16,11 +16,7 @@ public class SsProcessor implements MessageProcessor<SocketMessage> {
     @Override
     public void process(AioSession<SocketMessage> session, SocketMessage request) {
         try {
-            SsContext context  =new SsContext(session, request);
-
-            _contextHandler.handle(context);
-
-            context.close();
+            _contextHandler.handle(session, request);
         } catch (Exception e) {
             e.printStackTrace();
         }

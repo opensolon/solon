@@ -106,9 +106,10 @@ public class SsContext extends XContextEmpty {
     }
 
 
+    ByteArrayOutputStream _outputStream = new ByteArrayOutputStream();
     @Override
     public OutputStream outputStream() {
-        return _session.writeBuffer();
+        return _outputStream;
     }
 
     @Override
@@ -137,7 +138,10 @@ public class SsContext extends XContextEmpty {
 
     @Override
     protected void commit() throws IOException {
-        outputStream().flush();
+        if(_session.isInvalid() == false) {
+            SocketMessage msg = new SocketMessage(_message.resourceDescriptor, _outputStream.toByteArray());
+            _session.writeBuffer().writeAndFlush(msg.wrap().array());
+        }
     }
 
     @Override

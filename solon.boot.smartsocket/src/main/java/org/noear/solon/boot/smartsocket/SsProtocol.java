@@ -24,14 +24,14 @@ public class SsProtocol implements Protocol<SocketMessage> {
         }
 
         //1.解码res
-        StringBuilder sb = new StringBuilder(256);
+        ByteBuffer sb = ByteBuffer.allocate(Math.min(256,buffer.limit()));
         while (true) {
-            char c = (char) (buffer.get() & 0xFF);
+            byte c = buffer.get();
 
             if (c == '\n') {
                 break;
-            } else if (c != ' ') {
-                sb.append(c);
+            } else if (c > 32 || c < 0) {
+                sb.put(c);
             }
 
             //url 太长了
@@ -41,16 +41,19 @@ public class SsProtocol implements Protocol<SocketMessage> {
             }
         }
 
-        if (sb.length() < 1) {
+        sb.flip();
+        if (sb.limit() < 1) {
             return null;
             //throw new RuntimeException("Protocol decoding error!");
         }
+
+        String uri = new String(sb.array(), 0, sb.limit());
 
         //2.解码body
         byte[] bytes = new byte[buffer.limit() - buffer.position()];
         buffer.get(bytes, 0, buffer.limit() - buffer.position());
 
-        return new SocketMessage(sb.toString(), bytes);
+        return new SocketMessage(uri, bytes);
     }
 }
 
