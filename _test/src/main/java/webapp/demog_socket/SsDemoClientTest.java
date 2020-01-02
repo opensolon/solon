@@ -5,20 +5,23 @@ import org.noear.solon.core.SocketMessage;
 import org.smartboot.socket.transport.AioQuickClient;
 
 public class SsDemoClientTest {
-    static SsDemoProcessor processor = new SsDemoProcessor();
 
     public static void test() {
-        do_test();
-        do_test();
+        for(int i=0; i<10; i++){
+            new Thread(()->do_test()).start();
+        }
     }
 
     private static void do_test(){
         try {
             Thread.sleep(1000);
 
+            SsDemoProcessor processor = new SsDemoProcessor();
+
             int port = 20000 + XApp.global().port();
             AioQuickClient<SocketMessage> client = new AioQuickClient<>("localhost", port,new SsDemoProtocol(),processor);
             client.start();
+
 
             while (true){
                 if(processor.session ==null){

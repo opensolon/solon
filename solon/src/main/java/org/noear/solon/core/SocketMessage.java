@@ -28,6 +28,11 @@ public final class SocketMessage {
      * */
     public Charset charset = StandardCharsets.UTF_8;
 
+
+    protected SocketMessage(){
+
+    }
+
     /**
      * 打包
      * */

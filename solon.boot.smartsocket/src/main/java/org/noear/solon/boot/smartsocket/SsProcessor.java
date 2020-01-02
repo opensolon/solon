@@ -11,7 +11,6 @@ import java.util.concurrent.Executors;
 @SuppressWarnings("unchecked")
 public class SsProcessor implements MessageProcessor<SocketMessage> {
     private SsContextHandler _contextHandler;
-    private ExecutorService _pool = Executors.newCachedThreadPool();
 
     public SsProcessor(SsContextHandler contextHandler) {
         this._contextHandler = contextHandler;
@@ -20,17 +19,11 @@ public class SsProcessor implements MessageProcessor<SocketMessage> {
 
     @Override
     public void process(AioSession<SocketMessage> session, SocketMessage request) {
-        if (request == null) {
-            return;
+        try {
+            _contextHandler.handle(session, request);
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
-
-        _pool.execute(() -> {
-            try {
-                _contextHandler.handle(session, request);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
     }
 
     @Override

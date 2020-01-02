@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 public class SsDemoProcessor implements MessageProcessor<SocketMessage> {
 
     public AioSession<SocketMessage> session;
-    private Map<String,Act1<SocketMessage>> msgCallback = new HashMap<>();
+    private Map<String, Act1<SocketMessage>> msgCallback = new HashMap<>();
     private ExecutorService pool = Executors.newCachedThreadPool();
 
     @Override
@@ -49,12 +49,12 @@ public class SsDemoProcessor implements MessageProcessor<SocketMessage> {
     }
 
     public void send(String path, String message, Act1<SocketMessage> callback) throws IOException {
-        pool.execute(()->{
+        pool.execute(() -> {
             try {
-                SocketMessage msg = new SocketMessage(UUID.randomUUID().toString(), path, message);
+                SocketMessage msg = SocketMessage.wrap(path, message);
                 msgCallback.put(msg.key, callback);
-                session.writeBuffer().writeAndFlush(msg.wrap().array());
-            }catch (Exception ex){
+                session.writeBuffer().writeAndFlush(msg.encode().array());
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
