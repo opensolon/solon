@@ -27,7 +27,7 @@ public class SocketSession {
 
     public SocketMessage receive(SocketProtocol protocol) {
         try {
-            return protocol.decode(this, connector.getInputStream());
+            return protocol.decode(connector, connector.getInputStream());
         } catch (Throwable ex) {
             System.out.println("Decoding failure::");
             ex.printStackTrace();
@@ -39,5 +39,4 @@ public class SocketSession {
         connector.getOutputStream().write(message.encode().array());
         connector.getOutputStream().flush();
     }
-
 }

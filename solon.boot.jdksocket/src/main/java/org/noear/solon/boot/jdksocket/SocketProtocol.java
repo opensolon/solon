@@ -4,10 +4,11 @@ import org.noear.solon.core.SocketMessage;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Socket;
 import java.nio.ByteBuffer;
 
 public class SocketProtocol {
-    public SocketMessage decode(SocketSession session, InputStream input) throws IOException {
+    public SocketMessage decode(Socket connector, InputStream input) throws IOException {
         byte[] lenBts = new byte[4];
         if (input.read(lenBts) < -1) {
             return null;
