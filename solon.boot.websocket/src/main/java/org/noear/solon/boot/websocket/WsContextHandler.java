@@ -16,7 +16,7 @@ public class WsContextHandler {
     }
 
     public void handle(WebSocket socket, byte[] message, boolean messageIsString) {
-        SocketMessage request = new SocketMessage(null, socket.getResourceDescriptor(), message);
+        SocketMessage request =  SocketMessage.wrap(null, socket.getResourceDescriptor(), message);
         WsContext context = new WsContext(socket, request, messageIsString);
 
         try {

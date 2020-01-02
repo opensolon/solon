@@ -15,7 +15,7 @@ public class SsDemoProtocol implements Protocol<SocketMessage> {
 
     @Override
     public SocketMessage decode(ByteBuffer buffer, AioSession<SocketMessage> session) {
-        return SocketMessage.parse(buffer);
+        return SocketMessage.decode(buffer);
     }
 }
 

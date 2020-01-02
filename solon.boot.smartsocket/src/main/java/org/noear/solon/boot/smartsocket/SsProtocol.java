@@ -13,11 +13,9 @@ import java.nio.ByteBuffer;
  * */
 public class SsProtocol implements Protocol<SocketMessage> {
 
-    private static final int URL_MAX_LEN = 256;
-
     @Override
     public SocketMessage decode(ByteBuffer buffer, AioSession<SocketMessage> session) {
-        return SocketMessage.parse(buffer);
+        return SocketMessage.decode(buffer);
     }
 }
 

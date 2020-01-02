@@ -141,8 +141,8 @@ public class SsContext extends XContextEmpty {
     @Override
     protected void commit() throws IOException {
         if (_session.isInvalid() == false) {
-            SocketMessage msg = new SocketMessage(_message.key, _message.resourceDescriptor, _outputStream.toByteArray());
-            _session.writeBuffer().writeAndFlush(msg.wrap().array());
+            SocketMessage msg =  SocketMessage.wrap(_message.key, _message.resourceDescriptor, _outputStream.toByteArray());
+            _session.writeBuffer().writeAndFlush(msg.encode().array());
         }
     }
 
