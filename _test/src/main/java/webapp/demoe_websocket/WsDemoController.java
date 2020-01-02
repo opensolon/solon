@@ -9,7 +9,7 @@ import org.noear.solon.core.XMethod;
 
 @XController
 public class WsDemoController {
-    @XMapping(value = "/demoe/*",method = XMethod.SEND)
+    @XMapping(value = "/demoe/*",method = XMethod.WEBSOCKET)
     public void test(XContext ctx) throws Exception{
         if(ctx == null){
             return;
