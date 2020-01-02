@@ -9,13 +9,11 @@ import java.net.URI;
 import java.nio.charset.Charset;
 
 public class WsContext extends XContextEmpty {
-
-    private Charset _charset = Charset.forName("UTF-8");
     private InetSocketAddress _inetSocketAddress;
     private WebSocket _socket;
-    private byte[] _message;
+    private SocketMessage _message;
     private boolean _messageIsString;
-    public WsContext(WebSocket socket, byte[] message, boolean messageIsString){
+    public WsContext(WebSocket socket, SocketMessage message, boolean messageIsString){
         _socket = socket;
         _message = message;
         _inetSocketAddress = socket.getRemoteSocketAddress();
@@ -69,7 +67,7 @@ public class WsContext extends XContextEmpty {
 
     @Override
     public String url() {
-        return _socket.getResourceDescriptor();
+        return _message.resourceDescriptor;
     }
 
     @Override
@@ -84,12 +82,12 @@ public class WsContext extends XContextEmpty {
 
     @Override
     public String body()  {
-        return new String(_message, _charset);
+        return new String(_message.content, _charset);
     }
 
     @Override
     public InputStream bodyAsStream() throws IOException {
-        return new ByteArrayInputStream(_message);
+        return new ByteArrayInputStream(_message.content);
     }
 
     //==============
@@ -97,11 +95,6 @@ public class WsContext extends XContextEmpty {
     @Override
     public Object response() {
         return _socket;
-    }
-
-    @Override
-    public void charset(String charset) {
-        _charset = Charset.forName(charset);
     }
 
     @Override

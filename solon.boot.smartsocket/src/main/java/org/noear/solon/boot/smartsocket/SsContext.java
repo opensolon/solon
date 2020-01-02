@@ -1,6 +1,6 @@
 package org.noear.solon.boot.smartsocket;
 
-import org.noear.solon.core.SocketRequest;
+import org.noear.solon.core.SocketMessage;
 import org.noear.solon.core.XContextEmpty;
 import org.noear.solon.core.XMethod;
 import org.smartboot.socket.transport.AioSession;
@@ -12,15 +12,13 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class SsContext extends XContextEmpty {
-
-    private Charset _charset = StandardCharsets.UTF_8;
     private InetSocketAddress _inetSocketAddress;
-    private AioSession<SocketRequest> _session;
-    private SocketRequest _request;
+    private AioSession<SocketMessage> _session;
+    private SocketMessage _message;
 
-    public SsContext(AioSession<SocketRequest> session, SocketRequest request){
+    public SsContext(AioSession<SocketMessage> session, SocketMessage message){
         _session = session;
-        _request = request;
+        _message = message;
 
         try {
             _inetSocketAddress = session.getRemoteAddress();
@@ -72,12 +70,9 @@ public class SsContext extends XContextEmpty {
         return uri().getPath();
     }
 
-
-
     @Override
     public String url() {
-        return null;
-        //return _session.getResourceDescriptor();
+        return _message.resourceDescriptor;
     }
 
     @Override
@@ -92,21 +87,12 @@ public class SsContext extends XContextEmpty {
 
     @Override
     public String body() throws IOException {
-        InputStream inpStream = _request.message;
-
-        StringBuilder content = new StringBuilder();
-        byte[] b = new byte[1024];
-        int lens = -1;
-        while ((lens = inpStream.read(b)) > 0) {
-            content.append(new String(b, 0, lens));
-        }
-
-        return content.toString();
+        return new String(_message.content);
     }
 
     @Override
     public InputStream bodyAsStream() throws IOException {
-        return _request.message;
+        return new ByteArrayInputStream(_message.content);
     }
 
     //==============
@@ -114,11 +100,6 @@ public class SsContext extends XContextEmpty {
     @Override
     public Object response() {
         return _session;
-    }
-
-    @Override
-    public void charset(String charset) {
-        _charset = Charset.forName(charset);
     }
 
     @Override
@@ -158,7 +139,7 @@ public class SsContext extends XContextEmpty {
 
     @Override
     protected void commit() throws IOException {
-
+        outputStream().flush();
     }
 
     @Override

@@ -1,12 +1,12 @@
 package org.noear.solon.boot.smartsocket;
 
-import org.noear.solon.core.SocketRequest;
+import org.noear.solon.core.SocketMessage;
 import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.StateMachineEnum;
 import org.smartboot.socket.transport.AioSession;
 
 @SuppressWarnings("unchecked")
-public class SsProcessor implements MessageProcessor<SocketRequest> {
+public class SsProcessor implements MessageProcessor<SocketMessage> {
     private SsContextHandler _contextHandler;
     public SsProcessor(SsContextHandler contextHandler){
         this._contextHandler = contextHandler;
@@ -14,9 +14,9 @@ public class SsProcessor implements MessageProcessor<SocketRequest> {
 
 
     @Override
-    public void process(AioSession<SocketRequest> session, SocketRequest ssRequest) {
+    public void process(AioSession<SocketMessage> session, SocketMessage request) {
         try {
-            SsContext context  =new SsContext(session, ssRequest);
+            SsContext context  =new SsContext(session, request);
 
             _contextHandler.handle(context);
 
@@ -27,7 +27,7 @@ public class SsProcessor implements MessageProcessor<SocketRequest> {
     }
 
     @Override
-    public void stateEvent(AioSession<SocketRequest> session, StateMachineEnum stateMachineEnum, Throwable throwable) {
+    public void stateEvent(AioSession<SocketMessage> session, StateMachineEnum stateMachineEnum, Throwable throwable) {
 
     }
 }

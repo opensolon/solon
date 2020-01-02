@@ -5,28 +5,28 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-public class SocketRequest {
+public class SocketMessage {
     public String resourceDescriptor;
-    public byte[] message;
+    public byte[] content;
     public Charset charset = StandardCharsets.UTF_8;
 
-    public SocketRequest(String resourceDescriptor, String message) {
+    public SocketMessage(String resourceDescriptor, String str) {
         this.resourceDescriptor = resourceDescriptor;
-        this.message = message.getBytes(charset);
+        this.content = str.getBytes(charset);
     }
 
-    public SocketRequest(String resourceDescriptor, byte[] bytes) {
+    public SocketMessage(String resourceDescriptor, byte[] bytes) {
         this.resourceDescriptor = resourceDescriptor;
-        this.message = bytes;
+        this.content = bytes;
     }
 
     public ByteBuffer wrap() throws IOException {
-        int len = resourceDescriptor.length() + message.length;
+        int len = resourceDescriptor.length() + content.length;
 
         ByteBuffer buffer = ByteBuffer.allocate(len);
         buffer.put(resourceDescriptor.getBytes(charset));
         buffer.putChar('\n');
-        buffer.put(message);
+        buffer.put(content);
 
         return buffer;
     }

@@ -2,6 +2,7 @@ package org.noear.solon.boot.websocket;
 
 import org.java_websocket.WebSocket;
 import org.noear.solon.XApp;
+import org.noear.solon.core.SocketMessage;
 
 import java.io.PrintWriter;
 
@@ -11,12 +12,13 @@ public class WsContextHandler {
 
     public WsContextHandler(XApp xapp) {
         this.xapp = xapp;
-        this.debug = xapp.prop().argx().getInt("debug") == 1;
+        this.debug = xapp.prop().isDebugMode();
     }
 
     public void handle(WebSocket socket, byte[] message, boolean messageIsString) {
 
-        WsContext context = new WsContext(socket, message, messageIsString);
+        SocketMessage request = new SocketMessage(socket.getResourceDescriptor(),message);
+        WsContext context = new WsContext(socket, request, messageIsString);
 
         try {
             xapp.handle(context);

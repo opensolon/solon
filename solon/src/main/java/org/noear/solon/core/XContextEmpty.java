@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +33,8 @@ public class XContextEmpty extends XContext {
             }
         });
     }
+
+    protected Charset _charset = StandardCharsets.UTF_8;
 
 
     private Map<String,Object> _sessionMap = null;
@@ -173,7 +177,7 @@ public class XContextEmpty extends XContext {
 
     @Override
     public void charset(String charset) {
-
+        _charset = Charset.forName(charset);
     }
 
     @Override
