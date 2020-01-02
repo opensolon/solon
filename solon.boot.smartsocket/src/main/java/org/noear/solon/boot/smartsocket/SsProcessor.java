@@ -16,7 +16,6 @@ public class SsProcessor implements MessageProcessor<byte[]> {
     @Override
     public void process(AioSession<byte[]> session, byte[] msg) {
 
-
         try {
             SsContext context  =new SsContext(session, new ByteArrayInputStream(msg));
 

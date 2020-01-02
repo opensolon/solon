@@ -1,6 +1,7 @@
 package org.noear.solon.boot.smartsocket;
 
 import org.noear.solon.core.XContextEmpty;
+import org.noear.solon.core.XMethod;
 import org.smartboot.socket.transport.AioSession;
 
 import java.io.*;
@@ -37,7 +38,7 @@ public class SsContext extends XContextEmpty {
         if(_inetSocketAddress == null)
             return null;
         else
-            return _inetSocketAddress.getAddress().toString();
+            return _inetSocketAddress.getAddress().getHostAddress();
     }
 
     @Override
@@ -47,7 +48,7 @@ public class SsContext extends XContextEmpty {
 
     @Override
     public String method() {
-        return "LISTEN";
+        return XMethod.LISTEN.name;
     }
 
     @Override
@@ -161,6 +162,6 @@ public class SsContext extends XContextEmpty {
 
     @Override
     public void close() throws IOException {
-//        _socket.close();
+        _session.close();
     }
 }
