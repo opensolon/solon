@@ -1,4 +1,4 @@
-package org.noear.solon.boot.smartsocket;
+package webapp.demog_socket;
 
 import org.noear.solon.core.SocketMessage;
 import org.smartboot.socket.Protocol;
@@ -11,7 +11,7 @@ import java.nio.ByteBuffer;
  * /date/xxx/sss\n...
  *
  * */
-public class SsProtocol implements Protocol<SocketMessage> {
+public class SsDemoProtocol implements Protocol<SocketMessage> {
 
     private static final int URL_MAX_LEN = 256;
 
@@ -49,7 +49,6 @@ public class SsProtocol implements Protocol<SocketMessage> {
         //2.解码body
         byte[] bytes = new byte[buffer.limit() - buffer.position()];
         buffer.get(bytes, 0, buffer.limit() - buffer.position());
-
         return new SocketMessage(sb.toString(), bytes);
     }
 }

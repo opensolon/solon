@@ -2,6 +2,7 @@ package webapp;
 
 import org.noear.solon.XApp;
 import org.noear.solon.core.XPlugin;
+import webapp.demog_socket.SsDemoClientTest;
 
 public class TestApp {
     public static void main(String[] args) {
@@ -33,6 +34,10 @@ public class TestApp {
                 System.out.println("通知你一下，我现在要停了");
             }
         });
+
+
+        //socket test
+        SsDemoClientTest.test();
 
 //        //web socket send 监听
 //        app.send("/seb/test",(c)->{

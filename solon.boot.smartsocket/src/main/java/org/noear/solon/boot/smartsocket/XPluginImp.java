@@ -15,7 +15,7 @@ public final class XPluginImp implements XPlugin {
             return;
         }
 
-        int _port = 10000 + app.port();
+        int _port = 20000 + app.port();
 
         SsContextHandler contextHandler = new SsContextHandler(app);
 
