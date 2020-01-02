@@ -9,7 +9,6 @@ import java.io.PrintWriter;
 public class SsContextHandler {
     protected XApp xapp;
     protected boolean debug;
-    //private ExecutorService pool = Executors.newCachedThreadPool();
 
     public SsContextHandler(XApp xapp) {
         this.xapp = xapp;
@@ -17,7 +16,7 @@ public class SsContextHandler {
     }
 
     public void handle(AioSession<SocketMessage> session, SocketMessage request) {
-        if(request == null){
+        if (request == null) {
             return;
         }
 
@@ -32,7 +31,7 @@ public class SsContextHandler {
 
         try {
             context.commit();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }

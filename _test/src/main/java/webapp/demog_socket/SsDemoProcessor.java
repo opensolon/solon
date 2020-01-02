@@ -10,12 +10,15 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @SuppressWarnings("unchecked")
 public class SsDemoProcessor implements MessageProcessor<SocketMessage> {
 
     public AioSession<SocketMessage> session;
     private Map<String,Act1<SocketMessage>> msgCallback = new HashMap<>();
+    private ExecutorService pool = Executors.newCachedThreadPool();
 
     @Override
     public void process(AioSession<SocketMessage> session, SocketMessage msg) {
@@ -46,10 +49,14 @@ public class SsDemoProcessor implements MessageProcessor<SocketMessage> {
     }
 
     public void send(String path, String message, Act1<SocketMessage> callback) throws IOException {
-        SocketMessage msg = new SocketMessage(UUID.randomUUID().toString(),path,message);
-
-        msgCallback.put(msg.key, callback);
-
-        session.writeBuffer().writeAndFlush(msg.wrap().array());
+        pool.execute(()->{
+            try {
+                SocketMessage msg = new SocketMessage(UUID.randomUUID().toString(), path, message);
+                msgCallback.put(msg.key, callback);
+                session.writeBuffer().writeAndFlush(msg.wrap().array());
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
+        });
     }
 }

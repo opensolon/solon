@@ -5,11 +5,16 @@ import org.noear.solon.core.SocketMessage;
 import org.smartboot.socket.transport.AioQuickClient;
 
 public class SsDemoClientTest {
+    static SsDemoProcessor processor = new SsDemoProcessor();
+
     public static void test() {
+        do_test();
+        do_test();
+    }
+
+    private static void do_test(){
         try {
             Thread.sleep(1000);
-
-            SsDemoProcessor processor = new SsDemoProcessor();
 
             int port = 20000 + XApp.global().port();
             AioQuickClient<SocketMessage> client = new AioQuickClient<>("localhost", port,new SsDemoProtocol(),processor);
@@ -24,21 +29,21 @@ public class SsDemoClientTest {
             }
 
             processor.send("/demog/中文/1","Hello 世界!", msg->{
-                System.out.println(msg.contentAsString());
+                System.out.println(msg.toString());
             });
 
 
             Thread.sleep(100);
 
             processor.send("/demog/中文/2","Hello 世界2!", msg->{
-                System.out.println(msg.contentAsString());
+                System.out.println(msg.toString());
             });
 
 
             Thread.sleep(100);
 
             processor.send("/demog/中文/3","close", msg->{
-                System.out.println(msg.contentAsString());
+                System.out.println(msg.toString());
             });
 
         } catch (Exception e) {
