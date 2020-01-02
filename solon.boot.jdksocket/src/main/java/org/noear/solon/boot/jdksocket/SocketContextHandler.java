@@ -1,26 +1,25 @@
-package org.noear.solon.boot.smartsocket;
+package org.noear.solon.boot.jdksocket;
 
 import org.noear.solon.XApp;
 import org.noear.solon.core.SocketMessage;
-import org.smartboot.socket.transport.AioSession;
 
 import java.io.PrintWriter;
 
-public class SsContextHandler {
-    protected XApp xapp;
-    protected boolean debug;
+public class SocketContextHandler {
+    private XApp xapp;
 
-    public SsContextHandler(XApp xapp) {
+    public SocketContextHandler(XApp xapp) {
         this.xapp = xapp;
-        this.debug = xapp.prop().isDebugMode();
     }
 
-    public void handle(AioSession<SocketMessage> session, SocketMessage request) {
-        if (request == null) {
+    public void handler(SocketSession session) {
+        SocketMessage request = session.getMessage();
+
+        if(request == null){
             return;
         }
 
-        SsContext context = new SsContext(session, request);
+        SocketContext context = new SocketContext(session,request);
 
         try {
             xapp.handle(context);

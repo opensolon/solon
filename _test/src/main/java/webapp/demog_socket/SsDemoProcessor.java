@@ -51,7 +51,7 @@ public class SsDemoProcessor implements MessageProcessor<SocketMessage> {
     public void send(String path, String message, Act1<SocketMessage> callback) throws IOException {
         pool.execute(() -> {
             try {
-                SocketMessage msg = SocketMessage.wrap(path, message);
+                SocketMessage msg = SocketMessage.wrap(path, message.getBytes("utf-8"));
                 msgCallback.put(msg.key, callback);
                 session.writeBuffer().writeAndFlush(msg.encode().array());
             } catch (Exception ex) {

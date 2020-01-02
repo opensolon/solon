@@ -23,6 +23,7 @@ public final class XPluginImp implements XPlugin {
         SsProcessor processor = new SsProcessor(contextHandler);
 
         server = new AioQuickServer<>(_port, protocol, processor);
+        server.setBannerEnabled(false);
 
         try {
             server.start();

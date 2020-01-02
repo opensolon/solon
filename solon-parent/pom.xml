@@ -103,11 +103,19 @@
                 <artifactId>solon.boot.websocket</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.boot.jdksocket</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.smartsocket</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -390,6 +398,7 @@
 
         <module>../solon.boot.websocket</module>
 
+        <module>../solon.boot.jdksocket</module>
         <module>../solon.boot.smartsocket</module>
 
         <!--        <module>../solon.boot.tomcat</module>-->
