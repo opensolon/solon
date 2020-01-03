@@ -1,3 +1,7 @@
+#### 1.0.4.1::
+* 1. BeanBuilderAdd 更名为：beanInjectorAdd 
+* 2. BeanLoaderAdd  更名为：beanCreatorAdd
+
 #### 1.0.3.40::
 * 1.修复添加BeanBuilderAdd名称错误(BeanBuilderadd)
 * 2.修复 thymeleaf, velocity 调试模式支持

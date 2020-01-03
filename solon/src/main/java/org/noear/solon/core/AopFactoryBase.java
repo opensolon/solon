@@ -80,7 +80,11 @@ public abstract class AopFactoryBase {
         }
     }
 
+
+
+
     public abstract BeanWrap wrap(Class<?> clz, Object raw);
+
 
 
     protected void tryBeanInject(FieldWrapTmp fwT, XInject xi) {
