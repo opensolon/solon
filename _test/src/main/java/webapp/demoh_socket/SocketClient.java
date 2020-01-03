@@ -50,7 +50,6 @@ public class SocketClient {
                     m.notify();
                 }
             });
-
             msgD.wait();
         }
 
