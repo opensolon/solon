@@ -1,5 +1,6 @@
 package org.noear.solon.core;
 
+import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XInject;
 import org.noear.solon.ext.Act1;
 
@@ -88,13 +89,11 @@ public abstract class AopFactoryBase {
 
 
     protected void tryBeanInject(FieldWrapTmp fwT, XInject xi) {
-        Annotation[] annoSet = fwT.getAnnoS();
-
-        if (xi.value() == null && annoSet.length > 1) {
-            for (Annotation a : annoSet) {
-                BeanInjector builder = beanInjectors.get(a.annotationType());
-                if (builder != null) {
-                    builder.handler(fwT, a);
+        if (XUtil.isEmpty(xi.value()) && fwT.getAnnoS().length > 1) {
+            for (Annotation a : fwT.getAnnoS()) {
+                BeanInjector bi = beanInjectors.get(a.annotationType());
+                if (bi != null) {
+                    bi.handler(fwT, a);
                     return;
                 }
             }
@@ -108,10 +107,9 @@ public abstract class AopFactoryBase {
      */
     protected boolean tryCreateBean(Class<?> clz, Annotation[] annoSet) {
         for (Annotation a : annoSet) {
-            BeanCreator loader = beanCreators.get(a.annotationType());
-
-            if (loader != null) {
-                tryCreateBeanByAnno(clz, a, loader);
+            BeanCreator bc = beanCreators.get(a.annotationType());
+            if (bc != null) {
+                tryCreateBeanByAnno(clz, a, bc);
                 return true;
             }
         }
