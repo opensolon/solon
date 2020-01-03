@@ -8,11 +8,11 @@ public class SsDemoClientTest {
 
     public static void test() {
 
-//        do_test();
+        do_test();
 
-        for(int i=0; i<10; i++){
-            new Thread(()->do_test()).start();
-        }
+//        for(int i=0; i<10; i++){
+//            new Thread(()->do_test()).start();
+//        }
     }
 
     private static void do_test(){

@@ -1,23 +1,20 @@
 package webapp.demoh_socket;
 
 
-import org.noear.solon.XApp;
 import org.noear.solon.core.SocketMessage;
-import org.noear.solon.ext.Act1;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.Socket;
 import java.nio.ByteBuffer;
 
 public class SoDemoClientTest {
 
     public static void test() {
-//        do_test();
+        do_test();
 
-        for(int i=0; i<10; i++){
-            new Thread(()->do_test()).start();
-        }
+//        for(int i=0; i<10; i++){
+//            new Thread(()->do_test()).start();
+//        }
     }
 
     private static void do_test(){

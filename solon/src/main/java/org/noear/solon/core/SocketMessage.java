@@ -108,6 +108,8 @@ public final class SocketMessage {
         //content
         buffer.put(content);
 
+        buffer.flip();
+
         return buffer;
     }
 
