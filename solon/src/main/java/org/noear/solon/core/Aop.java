@@ -1,11 +1,7 @@
 package org.noear.solon.core;
 
-import org.noear.solon.XApp;
-import org.noear.solon.XProperties;
 import org.noear.solon.ext.Act1;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.util.function.BiConsumer;
 
 /**
@@ -67,10 +63,6 @@ public class Aop {
     public static void getAsyn(Class<?> clz, FieldWrapTmp fwT, Act1<BeanWrap> callback) {
         BeanWrap wrap = _f.wrap(clz, null);
         if (wrap == null) {
-            if(factory().tryBuildBean(clz, fwT)){
-                return;
-            }
-
             _f.beanSubscribe(clz, callback);
         } else {
             callback.run(wrap);

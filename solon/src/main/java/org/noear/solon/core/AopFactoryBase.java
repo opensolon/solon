@@ -25,7 +25,7 @@ public class AopFactoryBase {
     /** bean loaders */
     protected final Map<Class<?>,BeanLoader<?>> beanLoaders = new HashMap<>();
     /** bean builder */
-    protected final Set<BeanBuilder> beanBuilders = new HashSet<>();
+    protected final Map<Class<?>,BeanBuilder<?>> beanBuilders = new HashMap<>();
 
     //////////////////////////
     //

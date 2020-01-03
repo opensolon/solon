@@ -9,6 +9,10 @@ public class FieldWrapTmp {
         this.obj = obj;
     }
 
+    public Class<?> getType(){
+        return fw.type;
+    }
+
     /**
      * 设置字段值
      */
