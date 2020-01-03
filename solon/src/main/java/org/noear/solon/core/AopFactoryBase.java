@@ -2,9 +2,9 @@ package org.noear.solon.core;
 
 import org.noear.solon.ext.Act1;
 
+import java.lang.annotation.Annotation;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 /** 为 AopFactory 提供存储 支持 */
 public class AopFactoryBase {
@@ -23,9 +23,21 @@ public class AopFactoryBase {
 
     //启动时写入
     /** bean loaders */
-    protected final Map<Class<?>,BeanLoader<?>> beanLoaders = new HashMap<>();
+    protected final Map<Class<?>, BeanCreator<?>> beanCreators = new HashMap<>();
     /** bean builder */
-    protected final Map<Class<?>,BeanBuilder<?>> beanBuilders = new HashMap<>();
+    protected final Map<Class<?>, BeanInjector<?>> beanInjectors = new HashMap<>();
+
+
+    /**
+     * 添加 bean creator, injector
+     */
+    public <T extends Annotation> void beanCreatorAdd(Class<T> anno, BeanCreator<T> creater) {
+        beanCreators.put(anno, creater);
+    }
+
+    public <T extends Annotation> void beanInjectorAdd(Class<T> anno, BeanInjector<T> injector) {
+        beanInjectors.put(anno, injector);
+    }
 
     //////////////////////////
     //

@@ -1,5 +1,7 @@
 package org.noear.solon.core;
 
+import java.lang.annotation.Annotation;
+
 public class FieldWrapTmp {
     public final FieldWrap fw;
     public final Object obj;
@@ -11,6 +13,10 @@ public class FieldWrapTmp {
 
     public Class<?> getType(){
         return fw.type;
+    }
+
+    public Annotation[] getAnnoS(){
+        return fw.annoS;
     }
 
     /**
