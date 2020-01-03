@@ -1,55 +1,123 @@
 package webapp.demoh_socket;
 
-import org.noear.solon.XApp;
 import org.noear.solon.core.SocketMessage;
 import org.noear.solon.ext.Act1;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
+import java.net.URI;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class SocketClient {
-    private Socket connector;
-    private ExecutorService pool = Executors.newCachedThreadPool();
+    private static ExecutorService pool = Executors.newCachedThreadPool();
+    private static Map<String,SocketClient> clientMap = new HashMap<>();
 
-    public void start() throws Exception {
-        // 要连接的服务端IP地址和端口
-        String host = "127.0.0.1";
-        int port = 20000 + XApp.global().port();
-        // 与服务端建立连接
-        connector = new Socket(host, port);
+    public static SocketClient get(String uri){
+        URI uri1 = URI.create(uri);
+
+        if("s".equals(uri1.getScheme()) == false) {
+            throw new RuntimeException("Only [s] scheme is supported");
+        }
+
+        String hostAndPort = uri1.getAuthority();
+
+        SocketClient client = clientMap.get(hostAndPort);
+        if(client == null){
+            synchronized (hostAndPort.intern()){
+                client = clientMap.get(hostAndPort);
+                if(client == null){
+                    client = new SocketClient(uri1.getHost(), uri1.getPort());
+                    clientMap.put(hostAndPort,client);
+                }
+            }
+        }
+
+        return client;
     }
 
-    public void send(String path, String message, Act1<SocketMessage> callback) throws Exception {
-        // 建立连接后获得输出流
-        pool.execute(()->{
-            try {
-                SocketMessage msg = SocketMessage.wrap(path, message.getBytes("utf-8"));
+    public static SocketMessage send(String uri, String message) throws Throwable {
+        SocketMessageDock msgD = new SocketMessageDock(SocketMessage.wrap(uri, message.getBytes("utf-8")));
 
-                connector.getOutputStream().write(msg.encode().array());
-                connector.getOutputStream().flush();
-
-                msg = decode(connector, connector.getInputStream());
-
-                if(msg != null) {
-                    callback.run(msg);
+        synchronized (msgD) {
+            get(uri).sendDo(msgD, (m) -> {
+                synchronized (m){
+                    m.notify();
                 }
-            }catch (Exception ex){
-                ex.printStackTrace();
+            });
+
+            msgD.wait();
+        }
+
+        if (msgD.err == null) {
+            return msgD.res;
+        } else {
+            throw msgD.err;
+        }
+    }
+
+    private Socket connector;
+    private OutputStream outputStream;
+    private final String host;
+    private final int port;
+
+    private SocketClient(String host, int port){
+        this.host = host;
+        this.port = port;
+    }
+
+    private void tryConnect() throws Exception {
+        if(connector == null) {
+            connector = new Socket(host, port);
+            outputStream = connector.getOutputStream();
+        }else{
+            try{
+                outputStream.write(0);
+                outputStream.flush();
+                Thread.sleep(200);
+            }catch(Exception ex){
+                stop();
+                tryConnect();
+            }
+        }
+    }
+
+    private void sendDo(final SocketMessageDock msgD, Act1<SocketMessageDock> callback) throws Exception {
+        // 建立连接后获得输出流
+        pool.execute(() -> {
+            try {
+                tryConnect();
+
+                outputStream.write(msgD.req.encode().array());
+                outputStream.flush();
+
+                msgD.res = decode(connector, connector.getInputStream());
+
+                callback.run(msgD);
+
+            } catch (Throwable ex) {
+                msgD.err = ex;
+                callback.run(msgD);
             }
         });
     }
 
     public void stop() throws IOException {
+        outputStream.close();
         connector.close();
+        outputStream = null;
+        connector = null;
     }
 
 
-    
-    private static SocketMessage decode(Socket connector, InputStream input) throws IOException {
+
+    private static int MESSAGE_MAX_SIZE = 1024 * 20;
+    private SocketMessage decode(Socket connector, InputStream input) throws IOException {
         if(input == null){
             return null;
         }
@@ -61,7 +129,12 @@ public class SocketClient {
 
         int len = bytesToInt32(lenBts);
 
-        if(len < 6){
+        if(len < 6 ){
+            return null;
+        }
+
+        if(len > MESSAGE_MAX_SIZE){
+            stop();
             return null;
         }
 
@@ -94,5 +167,19 @@ public class SocketClient {
         int num4 = 0;
         num4 = (num4 ^ (int) bs[3]);
         return num1 ^ num2 ^ num3 ^ num4;
+    }
+
+    public static class SocketMessageDock {
+        public SocketMessage req;
+        public SocketMessage res;
+        public Throwable err;
+
+        public String getKey(){
+            return req.key;
+        }
+
+        public SocketMessageDock(SocketMessage req){
+            this.req = req;
+        }
     }
 }
