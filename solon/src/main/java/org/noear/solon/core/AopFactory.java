@@ -16,7 +16,6 @@ import java.util.Properties;
  * */
 public class AopFactory extends AopFactoryBase {
 
-    private BeanInjector<XInject> injectBuilder;
 
     public AopFactory() {
         initialize();
@@ -61,7 +60,7 @@ public class AopFactory extends AopFactoryBase {
         });
 
 
-        injectBuilder = (fwT,anno)->{
+        defaultInjector = (fwT,anno)->{
             if (XUtil.isEmpty(anno.value())) {
                 //如果没有name,使用类型进行获取 bean
                 Aop.getAsyn(fwT.getType(), fwT, (bw) -> {
@@ -132,6 +131,7 @@ public class AopFactory extends AopFactoryBase {
     /**
      * 获取一个clz的包装（唯一的）
      */
+    @Override
     public BeanWrap wrap(Class<?> clz, Object raw) {
         //1.先用自己的类型找
         BeanWrap bw = beanWraps.get(clz);
@@ -173,26 +173,12 @@ public class AopFactory extends AopFactoryBase {
             XInject xi = f.getAnnotation(XInject.class);
             if(xi != null){
                 FieldWrapTmp fwT = clzWrap.getFieldWrap(f).tmp(obj);
-                beanInject(fwT,xi);
+                tryBeanInject(fwT,xi);
             }
         }
     }
 
-    private void beanInject(FieldWrapTmp fwT, XInject xi) {
-        Annotation[] annoSet = fwT.getAnnoS();
 
-        if (xi.value() == null && annoSet.length > 1) {
-            for (Annotation a : annoSet) {
-                BeanInjector builder = beanInjectors.get(a.annotationType());
-                if (builder != null) {
-                    builder.handler(fwT, a);
-                    return;
-                }
-            }
-        }
-
-        injectBuilder.handler(fwT, xi);
-    }
 
     //::库管理
 
@@ -251,35 +237,5 @@ public class AopFactory extends AopFactoryBase {
 
         //尝试加载事件（不用函数包装，是为了减少代码）
         loadedEvent.forEach(f -> f.run());
-    }
-
-    /**
-     * 尝试生成一个类
-     */
-    protected boolean tryCreateBean(Class<?> clz, Annotation[] annoSet) {
-        for (Annotation a : annoSet) {
-            BeanCreator loader = beanCreators.get(a.annotationType());
-
-            if (loader != null) {
-                tryCreateBeanByAnno(clz, a, loader);
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * 尝试加载一个注解
-     */
-    protected <T extends Annotation> void tryCreateBeanByAnno(Class<?> clz, T anno, BeanCreator<T> loader) {
-        try {
-            BeanWrap wrap = wrap(clz, null);
-            loader.handler(clz, wrap, anno);
-
-            beanNotice(clz, wrap);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
     }
 }

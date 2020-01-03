@@ -1,5 +1,6 @@
 package org.noear.solon.core;
 
+import org.noear.solon.annotation.XInject;
 import org.noear.solon.ext.Act1;
 
 import java.lang.annotation.Annotation;
@@ -7,12 +8,15 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /** 为 AopFactory 提供存储 支持 */
-public class AopFactoryBase {
+public abstract class AopFactoryBase {
     //////////////////////////
     //
     // 基础存储
     //
     /////////////////////////
+
+
+    protected BeanInjector<XInject> defaultInjector;
 
     /** bean包装库 */
     protected final Map<Class<?>, BeanWrap> beanWraps = new ConcurrentHashMap<>();
@@ -73,6 +77,55 @@ public class AopFactoryBase {
         Set<Act1<BeanWrap>> e = _subs.get(key);
         if (e != null) {
             e.forEach(f -> f.run(wrap));
+        }
+    }
+
+    public abstract BeanWrap wrap(Class<?> clz, Object raw);
+
+
+    protected void tryBeanInject(FieldWrapTmp fwT, XInject xi) {
+        Annotation[] annoSet = fwT.getAnnoS();
+
+        if (xi.value() == null && annoSet.length > 1) {
+            for (Annotation a : annoSet) {
+                BeanInjector builder = beanInjectors.get(a.annotationType());
+                if (builder != null) {
+                    builder.handler(fwT, a);
+                    return;
+                }
+            }
+        }
+
+        defaultInjector.handler(fwT, xi);
+    }
+
+    /**
+     * 尝试生成一个类
+     */
+    protected boolean tryCreateBean(Class<?> clz, Annotation[] annoSet) {
+        for (Annotation a : annoSet) {
+            BeanCreator loader = beanCreators.get(a.annotationType());
+
+            if (loader != null) {
+                tryCreateBeanByAnno(clz, a, loader);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 尝试加载一个注解
+     */
+    protected <T extends Annotation> void tryCreateBeanByAnno(Class<?> clz, T anno, BeanCreator<T> loader) {
+        try {
+            BeanWrap wrap = wrap(clz, null);
+            loader.handler(clz, wrap, anno);
+
+            beanNotice(clz, wrap);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
     }
 }
