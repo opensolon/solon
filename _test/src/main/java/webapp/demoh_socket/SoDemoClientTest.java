@@ -2,7 +2,8 @@ package webapp.demoh_socket;
 
 
 import org.noear.solon.XApp;
-import org.noear.solon.core.SocketMessage;
+import org.noear.solonclient.channel.SocketMessage;
+import org.noear.solonclient.channel.SocketUtils;
 
 public class SoDemoClientTest {
 
@@ -20,16 +21,16 @@ public class SoDemoClientTest {
             String root = "s://localhost:" + (20000 + XApp.global().port());
 
 
-            SocketMessage msg = SocketClient.send(root + "/demog/中文/1", "Hello 世界!");
+            SocketMessage msg = SocketUtils.send(root + "/demog/中文/1", "Hello 世界!");
             System.out.println(msg.toString());
 
             Thread.sleep(100);
-            msg = SocketClient.send(root + "/demog/中文/2", "Hello 世界2!");
+            msg = SocketUtils.send(root + "/demog/中文/2", "Hello 世界2!");
             System.out.println(msg.toString());
 
             Thread.sleep(100);
 
-            msg = SocketClient.send(root + "/demog/中文/3", "close");
+            msg = SocketUtils.send(root + "/demog/中文/3", "close");
             System.out.println(msg.toString());
 
 

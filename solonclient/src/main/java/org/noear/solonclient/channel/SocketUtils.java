@@ -72,15 +72,6 @@ public class SocketUtils {
         if(connector == null) {
             connector = new Socket(host, port);
             outputStream = connector.getOutputStream();
-        }else{
-            try{
-                outputStream.write(0);
-                outputStream.flush();
-                Thread.sleep(200);
-            }catch(Exception ex){
-                stop();
-                tryConnect();
-            }
         }
     }
 

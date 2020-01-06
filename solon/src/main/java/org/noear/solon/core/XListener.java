@@ -19,7 +19,9 @@ public class XListener {
 
 
     public boolean matches(XMethod method2, String path2) {
-        if (XMethod.HTTP.code == _m.code) { //不是null时，不能用==
+        if (XMethod.ALL.code == _m.code) {
+            return do_matches(path2);
+        } else if (XMethod.HTTP.code == _m.code) { //不是null时，不能用==
             if (method2.isHttpMethod()) {
                 return do_matches(path2);
             }
