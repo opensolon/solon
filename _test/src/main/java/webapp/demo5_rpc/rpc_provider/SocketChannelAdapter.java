@@ -7,7 +7,7 @@ import org.noear.solon.core.XMethod;
 
 import java.util.Map;
 
-public class SocketAdp implements XHandler {
+public class SocketChannelAdapter implements XHandler {
     @Override
     public void handle(XContext ctx) throws Throwable {
         if(XMethod.LISTEN.name.equals(ctx.method())){

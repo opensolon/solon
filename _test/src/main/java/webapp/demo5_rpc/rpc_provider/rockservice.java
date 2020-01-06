@@ -11,13 +11,13 @@ import webapp.models.UserModel;
 import java.util.ArrayList;
 import java.util.List;
 
-@XBefore({SocketAdp.class})
+@XBefore({SocketChannelAdapter.class})
 @XMapping(value = "/demo5/test", method = {XMethod.HTTP, XMethod.SOCKET})
 @XBean(remoting = true)
 public class rockservice implements rockapi {
 
-    public Object test1(Integer a){
-        return "test1="+a;
+    public Object test1(Integer a) {
+        return XContext.current().method() + "::test1=" + a;
     }
 
     public Object test2(){
