@@ -6,17 +6,40 @@ import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XHandler;
 import org.noear.solonclient.XProxy;
+import org.noear.solonclient.channel.HttpChannel;
 import org.noear.solonclient.channel.SocketChannel;
 import org.noear.solonclient.serializer.SnackSerializer;
 import webapp.demoh_socket.SoDemoClientTest;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @XMapping("/demo5/rpctest/")
 @XController
 public class rpctest implements XHandler {
     @Override
     public void handle(XContext ctx) throws Throwable {
+        Map<String, Object> map = new HashMap<>();
 
-//        String url = "http://localhost:" + XApp.global().port();
+        map.put("http", httpOf());
+        map.put("socket", socketOf());
+
+        ctx.render(map);
+    }
+
+    private Object httpOf() {
+        String root = "http://localhost:" + XApp.global().port();
+
+        rockapi client = new XProxy()
+                .channel(HttpChannel.instance)
+                .serializer(SnackSerializer.instance)
+                .upstream(name -> root)
+                .create(rockapi.class);
+
+        return client.test1(12);
+    }
+
+    private Object socketOf() {
         String root = "s://localhost:" + (20000 + XApp.global().port());
 
         rockapi client = new XProxy()
@@ -25,11 +48,6 @@ public class rpctest implements XHandler {
                 .upstream(name -> root)
                 .create(rockapi.class);
 
-        Object val = client.test1(12);
-        if (val == null) {
-            return;
-        }
-
-        ctx.render(val);
+        return client.test1(12);
     }
 }
