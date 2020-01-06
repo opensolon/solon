@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @XBefore({SocketAdp.class})
-@XMapping(value = "/demo5/test", method = XMethod.ALL)
+@XMapping(value = "/demo5/test", method = {XMethod.HTTP, XMethod.SOCKET})
 @XBean(remoting = true)
 public class rockservice implements rockapi {
 

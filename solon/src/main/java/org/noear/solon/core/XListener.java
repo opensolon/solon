@@ -25,10 +25,8 @@ public class XListener {
             if (method2.isHttpMethod()) {
                 return do_matches(path2);
             }
-        } else {
-            if (method2.code == _m.code) {
-                return do_matches(path2);
-            }
+        } else if (method2.code == _m.code) {
+            return do_matches(path2);
         }
 
         return false;
