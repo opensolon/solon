@@ -239,7 +239,7 @@ public class JdkHttpContext extends XContext {
         if (_cookieMap == null) {
             _cookieMap = new XMap();
 
-            String tmp = header("Cookie");
+            String tmp = header("Cookie","");
             String[] ss = tmp.split(";");
             for (String s : ss) {
                 String[] kv = s.split("=");
