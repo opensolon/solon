@@ -139,10 +139,10 @@ public class XApp implements XHandler {
      */
     public static void stop() {
         if (_global == null) {
-            return;
+            _global.prop().plugs().forEach(p -> p.stop());
         }
 
-        _global.prop().plugs().forEach(p->p.stop());
+        System.exit(0);
     }
 
     //////////////////////////////////
