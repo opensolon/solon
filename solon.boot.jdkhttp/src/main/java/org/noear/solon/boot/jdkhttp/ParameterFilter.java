@@ -16,10 +16,17 @@ import java.util.Map;
 
 public class ParameterFilter extends Filter {
 
+    final String file_encoding;
+
+    public ParameterFilter() {
+        file_encoding = System.getProperty("file.encoding");
+    }
+
     @Override
     public String description() {
         return "Parses the requested URI for parameters";
     }
+
 
     @Override
     public void doFilter(HttpExchange exchange, Chain chain) throws IOException {
@@ -75,13 +82,11 @@ public class ParameterFilter extends Filter {
                 String key = null;
                 String value = null;
                 if (param.length > 0) {
-                    key = URLDecoder.decode(param[0],
-                            System.getProperty("file.encoding"));
+                    key = URLDecoder.decode(param[0], file_encoding);
                 }
 
                 if (param.length > 1) {
-                    value = URLDecoder.decode(param[1],
-                            System.getProperty("file.encoding"));
+                    value = URLDecoder.decode(param[1], file_encoding);
                 }
 
                 if (parameters.containsKey(key)) {
