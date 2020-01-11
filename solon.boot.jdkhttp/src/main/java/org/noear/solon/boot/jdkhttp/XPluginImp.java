@@ -22,7 +22,6 @@ public final class XPluginImp implements XPlugin {
 
         XServerProp.init();
 
-
         long time_start = System.currentTimeMillis();
 
         JdkHttpContextHandler _handler = new JdkHttpContextHandler(app);
