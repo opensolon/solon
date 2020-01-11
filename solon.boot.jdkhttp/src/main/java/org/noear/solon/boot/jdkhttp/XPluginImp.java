@@ -27,7 +27,6 @@ public final class XPluginImp implements XPlugin {
 
         JdkHttpContextHandler _handler = new JdkHttpContextHandler(app);
 
-
         System.out.println("solon.Server:main: Sun.net.HttpServer jdk8");
 
         try {

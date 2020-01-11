@@ -6,21 +6,25 @@ import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class JdkHttpContextHandler implements HttpHandler {
     private XApp xapp;
+    private ExecutorService pool = Executors.newCachedThreadPool();
+
     public JdkHttpContextHandler(XApp xapp){
         this.xapp = xapp;
     }
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        new Thread(() -> {
+        pool.execute(() -> {
             try {
                 handle_do(exchange);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-        }).start();
+        });
     }
 
     private void handle_do(HttpExchange exchange) throws IOException {

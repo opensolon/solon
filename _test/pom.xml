@@ -15,7 +15,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.0.4.1</version>
+        <version>1.0.4.2</version>
         <relativePath>../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -67,15 +67,15 @@
             <artifactId>solon.boot.jdksocket</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jlhttp</artifactId>
-        </dependency>
-
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.jdkhttp</artifactId>-->
+<!--            <artifactId>solon.boot.jlhttp</artifactId>-->
 <!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.jdkhttp</artifactId>
+        </dependency>
 
 
 
@@ -127,15 +127,15 @@
             <artifactId>solon.extend.sessionstate.local</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.jackson</artifactId>
-        </dependency>
-
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.serialization.fastjson</artifactId>-->
+<!--            <artifactId>solon.serialization.jackson</artifactId>-->
 <!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.serialization.fastjson</artifactId>
+        </dependency>
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
