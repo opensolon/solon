@@ -22,16 +22,13 @@ public class ParameterFilter extends Filter {
     }
 
     @Override
-    public void doFilter(HttpExchange exchange, Chain chain)
-            throws IOException {
+    public void doFilter(HttpExchange exchange, Chain chain) throws IOException {
         parseGetParameters(exchange);
         parsePostParameters(exchange);
         chain.doFilter(exchange);
     }
 
-    private void parseGetParameters(HttpExchange exchange)
-            throws UnsupportedEncodingException {
-
+    private void parseGetParameters(HttpExchange exchange) throws UnsupportedEncodingException {
         Map<String, Object> parameters = new HashMap<>();
         URI requestedUri = exchange.getRequestURI();
         String query = requestedUri.getRawQuery();
