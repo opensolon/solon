@@ -1,4 +1,4 @@
-#### 1.0.4.2::
+#### 1.0.4.1::
 * 1. BeanBuilderAdd 更名为：beanInjectorAdd 
 * 2. BeanLoaderAdd  更名为：beanCreatorAdd
 

@@ -239,7 +239,7 @@ public class JdkHttpContext extends XContext {
         if (_cookieMap == null) {
             _cookieMap = new XMap();
 
-            String tmp = header("Cookie","");
+            String tmp = header("Cookie", "");
             String[] ss = tmp.split(";");
             for (String s : ss) {
                 String[] kv = s.split("=");
@@ -346,6 +346,7 @@ public class JdkHttpContext extends XContext {
     }
 
     protected ByteArrayOutputStream _outputStream = new ByteArrayOutputStream();
+
     @Override
     public OutputStream outputStream() throws IOException {
         return _outputStream;
@@ -407,8 +408,10 @@ public class JdkHttpContext extends XContext {
 
     @Override
     protected void commit() throws IOException {
-        _exchange.sendResponseHeaders(_status,0);
-        _outputStream.writeTo(_exchange.getResponseBody());
+        _exchange.sendResponseHeaders(_status, 0);
+        if (_outputStream.size() > 0) {
+            _outputStream.writeTo(_exchange.getResponseBody());
+        }
         _exchange.getResponseBody().close();
     }
 }
