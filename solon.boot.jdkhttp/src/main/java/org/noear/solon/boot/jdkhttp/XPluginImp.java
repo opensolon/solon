@@ -11,7 +11,7 @@ public final class XPluginImp implements XPlugin {
     private HttpServer _server = null;
 
     public static String solon_boot_ver(){
-        return "jdk http jdk8/1.0.4.43";
+        return "jdk http jdk8/1.0.4.2";
     }
 
     @Override
@@ -47,12 +47,13 @@ public final class XPluginImp implements XPlugin {
 
     @Override
     public void stop() throws Throwable {
-        if(_server != null) {
-            _server.stop(0);
-            _server = null;
-
-            System.out.println("solon.Server:main: Has Stopped " + solon_boot_ver());
+        if (_server == null) {
+            return;
         }
+
+        _server.stop(0);
+        _server = null;
+        System.out.println("solon.Server:main: Has Stopped " + solon_boot_ver());
     }
 }
 

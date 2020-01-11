@@ -5,6 +5,11 @@ import org.noear.solon.core.XPlugin;
 
 public class XPluginImp implements XPlugin {
     SocketServer _server;
+
+    public static String solon_boot_ver(){
+        return "jdk socket jdk8/1.0.4.2";
+    }
+
     @Override
     public void start(XApp app) {
 
@@ -41,5 +46,6 @@ public class XPluginImp implements XPlugin {
 
         _server.stop();
         _server = null;
+        System.out.println("solon.Server:main: Has Stopped " + solon_boot_ver());
     }
 }

@@ -10,7 +10,7 @@ public class XPluginImp implements XPlugin {
     DisposableServer _server = null;
 
     public static String solon_boot_ver() {
-        return "reactor-netty 0.9.1/1.0.3-b1";
+        return "reactor-netty 0.9.1/1.0.4-b1";
     }
 
     @Override
