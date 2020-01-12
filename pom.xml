@@ -27,6 +27,8 @@
 
         <module>solon.view.rocker</module>
 
+        <module>_plugin/dubbo-solon-plugin</module>
+
         <module>_demo</module>
         <module>_test</module>
         <module>_testTmp</module>
