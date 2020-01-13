@@ -2,6 +2,7 @@ package org.noear.solon.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
@@ -11,6 +12,8 @@ public class FieldWrap {
     public final Annotation[] annoS;
     public final Class<?> type;
     public final ParameterizedType genericType;
+
+    private Method _setter;
 
     public FieldWrap(Class<?> clz, Field f1) {
         entityClz = clz;
@@ -24,18 +27,50 @@ public class FieldWrap {
         } else {
             genericType = null;
         }
+
+        field.setAccessible(true);
+        _setter = findSetter(clz, f1);
     }
 
     public FieldWrapTmp tmp(Object obj) {
         return new FieldWrapTmp(this, obj);
     }
 
-    public void setValue(Object target, Object val) {
+    public void setValue(Object tObj, Object val) {
         try {
-            field.setAccessible(true);
-            field.set(target, val);
+            if (_setter == null) {
+                field.set(tObj, val);
+            } else {
+                _setter.invoke(tObj, new Object[]{val});
+            }
+        } catch (IllegalArgumentException ex) {
+            if (val == null) {
+                throw new IllegalArgumentException(field.getName() + "(" + field.getType().getSimpleName() + ")类型接收失败!", ex);
+            }
+            throw new IllegalArgumentException(
+                    field.getName() + "(" + field.getType().getSimpleName() +
+                            ")类型接收失败：val(" + val.getClass().getSimpleName() + ")", ex);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+
+    private static Method findSetter(Class<?> tCls, Field field) {
+        String fieldName = field.getName();
+        String firstLetter = fieldName.substring(0, 1).toUpperCase();
+        String setMethodName = "set" + firstLetter + fieldName.substring(1);
+
+        try {
+            Method setFun = tCls.getMethod(setMethodName, new Class[]{field.getType()});
+            if (setFun != null) {
+                return setFun;
+            }
+        } catch (NoSuchMethodException ex) {
+
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }

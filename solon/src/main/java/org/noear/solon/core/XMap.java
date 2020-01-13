@@ -14,13 +14,13 @@ import java.util.Map;
 * */
 public class XMap extends LinkedCaseInsensitiveMap<String> {
 
-    public XMap(){
+    public XMap() {
         super();
     }
 
-    public XMap(Map<String,String> map){
-       super();
-       putAll(map);
+    public XMap(Map<String, String> map) {
+        super();
+        putAll(map);
     }
 
     public static XMap from(String[] args) {
@@ -76,5 +76,9 @@ public class XMap extends LinkedCaseInsensitiveMap<String> {
         } else {
             return Double.parseDouble(temp);
         }
+    }
+
+    public void bindTo(Object target) {
+        XUtil.bindTo((k) -> get(k), target);
     }
 }

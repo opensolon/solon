@@ -23,11 +23,6 @@ public class FieldWrapTmp {
      * 设置字段值
      */
     public void setValue(Object val) {
-        try {
-            fw.field.setAccessible(true);
-            fw.field.set(obj, val);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+        fw.setValue(obj, val);
     }
 }

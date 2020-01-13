@@ -2,6 +2,7 @@ package org.noear.solon;
 
 import org.noear.solon.core.*;
 import org.noear.solon.core.utils.TypeUtil;
+import org.noear.solon.ext.Fun1;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -227,21 +228,28 @@ public class XUtil {
         }
     }
 
-    public static void bindProps(Properties prop, Object obj) {
-        if (obj == null) {
+    public static void bindTo(Map<String,String> source, Object target) {
+        bindTo((k) -> source.get(k), target);
+    }
+
+    public static void bindTo(Properties source, Object target) {
+        bindTo((k) -> source.getProperty(k), target);
+    }
+
+    public static void bindTo(Fun1<String, String> source, Object target) {
+        if (target == null) {
             return;
         }
 
-        ClassWrap cw = ClassWrap.get(obj.getClass());
+        ClassWrap cw = ClassWrap.get(target.getClass());
 
         for (Field f1 : cw.fields) {
-            String val = prop.getProperty(f1.getName());
+            String val = source.run(f1.getName());
             if (val != null) {
                 FieldWrap fw = cw.getFieldWrap(f1);
                 Object val2 = TypeUtil.changeOfPop(f1.getType(), val);
-                fw.setValue(obj, val2);
+                fw.setValue(target, val2);
             }
         }
-
     }
 }

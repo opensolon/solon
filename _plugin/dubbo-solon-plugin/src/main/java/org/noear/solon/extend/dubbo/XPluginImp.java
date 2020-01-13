@@ -22,17 +22,11 @@ public class XPluginImp implements XPlugin {
 
                     Class<?>[] ifs = bw.clz().getInterfaces();
                     if (ifs.length == 1) {
-                        Service sAnno = bw.clz().getAnnotation(Service.class);
-                        ServiceConfig service = null;
-                        if (sAnno == null) {
-                            service = new ServiceConfig();
-                            service.setVersion("1.0.0");
-                        } else {
-                            service = new ServiceConfig(sAnno);
-                        }
-
+                        //Service sAnno = bw.clz().getAnnotation(Service.class);
+                        ServiceConfig service =  new ServiceConfig();
                         service.setInterface(ifs[0]);
                         service.setRef(bw.raw());
+                        service.setVersion("1.0.0");
 
                         // 暴露及注册服务
                         _server.regService(service);

@@ -3,6 +3,7 @@ package org.noear.solon.extend.dubbo;
 import com.alibaba.dubbo.config.*;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.core.XMap;
 
 import java.util.Properties;
 
@@ -23,47 +24,46 @@ public class DubboAdapter {
     private DubboAdapter() {
         // 当前应用配置
         //
-        Properties props = null;
+        XMap props = null;
         {
-            props = XApp.cfg().getProp("dubbo.application");
+            application = new ApplicationConfig();
+            props = XApp.cfg().getXmap("dubbo.application");
             if (props.containsKey("name") == false) {
                 props.put("name", "dubbo-service-demo");
             }
-
-            application = new ApplicationConfig();
-            XUtil.bindProps(props, application);
+            XUtil.bindTo(props, application);
         }
 
 
         // 连接注册中心配置
         //
         {
-            props = XApp.cfg().getProp("dubbo.registry");
+            registry = new RegistryConfig();
+            props = XApp.cfg().getXmap("dubbo.registry");
             if (props.containsKey("address") == false) {
                 props.put("address", "A/N");
             }
             if (props.containsKey("group") == false) {
                 props.put("group", "dubbo");
             }
-
-            registry = new RegistryConfig();
-            XUtil.bindProps(props, registry);
+            registry.setParameters(props);
+//            XUtil.bindTo(props, registry);
         }
 
 
         // 服务提供者协议配置
         //
         {
-            props = XApp.cfg().getProp("dubbo.protocol");
+            protocol = new ProtocolConfig();
+            props = XApp.cfg().getXmap("dubbo.protocol");
             if (props.containsKey("name") == false) {
                 props.put("name", "dubbo");
             }
             if (props.containsKey("port") == false) {
                 props.put("port", "" + (XApp.global().port() + 20000));
             }
-
-            protocol = new ProtocolConfig();
-            XUtil.bindProps(props, protocol);
+            protocol.setParameters(props);
+//            XUtil.bindTo(props, protocol);
         }
     }
 
@@ -71,6 +71,7 @@ public class DubboAdapter {
         cfg.setApplication(application);
         cfg.setRegistry(registry); // 多个注册中心可以用setRegistries()
         cfg.setProtocol(protocol); // 多个协议可以用setProtocols()
+
         cfg.export();
     }
 
