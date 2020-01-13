@@ -2,7 +2,9 @@ package org.noear.solon.extend.dubbo;
 
 import com.alibaba.dubbo.config.ServiceConfig;
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.dubbo.config.annotation.Reference;
 import org.noear.solon.XApp;
+import org.noear.solon.XUtil;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XPlugin;
 
@@ -22,18 +24,43 @@ public class XPluginImp implements XPlugin {
 
                     Class<?>[] ifs = bw.clz().getInterfaces();
                     if (ifs.length == 1) {
-                        //Service sAnno = bw.clz().getAnnotation(Service.class);
-                        ServiceConfig service =  new ServiceConfig();
-                        service.setInterface(ifs[0]);
-                        service.setRef(bw.raw());
-                        service.setVersion("1.0.0");
+                        ServiceConfig cfg =  new ServiceConfig();
+                        cfg.setInterface(ifs[0]);
+                        cfg.setVersion("1.0.0");
+                        cfg.setRef(bw.raw());
 
                         // 暴露及注册服务
-                        _server.regService(service);
+                        _server.regService(cfg);
                     }
                 }
             });
         });
+
+        Aop.factory().beanCreatorAdd(Service.class,((clz, bw, anno) -> {
+            Class<?>[] ifs = bw.clz().getInterfaces();
+            if (ifs.length == 1) {
+                ServiceConfig cfg = new ServiceConfig(anno);
+                if (cfg.getInterface() == null) {
+                    cfg.setInterface(ifs[0]);
+                }
+                if (cfg.getVersion() == null) {
+                    cfg.setVersion("1.0.0");
+                }
+
+                cfg.setRef(bw.raw());
+
+                // 暴露及注册服务
+                _server.regService(cfg);
+            }
+        }));
+
+        Aop.factory().beanInjectorAdd(Reference.class,((fwT, anno) -> {
+            if(fwT.getType().isInterface()){
+                Object raw = DubboAdapter.global().get(fwT.getType());
+                fwT.setValue(raw);
+                Aop.put(fwT.getType(),raw);
+            }
+        }));
     }
 
 

@@ -12,6 +12,7 @@ public class DubboAdapter {
     protected ApplicationConfig application;
     protected RegistryConfig registry;
     protected ProtocolConfig protocol;
+    protected ConsumerConfig consumer;
     protected Map<Class<?>, ReferenceConfig> refMap = new ConcurrentHashMap<>();
 
     private static DubboAdapter _global;
@@ -37,7 +38,7 @@ public class DubboAdapter {
             XUtil.bindTo(props, application);
 
             MonitorConfig monitor = new MonitorConfig();
-            props = XApp.cfg().getXmap("dubbo.application.monitor");
+            props = XApp.cfg().getXmap("dubbo.monitor");
             if (props.size() > 0) {
                 monitor.setParameters(props);
                 application.setMonitor(monitor);
@@ -57,7 +58,6 @@ public class DubboAdapter {
                 props.put("group", "dubbo");
             }
             registry.setParameters(props);
-//            XUtil.bindTo(props, registry);
         }
 
 
@@ -73,7 +73,18 @@ public class DubboAdapter {
                 props.put("port", "" + (XApp.global().port() + 20000));
             }
             protocol.setParameters(props);
-//            XUtil.bindTo(props, protocol);
+        }
+
+        {
+            consumer = new ConsumerConfig();
+            props = XApp.cfg().getXmap("dubbo.consumer");
+            if (props.containsKey("check") == false) {
+                props.put("check", "false");
+            }
+            if (props.containsKey("timeout") == false) {
+                props.put("timeout", "3000");
+            }
+            consumer.setParameters(props);
         }
     }
 
@@ -100,10 +111,11 @@ public class DubboAdapter {
             cfg.setApplication(application);
             cfg.setRegistry(registry); // 多个注册中心可以用setRegistries()
             cfg.setInterface(clz);
+            cfg.setConsumer(consumer);
             cfg.setVersion(ver);
             cfg.setUrl(url);
 
-            cfg = refMap.putIfAbsent(clz, cfg);
+            refMap.putIfAbsent(clz, cfg);
         }
 
         return cfg.get();
