@@ -5,16 +5,19 @@ import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.XMap;
 
-import java.util.Properties;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DubboAdapter {
     protected ApplicationConfig application;
     protected RegistryConfig registry;
     protected ProtocolConfig protocol;
+    protected Map<Class<?>, ReferenceConfig> refMap = new ConcurrentHashMap<>();
 
     private static DubboAdapter _global;
-    public static DubboAdapter global(){
-        if(_global == null){
+
+    public static DubboAdapter global() {
+        if (_global == null) {
             _global = new DubboAdapter();
         }
 
@@ -32,6 +35,13 @@ public class DubboAdapter {
                 props.put("name", "dubbo-service-demo");
             }
             XUtil.bindTo(props, application);
+
+            MonitorConfig monitor = new MonitorConfig();
+            props = XApp.cfg().getXmap("dubbo.application.monitor");
+            if (props.size() > 0) {
+                monitor.setParameters(props);
+                application.setMonitor(monitor);
+            }
         }
 
 
@@ -84,12 +94,17 @@ public class DubboAdapter {
     }
 
     public <T> T get(Class<T> clz, String url, String ver) {
-        ReferenceConfig<T> cfg = new ReferenceConfig<T>(); // 此实例很重，封装了与注册中心的连接以及与提供者的连接，请自行缓存，否则可能造成内存和连接泄漏
-        cfg.setApplication(application);
-        cfg.setRegistry(registry); // 多个注册中心可以用setRegistries()
-        cfg.setInterface(clz);
-        cfg.setVersion(ver);
-        cfg.setUrl(url);
+        ReferenceConfig<T> cfg = refMap.get(clz);
+        if (cfg == null) {
+            new ReferenceConfig<T>(); // 此实例很重，封装了与注册中心的连接以及与提供者的连接，请自行缓存，否则可能造成内存和连接泄漏
+            cfg.setApplication(application);
+            cfg.setRegistry(registry); // 多个注册中心可以用setRegistries()
+            cfg.setInterface(clz);
+            cfg.setVersion(ver);
+            cfg.setUrl(url);
+
+            cfg = refMap.putIfAbsent(clz, cfg);
+        }
 
         return cfg.get();
     }
