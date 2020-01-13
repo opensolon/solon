@@ -1,10 +1,10 @@
 package org.noear.solon;
 
-import org.noear.solon.core.PathAnalyzer;
-import org.noear.solon.core.XMap;
-import org.noear.solon.core.XPropertiesLoader;
+import org.noear.solon.core.*;
+import org.noear.solon.core.utils.TypeUtil;
 
 import java.io.*;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.*;
@@ -15,49 +15,61 @@ import java.util.regex.Pattern;
  * 内部专用工具
  * */
 public class XUtil {
-    /** 生成UGID*/
-    public static String guid(){
-        return UUID.randomUUID().toString().replaceAll("-","");
+    /**
+     * 生成UGID
+     */
+    public static String guid() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
-    /** 检查字符串是否为空*/
+    /**
+     * 检查字符串是否为空
+     */
     public static boolean isEmpty(String s) {
         return s == null || s.length() == 0;
     }
 
-    /** 获取第一项或者null */
-    public static <T> T firstOrNull(List<T> list){
-        if(list.size()>0){
+    /**
+     * 获取第一项或者null
+     */
+    public static <T> T firstOrNull(List<T> list) {
+        if (list.size() > 0) {
             return list.get(0);
-        }else{
+        } else {
             return null;
         }
     }
 
-    /** 根据字符串加载为一个类*/
+    /**
+     * 根据字符串加载为一个类
+     */
     public static Class<?> loadClass(String className) {
         try {
             return Class.forName(className);
-        }catch (Throwable ex) {
+        } catch (Throwable ex) {
             return null;
         }
     }
 
-    /** 根据字段串加载为一个对象 */
+    /**
+     * 根据字段串加载为一个对象
+     */
     public static <T> T newClass(String className) {
         try {
             Class clz = Class.forName(className);
             return (T) clz.newInstance();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
     }
 
-    /** 获取资源URL集*/
-    public static Enumeration<URL> getResources(String name) throws IOException{
+    /**
+     * 获取资源URL集
+     */
+    public static Enumeration<URL> getResources(String name) throws IOException {
         Enumeration<URL> urls = XUtil.class.getClassLoader().getResources(name);
-        if (urls == null || urls.hasMoreElements()==false) {
+        if (urls == null || urls.hasMoreElements() == false) {
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             if (loader != null) {
                 urls = loader.getResources(name);
@@ -69,7 +81,9 @@ public class XUtil {
         return urls;
     }
 
-    /** 获取资源URL*/
+    /**
+     * 获取资源URL
+     */
     public static URL getResource(String name) {
         URL url = XUtil.class.getResource(name);
         if (url == null) {
@@ -84,22 +98,26 @@ public class XUtil {
         return url;
     }
 
-    public static Properties getProperties(URL url){
+    public static Properties getProperties(URL url) {
         try {
             return XPropertiesLoader.global.load(url);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
 
-    /** 获取异常的完整内容*/
-    public static String getFullStackTrace(Throwable ex){
+    /**
+     * 获取异常的完整内容
+     */
+    public static String getFullStackTrace(Throwable ex) {
         StringWriter sw = new StringWriter();
         ex.printStackTrace(new PrintWriter(sw, true));
         return sw.getBuffer().toString();
     }
 
-    /** 合并两个路径*/
+    /**
+     * 合并两个路径
+     */
     public static String mergePath(String path1, String path2) {
         if (XUtil.isEmpty(path1)) {
             if (path2.startsWith("/")) {
@@ -113,7 +131,7 @@ public class XUtil {
             path1 = "/" + path1;
         }
 
-        if(XUtil.isEmpty(path2)){
+        if (XUtil.isEmpty(path2)) {
             return path1;
         }
 
@@ -145,9 +163,9 @@ public class XUtil {
         //支持path变量
         if (expr.indexOf("{") >= 0) {
             String path2 = null;
-            try{
-                path2 =URLDecoder.decode(path, "utf-8");
-            }catch (Exception ex){
+            try {
+                path2 = URLDecoder.decode(path, "utf-8");
+            } catch (Exception ex) {
                 path2 = path;
             }
 
@@ -177,7 +195,7 @@ public class XUtil {
 
     public static String buildExt(String ext_dir, boolean autoCreate) {
         URL temp = XUtil.getResource("application.properties");
-        if(temp == null){
+        if (temp == null) {
             temp = XUtil.getResource("application.yml");
         }
 
@@ -194,18 +212,36 @@ public class XUtil {
                 uri = uri.substring(9, idx);
             }
 
-            uri = uri + ext_dir+ "/";
+            uri = uri + ext_dir + "/";
             File dir = new File(uri);
 
             if (dir.exists() == false) {
-                if(autoCreate) {
+                if (autoCreate) {
                     dir.mkdir();
-                }else{
+                } else {
                     return null;
                 }
             }
 
             return uri;
         }
+    }
+
+    public static void bindProps(Properties prop, Object obj) {
+        if (obj == null) {
+            return;
+        }
+
+        ClassWrap cw = ClassWrap.get(obj.getClass());
+
+        for (Field f1 : cw.fields) {
+            String val = prop.getProperty(f1.getName());
+            if (val != null) {
+                FieldWrap fw = cw.getFieldWrap(f1);
+                Object val2 = TypeUtil.changeOfPop(f1.getType(), val);
+                fw.setValue(obj, val2);
+            }
+        }
+
     }
 }

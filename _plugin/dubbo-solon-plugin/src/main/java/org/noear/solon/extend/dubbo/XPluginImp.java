@@ -8,12 +8,12 @@ import org.noear.solon.core.XPlugin;
 
 
 public class XPluginImp implements XPlugin {
-    DubboServer _server;
+    DubboAdapter _server;
 
     @Override
     public void start(XApp app) {
 
-        _server = new DubboServer(app);
+        _server = DubboAdapter.global();
 
         // 服务提供者暴露服务配置
         Aop.beanOnloaded(() -> {

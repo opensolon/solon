@@ -29,4 +29,13 @@ public class FieldWrap {
     public FieldWrapTmp tmp(Object obj) {
         return new FieldWrapTmp(this, obj);
     }
+
+    public void setValue(Object target, Object val) {
+        try {
+            field.setAccessible(true);
+            field.set(target, val);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 }
