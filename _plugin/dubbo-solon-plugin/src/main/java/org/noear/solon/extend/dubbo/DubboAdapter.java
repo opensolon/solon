@@ -8,6 +8,7 @@ import org.noear.solon.XUtil;
 import org.noear.solon.core.XMap;
 
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DubboAdapter {
@@ -117,6 +118,11 @@ public class DubboAdapter {
     }
 
     public void regService(ServiceConfig cfg) {
+        Properties prop = XApp.cfg().getProp("dubbo.service." + cfg.getInterface());
+        if (prop.size() > 0) {
+            XUtil.bindTo(prop, cfg);
+        }
+
         cfg.export();
         startBlock();
     }
@@ -135,6 +141,11 @@ public class DubboAdapter {
         if (cfg == null) {
             cfg = new ReferenceConfig<T>(ref); // 此实例很重，封装了与注册中心的连接以及与提供者的连接，请自行缓存，否则可能造成内存和连接泄漏
             cfg.setInterface(clz);
+
+            Properties prop = XApp.cfg().getProp("dubbo.reference." + cfg.getInterface());
+            if (prop.size() > 0) {
+                XUtil.bindTo(prop, cfg);
+            }
 
             refMap.putIfAbsent(clzKey, cfg);
         }
