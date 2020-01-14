@@ -1,6 +1,5 @@
 package org.noear.solon.extend.dubbo;
 
-import com.sun.javaws.security.AppContextUtil;
 import org.apache.dubbo.config.*;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.rpc.model.ApplicationModel;
