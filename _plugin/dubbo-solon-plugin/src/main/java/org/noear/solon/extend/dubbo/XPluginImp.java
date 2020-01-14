@@ -25,7 +25,6 @@ public class XPluginImp implements XPlugin {
                     if (ifs.length == 1) {
                         ServiceConfig cfg =  new ServiceConfig();
                         cfg.setInterface(ifs[0]);
-                        cfg.setVersion("1.0.0");
                         cfg.setRef(bw.raw());
 
                         // 暴露及注册服务
@@ -42,9 +41,6 @@ public class XPluginImp implements XPlugin {
                 ServiceConfig cfg = new ServiceConfig(anno);
                 if (cfg.getInterface() == null) {
                     cfg.setInterface(ifs[0]);
-                }
-                if (cfg.getVersion() == null) {
-                    cfg.setVersion("1.0.0");
                 }
 
                 cfg.setRef(bw.raw());

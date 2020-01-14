@@ -102,11 +102,11 @@ public class DubboAdapter {
     }
 
     public <T> T get(Class<T> clz) {
-        return get(clz, null, "1.0.0");
+        return get(clz, null, null);
     }
 
     public <T> T get(Class<T> clz, String url) {
-        return get(clz, url, "1.0.0");
+        return get(clz, url, null);
     }
 
     public <T> T get(Class<T> clz, String url, String ver) {
