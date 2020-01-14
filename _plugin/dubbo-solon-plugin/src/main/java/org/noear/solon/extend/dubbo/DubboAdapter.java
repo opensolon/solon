@@ -1,6 +1,7 @@
 package org.noear.solon.extend.dubbo;
 
 import org.apache.dubbo.config.*;
+import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.rpc.model.ApplicationModel;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
@@ -95,27 +96,14 @@ public class DubboAdapter {
     }
 
     public void regService(ServiceConfig cfg) {
-        //cfg.setRegistry(registry); // 多个注册中心可以用setRegistries()
-        //cfg.setProtocol(protocol); // 多个协议可以用setProtocols()
-
         cfg.export();
     }
 
-    public <T> T get(Class<T> clz) {
-        return get(clz, null, null);
-    }
-
-    public <T> T get(Class<T> clz, String url) {
-        return get(clz, url, null);
-    }
-
-    public <T> T get(Class<T> clz, String url, String ver) {
+    public <T> T getService(Class<T> clz, Reference ref) {
         ReferenceConfig<T> cfg = refMap.get(clz);
         if (cfg == null) {
-            cfg = new ReferenceConfig<T>(); // 此实例很重，封装了与注册中心的连接以及与提供者的连接，请自行缓存，否则可能造成内存和连接泄漏
+            cfg = new ReferenceConfig<T>(ref); // 此实例很重，封装了与注册中心的连接以及与提供者的连接，请自行缓存，否则可能造成内存和连接泄漏
             cfg.setInterface(clz);
-            cfg.setVersion(ver);
-            cfg.setUrl(url);
 
             refMap.putIfAbsent(clz, cfg);
         }

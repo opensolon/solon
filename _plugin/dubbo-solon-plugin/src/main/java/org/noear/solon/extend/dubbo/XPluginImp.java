@@ -20,10 +20,9 @@ public class XPluginImp implements XPlugin {
         Aop.beanOnloaded(() -> {
             Aop.beanForeach((name, bw) -> {
                 if (bw.remoting()) {
-
                     Class<?>[] ifs = bw.clz().getInterfaces();
                     if (ifs.length == 1) {
-                        ServiceConfig cfg =  new ServiceConfig();
+                        ServiceConfig cfg = new ServiceConfig();
                         cfg.setInterface(ifs[0]);
                         cfg.setRef(bw.raw());
 
@@ -35,14 +34,13 @@ public class XPluginImp implements XPlugin {
         });
 
         //支持duboo.Service注解
-        Aop.factory().beanCreatorAdd(Service.class,((clz, bw, anno) -> {
+        Aop.factory().beanCreatorAdd(Service.class, ((clz, bw, anno) -> {
             Class<?>[] ifs = bw.clz().getInterfaces();
             if (ifs.length == 1) {
                 ServiceConfig cfg = new ServiceConfig(anno);
                 if (cfg.getInterface() == null) {
                     cfg.setInterface(ifs[0]);
                 }
-
                 cfg.setRef(bw.raw());
 
                 // 暴露及注册服务
@@ -51,11 +49,11 @@ public class XPluginImp implements XPlugin {
         }));
 
         //支持dubbo.Reference注入
-        Aop.factory().beanInjectorAdd(Reference.class,((fwT, anno) -> {
-            if(fwT.getType().isInterface()){
-                Object raw = DubboAdapter.global().get(fwT.getType());
+        Aop.factory().beanInjectorAdd(Reference.class, ((fwT, anno) -> {
+            if (fwT.getType().isInterface()) {
+                Object raw = DubboAdapter.global().getService(fwT.getType(), anno);
                 fwT.setValue(raw);
-                Aop.put(fwT.getType(),raw);
+                Aop.put(fwT.getType(), raw);
             }
         }));
     }
