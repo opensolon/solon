@@ -16,7 +16,7 @@ public class XPluginImp implements XPlugin {
 
         _server = DubboAdapter.global();
 
-        // 服务提供者暴露服务配置
+        //支持XBean.remoting注解
         Aop.beanOnloaded(() -> {
             Aop.beanForeach((name, bw) -> {
                 if (bw.remoting()) {
@@ -35,6 +35,7 @@ public class XPluginImp implements XPlugin {
             });
         });
 
+        //支持duboo.Service注解
         Aop.factory().beanCreatorAdd(Service.class,((clz, bw, anno) -> {
             Class<?>[] ifs = bw.clz().getInterfaces();
             if (ifs.length == 1) {
@@ -53,6 +54,7 @@ public class XPluginImp implements XPlugin {
             }
         }));
 
+        //支持dubbo.Reference注入
         Aop.factory().beanInjectorAdd(Reference.class,((fwT, anno) -> {
             if(fwT.getType().isInterface()){
                 Object raw = DubboAdapter.global().get(fwT.getType());

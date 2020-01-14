@@ -1,6 +1,7 @@
 package org.noear.solon.extend.dubbo;
 
 import org.apache.dubbo.config.*;
+import org.apache.dubbo.rpc.model.ApplicationModel;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.XMap;
@@ -43,6 +44,8 @@ public class DubboAdapter {
                 monitor.setParameters(props);
                 application.setMonitor(monitor);
             }
+
+            ApplicationModel.getConfigManager().addConfig(application);
         }
 
 
@@ -58,6 +61,7 @@ public class DubboAdapter {
                 props.put("group", "dubbo");
             }
             registry.setParameters(props);
+            ApplicationModel.getConfigManager().addRegistry(registry);
         }
 
 
@@ -73,6 +77,7 @@ public class DubboAdapter {
                 props.put("port", "" + (XApp.global().port() + 20000));
             }
             protocol.setParameters(props);
+            ApplicationModel.getConfigManager().addProtocol(protocol);
         }
 
         {
@@ -85,12 +90,13 @@ public class DubboAdapter {
                 props.put("timeout", "3000");
             }
             consumer.setParameters(props);
+            ApplicationModel.getConfigManager().addConsumer(consumer);
         }
     }
 
     public void regService(ServiceConfig cfg) {
-        cfg.setRegistry(registry); // 多个注册中心可以用setRegistries()
-        cfg.setProtocol(protocol); // 多个协议可以用setProtocols()
+        //cfg.setRegistry(registry); // 多个注册中心可以用setRegistries()
+        //cfg.setProtocol(protocol); // 多个协议可以用setProtocols()
 
         cfg.export();
     }
@@ -107,9 +113,7 @@ public class DubboAdapter {
         ReferenceConfig<T> cfg = refMap.get(clz);
         if (cfg == null) {
             cfg = new ReferenceConfig<T>(); // 此实例很重，封装了与注册中心的连接以及与提供者的连接，请自行缓存，否则可能造成内存和连接泄漏
-            cfg.setRegistry(registry); // 多个注册中心可以用setRegistries()
             cfg.setInterface(clz);
-            cfg.setConsumer(consumer);
             cfg.setVersion(ver);
             cfg.setUrl(url);
 
