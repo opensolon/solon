@@ -1,5 +1,6 @@
 package org.noear.solon.extend.dubbo;
 
+import com.sun.javaws.security.AppContextUtil;
 import org.apache.dubbo.config.*;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.rpc.model.ApplicationModel;
@@ -95,8 +96,28 @@ public class DubboAdapter {
         }
     }
 
+    private Thread blockThread = null;
+    public void startBlock() {
+        if (blockThread == null) {
+            blockThread = new Thread(() -> {
+                try {
+                    System.in.read();
+                } catch (Exception ex) {
+                }
+            });
+            blockThread.start();
+        }
+    }
+    public void stopBlock(){
+        if(blockThread != null){
+            blockThread.stop();
+            blockThread = null;
+        }
+    }
+
     public void regService(ServiceConfig cfg) {
         cfg.export();
+        startBlock();
     }
 
     public <T> T getService(Class<T> clz, Reference ref) {

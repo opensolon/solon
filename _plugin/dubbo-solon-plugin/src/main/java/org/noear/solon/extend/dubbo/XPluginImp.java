@@ -61,5 +61,11 @@ public class XPluginImp implements XPlugin {
 
     @Override
     public void stop() throws Throwable {
+        if(_server==null){
+            return;
+        }
+
+        _server.stopBlock();
+        _server = null;
     }
 }
