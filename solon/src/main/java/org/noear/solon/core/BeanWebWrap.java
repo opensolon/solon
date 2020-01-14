@@ -23,6 +23,10 @@ public class BeanWebWrap{
         _cxm = _bw.clz().getAnnotation(XMapping.class);
     }
 
+    public XMapping mapping(){
+        return _cxm;
+    }
+
     /**
      * 设置切入点
      * */

@@ -110,8 +110,10 @@ public class AopFactory extends AopFactoryBase {
 
             if (anno.remoting()) {
                 BeanWebWrap bww = new BeanWebWrap(bw);
-                bww.remotingSet(true);
-                bww.load(XApp.global());
+                if (bww.mapping() != null) {
+                    bww.remotingSet(true);
+                    bww.load(XApp.global());
+                }
             }
 
             Class<?>[] list = bw.clz().getInterfaces();
@@ -170,13 +172,12 @@ public class AopFactory extends AopFactoryBase {
         Field[] fs = clzWrap.fields;
         for (Field f : fs) {
             Annotation[] annS = f.getDeclaredAnnotations();
-            if(annS.length > 0){
+            if (annS.length > 0) {
                 FieldWrapTmp fwT = clzWrap.getFieldWrap(f).tmp(obj);
-                tryBeanInject(fwT,annS);
+                tryBeanInject(fwT, annS);
             }
         }
     }
-
 
 
     //::库管理
@@ -209,7 +210,7 @@ public class AopFactory extends AopFactoryBase {
     public void beanLoad(Class<?> source) {
         //确定文件夹名
         String dir = "";
-        if(source.getPackage() != null) {
+        if (source.getPackage() != null) {
             dir = source.getPackage().getName().replace('.', '/');
         }
 
@@ -227,7 +228,7 @@ public class AopFactory extends AopFactoryBase {
                         if (annoSet.length > 0) {
                             try {
                                 tryBeanCreate(clz, annoSet);
-                            }catch (Throwable ex){
+                            } catch (Throwable ex) {
                                 ex.printStackTrace();
                             }
                         }
