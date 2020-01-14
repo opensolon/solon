@@ -13,49 +13,53 @@ public class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
+        boolean enableDubbo = true;
         if (app.source() != null) {
             //
-            //默认是开启的；如果关掉，则不处理bubbo相关
+            //Dubbo服务，默认是开启的；如果关掉，则不处理bubbo相关
             //
             EnableDubbo anno = app.source().getAnnotation(EnableDubbo.class);
             if (anno != null && anno.value() == false) {
-                return;
+                enableDubbo = false;
             }
         }
 
         _server = DubboAdapter.global();
 
-        //支持XBean.remoting注解
-        Aop.beanOnloaded(() -> {
-            Aop.beanForeach((name, bw) -> {
-                if (bw.remoting()) {
-                    Class<?>[] ifs = bw.clz().getInterfaces();
-                    if (ifs.length == 1) {
-                        ServiceConfig cfg = new ServiceConfig();
-                        cfg.setInterface(ifs[0]);
-                        cfg.setRef(bw.raw());
 
-                        // 暴露及注册服务
-                        _server.regService(cfg);
+        if(enableDubbo) {
+            //支持XBean.remoting注解
+            Aop.beanOnloaded(() -> {
+                Aop.beanForeach((name, bw) -> {
+                    if (bw.remoting()) {
+                        Class<?>[] ifs = bw.clz().getInterfaces();
+                        if (ifs.length == 1) {
+                            ServiceConfig cfg = new ServiceConfig();
+                            cfg.setInterface(ifs[0]);
+                            cfg.setRef(bw.raw());
+
+                            // 暴露及注册服务
+                            _server.regService(cfg);
+                        }
                     }
-                }
+                });
             });
-        });
 
-        //支持duboo.Service注解
-        Aop.factory().beanCreatorAdd(Service.class, ((clz, bw, anno) -> {
-            Class<?>[] ifs = bw.clz().getInterfaces();
-            if (ifs.length == 1) {
-                ServiceConfig cfg = new ServiceConfig(anno);
-                if (cfg.getInterface() == null) {
-                    cfg.setInterface(ifs[0]);
+            //支持duboo.Service注解
+            Aop.factory().beanCreatorAdd(Service.class, ((clz, bw, anno) -> {
+                Class<?>[] ifs = bw.clz().getInterfaces();
+                if (ifs.length == 1) {
+                    ServiceConfig cfg = new ServiceConfig(anno);
+                    if (cfg.getInterface() == null) {
+                        cfg.setInterface(ifs[0]);
+                    }
+                    cfg.setRef(bw.raw());
+
+                    // 暴露及注册服务
+                    _server.regService(cfg);
                 }
-                cfg.setRef(bw.raw());
-
-                // 暴露及注册服务
-                _server.regService(cfg);
-            }
-        }));
+            }));
+        }
 
         //支持dubbo.Reference注入
         Aop.factory().beanInjectorAdd(Reference.class, ((fwT, anno) -> {
