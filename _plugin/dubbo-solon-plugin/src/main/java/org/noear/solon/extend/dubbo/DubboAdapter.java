@@ -59,9 +59,6 @@ public class DubboAdapter {
             if (props.containsKey("address") == false) {
                 props.put("address", "A/N");
             }
-            if (props.containsKey("group") == false) {
-                props.put("group", "dubbo");
-            }
             registry.setParameters(props);
             ApplicationModel.getConfigManager().addRegistry(registry);
         }
