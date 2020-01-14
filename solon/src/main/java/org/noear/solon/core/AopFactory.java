@@ -226,7 +226,7 @@ public class AopFactory extends AopFactoryBase {
                         Annotation[] annoSet = clz.getDeclaredAnnotations();
                         if (annoSet.length > 0) {
                             try {
-                                tryCreateBean(clz, annoSet);
+                                tryBeanCreate(clz, annoSet);
                             }catch (Throwable ex){
                                 ex.printStackTrace();
                             }

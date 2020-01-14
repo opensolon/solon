@@ -15,7 +15,7 @@ public class DubboAdapter {
     protected RegistryConfig registry;
     protected ProtocolConfig protocol;
     protected ConsumerConfig consumer;
-    protected Map<Class<?>, ReferenceConfig> refMap = new ConcurrentHashMap<>();
+    protected Map<String, ReferenceConfig> refMap = new ConcurrentHashMap<>();
 
     private static DubboAdapter _global;
 
@@ -96,6 +96,7 @@ public class DubboAdapter {
     }
 
     private Thread blockThread = null;
+
     public void startBlock() {
         if (blockThread == null) {
             blockThread = new Thread(() -> {
@@ -107,8 +108,9 @@ public class DubboAdapter {
             blockThread.start();
         }
     }
-    public void stopBlock(){
-        if(blockThread != null){
+
+    public void stopBlock() {
+        if (blockThread != null) {
             blockThread.stop();
             blockThread = null;
         }
@@ -120,12 +122,21 @@ public class DubboAdapter {
     }
 
     public <T> T getService(Class<T> clz, Reference ref) {
-        ReferenceConfig<T> cfg = refMap.get(clz);
+        //生成带版本号的key
+        String clzKey = null;
+        if (ref == null) {
+            clzKey = clz.getName();
+        } else {
+            clzKey = clz.getName() + "_" + ref.version();
+        }
+
+
+        ReferenceConfig<T> cfg = refMap.get(clzKey);
         if (cfg == null) {
             cfg = new ReferenceConfig<T>(ref); // 此实例很重，封装了与注册中心的连接以及与提供者的连接，请自行缓存，否则可能造成内存和连接泄漏
             cfg.setInterface(clz);
 
-            refMap.putIfAbsent(clz, cfg);
+            refMap.putIfAbsent(clzKey, cfg);
         }
 
         return cfg.get();

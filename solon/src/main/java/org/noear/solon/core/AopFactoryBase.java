@@ -107,7 +107,6 @@ public abstract class AopFactoryBase {
             BeanInjector bi = beanInjectors.get(a.annotationType());
             if (bi != null) {
                 bi.handler(fwT, a);
-                return;
             }
         }
     }
@@ -115,16 +114,13 @@ public abstract class AopFactoryBase {
     /**
      * 尝试生成一个类
      */
-    protected boolean tryCreateBean(Class<?> clz, Annotation[] annoSet) {
+    protected void tryBeanCreate(Class<?> clz, Annotation[] annoSet) {
         for (Annotation a : annoSet) {
             BeanCreator bc = beanCreators.get(a.annotationType());
             if (bc != null) {
                 tryCreateBeanByAnno(clz, a, bc);
-                return true;
             }
         }
-
-        return false;
     }
 
     /**

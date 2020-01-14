@@ -32,6 +32,13 @@ public class XPluginImp implements XPlugin {
             Aop.beanOnloaded(() -> {
                 Aop.beanForeach((name, bw) -> {
                     if (bw.remoting()) {
+                        if(bw.clz().getAnnotation(Service.class) != null){
+                            //
+                            //交给@Service处理
+                            //
+                            return;
+                        }
+
                         Class<?>[] ifs = bw.clz().getInterfaces();
                         if (ifs.length == 1) {
                             ServiceConfig cfg = new ServiceConfig();
@@ -66,7 +73,6 @@ public class XPluginImp implements XPlugin {
             if (fwT.getType().isInterface()) {
                 Object raw = DubboAdapter.global().getService(fwT.getType(), anno);
                 fwT.setValue(raw);
-                Aop.put(fwT.getType(), raw);
             }
         }));
     }
