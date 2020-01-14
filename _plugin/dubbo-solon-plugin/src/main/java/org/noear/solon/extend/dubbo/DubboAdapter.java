@@ -13,9 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DubboAdapter {
     protected ApplicationConfig application;
-    protected RegistryConfig registry;
-    protected ProtocolConfig protocol;
-    protected ConsumerConfig consumer;
     protected Map<String, ReferenceConfig> refMap = new ConcurrentHashMap<>();
 
     private static DubboAdapter _global;
@@ -54,7 +51,7 @@ public class DubboAdapter {
         // 连接注册中心配置
         //
         {
-            registry = new RegistryConfig();
+            RegistryConfig registry = new RegistryConfig();
             props = XApp.cfg().getXmap("dubbo.registry");
             if (props.containsKey("address") == false) {
                 props.put("address", "A/N");
@@ -67,7 +64,7 @@ public class DubboAdapter {
         // 服务提供者协议配置
         //
         {
-            protocol = new ProtocolConfig();
+            ProtocolConfig protocol = new ProtocolConfig();
             props = XApp.cfg().getXmap("dubbo.protocol");
             if (props.containsKey("name") == false) {
                 props.put("name", "dubbo");
@@ -80,7 +77,7 @@ public class DubboAdapter {
         }
 
         {
-            consumer = new ConsumerConfig();
+            ConsumerConfig  consumer = new ConsumerConfig();
             props = XApp.cfg().getXmap("dubbo.consumer");
             if (props.containsKey("check") == false) {
                 props.put("check", "false");
