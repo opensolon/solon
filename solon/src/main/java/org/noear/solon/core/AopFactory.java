@@ -33,12 +33,12 @@ public class AopFactory extends AopFactoryBase {
                 XBean m_an = mWrap.method.getAnnotation(XBean.class);
 
                 if (m_an != null) {
-                    if(mWrap.parameters.length == 0) {
+                    if (mWrap.parameters.length == 0) {
                         Object raw = mWrap.method.invoke(bw.raw());
 
                         BeanWrap m_bw = Aop.put(mWrap.method.getReturnType(), raw);
                         beanCreate(m_bw, m_an);
-                    }else{
+                    } else {
                         throw new RuntimeException("XBean method does not support parameters");
                     }
                 }
@@ -59,8 +59,7 @@ public class AopFactory extends AopFactoryBase {
             bww.load(XApp.global());
         });
 
-
-        defaultInjector = (fwT,anno)->{
+        beanInjectorAdd(XInject.class, ((fwT, anno) -> {
             if (XUtil.isEmpty(anno.value())) {
                 //如果没有name,使用类型进行获取 bean
                 Aop.getAsyn(fwT.getType(), fwT, (bw) -> {
@@ -94,7 +93,7 @@ public class AopFactory extends AopFactoryBase {
                     }
                 }
             }
-        };
+        }));
     }
 
     protected void beanCreate(BeanWrap bw, XBean anno) {
@@ -170,10 +169,10 @@ public class AopFactory extends AopFactoryBase {
         ClassWrap clzWrap = ClassWrap.get(obj.getClass());
         Field[] fs = clzWrap.fields;
         for (Field f : fs) {
-            XInject xi = f.getAnnotation(XInject.class);
-            if(xi != null){
+            Annotation[] annS = f.getDeclaredAnnotations();
+            if(annS.length > 0){
                 FieldWrapTmp fwT = clzWrap.getFieldWrap(f).tmp(obj);
-                tryBeanInject(fwT,xi);
+                tryBeanInject(fwT,annS);
             }
         }
     }

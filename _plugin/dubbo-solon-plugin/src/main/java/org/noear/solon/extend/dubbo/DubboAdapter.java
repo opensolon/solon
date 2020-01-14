@@ -1,6 +1,6 @@
 package org.noear.solon.extend.dubbo;
 
-import com.alibaba.dubbo.config.*;
+import org.apache.dubbo.config.*;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.XMap;
@@ -89,7 +89,6 @@ public class DubboAdapter {
     }
 
     public void regService(ServiceConfig cfg) {
-        cfg.setApplication(application);
         cfg.setRegistry(registry); // 多个注册中心可以用setRegistries()
         cfg.setProtocol(protocol); // 多个协议可以用setProtocols()
 
@@ -108,7 +107,6 @@ public class DubboAdapter {
         ReferenceConfig<T> cfg = refMap.get(clz);
         if (cfg == null) {
             cfg = new ReferenceConfig<T>(); // 此实例很重，封装了与注册中心的连接以及与提供者的连接，请自行缓存，否则可能造成内存和连接泄漏
-            cfg.setApplication(application);
             cfg.setRegistry(registry); // 多个注册中心可以用setRegistries()
             cfg.setInterface(clz);
             cfg.setConsumer(consumer);

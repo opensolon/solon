@@ -1,10 +1,9 @@
 package org.noear.solon.extend.dubbo;
 
-import com.alibaba.dubbo.config.ServiceConfig;
-import com.alibaba.dubbo.config.annotation.Service;
-import com.alibaba.dubbo.config.annotation.Reference;
+import org.apache.dubbo.config.ServiceConfig;
+import org.apache.dubbo.config.annotation.Reference;
+import org.apache.dubbo.config.annotation.Service;
 import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XPlugin;
 

@@ -18,7 +18,7 @@ public class FieldWrap {
     public FieldWrap(Class<?> clz, Field f1) {
         entityClz = clz;
         field = f1;
-        annoS = f1.getAnnotations();
+        annoS = f1.getDeclaredAnnotations();
 
         type = f1.getType();
         Type tmp = f1.getGenericType();
