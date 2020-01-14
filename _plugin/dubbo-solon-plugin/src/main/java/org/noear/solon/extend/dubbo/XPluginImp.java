@@ -55,7 +55,7 @@ public class XPluginImp implements XPlugin {
             //支持duboo.Service注解
             Aop.factory().beanCreatorAdd(Service.class, ((clz, bw, anno) -> {
                 Class<?>[] ifs = bw.clz().getInterfaces();
-                if (ifs.length == 1) {
+                if (ifs.length > 0) {
                     ServiceConfig cfg = new ServiceConfig(anno);
                     if (cfg.getInterface() == null) {
                         cfg.setInterface(ifs[0]);
