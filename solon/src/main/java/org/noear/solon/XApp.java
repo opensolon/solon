@@ -6,6 +6,7 @@ import org.noear.solon.ext.Act1;
 import org.noear.solon.ext.Act2;
 import org.noear.solon.ext.PrintUtil;
 
+import java.lang.annotation.Annotation;
 import java.util.*;
 
 /**
@@ -93,7 +94,7 @@ public class XApp implements XHandler {
         PrintUtil.blueln("solon.plugin:: Start loading");
 
         //1.初始化应用
-        _global = new XApp(argx);
+        _global = new XApp(source, argx);
 
         //2.尝试加载扩展文件夹
         String _extend = argx.get("extend");
@@ -210,8 +211,11 @@ public class XApp implements XHandler {
      * 属性配置
      */
     private final XProperties _prop;
+    private final Class<?> _source;
 
-    protected XApp(XMap args) {
+    protected XApp(Class<?> source, XMap args) {
+        _source = source;
+
         _prop = new XProperties().load(args);
         _port = _prop.serverPort();
 
@@ -219,6 +223,10 @@ public class XApp implements XHandler {
         _router = new XRouter();
 
         _handler = new XRouterHandler(_router);
+    }
+
+    public Class<?> source(){
+        return _source;
     }
 
     /**
