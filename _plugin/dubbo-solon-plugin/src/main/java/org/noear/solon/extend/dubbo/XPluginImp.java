@@ -14,6 +14,7 @@ public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
         if (app.source() != null) {
+            //
             //默认是开启的；如果关掉，则不处理bubbo相关
             //
             EnableDubbo anno = app.source().getAnnotation(EnableDubbo.class);
