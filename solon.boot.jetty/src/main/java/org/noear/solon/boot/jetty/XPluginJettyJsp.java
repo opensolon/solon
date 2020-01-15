@@ -7,12 +7,10 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.ResourceCollection;
 import org.noear.solon.XApp;
-import org.noear.solon.XProperties;
+import org.noear.solon.XAppProperties;
 import org.noear.solon.XUtil;
-import org.noear.solon.annotation.XSingleton;
 import org.noear.solon.core.XPlugin;
 
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -27,7 +25,7 @@ final class XPluginJettyJsp implements XPlugin {
 
     @Override
     public void start(XApp app) {
-        XProperties props = app.prop();
+        XAppProperties props = app.prop();
 
         try {
             ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);

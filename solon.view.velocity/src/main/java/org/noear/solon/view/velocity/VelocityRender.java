@@ -5,7 +5,6 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.noear.solon.XApp;
-import org.noear.solon.XProperties;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.ModelAndView;
 import org.noear.solon.core.XRender;

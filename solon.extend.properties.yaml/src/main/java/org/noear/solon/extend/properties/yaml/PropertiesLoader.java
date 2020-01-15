@@ -1,5 +1,6 @@
 package org.noear.solon.extend.properties.yaml;
 
+import org.noear.solon.core.XProperties;
 import org.noear.solon.core.XPropertiesLoader;
 
 import java.net.URL;
@@ -20,7 +21,7 @@ public class PropertiesLoader extends XPropertiesLoader {
     }
 
     @Override
-    public Properties load(URL url) throws Exception {
+    public XProperties load(URL url) throws Exception {
         if (url == null) {
             return null;
         }
@@ -30,7 +31,7 @@ public class PropertiesLoader extends XPropertiesLoader {
         if (fileName.endsWith(".properties")) {
             System.out.println(url);
 
-            Properties tmp = new Properties();
+            XProperties tmp = new XProperties();
             tmp.load(url.openStream());
             return tmp;
         }

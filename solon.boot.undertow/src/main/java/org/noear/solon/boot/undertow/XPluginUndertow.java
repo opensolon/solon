@@ -9,13 +9,11 @@ import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.servlet.api.ServletContainer;
 import org.noear.solon.XApp;
-import org.noear.solon.XProperties;
+import org.noear.solon.XAppProperties;
 import org.noear.solon.core.XPlugin;
 
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
-import java.io.Closeable;
-import java.io.IOException;
 
 /**
  * @Created by: Yukai
@@ -67,7 +65,7 @@ public class XPluginUndertow implements XPlugin {
                 .setDefaultMultipartConfig(multipartConfigElement)
                 .addInnerHandlerChainWrapper(wrapper);
 
-        XProperties props = app.prop();
+        XAppProperties props = app.prop();
         int s_timeout = props.getInt("server.session.timeout", 0);
         if (s_timeout > 0) {
             builder.setDefaultSessionTimeout(s_timeout);

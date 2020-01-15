@@ -2,6 +2,7 @@ package org.noear.solon;
 
 import org.noear.solon.core.XMap;
 import org.noear.solon.core.XPluginEntity;
+import org.noear.solon.core.XProperties;
 import org.noear.solon.core.XScaner;
 import org.noear.solon.ext.Act2;
 import java.net.URL;
@@ -10,17 +11,17 @@ import java.util.*;
 /**
  * 统一配置加载器
  * */
-public final class XProperties extends Properties{
+public final class XAppProperties extends XProperties {
     public static final String server_port = "server.port";
 
     private XMap _args;
     private List<XPluginEntity> _plugs = new ArrayList<>();
 
-    public XProperties(){
+    public XAppProperties(){
         super();
     }
 
-    public XProperties load(XMap args) {
+    public XAppProperties load(XMap args) {
         _args = args;
 
         do_loadFile();
@@ -38,7 +39,7 @@ public final class XProperties extends Properties{
         return this;
     }
 
-    public XProperties load(URL url) {
+    public XAppProperties load(URL url) {
         if(url != null) {
             Properties prop = XUtil.getProperties(url);
 
@@ -99,7 +100,7 @@ public final class XProperties extends Properties{
 
     private void do_loadPlug(URL url){
         try {
-            XProperties p = new XProperties().load(url);
+            XAppProperties p = new XAppProperties().load(url);
 
             String temp = p.get("solon.plugin");
 
@@ -142,78 +143,7 @@ public final class XProperties extends Properties{
         return _plugs;
     }
 
-    /**获取某项配置*/
-    public String get(String key) {
-        return getProperty(key);
-    }
-    public String get(String key, String def) {
-        return getProperty(key, def);
-    }
 
-    public int getInt(String key, int def) {
-        String temp = get(key);
-        if (XUtil.isEmpty(temp)) {
-            return def;
-        } else {
-            return Integer.parseInt(temp);
-        }
-    }
-
-    public long getLong(String key, long def) {
-        String temp = get(key);
-        if (XUtil.isEmpty(temp)) {
-            return def;
-        } else {
-            return Long.parseLong(temp);
-        }
-    }
-
-    public boolean getBool(String key, boolean def){
-        String temp = get(key);
-        if (XUtil.isEmpty(temp)) {
-            return def;
-        } else {
-            return Boolean.parseBoolean(temp);
-        }
-    }
-
-    public Object getRaw(String key){
-        return super.get(key);
-    }
-
-    public Properties getProp(String key) {
-        Properties prop = new Properties();
-
-        String key2 = key + ".";
-        int idx2 = key2.length();
-
-        String keyStr = null;
-        for (Map.Entry<Object, Object> kv : this.entrySet()) {
-            keyStr = kv.getKey().toString();
-            if (keyStr.startsWith(key2)) {
-                prop.put(keyStr.substring(idx2), kv.getValue());
-            }
-        }
-
-        return prop;
-    }
-
-    public XMap getXmap(String key) {
-        XMap map = new XMap();
-
-        String key2 = key + ".";
-        int idx2 = key2.length();
-
-        String keyStr = null;
-        for (Map.Entry<Object, Object> kv : this.entrySet()) {
-            keyStr = kv.getKey().toString();
-            if (keyStr.startsWith(key2)) {
-                map.put(keyStr.substring(idx2), kv.getValue().toString());
-            }
-        }
-
-        return map;
-    }
 
     /**获取服务端口(默认:8080)*/
     public int serverPort() {

@@ -4,17 +4,14 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.eclipse.jetty.server.session.SessionHandler;
 import org.noear.solon.XApp;
-import org.noear.solon.XProperties;
+import org.noear.solon.XAppProperties;
 import org.noear.solon.core.XPlugin;
-
-import java.io.Closeable;
-import java.io.IOException;
 
 final class XPluginJetty implements XPlugin {
     private Server _server = null;
     @Override
     public void start(XApp app) {
-        XProperties props = app.prop();
+        XAppProperties props = app.prop();
         SessionHandler s_handler = new SessionHandler();
 
         if (XServerProp.session_timeout > 0) {

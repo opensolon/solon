@@ -6,7 +6,6 @@ import org.noear.solon.ext.Act1;
 import org.noear.solon.ext.Act2;
 import org.noear.solon.ext.PrintUtil;
 
-import java.lang.annotation.Annotation;
 import java.util.*;
 
 /**
@@ -62,7 +61,7 @@ public class XApp implements XHandler {
         return _global;
     }
 
-    public static XProperties cfg(){
+    public static XAppProperties cfg(){
         return global().prop();
     }
 
@@ -210,13 +209,13 @@ public class XApp implements XHandler {
     /**
      * 属性配置
      */
-    private final XProperties _prop;
+    private final XAppProperties _prop;
     private final Class<?> _source;
 
     protected XApp(Class<?> source, XMap args) {
         _source = source;
 
-        _prop = new XProperties().load(args);
+        _prop = new XAppProperties().load(args);
         _port = _prop.serverPort();
 
         //顺序不能换
@@ -239,7 +238,7 @@ public class XApp implements XHandler {
     /**
      * 获取属性
      */
-    public XProperties prop() {
+    public XAppProperties prop() {
         return _prop;
     }
 
