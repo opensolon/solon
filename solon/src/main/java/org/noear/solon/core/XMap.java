@@ -77,8 +77,4 @@ public class XMap extends LinkedCaseInsensitiveMap<String> {
             return Double.parseDouble(temp);
         }
     }
-
-    public void bindTo(Object target) {
-        XUtil.bindTo((k) -> get(k), target);
-    }
 }

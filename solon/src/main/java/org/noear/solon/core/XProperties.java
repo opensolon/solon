@@ -69,8 +69,4 @@ public class XProperties extends Properties {
             }
         }
     }
-
-    public void bindTo(Object target) {
-        XUtil.bindTo((k) -> get(k), target);
-    }
 }
