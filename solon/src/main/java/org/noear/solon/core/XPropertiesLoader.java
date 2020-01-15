@@ -3,6 +3,7 @@ package org.noear.solon.core;
 import org.noear.solon.XUtil;
 
 import java.net.URL;
+import java.util.Properties;
 
 public class XPropertiesLoader {
     public static XPropertiesLoader global = new XPropertiesLoader();

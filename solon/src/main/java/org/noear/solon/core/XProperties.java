@@ -1,6 +1,8 @@
 package org.noear.solon.core;
 
 import org.noear.solon.XUtil;
+import org.noear.solon.ext.Act2;
+import org.noear.solon.ext.Fun1;
 
 import java.util.Map;
 import java.util.Properties;
@@ -14,30 +16,28 @@ public class XProperties extends Properties {
         return getProperty(key, def);
     }
 
+    public boolean getBool(String key, boolean def){
+        return getOrDef(key, def, Boolean::parseBoolean);
+    }
+
     public int getInt(String key, int def) {
-        String temp = get(key);
-        if (XUtil.isEmpty(temp)) {
-            return def;
-        } else {
-            return Integer.parseInt(temp);
-        }
+        return getOrDef(key, def, Integer::parseInt);
     }
 
     public long getLong(String key, long def) {
-        String temp = get(key);
-        if (XUtil.isEmpty(temp)) {
-            return def;
-        } else {
-            return Long.parseLong(temp);
-        }
+        return getOrDef(key, def, Long::parseLong);
     }
 
-    public boolean getBool(String key, boolean def){
+    public Double getDouble(String key, double def) {
+        return getOrDef(key, def, Double::parseDouble);
+    }
+
+    private <T> T getOrDef(String key, T def, Fun1<String,T> convert){
         String temp = get(key);
         if (XUtil.isEmpty(temp)) {
             return def;
         } else {
-            return Boolean.parseBoolean(temp);
+            return convert.run(temp);
         }
     }
 
@@ -47,24 +47,17 @@ public class XProperties extends Properties {
 
     public XProperties getProp(String key) {
         XProperties prop = new XProperties();
-
-        String key2 = key + ".";
-        int idx2 = key2.length();
-
-        String keyStr = null;
-        for (Map.Entry<Object, Object> kv : this.entrySet()) {
-            keyStr = kv.getKey().toString();
-            if (keyStr.startsWith(key2)) {
-                prop.put(keyStr.substring(idx2), kv.getValue());
-            }
-        }
-
+        find(key, prop::put);
         return prop;
     }
 
     public XMap getXmap(String key) {
         XMap map = new XMap();
+        find(key,map::put);
+        return map;
+    }
 
+    private void find(String key, Act2<String,String> setFun){
         String key2 = key + ".";
         int idx2 = key2.length();
 
@@ -72,10 +65,12 @@ public class XProperties extends Properties {
         for (Map.Entry<Object, Object> kv : this.entrySet()) {
             keyStr = kv.getKey().toString();
             if (keyStr.startsWith(key2)) {
-                map.put(keyStr.substring(idx2), kv.getValue().toString());
+                setFun.run(keyStr.substring(idx2), kv.getValue().toString());
             }
         }
+    }
 
-        return map;
+    public void bindTo(Object target) {
+        XUtil.bindTo((k) -> get(k), target);
     }
 }
