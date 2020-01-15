@@ -30,7 +30,7 @@ public class XPropertiesLoader {
         return suffix.endsWith(".properties");
     }
 
-    public XProperties load(URL url) throws Exception {
+    public Properties load(URL url) throws Exception {
         if (url == null) {
             return null;
         }
@@ -40,11 +40,12 @@ public class XPropertiesLoader {
         if (fileName.endsWith(".properties")) {
             System.out.println(url);
 
-            XProperties tmp = new XProperties();
+            Properties tmp = new Properties();
             tmp.load(url.openStream());
             return tmp;
         }
 
         return null;
     }
+
 }

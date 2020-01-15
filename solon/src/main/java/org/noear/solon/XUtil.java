@@ -99,7 +99,7 @@ public class XUtil {
         return url;
     }
 
-    public static XProperties getProperties(URL url) {
+    public static Properties getProperties(URL url) {
         try {
             return XPropertiesLoader.global.load(url);
         } catch (Exception ex) {

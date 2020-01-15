@@ -1,13 +1,13 @@
 package org.noear.solon.extend.properties.yaml;
 
-import org.noear.solon.core.XProperties;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
-public class PropertiesYaml extends XProperties {
+public class PropertiesYaml extends Properties {
     public synchronized void loadYml(InputStream inputStream) {
         Yaml yaml = new Yaml();
 

@@ -61,7 +61,7 @@ public class XApp implements XHandler {
         return _global;
     }
 
-    public static XAppProperties cfg(){
+    public static XProperties cfg(){
         return global().prop();
     }
 
@@ -209,13 +209,13 @@ public class XApp implements XHandler {
     /**
      * 属性配置
      */
-    private final XAppProperties _prop;
+    private final XProperties _prop;
     private final Class<?> _source;
 
     protected XApp(Class<?> source, XMap args) {
         _source = source;
 
-        _prop = new XAppProperties().load(args);
+        _prop = new XProperties().load(args);
         _port = _prop.serverPort();
 
         //顺序不能换
@@ -238,7 +238,7 @@ public class XApp implements XHandler {
     /**
      * 获取属性
      */
-    public XAppProperties prop() {
+    public XProperties prop() {
         return _prop;
     }
 
