@@ -20,4 +20,9 @@ public class TestController {
     public void test2(XContext c) throws Throwable{
         c.render(XApp.cfg());
     }
+
+    @XMapping("/demo8/config_system")
+    public void test3(XContext c) throws Throwable{
+        c.render(System.getProperties());
+    }
 }
