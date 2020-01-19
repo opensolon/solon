@@ -113,7 +113,7 @@ public class XRenderManager implements XRender {
             render = _mapping.get(mode);
 
             if (render == null) {
-                ctx.headerSet("serialization", "no " + mode);
+                ctx.headerSet("Solon.serialization.mode", "Not supported " + mode);
             }
         }
 
