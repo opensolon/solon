@@ -72,12 +72,7 @@ public class XUtil {
     public static Enumeration<URL> getResources(String name) throws IOException {
         Enumeration<URL> urls = XClassLoader.global().getResources(name); //XUtil.class.getClassLoader().getResources(name);
         if (urls == null || urls.hasMoreElements() == false) {
-            ClassLoader loader = Thread.currentThread().getContextClassLoader();
-            if (loader != null) {
-                urls = loader.getResources(name);
-            } else {
-                urls = ClassLoader.getSystemResources(name);
-            }
+            urls = ClassLoader.getSystemResources(name);
         }
 
         return urls;
@@ -90,12 +85,7 @@ public class XUtil {
         URL url = XClassLoader.global().getResource(name);//XUtil.class.getResource(name);
 
         if (url == null) {
-            ClassLoader loader = Thread.currentThread().getContextClassLoader();
-            if (loader != null) {
-                url = loader.getResource(name);
-            } else {
-                url = ClassLoader.getSystemResource(name);
-            }
+            url = XUtil.class.getResource(name);
         }
 
         return url;
