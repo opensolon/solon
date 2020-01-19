@@ -46,7 +46,7 @@ public class XUtil {
      */
     public static Class<?> loadClass(String className) {
         try {
-            return Class.forName(className);
+            return XClassLoader.global().loadClass(className); //Class.forName(className);
         } catch (Throwable ex) {
             return null;
         }
@@ -57,8 +57,9 @@ public class XUtil {
      */
     public static <T> T newClass(String className) {
         try {
-            Class clz = Class.forName(className);
-            return (T) clz.newInstance();
+            return (T)loadClass(className).newInstance();
+//            Class clz = Class.forName(className);
+//            return (T) clz.newInstance();
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
@@ -69,7 +70,7 @@ public class XUtil {
      * 获取资源URL集
      */
     public static Enumeration<URL> getResources(String name) throws IOException {
-        Enumeration<URL> urls = XUtil.class.getClassLoader().getResources(name);
+        Enumeration<URL> urls = XClassLoader.global().getResources(name); //XUtil.class.getClassLoader().getResources(name);
         if (urls == null || urls.hasMoreElements() == false) {
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             if (loader != null) {
@@ -86,7 +87,8 @@ public class XUtil {
      * 获取资源URL
      */
     public static URL getResource(String name) {
-        URL url = XUtil.class.getResource(name);
+        URL url = XClassLoader.global().getResource(name);//XUtil.class.getResource(name);
+
         if (url == null) {
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             if (loader != null) {

@@ -5,9 +5,6 @@ import org.noear.solon.XUtil;
 import org.noear.solon.ext.PrintUtil;
 
 import java.io.File;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
 
 /** 外部扩展加载器（对于动态扩展） */
 public class ExtendLoader {
@@ -26,7 +23,7 @@ public class ExtendLoader {
                 PrintUtil.blueln("solon.extend: " + path);
 
                 File file = new File(path);
-                _g.do_load(file);
+                _g.loadFile(file);
             }
         }
     }
@@ -34,26 +31,32 @@ public class ExtendLoader {
     /**
      * 加载扩展具体的jar文件
      * */
-    public static void loadJar(File file) {
-        _g.do_loadFile(file);
-    }
-
-    private Method addURL;
-    private URLClassLoader urlLoader;
-
-    private ExtendLoader() {
-        urlLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
-
+    public static boolean loadJar(File file) {
         try {
-            addURL = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{URL.class});
-            addURL.setAccessible(true);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            XClassLoader.global().loadJar(file.toURI().toURL());
+            return true;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return false;
         }
     }
 
+    public static boolean unloadJar(File file){
+        try {
+            XClassLoader.global().unloadJar(file.toURI().toURL());
+            return true;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    private ExtendLoader() {
+
+    }
+
     /** 如果是目录的话，只处理一级 */
-    private void do_load(File file) {
+    private void loadFile(File file) {
         if (file.exists() == false) {
             return;
         }
@@ -61,21 +64,21 @@ public class ExtendLoader {
         if (file.isDirectory()) {
             File[] tmps = file.listFiles();
             for (File tmp : tmps) {
-                do_loadFile(tmp);
+                loadFileDo(tmp);
             }
         } else {
-            do_loadFile(file);
+            loadFileDo(file);
         }
     }
 
 
-    private void do_loadFile(File file) {
+    private void loadFileDo(File file) {
         if (file.isFile()) {
             String path = file.getAbsolutePath();
             try {
                 //尝试加载jar包
                 if (path.endsWith(".jar") || path.endsWith(".zip")) {
-                    addURL.invoke(urlLoader, new Object[]{file.toURI().toURL()});
+                    loadJar(file);
                     return;
                 }
 

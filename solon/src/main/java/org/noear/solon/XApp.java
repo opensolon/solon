@@ -89,6 +89,9 @@ public class XApp implements XHandler {
             return _global;
         }
 
+        //绑定类加载器
+        XClassLoader.bindingThread();
+
         long time_start = System.currentTimeMillis();
         PrintUtil.blueln("solon.plugin:: Start loading");
 
