@@ -107,12 +107,25 @@ public class XRenderManager implements XRender {
         //@protobuf
         //
         //
+        XRender render = null;
         String mode = ctx.header("serialization");
-        if (XUtil.isEmpty(mode)) {
-            mode = ctx.remoting() ? "@type_json" : "@json";
+        if (XUtil.isEmpty(mode) == false) {
+            render = _mapping.get(mode);
+
+            if (render == null) {
+                ctx.headerSet("serialization", "no " + mode);
+            }
         }
 
-        XRender render = _mapping.get(mode);
+        if (render == null) {
+            if (ctx.remoting()) {
+                render = _mapping.get("@type_json");
+            }
+        }
+
+        if (render == null) {
+            render = _mapping.get("@json");
+        }
 
         if (render != null) {
             render.render(obj, ctx);
