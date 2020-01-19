@@ -375,6 +375,7 @@ public class XApp implements XHandler {
     public void handle(XContext x) throws Throwable {
         try {
             //设置当前线程上下文
+            XClassLoader.bindingThread();
             XContextUtil.currentSet(x);
 
             _handler.handle(x);
