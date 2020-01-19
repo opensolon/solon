@@ -17,7 +17,10 @@ public class JacksonRender implements XRender {
     ObjectMapper mapper = new ObjectMapper();
     ObjectMapper mapper_serialize = new ObjectMapper();
 
-    public JacksonRender(){
+    private boolean _typedJson;
+    public JacksonRender(boolean typedJson){
+        _typedJson = typedJson;
+
         mapper_serialize.enableDefaultTypingAsProperty(NON_FINAL, "@type");
 
 
@@ -38,7 +41,7 @@ public class JacksonRender implements XRender {
     public void render(Object obj, XContext ctx) throws Throwable {
         String txt = null;
 
-        if (ctx.remoting()) {
+        if (_typedJson) {
             //序列化处理
             //
             txt = mapper_serialize.writeValueAsString(obj);

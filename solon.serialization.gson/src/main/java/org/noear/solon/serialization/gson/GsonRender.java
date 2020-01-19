@@ -14,13 +14,16 @@ public class GsonRender implements XRender {
             .registerTypeAdapter(java.util.Date.class,new GsonDateSerialize())
             .create();//序列化输出
 
-
+    private boolean _typedJson;
+    public GsonRender(boolean typedJson){
+        _typedJson = typedJson;
+    }
 
     @Override
     public void render(Object obj, XContext ctx) throws Throwable {
         String txt = null;
 
-        if (ctx.remoting()) {
+        if (_typedJson) {
             //序列化处理
             //
             txt = serialize.toJson(obj, obj.getClass());

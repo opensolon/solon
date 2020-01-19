@@ -11,10 +11,8 @@ public class XPluginImp implements XPlugin {
     public void start(XApp app) {
         output_meta = app.prop().getInt("solon.output.meta", 0) > 0;
 
-        SnackRender render = new SnackRender();
-
         //XRenderManager.register(render);
-        XRenderManager.mapping("@json",render);
-        XRenderManager.mapping("@type_json",render);
+        XRenderManager.mapping("@json", new SnackRender(false));
+        XRenderManager.mapping("@type_json", new SnackRender(true));
     }
 }

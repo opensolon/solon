@@ -8,11 +8,16 @@ import org.noear.solon.core.XRender;
 //
 public class SnackRender implements XRender {
 
+    private boolean _typedJson;
+    public SnackRender(boolean typedJson) {
+        _typedJson = typedJson;
+    }
+
     @Override
     public void render(Object obj, XContext ctx) throws Throwable {
         String txt = null;
 
-        if (ctx.remoting()) {
+        if (_typedJson) {
             //序列化处理
             //
             txt = ONode.serialize(obj);

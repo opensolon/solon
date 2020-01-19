@@ -8,12 +8,16 @@ import org.noear.solon.core.XRender;
 //不要要入参，方便后面多视图混用
 //
 public class FastjsonRender implements XRender {
+    private boolean _typedJson;
+    public FastjsonRender(boolean typedJson){
+        _typedJson = typedJson;
+    }
 
     @Override
     public void render(Object obj, XContext ctx) throws Throwable {
         String txt = null;
 
-        if (ctx.remoting()) {
+        if (_typedJson) {
             //序列化处理
             //
             txt = JSON.toJSONString(obj,
