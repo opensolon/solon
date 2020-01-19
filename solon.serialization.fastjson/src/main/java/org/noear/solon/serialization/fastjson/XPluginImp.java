@@ -15,6 +15,7 @@ public class XPluginImp implements XPlugin {
         FastjsonRender render = new FastjsonRender();
 
         //XRenderManager.register(render);
-        XRenderManager.mapping(XRenderManager.mapping_model,render);
+        XRenderManager.mapping("@json",render);
+        XRenderManager.mapping("@type_json",render);
     }
 }

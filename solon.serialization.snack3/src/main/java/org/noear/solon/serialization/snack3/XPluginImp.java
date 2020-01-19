@@ -14,6 +14,7 @@ public class XPluginImp implements XPlugin {
         SnackRender render = new SnackRender();
 
         //XRenderManager.register(render);
-        XRenderManager.mapping(XRenderManager.mapping_model,render);
+        XRenderManager.mapping("@json",render);
+        XRenderManager.mapping("@type_json",render);
     }
 }

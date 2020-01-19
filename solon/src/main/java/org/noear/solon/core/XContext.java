@@ -333,6 +333,15 @@ public abstract class XContext {
         XRenderManager.global.render(new ModelAndView(view,data), this);
     }
 
+    private boolean _remoting;
+    @XNote("是否为远程调用")
+    public boolean remoting(){
+        return _remoting;
+    }
+    public void remotingSet(boolean remote){
+        _remoting = remote;
+    }
+
     //一些特殊的boot才有效
     @XNote("提交响应")
     protected void commit() throws IOException{}

@@ -11,7 +11,6 @@ import java.util.Map;
  * */
 public class XRenderManager implements XRender {
 
-    public static final String mapping_model = "model";
     private static final Map<String, XRender> _mapping = new HashMap<>();
     private static final Map<String, XRender> _lib = new HashMap<>();
 
@@ -21,10 +20,9 @@ public class XRenderManager implements XRender {
             c.output(d.toString());
         }
     };
-    //数据模型渲染器
-    private static XRender _model = _def;
 
-    private XRenderManager() {}
+    private XRenderManager() {
+    }
 
     //不能放上面
     public static XRenderManager global = new XRenderManager();
@@ -49,10 +47,6 @@ public class XRenderManager implements XRender {
     public static void mapping(String suffix, XRender render) {
         //suffix=.ftl
         _mapping.put(suffix, render);
-
-        if (mapping_model.equals(suffix)) {
-            _model = render;
-        }
 
         PrintUtil.blueln("solon:: view mapping: " + suffix + "=" + render.getClass().getSimpleName());
     }
@@ -107,8 +101,25 @@ public class XRenderManager implements XRender {
             }
         }
 
-        //最后只有 model
+        //@json
+        //@type_json
+        //@xml
+        //@protobuf
         //
-        _model.render(obj, ctx);
+        //
+        String mode = ctx.header("serialization");
+        if (XUtil.isEmpty(mode)) {
+            mode = ctx.remoting() ? "@type_json" : "@json";
+        }
+
+        XRender render = _mapping.get(mode);
+
+        if (render != null) {
+            render.render(obj, ctx);
+        } else {
+            //最后只有 def
+            //
+            _def.render(obj, ctx);
+        }
     }
 }

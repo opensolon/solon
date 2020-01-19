@@ -11,10 +11,9 @@ public class FastjsonRender implements XRender {
 
     @Override
     public void render(Object obj, XContext ctx) throws Throwable {
-        boolean is_serialize = "serialize".equals(ctx.attr("solon.reader.mode", null));
         String txt = null;
 
-        if (is_serialize) {
+        if (ctx.remoting()) {
             //序列化处理
             //
             txt = JSON.toJSONString(obj,

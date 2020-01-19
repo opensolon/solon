@@ -45,7 +45,7 @@ public class XAction extends XHandlerAide implements XHandler {
     @Override
     public void handle(XContext x) throws Throwable {
         if (_c_remoting) {
-            x.attrSet("solon.reader.mode", "serialize");
+            x.remotingSet(_c_remoting);
         }
 
         try {
