@@ -14,7 +14,6 @@ import io.undertow.servlet.util.DefaultClassIntrospector;
 import org.apache.jasper.deploy.JspPropertyGroup;
 import org.apache.jasper.deploy.TagLibraryInfo;
 import org.noear.solon.XApp;
-import org.noear.solon.XAppProperties;
 import org.noear.solon.boot.undertow.ext.UnderTowConfig;
 import org.noear.solon.core.XPlugin;
 
@@ -65,10 +64,8 @@ public class XPluginUndertowJsp implements XPlugin {
                 .addServlet(JspServletBuilder.createServlet("JSPServlet", "*.jsp"))
                 .addServlet(new ServletInfo("ACTServlet", UnderServlet.class).addMapping("/"));  //这个才是根据上下文对象`XContext`进行分发
 
-        XAppProperties props = app.prop();
-        int s_timeout = props.getInt("server.session.timeout", 0);
-        if (s_timeout > 0) {
-            builder.setDefaultSessionTimeout(s_timeout);
+        if (XServerProp.session_timeout > 0) {
+            builder.setDefaultSessionTimeout(XServerProp.session_timeout);
         }
 
 

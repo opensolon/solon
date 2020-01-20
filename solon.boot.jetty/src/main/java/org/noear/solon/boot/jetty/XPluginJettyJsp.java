@@ -7,7 +7,6 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.ResourceCollection;
 import org.noear.solon.XApp;
-import org.noear.solon.XAppProperties;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.XPlugin;
 
@@ -25,7 +24,6 @@ final class XPluginJettyJsp implements XPlugin {
 
     @Override
     public void start(XApp app) {
-        XAppProperties props = app.prop();
 
         try {
             ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
@@ -33,7 +31,7 @@ final class XPluginJettyJsp implements XPlugin {
             handler.setBaseResource(new ResourceCollection(getResourceURLs()));
             handler.addServlet(JspHttpContextServlet.class, "/");
 
-            if(XServerProp.session_timeout >0) {
+            if (XServerProp.session_timeout > 0) {
                 handler.getSessionHandler().setMaxInactiveInterval(XServerProp.session_timeout);
             }
 
@@ -46,20 +44,19 @@ final class XPluginJettyJsp implements XPlugin {
             _server.setAttribute("org.eclipse.jetty.server.Request.maxFormContentSize",
                     XServerProp.request_maxRequestSize);
 
-            if (props != null) {
-                props.forEach((k, v) -> {
-                    String key = k.toString();
-                    if (key.indexOf(".jetty.") > 0) {
-                        _server.setAttribute(key, v);
-                    }
-                });
 
-                props.onChange((k,v)->{
-                    if (k.indexOf(".jetty.") > 0) {
-                        _server.setAttribute(k, v);
-                    }
-                });
-            }
+            app.prop().forEach((k, v) -> {
+                String key = k.toString();
+                if (key.indexOf(".jetty.") > 0) {
+                    _server.setAttribute(key, v);
+                }
+            });
+
+            app.prop().onChange((k, v) -> {
+                if (k.indexOf(".jetty.") > 0) {
+                    _server.setAttribute(k, v);
+                }
+            });
 
             _server.start();
         } catch (Exception ex) {
