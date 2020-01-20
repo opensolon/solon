@@ -190,6 +190,11 @@
                 <artifactId>solon.serialization.protobuf</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.serialization.xstream</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
 
 
             <dependency>
@@ -422,6 +427,7 @@
         <module>../solon.serialization.snack3</module>
         <module>../solon.serialization.jsoniter</module>
         <module>../solon.serialization.protobuf</module>
+        <module>../solon.serialization.xstream</module>
 
         <module>../solon.view.freemarker</module>
         <module>../solon.view.jsp</module>

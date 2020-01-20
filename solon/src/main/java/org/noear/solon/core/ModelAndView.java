@@ -7,7 +7,7 @@ import java.util.Map;
  * mvc:模型与视图
  * */
 public class ModelAndView extends LinkedHashMap{
-    private String __view;
+    private transient String __view;
 
     public ModelAndView(){super();}
     public ModelAndView(String view) {

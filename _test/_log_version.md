@@ -1,3 +1,8 @@
+#### 1.0.4.3::
+* 1. 字段注入支持多注解（如有冲突，需要自己处理）
+* 2. 类注解支持多注解（如有冲突，需要自己处理）
+* 3. 优化序列化管理器，支持多种序列化能力同时存在(xml,json,type_json,protobuf)
+
 #### 1.0.4.1::
 * 1. BeanBuilderAdd 更名为：beanInjectorAdd 
 * 2. BeanLoaderAdd  更名为：beanCreatorAdd
