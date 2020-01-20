@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 public class RhfContext extends XContext {
 
@@ -102,6 +103,11 @@ public class RhfContext extends XContext {
 
     @Override
     public XMap paramMap() {
+        return null;
+    }
+
+    @Override
+    public Map<String, String[]> paramsMap() {
         return null;
     }
 

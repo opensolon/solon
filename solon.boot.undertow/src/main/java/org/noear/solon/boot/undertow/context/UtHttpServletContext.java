@@ -3,10 +3,7 @@ package org.noear.solon.boot.undertow.context;
 import io.undertow.server.HttpServerExchange;
 import org.noear.solon.XUtil;
 import org.noear.solon.boot.undertow.ext.MultipartUtil;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XFile;
-import org.noear.solon.core.XMap;
-import org.noear.solon.core.XSessionState;
+import org.noear.solon.core.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +17,7 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 
 //和JtHttpContext区别不大的上下文类，不支持XNIO
 public class UtHttpServletContext extends XContext {
@@ -153,6 +151,7 @@ public class UtHttpServletContext extends XContext {
         }
     }
 
+    private XMap _paramMap;
     @Override
     public XMap paramMap() {
         if (_paramMap == null) {
@@ -170,8 +169,10 @@ public class UtHttpServletContext extends XContext {
         return _paramMap;
     }
 
-    private XMap _paramMap;
-
+    @Override
+    public Map<String, String[]> paramsMap() {
+        return _request.getParameterMap();
+    }
 
     @Override
     public List<XFile> files(String key) throws Exception {
@@ -231,6 +232,7 @@ public class UtHttpServletContext extends XContext {
         }
     }
 
+    private XMap _headerMap;
     @Override
     public XMap headerMap() {
         if (_headerMap == null) {
@@ -246,8 +248,6 @@ public class UtHttpServletContext extends XContext {
 
         return _headerMap;
     }
-
-    private XMap _headerMap;
 
     @Override
     public Object response() {

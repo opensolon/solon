@@ -139,6 +139,8 @@ public abstract class XContext {
     public double paramAsDouble(String key, double def){return Double.parseDouble(param(key,String.valueOf(def)));}
     @XNote("获取所有参数并转为map")
     public abstract XMap paramMap();
+    @XNote("获取所有参数并转为Map")
+    public abstract Map<String,String[]> paramsMap();
     @XNote("设置参数")
     public void paramSet(String key,String val){paramMap().put(key,val);}
     @XNote("获取所有参数并转为class")

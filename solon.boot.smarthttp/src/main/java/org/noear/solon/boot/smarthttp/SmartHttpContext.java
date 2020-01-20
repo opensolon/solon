@@ -161,7 +161,6 @@ public class SmartHttpContext extends XContext {
                 for(Map.Entry<String,String[]> entry:_request.getParameters().entrySet()){
                     _paramMap.put(entry.getKey(),entry.getValue()[0]);
                 }
-//                _paramMap.putAll(_request.getParameters());
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -169,6 +168,13 @@ public class SmartHttpContext extends XContext {
 
         return _paramMap;
     }
+
+    @Override
+    public Map<String, String[]> paramsMap() {
+        return _request.getParameters();
+    }
+
+
 
     @Override
     public List<XFile> files(String key) throws Exception {

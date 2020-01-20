@@ -15,6 +15,7 @@ import reactor.netty.http.server.HttpServerResponse;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -156,6 +157,19 @@ public class RnHttpContext extends XContext {
         }
 
         return _paramMap;
+    }
+
+    private Map<String, String[]> _paramsMap;
+    @Override
+    public Map<String, String[]> paramsMap() {
+        if (_paramsMap == null) {
+            _paramsMap = new LinkedHashMap<>();
+
+            _request_parse.parmMap.forEach((k, v) -> {
+                _paramsMap.put(k, (String[]) v.toArray());
+            });
+        }
+        return _paramsMap;
     }
 
     @Override

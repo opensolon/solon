@@ -8,10 +8,7 @@ import io.undertow.util.HeaderMap;
 import io.undertow.util.HttpString;
 import org.noear.solon.XUtil;
 import org.noear.solon.boot.undertow.ext.MultipartUtil;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XFile;
-import org.noear.solon.core.XMap;
-import org.noear.solon.core.XSessionState;
+import org.noear.solon.core.*;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -169,13 +166,7 @@ public class UtHttpExchangeContext extends XContext {
 
     @Override
     public String[] paramValues(String key) {
-        if (_request instanceof HttpServletRequest) {
-            return ((HttpServletRequest) _request).getParameterValues(key);
-        }
-        // 尝试从exchange中获取
-        Map<String, Deque<String>> query = _exchange.getQueryParameters();
-        Deque<String> deque = query.get(key);
-        return deque.toArray(new String[deque.size()]);
+        return _request.getParameterValues(key);
     }
 
     @Override
@@ -195,22 +186,19 @@ public class UtHttpExchangeContext extends XContext {
         }
     }
 
+    private XMap _paramMap;
+
     @Override
     public XMap paramMap() {
         if (_paramMap == null) {
             _paramMap = new XMap();
 
-            if (_request instanceof HttpServletRequest) {
-                Enumeration<String> names = ((HttpServletRequest) _request).getParameterNames();
+            Enumeration<String> names = _request.getParameterNames();
 
-                while (names.hasMoreElements()) {
-                    String name = names.nextElement();
-                    String value = ((HttpServletRequest) _request).getParameter(name);
-                    _paramMap.put(name, value);
-                }
-            } else {
-                Map<String, Deque<String>> params = _exchange.getQueryParameters();
-                params.forEach((s, deque) -> _paramMap.put(s, deque.getFirst()));
+            while (names.hasMoreElements()) {
+                String name = names.nextElement();
+                String value = _request.getParameter(name);
+                _paramMap.put(name, value);
             }
 
         }
@@ -218,7 +206,10 @@ public class UtHttpExchangeContext extends XContext {
         return _paramMap;
     }
 
-    private XMap _paramMap;
+    @Override
+    public Map<String, String[]> paramsMap() {
+        return _request.getParameterMap();
+    }
 
     @Override
     public void paramSet(String key, String val) {

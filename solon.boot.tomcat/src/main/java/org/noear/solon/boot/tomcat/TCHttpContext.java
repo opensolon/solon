@@ -2,10 +2,7 @@ package org.noear.solon.boot.tomcat;
 
 import org.noear.solon.XUtil;
 import org.noear.solon.boot.tomcat.ext.MultipartUtil;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XFile;
-import org.noear.solon.core.XMap;
-import org.noear.solon.core.XSessionState;
+import org.noear.solon.core.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +15,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 
 public class TCHttpContext extends XContext{
     private HttpServletRequest _request;
@@ -138,6 +136,8 @@ public class TCHttpContext extends XContext{
         }
     }
 
+    private XMap _paramMap;
+
     @Override
     public XMap paramMap() {
         if(_paramMap == null){
@@ -154,7 +154,11 @@ public class TCHttpContext extends XContext{
 
         return _paramMap;
     }
-    private XMap _paramMap;
+
+    @Override
+    public Map<String, String[]> paramsMap() {
+        return _request.getParameterMap();
+    }
 
 
     @Override

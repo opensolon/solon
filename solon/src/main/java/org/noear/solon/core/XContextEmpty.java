@@ -6,9 +6,7 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class XContextEmpty extends XContext {
     public static XContext create(){
@@ -125,6 +123,16 @@ public class XContextEmpty extends XContext {
             _paramMap = new XMap();
         }
         return _paramMap;
+    }
+
+    private Map<String, String[]> _paramsMap;
+    @Override
+    public Map<String, String[]> paramsMap() {
+        if(_paramsMap == null){
+            _paramsMap = new LinkedHashMap<>();
+        }
+
+        return _paramsMap;
     }
 
     @Override
