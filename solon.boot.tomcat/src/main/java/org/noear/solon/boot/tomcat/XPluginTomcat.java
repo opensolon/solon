@@ -5,7 +5,7 @@ import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 import org.noear.solon.XApp;
-import org.noear.solon.XProperties;
+import org.noear.solon.XAppProperties;
 import org.noear.solon.core.XPlugin;
 
 
@@ -26,7 +26,7 @@ public class XPluginTomcat implements XPlugin {
         Context context = stepContext(tomcat,app);
 
         //**************session time setting start Session时间相关*****************
-        XProperties props = app.prop();
+        XAppProperties props = app.prop();
         int s_timeout = props.getInt("server.session.timeout", 0);
         if (s_timeout > 0) {
             context.setSessionTimeout(s_timeout);
