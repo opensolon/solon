@@ -125,14 +125,9 @@ public class XContextEmpty extends XContext {
         return _paramMap;
     }
 
-    private Map<String, String[]> _paramsMap;
     @Override
     public Map<String, String[]> paramsMap() {
-        if(_paramsMap == null){
-            _paramsMap = new LinkedHashMap<>();
-        }
-
-        return _paramsMap;
+        return null;
     }
 
     @Override

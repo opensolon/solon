@@ -209,7 +209,8 @@ public class JdkHttpContext extends XContext {
 
             _parameters.forEach((k, v) -> {
                 if (v instanceof List) {
-                    _paramsMap.put(k, (String[]) ((List)v).toArray());
+                    List<String> list = (List<String>)v;
+                    _paramsMap.put(k, list.toArray(new String[list.size()]));
                 } else {
                     _paramsMap.put(k, new String[]{(String) v});
                 }

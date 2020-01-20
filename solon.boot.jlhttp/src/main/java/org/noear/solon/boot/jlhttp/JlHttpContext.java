@@ -218,7 +218,7 @@ public class JlHttpContext extends XContext {
             }
 
             _map.forEach((k, v) -> {
-                _paramsMap.put(k, (String[]) v.toArray());
+                _paramsMap.put(k, v.toArray(new String[v.size()]));
             });
         }
         return _paramsMap;

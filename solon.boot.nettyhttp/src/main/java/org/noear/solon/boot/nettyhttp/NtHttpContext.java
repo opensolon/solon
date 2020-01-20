@@ -183,7 +183,7 @@ public class NtHttpContext extends XContext {
             _paramsMap = new LinkedHashMap<>();
 
             _request_parse.parmMap.forEach((k, v) -> {
-                _paramsMap.put(k, (String[]) v.toArray());
+                _paramsMap.put(k, v.toArray(new String[v.size()]));
             });
         }
         return _paramsMap;
