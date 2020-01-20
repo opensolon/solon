@@ -12,10 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class JdkHttpContext extends XContext {
 
@@ -192,8 +189,7 @@ public class JdkHttpContext extends XContext {
         if (_paramMap == null) {
             _paramMap = new XMap();
 
-            Map<String, Object> params = (Map<String, Object>) _exchange.getAttribute("parameters");
-            params.forEach((k, v) -> {
+            _parameters.forEach((k, v) -> {
                 if (v instanceof List) {
                     _paramMap.put(k, ((List<String>) v).get(0));
                 } else {
@@ -203,6 +199,23 @@ public class JdkHttpContext extends XContext {
         }
 
         return _paramMap;
+    }
+
+    private Map<String, String[]> _paramsMap;
+    @Override
+    public Map<String, String[]> paramsMap() {
+        if(_paramsMap == null){
+            _paramsMap = new LinkedHashMap<>();
+
+            _parameters.forEach((k, v) -> {
+                if (v instanceof List) {
+                    _paramsMap.put(k, (String[]) ((List)v).toArray());
+                } else {
+                    _paramsMap.put(k, new String[]{(String) v});
+                }
+            });
+        }
+        return _paramsMap;
     }
 
     @Override

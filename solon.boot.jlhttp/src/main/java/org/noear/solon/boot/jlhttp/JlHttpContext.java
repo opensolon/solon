@@ -11,10 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class JlHttpContext extends XContext {
     private HTTPServer.Request _request;
@@ -196,6 +193,35 @@ public class JlHttpContext extends XContext {
         }
 
         return _paramMap;
+    }
+
+    private Map<String, String[]> _paramsMap;
+    @Override
+    public Map<String, String[]> paramsMap() {
+        if (_paramsMap == null) {
+            _paramsMap = new LinkedHashMap<>();
+
+            Map<String, List<String>> _map = new LinkedHashMap<>();
+            try {
+                for (String[] kv : _request.getParamsList()) {
+                    List<String> list = _map.get(kv[0]);
+                    if (list == null) {
+                        list = new ArrayList<>();
+                        _map.put(kv[0], list);
+                    }
+
+                    list.add(kv[1]);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return null;
+            }
+
+            _map.forEach((k, v) -> {
+                _paramsMap.put(k, (String[]) v.toArray());
+            });
+        }
+        return _paramsMap;
     }
 
     @Override

@@ -177,6 +177,10 @@ public class JtHttpContext extends XContext{
         return _paramMap;
     }
 
+    @Override
+    public Map<String, String[]> paramsMap() {
+        return _request.getParameterMap();
+    }
 
     @Override
     public List<XFile> files(String key) throws Exception{
