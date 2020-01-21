@@ -119,12 +119,12 @@ public class RnHttpContext extends XContext {
 
     @Override
     public String[] paramValues(String key) {
-        List<String> tmp = _request_parse.parmMap.get(key);
-        if(tmp == null){
+        List<String> list = paramsMap().get(key);
+        if(list == null){
             return null;
-        }else{
-            return tmp.toArray(new String[tmp.size()]);
         }
+
+        return list.toArray(new String[list.size()]);
     }
 
     @Override
