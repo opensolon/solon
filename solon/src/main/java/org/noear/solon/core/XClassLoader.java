@@ -51,7 +51,6 @@ public class XClassLoader extends URLClassLoader {
         }
 
         try {
-            System.out.println("Unloading plugin JAR file " + jarURL.getJarFile().getName());
             jarURL.getJarFile().close();
             jarURL = null;
             cachedMap.remove(file);
