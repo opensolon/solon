@@ -30,6 +30,10 @@ public class XUtil {
         return s == null || s.length() == 0;
     }
 
+    public static boolean isNotEmpty(String s) {
+        return !isEmpty(s);
+    }
+
     /**
      * 获取第一项或者null
      */

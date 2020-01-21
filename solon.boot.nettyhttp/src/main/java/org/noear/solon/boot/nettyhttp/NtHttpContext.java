@@ -4,6 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.cookie.Cookie;
 import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
+import org.noear.solon.XUtil;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XFile;
 import org.noear.solon.core.XMap;
@@ -327,7 +328,7 @@ public class NtHttpContext extends XContext {
         StringBuilder sb = new StringBuilder();
         sb.append(key).append("=").append(val).append(";");
 
-        if (path != null) {
+        if (XUtil.isNotEmpty(path)) {
             sb.append("path=").append(path).append(";");
         }
 
@@ -335,7 +336,7 @@ public class NtHttpContext extends XContext {
             sb.append("max-age=").append(maxAge).append(";");
         }
 
-        if (domain != null) {
+        if (XUtil.isNotEmpty(domain)) {
             sb.append("domain=").append(domain.toLowerCase()).append(";");
         }
 

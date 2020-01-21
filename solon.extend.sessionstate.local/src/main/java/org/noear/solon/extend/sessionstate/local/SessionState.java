@@ -43,10 +43,6 @@ public class SessionState implements XSessionState {
     }
 
     public void cookieSet(String key, String val) {
-        if (XUtil.isEmpty(_domain)) {
-            _domain = XContext.current().uri().getHost();
-        }
-
         XContext.current().cookieSet(key, val, _domain, _expiry);
     }
 

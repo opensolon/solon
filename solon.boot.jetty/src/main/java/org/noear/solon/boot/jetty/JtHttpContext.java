@@ -323,11 +323,17 @@ public class JtHttpContext extends XContext{
     @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
         Cookie c = new Cookie(key,val);
-        c.setPath(path);
+
+        if (XUtil.isNotEmpty(path)) {
+            c.setPath(path);
+        }
+
         c.setMaxAge(maxAge);
-        if(domain != null) {
+
+        if (XUtil.isNotEmpty(domain)) {
             c.setDomain(domain);
         }
+
         _response.addCookie(c);
     }
 

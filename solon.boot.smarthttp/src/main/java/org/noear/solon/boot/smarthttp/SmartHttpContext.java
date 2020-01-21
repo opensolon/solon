@@ -333,7 +333,7 @@ public class SmartHttpContext extends XContext {
         StringBuilder sb = new StringBuilder();
         sb.append(key).append("=").append(val).append(";");
 
-        if (path != null) {
+        if (XUtil.isNotEmpty(path)) {
             sb.append("path=").append(path).append(";");
         }
 
@@ -341,7 +341,7 @@ public class SmartHttpContext extends XContext {
             sb.append("max-age=").append(maxAge).append(";");
         }
 
-        if (domain != null) {
+        if (XUtil.isNotEmpty(domain)) {
             sb.append("domain=").append(domain.toLowerCase()).append(";");
         }
 

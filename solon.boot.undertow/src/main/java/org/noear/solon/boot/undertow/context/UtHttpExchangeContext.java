@@ -368,10 +368,13 @@ public class UtHttpExchangeContext extends XContext {
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
         CookieImpl c = new CookieImpl(key, val);
 
-        c.setPath(path);
+        if (XUtil.isNotEmpty(path)) {
+            c.setPath(path);
+        }
+
         c.setMaxAge(maxAge);
 
-        if (domain != null) {
+        if (XUtil.isNotEmpty(domain)) {
             c.setDomain(domain);
         }
 
