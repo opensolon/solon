@@ -45,7 +45,7 @@ public class AioContext extends XContextEmpty {
 
     @Override
     public String method() {
-        return XMethod.LISTEN.name;
+        return XMethod.SOCKET.name;
     }
 
     @Override

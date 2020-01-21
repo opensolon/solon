@@ -44,7 +44,7 @@ public class SocketContext extends XContextEmpty {
 
     @Override
     public String method() {
-        return XMethod.LISTEN.name;
+        return XMethod.SOCKET.name;
     }
 
     @Override

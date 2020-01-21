@@ -40,7 +40,7 @@ public class WsContext extends XContextEmpty {
 
     @Override
     public String method() {
-        return XMethod.SEND.name;
+        return XMethod.WEBSOCKET.name;
     }
 
     @Override

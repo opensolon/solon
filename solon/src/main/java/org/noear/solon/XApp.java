@@ -343,14 +343,14 @@ public class XApp implements XHandler {
      * 添加web socket方法的监听
      */
     public void ws(String path, XHandler handler){
-        add(path, XMethod.SEND, handler);
+        add(path, XMethod.WEBSOCKET, handler);
     }
 
     /**
      * 添加socket方法的监听
      */
     public void socket(String path, XHandler handler){
-        add(path, XMethod.LISTEN, handler);
+        add(path, XMethod.SOCKET, handler);
     }
 
     /**

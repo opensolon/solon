@@ -106,7 +106,7 @@ public class DubboAdapter {
 
     public void stopBlock() {
         if (blockThread != null) {
-            blockThread.stop();
+            blockThread.interrupt();
             blockThread = null;
         }
     }
