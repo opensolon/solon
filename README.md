@@ -115,7 +115,7 @@ public class App{
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon.boot.jlhttp</artifactId>
-  <version>1.0.4.4</version>
+  <version>1.0.5-SNAPSHOT</version>
 </dependency>
 ```
 ```java
@@ -133,7 +133,7 @@ public class App{
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-mvc</artifactId>
-    <version>1.0.4.4</version>
+    <version>1.0.5-SNAPSHOT</version>
 </parent>
 ```
 ```
