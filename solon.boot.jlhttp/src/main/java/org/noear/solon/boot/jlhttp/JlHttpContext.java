@@ -140,19 +140,12 @@ public class JlHttpContext extends XContext {
 
     @Override
     public String[] paramValues(String key) {
-        List<String> list = new ArrayList<>();
-        try {
-            for (String[] kv : _request.getParamsList()) {
-                if (key.equals(kv[0])) {
-                    list.add(kv[1]);
-                }
-            }
-        }catch (Exception ex){
-            ex.printStackTrace();
+        List<String> list = paramsMap().get(key);
+        if(list == null){
             return null;
         }
 
-        return list.toArray(new String[]{});
+        return list.toArray(new String[list.size()]);
     }
 
     @Override
@@ -195,19 +188,18 @@ public class JlHttpContext extends XContext {
         return _paramMap;
     }
 
-    private Map<String, String[]> _paramsMap;
+    private Map<String, List<String>> _paramsMap;
     @Override
-    public Map<String, String[]> paramsMap() {
+    public Map<String, List<String>> paramsMap() {
         if (_paramsMap == null) {
             _paramsMap = new LinkedHashMap<>();
 
-            Map<String, List<String>> _map = new LinkedHashMap<>();
             try {
                 for (String[] kv : _request.getParamsList()) {
-                    List<String> list = _map.get(kv[0]);
+                    List<String> list = _paramsMap.get(kv[0]);
                     if (list == null) {
                         list = new ArrayList<>();
-                        _map.put(kv[0], list);
+                        _paramsMap.put(kv[0], list);
                     }
 
                     list.add(kv[1]);
@@ -216,11 +208,8 @@ public class JlHttpContext extends XContext {
                 ex.printStackTrace();
                 return null;
             }
-
-            _map.forEach((k, v) -> {
-                _paramsMap.put(k, v.toArray(new String[v.size()]));
-            });
         }
+
         return _paramsMap;
     }
 

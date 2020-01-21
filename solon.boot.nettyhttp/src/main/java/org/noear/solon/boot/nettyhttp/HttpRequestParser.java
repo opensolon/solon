@@ -10,10 +10,7 @@ import io.netty.handler.codec.http.multipart.InterfaceHttpData;
 import org.noear.solon.core.XFile;
 
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 对 Request 的参数进行解析
@@ -21,7 +18,7 @@ import java.util.Map;
 class HttpRequestParser {
     private final FullHttpRequest _request;
 
-    protected final Map<String, List<String>> parmMap = new HashMap<>();
+    protected final Map<String, List<String>> parmMap = new LinkedHashMap<>();
     protected final Map<String, List<XFile>> fileMap = new HashMap<>();
 
 

@@ -107,7 +107,7 @@ public class RhfContext extends XContext {
     }
 
     @Override
-    public Map<String, String[]> paramsMap() {
+    public Map<String, List<String>> paramsMap() {
         return null;
     }
 

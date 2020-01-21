@@ -169,9 +169,18 @@ public class SmartHttpContext extends XContext {
         return _paramMap;
     }
 
+    private Map<String, List<String>> _paramsMap;
     @Override
-    public Map<String, String[]> paramsMap() {
-        return _request.getParameters();
+    public Map<String, List<String>> paramsMap() {
+        if (_paramsMap == null) {
+            _paramsMap = new LinkedHashMap<>();
+
+            _request.getParameters().forEach((k, v) -> {
+                _paramsMap.put(k, Arrays.asList(v));
+            });
+        }
+
+        return _paramsMap;
     }
 
 

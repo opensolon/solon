@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,10 +140,26 @@ public abstract class XContext {
     public double paramAsDouble(String key, double def){return Double.parseDouble(param(key,String.valueOf(def)));}
     @XNote("获取所有参数并转为map")
     public abstract XMap paramMap();
-    @XNote("获取所有参数并转为Map")
-    public abstract Map<String,String[]> paramsMap();
+
     @XNote("设置参数")
-    public void paramSet(String key,String val){paramMap().put(key,val);}
+    public void paramSet(String key,String val) {
+        paramMap().put(key, val);
+        paramsAdd(key,val);
+    }
+
+    @XNote("获取所有参数并转为Map")
+    public abstract Map<String,List<String>> paramsMap();
+    public void paramsAdd(String key,String val) {
+        if (paramsMap() != null) {
+            List<String> ary = paramsMap().get(key);
+            if (ary == null) {
+                ary = new ArrayList<>();
+                paramsMap().put(key, ary);
+            }
+            ary.add(val);
+        }
+    }
+
     @XNote("获取所有参数并转为class")
     public <T> T paramAsEntity(Class<T> clz) throws Exception{
         return (T)XActionUtil.params2Entity(this, clz);

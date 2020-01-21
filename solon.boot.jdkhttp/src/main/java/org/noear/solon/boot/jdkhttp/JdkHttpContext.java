@@ -144,18 +144,12 @@ public class JdkHttpContext extends XContext {
 
     @Override
     public String[] paramValues(String key) {
-        List<String> list = new ArrayList<>();
-        try {
-            Object tmp = _parameters.get(key);
-            if (tmp != null && tmp instanceof List) {
-                list.addAll((List<String>) tmp);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        List<String> list = paramsMap().get(key);
+        if(list == null){
             return null;
         }
 
-        return list.toArray(new String[]{});
+        return list.toArray(new String[list.size()]);
     }
 
     @Override
@@ -201,21 +195,23 @@ public class JdkHttpContext extends XContext {
         return _paramMap;
     }
 
-    private Map<String, String[]> _paramsMap;
+    private Map<String, List<String>> _paramsMap;
     @Override
-    public Map<String, String[]> paramsMap() {
+    public Map<String, List<String>> paramsMap() {
         if(_paramsMap == null){
             _paramsMap = new LinkedHashMap<>();
 
             _parameters.forEach((k, v) -> {
                 if (v instanceof List) {
-                    List<String> list = (List<String>)v;
-                    _paramsMap.put(k, list.toArray(new String[list.size()]));
+                    _paramsMap.put(k, (List<String>)v);
                 } else {
-                    _paramsMap.put(k, new String[]{(String) v});
+                    List<String> list = new ArrayList<>();
+                    list.add((String) v);
+                    _paramsMap.put(k, list);
                 }
             });
         }
+
         return _paramsMap;
     }
 

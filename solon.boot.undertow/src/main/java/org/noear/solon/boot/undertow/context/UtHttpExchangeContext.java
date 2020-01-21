@@ -206,9 +206,18 @@ public class UtHttpExchangeContext extends XContext {
         return _paramMap;
     }
 
+    private Map<String, List<String>> _paramsMap;
     @Override
-    public Map<String, String[]> paramsMap() {
-        return _request.getParameterMap();
+    public Map<String, List<String>> paramsMap() {
+        if(_paramsMap == null){
+            _paramsMap = new LinkedHashMap<>();
+
+            _request.getParameterMap().forEach((k,v)->{
+                _paramsMap.put(k,Arrays.asList(v));
+            });
+        }
+
+        return _paramsMap;
     }
 
     @Override

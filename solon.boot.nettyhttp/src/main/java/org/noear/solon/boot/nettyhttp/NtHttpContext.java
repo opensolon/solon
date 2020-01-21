@@ -177,17 +177,9 @@ public class NtHttpContext extends XContext {
         return _paramMap;
     }
 
-    private Map<String, String[]> _paramsMap;
     @Override
-    public Map<String, String[]> paramsMap() {
-        if (_paramsMap == null) {
-            _paramsMap = new LinkedHashMap<>();
-
-            _request_parse.parmMap.forEach((k, v) -> {
-                _paramsMap.put(k, v.toArray(new String[v.size()]));
-            });
-        }
-        return _paramsMap;
+    public Map<String, List<String>> paramsMap() {
+        return _request_parse.parmMap;
     }
 
     @Override

@@ -162,7 +162,7 @@ public class JtHttpContext extends XContext{
     private XMap _paramMap;
     @Override
     public XMap paramMap() {
-        if(_paramMap == null){
+        if (_paramMap == null) {
             _paramMap = new XMap();
 
             Enumeration<String> names = _request.getParameterNames();
@@ -177,9 +177,18 @@ public class JtHttpContext extends XContext{
         return _paramMap;
     }
 
+    private Map<String, List<String>> _paramsMap;
     @Override
-    public Map<String, String[]> paramsMap() {
-        return _request.getParameterMap();
+    public Map<String, List<String>> paramsMap() {
+        if (_paramsMap == null) {
+            _paramsMap = new LinkedHashMap<>();
+
+            _request.getParameterMap().forEach((k, v) -> {
+                _paramsMap.put(k, Arrays.asList(v));
+            });
+        }
+
+        return _paramsMap;
     }
 
     @Override

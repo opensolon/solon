@@ -12,10 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TCHttpContext extends XContext{
     private HttpServletRequest _request;
@@ -155,9 +152,18 @@ public class TCHttpContext extends XContext{
         return _paramMap;
     }
 
+    private Map<String, List<String>> _paramsMap;
     @Override
-    public Map<String, String[]> paramsMap() {
-        return _request.getParameterMap();
+    public Map<String, List<String>> paramsMap() {
+        if (_paramsMap == null) {
+            _paramsMap = new LinkedHashMap<>();
+
+            _request.getParameterMap().forEach((k, v) -> {
+                _paramsMap.put(k, Arrays.asList(v));
+            });
+        }
+
+        return _paramsMap;
     }
 
 
