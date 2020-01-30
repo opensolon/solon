@@ -1,7 +1,5 @@
 package org.noear.solon.core;
 
-import org.noear.solon.XUtil;
-import org.noear.solon.annotation.XInject;
 import org.noear.solon.ext.Act1;
 
 import java.lang.annotation.Annotation;
