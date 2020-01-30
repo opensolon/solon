@@ -15,10 +15,6 @@ public abstract class AopFactoryBase {
     // 基础存储
     //
     /////////////////////////
-
-
-    protected BeanInjector<XInject> defaultInjector;
-
     /**
      * bean包装库
      */
@@ -102,6 +98,9 @@ public abstract class AopFactoryBase {
     public abstract BeanWrap wrap(Class<?> clz, Object raw);
 
 
+    /**
+     * 尝试为bean注入
+     * */
     protected void tryBeanInject(FieldWrapTmp fwT, Annotation[] annS) {
         for (Annotation a : annS) {
             BeanInjector bi = beanInjectors.get(a.annotationType());
@@ -112,10 +111,10 @@ public abstract class AopFactoryBase {
     }
 
     /**
-     * 尝试生成一个类
+     * 尝试生成bean
      */
-    protected void tryBeanCreate(Class<?> clz, Annotation[] annoSet) {
-        for (Annotation a : annoSet) {
+    protected void tryBeanCreate(Class<?> clz, Annotation[] annS) {
+        for (Annotation a : annS) {
             BeanCreator bc = beanCreators.get(a.annotationType());
             if (bc != null) {
                 tryCreateBeanByAnno(clz, a, bc);
