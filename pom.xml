@@ -20,7 +20,7 @@
 
     <modules>
         <module>solon-parent</module>
-        
+
         <module>solon.boot.rapidoid-http-fast</module>
         <module>solon.boot.tomcat</module>
 
