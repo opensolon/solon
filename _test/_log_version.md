@@ -1,3 +1,6 @@
+#### 1.0.5.1::
+* 1. 优化 XActionUtil.exeMethod 里的参数转化处理
+
 #### 1.0.4.4::
 * 1. 添加XClassLoader，完成jar包加载的自由控制
 * 2. 完成java8-java11的兼容测试
