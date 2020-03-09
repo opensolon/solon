@@ -1,7 +1,5 @@
 package org.noear.solon.core;
 
-import org.noear.solon.XUtil;
-import org.noear.solon.annotation.XParam;
 import org.noear.solon.core.utils.TypeUtil;
 
 import java.lang.reflect.*;
