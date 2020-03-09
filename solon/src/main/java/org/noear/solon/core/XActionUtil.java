@@ -47,30 +47,30 @@ class XActionUtil {
             //pt 参数原类型
             for (Parameter p : pSet) {
                 Class<?> pt = p.getType();
+                String pn = p.getName();
 
                 if (XContext.class.equals(pt)) {
                     //如果是 XContext 类型
                     args.add(ctx);
+                } else if (XFile.class.equals(pt)) {
+                    //如果是 XFile 类型
+                    args.add(ctx.file(pn));
+                } else if (pt.isArray()) {
+                    //如果是 数组
+                    args.add(TypeUtil.changeArrayOfCtx(ctx, pt, pn));
                 } else {
-                    String pn = p.getName();
                     String pv = ctx.param(pn);
 
                     if (pv == null) {
                         //
                         // 没有从ctx.param 直接找到值
                         //
-                        if (XFile.class == pt) {
-                            //1.如果是 XFile 类型
-                            XFile file = ctx.file(pn);
-                            args.add(file);
+                        if (pt.getName().startsWith("java.")) {
+                            //如果是基本类型，则为null
+                            args.add(null);
                         } else {
-                            if (pt.getName().startsWith("java.") || pt.isArray()) {
-                                //如果是基本类型，则为null
-                                args.add(null);
-                            } else {
-                                //尝试转为模型
-                                args.add(params2Entity(ctx, pt));
-                            }
+                            //尝试转为模型
+                            args.add(params2Entity(ctx, pt));
                         }
                     } else {
                         //如果拿到了肯体的参数值，则开始转换

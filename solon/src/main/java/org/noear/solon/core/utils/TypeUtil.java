@@ -36,7 +36,7 @@ public class TypeUtil {
 
             if (xd != null && XUtil.isEmpty(xd.value()) == false) {
                 format = new SimpleDateFormat(xd.value());
-            }else{
+            } else {
                 format = date_def_format;
             }
 
@@ -47,59 +47,63 @@ public class TypeUtil {
             }
         }
 
-        if(type.isArray()){
-            String[] ary = ctx.paramValues(key);
-            if(ary == null){
-                return null;
-            }
-
-            int len = ary.length;
-
-            if (is(String[].class, type)) {
-                return ary;
-            } else if (is(short[].class, type)) {
-                short[] ary2 = new short[len];
-                for (int i = 0; i < len; i++) {
-                    ary2[i] = Short.parseShort(ary[i]);
-                }
-                return ary2;
-            } else if (is(int[].class, type) ) {
-                int[] ary2 = new int[len];
-                for (int i = 0; i < len; i++) {
-                    ary2[i] = Integer.parseInt(ary[i]);
-                }
-                return ary2;
-            } else if (is(long[].class, type)) {
-                long[] ary2 = new long[len];
-                for (int i = 0; i < len; i++) {
-                    ary2[i] = Long.parseLong(ary[i]);
-                }
-                return ary2;
-            }  else if (is(float[].class, type) ) {
-                float[] ary2 = new float[len];
-                for (int i = 0; i < len; i++) {
-                    ary2[i] = Float.parseFloat(ary[i]);
-                }
-                return ary2;
-            } else if (is(double[].class, type)) {
-                double[] ary2 = new double[len];
-                for (int i = 0; i < len; i++) {
-                    ary2[i] = Double.parseDouble(ary[i]);
-                }
-                return ary2;
-            } else if (is(Object[].class, type)) {
-                Class<?> c = type.getComponentType();
-                Object[] ary2 = (Object[])Array.newInstance(c,len);
-                for (int i = 0; i < len; i++) {
-                    ary2[i] = do_change(c, ary[i]);
-                }
-                return ary2;
-            }
+        if (type.isArray()) {
+            return changeArrayOfCtx(ctx, type, key);
         }
 
-
-
         throw new RuntimeException("不支持类型:" + type.getName());
+    }
+
+    public static Object changeArrayOfCtx(XContext ctx, Class<?> type, String key) {
+        String[] ary = ctx.paramValues(key);
+        if (ary == null) {
+            return null;
+        }
+
+        int len = ary.length;
+
+        if (is(String[].class, type)) {
+            return ary;
+        } else if (is(short[].class, type)) {
+            short[] ary2 = new short[len];
+            for (int i = 0; i < len; i++) {
+                ary2[i] = Short.parseShort(ary[i]);
+            }
+            return ary2;
+        } else if (is(int[].class, type)) {
+            int[] ary2 = new int[len];
+            for (int i = 0; i < len; i++) {
+                ary2[i] = Integer.parseInt(ary[i]);
+            }
+            return ary2;
+        } else if (is(long[].class, type)) {
+            long[] ary2 = new long[len];
+            for (int i = 0; i < len; i++) {
+                ary2[i] = Long.parseLong(ary[i]);
+            }
+            return ary2;
+        } else if (is(float[].class, type)) {
+            float[] ary2 = new float[len];
+            for (int i = 0; i < len; i++) {
+                ary2[i] = Float.parseFloat(ary[i]);
+            }
+            return ary2;
+        } else if (is(double[].class, type)) {
+            double[] ary2 = new double[len];
+            for (int i = 0; i < len; i++) {
+                ary2[i] = Double.parseDouble(ary[i]);
+            }
+            return ary2;
+        } else if (is(Object[].class, type)) {
+            Class<?> c = type.getComponentType();
+            Object[] ary2 = (Object[]) Array.newInstance(c, len);
+            for (int i = 0; i < len; i++) {
+                ary2[i] = do_change(c, ary[i]);
+            }
+            return ary2;
+        }
+
+        return null;
     }
 
     private static boolean is(Class<?> s, Class<?> t){
