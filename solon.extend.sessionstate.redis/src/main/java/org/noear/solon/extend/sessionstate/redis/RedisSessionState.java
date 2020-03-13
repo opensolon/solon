@@ -57,17 +57,6 @@ public class RedisSessionState implements XSessionState {
         XContext.current().cookieSet(key, val, _domain, _expiry);
     }
 
-    protected void updateSessionID() {
-        String skey = cookieGet(SESSIONID_KEY);
-
-        if (XUtil.isEmpty(skey) == false) {
-            cookieSet(SESSIONID_KEY, skey);
-            cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_encrypt));
-
-            redisX.open0((ru)->ru.key(sessionId()).expire(_expiry).delay());
-        }
-    }
-
     //
     // session control
     //
@@ -141,6 +130,18 @@ public class RedisSessionState implements XSessionState {
     @Override
     public void sessionClear() {
         redisX.open0((ru)->ru.key(sessionId()).delete());
+    }
+
+    @Override
+    public void sessionRefresh() {
+        String skey = cookieGet(SESSIONID_KEY);
+
+        if (XUtil.isEmpty(skey) == false) {
+            cookieSet(SESSIONID_KEY, skey);
+            cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_encrypt));
+
+            redisX.open0((ru)->ru.key(sessionId()).expire(_expiry).delay());
+        }
     }
 
     public static final int SESSION_STATE_PRIORITY = 2;

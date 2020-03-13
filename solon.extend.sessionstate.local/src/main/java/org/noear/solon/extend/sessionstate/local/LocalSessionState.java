@@ -50,16 +50,7 @@ public class LocalSessionState implements XSessionState {
         XContext.current().cookieSet(key, val, _domain, _expiry);
     }
 
-    protected void updateSessionID() {
-        String skey = cookieGet(SESSIONID_KEY);
 
-        if (XUtil.isEmpty(skey) == false) {
-            cookieSet(SESSIONID_KEY, skey);
-            cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_encrypt));
-
-            _store.delay(sessionId());
-        }
-    }
 
     //
     // session control
@@ -112,6 +103,18 @@ public class LocalSessionState implements XSessionState {
     @Override
     public void sessionClear() {
         _store.remove(sessionId());
+    }
+
+    @Override
+    public void sessionRefresh() {
+        String skey = cookieGet(SESSIONID_KEY);
+
+        if (XUtil.isEmpty(skey) == false) {
+            cookieSet(SESSIONID_KEY, skey);
+            cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_encrypt));
+
+            _store.delay(sessionId());
+        }
     }
 
     public static final int SESSION_STATE_PRIORITY = 1;

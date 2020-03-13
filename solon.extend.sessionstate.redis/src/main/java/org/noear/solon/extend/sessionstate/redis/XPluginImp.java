@@ -21,6 +21,7 @@ public class XPluginImp implements XPlugin {
         * maxTotaol: 200
         *
         * */
+        XServerProp.init();
         RedisSessionState sessionState = RedisSessionState.create();
 
         if(sessionState == null){
@@ -28,16 +29,8 @@ public class XPluginImp implements XPlugin {
             return;
         }
 
-        XServerProp.init();
+        XSessionStateDefault.setGlobal(sessionState);
 
-
-
-        XSessionStateDefault.global = sessionState;
-
-        app.before("**", XMethod.HTTP,(c)->{
-            sessionState.updateSessionID();
-        });
-
-        System.out.println("solon:: Redis session state is loaded");
+        System.out.println("solon:: Redis session state plugin is loaded");
     }
 }
