@@ -24,12 +24,9 @@ public class XPluginImp implements XPlugin {
         XServerProp.init();
         RedisSessionState sessionState = RedisSessionState.create();
 
-        if(sessionState == null){
-            //说明，没有配置好
-            return;
+        if(sessionState != null){
+            XSessionStateDefault.setGlobal(sessionState);
         }
-
-        XSessionStateDefault.setGlobal(sessionState);
 
         System.out.println("solon:: Redis session state plugin is loaded");
     }

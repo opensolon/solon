@@ -15,7 +15,9 @@ public class XPluginImp implements XPlugin {
         XServerProp.init();
         LocalSessionState sessionState = LocalSessionState.create();
 
-        XSessionStateDefault.setGlobal(sessionState);
+        if (sessionState != null) {
+            XSessionStateDefault.setGlobal(sessionState);
+        }
 
         System.out.println("solon:: Local session state plugin is loaded");
     }
