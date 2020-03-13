@@ -1,6 +1,8 @@
 package org.noear.solon.extend.sessionstate.redis;
 
 import org.noear.snack.ONode;
+import org.noear.snack.core.Constants;
+import org.noear.snack.core.Feature;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.XContext;
@@ -129,7 +131,8 @@ public class RedisSessionState implements XSessionState {
         ONode tmp = new ONode();
         try {
             tmp.set("type",val.getClass().getSimpleName());
-            tmp.set("data",ONode.serialize(val));
+            //不对中文转码
+            tmp.set("data",ONode.load(val, Constants.serialize().sub(Feature.BrowserCompatible)));
         }catch (Exception ex){
             throw new RuntimeException("Session state serialization error: "+ key);
         }
