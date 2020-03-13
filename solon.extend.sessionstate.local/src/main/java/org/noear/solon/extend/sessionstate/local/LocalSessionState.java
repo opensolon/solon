@@ -8,7 +8,7 @@ import org.noear.solon.core.XSessionState;
 /**
  * 它会是个单例，不能有上下文数据
  * */
-public class SessionState implements XSessionState {
+public class LocalSessionState implements XSessionState {
     public final static String SESSIONID_KEY = "SOLONID";
 
     public final static String SESSIONID_MD5() {
@@ -19,7 +19,7 @@ public class SessionState implements XSessionState {
 
     private final ScheduledStore _store;
 
-    public SessionState() {
+    private LocalSessionState() {
         if (XServerProp.session_timeout > 0) {
             _expiry = XServerProp.session_timeout;
         }
@@ -30,6 +30,10 @@ public class SessionState implements XSessionState {
 
         _store = new ScheduledStore(_expiry);
 
+    }
+
+    public static LocalSessionState create(){
+        return new LocalSessionState();
     }
 
     //
@@ -108,5 +112,11 @@ public class SessionState implements XSessionState {
     @Override
     public void sessionClear() {
         _store.remove(sessionId());
+    }
+
+    public static final int SESSION_STATE_PRIORITY = 1;
+    @Override
+    public int priority() {
+        return SESSION_STATE_PRIORITY;
     }
 }

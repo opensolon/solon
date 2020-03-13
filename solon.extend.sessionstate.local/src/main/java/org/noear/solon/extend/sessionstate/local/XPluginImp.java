@@ -1,8 +1,6 @@
 package org.noear.solon.extend.sessionstate.local;
 
 import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XHandlerLink;
 import org.noear.solon.core.XMethod;
 import org.noear.solon.core.XPlugin;
 import org.noear.solon.core.XSessionStateDefault;
@@ -10,13 +8,18 @@ import org.noear.solon.core.XSessionStateDefault;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
+        if (XSessionStateDefault.global != null
+                && XSessionStateDefault.global.priority() >= LocalSessionState.SESSION_STATE_PRIORITY) {
+            return;
+        }
+
         XServerProp.init();
 
-        SessionState sessionState = new SessionState();
+        LocalSessionState sessionState = LocalSessionState.create();
 
         XSessionStateDefault.global = sessionState;
 
-        app.before("**", XMethod.HTTP,(c)->{
+        app.before("**", XMethod.HTTP, (c) -> {
             sessionState.updateSessionID();
         });
 

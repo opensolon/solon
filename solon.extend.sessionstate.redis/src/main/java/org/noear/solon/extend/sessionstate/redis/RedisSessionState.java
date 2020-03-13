@@ -10,19 +10,13 @@ import org.noear.solon.core.XSessionState;
 /**
  * 它会是个单例，不能有上下文数据
  * */
-public class SessionState implements XSessionState {
+public class RedisSessionState implements XSessionState {
     public final static String SESSIONID_KEY = "SOLONID";
     public final static String SESSIONID_MD5(){return SESSIONID_KEY+"2";}
     public final static String SESSIONID_encrypt = "&L8e!@T0";
 
-    private final RedisX redisX;
-    public SessionState(){
-        XMap map = XApp.cfg().getXmap("server.session.state.redis");
-
-        if(map.size() < 4){
-            throw new RuntimeException("Error configuration: solon.session.state.redis");
-        }
-
+    private RedisX redisX;
+    private RedisSessionState(XMap map){
         if (XServerProp.session_timeout > 0) {
             _expiry = XServerProp.session_timeout;
         }
@@ -37,6 +31,17 @@ public class SessionState implements XSessionState {
                 map.getInt("db"),
                 map.getInt("maxTotaol"));
 
+    }
+
+    public static RedisSessionState create(){
+        XMap map = XApp.cfg().getXmap("server.session.state.redis");
+
+        if(map.size() < 4){
+            System.err.println("Error configuration: solon.session.state.redis");
+            return null;
+        }
+
+        return new RedisSessionState(map);
     }
 
     //
@@ -136,5 +141,11 @@ public class SessionState implements XSessionState {
     @Override
     public void sessionClear() {
         redisX.open0((ru)->ru.key(sessionId()).delete());
+    }
+
+    public static final int SESSION_STATE_PRIORITY = 2;
+    @Override
+    public int priority() {
+        return SESSION_STATE_PRIORITY;
     }
 }

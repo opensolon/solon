@@ -17,4 +17,6 @@ public interface XSessionState {
 
     /** 清除SESSION状态 */
     default void sessionClear(){}
+
+    default int priority(){return 0;}
 }

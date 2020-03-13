@@ -3,6 +3,9 @@ package org.noear.solon.extend.sessionstate.local;
 import java.util.Map;
 import java.util.concurrent.*;
 
+/**
+ * 定时存储器（做为Session存储方案）
+ * */
 class ScheduledStore {
     private int _defaultSeconds;
 
