@@ -97,32 +97,43 @@ public class RedisSessionState implements XSessionState {
 
     @Override
     public Object sessionGet(String key) {
-        String tmp = redisX.open1((ru) -> ru.key(sessionId()).expire(_expiry).hashGet(key));
+        String json = redisX.open1((ru) -> ru.key(sessionId()).expire(_expiry).hashGet(key));
 
-        if(tmp == null){
-            return tmp;
+        if(json == null){
+            return json;
         }
 
-        Object val = null;
+        ONode tmp = ONode.loadStr(json);
+        String type = tmp.get("type").getString();
+        String value = tmp.get("value").getString();
+
+
         try {
-            val = ONode.deserialize(tmp);
+            switch (type){
+                case "Byte":return Byte.parseByte(value);
+                case "Short":return Short.parseShort(value);
+                case "Integer":return Integer.parseInt(value);
+                case "Long":return Long.parseLong(value);
+                case "Float":return Float.parseFloat(value);
+                case "Double":return Double.parseDouble(value);
+            }
+            return ONode.deserialize(value);
         }catch (Exception ex){
             throw new RuntimeException("Session state deserialization error: "+ key);
         }
-
-        return val;
     }
 
     @Override
     public void sessionSet(String key, Object val) {
-        String tmp = null;
+        ONode tmp = new ONode();
         try {
-            tmp = ONode.serialize(val);
+            tmp.set("type",val.getClass().getSimpleName());
+            tmp.set("data",ONode.serialize(val));
         }catch (Exception ex){
             throw new RuntimeException("Session state serialization error: "+ key);
         }
 
-        String json = tmp;
+        String json = tmp.toJson();
 
         redisX.open0((ru)->ru.key(sessionId()).expire(_expiry).hashSet(key,json));
     }
