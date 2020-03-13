@@ -105,19 +105,20 @@ public class RedisSessionState implements XSessionState {
 
         ONode tmp = ONode.loadStr(json);
         String type = tmp.get("type").getString();
-        String value = tmp.get("value").getString();
+        String data = tmp.get("data").getString();
 
 
         try {
             switch (type){
-                case "Byte":return Byte.parseByte(value);
-                case "Short":return Short.parseShort(value);
-                case "Integer":return Integer.parseInt(value);
-                case "Long":return Long.parseLong(value);
-                case "Float":return Float.parseFloat(value);
-                case "Double":return Double.parseDouble(value);
+                case "Byte":return Byte.parseByte(data);
+                case "Short":return Short.parseShort(data);
+                case "Integer":return Integer.parseInt(data);
+                case "Long":return Long.parseLong(data);
+                case "Float":return Float.parseFloat(data);
+                case "Double":return Double.parseDouble(data);
+                default:return ONode.deserialize(data);
             }
-            return ONode.deserialize(value);
+
         }catch (Exception ex){
             throw new RuntimeException("Session state deserialization error: "+ key);
         }
