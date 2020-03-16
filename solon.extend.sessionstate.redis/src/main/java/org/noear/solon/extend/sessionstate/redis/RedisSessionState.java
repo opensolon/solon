@@ -107,18 +107,20 @@ public class RedisSessionState implements XSessionState {
 
         ONode tmp = ONode.loadStr(json);
         String type = tmp.get("t").getString();
-        String data = tmp.get("d").getString();
+        ONode data = tmp.get("d");
 
 
         try {
             switch (type){
-                case "Byte":return Byte.parseByte(data);
-                case "Short":return Short.parseShort(data);
-                case "Integer":return Integer.parseInt(data);
-                case "Long":return Long.parseLong(data);
-                case "Float":return Float.parseFloat(data);
-                case "Double":return Double.parseDouble(data);
-                default:return ONode.deserialize(data);
+                case "Null":return null;
+                case "Short":return data.val().getShort();
+                case "Integer":return data.val().getInt();
+                case "Long":return data.val().getLong();
+                case "Float":return data.val().getFloat();
+                case "Double":return data.val().getDouble();
+                case "Date":return data.val().getDate();
+                case "Boolean":return data.val().getBoolean();
+                default:return data.toObject(null);
             }
 
         }catch (Exception ex){
@@ -131,12 +133,18 @@ public class RedisSessionState implements XSessionState {
         ONode tmp = new ONode();
         try {
             if(val == null) {
-                tmp.set("t", "");
+                tmp.set("t", "Null");
                 tmp.set("d", null);
             }else{
-                tmp.set("t", val.getClass().getSimpleName());
-                //不对中文转码
-                tmp.set("d", ONode.load(val, Constants.serialize().sub(Feature.BrowserCompatible)));
+                String type = val.getClass().getName();
+                String type2 = val.getClass().getSimpleName();
+
+                tmp.set("t", type2);
+                if(type.startsWith("java.lang.")){
+                    tmp.set("d",val);
+                }else{
+                    tmp.set("d", ONode.load(val, Constants.serialize().sub(Feature.BrowserCompatible)));
+                }
             }
 
         } catch (Exception ex) {
