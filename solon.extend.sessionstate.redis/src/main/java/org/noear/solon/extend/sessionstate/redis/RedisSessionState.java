@@ -136,15 +136,8 @@ public class RedisSessionState implements XSessionState {
                 tmp.set("t", "Null");
                 tmp.set("d", null);
             }else{
-                String type = val.getClass().getName();
-                String type2 = val.getClass().getSimpleName();
-
-                tmp.set("t", type2);
-                if(type.startsWith("java.lang.")){
-                    tmp.set("d",val);
-                }else{
-                    tmp.set("d", ONode.load(val, Constants.serialize().sub(Feature.BrowserCompatible)));
-                }
+                tmp.set("t", val.getClass().getSimpleName());
+                tmp.set("d", ONode.loadObj(val, Constants.serialize().sub(Feature.BrowserCompatible)));
             }
 
         } catch (Exception ex) {
