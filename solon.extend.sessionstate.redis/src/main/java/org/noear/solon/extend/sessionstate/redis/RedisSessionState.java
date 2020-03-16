@@ -122,7 +122,7 @@ public class RedisSessionState implements XSessionState {
             }
 
         }catch (Exception ex){
-            throw new RuntimeException("Session state deserialization error: "+ key);
+            throw new RuntimeException("Session state deserialization error: "+ key + " = " + json);
         }
     }
 
@@ -130,16 +130,22 @@ public class RedisSessionState implements XSessionState {
     public void sessionSet(String key, Object val) {
         ONode tmp = new ONode();
         try {
-            tmp.set("t",val.getClass().getSimpleName());
-            //不对中文转码
-            tmp.set("d",ONode.load(val, Constants.serialize().sub(Feature.BrowserCompatible)));
-        }catch (Exception ex){
-            throw new RuntimeException("Session state serialization error: "+ key);
+            if(val == null) {
+                tmp.set("t", "");
+                tmp.set("d", null);
+            }else{
+                tmp.set("t", val.getClass().getSimpleName());
+                //不对中文转码
+                tmp.set("d", ONode.load(val, Constants.serialize().sub(Feature.BrowserCompatible)));
+            }
+
+        } catch (Exception ex) {
+            throw new RuntimeException("Session state serialization error: " + key + " = " + val);
         }
 
         String json = tmp.toJson();
 
-        redisX.open0((ru)->ru.key(sessionId()).expire(_expiry).hashSet(key,json));
+        redisX.open0((ru) -> ru.key(sessionId()).expire(_expiry).hashSet(key, json));
     }
 
     @Override
