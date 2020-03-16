@@ -56,7 +56,18 @@ public class RedisSessionState implements XSessionState {
         return XContext.current().cookie(key);
     }
     public  void   cookieSet(String key, String val) {
-        XContext.current().cookieSet(key, val, _domain, _expiry);
+        XContext ctx = XContext.current();
+
+        if (XServerProp.session_state_domain_auto) {
+            if (_domain != null) {
+                if(ctx.uri().getHost().indexOf(_domain) < 0){ //非安全域
+                    ctx.cookieSet(key, val, null, _expiry);
+                    return;
+                }
+            }
+        }
+
+        ctx.cookieSet(key, val, _domain, _expiry);
     }
 
     //
