@@ -102,12 +102,12 @@ public class RedisSessionState implements XSessionState {
         String json = redisX.open1((ru) -> ru.key(sessionId()).expire(_expiry).hashGet(key));
 
         if(json == null){
-            return json;
+            return null;
         }
 
         ONode tmp = ONode.loadStr(json);
-        String type = tmp.get("type").getString();
-        String data = tmp.get("data").getString();
+        String type = tmp.get("t").getString();
+        String data = tmp.get("d").getString();
 
 
         try {
@@ -130,9 +130,9 @@ public class RedisSessionState implements XSessionState {
     public void sessionSet(String key, Object val) {
         ONode tmp = new ONode();
         try {
-            tmp.set("type",val.getClass().getSimpleName());
+            tmp.set("t",val.getClass().getSimpleName());
             //不对中文转码
-            tmp.set("data",ONode.load(val, Constants.serialize().sub(Feature.BrowserCompatible)));
+            tmp.set("d",ONode.load(val, Constants.serialize().sub(Feature.BrowserCompatible)));
         }catch (Exception ex){
             throw new RuntimeException("Session state serialization error: "+ key);
         }
