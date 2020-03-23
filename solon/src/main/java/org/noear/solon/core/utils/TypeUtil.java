@@ -21,9 +21,6 @@ public class TypeUtil {
         }
 
         if (val.length() == 0) {
-            if (type.isPrimitive()) {
-                throw new IllegalArgumentException("Please enter a valid parameter @" + key);
-            }
             return null;
         }
 

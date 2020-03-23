@@ -52,6 +52,7 @@ class XActionUtil {
                 } else {
                     String pn = p.getName();
                     String pv = ctx.param(pn);
+                    Object tv = null;
 
                     if (pv == null) {
                         //
@@ -62,18 +63,26 @@ class XActionUtil {
                             XFile file = ctx.file(pn);
                             args.add(file);
                         } else {
-                            if (pt.getName().startsWith("java.") || pt.isArray()) {
+                            if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive()) {
                                 //如果是基本类型，则为null
-                                args.add(null);
+                                tv = null;
                             } else {
                                 //尝试转为模型
-                                args.add(params2Entity(ctx, pt));
+                                tv = params2Entity(ctx, pt);
                             }
                         }
                     } else {
                         //如果拿到了肯体的参数值，则开始转换
-                        args.add(TypeUtil.changeOfCtx(p, pt, pn, pv, ctx));
+                        tv = TypeUtil.changeOfCtx(p, pt, pn, pv, ctx);
                     }
+
+                    if(tv == null){
+                        if (pt.isPrimitive()) {
+                            throw new IllegalArgumentException("Please enter a valid parameter @" + pn);
+                        }
+                    }
+
+                    args.add(tv);
                 }
             }
 
