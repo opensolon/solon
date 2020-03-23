@@ -82,7 +82,8 @@ class XActionUtil {
             } else {
                 return mWrap.method.invoke(obj, args.toArray());
             }
-        } catch (InvocationTargetException ex) {
+        }
+        catch (InvocationTargetException ex) {
             Throwable ex2 = ex.getCause();
             if (ex2 instanceof Error) {
                 throw new RuntimeException(ex2);
