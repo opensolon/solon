@@ -8,7 +8,7 @@ import java.util.List;
 @XClient("demo:/demo5/test/")
 public interface rockapi {
     Object test1(Integer a);
-    Object test2();
+    Object test2(int b);
     Object test3();
     UserModel test4();
     List<UserModel> test5();

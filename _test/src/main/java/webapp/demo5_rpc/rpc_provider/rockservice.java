@@ -20,7 +20,7 @@ public class rockservice implements rockapi {
         return XContext.current().method() + "::test1=" + a;
     }
 
-    public Object test2(){
+    public Object test2(int b){
         return XContext.current().path();
     }
 
