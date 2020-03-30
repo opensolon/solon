@@ -278,6 +278,10 @@ public abstract class XContext {
 
     /**设置COOKIE*/
     @XNote("设置COOKIE")
+    public void cookieSet(String key, String val){
+        cookieSet(key, val, null, -1);
+    }
+    @XNote("设置COOKIE")
     public void cookieSet(String key, String val, int maxAge){
         cookieSet(key, val, null, maxAge);
     }
