@@ -309,7 +309,8 @@ public abstract class XContext {
     public abstract void status(int status);
 
     private Map<String,Object> _attrMap = null;
-    private Map<String,Object> attrMap(){//改为懒加载
+    @XNote("获取自定义特性并转为Map")
+    public Map<String,Object> attrMap(){//改为懒加载
         if(_attrMap == null){
             _attrMap = new HashMap<>();
         }

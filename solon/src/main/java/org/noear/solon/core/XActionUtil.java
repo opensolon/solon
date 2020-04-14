@@ -60,8 +60,7 @@ class XActionUtil {
                         //
                         if (XFile.class == pt) {
                             //1.如果是 XFile 类型
-                            XFile file = ctx.file(pn);
-                            args.add(file);
+                            tv = ctx.file(pn);
                         } else {
                             if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive()) {
                                 //如果是基本类型，则为null
