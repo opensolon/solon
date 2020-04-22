@@ -10,9 +10,9 @@ public class JobRunner implements IJobRunner {
         return true;
     }
 
-    public void run(JobEntity job) {
+    public void run(JobEntity job, int tag) {
         if (allow(job)) {
-            System.out.print("schedule run::" + job.getName() + "\r\n");
+            System.out.print("schedule run::" + job.getName() + " - " + tag + "\r\n");
 
             new Thread(() -> {
                 doRun(job);

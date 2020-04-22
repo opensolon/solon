@@ -13,5 +13,5 @@ public interface IJob {
     }
 
     /** 执行线程数 */
-    default int threads(){return 1;}
+    default int getThreads(){return 1;}
 }

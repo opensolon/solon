@@ -10,15 +10,6 @@ public class JobFactory {
     private static IJobRunner _runner;
 
     public static void register(JobEntity job) {
-        registerDo(job);
-
-        //支持多线程并发
-        for (int i = 1; i < job.getJob().threads(); i++) {
-            registerDo(new JobEntity(job.getName(), job.getJob(), i));
-        }
-    }
-
-    private static void registerDo(JobEntity job) {
         if (_jobMap.containsKey(job.getName())) {
             return;
         }
@@ -27,7 +18,7 @@ public class JobFactory {
 
         //如果已有运行器，直接运行
         if (_runner != null) {
-            _runner.run(job);
+            runDo(job);
         }
     }
 
@@ -44,12 +35,14 @@ public class JobFactory {
             //运行一次已存在的任务
             //
             for (JobEntity job : _jobMap.values()) {
-                _runner.run(job);
+                runDo(job);
             }
         }
     }
 
     private static void runDo(JobEntity job) {
-        _runner.run(job);
+        for (int i = 0; i < job.getJob().getThreads(); i++) {
+            _runner.run(job, i);
+        }
     }
 }
