@@ -6,6 +6,10 @@ public class JobEntity {
     private IJob job;
 
     public JobEntity(String name, IJob job) {
+        this(name, job, 0);
+    }
+
+    public JobEntity(String name, IJob job, int index) {
         this.job = job;
         this.name = job.getName();
 
@@ -15,6 +19,10 @@ public class JobEntity {
 
         if (this.name == null) {
             this.name = job.getClass().getSimpleName();
+        }
+
+        if (index > 0) {
+            this.name = this.name + index;
         }
     }
 

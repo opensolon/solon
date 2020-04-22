@@ -9,11 +9,16 @@ public class JobFactory {
 
     private static IJobRunner _runner;
 
-    public static void register(IJob job){
-        register(new JobEntity(job.getName(),job));
+    public static void register(JobEntity job) {
+        registerDo(job);
+
+        //支持多线程并发
+        for (int i = 1; i < job.getJob().threads(); i++) {
+            registerDo(new JobEntity(job.getName(), job.getJob(), i));
+        }
     }
 
-    public static void register(JobEntity job) {
+    private static void registerDo(JobEntity job) {
         if (_jobMap.containsKey(job.getName())) {
             return;
         }
@@ -29,7 +34,7 @@ public class JobFactory {
     public static void run(IJobRunner runner) {
         //充许修改一次
         //
-        if(_runner != null ){
+        if (_runner != null) {
             return;
         }
 
@@ -38,9 +43,13 @@ public class JobFactory {
         if (_runner != null) {
             //运行一次已存在的任务
             //
-            for (JobEntity task : _jobMap.values()) {
-                _runner.run(task);
+            for (JobEntity job : _jobMap.values()) {
+                _runner.run(job);
             }
         }
+    }
+
+    private static void runDo(JobEntity job) {
+        _runner.run(job);
     }
 }
