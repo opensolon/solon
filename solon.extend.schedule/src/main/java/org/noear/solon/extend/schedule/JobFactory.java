@@ -9,6 +9,10 @@ public class JobFactory {
 
     private static IJobRunner _runner;
 
+    public static void register(IJob job){
+        register(new JobEntity(job.getName(),job));
+    }
+
     public static void register(JobEntity job) {
         if (_jobMap.containsKey(job.getName())) {
             return;
