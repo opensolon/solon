@@ -196,9 +196,17 @@ client.setName(1,'');
 ```
 * 获取应用配置
 ```java
+//非注入模式
 XApp.cfg().get("app_key"); //=>String
 XApp.cfg().getInt("app_id",0); //=>int
 XApp.cfg().getProp("xxx.datasource"); //=>Properties
+
+//注入模式
+@XConfiguration //or @XController, or @XBean
+class xxx{
+    @XInject("app_key")
+    String app_key;
+}
 ```
 
 ### 附2：更多示例可参考 _test 和 _demo
