@@ -76,6 +76,9 @@ class XActionUtil {
                     }
 
                     if(tv == null){
+                        //
+                        // 如果是基类类型（int,long...），则抛出异常
+                        //
                         if (pt.isPrimitive()) {
                             throw new IllegalArgumentException("Please enter a valid parameter @" + pn);
                         }
