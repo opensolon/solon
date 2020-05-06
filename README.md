@@ -108,6 +108,7 @@ public class App{
 | --- | --- |
 | org.noear:cron4j-solon-plugin | cron4j 适配插件 |
 | org.noear:dubbo-solon-plugin | dubbo 适配插件|
+| org.noear:mybatis-solon-plugin | mybatis 适配插件|
 
 ### 附1：入门示例
 * 微框架示例
