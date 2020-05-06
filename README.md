@@ -106,7 +106,8 @@ public class App{
 
 | 外部框架适配 | 说明 |
 | --- | --- |
-| org.noear:cron4j-solon-plugin | cron4j 适配 |
+| org.noear:cron4j-solon-plugin | cron4j 适配插件 |
+| org.noear:dubbo-solon-plugin | dubbo 适配插件|
 
 ### 附1：入门示例
 * 微框架示例
