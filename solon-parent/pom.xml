@@ -462,6 +462,7 @@
         <module>../_plugin/cron4j-solon-plugin</module>
         <module>../_plugin/dubbo-solon-plugin</module>
         <module>../_plugin/mqtt-solon-plugin</module>
+        <module>../_plugin/mybatis-solon-plugin</module>
 <!--        <module>../_plugin/beetlsql-solon-plugin</module>-->
 
     </modules>
