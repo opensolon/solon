@@ -9,7 +9,7 @@ import org.noear.solon.XUtil;
 public class XPluginEntity {
     /** 类名（全路径） */
     public String className;
-    /*** 权重 */
+    /*** 优先级（大的优先） */
     public int priority = 0;
     /** 插件 */
     public XPlugin plugin;
@@ -17,6 +17,11 @@ public class XPluginEntity {
     public XPluginEntity(){}
     public XPluginEntity(XPlugin plugin){
         this.plugin = plugin;
+    }
+
+
+    public int getPriority() {
+        return priority;
     }
 
     /**

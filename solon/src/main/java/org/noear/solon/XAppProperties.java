@@ -62,14 +62,16 @@ public final class XAppProperties extends XProperties {
         XScaner.scan("solonplugin", n -> n.endsWith(".properties") || n.endsWith(".yml"))
                 .stream()
                 .map(k -> XUtil.getResource(k))
-                .forEach(url -> do_loadPlug(url));
+                .forEach(url -> plugsScanMapDo(url));
 
-        if (_plugs != null) {
-            _plugs.sort(Comparator.comparingInt(p1 -> p1.priority));
+        if (_plugs.size() > 0) {
+            //进行优先级顺排（数值要倒排）
+            //
+            _plugs.sort(Comparator.comparingInt(XPluginEntity::getPriority).reversed());
         }
     }
 
-    private void do_loadPlug(URL url) {
+    private void plugsScanMapDo(URL url) {
         try {
             XAppProperties p = new XAppProperties().load(url);
 
@@ -78,7 +80,7 @@ public final class XAppProperties extends XProperties {
             if (XUtil.isEmpty(temp) == false) {
                 XPluginEntity ent = new XPluginEntity();
                 ent.className = temp;
-                ent.priority = - p.getInt("solon.plugin.priority", 0);
+                ent.priority = p.getInt("solon.plugin.priority", 0);
 
                 _plugs.add(ent);
             }
