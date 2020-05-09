@@ -4,7 +4,6 @@ import org.noear.solon.XUtil;
 import org.noear.solon.ext.Act2;
 import org.noear.solon.ext.Fun1;
 
-import java.util.Map;
 import java.util.Properties;
 
 public class XProperties extends Properties {
