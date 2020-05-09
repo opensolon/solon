@@ -70,11 +70,9 @@ public class XProperties extends Properties {
         String key2 = key + ".";
         int idx2 = key2.length();
 
-        String keyStr = null;
-        for (Map.Entry<Object, Object> kv : this.entrySet()) {
-            keyStr = kv.getKey().toString();
+        for(String keyStr : stringPropertyNames()){
             if (keyStr.startsWith(key2)) {
-                setFun.run(keyStr.substring(idx2), kv.getValue().toString());
+                setFun.run(keyStr.substring(idx2), getProperty(keyStr));
             }
         }
     }
