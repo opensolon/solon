@@ -9,6 +9,14 @@ import java.util.Properties;
 
 public class XProperties extends Properties {
 
+    public XProperties(){
+        super();
+    }
+
+    public XProperties(Properties defaults){
+        super(defaults);
+    }
+
     /**获取某项配置*/
     public String get(String key) {
         return getProperty(key);

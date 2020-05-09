@@ -18,22 +18,27 @@ public final class XAppProperties extends XProperties {
     private XMap _args;
     private List<XPluginEntity> _plugs = new ArrayList<>();
 
-    public XAppProperties(){
-        super();
+    public XAppProperties() {
+        super(System.getProperties());
     }
 
     public XAppProperties load(XMap args) {
+        //1.接收启动参数
         _args = args;
 
-        do_loadFile();
+        //2.加载文件的配置
+        load(XUtil.getResource("application.properties"));
+        load(XUtil.getResource("application.yml"));
 
+        //3.同步启动参数
         _args.forEach((k, v) -> {
             if (k.indexOf(".") >= 0) {
-                setProperty(k, v);
+                this.setProperty(k, v);
                 System.setProperty(k, v);
             }
         });
 
+        //4.标识debug模式
         if (isDebugMode()) {
             System.setProperty("debug", "1");
         }
@@ -42,11 +47,12 @@ public final class XAppProperties extends XProperties {
     }
 
     public XAppProperties load(URL url) {
-        if(url != null) {
+        if (url != null) {
             Properties prop = XUtil.getProperties(url);
 
             if (prop != null) {
                 putAll(prop);
+                System.getProperties().putAll(prop);
             }
         }
 
@@ -65,42 +71,7 @@ public final class XAppProperties extends XProperties {
         }
     }
 
-    private void do_loadFile() {
-        //1.加载文件的配置
-        load(XUtil.getResource("application.properties"));
-        load(XUtil.getResource("application.yml"));
-
-        Properties sys_prop = System.getProperties();
-
-        Map<String,Object> _tmp = new HashMap<>();
-
-        //2.同步到 System Properties，让别的框架可以从 System 获取
-        this.forEach((k,v)->{
-            String key = k.toString();
-            if(key.indexOf(".") > 0){
-                if(sys_prop.containsKey(k)==false){
-                    sys_prop.put(k,v);
-                    _tmp.put(key,k);
-                }
-            }
-        });
-
-
-        //2.同步 System 的配置
-        sys_prop.forEach((k, v) -> {
-            String key = k.toString();
-
-            if(_tmp.containsKey(key)){
-                return;
-            }
-
-            if ( key.startsWith("solon.") || key.indexOf("server.") >= 0) {
-                setProperty(key, String.valueOf(v));
-            }
-        });
-    }
-
-    private void do_loadPlug(URL url){
+    private void do_loadPlug(URL url) {
         try {
             XAppProperties p = new XAppProperties().load(url);
 
@@ -113,14 +84,14 @@ public final class XAppProperties extends XProperties {
 
                 _plugs.add(ent);
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
 
-    private Set<Act2<String,String>> _changeEvent = new HashSet<>();
+    private Set<Act2<String, String>> _changeEvent = new HashSet<>();
 
-    public void onChange(Act2<String,String> event){
+    public void onChange(Act2<String, String> event) {
         _changeEvent.add(event);
     }
 
@@ -128,32 +99,39 @@ public final class XAppProperties extends XProperties {
     public synchronized Object setProperty(String key, String value) {
         Object obj = super.setProperty(key, value);
 
-        _changeEvent.forEach(event->{
-            event.run(key,value);
+        _changeEvent.forEach(event -> {
+            event.run(key, value);
         });
 
         return obj;
     }
 
-    /**获取启动参数*/
+    /**
+     * 获取启动参数
+     */
     public XMap argx() {
         return _args;
     }
 
-    /**获取插件列表*/
-    public List<XPluginEntity> plugs(){
+    /**
+     * 获取插件列表
+     */
+    public List<XPluginEntity> plugs() {
         return _plugs;
     }
 
 
-
-    /**获取服务端口(默认:8080)*/
+    /**
+     * 获取服务端口(默认:8080)
+     */
     public int serverPort() {
         return getInt(server_port, 8080);
     }
 
-    /** 是否为debug mode */
-    public boolean isDebugMode(){
+    /**
+     * 是否为debug mode
+     */
+    public boolean isDebugMode() {
         return argx().getInt("debug") == 1;
     }
 }

@@ -3,11 +3,15 @@ package org.noear.solon.core;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 
-import java.io.Closeable;
-
+/**
+ * 插件实体
+ * */
 public class XPluginEntity {
-    public String className;//classFullName
+    /** 类名（全路径） */
+    public String className;
+    /*** 权重 */
     public int priority = 0;
+    /** 插件 */
     public XPlugin plugin;
 
     public XPluginEntity(){}
@@ -15,6 +19,9 @@ public class XPluginEntity {
         this.plugin = plugin;
     }
 
+    /**
+     * 启动
+     * */
     public void start() {
         if (plugin == null) {
             plugin = XUtil.newClass(className);
@@ -25,6 +32,9 @@ public class XPluginEntity {
         }
     }
 
+    /**
+     * 停止
+     * */
     public void stop(){
         if (plugin != null) {
             try {
