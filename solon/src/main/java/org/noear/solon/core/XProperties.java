@@ -59,17 +59,17 @@ public class XProperties extends Properties {
 
     public XProperties getProp(String key) {
         XProperties prop = new XProperties();
-        find(key, prop::put);
+        findDo(key, prop::put);
         return prop;
     }
 
     public XMap getXmap(String key) {
         XMap map = new XMap();
-        find(key, map::put);
+        findDo(key, map::put);
         return map;
     }
 
-    private void find(String key, Act2<String, String> setFun) {
+    private void findDo(String key, Act2<String, String> setFun) {
         String key2 = key + ".";
         int idx2 = key2.length();
 
