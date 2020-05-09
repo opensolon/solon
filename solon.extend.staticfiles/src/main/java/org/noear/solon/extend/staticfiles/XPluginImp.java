@@ -10,7 +10,7 @@ public class XPluginImp implements XPlugin {
     public void start(XApp app) {
         //通过动态控制是否启用
         //
-        if("0".equals(System.getProperty("org.noear.solon.extend.staticfiles.enabled"))){
+        if("0".equals(XApp.cfg().get("org.noear.solon.extend.staticfiles.enabled"))){
             return;
         }
 
