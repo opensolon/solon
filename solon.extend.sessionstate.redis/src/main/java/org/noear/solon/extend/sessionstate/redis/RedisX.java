@@ -19,6 +19,10 @@ class RedisX {
     private void doinit(String server, String password, int db, int maxTotaol) {
         JedisPoolConfig config = new JedisPoolConfig();
 
+        if(maxTotaol < 10){
+            maxTotaol = 200;
+        }
+
         int maxIdle = maxTotaol / 5;
         if (maxIdle < 10) {
             maxIdle = 10;
