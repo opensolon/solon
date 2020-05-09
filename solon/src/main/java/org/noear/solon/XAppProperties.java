@@ -30,6 +30,7 @@ public final class XAppProperties extends XProperties {
         _args.forEach((k, v) -> {
             if (k.indexOf(".") >= 0) {
                 setProperty(k, v);
+                System.setProperty(k, v);
             }
         });
 
