@@ -96,12 +96,14 @@ public final class XAppProperties extends XProperties {
     }
 
     @Override
-    public synchronized Object setProperty(String key, String value) {
-        Object obj = super.setProperty(key, value);
+    public synchronized Object put(Object key, Object value) {
+        Object obj = super.put(key, value);
 
-        _changeEvent.forEach(event -> {
-            event.run(key, value);
-        });
+        if (key instanceof String && value instanceof String) {
+            _changeEvent.forEach(event -> {
+                event.run((String) key, (String) value);
+            });
+        }
 
         return obj;
     }
