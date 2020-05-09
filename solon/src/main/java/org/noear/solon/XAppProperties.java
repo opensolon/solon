@@ -13,8 +13,6 @@ import java.util.*;
  * 统一配置加载器
  * */
 public final class XAppProperties extends XProperties {
-    public static final String server_port = "server.port";
-
     private XMap _args;
     private List<XPluginEntity> _plugs = new ArrayList<>();
 
@@ -125,7 +123,7 @@ public final class XAppProperties extends XProperties {
      * 获取服务端口(默认:8080)
      */
     public int serverPort() {
-        return getInt(server_port, 8080);
+        return getInt("server.port", 8080);
     }
 
     /**
