@@ -209,6 +209,11 @@ public class XContextEmpty extends XContext {
     }
 
     @Override
+    public void headerAdd(String key, String val) {
+        headerMap().put(key,val);
+    }
+
+    @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
         cookieMap().put(key,val);
     }

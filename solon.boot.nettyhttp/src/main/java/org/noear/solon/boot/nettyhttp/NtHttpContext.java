@@ -316,6 +316,11 @@ public class NtHttpContext extends XContext {
     }
 
     @Override
+    public void headerAdd(String key, String val) {
+        _response.headers().add(key,val);
+    }
+
+    @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
         StringBuilder sb = new StringBuilder();
         sb.append(key).append("=").append(val).append(";");

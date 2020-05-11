@@ -374,6 +374,15 @@ public class UtHttpExchangeContext extends XContext {
     }
 
     @Override
+    public void headerAdd(String key, String val) {
+        if (_response instanceof HttpServletResponse) {
+            ((HttpServletResponse) _response).addHeader(key, val);
+        }
+        HeaderMap respHeaders = _exchange.getResponseHeaders();
+        respHeaders.add(new HttpString(key), val);
+    }
+
+    @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
         CookieImpl c = new CookieImpl(key, val);
 

@@ -275,6 +275,8 @@ public abstract class XContext {
     /**设置HEADER*/
     @XNote("设置HEADER")
     public abstract void headerSet(String key, String val);
+    @XNote("添加HEADER")
+    public abstract void headerAdd(String key, String val);
 
     /**设置COOKIE*/
     @XNote("设置COOKIE")

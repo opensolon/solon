@@ -4,7 +4,7 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static org.smartboot.http.utils.Consts.CRLF;
+import static org.smartboot.http.utils.Constant.CRLF;
 
 public class MultipartInputStream extends FilterInputStream {
 

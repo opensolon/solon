@@ -258,7 +258,9 @@ public class SmartHttpContext extends XContext {
         if(_headerMap == null) {
             _headerMap = new XMap();
 
-            _headerMap.putAll(_request.getHeaders());
+            for(String k : _request.getHeaderNames()){
+                _headerMap.put(k,_request.getHeader(k));
+            }
         }
 
         return _headerMap;
@@ -332,9 +334,13 @@ public class SmartHttpContext extends XContext {
     @Override
     public void headerSet(String key, String val) {
         //用put才有效
-        _response.getHeaders().put(key, val);
+        _response.setHeader(key, val);
     }
 
+    @Override
+    public void headerAdd(String key, String val) {
+        _response.addHeader(key,val);
+    }
 
     @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {

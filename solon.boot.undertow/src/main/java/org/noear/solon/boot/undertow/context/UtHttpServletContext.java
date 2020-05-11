@@ -309,6 +309,12 @@ public class UtHttpServletContext extends XContext {
         _response.setHeader(key, val);
     }
 
+
+    @Override
+    public void headerAdd(String key, String val) {
+        _response.addHeader(key,val);
+    }
+
     @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
         Cookie c = new Cookie(key, val);

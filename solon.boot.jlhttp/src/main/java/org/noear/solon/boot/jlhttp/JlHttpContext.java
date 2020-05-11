@@ -356,6 +356,10 @@ public class JlHttpContext extends XContext {
         _response.getHeaders().replace(key, val);
     }
 
+    @Override
+    public void headerAdd(String key, String val) {
+        _response.getHeaders().add(key,val);
+    }
 
     @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
