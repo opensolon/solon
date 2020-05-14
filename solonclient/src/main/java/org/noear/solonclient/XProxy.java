@@ -123,13 +123,13 @@ public class XProxy {
         return (T) Proxy.newProxyInstance(
                 clz.getClassLoader(),
                 new Class[]{clz},
-                (proxy, method, args) -> proxy_call(proxy, method, args));
+                (proxy, method, args) -> proxyCall(proxy, method, args));
     }
 
     /**
      * 执行调用代理
      */
-    private Object proxy_call(Object proxy, Method method, Object[] vals) throws Throwable {
+    private Object proxyCall(Object proxy, Method method, Object[] vals) throws Throwable {
         //调用准备
         String fun = method.getName();
 
@@ -188,6 +188,10 @@ public class XProxy {
             }
 
             url = _upstream.getTarget(_sev);
+
+            if(url == null){
+                throw new RuntimeException("Solon client proxy: Not found upstream!");
+            }
 
             if (_pat != null) {
                 int idx = url.indexOf("/", 9);//https://a
