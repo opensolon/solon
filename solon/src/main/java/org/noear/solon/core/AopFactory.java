@@ -146,13 +146,12 @@ public class AopFactory extends AopFactoryBase {
         }
 
         if (bw == null) {
-            //3.如果还没有，则尝试构建
-            if (clz.isInterface() && raw == null) { //如查是interfacle 不能入库；且无实例
-                return null;
-            }
-
             bw = new BeanWrap(clz, raw);
             beanWraps.putIfAbsent(clz, bw);
+        }
+
+        if (bw.raw() == null) {
+            bw.rawSet(raw);
         }
 
         return bw;

@@ -98,7 +98,7 @@ public abstract class AopFactoryBase {
 
     /**
      * 尝试为bean注入
-     * */
+     */
     protected void tryBeanInject(FieldWrapTmp fwT, Annotation[] annS) {
         for (Annotation a : annS) {
             BeanInjector bi = beanInjectors.get(a.annotationType());
@@ -127,7 +127,6 @@ public abstract class AopFactoryBase {
         try {
             BeanWrap wrap = wrap(clz, null);
             loader.handler(clz, wrap, anno);
-
             beanNotice(clz, wrap);
         } catch (Exception ex) {
             throw new RuntimeException(ex);

@@ -38,6 +38,9 @@ public class BeanWrap {
     public <T> T raw() {
         return (T)_raw;
     }
+    protected void rawSet(Object raw){
+        _raw = raw;
+    }
     /** bean对象 */
     public <T> T get(){
         if(_singleton){

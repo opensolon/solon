@@ -56,13 +56,13 @@ public class Aop {
     }
     /** 获取bean (clz) */
     public static <T> T get(Class<?> clz) {
-        BeanWrap bw = _f.wrap(clz, null);
-        return bw == null ? null : bw.get();
+        return  _f.wrap(clz, null).get();
     }
     /** 异步获取bean (clz) */
     public static void getAsyn(Class<?> clz, FieldWrapTmp fwT, Act1<BeanWrap> callback) {
         BeanWrap wrap = _f.wrap(clz, null);
-        if (wrap == null) {
+
+        if (wrap.raw() == null) {
             _f.beanSubscribe(clz, callback);
         } else {
             callback.run(wrap);
