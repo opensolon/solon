@@ -5,7 +5,7 @@ import org.noear.solon.ext.Act1;
 import java.util.function.BiConsumer;
 
 /**
- * Aop 管理中心（aop 的设计改了10多版本了，终于满意了...）
+ * Aop 管理中心
  * */
 public class Aop {
     //::工厂
@@ -25,19 +25,27 @@ public class Aop {
     }
 
     //::添加bean
-    /** 添加bean（key + wrap） */
-    public static void put(String key, BeanWrap wrap) {
-        _f.put(key, wrap);
-    }
-
-    //::添加bean
     /** 添加bean（key + obj） */
     public static void put(String key, Object obj) {
         _f.put(key, new BeanWrap(obj.getClass(), obj));
     }
 
+    //::添加bean
+    /** 添加bean（key + wrap） */
+    public static void put(String key, BeanWrap wrap) {
+        _f.put(key, wrap);
+    }
+
     /** 添加bean（clz + obj） */
-    public static BeanWrap put(Class<?> clz, Object obj){return _f.wrap(clz, obj);}
+    public static BeanWrap put(Class<?> clz, Object obj){
+        BeanWrap bw = _f.wrap(clz, obj);
+
+        if(bw.raw() != null) {
+            _f.beanNotice(clz, bw);
+        }
+
+        return bw;
+    }
 
     //::获取bean
     /** 获取bean (key) */
