@@ -15,9 +15,17 @@ public class XProxy {
 
     private String _url;
     private String _result;
-    private ISerializer _serializer = FastjsonSerializer.instance;
+    private ISerializer _serializer;
     private IChannel _channel = HttpChannel.instance;
     private Enctype _enctype = Enctype.form_data;
+
+    public XProxy(){
+        _serializer = FastjsonSerializer.instance;
+    }
+
+    public XProxy(ISerializer serializer){
+        _serializer = serializer;
+    }
 
     public String url(){return _url;}
     public ISerializer serializer(){return _serializer;}
