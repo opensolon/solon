@@ -2,11 +2,14 @@ package webapp;
 
 import org.noear.solon.XApp;
 import org.noear.solon.core.XPlugin;
+import org.noear.solonclient.channel.SocketMessage;
+import org.noear.solonclient.channel.SocketUtils;
+import webapp.demoe_websocket.WsDemoClientTest;
 import webapp.demog_socket.SsDemoClientTest;
 import webapp.demoh_socket.SoDemoClientTest;
 
 public class TestApp {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         /**
          *
          * http://t5_undertow.test.noear.org
@@ -37,16 +40,26 @@ public class TestApp {
         });
 
 
-        //socket test
-//        SoDemoClientTest.test();
-
-//        //web socket send 监听
-//        app.send("/seb/test",(c)->{
+        //socket server
+//        app.socket("/seb/test",(c)->{
 //            String msg = c.body();
 //            c.output("收到了...:" + msg);
 //        });
-//
-//        //web socket test
-//        WsDemoClientTest.test();
+
+        //socket client
+//        String root = "s://localhost:" + (20000 + XApp.global().port());
+//        SocketMessage msg = SocketUtils.send(root + "/seb/test", "Hello 世界!");
+//        System.out.println(msg.toString());
+
+        //SoDemoClientTest.test();
+
+        //web socket wss 监听
+//        app.ws("/seb/test",(c)->{
+//            String msg = c.body();
+//            c.output("收到了...:" + msg);
+//        });
+
+        //web socket test
+        //WsDemoClientTest.test();
     }
 }
