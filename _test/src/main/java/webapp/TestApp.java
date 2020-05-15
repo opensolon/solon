@@ -40,6 +40,10 @@ public class TestApp {
         });
 
 
+        //socket client test
+        //SoDemoClientTest.test();
+
+
         //socket server
 //        app.socket("/seb/test",(c)->{
 //            String msg = c.body();
@@ -51,7 +55,7 @@ public class TestApp {
 //        SocketMessage msg = SocketUtils.send(root + "/seb/test", "Hello 世界!");
 //        System.out.println(msg.toString());
 
-        //SoDemoClientTest.test();
+
 
         //web socket wss 监听
 //        app.ws("/seb/test",(c)->{
