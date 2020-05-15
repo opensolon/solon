@@ -1,6 +1,8 @@
 package org.noear.solonclient.channel;
 
 
+import org.noear.snack.core.exts.Act2;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -56,6 +58,15 @@ public class SocketUtils {
         } else {
             throw msgD.err;
         }
+    }
+
+    public static void send(String uri, String message, Act2<SocketMessage,Exception> callback) throws Exception {
+        SocketMessageDock msgD = new SocketMessageDock(SocketMessage.wrap(uri, message.getBytes("utf-8")));
+        msgD.handler = callback;
+
+        get(uri).sendDo(msgD, (m) -> {
+            msgD.handler.run(msgD.res, msgD.err);
+        });
     }
 
     private Socket connector;
@@ -161,6 +172,8 @@ public class SocketUtils {
         public SocketMessage req;
         public SocketMessage res;
         public Exception err;
+
+        public Act2<SocketMessage,Exception> handler;
 
         public String getKey(){
             return req.key;

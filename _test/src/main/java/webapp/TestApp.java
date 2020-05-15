@@ -45,15 +45,16 @@ public class TestApp {
 
 
         //socket server
-//        app.socket("/seb/test",(c)->{
-//            String msg = c.body();
-//            c.output("收到了...:" + msg);
-//        });
+        app.socket("/seb/test",(c)->{
+            String msg = c.body();
+            c.output("收到了...:" + msg);
+        });
 
         //socket client
-//        String root = "s://localhost:" + (20000 + XApp.global().port());
-//        SocketMessage msg = SocketUtils.send(root + "/seb/test", "Hello 世界!");
-//        System.out.println(msg.toString());
+        String root = "s://localhost:" + (20000 + XApp.global().port());
+        SocketUtils.send(root + "/seb/test", "Hello 世界!",(msg,err)->{
+            System.out.println(msg.toString());
+        });
 
 
 
