@@ -90,6 +90,12 @@ public class XApp implements XHandler {
             return _global;
         }
 
+        //添加关闭勾子
+        Runtime.getRuntime().addShutdownHook(new Thread(XApp::stop));
+
+        //启动
+        _started = true;
+
         //绑定类加载器
         XClassLoader.bindingThread();
 
@@ -145,7 +151,14 @@ public class XApp implements XHandler {
     /**
      * 停止服务（为web方式停止服务提供支持）
      */
+    private static boolean _started;
     public static void stop() {
+        if(_started == false){
+            return;
+        }
+
+        _started = false;
+
         if (_global == null) {
             _global.prop().plugs().forEach(p -> p.stop());
         }
