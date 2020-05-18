@@ -40,13 +40,13 @@ public class BeanWebWrap{
 
     public void load(XApp app) {
         if (XHandler.class.isAssignableFrom(_bw.clz())) {
-            do_loadHandler(app, _bw, _cxm);
+            loadHandlerDo(app, _bw, _cxm);
         } else {
-            do_loadAction(app);
+            loadActionDo(app);
         }
     }
 
-    protected void do_loadHandler(XApp app, BeanWrap bw, XMapping cxm) {
+    protected void loadHandlerDo(XApp app, BeanWrap bw, XMapping cxm) {
         if (cxm == null) {
             throw new RuntimeException(bw.clz().getName() + " No XMapping!");
         }
@@ -60,7 +60,7 @@ public class BeanWebWrap{
         }
     }
 
-    private void do_loadAction(XApp app) {
+    private void loadActionDo(XApp app) {
         String c_path = "";
         String m_path;
 
@@ -74,10 +74,10 @@ public class BeanWebWrap{
         List<XHandler> c_afts2 = new ArrayList<>();
 
         if (c_befs != null) {
-            do_add(c_befs.value(), (b) -> c_befs2.add(b.newInstance()));
+            addDo(c_befs.value(), (b) -> c_befs2.add(b.newInstance()));
         }
         if (c_afts != null) {
-            do_add(c_afts.value(), (f) -> c_afts2.add(f.newInstance()));
+            addDo(c_afts.value(), (f) -> c_afts2.add(f.newInstance()));
         }
 
         XMethod[] m_method;
@@ -117,15 +117,15 @@ public class BeanWebWrap{
                 XAction action = new XAction(_bw , _remoting, m_produces, method, newPath);
 
                 //加载控制器的前置拦截器
-                do_add(c_befs2.toArray(), (b) -> action.before((XHandler) b));
+                addDo(c_befs2.toArray(), (b) -> action.before((XHandler) b));
                 if (m_befores != null) {
-                    do_add(m_befores.value(), (b) -> action.before(b.newInstance()));
+                    addDo(m_befores.value(), (b) -> action.before(b.newInstance()));
                 }
 
                 //加载控制器的后置拦截器
-                do_add(c_afts2.toArray(), (f) -> action.after((XHandler) f));
+                addDo(c_afts2.toArray(), (f) -> action.after((XHandler) f));
                 if (m_afters != null) {
-                    do_add(m_afters.value(), (f) -> action.after(f.newInstance()));
+                    addDo(m_afters.value(), (f) -> action.after(f.newInstance()));
                 }
 
                 for(XMethod m1 : m_method){
@@ -140,12 +140,12 @@ public class BeanWebWrap{
     }
 
     /** 附加触发器（前后置处理） */
-    private static <T> void do_add(T[] ary, Act1Ex<T> fun) {
+    private static <T> void addDo(T[] ary, Act1Ex<T> fun) {
         if (ary != null) {
             for (T t : ary) {
                 try {
                     fun.run(t);
-                } catch (Exception ex) {
+                } catch (Throwable ex) {
                     throw new RuntimeException(ex);
                 }
             }

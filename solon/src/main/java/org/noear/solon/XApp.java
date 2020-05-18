@@ -114,7 +114,7 @@ public class XApp implements XHandler {
         if (builder != null) {
             try {
                 builder.run(_global);
-            }catch (Exception ex){
+            }catch (Throwable ex){
                 throw new RuntimeException(ex);
             }
         }
