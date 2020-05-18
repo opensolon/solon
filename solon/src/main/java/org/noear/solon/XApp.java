@@ -3,6 +3,7 @@ package org.noear.solon;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.*;
 import org.noear.solon.ext.Act1;
+import org.noear.solon.ext.Act1Ex;
 import org.noear.solon.ext.Act2;
 import org.noear.solon.ext.PrintUtil;
 
@@ -78,13 +79,13 @@ public class XApp implements XHandler {
         return start(source, args, null);
     }
 
-    public static XApp start(Class<?> source, String[] args, Act1<XApp> builder){
+    public static XApp start(Class<?> source, String[] args, Act1Ex<XApp> builder){
         //1.初始化应用，加载配置
         XMap argx = XMap.from(args);
         return start(source,argx,builder);
     }
 
-    public static XApp start(Class<?> source, XMap argx, Act1<XApp> builder) {
+    public static XApp start(Class<?> source, XMap argx, Act1Ex<XApp> builder) {
         if (_global != null) {
             return _global;
         }
@@ -111,7 +112,11 @@ public class XApp implements XHandler {
 
         //3.2.尝试预构建
         if (builder != null) {
-            builder.run(_global);
+            try {
+                builder.run(_global);
+            }catch (Exception ex){
+                throw new RuntimeException(ex);
+            }
         }
 
         //3.3.尝试加载插件（顺序不能乱） //不能用forEach，以免当中有插进来
