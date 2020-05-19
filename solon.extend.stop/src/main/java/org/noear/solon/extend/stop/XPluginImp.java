@@ -7,7 +7,7 @@ public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
         boolean enabled = app.prop().getBool("solon.stop.enabled",false);
-        String path = app.prop().get("solon.stop.path","/_run/_stop/");
+        String path = app.prop().get("solon.stop.path","/run/stop/");
         String host = app.prop().get("solon.stop.host","127.0.0.1");
 
         if(enabled){
