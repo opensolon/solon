@@ -110,6 +110,16 @@ public class App{
 | org.noear:dubbo-solon-plugin | dubbo 适配插件|
 | org.noear:mybatis-solon-plugin | mybatis 适配插件|
 
+### 附0：启动顺序参考
+* 1.实例化 XApp.global() 并加载配置
+* 2.加载扩展文件夹
+* 3.扫描插件
+* 4.运行builder函数
+* 5.运行插件
+* 6.扫描并加载java bean
+* 7.加载渲染关系
+* 8.完成
+
 ### 附1：入门示例
 * 微框架示例
 ```xml
