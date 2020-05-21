@@ -10,6 +10,10 @@ public class Result<T> implements Serializable {
     public String msg;
     public T data;
 
+    public Result(){
+
+    }
+
     public Result(int code, String msg) {
         this(code, msg, null);
     }
