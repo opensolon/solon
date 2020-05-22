@@ -445,6 +445,7 @@
 
         <module>../solon.extend.properties.yaml</module>
         <module>../solon.extend.stop</module>
+        <module>../solon.extend.uapi</module>
         <module>../solon.extend.schedule</module>
         <!--        <module>../solon.extend.aopx</module>-->
 
