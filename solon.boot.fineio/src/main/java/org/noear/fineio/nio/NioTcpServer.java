@@ -11,7 +11,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 
-public class NioServer<T> extends NetServer<T> {
+public class NioTcpServer<T> extends NetServer<T> {
     private ByteBuffer buffer = ByteBuffer.allocate(1024);
     private Selector selector;
 
@@ -84,7 +84,7 @@ public class NioServer<T> extends NetServer<T> {
                 //
                 //如果message没有问题，则执行处理
                 //
-                NioSession<T> session = new NioSession<>(channel, message);
+                NioTcpSession<T> session = new NioTcpSession<>(channel, message);
 
                 processor.process(session);
             }

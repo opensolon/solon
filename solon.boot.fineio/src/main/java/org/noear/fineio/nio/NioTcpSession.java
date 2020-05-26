@@ -10,11 +10,11 @@ import java.nio.channels.SocketChannel;
 /**
  * 会话
  * */
-public class NioSession<T> extends NetSession<T> {
+public class NioTcpSession<T> extends NetSession<T> {
     private SocketChannel _channel;
     private  T _message;
 
-    protected NioSession(SocketChannel channel, T message){
+    protected NioTcpSession(SocketChannel channel, T message){
         _channel = channel;
         _message = message;
     }

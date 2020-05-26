@@ -1,4 +1,4 @@
 package org.noear.fineio.nio;
 
-public class NioClient {
+public class NioTcpClient {
 }

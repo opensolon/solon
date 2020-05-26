@@ -1,6 +1,6 @@
 package org.noear.fineio;
 
-import org.noear.fineio.nio.NioServer;
+import org.noear.fineio.nio.NioTcpServer;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ public abstract class NetServer<T> {
      * Nio net server
      * */
     public static <T> NetServer<T> nio(Protocol<T> protocol, SessionProcessor<T> processor) {
-        NetServer<T> server = new NioServer<T>();
+        NetServer<T> server = new NioTcpServer<T>();
         server.protocol = protocol;
         server.processor = processor;
 

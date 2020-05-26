@@ -17,10 +17,8 @@ public final class XPluginImp implements XPlugin {
 
         int _port = 20000 + app.port();
 
-        AioContextHandler contextHandler = new AioContextHandler(app);
-
         AioProtocol protocol = new AioProtocol();
-        AioProcessor processor = new AioProcessor(contextHandler);
+        AioProcessor processor = new AioProcessor();
 
         server = new AioQuickServer<>(_port, protocol, processor);
         server.setBannerEnabled(false);

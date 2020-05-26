@@ -115,6 +115,11 @@
                 <artifactId>solon.boot.smartsocket</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.boot.fineio</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
 
 
             <dependency>
@@ -417,6 +422,7 @@
         <module>../solon.boot.websocket</module>
 
         <module>../solon.boot.jdksocket</module>
+        <module>../solon.boot.fineio</module>
         <module>../solon.boot.smartsocket</module>
 
         <!--        <module>../solon.boot.tomcat</module>-->
