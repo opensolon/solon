@@ -10,47 +10,7 @@ import org.noear.solon.ext.PrintUtil;
 import java.util.*;
 
 /**
- * 插件式微型Web框架(70kb)
- *
- * 框架主要有几部份组成：
- * 1.微框架体系
- * 2.插件体系
- * 3.注解体系(为 mvc, prc 提供支持) //Bean分为：普通Bean和Web Bean
- *
- * ///设计目标::
- * 1.更高的性能（弱化字段级注入，减少不必要的反射）
- * 2.更轻量的结构、更强的扩展性
- * 3.为Spring之外提供另一个选择
- *
- * ///保持手写和注解两种体验方案::
- *
- * ///关于Bean扫描和加载机制::
- * #XBean 为一般bean,会被加载 (仅支持类级别)
- * #XController, #XInterceptor 为特定bean,会被加载 (仅支持类级别)
- *
- * 其中：#XController (控制器), #XInterceptor (拦截器), #XBean(remoting=true)(服务)  会自动注入到 XApp.router
- *      //这三者最终都会转换为：XAction
- *
- * 其中：#XController 加在 XHandler上， 会自动注入到 XApp.router
- *      #XBean 加在 XPlugin上，会自运注入到 XApp.plug()
- *      #XBean 加在普通类上，会自动注入到 XApp.beans
- *
- * ///插件(XPlugin)的作用::
- * 1.扩展框架机能
- * 2.按需定制架构
- * 3.可让业务开发时分散、打包时合并；
- *
- * ///XMapping的策略
- * 1.与Spring保持相近
- * 2.编写更好性能的方法（根级map: /开头，子级map: 不要/开头；）
- *
- * ///更新日志：
- * 20190109:为path var添加_支持
- * 20190110:添加stop事件支持；
- *          添加XContent.paramValues(k)->[]；
- *          添加XContent.paramAsEntity(c)->t;
- *          添加XParam，支持XAction模型参数
- * 20190111:添加Aop扩展机制
+ * @author noear
  * */
 public class XApp implements XHandler {
     private static XApp _global;
