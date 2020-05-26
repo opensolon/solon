@@ -11,8 +11,10 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class SocketUtils {
     private static ExecutorService pool = Executors.newCachedThreadPool();
@@ -44,14 +46,11 @@ public class SocketUtils {
     public static SocketMessage send(String uri, String message) throws Exception {
         SocketMessageDock msgD = new SocketMessageDock(SocketMessage.wrap(uri, message.getBytes("utf-8")));
 
-        synchronized (msgD) {
-            get(uri).sendDo(msgD, (m) -> {
-                synchronized (m){
-                    m.notify();
-                }
-            });
-            msgD.wait();
-        }
+        get(uri).sendDo(msgD, (m) -> {
+            msgD.complete(null);
+        });
+
+        msgD.get(3, TimeUnit.SECONDS);
 
         if (msgD.err == null) {
             return msgD.res;
@@ -168,7 +167,7 @@ public class SocketUtils {
         return num1 ^ num2 ^ num3 ^ num4;
     }
 
-    public static class SocketMessageDock {
+    public static class SocketMessageDock extends CompletableFuture<Integer> {
         public SocketMessage req;
         public SocketMessage res;
         public Exception err;
