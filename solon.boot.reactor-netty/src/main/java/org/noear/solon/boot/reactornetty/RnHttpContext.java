@@ -108,11 +108,6 @@ public class RnHttpContext extends XContext {
     }
 
     @Override
-    public String body() throws IOException {
-        return _request.receiveContent().blockFirst().content().toString();
-    }
-
-    @Override
     public InputStream bodyAsStream() throws IOException {
         return new ByteArrayInputStream(_request.receiveContent().blockFirst().content().array());
     }

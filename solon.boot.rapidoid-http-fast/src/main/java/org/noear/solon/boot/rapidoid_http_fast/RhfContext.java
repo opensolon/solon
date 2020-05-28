@@ -75,11 +75,6 @@ public class RhfContext extends XContext {
     }
 
     @Override
-    public String body() throws IOException {
-        return null;
-    }
-
-    @Override
     public InputStream bodyAsStream() throws IOException {
         return null;
     }
@@ -178,6 +173,11 @@ public class RhfContext extends XContext {
 
     @Override
     public void headerSet(String key, String val) {
+
+    }
+
+    @Override
+    public void headerAdd(String key, String val) {
 
     }
 

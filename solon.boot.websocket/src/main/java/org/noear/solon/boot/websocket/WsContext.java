@@ -81,11 +81,6 @@ public class WsContext extends XContextEmpty {
     }
 
     @Override
-    public String body()  {
-        return new String(_message.content, _charset);
-    }
-
-    @Override
     public InputStream bodyAsStream() throws IOException {
         return new ByteArrayInputStream(_message.content);
     }

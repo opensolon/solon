@@ -8,6 +8,9 @@ import webapp.demoe_websocket.WsDemoClientTest;
 import webapp.demog_socket.SsDemoClientTest;
 import webapp.demoh_socket.SoDemoClientTest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TestApp {
     public static void main(String[] args) throws Exception{
         /**
@@ -52,9 +55,40 @@ public class TestApp {
 
         //socket client
         String root = "s://localhost:" + (20000 + XApp.global().port());
-        SocketUtils.send(root + "/seb/test", "Hello 世界!",(msg,err)->{
+
+//        List<Integer> list = new ArrayList<>();
+//        for(int i=0; i<100; i++){
+//            list.add(i);
+//        }
+//
+//        list.parallelStream().forEach((i)->{
+//            try {
+//                SocketUtils.send(root + "/seb/test", "Hello 世界!+"+i, (msg, err) -> {
+//                    if(msg == null){
+//                        return;
+//                    }
+//                    System.out.println(msg.toString());
+//                });
+//            }catch (Exception ex){
+//                ex.printStackTrace();
+//            }
+//        });
+
+        SocketUtils.create(root).send(root + "/seb/test", "Hello 世界!", (msg, err) -> {
+            if(msg == null){
+                return;
+            }
             System.out.println(msg.toString());
         });
+
+        SocketUtils.create(root).send(root + "/seb/test", "Hello 世界!", (msg, err) -> {
+            if(msg == null){
+                return;
+            }
+            System.out.println(msg.toString());
+        });
+
+
 
 
 
@@ -65,6 +99,6 @@ public class TestApp {
 //        });
 
         //web socket test
-        //WsDemoClientTest.test();
+//        WsDemoClientTest.test();
     }
 }

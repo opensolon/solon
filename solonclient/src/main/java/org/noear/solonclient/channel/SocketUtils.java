@@ -43,6 +43,16 @@ public class SocketUtils {
         return client;
     }
 
+    public static SocketUtils create(String uri){
+        URI uri1 = URI.create(uri);
+
+        if("s".equals(uri1.getScheme()) == false) {
+            throw new RuntimeException("Only [s] scheme is supported");
+        }
+
+        return new SocketUtils(uri1.getHost(), uri1.getPort());
+    }
+
     public static SocketMessage send(String uri, String message) throws Exception {
         SocketMessageDock msgD = new SocketMessageDock(SocketMessage.wrap(uri, message.getBytes("utf-8")));
 

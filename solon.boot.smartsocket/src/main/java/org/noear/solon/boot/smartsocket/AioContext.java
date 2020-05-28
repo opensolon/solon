@@ -85,11 +85,6 @@ public class AioContext extends XContextEmpty {
     }
 
     @Override
-    public String body() throws IOException {
-        return new String(_message.content);
-    }
-
-    @Override
     public InputStream bodyAsStream() throws IOException {
         return new ByteArrayInputStream(_message.content);
     }

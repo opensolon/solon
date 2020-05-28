@@ -3,6 +3,7 @@ package org.noear.solon.core;
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XNote;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -114,7 +115,27 @@ public abstract class XContext {
 
     /**获取RAW内容*/
     @XNote("获取RAW内容")
-    public abstract String body() throws IOException;
+    public String body() throws IOException{
+        return body("UTF-8");
+    }
+
+    @XNote("获取RAW内容")
+    public String body(String charset) throws IOException{
+        InputStream inputStream = bodyAsStream();
+        if(inputStream == null){
+            return null;
+        }
+
+        ByteArrayOutputStream outs = new ByteArrayOutputStream();
+
+        int i = -1;
+        while ((i = inputStream.read()) != -1) {
+            outs.write(i);
+        }
+
+        return outs.toString(charset);
+    }
+
     /**获取RAW内容为Stream*/
     @XNote("获取RAW内容为Stream")
     public abstract InputStream bodyAsStream() throws IOException;

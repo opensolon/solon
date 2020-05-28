@@ -125,11 +125,6 @@ public class NtHttpContext extends XContext {
     }
 
     @Override
-    public String body() throws IOException{
-        return _request.content().toString();
-    }
-
-    @Override
     public InputStream bodyAsStream() throws IOException{
         return new ByteArrayInputStream(_request.content().array());
     }

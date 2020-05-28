@@ -124,14 +124,14 @@ public final class SocketMessage {
     }
 
     private static String readStr(ByteBuffer buffer, ByteBuffer sb) {
-        sb.position(0);
+        sb.clear();
 
         while (true) {
             byte c = buffer.get();
 
             if (c == 10) { //10:'\n'
                 break;
-            } else if (c > 32 || c < 0) { //32:' '
+            } else if( c != 0){ //32:' '
                 sb.put(c);
             }
 

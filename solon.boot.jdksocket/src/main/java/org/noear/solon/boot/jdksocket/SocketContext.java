@@ -7,6 +7,7 @@ import org.noear.solon.core.XMethod;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.URI;
+import java.nio.charset.Charset;
 
 public class SocketContext extends XContextEmpty {
     private InetAddress _inetSocketAddress;
@@ -81,11 +82,6 @@ public class SocketContext extends XContextEmpty {
     @Override
     public String contentType() {
         return null;
-    }
-
-    @Override
-    public String body() throws IOException {
-        return new String(_message.content);
     }
 
     @Override

@@ -92,19 +92,6 @@ public class TCHttpContext extends XContext{
         return _request.getContentType();
     }
 
-    @Override
-    public String body() throws IOException {
-        InputStream inpStream = bodyAsStream();
-
-        StringBuilder content = new StringBuilder();
-        byte[] b = new byte[1024];
-        int lens = -1;
-        while ((lens = inpStream.read(b)) > 0) {
-            content.append(new String(b, 0, lens));
-        }
-
-        return content.toString();
-    }
 
     @Override
     public InputStream bodyAsStream() throws IOException {
@@ -298,6 +285,11 @@ public class TCHttpContext extends XContext{
     @Override
     public void headerSet(String key, String val) {
         _response.setHeader(key,val);
+    }
+
+    @Override
+    public void headerAdd(String key, String val) {
+        _response.addHeader(key,val);
     }
 
     @Override

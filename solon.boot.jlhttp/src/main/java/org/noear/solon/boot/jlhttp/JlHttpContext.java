@@ -120,20 +120,6 @@ public class JlHttpContext extends XContext {
     }
 
     @Override
-    public String body() throws IOException {
-        InputStream inpStream = bodyAsStream();
-
-        StringBuilder content = new StringBuilder();
-        byte[] b = new byte[1024];
-        int lens = -1;
-        while ((lens = inpStream.read(b)) > 0) {
-            content.append(new String(b, 0, lens));
-        }
-
-        return content.toString();
-    }
-
-    @Override
     public InputStream bodyAsStream() throws IOException {
         return _request.getBody();
     }

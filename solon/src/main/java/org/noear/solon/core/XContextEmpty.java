@@ -92,11 +92,6 @@ public class XContextEmpty extends XContext {
     }
 
     @Override
-    public String body() throws IOException{
-        return null;
-    }
-
-    @Override
     public InputStream bodyAsStream() throws IOException {
         return null;
     }
