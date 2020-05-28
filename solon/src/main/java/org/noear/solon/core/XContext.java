@@ -116,13 +116,13 @@ public abstract class XContext {
     /**获取RAW内容*/
     @XNote("获取RAW内容")
     public String body() throws IOException{
-        return body("UTF-8");
+        return body(null);
     }
 
     @XNote("获取RAW内容")
-    public String body(String charset) throws IOException{
+    public String body(String charset) throws IOException {
         InputStream inputStream = bodyAsStream();
-        if(inputStream == null){
+        if (inputStream == null) {
             return null;
         }
 
@@ -133,7 +133,11 @@ public abstract class XContext {
             outs.write(i);
         }
 
-        return outs.toString(charset);
+        if (charset == null) {
+            return outs.toString();
+        } else {
+            return outs.toString(charset);
+        }
     }
 
     /**获取RAW内容为Stream*/
