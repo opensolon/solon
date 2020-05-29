@@ -54,7 +54,7 @@ public class TestApp {
         });
 
         //socket client
-        String root = "s://localhost:" + (20000 + XApp.global().port());
+//        String root = "s://localhost:" + (20000 + XApp.global().port());
 
 //        List<Integer> list = new ArrayList<>();
 //        for(int i=0; i<100; i++){
@@ -74,19 +74,19 @@ public class TestApp {
 //            }
 //        });
 
-        SocketUtils.create(root).send(root + "/seb/test", "Hello 世界!", (msg, err) -> {
-            if(msg == null){
-                return;
-            }
-            System.out.println(msg.toString());
-        });
-
-        SocketUtils.create(root).send(root + "/seb/test", "Hello 世界!", (msg, err) -> {
-            if(msg == null){
-                return;
-            }
-            System.out.println(msg.toString());
-        });
+//        SocketUtils.create(root).send(root + "/seb/test", "Hello 世界!", (msg, err) -> {
+//            if(msg == null){
+//                return;
+//            }
+//            System.out.println(msg.toString());
+//        });
+//
+//        SocketUtils.create(root).send(root + "/seb/test", "Hello 世界!", (msg, err) -> {
+//            if(msg == null){
+//                return;
+//            }
+//            System.out.println(msg.toString());
+//        });
 
 
 

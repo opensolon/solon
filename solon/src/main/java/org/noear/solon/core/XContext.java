@@ -121,22 +121,23 @@ public abstract class XContext {
 
     @XNote("获取RAW内容")
     public String body(String charset) throws IOException {
-        InputStream inputStream = bodyAsStream();
-        if (inputStream == null) {
-            return null;
-        }
+        try(InputStream inputStream = bodyAsStream()) {
+            if (inputStream == null) {
+                return null;
+            }
 
-        ByteArrayOutputStream outs = new ByteArrayOutputStream();
+            ByteArrayOutputStream outs = new ByteArrayOutputStream(); //这个不需要关闭
 
-        int i = -1;
-        while ((i = inputStream.read()) != -1) {
-            outs.write(i);
-        }
+            int i = -1;
+            while ((i = inputStream.read()) != -1) {
+                outs.write(i);
+            }
 
-        if (charset == null) {
-            return outs.toString();
-        } else {
-            return outs.toString(charset);
+            if (charset == null) {
+                return outs.toString();
+            } else {
+                return outs.toString(charset);
+            }
         }
     }
 

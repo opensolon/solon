@@ -8,12 +8,19 @@ import org.noear.solon.core.XContext;
 import org.noear.solon.core.XFile;
 import webapp.models.UserModel;
 
+import java.io.IOException;
 import java.util.Date;
 
 @XSingleton(false)
 @XMapping("/demo2/param")
 @XController
 public class ParamController {
+    //支持post和get参数
+    @XMapping("body")
+    public String test_body(XContext ctx) throws IOException {
+        return ctx.body();
+    }
+
     //支持post和get参数
     @XMapping("d/*")
     public String test_d(XContext ctx, String name) {
