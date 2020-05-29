@@ -121,15 +121,15 @@ public abstract class XContext {
 
     @XNote("获取RAW内容")
     public String body(String charset) throws IOException {
-        try(InputStream inputStream = bodyAsStream()) {
-            if (inputStream == null) {
+        try(InputStream ins = bodyAsStream()) {
+            if (ins == null) {
                 return null;
             }
 
             ByteArrayOutputStream outs = new ByteArrayOutputStream(); //这个不需要关闭
 
             int i = -1;
-            while ((i = inputStream.read()) != -1) {
+            while ((i = ins.read()) != -1) {
                 outs.write(i);
             }
 
