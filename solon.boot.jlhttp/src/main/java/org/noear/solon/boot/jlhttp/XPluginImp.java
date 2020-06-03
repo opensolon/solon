@@ -4,6 +4,7 @@ import org.noear.solon.XApp;
 import org.noear.solon.core.XMethod;
 import org.noear.solon.core.XPlugin;
 
+import javax.net.ssl.SSLServerSocketFactory;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -29,13 +30,9 @@ public final class XPluginImp implements XPlugin {
 
         JlHttpContextHandler _handler = new JlHttpContextHandler( app);
 
-        _server.setPort(app.port());
-        _server.setExecutor(new ThreadPoolExecutor(
-                8,
-                200,
-                60000L, //1分钟
-                TimeUnit.MILLISECONDS,
-                new SynchronousQueue<>()));
+        if (System.getProperty("javax.net.ssl.keyStore") != null) { // enable SSL if configured
+            _server.setServerSocketFactory(SSLServerSocketFactory.getDefault());
+        }
 
         HTTPServer.VirtualHost host = _server.getVirtualHost((String) null);
 
@@ -51,6 +48,7 @@ public final class XPluginImp implements XPlugin {
         System.out.println("solon.Server:main: JlHttpServer 2.4");
 
         try {
+            _server.setPort(app.port());
             _server.start();
 
             long time_end = System.currentTimeMillis();

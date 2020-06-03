@@ -52,7 +52,7 @@ public class JspHttpContextServlet extends HttpServlet {
         } catch (Throwable ex) {
             ex.printStackTrace();
 
-            if(xapp.prop().argx().getInt("debug") == 1) {
+            if(xapp.prop().isDebugMode()) {
                 ((Request)request).setHandled(true);
                 ex.printStackTrace(response.getWriter());
                 response.setStatus(500);

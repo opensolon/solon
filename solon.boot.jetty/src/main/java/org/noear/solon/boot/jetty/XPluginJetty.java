@@ -21,6 +21,8 @@ final class XPluginJetty implements XPlugin {
         s_handler.setHandler(_handler);
 
         _server = new Server(app.port());
+
+        //session 支持
         _server.setSessionIdManager(new DefaultSessionIdManager(_server));
         _server.setHandler(s_handler);
 
