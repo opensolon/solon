@@ -21,7 +21,7 @@
         <solon.ver>1.0.5.13</solon.ver>
 
         <snack3.ver>3.1.6.3</snack3.ver>
-        <fastjson.ver>1.2.29</fastjson.ver>
+        <fastjson.ver>1.2.70</fastjson.ver>
         <jedis.ver>2.9.0</jedis.ver>
         <okhttp.ver>3.11.0</okhttp.ver>
 

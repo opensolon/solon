@@ -13,17 +13,26 @@ import java.util.Map;
 
 public class XProxy {
 
+    public static IChannel defaultChannel = HttpChannel.instance;
+    public static ISerializer defaultSerializer = FastjsonSerializer.instance;
+    public static Enctype defaultEnctype = Enctype.form_data;
+
     private String _url;
     private String _result;
     private ISerializer _serializer;
-    private IChannel _channel = HttpChannel.instance;
-    private Enctype _enctype = Enctype.form_data;
+    private IChannel _channel;
+    private Enctype _enctype;
 
-    public XProxy(){
-        _serializer = FastjsonSerializer.instance;
+
+
+    public XProxy() {
+        _serializer = defaultSerializer;
+        _channel = defaultChannel;
+        _enctype = defaultEnctype;
     }
 
-    public XProxy(ISerializer serializer){
+    public XProxy(ISerializer serializer) {
+        this();
         _serializer = serializer;
     }
 
