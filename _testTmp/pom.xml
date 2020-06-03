@@ -16,7 +16,7 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.boot.reactor-netty</artifactId>
-            <version>1.0.5.12</version>
+            <version>1.0.5.13</version>
         </dependency>
 
         <dependency>

@@ -9,7 +9,7 @@ public class XPluginImp implements XPlugin {
 
 
     public static String solon_boot_ver() {
-        return "jdk socket nio jdk8/1.0.5.12";
+        return "jdk socket nio jdk8/1.0.5.13";
     }
 
     NetServer<SocketMessage> _server;
