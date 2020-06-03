@@ -407,10 +407,14 @@ public class JdkHttpContext extends XContext {
 
     @Override
     protected void commit() throws IOException {
-        _exchange.sendResponseHeaders(_status, 0);
         if (_outputStream.size() > 0) {
+            _exchange.sendResponseHeaders(_status, _outputStream.size());
             _outputStream.writeTo(_exchange.getResponseBody());
+        }else{
+            _exchange.sendResponseHeaders(_status, 0);
         }
+
         _exchange.getResponseBody().close();
+        _exchange.close();
     }
 }

@@ -6,6 +6,7 @@ import org.noear.solon.XApp;
 import org.noear.solon.core.XPlugin;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.Executors;
 
 public final class XPluginImp implements XPlugin {
     private HttpServer _server = null;
@@ -30,9 +31,11 @@ public final class XPluginImp implements XPlugin {
 
         try {
             _server = HttpServer.create(new InetSocketAddress(app.port()), 0);
+
             HttpContext context = _server.createContext("/", _handler);
             context.getFilters().add(new ParameterFilter());
-            
+
+            _server.setExecutor(Executors.newCachedThreadPool());
             _server.start();
 
             long time_end = System.currentTimeMillis();
