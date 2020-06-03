@@ -93,6 +93,14 @@ public class HttpTest {
     }
 
     @Test
+    public void test25_3() throws IOException{
+        Map<String,String> map = new HashMap<>();
+        map.put("name","中文");
+
+        assert  put("/demo2/mapping/put",map).equals("中文");
+    }
+
+    @Test
     public void test26() throws IOException{
         assert  get("/demo2/mapping/post_get").equals("/demo2/mapping/post_get");
     }
@@ -255,5 +263,10 @@ public class HttpTest {
     private String post(String path, Map<String,String> data) throws IOException {
         String url = "http://localhost:8080" + path;
         return HttpUtils.http(url).data(data).post();
+    }
+
+    private String put(String path, Map<String,String> data) throws IOException {
+        String url = "http://localhost:8080" + path;
+        return HttpUtils.http(url).data(data).put();
     }
 }

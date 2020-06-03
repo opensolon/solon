@@ -21,6 +21,11 @@ public class MappingController {
         return context.param("name");
     }
 
+    @XMapping(value = "put", method = {XMethod.PUT})
+    public String test_put(XContext context) {
+        return context.param("name");
+    }
+
 
     @XMapping(value = "post_get", method = {XMethod.POST, XMethod.GET})
     public String test_post_get(XContext context) {
