@@ -15,7 +15,6 @@ import java.net.URI;
 import java.util.*;
 
 public class JdkHttpContext extends XContext {
-
     private HttpExchange _exchange;
     private Map<String, Object> _parameters;
     protected Map<String, List<XFile>> _fileMap;

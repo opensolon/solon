@@ -25,14 +25,12 @@ public final class XPluginImp implements XPlugin {
 
         long time_start = System.currentTimeMillis();
 
-        JdkHttpContextHandler _handler = new JdkHttpContextHandler(app);
-
         System.out.println("solon.Server:main: Sun.net.HttpServer jdk8");
 
         try {
             _server = HttpServer.create(new InetSocketAddress(app.port()), 0);
 
-            HttpContext context = _server.createContext("/", _handler);
+            HttpContext context = _server.createContext("/", new JdkHttpContextHandler());
             context.getFilters().add(new ParameterFilter());
 
             _server.setExecutor(Executors.newCachedThreadPool());

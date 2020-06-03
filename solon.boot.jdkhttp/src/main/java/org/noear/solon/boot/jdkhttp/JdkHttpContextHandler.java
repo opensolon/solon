@@ -10,11 +10,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class JdkHttpContextHandler implements HttpHandler {
-    private XApp xapp;
-
-    public JdkHttpContextHandler(XApp xapp){
-        this.xapp = xapp;
-    }
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try {
@@ -27,16 +22,6 @@ public class JdkHttpContextHandler implements HttpHandler {
     }
 
     private void handle_do(HttpExchange exchange) throws IOException {
-        /*
-         *
-         * lhttp 流程
-         *
-         * 1.处理，并暂存结果
-         * 2.输出头
-         * 3.输出内容
-         *
-         * */
-
         JdkHttpContext context = new JdkHttpContext(exchange);
         context.contentType("text/plain;charset=UTF-8");
         if(XServerProp.output_meta) {
@@ -44,7 +29,7 @@ public class JdkHttpContextHandler implements HttpHandler {
         }
 
         try {
-            xapp.handle(context);
+            XApp.global().handle(context);
         } catch (Throwable ex) {
             ex.printStackTrace();
 

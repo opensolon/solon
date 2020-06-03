@@ -24,17 +24,17 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onStart() {
-        System.out.println("WsServer: onStart...");
+        System.out.println("Solon.Server:Websocket onStart...");
     }
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake shake) {
-        System.out.println("WsServer: onOpen=" + shake.getResourceDescriptor());
+        System.out.println("Solon.Server:Websocket onOpen=" + shake.getResourceDescriptor());
     }
 
     @Override
     public void onClose(WebSocket conn, int i, String s, boolean b) {
-        System.out.println("WsServer: onClose...");
+        System.out.println("Solon.Server:Websocket onClose...");
     }
 
     @Override
@@ -57,7 +57,7 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onError(WebSocket conn, Exception ex) {
-        System.out.println("WsServer: onError:");
+        System.out.println("Solon.Server:Websocket onError:");
         ex.printStackTrace();
     }
 
