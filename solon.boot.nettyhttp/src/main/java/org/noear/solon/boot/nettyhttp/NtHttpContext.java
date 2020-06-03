@@ -1,5 +1,6 @@
 package org.noear.solon.boot.nettyhttp;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.cookie.Cookie;
@@ -12,6 +13,7 @@ import org.noear.solon.core.XMap;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.nio.ByteBuffer;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,7 +128,20 @@ public class NtHttpContext extends XContext {
 
     @Override
     public InputStream bodyAsStream() throws IOException{
-        return new ByteArrayInputStream(_request.content().array());
+        ByteBuf buf = _request.content();
+
+        if(buf.hasArray()) {
+            //处理堆缓冲区
+            //
+            int offset = buf.arrayOffset() + buf.readerIndex();
+            return new ByteArrayInputStream(buf.array(), offset, buf.readableBytes());
+        } else {
+            //处理直接缓冲区以及复合缓冲区
+            //
+            byte[] bytes = new byte[buf.readableBytes()];
+            buf.getBytes(buf.readerIndex(), bytes);
+            return new ByteArrayInputStream(bytes, 0, buf.readableBytes());
+        }
     }
 
     @Override

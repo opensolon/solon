@@ -248,7 +248,11 @@ public class HttpTest {
 
     private int getStatus(String path) throws IOException {
         String url = "http://localhost:8080" + path;
-        return HttpUtils.http(url).exec("GET").code();
+        int rst = HttpUtils.http(url).exec("GET").code();
+
+        System.out.println("code : " + rst);
+
+        return rst;
     }
 
     private String post(String path, String body) throws IOException {

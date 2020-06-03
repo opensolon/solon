@@ -47,13 +47,16 @@ class NtHttpContextHandler extends SimpleChannelInboundHandler<FullHttpRequest> 
             context.output(XUtil.getFullStackTrace(ex));
         }
 
-        try {
-            context.commit();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        try{
+            if (context.getHandled() && context.status() != 404) {
+                context.commit();
+            } else {
+                context.status(404);
+                context.commit();
+            }
+        }finally {
+            // 将html write到客户端
+            ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
         }
-
-        // 将html write到客户端
-        ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
 }
