@@ -7,11 +7,13 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.util.concurrent.DefaultThreadFactory;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.concurrent.Executors;
 
- class HttpServer {
+class HttpServer {
     private int port ;
     private ChannelFuture _server;
 
@@ -21,12 +23,12 @@ import java.net.InetSocketAddress;
 
     public void start() throws Exception{
 
-        EventLoopGroup boss = new NioEventLoopGroup();
-        EventLoopGroup work = new NioEventLoopGroup();
+        EventLoopGroup bossGroup = new NioEventLoopGroup(2, new DefaultThreadFactory("boss",true));
+        EventLoopGroup workGroup = new NioEventLoopGroup(4, new DefaultThreadFactory("work",true));
 
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
-            bootstrap.group(boss, work)
+            bootstrap.group(bossGroup, workGroup)
                     //.handler(new LoggingHandler(LogLevel.ERROR))
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new HttpServerInitializer());
@@ -34,8 +36,8 @@ import java.net.InetSocketAddress;
             _server = bootstrap.bind(new InetSocketAddress(port)).sync();
         }catch (Throwable ex){
             _server = null;
-            boss.shutdownGracefully();
-            work.shutdownGracefully();
+            bossGroup.shutdownGracefully();
+            workGroup.shutdownGracefully();
         }
     }
 

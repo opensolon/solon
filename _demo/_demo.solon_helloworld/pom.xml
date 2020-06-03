@@ -9,13 +9,13 @@
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>JdkhttpApp</name>
+    <name>NettyhttpApp</name>
     <description>java project for solon demo</description>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jdkhttp</artifactId>
+            <artifactId>solon.boot.nettyhttp</artifactId>
             <version>1.0.5.13</version>
         </dependency>
     </dependencies>
