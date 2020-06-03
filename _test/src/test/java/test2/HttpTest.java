@@ -245,7 +245,11 @@ public class HttpTest {
 
     private String post(String path, String body) throws IOException {
         String url = "http://localhost:8080" + path;
-        return HttpUtils.http(url).bodyTxt(body).post();
+        String rst = HttpUtils.http(url).bodyTxt(body).post();
+
+        System.out.println(path + " :: " + rst);
+
+        return rst;
     }
 
     private String post(String path, Map<String,String> data) throws IOException {

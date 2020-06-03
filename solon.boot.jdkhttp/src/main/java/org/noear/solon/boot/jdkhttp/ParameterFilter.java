@@ -54,8 +54,15 @@ public class ParameterFilter extends Filter {
                 || "PATCH".equalsIgnoreCase(method)) {
 
             String ct = exchange.getRequestHeaders().getFirst("Content-Type");
-            if (ct != null && ct.indexOf("multipart/") >= 0) {
+
+            if(ct == null){
                 return;
+            }
+
+            if (ct != null) {
+                if(ct.startsWith("multipart/")) {
+                    return;
+                }
             }
 
 
@@ -87,6 +94,8 @@ public class ParameterFilter extends Filter {
 
                 if (param.length > 1) {
                     value = URLDecoder.decode(param[1], file_encoding);
+                }else{
+                    value = "";
                 }
 
                 if (parameters.containsKey(key)) {
