@@ -39,8 +39,8 @@ public class FastjsonSerializer implements ISerializer {
             }
             returnVal = JSONObject.parseObject(str, new TypeReference<T>(){});
 
-        }catch (Exception ex){
-            System.out.println(str);
+        }catch (Throwable ex){
+            System.err.println("error::" + str);
             returnVal = ex;
         }
 
