@@ -9,7 +9,7 @@
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>${artifactId}</name>
+    <name>${project.artifactId}</name>
     <description>java project for solon demo</description>
 
     <dependencies>
@@ -21,7 +21,7 @@
     </dependencies>
 
     <build>
-        <finalName>${artifactId}</finalName>
+        <finalName>${name}</finalName>
         <plugins>
 
             <plugin>
@@ -38,14 +38,14 @@
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                    <finalName>${project.artifactId}</finalName>
+                    <finalName>${name}</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>webapp.App0</mainClass>
+                            <mainClass>webapp.HelloApp</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
