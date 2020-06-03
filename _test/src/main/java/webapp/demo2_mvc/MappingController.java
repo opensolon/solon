@@ -18,7 +18,7 @@ public class MappingController {
 
     @XMapping(value = "post", method = {XMethod.POST})
     public String test_post(XContext context) {
-        return context.path();
+        return context.param("name");
     }
 
 

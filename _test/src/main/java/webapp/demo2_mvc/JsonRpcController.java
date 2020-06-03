@@ -13,7 +13,7 @@ import java.util.Map;
 
 @XMapping("/demo2/rpc/")
 @XBean(remoting = true)
-public class View2Controller {
+public class JsonRpcController {
 
     public Object json(){
         Map<String,Object> model = new HashMap<>();

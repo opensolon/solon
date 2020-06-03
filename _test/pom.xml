@@ -72,10 +72,10 @@
 <!--            <artifactId>solon.boot.jdksocket</artifactId>-->
 <!--        </dependency>-->
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.jlhttp</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.jlhttp</artifactId>
+        </dependency>
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
@@ -105,10 +105,10 @@
 <!--        </dependency>-->
 
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jetty</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.jetty</artifactId>-->
+<!--        </dependency>-->
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
@@ -234,6 +234,12 @@
             <groupId>org.smartboot.socket</groupId>
             <artifactId>aio-core</artifactId>
             <version>1.4.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.14.8</version>
         </dependency>
     </dependencies>
 
