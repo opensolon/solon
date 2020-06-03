@@ -27,6 +27,7 @@
             <artifactId>aio-core</artifactId>
             <version>1.4.6</version>
         </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>

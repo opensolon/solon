@@ -5,8 +5,6 @@ import org.noear.solon.core.XPlugin;
 import org.noear.solonclient.channel.SocketMessage;
 import org.noear.solonclient.channel.SocketUtils;
 import webapp.demoe_websocket.WsDemoClientTest;
-import webapp.demog_socket.SsDemoClientTest;
-import webapp.demoh_socket.SoDemoClientTest;
 
 import java.util.ArrayList;
 import java.util.List;
