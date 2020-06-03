@@ -5,9 +5,6 @@ import org.noear.solon.core.XMethod;
 import org.noear.solon.core.XPlugin;
 
 import javax.net.ssl.SSLServerSocketFactory;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 public final class XPluginImp implements XPlugin {
     private HTTPServer _server = null;
