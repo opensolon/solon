@@ -57,7 +57,9 @@ public class ParameterFilter extends Filter {
 
             if (ct == null) {
                 return;
-            } else if (ct.equals("application/x-www-form-urlencoded") == false) {
+            }
+
+            if (ct.equals("application/x-www-form-urlencoded") == false) {
                 return;
             }
 

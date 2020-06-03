@@ -31,7 +31,7 @@ class HttpRequestParser {
         HttpMethod method = _request.method();
 
         // url 参数
-        if(_request.uri().indexOf("?") > 0) {
+        if (_request.uri().indexOf("?") > 0) {
             QueryStringDecoder decoder = new QueryStringDecoder(_request.uri());
 
             decoder.parameters().entrySet().forEach(entry -> {
@@ -43,55 +43,70 @@ class HttpRequestParser {
         // body
         if (HttpMethod.POST == method
                 || HttpMethod.PUT == method
-                ||  HttpMethod.DELETE == method
+                || HttpMethod.DELETE == method
                 || HttpMethod.PATCH == method) {
 
-            HttpPostRequestDecoder decoder = new HttpPostRequestDecoder(_request);
-            decoder.offer(_request);
-
-            List<InterfaceHttpData> parmList = decoder.getBodyHttpDatas();
-
-            for (InterfaceHttpData p1 : parmList) {
-                if(p1.getHttpDataType() == InterfaceHttpData.HttpDataType.Attribute){
-                    //参数
-                    //
-                    Attribute a1 = (Attribute) p1;
-
-                    List<String> tmp = parmMap.get(a1.getName());
-                    if(tmp == null){
-                        tmp = new ArrayList<>();
-                        parmMap.put(a1.getName(), tmp);
-                    }
-
-                    tmp.add(a1.getValue());
-                    continue;
-                }
-
-                if(p1.getHttpDataType() == InterfaceHttpData.HttpDataType.FileUpload){
-                    //文件
-                    //
-                    FileUpload f1 = (FileUpload) p1;
-
-                    List<XFile> tmp = fileMap.get(p1.getName());
-                    if(tmp == null){
-                        tmp = new ArrayList<>();
-                        fileMap.put(p1.getName(), tmp);
-                    }
-
-                    XFile file = new XFile();
-                    file.name = f1.getFilename();
-                    file.contentType = f1.getContentType();
-                    file.content = new FileInputStream(f1.getFile());
-                    int idx = file.name.lastIndexOf(".");
-                    if(idx>0){
-                        file.extension = file.name.substring(idx+1);
-                    }
-
-                    tmp.add(file);
-                }
-            }
+            parseBodyTry();
         }
 
         return this;
+    }
+
+    private void parseBodyTry() throws Exception{
+        String ct = _request.headers().get("Content-Type");
+
+        if (ct == null) {
+            return;
+        }
+
+        if (ct.equals("application/x-www-form-urlencoded") == false
+                && ct.startsWith("multipart/") == false) {
+            return;
+        }
+
+        HttpPostRequestDecoder decoder = new HttpPostRequestDecoder(_request);
+        decoder.offer(_request);
+
+        List<InterfaceHttpData> parmList = decoder.getBodyHttpDatas();
+
+        for (InterfaceHttpData p1 : parmList) {
+            if (p1.getHttpDataType() == InterfaceHttpData.HttpDataType.Attribute) {
+                //参数
+                //
+                Attribute a1 = (Attribute) p1;
+
+                List<String> tmp = parmMap.get(a1.getName());
+                if (tmp == null) {
+                    tmp = new ArrayList<>();
+                    parmMap.put(a1.getName(), tmp);
+                }
+
+                tmp.add(a1.getValue());
+                continue;
+            }
+
+            if (p1.getHttpDataType() == InterfaceHttpData.HttpDataType.FileUpload) {
+                //文件
+                //
+                FileUpload f1 = (FileUpload) p1;
+
+                List<XFile> tmp = fileMap.get(p1.getName());
+                if (tmp == null) {
+                    tmp = new ArrayList<>();
+                    fileMap.put(p1.getName(), tmp);
+                }
+
+                XFile file = new XFile();
+                file.name = f1.getFilename();
+                file.contentType = f1.getContentType();
+                file.content = new FileInputStream(f1.getFile());
+                int idx = file.name.lastIndexOf(".");
+                if (idx > 0) {
+                    file.extension = file.name.substring(idx + 1);
+                }
+
+                tmp.add(file);
+            }
+        }
     }
 }
