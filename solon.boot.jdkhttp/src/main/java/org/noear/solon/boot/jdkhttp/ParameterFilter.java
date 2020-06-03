@@ -55,14 +55,10 @@ public class ParameterFilter extends Filter {
 
             String ct = exchange.getRequestHeaders().getFirst("Content-Type");
 
-            if(ct == null){
+            if (ct == null) {
                 return;
-            }
-
-            if (ct != null) {
-                if(ct.startsWith("multipart/")) {
-                    return;
-                }
+            } else if (ct.equals("application/x-www-form-urlencoded") == false) {
+                return;
             }
 
 
