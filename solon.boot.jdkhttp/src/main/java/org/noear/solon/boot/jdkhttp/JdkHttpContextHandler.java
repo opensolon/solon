@@ -11,20 +11,19 @@ import java.util.concurrent.Executors;
 
 public class JdkHttpContextHandler implements HttpHandler {
     private XApp xapp;
-    private ExecutorService pool = Executors.newCachedThreadPool();
 
     public JdkHttpContextHandler(XApp xapp){
         this.xapp = xapp;
     }
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        pool.execute(() -> {
-            try {
-                handle_do(exchange);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        });
+        try {
+            handle_do(exchange);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        } finally {
+            exchange.close();
+        }
     }
 
     private void handle_do(HttpExchange exchange) throws IOException {

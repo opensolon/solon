@@ -410,11 +410,10 @@ public class JdkHttpContext extends XContext {
         if (_outputStream.size() > 0) {
             _exchange.sendResponseHeaders(_status, _outputStream.size());
             _outputStream.writeTo(_exchange.getResponseBody());
-        }else{
+        } else {
             _exchange.sendResponseHeaders(_status, 0);
         }
 
         _exchange.getResponseBody().close();
-        _exchange.close();
     }
 }
