@@ -9,10 +9,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ParameterFilter extends Filter {
 
@@ -59,7 +56,7 @@ public class ParameterFilter extends Filter {
                 return;
             }
 
-            if (ct.equals("application/x-www-form-urlencoded") == false) {
+            if (ct.toLowerCase(Locale.US).startsWith("application/x-www-form-urlencoded") == false) {
                 return;
             }
 

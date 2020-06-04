@@ -59,7 +59,9 @@ class HttpRequestParser {
             return;
         }
 
-        if (ct.equals("application/x-www-form-urlencoded") == false
+        ct = ct.toLowerCase(Locale.US);
+
+        if (ct.startsWith("application/x-www-form-urlencoded") == false
                 && ct.startsWith("multipart/") == false) {
             return;
         }

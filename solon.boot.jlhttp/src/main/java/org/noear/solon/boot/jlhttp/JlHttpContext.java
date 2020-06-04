@@ -301,10 +301,7 @@ public class JlHttpContext extends XContext {
 
     @Override
     public OutputStream outputStream() throws IOException{
-        if (!_response.headersSent()) {
-            _response.sendHeaders(status());
-        }
-
+        sendHeaders();
         return _response.getOutputStream();
     }
 
@@ -403,8 +400,14 @@ public class JlHttpContext extends XContext {
     //jlhttp 需要先输出 header ，但是 header 后面可能会有变化；所以不直接使用  response.getOutputStream()
     @Override
     protected void commit() throws IOException{
-        //outputStream.writeTo(_response.getOutputStream());
+        sendHeaders();
         _response.getOutputStream().close();
+    }
+
+    private void sendHeaders() throws IOException{
+        if (!_response.headersSent()) {
+            _response.sendHeaders(status());
+        }
     }
 
 }

@@ -43,10 +43,6 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
         }
 
         if (context.getHandled() && context.status() != 404) {
-            if (!response.headersSent()) {
-                response.sendHeaders(context.status());
-            }
-
             context.commit();
 
             return 0;
