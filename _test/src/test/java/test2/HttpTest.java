@@ -24,8 +24,23 @@ public class HttpTest {
     }
 
     @Test
-    public void test12() throws IOException{
+    public void test12_get() throws IOException{
         assert  get("/demo1/run1/*").equals("http://localhost:8080/demo1/run1/*");
+    }
+
+    @Test
+    public void test12_post() throws IOException {
+        assert post("/demo1/run1/*", "").equals("http://localhost:8080/demo1/run1/*");
+    }
+
+    @Test
+    public void test12_put() throws IOException {
+        assert put("/demo1/run1/*", "").equals("http://localhost:8080/demo1/run1/*");
+    }
+
+    @Test
+    public void test12_head() throws IOException {
+        assert headStatus("/demo1/run1/*") == 200;
     }
 
     @Test
@@ -263,9 +278,27 @@ public class HttpTest {
         return rst;
     }
 
+    private int headStatus(String path) throws IOException {
+        String url = "http://localhost:8080" + path;
+        int rst = HttpUtils.http(url).exec("HEAD").code();
+
+        System.out.println("code : " + rst);
+
+        return rst;
+    }
+
     private String post(String path, String body) throws IOException {
         String url = "http://localhost:8080" + path;
         String rst = HttpUtils.http(url).bodyTxt(body).post();
+
+        System.out.println(path + " :: " + rst);
+
+        return rst;
+    }
+
+    private String put(String path, String body) throws IOException {
+        String url = "http://localhost:8080" + path;
+        String rst = HttpUtils.http(url).bodyTxt(body).put();
 
         System.out.println(path + " :: " + rst);
 

@@ -7,6 +7,7 @@ import org.noear.solon.core.XContext;
 import org.noear.solon.core.XFile;
 import org.noear.solon.core.XMap;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -342,7 +343,12 @@ public class JdkHttpContext extends XContext {
     @Override
     public OutputStream outputStream() throws IOException {
         sendHeaders();
-        return _exchange.getResponseBody();
+
+        if (_allows_write) {
+            return _exchange.getResponseBody();
+        }else{
+            return new ByteArrayOutputStream();
+        }
     }
 
     @Override
@@ -405,14 +411,20 @@ public class JdkHttpContext extends XContext {
     @Override
     protected void commit() throws IOException {
         sendHeaders();
-        _exchange.getResponseBody().close();
+        //_exchange.getResponseBody().close();
     }
 
+    private boolean _allows_write = true;
     private boolean _headers_sent = false;
     private void sendHeaders() throws IOException{
         if(!_headers_sent) {
             _headers_sent = true;
-            _exchange.sendResponseHeaders(_status, 0);
+            if("HEAD".equals(method())){
+                _allows_write = false;
+                _exchange.sendResponseHeaders(_status, -1);
+            }else {
+                _exchange.sendResponseHeaders(_status, 0);
+            }
         }
     }
 }
