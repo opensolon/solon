@@ -411,7 +411,6 @@ public class JdkHttpContext extends XContext {
     @Override
     protected void commit() throws IOException {
         sendHeaders();
-        //_exchange.getResponseBody().close();
     }
 
     private boolean _allows_write = true;
