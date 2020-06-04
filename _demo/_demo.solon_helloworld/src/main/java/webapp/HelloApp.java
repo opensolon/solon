@@ -10,5 +10,6 @@ public class HelloApp {
         XApp app = XApp.start(HelloApp.class, args);
 
         app.get("/", c -> c.output("hello world!"));
+
     }
 }

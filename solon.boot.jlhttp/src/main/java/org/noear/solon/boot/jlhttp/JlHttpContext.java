@@ -301,13 +301,17 @@ public class JlHttpContext extends XContext {
 
     @Override
     public OutputStream outputStream() throws IOException{
-        return outputStream;
+        if (!_response.headersSent()) {
+            _response.sendHeaders(status());
+        }
+
+        return _response.getOutputStream();
     }
 
     @Override
     public void output(String str) {
         try {
-            OutputStream out = outputStream;
+            OutputStream out = outputStream();
 
             out.write(str.getBytes(_charset));
             out.flush();
@@ -319,7 +323,7 @@ public class JlHttpContext extends XContext {
     @Override
     public void output(InputStream stream) {
         try {
-            OutputStream out = outputStream;
+            OutputStream out = outputStream();
 
             byte[] buff = new byte[100];
             int rc = 0;
@@ -333,7 +337,7 @@ public class JlHttpContext extends XContext {
         }
     }
 
-    protected ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    //protected ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
 
 
@@ -399,7 +403,7 @@ public class JlHttpContext extends XContext {
     //jlhttp 需要先输出 header ，但是 header 后面可能会有变化；所以不直接使用  response.getOutputStream()
     @Override
     protected void commit() throws IOException{
-        outputStream.writeTo(_response.getOutputStream());
+        //outputStream.writeTo(_response.getOutputStream());
         _response.getOutputStream().close();
     }
 

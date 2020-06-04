@@ -340,11 +340,12 @@ public class JdkHttpContext extends XContext {
         }
     }
 
-    protected ByteArrayOutputStream _outputStream = new ByteArrayOutputStream();
+    //protected ByteArrayOutputStream _outputStream = new ByteArrayOutputStream();
 
     @Override
     public OutputStream outputStream() throws IOException {
-        return _outputStream;
+        _exchange.sendResponseHeaders(_status, 0);
+        return _exchange.getResponseBody();
     }
 
     @Override
@@ -406,11 +407,7 @@ public class JdkHttpContext extends XContext {
 
     @Override
     protected void commit() throws IOException {
-        _exchange.sendResponseHeaders(_status, _outputStream.size());
 
-        if (_outputStream.size() > 0) {
-            _outputStream.writeTo(_exchange.getResponseBody());
-        }
 
         _exchange.getResponseBody().close();
     }
