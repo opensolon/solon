@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jlhttp</artifactId>
+            <artifactId>solon.boot.jdkhttp</artifactId>
             <version>1.0.5.13</version>
         </dependency>
     </dependencies>
