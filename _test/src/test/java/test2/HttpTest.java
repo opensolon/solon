@@ -182,6 +182,14 @@ public class HttpTest {
     }
 
     @Test
+    public void test2k2() throws IOException{
+        Map<String,String> map = new HashMap<>();
+        map.put("username","noear");
+        map.put("password","zk1234");
+        assert  post("/demo2/param/login", map).equals("noear # zk1234");
+    }
+
+    @Test
     public void test2o() throws IOException{
         assert  get("/demo2/view").indexOf("你好 world! in XController") > 0;
     }
@@ -266,11 +274,19 @@ public class HttpTest {
 
     private String post(String path, Map<String,String> data) throws IOException {
         String url = "http://localhost:8080" + path;
-        return HttpUtils.http(url).data(data).post();
+        String rst =  HttpUtils.http(url).data(data).post();
+
+        System.out.println(path + " :: " + rst);
+
+        return rst;
     }
 
     private String put(String path, Map<String,String> data) throws IOException {
         String url = "http://localhost:8080" + path;
-        return HttpUtils.http(url).data(data).put();
+        String rst =  HttpUtils.http(url).data(data).put();
+
+        System.out.println(path + " :: " + rst);
+
+        return rst;
     }
 }

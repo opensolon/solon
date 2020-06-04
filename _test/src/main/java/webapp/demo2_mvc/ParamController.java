@@ -6,6 +6,7 @@ import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XSingleton;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XFile;
+import org.noear.solon.core.XMethod;
 import webapp.models.UserModel;
 
 import java.io.IOException;
@@ -66,5 +67,10 @@ public class ParamController {
     @XMapping("date")
     public Object test_h2(XContext ctx, @XParam("yyyy-MM-dd") Date date, Date date2) throws Exception{
         return date + " # " + date2;
+    }
+
+    @XMapping(value = "login", method = XMethod.POST)
+    public Object test_h3(String username, String password) throws Exception{
+        return username + " # " + password;
     }
 }

@@ -27,22 +27,21 @@ public class ParameterFilter extends Filter {
 
     @Override
     public void doFilter(HttpExchange exchange, Chain chain) throws IOException {
-        parseGetParameters(exchange);
-        parsePostParameters(exchange);
+        Map<String, Object> parameters = new HashMap<>();
+        exchange.setAttribute("parameters", parameters);
+
+        parseGetParameters(exchange, parameters);
+        parsePostParameters(exchange, parameters);
         chain.doFilter(exchange);
     }
 
-    private void parseGetParameters(HttpExchange exchange) throws UnsupportedEncodingException {
-        Map<String, Object> parameters = new HashMap<>();
+    private void parseGetParameters(HttpExchange exchange, Map<String, Object> parameters) throws UnsupportedEncodingException {
         URI requestedUri = exchange.getRequestURI();
         String query = requestedUri.getRawQuery();
         parseQuery(query, parameters);
-        exchange.setAttribute("parameters", parameters);
     }
 
-    private void parsePostParameters(HttpExchange exchange)
-            throws IOException {
-
+    private void parsePostParameters(HttpExchange exchange, Map<String, Object> parameters) throws IOException {
         String method = exchange.getRequestMethod();
 
         if ("POST".equalsIgnoreCase(method)
@@ -60,10 +59,6 @@ public class ParameterFilter extends Filter {
                 return;
             }
 
-
-            @SuppressWarnings("unchecked")
-            Map<String, Object> parameters = (Map<String, Object>) exchange.getAttribute("parameters");
-
             InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
             String query = br.readLine();
@@ -72,8 +67,7 @@ public class ParameterFilter extends Filter {
     }
 
     @SuppressWarnings("unchecked")
-    private void parseQuery(String query, Map<String, Object> parameters)
-            throws UnsupportedEncodingException {
+    private void parseQuery(String query, Map<String, Object> parameters) throws UnsupportedEncodingException {
 
         if (query != null) {
             String pairs[] = query.split("[&]");
