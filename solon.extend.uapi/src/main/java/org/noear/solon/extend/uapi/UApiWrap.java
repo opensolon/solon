@@ -14,6 +14,6 @@ public class UApiWrap extends BeanWebWrap {
 
     @Override
     protected XAction createAction(BeanWrap bw, Method method, XMapping mp, String path) {
-        return new UApiAction(bw, method, mp);
+        return new UApiAction(bw, method, mp, path);
     }
 }

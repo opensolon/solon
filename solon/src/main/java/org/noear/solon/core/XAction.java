@@ -21,16 +21,16 @@ public class XAction extends XHandlerAide implements XHandler {
     private List<String> _pks;
     private static Pattern _pkr = Pattern.compile("\\{([^\\\\}]+)\\}");
 
-    public XAction(BeanWrap beanWrap, Method method, XMapping mp, String path) {
-        _bw = beanWrap;
-        _mw = MethodWrap.get(method);
+    public XAction(BeanWrap bw, Method m, XMapping mp, String path) {
+        _bw = bw;
+        _mw = MethodWrap.get(m);
 
         if (mp != null) {
             _produces = mp.produces();
         }
 
         //支持path变量
-        if (path.indexOf("{") >= 0) {
+        if (path != null && path.indexOf("{") >= 0) {
             _pks = new ArrayList<>();
             Matcher pm = _pkr.matcher(path);
             while (pm.find()) {
