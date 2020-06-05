@@ -39,7 +39,7 @@ public abstract class UApiNav extends XNav {
      */
     public void add(Object api) {
         BeanWrap bw = new BeanWrap(api.getClass(), api);
-        UApiBeanWrap uw = new UApiBeanWrap(bw);
+        UApiBeanWebWrap uw = new UApiBeanWebWrap(bw);
 
         uw.load(new XHandlerSlots() {
             @Override

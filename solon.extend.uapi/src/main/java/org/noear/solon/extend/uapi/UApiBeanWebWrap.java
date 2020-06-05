@@ -7,8 +7,8 @@ import org.noear.solon.core.XAction;
 
 import java.lang.reflect.Method;
 
-public class UApiBeanWrap extends BeanWebWrap {
-    public UApiBeanWrap(BeanWrap wrap) {
+public class UApiBeanWebWrap extends BeanWebWrap {
+    public UApiBeanWebWrap(BeanWrap wrap) {
         super(wrap);
     }
 

@@ -9,7 +9,7 @@ public class UApiAction extends XAction {
     private String _name;
 
     public UApiAction(BeanWrap bw, Method method, XMapping mp, String path) {
-        super(bw,method,mp,path);
+        super(bw, method, mp, path);
 
         if (mp == null) {
             _name = method.getName();
@@ -18,22 +18,13 @@ public class UApiAction extends XAction {
         }
     }
 
-    public String name(){
+    public String name() {
         return _name;
     }
 
     protected void innerRender(XContext x, Object result) throws Throwable {
-        if(result == null){
-            return;
-        }
-
-        //_uapinav 由 UApiNav 写入
+        //取消原有的渲染；改为属性传递
         //
-        if(x.attr("_uapinav",null) == null){
-            x.render(result);
-        }else {
-            x.attrSet("result", result);
-        }
+        x.attrSet("result", result);
     }
-
 }
