@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * @author noear
  * */
-public class XApp implements XHandler {
+public class XApp implements XHandler,XHandlerSlots {
     private static XApp _global;
 
     /**
@@ -241,6 +241,7 @@ public class XApp implements XHandler {
     public void before(String expr, XMethod method, XHandler handler) {
         _router.add(expr, XEndpoint.before, method, handler);
     }
+
     public void before(String expr, XMethod method, int index, XHandler handler) {
         _router.add(expr, XEndpoint.before, method, index, handler);
     }

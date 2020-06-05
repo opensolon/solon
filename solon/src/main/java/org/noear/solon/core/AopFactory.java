@@ -108,10 +108,9 @@ public class AopFactory extends AopFactoryBase {
                 Aop.put(bw.clz().getName(), bw);
             }
 
-            if (anno.remoting()) {
+            if (bw.remoting()) {
                 BeanWebWrap bww = new BeanWebWrap(bw);
                 if (bww.mapping() != null) {
-                    bww.remotingSet(true);
                     bww.load(XApp.global());
                 }
             }
@@ -214,7 +213,6 @@ public class AopFactory extends AopFactoryBase {
         }
 
         //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
-        List<Class<?>> tmpList = new ArrayList<>();
         XScaner.scan(dir, n -> n.endsWith(".class"))
                 .stream()
                 .map(name -> {
