@@ -7,7 +7,7 @@ import java.io.Serializable;
  * */
 public class Result<T> implements Serializable {
     public int code;
-    public String msg;
+    public String message;
     public T data;
 
     public Result(){
@@ -20,7 +20,7 @@ public class Result<T> implements Serializable {
 
     public Result(int code, String msg, T data) {
         this.code = code;
-        this.msg = msg;
+        this.message = msg;
         this.data = data;
     }
 }

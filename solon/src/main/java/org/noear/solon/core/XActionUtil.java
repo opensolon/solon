@@ -10,12 +10,12 @@ import java.util.Map;
 /**
  * XAction 辅助工具
  * */
-class XActionUtil {
+public class XActionUtil {
 
     /**
      * 将参数转为实体
      */
-    protected static Object params2Entity(XContext ctx, Class<?> clz) throws Exception {
+    public static Object params2Entity(XContext ctx, Class<?> clz) throws Exception {
         Field[] fields = clz.getDeclaredFields();
 
         Map<String, String> map = ctx.paramMap();
@@ -35,7 +35,7 @@ class XActionUtil {
     /**
      * 执行方法
      */
-    protected static Object exeMethod(Object obj, MethodWrap mWrap, XContext ctx) throws Exception {
+    public static Object exeMethod(Object obj, MethodWrap mWrap, XContext ctx) throws Exception {
         try {
             Parameter[] pSet = mWrap.parameters;
 

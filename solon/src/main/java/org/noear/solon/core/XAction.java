@@ -78,10 +78,10 @@ public class XAction extends XHandlerAide implements XHandler {
                     }
                 }
 
-                x.render(XActionUtil.exeMethod(_c_bw.get(), _mw, x));
-            }catch (Throwable ex){
+                innerRender(x, XActionUtil.exeMethod(_c_bw.get(), _mw, x));
+            } catch (Throwable ex) {
                 x.attrSet("error", ex);
-                x.render(ex);
+                innerRender(x, ex);
                 XMonitor.sendError(x, ex);
             }
         }
@@ -90,5 +90,9 @@ public class XAction extends XHandlerAide implements XHandler {
         for (XHandler h : _after) {
             h.handle(x);
         }
+    }
+
+    protected void innerRender(XContext x, Object result) throws Throwable {
+        x.render(result);
     }
 }

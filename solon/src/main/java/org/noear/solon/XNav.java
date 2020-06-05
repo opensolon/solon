@@ -13,7 +13,8 @@ import java.util.Map;
  * */
 public class XNav extends XHandlerAide implements XHandler {
 
-    protected Map<String,XHandler> _main = new HashMap<>();
+    private final Map<String, XHandler> _main = new HashMap<>();
+    private final String _path;
 
     public XNav() {
         XMapping _map = this.getClass().getAnnotation(XMapping.class);
@@ -24,33 +25,44 @@ public class XNav extends XHandlerAide implements XHandler {
         _path = _map.value();
     }
 
-    private String _path = null;
-
-    /** 添加二级路径处理 */
+    /**
+     * 添加二级路径处理
+     */
     public void add(String path, XHandler handler) {
+        addDo(path, handler);
+    }
+
+    protected void addDo(String path, XHandler handler){
         //addPath 已处理 path1= null 的情况
         _main.put(XUtil.mergePath(_path, path).toUpperCase(), handler);
+    }
 
+    public XHandler get(String path) {
+        return _main.get(path);
     }
 
     @Override
     public void handle(XContext c) throws Throwable {
-        XHandler m = _main.get(c.pathAsUpper());
+        XHandler m = get(c.pathAsUpper());
 
-        if(m != null) {
+        if (m != null) {
             for (XHandler h : _before) {
                 h.handle(c);
             }
 
-            if(c.getHandled()==false) {
+            if (c.getHandled() == false) {
                 m.handle(c);
             }
 
             for (XHandler h : _after) {
                 h.handle(c);
             }
-        }else{
-            c.status(404);
+        } else {
+            handle404(c);
         }
+    }
+
+    protected void handle404(XContext c) throws Throwable {
+        c.status(404);
     }
 }
