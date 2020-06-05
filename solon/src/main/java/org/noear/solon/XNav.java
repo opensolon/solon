@@ -37,13 +37,13 @@ public class XNav extends XHandlerAide implements XHandler {
         _main.put(XUtil.mergePath(_path, path).toUpperCase(), handler);
     }
 
-    public XHandler get(String path) {
+    public XHandler get(XContext c, String path) {
         return _main.get(path);
     }
 
     @Override
     public void handle(XContext c) throws Throwable {
-        XHandler m = get(c.pathAsUpper());
+        XHandler m = get(c, c.pathAsUpper());
 
         if (m != null) {
             for (XHandler h : _before) {

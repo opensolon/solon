@@ -46,7 +46,7 @@ public class XActionUtil {
             for (Parameter p : pSet) {
                 Class<?> pt = p.getType();
 
-                if (XContext.class.equals(pt)) {
+                if (XContext.class.isAssignableFrom(pt)) {
                     //如果是 XContext 类型
                     args.add(ctx);
                 } else {

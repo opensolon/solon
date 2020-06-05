@@ -29,13 +29,17 @@ public class XCallable implements XHandler {
 
         if (x.getHandled() == false) {
             try {
-                innerRender(x, XActionUtil.exeMethod(bWrap.get(), cWrap, x));
+                innerRender(x, innerCall(x));
             } catch (Throwable ex) {
                 x.attrSet("error", ex);
                 innerRender(x, ex);
                 XMonitor.sendError(x, ex);
             }
         }
+    }
+
+    protected Object innerCall(XContext x) throws Throwable{
+        return XActionUtil.exeMethod(bWrap.get(), cWrap, x);
     }
 
     protected void innerRender(XContext x, Object result) throws Throwable {
