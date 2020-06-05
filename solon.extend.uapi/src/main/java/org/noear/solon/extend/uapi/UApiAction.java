@@ -23,6 +23,10 @@ public class UApiAction extends XAction {
     }
 
     protected void innerRender(XContext x, Object result) throws Throwable {
+        if (result == null) {
+            return;
+        }
+
         //取消原有的渲染；改为属性传递
         //
         x.attrSet("result", result);
