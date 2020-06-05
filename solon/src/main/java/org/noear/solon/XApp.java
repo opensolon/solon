@@ -2,10 +2,7 @@ package org.noear.solon;
 
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.*;
-import org.noear.solon.ext.Act1;
-import org.noear.solon.ext.Act1Ex;
-import org.noear.solon.ext.Act2;
-import org.noear.solon.ext.PrintUtil;
+import org.noear.solon.ext.*;
 
 import java.util.*;
 
@@ -352,9 +349,10 @@ public class XApp implements XHandler {
     public void handle(XContext x) throws Throwable {
         try {
             //设置当前线程上下文
-            XContextUtil.currentSet(x);
+            XContext x2 = XMonitor.sendContext(x);
+            XContextUtil.currentSet(x2);
 
-            _handler.handle(x);
+            _handler.handle(x2);
         } catch (Throwable ex) {
             XMonitor.sendError(x, ex);
             throw ex;
@@ -362,6 +360,11 @@ public class XApp implements XHandler {
             //移除当前线程上下文
             XContextUtil.currentRemove();
         }
+    }
+
+    public XApp onContext(Fun1<XContext,XContext> event){
+        XMonitor.onContext(event);
+        return this;
     }
 
     public XApp onError(Act2<XContext,Throwable> event) {
