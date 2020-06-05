@@ -20,6 +20,10 @@ public class MethodWrap {
     public final Method method;
     public final Parameter[] parameters;
 
+    public String name(){
+        return method.getName();
+    }
+
     protected MethodWrap(Method m){
         method = m;
         parameters = m.getParameters();

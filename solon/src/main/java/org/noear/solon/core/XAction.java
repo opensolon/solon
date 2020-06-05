@@ -97,8 +97,12 @@ public class XAction extends XHandlerAide implements XHandler {
         }
     }
 
-    protected XMapping mapping(){
+    public XMapping mapping(){
         return _mp;
+    }
+
+    public MethodWrap method(){
+        return _mw;
     }
 
     protected void innerRender(XContext x, Object result) throws Throwable {
