@@ -15,7 +15,7 @@ public class CmdHandler extends UApiNav {
     protected void register() {
         after(new UApiRender());
 
-        add(new CMD_A_0_1());
+        add(CMD_A_0_1.class);
     }
 
     @Override

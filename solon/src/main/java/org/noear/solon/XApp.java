@@ -241,7 +241,7 @@ public class XApp implements XHandler,XHandlerSlots {
     public void before(String expr, XMethod method, XHandler handler) {
         _router.add(expr, XEndpoint.before, method, handler);
     }
-
+    @Override
     public void before(String expr, XMethod method, int index, XHandler handler) {
         _router.add(expr, XEndpoint.before, method, index, handler);
     }
@@ -252,6 +252,7 @@ public class XApp implements XHandler,XHandlerSlots {
     public void after(String expr, XMethod method, XHandler handler) {
         _router.add(expr, XEndpoint.after, method, handler);
     }
+    @Override
     public void after(String expr, XMethod method, int index, XHandler handler) {
         _router.add(expr, XEndpoint.after, method, index, handler);
     }
@@ -259,6 +260,7 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 主体监听
      */
+    @Override
     public void add(String expr, XMethod method, XHandler handler) {
         _router.add(expr, XEndpoint.main, method, handler);
     }

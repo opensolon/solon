@@ -14,7 +14,7 @@ public class ApiHandler extends UApiNav {
     public void register() {
         after(new UApiRender());
 
-        add(new API_0_0_0());
-        add(new API_A_0_1());
+        add(API_0_0_0.class);
+        add(API_A_0_1.class);
     }
 }

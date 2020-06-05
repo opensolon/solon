@@ -41,26 +41,13 @@ public abstract class UApiNav extends XNav {
         BeanWrap bw = Aop.wrap(clz);
         UApiBeanWebWrap uw = new UApiBeanWebWrap(bw);
 
-        uw.load(new XHandlerSlots() {
-            @Override
-            public void before(String expr, XMethod method, int index, XHandler handler) {
-                //不支持拦截器
-            }
+        uw.load((expr, method, handler) -> {
+            UApiAction act = (UApiAction) handler;
 
-            @Override
-            public void after(String expr, XMethod method, int index, XHandler handler) {
-                //不支持拦截器
-            }
-
-            @Override
-            public void add(String expr, XMethod method, XHandler handler) {
-                UApiAction act = (UApiAction) handler;
-
-                if (XUtil.isEmpty(act.name())) {
-                    _def = act;
-                } else {
-                    addDo(act.name(), act);
-                }
+            if (XUtil.isEmpty(act.name())) {
+                _def = act;
+            } else {
+                addDo(act.name(), act);
             }
         });
     }
