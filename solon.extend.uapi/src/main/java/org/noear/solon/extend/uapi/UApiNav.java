@@ -77,9 +77,14 @@ public abstract class UApiNav extends XNav {
     public XHandler get(XContext c, String path) {
         UApiAction api = (UApiAction) super.get(c, path);
 
-        c.attrSet("_uapinav", "1");
-
         if (api == null) {
+            if (_def != null) {
+                try {
+                    _def.handle(c);
+                }catch (Throwable ex){
+                    throw new RuntimeException(ex);
+                }
+            }
             c.setHandled(true);
             return _def;
         } else {

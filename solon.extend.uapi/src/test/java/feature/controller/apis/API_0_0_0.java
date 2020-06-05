@@ -5,7 +5,7 @@ import org.noear.solon.annotation.XMapping;
 
 public class API_0_0_0 {
     @XMapping()
-    Object call(){
+    public Object call(){
         return new ApiResult(0, "接口不存在");
     }
 }
