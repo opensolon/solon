@@ -4,6 +4,7 @@ import org.noear.solon.XApp;
 import org.noear.solon.core.XPlugin;
 import org.noear.solonclient.channel.SocketMessage;
 import org.noear.solonclient.channel.SocketUtils;
+import webapp.demo2_mvc.MappingController;
 import webapp.demo2_mvc.ParamController;
 import webapp.demoe_websocket.WsDemoClientTest;
 
@@ -28,6 +29,7 @@ public class TestApp {
         XApp app = XApp.start(TestApp.class, args);
 
         app.add("/demo2x/param", ParamController.class);
+        app.add("/demo2x/mapping", MappingController.class);
 
         app.get("/",c->c.redirect("/debug.htm"));
 
