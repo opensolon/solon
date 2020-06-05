@@ -15,7 +15,6 @@ public class BeanWebWrap {
     protected BeanWrap _bw;
     protected XMapping _cxm;
     protected int _poi = XEndpoint.main;
-    protected boolean _remoting = false;
 
     public BeanWebWrap(BeanWrap wrap) {
         _bw = wrap;
@@ -84,7 +83,6 @@ public class BeanWebWrap {
         XMapping m_map;
         XBefore m_befores;
         XAfter m_afters;
-        String m_produces;
         int m_index = 0;
 
         //只支持public函数为XAction
@@ -109,7 +107,7 @@ public class BeanWebWrap {
             }
 
             //如果是service，method 就不需要map
-            if (m_map != null || _remoting) {
+            if (m_map != null || _bw.remoting()) {
                 String newPath = XUtil.mergePath(c_path, m_path);
 
                 XAction action = createAction(_bw,method, m_map,newPath);
