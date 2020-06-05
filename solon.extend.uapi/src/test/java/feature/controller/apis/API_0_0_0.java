@@ -1,6 +1,6 @@
 package feature.controller.apis;
 
-import org.noear.solon.core.Result;
+import feature.controller.ApiResult;
 import org.noear.solon.extend.uapi.UApi;
 
 public class API_0_0_0 extends UApi {
@@ -10,6 +10,6 @@ public class API_0_0_0 extends UApi {
     }
 
     Object call(){
-        return new Result<>(0, "接口不存在");
+        return new ApiResult(0, "接口不存在");
     }
 }

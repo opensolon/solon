@@ -1,8 +1,6 @@
 package org.noear.solon.core;
 
-
 import java.lang.reflect.Method;
-
 
 public class XCallable implements XHandler {
     private MethodWrap cWrap = null;
@@ -23,13 +21,13 @@ public class XCallable implements XHandler {
 
     @Override
     public void handle(XContext x) throws Throwable {
-        if(cWrap == null){
-            return;
-        }
-
         if (x.getHandled() == false) {
             try {
-                innerRender(x, innerCall(x));
+                if (cWrap == null) {
+                    innerRender(x, null);
+                } else {
+                    innerRender(x, innerCall(x));
+                }
             } catch (Throwable ex) {
                 x.attrSet("error", ex);
                 innerRender(x, ex);
@@ -38,7 +36,7 @@ public class XCallable implements XHandler {
         }
     }
 
-    protected Object innerCall(XContext x) throws Throwable{
+    protected Object innerCall(XContext x) throws Throwable {
         return XActionUtil.exeMethod(bWrap.get(), cWrap, x);
     }
 

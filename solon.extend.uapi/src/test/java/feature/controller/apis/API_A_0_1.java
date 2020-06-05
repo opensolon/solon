@@ -1,7 +1,6 @@
 package feature.controller.apis;
 
-import org.noear.solon.annotation.XNote;
-import org.noear.solon.core.Result;
+import feature.controller.ApiResult;
 import org.noear.solon.extend.uapi.UApi;
 
 import java.util.HashMap;
@@ -22,6 +21,6 @@ public class API_A_0_1 extends UApi {
 
         data.put("nickname", "noear");
 
-        return new Result(1, "ok", data);
+        return new ApiResult(1, "ok", data);
     }
 }
