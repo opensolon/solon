@@ -37,8 +37,8 @@ public abstract class UApiNav extends XNav {
     /**
      * 添加接口
      */
-    public void add(Object api) {
-        BeanWrap bw = new BeanWrap(api.getClass(), api);
+    public void add(Class<?> clz) {
+        BeanWrap bw = Aop.wrap(clz);
         UApiBeanWebWrap uw = new UApiBeanWebWrap(bw);
 
         uw.load(new XHandlerSlots() {
