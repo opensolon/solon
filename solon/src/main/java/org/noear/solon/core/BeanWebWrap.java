@@ -151,7 +151,7 @@ public class BeanWebWrap {
     }
 
     protected XAction createAction(BeanWrap bw, Method method, XMapping mp, String path){
-        return new XActionImp(bw, method, mp, path);
+        return new XAction(bw, method, mp, path);
     }
 
     /**
