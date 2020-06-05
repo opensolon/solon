@@ -1,4 +1,4 @@
-package org.noear.solon.extend.uapi2;
+package org.noear.solon.extend.uapi;
 
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.BeanWebWrap;
