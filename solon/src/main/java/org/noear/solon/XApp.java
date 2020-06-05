@@ -266,22 +266,7 @@ public class XApp implements XHandler,XHandlerSlots {
     public void add(String expr, Class<?> clz) {
         BeanWrap bw = Aop.wrap(clz);
         if (bw != null) {
-            new BeanWebWrap(bw, null).load(new XHandlerSlots() {
-                @Override
-                public void before(String p, XMethod m, int i, XHandler h) {
-                    XApp.global().before(XUtil.mergePath(expr, p), m, i, h);
-                }
-
-                @Override
-                public void after(String p, XMethod m, int i, XHandler h) {
-                    XApp.global().after(XUtil.mergePath(expr, p), m, i, h);
-                }
-
-                @Override
-                public void add(String p, XMethod m, XHandler h) {
-                    XApp.global().add(XUtil.mergePath(expr, p), m, h);
-                }
-            });
+            new BeanWebWrap(bw, expr).load(this);
         }
     }
 

@@ -110,7 +110,7 @@ public class AopFactory extends AopFactoryBase {
 
             if (bw.remoting()) {
                 BeanWebWrap bww = new BeanWebWrap(bw);
-                if (bww.mapping() != null) {
+                if (bww.expr() != null) {
                     bww.load(XApp.global());
                 }
             }

@@ -15,19 +15,25 @@ public class BeanWebWrap {
     protected BeanWrap _bw;
     protected XMapping _cxm;
     protected int _poi = XEndpoint.main;
+    protected String c_path;
 
     public BeanWebWrap(BeanWrap wrap) {
         _bw = wrap;
         _cxm = _bw.clz().getAnnotation(XMapping.class);
+        if (_cxm != null) {
+            c_path = _cxm.value();
+        }
     }
 
-    public BeanWebWrap(BeanWrap wrap, XMapping mapping) {
+    public BeanWebWrap(BeanWrap wrap, String expr) {
         _bw = wrap;
-        _cxm = mapping;
+        if (expr != null) {
+            c_path = expr;
+        }
     }
 
-    public XMapping mapping() {
-        return _cxm;
+    public String expr() {
+        return c_path;
     }
 
     /**
@@ -65,11 +71,10 @@ public class BeanWebWrap {
     }
 
     private void loadActionDo(XHandlerSlots slots) {
-        String c_path = "";
         String m_path;
 
-        if (_cxm != null) {
-            c_path = _cxm.value();
+        if(c_path == null){
+            c_path = "";
         }
 
         XBefore c_befs = _bw.clz().getAnnotation(XBefore.class);
