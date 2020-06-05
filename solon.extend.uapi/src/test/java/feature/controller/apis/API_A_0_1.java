@@ -2,6 +2,7 @@ package feature.controller.apis;
 
 import feature.controller.ApiResult;
 import org.noear.solon.annotation.XMapping;
+import org.noear.solon.core.XContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,5 +19,11 @@ public class API_A_0_1 {
         data.put("nickname", "noear");
 
         return new ApiResult(1, "ok", data);
+    }
+
+
+    @XMapping("A.0.2")
+    public Object call2(XContext ctx) {
+        return ctx.path();
     }
 }
