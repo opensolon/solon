@@ -21,6 +21,11 @@ public class BeanWebWrap {
         _cxm = _bw.clz().getAnnotation(XMapping.class);
     }
 
+    public BeanWebWrap(BeanWrap wrap, XMapping mapping) {
+        _bw = wrap;
+        _cxm = mapping;
+    }
+
     public XMapping mapping() {
         return _cxm;
     }
