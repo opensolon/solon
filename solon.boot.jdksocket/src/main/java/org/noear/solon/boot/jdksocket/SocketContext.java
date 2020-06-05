@@ -1,13 +1,12 @@
 package org.noear.solon.boot.jdksocket;
 
-import org.noear.solon.core.SocketMessage;
 import org.noear.solon.core.XContextEmpty;
 import org.noear.solon.core.XMethod;
+import org.noear.solonclient.channel.SocketMessage;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.URI;
-import java.nio.charset.Charset;
 
 public class SocketContext extends XContextEmpty {
     private InetAddress _inetSocketAddress;

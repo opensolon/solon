@@ -2,7 +2,7 @@ package org.noear.solon.boot.websocket;
 
 import org.java_websocket.WebSocket;
 import org.noear.solon.XApp;
-import org.noear.solon.core.SocketMessage;
+import org.noear.solonclient.channel.SocketMessage;
 
 import java.io.PrintWriter;
 

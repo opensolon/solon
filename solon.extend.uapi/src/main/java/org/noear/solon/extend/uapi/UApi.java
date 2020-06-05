@@ -34,11 +34,7 @@ public abstract class UApi extends XCallable {
         if(x.attr("_uapinav",null) == null){
             x.render(result);
         }else {
-            if (result instanceof Throwable) {
-                x.attrSet("result", new Result<>(0, null, result));
-            } else {
-                x.attrSet("result", result);
-            }
+            x.attrSet("result", result);
         }
     }
 }
