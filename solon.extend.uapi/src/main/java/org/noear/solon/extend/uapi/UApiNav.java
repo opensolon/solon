@@ -55,16 +55,11 @@ public abstract class UApiNav extends XNav {
             @Override
             public void add(String expr, XMethod method, XHandler handler) {
                 UApiAction act = (UApiAction) handler;
-                if (act.mapping() != null) {
-                    act.name = act.mapping().value();
-                } else {
-                    act.name = act.method().name();
-                }
 
-                if(XUtil.isEmpty(act.name)){
+                if (XUtil.isEmpty(act.name())) {
                     _def = act;
-                }else {
-                    addDo(act.name, act);
+                } else {
+                    addDo(act.name(), act);
                 }
             }
         });
@@ -88,7 +83,7 @@ public abstract class UApiNav extends XNav {
             c.setHandled(true);
             return _def;
         } else {
-            c.attrSet("api", api.name);
+            c.attrSet("api", api.name());
             return api;
         }
     }
