@@ -47,33 +47,37 @@ public class BeanWebWrap {
     }
 
     public void load(XHandlerSlots slots) {
+        load(slots, _bw.remoting());
+    }
+
+    public void load(XHandlerSlots slots, boolean all) {
         if (XHandler.class.isAssignableFrom(_bw.clz())) {
-            loadHandlerDo(slots, _bw, c_map);
+            loadHandlerDo(slots);
         } else {
-            loadActionDo(slots);
+            loadActionDo(slots, all);
         }
     }
 
-    protected void loadHandlerDo(XHandlerSlots slots, BeanWrap bw, XMapping cxm) {
-        if (cxm == null) {
-            throw new RuntimeException(bw.clz().getName() + " No XMapping!");
+    protected void loadHandlerDo(XHandlerSlots slots) {
+        if (c_map == null) {
+            throw new RuntimeException(_bw.clz().getName() + " No XMapping!");
         }
 
-        for (XMethod m1 : cxm.method()) {
+        for (XMethod m1 : c_map.method()) {
             switch (c_poi) {
                 case XEndpoint.before:
-                    slots.before(cxm.value(), m1, cxm.index(), bw.raw());
+                    slots.before(c_map.value(), m1, c_map.index(), _bw.raw());
                     break;
                 case XEndpoint.after:
-                    slots.after(cxm.value(), m1, cxm.index(), bw.raw());
+                    slots.after(c_map.value(), m1, c_map.index(), _bw.raw());
                     break;
                 default:
-                    slots.add(cxm.value(), m1, bw.raw());
+                    slots.add(c_map.value(), m1, _bw.raw());
             }
         }
     }
 
-    private void loadActionDo(XHandlerSlots slots) {
+    protected void loadActionDo(XHandlerSlots slots, boolean all) {
         String m_path;
 
         if(c_path == null){
@@ -120,7 +124,7 @@ public class BeanWebWrap {
             }
 
             //如果是service，method 就不需要map
-            if (m_map != null || _bw.remoting()) {
+            if (m_map != null || all || _bw.remoting()) {
                 String newPath = XUtil.mergePath(c_path, m_path);
 
                 XAction action = createAction(_bw,method, m_map,newPath);
