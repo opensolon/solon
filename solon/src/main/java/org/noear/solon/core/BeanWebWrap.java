@@ -32,7 +32,10 @@ public class BeanWebWrap {
         }
     }
 
-    public String path() {
+    /**
+     * mapping expr
+     * */
+    public String mapping() {
         return c_path;
     }
 
