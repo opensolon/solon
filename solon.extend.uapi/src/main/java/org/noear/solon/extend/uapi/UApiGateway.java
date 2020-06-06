@@ -42,9 +42,23 @@ public abstract class UApiGateway extends XNav {
     /**
      * 添加接口
      */
-    public void add(Class<?> clz) {
-        BeanWrap bw = Aop.wrap(clz);
-        BeanWebWrap uw = new BeanWebWrap(bw){
+    public void add(Class<?> clz){
+        if(clz == null){
+            return;
+        }
+
+        add(Aop.wrap(clz));
+    }
+
+    /**
+     * 添加接口
+     */
+    public void add(BeanWrap bw) {
+        if(bw == null){
+            return;
+        }
+
+        BeanWebWrap uw = new BeanWebWrap(bw, _path){
             @Override
             protected XAction createAction(BeanWrap bw, Method method, XMapping mp, String path) {
                 return createAction(bw, method, mp, path);
