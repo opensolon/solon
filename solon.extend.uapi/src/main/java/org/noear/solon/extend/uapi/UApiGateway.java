@@ -2,7 +2,10 @@ package org.noear.solon.extend.uapi;
 
 import org.noear.solon.XNav;
 import org.noear.solon.XUtil;
+import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.*;
+
+import java.lang.reflect.Method;
 
 /**
  * UAPI导航控制器
@@ -41,7 +44,12 @@ public abstract class UApiGateway extends XNav {
      */
     public void add(Class<?> clz) {
         BeanWrap bw = Aop.wrap(clz);
-        UApiBeanWebWrap uw = new UApiBeanWebWrap(bw);
+        BeanWebWrap uw = new BeanWebWrap(bw){
+            @Override
+            protected XAction createAction(BeanWrap bw, Method method, XMapping mp, String path) {
+                return createAction(bw, method, mp, path);
+            }
+        };
 
         uw.load((path, m, h) -> {
             UApi api = null;
@@ -64,7 +72,7 @@ public abstract class UApiGateway extends XNav {
      */
     @Override
     public void add(String path, XHandler handler) {
-        UApi api = new UApiHandler(path, handler);
+        UApi api = createHandler(path, handler);
         add(api.name(), api);
     }
 
@@ -89,9 +97,23 @@ public abstract class UApiGateway extends XNav {
     }
 
     /**
-     * 提供上下文转换机制
+     * 转换 上下文
      */
     public XContext context(XContext ctx) {
         return ctx;
+    }
+
+    /**
+     * 创建 uapi action （可重载）
+     * */
+    protected UApiAction createAction(BeanWrap bw, Method method, XMapping mp, String path){
+        return new UApiAction(bw, method, mp, path);
+    }
+
+    /**
+     * 创建 uapi handler （可重载）
+     * */
+    protected UApiHandler createHandler(String path, XHandler handler){
+        return new UApiHandler(path, handler);
     }
 }
