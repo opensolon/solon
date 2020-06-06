@@ -13,26 +13,26 @@ import java.util.List;
  * */
 public class BeanWebWrap {
     protected BeanWrap _bw;
-    protected XMapping _cxm;
-    protected int _poi = XEndpoint.main;
+    protected XMapping c_map;
+    protected int c_poi = XEndpoint.main;
     protected String c_path;
 
     public BeanWebWrap(BeanWrap wrap) {
         _bw = wrap;
-        _cxm = _bw.clz().getAnnotation(XMapping.class);
-        if (_cxm != null) {
-            c_path = _cxm.value();
+        c_map = _bw.clz().getAnnotation(XMapping.class);
+        if (c_map != null) {
+            c_path = c_map.value();
         }
     }
 
-    public BeanWebWrap(BeanWrap wrap, String expr) {
+    public BeanWebWrap(BeanWrap wrap, String mapping) {
         _bw = wrap;
-        if (expr != null) {
-            c_path = expr;
+        if (mapping != null) {
+            c_path = mapping;
         }
     }
 
-    public String expr() {
+    public String path() {
         return c_path;
     }
 
@@ -40,12 +40,12 @@ public class BeanWebWrap {
      * 设置切入点
      */
     public void endpointSet(int endpoint) {
-        _poi = endpoint;
+        c_poi = endpoint;
     }
 
     public void load(XHandlerSlots slots) {
         if (XHandler.class.isAssignableFrom(_bw.clz())) {
-            loadHandlerDo(slots, _bw, _cxm);
+            loadHandlerDo(slots, _bw, c_map);
         } else {
             loadActionDo(slots);
         }
@@ -57,7 +57,7 @@ public class BeanWebWrap {
         }
 
         for (XMethod m1 : cxm.method()) {
-            switch (_poi) {
+            switch (c_poi) {
                 case XEndpoint.before:
                     slots.before(cxm.value(), m1, cxm.index(), bw.raw());
                     break;
@@ -109,10 +109,10 @@ public class BeanWebWrap {
                 m_index = m_map.index();
             } else {
                 m_path = method.getName();
-                if (_cxm == null) {
+                if (c_map == null) {
                     m_method = new XMethod[]{XMethod.HTTP};
                 } else {
-                    m_method = _cxm.method();
+                    m_method = c_map.method();
                 }
             }
 
@@ -135,7 +135,7 @@ public class BeanWebWrap {
                 }
 
                 for (XMethod m1 : m_method) {
-                    switch (_poi) {
+                    switch (c_poi) {
                         case XEndpoint.before:
                             slots.before(newPath, m1, m_index, action);
                             break;

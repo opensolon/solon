@@ -7,8 +7,6 @@ import org.noear.solon.core.utils.TypeUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 /**
@@ -110,7 +108,7 @@ public class AopFactory extends AopFactoryBase {
 
             if (bw.remoting()) {
                 BeanWebWrap bww = new BeanWebWrap(bw);
-                if (bww.expr() != null) {
+                if (bww.path() != null) {
                     bww.load(XApp.global());
                 }
             }
