@@ -99,7 +99,7 @@ public abstract class UApiGateway extends XNav {
     /**
      * 转换 上下文
      */
-    public XContext context(XContext ctx) {
+    protected XContext context(XContext ctx) {
         return ctx;
     }
 
