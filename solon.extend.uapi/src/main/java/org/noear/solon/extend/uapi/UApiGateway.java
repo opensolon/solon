@@ -9,10 +9,10 @@ import org.noear.solon.core.*;
  *
  * 1.提供容器，重新组织Handler运行
  * */
-public abstract class UApiNav extends XNav {
+public abstract class UApiGateway extends XNav {
     private XHandler _def;
 
-    public UApiNav() {
+    public UApiGateway() {
         super();
 
         register();
