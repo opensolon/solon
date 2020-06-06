@@ -5,7 +5,7 @@ import org.noear.solon.core.*;
 
 import java.lang.reflect.Method;
 
-public class UApiAction extends XAction implements UApi{
+public class UApiAction extends XAction implements UApi {
     private String _name;
 
     public UApiAction(BeanWrap bw, Method m, XMapping mp, String path) {
