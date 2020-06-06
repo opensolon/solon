@@ -13,8 +13,8 @@ import java.util.Map;
  * */
 public class XNav extends XHandlerAide implements XHandler {
 
-    protected final Map<String, XHandler> _main = new HashMap<>();
-    protected final String _path;
+    private final Map<String, XHandler> _main = new HashMap<>();
+    private final String _path;
 
     public XNav() {
         XMapping _map = this.getClass().getAnnotation(XMapping.class);
@@ -23,6 +23,13 @@ public class XNav extends XHandlerAide implements XHandler {
         }
 
         _path = _map.value();
+    }
+
+    /**
+     * XMapping value
+     * */
+    protected String mapping(){
+        return _path;
     }
 
     /**
