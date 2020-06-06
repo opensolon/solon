@@ -18,17 +18,22 @@ public class UApiAction extends XAction {
         }
     }
 
+    /**
+     * 接口名称
+     * */
     public String name() {
         return _name;
     }
 
+    /**
+     * 取消原有的渲染；改为属性传递
+     * */
+    @Override
     protected void renderDo(XContext x, Object result) throws Throwable {
         if (result == null) {
             return;
         }
 
-        //取消原有的渲染；改为属性传递
-        //
         x.attrSet("result", result);
     }
 }
