@@ -60,7 +60,7 @@ public abstract class UApiGateway extends XNav {
 
         BeanWebWrap uw = new BeanWebWrap(bw, mapping()){
             @Override
-            protected XAction createAction(BeanWrap bw, Method method, XMapping mp, String path) {
+            protected XAction action(BeanWrap bw, Method method, XMapping mp, String path) {
                 return createAction(bw, method, mp, path);
             }
         };
