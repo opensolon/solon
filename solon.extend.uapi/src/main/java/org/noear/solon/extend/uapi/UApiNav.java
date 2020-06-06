@@ -6,6 +6,8 @@ import org.noear.solon.core.*;
 
 /**
  * UAPI导航控制器
+ *
+ * 1.提供容器，重新组织Handler运行
  * */
 public abstract class UApiNav extends XNav {
     private XHandler _def;
@@ -41,13 +43,18 @@ public abstract class UApiNav extends XNav {
         BeanWrap bw = Aop.wrap(clz);
         UApiBeanWebWrap uw = new UApiBeanWebWrap(bw);
 
-        uw.load((expr, method, handler) -> {
-            UApiAction act = (UApiAction) handler;
-
-            if (XUtil.isEmpty(act.name())) {
-                _def = act;
+        uw.load((path, m, h) -> {
+            UApi api = null;
+            if (h instanceof UApi) {
+                api = (UApi) h;
             } else {
-                addDo(act.name(), act);
+                api = new UApiHandler(path, h);
+            }
+
+            if (XUtil.isEmpty(api.name())) {
+                _def = api;
+            } else {
+                addDo(api.name(), api);
             }
         });
     }
@@ -57,18 +64,19 @@ public abstract class UApiNav extends XNav {
      */
     @Override
     public void add(String path, XHandler handler) {
-        throw new RuntimeException("No supported");
+        UApi api = new UApiHandler(path, handler);
+        add(api.name(), api);
     }
 
     @Override
     public XHandler get(XContext c, String path) {
-        UApiAction api = (UApiAction) super.get(c, path);
+        UApi api = (UApi) super.get(c, path);
 
         if (api == null) {
             if (_def != null) {
                 try {
                     _def.handle(c);
-                }catch (Throwable ex){
+                } catch (Throwable ex) {
                     throw new RuntimeException(ex);
                 }
             }
