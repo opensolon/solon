@@ -14,6 +14,9 @@ public class UApiHandler implements UApi {
 
     @Override
     public void handle(XContext c) throws Throwable {
+        //
+        // handler 需要自己写入 c.attr["result"]
+        //
         _hander.handle(c);
     }
 

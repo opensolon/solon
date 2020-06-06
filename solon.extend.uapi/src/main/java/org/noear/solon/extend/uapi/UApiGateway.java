@@ -85,8 +85,8 @@ public abstract class UApiGateway extends XNav {
      * 添加接口
      */
     @Override
-    public void add(String path, XHandler handler) {
-        UApi api = createHandler(path, handler);
+    public void add(String name, XHandler handler) {
+        UApi api = createHandler(name, handler);
         add(api.name(), api);
     }
 

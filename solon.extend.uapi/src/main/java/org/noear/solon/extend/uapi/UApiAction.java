@@ -21,6 +21,7 @@ public class UApiAction extends XAction implements UApi {
     /**
      * 接口名称
      * */
+    @Override
     public String name() {
         return _name;
     }
