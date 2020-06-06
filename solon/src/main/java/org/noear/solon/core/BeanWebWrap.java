@@ -54,7 +54,7 @@ public class BeanWebWrap {
         if (XHandler.class.isAssignableFrom(_bw.clz())) {
             loadHandlerDo(slots);
         } else {
-            loadActionDo(slots, all);
+            loadActionDo(slots, all || _bw.remoting());
         }
     }
 
@@ -124,7 +124,7 @@ public class BeanWebWrap {
             }
 
             //如果是service，method 就不需要map
-            if (m_map != null || all || _bw.remoting()) {
+            if (m_map != null || all) {
                 String newPath = XUtil.mergePath(c_path, m_path);
 
                 XAction action = createAction(_bw,method, m_map,newPath);
