@@ -30,11 +30,14 @@ public class UApiAction extends XAction implements UApi {
      * 取消原有的渲染；改为属性传递
      * */
     @Override
-    protected void renderDo(XContext x, Object result) throws Throwable {
+    protected void renderDo(XContext c, Object result) throws Throwable {
         if (result == null) {
             return;
         }
 
-        x.attrSet("result", result);
+        //
+        // 结果写入 c.attr["result"]
+        //
+        c.attrSet("result", result);
     }
 }
