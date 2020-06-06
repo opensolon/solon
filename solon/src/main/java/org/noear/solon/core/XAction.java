@@ -77,10 +77,10 @@ public class XAction extends XHandlerAide implements XHandler {
                     }
                 }
 
-                innerRender(x, innerCall(x));
+                renderDo(x, callDo(x));
             } catch (Throwable ex) {
                 x.attrSet("error", ex);
-                innerRender(x, ex);
+                renderDo(x, ex);
                 XMonitor.sendError(x, ex);
             }
         }
@@ -91,11 +91,11 @@ public class XAction extends XHandlerAide implements XHandler {
         }
     }
 
-    protected Object innerCall(XContext x) throws Throwable {
+    protected Object callDo(XContext x) throws Throwable {
         return XActionUtil.exeMethod(_bw.get(), _mw, x);
     }
 
-    protected void innerRender(XContext x, Object result) throws Throwable {
+    protected void renderDo(XContext x, Object result) throws Throwable {
         x.render(result);
     }
 }

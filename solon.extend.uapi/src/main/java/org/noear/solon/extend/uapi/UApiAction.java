@@ -22,7 +22,7 @@ public class UApiAction extends XAction {
         return _name;
     }
 
-    protected void innerRender(XContext x, Object result) throws Throwable {
+    protected void renderDo(XContext x, Object result) throws Throwable {
         if (result == null) {
             return;
         }
