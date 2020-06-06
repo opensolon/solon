@@ -8,11 +8,11 @@ import java.lang.reflect.Method;
 public class UApiAction extends XAction {
     private String _name;
 
-    public UApiAction(BeanWrap bw, Method method, XMapping mp, String path) {
-        super(bw, method, mp, path);
+    public UApiAction(BeanWrap bw, Method m, XMapping mp, String path) {
+        super(bw, m, mp, path);
 
         if (mp == null) {
-            _name = method.getName();
+            _name = m.getName();
         } else {
             _name = mp.value();
         }

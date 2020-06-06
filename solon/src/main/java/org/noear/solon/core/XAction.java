@@ -91,7 +91,7 @@ public class XAction extends XHandlerAide implements XHandler {
         }
     }
 
-    protected Object innerCall(XContext x) throws Throwable{
+    protected Object innerCall(XContext x) throws Throwable {
         return XActionUtil.exeMethod(_bw.get(), _mw, x);
     }
 

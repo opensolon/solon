@@ -359,7 +359,7 @@ public class XApp implements XHandler,XHandlerSlots {
     public void handle(XContext x) throws Throwable {
         try {
             //设置当前线程上下文
-            XContext x2 = XMonitor.sendContext(x);
+            XContext x2 = XMonitor.context(x);
             XContextUtil.currentSet(x2);
 
             _handler.handle(x2);

@@ -20,7 +20,7 @@ public class XMonitor {
         }
     }
 
-    public static XContext sendContext(XContext ctx){
+    public static XContext context(XContext ctx){
         if(_onContextEvent == null){
             return ctx;
         }else{
