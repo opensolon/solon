@@ -9,7 +9,7 @@ import org.noear.solon.extend.uapi.UApiRender;
 
 @XController
 @XMapping("/api/*")
-public class ApiHandler extends UApiGateway {
+public class ApiGateway extends UApiGateway {
     @Override
     public void register() {
         after(new UApiRender());

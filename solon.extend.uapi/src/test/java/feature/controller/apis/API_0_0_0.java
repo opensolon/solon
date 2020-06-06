@@ -1,6 +1,5 @@
 package feature.controller.apis;
 
-import feature.controller.ApiResult;
 import org.noear.solon.annotation.XMapping;
 
 public class API_0_0_0 {

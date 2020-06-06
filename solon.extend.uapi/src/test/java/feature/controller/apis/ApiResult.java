@@ -1,4 +1,4 @@
-package feature.controller;
+package feature.controller.apis;
 
 public class ApiResult {
     public int code;

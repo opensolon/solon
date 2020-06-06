@@ -10,7 +10,7 @@ import org.noear.solon.extend.uapi.UApiRender;
 
 @XController
 @XMapping("/cmd/*")
-public class CmdHandler extends UApiGateway {
+public class CmdGateway extends UApiGateway {
     @Override
     protected void register() {
         after(new UApiRender());
