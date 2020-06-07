@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * UAPI上下文（为扩展上下文提供基类）
  * */
-public abstract class UApiContext extends XContext {
+public class UApiContext extends XContext {
     private XContext real;
     public UApiContext(XContext ctx){
         this.real = ctx;

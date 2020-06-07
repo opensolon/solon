@@ -114,7 +114,7 @@ public abstract class UApiGateway extends XNav {
      * 转换 上下文
      */
     protected XContext context(XContext ctx) {
-        return ctx;
+        return new UApiContext(ctx);
     }
 
     /**
