@@ -105,7 +105,7 @@ public abstract class UApiGateway extends XNav {
             c.setHandled(true);
             return _def;
         } else {
-            c.attrSet("api", api.name());
+            c.attrSet("uapi", api.name());
             return api;
         }
     }

@@ -200,6 +200,6 @@ public class UApiContext extends XContext {
     //
 
     public String uapiName(){
-        return attr("api");
+        return attr("uapi");
     }
 }
