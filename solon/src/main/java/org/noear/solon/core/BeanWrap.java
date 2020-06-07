@@ -32,6 +32,10 @@ public class BeanWrap {
         return _remoting;
     }
 
+    public void remotingSet(boolean remoting){
+        _remoting = remoting;
+    }
+
     /** bean类 */
     public Class<?> clz(){return _clz;}
     /** bean原始对象 */

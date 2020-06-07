@@ -47,10 +47,10 @@ public class BeanWebWrap {
     }
 
     public void load(XHandlerSlots slots) {
-        load(slots, _bw.remoting());
+        load(_bw.remoting(), slots);
     }
 
-    public void load(XHandlerSlots slots, boolean all) {
+    public void load(boolean all, XHandlerSlots slots) {
         if (XHandler.class.isAssignableFrom(_bw.clz())) {
             loadHandlerDo(slots);
         } else {
