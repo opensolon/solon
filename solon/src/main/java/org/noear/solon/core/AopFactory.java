@@ -100,10 +100,10 @@ public class AopFactory extends AopFactoryBase {
         if (XPlugin.class.isAssignableFrom(bw.clz())) { //如果是插件，则插入
             XApp.global().plug(bw.raw());
         } else {
-            if (XUtil.isEmpty(anno.value()) == false) {
-                Aop.put(anno.value(), bw);
-            } else {
+            if (XUtil.isEmpty(anno.value())) {
                 Aop.put(bw.clz().getName(), bw);
+            }else{
+                Aop.put(anno.value(), bw);
             }
 
             if (bw.remoting()) {
