@@ -97,7 +97,8 @@ public class AopFactory extends AopFactoryBase {
     protected void beanCreate(BeanWrap bw, XBean anno) {
         bw.remotingSet(anno.remoting());
 
-        if (XPlugin.class.isAssignableFrom(bw.clz())) { //如果是插件，则插入
+        if (XPlugin.class.isAssignableFrom(bw.clz())) {
+            //如果是插件，则插入
             XApp.global().plug(bw.raw());
         } else {
             if (XUtil.isEmpty(anno.value())) {
@@ -116,6 +117,7 @@ public class AopFactory extends AopFactoryBase {
                 }
             }
 
+            //如果有父级接口，则建立关系映射
             Class<?>[] list = bw.clz().getInterfaces();
             for (Class<?> c : list) {
                 if (c.getName().contains("java.") == false) {
