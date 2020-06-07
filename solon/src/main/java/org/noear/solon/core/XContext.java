@@ -356,6 +356,10 @@ public abstract class XContext {
 
         return (T) val;
     }
+
+    public <T> T attr(String key){
+        return (T) attrMap().get(key);
+    }
     /**设置上下文特性*/
     @XNote("设置自定义特性")
     public void attrSet(String key, Object val){

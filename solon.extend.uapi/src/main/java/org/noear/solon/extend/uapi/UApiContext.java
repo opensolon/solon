@@ -194,4 +194,12 @@ public abstract class UApiContext extends XContext {
     public void status(int status) {
         real.status(status);
     }
+
+    //
+    //
+    //
+
+    public String uapiName(){
+        return attr("api");
+    }
 }

@@ -58,7 +58,7 @@ public class XNav extends XHandlerAide implements XHandler {
             }
 
             if (c.getHandled() == false) {
-                m.handle(c);
+                handleDo(c,m);
             }
 
             for (XHandler h : _after) {
@@ -67,6 +67,10 @@ public class XNav extends XHandlerAide implements XHandler {
         } else {
             handle404(c);
         }
+    }
+
+    protected void handleDo(XContext c, XHandler h) throws Throwable{
+        h.handle(c);
     }
 
     protected void handle404(XContext c) throws Throwable {
