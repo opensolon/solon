@@ -109,6 +109,9 @@ public class AopFactory extends AopFactoryBase {
             if (bw.remoting()) {
                 BeanWebWrap bww = new BeanWebWrap(bw);
                 if (bww.mapping() != null) {
+                    //
+                    //如果没有xmapping，则不进行web注册
+                    //
                     bww.load(XApp.global());
                 }
             }
