@@ -5,6 +5,9 @@ import org.noear.solon.core.*;
 
 import java.lang.reflect.Method;
 
+/**
+ * 将结果，转到ctx.attr[result]
+ * */
 public class UApiAction extends XAction implements UApi {
     private String _name;
 
