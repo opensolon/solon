@@ -149,7 +149,10 @@ public class AopFactory extends AopFactoryBase {
 
         if (bw == null) {
             bw = new BeanWrap(clz, raw);
-            beanWraps.putIfAbsent(clz, bw);
+            BeanWrap l = beanWraps.putIfAbsent(clz, bw);
+            if(l != null){
+                bw = l;
+            }
         }
 
         if (bw.raw() == null) {

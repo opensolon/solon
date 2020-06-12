@@ -973,7 +973,7 @@ public class HTTPServer {
             path = trimRight(path, '/'); // remove trailing slash
             ContextInfo info = new ContextInfo(path);
             ContextInfo existing = contexts.putIfAbsent(path, info);
-            info = existing != null ? existing : info;
+            info = (existing != null ? existing : info);
             info.addHandler(handler, methods);
         }
 

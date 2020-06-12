@@ -141,7 +141,10 @@ public class DubboAdapter {
                 XUtil.bindTo(prop, cfg);
             }
 
-            refMap.putIfAbsent(clzKey, cfg);
+            ReferenceConfig<T> l = refMap.putIfAbsent(clzKey, cfg);
+            if(l != null){
+                cfg = l;
+            }
         }
 
         return cfg.get();

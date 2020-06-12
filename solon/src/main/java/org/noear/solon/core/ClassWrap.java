@@ -14,7 +14,10 @@ public class ClassWrap {
         ClassWrap cw = _cache.get(clz);
         if (cw == null) {
             cw = new ClassWrap(clz);
-            _cache.putIfAbsent(clz, cw);
+            ClassWrap l = _cache.putIfAbsent(clz, cw);
+            if (l != null) {
+                cw = l;
+            }
         }
         return cw;
     }
@@ -40,7 +43,10 @@ public class ClassWrap {
         FieldWrap fw = _fwS.get(f1.getName());
         if (fw == null) {
             fw = new FieldWrap(clazz, f1);
-            _fwS.putIfAbsent(f1.getName(), fw);
+            FieldWrap l = _fwS.putIfAbsent(f1.getName(), fw);
+            if (l != null) {
+                fw = l;
+            }
         }
         return fw;
     }
