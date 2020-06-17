@@ -134,6 +134,7 @@ public abstract class XContext {
                 outs.write(buf, 0, len);
             }
 
+
             if (charset == null) {
                 return outs.toString();
             } else {
