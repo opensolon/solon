@@ -458,17 +458,19 @@
         <module>../solon.plugins/solon.extend.jetty.jsp</module>
         <module>../solon.plugins/solon.extend.undertow.jsp</module>
 
+        <module>../solon.plugins/solon-mvc-beetl</module>
+
         <module>../solonclient</module>
 
 
         <module>../solon-mvc</module>
-        <module>../solon-mvc-beetl</module>
         <module>../solon-api</module>
 
-        <module>../_plugin/cron4j-solon-plugin</module>
-        <module>../_plugin/dubbo-solon-plugin</module>
-        <module>../_plugin/mqtt-solon-plugin</module>
-        <module>../_plugin/mybatis-solon-plugin</module>
+
+        <module>../solon.plugins2/cron4j-solon-plugin</module>
+        <module>../solon.plugins2/dubbo-solon-plugin</module>
+        <module>../solon.plugins2/mqtt-solon-plugin</module>
+        <module>../solon.plugins2/mybatis-solon-plugin</module>
         <!--        <module>../_plugin/beetlsql-solon-plugin</module>-->
 
     </modules>
