@@ -21,13 +21,6 @@
     <modules>
         <module>solon-parent</module>
 
-<!--        <module>solon.boot.rapidoid-http-fast</module>-->
-<!--        <module>solon.boot.tomcat</module>-->
-
-<!--        <module>solon.view.rocker</module>-->
-
-<!--        <module>_plugin/dubbo-solon-plugin</module>-->
-
         <module>_demo</module>
         <module>_test</module>
         <module>_testTmp</module>
