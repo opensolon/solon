@@ -158,7 +158,9 @@ public class HttpTest {
     @Test
     public void test2d_2() throws IOException{
         assert  post("/demo2/param/body","name=xxx").equals("name=xxx");
-        //assert  post("/demo2/param/body","name=xxx").equals("name=xxx");
+        assert  get("/demo2/param/body?name=xxx").equals("");
+        assert  post("/demo2/param/body","name=xxx").equals("name=xxx");
+
     }
 
 
