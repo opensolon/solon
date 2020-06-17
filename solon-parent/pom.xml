@@ -409,54 +409,54 @@
     <modules>
 
         <module>../solon</module>
-        <module>../solon.boot.jetty</module>
-        <module>../solon.boot.jlhttp</module>
-        <module>../solon.boot.jdkhttp</module>
-        <module>../solon.boot.nettyhttp</module>
-        <module>../solon.boot.reactor-netty</module>
+        <module>../solon.plugins/solon.boot.jetty</module>
+        <module>../solon.plugins/solon.boot.jlhttp</module>
+        <module>../solon.plugins/solon.boot.jdkhttp</module>
+        <module>../solon.plugins/solon.boot.nettyhttp</module>
+        <module>../solon.plugins/solon.boot.reactor-netty</module>
         <!--        <module>../solon.boot.reactor-netty</module>-->
         <!--        <module>../solon.boot.rapidoid-http-fast</module>-->
-        <module>../solon.boot.smarthttp</module>
-        <module>../solon.boot.undertow</module>
+        <module>../solon.plugins/solon.boot.smarthttp</module>
+        <module>../solon.plugins/solon.boot.undertow</module>
 
-        <module>../solon.boot.websocket</module>
+        <module>../solon.plugins/solon.boot.websocket</module>
 
-        <module>../solon.boot.jdksocket</module>
-        <module>../solon.boot.smartsocket</module>
+        <module>../solon.plugins/solon.boot.jdksocket</module>
+        <module>../solon.plugins/solon.boot.smartsocket</module>
 
         <!--        <module>../solon.boot.tomcat</module>-->
 
-        <module>../solon.serialization.fastjson</module>
-        <module>../solon.serialization.jackson</module>
-        <module>../solon.serialization.gson</module>
-        <module>../solon.serialization.snack3</module>
-        <module>../solon.serialization.jsoniter</module>
-        <module>../solon.serialization.protobuf</module>
-        <module>../solon.serialization.xstream</module>
+        <module>../solon.plugins/solon.serialization.fastjson</module>
+        <module>../solon.plugins/solon.serialization.jackson</module>
+        <module>../solon.plugins/solon.serialization.gson</module>
+        <module>../solon.plugins/solon.serialization.snack3</module>
+        <module>../solon.plugins/solon.serialization.jsoniter</module>
+        <module>../solon.plugins/solon.serialization.protobuf</module>
+        <module>../solon.plugins/solon.serialization.xstream</module>
 
-        <module>../solon.view.freemarker</module>
-        <module>../solon.view.jsp</module>
-        <module>../solon.view.velocity</module>
-        <module>../solon.view.thymeleaf</module>
+        <module>../solon.plugins/solon.view.freemarker</module>
+        <module>../solon.plugins/solon.view.jsp</module>
+        <module>../solon.plugins/solon.view.velocity</module>
+        <module>../solon.plugins/solon.view.thymeleaf</module>
 
-        <module>../solon.view.enjoy</module>
-        <module>../solon.view.beetl</module>
+        <module>../solon.plugins/solon.view.enjoy</module>
+        <module>../solon.plugins/solon.view.beetl</module>
         <!--        <module>../solon.view.rocker</module>-->
 
-        <module>../solon.extend.staticfiles</module>
+        <module>../solon.plugins/solon.extend.staticfiles</module>
 
-        <module>../solon.extend.sessionstate.redis</module>
-        <module>../solon.extend.sessionstate.local</module>
+        <module>../solon.plugins/solon.extend.sessionstate.redis</module>
+        <module>../solon.plugins/solon.extend.sessionstate.local</module>
 
-        <module>../solon.extend.properties.yaml</module>
-        <module>../solon.extend.stop</module>
-        <module>../solon.extend.uapi</module>
-        <module>../solon.extend.schedule</module>
+        <module>../solon.plugins/solon.extend.properties.yaml</module>
+        <module>../solon.plugins/solon.extend.stop</module>
+        <module>../solon.plugins/solon.extend.uapi</module>
+        <module>../solon.plugins/solon.extend.schedule</module>
         <!--        <module>../solon.extend.aopx</module>-->
 
 
-        <module>../solon.extend.jetty.jsp</module>
-        <module>../solon.extend.undertow.jsp</module>
+        <module>../solon.plugins/solon.extend.jetty.jsp</module>
+        <module>../solon.plugins/solon.extend.undertow.jsp</module>
 
         <module>../solonclient</module>
 
