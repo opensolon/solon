@@ -413,9 +413,8 @@
         <module>../_plugins/solon.boot.jlhttp</module>
         <module>../_plugins/solon.boot.jdkhttp</module>
         <module>../_plugins/solon.boot.nettyhttp</module>
-        <module>../_plugins/solon.boot.reactor-netty</module>
-        <!--        <module>../solon.boot.reactor-netty</module>-->
-        <!--        <module>../solon.boot.rapidoid-http-fast</module>-->
+<!--        <module>../_plugins/solon.boot.reactor-netty</module>-->
+        <!--        <module>../_plugins/solon.boot.rapidoid-http-fast</module>-->
         <module>../_plugins/solon.boot.smarthttp</module>
         <module>../_plugins/solon.boot.undertow</module>
 
@@ -430,9 +429,9 @@
         <module>../_plugins/solon.serialization.jackson</module>
         <module>../_plugins/solon.serialization.gson</module>
         <module>../_plugins/solon.serialization.snack3</module>
-        <module>../_plugins/solon.serialization.jsoniter</module>
-        <module>../_plugins/solon.serialization.protobuf</module>
-        <module>../_plugins/solon.serialization.xstream</module>
+<!--        <module>../_plugins/solon.serialization.jsoniter</module>-->
+<!--        <module>../_plugins/solon.serialization.protobuf</module>-->
+<!--        <module>../_plugins/solon.serialization.xstream</module>-->
 
         <module>../_plugins/solon.view.freemarker</module>
         <module>../_plugins/solon.view.jsp</module>
@@ -472,10 +471,13 @@
         <module>../solon-api</module>
 
 
-        <module>../_plugins2/cron4j-solon-plugin</module>
-        <module>../_plugins2/dubbo-solon-plugin</module>
-        <module>../_plugins2/mqtt-solon-plugin</module>
-        <module>../_plugins2/mybatis-solon-plugin</module>
+<!--        <module>../_plugins2/cron4j-solon-plugin</module>-->
+<!--        <module>../_plugins2/dubbo-solon-plugin</module>-->
+<!--        <module>../_plugins2/mqtt-solon-plugin</module>-->
+<!--        <module>../_plugins2/mybatis-solon-plugin</module>-->
+
+
+
 <!--        <module>../_plugins2/beetlsql-solon-plugin</module>-->
 <!--        <module>../_plugins2/dubbo-solon-plugin</module>-->
 
