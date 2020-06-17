@@ -29,7 +29,7 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>weed3</artifactId>
-            <version>3.2.7.4</version>
+            <version>3.2.8</version>
         </dependency>
 
         <dependency>
@@ -56,7 +56,7 @@
             <plugin>
                 <groupId>org.noear</groupId>
                 <artifactId>weed3-maven-plugin</artifactId>
-                <version>3.2.7.4</version>
+                <version>3.2.8</version>
             </plugin>
 
             <plugin>
