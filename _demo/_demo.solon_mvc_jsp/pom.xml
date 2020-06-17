@@ -16,6 +16,7 @@
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
         <version>1.0.6</version>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
     <dependencies>
