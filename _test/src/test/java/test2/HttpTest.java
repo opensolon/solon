@@ -289,7 +289,7 @@ public class HttpTest {
 
     private String post(String path, String body) throws IOException {
         String url = "http://localhost:8080" + path;
-        String rst = HttpUtils.http(url).bodyTxt(body).post();
+        String rst = HttpUtils.http(url).bodyTxt(body, "text/plain").post();
 
         System.out.println(path + " :: " + rst);
 
@@ -298,7 +298,7 @@ public class HttpTest {
 
     private String put(String path, String body) throws IOException {
         String url = "http://localhost:8080" + path;
-        String rst = HttpUtils.http(url).bodyTxt(body).put();
+        String rst = HttpUtils.http(url).bodyTxt(body, "text/plain").put();
 
         System.out.println(path + " :: " + rst);
 
