@@ -457,12 +457,17 @@
         <module>../_plugins/solon.extend.jetty.jsp</module>
         <module>../_plugins/solon.extend.undertow.jsp</module>
 
-        <module>../_plugins/solon-mvc-beetl</module>
 
 
 <!--        <module>../_plugins/solon.boot.rapidoid-http-fast</module>-->
 <!--        <module>../_plugins/solon.boot.tomcat</module>-->
 <!--        <module>../_plugins/solon.view.rocker</module>-->
+
+
+
+        <module>../_plugins/solon-mvc-beetl</module>
+
+
 
         <module>../solonclient</module>
 
