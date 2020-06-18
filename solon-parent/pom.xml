@@ -476,10 +476,10 @@
         <module>../solon-api</module>
 
 
-<!--        <module>../_plugins2/cron4j-solon-plugin</module>-->
-<!--        <module>../_plugins2/dubbo-solon-plugin</module>-->
-<!--        <module>../_plugins2/mqtt-solon-plugin</module>-->
-<!--        <module>../_plugins2/mybatis-solon-plugin</module>-->
+        <module>../_plugins2/cron4j-solon-plugin</module>
+        <module>../_plugins2/dubbo-solon-plugin</module>
+        <module>../_plugins2/mqtt-solon-plugin</module>
+        <module>../_plugins2/mybatis-solon-plugin</module>
 
 
 
