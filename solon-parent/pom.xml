@@ -409,63 +409,63 @@
     <modules>
 
         <module>../solon</module>
-        <module>../_plugins/solon.boot.jetty</module>
-        <module>../_plugins/solon.boot.jlhttp</module>
-        <module>../_plugins/solon.boot.jdkhttp</module>
-        <module>../_plugins/solon.boot.nettyhttp</module>
-<!--        <module>../_plugins/solon.boot.reactor-netty</module>-->
-        <!--        <module>../_plugins/solon.boot.rapidoid-http-fast</module>-->
-        <module>../_plugins/solon.boot.smarthttp</module>
-        <module>../_plugins/solon.boot.undertow</module>
+        <module>../_extend/solon.boot.jetty</module>
+        <module>../_extend/solon.boot.jlhttp</module>
+        <module>../_extend/solon.boot.jdkhttp</module>
+        <module>../_extend/solon.boot.nettyhttp</module>
+<!--        <module>../_extend/solon.boot.reactor-netty</module>-->
+        <!--        <module>../_extend/solon.boot.rapidoid-http-fast</module>-->
+        <module>../_extend/solon.boot.smarthttp</module>
+        <module>../_extend/solon.boot.undertow</module>
 
-        <module>../_plugins/solon.boot.websocket</module>
+        <module>../_extend/solon.boot.websocket</module>
 
-        <module>../_plugins/solon.boot.jdksocket</module>
-        <module>../_plugins/solon.boot.smartsocket</module>
+        <module>../_extend/solon.boot.jdksocket</module>
+        <module>../_extend/solon.boot.smartsocket</module>
 
         <!--        <module>../solon.boot.tomcat</module>-->
 
-        <module>../_plugins/solon.serialization.fastjson</module>
-        <module>../_plugins/solon.serialization.jackson</module>
-        <module>../_plugins/solon.serialization.gson</module>
-        <module>../_plugins/solon.serialization.snack3</module>
-<!--        <module>../_plugins/solon.serialization.jsoniter</module>-->
-<!--        <module>../_plugins/solon.serialization.protobuf</module>-->
-<!--        <module>../_plugins/solon.serialization.xstream</module>-->
+        <module>../_extend/solon.serialization.fastjson</module>
+        <module>../_extend/solon.serialization.jackson</module>
+        <module>../_extend/solon.serialization.gson</module>
+        <module>../_extend/solon.serialization.snack3</module>
+<!--        <module>../_extend/solon.serialization.jsoniter</module>-->
+<!--        <module>../_extend/solon.serialization.protobuf</module>-->
+<!--        <module>../_extend/solon.serialization.xstream</module>-->
 
-        <module>../_plugins/solon.view.freemarker</module>
-        <module>../_plugins/solon.view.jsp</module>
-        <module>../_plugins/solon.view.velocity</module>
-        <module>../_plugins/solon.view.thymeleaf</module>
+        <module>../_extend/solon.view.freemarker</module>
+        <module>../_extend/solon.view.jsp</module>
+        <module>../_extend/solon.view.velocity</module>
+        <module>../_extend/solon.view.thymeleaf</module>
 
-        <module>../_plugins/solon.view.enjoy</module>
-        <module>../_plugins/solon.view.beetl</module>
+        <module>../_extend/solon.view.enjoy</module>
+        <module>../_extend/solon.view.beetl</module>
         <!--        <module>../solon.view.rocker</module>-->
 
-        <module>../_plugins/solon.extend.staticfiles</module>
+        <module>../_extend/solon.extend.staticfiles</module>
 
-        <module>../_plugins/solon.extend.sessionstate.redis</module>
-        <module>../_plugins/solon.extend.sessionstate.local</module>
+        <module>../_extend/solon.extend.sessionstate.redis</module>
+        <module>../_extend/solon.extend.sessionstate.local</module>
 
-        <module>../_plugins/solon.extend.properties.yaml</module>
-        <module>../_plugins/solon.extend.stop</module>
-        <module>../_plugins/solon.extend.uapi</module>
-        <module>../_plugins/solon.extend.schedule</module>
+        <module>../_extend/solon.extend.properties.yaml</module>
+        <module>../_extend/solon.extend.stop</module>
+        <module>../_extend/solon.extend.uapi</module>
+        <module>../_extend/solon.extend.schedule</module>
         <!--        <module>../solon.extend.aopx</module>-->
 
 
-        <module>../_plugins/solon.extend.jetty.jsp</module>
-        <module>../_plugins/solon.extend.undertow.jsp</module>
+        <module>../_extend/solon.extend.jetty.jsp</module>
+        <module>../_extend/solon.extend.undertow.jsp</module>
 
 
 
-<!--        <module>../_plugins/solon.boot.rapidoid-http-fast</module>-->
-<!--        <module>../_plugins/solon.boot.tomcat</module>-->
-<!--        <module>../_plugins/solon.view.rocker</module>-->
+<!--        <module>../_extend/solon.boot.rapidoid-http-fast</module>-->
+<!--        <module>../_extend/solon.boot.tomcat</module>-->
+<!--        <module>../_extend/solon.view.rocker</module>-->
 
 
 
-        <module>../_plugins/solon-mvc-beetl</module>
+        <module>../_extend/solon-mvc-beetl</module>
 
 
 
@@ -476,15 +476,15 @@
         <module>../solon-api</module>
 
 
-        <module>../_plugins2/cron4j-solon-plugin</module>
-        <module>../_plugins2/dubbo-solon-plugin</module>
-        <module>../_plugins2/mqtt-solon-plugin</module>
-        <module>../_plugins2/mybatis-solon-plugin</module>
+        <module>../_extend2/cron4j-solon-plugin</module>
+        <module>../_extend2/dubbo-solon-plugin</module>
+        <module>../_extend2/mqtt-solon-plugin</module>
+        <module>../_extend2/mybatis-solon-plugin</module>
 
 
 
-<!--        <module>../_plugins2/beetlsql-solon-plugin</module>-->
-<!--        <module>../_plugins2/dubbo-solon-plugin</module>-->
+<!--        <module>../_extend2/beetlsql-solon-plugin</module>-->
+<!--        <module>../_extend2/dubbo-solon-plugin</module>-->
 
     </modules>
 
