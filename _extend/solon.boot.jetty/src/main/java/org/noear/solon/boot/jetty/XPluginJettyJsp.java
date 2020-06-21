@@ -16,7 +16,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Properties;
 
- class XPluginJettyJsp extends XPluginJetty {
+class XPluginJettyJsp extends XPluginJetty {
 
     /**
      * 获取Server Handler
@@ -105,6 +105,4 @@ import java.util.Properties;
             return null;
         }
     }
-
-
 }
