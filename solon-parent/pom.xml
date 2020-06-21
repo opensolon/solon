@@ -28,7 +28,7 @@
         <beetl.ver>3.0.15.RELEASE</beetl.ver>
         <enjoy.ver>4.8</enjoy.ver>
 
-        <jetty.ver>9.4.12.v20180830</jetty.ver>
+        <jetty.ver>9.4.30.v20200611</jetty.ver>
     </properties>
 
 
