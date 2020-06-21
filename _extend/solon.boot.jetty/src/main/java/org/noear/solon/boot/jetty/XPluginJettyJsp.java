@@ -1,14 +1,12 @@
 package org.noear.solon.boot.jetty;
 
 import org.eclipse.jetty.jsp.JettyJspServlet;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.session.DefaultSessionIdManager;
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.ResourceCollection;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
-import org.noear.solon.core.XPlugin;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,50 +16,25 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Properties;
 
-final class XPluginJettyJsp implements XPlugin {
+ class XPluginJettyJsp extends XPluginJetty {
 
-    private Server _server = null;
-
+    /**
+     * 获取Server Handler
+     * */
     @Override
-    public void start(XApp app) {
+    protected Handler getServerHandler() throws IOException{
+        ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        handler.setContextPath("/");
+        handler.setBaseResource(new ResourceCollection(getResourceURLs()));
+        handler.addServlet(JspHttpContextServlet.class, "/");
 
-        try {
-            ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-            handler.setContextPath("/");
-            handler.setBaseResource(new ResourceCollection(getResourceURLs()));
-            handler.addServlet(JspHttpContextServlet.class, "/");
-
-            if (XServerProp.session_timeout > 0) {
-                handler.getSessionHandler().setMaxInactiveInterval(XServerProp.session_timeout);
-            }
-
-            enableJspSupport(handler);
-
-            _server = new Server(app.port());
-            _server.setSessionIdManager(new DefaultSessionIdManager(_server));
-            _server.setHandler(handler);
-
-            _server.setAttribute("org.eclipse.jetty.server.Request.maxFormContentSize",
-                    XServerProp.request_maxRequestSize);
-
-
-            app.prop().forEach((k, v) -> {
-                String key = k.toString();
-                if (key.indexOf(".jetty.") > 0) {
-                    _server.setAttribute(key, v);
-                }
-            });
-
-            app.prop().onChange((k, v) -> {
-                if (k.indexOf(".jetty.") > 0) {
-                    _server.setAttribute(k, v);
-                }
-            });
-
-            _server.start();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        if (XServerProp.session_timeout > 0) {
+            handler.getSessionHandler().setMaxInactiveInterval(XServerProp.session_timeout);
         }
+
+        enableJspSupport(handler);
+
+        return handler;
     }
 
     private void enableJspSupport(ServletContextHandler handler) throws IOException {
@@ -133,11 +106,5 @@ final class XPluginJettyJsp implements XPlugin {
         }
     }
 
-    @Override
-    public void stop() throws Throwable {
-        if (_server != null) {
-            _server.stop();
-            _server = null;
-        }
-    }
+
 }

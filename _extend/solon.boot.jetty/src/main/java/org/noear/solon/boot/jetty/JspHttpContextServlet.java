@@ -39,12 +39,11 @@ public class JspHttpContextServlet extends HttpServlet {
 
     private void call(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        XApp xapp = XApp.global();
         JtHttpContext context = new JtHttpContext(request,response);
         context.contentType("text/plain;charset=UTF-8");
 
         try {
-            xapp.handle(context);
+            XApp.global().handle(context);
 
             if(context.getHandled() && context.status() != 404) {
                 ((Request)request).setHandled(true);
@@ -52,7 +51,7 @@ public class JspHttpContextServlet extends HttpServlet {
         } catch (Throwable ex) {
             ex.printStackTrace();
 
-            if(xapp.prop().isDebugMode()) {
+            if(XApp.global().prop().isDebugMode()) {
                 ((Request)request).setHandled(true);
                 ex.printStackTrace(response.getWriter());
                 response.setStatus(500);
