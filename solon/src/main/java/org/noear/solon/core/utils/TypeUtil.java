@@ -6,6 +6,8 @@ import org.noear.solon.core.XContext;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -132,27 +134,27 @@ public class TypeUtil {
     }
 
     public static Object do_change(Class<?> type, String val) {
-        if (Short.class == (type) || type == Short.TYPE) {
+        if (Short.class == type || type == Short.TYPE) {
             return Short.parseShort(val);
         }
 
-        if (Integer.class == (type) || type == Integer.TYPE) {
+        if (Integer.class == type || type == Integer.TYPE) {
             return Integer.parseInt(val);
         }
 
-        if (Long.class == (type) || type == Long.TYPE) {
+        if (Long.class == type || type == Long.TYPE) {
             return Long.parseLong(val);
         }
 
-        if (Double.class == (type) || type == Double.TYPE) {
+        if (Double.class == type || type == Double.TYPE) {
             return Double.parseDouble(val);
         }
 
-        if (Float.class == (type) || type == Float.TYPE) {
+        if (Float.class == type || type == Float.TYPE) {
             return Float.parseFloat(val);
         }
 
-        if (Boolean.class == (type) || type == Boolean.TYPE) {
+        if (Boolean.class == type || type == Boolean.TYPE) {
             return Boolean.parseBoolean(val);
         }
 
@@ -169,6 +171,14 @@ public class TypeUtil {
         if(LocalDateTime.class == type){
             //as "2007-12-03T10:15:30", not null
             return LocalDateTime.parse(val);
+        }
+
+        if(BigDecimal.class == type){
+            return new BigDecimal(val);
+        }
+
+        if(BigInteger.class == type){
+            return new BigInteger(val);
         }
 
         return null;

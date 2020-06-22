@@ -71,7 +71,7 @@ public class XActionUtil {
                             }
                         }
                     } else {
-                        //如果拿到了肯体的参数值，则开始转换
+                        //如果拿到了具体的参数值，则开始转换
                         tv = TypeUtil.changeOfCtx(p, pt, pn, pv, ctx);
                     }
 
