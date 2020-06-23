@@ -103,6 +103,14 @@ public class XUtil {
         }
     }
 
+    public static Properties getProperties(String text) {
+        try {
+            return XPropertiesLoader.global.load(text);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
     /**
      * 获取异常的完整内容
      */

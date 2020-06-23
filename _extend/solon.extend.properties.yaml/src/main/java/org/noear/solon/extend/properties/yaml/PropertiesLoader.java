@@ -3,6 +3,7 @@ package org.noear.solon.extend.properties.yaml;
 import org.noear.solon.core.XPropertiesLoader;
 
 import java.io.Reader;
+import java.io.StringReader;
 import java.net.URL;
 import java.util.Properties;
 
@@ -48,18 +49,19 @@ public class PropertiesLoader extends XPropertiesLoader {
     }
 
     @Override
-    public Properties load(Reader reader, String type) throws Exception {
-        if (type.endsWith(".properties")) {
+    public Properties load(String text) throws Exception {
+        int idx1 = text.indexOf("=");
+        int idx2 = text.indexOf(":");
 
+        if (idx1 > 0 && idx1 > idx2) {
             Properties tmp = new Properties();
-            tmp.load(reader);
+            tmp.load(new StringReader(text));
             return tmp;
         }
 
-        if (type.endsWith(".yml")) {
-
+        if (idx2 > 0 && idx2 > idx1) {
             PropertiesYaml tmp = new PropertiesYaml();
-            tmp.loadYml(reader);
+            tmp.load(new StringReader(text));
             return tmp;
         }
 

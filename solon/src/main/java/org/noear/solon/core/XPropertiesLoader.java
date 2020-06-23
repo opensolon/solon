@@ -3,6 +3,7 @@ package org.noear.solon.core;
 import org.noear.solon.XUtil;
 
 import java.io.Reader;
+import java.io.StringReader;
 import java.net.URL;
 import java.util.Properties;
 
@@ -32,7 +33,6 @@ public class XPropertiesLoader {
     }
 
 
-
     public Properties load(URL url) throws Exception {
         if (url == null) {
             return null;
@@ -51,14 +51,16 @@ public class XPropertiesLoader {
         return null;
     }
 
-    public Properties load(Reader reader, String type) throws Exception{
-        if (type.endsWith(".properties")) {
+    public Properties load(String text) throws Exception {
+        int idx1 = text.indexOf("=");
+        int idx2 = text.indexOf(":");
+
+        if (idx1 > 0 && idx1 > idx2) {
             Properties tmp = new Properties();
-            tmp.load(reader);
+            tmp.load(new StringReader(text));
             return tmp;
         }
 
         return null;
     }
-
 }
