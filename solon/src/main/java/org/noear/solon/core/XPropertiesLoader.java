@@ -2,6 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.XUtil;
 
+import java.io.Reader;
 import java.net.URL;
 import java.util.Properties;
 
@@ -30,6 +31,8 @@ public class XPropertiesLoader {
         return suffix.endsWith(".properties");
     }
 
+
+
     public Properties load(URL url) throws Exception {
         if (url == null) {
             return null;
@@ -42,6 +45,16 @@ public class XPropertiesLoader {
 
             Properties tmp = new Properties();
             tmp.load(url.openStream());
+            return tmp;
+        }
+
+        return null;
+    }
+
+    public Properties load(Reader reader, String type) throws Exception{
+        if (type.endsWith(".properties")) {
+            Properties tmp = new Properties();
+            tmp.load(reader);
             return tmp;
         }
 

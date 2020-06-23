@@ -2,7 +2,9 @@ package org.noear.solon.extend.properties.yaml;
 
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -12,6 +14,15 @@ public class PropertiesYaml extends Properties {
         Yaml yaml = new Yaml();
 
         Object tmp = yaml.load(inputStream);
+
+        String prefix = "";
+        do_load(prefix, tmp);
+    }
+
+    public synchronized void loadYml(Reader reader) throws IOException {
+        Yaml yaml = new Yaml();
+
+        Object tmp = yaml.load(reader);
 
         String prefix = "";
         do_load(prefix, tmp);
