@@ -61,6 +61,6 @@ public class XPropertiesLoader {
             return tmp;
         }
 
-        return null;
+        return new Properties();
     }
 }

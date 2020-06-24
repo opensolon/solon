@@ -65,6 +65,6 @@ public class PropertiesLoader extends XPropertiesLoader {
             return tmp;
         }
 
-        return null;
+        return new Properties();
     }
 }
