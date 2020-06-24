@@ -49,15 +49,35 @@ public class PropertiesLoader extends XPropertiesLoader {
 
     @Override
     public Properties load(String text) throws Exception {
+        text = text.trim();
+
         int idx1 = text.indexOf("=");
         int idx2 = text.indexOf(":");
 
+        //有{开头
+        if(text.startsWith("{") && text.endsWith("}")){
+            PropertiesJson tmp  =new PropertiesJson();
+            tmp.loadJson(text);
+            return tmp;
+        }
+
+        //有[开头
+        if(text.startsWith("[") && text.endsWith("]")){
+            PropertiesJson tmp  =new PropertiesJson();
+            tmp.loadJson(text);
+            return tmp;
+        }
+
+
+
+        //有=
         if (idx1 > 0 && (idx1 < idx2 || idx2 < 0)) {
             Properties tmp = new Properties();
             tmp.load(new StringReader(text));
             return tmp;
         }
 
+        //有:
         if (idx2 > 0 && (idx2 < idx1 || idx1 < 0)) {
             PropertiesYaml tmp = new PropertiesYaml();
             tmp.loadYml(new StringReader(text));
