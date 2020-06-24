@@ -16,7 +16,7 @@ import java.util.*;
 public class JlHttpContext extends XContext {
     private HTTPServer.Request _request;
     private HTTPServer.Response _response;
-    protected Map<String,List<XFile>> _fileMap;
+    protected Map<String, List<XFile>> _fileMap;
 
     public JlHttpContext(HTTPServer.Request request, HTTPServer.Response response) {
         _request = request;
@@ -27,7 +27,7 @@ public class JlHttpContext extends XContext {
             try {
                 _fileMap = new HashMap<>();
                 MultipartUtil.buildParamsAndFiles(this);
-            }catch (Throwable ex){
+            } catch (Throwable ex) {
                 ex.printStackTrace();
             }
         }
@@ -39,9 +39,10 @@ public class JlHttpContext extends XContext {
     }
 
     private String _ip;
+
     @Override
     public String ip() {
-        if(_ip == null) {
+        if (_ip == null) {
             _ip = header("X-Forwarded-For");
 
             if (_ip == null) {
@@ -73,9 +74,10 @@ public class JlHttpContext extends XContext {
     }
 
     private String _url;
+
     @Override
     public String url() {
-        if(_url == null){
+        if (_url == null) {
             _url = _request.getURI().toString();
 
             if (_url != null && _url.startsWith("/")) {
@@ -85,7 +87,7 @@ public class JlHttpContext extends XContext {
                     host = header(":authority");
                     String scheme = header(":scheme");
 
-                    if(host == null){
+                    if (host == null) {
                         host = "localhost";
                     }
 
@@ -108,7 +110,7 @@ public class JlHttpContext extends XContext {
     public long contentLength() {
         try {
             return _request.getBody().available();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             return 0;
         }
@@ -127,7 +129,7 @@ public class JlHttpContext extends XContext {
     @Override
     public String[] paramValues(String key) {
         List<String> list = paramsMap().get(key);
-        if(list == null){
+        if (list == null) {
             return null;
         }
 
@@ -146,12 +148,12 @@ public class JlHttpContext extends XContext {
         try {
             String temp = paramMap().get(key);
 
-            if(XUtil.isEmpty(temp)){
+            if (XUtil.isEmpty(temp)) {
                 return def;
-            }else{
+            } else {
                 return temp;
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
 
             return def;
@@ -159,6 +161,7 @@ public class JlHttpContext extends XContext {
     }
 
     private XMap _paramMap;
+
     @Override
     public XMap paramMap() {
         if (_paramMap == null) {
@@ -175,6 +178,7 @@ public class JlHttpContext extends XContext {
     }
 
     private Map<String, List<String>> _paramsMap;
+
     @Override
     public Map<String, List<String>> paramsMap() {
         if (_paramsMap == null) {
@@ -201,14 +205,14 @@ public class JlHttpContext extends XContext {
 
     @Override
     public List<XFile> files(String key) throws Exception {
-        if (isMultipartFormData()){
+        if (isMultipartFormData()) {
             List<XFile> temp = _fileMap.get(key);
-            if(temp == null){
+            if (temp == null) {
                 return new ArrayList<>();
-            }else{
+            } else {
                 return temp;
             }
-        }  else {
+        } else {
             return new ArrayList<>();
         }
     }
@@ -221,21 +225,22 @@ public class JlHttpContext extends XContext {
     @Override
     public String cookie(String key, String def) {
         String temp = cookieMap().get(key);
-        if(temp == null){
-            return  def;
-        }else{
+        if (temp == null) {
+            return def;
+        } else {
             return temp;
         }
     }
 
     @Override
     public XMap cookieMap() {
-        if(_cookieMap == null){
+        if (_cookieMap == null) {
             _cookieMap = new XMap(_request.getHeaders().getParams("Cookie"));
         }
 
         return _cookieMap;
     }
+
     private XMap _cookieMap;
 
 
@@ -256,7 +261,7 @@ public class JlHttpContext extends XContext {
 
     @Override
     public XMap headerMap() {
-        if(_headerMap == null) {
+        if (_headerMap == null) {
             _headerMap = new XMap();
 
             HTTPServer.Headers headers = _request.getHeaders();
@@ -270,6 +275,7 @@ public class JlHttpContext extends XContext {
 
         return _headerMap;
     }
+
     private XMap _headerMap;
 
     //=================================
@@ -283,6 +289,7 @@ public class JlHttpContext extends XContext {
     public void charset(String charset) {
         _charset = charset;
     }
+
     private String _charset = "UTF-8";
 
 
@@ -300,9 +307,9 @@ public class JlHttpContext extends XContext {
 
 
     @Override
-    public OutputStream outputStream() throws IOException{
+    public OutputStream outputStream() throws IOException {
         sendHeaders();
-        return _response.getOutputStream();
+        return _response.getBody();
     }
 
     @Override
@@ -311,8 +318,7 @@ public class JlHttpContext extends XContext {
             OutputStream out = outputStream();
 
             out.write(str.getBytes(_charset));
-            out.flush();
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -322,20 +328,17 @@ public class JlHttpContext extends XContext {
         try {
             OutputStream out = outputStream();
 
-            byte[] buff = new byte[100];
-            int rc = 0;
-            while ((rc = stream.read(buff, 0, 100)) > 0) {
-                out.write(buff, 0, rc);
+            int len = 0;
+            byte[] buf = new byte[512]; //0.5k
+            while ((len = stream.read(buf)) != -1) {
+                out.write(buf, 0, len);
             }
-
-            out.flush();
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
 
     //protected ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
 
 
     @Override
@@ -345,7 +348,7 @@ public class JlHttpContext extends XContext {
 
     @Override
     public void headerAdd(String key, String val) {
-        _response.getHeaders().add(key,val);
+        _response.getHeaders().add(key, val);
     }
 
     @Override
@@ -370,8 +373,8 @@ public class JlHttpContext extends XContext {
     }
 
     @Override
-    public void redirect(String url)  {
-        redirect(url,302);
+    public void redirect(String url) {
+        redirect(url, 302);
     }
 
     @Override
@@ -379,7 +382,7 @@ public class JlHttpContext extends XContext {
         try {
             headerSet("Location", url);
             _response.sendHeaders(code);
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -388,6 +391,7 @@ public class JlHttpContext extends XContext {
     public int status() {
         return _status;
     }
+
     private int _status = 200;
 
     @Override
@@ -399,15 +403,15 @@ public class JlHttpContext extends XContext {
 
     //jlhttp 需要先输出 header ，但是 header 后面可能会有变化；所以不直接使用  response.getOutputStream()
     @Override
-    protected void commit() throws IOException{
+    protected void commit() throws IOException {
         sendHeaders();
-        _response.getOutputStream().close();
+        //_response.getOutputStream().close(); //length=-1后，不需要colose()；而且性能大大提搞
     }
 
-    private void sendHeaders() throws IOException{
+    private void sendHeaders() throws IOException {
         if (!_response.headersSent()) {
-            _response.sendHeaders(status());
+            //_response.sendHeaders(status()); //不能用这个；
+            _response.sendHeaders(status(), -1, -1, null, null, null);
         }
     }
-
 }

@@ -22,7 +22,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jdkhttp</artifactId>
+            <artifactId>solon.boot.jlhttp</artifactId>
             <version>1.0.6.1</version>
         </dependency>
     </dependencies>
