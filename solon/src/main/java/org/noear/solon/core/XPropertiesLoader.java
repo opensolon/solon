@@ -55,7 +55,7 @@ public class XPropertiesLoader {
         int idx1 = text.indexOf("=");
         int idx2 = text.indexOf(":");
 
-        if (idx1 > 0 && idx1 < idx2) {
+        if (idx1 > 0 && (idx1 < idx2 || idx2 < 0)) {
             Properties tmp = new Properties();
             tmp.load(new StringReader(text));
             return tmp;
