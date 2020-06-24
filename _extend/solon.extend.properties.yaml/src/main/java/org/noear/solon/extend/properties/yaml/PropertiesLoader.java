@@ -60,7 +60,7 @@ public class PropertiesLoader extends XPropertiesLoader {
 
         if (idx2 > 0 && (idx2 < idx1 || idx1 < 0)) {
             PropertiesYaml tmp = new PropertiesYaml();
-            tmp.load(new StringReader(text));
+            tmp.loadYml(new StringReader(text));
             return tmp;
         }
 
