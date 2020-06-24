@@ -38,7 +38,14 @@ public class PropertiesYaml extends Properties {
         }
 
         if (tmp instanceof List) {
-            do_put(prefix, tmp);
+            //do_put(prefix, tmp);
+
+            int index = 0;
+            for (Object v : ((List) tmp)) {
+                String prefix2 = prefix + "[" + index + "]";
+                do_load(prefix2, v);
+                index++;
+            }
             return;
         }
 
