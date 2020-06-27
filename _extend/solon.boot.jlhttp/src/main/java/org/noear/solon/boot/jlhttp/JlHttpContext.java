@@ -317,6 +317,10 @@ public class JlHttpContext extends XContext {
         try {
             OutputStream out = outputStream();
 
+            if(out == null){ // on HEAD method
+                return;
+            }
+
             out.write(str.getBytes(_charset));
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
@@ -327,6 +331,10 @@ public class JlHttpContext extends XContext {
     public void output(InputStream stream) {
         try {
             OutputStream out = outputStream();
+
+            if(out == null){ // on HEAD method
+                return;
+            }
 
             int len = 0;
             byte[] buf = new byte[512]; //0.5k
