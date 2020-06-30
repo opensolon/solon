@@ -90,10 +90,10 @@ public class BeanWebWrap {
         List<XHandler> c_afts2 = new ArrayList<>();
 
         if (c_befs != null) {
-            addDo(c_befs.value(), (b) -> c_befs2.add(b.newInstance()));
+            addDo(c_befs.value(), (b) -> c_befs2.add(Aop.get(b)));
         }
         if (c_afts != null) {
-            addDo(c_afts.value(), (f) -> c_afts2.add(f.newInstance()));
+            addDo(c_afts.value(), (f) -> c_afts2.add(Aop.get(f)));
         }
 
         XMethod[] m_method;
@@ -132,13 +132,13 @@ public class BeanWebWrap {
                 //加载控制器的前置拦截器
                 addDo(c_befs2.toArray(), (b) -> action.before((XHandler) b));
                 if (m_befores != null) {
-                    addDo(m_befores.value(), (b) -> action.before(b.newInstance()));
+                    addDo(m_befores.value(), (b) -> action.before(Aop.get(b)));
                 }
 
                 //加载控制器的后置拦截器
                 addDo(c_afts2.toArray(), (f) -> action.after((XHandler) f));
                 if (m_afters != null) {
-                    addDo(m_afters.value(), (f) -> action.after(f.newInstance()));
+                    addDo(m_afters.value(), (f) -> action.after(Aop.get(f)));
                 }
 
                 for (XMethod m1 : m_method) {
