@@ -32,10 +32,12 @@ public class AopFactory extends AopFactoryBase {
 
                 if (m_an != null) {
                     if (mWrap.parameters.length == 0) {
+                        //充许空函数运行
                         Object raw = mWrap.method.invoke(bw.raw());
-
-                        BeanWrap m_bw = Aop.put(mWrap.method.getReturnType(), raw);
-                        beanCreate(m_bw, m_an);
+                        if(raw != null) {
+                            BeanWrap m_bw = Aop.put(mWrap.method.getReturnType(), raw);
+                            beanCreate(m_bw, m_an);
+                        }
                     } else {
                         throw new RuntimeException("XBean method does not support parameters");
                     }
