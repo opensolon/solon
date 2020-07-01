@@ -4,7 +4,7 @@ package org.noear.solon.core;
  * 监听器（内部类，外部不要使用）
  * */
 public class XMonitor {
-    private static EventHandler<Throwable> errorEventHandler;
+    private static XEventHandler<Throwable> errorEventHandler;
 
     public static void sendError(XContext ctx, Throwable err) {
         if (errorEventHandler != null) {
@@ -15,7 +15,7 @@ public class XMonitor {
             }
         }
     }
-    public static void onError(EventHandler<Throwable> handler) {
+    public static void onError(XEventHandler<Throwable> handler) {
         errorEventHandler = handler;
     }
 }
