@@ -370,8 +370,8 @@ public class XApp implements XHandler,XHandlerSlots {
         }
     }
 
-    public XApp onError(Act2<XContext,Throwable> event) {
-        XMonitor.onError(event);
+    public XApp onError(EventHandler<Throwable> handler) {
+        XMonitor.onError(handler);
         return this;
     }
 
