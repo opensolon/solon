@@ -20,19 +20,27 @@ public class JobRunner implements IJobRunner {
         }
     }
 
-    protected void doRun(JobEntity job) {
+    protected void doRun(JobEntity jobEntity) {
+        if (jobEntity.getJob().getDelay() > 0) {
+            //处理延迟
+            try {
+                Thread.sleep(jobEntity.getJob().getDelay());
+            } catch (Exception ee) {
+            }
+        }
+
         while (true) {
             try {
                 long time_start = System.currentTimeMillis();
-                job.getJob().exec();
+                jobEntity.getJob().exec();
                 long time_end = System.currentTimeMillis();
 
-                if (job.getJob().getInterval() == 0) {
+                if (jobEntity.getJob().getInterval() == 0) {
                     return;
                 }
 
-                if (time_end - time_start < job.getJob().getInterval()) {
-                    Thread.sleep(job.getJob().getInterval());//0.5s
+                if (time_end - time_start < jobEntity.getJob().getInterval()) {
+                    Thread.sleep(jobEntity.getJob().getInterval());//0.5s
                 }
 
             } catch (Throwable ex) {
@@ -41,7 +49,6 @@ public class JobRunner implements IJobRunner {
                 try {
                     Thread.sleep(1000);
                 } catch (Exception ee) {
-                    ee.printStackTrace();
                 }
             }
         }
