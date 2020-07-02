@@ -10,6 +10,7 @@ import org.noear.solon.core.XMethod;
 import webapp.models.UserModel;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @XSingleton(false)
@@ -20,6 +21,11 @@ public class ParamController {
     @XMapping("body")
     public String test_body(XContext ctx) throws IOException {
         return ctx.body();
+    }
+
+    @XMapping("decimal")
+    public Object test_decimal(BigDecimal num) throws IOException {
+        return num;
     }
 
     //支持post和get参数

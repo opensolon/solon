@@ -382,8 +382,16 @@ public class JlHttpContext extends XContext {
     //jlhttp 需要先输出 header ，但是 header 后面可能会有变化；所以不直接使用  response.getOutputStream()
     @Override
     protected void commit() throws IOException {
-        sendHeaders();
         //_response.getOutputStream().close(); //length=-1后，不需要colose()；而且性能大大提搞
+
+        //sendHeaders();
+
+        if (!_response.headersSent()) {
+            //
+            // 如果之前，什么都还没输；会出错
+            //
+            output("");
+        }
     }
 
     private void sendHeaders() throws IOException {
