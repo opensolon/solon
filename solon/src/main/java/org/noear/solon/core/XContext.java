@@ -7,6 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -186,6 +187,18 @@ public abstract class XContext {
     public double paramAsDouble(String key){return paramAsDouble(key,0);}
     @XNote("获取参数并转为double")
     public double paramAsDouble(String key, double def){return Double.parseDouble(param(key,String.valueOf(def)));}
+    @XNote("获取参数并转为BigDecimal")
+    public BigDecimal paramAsDecimal(String key){return paramAsDecimal(key, BigDecimal.ZERO);}
+    @XNote("获取参数并转为BigDecimal")
+    public BigDecimal paramAsDecimal(String key, BigDecimal def){
+        String tmp = param(key);
+        if(XUtil.isEmpty(tmp)){
+            return def;
+        }else{
+            return new BigDecimal(tmp);
+        }
+    }
+
     @XNote("获取所有参数并转为map")
     public abstract XMap paramMap();
 
