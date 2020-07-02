@@ -384,7 +384,7 @@ public class JlHttpContext extends XContext {
     protected void commit() throws IOException {
         //_response.getOutputStream().close(); //length=-1后，不需要colose()；而且性能大大提搞
 
-        //sendHeaders();
+        //sendHeaders(); //output时，会自动 sendHeaders
 
         if (!_response.headersSent()) {
             //
