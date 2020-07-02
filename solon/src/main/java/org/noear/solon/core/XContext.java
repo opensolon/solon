@@ -203,17 +203,25 @@ public abstract class XContext {
 
     /**获取COOKIE*/
     @XNote("获取COOKIE")
-    public abstract String cookie(String key);
+    public String cookie(String key){
+        return cookieMap().get(key);
+    }
     @XNote("获取COOKIE")
-    public abstract String cookie(String key, String def);
+    public String cookie(String key, String def){
+        return cookieMap().getOrDefault(key,def);
+    }
     @XNote("获取所有COOKIE并转为map")
     public abstract XMap cookieMap();
 
     /**获取HEADER*/
     @XNote("获取HEADER")
-    public abstract String header(String key);
+    public String header(String key){
+        return headerMap().get(key);
+    }
     @XNote("获取HEADER")
-    public abstract String header(String key, String def);
+    public String header(String key, String def){
+        return headerMap().getOrDefault(key,def);
+    }
     @XNote("获取所有HEADER并转为map")
     public abstract XMap headerMap();
 

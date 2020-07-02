@@ -149,16 +149,6 @@ public class XContextEmpty extends XContext {
         return _cookieMap;
     }
 
-    @Override
-    public String header(String key) {
-        return headerMap().get(key);
-    }
-
-    @Override
-    public String header(String key, String def) {
-        return headerMap().getOrDefault(key,def);
-    }
-
     private XMap _headerMap = null;
     @Override
     public XMap headerMap() {

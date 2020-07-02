@@ -4,6 +4,7 @@ import org.noear.solon.annotation.XBean;
 import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.ModelAndView;
+import org.noear.solon.core.XContext;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,7 +16,9 @@ import java.util.Map;
 @XBean(remoting = true)
 public class JsonRpcController {
 
-    public Object json(){
+    public Object json(XContext ctx){
+        ctx.headerMap().put("serialization","@avro");
+
         Map<String,Object> model = new HashMap<>();
         model.put("title","dock");
         model.put("msg","你好 world! in XController");

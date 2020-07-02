@@ -197,20 +197,6 @@ public class NtHttpContext extends XContext {
         return _request_parse.fileMap.get(key);
     }
 
-    @Override
-    public String cookie(String key) {
-        return cookieMap().get(key);
-    }
-
-    @Override
-    public String cookie(String key, String def) {
-        String temp = cookieMap().get(key);
-        if(temp == null){
-            return  def;
-        }else{
-            return temp;
-        }
-    }
 
     private XMap _cookieMap;
     @Override
@@ -229,21 +215,6 @@ public class NtHttpContext extends XContext {
         }
 
         return _cookieMap;
-    }
-
-    @Override
-    public String header(String key) {
-        return _request.headers().get(key);
-    }
-
-    @Override
-    public String header(String key, String def) {
-        String tmp = _request.headers().get(key);
-        if(tmp == null){
-            return def;
-        }else{
-            return  tmp;
-        }
     }
 
     private XMap _headerMap;

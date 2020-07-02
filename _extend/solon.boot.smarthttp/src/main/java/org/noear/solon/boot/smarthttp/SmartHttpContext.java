@@ -186,21 +186,6 @@ public class SmartHttpContext extends XContext {
     }
 
     @Override
-    public String cookie(String key) {
-        return cookieMap().get(key);
-    }
-
-    @Override
-    public String cookie(String key, String def) {
-        String temp = cookieMap().get(key);
-        if(temp == null){
-            return  def;
-        }else{
-            return temp;
-        }
-    }
-
-    @Override
     public XMap cookieMap() {
         if (_cookieMap == null) {
             _cookieMap = new XMap();
@@ -223,21 +208,6 @@ public class SmartHttpContext extends XContext {
     }
     private XMap _cookieMap;
 
-
-    @Override
-    public String header(String key) {
-        return headerMap().get(key);
-    }
-
-    @Override
-    public String header(String key, String def) {
-        String temp = header(key);
-
-        if (temp == null)
-            return def;
-        else
-            return temp;
-    }
 
     @Override
     public XMap headerMap() {

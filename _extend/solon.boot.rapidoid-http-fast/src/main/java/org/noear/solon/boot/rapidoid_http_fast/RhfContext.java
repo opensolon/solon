@@ -112,27 +112,7 @@ public class RhfContext extends XContext {
     }
 
     @Override
-    public String cookie(String key) {
-        return null;
-    }
-
-    @Override
-    public String cookie(String key, String def) {
-        return null;
-    }
-
-    @Override
     public XMap cookieMap() {
-        return null;
-    }
-
-    @Override
-    public String header(String key) {
-        return null;
-    }
-
-    @Override
-    public String header(String key, String def) {
         return null;
     }
 

@@ -175,20 +175,6 @@ public class UtHttpServletContext extends XContext {
         }
     }
 
-    @Override
-    public String cookie(String key) {
-        return cookie(key, null);
-    }
-
-    @Override
-    public String cookie(String key, String def) {
-        String temp = cookieMap().get(key);
-        if (temp == null) {
-            return def;
-        } else {
-            return temp;
-        }
-    }
 
     private XMap _cookieMap;
 
@@ -207,21 +193,6 @@ public class UtHttpServletContext extends XContext {
         }
 
         return _cookieMap;
-    }
-
-    @Override
-    public String header(String key) {
-        return _request.getHeader(key);
-    }
-
-    @Override
-    public String header(String key, String def) {
-        String temp = _request.getHeader(key);
-        if (XUtil.isEmpty(temp)) {
-            return def;
-        } else {
-            return temp;
-        }
     }
 
     private XMap _headerMap;

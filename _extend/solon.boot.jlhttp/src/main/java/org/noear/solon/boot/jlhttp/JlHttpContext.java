@@ -218,21 +218,6 @@ public class JlHttpContext extends XContext {
     }
 
     @Override
-    public String cookie(String key) {
-        return cookieMap().get(key);
-    }
-
-    @Override
-    public String cookie(String key, String def) {
-        String temp = cookieMap().get(key);
-        if (temp == null) {
-            return def;
-        } else {
-            return temp;
-        }
-    }
-
-    @Override
     public XMap cookieMap() {
         if (_cookieMap == null) {
             _cookieMap = new XMap(_request.getHeaders().getParams("Cookie"));
@@ -243,21 +228,6 @@ public class JlHttpContext extends XContext {
 
     private XMap _cookieMap;
 
-
-    @Override
-    public String header(String key) {
-        return _request.getHeaders().get(key);
-    }
-
-    @Override
-    public String header(String key, String def) {
-        String temp = _request.getHeaders().get(key);
-
-        if (temp == null)
-            return def;
-        else
-            return temp;
-    }
 
     @Override
     public XMap headerMap() {
