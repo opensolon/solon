@@ -183,7 +183,7 @@ public class HttpTest {
 
     @Test
     public void test2g() throws IOException{
-        assert  get("/demo2/param/array_str?aaa=1&aaa=2&aaa=中文").equals("[\"1\",\"2\",\"\\u4E2D\\u6587\"]");
+        assert  get("/demo2/param/array_str?aaa=1&aaa=2&aaa=中文").equals("[\"1\",\"2\",\"中文\"]");
     }
 
     @Test
@@ -198,7 +198,7 @@ public class HttpTest {
 
     @Test
     public void test2j() throws IOException{
-        assert  get("/demo2/param/model?id=1&name=xxx&sex=2&date=2019-12-1&aaa=1&aaa=2").equals("{\"aaa\":[1,2],\"date\":1575129600000,\"id\":1,\"name\":\"xxx\",\"sex\":2}");
+        assert  get("/demo2/param/model?id=1&name=xxx&sex=2&date=2019-12-1&aaa=1&aaa=2").equals("{\"id\":1,\"name\":\"xxx\",\"sex\":2,\"date\":1575129600000,\"aaa\":[1,2]}");
     }
 
     @Test
@@ -234,7 +234,7 @@ public class HttpTest {
     }
     @Test
     public void test61() throws IOException{
-        assert  get("/demo6/aop").equals("{\"rockapi12\":\"\\u6211\\u662F\\uFF1ARockservice1\",\"rockapi11\":\"\\u6211\\u662F\\uFF1ARockservice1\",\"rockapi2\":\"\\u6211\\u662F\\uFF1ARockservice2\"}");
+        assert  get("/demo6/aop").equals("{\"rockapi12\":\"我是：Rockservice1\",\"rockapi11\":\"我是：Rockservice1\",\"rockapi2\":\"我是：Rockservice2\"}");
     }
     @Test
     public void test71() throws IOException{
@@ -242,7 +242,7 @@ public class HttpTest {
     }
     @Test
     public void test81() throws IOException{
-        assert  get("/demo8/config_inject").equals("{\"dbcfg\":{\"url\":\"jdbc:mysql:\\/\\/127.0.0.1\\/user\",\"paasword\":\"12\",\"username\":\"root\"},\"nameuser_2\":\"noear\",\"paasword\":1234,\"test\":{\"url\":\"jdbc:mysql:\\/\\/127.0.0.1\\/user\",\"paasword\":\"12\",\"username\":\"root\"},\"username\":\"noear\"}");
+        assert  get("/demo8/config_inject").equals("{\"username\":\"noear\",\"paasword\":1234,\"test\":{\"url\":\"jdbc:mysql://127.0.0.1/user\",\"paasword\":\"12\",\"username\":\"root\"},\"nameuser_2\":\"noear\",\"dbcfg\":{\"url\":\"jdbc:mysql://127.0.0.1/user\",\"paasword\":\"12\",\"username\":\"root\"}}");
     }
     @Test
     public void test82() throws IOException{
