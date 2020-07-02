@@ -143,6 +143,26 @@ public abstract class XContext {
         }
     }
 
+    /**获取RAW内容为byte[]*/
+    @XNote("获取RAW内容为byte[]")
+    public byte[] bodyAsBytes() throws IOException{
+        try (InputStream ins = bodyAsStream()) {
+            if (ins == null) {
+                return null;
+            }
+
+            ByteArrayOutputStream outs = new ByteArrayOutputStream(); //这个不需要关闭
+
+            int len = 0;
+            byte[] buf = new byte[512]; //0.5k
+            while ((len = ins.read(buf)) != -1) {
+                outs.write(buf, 0, len);
+            }
+
+            return outs.toByteArray();
+        }
+    }
+
     /**获取RAW内容为Stream*/
     @XNote("获取RAW内容为Stream")
     public abstract InputStream bodyAsStream() throws IOException;

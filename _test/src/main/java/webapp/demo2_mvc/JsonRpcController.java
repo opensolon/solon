@@ -17,7 +17,7 @@ import java.util.Map;
 public class JsonRpcController {
 
     public Object json(XContext ctx){
-        ctx.headerMap().put("serialization","@avro");
+//        ctx.headerMap().put("serialization","@avro");
 
         Map<String,Object> model = new HashMap<>();
         model.put("title","dock");
