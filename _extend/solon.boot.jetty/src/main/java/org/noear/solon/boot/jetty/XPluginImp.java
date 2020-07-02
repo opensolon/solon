@@ -35,6 +35,7 @@ public final class XPluginImp implements XPlugin {
 
         long time_end = System.currentTimeMillis();
 
+        System.out.println("solon.Connector:main: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
         System.out.println("solon.Server:main: Started @" + (time_end - time_start) + "ms");
     }
 
