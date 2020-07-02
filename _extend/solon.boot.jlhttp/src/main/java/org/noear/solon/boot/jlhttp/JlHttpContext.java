@@ -388,7 +388,7 @@ public class JlHttpContext extends XContext {
 
         if (!_response.headersSent()) {
             //
-            // 如果之前，什么都还没输；会出错
+            // 因为header 里没有设内容长度；所有必须要有输出!!
             //
             output("");
         }
