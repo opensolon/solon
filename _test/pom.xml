@@ -68,6 +68,11 @@
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.wizzardohttp</artifactId>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
 <!--            <artifactId>solon.boot.jdksocket</artifactId>-->
 <!--        </dependency>-->
 

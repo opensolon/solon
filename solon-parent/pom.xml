@@ -80,6 +80,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.boot.wizzardohttp</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.boot.reactor-netty</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -418,6 +423,7 @@
         <module>../_extend/solon.boot.jlhttp</module>
         <module>../_extend/solon.boot.jdkhttp</module>
         <module>../_extend/solon.boot.nettyhttp</module>
+        <module>../_extend/solon.boot.wizzardohttp</module>
         <module>../_extend/solon.boot.reactor-netty</module>
         <!--        <module>../_extend/solon.boot.rapidoid-http-fast</module>-->
         <module>../_extend/solon.boot.smarthttp</module>
