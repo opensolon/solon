@@ -39,7 +39,8 @@ public class TCHttpContextHandler extends HttpServlet {
                 return;
             }
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            XMonitor.sendError(context,ex);
+
             ex.printStackTrace(response.getWriter());
             response.setStatus(500);
         }

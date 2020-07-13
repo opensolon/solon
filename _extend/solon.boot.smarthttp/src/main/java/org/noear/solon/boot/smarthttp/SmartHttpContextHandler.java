@@ -2,6 +2,7 @@ package org.noear.solon.boot.smarthttp;
 
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.core.XMonitor;
 import org.noear.solon.core.XPlugin;
 import org.smartboot.http.HttpRequest;
 import org.smartboot.http.HttpResponse;
@@ -40,7 +41,7 @@ public class SmartHttpContextHandler extends HttpHandle {
         try {
             xapp.handle(context);
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            XMonitor.sendError(context,ex);
 
             context.status(500);
             context.setHandled(true);

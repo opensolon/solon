@@ -2,6 +2,7 @@ package org.noear.solon.boot.websocket;
 
 import org.java_websocket.WebSocket;
 import org.noear.solon.XApp;
+import org.noear.solon.core.XMonitor;
 import org.noear.solonclient.channel.SocketMessage;
 
 import java.io.PrintWriter;
@@ -22,14 +23,14 @@ public class WsContextHandler {
         try {
             xapp.handle(context);
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            XMonitor.sendError(context,ex);
             ex.printStackTrace(new PrintWriter(context.outputStream()));
         }
 
         try {
             context.commit();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            XMonitor.sendError(context,ex);
         }
     }
 }

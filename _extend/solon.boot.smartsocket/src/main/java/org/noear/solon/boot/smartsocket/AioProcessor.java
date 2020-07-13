@@ -1,6 +1,7 @@
 package org.noear.solon.boot.smartsocket;
 
 import org.noear.solon.XApp;
+import org.noear.solon.core.XMonitor;
 import org.noear.solonclient.channel.SocketMessage;
 import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.StateMachineEnum;
@@ -33,14 +34,14 @@ public class AioProcessor implements MessageProcessor<SocketMessage> {
         try {
             XApp.global().handle(context);
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            XMonitor.sendError(context,ex);
             ex.printStackTrace(new PrintWriter(context.outputStream()));
         }
 
         try {
             context.commit();
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            XMonitor.sendError(context,ex);
         }
     }
 }

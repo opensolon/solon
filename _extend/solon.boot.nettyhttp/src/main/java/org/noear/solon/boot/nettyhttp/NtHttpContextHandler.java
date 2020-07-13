@@ -6,6 +6,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.core.XMonitor;
 
 import static io.netty.handler.codec.http.HttpUtil.is100ContinueExpected;
 
@@ -40,7 +41,7 @@ class NtHttpContextHandler extends SimpleChannelInboundHandler<FullHttpRequest> 
         try {
             app.handle(context);
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            XMonitor.sendError(context,ex);
 
             context.status(500);
             context.setHandled(true);
@@ -54,7 +55,11 @@ class NtHttpContextHandler extends SimpleChannelInboundHandler<FullHttpRequest> 
                 context.status(404);
                 context.commit();
             }
-        }finally {
+        }
+        catch (Throwable ex){
+            XMonitor.sendError(context,ex);
+        }
+        finally {
             // 将html write到客户端
             ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
         }

@@ -6,6 +6,7 @@ import io.netty.handler.codec.DefaultHeaders;
 import io.netty.handler.codec.http.*;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.core.XMonitor;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoProcessor;
@@ -69,7 +70,7 @@ class RnHttpHandler implements BiFunction<HttpServerRequest, HttpServerResponse,
         try {
             app.handle(context);
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            XMonitor.sendError(context,ex);
 
             context.status(500);
             context.setHandled(true);

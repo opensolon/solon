@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.core.XMonitor;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -31,7 +32,7 @@ public class JdkHttpContextHandler implements HttpHandler {
         try {
             XApp.global().handle(context);
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            XMonitor.sendError(context,ex);
 
             context.status(500);
             context.setHandled(true);

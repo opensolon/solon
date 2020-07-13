@@ -3,6 +3,7 @@ package org.noear.solon.boot.jetty;
 import org.noear.solon.XApp;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.noear.solon.core.XMonitor;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +35,7 @@ public class JtHttpContextHandler extends AbstractHandler {
                 baseRequest.setHandled(true);
             }
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            XMonitor.sendError(context,ex);
 
             baseRequest.setHandled(true);
             ex.printStackTrace(response.getWriter());

@@ -2,6 +2,7 @@ package org.noear.solon.boot.jlhttp;
 
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.core.XMonitor;
 
 import java.io.IOException;
 
@@ -35,7 +36,7 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
         try {
             xapp.handle(context);
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            XMonitor.sendError(context,ex);
 
             context.status(500);
             context.setHandled(true);

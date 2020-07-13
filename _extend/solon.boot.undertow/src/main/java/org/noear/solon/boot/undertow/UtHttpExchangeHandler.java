@@ -9,6 +9,7 @@ import io.undertow.server.session.SessionManager;
 import io.undertow.servlet.handlers.ServletRequestContext;
 import org.noear.solon.XApp;
 import org.noear.solon.boot.undertow.context.UtHttpServletContext;
+import org.noear.solon.core.XMonitor;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -67,7 +68,7 @@ public class UtHttpExchangeHandler implements HttpHandler {
                 exchange.endExchange();
             }
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            XMonitor.sendError(context,ex);
 
             ex.printStackTrace(response.getWriter());
             exchange.setStatusCode(500);
