@@ -42,12 +42,19 @@ public abstract class UApiGateway extends XNav {
     /**
      * 添加接口
      */
-    public void add(Class<?> clz){
-        if(clz == null){
-            return;
-        }
+    public void add(Class<?> clz, boolean remoting) {
+        if (clz != null) {
+            BeanWrap bw = Aop.wrap(clz);
+            bw.remotingSet(remoting);
 
-        add(Aop.wrap(clz));
+            add(bw);
+        }
+    }
+
+    public void add(Class<?> clz){
+        if (clz != null) {
+            add(Aop.wrap(clz));
+        }
     }
 
     /**
