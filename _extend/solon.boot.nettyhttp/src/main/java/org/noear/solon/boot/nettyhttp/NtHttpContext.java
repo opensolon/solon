@@ -9,6 +9,7 @@ import org.noear.solon.XUtil;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XFile;
 import org.noear.solon.core.XMap;
+import org.noear.solon.core.XMonitor;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -36,6 +37,7 @@ public class NtHttpContext extends XContext {
         try {
             _request_parse = new HttpRequestParser(request).parse();
         }catch (Exception ex){
+            XMonitor.sendError(this, ex);
             throw new RuntimeException(ex);
         }
     }

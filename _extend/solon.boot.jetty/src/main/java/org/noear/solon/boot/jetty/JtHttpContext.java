@@ -1,10 +1,7 @@
 package org.noear.solon.boot.jetty;
 
-import org.noear.solon.core.XMap;
+import org.noear.solon.core.*;
 import org.noear.solon.XUtil;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XFile;
-import org.noear.solon.core.XSessionState;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -52,7 +49,7 @@ public class JtHttpContext extends XContext{
 
                 MultipartUtil.buildParamsAndFiles(this);
             } catch (Throwable ex) {
-                ex.printStackTrace();
+                XMonitor.sendError(this, ex);
             }
         }
     }

@@ -29,14 +29,14 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
 
         JlHttpContext context = new JlHttpContext(request, response);
         context.contentType("text/plain;charset=UTF-8");
-        if(XServerProp.output_meta) {
+        if (XServerProp.output_meta) {
             context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
         }
 
         try {
             xapp.handle(context);
         } catch (Throwable ex) {
-            XMonitor.sendError(context,ex);
+            XMonitor.sendError(context, ex);
 
             context.status(500);
             context.setHandled(true);
@@ -44,7 +44,11 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
         }
 
         if (context.getHandled() && context.status() != 404) {
-            context.commit();
+            try {
+                context.commit();
+            } catch (Throwable ex) {
+                XMonitor.sendError(context, ex);
+            }
 
             return 0;
         } else {

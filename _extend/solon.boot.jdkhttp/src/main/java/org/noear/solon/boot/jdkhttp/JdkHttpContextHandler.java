@@ -12,9 +12,9 @@ import java.util.concurrent.Executors;
 
 public class JdkHttpContextHandler implements HttpHandler {
     @Override
-    public void handle(HttpExchange exchange) throws IOException {
+    public void handle(HttpExchange exchange){
         try {
-            handle_do(exchange);
+            handleDo(exchange);
         } catch (Throwable ex) {
             ex.printStackTrace();
         } finally {
@@ -22,8 +22,18 @@ public class JdkHttpContextHandler implements HttpHandler {
         }
     }
 
-    private void handle_do(HttpExchange exchange) throws IOException {
+    private void handleDo(HttpExchange exchange) {
         JdkHttpContext context = new JdkHttpContext(exchange);
+
+        try {
+            handleDo0(context);
+        } catch (Throwable err) {
+            XMonitor.sendError(context, err);
+        }
+    }
+
+    private void handleDo0(JdkHttpContext context) throws IOException {
+
         context.contentType("text/plain;charset=UTF-8");
         if(XServerProp.output_meta) {
             context.headerSet("solon.boot", XPluginImp.solon_boot_ver());

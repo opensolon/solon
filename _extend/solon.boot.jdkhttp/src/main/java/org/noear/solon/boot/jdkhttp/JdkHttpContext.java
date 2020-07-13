@@ -6,6 +6,7 @@ import org.noear.solon.XUtil;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XFile;
 import org.noear.solon.core.XMap;
+import org.noear.solon.core.XMonitor;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class JdkHttpContext extends XContext {
                 _fileMap = new HashMap<>();
                 MultipartUtil.buildParamsAndFiles(this);
             } catch (Throwable ex) {
-                ex.printStackTrace();
+                XMonitor.sendError(this, ex);
             }
         }
     }
