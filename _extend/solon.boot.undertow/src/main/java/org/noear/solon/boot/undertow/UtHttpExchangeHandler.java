@@ -20,14 +20,6 @@ import javax.servlet.http.HttpServletResponse;
  * Description : 基础handler
  **/
 public class UtHttpExchangeHandler implements HttpHandler {
-    protected XApp xapp;
-    protected boolean debug;
-
-    public UtHttpExchangeHandler(XApp xapp) {
-        this.xapp = xapp;
-        this.debug = xapp.prop().argx().getInt("debug") == 1;
-    }
-
 
     @Override
     public void handleRequest(HttpServerExchange exchange) throws Exception {
@@ -57,7 +49,7 @@ public class UtHttpExchangeHandler implements HttpHandler {
 
         try {
             if (exchange.getRequestURI() != null && !exchange.getRequestURI().endsWith(".jsp")) {
-                xapp.handle(context);
+                XApp.global().tryHandle(context);
             }
 
             if (context.getHandled() && context.status() != 404) {

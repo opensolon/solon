@@ -24,6 +24,8 @@ public class JtHttpContextHandler extends AbstractHandler {
             //context 初始化时，可能会出错
             //
             XMonitor.sendError(null, ex);
+
+            response.setStatus(500);
         }
     }
 

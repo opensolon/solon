@@ -32,6 +32,7 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
             //
             XMonitor.sendError(null, ex);
 
+            response.sendHeaders(500);
             return 0;
         }
     }

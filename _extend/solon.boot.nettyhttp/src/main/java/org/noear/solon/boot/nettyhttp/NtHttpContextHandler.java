@@ -35,7 +35,10 @@ class NtHttpContextHandler extends SimpleChannelInboundHandler<FullHttpRequest> 
         try {
             HandleDo(ctx, req, response);
         } catch (Throwable ex) {
+
             XMonitor.sendError(null, ex);
+
+            response.setStatus(HttpResponseStatus.INTERNAL_SERVER_ERROR);
         } finally {
             // 将html write到客户端
             ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
