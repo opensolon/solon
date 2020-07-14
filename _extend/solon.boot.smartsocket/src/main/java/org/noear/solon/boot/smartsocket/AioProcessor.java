@@ -29,19 +29,15 @@ public class AioProcessor implements MessageProcessor<SocketMessage> {
             return;
         }
 
-        AioContext context = new AioContext(session, request);
-
         try {
-            XApp.global().handle(context);
-        } catch (Throwable ex) {
-            XMonitor.sendError(context,ex);
-            ex.printStackTrace(new PrintWriter(context.outputStream()));
-        }
+            AioContext context = new AioContext(session, request);
 
-        try {
+            XApp.global().tryHandle(context);
+
             context.commit();
+
         } catch (Throwable ex) {
-            XMonitor.sendError(context,ex);
+            XMonitor.sendError(null, ex);
         }
     }
 }

@@ -17,31 +17,23 @@ import java.io.IOException;
         urlPatterns = {"/"}
 )
 public class TCHttpContextHandler extends HttpServlet {
-    protected XApp xapp;
-    protected boolean debug;
-
-    public TCHttpContextHandler(XApp xapp) {
-        this.xapp = xapp;
-        this.debug = xapp.prop().argx().getInt("debug") == 1;
-    }
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        TCHttpContext context = new TCHttpContext(request, response);
-        context.contentType("text/plain;charset=UTF-8");
-        context.headerSet("solon.boot",XPluginImp.solon_boot_ver());
-
         try {
-            xapp.handle(context);
+            TCHttpContext context = new TCHttpContext(request, response);
+            context.contentType("text/plain;charset=UTF-8");
+            context.headerSet("solon.boot",XPluginImp.solon_boot_ver());
+
+            XApp.global().tryHandle(context);
 
             if (context.getHandled() && context.status() != 404) {
                 return;
             }
-        } catch (Throwable ex) {
-            XMonitor.sendError(context,ex);
 
-            ex.printStackTrace(response.getWriter());
+        } catch (Throwable ex) {
+            XMonitor.sendError(null, ex);
             response.setStatus(500);
         }
     }

@@ -22,7 +22,7 @@ public final class XPluginImp implements XPlugin {
 
         long time_start = System.currentTimeMillis();
 
-        SmartHttpContextHandler _handler = new SmartHttpContextHandler(app);
+        SmartHttpContextHandler _handler = new SmartHttpContextHandler();
 
         _server = new HttpBootstrap();
         _server.pipeline().next(_handler);

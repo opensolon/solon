@@ -30,7 +30,7 @@ public class SmartHttpContext extends XContext {
                 _fileMap = new HashMap<>();
                 MultipartUtil.buildParamsAndFiles(this);
             }catch (Throwable ex){
-                ex.printStackTrace();
+                throw new RuntimeException(ex);
             }
         }
     }

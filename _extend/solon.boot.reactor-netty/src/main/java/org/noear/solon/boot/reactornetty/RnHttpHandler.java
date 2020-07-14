@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 class RnHttpHandler implements BiFunction<HttpServerRequest, HttpServerResponse, Publisher<Void>> {
-    private XApp app = XApp.global();
+
 
     @Override
     public Publisher<Void> apply(HttpServerRequest request, HttpServerResponse response) {
@@ -67,15 +67,7 @@ class RnHttpHandler implements BiFunction<HttpServerRequest, HttpServerResponse,
             context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
         }
 
-        try {
-            app.handle(context);
-        } catch (Throwable ex) {
-            XMonitor.sendError(context,ex);
-
-            context.status(500);
-            context.setHandled(true);
-            context.output(XUtil.getFullStackTrace(ex));
-        }
+        XApp.global().tryHandle(context);
 
         if (context.status() == 404) {
             return null;  //response.sendNotFound();

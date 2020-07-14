@@ -5,32 +5,19 @@ import org.noear.solon.XApp;
 import org.noear.solon.core.XMonitor;
 import org.noear.solonclient.channel.SocketMessage;
 
-import java.io.PrintWriter;
-
 public class WsContextHandler {
-    protected XApp xapp;
-    protected boolean debug;
-
-    public WsContextHandler(XApp xapp) {
-        this.xapp = xapp;
-        this.debug = xapp.prop().isDebugMode();
-    }
 
     public void handle(WebSocket socket, byte[] message, boolean messageIsString) {
-        SocketMessage request =  SocketMessage.wrap(null, socket.getResourceDescriptor(), message);
-        WsContext context = new WsContext(socket, request, messageIsString);
-
         try {
-            xapp.handle(context);
-        } catch (Throwable ex) {
-            XMonitor.sendError(context,ex);
-            ex.printStackTrace(new PrintWriter(context.outputStream()));
-        }
+            SocketMessage request = SocketMessage.wrap(null, socket.getResourceDescriptor(), message);
 
-        try {
+            WsContext context = new WsContext(socket, request, messageIsString);
+
+            XApp.global().tryHandle(context);
+
             context.commit();
         } catch (Exception ex) {
-            XMonitor.sendError(context,ex);
+            XMonitor.sendError(null, ex);
         }
     }
 }
