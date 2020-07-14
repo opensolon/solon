@@ -3,9 +3,6 @@ package org.noear.solon.boot.websocket;
 import org.noear.solon.XApp;
 import org.noear.solon.core.XPlugin;
 
-import java.io.Closeable;
-import java.io.IOException;
-
 public class XPluginImp implements XPlugin {
     private WsServer _server = null;
 
@@ -23,7 +20,7 @@ public class XPluginImp implements XPlugin {
         int _port = 10000 + app.port();
         long time_start = System.currentTimeMillis();
 
-        WsContextHandler contextHandler = new WsContextHandler(app);
+        WsContextHandler contextHandler = new WsContextHandler();
 
         System.out.println("solon.Server:main: WebSocket");
 
