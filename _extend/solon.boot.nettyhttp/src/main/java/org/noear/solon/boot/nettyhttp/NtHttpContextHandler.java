@@ -5,13 +5,13 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
 import org.noear.solon.core.XMonitor;
+
+import java.io.IOException;
 
 import static io.netty.handler.codec.http.HttpUtil.is100ContinueExpected;
 
 class NtHttpContextHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
-    private XApp app = XApp.global();
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
@@ -32,36 +32,31 @@ class NtHttpContextHandler extends SimpleChannelInboundHandler<FullHttpRequest> 
                 HttpVersion.HTTP_1_1,
                 HttpResponseStatus.OK);
 
-        NtHttpContext context = new NtHttpContext(ctx, req, response);
+        try {
+            HandleDo(ctx, req, response);
+        } catch (Throwable ex) {
+            XMonitor.sendError(null, ex);
+        } finally {
+            // 将html write到客户端
+            ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+        }
+    }
+
+    private void HandleDo(ChannelHandlerContext ctx, FullHttpRequest req, FullHttpResponse res) throws IOException {
+        NtHttpContext context = new NtHttpContext(ctx, req, res);
+
         context.contentType("text/plain;charset=UTF-8");//默认
-        if(XServerProp.output_meta) {
+        if (XServerProp.output_meta) {
             context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
         }
 
-        try {
-            app.handle(context);
-        } catch (Throwable ex) {
-            XMonitor.sendError(context,ex);
+        XApp.global().tryHandle(context);
 
-            context.status(500);
-            context.setHandled(true);
-            context.output(XUtil.getFullStackTrace(ex));
-        }
-
-        try{
-            if (context.getHandled() && context.status() != 404) {
-                context.commit();
-            } else {
-                context.status(404);
-                context.commit();
-            }
-        }
-        catch (Throwable ex){
-            XMonitor.sendError(context,ex);
-        }
-        finally {
-            // 将html write到客户端
-            ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+        if (context.getHandled() && context.status() != 404) {
+            context.commit();
+        } else {
+            context.status(404);
+            context.commit();
         }
     }
 }

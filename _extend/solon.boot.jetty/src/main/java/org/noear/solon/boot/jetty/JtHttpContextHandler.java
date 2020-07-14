@@ -18,7 +18,7 @@ public class JtHttpContextHandler extends AbstractHandler {
     @Override
     public void handle(String s, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
         try {
-            handleDo(s, baseRequest, request, response);
+            handleDo(baseRequest, request, response);
 
         } catch (Throwable ex) {
             //context 初始化时，可能会出错
@@ -27,7 +27,7 @@ public class JtHttpContextHandler extends AbstractHandler {
         }
     }
 
-    private void handleDo(String s, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
+    private void handleDo(Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
         JtHttpContext context = new JtHttpContext(request, response);
 
         context.contentType("text/plain;charset=UTF-8");
@@ -37,7 +37,7 @@ public class JtHttpContextHandler extends AbstractHandler {
 
         XApp.global().tryHandle(context);
 
-        if (context.status() != 404) {
+        if (context.getHandled() && context.status() != 404) {
             baseRequest.setHandled(true);
         }
     }

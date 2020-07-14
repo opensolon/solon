@@ -29,7 +29,7 @@ public class JlHttpContext extends XContext {
                 _fileMap = new HashMap<>();
                 MultipartUtil.buildParamsAndFiles(this);
             } catch (Throwable ex) {
-                XMonitor.sendError(this, ex);
+                throw new RuntimeException(ex);
             }
         }
     }

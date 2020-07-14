@@ -25,7 +25,7 @@ public final class XPluginImp implements XPlugin {
 
         long time_start = System.currentTimeMillis();
 
-        JlHttpContextHandler _handler = new JlHttpContextHandler( app);
+        JlHttpContextHandler _handler = new JlHttpContextHandler();
 
         if (System.getProperty("javax.net.ssl.keyStore") != null) { // enable SSL if configured
             _server.setServerSocketFactory(SSLServerSocketFactory.getDefault());

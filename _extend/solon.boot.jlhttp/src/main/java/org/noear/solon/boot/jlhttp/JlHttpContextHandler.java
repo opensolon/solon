@@ -7,12 +7,10 @@ import org.noear.solon.core.XMonitor;
 import java.io.IOException;
 
 public class JlHttpContextHandler implements HTTPServer.ContextHandler {
-    protected XApp xapp;
     protected boolean debug;
 
-    public JlHttpContextHandler(XApp xapp) {
-        this.xapp = xapp;
-        this.debug = xapp.prop().argx().getInt("debug") == 1;
+    public JlHttpContextHandler() {
+        this.debug = XApp.cfg().isDebugMode();
     }
 
     @Override
@@ -27,28 +25,30 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
          *
          * */
 
+        try {
+            return handleDo(request, response);
+        } catch (Throwable ex) {
+            //context 初始化时，可能会出错
+            //
+            XMonitor.sendError(null, ex);
+
+            return 0;
+        }
+    }
+
+    private int handleDo(HTTPServer.Request request, HTTPServer.Response response) throws IOException {
         JlHttpContext context = new JlHttpContext(request, response);
+
         context.contentType("text/plain;charset=UTF-8");
+
         if (XServerProp.output_meta) {
             context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
         }
 
-        try {
-            xapp.handle(context);
-        } catch (Throwable ex) {
-            XMonitor.sendError(context, ex);
-
-            context.status(500);
-            context.setHandled(true);
-            context.output(XUtil.getFullStackTrace(ex));
-        }
+        XApp.global().tryHandle(context);
 
         if (context.getHandled() && context.status() != 404) {
-            try {
-                context.commit();
-            } catch (Throwable ex) {
-                XMonitor.sendError(context, ex);
-            }
+            context.commit();
 
             return 0;
         } else {

@@ -37,7 +37,6 @@ public class NtHttpContext extends XContext {
         try {
             _request_parse = new HttpRequestParser(request).parse();
         }catch (Exception ex){
-            XMonitor.sendError(this, ex);
             throw new RuntimeException(ex);
         }
     }
