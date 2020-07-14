@@ -24,6 +24,7 @@ public abstract class XContext {
         return XContextUtil.current();
     }
 
+
     /**是否已处理*/
     private boolean _handled;
     @XNote("设置处理状态")

@@ -51,7 +51,7 @@ public class SocketServer {
                     SocketMessage msg = session.receive(protocol);
                     if (msg != null) {
                         pool.execute(() -> {
-                            handler.handler(session, msg);
+                            handler.handle(session, msg);
                         });
                     }
                 }

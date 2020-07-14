@@ -30,7 +30,7 @@ public class JdkHttpContext extends XContext {
                 _fileMap = new HashMap<>();
                 MultipartUtil.buildParamsAndFiles(this);
             } catch (Throwable ex) {
-                XMonitor.sendError(this, ex);
+                throw new RuntimeException(ex);
             }
         }
     }
@@ -389,6 +389,7 @@ public class JdkHttpContext extends XContext {
     private void sendHeaders() throws IOException{
         if(!_headers_sent) {
             _headers_sent = true;
+
             if("HEAD".equals(method())){
                 _allows_write = false;
                 _exchange.sendResponseHeaders(_status, -1);

@@ -49,7 +49,7 @@ public class JtHttpContext extends XContext{
 
                 MultipartUtil.buildParamsAndFiles(this);
             } catch (Throwable ex) {
-                XMonitor.sendError(this, ex);
+               throw new RuntimeException(ex);
             }
         }
     }

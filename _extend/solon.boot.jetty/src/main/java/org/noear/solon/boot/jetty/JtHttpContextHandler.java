@@ -5,41 +5,40 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.noear.solon.core.XMonitor;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public class JtHttpContextHandler extends AbstractHandler {
-    protected XApp xapp;
     protected boolean debug;
 
-    public JtHttpContextHandler(XApp xapp) {
-        this.xapp = xapp;
-        this.debug = xapp.prop().argx().getInt("debug") == 1;
+    public JtHttpContextHandler() {
+        this.debug = XApp.cfg().isDebugMode();
     }
 
     @Override
-    public void handle(String s, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void handle(String s, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            handleDo(s, baseRequest, request, response);
 
-        JtHttpContext context = new JtHttpContext(request,response);
+        } catch (Throwable ex) {
+            //context 初始化时，可能会出错
+            //
+            XMonitor.sendError(null, ex);
+        }
+    }
+
+    private void handleDo(String s, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
+        JtHttpContext context = new JtHttpContext(request, response);
+
         context.contentType("text/plain;charset=UTF-8");
-        if(XServerProp.output_meta) {
+        if (XServerProp.output_meta) {
             context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
         }
 
-        try {
-            xapp.handle(context);
+        XApp.global().tryHandle(context);
 
-            if(context.getHandled() && context.status() != 404){
-                baseRequest.setHandled(true);
-            }
-        } catch (Throwable ex) {
-            XMonitor.sendError(context,ex);
-
+        if (context.status() != 404) {
             baseRequest.setHandled(true);
-            ex.printStackTrace(response.getWriter());
-            response.setStatus(500);
         }
     }
 }

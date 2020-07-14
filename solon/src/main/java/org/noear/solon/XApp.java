@@ -378,6 +378,19 @@ public class XApp implements XHandler,XHandlerSlots {
         }
     }
 
+    /*
+    * 异常时，自动500处理
+    * */
+    public void tryHandle(XContext x) {
+        try {
+            handle(x);
+        } catch (Throwable ex) {
+            x.status(500);
+            x.setHandled(true);
+            x.output(XUtil.getFullStackTrace(ex));
+        }
+    }
+
     public XApp onError(XEventHandler<Throwable> handler) {
         XMonitor.onError(handler);
         return this;
