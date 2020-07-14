@@ -30,7 +30,7 @@ public class XPluginUndertow implements XPlugin {
         builder.setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE,false);
 
         // 动作分发Handler
-        UtHttpExchangeHandler _handler = new UtHttpExchangeHandler( app);
+        UtHttpExchangeHandler _handler = new UtHttpExchangeHandler();
         DeploymentManager manager = doGenerateManager(_handler, app);
 
         HttpHandler f_handler = null;
