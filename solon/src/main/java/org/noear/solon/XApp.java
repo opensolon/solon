@@ -139,6 +139,9 @@ public class XApp implements XHandler,XHandlerSlots {
     private final Map<String,Object> _shared=new HashMap<>();
     private Map<String,Object> _shared_unmod;
 
+    /**
+     * 添加共享对象
+     * */
     public void sharedAdd(String key,Object obj) {
         _shared.put(key, obj);
         _onSharedAdd_event.forEach(fun->{
@@ -146,6 +149,9 @@ public class XApp implements XHandler,XHandlerSlots {
         });
     }
 
+    /**
+     * 获取共享对象（异步获取）
+     * */
     public <T> void sharedGet(String key,Act1<T> event) {
         Object tmp = _shared.get(key);
         if (tmp != null) {
@@ -159,10 +165,16 @@ public class XApp implements XHandler,XHandlerSlots {
         }
     }
 
+    /**
+     * 共享对象添加事件
+     * */
     public void onSharedAdd(Act2<String,Object> event){
         _onSharedAdd_event.add(event);
     }
 
+    /**
+     * 共享对象
+     * */
     public Map<String,Object> shared(){
         if(_shared_unmod == null) {
             _shared_unmod = Collections.unmodifiableMap(_shared);
@@ -171,11 +183,11 @@ public class XApp implements XHandler,XHandlerSlots {
         return _shared_unmod;
     }
 
+
+    private final XRouter _router;
     /**
      * 路由器
      */
-    private final XRouter _router;
-
     public XRouter router() {
         return _router;
     }
