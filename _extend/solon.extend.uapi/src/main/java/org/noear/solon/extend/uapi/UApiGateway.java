@@ -9,7 +9,7 @@ import org.noear.solon.core.*;
 /**
  * UAPI导航控制器
  *
- * 1.提供容器，重新组织Handler运行
+ * 1.提供容器，重新组织XAction运行
  * */
 public abstract class UApiGateway implements XHandler , XRender {
     private XHandler _def;
