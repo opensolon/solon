@@ -7,6 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Class 包装
+ *
+ *  用于缓存类的方法
+ * */
 public class ClassWrap {
     private static Map<Class<?>, ClassWrap> _cache = new ConcurrentHashMap<>();
 

@@ -6,7 +6,9 @@ import org.noear.solon.ext.PrintUtil;
 
 import java.io.File;
 
-/** 外部扩展加载器（对于动态扩展） */
+/**
+ * 外部扩展加载器（对于动态扩展）
+ * */
 public class ExtendLoader {
     private static final ExtendLoader _g = new ExtendLoader();
 
