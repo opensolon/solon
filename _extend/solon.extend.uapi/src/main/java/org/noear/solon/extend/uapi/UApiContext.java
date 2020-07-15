@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * UAPI上下文（为扩展上下文提供基类）
+ * UAPI上下文
+ *
+ * 为扩展上下文提供基类；同时可拦截所有方法（已拦截render函数；进而控制泻染动作）
  * */
 public class UApiContext extends XContext {
     private XContext real;
