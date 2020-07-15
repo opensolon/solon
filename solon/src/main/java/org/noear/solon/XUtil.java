@@ -30,6 +30,9 @@ public class XUtil {
         return s == null || s.length() == 0;
     }
 
+    /**
+     * 检查字符串是否为非空
+     */
     public static boolean isNotEmpty(String s) {
         return !isEmpty(s);
     }
@@ -95,6 +98,9 @@ public class XUtil {
         return url;
     }
 
+    /**
+     * 根据url加载配置集
+     * */
     public static Properties getProperties(URL url) {
         try {
             return XPropertiesLoader.global.load(url);
@@ -103,9 +109,12 @@ public class XUtil {
         }
     }
 
-    public static Properties getProperties(String text) {
+    /**
+     * 根据txt加载配置集
+     * */
+    public static Properties getProperties(String txt) {
         try {
-            return XPropertiesLoader.global.load(text);
+            return XPropertiesLoader.global.load(txt);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -162,6 +171,9 @@ public class XUtil {
 
     private static Pattern _pkr = Pattern.compile("\\{([^\\\\}]+)\\}");
 
+    /**
+     * 将路径根据表达式转成map
+     * */
     public static XMap pathVarMap(String path, String expr) {
         XMap _map = new XMap();
 
@@ -198,6 +210,9 @@ public class XUtil {
         return _map;
     }
 
+    /**
+     * 构建应用扩展目录
+     * */
     public static String buildExt(String ext_dir, boolean autoCreate) {
         URL temp = XUtil.getResource("application.properties");
         if (temp == null) {
@@ -232,14 +247,23 @@ public class XUtil {
         }
     }
 
+    /**
+     * 将 source:Map 数据，绑定到 target:bean
+     * */
     public static void bindTo(Map<String,String> source, Object target) {
         bindTo((k) -> source.get(k), target);
     }
 
+    /**
+     * 将 source:Properties 数据，绑定到 target:bean
+     * */
     public static void bindTo(Properties source, Object target) {
         bindTo((k) -> source.getProperty(k), target);
     }
 
+    /**
+     * 将 source:((k)->v) 数据，绑定到 target:bean
+     * */
     public static void bindTo(Fun1<String, String> source, Object target) {
         if (target == null) {
             return;

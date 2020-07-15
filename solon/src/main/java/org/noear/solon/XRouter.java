@@ -23,6 +23,7 @@ public class XRouter {
         add(path, endpoint, method, 0, handler);
     }
 
+    /** 添加路由关系 */
     public void add( String path, int endpoint, XMethod method, int index, XHandler handler) {
         _list[endpoint].add(new XListener(path, method, index, handler));
     }
@@ -34,7 +35,7 @@ public class XRouter {
         _list[2].clear();
     }
 
-    /** 区配目标（根据上上文） */
+    /** 区配一个目标（根据上上文） */
     public XHandler matchOne(XContext context, int endpoint) {
         String path = context.path();
         XMethod method = XMethod.valueOf(context.method());
@@ -48,6 +49,7 @@ public class XRouter {
         return null;
     }
 
+    /** 区配多个目标（根据上上文） */
     public List<XHandler> matchAll(XContext context, int endpoint) {
         String path = context.path();
         XMethod method = XMethod.valueOf(context.method());
