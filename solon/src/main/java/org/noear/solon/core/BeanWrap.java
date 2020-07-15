@@ -7,10 +7,10 @@ import org.noear.solon.annotation.XSingleton;
  * */
 @SuppressWarnings("unchecked")
 public class BeanWrap {
-    protected Class<?> _clz;
-    protected Object _raw;
-    protected boolean _singleton;
-    protected boolean _remoting;
+    protected Class<?> _clz;      // bean clz
+    protected Object _raw;        // bean raw（初始实例）
+    protected boolean _singleton; // 是否为单例
+    protected boolean _remoting;  // 是否为远程服务
 
     public BeanWrap() {}
 
