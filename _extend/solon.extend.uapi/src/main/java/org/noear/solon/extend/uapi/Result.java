@@ -3,7 +3,7 @@ package org.noear.solon.extend.uapi;
 import java.io.Serializable;
 
 /**
- * UAPI结果
+ * 结果
  * */
 public class Result<T> implements Serializable {
     public int code = 1;
