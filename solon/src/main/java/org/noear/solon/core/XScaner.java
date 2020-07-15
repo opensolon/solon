@@ -23,15 +23,21 @@ public class XScaner {
         Set<String> urls = new LinkedHashSet<>();
 
         try {
+            //1.查找资源
             Enumeration<URL> roots = XUtil.getResources(path);
             while (roots.hasMoreElements()) {
+                //2.资源遍历
                 URL url = roots.nextElement();
 
                 String p = url.getProtocol();
                 if ("file".equals(p)) {
+                    //3.1.找到文件
+                    //
                     String fp = URLDecoder.decode(url.getFile(), "UTF-8");
                     doScanByFile(new File(fp), path, filter, urls);
                 } else if("jar".equals(p)){
+                    //3.2.找到jar包
+                    //
                     JarFile jar = ((JarURLConnection) url.openConnection()).getJarFile();
                     doScanByJar(path, jar, filter, urls);
                 }
