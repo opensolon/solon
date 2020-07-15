@@ -20,8 +20,8 @@ public abstract class UApiGateway implements XHandler , XRender {
 
         _nav = new XNav(this.getClass().getAnnotation(XMapping.class)){
             @Override
-            public XHandler get(XContext c, String path) {
-                return UApiGateway.this.getDo(c, path);
+            protected XHandler findDo(XContext c, String path) {
+                return UApiGateway.this.findDo(c, path);
             }
         };
 
@@ -121,9 +121,9 @@ public abstract class UApiGateway implements XHandler , XRender {
 
 
     /**
-     * 获取接口
+     * 查找接口
      * */
-    protected XHandler getDo(XContext c, String path) {
+    protected XHandler findDo(XContext c, String path) {
         XAction api = (XAction) _nav.get(path);
 
         if (api == null) {

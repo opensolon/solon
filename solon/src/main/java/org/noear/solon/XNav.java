@@ -51,17 +51,25 @@ public class XNav extends XHandlerAide implements XHandler {
         _main.put(XUtil.mergePath(_path, path).toUpperCase(), handler);
     }
 
-    public XHandler get(String path) {
+    /**
+     * 获取接口
+     * */
+    public final XHandler get(String path) {
         return _main.get(path);
     }
 
-    public XHandler get(XContext c, String path) {
-        return _main.get(path);
+    /**
+     * 查找接口
+     *
+     * 用于被人重写，从而控制find过程
+     * */
+    protected XHandler findDo(XContext c, String path) {
+        return get(path);
     }
 
     @Override
     public void handle(XContext c) throws Throwable {
-        XHandler m = get(c, c.pathAsUpper());
+        XHandler m = findDo(c, c.pathAsUpper());
 
         if (m != null) {
             for (XHandler h : _before) {
