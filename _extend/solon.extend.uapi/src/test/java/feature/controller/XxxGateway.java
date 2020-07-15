@@ -13,7 +13,7 @@ import org.noear.solon.extend.uapi.UApiRender;
 public class XxxGateway extends UApiGateway {
     @Override
     protected void register() {
-        after(new UApiRender());
+        after(UApiRender.class);
 
         Aop.beanOnloaded(() -> {
             Aop.beanForeach((clzName, bw) -> {

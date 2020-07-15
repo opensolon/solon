@@ -39,6 +39,14 @@ public abstract class UApiGateway extends XNav {
         super.handle(c2);
     }
 
+    public <T extends XHandler > void before(Class<T> clz){
+        super.before(Aop.get(clz));
+    }
+
+    public <T extends XHandler > void after(Class<T> clz){
+        super.after(Aop.get(clz));
+    }
+
     /**
      * 添加接口
      */
