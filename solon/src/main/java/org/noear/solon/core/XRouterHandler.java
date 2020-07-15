@@ -3,7 +3,7 @@ package org.noear.solon.core;
 import org.noear.solon.XRouter;
 
 /**
- * XApp Handler
+ * XApp router Handler
  * */
 public class XRouterHandler implements XHandler {
     private XRouter _router;
@@ -46,6 +46,9 @@ public class XRouterHandler implements XHandler {
         }
     }
 
+    /**
+     * 唯一处理（用于主处理）
+     * */
     protected boolean handleOne(XContext context, int endpoint) throws Throwable {
         XHandler handler = _router.matchOne(context, endpoint);
 
@@ -57,6 +60,9 @@ public class XRouterHandler implements XHandler {
         }
     }
 
+    /**
+     * 多项目处理（用于拦截器）
+     * */
     protected void handleMultiple(XContext context, int endpoint) throws Throwable {
         for(XHandler handler: _router.matchAll(context,endpoint)){
             handler.handle(context);

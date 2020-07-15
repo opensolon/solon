@@ -6,6 +6,9 @@ package org.noear.solon.core;
 public class XMonitor {
     private static XEventHandler<Throwable> errorEventHandler;
 
+    /**
+     * 发送异常
+     * */
     public static void sendError(XContext ctx, Throwable err) {
         if (errorEventHandler != null) {
             try {
@@ -15,6 +18,10 @@ public class XMonitor {
             }
         }
     }
+
+    /**
+     * 添加异常处理器（只能一个）
+     * */
     public static void onError(XEventHandler<Throwable> handler) {
         errorEventHandler = handler;
     }

@@ -7,10 +7,17 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.Properties;
 
+/**
+ * 属性加载器
+ *
+ * 通过 global 进行重写
+ * */
 public class XPropertiesLoader {
     public static XPropertiesLoader global = new XPropertiesLoader();
 
     static {
+        //默认的扩展加载器
+        //
         String loader = "org.noear.solon.extend.properties.yaml.PropertiesLoader";
 
         Class<?> clz = XUtil.loadClass(loader);
@@ -24,6 +31,11 @@ public class XPropertiesLoader {
         }
     }
 
+    /**
+     * 是否支持
+     *
+     * @param suffix 文件后缀
+     * */
     public boolean isSupport(String suffix) {
         if (suffix == null) {
             return false;
@@ -33,6 +45,9 @@ public class XPropertiesLoader {
     }
 
 
+    /**
+     * 加载 url 配置
+     * */
     public Properties load(URL url) throws Exception {
         if (url == null) {
             return null;
@@ -51,13 +66,16 @@ public class XPropertiesLoader {
         return null;
     }
 
-    public Properties load(String text) throws Exception {
-        int idx1 = text.indexOf("=");
-        int idx2 = text.indexOf(":");
+    /**
+     * 加载 txt 配置
+     * */
+    public Properties load(String txt) throws Exception {
+        int idx1 = txt.indexOf("=");
+        int idx2 = txt.indexOf(":");
 
         if (idx1 > 0 && (idx1 < idx2 || idx2 < 0)) {
             Properties tmp = new Properties();
-            tmp.load(new StringReader(text));
+            tmp.load(new StringReader(txt));
             return tmp;
         }
 

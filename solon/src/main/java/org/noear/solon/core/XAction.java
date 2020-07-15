@@ -103,10 +103,16 @@ public class XAction extends XHandlerAide implements XHandler {
         }
     }
 
+    /**
+     * 执行动作（便于重写）
+     * */
     protected Object callDo(XContext x) throws Throwable {
         return XActionUtil.exeMethod(_bw.get(), _mw, x);
     }
 
+    /**
+     * 执行渲染（便于重写）
+     * */
     protected void renderDo(XContext x, Object result) throws Throwable {
         x.render(result);
     }

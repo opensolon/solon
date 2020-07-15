@@ -8,6 +8,11 @@ import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 自定义类加载器
+ *
+ * 为了方便加载扩展jar包
+ * */
 public class XClassLoader extends URLClassLoader {
 
     private static XClassLoader _global = new XClassLoader();

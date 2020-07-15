@@ -1,5 +1,8 @@
 package org.noear.solon.core;
 
+/**
+ * 路由监听器（为路由器服务）
+ * */
 public class XListener {
     public XListener(String path, XMethod method, int index, XHandler handler) {
         _p = path;
@@ -18,6 +21,9 @@ public class XListener {
     private final XMethod _m; //方式
 
 
+    /**
+     * 是否匹配
+     * */
     public boolean matches(XMethod method2, String path2) {
         if (XMethod.ALL.code == _m.code) {
             return do_matches(path2);

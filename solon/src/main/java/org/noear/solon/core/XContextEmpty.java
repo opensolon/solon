@@ -8,6 +8,9 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+/**
+ * 通用上下文，空对象
+ * */
 public class XContextEmpty extends XContext {
     public static XContext create(){
         return new XContextEmpty();

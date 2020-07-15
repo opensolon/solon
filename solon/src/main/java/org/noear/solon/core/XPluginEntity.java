@@ -20,6 +20,9 @@ public class XPluginEntity {
     }
 
 
+    /**
+     * 优先级
+     * */
     public int getPriority() {
         return priority;
     }

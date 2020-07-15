@@ -3,7 +3,7 @@ package org.noear.solon.core;
 import java.io.InputStream;
 
 /**
- * 通用上传文件模型
+ * 通用上传文件模型（例：通过http上传的文件）
  * */
 public class XFile {
     /**内容类型*/

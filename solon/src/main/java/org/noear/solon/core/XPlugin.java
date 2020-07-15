@@ -12,5 +12,8 @@ public interface XPlugin {
      */
     void start(XApp app);
 
+    /**
+     * 停止
+     * */
     default void stop() throws Throwable{}
 }

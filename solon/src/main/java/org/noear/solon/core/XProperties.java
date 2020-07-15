@@ -7,6 +7,11 @@ import org.noear.solon.ext.Fun1;
 import java.util.Properties;
 import java.util.function.BiConsumer;
 
+/**
+ * 通用属性集合
+ *
+ * 在 Properties 基础上，添加了些方法
+ * */
 public class XProperties extends Properties {
 
     public XProperties() {
@@ -53,24 +58,38 @@ public class XProperties extends Properties {
         }
     }
 
+    /**
+     * 获取某项配置 的 原始值
+     * */
     public Object getRaw(String key) {
         return super.get(key);
     }
 
-    public XProperties getProp(String key) {
+
+    /**
+     * 查找 keyStarts 开头的所有配置；并生成一个新的 配置集
+     *
+     * @param keyStarts key 的开始字符
+     * */
+    public XProperties getProp(String keyStarts) {
         XProperties prop = new XProperties();
-        findDo(key, prop::put);
+        findDo(keyStarts, prop::put);
         return prop;
     }
 
-    public XMap getXmap(String key) {
+    /**
+     * 查找 keyStarts 开头的所有配置；并生成一个新的 Map
+     *
+     * @param keyStarts key 的开始字符
+     * */
+    public XMap getXmap(String keyStarts) {
         XMap map = new XMap();
-        findDo(key, map::put);
+        findDo(keyStarts, map::put);
         return map;
     }
 
-    private void findDo(String key, Act2<String, String> setFun) {
-        String key2 = key + ".";
+    private void findDo(String keyStarts, Act2<String, String> setFun) {
+        String key2 = keyStarts + ".";
         int idx2 = key2.length();
 
         forEach((k, v) -> {
@@ -84,6 +103,9 @@ public class XProperties extends Properties {
         });
     }
 
+    /**
+     * 重写 forEach，增加 defaults 的遍历
+     * */
     @Override
     public synchronized void forEach(BiConsumer<? super Object, ? super Object> action) {
         if (defaults != null) {
