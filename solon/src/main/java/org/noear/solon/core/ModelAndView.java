@@ -22,7 +22,7 @@ public class ModelAndView extends LinkedHashMap{
         }
     }
 
-    /*视图*/
+    /** 视图 */
     public String view() {
         return __view;
     }
@@ -31,7 +31,7 @@ public class ModelAndView extends LinkedHashMap{
         return this;
     }
 
-    /*模型*/
+    /** 模型 */
     public Map<String, Object> model() { return this; }
 
     @Override
@@ -40,6 +40,7 @@ public class ModelAndView extends LinkedHashMap{
         __view = null;
     }
 
+    /** 是否为空 */
     public boolean isEmpty() {
         return __view == null && size()==0;
     }

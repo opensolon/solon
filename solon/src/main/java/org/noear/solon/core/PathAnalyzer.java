@@ -13,14 +13,23 @@ public class PathAnalyzer {
         pattern = Pattern.compile(expCompile(path), Pattern.CASE_INSENSITIVE);
     }
 
+    /**
+     * 获取路径匹配结果
+     * */
     public Matcher matcher(String uri){
         return pattern.matcher(uri);
     }
 
+    /**
+     * 检测是否匹配
+     * */
     public boolean matches(String uri){
         return pattern.matcher(uri).find();
     }
 
+    /**
+     * 将路径表达式编译为正则表达式
+     * */
     private static String expCompile(String path) {
         //替换特殊符号
         String p = path;
