@@ -13,6 +13,8 @@ import java.lang.annotation.*;
 
 /**
  * 路径印射
+ *
+ * 一般附加在控制器和动作上
  * */
 @Inherited //要可继承
 @Target({ElementType.METHOD, ElementType.TYPE})
