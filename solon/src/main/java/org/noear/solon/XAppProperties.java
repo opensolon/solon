@@ -131,9 +131,16 @@ public final class XAppProperties extends XProperties {
     }
 
     /**
-     * 是否为debug mode
+     * 是否为 debug mode
      */
     public boolean isDebugMode() {
         return argx().getInt("debug") == 1;
+    }
+
+    /**
+     * 是否为 drift mode (of ip)
+     * */
+    public boolean isDriftMode() {
+        return argx().getInt("drift") == 1;
     }
 }
