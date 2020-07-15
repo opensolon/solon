@@ -46,10 +46,21 @@ public class BeanWebWrap {
         c_poi = endpoint;
     }
 
+    /**
+     * 加载 XAction 到目标容器
+     *
+     * @param slots 接收加载结果的容器（槽）
+     * */
     public void load(XHandlerSlots slots) {
         load(_bw.remoting(), slots);
     }
 
+    /**
+     * 加载 XAction 到目标容器
+     *
+     * @param all 加载全部函数（一般 remoting 会全部加载）
+     * @param slots 接收加载结果的容器（槽）
+     * */
     public void load(boolean all, XHandlerSlots slots) {
         if (XHandler.class.isAssignableFrom(_bw.clz())) {
             loadHandlerDo(slots);
@@ -58,6 +69,9 @@ public class BeanWebWrap {
         }
     }
 
+    /**
+     * 加载处理
+     * */
     protected void loadHandlerDo(XHandlerSlots slots) {
         if (c_map == null) {
             throw new RuntimeException(_bw.clz().getName() + " No XMapping!");
@@ -77,6 +91,9 @@ public class BeanWebWrap {
         }
     }
 
+    /**
+     * 加载 XAction 处理
+     * */
     protected void loadActionDo(XHandlerSlots slots, boolean all) {
         String m_path;
 
@@ -157,6 +174,9 @@ public class BeanWebWrap {
         }
     }
 
+    /**
+     * 构建 XAction
+     * */
     protected XAction action(BeanWrap bw, Method method, XMapping mp, String path){
         return new XAction(bw, method, mp, path);
     }
