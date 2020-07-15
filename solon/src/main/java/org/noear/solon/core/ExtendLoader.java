@@ -43,6 +43,9 @@ public class ExtendLoader {
         }
     }
 
+    /**
+     * 卸载一个已加载的jar文件
+     * */
     public static boolean unloadJar(File file){
         try {
             XClassLoader.global().unloadJar(file.toURI().toURL());
@@ -57,7 +60,11 @@ public class ExtendLoader {
 
     }
 
-    /** 如果是目录的话，只处理一级 */
+    /**
+     * 加载一个具体的文件
+     *
+     * 如果是目录的话，只处理一级
+     * */
     private void loadFile(File file) {
         if (file.exists() == false) {
             return;
@@ -74,6 +81,9 @@ public class ExtendLoader {
     }
 
 
+    /**
+     * 加载一个具体的文件
+     * */
     private void loadFileDo(File file) {
         if (file.isFile()) {
             String path = file.getAbsolutePath();
