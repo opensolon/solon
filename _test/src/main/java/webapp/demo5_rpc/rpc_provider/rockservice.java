@@ -3,6 +3,7 @@ package webapp.demo5_rpc.rpc_provider;
 import org.noear.solon.annotation.XBean;
 import org.noear.solon.annotation.XBefore;
 import org.noear.solon.annotation.XMapping;
+import org.noear.solon.annotation.XService;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XMethod;
 import webapp.demo5_rpc.rockapi;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @XBefore({SocketChannelAdapter.class})
 @XMapping(value = "/demo5/test", method = {XMethod.HTTP, XMethod.SOCKET})
-@XBean(remoting = true)
+@XService(remoting = true)
 public class rockservice implements rockapi {
 
     public Object test1(Integer a) {

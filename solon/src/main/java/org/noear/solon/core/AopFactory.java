@@ -36,7 +36,7 @@ public class AopFactory extends AopFactoryBase {
                         Object raw = mWrap.method.invoke(bw.raw());
                         if(raw != null) {
                             BeanWrap m_bw = Aop.put(mWrap.method.getReturnType(), raw);
-                            beanCreate(m_bw, m_an);
+                            beanAnnoHandle(m_bw, m_an.value());
                         }
                     } else {
                         throw new RuntimeException("XBean method does not support parameters");
@@ -46,7 +46,11 @@ public class AopFactory extends AopFactoryBase {
         });
 
         beanCreatorAdd(XBean.class, (clz, bw, anno) -> {
-            beanCreate(bw, anno);
+            beanAnnoHandle(bw, anno.value());
+        });
+
+        beanCreatorAdd(XService.class, (clz, bw, anno) -> {
+            serviceAnnoHandle(bw, anno);
         });
 
         beanCreatorAdd(XController.class, (clz, bw, anno) -> {
@@ -96,27 +100,31 @@ public class AopFactory extends AopFactoryBase {
         }));
     }
 
-    protected void beanCreate(BeanWrap bw, XBean anno) {
+    protected void serviceAnnoHandle(BeanWrap bw, XService anno) {
         bw.remotingSet(anno.remoting());
 
+        beanAnnoHandle(bw, "");
+
+        if (bw.remoting()) {
+            BeanWebWrap bww = new BeanWebWrap(bw);
+            if (bww.mapping() != null) {
+                //
+                //如果没有xmapping，则不进行web注册
+                //
+                bww.load(XApp.global());
+            }
+        }
+    }
+
+    protected void beanAnnoHandle(BeanWrap bw, String name) {
         if (XPlugin.class.isAssignableFrom(bw.clz())) {
             //如果是插件，则插入
             XApp.global().plug(bw.raw());
         } else {
-            if (XUtil.isEmpty(anno.value())) {
+            if (XUtil.isEmpty(name)) {
                 Aop.put(bw.clz().getName(), bw);
             }else{
-                Aop.put(anno.value(), bw);
-            }
-
-            if (bw.remoting()) {
-                BeanWebWrap bww = new BeanWebWrap(bw);
-                if (bww.mapping() != null) {
-                    //
-                    //如果没有xmapping，则不进行web注册
-                    //
-                    bww.load(XApp.global());
-                }
+                Aop.put(name, bw);
             }
 
             //如果有父级接口，则建立关系映射

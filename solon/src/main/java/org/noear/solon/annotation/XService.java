@@ -8,6 +8,6 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface XBean {
-    String value() default "";//as bean.name
+public @interface XService {
+    boolean remoting() default false; //是否开始远程服务
 }

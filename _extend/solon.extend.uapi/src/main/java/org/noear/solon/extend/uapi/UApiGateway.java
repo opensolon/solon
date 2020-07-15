@@ -85,7 +85,7 @@ public abstract class UApiGateway extends XNav {
             if (h instanceof UApi) {
                 api = (UApi) h;
             } else {
-                api = new UApiHandler(path, h);
+                api = createHandler(path, h);
             }
 
             if (XUtil.isEmpty(api.name())) {

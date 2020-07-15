@@ -3,6 +3,7 @@ package webapp.demo2_mvc;
 import org.noear.solon.annotation.XBean;
 import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
+import org.noear.solon.annotation.XService;
 import org.noear.solon.core.ModelAndView;
 import org.noear.solon.core.XContext;
 
@@ -13,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @XMapping("/demo2/rpc/")
-@XBean(remoting = true)
+@XService(remoting = true)
 public class JsonRpcController {
 
     public Object json(XContext ctx){
