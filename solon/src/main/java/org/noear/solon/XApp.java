@@ -7,7 +7,7 @@ import org.noear.solon.ext.*;
 import java.util.*;
 
 /**
- * @author noear
+ * 应用管理中心
  * */
 public class XApp implements XHandler,XHandlerSlots {
     private static XApp _global;
@@ -26,6 +26,7 @@ public class XApp implements XHandler,XHandlerSlots {
 
     /**
      * 启动应用（全局只启动一个），执行序列
+     *
      * <p>
      * 1.加载配置（约定：application.properties    为应用配置文件）
      * 2.加载自发现插件（约定：/solonplugin/*.properties 为插件配置文件）
