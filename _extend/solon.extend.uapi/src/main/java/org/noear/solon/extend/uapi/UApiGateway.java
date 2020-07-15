@@ -7,9 +7,9 @@ import org.noear.solon.core.*;
 
 
 /**
- * UAPI导航控制器
+ * UAPI网关
  *
- * 1.提供容器，重新组织XAction运行
+ * 提供容器，重新组织XAction运行
  * */
 public abstract class UApiGateway implements XHandler , XRender {
     private XHandler _def;
@@ -21,7 +21,7 @@ public abstract class UApiGateway implements XHandler , XRender {
         _nav = new XNav(this.getClass().getAnnotation(XMapping.class)){
             @Override
             public XHandler get(XContext c, String path) {
-                return UApiGateway.this.get(c, path);
+                return UApiGateway.this.getDo(c, path);
             }
         };
 
@@ -31,11 +31,14 @@ public abstract class UApiGateway implements XHandler , XRender {
     }
 
     /**
-     * 注册二级代理
+     * 注册相关接口与拦截器
      */
     protected abstract void register();
 
 
+    /**
+     * for XHandler
+     * */
     @Override
     public void handle(XContext c) throws Throwable {
         //转换上下文
@@ -48,21 +51,30 @@ public abstract class UApiGateway implements XHandler , XRender {
         _nav.handle(c2);
     }
 
+    /**
+     * for XRender (用于接管 XContext::render)
+     * */
     @Override
     public void render(Object obj, XContext c) throws Throwable {
         c.renderReal(obj);
     }
 
+    /**
+     * 添加前置拦截器
+     * */
     public <T extends XHandler> void addBefore(Class<T> clz) {
         _nav.before(Aop.get(clz));
     }
 
+    /**
+     * 添加后置拦截器
+     * */
     public <T extends XHandler> void addAfter(Class<T> clz) {
         _nav.after(Aop.get(clz));
     }
 
     /**
-     * 添加接口
+     * 添加接口（remoting ? 采用@json进行渲染）
      */
     public void add(Class<?> clz, boolean remoting) {
         if (clz != null) {
@@ -73,14 +85,18 @@ public abstract class UApiGateway implements XHandler , XRender {
         }
     }
 
+    /**
+     * 添加接口
+     */
     public void add(Class<?> clz) {
         if (clz != null) {
             add(Aop.wrap(clz));
         }
     }
 
+
     /**
-     * 添加接口
+     * 添加接口（适用于，从Aop工厂遍历加入）
      */
     public void add(BeanWrap bw) {
         if (bw == null) {
@@ -104,7 +120,10 @@ public abstract class UApiGateway implements XHandler , XRender {
     }
 
 
-    public XHandler get(XContext c, String path) {
+    /**
+     * 获取接口
+     * */
+    protected XHandler getDo(XContext c, String path) {
         XAction api = (XAction) _nav.get(path);
 
         if (api == null) {
