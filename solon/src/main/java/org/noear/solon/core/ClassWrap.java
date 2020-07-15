@@ -15,6 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ClassWrap {
     private static Map<Class<?>, ClassWrap> _cache = new ConcurrentHashMap<>();
 
+    /**
+     * 根据clz获取一个ClassWrap
+     * */
     public static ClassWrap get(Class<?> clz) {
         ClassWrap cw = _cache.get(clz);
         if (cw == null) {
@@ -27,9 +30,9 @@ public class ClassWrap {
         return cw;
     }
 
-    public final Class<?> clazz;
-    public final List<MethodWrap> methodWraps;
-    public final Field[] fields;
+    public final Class<?> clazz;                //clz
+    public final List<MethodWrap> methodWraps;  //clz.methodS
+    public final Field[] fields;                //clz.fieldS
 
     protected ClassWrap(Class<?> clz) {
         clazz = clz;
@@ -44,6 +47,9 @@ public class ClassWrap {
 
     private Map<String, FieldWrap> _fwS = new ConcurrentHashMap<>();
 
+    /**
+     * 获取一个字段包装
+     * */
     public FieldWrap getFieldWrap(Field f1) {
         FieldWrap fw = _fwS.get(f1.getName());
         if (fw == null) {
