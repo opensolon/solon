@@ -186,7 +186,7 @@ public interface DemoRpc{
 
 // - server
 @XMapping("/demo/*")
-@XB(remoting = true)
+@XService(remoting = true)
 public class DemoService implements DemoRpc{
     public void setName(Integer user_id,String name){
         
