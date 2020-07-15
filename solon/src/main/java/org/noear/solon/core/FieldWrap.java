@@ -37,10 +37,16 @@ public class FieldWrap {
         _setter = findSetter(clz, f1);
     }
 
+    /**
+     * 获取自身的临时对象
+     * */
     public FieldWrapTmp tmp(Object obj) {
         return new FieldWrapTmp(this, obj);
     }
 
+    /**
+     * 设置字段的值
+     * */
     public void setValue(Object tObj, Object val) {
         try {
             if (_setter == null) {
@@ -61,6 +67,9 @@ public class FieldWrap {
     }
 
 
+    /**
+     * 查找设置器
+     * */
     private static Method findSetter(Class<?> tCls, Field field) {
         String fieldName = field.getName();
         String firstLetter = fieldName.substring(0, 1).toUpperCase();
