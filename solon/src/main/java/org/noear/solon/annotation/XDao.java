@@ -8,6 +8,5 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface XService {
-    boolean remoting() default false; //是否开始远程服务
+public @interface XDao {
 }

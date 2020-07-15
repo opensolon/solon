@@ -36,7 +36,7 @@ public class AopFactory extends AopFactoryBase {
                         Object raw = mWrap.method.invoke(bw.raw());
                         if(raw != null) {
                             BeanWrap m_bw = Aop.put(mWrap.method.getReturnType(), raw);
-                            beanAnnoHandle(m_bw, m_an.value());
+                            beanRegister(m_bw, m_an.value());
                         }
                     } else {
                         throw new RuntimeException("XBean method does not support parameters");
@@ -47,6 +47,10 @@ public class AopFactory extends AopFactoryBase {
 
         beanCreatorAdd(XBean.class, (clz, bw, anno) -> {
             beanAnnoHandle(bw, anno.value());
+        });
+
+        beanCreatorAdd(XDao.class, (clz, bw, anno) -> {
+            beanRegister(bw, "");
         });
 
         beanCreatorAdd(XService.class, (clz, bw, anno) -> {
@@ -103,7 +107,7 @@ public class AopFactory extends AopFactoryBase {
     protected void serviceAnnoHandle(BeanWrap bw, XService anno) {
         bw.remotingSet(anno.remoting());
 
-        beanAnnoHandle(bw, "");
+        beanRegister(bw, "");
 
         if (bw.remoting()) {
             BeanWebWrap bww = new BeanWebWrap(bw);
@@ -121,20 +125,24 @@ public class AopFactory extends AopFactoryBase {
             //如果是插件，则插入
             XApp.global().plug(bw.raw());
         } else {
-            if (XUtil.isEmpty(name)) {
-                Aop.put(bw.clz().getName(), bw);
-            }else{
-                Aop.put(name, bw);
-            }
+            beanRegister(bw, name);
+        }
+    }
 
-            //如果有父级接口，则建立关系映射
-            Class<?>[] list = bw.clz().getInterfaces();
-            for (Class<?> c : list) {
-                if (c.getName().contains("java.") == false) {
-                    //建立关系映射
-                    clzMapping.put(c, bw.clz());
-                    beanNotice(c, bw);//通知子类订阅
-                }
+    protected void beanRegister(BeanWrap bw, String name) {
+        if (XUtil.isEmpty(name)) {
+            Aop.put(bw.clz().getName(), bw);
+        } else {
+            Aop.put(name, bw);
+        }
+
+        //如果有父级接口，则建立关系映射
+        Class<?>[] list = bw.clz().getInterfaces();
+        for (Class<?> c : list) {
+            if (c.getName().contains("java.") == false) {
+                //建立关系映射
+                clzMapping.put(c, bw.clz());
+                beanNotice(c, bw);//通知子类订阅
             }
         }
     }
