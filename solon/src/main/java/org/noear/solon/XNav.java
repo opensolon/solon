@@ -51,6 +51,10 @@ public class XNav extends XHandlerAide implements XHandler {
         _main.put(XUtil.mergePath(_path, path).toUpperCase(), handler);
     }
 
+    public XHandler get(String path) {
+        return _main.get(path);
+    }
+
     public XHandler get(XContext c, String path) {
         return _main.get(path);
     }

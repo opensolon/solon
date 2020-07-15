@@ -105,7 +105,7 @@ public abstract class UApiGateway implements XHandler , XRender {
 
 
     public XHandler get(XContext c, String path) {
-        XAction api = (XAction) _nav.get(c, path);
+        XAction api = (XAction) _nav.get(path);
 
         if (api == null) {
             if (_def != null) {
