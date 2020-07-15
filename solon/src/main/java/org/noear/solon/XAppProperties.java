@@ -20,6 +20,11 @@ public final class XAppProperties extends XProperties {
         super(System.getProperties());
     }
 
+    /**
+     * 加载配置（用于第一次加载）
+     *
+     * @param args 启用参数
+     * */
     public XAppProperties load(XMap args) {
         //1.接收启动参数
         _args = args;
@@ -44,6 +49,11 @@ public final class XAppProperties extends XProperties {
         return this;
     }
 
+    /**
+     * 加载配置（用于扩展加载）
+     *
+     * @param url 配置地址
+     * */
     public XAppProperties load(URL url) {
         if (url != null) {
             Properties prop = XUtil.getProperties(url);
@@ -57,6 +67,9 @@ public final class XAppProperties extends XProperties {
         return this;
     }
 
+    /**
+     * 插件扫描
+     * */
     protected void plugsScan() {
         //3.查找插件配置（如果出错，让它抛出异常）
         XScaner.scan("solonplugin", n -> n.endsWith(".properties") || n.endsWith(".yml"))
@@ -71,6 +84,11 @@ public final class XAppProperties extends XProperties {
         }
     }
 
+    /**
+     * 插件扫描，根据某个资源地址扫描
+     *
+     * @param url 资源地址
+     * */
     private void plugsScanMapDo(URL url) {
         try {
             XAppProperties p = new XAppProperties().load(url);
@@ -91,6 +109,9 @@ public final class XAppProperties extends XProperties {
 
     private Set<Act2<String, String>> _changeEvent = new HashSet<>();
 
+    /**
+     * 添加变更事件
+     * */
     public void onChange(Act2<String, String> event) {
         _changeEvent.add(event);
     }
