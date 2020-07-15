@@ -46,7 +46,7 @@ public class AopFactory extends AopFactoryBase {
         });
 
         beanCreatorAdd(XBean.class, (clz, bw, anno) -> {
-            beanAnnoHandle(bw, anno.value());
+            beanAnnoHandle(bw, anno);
         });
 
         beanCreatorAdd(XDao.class, (clz, bw, anno) -> {
@@ -104,6 +104,9 @@ public class AopFactory extends AopFactoryBase {
         }));
     }
 
+    /**
+     * XService 的处理
+     * */
     protected void serviceAnnoHandle(BeanWrap bw, XService anno) {
         bw.remotingSet(anno.remoting());
 
@@ -120,15 +123,21 @@ public class AopFactory extends AopFactoryBase {
         }
     }
 
-    protected void beanAnnoHandle(BeanWrap bw, String name) {
+    /**
+     * XBean 的处理
+     * */
+    protected void beanAnnoHandle(BeanWrap bw, XBean anno) {
         if (XPlugin.class.isAssignableFrom(bw.clz())) {
             //如果是插件，则插入
             XApp.global().plug(bw.raw());
         } else {
-            beanRegister(bw, name);
+            beanRegister(bw, anno.value());
         }
     }
 
+    /**
+     * 注册Bean到Aop管理中心
+     * */
     protected void beanRegister(BeanWrap bw, String name) {
         if (XUtil.isEmpty(name)) {
             Aop.put(bw.clz().getName(), bw);
