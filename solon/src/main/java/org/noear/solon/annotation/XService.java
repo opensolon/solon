@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 /**
  * Service组件
  *
- * 从XBean分离出来，后添加别的特性 可不相互干扰（如 remoting 与 UapiGateway 的冲突）
+ * 从XBean分离出来（避免添加别的特性时造成相互干扰）（如 remoting 与 UapiGateway 的冲突）
  * */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
