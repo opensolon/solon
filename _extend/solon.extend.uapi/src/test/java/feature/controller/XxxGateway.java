@@ -6,14 +6,12 @@ import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XContext;
 import org.noear.solon.extend.uapi.UApiGateway;
-import org.noear.solon.extend.uapi.UApiRender;
 
 @XController
 @XMapping("/xxx/*")
 public class XxxGateway extends UApiGateway {
     @Override
     protected void register() {
-        after(UApiRender.class);
 
         Aop.beanOnloaded(() -> {
             Aop.beanForeach((clzName, bw) -> {
@@ -30,6 +28,6 @@ public class XxxGateway extends UApiGateway {
     //替换自定义上下文
     @Override
     public XContext context(XContext ctx) {
-        return new CmdContext(ctx);
+        return new CmdContext(ctx, this);
     }
 }

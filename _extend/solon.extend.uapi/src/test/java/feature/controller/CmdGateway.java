@@ -6,14 +6,12 @@ import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.XContext;
 import org.noear.solon.extend.uapi.UApiGateway;
-import org.noear.solon.extend.uapi.UApiRender;
 
 @XController
 @XMapping("/cmd/*")
 public class CmdGateway extends UApiGateway {
     @Override
     protected void register() {
-        after(new UApiRender());
 
         add(CMD_A_0_1.class);
     }
@@ -21,6 +19,6 @@ public class CmdGateway extends UApiGateway {
     //替换自定义上下文
     @Override
     public XContext context(XContext ctx) {
-        return new CmdContext(ctx);
+        return new CmdContext(ctx, this);
     }
 }
