@@ -62,23 +62,37 @@ public abstract class UApiGateway implements XHandler , XRender {
     /**
      * 添加前置拦截器
      * */
-    public <T extends XHandler> void addBefore(Class<T> clz) {
-        _nav.before(Aop.get(clz));
+    public <T extends XHandler> void addBefore(Class<T> interceptorClz) {
+        _nav.before(Aop.get(interceptorClz));
+    }
+
+    /**
+     * 添加前置拦截器
+     * */
+    public  void addBefore(XHandler interceptor) {
+        _nav.before(interceptor);
     }
 
     /**
      * 添加后置拦截器
      * */
-    public <T extends XHandler> void addAfter(Class<T> clz) {
-        _nav.after(Aop.get(clz));
+    public <T extends XHandler> void addAfter(Class<T> interceptorClz) {
+        _nav.after(Aop.get(interceptorClz));
+    }
+
+    /**
+     * 添加后置拦截器
+     * */
+    public  void addAfter(XHandler interceptor) {
+        _nav.after(interceptor);
     }
 
     /**
      * 添加接口（remoting ? 采用@json进行渲染）
      */
-    public void add(Class<?> clz, boolean remoting) {
-        if (clz != null) {
-            BeanWrap bw = Aop.wrap(clz);
+    public void add(Class<?> beanClz, boolean remoting) {
+        if (beanClz != null) {
+            BeanWrap bw = Aop.wrap(beanClz);
             bw.remotingSet(remoting);
 
             add(bw);
@@ -88,9 +102,9 @@ public abstract class UApiGateway implements XHandler , XRender {
     /**
      * 添加接口
      */
-    public void add(Class<?> clz) {
-        if (clz != null) {
-            add(Aop.wrap(clz));
+    public void add(Class<?> beanClz) {
+        if (beanClz != null) {
+            add(Aop.wrap(beanClz));
         }
     }
 
@@ -98,12 +112,12 @@ public abstract class UApiGateway implements XHandler , XRender {
     /**
      * 添加接口（适用于，从Aop工厂遍历加入；或者把rpc代理包装成bw）
      */
-    public void add(BeanWrap bw) {
-        if (bw == null) {
+    public void add(BeanWrap beanWp) {
+        if (beanWp == null) {
             return;
         }
 
-        BeanWebWrap uw = new BeanWebWrap(bw, _nav.mapping());
+        BeanWebWrap uw = new BeanWebWrap(beanWp, _nav.mapping());
 
         uw.load((path, m, h) -> {
             XAction api = null;
