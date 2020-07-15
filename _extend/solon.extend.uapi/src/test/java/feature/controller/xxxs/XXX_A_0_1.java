@@ -10,7 +10,7 @@ import java.util.Map;
 
 //@XController              //如果想直接被运行，加这两个注解
 //@XMapping("/api/")
-@XBean()
+@XBean
 public class XXX_A_0_1 {
     @XMapping("A.0.1")
     public Object call(Integer cid, Integer user) {
