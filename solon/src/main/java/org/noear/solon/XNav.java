@@ -17,18 +17,25 @@ public class XNav extends XHandlerAide implements XHandler {
     private final String _path;
 
     public XNav() {
-        XMapping _map = this.getClass().getAnnotation(XMapping.class);
-        if (_map == null) {
+        this(null);
+    }
+
+    public XNav(XMapping mapping) {
+        if (mapping == null) {
+            mapping = this.getClass().getAnnotation(XMapping.class);
+        }
+
+        if (mapping == null) {
             throw new RuntimeException("No XMapping!");
         }
 
-        _path = _map.value();
+        _path = mapping.value();
     }
 
     /**
      * XMapping value
      * */
-    protected String mapping(){
+    public String mapping(){
         return _path;
     }
 

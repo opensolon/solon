@@ -425,12 +425,18 @@ public abstract class XContext {
     @XNote("渲染数据")
     public void render(Object obj) throws Throwable {
         //ModelAndView or Data
-        XRenderManager.global.render(obj, this);
+        renderReal(obj);
     }
 
     @XNote("渲染数据")
     public void render(String view, Map<String,?> data) throws Throwable {
-        XRenderManager.global.render(new ModelAndView(view,data), this);
+        renderReal(new ModelAndView(view,data));
+    }
+
+    @XNote("渲染数据")
+    public final void renderReal(Object obj) throws Throwable {
+        //ModelAndView or Data
+        XRenderManager.global.render(obj, this);
     }
 
     private boolean _remoting;

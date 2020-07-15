@@ -17,6 +17,8 @@ public class XAction extends XHandlerAide implements XHandler {
     protected final MethodWrap _mw;
     protected String _produces;//输出产品
 
+    private String _name;
+
     private PathAnalyzer _pr;//路径分析器
     private List<String> _pks;
     private static Pattern _pkr = Pattern.compile("\\{([^\\\\}]+)\\}");
@@ -27,6 +29,9 @@ public class XAction extends XHandlerAide implements XHandler {
 
         if (mp != null) {
             _produces = mp.produces();
+            _name = mp.value();
+        }else{
+            _name = m.getName();
         }
 
         //支持path变量
@@ -41,6 +46,13 @@ public class XAction extends XHandlerAide implements XHandler {
                 _pr = new PathAnalyzer(path);
             }
         }
+    }
+
+    /**
+     * 接口名称
+     */
+    public String name() {
+        return _name;
     }
 
     @Override

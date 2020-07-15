@@ -5,18 +5,27 @@ import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.*;
 
-import java.lang.reflect.Method;
 
 /**
  * UAPI导航控制器
  *
  * 1.提供容器，重新组织Handler运行
  * */
-public abstract class UApiGateway extends XNav {
+public abstract class UApiGateway implements XHandler , XRender {
     private XHandler _def;
+    private XNav _nav;
 
     public UApiGateway() {
         super();
+
+        _nav = new XNav(this.getClass().getAnnotation(XMapping.class)){
+            @Override
+            public XHandler get(XContext c, String path) {
+                return UApiGateway.this.get(c, path);
+            }
+        };
+
+        _def = (c) -> c.status(404);
 
         register();
     }
@@ -36,15 +45,20 @@ public abstract class UApiGateway extends XNav {
         XContextUtil.currentSet(c2);
 
         //调用父级处理
-        super.handle(c2);
+        _nav.handle(c2);
     }
 
-    public <T extends XHandler > void before(Class<T> clz){
-        super.before(Aop.get(clz));
+    @Override
+    public void render(Object obj, XContext c) throws Throwable {
+        c.renderReal(obj);
     }
 
-    public <T extends XHandler > void after(Class<T> clz){
-        super.after(Aop.get(clz));
+    public <T extends XHandler> void addBefore(Class<T> clz) {
+        _nav.before(Aop.get(clz));
+    }
+
+    public <T extends XHandler> void addAfter(Class<T> clz) {
+        _nav.after(Aop.get(clz));
     }
 
     /**
@@ -59,7 +73,7 @@ public abstract class UApiGateway extends XNav {
         }
     }
 
-    public void add(Class<?> clz){
+    public void add(Class<?> clz) {
         if (clz != null) {
             add(Aop.wrap(clz));
         }
@@ -69,45 +83,29 @@ public abstract class UApiGateway extends XNav {
      * 添加接口
      */
     public void add(BeanWrap bw) {
-        if(bw == null){
+        if (bw == null) {
             return;
         }
 
-        BeanWebWrap uw = new BeanWebWrap(bw, mapping()){
-            @Override
-            protected XAction action(BeanWrap bw, Method method, XMapping mp, String path) {
-                return createAction(bw, method, mp, path);
-            }
-        };
+        BeanWebWrap uw = new BeanWebWrap(bw, _nav.mapping());
 
         uw.load((path, m, h) -> {
-            UApi api = null;
-            if (h instanceof UApi) {
-                api = (UApi) h;
-            } else {
-                api = createHandler(path, h);
-            }
+            XAction api = null;
+            if (h instanceof XAction) {
+                api = (XAction) h;
 
-            if (XUtil.isEmpty(api.name())) {
-                _def = api;
-            } else {
-                addDo(api.name(), api);
+                if (XUtil.isEmpty(api.name())) {
+                    _def = api;
+                } else {
+                    _nav.add(api.name(), api);
+                }
             }
         });
     }
 
-    /**
-     * 添加接口
-     */
-    @Override
-    public void add(String name, XHandler handler) {
-        UApi api = createHandler(name, handler);
-        add(api.name(), api);
-    }
 
-    @Override
     public XHandler get(XContext c, String path) {
-        UApi api = (UApi) super.get(c, path);
+        XAction api = (XAction) _nav.get(c, path);
 
         if (api == null) {
             if (_def != null) {
@@ -126,23 +124,9 @@ public abstract class UApiGateway extends XNav {
     }
 
     /**
-     * 转换 上下文
+     * 转换 上下文（关键的地方）
      */
     protected XContext context(XContext ctx) {
-        return new UApiContext(ctx);
-    }
-
-    /**
-     * 创建 uapi action （可重载）
-     * */
-    protected UApiAction createAction(BeanWrap bw, Method method, XMapping mp, String path){
-        return new UApiAction(bw, method, mp, path);
-    }
-
-    /**
-     * 创建 uapi handler （可重载）
-     * */
-    protected UApiHandler createHandler(String path, XHandler handler){
-        return new UApiHandler(path, handler);
+        return new UApiContext(ctx, this);
     }
 }

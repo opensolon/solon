@@ -1,5 +1,6 @@
 package org.noear.solon.extend.uapi;
 
+import org.noear.solon.core.ModelAndView;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XFile;
 import org.noear.solon.core.XMap;
@@ -16,8 +17,11 @@ import java.util.Map;
  * */
 public class UApiContext extends XContext {
     private XContext real;
-    public UApiContext(XContext ctx){
+    private UApiGateway gateway;
+
+    public UApiContext(XContext ctx, UApiGateway gateway) {
         this.real = ctx;
+        this.gateway = gateway;
     }
 
     @Override
@@ -82,7 +86,7 @@ public class UApiContext extends XContext {
 
     @Override
     public String param(String key, String def) {
-        return real.param(key,def);
+        return real.param(key, def);
     }
 
     @Override
@@ -107,7 +111,7 @@ public class UApiContext extends XContext {
 
     @Override
     public String cookie(String key, String def) {
-        return real.cookie(key,def);
+        return real.cookie(key, def);
     }
 
     @Override
@@ -122,7 +126,7 @@ public class UApiContext extends XContext {
 
     @Override
     public String header(String key, String def) {
-        return real.header(key,def);
+        return real.header(key, def);
     }
 
     @Override
@@ -162,17 +166,17 @@ public class UApiContext extends XContext {
 
     @Override
     public void headerSet(String key, String val) {
-        real.headerSet(key,val);
+        real.headerSet(key, val);
     }
 
     @Override
     public void headerAdd(String key, String val) {
-        real.headerAdd(key,val);
+        real.headerAdd(key, val);
     }
 
     @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
-        real.cookieSet(key,val,domain,path,maxAge);
+        real.cookieSet(key, val, domain, path, maxAge);
     }
 
     @Override
@@ -199,7 +203,25 @@ public class UApiContext extends XContext {
     //
     //
 
-    public String uapiName(){
+    public String uapiName() {
         return attr("uapi");
+    }
+
+    @Override
+    public void render(Object obj) throws Throwable {
+        if (gateway == null) {
+            super.render(obj);
+        } else {
+            gateway.render(obj, this);
+        }
+    }
+
+    @Override
+    public void render(String view, Map<String, ?> data) throws Throwable {
+        if (gateway == null) {
+            super.render(view, data);
+        } else {
+            gateway.render(new ModelAndView(view, data), this);
+        }
     }
 }
