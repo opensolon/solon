@@ -103,10 +103,7 @@ public abstract class UApiGateway implements XHandler , XRender {
      */
     public void add(Class<?> beanClz, boolean remoting) {
         if (beanClz != null) {
-            BeanWrap bw = Aop.wrap(beanClz);
-            bw.remotingSet(remoting);
-
-            add(bw, remoting);
+            add(Aop.wrap(beanClz), remoting);
         }
     }
 
