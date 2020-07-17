@@ -4,6 +4,8 @@ import org.noear.solon.annotation.XSingleton;
 
 /**
  * Bean 包装（可以被继承重写）
+ *
+ * Bean 构建过程：Constructor(构造方法) -> @XInject(依赖注入) -> @XInit(初始化，相当于 PostConstruct)
  * */
 @SuppressWarnings("unchecked")
 public class BeanWrap {
