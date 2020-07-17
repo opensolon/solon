@@ -20,7 +20,12 @@ public class BeanWebWrap {
 
     public BeanWebWrap(BeanWrap wrap) {
         c_map = wrap.clz().getAnnotation(XMapping.class);
-        initDo(wrap, c_map.value(), wrap.remoting());
+
+        if(c_map == null){
+            initDo(wrap, null, wrap.remoting());
+        }else{
+            initDo(wrap, c_map.value(), wrap.remoting());
+        }
     }
 
     public BeanWebWrap(BeanWrap wrap, String mapping) {
