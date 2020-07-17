@@ -19,7 +19,7 @@ public class BeanWebWrap {
     protected boolean c_remoting;
 
     public BeanWebWrap(BeanWrap wrap) {
-        c_map = _bw.clz().getAnnotation(XMapping.class);
+        c_map = wrap.clz().getAnnotation(XMapping.class);
         initDo(wrap, c_map.value(), wrap.remoting());
     }
 
