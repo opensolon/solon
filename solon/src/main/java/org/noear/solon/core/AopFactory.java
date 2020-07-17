@@ -49,14 +49,6 @@ public class AopFactory extends AopFactoryBase {
             beanAnnoHandle(bw, anno);
         });
 
-        beanCreatorAdd(XDao.class, (clz, bw, anno) -> {
-            beanRegister(bw, "");
-        });
-
-        beanCreatorAdd(XService.class, (clz, bw, anno) -> {
-            serviceAnnoHandle(bw, anno);
-        });
-
         beanCreatorAdd(XController.class, (clz, bw, anno) -> {
             new BeanWebWrap(bw).load(XApp.global());
         });
@@ -105,25 +97,6 @@ public class AopFactory extends AopFactoryBase {
     }
 
     /**
-     * XService 的处理
-     * */
-    protected void serviceAnnoHandle(BeanWrap bw, XService anno) {
-        bw.remotingSet(anno.remoting());
-
-        beanRegister(bw, "");
-
-        if (bw.remoting()) {
-            BeanWebWrap bww = new BeanWebWrap(bw);
-            if (bww.mapping() != null) {
-                //
-                //如果没有xmapping，则不进行web注册
-                //
-                bww.load(XApp.global());
-            }
-        }
-    }
-
-    /**
      * XBean 的处理
      * */
     protected void beanAnnoHandle(BeanWrap bw, XBean anno) {
@@ -131,7 +104,22 @@ public class AopFactory extends AopFactoryBase {
             //如果是插件，则插入
             XApp.global().plug(bw.raw());
         } else {
+            //设置remoting状态
+            bw.remotingSet(anno.remoting());
+
+            //注册到管理中心
             beanRegister(bw, anno.value());
+
+            //如果是remoting状态，转到XApp路由器
+            if (bw.remoting()) {
+                BeanWebWrap bww = new BeanWebWrap(bw);
+                if (bww.mapping() != null) {
+                    //
+                    //如果没有xmapping，则不进行web注册
+                    //
+                    bww.load(XApp.global());
+                }
+            }
         }
     }
 

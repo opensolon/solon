@@ -10,4 +10,5 @@ import java.lang.annotation.*;
 @Documented
 public @interface XBean {
     String value() default "";//as bean.name
+    boolean remoting() default false; //是否开始远程服务
 }
