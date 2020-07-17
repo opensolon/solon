@@ -1,5 +1,6 @@
 package org.noear.solon.core;
 
+import org.noear.solon.annotation.XInit;
 import org.noear.solon.annotation.XSingleton;
 
 /**
@@ -10,17 +11,21 @@ import org.noear.solon.annotation.XSingleton;
 @SuppressWarnings("unchecked")
 public class BeanWrap {
     protected Class<?> _clz;      // bean clz
+    protected MethodWrap _clz_init;
     protected Object _raw;        // bean raw（初始实例）
     protected boolean _singleton; // 是否为单例
     protected boolean _remoting;  // 是否为远程服务
 
-    public BeanWrap() {}
+    public BeanWrap() {
+    }
 
-    public BeanWrap(Class<?> clz, Object raw){
+    public BeanWrap(Class<?> clz, Object raw) {
         _clz = clz;
 
         XSingleton ano = clz.getAnnotation(XSingleton.class);
         _singleton = (ano == null || ano.value());
+
+        _buildInit();
 
         if (raw == null) {
             _raw = _new();
@@ -29,45 +34,92 @@ public class BeanWrap {
         }
     }
 
-    /** is remoting()? */
-    public boolean remoting(){
+    /**
+     * is remoting()?
+     */
+    public boolean remoting() {
         return _remoting;
     }
 
-    public void remotingSet(boolean remoting){
+    public void remotingSet(boolean remoting) {
         _remoting = remoting;
     }
 
-    /** bean类 */
-    public Class<?> clz(){return _clz;}
-    /** bean原始对象 */
-    public <T> T raw() {
-        return (T)_raw;
+    /**
+     * bean类
+     */
+    public Class<?> clz() {
+        return _clz;
     }
-    protected void rawSet(Object raw){
+
+    /**
+     * bean原始对象
+     */
+    public <T> T raw() {
+        return (T) _raw;
+    }
+
+    protected void rawSet(Object raw) {
         _raw = raw;
     }
-    /** bean对象 */
-    public <T> T get(){
-        if(_singleton){
-            return (T)_raw;
-        }else{
-            return (T)_new();
+
+    /**
+     * bean对象
+     */
+    public <T> T get() {
+        if (_singleton) {
+            return (T) _raw;
+        } else {
+            return (T) _new();
         }
     }
 
-    /** bean 新建对象 */
-    protected Object _new(){
-        if(_clz.isInterface()){
+    /**
+     * bean 新建对象
+     */
+    protected Object _new() {
+        if (_clz.isInterface()) {
             return null;
         }
 
-        try{
+        try {
+            //1.构造
             Object obj = _clz.newInstance();
+
+            //2.注入
             Aop.factory().inject(obj);
+
+            //3.初始化
+            if(_clz_init != null){
+                _clz_init.method.invoke(obj);
+            }
+
             return obj;
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
+        }
+    }
+
+    protected void _buildInit() {
+        if (_clz_init != null) {
+            return;
+        }
+
+        if (_clz.isInterface()) {
+            return;
+        }
+
+        ClassWrap clzWrap = ClassWrap.get(_clz);
+
+        for (MethodWrap mw : clzWrap.methodWraps) {
+            if (mw.method.getAnnotation(XInit.class) != null) {
+                if (mw.parameters.length == 0) {
+                    //只接收没有参数的
+                    _clz_init = mw;
+                }
+
+                break;
+            }
         }
     }
 }
