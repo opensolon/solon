@@ -18,14 +18,17 @@ public class XAction extends XHandlerAide implements XHandler {
     protected String _produces;//输出产品
 
     private String _name;
+    private boolean _remoting;
 
     private PathAnalyzer _pr;//路径分析器
     private List<String> _pks;
     private static Pattern _pkr = Pattern.compile("\\{([^\\\\}]+)\\}");
 
-    public XAction(BeanWrap bw, Method m, XMapping mp, String path) {
+    public XAction(BeanWrap bw, Method m, XMapping mp, String path, boolean remoting) {
         _bw = bw;
         _mw = MethodWrap.get(m);
+
+        _remoting = remoting;
 
         if (mp != null) {
             _produces = mp.produces();
@@ -57,7 +60,7 @@ public class XAction extends XHandlerAide implements XHandler {
 
     @Override
     public void handle(XContext x) throws Throwable {
-        x.remotingSet(_bw.remoting());
+        x.remotingSet(_remoting);
 
         try {
             if (XUtil.isEmpty(_produces) == false) {

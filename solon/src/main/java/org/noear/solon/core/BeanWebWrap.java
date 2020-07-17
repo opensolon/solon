@@ -16,20 +16,28 @@ public class BeanWebWrap {
     protected XMapping c_map;
     protected int c_poi = XEndpoint.main;
     protected String c_path;
+    protected boolean c_remoting;
 
     public BeanWebWrap(BeanWrap wrap) {
-        _bw = wrap;
         c_map = _bw.clz().getAnnotation(XMapping.class);
-        if (c_map != null) {
-            c_path = c_map.value();
-        }
+        initDo(wrap, c_map.value(), wrap.remoting());
     }
 
     public BeanWebWrap(BeanWrap wrap, String mapping) {
+        initDo(wrap, mapping, wrap.remoting());
+    }
+
+    public BeanWebWrap(BeanWrap wrap, String mapping, boolean remoting) {
+        initDo(wrap, mapping, remoting);
+    }
+
+    private void initDo(BeanWrap wrap, String mapping, boolean remoting){
         _bw = wrap;
         if (mapping != null) {
             c_path = mapping;
         }
+
+        c_remoting = remoting;
     }
 
     /**
@@ -52,7 +60,7 @@ public class BeanWebWrap {
      * @param slots 接收加载结果的容器（槽）
      * */
     public void load(XHandlerSlots slots) {
-        load(_bw.remoting(), slots);
+        load(c_remoting, slots);
     }
 
     /**
@@ -65,7 +73,7 @@ public class BeanWebWrap {
         if (XHandler.class.isAssignableFrom(_bw.clz())) {
             loadHandlerDo(slots);
         } else {
-            loadActionDo(slots, all || _bw.remoting());
+            loadActionDo(slots, all || c_remoting);
         }
     }
 
@@ -178,7 +186,7 @@ public class BeanWebWrap {
      * 构建 XAction
      * */
     protected XAction action(BeanWrap bw, Method method, XMapping mp, String path){
-        return new XAction(bw, method, mp, path);
+        return new XAction(bw, method, mp, path, c_remoting);
     }
 
     /**

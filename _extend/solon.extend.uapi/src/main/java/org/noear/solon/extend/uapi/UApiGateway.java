@@ -88,6 +88,17 @@ public abstract class UApiGateway implements XHandler , XRender {
     }
 
     /**
+     * 添加接口
+     */
+    public void add(Class<?> beanClz) {
+        if (beanClz != null) {
+            BeanWrap bw = Aop.wrap(beanClz);
+
+            add(bw, bw.remoting());
+        }
+    }
+
+    /**
      * 添加接口（remoting ? 采用@json进行渲染）
      */
     public void add(Class<?> beanClz, boolean remoting) {
@@ -95,29 +106,23 @@ public abstract class UApiGateway implements XHandler , XRender {
             BeanWrap bw = Aop.wrap(beanClz);
             bw.remotingSet(remoting);
 
-            add(bw);
+            add(bw, remoting);
         }
     }
 
-    /**
-     * 添加接口
-     */
-    public void add(Class<?> beanClz) {
-        if (beanClz != null) {
-            add(Aop.wrap(beanClz));
-        }
+    public void add(BeanWrap beanWp) {
+        add(beanWp, beanWp.remoting());
     }
-
 
     /**
      * 添加接口（适用于，从Aop工厂遍历加入；或者把rpc代理包装成bw）
      */
-    public void add(BeanWrap beanWp) {
+    public void add(BeanWrap beanWp, boolean remoting) {
         if (beanWp == null) {
             return;
         }
 
-        BeanWebWrap uw = new BeanWebWrap(beanWp, _nav.mapping());
+        BeanWebWrap uw = new BeanWebWrap(beanWp, _nav.mapping(), remoting);
 
         uw.load((path, m, h) -> {
             XAction api = null;
