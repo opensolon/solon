@@ -23,18 +23,23 @@ class HttpServer {
 
     public void start() throws Exception{
 
-        EventLoopGroup bossGroup = new NioEventLoopGroup(2, new DefaultThreadFactory("boss",true));
-        EventLoopGroup workGroup = new NioEventLoopGroup(4, new DefaultThreadFactory("work",true));
+        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup workGroup = new NioEventLoopGroup();
 
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap.group(bossGroup, workGroup)
-                    //.handler(new LoggingHandler(LogLevel.ERROR))
+//                    .handler(new LoggingHandler(LogLevel.ERROR))
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new HttpServerInitializer());
 
             _server = bootstrap.bind(new InetSocketAddress(port)).sync();
+
+            //这句不能去掉
+            //
+            new Thread(_server.channel().closeFuture()::syncUninterruptibly).start();
         }catch (Throwable ex){
+            ex.printStackTrace();
             _server = null;
             bossGroup.shutdownGracefully();
             workGroup.shutdownGracefully();
