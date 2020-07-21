@@ -382,6 +382,8 @@ public class JdkHttpContext extends XContext {
     @Override
     protected void commit() throws IOException {
         sendHeaders();
+
+        OutputStream stream = outputStream();
     }
 
     private boolean _allows_write = true;

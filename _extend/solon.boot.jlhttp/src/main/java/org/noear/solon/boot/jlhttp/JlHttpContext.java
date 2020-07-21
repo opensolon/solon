@@ -280,18 +280,22 @@ public class JlHttpContext extends XContext {
     @Override
     public OutputStream outputStream() throws IOException {
         sendHeaders();
-        return _response.getBody();
+
+        if (_allows_write) {
+            return _response.getBody();
+        }else{
+            return new ByteArrayOutputStream();
+        }
     }
 
     @Override
     public void output(String str) {
+        if (!_allows_write) {
+            return;
+        }
+
         try {
             OutputStream out = outputStream();
-
-            if(out == null){ // on HEAD method
-                return;
-            }
-
             out.write(str.getBytes(_charset));
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
@@ -300,12 +304,12 @@ public class JlHttpContext extends XContext {
 
     @Override
     public void output(InputStream stream) {
+        if (!_allows_write) {
+            return;
+        }
+
         try {
             OutputStream out = outputStream();
-
-            if(out == null){ // on HEAD method
-                return;
-            }
 
             int len = 0;
             byte[] buf = new byte[512]; //0.5k
@@ -395,8 +399,13 @@ public class JlHttpContext extends XContext {
         }
     }
 
+    private boolean _allows_write = true;
     private void sendHeaders() throws IOException {
         if (!_response.headersSent()) {
+            if("HEAD".equals(method())) {
+                _allows_write = false;
+            }
+
             //_response.sendHeaders(status()); //不能用这个；
             _response.sendHeaders(status(), -1, -1, null, null, null);
         }
