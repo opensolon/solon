@@ -290,12 +290,13 @@ public class JlHttpContext extends XContext {
 
     @Override
     public void output(String str) {
-        if (!_allows_write) {
-            return;
-        }
-
         try {
             OutputStream out = outputStream();
+            
+            if(!_allows_write){
+                return;
+            }
+
             out.write(str.getBytes(_charset));
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
@@ -304,12 +305,12 @@ public class JlHttpContext extends XContext {
 
     @Override
     public void output(InputStream stream) {
-        if (!_allows_write) {
-            return;
-        }
-
         try {
             OutputStream out = outputStream();
+
+            if(!_allows_write){
+                return;
+            }
 
             int len = 0;
             byte[] buf = new byte[512]; //0.5k

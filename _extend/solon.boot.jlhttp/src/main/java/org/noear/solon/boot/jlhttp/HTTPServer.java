@@ -2218,7 +2218,7 @@ public class HTTPServer {
         if (method.equals("GET") || handlers.containsKey(method)) {
             serve(req, resp); // method is handled by context handler (or 404)
         } else if (method.equals("HEAD")) { // default HEAD handler
-            req.method = "GET"; // identical to a GET
+            //req.method = "HEAD"; // identical to a GET //保留原有的HEAD
             resp.setDiscardBody(true); // process normally but discard body
             serve(req, resp);
         } else if (method.equals("TRACE")) { // default TRACE handler

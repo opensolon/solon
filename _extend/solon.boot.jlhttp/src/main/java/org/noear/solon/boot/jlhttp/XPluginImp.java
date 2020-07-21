@@ -36,6 +36,7 @@ public final class XPluginImp implements XPlugin {
         host.setDirectoryIndex(null);
 
         host.addContext("/", _handler,
+                XMethod.HEAD.name,
                 XMethod.GET.name,
                 XMethod.POST.name,
                 XMethod.PUT.name,

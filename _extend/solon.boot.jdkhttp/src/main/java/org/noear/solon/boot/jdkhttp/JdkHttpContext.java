@@ -287,6 +287,10 @@ public class JdkHttpContext extends XContext {
         try {
             OutputStream out = outputStream();
 
+            if(!_allows_write){
+                return;
+            }
+
             out.write(str.getBytes(_charset));
             out.flush();
         } catch (Throwable ex) {
@@ -298,6 +302,10 @@ public class JdkHttpContext extends XContext {
     public void output(InputStream stream) {
         try {
             OutputStream out = outputStream();
+
+            if(!_allows_write){
+                return;
+            }
 
             byte[] buff = new byte[100];
             int rc = 0;
@@ -383,7 +391,9 @@ public class JdkHttpContext extends XContext {
     protected void commit() throws IOException {
         sendHeaders();
 
-        OutputStream stream = outputStream();
+        if(!_allows_write){
+            outputStream().close();
+        }
     }
 
     private boolean _allows_write = true;
