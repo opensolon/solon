@@ -348,10 +348,11 @@ public class SmartHttpContext extends XContext {
 
     @Override
     protected void commit() throws IOException{
+        OutputStream out = _response.getOutputStream();
         _response.setHttpStatus(HttpStatus.valueOf(status()));
         _response.setContentLength(_outputStream.size());
-        _outputStream.writeTo(_response.getOutputStream());
-        //_response.getOutputStream().close();
+        _outputStream.writeTo(out);
+        out.close();
     }
 
 }

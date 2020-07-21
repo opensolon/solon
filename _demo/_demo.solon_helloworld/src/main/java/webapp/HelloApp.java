@@ -9,7 +9,7 @@ public class HelloApp {
     public static void main(String[] args) {
         XApp app = XApp.start(HelloApp.class, args);
 
-        app.get("/", c -> c.output("hello world!"));
+        app.http("/", c -> c.output("hello world!"));
 
     }
 }
