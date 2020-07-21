@@ -46,8 +46,8 @@ public class SmartHttpContextHandler extends HttpHandle {
             XMonitor.sendError(null, ex);
             response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        finally {
-            response.close();
-        }
+//        finally {
+//            response.close(); //性能非常差
+//        }
     }
 }
