@@ -28,7 +28,7 @@ public final class XPluginImp implements XPlugin {
         _server.pipeline().next(_handler);
 
 
-        System.out.println("solon.Server:main: SmaertHttpServer 1.0.11");
+        System.out.println("solon.Server:main: SmartHttpServer 1.0.11");
 
         try {
 
