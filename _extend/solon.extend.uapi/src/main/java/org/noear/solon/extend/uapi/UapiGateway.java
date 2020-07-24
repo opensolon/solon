@@ -60,7 +60,7 @@ public abstract class UapiGateway implements XHandler , XRender {
                 //
                 render(err, c);
             } else {
-                render(new UapiError(err), c);
+                render(new UapiCode(err), c);
             }
         }
     }
@@ -70,8 +70,8 @@ public abstract class UapiGateway implements XHandler , XRender {
      * */
     @Override
     public void render(Object obj, XContext c) throws Throwable {
-        if (obj instanceof UapiError) {
-            UapiError exp = (UapiError) obj;
+        if (obj instanceof UapiCode) {
+            UapiCode exp = (UapiCode) obj;
 
             Map<String, Object> map = new HashMap();
             map.put("code", exp.getCode());
