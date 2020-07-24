@@ -206,7 +206,12 @@ public class UApiContext extends XContext {
     //
 
     public String uapiName() {
-        return attr("uapi");
+        String tmp = attr("uapi");
+        if (tmp == null) {
+            return path();
+        } else {
+            return tmp;
+        }
     }
 
     @Override

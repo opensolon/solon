@@ -59,6 +59,7 @@ public abstract class UApiGateway implements XHandler , XRender {
         c.renderReal(obj);
     }
 
+
     /**
      * 添加前置拦截器
      * */
@@ -135,12 +136,16 @@ public abstract class UApiGateway implements XHandler , XRender {
         });
     }
 
+    public void add(String path, XHandler handler) {
+        _nav.add(path, handler);
+    }
+
 
     /**
      * 查找接口
      * */
     protected XHandler findDo(XContext c, String path) {
-        XAction api = (XAction) _nav.get(path);
+        XHandler api = _nav.get(path);
 
         if (api == null) {
             if (_def != null) {
@@ -153,7 +158,10 @@ public abstract class UApiGateway implements XHandler , XRender {
             c.setHandled(true);
             return _def;
         } else {
-            c.attrSet("uapi", api.name());
+            if (api instanceof XAction) {
+                c.attrSet("uapi", ((XAction) api).name());
+            }
+
             return api;
         }
     }
