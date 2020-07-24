@@ -64,10 +64,10 @@ public class XActionUtil {
                             //1.如果是 XFile 类型
                             tv = ctx.file(pn);
                         } else {
-                            //尝试在attr里找（支持 @name 的特性注入）
-                            tv = ctx.attr("@" + pn);
-
-                            if( tv == null) {
+                            //$name 的变量，从attr里找
+                            if (pn.startsWith("$")) {
+                                tv = ctx.attr(pn);
+                            } else {
                                 if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive()) {
                                     //如果是基本类型，则为null
                                     //
