@@ -24,6 +24,7 @@ public class XActionUtil {
         for (Field f : fields) {
             String key = f.getName();
             if (map.containsKey(key)) {
+                //将 string 转为目标 type，并为字段赋值
                 Object val = TypeUtil.changeOfCtx(f, f.getType(), key, map.get(key), ctx);
                 f.set(obj, val);
             }
@@ -47,11 +48,12 @@ public class XActionUtil {
                 Class<?> pt = p.getType();
 
                 if (XContext.class.isAssignableFrom(pt)) {
-                    //如果是 XContext 类型
+                    //如果是 XContext 类型，直接加入参数
+                    //
                     args.add(ctx);
                 } else {
-                    String pn = p.getName();
-                    String pv = ctx.param(pn);
+                    String pn = p.getName();    //参数名
+                    String pv = ctx.param(pn);  //参数值
                     Object tv = null;
 
                     if (pv == null) {
@@ -62,12 +64,18 @@ public class XActionUtil {
                             //1.如果是 XFile 类型
                             tv = ctx.file(pn);
                         } else {
-                            if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive()) {
-                                //如果是基本类型，则为null
-                                tv = null;
-                            } else {
-                                //尝试转为模型
-                                tv = params2Entity(ctx, pt);
+                            //尝试在attr里找（支持 @name 的特性注入）
+                            tv = ctx.attr("@" + pn);
+
+                            if( tv == null) {
+                                if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive()) {
+                                    //如果是基本类型，则为null
+                                    //
+                                    tv = null;
+                                } else {
+                                    //尝试转为模型
+                                    tv = params2Entity(ctx, pt);
+                                }
                             }
                         }
                     } else {
