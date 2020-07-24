@@ -172,9 +172,9 @@ public class HttpTest {
 
     @Test
     public void test2int() throws IOException{
-        //assert  get("/demo2/param/int").equals("0");
+        assert  get("/demo2/param/int").equals("0");
         assert  get("/demo2/param/int?num=").equals("0");
-        //assert  get("/demo2/param/int?num=12").equals("12");
+        assert  get("/demo2/param/int?num=12").equals("12");
     }
 
 
