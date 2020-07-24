@@ -1,11 +1,8 @@
 package org.noear.solon.extend.uapi;
 
-/**
- *
- *
- *
- * */
-public class UApiError extends RuntimeException {
+import org.noear.solon.core.DataThrowable;
+
+public class UApiError extends RuntimeException implements DataThrowable {
     private int detailCode;
 
     public int getCode() {

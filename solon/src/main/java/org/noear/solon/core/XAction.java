@@ -33,7 +33,7 @@ public class XAction extends XHandlerAide implements XHandler {
         if (mp != null) {
             _produces = mp.produces();
             _name = mp.value();
-        }else{
+        } else {
             _name = m.getName();
         }
 
@@ -93,14 +93,17 @@ public class XAction extends XHandlerAide implements XHandler {
                 }
 
                 renderDo(x, callDo(x));
-            } catch (CodeThrowable ex) {
-                //CodeThrowable只是传导用的
-                //
-                renderDo(x, ex);
             } catch (Throwable ex) {
-                x.attrSet("error", ex);
-                renderDo(x, ex);
-                XMonitor.sendError(x, ex);
+                if (ex instanceof DataThrowable) {
+                    //
+                    //数据抛出，不进入异常系统
+                    //
+                    renderDo(x, ex);
+                } else {
+                    x.attrSet("error", ex);
+                    renderDo(x, ex);
+                    XMonitor.sendError(x, ex);
+                }
             }
         }
 
@@ -112,14 +115,14 @@ public class XAction extends XHandlerAide implements XHandler {
 
     /**
      * 执行动作（便于重写）
-     * */
+     */
     protected Object callDo(XContext x) throws Throwable {
         return XActionUtil.exeMethod(_bw.get(), _mw, x);
     }
 
     /**
      * 执行渲染（便于重写）
-     * */
+     */
     protected void renderDo(XContext x, Object result) throws Throwable {
         x.render(result);
     }
