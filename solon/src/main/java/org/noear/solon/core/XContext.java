@@ -455,4 +455,7 @@ public abstract class XContext {
     //一些特殊的boot才有效
     @XNote("关闭响应")
     public void close() throws IOException{}
+
+    @XNote("附件")
+    public Object attachment;
 }

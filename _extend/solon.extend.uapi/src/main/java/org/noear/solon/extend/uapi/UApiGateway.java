@@ -54,11 +54,13 @@ public abstract class UApiGateway implements XHandler , XRender {
         try {
             //调用父级处理
             _nav.handle(c2);
-        } catch (RuntimeException err) {
+        } catch (Throwable err) {
             if (err instanceof DataThrowable) {
                 //充许通过 DataThrowable 传递数据
                 //
                 render(err, c);
+            } else {
+                render(new UApiError(err), c);
             }
         }
     }
