@@ -40,7 +40,7 @@ public class XActionUtil {
         try {
             Parameter[] pSet = mWrap.parameters;
 
-            List<Object> args = new ArrayList<>();
+            List<Object> args = new ArrayList<>(pSet.length);
 
             //p 参数
             //pt 参数原类型

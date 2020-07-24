@@ -93,6 +93,10 @@ public class XAction extends XHandlerAide implements XHandler {
                 }
 
                 renderDo(x, callDo(x));
+            } catch (CodeThrowable ex) {
+                //CodeThrowable只是传导用的
+                //
+                renderDo(x, ex);
             } catch (Throwable ex) {
                 x.attrSet("error", ex);
                 renderDo(x, ex);
