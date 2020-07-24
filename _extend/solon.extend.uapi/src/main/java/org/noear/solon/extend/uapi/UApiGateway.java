@@ -182,7 +182,10 @@ public abstract class UApiGateway implements XHandler , XRender {
             c.setHandled(true);
             return _def;
         } else {
-            c.attrSet("handler", api);
+            if (api instanceof XAction) {
+                c.attrSet("api", ((XAction) api).name());
+            }
+
             return api;
         }
     }
