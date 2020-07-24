@@ -157,6 +157,7 @@ public abstract class UApiGateway implements XHandler , XRender {
                     throw new RuntimeException(ex);
                 }
             }
+            //中止执行
             c.setHandled(true);
             return _def;
         } else {
