@@ -23,6 +23,11 @@ public class ParamController {
         return ctx.body();
     }
 
+    @XMapping("int")
+    public Object test_int(int num) throws IOException {
+        return num; //没有传入时，默认为0
+    }
+
     @XMapping("decimal")
     public Object test_decimal(BigDecimal num) throws IOException {
         return num;

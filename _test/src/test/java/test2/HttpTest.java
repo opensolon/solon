@@ -170,6 +170,13 @@ public class HttpTest {
         assert  get("/demo2/param/decimal?num=1.12").equals("1.12");
     }
 
+    @Test
+    public void test2int() throws IOException{
+        //assert  get("/demo2/param/int").equals("0");
+        assert  get("/demo2/param/int?num=").equals("0");
+        //assert  get("/demo2/param/int?num=12").equals("12");
+    }
+
 
     @Test
     public void test2e() throws IOException{
