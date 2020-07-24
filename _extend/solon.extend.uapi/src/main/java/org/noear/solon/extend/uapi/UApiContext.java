@@ -201,19 +201,6 @@ public class UApiContext extends XContext {
         real.status(status);
     }
 
-    //
-    //
-    //
-
-    public String uapiName() {
-        String tmp = attr("uapi");
-        if (tmp == null) {
-            return path();
-        } else {
-            return tmp;
-        }
-    }
-
     @Override
     public void render(Object obj) throws Throwable {
         if (gateway == null) {

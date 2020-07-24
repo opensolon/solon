@@ -148,6 +148,8 @@ public abstract class UApiGateway implements XHandler , XRender {
         XHandler api = _nav.get(path);
 
         if (api == null) {
+            //主要增加默认接口支持
+            //
             if (_def != null) {
                 try {
                     _def.handle(c);
@@ -158,10 +160,6 @@ public abstract class UApiGateway implements XHandler , XRender {
             c.setHandled(true);
             return _def;
         } else {
-            if (api instanceof XAction) {
-                c.attrSet("uapi", ((XAction) api).name());
-            }
-
             return api;
         }
     }
