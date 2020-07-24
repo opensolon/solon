@@ -50,8 +50,17 @@ public abstract class UApiGateway implements XHandler , XRender {
         XContextUtil.currentRemove();
         XContextUtil.currentSet(c2);
 
-        //调用父级处理
-        _nav.handle(c2);
+
+        try {
+            //调用父级处理
+            _nav.handle(c2);
+        } catch (RuntimeException err) {
+            //充许通过 DataThrowable 传递数据
+            //
+            if (err instanceof DataThrowable) {
+                render(err, c);
+            }
+        }
     }
 
     /**
