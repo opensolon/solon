@@ -14,6 +14,11 @@ public class UApiError extends RuntimeException {
         detailCode = code;
     }
 
+    public UApiError(int code, String message) {
+        super(message);
+        detailCode = code;
+    }
+
     public UApiError(Throwable cause) {
         super(cause);
     }
