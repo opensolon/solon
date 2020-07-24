@@ -173,6 +173,7 @@ public abstract class UApiGateway implements XHandler , XRender {
             c.setHandled(true);
             return _def;
         } else {
+            c.attrSet("handler", api);
             return api;
         }
     }
