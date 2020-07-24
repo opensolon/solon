@@ -68,10 +68,27 @@ public class XActionUtil {
                             if (pn.startsWith("$")) {
                                 tv = ctx.attr(pn);
                             } else {
-                                if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive()) {
-                                    //如果是基本类型，则为null
+                                if (pt.getName().startsWith("java.") || pt.isArray()) {
+                                    //如果是java基础对象，则为null
                                     //
                                     tv = null;
+                                } else if (pt.isPrimitive()) {
+                                    //如果是基本类型，则为null
+                                    //
+                                    if(pt == short.class){
+                                        tv = (short)0;
+                                    } else if(pt == int.class){
+                                        tv = 0;
+                                    } else if(pt == long.class){
+                                        tv = 0L;
+                                    } else if(pt == double.class){
+                                        tv = 0d;
+                                    } else if(pt == float.class){
+                                        tv = 0f;
+                                    } else if(pt == boolean.class){
+                                        tv = false;
+                                    }
+                                    //别的类型，暂时不管
                                 } else {
                                     //尝试转为模型
                                     tv = params2Entity(ctx, pt);
