@@ -5,6 +5,9 @@ import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * UAPI网关
@@ -56,7 +59,16 @@ public abstract class UApiGateway implements XHandler , XRender {
      * */
     @Override
     public void render(Object obj, XContext c) throws Throwable {
-        c.renderReal(obj);
+        if (obj instanceof UApiError) {
+            UApiError exp = (UApiError) obj;
+
+            Map<String, Object> map = new HashMap();
+            map.put("code", exp.getCode());
+            map.put("msg", exp.getMessage());
+            c.renderReal(map);
+        } else {
+            c.renderReal(obj);
+        }
     }
 
 
