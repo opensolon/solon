@@ -22,7 +22,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.nettyhttp</artifactId>
+            <artifactId>solon.boot.jlhttp</artifactId>
         </dependency>
     </dependencies>
 

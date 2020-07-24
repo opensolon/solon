@@ -2,6 +2,8 @@ package org.noear.solon.extend.uapi;
 
 /**
  *
+ *
+ *
  * */
 public class UApiError extends RuntimeException {
     private int detailCode;
