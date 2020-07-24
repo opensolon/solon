@@ -14,17 +14,17 @@ import java.util.Map;
  *
  * 提供容器，重新组织XAction运行
  * */
-public abstract class UApiGateway implements XHandler , XRender {
+public abstract class UapiGateway implements XHandler , XRender {
     private XHandler _def;
     private XNav _nav;
 
-    public UApiGateway() {
+    public UapiGateway() {
         super();
 
         _nav = new XNav(this.getClass().getAnnotation(XMapping.class)){
             @Override
             protected XHandler findDo(XContext c, String path) {
-                return UApiGateway.this.findDo(c, path);
+                return UapiGateway.this.findDo(c, path);
             }
         };
 
@@ -60,7 +60,7 @@ public abstract class UApiGateway implements XHandler , XRender {
                 //
                 render(err, c);
             } else {
-                render(new UApiError(err), c);
+                render(new UapiError(err), c);
             }
         }
     }
@@ -70,8 +70,8 @@ public abstract class UApiGateway implements XHandler , XRender {
      * */
     @Override
     public void render(Object obj, XContext c) throws Throwable {
-        if (obj instanceof UApiError) {
-            UApiError exp = (UApiError) obj;
+        if (obj instanceof UapiError) {
+            UapiError exp = (UapiError) obj;
 
             Map<String, Object> map = new HashMap();
             map.put("code", exp.getCode());
@@ -196,6 +196,6 @@ public abstract class UApiGateway implements XHandler , XRender {
      * 转换 上下文（关键的地方）
      */
     protected XContext context(XContext ctx) {
-        return new UApiContext(ctx, this);
+        return new UapiContext(ctx, this);
     }
 }

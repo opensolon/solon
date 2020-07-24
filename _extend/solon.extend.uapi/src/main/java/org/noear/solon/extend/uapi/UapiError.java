@@ -2,23 +2,23 @@ package org.noear.solon.extend.uapi;
 
 import org.noear.solon.core.DataThrowable;
 
-public class UApiError extends RuntimeException implements DataThrowable {
+public class UapiError extends RuntimeException implements DataThrowable {
     private int detailCode;
 
     public int getCode() {
         return detailCode;
     }
 
-    public UApiError(int code) {
+    public UapiError(int code) {
         detailCode = code;
     }
 
-    public UApiError(int code, String message) {
+    public UapiError(int code, String message) {
         super(message);
         detailCode = code;
     }
 
-    public UApiError(Throwable cause) {
+    public UapiError(Throwable cause) {
         super(cause);
     }
 }

@@ -5,11 +5,11 @@ import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XContext;
-import org.noear.solon.extend.uapi.UApiGateway;
+import org.noear.solon.extend.uapi.UapiGateway;
 
 @XController
 @XMapping("/xxx/*")
-public class XxxGateway extends UApiGateway {
+public class XxxGateway extends UapiGateway {
     @Override
     protected void register() {
 

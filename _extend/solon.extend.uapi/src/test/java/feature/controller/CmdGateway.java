@@ -5,11 +5,11 @@ import feature.controller.cmds.CmdContext;
 import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.XContext;
-import org.noear.solon.extend.uapi.UApiGateway;
+import org.noear.solon.extend.uapi.UapiGateway;
 
 @XController
 @XMapping("/cmd/*")
-public class CmdGateway extends UApiGateway {
+public class CmdGateway extends UapiGateway {
     @Override
     protected void register() {
 

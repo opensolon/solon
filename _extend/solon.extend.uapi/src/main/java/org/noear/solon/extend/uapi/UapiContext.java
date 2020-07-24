@@ -19,11 +19,11 @@ import java.util.Map;
  *
  * 原则上，只重写不扩展；避免接口的不统一性
  * */
-public class UApiContext extends XContext {
+public class UapiContext extends XContext {
     private XContext real;
-    private UApiGateway gateway;
+    private UapiGateway gateway;
 
-    public UApiContext(XContext ctx, UApiGateway gateway) {
+    public UapiContext(XContext ctx, UapiGateway gateway) {
         this.real = ctx;
         this.gateway = gateway;
     }
