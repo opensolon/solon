@@ -9,6 +9,8 @@ import java.lang.reflect.Method;
 
 /**
  * 为了拦截 renderDo 处理，并转发给网关
+ *
+ * 从对从XContext处拦截，更安全
  * */
 public class ExAction extends XAction {
     private UapiGateway gateway;
