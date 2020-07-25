@@ -1,7 +1,6 @@
 package feature.controller;
 
-import feature.controller.cmds.CMD_A_0_1;
-import feature.controller.cmds.CmdContext;
+import feature.controller.cmds.*;
 import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.XContext;
@@ -14,6 +13,9 @@ public class CmdGateway extends UapiGateway {
     protected void register() {
 
         add(CMD_A_0_1.class);
+        add(CMD_A_0_2.class);
+        add(CMD_A_0_3.class);
+        add(CMD_A_0_4.class);
     }
 
     //替换自定义上下文

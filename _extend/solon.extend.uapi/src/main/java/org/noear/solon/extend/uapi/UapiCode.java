@@ -15,12 +15,12 @@ public class UapiCode extends DataThrowable {
     }
 
     public UapiCode(int code) {
-        super();
+        super(code + "");
         detailCode = code;
     }
 
     public UapiCode(int code, String message) {
-        super(message);
+        super(code + ": " + message);
         detailCode = code;
     }
 
