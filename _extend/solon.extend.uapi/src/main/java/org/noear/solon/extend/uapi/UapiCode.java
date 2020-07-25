@@ -8,20 +8,40 @@ import org.noear.solon.core.DataThrowable;
  * 通过返回或抛出两种形式传递
  * */
 public class UapiCode extends DataThrowable {
-    private int detailCode;
+    private int code;
+    private String description;
 
+    /**
+     * 代码
+     * */
     public int getCode() {
-        return detailCode;
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    /**
+     * 描述
+     * */
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public UapiCode(int code) {
-        super(code + "");
-        detailCode = code;
+        super(code + ""); //给异常系统用的
+        this.code = code;
     }
 
-    public UapiCode(int code, String message) {
-        super(code + ": " + message);
-        detailCode = code;
+    public UapiCode(int code, String description) {
+        super(code + ": " + description);//给异常系统用的
+        this.code = code;
+        this.description = description;
     }
 
     public UapiCode(Throwable cause) {

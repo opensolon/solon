@@ -11,6 +11,6 @@ public class CMD_A_0_2 {
 
     @XMapping("A.0.22")
     public Object call2(CmdContext ctx){
-        throw new UapiCode(12,"参数12没有输");
+        throw new UapiCode(12,"参数@name没有输");
     }
 }
