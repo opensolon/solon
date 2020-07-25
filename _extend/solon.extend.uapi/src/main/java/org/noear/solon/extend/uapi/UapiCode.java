@@ -7,7 +7,7 @@ import org.noear.solon.core.DataThrowable;
  *
  * 通过返回或抛出两种形式传递
  * */
-public class UapiCode extends RuntimeException implements DataThrowable {
+public class UapiCode extends DataThrowable {
     private int detailCode;
 
     public int getCode() {
@@ -15,6 +15,7 @@ public class UapiCode extends RuntimeException implements DataThrowable {
     }
 
     public UapiCode(int code) {
+        super();
         detailCode = code;
     }
 
