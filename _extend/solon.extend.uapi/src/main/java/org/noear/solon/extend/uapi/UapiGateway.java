@@ -33,6 +33,7 @@ public abstract class UapiGateway implements XHandler , XRender {
             }
         };
 
+        //默认为404错误输出
         _def = (c) -> c.status(404);
 
         register();
