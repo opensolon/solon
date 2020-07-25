@@ -21,10 +21,15 @@ public abstract class UapiGateway implements XHandler , XRender {
     public UapiGateway() {
         super();
 
-        _nav = new XNav(this.getClass().getAnnotation(XMapping.class)){
+        _nav = new XNav(this.getClass().getAnnotation(XMapping.class)) {
             @Override
             protected XHandler findDo(XContext c, String path) {
                 return UapiGateway.this.findDo(c, path);
+            }
+
+            @Override
+            protected void handleDo(XContext c, XHandler h, int endpoint) throws Throwable {
+                super.handleDo(c, h, endpoint);
             }
         };
 
@@ -41,7 +46,7 @@ public abstract class UapiGateway implements XHandler , XRender {
 
     /**
      * for XHandler
-     * */
+     */
     @Override
     public void handle(XContext c) throws Throwable {
         //转换上下文
@@ -54,20 +59,17 @@ public abstract class UapiGateway implements XHandler , XRender {
         try {
             //调用父级处理
             _nav.handle(c2);
-        } catch (Throwable err) {
-            if (err instanceof DataThrowable) {
-                //充许通过 DataThrowable 传递数据
-                //
-                render(err, c);
-            } else {
-                render(new UapiCode(err), c);
-            }
+        } catch (DataThrowable ex) {
+            //充许通过 DataThrowable 传递数据
+            render(ex, c);
+        } catch (Throwable ex) {
+            render(new UapiCode(ex), c);
         }
     }
 
     /**
      * for XRender (用于接管 XContext::render)
-     * */
+     */
     @Override
     public void render(Object obj, XContext c) throws Throwable {
         if (obj instanceof UapiCode) {
@@ -85,29 +87,29 @@ public abstract class UapiGateway implements XHandler , XRender {
 
     /**
      * 添加前置拦截器
-     * */
+     */
     public <T extends XHandler> void addBefore(Class<T> interceptorClz) {
         _nav.before(Aop.get(interceptorClz));
     }
 
     /**
      * 添加前置拦截器
-     * */
-    public  void addBefore(XHandler interceptor) {
+     */
+    public void addBefore(XHandler interceptor) {
         _nav.before(interceptor);
     }
 
     /**
      * 添加后置拦截器
-     * */
+     */
     public <T extends XHandler> void addAfter(Class<T> interceptorClz) {
         _nav.after(Aop.get(interceptorClz));
     }
 
     /**
      * 添加后置拦截器
-     * */
-    public  void addAfter(XHandler interceptor) {
+     */
+    public void addAfter(XHandler interceptor) {
         _nav.after(interceptor);
     }
 
@@ -163,10 +165,29 @@ public abstract class UapiGateway implements XHandler , XRender {
         _nav.add(path, handler);
     }
 
+    /**
+     * 执行接口
+     */
+    protected void handleDo(XContext c, XHandler h, int endpoint) throws Throwable {
+        if (endpoint != XEndpoint.after) {
+            //
+            //确保非后置处理不出错，出错转为UapiCode
+            //
+            try {
+                h.handle(c);
+            } catch (DataThrowable ex) {
+                render(ex, c);
+            } catch (Throwable ex) {
+                render(new UapiCode(ex), c);
+            }
+        } else {
+            h.handle(c);
+        }
+    }
 
     /**
      * 查找接口
-     * */
+     */
     protected XHandler findDo(XContext c, String path) {
         XHandler api = _nav.get(path);
 
