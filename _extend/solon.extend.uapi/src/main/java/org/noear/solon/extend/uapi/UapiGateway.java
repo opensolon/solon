@@ -5,9 +5,6 @@ import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 
 /**
  * UAPI网关
@@ -17,21 +14,14 @@ import java.util.Map;
 public abstract class UapiGateway implements XHandler , XRender {
     private XHandler _def;
     private XNav _nav;
+    private XMapping _mapping;
 
     public UapiGateway() {
         super();
 
-        _nav = new XNav(this.getClass().getAnnotation(XMapping.class)) {
-            @Override
-            protected XHandler findDo(XContext c, String path) {
-                return UapiGateway.this.findDo(c, path);
-            }
+        _mapping = this.getClass().getAnnotation(XMapping.class);
 
-            @Override
-            protected void handleDo(XContext c, XHandler h, int endpoint) throws Throwable {
-                super.handleDo(c, h, endpoint);
-            }
-        };
+        _nav = new ExXNav(_mapping, this);
 
         //默认为404错误输出
         _def = (c) -> c.status(404);
@@ -131,7 +121,7 @@ public abstract class UapiGateway implements XHandler , XRender {
             return;
         }
 
-        BeanWebWrap uw = new BeanWebWrap(beanWp, _nav.mapping(), remoting);
+        BeanWebWrap uw = new ExBeanWebWrap(beanWp, _nav.mapping(), remoting, this);
 
         uw.load((path, m, h) -> {
             XAction api = null;

@@ -203,21 +203,7 @@ public class UapiContext extends XContext {
         real.status(status);
     }
 
-    @Override
-    public void render(Object obj) throws Throwable {
-        if (gateway == null) {
-            super.render(obj);
-        } else {
-            gateway.render(obj, this);
-        }
-    }
-
-    @Override
-    public void render(String view, Map<String, ?> data) throws Throwable {
-        if (gateway == null) {
-            super.render(view, data);
-        } else {
-            gateway.render(new ModelAndView(view, data), this);
-        }
-    }
+    //
+    //不重写渲染函数；使用时太容易死循环
+    //
 }
