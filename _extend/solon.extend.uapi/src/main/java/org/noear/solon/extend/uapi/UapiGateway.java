@@ -55,33 +55,18 @@ public abstract class UapiGateway implements XHandler , XRender {
         XContextUtil.currentRemove();
         XContextUtil.currentSet(c2);
 
-
-        try {
-            //调用父级处理
-            _nav.handle(c2);
-        } catch (DataThrowable ex) {
-            //充许通过 DataThrowable 传递数据
-            render(ex, c);
-        } catch (Throwable ex) {
-            render(new UapiCode(ex), c);
-        }
+        //不要接管异常，因为后面没有处理了
+        _nav.handle(c2);
     }
 
     /**
      * for XRender (用于接管 XContext::render)
+     *
+     * 主要为了子类可重写
      */
     @Override
     public void render(Object obj, XContext c) throws Throwable {
-        if (obj instanceof UapiCode) {
-            UapiCode exp = (UapiCode) obj;
-
-            Map<String, Object> map = new HashMap();
-            map.put("code", exp.getCode());
-            map.put("msg", exp.getMessage());
-            c.renderReal(map);
-        } else {
-            c.renderReal(obj);
-        }
+        c.renderReal(obj);
     }
 
 
