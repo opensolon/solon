@@ -78,7 +78,14 @@ public class XAction extends XHandlerAide implements XHandler {
     private void do_handle(XContext x) throws Throwable {
         //前置处理
         for (XHandler h : _before) {
-            h.handle(x);
+            try {
+                h.handle(x);
+            } catch (DataThrowable ex) {
+                //数据抛出，不进入异常系统
+                //
+                x.setHandled(true); //停止处理
+                renderDo(x, ex); //渲染数据
+            }
         }
 
         if (x.getHandled() == false) {

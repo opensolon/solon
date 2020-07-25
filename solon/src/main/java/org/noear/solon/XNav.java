@@ -2,6 +2,7 @@ package org.noear.solon;
 
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.XContext;
+import org.noear.solon.core.XEndpoint;
 import org.noear.solon.core.XHandler;
 import org.noear.solon.core.XHandlerAide;
 
@@ -34,8 +35,8 @@ public class XNav extends XHandlerAide implements XHandler {
 
     /**
      * XMapping value
-     * */
-    public String mapping(){
+     */
+    public String mapping() {
         return _path;
     }
 
@@ -46,23 +47,23 @@ public class XNav extends XHandlerAide implements XHandler {
         addDo(path, handler);
     }
 
-    protected void addDo(String path, XHandler handler){
+    protected void addDo(String path, XHandler handler) {
         //addPath 已处理 path1= null 的情况
         _main.put(XUtil.mergePath(_path, path).toUpperCase(), handler);
     }
 
     /**
      * 获取接口
-     * */
+     */
     public final XHandler get(String path) {
         return _main.get(path);
     }
 
     /**
      * 查找接口
-     *
+     * <p>
      * 用于被人重写，从而控制find过程
-     * */
+     */
     protected XHandler findDo(XContext c, String path) {
         return get(path);
     }
@@ -73,22 +74,22 @@ public class XNav extends XHandlerAide implements XHandler {
 
         if (m != null) {
             for (XHandler h : _before) {
-                h.handle(c);
+                handleDo(c, h, XEndpoint.before);
             }
 
             if (c.getHandled() == false) {
-                handleDo(c,m);
+                handleDo(c, m, XEndpoint.main);
             }
 
             for (XHandler h : _after) {
-                h.handle(c);
+                handleDo(c, h, XEndpoint.after);
             }
         } else {
             handle404(c);
         }
     }
 
-    protected void handleDo(XContext c, XHandler h) throws Throwable{
+    protected void handleDo(XContext c, XHandler h, int endpoint) throws Throwable {
         h.handle(c);
     }
 
