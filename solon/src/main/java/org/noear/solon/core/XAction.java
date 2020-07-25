@@ -93,17 +93,13 @@ public class XAction extends XHandlerAide implements XHandler {
                 }
 
                 renderDo(x, callDo(x));
+            } catch (DataThrowable ex) {
+                //数据抛出，不进入异常系统
+                renderDo(x, ex);
             } catch (Throwable ex) {
-                if (ex instanceof DataThrowable) {
-                    //
-                    //数据抛出，不进入异常系统
-                    //
-                    renderDo(x, ex);
-                } else {
-                    x.attrSet("error", ex);
-                    renderDo(x, ex);
-                    XMonitor.sendError(x, ex);
-                }
+                x.attrSet("error", ex);
+                renderDo(x, ex);
+                XMonitor.sendError(x, ex);
             }
         }
 
