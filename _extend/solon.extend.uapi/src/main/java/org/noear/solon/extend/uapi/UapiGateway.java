@@ -9,7 +9,10 @@ import org.noear.solon.core.*;
 /**
  * UAPI网关
  *
- * 提供容器，重新组织XAction运行
+ * 提供容器，重新组织XAction运行。网关的三大功能：
+ * 1.控制输入
+ * 2.重构上下文数据
+ * 3.控制输出
  * */
 public abstract class UapiGateway implements XHandler , XRender {
     private XHandler _def;
