@@ -46,5 +46,6 @@ public class UapiCode extends DataThrowable {
 
     public UapiCode(Throwable cause) {
         super(cause);
+        this.description = cause.getMessage();
     }
 }
