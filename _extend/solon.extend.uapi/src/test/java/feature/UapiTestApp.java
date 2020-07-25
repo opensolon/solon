@@ -2,9 +2,9 @@ package feature;
 
 import org.noear.solon.XApp;
 
-public class UApiTestApp {
+public class UapiTestApp {
     public static void main(String[] args) {
-        XApp.start(UApiTestApp.class, args);
+        XApp.start(UapiTestApp.class, args);
     }
 
 }
