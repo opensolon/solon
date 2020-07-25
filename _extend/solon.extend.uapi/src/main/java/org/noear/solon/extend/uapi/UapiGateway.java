@@ -55,7 +55,7 @@ public abstract class UapiGateway implements XHandler , XRender {
         XContextUtil.currentRemove();
         XContextUtil.currentSet(c2);
 
-        //不要接管异常，因为后面没有处理了
+        //不要接管异常，因为后面没有处理了（DataThrowable，已在）
         _nav.handle(c2);
     }
 
@@ -151,19 +151,19 @@ public abstract class UapiGateway implements XHandler , XRender {
     }
 
     /**
-     * 执行接口
+     * 执行接口（主要对DataThrowable进行处理）
      */
     protected void handleDo(XContext c, XHandler h, int endpoint) throws Throwable {
         if (endpoint != XEndpoint.after) {
             //
             //确保非后置处理不出错，出错转为UapiCode（前置处理，也可以填接抛出数据）
             //
+            //其它异常不管
+            //
             try {
                 h.handle(c);
             } catch (DataThrowable ex) {
                 render(ex, c);
-            } catch (Throwable ex) {
-                render(new UapiCode(ex), c);
             }
         } else {
             //
