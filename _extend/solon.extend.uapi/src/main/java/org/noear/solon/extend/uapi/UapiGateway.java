@@ -57,7 +57,7 @@ public abstract class UapiGateway implements XHandler , XRender {
      */
     @Override
     public void render(Object obj, XContext c) throws Throwable {
-        c.renderReal(obj);
+        c.render(obj);
     }
 
 
