@@ -8,10 +8,10 @@ import org.noear.solon.extend.uapi.UapiGateway;
 
 import java.lang.reflect.Method;
 
-public class ExXAction extends XAction {
+public class ExAction extends XAction {
     private UapiGateway gateway;
 
-    public ExXAction(BeanWrap bw, Method m, XMapping mp, String path, boolean remoting, UapiGateway gateway) {
+    public ExAction(BeanWrap bw, Method m, XMapping mp, String path, boolean remoting, UapiGateway gateway) {
         super(bw, m, mp, path, remoting);
         this.gateway = gateway;
     }

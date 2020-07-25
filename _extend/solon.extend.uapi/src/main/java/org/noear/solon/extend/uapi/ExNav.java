@@ -5,10 +5,10 @@ import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XHandler;
 
-public class ExXNav extends XNav {
+public class ExNav extends XNav {
     private UapiGateway gateway;
 
-    public ExXNav(XMapping mapping, UapiGateway gateway) {
+    public ExNav(XMapping mapping, UapiGateway gateway) {
         super(mapping);
         this.gateway = gateway;
     }

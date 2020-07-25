@@ -21,7 +21,7 @@ public abstract class UapiGateway implements XHandler , XRender {
 
         _mapping = this.getClass().getAnnotation(XMapping.class);
 
-        _nav = new ExXNav(_mapping, this);
+        _nav = new ExNav(_mapping, this);
 
         //默认为404错误输出
         _def = (c) -> c.status(404);
