@@ -4,10 +4,12 @@ import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.XAction;
 import org.noear.solon.core.XContext;
-import org.noear.solon.extend.uapi.UapiGateway;
 
 import java.lang.reflect.Method;
 
+/**
+ * 为了重写渲染动作
+ * */
 public class ExAction extends XAction {
     private UapiGateway gateway;
 

@@ -7,6 +7,9 @@ import org.noear.solon.core.XAction;
 
 import java.lang.reflect.Method;
 
+/**
+ * 为了重写XAction的创建动作
+ * */
 public class ExBeanWebWrap extends BeanWebWrap {
     private UapiGateway gateway;
 

@@ -5,6 +5,9 @@ import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XHandler;
 
+/**
+ * 为了重写处理逻辑
+ * */
 public class ExNav extends XNav {
     private UapiGateway gateway;
 
