@@ -171,7 +171,7 @@ public abstract class UapiGateway implements XHandler , XRender {
     protected void handleDo(XContext c, XHandler h, int endpoint) throws Throwable {
         if (endpoint != XEndpoint.after) {
             //
-            //确保非后置处理不出错，出错转为UapiCode
+            //确保非后置处理不出错，出错转为UapiCode（前置处理，也可以填接抛出数据）
             //
             try {
                 h.handle(c);
@@ -181,6 +181,9 @@ public abstract class UapiGateway implements XHandler , XRender {
                 render(new UapiCode(ex), c);
             }
         } else {
+            //
+            //后置处理，不能再抛数据了（不然，没完没了）
+            //
             h.handle(c);
         }
     }
