@@ -8,7 +8,7 @@ import org.noear.solon.core.XContext;
 import java.lang.reflect.Method;
 
 /**
- * 为了重写渲染动作
+ * 为了拦截 renderDo 处理，并转发给网关
  * */
 public class ExAction extends XAction {
     private UapiGateway gateway;

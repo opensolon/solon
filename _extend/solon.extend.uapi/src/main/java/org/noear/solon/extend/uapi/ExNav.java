@@ -6,7 +6,7 @@ import org.noear.solon.core.XContext;
 import org.noear.solon.core.XHandler;
 
 /**
- * 为了重写处理逻辑
+ * 为了拦截 handleDo 处理，并转发给网关
  * */
 public class ExNav extends XNav {
     private UapiGateway gateway;

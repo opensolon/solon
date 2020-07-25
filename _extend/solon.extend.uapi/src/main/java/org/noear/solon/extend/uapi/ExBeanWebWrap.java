@@ -8,7 +8,7 @@ import org.noear.solon.core.XAction;
 import java.lang.reflect.Method;
 
 /**
- * 为了重写XAction的创建动作
+ * 为了获取 创建 XAction 的权限
  * */
 public class ExBeanWebWrap extends BeanWebWrap {
     private UapiGateway gateway;
