@@ -3,6 +3,7 @@ package feature.controller;
 import feature.controller.service.*;
 import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
+import org.noear.solon.core.Aop;
 import org.noear.solon.core.XContext;
 import org.noear.solon.extend.uapi.Result;
 import org.noear.solon.extend.uapi.UapiCode;
@@ -13,11 +14,13 @@ import org.noear.solon.extend.uapi.UapiGateway;
 public class ApiGateway extends UapiGateway {
     @Override
     public void register() {
-        add(API_0.class);
-        add(API_A_0_1.class);
-        add(API_A_0_2.class);
-        add(API_A_0_3.class);
-        add(API_A_0_4.class);
+        Aop.beanOnloaded(()->{
+            Aop.beanForeach((k,bw)->{
+                if("api".equals(bw.tag())){
+                    add(bw);
+                }
+            });
+        });
     }
 
     @Override

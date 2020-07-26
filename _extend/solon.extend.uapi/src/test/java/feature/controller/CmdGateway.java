@@ -4,6 +4,7 @@ import feature.controller.service.*;
 import org.noear.snack.ONode;
 import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
+import org.noear.solon.core.Aop;
 import org.noear.solon.core.XContext;
 import org.noear.solon.extend.uapi.Result;
 import org.noear.solon.extend.uapi.UapiCode;
@@ -17,6 +18,14 @@ public class CmdGateway extends UapiGateway {
 
         //开始计时
         addBefore(c -> c.attr("start", System.currentTimeMillis()));
+
+        Aop.beanOnloaded(()->{
+            Aop.beanForeach((k,bw)->{
+                if("api".equals(bw.tag())){
+                    add(bw);
+                }
+            });
+        });
 
         add(API_0.class);
         add(API_A_0_1.class);
