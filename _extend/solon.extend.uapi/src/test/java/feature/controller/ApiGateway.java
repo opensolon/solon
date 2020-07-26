@@ -13,7 +13,6 @@ import org.noear.solon.extend.uapi.UapiGateway;
 public class ApiGateway extends UapiGateway {
     @Override
     public void register() {
-
         add(API_0.class);
         add(API_A_0_1.class);
         add(API_A_0_2.class);
