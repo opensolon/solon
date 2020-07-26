@@ -10,6 +10,9 @@ import org.noear.solon.extend.uapi.UapiGateway;
 public class RpcGateway extends UapiGateway {
     @Override
     protected boolean allowActionMapping() {
+        //
+        //作rpc时，禁掉mapping；客户端使用时友好些
+        //
         return false;
     }
 
