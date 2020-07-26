@@ -209,6 +209,8 @@ public class AopFactory extends AopFactoryBase {
     public void put(String key, BeanWrap wrap) {
         if (XUtil.isEmpty(key) == false) {
             if (beans.containsKey(key) == false) {
+                wrap.nameSet(key);
+
                 beans.put(key, wrap);
 
                 beanNotice(key, wrap);

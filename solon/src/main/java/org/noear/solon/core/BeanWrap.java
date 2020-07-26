@@ -16,6 +16,7 @@ public class BeanWrap {
     protected boolean _singleton; // 是否为单例
     protected boolean _remoting;  // 是否为远程服务
     protected String _tag;
+    protected String _name;
 
     public BeanWrap() {
     }
@@ -54,7 +55,7 @@ public class BeanWrap {
     }
 
     /**
-     * bean原始对象
+     * bean 原始对象
      */
     public <T> T raw() {
         return (T) _raw;
@@ -63,6 +64,15 @@ public class BeanWrap {
         _raw = raw;
     }
 
+    /**
+     * bean name
+     * */
+    public String name(){ return  _name; }
+    protected void nameSet(String name){ _name = name; }
+
+    /**
+     * bean tag
+     * */
     public String tag(){ return  _tag; }
     protected void tagSet(String tag){ _tag = tag; }
 
