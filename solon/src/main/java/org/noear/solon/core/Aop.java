@@ -3,6 +3,7 @@ package org.noear.solon.core;
 import org.noear.solon.ext.Act1;
 
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * Aop 管理中心
@@ -90,5 +91,6 @@ public class Aop {
     /** 遍历bean (拿到的是bean包装) */
     public static void beanForeach(BiConsumer<String, BeanWrap> action) {
         _f.beans.forEach(action);
+
     }
 }
