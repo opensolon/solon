@@ -52,6 +52,7 @@ public class Result<T> {
     }
 
     public Result(T data) {
+        this.code = 1;
         this.data = data;
         this.description = "";
     }
@@ -63,7 +64,6 @@ public class Result<T> {
         } else {
             this.description = description;
         }
-
     }
 
     /**
