@@ -21,9 +21,9 @@ public class BeanWebWrap {
     public BeanWebWrap(BeanWrap wrap) {
         c_map = wrap.clz().getAnnotation(XMapping.class);
 
-        if(c_map == null){
+        if (c_map == null) {
             initDo(wrap, null, wrap.remoting());
-        }else{
+        } else {
             initDo(wrap, c_map.value(), wrap.remoting());
         }
     }
@@ -36,7 +36,7 @@ public class BeanWebWrap {
         initDo(wrap, mapping, remoting);
     }
 
-    private void initDo(BeanWrap wrap, String mapping, boolean remoting){
+    private void initDo(BeanWrap wrap, String mapping, boolean remoting) {
         _bw = wrap;
         if (mapping != null) {
             c_path = mapping;
@@ -47,7 +47,7 @@ public class BeanWebWrap {
 
     /**
      * mapping expr
-     * */
+     */
     public String mapping() {
         return c_path;
     }
@@ -63,7 +63,7 @@ public class BeanWebWrap {
      * 加载 XAction 到目标容器
      *
      * @param slots 接收加载结果的容器（槽）
-     * */
+     */
     public void load(XHandlerSlots slots) {
         load(c_remoting, slots);
     }
@@ -71,9 +71,9 @@ public class BeanWebWrap {
     /**
      * 加载 XAction 到目标容器
      *
-     * @param all 加载全部函数（一般 remoting 会全部加载）
+     * @param all   加载全部函数（一般 remoting 会全部加载）
      * @param slots 接收加载结果的容器（槽）
-     * */
+     */
     public void load(boolean all, XHandlerSlots slots) {
         if (XHandler.class.isAssignableFrom(_bw.clz())) {
             loadHandlerDo(slots);
@@ -84,7 +84,7 @@ public class BeanWebWrap {
 
     /**
      * 加载处理
-     * */
+     */
     protected void loadHandlerDo(XHandlerSlots slots) {
         if (c_map == null) {
             throw new RuntimeException(_bw.clz().getName() + " No XMapping!");
@@ -106,11 +106,11 @@ public class BeanWebWrap {
 
     /**
      * 加载 XAction 处理
-     * */
+     */
     protected void loadActionDo(XHandlerSlots slots, boolean all) {
         String m_path;
 
-        if(c_path == null){
+        if (c_path == null) {
             c_path = "";
         }
 
@@ -157,7 +157,7 @@ public class BeanWebWrap {
             if (m_map != null || all) {
                 String newPath = XUtil.mergePath(c_path, m_path);
 
-                XAction action = action(_bw,method, m_map,newPath);
+                XAction action = action(_bw, method, m_map, newPath);
 
                 //加载控制器的前置拦截器
                 addDo(c_befs2.toArray(), (b) -> action.before((XHandler) b));
@@ -189,8 +189,8 @@ public class BeanWebWrap {
 
     /**
      * 构建 XAction
-     * */
-    protected XAction action(BeanWrap bw, Method method, XMapping mp, String path){
+     */
+    protected XAction action(BeanWrap bw, Method method, XMapping mp, String path) {
         return new XAction(bw, method, mp, path, c_remoting);
     }
 
