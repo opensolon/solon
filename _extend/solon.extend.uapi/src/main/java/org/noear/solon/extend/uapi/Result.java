@@ -6,6 +6,10 @@ package org.noear.solon.extend.uapi;
 public class Result<T> {
     /**
      * 状态码
+     *
+     * -x:明确的失败（或正数）
+     * 00:未知失败
+     * 01:成功
      */
     public int code;
     /**
