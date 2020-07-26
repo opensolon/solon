@@ -2,6 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.annotation.XInit;
 import org.noear.solon.annotation.XSingleton;
+import sun.util.resources.cldr.ss.CurrencyNames_ss;
 
 /**
  * Bean 包装（可以被继承重写）
@@ -37,6 +38,13 @@ public class BeanWrap {
     }
 
     /**
+     * 是否为单例
+     * */
+    public boolean singleton(){
+        return _singleton;
+    }
+
+    /**
      * is remoting()?
      */
     public boolean remoting() {
@@ -48,7 +56,7 @@ public class BeanWrap {
     }
 
     /**
-     * bean类
+     * bean 类
      */
     public Class<?> clz() {
         return _clz;
