@@ -100,6 +100,8 @@ public class AopFactory extends AopFactoryBase {
      * XBean 的处理
      * */
     protected void beanAnnoHandle(BeanWrap bw, XBean anno) {
+        bw.tagSet(anno.tag());
+
         if (XPlugin.class.isAssignableFrom(bw.clz())) {
             //如果是插件，则插入
             XApp.global().plug(bw.raw());
