@@ -27,7 +27,7 @@ public class ApiGateway extends UapiGateway {
             c.render(Result.failure((UapiCode) obj));
         } else if (obj instanceof Throwable) {
             c.render(Result.failure(new UapiCode((Throwable) obj)));
-        } else{
+        } else {
             c.render(Result.succeed(obj));
         }
     }

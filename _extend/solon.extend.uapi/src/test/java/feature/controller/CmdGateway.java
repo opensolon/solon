@@ -24,12 +24,12 @@ public class CmdGateway extends UapiGateway {
         add(API_A_0_3.class);
         add(API_A_0_4.class);
 
-        //控制渲染
+        //控制渲染+签名
         addAfter(c -> {
             String json = ONode.loadObj(c.attachment).toJson();
             String json_md5 = md5(json + "#" + sign_salt);
 
-            c.headerSet("sign", json_md5);
+            c.headerSet("Rock-Sign", json_md5);
             c.output(json);
             c.attachment = json;
         });
@@ -54,7 +54,7 @@ public class CmdGateway extends UapiGateway {
 
     private String sign_salt = "1234";
     private String md5(String str) {
-        return null;
+        return "xxx";
     }
 
     @Override
