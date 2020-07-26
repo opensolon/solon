@@ -6,11 +6,15 @@ import org.noear.solon.annotation.XMapping;
 import org.noear.solon.extend.uapi.UapiGateway;
 
 @XController
-@XMapping("/cmd/*")
+@XMapping("/rpc/*")
 public class RpcGateway extends UapiGateway {
     @Override
-    protected void register() {
+    protected boolean allowActionMapping() {
+        return false;
+    }
 
+    @Override
+    protected void register() {
         add(API_A_0_1.class);
         add(API_A_0_2.class);
         add(API_A_0_3.class);

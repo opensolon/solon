@@ -9,11 +9,12 @@ import org.noear.solon.extend.uapi.UapiCode;
 import org.noear.solon.extend.uapi.UapiGateway;
 
 @XController
-@XMapping("/cmd2/*")
+@XMapping("/cmd/*")
 public class CmdGateway extends UapiGateway {
     @Override
     protected void register() {
 
+        add(API_0.class);
         add(API_A_0_1.class);
         add(API_A_0_2.class);
         add(API_A_0_3.class);

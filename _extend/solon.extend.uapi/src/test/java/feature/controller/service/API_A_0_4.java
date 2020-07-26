@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class API_A_0_4 {
     @XMapping("A.0.4")
-    public Object call(){
+    public Object getUser(){
         Map<String,Object>  map = new HashMap<>();
 
         map.put("user_id",12);

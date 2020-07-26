@@ -5,7 +5,7 @@ import org.noear.solon.extend.uapi.UapiCode;
 
 public class API_A_0_2 {
     @XMapping("A.0.2")
-    public Object call(){
+    public Object getOrder(){
         throw new UapiCode(12,"There are no appropriate parameters");
     }
 }

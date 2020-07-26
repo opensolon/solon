@@ -10,7 +10,6 @@ public class CallbackGateway extends UapiGateway {
 
     @Override
     protected void register() {
-
         addBefore(c->c.output("插一点"));
 
         add("wechat/payment", c -> c.output(c.path()));
