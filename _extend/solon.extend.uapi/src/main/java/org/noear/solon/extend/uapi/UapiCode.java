@@ -9,7 +9,7 @@ import org.noear.solon.core.DataThrowable;
  * */
 public class UapiCode extends DataThrowable {
     private int code;
-    private String description;
+    private String description = "";
 
     /**
      * 代码

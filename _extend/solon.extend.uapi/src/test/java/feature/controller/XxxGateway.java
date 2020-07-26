@@ -1,6 +1,5 @@
 package feature.controller;
 
-import feature.controller.cmds.CmdContext;
 import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.Aop;
@@ -23,11 +22,5 @@ public class XxxGateway extends UapiGateway {
                 }
             });
         });
-    }
-
-    //替换自定义上下文
-    @Override
-    public XContext context(XContext ctx) {
-        return new CmdContext(ctx, this);
     }
 }

@@ -17,10 +17,4 @@ public class CmdGateway extends UapiGateway {
         add(CMD_A_0_3.class);
         add(CMD_A_0_4.class);
     }
-
-    //替换自定义上下文
-    @Override
-    public XContext context(XContext ctx) {
-        return new CmdContext(ctx, this);
-    }
 }

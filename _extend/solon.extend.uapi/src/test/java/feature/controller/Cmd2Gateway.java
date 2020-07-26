@@ -5,6 +5,7 @@ import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.DataThrowable;
 import org.noear.solon.core.XContext;
+import org.noear.solon.extend.uapi.Result;
 import org.noear.solon.extend.uapi.UapiCode;
 import org.noear.solon.extend.uapi.UapiGateway;
 
@@ -23,24 +24,14 @@ public class Cmd2Gateway extends UapiGateway {
         add(CMD_A_0_4.class);
     }
 
-    //替换自定义上下文
-    @Override
-    public XContext context(XContext ctx) {
-        return new CmdContext(ctx, this);
-    }
-
     @Override
     public void render(Object obj, XContext c) throws Throwable {
-        if(obj instanceof UapiCode){
-            UapiCode uc = (UapiCode)obj;
-            Map<String,Object> map = new HashMap<>();
-
-            map.put("code",uc.getCode());
-            map.put("msg",uc.getDescription());
-
-            super.render(map,c);
-        }else {
-            super.render(obj, c);
+        if (obj instanceof UapiCode) {
+            c.render(Result.failure((UapiCode) obj));
+        } else if (obj instanceof Throwable) {
+            c.render(Result.failure(new UapiCode((Throwable) obj)));
+        } else{
+            c.render(Result.succeed(obj));
         }
     }
 }
