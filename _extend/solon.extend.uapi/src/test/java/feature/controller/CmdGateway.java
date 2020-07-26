@@ -1,6 +1,7 @@
 package feature.controller;
 
 import feature.controller.service.*;
+import org.noear.snack.ONode;
 import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.XContext;
@@ -14,21 +15,56 @@ public class CmdGateway extends UapiGateway {
     @Override
     protected void register() {
 
+        //开始计时
+        addBefore(c -> c.attr("start", System.currentTimeMillis()));
+
         add(API_0.class);
         add(API_A_0_1.class);
         add(API_A_0_2.class);
         add(API_A_0_3.class);
         add(API_A_0_4.class);
+
+        //控制渲染
+        addAfter(c -> {
+            String json = ONode.loadObj(c.attachment).toJson();
+            String json_md5 = md5(json + "#" + sign_salt);
+
+            c.headerSet("sign", json_md5);
+            c.output(json);
+            c.attachment = json;
+        });
+
+        //记录性能
+        addAfter(c -> {
+            long start = c.attr("start", 0);
+            if (start > 0) {
+                long times = System.currentTimeMillis() - start;
+                System.out.println("using times: " + times);
+            }
+        });
+
+        //写入日志
+        addAfter(c -> {
+            if (c.attachment != null) {
+                System.out.println(c.attachment);
+            }
+        });
+    }
+
+
+    private String sign_salt = "1234";
+    private String md5(String str) {
+        return null;
     }
 
     @Override
     public void render(Object obj, XContext c) throws Throwable {
         if (obj instanceof UapiCode) {
-            c.render(Result.failure((UapiCode) obj));
+            c.attachment = (Result.failure((UapiCode) obj));
         } else if (obj instanceof Throwable) {
-            c.render(Result.failure(new UapiCode((Throwable) obj)));
-        } else{
-            c.render(Result.succeed(obj));
+            c.attachment = (Result.failure(new UapiCode((Throwable) obj)));
+        } else {
+            c.attachment = (Result.succeed(obj));
         }
     }
 }
