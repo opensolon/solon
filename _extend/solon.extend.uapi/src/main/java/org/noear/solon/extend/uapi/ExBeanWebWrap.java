@@ -20,6 +20,10 @@ public class ExBeanWebWrap extends BeanWebWrap {
 
     @Override
     protected XAction action(BeanWrap bw, Method method, XMapping mp, String path) {
-        return new ExAction(bw, method, mp, path, c_remoting, gateway);
+        if (gateway.allowActionMapping()) {
+            return new ExAction(bw, method, mp, path, c_remoting, gateway);
+        } else {
+            return new ExAction(bw, method, null, path, c_remoting, gateway);
+        }
     }
 }

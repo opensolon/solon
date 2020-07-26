@@ -37,6 +37,13 @@ public abstract class UapiGateway implements XHandler , XRender {
      */
     protected abstract void register();
 
+    /**
+     * 允许 Action Mapping 申明
+     * */
+    protected boolean allowActionMapping() {
+        return true;
+    }
+
 
     /**
      * for XHandler
@@ -55,7 +62,7 @@ public abstract class UapiGateway implements XHandler , XRender {
 
     /**
      * for XRender (用于接管 XContext::render)
-     *
+     * <p>
      * 主要为了子类可重写
      */
     @Override
