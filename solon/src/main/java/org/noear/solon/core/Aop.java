@@ -68,7 +68,7 @@ public class Aop {
         return  _f.wrap(clz, null).get();
     }
     /** 异步获取bean (clz) */
-    public static void getAsyn(Class<?> clz, FieldWrapTmp fwT, Act1<BeanWrap> callback) {
+    public static void getAsyn(Class<?> clz, Act1<BeanWrap> callback) { //FieldWrapTmp fwT,
         BeanWrap wrap = _f.wrap(clz, null);
 
         if (wrap.raw() == null) {

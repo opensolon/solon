@@ -62,7 +62,7 @@ public class AopFactory extends AopFactoryBase {
         beanInjectorAdd(XInject.class, ((fwT, anno) -> {
             if (XUtil.isEmpty(anno.value())) {
                 //如果没有name,使用类型进行获取 bean
-                Aop.getAsyn(fwT.getType(), fwT, (bw) -> {
+                Aop.getAsyn(fwT.getType(), (bw) -> {
                     fwT.setValue(bw.get());
                 });
             } else {
