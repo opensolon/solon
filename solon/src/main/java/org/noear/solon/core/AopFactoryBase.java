@@ -5,6 +5,8 @@ import org.noear.solon.ext.Act1;
 import java.lang.annotation.Annotation;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.function.Consumer;
 
 /** 为 AopFactory 提供存储 支持 */
 public abstract class AopFactoryBase {
@@ -32,7 +34,7 @@ public abstract class AopFactoryBase {
      */
     protected final Map<Class<?>, BeanCreator<?>> beanCreators = new HashMap<>();
     /**
-     * bean builder
+     * bean injectors
      */
     protected final Map<Class<?>, BeanInjector<?>> beanInjectors = new HashMap<>();
 
@@ -68,29 +70,39 @@ public abstract class AopFactoryBase {
     /**
      * bean订阅者
      */
-    private final Map<Object, Set<Act1<BeanWrap>>> _subs = new ConcurrentHashMap<>();
+    private final Set<BeanSubscriber> subscribers = new ConcurrentSkipListSet<>();
 
     /**
      * bean订阅
      */
-    public void beanSubscribe(Object key, Act1<BeanWrap> callback) {
-        Set<Act1<BeanWrap>> e = _subs.get(key);
-        if (e == null) {
-            e = new HashSet<>();
-            _subs.put(key, e);
-        }
+    public void beanSubscribe(Object key, Consumer<BeanWrap> callback) {
+        subscribers.add(new BeanSubscriber(key, callback));
+    }
 
-        e.add(callback);
+    /**
+     * bean订阅
+     */
+    public void beanSubscribe(Consumer<BeanWrap> callback) {
+        subscribers.add(new BeanSubscriber(callback));
     }
 
     /**
      * bean通知
      */
     public void beanNotice(Object key, BeanWrap wrap) {
-        Set<Act1<BeanWrap>> e = _subs.get(key);
-        if (e != null) {
-            e.forEach(f -> f.run(wrap));
-        }
+        subscribers.forEach(s1 -> {
+            if (s1.key != null) {
+                if (s1.key.equals(key)) {
+                    s1.callback.accept(wrap);
+                }
+            } else if (s1.tag != null) {
+                if (s1.tag.equals(wrap.tag())) {
+                    s1.callback.accept(wrap);
+                }
+            } else {
+                s1.callback.accept(wrap);
+            }
+        });
     }
 
     public abstract BeanWrap wrap(Class<?> clz, Object raw);

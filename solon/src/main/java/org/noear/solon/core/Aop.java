@@ -55,12 +55,12 @@ public class Aop {
         return bw == null ? null : bw.get();
     }
     /** 异步获取bean (key) */
-    public static void getAsyn(String key, Act1<BeanWrap> callback) {
+    public static void getAsyn(String key, Consumer<BeanWrap> callback) {
         BeanWrap wrap = _f.get(key);
         if (wrap == null) {
             _f.beanSubscribe(key, callback);
         } else {
-            callback.run(wrap);
+            callback.accept(wrap);
         }
     }
     /** 获取bean (clz) */
@@ -68,13 +68,13 @@ public class Aop {
         return  _f.wrap(clz, null).get();
     }
     /** 异步获取bean (clz) */
-    public static void getAsyn(Class<?> clz, Act1<BeanWrap> callback) { //FieldWrapTmp fwT,
+    public static void getAsyn(Class<?> clz, Consumer<BeanWrap> callback) { //FieldWrapTmp fwT,
         BeanWrap wrap = _f.wrap(clz, null);
 
         if (wrap.raw() == null) {
             _f.beanSubscribe(clz, callback);
         } else {
-            callback.run(wrap);
+            callback.accept(wrap);
         }
     }
     /** 尝试注入（建议使用：get(clz) ） */
