@@ -1,6 +1,7 @@
 package org.noear.solon.core;
 
 import org.noear.solon.ext.Act1;
+import org.noear.solon.ext.Fun2;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
@@ -72,13 +73,14 @@ public abstract class AopFactoryBase {
      */
     protected final Set<BeanSubscriber> subSet = new ConcurrentSkipListSet<>();
 
-
     /**
      * bean通知
      */
     public void beanNotice(Object key, BeanWrap wrap) {
         subSet.forEach(s1 -> {
-            s1.callback.accept(wrap);
+            if(s1.match(key,wrap)){
+                s1.callback.accept(wrap);
+            }
         });
     }
 

@@ -147,15 +147,6 @@ public class Aop {
      * @param label [key,tag,type,sup type]
      */
     public static void beanSubscribe(Object label, Consumer<BeanWrap> callback) {
-        if (label == null) {
-            _f.subSet.add(new BeanSubscriber((k, b) -> true, callback));
-        } else {
-            if (label instanceof String && ((String) label).startsWith("@")) {
-                String tag = ((String) label).substring(1);
-                _f.subSet.add(new BeanSubscriber((k, b) -> tag.equals(b.tag()), callback));
-            } else {
-                _f.subSet.add(new BeanSubscriber((k, b) -> label.equals(k), callback));
-            }
-        }
+        _f.subSet.add(new BeanSubscriber(label, callback));
     }
 }
