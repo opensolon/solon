@@ -208,6 +208,6 @@ public abstract class UapiGateway implements XHandler , XRender {
      * 转换 上下文（关键的地方）
      */
     protected XContext context(XContext ctx) {
-        return new UapiContext(ctx, this);
+        return ctx;
     }
 }
