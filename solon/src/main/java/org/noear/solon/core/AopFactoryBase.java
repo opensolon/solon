@@ -78,7 +78,7 @@ public abstract class AopFactoryBase {
      */
     public void beanNotice(Object key, BeanWrap wrap) {
         subSet.forEach(s1 -> {
-            if(s1.match(key,wrap)){
+            if(s1.matched(key,wrap)){
                 s1.callback.accept(wrap);
             }
         });

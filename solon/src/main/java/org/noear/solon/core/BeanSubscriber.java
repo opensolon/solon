@@ -18,7 +18,7 @@ public class BeanSubscriber {
         }
     }
 
-    public boolean match(Object key, BeanWrap wrap) {
+    public boolean matched(Object key, BeanWrap wrap) {
         if (tag != null) {
             return tag.equals(wrap.tag());
         }
