@@ -24,4 +24,10 @@ public class ExAction extends XAction {
     protected void renderDo(XContext x, Object result) throws Throwable {
         gateway.renderDo(x, result);
     }
+
+    @Override
+    protected Object callDo(Object obj, XContext x) throws Throwable {
+        x.attr("controller", obj);
+        return super.callDo(obj, x);
+    }
 }
