@@ -156,7 +156,7 @@ public abstract class UapiGateway implements XHandler {
     }
 
     /**
-     * 执行接口（主要对DataThrowable进行处理）
+     * 接管XNav的handleDo（主要对DataThrowable进行处理）
      */
     protected void handleDo(XContext c, XHandler h, int endpoint) throws Throwable {
         if (endpoint != XEndpoint.after) {
@@ -166,6 +166,7 @@ public abstract class UapiGateway implements XHandler {
             try {
                 h.handle(c);
             } catch (DataThrowable ex) {
+                c.setHandled(true);
                 renderDo(c, ex);
             }
             //
