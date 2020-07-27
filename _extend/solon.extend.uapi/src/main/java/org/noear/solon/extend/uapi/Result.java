@@ -52,18 +52,14 @@ public class Result<T> {
     }
 
     public Result(T data) {
-        this.code = 1;
-        this.data = data;
-        this.description = "";
+        setCode(1);
+        setDescription("");
+        setData(data);
     }
 
     public Result(int code, String description) {
-        this.code = code;
-        if (description == null) {
-            this.description = "";
-        } else {
-            this.description = description;
-        }
+        setCode(code);
+        setDescription(description);
     }
 
     /**
