@@ -14,7 +14,7 @@ import org.noear.solon.core.*;
  * 2.重构上下文数据
  * 3.控制输出
  * */
-public abstract class UapiGateway implements XHandler , XRender {
+public abstract class UapiGateway implements XHandler {
     private XHandler _def;
     private XNav _nav;
     private XMapping _mapping;
@@ -58,16 +58,6 @@ public abstract class UapiGateway implements XHandler , XRender {
 
         //不要接管异常，因为后面没有处理了（DataThrowable，已在handleDo处理）
         _nav.handle(c2);
-    }
-
-    /**
-     * for XRender (用于接管 XContext::render)
-     * <p>
-     * 主要为了子类可重写
-     */
-    @Override
-    public void render(Object obj, XContext c) throws Throwable {
-        c.render(obj);
     }
 
 
@@ -151,6 +141,20 @@ public abstract class UapiGateway implements XHandler , XRender {
         _nav.add(path, handler);
     }
 
+
+    //
+    //
+    //
+
+    /**
+     * 用于接管 XAction::renderDo
+     * <p>
+     * 主要为了子类可重写
+     */
+    protected void renderDo(XContext c , Object obj) throws Throwable {
+        c.render(obj);
+    }
+
     /**
      * 执行接口（主要对DataThrowable进行处理）
      */
@@ -162,7 +166,7 @@ public abstract class UapiGateway implements XHandler , XRender {
             try {
                 h.handle(c);
             } catch (DataThrowable ex) {
-                render(ex, c);
+                renderDo(c, ex);
             }
             //
             //别的异常不管，输出50X错误

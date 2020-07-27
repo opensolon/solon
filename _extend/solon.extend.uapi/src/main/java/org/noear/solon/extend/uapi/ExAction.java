@@ -22,6 +22,6 @@ public class ExAction extends XAction {
 
     @Override
     protected void renderDo(XContext x, Object result) throws Throwable {
-        gateway.render(result, x);
+        gateway.renderDo(x, result);
     }
 }

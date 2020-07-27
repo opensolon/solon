@@ -20,7 +20,7 @@ public class ApiGateway extends UapiGateway {
     }
 
     @Override
-    public void render(Object obj, XContext c) throws Throwable {
+    public void renderDo(XContext c, Object obj) throws Throwable {
         if (obj instanceof UapiCode) {
             c.render(Result.failure((UapiCode) obj));
         } else if (obj instanceof Throwable) {
