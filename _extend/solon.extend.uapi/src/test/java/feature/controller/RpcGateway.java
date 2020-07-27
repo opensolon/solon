@@ -19,12 +19,8 @@ public class RpcGateway extends UapiGateway {
 
     @Override
     protected void register() {
-        Aop.beanOnloaded(()->{
-            Aop.beanForeach((k,bw)->{
-                if("api".equals(bw.tag())){
-                    add(bw);
-                }
-            });
+        Aop.beanSubscribe("@api", (bw) -> {
+            add(bw);
         });
     }
 }

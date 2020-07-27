@@ -19,12 +19,8 @@ public class CmdGateway extends UapiGateway {
         //开始计时
         addBefore(c -> c.attr("start", System.currentTimeMillis()));
 
-        Aop.beanOnloaded(()->{
-            Aop.beanForeach((k,bw)->{
-                if("api".equals(bw.tag())){
-                    add(bw);
-                }
-            });
+        Aop.beanSubscribe("@api", (bw) -> {
+            add(bw);
         });
 
         add(API_0.class);
