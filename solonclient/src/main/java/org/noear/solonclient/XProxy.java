@@ -13,8 +13,17 @@ import java.util.Map;
 
 public class XProxy {
 
+    /**
+     * 默认的通讯通道
+     * */
     public static IChannel defaultChannel = HttpChannel.instance;
+    /**
+     * 默认的序列化器
+     * */
     public static ISerializer defaultSerializer = FastjsonSerializer.instance;
+    /**
+     * 默认的编码类型
+     * */
     public static Enctype defaultEnctype = Enctype.form_data;
 
     private String _url;
