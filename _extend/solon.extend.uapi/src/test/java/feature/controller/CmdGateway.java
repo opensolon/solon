@@ -62,7 +62,7 @@ public class CmdGateway extends UapiGateway {
     }
 
     @Override
-    public void render(Object obj, XContext c) throws Throwable {
+    public void renderDo(XContext c, Object obj) throws Throwable {
         if (obj instanceof UapiCode) {
             c.attachment = (Result.failure((UapiCode) obj));
         } else if (obj instanceof Throwable) {
