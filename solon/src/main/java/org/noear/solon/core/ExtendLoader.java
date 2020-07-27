@@ -11,6 +11,11 @@ import java.io.File;
  * */
 public class ExtendLoader {
     private static final ExtendLoader _g = new ExtendLoader();
+    private static String _path;
+
+    public static String path(){
+        return _path;
+    }
 
     /**
      * 加载扩展文件夹（或文件）
@@ -22,6 +27,8 @@ public class ExtendLoader {
             }
 
             if (path != null) {
+                _path = path;
+
                 PrintUtil.blueln("solon.extend: " + path);
 
                 File file = new File(path);
@@ -29,6 +36,7 @@ public class ExtendLoader {
             }
         }
     }
+
 
     /**
      * 加载扩展具体的jar文件
