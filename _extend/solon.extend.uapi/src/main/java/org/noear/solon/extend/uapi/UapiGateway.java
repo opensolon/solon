@@ -163,11 +163,10 @@ public abstract class UapiGateway implements XHandler , XRender {
                 h.handle(c);
             } catch (DataThrowable ex) {
                 render(ex, c);
-            } catch (Throwable ex) {
-                //其它异常做为未知代码
-                //
-                render(new UapiCode(ex), c);
             }
+            //
+            //别的异常不管，输出50X错误
+            //
         } else {
             //
             //后置处理，不能再抛数据了（不然，没完没了）
