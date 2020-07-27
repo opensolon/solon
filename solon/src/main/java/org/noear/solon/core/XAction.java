@@ -99,7 +99,7 @@ public class XAction extends XHandlerAide implements XHandler {
                     }
                 }
 
-                renderDo(x, callDo(x));
+                renderDo(x, callDo(_bw.get(), x));
             } catch (DataThrowable ex) {
                 //数据抛出，不进入异常系统
                 renderDo(x, ex);
@@ -119,8 +119,9 @@ public class XAction extends XHandlerAide implements XHandler {
     /**
      * 执行动作（便于重写）
      */
-    protected Object callDo(XContext x) throws Throwable {
-        return XActionUtil.exeMethod(_bw.get(), _mw, x);
+    protected Object callDo(Object obj, XContext x) throws Throwable {
+        x.attr("controller", obj);
+        return XActionUtil.exeMethod(obj, _mw, x);
     }
 
     /**
