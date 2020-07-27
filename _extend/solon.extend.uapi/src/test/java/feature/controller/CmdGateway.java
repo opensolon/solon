@@ -15,13 +15,12 @@ import org.noear.solon.extend.uapi.UapiGateway;
 public class CmdGateway extends UapiGateway {
     @Override
     protected void register() {
-
-        //开始计时
-        addBefore(c -> c.attr("start", System.currentTimeMillis()));
-
         Aop.beanSubscribe("@api", (bw) -> {
             add(bw);
         });
+
+        //开始计时
+        addBefore(c -> c.attr("start", System.currentTimeMillis()));
 
         add(API_0.class);
         add(API_A_0_1.class);
