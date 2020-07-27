@@ -204,7 +204,7 @@ public abstract class UapiGateway implements XHandler , XRender {
     }
 
     /**
-     * 转换 上下文（关键的地方）
+     * 提供转换上下文的机制
      */
     protected XContext context(XContext ctx) {
         return ctx;
