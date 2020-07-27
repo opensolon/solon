@@ -74,11 +74,20 @@ public abstract class AopFactoryBase {
     protected final Set<BeanSubscriber> subSet = new LinkedHashSet<>();
 
     /**
+     * bean订阅
+     */
+    public void beanSubscribe(Object key, Consumer<BeanWrap> callback) {
+        if (key != null) {
+            subSet.add(new BeanSubscriber(key, callback));
+        }
+    }
+
+    /**
      * bean通知
      */
     public void beanNotice(Object key, BeanWrap wrap) {
         subSet.forEach(s1 -> {
-            if(s1.matched(key,wrap)){
+            if(s1.key.equals(key)){
                 s1.callback.accept(wrap);
             }
         });

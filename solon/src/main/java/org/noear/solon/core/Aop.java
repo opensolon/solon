@@ -83,7 +83,7 @@ public class Aop {
     public static void getAsyn(String key, Consumer<BeanWrap> callback) {
         BeanWrap wrap = _f.get(key);
         if (wrap == null) {
-            beanSubscribe(key, callback);
+            _f.beanSubscribe(key, callback);
         } else {
             callback.accept(wrap);
         }
@@ -103,7 +103,7 @@ public class Aop {
         BeanWrap wrap = _f.wrap(clz, null);
 
         if (wrap.raw() == null) {
-            beanSubscribe(clz, callback);
+            _f.beanSubscribe(clz, callback);
         } else {
             callback.accept(wrap);
         }
@@ -139,14 +139,5 @@ public class Aop {
     public static void beanForeach(BiConsumer<String, BeanWrap> action) {
         _f.beans.forEach(action);
 
-    }
-
-    /**
-     * bean订阅
-     *
-     * @param label [key,tag,type,sup type]
-     */
-    public static void beanSubscribe(Object label, Consumer<BeanWrap> callback) {
-        _f.subSet.add(new BeanSubscriber(label, callback));
     }
 }
