@@ -27,7 +27,7 @@ public class ExAction extends XAction {
 
     @Override
     protected Object callDo(Object obj, XContext x) throws Throwable {
-        x.attr("controller", obj);
+        x.attrSet("controller", obj);
         return super.callDo(obj, x);
     }
 }
