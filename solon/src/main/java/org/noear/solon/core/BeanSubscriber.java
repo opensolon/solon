@@ -1,5 +1,6 @@
 package org.noear.solon.core;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -28,5 +29,24 @@ public class BeanSubscriber {
         } else {
             return label.equals(key);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        BeanSubscriber that = (BeanSubscriber) o;
+        return  Objects.equals(label, that.label) &&
+                Objects.equals(callback, that.callback);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(label, callback);
     }
 }

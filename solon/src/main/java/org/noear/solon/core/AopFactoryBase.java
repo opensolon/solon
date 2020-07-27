@@ -71,7 +71,7 @@ public abstract class AopFactoryBase {
     /**
      * bean订阅者
      */
-    protected final Set<BeanSubscriber> subSet = new ConcurrentSkipListSet<>();
+    protected final Set<BeanSubscriber> subSet = new LinkedHashSet<>();
 
     /**
      * bean通知
