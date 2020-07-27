@@ -1,31 +1,18 @@
 package org.noear.solon.core;
 
+import org.noear.solon.ext.Fun2;
+
 import java.util.function.Consumer;
 
 /**
  * Bean 订阅者
  * */
 public class BeanSubscriber {
-    public Object key;
-    public String tag;
+    public Fun2<Object, BeanWrap, Boolean> expr;
     public Consumer<BeanWrap> callback;
 
-    public BeanSubscriber(Consumer<BeanWrap> callback) {
-        this.callback = callback;
-    }
-
-    public BeanSubscriber(Object key, Consumer<BeanWrap> callback) {
-        //
-        //key = [tag, key, type]
-        //
-        if (key instanceof String && ((String) key).startsWith("@")) {
-            //tag
-            this.tag = ((String) key).substring(1);
-        } else {
-            //key
-            this.key = key;
-        }
-
+    public BeanSubscriber(Fun2<Object, BeanWrap, Boolean> expr, Consumer<BeanWrap> callback) {
+        this.expr = expr;
         this.callback = callback;
     }
 }

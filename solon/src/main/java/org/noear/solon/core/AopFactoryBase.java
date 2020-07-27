@@ -70,38 +70,15 @@ public abstract class AopFactoryBase {
     /**
      * bean订阅者
      */
-    private final Set<BeanSubscriber> subscribers = new ConcurrentSkipListSet<>();
+    protected final Set<BeanSubscriber> subSet = new ConcurrentSkipListSet<>();
 
-    /**
-     * bean订阅
-     */
-    public void beanSubscribe(Object key, Consumer<BeanWrap> callback) {
-        subscribers.add(new BeanSubscriber(key, callback));
-    }
-
-    /**
-     * bean订阅
-     */
-    public void beanSubscribe(Consumer<BeanWrap> callback) {
-        subscribers.add(new BeanSubscriber(callback));
-    }
 
     /**
      * bean通知
      */
     public void beanNotice(Object key, BeanWrap wrap) {
-        subscribers.forEach(s1 -> {
-            if (s1.key != null) {
-                if (s1.key.equals(key)) {
-                    s1.callback.accept(wrap);
-                }
-            } else if (s1.tag != null) {
-                if (s1.tag.equals(wrap.tag())) {
-                    s1.callback.accept(wrap);
-                }
-            } else {
-                s1.callback.accept(wrap);
-            }
+        subSet.forEach(s1 -> {
+            s1.callback.accept(wrap);
         });
     }
 

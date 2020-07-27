@@ -1,7 +1,5 @@
 package org.noear.solon.core;
 
-import org.noear.solon.ext.Act1;
-
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -10,38 +8,59 @@ import java.util.function.Consumer;
  * */
 public class Aop {
     //::工厂
-    /** Aop处理工厂 */
+    /**
+     * Aop处理工厂
+     */
     private static AopFactory _f = new AopFactory();
-    /** 获取Aop处理工厂 */
-    public static AopFactory factory(){return _f;}
-    /** 设置Aop处理工厂 */
+
+    /**
+     * 获取Aop处理工厂
+     */
+    public static AopFactory factory() {
+        return _f;
+    }
+
+    /**
+     * 设置Aop处理工厂
+     */
     public static void factorySet(AopFactory factory) {
         _f = factory;
     }
 
     //::包装bean
-    /** 包装bean（clz） */
-    public static BeanWrap wrap(Class<?> clz){
-        return _f.wrap(clz,null);
+
+    /**
+     * 包装bean（clz）
+     */
+    public static BeanWrap wrap(Class<?> clz) {
+        return _f.wrap(clz, null);
     }
 
     //::添加bean
-    /** 添加bean（key + obj） */
+
+    /**
+     * 添加bean（key + obj）
+     */
     public static void put(String key, Object obj) {
         _f.put(key, new BeanWrap(obj.getClass(), obj));
     }
 
     //::添加bean
-    /** 添加bean（key + wrap） */
+
+    /**
+     * 添加bean（key + wrap）
+     */
     public static void put(String key, BeanWrap wrap) {
         _f.put(key, wrap);
     }
 
-    /** 添加bean（clz + obj） */
-    public static BeanWrap put(Class<?> clz, Object obj){
+    /**
+     * 添加bean（clz + obj）
+     */
+    public static BeanWrap put(Class<?> clz, Object obj) {
         BeanWrap bw = _f.wrap(clz, obj);
 
-        if(bw.raw() != null) {
+        if (bw.raw() != null) {
             _f.beanNotice(clz, bw);
         }
 
@@ -49,48 +68,94 @@ public class Aop {
     }
 
     //::获取bean
-    /** 获取bean (key) */
+
+    /**
+     * 获取bean (key)
+     */
     public static <T> T get(String key) {
         BeanWrap bw = _f.get(key);
         return bw == null ? null : bw.get();
     }
-    /** 异步获取bean (key) */
+
+    /**
+     * 异步获取bean (key)
+     */
     public static void getAsyn(String key, Consumer<BeanWrap> callback) {
         BeanWrap wrap = _f.get(key);
         if (wrap == null) {
-            _f.beanSubscribe(key, callback);
+            beanSubscribe(key, callback);
         } else {
             callback.accept(wrap);
         }
     }
-    /** 获取bean (clz) */
+
+    /**
+     * 获取bean (clz)
+     */
     public static <T> T get(Class<?> clz) {
-        return  _f.wrap(clz, null).get();
+        return _f.wrap(clz, null).get();
     }
-    /** 异步获取bean (clz) */
+
+    /**
+     * 异步获取bean (clz)
+     */
     public static void getAsyn(Class<?> clz, Consumer<BeanWrap> callback) { //FieldWrapTmp fwT,
         BeanWrap wrap = _f.wrap(clz, null);
 
         if (wrap.raw() == null) {
-            _f.beanSubscribe(clz, callback);
+            beanSubscribe(clz, callback);
         } else {
             callback.accept(wrap);
         }
     }
-    /** 尝试注入（建议使用：get(clz) ） */
-    public static <T> T inject(T obj){
+
+    /**
+     * 尝试注入（建议使用：get(clz) ）
+     */
+    public static <T> T inject(T obj) {
         _f.inject(obj);
         return obj;
     }
 
     //::bean事件处理
-    /** 加载bean */
-    public static void beanLoad(Class<?> source){_f.beanLoad(source);}
-    /** 添加bean加载完成事件 */
-    public static void beanOnloaded(Runnable fun){_f.loadedEvent.add(fun);}
-    /** 遍历bean (拿到的是bean包装) */
+
+    /**
+     * 加载bean
+     */
+    public static void beanLoad(Class<?> source) {
+        _f.beanLoad(source);
+    }
+
+    /**
+     * 添加bean加载完成事件
+     */
+    public static void beanOnloaded(Runnable fun) {
+        _f.loadedEvent.add(fun);
+    }
+
+    /**
+     * 遍历bean (拿到的是bean包装)
+     */
     public static void beanForeach(BiConsumer<String, BeanWrap> action) {
         _f.beans.forEach(action);
 
+    }
+
+    /**
+     * bean订阅
+     *
+     * @param label [key,tag,type,sup type]
+     */
+    public static void beanSubscribe(Object label, Consumer<BeanWrap> callback) {
+        if (label == null) {
+            _f.subSet.add(new BeanSubscriber((k, b) -> true, callback));
+        } else {
+            if (label instanceof String && ((String) label).startsWith("@")) {
+                String tag = ((String) label).substring(1);
+                _f.subSet.add(new BeanSubscriber((k, b) -> tag.equals(b.tag()), callback));
+            } else {
+                _f.subSet.add(new BeanSubscriber((k, b) -> label.equals(k), callback));
+            }
+        }
     }
 }
