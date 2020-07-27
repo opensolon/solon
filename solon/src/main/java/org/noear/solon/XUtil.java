@@ -2,13 +2,13 @@ package org.noear.solon;
 
 import org.noear.solon.core.*;
 import org.noear.solon.core.utils.TypeUtil;
-import org.noear.solon.ext.Fun1;
 
 import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -264,7 +264,7 @@ public class XUtil {
     /**
      * 将 source:((k)->v) 数据，绑定到 target:bean
      * */
-    public static void bindTo(Fun1<String, String> source, Object target) {
+    public static void bindTo(Function<String, String> source, Object target) {
         if (target == null) {
             return;
         }
@@ -272,7 +272,7 @@ public class XUtil {
         ClassWrap cw = ClassWrap.get(target.getClass());
 
         for (Field f1 : cw.fields) {
-            String val = source.run(f1.getName());
+            String val = source.apply(f1.getName());
             if (val != null) {
                 FieldWrap fw = cw.getFieldWrap(f1);
                 Object val2 = TypeUtil.changeOfPop(f1.getType(), val);

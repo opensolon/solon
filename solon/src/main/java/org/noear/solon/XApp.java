@@ -5,6 +5,8 @@ import org.noear.solon.core.*;
 import org.noear.solon.ext.*;
 
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * 应用管理中心
@@ -135,7 +137,7 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 共享变量（一般用于插件之间）
      * */
-    private final Set<Act2<String,Object>> _onSharedAdd_event=new HashSet<>();
+    private final Set<BiConsumer<String,Object>> _onSharedAdd_event=new HashSet<>();
     private final Map<String,Object> _shared=new HashMap<>();
     private Map<String,Object> _shared_unmod;
 
@@ -145,21 +147,21 @@ public class XApp implements XHandler,XHandlerSlots {
     public void sharedAdd(String key,Object obj) {
         _shared.put(key, obj);
         _onSharedAdd_event.forEach(fun->{
-            fun.run(key,obj);
+            fun.accept(key,obj);
         });
     }
 
     /**
      * 获取共享对象（异步获取）
      * */
-    public <T> void sharedGet(String key,Act1<T> event) {
+    public <T> void sharedGet(String key, Consumer<T> event) {
         Object tmp = _shared.get(key);
         if (tmp != null) {
-            event.run((T) tmp);
+            event.accept((T) tmp);
         } else {
             onSharedAdd((k, v) -> {
                 if (k.equals(key)) {
-                    event.run((T) v);
+                    event.accept((T) v);
                 }
             });
         }
@@ -168,7 +170,7 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 共享对象添加事件
      * */
-    public void onSharedAdd(Act2<String,Object> event){
+    public void onSharedAdd(BiConsumer<String,Object> event){
         _onSharedAdd_event.add(event);
     }
 

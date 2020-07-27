@@ -1,11 +1,10 @@
 package org.noear.solon.core;
 
 import org.noear.solon.XUtil;
-import org.noear.solon.ext.Act2;
-import org.noear.solon.ext.Fun1;
 
 import java.util.Properties;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * 通用属性集合
@@ -49,12 +48,12 @@ public class XProperties extends Properties {
         return getOrDef(key, def, Double::parseDouble);
     }
 
-    private <T> T getOrDef(String key, T def, Fun1<String, T> convert) {
+    private <T> T getOrDef(String key, T def, Function<String, T> convert) {
         String temp = get(key);
         if (XUtil.isEmpty(temp)) {
             return def;
         } else {
-            return convert.run(temp);
+            return convert.apply(temp);
         }
     }
 
@@ -88,7 +87,7 @@ public class XProperties extends Properties {
         return map;
     }
 
-    private void findDo(String keyStarts, Act2<String, String> setFun) {
+    private void findDo(String keyStarts, BiConsumer<String, String> setFun) {
         String key2 = keyStarts + ".";
         int idx2 = key2.length();
 
@@ -97,7 +96,7 @@ public class XProperties extends Properties {
                 String keyStr = (String) k;
 
                 if (keyStr.startsWith(key2)) {
-                    setFun.run(keyStr.substring(idx2), (String)v);
+                    setFun.accept(keyStr.substring(idx2), (String)v);
                 }
             }
         });

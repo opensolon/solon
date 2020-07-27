@@ -4,10 +4,10 @@ import org.noear.solon.core.XMap;
 import org.noear.solon.core.XPluginEntity;
 import org.noear.solon.core.XProperties;
 import org.noear.solon.core.XScaner;
-import org.noear.solon.ext.Act2;
 
 import java.net.URL;
 import java.util.*;
+import java.util.function.BiConsumer;
 
 /**
  * 统一配置加载器
@@ -107,12 +107,12 @@ public final class XAppProperties extends XProperties {
         }
     }
 
-    private Set<Act2<String, String>> _changeEvent = new HashSet<>();
+    private Set<BiConsumer<String, String>> _changeEvent = new HashSet<>();
 
     /**
      * 添加变更事件
      * */
-    public void onChange(Act2<String, String> event) {
+    public void onChange(BiConsumer<String, String> event) {
         _changeEvent.add(event);
     }
 
@@ -122,7 +122,7 @@ public final class XAppProperties extends XProperties {
 
         if (key instanceof String && value instanceof String) {
             _changeEvent.forEach(event -> {
-                event.run((String) key, (String) value);
+                event.accept((String) key, (String) value);
             });
         }
 

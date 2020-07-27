@@ -1,12 +1,9 @@
 package org.noear.solon.core;
 
-import org.noear.solon.ext.Act1;
-import org.noear.solon.ext.Fun2;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Consumer;
 
 /** 为 AopFactory 提供存储 支持 */

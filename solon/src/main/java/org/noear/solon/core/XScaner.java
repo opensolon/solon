@@ -1,7 +1,6 @@
 package org.noear.solon.core;
 
 import org.noear.solon.XUtil;
-import org.noear.solon.ext.Fun1;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +8,7 @@ import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -19,7 +19,7 @@ public class XScaner {
     /**
      * 扫描路径下的的资源（path 扫描路径，suffix 文件后缀）
      * */
-    public static Set<String> scan(String path, Fun1<String,Boolean> filter) {
+    public static Set<String> scan(String path, Predicate<String> filter) {
         Set<String> urls = new LinkedHashSet<>();
 
         try {
@@ -50,14 +50,14 @@ public class XScaner {
     }
 
     /** 在文件系统里查到目标 */
-    private static void doScanByFile(File dir, String path, Fun1<String,Boolean> filter, Set<String> urls) {
+    private static void doScanByFile(File dir, String path, Predicate<String> filter, Set<String> urls) {
         // 如果不存在或者 也不是目录就直接返回
         if (!dir.exists() || !dir.isDirectory()) {
             return;
         }
 
         // 如果存在 就获取包下的所有文件 包括目录
-        File[] dirfiles = dir.listFiles(f -> f.isDirectory() || filter.run(f.getName()));
+        File[] dirfiles = dir.listFiles(f -> f.isDirectory() || filter.test(f.getName()));
 
         if (dirfiles != null) {
             for (File f : dirfiles) {
@@ -77,7 +77,7 @@ public class XScaner {
     }
 
     /** 在 jar 包里查找目标 */
-    private static void doScanByJar(String path, JarFile jar, Fun1<String,Boolean> filter, Set<String> urls) {
+    private static void doScanByJar(String path, JarFile jar, Predicate<String> filter, Set<String> urls) {
         Enumeration<JarEntry> entry = jar.entries();
 
         while (entry.hasMoreElements()) {
@@ -88,7 +88,7 @@ public class XScaner {
                 n = n.substring(1);
             }
 
-            if (e.isDirectory() || !n.startsWith(path) || !filter.run(n)) {
+            if (e.isDirectory() || !n.startsWith(path) || !filter.test(n)) {
                 // 非指定包路径， 非目标后缀
                 continue;
             }
