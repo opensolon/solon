@@ -35,7 +35,7 @@ public class HttpChannel implements IChannel {
 
         //2.1.设置头
         for (int i = 0, len = response.headers().size(); i < len; i++) {
-            result.headerSet(response.headers().name(i), response.headers().value(i));
+            result.headerAdd(response.headers().name(i), response.headers().value(i));
         }
 
         //2.2.设置字符码

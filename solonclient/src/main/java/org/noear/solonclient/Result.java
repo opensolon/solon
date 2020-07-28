@@ -14,7 +14,7 @@ public class Result {
     /**
      * 头信息
      * */
-    private Map<String,String> headers;
+    private List<Map.Entry<String,String>> headers;
     /**
      * 编码
      * */
@@ -29,7 +29,7 @@ public class Result {
     private String body_string;
 
     public Result() {
-        headers = new LinkedHashMap<>();
+        headers = new ArrayList<>();
     }
 
     public Result(Charset charset, byte[] body) {
@@ -50,8 +50,20 @@ public class Result {
     //////////////////
 
 
-    public void headerSet(String name, String value) {
-        headers.putIfAbsent(name,value);
+    public void headerAdd(String name, String value) {
+        headers.add(new AbstractMap.SimpleEntry<>(name,value));
+    }
+
+    public String headerGet(String name){
+        if(name != null) {
+            for (Map.Entry<String, String> kv : headers) {
+                if (name.equals(kv.getKey())) {
+                    return kv.getValue();
+                }
+            }
+        }
+
+        return null;
     }
 
     public void charsetSet(Charset charset){
@@ -65,7 +77,7 @@ public class Result {
     /**
      * 头信息
      * */
-    public Map<String,String> headers(){
+    public Iterable<Map.Entry<String, String>> headers(){
         return headers;
     }
 
