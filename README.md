@@ -64,8 +64,7 @@ public class App{
 | --- | --- |
 | org.noear:solon.boot.jlhttp* | boot插件,对`jlhttp`适配,提供`http`服务（不自带session state） |
 | org.noear:solon.boot.jetty* | boot插件,对`jetty`适配,提供`http`服务（网友@khb提供） |
-| org.noear:solon.boot.jdkhttp | boot插件,对`JKD`自带的`HttpServer`适配,提供`http`服务（不自带session state） |
-| org.noear:solon.boot.undertow | boot插件,对`undertow`适配,提供`http`服务（网友@tyk提供） |
+| org.noear:solon.boot.undertow* | boot插件,对`undertow`适配,提供`http`服务（网友@tyk提供） |
 | org.noear:solon.boot.websocket | boot插件,对`java-websocket`适配，提供`websocket`服务 |
 | org.noear:solon.extend.jetty.jsp | 扩展插件,为`jetty`添加`jsp`支持（不建议使用jsp）（网友@khb提供） |
 | org.noear:solon.extend.undertow.jsp | 扩展插件,为`undertow`添加`jsp`支持（不建议使用jsp）（网友@tyk提供） |
@@ -135,6 +134,7 @@ public class App{
     <groupId>org.noear</groupId>
     <artifactId>solon-mvc</artifactId>
     <version>1.0.7</version>
+    <type>pom</type>
 </parent>
 ```
 ```
