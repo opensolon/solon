@@ -1,8 +1,6 @@
-package org.noear.solon.boot.undertow.context;
+package org.noear.solon.boot.undertow;
 
-import io.undertow.server.HttpServerExchange;
 import org.noear.solon.XUtil;
-import org.noear.solon.boot.undertow.ext.MultipartUtil;
 import org.noear.solon.core.*;
 
 import javax.servlet.http.Cookie;
@@ -13,21 +11,18 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URI;
-import java.net.URLDecoder;
 import java.util.*;
 
-//和JtHttpContext区别不大的上下文类，不支持XNIO
 public class UtHttpServletContext extends XContext {
     private HttpServletRequest _request;
     private HttpServletResponse _response;
-    private HttpServerExchange _exchange;
+    protected Map<String,List<XFile>> _fileMap;
 
-    public UtHttpServletContext(HttpServletRequest request, HttpServletResponse response, HttpServerExchange exchange) {
+    public UtHttpServletContext(HttpServletRequest request, HttpServletResponse response) {
         _request = request;
         _response = response;
-        _exchange = exchange;
 
-        if(sessionState().replaceable()) {
+        if(sessionState().replaceable()){
             sessionStateInit(new XSessionState() {
                 @Override
                 public String sessionId() {
@@ -41,9 +36,21 @@ public class UtHttpServletContext extends XContext {
 
                 @Override
                 public void sessionSet(String key, Object val) {
-                    _request.getSession().setAttribute(key, val);
+                    _request.getSession().setAttribute(key,val);
                 }
             });
+        }
+
+
+        //文件上传需要
+        if (isMultipart()) {
+            try {
+                _fileMap = new HashMap<>();
+
+                MultipartUtil.buildParamsAndFiles(this);
+            } catch (Throwable ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 
@@ -78,13 +85,12 @@ public class UtHttpServletContext extends XContext {
 
     @Override
     public URI uri() {
-        if (_uri == null) {
+        if(_uri == null) {
             _uri = URI.create(url());
         }
 
         return _uri;
     }
-
     private URI _uri;
 
     @Override
@@ -104,8 +110,9 @@ public class UtHttpServletContext extends XContext {
 
     @Override
     public String contentType() {
-        return _request.getContentType()==null?"":_request.getContentType();
+        return _request.getContentType();
     }
+
 
     @Override
     public InputStream bodyAsStream() throws IOException {
@@ -113,8 +120,8 @@ public class UtHttpServletContext extends XContext {
     }
 
     @Override
-    public String[] paramValues(String key) {
-        return _request.getParameterValues(key);
+    public String[] paramValues(String key){
+        return  _request.getParameterValues(key);
     }
 
     @Override
@@ -126,13 +133,15 @@ public class UtHttpServletContext extends XContext {
 
     @Override
     public String param(String key, String def) {
-        String temp = paramMap().get(key);
-        if (XUtil.isEmpty(temp)) {
+        String temp = paramMap().get(key); //因为会添加参数，所以必须用这个
+
+        if(XUtil.isEmpty(temp)){
             return def;
-        } else {
+        }else{
             return temp;
         }
     }
+
 
     private XMap _paramMap;
     @Override
@@ -155,11 +164,11 @@ public class UtHttpServletContext extends XContext {
     private Map<String, List<String>> _paramsMap;
     @Override
     public Map<String, List<String>> paramsMap() {
-        if(_paramsMap == null){
+        if (_paramsMap == null) {
             _paramsMap = new LinkedHashMap<>();
 
-            _request.getParameterMap().forEach((k,v)->{
-                _paramsMap.put(k,Arrays.asList(v));
+            _request.getParameterMap().forEach((k, v) -> {
+                _paramsMap.put(k, Arrays.asList(v));
             });
         }
 
@@ -167,14 +176,18 @@ public class UtHttpServletContext extends XContext {
     }
 
     @Override
-    public List<XFile> files(String key) throws Exception {
-        if (isMultipartFormData()) {
-            return MultipartUtil.getUploadedFiles(this, key);
-        } else {
+    public List<XFile> files(String key) throws Exception{
+        if (isMultipartFormData()){
+            List<XFile> temp = _fileMap.get(key);
+            if(temp == null){
+                return new ArrayList<>();
+            }else{
+                return temp;
+            }
+        }  else {
             return new ArrayList<>();
         }
     }
-
 
     private XMap _cookieMap;
 
@@ -195,10 +208,9 @@ public class UtHttpServletContext extends XContext {
         return _cookieMap;
     }
 
-    private XMap _headerMap;
     @Override
     public XMap headerMap() {
-        if (_headerMap == null) {
+        if(_headerMap == null) {
             _headerMap = new XMap();
             Enumeration<String> headers = _request.getHeaderNames();
 
@@ -211,6 +223,11 @@ public class UtHttpServletContext extends XContext {
 
         return _headerMap;
     }
+    private XMap _headerMap;
+
+
+
+    //====================================
 
     @Override
     public Object response() {
@@ -229,7 +246,7 @@ public class UtHttpServletContext extends XContext {
 
 
     @Override
-    public OutputStream outputStream() throws IOException{
+    public OutputStream outputStream() throws IOException {
         return _response.getOutputStream();
     }
 
@@ -263,9 +280,8 @@ public class UtHttpServletContext extends XContext {
 
     @Override
     public void headerSet(String key, String val) {
-        _response.setHeader(key, val);
+        _response.setHeader(key,val);
     }
-
 
     @Override
     public void headerAdd(String key, String val) {
@@ -274,7 +290,7 @@ public class UtHttpServletContext extends XContext {
 
     @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
-        Cookie c = new Cookie(key, val);
+        Cookie c = new Cookie(key,val);
 
         if (XUtil.isNotEmpty(path)) {
             c.setPath(path);
@@ -289,9 +305,8 @@ public class UtHttpServletContext extends XContext {
         _response.addCookie(c);
     }
 
-
     @Override
-    public void redirect(String url)  {
+    public void redirect(String url) {
         try {
             _response.sendRedirect(url);
         }catch (Throwable ex){
@@ -300,7 +315,7 @@ public class UtHttpServletContext extends XContext {
     }
 
     @Override
-    public void redirect(String url, int code) {
+    public void redirect(String url, int code)  {
         status(code);
         _response.setHeader("Location", url);
     }
@@ -311,7 +326,7 @@ public class UtHttpServletContext extends XContext {
     }
 
     @Override
-    public void status(int status)  {
+    public void status(int status) {
         _response.setStatus(status);
     }
 }

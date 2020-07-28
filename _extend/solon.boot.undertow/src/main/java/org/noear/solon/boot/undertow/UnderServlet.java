@@ -1,29 +1,8 @@
-/*
- * JBoss, Home of Professional Open Source.
- * Copyright 2014 Red Hat, Inc., and individual contributors
- * as indicated by the @author tags.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
 package org.noear.solon.boot.undertow;
-
-
 
 import io.undertow.server.HttpServerExchange;
 import io.undertow.servlet.spec.HttpServletRequestImpl;
-import org.noear.solon.boot.undertow.context.UtHttpServletContext;
-import org.noear.solon.boot.undertow.ext.UnderTowConfig;
+import org.noear.solon.XApp;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -44,7 +23,7 @@ public class UnderServlet extends HttpServlet {
         }
 
         try {
-            UnderTowConfig.app.handle(context);
+            XApp.global().handle(context);
 
             if(context.getHandled() && context.status() != 404){
               return;
@@ -52,7 +31,7 @@ public class UnderServlet extends HttpServlet {
         } catch (Throwable ex) {
             ex.printStackTrace();
 
-            if( UnderTowConfig.debug) {
+            if( XApp.cfg().isDebugMode()) {
                 ex.printStackTrace(resp.getWriter());
                 resp.setStatus(500);
                 return;

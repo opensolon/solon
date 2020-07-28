@@ -14,7 +14,6 @@ import io.undertow.servlet.util.DefaultClassIntrospector;
 import org.apache.jasper.deploy.JspPropertyGroup;
 import org.apache.jasper.deploy.TagLibraryInfo;
 import org.noear.solon.XApp;
-import org.noear.solon.boot.undertow.ext.UnderTowConfig;
 import org.noear.solon.core.XPlugin;
 
 import javax.servlet.MultipartConfigElement;
@@ -35,9 +34,6 @@ public class XPluginUndertowJsp implements XPlugin {
 
     @Override
     public void start(XApp app) {
-        UnderTowConfig.app = app;
-        UnderTowConfig.debug = true;
-
         try {
             setupJsp(app);
         } catch (ServletException e) {
