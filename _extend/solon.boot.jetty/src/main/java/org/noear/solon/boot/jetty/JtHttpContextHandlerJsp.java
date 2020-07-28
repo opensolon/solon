@@ -2,6 +2,7 @@ package org.noear.solon.boot.jetty;
 
 import org.eclipse.jetty.server.Request;
 import org.noear.solon.XApp;
+import org.noear.solon.core.XMonitor;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class JspHttpContextServlet extends HttpServlet {
+public class JtHttpContextHandlerJsp extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -37,26 +38,29 @@ public class JspHttpContextServlet extends HttpServlet {
         call(req, resp);
     }
 
-    private void call(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        JtHttpContext context = new JtHttpContext(request,response);
+    private void call(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        JtHttpContext context = new JtHttpContext(request, response);
         context.contentType("text/plain;charset=UTF-8");
 
         try {
             XApp.global().handle(context);
 
-            if(context.getHandled() && context.status() != 404) {
-                ((Request)request).setHandled(true);
+            if (context.getHandled() && context.status() != 404) {
+                ((Request) request).setHandled(true);
+            } else {
+                response.setStatus(404);
             }
-        } catch (Throwable ex) {
-            ex.printStackTrace();
 
-            if(XApp.global().prop().isDebugMode()) {
-                ((Request)request).setHandled(true);
-                ex.printStackTrace(response.getWriter());
-                response.setStatus(500);
-            }else{
-                throw new ServletException(ex);
+        } catch (Throwable ex) {
+            //context 初始化时，可能会出错
+            //
+            XMonitor.sendError(null, ex);
+
+            response.setStatus(500);
+            ((Request) request).setHandled(true);
+
+            if (XApp.cfg().isDebugMode()) {
+                ex.printStackTrace();
             }
         }
     }

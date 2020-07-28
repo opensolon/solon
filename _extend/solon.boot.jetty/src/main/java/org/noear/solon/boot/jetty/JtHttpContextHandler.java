@@ -26,6 +26,10 @@ public class JtHttpContextHandler extends AbstractHandler {
             XMonitor.sendError(null, ex);
 
             response.setStatus(500);
+
+            if (XApp.cfg().isDebugMode()) {
+                ex.printStackTrace();
+            }
         }
     }
 

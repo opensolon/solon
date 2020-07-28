@@ -26,7 +26,7 @@ class XPluginJettyJsp extends XPluginJetty {
         ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
         handler.setContextPath("/");
         handler.setBaseResource(new ResourceCollection(getResourceURLs()));
-        handler.addServlet(JspHttpContextServlet.class, "/");
+        handler.addServlet(JtHttpContextHandlerJsp.class, "/");
 
         if (XServerProp.session_timeout > 0) {
             handler.getSessionHandler().setMaxInactiveInterval(XServerProp.session_timeout);
