@@ -1,14 +1,9 @@
 package org.noear.solon.serialization.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XRender;
-import org.noear.solon.serialization.jackson.serializer.DateSerializer;
-
-import java.util.Date;
-
-import static com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping.NON_FINAL;
 
 public class JacksonRender implements XRender {
     ObjectMapper mapper = new ObjectMapper();
@@ -18,13 +13,15 @@ public class JacksonRender implements XRender {
     public JacksonRender(boolean typedJson) {
         _typedJson = typedJson;
 
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(Date.class, new DateSerializer());
+        mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-        mapper.registerModule(module);
+        mapper_serialize.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+//        mapper_serialize.activateDefaultTyping(mapper_serialize.getPolymorphicTypeValidator());
+//        mapper_serialize.activateDefaultTypingAsProperty(
+//                mapper_serialize.getPolymorphicTypeValidator(),
+//                ObjectMapper.DefaultTyping.NON_FINAL,
+//                "@type");
 
-        mapper_serialize.registerModule(module);
-        mapper_serialize.activateDefaultTypingAsProperty(mapper_serialize.getPolymorphicTypeValidator(), NON_FINAL, "@type");
     }
 
     @Override

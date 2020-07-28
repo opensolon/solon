@@ -31,4 +31,18 @@ public class UserController {
         ctx.render(user);
         ctx.remotingSet(false);
     }
+
+    @XMapping(value = "get3")
+    public Object get3(String name, XContext ctx) throws Throwable{
+        User user = new User();
+
+        user.setName(name);
+        user.setSex(1);
+        user.setIcon("fa-btn");
+        user.setState(true);
+        user.setRegTime(new Date());
+        user.setOrderList(Arrays.asList("a","1","#"));
+
+        return user;
+    }
 }
