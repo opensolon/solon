@@ -4,6 +4,7 @@ import feign.Feign;
 import feign.Request;
 import feign.Retryer;
 import feign.jackson.JacksonDecoder;
+import feign.jackson.JacksonEncoder;
 import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
 import webapp.dso.RemoteService;
@@ -17,6 +18,7 @@ public class TestController {
             .target(RemoteService.class, "http://127.0.0.1:8080");
 
     RemoteService service2 = Feign.builder()
+            .encoder(new JacksonEncoder())
             .decoder(new JacksonDecoder())
             .options(new Request.Options(1000, 3500))
             .retryer(new Retryer.Default(5000, 5000, 3))
