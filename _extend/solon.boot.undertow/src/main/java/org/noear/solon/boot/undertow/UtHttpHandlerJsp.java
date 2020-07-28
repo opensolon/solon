@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 //Servlet模式
-public class UnderServlet extends HttpServlet {
+public class UtHttpHandlerJsp extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -24,8 +24,8 @@ public class UnderServlet extends HttpServlet {
         try {
             XApp.global().handle(context);
 
-            if (context.getHandled() && context.status() != 404) {
-                return;
+            if (context.getHandled() == false || context.status() == 404) {
+                resp.setStatus(404);
             }
         } catch (Throwable ex) {
             XMonitor.sendError(context, ex);

@@ -59,7 +59,7 @@ public class XPluginUndertowJsp implements XPlugin {
                 .setResourceManager(new ClassPathResourceManager(jspClassLoader))
                 .setDefaultMultipartConfig(new MultipartConfigElement(System.getProperty("java.io.tmpdir")))
                 .addServlet(JspServletBuilder.createServlet("JSPServlet", "*.jsp"))
-                .addServlet(new ServletInfo("ACTServlet", UnderServlet.class).addMapping("/"));  //这个才是根据上下文对象`XContext`进行分发
+                .addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"));  //这个才是根据上下文对象`XContext`进行分发
 
         if (XServerProp.session_timeout > 0) {
             builder.setDefaultSessionTimeout(XServerProp.session_timeout);
