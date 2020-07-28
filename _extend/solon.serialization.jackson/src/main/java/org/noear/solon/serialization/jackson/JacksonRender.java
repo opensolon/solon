@@ -1,14 +1,13 @@
 package org.noear.solon.serialization.jackson;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.CalendarSerializer;
+import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XRender;
 
-import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 
 import static com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping.NON_FINAL;
@@ -21,20 +20,15 @@ public class JacksonRender implements XRender {
     public JacksonRender(boolean typedJson){
         _typedJson = typedJson;
 
+        SimpleModule simpleModule = new SimpleModule();
+        simpleModule.addSerializer(Calendar.class, new CalendarSerializer());
+        simpleModule.addSerializer(Date.class, new DateSerializer());
+
+
+        mapper.registerModule(simpleModule);
+
         mapper_serialize.enableDefaultTypingAsProperty(NON_FINAL, "@type");
-
-
-//        JsonSerializer<Date> dateSerializer = new JsonSerializer<Date>() {
-//            @Override
-//            public void serialize(Date date, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-//                jsonGenerator.writeRaw("new Date(" + date.getTime() + ")");
-//            }
-//        };
-//
-//        SimpleModule simpleModule = new SimpleModule();
-//        simpleModule.addSerializer(Date.class, dateSerializer);
-//
-//        mapper_serialize.registerModule(simpleModule);
+        mapper_serialize.registerModule(simpleModule);
     }
 
     @Override

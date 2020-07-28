@@ -29,6 +29,7 @@
         <enjoy.ver>4.8</enjoy.ver>
 
         <jetty.ver>9.4.20.v20190813</jetty.ver>
+        <jackson.ver>2.9.3</jackson.ver>
     </properties>
 
 

@@ -36,8 +36,12 @@
         -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-api</artifactId>
-            <type>pom</type>
+            <artifactId>solon.boot.jlhttp</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.serialization.jackson</artifactId>
         </dependency>
 
         <dependency>
