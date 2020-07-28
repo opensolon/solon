@@ -4,6 +4,7 @@ import okhttp3.MediaType;
 import okhttp3.Response;
 import org.noear.solonclient.Enctype;
 import org.noear.solonclient.IChannel;
+import org.noear.solonclient.Result;
 import org.noear.solonclient.XProxy;
 
 import java.util.Map;

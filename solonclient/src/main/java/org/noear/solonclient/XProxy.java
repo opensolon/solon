@@ -3,7 +3,6 @@ package org.noear.solonclient;
 import org.noear.solonclient.annotation.XAlias;
 import org.noear.solonclient.annotation.XClient;
 import org.noear.solonclient.channel.HttpChannel;
-import org.noear.solonclient.channel.Result;
 import org.noear.solonclient.serializer.FastjsonSerializer;
 
 import java.lang.reflect.Method;

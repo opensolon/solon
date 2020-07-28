@@ -1,4 +1,4 @@
-package org.noear.solonclient.channel;
+package org.noear.solonclient;
 
 import java.nio.charset.Charset;
 import java.util.AbstractMap;

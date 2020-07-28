@@ -1,6 +1,7 @@
 package org.noear.solonclient.channel;
 
 import org.noear.solonclient.IChannel;
+import org.noear.solonclient.Result;
 import org.noear.solonclient.XProxy;
 
 import java.util.Map;

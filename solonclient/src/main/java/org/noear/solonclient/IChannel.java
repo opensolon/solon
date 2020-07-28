@@ -1,7 +1,5 @@
 package org.noear.solonclient;
 
-import org.noear.solonclient.channel.Result;
-
 import java.util.Map;
 
 public interface IChannel {
