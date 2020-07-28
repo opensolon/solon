@@ -6,11 +6,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 代理调用结果
+ * */
 public class Result {
-    public int code;
-    public List<Map.Entry<String, String>> headers;
-    public byte[] body;
-    public Charset charset;
+    /**
+     * 状态码
+     * */
+    private int code;
+    /**
+     * 头信息
+     * */
+    private List<Map.Entry<String, String>> headers;
+    /**
+     * 编码
+     * */
+    private Charset charset;
+    /**
+     * 返回体
+     * */
+    private byte[] body;
+    /**
+     * 返回体的字符串形式
+     * */
     private String body_string;
 
     public Result() {
@@ -23,8 +41,31 @@ public class Result {
         this.body = body;
     }
 
+    public Result(int code,  byte[] body) {
+        this();
+        this.code = code;
+        this.charset = charset;
+        this.body = body;
+    }
+
+
     public void headerAdd(String name, String value) {
         headers.add(new AbstractMap.SimpleEntry<>(name, value));
+    }
+
+    public int code() {
+        return code;
+    }
+
+    public Charset charset() {
+        return charset;
+    }
+    public void charsetSet(Charset charset){
+        this.charset = charset;
+    }
+
+    public byte[] body() {
+        return body;
     }
 
     public String bodyAsString() {

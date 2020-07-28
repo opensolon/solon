@@ -17,6 +17,8 @@ public class HttpChannel implements IChannel {
     @Override
     public Result call(XProxy proxy, Map<String, String> headers, Map<String, String> args) throws Exception {
         HttpUtils http = HttpUtils.http(proxy.url()).headers(headers);
+
+        //1.执行并返回
         Response response;
         if (proxy.enctype() == Enctype.form_data) {
             if (args != null && args.size() > 0) {
@@ -28,21 +30,21 @@ public class HttpChannel implements IChannel {
             response = http.bodyTxt(proxy.serializer().stringify(args), enctype_json).exec("POST");
         }
 
-        Result result = new Result();
-        //code
-        result.code = response.code();
+        //2.构建结果
+        Result result = new Result(response.code(), response.body().bytes());
+
+        //2.1.设置头
         for (int i = 0, len = response.headers().size(); i < len; i++) {
-            //header
             result.headerAdd(response.headers().name(i), response.headers().value(i));
         }
-        //body
-        result.body = response.body().bytes();
+
+        //2.2.设置字符码
         MediaType contentType = response.body().contentType();
         if (contentType != null) {
-            //charset
-            result.charset = contentType.charset();
+            result.charsetSet(contentType.charset());
         }
 
+        //3.返回结果
         return result;
     }
 }
