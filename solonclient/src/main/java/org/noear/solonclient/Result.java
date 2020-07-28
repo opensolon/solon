@@ -1,10 +1,7 @@
 package org.noear.solonclient;
 
 import java.nio.charset.Charset;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 代理调用结果
@@ -17,7 +14,7 @@ public class Result {
     /**
      * 头信息
      * */
-    private List<Map.Entry<String, String>> headers;
+    private Map<String,String> headers;
     /**
      * 编码
      * */
@@ -32,7 +29,7 @@ public class Result {
     private String body_string;
 
     public Result() {
-        headers = new ArrayList<>();
+        headers = new LinkedHashMap<>();
     }
 
     public Result(Charset charset, byte[] body) {
@@ -48,26 +45,54 @@ public class Result {
         this.body = body;
     }
 
+    //////////////////
+    //////////////////
+    //////////////////
 
-    public void headerAdd(String name, String value) {
-        headers.add(new AbstractMap.SimpleEntry<>(name, value));
+
+    public void headerSet(String name, String value) {
+        headers.putIfAbsent(name,value);
     }
 
-    public int code() {
-        return code;
-    }
-
-    public Charset charset() {
-        return charset;
-    }
     public void charsetSet(Charset charset){
         this.charset = charset;
     }
 
+    //////////////////
+    //////////////////
+    //////////////////
+
+    /**
+     * 头信息
+     * */
+    public Map<String,String> headers(){
+        return headers;
+    }
+
+    /**
+     * 状态码
+     * */
+    public int code() {
+        return code;
+    }
+
+    /**
+     * 字符集
+     * */
+    public Charset charset() {
+        return charset;
+    }
+
+    /**
+     * 返回体
+     * */
     public byte[] body() {
         return body;
     }
 
+    /**
+     * 返回体字符形式
+     * */
     public String bodyAsString() {
         if (body_string == null) {
             if (charset == null) {
