@@ -2,12 +2,10 @@ package org.noear.solon.serialization.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.ser.std.CalendarSerializer;
-import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XRender;
+import org.noear.solon.serialization.jackson.serializer.DateSerializer;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import static com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping.NON_FINAL;
@@ -20,15 +18,14 @@ public class JacksonRender implements XRender {
     public JacksonRender(boolean typedJson){
         _typedJson = typedJson;
 
-        SimpleModule simpleModule = new SimpleModule();
-        simpleModule.addSerializer(Calendar.class, new CalendarSerializer());
-        simpleModule.addSerializer(Date.class, new DateSerializer());
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(Date.class, new DateSerializer());
 
 
-        mapper.registerModule(simpleModule);
+        mapper.registerModule(module);
 
         mapper_serialize.enableDefaultTypingAsProperty(NON_FINAL, "@type");
-        mapper_serialize.registerModule(simpleModule);
+        mapper_serialize.registerModule(module);
     }
 
     @Override
