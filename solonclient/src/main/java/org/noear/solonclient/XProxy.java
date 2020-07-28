@@ -3,6 +3,7 @@ package org.noear.solonclient;
 import org.noear.solonclient.annotation.XAlias;
 import org.noear.solonclient.annotation.XClient;
 import org.noear.solonclient.channel.HttpChannel;
+import org.noear.solonclient.channel.Result;
 import org.noear.solonclient.serializer.FastjsonSerializer;
 
 import java.lang.reflect.Method;
@@ -27,7 +28,7 @@ public class XProxy {
     public static ISerializer defaultSerializer;
 
     private String _url;
-    private String _result;
+    private Result _result;
     private ISerializer _serializer;
     private IChannel _channel;
     private Enctype _enctype;
@@ -102,18 +103,22 @@ public class XProxy {
         return this;
     }
 
+    public Result getRaw(){
+        return _result;
+    }
+
     /**
      * 获取结果（以string形式）
      */
     public String getString() {
-        return _result;
+        return _result.bodyAsString();
     }
 
     /**
      * 获取结果（返序列化为object）
      */
     public <T> T getObject(Class<T> returnType) {
-        return _serializer.deserialize(_result, returnType);
+        return _serializer.deserialize(_result.bodyAsString(), returnType);
     }
 
     //////////////////////////////////
