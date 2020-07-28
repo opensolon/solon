@@ -59,8 +59,9 @@ public class XPluginUndertow implements XPlugin {
         MultipartConfigElement multipartConfigElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
         DeploymentInfo builder = new DeploymentInfo()
                 .setClassLoader(XPluginImp.class.getClassLoader())
-                .setDeploymentName("YK")
+                .setDeploymentName("solon")
                 .setContextPath("/")
+                .setDefaultEncoding("UTF-8")
                 .setDefaultMultipartConfig(multipartConfigElement)
                 .addInnerHandlerChainWrapper(wrapper);
 

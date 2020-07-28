@@ -52,9 +52,10 @@ public class XPluginUndertowJsp implements XPlugin {
 
         DeploymentInfo builder = new DeploymentInfo()
                 .setClassLoader(XPluginUndertowJsp.class.getClassLoader())
+                .setDeploymentName("solon")
                 .setContextPath("/")
+                .setDefaultEncoding("UTF-8")
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE)
-                .setDeploymentName("yukaiIsSoBrilliant")
                 .setResourceManager(new ClassPathResourceManager(jspClassLoader))
                 .setDefaultMultipartConfig(new MultipartConfigElement(System.getProperty("java.io.tmpdir")))
                 .addServlet(JspServletBuilder.createServlet("JSPServlet", "*.jsp"))
