@@ -1,8 +1,7 @@
 package org.noear.solon.boot.undertow;
 
-import io.undertow.server.HttpServerExchange;
-import io.undertow.servlet.spec.HttpServletRequestImpl;
 import org.noear.solon.XApp;
+import org.noear.solon.core.XMonitor;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,30 +14,26 @@ public class UnderServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpServerExchange exchange = ((HttpServletRequestImpl) req).getExchange();
-        UtHttpContext context = new UtHttpContext(req, resp,exchange);
+        UtHttpContext context = new UtHttpContext(req, resp);
         context.contentType("text/plain;charset=UTF-8");
-        if(XServerProp.output_meta) {
+
+        if (XServerProp.output_meta) {
             context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
         }
 
         try {
             XApp.global().handle(context);
 
-            if(context.getHandled() && context.status() != 404){
-              return;
+            if (context.getHandled() && context.status() != 404) {
+                return;
             }
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            XMonitor.sendError(context, ex);
+            resp.setStatus(500);
 
-            if( XApp.cfg().isDebugMode()) {
+            if (XApp.cfg().isDebugMode()) {
                 ex.printStackTrace(resp.getWriter());
-                resp.setStatus(500);
-                return;
-            }else{
-                throw new ServletException(ex);
             }
         }
-
     }
 }

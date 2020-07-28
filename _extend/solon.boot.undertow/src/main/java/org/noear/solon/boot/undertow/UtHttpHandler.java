@@ -35,15 +35,16 @@ public class UtHttpHandler implements HttpHandler {
                 XApp.global().tryHandle(context);
             }
 
-            if (context.getHandled() && context.status() == 404) {
+            if (context.getHandled() == false || context.status() == 404) {
                 exchange.setStatusCode(404);
             }
         } catch (Throwable ex) {
             XMonitor.sendError(context, ex);
-
-            ex.printStackTrace(response.getWriter());
             exchange.setStatusCode(500);
 
+            if (XApp.cfg().isDebugMode()) {
+                ex.printStackTrace(response.getWriter());
+            }
         } finally {
             exchange.endExchange();
         }
