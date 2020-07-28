@@ -14,17 +14,17 @@ import java.util.Map;
 public class XProxy {
 
     /**
-     * 默认的通讯通道
-     * */
-    public static IChannel defaultChannel = HttpChannel.instance;
-    /**
-     * 默认的序列化器
-     * */
-    public static ISerializer defaultSerializer = FastjsonSerializer.instance;
-    /**
      * 默认的编码类型
      * */
     public static Enctype defaultEnctype = Enctype.form_data;
+    /**
+     * 默认的通讯通道（涉及第三方框架引用，不做定义）
+     * */
+    public static IChannel defaultChannel;
+    /**
+     * 默认的序列化器（涉及第三方框架引用，不做定义）
+     * */
+    public static ISerializer defaultSerializer;
 
     private String _url;
     private String _result;
@@ -35,8 +35,8 @@ public class XProxy {
 
 
     public XProxy() {
-        _serializer = defaultSerializer;
-        _channel = defaultChannel;
+        _serializer = (defaultSerializer != null ? defaultSerializer : FastjsonSerializer.instance);
+        _channel = (defaultChannel != null ? defaultChannel : HttpChannel.instance);
         _enctype = defaultEnctype;
     }
 
