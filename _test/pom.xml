@@ -9,7 +9,7 @@
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>${artifactId}</name>
+    <name>${project.artifactId}</name>
     <description>java project for solon test</description>
 
     <parent>
@@ -103,10 +103,11 @@
             <artifactId>solon.boot.undertow</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.extend.undertow.jsp</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.undertow.jsp</artifactId>
+            <type>pom</type>
+        </dependency>
 
 
 <!--        <dependency>-->
