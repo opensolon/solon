@@ -16,7 +16,7 @@ public class UnderServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpServerExchange exchange = ((HttpServletRequestImpl) req).getExchange();
-        UtHttpServletContext context = new UtHttpServletContext(req, resp,exchange);
+        UtHttpContext context = new UtHttpContext(req, resp,exchange);
         context.contentType("text/plain;charset=UTF-8");
         if(XServerProp.output_meta) {
             context.headerSet("solon.boot", XPluginImp.solon_boot_ver());

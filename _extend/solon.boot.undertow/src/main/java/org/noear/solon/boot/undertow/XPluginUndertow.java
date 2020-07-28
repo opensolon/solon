@@ -30,7 +30,7 @@ public class XPluginUndertow implements XPlugin {
         builder.setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE,false);
 
         // 动作分发Handler
-        UtHttpExchangeHandler _handler = new UtHttpExchangeHandler();
+        UtHttpHandler _handler = new UtHttpHandler();
         DeploymentManager manager = doGenerateManager(_handler, app);
 
         HttpHandler f_handler = null;
@@ -53,7 +53,7 @@ public class XPluginUndertow implements XPlugin {
 
 
     // 生成DeploymentManager来生成handler
-    private DeploymentManager doGenerateManager(UtHttpExchangeHandler innerHandler, XApp app) {
+    private DeploymentManager doGenerateManager(UtHttpHandler innerHandler, XApp app) {
         HandlerWrapper wrapper = nothing -> innerHandler;
 
         MultipartConfigElement multipartConfigElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));

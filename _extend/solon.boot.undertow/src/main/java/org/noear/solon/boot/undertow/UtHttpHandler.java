@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  * author : Yukai
  * Description : 基础handler
  **/
-public class UtHttpExchangeHandler implements HttpHandler {
+public class UtHttpHandler implements HttpHandler {
 
     @Override
     public void handleRequest(HttpServerExchange exchange) throws Exception {
@@ -26,7 +26,7 @@ public class UtHttpExchangeHandler implements HttpHandler {
         HttpServletRequest request = (HttpServletRequest) servletRequestContext.getServletRequest();
         HttpServletResponse response = (HttpServletResponse) servletRequestContext.getServletResponse();
 
-        UtHttpServletContext context = new UtHttpServletContext(request, response);
+        UtHttpContext context = new UtHttpContext(request, response);
         context.contentType("text/plain;charset=UTF-8");
         context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
 

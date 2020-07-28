@@ -13,12 +13,12 @@ import java.io.PrintWriter;
 import java.net.URI;
 import java.util.*;
 
-public class UtHttpServletContext extends XContext {
+public class UtHttpContext extends XContext {
     private HttpServletRequest _request;
     private HttpServletResponse _response;
     protected Map<String,List<XFile>> _fileMap;
 
-    public UtHttpServletContext(HttpServletRequest request, HttpServletResponse response) {
+    public UtHttpContext(HttpServletRequest request, HttpServletResponse response) {
         _request = request;
         _response = response;
 

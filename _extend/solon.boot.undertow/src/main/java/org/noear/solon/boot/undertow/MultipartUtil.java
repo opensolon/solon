@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MultipartUtil {
-    public static void buildParamsAndFiles(UtHttpServletContext context) throws IOException, ServletException{
+    public static void buildParamsAndFiles(UtHttpContext context) throws IOException, ServletException{
         HttpServletRequest request = (HttpServletRequest) context.request();
 
         request.setAttribute("org.eclipse.jetty.multipartConfig",
@@ -24,7 +24,7 @@ public class MultipartUtil {
         }
     }
 
-    private static void doBuildFiles(UtHttpServletContext context, Part part) throws IOException{
+    private static void doBuildFiles(UtHttpContext context, Part part) throws IOException{
         List<XFile> list = context._fileMap.get(part.getName());
         if(list == null){
             list = new ArrayList<>();
