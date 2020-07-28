@@ -6,6 +6,7 @@ import org.noear.solon.core.XContext;
 import webapp.model.User;
 
 import java.util.Arrays;
+import java.util.Date;
 
 @XMapping("users")
 @XController
@@ -23,6 +24,7 @@ public class UserController {
         user.setSex(1);
         user.setIcon("fa-btn");
         user.setState(true);
+        user.setRegTime(new Date());
         user.setOrderList(Arrays.asList("a","1","#"));
 
         ctx.remotingSet(true);

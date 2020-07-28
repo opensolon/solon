@@ -10,7 +10,7 @@ public class User {
     private String name;
     private int sex;
     private String icon;
-    private Date reg_time;
+    private Date regTime;
     private boolean state;
     private List<String> orderList;
 }
