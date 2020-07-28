@@ -41,6 +41,8 @@ public class JtHttpContextHandler extends AbstractHandler {
 
         if (context.getHandled() && context.status() != 404) {
             baseRequest.setHandled(true);
+        }else{
+            response.setStatus(404);
         }
     }
 }
