@@ -61,7 +61,7 @@ public class XPluginUndertow implements XPlugin {
                 .setClassLoader(XPluginImp.class.getClassLoader())
                 .setDeploymentName("solon")
                 .setContextPath("/")
-                .setDefaultEncoding("UTF-8")
+                .setDefaultEncoding(XServerProp.encoding_request)
                 .setDefaultMultipartConfig(multipartConfigElement)
                 .addInnerHandlerChainWrapper(wrapper);
 

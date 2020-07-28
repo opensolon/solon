@@ -54,7 +54,7 @@ public class XPluginUndertowJsp implements XPlugin {
                 .setClassLoader(XPluginUndertowJsp.class.getClassLoader())
                 .setDeploymentName("solon")
                 .setContextPath("/")
-                .setDefaultEncoding("UTF-8")
+                .setDefaultEncoding(XServerProp.encoding_request)
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE)
                 .setResourceManager(new ClassPathResourceManager(jspClassLoader))
                 .setDefaultMultipartConfig(new MultipartConfigElement(System.getProperty("java.io.tmpdir")))

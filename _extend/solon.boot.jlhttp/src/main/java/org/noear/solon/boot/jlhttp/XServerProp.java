@@ -7,6 +7,8 @@ class XServerProp {
     public static int session_timeout = 0;
     public static String session_state_domain;
     public static boolean output_meta = false;
+    public static String encoding_request = "UTF-8";
+    public static String encoding_response = "UTF-8";
 
     public static void init() {
         String tmp = XApp.cfg().get("server.request.maxRequestSize", "").trim().toLowerCase();//k数
@@ -23,5 +25,8 @@ class XServerProp {
         session_timeout = XApp.cfg().getInt("server.session.timeout", 0);
         session_state_domain = XApp.cfg().get("server.session.state.domain");
         output_meta = XApp.cfg().getInt("solon.output.meta", 0) > 0;
+
+        encoding_request = XApp.cfg().get("solon.encoding.request", "UTF-8");
+        encoding_response = XApp.cfg().get("solon.encoding.response", "UTF-8");
     }
 }
