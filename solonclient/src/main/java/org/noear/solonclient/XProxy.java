@@ -103,7 +103,7 @@ public class XProxy {
         return this;
     }
 
-    public Result getRaw(){
+    public Result result(){
         return _result;
     }
 
