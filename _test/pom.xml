@@ -98,27 +98,28 @@
 <!--        </dependency>-->
 
 
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.undertow</artifactId>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.extend.undertow.jsp</artifactId>-->
+<!--            <type>pom</type>-->
+<!--        </dependency>-->
+
+
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.undertow</artifactId>
+            <artifactId>solon.boot.jetty</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.undertow.jsp</artifactId>
+            <artifactId>solon.extend.jetty.jsp</artifactId>
             <type>pom</type>
         </dependency>
-
-
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.jetty</artifactId>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.extend.jetty.jsp</artifactId>-->
-<!--        </dependency>-->
 
 
         <dependency>
