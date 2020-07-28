@@ -10,11 +10,12 @@ public class HelloApp {
         XApp app = XApp.start(HelloApp.class, args);
 
         app.http("/", c -> {
-            try {
-                throw new RuntimeException("hello world!");
-            } catch (Exception ex) {
-                c.output(ex.getMessage());
-            }
+            c.output("hello world!");
+//            try {
+//                throw new RuntimeException("hello world!");
+//            } catch (Exception ex) {
+//                c.output(ex.getMessage());
+//            }
         });
     }
 }

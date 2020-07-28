@@ -22,7 +22,7 @@ public class MappingController {
     }
 
     @XMapping(value = "put", method = {XMethod.PUT})
-    public String test_put(XContext context) {
+    public String test_put(XContext context, String name) {
         return context.param("name");
     }
 
