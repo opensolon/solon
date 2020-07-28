@@ -5,6 +5,8 @@ import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.XContext;
 import webapp.model.User;
 
+import java.util.Arrays;
+
 @XMapping("users")
 @XController
 public class UserController {
@@ -20,6 +22,8 @@ public class UserController {
         user.setName(name);
         user.setSex(1);
         user.setIcon("fa-btn");
+        user.setState(true);
+        user.setOrderList(Arrays.asList("a","1","#"));
 
         ctx.remotingSet(true);
         ctx.render(user);
