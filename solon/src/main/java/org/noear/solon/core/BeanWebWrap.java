@@ -2,7 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.*;
-import org.noear.solon.ext.ExConsumer;
+import org.noear.solon.ext.ConsumerEx;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -197,7 +197,7 @@ public class BeanWebWrap {
     /**
      * 附加触发器（前后置处理）
      */
-    private static <T> void addDo(T[] ary, ExConsumer<T> fun) {
+    private static <T> void addDo(T[] ary, ConsumerEx<T> fun) {
         if (ary != null) {
             for (T t : ary) {
                 try {

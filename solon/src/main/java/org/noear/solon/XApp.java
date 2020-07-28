@@ -39,13 +39,13 @@ public class XApp implements XHandler,XHandlerSlots {
         return start(source, args, null);
     }
 
-    public static XApp start(Class<?> source, String[] args, ExConsumer<XApp> builder){
+    public static XApp start(Class<?> source, String[] args, ConsumerEx<XApp> builder){
         //1.初始化应用，加载配置
         XMap argx = XMap.from(args);
         return start(source,argx,builder);
     }
 
-    public static XApp start(Class<?> source, XMap argx, ExConsumer<XApp> builder) {
+    public static XApp start(Class<?> source, XMap argx, ConsumerEx<XApp> builder) {
         if (_global != null) {
             return _global;
         }
