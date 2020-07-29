@@ -14,7 +14,7 @@ public class HttpChannel implements IChannel {
         HttpUtils http = HttpUtils.http(url).headers(headers);
 
         //1.执行并返回
-        Response response;
+        Response response = null;
 
         if (cfg.getEnctype() == Enctype.form_data) {
             if (args != null && args.size() > 0) {
@@ -22,8 +22,14 @@ public class HttpChannel implements IChannel {
             } else {
                 response = http.exec("GET");
             }
-        } else {
+        }
+
+        if (cfg.getEnctype() == Enctype.application_json) {
             response = http.bodyTxt((String) cfg.getSerializer().serialize(args), ContextTypes.json).exec("POST");
+        }
+
+        if (response == null) {
+            return null;
         }
 
         //2.构建结果
