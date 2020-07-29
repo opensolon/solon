@@ -12,6 +12,8 @@ public class XActionConverter {
     public List<Object> change(XContext ctx, Parameter[] pSet) throws Exception{
         List<Object> args = new ArrayList<>(pSet.length);
 
+        Object bodyObj = changeBody(ctx);
+
         //p 参数
         //pt 参数原类型
         for (Parameter p : pSet) {
@@ -26,11 +28,15 @@ public class XActionConverter {
                 //
                 args.add(ctx.file(p.getName()));
             } else {
-                args.add(changeValue(ctx, p, pt, null));
+                args.add(changeValue(ctx, p, pt, bodyObj));
             }
         }
 
         return args;
+    }
+
+    protected Object changeBody(XContext ctx) throws Exception{
+        return  null;
     }
 
     protected Object changeValue(XContext ctx, Parameter p, Class<?> pt, Object bodyObj) throws Exception {

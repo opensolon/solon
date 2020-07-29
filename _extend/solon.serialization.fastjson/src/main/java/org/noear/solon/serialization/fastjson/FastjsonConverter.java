@@ -1,29 +1,55 @@
 package org.noear.solon.serialization.fastjson;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.noear.solon.core.XActionConverter;
 import org.noear.solon.core.XContext;
-import org.noear.solon.core.XParamConverter;
 
-public class FastjsonConverter extends XParamConverter {
+import java.lang.reflect.Parameter;
+
+public class FastjsonConverter extends XActionConverter {
     @Override
-    public Object getEntity(XContext ctx, String name, Class<?> type) throws Exception {
-        String ct = ctx.contentType();
+    protected Object changeBody(XContext ctx) throws Exception {
+        String tmp = ctx.contentType();
+        if (tmp != null && tmp.indexOf("/json") > 0) {
+            return JSON.parse(ctx.body());
+        }
 
-        if (ct != null && ct.indexOf("/json") > 0) {
-            if(name == null) {
-                return JSON.parseObject(ctx.body(), type);
-            }else{
-                JSONObject node = JSON.parseObject(ctx.body());
+        return null;
+    }
 
-                if(node.containsKey(name)){
-                    return node.getObject(name,type);
-                }else {
-                    return node.toJavaObject(type);
+    @Override
+    protected Object changeValue(XContext ctx, Parameter p, Class<?> pt, Object bodyObj) throws Exception {
+        if (bodyObj == null) {
+            return super.changeValue(ctx, p, pt, bodyObj);
+        } else {
+            if (bodyObj instanceof JSONObject) {
+                JSONObject tmp = (JSONObject) bodyObj;
+
+                if (tmp.containsKey(p.getName())) {
+                    return tmp.getObject(p.getName(), pt);
+                } else {
+                    return tmp.toJavaObject(pt);
                 }
             }
+
+            if (bodyObj instanceof JSONArray) {
+                JSONArray tmp = (JSONArray) bodyObj;
+                return tmp.toJavaList(pt);
+            }
+
+            return bodyObj;
+        }
+    }
+
+    @Override
+    protected Object changeEntity(XContext ctx, String name, Class<?> type, Object bodyObj) throws Exception {
+        String tmp = ctx.contentType();
+        if (tmp != null && tmp.indexOf("/json") > 0) {
+            return JSON.parseObject(ctx.body(), type);
         } else {
-            return super.getEntity(ctx, name, type);
+            return super.changeEntity(ctx, name, type, bodyObj);
         }
     }
 }
