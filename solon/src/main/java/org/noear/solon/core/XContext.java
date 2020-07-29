@@ -115,6 +115,7 @@ public abstract class XContext {
     @XNote("获取内容类型")
     public abstract String contentType();
 
+    private String _body;
     /**获取RAW内容*/
     @XNote("获取RAW内容")
     public String body() throws IOException{
@@ -123,26 +124,30 @@ public abstract class XContext {
 
     @XNote("获取RAW内容")
     public String body(String charset) throws IOException {
-        try (InputStream ins = bodyAsStream()) {
-            if (ins == null) {
-                return null;
-            }
+        if (_body == null) {
+            try (InputStream ins = bodyAsStream()) {
+                if (ins == null) {
+                    return null;
+                }
 
-            ByteArrayOutputStream outs = new ByteArrayOutputStream(); //这个不需要关闭
+                ByteArrayOutputStream outs = new ByteArrayOutputStream(); //这个不需要关闭
 
-            int len = 0;
-            byte[] buf = new byte[512]; //0.5k
-            while ((len = ins.read(buf)) != -1) {
-                outs.write(buf, 0, len);
-            }
+                int len = 0;
+                byte[] buf = new byte[512]; //0.5k
+                while ((len = ins.read(buf)) != -1) {
+                    outs.write(buf, 0, len);
+                }
 
 
-            if (charset == null) {
-                return outs.toString();
-            } else {
-                return outs.toString(charset);
+                if (charset == null) {
+                    _body = outs.toString();
+                } else {
+                    _body = outs.toString(charset);
+                }
             }
         }
+
+        return _body;
     }
 
     /**获取RAW内容为byte[]*/
