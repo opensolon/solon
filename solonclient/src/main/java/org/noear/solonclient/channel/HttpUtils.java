@@ -77,11 +77,15 @@ class HttpUtils {
     }
 
     //@XNote("设置数据提交")
-    public HttpUtils data(Map<String,String> data) {
+    public HttpUtils data(Map<String,Object> data) {
         if (data != null) {
             tryInitForm();
 
-            _form.putAll(data);
+            data.forEach((k, v) -> {
+                if (v != null) {
+                    _form.put(k, v.toString());
+                }
+            });
         }
 
         return this;

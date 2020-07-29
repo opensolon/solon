@@ -10,7 +10,7 @@ public class SocketChannel implements IChannel {
     public static final SocketChannel instance = new SocketChannel();
 
     @Override
-    public Result call(XProxy proxy, Map<String, String> headers, Map<String, String> args) throws Exception {
+    public Result call(XProxy proxy, Map<String, String> headers, Map<String, Object> args) throws Exception {
         SocketMessage msg = SocketUtils.send(proxy.url(), proxy.serializer().stringify(args));
 
         return new Result(msg.charset, msg.content);

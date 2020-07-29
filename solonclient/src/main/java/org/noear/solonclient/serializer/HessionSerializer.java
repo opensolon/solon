@@ -41,7 +41,11 @@ public class HessionSerializer implements ISerializer {
         Hessian2Input hi = new Hessian2Input(new ByteArrayInputStream(rst.body()));
 
         try {
-            return (T) hi.readObject(clz);
+            if (clz == Void.TYPE) {
+                return (T) hi.readObject();
+            } else {
+                return (T) hi.readObject(clz);
+            }
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {

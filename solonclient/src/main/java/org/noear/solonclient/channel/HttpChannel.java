@@ -10,7 +10,7 @@ public class HttpChannel implements IChannel {
     public static final HttpChannel instance = new HttpChannel();
 
     @Override
-    public Result call(XProxy proxy, Map<String, String> headers, Map<String, String> args) throws Exception {
+    public Result call(XProxy proxy, Map<String, String> headers, Map<String, Object> args) throws Exception {
         HttpUtils http = HttpUtils.http(proxy.url()).headers(headers);
 
         //1.执行并返回

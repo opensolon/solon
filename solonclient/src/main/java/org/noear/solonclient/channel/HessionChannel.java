@@ -13,7 +13,7 @@ public class HessionChannel implements IChannel {
     public static final HessionChannel instance = new HessionChannel();
 
     @Override
-    public Result call(XProxy proxy, Map<String, String> headers, Map<String, String> args) throws Exception {
+    public Result call(XProxy proxy, Map<String, String> headers, Map<String, Object> args) throws Exception {
         HttpUtils http = HttpUtils.http(proxy.url()).headers(headers);
 
         http.header("Solon-Serialization","@hession");

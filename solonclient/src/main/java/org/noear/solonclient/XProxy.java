@@ -99,7 +99,7 @@ public class XProxy {
     /**
      * 执行完成呼叫
      */
-    public XProxy call(Map<String, String> headers, Map<String, String> args) {
+    public XProxy call(Map<String, String> headers, Map args) {
         try {
             _result = _channel.call(this, headers, args);
         } catch (Exception ex) {
@@ -143,6 +143,10 @@ public class XProxy {
         return this;
     }
 
+    public Map<String,String> headers(){
+        return _headers;
+    }
+
     /**
      * 设置服务端
      */
@@ -151,109 +155,21 @@ public class XProxy {
         return this;
     }
 
+    public String sev(){
+        return _sev;
+    }
+
 
     /**
      * 创建接口调用代理客户端
      */
     public <T> T create(Class<?> clz) {
+        XProxyHandler handler = new XProxyHandler(this);
+
         return (T) Proxy.newProxyInstance(
                 clz.getClassLoader(),
                 new Class[]{clz},
-                (proxy, method, args) -> proxyCall(proxy, method, args));
-    }
-
-    /**
-     * 执行调用代理
-     */
-    private Object proxyCall(Object proxy, Method method, Object[] vals) throws Throwable {
-        //调用准备
-        String fun = method.getName();
-
-        XClient c_meta = method.getDeclaringClass().getAnnotation(XClient.class);
-        XAlias m_meta = method.getAnnotation(XAlias.class);
-
-        if (c_meta == null) {
-            return null;
-        }
-
-        if (_sev == null) {
-            //1.优先从 XClient 获取服务地址或名称
-            if (isEmpty(c_meta.value()) == false) {
-                _sev = c_meta.value();
-            }
-
-            //2.如果没有，就报错
-            if (_sev == null) {
-                throw new RuntimeException("XClient no name");
-            }
-        }
-
-        if (m_meta != null && isEmpty(m_meta.value()) == false) {
-            fun = m_meta.value();
-        }
-
-        //构建args
-        Map<String, String> args = new HashMap<>();
-        Parameter[] names = method.getParameters();
-        for (int i = 0, len = names.length; i < len; i++) {
-            if (vals[i] != null) {
-                args.put(names[i].getName(), vals[i].toString());
-            }
-        }
-
-        //构建headers
-        Map<String, String> headers = new HashMap<>();
-        //>>添加全局header
-        headers.putAll(_headers);
-        //>>添加接口header
-        if (c_meta.headers() != null) {
-            for (String h : c_meta.headers()) {
-                String[] ss = h.split("=");
-                headers.put(ss[0], ss[1]);
-            }
-        }
-
-        String url = null;
-        if (_sev.indexOf("://") < 0) {
-            String _pat = null;
-            if (_sev.indexOf(":") > 0) {
-                String[] ss = _sev.split(":");
-
-                _sev = ss[0];
-                _pat = ss[1];
-            }
-
-            url = _upstream.getTarget(_sev);
-
-            if(url == null){
-                throw new RuntimeException("Solon client proxy: Not found upstream!");
-            }
-
-            if (_pat != null) {
-                int idx = url.indexOf("/", 9);//https://a
-                if (idx > 0) {
-                    url = url.substring(0, idx);
-                }
-
-                if (_pat.endsWith("/")) {
-                    fun = _pat + fun;
-                } else {
-                    fun = _pat + "/" + fun;
-                }
-            }
-
-        } else {
-            url = _sev;
-        }
-
-        //执行调用
-        return new XProxy()
-                .url(url, fun)
-                .enctype(_enctype)
-                .channel(_channel)
-                .call(headers, args)
-                .serializer(_serializer)
-                .getObject(method.getReturnType());
+                handler);
     }
 
     /**
@@ -264,6 +180,10 @@ public class XProxy {
         return this;
     }
 
+    public HttpUpstream upstream(){
+        return _upstream;
+    }
+
     /**
      * 设置序列化器
      */
@@ -272,12 +192,17 @@ public class XProxy {
         return this;
     }
 
+
     /**
      * 设置通信通道
      */
     public XProxy channel(IChannel channel) {
         _channel = channel;
         return this;
+    }
+
+    public IChannel channel(){
+        return _channel;
     }
 
     /**
@@ -289,7 +214,4 @@ public class XProxy {
     }
 
 
-    private static boolean isEmpty(String str) {
-        return str == null || str.length() == 0;
-    }
 }

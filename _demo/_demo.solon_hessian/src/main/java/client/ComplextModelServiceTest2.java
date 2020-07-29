@@ -1,6 +1,5 @@
 package client;
 
-import com.caucho.hessian.client.HessianProxyFactory;
 import org.noear.solonclient.XProxy;
 import org.noear.solonclient.channel.HessionChannel;
 import org.noear.solonclient.serializer.HessionSerializer;
