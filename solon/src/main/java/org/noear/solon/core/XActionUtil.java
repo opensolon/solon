@@ -14,7 +14,7 @@ public class XActionUtil {
      * 将参数转为实体
      */
     public static Object params2Entity(XContext ctx, Class<?> pt) throws Exception {
-        return converter.changeEntity(ctx, null, pt);
+        return converter.changeEntity(ctx, null, pt, null);
     }
 
     /**

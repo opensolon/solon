@@ -1,7 +1,6 @@
 package org.noear.solon.serialization.jackson;
 
 import org.noear.solon.XApp;
-import org.noear.solon.core.XParamConverter;
 import org.noear.solon.core.XRenderManager;
 import org.noear.solon.core.XPlugin;
 
@@ -17,6 +16,6 @@ public class XPluginImp implements XPlugin {
         XRenderManager.mapping("@type_json", new JacksonRender(true));
 
         //重置转换器
-        XParamConverter.global = new JacksonConverter();
+        //XActionUtil.converter = new JacksonConverter();
     }
 }
