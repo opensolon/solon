@@ -26,40 +26,39 @@ public class XProxy {
      * */
     public static ISerializer defaultSerializer;
 
-    private String _url;
-    private Result _result;
-    private ISerializer _serializer;
-    private IChannel _channel;
-    private Enctype _enctype;
+    private final XProxyConfig _config;
 
 
+    protected XProxy(XProxyConfig config){
+        _config = config;
+    }
 
     public XProxy() {
-        _serializer = (defaultSerializer != null ? defaultSerializer : FastjsonSerializer.instance);
-        _channel = (defaultChannel != null ? defaultChannel : HttpChannel.instance);
-        _enctype = defaultEnctype;
+        _config = new XProxyConfig();
+
+        _config.serializer = (defaultSerializer != null ? defaultSerializer : FastjsonSerializer.instance);
+        _config.channel = (defaultChannel != null ? defaultChannel : HttpChannel.instance);
+        _config.enctype = defaultEnctype;
     }
+
+
 
     public XProxy(ISerializer serializer) {
         this();
-        _serializer = serializer;
+        _config.serializer = serializer;
     }
 
     public XProxy(ISerializer serializer, IChannel channel) {
         this();
-        _serializer = serializer;
-        _channel = channel;
+        _config.serializer = serializer;
+        _config.channel = channel;
     }
-
-    public String url(){return _url;}
-    public ISerializer serializer(){return _serializer;}
-    public Enctype enctype(){return _enctype;}
 
     /**
      * 设置请求地址
      */
     public XProxy url(String url) {
-        _url = url;
+        _config.url = url;
         return this;
     }
 
@@ -68,10 +67,10 @@ public class XProxy {
      */
     public XProxy url(String url, String fun) {
         if (url.indexOf("{fun}") > 0) {
-            _url = url.replace("{fun}", fun);
+            _config.url = url.replace("{fun}", fun);
         } else {
             if (fun == null) {
-                _url = url;
+                _config.url = url;
             } else {
                 StringBuilder sb = new StringBuilder(200);
 
@@ -90,7 +89,7 @@ public class XProxy {
                     }
                 }
 
-                _url = sb.toString();
+                _config.url = sb.toString();
             }
         }
         return this;
@@ -101,13 +100,14 @@ public class XProxy {
      */
     public XProxy call(Map<String, String> headers, Map args) {
         try {
-            _result = _channel.call(this, headers, args);
+            _result = _config.channel.call(this, headers, args);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
         return this;
     }
 
+    private Result _result;
     public Result result(){
         return _result;
     }
@@ -123,7 +123,7 @@ public class XProxy {
      * 获取结果（返序列化为object）
      */
     public <T> T getObject(Class<T> returnType) {
-        return _serializer.deserialize(_result, returnType);
+        return _config.serializer.deserialize(_result, returnType);
     }
 
     //////////////////////////////////
@@ -131,32 +131,22 @@ public class XProxy {
     // 下面为动态代理部分
     //
     //////////////////////////////////
-    private HttpUpstream _upstream;
-    private String _sev;
-    private Map<String, String> _headers = new HashMap<>();
+
+
 
     /**
      * 设置全局头信息
      */
     public XProxy headerAdd(String name, String value) {
-        _headers.put(name, value);
+        _config.headers.put(name, value);
         return this;
     }
-
-    public Map<String,String> headers(){
-        return _headers;
-    }
-
     /**
      * 设置服务端
      */
     public XProxy sev(String sev) {
-        _sev = sev;
+        _config.sev = sev;
         return this;
-    }
-
-    public String sev(){
-        return _sev;
     }
 
 
@@ -176,19 +166,15 @@ public class XProxy {
      * 设置负载代理
      */
     public XProxy upstream(HttpUpstream upstream) {
-        _upstream = upstream;
+        _config.upstream = upstream;
         return this;
-    }
-
-    public HttpUpstream upstream(){
-        return _upstream;
     }
 
     /**
      * 设置序列化器
      */
     public XProxy serializer(ISerializer serializer) {
-        _serializer = serializer;
+        _config.serializer = serializer;
         return this;
     }
 
@@ -197,21 +183,15 @@ public class XProxy {
      * 设置通信通道
      */
     public XProxy channel(IChannel channel) {
-        _channel = channel;
+        _config.channel = channel;
         return this;
-    }
-
-    public IChannel channel(){
-        return _channel;
     }
 
     /**
      * 设置编码类型
      */
     public XProxy enctype(Enctype enctype) {
-        _enctype = enctype;
+        _config.enctype = enctype;
         return this;
     }
-
-
 }
