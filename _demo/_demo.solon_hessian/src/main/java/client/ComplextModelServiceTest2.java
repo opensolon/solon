@@ -18,14 +18,17 @@ public class ComplextModelServiceTest2 {
     public static void main(String[] args) throws Exception {
         //RPC访问地址
 
-        XProxy.defaultSerializer = SnackSerializer.instance;
+        XProxy.defaultSerializer = SnackSerializer.instance_type;
         XProxy.defaultDeserializer = HessionSerializer.instance;
         XProxy.defaultEnctype = Enctype.application_json;
 
         //接口的动态代理工厂
-        IComplexModelService service = new XProxy().upstream((name)->{
+        IComplexModelService service = new XProxy()
+                .headerAdd("Solon-Serialization","@hession")
+                .upstream((name)->{
             return "http://localhost:8080";
         }).create(IComplexModelService.class);
+
 
         ComplexModel<Point> model = new ComplexModel<Point>();
         model.setId(1);

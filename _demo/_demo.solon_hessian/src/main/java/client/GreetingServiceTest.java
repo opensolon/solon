@@ -10,9 +10,9 @@ public class GreetingServiceTest {
 
         //接口的动态代理工厂
         HessianProxyFactory factory = new HessianProxyFactory();
-        IGreetingService greetingService = (IGreetingService) factory.create(IGreetingService.class, url);
+        IGreetingService service = (IGreetingService) factory.create(IGreetingService.class, url);
 
-        String result = greetingService.greeting("tom");
+        String result = service.greeting("tom");
 
         //远程方法调用
         System.out.println("hello(), " + result);

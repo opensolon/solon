@@ -15,7 +15,6 @@ public class XProxyHandler implements InvocationHandler {
     private String _sev;
     public XProxyHandler(XProxy proxy){
         _cfg = proxy.config();
-        _sev =_cfg.getServer();
 
     }
     @Override
@@ -29,6 +28,8 @@ public class XProxyHandler implements InvocationHandler {
         if (c_meta == null) {
             return null;
         }
+
+        _sev =_cfg.getServer();
 
         if (_sev == null) {
             //1.优先从 XClient 获取服务地址或名称

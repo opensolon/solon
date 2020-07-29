@@ -19,8 +19,6 @@ public class HessionSerializer implements ISerializer, IDeserializer {
 
         try {
             ho.writeObject(obj);
-            ho.getBytesOutputStream().flush();
-            ho.completeMessage();
             ho.close();
         } catch (RuntimeException ex) {
             throw ex;
@@ -36,10 +34,10 @@ public class HessionSerializer implements ISerializer, IDeserializer {
         Hessian2Input hi = new Hessian2Input(new ByteArrayInputStream(rst.body()));
 
         try {
-            if (clz == Void.TYPE) {
-                return (T) hi.readObject();
+            if (Void.TYPE == clz) {
+                return null;
             } else {
-                return (T) hi.readObject(clz);
+                return (T) hi.readObject();
             }
         } catch (RuntimeException ex) {
             throw ex;

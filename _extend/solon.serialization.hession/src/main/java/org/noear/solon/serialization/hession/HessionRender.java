@@ -25,18 +25,19 @@ public class HessionRender implements XRender {
         ctx.contentType("x-application/hessian");
 
         if (obj instanceof ModelAndView) {
-            writeDo(ctx.outputStream(), new LinkedHashMap((Map) obj));
+            ctx.output(new ByteArrayInputStream(serializeDo(new LinkedHashMap((Map) obj))));
         } else {
-            writeDo(ctx.outputStream(), obj);
+            ctx.output(new ByteArrayInputStream(serializeDo(obj)));
         }
     }
 
-    private void writeDo(OutputStream out, Object obj) throws Throwable {
-        Hessian2Output ho = new Hessian2Output(out);
+    private byte[] serializeDo(Object obj) throws Throwable {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
 
+        Hessian2Output ho = new Hessian2Output(out);
         ho.writeObject(obj);
-        ho.getBytesOutputStream().flush();
-        ho.completeMessage();
         ho.close();
+
+        return out.toByteArray();
     }
 }
