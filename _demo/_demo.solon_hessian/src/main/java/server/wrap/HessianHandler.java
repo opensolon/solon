@@ -8,7 +8,7 @@ import org.noear.solon.core.XHandler;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class HessianSolonHandler implements XHandler {
+public class HessianHandler implements XHandler {
     private Class<?> _homeAPI;
     private Object _homeImpl;
 
@@ -17,7 +17,7 @@ public class HessianSolonHandler implements XHandler {
     private SerializerFactory _serializerFactory;
 
 
-    public HessianSolonHandler(Class<?> homeAPI, Object homeImpl) {
+    public HessianHandler(Class<?> homeAPI, Object homeImpl) {
         _homeAPI = homeAPI;
         _homeImpl = homeImpl;
 
