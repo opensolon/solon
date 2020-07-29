@@ -7,6 +7,8 @@ import webapp.model.User;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @XMapping("users")
 @XController
@@ -27,6 +29,11 @@ public class UserController {
         user.setRegTime(new Date());
         user.setOrderList(Arrays.asList("a","1","#"));
 
+        Map<String,Object> attrs = new HashMap<>();
+        attrs.put("a","1");
+        attrs.put("b",2);
+        user.setAttrMap(attrs);
+
         ctx.remotingSet(true);
         ctx.render(user);
         ctx.remotingSet(false);
@@ -42,6 +49,11 @@ public class UserController {
         user.setState(true);
         user.setRegTime(new Date());
         user.setOrderList(Arrays.asList("a","1","#"));
+
+        Map<String,Object> attrs = new HashMap<>();
+        attrs.put("a","1");
+        attrs.put("b",2);
+        user.setAttrMap(attrs);
 
         return user;
     }

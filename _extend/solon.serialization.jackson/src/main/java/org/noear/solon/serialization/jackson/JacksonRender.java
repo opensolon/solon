@@ -16,7 +16,9 @@ public class JacksonRender implements XRender {
         mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
         mapper_serialize.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-//        mapper_serialize.activateDefaultTyping(mapper_serialize.getPolymorphicTypeValidator());
+
+
+        //没有@type，不好反序列化异常类
 //        mapper_serialize.activateDefaultTypingAsProperty(
 //                mapper_serialize.getPolymorphicTypeValidator(),
 //                ObjectMapper.DefaultTyping.NON_FINAL,

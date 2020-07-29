@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class User {
@@ -13,4 +14,5 @@ public class User {
     private Date regTime;
     private boolean state;
     private List<String> orderList;
+    private Map<String,Object> attrMap;
 }
