@@ -1,8 +1,9 @@
 package client;
 
+import org.noear.solonclient.Enctype;
 import org.noear.solonclient.XProxy;
-import org.noear.solonclient.channel.HessionChannel;
 import org.noear.solonclient.serializer.HessionSerializer;
+import org.noear.solonclient.serializer.SnackSerializer;
 import server.dso.IComplexModelService;
 import server.model.ComplexModel;
 import server.model.Person;
@@ -16,8 +17,9 @@ public class ComplextModelServiceTest2 {
     public static void main(String[] args) throws Exception {
         //RPC访问地址
 
-        XProxy.defaultChannel = HessionChannel.instance;
-        XProxy.defaultSerializer = HessionSerializer.instance;
+        XProxy.defaultSerializer = SnackSerializer.instance;
+        XProxy.defaultDeserializer = HessionSerializer.instance;
+        XProxy.defaultEnctype = Enctype.application_json;
 
         //接口的动态代理工厂
         IComplexModelService service = new XProxy().upstream((name)->{

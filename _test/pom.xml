@@ -137,15 +137,15 @@
             <artifactId>solon.extend.sessionstate.local</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.jackson</artifactId>
-        </dependency>
-
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.serialization.snack3</artifactId>-->
+<!--            <artifactId>solon.serialization.jackson</artifactId>-->
 <!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.serialization.snack3</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
