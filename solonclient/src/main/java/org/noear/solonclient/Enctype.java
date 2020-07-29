@@ -5,5 +5,6 @@ package org.noear.solonclient;
  * */
 public enum  Enctype {
     form_data,
-    application_json;
+    application_json,
+    hessian;
 }
