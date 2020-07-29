@@ -2,17 +2,12 @@ package org.noear.solonclient.channel;
 
 import okhttp3.MediaType;
 import okhttp3.Response;
-import org.noear.solonclient.Enctype;
-import org.noear.solonclient.IChannel;
-import org.noear.solonclient.Result;
-import org.noear.solonclient.XProxy;
+import org.noear.solonclient.*;
 
 import java.util.Map;
 
 public class HttpChannel implements IChannel {
     public static final HttpChannel instance = new HttpChannel();
-
-    private static final String enctype_json = "application/json";
 
     @Override
     public Result call(XProxy proxy, Map<String, String> headers, Map<String, String> args) throws Exception {
@@ -27,7 +22,7 @@ public class HttpChannel implements IChannel {
                 response = http.exec("GET");
             }
         } else {
-            response = http.bodyTxt(proxy.serializer().stringify(args), enctype_json).exec("POST");
+            response = http.bodyTxt(proxy.serializer().stringify(args), ContextTypes.json).exec("POST");
         }
 
         //2.构建结果
