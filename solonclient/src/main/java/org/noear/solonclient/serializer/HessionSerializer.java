@@ -10,6 +10,8 @@ import java.io.ByteArrayOutputStream;
 import java.util.Base64;
 
 public class HessionSerializer implements ISerializer {
+    public static final HessionSerializer instance = new HessionSerializer();
+
     @Override
     public String stringify(Object obj) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();

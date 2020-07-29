@@ -1,13 +1,15 @@
 package server.controller;
 
 import org.noear.solon.annotation.XBean;
+import org.noear.solon.annotation.XMapping;
 import server.dso.IComplexModelService;
 import server.model.ComplexModel;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@XBean
+@XMapping("/ComplexModelService/")
+@XBean(remoting = true)
 public class ComplexModelService implements IComplexModelService {
     private Map<Integer,ComplexModel> models = new HashMap<Integer, ComplexModel>();
 

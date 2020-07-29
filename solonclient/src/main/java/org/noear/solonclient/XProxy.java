@@ -45,6 +45,12 @@ public class XProxy {
         _serializer = serializer;
     }
 
+    public XProxy(ISerializer serializer, IChannel channel) {
+        this();
+        _serializer = serializer;
+        _channel = channel;
+    }
+
     public String url(){return _url;}
     public ISerializer serializer(){return _serializer;}
     public Enctype enctype(){return _enctype;}

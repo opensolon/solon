@@ -199,6 +199,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.serialization.hession</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.serialization.avro</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
