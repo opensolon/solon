@@ -6,6 +6,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.noear.solonclient.ISerializer;
+import org.noear.solonclient.Result;
 
 public class FastjsonSerializer implements ISerializer {
     static {
@@ -31,7 +32,9 @@ public class FastjsonSerializer implements ISerializer {
     }
 
     @Override
-    public <T> T deserialize(String str, Class<T> clz) {
+    public <T> T deserialize(Result rst, Class<T> clz) {
+        String str = rst.bodyAsString();
+
         Object returnVal = null;
         try {
             if (str == null) {

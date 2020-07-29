@@ -16,6 +16,8 @@ public class HessionChannel implements IChannel {
     public Result call(XProxy proxy, Map<String, String> headers, Map<String, String> args) throws Exception {
         HttpUtils http = HttpUtils.http(proxy.url()).headers(headers);
 
+        http.header("Solon-Serialization","@hession");
+
         //1.执行并返回
         Response response;
         if (proxy.enctype() == Enctype.form_data) {

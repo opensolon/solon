@@ -3,6 +3,7 @@ package org.noear.solonclient.serializer;
 import org.noear.snack.ONode;
 import org.noear.snack.core.TypeRef;
 import org.noear.solonclient.ISerializer;
+import org.noear.solonclient.Result;
 
 public class SnackSerializer implements ISerializer {
     public static final SnackSerializer instance = new SnackSerializer();
@@ -18,7 +19,9 @@ public class SnackSerializer implements ISerializer {
     }
 
     @Override
-    public <T> T deserialize(String str, Class<T> clz) {
+    public <T> T deserialize(Result rst, Class<T> clz) {
+        String str = rst.bodyAsString();
+
         Object returnVal = null;
         try {
             if (str == null) {

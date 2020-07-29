@@ -117,7 +117,7 @@ public class XProxy {
      * 获取结果（返序列化为object）
      */
     public <T> T getObject(Class<T> returnType) {
-        return _serializer.deserialize(_result.bodyAsString(), returnType);
+        return _serializer.deserialize(_result, returnType);
     }
 
     //////////////////////////////////
