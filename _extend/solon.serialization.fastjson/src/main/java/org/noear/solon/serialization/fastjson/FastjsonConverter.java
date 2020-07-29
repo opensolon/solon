@@ -3,11 +3,11 @@ package org.noear.solon.serialization.fastjson;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.noear.solon.core.XContext;
-import org.noear.solon.core.XConverter;
+import org.noear.solon.core.XParamConverter;
 
-public class FastjsonConverter extends XConverter {
+public class FastjsonConverter extends XParamConverter {
     @Override
-    public Object convert(XContext ctx, String name, Class<?> type) throws Exception {
+    public Object getEntity(XContext ctx, String name, Class<?> type) throws Exception {
         String ct = ctx.contentType();
 
         if (ct != null && ct.indexOf("/json") > 0) {
@@ -23,7 +23,7 @@ public class FastjsonConverter extends XConverter {
                 }
             }
         } else {
-            return super.convert(ctx, name, type);
+            return super.getEntity(ctx, name, type);
         }
     }
 }
