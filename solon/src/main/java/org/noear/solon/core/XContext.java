@@ -229,7 +229,7 @@ public abstract class XContext {
 
     @XNote("获取所有参数并转为class")
     public <T> T paramAsEntity(Class<T> clz) throws Exception{
-        return (T)XActionUtil.params2Entity(this, clz);
+        return (T)XConverter.global.convert(this, clz);
     }
 
     /**获取文件*/

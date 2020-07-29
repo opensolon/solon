@@ -5,34 +5,12 @@ import org.noear.solon.core.utils.TypeUtil;
 import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.function.BiFunction;
 
 /**
  * XAction 辅助工具
  * */
 public class XActionUtil {
-
-    /**
-     * 将参数转为实体
-     */
-    public static Object params2Entity(XContext ctx, Class<?> clz) throws Exception {
-        Field[] fields = clz.getDeclaredFields();
-
-        Map<String, String> map = ctx.paramMap();
-        Object obj = clz.newInstance();
-
-        for (Field f : fields) {
-            String key = f.getName();
-            if (map.containsKey(key)) {
-                //将 string 转为目标 type，并为字段赋值
-                Object val = TypeUtil.changeOfCtx(f, f.getType(), key, map.get(key), ctx);
-                f.set(obj, val);
-            }
-        }
-
-        return obj;
-    }
-
     /**
      * 执行方法
      */
@@ -73,8 +51,8 @@ public class XActionUtil {
                                     //
                                     tv = null;
                                 } else {
-                                    //尝试转为模型
-                                    tv = params2Entity(ctx, pt);
+                                    //尝试转为实体
+                                    tv = XConverter.global.convert(ctx, pt);
                                 }
                             }
                         }

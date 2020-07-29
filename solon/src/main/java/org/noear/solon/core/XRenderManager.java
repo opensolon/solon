@@ -5,6 +5,9 @@ import org.noear.solon.ext.PrintUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * 通过 XRender 管理员，以此实现多模板引擎处理
@@ -13,6 +16,7 @@ public class XRenderManager implements XRender {
 
     private static final Map<String, XRender> _mapping = new HashMap<>();
     private static final Map<String, XRender> _lib = new HashMap<>();
+
 
     //默认渲染器
     private static XRender _def = (d, c) -> {
@@ -26,6 +30,7 @@ public class XRenderManager implements XRender {
 
     //不能放上面
     public static XRenderManager global = new XRenderManager();
+
 
     /**
      * 登记渲染器
