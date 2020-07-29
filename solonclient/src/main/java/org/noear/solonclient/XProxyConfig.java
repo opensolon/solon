@@ -4,13 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class XProxyConfig {
-    protected String url;
-    protected ISerializer serializer;
-    protected IChannel channel;
-    protected Enctype enctype;
+    public ISerializer serializer;
+    public IDeserializer deserializer;
 
-    protected HttpUpstream upstream;
-    protected String sev;
+    public IChannel channel;
+    public Enctype enctype;
 
-    protected Map<String, String> headers = new HashMap<>();
+    public HttpUpstream upstream;
+    public String sev;
+
+    public Map<String, String> headers = new HashMap<>();
 }

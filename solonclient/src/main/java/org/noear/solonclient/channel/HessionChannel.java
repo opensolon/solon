@@ -2,10 +2,7 @@ package org.noear.solonclient.channel;
 
 import okhttp3.MediaType;
 import okhttp3.Response;
-import org.noear.solonclient.Enctype;
-import org.noear.solonclient.IChannel;
-import org.noear.solonclient.Result;
-import org.noear.solonclient.XProxy;
+import org.noear.solonclient.*;
 
 import java.util.Map;
 
@@ -13,14 +10,14 @@ public class HessionChannel implements IChannel {
     public static final HessionChannel instance = new HessionChannel();
 
     @Override
-    public Result call(XProxy proxy, Map<String, String> headers, Map<String, Object> args) throws Exception {
-        HttpUtils http = HttpUtils.http(proxy.url()).headers(headers);
+    public Result call(XProxyConfig cfg, String url, Map<String, String> headers, Map<String, Object> args) throws Exception {
+        HttpUtils http = HttpUtils.http(url).headers(headers);
 
         http.header("Solon-Serialization","@hession");
 
         //1.执行并返回
         Response response;
-        if (proxy.enctype() == Enctype.form_data) {
+        if (cfg.enctype == Enctype.form_data) {
             if (args != null && args.size() > 0) {
                 response = http.data(args).exec("POST");
             } else {

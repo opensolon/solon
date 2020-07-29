@@ -2,18 +2,18 @@ package org.noear.solonclient.serializer;
 
 import com.caucho.hessian.io.Hessian2Input;
 import com.caucho.hessian.io.Hessian2Output;
+import org.noear.solonclient.IDeserializer;
 import org.noear.solonclient.ISerializer;
 import org.noear.solonclient.Result;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.Base64;
 
-public class HessionSerializer implements ISerializer {
+public class HessionSerializer implements ISerializer, IDeserializer {
     public static final HessionSerializer instance = new HessionSerializer();
 
     @Override
-    public String stringify(Object obj) {
+    public Object serialize(Object obj) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         Hessian2Output ho = new Hessian2Output(out);
 
@@ -28,12 +28,7 @@ public class HessionSerializer implements ISerializer {
             throw new RuntimeException(ex);
         }
 
-        return Base64.getEncoder().encodeToString(out.toByteArray());
-    }
-
-    @Override
-    public String serialize(Object obj) {
-        return stringify(obj);
+        return out.toByteArray();
     }
 
     @Override

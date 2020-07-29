@@ -1,14 +1,9 @@
 package org.noear.solonclient;
 
-import org.noear.solonclient.annotation.XAlias;
-import org.noear.solonclient.annotation.XClient;
 import org.noear.solonclient.channel.HttpChannel;
 import org.noear.solonclient.serializer.FastjsonSerializer;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.lang.reflect.Proxy;
-import java.util.HashMap;
 import java.util.Map;
 
 public class XProxy {
@@ -26,7 +21,19 @@ public class XProxy {
      * */
     public static ISerializer defaultSerializer;
 
+    /**
+     * 默认的反序列化器（涉及第三方框架引用，不做定义）
+     * */
+    public static IDeserializer defaultDeserializer;
+
+    private String _url;
     private final XProxyConfig _config;
+
+
+
+    public XProxyConfig config(){
+        return _config;
+    }
 
 
     protected XProxy(XProxyConfig config){
@@ -37,28 +44,21 @@ public class XProxy {
         _config = new XProxyConfig();
 
         _config.serializer = (defaultSerializer != null ? defaultSerializer : FastjsonSerializer.instance);
+        _config.deserializer = (defaultDeserializer != null ? defaultDeserializer : FastjsonSerializer.instance);
+
         _config.channel = (defaultChannel != null ? defaultChannel : HttpChannel.instance);
         _config.enctype = defaultEnctype;
     }
 
-
-
-    public XProxy(ISerializer serializer) {
-        this();
-        _config.serializer = serializer;
-    }
-
-    public XProxy(ISerializer serializer, IChannel channel) {
-        this();
-        _config.serializer = serializer;
-        _config.channel = channel;
+    public String url(){
+        return _url;
     }
 
     /**
      * 设置请求地址
      */
     public XProxy url(String url) {
-        _config.url = url;
+        _url = url;
         return this;
     }
 
@@ -67,10 +67,10 @@ public class XProxy {
      */
     public XProxy url(String url, String fun) {
         if (url.indexOf("{fun}") > 0) {
-            _config.url = url.replace("{fun}", fun);
+            _url = url.replace("{fun}", fun);
         } else {
             if (fun == null) {
-                _config.url = url;
+                _url = url;
             } else {
                 StringBuilder sb = new StringBuilder(200);
 
@@ -89,7 +89,7 @@ public class XProxy {
                     }
                 }
 
-                _config.url = sb.toString();
+                _url = sb.toString();
             }
         }
         return this;
@@ -123,7 +123,7 @@ public class XProxy {
      * 获取结果（返序列化为object）
      */
     public <T> T getObject(Class<T> returnType) {
-        return _config.serializer.deserialize(_result, returnType);
+        return _config.deserializer.deserialize(_result, returnType);
     }
 
     //////////////////////////////////
@@ -175,6 +175,14 @@ public class XProxy {
      */
     public XProxy serializer(ISerializer serializer) {
         _config.serializer = serializer;
+        return this;
+    }
+
+    /**
+     * 设置反序列器
+     * */
+    public XProxy deserializer(IDeserializer deserializer) {
+        _config.deserializer = deserializer;
         return this;
     }
 

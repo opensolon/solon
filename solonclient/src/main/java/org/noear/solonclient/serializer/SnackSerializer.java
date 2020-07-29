@@ -1,21 +1,18 @@
 package org.noear.solonclient.serializer;
 
 import org.noear.snack.ONode;
-import org.noear.snack.core.TypeRef;
+import org.noear.solonclient.IDeserializer;
 import org.noear.solonclient.ISerializer;
 import org.noear.solonclient.Result;
 
-public class SnackSerializer implements ISerializer {
+public class SnackSerializer implements ISerializer, IDeserializer {
     public static final SnackSerializer instance = new SnackSerializer();
 
     @Override
-    public String stringify(Object obj) {
+    public Object serialize(Object obj) {
         return ONode.stringify(obj);
-    }
 
-    @Override
-    public String serialize(Object obj) {
-        return ONode.serialize(obj);
+//        return ONode.serialize(obj);
     }
 
     @Override

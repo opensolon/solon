@@ -5,10 +5,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import org.noear.solonclient.IDeserializer;
 import org.noear.solonclient.ISerializer;
 import org.noear.solonclient.Result;
 
-public class FastjsonSerializer implements ISerializer {
+public class FastjsonSerializer implements ISerializer, IDeserializer {
     static {
         ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
     }
@@ -17,18 +18,15 @@ public class FastjsonSerializer implements ISerializer {
 
 
     @Override
-    public String stringify(Object obj) {
+    public Object serialize(Object obj) {
         return JSON.toJSONString(obj,
                 SerializerFeature.BrowserCompatible,
                 SerializerFeature.DisableCircularReferenceDetect);
-    }
 
-    @Override
-    public String serialize(Object obj) {
-        return JSON.toJSONString(obj,
-                SerializerFeature.BrowserCompatible,
-                SerializerFeature.WriteClassName,
-                SerializerFeature.DisableCircularReferenceDetect);
+//        return JSON.toJSONString(obj,
+//                SerializerFeature.BrowserCompatible,
+//                SerializerFeature.WriteClassName,
+//                SerializerFeature.DisableCircularReferenceDetect);
     }
 
     @Override

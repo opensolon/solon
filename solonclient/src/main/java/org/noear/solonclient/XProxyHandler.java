@@ -15,12 +15,13 @@ public class XProxyHandler implements InvocationHandler {
     private String _sev;
     public XProxyHandler(XProxy proxy){
         _proxy = proxy;
-        _sev = proxy.sev();
+        _sev = proxy.config().sev;
 
     }
     @Override
     public Object invoke(Object proxy, Method method, Object[] vals) throws Throwable {
         //调用准备
+        XProxyConfig cfg = _proxy.config();
         String fun = method.getName();
 
         XClient c_meta = method.getDeclaringClass().getAnnotation(XClient.class);
@@ -58,7 +59,7 @@ public class XProxyHandler implements InvocationHandler {
         //构建headers
         Map<String, String> headers = new HashMap<>();
         //>>添加全局header
-        headers.putAll(_proxy.headers());
+        headers.putAll(cfg.headers);
         //>>添加接口header
         if (c_meta.headers() != null) {
             for (String h : c_meta.headers()) {
@@ -77,7 +78,7 @@ public class XProxyHandler implements InvocationHandler {
                 _pat = ss[1];
             }
 
-            url = _proxy.upstream().getTarget(_sev);
+            url = cfg.upstream.getTarget(_sev);
 
             if(url == null){
                 throw new RuntimeException("Solon client proxy: Not found upstream!");
@@ -101,12 +102,9 @@ public class XProxyHandler implements InvocationHandler {
         }
 
         //执行调用
-        return new XProxy()
+        return new XProxy(cfg)
                 .url(url, fun)
-                .enctype(_proxy.enctype())
-                .channel(_proxy.channel())
                 .call(headers, args)
-                .serializer(_proxy.serializer())
                 .getObject(method.getReturnType());
     }
 
