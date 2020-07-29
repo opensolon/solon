@@ -8,13 +8,13 @@ public class JacksonConverter extends XConverter {
     ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public Object convert(XContext ctx, Class<?> clz) throws Exception {
+    public Object convert(XContext ctx, String name, Class<?> type) throws Exception {
         String ct = ctx.contentType();
 
         if (ct != null && ct.indexOf("/json") > 0) {
-            return mapper.readValue(ctx.body(), clz);
+            return mapper.readValue(ctx.body(), type);
         } else {
-            return super.convert(ctx, clz);
+            return super.convert(ctx, name, type);
         }
     }
 }

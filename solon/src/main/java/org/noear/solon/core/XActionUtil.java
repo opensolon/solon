@@ -14,8 +14,8 @@ public class XActionUtil {
     /**
      * 将参数转为实体
      */
-    public static Object params2Entity(XContext ctx, Class<?> clz) throws Exception {
-        return XConverter.global.convert(ctx,clz);
+    public static Object params2Entity(XContext ctx, String name, Class<?> type) throws Exception {
+        return XConverter.global.convert(ctx, name, type);
     }
 
     /**
@@ -59,7 +59,7 @@ public class XActionUtil {
                                     tv = null;
                                 } else {
                                     //尝试转为实体
-                                    tv = params2Entity(ctx, pt);
+                                    tv = params2Entity(ctx, pn, pt);
                                 }
                             }
                         }

@@ -51,7 +51,7 @@ public class XProxyHandler implements InvocationHandler {
         Parameter[] names = method.getParameters();
         for (int i = 0, len = names.length; i < len; i++) {
             if (vals[i] != null) {
-                args.put(names[i].getName(), vals[i].toString());
+                args.put(names[i].getName(), vals[i]);
             }
         }
 

@@ -14,11 +14,11 @@ public class XConverter {
     /**
      * 获取
      * */
-    public Object convert(XContext ctx, Class<?> clz) throws Exception {
-        Field[] fields = clz.getDeclaredFields();
+    public Object convert(XContext ctx, String name, Class<?> type) throws Exception {
+        Field[] fields = type.getDeclaredFields();
 
         Map<String, String> map = ctx.paramMap();
-        Object obj = clz.newInstance();
+        Object obj = type.newInstance();
 
         if (map.size() > 0) {
             for (Field f : fields) {

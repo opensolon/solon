@@ -6,13 +6,13 @@ import org.noear.solon.core.XConverter;
 
 public class FastjsonConverter extends XConverter {
     @Override
-    public Object convert(XContext ctx, Class<?> clz) throws Exception {
+    public Object convert(XContext ctx, String name, Class<?> type) throws Exception {
         String ct = ctx.contentType();
 
         if (ct != null && ct.indexOf("/json") > 0) {
-            return JSON.parseObject(ctx.body(), clz);
+            return JSON.parseObject(ctx.body(), type);
         } else {
-            return super.convert(ctx, clz);
+            return super.convert(ctx, name, type);
         }
     }
 }
