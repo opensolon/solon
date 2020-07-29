@@ -10,7 +10,16 @@ public class SnackConverter extends XConverter {
         String ct = ctx.contentType();
 
         if (ct != null && ct.indexOf("/json") > 0) {
-            return ONode.deserialize(ctx.body(), type);
+            if(name == null) {
+                return ONode.deserialize(ctx.body(), type);
+            }else{
+                ONode node = ONode.loadStr(ctx.body());
+                if(node.contains(name)){
+                    return node.get(name).toObject(type);
+                }else{
+                    return node.toObject(type);
+                }
+            }
         } else {
             return super.convert(ctx, name, type);
         }
