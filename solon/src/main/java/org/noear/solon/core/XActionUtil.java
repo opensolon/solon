@@ -12,6 +12,13 @@ import java.util.function.BiFunction;
  * */
 public class XActionUtil {
     /**
+     * 将参数转为实体
+     */
+    public static Object params2Entity(XContext ctx, Class<?> clz) throws Exception {
+        return XConverter.global.convert(ctx,clz);
+    }
+
+    /**
      * 执行方法
      */
     public static Object exeMethod(Object obj, MethodWrap mWrap, XContext ctx) throws Exception {
@@ -52,7 +59,7 @@ public class XActionUtil {
                                     tv = null;
                                 } else {
                                     //尝试转为实体
-                                    tv = XConverter.global.convert(ctx, pt);
+                                    tv = params2Entity(ctx, pt);
                                 }
                             }
                         }
