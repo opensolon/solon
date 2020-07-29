@@ -11,7 +11,7 @@ public class SocketChannel implements IChannel {
 
     @Override
     public Result call(XProxyConfig cfg, String url, Map<String, String> headers, Map<String, Object> args) throws Exception {
-        SocketMessage msg = SocketUtils.send(url, (String) cfg.serializer.serialize(args));
+        SocketMessage msg = SocketUtils.send(url, (String) cfg.getSerializer().serialize(args));
 
         return new Result(msg.charset, msg.content);
     }

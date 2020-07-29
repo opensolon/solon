@@ -17,7 +17,7 @@ public class HessionChannel implements IChannel {
 
         //1.执行并返回
         Response response;
-        if (cfg.enctype == Enctype.form_data) {
+        if (cfg.getEnctype() == Enctype.form_data) {
             if (args != null && args.size() > 0) {
                 response = http.data(args).exec("POST");
             } else {
