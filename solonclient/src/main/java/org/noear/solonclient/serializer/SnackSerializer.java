@@ -6,13 +6,21 @@ import org.noear.solonclient.ISerializer;
 import org.noear.solonclient.Result;
 
 public class SnackSerializer implements ISerializer, IDeserializer {
-    public static final SnackSerializer instance = new SnackSerializer();
+    public static final SnackSerializer instance = new SnackSerializer(false);
+    public static final SnackSerializer instance_type = new SnackSerializer(true);
+
+    private boolean usingType;
+    public SnackSerializer(boolean usingType){
+        this.usingType = usingType;
+    }
 
     @Override
     public Object serialize(Object obj) {
-        return ONode.stringify(obj);
-
-//        return ONode.serialize(obj);
+        if (usingType) {
+            return ONode.serialize(obj);
+        } else {
+            return ONode.stringify(obj);
+        }
     }
 
     @Override

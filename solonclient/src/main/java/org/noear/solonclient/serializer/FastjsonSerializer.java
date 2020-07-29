@@ -14,19 +14,27 @@ public class FastjsonSerializer implements ISerializer, IDeserializer {
         ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
     }
 
-    public static final FastjsonSerializer instance = new FastjsonSerializer();
+    public static final FastjsonSerializer instance = new FastjsonSerializer(false);
+    public static final FastjsonSerializer instance_type = new FastjsonSerializer(true);
 
+
+    private boolean usingType;
+    public FastjsonSerializer(boolean usingType){
+        this.usingType = usingType;
+    }
 
     @Override
     public Object serialize(Object obj) {
-        return JSON.toJSONString(obj,
-                SerializerFeature.BrowserCompatible,
-                SerializerFeature.DisableCircularReferenceDetect);
-
-//        return JSON.toJSONString(obj,
-//                SerializerFeature.BrowserCompatible,
-//                SerializerFeature.WriteClassName,
-//                SerializerFeature.DisableCircularReferenceDetect);
+        if (usingType) {
+            return JSON.toJSONString(obj,
+                    SerializerFeature.BrowserCompatible,
+                    SerializerFeature.WriteClassName,
+                    SerializerFeature.DisableCircularReferenceDetect);
+        } else {
+            return JSON.toJSONString(obj,
+                    SerializerFeature.BrowserCompatible,
+                    SerializerFeature.DisableCircularReferenceDetect);
+        }
     }
 
     @Override
