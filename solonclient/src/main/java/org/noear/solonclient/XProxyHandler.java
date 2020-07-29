@@ -11,17 +11,16 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class XProxyHandler implements InvocationHandler {
-    private XProxy _proxy;
+    private XProxyConfig _cfg;
     private String _sev;
     public XProxyHandler(XProxy proxy){
-        _proxy = proxy;
-        _sev = proxy.config().sev;
+        _cfg = proxy.config();
+        _sev =_cfg.getServer();
 
     }
     @Override
     public Object invoke(Object proxy, Method method, Object[] vals) throws Throwable {
         //调用准备
-        XProxyConfig cfg = _proxy.config();
         String fun = method.getName();
 
         XClient c_meta = method.getDeclaringClass().getAnnotation(XClient.class);
@@ -59,7 +58,7 @@ public class XProxyHandler implements InvocationHandler {
         //构建headers
         Map<String, String> headers = new HashMap<>();
         //>>添加全局header
-        headers.putAll(cfg.headers);
+        headers.putAll(_cfg.getHeaders());
         //>>添加接口header
         if (c_meta.headers() != null) {
             for (String h : c_meta.headers()) {
@@ -78,7 +77,7 @@ public class XProxyHandler implements InvocationHandler {
                 _pat = ss[1];
             }
 
-            url = cfg.upstream.getTarget(_sev);
+            url = _cfg.getUpstream().getTarget(_sev);
 
             if(url == null){
                 throw new RuntimeException("Solon client proxy: Not found upstream!");
@@ -102,7 +101,7 @@ public class XProxyHandler implements InvocationHandler {
         }
 
         //执行调用
-        return new XProxy(cfg)
+        return new XProxy(_cfg)
                 .url(url, fun)
                 .call(headers, args)
                 .getObject(method.getReturnType());
