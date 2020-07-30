@@ -21,7 +21,6 @@ public class ComplextModelServiceTest3 {
 
         //接口的动态代理工厂
         IComplexModelService service = new XProxy()
-                .headerAdd("Solon-Serialization","@type_json")
                 .upstream((name)->{
             return "http://localhost:8080";
         }).create(IComplexModelService.class);
