@@ -120,7 +120,8 @@ public class XAction extends XHandlerAide implements XHandler {
      * 执行动作（便于重写）
      */
     protected Object callDo(Object obj, XContext x) throws Throwable {
-        return XActionUtil.exeMethod(obj, _mw, x);
+        x.attrSet("controller", obj);
+        return XActionUtil.exeMethod(x, obj, _mw);
     }
 
     /**

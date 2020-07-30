@@ -28,14 +28,14 @@ public class AopFactory extends AopFactoryBase {
 
         beanCreatorAdd(XConfiguration.class, (clz, bw, anno) -> {
             for (MethodWrap mWrap : ClassWrap.get(bw.clz()).methodWraps) {
-                XBean m_an = mWrap.method.getAnnotation(XBean.class);
+                XBean m_an = mWrap.getMethod().getAnnotation(XBean.class);
 
                 if (m_an != null) {
-                    if (mWrap.parameters.length == 0) {
+                    if (mWrap.getParameters().length == 0) {
                         //充许空函数运行
-                        Object raw = mWrap.method.invoke(bw.raw());
+                        Object raw = mWrap.invoke(bw.raw());
                         if(raw != null) {
-                            BeanWrap m_bw = Aop.put(mWrap.method.getReturnType(), raw);
+                            BeanWrap m_bw = Aop.put(mWrap.getReturnType(), raw);
                             beanRegister(m_bw, m_an.value());
                         }
                     } else {

@@ -105,7 +105,7 @@ public class BeanWrap {
 
             //3.初始化
             if(_clz_init != null){
-                _clz_init.method.invoke(obj);
+                _clz_init.getMethod().invoke(obj);
             }
 
             return obj;
@@ -126,8 +126,8 @@ public class BeanWrap {
         ClassWrap clzWrap = ClassWrap.get(_clz);
 
         for (MethodWrap mw : clzWrap.methodWraps) {
-            if (mw.method.getAnnotation(XInit.class) != null) {
-                if (mw.parameters.length == 0) {
+            if (mw.getMethod().getAnnotation(XInit.class) != null) {
+                if (mw.getParameters().length == 0) {
                     //只接收没有参数的
                     _clz_init = mw;
                 }

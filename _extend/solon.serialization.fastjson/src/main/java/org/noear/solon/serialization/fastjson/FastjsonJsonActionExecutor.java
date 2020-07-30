@@ -3,15 +3,15 @@ package org.noear.solon.serialization.fastjson;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.noear.solon.core.XActionConverter;
+import org.noear.solon.core.XActionExecutor;
 import org.noear.solon.core.XContext;
 
 import java.lang.reflect.Parameter;
 
-public class FastjsonConverter extends XActionConverter {
+public class FastjsonJsonActionExecutor extends XActionExecutor {
 
     @Override
-    protected boolean matched(XContext ctx, String contextType) {
+    public boolean matched(XContext ctx, String contextType) {
         if (contextType != null && contextType.contains("/json")) {
             return true;
         } else {

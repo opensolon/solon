@@ -2,6 +2,7 @@ package org.noear.solon.core;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -25,24 +26,51 @@ public class MethodWrap {
         return mw;
     }
 
-    /**
-     * 函数本身
-     * */
-    public final Method method;
-    /**
-     * 函数参数
-     * */
-    public final Parameter[] parameters;
+    protected MethodWrap(Method m){
+        method = m;
+        parameters = m.getParameters();
+    }
+
+
+    private final Method method;
+    private final Parameter[] parameters;
 
     /**
      * 获取函数名
      * */
-    public String name(){
+    public String getName(){
         return method.getName();
     }
 
-    protected MethodWrap(Method m){
-        method = m;
-        parameters = m.getParameters();
+    /**
+     * 获取函数本身
+     * */
+    public Method getMethod() {
+        return method;
+    }
+
+    /**
+     * 获取函数反回类型
+     * */
+    public Class<?> getReturnType(){
+        return method.getReturnType();
+    }
+
+    /**
+     * 获取函数参数
+     * */
+    public Parameter[] getParameters() {
+        return parameters;
+    }
+
+    /**
+     * 执行并返回
+     * */
+    public Object invoke(Object obj, Object... args) throws Exception{
+        if(parameters.length == 0) {
+            return method.invoke(obj);
+        }else{
+            return method.invoke(obj, args);
+        }
     }
 }

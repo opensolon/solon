@@ -8,8 +8,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class XActionConverter {
-    public List<Object> change(XContext ctx, Parameter[] pSet) throws Exception {
+public class XActionExecutor implements MethodExecutor {
+    @Override
+    public boolean matched(XContext ctx, String ct) {
+        return true;
+    }
+
+    @Override
+    public Object execute(XContext ctx, Object obj, MethodWrap mWrap) throws Throwable{
+        return mWrap.invoke(obj, buildArgs(ctx, mWrap.getParameters()));
+    }
+
+
+    /**
+     * 构建执行参数
+     * */
+    protected List<Object> buildArgs(XContext ctx, Parameter[] pSet) throws Exception {
         List<Object> args = new ArrayList<>(pSet.length);
 
         Object bodyObj = changeBody(ctx);
@@ -66,14 +80,16 @@ public class XActionConverter {
         return args;
     }
 
-    protected boolean matched(XContext ctx, String contextType) {
-        return true;
-    }
-
+    /**
+     * 尝试将body转换为特定对象
+     * */
     protected Object changeBody(XContext ctx) throws Exception {
         return null;
     }
 
+    /**
+     * 尝试将值按类型转换
+     * */
     protected Object changeValue(XContext ctx, Parameter p, int pi, Class<?> pt, Object bodyObj) throws Exception {
         String pn = p.getName();    //参数名
         String pv = ctx.param(pn);  //参数值
@@ -98,7 +114,7 @@ public class XActionConverter {
                         tv = null;
                     } else {
                         //尝试转为实体
-                        tv = changeEntity(ctx, pn, pt);
+                        tv = changeEntityDo(ctx, pn, pt);
                     }
                 }
             }
@@ -111,9 +127,9 @@ public class XActionConverter {
     }
 
     /**
-     * 获取实体值
+     * 尝试将值转换为实体
      */
-    private Object changeEntity(XContext ctx, String name, Class<?> type) throws Exception {
+    private Object changeEntityDo(XContext ctx, String name, Class<?> type) throws Exception {
         Field[] fields = type.getDeclaredFields();
 
         Map<String, String> map = ctx.paramMap();

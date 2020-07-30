@@ -20,6 +20,6 @@ public class TmpApp {
         XApp.global().add("/web/hessian_complex", XMethod.HTTP,
                 new HessianHandler(IComplexModelService.class, Aop.get(ComplexModelService.class)));
 
-        HessianServlet
+        //HessianServlet
     }
 }

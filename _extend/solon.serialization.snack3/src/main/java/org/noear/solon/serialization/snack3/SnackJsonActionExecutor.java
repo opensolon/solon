@@ -1,14 +1,14 @@
 package org.noear.solon.serialization.snack3;
 
 import org.noear.snack.ONode;
-import org.noear.solon.core.XActionConverter;
+import org.noear.solon.core.XActionExecutor;
 import org.noear.solon.core.XContext;
 
 import java.lang.reflect.Parameter;
 
-public class SnackConverter extends XActionConverter {
+public class SnackJsonActionExecutor extends XActionExecutor {
     @Override
-    protected boolean matched(XContext ctx, String contextType) {
+    public boolean matched(XContext ctx, String contextType) {
         if (contextType != null && contextType.contains("/json")) {
             return true;
         } else {

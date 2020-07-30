@@ -1,18 +1,18 @@
 package org.noear.solon.serialization.hession;
 
 import com.caucho.hessian.io.Hessian2Input;
-import org.noear.solon.core.XActionConverter;
+import org.noear.solon.core.XActionExecutor;
 import org.noear.solon.core.XContext;
 
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Parameter;
 import java.util.Map;
 
-public class HessianConverter extends XActionConverter {
+public class HessianActionExecutor extends XActionExecutor {
 
     @Override
-    protected boolean matched(XContext ctx, String contextType) {
-        if (contextType != null && contextType.contains("application/hessian")) {
+    public boolean matched(XContext ctx, String ct) {
+        if (ct != null && ct.contains("application/hessian")) {
             return true;
         } else {
             return false;
