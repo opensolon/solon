@@ -32,7 +32,7 @@ public class SpeetTest {
 
         for (int i = 0; i < 100000; i++) {
             for(MethodWrap mw: ClassWrap.get(UserModel.class).methodWraps){
-                for(Parameter p : mw.parameters){
+                for(Parameter p : mw.getParameters()){
 
                 }
             }
