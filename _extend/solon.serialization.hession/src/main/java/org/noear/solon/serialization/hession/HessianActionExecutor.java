@@ -9,10 +9,11 @@ import java.lang.reflect.Parameter;
 import java.util.Map;
 
 public class HessianActionExecutor extends XActionExecutor {
+    private static final String label = "application/hessian";
 
     @Override
     public boolean matched(XContext ctx, String ct) {
-        if (ct != null && ct.contains("application/hessian")) {
+        if (ct != null && ct.contains(label)) {
             return true;
         } else {
             return false;

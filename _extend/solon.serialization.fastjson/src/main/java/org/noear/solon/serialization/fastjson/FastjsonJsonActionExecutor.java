@@ -9,10 +9,11 @@ import org.noear.solon.core.XContext;
 import java.lang.reflect.Parameter;
 
 public class FastjsonJsonActionExecutor extends XActionExecutor {
+    private static final String label = "/json";
 
     @Override
-    public boolean matched(XContext ctx, String contextType) {
-        if (contextType != null && contextType.contains("/json")) {
+    public boolean matched(XContext ctx, String ct) {
+        if (ct != null && ct.contains(label)) {
             return true;
         } else {
             return false;
