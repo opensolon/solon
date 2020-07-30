@@ -1,11 +1,6 @@
 package feature;
 
 
-import org.junit.Test;
-import org.noear.solonclient.ISerializer;
-import org.noear.solonclient.serializer.FastjsonSerializer;
-import org.noear.solonclient.serializer.SnackSerializer;
-
 public class JsonTest {
 //    @Test
 //    public void test1(){

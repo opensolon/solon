@@ -1,18 +1,16 @@
 package client;
 
-import com.caucho.hessian.client.HessianProxyFactory;
 import org.noear.solonclient.Enctype;
 import org.noear.solonclient.XProxy;
-import org.noear.solonclient.serializer.HessionSerializer;
-import org.noear.solonclient.serializer.SnackSerializer;
-import server.dso.IComplexModelService;
+import org.noear.solonclient.serializer.HessionSerializerD;
+import org.noear.solonclient.serializer.SnackSerializerD;
 import server.dso.IGreetingService;
 
 public class GreetingServiceTest2 {
     public static void main(String[] args) throws Exception {
         //RPC访问地址
-        XProxy.defaultSerializer = SnackSerializer.instance_type;
-        XProxy.defaultDeserializer = HessionSerializer.instance;
+        XProxy.defaultSerializer = SnackSerializerD.instance_type;
+        XProxy.defaultDeserializer = HessionSerializerD.instance;
         XProxy.defaultEnctype = Enctype.application_json;
 
         //接口的动态代理工厂

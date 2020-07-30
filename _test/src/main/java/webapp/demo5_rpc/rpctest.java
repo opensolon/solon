@@ -8,8 +8,7 @@ import org.noear.solon.core.XHandler;
 import org.noear.solonclient.XProxy;
 import org.noear.solonclient.channel.HttpChannel;
 import org.noear.solonclient.channel.SocketChannel;
-import org.noear.solonclient.serializer.SnackSerializer;
-import webapp.demoh_socket.SoDemoClientTest;
+import org.noear.solonclient.serializer.SnackSerializerD;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +31,7 @@ public class rpctest implements XHandler {
 
         rockapi client = new XProxy()
                 .channel(HttpChannel.instance)
-                .serializer(SnackSerializer.instance)
+                .serializer(SnackSerializerD.instance)
                 .upstream(name -> root)
                 .create(rockapi.class);
 
@@ -44,7 +43,7 @@ public class rpctest implements XHandler {
 
         rockapi client = new XProxy()
                 .channel(SocketChannel.instance)
-                .serializer(SnackSerializer.instance)
+                .serializer(SnackSerializerD.instance)
                 .upstream(name -> root)
                 .create(rockapi.class);
 

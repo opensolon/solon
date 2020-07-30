@@ -1,17 +1,23 @@
 package org.noear.solonclient.serializer;
 
 import org.noear.snack.ONode;
+import org.noear.solonclient.Enctype;
 import org.noear.solonclient.IDeserializer;
 import org.noear.solonclient.ISerializer;
 import org.noear.solonclient.Result;
 
-public class SnackSerializer implements ISerializer, IDeserializer {
-    public static final SnackSerializer instance = new SnackSerializer(false);
-    public static final SnackSerializer instance_type = new SnackSerializer(true);
+public class SnackSerializerD implements ISerializer, IDeserializer {
+    public static final SnackSerializerD instance = new SnackSerializerD(false);
+    public static final SnackSerializerD instance_type = new SnackSerializerD(true);
 
     private boolean usingType;
-    public SnackSerializer(boolean usingType){
+    public SnackSerializerD(boolean usingType){
         this.usingType = usingType;
+    }
+
+    @Override
+    public Enctype enctype() {
+        return Enctype.application_json;
     }
 
     @Override

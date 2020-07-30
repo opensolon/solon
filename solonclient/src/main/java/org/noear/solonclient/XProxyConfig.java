@@ -1,7 +1,8 @@
 package org.noear.solonclient;
 
 import org.noear.solonclient.channel.HttpChannel;
-import org.noear.solonclient.serializer.FastjsonSerializer;
+import org.noear.solonclient.serializer.FastjsonSerializerD;
+import org.noear.solonclient.serializer.FormSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +12,6 @@ public class XProxyConfig {
     private IDeserializer deserializer;
 
     private IChannel channel;
-    private Enctype enctype;
 
     private HttpUpstream upstream;
     private String server;
@@ -24,7 +24,7 @@ public class XProxyConfig {
 
     protected void setSerializer(ISerializer serializer) {
         if(serializer == null){
-            this.serializer = FastjsonSerializer.instance;
+            this.serializer = FormSerializer.instance;
         }else {
             this.serializer = serializer;
         }
@@ -36,7 +36,7 @@ public class XProxyConfig {
 
     protected void setDeserializer(IDeserializer deserializer) {
         if(deserializer == null){
-            this.deserializer = FastjsonSerializer.instance;
+            this.deserializer = FastjsonSerializerD.instance;
         }else {
             this.deserializer = deserializer;
         }
@@ -52,14 +52,6 @@ public class XProxyConfig {
         }else {
             this.channel = channel;
         }
-    }
-
-    public Enctype getEnctype() {
-        return enctype;
-    }
-
-    protected void setEnctype(Enctype enctype) {
-        this.enctype = enctype;
     }
 
     public HttpUpstream getUpstream() {

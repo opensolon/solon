@@ -2,6 +2,7 @@ package org.noear.solonclient.serializer;
 
 import com.caucho.hessian.io.Hessian2Input;
 import com.caucho.hessian.io.Hessian2Output;
+import org.noear.solonclient.Enctype;
 import org.noear.solonclient.IDeserializer;
 import org.noear.solonclient.ISerializer;
 import org.noear.solonclient.Result;
@@ -9,8 +10,13 @@ import org.noear.solonclient.Result;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
-public class HessionSerializer implements ISerializer, IDeserializer {
-    public static final HessionSerializer instance = new HessionSerializer();
+public class HessionSerializerD implements ISerializer, IDeserializer {
+    public static final HessionSerializerD instance = new HessionSerializerD();
+
+    @Override
+    public Enctype enctype() {
+        return Enctype.application_hessian;
+    }
 
     @Override
     public Object serialize(Object obj) {

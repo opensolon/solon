@@ -5,22 +5,28 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import org.noear.solonclient.Enctype;
 import org.noear.solonclient.IDeserializer;
 import org.noear.solonclient.ISerializer;
 import org.noear.solonclient.Result;
 
-public class FastjsonSerializer implements ISerializer, IDeserializer {
+public class FastjsonSerializerD implements ISerializer, IDeserializer {
     static {
         ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
     }
 
-    public static final FastjsonSerializer instance = new FastjsonSerializer(false);
-    public static final FastjsonSerializer instance_type = new FastjsonSerializer(true);
+    public static final FastjsonSerializerD instance = new FastjsonSerializerD(false);
+    public static final FastjsonSerializerD instance_type = new FastjsonSerializerD(true);
 
 
     private boolean usingType;
-    public FastjsonSerializer(boolean usingType){
+    public FastjsonSerializerD(boolean usingType){
         this.usingType = usingType;
+    }
+
+    @Override
+    public Enctype enctype() {
+        return Enctype.application_json;
     }
 
     @Override

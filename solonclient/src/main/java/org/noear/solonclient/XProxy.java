@@ -4,11 +4,6 @@ import java.lang.reflect.Proxy;
 import java.util.Map;
 
 public class XProxy {
-
-    /**
-     * 默认的编码类型
-     * */
-    public static Enctype defaultEnctype = Enctype.form_data;
     /**
      * 默认的通讯通道（涉及第三方框架引用，不做定义）
      * */
@@ -44,7 +39,6 @@ public class XProxy {
         _config.setDeserializer(defaultDeserializer);
 
         _config.setChannel(defaultChannel);
-        _config.setEnctype(defaultEnctype);
     }
 
     /**
@@ -185,14 +179,6 @@ public class XProxy {
      */
     public XProxy channel(IChannel channel) {
         _config.setChannel(channel);
-        return this;
-    }
-
-    /**
-     * 设置编码类型
-     */
-    public XProxy enctype(Enctype enctype) {
-        _config.setEnctype(enctype);
         return this;
     }
 }
