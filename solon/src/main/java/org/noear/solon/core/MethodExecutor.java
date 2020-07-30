@@ -1,7 +1,7 @@
 package org.noear.solon.core;
 
 /**
- * 转换器
+ * 函数执行器
  * */
 public interface MethodExecutor {
     /**
