@@ -16,7 +16,7 @@ public class XPluginImp implements XPlugin {
         XRenderManager.mapping("@json", new SnackRender(false));
         XRenderManager.mapping("@type_json", new SnackRender(true));
 
-        //重置转换器
+        //支持Json内容类型执行
         XActionUtil.register(new SnackJsonActionExecutor());
     }
 }
