@@ -34,6 +34,10 @@ public class SnackJsonActionExecutor extends XActionExecutor {
         if (tmp.isObject()) {
             if (tmp.contains(p.getName())) {
                 return tmp.get(p.getName()).toObject(pt);
+            } else if (ctx.paramMap().containsKey(p.getName())) {
+                //有可能是path变量
+                //
+                return super.changeValue(ctx, p, pi, pt, bodyObj);
             } else {
                 return tmp.toObject(pt);
             }

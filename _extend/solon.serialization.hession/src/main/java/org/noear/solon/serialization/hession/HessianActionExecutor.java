@@ -31,13 +31,19 @@ public class HessianActionExecutor extends XActionExecutor {
         if (bodyObj == null) {
             return null;
         } else {
-            if(bodyObj instanceof Map) {
+            if (bodyObj instanceof Map) {
                 Map<String, Object> tmp = (Map<String, Object>) bodyObj;
 
-                return tmp.get(p.getName());
-            }else{
-                return null;
+                if (tmp.containsKey(p.getName())) {
+                    return tmp.get(p.getName());
+                } else if (ctx.paramMap().containsKey(p.getName())) {
+                    //有可能是path变量
+                    //
+                    return super.changeValue(ctx, p, pi, pt, bodyObj);
+                }
             }
+
+            return null;
         }
     }
 }

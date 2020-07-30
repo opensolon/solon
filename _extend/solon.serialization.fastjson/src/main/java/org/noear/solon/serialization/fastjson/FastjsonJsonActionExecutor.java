@@ -36,6 +36,10 @@ public class FastjsonJsonActionExecutor extends XActionExecutor {
 
             if (tmp.containsKey(p.getName())) {
                 return tmp.getObject(p.getName(), pt);
+            } else if (ctx.paramMap().containsKey(p.getName())) {
+                //有可能是path变量
+                //
+                return super.changeValue(ctx, p, pi, pt, bodyObj);
             } else {
                 return tmp.toJavaObject(pt);
             }
