@@ -4,6 +4,7 @@ import okhttp3.MediaType;
 import okhttp3.Response;
 import org.noear.solonclient.*;
 
+import java.io.ByteArrayInputStream;
 import java.util.Map;
 
 public class HttpChannel implements IChannel {
@@ -26,6 +27,10 @@ public class HttpChannel implements IChannel {
 
         if (cfg.getEnctype() == Enctype.application_json) {
             response = http.bodyTxt((String) cfg.getSerializer().serialize(args), ContextTypes.json).exec("POST");
+        }
+
+        if (cfg.getEnctype() == Enctype.hessian) {
+            response = http.bodyRaw(new ByteArrayInputStream((byte[]) cfg.getSerializer().serialize(args)), ContextTypes.hessian).exec("POST");
         }
 
         if (response == null) {

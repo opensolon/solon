@@ -8,36 +8,39 @@ import java.lang.reflect.Parameter;
 
 public class SnackConverter extends XActionConverter {
     @Override
-    protected Object changeBody(XContext ctx) throws Exception {
-        String tmp = ctx.contentType();
-
-        if (tmp != null && tmp.indexOf("/json") > 0) {
-            return ONode.loadStr(ctx.body());
+    protected boolean matched(XContext ctx, String contextType) {
+        if (contextType != null && contextType.contains("/json")) {
+            return true;
+        } else {
+            return false;
         }
-
-        return null;
     }
 
     @Override
-    protected Object changeValue(XContext ctx, Parameter p, Class<?> pt, Object bodyObj) throws Exception {
+    protected Object changeBody(XContext ctx) throws Exception {
+        return ONode.loadStr(ctx.body());
+    }
+
+    @Override
+    protected Object changeValue(XContext ctx, Parameter p, int pi, Class<?> pt, Object bodyObj) throws Exception {
         if (bodyObj == null) {
-            return super.changeValue(ctx, p, pt, bodyObj);
-        } else {
-            ONode tmp = (ONode) bodyObj;
+            return null;
+        }
 
-            if (tmp.isObject()) {
-                if (tmp.contains(p.getName())) {
-                    return tmp.get(p.getName()).toObject(pt);
-                } else {
-                    return tmp.toObject(pt);
-                }
-            }
+        ONode tmp = (ONode) bodyObj;
 
-            if (tmp.isArray()) {
+        if (tmp.isObject()) {
+            if (tmp.contains(p.getName())) {
+                return tmp.get(p.getName()).toObject(pt);
+            } else {
                 return tmp.toObject(pt);
             }
-
-            return tmp.val().getRaw();
         }
+
+        if (tmp.isArray()) {
+            return tmp.toObject(pt);
+        }
+
+        return tmp.val().getRaw();
     }
 }

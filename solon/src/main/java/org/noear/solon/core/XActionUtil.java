@@ -1,20 +1,24 @@
 package org.noear.solon.core;
 
 import java.lang.reflect.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * XAction 辅助工具
  * */
 public class XActionUtil {
-    public static XActionConverter converter = new XActionConverter();
+    public static XActionConverter def = new XActionConverter();
+    public static Set<XActionConverter> converterSet = new HashSet<>();
 
-    /**
-     * 将参数转为实体
-     */
-    public static Object params2Entity(XContext ctx, Class<?> pt) throws Exception {
-        return converter.changeEntity(ctx, null, pt, null);
+    private static List<Object> paramsChange(XContext ctx, Parameter[] pSet) throws Exception{
+        String tmp = ctx.contentType();
+        for (XActionConverter c : converterSet) {
+            if (c.matched(ctx, tmp)) {
+                return c.change(ctx, pSet);
+            }
+        }
+
+        return def.change(ctx, pSet);
     }
 
     /**
@@ -24,7 +28,7 @@ public class XActionUtil {
         try {
             Parameter[] pSet = mWrap.parameters;
 
-            List<Object> args = converter.change(ctx, pSet);
+            List<Object> args = paramsChange(ctx, pSet);
 
 
             if (args.size() == 0) {

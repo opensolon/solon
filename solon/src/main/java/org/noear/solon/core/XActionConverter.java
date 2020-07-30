@@ -9,14 +9,15 @@ import java.util.List;
 import java.util.Map;
 
 public class XActionConverter {
-    public List<Object> change(XContext ctx, Parameter[] pSet) throws Exception{
+    public List<Object> change(XContext ctx, Parameter[] pSet) throws Exception {
         List<Object> args = new ArrayList<>(pSet.length);
 
         Object bodyObj = changeBody(ctx);
 
         //p 参数
         //pt 参数原类型
-        for (Parameter p : pSet) {
+        for (int i = 0, len = pSet.length; i < len; i++) {
+            Parameter p = pSet[i];
             Class<?> pt = p.getType();
 
             if (XContext.class.isAssignableFrom(pt)) {
@@ -28,18 +29,52 @@ public class XActionConverter {
                 //
                 args.add(ctx.file(p.getName()));
             } else {
-                args.add(changeValue(ctx, p, pt, bodyObj));
+                Object tv = changeValue(ctx, p, i, pt, bodyObj);
+
+                if (tv == null) {
+                    //
+                    // 如果是基类类型（int,long...），则抛出异常
+                    //
+                    if (pt.isPrimitive()) {
+                        //如果是基本类型，则为给个默认值
+                        //
+                        if (pt == short.class) {
+                            tv = (short) 0;
+                        } else if (pt == int.class) {
+                            tv = 0;
+                        } else if (pt == long.class) {
+                            tv = 0L;
+                        } else if (pt == double.class) {
+                            tv = 0d;
+                        } else if (pt == float.class) {
+                            tv = 0f;
+                        } else if (pt == boolean.class) {
+                            tv = false;
+                        } else {
+                            //
+                            //其它类型不支持
+                            //
+                            throw new IllegalArgumentException("Please enter a valid parameter @" + p.getName());
+                        }
+                    }
+                }
+
+                args.add(tv);
             }
         }
 
         return args;
     }
 
-    protected Object changeBody(XContext ctx) throws Exception{
-        return  null;
+    protected boolean matched(XContext ctx, String contextType) {
+        return true;
     }
 
-    protected Object changeValue(XContext ctx, Parameter p, Class<?> pt, Object bodyObj) throws Exception {
+    protected Object changeBody(XContext ctx) throws Exception {
+        return null;
+    }
+
+    protected Object changeValue(XContext ctx, Parameter p, int pi, Class<?> pt, Object bodyObj) throws Exception {
         String pn = p.getName();    //参数名
         String pv = ctx.param(pn);  //参数值
         Object tv = null;
@@ -63,7 +98,7 @@ public class XActionConverter {
                         tv = null;
                     } else {
                         //尝试转为实体
-                        tv = changeEntity(ctx, pn, pt, bodyObj);
+                        tv = changeEntity(ctx, pn, pt);
                     }
                 }
             }
@@ -72,41 +107,13 @@ public class XActionConverter {
             tv = TypeUtil.changeOfCtx(p, pt, pn, pv, ctx);
         }
 
-        if (tv == null) {
-            //
-            // 如果是基类类型（int,long...），则抛出异常
-            //
-            if (pt.isPrimitive()) {
-                //如果是基本类型，则为给个默认值
-                //
-                if (pt == short.class) {
-                    tv = (short) 0;
-                } else if (pt == int.class) {
-                    tv = 0;
-                } else if (pt == long.class) {
-                    tv = 0L;
-                } else if (pt == double.class) {
-                    tv = 0d;
-                } else if (pt == float.class) {
-                    tv = 0f;
-                } else if (pt == boolean.class) {
-                    tv = false;
-                } else {
-                    //
-                    //其它类型不支持
-                    //
-                    throw new IllegalArgumentException("Please enter a valid parameter @" + pn);
-                }
-            }
-        }
-
         return tv;
     }
 
     /**
      * 获取实体值
      */
-    protected Object changeEntity(XContext ctx, String name, Class<?> type, Object bodyObj) throws Exception {
+    private Object changeEntity(XContext ctx, String name, Class<?> type) throws Exception {
         Field[] fields = type.getDeclaredFields();
 
         Map<String, String> map = ctx.paramMap();

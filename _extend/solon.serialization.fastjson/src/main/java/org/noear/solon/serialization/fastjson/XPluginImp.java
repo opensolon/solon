@@ -17,6 +17,6 @@ public class XPluginImp implements XPlugin {
         XRenderManager.mapping("@type_json", new FastjsonRender(true));
 
         //重置转换器
-        XActionUtil.converter = new FastjsonConverter();
+        XActionUtil.converterSet.add(new FastjsonConverter());
     }
 }

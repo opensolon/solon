@@ -17,6 +17,6 @@ public class XPluginImp implements XPlugin {
         XRenderManager.mapping("@type_json", new SnackRender(true));
 
         //重置转换器
-        XActionUtil.converter = new SnackConverter();
+        XActionUtil.converterSet.add(new SnackConverter());
     }
 }
