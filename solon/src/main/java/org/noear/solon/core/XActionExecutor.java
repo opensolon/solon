@@ -16,7 +16,8 @@ public class XActionExecutor implements MethodExecutor {
 
     @Override
     public Object execute(XContext ctx, Object obj, MethodWrap mWrap) throws Throwable{
-        return mWrap.invoke(obj, buildArgs(ctx, mWrap.getParameters()));
+        List<Object> args = buildArgs(ctx, mWrap.getParameters());
+        return mWrap.invoke(obj, args.toArray());
     }
 
 
