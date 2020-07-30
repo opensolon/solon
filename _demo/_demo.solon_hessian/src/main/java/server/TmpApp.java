@@ -1,5 +1,6 @@
 package server;
 
+import com.caucho.hessian.server.HessianServlet;
 import org.noear.solon.XApp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XMethod;
@@ -18,5 +19,7 @@ public class TmpApp {
 
         XApp.global().add("/web/hessian_complex", XMethod.HTTP,
                 new HessianHandler(IComplexModelService.class, Aop.get(ComplexModelService.class)));
+
+        HessianServlet
     }
 }
