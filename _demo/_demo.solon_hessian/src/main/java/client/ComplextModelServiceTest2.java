@@ -18,9 +18,9 @@ public class ComplextModelServiceTest2 {
     public static void main(String[] args) throws Exception {
         //RPC访问地址
 
-        XProxy.defaultSerializer = SnackSerializer.instance_type;
+        XProxy.defaultSerializer = HessionSerializer.instance;
         XProxy.defaultDeserializer = HessionSerializer.instance;
-        XProxy.defaultEnctype = Enctype.application_json;
+        XProxy.defaultEnctype = Enctype.hessian;
 
         //接口的动态代理工厂
         IComplexModelService service = new XProxy()
