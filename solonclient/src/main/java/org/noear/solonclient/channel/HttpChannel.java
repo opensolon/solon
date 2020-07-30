@@ -5,6 +5,7 @@ import okhttp3.Response;
 import org.noear.solonclient.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Map;
 
 public class HttpChannel implements IChannel {
@@ -26,11 +27,13 @@ public class HttpChannel implements IChannel {
         }
 
         if (cfg.getSerializer().enctype() == Enctype.application_json) {
-            response = http.bodyTxt((String) cfg.getSerializer().serialize(args), ContextTypes.json).exec("POST");
+            String json = (String) cfg.getSerializer().serialize(args);
+            response = http.bodyTxt(json, ContextTypes.json).exec("POST");
         }
 
         if (cfg.getSerializer().enctype() == Enctype.application_hessian) {
-            response = http.bodyRaw(new ByteArrayInputStream((byte[]) cfg.getSerializer().serialize(args)), ContextTypes.hessian).exec("POST");
+            InputStream stream = new ByteArrayInputStream((byte[]) cfg.getSerializer().serialize(args));
+            response = http.bodyRaw(stream, ContextTypes.hessian).exec("POST");
         }
 
         if (response == null) {
