@@ -11,7 +11,6 @@ public class GreetingServiceTest2 {
         //RPC访问地址
         XProxy.defaultSerializer = SnackSerializerD.instance_type;
         XProxy.defaultDeserializer = HessionSerializerD.instance;
-        XProxy.defaultEnctype = Enctype.application_json;
 
         //接口的动态代理工厂
         IGreetingService service = new XProxy()

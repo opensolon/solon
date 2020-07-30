@@ -18,7 +18,6 @@ public class ComplextModelServiceTest2 {
 
         XProxy.defaultSerializer = HessionSerializerD.instance;
         XProxy.defaultDeserializer = HessionSerializerD.instance;
-        XProxy.defaultEnctype = Enctype.application_hessian;
 
         //接口的动态代理工厂
         IComplexModelService service = new XProxy()

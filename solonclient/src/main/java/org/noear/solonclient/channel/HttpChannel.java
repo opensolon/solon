@@ -17,7 +17,7 @@ public class HttpChannel implements IChannel {
         //1.执行并返回
         Response response = null;
 
-        if (cfg.getEnctype() == Enctype.form_urlencoded) {
+        if (cfg.getSerializer().enctype() == Enctype.form_urlencoded) {
             if (args != null && args.size() > 0) {
                 response = http.data(args).exec("POST");
             } else {
@@ -25,11 +25,11 @@ public class HttpChannel implements IChannel {
             }
         }
 
-        if (cfg.getEnctype() == Enctype.application_json) {
+        if (cfg.getSerializer().enctype() == Enctype.application_json) {
             response = http.bodyTxt((String) cfg.getSerializer().serialize(args), ContextTypes.json).exec("POST");
         }
 
-        if (cfg.getEnctype() == Enctype.application_hessian) {
+        if (cfg.getSerializer().enctype() == Enctype.application_hessian) {
             response = http.bodyRaw(new ByteArrayInputStream((byte[]) cfg.getSerializer().serialize(args)), ContextTypes.hessian).exec("POST");
         }
 
