@@ -86,6 +86,7 @@ public class App{
 | --- | --- |
 | org.noear:solon.serialization.fastjson* | 视图插件，对 `fastjson` 适配，输出`json`视图 或 序列化输出 |
 | org.noear:solon.serialization.snack3* | 视图插件，对 `snack3` 适配，输出`json`视图 或 序列化输出 |
+| org.noear:solon.serialization.hession* | 视图插件，对 `hession` 适配，支持 `hession` 序列化输出 |
 | org.noear:solon.serialization.jackson | 视图插件，对 `jackson` 适配，输出`json`视图 或 序列化输出 |
 
 | 视图插件 | 说明（可置多个视图插件） |
