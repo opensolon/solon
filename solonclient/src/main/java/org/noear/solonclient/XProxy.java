@@ -3,6 +3,9 @@ package org.noear.solonclient;
 import java.lang.reflect.Proxy;
 import java.util.Map;
 
+/**
+ * 代理器
+ * */
 public class XProxy {
     /**
      * 默认的通讯通道（涉及第三方框架引用，不做定义）
