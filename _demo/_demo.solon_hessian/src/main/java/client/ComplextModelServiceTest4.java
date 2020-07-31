@@ -1,8 +1,8 @@
 package client;
 
-import org.noear.solonclient.Enctype;
 import org.noear.solonclient.XProxy;
 import org.noear.solonclient.serializer.HessionSerializerD;
+import org.noear.solonclient.serializer.SnackSerializerD;
 import server.dso.IComplexModelService;
 import server.model.ComplexModel;
 import server.model.Person;
@@ -12,12 +12,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ComplextModelServiceTest2 {
+public class ComplextModelServiceTest4 {
     public static void main(String[] args) throws Exception {
         //配置接口代理
         IComplexModelService service = new XProxy()
-                .serializer(HessionSerializerD.instance)
-                .deserializer(HessionSerializerD.instance)
+                .serializer(SnackSerializerD.instance_type)
+                .deserializer(SnackSerializerD.instance)
                 .upstream((name)->{
             return "http://localhost:8080";
         }).create(IComplexModelService.class);

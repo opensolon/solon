@@ -14,13 +14,10 @@ import java.util.List;
 
 public class ComplextModelServiceTest3 {
     public static void main(String[] args) throws Exception {
-        //RPC访问地址
-
-        XProxy.defaultSerializer = SnackSerializerD.instance_type;
-        XProxy.defaultDeserializer = SnackSerializerD.instance;
-
-        //接口的动态代理工厂
+        //配置接口代理
         IComplexModelService service = new XProxy()
+                .serializer(SnackSerializerD.instance_type)
+                .deserializer(HessionSerializerD.instance)
                 .upstream((name)->{
             return "http://localhost:8080";
         }).create(IComplexModelService.class);
