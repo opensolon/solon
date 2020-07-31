@@ -77,7 +77,7 @@ public class XProxyHandler implements InvocationHandler {
                 _pat = ss[1];
             }
 
-            url = _cfg.getUpstream().getTarget(_sev);
+            url = _cfg.getUpstream().getServer(_sev);
 
             if(url == null){
                 throw new RuntimeException("Solon client proxy: Not found upstream!");

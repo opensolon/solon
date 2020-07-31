@@ -152,7 +152,7 @@ public class XProxy {
     /**
      * 设置负载代理
      */
-    public XProxy upstream(HttpUpstream upstream) {
+    public XProxy upstream(XUpstream upstream) {
         _config.setUpstream(upstream);
         return this;
     }

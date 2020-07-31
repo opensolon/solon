@@ -13,7 +13,7 @@ public class XProxyConfig {
 
     private IChannel channel;
 
-    private HttpUpstream upstream;
+    private XUpstream upstream;
     private String server;
 
     private Map<String, String> headers = new HashMap<>();
@@ -54,11 +54,11 @@ public class XProxyConfig {
         }
     }
 
-    public HttpUpstream getUpstream() {
+    public XUpstream getUpstream() {
         return upstream;
     }
 
-    protected void setUpstream(HttpUpstream upstream) {
+    protected void setUpstream(XUpstream upstream) {
         this.upstream = upstream;
     }
 
