@@ -58,6 +58,13 @@ public class XAction extends XHandlerAide implements XHandler {
         return _name;
     }
 
+    /**
+     * 函数包装器
+     * */
+    public MethodWrap method(){
+        return _mw;
+    }
+
     @Override
     public void handle(XContext x) throws Throwable {
         x.remotingSet(_remoting);
