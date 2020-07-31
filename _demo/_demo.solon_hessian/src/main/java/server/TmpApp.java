@@ -1,6 +1,5 @@
 package server;
 
-import com.caucho.hessian.server.HessianServlet;
 import org.noear.solon.XApp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XMethod;
