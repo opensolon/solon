@@ -7,6 +7,6 @@ import java.util.Date;
 
 public class GsonDateSerialize implements JsonSerializer<Date> {
     public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
-        return new JsonPrimitive("new Date(" + src.getTime() + ")");
+        return new JsonPrimitive(src.getTime());
     }
 }

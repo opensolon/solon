@@ -7,7 +7,7 @@ import org.noear.solon.core.XRender;
 
 public class GsonRender implements XRender {
     Gson stringify = new GsonBuilder()
-            .registerTypeAdapter(java.util.Date.class,new GsonDateStringify())
+            .registerTypeAdapter(java.util.Date.class,new GsonDateSerialize())
             .create();//json输出
 
     Gson serialize = new GsonBuilder()
