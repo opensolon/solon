@@ -147,10 +147,10 @@
             <artifactId>solon.serialization.snack3</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.avro</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.serialization.avro</artifactId>-->
+<!--        </dependency>-->
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
