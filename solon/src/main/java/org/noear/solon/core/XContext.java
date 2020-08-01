@@ -25,7 +25,7 @@ public abstract class XContext {
     }
 
 
-    /**是否已处理*/
+    /**是否已处理（用于控制处理链）*/
     private boolean _handled;
     @XNote("设置处理状态")
     public void setHandled(boolean handled){
@@ -34,6 +34,17 @@ public abstract class XContext {
     @XNote("获取处理状态")
     public boolean getHandled(){
         return _handled;
+    }
+
+    /**是否已渲染（用于控制渲染链）*/
+    private boolean _rendered;
+    @XNote("设置渲染状态")
+    public void setRendered(boolean rendered){
+        _rendered = rendered;
+    }
+    @XNote("获取渲染状态")
+    public boolean getRendered(){
+        return _rendered;
     }
 
     /**获取请求对象*/

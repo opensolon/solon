@@ -60,8 +60,8 @@ public class XAction extends XHandlerAide {
 
     /**
      * 函数包装器
-     * */
-    public MethodWrap method(){
+     */
+    public MethodWrap method() {
         return _mw;
     }
 
@@ -128,14 +128,18 @@ public class XAction extends XHandlerAide {
      */
     protected Object callDo(Object obj, XContext x) throws Throwable {
         x.attrSet("controller", obj);
-        x.result = XActionUtil.exeMethod(x, obj, _mw);
-        return x.result;
+        return XActionUtil.exeMethod(x, obj, _mw);
     }
 
     /**
      * 执行渲染（便于重写）
      */
     protected void renderDo(XContext x, Object result) throws Throwable {
-        x.render(result);
+        x.result = result;
+
+        //可以通过before关掉render
+        if (x.getRendered() == false) {
+            x.render(result);
+        }
     }
 }
