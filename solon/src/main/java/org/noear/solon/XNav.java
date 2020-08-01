@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * XHandler 导航类
  * */
-public class XNav extends XHandlerAide implements XHandler {
+public class XNav extends XHandlerAide {
 
     private final Map<String, XHandler> _main = new HashMap<>();
     private final String _path;

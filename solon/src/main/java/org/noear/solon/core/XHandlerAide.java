@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * 处理助手，提供前置与后置处理的存储
  * */
-public abstract class XHandlerAide {
+public abstract class XHandlerAide implements XHandler{
     /** 前置处理 */
     protected List<XHandler> _before  =new ArrayList<>();
     /** 后置处理 */
