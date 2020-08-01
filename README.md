@@ -144,7 +144,7 @@ resources/application.properties（或 application.yml） 为应用配置文件
 resources/static/ 为静态文件根目标
 resources/WEB-INF/view/ 为视图文件根目标（支持多视图共存）
 
-//模板调试模式（或加热加载模式）：
+//调试模式：
 启动参数添加：-deubg=1
 ```
 ```java
