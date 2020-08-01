@@ -49,14 +49,18 @@ public class XNav extends XHandlerAide {
 
     protected void addDo(String path, XHandler handler) {
         //addPath 已处理 path1= null 的情况
-        _main.put(XUtil.mergePath(_path, path).toUpperCase(), handler);
+        _main.put(XUtil.mergePath(_path, path).toLowerCase(), handler);
     }
 
     /**
      * 获取接口
      */
     public final XHandler get(String path) {
-        return _main.get(path);
+        if (path == null) {
+            return null;
+        } else {
+            return _main.get(path.toLowerCase());
+        }
     }
 
     /**
