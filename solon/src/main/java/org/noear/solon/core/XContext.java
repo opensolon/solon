@@ -460,6 +460,7 @@ public abstract class XContext {
     @XNote("关闭响应")
     public void close() throws IOException{}
 
-    @XNote("主体处理结果")
+    //用于在处理链中透传处理结果
+    @XNote("处理结果")
     public Object result;
 }
