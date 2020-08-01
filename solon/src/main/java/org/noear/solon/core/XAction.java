@@ -74,7 +74,7 @@ public class XAction extends XHandlerAide implements XHandler {
                 x.contentType(_produces);
             }
 
-            do_handle(x);
+            handleDo(x);
         } catch (Throwable ex) {
             x.attrSet("error", ex);
             x.render(ex);
@@ -82,7 +82,7 @@ public class XAction extends XHandlerAide implements XHandler {
         }
     }
 
-    private void do_handle(XContext x) throws Throwable {
+    private void handleDo(XContext x) throws Throwable {
         //前置处理
         for (XHandler h : _before) {
             try {
