@@ -82,7 +82,7 @@ public class XAction extends XHandlerAide implements XHandler {
         }
     }
 
-    private void handleDo(XContext x) throws Throwable {
+    protected void handleDo(XContext x) throws Throwable {
         //前置处理
         for (XHandler h : _before) {
             try {
