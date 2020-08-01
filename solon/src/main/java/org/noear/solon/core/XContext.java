@@ -449,6 +449,6 @@ public abstract class XContext {
     @XNote("关闭响应")
     public void close() throws IOException{}
 
-    @XNote("附件")
-    public Object attachment;
+    @XNote("主体处理结果")
+    public Object result;
 }

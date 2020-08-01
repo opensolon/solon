@@ -128,8 +128,8 @@ public class XAction extends XHandlerAide {
      */
     protected Object callDo(Object obj, XContext x) throws Throwable {
         x.attrSet("controller", obj);
-        x.attachment = XActionUtil.exeMethod(x, obj, _mw);
-        return x.attachment;
+        x.result = XActionUtil.exeMethod(x, obj, _mw);
+        return x.result;
     }
 
     /**

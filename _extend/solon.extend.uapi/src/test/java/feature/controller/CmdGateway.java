@@ -34,12 +34,12 @@ public class CmdGateway extends UapiGateway {
 
         //控制渲染+签名
         addAfter(c -> {
-            String json = ONode.loadObj(c.attachment).toJson();
+            String json = ONode.loadObj(c.result).toJson();
             String json_md5 = md5(json + "#" + sign_salt);
 
             c.headerSet("Rock-Sign", json_md5);
             c.output(json);
-            c.attachment = json;
+            c.result = json;
         });
 
         //记录性能
@@ -53,8 +53,8 @@ public class CmdGateway extends UapiGateway {
 
         //写入日志
         addAfter(c -> {
-            if (c.attachment != null) {
-                System.out.println(c.attachment);
+            if (c.result != null) {
+                System.out.println(c.result);
             }
         });
     }
@@ -68,11 +68,11 @@ public class CmdGateway extends UapiGateway {
     @Override
     public void renderDo(XContext c, Object obj) throws Throwable {
         if (obj instanceof UapiCode) {
-            c.attachment = (Result.failure((UapiCode) obj));
+            c.result = (Result.failure((UapiCode) obj));
         } else if (obj instanceof Throwable) {
-            c.attachment = (Result.failure(new UapiCode((Throwable) obj)));
+            c.result = (Result.failure(new UapiCode((Throwable) obj)));
         } else {
-            c.attachment = (Result.succeed(obj));
+            c.result = (Result.succeed(obj));
         }
     }
 }
