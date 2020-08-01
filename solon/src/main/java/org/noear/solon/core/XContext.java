@@ -47,6 +47,7 @@ public abstract class XContext {
         return _rendered;
     }
 
+
     /**获取请求对象*/
     @XNote("获取请求对象")
     public abstract Object request();
