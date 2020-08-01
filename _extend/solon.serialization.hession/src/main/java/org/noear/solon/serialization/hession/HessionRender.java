@@ -22,7 +22,7 @@ public class HessionRender implements XRender {
             ctx.headerSet("solon.serialization", "HessionRender");
         }
 
-        ctx.contentType("x-application/hessian");
+        ctx.contentType("application/hessian");
 
         if (obj instanceof ModelAndView) {
             ctx.output(new ByteArrayInputStream(serializeDo(new LinkedHashMap((Map) obj))));
