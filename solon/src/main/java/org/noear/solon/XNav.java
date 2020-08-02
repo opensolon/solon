@@ -49,7 +49,7 @@ public class XNav extends XHandlerAide {
 
     protected void addDo(String path, XHandler handler) {
         //addPath 已处理 path1= null 的情况
-        _main.put(XUtil.mergePath(_path, path).toLowerCase(), handler);
+        _main.put(XUtil.mergePath(_path, path).toUpperCase(), handler);
     }
 
     /**
@@ -59,7 +59,7 @@ public class XNav extends XHandlerAide {
         if (path == null) {
             return null;
         } else {
-            return _main.get(path.toLowerCase());
+            return _main.get(path.toUpperCase());
         }
     }
 
