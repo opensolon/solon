@@ -1,9 +1,9 @@
-package org.noear.solon.extend.uapi;
+package org.noear.solon.core;
 
 /**
  * 结果
  * */
-public class Result<T> {
+public class XResult<T> {
     /**
      * 状态码
      * <p>
@@ -51,13 +51,13 @@ public class Result<T> {
         return data;
     }
 
-    public Result(T data) {
+    public XResult(T data) {
         setCode(1);
         setDescription("");
         setData(data);
     }
 
-    public Result(int code, String description) {
+    public XResult(int code, String description) {
         setCode(code);
         setDescription(description);
     }
@@ -65,29 +65,29 @@ public class Result<T> {
     /**
      * 成功的结果
      */
-    public static <T> Result<T> succeed(T data) {
-        return new Result<>(data);
+    public static <T> XResult<T> succeed(T data) {
+        return new XResult<>(data);
     }
 
 
     /**
      * 失败的结果
      */
-    public static <T> Result<T> failure(UapiCode code) {
+    public static <T> XResult<T> failure(CodeThrowable code) {
         return failure(code.getCode(), code.getDescription());
     }
 
     /**
      * 失败的结果
      */
-    public static <T> Result<T> failure(int code) {
+    public static <T> XResult<T> failure(int code) {
         return failure(code, "");
     }
 
     /**
      * 失败的结果
      */
-    public static <T> Result<T> failure(int code, String description) {
-        return new Result<>(code, description);
+    public static <T> XResult<T> failure(int code, String description) {
+        return new XResult<>(code, description);
     }
 }

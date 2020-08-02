@@ -1,13 +1,11 @@
-package org.noear.solon.extend.uapi;
+package org.noear.solon.core;
 
-import org.noear.solon.core.DataThrowable;
 
 /**
- * 接口代码
+ * 错误代码抛出
  *
- * 通过返回或抛出两种形式传递
  * */
-public class UapiCode extends DataThrowable {
+public class CodeThrowable extends RuntimeException{
     private int code;
     private String description = "";
 
@@ -33,18 +31,18 @@ public class UapiCode extends DataThrowable {
         this.description = description;
     }
 
-    public UapiCode(int code) {
+    public CodeThrowable(int code) {
         super(code + ""); //给异常系统用的
         this.code = code;
     }
 
-    public UapiCode(int code, String description) {
+    public CodeThrowable(int code, String description) {
         super(code + ": " + description);//给异常系统用的
         this.code = code;
         this.description = description;
     }
 
-    public UapiCode(Throwable cause) {
+    public CodeThrowable(Throwable cause) {
         super(cause);
         this.description = cause.getMessage();
     }

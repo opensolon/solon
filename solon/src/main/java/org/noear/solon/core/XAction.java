@@ -16,6 +16,7 @@ public class XAction extends XHandlerAide {
     protected final BeanWrap _bw;//
     protected final MethodWrap _mw;
     protected String _produces;//输出产品
+    protected XRender _render;
 
     private String _name;
     private boolean _remoting;
@@ -24,11 +25,12 @@ public class XAction extends XHandlerAide {
     private List<String> _pks;
     private static Pattern _pkr = Pattern.compile("\\{([^\\\\}]+)\\}");
 
-    public XAction(BeanWrap bw, Method m, XMapping mp, String path, boolean remoting) {
+    public XAction(BeanWrap bw, Method m, XMapping mp, String path, boolean remoting, XRender render) {
         _bw = bw;
         _mw = MethodWrap.get(m);
 
         _remoting = remoting;
+        _render = render;
 
         if (mp != null) {
             _produces = mp.produces();
@@ -87,7 +89,7 @@ public class XAction extends XHandlerAide {
         for (XHandler h : _before) {
             try {
                 h.handle(x);
-            } catch (DataThrowable ex) {
+            } catch (CodeThrowable ex) {
                 //数据抛出，不进入异常系统
                 //
                 x.setHandled(true); //停止处理
@@ -107,7 +109,7 @@ public class XAction extends XHandlerAide {
                 }
 
                 renderDo(x, callDo(_bw.get(), x));
-            } catch (DataThrowable ex) {
+            } catch (CodeThrowable ex) {
                 //数据抛出，不进入异常系统
                 renderDo(x, ex);
             } catch (Throwable ex) {
@@ -139,7 +141,11 @@ public class XAction extends XHandlerAide {
 
         //可以通过before关掉render
         if (x.getRendered() == false) {
-            x.render(result);
+            if (_render == null) {
+                x.render(result);
+            } else {
+                _render.render(result, x);
+            }
         }
     }
 }

@@ -13,6 +13,8 @@ import java.util.List;
  * */
 public class BeanWebWrap {
     protected BeanWrap _bw;
+    protected XRender _render;
+
     protected XMapping c_map;
     protected int c_poi = XEndpoint.main;
     protected String c_path;
@@ -22,22 +24,28 @@ public class BeanWebWrap {
         c_map = wrap.clz().getAnnotation(XMapping.class);
 
         if (c_map == null) {
-            initDo(wrap, null, wrap.remoting());
+            initDo(wrap, null, wrap.remoting(), null);
         } else {
-            initDo(wrap, c_map.value(), wrap.remoting());
+            initDo(wrap, c_map.value(), wrap.remoting(), null);
         }
     }
 
     public BeanWebWrap(BeanWrap wrap, String mapping) {
-        initDo(wrap, mapping, wrap.remoting());
+        initDo(wrap, mapping, wrap.remoting(), null);
     }
 
     public BeanWebWrap(BeanWrap wrap, String mapping, boolean remoting) {
-        initDo(wrap, mapping, remoting);
+        initDo(wrap, mapping, remoting, null);
     }
 
-    private void initDo(BeanWrap wrap, String mapping, boolean remoting) {
+    public BeanWebWrap(BeanWrap wrap, String mapping, boolean remoting, XRender render) {
+        initDo(wrap, mapping, remoting, render);
+    }
+
+    private void initDo(BeanWrap wrap, String mapping, boolean remoting, XRender render) {
         _bw = wrap;
+        _render = render;
+
         if (mapping != null) {
             c_path = mapping;
         }
@@ -157,7 +165,7 @@ public class BeanWebWrap {
             if (m_map != null || all) {
                 String newPath = XUtil.mergePath(c_path, m_path);
 
-                XAction action = action(_bw, method, m_map, newPath);
+                XAction action = createAction(_bw, method, m_map, newPath, c_remoting);
 
                 //加载控制器的前置拦截器
                 addDo(c_befs2.toArray(), (b) -> action.before((XHandler) b));
@@ -190,8 +198,8 @@ public class BeanWebWrap {
     /**
      * 构建 XAction
      */
-    protected XAction action(BeanWrap bw, Method method, XMapping mp, String path) {
-        return new XAction(bw, method, mp, path, c_remoting);
+    protected XAction createAction(BeanWrap bw, Method method, XMapping mp, String path, boolean remoting) {
+        return new XAction(bw, method, mp, path, remoting, null);
     }
 
     /**

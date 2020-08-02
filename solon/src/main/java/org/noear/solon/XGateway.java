@@ -1,30 +1,31 @@
-package org.noear.solon.extend.uapi;
+package org.noear.solon;
 
-import org.noear.solon.XNav;
-import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
- * UAPI网关
+ * 本地网关（替代旧的XNav）
  *
- * 提供容器，重新组织XAction运行。网关的三大功能：
- * 1.控制输入
- * 2.重构上下文数据
- * 3.控制输出
+ * 提供容器，重新组织处理者运行；只支持HASH路由
  * */
-public abstract class UapiGateway implements XHandler {
+public abstract class XGateway extends XHandlerAide implements XRender {
     private XHandler _def;
-    private XNav _nav;
+    private final Map<String, XHandler> _main = new HashMap<>();
+    private final String _path;
     private XMapping _mapping;
 
-    public UapiGateway() {
+    public XGateway() {
         super();
-
         _mapping = this.getClass().getAnnotation(XMapping.class);
+        if (_mapping == null) {
+            throw new RuntimeException("No XMapping!");
+        }
 
-        _nav = new ExNav(_mapping, this);
+        _path = _mapping.value();
 
         //默认为404错误输出
         _def = (c) -> c.status(404);
@@ -39,11 +40,19 @@ public abstract class UapiGateway implements XHandler {
 
     /**
      * 允许 Action Mapping 申明
-     * */
+     */
     protected boolean allowActionMapping() {
         return true;
     }
 
+
+    /**
+     * for XRender
+     * */
+    @Override
+    public void render(Object obj, XContext c) throws Throwable {
+        c.render(obj);
+    }
 
     /**
      * for XHandler
@@ -53,40 +62,45 @@ public abstract class UapiGateway implements XHandler {
         //转换上下文
         //
         XContext c2 = context(c);
-        XContextUtil.currentRemove();
-        XContextUtil.currentSet(c2);
 
         //不要接管异常，因为后面没有处理了（DataThrowable，已在handleDo处理）
-        _nav.handle(c2);
+        handle0(c2);
+    }
+
+    private void handle0(XContext c) throws Throwable {
+        XHandler m = findDo(c, c.pathAsUpper());
+
+        if (m != null) {
+            for (XHandler h : _before) {
+                handleDo(c, h, XEndpoint.before);
+            }
+
+            if (c.getHandled() == false) {
+                handleDo(c, m, XEndpoint.main);
+            }
+
+            for (XHandler h : _after) {
+                handleDo(c, h, XEndpoint.after);
+            }
+        } else {
+            _def.handle(c);
+        }
     }
 
 
     /**
      * 添加前置拦截器
      */
-    public <T extends XHandler> void addBefore(Class<T> interceptorClz) {
-        _nav.before(Aop.get(interceptorClz));
+    public <T extends XHandler> void before(Class<T> interceptorClz) {
+        super.before(Aop.get(interceptorClz));
     }
 
-    /**
-     * 添加前置拦截器
-     */
-    public void addBefore(XHandler interceptor) {
-        _nav.before(interceptor);
-    }
 
     /**
      * 添加后置拦截器
      */
-    public <T extends XHandler> void addAfter(Class<T> interceptorClz) {
-        _nav.after(Aop.get(interceptorClz));
-    }
-
-    /**
-     * 添加后置拦截器
-     */
-    public void addAfter(XHandler interceptor) {
-        _nav.after(interceptor);
+    public <T extends XHandler> void after(Class<T> interceptorClz) {
+        super.after(Aop.get(interceptorClz));
     }
 
     /**
@@ -121,7 +135,7 @@ public abstract class UapiGateway implements XHandler {
             return;
         }
 
-        BeanWebWrap uw = new ExBeanWebWrap(beanWp, _nav.mapping(), remoting, this);
+        BeanWebWrap uw = new BeanWebWrap(beanWp, _path, remoting, this);
 
         uw.load((path, m, h) -> {
             XAction api = null;
@@ -131,29 +145,27 @@ public abstract class UapiGateway implements XHandler {
                 if (XUtil.isEmpty(api.name())) {
                     _def = api;
                 } else {
-                    _nav.add(api.name(), api);
+                    add(api.name(), api);
                 }
             }
         });
     }
 
-    public void add(String path, XHandler handler) {
-        _nav.add(path, handler);
-    }
-
-
-    //
-    //
-    //
-
     /**
-     * 用于接管 XAction::renderDo
-     * <p>
-     * 主要为了子类可重写
+     * 添加二级路径处理
      */
-    protected void renderDo(XContext c , Object obj) throws Throwable {
-        c.render(obj);
+    public void add(String path, XHandler handler) {
+        addDo(path, handler);
     }
+
+    protected void addDo(String path, XHandler handler) {
+        //addPath 已处理 path1= null 的情况
+        _main.put(XUtil.mergePath(_path, path).toUpperCase(), handler);
+    }
+
+    //
+    //
+    //
 
     /**
      * 接管XNav的handleDo（主要对DataThrowable进行处理）
@@ -165,9 +177,9 @@ public abstract class UapiGateway implements XHandler {
             //
             try {
                 h.handle(c);
-            } catch (DataThrowable ex) {
+            } catch (CodeThrowable ex) {
                 c.setHandled(true);
-                renderDo(c, ex);
+                render(ex, c);
             }
             //
             //别的异常不管，输出50X错误
@@ -184,7 +196,7 @@ public abstract class UapiGateway implements XHandler {
      * 查找接口
      */
     protected XHandler findDo(XContext c, String path) {
-        XHandler api = _nav.get(path);
+        XHandler api = _main.get(path.toUpperCase());
 
         if (api == null) {
             //主要增加默认接口支持

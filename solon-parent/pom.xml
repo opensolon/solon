@@ -144,12 +144,6 @@
                 <artifactId>solon.extend.schedule</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.extend.uapi</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
-
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -471,7 +465,6 @@
 
         <module>../_extend/solon.extend.properties.yaml</module>
         <module>../_extend/solon.extend.stop</module>
-        <module>../_extend/solon.extend.uapi</module>
         <module>../_extend/solon.extend.schedule</module>
         <!--        <module>../solon.extend.aopx</module>-->
 
