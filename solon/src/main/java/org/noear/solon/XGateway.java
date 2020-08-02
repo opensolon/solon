@@ -66,12 +66,10 @@ public abstract class XGateway extends XHandlerAide implements XRender {
      */
     @Override
     public void handle(XContext c) throws Throwable {
-
+        //
         //不要接管异常，因为后面没有处理了（CodeThrowable，已在handleDo处理）
-        handle0(c);
-    }
+        //
 
-    protected void handle0(XContext c) throws Throwable {
         XHandler m = findDo(c);
 
         //m 不可能为 null；有 _def 打底
