@@ -11,7 +11,7 @@ public class HelloApp {
     }
 
     @XMapping("/")
-    public String hello(){
+    public String hello(String name){
         return "hello world!";
     }
 }
