@@ -51,6 +51,12 @@ public abstract class XGateway extends XHandlerAide implements XRender {
      * */
     @Override
     public void render(Object obj, XContext c) throws Throwable {
+        if(c.getRendered()){
+            return;
+        }
+
+        c.setRendered(true);
+
         c.result = obj;
         c.render(obj);
     }
@@ -76,6 +82,8 @@ public abstract class XGateway extends XHandlerAide implements XRender {
             if (c.getHandled() == false) {
                 handleDo(c, m, XEndpoint.main);
             }
+
+            render(c.result,c);
 
             for (XHandler h : _after) {
                 handleDo(c, h, XEndpoint.after);
