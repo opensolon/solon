@@ -1,6 +1,6 @@
 package webapp.demo1_handler;
 
-import org.noear.solon.XNav;
+import org.noear.solon.XGateway;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.annotation.XController;
 
@@ -9,8 +9,9 @@ import org.noear.solon.annotation.XController;
  * */
 @XMapping("/demo1/run2/*")
 @XController
-public class Run2Handler extends XNav {
-    public Run2Handler() {
+public class Run2Handler extends XGateway {
+    @Override
+    protected void register() {
         before(c->{if(false){}});
 
         add("send", (c)->{c.output(c.url());});
