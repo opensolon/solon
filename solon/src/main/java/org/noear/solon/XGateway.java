@@ -213,8 +213,8 @@ public abstract class XGateway extends XHandlerAide implements XRender {
         XHandler h = _main.get(c.pathAsUpper());
 
         if (h == null) {
-            c.setHandled(true);
             _def.handle(c);
+            c.setHandled(true);
             return _def;
         } else {
             if (h instanceof XAction) {
