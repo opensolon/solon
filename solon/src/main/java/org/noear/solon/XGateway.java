@@ -51,6 +51,7 @@ public abstract class XGateway extends XHandlerAide implements XRender {
      * */
     @Override
     public void render(Object obj, XContext c) throws Throwable {
+        c.result = obj;
         c.render(obj);
     }
 
@@ -59,16 +60,13 @@ public abstract class XGateway extends XHandlerAide implements XRender {
      */
     @Override
     public void handle(XContext c) throws Throwable {
-        //转换上下文
-        //
-        XContext c2 = context(c);
 
-        //不要接管异常，因为后面没有处理了（DataThrowable，已在handleDo处理）
-        handle0(c2);
+        //不要接管异常，因为后面没有处理了（CodeThrowable，已在handleDo处理）
+        handle0(c);
     }
 
-    private void handle0(XContext c) throws Throwable {
-        XHandler m = findDo(c, c.pathAsUpper());
+    protected void handle0(XContext c) throws Throwable {
+        XHandler m = findDo(c);
 
         if (m != null) {
             for (XHandler h : _before) {
@@ -195,8 +193,8 @@ public abstract class XGateway extends XHandlerAide implements XRender {
     /**
      * 查找接口
      */
-    protected XHandler findDo(XContext c, String path) {
-        XHandler api = _main.get(path.toUpperCase());
+    protected XHandler findDo(XContext c) {
+        XHandler api = _main.get(c.pathAsUpper());
 
         if (api == null) {
             //主要增加默认接口支持
@@ -218,13 +216,5 @@ public abstract class XGateway extends XHandlerAide implements XRender {
 
             return api;
         }
-    }
-
-
-    /**
-     * 提供转换上下文的机制
-     */
-    protected XContext context(XContext ctx) {
-        return ctx;
     }
 }
