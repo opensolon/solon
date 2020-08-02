@@ -50,10 +50,10 @@ public abstract class XGateway extends XHandlerAide implements XRender {
 
     /**
      * for XRender
-     * */
+     */
     @Override
     public void render(Object obj, XContext c) throws Throwable {
-        if(c.getRendered()){
+        if (c.getRendered()) {
             return;
         }
 
@@ -73,30 +73,61 @@ public abstract class XGateway extends XHandlerAide implements XRender {
         //
 
         XHandler m = findDo(c);
+        Object bean = null;
 
         //m 不可能为 null；有 _def 打底
         if (m != null) {
             //预加载控制器，确保所有的处理者可以都可以获取控制器
-//            if (m instanceof XAction) { //如果前置或后置为XAction,会出错
-//                ((XAction) m).preload(c);
-//            }
+            if (m instanceof XAction) {
+                bean = ((XAction) m).bean();
+                c.attrSet("controller", bean);
+            }
 
             //前置处理
             for (XHandler h : _before) {
-                handleDo(c, h, XEndpoint.before);
+                handleDo(c, h, XEndpoint.before, null);
             }
 
             //主处理
             if (c.getHandled() == false) {
-                handleDo(c, m, XEndpoint.main);
+                handleDo(c, m, XEndpoint.main, bean);
             } else {
                 render(c.result, c);
             }
 
             //后置处理
             for (XHandler h : _after) {
-                handleDo(c, h, XEndpoint.after);
+                handleDo(c, h, XEndpoint.after, null);
             }
+        }
+    }
+
+    /**
+     * 主要对DataThrowable进行处理
+     */
+    protected void handleDo(XContext c, XHandler h, int endpoint, Object bean) throws Throwable {
+        if (endpoint != XEndpoint.after) {
+            //
+            //确保非后置处理不出错，出错转为UapiCode（前置处理，也可以填接抛出数据）
+            //
+            try {
+                if (bean == null) {
+                    h.handle(c);
+                } else {
+                    ((XAction) h).invoke(c, bean);
+                }
+            } catch (DataThrowable ex) {
+                c.setHandled(true);
+                render(ex, c);
+            }
+            //
+            //别的异常不管，输出50X错误
+            //
+        } else {
+            //
+            //后置处理，不能再抛数据了（不然，没完没了）
+            //
+            h.handle(c);
         }
     }
 
@@ -176,34 +207,9 @@ public abstract class XGateway extends XHandlerAide implements XRender {
     }
 
     /**
-     * 接管XNav的handleDo（主要对DataThrowable进行处理）
-     */
-    protected void handleDo(XContext c, XHandler h, int endpoint) throws Throwable {
-        if (endpoint != XEndpoint.after) {
-            //
-            //确保非后置处理不出错，出错转为UapiCode（前置处理，也可以填接抛出数据）
-            //
-            try {
-                h.handle(c);
-            } catch (DataThrowable ex) {
-                c.setHandled(true);
-                render(ex, c);
-            }
-            //
-            //别的异常不管，输出50X错误
-            //
-        } else {
-            //
-            //后置处理，不能再抛数据了（不然，没完没了）
-            //
-            h.handle(c);
-        }
-    }
-
-    /**
      * 查找接口
      */
-    protected XHandler findDo(XContext c) throws Throwable{
+    protected XHandler findDo(XContext c) throws Throwable {
         XHandler h = _main.get(c.pathAsUpper());
 
         if (h == null) {

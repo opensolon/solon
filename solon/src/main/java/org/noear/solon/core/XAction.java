@@ -68,20 +68,21 @@ public class XAction extends XHandlerAide {
     }
 
     /**
-     * 预加载控制器
+     * 获取一个控制器实例
      * */
-//    public Object preload(XContext x){
-//        Object obj = x.attr("controller");
-//        if(obj == null){
-//            obj = _bw.get();
-//            x.attrSet("controller",obj);
-//        }
-//
-//        return obj;
-//    }
+    public Object bean(){
+        return _bw.get();
+    }
 
     @Override
     public void handle(XContext x) throws Throwable {
+        invoke(x,null);
+    }
+
+    /**
+     * 调用
+     * */
+    public void invoke(XContext x, Object bean) throws Throwable{
         x.remotingSet(_remoting);
 
         try {
@@ -89,7 +90,7 @@ public class XAction extends XHandlerAide {
                 x.contentType(_produces);
             }
 
-            handleDo(x);
+            invoke0(x, bean);
         } catch (Throwable ex) {
             x.attrSet("error", ex);
             x.render(ex);
@@ -98,8 +99,7 @@ public class XAction extends XHandlerAide {
     }
 
 
-
-    protected void handleDo(XContext x) throws Throwable {
+    protected void invoke0(XContext x, Object bean) throws Throwable {
         //前置处理
         for (XHandler h : _before) {
             try {
@@ -124,7 +124,10 @@ public class XAction extends XHandlerAide {
                 }
 
                 //可以前置加载控制器
-                renderDo(x, callDo(_bw.get(), x));
+                if(bean == null){
+                    bean = _bw.get();
+                }
+                renderDo(x, callDo(bean, x));
             } catch (DataThrowable ex) {
                 //数据抛出，不进入异常系统
                 renderDo(x, ex);
@@ -144,8 +147,8 @@ public class XAction extends XHandlerAide {
     /**
      * 执行动作（便于重写）
      */
-    protected Object callDo(Object obj, XContext x) throws Throwable {
-        return XActionUtil.exeMethod(x, obj, _mw);
+    protected Object callDo(Object bean, XContext x) throws Throwable {
+        return XActionUtil.exeMethod(x, bean, _mw);
     }
 
     /**
