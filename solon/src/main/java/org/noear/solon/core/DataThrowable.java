@@ -15,8 +15,4 @@ public class DataThrowable extends RuntimeException implements Serializable {
     public DataThrowable(String message, Throwable cause){
         super(message, cause);
     }
-
-    public DataThrowable(Throwable cause){
-        super(cause);
-    }
 }
