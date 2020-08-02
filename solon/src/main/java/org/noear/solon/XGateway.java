@@ -74,9 +74,10 @@ public abstract class XGateway extends XHandlerAide implements XRender {
     protected void handle0(XContext c) throws Throwable {
         XHandler m = findDo(c);
 
+        //m 不可能为 null；有 _def 打底
         if (m != null) {
             //预加载控制器，确保所有的处理者可以都可以获取控制器
-            if(m instanceof XAction){
+            if (m instanceof XAction) {
                 ((XAction) m).preload(c);
             }
 
@@ -96,8 +97,6 @@ public abstract class XGateway extends XHandlerAide implements XRender {
             for (XHandler h : _after) {
                 handleDo(c, h, XEndpoint.after);
             }
-        } else {
-            _def.handle(c);
         }
     }
 
@@ -215,7 +214,6 @@ public abstract class XGateway extends XHandlerAide implements XRender {
             if (h instanceof XAction) {
                 c.attrSet("handler_name", ((XAction) h).name());
             }
-
             return h;
         }
     }
