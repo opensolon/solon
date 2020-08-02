@@ -77,7 +77,9 @@ public class XApp implements XHandler,XHandlerSlots {
         if (builder != null) {
             try {
                 builder.accept(_global);
-            }catch (Throwable ex){
+            } catch (RuntimeException ex) {
+                throw ex;
+            } catch (Throwable ex) {
                 throw new RuntimeException(ex);
             }
         }

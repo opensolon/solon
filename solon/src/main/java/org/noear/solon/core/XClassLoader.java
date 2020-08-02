@@ -39,7 +39,7 @@ public class XClassLoader extends URLClassLoader {
                 ((JarURLConnection) uc).getManifest();
                 cachedMap.put(file, (JarURLConnection) uc);
             }
-        } catch (Exception e) {
+        } catch (Throwable ex) {
             System.err.println("Failed to cache plugin JAR file: " + file.toExternalForm());
         }
         addURL(file);
@@ -60,8 +60,8 @@ public class XClassLoader extends URLClassLoader {
             jarURL = null;
             cachedMap.remove(file);
             System.gc();
-        } catch (Exception e) {
-            System.err.println("Failed to unload JAR file\n" + e);
+        } catch (Throwable ex) {
+            System.err.println("Failed to unload JAR file\n" + ex);
         }
     }
 

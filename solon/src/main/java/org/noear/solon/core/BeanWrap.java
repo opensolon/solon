@@ -109,7 +109,9 @@ public class BeanWrap {
             }
 
             return obj;
-        } catch (Exception ex) {
+        } catch (RuntimeException ex) {
+            throw ex;
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }

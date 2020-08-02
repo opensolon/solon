@@ -45,7 +45,7 @@ public class ExtendLoader {
         try {
             XClassLoader.global().loadJar(file.toURI().toURL());
             return true;
-        }catch (Exception ex){
+        }catch (Throwable ex){
             ex.printStackTrace();
             return false;
         }
@@ -58,7 +58,7 @@ public class ExtendLoader {
         try {
             XClassLoader.global().unloadJar(file.toURI().toURL());
             return true;
-        }catch (Exception ex){
+        }catch (Throwable ex){
             ex.printStackTrace();
             return false;
         }
@@ -120,7 +120,7 @@ public class ExtendLoader {
                     PrintUtil.blueln("loaded: " + path);
                     return;
                 }
-            } catch (Exception ex) {
+            } catch (Throwable ex) {
                 ex.printStackTrace();
             }
         }

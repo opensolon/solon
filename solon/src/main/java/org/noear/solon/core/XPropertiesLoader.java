@@ -25,7 +25,7 @@ public class XPropertiesLoader {
             try {
                 Object tmp = clz.newInstance();
                 global = (XPropertiesLoader) tmp;
-            } catch (Exception ex) {
+            } catch (Throwable ex) {
                 ex.printStackTrace();
             }
         }

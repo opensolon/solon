@@ -67,7 +67,7 @@ public class XUtil {
             return (T)loadClass(className).newInstance();
 //            Class clz = Class.forName(className);
 //            return (T) clz.newInstance();
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             ex.printStackTrace();
             return null;
         }
@@ -104,7 +104,9 @@ public class XUtil {
     public static Properties getProperties(URL url) {
         try {
             return XPropertiesLoader.global.load(url);
-        } catch (Exception ex) {
+        } catch (RuntimeException ex) {
+            throw ex;
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -115,7 +117,9 @@ public class XUtil {
     public static Properties getProperties(String txt) {
         try {
             return XPropertiesLoader.global.load(txt);
-        } catch (Exception ex) {
+        } catch (RuntimeException ex) {
+            throw ex;
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -182,7 +186,7 @@ public class XUtil {
             String path2 = null;
             try {
                 path2 = URLDecoder.decode(path, "utf-8");
-            } catch (Exception ex) {
+            } catch (Throwable ex) {
                 path2 = path;
             }
 

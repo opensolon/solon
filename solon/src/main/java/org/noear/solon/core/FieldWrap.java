@@ -61,6 +61,8 @@ public class FieldWrap {
             throw new IllegalArgumentException(
                     field.getName() + "(" + field.getType().getSimpleName() +
                             ")类型接收失败：val(" + val.getClass().getSimpleName() + ")", ex);
+        } catch (RuntimeException ex) {
+            throw ex;
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

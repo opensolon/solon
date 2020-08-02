@@ -44,7 +44,9 @@ public class TypeUtil {
 
             try {
                 return format.parse(val);
-            } catch (Exception ex) {
+            } catch (RuntimeException ex) {
+                throw ex;
+            } catch (Throwable ex) {
                 throw new RuntimeException(ex);
             }
         }
@@ -125,7 +127,9 @@ public class TypeUtil {
         if (Date.class == (type)) {
             try {
                 return date_def_format.parse(val);
-            } catch (Exception ex) {
+            } catch (RuntimeException ex) {
+                throw ex;
+            } catch (Throwable ex) {
                 throw new RuntimeException(ex);
             }
         }

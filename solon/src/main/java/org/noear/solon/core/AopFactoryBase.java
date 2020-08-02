@@ -125,7 +125,9 @@ public abstract class AopFactoryBase {
             BeanWrap wrap = wrap(clz, null);
             loader.handler(clz, wrap, anno);
             beanNotice(clz, wrap);
-        } catch (Exception ex) {
+        } catch (RuntimeException ex) {
+            throw ex;
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }

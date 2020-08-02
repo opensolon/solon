@@ -216,6 +216,8 @@ public class BeanWebWrap {
             for (T t : ary) {
                 try {
                     fun.accept(t);
+                } catch (RuntimeException ex) {
+                    throw ex;
                 } catch (Throwable ex) {
                     throw new RuntimeException(ex);
                 }

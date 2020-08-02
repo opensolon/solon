@@ -102,7 +102,9 @@ public final class XAppProperties extends XProperties {
 
                 _plugs.add(ent);
             }
-        } catch (Exception ex) {
+        } catch (RuntimeException ex) {
+            throw ex;
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
