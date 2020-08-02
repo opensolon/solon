@@ -67,6 +67,19 @@ public class XAction extends XHandlerAide {
         return _mw;
     }
 
+    /**
+     * 预加载控制器
+     * */
+    public Object preload(XContext x){
+        Object obj = x.attr("controller");
+        if(obj == null){
+            obj = _bw.get();
+            x.attrSet("controller",obj);
+        }
+
+        return obj;
+    }
+
     @Override
     public void handle(XContext x) throws Throwable {
         x.remotingSet(_remoting);
@@ -83,6 +96,8 @@ public class XAction extends XHandlerAide {
             XMonitor.sendError(x, ex);
         }
     }
+
+
 
     protected void handleDo(XContext x) throws Throwable {
         //前置处理
@@ -108,7 +123,8 @@ public class XAction extends XHandlerAide {
                     }
                 }
 
-                renderDo(x, callDo(_bw.get(), x));
+                //可以前置加载控制器
+                renderDo(x, callDo(preload(x), x));
             } catch (XResultCode ex) {
                 //数据抛出，不进入异常系统
                 renderDo(x, ex);
@@ -129,7 +145,6 @@ public class XAction extends XHandlerAide {
      * 执行动作（便于重写）
      */
     protected Object callDo(Object obj, XContext x) throws Throwable {
-        x.attrSet("controller", obj);
         return XActionUtil.exeMethod(x, obj, _mw);
     }
 

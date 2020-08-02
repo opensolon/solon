@@ -75,16 +75,24 @@ public abstract class XGateway extends XHandlerAide implements XRender {
         XHandler m = findDo(c);
 
         if (m != null) {
+            //预加载控制器，确保所有的处理者可以都可以获取控制器
+            if(m instanceof XAction){
+                ((XAction) m).preload(c);
+            }
+
+            //前置处理
             for (XHandler h : _before) {
                 handleDo(c, h, XEndpoint.before);
             }
 
+            //主处理
             if (c.getHandled() == false) {
                 handleDo(c, m, XEndpoint.main);
+            } else {
+                render(c.result, c);
             }
 
-            render(c.result,c);
-
+            //后置处理
             for (XHandler h : _after) {
                 handleDo(c, h, XEndpoint.after);
             }
