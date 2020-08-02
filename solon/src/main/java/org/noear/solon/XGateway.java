@@ -183,7 +183,7 @@ public abstract class XGateway extends XHandlerAide implements XRender {
             //
             try {
                 h.handle(c);
-            } catch (XResultCode ex) {
+            } catch (DataThrowable ex) {
                 c.setHandled(true);
                 render(ex, c);
             }

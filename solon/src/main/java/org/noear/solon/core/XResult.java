@@ -71,14 +71,6 @@ public class XResult<T> implements Serializable {
         return new XResult<>(data);
     }
 
-
-    /**
-     * 失败的结果
-     */
-    public static <T> XResult<T> failure(XResultCode code) {
-        return failure(code.getCode(), code.getDescription());
-    }
-
     /**
      * 失败的结果
      */

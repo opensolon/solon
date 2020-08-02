@@ -104,7 +104,7 @@ public class XAction extends XHandlerAide {
         for (XHandler h : _before) {
             try {
                 h.handle(x);
-            } catch (XResultCode ex) {
+            } catch (DataThrowable ex) {
                 //数据抛出，不进入异常系统
                 //
                 x.setHandled(true); //停止处理
@@ -125,7 +125,7 @@ public class XAction extends XHandlerAide {
 
                 //可以前置加载控制器
                 renderDo(x, callDo(preload(x), x));
-            } catch (XResultCode ex) {
+            } catch (DataThrowable ex) {
                 //数据抛出，不进入异常系统
                 renderDo(x, ex);
             } catch (Throwable ex) {
