@@ -152,14 +152,13 @@ public abstract class XGateway extends XHandlerAide implements XRender {
         BeanWebWrap uw = new BeanWebWrap(beanWp, _path, remoting, this, allowActionMapping());
 
         uw.load((path, m, h) -> {
-            XAction api = null;
             if (h instanceof XAction) {
-                api = (XAction) h;
+                XAction h2 = (XAction) h;
 
-                if (XUtil.isEmpty(api.name())) {
-                    _def = api;
+                if (XUtil.isEmpty(h2.name())) {
+                    _def = h2;
                 } else {
-                    add(api.name(), api);
+                    addDo(h2.name(), h2);
                 }
             }
         });
@@ -176,10 +175,6 @@ public abstract class XGateway extends XHandlerAide implements XRender {
         //addPath 已处理 path1= null 的情况
         _main.put(XUtil.mergePath(_path, path).toUpperCase(), handler);
     }
-
-    //
-    //
-    //
 
     /**
      * 接管XNav的handleDo（主要对DataThrowable进行处理）
@@ -209,28 +204,19 @@ public abstract class XGateway extends XHandlerAide implements XRender {
     /**
      * 查找接口
      */
-    protected XHandler findDo(XContext c) {
-        XHandler api = _main.get(c.pathAsUpper());
+    protected XHandler findDo(XContext c) throws Throwable{
+        XHandler h = _main.get(c.pathAsUpper());
 
-        if (api == null) {
-            //主要增加默认接口支持
-            //
-            if (_def != null) {
-                try {
-                    _def.handle(c);
-                } catch (Throwable ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-            //中止执行
+        if (h == null) {
             c.setHandled(true);
+            _def.handle(c);
             return _def;
         } else {
-            if (api instanceof XAction) {
-                c.attrSet("handler_name", ((XAction) api).name());
+            if (h instanceof XAction) {
+                c.attrSet("handler_name", ((XAction) h).name());
             }
 
-            return api;
+            return h;
         }
     }
 }
