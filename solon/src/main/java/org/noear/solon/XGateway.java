@@ -11,6 +11,8 @@ import java.util.Map;
  * 本地网关（替代旧的XNav）
  *
  * 提供容器，重新组织处理者运行；只支持HASH路由
+ *
+ * 问题：如何获取主控制器实例???
  * */
 public abstract class XGateway extends XHandlerAide implements XRender {
     private XHandler _def;
@@ -75,9 +77,9 @@ public abstract class XGateway extends XHandlerAide implements XRender {
         //m 不可能为 null；有 _def 打底
         if (m != null) {
             //预加载控制器，确保所有的处理者可以都可以获取控制器
-            if (m instanceof XAction) {
-                ((XAction) m).preload(c);
-            }
+//            if (m instanceof XAction) { //如果前置或后置为XAction,会出错
+//                ((XAction) m).preload(c);
+//            }
 
             //前置处理
             for (XHandler h : _before) {

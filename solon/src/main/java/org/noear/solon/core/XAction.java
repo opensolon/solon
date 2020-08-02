@@ -70,15 +70,15 @@ public class XAction extends XHandlerAide {
     /**
      * 预加载控制器
      * */
-    public Object preload(XContext x){
-        Object obj = x.attr("controller");
-        if(obj == null){
-            obj = _bw.get();
-            x.attrSet("controller",obj);
-        }
-
-        return obj;
-    }
+//    public Object preload(XContext x){
+//        Object obj = x.attr("controller");
+//        if(obj == null){
+//            obj = _bw.get();
+//            x.attrSet("controller",obj);
+//        }
+//
+//        return obj;
+//    }
 
     @Override
     public void handle(XContext x) throws Throwable {
@@ -124,7 +124,7 @@ public class XAction extends XHandlerAide {
                 }
 
                 //可以前置加载控制器
-                renderDo(x, callDo(preload(x), x));
+                renderDo(x, callDo(_bw.get(), x));
             } catch (DataThrowable ex) {
                 //数据抛出，不进入异常系统
                 renderDo(x, ex);
