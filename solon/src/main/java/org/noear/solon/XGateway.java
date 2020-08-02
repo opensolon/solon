@@ -157,7 +157,7 @@ public abstract class XGateway extends XHandlerAide implements XRender {
                 if (XUtil.isEmpty(h2.name())) {
                     _def = h2;
                 } else {
-                    addDo(h2.name(), h2);
+                    add(h2.name(), h2);
                 }
             }
         });
