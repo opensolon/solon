@@ -17,6 +17,7 @@ public class XAction extends XHandlerAide {
     protected final MethodWrap _mw;
     protected String _produces;//输出产品
     protected XRender _render;
+    protected int _poi; //endpoint
 
     private String _name;
     private boolean _remoting;
@@ -25,10 +26,11 @@ public class XAction extends XHandlerAide {
     private List<String> _pks;
     private static Pattern _pkr = Pattern.compile("\\{([^\\\\}]+)\\}");
 
-    public XAction(BeanWrap bw, Method m, XMapping mp, String path, boolean remoting, XRender render) {
+    public XAction(BeanWrap bw, Method m, int poi, XMapping mp, String path, boolean remoting, XRender render) {
         _bw = bw;
         _mw = MethodWrap.get(m);
 
+        _poi = poi;
         _remoting = remoting;
         _render = render;
 

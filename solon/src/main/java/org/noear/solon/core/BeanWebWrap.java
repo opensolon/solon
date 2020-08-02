@@ -167,7 +167,7 @@ public class BeanWebWrap {
             if (m_map != null || all) {
                 String newPath = XUtil.mergePath(c_path, m_path);
 
-                XAction action = createAction(_bw, method, m_map, newPath, c_remoting);
+                XAction action = createAction(_bw, method, c_poi, m_map, newPath, c_remoting);
 
                 //加载控制器的前置拦截器
                 addDo(c_befs2.toArray(), (b) -> action.before((XHandler) b));
@@ -200,11 +200,11 @@ public class BeanWebWrap {
     /**
      * 构建 XAction
      */
-    protected XAction createAction(BeanWrap bw, Method method, XMapping mp, String path, boolean remoting) {
+    protected XAction createAction(BeanWrap bw, Method method, int endpoint, XMapping mp, String path, boolean remoting) {
         if (_allowMapping) {
-            return new XAction(bw, method, mp, path, remoting, _render);
+            return new XAction(bw, method, endpoint, mp, path, remoting, _render);
         } else {
-            return new XAction(bw, method, null, path, remoting, _render);
+            return new XAction(bw, method, endpoint,null, path, remoting, _render);
         }
     }
 
