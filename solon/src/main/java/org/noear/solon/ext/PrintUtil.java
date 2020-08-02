@@ -23,10 +23,10 @@ public class PrintUtil {
         System.out.println(obj);
     }
 
-    public static void blackln(String txt){
-        System.out.println(ANSI_BLACK + txt);
-        System.out.print(ANSI_RESET);
-    }
+//    public static void blackln(String txt){
+//        System.out.println(ANSI_BLACK + txt);
+//        System.out.print(ANSI_RESET);
+//    }
 
 //    public static void blackln(Object obj){
 //        System.out.println(ANSI_BLACK + obj);

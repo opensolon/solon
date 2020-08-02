@@ -5,9 +5,6 @@ import org.noear.solon.ext.PrintUtil;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * 通过 XRender 管理员，以此实现多模板引擎处理
