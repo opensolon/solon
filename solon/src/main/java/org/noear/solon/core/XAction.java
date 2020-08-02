@@ -101,7 +101,7 @@ public class XAction extends XHandlerAide {
     }
 
 
-    protected void invoke0(XContext x, Object bean) throws Throwable {
+    protected void invoke0(XContext x, Object obj) throws Throwable {
         //前置处理
         for (XHandler h : _before) {
             try {
@@ -126,10 +126,14 @@ public class XAction extends XHandlerAide {
                 }
 
                 //可以前置加载控制器
-                if(bean == null){
-                    bean = _bw.get();
+                if(obj == null){
+                    obj = _bw.get();
+                    if(_poi == XEndpoint.main){
+                        //传递控制器实例
+                        x.attrSet("controller", obj);
+                    }
                 }
-                renderDo(x, callDo(bean, x));
+                renderDo(x, callDo(x, obj));
             } catch (DataThrowable ex) {
                 //数据抛出，不进入异常系统
                 renderDo(x, ex);
@@ -149,8 +153,8 @@ public class XAction extends XHandlerAide {
     /**
      * 执行动作（便于重写）
      */
-    protected Object callDo(Object bean, XContext x) throws Throwable {
-        return XActionUtil.exeMethod(x, bean, _mw);
+    protected Object callDo(XContext x, Object obj) throws Throwable {
+        return XActionUtil.exeMethod(x, obj, _mw);
     }
 
     /**
