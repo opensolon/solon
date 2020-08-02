@@ -6,40 +6,31 @@ import java.util.*;
 @SuppressWarnings("serial")
 public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable, Cloneable {
 
-    private final LinkedHashMap<String, V> targetMap;
-    private final HashMap<String, String> caseInsensitiveKeys;
+    private final LinkedHashMap<String, V> _m;
+    private final HashMap<String, String> _k;
     private final Locale locale;
 
     public LinkedCaseInsensitiveMap() {
-        this((Locale) null);
+        this(16, null);
     }
 
-    public LinkedCaseInsensitiveMap(Locale locale) {
-        this(16, locale);
-    }
-
-
-    public LinkedCaseInsensitiveMap(int initialCapacity) {
-        this(initialCapacity, null);
-    }
-
-
-    public LinkedCaseInsensitiveMap(int initialCapacity,Locale locale) {
-        this.targetMap = new LinkedHashMap<String, V>(initialCapacity) {
+    public LinkedCaseInsensitiveMap(int initialCapacity, Locale locale) {
+        this._m = new LinkedHashMap<String, V>(initialCapacity) {
             @Override
             public boolean containsKey(Object key) {
                 return LinkedCaseInsensitiveMap.this.containsKey(key);
             }
+
             @Override
             protected boolean removeEldestEntry(Map.Entry<String, V> eldest) {
                 boolean doRemove = LinkedCaseInsensitiveMap.this.removeEldestEntry(eldest);
                 if (doRemove) {
-                    caseInsensitiveKeys.remove(convertKey(eldest.getKey()));
+                    _k.remove(convertKey(eldest.getKey()));
                 }
                 return doRemove;
             }
         };
-        this.caseInsensitiveKeys = new HashMap<>(initialCapacity);
+        this._k = new HashMap<>(initialCapacity);
         this.locale = (locale != null ? locale : Locale.getDefault());
     }
 
@@ -48,8 +39,8 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
      */
     @SuppressWarnings("unchecked")
     private LinkedCaseInsensitiveMap(LinkedCaseInsensitiveMap<V> other) {
-        this.targetMap = (LinkedHashMap<String, V>) other.targetMap.clone();
-        this.caseInsensitiveKeys = (HashMap<String, String>) other.caseInsensitiveKeys.clone();
+        this._m = (LinkedHashMap<String, V>) other._m.clone();
+        this._k = (HashMap<String, String>) other._k.clone();
         this.locale = other.locale;
     }
 
@@ -58,30 +49,30 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
 
     @Override
     public int size() {
-        return this.targetMap.size();
+        return this._m.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return this.targetMap.isEmpty();
+        return this._m.isEmpty();
     }
 
     @Override
     public boolean containsKey(Object key) {
-        return (key instanceof String && this.caseInsensitiveKeys.containsKey(convertKey((String) key)));
+        return (key instanceof String && this._k.containsKey(convertKey((String) key)));
     }
 
     @Override
     public boolean containsValue(Object value) {
-        return this.targetMap.containsValue(value);
+        return this._m.containsValue(value);
     }
 
     @Override
     public V get(Object key) {
         if (key instanceof String) {
-            String caseInsensitiveKey = this.caseInsensitiveKeys.get(convertKey((String) key));
-            if (caseInsensitiveKey != null) {
-                return this.targetMap.get(caseInsensitiveKey);
+            String key2 = this._k.get(convertKey((String) key));
+            if (key2 != null) {
+                return this._m.get(key2);
             }
         }
         return null;
@@ -90,9 +81,9 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
     @Override
     public V getOrDefault(Object key, V defaultValue) {
         if (key instanceof String) {
-            String caseInsensitiveKey = this.caseInsensitiveKeys.get(convertKey((String) key));
-            if (caseInsensitiveKey != null) {
-                return this.targetMap.get(caseInsensitiveKey);
+            String key2 = this._k.get(convertKey((String) key));
+            if (key2 != null) {
+                return this._m.get(key2);
             }
         }
         return defaultValue;
@@ -100,11 +91,11 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
 
     @Override
     public V put(String key, V value) {
-        String oldKey = this.caseInsensitiveKeys.put(convertKey(key), key);
+        String oldKey = this._k.put(convertKey(key), key);
         if (oldKey != null && !oldKey.equals(key)) {
-            this.targetMap.remove(oldKey);
+            this._m.remove(oldKey);
         }
-        return this.targetMap.put(key, value);
+        return this._m.put(key, value);
     }
 
     @Override
@@ -118,9 +109,9 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
     @Override
     public V remove(Object key) {
         if (key instanceof String) {
-            String caseInsensitiveKey = this.caseInsensitiveKeys.remove(convertKey((String) key));
-            if (caseInsensitiveKey != null) {
-                return this.targetMap.remove(caseInsensitiveKey);
+            String key2 = this._k.remove(convertKey((String) key));
+            if (key2 != null) {
+                return this._m.remove(key2);
             }
         }
         return null;
@@ -128,23 +119,23 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
 
     @Override
     public void clear() {
-        this.caseInsensitiveKeys.clear();
-        this.targetMap.clear();
+        this._k.clear();
+        this._m.clear();
     }
 
     @Override
     public Set<String> keySet() {
-        return this.targetMap.keySet();
+        return this._m.keySet();
     }
 
     @Override
     public Collection<V> values() {
-        return this.targetMap.values();
+        return this._m.values();
     }
 
     @Override
     public Set<Entry<String, V>> entrySet() {
-        return this.targetMap.entrySet();
+        return this._m.entrySet();
     }
 
     @Override
@@ -154,17 +145,17 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
 
     @Override
     public boolean equals(Object obj) {
-        return this.targetMap.equals(obj);
+        return this._m.equals(obj);
     }
 
     @Override
     public int hashCode() {
-        return this.targetMap.hashCode();
+        return this._m.hashCode();
     }
 
     @Override
     public String toString() {
-        return this.targetMap.toString();
+        return this._m.toString();
     }
 
 
