@@ -70,8 +70,8 @@ public class XAction extends XHandlerAide {
     /**
      * 获取一个控制器实例
      * */
-    public Object bean(){
-        return _bw.get();
+    public BeanWrap bean(){
+        return _bw;
     }
 
     @Override

@@ -79,7 +79,7 @@ public abstract class XGateway extends XHandlerAide implements XRender {
         if (m != null) {
             //预加载控制器，确保所有的处理者可以都可以获取控制器
             if (m instanceof XAction) {
-                bean = ((XAction) m).bean();
+                bean = ((XAction) m).bean().get();
                 c.attrSet("controller", bean);
             }
 
