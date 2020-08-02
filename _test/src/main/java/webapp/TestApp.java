@@ -1,6 +1,7 @@
 package webapp;
 
 import org.noear.solon.XApp;
+import org.noear.solon.core.XMethod;
 import org.noear.solon.core.XPlugin;
 import org.noear.solonclient.channel.SocketMessage;
 import org.noear.solonclient.channel.SocketUtils;
@@ -103,5 +104,19 @@ public class TestApp {
 
         //web socket test
 //        WsDemoClientTest.test();
+    }
+
+    void test1(){
+        //控制渲染的示例 //即拦截执行结果的机制
+        //
+        XApp app = XApp.start(TestApp.class,null);
+
+        //开始之前把上下文置为已泻染
+        app.before("/user/**", XMethod.HTTP,c-> c.setRendered(true));
+
+        app.after("/user/**", XMethod.HTTP,c-> {
+            //可对 c.result 进行处理 //并输出
+        });
+
     }
 }

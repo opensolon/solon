@@ -1,9 +1,11 @@
 package org.noear.solon.core;
 
+import java.io.Serializable;
+
 /**
  * 结果
  * */
-public class XResult<T> {
+public class XResult<T> implements Serializable {
     /**
      * 状态码
      * <p>
@@ -73,7 +75,7 @@ public class XResult<T> {
     /**
      * 失败的结果
      */
-    public static <T> XResult<T> failure(CodeThrowable code) {
+    public static <T> XResult<T> failure(XResultCode code) {
         return failure(code.getCode(), code.getDescription());
     }
 

@@ -1,11 +1,13 @@
 package org.noear.solon.core;
 
 
+import java.io.Serializable;
+
 /**
- * 错误代码抛出
+ * 结果代码
  *
  * */
-public class CodeThrowable extends RuntimeException{
+public class XResultCode extends RuntimeException implements Serializable {
     private int code;
     private String description = "";
 
@@ -31,18 +33,18 @@ public class CodeThrowable extends RuntimeException{
         this.description = description;
     }
 
-    public CodeThrowable(int code) {
+    public XResultCode(int code) {
         super(code + ""); //给异常系统用的
         this.code = code;
     }
 
-    public CodeThrowable(int code, String description) {
+    public XResultCode(int code, String description) {
         super(code + ": " + description);//给异常系统用的
         this.code = code;
         this.description = description;
     }
 
-    public CodeThrowable(Throwable cause) {
+    public XResultCode(Throwable cause) {
         super(cause);
         this.description = cause.getMessage();
     }
