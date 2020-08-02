@@ -135,7 +135,7 @@ public abstract class XGateway extends XHandlerAide implements XRender {
             return;
         }
 
-        BeanWebWrap uw = new BeanWebWrap(beanWp, _path, remoting, this);
+        BeanWebWrap uw = new BeanWebWrap(beanWp, _path, remoting, this, allowActionMapping());
 
         uw.load((path, m, h) -> {
             XAction api = null;
@@ -213,12 +213,13 @@ public abstract class XGateway extends XHandlerAide implements XRender {
             return _def;
         } else {
             if (api instanceof XAction) {
-                c.attrSet("api", ((XAction) api).name());
+                c.attrSet("handler_name", ((XAction) api).name());
             }
 
             return api;
         }
     }
+
 
     /**
      * 提供转换上下文的机制

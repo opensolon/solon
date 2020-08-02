@@ -14,6 +14,7 @@ import java.util.List;
 public class BeanWebWrap {
     protected BeanWrap _bw;
     protected XRender _render;
+    protected boolean _allowMapping;
 
     protected XMapping c_map;
     protected int c_poi = XEndpoint.main;
@@ -24,27 +25,28 @@ public class BeanWebWrap {
         c_map = wrap.clz().getAnnotation(XMapping.class);
 
         if (c_map == null) {
-            initDo(wrap, null, wrap.remoting(), null);
+            initDo(wrap, null, wrap.remoting(), null, true);
         } else {
-            initDo(wrap, c_map.value(), wrap.remoting(), null);
+            initDo(wrap, c_map.value(), wrap.remoting(), null, true);
         }
     }
 
     public BeanWebWrap(BeanWrap wrap, String mapping) {
-        initDo(wrap, mapping, wrap.remoting(), null);
+        initDo(wrap, mapping, wrap.remoting(), null, true);
     }
 
     public BeanWebWrap(BeanWrap wrap, String mapping, boolean remoting) {
-        initDo(wrap, mapping, remoting, null);
+        initDo(wrap, mapping, remoting, null, true);
     }
 
-    public BeanWebWrap(BeanWrap wrap, String mapping, boolean remoting, XRender render) {
-        initDo(wrap, mapping, remoting, render);
+    public BeanWebWrap(BeanWrap wrap, String mapping, boolean remoting, XRender render, boolean allowMapping) {
+        initDo(wrap, mapping, remoting, render, allowMapping);
     }
 
-    private void initDo(BeanWrap wrap, String mapping, boolean remoting, XRender render) {
+    private void initDo(BeanWrap wrap, String mapping, boolean remoting, XRender render, boolean allowMapping) {
         _bw = wrap;
         _render = render;
+        _allowMapping = allowMapping;
 
         if (mapping != null) {
             c_path = mapping;
@@ -199,7 +201,11 @@ public class BeanWebWrap {
      * 构建 XAction
      */
     protected XAction createAction(BeanWrap bw, Method method, XMapping mp, String path, boolean remoting) {
-        return new XAction(bw, method, mp, path, remoting, null);
+        if (_allowMapping) {
+            return new XAction(bw, method, mp, path, remoting, _render);
+        } else {
+            return new XAction(bw, method, null, path, remoting, _render);
+        }
     }
 
     /**
