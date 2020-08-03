@@ -59,9 +59,9 @@ public abstract class XGateway extends XHandlerAide implements XRender {
             return;
         }
 
-        c.setRendered(true);
-
         c.result = obj;
+
+        c.setRendered(true);//最多一次渲染
         c.render(obj);
     }
 
