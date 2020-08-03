@@ -51,7 +51,7 @@ public abstract class XGateway extends XHandlerAide implements XRender {
 
 
     /**
-     * for XRender
+     * for XRender （用于接管 BeanWebWrap 和 XAction 的渲染）
      */
     @Override
     public void render(Object obj, XContext c) throws Throwable {
