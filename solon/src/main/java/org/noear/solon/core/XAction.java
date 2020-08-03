@@ -139,7 +139,7 @@ public class XAction extends XHandlerAide {
 
                 Object tmp = callDo(x, obj);
 
-                //如果是主处理
+                //如果是主处理（不支持非主控的返回值；有可能是拦截器）
                 if(_poi == XEndpoint.main) {
 
                     //记录返回值（后续不一定会再记录）
