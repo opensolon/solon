@@ -12,7 +12,7 @@ public class HttpChannel implements IChannel {
     public static final HttpChannel instance = new HttpChannel();
 
     @Override
-    public Result call(XProxyConfig cfg, String url, Map<String, String> headers, Map<String, Object> args) throws Exception {
+    public Result call(XProxyConfig cfg, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
         HttpUtils http = HttpUtils.http(url).headers(headers);
 
         if(cfg.getDeserializer().enctype() == Enctype.application_json){
