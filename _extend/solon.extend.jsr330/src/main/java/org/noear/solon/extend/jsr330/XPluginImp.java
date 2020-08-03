@@ -4,12 +4,10 @@ import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWebWrap;
-import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.XPlugin;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.inject.Qualifier;
 import javax.inject.Singleton;
 
 public class XPluginImp implements XPlugin {
