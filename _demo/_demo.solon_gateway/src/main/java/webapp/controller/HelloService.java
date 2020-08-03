@@ -5,7 +5,7 @@ import org.noear.solon.annotation.XMapping;
 
 @XBean
 public class HelloService {
-    @XMapping()
+    @XMapping("hello")
     public String hello(String name){
         return "hello world!";
     }
