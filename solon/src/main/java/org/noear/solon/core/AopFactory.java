@@ -140,9 +140,10 @@ public class AopFactory extends AopFactoryBase {
                 varH.setValue(bw.get());
             });
         } else {
-            if (name.startsWith("@")) {
+            if (name.startsWith("${")) {
                 //配置
-                name = name.substring(1);
+                name = name.substring(2,name.length()-1);
+
                 if (Properties.class == varH.getType()) {
                     //如果是 Properties，只尝试从配置获取
                     Properties val = XApp.cfg().getProp(name);

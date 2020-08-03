@@ -206,7 +206,7 @@ XApp.cfg().getProp("xxx.datasource"); //=>Properties
 //注入模式
 @XConfiguration //or @XController, or @XBean
 class xxx{
-    @XInject("app_key")
+    @XInject("${app_key}")
     String app_key;
 }
 ```
