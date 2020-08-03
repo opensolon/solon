@@ -8,8 +8,7 @@
     <artifactId>solon_java</artifactId>
     <version>root</version>
     <packaging>pom</packaging>
-
-
+    
     <name>root</name>
     <description>Java project for solon</description>
 
