@@ -129,18 +129,19 @@ public class BeanWrap {
         }
 
         if (_clz.isInterface()) {
+            singletonSet(true); //如果它是接口，则认为是单例；因为无法实列化
             return;
         }
 
         ClassWrap clzWrap = ClassWrap.get(_clz);
 
+        //查找初始化函数
         for (MethodWrap mw : clzWrap.methodWraps) {
             if (mw.getMethod().getAnnotation(XInit.class) != null) {
                 if (mw.getParameters().length == 0) {
                     //只接收没有参数的
                     _clz_init = mw;
                 }
-
                 break;
             }
         }
