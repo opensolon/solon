@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
 import org.noear.solon.XApp;
+import org.noear.solon.annotation.XInject;
 import org.noear.solon.test.SolonBootTest;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.water.utils.HttpUtils;
@@ -16,6 +17,9 @@ import java.util.Map;
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonBootTest(webapp.TestApp.class)
 public class HttpTest {
+
+    @XInject("username")
+    public String username;
 
     @Test
     public void test11() throws IOException{
