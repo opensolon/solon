@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -18,7 +18,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.0.7</solon.ver>
+        <solon.ver>1.0.8</solon.ver>
 
         <snack3.ver>3.1.7.5</snack3.ver>
         <fastjson.ver>1.2.70</fastjson.ver>
@@ -444,7 +444,7 @@
         <module>../_extend/solon.serialization.jackson</module>
         <module>../_extend/solon.serialization.gson</module>
         <module>../_extend/solon.serialization.snack3</module>
-<!--        <module>../_extend/solon.serialization.avro</module>-->
+        <module>../_extend/solon.serialization.avro</module>
 <!--        <module>../_extend/solon.serialization.jsoniter</module>-->
 <!--        <module>../_extend/solon.serialization.protobuf</module>-->
 <!--        <module>../_extend/solon.serialization.xstream</module>-->
