@@ -43,6 +43,10 @@ public class BeanWrap {
         return _singleton;
     }
 
+    public void singletonSet(boolean singleton){
+        _singleton = singleton;
+    }
+
     /**
      * is remoting()?
      */

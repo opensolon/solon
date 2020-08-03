@@ -34,7 +34,7 @@ public class AopFactory extends AopFactoryBase {
                     if (mWrap.getParameters().length == 0) {
                         //充许空函数运行
                         Object raw = mWrap.invoke(bw.raw());
-                        if(raw != null) {
+                        if (raw != null) {
                             BeanWrap m_bw = Aop.put(mWrap.getReturnType(), raw);
                             beanRegister(m_bw, m_an.value());
                         }
@@ -60,39 +60,7 @@ public class AopFactory extends AopFactoryBase {
         });
 
         beanInjectorAdd(XInject.class, ((fwT, anno) -> {
-            if (XUtil.isEmpty(anno.value())) {
-                //如果没有name,使用类型进行获取 bean
-                Aop.getAsyn(fwT.getType(), (bw) -> {
-                    fwT.setValue(bw.get());
-                });
-            } else {
-                //如果有name
-                if (Properties.class == fwT.getType()) {
-                    //如果是 Properties，只尝试从配置获取
-                    Properties val = XApp.cfg().getProp(anno.value());
-                    fwT.setValue(val);
-                } else {
-                    //1.如果是单值，先尝试获取BEAN
-                    Object tmp = Aop.get(anno.value());
-
-                    if (tmp != null) {
-                        fwT.setValue(tmp);
-                    } else {
-                        //2.然后尝试获取配置
-                        String val = XApp.cfg().get(anno.value());
-
-                        if (XUtil.isEmpty(val) == false) {
-                            Object val2 = TypeUtil.changeOfPop(fwT.getType(), val);
-                            fwT.setValue(val2);
-                        } else {
-                            //3.如果没有配置，尝试异步获取BEAN
-                            Aop.getAsyn(anno.value(), (bw) -> {
-                                fwT.setValue(bw.get());
-                            });
-                        }
-                    }
-                }
-            }
+            beanInject(fwT, anno.value());
         }));
     }
 
@@ -126,9 +94,48 @@ public class AopFactory extends AopFactoryBase {
     }
 
     /**
-     * 注册Bean到Aop管理中心
+     * 执行字段注入
      * */
-    protected void beanRegister(BeanWrap bw, String name) {
+    public void beanInject(FieldWrapTmp fwT, String name){
+        if (XUtil.isEmpty(name)) {
+            //如果没有name,使用类型进行获取 bean
+            Aop.getAsyn(fwT.getType(), (bw) -> {
+                fwT.setValue(bw.get());
+            });
+        } else {
+            //如果有name
+            if (Properties.class == fwT.getType()) {
+                //如果是 Properties，只尝试从配置获取
+                Properties val = XApp.cfg().getProp(name);
+                fwT.setValue(val);
+            } else {
+                //1.如果是单值，先尝试获取BEAN
+                Object tmp = Aop.get(name);
+
+                if (tmp != null) {
+                    fwT.setValue(tmp);
+                } else {
+                    //2.然后尝试获取配置
+                    String val = XApp.cfg().get(name);
+
+                    if (XUtil.isEmpty(val) == false) {
+                        Object val2 = TypeUtil.changeOfPop(fwT.getType(), val);
+                        fwT.setValue(val2);
+                    } else {
+                        //3.如果没有配置，尝试异步获取BEAN
+                        Aop.getAsyn(name, (bw) -> {
+                            fwT.setValue(bw.get());
+                        });
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 注册到管理中心
+     * */
+    public void beanRegister(BeanWrap bw, String name) {
         if (XUtil.isEmpty(name)) {
             Aop.put(bw.clz().getName(), bw);
         } else {
