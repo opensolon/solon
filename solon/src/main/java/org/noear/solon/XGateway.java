@@ -2,6 +2,8 @@ package org.noear.solon;
 
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.*;
+import org.noear.solon.ext.ConsumerEx;
+import org.noear.solon.ext.RunnableEx;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,73 +70,67 @@ public abstract class XGateway extends XHandlerAide implements XRender {
      */
     @Override
     public void handle(XContext c) throws Throwable {
-        //
-        //不要接管异常，因为后面没有处理了（CodeThrowable，已在handleDo处理）
-        //
+
 
         XHandler m = findDo(c);
-        Object bean = null;
+        Object obj = null;
 
         //m 不可能为 null；有 _def 打底
         if (m != null) {
             //预加载控制器，确保所有的处理者可以都可以获取控制器
             if (m instanceof XAction) {
-                bean = ((XAction) m).bean().get();
-                c.attrSet("controller", bean);
+                obj = ((XAction) m).bean().get();
+                c.attrSet("controller", obj);
             }
 
-            //前置处理
-            for (XHandler h : _before) {
-                handleDo(c, h, XEndpoint.before, null);
-            }
-
-            //主处理
-            if (c.getHandled() == false) {
-                handleDo(c, m, XEndpoint.main, bean);
-            } else {
-                render(c.result, c);
-            }
-
-            //后置处理（确保不受前面的异常影响）
-            for (XHandler h : _after) {
-                handleDo(c, h, XEndpoint.after, null);
-            }
+            handle0(c, m, obj);
         }
     }
 
-    /**
-     * 主要对DataThrowable进行处理
-     */
-    protected void handleDo(XContext c, XHandler h, int endpoint, Object bean) throws Throwable {
-        if (endpoint != XEndpoint.after) {
-            //
-            //确保非后置处理不出错，出错转为UapiCode（前置处理，也可以填接抛出数据）
-            //
-            try {
-                if (bean == null) {
-                    h.handle(c);
-                } else {
-                    ((XAction) h).invoke(c, bean);
-                }
-            } catch (DataThrowable ex) {
-                c.setHandled(true); //停止处理
+    private void handle0(XContext c, XHandler m, Object obj) throws Throwable {
+        /**
+         * 1.保持与XAction相同的逻辑
+         * */
 
-                render(ex, c);
-            } catch (Throwable ex) {
-                c.setHandled(true); //停止处理
-
-                c.attrSet("error", ex);
-                render(ex, c);
-                XMonitor.sendError(c, ex);
+        //前置处理（最多一次渲染）
+        handleDo(c, () -> {
+            for (XHandler h : _before) {
+                h.handle(c);
             }
-            //
-            //别的异常不管，输出50X错误
-            //
+        });
+
+        //主处理（最多一次尝染）
+        if (c.getHandled() == false) {
+            handleDo(c, () -> {
+                if (obj == null) {
+                    m.handle(c);
+                } else {
+                    ((XAction) m).invoke(c, obj);
+                }
+            });
         } else {
-            //
-            //后置处理，不能再抛数据了（不然，没完没了）
-            //
+            render(c.result, c);
+        }
+
+        //后置处理（确保不受前面的异常影响）
+        for (XHandler h : _after) {
             h.handle(c);
+        }
+    }
+
+    protected void handleDo(XContext c, RunnableEx runnable) throws Throwable {
+        try {
+            runnable.run();
+        } catch (DataThrowable ex) {
+            c.setHandled(true); //停止处理
+
+            render(ex, c);
+        } catch (Throwable ex) {
+            c.setHandled(true); //停止处理
+
+            c.attrSet("error", ex);
+            render(ex, c);
+            XMonitor.sendError(c, ex);
         }
     }
 

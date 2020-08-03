@@ -2,6 +2,8 @@ package org.noear.solon.core;
 
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XMapping;
+import org.noear.solon.ext.ConsumerEx;
+import org.noear.solon.ext.RunnableEx;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -111,31 +113,20 @@ public class XAction extends XHandlerAide {
         /**
          * 1.确保所有处理者，能拿到控制器
          * 2.确保后置处理者，能被触发（前面的异常不能影响后置处理）
+         * 3.确保最多一次渲染
          * */
 
-        //前置处理
-        for (XHandler h : _before) {
-            try {
+        //前置处理（最多一次渲染）
+        handleDo(x, ()->{
+            for (XHandler h : _before) {
                 h.handle(x);
-            } catch (DataThrowable ex) {
-                //数据抛出，不进入异常系统
-                //
-                x.setHandled(true); //停止处理
-
-                renderDo(x, ex); //渲染数据
-            } catch (Throwable ex) {
-                x.setHandled(true); //停止处理
-
-                x.attrSet("error", ex);
-                renderDo(x, ex);
-                XMonitor.sendError(x, ex);
             }
-        }
+        });
 
 
-        //主体处理
+        //主体处理（最多一次渲染）
         if (x.getHandled() == false) {
-            try {
+            handleDo(x,()->{
                 //获取path var
                 if (_pr != null) {
                     Matcher pm = _pr.matcher(x.path());
@@ -154,20 +145,29 @@ public class XAction extends XHandlerAide {
                     x.contentType(_produces);
                 }
 
-                renderDo(x, x.result);
-            } catch (DataThrowable ex) {
-                //数据抛出，不进入异常系统
-                renderDo(x, ex);
-            } catch (Throwable ex) {
-                x.attrSet("error", ex);
-                renderDo(x, ex);
-                XMonitor.sendError(x, ex);
-            }
+                renderDo(x.result, x);
+            });
         }
 
         //后置处理
         for (XHandler h : _after) {
             h.handle(x);
+        }
+    }
+
+    protected void handleDo(XContext c, RunnableEx runnable) throws Throwable {
+        try {
+            runnable.run();
+        } catch (DataThrowable ex) {
+            c.setHandled(true); //停止处理
+
+            renderDo(ex, c);
+        } catch (Throwable ex) {
+            c.setHandled(true); //停止处理
+
+            c.attrSet("error", ex);
+            renderDo(ex, c);
+            XMonitor.sendError(c, ex);
         }
     }
 
@@ -181,7 +181,7 @@ public class XAction extends XHandlerAide {
     /**
      * 执行渲染（便于重写）
      */
-    protected void renderDo(XContext x, Object result) throws Throwable {
+    protected void renderDo(Object result, XContext x) throws Throwable {
         //可以通过before关掉render
         if (x.getRendered()) {
             return;
@@ -190,6 +190,7 @@ public class XAction extends XHandlerAide {
         x.result = result;
 
         if (_render == null) {
+            x.setRendered(true); //最多一次渲染
             x.render(result);
         } else {
             _render.render(result, x);
