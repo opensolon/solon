@@ -3,7 +3,7 @@ package org.noear.solon.extend.jsr330;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.AopUtils;
+import org.noear.solon.core.AopFactory;
 import org.noear.solon.core.BeanWebWrap;
 import org.noear.solon.core.XPlugin;
 
@@ -41,9 +41,9 @@ public class XPluginImp implements XPlugin {
         Aop.factory().beanInjectorAdd(Inject.class, (fwT, anno) -> {
             Named tmp = fwT.getType().getAnnotation(Named.class);
             if(tmp == null || XUtil.isEmpty(tmp.value())){
-                AopUtils.beanInjectDo(fwT, null);
+                AopFactory.beanInjectDo(fwT, null);
             }else{
-                AopUtils.beanInjectDo(fwT, tmp.value());
+                AopFactory.beanInjectDo(fwT, tmp.value());
             }
         });
 
