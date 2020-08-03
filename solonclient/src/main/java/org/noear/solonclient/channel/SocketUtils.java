@@ -53,7 +53,7 @@ public class SocketUtils {
         return new SocketUtils(uri1.getHost(), uri1.getPort());
     }
 
-    public static SocketMessage send(String uri, String message) throws Exception {
+    public static SocketMessage send(String uri, String message) throws Throwable {
         SocketMessageDock msgD = new SocketMessageDock(SocketMessage.wrap(uri, message.getBytes("utf-8")));
 
         get(uri).sendDo(msgD, (m) -> {
@@ -69,7 +69,7 @@ public class SocketUtils {
         }
     }
 
-    public static void send(String uri, String message, Act2<SocketMessage,Exception> callback) throws Exception {
+    public static void send(String uri, String message, Act2<SocketMessage,Throwable> callback) throws Throwable {
         SocketMessageDock msgD = new SocketMessageDock(SocketMessage.wrap(uri, message.getBytes("utf-8")));
         msgD.handler = callback;
 
@@ -108,7 +108,7 @@ public class SocketUtils {
 
                 callback.run(msgD);
 
-            } catch (Exception ex) {
+            } catch (Throwable ex) {
                 msgD.err = ex;
                 callback.run(msgD);
             }
@@ -180,9 +180,9 @@ public class SocketUtils {
     public static class SocketMessageDock extends CompletableFuture<Integer> {
         public SocketMessage req;
         public SocketMessage res;
-        public Exception err;
+        public Throwable err;
 
-        public Act2<SocketMessage,Exception> handler;
+        public Act2<SocketMessage,Throwable> handler;
 
         public String getKey(){
             return req.key;

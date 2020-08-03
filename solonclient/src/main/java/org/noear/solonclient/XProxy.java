@@ -91,9 +91,12 @@ public class XProxy {
     public XProxy call(Map<String, String> headers, Map args) {
         try {
             _result = _config.getChannel().call(_config, _url, headers, args);
-        } catch (Exception ex) {
+        } catch (RuntimeException ex) {
+            throw ex;
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
+
         return this;
     }
 
