@@ -8,6 +8,7 @@ import org.noear.solon.core.XPlugin;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Scope;
 import javax.inject.Singleton;
 
 public class XPluginImp implements XPlugin {
@@ -47,6 +48,10 @@ public class XPluginImp implements XPlugin {
 
         Aop.factory().beanCreatorAdd(Singleton.class, (clz, bw, anno) -> {
             bw.singletonSet(true);
+        });
+
+        Aop.factory().beanCreatorAdd(Scope.class, (clz, bw, anno) -> {
+            bw.singletonSet(false);
         });
     }
 }
