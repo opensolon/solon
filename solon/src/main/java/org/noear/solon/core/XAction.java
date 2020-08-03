@@ -71,27 +71,27 @@ public class XAction extends XHandlerAide {
 
     /**
      * 获取一个控制器实例
-     * */
-    public BeanWrap bean(){
+     */
+    public BeanWrap bean() {
         return _bw;
     }
 
     @Override
     public void handle(XContext x) throws Throwable {
-        invoke(x,null);
+        invoke(x, null);
     }
 
     /**
      * 调用
-     * */
-    public void invoke(XContext x, Object obj) throws Throwable{
+     */
+    public void invoke(XContext x, Object obj) throws Throwable {
         x.remotingSet(_remoting);
 
         try {
             //前置加载控制器（用于拦截器获取）
-            if(obj == null){
+            if (obj == null) {
                 obj = _bw.get();
-                if(_poi == XEndpoint.main){
+                if (_poi == XEndpoint.main) {
                     //传递控制器实例
                     x.attrSet("controller", obj);
                 }
@@ -107,26 +107,31 @@ public class XAction extends XHandlerAide {
 
 
     protected void invoke0(XContext x, Object obj) throws Throwable {
+
+        /**
+         * 1.确保所有处理者，能拿到控制器
+         * 2.确保后置处理者，能被触发（前面的异常不能影响后置处理）
+         * */
+
         //前置处理
-        try {
-            for (XHandler h : _before) {
-                try {
-                    h.handle(x);
-                } catch (DataThrowable ex) {
-                    //数据抛出，不进入异常系统
-                    //
-                    x.setHandled(true); //停止处理
+        for (XHandler h : _before) {
+            try {
+                h.handle(x);
+            } catch (DataThrowable ex) {
+                //数据抛出，不进入异常系统
+                //
+                x.setHandled(true); //停止处理
 
-                    renderDo(x, ex); //渲染数据
-                }
+                renderDo(x, ex); //渲染数据
+            } catch (Throwable ex) {
+                x.setHandled(true); //停止处理
+
+                x.attrSet("error", ex);
+                renderDo(x, ex);
+                XMonitor.sendError(x, ex);
             }
-        } catch (Throwable ex) {
-            x.setHandled(true); //停止处理
-
-            x.attrSet("error", ex);
-            renderDo(x, ex);
-            XMonitor.sendError(x, ex);
         }
+
 
         //主体处理
         if (x.getHandled() == false) {
@@ -141,14 +146,15 @@ public class XAction extends XHandlerAide {
                     }
                 }
 
-                Object tmp = callDo(x, obj);
+                //此处必须赋值；下面不一定再赋值
+                x.result = callDo(x, obj);
 
                 //成功后，控制输出产品（放在这个位置正好）
                 if (XUtil.isEmpty(_produces) == false) {
                     x.contentType(_produces);
                 }
 
-                renderDo(x, tmp);
+                renderDo(x, x.result);
             } catch (DataThrowable ex) {
                 //数据抛出，不进入异常系统
                 renderDo(x, ex);
@@ -159,7 +165,7 @@ public class XAction extends XHandlerAide {
             }
         }
 
-        //后置处理（要确保后置处理不受前面的影响）
+        //后置处理
         for (XHandler h : _after) {
             h.handle(x);
         }
@@ -176,10 +182,10 @@ public class XAction extends XHandlerAide {
      * 执行渲染（便于重写）
      */
     protected void renderDo(XContext x, Object result) throws Throwable {
-        x.result = result;
-
         //可以通过before关掉render
         if (x.getRendered() == false) {
+            x.result = result;
+
             if (_render == null) {
                 x.render(result);
             } else {
