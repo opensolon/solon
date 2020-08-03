@@ -41,7 +41,7 @@ public class FieldWrap {
      * 获取自身的临时对象
      * */
     public VarHolder holder(Object obj) {
-        return new FieldVarHolder(this, obj);
+        return new VarHolderField(this, obj);
     }
 
     /**
