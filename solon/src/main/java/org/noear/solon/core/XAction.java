@@ -90,7 +90,7 @@ public class XAction extends XHandlerAide {
         x.remotingSet(_remoting);
 
         try {
-            //前置加载控制器（用于拦截器获取）
+            //预加载控制器，确保所有的处理者可以都可以获取控制器
             if (obj == null) {
                 obj = _bw.get();
                 if (_poi == XEndpoint.main) {
