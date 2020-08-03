@@ -12,7 +12,7 @@ import java.util.Properties;
 
 @XController
 public class TestController {
-    @XInject //会从bean库注入
+    @XInject("rs1") //会从bean库注入
     public Rockapi  rockapi11;
 
     @XInject("rs1")
