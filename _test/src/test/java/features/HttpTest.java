@@ -2,21 +2,20 @@ package features;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
 import org.noear.solon.XApp;
+import org.noear.solon.test.SolonBootTest;
+import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.water.utils.HttpUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@RunWith(SolonJUnit4ClassRunner.class)
+@SolonBootTest(webapp.TestApp.class)
 public class HttpTest {
-    @BeforeClass
-    public static void test0() throws Exception{
-        XApp.start(webapp.TestApp.class, new String[]{});
-        Thread.sleep(1000);
-    }
-
 
     @Test
     public void test11() throws IOException{
