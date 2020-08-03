@@ -7,6 +7,9 @@ import org.noear.solon.core.utils.TypeUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -31,15 +34,49 @@ public class AopFactory extends AopFactoryBase {
                 XBean m_an = mWrap.getMethod().getAnnotation(XBean.class);
 
                 if (m_an != null) {
-                    if (mWrap.getParameters().length == 0) {
-                        //充许空函数运行
+                    int size2 = mWrap.getParameters().length;
+
+                    if(size2 == 0){
                         Object raw = mWrap.invoke(bw.raw());
-                        if (raw != null) {
-                            BeanWrap m_bw = Aop.put(mWrap.getReturnType(), raw);
+
+                        if(raw != null) {
+                            BeanWrap m_bw = Aop.put(raw.getClass(), raw);
                             beanRegister(m_bw, m_an.value());
                         }
-                    } else {
-                        throw new RuntimeException("XBean method does not support parameters");
+                    } else{
+                        //1.构建参数
+                        List<Object> args2 = new ArrayList<>(size2);
+                        List<VarHolderParam> args1 = new ArrayList<>(size2);
+
+                        for(Parameter p1 : mWrap.getParameters()){
+                            VarHolderParam p2 = new VarHolderParam(p1);
+                            args1.add(p2);
+
+                            XInject anno2 = p1.getAnnotation(XInject.class);
+                            if(anno2 == null) {
+                                beanInject(p2, null);
+                            }else{
+                                beanInject(p2, anno2.value());
+                            }
+                        }
+
+                        //异步获取注入值
+                        XUtil.commonPool.submit(()->{
+                            for(VarHolderParam p2 : args1){
+                                args2.add(p2.getValue());
+                            }
+
+                            Object raw = mWrap.invoke(bw.raw(), args2.toArray());
+
+                            if(raw != null) {
+                                BeanWrap m_bw = Aop.put(raw.getClass(), raw);
+                                beanRegister(m_bw, m_an.value());
+                            }
+
+                            return true;
+                        });
+
+
                     }
                 }
             }
