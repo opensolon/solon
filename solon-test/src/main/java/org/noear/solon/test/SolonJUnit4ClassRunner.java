@@ -12,9 +12,9 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
         SolonBootTest anno = klass.getAnnotation(SolonBootTest.class);
 
         if (anno != null && anno.value() != null) {
-            XApp.start(anno.value(), new String[]{});
+            XApp.start(anno.value(), new String[]{"-debug=1"});
         } else {
-            XApp.start(klass, new String[]{});
+            XApp.start(klass, new String[]{"-debug=1"});
         }
     }
 
