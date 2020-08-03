@@ -7,4 +7,5 @@ import java.lang.annotation.*;
 @Documented
 public @interface SolonBootTest {
     Class<?> value();
+    boolean debug() default true;
 }
