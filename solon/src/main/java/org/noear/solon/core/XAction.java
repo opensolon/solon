@@ -183,14 +183,16 @@ public class XAction extends XHandlerAide {
      */
     protected void renderDo(XContext x, Object result) throws Throwable {
         //可以通过before关掉render
-        if (x.getRendered() == false) {
-            x.result = result;
+        if (x.getRendered()) {
+            return;
+        }
 
-            if (_render == null) {
-                x.render(result);
-            } else {
-                _render.render(result, x);
-            }
+        x.result = result;
+
+        if (_render == null) {
+            x.render(result);
+        } else {
+            _render.render(result, x);
         }
     }
 }
