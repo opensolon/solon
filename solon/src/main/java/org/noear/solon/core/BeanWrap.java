@@ -91,7 +91,7 @@ public class BeanWrap {
         if (_singleton) {
             return (T) _raw;
         } else {
-            return (T) _new();
+            return (T) _new(); //如果是 interface ，则返回 _raw
         }
     }
 
@@ -100,7 +100,7 @@ public class BeanWrap {
      */
     protected Object _new() {
         if (_clz.isInterface()) {
-            return null;
+            return _raw;
         }
 
         try {
@@ -108,7 +108,7 @@ public class BeanWrap {
             Object obj = _clz.newInstance();
 
             //2.注入
-            Aop.factory().inject(obj);
+            Aop.inject(obj);
 
             //3.初始化
             if(_clz_init != null){
@@ -129,7 +129,6 @@ public class BeanWrap {
         }
 
         if (_clz.isInterface()) {
-            singletonSet(true); //如果它是接口，则认为是单例；因为无法实列化
             return;
         }
 
