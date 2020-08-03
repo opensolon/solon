@@ -25,7 +25,10 @@ public class BeanWrap {
         _clz = clz;
 
         XSingleton ano = clz.getAnnotation(XSingleton.class);
-        _singleton = (ano == null || ano.value());
+        if (ano != null) {
+            //默认为非单例
+            _singleton = ano.value();
+        }
 
         _buildInit();
 
