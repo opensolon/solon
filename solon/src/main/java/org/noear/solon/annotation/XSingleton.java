@@ -11,5 +11,5 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface XSingleton {
-    boolean value() ;
+    boolean value() default true;
 }
