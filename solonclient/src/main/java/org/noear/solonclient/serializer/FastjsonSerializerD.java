@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import org.noear.solon.XApp;
 import org.noear.solonclient.Enctype;
 import org.noear.solonclient.IDeserializer;
 import org.noear.solonclient.ISerializer;
@@ -20,7 +21,8 @@ public class FastjsonSerializerD implements ISerializer, IDeserializer {
 
 
     private boolean usingType;
-    public FastjsonSerializerD(boolean usingType){
+
+    public FastjsonSerializerD(boolean usingType) {
         this.usingType = usingType;
     }
 
@@ -50,19 +52,27 @@ public class FastjsonSerializerD implements ISerializer, IDeserializer {
         Object returnVal = null;
         try {
             if (str == null) {
-                return (T)str;
+                return (T) str;
             }
-            returnVal = JSONObject.parseObject(str, new TypeReference<T>(){});
+            returnVal = JSONObject.parseObject(str, new TypeReference<T>() {
+            });
 
-        }catch (Throwable ex){
-            System.err.println("error::" + str);
+        } catch (Throwable ex) {
+            if (XApp.cfg().isDebugMode()) {
+                System.err.println("error::" + str);
+            }
+
             returnVal = ex;
         }
 
         if (returnVal != null && Throwable.class.isAssignableFrom(returnVal.getClass())) {
-            throw new RuntimeException((Throwable)returnVal);
+            if (returnVal instanceof RuntimeException) {
+                throw (RuntimeException) returnVal;
+            } else {
+                throw new RuntimeException((Throwable) returnVal);
+            }
         } else {
-            return (T)returnVal;
+            return (T) returnVal;
         }
     }
 }

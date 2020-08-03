@@ -1,6 +1,7 @@
 package org.noear.solonclient.serializer;
 
 import org.noear.snack.ONode;
+import org.noear.solon.XApp;
 import org.noear.solonclient.Enctype;
 import org.noear.solonclient.IDeserializer;
 import org.noear.solonclient.ISerializer;
@@ -41,12 +42,18 @@ public class SnackSerializerD implements ISerializer, IDeserializer {
             returnVal = ONode.deserialize(str, clz);
 
         } catch (Throwable ex) {
-            System.err.println("error::" + str);
+            if (XApp.cfg().isDebugMode()) {
+                System.err.println("error::" + str);
+            }
             returnVal = ex;
         }
 
         if (returnVal != null && Throwable.class.isAssignableFrom(returnVal.getClass())) {
-            throw new RuntimeException((Throwable) returnVal);
+            if (returnVal instanceof RuntimeException) {
+                throw (RuntimeException) returnVal;
+            } else {
+                throw new RuntimeException((Throwable) returnVal);
+            }
         } else {
             return (T) returnVal;
         }
