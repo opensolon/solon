@@ -31,6 +31,8 @@
         <jetty.ver>9.4.20.v20190813</jetty.ver>
         <jackson.ver>2.10.5</jackson.ver>
         <hessian.ver>4.0.63</hessian.ver>
+
+        <junit.ver>4.12</junit.ver>
     </properties>
 
 
@@ -273,6 +275,12 @@
                 <type>pom</type>
             </dependency>
 
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-test</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -489,6 +497,8 @@
 
         <module>../solon-mvc</module>
         <module>../solon-api</module>
+
+        <module>../solon-test</module>
 
 
         <module>../_extend2/cron4j-solon-plugin</module>
