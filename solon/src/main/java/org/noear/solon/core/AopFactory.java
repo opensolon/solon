@@ -96,35 +96,35 @@ public class AopFactory extends AopFactoryBase {
     /**
      * 执行字段注入
      * */
-    public void beanInject(FieldWrapTmp fwT, String name){
+    public void beanInject(VarHolder varH, String name){
         if (XUtil.isEmpty(name)) {
             //如果没有name,使用类型进行获取 bean
-            Aop.getAsyn(fwT.getType(), (bw) -> {
-                fwT.setValue(bw.get());
+            Aop.getAsyn(varH.getType(), (bw) -> {
+                varH.setValue(bw.get());
             });
         } else {
             //如果有name
-            if (Properties.class == fwT.getType()) {
+            if (Properties.class == varH.getType()) {
                 //如果是 Properties，只尝试从配置获取
                 Properties val = XApp.cfg().getProp(name);
-                fwT.setValue(val);
+                varH.setValue(val);
             } else {
                 //1.如果是单值，先尝试获取BEAN
                 Object tmp = Aop.get(name);
 
                 if (tmp != null) {
-                    fwT.setValue(tmp);
+                    varH.setValue(tmp);
                 } else {
                     //2.然后尝试获取配置
                     String val = XApp.cfg().get(name);
 
                     if (XUtil.isEmpty(val) == false) {
-                        Object val2 = TypeUtil.changeOfPop(fwT.getType(), val);
-                        fwT.setValue(val2);
+                        Object val2 = TypeUtil.changeOfPop(varH.getType(), val);
+                        varH.setValue(val2);
                     } else {
                         //3.如果没有配置，尝试异步获取BEAN
                         Aop.getAsyn(name, (bw) -> {
-                            fwT.setValue(bw.get());
+                            varH.setValue(bw.get());
                         });
                     }
                 }
@@ -201,8 +201,8 @@ public class AopFactory extends AopFactoryBase {
         for (Field f : fs) {
             Annotation[] annS = f.getDeclaredAnnotations();
             if (annS.length > 0) {
-                FieldWrapTmp fwT = clzWrap.getFieldWrap(f).tmp(obj);
-                tryBeanInject(fwT, annS);
+                VarHolder varH = clzWrap.getFieldWrap(f).holder(obj);
+                tryBeanInject(varH, annS);
             }
         }
     }

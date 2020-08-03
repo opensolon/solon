@@ -40,8 +40,8 @@ public class FieldWrap {
     /**
      * 获取自身的临时对象
      * */
-    public FieldWrapTmp tmp(Object obj) {
-        return new FieldWrapTmp(this, obj);
+    public VarHolder holder(Object obj) {
+        return new FieldVarHolder(this, obj);
     }
 
     /**
