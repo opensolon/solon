@@ -143,6 +143,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.extend.jsr330</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.extend.schedule</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
