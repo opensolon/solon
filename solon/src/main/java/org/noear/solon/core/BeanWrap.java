@@ -26,7 +26,7 @@ public class BeanWrap {
 
         XSingleton ano = clz.getAnnotation(XSingleton.class);
         if (ano != null) {
-            //默认为非单例
+            //JSR330，默认为非单例
             _singleton = ano.value();
         }
 
