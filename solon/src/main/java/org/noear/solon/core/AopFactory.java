@@ -133,24 +133,20 @@ public class AopFactory extends AopFactoryBase {
     /**
      * 执行字段注入
      * */
-    public void beanInject(VarHolder varH, String name){
+    public void beanInject(VarHolder varH, String name) {
         if (XUtil.isEmpty(name)) {
             //如果没有name,使用类型进行获取 bean
             Aop.getAsyn(varH.getType(), (bw) -> {
                 varH.setValue(bw.get());
             });
         } else {
-            //如果有name
-            if (Properties.class == varH.getType()) {
-                //如果是 Properties，只尝试从配置获取
-                Properties val = XApp.cfg().getProp(name);
-                varH.setValue(val);
-            } else {
-                //1.如果是单值，先尝试获取BEAN
-                Object tmp = Aop.get(name);
-
-                if (tmp != null) {
-                    varH.setValue(tmp);
+            if (name.startsWith("@")) {
+                //配置
+                name = name.substring(1);
+                if (Properties.class == varH.getType()) {
+                    //如果是 Properties，只尝试从配置获取
+                    Properties val = XApp.cfg().getProp(name);
+                    varH.setValue(val);
                 } else {
                     //2.然后尝试获取配置
                     String val = XApp.cfg().get(name);
@@ -158,12 +154,21 @@ public class AopFactory extends AopFactoryBase {
                     if (XUtil.isEmpty(val) == false) {
                         Object val2 = TypeUtil.changeOfPop(varH.getType(), val);
                         varH.setValue(val2);
-                    } else {
-                        //3.如果没有配置，尝试异步获取BEAN
-                        Aop.getAsyn(name, (bw) -> {
-                            varH.setValue(bw.get());
-                        });
+                    }else{
+                        varH.setValue(null);
                     }
+                }
+            } else {
+                //BEAN
+                Object tmp = Aop.get(name);
+
+                if (tmp != null) {
+                    varH.setValue(tmp);
+                } else {
+                    //3.如果没有配置，尝试异步获取BEAN
+                    Aop.getAsyn(name, (bw) -> {
+                        varH.setValue(bw.get());
+                    });
                 }
             }
         }
