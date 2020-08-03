@@ -10,7 +10,6 @@
 支持jdk8+，主框架90kb。组合不同的插件应对不同需求。
 
 
-
 * 采用Handler + Context 架构
 * 实现IOC & AOP容器，支持MVC
 * 支持Http（Serverlet 或 非Serverlet），WebSocket，Socket信号接入
