@@ -137,15 +137,21 @@ public class XAction extends XHandlerAide {
                     }
                 }
 
-                //此处赋值；后续不一定会再赋值
-                x.result = callDo(x, obj);
+                Object tmp = callDo(x, obj);
 
-                //成功后，控制输出产品（放在这个位置正好）
-                if (XUtil.isEmpty(_produces) == false) {
-                    x.contentType(_produces);
+                //如果是主处理
+                if(_poi == XEndpoint.main) {
+
+                    //记录返回值（后续不一定会再记录）
+                    x.result = tmp;
+
+                    //设定输出产品（放在这个位置正好）
+                    if (XUtil.isEmpty(_produces) == false) {
+                        x.contentType(_produces);
+                    }
+
+                    renderDo(tmp, x);
                 }
-
-                renderDo(x.result, x);
             });
         }
 
