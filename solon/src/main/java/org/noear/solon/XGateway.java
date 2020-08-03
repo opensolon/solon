@@ -95,7 +95,7 @@ public abstract class XGateway extends XHandlerAide implements XRender {
                 render(c.result, c);
             }
 
-            //后置处理
+            //后置处理（确保不受前面的异常影响）
             for (XHandler h : _after) {
                 handleDo(c, h, XEndpoint.after, null);
             }
@@ -117,8 +117,15 @@ public abstract class XGateway extends XHandlerAide implements XRender {
                     ((XAction) h).invoke(c, bean);
                 }
             } catch (DataThrowable ex) {
-                c.setHandled(true);
+                c.setHandled(true); //停止处理
+
                 render(ex, c);
+            } catch (Throwable ex) {
+                c.setHandled(true); //停止处理
+
+                c.attrSet("error", ex);
+                render(ex, c);
+                XMonitor.sendError(c, ex);
             }
             //
             //别的异常不管，输出50X错误

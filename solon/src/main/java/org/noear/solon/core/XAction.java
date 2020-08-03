@@ -108,15 +108,24 @@ public class XAction extends XHandlerAide {
 
     protected void invoke0(XContext x, Object obj) throws Throwable {
         //前置处理
-        for (XHandler h : _before) {
-            try {
-                h.handle(x);
-            } catch (DataThrowable ex) {
-                //数据抛出，不进入异常系统
-                //
-                x.setHandled(true); //停止处理
-                renderDo(x, ex); //渲染数据
+        try {
+            for (XHandler h : _before) {
+                try {
+                    h.handle(x);
+                } catch (DataThrowable ex) {
+                    //数据抛出，不进入异常系统
+                    //
+                    x.setHandled(true); //停止处理
+
+                    renderDo(x, ex); //渲染数据
+                }
             }
+        } catch (Throwable ex) {
+            x.setHandled(true); //停止处理
+
+            x.attrSet("error", ex);
+            renderDo(x, ex);
+            XMonitor.sendError(x, ex);
         }
 
         //主体处理
@@ -150,7 +159,7 @@ public class XAction extends XHandlerAide {
             }
         }
 
-        //后置处理
+        //后置处理（要确保后置处理不受前面的影响）
         for (XHandler h : _after) {
             h.handle(x);
         }
