@@ -84,15 +84,20 @@ public class XAction extends XHandlerAide {
     /**
      * 调用
      * */
-    public void invoke(XContext x, Object bean) throws Throwable{
+    public void invoke(XContext x, Object obj) throws Throwable{
         x.remotingSet(_remoting);
 
         try {
-            if (XUtil.isEmpty(_produces) == false) {
-                x.contentType(_produces);
+            //前置加载控制器（用于拦截器获取）
+            if(obj == null){
+                obj = _bw.get();
+                if(_poi == XEndpoint.main){
+                    //传递控制器实例
+                    x.attrSet("controller", obj);
+                }
             }
 
-            invoke0(x, bean);
+            invoke0(x, obj);
         } catch (Throwable ex) {
             x.attrSet("error", ex);
             x.render(ex);
@@ -114,8 +119,10 @@ public class XAction extends XHandlerAide {
             }
         }
 
+        //主体处理
         if (x.getHandled() == false) {
             try {
+                //获取path var
                 if (_pr != null) {
                     Matcher pm = _pr.matcher(x.path());
                     if (pm.find()) {
@@ -125,15 +132,14 @@ public class XAction extends XHandlerAide {
                     }
                 }
 
-                //可以前置加载控制器
-                if(obj == null){
-                    obj = _bw.get();
-                    if(_poi == XEndpoint.main){
-                        //传递控制器实例
-                        x.attrSet("controller", obj);
-                    }
+                Object tmp = callDo(x, obj);
+
+                //成功后，控制输出产品（放在这个位置正好）
+                if (XUtil.isEmpty(_produces) == false) {
+                    x.contentType(_produces);
                 }
-                renderDo(x, callDo(x, obj));
+
+                renderDo(x, tmp);
             } catch (DataThrowable ex) {
                 //数据抛出，不进入异常系统
                 renderDo(x, ex);
