@@ -24,6 +24,7 @@ public class XPluginImp implements XPlugin {
             //通过SqlSessionFactory打开一个数据库会话
             SqlSession sqlsession = sqlSessionFactory.openSession();
 
+            Aop.put(SqlSessionFactory.class, sqlSessionFactory);
             Aop.put("sqlsession", sqlsession);
         }catch (Exception ex){
             throw new RuntimeException(ex);
