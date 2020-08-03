@@ -137,7 +137,7 @@ public class XAction extends XHandlerAide {
                     }
                 }
 
-                //此处必须赋值；下面不一定再赋值
+                //此处赋值；后续不一定会再赋值
                 x.result = callDo(x, obj);
 
                 //成功后，控制输出产品（放在这个位置正好）
