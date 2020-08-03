@@ -9,6 +9,7 @@ public interface XUpstream {
      * 设置备份节点
      * */
     default void setBackup(String server){}
+
     /**
      * 获取节点
      *
