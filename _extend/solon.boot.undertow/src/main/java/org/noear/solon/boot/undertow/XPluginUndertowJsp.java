@@ -36,7 +36,7 @@ public class XPluginUndertowJsp implements XPlugin {
     public void start(XApp app) {
         try {
             setupJsp(app);
-        } catch (ServletException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         _server.start();
@@ -44,7 +44,7 @@ public class XPluginUndertowJsp implements XPlugin {
     }
 
 
-    public void setupJsp(XApp app) throws ServletException {
+    public void setupJsp(XApp app) throws Exception {
         final String KEY = "io.message";
 
         final ServletContainer container = ServletContainer.Factory.newInstance();
@@ -65,8 +65,9 @@ public class XPluginUndertowJsp implements XPlugin {
             builder.setDefaultSessionTimeout(XServerProp.session_timeout);
         }
 
+        HashMap<String, TagLibraryInfo> tagLibraryMap = TldLocator.createTldInfos();
 
-        JspServletBuilder.setupDeployment(builder, new HashMap<String, JspPropertyGroup>(), new HashMap<String, TagLibraryInfo>(), new HackInstanceManager());
+        JspServletBuilder.setupDeployment(builder, new HashMap<String, JspPropertyGroup>(),tagLibraryMap , new HackInstanceManager());
 
         DeploymentManager manager = container.addDeployment(builder);
         manager.deploy();

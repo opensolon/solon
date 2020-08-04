@@ -56,12 +56,29 @@
             </exclusions>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.jboss.metadata</groupId>
+            <artifactId>jboss-metadata-common</artifactId>
+            <version>8.0.0.Final</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.metadata</groupId>
+            <artifactId>jboss-metadata-web</artifactId>
+            <version>8.0.0.Final</version>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>io.undertow</groupId>
             <artifactId>undertow-jsp</artifactId>
             <version>1.0.0.Beta27</version>
             <scope>provided</scope>
         </dependency>
+
+
 
         <!--jsp try end-->
     </dependencies>
