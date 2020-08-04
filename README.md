@@ -51,12 +51,11 @@ public class App{
 | org.noear:solon-parent | 框架版本管理 |
 | org.noear:solon | 主框架 |
 
-###### 快速集成包
+###### 快速集成开发包
 
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon-web | 可进行mvc开发的快速集成包 |
-| org.noear:solon-api | 可进行api 或 rpc 开发的快速集成包 |
+| org.noear:solon-web | 可进行http api,mvc,rpc开发的快速集成包 |
 
 ###### 插件
 
