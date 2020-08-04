@@ -286,45 +286,43 @@ public class AopFactory extends AopFactoryBase {
             Aop.getAsyn(varH.getType(), (bw) -> {
                 varH.setValue(bw.get());
             });
+        } else if (name.startsWith("${") == false) {
+            //使用name, 获取BEAN
+            Aop.getAsyn(name, (bw) -> {
+                varH.setValue(bw.get());
+            });
         } else {
-            if (name.startsWith("${")) {
-                //配置
-                name = name.substring(2, name.length() - 1);
+            //配置 ${xxx}
+            name = name.substring(2, name.length() - 1);
 
-                if (Properties.class == varH.getType()) {
-                    //如果是 Properties
-                    Properties val = XApp.cfg().getProp(name);
-                    varH.setValue(val);
-                } else if (Map.class == varH.getType()) {
-                    //如果是 Map
-                    Map val = XApp.cfg().getXmap(name);
-                    varH.setValue(val);
-                } else {
-                    //2.然后尝试获取配置
-                    String val = XApp.cfg().get(name);
-                    if (val == null) {
-                        Class<?> pt = varH.getType();
+            if (Properties.class == varH.getType()) {
+                //如果是 Properties
+                Properties val = XApp.cfg().getProp(name);
+                varH.setValue(val);
+            } else if (Map.class == varH.getType()) {
+                //如果是 Map
+                Map val = XApp.cfg().getXmap(name);
+                varH.setValue(val);
+            } else {
+                //2.然后尝试获取配置
+                String val = XApp.cfg().get(name);
+                if (val == null) {
+                    Class<?> pt = varH.getType();
 
-                        if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive()) {
-                            //如果是java基础类型，则为null（后面统一地 isPrimitive 做处理）
-                            //
-                            varH.setValue(null);
-                        } else {
-                            //尝试转为实体
-                            Properties val0 = XApp.cfg().getProp(name);
-                            Object val2 = ClassWrap.get(pt).newBy(val0::getProperty);
-                            varH.setValue(val2);
-                        }
+                    if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive()) {
+                        //如果是java基础类型，则为null（后面统一地 isPrimitive 做处理）
+                        //
+                        varH.setValue(null); //暂时不支持数组注入
                     } else {
-                        Object val2 = TypeUtil.changeOfPop(varH.getType(), val);
+                        //尝试转为实体
+                        Properties val0 = XApp.cfg().getProp(name);
+                        Object val2 = ClassWrap.get(pt).newBy(val0::getProperty);
                         varH.setValue(val2);
                     }
+                } else {
+                    Object val2 = TypeUtil.changeOfPop(varH.getType(), val);
+                    varH.setValue(val2);
                 }
-            } else {
-                //使用name, 获取BEAN
-                Aop.getAsyn(name, (bw) -> {
-                    varH.setValue(bw.get());
-                });
             }
         }
     }
