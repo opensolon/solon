@@ -9,13 +9,13 @@ import java.util.Properties;
 @XBean("config")
 public class ConfigDemo {
     //注解方式(仅支持简单的类型注入)
-    @XInject("username")
+    @XInject("${username}")
     public String username;
 
-    @XInject("paasword")
+    @XInject("${paasword}")
     public int paasword;
 
-    @XInject("demo8.test")
+    @XInject("${demo8.test}")
     public Properties test;
 
     //获取方式（复杂的请用这种方式）
