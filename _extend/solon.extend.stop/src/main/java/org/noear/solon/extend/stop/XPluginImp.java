@@ -15,10 +15,16 @@ public class XPluginImp implements XPlugin {
 
         if (enabled) {
             app.get(path, (c) -> {
+                long delay2 = c.paramAsLong("delay", delay);
+
+                if(delay2 < 0){
+                    delay2 = 0;
+                }
+
                 if ("*".equals(host)) {
-                    XApp.stop(true, delay);
+                    XApp.stop(true, delay2);
                 } else if (host.equals(c.uri().getHost())) {
-                    XApp.stop(true, delay);
+                    XApp.stop(true, delay2);
                 }
             });
         }
