@@ -55,7 +55,7 @@ public class App{
 
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon-mvc | 可进行mvc开发的快速集成包 |
+| org.noear:solon-web | 可进行mvc开发的快速集成包 |
 | org.noear:solon-api | 可进行api 或 rpc 开发的快速集成包 |
 
 ###### 插件
@@ -133,7 +133,7 @@ public class App{
 ```xml
 <parent>
     <groupId>org.noear</groupId>
-    <artifactId>solon-mvc</artifactId>
+    <artifactId>solon-web</artifactId>
     <version>1.0.9</version>
     <type>pom</type>
 </parent>
