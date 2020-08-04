@@ -302,26 +302,29 @@ public class AopFactory extends AopFactoryBase {
                 } else {
                     //2.然后尝试获取配置
                     String val = XApp.cfg().get(name);
+                    if (val == null) {
+                        Class<?> pt = varH.getType();
 
-                    if (XUtil.isEmpty(val) == false) {
+                        if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive()) {
+                            //如果是java基础类型，则为null（后面统一地 isPrimitive 做处理）
+                            //
+                            varH.setValue(null);
+                        } else {
+                            //尝试转为实体
+                            Properties val0 = XApp.cfg().getProp(name);
+                            Object val2 = ClassWrap.get(pt).newBy(val0::getProperty);
+                            varH.setValue(val2);
+                        }
+                    } else {
                         Object val2 = TypeUtil.changeOfPop(varH.getType(), val);
                         varH.setValue(val2);
-                    } else {
-                        varH.setValue(null);
                     }
                 }
             } else {
-                //BEAN
-                Object tmp = Aop.get(name);
-
-                if (tmp != null) {
-                    varH.setValue(tmp);
-                } else {
-                    //3.如果没有配置，尝试异步获取BEAN
-                    Aop.getAsyn(name, (bw) -> {
-                        varH.setValue(bw.get());
-                    });
-                }
+                //使用name, 获取BEAN
+                Aop.getAsyn(name, (bw) -> {
+                    varH.setValue(bw.get());
+                });
             }
         }
     }

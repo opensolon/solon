@@ -14,3 +14,5 @@ solon.datasource:
     username: "demo"
     password: "UL0hHlg0Ybq60xyb"
 
+mybatis:
+  datasource:

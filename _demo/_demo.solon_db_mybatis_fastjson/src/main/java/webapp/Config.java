@@ -64,12 +64,12 @@ public class Config {
     }
 
     @XBean("test.dataSource")
-    public HikariDataSource dataSource_java(@XInject("${test.db}") Map<String,String> map) {
+    public HikariDataSource dataSource_java(@XInject("${test.db}") Properties map) {
         //XMap map = XApp.cfg().getXmap("test.db");
 
-        map.put("jdbcUrl",map.get("url"));
+        map.setProperty("jdbcUrl",map.getProperty("url"));
 
-        HikariDataSource dataSource = ClassWrap.get(HikariDataSource.class).newBy(map::get);
+        HikariDataSource dataSource = ClassWrap.get(HikariDataSource.class).newBy(map::getProperty);
 
         return dataSource;
     }
