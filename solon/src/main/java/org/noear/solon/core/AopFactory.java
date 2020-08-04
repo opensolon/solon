@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.function.BiPredicate;
 import java.util.function.Function;
 
 /**
@@ -37,7 +36,7 @@ public class AopFactory extends AopFactoryBase {
                 XBean m_an = mWrap.getMethod().getAnnotation(XBean.class);
 
                 if (m_an != null) {
-                    beanBuildDo(m_an.value(), mWrap, bw, (p1) -> {
+                    beanBuild(m_an.value(), mWrap, bw, (p1) -> {
                         XInject tmp = p1.getAnnotation(XInject.class);
                         if (tmp == null) {
                             return null;
@@ -64,7 +63,7 @@ public class AopFactory extends AopFactoryBase {
         });
 
         beanInjectorAdd(XInject.class, ((fwT, anno) -> {
-            beanInjectDo(fwT, anno.value());
+            beanInject(fwT, anno.value());
         }));
     }
 
@@ -237,7 +236,7 @@ public class AopFactory extends AopFactoryBase {
     /**
      * 执行对象构建
      */
-    public static void beanBuildDo(String beanName, MethodWrap mWrap, BeanWrap bw, Function<Parameter, String> injectVal) throws Exception {
+    public static void beanBuild(String beanName, MethodWrap mWrap, BeanWrap bw, Function<Parameter, String> injectVal) throws Exception {
         int size2 = mWrap.getParameters().length;
 
         if (size2 == 0) {
@@ -256,7 +255,7 @@ public class AopFactory extends AopFactoryBase {
                 VarHolderParam p2 = new VarHolderParam(p1);
                 args1.add(p2);
 
-                beanInjectDo(p2, injectVal.apply(p1));
+                beanInject(p2, injectVal.apply(p1));
             }
 
             //异步获取注入值
@@ -280,7 +279,7 @@ public class AopFactory extends AopFactoryBase {
     /**
      * 执行变量注入
      */
-    public static void beanInjectDo(VarHolder varH, String name) {
+    public static void beanInject(VarHolder varH, String name) {
         if (XUtil.isEmpty(name)) {
             //如果没有name,使用类型进行获取 bean
             Aop.getAsyn(varH.getType(), (bw) -> {
