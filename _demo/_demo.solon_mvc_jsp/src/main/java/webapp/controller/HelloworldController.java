@@ -10,7 +10,7 @@ import webapp.model.UserModel;
 @XController
 public class HelloworldController {
 
-    @XInject("custom.user")
+    @XInject("${custom.user}")
     protected String user;
 
     @XMapping("/helloworld")

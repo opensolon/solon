@@ -18,7 +18,7 @@ import java.util.Map;
 @SolonBootTest(webapp.TestApp.class)
 public class HttpTest {
 
-    @XInject("username")
+    @XInject("${username}")
     public String username;
 
     @Test
