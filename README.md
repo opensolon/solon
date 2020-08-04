@@ -112,7 +112,7 @@ public class App{
 ### 附1：入门示例
 * 微框架示例
 ```xml
-<!-- http boot 插件；可以换成：.smarthttp 或 .jetty 或 .undertow 或自己定义个 -->
+<!-- http boot 插件；可以换成：.jetty 或 .undertow 或自己定义个 -->
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon.boot.jlhttp</artifactId>
