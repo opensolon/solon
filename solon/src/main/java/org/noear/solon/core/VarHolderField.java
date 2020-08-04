@@ -1,6 +1,7 @@
 package org.noear.solon.core;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.ParameterizedType;
 
 /**
  * 字段包装 临时对象
@@ -14,6 +15,11 @@ public class VarHolderField implements VarHolder{
     public VarHolderField(FieldWrap fw, Object obj) {
         this.fw = fw;
         this.obj = obj;
+    }
+
+    @Override
+    public ParameterizedType getGenericType() {
+        return fw.genericType;
     }
 
     /**

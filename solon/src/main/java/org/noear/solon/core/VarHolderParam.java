@@ -2,6 +2,7 @@ package org.noear.solon.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.ParameterizedType;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -11,6 +12,11 @@ public class VarHolderParam implements VarHolder{
     public VarHolderParam(Parameter p){
         this.p = p;
         this.future = new CompletableFuture<>();
+    }
+
+    @Override
+    public ParameterizedType getGenericType() {
+        return null;
     }
 
     @Override
