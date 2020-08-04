@@ -3,7 +3,7 @@
 <configuration>
 
     <!-- 引用db.properties配置文件 -->
-    <properties resource="application.properties"></properties>
+    <properties resource="application.yml"></properties>
     <!--
         development:开发模式
         work:工作模式

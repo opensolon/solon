@@ -4,11 +4,14 @@ import org.noear.solon.core.utils.TypeUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Class 包装
@@ -45,19 +48,47 @@ public class ClassWrap {
             methodWraps.add(MethodWrap.get(m));
         }
 
+        //自己申明的字段
         fields = clz.getDeclaredFields();
+
+        //扫描所有字段
+        scanAllFields(clz, fieldWraps::containsKey, fieldWraps::put);
     }
 
-    private Map<String, FieldWrap> _fwS = new ConcurrentHashMap<>();
+    private Map<String, FieldWrap> fieldWraps = new ConcurrentHashMap<>();
+
+    /** 扫描一个类的所有字段 */
+    private static void scanAllFields(Class<?> clz, Predicate<String> checker, BiConsumer<String,FieldWrap> consumer) {
+        if (clz == null) {
+            return;
+        }
+
+        for (Field f : clz.getDeclaredFields()) {
+            int mod = f.getModifiers();
+
+            if (!Modifier.isTransient(mod) && !Modifier.isStatic(mod)) {
+                f.setAccessible(true);
+
+                if (checker.test(f.getName()) == false) {
+                    consumer.accept(f.getName(), new FieldWrap(clz, f));
+                }
+            }
+        }
+
+        Class<?> sup = clz.getSuperclass();
+        if (sup != Object.class) {
+            scanAllFields(sup, checker, consumer);
+        }
+    }
 
     /**
      * 获取一个字段包装
      */
     public FieldWrap getFieldWrap(Field f1) {
-        FieldWrap fw = _fwS.get(f1.getName());
+        FieldWrap fw = fieldWraps.get(f1.getName());
         if (fw == null) {
             fw = new FieldWrap(clazz, f1);
-            FieldWrap l = _fwS.putIfAbsent(f1.getName(), fw);
+            FieldWrap l = fieldWraps.putIfAbsent(f1.getName(), fw);
             if (l != null) {
                 fw = l;
             }
@@ -83,14 +114,16 @@ public class ClassWrap {
      * 为一个对象填充数据
      * */
     public void fill(Object target, Function<String, String> data, XContext ctx) {
-        for (Field f : fields) {
-            String key = f.getName();
+        for (Map.Entry<String,FieldWrap> kv : fieldWraps.entrySet()) {
+            String key = kv.getKey();
             String val0 = data.apply(key);
 
             if (val0 != null) {
+                FieldWrap fw = kv.getValue();
+
                 //将 string 转为目标 type，并为字段赋值
-                Object val = TypeUtil.changeOfCtx(f, f.getType(), key, val0, ctx);
-                getFieldWrap(f).setValue(target, val);
+                Object val = TypeUtil.changeOfCtx(fw.field, fw.type, key, val0, ctx);
+                fw.setValue(target, val);
             }
         }
     }
