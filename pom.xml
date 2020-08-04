@@ -25,8 +25,8 @@
         <module>_test2</module>
 
 
-<!--        <module>_demo/_demo.solon_db_mybatis_fastjson</module>-->
-<!--        <module>_demo/_demo.solon_db_weed_snack</module>-->
+        <module>_demo/_demo.solon_db_mybatis_fastjson</module>
+        <module>_demo/_demo.solon_db_weed_snack</module>
         <module>_demo/_demo.solon_feign</module>
         <module>_demo/_demo.solon_gateway</module>
         <module>_demo/_demo.solon_helloworld</module>

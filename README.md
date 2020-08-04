@@ -116,7 +116,7 @@ public class App{
 <dependency>
   <groupId>org.noear</groupId>
   <artifactId>solon.boot.jlhttp</artifactId>
-  <version>1.0.8</version>
+  <version>1.0.9</version>
 </dependency>
 ```
 ```java
@@ -134,7 +134,7 @@ public class App{
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-mvc</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
     <type>pom</type>
 </parent>
 ```
@@ -206,7 +206,7 @@ XApp.cfg().getProp("xxx.datasource"); //=>Properties
 //注入模式
 @XConfiguration //or @XController, or @XBean
 class xxx{
-    @XInject("app_key")
+    @XInject("${app_key}")
     String app_key;
 }
 ```

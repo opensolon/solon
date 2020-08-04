@@ -12,10 +12,14 @@ import java.util.Properties;
 
 @XController
 public class TestController {
-    @XInject //会从bean库注入
+    @XInject("rs1") //会从bean库注入
     public Rockapi  rockapi11;
+
     @XInject("rs1")
     public Rockapi  rockapi12;
+
+    @XInject("rs3")
+    public Rockapi  rockapi13;
 
     @XInject //会自动生成
     public Rockservice2  rockapi2;
@@ -34,5 +38,10 @@ public class TestController {
         map.put("rockapi2", rockapi2.test());
 
         return map;
+    }
+
+    @XMapping("/demo6/aop3")
+    public Object test3() throws Exception {
+        return rockapi13.test();
     }
 }

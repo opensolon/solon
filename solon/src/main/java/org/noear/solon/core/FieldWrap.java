@@ -38,9 +38,9 @@ public class FieldWrap {
     }
 
     /**
-     * 获取变量容器
+     * 获取自身的临时对象
      * */
-    public VarHolderField hold(Object obj) {
+    public VarHolder holder(Object obj) {
         return new VarHolderField(this, obj);
     }
 

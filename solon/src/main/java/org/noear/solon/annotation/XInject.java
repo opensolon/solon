@@ -5,9 +5,9 @@ import java.lang.annotation.*;
 /**
  * 注入
  *
- * 可注入配置和BEAN
+ * 可注入到字段或参数（参数只在XConfiguration有效）
  * */
-@Target({ElementType.FIELD})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface XInject {

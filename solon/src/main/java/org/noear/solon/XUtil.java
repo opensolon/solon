@@ -8,6 +8,9 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,6 +19,8 @@ import java.util.regex.Pattern;
  * 内部专用工具
  * */
 public class XUtil {
+    public static ExecutorService commonPool = Executors.newCachedThreadPool();
+
     /**
      * 生成UGID
      */

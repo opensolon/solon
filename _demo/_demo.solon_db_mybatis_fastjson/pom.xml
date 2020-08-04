@@ -15,26 +15,15 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.0.8</version>
+        <version>1.0.9</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jlhttp</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.jackson</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.staticfiles</artifactId>
+            <artifactId>solon-mvc</artifactId>
+            <type>pom</type>
         </dependency>
 
         <dependency>

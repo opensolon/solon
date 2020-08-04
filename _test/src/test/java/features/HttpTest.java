@@ -246,6 +246,12 @@ public class HttpTest {
     public void test61() throws IOException{
         assert  get("/demo6/aop").equals("{\"rockapi12\":\"我是：Rockservice1\",\"rockapi11\":\"我是：Rockservice1\",\"rockapi2\":\"我是：Rockservice2\"}");
     }
+
+    @Test
+    public void test63() throws IOException{
+        assert  get("/demo6/aop3").equals("我是：Rockservice3");
+    }
+
     @Test
     public void test71() throws IOException{
         assert  get("/demo7/test").equals("/demo7/test");

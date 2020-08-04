@@ -1,0 +1,19 @@
+test.db:
+  schema: "rock"
+  jdbcUrl: "jdbc:mysql://localdb:3306/rock?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true"
+  url: "jdbc:mysql://localdb:3306/rock?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true"
+  driverClassName: "com.mysql.jdbc.Driver"
+  username: "demo"
+  password: "UL0hHlg0Ybq60xyb"
+
+
+solon.datasource:
+  test:
+    schema: "rock"
+    url: "jdbc:mysql://localdb:3306/rock?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true"
+    driverClassName: "com.mysql.jdbc.Driver"
+    username: "demo"
+    password: "UL0hHlg0Ybq60xyb"
+
+mybatis:
+  datasource:

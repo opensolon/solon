@@ -22,7 +22,7 @@ public class TypeUtil {
             return val;
         }
 
-        if (XUtil.isEmpty(val)) {
+        if (val.length() == 0) {
             return null;
         }
 
@@ -51,60 +51,59 @@ public class TypeUtil {
             }
         }
 
-        if(type.isArray()){
-            if(ctx == null){
+        if(type.isArray()) {
+            if (ctx == null) {
                 return null;
-            }
+            } else {
+                String[] ary = ctx.paramValues(key);
+                if (ary == null) {
+                    return null;
+                }
 
-            String[] ary = ctx.paramValues(key);
-            if(ary == null){
-                return null;
-            }
+                int len = ary.length;
 
-            int len = ary.length;
-
-            if (is(String[].class, type)) {
-                return ary;
-            } else if (is(short[].class, type)) {
-                short[] ary2 = new short[len];
-                for (int i = 0; i < len; i++) {
-                    ary2[i] = Short.parseShort(ary[i]);
+                if (is(String[].class, type)) {
+                    return ary;
+                } else if (is(short[].class, type)) {
+                    short[] ary2 = new short[len];
+                    for (int i = 0; i < len; i++) {
+                        ary2[i] = Short.parseShort(ary[i]);
+                    }
+                    return ary2;
+                } else if (is(int[].class, type)) {
+                    int[] ary2 = new int[len];
+                    for (int i = 0; i < len; i++) {
+                        ary2[i] = Integer.parseInt(ary[i]);
+                    }
+                    return ary2;
+                } else if (is(long[].class, type)) {
+                    long[] ary2 = new long[len];
+                    for (int i = 0; i < len; i++) {
+                        ary2[i] = Long.parseLong(ary[i]);
+                    }
+                    return ary2;
+                } else if (is(float[].class, type)) {
+                    float[] ary2 = new float[len];
+                    for (int i = 0; i < len; i++) {
+                        ary2[i] = Float.parseFloat(ary[i]);
+                    }
+                    return ary2;
+                } else if (is(double[].class, type)) {
+                    double[] ary2 = new double[len];
+                    for (int i = 0; i < len; i++) {
+                        ary2[i] = Double.parseDouble(ary[i]);
+                    }
+                    return ary2;
+                } else if (is(Object[].class, type)) {
+                    Class<?> c = type.getComponentType();
+                    Object[] ary2 = (Object[]) Array.newInstance(c, len);
+                    for (int i = 0; i < len; i++) {
+                        ary2[i] = do_change(c, ary[i]);
+                    }
+                    return ary2;
                 }
-                return ary2;
-            } else if (is(int[].class, type) ) {
-                int[] ary2 = new int[len];
-                for (int i = 0; i < len; i++) {
-                    ary2[i] = Integer.parseInt(ary[i]);
-                }
-                return ary2;
-            } else if (is(long[].class, type)) {
-                long[] ary2 = new long[len];
-                for (int i = 0; i < len; i++) {
-                    ary2[i] = Long.parseLong(ary[i]);
-                }
-                return ary2;
-            }  else if (is(float[].class, type) ) {
-                float[] ary2 = new float[len];
-                for (int i = 0; i < len; i++) {
-                    ary2[i] = Float.parseFloat(ary[i]);
-                }
-                return ary2;
-            } else if (is(double[].class, type)) {
-                double[] ary2 = new double[len];
-                for (int i = 0; i < len; i++) {
-                    ary2[i] = Double.parseDouble(ary[i]);
-                }
-                return ary2;
-            } else if (is(Object[].class, type)) {
-                Class<?> c = type.getComponentType();
-                Object[] ary2 = (Object[])Array.newInstance(c,len);
-                for (int i = 0; i < len; i++) {
-                    ary2[i] = do_change(c, ary[i]);
-                }
-                return ary2;
             }
         }
-
 
 
         throw new RuntimeException("不支持类型:" + type.getName());

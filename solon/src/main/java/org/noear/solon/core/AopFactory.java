@@ -7,8 +7,12 @@ import org.noear.solon.core.utils.TypeUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.function.Function;
 
 /**
  * Aop 处理工厂（可以被继承重写）
@@ -32,16 +36,14 @@ public class AopFactory extends AopFactoryBase {
                 XBean m_an = mWrap.getMethod().getAnnotation(XBean.class);
 
                 if (m_an != null) {
-                    if (mWrap.getParameters().length == 0) {
-                        //充许空函数运行
-                        Object raw = mWrap.invoke(bw.raw());
-                        if (raw != null) {
-                            BeanWrap m_bw = Aop.put(mWrap.getReturnType(), raw);
-                            beanRegister(m_bw, m_an.value());
+                    beanBuild(m_an.value(), mWrap, bw, (p1) -> {
+                        XInject tmp = p1.getAnnotation(XInject.class);
+                        if (tmp == null) {
+                            return null;
+                        } else {
+                            return tmp.value();
                         }
-                    } else {
-                        throw new RuntimeException("XBean method does not support parameters");
-                    }
+                    });
                 }
             }
         });
@@ -67,7 +69,7 @@ public class AopFactory extends AopFactoryBase {
 
     /**
      * XBean 的处理
-     * */
+     */
     protected void beanAnnoHandle(BeanWrap bw, XBean anno) {
         bw.tagSet(anno.tag());
 
@@ -94,59 +96,10 @@ public class AopFactory extends AopFactoryBase {
         }
     }
 
-    /**
-     * 执行字段注入
-     * */
-    public void beanInject(VarHolder varH, String name){
-        if (XUtil.isEmpty(name)) {
-            //如果没有name,使用类型进行获取 bean
-            Aop.getAsyn(varH.getType(), (bw) -> {
-                varH.setValue(bw.get());
-            });
-        } else if (name.startsWith("${") == false) {
-            //使用name, 获取BEAN
-            Aop.getAsyn(name, (bw) -> {
-                varH.setValue(bw.get());
-            });
-        } else {
-            //配置 ${xxx}
-            name = name.substring(2, name.length() - 1);
-
-            if (Properties.class == varH.getType()) {
-                //如果是 Properties
-                Properties val = XApp.cfg().getProp(name);
-                varH.setValue(val);
-            } else if (Map.class == varH.getType()) {
-                //如果是 Map
-                Map val = XApp.cfg().getXmap(name);
-                varH.setValue(val);
-            } else {
-                //2.然后尝试获取配置
-                String val = XApp.cfg().get(name);
-                if (val == null) {
-                    Class<?> pt = varH.getType();
-
-                    if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive()) {
-                        //如果是java基础类型，则为null（后面统一地 isPrimitive 做处理）
-                        //
-                        varH.setValue(null); //暂时不支持数组注入
-                    } else {
-                        //尝试转为实体
-                        Properties val0 = XApp.cfg().getProp(name);
-                        Object val2 = ClassWrap.get(pt).newBy(val0::getProperty);
-                        varH.setValue(val2);
-                    }
-                } else {
-                    Object val2 = TypeUtil.changeOfPop(varH.getType(), val);
-                    varH.setValue(val2);
-                }
-            }
-        }
-    }
 
     /**
      * 注册到管理中心
-     * */
+     */
     public void beanRegister(BeanWrap bw, String name) {
         if (XUtil.isEmpty(name)) {
             Aop.put(bw.clz().getName(), bw);
@@ -186,7 +139,7 @@ public class AopFactory extends AopFactoryBase {
         if (bw == null) {
             bw = new BeanWrap(clz, raw);
             BeanWrap l = beanWraps.putIfAbsent(clz, bw);
-            if(l != null){
+            if (l != null) {
                 bw = l;
             }
         }
@@ -213,8 +166,8 @@ public class AopFactory extends AopFactoryBase {
         for (Field f : fs) {
             Annotation[] annS = f.getDeclaredAnnotations();
             if (annS.length > 0) {
-                VarHolderField fwT = clzWrap.getFieldWrap(f).hold(obj);
-                tryBeanInject(fwT, annS);
+                VarHolder varH = clzWrap.getFieldWrap(f).holder(obj);
+                tryBeanInject(varH, annS);
             }
         }
     }
@@ -276,5 +229,100 @@ public class AopFactory extends AopFactoryBase {
 
         //尝试加载事件（不用函数包装，是为了减少代码）
         loadedEvent.forEach(f -> f.run());
+    }
+
+    ////////////////////////////////////////////////////////
+
+    /**
+     * 执行对象构建
+     */
+    public static void beanBuild(String beanName, MethodWrap mWrap, BeanWrap bw, Function<Parameter, String> injectVal) throws Exception {
+        int size2 = mWrap.getParameters().length;
+
+        if (size2 == 0) {
+            Object raw = mWrap.invoke(bw.raw());
+
+            if (raw != null) {
+                BeanWrap m_bw = Aop.put(raw.getClass(), raw);
+                Aop.factory().beanRegister(m_bw, beanName);
+            }
+        } else {
+            //1.构建参数
+            List<Object> args2 = new ArrayList<>(size2);
+            List<VarHolderParam> args1 = new ArrayList<>(size2);
+
+            for (Parameter p1 : mWrap.getParameters()) {
+                VarHolderParam p2 = new VarHolderParam(p1);
+                args1.add(p2);
+
+                beanInject(p2, injectVal.apply(p1));
+            }
+
+            //异步获取注入值
+            XUtil.commonPool.submit(() -> {
+                for (VarHolderParam p2 : args1) {
+                    args2.add(p2.getValue());
+                }
+
+                Object raw = mWrap.invoke(bw.raw(), args2.toArray());
+
+                if (raw != null) {
+                    BeanWrap m_bw = Aop.put(raw.getClass(), raw);
+                    Aop.factory().beanRegister(m_bw, beanName);
+                }
+
+                return true;
+            });
+        }
+    }
+
+    /**
+     * 执行变量注入
+     */
+    public static void beanInject(VarHolder varH, String name) {
+        if (XUtil.isEmpty(name)) {
+            //如果没有name,使用类型进行获取 bean
+            Aop.getAsyn(varH.getType(), (bw) -> {
+                varH.setValue(bw.get());
+            });
+        } else if (name.startsWith("${") == false) {
+            //使用name, 获取BEAN
+            Aop.getAsyn(name, (bw) -> {
+                varH.setValue(bw.get());
+            });
+        } else {
+            //配置 ${xxx}
+            name = name.substring(2, name.length() - 1);
+
+            if (Properties.class == varH.getType()) {
+                //如果是 Properties
+                Properties val = XApp.cfg().getProp(name);
+                varH.setValue(val);
+            } else if (Map.class == varH.getType()) {
+                //如果是 Map
+                Map val = XApp.cfg().getXmap(name);
+                varH.setValue(val);
+            } else {
+                //2.然后尝试获取配置
+                String val = XApp.cfg().get(name);
+                if (val == null) {
+                    Class<?> pt = varH.getType();
+
+                    if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive()) {
+                        //如果是java基础类型，则为null（后面统一地 isPrimitive 做处理）
+                        //
+                        varH.setValue(null); //暂时不支持数组注入
+                    } else {
+                        //尝试转为实体
+                        Properties val0 = XApp.cfg().getProp(name);
+                        Object val2 = ClassWrap.get(pt).newBy(val0::getProperty);
+                        varH.setValue(val2);
+                    }
+                } else {
+                    Object val2 = TypeUtil.changeOfPop(varH.getType(), val);
+                    varH.setValue(val2);
+                }
+            }
+        }
     }
 }

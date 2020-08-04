@@ -13,7 +13,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-
 /**
  * Class 包装
  *
@@ -58,10 +57,8 @@ public class ClassWrap {
 
     private Map<String, FieldWrap> fieldWraps = new ConcurrentHashMap<>();
 
-    /**
-     * 扫描一个类的所有字段
-     */
-    private static void scanAllFields(Class<?> clz, Predicate<String> checker, BiConsumer<String, FieldWrap> consumer) {
+    /** 扫描一个类的所有字段（不能与Snack3的复用；它需要排除非序列化字段） */
+    private static void scanAllFields(Class<?> clz, Predicate<String> checker, BiConsumer<String,FieldWrap> consumer) {
         if (clz == null) {
             return;
         }
@@ -69,7 +66,7 @@ public class ClassWrap {
         for (Field f : clz.getDeclaredFields()) {
             int mod = f.getModifiers();
 
-            if (!Modifier.isTransient(mod) && !Modifier.isStatic(mod)) {
+            if (!Modifier.isStatic(mod)) {
                 f.setAccessible(true);
 
                 if (checker.test(f.getName()) == false) {
@@ -105,7 +102,7 @@ public class ClassWrap {
 
             fill(obj, data, null);
 
-            return (T) obj;
+            return (T)obj;
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Exception ex) {
@@ -115,9 +112,9 @@ public class ClassWrap {
 
     /**
      * 为一个对象填充数据
-     */
+     * */
     public void fill(Object target, Function<String, String> data, XContext ctx) {
-        for (Map.Entry<String, FieldWrap> kv : fieldWraps.entrySet()) {
+        for (Map.Entry<String,FieldWrap> kv : fieldWraps.entrySet()) {
             String key = kv.getKey();
             String val0 = data.apply(key);
 
@@ -125,13 +122,7 @@ public class ClassWrap {
                 FieldWrap fw = kv.getValue();
 
                 //将 string 转为目标 type，并为字段赋值
-                Object val = null;
-                if (ctx == null) {
-                    val = TypeUtil.changeOfPop(fw.type, val0);
-                } else {
-                    val = TypeUtil.changeOfCtx(fw.field, fw.type, key, val0, ctx);
-                }
-
+                Object val = TypeUtil.changeOfCtx(fw.field, fw.type, key, val0, ctx);
                 fw.setValue(target, val);
             }
         }

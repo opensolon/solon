@@ -96,11 +96,11 @@ public abstract class AopFactoryBase {
     /**
      * 尝试为bean注入
      */
-    protected void tryBeanInject(VarHolderField fwT, Annotation[] annS) {
+    protected void tryBeanInject(VarHolder varH, Annotation[] annS) {
         for (Annotation a : annS) {
             BeanInjector bi = beanInjectors.get(a.annotationType());
             if (bi != null) {
-                bi.handler(fwT, a);
+                bi.handler(varH, a);
             }
         }
     }

@@ -3,6 +3,7 @@ package org.noear.solon;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.*;
 import org.noear.solon.ext.*;
+import sun.rmi.runtime.RuntimeUtil;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -51,7 +52,7 @@ public class XApp implements XHandler,XHandlerSlots {
         }
 
         //添加关闭勾子
-        Runtime.getRuntime().addShutdownHook(new Thread(()->stopDo(false)));
+        Runtime.getRuntime().addShutdownHook(new Thread(()->stop(false, 0)));
 
         //绑定类加载器
         XClassLoader.bindingThread();
@@ -110,21 +111,31 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 停止服务（为web方式停止服务提供支持）
      */
+    private static boolean _stopped;
     public static void stop() {
-        stopDo(true);
+        stop(true, 0);
     }
 
-    private static void stopDo(boolean exit) {
+    public static void stop(boolean exit, long delay) {
         if (_global == null) {
             return;
         }
 
-        _global.prop().plugs().forEach(p -> p.stop());
-        _global = null;
+        _stopped = true;
 
-        if (exit) {
-            System.exit(0);
-        }
+        XUtil.commonPool.submit(() -> {
+            if (delay > 0) {
+                Thread.sleep(delay);
+            }
+
+            _global.prop().plugs().forEach(p -> p.stop());
+            _global = null;
+
+            if (exit) {
+                System.exit(0);
+            }
+            return null;
+        });
     }
 
     //////////////////////////////////
@@ -381,6 +392,11 @@ public class XApp implements XHandler,XHandlerSlots {
      */
     @Override
     public void handle(XContext x) throws Throwable {
+        if(_stopped){
+            //停止后不再接收请求（避免产生脏数据）
+            return;
+        }
+
         try {
             //设置当前线程上下文
             XContextUtil.currentSet(x);
