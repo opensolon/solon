@@ -60,25 +60,6 @@ public class App{
 
 
 ### 附1：入门示例
-* 微框架示例
-```xml
-<!-- http boot 插件；可以换成：.jetty 或 .undertow 或自己定义个 -->
-<dependency>
-  <groupId>org.noear</groupId>
-  <artifactId>solon.boot.jlhttp</artifactId>
-  <version>1.0.9</version>
-</dependency>
-```
-```java
-public class App{
-    public static void main(String[] args){
-        XApp app = XApp.start(App.class,args);
-        
-        //http get 监听
-        app.get("/",(c)->c.output("hallo world!"));
-    }
-}
-```
 * Web 示例（aop,mvc,rpc）
 ```xml
 <parent>
