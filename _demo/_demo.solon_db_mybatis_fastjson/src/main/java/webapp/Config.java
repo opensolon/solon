@@ -12,10 +12,15 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.noear.solon.XApp;
 import org.noear.solon.annotation.XBean;
 import org.noear.solon.annotation.XConfiguration;
+import org.noear.solon.annotation.XInject;
+import org.noear.solon.core.ClassWrap;
 import org.noear.solon.core.XMap;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Map;
+import java.util.Properties;
 
 @XConfiguration
 public class Config {
@@ -40,9 +45,9 @@ public class Config {
      * 使用 java 配置创建
      * */
     @XBean("sqlSession2")
-    public SqlSession getSqlSession_java() throws IOException {
+    public SqlSession getSqlSession_java(@XInject("test.dataSource") DataSource dataSource) throws IOException {
         TransactionFactory transactionFactory = new JdbcTransactionFactory();
-        Environment environment = new Environment("development", transactionFactory, dataSource_java());
+        Environment environment = new Environment("development", transactionFactory, dataSource);
         Configuration configuration = new Configuration(environment);
 
         //添加 typeAliases
@@ -58,13 +63,13 @@ public class Config {
         return sqlsession;
     }
 
-    public HikariDataSource dataSource_java() {
-        XMap map = XApp.cfg().getXmap("test.db");
+    @XBean("test.dataSource")
+    public HikariDataSource dataSource_java(@XInject("${test.db}") Map<String,String> map) {
+        //XMap map = XApp.cfg().getXmap("test.db");
 
-        HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl(map.get("url"));
-        dataSource.setUsername(map.get("username"));
-        dataSource.setPassword(map.get("password"));
+        map.put("jdbcUrl",map.get("url"));
+
+        HikariDataSource dataSource = ClassWrap.get(HikariDataSource.class).newBy(map::get);
 
         return dataSource;
     }

@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
@@ -69,7 +70,7 @@ public class AopFactory extends AopFactoryBase {
 
     /**
      * XBean 的处理
-     * */
+     */
     protected void beanAnnoHandle(BeanWrap bw, XBean anno) {
         bw.tagSet(anno.tag());
 
@@ -97,10 +98,9 @@ public class AopFactory extends AopFactoryBase {
     }
 
 
-
     /**
      * 注册到管理中心
-     * */
+     */
     public void beanRegister(BeanWrap bw, String name) {
         if (XUtil.isEmpty(name)) {
             Aop.put(bw.clz().getName(), bw);
@@ -140,7 +140,7 @@ public class AopFactory extends AopFactoryBase {
         if (bw == null) {
             bw = new BeanWrap(clz, raw);
             BeanWrap l = beanWraps.putIfAbsent(clz, bw);
-            if(l != null){
+            if (l != null) {
                 bw = l;
             }
         }
@@ -236,8 +236,8 @@ public class AopFactory extends AopFactoryBase {
 
     /**
      * 执行对象构建
-     * */
-    public static void beanBuildDo(String beanName, MethodWrap mWrap, BeanWrap bw, Function<Parameter,String> injectVal) throws Exception{
+     */
+    public static void beanBuildDo(String beanName, MethodWrap mWrap, BeanWrap bw, Function<Parameter, String> injectVal) throws Exception {
         int size2 = mWrap.getParameters().length;
 
         if (size2 == 0) {
@@ -279,7 +279,7 @@ public class AopFactory extends AopFactoryBase {
 
     /**
      * 执行变量注入
-     * */
+     */
     public static void beanInjectDo(VarHolder varH, String name) {
         if (XUtil.isEmpty(name)) {
             //如果没有name,使用类型进行获取 bean
@@ -289,11 +289,15 @@ public class AopFactory extends AopFactoryBase {
         } else {
             if (name.startsWith("${")) {
                 //配置
-                name = name.substring(2,name.length()-1);
+                name = name.substring(2, name.length() - 1);
 
                 if (Properties.class == varH.getType()) {
-                    //如果是 Properties，只尝试从配置获取
+                    //如果是 Properties
                     Properties val = XApp.cfg().getProp(name);
+                    varH.setValue(val);
+                } else if (Map.class == varH.getType()) {
+                    //如果是 Map
+                    Map val = XApp.cfg().getXmap(name);
                     varH.setValue(val);
                 } else {
                     //2.然后尝试获取配置
@@ -302,7 +306,7 @@ public class AopFactory extends AopFactoryBase {
                     if (XUtil.isEmpty(val) == false) {
                         Object val2 = TypeUtil.changeOfPop(varH.getType(), val);
                         varH.setValue(val2);
-                    }else{
+                    } else {
                         varH.setValue(null);
                     }
                 }

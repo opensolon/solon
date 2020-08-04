@@ -15,7 +15,7 @@ public class XActionExecutor implements MethodExecutor {
     }
 
     @Override
-    public Object execute(XContext ctx, Object obj, MethodWrap mWrap) throws Throwable{
+    public Object execute(XContext ctx, Object obj, MethodWrap mWrap) throws Throwable {
         List<Object> args = buildArgs(ctx, mWrap.getParameters());
         return mWrap.invoke(obj, args.toArray());
     }
@@ -23,7 +23,7 @@ public class XActionExecutor implements MethodExecutor {
 
     /**
      * 构建执行参数
-     * */
+     */
     protected List<Object> buildArgs(XContext ctx, Parameter[] pSet) throws Exception {
         List<Object> args = new ArrayList<>(pSet.length);
 
@@ -83,14 +83,14 @@ public class XActionExecutor implements MethodExecutor {
 
     /**
      * 尝试将body转换为特定对象
-     * */
+     */
     protected Object changeBody(XContext ctx) throws Exception {
         return null;
     }
 
     /**
      * 尝试将值按类型转换
-     * */
+     */
     protected Object changeValue(XContext ctx, Parameter p, int pi, Class<?> pt, Object bodyObj) throws Exception {
         String pn = p.getName();    //参数名
         String pv = ctx.param(pn);  //参数值
@@ -131,20 +131,13 @@ public class XActionExecutor implements MethodExecutor {
      * 尝试将值转换为实体
      */
     private Object changeEntityDo(XContext ctx, String name, Class<?> type) throws Exception {
-        Field[] fields = type.getDeclaredFields();
+        ClassWrap clzW = ClassWrap.get(type);
 
         Map<String, String> map = ctx.paramMap();
         Object obj = type.newInstance();
 
         if (map.size() > 0) {
-            for (Field f : fields) {
-                String key = f.getName();
-                if (map.containsKey(key)) {
-                    //将 string 转为目标 type，并为字段赋值
-                    Object val = TypeUtil.changeOfCtx(f, f.getType(), key, map.get(key), ctx);
-                    f.set(obj, val);
-                }
-            }
+            clzW.fill(obj, map::get, ctx);
         }
 
         return obj;
