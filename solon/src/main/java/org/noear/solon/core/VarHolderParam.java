@@ -16,7 +16,7 @@ public class VarHolderParam implements VarHolder{
 
     @Override
     public ParameterizedType getGenericType() {
-        return null;
+        return (ParameterizedType)p.getParameterizedType();
     }
 
     @Override
