@@ -66,7 +66,7 @@ public class ClassWrap {
         for (Field f : clz.getDeclaredFields()) {
             int mod = f.getModifiers();
 
-            if (!Modifier.isTransient(mod) && !Modifier.isStatic(mod)) {
+            if (!Modifier.isStatic(mod)) {
                 f.setAccessible(true);
 
                 if (checker.test(f.getName()) == false) {
