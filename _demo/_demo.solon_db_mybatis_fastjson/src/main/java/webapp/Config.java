@@ -45,7 +45,7 @@ public class Config {
      * 使用 java 配置创建
      * */
     @XBean("sqlSession2")
-    public SqlSession getSqlSession_java(@XInject("test.dataSource") DataSource dataSource) throws IOException {
+    public SqlSession getSqlSession_java(@XInject("${test.db}") HikariDataSource dataSource) throws IOException {
         TransactionFactory transactionFactory = new JdbcTransactionFactory();
         Environment environment = new Environment("development", transactionFactory, dataSource);
         Configuration configuration = new Configuration(environment);
@@ -61,16 +61,5 @@ public class Config {
         //通过SqlSessionFactory打开一个数据库会话
         SqlSession sqlsession = sqlSessionFactory.openSession();
         return sqlsession;
-    }
-
-    @XBean("test.dataSource")
-    public HikariDataSource dataSource_java(@XInject("${test.db}") Properties map) {
-        //XMap map = XApp.cfg().getXmap("test.db");
-
-        map.setProperty("jdbcUrl",map.getProperty("url"));
-
-        HikariDataSource dataSource = ClassWrap.get(HikariDataSource.class).newBy(map::getProperty);
-
-        return dataSource;
     }
 }

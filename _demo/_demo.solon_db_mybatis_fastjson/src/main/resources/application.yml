@@ -1,5 +1,6 @@
 test.db:
   schema: "rock"
+  jdbcUrl: "jdbc:mysql://localdb:3306/rock?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true"
   url: "jdbc:mysql://localdb:3306/rock?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true"
   driverClassName: "com.mysql.jdbc.Driver"
   username: "demo"
