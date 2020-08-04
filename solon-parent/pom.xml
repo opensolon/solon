@@ -58,8 +58,6 @@
     </scm>
 
 
-
-
     <dependencyManagement>
         <dependencies>
             <dependency>
