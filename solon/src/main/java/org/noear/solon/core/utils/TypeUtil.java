@@ -22,7 +22,7 @@ public class TypeUtil {
             return val;
         }
 
-        if (val.length() == 0) {
+        if (XUtil.isEmpty(val)) {
             return null;
         }
 
@@ -52,6 +52,10 @@ public class TypeUtil {
         }
 
         if(type.isArray()){
+            if(ctx == null){
+                return null;
+            }
+
             String[] ary = ctx.paramValues(key);
             if(ary == null){
                 return null;

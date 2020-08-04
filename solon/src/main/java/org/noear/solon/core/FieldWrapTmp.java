@@ -7,7 +7,7 @@ import java.lang.annotation.Annotation;
  *
  * 为了稳藏 FieldWrap 的一些特性
  * */
-public class FieldWrapTmp {
+public class FieldWrapTmp implements VarHolder {
     public final FieldWrap fw;
     protected final Object obj;
 
@@ -19,6 +19,7 @@ public class FieldWrapTmp {
     /**
      * 获取字段类型
      * */
+    @Override
     public Class<?> getType(){
         return fw.type;
     }
@@ -26,6 +27,7 @@ public class FieldWrapTmp {
     /**
      * 获取所有注解
      * */
+    @Override
     public Annotation[] getAnnoS(){
         return fw.annoS;
     }
@@ -33,6 +35,7 @@ public class FieldWrapTmp {
     /**
      * 设置字段的值
      */
+    @Override
     public void setValue(Object val) {
         fw.setValue(obj, val);
     }

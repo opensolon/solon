@@ -273,15 +273,6 @@ public class XUtil {
             return;
         }
 
-        ClassWrap cw = ClassWrap.get(target.getClass());
-
-        for (Field f1 : cw.fields) {
-            String val = source.apply(f1.getName());
-            if (val != null) {
-                FieldWrap fw = cw.getFieldWrap(f1);
-                Object val2 = TypeUtil.changeOfPop(f1.getType(), val);
-                fw.setValue(target, val2);
-            }
-        }
+        ClassWrap.get(target.getClass()).fill(target,source,null);
     }
 }

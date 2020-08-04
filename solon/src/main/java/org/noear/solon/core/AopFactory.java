@@ -7,6 +7,7 @@ import org.noear.solon.core.utils.TypeUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -96,37 +97,48 @@ public class AopFactory extends AopFactoryBase {
     /**
      * 执行字段注入
      * */
-    public void beanInject(FieldWrapTmp fwT, String name){
+    public void beanInject(VarHolder varH, String name){
         if (XUtil.isEmpty(name)) {
             //如果没有name,使用类型进行获取 bean
-            Aop.getAsyn(fwT.getType(), (bw) -> {
-                fwT.setValue(bw.get());
+            Aop.getAsyn(varH.getType(), (bw) -> {
+                varH.setValue(bw.get());
+            });
+        } else if (name.startsWith("${") == false) {
+            //使用name, 获取BEAN
+            Aop.getAsyn(name, (bw) -> {
+                varH.setValue(bw.get());
             });
         } else {
-            //如果有name
-            if (Properties.class == fwT.getType()) {
-                //如果是 Properties，只尝试从配置获取
+            //配置 ${xxx}
+            name = name.substring(2, name.length() - 1);
+
+            if (Properties.class == varH.getType()) {
+                //如果是 Properties
                 Properties val = XApp.cfg().getProp(name);
-                fwT.setValue(val);
+                varH.setValue(val);
+            } else if (Map.class == varH.getType()) {
+                //如果是 Map
+                Map val = XApp.cfg().getXmap(name);
+                varH.setValue(val);
             } else {
-                //1.如果是单值，先尝试获取BEAN
-                Object tmp = Aop.get(name);
+                //2.然后尝试获取配置
+                String val = XApp.cfg().get(name);
+                if (val == null) {
+                    Class<?> pt = varH.getType();
 
-                if (tmp != null) {
-                    fwT.setValue(tmp);
-                } else {
-                    //2.然后尝试获取配置
-                    String val = XApp.cfg().get(name);
-
-                    if (XUtil.isEmpty(val) == false) {
-                        Object val2 = TypeUtil.changeOfPop(fwT.getType(), val);
-                        fwT.setValue(val2);
+                    if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive()) {
+                        //如果是java基础类型，则为null（后面统一地 isPrimitive 做处理）
+                        //
+                        varH.setValue(null); //暂时不支持数组注入
                     } else {
-                        //3.如果没有配置，尝试异步获取BEAN
-                        Aop.getAsyn(name, (bw) -> {
-                            fwT.setValue(bw.get());
-                        });
+                        //尝试转为实体
+                        Properties val0 = XApp.cfg().getProp(name);
+                        Object val2 = ClassWrap.get(pt).newBy(val0::getProperty);
+                        varH.setValue(val2);
                     }
+                } else {
+                    Object val2 = TypeUtil.changeOfPop(varH.getType(), val);
+                    varH.setValue(val2);
                 }
             }
         }
