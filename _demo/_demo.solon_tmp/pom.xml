@@ -31,12 +31,9 @@
 
 
     <dependencies>
-        <!--
-        solon-api 和 solon-mvc 的区别是：前者没有模板和SessionState
-        -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-mvc</artifactId>
+            <artifactId>solon-web</artifactId>
             <type>pom</type>
         </dependency>
 
