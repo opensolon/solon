@@ -1,5 +1,0 @@
-@startuml
-Handler <|-- XHandlerAide
-XHandlerAide <|-- XNav
-XHandlerAide <|-- XAction
-@enduml
