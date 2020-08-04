@@ -10,6 +10,8 @@ public class XPluginImp implements XPlugin {
         String path = app.prop().get("solon.stop.path","/run/stop/");
         String host = app.prop().get("solon.stop.host","127.0.0.1");
 
+
+
         if(enabled){
             app.get(path, (c)->{
                 if("*".equals(host)){

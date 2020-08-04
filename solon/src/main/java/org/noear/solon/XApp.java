@@ -123,7 +123,17 @@ public class XApp implements XHandler,XHandlerSlots {
         _global = null;
 
         if (exit) {
-            System.exit(0);
+            XUtil.commonPool.submit(()->{
+                //支持延时退出
+                int delay = XApp.cfg().getInt("solon.stop.delay",0);
+
+                if(delay > 0){
+                    Thread.sleep(delay);
+                }
+                System.exit(0);
+
+                return null;
+            });
         }
     }
 
