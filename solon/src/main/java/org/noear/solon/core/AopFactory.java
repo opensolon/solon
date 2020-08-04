@@ -213,7 +213,7 @@ public class AopFactory extends AopFactoryBase {
         for (Field f : fs) {
             Annotation[] annS = f.getDeclaredAnnotations();
             if (annS.length > 0) {
-                FieldWrapTmp fwT = clzWrap.getFieldWrap(f).tmp(obj);
+                VarHolderField fwT = clzWrap.getFieldWrap(f).hold(obj);
                 tryBeanInject(fwT, annS);
             }
         }

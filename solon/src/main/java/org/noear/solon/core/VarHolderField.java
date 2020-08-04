@@ -7,11 +7,11 @@ import java.lang.annotation.Annotation;
  *
  * 为了稳藏 FieldWrap 的一些特性
  * */
-public class FieldWrapTmp implements VarHolder {
+public class VarHolderField implements VarHolder {
     public final FieldWrap fw;
     protected final Object obj;
 
-    public FieldWrapTmp(FieldWrap fw, Object obj) {
+    public VarHolderField(FieldWrap fw, Object obj) {
         this.fw = fw;
         this.obj = obj;
     }
