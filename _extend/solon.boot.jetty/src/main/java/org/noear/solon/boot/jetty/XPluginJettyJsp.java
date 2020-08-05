@@ -70,7 +70,6 @@ class XPluginJettyJsp extends XPluginJetty {
     }
 
     private String[] getResourceURLs() throws FileNotFoundException {
-
         URL rootURL = getRootPath();
         if (rootURL == null) {
             throw new FileNotFoundException("Unable to find root");

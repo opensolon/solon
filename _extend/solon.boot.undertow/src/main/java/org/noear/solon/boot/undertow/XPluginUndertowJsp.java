@@ -20,6 +20,8 @@ import org.noear.solon.core.XPlugin;
 
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
@@ -48,6 +50,7 @@ public class XPluginUndertowJsp implements XPlugin {
 
     public void setupJsp(XApp app) throws Exception {
         final ServletContainer container = ServletContainer.Factory.newInstance();
+        String res_root = getResourceRoot();
 
         DeploymentInfo builder = new DeploymentInfo()
                 .setClassLoader(XPluginUndertowJsp.class.getClassLoader())
@@ -55,7 +58,7 @@ public class XPluginUndertowJsp implements XPlugin {
                 .setContextPath("/")
                 .setDefaultEncoding(XServerProp.encoding_request)
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE)
-                .setResourceManager(new ClassPathResourceManager(XClassLoader.global()))
+                .setResourceManager(new ClassPathResourceManager(XClassLoader.global(), res_root))
                 .setDefaultMultipartConfig(new MultipartConfigElement(System.getProperty("java.io.tmpdir")))
                 .addServlet(JspServletBuilder.createServlet("JSPServlet", "*.jsp"))
                 .addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"));  //这个才是根据上下文对象`XContext`进行分发
@@ -103,9 +106,38 @@ public class XPluginUndertowJsp implements XPlugin {
         }
     }
 
-    public static class DefaultResourceLoader extends ClassPathResourceManager {
-        public DefaultResourceLoader(final Class<?> clazz) {
-            super(clazz.getClassLoader(), "");
+    private String getResourceRoot() throws FileNotFoundException {
+        URL rootURL = getRootPath();
+        if (rootURL == null) {
+            throw new FileNotFoundException("Unable to find root");
+        }
+        String resURL = rootURL.toString();
+
+        boolean isDebug = XApp.cfg().isDebugMode();
+        if (isDebug && (resURL.startsWith("jar:") == false)) {
+            int endIndex = resURL.indexOf("target");
+            return resURL.substring(0, endIndex) + "src/main/resources/";
+        }
+
+        return "";
+    }
+
+    private URL getRootPath() {
+        URL root = XUtil.getResource("/");
+        if (root != null) {
+            return root;
+        }
+        try {
+            String path = XUtil.getResource("").toString();
+            if (path.startsWith("jar:")) {
+                int endIndex = path.indexOf("!");
+                path = path.substring(0, endIndex + 1) + "/";
+            } else {
+                return null;
+            }
+            return new URL(path);
+        } catch (MalformedURLException e) {
+            return null;
         }
     }
 }
