@@ -168,6 +168,10 @@ public class XPluginUndertowJsp implements XPlugin {
 
         @Override
         public Resource getResource(String path) throws IOException {
+            if (path == null || path.endsWith(".jsp") == false) {
+                return null;
+            }
+
             String modPath = path;
             if (path.startsWith("/")) {
                 modPath = path.substring(1);
