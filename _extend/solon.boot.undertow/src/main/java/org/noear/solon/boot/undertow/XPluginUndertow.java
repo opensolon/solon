@@ -8,6 +8,7 @@ import io.undertow.servlet.Servlets;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.servlet.api.ServletContainer;
+import io.undertow.servlet.util.DefaultClassIntrospector;
 import org.noear.solon.XApp;
 import org.noear.solon.core.XPlugin;
 
@@ -27,7 +28,7 @@ public class XPluginUndertow implements XPlugin {
     @Override
     public void start(XApp app) {
         Undertow.Builder builder = getInstance();
-        builder.setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE,false);
+        builder.setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE, false);
 
         // 动作分发Handler
         UtHttpHandler _handler = new UtHttpHandler();
@@ -64,7 +65,9 @@ public class XPluginUndertow implements XPlugin {
                 .setContextPath("/")
                 .setDefaultEncoding(XServerProp.encoding_request)
                 .setDefaultMultipartConfig(configElement)
-                .addInnerHandlerChainWrapper(wrapper);
+                .setClassIntrospecter(DefaultClassIntrospector.INSTANCE);
+
+        builder.addInnerHandlerChainWrapper(wrapper);
 
         if (XServerProp.session_timeout > 0) {
             builder.setDefaultSessionTimeout(XServerProp.session_timeout);

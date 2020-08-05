@@ -5,7 +5,6 @@ import io.undertow.UndertowMessages;
 import io.undertow.UndertowOptions;
 import io.undertow.jsp.HackInstanceManager;
 import io.undertow.jsp.JspServletBuilder;
-import io.undertow.server.HandlerWrapper;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.handlers.resource.*;
 import io.undertow.servlet.api.DeploymentInfo;
@@ -61,11 +60,13 @@ public class XPluginUndertowJsp implements XPlugin {
                 .setDeploymentName("solon")
                 .setContextPath("/")
                 .setDefaultEncoding(XServerProp.encoding_request)
-                .setClassIntrospecter(DefaultClassIntrospector.INSTANCE)
-                .setResourceManager(new DefaultResourceManager(XClassLoader.global(), fileRoot))
                 .setDefaultMultipartConfig(configElement)
-                .addServlet(JspServletBuilder.createServlet("JSPServlet", "*.jsp"))
-                .addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"));  //这个才是根据上下文对象`XContext`进行分发
+                .setClassIntrospecter(DefaultClassIntrospector.INSTANCE);
+
+
+        builder.setResourceManager(new DefaultResourceManager(XClassLoader.global(), fileRoot))
+               .addServlet(JspServletBuilder.createServlet("JSPServlet", "*.jsp"))
+               .addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"));  //这个才是根据上下文对象`XContext`进行分发
 
         if (XServerProp.session_timeout > 0) {
             builder.setDefaultSessionTimeout(XServerProp.session_timeout);
@@ -73,14 +74,15 @@ public class XPluginUndertowJsp implements XPlugin {
 
         HashMap<String, TagLibraryInfo> tagLibraryMap = TldLocator.createTldInfos("WEB-INF");
 
-        JspServletBuilder.setupDeployment(builder, new HashMap<String, JspPropertyGroup>(),tagLibraryMap , new HackInstanceManager());
+        JspServletBuilder.setupDeployment(builder, new HashMap<String, JspPropertyGroup>(), tagLibraryMap, new HackInstanceManager());
 
         DeploymentManager manager = container.addDeployment(builder);
         manager.deploy();
         HttpHandler jsp_handler = manager.start();
 
         //************************** init server start******************
-        serverBuilder = getInstance().setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE,false);;
+        serverBuilder = getInstance().setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE, false);
+        ;
         serverBuilder.addHttpListener(app.port(), "0.0.0.0");
         serverBuilder.setHandler(jsp_handler);
 
@@ -147,8 +149,8 @@ public class XPluginUndertowJsp implements XPlugin {
 
     /**
      * 默认的资源管理器
-     * */
-    public static class DefaultResourceManager implements ResourceManager{
+     */
+    public static class DefaultResourceManager implements ResourceManager {
         private final ClassLoader classLoader;
         private final String prefix;
 
