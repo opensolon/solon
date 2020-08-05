@@ -63,7 +63,7 @@ public class TldLocator {
               });
             }
           }
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
           //ex.printStackTrace();
         }
       }
@@ -71,9 +71,13 @@ public class TldLocator {
 
 
     //自己的.tld
-    XScaner.scan(webinfo_path, n -> n.endsWith(".tld")).forEach((file) -> {
-      loadTagLibraryInfo(tagLibInfos, () -> XUtil.getResource(file).openStream());
-    });
+    try {
+      XScaner.scan(webinfo_path, n -> n.endsWith(".tld")).forEach((file) -> {
+        loadTagLibraryInfo(tagLibInfos, () -> XUtil.getResource(file).openStream());
+      });
+    } catch (Throwable ex) {
+      ex.printStackTrace();
+    }
 
     return tagLibInfos;
   }
