@@ -18,21 +18,25 @@ public final class XPluginImp implements XPlugin {
             return;
         }
 
-
         XServerProp.init();
 
-        long start_before = System.currentTimeMillis();
-        String mode = XUtil.loadClass("io.undertow.jsp.JspServletBuilder") == null ? "pure" : "jsp";
-        // pure 仅支持返回REST风格的JSON数据，渲染生产HTML页面需要render
-        // jsp 支持使用jsp技术生成JSP Servlet生成HTML
-        if("jsp".equals(mode)){
-            _server = new XPluginUndertowJsp();
-        }else{
+        long time_start = System.currentTimeMillis();
+        System.out.println("solon.Server:main: Undertow 2.1.0");
+
+        Class<?> jspClz = XUtil.loadClass("io.undertow.jsp.JspServletBuilder");
+
+        if (jspClz == null) {
             _server = new XPluginUndertow();
+        }else{
+            _server = new XPluginUndertowJsp();
         }
 
         _server.start(app);
-        System.err.println("undertow::start end @" + (System.currentTimeMillis() - start_before) + "ms");
+
+        long time_end = System.currentTimeMillis();
+
+        System.out.println("solon.Connector:main: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
+        System.out.println("solon.Server:main: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override
