@@ -1,5 +1,7 @@
 package org.noear.solon.core;
 
+import org.noear.solon.XApp;
+
 /**
  * 监听器（内部类，外部不要使用）
  * */
@@ -15,6 +17,10 @@ public class XMonitor {
                 errorEventHandler.handle(ctx, err);
             } catch (Throwable ex) {
                 ex.printStackTrace();
+            }
+        }else{
+            if(XApp.cfg().isDebugMode()){
+                err.printStackTrace();
             }
         }
     }
