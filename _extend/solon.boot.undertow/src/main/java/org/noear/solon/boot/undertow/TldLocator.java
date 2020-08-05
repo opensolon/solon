@@ -1,16 +1,6 @@
 package org.noear.solon.boot.undertow;
 
-import org.apache.jasper.deploy.*;
-import org.jboss.annotation.javaee.Icon;
-import org.jboss.metadata.javaee.spec.DescriptionGroupMetaData;
-import org.jboss.metadata.javaee.spec.ParamValueMetaData;
-import org.jboss.metadata.parser.jsp.TldMetaDataParser;
-import org.jboss.metadata.parser.util.NoopXMLResolver;
-import org.jboss.metadata.web.spec.*;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -19,6 +9,29 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
+import org.apache.jasper.deploy.FunctionInfo;
+import org.apache.jasper.deploy.TagAttributeInfo;
+import org.apache.jasper.deploy.TagFileInfo;
+import org.apache.jasper.deploy.TagInfo;
+import org.apache.jasper.deploy.TagLibraryInfo;
+import org.apache.jasper.deploy.TagLibraryValidatorInfo;
+import org.apache.jasper.deploy.TagVariableInfo;
+import org.jboss.annotation.javaee.Icon;
+import org.jboss.metadata.javaee.spec.DescriptionGroupMetaData;
+import org.jboss.metadata.javaee.spec.ParamValueMetaData;
+import org.jboss.metadata.parser.jsp.TldMetaDataParser;
+import org.jboss.metadata.parser.util.NoopXMLResolver;
+import org.jboss.metadata.web.spec.AttributeMetaData;
+import org.jboss.metadata.web.spec.FunctionMetaData;
+import org.jboss.metadata.web.spec.TagFileMetaData;
+import org.jboss.metadata.web.spec.TagMetaData;
+import org.jboss.metadata.web.spec.TldMetaData;
+import org.jboss.metadata.web.spec.VariableMetaData;
 
 /**
  * Original code taken from https://github.com/djotanov/undertow-jsp-template
@@ -31,7 +44,14 @@ public class TldLocator {
     long time = System.currentTimeMillis();
     for (URL url : urls) {
       if (url.toString().endsWith(".jar")) {
-        JarFile jarFile = new JarFile(url.getFile());
+        JarFile jarFile = null;
+        try {
+          jarFile = new JarFile(url.getFile());
+        }catch (Exception ex){
+          continue;
+        }
+
+
         final Enumeration<JarEntry> entries = jarFile.entries();
         while (entries.hasMoreElements()) {
           final JarEntry entry = entries.nextElement();
@@ -108,7 +128,7 @@ public class TldLocator {
         if (tagMetaData.getDescriptionGroup() != null) {
           DescriptionGroupMetaData descriptionGroup = tagMetaData.getDescriptionGroup();
           if (descriptionGroup.getIcons() != null && descriptionGroup.getIcons().value() != null
-            && (descriptionGroup.getIcons().value().length > 0)) {
+                  && (descriptionGroup.getIcons().value().length > 0)) {
             Icon icon = descriptionGroup.getIcons().value()[0];
             tagInfo.setLargeIcon(icon.largeIcon());
             tagInfo.setSmallIcon(icon.smallIcon());
@@ -179,4 +199,5 @@ public class TldLocator {
 
     return tagLibraryInfo;
   }
+
 }
