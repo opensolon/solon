@@ -22,31 +22,6 @@ public class XClassLoader extends URLClassLoader {
 
     protected XClassLoader() {
         super(new URL[]{}, ClassLoader.getSystemClassLoader());
-
-        ClassLoader tmp = ClassLoader.getSystemClassLoader();
-
-        if(tmp != null) {
-            System.out.println("SystemClassLoader:: " + tmp.getClass().toString());
-
-            String classPath = System.getProperty("java.class.path");
-            if(classPath != null){
-                String[] list = classPath.split(":");
-                for(String uri : list){
-                    if(uri.endsWith(".jar") && uri.contains(" ")==false){
-                        try {
-                            if(uri.startsWith("/")){
-                                uri = "file:"+uri;
-                            }
-
-                            URL url = URI.create(uri).toURL();
-                            addURL(url);
-                        }catch (Throwable ex){
-                            ex.printStackTrace();
-                        }
-                    }
-                }
-            }
-        }
     }
 
     /**

@@ -3,11 +3,13 @@ package org.noear.solon.boot.undertow.jsp;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -43,8 +45,8 @@ import org.noear.solon.ext.SupplierEx;
  */
 public class JspTldLocator {
     public static HashMap<String, TagLibraryInfo> createTldInfos(String webinfo_path) throws IOException {
-        URLClassLoader loader = XClassLoader.global();
-        URL[] urls = loader.getURLs();
+
+        List<URL> urls = getURLs();
 
         HashMap<String, TagLibraryInfo> tagLibInfos = new HashMap<>();
 
@@ -85,6 +87,35 @@ public class JspTldLocator {
         }
 
         return tagLibInfos;
+    }
+
+    static  List<URL> getURLs(){
+        List<URL> urls = new ArrayList<>();
+
+        String classPath = System.getProperty("java.class.path");
+
+        if (classPath != null) {
+            String[] list = classPath.split(":");
+            for (String uri : list) {
+                //
+                //加载系统java包，用于后续加载使用
+                //
+                if (uri.indexOf(".jar") > 0) {
+                    try {
+                        if (uri.startsWith("/")) {
+                            uri = "file:" + uri;
+                        }
+
+                        URL url = URI.create(uri).toURL();
+                        urls.add(url);
+                    } catch (Throwable ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        return urls;
     }
 
     static void loadTagLibraryInfo(HashMap<String, TagLibraryInfo> tagLibInfos, SupplierEx<InputStream> supplier) {
