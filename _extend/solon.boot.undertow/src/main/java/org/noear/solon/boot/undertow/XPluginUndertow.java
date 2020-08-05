@@ -40,7 +40,7 @@ public class XPluginUndertow implements XPlugin {
             throw new RuntimeException(e);
         }
 
-        builder.addHttpListener(app.port(), "localhost");
+        builder.addHttpListener(app.port(), "0.0.0.0");
         builder.setHandler(f_handler);
         _server = builder.build();
 

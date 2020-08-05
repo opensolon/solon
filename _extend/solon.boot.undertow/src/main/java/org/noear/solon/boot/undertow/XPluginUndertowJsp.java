@@ -56,7 +56,6 @@ public class XPluginUndertowJsp implements XPlugin {
                 .setDefaultEncoding(XServerProp.encoding_request)
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE)
                 .setResourceManager(new ClassPathResourceManager(XClassLoader.global()))
-                //.setResourceManager(new DefaultResourceLoader(XPluginUndertowJsp.class))
                 .setDefaultMultipartConfig(new MultipartConfigElement(System.getProperty("java.io.tmpdir")))
                 .addServlet(JspServletBuilder.createServlet("JSPServlet", "*.jsp"))
                 .addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"));  //这个才是根据上下文对象`XContext`进行分发
@@ -75,7 +74,7 @@ public class XPluginUndertowJsp implements XPlugin {
 
         //************************** init server start******************
         serverBuilder = getInstance().setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE,false);;
-        serverBuilder.addHttpListener(app.port(), "localhost");
+        serverBuilder.addHttpListener(app.port(), "0.0.0.0");
         serverBuilder.setHandler(jsp_handler);
 
         _server = serverBuilder.build();
