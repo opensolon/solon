@@ -18,10 +18,10 @@ public class XMonitor {
             } catch (Throwable ex) {
                 ex.printStackTrace();
             }
-        }else{
-            if(XApp.cfg().isDebugMode()){
-                err.printStackTrace();
-            }
+        }
+
+        if(XApp.cfg().isDebugMode()){
+            err.printStackTrace();
         }
     }
 
