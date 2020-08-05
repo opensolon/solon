@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.jar.JarEntry;
@@ -49,7 +50,9 @@ public class TldLocator {
     for (URL url : urls) {
       if (url.toString().endsWith(".jar")) {
         try {
-          JarFile jarFile = new JarFile(url.getFile());
+          String file_uri = URLDecoder.decode(url.getFile(),"utf-8");
+
+          JarFile jarFile = new JarFile(file_uri);
 
           final Enumeration<JarEntry> entries = jarFile.entries();
 
@@ -64,7 +67,7 @@ public class TldLocator {
             }
           }
         } catch (Throwable ex) {
-          //ex.printStackTrace();
+          ex.printStackTrace();
         }
       }
     }
@@ -72,8 +75,8 @@ public class TldLocator {
 
     //自己的.tld
     try {
-      XScaner.scan(webinfo_path, n -> n.endsWith(".tld")).forEach((file) -> {
-        loadTagLibraryInfo(tagLibInfos, () -> XUtil.getResource(file).openStream());
+      XScaner.scan(webinfo_path, n -> n.endsWith(".tld")).forEach((uri) -> {
+          loadTagLibraryInfo(tagLibInfos, () -> XUtil.getResource(uri).openStream());
       });
     } catch (Throwable ex) {
       ex.printStackTrace();
