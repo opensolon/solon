@@ -1,12 +1,10 @@
 package org.noear.solon.boot.undertow;
 
 import io.undertow.Undertow;
-import io.undertow.UndertowMessages;
 import io.undertow.UndertowOptions;
 import io.undertow.jsp.HackInstanceManager;
 import io.undertow.jsp.JspServletBuilder;
 import io.undertow.server.HttpHandler;
-import io.undertow.server.handlers.resource.*;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.servlet.api.ServletContainer;
@@ -16,14 +14,14 @@ import org.apache.jasper.deploy.JspPropertyGroup;
 import org.apache.jasper.deploy.TagLibraryInfo;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.boot.undertow.jsp.JspResourceManager;
+import org.noear.solon.boot.undertow.jsp.JspTldLocator;
 import org.noear.solon.core.XClassLoader;
 import org.noear.solon.core.XPlugin;
 
 import javax.servlet.MultipartConfigElement;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -64,7 +62,7 @@ public class XPluginUndertowJsp implements XPlugin {
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE);
 
 
-        builder.setResourceManager(new DefaultResourceManager(XClassLoader.global(), fileRoot))
+        builder.setResourceManager(new JspResourceManager(XClassLoader.global(), fileRoot))
                .addServlet(JspServletBuilder.createServlet("JSPServlet", "*.jsp"))
                .addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"));  //这个才是根据上下文对象`XContext`进行分发
 
@@ -72,7 +70,7 @@ public class XPluginUndertowJsp implements XPlugin {
             builder.setDefaultSessionTimeout(XServerProp.session_timeout);
         }
 
-        HashMap<String, TagLibraryInfo> tagLibraryMap = TldLocator.createTldInfos("WEB-INF");
+        HashMap<String, TagLibraryInfo> tagLibraryMap = JspTldLocator.createTldInfos("WEB-INF");
 
         JspServletBuilder.setupDeployment(builder, new HashMap<String, JspPropertyGroup>(), tagLibraryMap, new HackInstanceManager());
 
@@ -147,64 +145,5 @@ public class XPluginUndertowJsp implements XPlugin {
         }
     }
 
-    /**
-     * 默认的资源管理器
-     */
-    public static class DefaultResourceManager implements ResourceManager {
-        private final ClassLoader classLoader;
-        private final String prefix;
 
-        public DefaultResourceManager(ClassLoader classLoader, String prefix) {
-            this.classLoader = classLoader;
-            if (prefix.isEmpty()) {
-                this.prefix = "";
-            } else if (prefix.endsWith("/")) {
-                this.prefix = prefix;
-            } else {
-                this.prefix = prefix + "/";
-            }
-
-        }
-
-        @Override
-        public Resource getResource(String path) throws IOException {
-            if (path == null || path.endsWith(".jsp") == false) {
-                return null;
-            }
-
-            String modPath = path;
-            if (path.startsWith("/")) {
-                modPath = path.substring(1);
-            }
-
-            String realPath = this.prefix + modPath;
-            URL resource = null;
-            if (realPath.startsWith("file:")) {
-                resource = URI.create(realPath).toURL();
-            } else {
-                resource = this.classLoader.getResource(realPath);
-            }
-
-            return resource == null ? null : new URLResource(resource, path);
-        }
-
-        @Override
-        public boolean isResourceChangeListenerSupported() {
-            return false;
-        }
-
-        @Override
-        public void registerResourceChangeListener(ResourceChangeListener listener) {
-            throw UndertowMessages.MESSAGES.resourceChangeListenerNotSupported();
-        }
-
-        @Override
-        public void removeResourceChangeListener(ResourceChangeListener listener) {
-            throw UndertowMessages.MESSAGES.resourceChangeListenerNotSupported();
-        }
-
-        @Override
-        public void close() throws IOException {
-        }
-    }
 }

@@ -1,4 +1,4 @@
-package org.noear.solon.boot.undertow;
+package org.noear.solon.boot.undertow.jsp;
 
 
 import java.io.IOException;
@@ -39,8 +39,8 @@ import org.noear.solon.ext.SupplierEx;
 /**
  * Original code taken from https://github.com/djotanov/undertow-jsp-template
  */
-public class TldLocator {
-  static HashMap<String, TagLibraryInfo> createTldInfos(String webinfo_path) throws IOException {
+public class JspTldLocator {
+  public static HashMap<String, TagLibraryInfo> createTldInfos(String webinfo_path) throws IOException {
     URLClassLoader loader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
     URL[] urls = loader.getURLs();
 
