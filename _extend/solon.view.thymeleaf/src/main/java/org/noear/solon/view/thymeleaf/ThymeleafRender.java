@@ -65,17 +65,21 @@ public class ThymeleafRender implements XRender {
         });
     }
 
-    private void forDebug(){
+    private void forDebug() {
         String dirroot = XUtil.getResource("/").toString().replace("target/classes/", "");
-        String dir_str = dirroot + "src/main/resources"+_baseUri;
-        File dir = new File(URI.create(dir_str));
-        if (!dir.exists()) {
-            dir_str = dirroot + "src/main/webapp"+_baseUri;
+        File dir = null;
+
+        if (dirroot.startsWith("file:")) {
+            String dir_str = dirroot + "src/main/resources" + _baseUri;
             dir = new File(URI.create(dir_str));
+            if (!dir.exists()) {
+                dir_str = dirroot + "src/main/webapp" + _baseUri;
+                dir = new File(URI.create(dir_str));
+            }
         }
 
         try {
-            if (dir.exists()) {
+            if (dir != null && dir.exists()) {
                 FileTemplateResolver _loader = new FileTemplateResolver();
                 _loader.setPrefix(dir.getAbsolutePath() + File.separatorChar);
                 _loader.setTemplateMode(TemplateMode.HTML);
@@ -84,7 +88,7 @@ public class ThymeleafRender implements XRender {
                 _loader.setCacheTTLMs(Long.valueOf(3600000L));
 
                 _engine.setTemplateResolver(_loader);
-            }else{
+            } else {
                 //如果没有找到文件，则使用发行模式
                 //
                 forRelease();
