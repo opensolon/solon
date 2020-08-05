@@ -11,7 +11,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.jasper.deploy.FunctionInfo;
@@ -32,61 +31,78 @@ import org.jboss.metadata.web.spec.TagFileMetaData;
 import org.jboss.metadata.web.spec.TagMetaData;
 import org.jboss.metadata.web.spec.TldMetaData;
 import org.jboss.metadata.web.spec.VariableMetaData;
+import org.noear.solon.XUtil;
+import org.noear.solon.core.XScaner;
+import org.noear.solon.ext.SupplierEx;
 
 /**
  * Original code taken from https://github.com/djotanov/undertow-jsp-template
  */
 public class TldLocator {
-  static HashMap<String, TagLibraryInfo> createTldInfos() throws IOException {
+  static HashMap<String, TagLibraryInfo> createTldInfos(String webinfo_path) throws IOException {
     URLClassLoader loader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
     URL[] urls = loader.getURLs();
-    HashMap<String, TagLibraryInfo> tagLibInfos = new HashMap<String, TagLibraryInfo>();
-    long time = System.currentTimeMillis();
+
+    HashMap<String, TagLibraryInfo> tagLibInfos = new HashMap<>();
+
+    //加载外部jar包的.tld（也可能包括自己的了）
     for (URL url : urls) {
       if (url.toString().endsWith(".jar")) {
-        JarFile jarFile = null;
         try {
-          jarFile = new JarFile(url.getFile());
-        }catch (Exception ex){
-          continue;
-        }
+          JarFile jarFile = new JarFile(url.getFile());
 
+          final Enumeration<JarEntry> entries = jarFile.entries();
 
-        final Enumeration<JarEntry> entries = jarFile.entries();
-        while (entries.hasMoreElements()) {
-          final JarEntry entry = entries.nextElement();
-          if (entry.getName().endsWith(".tld")) {
-            InputStream is = null;
-            try {
-              JarEntry fileEntry = jarFile.getJarEntry(entry.getName());
-              is = jarFile.getInputStream(fileEntry);
-              final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-              inputFactory.setXMLResolver(NoopXMLResolver.create());
-              XMLStreamReader xmlReader = inputFactory.createXMLStreamReader(is);
-              TldMetaData tldMetadata = TldMetaDataParser.parse(xmlReader);
-              TagLibraryInfo taglibInfo = getTagLibraryInfo(tldMetadata);
-              if (!tagLibInfos.containsKey(taglibInfo.getUri())) {
-                tagLibInfos.put(taglibInfo.getUri(), taglibInfo);
-              }
-            } catch (XMLStreamException e) {
-              e.printStackTrace();
-            } catch (IOException e) {
-              e.printStackTrace();
-            } finally {
-              try {
-                if (is != null) {
-                  is.close();
-                }
-              } catch (IOException ignore) {
-              }
+          while (entries.hasMoreElements()) {
+            final JarEntry entry = entries.nextElement();
+
+            if (entry.getName().endsWith(".tld")) {
+              loadTagLibraryInfo(tagLibInfos, () -> {
+                JarEntry fileEntry = jarFile.getJarEntry(entry.getName());
+                return jarFile.getInputStream(fileEntry);
+              });
             }
-            //System.out.println("File : " + entry.getName());
           }
+        }catch (Throwable ex){
+          ex.printStackTrace();
         }
       }
     }
-    //System.out.println("Time: " + (System.currentTimeMillis() - time));
+
+
+    //自己的.tld
+    XScaner.scan(webinfo_path, n -> n.endsWith(".tld")).forEach((file) -> {
+      loadTagLibraryInfo(tagLibInfos, () -> XUtil.getResource(file).openStream());
+    });
+
     return tagLibInfos;
+  }
+
+  static void loadTagLibraryInfo(HashMap<String, TagLibraryInfo> tagLibInfos, SupplierEx<InputStream> supplier) {
+    InputStream is = null;
+
+    try {
+      is = supplier.get();
+
+      final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+      inputFactory.setXMLResolver(NoopXMLResolver.create());
+      XMLStreamReader xmlReader = inputFactory.createXMLStreamReader(is);
+      TldMetaData tldMetadata = TldMetaDataParser.parse(xmlReader);
+      TagLibraryInfo taglibInfo = getTagLibraryInfo(tldMetadata);
+      if (!tagLibInfos.containsKey(taglibInfo.getUri())) {
+        tagLibInfos.put(taglibInfo.getUri(), taglibInfo);
+      }
+
+    } catch (Throwable e) {
+      e.printStackTrace();
+    } finally {
+      try {
+        if (is != null) {
+          is.close();
+        }
+      } catch (IOException ignore) {
+      }
+    }
   }
 
   static TagLibraryInfo getTagLibraryInfo(TldMetaData tldMetaData) {
@@ -153,25 +169,25 @@ public class TldLocator {
         // Attribute
         if (tagMetaData.getAttributes() != null) {
           for (AttributeMetaData attributeMetaData : tagMetaData.getAttributes()) {
-            TagAttributeInfo tagAttributeInfo = new TagAttributeInfo();
-            tagAttributeInfo.setName(attributeMetaData.getName());
-            tagAttributeInfo.setType(attributeMetaData.getType());
-            tagAttributeInfo.setReqTime(attributeMetaData.getRtexprvalue());
-            tagAttributeInfo.setRequired(attributeMetaData.getRequired());
-            tagAttributeInfo.setFragment(attributeMetaData.getFragment());
+            TagAttributeInfo ari = new TagAttributeInfo();
+            ari.setName(attributeMetaData.getName());
+            ari.setType(attributeMetaData.getType());
+            ari.setReqTime(attributeMetaData.getRtexprvalue());
+            ari.setRequired(attributeMetaData.getRequired());
+            ari.setFragment(attributeMetaData.getFragment());
             if (attributeMetaData.getDeferredValue() != null) {
-              tagAttributeInfo.setDeferredValue("true");
-              tagAttributeInfo.setExpectedTypeName(attributeMetaData.getDeferredValue().getType());
+              ari.setDeferredValue("true");
+              ari.setExpectedTypeName(attributeMetaData.getDeferredValue().getType());
             } else {
-              tagAttributeInfo.setDeferredValue("false");
+              ari.setDeferredValue("false");
             }
             if (attributeMetaData.getDeferredMethod() != null) {
-              tagAttributeInfo.setDeferredMethod("true");
-              tagAttributeInfo.setMethodSignature(attributeMetaData.getDeferredMethod().getMethodSignature());
+              ari.setDeferredMethod("true");
+              ari.setMethodSignature(attributeMetaData.getDeferredMethod().getMethodSignature());
             } else {
-              tagAttributeInfo.setDeferredMethod("false");
+              ari.setDeferredMethod("false");
             }
-            tagInfo.addTagAttributeInfo(tagAttributeInfo);
+            tagInfo.addTagAttributeInfo(ari);
           }
         }
         tagLibraryInfo.addTagInfo(tagInfo);
@@ -180,24 +196,23 @@ public class TldLocator {
     // Tag files
     if (tldMetaData.getTagFiles() != null) {
       for (TagFileMetaData tagFileMetaData : tldMetaData.getTagFiles()) {
-        TagFileInfo tagFileInfo = new TagFileInfo();
-        tagFileInfo.setName(tagFileMetaData.getName());
-        tagFileInfo.setPath(tagFileMetaData.getPath());
-        tagLibraryInfo.addTagFileInfo(tagFileInfo);
+        TagFileInfo tfi = new TagFileInfo();
+        tfi.setName(tagFileMetaData.getName());
+        tfi.setPath(tagFileMetaData.getPath());
+        tagLibraryInfo.addTagFileInfo(tfi);
       }
     }
     // Function
     if (tldMetaData.getFunctions() != null) {
       for (FunctionMetaData functionMetaData : tldMetaData.getFunctions()) {
-        FunctionInfo functionInfo = new FunctionInfo();
-        functionInfo.setName(functionMetaData.getName());
-        functionInfo.setFunctionClass(functionMetaData.getFunctionClass());
-        functionInfo.setFunctionSignature(functionMetaData.getFunctionSignature());
-        tagLibraryInfo.addFunctionInfo(functionInfo);
+        FunctionInfo fi = new FunctionInfo();
+        fi.setName(functionMetaData.getName());
+        fi.setFunctionClass(functionMetaData.getFunctionClass());
+        fi.setFunctionSignature(functionMetaData.getFunctionSignature());
+        tagLibraryInfo.addFunctionInfo(fi);
       }
     }
 
     return tagLibraryInfo;
   }
-
 }

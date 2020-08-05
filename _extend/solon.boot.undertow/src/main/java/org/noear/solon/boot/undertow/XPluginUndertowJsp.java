@@ -14,6 +14,8 @@ import io.undertow.servlet.util.DefaultClassIntrospector;
 import org.apache.jasper.deploy.JspPropertyGroup;
 import org.apache.jasper.deploy.TagLibraryInfo;
 import org.noear.solon.XApp;
+import org.noear.solon.XUtil;
+import org.noear.solon.core.XClassLoader;
 import org.noear.solon.core.XPlugin;
 
 import javax.servlet.MultipartConfigElement;
@@ -53,7 +55,8 @@ public class XPluginUndertowJsp implements XPlugin {
                 .setContextPath("/")
                 .setDefaultEncoding(XServerProp.encoding_request)
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE)
-                .setResourceManager(new DefaultResourceLoader(XPluginUndertowJsp.class))
+                .setResourceManager(new ClassPathResourceManager(XClassLoader.global()))
+                //.setResourceManager(new DefaultResourceLoader(XPluginUndertowJsp.class))
                 .setDefaultMultipartConfig(new MultipartConfigElement(System.getProperty("java.io.tmpdir")))
                 .addServlet(JspServletBuilder.createServlet("JSPServlet", "*.jsp"))
                 .addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"));  //这个才是根据上下文对象`XContext`进行分发
@@ -62,7 +65,7 @@ public class XPluginUndertowJsp implements XPlugin {
             builder.setDefaultSessionTimeout(XServerProp.session_timeout);
         }
 
-        HashMap<String, TagLibraryInfo> tagLibraryMap = TldLocator.createTldInfos();
+        HashMap<String, TagLibraryInfo> tagLibraryMap = TldLocator.createTldInfos("WEB-INF");
 
         JspServletBuilder.setupDeployment(builder, new HashMap<String, JspPropertyGroup>(),tagLibraryMap , new HackInstanceManager());
 

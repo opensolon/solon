@@ -23,7 +23,7 @@ class XResourceHandler implements XHandler {
 
     public XResourceHandler(String baseUri) {
         _baseUri = baseUri;
-        _isdebug = XApp.global().prop().argx().getInt("debug") == 1;
+        _isdebug = XApp.cfg().isDebugMode();
 
         if(_isdebug){
             String dirroot = XUtil.getResource("/").toString().replace("target/classes/", "");

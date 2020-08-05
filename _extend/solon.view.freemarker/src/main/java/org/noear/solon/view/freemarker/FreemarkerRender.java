@@ -38,10 +38,10 @@ public class FreemarkerRender implements XRender {
         }
 
 
-        if (XApp.cfg().argx().getInt("debug") == 0) {
-            forRelease();
-        }else {
+        if (XApp.cfg().isDebugMode()) {
             forDebug();
+        }else{
+            forRelease();
         }
 
         cfg.setNumberFormat("#");

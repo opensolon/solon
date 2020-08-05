@@ -77,7 +77,7 @@ class XPluginJettyJsp extends XPluginJetty {
         }
         String resURL = rootURL.toString();
 
-        boolean isDebug = (XApp.global().prop().argx().getInt("debug") == 1);
+        boolean isDebug = XApp.cfg().isDebugMode();
         if (isDebug && (resURL.startsWith("jar:") == false)) {
             int endIndex = resURL.indexOf("target");
             String debugResURL = resURL.substring(0, endIndex) + "src/main/resources/";
