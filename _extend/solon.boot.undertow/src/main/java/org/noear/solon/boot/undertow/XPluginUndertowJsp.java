@@ -45,10 +45,7 @@ public class XPluginUndertowJsp implements XPlugin {
 
 
     public void setupJsp(XApp app) throws Exception {
-        final String KEY = "io.message";
-
         final ServletContainer container = ServletContainer.Factory.newInstance();
-        ClassLoader jspClassLoader = new URLClassLoader(new URL[0], app.getClass().getClassLoader());
 
         DeploymentInfo builder = new DeploymentInfo()
                 .setClassLoader(XPluginUndertowJsp.class.getClassLoader())
@@ -56,7 +53,7 @@ public class XPluginUndertowJsp implements XPlugin {
                 .setContextPath("/")
                 .setDefaultEncoding(XServerProp.encoding_request)
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE)
-                .setResourceManager(new ClassPathResourceManager(jspClassLoader))
+                .setResourceManager(new DefaultResourceLoader(XPluginUndertowJsp.class))
                 .setDefaultMultipartConfig(new MultipartConfigElement(System.getProperty("java.io.tmpdir")))
                 .addServlet(JspServletBuilder.createServlet("JSPServlet", "*.jsp"))
                 .addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"));  //这个才是根据上下文对象`XContext`进行分发
@@ -75,13 +72,12 @@ public class XPluginUndertowJsp implements XPlugin {
 
         //************************** init server start******************
         serverBuilder = getInstance().setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE,false);;
-        serverBuilder.addHttpListener(app.port(), "0.0.0.0");
+        serverBuilder.addHttpListener(app.port(), "localhost");
         serverBuilder.setHandler(jsp_handler);
 
         _server = serverBuilder.build();
 
         //************************* init server end********************
-        System.setProperty(KEY, "Hello JSP!");
     }
 
 
@@ -102,6 +98,12 @@ public class XPluginUndertowJsp implements XPlugin {
         if (_server != null) {
             _server.stop();
             _server = null;
+        }
+    }
+
+    public static class DefaultResourceLoader extends ClassPathResourceManager {
+        public DefaultResourceLoader(final Class<?> clazz) {
+            super(clazz.getClassLoader(), "");
         }
     }
 }
