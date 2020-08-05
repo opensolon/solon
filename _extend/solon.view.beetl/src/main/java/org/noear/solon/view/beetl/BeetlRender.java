@@ -51,27 +51,9 @@ public class BeetlRender implements XRender {
 
 
         if (XApp.cfg().isDebugMode()) {
-            //添加调试模式
-            String dirroot = XUtil.getResource("/").toString().replace("target/classes/", "");
-            String dir_str = dirroot + "src/main/resources"+_baseUri;
-            File dir = new File(URI.create(dir_str));
-            if (!dir.exists()) {
-                dir_str = dirroot + "src/main/webapp"+_baseUri;
-                dir = new File(URI.create(dir_str));
-            }
-
-            try {
-                if (dir.exists()) {
-                    FileResourceLoader loader = new FileResourceLoader(dir.getAbsolutePath(),"utf-8");
-                    gt = new GroupTemplate(loader,cfg);
-                }else{
-                    initForRuntime();
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            forDebug();
         }else{
-            initForRuntime();
+            forRelease();
         }
 
         XApp.global().onSharedAdd((k,v)->{
@@ -79,7 +61,33 @@ public class BeetlRender implements XRender {
         });
     }
 
-    private void initForRuntime(){
+    private void forDebug() {
+        //添加调试模式
+        String dirroot = XUtil.getResource("/").toString().replace("target/classes/", "");
+        File dir = null;
+
+        if (dirroot.startsWith("file:")) {
+            String dir_str = dirroot + "src/main/resources" + _baseUri;
+            dir = new File(URI.create(dir_str));
+            if (!dir.exists()) {
+                dir_str = dirroot + "src/main/webapp" + _baseUri;
+                dir = new File(URI.create(dir_str));
+            }
+        }
+
+        try {
+            if (dir != null && dir.exists()) {
+                FileResourceLoader loader = new FileResourceLoader(dir.getAbsolutePath(), "utf-8");
+                gt = new GroupTemplate(loader, cfg);
+            } else {
+                forRelease();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void forRelease(){
         try {
             ClasspathResourceLoader loader = new ClasspathResourceLoader(this.getClass().getClassLoader(),_baseUri);
            gt = new GroupTemplate(loader,cfg);

@@ -43,28 +43,9 @@ public class EnjoyRender implements XRender {
 
 
         if (XApp.cfg().isDebugMode()) {
-            //添加调试模式
-            String dirroot = XUtil.getResource("/").toString().replace("target/classes/", "");
-            String dir_str = dirroot + "src/main/resources"+_baseUri;
-            File dir = new File(URI.create(dir_str));
-            if (!dir.exists()) {
-                dir_str = dirroot + "src/main/webapp"+_baseUri;
-                dir = new File(URI.create(dir_str));
-            }
-
-            try {
-                if (dir.exists()) {
-                    engine.setDevMode(true);
-                    engine.setBaseTemplatePath(dir.getPath());
-                    engine.setSourceFactory(new FileSourceFactory());
-                }else{
-                    initForRuntime();
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            forDebug();
         }else{
-            initForRuntime();
+            forRelease();
         }
 
         XApp.global().onSharedAdd((k,v)->{
@@ -72,7 +53,34 @@ public class EnjoyRender implements XRender {
         });
     }
 
-    private void initForRuntime(){
+    private void forDebug() {
+        //添加调试模式
+        String dirroot = XUtil.getResource("/").toString().replace("target/classes/", "");
+        File dir = null;
+
+        if (dirroot.startsWith("file:")) {
+            String dir_str = dirroot + "src/main/resources" + _baseUri;
+            dir = new File(URI.create(dir_str));
+            if (!dir.exists()) {
+                dir_str = dirroot + "src/main/webapp" + _baseUri;
+                dir = new File(URI.create(dir_str));
+            }
+        }
+
+        try {
+            if (dir != null && dir.exists()) {
+                engine.setDevMode(true);
+                engine.setBaseTemplatePath(dir.getPath());
+                engine.setSourceFactory(new FileSourceFactory());
+            } else {
+                forRelease();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void forRelease(){
         try {
             engine.setBaseTemplatePath(_baseUri);
             engine.setSourceFactory(new ClassPathSourceFactory());

@@ -53,19 +53,23 @@ public class FreemarkerRender implements XRender {
     }
 
     //尝试 调试模式 进行实始化
-    private void forDebug(){
+    private void forDebug() {
         String dirroot = XUtil.getResource("/").toString().replace("target/classes/", "");
-        String dir_str = dirroot + "src/main/resources"+_baseUri;
-        File dir = new File(URI.create(dir_str));
-        if (!dir.exists()) {
-            dir_str = dirroot + "src/main/webapp"+_baseUri;
+        File dir = null;
+
+        if (dirroot.startsWith("file:")) {
+            String dir_str = dirroot + "src/main/resources" + _baseUri;
             dir = new File(URI.create(dir_str));
+            if (!dir.exists()) {
+                dir_str = dirroot + "src/main/webapp" + _baseUri;
+                dir = new File(URI.create(dir_str));
+            }
         }
 
         try {
-            if (dir.exists()) {
+            if (dir != null && dir.exists()) {
                 cfg.setDirectoryForTemplateLoading(dir);
-            }else{
+            } else {
                 //如果没有找到文件，则使用发行模式
                 //
                 forRelease();
