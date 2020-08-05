@@ -14,8 +14,6 @@ class XResourceHandler implements XHandler {
     private static final String CACHE_CONTROL = "Cache-Control";
     private static final String LAST_MODIFIED = "Last-Modified";
 
-
-    private boolean _isdebug=false;
     private String _debugBaseUri;
     private String _baseUri;
     private XStaticFiles staticFiles =  XStaticFiles.instance();
@@ -23,11 +21,12 @@ class XResourceHandler implements XHandler {
 
     public XResourceHandler(String baseUri) {
         _baseUri = baseUri;
-        _isdebug = XApp.cfg().isDebugMode();
 
-        if(_isdebug){
+        if(XApp.cfg().isDebugMode()){
             String dirroot = XUtil.getResource("/").toString().replace("target/classes/", "");
-            _debugBaseUri = dirroot + "src/main/resources"+_baseUri;
+            if(dirroot.startsWith("file:")) {
+                _debugBaseUri = dirroot + "src/main/resources" + _baseUri;
+            }
         }
 
         String expr = "(" + String.join("|", staticFiles.keySet()) + ")$";
@@ -36,9 +35,10 @@ class XResourceHandler implements XHandler {
     }
 
     public URL getResource(String path) throws Exception{
-        if(_isdebug){
+        if(_debugBaseUri != null){
             URI uri = URI.create(_debugBaseUri+path);
             File file = new File(uri);
+
             if(file.exists()){
                 return uri.toURL();
             }else{
