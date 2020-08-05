@@ -11,7 +11,7 @@ import java.net.URI;
 import java.net.URL;
 
 /**
- * 默认的资源管理器
+ * JSP资源管理器
  */
 public class JspResourceManager implements ResourceManager {
     private final ClassLoader classLoader;
