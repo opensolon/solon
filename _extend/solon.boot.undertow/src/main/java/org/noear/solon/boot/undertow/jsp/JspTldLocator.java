@@ -34,6 +34,7 @@ import org.jboss.metadata.web.spec.TldMetaData;
 import org.jboss.metadata.web.spec.VariableMetaData;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.core.XClassLoader;
 import org.noear.solon.core.XScaner;
 import org.noear.solon.ext.SupplierEx;
 
@@ -42,21 +43,14 @@ import org.noear.solon.ext.SupplierEx;
  */
 public class JspTldLocator {
     public static HashMap<String, TagLibraryInfo> createTldInfos(String webinfo_path) throws IOException {
-        URLClassLoader loader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
+        URLClassLoader loader = XClassLoader.global();
         URL[] urls = loader.getURLs();
 
         HashMap<String, TagLibraryInfo> tagLibInfos = new HashMap<>();
 
         //加载外部jar包的.tld（也可能包括自己的了）
         for (URL url : urls) {
-
-
             if (url.toString().endsWith(".jar")) {
-
-                if (XApp.cfg().isDebugMode()) {
-                    System.out.println(url);
-                }
-
                 try {
                     String file_uri = URLDecoder.decode(url.getFile(), "utf-8");
 
