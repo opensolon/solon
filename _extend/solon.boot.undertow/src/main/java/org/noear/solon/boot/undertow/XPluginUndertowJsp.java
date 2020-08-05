@@ -80,7 +80,7 @@ public class XPluginUndertowJsp implements XPlugin {
 
         //************************** init server start******************
         serverBuilder = getInstance().setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE, false);
-        ;
+
         serverBuilder.addHttpListener(app.port(), "0.0.0.0");
         serverBuilder.setHandler(jsp_handler);
 
