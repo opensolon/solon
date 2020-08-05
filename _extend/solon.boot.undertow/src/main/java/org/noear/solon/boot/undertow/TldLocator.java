@@ -64,7 +64,7 @@ public class TldLocator {
             }
           }
         }catch (Throwable ex){
-          ex.printStackTrace();
+          //ex.printStackTrace();
         }
       }
     }
