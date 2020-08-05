@@ -39,7 +39,6 @@
             <groupId>io.undertow.jastow</groupId>
             <artifactId>jastow</artifactId>
             <version>${undertow.ver}</version>
-            <!--不排除这两依赖maven会根据引用顺序采用依赖-->
             <exclusions>
                 <exclusion>
                     <groupId>io.undertow</groupId>
