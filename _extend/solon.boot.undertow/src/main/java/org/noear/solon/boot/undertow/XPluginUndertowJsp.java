@@ -5,6 +5,7 @@ import io.undertow.UndertowMessages;
 import io.undertow.UndertowOptions;
 import io.undertow.jsp.HackInstanceManager;
 import io.undertow.jsp.JspServletBuilder;
+import io.undertow.server.HandlerWrapper;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.handlers.resource.*;
 import io.undertow.servlet.api.DeploymentInfo;
@@ -51,6 +52,7 @@ public class XPluginUndertowJsp implements XPlugin {
 
     public void setupJsp(XApp app) throws Exception {
         final ServletContainer container = ServletContainer.Factory.newInstance();
+        MultipartConfigElement configElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
 
         String fileRoot = getResourceRoot();
 
@@ -61,7 +63,7 @@ public class XPluginUndertowJsp implements XPlugin {
                 .setDefaultEncoding(XServerProp.encoding_request)
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE)
                 .setResourceManager(new DefaultResourceManager(XClassLoader.global(), fileRoot))
-                .setDefaultMultipartConfig(new MultipartConfigElement(System.getProperty("java.io.tmpdir")))
+                .setDefaultMultipartConfig(configElement)
                 .addServlet(JspServletBuilder.createServlet("JSPServlet", "*.jsp"))
                 .addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"));  //这个才是根据上下文对象`XContext`进行分发
 

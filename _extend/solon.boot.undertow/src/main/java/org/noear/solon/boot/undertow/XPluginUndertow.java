@@ -56,13 +56,14 @@ public class XPluginUndertow implements XPlugin {
     private DeploymentManager doGenerateManager(UtHttpHandler innerHandler, XApp app) {
         HandlerWrapper wrapper = nothing -> innerHandler;
 
-        MultipartConfigElement multipartConfigElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
+        MultipartConfigElement configElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
+
         DeploymentInfo builder = new DeploymentInfo()
                 .setClassLoader(XPluginImp.class.getClassLoader())
                 .setDeploymentName("solon")
                 .setContextPath("/")
                 .setDefaultEncoding(XServerProp.encoding_request)
-                .setDefaultMultipartConfig(multipartConfigElement)
+                .setDefaultMultipartConfig(configElement)
                 .addInnerHandlerChainWrapper(wrapper);
 
         if (XServerProp.session_timeout > 0) {
