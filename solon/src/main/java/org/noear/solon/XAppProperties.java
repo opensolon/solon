@@ -15,6 +15,8 @@ import java.util.function.BiConsumer;
 public final class XAppProperties extends XProperties {
     private XMap _args;
     private List<XPluginEntity> _plugs = new ArrayList<>();
+    private boolean _isDebugMode;
+    private boolean _isDriftMode;
 
     public XAppProperties() {
         super(System.getProperties());
@@ -40,6 +42,9 @@ public final class XAppProperties extends XProperties {
                 System.setProperty(k, v);
             }
         });
+
+        _isDebugMode = argx().getInt("debug") == 1;
+        _isDriftMode = argx().getInt("drift") == 1;
 
         //4.标识debug模式
         if (isDebugMode()) {
@@ -157,13 +162,13 @@ public final class XAppProperties extends XProperties {
      * 是否为 debug mode
      */
     public boolean isDebugMode() {
-        return argx().getInt("debug") == 1;
+        return _isDebugMode;
     }
 
     /**
      * 是否为 drift mode (of ip)
      * */
     public boolean isDriftMode() {
-        return argx().getInt("drift") == 1;
+        return _isDriftMode;
     }
 }
