@@ -80,12 +80,12 @@ public class TldLocator {
               } catch (IOException ignore) {
               }
             }
-            System.out.println("File : " + entry.getName());
+            //System.out.println("File : " + entry.getName());
           }
         }
       }
     }
-    System.out.println("Time: " + (System.currentTimeMillis() - time));
+    //System.out.println("Time: " + (System.currentTimeMillis() - time));
     return tagLibInfos;
   }
 

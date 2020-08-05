@@ -25,6 +25,14 @@ public class XClassLoader extends URLClassLoader {
 
     protected XClassLoader() {
         super(new URL[]{}, ClassLoader.getSystemClassLoader());
+
+        ClassLoader tmp = ClassLoader.getSystemClassLoader();
+        if(tmp instanceof URLClassLoader){
+            URL[] tmp2 = ((URLClassLoader) tmp).getURLs();
+            for(URL u1 : tmp2){
+                addURL(u1);
+            }
+        }
     }
 
     /**
