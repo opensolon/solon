@@ -107,7 +107,7 @@ public class JspTldLocator {
                         URL url = URI.create(uri).toURL();
                         urls.add(url);
                     } catch (Throwable ex) {
-                        ex.printStackTrace();
+                        //ex.printStackTrace();
                     }
                 }
             }
