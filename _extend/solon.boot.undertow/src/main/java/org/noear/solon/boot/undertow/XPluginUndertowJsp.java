@@ -1,11 +1,12 @@
 package org.noear.solon.boot.undertow;
 
 import io.undertow.Undertow;
+import io.undertow.UndertowMessages;
 import io.undertow.UndertowOptions;
 import io.undertow.jsp.HackInstanceManager;
 import io.undertow.jsp.JspServletBuilder;
 import io.undertow.server.HttpHandler;
-import io.undertow.server.handlers.resource.ClassPathResourceManager;
+import io.undertow.server.handlers.resource.*;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.servlet.api.ServletContainer;
@@ -20,8 +21,11 @@ import org.noear.solon.core.XPlugin;
 
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
@@ -50,7 +54,8 @@ public class XPluginUndertowJsp implements XPlugin {
 
     public void setupJsp(XApp app) throws Exception {
         final ServletContainer container = ServletContainer.Factory.newInstance();
-        String res_root = getResourceRoot();
+
+        String fileRoot = getResourceRoot();
 
         DeploymentInfo builder = new DeploymentInfo()
                 .setClassLoader(XPluginUndertowJsp.class.getClassLoader())
@@ -58,7 +63,7 @@ public class XPluginUndertowJsp implements XPlugin {
                 .setContextPath("/")
                 .setDefaultEncoding(XServerProp.encoding_request)
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE)
-                .setResourceManager(new ClassPathResourceManager(XClassLoader.global(), res_root))
+                .setResourceManager(new DefaultResourceManager(XClassLoader.global(), fileRoot))
                 .setDefaultMultipartConfig(new MultipartConfigElement(System.getProperty("java.io.tmpdir")))
                 .addServlet(JspServletBuilder.createServlet("JSPServlet", "*.jsp"))
                 .addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"));  //这个才是根据上下文对象`XContext`进行分发
@@ -138,6 +143,60 @@ public class XPluginUndertowJsp implements XPlugin {
             return new URL(path);
         } catch (MalformedURLException e) {
             return null;
+        }
+    }
+
+    public static class DefaultResourceManager implements ResourceManager{
+        private final ClassLoader classLoader;
+        private final String prefix;
+
+        public DefaultResourceManager(ClassLoader classLoader, String prefix) {
+            this.classLoader = classLoader;
+            if (prefix.isEmpty()) {
+                this.prefix = "";
+            } else if (prefix.endsWith("/")) {
+                this.prefix = prefix;
+            } else {
+                this.prefix = prefix + "/";
+            }
+
+        }
+
+        @Override
+        public Resource getResource(String path) throws IOException {
+            String modPath = path;
+            if (path.startsWith("/")) {
+                modPath = path.substring(1);
+            }
+
+            String realPath = this.prefix + modPath;
+            URL resource = null;
+            if (realPath.startsWith("file:")) {
+                resource = URI.create(realPath).toURL();
+            } else {
+                resource = this.classLoader.getResource(realPath);
+            }
+
+            return resource == null ? null : new URLResource(resource, path);
+        }
+
+        @Override
+        public boolean isResourceChangeListenerSupported() {
+            return false;
+        }
+
+        @Override
+        public void registerResourceChangeListener(ResourceChangeListener listener) {
+            throw UndertowMessages.MESSAGES.resourceChangeListenerNotSupported();
+        }
+
+        @Override
+        public void removeResourceChangeListener(ResourceChangeListener listener) {
+            throw UndertowMessages.MESSAGES.resourceChangeListenerNotSupported();
+        }
+
+        @Override
+        public void close() throws IOException {
         }
     }
 }
