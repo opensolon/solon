@@ -146,6 +146,9 @@ public class XPluginUndertowJsp implements XPlugin {
         }
     }
 
+    /**
+     * 默认的资源管理器
+     * */
     public static class DefaultResourceManager implements ResourceManager{
         private final ClassLoader classLoader;
         private final String prefix;
