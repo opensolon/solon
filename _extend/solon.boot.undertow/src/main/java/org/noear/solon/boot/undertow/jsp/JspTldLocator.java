@@ -34,9 +34,7 @@ import org.jboss.metadata.web.spec.TagFileMetaData;
 import org.jboss.metadata.web.spec.TagMetaData;
 import org.jboss.metadata.web.spec.TldMetaData;
 import org.jboss.metadata.web.spec.VariableMetaData;
-import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
-import org.noear.solon.core.XClassLoader;
 import org.noear.solon.core.XScaner;
 import org.noear.solon.ext.SupplierEx;
 
