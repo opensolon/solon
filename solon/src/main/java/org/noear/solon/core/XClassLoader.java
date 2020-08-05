@@ -1,10 +1,7 @@
 package org.noear.solon.core;
 
 
-import java.net.JarURLConnection;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.net.URLConnection;
+import java.net.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,10 +28,22 @@ public class XClassLoader extends URLClassLoader {
         if(tmp != null) {
             System.out.println("SystemClassLoader:: " + tmp.getClass().toString());
 
-            if (tmp instanceof URLClassLoader) {
-                URL[] tmp2 = ((URLClassLoader) tmp).getURLs();
-                for (URL u1 : tmp2) {
-                    addURL(u1);
+            String classPath = System.getProperty("java.class.path");
+            if(classPath != null){
+                String[] list = classPath.split(":");
+                for(String uri : list){
+                    if(uri.endsWith(".jar") && uri.contains(" ")==false){
+                        try {
+                            if(uri.startsWith("/")){
+                                uri = "file:"+uri;
+                            }
+
+                            URL url = URI.create(uri).toURL();
+                            addURL(url);
+                        }catch (Throwable ex){
+                            ex.printStackTrace();
+                        }
+                    }
                 }
             }
         }
