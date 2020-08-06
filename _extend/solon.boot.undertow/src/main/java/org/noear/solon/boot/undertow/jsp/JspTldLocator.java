@@ -103,7 +103,7 @@ public class JspTldLocator {
                 //
                 //加载系统java包，用于后续加载使用
                 //
-                if (uri.indexOf(".jar") > 0) {
+                if (uri.endsWith(".jar") || uri.indexOf(".jar ") > 0) {
                     try {
                         if (uri.startsWith("/")) {
                             uri = "file:" + uri;
