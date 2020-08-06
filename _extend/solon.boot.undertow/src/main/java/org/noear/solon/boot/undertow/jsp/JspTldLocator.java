@@ -93,7 +93,12 @@ public class JspTldLocator {
         String classPath = System.getProperty("java.class.path");
 
         if (classPath != null) {
-            String[] list = classPath.split(":");
+            String separator = System.getProperty("path.separator");
+            if(XUtil.isEmpty(separator)){
+                separator=":";
+            }
+
+            String[] list = classPath.split(separator);
             for (String uri : list) {
                 //
                 //加载系统java包，用于后续加载使用
