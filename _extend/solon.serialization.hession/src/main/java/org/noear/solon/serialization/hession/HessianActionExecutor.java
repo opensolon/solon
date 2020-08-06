@@ -13,7 +13,7 @@ public class HessianActionExecutor extends XActionExecutor {
 
     @Override
     public boolean matched(XContext ctx, String ct) {
-        if (ct != null && ct.contains(label)) {
+        if (ct != null && ct.startsWith(label)) {
             return true;
         } else {
             return false;
