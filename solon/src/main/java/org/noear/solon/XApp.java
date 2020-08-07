@@ -266,6 +266,10 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 前置监听
      */
+    public void before(String expr,  XHandler handler) {
+        before(expr, XMethod.ALL, handler);
+    }
+
     public void before(String expr, XMethod method, XHandler handler) {
         _router.add(expr, XEndpoint.before, method, handler);
     }
@@ -277,6 +281,10 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 重置监听
      */
+    public void after(String expr,XHandler handler) {
+        after(expr, XMethod.ALL, handler);
+    }
+
     public void after(String expr, XMethod method, XHandler handler) {
         _router.add(expr, XEndpoint.after, method, handler);
     }
