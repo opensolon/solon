@@ -105,18 +105,17 @@ public class AopFactory extends AopFactoryBase {
             //有name的，只用name注入
             //
             Aop.put(name, bw);
-            return;
-        }
+        } else {
+            Aop.put(bw.clz().getName(), bw);
 
-        Aop.put(bw.clz().getName(), bw);
-
-        //如果有父级接口，则建立关系映射
-        Class<?>[] list = bw.clz().getInterfaces();
-        for (Class<?> c : list) {
-            if (c.getName().contains("java.") == false) {
-                //建立关系映射
-                clzMapping.put(c, bw.clz());
-                beanNotice(c, bw);//通知子类订阅
+            //如果有父级接口，则建立关系映射
+            Class<?>[] list = bw.clz().getInterfaces();
+            for (Class<?> c : list) {
+                if (c.getName().contains("java.") == false) {
+                    //建立关系映射
+                    clzMapping.put(c, bw.clz());
+                    beanNotice(c, bw);//通知子类订阅
+                }
             }
         }
     }
