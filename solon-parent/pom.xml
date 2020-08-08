@@ -34,6 +34,8 @@
 
         <junit.ver>4.12</junit.ver>
         <undertow.ver>2.1.0.Final</undertow.ver>
+
+        <mybatis.ver>3.5.3</mybatis.ver>
     </properties>
 
 

@@ -11,15 +11,32 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Properties;
 
 public class SqlSessionFactoryBean {
     protected Configuration config;
     protected SqlSessionFactory factory;
 
     public SqlSessionFactoryBean(DataSource dataSource) {
+        this(dataSource,null);
+    }
+
+    public SqlSessionFactoryBean(DataSource dataSource, Properties props) {
         TransactionFactory tf = new JdbcTransactionFactory();
         Environment envi = new Environment("solon", tf, dataSource);
         config = new Configuration(envi);
+
+        if (props != null) {
+            String tmp = props.getProperty("typeAliases.package");
+            if (tmp != null) {
+                cfg().getTypeAliasRegistry().registerAliases(tmp);
+            }
+
+            tmp = props.getProperty("mappers.package");
+            if (tmp != null) {
+                cfg().addMappers(tmp);
+            }
+        }
     }
 
     public Configuration cfg() {
@@ -33,13 +50,4 @@ public class SqlSessionFactoryBean {
 
         return factory;
     }
-
-    /**
-     * @param resource 例："mybatis.xml"
-     * */
-    public static SqlSessionFactory getObjectByXml(String resource) throws IOException {
-        Reader reader = Resources.getResourceAsReader(resource);
-        return new SqlSessionFactoryBuilder().build(reader);
-    }
-
 }

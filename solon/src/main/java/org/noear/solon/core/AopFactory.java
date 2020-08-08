@@ -264,7 +264,12 @@ public class AopFactory extends AopFactoryBase {
                     args2.add(p2.getValue());
                 }
 
-                Object raw = mWrap.invoke(bw.raw(), args2.toArray());
+                Object raw = null;
+                try {
+                    raw = mWrap.invoke(bw.raw(), args2.toArray());
+                } catch (Throwable ex) {
+                    XMonitor.sendError(null, ex);
+                }
 
                 if (raw != null) {
                     BeanWrap m_bw = Aop.put(raw.getClass(), raw);

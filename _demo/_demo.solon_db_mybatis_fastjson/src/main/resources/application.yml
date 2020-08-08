@@ -1,4 +1,4 @@
-test.db:
+test.db1:
   schema: "rock"
   jdbcUrl: "jdbc:mysql://localdb:3306/rock?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true"
   url: "jdbc:mysql://localdb:3306/rock?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true"
@@ -6,14 +6,23 @@ test.db:
   username: "demo"
   password: "UL0hHlg0Ybq60xyb"
 
+test.db2:
+  schema: "rock"
+  jdbcUrl: "jdbc:mysql://localdb:3306/rock?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true"
+  url: "jdbc:mysql://localdb:3306/rock?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true"
+  driverClassName: "com.mysql.jdbc.Driver"
+  username: "demo"
+  password: "UL0hHlg0Ybq60xyb"
 
-solon.datasource:
-  test:
-    schema: "rock"
-    url: "jdbc:mysql://localdb:3306/rock?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true"
-    driverClassName: "com.mysql.jdbc.Driver"
-    username: "demo"
-    password: "UL0hHlg0Ybq60xyb"
+mybatis.case1:
+  typeAliases:
+    package: "webapp.model"
+  mappers:
+    package: "webapp.dso.db"
 
-mybatis:
-  datasource:
+mybatis.case2:
+  typeAliases:
+    package: "webapp.model"
+  mappers:
+    package: "webapp.dso.db"
+
