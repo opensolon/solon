@@ -15,6 +15,7 @@ import org.apache.jasper.deploy.TagLibraryInfo;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.boot.undertow.jsp.JspResourceManager;
+import org.noear.solon.boot.undertow.jsp.JspServletEx;
 import org.noear.solon.boot.undertow.jsp.JspTldLocator;
 import org.noear.solon.core.XClassLoader;
 import org.noear.solon.core.XPlugin;
@@ -63,8 +64,8 @@ public class XPluginUndertowJsp implements XPlugin {
 
 
         builder.setResourceManager(new JspResourceManager(XClassLoader.global(), fileRoot))
-                .addServlet(JspServletBuilder.createServlet("JSPServlet", "*.jsp"))
-                .addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"));
+                .addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"))
+                .addServlet(JspServletEx.createServlet("JSPServlet", "*.jsp"));
 
         if (XServerProp.session_timeout > 0) {
             builder.setDefaultSessionTimeout(XServerProp.session_timeout);
