@@ -101,11 +101,12 @@ public class AopFactory extends AopFactoryBase {
      * 注册到管理中心
      */
     public void beanRegister(BeanWrap bw, String name) {
-        if (XUtil.isEmpty(name)) {
-            Aop.put(bw.clz().getName(), bw);
-        } else {
+        if (XUtil.isEmpty(name) == false) {
             Aop.put(name, bw);
+            return;
         }
+
+        Aop.put(bw.clz().getName(), bw);
 
         //如果有父级接口，则建立关系映射
         Class<?>[] list = bw.clz().getInterfaces();
