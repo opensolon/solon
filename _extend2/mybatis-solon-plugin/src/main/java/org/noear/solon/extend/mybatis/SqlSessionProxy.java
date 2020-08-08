@@ -4,11 +4,13 @@ import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.executor.BatchResult;
 import org.apache.ibatis.reflection.ExceptionUtil;
 import org.apache.ibatis.session.*;
+import org.noear.solon.ext.RunnableEx;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,7 +19,8 @@ public class SqlSessionProxy implements SqlSession {
     private final SqlSessionFactory factory;
     private final SqlSession proxy;
 
-    private final static  Map<SqlSessionFactory, SqlSessionProxy> cached = new ConcurrentHashMap<>();
+    private final static ThreadLocal<SqlSession> threadLocal = new ThreadLocal<>();
+    private final static Map<SqlSessionFactory, SqlSessionProxy> cached = new ConcurrentHashMap<>();
 
     public static SqlSessionProxy get(SqlSessionFactory factory) {
         SqlSessionProxy wrap = cached.get(factory);
@@ -27,6 +30,37 @@ public class SqlSessionProxy implements SqlSession {
         }
 
         return wrap;
+    }
+
+    public void tran(RunnableEx runnable) throws SQLException {
+        SqlSession session = null;
+
+        try {
+            session = factory.openSession();
+            threadLocal.set(session);
+
+            runnable.run();
+
+            session.commit();
+        } catch (Throwable ex) {
+            if (session != null) {
+                session.rollback();
+            }
+
+            if (ex instanceof RuntimeException) {
+                throw (RuntimeException) ex;
+            } else if (ex instanceof SQLException) {
+                throw (SQLException) ex;
+            } else {
+                throw new RuntimeException(ex);
+            }
+        } finally {
+            threadLocal.remove();
+
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     private SqlSessionProxy(SqlSessionFactory factory) {
@@ -138,34 +172,10 @@ public class SqlSessionProxy implements SqlSession {
     }
 
     @Override
-    public void commit() {
-        proxy.commit();
-    }
-
-    @Override
-    public void commit(boolean b) {
-        proxy.commit(b);
-    }
-
-    @Override
-    public void rollback() {
-        proxy.rollback();
-    }
-
-    @Override
-    public void rollback(boolean b) {
-        proxy.rollback(b);
-    }
-
-    @Override
     public List<BatchResult> flushStatements() {
         return proxy.flushStatements();
     }
 
-    @Override
-    public void close() {
-        proxy.close();
-    }
 
     @Override
     public void clearCache() {
@@ -187,23 +197,49 @@ public class SqlSessionProxy implements SqlSession {
         return proxy.getConnection();
     }
 
+    public void commit() {
+        throw new UnsupportedOperationException("Manual commit is not allowed over a Solon managed SqlSession");
+    }
+
+    public void commit(boolean force) {
+        throw new UnsupportedOperationException("Manual commit is not allowed over a Solon managed SqlSession");
+    }
+
+    public void rollback() {
+        throw new UnsupportedOperationException("Manual rollback is not allowed over a Solon managed SqlSession");
+    }
+
+    public void rollback(boolean force) {
+        throw new UnsupportedOperationException("Manual rollback is not allowed over a Solon managed SqlSession");
+    }
+
+    public void close() {
+        throw new UnsupportedOperationException("Manual close is not allowed over a Solon managed SqlSession");
+    }
+
 
     private class SqlSessionInterceptor implements InvocationHandler {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            SqlSession sqlSession = SqlSessionProxy.this.factory.openSession();
+            SqlSession session = SqlSessionProxy.threadLocal.get();
+            Boolean has_close = false;
+            if(session == null){
+                has_close = true;
+                session = SqlSessionProxy.this.factory.openSession(true); //isAutoCommit
+            }
+
             Object unwrapped = null;
 
             try {
-                Object result = method.invoke(sqlSession, args);
+                Object result = method.invoke(session, args);
                 unwrapped = result;
             } catch (Throwable ex) {
                 unwrapped = ExceptionUtil.unwrapThrowable(ex);
                 throw (Throwable) unwrapped;
             } finally {
-                if (sqlSession != null) {
-                    sqlSession.close();
+                if (session != null && has_close) {
+                    session.close();
                 }
             }
 
