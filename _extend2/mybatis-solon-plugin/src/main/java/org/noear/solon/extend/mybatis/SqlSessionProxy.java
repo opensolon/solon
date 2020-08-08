@@ -15,17 +15,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class MybatisProxy implements SqlSession {
+public class SqlSessionProxy implements SqlSession {
     private final SqlSessionFactory factory;
     private final SqlSession proxy;
 
     private final static ThreadLocal<SqlSession> threadLocal = new ThreadLocal<>();
-    private final static Map<SqlSessionFactory, MybatisProxy> cached = new ConcurrentHashMap<>();
+    private final static Map<SqlSessionFactory, SqlSessionProxy> cached = new ConcurrentHashMap<>();
 
-    public static MybatisProxy get(SqlSessionFactory factory) {
-        MybatisProxy wrap = cached.get(factory);
+    public static SqlSessionProxy get(SqlSessionFactory factory) {
+        SqlSessionProxy wrap = cached.get(factory);
         if (wrap == null) {
-            wrap = new MybatisProxy(factory);
+            wrap = new SqlSessionProxy(factory);
             cached.putIfAbsent(factory, wrap);
         }
 
@@ -63,12 +63,12 @@ public class MybatisProxy implements SqlSession {
         }
     }
 
-    protected MybatisProxy(SqlSessionFactory factory) {
+    protected SqlSessionProxy(SqlSessionFactory factory) {
         this.factory = factory;
         this.proxy = (SqlSession) Proxy.newProxyInstance(
                 factory.getClass().getClassLoader(),
                 new Class[]{SqlSession.class},
-                new MybatisProxy.SqlSessionInterceptor());
+                new SqlSessionProxy.SqlSessionInterceptor());
     }
 
     @Override
@@ -222,11 +222,11 @@ public class MybatisProxy implements SqlSession {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            SqlSession session = MybatisProxy.threadLocal.get();
+            SqlSession session = SqlSessionProxy.threadLocal.get();
             Boolean has_close = false;
             if(session == null){
                 has_close = true;
-                session = MybatisProxy.this.factory.openSession(true); //isAutoCommit
+                session = SqlSessionProxy.this.factory.openSession(true); //isAutoCommit
             }
 
             Object unwrapped = null;
