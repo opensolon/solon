@@ -102,6 +102,8 @@ public class AopFactory extends AopFactoryBase {
      */
     public void beanRegister(BeanWrap bw, String name) {
         if (XUtil.isEmpty(name) == false) {
+            //有name的，只用name注入
+            //
             Aop.put(name, bw);
             return;
         }
