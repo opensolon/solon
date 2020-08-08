@@ -63,7 +63,7 @@ public class SqlSessionProxy implements SqlSession {
         }
     }
 
-    private SqlSessionProxy(SqlSessionFactory factory) {
+    protected SqlSessionProxy(SqlSessionFactory factory) {
         this.factory = factory;
         this.proxy = (SqlSession) Proxy.newProxyInstance(
                 factory.getClass().getClassLoader(),
