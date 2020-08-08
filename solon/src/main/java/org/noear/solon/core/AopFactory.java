@@ -246,7 +246,8 @@ public class AopFactory extends AopFactoryBase {
             Object raw = mWrap.invoke(bw.raw());
 
             if (raw != null) {
-                BeanWrap m_bw = Aop.put(raw.getClass(), raw);
+                //动态构建的bean，都用新生成wrap
+                BeanWrap m_bw = new BeanWrap(raw.getClass(), raw);
                 Aop.factory().beanRegister(m_bw, beanName);
             }
         } else {
@@ -263,20 +264,20 @@ public class AopFactory extends AopFactoryBase {
 
             //异步获取注入值
             XUtil.commonPool.submit(() -> {
-                for (VarHolderParam p2 : args1) {
-                    args2.add(p2.getValue());
-                }
-
-                Object raw = null;
                 try {
-                    raw = mWrap.invoke(bw.raw(), args2.toArray());
+                    for (VarHolderParam p2 : args1) {
+                        args2.add(p2.getValue());
+                    }
+
+                    Object raw = mWrap.invoke(bw.raw(), args2.toArray());
+
+                    if (raw != null) {
+                        //动态构建的bean，都用新生成wrap（否则会类型混乱）
+                        BeanWrap m_bw = new BeanWrap(raw.getClass(), raw);
+                        Aop.factory().beanRegister(m_bw, beanName);
+                    }
                 } catch (Throwable ex) {
                     XMonitor.sendError(null, ex);
-                }
-
-                if (raw != null) {
-                    BeanWrap m_bw = Aop.put(raw.getClass(), raw);
-                    Aop.factory().beanRegister(m_bw, beanName);
                 }
 
                 return true;
