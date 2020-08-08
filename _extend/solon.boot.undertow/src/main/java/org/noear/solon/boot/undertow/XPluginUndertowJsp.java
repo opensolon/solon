@@ -63,8 +63,8 @@ public class XPluginUndertowJsp implements XPlugin {
 
 
         builder.setResourceManager(new JspResourceManager(XClassLoader.global(), fileRoot))
-               .addServlet(JspServletBuilder.createServlet("JSPServlet", "*.jsp"))
-               .addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"));  //这个才是根据上下文对象`XContext`进行分发
+                .addServlet(JspServletBuilder.createServlet("JSPServlet", "*.jsp"))
+                .addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"));
 
         if (XServerProp.session_timeout > 0) {
             builder.setDefaultSessionTimeout(XServerProp.session_timeout);
@@ -144,6 +144,4 @@ public class XPluginUndertowJsp implements XPlugin {
             return null;
         }
     }
-
-
 }
