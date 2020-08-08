@@ -17,32 +17,32 @@ public class XPluginImp implements XPlugin {
             Aop.getAsyn(sessionFactoryRef, (bw -> {
                 if (bw.raw() instanceof SqlSessionFactory) {
                     try {
-                        scanMapper(dir, bw.raw());
-                    }catch (Throwable ex){
+                        scanMapper(dir, SqlSessionProxy.get(bw.raw()));
+                    } catch (Throwable ex) {
                         ex.printStackTrace();
                     }
                 }
             }));
         });
 
-        Aop.factory().beanInjectorAdd(Df.class, (varH, anno)->{
-            Aop.getAsyn(anno.value(),(bw)->{
-                if(bw.raw() instanceof SqlSessionFactory) {
+        Aop.factory().beanInjectorAdd(Df.class, (varH, anno) -> {
+            Aop.getAsyn(anno.value(), (bw) -> {
+                if (bw.raw() instanceof SqlSessionFactory) {
                     SqlSessionFactory factory = bw.raw();
 
-                    if(varH.getType().isInterface()){
-                        Object mapper = factory.openSession().getMapper(varH.getType());
+                    if (varH.getType().isInterface()) {
+                        Object mapper = SqlSessionProxy.get(factory).getMapper(varH.getType());
 
                         varH.setValue(mapper);
                         return;
                     }
 
-                    if(SqlSession.class.isAssignableFrom(varH.getType())){
-                        varH.setValue(factory.openSession());
+                    if (SqlSession.class.isAssignableFrom(varH.getType())) {
+                        varH.setValue(SqlSessionProxy.get(factory));
                         return;
                     }
 
-                    if(SqlSessionFactory.class.isAssignableFrom(varH.getType())){
+                    if (SqlSessionFactory.class.isAssignableFrom(varH.getType())) {
                         varH.setValue(factory);
                         return;
                     }
@@ -52,7 +52,7 @@ public class XPluginImp implements XPlugin {
         });
     }
 
-    private static void scanMapper(String dir, SqlSessionFactory factory) {
+    private static void scanMapper(String dir, SqlSessionProxy sessionWrap) {
         XScaner.scan(dir, n -> n.endsWith(".class"))
                 .stream()
                 .map(name -> {
@@ -61,7 +61,7 @@ public class XPluginImp implements XPlugin {
                 })
                 .forEach((clz) -> {
                     if (clz != null && clz.isInterface()) {
-                        Object mapper = factory.openSession().getMapper(clz);
+                        Object mapper = sessionWrap.getMapper(clz);
 
                         Aop.put(clz, mapper);
                     }
