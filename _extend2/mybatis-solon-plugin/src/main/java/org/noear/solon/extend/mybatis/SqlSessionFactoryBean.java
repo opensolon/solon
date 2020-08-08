@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
+import org.noear.solon.XUtil;
 import org.noear.solon.core.XMonitor;
 
 import javax.sql.DataSource;
@@ -36,7 +37,16 @@ public class SqlSessionFactoryBean {
                     String val = (String) v;
 
                     if (key.startsWith("typeAliases[")) {
-                        cfg().getTypeAliasRegistry().registerAliases(val);
+                        if (key.endsWith(".class")) {
+                            //type class
+                            Class<?> clz = XUtil.loadClass(val.substring(0, val.length() - 6));
+                            if (clz != null) {
+                                cfg().getTypeAliasRegistry().registerAlias(clz);
+                            }
+                        } else {
+                            //package
+                            cfg().getTypeAliasRegistry().registerAliases(val);
+                        }
                     }
                 }
             });
@@ -49,24 +59,21 @@ public class SqlSessionFactoryBean {
 
                     if (key.startsWith("mappers[")) {
                         if (val.endsWith(".xml")) {
+                            //mapper xml
                             addMappersByXml(val);
                         } else if (val.endsWith(".class")) {
-                            addMappersByClz(val.substring(0, val.length() - 6));
+                            //mapper class
+                            Class<?> clz = XUtil.loadClass(val.substring(0, val.length() - 6));
+                            if (clz != null) {
+                                cfg().addMapper(clz);
+                            }
                         } else {
+                            //package
                             cfg().addMappers(val);
                         }
                     }
                 }
             });
-        }
-    }
-
-    private void addMappersByClz(String val) {
-        try {
-            Class<?> mapperInterface = Resources.classForName(val);
-            cfg().addMapper(mapperInterface);
-        } catch (Throwable ex) {
-            XMonitor.sendError(null, ex);
         }
     }
 
@@ -77,11 +84,11 @@ public class SqlSessionFactoryBean {
             /**
              * 读取mapper文件
              */
-            InputStream inputStream = Resources.getResourceAsStream(val);
+            InputStream stream = Resources.getResourceAsStream(val);
             /**
              * mapper映射文件都是通过XMLMapperBuilder解析
              */
-            XMLMapperBuilder mapperParser = new XMLMapperBuilder(inputStream, cfg(), val, cfg().getSqlFragments());
+            XMLMapperBuilder mapperParser = new XMLMapperBuilder(stream, cfg(), val, cfg().getSqlFragments());
             mapperParser.parse();
         } catch (Throwable ex) {
             XMonitor.sendError(null, ex);
