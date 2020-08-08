@@ -6,7 +6,7 @@ import org.noear.solon.annotation.XBean;
 import org.noear.solon.annotation.XConfiguration;
 import org.noear.solon.annotation.XInject;
 import org.noear.solon.extend.mybatis.MapperScan;
-import org.noear.solon.extend.mybatis.SqlSessionFactoryBean;
+import org.noear.solon.extend.mybatis.MybatisAdapter;
 
 import java.util.Properties;
 
@@ -20,7 +20,7 @@ public class Config {
     public SqlSessionFactory sqlSessionFactory1(
             @XInject("${test.db1}") HikariDataSource dataSource,
             @XInject("${mybatis.case1}") Properties props) {
-        return new SqlSessionFactoryBean(dataSource, props)
+        return new MybatisAdapter(dataSource, props)
                 .getObject();
     }
 }

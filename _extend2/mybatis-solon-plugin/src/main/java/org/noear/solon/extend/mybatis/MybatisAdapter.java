@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
+import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.XMonitor;
 
@@ -16,16 +17,19 @@ import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class SqlSessionFactoryBean {
+public class MybatisAdapter {
     protected Configuration config;
     protected SqlSessionFactory factory;
     private static int count = 0;
 
-    public SqlSessionFactoryBean(DataSource dataSource) {
-        this(dataSource,null);
+    /**
+     * 使用默认的 typeAliases 和 mappers 配置
+     * */
+    public MybatisAdapter(DataSource dataSource) {
+        this(dataSource, XApp.cfg().getProp("mybatis"));
     }
 
-    public SqlSessionFactoryBean(DataSource dataSource, Properties props) {
+    public MybatisAdapter(DataSource dataSource, Properties props) {
         TransactionFactory tf = new JdbcTransactionFactory();
         Environment envi = new Environment("solon-" + (count++), tf, dataSource);
         config = new Configuration(envi);
@@ -71,6 +75,8 @@ public class SqlSessionFactoryBean {
                             //package
                             cfg().addMappers(val);
                         }
+                    }else{
+                        throw new RuntimeException("Please add the mappers configuration!");
                     }
                 }
             });
@@ -99,7 +105,7 @@ public class SqlSessionFactoryBean {
         return config;
     }
 
-    public SqlSessionFactory getObject() {
+    public SqlSessionFactory getFactory() {
         if (factory == null) {
             factory = new SqlSessionFactoryBuilder().build(config);
         }
