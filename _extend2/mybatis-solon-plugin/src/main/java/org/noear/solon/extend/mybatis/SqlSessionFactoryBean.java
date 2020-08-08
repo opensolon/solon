@@ -1,6 +1,5 @@
 package org.noear.solon.extend.mybatis;
 
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
