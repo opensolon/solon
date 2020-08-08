@@ -321,7 +321,11 @@
 
 
 
-
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mybatis-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
