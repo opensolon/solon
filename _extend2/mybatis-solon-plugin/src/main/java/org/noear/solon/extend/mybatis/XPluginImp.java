@@ -17,26 +17,10 @@ public class XPluginImp implements XPlugin {
 
             Aop.getAsyn(sessionFactoryRef, (bw -> {
                 if (bw.raw() instanceof SqlSessionFactory) {
-                    scanMapper(dir, (SqlSessionFactory) bw.raw());
+                    scanMapper(dir, bw.raw());
                 }
             }));
         });
-
-//        try {
-//            //通过配置文件获取数据库连接信息
-//            Reader reader = Resources.getResourceAsReader("mybatis.xml");
-//
-//            //通过配置信息构建一个SqlSessionFactory
-//            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-//
-//            //通过SqlSessionFactory打开一个数据库会话
-//            SqlSession sqlsession = sqlSessionFactory.openSession();
-//
-//            Aop.put(SqlSessionFactory.class, sqlSessionFactory);
-//            Aop.put("sqlsession", sqlsession);
-//        }catch (Exception ex){
-//            throw new RuntimeException(ex);
-//        }
     }
 
     private void scanMapper(String dir, SqlSessionFactory factory) {
