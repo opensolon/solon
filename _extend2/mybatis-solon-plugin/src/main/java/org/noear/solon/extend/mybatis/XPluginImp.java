@@ -37,11 +37,6 @@ public class XPluginImp implements XPlugin {
                         return;
                     }
 
-                    if (SqlSessionProxy.class.isAssignableFrom(varH.getType())) {
-                        varH.setValue(SqlSessionProxy.get(factory));
-                        return;
-                    }
-
                     if (SqlSession.class.isAssignableFrom(varH.getType())) {
                         varH.setValue(SqlSessionProxy.get(factory));
                         return;
