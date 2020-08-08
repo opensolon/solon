@@ -3,9 +3,7 @@ package org.noear.solon.extend.mybatis;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
-import org.noear.solon.core.Aop;
-import org.noear.solon.core.XPlugin;
-import org.noear.solon.core.XScaner;
+import org.noear.solon.core.*;
 
 public class XPluginImp implements XPlugin {
     @Override
@@ -21,6 +19,17 @@ public class XPluginImp implements XPlugin {
                 }
             }));
         });
+
+        Aop.factory().beanInjectorAdd(Mapper.class, (varH, anno)->{
+            Aop.getAsyn(anno.value(),(bw)->{
+                if(bw.raw() instanceof SqlSessionFactory) {
+                    SqlSessionFactory factory = bw.raw();
+                    Object mapper = factory.openSession().getMapper(varH.getType());
+
+                    varH.setValue(mapper);
+                }
+            });
+        });
     }
 
     private void scanMapper(String dir, SqlSessionFactory factory) {
@@ -33,6 +42,7 @@ public class XPluginImp implements XPlugin {
                 .forEach((clz) -> {
                     if (clz != null && clz.isInterface()) {
                         Object mapper = factory.openSession().getMapper(clz);
+
                         Aop.put(clz, mapper);
                     }
                 });
