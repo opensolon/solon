@@ -9,8 +9,6 @@ import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 
 import javax.sql.DataSource;
-import java.io.IOException;
-import java.io.Reader;
 import java.util.Properties;
 
 public class SqlSessionFactoryBean {

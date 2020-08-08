@@ -1,5 +1,6 @@
 package org.noear.solon.extend.mybatis;
 
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
@@ -20,13 +21,28 @@ public class XPluginImp implements XPlugin {
             }));
         });
 
-        Aop.factory().beanInjectorAdd(Mapper.class, (varH, anno)->{
+        Aop.factory().beanInjectorAdd(Df.class, (varH, anno)->{
             Aop.getAsyn(anno.value(),(bw)->{
                 if(bw.raw() instanceof SqlSessionFactory) {
                     SqlSessionFactory factory = bw.raw();
-                    Object mapper = factory.openSession().getMapper(varH.getType());
 
-                    varH.setValue(mapper);
+                    if(varH.getType().isInterface()){
+                        Object mapper = factory.openSession().getMapper(varH.getType());
+
+                        varH.setValue(mapper);
+                        return;
+                    }
+
+                    if(SqlSession.class.isAssignableFrom(varH.getType())){
+                        varH.setValue(factory.openSession());
+                        return;
+                    }
+
+                    if(SqlSessionFactory.class.isAssignableFrom(varH.getType())){
+                        varH.setValue(factory);
+                        return;
+                    }
+
                 }
             });
         });
