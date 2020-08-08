@@ -13,6 +13,7 @@ import java.util.Properties;
 public class SqlSessionFactoryBean {
     protected Configuration config;
     protected SqlSessionFactory factory;
+    private static int count = 0;
 
     public SqlSessionFactoryBean(DataSource dataSource) {
         this(dataSource,null);
@@ -20,7 +21,7 @@ public class SqlSessionFactoryBean {
 
     public SqlSessionFactoryBean(DataSource dataSource, Properties props) {
         TransactionFactory tf = new JdbcTransactionFactory();
-        Environment envi = new Environment("solon", tf, dataSource);
+        Environment envi = new Environment("solon-" + (count++), tf, dataSource);
         config = new Configuration(envi);
 
         if (props != null) {

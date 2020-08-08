@@ -16,7 +16,11 @@ public class XPluginImp implements XPlugin {
 
             Aop.getAsyn(sessionFactoryRef, (bw -> {
                 if (bw.raw() instanceof SqlSessionFactory) {
-                    scanMapper(dir, bw.raw());
+                    try {
+                        scanMapper(dir, bw.raw());
+                    }catch (Throwable ex){
+                        ex.printStackTrace();
+                    }
                 }
             }));
         });
@@ -48,7 +52,7 @@ public class XPluginImp implements XPlugin {
         });
     }
 
-    private void scanMapper(String dir, SqlSessionFactory factory) {
+    private static void scanMapper(String dir, SqlSessionFactory factory) {
         XScaner.scan(dir, n -> n.endsWith(".class"))
                 .stream()
                 .map(name -> {
