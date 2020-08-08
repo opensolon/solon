@@ -35,7 +35,7 @@ public class SqlSessionFactoryBean {
                     String key = (String) k;
                     String val = (String) v;
 
-                    if(key.startsWith("typeAliases[")){
+                    if (key.startsWith("typeAliases[")) {
                         cfg().getTypeAliasRegistry().registerAliases(val);
                     }
                 }
@@ -47,15 +47,26 @@ public class SqlSessionFactoryBean {
                     String key = (String) k;
                     String val = (String) v;
 
-                    if(key.startsWith("mappers[")){
-                        if(val.endsWith(".xml")){
+                    if (key.startsWith("mappers[")) {
+                        if (val.endsWith(".xml")) {
                             addMappersByXml(val);
-                        }else {
+                        } else if (val.endsWith(".class")) {
+                            addMappersByClz(val.substring(0, val.length() - 6 - 1));
+                        } else {
                             cfg().addMappers(val);
                         }
                     }
                 }
             });
+        }
+    }
+
+    private void addMappersByClz(String val) {
+        try {
+            Class<?> mapperInterface = Resources.classForName(val);
+            cfg().addMapper(mapperInterface);
+        } catch (Throwable ex) {
+            XMonitor.sendError(null, ex);
         }
     }
 
