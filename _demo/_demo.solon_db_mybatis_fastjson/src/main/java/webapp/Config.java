@@ -21,6 +21,6 @@ public class Config {
             @XInject("${test.db1}") HikariDataSource dataSource,
             @XInject("${mybatis.case1}") Properties props) {
         return new MybatisAdapter(dataSource, props)
-                .getObject();
+                .getFactory();
     }
 }
