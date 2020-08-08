@@ -17,9 +17,14 @@ import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * 适配器
+ * */
 public class MybatisAdapter {
     protected Configuration config;
     protected SqlSessionFactory factory;
+    protected Integer mappersCount = 0;
+
     private static int count = 0;
 
     /**
@@ -30,9 +35,14 @@ public class MybatisAdapter {
     }
 
     public MybatisAdapter(DataSource dataSource, Properties props) {
+        String environment_id = props.getProperty("environment");
+        if(XUtil.isEmpty(environment_id)) {
+            environment_id = "solon-" + (count++);
+        }
+
         TransactionFactory tf = new JdbcTransactionFactory();
-        Environment envi = new Environment("solon-" + (count++), tf, dataSource);
-        config = new Configuration(envi);
+        Environment environment = new Environment(environment_id, tf, dataSource);
+        config = new Configuration(environment);
 
         if (props != null) {
             props.forEach((k, v) -> {
@@ -65,21 +75,26 @@ public class MybatisAdapter {
                         if (val.endsWith(".xml")) {
                             //mapper xml
                             addMappersByXml(val);
+                            mappersCount++;
                         } else if (val.endsWith(".class")) {
                             //mapper class
                             Class<?> clz = XUtil.loadClass(val.substring(0, val.length() - 6));
                             if (clz != null) {
                                 cfg().addMapper(clz);
+                                mappersCount++;
                             }
                         } else {
                             //package
                             cfg().addMappers(val);
+                            mappersCount++;
                         }
-                    }else{
-                        throw new RuntimeException("Please add the mappers configuration!");
                     }
                 }
             });
+
+            if(mappersCount == 0) {
+                throw new RuntimeException("Please add the mappers configuration!");
+            }
         }
     }
 
