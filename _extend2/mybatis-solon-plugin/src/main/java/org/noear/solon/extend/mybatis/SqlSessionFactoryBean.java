@@ -51,7 +51,7 @@ public class SqlSessionFactoryBean {
                         if (val.endsWith(".xml")) {
                             addMappersByXml(val);
                         } else if (val.endsWith(".class")) {
-                            addMappersByClz(val.substring(0, val.length() - 6 - 1));
+                            addMappersByClz(val.substring(0, val.length() - 6));
                         } else {
                             cfg().addMappers(val);
                         }
