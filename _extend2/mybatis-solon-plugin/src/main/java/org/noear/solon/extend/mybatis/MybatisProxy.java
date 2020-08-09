@@ -12,9 +12,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 代理
+ * 代理器
  *
- * 处理包装和事务
+ * 处理包装和事务控制
  * */
 public class MybatisProxy extends SqlSessionHolder implements SqlSession {
     private final SqlSessionFactory factory;
