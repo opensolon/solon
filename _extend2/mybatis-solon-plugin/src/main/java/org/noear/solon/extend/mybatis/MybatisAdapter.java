@@ -17,6 +17,8 @@ import org.noear.solon.core.XScaner;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -25,7 +27,7 @@ import java.util.Properties;
 public class MybatisAdapter {
     protected Configuration config;
     protected SqlSessionFactory factory;
-    protected Integer mappersCount = 0;
+    protected List<String> mappers = new ArrayList<>();
 
     protected static int environmentIndex = 0;
 
@@ -77,24 +79,24 @@ public class MybatisAdapter {
                         if (val.endsWith(".xml")) {
                             //mapper xml
                             addMappersByXml(val);
-                            mappersCount++;
+                            mappers.add(val);
                         } else if (val.endsWith(".class")) {
                             //mapper class
                             Class<?> clz = XUtil.loadClass(val.substring(0, val.length() - 6));
                             if (clz != null) {
                                 cfg().addMapper(clz);
-                                mappersCount++;
+                                mappers.add(val);
                             }
                         } else {
                             //package
                             cfg().addMappers(val);
-                            mappersCount++;
+                            mappers.add(val);
                         }
                     }
                 }
             });
 
-            if (mappersCount == 0) {
+            if (mappers.size() == 0) {
                 throw new RuntimeException("Please add the mappers configuration!");
             }
         }
@@ -130,15 +132,39 @@ public class MybatisAdapter {
         return factory;
     }
 
-    /**
-     * 替代 @mapperScan
-     *
-     * 扫描 basePackages 里的类，并生成 mapper 实例注册到bean中心
-     * */
-    public MybatisAdapter mapperScan(String basePackages) {
-        String dir = basePackages.replace('.', '/');
+    public MybatisAdapter mapperScan() {
         MybatisProxy proxy = MybatisProxy.get(getFactory());
 
+        for (String val : mappers) {
+            mapperScan0(proxy, val);
+        }
+
+        return this;
+    }
+
+    /**
+     * 替代 @mapperScan
+     * <p>
+     * 扫描 basePackages 里的类，并生成 mapper 实例注册到bean中心
+     */
+    public MybatisAdapter mapperScan(String basePackages) {
+        mapperScan0(MybatisProxy.get(getFactory()), basePackages);
+        return this;
+    }
+
+    private void mapperScan0(MybatisProxy proxy, String val) {
+        if (val.endsWith(".xml")) {
+
+        } else if (val.endsWith(".class")) {
+            Class<?> clz = XUtil.loadClass(val.substring(0, val.length() - 6));
+            mapperBindDo(proxy, clz);
+        } else {
+            String dir = val.replace('.', '/');
+            mapperScanDo(proxy, dir);
+        }
+    }
+
+    private void mapperScanDo(MybatisProxy proxy, String dir) {
         XScaner.scan(dir, n -> n.endsWith(".class"))
                 .stream()
                 .map(name -> {
@@ -146,13 +172,15 @@ public class MybatisAdapter {
                     return XUtil.loadClass(className.replace("/", "."));
                 })
                 .forEach((clz) -> {
-                    if (clz != null && clz.isInterface()) {
-                        Object mapper = proxy.getMapper(clz);
-
-                        Aop.put(clz, mapper);
-                    }
+                    mapperBindDo(proxy, clz);
                 });
+    }
 
-        return this;
+    private void mapperBindDo(MybatisProxy proxy, Class<?> clz) {
+        if (clz != null && clz.isInterface()) {
+            Object mapper = proxy.getMapper(clz);
+
+            Aop.put(clz, mapper);
+        }
     }
 }
