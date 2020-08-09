@@ -64,10 +64,18 @@ public class App{
 ```xml
 <parent>
     <groupId>org.noear</groupId>
-    <artifactId>solon-web</artifactId>
+    <artifactId>solon-parent</artifactId>
     <version>1.0.9.2</version>
-    <type>pom</type>
 </parent>
+
+<dependencies>
+    <dependency>
+        <groupId>org.noear</groupId>
+        <artifactId>solon-web</artifactId>
+        <type>pom</type>
+    </dependency>
+</dependencies>
+
 ```
 ```
 //资源路径说明（不用配置）
