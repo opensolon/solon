@@ -15,9 +15,9 @@ public class SqlSessionHolder implements SqlSession {
     private final SqlSession holder;
 
     /**
-     * 附件，用于数据传递
+     * 结果
      * */
-    public Object attachment;
+    public Object result;
 
     public SqlSessionHolder(SqlSession session) {
         holder = session;

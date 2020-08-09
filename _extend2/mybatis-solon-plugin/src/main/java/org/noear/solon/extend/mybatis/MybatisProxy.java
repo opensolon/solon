@@ -41,16 +41,18 @@ public class MybatisProxy extends SqlSessionHolder implements SqlSession {
     /**
      * 事务
      * */
-    public void tran(ConsumerEx<SqlSessionHolder> consumer) throws SQLException {
+    public Object tran(ConsumerEx<SqlSessionHolder> consumer) throws SQLException {
         SqlSession session = null;
-
         try {
             session = factory.openSession();
             threadLocal.set(session);
 
-            consumer.accept(new SqlSessionHolder(session));
+            SqlSessionHolder session2 = new SqlSessionHolder(session);
+            consumer.accept(session2);
 
             session.commit();
+
+            return session2.result;
         } catch (Throwable ex) {
             if (session != null) {
                 session.rollback();
