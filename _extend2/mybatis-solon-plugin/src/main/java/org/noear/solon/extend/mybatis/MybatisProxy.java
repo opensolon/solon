@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class MybatisProxy implements SqlSession {
     private final SqlSessionFactory factory;
-    private final SqlSession proxy;
+    private final SqlSession holder;
 
     private final static ThreadLocal<SqlSession> threadLocal = new ThreadLocal<>();
     private final static Map<SqlSessionFactory, MybatisProxy> cached = new ConcurrentHashMap<>();
@@ -25,8 +25,13 @@ public class MybatisProxy implements SqlSession {
     public static MybatisProxy get(SqlSessionFactory factory) {
         MybatisProxy wrap = cached.get(factory);
         if (wrap == null) {
-            wrap = new MybatisProxy(factory);
-            cached.putIfAbsent(factory, wrap);
+            synchronized (cached) {
+                wrap = cached.get(factory);
+                if(wrap == null) {
+                    wrap = new MybatisProxy(factory);
+                    cached.put(factory, wrap);
+                }
+            }
         }
 
         return wrap;
@@ -65,7 +70,7 @@ public class MybatisProxy implements SqlSession {
 
     protected MybatisProxy(SqlSessionFactory factory) {
         this.factory = factory;
-        this.proxy = (SqlSession) Proxy.newProxyInstance(
+        this.holder = (SqlSession) Proxy.newProxyInstance(
                 factory.getClass().getClassLoader(),
                 new Class[]{SqlSession.class},
                 new MybatisProxy.SqlSessionInterceptor());
@@ -73,118 +78,118 @@ public class MybatisProxy implements SqlSession {
 
     @Override
     public <T> T selectOne(String s) {
-        return proxy.selectOne(s);
+        return holder.selectOne(s);
     }
 
     @Override
     public <T> T selectOne(String s, Object o) {
-        return proxy.selectOne(s, o);
+        return holder.selectOne(s, o);
     }
 
     @Override
     public <E> List<E> selectList(String s) {
-        return proxy.selectList(s);
+        return holder.selectList(s);
     }
 
     @Override
     public <E> List<E> selectList(String s, Object o) {
-        return proxy.selectList(s, o);
+        return holder.selectList(s, o);
     }
 
     @Override
     public <E> List<E> selectList(String s, Object o, RowBounds rowBounds) {
-        return proxy.selectList(s, o, rowBounds);
+        return holder.selectList(s, o, rowBounds);
     }
 
     @Override
     public <K, V> Map<K, V> selectMap(String s, String s1) {
-        return proxy.selectMap(s, s1);
+        return holder.selectMap(s, s1);
     }
 
     @Override
     public <K, V> Map<K, V> selectMap(String s, Object o, String s1) {
-        return proxy.selectMap(s, o, s1);
+        return holder.selectMap(s, o, s1);
     }
 
     @Override
     public <K, V> Map<K, V> selectMap(String s, Object o, String s1, RowBounds rowBounds) {
-        return proxy.selectMap(s, o, s1, rowBounds);
+        return holder.selectMap(s, o, s1, rowBounds);
     }
 
     @Override
     public <T> Cursor<T> selectCursor(String s) {
-        return proxy.selectCursor(s);
+        return holder.selectCursor(s);
     }
 
     @Override
     public <T> Cursor<T> selectCursor(String s, Object o) {
-        return proxy.selectCursor(s, o);
+        return holder.selectCursor(s, o);
     }
 
     @Override
     public <T> Cursor<T> selectCursor(String s, Object o, RowBounds rowBounds) {
-        return proxy.selectCursor(s, o, rowBounds);
+        return holder.selectCursor(s, o, rowBounds);
     }
 
     @Override
     public void select(String s, Object o, ResultHandler resultHandler) {
-        proxy.select(s, o, resultHandler);
+        holder.select(s, o, resultHandler);
     }
 
     @Override
     public void select(String s, ResultHandler resultHandler) {
-        proxy.select(s, resultHandler);
+        holder.select(s, resultHandler);
     }
 
     @Override
     public void select(String s, Object o, RowBounds rowBounds, ResultHandler resultHandler) {
-        proxy.select(s, o, rowBounds, resultHandler);
+        holder.select(s, o, rowBounds, resultHandler);
     }
 
     @Override
     public int insert(String s) {
-        return proxy.insert(s);
+        return holder.insert(s);
     }
 
     @Override
     public int insert(String s, Object o) {
-        return proxy.insert(s, 0);
+        return holder.insert(s, 0);
     }
 
     @Override
     public int update(String s) {
-        return proxy.update(s);
+        return holder.update(s);
     }
 
     @Override
     public int update(String s, Object o) {
-        return proxy.update(s, o);
+        return holder.update(s, o);
     }
 
     @Override
     public int delete(String s) {
-        return proxy.delete(s);
+        return holder.delete(s);
     }
 
     @Override
     public int delete(String s, Object o) {
-        return proxy.delete(s, o);
+        return holder.delete(s, o);
     }
 
     @Override
     public List<BatchResult> flushStatements() {
-        return proxy.flushStatements();
+        return holder.flushStatements();
     }
 
 
     @Override
     public void clearCache() {
-        proxy.clearCache();
+        holder.clearCache();
     }
 
     @Override
     public Configuration getConfiguration() {
-        return proxy.getConfiguration();
+        return holder.getConfiguration();
     }
 
     @Override
@@ -194,7 +199,7 @@ public class MybatisProxy implements SqlSession {
 
     @Override
     public Connection getConnection() {
-        return proxy.getConnection();
+        return holder.getConnection();
     }
 
     public void commit() {
