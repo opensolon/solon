@@ -23,6 +23,9 @@ import java.util.Properties;
 
 /**
  * 适配器
+ *
+ * 1.提供 mapperScan 能力
+ * 2.生成 factory 的能力
  * */
 public class MybatisAdapter {
     protected Configuration config;

@@ -11,6 +11,11 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 对SqlSession的包装
+ *
+ * 目的：禁止进行手动执行事处动作
+ * */
 public class SqlSessionHolder implements SqlSession {
     private final SqlSession holder;
 
