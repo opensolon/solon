@@ -25,7 +25,7 @@ public class MybatisAdapter {
     protected SqlSessionFactory factory;
     protected Integer mappersCount = 0;
 
-    private static int count = 0;
+    protected static int environmentIndex = 0;
 
     /**
      * 使用默认的 typeAliases 和 mappers 配置
@@ -37,7 +37,7 @@ public class MybatisAdapter {
     public MybatisAdapter(DataSource dataSource, Properties props) {
         String environment_id = props.getProperty("environment");
         if(XUtil.isEmpty(environment_id)) {
-            environment_id = "solon-" + (count++);
+            environment_id = "solon-" + (environmentIndex++);
         }
 
         TransactionFactory tf = new JdbcTransactionFactory();

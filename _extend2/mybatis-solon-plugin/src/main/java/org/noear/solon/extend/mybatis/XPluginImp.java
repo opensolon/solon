@@ -17,7 +17,7 @@ public class XPluginImp implements XPlugin {
             Aop.getAsyn(sessionFactoryRef, (bw -> {
                 if (bw.raw() instanceof SqlSessionFactory) {
                     try {
-                        scanMapper(dir, SqlSessionProxy.get(bw.raw()));
+                        scanMapper(dir, MybatisProxy.get(bw.raw()));
                     } catch (Throwable ex) {
                         ex.printStackTrace();
                     }
@@ -31,14 +31,14 @@ public class XPluginImp implements XPlugin {
                     SqlSessionFactory factory = bw.raw();
 
                     if (varH.getType().isInterface()) {
-                        Object mapper = SqlSessionProxy.get(factory).getMapper(varH.getType());
+                        Object mapper = MybatisProxy.get(factory).getMapper(varH.getType());
 
                         varH.setValue(mapper);
                         return;
                     }
 
                     if (SqlSession.class.isAssignableFrom(varH.getType())) {
-                        varH.setValue(SqlSessionProxy.get(factory));
+                        varH.setValue(MybatisProxy.get(factory));
                         return;
                     }
 
@@ -52,7 +52,7 @@ public class XPluginImp implements XPlugin {
         });
     }
 
-    private static void scanMapper(String dir, SqlSessionProxy proxy) {
+    private static void scanMapper(String dir, MybatisProxy proxy) {
         XScaner.scan(dir, n -> n.endsWith(".class"))
                 .stream()
                 .map(name -> {
