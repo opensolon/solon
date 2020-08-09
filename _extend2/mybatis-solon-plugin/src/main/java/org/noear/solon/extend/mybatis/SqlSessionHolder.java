@@ -150,22 +150,22 @@ public class SqlSessionHolder implements SqlSession {
     }
 
     public void commit() {
-        throw new UnsupportedOperationException("Manual commit is not allowed over a Solon managed SqlSession");
+        throw new UnsupportedOperationException("Manual commit is not allowed over a managed SqlSession");
     }
 
     public void commit(boolean force) {
-        throw new UnsupportedOperationException("Manual commit is not allowed over a Solon managed SqlSession");
+        throw new UnsupportedOperationException("Manual commit is not allowed over a managed SqlSession");
     }
 
     public void rollback() {
-        throw new UnsupportedOperationException("Manual rollback is not allowed over a Solon managed SqlSession");
+        throw new UnsupportedOperationException("Manual rollback is not allowed over a managed SqlSession");
     }
 
     public void rollback(boolean force) {
-        throw new UnsupportedOperationException("Manual rollback is not allowed over a Solon managed SqlSession");
+        throw new UnsupportedOperationException("Manual rollback is not allowed over a managed SqlSession");
     }
 
     public void close() {
-        throw new UnsupportedOperationException("Manual close is not allowed over a Solon managed SqlSession");
+        throw new UnsupportedOperationException("Manual close is not allowed over a managed SqlSession");
     }
 }
