@@ -11,7 +11,9 @@ import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.core.Aop;
 import org.noear.solon.core.XMonitor;
+import org.noear.solon.core.XScaner;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
@@ -29,14 +31,14 @@ public class MybatisAdapter {
 
     /**
      * 使用默认的 typeAliases 和 mappers 配置
-     * */
+     */
     public MybatisAdapter(DataSource dataSource) {
         this(dataSource, XApp.cfg().getProp("mybatis"));
     }
 
     public MybatisAdapter(DataSource dataSource, Properties props) {
         String environment_id = props.getProperty("environment");
-        if(XUtil.isEmpty(environment_id)) {
+        if (XUtil.isEmpty(environment_id)) {
             environment_id = "solon-" + (environmentIndex++);
         }
 
@@ -92,7 +94,7 @@ public class MybatisAdapter {
                 }
             });
 
-            if(mappersCount == 0) {
+            if (mappersCount == 0) {
                 throw new RuntimeException("Please add the mappers configuration!");
             }
         }
@@ -126,5 +128,29 @@ public class MybatisAdapter {
         }
 
         return factory;
+    }
+
+    /**
+     * 替代 @mapperScan
+     * */
+    public MybatisAdapter mapperScan(String basePackages) {
+        String dir = basePackages.replace('.', '/');
+        MybatisProxy proxy = MybatisProxy.get(getFactory());
+
+        XScaner.scan(dir, n -> n.endsWith(".class"))
+                .stream()
+                .map(name -> {
+                    String className = name.substring(0, name.length() - 6);
+                    return XUtil.loadClass(className.replace("/", "."));
+                })
+                .forEach((clz) -> {
+                    if (clz != null && clz.isInterface()) {
+                        Object mapper = proxy.getMapper(clz);
+
+                        Aop.put(clz, mapper);
+                    }
+                });
+
+        return this;
     }
 }
