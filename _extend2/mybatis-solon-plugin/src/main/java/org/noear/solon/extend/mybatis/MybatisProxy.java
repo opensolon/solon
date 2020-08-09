@@ -13,6 +13,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 代理
+ *
+ * 处理包装和事务
  * */
 public class MybatisProxy extends SqlSessionHolder implements SqlSession {
     private final SqlSessionFactory factory;
