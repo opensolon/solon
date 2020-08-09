@@ -11,7 +11,7 @@ import java.lang.annotation.*;
  * @Df("db1f") SqlSession session;
  * @Df("db1f") Mapper mapper;
  * */
-@Target({ElementType.FIELD})
+@Target({ElementType.FIELD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Df {

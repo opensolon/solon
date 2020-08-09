@@ -10,6 +10,21 @@ public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
 
+        Aop.factory().beanCreatorAdd(Df.class, (clz,  wrap,  anno)->{
+            if(XUtil.isEmpty(anno.value()) || clz.isInterface() == false){
+                return;
+            }
+
+            Aop.getAsyn(anno.value(),(bw)->{
+                if (bw.raw() instanceof SqlSessionFactory) {
+                    SqlSessionFactory factory = bw.raw();
+
+                    Object raw = MybatisProxy.get(factory).getMapper(clz);
+                    Aop.put(clz,raw);
+                }
+            });
+        });
+
         Aop.factory().beanInjectorAdd(Df.class, (varH, anno) -> {
 
             if (XUtil.isEmpty(anno.value())) {
