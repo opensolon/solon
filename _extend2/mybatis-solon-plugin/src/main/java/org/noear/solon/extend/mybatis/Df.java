@@ -16,5 +16,5 @@ public @interface Df {
     /**
      * sqlSessionFactory bean name
      * */
-    String value();
+    String value() default "";
 }

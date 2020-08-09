@@ -11,34 +11,43 @@ public class XPluginImp implements XPlugin {
     public void start(XApp app) {
 
         Aop.factory().beanInjectorAdd(Df.class, (varH, anno) -> {
-            Aop.getAsyn(anno.value(), (bw) -> {
-                if (bw.raw() instanceof SqlSessionFactory) {
-                    SqlSessionFactory factory = bw.raw();
 
-                    if (varH.getType().isInterface()) {
-                        Object mapper = MybatisProxy.get(factory).getMapper(varH.getType());
-
-                        varH.setValue(mapper);
-                        return;
-                    }
-
-                    if (MybatisProxy.class.isAssignableFrom(varH.getType())) {
-                        varH.setValue(MybatisProxy.get(factory));
-                        return;
-                    }
-
-                    if (SqlSession.class.isAssignableFrom(varH.getType())) {
-                        varH.setValue(MybatisProxy.get(factory));
-                        return;
-                    }
-
-                    if (SqlSessionFactory.class.isAssignableFrom(varH.getType())) {
-                        varH.setValue(factory);
-                        return;
-                    }
-
+            if (XUtil.isEmpty(anno.value())) {
+                if (varH.getType().isInterface()) {
+                    Aop.getAsyn(varH.getType(), (bw) -> {
+                        varH.setValue(bw.raw());
+                    });
                 }
-            });
+            } else {
+                Aop.getAsyn(anno.value(), (bw) -> {
+                    if (bw.raw() instanceof SqlSessionFactory) {
+                        SqlSessionFactory factory = bw.raw();
+
+                        if (varH.getType().isInterface()) {
+                            Object mapper = MybatisProxy.get(factory).getMapper(varH.getType());
+
+                            varH.setValue(mapper);
+                            return;
+                        }
+
+                        if (MybatisProxy.class.isAssignableFrom(varH.getType())) {
+                            varH.setValue(MybatisProxy.get(factory));
+                            return;
+                        }
+
+                        if (SqlSession.class.isAssignableFrom(varH.getType())) {
+                            varH.setValue(MybatisProxy.get(factory));
+                            return;
+                        }
+
+                        if (SqlSessionFactory.class.isAssignableFrom(varH.getType())) {
+                            varH.setValue(factory);
+                            return;
+                        }
+
+                    }
+                });
+            }
         });
     }
 }
