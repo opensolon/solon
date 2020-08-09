@@ -132,6 +132,8 @@ public class MybatisAdapter {
 
     /**
      * 替代 @mapperScan
+     *
+     * 扫描 basePackages 里的类，并生成 mapper 实例注册到bean中心
      * */
     public MybatisAdapter mapperScan(String basePackages) {
         String dir = basePackages.replace('.', '/');
