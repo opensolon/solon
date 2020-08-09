@@ -44,7 +44,7 @@ public class MybatisProxy extends SqlSessionHolder implements SqlSession {
     public Object tran(ConsumerEx<SqlSessionHolder> consumer) throws SQLException {
         SqlSession session = null;
         try {
-            session = factory.openSession(false);
+            session = factory.openSession(false);//Not Auto Commit
             threadLocal.set(session);
 
             SqlSessionHolder session2 = new SqlSessionHolder(session);
