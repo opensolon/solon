@@ -44,7 +44,7 @@ public class MybatisProxy extends SqlSessionHolder implements SqlSession {
     public Object tran(ConsumerEx<SqlSessionHolder> consumer) throws SQLException {
         SqlSession session = null;
         try {
-            session = factory.openSession();
+            session = factory.openSession(false);
             threadLocal.set(session);
 
             SqlSessionHolder session2 = new SqlSessionHolder(session);
@@ -95,7 +95,7 @@ public class MybatisProxy extends SqlSessionHolder implements SqlSession {
             Boolean has_close = false;
             if (session == null) {
                 has_close = true;
-                session = factory.openSession(true); //isAutoCommit
+                session = factory.openSession(true); //Auto Commit
             }
 
             Object unwrapped = null;
