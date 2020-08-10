@@ -42,12 +42,12 @@ public class Aop {
         return wrap;
     }
 
-    public static BeanWrap wrap(Class<?> clz) {
-        return wrap(clz,null);
-    }
+//    public static BeanWrap wrap(Class<?> clz) {
+//        return wrap(clz,null);
+//    }
 
-    public static BeanWrap getAndPut(Class<?> clz){
-        BeanWrap wrap = wrap(clz);
+    public static BeanWrap wrapAndPut(Class<?> clz){
+        BeanWrap wrap = wrap(clz, null);
         if (wrap.raw() != null) {
             putWrap(clz, wrap);
         }
@@ -102,7 +102,7 @@ public class Aop {
      * 获取bean (clz)
      */
     public static <T> T get(Class<?> clz) {
-        return getAndPut(clz).get();
+        return wrapAndPut(clz).get();
     }
 
     /**

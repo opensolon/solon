@@ -163,7 +163,7 @@ public abstract class AopFactoryBase {
      */
     protected <T extends Annotation> void tryCreateBeanByAnno(Class<?> clz, T anno, BeanCreator<T> loader) {
         try {
-            BeanWrap wrap = Aop.getAndPut(clz); //在 create 事件里，要先完成注册，以提高复用
+            BeanWrap wrap = Aop.wrapAndPut(clz); //在 create 事件里，要先完成注册，以提高复用
             loader.handler(clz, wrap, anno);
             beanNotice(clz, wrap);
         } catch (RuntimeException ex) {

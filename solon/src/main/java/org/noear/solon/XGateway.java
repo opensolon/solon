@@ -154,7 +154,7 @@ public abstract class XGateway extends XHandlerAide implements XRender {
      */
     public void add(Class<?> beanClz) {
         if (beanClz != null) {
-            BeanWrap bw = Aop.wrap(beanClz);
+            BeanWrap bw = Aop.wrapAndPut(beanClz);
 
             add(bw, bw.remoting());
         }
@@ -165,7 +165,7 @@ public abstract class XGateway extends XHandlerAide implements XRender {
      */
     public void add(Class<?> beanClz, boolean remoting) {
         if (beanClz != null) {
-            add(Aop.wrap(beanClz), remoting);
+            add(Aop.wrapAndPut(beanClz), remoting);
         }
     }
 
