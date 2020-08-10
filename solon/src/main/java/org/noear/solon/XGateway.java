@@ -2,7 +2,6 @@ package org.noear.solon;
 
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.*;
-import org.noear.solon.ext.ConsumerEx;
 import org.noear.solon.ext.RunnableEx;
 
 import java.util.HashMap;
@@ -130,7 +129,7 @@ public abstract class XGateway extends XHandlerAide implements XRender {
 
             c.attrSet("error", ex);
             render(ex, c);
-            XMonitor.sendError(c, ex);
+            XEventBus.push(ex);
         }
     }
 

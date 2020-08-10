@@ -2,7 +2,7 @@ package org.noear.solon.boot.websocket;
 
 import org.java_websocket.WebSocket;
 import org.noear.solon.XApp;
-import org.noear.solon.core.XMonitor;
+import org.noear.solon.core.XEventBus;
 import org.noear.solonclient.channel.SocketMessage;
 
 public class WsContextHandler {
@@ -17,7 +17,7 @@ public class WsContextHandler {
 
             context.commit();
         } catch (Exception ex) {
-            XMonitor.sendError(null, ex);
+            XEventBus.push(ex);
         }
     }
 }

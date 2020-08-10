@@ -7,7 +7,7 @@ import com.wizzardo.http.response.Response;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.XContext;
-import org.noear.solon.core.XMonitor;
+import org.noear.solon.core.XEventBus;
 
 import java.io.IOException;
 
@@ -18,7 +18,7 @@ public class WizzContextHandler implements Handler {
         try {
             XApp.global().handle(context);
         }catch (Throwable ex){
-            XMonitor.sendError(context,ex);
+            XEventBus.push(ex);
 
             context.status(500);
             context.setHandled(true);

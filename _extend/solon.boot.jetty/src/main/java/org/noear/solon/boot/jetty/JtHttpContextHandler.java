@@ -3,7 +3,7 @@ package org.noear.solon.boot.jetty;
 import org.noear.solon.XApp;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
-import org.noear.solon.core.XMonitor;
+import org.noear.solon.core.XEventBus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +23,7 @@ public class JtHttpContextHandler extends AbstractHandler {
         } catch (Throwable ex) {
             //context 初始化时，可能会出错
             //
-            XMonitor.sendError(null, ex);
+            XEventBus.push(ex);
 
             response.setStatus(500);
 

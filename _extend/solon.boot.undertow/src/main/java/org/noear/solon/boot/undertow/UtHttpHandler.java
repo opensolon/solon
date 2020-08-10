@@ -4,7 +4,7 @@ import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.servlet.handlers.ServletRequestContext;
 import org.noear.solon.XApp;
-import org.noear.solon.core.XMonitor;
+import org.noear.solon.core.XEventBus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,7 +39,7 @@ public class UtHttpHandler implements HttpHandler {
                 exchange.setStatusCode(404);
             }
         } catch (Throwable ex) {
-            XMonitor.sendError(context, ex);
+            XEventBus.push(ex);
             exchange.setStatusCode(500);
 
             if (XApp.cfg().isDebugMode()) {

@@ -3,7 +3,6 @@ package org.noear.solon;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.*;
 import org.noear.solon.ext.*;
-import sun.rmi.runtime.RuntimeUtil;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -410,7 +409,7 @@ public class XApp implements XHandler,XHandlerSlots {
             XContextUtil.currentSet(x);
             _handler.handle(x);
         } catch (Throwable ex) {
-            XMonitor.sendError(x, ex);
+            XEventBus.push(ex);
             throw ex;
         } finally {
             //移除当前线程上下文
@@ -432,7 +431,7 @@ public class XApp implements XHandler,XHandlerSlots {
     }
 
     public XApp onError(XEventHandler<Throwable> handler) {
-        XMonitor.onError(handler);
+        XEventBus.subscribe(Throwable.class, handler);
         return this;
     }
 

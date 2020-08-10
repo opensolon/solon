@@ -3,7 +3,7 @@ package org.noear.solon.boot.jdkhttp;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.noear.solon.XApp;
-import org.noear.solon.core.XMonitor;
+import org.noear.solon.core.XEventBus;
 
 public class JdkHttpContextHandler implements HttpHandler {
     @Override
@@ -13,7 +13,7 @@ public class JdkHttpContextHandler implements HttpHandler {
         } catch (Throwable ex) {
             //context 初始化时，可能会出错
             //
-            XMonitor.sendError(null, ex);
+            XEventBus.push( ex);
         } finally {
             exchange.close();
         }
@@ -41,7 +41,7 @@ public class JdkHttpContextHandler implements HttpHandler {
             }
 
         } catch (Throwable err) {
-            XMonitor.sendError(context, err);
+            XEventBus.push(err);
         }
     }
 }

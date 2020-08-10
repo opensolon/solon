@@ -6,5 +6,5 @@ package org.noear.solon.core;
  * 目前用于异常件事
  * */
 public interface XEventHandler<Event> {
-    void handle(XContext ctx, Event event);
+    void onEvent(Event event);
 }

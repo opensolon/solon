@@ -276,7 +276,7 @@ public class AopFactory extends AopFactoryBase {
                         Aop.factory().beanRegister(m_bw, beanName);
                     }
                 } catch (Throwable ex) {
-                    XMonitor.sendError(null, ex);
+                    XEventBus.push(ex);
                 }
 
                 return true;

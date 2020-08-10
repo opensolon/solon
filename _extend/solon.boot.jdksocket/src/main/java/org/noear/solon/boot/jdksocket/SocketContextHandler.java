@@ -1,7 +1,7 @@
 package org.noear.solon.boot.jdksocket;
 
 import org.noear.solon.XApp;
-import org.noear.solon.core.XMonitor;
+import org.noear.solon.core.XEventBus;
 import org.noear.solonclient.channel.SocketMessage;
 
 public class SocketContextHandler {
@@ -16,7 +16,7 @@ public class SocketContextHandler {
         } catch (Throwable ex) {
             //context 初始化时，可能会出错
             //
-            XMonitor.sendError(null, ex);
+            XEventBus.push(ex);
         }
     }
 
@@ -28,7 +28,7 @@ public class SocketContextHandler {
 
             context.commit();
         } catch (Throwable ex) {
-            XMonitor.sendError(context, ex);
+            XEventBus.push(ex);
         }
     }
 }

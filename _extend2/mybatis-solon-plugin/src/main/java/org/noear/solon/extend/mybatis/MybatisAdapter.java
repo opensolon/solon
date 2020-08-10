@@ -12,7 +12,7 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.XMonitor;
+import org.noear.solon.core.XEventBus;
 import org.noear.solon.core.XScaner;
 
 import javax.sql.DataSource;
@@ -119,7 +119,7 @@ public class MybatisAdapter {
             XMLMapperBuilder mapperParser = new XMLMapperBuilder(stream, cfg(), val, cfg().getSqlFragments());
             mapperParser.parse();
         } catch (Throwable ex) {
-            XMonitor.sendError(null, ex);
+            XEventBus.push(ex);
         }
     }
 

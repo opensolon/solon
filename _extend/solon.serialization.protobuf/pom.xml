@@ -24,7 +24,7 @@
 
         <dependency>
             <groupId>io.edap</groupId>
-            <artifactId>edap-protobuf</artifactId>
+            <artifactId>edapx-protobuf</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

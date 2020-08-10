@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import org.noear.solon.XApp;
-import org.noear.solon.core.XMonitor;
+import org.noear.solon.core.XEventBus;
 
 import java.io.IOException;
 
@@ -36,7 +36,7 @@ class NtHttpContextHandler extends SimpleChannelInboundHandler<FullHttpRequest> 
             HandleDo(ctx, req, response);
         } catch (Throwable ex) {
 
-            XMonitor.sendError(null, ex);
+            XEventBus.push( ex);
 
             response.setStatus(HttpResponseStatus.INTERNAL_SERVER_ERROR);
         } finally {

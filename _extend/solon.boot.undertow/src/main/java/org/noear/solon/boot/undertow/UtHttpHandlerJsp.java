@@ -1,7 +1,7 @@
 package org.noear.solon.boot.undertow;
 
 import org.noear.solon.XApp;
-import org.noear.solon.core.XMonitor;
+import org.noear.solon.core.XEventBus;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,7 +28,7 @@ public class UtHttpHandlerJsp extends HttpServlet {
                 resp.setStatus(404);
             }
         } catch (Throwable ex) {
-            XMonitor.sendError(context, ex);
+            XEventBus.push(ex);
             resp.setStatus(500);
 
             if (XApp.cfg().isDebugMode()) {

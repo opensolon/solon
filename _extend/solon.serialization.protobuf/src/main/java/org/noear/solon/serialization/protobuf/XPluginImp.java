@@ -14,6 +14,6 @@ public class XPluginImp implements XPlugin {
         ProtobufRender render = new ProtobufRender();
 
         //XRenderManager.register(render);
-        XRenderManager.mapping("@protobuf",render);
+        XRenderManager.mapping("@protobuf-x",render);
     }
 }

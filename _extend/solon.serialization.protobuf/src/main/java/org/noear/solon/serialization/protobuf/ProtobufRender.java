@@ -20,9 +20,9 @@ public class ProtobufRender implements XRender {
         }
         byte[] bytes = null;
         if(obj instanceof ModelAndView){
-            bytes = ProtoBuf.toByteArray(new HashMap<>(((Map)obj)));
+            bytes = ProtoBuf.ser(new HashMap<>(((Map)obj)));
         }else{
-            bytes = ProtoBuf.toByteArray(obj);
+            bytes = ProtoBuf.ser(obj);
         }
 
         ctx.attrSet("output", bytes);

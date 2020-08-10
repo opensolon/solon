@@ -2,7 +2,7 @@ package org.noear.solon.boot.jetty;
 
 import org.eclipse.jetty.server.Request;
 import org.noear.solon.XApp;
-import org.noear.solon.core.XMonitor;
+import org.noear.solon.core.XEventBus;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -54,7 +54,7 @@ public class JtHttpContextHandlerJsp extends HttpServlet {
         } catch (Throwable ex) {
             //context 初始化时，可能会出错
             //
-            XMonitor.sendError(null, ex);
+            XEventBus.push(ex);
 
             response.setStatus(500);
             ((Request) request).setHandled(true);

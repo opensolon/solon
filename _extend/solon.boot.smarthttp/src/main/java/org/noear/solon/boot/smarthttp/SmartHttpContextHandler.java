@@ -1,9 +1,7 @@
 package org.noear.solon.boot.smarthttp;
 
 import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XMonitor;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.core.XEventBus;
 import org.smartboot.http.HttpRequest;
 import org.smartboot.http.HttpResponse;
 import org.smartboot.http.enums.HttpStatus;
@@ -43,7 +41,7 @@ public class SmartHttpContextHandler extends HttpHandle {
                 context.commit();
             }
         } catch (Throwable ex) {
-            XMonitor.sendError(null, ex);
+            XEventBus.push(ex);
             response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 //        finally {
