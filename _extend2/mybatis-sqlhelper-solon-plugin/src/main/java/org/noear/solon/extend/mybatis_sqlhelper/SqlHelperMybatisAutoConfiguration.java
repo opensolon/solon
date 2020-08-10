@@ -12,10 +12,14 @@ import org.apache.ibatis.session.Configuration;
 import org.noear.solon.annotation.XBean;
 import org.noear.solon.annotation.XConfiguration;
 import org.noear.solon.annotation.XInject;
+import org.noear.solon.core.XEventBus;
 import org.noear.solon.core.XEventHandler;
 
 @XConfiguration
 public class SqlHelperMybatisAutoConfiguration implements XEventHandler<Configuration> {
+    public SqlHelperMybatisAutoConfiguration(){
+        XEventBus.subscribe(Configuration.class, this);
+    }
 
     @XBean
     public DatabaseIdProvider databaseIdProvider() {
