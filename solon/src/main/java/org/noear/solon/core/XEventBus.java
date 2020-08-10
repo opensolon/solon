@@ -10,17 +10,17 @@ public final class XEventBus {
     /**
      * 订阅者
      */
-    private static Set<HandlerHolder> subscriber = new HashSet<>();
+    private static Set<HH> _s = new HashSet<>();
 
     /**
      * 推送事件
      */
     public static void push(Object event) {
         if (event != null) {
-            for (HandlerHolder h1 : subscriber) {
-                if (h1.type.isInstance(event)) {
+            for (HH h1 : _s) {
+                if (h1.t.isInstance(event)) {
                     try {
-                        h1.handler.onEvent(event);
+                        h1.h.onEvent(event);
                     } catch (Throwable ex) {}
                 }
             }
@@ -31,16 +31,19 @@ public final class XEventBus {
      * 订阅事件
      */
     public static <T> void subscribe(Class<T> eventType, XEventHandler<T> handler) {
-        subscriber.add(new HandlerHolder(eventType, handler));
+        _s.add(new HH(eventType, handler));
     }
 
-    static class HandlerHolder {
-        protected Class<?> type;
-        protected XEventHandler handler;
+    /**
+     * Handler Holder
+     * */
+    static class HH {
+        protected Class<?> t;
+        protected XEventHandler h;
 
-        public HandlerHolder(Class<?> type, XEventHandler handler) {
-            this.type = type;
-            this.handler = handler;
+        public HH(Class<?> type, XEventHandler handler) {
+            this.t = type;
+            this.h = handler;
         }
     }
 }
