@@ -109,7 +109,12 @@ public class XProperties extends Properties {
                 String keyStr = (String) k;
 
                 if (keyStr.startsWith(key2)) {
-                    setFun.accept(keyStr.substring(idx2), (String)v);
+                    String key = keyStr.substring(idx2);
+
+                    setFun.accept(key, (String) v);
+                    if (key.contains("-")) {
+                        setFun.accept(key.replace("-", ""), (String) v);
+                    }
                 }
             }
         });
