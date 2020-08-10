@@ -1,5 +1,7 @@
 package org.noear.solon.core;
 
+import org.noear.solon.XApp;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,6 +23,10 @@ public final class XEventBus {
             if (event instanceof Throwable) {
                 //异常分发
                 push0(_sThrow, event);
+
+                if(XApp.cfg().isDebugMode()){
+                    ((Throwable) event).printStackTrace();
+                }
             } else {
                 //其它事件分发
                 push0(_sOther, event);
