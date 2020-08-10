@@ -90,8 +90,28 @@ public abstract class AopFactoryBase {
         });
     }
 
-    public abstract BeanWrap wrap(Class<?> clz, Object raw);
+    //public abstract BeanWrap wrap(Class<?> clz, Object raw);
 
+
+    /**
+     * 尝试生成bean
+     */
+    protected void tryBeanCreate(Class<?> clz) {
+        Annotation[] annS = clz.getDeclaredAnnotations();
+
+        if (annS.length > 0) {
+            try {
+                for (Annotation a : annS) {
+                    BeanCreator bc = beanCreators.get(a.annotationType());
+                    if (bc != null) {
+                        tryCreateBeanByAnno(clz, a, bc);
+                    }
+                }
+            } catch (Throwable ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 
     /**
      * 尝试为bean注入
@@ -106,23 +126,11 @@ public abstract class AopFactoryBase {
     }
 
     /**
-     * 尝试生成bean
-     */
-    protected void tryBeanCreate(Class<?> clz, Annotation[] annS) {
-        for (Annotation a : annS) {
-            BeanCreator bc = beanCreators.get(a.annotationType());
-            if (bc != null) {
-                tryCreateBeanByAnno(clz, a, bc);
-            }
-        }
-    }
-
-    /**
      * 尝试加载一个注解
      */
     protected <T extends Annotation> void tryCreateBeanByAnno(Class<?> clz, T anno, BeanCreator<T> loader) {
         try {
-            BeanWrap wrap = wrap(clz, null);
+            BeanWrap wrap = Aop.getWrap(clz); //在 create 事件里，要先完成注册，以提高复用
             loader.handler(clz, wrap, anno);
             beanNotice(clz, wrap);
         } catch (RuntimeException ex) {

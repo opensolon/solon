@@ -31,10 +31,43 @@ public class Aop {
     //::包装bean
 
     /**
-     * 包装bean（clz）
+     * 包装bean（clz），不负责注册
      */
+    public static BeanWrap wrap(Class<?> clz, Object raw) {
+        BeanWrap wrap = _f.beanWraps.get(clz);
+        if (wrap == null) {
+            wrap = new BeanWrap(clz, raw);
+        }
+
+        return wrap;
+    }
+
     public static BeanWrap wrap(Class<?> clz) {
-        return _f.wrap(clz, null);
+        return wrap(clz,null);
+    }
+
+    public static BeanWrap getWrap(Class<?> clz){
+        BeanWrap wrap = wrap(clz);
+        if (wrap.raw() != null) {
+            putWrap(clz, wrap);
+        }
+
+        return wrap;
+    }
+
+
+    /**
+     * 添加bean（key + wrap）
+     */
+    public static void putWrap(String key, BeanWrap wrap) {
+        _f.put(key, wrap);
+    }
+
+    /**
+     * 添加bean（clz + obj）
+     */
+    public static void putWrap(Class<?> clz, BeanWrap wrap) {
+        _f.put(clz, wrap);
     }
 
     //::添加bean
@@ -43,30 +76,17 @@ public class Aop {
      * 添加bean（key + obj）
      */
     public static void put(String key, Object obj) {
-        _f.put(key, new BeanWrap(obj.getClass(), obj));
+        _f.put(key, wrap(obj.getClass(), obj));
     }
 
     //::添加bean
 
-    /**
-     * 添加bean（key + wrap）
-     */
-    public static void put(String key, BeanWrap wrap) {
-        _f.put(key, wrap);
+
+    public static void put(Class<?> clz, Object obj) {
+        _f.put(clz, wrap(clz, obj));
     }
 
-    /**
-     * 添加bean（clz + obj）
-     */
-    public static BeanWrap put(Class<?> clz, Object obj) {
-        BeanWrap bw = _f.wrap(clz, obj);
 
-        if (bw.raw() != null) {
-            _f.beanNotice(clz, bw);
-        }
-
-        return bw;
-    }
 
     //::获取bean
 
@@ -79,6 +99,13 @@ public class Aop {
     }
 
     /**
+     * 获取bean (clz)
+     */
+    public static <T> T get(Class<?> clz) {
+        return getWrap(clz).get();
+    }
+
+    /**
      * 异步获取bean (key)
      */
     public static void getAsyn(String key, Consumer<BeanWrap> callback) {
@@ -88,13 +115,6 @@ public class Aop {
         } else {
             callback.accept(wrap);
         }
-    }
-
-    /**
-     * 获取bean (clz)
-     */
-    public static <T> T get(Class<?> clz) {
-        return _f.wrap(clz, null).get();
     }
 
     /**

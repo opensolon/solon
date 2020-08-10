@@ -21,6 +21,10 @@ public class BeanWrap {
     public BeanWrap() {
     }
 
+    public BeanWrap(Class<?> clz){
+        this(clz, null);
+    }
+
     public BeanWrap(Class<?> clz, Object raw) {
         _clz = clz;
 

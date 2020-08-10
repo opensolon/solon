@@ -36,9 +36,9 @@ public class AopFactory extends AopFactoryBase {
                 XBean m_an = mWrap.getMethod().getAnnotation(XBean.class);
 
                 if (m_an != null) {
-                    XInject injectRst = mWrap.getMethod().getAnnotation(XInject.class);
+                    XInject beanInj = mWrap.getMethod().getAnnotation(XInject.class);
 
-                    beanBuild(m_an.value(), mWrap, bw, injectRst, (p1) -> {
+                    beanBuild(m_an.value(), mWrap, bw, beanInj, (p1) -> {
                         XInject tmp = p1.getAnnotation(XInject.class);
                         if (tmp == null) {
                             return null;
@@ -106,10 +106,10 @@ public class AopFactory extends AopFactoryBase {
         if (XUtil.isEmpty(name) == false) {
             //有name的，只用name注入
             //
-            Aop.put(name, bw);
+            Aop.putWrap(name, bw);
         } else {
-            Aop.put(bw.clz(),bw.raw());
-            Aop.put(bw.clz().getName(), bw);
+            Aop.putWrap(bw.clz(), bw);
+            Aop.putWrap(bw.clz().getName(), bw);
 
             //如果有父级接口，则建立关系映射
             Class<?>[] list = bw.clz().getInterfaces();
@@ -117,7 +117,8 @@ public class AopFactory extends AopFactoryBase {
                 if (c.getName().contains("java.") == false) {
                     //建立关系映射
                     clzMapping.put(c, bw.clz());
-                    beanNotice(c, bw);//通知子类订阅
+                    Aop.putWrap(c,bw);
+                    //beanNotice(c, bw);//通知子类订阅
                 }
             }
         }
@@ -128,33 +129,33 @@ public class AopFactory extends AopFactoryBase {
     /**
      * 获取一个clz的包装（唯一的）
      */
-    @Override
-    public BeanWrap wrap(Class<?> clz, Object raw) {
-        //1.先用自己的类型找
-        BeanWrap bw = beanWraps.get(clz);
-
-        if (bw == null) {
-            //2.尝试Mapping的类型找
-            if (clzMapping.containsKey(clz)) {
-                clz = clzMapping.get(clz);
-                bw = beanWraps.get(clz);
-            }
-        }
-
-        if (bw == null) {
-            bw = new BeanWrap(clz, raw);
-            BeanWrap l = beanWraps.putIfAbsent(clz, bw);
-            if (l != null) {
-                bw = l;
-            }
-        }
-
-        if (bw.raw() == null) {
-            bw.rawSet(raw);
-        }
-
-        return bw;
-    }
+    //@Override
+//    public BeanWrap wrap(Class<?> clz, Object raw) {
+//        //1.先用自己的类型找
+//        BeanWrap bw = beanWraps.get(clz);
+//
+//        if (bw == null) {
+//            //2.尝试Mapping的类型找
+//            if (clzMapping.containsKey(clz)) {
+//                clz = clzMapping.get(clz);
+//                bw = beanWraps.get(clz);
+//            }
+//        }
+//
+//        if (bw == null) {
+//            bw = new BeanWrap(clz, raw);
+//            BeanWrap l = beanWraps.putIfAbsent(clz, bw);
+//            if (l != null) {
+//                bw = l;
+//            }
+//        }
+//
+//        if (bw.raw() == null) {
+//            bw.rawSet(raw);
+//        }
+//
+//        return bw;
+//    }
 
     //::注入
 
@@ -193,6 +194,16 @@ public class AopFactory extends AopFactoryBase {
         }
     }
 
+    public void put(Class<?> key, BeanWrap wrap) {
+        if (key != null) {
+            if (beanWraps.containsKey(key) == false) {
+                beanWraps.put(key, wrap);
+
+                beanNotice(key, wrap);
+            }
+        }
+    }
+
     /**
      * 获取一个bean
      */
@@ -221,19 +232,12 @@ public class AopFactory extends AopFactoryBase {
                 })
                 .forEach((clz) -> {
                     if (clz != null) {
-                        Annotation[] annoSet = clz.getDeclaredAnnotations();
-                        if (annoSet.length > 0) {
-                            try {
-                                tryBeanCreate(clz, annoSet);
-                            } catch (Throwable ex) {
-                                ex.printStackTrace();
-                            }
-                        }
+                        tryBeanCreate(clz);
                     }
                 });
 
         //尝试加载事件（不用函数包装，是为了减少代码）
-        if(end) {
+        if (end) {
             loadedEvent.forEach(f -> f.run());
         }
     }
@@ -243,24 +247,13 @@ public class AopFactory extends AopFactoryBase {
     /**
      * 执行对象构建
      */
-    public static void beanBuild(String beanName, MethodWrap mWrap, BeanWrap bw, XInject injectRst, Function<Parameter, String> injectVal) throws Exception {
+    public static void beanBuild(String beanName, MethodWrap mWrap, BeanWrap bw, XInject beanInj, Function<Parameter, String> injectVal) throws Exception {
         int size2 = mWrap.getParameters().length;
 
         if (size2 == 0) {
             //0.没有参数
             Object raw = mWrap.invoke(bw.raw());
-
-            if (raw != null) {
-                if (injectRst != null && XUtil.isEmpty(injectRst.value()) == false) {
-                    if (injectRst.value().startsWith("${")) {
-                        Aop.inject(raw, XApp.cfg().getPropByExpr(injectRst.value()));
-                    }
-                }
-
-                //动态构建的bean，都用新生成wrap
-                BeanWrap m_bw = new BeanWrap(raw.getClass(), raw);
-                Aop.factory().beanRegister(m_bw, beanName);
-            }
+            beanBuildEnd(beanName, beanInj, raw);
         } else {
             //1.构建参数
             List<Object> args2 = new ArrayList<>(size2);
@@ -281,24 +274,27 @@ public class AopFactory extends AopFactoryBase {
                     }
 
                     Object raw = mWrap.invoke(bw.raw(), args2.toArray());
-
-                    if (raw != null) {
-                        if (injectRst != null && XUtil.isEmpty(injectRst.value()) == false) {
-                            if (injectRst.value().startsWith("${")) {
-                                Aop.inject(raw, XApp.cfg().getPropByExpr(injectRst.value()));
-                            }
-                        }
-
-                        //动态构建的bean，都用新生成wrap（否则会类型混乱）
-                        BeanWrap m_bw = new BeanWrap(raw.getClass(), raw);
-                        Aop.factory().beanRegister(m_bw, beanName);
-                    }
+                    beanBuildEnd(beanName, beanInj, raw);
                 } catch (Throwable ex) {
                     XEventBus.push(ex);
                 }
 
                 return true;
             });
+        }
+    }
+
+    protected static void beanBuildEnd(String beanName, XInject beanInj, Object raw) {
+        if (raw != null) {
+            if (beanInj != null && XUtil.isEmpty(beanInj.value()) == false) {
+                if (beanInj.value().startsWith("${")) {
+                    Aop.inject(raw, XApp.cfg().getPropByExpr(beanInj.value()));
+                }
+            }
+
+            //动态构建的bean，都用新生成wrap（否则会类型混乱）
+            BeanWrap m_bw = new BeanWrap(raw.getClass(), raw);
+            Aop.factory().beanRegister(m_bw, beanName);
         }
     }
 

@@ -142,9 +142,9 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 加载Bean
      * */
-    public void loadBean(Class<?> source){
-        Aop.beanLoad(source);
-    }
+//    public void loadBean(Class<?> source){
+//        Aop.beanLoad(source);
+//    }
 
     /**
      * 共享变量（一般用于插件之间）
@@ -301,14 +301,14 @@ public class XApp implements XHandler,XHandlerSlots {
     }
 
     public void add(String expr, Class<?> clz) {
-        BeanWrap bw = Aop.wrap(clz);
+        BeanWrap bw = Aop.get(clz);
         if (bw != null) {
             new BeanWebWrap(bw, expr).load(this);
         }
     }
 
     public void add(String expr, Class<?> clz, boolean remoting) {
-        BeanWrap bw = Aop.wrap(clz);
+        BeanWrap bw = Aop.get(clz);
         if (bw != null) {
             new BeanWebWrap(bw, expr, remoting).load(this);
         }
