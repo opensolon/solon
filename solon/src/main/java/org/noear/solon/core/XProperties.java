@@ -113,7 +113,17 @@ public class XProperties extends Properties {
 
                     setFun.accept(key, (String) v);
                     if (key.contains("-")) {
-                        setFun.accept(key.replace("-", ""), (String) v);
+                        String[] ss = key.split("-");
+                        StringBuilder sb = new StringBuilder(key.length());
+                        sb.append(ss[0]);
+                        for (int i = 1; i < ss.length; i++) {
+                            if(ss[i].length()>1) {
+                                sb.append(ss[i].substring(0, 1).toUpperCase()).append(ss[i].substring(1));
+                            }else{
+                                sb.append(ss[i].toUpperCase());
+                            }
+                        }
+                        setFun.accept(sb.toString(), (String) v);
                     }
                 }
             }
