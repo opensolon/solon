@@ -49,7 +49,7 @@ public class Aop {
     public static BeanWrap wrapAndPut(Class<?> clz){
         BeanWrap wrap = wrap(clz, null);
         if (wrap.raw() != null) {
-            putWrap(clz, wrap);
+            _f.putWrap(clz, wrap);
         }
 
         return wrap;
@@ -59,16 +59,16 @@ public class Aop {
     /**
      * 添加bean（key + wrap）
      */
-    public static void putWrap(String key, BeanWrap wrap) {
-        _f.putWrap(key, wrap);
-    }
+//    public static void putWrap(String key, BeanWrap wrap) {
+//        _f.putWrap(key, wrap);
+//    }
 
     /**
      * 添加bean（clz + obj）
      */
-    public static void putWrap(Class<?> clz, BeanWrap wrap) {
-        _f.putWrap(clz, wrap);
-    }
+//    public static void putWrap(Class<?> clz, BeanWrap wrap) {
+//        _f.putWrap(clz, wrap);
+//    }
 
     //::添加bean
 

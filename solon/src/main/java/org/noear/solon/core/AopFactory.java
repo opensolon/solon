@@ -106,10 +106,10 @@ public class AopFactory extends AopFactoryBase {
         if (XUtil.isEmpty(name) == false) {
             //有name的，只用name注入
             //
-            Aop.putWrap(name, bw);
+            Aop.factory().putWrap(name, bw);
         } else {
-            Aop.putWrap(bw.clz(), bw);
-            Aop.putWrap(bw.clz().getName(), bw);
+            Aop.factory().putWrap(bw.clz(), bw);
+            Aop.factory().putWrap(bw.clz().getName(), bw);
 
             //如果有父级接口，则建立关系映射
             Class<?>[] list = bw.clz().getInterfaces();
@@ -117,45 +117,12 @@ public class AopFactory extends AopFactoryBase {
                 if (c.getName().contains("java.") == false) {
                     //建立关系映射
                     clzMapping.put(c, bw.clz());
-                    Aop.putWrap(c,bw);
+                    Aop.factory().putWrap(c,bw);
                     //beanNotice(c, bw);//通知子类订阅
                 }
             }
         }
     }
-
-    //::包装
-
-    /**
-     * 获取一个clz的包装（唯一的）
-     */
-    //@Override
-//    public BeanWrap wrap(Class<?> clz, Object raw) {
-//        //1.先用自己的类型找
-//        BeanWrap bw = beanWraps.get(clz);
-//
-//        if (bw == null) {
-//            //2.尝试Mapping的类型找
-//            if (clzMapping.containsKey(clz)) {
-//                clz = clzMapping.get(clz);
-//                bw = beanWraps.get(clz);
-//            }
-//        }
-//
-//        if (bw == null) {
-//            bw = new BeanWrap(clz, raw);
-//            BeanWrap l = beanWraps.putIfAbsent(clz, bw);
-//            if (l != null) {
-//                bw = l;
-//            }
-//        }
-//
-//        if (bw.raw() == null) {
-//            bw.rawSet(raw);
-//        }
-//
-//        return bw;
-//    }
 
     //::注入
 
