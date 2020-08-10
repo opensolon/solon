@@ -1,6 +1,9 @@
 package webapp.demo6_aop;
 
 
+import org.noear.solon.annotation.XBean;
+
+@XBean
 public class Rockservice3 implements Rockapi {
 
     @Override

@@ -24,6 +24,10 @@ public class TestController {
     @XInject //会自动生成
     public Rockservice2  rockapi2;
 
+
+    @XInject
+    public Rockapi  rockapi132;
+
     public String   test_aaa = XApp.cfg().get("demo6.test.aaa");
     public int      test_bbb = XApp.cfg().getInt("demo6.test.bbb",0);
     public Properties prop   = XApp.cfg().getProp("mytbae.bcf");
@@ -36,6 +40,8 @@ public class TestController {
         map.put("rockapi12", rockapi12.test());
 
         map.put("rockapi2", rockapi2.test());
+
+        map.put("rockapi132", rockapi132.test());
 
         return map;
     }
