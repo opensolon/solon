@@ -101,9 +101,9 @@ public class Aop {
      * 异步获取bean (clz)
      */
     public static void getAsyn(Class<?> clz, Consumer<BeanWrap> callback) { //FieldWrapTmp fwT,
-        BeanWrap wrap = _f.wrap(clz, null);
+        BeanWrap wrap = _f.beanWraps.get(clz);
 
-        if (wrap.raw() == null) {
+        if (wrap == null || wrap.raw() == null) {
             _f.beanSubscribe(clz, callback);
         } else {
             callback.accept(wrap);

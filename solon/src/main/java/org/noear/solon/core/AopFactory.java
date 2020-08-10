@@ -108,6 +108,7 @@ public class AopFactory extends AopFactoryBase {
             //
             Aop.put(name, bw);
         } else {
+            Aop.put(bw.clz(),bw.raw());
             Aop.put(bw.clz().getName(), bw);
 
             //如果有父级接口，则建立关系映射
