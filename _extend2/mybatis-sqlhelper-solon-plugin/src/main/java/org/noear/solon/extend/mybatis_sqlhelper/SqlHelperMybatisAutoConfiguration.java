@@ -24,7 +24,6 @@ public class SqlHelperMybatisAutoConfiguration implements XEventHandler<Configur
 
 
     @XBean
-    @XInject("${sqlhelper.mybatis}")
     public SqlHelperMybatisProperties sqlHelperMybatisProperties(
             @XInject("${sqlhelper.mybatis.instrumentor}") SQLInstrumentorConfig sqlInstrumentConfig,
             @XInject("${sqlhelper.mybatis.pagination}") PaginationConfig paginationPluginConfig) {
