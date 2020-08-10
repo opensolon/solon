@@ -129,7 +129,7 @@ public class Aop {
      * 加载bean
      */
     public static void beanLoad(Class<?> source) {
-        _f.beanLoad(source);
+        _f.beanLoad(source, false);
     }
 
     /**

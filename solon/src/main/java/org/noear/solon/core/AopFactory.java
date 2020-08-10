@@ -204,7 +204,7 @@ public class AopFactory extends AopFactoryBase {
     /**
      * 加载 bean 及对应处理
      */
-    public void beanLoad(Class<?> source) {
+    public void beanLoad(Class<?> source, boolean end) {
         //确定文件夹名
         String dir = "";
         if (source.getPackage() != null) {
@@ -232,7 +232,9 @@ public class AopFactory extends AopFactoryBase {
                 });
 
         //尝试加载事件（不用函数包装，是为了减少代码）
-        loadedEvent.forEach(f -> f.run());
+        if(end) {
+            loadedEvent.forEach(f -> f.run());
+        }
     }
 
     ////////////////////////////////////////////////////////
