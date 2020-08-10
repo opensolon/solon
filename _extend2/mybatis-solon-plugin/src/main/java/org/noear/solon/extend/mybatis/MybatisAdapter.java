@@ -51,6 +51,9 @@ public class MybatisAdapter {
         Environment environment = new Environment(environment_id, tf, dataSource);
         config = new Configuration(environment);
 
+        //分发事件，推给扩展处理
+        XEventBus.push(config);
+
         if (props != null) {
             props.forEach((k, v) -> {
                 if (k instanceof String && v instanceof String) {
@@ -101,9 +104,6 @@ public class MybatisAdapter {
 
             if (mappers.size() == 0) {
                 throw new RuntimeException("Please add the mappers configuration!");
-            }else{
-                //通过事件转发，交给有需要的订阅者
-                XEventBus.push(config);
             }
         }
     }

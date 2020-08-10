@@ -43,7 +43,11 @@ public class SqlHelperMybatisAutoConfiguration implements XEventHandler<Configur
 
     @Override
     public void onEvent(Configuration configuration) {
-        System.out.println("Start to customize mybatis configuration with mybatis-spring-boot-autoconfigure");
+        if(sqlHelperMybatisProperties == null){
+            return;
+        }
+
+        System.out.println("Start to customize mybatis configuration with mybatis-sqlhelper-solon-plugin");
         configuration.setDefaultScriptingLanguage(CustomScriptLanguageDriver.class);
 
         SqlHelperMybatisPlugin plugin = new SqlHelperMybatisPlugin();

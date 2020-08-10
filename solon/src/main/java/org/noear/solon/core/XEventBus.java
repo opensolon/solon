@@ -40,6 +40,7 @@ public final class XEventBus {
                 try {
                     h1.h.onEvent(event);
                 } catch (Throwable ex) {
+                    ex.printStackTrace();
                 }
             }
         }
