@@ -1,6 +1,8 @@
 package org.noear.solon.core;
 
 
+import org.noear.solon.XUtil;
+
 import java.lang.annotation.Annotation;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -94,6 +96,37 @@ public abstract class AopFactoryBase {
 
 
     /**
+     * 加入到bean库
+     */
+    public void putWrap(String key, BeanWrap wrap) {
+        if (XUtil.isEmpty(key) == false) {
+            if (beans.containsKey(key) == false) {
+                beans.put(key, wrap);
+
+                beanNotice(key, wrap);
+            }
+        }
+    }
+
+    public void putWrap(Class<?> key, BeanWrap wrap) {
+        if (key != null) {
+            if (beanWraps.containsKey(key) == false) {
+                beanWraps.put(key, wrap);
+
+                beanNotice(key, wrap);
+            }
+        }
+    }
+
+    /**
+     * 获取一个bean
+     */
+    public BeanWrap getWrap(String key) {
+        return beans.get(key);
+    }
+
+
+    /**
      * 尝试生成bean
      */
     protected void tryBeanCreate(Class<?> clz) {
@@ -130,7 +163,7 @@ public abstract class AopFactoryBase {
      */
     protected <T extends Annotation> void tryCreateBeanByAnno(Class<?> clz, T anno, BeanCreator<T> loader) {
         try {
-            BeanWrap wrap = Aop.getWrap(clz); //在 create 事件里，要先完成注册，以提高复用
+            BeanWrap wrap = Aop.getAndPut(clz); //在 create 事件里，要先完成注册，以提高复用
             loader.handler(clz, wrap, anno);
             beanNotice(clz, wrap);
         } catch (RuntimeException ex) {

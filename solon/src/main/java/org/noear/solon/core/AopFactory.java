@@ -181,35 +181,7 @@ public class AopFactory extends AopFactoryBase {
 
     //::库管理
 
-    /**
-     * 加入到bean库
-     */
-    public void put(String key, BeanWrap wrap) {
-        if (XUtil.isEmpty(key) == false) {
-            if (beans.containsKey(key) == false) {
-                beans.put(key, wrap);
 
-                beanNotice(key, wrap);
-            }
-        }
-    }
-
-    public void put(Class<?> key, BeanWrap wrap) {
-        if (key != null) {
-            if (beanWraps.containsKey(key) == false) {
-                beanWraps.put(key, wrap);
-
-                beanNotice(key, wrap);
-            }
-        }
-    }
-
-    /**
-     * 获取一个bean
-     */
-    public BeanWrap get(String key) {
-        return beans.get(key);
-    }
 
     //::加载相关
 

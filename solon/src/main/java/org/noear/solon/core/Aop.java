@@ -46,7 +46,7 @@ public class Aop {
         return wrap(clz,null);
     }
 
-    public static BeanWrap getWrap(Class<?> clz){
+    public static BeanWrap getAndPut(Class<?> clz){
         BeanWrap wrap = wrap(clz);
         if (wrap.raw() != null) {
             putWrap(clz, wrap);
@@ -60,14 +60,14 @@ public class Aop {
      * 添加bean（key + wrap）
      */
     public static void putWrap(String key, BeanWrap wrap) {
-        _f.put(key, wrap);
+        _f.putWrap(key, wrap);
     }
 
     /**
      * 添加bean（clz + obj）
      */
     public static void putWrap(Class<?> clz, BeanWrap wrap) {
-        _f.put(clz, wrap);
+        _f.putWrap(clz, wrap);
     }
 
     //::添加bean
@@ -76,14 +76,14 @@ public class Aop {
      * 添加bean（key + obj）
      */
     public static void put(String key, Object obj) {
-        _f.put(key, wrap(obj.getClass(), obj));
+        _f.putWrap(key, wrap(obj.getClass(), obj));
     }
 
     //::添加bean
 
 
     public static void put(Class<?> clz, Object obj) {
-        _f.put(clz, wrap(clz, obj));
+        _f.putWrap(clz, wrap(clz, obj));
     }
 
 
@@ -94,7 +94,7 @@ public class Aop {
      * 获取bean (key)
      */
     public static <T> T get(String key) {
-        BeanWrap bw = _f.get(key);
+        BeanWrap bw = _f.getWrap(key);
         return bw == null ? null : bw.get();
     }
 
@@ -102,14 +102,14 @@ public class Aop {
      * 获取bean (clz)
      */
     public static <T> T get(Class<?> clz) {
-        return getWrap(clz).get();
+        return getAndPut(clz).get();
     }
 
     /**
      * 异步获取bean (key)
      */
     public static void getAsyn(String key, Consumer<BeanWrap> callback) {
-        BeanWrap wrap = _f.get(key);
+        BeanWrap wrap = _f.getWrap(key);
         if (wrap == null) {
             _f.beanSubscribe(key, callback);
         } else {
