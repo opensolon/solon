@@ -6,6 +6,10 @@ import java.util.function.Consumer;
 
 /**
  * Aop 管理中心
+ *
+ * wrap, 只包装不注册
+ * put，只注册不包装
+ * get，获取或包装并获取
  * */
 public class Aop {
     //::工厂
@@ -79,9 +83,7 @@ public class Aop {
         _f.putWrap(key, wrap(obj.getClass(), obj));
     }
 
-    //::添加bean
-
-
+    //::添加bean（clz + obj）
     public static void put(Class<?> clz, Object obj) {
         _f.putWrap(clz, wrap(clz, obj));
     }
