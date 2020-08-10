@@ -77,6 +77,19 @@ public class XProperties extends Properties {
     }
 
     /**
+     *
+     * @param expr 兼容 ${key} or key
+     * */
+    public XProperties getPropByExpr(String expr) {
+        String name = expr;
+        if (name.startsWith("${") && name.endsWith("}")) {
+            name = expr.substring(2, name.length() - 1);
+        }
+
+        return getProp(name);
+    }
+
+    /**
      * 查找 keyStarts 开头的所有配置；并生成一个新的 Map
      *
      * @param keyStarts key 的开始字符

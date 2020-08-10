@@ -101,6 +101,9 @@ public class MybatisAdapter {
 
             if (mappers.size() == 0) {
                 throw new RuntimeException("Please add the mappers configuration!");
+            }else{
+                //通过事件转发，交给有需要的订阅者
+                XEventBus.push(config);
             }
         }
     }

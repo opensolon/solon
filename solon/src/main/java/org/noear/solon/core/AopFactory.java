@@ -36,7 +36,9 @@ public class AopFactory extends AopFactoryBase {
                 XBean m_an = mWrap.getMethod().getAnnotation(XBean.class);
 
                 if (m_an != null) {
-                    beanBuild(m_an.value(), mWrap, bw, (p1) -> {
+                    XInject injectRst = mWrap.getMethod().getAnnotation(XInject.class);
+
+                    beanBuild(m_an.value(), mWrap, bw, injectRst, (p1) -> {
                         XInject tmp = p1.getAnnotation(XInject.class);
                         if (tmp == null) {
                             return null;
@@ -238,13 +240,20 @@ public class AopFactory extends AopFactoryBase {
     /**
      * 执行对象构建
      */
-    public static void beanBuild(String beanName, MethodWrap mWrap, BeanWrap bw, Function<Parameter, String> injectVal) throws Exception {
+    public static void beanBuild(String beanName, MethodWrap mWrap, BeanWrap bw, XInject injectRst, Function<Parameter, String> injectVal) throws Exception {
         int size2 = mWrap.getParameters().length;
 
         if (size2 == 0) {
+            //0.没有参数
             Object raw = mWrap.invoke(bw.raw());
 
             if (raw != null) {
+                if (injectRst != null && XUtil.isEmpty(injectRst.value()) == false) {
+                    if (injectRst.value().startsWith("${")) {
+                        Aop.inject(raw, XApp.cfg().getPropByExpr(injectRst.value()));
+                    }
+                }
+
                 //动态构建的bean，都用新生成wrap
                 BeanWrap m_bw = new BeanWrap(raw.getClass(), raw);
                 Aop.factory().beanRegister(m_bw, beanName);
@@ -271,6 +280,12 @@ public class AopFactory extends AopFactoryBase {
                     Object raw = mWrap.invoke(bw.raw(), args2.toArray());
 
                     if (raw != null) {
+                        if (injectRst != null && XUtil.isEmpty(injectRst.value()) == false) {
+                            if (injectRst.value().startsWith("${")) {
+                                Aop.inject(raw, XApp.cfg().getPropByExpr(injectRst.value()));
+                            }
+                        }
+
                         //动态构建的bean，都用新生成wrap（否则会类型混乱）
                         BeanWrap m_bw = new BeanWrap(raw.getClass(), raw);
                         Aop.factory().beanRegister(m_bw, beanName);

@@ -7,7 +7,7 @@ import java.lang.annotation.*;
  *
  * 可注入到字段或参数（参数只在XConfiguration有效）
  * */
-@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface XInject {

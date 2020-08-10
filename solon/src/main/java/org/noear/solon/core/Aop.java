@@ -1,5 +1,6 @@
 package org.noear.solon.core;
 
+import java.util.Properties;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -114,6 +115,11 @@ public class Aop {
      */
     public static <T> T inject(T obj) {
         _f.inject(obj);
+        return obj;
+    }
+
+    public static <T> T inject(T obj, Properties propS) {
+        ClassWrap.get(obj.getClass()).fill(obj, propS::getProperty, null);
         return obj;
     }
 
