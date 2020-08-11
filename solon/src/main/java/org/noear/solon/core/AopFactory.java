@@ -118,7 +118,6 @@ public class AopFactory extends AopFactoryBase {
                     //建立关系映射
                     clzMapping.put(c, bw.clz());
                     Aop.factory().putWrap(c,bw);
-                    //beanNotice(c, bw);//通知子类订阅
                 }
             }
         }

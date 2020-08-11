@@ -100,7 +100,7 @@ public abstract class AopFactoryBase {
 
 
     /**
-     * 注册到bean库
+     * 注册到bean库（注册成功会进行通知）
      */
     public void putWrap(String key, BeanWrap wrap) {
         if (XUtil.isEmpty(key) == false) {
@@ -112,6 +112,9 @@ public abstract class AopFactoryBase {
         }
     }
 
+    /**
+     * 注册到bean库（注册成功会进行通知）
+     */
     public void putWrap(Class<?> key, BeanWrap wrap) {
         if (key != null) {
             if (beanWraps.containsKey(key) == false) {
