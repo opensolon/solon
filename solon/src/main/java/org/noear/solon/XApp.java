@@ -92,7 +92,7 @@ public class XApp implements XHandler,XHandlerSlots {
 
         //4.再加载bean
         if (source != null) {
-            Aop.factory().beanLoad(source, true);
+            Aop.beanLoad(source);
         }
 
         //6.加载渲染关系
