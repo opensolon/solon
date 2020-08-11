@@ -6,6 +6,9 @@
 * 注入
 
 ```swift
+//
+//旧的wrap()相当于wrapAndPut()，操作时无法选择
+//
 +wrap(clz, bean)->BeanWrap           //包装并不注册
 +wrapAndPut(clz)->BeanWrap           //包装并注册
 +wrapAndPut(clz, bean)->BeanWrap     //包装并注册
