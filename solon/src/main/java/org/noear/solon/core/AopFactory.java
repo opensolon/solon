@@ -56,6 +56,10 @@ public class AopFactory extends AopFactoryBase {
             beanAnnoHandle(bw, anno);
         });
 
+        beanCreatorAdd(XEvent.class, (clz, bw, anno) -> {
+            XEventBus.subscribe(anno.value(), bw.raw());
+        });
+
         beanCreatorAdd(XController.class, (clz, bw, anno) -> {
             new BeanWebWrap(bw).load(XApp.global());
         });
@@ -119,7 +123,7 @@ public class AopFactory extends AopFactoryBase {
                 if (c.getName().contains("java.") == false) {
                     //建立关系映射
                     clzMapping.put(c, bw.clz());
-                    Aop.factory().putWrap(c,bw);
+                    Aop.factory().putWrap(c, bw);
                 }
             }
         }
@@ -150,7 +154,6 @@ public class AopFactory extends AopFactoryBase {
     //::库管理
 
 
-
     //::加载相关
 
     /**
@@ -177,7 +180,7 @@ public class AopFactory extends AopFactoryBase {
                 });
 
         //尝试加载事件（不用函数包装，是为了减少代码）
-        if(loaded) {
+        if (loaded) {
             loadedEvent.forEach(f -> f.run());
         }
     }
