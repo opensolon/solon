@@ -146,6 +146,10 @@ public class XApp implements XHandler,XHandlerSlots {
     private final Map<String,Object> _shared=new HashMap<>();
     private Map<String,Object> _shared_unmod;
 
+    public void loadBean(Class<?> source){
+        Aop.beanLoad(source);
+    }
+
     /**
      * 添加共享对象
      * */
@@ -425,6 +429,11 @@ public class XApp implements XHandler,XHandlerSlots {
 
     public XApp onError(XEventHandler<Throwable> handler) {
         XEventBus.subscribe(Throwable.class, handler);
+        return this;
+    }
+
+    public <T> XApp onEvent(Class<T> type, XEventHandler<T> handler) {
+        XEventBus.subscribe(type, handler);
         return this;
     }
 

@@ -10,8 +10,8 @@ public class XPluginImp implements XPlugin {
         //
         //添加到加载源里
         //
-        Aop.beanLoad(SqlHelperMybatisAutoConfiguration.class);
+        app.loadBean(SqlHelperMybatisAutoConfiguration.class);
 
-        XEventBus.subscribe(Configuration.class, Aop.get(Configuration.class));
+        app.onEvent(Configuration.class, Aop.get(SqlHelperMybatisAutoConfiguration.class));
     }
 }
