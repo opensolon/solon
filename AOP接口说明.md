@@ -1,8 +1,8 @@
 
 ```swift
-+wrap(clz, raw)->BeanWrap           //包装并不注册
-+wrapAndPut(clz)->BeanWrap          //包装并注册
-+wrapAndPut(clz, raw)->BeanWrap     //包装并注册
++wrap(clz, bean)->BeanWrap           //包装并不注册
++wrapAndPut(clz)->BeanWrap           //包装并注册
++wrapAndPut(clz, bean)->BeanWrap     //包装并注册
 
 +get(key:String) -> T       //获取有name的bean
 +get(clz)        -> T       //获取只有类型的bean
