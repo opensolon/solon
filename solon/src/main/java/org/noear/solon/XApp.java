@@ -427,12 +427,12 @@ public class XApp implements XHandler,XHandlerSlots {
         }
     }
 
-    public XApp onError(XEventHandler<Throwable> handler) {
+    public XApp onError(XEventListener<Throwable> handler) {
         XEventBus.subscribe(Throwable.class, handler);
         return this;
     }
 
-    public <T> XApp onEvent(Class<T> type, XEventHandler<T> handler) {
+    public <T> XApp onEvent(Class<T> type, XEventListener<T> handler) {
         XEventBus.subscribe(type, handler);
         return this;
     }

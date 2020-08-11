@@ -8,8 +8,6 @@ import org.noear.solon.core.utils.TypeUtil;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +65,7 @@ public class AopFactory extends AopFactoryBase {
         });
 
         beanCreatorAdd(XEvent.class, (clz, bw, anno) -> {
-            if(bw.raw() instanceof XEventHandler) {
+            if(bw.raw() instanceof XEventListener) {
                 XEventBus.subscribe(anno.value(), bw.raw());
             }
         });

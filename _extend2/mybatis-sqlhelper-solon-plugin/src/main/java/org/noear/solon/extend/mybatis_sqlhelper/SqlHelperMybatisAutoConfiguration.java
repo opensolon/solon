@@ -13,11 +13,11 @@ import org.noear.solon.annotation.XBean;
 import org.noear.solon.annotation.XConfiguration;
 import org.noear.solon.annotation.XEvent;
 import org.noear.solon.annotation.XInject;
-import org.noear.solon.core.XEventHandler;
+import org.noear.solon.core.XEventListener;
 
 @XEvent(Configuration.class)
 @XConfiguration
-public class SqlHelperMybatisAutoConfiguration implements XEventHandler<Configuration> {
+public class SqlHelperMybatisAutoConfiguration implements XEventListener<Configuration> {
 
     @XBean
     public DatabaseIdProvider databaseIdProvider() {

@@ -49,7 +49,7 @@ public final class XEventBus {
     /**
      * 订阅事件
      */
-    public static <T> void subscribe(Class<T> eventType, XEventHandler<T> handler) {
+    public static <T> void subscribe(Class<T> eventType, XEventListener<T> handler) {
         if (Throwable.class.isAssignableFrom(eventType)) {
             _sThrow.add(new HH(eventType, handler));
         } else {
@@ -62,9 +62,9 @@ public final class XEventBus {
      */
     static class HH {
         protected Class<?> t;
-        protected XEventHandler h;
+        protected XEventListener h;
 
-        public HH(Class<?> type, XEventHandler handler) {
+        public HH(Class<?> type, XEventListener handler) {
             this.t = type;
             this.h = handler;
         }
