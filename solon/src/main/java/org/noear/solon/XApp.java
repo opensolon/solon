@@ -142,9 +142,9 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 加载Bean
      * */
-//    public void loadBean(Class<?> source){
-//        Aop.beanLoad(source);
-//    }
+    public void loadBean(Class<?> source){
+        Aop.beanLoad(source);
+    }
 
     /**
      * 共享变量（一般用于插件之间）
