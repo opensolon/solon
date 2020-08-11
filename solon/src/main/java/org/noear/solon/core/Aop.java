@@ -116,8 +116,8 @@ public class Aop {
     /**
      * 加载bean
      */
-    public static void beanLoad(Class<?> source) {
-        _f.beanLoad(source);
+    public static void beanLoad(Class<?>... sources) {
+        _f.beanLoad(sources);
     }
 
     /**

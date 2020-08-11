@@ -92,7 +92,8 @@ public class XApp implements XHandler,XHandlerSlots {
 
         //4.再加载bean
         if (source != null) {
-            Aop.beanLoad(source);
+            Class[] ary = new Class[_global._sourceLib.size()];
+            Aop.beanLoad(_global._sourceLib.toArray(ary));
         }
 
         //6.加载渲染关系
@@ -138,13 +139,6 @@ public class XApp implements XHandler,XHandlerSlots {
     }
 
     //////////////////////////////////
-
-    /**
-     * 加载Bean
-     * */
-    public void loadBean(Class<?> source){
-        Aop.beanLoad(source);
-    }
 
     /**
      * 共享变量（一般用于插件之间）
@@ -215,9 +209,11 @@ public class XApp implements XHandler,XHandlerSlots {
      */
     private final XAppProperties _prop;
     private final Class<?> _source;
+    private final Set<Class<?>> _sourceLib = new LinkedHashSet<>();
 
     protected XApp(Class<?> source, XMap args) {
         _source = source;
+        _sourceLib.add(source);
 
         _prop = new XAppProperties().load(args);
         _port = _prop.serverPort();
@@ -230,6 +226,10 @@ public class XApp implements XHandler,XHandlerSlots {
 
     public Class<?> source(){
         return _source;
+    }
+
+    public void sourceAdd(Class<?> source){
+        _sourceLib.add(source);
     }
 
     /**
