@@ -35,10 +35,10 @@ public class Aop {
     /**
      * 包装bean（clz），不负责注册
      */
-    public static BeanWrap wrap(Class<?> clz, Object raw) {
+    public static BeanWrap wrap(Class<?> clz, Object bean) {
         BeanWrap wrap = _f.getWrap(clz);
         if (wrap == null) {
-            wrap = new BeanWrap(clz, raw);
+            wrap = new BeanWrap(clz, bean);
         }
 
         return wrap;
@@ -48,8 +48,8 @@ public class Aop {
        return wrapAndPut(clz, null);
     }
 
-    public static BeanWrap wrapAndPut(Class<?> clz, Object raw){
-        BeanWrap wrap = wrap(clz, raw);
+    public static BeanWrap wrapAndPut(Class<?> clz, Object bean){
+        BeanWrap wrap = wrap(clz, bean);
         if (wrap.raw() != null) {
             _f.putWrap(clz, wrap);
         }
@@ -101,14 +101,14 @@ public class Aop {
     /**
      * 尝试注入（建议使用：get(clz) ）
      */
-    public static <T> T inject(T obj) {
-        _f.inject(obj);
-        return obj;
+    public static <T> T inject(T bean) {
+        _f.inject(bean);
+        return bean;
     }
 
-    public static <T> T inject(T obj, Properties propS) {
-        ClassWrap.get(obj.getClass()).fill(obj, propS::getProperty, null);
-        return obj;
+    public static <T> T inject(T bean, Properties propS) {
+        ClassWrap.get(bean.getClass()).fill(bean, propS::getProperty, null);
+        return bean;
     }
 
     //::bean事件处理
