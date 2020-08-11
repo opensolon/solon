@@ -57,13 +57,16 @@ public class XProperties extends Properties {
         }
     }
 
-    /**
-     * 获取某项配置 的 原始值
-     * */
-    public Object getRaw(String key) {
-        return super.get(key);
-    }
 
+
+    /**
+     * 查找 keyStarts 开头的所有配置；并生成一个新的 Bean
+     *
+     * @param keyStarts key 的开始字符
+     * */
+    public <T> T getBean(String keyStarts, Class<T> clz) {
+        return ClassWrap.get(clz).newBy(getProp(keyStarts)::getProperty);
+    }
 
     /**
      * 查找 keyStarts 开头的所有配置；并生成一个新的 配置集
