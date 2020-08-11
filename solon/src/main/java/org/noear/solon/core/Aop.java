@@ -7,9 +7,7 @@ import java.util.function.Consumer;
 /**
  * Aop 管理中心
  *
- * wrap, 只包装不注册
- * put，只注册不包装
- * get，获取或包装并获取
+ * 负责常用对外接口
  * */
 public class Aop {
     //::工厂

@@ -8,7 +8,11 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
-/** 为 AopFactory 提供存储 支持 */
+/**
+ * 为 AopFactory 提供存储 支持，并提供注册管理
+ *
+ *
+ * */
 public abstract class AopFactoryBase {
     //////////////////////////
     //
@@ -96,7 +100,7 @@ public abstract class AopFactoryBase {
 
 
     /**
-     * 加入到bean库
+     * 注册到bean库
      */
     public void putWrap(String key, BeanWrap wrap) {
         if (XUtil.isEmpty(key) == false) {
@@ -119,7 +123,7 @@ public abstract class AopFactoryBase {
     }
 
     /**
-     * 获取一个bean
+     * 获取一个bean包装
      */
     public BeanWrap getWrap(Object key) {
         if(key instanceof String) {

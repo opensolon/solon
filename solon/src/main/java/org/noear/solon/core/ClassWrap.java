@@ -36,26 +36,29 @@ public class ClassWrap {
         return cw;
     }
 
-    public final Class<?> clazz;                //clz
-    public final List<MethodWrap> methodWraps;  //clz.methodS
-    public final Field[] fields;                //clz.fieldS
+    public final Class<?> clazz;                        //clz
+    public final List<MethodWrap> methodWraps;          //clz.methodS
+    public final Field[] fields;                        //clz.fieldS
+    private final Map<String, FieldWrap> fieldWraps;    //clz.all_fieldS
 
     protected ClassWrap(Class<?> clz) {
         clazz = clz;
-        methodWraps = new ArrayList<>();
-
-        for (Method m : clz.getDeclaredMethods()) {
-            methodWraps.add(MethodWrap.get(m));
-        }
 
         //自己申明的字段
         fields = clz.getDeclaredFields();
 
-        //扫描所有字段
+        //自己申明的函数
+        methodWraps = new ArrayList<>();
+        for (Method m : clz.getDeclaredMethods()) {
+            methodWraps.add(MethodWrap.get(m));
+        }
+
+        //所有字段的包装（自己的 + 父类的）
+        fieldWraps = new ConcurrentHashMap<>();
         scanAllFields(clz, fieldWraps::containsKey, fieldWraps::put);
     }
 
-    private Map<String, FieldWrap> fieldWraps = new ConcurrentHashMap<>();
+
 
     /** 扫描一个类的所有字段（不能与Snack3的复用；它需要排除非序列化字段） */
     private static void scanAllFields(Class<?> clz, Predicate<String> checker, BiConsumer<String,FieldWrap> consumer) {
