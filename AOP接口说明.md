@@ -1,4 +1,10 @@
 
+**分三种行为**
+
+* 生成（默认进行注册）
+* 构建（每次创建新包装，成功后才注册）
+* 注入
+
 ```swift
 +wrap(clz, bean)->BeanWrap           //包装并不注册
 +wrapAndPut(clz)->BeanWrap           //包装并注册

@@ -7,11 +7,10 @@ import org.noear.solon.core.*;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        //
-        //添加到加载源里
-        //
+        //马上加载
         app.loadBean(SqlHelperMybatisAutoConfiguration.class);
 
+        //马上订阅事件
         app.onEvent(Configuration.class, Aop.get(SqlHelperMybatisAutoConfiguration.class));
     }
 }
