@@ -67,8 +67,7 @@ public class ParamController {
     public String test_g(XContext ctx,  String title, XFile file,  String label) throws Exception{
         return ctx.path();
     }
-    
-    //支持模型参数（要加@XParam申明，如安其字段里有日期类型，要加XParam指定格式）
+
     @XMapping("model")
     public void test_h1(XContext ctx, UserModel model) throws Throwable {
         ctx.render(model);
