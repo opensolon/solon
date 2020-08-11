@@ -1,5 +1,6 @@
 package org.noear.solon.extend.mybatis_sqlhelper;
 
+import org.apache.ibatis.session.Configuration;
 import org.noear.solon.XApp;
 import org.noear.solon.core.*;
 
@@ -9,6 +10,8 @@ public class XPluginImp implements XPlugin {
         //
         //添加到加载源里
         //
-        app.sourceAdd(SqlHelperMybatisAutoConfiguration.class);
+        Aop.beanLoad(SqlHelperMybatisAutoConfiguration.class);
+
+        XEventBus.subscribe(Configuration.class, Aop.get(Configuration.class));
     }
 }

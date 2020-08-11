@@ -18,10 +18,6 @@ import org.noear.solon.core.XEventHandler;
 @XConfiguration
 public class SqlHelperMybatisAutoConfiguration implements XEventHandler<Configuration> {
 
-    public SqlHelperMybatisAutoConfiguration() {
-        XEventBus.subscribe(Configuration.class, this);
-    }
-
     @XBean
     public DatabaseIdProvider databaseIdProvider() {
         return MybatisUtils.vendorDatabaseIdProvider();
