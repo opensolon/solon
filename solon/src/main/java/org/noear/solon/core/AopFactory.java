@@ -52,12 +52,6 @@ public class AopFactory extends AopFactoryBase {
             }
         });
 
-        beanCreatorAdd(XEvent.class, (clz, bw, anno) -> {
-            if(bw.raw() instanceof XEventHandler) {
-                XEventBus.subscribe(anno.value(), bw.raw());
-            }
-        });
-
         beanCreatorAdd(XBean.class, (clz, bw, anno) -> {
             beanAnnoHandle(bw, anno);
         });
@@ -72,9 +66,16 @@ public class AopFactory extends AopFactoryBase {
             bww.load(XApp.global());
         });
 
+        beanCreatorAdd(XEvent.class, (clz, bw, anno) -> {
+            if(bw.raw() instanceof XEventHandler) {
+                XEventBus.subscribe(anno.value(), bw.raw());
+            }
+        });
+
         beanInjectorAdd(XInject.class, ((fwT, anno) -> {
             beanInject(fwT, anno.value());
         }));
+
     }
 
     /**
