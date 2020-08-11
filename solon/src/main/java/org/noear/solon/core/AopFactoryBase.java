@@ -121,8 +121,16 @@ public abstract class AopFactoryBase {
     /**
      * 获取一个bean
      */
-    public BeanWrap getWrap(String key) {
-        return beans.get(key);
+    public BeanWrap getWrap(Object key) {
+        if(key instanceof String) {
+            return beans.get(key);
+        }
+
+        if(key instanceof Class<?>){
+            return beanWraps.get(key);
+        }
+
+        return null;
     }
 
 

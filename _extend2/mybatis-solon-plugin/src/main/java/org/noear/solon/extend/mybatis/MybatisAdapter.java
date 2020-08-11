@@ -186,7 +186,7 @@ public class MybatisAdapter {
         if (clz != null && clz.isInterface()) {
             Object mapper = proxy.getMapper(clz);
 
-            Aop.put(clz, mapper);
+            Aop.factory().putWrap(clz, Aop.wrap(clz,mapper));
         }
     }
 }

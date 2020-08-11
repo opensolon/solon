@@ -20,7 +20,7 @@ public class XPluginImp implements XPlugin {
                     SqlSessionFactory factory = bw.raw();
 
                     Object raw = MybatisProxy.get(factory).getMapper(clz);
-                    Aop.put(clz,raw);
+                    Aop.wrapAndPut(clz,raw);
                 }
             });
         });

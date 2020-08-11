@@ -38,7 +38,7 @@ public class Aop {
      * 包装bean（clz），不负责注册
      */
     public static BeanWrap wrap(Class<?> clz, Object raw) {
-        BeanWrap wrap = _f.beanWraps.get(clz);
+        BeanWrap wrap = _f.getWrap(clz);
         if (wrap == null) {
             wrap = new BeanWrap(clz, raw);
         }
@@ -46,49 +46,18 @@ public class Aop {
         return wrap;
     }
 
-//    public static BeanWrap wrap(Class<?> clz) {
-//        return wrap(clz,null);
-//    }
-
     public static BeanWrap wrapAndPut(Class<?> clz){
-        BeanWrap wrap = wrap(clz, null);
+       return wrapAndPut(clz, null);
+    }
+
+    public static BeanWrap wrapAndPut(Class<?> clz, Object obj){
+        BeanWrap wrap = wrap(clz, obj);
         if (wrap.raw() != null) {
             _f.putWrap(clz, wrap);
         }
 
         return wrap;
     }
-
-
-    /**
-     * 添加bean（key + wrap）
-     */
-//    public static void putWrap(String key, BeanWrap wrap) {
-//        _f.putWrap(key, wrap);
-//    }
-
-    /**
-     * 添加bean（clz + obj）
-     */
-//    public static void putWrap(Class<?> clz, BeanWrap wrap) {
-//        _f.putWrap(clz, wrap);
-//    }
-
-    //::添加bean
-
-    /**
-     * 添加bean（key + obj）
-     */
-    public static void put(String key, Object obj) {
-        _f.putWrap(key, wrap(obj.getClass(), obj));
-    }
-
-    //::添加bean（clz + obj）
-    public static void put(Class<?> clz, Object obj) {
-        _f.putWrap(clz, wrap(clz, obj));
-    }
-
-
 
     //::获取bean
 
@@ -111,22 +80,21 @@ public class Aop {
      * 异步获取bean (key)
      */
     public static void getAsyn(String key, Consumer<BeanWrap> callback) {
-        BeanWrap wrap = _f.getWrap(key);
-        if (wrap == null) {
-            _f.beanSubscribe(key, callback);
-        } else {
-            callback.accept(wrap);
-        }
+        getAsynDo(key, callback);
     }
 
     /**
      * 异步获取bean (clz)
      */
     public static void getAsyn(Class<?> clz, Consumer<BeanWrap> callback) { //FieldWrapTmp fwT,
-        BeanWrap wrap = _f.beanWraps.get(clz);
+        getAsynDo(clz, callback);
+    }
+
+    private static void getAsynDo(Object key, Consumer<BeanWrap> callback) {
+        BeanWrap wrap = _f.getWrap(key);
 
         if (wrap == null || wrap.raw() == null) {
-            _f.beanSubscribe(clz, callback);
+            _f.beanSubscribe(key, callback);
         } else {
             callback.accept(wrap);
         }
