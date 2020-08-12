@@ -119,14 +119,14 @@ public class DemoController{
 // - interface
 @XClient("rpc:/demo/") // 或 demorpc （使用water提供的注册服务；当然也可以改成别的...）
 public interface DemoRpc{
-    void setName(Integer user_id,String name);
+    void setName(Integer user_id, String name);
 }
 
 // - server
 @XMapping("/demo/*")
 @XBean(remoting = true)
 public class DemoService implements DemoRpc{
-    public void setName(Integer user_id,String name){
+    public void setName(Integer user_id, String name){
         
     }
 }
@@ -153,7 +153,7 @@ class xxx{
 ### 附2：更多示例可参考 _test 和 _demo
 
 ### 附3：插件开发说明
-* 新建一个 meven 项目
+* 新建一个 maven 项目
 * 新建一个 java/{包名}/XPluginImp.java （implements XPlugin）
 * 新建一个 resources/`solonplugin`/{包名.properties}
 *    添加配置：solon.plugin={包名}.XPluginImp
