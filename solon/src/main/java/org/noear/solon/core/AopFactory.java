@@ -259,7 +259,7 @@ public class AopFactory extends AopFactoryBase {
 
             if (Properties.class == varH.getType()) {
                 varH.setValue(val);
-            } else if(Map.class == varH.getType()) {
+            } else if (Map.class == varH.getType()) {
                 Map<String, String> val2 = new HashMap<>();
                 val.forEach((k, v) -> {
                     if (k instanceof String && v instanceof String) {
@@ -267,7 +267,7 @@ public class AopFactory extends AopFactoryBase {
                     }
                 });
                 varH.setValue(val2);
-            } else{
+            } else {
                 Object val2 = ClassWrap.get(varH.getType()).newBy(val::getProperty);
                 varH.setValue(val2);
             }
