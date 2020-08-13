@@ -1,11 +1,11 @@
-package org.noear.solon.data;
+package org.noear.solon.core;
 
 import org.noear.solon.ext.RunnableEx;
 
 /**
  * 事务
  * */
-public interface Transaction {
+public interface Tran {
     /**
      * 是否为主事务（一主，多从）
      * */
@@ -13,7 +13,7 @@ public interface Transaction {
     /**
      * 添加从事务
      * */
-    void add(Transaction slave);
+    void add(Tran slave);
     /**
      * 执行事务
      * */

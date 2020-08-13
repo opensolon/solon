@@ -1,4 +1,4 @@
-package org.noear.solon.data;
+package org.noear.solon.core;
 
 import org.noear.solon.annotation.XTran;
 import org.noear.solon.ext.RunnableEx;
@@ -8,9 +8,9 @@ import java.util.function.Function;
 /**
  * 事务管理器
  * */
-public class TransactionManger {
-    public static Function<XTran, Transaction> factory;
-    private static ThreadLocal<Transaction> rootLocal = new ThreadLocal<>();
+public class TranManger {
+    public static Function<XTran, Tran> factory;
+    private static ThreadLocal<Tran> rootLocal = new ThreadLocal<>();
 
     public void execute(XTran anno, RunnableEx runnable) throws Throwable {
         if (anno == null) {
@@ -18,8 +18,8 @@ public class TransactionManger {
             return;
         }
 
-        Transaction root = rootLocal.get();
-        Transaction tran = factory.apply(anno);
+        Tran root = rootLocal.get();
+        Tran tran = factory.apply(anno);
 
         //根事务不存在
         if (root == null) {
