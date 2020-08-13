@@ -12,7 +12,7 @@ public class TranManger {
     public static Function<XTran, Tran> factory;
     private static ThreadLocal<Tran> rootLocal = new ThreadLocal<>();
 
-    public void execute(XTran anno, RunnableEx runnable) throws Throwable {
+    public static void execute(XTran anno, RunnableEx runnable) throws Throwable {
         if (anno == null) {
             runnable.run();
             return;
