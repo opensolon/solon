@@ -9,7 +9,7 @@ import webapp.models.UserModel;
 
 @XController
 public class TestController {
-    @XInject("config")
+    @XInject
     private ConfigDemo config;
 
     @XInject("${classpath:user.yml}")

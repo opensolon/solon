@@ -2,11 +2,12 @@ package webapp.demo8_config;
 
 import org.noear.solon.XApp;
 import org.noear.solon.annotation.XBean;
+import org.noear.solon.annotation.XConfiguration;
 import org.noear.solon.annotation.XInject;
 
 import java.util.Properties;
 
-@XBean("config")
+@XConfiguration
 public class ConfigDemo {
     //注解方式(仅支持简单的类型注入)
     @XInject("${username}")
