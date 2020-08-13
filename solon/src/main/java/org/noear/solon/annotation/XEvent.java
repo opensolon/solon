@@ -2,7 +2,6 @@ package org.noear.solon.annotation;
 
 import java.lang.annotation.*;
 
-
 /**
  * 事件订阅（注解在XEventListener的实现类上，才有效）
  * */

@@ -35,3 +35,4 @@ solon.schedule.job1:
 solon.schedule.job2:
   cron4x: "*/1 * * * *"
   enable: true
+
