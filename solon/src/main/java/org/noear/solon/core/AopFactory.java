@@ -8,10 +8,7 @@ import org.noear.solon.core.utils.TypeUtil;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -65,7 +62,7 @@ public class AopFactory extends AopFactoryBase {
         });
 
         beanCreatorAdd(XEvent.class, (clz, bw, anno) -> {
-            if(bw.raw() instanceof XEventListener) {
+            if (bw.raw() instanceof XEventListener) {
                 XEventBus.subscribe(anno.value(), bw.raw());
             }
         });
@@ -252,12 +249,30 @@ public class AopFactory extends AopFactoryBase {
             Aop.getAsyn(varH.getType(), (bw) -> {
                 varH.setValue(bw.get());
             });
-        } else if (name.startsWith("${") == false) {
-            //使用name, 获取BEAN
-            Aop.getAsyn(name, (bw) -> {
-                varH.setValue(bw.get());
-            });
-        } else {
+        } else if (name.startsWith("classpath:")) {
+            String url = name.substring(10);
+            Properties val = XUtil.getProperties(XUtil.getResource(url));
+
+            if (val == null) {
+                throw new RuntimeException(name + "  failed to load!");
+            }
+
+            if (Properties.class == varH.getType()) {
+                varH.setValue(val);
+            } else if(Map.class == varH.getType()) {
+                Map<String, String> val2 = new HashMap<>();
+                val.forEach((k, v) -> {
+                    if (k instanceof String && v instanceof String) {
+                        val2.put((String) k, (String) v);
+                    }
+                });
+                varH.setValue(val2);
+            } else{
+                Object val2 = ClassWrap.get(varH.getType()).newBy(val::getProperty);
+                varH.setValue(val2);
+            }
+
+        } else if (name.startsWith("${")) {
             //配置 ${xxx}
             name = name.substring(2, name.length() - 1);
 
@@ -290,6 +305,11 @@ public class AopFactory extends AopFactoryBase {
                     varH.setValue(val2);
                 }
             }
+        } else {
+            //使用name, 获取BEAN
+            Aop.getAsyn(name, (bw) -> {
+                varH.setValue(bw.get());
+            });
         }
     }
 }

@@ -107,6 +107,10 @@ public class XUtil {
      * 根据url加载配置集
      * */
     public static Properties getProperties(URL url) {
+        if(url == null){
+            return null;
+        }
+
         try {
             return XPropertiesLoader.global.load(url);
         } catch (RuntimeException ex) {
