@@ -22,7 +22,7 @@ public class XPluginImp implements XPlugin {
             //
             XMap mimeTypes = app.prop().getXmap("solon.mime");
             mimeTypes.forEach((k, v) -> {
-                XStaticFiles.instance().putIfAbsent(k, v);
+                XStaticFiles.instance().putIfAbsent("." + k, v);
             });
 
             //2.切换代理（让静态文件优先）
