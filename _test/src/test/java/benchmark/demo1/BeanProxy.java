@@ -1,4 +1,4 @@
-package benchmark;
+package benchmark.demo1;
 
 import java.lang.reflect.Proxy;
 
