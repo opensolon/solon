@@ -269,6 +269,11 @@ public class HttpTest {
     public void test83() throws IOException{
         assert ONode.loadStr(get("/demo8/config_system")).get("file.separator").getString().equals("/");
     }
+
+    @Test
+    public void test84() throws IOException{
+        assert ONode.loadStr(get("/demo8/user")).get("name").getString().equals("noear");
+    }
     @Test
     public void test91() throws IOException{
         assert  get("/demo9/view/beetl").indexOf("beetl::") > 0;

@@ -298,14 +298,14 @@ public class XApp implements XHandler,XHandlerSlots {
     }
 
     public void add(String expr, Class<?> clz) {
-        BeanWrap bw = Aop.get(clz);
+        BeanWrap bw = Aop.wrapAndPut(clz);
         if (bw != null) {
             new BeanWebWrap(bw, expr).load(this);
         }
     }
 
     public void add(String expr, Class<?> clz, boolean remoting) {
-        BeanWrap bw = Aop.get(clz);
+        BeanWrap bw = Aop.wrapAndPut(clz);
         if (bw != null) {
             new BeanWebWrap(bw, expr, remoting).load(this);
         }

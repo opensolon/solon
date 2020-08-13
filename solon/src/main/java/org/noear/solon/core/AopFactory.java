@@ -249,8 +249,11 @@ public class AopFactory extends AopFactoryBase {
             Aop.getAsyn(varH.getType(), (bw) -> {
                 varH.setValue(bw.get());
             });
-        } else if (name.startsWith("classpath:")) {
-            String url = name.substring(10);
+        } else if (name.startsWith("${classpath:")) {
+            //
+            //demo:${classpath:user.yml}
+            //
+            String url = name.substring(12,name.length()-1);
             Properties val = XUtil.getProperties(XUtil.getResource(url));
 
             if (val == null) {
