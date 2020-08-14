@@ -17,6 +17,7 @@ public class BeanWrap {
     protected boolean _singleton; // 是否为单例
     protected boolean _remoting;  // 是否为远程服务
     protected String _tag;
+    protected BeanProxy _proxy;
 
     public BeanWrap() {
     }
@@ -37,6 +38,14 @@ public class BeanWrap {
             _raw = _new();
         } else {
             _raw = raw;
+        }
+    }
+
+    public void proxySet(BeanProxy proxy){
+        _proxy = proxy;
+
+        if(_raw != null){
+            _raw = proxy.getProxy(_raw);
         }
     }
 
@@ -114,6 +123,10 @@ public class BeanWrap {
             //3.初始化
             if(_clz_init != null){
                 _clz_init.getMethod().invoke(obj);
+            }
+
+            if(_proxy!= null){
+                obj = _proxy.getProxy(obj);
             }
 
             return obj;

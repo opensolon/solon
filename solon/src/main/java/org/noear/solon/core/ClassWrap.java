@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -38,8 +39,9 @@ public class ClassWrap {
 
     public final Class<?> clazz;                        //clz
     public final List<MethodWrap> methodWraps;          //clz.methodS
+    public final Map<Method,MethodWrap> methodWrapsMap;          //clz.methodS
     public final Field[] fields;                        //clz.fieldS
-    private final Map<String, FieldWrap> fieldWraps;    //clz.all_fieldS
+    private final Map<String, FieldWrap> fieldWrapsMap;    //clz.all_fieldS
 
     protected ClassWrap(Class<?> clz) {
         clazz = clz;
@@ -49,13 +51,17 @@ public class ClassWrap {
 
         //自己申明的函数
         methodWraps = new ArrayList<>();
+        methodWrapsMap = new HashMap<>();
+
         for (Method m : clz.getDeclaredMethods()) {
-            methodWraps.add(MethodWrap.get(m));
+            MethodWrap m1 = MethodWrap.get(m);
+            methodWraps.add(m1);
+            methodWrapsMap.put(m,m1);
         }
 
         //所有字段的包装（自己的 + 父类的）
-        fieldWraps = new ConcurrentHashMap<>();
-        scanAllFields(clz, fieldWraps::containsKey, fieldWraps::put);
+        fieldWrapsMap = new ConcurrentHashMap<>();
+        scanAllFields(clz, fieldWrapsMap::containsKey, fieldWrapsMap::put);
     }
 
 
@@ -88,15 +94,30 @@ public class ClassWrap {
      * 获取一个字段包装
      */
     public FieldWrap getFieldWrap(Field f1) {
-        FieldWrap fw = fieldWraps.get(f1.getName());
-        if (fw == null) {
-            fw = new FieldWrap(clazz, f1);
-            FieldWrap l = fieldWraps.putIfAbsent(f1.getName(), fw);
+        FieldWrap tmp = fieldWrapsMap.get(f1.getName());
+        if (tmp == null) {
+            tmp = new FieldWrap(clazz, f1);
+            FieldWrap l = fieldWrapsMap.putIfAbsent(f1.getName(), tmp);
             if (l != null) {
-                fw = l;
+                tmp = l;
             }
         }
-        return fw;
+        return tmp;
+    }
+
+    /**
+     * 获取一个方法包装
+     * */
+    public MethodWrap getMethodWrap(Method m1) {
+        MethodWrap tmp = methodWrapsMap.get(m1);
+        if (tmp == null) {
+            tmp = new MethodWrap(m1);
+            MethodWrap l = methodWrapsMap.putIfAbsent(m1, tmp);
+            if (l != null) {
+                tmp = l;
+            }
+        }
+        return tmp;
     }
 
     public <T> T newBy(Function<String, String> data) {
@@ -117,7 +138,7 @@ public class ClassWrap {
      * 为一个对象填充数据
      * */
     public void fill(Object target, Function<String, String> data, XContext ctx) {
-        for (Map.Entry<String,FieldWrap> kv : fieldWraps.entrySet()) {
+        for (Map.Entry<String,FieldWrap> kv : fieldWrapsMap.entrySet()) {
             String key = kv.getKey();
             String val0 = data.apply(key);
 
