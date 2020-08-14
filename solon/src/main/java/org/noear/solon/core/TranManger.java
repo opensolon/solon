@@ -58,7 +58,7 @@ public class TranManger {
                 //如果名字相同，则直接执行
                 runnable.run();
             }else{
-                //新建事务
+                //新建事务（不同数据源的事务嵌套，会有潜在问题）
                 Tran tran = factory.apply(anno);
                 tran.execute(runnable);
             }
