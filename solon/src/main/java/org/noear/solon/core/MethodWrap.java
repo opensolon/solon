@@ -68,16 +68,16 @@ public class MethodWrap {
     }
 
     /**
-     * 执行并返回
+     * 执行
      */
     public Object invoke(Object obj, Object... args) throws Exception {
         return invoke0(obj, args);
     }
 
     /**
-     * 执行并返回 尝试事务
+     * 执行，并尝试事务
      */
-    public Object invokeOnTran(Object obj, Object... args) throws Throwable {
+    public Object invokeAndTran(Object obj, Object... args) throws Throwable {
         if (xTran == null) {
             return invoke0(obj, args);
         } else {

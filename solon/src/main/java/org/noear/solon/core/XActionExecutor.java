@@ -2,7 +2,6 @@ package org.noear.solon.core;
 
 import org.noear.solon.core.utils.TypeUtil;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,7 @@ public class XActionExecutor implements MethodExecutor {
     @Override
     public Object execute(XContext ctx, Object obj, MethodWrap mWrap) throws Throwable {
         List<Object> args = buildArgs(ctx, mWrap.getParameters());
-        return mWrap.invokeOnTran(obj, args.toArray());
+        return mWrap.invokeAndTran(obj, args.toArray());
     }
 
 
