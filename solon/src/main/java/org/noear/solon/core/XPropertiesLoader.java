@@ -2,7 +2,6 @@ package org.noear.solon.core;
 
 import org.noear.solon.XUtil;
 
-import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.Properties;
@@ -20,14 +19,9 @@ public class XPropertiesLoader {
         //
         String loader = "org.noear.solon.extend.properties.yaml.PropertiesLoader";
 
-        Class<?> clz = XUtil.loadClass(loader);
-        if (clz != null) {
-            try {
-                Object tmp = clz.newInstance();
-                global = (XPropertiesLoader) tmp;
-            } catch (Throwable ex) {
-                ex.printStackTrace();
-            }
+        XPropertiesLoader tmp = XUtil.newInstance(loader);
+        if (tmp != null) {
+            global = tmp;
         }
     }
 

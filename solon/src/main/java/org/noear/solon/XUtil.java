@@ -67,11 +67,14 @@ public class XUtil {
     /**
      * 根据字段串加载为一个对象
      */
-    public static <T> T newClass(String className) {
+    public static <T> T newInstance(String className) {
         try {
-            return (T)loadClass(className).newInstance();
-//            Class clz = Class.forName(className);
-//            return (T) clz.newInstance();
+            Class<?> clz = loadClass(className);
+            if (clz == null) {
+                return null;
+            } else {
+                return (T)clz.newInstance();
+            }
         } catch (Throwable ex) {
             ex.printStackTrace();
             return null;

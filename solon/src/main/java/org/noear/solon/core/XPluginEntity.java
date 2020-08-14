@@ -32,7 +32,7 @@ public class XPluginEntity {
      * */
     public void start() {
         if (plugin == null) {
-            plugin = XUtil.newClass(className);
+            plugin = XUtil.newInstance(className);
         }
 
         if (plugin != null) {
