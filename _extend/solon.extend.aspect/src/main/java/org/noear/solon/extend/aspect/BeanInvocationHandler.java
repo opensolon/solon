@@ -1,6 +1,7 @@
 package org.noear.solon.extend.aspect;
 
 import org.noear.solon.core.ClassWrap;
+import org.noear.solon.extend.aspect.asm.Proxy;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;

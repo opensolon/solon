@@ -1,4 +1,4 @@
-package org.noear.solon.extend.aspect;
+package org.noear.solon.extend.aspect.asm;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
