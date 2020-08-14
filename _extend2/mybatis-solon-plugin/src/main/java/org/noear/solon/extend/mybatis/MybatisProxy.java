@@ -15,37 +15,38 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * 处理包装和事务控制
  * */
-public class MybatisProxy extends SqlSessionHolder implements SqlSession {
-    private final SqlSessionFactory factory;
-
-    //private final static ThreadLocal<SqlSession> threadLocal = new ThreadLocal<>();
-    private final static Map<SqlSessionFactory, MybatisProxy> cached = new ConcurrentHashMap<>();
+public class MybatisProxy {
+    private final static Map<SqlSessionFactory, SqlSessionHolder> cached = new ConcurrentHashMap<>();
 
     /**
-     * 获取代理
-     * */
+     * 获取会话容器
+     */
     public static SqlSessionHolder get(SqlSessionFactory factory) {
-        MybatisProxy wrap = cached.get(factory);
-        if (wrap == null) {
+        SqlSessionHolder holder = cached.get(factory);
+        if (holder == null) {
             synchronized (cached) {
-                wrap = cached.get(factory);
-                if (wrap == null) {
-                    wrap = new MybatisProxy(factory);
-                    cached.put(factory, wrap);
+                holder = cached.get(factory);
+                if (holder == null) {
+                    SqlSession proxy = getProxy(factory);
+                    holder = new SqlSessionHolder(proxy);
+                    cached.put(factory, holder);
                 }
             }
         }
 
-        return wrap;
+        return holder;
     }
 
-    protected MybatisProxy(SqlSessionFactory factory) {
-        super((SqlSession) Proxy.newProxyInstance(
+    /**
+     * 获取会话代理
+     * */
+    protected static SqlSession getProxy(SqlSessionFactory factory) {
+        return (SqlSession) Proxy.newProxyInstance(
                 factory.getClass().getClassLoader(),
                 new Class[]{SqlSession.class},
-                new SqlSessionInterceptor(factory)));
-        this.factory = factory;
+                new SqlSessionInterceptor(factory));
     }
+
 
     protected static class SqlSessionInterceptor implements InvocationHandler {
         private SqlSessionFactory factory;

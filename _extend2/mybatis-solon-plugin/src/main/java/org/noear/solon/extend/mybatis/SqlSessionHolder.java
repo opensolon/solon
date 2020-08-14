@@ -19,11 +19,6 @@ import java.util.Map;
 public class SqlSessionHolder implements SqlSession {
     private final SqlSession holder;
 
-    /**
-     * 结果
-     * */
-    public Object result;
-
     public SqlSessionHolder(SqlSession session) {
         holder = session;
     }
