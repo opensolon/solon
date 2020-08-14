@@ -6,7 +6,7 @@ import org.noear.weed.DbContext;
 import org.noear.weed.DbTran;
 import org.noear.weed.DbTranQueue;
 
-public class TranImpQueue extends DbTranQueue implements Tran {
+public class TranQueueImp extends DbTranQueue implements Tran {
 
     @Override
     public boolean isQueue() {

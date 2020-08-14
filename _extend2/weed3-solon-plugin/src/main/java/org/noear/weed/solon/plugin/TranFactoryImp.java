@@ -22,8 +22,8 @@ public final class TranFactoryImp implements TranFactory {
     private TranFactoryImp() {
     }
 
-    private Tran tranQueue = new TranImpQueue();
-    private Tran tranExclude = new TranImpExclude();
+    private Tran tranQueue = new TranQueueImp();
+    private Tran tranExclude = new TranExcludeImp();
 
     @Override
     public Tran create(XTran tran) {
