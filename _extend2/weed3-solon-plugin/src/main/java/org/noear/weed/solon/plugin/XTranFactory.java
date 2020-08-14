@@ -14,10 +14,6 @@ public class XTranFactory implements Function<XTran, Tran> {
         if (tran.multisource()) {
             return new XTranGroupImp();
         } else {
-            if(XUtil.isEmpty(tran.value())){
-                throw  new RuntimeException("Please configure @XTran value");
-            }
-
             DbContext db = null;
             if(XUtil.isEmpty(tran.value())){
                 //根据名字获取
