@@ -9,7 +9,7 @@ import org.noear.weed.DbTranQueue;
 public class TranImpQueue extends DbTranQueue implements Tran {
 
     @Override
-    public boolean isMaster() {
+    public boolean isQueue() {
         return true;
     }
 

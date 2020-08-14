@@ -3,8 +3,6 @@ package org.noear.solon.core;
 import org.noear.solon.annotation.XTran;
 import org.noear.solon.ext.RunnableEx;
 
-import java.util.function.Function;
-
 /**
  * 事务管理器
  * */
@@ -26,7 +24,6 @@ public class TranManger {
             //::支持但不必需
             if(anno.policy() == TranPolicy.supports){
                 runnable.run();
-                return;
             }else {
                 //新建事务
                 Tran tran = factory.create(anno);
@@ -44,7 +41,7 @@ public class TranManger {
             }
         } else {
             //根事务已经存在
-            if (root.value.isMaster()) {
+            if (root.value.isQueue()) {
                 //如果是主事务，则加入
                 //
                 Tran tran = factory.create(anno);

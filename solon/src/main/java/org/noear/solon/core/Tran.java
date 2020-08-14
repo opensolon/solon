@@ -7,14 +7,14 @@ import org.noear.solon.ext.RunnableEx;
  * */
 public interface Tran {
     /**
-     * 是否为主事务（一主多从）
+     * 是否为队列事务
      * */
-    default boolean isMaster(){ return false; }
+    default boolean isQueue(){ return false; }
 
     /**
-     * 添加从事务（只有主事务，才能添加从事务）
+     * 添加事务（当前为事务队列时，可添加）
      * */
-    default void add(Tran slave){}
+    default void add(Tran slave){ }
 
     /**
      * 执行事务
