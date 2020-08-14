@@ -45,11 +45,6 @@ public class XPluginImp implements XPlugin {
                             return;
                         }
 
-                        if (MybatisProxy.class.isAssignableFrom(varH.getType())) {
-                            varH.setValue(MybatisProxy.get(factory));
-                            return;
-                        }
-
                         if (SqlSession.class.isAssignableFrom(varH.getType())) {
                             varH.setValue(MybatisProxy.get(factory));
                             return;
