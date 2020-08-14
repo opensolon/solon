@@ -15,6 +15,6 @@ public class BeanProxyImp implements BeanProxy {
 
     @Override
     public Object getProxy(Object bean) {
-        return new BeanHandler(bean).getProxy();
+        return new BeanInvocationHandler(bean).getProxy();
     }
 }

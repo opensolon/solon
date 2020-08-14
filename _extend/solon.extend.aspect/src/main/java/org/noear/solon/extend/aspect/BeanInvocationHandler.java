@@ -6,16 +6,16 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-public class BeanHandler implements InvocationHandler {
+public class BeanInvocationHandler implements InvocationHandler {
     private Object bean;
     private ClassWrap clazzWrap;
     private Object proxy;
 
-    public BeanHandler(Object bean) {
+    public BeanInvocationHandler(Object bean) {
         this(bean.getClass(), bean);
     }
 
-    public BeanHandler(Class<?> clazz, Object bean) {
+    public BeanInvocationHandler(Class<?> clazz, Object bean) {
         try {
             Constructor constructor = clazz.getConstructor(new Class[]{});
             Object[] constructorParam = new Object[]{};
