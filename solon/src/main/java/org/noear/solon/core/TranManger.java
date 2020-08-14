@@ -19,6 +19,9 @@ public class TranManger {
 
     public static void execute(XTran anno, RunnableEx runnable) throws Throwable {
         if (anno == null || factory == null) {
+            //
+            //如果没有注解或工厂，直接运行
+            //
             runnable.run();
             return;
         }
@@ -31,6 +34,7 @@ public class TranManger {
             //::支持但不必需
             if(anno.policy() == TranPolicy.supports){
                 runnable.run();
+                return;
             }else {
                 //新建事务
                 Tran tran = factory.create(anno);
@@ -54,24 +58,25 @@ public class TranManger {
                 return;
             }
 
-            //根事务已经存在
             if (root.value.isQueue()) {
-                //如果是队列，则加入
+                //如果根是队列，则加入
                 //
                 Tran tran = factory.create(anno);
 
                 root.value.add(tran);
                 tran.execute(runnable);
                 return;
-            }
-
-            if(root.tag.equals(anno.value())){
-                //如果名字相同，则不新建事务
-                runnable.run();
-            }else{
-                //新建事务（不同数据源的事务嵌套，会有潜在问题）
-                Tran tran = factory.create(anno);
-                tran.execute(runnable);
+            }else {
+                //如果根不是队列
+                //
+                if (root.tag.equals(anno.value())) {
+                    //如果名字相同，则不新建事务
+                    runnable.run();
+                } else {
+                    //新建事务（不同数据源的事务嵌套，会有潜在问题）
+                    Tran tran = factory.create(anno);
+                    tran.execute(runnable);
+                }
             }
         }
     }
