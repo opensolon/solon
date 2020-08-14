@@ -19,7 +19,7 @@ public class XPluginImp implements XPlugin {
                 if (bw.raw() instanceof SqlSessionFactory) {
                     SqlSessionFactory factory = bw.raw();
 
-                    Object raw = MybatisProxy.get(factory).getMapper(clz);
+                    Object raw = MybatisUtil.get(factory).getMapper(clz);
                     Aop.wrapAndPut(clz,raw);
                 }
             });
@@ -39,14 +39,14 @@ public class XPluginImp implements XPlugin {
                         SqlSessionFactory factory = bw.raw();
 
                         if (varH.getType().isInterface()) {
-                            Object mapper = MybatisProxy.get(factory).getMapper(varH.getType());
+                            Object mapper = MybatisUtil.get(factory).getMapper(varH.getType());
 
                             varH.setValue(mapper);
                             return;
                         }
 
                         if (SqlSession.class.isAssignableFrom(varH.getType())) {
-                            varH.setValue(MybatisProxy.get(factory));
+                            varH.setValue(MybatisUtil.get(factory));
                             return;
                         }
 

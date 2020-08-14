@@ -139,7 +139,7 @@ public class MybatisAdapter {
     }
 
     public MybatisAdapter mapperScan() {
-        SqlSessionHolder proxy = MybatisProxy.get(getFactory());
+        SqlSessionHolder proxy = MybatisUtil.get(getFactory());
 
         for (String val : mappers) {
             mapperScan0(proxy, val);
@@ -154,7 +154,7 @@ public class MybatisAdapter {
      * 扫描 basePackages 里的类，并生成 mapper 实例注册到bean中心
      */
     public MybatisAdapter mapperScan(String basePackages) {
-        mapperScan0(MybatisProxy.get(getFactory()), basePackages);
+        mapperScan0(MybatisUtil.get(getFactory()), basePackages);
         return this;
     }
 
