@@ -1,7 +1,7 @@
 package benchmark.demo1;
 
 
-import org.noear.solon.extend.aspect.Proxy;
+import org.noear.solon.extend.aspect.asm.Proxy;
 
 import java.lang.reflect.Constructor;
 
