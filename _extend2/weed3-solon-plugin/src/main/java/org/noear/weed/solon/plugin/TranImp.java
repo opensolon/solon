@@ -6,7 +6,7 @@ import org.noear.weed.DbContext;
 import org.noear.weed.DbTran;
 
 public class TranImp extends DbTran implements Tran {
-    public TranImp(DbContext context) {
+    protected TranImp(DbContext context) {
         super(context);
     }
 

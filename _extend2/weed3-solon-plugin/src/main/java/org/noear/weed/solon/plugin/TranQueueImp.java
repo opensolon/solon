@@ -7,6 +7,9 @@ import org.noear.weed.DbTran;
 import org.noear.weed.DbTranQueue;
 
 public class TranQueueImp extends DbTranQueue implements Tran {
+    protected TranQueueImp(){
+
+    }
 
     @Override
     public boolean isQueue() {
@@ -14,8 +17,10 @@ public class TranQueueImp extends DbTranQueue implements Tran {
     }
 
     @Override
-    public void add(Tran slave) {
-        super.add((DbTran) slave);
+    public void add(Tran node) {
+        if(node instanceof DbTran) {
+            super.add((DbTran) node);
+        }
     }
 
     @Override

@@ -6,6 +6,10 @@ import org.noear.weed.DbTran;
 import org.noear.weed.DbTranUtil;
 
 public class TranExcludeImp implements Tran {
+    protected TranExcludeImp(){
+
+    }
+
     @Override
     public void execute(RunnableEx runnable) throws Throwable {
         //获取当前事务
