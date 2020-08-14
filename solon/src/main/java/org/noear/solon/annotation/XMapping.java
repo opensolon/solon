@@ -24,7 +24,9 @@ public @interface XMapping {
     XMethod[] method() default {XMethod.HTTP};
     String produces() default "";
 
-    //拦截相关
+    /**
+     * @XInterceptor 的类，以下才有效
+     * */
     int index() default 0;//顺序位
     boolean before() default false;
     boolean after() default false;
