@@ -18,8 +18,20 @@ public class XTranFactory implements Function<XTran, Tran> {
                 throw  new RuntimeException("Please configure @XTran value");
             }
 
-            DbContext ctx = Aop.get(tran.value());
-            return new XTranImp(ctx);
+            DbContext db = null;
+            if(XUtil.isEmpty(tran.value())){
+                //根据名字获取
+                db = Aop.get(DbContext.class);
+            }else{
+                //根据类型获取
+                db = Aop.get(tran.value());
+            }
+
+            if(XUtil.isEmpty(tran.value())){
+                throw  new RuntimeException("@XTran annotation failed");
+            }
+
+            return new XTranImp(db);
         }
     }
 }

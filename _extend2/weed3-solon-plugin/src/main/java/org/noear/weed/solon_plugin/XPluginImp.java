@@ -1,6 +1,7 @@
 package org.noear.weed.solon_plugin;
 
 import org.noear.solon.XApp;
+import org.noear.solon.XUtil;
 import org.noear.solon.core.*;
 import org.noear.weed.BaseMapper;
 import org.noear.weed.DbContext;
@@ -35,21 +36,34 @@ public class XPluginImp implements XPlugin {
     }
 
     public void getMapper(Class<?> clz, Db anno, VarHolder varH, Consumer<Object> callback) {
-        Aop.getAsyn(anno.value(), (bw) -> {
-            DbContext db = bw.raw();
-            Object obj = null;
-            //生成mapper
-            if (varH != null && varH.getGenericType() != null) {
-                if (clz == BaseMapper.class) {
-                    obj = db.mapperBase((Class<?>) varH.getGenericType().getActualTypeArguments()[0]);
-                }
-            } else {
-                obj = db.mapper(clz);
-            }
+        if (XUtil.isEmpty(anno.value())) {
+            //根据类型（用于支持主配置的概念）
+            Aop.getAsyn(DbContext.class, (bw) -> {
+                getMapper0(clz, bw, varH, callback);
+            });
+        } else {
+            //根据名字
+            Aop.getAsyn(anno.value(), (bw) -> {
+                getMapper0(clz, bw, varH, callback);
+            });
+        }
 
-            if (obj != null) {
-                callback.accept(obj);
+    }
+
+    private void getMapper0(Class<?> clz, BeanWrap bw, VarHolder varH, Consumer<Object> callback) {
+        DbContext db = bw.raw();
+        Object obj = null;
+        //生成mapper
+        if (varH != null && varH.getGenericType() != null) {
+            if (clz == BaseMapper.class) {
+                obj = db.mapperBase((Class<?>) varH.getGenericType().getActualTypeArguments()[0]);
             }
-        });
+        } else {
+            obj = db.mapper(clz);
+        }
+
+        if (obj != null) {
+            callback.accept(obj);
+        }
     }
 }

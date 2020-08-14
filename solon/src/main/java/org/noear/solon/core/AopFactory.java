@@ -120,7 +120,7 @@ public class AopFactory extends AopFactoryBase {
             for (Class<?> c : list) {
                 if (c.getName().contains("java.") == false) {
                     //建立关系映射
-                    clzMapping.put(c, bw.clz());
+                    clzMapping.putIfAbsent(c, bw.clz());
                     Aop.factory().putWrap(c, bw);
                 }
             }
