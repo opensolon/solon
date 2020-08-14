@@ -19,7 +19,7 @@ public class TranQueueImp extends DbTranQueue implements Tran {
     @Override
     public void add(Tran node) {
         if (node instanceof DbTran) {
-            super.add((DbTran) node);
+            ((DbTran) node).join(this);
         }
     }
 
