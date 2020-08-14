@@ -1,6 +1,8 @@
 package org.noear.solon.core;
 
-
+/**
+ * 事务策略
+ * */
 public enum TranPolicy {
     /**
      * 必须，如果前面在事务则加入，否则新建事务
