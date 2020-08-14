@@ -17,5 +17,5 @@ public interface Tran {
     /**
      * 执行事务
      * */
-    void execute(RunnableEx runnable) throws Exception;
+    void execute(RunnableEx runnable) throws Throwable;
 }
