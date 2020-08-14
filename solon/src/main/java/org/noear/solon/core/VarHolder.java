@@ -4,7 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 
 /**
- * 变量持有人
+ * 变量容器
  * */
 public interface VarHolder {
 

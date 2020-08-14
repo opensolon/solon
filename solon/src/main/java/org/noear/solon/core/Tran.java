@@ -9,11 +9,13 @@ public interface Tran {
     /**
      * 是否为主事务（一主多从）
      * */
-    boolean isMaster();
+    default boolean isMaster(){ return false; }
+
     /**
      * 添加从事务（只有主事务，才能添加从事务）
      * */
-    void add(Tran slave);
+    default void add(Tran slave){}
+
     /**
      * 执行事务
      * */
