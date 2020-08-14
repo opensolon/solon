@@ -23,18 +23,24 @@ public class TranManger {
 
         //根事务不存在
         if (root == null) {
-            //新建事务
-            Tran tran = factory.apply(anno);
+            //::支持但不必需
+            if(anno.policy() == TranPolicy.supports){
+                runnable.run();
+                return;
+            }else {
+                //新建事务
+                Tran tran = factory.apply(anno);
 
-            ValHolder<Tran> vh = new ValHolder<>();
-            vh.value = tran;
-            vh.tag = anno.value();
+                ValHolder<Tran> vh = new ValHolder<>();
+                vh.value = tran;
+                vh.tag = anno.value();
 
-            try {
-                rootLocal.set(vh);
-                tran.execute(runnable);
-            } finally {
-                rootLocal.remove();
+                try {
+                    rootLocal.set(vh);
+                    tran.execute(runnable);
+                } finally {
+                    rootLocal.remove();
+                }
             }
         } else {
             //根事务已经存在
@@ -49,7 +55,7 @@ public class TranManger {
             }
 
             if(root.tag.equals(anno.value())){
-                //如果名字相当，则不新建事务
+                //如果名字相同，则直接执行
                 runnable.run();
             }else{
                 //新建事务
