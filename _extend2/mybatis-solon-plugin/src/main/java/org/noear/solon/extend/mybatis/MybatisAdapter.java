@@ -139,7 +139,7 @@ public class MybatisAdapter {
     }
 
     public MybatisAdapter mapperScan() {
-        MybatisProxy proxy = MybatisProxy.get(getFactory());
+        SqlSessionHolder proxy = MybatisProxy.get(getFactory());
 
         for (String val : mappers) {
             mapperScan0(proxy, val);
@@ -158,7 +158,7 @@ public class MybatisAdapter {
         return this;
     }
 
-    private void mapperScan0(MybatisProxy proxy, String val) {
+    private void mapperScan0(SqlSessionHolder proxy, String val) {
         if (val.endsWith(".xml")) {
 
         } else if (val.endsWith(".class")) {
@@ -170,7 +170,7 @@ public class MybatisAdapter {
         }
     }
 
-    private void mapperScanDo(MybatisProxy proxy, String dir) {
+    private void mapperScanDo(SqlSessionHolder proxy, String dir) {
         XScaner.scan(dir, n -> n.endsWith(".class"))
                 .stream()
                 .map(name -> {
@@ -182,7 +182,7 @@ public class MybatisAdapter {
                 });
     }
 
-    private void mapperBindDo(MybatisProxy proxy, Class<?> clz) {
+    private void mapperBindDo(SqlSessionHolder proxy, Class<?> clz) {
         if (clz != null && clz.isInterface()) {
             Object mapper = proxy.getMapper(clz);
 

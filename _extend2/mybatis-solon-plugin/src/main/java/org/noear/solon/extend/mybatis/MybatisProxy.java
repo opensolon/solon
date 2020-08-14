@@ -24,7 +24,7 @@ public class MybatisProxy extends SqlSessionHolder implements SqlSession {
     /**
      * 获取代理
      * */
-    public static MybatisProxy get(SqlSessionFactory factory) {
+    public static SqlSessionHolder get(SqlSessionFactory factory) {
         MybatisProxy wrap = cached.get(factory);
         if (wrap == null) {
             synchronized (cached) {
