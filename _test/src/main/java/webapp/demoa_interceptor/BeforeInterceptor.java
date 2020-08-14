@@ -8,20 +8,20 @@ import org.noear.solon.core.XContext;
 import org.noear.solon.core.XHandler;
 
 
-@XInterceptor(before = true)
+@XInterceptor
 public class BeforeInterceptor {
 
-    @XMapping(value = "/demoa/**",index = 1)
+    @XMapping(value = "/demoa/**",index = 1, before = true)
     public void call(XContext context, String sev) {
         context.output("XInterceptor1::你被我拦截了(/demoa/**)!!!\n");
     }
 
-    @XMapping(value = "/demoa/**",index = 3)
+    @XMapping(value = "/demoa/**",index = 3, before = true)
     public void call2(XContext context, String sev) {
         context.output("XInterceptor3::你被我拦截了(/demoa/**)!!!\n");
     }
 
-    @XMapping(value = "/demoa/**",index = 2)
+    @XMapping(value = "/demoa/**",index = 2, before = true)
     public void call3(XContext context, String sev) {
         context.output("XInterceptor2::你被我拦截了(/demoa/**)!!!\n");
     }
