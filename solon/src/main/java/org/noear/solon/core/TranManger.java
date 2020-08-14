@@ -44,9 +44,16 @@ public class TranManger {
                 }
             }
         } else {
+            //事务排斥
+            if(anno.policy() == TranPolicy.exclude){
+                Tran tran = factory.create(anno);
+                tran.execute(runnable);
+                return;
+            }
+
             //根事务已经存在
             if (root.value.isQueue()) {
-                //如果是主事务，则加入
+                //如果是队列，则加入
                 //
                 Tran tran = factory.create(anno);
 
@@ -56,7 +63,7 @@ public class TranManger {
             }
 
             if(root.tag.equals(anno.value())){
-                //如果名字相同，则直接执行
+                //如果名字相同，则不新建事务
                 runnable.run();
             }else{
                 //新建事务（不同数据源的事务嵌套，会有潜在问题）
