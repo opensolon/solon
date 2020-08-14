@@ -1,4 +1,4 @@
-package org.noear.weed.solon_plugin;
+package org.noear.weed.solon.plugin;
 
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;

@@ -1,4 +1,4 @@
-package org.noear.weed.solon_plugin;
+package org.noear.weed.solon.plugin;
 
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XTran;
