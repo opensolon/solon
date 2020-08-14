@@ -26,7 +26,7 @@ public class TypeUtil {
             return null;
         }
 
-        Object rst = do_change(type, val);
+        Object rst = change(type, val);
 
         if (rst != null) {
             return rst;
@@ -98,7 +98,7 @@ public class TypeUtil {
                     Class<?> c = type.getComponentType();
                     Object[] ary2 = (Object[]) Array.newInstance(c, len);
                     for (int i = 0; i < len; i++) {
-                        ary2[i] = do_change(c, ary[i]);
+                        ary2[i] = change(c, ary[i]);
                     }
                     return ary2;
                 }
@@ -107,10 +107,6 @@ public class TypeUtil {
 
 
         throw new RuntimeException("不支持类型:" + type.getName());
-    }
-
-    private static boolean is(Class<?> s, Class<?> t){
-        return s.isAssignableFrom(t);
     }
 
     public static Object changeOfPop(Class<?> type, String val) {
@@ -122,7 +118,7 @@ public class TypeUtil {
             return null;
         }
 
-        Object rst = do_change(type, val);
+        Object rst = change(type, val);
         if (rst != null) {
             return rst;
         }
@@ -140,7 +136,11 @@ public class TypeUtil {
         throw new RuntimeException("不支持类型:" + type.getName());
     }
 
-    public static Object do_change(Class<?> type, String val) {
+    private static boolean is(Class<?> s, Class<?> t){
+        return s.isAssignableFrom(t);
+    }
+
+    public static Object change(Class<?> type, String val) {
         if (Short.class == type || type == Short.TYPE) {
             return Short.parseShort(val);
         }
