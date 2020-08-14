@@ -1,13 +1,12 @@
-package org.noear.weed.solon.plugin;
+package org.noear.solon.extend.mybatis.tran;
 
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.noear.solon.core.Tran;
 import org.noear.solon.ext.RunnableEx;
-import org.noear.weed.DbContext;
-import org.noear.weed.DbTran;
 
 public class TranImp extends DbTran implements Tran {
-    protected TranImp(DbContext context) {
-        super(context);
+    protected TranImp(SqlSessionFactory factory) {
+        super(factory);
     }
 
     @Override

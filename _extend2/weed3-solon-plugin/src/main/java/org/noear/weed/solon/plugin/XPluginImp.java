@@ -6,6 +6,7 @@ import org.noear.solon.core.*;
 import org.noear.weed.BaseMapper;
 import org.noear.weed.DbContext;
 import org.noear.weed.annotation.Db;
+import org.noear.weed.solon.plugin.tran.TranFactoryImp;
 import org.noear.weed.xml.XmlSqlLoader;
 
 import java.util.function.Consumer;

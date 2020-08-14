@@ -2,12 +2,11 @@ package org.noear.solon.extend.mybatis;
 
 import org.apache.ibatis.reflection.ExceptionUtil;
 import org.apache.ibatis.session.*;
-import org.noear.solon.ext.ConsumerEx;
+import org.noear.solon.extend.mybatis.tran.DbTranUtil;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -19,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MybatisProxy extends SqlSessionHolder implements SqlSession {
     private final SqlSessionFactory factory;
 
-    private final static ThreadLocal<SqlSession> threadLocal = new ThreadLocal<>();
+    //private final static ThreadLocal<SqlSession> threadLocal = new ThreadLocal<>();
     private final static Map<SqlSessionFactory, MybatisProxy> cached = new ConcurrentHashMap<>();
 
     /**
@@ -40,42 +39,6 @@ public class MybatisProxy extends SqlSessionHolder implements SqlSession {
         return wrap;
     }
 
-    /**
-     * 事务
-     * */
-    public Object tran(ConsumerEx<SqlSessionHolder> consumer) throws SQLException {
-        SqlSession session = null;
-        try {
-            session = factory.openSession(false);//Not Auto Commit
-            threadLocal.set(session);
-
-            SqlSessionHolder session2 = new SqlSessionHolder(session);
-            consumer.accept(session2);
-
-            session.commit();
-
-            return session2.result;
-        } catch (Throwable ex) {
-            if (session != null) {
-                session.rollback();
-            }
-
-            if (ex instanceof RuntimeException) {
-                throw (RuntimeException) ex;
-            } else if (ex instanceof SQLException) {
-                throw (SQLException) ex;
-            } else {
-                throw new RuntimeException(ex);
-            }
-        } finally {
-            threadLocal.remove();
-
-            if (session != null) {
-                session.close();
-            }
-        }
-    }
-
     protected MybatisProxy(SqlSessionFactory factory) {
         super((SqlSession) Proxy.newProxyInstance(
                 factory.getClass().getClassLoader(),
@@ -93,7 +56,7 @@ public class MybatisProxy extends SqlSessionHolder implements SqlSession {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            SqlSession session = MybatisProxy.threadLocal.get();
+            SqlSession session = DbTranUtil.current();
             Boolean has_close = false;
             if (session == null) {
                 has_close = true;

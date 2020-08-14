@@ -1,25 +1,23 @@
 package org.noear.solon.extend.mybatis.tran;
 
 import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.noear.solon.ext.ConsumerEx;
+import org.noear.solon.extend.mybatis.SqlSessionHolder;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 public class DbTran {
-    protected Connection connection;
     private DbTranQueue queue;
+    private SqlSession session = null;
+    private final SqlSessionFactory _factory;
+
     private ConsumerEx<DbTran> _handler = null;
-    private SqlSession _context = null;
     public Object result;
     private boolean _isSucceed = false;
 
     public boolean isSucceed() {
         return this._isSucceed;
-    }
-
-    public SqlSession db() {
-        return this._context;
     }
 
     public DbTran join(DbTranQueue queue) {
@@ -31,30 +29,18 @@ public class DbTran {
         return this;
     }
 
-    public DbTran(SqlSession context) {
-        this._context = context;
+    public DbTran(SqlSessionFactory factory) {
+        _factory = factory;
     }
 
-    public DbTran connect() {
-        try {
-            if (this.connection == null) {
-                this.connection = this._context.getConnection();
-            }
-        } catch (Exception var2) {
-            var2.printStackTrace();
-        }
-
-        return this;
-    }
 
     public DbTran execute(ConsumerEx<DbTran> handler) throws Throwable {
         try {
-            if (this.connection == null) {
-                this.connection = this._context.getConnection();
-            }
+            session = _factory.openSession(false);
 
-            this.begin();
-            DbTranUtil.currentSet(this);
+            SqlSessionHolder session2 = new SqlSessionHolder(session);
+
+            DbTranUtil.currentSet(session2);
             handler.accept(this);
             this.commit(false);
             this._isSucceed = true;
@@ -84,32 +70,24 @@ public class DbTran {
         return this;
     }
 
-    protected void begin() throws SQLException {
-        if (this.connection != null) {
-            this.connection.setAutoCommit(false);
-        }
-
-    }
-
     protected void rollback(boolean isQueue) throws SQLException {
-        if ((this.queue == null || isQueue) && this.connection != null) {
-            this.connection.rollback();
+        if ((this.queue == null || isQueue) && this.session != null) {
+            this.session.rollback();
         }
 
     }
 
     protected void commit(boolean isQueue) throws SQLException {
-        if ((this.queue == null || isQueue) && this.connection != null) {
-            this.connection.commit();
+        if ((this.queue == null || isQueue) && this.session != null) {
+            this.session.commit();
         }
 
     }
 
     protected void close(boolean isQueue) throws SQLException {
-        if ((this.queue == null || isQueue) && this.connection != null) {
-            this.connection.setAutoCommit(true);
-            this.connection.close();
-            this.connection = null;
+        if ((this.queue == null || isQueue) && this.session != null) {
+            this.session.close();
+            this.session = null;
         }
 
     }

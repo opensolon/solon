@@ -1,10 +1,7 @@
-package org.noear.weed.solon.plugin;
+package org.noear.solon.extend.mybatis.tran;
 
 import org.noear.solon.core.Tran;
 import org.noear.solon.ext.RunnableEx;
-import org.noear.weed.DbContext;
-import org.noear.weed.DbTran;
-import org.noear.weed.DbTranQueue;
 
 public class TranQueueImp extends DbTranQueue implements Tran {
     protected TranQueueImp() {
