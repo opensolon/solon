@@ -7,7 +7,6 @@ import java.lang.annotation.*;
  *
  * 例：
  * @Df("db1f") SqlSessionFactory factory;
- * @Df("db1f") MybatisProxy proxy;(用于发起事务)
  * @Df("db1f") SqlSession session;
  * @Df("db1f") Mapper mapper;
  * */
