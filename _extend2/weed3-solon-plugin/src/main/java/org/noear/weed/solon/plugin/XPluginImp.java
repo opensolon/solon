@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        TranManger.factory = new XTranFactory();
+        TranManger.factory = TranFactoryImp.singleton();
 
         Aop.factory().beanCreatorAdd(Db.class, (clz, bw, anno) -> {
             if (clz.isInterface()) {
@@ -47,7 +47,6 @@ public class XPluginImp implements XPlugin {
                 getMapper0(clz, bw, varH, callback);
             });
         }
-
     }
 
     private void getMapper0(Class<?> clz, BeanWrap bw, VarHolder varH, Consumer<Object> callback) {

@@ -4,23 +4,15 @@ import org.noear.solon.core.Tran;
 import org.noear.solon.ext.RunnableEx;
 import org.noear.weed.DbContext;
 import org.noear.weed.DbTran;
-import org.noear.weed.DbTranQueue;
 
-public class XTranGroupImp extends DbTranQueue implements Tran {
-
-    @Override
-    public boolean isMaster() {
-        return true;
-    }
-
-    @Override
-    public void add(Tran slave) {
-        super.add((DbTran) slave);
+public class TranImp extends DbTran implements Tran {
+    public TranImp(DbContext context) {
+        super(context);
     }
 
     @Override
     public void execute(RunnableEx runnable) throws Exception {
-        super.execute((tq) -> {
+        super.execute((t) -> {
             try {
                 runnable.run();
             } catch (RuntimeException ex) {

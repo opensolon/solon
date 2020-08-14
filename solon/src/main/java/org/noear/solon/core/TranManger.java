@@ -9,7 +9,7 @@ import java.util.function.Function;
  * 事务管理器
  * */
 public class TranManger {
-    public static Function<XTran, Tran> factory;
+    public static TranFactory factory;
     private static ThreadLocal<ValHolder<Tran>> rootLocal = new ThreadLocal<>();
 
     public static void execute(XTran anno, RunnableEx runnable) throws Throwable {
@@ -29,7 +29,7 @@ public class TranManger {
                 return;
             }else {
                 //新建事务
-                Tran tran = factory.apply(anno);
+                Tran tran = factory.create(anno);
 
                 ValHolder<Tran> vh = new ValHolder<>();
                 vh.value = tran;
@@ -47,7 +47,7 @@ public class TranManger {
             if (root.value.isMaster()) {
                 //如果是主事务，则加入
                 //
-                Tran tran = factory.apply(anno);
+                Tran tran = factory.create(anno);
 
                 root.value.add(tran);
                 tran.execute(runnable);
@@ -59,7 +59,7 @@ public class TranManger {
                 runnable.run();
             }else{
                 //新建事务（不同数据源的事务嵌套，会有潜在问题）
-                Tran tran = factory.apply(anno);
+                Tran tran = factory.create(anno);
                 tran.execute(runnable);
             }
         }
