@@ -15,16 +15,16 @@ public class XTranFactory implements Function<XTran, Tran> {
             return new XTranGroupImp();
         } else {
             DbContext db = null;
-            if(XUtil.isEmpty(tran.value())){
+            if (XUtil.isEmpty(tran.value())) {
                 //根据名字获取
                 db = Aop.get(DbContext.class);
-            }else{
+            } else {
                 //根据类型获取
                 db = Aop.get(tran.value());
             }
 
-            if(XUtil.isEmpty(tran.value())){
-                throw  new RuntimeException("@XTran annotation failed");
+            if (db == null) {
+                throw new RuntimeException("@XTran annotation failed");
             }
 
             return new XTranImp(db);
