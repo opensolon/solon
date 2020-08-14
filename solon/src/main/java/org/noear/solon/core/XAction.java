@@ -95,6 +95,7 @@ public class XAction extends XHandlerAide {
                 if (_poi_main) {
                     //传递控制器实例
                     x.attrSet("controller", obj);
+                    x.attrSet("action",this);
                 }
             }
 
