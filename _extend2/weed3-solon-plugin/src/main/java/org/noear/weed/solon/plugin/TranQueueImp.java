@@ -7,7 +7,7 @@ import org.noear.weed.DbTran;
 import org.noear.weed.DbTranQueue;
 
 public class TranQueueImp extends DbTranQueue implements Tran {
-    protected TranQueueImp(){
+    protected TranQueueImp() {
 
     }
 
@@ -18,21 +18,15 @@ public class TranQueueImp extends DbTranQueue implements Tran {
 
     @Override
     public void add(Tran node) {
-        if(node instanceof DbTran) {
+        if (node instanceof DbTran) {
             super.add((DbTran) node);
         }
     }
 
     @Override
-    public void execute(RunnableEx runnable) throws Exception {
+    public void execute(RunnableEx runnable) throws Throwable {
         super.execute((tq) -> {
-            try {
-                runnable.run();
-            } catch (RuntimeException ex) {
-                throw ex;
-            } catch (Throwable ex) {
-                throw new RuntimeException(ex);
-            }
+            runnable.run();
         });
     }
 }

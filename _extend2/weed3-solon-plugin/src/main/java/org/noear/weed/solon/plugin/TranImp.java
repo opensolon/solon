@@ -11,15 +11,9 @@ public class TranImp extends DbTran implements Tran {
     }
 
     @Override
-    public void execute(RunnableEx runnable) throws Exception {
+    public void execute(RunnableEx runnable) throws Throwable {
         super.execute((t) -> {
-            try {
-                runnable.run();
-            } catch (RuntimeException ex) {
-                throw ex;
-            } catch (Throwable ex) {
-                throw new RuntimeException(ex);
-            }
+            runnable.run();
         });
     }
 }
