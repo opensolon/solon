@@ -23,5 +23,9 @@ public @interface XMapping {
     String value() default "";
     XMethod[] method() default {XMethod.HTTP};
     String produces() default "";
+
+    //拦截相关
     int index() default 0;//顺序位
+    boolean before() default false;
+    boolean after() default false;
 }

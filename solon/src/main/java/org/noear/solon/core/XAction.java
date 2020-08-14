@@ -18,7 +18,7 @@ public class XAction extends XHandlerAide {
     protected final MethodWrap _mw;
     protected String _produces;//输出产品
     protected XRender _render;
-    protected int _poi; //endpoint
+    protected boolean _poi_main;
 
     private String _name;
     private boolean _remoting;
@@ -27,13 +27,13 @@ public class XAction extends XHandlerAide {
     private List<String> _pks;
     private static Pattern _pkr = Pattern.compile("\\{([^\\\\}]+)\\}");
 
-    public XAction(BeanWrap bw, Method m, int poi, XMapping mp, String path, boolean remoting, XRender render) {
+    public XAction(BeanWrap bw, boolean poi_main, Method m, XMapping mp, String path, boolean remoting, XRender render) {
         _bw = bw;
         _mw = MethodWrap.get(m);
 
-        _poi = poi;
         _remoting = remoting;
         _render = render;
+        _poi_main = poi_main;
 
         if (mp != null) {
             _produces = mp.produces();
@@ -92,7 +92,7 @@ public class XAction extends XHandlerAide {
             //预加载控制器，确保所有的处理者可以都可以获取控制器
             if (obj == null) {
                 obj = _bw.get();
-                if (_poi == XEndpoint.main) {
+                if (_poi_main) {
                     //传递控制器实例
                     x.attrSet("controller", obj);
                 }
@@ -116,7 +116,7 @@ public class XAction extends XHandlerAide {
          * */
 
         //前置处理（最多一次渲染）
-        handleDo(x, ()->{
+        handleDo(x, () -> {
             for (XHandler h : _before) {
                 h.handle(x);
             }
@@ -125,7 +125,7 @@ public class XAction extends XHandlerAide {
 
         //主体处理（最多一次渲染）
         if (x.getHandled() == false) {
-            handleDo(x,()->{
+            handleDo(x, () -> {
                 //获取path var
                 if (_pr != null) {
                     Matcher pm = _pr.matcher(x.path());
@@ -139,7 +139,7 @@ public class XAction extends XHandlerAide {
                 Object tmp = callDo(x, obj);
 
                 //如果是主处理（不支持非主控的返回值；有可能是拦截器）
-                if(_poi == XEndpoint.main) {
+                if (_poi_main) {
 
                     //记录返回值（后续不一定会再记录）
                     x.result = tmp;

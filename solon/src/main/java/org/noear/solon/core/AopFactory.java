@@ -56,9 +56,7 @@ public class AopFactory extends AopFactoryBase {
         });
 
         beanCreatorAdd(XInterceptor.class, (clz, bw, anno) -> {
-            BeanWebWrap bww = new BeanWebWrap(bw);
-            bww.endpointSet(anno.after() ? XEndpoint.after : XEndpoint.before);
-            bww.load(XApp.global());
+            new BeanWebWrap(bw).main(false).load(XApp.global());
         });
 
         beanCreatorAdd(XEvent.class, (clz, bw, anno) -> {

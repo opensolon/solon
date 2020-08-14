@@ -16,10 +16,15 @@ public class BeanWebWrap {
     protected XRender _render;
     protected boolean _allowMapping;
 
+    protected boolean _poi_main = true;
     protected XMapping c_map;
-    protected int c_poi = XEndpoint.main;
     protected String c_path;
     protected boolean c_remoting;
+
+    public BeanWebWrap main(boolean poi_main) {
+        _poi_main = poi_main;
+        return this;
+    }
 
     public BeanWebWrap(BeanWrap wrap) {
         c_map = wrap.clz().getAnnotation(XMapping.class);
@@ -63,13 +68,6 @@ public class BeanWebWrap {
     }
 
     /**
-     * 设置切入点
-     */
-    public void endpointSet(int endpoint) {
-        c_poi = endpoint;
-    }
-
-    /**
      * 加载 XAction 到目标容器
      *
      * @param slots 接收加载结果的容器（槽）
@@ -97,19 +95,18 @@ public class BeanWebWrap {
      */
     protected void loadHandlerDo(XHandlerSlots slots) {
         if (c_map == null) {
-            throw new RuntimeException(_bw.clz().getName() + " No XMapping!");
+            throw new RuntimeException(_bw.clz().getName() + " No @XMapping!");
         }
 
         for (XMethod m1 : c_map.method()) {
-            switch (c_poi) {
-                case XEndpoint.before:
-                    slots.before(c_map.value(), m1, c_map.index(), _bw.raw());
-                    break;
-                case XEndpoint.after:
+            if (_poi_main) {
+                slots.add(c_map.value(), m1, _bw.raw());
+            } else {
+                if (c_map.after()) {
                     slots.after(c_map.value(), m1, c_map.index(), _bw.raw());
-                    break;
-                default:
-                    slots.add(c_map.value(), m1, _bw.raw());
+                } else {
+                    slots.before(c_map.value(), m1, c_map.index(), _bw.raw());
+                }
             }
         }
     }
@@ -167,7 +164,7 @@ public class BeanWebWrap {
             if (m_map != null || all) {
                 String newPath = XUtil.mergePath(c_path, m_path);
 
-                XAction action = createAction(_bw, method, c_poi, m_map, newPath, c_remoting);
+                XAction action = createAction(_bw, _poi_main, method, m_map, newPath, c_remoting);
 
                 //加载控制器的前置拦截器
                 addDo(c_befs2.toArray(), (b) -> action.before((XHandler) b));
@@ -182,15 +179,14 @@ public class BeanWebWrap {
                 }
 
                 for (XMethod m1 : m_method) {
-                    switch (c_poi) {
-                        case XEndpoint.before:
-                            slots.before(newPath, m1, m_index, action);
-                            break;
-                        case XEndpoint.after:
+                    if (_poi_main) {
+                        slots.add(newPath, m1, action);
+                    } else {
+                        if (m_map.after()) {
                             slots.after(newPath, m1, m_index, action);
-                            break;
-                        default:
-                            slots.add(newPath, m1, action);
+                        } else {
+                            slots.before(newPath, m1, m_index, action);
+                        }
                     }
                 }
             }
@@ -200,11 +196,11 @@ public class BeanWebWrap {
     /**
      * 构建 XAction
      */
-    protected XAction createAction(BeanWrap bw, Method method, int endpoint, XMapping mp, String path, boolean remoting) {
+    protected XAction createAction(BeanWrap bw, boolean poi_main, Method method, XMapping mp, String path, boolean remoting) {
         if (_allowMapping) {
-            return new XAction(bw, method, endpoint, mp, path, remoting, _render);
+            return new XAction(bw, poi_main, method, mp, path, remoting, _render);
         } else {
-            return new XAction(bw, method, endpoint,null, path, remoting, _render);
+            return new XAction(bw, poi_main, method, null, path, remoting, _render);
         }
     }
 

@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface XInterceptor {
-    boolean before() default false;
-    boolean after() default false;
+//    boolean before() default false;
+//    boolean after() default false;
 }
 
