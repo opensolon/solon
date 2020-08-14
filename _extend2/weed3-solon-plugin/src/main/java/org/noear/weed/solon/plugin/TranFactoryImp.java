@@ -28,13 +28,13 @@ public final class TranFactoryImp implements TranFactory {
     @Override
     public Tran create(XTran tran) {
         if (tran.multisource()) {
-            //队列事务
+            //事务队列
             return tranQueue;
         } else if (tran.policy() == TranPolicy.exclude) {
-            //排除事务
+            //事务排除
             return tranExclude;
         } else {
-            //jdbc事务
+            //事务
             //
             DbContext db = null;
 

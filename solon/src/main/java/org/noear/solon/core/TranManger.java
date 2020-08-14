@@ -7,11 +7,15 @@ import org.noear.solon.ext.RunnableEx;
  * 事务管理器
  * */
 public class TranManger {
-    public static TranFactory factory;
+    private static TranFactory factory;
     private static ThreadLocal<ValHolder<Tran>> rootLocal = new ThreadLocal<>();
 
+    public static void setFactory(TranFactory factory) {
+        TranManger.factory = factory;
+    }
+
     public static void execute(XTran anno, RunnableEx runnable) throws Throwable {
-        if (anno == null) {
+        if (anno == null || factory == null) {
             runnable.run();
             return;
         }
