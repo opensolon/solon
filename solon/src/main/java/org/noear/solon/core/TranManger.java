@@ -4,12 +4,15 @@ import org.noear.solon.annotation.XTran;
 import org.noear.solon.ext.RunnableEx;
 
 /**
- * 事务管理器
+ * 事务管理
  * */
 public class TranManger {
     private static TranFactory factory;
     private static ThreadLocal<ValHolder<Tran>> rootLocal = new ThreadLocal<>();
 
+    /**
+     * 设置事务工厂
+     * */
     public static void setFactory(TranFactory factory) {
         TranManger.factory = factory;
     }
