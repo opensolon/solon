@@ -67,6 +67,13 @@ public class MethodWrap {
     }
 
     /**
+     * 获取注解
+     * */
+    public <T extends Annotation> T getAnnotation(Class<T> clz){
+        return method.getAnnotation(clz);
+    }
+
+    /**
      * 执行
      */
     public Object invoke(Object obj, Object... args) throws Exception {
