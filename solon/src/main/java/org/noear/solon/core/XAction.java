@@ -71,10 +71,17 @@ public class XAction extends XHandlerAide {
     }
 
     /**
-     * 获取一个控制器实例
+     * 控制器类包装
      */
     public BeanWrap bean() {
         return _bw;
+    }
+
+    /**
+     * 主控制器
+     * */
+    public Object controller() {
+        return XContext.current().attr("controller");
     }
 
     @Override
