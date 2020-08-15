@@ -99,11 +99,12 @@ public class XAction extends XHandlerAide {
             //预加载控制器，确保所有的处理者可以都可以获取控制器
             if (obj == null) {
                 obj = _bw.get();
-                if (_poi_main) {
-                    //传递控制器实例
-                    x.attrSet("controller", obj);
-                    x.attrSet("action",this);
-                }
+            }
+
+            if (_poi_main) {
+                //传递控制器实例
+                x.attrSet("controller", obj);
+                x.attrSet("action",this);
             }
 
             invoke0(x, obj);
