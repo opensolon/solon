@@ -2,6 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.annotation.XTran;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Map;
@@ -30,13 +31,14 @@ public class MethodWrap {
     protected MethodWrap(Method m) {
         method = m;
         parameters = m.getParameters();
+        annotations = m.getDeclaredAnnotations();
         xTran = m.getAnnotation(XTran.class);
     }
-
 
     private final XTran xTran;
     private final Method method;
     private final Parameter[] parameters;
+    private final Annotation[] annotations;
 
     /**
      * 获取函数名
@@ -64,6 +66,13 @@ public class MethodWrap {
      */
     public Parameter[] getParameters() {
         return parameters;
+    }
+
+    /**
+     * 获取函数的注解
+     * */
+    public Annotation[] getAnnotations() {
+        return annotations;
     }
 
     /**
