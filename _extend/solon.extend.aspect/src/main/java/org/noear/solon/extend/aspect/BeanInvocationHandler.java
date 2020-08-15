@@ -39,7 +39,7 @@ public class BeanInvocationHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         method.setAccessible(true);
 
-        Object result = clazzWrap.getMethodWrap(method).invokeAndTran(bean, args);
+        Object result = clazzWrap.getMethodWrap(method).invokeByAspect(bean, args);
 
         return result;
     }
