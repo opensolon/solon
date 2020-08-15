@@ -49,9 +49,10 @@ public class Aop {
     }
 
     public static BeanWrap wrapAndPut(Class<?> clz, Object bean){
-        BeanWrap wrap = wrap(clz, bean);
-        if (wrap.raw() != null) {
-            _f.putWrap(clz, wrap);
+        BeanWrap wrap = _f.getWrap(clz);
+        if (wrap == null) {
+            wrap = new BeanWrap(clz, bean);
+            _f.putWrap(clz,wrap);
         }
 
         return wrap;

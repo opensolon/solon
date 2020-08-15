@@ -1,8 +1,11 @@
 package org.noear.solon.core;
 
+import org.noear.solon.XUtil;
+import org.noear.solon.annotation.XAround;
 import org.noear.solon.annotation.XTran;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Map;
@@ -32,9 +35,19 @@ public class MethodWrap {
         method = m;
         parameters = m.getParameters();
         xTran = m.getAnnotation(XTran.class);
+        xAround = buildAround(m.getAnnotation(XAround.class));
+    }
+
+    private InvocationHandler buildAround(XAround anno) {
+        if (anno == null) {
+            return null;
+        } else {
+            return Aop.get(anno.value());
+        }
     }
 
     private final XTran xTran;
+    private final InvocationHandler xAround;
     private final Method method;
     private final Parameter[] parameters;
 
@@ -68,8 +81,8 @@ public class MethodWrap {
 
     /**
      * 获取注解
-     * */
-    public <T extends Annotation> T getAnnotation(Class<T> clz){
+     */
+    public <T extends Annotation> T getAnnotation(Class<T> clz) {
         return method.getAnnotation(clz);
     }
 
@@ -77,13 +90,13 @@ public class MethodWrap {
      * 执行
      */
     public Object invoke(Object obj, Object... args) throws Exception {
-        return invoke0(obj, args);
+        return method.invoke(obj, args);
     }
 
     /**
      * 执行，并尝试事务
      */
-    public Object invokeAndTran(Object obj, Object... args) throws Throwable {
+    public Object invokeByAspect(Object obj, Object... args) throws Throwable {
         if (xTran == null) {
             return invoke0(obj, args);
         } else {
@@ -97,9 +110,9 @@ public class MethodWrap {
         }
     }
 
-    private Object invoke0(Object obj, Object... args) throws Exception {
-        if (parameters.length == 0) {
-            return method.invoke(obj);
+    private Object invoke0(Object obj, Object[] args) throws Throwable {
+        if (xAround != null) {
+            return xAround.invoke(obj, method, args);
         } else {
             return method.invoke(obj, args);
         }
