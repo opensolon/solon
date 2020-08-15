@@ -98,23 +98,23 @@ public class MethodWrap {
      */
     public Object invokeByAspect(Object obj, Object... args) throws Throwable {
         if (xTran == null) {
-            return invoke0(obj, args);
+            return invokeByAspect0(obj, args);
         } else {
             ValHolder val0 = new ValHolder();
 
             TranManger.execute(xTran, () -> {
-                val0.value = invoke0(obj, args);
+                val0.value = invokeByAspect0(obj, args);
             });
 
             return val0.value;
         }
     }
 
-    private Object invoke0(Object obj, Object[] args) throws Throwable {
-        if (xAround != null) {
-            return xAround.invoke(obj, method, args);
-        } else {
+    private Object invokeByAspect0(Object obj, Object[] args) throws Throwable {
+        if (xAround == null) {
             return method.invoke(obj, args);
+        } else {
+            return xAround.invoke(obj, method, args);
         }
     }
 }
