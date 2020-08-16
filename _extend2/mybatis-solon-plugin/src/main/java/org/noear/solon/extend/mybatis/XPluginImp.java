@@ -12,7 +12,7 @@ public class XPluginImp implements XPlugin {
     public void start(XApp app) {
         TranManger.setFactory(TranFactoryImp.singleton());
 
-        Aop.factory().beanCreatorAdd(Df.class, (clz,  wrap,  anno)->{
+        Aop.factory().beanCreatorAdd(Db.class, (clz, wrap, anno)->{
             if(XUtil.isEmpty(anno.value()) || clz.isInterface() == false){
                 return;
             }
@@ -27,7 +27,7 @@ public class XPluginImp implements XPlugin {
             });
         });
 
-        Aop.factory().beanInjectorAdd(Df.class, (varH, anno) -> {
+        Aop.factory().beanInjectorAdd(Db.class, (varH, anno) -> {
 
             if (XUtil.isEmpty(anno.value())) {
                 if (varH.getType().isInterface()) {

@@ -13,7 +13,7 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Df {
+public @interface Db {
     /**
      * sqlSessionFactory bean name
      * */
