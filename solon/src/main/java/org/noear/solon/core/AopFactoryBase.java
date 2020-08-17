@@ -89,6 +89,10 @@ public abstract class AopFactoryBase {
      * bean通知
      */
     public void beanNotice(Object key, BeanWrap wrap) {
+        if (wrap.raw() == null) {
+            return;
+        }
+
         subSet.forEach(s1 -> {
             if (s1.key.equals(key)) {
                 s1.callback.accept(wrap);
