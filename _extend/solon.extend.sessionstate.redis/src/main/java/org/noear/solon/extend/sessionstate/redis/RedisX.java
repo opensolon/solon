@@ -2,6 +2,7 @@ package org.noear.solon.extend.sessionstate.redis;
 
 import org.noear.solon.XUtil;
 import redis.clients.jedis.*;
+import redis.clients.jedis.params.SetParams;
 
 import java.util.Collection;
 import java.util.List;
@@ -10,7 +11,8 @@ import java.util.Set;
 
 class RedisX {
     private JedisPool _jedisPool;
-    private static final Object lock = "";
+    private static final Object LOCK = "";
+    private static final String SET_SUCCEED = "OK";
 
     public RedisX(String server, String password, int db, int maxTotaol) {
         doinit(server, password, db, maxTotaol);
@@ -184,14 +186,18 @@ class RedisX {
         }
 
         public boolean lock(String val) {
-            if(client.exists(_key)){
-                return false;
-            }else {
-                long rst = client.setnx(_key, val);
-                reset_expire();
+            /**
+             * NX: IF_NOT_EXIST（只在键不存在时，才对键进行设置操作）
+             * XX: IF_EXIST（只在键已经存在时，才对键进行设置操作）
+             *
+             * EX: SET_WITH_EXPIRE_TIME for second
+             * PX: SET_WITH_EXPIRE_TIME for millisecond
+             * */
 
-                return rst > 0;//成功获得锁
-            }
+            SetParams options = new SetParams().nx().ex(_seconds);
+            String rst = client.set(_key, val, options); //设置成功，返回 1 。//设置失败，返回 0 。
+
+            return SET_SUCCEED.equals(rst);//成功获得锁
         }
 
         public boolean lock() {
@@ -280,8 +286,8 @@ class RedisX {
                 return Long.parseLong(temp);
         }
 
-        public Map<String,String> hashGetAll() {
-            return client.hgetAll(_key);
+        public RedisHashWarp hashGetAll() {
+            return new RedisHashWarp(client.hgetAll(_key));
         }
 
         public long hashLen(){
@@ -299,7 +305,23 @@ class RedisX {
             return this;
         }
 
-        public  RedisUsing listAddRange(Collection<String> vals){
+        /**
+         * count > 0 : 从表头开始向表尾搜索，移除与 VALUE 相等的元素，数量为 COUNT 。
+         * count < 0 : 从表尾开始向表头搜索，移除与 VALUE 相等的元素，数量为 COUNT 的绝对值。
+         * count = 0 : 移除表中所有与 VALUE 相等的值。
+         * */
+        public  RedisUsing listDel(String val, int count) {
+            client.lrem(_key, count, val); //左侧压进
+            reset_expire();
+
+            return this;
+        }
+
+        public  RedisUsing listDel(String val) {
+            return listDel(val, 0);
+        }
+
+        public  RedisUsing listAddRange(Collection<String>  vals){
             Pipeline pip = client.pipelined();
             for(String  val: vals) {
                 pip.lpush(_key, val); //左侧压进
@@ -315,10 +337,20 @@ class RedisX {
             return client.rpop(_key); //右侧推出
         }
 
+        public String listPeek(){
+            return listGet(0); //右侧推出
+        }
+
+        /**
+         * 先进先出（即从right取）
+         * */
         public String listGet(int index){
             return client.lindex(_key,index);
         }
 
+        /**
+         * 先进先出（即从right取）
+         * */
         public List<String> listGet(int start, int end){
             return client.lrange(_key,start,end);
         }
@@ -331,6 +363,13 @@ class RedisX {
         //Sset::
         public  RedisUsing setAdd(String val){
             client.sadd(_key, val); //左侧压进
+            reset_expire();
+
+            return this;
+        }
+
+        public  RedisUsing setDel(String val){
+            client.srem(_key, val); //左侧压进
             reset_expire();
 
             return this;
@@ -384,6 +423,10 @@ class RedisX {
             return this;
         }
 
+        public void zsetDel(String... vals){
+            client.zrem(_key,vals);
+        }
+
         public long zsetLen(){
             return client.zcard(_key);
         }
@@ -392,12 +435,14 @@ class RedisX {
             return client.zrange(_key,start, end);
         }
 
-        public void zsetDel(String... vals){
-            client.zrem(_key,vals);
-        }
 
         public long zsetIdx(String val){
-            return client.zrank(_key,val);
+            Long tmp = client.zrank(_key,val);
+            if(tmp == null){
+                return -1;
+            }else{
+                return tmp;
+            }
         }
 
         public List<Tuple> zsetScan(String valPattern, int count) {
