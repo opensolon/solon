@@ -1,6 +1,6 @@
 @startuml
 start
-:扫描类;
+:扫描Source下的所有类;
 :发现有注解的类;
 :生成BeanWrap;
 if(BeanWrap.raw() != null) then(yes)
@@ -10,10 +10,10 @@ else
 endif
 :执行注解代理;
 fork
-  :有name的;
+  :如果有name?;
   :name 注册+通知;
 fork again
-  :是接口的;
+  :如是是接口?;
   :完成接口代理;
   :生成新的BeanWrap;
   :type 注册+通知;
