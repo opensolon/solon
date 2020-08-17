@@ -1,0 +1,25 @@
+@startuml
+start
+:扫描类;
+:发现有注解的类;
+:生成BeanWrap;
+if(BeanWrap.raw() != null) then(yes)
+    :type 注册+通知;
+else
+    :不注册;
+endif
+:执行注解代理;
+fork
+  :有name的;
+  :name 注册+通知;
+fork again
+  :是接口的;
+  :完成接口代理;
+  :生成新的BeanWrap;
+  :type 注册+通知;
+  if(如果有父接口) then(yes)
+    :父接口 type 注册+通知;
+  endif
+end fork
+end
+@enduml
