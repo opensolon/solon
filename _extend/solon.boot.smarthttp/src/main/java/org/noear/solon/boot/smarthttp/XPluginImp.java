@@ -9,7 +9,7 @@ public final class XPluginImp implements XPlugin {
     HttpBootstrap _server = null;
 
     public static String solon_boot_ver(){
-        return "smart http 1.0.12/1.0.12";
+        return "smart http 1.0.13/1.0.13";
     }
 
     @Override
@@ -28,7 +28,7 @@ public final class XPluginImp implements XPlugin {
         _server.pipeline().next(_handler);
 
 
-        System.out.println("solon.Server:main: SmartHttpServer 1.0.12");
+        System.out.println("solon.Server:main: SmartHttpServer 1.0.13");
 
         try {
 
