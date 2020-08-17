@@ -112,9 +112,8 @@ public abstract class AopFactoryBase {
         if (XUtil.isEmpty(key) == false && wrap.raw() != null) {
             if (beans.containsKey(key) == false) {
                 beans.put(key, wrap);
+                beanNotice(key, wrap);
             }
-
-            beanNotice(key, wrap);
         }
     }
 
@@ -130,9 +129,8 @@ public abstract class AopFactoryBase {
             //
             if (beanWraps.containsKey(key) == false) {
                 beanWraps.put(key, wrap);
+                beanNotice(key, wrap);
             }
-
-            beanNotice(key, wrap);
         }
     }
 
