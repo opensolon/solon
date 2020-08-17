@@ -11,7 +11,6 @@ import java.util.Set;
 
 class RedisX {
     private JedisPool _jedisPool;
-    private static final Object LOCK = "";
     private static final String SET_SUCCEED = "OK";
 
     public RedisX(String server, String password, int db, int maxTotaol) {
