@@ -183,7 +183,7 @@ public abstract class AopFactoryBase {
             loader.handler(clz, wrap, anno);
 
             if (wrap.raw() != null) {
-                //说明不是接口
+                //说明不是接口，需要进行类型登记
                 Aop.factory().putWrap(clz.getName(), wrap);
             }
         } catch (RuntimeException ex) {
