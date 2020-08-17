@@ -44,15 +44,15 @@ public class Aop {
         return wrap;
     }
 
-    public static BeanWrap wrapAndPut(Class<?> clz){
-       return wrapAndPut(clz, null);
+    public static BeanWrap wrapAndPut(Class<?> clz) {
+        return wrapAndPut(clz, null);
     }
 
-    public static BeanWrap wrapAndPut(Class<?> clz, Object bean){
+    public static BeanWrap wrapAndPut(Class<?> clz, Object bean) {
         BeanWrap wrap = _f.getWrap(clz);
         if (wrap == null) {
             wrap = new BeanWrap(clz, bean);
-            _f.putWrap(clz,wrap);
+            _f.putWrap(clz, wrap);
         }
 
         return wrap;
@@ -129,10 +129,19 @@ public class Aop {
     }
 
     /**
-     * 遍历bean (拿到的是bean包装)
+     * 遍历bean库 (拿到的是bean包装)
      */
     public static void beanForeach(BiConsumer<String, BeanWrap> action) {
         _f.beans.forEach(action);
 
+    }
+
+    /**
+     * 遍历bean包装库
+     */
+    public static void beanForeach(Consumer<BeanWrap> action) {
+        _f.beanWraps.forEach((k, bw) -> {
+            action.accept(bw);
+        });
     }
 }
