@@ -18,7 +18,6 @@ public class BeanWrap {
     protected boolean _remoting;  // 是否为远程服务
     protected String _tag;
     protected BeanProxy _proxy;
-    protected boolean _notified;
 
     public BeanWrap() {
     }
@@ -48,17 +47,6 @@ public class BeanWrap {
         if(_raw != null){
             _raw = proxy.getProxy(_raw);
         }
-    }
-
-    /**
-     * 是否已通知
-     * */
-    public boolean notified(){
-        return _notified;
-    }
-
-    public void notifiedSet(boolean notified){
-        _notified = notified;
     }
 
     /**

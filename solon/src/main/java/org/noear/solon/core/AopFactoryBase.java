@@ -89,11 +89,9 @@ public abstract class AopFactoryBase {
      * bean通知
      */
     public void beanNotice(Object key, BeanWrap wrap) {
-        if (wrap.notified() || wrap.raw() == null) {
+        if (wrap.raw() == null) {
             return;
         }
-
-        wrap.notifiedSet(true);
 
         subSet.forEach(s1 -> {
             if (s1.key.equals(key)) {
@@ -112,7 +110,6 @@ public abstract class AopFactoryBase {
         if (XUtil.isEmpty(key) == false) {
             if (beans.containsKey(key) == false) {
                 beans.put(key, wrap);
-
                 beanNotice(key, wrap);
             }
         }
