@@ -124,7 +124,7 @@ public abstract class AopFactoryBase {
     public void putWrap(Class<?> key, BeanWrap wrap) {
         if (key != null && wrap.raw() != null) {
             //
-            //wrap.raw()==null, 说明它是接口；等它完成代理现注册
+            //wrap.raw()==null, 说明它是接口；等它完成代理现注册；以@Db为例，可以看一下
             //
             if (beanWraps.containsKey(key) == false) {
                 beanWraps.put(key, wrap);
