@@ -7,5 +7,5 @@ start
 :运行插件;
 :扫描并加载java bean;
 :加载渲染关系;
-end
+stop
 @enduml
