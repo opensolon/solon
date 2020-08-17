@@ -89,9 +89,11 @@ public abstract class AopFactoryBase {
      * bean通知
      */
     public void beanNotice(Object key, BeanWrap wrap) {
-        if (wrap.raw() == null) {
+        if (wrap.notified() || wrap.raw() == null) {
             return;
         }
+
+        wrap.notifiedSet(true);
 
         subSet.forEach(s1 -> {
             if (s1.key.equals(key)) {
@@ -120,12 +122,15 @@ public abstract class AopFactoryBase {
      * 注册到bean库（注册成功会进行通知）
      */
     public void putWrap(Class<?> key, BeanWrap wrap) {
-        if (key != null) {
+        if (key != null && wrap.raw() != null) {
+            //
+            //wrap.raw()==null, 说明它是接口；等它完成代理现注册
+            //
             if (beanWraps.containsKey(key) == false) {
                 beanWraps.put(key, wrap);
-
-                beanNotice(key, wrap);
             }
+
+            beanNotice(key, wrap);
         }
     }
 
