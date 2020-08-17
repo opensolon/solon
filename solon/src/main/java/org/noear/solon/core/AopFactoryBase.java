@@ -181,11 +181,6 @@ public abstract class AopFactoryBase {
             //由create anno 注解的类，自动入库
             BeanWrap wrap = Aop.wrapAndPut(clz); //在 create 事件里，要先完成注册，以提高复用
             loader.handler(clz, wrap, anno);
-
-            if (wrap.raw() != null) {
-                //说明不是接口，需要进行类型登记
-                Aop.factory().putWrap(clz.getName(), wrap);
-            }
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {
