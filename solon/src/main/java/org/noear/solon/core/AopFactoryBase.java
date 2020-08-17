@@ -90,7 +90,7 @@ public abstract class AopFactoryBase {
      */
     public void beanNotice(Object key, BeanWrap wrap) {
         subSet.forEach(s1 -> {
-            if(s1.key.equals(key)){
+            if (s1.key.equals(key)) {
                 s1.callback.accept(wrap);
             }
         });
@@ -129,11 +129,11 @@ public abstract class AopFactoryBase {
      * 获取一个bean包装
      */
     public BeanWrap getWrap(Object key) {
-        if(key instanceof String) {
+        if (key instanceof String) {
             return beans.get(key);
         }
 
-        if(key instanceof Class<?>){
+        if (key instanceof Class<?>) {
             return beanWraps.get(key);
         }
 
@@ -178,9 +178,14 @@ public abstract class AopFactoryBase {
      */
     protected <T extends Annotation> void tryCreateBeanByAnno(Class<?> clz, T anno, BeanCreator<T> loader) {
         try {
+            //由create anno 注解的类，自动入库
             BeanWrap wrap = Aop.wrapAndPut(clz); //在 create 事件里，要先完成注册，以提高复用
             loader.handler(clz, wrap, anno);
-            beanNotice(clz, wrap);
+
+            if (wrap.raw() != null) {
+                //说明不是接口
+                Aop.factory().putWrap(clz.getName(), wrap);
+            }
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {
