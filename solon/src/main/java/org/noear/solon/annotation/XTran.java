@@ -13,7 +13,7 @@ public @interface XTran {
     String value() default "";
 
     /**
-     * 事务测略
+     * 事务策略
      * */
     TranPolicy policy() default TranPolicy.required;
 
