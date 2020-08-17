@@ -105,18 +105,23 @@ public abstract class AopFactoryBase {
 
     /**
      * 注册到bean库（注册成功会进行通知）
+     *
+     * @param wrap 如果raw为null，拒绝注册
      */
     public void putWrap(String key, BeanWrap wrap) {
-        if (XUtil.isEmpty(key) == false) {
+        if (XUtil.isEmpty(key) == false && wrap.raw() != null) {
             if (beans.containsKey(key) == false) {
                 beans.put(key, wrap);
-                beanNotice(key, wrap);
             }
+
+            beanNotice(key, wrap);
         }
     }
 
     /**
      * 注册到bean库（注册成功会进行通知）
+     *
+     * @param wrap 如果raw为null，拒绝注册
      */
     public void putWrap(Class<?> key, BeanWrap wrap) {
         if (key != null && wrap.raw() != null) {
