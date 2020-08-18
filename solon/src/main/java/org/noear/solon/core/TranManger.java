@@ -51,8 +51,8 @@ public class TranManger {
                 }
             }
         } else {
-            //事务排斥
-            if(anno.policy() == TranPolicy.exclude){
+            //事务排斥 或 全新事务
+            if(anno.policy() == TranPolicy.exclude || anno.policy() == TranPolicy.required_new){
                 Tran tran = factory.create(anno);
                 tran.execute(runnable);
                 return;

@@ -18,4 +18,9 @@ public enum TranPolicy {
      * 排除
      * */
     exclude,
+
+    /**
+     * 必须，且新起一个事务
+     * */
+    required_new,
 }

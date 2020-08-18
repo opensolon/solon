@@ -50,7 +50,11 @@ public final class TranFactoryImp implements TranFactory {
                 throw new RuntimeException("@XTran annotation failed");
             }
 
-            return new TranImp(db);
+            if (tran.policy() == TranPolicy.required_new) {
+                return new TranNewImp(db);
+            } else {
+                return new TranImp(db);
+            }
         }
     }
 }
