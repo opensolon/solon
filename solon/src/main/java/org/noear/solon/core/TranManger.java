@@ -31,8 +31,8 @@ public class TranManger {
 
         //根事务不存在
         if (root == null) {
-            //::支持但不必需
-            if(anno.policy() == TranPolicy.supports){
+            //::支持但不必需   或不支持
+            if(anno.policy() == TranPolicy.supports || anno.policy() == TranPolicy.not_supported){
                 runnable.run();
                 return;
             }else {
@@ -51,8 +51,8 @@ public class TranManger {
                 }
             }
         } else {
-            //事务排斥 或 全新事务
-            if(anno.policy() == TranPolicy.exclude || anno.policy() == TranPolicy.required_new){
+            //不支持事务 或 全新事务
+            if(anno.policy() == TranPolicy.not_supported || anno.policy() == TranPolicy.required_new){
                 Tran tran = factory.create(anno);
                 tran.execute(runnable);
                 return;

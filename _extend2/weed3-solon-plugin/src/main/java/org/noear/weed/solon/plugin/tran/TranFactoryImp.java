@@ -23,14 +23,14 @@ public final class TranFactoryImp implements TranFactory {
     }
 
     private Tran tranQueue = new TranQueueImp();
-    private Tran tranExclude = new TranExcludeImp();
+    private Tran tranExclude = new TranNotImp();
 
     @Override
     public Tran create(XTran tran) {
         if (tran.multisource()) {
             //事务队列
             return tranQueue;
-        } else if (tran.policy() == TranPolicy.exclude) {
+        } else if (tran.policy() == TranPolicy.not_supported) {
             //事务排除
             return tranExclude;
         } else {
