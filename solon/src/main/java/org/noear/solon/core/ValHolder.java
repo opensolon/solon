@@ -8,8 +8,4 @@ public class ValHolder<T> {
      * 值
      * */
     public T value;
-    /**
-     * 值的标记
-     * */
-    public String tag;
 }

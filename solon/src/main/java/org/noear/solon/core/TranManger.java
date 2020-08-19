@@ -8,7 +8,7 @@ import org.noear.solon.ext.RunnableEx;
  * */
 public class TranManger {
     private static TranFactory factory;
-    private static ThreadLocal<ValHolder<Tran>> rootLocal = new ThreadLocal<>();
+    private static ThreadLocal<TranEntity> rootLocal = new ThreadLocal<>();
 
     /**
      * 设置事务工厂
@@ -26,7 +26,7 @@ public class TranManger {
             return;
         }
 
-        ValHolder<Tran> root = rootLocal.get();
+        TranEntity root = rootLocal.get();
 
 
         //根事务不存在
@@ -41,9 +41,7 @@ public class TranManger {
                 //新建事务，并置为根事务
                 Tran tran = factory.create(anno);
 
-                root = new ValHolder<>();
-                root.value = tran;
-                root.tag = anno.value();
+                root = new TranEntity(tran,anno);
 
                 try {
                     rootLocal.set(root);
@@ -61,18 +59,18 @@ public class TranManger {
                 return;
             }
 
-            if (root.value.isGroup()) {
+            if (root.tran.isGroup()) {
                 //如果根是事务组，则新建事务加入事务组
                 //
                 Tran tran = factory.create(anno);
 
-                root.value.add(tran);
+                root.tran.add(tran);
                 tran.apply(runnable);
                 return;
             } else {
                 //如果根不是队列
                 //
-                if (root.tag.equals(anno.value())) {
+                if (root.anno.value().equals(anno.value())) {
                     //如果同源，则直接并入
                     runnable.run();
                 } else {
