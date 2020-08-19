@@ -55,9 +55,8 @@ public class TranManger {
             try {
                 local.set(stack);
                 apply2(stack, tran, anno, runnable);
-            } catch (InvocationTargetException ex) {
-                throw ex.getCause();
-            } finally {
+            }
+            finally {
                 local.remove();
             }
         }

@@ -4,6 +4,7 @@ import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.ext.RunnableEx;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -177,6 +178,10 @@ public class XAction extends XHandlerAide {
 
             renderDo(ex, c);
         } catch (Throwable ex) {
+            if (ex instanceof InvocationTargetException) {
+                ex = ((InvocationTargetException) ex).getTargetException();
+            }
+
             c.setHandled(true); //停止处理
 
             c.attrSet("error", ex);
