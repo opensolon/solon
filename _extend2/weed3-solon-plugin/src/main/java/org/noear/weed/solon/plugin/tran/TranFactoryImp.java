@@ -50,7 +50,8 @@ public final class TranFactoryImp implements TranFactory {
                 throw new RuntimeException("@XTran annotation failed");
             }
 
-            if (anno.policy() == TranPolicy.requires_new) {
+            if (anno.policy() == TranPolicy.requires_new
+                    || anno.policy() == TranPolicy.nested) {
                 return new TranNewImp(db);
             } else {
                 return new TranImp(db);

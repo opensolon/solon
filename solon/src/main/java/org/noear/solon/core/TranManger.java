@@ -3,12 +3,14 @@ package org.noear.solon.core;
 import org.noear.solon.annotation.XTran;
 import org.noear.solon.ext.RunnableEx;
 
+import java.util.Stack;
+
 /**
  * 事务管理
  * */
 public class TranManger {
     private static TranFactory factory;
-    private static ThreadLocal<TranEntity> rootLocal = new ThreadLocal<>();
+    private static ThreadLocal<Stack<TranEntity>> local = new ThreadLocal<>();
 
     /**
      * 设置事务工厂
@@ -26,11 +28,11 @@ public class TranManger {
             return;
         }
 
-        TranEntity root = rootLocal.get();
+        Stack<TranEntity> stack = local.get();
 
 
         //根事务不存在
-        if (root == null) {
+        if (stack == null) {
             //::支持但不必需 或排除 或决不
             if (anno.policy() == TranPolicy.supports
                     || anno.policy() == TranPolicy.exclude
@@ -40,45 +42,68 @@ public class TranManger {
             } else {
                 //新建事务，并置为根事务
                 Tran tran = factory.create(anno);
-
-                root = new TranEntity(tran,anno);
+                stack = new Stack<>();
 
                 try {
-                    rootLocal.set(root);
-                    tran.apply(runnable);
+                    local.set(stack);
+                    apply2(stack, tran, anno, runnable);
                 } finally {
-                    rootLocal.remove();
+                    local.remove();
                 }
             }
         } else {
-            //事务排斥 或 全新事务（不需要加入事务组）
+            //当前：排除 或 绝不 （不需要加入事务组）//不需要入栈
             if (anno.policy() == TranPolicy.exclude
-                    || anno.policy() == TranPolicy.requires_new) {
+                    || anno.policy() == TranPolicy.never) {
                 Tran tran = factory.create(anno);
                 tran.apply(runnable);
                 return;
             }
 
-            if (root.tran.isGroup()) {
-                //如果根是事务组，则新建事务加入事务组
+            //当前：事务组 或 新建；新起事务且不需要加入上个事务组 //入栈，供后来事务用
+            if (anno.group() || anno.policy() == TranPolicy.requires_new) {
+                Tran tran = factory.create(anno);
+                apply2(stack, tran, anno, runnable);
+                return;
+            }
+
+
+            //获取之前的事务
+            TranEntity before = stack.peek();
+
+            if (before.tran.isGroup()) {
+                //如果之前的是事务组，则新建事务加入访事务组  //入栈，供后来事务用
                 //
                 Tran tran = factory.create(anno);
 
-                root.tran.add(tran);
-                tran.apply(runnable);
+                before.tran.add(tran);
+
+                apply2(stack, tran, anno, runnable);
                 return;
             } else {
-                //如果根不是队列
+                //如果之前不是事务组
                 //
-                if (root.anno.value().equals(anno.value())) {
-                    //如果同源，则直接并入
+                if (before.anno.value().equals(anno.value())
+                        && anno.policy() == TranPolicy.nested) {
+                    //如果同源 并且不嵌套，则直接并入
                     runnable.run();
                 } else {
-                    //不同源；则新建事务（不同源，嵌套可能会有问题）
+                    //不同源 或嵌套；则新建事务（不同源，嵌套可能会有问题） //入栈，供后来事务用
                     Tran tran = factory.create(anno);
-                    tran.apply(runnable);
+                    apply2(stack, tran, anno, runnable);
                 }
             }
+        }
+    }
+
+    private static void apply2(Stack<TranEntity> stack, Tran tran, XTran anno, RunnableEx runnable) throws Throwable {
+        try {
+            //入栈
+            stack.push(new TranEntity(tran, anno));
+            tran.apply(runnable);
+        } finally {
+            //出栈
+            stack.pop();
         }
     }
 }
