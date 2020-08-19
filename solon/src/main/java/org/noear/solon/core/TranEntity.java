@@ -2,7 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.annotation.XTran;
 
-public class TranEntity {
+class TranEntity {
     protected Tran tran;
     protected XTran anno;
 
