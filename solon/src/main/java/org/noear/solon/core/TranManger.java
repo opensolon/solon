@@ -52,21 +52,18 @@ public class TranManger {
                 }
             }
         } else {
-            if(anno.policy() == TranPolicy.supports){
+            if (anno.policy() == TranPolicy.supports) {
                 runnable.run();
                 return;
             }
 
-            //当前：排除 或 绝不 或必须 （不需要加入事务组）//不需要入栈
+            //当前：排除 或 绝不 （不需要加入事务组）//不需要入栈
             if (anno.policy() == TranPolicy.exclude
-                    || anno.policy() == TranPolicy.mandatory
                     || anno.policy() == TranPolicy.never) {
                 Tran tran = factory.create(anno);
                 tran.apply(runnable);
                 return;
             }
-
-
 
             //当前：事务组 或 新建 或嵌套；新起事务且不需要加入上个事务组 //入栈，供后来事务用
             if (anno.group() || anno.policy() == TranPolicy.requires_new) {
@@ -75,9 +72,20 @@ public class TranManger {
                 return;
             }
 
-
             //获取之前的事务
             TranEntity before = stack.peek();
+
+            //当前：必须有同源事务
+            if (anno.policy() == TranPolicy.mandatory) {
+                if (anno.value().equals(before.anno.value())) {
+                    Tran tran = factory.create(anno);
+                    tran.apply(runnable);
+                } else {
+                    throw new RuntimeException("You must have the same source transaction");
+                }
+                return;
+            }
+
 
             if (before.tran.isGroup()) {
                 //如果之前的是事务组，则新建事务加入访事务组  //入栈，供后来事务用
@@ -105,13 +113,19 @@ public class TranManger {
     }
 
     private static void apply2(Stack<TranEntity> stack, Tran tran, XTran anno, RunnableEx runnable) throws Throwable {
-        try {
-            //入栈
-            stack.push(new TranEntity(tran, anno));
+        if (anno.group() || anno.policy().code <= TranPolicy.nested.code) {
+            try {
+                //入栈
+                stack.push(new TranEntity(tran, anno));
+                tran.apply(runnable);
+            } finally {
+                //出栈
+                stack.pop();
+            }
+        } else {
+            //不需要入栈
+            //
             tran.apply(runnable);
-        } finally {
-            //出栈
-            stack.pop();
         }
     }
 }

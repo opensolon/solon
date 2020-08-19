@@ -73,6 +73,7 @@ public enum TranPolicy {
      */
     never(7);
 
+
     public final int code;
 
     TranPolicy(int code) {
