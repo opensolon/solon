@@ -94,15 +94,7 @@ public class XProxy {
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {
-            if (ex instanceof InvocationTargetException) {
-                ex = ((InvocationTargetException) ex).getTargetException();
-            }
-
-            if (ex instanceof RuntimeException) {
-                throw (RuntimeException) ex;
-            } else {
-                throw new RuntimeException(ex);
-            }
+            throw new RuntimeException(ex);
         }
 
         return this;

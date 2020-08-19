@@ -178,6 +178,12 @@ public class XAction extends XHandlerAide {
 
             renderDo(ex, c);
         } catch (Throwable ex) {
+            if(ex instanceof RuntimeException) {
+                if (ex.getCause() != null) {
+                    ex = ex.getCause();
+                }
+            }
+
             if (ex instanceof InvocationTargetException) {
                 ex = ((InvocationTargetException) ex).getTargetException();
             }
