@@ -31,7 +31,6 @@ public class TranManger {
 
         Stack<TranEntity> stack = local.get();
 
-
         //根事务不存在
         if (stack == null) {
             forRoot(stack, anno, runnable);
