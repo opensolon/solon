@@ -111,7 +111,7 @@ public class TranManger {
             //如果之前不是事务组
             //
             if (before.anno.value().equals(anno.value())
-                    && anno.policy() == TranPolicy.nested) {
+                    && anno.policy() != TranPolicy.nested) {
                 //如果同源 并且不嵌套，则直接并入
                 runnable.run();
             } else {
