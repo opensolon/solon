@@ -52,13 +52,21 @@ public class TranManger {
                 }
             }
         } else {
-            //当前：排除 或 绝不 （不需要加入事务组）//不需要入栈
+            if(anno.policy() == TranPolicy.supports){
+                runnable.run();
+                return;
+            }
+
+            //当前：排除 或 绝不 或必须 （不需要加入事务组）//不需要入栈
             if (anno.policy() == TranPolicy.exclude
+                    || anno.policy() == TranPolicy.mandatory
                     || anno.policy() == TranPolicy.never) {
                 Tran tran = factory.create(anno);
                 tran.apply(runnable);
                 return;
             }
+
+
 
             //当前：事务组 或 新建 或嵌套；新起事务且不需要加入上个事务组 //入栈，供后来事务用
             if (anno.group() || anno.policy() == TranPolicy.requires_new) {
