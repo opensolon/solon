@@ -12,12 +12,16 @@ public class TranManger {
 
     /**
      * 设置事务工厂
-     * */
+     */
     public static void setFactory(TranFactory factory) {
         TranManger.factory = factory;
     }
 
     public static void execute(XTran anno, RunnableEx runnable) throws Throwable {
+        execute(new TranAnno(anno), runnable);
+    }
+
+    public static void execute(TranAnno anno, RunnableEx runnable) throws Throwable {
         if (anno == null || factory == null) {
             //
             //如果没有注解或工厂，直接运行
@@ -32,12 +36,12 @@ public class TranManger {
         //根事务不存在
         if (root == null) {
             //::支持但不必需 或排除 或决不
-            if(anno.policy() == TranPolicy.supports
+            if (anno.policy() == TranPolicy.supports
                     || anno.policy() == TranPolicy.exclude
-                    || anno.policy() == TranPolicy.never){
+                    || anno.policy() == TranPolicy.never) {
                 runnable.run();
                 return;
-            }else {
+            } else {
                 //新建事务
                 Tran tran = factory.create(anno);
 
@@ -54,8 +58,8 @@ public class TranManger {
             }
         } else {
             //事务排斥 或 全新事务
-            if(anno.policy() == TranPolicy.exclude
-                    || anno.policy() == TranPolicy.requires_new){
+            if (anno.policy() == TranPolicy.exclude
+                    || anno.policy() == TranPolicy.requires_new) {
                 Tran tran = factory.create(anno);
                 tran.apply(runnable);
                 return;
@@ -69,7 +73,7 @@ public class TranManger {
                 root.value.add(tran);
                 tran.apply(runnable);
                 return;
-            }else {
+            } else {
                 //如果根不是队列
                 //
                 if (root.tag.equals(anno.value())) {

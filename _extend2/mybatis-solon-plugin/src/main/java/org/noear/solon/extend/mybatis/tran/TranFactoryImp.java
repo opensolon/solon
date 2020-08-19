@@ -3,10 +3,7 @@ package org.noear.solon.extend.mybatis.tran;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XTran;
-import org.noear.solon.core.Aop;
-import org.noear.solon.core.Tran;
-import org.noear.solon.core.TranFactory;
-import org.noear.solon.core.TranPolicy;
+import org.noear.solon.core.*;
 
 public final class TranFactoryImp implements TranFactory {
     private static TranFactory _singleton;
@@ -26,7 +23,7 @@ public final class TranFactoryImp implements TranFactory {
     private Tran tranNot = new TranNotImp();
 
     @Override
-    public Tran create(XTran anno) {
+    public Tran create(TranAnno anno) {
         if (anno.group()) {
             //事务队列
             return new TranGroupImp();
