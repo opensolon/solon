@@ -38,22 +38,22 @@ public class TranManger {
                 runnable.run();
                 return;
             } else {
-                //新建事务
+                //新建事务，并置为根事务
                 Tran tran = factory.create(anno);
 
-                ValHolder<Tran> vh = new ValHolder<>();
-                vh.value = tran;
-                vh.tag = anno.value();
+                root = new ValHolder<>();
+                root.value = tran;
+                root.tag = anno.value();
 
                 try {
-                    rootLocal.set(vh);
+                    rootLocal.set(root);
                     tran.apply(runnable);
                 } finally {
                     rootLocal.remove();
                 }
             }
         } else {
-            //事务排斥 或 全新事务
+            //事务排斥 或 全新事务（不需要加入事务组）
             if (anno.policy() == TranPolicy.exclude
                     || anno.policy() == TranPolicy.requires_new) {
                 Tran tran = factory.create(anno);
@@ -62,7 +62,7 @@ public class TranManger {
             }
 
             if (root.value.isGroup()) {
-                //如果根是组，则加入组
+                //如果根是事务组，则新建事务加入事务组
                 //
                 Tran tran = factory.create(anno);
 
@@ -73,10 +73,10 @@ public class TranManger {
                 //如果根不是队列
                 //
                 if (root.tag.equals(anno.value())) {
-                    //如果名字相同，则不新建事务
+                    //如果同源，则直接并入
                     runnable.run();
                 } else {
-                    //新建事务（不同数据源的事务嵌套，会有潜在问题）
+                    //不同源；则新建事务
                     Tran tran = factory.create(anno);
                     tran.apply(runnable);
                 }
