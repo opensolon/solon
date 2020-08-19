@@ -14,6 +14,7 @@ public class TranNeverImp implements Tran {
         //
         Object tran = DbTranUtil.current();
         if (tran != null) {
+            //绝不能有事务
             throw new RuntimeException("Never support transactions");
         } else {
             runnable.run();

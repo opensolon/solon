@@ -16,7 +16,7 @@ public class TranMandatoryImp implements Tran {
         Object tran = DbTranUtil.current();
         if (tran == null) {
             //必须要有事务
-            throw new RuntimeException("There has to be a transactions");
+            throw new RuntimeException("You must have the same source transaction");
         } else {
             runnable.run();
         }
