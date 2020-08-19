@@ -91,18 +91,18 @@ public class XProxy {
     public XProxy call(Map<String, String> headers, Map args) {
         try {
             _result = _config.getChannel().call(_config, _url, headers, args);
-        } catch (InvocationTargetException ex) {
-            Throwable ex2 = ex.getCause();
-
-            if (ex2 instanceof RuntimeException) {
-                throw (RuntimeException) ex2;
-            } else {
-                throw new RuntimeException(ex2);
-            }
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {
-            throw new RuntimeException(ex);
+            if (ex instanceof InvocationTargetException) {
+                ex = ((InvocationTargetException) ex).getTargetException();
+            }
+
+            if (ex instanceof RuntimeException) {
+                throw (RuntimeException) ex;
+            } else {
+                throw new RuntimeException(ex);
+            }
         }
 
         return this;
