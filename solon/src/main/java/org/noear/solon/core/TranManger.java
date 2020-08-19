@@ -76,7 +76,7 @@ public class TranManger {
                     //如果同源，则直接并入
                     runnable.run();
                 } else {
-                    //不同源；则新建事务
+                    //不同源；则新建事务（不同源，嵌套可能会有问题）
                     Tran tran = factory.create(anno);
                     tran.apply(runnable);
                 }
