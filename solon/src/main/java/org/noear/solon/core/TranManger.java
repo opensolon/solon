@@ -33,87 +33,98 @@ public class TranManger {
 
         //根事务不存在
         if (stack == null) {
-            //::支持但不必需 或排除 或决不
-            if (anno.policy() == TranPolicy.supports
-                    || anno.policy() == TranPolicy.exclude
-                    || anno.policy() == TranPolicy.never) {
-                runnable.run();
-                return;
-            } else {
-                //新建事务，并置为根事务
-                Tran tran = factory.create(anno);
-                stack = new Stack<>();
-
-                try {
-                    local.set(stack);
-                    apply2(stack, tran, anno, runnable);
-                } finally {
-                    local.remove();
-                }
-            }
+            forRoot(stack, anno, runnable);
         } else {
-            if (anno.policy() == TranPolicy.supports) {
-                runnable.run();
-                return;
-            }
+            forNotRoot(stack, anno, runnable);
+        }
+    }
 
-            //当前：排除 或 绝不 （不需要加入事务组）//不需要入栈
-            if (anno.policy() == TranPolicy.exclude
-                    || anno.policy() == TranPolicy.never) {
-                Tran tran = factory.create(anno);
-                tran.apply(runnable);
-                return;
-            }
+    private static void forRoot(Stack<TranEntity> stack, XTran anno, RunnableEx runnable) throws Throwable {
+        //::支持但不必需 或排除 或决不
+        if (anno.policy() == TranPolicy.supports
+                || anno.policy() == TranPolicy.exclude
+                || anno.policy() == TranPolicy.never) {
+            runnable.run();
+            return;
+        } else {
+            //新建事务，并置为根事务
+            Tran tran = factory.create(anno);
+            stack = new Stack<>();
 
-            //当前：事务组 或 新建 或嵌套；新起事务且不需要加入上个事务组 //入栈，供后来事务用
-            if (anno.group() || anno.policy() == TranPolicy.requires_new) {
-                Tran tran = factory.create(anno);
+            try {
+                local.set(stack);
                 apply2(stack, tran, anno, runnable);
-                return;
-            }
-
-            //获取之前的事务
-            TranEntity before = stack.peek();
-
-            //当前：必须有同源事务
-            if (anno.policy() == TranPolicy.mandatory) {
-                if (anno.value().equals(before.anno.value())) {
-                    Tran tran = factory.create(anno);
-                    tran.apply(runnable);
-                } else {
-                    throw new RuntimeException("You must have the same source transaction");
-                }
-                return;
-            }
-
-
-            if (before.tran.isGroup()) {
-                //如果之前的是事务组，则新建事务加入访事务组  //入栈，供后来事务用
-                //
-                Tran tran = factory.create(anno);
-
-                before.tran.add(tran);
-
-                apply2(stack, tran, anno, runnable);
-                return;
-            } else {
-                //如果之前不是事务组
-                //
-                if (before.anno.value().equals(anno.value())
-                        && anno.policy() == TranPolicy.nested) {
-                    //如果同源 并且不嵌套，则直接并入
-                    runnable.run();
-                } else {
-                    //不同源 或嵌套；则新建事务（不同源，嵌套可能会有问题） //入栈，供后来事务用
-                    Tran tran = factory.create(anno);
-                    apply2(stack, tran, anno, runnable);
-                }
+            } finally {
+                local.remove();
             }
         }
     }
 
+    private static void forNotRoot(Stack<TranEntity> stack, XTran anno, RunnableEx runnable) throws Throwable {
+        if (anno.policy() == TranPolicy.supports) {
+            runnable.run();
+            return;
+        }
+
+        //当前：排除 或 绝不 （不需要加入事务组）//不需要入栈
+        if (anno.policy() == TranPolicy.exclude
+                || anno.policy() == TranPolicy.never) {
+            Tran tran = factory.create(anno);
+            tran.apply(runnable);
+            return;
+        }
+
+        //当前：事务组 或 新建 或嵌套；新起事务且不需要加入上个事务组 //入栈，供后来事务用
+        if (anno.group() || anno.policy() == TranPolicy.requires_new) {
+            Tran tran = factory.create(anno);
+            apply2(stack, tran, anno, runnable);
+            return;
+        }
+
+        //获取之前的事务
+        TranEntity before = stack.peek();
+
+        //当前：必须有同源事务
+        if (anno.policy() == TranPolicy.mandatory) {
+            if (anno.value().equals(before.anno.value())) {
+                Tran tran = factory.create(anno);
+                tran.apply(runnable);
+            } else {
+                throw new RuntimeException("You must have the same source transaction");
+            }
+            return;
+        }
+
+
+        if (before.tran.isGroup()) {
+            //如果之前的是事务组，则新建事务加入访事务组  //入栈，供后来事务用
+            //
+            Tran tran = factory.create(anno);
+
+            before.tran.add(tran);
+
+            apply2(stack, tran, anno, runnable);
+            return;
+        } else {
+            //如果之前不是事务组
+            //
+            if (before.anno.value().equals(anno.value())
+                    && anno.policy() == TranPolicy.nested) {
+                //如果同源 并且不嵌套，则直接并入
+                runnable.run();
+            } else {
+                //不同源 或嵌套；则新建事务（不同源，嵌套可能会有问题） //入栈，供后来事务用
+                Tran tran = factory.create(anno);
+                apply2(stack, tran, anno, runnable);
+            }
+        }
+    }
+
+
     private static void apply2(Stack<TranEntity> stack, Tran tran, XTran anno, RunnableEx runnable) throws Throwable {
         if (anno.group() || anno.policy().code <= TranPolicy.nested.code) {
+            //@group || required || requires_new || nested ，需要入栈
+            //
             try {
                 //入栈
                 stack.push(new TranEntity(tran, anno));
