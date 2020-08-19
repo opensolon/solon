@@ -62,4 +62,9 @@ public final class TranFactoryImp implements TranFactory {
             }
         }
     }
+
+    @Override
+    public Tran createNot() {
+        return tranNot;
+    }
 }

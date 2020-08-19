@@ -62,8 +62,18 @@ public class TranManger {
     }
 
     private static void forNotRoot(Stack<TranEntity> stack, XTran anno, RunnableEx runnable) throws Throwable {
+        //获取之前的事务
+        TranEntity before = stack.peek();
+
         if (anno.policy() == TranPolicy.supports) {
-            runnable.run();
+            if (anno.value().equals(before.anno.value()) //当前为同源
+                    || before.anno.group()) { //或，当前为组
+                //直接运行，即并入
+                runnable.run();
+            }else{
+                //挂起
+                factory.createNot().apply(runnable);
+            }
             return;
         }
 
@@ -81,9 +91,6 @@ public class TranManger {
             apply2(stack, tran, anno, runnable);
             return;
         }
-
-        //获取之前的事务
-        TranEntity before = stack.peek();
 
         //当前：必须有同源事务
         if (anno.policy() == TranPolicy.mandatory) {

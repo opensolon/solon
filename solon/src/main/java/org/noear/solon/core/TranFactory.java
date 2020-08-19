@@ -7,4 +7,5 @@ import org.noear.solon.annotation.XTran;
  * */
 public interface TranFactory {
     Tran create(XTran anno);
+    Tran createNot();
 }
