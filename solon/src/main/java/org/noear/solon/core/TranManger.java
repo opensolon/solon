@@ -80,8 +80,7 @@ public class TranManger {
         //当前：排除 或 绝不 （不需要加入事务组）//不需要入栈
         if (anno.policy() == TranPolicy.exclude
                 || anno.policy() == TranPolicy.never) {
-            Tran tran = factory.create(anno);
-            tran.apply(runnable);
+            factory.create(anno).apply(runnable);
             return;
         }
 
@@ -108,7 +107,6 @@ public class TranManger {
             //如果之前的是事务组，则新建事务加入访事务组  //入栈，供后来事务用
             //
             Tran tran = factory.create(anno);
-
             before.tran.add(tran);
 
             apply2(stack, tran, anno, runnable);
