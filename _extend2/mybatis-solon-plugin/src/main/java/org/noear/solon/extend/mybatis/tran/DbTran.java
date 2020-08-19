@@ -89,6 +89,5 @@ public class DbTran {
             this.session.close();
             this.session = null;
         }
-
     }
 }
