@@ -23,7 +23,7 @@ public final class TranFactoryImp implements TranFactory {
     private Tran tranNot = new TranNotImp();
 
     @Override
-    public Tran create(TranAnno anno) {
+    public Tran create(XTran anno) {
         if (anno.group()) {
             //事务队列
             return new TranGroupImp();

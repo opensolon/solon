@@ -18,10 +18,6 @@ public class TranManger {
     }
 
     public static void execute(XTran anno, RunnableEx runnable) throws Throwable {
-        execute(new TranAnno(anno), runnable);
-    }
-
-    public static void execute(TranAnno anno, RunnableEx runnable) throws Throwable {
         if (anno == null || factory == null) {
             //
             //如果没有注解或工厂，直接运行
