@@ -29,28 +29,14 @@ public class XActionUtil {
      * 执行方法
      */
     public static Object exeMethod(XContext ctx, Object obj, MethodWrap mWrap) throws Throwable {
-        try {
-            String ct = ctx.contentType();
+        String ct = ctx.contentType();
 
-            for (MethodExecutor me : exeLib) {
-                if (me.matched(ctx, ct)) {
-                    return me.execute(ctx, obj, mWrap);
-                }
-            }
-
-            return exeDef.execute(ctx, obj, mWrap);
-
-        } catch (InvocationTargetException ex) {
-            //
-            // 反射相关的异常，要转一下
-            //
-            Throwable ex2 = ex.getCause();
-
-            if (ex2 instanceof Error) {
-                throw new RuntimeException(ex2);
-            } else {
-                throw ex2;
+        for (MethodExecutor me : exeLib) {
+            if (me.matched(ctx, ct)) {
+                return me.execute(ctx, obj, mWrap);
             }
         }
+
+        return exeDef.execute(ctx, obj, mWrap);
     }
 }
