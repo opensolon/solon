@@ -6,9 +6,9 @@ import java.lang.annotation.*;
  * 数据工厂注解
  *
  * 例：
- * @Df("db1f") SqlSessionFactory factory;
- * @Df("db1f") SqlSession session;
- * @Df("db1f") Mapper mapper;
+ * @Db("db1") SqlSessionFactory factory;
+ * @Db("db1") SqlSession session;
+ * @Db("db1") Mapper mapper;
  * */
 @Target({ElementType.FIELD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
