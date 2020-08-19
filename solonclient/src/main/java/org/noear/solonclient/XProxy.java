@@ -1,5 +1,6 @@
 package org.noear.solonclient;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
 import java.util.Map;
 
@@ -9,29 +10,28 @@ import java.util.Map;
 public class XProxy {
     /**
      * 默认的通讯通道（涉及第三方框架引用，不做定义）
-     * */
+     */
     public static IChannel defaultChannel;
     /**
      * 默认的序列化器（涉及第三方框架引用，不做定义）
-     * */
+     */
     public static ISerializer defaultSerializer;
 
     /**
      * 默认的反序列化器（涉及第三方框架引用，不做定义）
-     * */
+     */
     public static IDeserializer defaultDeserializer;
 
     private String _url;
     private final XProxyConfig _config;
 
 
-
-    public XProxyConfig config(){
+    public XProxyConfig config() {
         return _config;
     }
 
 
-    protected XProxy(XProxyConfig config){
+    protected XProxy(XProxyConfig config) {
         _config = config;
     }
 
@@ -91,6 +91,14 @@ public class XProxy {
     public XProxy call(Map<String, String> headers, Map args) {
         try {
             _result = _config.getChannel().call(_config, _url, headers, args);
+        } catch (InvocationTargetException ex) {
+            Throwable ex2 = ex.getCause();
+
+            if (ex2 instanceof RuntimeException) {
+                throw (RuntimeException) ex2;
+            } else {
+                throw new RuntimeException(ex2);
+            }
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {
@@ -101,7 +109,8 @@ public class XProxy {
     }
 
     private Result _result;
-    public Result result(){
+
+    public Result result() {
         return _result;
     }
 
@@ -126,7 +135,6 @@ public class XProxy {
     //////////////////////////////////
 
 
-
     /**
      * 设置全局头信息
      */
@@ -134,6 +142,7 @@ public class XProxy {
         _config.headerAdd(name, value);
         return this;
     }
+
     /**
      * 设置服务端
      */
@@ -173,7 +182,7 @@ public class XProxy {
 
     /**
      * 设置反序列器
-     * */
+     */
     public XProxy deserializer(IDeserializer deserializer) {
         _config.setDeserializer(deserializer);
         return this;

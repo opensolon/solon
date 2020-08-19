@@ -3,6 +3,7 @@ package org.noear.solon.core;
 import org.noear.solon.annotation.XTran;
 import org.noear.solon.ext.RunnableEx;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Stack;
 
 /**
@@ -54,6 +55,8 @@ public class TranManger {
             try {
                 local.set(stack);
                 apply2(stack, tran, anno, runnable);
+            } catch (InvocationTargetException ex) {
+                throw ex.getCause();
             } finally {
                 local.remove();
             }
