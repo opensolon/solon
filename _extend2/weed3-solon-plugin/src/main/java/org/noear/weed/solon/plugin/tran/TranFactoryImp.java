@@ -40,25 +40,25 @@ public final class TranFactoryImp implements TranFactory {
         } else {
             //事务
             //
-            DbContext db = null;
+            DbContext tmp = null;
 
             if (XUtil.isEmpty(anno.value())) {
                 //根据名字获取
-                db = Aop.get(DbContext.class);
+                tmp = Aop.get(DbContext.class);
             } else {
                 //根据类型获取
-                db = Aop.get(anno.value());
+                tmp = Aop.get(anno.value());
             }
 
-            if (db == null) {
+            if (tmp == null) {
                 throw new RuntimeException("@XTran annotation failed");
             }
 
             if (anno.policy() == TranPolicy.requires_new
                     || anno.policy() == TranPolicy.nested) {
-                return new TranNewImp(db);
+                return new TranNewImp(tmp);
             } else {
-                return new TranImp(db);
+                return new TranImp(tmp);
             }
         }
     }

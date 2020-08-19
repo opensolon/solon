@@ -26,7 +26,7 @@ public final class TranFactoryImp implements TranFactory {
     @Override
     public Tran create(XTran anno) {
         if (anno.group()) {
-            //事务队列
+            //事务组
             return new TranGroupImp();
         } else if (anno.policy() == TranPolicy.exclude) {
             //事务排除
@@ -40,25 +40,25 @@ public final class TranFactoryImp implements TranFactory {
         } else {
             //事务
             //
-            SqlSessionFactory factory = null;
+            SqlSessionFactory tmp = null;
 
             if (XUtil.isEmpty(anno.value())) {
                 //根据名字获取
-                factory = Aop.get(SqlSessionFactory.class);
+                tmp = Aop.get(SqlSessionFactory.class);
             } else {
                 //根据类型获取
-                factory = Aop.get(anno.value());
+                tmp = Aop.get(anno.value());
             }
 
-            if (factory == null) {
+            if (tmp == null) {
                 throw new RuntimeException("@XTran annotation failed");
             }
 
             if (anno.policy() == TranPolicy.requires_new
                     || anno.policy() == TranPolicy.nested) {
-                return new TranNewImp(factory);
+                return new TranNewImp(tmp);
             } else {
-                return new TranImp(factory);
+                return new TranImp(tmp);
             }
         }
     }
