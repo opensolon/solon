@@ -60,7 +60,7 @@ public class TranManger {
                 return;
             }
 
-            //当前：事务组 或 新建；新起事务且不需要加入上个事务组 //入栈，供后来事务用
+            //当前：事务组 或 新建 或嵌套；新起事务且不需要加入上个事务组 //入栈，供后来事务用
             if (anno.group() || anno.policy() == TranPolicy.requires_new) {
                 Tran tran = factory.create(anno);
                 apply2(stack, tran, anno, runnable);
