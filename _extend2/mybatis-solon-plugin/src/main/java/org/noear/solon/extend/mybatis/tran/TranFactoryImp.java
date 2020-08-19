@@ -22,17 +22,20 @@ public final class TranFactoryImp implements TranFactory {
     private TranFactoryImp() {
     }
 
-    private Tran tranQueue = new TranQueueImp();
-    private Tran tranExclude = new TranExcludeImp();
+    private Tran tranNever = new TranNeverImp();
+    private Tran tranNot = new TranNotImp();
 
     @Override
     public Tran create(XTran tran) {
-        if (tran.multisource()) {
+        if (tran.group()) {
             //事务队列
-            return tranQueue;
+            return new TranGroupImp();
         } else if (tran.policy() == TranPolicy.exclude) {
             //事务排除
-            return tranExclude;
+            return tranNot;
+        } else if (tran.policy() == TranPolicy.never) {
+            //事务排除
+            return tranNever;
         } else {
             //事务
             //
@@ -50,7 +53,7 @@ public final class TranFactoryImp implements TranFactory {
                 throw new RuntimeException("@XTran annotation failed");
             }
 
-            if (tran.policy() == TranPolicy.required_new) {
+            if (tran.policy() == TranPolicy.requires_new) {
                 return new TranNewImp(factory);
             } else {
                 return new TranImp(factory);

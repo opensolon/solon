@@ -7,9 +7,9 @@ import org.noear.solon.ext.RunnableEx;
  * */
 public interface Tran {
     /**
-     * 是否为队列事务
+     * 是否为事务组
      * */
-    default boolean isQueue(){ return false; }
+    default boolean isGroup(){ return false; }
 
     /**
      * 添加事务（当前为事务队列时，可添加）
@@ -17,7 +17,7 @@ public interface Tran {
     default void add(Tran slave){ }
 
     /**
-     * 执行事务
+     * 应用事务
      * */
-    void execute(RunnableEx runnable) throws Throwable;
+    void apply(RunnableEx runnable) throws Throwable;
 }

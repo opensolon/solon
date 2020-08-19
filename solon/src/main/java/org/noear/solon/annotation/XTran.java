@@ -18,7 +18,7 @@ public @interface XTran {
     TranPolicy policy() default TranPolicy.required;
 
     /**
-     * 是否为多源事务
+     * 是否为事务组
      * */
-    boolean multisource() default false;
+    boolean group() default false;
 }

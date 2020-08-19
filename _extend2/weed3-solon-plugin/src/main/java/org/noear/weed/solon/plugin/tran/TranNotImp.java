@@ -5,13 +5,13 @@ import org.noear.solon.ext.RunnableEx;
 import org.noear.weed.DbTran;
 import org.noear.weed.DbTranUtil;
 
-public class TranExcludeImp implements Tran {
-    protected TranExcludeImp(){
+public class TranNotImp implements Tran {
+    protected TranNotImp(){
 
     }
 
     @Override
-    public void execute(RunnableEx runnable) throws Throwable {
+    public void apply(RunnableEx runnable) throws Throwable {
         //获取当前事务
         //
         DbTran tran = DbTranUtil.current();

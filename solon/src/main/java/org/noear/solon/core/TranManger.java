@@ -31,8 +31,10 @@ public class TranManger {
 
         //根事务不存在
         if (root == null) {
-            //::支持但不必需
-            if(anno.policy() == TranPolicy.supports){
+            //::支持但不必需 或排除 或决不
+            if(anno.policy() == TranPolicy.supports
+                    || anno.policy() == TranPolicy.exclude
+                    || anno.policy() == TranPolicy.never){
                 runnable.run();
                 return;
             }else {
@@ -45,26 +47,27 @@ public class TranManger {
 
                 try {
                     rootLocal.set(vh);
-                    tran.execute(runnable);
+                    tran.apply(runnable);
                 } finally {
                     rootLocal.remove();
                 }
             }
         } else {
             //事务排斥 或 全新事务
-            if(anno.policy() == TranPolicy.exclude || anno.policy() == TranPolicy.required_new){
+            if(anno.policy() == TranPolicy.exclude
+                    || anno.policy() == TranPolicy.requires_new){
                 Tran tran = factory.create(anno);
-                tran.execute(runnable);
+                tran.apply(runnable);
                 return;
             }
 
-            if (root.value.isQueue()) {
-                //如果根是队列，则加入
+            if (root.value.isGroup()) {
+                //如果根是组，则加入组
                 //
                 Tran tran = factory.create(anno);
 
                 root.value.add(tran);
-                tran.execute(runnable);
+                tran.apply(runnable);
                 return;
             }else {
                 //如果根不是队列
@@ -75,7 +78,7 @@ public class TranManger {
                 } else {
                     //新建事务（不同数据源的事务嵌套，会有潜在问题）
                     Tran tran = factory.create(anno);
-                    tran.execute(runnable);
+                    tran.apply(runnable);
                 }
             }
         }

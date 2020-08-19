@@ -12,7 +12,7 @@ public class TranNewImp extends DbTran implements Tran {
     }
 
     @Override
-    public void execute(RunnableEx runnable) throws Throwable {
+    public void apply(RunnableEx runnable) throws Throwable {
         //获取当前事务
         //
         DbTran tran = DbTranUtil.current();
