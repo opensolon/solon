@@ -20,6 +20,7 @@ public final class TranFactoryImp implements TranFactory {
     }
 
     private Tran tranNever = new TranNeverImp();
+    private Tran tranMandatory = new TranMandatoryImp();
     private Tran tranNot = new TranNotImp();
 
     @Override
@@ -31,8 +32,11 @@ public final class TranFactoryImp implements TranFactory {
             //事务排除
             return tranNot;
         } else if (anno.policy() == TranPolicy.never) {
-            //事务排除
+            //决不能有事务
             return tranNever;
+        } else if (anno.policy() == TranPolicy.mandatory) {
+            //必须要有当前事务
+            return tranMandatory;
         } else {
             //事务
             //
