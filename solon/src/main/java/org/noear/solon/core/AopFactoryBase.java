@@ -187,9 +187,11 @@ public abstract class AopFactoryBase {
      */
     protected <T extends Annotation> void tryCreateBeanByAnno(Class<?> clz, T anno, BeanCreator<T> loader) {
         try {
-            //由create anno 注解的类，自动入库
-            BeanWrap wrap = Aop.wrapAndPut(clz); //在 create 事件里，要先完成注册，以提高复用
+            //包装
+            BeanWrap wrap = Aop.wrap(clz, null);
             loader.handler(clz, wrap, anno);
+            //尝试入库
+            Aop.factory().putWrap(clz,wrap);
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {
