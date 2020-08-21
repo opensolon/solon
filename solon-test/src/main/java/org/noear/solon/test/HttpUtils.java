@@ -311,15 +311,7 @@ public class HttpUtils {
 
     //@XNote("执行请求，返回字符串")
     public String exec2(String mothod) throws IOException {
-        Response tmp = exec(mothod);
-
-        int code = tmp.code();
-        String text = tmp.body().string();
-        if (code >= 200 && code <= 300) {
-            return text;
-        } else {
-            throw new RuntimeException(code + "错误：" + text);
-        }
+        return exec(mothod).body().string();
     }
 
 
