@@ -41,18 +41,14 @@ public class XPluginImp implements XPlugin {
         Aop.factory().beanInjectorAdd(Inject.class, (fwT, anno) -> {
             Named tmp = fwT.getType().getAnnotation(Named.class);
             if(tmp == null || XUtil.isEmpty(tmp.value())){
-                AopFactory.beanInject(fwT, null);
+                Aop.factory().tryInjectByName(fwT, null);
             }else{
-                AopFactory.beanInject(fwT, tmp.value());
+                Aop.factory().tryInjectByName(fwT, tmp.value());
             }
         });
 
         Aop.factory().beanCreatorAdd(Singleton.class, (clz, bw, anno) -> {
             bw.singletonSet(true);
-        });
-
-        Aop.factory().beanCreatorAdd(Scope.class, (clz, bw, anno) -> {
-            bw.singletonSet(false);
         });
     }
 }

@@ -13,6 +13,11 @@ import java.util.function.Function;
 
 /**
  * Aop 处理工厂（可以被继承重写）
+ *
+ * 主要实现三个动作：
+ * 1.生成 bean
+ * 2.构建 bean
+ * 3.注入 字段或参数
  * */
 public class AopFactory extends AopFactoryBase {
 
@@ -21,10 +26,8 @@ public class AopFactory extends AopFactoryBase {
         initialize();
     }
 
-    //::初始化
-
     /**
-     * 初始化（独立出 initialize，方便重写）
+     * ::初始化（独立出 initialize，方便重写）
      */
     protected void initialize() {
 
@@ -35,7 +38,7 @@ public class AopFactory extends AopFactoryBase {
                 if (m_an != null) {
                     XInject beanInj = mWrap.getMethod().getAnnotation(XInject.class);
 
-                    beanBuild(m_an.value(), mWrap, bw, beanInj, (p1) -> {
+                    tryBuildBean(m_an.value(), mWrap, bw, beanInj, (p1) -> {
                         XInject tmp = p1.getAnnotation(XInject.class);
                         if (tmp == null) {
                             return null;
@@ -48,7 +51,29 @@ public class AopFactory extends AopFactoryBase {
         });
 
         beanCreatorAdd(XBean.class, (clz, bw, anno) -> {
-            beanAnnoHandle(bw, anno);
+            bw.tagSet(anno.tag());
+
+            if (XPlugin.class.isAssignableFrom(bw.clz())) {
+                //如果是插件，则插入
+                XApp.global().plug(bw.raw());
+            } else {
+                //设置remoting状态
+                bw.remotingSet(anno.remoting());
+
+                //注册到管理中心
+                beanRegister(bw, anno.value());
+
+                //如果是remoting状态，转到XApp路由器
+                if (bw.remoting()) {
+                    BeanWebWrap bww = new BeanWebWrap(bw);
+                    if (bww.mapping() != null) {
+                        //
+                        //如果没有xmapping，则不进行web注册
+                        //
+                        bww.load(XApp.global());
+                    }
+                }
+            }
         });
 
         beanCreatorAdd(XController.class, (clz, bw, anno) -> {
@@ -66,40 +91,39 @@ public class AopFactory extends AopFactoryBase {
         });
 
         beanInjectorAdd(XInject.class, ((fwT, anno) -> {
-            beanInject(fwT, anno.value());
+            tryInjectByName(fwT, anno.value());
         }));
 
     }
 
     /**
-     * XBean 的处理
+     * ::加载 bean 及对应处理
      */
-    protected void beanAnnoHandle(BeanWrap bw, XBean anno) {
-        bw.tagSet(anno.tag());
+    public void beanLoad(Class<?> source, boolean loaded) {
+        //确定文件夹名
+        String dir = "";
+        if (source.getPackage() != null) {
+            dir = source.getPackage().getName().replace('.', '/');
+        }
 
-        if (XPlugin.class.isAssignableFrom(bw.clz())) {
-            //如果是插件，则插入
-            XApp.global().plug(bw.raw());
-        } else {
-            //设置remoting状态
-            bw.remotingSet(anno.remoting());
+        //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
+        XScaner.scan(dir, n -> n.endsWith(".class"))
+                .stream()
+                .map(name -> {
+                    String className = name.substring(0, name.length() - 6);
+                    return XUtil.loadClass(className.replace("/", "."));
+                })
+                .forEach((clz) -> {
+                    if (clz != null) {
+                        tryCreateBean(clz);
+                    }
+                });
 
-            //注册到管理中心
-            beanRegister(bw, anno.value());
-
-            //如果是remoting状态，转到XApp路由器
-            if (bw.remoting()) {
-                BeanWebWrap bww = new BeanWebWrap(bw);
-                if (bww.mapping() != null) {
-                    //
-                    //如果没有xmapping，则不进行web注册
-                    //
-                    bww.load(XApp.global());
-                }
-            }
+        //尝试加载事件（不用函数包装，是为了减少代码）
+        if (loaded) {
+            loadedEvent.forEach(f -> f.run());
         }
     }
-
 
     /**
      * 注册到管理中心
@@ -130,7 +154,7 @@ public class AopFactory extends AopFactoryBase {
     /**
      * 为一个对象注入（可以重写）
      */
-    public void inject(Object obj) {
+    public void beanInject(Object obj) {
         if (obj == null) {
             return;
         }
@@ -141,39 +165,8 @@ public class AopFactory extends AopFactoryBase {
             Annotation[] annS = f.getDeclaredAnnotations();
             if (annS.length > 0) {
                 VarHolder varH = clzWrap.getFieldWrap(f).holder(obj);
-                tryBeanInject(varH, annS);
+                tryInject(varH, annS);
             }
-        }
-    }
-
-    //::加载相关
-
-    /**
-     * 加载 bean 及对应处理
-     */
-    public void beanLoad(Class<?> source, boolean loaded) {
-        //确定文件夹名
-        String dir = "";
-        if (source.getPackage() != null) {
-            dir = source.getPackage().getName().replace('.', '/');
-        }
-
-        //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
-        XScaner.scan(dir, n -> n.endsWith(".class"))
-                .stream()
-                .map(name -> {
-                    String className = name.substring(0, name.length() - 6);
-                    return XUtil.loadClass(className.replace("/", "."));
-                })
-                .forEach((clz) -> {
-                    if (clz != null) {
-                        tryBeanCreate(clz);
-                    }
-                });
-
-        //尝试加载事件（不用函数包装，是为了减少代码）
-        if (loaded) {
-            loadedEvent.forEach(f -> f.run());
         }
     }
 
@@ -181,15 +174,15 @@ public class AopFactory extends AopFactoryBase {
     ////////////////////////////////////////////////////////
 
     /**
-     * 执行对象构建
+     * 尝试构建 bean
      */
-    public static void beanBuild(String beanName, MethodWrap mWrap, BeanWrap bw, XInject beanInj, Function<Parameter, String> injectVal) throws Exception {
+    public void tryBuildBean(String beanName, MethodWrap mWrap, BeanWrap bw, XInject beanInj, Function<Parameter, String> injectVal) throws Exception {
         int size2 = mWrap.getParameters().length;
 
         if (size2 == 0) {
             //0.没有参数
             Object raw = mWrap.invoke(bw.raw());
-            beanBuildEnd(beanName, beanInj, raw);
+            tryBuildBean0(beanName, beanInj, raw);
         } else {
             //1.构建参数
             List<Object> args2 = new ArrayList<>(size2);
@@ -199,7 +192,7 @@ public class AopFactory extends AopFactoryBase {
                 VarHolderParam p2 = new VarHolderParam(p1);
                 args1.add(p2);
 
-                beanInject(p2, injectVal.apply(p1));
+                tryInjectByName(p2, injectVal.apply(p1));
             }
 
             //异步获取注入值
@@ -210,7 +203,7 @@ public class AopFactory extends AopFactoryBase {
                     }
 
                     Object raw = mWrap.invoke(bw.raw(), args2.toArray());
-                    beanBuildEnd(beanName, beanInj, raw);
+                    tryBuildBean0(beanName, beanInj, raw);
                 } catch (Throwable ex) {
                     XEventBus.push(ex);
                 }
@@ -220,7 +213,7 @@ public class AopFactory extends AopFactoryBase {
         }
     }
 
-    protected static void beanBuildEnd(String beanName, XInject beanInj, Object raw) {
+    protected void tryBuildBean0(String beanName, XInject beanInj, Object raw) {
         if (raw != null) {
             if (beanInj != null && XUtil.isEmpty(beanInj.value()) == false) {
                 if (beanInj.value().startsWith("${")) {
@@ -235,9 +228,9 @@ public class AopFactory extends AopFactoryBase {
     }
 
     /**
-     * 执行变量注入
+     * 尝试变量注入 字段或参数
      */
-    public static void beanInject(VarHolder varH, String name) {
+    public void tryInjectByName(VarHolder varH, String name) {
         if (XUtil.isEmpty(name)) {
             //如果没有name,使用类型进行获取 bean
             Aop.getAsyn(varH.getType(), (bw) -> {

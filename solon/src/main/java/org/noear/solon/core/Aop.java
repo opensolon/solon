@@ -103,7 +103,7 @@ public class Aop {
      * 尝试注入（建议使用：get(clz) ）
      */
     public static <T> T inject(T bean) {
-        _f.inject(bean);
+        _f.beanInject(bean);
         return bean;
     }
 

@@ -151,9 +151,22 @@ public abstract class AopFactoryBase {
 
 
     /**
+     * 尝试为bean注入
+     */
+    protected void tryInject(VarHolder varH, Annotation[] annS) {
+        for (Annotation a : annS) {
+            BeanInjector bi = beanInjectors.get(a.annotationType());
+            if (bi != null) {
+                bi.handler(varH, a);
+            }
+        }
+    }
+
+
+    /**
      * 尝试生成bean
      */
-    protected void tryBeanCreate(Class<?> clz) {
+    protected void tryCreateBean(Class<?> clz) {
         Annotation[] annS = clz.getDeclaredAnnotations();
 
         if (annS.length > 0) {
@@ -170,17 +183,6 @@ public abstract class AopFactoryBase {
         }
     }
 
-    /**
-     * 尝试为bean注入
-     */
-    protected void tryBeanInject(VarHolder varH, Annotation[] annS) {
-        for (Annotation a : annS) {
-            BeanInjector bi = beanInjectors.get(a.annotationType());
-            if (bi != null) {
-                bi.handler(varH, a);
-            }
-        }
-    }
 
     /**
      * 尝试加载一个注解
