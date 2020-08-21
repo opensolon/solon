@@ -1,12 +1,17 @@
 package org.noear.solon.core;
 
 
+import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.annotation.XInject;
+import org.noear.solon.core.utils.TypeUtil;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Parameter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * 为 AopFactory 提供存储 支持，并提供注册管理
@@ -164,9 +169,9 @@ public abstract class AopFactoryBase {
 
 
     /**
-     * 尝试生成bean
+     * 尝试生成 bean
      */
-    protected void tryCreateBean(Class<?> clz) {
+    public void tryCreateBean(Class<?> clz) {
         Annotation[] annS = clz.getDeclaredAnnotations();
 
         if (annS.length > 0) {
@@ -185,7 +190,7 @@ public abstract class AopFactoryBase {
 
 
     /**
-     * 尝试加载一个注解
+     * 尝试一个注解处理
      */
     protected <T extends Annotation> void tryCreateBeanByAnno(Class<?> clz, T anno, BeanCreator<T> loader) {
         try {
@@ -198,6 +203,145 @@ public abstract class AopFactoryBase {
             throw ex;
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
+        }
+    }
+
+    /**
+     * 尝试构建 bean
+     *
+     * @param beanName bean 名字
+     * @param mWrap 方法包装器
+     * @param bw bean 包装器
+     * @param beanInj 类注入
+     * @param injectVal 参数注入
+     */
+    public void tryBuildBean(String beanName, MethodWrap mWrap, BeanWrap bw, XInject beanInj, Function<Parameter, String> injectVal) throws Exception {
+        int size2 = mWrap.getParameters().length;
+
+        if (size2 == 0) {
+            //0.没有参数
+            Object raw = mWrap.invoke(bw.raw());
+            tryBuildBean0(beanName, beanInj, raw);
+        } else {
+            //1.构建参数
+            List<Object> args2 = new ArrayList<>(size2);
+            List<VarHolderParam> args1 = new ArrayList<>(size2);
+
+            for (Parameter p1 : mWrap.getParameters()) {
+                VarHolderParam p2 = new VarHolderParam(p1);
+                args1.add(p2);
+
+                tryInjectByName(p2, injectVal.apply(p1));
+            }
+
+            //异步获取注入值
+            XUtil.commonPool.submit(() -> {
+                try {
+                    for (VarHolderParam p2 : args1) {
+                        args2.add(p2.getValue());
+                    }
+
+                    Object raw = mWrap.invoke(bw.raw(), args2.toArray());
+                    tryBuildBean0(beanName, beanInj, raw);
+                } catch (Throwable ex) {
+                    XEventBus.push(ex);
+                }
+
+                return true;
+            });
+        }
+    }
+
+    protected void tryBuildBean0(String beanName, XInject beanInj, Object raw) {
+        if (raw != null) {
+            if (beanInj != null && XUtil.isEmpty(beanInj.value()) == false) {
+                if (beanInj.value().startsWith("${")) {
+                    Aop.inject(raw, XApp.cfg().getPropByExpr(beanInj.value()));
+                }
+            }
+
+            //动态构建的bean，都用新生成wrap（否则会类型混乱）
+            BeanWrap m_bw = new BeanWrap(raw.getClass(), raw);
+            Aop.factory().beanRegister(m_bw, beanName);
+        }
+    }
+
+    /**
+     * 尝试变量注入 字段或参数
+     *
+     * @param varH 变量包装器
+     * @param name 名字（bean name || config ${name}）
+     */
+    public void tryInjectByName(VarHolder varH, String name) {
+        if (XUtil.isEmpty(name)) {
+            //如果没有name,使用类型进行获取 bean
+            Aop.getAsyn(varH.getType(), (bw) -> {
+                varH.setValue(bw.get());
+            });
+        } else if (name.startsWith("${classpath:")) {
+            //
+            //demo:${classpath:user.yml}
+            //
+            String url = name.substring(12,name.length()-1);
+            Properties val = XUtil.getProperties(XUtil.getResource(url));
+
+            if (val == null) {
+                throw new RuntimeException(name + "  failed to load!");
+            }
+
+            if (Properties.class == varH.getType()) {
+                varH.setValue(val);
+            } else if (Map.class == varH.getType()) {
+                Map<String, String> val2 = new HashMap<>();
+                val.forEach((k, v) -> {
+                    if (k instanceof String && v instanceof String) {
+                        val2.put((String) k, (String) v);
+                    }
+                });
+                varH.setValue(val2);
+            } else {
+                Object val2 = ClassWrap.get(varH.getType()).newBy(val::getProperty);
+                varH.setValue(val2);
+            }
+
+        } else if (name.startsWith("${")) {
+            //配置 ${xxx}
+            name = name.substring(2, name.length() - 1);
+
+            if (Properties.class == varH.getType()) {
+                //如果是 Properties
+                Properties val = XApp.cfg().getProp(name);
+                varH.setValue(val);
+            } else if (Map.class == varH.getType()) {
+                //如果是 Map
+                Map val = XApp.cfg().getXmap(name);
+                varH.setValue(val);
+            } else {
+                //2.然后尝试获取配置
+                String val = XApp.cfg().get(name);
+                if (val == null) {
+                    Class<?> pt = varH.getType();
+
+                    if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive()) {
+                        //如果是java基础类型，则为null（后面统一地 isPrimitive 做处理）
+                        //
+                        varH.setValue(null); //暂时不支持数组注入
+                    } else {
+                        //尝试转为实体
+                        Properties val0 = XApp.cfg().getProp(name);
+                        Object val2 = ClassWrap.get(pt).newBy(val0::getProperty);
+                        varH.setValue(val2);
+                    }
+                } else {
+                    Object val2 = TypeUtil.changeOfPop(varH.getType(), val);
+                    varH.setValue(val2);
+                }
+            }
+        } else {
+            //使用name, 获取BEAN
+            Aop.getAsyn(name, (bw) -> {
+                varH.setValue(bw.get());
+            });
         }
     }
 }
