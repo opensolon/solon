@@ -154,6 +154,15 @@ public abstract class AopFactoryBase {
         return null;
     }
 
+    public BeanWrap wrap(Class<?> clz, Object bean) {
+        BeanWrap wrap = getWrap(clz);
+        if (wrap == null) {
+            wrap = new BeanWrap(clz, bean);
+        }
+
+        return wrap;
+    }
+
 
     /**
      * 尝试为bean注入
@@ -195,10 +204,10 @@ public abstract class AopFactoryBase {
     protected <T extends Annotation> void tryCreateBeanByAnno(Class<?> clz, T anno, BeanCreator<T> loader) {
         try {
             //包装
-            BeanWrap wrap = Aop.wrap(clz, null);
+            BeanWrap wrap = this.wrap(clz, null);
             loader.handler(clz, wrap, anno);
             //尝试入库
-            Aop.factory().putWrap(clz,wrap);
+            this.putWrap(clz, wrap);
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {

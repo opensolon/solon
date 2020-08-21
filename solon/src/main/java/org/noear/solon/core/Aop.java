@@ -36,12 +36,7 @@ public class Aop {
      * 包装bean（clz），不负责注册
      */
     public static BeanWrap wrap(Class<?> clz, Object bean) {
-        BeanWrap wrap = _f.getWrap(clz);
-        if (wrap == null) {
-            wrap = new BeanWrap(clz, bean);
-        }
-
-        return wrap;
+        return  _f.wrap(clz, bean);
     }
 
     public static BeanWrap wrapAndPut(Class<?> clz) {
