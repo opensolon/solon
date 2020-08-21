@@ -29,7 +29,7 @@ public final class TranFactoryImp implements TranFactory {
         if (anno.group()) {
             //事务组
             return new TranGroupImp();
-        } else if (anno.policy() == TranPolicy.exclude) {
+        } else if (anno.policy() == TranPolicy.not_supported) {
             //事务排除
             return tranNot;
         } else if (anno.policy() == TranPolicy.never) {

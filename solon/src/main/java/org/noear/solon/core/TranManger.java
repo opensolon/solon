@@ -3,7 +3,6 @@ package org.noear.solon.core;
 import org.noear.solon.annotation.XTran;
 import org.noear.solon.ext.RunnableEx;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Stack;
 
 /**
@@ -42,7 +41,7 @@ public class TranManger {
     private static void forRoot(Stack<TranEntity> stack, XTran anno, RunnableEx runnable) throws Throwable {
         //::支持但不必需 或排除 或决不
         if (anno.policy() == TranPolicy.supports
-                || anno.policy() == TranPolicy.exclude
+                || anno.policy() == TranPolicy.not_supported
                 || anno.policy() == TranPolicy.never) {
             runnable.run();
             return;
@@ -78,7 +77,7 @@ public class TranManger {
         }
 
         //当前：排除 或 绝不 （不需要加入事务组）//不需要入栈
-        if (anno.policy() == TranPolicy.exclude
+        if (anno.policy() == TranPolicy.not_supported
                 || anno.policy() == TranPolicy.never) {
             factory.create(anno).apply(runnable);
             return;
