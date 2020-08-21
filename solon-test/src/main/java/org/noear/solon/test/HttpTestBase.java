@@ -3,7 +3,7 @@ package org.noear.solon.test;
 import org.noear.solon.XApp;
 
 public class HttpTestBase {
-    public HttpUtils local(String path) {
+    public HttpUtils path(String path) {
         return http("http://localhost:" + XApp.global().port() + path);
     }
 
