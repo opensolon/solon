@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XTran;
 import org.noear.solon.core.*;
+import org.noear.solon.ext.RunnableEx;
 
 public final class TranFactoryImp implements TranFactory {
     private static TranFactory _singleton;
@@ -64,7 +65,7 @@ public final class TranFactoryImp implements TranFactory {
     }
 
     @Override
-    public Tran createNot() {
-        return tranNot;
+    public void pending(RunnableEx runnable) throws Throwable{
+        tranNot.apply(runnable);
     }
 }

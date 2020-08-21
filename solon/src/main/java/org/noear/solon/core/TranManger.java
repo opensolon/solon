@@ -72,7 +72,7 @@ public class TranManger {
                 runnable.run();
             }else{
                 //挂起
-                factory.createNot().apply(runnable);
+                factory.pending(runnable);
             }
             return;
         }
