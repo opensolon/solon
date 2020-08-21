@@ -7,6 +7,7 @@ import org.noear.solon.annotation.XInject;
 import org.noear.solon.core.utils.TypeUtil;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Parameter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -98,11 +99,12 @@ public abstract class AopFactoryBase {
             return;
         }
 
-        for (BeanSubscriber s1 : subSet) {
+        //避免在forEach时，对它进行add
+        new ArrayList<>(subSet).forEach(s1 -> {
             if (s1.key.equals(key)) {
                 s1.callback.accept(wrap);
             }
-        }
+        });
     }
 
     //public abstract BeanWrap wrap(Class<?> clz, Object raw);
