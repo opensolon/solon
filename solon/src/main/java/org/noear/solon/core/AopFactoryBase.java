@@ -98,11 +98,11 @@ public abstract class AopFactoryBase {
             return;
         }
 
-        subSet.forEach(s1 -> {
+        for (BeanSubscriber s1 : subSet) {
             if (s1.key.equals(key)) {
                 s1.callback.accept(wrap);
             }
-        });
+        }
     }
 
     //public abstract BeanWrap wrap(Class<?> clz, Object raw);
