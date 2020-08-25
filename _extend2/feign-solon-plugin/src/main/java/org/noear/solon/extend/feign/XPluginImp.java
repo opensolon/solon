@@ -32,7 +32,7 @@ public class XPluginImp implements XPlugin {
                 .retryer(new Retryer.Default(5000, 5000, 3));
 
         //进行配置
-        configuration.config(anno, builder);
+        builder = configuration.config(anno, builder);
 
         //构建target
         FeignTarget target = null;

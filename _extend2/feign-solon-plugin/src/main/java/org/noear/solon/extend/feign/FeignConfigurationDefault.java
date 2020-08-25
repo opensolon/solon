@@ -5,7 +5,7 @@ import feign.Feign;
 public class FeignConfigurationDefault implements FeignConfiguration{
 
     @Override
-    public void config(FeignClient client, Feign.Builder builder) {
-
+    public Feign.Builder config(FeignClient client, Feign.Builder builder) {
+        return builder;
     }
 }

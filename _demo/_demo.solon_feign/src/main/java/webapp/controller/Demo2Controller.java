@@ -1,10 +1,5 @@
 package webapp.controller;
 
-import feign.Feign;
-import feign.Request;
-import feign.Retryer;
-import feign.jackson.JacksonDecoder;
-import feign.jackson.JacksonEncoder;
 import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XInject;
 import org.noear.solon.annotation.XMapping;
@@ -15,7 +10,7 @@ import webapp.model.User;
 @XMapping("demo2")
 @XController
 public class Demo2Controller {
-    @FeignClient(url="http://127.0.0.1:8080")
+    @FeignClient(url = "http://127.0.0.1:8080/users/")
     RemoteService service;
 
     @XInject
@@ -30,7 +25,7 @@ public class Demo2Controller {
 
     @XMapping("test2")
     public Object test2() {
-        User user = service2.getOwner2("scott");
+        User user = service2.get2("scott");
 
         return user;
     }

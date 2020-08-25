@@ -34,7 +34,7 @@ public class DemoController {
 
     @XMapping("test2")
     public Object test2() {
-        User user = service2.getOwner2("scott");
+        User user = service2.get2("scott");
 
         return user;
     }
