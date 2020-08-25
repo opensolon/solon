@@ -271,7 +271,7 @@ public abstract class AopFactoryBase {
                 }
             }
 
-            //开始广播
+            //动态构建的bean, 可通过广播进行扩展
             XEventBus.push(raw);
 
             //动态构建的bean，都用新生成wrap（否则会类型混乱）
