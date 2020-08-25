@@ -271,6 +271,9 @@ public abstract class AopFactoryBase {
                 }
             }
 
+            //开始广播
+            XEventBus.push(raw);
+
             //动态构建的bean，都用新生成wrap（否则会类型混乱）
             BeanWrap m_bw = new BeanWrap(raw.getClass(), raw);
             Aop.factory().beanRegister(m_bw, beanName);
