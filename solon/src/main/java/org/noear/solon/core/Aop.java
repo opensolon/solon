@@ -67,7 +67,11 @@ public class Aop {
      * 获取bean (clz)
      */
     public static <T> T get(Class<?> clz) {
-        return wrapAndPut(clz).get();
+        if (clz == null) {
+            return null;
+        } else {
+            return wrapAndPut(clz).get();
+        }
     }
 
     /**

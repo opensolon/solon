@@ -38,6 +38,7 @@
         <undertow.ver>2.1.0.Final</undertow.ver>
 
         <mybatis.ver>3.5.3</mybatis.ver>
+        <feign.ver>8.18.0</feign.ver>
     </properties>
 
 
@@ -543,6 +544,7 @@
 
         <module>../_extend2/cron4j-solon-plugin</module>
         <module>../_extend2/dubbo-solon-plugin</module>
+        <module>../_extend2/feign-solon-plugin</module>
 <!--        <module>../_extend2/mqtt-solon-plugin</module>-->
         <module>../_extend2/weed3-solon-plugin</module>
         <module>../_extend2/mybatis-solon-plugin</module>

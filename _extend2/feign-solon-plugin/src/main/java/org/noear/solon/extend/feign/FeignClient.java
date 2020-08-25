@@ -1,0 +1,12 @@
+package org.noear.solon.extend.feign;
+
+import java.lang.annotation.*;
+
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface FeignClient {
+    String name() default "";
+    String url() default "";
+    Class<? extends FeignConfiguration> configuration() default FeignConfigurationDefault.class;
+}
