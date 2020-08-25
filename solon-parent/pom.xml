@@ -356,6 +356,12 @@
                 <artifactId>dubbo-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>feign-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
 <!--            <dependency>-->
 <!--                <groupId>org.noear</groupId>-->
 <!--                <artifactId>mqtt-solon-plugin</artifactId>-->
