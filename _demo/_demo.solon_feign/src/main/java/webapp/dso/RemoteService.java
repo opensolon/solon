@@ -12,5 +12,5 @@ public interface RemoteService {
     String getOwner(@Param(value = "name") String name);
 
     @RequestLine("GET /users/get2?name={name}")
-    User getOwner2(@Param(value = "name") String name);
+    User getOwner2(String name);
 }
