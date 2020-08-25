@@ -32,7 +32,7 @@ public class rpctest implements XHandler {
         rockapi client = new XProxy()
                 .channel(HttpChannel.instance)
                 .serializer(SnackSerializerD.instance)
-                .upstream(name -> root)
+                .upstream(() -> root)
                 .create(rockapi.class);
 
         return client.test1(12);
@@ -44,7 +44,7 @@ public class rpctest implements XHandler {
         rockapi client = new XProxy()
                 .channel(SocketChannel.instance)
                 .serializer(SnackSerializerD.instance)
-                .upstream(name -> root)
+                .upstream(() -> root)
                 .create(rockapi.class);
 
         return client.test1(12);

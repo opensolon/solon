@@ -1,6 +1,7 @@
 package org.noear.solonclient;
 
-import java.lang.reflect.InvocationTargetException;
+import org.noear.solon.core.XUpstream;
+
 import java.lang.reflect.Proxy;
 import java.util.Map;
 

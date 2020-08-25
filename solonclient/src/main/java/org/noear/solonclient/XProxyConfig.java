@@ -1,5 +1,6 @@
 package org.noear.solonclient;
 
+import org.noear.solon.core.XUpstream;
 import org.noear.solonclient.channel.HttpChannel;
 import org.noear.solonclient.serializer.FastjsonSerializerD;
 import org.noear.solonclient.serializer.FormSerializer;

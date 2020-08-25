@@ -18,7 +18,7 @@ public class ComplextModelServiceTest2 {
         IComplexModelService service = new XProxy()
                 .serializer(HessionSerializerD.instance)
                 .deserializer(HessionSerializerD.instance)
-                .upstream((name)->{
+                .upstream(()->{
             return "http://localhost:8080";
         }).create(IComplexModelService.class);
 

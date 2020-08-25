@@ -18,7 +18,7 @@ public class ComplextModelServiceTest4 {
         IComplexModelService service = new XProxy()
                 .serializer(SnackSerializerD.instance_type)
                 .deserializer(SnackSerializerD.instance)
-                .upstream((name)->{
+                .upstream(()->{
             return "http://localhost:8080";
         }).create(IComplexModelService.class);
 
