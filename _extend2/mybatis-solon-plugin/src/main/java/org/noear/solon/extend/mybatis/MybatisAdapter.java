@@ -54,6 +54,10 @@ public class MybatisAdapter {
         //分发事件，推给扩展处理
         XEventBus.push(config);
 
+        init0(config, props);
+    }
+
+    private void init0(Configuration config,Properties props){
         if (props != null) {
             props.forEach((k, v) -> {
                 if (k instanceof String && v instanceof String) {
