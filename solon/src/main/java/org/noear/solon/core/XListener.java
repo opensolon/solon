@@ -3,7 +3,7 @@ package org.noear.solon.core;
 /**
  * 路由监听器（为路由器服务）
  * */
-public class XListener implements XHandler{
+public class XListener{
     public XListener(String path, XMethod method, int index, XHandler handler) {
         _p = path;
         _pr = new PathAnalyzer(path);
@@ -48,10 +48,5 @@ public class XListener implements XHandler{
         }
 
         return _pr.matches(path2);
-    }
-
-    @Override
-    public void handle(XContext ctx) throws Throwable {
-        handler.handle(ctx);
     }
 }
