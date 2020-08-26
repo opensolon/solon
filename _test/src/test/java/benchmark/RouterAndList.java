@@ -1,7 +1,6 @@
 package benchmark;
 
 import org.junit.Test;
-import org.noear.solon.XApp;
 import org.noear.solon.XRouter;
 import org.noear.solon.core.XEndpoint;
 import org.noear.solon.core.XMethod;
@@ -18,7 +17,7 @@ public class RouterAndList {
         assert router.atBefore().size() == 3;
 
         long start = System.currentTimeMillis();
-        for (int i = 1; i < 100000000; i++) {
+        for (int i = 1; i < 1000000; i++) {
             router.atBefore();
         }
 
@@ -38,7 +37,7 @@ public class RouterAndList {
         assert router.atAfter().size() == 3;
 
         long start = System.currentTimeMillis();
-        for (int i = 1; i < 100000000; i++) {
+        for (int i = 1; i < 1000000; i++) {
             router.atAfter();
         }
 
