@@ -1,5 +1,6 @@
 package org.noear.solon.core;
 
+import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.ext.RunnableEx;
@@ -127,6 +128,10 @@ public class XAction extends XHandlerAide {
 
         //前置处理（最多一次渲染）
         handleDo(x, () -> {
+            for (XHandler h : XApp.global().router().atBefore()) {
+                h.handle(x);
+            }
+
             for (XHandler h : _before) {
                 h.handle(x);
             }
@@ -165,6 +170,10 @@ public class XAction extends XHandlerAide {
         }
 
         //后置处理
+        for (XHandler h : XApp.global().router().atAfter()) {
+            h.handle(x);
+        }
+
         for (XHandler h : _after) {
             h.handle(x);
         }

@@ -34,6 +34,8 @@ public class TestApp {
 
         app.get("/",c->c.redirect("/debug.htm"));
 
+        app.before("@@",x -> x.output("test"));
+
         app.plug(new XPlugin() {
             @Override
             public void start(XApp app) {
