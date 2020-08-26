@@ -7,8 +7,8 @@ import org.noear.solon.core.XPlugin;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        if (XBridge.getSessionState() != null
-                && XBridge.getSessionState().priority() >= LocalSessionState.SESSION_STATE_PRIORITY) {
+        if (XBridge.sessionState() != null
+                && XBridge.sessionState().priority() >= LocalSessionState.SESSION_STATE_PRIORITY) {
             return;
         }
 
@@ -16,7 +16,7 @@ public class XPluginImp implements XPlugin {
         LocalSessionState sessionState = LocalSessionState.create();
 
         if (sessionState != null) {
-            XBridge.setSessionState(sessionState);
+            XBridge.sessionStateSet(sessionState);
         }
 
         System.out.println("solon:: Local session state plugin is loaded");

@@ -6,25 +6,25 @@ public class XBridge {
     //
     // SessionState 对接
     //
-    private static XSessionState sessionState = new XSessionStateDefault();
-    private static boolean sessionStateUpdated;
+    private static XSessionState _sessionState = new XSessionStateDefault();
+    private static boolean _sessionStateUpdated;
 
-    public static void setSessionState(XSessionState ss) {
+    public static void sessionStateSet(XSessionState ss) {
         if (ss != null) {
-            sessionState = ss;
+            _sessionState = ss;
 
-            if (sessionStateUpdated == false) {
-                sessionStateUpdated = true;
+            if (_sessionStateUpdated == false) {
+                _sessionStateUpdated = true;
 
                 XApp.global().before("**", XMethod.HTTP, (c) -> {
-                    sessionState.sessionRefresh();
+                    _sessionState.sessionRefresh();
                 });
             }
         }
     }
 
-    public static XSessionState getSessionState() {
-        return sessionState;
+    public static XSessionState sessionState() {
+        return _sessionState;
     }
 
     static class XSessionStateDefault implements XSessionState {
@@ -48,15 +48,15 @@ public class XBridge {
     //
     // UpstreamFactory 对接
     //
-    private static XUpstreamFactory upstreamFactory = (service -> {
-        throw new RuntimeException("Uninitialized XUpstreamFactory");
+    private static XUpstreamFactory _upstreamFactory = (service -> {
+        throw new RuntimeException("Uninitialized upstreamFactory");
     });
 
-    public static XUpstreamFactory getUpstreamFactory() {
-        return upstreamFactory;
+    public static XUpstreamFactory upstreamFactory() {
+        return _upstreamFactory;
     }
 
-    public static void setUpstreamFactory(XUpstreamFactory uf) {
-        upstreamFactory = uf;
+    public static void upstreamFactorySet(XUpstreamFactory uf) {
+        _upstreamFactory = uf;
     }
 }

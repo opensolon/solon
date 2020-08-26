@@ -7,8 +7,8 @@ import org.noear.solon.core.XPlugin;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        if (XBridge.getSessionState() != null
-                && XBridge.getSessionState().priority() >= RedisSessionState.SESSION_STATE_PRIORITY) {
+        if (XBridge.sessionState() != null
+                && XBridge.sessionState().priority() >= RedisSessionState.SESSION_STATE_PRIORITY) {
             return;
         }
         /*
@@ -24,7 +24,7 @@ public class XPluginImp implements XPlugin {
         RedisSessionState sessionState = RedisSessionState.create();
 
         if(sessionState != null){
-            XBridge.setSessionState(sessionState);
+            XBridge.sessionStateSet(sessionState);
         }
 
         System.out.println("solon:: Redis session state plugin is loaded");

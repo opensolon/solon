@@ -272,7 +272,7 @@ public abstract class XContext {
     public abstract XMap headerMap();
 
     /**SESSION_STATE对象*/
-    private XSessionState _sessionState = XBridge.getSessionState();
+    private XSessionState _sessionState = XBridge.sessionState();
     protected void sessionStateInit(XSessionState sessionState){
         if(_sessionState.replaceable()){
             _sessionState = sessionState;
