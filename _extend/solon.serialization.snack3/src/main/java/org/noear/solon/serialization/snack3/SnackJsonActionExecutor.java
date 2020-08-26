@@ -1,12 +1,12 @@
 package org.noear.solon.serialization.snack3;
 
 import org.noear.snack.ONode;
-import org.noear.solon.core.XActionExecutor;
+import org.noear.solon.core.XActionExecutorDefault;
 import org.noear.solon.core.XContext;
 
 import java.lang.reflect.Parameter;
 
-public class SnackJsonActionExecutor extends XActionExecutor {
+public class SnackJsonActionExecutor extends XActionExecutorDefault {
     private static final String label = "/json";
 
     @Override

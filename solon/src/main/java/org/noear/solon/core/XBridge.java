@@ -2,6 +2,9 @@ package org.noear.solon.core;
 
 import org.noear.solon.XApp;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class XBridge {
     //
     // SessionState 对接
@@ -58,5 +61,38 @@ public class XBridge {
 
     public static void upstreamFactorySet(XUpstreamFactory uf) {
         _upstreamFactory = uf;
+    }
+
+
+    //
+    // XActionExecutor 对接
+    //
+
+    /**
+     * 动作默认执行器
+     * */
+    private static XActionExecutor _actionExecutorDef = new XActionExecutorDefault();
+    /**
+     * 动作执行库
+     * */
+    private static Set<XActionExecutor> _actionExecutors = new HashSet<>();
+
+    public static XActionExecutor actionExecutorDef() {
+        return _actionExecutorDef;
+    }
+
+    public static void actionExecutorDefSet(XActionExecutor ae) {
+        _actionExecutorDef = ae;
+    }
+
+    public static Set<XActionExecutor> actionExecutors() {
+        return _actionExecutors;
+    }
+
+    /**
+     * 添加动作执行器
+     * */
+    public static void actionExecutorAdd(XActionExecutor executor){
+        _actionExecutors.add(executor);
     }
 }

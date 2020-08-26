@@ -146,7 +146,7 @@ public class XAction extends XHandlerAide {
                     }
                 }
 
-                Object tmp = callDo(x, obj);
+                Object tmp = callDo(x, obj, _mw);
 
                 //如果是主处理（不支持非主控的返回值；有可能是拦截器）
                 if (_poi_main) {
@@ -199,8 +199,16 @@ public class XAction extends XHandlerAide {
     /**
      * 执行动作（便于重写）
      */
-    protected Object callDo(XContext x, Object obj) throws Throwable {
-        return XActionUtil.exeMethod(x, obj, _mw);
+    protected Object callDo(XContext ctx, Object obj, MethodWrap mWrap) throws Throwable {
+        String ct = ctx.contentType();
+
+        for (XActionExecutor me : XBridge.actionExecutors()) {
+            if (me.matched(ctx, ct)) {
+                return me.execute(ctx, obj, mWrap);
+            }
+        }
+
+        return XBridge.actionExecutorDef().execute(ctx, obj, mWrap);
     }
 
     /**

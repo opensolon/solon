@@ -1,14 +1,14 @@
 package org.noear.solon.serialization.hession;
 
 import com.caucho.hessian.io.Hessian2Input;
-import org.noear.solon.core.XActionExecutor;
+import org.noear.solon.core.XActionExecutorDefault;
 import org.noear.solon.core.XContext;
 
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Parameter;
 import java.util.Map;
 
-public class HessianActionExecutor extends XActionExecutor {
+public class HessianActionExecutor extends XActionExecutorDefault {
     private static final String label = "application/hessian";
 
     @Override

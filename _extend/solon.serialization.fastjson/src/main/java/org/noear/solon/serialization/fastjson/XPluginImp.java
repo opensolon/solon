@@ -1,7 +1,7 @@
 package org.noear.solon.serialization.fastjson;
 
 import org.noear.solon.XApp;
-import org.noear.solon.core.XActionUtil;
+import org.noear.solon.core.XBridge;
 import org.noear.solon.core.XRenderManager;
 import org.noear.solon.core.XPlugin;
 
@@ -17,6 +17,6 @@ public class XPluginImp implements XPlugin {
         XRenderManager.mapping("@type_json", new FastjsonRender(true));
 
         //支持Json内容类型执行
-        XActionUtil.register(new FastjsonJsonActionExecutor());
+        XBridge.actionExecutorAdd(new FastjsonJsonActionExecutor());
     }
 }
