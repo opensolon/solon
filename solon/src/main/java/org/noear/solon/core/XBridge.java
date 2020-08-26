@@ -5,6 +5,9 @@ import org.noear.solon.XApp;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 内部扩展桥接器
+ * */
 public class XBridge {
     //
     // SessionState 对接
