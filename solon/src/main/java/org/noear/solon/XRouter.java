@@ -1,6 +1,5 @@
 package org.noear.solon;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.noear.solon.core.*;
 
 import java.util.*;
