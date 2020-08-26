@@ -127,15 +127,17 @@ public class XAction extends XHandlerAide {
          * */
 
         //前置处理（最多一次渲染）
-        handleDo(x, () -> {
-            for (XHandler h : XApp.global().router().atBefore()) {
-                h.handle(x);
-            }
+        if (_poi_main) {
+            handleDo(x, () -> {
+                for (XHandler h : XApp.global().router().atBefore()) {
+                    h.handle(x);
+                }
 
-            for (XHandler h : _before) {
-                h.handle(x);
-            }
-        });
+                for (XHandler h : _before) {
+                    h.handle(x);
+                }
+            });
+        }
 
 
         //主体处理（最多一次渲染）
@@ -170,12 +172,14 @@ public class XAction extends XHandlerAide {
         }
 
         //后置处理
-        for (XHandler h : XApp.global().router().atAfter()) {
-            h.handle(x);
-        }
+        if (_poi_main) {
+            for (XHandler h : XApp.global().router().atAfter()) {
+                h.handle(x);
+            }
 
-        for (XHandler h : _after) {
-            h.handle(x);
+            for (XHandler h : _after) {
+                h.handle(x);
+            }
         }
     }
 
