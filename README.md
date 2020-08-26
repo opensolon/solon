@@ -14,6 +14,7 @@
 * 支持Http（Serverlet 或 非Serverlet），WebSocket，Socket信号接入
 * 插件可扩展可切换：启动插件，扩展插件，序列化插件，会话状态插件，视图插件(可共存) 等...
 
+
 ### Hello world：
 
 ```java
