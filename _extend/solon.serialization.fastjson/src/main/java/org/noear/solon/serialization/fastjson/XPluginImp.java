@@ -13,8 +13,8 @@ public class XPluginImp implements XPlugin {
         output_meta = app.prop().getInt("solon.output.meta", 0) > 0;
 
         //XRenderManager.register(render);
-        XRenderManager.mapping("@json", new FastjsonRender(false));
-        XRenderManager.mapping("@type_json", new FastjsonRender(true));
+        XBridge.renderMapping("@json", new FastjsonRender(false));
+        XBridge.renderMapping("@type_json", new FastjsonRender(true));
 
         //支持Json内容类型执行
         XBridge.actionExecutorAdd(new FastjsonJsonActionExecutor());

@@ -1,6 +1,7 @@
 package org.noear.solon.serialization.gson;
 
 import org.noear.solon.XApp;
+import org.noear.solon.core.XBridge;
 import org.noear.solon.core.XRenderManager;
 import org.noear.solon.core.XPlugin;
 
@@ -11,8 +12,7 @@ public class XPluginImp implements XPlugin {
     public void start(XApp app) {
         output_meta = app.prop().getInt("solon.output.meta", 0) > 0;
 
-        //XRenderManager.register(render);
-        XRenderManager.mapping("@json", new GsonRender(false));
-        XRenderManager.mapping("@type_json", new GsonRender(true));
+        XBridge.renderMapping("@json", new GsonRender(false));
+        XBridge.renderMapping("@type_json", new GsonRender(true));
     }
 }

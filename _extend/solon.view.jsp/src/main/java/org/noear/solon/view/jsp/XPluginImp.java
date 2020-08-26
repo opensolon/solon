@@ -2,6 +2,7 @@ package org.noear.solon.view.jsp;
 
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.core.XBridge;
 import org.noear.solon.core.XRenderManager;
 import org.noear.solon.core.XPlugin;
 import org.noear.solon.ext.PrintUtil;
@@ -20,7 +21,7 @@ public class XPluginImp implements XPlugin {
 
         JspRender render = JspRender.global();
 
-        XRenderManager.register(render);
-        XRenderManager.mapping(".jsp", render);
+        XBridge.renderRegister(render);
+        XBridge.renderMapping(".jsp", render);
     }
 }

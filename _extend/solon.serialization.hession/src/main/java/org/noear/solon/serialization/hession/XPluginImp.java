@@ -15,8 +15,7 @@ public class XPluginImp implements XPlugin {
         HessionRender render = new HessionRender();
 
         //XRenderManager.register(render);
-        XRenderManager.mapping("@hession",render);
-
+        XBridge.renderMapping("@hession",render);
         XBridge.actionExecutorAdd(new HessianActionExecutor());
     }
 }

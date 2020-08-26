@@ -1,6 +1,7 @@
 package org.noear.solon.serialization.avro;
 
 import org.noear.solon.XApp;
+import org.noear.solon.core.XBridge;
 import org.noear.solon.core.XRenderManager;
 import org.noear.solon.core.XPlugin;
 
@@ -12,6 +13,6 @@ public class XPluginImp implements XPlugin {
         output_meta = app.prop().getInt("solon.output.meta", 0) > 0;
 
         //XRenderManager.register(render);
-        XRenderManager.mapping("@avro", new AvroRender());
+        XBridge.renderMapping("@avro", new AvroRender());
     }
 }

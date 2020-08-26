@@ -3,6 +3,7 @@ package org.noear.solon.view.beetl;
 import org.beetl.core.tag.Tag;
 import org.noear.solon.XApp;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.XBridge;
 import org.noear.solon.core.XRenderManager;
 import org.noear.solon.core.XPlugin;
 
@@ -31,7 +32,7 @@ public class XPluginImp implements XPlugin {
             });
         });
 
-        XRenderManager.register(render);
-        XRenderManager.mapping(".htm",render);
+        XBridge.renderRegister(render);
+        XBridge.renderMapping(".htm",render);
     }
 }
