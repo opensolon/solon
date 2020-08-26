@@ -129,6 +129,7 @@ public class XAction extends XHandlerAide {
         //前置处理（最多一次渲染）
         if (_poi_main) {
             handleDo(x, () -> {
+
                 for (XHandler h : XApp.global().router().atBefore()) {
                     h.handle(x);
                 }
