@@ -89,6 +89,7 @@ public class XRouter {
         return _list[endpoint].stream()
                 .filter(l -> l.matches(method, path))
                 .sorted(Comparator.comparingInt(l -> l.index))
+                .map(l->l.handler)
                 .collect(Collectors.toList());
     }
 
