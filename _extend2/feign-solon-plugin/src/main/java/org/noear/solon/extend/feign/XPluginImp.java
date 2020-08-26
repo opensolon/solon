@@ -43,7 +43,7 @@ public class XPluginImp implements XPlugin {
         FeignTarget target = null;
 
         if (XUtil.isEmpty(anno.url())) {
-            target = new FeignTarget(clz, anno.name(), anno.path(), XUpstreamFactory.global.create(anno.name()));
+            target = new FeignTarget(clz, anno.name(), anno.path(), XBridge.upstreamFactory.create(anno.name()));
         } else {
             target = new FeignTarget(clz, anno.name(), anno.path(), () -> anno.url());
         }

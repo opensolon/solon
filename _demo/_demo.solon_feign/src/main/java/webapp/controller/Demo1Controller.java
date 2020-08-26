@@ -10,9 +10,9 @@ import org.noear.solon.annotation.XMapping;
 import webapp.dso.RemoteService;
 import webapp.model.User;
 
-@XMapping("demo")
+@XMapping("demo1")
 @XController
-public class DemoController {
+public class Demo1Controller {
     RemoteService service = Feign.builder()
             .options(new Request.Options(1000, 3500))
             .retryer(new Retryer.Default(5000, 5000, 3))
