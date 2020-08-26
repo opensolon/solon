@@ -10,7 +10,7 @@ import webapp.model.User;
 @XMapping("demo2")
 @XController
 public class Demo2Controller {
-    @FeignClient(url = "http://127.0.0.1:8080")
+    @FeignClient(url = "http://127.0.0.1:8080", path = "/users/")
     RemoteService2 service;
 
     @XInject

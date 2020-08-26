@@ -107,17 +107,14 @@ public class AopFactory extends AopFactoryBase {
         }
 
         //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
-        XScaner.scan(dir, n -> n.endsWith(".class"))
-                .stream()
-                .map(name -> {
-                    String className = name.substring(0, name.length() - 6);
-                    return XUtil.loadClass(className.replace("/", "."));
-                })
-                .forEach((clz) -> {
-                    if (clz != null) {
-                        tryCreateBean(clz);
-                    }
-                });
+        XScaner.scan(dir, n -> n.endsWith(".class")).forEach(name -> {
+            String className = name.substring(0, name.length() - 6);
+
+            Class<?> clz = XUtil.loadClass(className.replace("/", "."));
+            if (clz != null) {
+                tryCreateBean(clz);
+            }
+        });
 
         //尝试加载事件（不用函数包装，是为了减少代码）
         if (loaded) {
