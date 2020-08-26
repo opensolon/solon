@@ -1,17 +1,23 @@
 package org.noear.solon;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.noear.solon.core.*;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * 通用路由器
  * */
 public class XRouter {
-    private final XListenerList[] _list = {new XListenerList(), new XListenerList(), new XListenerList()};
+    private final XListenerList[] _list = {
+            new XListenerList(), //before:0
+            new XListenerList(), //main
+            new XListenerList(), //after:2
+
+            new XListenerList(), //at before:3
+            new XListenerList(),
+            new XListenerList()}; //at after:5
 
     /**
      * 添加路由关系
@@ -31,7 +37,18 @@ public class XRouter {
      * 添加路由关系
      */
     public void add(String path, int endpoint, XMethod method, int index, XHandler handler) {
-        _list[endpoint].add(new XListener(path, method, index, handler));
+        XListener xl = new XListener(path, method, index, handler);
+
+        if ("@@".equals(path)) {
+            endpoint += 3;
+
+            XListenerList tmp = new XListenerList(_list[endpoint]);
+            tmp.add(xl);
+            tmp.sort(Comparator.comparing(l -> l.index));
+            _list[endpoint] = tmp;
+        }else{
+            _list[endpoint].add(xl);
+        }
     }
 
     /**
@@ -41,6 +58,10 @@ public class XRouter {
         _list[0].clear();
         _list[1].clear();
         _list[2].clear();
+
+        _list[3].clear();
+        _list[4].clear();
+        _list[5].clear();
     }
 
     /**
@@ -66,26 +87,27 @@ public class XRouter {
         String path = context.path();
         XMethod method = XMethod.valueOf(context.method());
 
-        return matchAllDo(path, method, endpoint);
-    }
-
-    private List<XHandler> matchAllDo(String path, XMethod method, int endpoint) {
         return _list[endpoint].stream()
                 .filter(l -> l.matches(method, path))
                 .sorted(Comparator.comparingInt(l -> l.index))
-                .map(l -> l.handler)
                 .collect(Collectors.toList());
     }
 
-    public List<XHandler> atBefore() {
-        return matchAllDo("@@", XMethod.ALL, XEndpoint.before);
+    public List<XListener> atBefore() {
+        return Collections.unmodifiableList(_list[3]);
     }
 
-    public List<XHandler> atAfter() {
-        return matchAllDo("@@", XMethod.ALL, XEndpoint.after);
+    public List<XListener> atAfter() {
+        return Collections.unmodifiableList(_list[5]);
     }
 
     public static class XListenerList extends ArrayList<XListener> {
+        public XListenerList(){
+            super();
+        }
 
+        public XListenerList(Collection<XListener> coll){
+            super(coll);
+        }
     }
 }
