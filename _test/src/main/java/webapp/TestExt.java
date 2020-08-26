@@ -2,6 +2,7 @@ package webapp;
 
 import org.noear.solon.XApp;
 import org.noear.solon.annotation.XBean;
+import org.noear.solon.core.XAction;
 import org.noear.solon.core.XPlugin;
 import webapp.demo2_mvc.MappingController;
 import webapp.demo2_mvc.ParamController;
@@ -15,7 +16,12 @@ public class TestExt implements XPlugin {
 
         app.get("/",c->c.redirect("/debug.htm"));
 
-        app.before("@@",x -> x.output("test"));
+        app.before("@@",x -> {
+            XAction action = x.attr("action");
+            if(action != null){
+                return;
+            }
+        });
 
         app.plug(new XPlugin() {
             @Override
