@@ -1,10 +1,8 @@
 package features;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
-import org.noear.solon.XApp;
 import org.noear.solon.annotation.XInject;
 import org.noear.solon.test.SolonBootTest;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
