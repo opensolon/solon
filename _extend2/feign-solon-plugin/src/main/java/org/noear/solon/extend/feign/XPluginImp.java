@@ -11,6 +11,11 @@ import org.noear.solon.core.*;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
+        //检查是否启用了@FeignClient
+        if (app.source().getAnnotation(EnableFeignClients.class) == null) {
+            return;
+        }
+
         Aop.factory().beanCreatorAdd(FeignClient.class, (clz, wrap, anno) -> {
             Aop.wrapAndPut(clz, getProxy(clz, anno));
         });
@@ -38,9 +43,9 @@ public class XPluginImp implements XPlugin {
         FeignTarget target = null;
 
         if (XUtil.isEmpty(anno.url())) {
-            target = new FeignTarget(clz, anno.name(), XUpstreamFactory.global.create(anno.name()));
+            target = new FeignTarget(clz, anno.name(), anno.path(), XUpstreamFactory.global.create(anno.name()));
         } else {
-            target = new FeignTarget(clz, anno.name(), () -> anno.url());
+            target = new FeignTarget(clz, anno.name(), anno.path(), () -> anno.url());
         }
 
         return builder.target(target);

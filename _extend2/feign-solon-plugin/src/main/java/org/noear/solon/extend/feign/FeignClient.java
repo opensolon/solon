@@ -8,5 +8,6 @@ import java.lang.annotation.*;
 public @interface FeignClient {
     String name() default "";
     String url() default "";
+    String path() default "";
     Class<? extends FeignConfiguration> configuration() default FeignConfigurationDefault.class;
 }
