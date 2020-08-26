@@ -38,14 +38,14 @@ public class XRouter {
     public void add(String path, int endpoint, XMethod method, int index, XHandler handler) {
         XListener xl = new XListener(path, method, index, handler);
 
-        if ("@@".equals(path)) {
+        if (endpoint != XEndpoint.main && "@@".equals(path)) {
             endpoint += 3;
 
             XListenerList tmp = new XListenerList(_list[endpoint]);
             tmp.add(xl);
             tmp.sort(Comparator.comparing(l -> l.index));
             _list[endpoint] = tmp;
-        }else{
+        } else {
             _list[endpoint].add(xl);
         }
     }
