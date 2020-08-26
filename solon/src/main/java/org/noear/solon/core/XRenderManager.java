@@ -26,13 +26,13 @@ public class XRenderManager implements XRender {
     }
 
     //不能放上面
-    public static XRenderManager global = new XRenderManager();
+    public static XRender global = new XRenderManager();
 
 
     /**
      * 登记渲染器
      */
-    public static void register(XRender render) {
+    protected static void register(XRender render) {
         _def = render;
         _lib.put(render.getClass().getSimpleName(), render);
         _lib.put(render.getClass().getName(), render);
@@ -46,7 +46,7 @@ public class XRenderManager implements XRender {
      *
      * @param suffix = .ftl
      */
-    public static void mapping(String suffix, XRender render) {
+    protected static void mapping(String suffix, XRender render) {
         //suffix=.ftl
         _mapping.put(suffix, render);
 
@@ -58,7 +58,7 @@ public class XRenderManager implements XRender {
      *
      * @param suffix = .ftl
      */
-    public static void mapping(String suffix, String className) {
+    protected static void mapping(String suffix, String className) {
         XRender render = _lib.get(className);
         if (render == null) {
             PrintUtil.redln("solon:: " + className + " not exists!");

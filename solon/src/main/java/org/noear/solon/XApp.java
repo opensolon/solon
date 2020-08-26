@@ -98,7 +98,7 @@ public class XApp implements XHandler,XHandlerSlots {
         //6.加载渲染关系
         XMap map = _global.prop().getXmap("solon.view.mapping");
         map.forEach((k, v) -> {
-            XRenderManager.mapping("." + k, v);
+            XBridge.renderMapping("." + k, v);
         });
 
         long time_end = System.currentTimeMillis();

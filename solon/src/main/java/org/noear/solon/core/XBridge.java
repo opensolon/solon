@@ -70,11 +70,11 @@ public class XBridge {
 
     /**
      * 动作默认执行器
-     * */
+     */
     private static XActionExecutor _actionExecutorDef = new XActionExecutorDefault();
     /**
      * 动作执行库
-     * */
+     */
     private static Set<XActionExecutor> _actionExecutors = new HashSet<>();
 
     public static XActionExecutor actionExecutorDef() {
@@ -91,8 +91,24 @@ public class XBridge {
 
     /**
      * 添加动作执行器
-     * */
-    public static void actionExecutorAdd(XActionExecutor executor){
+     */
+    public static void actionExecutorAdd(XActionExecutor executor) {
         _actionExecutors.add(executor);
+    }
+
+
+    //
+    // XRender 对接
+    //
+    public static void renderRegister(XRender render) {
+        XRenderManager.register(render);
+    }
+
+    public static void renderMapping(String suffix, XRender render) {
+        XRenderManager.mapping(suffix, render);
+    }
+
+    public static void renderMapping(String suffix, String className) {
+        XRenderManager.mapping(suffix, className);
     }
 }
