@@ -26,19 +26,19 @@ public class XListener implements XHandler{
      * */
     public boolean matches(XMethod method2, String path2) {
         if (XMethod.ALL.code == _m.code) {
-            return do_matches(path2);
+            return matches0(path2);
         } else if (XMethod.HTTP.code == _m.code) { //不是null时，不能用==
             if (method2.isHttpMethod()) {
-                return do_matches(path2);
+                return matches0(path2);
             }
         } else if (method2.code == _m.code) {
-            return do_matches(path2);
+            return matches0(path2);
         }
 
         return false;
     }
 
-    private boolean do_matches(String path2){
+    private boolean matches0(String path2){
         if("**".equals(_p)){
             return true;
         }
