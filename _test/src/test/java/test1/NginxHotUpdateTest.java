@@ -2,7 +2,7 @@ package test1;
 
 import org.junit.Test;
 
-public class NginxTest {
+public class NginxHotUpdateTest {
     @Test
     public void test1() throws Exception {
         new Thread(() -> {
