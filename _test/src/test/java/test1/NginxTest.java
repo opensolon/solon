@@ -13,7 +13,7 @@ public class NginxTest {
     }
 
     private void test1Do() {
-        String url = "http://139.196.28.6:1013/getAppByID?appID=10970";
+        String url = "http://rock2.zmapi.cn/getAppByID?appID=10970";
 
         while (true) {
             try {
