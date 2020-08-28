@@ -15,17 +15,31 @@ public class DubboAdapter {
     protected ApplicationConfig application;
     protected Map<String, ReferenceConfig> refMap = new ConcurrentHashMap<>();
 
+    private boolean enableService;
+    private boolean enableReference;
+
     private static DubboAdapter _global;
 
-    public static DubboAdapter global() {
+    public static DubboAdapter global(XApp app) {
         if (_global == null) {
-            _global = new DubboAdapter();
+            _global = new DubboAdapter(app);
         }
 
         return _global;
     }
 
-    private DubboAdapter() {
+    public boolean isEnableReference() {
+        return enableReference;
+    }
+
+    public boolean isEnableService() {
+        return enableService;
+    }
+
+    private DubboAdapter(XApp app) {
+        enableService = app.source().getAnnotation(EnableDubboService.class)!=null;
+        enableReference = app.source().getAnnotation(EnableDubboReference.class)!=null;
+
         // 当前应用配置
         //
         XMap props = null;
@@ -63,7 +77,7 @@ public class DubboAdapter {
 
         // 服务提供者协议配置
         //
-        {
+        if(enableService){
             ProtocolConfig protocol = new ProtocolConfig();
             props = XApp.cfg().getXmap("dubbo.protocol");
             if (props.containsKey("name") == false) {
@@ -76,7 +90,9 @@ public class DubboAdapter {
             ApplicationModel.getConfigManager().addProtocol(protocol);
         }
 
-        {
+        // 服务消费者配置
+        //
+        if(enableReference){
             ConsumerConfig  consumer = new ConsumerConfig();
             props = XApp.cfg().getXmap("dubbo.consumer");
             if (props.containsKey("check") == false) {
