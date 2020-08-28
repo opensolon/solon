@@ -13,35 +13,34 @@ public class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
+        if (app.source().getAnnotation(EnableDubbo.class) == null) {
+            return;
+        }
+
         _server = DubboAdapter.global(app);
 
-
-        if (_server.isEnableService()) {
-            //支持duboo.Service注解
-            Aop.factory().beanCreatorAdd(Service.class, ((clz, bw, anno) -> {
-                Class<?>[] ifs = bw.clz().getInterfaces();
-                if (ifs.length > 0) {
-                    ServiceConfig cfg = new ServiceConfig(anno);
-                    if (cfg.getInterface() == null) {
-                        cfg.setInterface(ifs[0]);
-                    }
-                    cfg.setRef(bw.raw());
-
-                    // 暴露及注册服务
-                    _server.regService(cfg);
+        //支持duboo.Service注解
+        Aop.factory().beanCreatorAdd(Service.class, ((clz, bw, anno) -> {
+            Class<?>[] ifs = bw.clz().getInterfaces();
+            if (ifs.length > 0) {
+                ServiceConfig cfg = new ServiceConfig(anno);
+                if (cfg.getInterface() == null) {
+                    cfg.setInterface(ifs[0]);
                 }
-            }));
-        }
+                cfg.setRef(bw.raw());
 
-        if (_server.isEnableService()) {
-            //支持dubbo.Reference注入
-            Aop.factory().beanInjectorAdd(Reference.class, ((fwT, anno) -> {
-                if (fwT.getType().isInterface()) {
-                    Object raw = _server.getService(fwT.getType(), anno);
-                    fwT.setValue(raw);
-                }
-            }));
-        }
+                // 暴露及注册服务
+                _server.regService(cfg);
+            }
+        }));
+
+        //支持dubbo.Reference注入
+        Aop.factory().beanInjectorAdd(Reference.class, ((fwT, anno) -> {
+            if (fwT.getType().isInterface()) {
+                Object raw = _server.getService(fwT.getType(), anno);
+                fwT.setValue(raw);
+            }
+        }));
     }
 
 
