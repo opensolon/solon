@@ -13,13 +13,10 @@ public class TranSessionImp extends DbTran implements TranSession {
     }
 
     @Override
-    public void open() throws SQLException {
+    public void start() throws SQLException {
         connect();
         begin();
-    }
 
-    @Override
-    public void start() {
         DbTranUtil.currentSet(this);
     }
 

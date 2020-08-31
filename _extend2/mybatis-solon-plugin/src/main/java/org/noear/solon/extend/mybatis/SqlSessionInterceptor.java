@@ -3,7 +3,6 @@ package org.noear.solon.extend.mybatis;
 import org.apache.ibatis.reflection.ExceptionUtil;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.noear.solon.extend.mybatis.tran.DbTranUtil;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -17,7 +16,7 @@ public class SqlSessionInterceptor implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        SqlSession session = DbTranUtil.current();
+        SqlSession session = TranUtil.current();
         Boolean has_close = false;
         if (session == null) {
             has_close = true;

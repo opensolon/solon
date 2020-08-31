@@ -3,8 +3,7 @@ package org.noear.solon.core;
 import java.sql.SQLException;
 
 public interface TranSession {
-    void open() throws SQLException;
-    void start();
+    void start() throws SQLException;
     void commit() throws SQLException;
     void rollback() throws SQLException;
     void end();

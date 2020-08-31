@@ -13,7 +13,6 @@ import java.util.function.Consumer;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        //XBridge.tranFactorySet(TranFactoryImp.singleton());
 
         XBridge.tranSessionFactorySet(new TranSessionFactoryImp());
 

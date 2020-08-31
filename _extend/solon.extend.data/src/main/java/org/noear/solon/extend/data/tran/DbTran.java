@@ -13,7 +13,6 @@ public abstract class DbTran extends DbTranNode implements Tran {
 
     public void execute(RunnableEx runnable) throws Throwable {
         try {
-            session.open();
             session.start();
 
             DbTranUtil.currentSet(this);
