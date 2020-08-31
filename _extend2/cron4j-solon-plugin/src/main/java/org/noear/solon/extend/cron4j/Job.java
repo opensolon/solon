@@ -8,5 +8,6 @@ import java.lang.annotation.*;
 public @interface Job {
     String cron4x();
     boolean enable() default true;
+    String name() default "";
 }
 
