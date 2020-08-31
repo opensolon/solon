@@ -9,11 +9,6 @@ public class TranGroupImp extends DbTranQueue implements Tran {
     }
 
     @Override
-    public boolean isGroup() {
-        return true;
-    }
-
-    @Override
     public void add(Tran node) {
         if (node instanceof DbTran) {
             ((DbTran) node).join(this);

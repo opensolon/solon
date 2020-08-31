@@ -13,8 +13,7 @@ public class TranMandatoryImp implements Tran {
     public void apply(RunnableEx runnable) throws Throwable {
         //获取当前事务
         //
-        DbTran tran = DbTranUtil.current();
-        if (tran == null) {
+        if (DbTranUtil.current() == null) {
             //必须要有事务
             throw new RuntimeException("You must have the same source transaction");
         } else {

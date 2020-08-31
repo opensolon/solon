@@ -116,7 +116,7 @@ public class TranExecutorImp implements TranExecutor {
         }
 
 
-        if (before.tran.isGroup()) {
+        if (before.anno.group()) {
             //如果之前的是事务组，则新建事务加入访事务组  //入栈，供后来事务用
             //
             Tran tran = factory().create(anno);

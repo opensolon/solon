@@ -6,16 +6,8 @@ import org.noear.solon.ext.RunnableEx;
  * 事务
  * */
 public interface Tran {
-
     /**
-     * 是否为事务组
-     */
-    default boolean isGroup() {
-        return false;
-    }
-
-    /**
-     * 添加事务（当前为事务队列时，可添加）
+     * 添加从事务
      */
     default void add(Tran slave) {
     }

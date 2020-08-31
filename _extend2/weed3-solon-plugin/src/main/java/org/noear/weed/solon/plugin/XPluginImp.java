@@ -15,6 +15,8 @@ public class XPluginImp implements XPlugin {
     public void start(XApp app) {
         //XBridge.tranFactorySet(TranFactoryImp.singleton());
 
+        XBridge.tranSessionFactorySet(new TranSessionFactoryImp());
+
         Aop.factory().beanCreatorAdd(Db.class, (clz, bw, anno) -> {
             if (clz.isInterface()) {
                 getMapper(clz, anno, null, (raw) -> {

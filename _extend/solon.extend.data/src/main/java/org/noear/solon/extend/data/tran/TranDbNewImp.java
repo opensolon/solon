@@ -14,7 +14,7 @@ public class TranDbNewImp extends DbTran implements Tran {
     public void apply(RunnableEx runnable) throws Throwable {
         //获取当前事务
         //
-        DbTran tran = DbTranUtil.current();
+        Tran tran = DbTranUtil.current();
 
         try {
             //移除事务
