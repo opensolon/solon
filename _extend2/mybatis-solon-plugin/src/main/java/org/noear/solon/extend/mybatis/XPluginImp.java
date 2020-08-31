@@ -10,7 +10,7 @@ import org.noear.solon.extend.mybatis.tran.TranFactoryImp;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        TranManger.setFactory(TranFactoryImp.singleton());
+        XBridge.tranFactorySet(TranFactoryImp.singleton());
 
         Aop.factory().beanCreatorAdd(Db.class, (clz, wrap, anno)->{
             if(XUtil.isEmpty(anno.value()) || clz.isInterface() == false){
