@@ -2,12 +2,12 @@ package org.noear.solon.extend.data.tran;
 
 
 import org.noear.solon.core.Tran;
-import org.noear.solon.core.TranSessionFactory;
+import org.noear.solon.core.TranSession;
 import org.noear.solon.ext.RunnableEx;
 
 public class TranDbNewImp extends DbTran implements Tran {
-    public TranDbNewImp(TranSessionFactory factory) {
-        super(factory);
+    public TranDbNewImp(TranSession session){
+        super(session);
     }
 
     @Override

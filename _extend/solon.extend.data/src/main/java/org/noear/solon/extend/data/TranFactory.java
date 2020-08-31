@@ -2,10 +2,7 @@ package org.noear.solon.extend.data;
 
 
 import org.noear.solon.annotation.XTran;
-import org.noear.solon.core.Tran;
-import org.noear.solon.core.TranPolicy;
-import org.noear.solon.core.TranSessionFactory;
-import org.noear.solon.core.XBridge;
+import org.noear.solon.core.*;
 import org.noear.solon.ext.RunnableEx;
 import org.noear.solon.extend.data.tran.*;
 
@@ -43,17 +40,23 @@ public final class TranFactory {
         } else {
             //事务
             //
-            TranSessionFactory tmp = XBridge.tranSessionFactory();
+            TranSessionFactory factory = XBridge.tranSessionFactory();
 
-            if (tmp == null) {
+            if(factory == null){
+                throw new RuntimeException("Final initialization of tranSessionFactory");
+            }
+
+            TranSession session = factory.create(anno.value());
+
+            if (session == null) {
                 throw new RuntimeException("@XTran annotation failed");
             }
 
             if (anno.policy() == TranPolicy.requires_new
                     || anno.policy() == TranPolicy.nested) {
-                return new TranDbNewImp(tmp);
+                return new TranDbNewImp(session);
             } else {
-                return new TranDbImp(tmp);
+                return new TranDbImp(session);
             }
         }
     }

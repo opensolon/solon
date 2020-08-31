@@ -13,12 +13,6 @@ public class DbTran {
     private final SqlSessionFactory _factory;
 
     private ConsumerEx<DbTran> _handler = null;
-    public Object result;
-    private boolean _isSucceed = false;
-
-    public boolean isSucceed() {
-        return this._isSucceed;
-    }
 
     public DbTran join(DbTranQueue queue) {
         if (queue != null) {
@@ -43,9 +37,7 @@ public class DbTran {
             DbTranUtil.currentSet(session2);
             handler.accept(this);
             this.commit(false);
-            this._isSucceed = true;
         } catch (Exception var6) {
-            this._isSucceed = false;
             if (this.queue == null) {
                 this.rollback(false);
             } else {
