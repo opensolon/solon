@@ -57,14 +57,18 @@ public class XPluginImp implements XPlugin {
         });
     }
 
-    private void scheduleAdd(String name, String cron4x, boolean enable,  BeanWrap bw) {
+    private void scheduleAdd(String name, String cron4x, boolean enable, BeanWrap bw) {
+        if (enable == false) {
+            return;
+        }
+
         if (Task.class.isAssignableFrom(bw.clz())) {
             if (cron4x.indexOf(" ") < 0) {
                 throw new RuntimeException("Job only supported Runnable：" + bw.clz().getName());
             }
         }
 
-        JobManager.addJob(new JobEntity(name,cron4x,enable,bw));
+        JobManager.addJob(new JobEntity(name, cron4x, enable, bw));
     }
 
     @Override

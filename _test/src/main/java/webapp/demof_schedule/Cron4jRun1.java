@@ -7,7 +7,7 @@ public class Cron4jRun1 implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("我是定时任务: Test2Run2(200ms)");
+        System.out.println("我是定时任务: Cron4jRun1(200ms)");
         throw new RuntimeException("异常");
     }
 }

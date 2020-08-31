@@ -5,11 +5,11 @@ import org.noear.solon.annotation.XTran;
 import org.noear.solon.core.*;
 import org.noear.solon.ext.RunnableEx;
 import org.noear.weed.DbContext;
+/*
+public final class TranFactoryImp {
+    private static TranFactoryImp _singleton;
 
-public final class TranFactoryImp implements TranFactory {
-    private static TranFactory _singleton;
-
-    public static TranFactory singleton() {
+    public static TranFactoryImp singleton() {
         if (_singleton == null) {
             _singleton = new TranFactoryImp();
         }
@@ -69,3 +69,4 @@ public final class TranFactoryImp implements TranFactory {
         tranNot.apply(runnable);
     }
 }
+*/

@@ -6,7 +6,6 @@ import org.noear.solon.core.*;
 import org.noear.weed.BaseMapper;
 import org.noear.weed.DbContext;
 import org.noear.weed.annotation.Db;
-import org.noear.weed.solon.plugin.tran.TranFactoryImp;
 import org.noear.weed.xml.XmlSqlLoader;
 
 import java.util.function.Consumer;
@@ -14,7 +13,7 @@ import java.util.function.Consumer;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        XBridge.tranFactorySet(TranFactoryImp.singleton());
+        //XBridge.tranFactorySet(TranFactoryImp.singleton());
 
         Aop.factory().beanCreatorAdd(Db.class, (clz, bw, anno) -> {
             if (clz.isInterface()) {

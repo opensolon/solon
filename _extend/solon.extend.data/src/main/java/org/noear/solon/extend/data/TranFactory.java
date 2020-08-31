@@ -1,30 +1,32 @@
-package org.noear.solon.extend.mybatis.tran;
+package org.noear.solon.extend.data;
 
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.noear.solon.XUtil;
+
 import org.noear.solon.annotation.XTran;
-import org.noear.solon.core.*;
+import org.noear.solon.core.Tran;
+import org.noear.solon.core.TranPolicy;
+import org.noear.solon.core.TranSessionFactory;
+import org.noear.solon.core.XBridge;
 import org.noear.solon.ext.RunnableEx;
-/*
-public final class TranFactoryImp implements TranFactory {
+import org.noear.solon.extend.data.tran.*;
+
+public final class TranFactory {
     private static TranFactory _singleton;
 
     public static TranFactory singleton() {
         if (_singleton == null) {
-            _singleton = new TranFactoryImp();
+            _singleton = new TranFactory();
         }
 
         return _singleton;
     }
 
-    private TranFactoryImp() {
+    private TranFactory() {
     }
 
     private Tran tranNever = new TranNeverImp();
     private Tran tranMandatory = new TranMandatoryImp();
     private Tran tranNot = new TranNotImp();
 
-    @Override
     public Tran create(XTran anno) {
         if (anno.group()) {
             //事务组
@@ -41,15 +43,7 @@ public final class TranFactoryImp implements TranFactory {
         } else {
             //事务
             //
-            SqlSessionFactory tmp = null;
-
-            if (XUtil.isEmpty(anno.value())) {
-                //根据名字获取
-                tmp = Aop.get(SqlSessionFactory.class);
-            } else {
-                //根据类型获取
-                tmp = Aop.get(anno.value());
-            }
+            TranSessionFactory tmp = XBridge.tranSessionFactory();
 
             if (tmp == null) {
                 throw new RuntimeException("@XTran annotation failed");
@@ -57,16 +51,14 @@ public final class TranFactoryImp implements TranFactory {
 
             if (anno.policy() == TranPolicy.requires_new
                     || anno.policy() == TranPolicy.nested) {
-                return new TranNewImp(tmp);
+                return new TranDbNewImp(tmp);
             } else {
-                return new TranImp(tmp);
+                return new TranDbImp(tmp);
             }
         }
     }
 
-    @Override
     public void pending(RunnableEx runnable) throws Throwable{
         tranNot.apply(runnable);
     }
 }
-*/

@@ -27,6 +27,13 @@ public final class JobManager {
 
         if (_server != null) {
             _server.stop();
+
+            jobMap.forEach((k,v)->{
+                if(v.getFuture() != null){
+                    v.getFuture().cancel(true);
+                }
+            });
+
             _server = null;
         }
     }
@@ -35,34 +42,44 @@ public final class JobManager {
      *
      * */
     public static void addJob(JobEntity jobEntity) {
+        jobMap.putIfAbsent(jobEntity.beanWrap.clz(), jobEntity);
 
         if (jobEntity.cron4x.indexOf(" ") < 0) {
             if (jobEntity.cron4x.endsWith("ms")) {
                 long period = Long.parseLong(jobEntity.cron4x.substring(0, jobEntity.cron4x.length() - 2));
-                addJob0(jobEntity, period, TimeUnit.MILLISECONDS);
+                addFuture(jobEntity, period, TimeUnit.MILLISECONDS);
             } else if (jobEntity.cron4x.endsWith("s")) {
                 long period = Long.parseLong(jobEntity.cron4x.substring(0, jobEntity.cron4x.length() - 1));
-                addJob0(jobEntity, period, TimeUnit.SECONDS);
+                addFuture(jobEntity, period, TimeUnit.SECONDS);
             } else if (jobEntity.cron4x.endsWith("m")) {
                 long period = Long.parseLong(jobEntity.cron4x.substring(0, jobEntity.cron4x.length() - 1));
-                addJob0(jobEntity, period, TimeUnit.MINUTES);
+                addSchedule(jobEntity, "*/"+period+" * * * *");
             } else if (jobEntity.cron4x.endsWith("h")) {
                 long period = Long.parseLong(jobEntity.cron4x.substring(0, jobEntity.cron4x.length() - 1));
-                addJob0(jobEntity, period, TimeUnit.HOURS);
+                addSchedule(jobEntity, "* */"+period+" * * *");
             } else if (jobEntity.cron4x.endsWith("d")) {
                 long period = Long.parseLong(jobEntity.cron4x.substring(0, jobEntity.cron4x.length() - 1));
-                addJob0(jobEntity, period, TimeUnit.DAYS);
+                addSchedule(jobEntity, "* * */"+period+" * *");
             }
-        } else if(jobEntity.beanWrap.raw() instanceof Runnable){
-            String jobID = _server.schedule(jobEntity.cron4x, jobEntity::exec);
-            jobEntity.setJobID(jobID);
-        } else if(jobEntity.beanWrap.raw() instanceof Task){
-            String jobID = _server.schedule(jobEntity.cron4x, (Task)jobEntity.beanWrap.raw());
-            jobEntity.setJobID(jobID);
+        } else{
+            addSchedule(jobEntity, jobEntity.cron4x);
         }
     }
 
-    private static void addJob0(JobEntity jobEntity, long period, TimeUnit unit) {
+    private static void addSchedule(JobEntity jobEntity, String cron4x) {
+        String jobID = null;
+        if(jobEntity.beanWrap.raw() instanceof Runnable) {
+            jobID = _server.schedule(cron4x, jobEntity::exec);
+        } else if(jobEntity.beanWrap.raw() instanceof Task){
+            jobID = _server.schedule(cron4x, (Task)jobEntity.beanWrap.raw());
+        } else{
+            return;
+        }
+
+        jobEntity.setJobID(jobID);
+    }
+
+    private static void addFuture(JobEntity jobEntity, long period, TimeUnit unit) {
         ScheduledFuture<?> future =  _taskScheduler.scheduleAtFixedRate(jobEntity::exec, 0, period, unit);
         jobEntity.setFuture(future);
     }

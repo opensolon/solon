@@ -132,7 +132,7 @@ public class XBridge {
     //
     // TranExecutor 对接
     //
-    private static TranFactory _tranFactory;
+    private static TranSessionFactory _tranSessionFactory;
     private static TranExecutor _tranExecutor = (anno, runnable) -> {
         runnable.run();
     };
@@ -147,13 +147,13 @@ public class XBridge {
         }
     }
 
-    public static TranFactory tranFactory() {
-        return _tranFactory;
+    public static TranSessionFactory tranSessionFactory() {
+        return _tranSessionFactory;
     }
 
-    public static void tranFactorySet(TranFactory tf) {
-        if (tf != null) {
-            _tranFactory = tf;
+    public static void tranSessionFactorySet(TranSessionFactory sf) {
+        if (sf != null) {
+            _tranSessionFactory = sf;
         }
     }
 }

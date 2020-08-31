@@ -20,7 +20,7 @@ public class TranExecutorImp implements TranExecutor {
     private ThreadLocal<Stack<TranEntity>> local = new ThreadLocal<>();
 
     public TranFactory factory() {
-        return XBridge.tranFactory();
+        return TranFactory.singleton();
     }
 
     public void execute(XTran anno, RunnableEx runnable) throws Throwable {
