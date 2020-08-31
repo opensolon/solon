@@ -102,7 +102,7 @@ public class MethodWrap {
         } else {
             ValHolder val0 = new ValHolder();
 
-            TranManger.execute(xTran, () -> {
+            XBridge.tranExecutor().execute(xTran, () -> {
                 val0.value = invokeByAspect0(obj, args);
             });
 

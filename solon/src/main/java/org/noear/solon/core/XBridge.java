@@ -2,6 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.XApp;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -63,7 +64,9 @@ public class XBridge {
     }
 
     public static void upstreamFactorySet(XUpstreamFactory uf) {
-        _upstreamFactory = uf;
+        if (uf != null) {
+            _upstreamFactory = uf;
+        }
     }
 
 
@@ -85,18 +88,22 @@ public class XBridge {
     }
 
     public static void actionExecutorDefSet(XActionExecutor ae) {
-        _actionExecutorDef = ae;
+        if (ae != null) {
+            _actionExecutorDef = ae;
+        }
     }
 
     public static Set<XActionExecutor> actionExecutors() {
-        return _actionExecutors;
+        return Collections.unmodifiableSet(_actionExecutors);
     }
 
     /**
      * 添加动作执行器
      */
-    public static void actionExecutorAdd(XActionExecutor executor) {
-        _actionExecutors.add(executor);
+    public static void actionExecutorAdd(XActionExecutor e) {
+        if (e != null) {
+            _actionExecutors.add(e);
+        }
     }
 
 
@@ -104,14 +111,49 @@ public class XBridge {
     // XRender 对接
     //
     public static void renderRegister(XRender render) {
-        XRenderManager.register(render);
+        if (render != null) {
+            XRenderManager.register(render);
+        }
     }
 
     public static void renderMapping(String suffix, XRender render) {
-        XRenderManager.mapping(suffix, render);
+        if (suffix != null && render != null) {
+            XRenderManager.mapping(suffix, render);
+        }
     }
 
     public static void renderMapping(String suffix, String className) {
-        XRenderManager.mapping(suffix, className);
+        if (suffix != null && className != null) {
+            XRenderManager.mapping(suffix, className);
+        }
+    }
+
+
+    //
+    // TranExecutor 对接
+    //
+    private static TranFactory _tranFactory;
+    private static TranExecutor _tranExecutor = (anno, runnable) -> {
+        runnable.run();
+    };
+
+    public static TranExecutor tranExecutor() {
+        return _tranExecutor;
+    }
+
+    public static void tranExecutorSet(TranExecutor te) {
+        if (te != null) {
+            _tranExecutor = te;
+        }
+    }
+
+    public static TranFactory tranFactory() {
+        return _tranFactory;
+    }
+
+    public static void tranFactorySet(TranFactory tf) {
+        if (tf != null) {
+            _tranFactory = tf;
+        }
     }
 }
