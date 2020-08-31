@@ -5,4 +5,14 @@ public interface TranSession {
     void commit();
     void rollback();
     void close();
+
+
+    /**
+     * 挂起
+     * */
+    void hangup();
+    /**
+     * 恢复
+     * */
+    void restore();
 }
