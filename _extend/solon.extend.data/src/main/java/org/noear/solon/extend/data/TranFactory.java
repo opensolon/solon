@@ -29,7 +29,7 @@ public final class TranFactory {
     }
 
     public Tran createTran(String name, boolean requires_new){
-        //事务
+        //事务 required || (requires_new || nested)
         //
         if(XBridge.tranSessionFactory() == null){
             throw new RuntimeException("Final initialization of tranSessionFactory");

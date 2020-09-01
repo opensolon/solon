@@ -2,10 +2,10 @@ package org.noear.solon.extend.mybatis;
 
 import org.apache.ibatis.session.SqlSession;
 
-class TranUtil {
+class SqlSesssionLocal {
     private static final ThreadLocal<SqlSession> _tl_tran = new ThreadLocal();
 
-    public TranUtil() {
+    public SqlSesssionLocal() {
     }
 
     public static void currentSet(SqlSession tran) {

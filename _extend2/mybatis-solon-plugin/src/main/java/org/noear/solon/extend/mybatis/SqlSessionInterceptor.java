@@ -16,7 +16,7 @@ public class SqlSessionInterceptor implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        SqlSession session = TranUtil.current();
+        SqlSession session = SqlSesssionLocal.current();
         Boolean has_close = false;
         if (session == null) {
             has_close = true;

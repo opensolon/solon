@@ -17,7 +17,7 @@ public class TranSessionImp implements TranSession {
     @Override
     public void start() throws SQLException{
         session = new SqlSessionHolder(factory.openSession(false));
-        TranUtil.currentSet(session);
+        SqlSesssionLocal.currentSet(session);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class TranSessionImp implements TranSession {
 
     @Override
     public void end() {
-        TranUtil.currentRemove();
+        SqlSesssionLocal.currentRemove();
     }
 
     @Override
@@ -43,15 +43,21 @@ public class TranSessionImp implements TranSession {
 
     SqlSession savepoint;
 
+    /**
+     * 挂起
+     * */
     @Override
-    public void hangup() {
-        savepoint = TranUtil.current();
+    public void suspend() {
+        savepoint = SqlSesssionLocal.current();
     }
 
+    /**
+     * 恢复
+     * */
     @Override
-    public void restore() {
+    public void resume() {
         if(savepoint != null) {
-            TranUtil.currentSet(savepoint);
+            SqlSesssionLocal.currentSet(savepoint);
         }
     }
 }

@@ -75,47 +75,50 @@ public class TranExecutorImp implements TranExecutor {
     }
 
     private void forNotRoot(Stack<TranEntity> stack, TranMeta meta, RunnableEx runnable) throws Throwable {
-        //获取之前的事务
+        //获取上一个事务
         TranEntity before = stack.peek();
 
+        //1.
         if (meta.policy() == TranPolicy.supports) {
-            if (meta.name().equals(before.meta.name()) //当前为同源
-                    || before.meta.group()) { //或，当前为组
+            if (before.meta.group() //当前为组
+                    || meta.name().equals(before.meta.name())) { //或，当前为同源
                 //直接运行，即并入
                 runnable.run();
             } else {
-                //挂起
+                //挂起（即不使用事务）
                 factory().pending(runnable);
             }
             return;
         }
 
-        //当前：排除 或 绝不 （不需要加入事务组）//不需要入栈
+        //2.当前：排除 或 绝不 （不需要加入事务组）//不需要入栈
         if (meta.policy() == TranPolicy.not_supported
                 || meta.policy() == TranPolicy.never) {
             factory().create(meta).apply(runnable);
             return;
         }
 
-        //当前：事务组 新起事务且不需要加入上个事务组 //入栈，供后来事务用
+        //3.当前：事务组 //入栈，供后来事务用
         if (meta.group()) {
-            if (before.meta.group()) {
+            if (before.meta.group()) { //如果之前也是组，则并入
                 runnable.run();
             } else {
                 Tran tran = factory().create(meta);
+                //尝试加入上个事务***
+                before.tran.add(tran);
                 apply2(stack, tran, meta, runnable);
             }
             return;
         }
 
-        //当前：事务组 或 新建 或嵌套；新起事务且不需要加入上个事务组 //入栈，供后来事务用
+        //4.当前：新起事务且不需要加入上个事务 //入栈，供后来事务用
         if (meta.policy() == TranPolicy.requires_new) {
             Tran tran = factory().create(meta);
             apply2(stack, tran, meta, runnable);
             return;
         }
 
-        //当前：必须有同源事务
+        //5.当前：必须有同源事务
         if (meta.policy() == TranPolicy.mandatory) {
             if (meta.name().equals(before.meta.name())) {
                 Tran tran = factory().create(meta);
@@ -131,6 +134,7 @@ public class TranExecutorImp implements TranExecutor {
             //如果之前的是事务组，则新建事务加入访事务组  //入栈，供后来事务用
             //
             Tran tran = factory().create(meta);
+            //尝试加入上个事务***
             before.tran.add(tran);
 
             apply2(stack, tran, meta, runnable);
@@ -145,6 +149,10 @@ public class TranExecutorImp implements TranExecutor {
             } else {
                 //不同源 或嵌套；则新建事务（不同源，嵌套可能会有问题） //入栈，供后来事务用
                 Tran tran = factory().create(meta);
+
+                //尝试加入上个事务***
+                before.tran.add(tran);
+
                 apply2(stack, tran, meta, runnable);
             }
         }

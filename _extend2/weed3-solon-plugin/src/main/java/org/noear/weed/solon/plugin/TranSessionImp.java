@@ -43,12 +43,12 @@ public class TranSessionImp extends DbTran implements TranSession {
     DbTran savepoint;
 
     @Override
-    public void hangup() {
+    public void suspend() {
         savepoint = DbTranUtil.current();
     }
 
     @Override
-    public void restore() {
+    public void resume() {
         if (savepoint != null) {
             DbTranUtil.currentSet(savepoint);
         }
