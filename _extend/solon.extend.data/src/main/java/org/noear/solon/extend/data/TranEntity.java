@@ -5,10 +5,10 @@ import org.noear.solon.core.Tran;
 
 class TranEntity {
     protected Tran tran;
-    protected XTran anno;
+    protected TranMeta meta;
 
-    public TranEntity(Tran tran, XTran anno){
+    public TranEntity(Tran tran, TranMeta meta){
         this.tran = tran;
-        this.anno = anno;
+        this.meta = meta;
     }
 }

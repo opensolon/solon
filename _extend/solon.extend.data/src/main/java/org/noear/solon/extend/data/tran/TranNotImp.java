@@ -13,19 +13,12 @@ public class TranNotImp implements Tran {
     public void apply(RunnableEx runnable) throws Throwable {
         //获取当前事务
         //
-        Tran tran = DbTranUtil.current();
+        DbTran tran = DbTranUtil.trySuspend();
 
         try {
-            //移除事务
-            DbTranUtil.currentRemove();
-
             runnable.run();
         } finally {
-            if (tran != null) {
-                //把事务重新放回去
-                //
-                DbTranUtil.currentSet(tran);
-            }
+            DbTranUtil.tryResume(tran);
         }
     }
 }

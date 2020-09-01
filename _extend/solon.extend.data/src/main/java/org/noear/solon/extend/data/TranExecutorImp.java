@@ -10,9 +10,9 @@ import java.util.Stack;
  * 事务管理
  * */
 public class TranExecutorImp implements TranExecutor {
-    public static final TranExecutor global = new TranExecutorImp();
+    public static final TranExecutorImp global = new TranExecutorImp();
 
-    protected TranExecutorImp(){
+    protected TranExecutorImp() {
 
     }
 
@@ -29,6 +29,17 @@ public class TranExecutorImp implements TranExecutor {
             //如果没有注解或工厂，直接运行
             //
             runnable.run();
+        } else {
+            execute(TranMeta.of(anno), runnable);
+        }
+    }
+
+    void execute(TranMeta meta, RunnableEx runnable) throws Throwable {
+        if (meta == null || factory() == null) {
+            //
+            //如果没有注解或工厂，直接运行
+            //
+            runnable.run();
             return;
         }
 
@@ -36,40 +47,40 @@ public class TranExecutorImp implements TranExecutor {
 
         //根事务不存在
         if (stack == null) {
-            forRoot(stack, anno, runnable);
+            forRoot(stack, meta, runnable);
         } else {
-            forNotRoot(stack, anno, runnable);
+            forNotRoot(stack, meta, runnable);
         }
     }
 
-    private void forRoot(Stack<TranEntity> stack, XTran anno, RunnableEx runnable) throws Throwable {
+    private void forRoot(Stack<TranEntity> stack, TranMeta meta, RunnableEx runnable) throws Throwable {
         //::支持但不必需 或排除 或决不
-        if (anno.policy() == TranPolicy.supports
-                || anno.policy() == TranPolicy.not_supported
-                || anno.policy() == TranPolicy.never) {
+        if (meta.policy() == TranPolicy.supports
+                || meta.policy() == TranPolicy.not_supported
+                || meta.policy() == TranPolicy.never) {
             runnable.run();
             return;
         } else {
             //新建事务，并置为根事务
-            Tran tran = factory().create(anno);
+            Tran tran = factory().create(meta);
             stack = new Stack<>();
 
             try {
                 local.set(stack);
-                apply2(stack, tran, anno, runnable);
+                apply2(stack, tran, meta, runnable);
             } finally {
                 local.remove();
             }
         }
     }
 
-    private void forNotRoot(Stack<TranEntity> stack, XTran anno, RunnableEx runnable) throws Throwable {
+    private void forNotRoot(Stack<TranEntity> stack, TranMeta meta, RunnableEx runnable) throws Throwable {
         //获取之前的事务
         TranEntity before = stack.peek();
 
-        if (anno.policy() == TranPolicy.supports) {
-            if (anno.value().equals(before.anno.value()) //当前为同源
-                    || before.anno.group()) { //或，当前为组
+        if (meta.policy() == TranPolicy.supports) {
+            if (meta.name().equals(before.meta.name()) //当前为同源
+                    || before.meta.group()) { //或，当前为组
                 //直接运行，即并入
                 runnable.run();
             } else {
@@ -80,34 +91,34 @@ public class TranExecutorImp implements TranExecutor {
         }
 
         //当前：排除 或 绝不 （不需要加入事务组）//不需要入栈
-        if (anno.policy() == TranPolicy.not_supported
-                || anno.policy() == TranPolicy.never) {
-            factory().create(anno).apply(runnable);
+        if (meta.policy() == TranPolicy.not_supported
+                || meta.policy() == TranPolicy.never) {
+            factory().create(meta).apply(runnable);
             return;
         }
 
         //当前：事务组 新起事务且不需要加入上个事务组 //入栈，供后来事务用
-        if (anno.group()) {
-            if (before.anno.group()) {
+        if (meta.group()) {
+            if (before.meta.group()) {
                 runnable.run();
             } else {
-                Tran tran = factory().create(anno);
-                apply2(stack, tran, anno, runnable);
+                Tran tran = factory().create(meta);
+                apply2(stack, tran, meta, runnable);
             }
             return;
         }
 
         //当前：事务组 或 新建 或嵌套；新起事务且不需要加入上个事务组 //入栈，供后来事务用
-        if (anno.policy() == TranPolicy.requires_new) {
-            Tran tran = factory().create(anno);
-            apply2(stack, tran, anno, runnable);
+        if (meta.policy() == TranPolicy.requires_new) {
+            Tran tran = factory().create(meta);
+            apply2(stack, tran, meta, runnable);
             return;
         }
 
         //当前：必须有同源事务
-        if (anno.policy() == TranPolicy.mandatory) {
-            if (anno.value().equals(before.anno.value())) {
-                Tran tran = factory().create(anno);
+        if (meta.policy() == TranPolicy.mandatory) {
+            if (meta.name().equals(before.meta.name())) {
+                Tran tran = factory().create(meta);
                 tran.apply(runnable);
             } else {
                 throw new RuntimeException("You must have the same source transaction");
@@ -116,37 +127,37 @@ public class TranExecutorImp implements TranExecutor {
         }
 
 
-        if (before.anno.group()) {
+        if (before.meta.group()) {
             //如果之前的是事务组，则新建事务加入访事务组  //入栈，供后来事务用
             //
-            Tran tran = factory().create(anno);
+            Tran tran = factory().create(meta);
             before.tran.add(tran);
 
-            apply2(stack, tran, anno, runnable);
+            apply2(stack, tran, meta, runnable);
             return;
         } else {
             //如果之前不是事务组
             //
-            if (before.anno.value().equals(anno.value())
-                    && anno.policy() != TranPolicy.nested) {
+            if (before.meta.name().equals(meta.name())
+                    && meta.policy() != TranPolicy.nested) {
                 //如果同源 并且不嵌套，则直接并入
                 runnable.run();
             } else {
                 //不同源 或嵌套；则新建事务（不同源，嵌套可能会有问题） //入栈，供后来事务用
-                Tran tran = factory().create(anno);
-                apply2(stack, tran, anno, runnable);
+                Tran tran = factory().create(meta);
+                apply2(stack, tran, meta, runnable);
             }
         }
     }
 
 
-    private void apply2(Stack<TranEntity> stack, Tran tran, XTran anno, RunnableEx runnable) throws Throwable {
-        if (anno.group() || anno.policy().code <= TranPolicy.nested.code) {
+    private void apply2(Stack<TranEntity> stack, Tran tran, TranMeta meta, RunnableEx runnable) throws Throwable {
+        if (meta.group() || meta.policy().code <= TranPolicy.nested.code) {
             //@group || required || requires_new || nested ，需要入栈
             //
             try {
                 //入栈
-                stack.push(new TranEntity(tran, anno));
+                stack.push(new TranEntity(tran, meta));
                 tran.apply(runnable);
             } finally {
                 //出栈

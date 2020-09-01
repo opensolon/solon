@@ -1,22 +1,45 @@
 package org.noear.solon.extend.data.tran;
 
-import org.noear.solon.core.Tran;
-
 public class DbTranUtil {
-    private static final ThreadLocal<Tran> _tl_tran = new ThreadLocal();
+    private static final ThreadLocal<DbTran> _tl_tran = new ThreadLocal();
 
     public DbTranUtil() {
     }
 
-    public static void currentSet(Tran tran) {
+    public static void currentSet(DbTran tran) {
         _tl_tran.set(tran);
     }
 
-    public static Tran current() {
+    public static DbTran current() {
         return _tl_tran.get();
     }
 
     public static void currentRemove() {
         _tl_tran.remove();
+    }
+
+    /**
+     * 尝试挂起
+     * */
+    public static DbTran trySuspend(){
+        DbTran tran = current();
+
+        if(tran != null){
+            currentRemove();
+
+            tran.suspend();
+        }
+
+        return tran;
+    }
+
+    /**
+     * 尝试恢复
+     * */
+    public static void tryResume(DbTran tran){
+        if(tran != null){
+            tran.resume();
+            currentSet(tran);
+        }
     }
 }

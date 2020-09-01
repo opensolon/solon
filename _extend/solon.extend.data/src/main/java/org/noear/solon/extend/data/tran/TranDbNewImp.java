@@ -1,34 +1,27 @@
 package org.noear.solon.extend.data.tran;
 
-
 import org.noear.solon.core.Tran;
 import org.noear.solon.core.TranSession;
 import org.noear.solon.ext.RunnableEx;
 
 public class TranDbNewImp extends DbTran implements Tran {
-    public TranDbNewImp(TranSession session){
+    public TranDbNewImp(TranSession session) {
         super(session);
     }
 
     @Override
     public void apply(RunnableEx runnable) throws Throwable {
-        //获取当前事务
+        //尝试挂起事务
         //
-        Tran tran = DbTranUtil.current();
+        DbTran tran = DbTranUtil.trySuspend();
 
         try {
-            //移除事务
-            DbTranUtil.currentRemove();
-
             super.execute(() -> {
                 runnable.run();
             });
         } finally {
-            if (tran != null) {
-                //把事务重新放回去
-                //
-                DbTranUtil.currentSet(tran);
-            }
+            //尝试恢复事务
+            DbTranUtil.tryResume(tran);
         }
     }
 }

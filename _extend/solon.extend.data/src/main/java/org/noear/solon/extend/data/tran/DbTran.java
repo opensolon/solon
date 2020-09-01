@@ -54,4 +54,17 @@ public abstract class DbTran extends DbTranNode implements Tran {
         super.close();
         session.close();
     }
+
+    /**
+     * 挂起
+     * */
+    public void suspend(){
+        session.suspend();
+    }
+    /**
+     * 恢复
+     * */
+    public void resume(){
+        session.resume();
+    }
 }

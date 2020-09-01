@@ -24,40 +24,49 @@ public final class TranFactory {
     private Tran tranMandatory = new TranMandatoryImp();
     private Tran tranNot = new TranNotImp();
 
-    public Tran create(XTran anno) {
-        if (anno.group()) {
+    public Tran createGroup(){
+        return new TranGroupImp();
+    }
+
+    public Tran createTran(String name, boolean requires_new){
+        //事务
+        //
+        if(XBridge.tranSessionFactory() == null){
+            throw new RuntimeException("Final initialization of tranSessionFactory");
+        }
+
+        TranSession session = XBridge.tranSessionFactory().create(name);
+
+        if (session == null) {
+            throw new RuntimeException("@XTran annotation failed");
+        }
+
+        if (requires_new) {
+            return new TranDbNewImp(session);
+        } else {
+            return new TranDbImp(session);
+        }
+    }
+
+    public Tran create(TranMeta meta) {
+        if (meta.group()) {
             //事务组
-            return new TranGroupImp();
-        } else if (anno.policy() == TranPolicy.not_supported) {
+            return createGroup();
+        } else if (meta.policy() == TranPolicy.not_supported) {
             //事务排除
             return tranNot;
-        } else if (anno.policy() == TranPolicy.never) {
+        } else if (meta.policy() == TranPolicy.never) {
             //决不能有事务
             return tranNever;
-        } else if (anno.policy() == TranPolicy.mandatory) {
+        } else if (meta.policy() == TranPolicy.mandatory) {
             //必须要有当前事务
             return tranMandatory;
         } else {
             //事务
             //
-            TranSessionFactory factory = XBridge.tranSessionFactory();
+            return createTran(meta.name(), meta.policy() == TranPolicy.requires_new
+                    || meta.policy() == TranPolicy.nested);
 
-            if(factory == null){
-                throw new RuntimeException("Final initialization of tranSessionFactory");
-            }
-
-            TranSession session = factory.create(anno.value());
-
-            if (session == null) {
-                throw new RuntimeException("@XTran annotation failed");
-            }
-
-            if (anno.policy() == TranPolicy.requires_new
-                    || anno.policy() == TranPolicy.nested) {
-                return new TranDbNewImp(session);
-            } else {
-                return new TranDbImp(session);
-            }
         }
     }
 

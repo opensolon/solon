@@ -12,10 +12,6 @@ public class TranGroupImp extends DbTranNode {
 
     @Override
     public void apply(RunnableEx runnable) throws Throwable {
-        //获取当前事务
-        //
-        Tran tran = DbTranUtil.current();
-
         try {
             runnable.run();
 
@@ -31,10 +27,6 @@ public class TranGroupImp extends DbTranNode {
         } finally {
             if (parent == null) {
                 close();
-            }
-
-            if(tran != null){
-                DbTranUtil.currentSet(tran);
             }
         }
     }
