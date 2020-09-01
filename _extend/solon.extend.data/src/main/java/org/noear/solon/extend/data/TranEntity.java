@@ -1,6 +1,5 @@
 package org.noear.solon.extend.data;
 
-import org.noear.solon.annotation.XTran;
 import org.noear.solon.core.Tran;
 
 class TranEntity {
