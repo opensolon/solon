@@ -2,6 +2,8 @@ package org.noear.solon.extend.mybatis;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.TransactionIsolationLevel;
+import org.noear.solon.core.TranIsolation;
 import org.noear.solon.core.TranSession;
 
 import java.sql.SQLException;
@@ -15,8 +17,32 @@ public class TranSessionImp implements TranSession {
     }
 
     @Override
-    public void start() throws SQLException{
-        session = new SqlSessionHolder(factory.openSession(false));
+    public void start(TranIsolation isolation) throws SQLException{
+        if(isolation.level> 0) {
+            TransactionIsolationLevel level = TransactionIsolationLevel.NONE;
+            switch (isolation){
+                case read_uncommitted:
+                    level = TransactionIsolationLevel.READ_UNCOMMITTED;
+                    break;
+
+                case repeatable_read:
+                    level = TransactionIsolationLevel.REPEATABLE_READ;
+                    break;
+
+                case serializable:
+                    level = TransactionIsolationLevel.SERIALIZABLE;
+                    break;
+
+                default:
+                    level = TransactionIsolationLevel.READ_COMMITTED;
+                    break;
+            }
+
+            session = new SqlSessionHolder(factory.openSession(level));
+        }else{
+            session = new SqlSessionHolder(factory.openSession(false));
+        }
+
         SqlSesssionLocal.currentSet(session);
     }
 

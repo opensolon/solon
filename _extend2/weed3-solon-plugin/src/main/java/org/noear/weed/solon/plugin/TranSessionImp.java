@@ -1,5 +1,6 @@
 package org.noear.weed.solon.plugin;
 
+import org.noear.solon.core.TranIsolation;
 import org.noear.solon.core.TranSession;
 import org.noear.weed.DbContext;
 import org.noear.weed.DbTran;
@@ -13,9 +14,9 @@ public class TranSessionImp extends DbTran implements TranSession {
     }
 
     @Override
-    public void start() throws SQLException {
+    public void start(TranIsolation isolation) throws SQLException {
         connect();
-        begin();
+        begin(isolation.level);
 
         DbTranUtil.currentSet(this);
     }

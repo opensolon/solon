@@ -1,6 +1,7 @@
 package org.noear.solon.extend.data.tran;
 
 import org.noear.solon.core.Tran;
+import org.noear.solon.core.TranIsolation;
 import org.noear.solon.core.TranSession;
 import org.noear.solon.ext.RunnableEx;
 import org.noear.solon.extend.data.TranLocal;
@@ -12,9 +13,9 @@ public abstract class DbTran extends DbTranNode implements Tran {
         this.session = session;
     }
 
-    public void execute(RunnableEx runnable) throws Throwable {
+    public void execute(TranIsolation isolation, RunnableEx runnable) throws Throwable {
         try {
-            session.start();
+            session.start(isolation);
 
             TranLocal.currentSet(this);
             runnable.run();

@@ -1,7 +1,5 @@
 package org.noear.solon.extend.data;
 
-
-import org.noear.solon.annotation.XTran;
 import org.noear.solon.core.*;
 import org.noear.solon.ext.RunnableEx;
 import org.noear.solon.extend.data.tran.*;
@@ -24,27 +22,27 @@ public final class TranFactory {
     private Tran tranMandatory = new TranMandatoryImp();
     private Tran tranNot = new TranNotImp();
 
-    public Tran createGroup(){
+    public Tran createGroup() {
         return new TranGroupImp();
     }
 
-    public Tran createTran(String name, boolean requires_new){
+    public Tran createTran(TranMeta meta, boolean requires_new) {
         //事务 required || (requires_new || nested)
         //
-        if(XBridge.tranSessionFactory() == null){
+        if (XBridge.tranSessionFactory() == null) {
             throw new RuntimeException("Final initialization of tranSessionFactory");
         }
 
-        TranSession session = XBridge.tranSessionFactory().create(name);
+        TranSession session = XBridge.tranSessionFactory().create(meta.name());
 
         if (session == null) {
             throw new RuntimeException("@XTran annotation failed");
         }
 
         if (requires_new) {
-            return new TranDbNewImp(session);
+            return new TranDbNewImp(meta, session);
         } else {
-            return new TranDbImp(session);
+            return new TranDbImp(meta, session);
         }
     }
 
@@ -64,13 +62,13 @@ public final class TranFactory {
         } else {
             //事务
             //
-            return createTran(meta.name(), meta.policy() == TranPolicy.requires_new
+            return createTran(meta, meta.policy() == TranPolicy.requires_new
                     || meta.policy() == TranPolicy.nested);
 
         }
     }
 
-    public void pending(RunnableEx runnable) throws Throwable{
+    public void pending(RunnableEx runnable) throws Throwable {
         tranNot.apply(runnable);
     }
 }

@@ -9,7 +9,7 @@ public interface TranSession {
     /**
      * 开始
      * */
-    void start() throws SQLException;
+    void start(TranIsolation isolation) throws SQLException;
     /**
      * 提交
      * */

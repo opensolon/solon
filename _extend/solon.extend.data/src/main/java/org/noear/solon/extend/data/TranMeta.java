@@ -1,11 +1,13 @@
 package org.noear.solon.extend.data;
 
 import org.noear.solon.annotation.XTran;
+import org.noear.solon.core.TranIsolation;
 import org.noear.solon.core.TranPolicy;
 
-class TranMeta {
+public class TranMeta {
     private String _name = "";
     private TranPolicy _policy = TranPolicy.required;
+    private TranIsolation _isolation =TranIsolation.unspecified;
     private boolean _group = false;
 
     public String name() {
@@ -14,6 +16,10 @@ class TranMeta {
 
     public TranPolicy policy() {
         return _policy;
+    }
+
+    public TranIsolation isolation() {
+        return _isolation;
     }
 
     public boolean group() {
@@ -25,6 +31,7 @@ class TranMeta {
         tmp._name = anno.value();
         tmp._policy = anno.policy();
         tmp._group = anno.group();
+        tmp._isolation = anno.isolation();
 
         return tmp;
     }
