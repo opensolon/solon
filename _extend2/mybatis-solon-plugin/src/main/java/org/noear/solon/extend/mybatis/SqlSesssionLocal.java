@@ -13,7 +13,7 @@ class SqlSesssionLocal {
     }
 
     public static SqlSession current() {
-        return (SqlSession)_tl_tran.get();
+        return _tl_tran.get();
     }
 
     public static void currentRemove() {

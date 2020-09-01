@@ -19,7 +19,7 @@ public class TranSessionImp implements TranSession {
     @Override
     public void start(TranIsolation isolation) throws SQLException{
         if(isolation.level> 0) {
-            TransactionIsolationLevel level = TransactionIsolationLevel.NONE;
+            TransactionIsolationLevel level;
             switch (isolation){
                 case read_uncommitted:
                     level = TransactionIsolationLevel.READ_UNCOMMITTED;
