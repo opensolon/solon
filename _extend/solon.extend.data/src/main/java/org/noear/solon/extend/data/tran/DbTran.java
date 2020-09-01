@@ -19,11 +19,11 @@ public abstract class DbTran extends DbTranNode implements Tran {
             runnable.run();
 
             if (parent == null) {
-                session.commit();
+                commit();
             }
         } catch (Throwable ex) {
             if (parent == null) {
-                session.rollback();
+                rollback();
             }
 
             throw ex;
@@ -32,7 +32,7 @@ public abstract class DbTran extends DbTranNode implements Tran {
             session.end();
 
             if (parent == null) {
-                session.close();
+                close();
             }
         }
     }
