@@ -41,17 +41,17 @@ public class TranSessionImp extends DbTran implements TranSession {
         close(false);
     }
 
-    DbTran savepoint;
+    DbTran localTmp;
 
     @Override
     public void suspend() {
-        savepoint = DbTranUtil.current();
+        localTmp = DbTranUtil.current();
     }
 
     @Override
     public void resume() {
-        if (savepoint != null) {
-            DbTranUtil.currentSet(savepoint);
+        if (localTmp != null) {
+            DbTranUtil.currentSet(localTmp);
         }
     }
 }

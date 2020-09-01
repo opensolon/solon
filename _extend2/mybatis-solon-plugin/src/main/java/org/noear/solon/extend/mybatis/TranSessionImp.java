@@ -67,14 +67,14 @@ public class TranSessionImp implements TranSession {
         session = null;
     }
 
-    SqlSession savepoint;
+    SqlSession localTmp;
 
     /**
      * 挂起
      * */
     @Override
     public void suspend() {
-        savepoint = SqlSesssionLocal.current();
+        localTmp = SqlSesssionLocal.current();
     }
 
     /**
@@ -82,8 +82,8 @@ public class TranSessionImp implements TranSession {
      * */
     @Override
     public void resume() {
-        if(savepoint != null) {
-            SqlSesssionLocal.currentSet(savepoint);
+        if(localTmp != null) {
+            SqlSesssionLocal.currentSet(localTmp);
         }
     }
 }

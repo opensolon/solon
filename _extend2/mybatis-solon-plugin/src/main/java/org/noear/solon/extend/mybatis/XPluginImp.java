@@ -5,12 +5,11 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.*;
-//import org.noear.solon.extend.mybatis.tran.TranFactoryImp;
 
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        //XBridge.tranFactorySet(TranFactoryImp.singleton());
+        XBridge.tranSessionFactorySet(new TranSessionFactoryImp());
 
         Aop.factory().beanCreatorAdd(Db.class, (clz, wrap, anno)->{
             if(XUtil.isEmpty(anno.value()) || clz.isInterface() == false){
