@@ -3,6 +3,7 @@ package org.noear.solon.extend.data.tran;
 import org.noear.solon.core.Tran;
 import org.noear.solon.core.TranSession;
 import org.noear.solon.ext.RunnableEx;
+import org.noear.solon.extend.data.TranLocal;
 
 public abstract class DbTran extends DbTranNode implements Tran {
     private final TranSession session;
@@ -15,7 +16,7 @@ public abstract class DbTran extends DbTranNode implements Tran {
         try {
             session.start();
 
-            DbTranUtil.currentSet(this);
+            TranLocal.currentSet(this);
             runnable.run();
 
             if (parent == null) {
@@ -28,7 +29,7 @@ public abstract class DbTran extends DbTranNode implements Tran {
 
             throw ex;
         } finally {
-            DbTranUtil.currentRemove();
+            TranLocal.currentRemove();
             session.end();
 
             if (parent == null) {
