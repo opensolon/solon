@@ -33,6 +33,12 @@
             <artifactId>solon.extend.staticfiles</artifactId>
         </dependency>
 
+        <!-- 提供事务支持 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.data</artifactId>
+        </dependency>
+
         <!-- 加强的动态代理支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
