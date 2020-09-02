@@ -5,6 +5,8 @@ import java.util.HashMap;
 public class XStaticFiles extends HashMap<String,String> {
     private XStaticFiles() {
         super();
+        put(".txt", "text/plain");
+
         put(".html", "text/html");
         put(".htm", "text/html");
         put(".css", "text/css");
