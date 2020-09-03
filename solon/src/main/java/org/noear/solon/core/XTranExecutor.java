@@ -10,7 +10,7 @@ import java.sql.SQLException;
 /**
  * 事务执行器
  * */
-public interface TranExecutor {
+public interface XTranExecutor {
     /**
      * 是否在事务中
      */

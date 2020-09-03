@@ -13,7 +13,7 @@ import java.util.Stack;
 /**
  * 事务管理
  * */
-public class TranExecutorImp implements TranExecutor {
+public class TranExecutorImp implements XTranExecutor {
     public static final TranExecutorImp global = new TranExecutorImp();
 
     protected TranExecutorImp() {

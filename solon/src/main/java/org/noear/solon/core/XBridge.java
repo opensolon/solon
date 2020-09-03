@@ -132,15 +132,15 @@ public class XBridge {
     //
     // TranExecutor 对接
     //
-    private static TranExecutor _tranExecutor = (anno, runnable) -> {
+    private static XTranExecutor _tranExecutor = (anno, runnable) -> {
         runnable.run();
     };
 
-    public static TranExecutor tranExecutor() {
+    public static XTranExecutor tranExecutor() {
         return _tranExecutor;
     }
 
-    public static void tranExecutorSet(TranExecutor te) {
+    public static void tranExecutorSet(XTranExecutor te) {
         if (te != null) {
             _tranExecutor = te;
         }
