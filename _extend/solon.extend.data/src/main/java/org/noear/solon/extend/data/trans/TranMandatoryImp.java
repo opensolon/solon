@@ -4,6 +4,9 @@ import org.noear.solon.ext.RunnableEx;
 import org.noear.solon.extend.data.Tran;
 import org.noear.solon.extend.data.TranManager;
 
+/**
+ * 支持当前事务，如果没有事务则报错（不需要入栈）
+ * */
 public class TranMandatoryImp implements Tran {
     public TranMandatoryImp() {
 
