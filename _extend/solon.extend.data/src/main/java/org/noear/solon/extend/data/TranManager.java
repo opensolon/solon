@@ -1,10 +1,6 @@
 package org.noear.solon.extend.data;
 
-import org.noear.solon.extend.data.tran.DbTran;
-
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
+import org.noear.solon.extend.data.trans.DbTran;
 
 public class TranManager {
     private static final ThreadLocal<DbTran> _tl_tran = new ThreadLocal();

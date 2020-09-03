@@ -1,9 +1,9 @@
-package org.noear.solon.extend.data.tran;
+package org.noear.solon.extend.data.trans;
 
-import org.noear.solon.core.Tran;
+import org.noear.solon.annotation.XTran;
 import org.noear.solon.ext.RunnableEx;
+import org.noear.solon.extend.data.Tran;
 import org.noear.solon.extend.data.TranManager;
-import org.noear.solon.extend.data.TranMeta;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -12,8 +12,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class DbTran extends DbTranNode implements Tran {
-    private final TranMeta meta;
+    private final XTran meta;
     private final Map<DataSource, Connection> conMap = new HashMap<>();
+
+    public XTran getMeta() {
+        return meta;
+    }
 
     public Connection getConnection(DataSource ds) throws SQLException {
         if (conMap.containsKey(ds)) {
@@ -30,7 +34,7 @@ public abstract class DbTran extends DbTranNode implements Tran {
         }
     }
 
-    public DbTran(TranMeta meta) {
+    public DbTran(XTran meta) {
         this.meta = meta;
     }
 
@@ -83,6 +87,7 @@ public abstract class DbTran extends DbTranNode implements Tran {
     public void close() throws Throwable{
         super.close();
         for(Map.Entry<DataSource,Connection> kv : conMap.entrySet()){
+            kv.getValue().setAutoCommit(true);
             kv.getValue().close();
         }
     }

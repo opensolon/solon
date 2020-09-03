@@ -3,7 +3,11 @@ package org.noear.solon.extend.data;
 import org.noear.solon.annotation.XTran;
 import org.noear.solon.core.*;
 import org.noear.solon.ext.RunnableEx;
+import org.noear.solon.extend.data.trans.DbTran;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Stack;
 
 /**
@@ -23,18 +27,31 @@ public class TranExecutorImp implements TranExecutor {
         return TranFactory.singleton();
     }
 
-    public void execute(XTran anno, RunnableEx runnable) throws Throwable {
-        if (anno == null || factory() == null) {
-            //
-            //如果没有注解或工厂，直接运行
-            //
-            runnable.run();
+    @Override
+    public boolean inTrans() {
+        return TranManager.current() != null;
+    }
+
+    @Override
+    public boolean inTransAndReadOnly() {
+        DbTran tran = TranManager.current();
+        return tran != null && tran.getMeta().readOnly();
+    }
+
+    @Override
+    public Connection getConnection(DataSource ds) throws SQLException {
+        DbTran tran = TranManager.current();
+
+        if (tran == null) {
+            return ds.getConnection();
         } else {
-            execute(TranMeta.of(anno), runnable);
+            return tran.getConnection(ds);
         }
     }
 
-    void execute(TranMeta meta, RunnableEx runnable) throws Throwable {
+    @Override
+
+    public void execute(XTran meta, RunnableEx runnable) throws Throwable {
         if (meta == null || factory() == null) {
             //
             //如果没有注解或工厂，直接运行
@@ -53,7 +70,7 @@ public class TranExecutorImp implements TranExecutor {
         }
     }
 
-    private void forRoot(Stack<TranEntity> stack, TranMeta meta, RunnableEx runnable) throws Throwable {
+    private void forRoot(Stack<TranEntity> stack, XTran meta, RunnableEx runnable) throws Throwable {
         //::支持但不必需 或排除 或决不
         if (meta.policy() == TranPolicy.supports
                 || meta.policy() == TranPolicy.not_supported
@@ -74,20 +91,13 @@ public class TranExecutorImp implements TranExecutor {
         }
     }
 
-    private void forNotRoot(Stack<TranEntity> stack, TranMeta meta, RunnableEx runnable) throws Throwable {
+    private void forNotRoot(Stack<TranEntity> stack, XTran meta, RunnableEx runnable) throws Throwable {
         //获取上一个事务
         TranEntity before = stack.peek();
 
         //1.
         if (meta.policy() == TranPolicy.supports) {
-            if (before.meta.group() //当前为组
-                    || meta.name().equals(before.meta.name())) { //或，当前为同源
-                //直接运行，即并入
-                runnable.run();
-            } else {
-                //挂起（即不使用事务）
-                factory().pending(runnable);
-            }
+            runnable.run();
             return;
         }
 
@@ -95,19 +105,6 @@ public class TranExecutorImp implements TranExecutor {
         if (meta.policy() == TranPolicy.not_supported
                 || meta.policy() == TranPolicy.never) {
             factory().create(meta).apply(runnable);
-            return;
-        }
-
-        //3.当前：事务组 //入栈，供后来事务用
-        if (meta.group()) {
-            if (before.meta.group()) { //如果之前也是组，则并入
-                runnable.run();
-            } else {
-                Tran tran = factory().create(meta);
-                //尝试加入上个事务***
-                before.tran.add(tran);
-                apply2(stack, tran, meta, runnable);
-            }
             return;
         }
 
@@ -120,47 +117,26 @@ public class TranExecutorImp implements TranExecutor {
 
         //5.当前：必须有同源事务
         if (meta.policy() == TranPolicy.mandatory) {
-            if (meta.name().equals(before.meta.name())) {
-                Tran tran = factory().create(meta);
-                tran.apply(runnable);
-            } else {
-                throw new RuntimeException("You must have the same source transaction");
-            }
-            return;
+            factory().create(meta).apply(runnable);
         }
 
-
-        if (before.meta.group()) {
-            //如果之前的是事务组，则新建事务加入访事务组  //入栈，供后来事务用
-            //
+        if (meta.policy() != TranPolicy.nested) {
+            //如果同源 并且不嵌套，则直接并入
+            runnable.run();
+        } else {
+            //不同源 或嵌套；则新建事务（不同源，嵌套可能会有问题） //入栈，供后来事务用
             Tran tran = factory().create(meta);
+
             //尝试加入上个事务***
             before.tran.add(tran);
 
             apply2(stack, tran, meta, runnable);
-            return;
-        } else {
-            //如果之前不是事务组
-            //
-            if (before.meta.name().equals(meta.name())
-                    && meta.policy() != TranPolicy.nested) {
-                //如果同源 并且不嵌套，则直接并入
-                runnable.run();
-            } else {
-                //不同源 或嵌套；则新建事务（不同源，嵌套可能会有问题） //入栈，供后来事务用
-                Tran tran = factory().create(meta);
-
-                //尝试加入上个事务***
-                before.tran.add(tran);
-
-                apply2(stack, tran, meta, runnable);
-            }
         }
     }
 
 
-    private void apply2(Stack<TranEntity> stack, Tran tran, TranMeta meta, RunnableEx runnable) throws Throwable {
-        if (meta.group() || meta.policy().code <= TranPolicy.nested.code) {
+    private void apply2(Stack<TranEntity> stack, Tran tran, XTran meta, RunnableEx runnable) throws Throwable {
+        if (meta.policy().code <= TranPolicy.nested.code) {
             //@group || required || requires_new || nested ，需要入栈
             //
             try {

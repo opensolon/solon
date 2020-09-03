@@ -1,12 +1,12 @@
 package org.noear.solon.extend.data;
 
-import org.noear.solon.core.Tran;
+import org.noear.solon.annotation.XTran;
 
 class TranEntity {
     protected Tran tran;
-    protected TranMeta meta;
+    protected XTran meta;
 
-    public TranEntity(Tran tran, TranMeta meta){
+    public TranEntity(Tran tran, XTran meta){
         this.tran = tran;
         this.meta = meta;
     }

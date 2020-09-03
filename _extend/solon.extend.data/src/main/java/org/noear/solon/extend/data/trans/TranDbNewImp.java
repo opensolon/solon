@@ -1,13 +1,13 @@
-package org.noear.solon.extend.data.tran;
+package org.noear.solon.extend.data.trans;
 
-import org.noear.solon.core.Tran;
+import org.noear.solon.annotation.XTran;
 import org.noear.solon.ext.RunnableEx;
+import org.noear.solon.extend.data.Tran;
 import org.noear.solon.extend.data.TranManager;
-import org.noear.solon.extend.data.TranMeta;
 
 public class TranDbNewImp extends DbTran implements Tran {
 
-    public TranDbNewImp(TranMeta meta) {
+    public TranDbNewImp(XTran meta) {
         super(meta);
     }
 

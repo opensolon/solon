@@ -9,11 +9,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface XTran {
     /**
-     * 数据源标识
-     * */
-    String value() default "";
-
-    /**
      * 事务传导策略
      * */
     TranPolicy policy() default TranPolicy.required;
@@ -24,7 +19,7 @@ public @interface XTran {
     TranIsolation isolation() default TranIsolation.unspecified;
 
     /**
-     * 是否为事务组
+     * 只读事务
      * */
-    boolean group() default false;
+    boolean readOnly() default false;
 }
