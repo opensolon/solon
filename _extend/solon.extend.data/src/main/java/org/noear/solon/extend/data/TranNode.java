@@ -5,11 +5,11 @@ import org.noear.solon.ext.RunnableEx;
 /**
  * 事务
  * */
-public interface Tran {
+public interface TranNode {
     /**
      * 添加从事务
      */
-    default void add(Tran slave) {
+    default void add(TranNode slave) {
     }
 
     /**

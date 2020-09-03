@@ -1,17 +1,17 @@
 package org.noear.solon.extend.data.trans;
 
 import org.noear.solon.core.XEventBus;
-import org.noear.solon.extend.data.Tran;
+import org.noear.solon.extend.data.TranNode;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class DbTranNode implements Tran {
+public abstract class DbTranNode implements TranNode {
     protected DbTranNode parent;
     protected List<DbTranNode> children = new ArrayList<>();
 
     @Override
-    public void add(Tran slave) {
+    public void add(TranNode slave) {
         if (slave instanceof DbTranNode) {
             DbTranNode node = (DbTranNode) slave;
 

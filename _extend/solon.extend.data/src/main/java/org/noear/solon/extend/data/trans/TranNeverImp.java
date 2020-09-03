@@ -1,13 +1,13 @@
 package org.noear.solon.extend.data.trans;
 
 import org.noear.solon.ext.RunnableEx;
-import org.noear.solon.extend.data.Tran;
+import org.noear.solon.extend.data.TranNode;
 import org.noear.solon.extend.data.TranManager;
 
 /**
  * 以无事务的方式执行，如果当前有事务则报错（不需要入栈）
  * */
-public class TranNeverImp implements Tran {
+public class TranNeverImp implements TranNode {
     public TranNeverImp() {
 
     }

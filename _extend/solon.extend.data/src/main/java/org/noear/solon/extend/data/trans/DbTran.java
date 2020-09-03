@@ -2,7 +2,7 @@ package org.noear.solon.extend.data.trans;
 
 import org.noear.solon.annotation.XTran;
 import org.noear.solon.ext.RunnableEx;
-import org.noear.solon.extend.data.Tran;
+import org.noear.solon.extend.data.TranNode;
 import org.noear.solon.extend.data.TranManager;
 
 import javax.sql.DataSource;
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class DbTran extends DbTranNode implements Tran {
+public abstract class DbTran extends DbTranNode implements TranNode {
     private final XTran meta;
     private final Map<DataSource, Connection> conMap = new HashMap<>();
 

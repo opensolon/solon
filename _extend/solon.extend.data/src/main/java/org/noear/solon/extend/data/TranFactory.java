@@ -19,12 +19,12 @@ public final class TranFactory {
     private TranFactory() {
     }
 
-    private Tran tranNever = new TranNeverImp();
-    private Tran tranMandatory = new TranMandatoryImp();
-    private Tran tranNot = new TranNotImp();
+    private TranNode tranNever = new TranNeverImp();
+    private TranNode tranMandatory = new TranMandatoryImp();
+    private TranNode tranNot = new TranNotImp();
 
 
-    public Tran create(XTran meta) {
+    public TranNode create(XTran meta) {
         if (meta.policy() == TranPolicy.not_supported) {
             //事务排除
             return tranNot;

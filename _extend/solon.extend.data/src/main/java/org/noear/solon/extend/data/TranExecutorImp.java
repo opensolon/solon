@@ -79,7 +79,7 @@ public class TranExecutorImp implements XTranExecutor {
             return;
         } else {
             //新建事务，并置为根事务
-            Tran tran = factory().create(meta);
+            TranNode tran = factory().create(meta);
             stack = new Stack<>();
 
             try {
@@ -110,7 +110,7 @@ public class TranExecutorImp implements XTranExecutor {
 
         //4.当前：新起事务且不需要加入上个事务 //入栈，供后来事务用
         if (meta.policy() == TranPolicy.requires_new) {
-            Tran tran = factory().create(meta);
+            TranNode tran = factory().create(meta);
             apply2(stack, tran, meta, runnable);
             return;
         }
@@ -125,7 +125,7 @@ public class TranExecutorImp implements XTranExecutor {
             runnable.run();
         } else {
             //不同源 或嵌套；则新建事务（不同源，嵌套可能会有问题） //入栈，供后来事务用
-            Tran tran = factory().create(meta);
+            TranNode tran = factory().create(meta);
 
             //尝试加入上个事务***
             before.tran.add(tran);
@@ -135,7 +135,7 @@ public class TranExecutorImp implements XTranExecutor {
     }
 
 
-    private void apply2(Stack<TranEntity> stack, Tran tran, XTran meta, RunnableEx runnable) throws Throwable {
+    private void apply2(Stack<TranEntity> stack, TranNode tran, XTran meta, RunnableEx runnable) throws Throwable {
         if (meta.policy().code <= TranPolicy.nested.code) {
             //@group || required || requires_new || nested ，需要入栈
             //
