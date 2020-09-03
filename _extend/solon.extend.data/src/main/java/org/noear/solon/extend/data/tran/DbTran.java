@@ -1,23 +1,47 @@
 package org.noear.solon.extend.data.tran;
 
 import org.noear.solon.core.Tran;
-import org.noear.solon.core.TranIsolation;
-import org.noear.solon.core.TranSession;
 import org.noear.solon.ext.RunnableEx;
-import org.noear.solon.extend.data.TranLocal;
+import org.noear.solon.extend.data.TranManager;
+import org.noear.solon.extend.data.TranMeta;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class DbTran extends DbTranNode implements Tran {
-    private final TranSession session;
+    private final TranMeta meta;
+    private final Map<DataSource, Connection> conMap = new HashMap<>();
 
-    public DbTran(TranSession session) {
-        this.session = session;
+    public Connection getConnection(DataSource ds) throws SQLException {
+        if (conMap.containsKey(ds)) {
+            return conMap.get(ds);
+        } else {
+            Connection con = ds.getConnection();
+            con.setAutoCommit(false);
+            if (meta.isolation().level > 0) {
+                con.setTransactionIsolation(meta.isolation().level);
+            }
+
+            conMap.putIfAbsent(ds, con);
+            return con;
+        }
     }
 
-    public void execute(TranIsolation isolation, RunnableEx runnable) throws Throwable {
-        try {
-            session.start(isolation);
+    public DbTran(TranMeta meta) {
+        this.meta = meta;
+    }
 
-            TranLocal.currentSet(this);
+    public void execute(RunnableEx runnable) throws Throwable {
+        try {
+            //conMap 此时，还是空的
+            //
+            TranManager.currentSet(this);
+
+            //conMap 会在run时产生
+            //
             runnable.run();
 
             if (parent == null) {
@@ -30,8 +54,7 @@ public abstract class DbTran extends DbTranNode implements Tran {
 
             throw ex;
         } finally {
-            TranLocal.currentRemove();
-            session.end();
+            TranManager.currentRemove();
 
             if (parent == null) {
                 close();
@@ -42,31 +65,25 @@ public abstract class DbTran extends DbTranNode implements Tran {
     @Override
     public void commit() throws Throwable{
         super.commit();
-        session.commit();
+
+        for(Map.Entry<DataSource,Connection> kv : conMap.entrySet()){
+            kv.getValue().commit();
+        }
     }
 
     @Override
     public void rollback() throws Throwable{
         super.rollback();
-        session.rollback();
+        for(Map.Entry<DataSource,Connection> kv : conMap.entrySet()){
+            kv.getValue().rollback();
+        }
     }
 
     @Override
     public void close() throws Throwable{
         super.close();
-        session.close();
-    }
-
-    /**
-     * 挂起
-     * */
-    public void suspend(){
-        session.suspend();
-    }
-    /**
-     * 恢复
-     * */
-    public void resume(){
-        session.resume();
+        for(Map.Entry<DataSource,Connection> kv : conMap.entrySet()){
+            kv.getValue().close();
+        }
     }
 }

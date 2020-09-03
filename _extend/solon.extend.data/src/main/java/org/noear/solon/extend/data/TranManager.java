@@ -2,10 +2,14 @@ package org.noear.solon.extend.data;
 
 import org.noear.solon.extend.data.tran.DbTran;
 
-public class TranLocal {
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+public class TranManager {
     private static final ThreadLocal<DbTran> _tl_tran = new ThreadLocal();
 
-    public TranLocal() {
+    private TranManager() {
     }
 
     /**
@@ -39,8 +43,6 @@ public class TranLocal {
 
         if(tran != null){
             currentRemove();
-
-            tran.suspend();
         }
 
         return tran;
@@ -51,7 +53,6 @@ public class TranLocal {
      * */
     public static void tryResume(DbTran tran){
         if(tran != null){
-            tran.resume();
             currentSet(tran);
         }
     }

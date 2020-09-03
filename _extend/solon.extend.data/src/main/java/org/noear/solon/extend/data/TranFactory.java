@@ -26,23 +26,13 @@ public final class TranFactory {
         return new TranGroupImp();
     }
 
-    public Tran createTran(TranMeta meta, boolean requires_new) {
+    public Tran createTran(TranMeta meta, boolean is_new) {
         //事务 required || (requires_new || nested)
         //
-        if (XBridge.tranSessionFactory() == null) {
-            throw new RuntimeException("Final initialization of tranSessionFactory");
-        }
-
-        TranSession session = XBridge.tranSessionFactory().create(meta.name());
-
-        if (session == null) {
-            throw new RuntimeException("@XTran annotation failed");
-        }
-
-        if (requires_new) {
-            return new TranDbNewImp(meta, session);
+        if (is_new) {
+            return new TranDbNewImp(meta);
         } else {
-            return new TranDbImp(meta, session);
+            return new TranDbImp(meta);
         }
     }
 

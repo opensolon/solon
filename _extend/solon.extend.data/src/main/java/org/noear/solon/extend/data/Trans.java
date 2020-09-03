@@ -2,8 +2,30 @@ package org.noear.solon.extend.data;
 
 import org.noear.solon.core.TranPolicy;
 import org.noear.solon.ext.RunnableEx;
+import org.noear.solon.extend.data.tran.DbTran;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class Trans {
+    /**
+     * 获取链接
+     * */
+    public static Connection getConnection(DataSource ds) throws SQLException {
+        DbTran tran = TranManager.current();
+
+        if(tran == null){
+            return ds.getConnection();
+        }else{
+            return tran.getConnection(ds);
+        }
+    }
+
+    public static boolean inTrans(){
+        return TranManager.current() != null;
+    }
+
     /**
      * 发起事务组
      * */

@@ -9,8 +9,6 @@ import org.noear.solon.core.*;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        XBridge.tranSessionFactorySet(new TranSessionFactoryImp());
-
         Aop.factory().beanCreatorAdd(Db.class, (clz, wrap, anno)->{
             if(XUtil.isEmpty(anno.value()) || clz.isInterface() == false){
                 return;
@@ -55,7 +53,6 @@ public class XPluginImp implements XPlugin {
                             varH.setValue(factory);
                             return;
                         }
-
                     }
                 });
             }

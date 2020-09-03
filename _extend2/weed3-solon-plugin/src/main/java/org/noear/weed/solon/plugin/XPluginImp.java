@@ -13,9 +13,6 @@ import java.util.function.Consumer;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-
-        XBridge.tranSessionFactorySet(new TranSessionFactoryImp());
-
         Aop.factory().beanCreatorAdd(Db.class, (clz, bw, anno) -> {
             if (clz.isInterface()) {
                 getMapper(clz, anno, null, (raw) -> {
