@@ -32,6 +32,11 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>solon.extend.data</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon.serialization.snack3</artifactId>
         </dependency>
 
