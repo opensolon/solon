@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.Stack;
 
 /**
- * 事务管理
+ * 事务执行器
  * */
 public class TranExecutorImp implements XTranExecutor {
     public static final TranExecutorImp global = new TranExecutorImp();

@@ -11,6 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
+    <!-- 添加事务支持和缓存支持 -->
     <artifactId>solon.extend.data</artifactId>
     <packaging>jar</packaging>
 
