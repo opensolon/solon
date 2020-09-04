@@ -23,7 +23,7 @@ public class CacheExecutorImp implements XCacheExecutor {
 
     @Override
     public Object execute(XCache anno, Method method, Parameter[] params, Object[] values, SupplierEx callable) throws Throwable {
-        CacheService cs = XBridge.cacheServiceGet(anno.caching());
+        CacheService cs = XBridge.cacheServiceGet(anno.service());
         Map<String,Object> parMap = new HashMap<>();
         Object cacheT = null;
 
