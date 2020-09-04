@@ -22,7 +22,7 @@ public class TranExecutorImp implements XTranExecutor {
 
     }
 
-    private ThreadLocal<Stack<TranEntity>> local = new ThreadLocal<>();
+    protected ThreadLocal<Stack<TranEntity>> local = new ThreadLocal<>();
 
     @Override
     public boolean inTrans() {
@@ -46,9 +46,9 @@ public class TranExecutorImp implements XTranExecutor {
         }
     }
 
-    private TranNode tranNot = new TranNotImp();
-    private TranNode tranNever = new TranNeverImp();
-    private TranNode tranMandatory = new TranMandatoryImp();
+    protected TranNode tranNot = new TranNotImp();
+    protected TranNode tranNever = new TranNeverImp();
+    protected TranNode tranMandatory = new TranMandatoryImp();
 
     @Override
     public void execute(XTran meta, RunnableEx runnable) throws Throwable {
@@ -91,8 +91,8 @@ public class TranExecutorImp implements XTranExecutor {
 
     /**
      * 执行根节点的事务
-     * */
-    private void forRoot(Stack<TranEntity> stack, XTran meta, RunnableEx runnable) throws Throwable {
+     */
+    protected void forRoot(Stack<TranEntity> stack, XTran meta, RunnableEx runnable) throws Throwable {
         //::必须 或新建 或嵌套  //::入栈
         //
         TranNode tran = create(meta);
@@ -100,7 +100,7 @@ public class TranExecutorImp implements XTranExecutor {
 
         try {
             local.set(stack);
-            apply2(stack, tran, meta, runnable);
+            applyDo(stack, tran, meta, runnable);
         } finally {
             local.remove();
         }
@@ -108,8 +108,8 @@ public class TranExecutorImp implements XTranExecutor {
 
     /**
      * 执行非根节点的事务
-     * */
-    private void forNotRoot(Stack<TranEntity> stack, XTran meta, RunnableEx runnable) throws Throwable {
+     */
+    protected void forNotRoot(Stack<TranEntity> stack, XTran meta, RunnableEx runnable) throws Throwable {
         switch (meta.policy()) {
             case required: {
                 //::支持当前事务
@@ -120,7 +120,7 @@ public class TranExecutorImp implements XTranExecutor {
             case requires_new: {
                 //::新起一个独立事务    //::入栈
                 TranNode tran = create(meta);
-                apply2(stack, tran, meta, runnable);
+                applyDo(stack, tran, meta, runnable);
                 return;
             }
 
@@ -131,14 +131,14 @@ public class TranExecutorImp implements XTranExecutor {
                 //::加入上个事务***
                 stack.peek().tran.add(tran);
 
-                apply2(stack, tran, meta, runnable);
+                applyDo(stack, tran, meta, runnable);
                 return;
             }
         }
     }
 
 
-    private void apply2(Stack<TranEntity> stack, TranNode tran, XTran meta, RunnableEx runnable) throws Throwable {
+    protected void applyDo(Stack<TranEntity> stack, TranNode tran, XTran meta, RunnableEx runnable) throws Throwable {
         if (meta.policy().code <= TranPolicy.nested.code) {
             //required || requires_new || nested ，需要入栈
             //
@@ -159,8 +159,8 @@ public class TranExecutorImp implements XTranExecutor {
 
     /**
      * 创建一个事务节点
-     * */
-    private TranNode create(XTran meta) {
+     */
+    protected TranNode create(XTran meta) {
         if (meta.policy() == TranPolicy.not_supported) {
             //事务排除
             return tranNot;

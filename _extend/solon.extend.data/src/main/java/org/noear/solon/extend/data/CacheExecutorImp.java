@@ -86,7 +86,7 @@ public class CacheExecutorImp implements XCacheExecutor {
         return result;
     }
 
-    private String buildKey(Method method, Parameter[] params, Object[] values, Map<String, Object> parMap) {
+    protected String buildKey(Method method, Parameter[] params, Object[] values, Map<String, Object> parMap) {
         StringBuilder keyB = new StringBuilder();
 
         keyB.append(method.getDeclaringClass().getName()).append(":");
@@ -100,7 +100,7 @@ public class CacheExecutorImp implements XCacheExecutor {
         return keyB.toString();
     }
 
-    private String formatTags(String tags, Map map) {
+    protected String formatTags(String tags, Map map) {
         if (tags.indexOf("$") < 0) {
             return tags;
         }
