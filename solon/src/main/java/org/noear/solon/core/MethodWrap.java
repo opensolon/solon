@@ -1,7 +1,7 @@
 package org.noear.solon.core;
 
-import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XAround;
+import org.noear.solon.annotation.XCache;
 import org.noear.solon.annotation.XTran;
 
 import java.lang.annotation.Annotation;
@@ -35,6 +35,7 @@ public class MethodWrap {
         method = m;
         parameters = m.getParameters();
         xTran = m.getAnnotation(XTran.class);
+        xCache = m.getAnnotation(XCache.class);
         xAround = buildAround(m.getAnnotation(XAround.class));
     }
 
@@ -47,6 +48,7 @@ public class MethodWrap {
     }
 
     private final XTran xTran;
+    private final XCache xCache;
     private final InvocationHandler xAround;
     private final Method method;
     private final Parameter[] parameters;
@@ -97,20 +99,41 @@ public class MethodWrap {
      * 执行，并尝试事务
      */
     public Object invokeByAspect(Object obj, Object... args) throws Throwable {
-        if (xTran == null) {
-            return invokeByAspect0(obj, args);
+        return invokeTryCache(obj, args);
+        //
+        //try cache => try tran => try around;
+        //
+    }
+
+    private Object invokeTryCache(Object obj, Object... args) throws Throwable {
+        if (xCache == null) {
+            return invokeTryTran(obj, args);
         } else {
             ValHolder val0 = new ValHolder();
 
-            XBridge.tranExecutor().execute(xTran, () -> {
-                val0.value = invokeByAspect0(obj, args);
+            XBridge.cacheExecutor().execute(xCache, parameters, args, () -> {
+                val0.value = invokeTryAround(obj, args);
             });
 
             return val0.value;
         }
     }
 
-    private Object invokeByAspect0(Object obj, Object[] args) throws Throwable {
+    private Object invokeTryTran(Object obj, Object... args) throws Throwable {
+        if (xTran == null) {
+            return invokeTryAround(obj, args);
+        } else {
+            ValHolder val0 = new ValHolder();
+
+            XBridge.tranExecutor().execute(xTran, () -> {
+                val0.value = invokeTryAround(obj, args);
+            });
+
+            return val0.value;
+        }
+    }
+
+    private Object invokeTryAround(Object obj, Object[] args) throws Throwable {
         if (xAround == null) {
             return method.invoke(obj, args);
         } else {
