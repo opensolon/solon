@@ -1,5 +1,6 @@
 package org.noear.solon.extend.data;
 
+import org.noear.solon.annotation.XNote;
 import org.noear.solon.core.CacheService;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class CacheTags {
      * @param tag            标签
      * @param targetCacheKey 目标缓存键
      */
+    @XNote("为缓存添加一个标签")
     public void add(String tag, String targetCacheKey) {
         List<String> temp = $get(tagKey(tag));
         if (temp.contains(targetCacheKey))
@@ -32,10 +34,11 @@ public class CacheTags {
     }
 
     /**
-     * 清空@tag相关的所有缓存
+     * 清空标签相关的所有缓存
      *
      * @param tag 缓存标签
      */
+    @XNote("清空标签相关的所有缓存")
     public CacheTags clear(String tag) {
         List<String> keys = $get(tagKey(tag));
 
