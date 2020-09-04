@@ -9,14 +9,14 @@ import org.noear.solon.extend.data.annotation.EnableTransaction;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        EnableTransaction et = app.source().getAnnotation(EnableTransaction.class);
-        EnableCaching ec = app.source().getAnnotation(EnableCaching.class);
+        EnableTransaction enableTransaction = app.source().getAnnotation(EnableTransaction.class);
+        EnableCaching enableCaching = app.source().getAnnotation(EnableCaching.class);
 
-        if (et == null || et.value()) {
+        if (enableTransaction == null || enableTransaction.value()) {
             XBridge.tranExecutorSet(TranExecutorImp.global);
         }
 
-        if (ec == null || ec.value()) {
+        if (enableCaching == null || enableCaching.value()) {
             XBridge.cacheServiceAddIfAbsent("", new CacheServiceDefault());
             XBridge.cacheExecutorSet(CacheExecutorImp.global);
         }
