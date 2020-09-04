@@ -3,7 +3,7 @@ package org.noear.solon.extend.data;
 import org.noear.solon.ext.RunnableEx;
 
 /**
- * 事务
+ * 事务节点
  * */
 public interface TranNode {
     /**

@@ -12,6 +12,8 @@ import java.util.Stack;
 
 /**
  * 事务执行器
+ *
+ * 基于 节点 与 栈管理
  * */
 public class TranExecutorImp implements XTranExecutor {
     public static final TranExecutorImp global = new TranExecutorImp();
@@ -21,7 +23,6 @@ public class TranExecutorImp implements XTranExecutor {
     }
 
     private ThreadLocal<Stack<TranEntity>> local = new ThreadLocal<>();
-
 
     @Override
     public boolean inTrans() {
@@ -88,6 +89,9 @@ public class TranExecutorImp implements XTranExecutor {
         }
     }
 
+    /**
+     * 执行根节点的事务
+     * */
     private void forRoot(Stack<TranEntity> stack, XTran meta, RunnableEx runnable) throws Throwable {
         //::必须 或新建 或嵌套  //::入栈
         //
@@ -102,6 +106,9 @@ public class TranExecutorImp implements XTranExecutor {
         }
     }
 
+    /**
+     * 执行非根节点的事务
+     * */
     private void forNotRoot(Stack<TranEntity> stack, XTran meta, RunnableEx runnable) throws Throwable {
         switch (meta.policy()) {
             case required: {
@@ -150,6 +157,9 @@ public class TranExecutorImp implements XTranExecutor {
         }
     }
 
+    /**
+     * 创建一个事务节点
+     * */
     private TranNode create(XTran meta) {
         if (meta.policy() == TranPolicy.not_supported) {
             //事务排除

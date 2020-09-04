@@ -2,6 +2,9 @@ package org.noear.solon.extend.data;
 
 import org.noear.solon.extend.data.trans.DbTran;
 
+/**
+ * 事务管理器
+ * */
 public class TranManager {
     private static final ThreadLocal<DbTran> _tl_tran = new ThreadLocal();
 
