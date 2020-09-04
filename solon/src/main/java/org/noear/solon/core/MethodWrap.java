@@ -109,11 +109,9 @@ public class MethodWrap {
         if (xCache == null) {
             return invokeTryTran(obj, args);
         } else {
-            ValHolder val0 = new ValHolder();
-
-            XBridge.cacheExecutor().execute(xCache, method, parameters, args, () -> invokeTryTran(obj, args));
-
-            return val0.value;
+            return XBridge.cacheExecutor()
+                    .execute(xCache, method, parameters, args,
+                            () -> invokeTryTran(obj, args));
         }
     }
 

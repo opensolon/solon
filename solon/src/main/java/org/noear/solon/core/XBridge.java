@@ -209,6 +209,14 @@ public class XBridge {
 
 
     /**
+     * 缓存服务集合；只读
+     * */
+    @XNote("缓存服务集合；只读")
+    public static Map<String, CacheService> cacheServiceMap() {
+        return Collections.unmodifiableMap(cacheServiceMap);
+    }
+
+    /**
      * 添加缓存服务
      * */
     @XNote("添加缓存服务")
