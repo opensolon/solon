@@ -24,69 +24,87 @@ public class CacheExecutorImp implements XCacheExecutor {
     @Override
     public Object execute(XCache anno, Method method, Parameter[] params, Object[] values, SupplierEx callable) throws Throwable {
         CacheService cs = XBridge.cacheServiceGet(anno.service());
-        Map<String,Object> parMap = new HashMap<>();
-        Object cacheT = null;
+        Map<String, Object> parMap = new HashMap<>();
+        Object result = null;
 
-        //清除缓存标签
-        //
         if (anno.seconds() != 0 || XUtil.isNotEmpty(anno.tags())) {
-            StringBuilder keyB = new StringBuilder();
-
-            keyB.append(method.getDeclaringClass().getName()).append(":");
-            keyB.append(method.getName()).append(":");
-
-            for (int i = 0, len = params.length; i < len; i++) {
-                keyB.append(params[i].getName()).append("_").append(values[i]);
-                parMap.put(params[i].getName(), values[i]);
-            }
-
-            String key = keyB.toString();
+            //
+            //（一）执行缓存操作
+            //
+            String key = buildKey(method, params, values, parMap);
 
             //1.从缓存获取
+            //
+            result = cs.get(key);
 
-            cacheT = cs.get(key);
-            if (cacheT == null) {
+            if (result == null) {
                 //2.执行调用，并返回
-                cacheT = callable.get();
-                cs.store(key, cacheT, anno.seconds());
+                //
+                result = callable.get();
 
+                if (result != null) {
+                    //3.不为null，则进行缓存
+                    //
+                    cs.store(key, result, anno.seconds());
 
-                if(XUtil.isNotEmpty(anno.tags())) {
-                    String tags = formatTags(anno.tags(), parMap);
-                    CacheTags ct = new CacheTags(cs);
+                    if (XUtil.isNotEmpty(anno.tags())) {
+                        String tags = formatTags(anno.tags(), parMap);
+                        CacheTags ct = new CacheTags(cs);
 
-                    //添加缓存
-                    for (String tag : tags.split(",")) {
-                        ct.add(tag, key);
+                        //4.添加缓存标签
+                        for (String tag : tags.split(",")) {
+                            ct.add(tag, key);
+                        }
                     }
                 }
             }
-        }else{
-            cacheT = callable.get();
+        } else {
+            //
+            //（一）无缓存操作
+            //
+            result = callable.get();
         }
 
-        //清除缓存标签
+        //（二）清除缓存标签
         //
         if (XUtil.isNotEmpty(anno.clearTags())) {
-            if(parMap.size() == 0) {
+            if (parMap.size() == 0) {
                 for (int i = 0, len = params.length; i < len; i++) {
                     parMap.put(params[i].getName(), values[i]);
                 }
             }
 
-            String tags = formatTags(anno.clearTags(),parMap);
+            String tags = formatTags(anno.clearTags(), parMap);
             CacheTags ct = new CacheTags(cs);
 
-            //添加缓存
-            for(String tag : tags.split(",")) {
+            //清除缓存
+            for (String tag : tags.split(",")) {
                 ct.clear(tag);
             }
         }
 
-        return cacheT;
+        return result;
+    }
+
+    private String buildKey(Method method, Parameter[] params, Object[] values, Map<String, Object> parMap) {
+        StringBuilder keyB = new StringBuilder();
+
+        keyB.append(method.getDeclaringClass().getName()).append(":");
+        keyB.append(method.getName()).append(":");
+
+        for (int i = 0, len = params.length; i < len; i++) {
+            keyB.append(params[i].getName()).append("_").append(values[i]);
+            parMap.put(params[i].getName(), values[i]);
+        }
+
+        return keyB.toString();
     }
 
     private String formatTags(String tags, Map map) {
+        if (tags.indexOf("$") < 0) {
+            return tags;
+        }
+
         String tags2 = tags;
 
         Pattern pattern = Pattern.compile("\\$\\{(\\w+)\\}");
@@ -94,7 +112,7 @@ public class CacheExecutorImp implements XCacheExecutor {
         while (m.find()) {
             String mark = m.group(0);
             String name = m.group(1);
-            if(map.containsKey(name)){
+            if (map.containsKey(name)) {
                 String val = String.valueOf(map.get(name));
 
                 tags2 = tags2.replace(mark, val);

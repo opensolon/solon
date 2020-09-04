@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.concurrent.*;
 
 public class CacheServiceDefault implements CacheService {
-    private String _cacheKeyHead;
     private int _defaultSeconds;
 
     //缓存存储器
@@ -19,11 +18,6 @@ public class CacheServiceDefault implements CacheService {
     }
 
     public CacheServiceDefault(int defSeconds) {
-        this("", defSeconds);
-    }
-
-    public CacheServiceDefault(String keyHeader, int defSeconds) {
-        _cacheKeyHead = keyHeader;
         _defaultSeconds = defSeconds;
     }
 
@@ -84,12 +78,10 @@ public class CacheServiceDefault implements CacheService {
         return _defaultSeconds;
     }
 
-    public String getCacheKeyHead() {
-        return _cacheKeyHead;
-    }
 
-
-    //存储实体
+    /**
+     * 存储实体
+     * */
     private static class Entity {
         public Object value;
         public Future future;
