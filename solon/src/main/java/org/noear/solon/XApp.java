@@ -1,5 +1,6 @@
 package org.noear.solon;
 
+import org.noear.solon.annotation.XNote;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.*;
 import org.noear.solon.ext.*;
@@ -15,12 +16,17 @@ public class XApp implements XHandler,XHandlerSlots {
     private static XApp _global;
 
     /**
-     * 唯一实例
+     * 全局实例
      */
+    @XNote("全局实例")
     public static XApp global() {
         return _global;
     }
 
+    /**
+     * 应用配置
+     * */
+    @XNote("应用配置")
     public static XAppProperties cfg(){
         return global().prop();
     }
