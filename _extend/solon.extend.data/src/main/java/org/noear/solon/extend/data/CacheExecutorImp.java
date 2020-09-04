@@ -11,7 +11,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,14 +67,14 @@ public class CacheExecutorImp implements XCacheExecutor {
 
         //清除缓存标签
         //
-        if (XUtil.isNotEmpty(anno.clear())) {
+        if (XUtil.isNotEmpty(anno.clearTags())) {
             if(parMap.size() == 0) {
                 for (int i = 0, len = params.length; i < len; i++) {
                     parMap.put(params[i].getName(), values[i]);
                 }
             }
 
-            String tags = formatTags(anno.clear(),parMap);
+            String tags = formatTags(anno.clearTags(),parMap);
             CacheTags ct = new CacheTags(cs);
 
             //添加缓存

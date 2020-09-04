@@ -7,9 +7,13 @@ import org.noear.solon.core.XPlugin;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        XBridge.tranExecutorSet(TranExecutorImp.global);
+        if (app.source().getAnnotation(EnableTransaction.class) != null) {
+            XBridge.tranExecutorSet(TranExecutorImp.global);
+        }
 
-        XBridge.cacheServiceAddIfAbsent("",new CacheServiceDefault());
-        XBridge.cacheExecutorSet(CacheExecutorImp.global);
+        if (app.source().getAnnotation(EnableCaching.class) != null) {
+            XBridge.cacheServiceAddIfAbsent("", new CacheServiceDefault());
+            XBridge.cacheExecutorSet(CacheExecutorImp.global);
+        }
     }
 }

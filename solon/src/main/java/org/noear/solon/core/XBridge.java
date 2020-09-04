@@ -181,7 +181,10 @@ public class XBridge {
     // XTranExecutor 对接
     //
     private static XTranExecutor _tranExecutor = (anno, runnable) -> {
-        throw new RuntimeException("XBridge: The tran actuator is not initialized");
+        //默认不开启事务
+        //
+        runnable.run();
+        //throw new RuntimeException("XBridge: The tran actuator is not initialized");
     };
 
     /**
@@ -238,7 +241,10 @@ public class XBridge {
     }
 
     private static XCacheExecutor _cacheExecutor = (anno, method, params, values, runnable) -> {
-        throw new RuntimeException("XBridge: The cache actuator is not initialized");
+        //默认不开启缓存
+        //
+        return runnable.get();
+        //throw new RuntimeException("XBridge: The cache actuator is not initialized");
     };
 
     /**
