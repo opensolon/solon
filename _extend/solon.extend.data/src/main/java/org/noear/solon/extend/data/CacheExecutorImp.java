@@ -30,7 +30,7 @@ public class CacheExecutorImp implements XCacheExecutor {
 
         //清除缓存标签
         //
-        if (anno.seconds() > 0 || XUtil.isNotEmpty(anno.tags())) {
+        if (anno.seconds() != 0 || XUtil.isNotEmpty(anno.tags())) {
             StringBuilder keyB = new StringBuilder();
 
             keyB.append(method.getDeclaringClass().getName()).append(":");
