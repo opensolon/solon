@@ -446,4 +446,6 @@ public class XApp implements XHandler,XHandlerSlots {
     public boolean enableHttp = true;
     public boolean enableWebSocket = true;
     public boolean enableSocket = true;
+    public boolean enableTransaction = true;
+    public boolean enableCaching = true;
 }
