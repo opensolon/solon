@@ -1,4 +1,4 @@
-package org.noear.solon.extend.data;
+package org.noear.solon.extend.data.annotation;
 
 import java.lang.annotation.*;
 
@@ -6,4 +6,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface EnableCaching {
+    boolean value() default true;
 }
