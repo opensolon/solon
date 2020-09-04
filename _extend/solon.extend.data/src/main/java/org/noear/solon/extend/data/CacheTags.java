@@ -56,13 +56,13 @@ public class CacheTags {
     /// <param name="targetCacheKey">目标缓存键</param>
     public void add(String tag,  String targetCacheKey)
     {
-        List<String> temp = $(KEY(tag));
+        List<String> temp = $get(KEY(tag));
         if (temp.contains(targetCacheKey))
             return;
 
         temp.add(targetCacheKey);
 
-        $(KEY(tag), temp);
+        $set(KEY(tag), temp);
     }
 
     //#endregion
@@ -74,7 +74,7 @@ public class CacheTags {
     /// </summary>
     public CacheTags clear(String tag)
     {
-        List<String> keys = $(KEY(tag));
+        List<String> keys = $get(KEY(tag));
 
         for (String cacheKey : keys)
             _Cache.remove(cacheKey);
@@ -86,13 +86,13 @@ public class CacheTags {
 
     public int count(String tag)
     {
-        return $(KEY(tag)).size();
+        return $get(KEY(tag)).size();
     }
 
 
     public String getCacheKey(String tag,  int index)
     {
-        List<String> temp = $(KEY(tag));
+        List<String> temp = $get(KEY(tag));
 
         if (temp.size() > index)
             return temp.get(index);
@@ -109,19 +109,19 @@ public class CacheTags {
     /// <returns></returns>
     public List<String> getCacheKeys(String tag)
     {
-        return $(KEY(tag));
+        return $get(KEY(tag));
     }
 
     public void removeTag(String tag, String val, String targetCacheKey)
     {
-        List<String> temp = $(KEY(tag));
+        List<String> temp = $get(KEY(tag));
         temp.remove(targetCacheKey);
-        $(KEY(tag), temp);
+        $set(KEY(tag), temp);
 
         _Cache.remove(targetCacheKey);
     }
 
-    private List<String> $(String key) {
+    private List<String> $get(String key) {
         Object temp = _Cache.get(key);
 
         if (temp == null)
@@ -130,9 +130,9 @@ public class CacheTags {
             return (List<String>) temp;
     }
 
-    private void $(String key, List<String> value)
+    private void $set(String key, List<String> value)
     {
-        _Cache.store(key, value, _Cache.getDefalutSeconds());
+        _Cache.store(key, value, 0);
     }
 
     private String KEY(String tag)

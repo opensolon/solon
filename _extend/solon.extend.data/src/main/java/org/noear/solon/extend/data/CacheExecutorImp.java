@@ -9,6 +9,7 @@ import org.noear.solon.ext.SupplierEx;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
@@ -18,13 +19,18 @@ import java.util.regex.Pattern;
  * 缓存执行器
  * */
 public class CacheExecutorImp implements XCacheExecutor {
+    public static final CacheExecutorImp global = new CacheExecutorImp();
+
+
     @Override
     public Object execute(XCache anno, Method method, Parameter[] params, Object[] values, SupplierEx callable) throws Throwable {
         CacheService cs = XBridge.cacheServiceGet(anno.caching());
+        Map<String,Object> parMap = new HashMap<>();
+        Object cacheT = null;
 
-        if (XUtil.isNotEmpty(anno.tags())) {
-            String tags = anno.tags();
-
+        //清除缓存标签
+        //
+        if (anno.seconds() > 0 || XUtil.isNotEmpty(anno.tags())) {
             StringBuilder keyB = new StringBuilder();
 
             keyB.append(method.getDeclaringClass().getName()).append(":");
@@ -32,28 +38,53 @@ public class CacheExecutorImp implements XCacheExecutor {
 
             for (int i = 0, len = params.length; i < len; i++) {
                 keyB.append(params[i].getName()).append("_").append(values[i]);
+                parMap.put(params[i].getName(), values[i]);
             }
 
             String key = keyB.toString();
 
             //1.从缓存获取
 
-            Object cacheT = cs.get(key);
+            cacheT = cs.get(key);
             if (cacheT == null) {
                 //2.执行调用，并返回
                 cacheT = callable.get();
                 cs.store(key, cacheT, anno.seconds());
 
-                CacheTags ct = new CacheTags(cs);
 
-                //添加缓存
-                for(String tag : tags.split(",")) {
-                    ct.add(tag, key);
+                if(XUtil.isNotEmpty(anno.tags())) {
+                    String tags = formatTags(anno.tags(), parMap);
+                    CacheTags ct = new CacheTags(cs);
+
+                    //添加缓存
+                    for (String tag : tags.split(",")) {
+                        ct.add(tag, key);
+                    }
                 }
+            }
+        }else{
+            cacheT = callable.get();
+        }
+
+        //清除缓存标签
+        //
+        if (XUtil.isNotEmpty(anno.clear())) {
+            if(parMap.size() == 0) {
+                for (int i = 0, len = params.length; i < len; i++) {
+                    parMap.put(params[i].getName(), values[i]);
+                }
+            }
+
+            String tags = formatTags(anno.clear(),parMap);
+            CacheTags ct = new CacheTags(cs);
+
+            //添加缓存
+            for(String tag : tags.split(",")) {
+                ct.clear(tag);
             }
         }
 
-        return null;
+        return cacheT;
     }
 
     private String formatTags(String tags, Map map) {

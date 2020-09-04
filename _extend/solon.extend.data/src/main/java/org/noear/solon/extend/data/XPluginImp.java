@@ -10,5 +10,6 @@ public class XPluginImp implements XPlugin {
         XBridge.tranExecutorSet(TranExecutorImp.global);
 
         XBridge.cacheServiceAddIfAbsent("",new CacheServiceDefault());
+        XBridge.cacheExecutorSet(CacheExecutorImp.global);
     }
 }

@@ -84,13 +84,6 @@ public class CacheServiceDefault implements CacheService {
         return _defaultSeconds;
     }
 
-    private CacheTags cacheTags = new CacheTags(this);
-
-    @Override
-    public void clear(String tag) {
-        cacheTags.clear(tag);
-    }
-
     public String getCacheKeyHead() {
         return _cacheKeyHead;
     }
