@@ -7,4 +7,10 @@ public interface CacheService {
     Object get(String key);
     /** 移除 */
     void remove(String key);
+
+    /** 默认缓存时间 */
+    int getDefalutSeconds();
+
+    /** 清空缓存 */
+    void clear(String tag);
 }

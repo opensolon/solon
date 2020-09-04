@@ -216,6 +216,11 @@ public class XBridge {
         cacheServiceMap.put(name,cs);
     }
 
+    @XNote("添加缓存服务")
+    public static void cacheServiceAddIfAbsent(String name, CacheService cs){
+        cacheServiceMap.putIfAbsent(name,cs);
+    }
+
     /**
      * 获取缓存服务
      * */
@@ -224,7 +229,7 @@ public class XBridge {
         return cacheServiceMap.get(name);
     }
 
-    private static XCacheExecutor _cacheExecutor = (anno, params, values, runnable) -> {
+    private static XCacheExecutor _cacheExecutor = (anno, method, params, values, runnable) -> {
         throw new RuntimeException("XBridge: The cache actuator is not initialized");
     };
 

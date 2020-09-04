@@ -22,7 +22,7 @@ public @interface XCache {
     /**
      * 例：user_${user_id} ，user_id 为参数
      * */
-    String taags() default "";
+    String tags() default "";
 
     /**
      * 例：user_${user_id} ，user_id 为参数

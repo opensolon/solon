@@ -8,5 +8,7 @@ public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
         XBridge.tranExecutorSet(TranExecutorImp.global);
+
+        XBridge.cacheServiceAddIfAbsent("",new CacheServiceDefault());
     }
 }

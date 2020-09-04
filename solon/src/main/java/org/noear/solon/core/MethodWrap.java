@@ -111,9 +111,7 @@ public class MethodWrap {
         } else {
             ValHolder val0 = new ValHolder();
 
-            XBridge.cacheExecutor().execute(xCache, parameters, args, () -> {
-                val0.value = invokeTryAround(obj, args);
-            });
+            XBridge.cacheExecutor().execute(xCache, method, parameters, args, () -> invokeTryTran(obj, args));
 
             return val0.value;
         }
