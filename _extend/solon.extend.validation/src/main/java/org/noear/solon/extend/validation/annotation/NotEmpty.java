@@ -4,16 +4,14 @@ package org.noear.solon.extend.validation.annotation;
 import java.lang.annotation.*;
 
 /**
- * 不能小于min
+ * 不能为空
  * */
 @Inherited
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface XNotMin {
+public @interface NotEmpty {
     /**
      * param names
      * */
     String[] value();
-
-    long min() default 1;
 }

@@ -4,16 +4,14 @@ package org.noear.solon.extend.validation.annotation;
 import java.lang.annotation.*;
 
 /**
- * 不能大于max
+ * 不能为null
  * */
 @Inherited
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface XNotMax {
+public @interface NotNull {
     /**
      * param names
      * */
     String[] value();
-
-    long max() default 1;
 }

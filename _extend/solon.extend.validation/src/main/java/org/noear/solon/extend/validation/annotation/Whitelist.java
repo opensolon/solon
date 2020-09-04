@@ -4,14 +4,11 @@ package org.noear.solon.extend.validation.annotation;
 import java.lang.annotation.*;
 
 /**
- * 不能为null
+ * 不在白名单
  * */
 @Inherited
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface XNotNull {
-    /**
-     * param names
-     * */
-    String[] value();
+public @interface Whitelist {
+    String tag() default "";
 }

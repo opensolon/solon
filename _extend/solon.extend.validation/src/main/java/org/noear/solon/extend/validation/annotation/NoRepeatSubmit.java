@@ -8,6 +8,6 @@ import java.lang.annotation.*;
 @Inherited
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface XNotLock {
+public @interface NoRepeatSubmit {
     int seconds() default 3;
 }

@@ -82,6 +82,11 @@ public final class XAppProperties extends XProperties {
                 .map(k -> XUtil.getResource(k))
                 .forEach(url -> plugsScanMapDo(url));
 
+        XScaner.scan("META-INF/solon", n -> n.endsWith(".properties") || n.endsWith(".yml"))
+                .stream()
+                .map(k -> XUtil.getResource(k))
+                .forEach(url -> plugsScanMapDo(url));
+
         if (_plugs.size() > 0) {
             //进行优先级顺排（数值要倒排）
             //
