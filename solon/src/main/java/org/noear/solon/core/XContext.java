@@ -1,5 +1,6 @@
 package org.noear.solon.core;
 
+import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XNote;
 
@@ -464,4 +465,14 @@ public abstract class XContext {
     //用于在处理链中透传处理结果
     @XNote("处理结果")
     public Object result;
+
+    @XNote("控制器?")
+    public Object controller() {
+        return attr("controller");
+    }
+
+    @XNote("动作?")
+    public XAction action() {
+        return attr("action");
+    }
 }

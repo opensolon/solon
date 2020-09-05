@@ -79,13 +79,6 @@ public class XAction extends XHandlerAide {
         return _bw;
     }
 
-    /**
-     * 主控制器
-     * */
-    public Object controller() {
-        return XContext.current().attr("controller");
-    }
-
     @Override
     public void handle(XContext x) throws Throwable {
         invoke(x, null);

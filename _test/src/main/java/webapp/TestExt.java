@@ -17,7 +17,7 @@ public class TestExt implements XPlugin {
         app.get("/",c->c.redirect("/debug.htm"));
 
         app.before("@@",x -> {
-            XAction action = x.attr("action");
+            XAction action = x.action();
             if(action != null){
                 return;
             }

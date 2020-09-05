@@ -8,7 +8,7 @@ import org.noear.solon.core.XHandler;
 public class VerifyInterceptor implements XHandler {
     @Override
     public void handle(XContext ctx) throws Throwable {
-        XAction action = ctx.attr("action");
+        XAction action = ctx.action();
         if (action != null) {
             handle0(ctx, action);
         }

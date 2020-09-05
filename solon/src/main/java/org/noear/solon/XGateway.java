@@ -80,6 +80,7 @@ public abstract class XGateway extends XHandlerAide implements XRender {
             if (m instanceof XAction) {
                 obj = ((XAction) m).bean().get();
                 c.attrSet("controller", obj);
+                c.attrSet("action",m);
             }
 
             handle0(c, m, obj);
