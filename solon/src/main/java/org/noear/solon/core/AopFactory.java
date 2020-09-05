@@ -32,6 +32,13 @@ public class AopFactory extends AopFactoryBase {
     protected void initialize() {
 
         beanCreatorAdd(XConfiguration.class, (clz, bw, anno) -> {
+            XInject typeInj = clz.getAnnotation(XInject.class);
+            if(typeInj != null && XUtil.isNotEmpty(typeInj.value())){
+                if (typeInj.value().startsWith("${")) {
+                    Aop.inject(bw.raw(), XApp.cfg().getPropByExpr(typeInj.value()));
+                }
+            }
+
             for (MethodWrap mWrap : ClassWrap.get(bw.clz()).methodWraps) {
                 XBean m_an = mWrap.getMethod().getAnnotation(XBean.class);
 
