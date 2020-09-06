@@ -283,13 +283,8 @@ public class HttpUtils {
     public String exec2(String mothod) throws IOException {
         Response tmp = exec(mothod);
 
-        int code = tmp.code();
-        String text = tmp.body().string();
-        if (code >= 200 && code <= 300) {
-            return text;
-        } else {
-            throw new RuntimeException(code + "错误：" + text);
-        }
+        //int code = tmp.code();
+        return tmp.body().string();
     }
 
 
