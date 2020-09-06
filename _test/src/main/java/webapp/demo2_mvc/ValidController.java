@@ -75,7 +75,7 @@ public class ValidController {
         return "OK";
     }
 
-    @Size(value = {"val1", "val2"}, min = 2, max = 5)
+    @Size(value = {"val1", "val2"}, min = 2, max = 5, message = "测试")
     @XMapping("size")
     public String size(String val1, String val2) {
         return "OK";

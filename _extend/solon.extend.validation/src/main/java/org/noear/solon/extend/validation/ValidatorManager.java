@@ -78,7 +78,7 @@ public class ValidatorManager implements XHandler {
                 rst = valid.validate(ctx, anno, tmp);
 
                 if (rst.getCode() != 1) {
-                    if (renderDo(ctx, anno, rst)) {
+                    if (renderDo(ctx, anno, rst, valid.message(anno))) {
                         break;
                     }
                 }
@@ -89,11 +89,14 @@ public class ValidatorManager implements XHandler {
     /**
      * @return 是否停止后续检查器
      */
-    protected boolean renderDo(XContext ctx, Annotation ano, XResult rst) {
+    protected boolean renderDo(XContext ctx, Annotation ano, XResult result, String message) {
         ctx.setHandled(true);
         ctx.statusSet(400);
         try {
-            String message = ano.annotationType().getSimpleName() + " verification failed: " + rst.getDescription();
+            if (XUtil.isEmpty(message)) {
+                message = ano.annotationType().getSimpleName() + " verification failed: " + result.getDescription();
+            }
+
             ctx.render(XResult.failure(400, message));
         } catch (Throwable ex) {
             XUtil.throwTr(ex);
