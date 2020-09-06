@@ -11,6 +11,8 @@ import java.util.Map;
 /**
  * 验证管理器
  *
+ * 只支持XController
+ *
  * @author noear
  * @since 1.0.22
  * */
