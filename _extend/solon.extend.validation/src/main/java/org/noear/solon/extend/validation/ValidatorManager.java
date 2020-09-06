@@ -70,7 +70,7 @@ public class ValidatorManager implements XHandler {
                 return;
             }
 
-            Validator valid = validMap.get(anno);
+            Validator valid = validMap.get(anno.annotationType());
             if (valid != null) {
                 tmp.setLength(0);
                 rst = valid.validate(ctx, anno, tmp);
