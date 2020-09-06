@@ -1,5 +1,6 @@
 package org.noear.solon.extend.validation;
 
+import org.noear.solon.XUtil;
 import org.noear.solon.core.XAction;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XResult;
@@ -65,6 +66,7 @@ public class ValidatorManager {
                 rst = m1.validator.validate(ctx, anno, tmp);
 
                 if (rst.getCode() != 1) {
+                    rst.setData(anno);
                     if (notVerified(ctx, rst)) {
                         break;
                     }
@@ -79,7 +81,11 @@ public class ValidatorManager {
     protected boolean notVerified(XContext ctx, XResult rst) {
         ctx.setHandled(true);
         ctx.statusSet(400);
-        rst.setCode(400);
+        try {
+            ctx.render(rst);
+        }catch (Throwable ex){
+            XUtil.throwTr(ex);
+        }
 
         return true;
     }
