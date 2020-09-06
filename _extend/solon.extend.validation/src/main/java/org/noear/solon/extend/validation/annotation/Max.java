@@ -14,4 +14,6 @@ public @interface Max {
     String[] value();
 
     long max();
+
+    String message() default "";
 }

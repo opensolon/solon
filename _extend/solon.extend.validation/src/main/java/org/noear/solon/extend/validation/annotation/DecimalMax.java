@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DecimalMax {
+public @interface DecimalMax{
     /**
      * param names
      * */
@@ -15,4 +15,6 @@ public @interface DecimalMax {
     String[] value();
 
     double max();
+
+    String message() default "";
 }

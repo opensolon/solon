@@ -17,7 +17,11 @@ public class NotEmptyValidator implements Validator<NotEmpty> {
         }
 
         if (tmp.length() > 1) {
-            return XResult.failure(tmp.substring(1));
+            if (XUtil.isNotEmpty(anno.message())) {
+                return XResult.failure(anno.message());
+            } else {
+                return XResult.failure(tmp.substring(1));
+            }
         } else {
             return XResult.succeed();
         }

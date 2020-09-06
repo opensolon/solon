@@ -15,4 +15,6 @@ public @interface Pattern {
     String[] value();
 
     String expr();
+
+    String message() default "";
 }

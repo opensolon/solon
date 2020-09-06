@@ -8,4 +8,6 @@ public @interface NoRepeatSubmit {
     HttpPart[] value() default {HttpPart.params};
 
     int seconds() default 3;
+
+    String message() default "";
 }

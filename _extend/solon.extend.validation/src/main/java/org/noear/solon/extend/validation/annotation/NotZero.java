@@ -16,4 +16,6 @@ public @interface NotZero {
      * */
     @XNote("param names")
     String[] value();
+
+    String message() default "";
 }

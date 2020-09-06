@@ -14,4 +14,6 @@ public @interface DecimalMin {
     String[] value();
 
     double min();
+
+    String message() default "";
 }

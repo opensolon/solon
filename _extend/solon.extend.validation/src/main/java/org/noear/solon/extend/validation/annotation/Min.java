@@ -14,4 +14,6 @@ public @interface Min {
     String[] value();
 
     long min();
+
+    String message() default "";
 }

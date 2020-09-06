@@ -16,4 +16,6 @@ public @interface Null {
      * */
     @XNote("param names")
     String[] value();
+
+    String message() default "";
 }
