@@ -159,9 +159,4 @@ public class BeanWrap {
             }
         }
     }
-
-    /**
-     * 附件
-     * */
-    public Object attachment;
 }

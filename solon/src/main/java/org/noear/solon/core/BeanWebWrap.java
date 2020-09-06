@@ -4,6 +4,7 @@ import org.noear.solon.XUtil;
 import org.noear.solon.annotation.*;
 import org.noear.solon.ext.ConsumerEx;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * Web Bean 包装
  * */
-public class BeanWebWrap extends XHandlerAide{
+public class BeanWebWrap extends XHandlerAide {
     protected BeanWrap _bw;
     protected XRender _render;
     protected boolean _allowMapping;
@@ -111,6 +112,7 @@ public class BeanWebWrap extends XHandlerAide{
         }
     }
 
+
     /**
      * 加载 XAction 处理
      */
@@ -121,27 +123,16 @@ public class BeanWebWrap extends XHandlerAide{
             c_path = "";
         }
 
-        XBefore c_befs = _bw.clz().getAnnotation(XBefore.class);
-        XAfter c_afts = _bw.clz().getAnnotation(XAfter.class);
-
-        if (c_befs != null) {
-            addDo(c_befs.value(), (b) -> this.before(Aop.get(b)));
-        }
-        if (c_afts != null) {
-            addDo(c_afts.value(), (f) -> this.after(Aop.get(f)));
-        }
+        loadControllerAide();
 
         XMethod[] m_method;
         XMapping m_map;
-        XBefore m_befores;
-        XAfter m_afters;
         int m_index = 0;
 
         //只支持public函数为XAction
         for (Method method : _bw.clz().getDeclaredMethods()) {
             m_map = method.getAnnotation(XMapping.class);
-            m_befores = method.getAnnotation(XBefore.class);
-            m_afters = method.getAnnotation(XAfter.class);
+
             m_index = 0;
 
             //构建path and method
@@ -164,15 +155,7 @@ public class BeanWebWrap extends XHandlerAide{
 
                 XAction action = createAction(_bw, _poi_main, method, m_map, newPath, c_remoting);
 
-                //加载控制器的前置拦截器
-                if (m_befores != null) {
-                    addDo(m_befores.value(), (b) -> action.before(Aop.get(b)));
-                }
-
-                //加载控制器的后置拦截器
-                if (m_afters != null) {
-                    addDo(m_afters.value(), (f) -> action.after(Aop.get(f)));
-                }
+                loadActionAide(method, action);
 
                 for (XMethod m1 : m_method) {
                     if (_poi_main) {
@@ -183,6 +166,43 @@ public class BeanWebWrap extends XHandlerAide{
                         } else {
                             slots.before(newPath, m1, m_index, action);
                         }
+                    }
+                }
+            }
+        }
+    }
+
+
+    protected void loadControllerAide() {
+        for (Annotation anno : _bw.clz().getAnnotations()) {
+            if (anno instanceof XBefore) {
+                addDo(((XBefore) anno).value(), (b) -> this.before(Aop.get(b)));
+            } else if (anno instanceof XAfter) {
+                addDo(((XAfter) anno).value(), (f) -> this.after(Aop.get(f)));
+            } else {
+                for (Annotation anno2 : anno.annotationType().getAnnotations()) {
+                    if (anno2 instanceof XBefore) {
+                        addDo(((XBefore) anno2).value(), (b) -> this.before(Aop.get(b)));
+                    } else if (anno2 instanceof XAfter) {
+                        addDo(((XAfter) anno2).value(), (f) -> this.after(Aop.get(f)));
+                    }
+                }
+            }
+        }
+    }
+
+    protected void loadActionAide(Method method, XAction action) {
+        for (Annotation anno : method.getAnnotations()) {
+            if (anno instanceof XBefore) {
+                addDo(((XBefore) anno).value(), (b) -> action.before(Aop.get(b)));
+            } else if (anno instanceof XAfter) {
+                addDo(((XAfter) anno).value(), (f) -> action.after(Aop.get(f)));
+            } else {
+                for (Annotation anno2 : anno.annotationType().getAnnotations()) {
+                    if (anno2 instanceof XBefore) {
+                        addDo(((XBefore) anno2).value(), (b) -> action.before(Aop.get(b)));
+                    } else if (anno2 instanceof XAfter) {
+                        addDo(((XAfter) anno2).value(), (f) -> action.after(Aop.get(f)));
                     }
                 }
             }
