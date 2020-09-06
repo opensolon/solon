@@ -306,8 +306,9 @@ public class RnHttpContext extends XContext {
     }
 
     private int _status = 200;
+
     @Override
-    public void status(int status) {
+    public void statusSet(int status) {
         _status = status;
         _response.status(status);
     }

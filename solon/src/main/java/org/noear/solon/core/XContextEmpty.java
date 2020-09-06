@@ -223,7 +223,7 @@ public class XContextEmpty extends XContext {
     }
 
     @Override
-    public void status(int status)  {
+    public void statusSet(int status) {
         _status = status;
     }
 }

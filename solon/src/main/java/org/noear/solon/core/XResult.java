@@ -1,11 +1,16 @@
 package org.noear.solon.core;
 
+import org.noear.solon.annotation.XNote;
+
 import java.io.Serializable;
 
 /**
  * 结果
  * */
 public class XResult<T> implements Serializable {
+    private static final XResult _SUCCEED = new XResult(null);
+    private static final XResult _FAILURE = new XResult(0,"");
+
     /**
      * 状态码
      * <p>
@@ -65,15 +70,33 @@ public class XResult<T> implements Serializable {
     }
 
     /**
+     * 成功的空结果
+     */
+    @XNote("成功的空结果")
+    public static <T> XResult<T> succeed() {
+        return _SUCCEED;
+    }
+
+    /**
      * 成功的结果
      */
+    @XNote("成功的结果")
     public static <T> XResult<T> succeed(T data) {
         return new XResult<>(data);
     }
 
     /**
+     * 成功的空结果
+     */
+    @XNote("失败的空结果")
+    public static <T> XResult<T> failure() {
+        return _FAILURE;
+    }
+
+    /**
      * 失败的结果
      */
+    @XNote("失败的结果")
     public static <T> XResult<T> failure(int code) {
         return failure(code, "");
     }
@@ -81,7 +104,13 @@ public class XResult<T> implements Serializable {
     /**
      * 失败的结果
      */
+    @XNote("失败的结果")
     public static <T> XResult<T> failure(int code, String description) {
         return new XResult<>(code, description);
+    }
+
+    @XNote("失败的结果")
+    public static <T> XResult<T> failure(String description) {
+        return new XResult<>(0, description);
     }
 }

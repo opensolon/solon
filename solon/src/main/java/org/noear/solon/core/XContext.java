@@ -389,9 +389,16 @@ public abstract class XContext {
     /**获取输出状态*/
     @XNote("获取输出状态")
     public abstract int status();
+
+    @Deprecated
+    public void status(int status){
+        statusSet(status);
+    }
+
     /**设置输出状态*/
     @XNote("设置输出状态")
-    public abstract void status(int status);
+    public abstract void statusSet(int status);
+
 
     private Map<String,Object> _attrMap = null;
     @XNote("获取自定义特性并转为Map")

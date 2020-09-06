@@ -341,7 +341,7 @@ public class WizzContext extends XContext {
     }
 
     @Override
-    public void status(int status) {
+    public void statusSet(int status) {
         _response.setStatus(Status.valueOf(status));
     }
 }

@@ -377,9 +377,8 @@ public class JlHttpContext extends XContext {
     private int _status = 200;
 
     @Override
-    public void status(int status) {
-        _status = status;
-        //_response.sendHeaders(status); //jlhttp 的 状态，由 上下文代理 负责
+    public void statusSet(int status) {
+        _status = status; //jlhttp 的 状态，由 上下文代理 负责
     }
 
 

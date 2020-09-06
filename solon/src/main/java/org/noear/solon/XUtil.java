@@ -1,14 +1,12 @@
 package org.noear.solon;
 
 import org.noear.solon.core.*;
-import org.noear.solon.core.utils.TypeUtil;
 
 import java.io.*;
-import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.security.MessageDigest;
 import java.util.*;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
@@ -20,12 +18,47 @@ import java.util.regex.Pattern;
  * */
 public class XUtil {
     public static ExecutorService commonPool = Executors.newCachedThreadPool();
+    private static final char[] _hexDigits = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
     /**
      * 生成UGID
      */
     public static String guid() {
         return UUID.randomUUID().toString().replaceAll("-", "");
+    }
+
+    /**
+     * 生成MD5
+     * */
+    public static String md5(String str) {
+        try {
+            byte[] btInput = str.getBytes("UTF-8");
+
+            MessageDigest mdInst = MessageDigest.getInstance("MD5");
+            mdInst.update(btInput);
+            byte[] md = mdInst.digest();
+            int j = md.length;
+            char[] chars = new char[j * 2];
+            int k = 0;
+
+            for (int i = 0; i < j; ++i) {
+                byte byte0 = md[i];
+                chars[k++] = _hexDigits[byte0 >>> 4 & 15];
+                chars[k++] = _hexDigits[byte0 & 15];
+            }
+
+            return new String(chars);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public static void throwTr(Throwable ex){
+        if(ex instanceof RuntimeException){
+            throw (RuntimeException)ex;
+        }else {
+            throw new RuntimeException(ex);
+        }
     }
 
     /**
@@ -40,6 +73,27 @@ public class XUtil {
      */
     public static boolean isNotEmpty(String s) {
         return !isEmpty(s);
+    }
+
+    /**
+     * 检查字符串是否为空白
+     */
+    public static boolean isBlank(String s) {
+        if (isEmpty(s)) {
+            return true;
+        } else {
+            for (int i = 0, l = s.length(); i < l; ++i) {
+                if (!isWhitespace(s.codePointAt(i))) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+
+    public static boolean isWhitespace(int c) {
+        return c == 32 || c == 9 || c == 10 || c == 12 || c == 13;
     }
 
     /**

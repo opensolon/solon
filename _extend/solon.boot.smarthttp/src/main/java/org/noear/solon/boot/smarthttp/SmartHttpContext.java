@@ -341,7 +341,7 @@ public class SmartHttpContext extends XContext {
     private int _status = 200;
 
     @Override
-    public void status(int status) {
+    public void statusSet(int status) {
         _status = status;
         //_response.setHttpStatus(HttpStatus.valueOf(status));
     }

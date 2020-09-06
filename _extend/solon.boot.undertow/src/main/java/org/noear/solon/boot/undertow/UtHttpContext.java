@@ -316,7 +316,7 @@ public class UtHttpContext extends XContext {
 
     @Override
     public void redirect(String url, int code)  {
-        status(code);
+        statusSet(code);
         _response.setHeader("Location", url);
     }
 
@@ -326,7 +326,7 @@ public class UtHttpContext extends XContext {
     }
 
     @Override
-    public void status(int status) {
+    public void statusSet(int status) {
         _response.setStatus(status);
     }
 }
