@@ -20,16 +20,16 @@ public class ValidatorManager {
     }
 
     protected void initialize() {
-        add(NoRepeatSubmit.class,  new NoRepeatSubmitValidator());
-        add(NotNull.class,  new NotNullValidator());
-        add(NotEmpty.class,  new NotEmptyValidator());
-        add(NotBlank.class,  new NotBlankValidator());
-        add(NotZero.class,  new NotZeroValidator());
+        add(NoRepeatSubmit.class, new NoRepeatSubmitValidator());
+        add(NotNull.class, new NotNullValidator());
+        add(NotEmpty.class, new NotEmptyValidator());
+        add(NotBlank.class, new NotBlankValidator());
+        add(NotZero.class, new NotZeroValidator());
     }
 
     protected <T extends Annotation> void add(Class<T> type, Validator<T> validator) {
-        for(ValidatorEntity ve : validators){
-            if(ve.type == type){
+        for (ValidatorEntity ve : validators) {
+            if (ve.type == type) {
                 return;
             }
         }
@@ -37,9 +37,9 @@ public class ValidatorManager {
         validators.add(new ValidatorEntity(type, validator));
     }
 
-    protected <T extends Annotation> void addAt(int index, Class<T> type,Validator<T> validator) {
-        for(ValidatorEntity ve : validators){
-            if(ve.type == type){
+    protected <T extends Annotation> void addAt(int index, Class<T> type, Validator<T> validator) {
+        for (ValidatorEntity ve : validators) {
+            if (ve.type == type) {
                 return;
             }
         }
@@ -66,8 +66,7 @@ public class ValidatorManager {
                 rst = m1.validator.validate(ctx, anno, tmp);
 
                 if (rst.getCode() != 1) {
-                    rst.setData(anno);
-                    if (notVerified(ctx, rst)) {
+                    if (notVerified(ctx, anno, rst)) {
                         break;
                     }
                 }
@@ -77,13 +76,14 @@ public class ValidatorManager {
 
     /**
      * @return 是否停止后续检查器
-     * */
-    protected boolean notVerified(XContext ctx, XResult rst) {
+     */
+    protected boolean notVerified(XContext ctx, Annotation anno, XResult rst) {
         ctx.setHandled(true);
         ctx.statusSet(400);
         try {
-            ctx.render(rst);
-        }catch (Throwable ex){
+            String message = anno.annotationType().getSimpleName() + " verification failed: " + rst.getDescription();
+            ctx.render(XResult.failure(400, message));
+        } catch (Throwable ex) {
             XUtil.throwTr(ex);
         }
 
