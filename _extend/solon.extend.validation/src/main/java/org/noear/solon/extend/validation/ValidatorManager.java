@@ -40,6 +40,7 @@ public class ValidatorManager implements XHandler {
         add(Null.class, NullValidator.instance);
 
         add(Pattern.class, PatternValidator.instance);
+        add(Size.class, SizeValidator.instance);
     }
 
     public void clear() {
