@@ -21,7 +21,7 @@ public class PatternValidator implements Validator<Pattern> {
             cached.putIfAbsent(anno.value(), pt);
         }
 
-        for (String key : anno.names()) {
+        for (String key : anno.check()) {
             String val = ctx.param(key);
             if (val == null || pt.matcher(val).find() == false) {
                 tmp.append(',').append(key);

@@ -15,5 +15,5 @@ public @interface NotEmpty {
      * param names
      * */
     @XNote("param names")
-    String[] names();
+    String[] check();
 }

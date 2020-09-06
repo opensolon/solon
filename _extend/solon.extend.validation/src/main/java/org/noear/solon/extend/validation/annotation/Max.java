@@ -11,7 +11,7 @@ public @interface Max {
      * param names
      * */
     @XNote("param names")
-    String[] names();
+    String[] check();
 
     long value();
 }

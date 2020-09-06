@@ -9,7 +9,7 @@ public class MaxValidator implements Validator<Max> {
 
     @Override
     public XResult validate(XContext ctx, Max anno, StringBuilder tmp) {
-        for (String key : anno.names()) {
+        for (String key : anno.check()) {
             if (ctx.paramAsLong(key) > anno.value()) {
                 tmp.append(',').append(key);
             }

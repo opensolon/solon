@@ -12,7 +12,7 @@ public @interface DecimalMax {
      * param names
      * */
     @XNote("param names")
-    String[] names();
+    String[] check();
 
     double value();
 }

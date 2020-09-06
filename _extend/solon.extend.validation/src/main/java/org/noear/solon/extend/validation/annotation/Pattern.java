@@ -12,7 +12,7 @@ public @interface Pattern {
      * param names
      */
     @XNote("param names")
-    String[] names();
+    String[] check();
 
     String value();
 }

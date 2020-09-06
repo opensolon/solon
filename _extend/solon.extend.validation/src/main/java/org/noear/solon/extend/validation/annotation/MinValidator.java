@@ -9,7 +9,7 @@ public class MinValidator implements Validator<Min> {
 
     @Override
     public XResult validate(XContext ctx, Min anno, StringBuilder tmp) {
-        for (String key : anno.names()) {
+        for (String key : anno.check()) {
             if (ctx.paramAsLong(key) < anno.value()) {
                 tmp.append(',').append(key);
             }
