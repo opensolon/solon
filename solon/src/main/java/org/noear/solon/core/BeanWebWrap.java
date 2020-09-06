@@ -123,14 +123,12 @@ public class BeanWebWrap extends XHandlerAide{
 
         XBefore c_befs = _bw.clz().getAnnotation(XBefore.class);
         XAfter c_afts = _bw.clz().getAnnotation(XAfter.class);
-        List<XHandler> c_befs2 = new ArrayList<>();
-        List<XHandler> c_afts2 = new ArrayList<>();
 
         if (c_befs != null) {
-            addDo(c_befs.value(), (b) -> c_befs2.add(Aop.get(b)));
+            addDo(c_befs.value(), (b) -> this.before(Aop.get(b)));
         }
         if (c_afts != null) {
-            addDo(c_afts.value(), (f) -> c_afts2.add(Aop.get(f)));
+            addDo(c_afts.value(), (f) -> this.after(Aop.get(f)));
         }
 
         XMethod[] m_method;
@@ -167,13 +165,11 @@ public class BeanWebWrap extends XHandlerAide{
                 XAction action = createAction(_bw, _poi_main, method, m_map, newPath, c_remoting);
 
                 //加载控制器的前置拦截器
-                addDo(c_befs2.toArray(), (b) -> action.before((XHandler) b));
                 if (m_befores != null) {
                     addDo(m_befores.value(), (b) -> action.before(Aop.get(b)));
                 }
 
                 //加载控制器的后置拦截器
-                addDo(c_afts2.toArray(), (f) -> action.after((XHandler) f));
                 if (m_afters != null) {
                     addDo(m_afters.value(), (f) -> action.after(Aop.get(f)));
                 }
@@ -198,9 +194,9 @@ public class BeanWebWrap extends XHandlerAide{
      */
     protected XAction createAction(BeanWrap bw, boolean poi_main, Method method, XMapping mp, String path, boolean remoting) {
         if (_allowMapping) {
-            return new XAction(bw, poi_main, method, mp, path, remoting, _render);
+            return new XAction(bw, this, poi_main, method, mp, path, remoting, _render);
         } else {
-            return new XAction(bw, poi_main, method, null, path, remoting, _render);
+            return new XAction(bw, this, poi_main, method, null, path, remoting, _render);
         }
     }
 

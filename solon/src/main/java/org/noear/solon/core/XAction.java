@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
  * */
 public class XAction extends XHandlerAide implements XHandler{
     protected final BeanWrap _bw;//
+    protected final BeanWebWrap _ww;
     protected final MethodWrap _mw;
     protected String _produces;//输出产品
     protected XRender _render;
@@ -29,8 +30,9 @@ public class XAction extends XHandlerAide implements XHandler{
     private List<String> _pks;
     private static Pattern _pkr = Pattern.compile("\\{([^\\\\}]+)\\}");
 
-    public XAction(BeanWrap bw, boolean poi_main, Method m, XMapping mp, String path, boolean remoting, XRender render) {
+    public XAction(BeanWrap bw, BeanWebWrap ww, boolean poi_main, Method m, XMapping mp, String path, boolean remoting, XRender render) {
         _bw = bw;
+        _ww = ww;
         _mw = MethodWrap.get(m);
 
         _remoting = remoting;
@@ -127,6 +129,10 @@ public class XAction extends XHandlerAide implements XHandler{
                     h.handle(x);
                 }
 
+                for (XHandler h : _ww._before) {
+                    h.handle(x);
+                }
+
                 for (XHandler h : _before) {
                     h.handle(x);
                 }
@@ -168,6 +174,10 @@ public class XAction extends XHandlerAide implements XHandler{
         //后置处理
         if (_poi_main) {
             for (XHandler h : XApp.global().router().atAfter()) {
+                h.handle(x);
+            }
+
+            for (XHandler h : _ww._after) {
                 h.handle(x);
             }
 
