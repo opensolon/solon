@@ -13,7 +13,7 @@ public @interface Max {
      * param names
      * */
     @XNote("param names")
-    String[] value();
+    String[] names();
 
     long max();
 }

@@ -10,7 +10,7 @@ public class NotEmptyValidator implements Validator<NotEmpty> {
 
     @Override
     public XResult validate(XContext ctx, NotEmpty anno, StringBuilder tmp) {
-        for (String key : anno.value()) {
+        for (String key : anno.names()) {
             if (XUtil.isEmpty(ctx.param(key))) {
                 tmp.append(',').append(key);
             }

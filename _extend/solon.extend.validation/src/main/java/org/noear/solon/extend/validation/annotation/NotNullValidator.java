@@ -9,7 +9,7 @@ public class NotNullValidator implements Validator<NotNull> {
 
     @Override
     public XResult validate(XContext ctx, NotNull anno, StringBuilder tmp) {
-        for (String key : anno.value()) {
+        for (String key : anno.names()) {
             if (ctx.param(key) == null) {
                 tmp.append(',').append(key);
             }

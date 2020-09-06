@@ -16,5 +16,5 @@ public @interface NotNull {
      * param names
      * */
     @XNote("param names")
-    String[] value();
+    String[] names();
 }

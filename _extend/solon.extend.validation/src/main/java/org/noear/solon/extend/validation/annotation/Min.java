@@ -13,7 +13,7 @@ public @interface Min {
      * param names
      * */
     @XNote("param names")
-    String[] value();
+    String[] names();
 
     long min();
 }

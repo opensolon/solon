@@ -9,7 +9,7 @@ public class DecimalMaxValidator implements Validator<DecimalMax> {
 
     @Override
     public XResult validate(XContext ctx, DecimalMax anno, StringBuilder tmp) {
-        for (String key : anno.value()) {
+        for (String key : anno.names()) {
             if (ctx.paramAsDouble(key) > anno.max()) {
                 tmp.append(',').append(key);
             }
