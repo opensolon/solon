@@ -10,7 +10,7 @@ public class ValidateInterceptor implements XHandler {
     public void handle(XContext ctx) throws Throwable {
         XAction action = ctx.action();
 
-        if (action != null) {
+        if (action != null && ValidatorManager.instance != null) {
             ValidatorManager.instance.validate(ctx, action);
         }
     }
