@@ -8,12 +8,12 @@ import java.lang.annotation.*;
 @Inherited
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Min {
+public @interface DecimalMax {
     /**
      * param names
      * */
     @XNote("param names")
     String[] value();
 
-    long min();
+    double max();
 }

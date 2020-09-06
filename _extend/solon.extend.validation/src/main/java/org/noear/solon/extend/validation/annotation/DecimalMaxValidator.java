@@ -4,13 +4,13 @@ import org.noear.solon.core.XContext;
 import org.noear.solon.core.XResult;
 import org.noear.solon.extend.validation.Validator;
 
-public class MinValidator implements Validator<Min> {
-    public static final MinValidator instance = new MinValidator();
+public class DecimalMaxValidator implements Validator<DecimalMax> {
+    public static final DecimalMaxValidator instance = new DecimalMaxValidator();
 
     @Override
-    public XResult validate(XContext ctx, Min anno, StringBuilder tmp) {
+    public XResult validate(XContext ctx, DecimalMax anno, StringBuilder tmp) {
         for (String key : anno.value()) {
-            if (ctx.paramAsLong(key) < anno.min()) {
+            if (ctx.paramAsDouble(key) > anno.max()) {
                 tmp.append(',').append(key);
             }
         }
