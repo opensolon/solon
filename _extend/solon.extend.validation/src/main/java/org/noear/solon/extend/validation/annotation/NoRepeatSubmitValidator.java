@@ -9,6 +9,10 @@ import org.noear.solon.extend.validation.Validator;
 public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
     public static final NoRepeatSubmitValidator instance = new NoRepeatSubmitValidator();
 
+    @Override
+    public String message(NoRepeatSubmit anno) {
+        return anno.message();
+    }
 
     @Override
     public XResult validate(XContext ctx, NoRepeatSubmit anno, StringBuilder tmp) {
@@ -43,13 +47,9 @@ public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
         }
 
         if(Locker.global().tryLock("", XUtil.md5(tmp.toString()), anno.seconds())){
-            if (XUtil.isNotEmpty(anno.message())) {
-                return XResult.failure(anno.message());
-            } else {
-                return XResult.failure();
-            }
-        } else {
             return XResult.succeed();
+        } else {
+            return XResult.failure();
         }
     }
 }

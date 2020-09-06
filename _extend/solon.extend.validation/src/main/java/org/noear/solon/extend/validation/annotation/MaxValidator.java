@@ -9,6 +9,11 @@ public class MaxValidator implements Validator<Max> {
     public static final MaxValidator instance = new MaxValidator();
 
     @Override
+    public String message(Max anno) {
+        return anno.message();
+    }
+
+    @Override
     public XResult validate(XContext ctx, Max anno, StringBuilder tmp) {
         for (String key : anno.value()) {
             if (ctx.paramAsLong(key) > anno.max()) {
@@ -17,11 +22,7 @@ public class MaxValidator implements Validator<Max> {
         }
 
         if (tmp.length() > 1) {
-            if (XUtil.isNotEmpty(anno.message())) {
-                return XResult.failure(anno.message());
-            } else {
-                return XResult.failure(tmp.substring(1));
-            }
+            return XResult.failure(tmp.substring(1));
         } else {
             return XResult.succeed();
         }

@@ -1,6 +1,5 @@
 package org.noear.solon.extend.validation.annotation;
 
-import org.noear.solon.XUtil;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XResult;
 import org.noear.solon.extend.validation.Validator;
@@ -12,6 +11,11 @@ public class PatternValidator implements Validator<Pattern> {
     public static final PatternValidator instance = new PatternValidator();
 
     private static final Map<String, java.util.regex.Pattern> cached = new ConcurrentHashMap<>();
+
+    @Override
+    public String message(Pattern anno) {
+        return anno.message();
+    }
 
     @Override
     public XResult validate(XContext ctx, Pattern anno, StringBuilder tmp) {
@@ -30,11 +34,7 @@ public class PatternValidator implements Validator<Pattern> {
         }
 
         if (tmp.length() > 1) {
-            if (XUtil.isNotEmpty(anno.message())) {
-                return XResult.failure(anno.message());
-            } else {
-                return XResult.failure(tmp.substring(1));
-            }
+            return XResult.failure(tmp.substring(1));
         } else {
             return XResult.succeed();
         }

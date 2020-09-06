@@ -9,6 +9,11 @@ public class DecimalMaxValidator implements Validator<DecimalMax> {
     public static final DecimalMaxValidator instance = new DecimalMaxValidator();
 
     @Override
+    public String message(DecimalMax anno) {
+        return anno.message();
+    }
+
+    @Override
     public XResult validate(XContext ctx, DecimalMax anno, StringBuilder tmp) {
         for (String key : anno.value()) {
             if (ctx.paramAsDouble(key) > anno.max()) {
@@ -17,11 +22,7 @@ public class DecimalMaxValidator implements Validator<DecimalMax> {
         }
 
         if (tmp.length() > 1) {
-            if (XUtil.isNotEmpty(anno.message())) {
-                return XResult.failure(anno.message());
-            } else {
-                return XResult.failure(tmp.substring(1));
-            }
+            return XResult.failure(tmp.substring(1));
         } else {
             return XResult.succeed();
         }

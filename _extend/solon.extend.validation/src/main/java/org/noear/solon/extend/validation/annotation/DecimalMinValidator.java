@@ -9,6 +9,11 @@ public class DecimalMinValidator implements Validator<DecimalMin> {
     public static final DecimalMinValidator instance = new DecimalMinValidator();
 
     @Override
+    public String message(DecimalMin anno) {
+        return anno.message();
+    }
+
+    @Override
     public XResult validate(XContext ctx, DecimalMin anno, StringBuilder tmp) {
         for (String key : anno.value()) {
             if (ctx.paramAsDouble(key) < anno.min()) {
@@ -17,11 +22,7 @@ public class DecimalMinValidator implements Validator<DecimalMin> {
         }
 
         if (tmp.length() > 1) {
-            if (XUtil.isNotEmpty(anno.message())) {
-                return XResult.failure(anno.message());
-            } else {
-                return XResult.failure(tmp.substring(1));
-            }
+            return XResult.failure(tmp.substring(1));
         } else {
             return XResult.succeed();
         }

@@ -9,6 +9,11 @@ public class NotBlankValidator implements Validator<NotBlank> {
     public static final NotBlankValidator instance = new NotBlankValidator();
 
     @Override
+    public String message(NotBlank anno) {
+        return anno.message();
+    }
+
+    @Override
     public XResult validate(XContext ctx, NotBlank anno, StringBuilder tmp) {
         for (String key : anno.value()) {
             if (XUtil.isBlank(ctx.param(key))) {
@@ -17,11 +22,7 @@ public class NotBlankValidator implements Validator<NotBlank> {
         }
 
         if (tmp.length() > 1) {
-            if (XUtil.isNotEmpty(anno.message())) {
-                return XResult.failure(anno.message());
-            } else {
-                return XResult.failure(tmp.substring(1));
-            }
+            return XResult.failure(tmp.substring(1));
         } else {
             return XResult.succeed();
         }

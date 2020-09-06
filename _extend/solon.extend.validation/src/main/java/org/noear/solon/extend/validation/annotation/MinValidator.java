@@ -9,6 +9,11 @@ public class MinValidator implements Validator<Min> {
     public static final MinValidator instance = new MinValidator();
 
     @Override
+    public String message(Min anno) {
+        return anno.message();
+    }
+
+    @Override
     public XResult validate(XContext ctx, Min anno, StringBuilder tmp) {
         for (String key : anno.value()) {
             if (ctx.paramAsLong(key) < anno.min()) {
@@ -17,11 +22,7 @@ public class MinValidator implements Validator<Min> {
         }
 
         if (tmp.length() > 1) {
-            if (XUtil.isNotEmpty(anno.message())) {
-                return XResult.failure(anno.message());
-            } else {
-                return XResult.failure(tmp.substring(1));
-            }
+            return XResult.failure(tmp.substring(1));
         } else {
             return XResult.succeed();
         }
