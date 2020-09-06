@@ -137,6 +137,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.extend.validation</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.extend.data</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
