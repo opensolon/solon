@@ -15,7 +15,7 @@ import java.util.Map;
  *
  * 问题：如何获取主控制器实例???
  * */
-public abstract class XGateway extends XHandlerAide implements XRender {
+public abstract class XGateway extends XHandlerAide implements XHandler, XRender {
     private XHandler _def;
     private final Map<String, XHandler> _main = new HashMap<>();
     private final String _path;

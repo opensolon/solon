@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Web Bean 包装
  * */
-public class BeanWebWrap {
+public class BeanWebWrap extends XHandlerAide{
     protected BeanWrap _bw;
     protected XRender _render;
     protected boolean _allowMapping;
