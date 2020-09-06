@@ -87,11 +87,11 @@ public class ValidatorManager implements XHandler {
     /**
      * @return 是否停止后续检查器
      */
-    protected boolean renderDo(XContext ctx, Annotation anno, XResult rst) {
+    protected boolean renderDo(XContext ctx, Annotation ano, XResult rst) {
         ctx.setHandled(true);
         ctx.statusSet(400);
         try {
-            String message = anno.annotationType().getSimpleName() + " verification failed: " + rst.getDescription();
+            String message = ano.annotationType().getSimpleName() + " verification failed: " + rst.getDescription();
             ctx.render(XResult.failure(400, message));
         } catch (Throwable ex) {
             XUtil.throwTr(ex);
