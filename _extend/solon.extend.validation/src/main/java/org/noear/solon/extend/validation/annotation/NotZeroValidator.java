@@ -9,7 +9,7 @@ public class NotZeroValidator implements Validator<NotZero> {
 
     @Override
     public XResult validate(XContext ctx, NotZero anno, StringBuilder tmp) {
-        for (String key : anno.check()) {
+        for (String key : anno.value()) {
             if (ctx.paramAsLong(key) == 0) {
                 tmp.append(',').append(key);
             }

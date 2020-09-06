@@ -12,7 +12,7 @@ public @interface Size {
      * param names
      * */
     @XNote("param names")
-    String[] check();
+    String[] value();
 
     int min();
     int max();

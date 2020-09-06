@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NoRepeatSubmit {
-    HttpPart[] check() default {HttpPart.params};
+    HttpPart[] value() default {HttpPart.params};
 
     int seconds() default 3;
 }

@@ -14,14 +14,14 @@ public class PatternValidator implements Validator<Pattern> {
 
     @Override
     public XResult validate(XContext ctx, Pattern anno, StringBuilder tmp) {
-        java.util.regex.Pattern pt = cached.get(anno.value());
+        java.util.regex.Pattern pt = cached.get(anno.expr());
 
         if (pt == null) {
-            pt = java.util.regex.Pattern.compile(anno.value());
-            cached.putIfAbsent(anno.value(), pt);
+            pt = java.util.regex.Pattern.compile(anno.expr());
+            cached.putIfAbsent(anno.expr(), pt);
         }
 
-        for (String key : anno.check()) {
+        for (String key : anno.value()) {
             String val = ctx.param(key);
             if (val == null || pt.matcher(val).find() == false) {
                 tmp.append(',').append(key);

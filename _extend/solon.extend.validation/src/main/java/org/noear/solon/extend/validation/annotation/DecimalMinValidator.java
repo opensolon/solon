@@ -9,8 +9,8 @@ public class DecimalMinValidator implements Validator<DecimalMin> {
 
     @Override
     public XResult validate(XContext ctx, DecimalMin anno, StringBuilder tmp) {
-        for (String key : anno.check()) {
-            if (ctx.paramAsDouble(key) < anno.value()) {
+        for (String key : anno.value()) {
+            if (ctx.paramAsDouble(key) < anno.min()) {
                 tmp.append(',').append(key);
             }
         }

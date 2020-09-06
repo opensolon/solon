@@ -9,7 +9,7 @@ public class SizeValidator implements Validator<Size> {
 
     @Override
     public XResult validate(XContext ctx, Size anno, StringBuilder tmp) {
-        for (String key : anno.check()) {
+        for (String key : anno.value()) {
             String val = ctx.param(key);
 
             if (val == null || val.length() < anno.min() || val.length() > anno.max()) {
