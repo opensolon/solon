@@ -5,8 +5,6 @@ import org.noear.solon.core.*;
 import org.noear.solon.extend.validation.annotation.*;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
