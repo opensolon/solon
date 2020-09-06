@@ -15,5 +15,5 @@ public @interface DecimalMax {
     @XNote("param names")
     String[] names();
 
-    double max();
+    double value();
 }

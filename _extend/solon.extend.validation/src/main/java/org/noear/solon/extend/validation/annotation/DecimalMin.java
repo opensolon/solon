@@ -15,5 +15,5 @@ public @interface DecimalMin {
     @XNote("param names")
     String[] names();
 
-    double min();
+    double value();
 }

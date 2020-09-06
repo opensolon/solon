@@ -15,5 +15,5 @@ public @interface Max {
     @XNote("param names")
     String[] names();
 
-    long max();
+    long value();
 }

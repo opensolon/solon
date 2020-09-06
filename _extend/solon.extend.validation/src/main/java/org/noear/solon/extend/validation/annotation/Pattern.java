@@ -15,5 +15,5 @@ public @interface Pattern {
     @XNote("param names")
     String[] names();
 
-    String expr();
+    String value();
 }
