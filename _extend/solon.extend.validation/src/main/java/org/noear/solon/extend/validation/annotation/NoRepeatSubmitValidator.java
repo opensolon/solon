@@ -7,6 +7,8 @@ import org.noear.solon.extend.validation.Locker;
 import org.noear.solon.extend.validation.Validator;
 
 public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
+    public static final NoRepeatSubmitValidator instance = new NoRepeatSubmitValidator();
+
 
     @Override
     public XResult validate(XContext ctx, NoRepeatSubmit anno, StringBuilder tmp) {

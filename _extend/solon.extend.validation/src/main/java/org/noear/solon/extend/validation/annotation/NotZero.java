@@ -1,6 +1,8 @@
 package org.noear.solon.extend.validation.annotation;
 
 
+import org.noear.solon.annotation.XNote;
+
 import java.lang.annotation.*;
 
 /**
@@ -13,7 +15,6 @@ public @interface NotZero {
     /**
      * param names
      * */
+    @XNote("param names")
     String[] value();
-
-    long min() default 1;
 }

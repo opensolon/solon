@@ -1,20 +1,13 @@
 package org.noear.solon.extend.validation.annotation;
 
-
 import org.noear.solon.annotation.XNote;
 
-import java.lang.annotation.*;
-
-/**
- * 不能为null
- * */
-@Inherited
-@Target({ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface NotNull {
+public @interface Min {
     /**
      * param names
      * */
     @XNote("param names")
     String[] value();
+
+    long min();
 }

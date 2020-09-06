@@ -6,6 +6,7 @@ import org.noear.solon.core.XResult;
 import org.noear.solon.extend.validation.Validator;
 
 public class NotBlankValidator implements Validator<NotBlank> {
+    public static final NotBlankValidator instance = new NotBlankValidator();
 
     @Override
     public XResult validate(XContext ctx, NotBlank anno, StringBuilder tmp) {

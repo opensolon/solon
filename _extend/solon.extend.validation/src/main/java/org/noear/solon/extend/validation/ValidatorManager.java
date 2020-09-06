@@ -1,33 +1,44 @@
 package org.noear.solon.extend.validation;
 
 import org.noear.solon.XUtil;
-import org.noear.solon.core.XAction;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XResult;
+import org.noear.solon.core.*;
 import org.noear.solon.extend.validation.annotation.*;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ValidatorManager {
-    public static ValidatorManager instance = new ValidatorManager();
+public class ValidatorManager implements XHandler {
+    public static XHandler instance = new ValidatorManager();
 
     protected List<ValidatorEntity> validators = new ArrayList<>();
+    protected XRender render;
+
+    public void setRender(XRender render) {
+        if (render != null) {
+            this.render = render;
+        }
+    }
 
     public ValidatorManager() {
         initialize();
     }
 
     protected void initialize() {
-        add(NoRepeatSubmit.class, new NoRepeatSubmitValidator());
-        add(NotNull.class, new NotNullValidator());
-        add(NotEmpty.class, new NotEmptyValidator());
-        add(NotBlank.class, new NotBlankValidator());
-        add(NotZero.class, new NotZeroValidator());
+        add(NoRepeatSubmit.class, NoRepeatSubmitValidator.instance);
+        add(NotNull.class, NotNullValidator.instance);
+        add(NotEmpty.class, NotEmptyValidator.instance);
+        add(NotBlank.class, NotBlankValidator.instance);
+        add(NotZero.class, NotZeroValidator.instance);
+        add(Min.class, MinValidator.instance);
+        add(Max.class, MaxValidator.instance);
     }
 
-    protected <T extends Annotation> void add(Class<T> type, Validator<T> validator) {
+    public void clear() {
+        validators.clear();
+    }
+
+    public <T extends Annotation> void add(Class<T> type, Validator<T> validator) {
         for (ValidatorEntity ve : validators) {
             if (ve.type == type) {
                 return;
@@ -37,7 +48,7 @@ public class ValidatorManager {
         validators.add(new ValidatorEntity(type, validator));
     }
 
-    protected <T extends Annotation> void addAt(int index, Class<T> type, Validator<T> validator) {
+    public <T extends Annotation> void addAt(int index, Class<T> type, Validator<T> validator) {
         for (ValidatorEntity ve : validators) {
             if (ve.type == type) {
                 return;
@@ -51,7 +62,17 @@ public class ValidatorManager {
         }
     }
 
-    public void validate(XContext ctx, XAction action) throws Throwable {
+
+    @Override
+    public void handle(XContext ctx) throws Throwable {
+        XAction action = ctx.action();
+
+        if (action != null) {
+            validate(ctx, action);
+        }
+    }
+
+    protected void validate(XContext ctx, XAction action) throws Throwable {
         StringBuilder tmp = new StringBuilder();
         XResult rst = null;
 

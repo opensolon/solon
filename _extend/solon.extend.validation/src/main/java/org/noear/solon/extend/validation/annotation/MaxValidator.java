@@ -1,17 +1,16 @@
 package org.noear.solon.extend.validation.annotation;
 
-import org.noear.solon.XUtil;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XResult;
 import org.noear.solon.extend.validation.Validator;
 
-public class NotEmptyValidator implements Validator<NotEmpty> {
-    public static final NotEmptyValidator instance = new NotEmptyValidator();
+public class MaxValidator implements Validator<Max> {
+    public static final MaxValidator instance = new MaxValidator();
 
     @Override
-    public XResult validate(XContext ctx, NotEmpty anno, StringBuilder tmp) {
+    public XResult validate(XContext ctx, Max anno, StringBuilder tmp) {
         for (String key : anno.value()) {
-            if (XUtil.isEmpty(ctx.param(key))) {
+            if (ctx.paramAsInt(key) > anno.max()) {
                 tmp.append(',').append(key);
             }
         }

@@ -1,17 +1,16 @@
 package org.noear.solon.extend.validation.annotation;
 
-import org.noear.solon.XUtil;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XResult;
 import org.noear.solon.extend.validation.Validator;
 
-public class NotEmptyValidator implements Validator<NotEmpty> {
-    public static final NotEmptyValidator instance = new NotEmptyValidator();
+public class MinValidator implements Validator<Min> {
+    public static final MinValidator instance = new MinValidator();
 
     @Override
-    public XResult validate(XContext ctx, NotEmpty anno, StringBuilder tmp) {
+    public XResult validate(XContext ctx, Min anno, StringBuilder tmp) {
         for (String key : anno.value()) {
-            if (XUtil.isEmpty(ctx.param(key))) {
+            if (ctx.paramAsInt(key) < anno.min()) {
                 tmp.append(',').append(key);
             }
         }
