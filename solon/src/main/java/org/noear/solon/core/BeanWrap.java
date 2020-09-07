@@ -97,7 +97,7 @@ public class BeanWrap {
     protected void tagSet(String tag){ _tag = tag; }
 
 
-    public Annotation[] annotations() {
+    public Annotation[] getAnnotations() {
         return _annotations;
     }
 
