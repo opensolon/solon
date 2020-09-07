@@ -4,6 +4,8 @@ import org.noear.solon.annotation.XInit;
 import org.noear.solon.annotation.XSingleton;
 import sun.util.resources.cldr.ss.CurrencyNames_ss;
 
+import java.lang.annotation.Annotation;
+
 /**
  * Bean 包装（可以被继承重写）
  *
@@ -18,9 +20,8 @@ public class BeanWrap {
     protected boolean _remoting;  // 是否为远程服务
     protected String _tag;
     protected BeanProxy _proxy;
+    protected final Annotation[] _annotations;
 
-    public BeanWrap() {
-    }
 
     public BeanWrap(Class<?> clz){
         this(clz, null);
@@ -31,6 +32,7 @@ public class BeanWrap {
 
         XSingleton ano = clz.getAnnotation(XSingleton.class);
         _singleton = (ano == null || ano.value()); //默认为单例
+        _annotations = clz.getAnnotations();
 
         _buildInit();
 
@@ -93,6 +95,11 @@ public class BeanWrap {
      * */
     public String tag(){ return  _tag; }
     protected void tagSet(String tag){ _tag = tag; }
+
+
+    public Annotation[] annotations() {
+        return _annotations;
+    }
 
     /**
      * bean对象

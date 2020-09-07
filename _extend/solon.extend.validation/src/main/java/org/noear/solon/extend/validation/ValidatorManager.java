@@ -99,31 +99,45 @@ public class ValidatorManager implements XHandler {
         XAction action = ctx.action();
 
         if (action != null) {
-            validateDo(ctx, action);
+            validate(ctx, action);
         }
     }
 
-    protected void validateDo(XContext ctx, XAction action) throws Throwable {
+    protected void validate(XContext ctx, XAction action) throws Throwable {
         StringBuilder tmp = new StringBuilder();
-        XResult rst = null;
 
-        for (Annotation anno : action.method().getMethod().getAnnotations()) {
-            if (ctx.getHandled()) {
+        for (Annotation anno : action.bean().annotations()) {
+            if (validate0(ctx, anno, tmp)) {
                 return;
             }
+        }
 
-            Validator valid = validMap.get(anno.annotationType());
-            if (valid != null) {
-                tmp.setLength(0);
-                rst = valid.validate(ctx, anno, tmp);
+        for (Annotation anno : action.method().getAnnotations()) {
+            if (validate0(ctx, anno, tmp)) {
+                return;
+            }
+        }
+    }
 
-                if (rst.getCode() != 1) {
-                    if (printer.onFailure(ctx, anno, rst, valid.message(anno))) {
-                        break;
-                    }
+    protected boolean validate0(XContext ctx, Annotation anno, StringBuilder tmp){
+        if (ctx.getHandled()) {
+            return true;
+        }
+
+        Validator valid = validMap.get(anno.annotationType());
+
+        if (valid != null) {
+            tmp.setLength(0);
+            XResult rst = valid.validate(ctx, anno, tmp);
+
+            if (rst.getCode() != 1) {
+                if (printer.onFailure(ctx, anno, rst, valid.message(anno))) {
+                    return true;
                 }
             }
         }
+
+        return false;
     }
 
     class ValidatorEventHandlerImp implements ValidatorEventHandler {

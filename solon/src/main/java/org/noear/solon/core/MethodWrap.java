@@ -34,6 +34,8 @@ public class MethodWrap {
     protected MethodWrap(Method m) {
         method = m;
         parameters = m.getParameters();
+        annotations = m.getAnnotations();
+
         xTran = m.getAnnotation(XTran.class);
         xCache = m.getAnnotation(XCache.class);
         xAround = buildAround(m.getAnnotation(XAround.class));
@@ -52,6 +54,7 @@ public class MethodWrap {
     private final InvocationHandler xAround;
     private final Method method;
     private final Parameter[] parameters;
+    private final Annotation[] annotations;
 
     /**
      * 获取函数名
@@ -79,6 +82,10 @@ public class MethodWrap {
      */
     public Parameter[] getParameters() {
         return parameters;
+    }
+
+    public Annotation[] getAnnotations() {
+        return annotations;
     }
 
     /**
