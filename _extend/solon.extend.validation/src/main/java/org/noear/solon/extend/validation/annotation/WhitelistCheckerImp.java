@@ -19,7 +19,7 @@ public class WhitelistCheckerImp implements WhitelistChecker{
     }
 
     public static void globalSet(WhitelistChecker checker) {
-        if (checker == null) {
+        if (checker != null) {
             _global = checker;
         }
     }

@@ -20,7 +20,7 @@ public class NoRepeatLockImp implements NoRepeatLock {
     }
 
     public static void globalSet(NoRepeatLock lock) {
-        if (lock == null) {
+        if (lock != null) {
             _global = lock;
         }
     }
