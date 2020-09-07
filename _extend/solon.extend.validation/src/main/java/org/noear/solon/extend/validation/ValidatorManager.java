@@ -30,9 +30,21 @@ public class ValidatorManager implements XHandler {
         }
     }
 
-    protected Map<Class<? extends Annotation>, Validator> validMap = new HashMap<>();
+    protected final Map<Class<? extends Annotation>, Validator> validMap = new HashMap<>();
+    protected final ValidatorEventHandler printer;
 
     public ValidatorManager() {
+        printer = new ValidatorEventHandlerImp();
+        initialize();
+    }
+
+    public ValidatorManager(ValidatorEventHandler printer) {
+        if (printer == null) {
+            this.printer = new ValidatorEventHandlerImp();
+        } else {
+            this.printer = printer;
+        }
+
         initialize();
     }
 
@@ -106,7 +118,7 @@ public class ValidatorManager implements XHandler {
                 rst = valid.validate(ctx, anno, tmp);
 
                 if (rst.getCode() != 1) {
-                    if (renderDo(ctx, anno, rst, valid.message(anno))) {
+                    if (printer.onFailure(ctx, anno, rst, valid.message(anno))) {
                         break;
                     }
                 }
@@ -114,22 +126,23 @@ public class ValidatorManager implements XHandler {
         }
     }
 
-    /**
-     * @return 是否停止后续检查器
-     */
-    protected boolean renderDo(XContext ctx, Annotation ano, XResult result, String message) {
-        ctx.setHandled(true);
-        ctx.statusSet(400);
-        try {
-            if (XUtil.isEmpty(message)) {
-                message = ano.annotationType().getSimpleName() + " verification failed: " + result.getDescription();
+    class ValidatorEventHandlerImp implements ValidatorEventHandler {
+
+        @Override
+        public boolean onFailure(XContext ctx, Annotation ano, XResult result, String message) {
+            ctx.setHandled(true);
+            ctx.statusSet(400);
+            try {
+                if (XUtil.isEmpty(message)) {
+                    message = ano.annotationType().getSimpleName() + " verification failed: " + result.getDescription();
+                }
+
+                ctx.render(XResult.failure(400, message));
+            } catch (Throwable ex) {
+                XUtil.throwTr(ex);
             }
 
-            ctx.render(XResult.failure(400, message));
-        } catch (Throwable ex) {
-            XUtil.throwTr(ex);
+            return true;
         }
-
-        return true;
     }
 }
