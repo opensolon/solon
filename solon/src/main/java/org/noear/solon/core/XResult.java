@@ -8,8 +8,8 @@ import java.io.Serializable;
  * 结果
  * */
 public class XResult<T> implements Serializable {
-    private static final XResult _SUCCEED = new XResult(null);
-    private static final XResult _FAILURE = new XResult(0,"");
+    private static final XResult _SUCCEED = new XResultReadonly(null);
+    private static final XResult _FAILURE = new XResultReadonly(0,"");
 
     /**
      * 状态码
@@ -59,14 +59,14 @@ public class XResult<T> implements Serializable {
     }
 
     public XResult(T data) {
-        setCode(1);
-        setDescription("");
-        setData(data);
+        this.code = 1;
+        this.description = "";
+        this.data = data;
     }
 
     public XResult(int code, String description) {
-        setCode(code);
-        setDescription(description);
+        this.code = code;
+        this.description = description;
     }
 
     /**

@@ -3,7 +3,6 @@ package org.noear.solon.extend.validation.annotation;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XResult;
-import org.noear.solon.extend.validation.Locker;
 import org.noear.solon.extend.validation.Validator;
 
 public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
@@ -46,7 +45,7 @@ public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
             }
         }
 
-        if(Locker.global().tryLock("", XUtil.md5(tmp.toString()), anno.seconds())){
+        if (NoRepeatLockImp.global().tryLock(XUtil.md5(tmp.toString()), anno.seconds())) {
             return XResult.succeed();
         } else {
             return XResult.failure();
