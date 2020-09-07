@@ -53,6 +53,7 @@ public class ValidatorManager implements XHandler {
 
         add(Pattern.class, PatternValidator.instance);
         add(Size.class, SizeValidator.instance);
+        add(Whitelist.class, WhitelistValidator.instance);
     }
 
     public void clear() {
