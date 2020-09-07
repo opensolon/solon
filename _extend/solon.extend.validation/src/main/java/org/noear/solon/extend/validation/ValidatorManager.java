@@ -149,7 +149,7 @@ public class ValidatorManager implements XHandler {
         return false;
     }
 
-    class ValidatorEventHandlerImp implements ValidatorEventHandler {
+    static class ValidatorEventHandlerImp implements ValidatorEventHandler {
 
         @Override
         public boolean onFailure(XContext ctx, Annotation ano, XResult result, String message) {

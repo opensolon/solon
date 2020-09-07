@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 public @interface NoRepeatSubmit {
     HttpPart[] value() default {HttpPart.params};
 
-    int seconds() default 3;
+    int seconds() default 1;
 
     String message() default "";
 }
