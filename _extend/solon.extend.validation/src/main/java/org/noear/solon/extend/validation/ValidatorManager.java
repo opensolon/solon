@@ -30,6 +30,15 @@ public class ValidatorManager implements XHandler {
         }
     }
 
+    public static void setNoRepeatLock(NoRepeatLock lock){
+        NoRepeatLockImp.globalSet(lock);
+    }
+
+    public static void setWhitelistChecker(WhitelistChecker checker){
+        WhitelistCheckerImp.globalSet(checker);
+    }
+
+
     protected final Map<Class<? extends Annotation>, Validator> validMap = new HashMap<>();
     protected final ValidatorEventHandler printer;
 
