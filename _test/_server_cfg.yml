@@ -44,3 +44,12 @@ solon.schedule.job2:
   cron4x: "*/1 * * * *"
   enable: true
 
+dubbo:
+  scan:
+    basePackages: "x.x.x.x"
+  application:
+    name: "hello-provider"
+    owner: "noear"
+  registry:
+    address: "nacos://192.168.8.118:8848"
+#    address: "water://water2"
