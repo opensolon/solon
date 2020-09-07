@@ -40,18 +40,18 @@ public class ValidatorManager implements XHandler {
 
 
     protected final Map<Class<? extends Annotation>, Validator> validMap = new HashMap<>();
-    protected final ValidatorEventHandler printer;
+    protected final ValidatorEventHandler handler;
 
     public ValidatorManager() {
-        printer = new ValidatorEventHandlerImp();
+        handler = new ValidatorEventHandlerImp();
         initialize();
     }
 
-    public ValidatorManager(ValidatorEventHandler printer) {
-        if (printer == null) {
-            this.printer = new ValidatorEventHandlerImp();
+    public ValidatorManager(ValidatorEventHandler handler) {
+        if (handler == null) {
+            this.handler = new ValidatorEventHandlerImp();
         } else {
-            this.printer = printer;
+            this.handler = handler;
         }
 
         initialize();
@@ -116,19 +116,19 @@ public class ValidatorManager implements XHandler {
         StringBuilder tmp = new StringBuilder();
 
         for (Annotation anno : action.bean().getAnnotations()) {
-            if (validate0(ctx, anno, tmp)) {
+            if (validateDo(ctx, anno, tmp)) {
                 return;
             }
         }
 
         for (Annotation anno : action.method().getAnnotations()) {
-            if (validate0(ctx, anno, tmp)) {
+            if (validateDo(ctx, anno, tmp)) {
                 return;
             }
         }
     }
 
-    protected boolean validate0(XContext ctx, Annotation anno, StringBuilder tmp){
+    protected boolean validateDo(XContext ctx, Annotation anno, StringBuilder tmp){
         if (ctx.getHandled()) {
             return true;
         }
@@ -140,13 +140,17 @@ public class ValidatorManager implements XHandler {
             XResult rst = valid.validate(ctx, anno, tmp);
 
             if (rst.getCode() != 1) {
-                if (printer.onFailure(ctx, anno, rst, valid.message(anno))) {
+                if (this.failureDo(ctx, anno, rst, valid.message(anno))) {
                     return true;
                 }
             }
         }
 
         return false;
+    }
+
+    protected boolean failureDo(XContext ctx, Annotation ano, XResult result, String message){
+        return handler.onFailure(ctx,ano,result,message);
     }
 
     static class ValidatorEventHandlerImp implements ValidatorEventHandler {
