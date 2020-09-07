@@ -1,6 +1,7 @@
 package org.noear.solon.extend.validation;
 
 import org.noear.solon.XUtil;
+import org.noear.solon.annotation.XNote;
 import org.noear.solon.core.*;
 import org.noear.solon.extend.validation.annotation.*;
 
@@ -11,7 +12,7 @@ import java.util.Map;
 /**
  * 验证管理器
  *
- * 只支持XController
+ * 只支持XController 和 XAction
  *
  * @author noear
  * @since 1.0.22
@@ -19,7 +20,7 @@ import java.util.Map;
 public class ValidatorManager implements XHandler {
     private static ValidatorManager global = new ValidatorManager();
 
-    public static XHandler global() {
+    public static ValidatorManager global() {
         return global;
     }
 
@@ -36,31 +37,47 @@ public class ValidatorManager implements XHandler {
     }
 
     protected void initialize() {
-        add(DecimalMax.class, DecimalMaxValidator.instance);
-        add(DecimalMin.class, DecimalMinValidator.instance);
+        register(DecimalMax.class, DecimalMaxValidator.instance);
+        register(DecimalMin.class, DecimalMinValidator.instance);
 
-        add(Max.class, MaxValidator.instance);
-        add(Min.class, MinValidator.instance);
+        register(Max.class, MaxValidator.instance);
+        register(Min.class, MinValidator.instance);
 
-        add(NoRepeatSubmit.class, NoRepeatSubmitValidator.instance);
+        register(NoRepeatSubmit.class, NoRepeatSubmitValidator.instance);
 
-        add(NotBlank.class, NotBlankValidator.instance);
-        add(NotEmpty.class, NotEmptyValidator.instance);
-        add(NotNull.class, NotNullValidator.instance);
-        add(NotZero.class, NotZeroValidator.instance);
+        register(NotBlank.class, NotBlankValidator.instance);
+        register(NotEmpty.class, NotEmptyValidator.instance);
+        register(NotNull.class, NotNullValidator.instance);
+        register(NotZero.class, NotZeroValidator.instance);
 
-        add(Null.class, NullValidator.instance);
+        register(Null.class, NullValidator.instance);
 
-        add(Pattern.class, PatternValidator.instance);
-        add(Size.class, SizeValidator.instance);
-        add(Whitelist.class, WhitelistValidator.instance);
+        register(Pattern.class, PatternValidator.instance);
+        register(Size.class, SizeValidator.instance);
+        register(Whitelist.class, WhitelistValidator.instance);
     }
 
+    /**
+     * 清除所有验证器
+     * */
+    @XNote("清除所有验证器")
     public void clear() {
         validMap.clear();
     }
 
-    public <T extends Annotation> void add(Class<T> type, Validator<T> validator) {
+    /**
+     * 移除某个类型的验证器
+     * */
+    @XNote("移除某个类型的验证器")
+    public <T extends Annotation> void remove(Class<T> type){
+        validMap.remove(type);
+    }
+
+    /**
+     * 注册验证器
+     * */
+    @XNote("注册验证器")
+    public <T extends Annotation> void register(Class<T> type, Validator<T> validator) {
         validMap.put(type, validator);
     }
 

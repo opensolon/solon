@@ -2,6 +2,11 @@ package org.noear.solon.extend.validation.annotation;
 
 import org.noear.solon.core.XContext;
 
+/**
+ * 白名单检测
+ *
+ * 使用实需要换掉全局实现
+ * */
 public class WhitelistCheckerImp implements WhitelistChecker{
     private static WhitelistChecker _global;
 
