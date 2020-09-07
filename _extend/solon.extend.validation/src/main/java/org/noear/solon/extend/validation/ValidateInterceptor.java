@@ -7,8 +7,8 @@ public class ValidateInterceptor implements XHandler {
 
     @Override
     public void handle(XContext ctx) throws Throwable {
-        if (ValidatorManager.instance != null) {
-            ValidatorManager.instance.handle(ctx);
+        if (ValidatorManager.global() != null) {
+            ValidatorManager.global().handle(ctx);
         }
     }
 }

@@ -17,7 +17,17 @@ import java.util.Map;
  * @since 1.0.22
  * */
 public class ValidatorManager implements XHandler {
-    public static XHandler instance = new ValidatorManager();
+    private static ValidatorManager global = new ValidatorManager();
+
+    public static XHandler global() {
+        return global;
+    }
+
+    public static void globalSet(ValidatorManager global) {
+        if (global != null) {
+            ValidatorManager.global = global;
+        }
+    }
 
     protected Map<Class<? extends Annotation>, Validator> validMap = new HashMap<>();
 
