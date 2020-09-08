@@ -19,11 +19,11 @@ public class PatternValidator implements Validator<Pattern> {
 
     @Override
     public XResult validate(XContext ctx, Pattern anno, String key, StringBuilder tmp) {
-        java.util.regex.Pattern pt = cached.get(anno.expr());
+        java.util.regex.Pattern pt = cached.get(anno.value());
 
         if (pt == null) {
-            pt = java.util.regex.Pattern.compile(anno.expr());
-            cached.putIfAbsent(anno.expr(), pt);
+            pt = java.util.regex.Pattern.compile(anno.value());
+            cached.putIfAbsent(anno.value(), pt);
         }
 
         String val = ctx.param(key);

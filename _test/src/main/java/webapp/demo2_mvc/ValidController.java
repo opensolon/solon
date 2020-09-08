@@ -8,28 +8,23 @@ import org.noear.solon.extend.validation.annotation.*;
 @XValid
 @XController
 public class ValidController {
-
-    @DecimalMax(value =3{"val1", "val2"}, value = 10.0)
     @XMapping("dmax")
-    public String dmax(double val1, double val2) {
+    public String dmax(@DecimalMax(10.0) double val1, @DecimalMax(10.0) double val2) {
         return "OK";
     }
 
-    @DecimalMin(value = {"val1", "val2"}, value = 10.0)
     @XMapping("dmin")
-    public String dmin(double val1, double val2) {
+    public String dmin(@DecimalMin(10.0) double val1, @DecimalMin(10.0) double val2) {
         return "OK";
     }
 
-    @Max(value = {"val1", "val2"}, value = 10)
     @XMapping("max")
-    public String max(int val1, int val2) {
+    public String max(@Max(10) int val1, @Max(10) int val2) {
         return "OK";
     }
 
-    @Min(value = {"val1", "val2"}, value = 10)
     @XMapping("min")
-    public String min(int val1, int val2) {
+    public String min(@Min(10) int val1, @Min(10)int val2) {
         return "OK";
     }
 
@@ -69,15 +64,14 @@ public class ValidController {
         return "OK";
     }
 
-    @Pattern(value = {"val1", "val2"}, expr = "\\d{3}-\\d+")
     @XMapping("patt")
-    public String patt(String val1, String val2) {
+    public String patt(@Pattern("\\d{3}-\\d+") String val1, @Pattern("\\d{3}-\\d+") String val2) {
         return "OK";
     }
 
-    @Size(value = {"val1", "val2"}, min = 2, max = 5, message = "测试")
     @XMapping("size")
-    public String size(String val1, String val2) {
+    public String size(@Size(min = 2, max = 5, message = "测试") String val1,
+                       @Size(min = 2, max = 5, message = "测试") String val2) {
         return "OK";
     }
 }

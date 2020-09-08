@@ -8,14 +8,14 @@ import java.lang.annotation.*;
 /**
  * 不能为null
  * */
-@Target({ElementType.METHOD})
+@Target({ElementType.METHOD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Null {
     /**
      * param names
      * */
     @XNote("param names")
-    String[] value();
+    String[] value() default {};
 
     String message() default "";
 }

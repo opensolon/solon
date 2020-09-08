@@ -1,5 +1,6 @@
 package org.noear.solon.extend.validation.annotation;
 
+import org.noear.solon.XUtil;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XResult;
 import org.noear.solon.extend.validation.Validator;
@@ -14,9 +15,17 @@ public class NotNullValidator implements Validator<NotNull> {
 
     @Override
     public XResult validate(XContext ctx, NotNull anno, String name, StringBuilder tmp) {
-        for (String key : anno.value()) {
-            if (ctx.param(key) == null) {
-                tmp.append(',').append(key);
+        if(name == null) {
+            //来自函数
+            for (String key : anno.value()) {
+                if (ctx.param(key) == null) {
+                    tmp.append(',').append(key);
+                }
+            }
+        }else{
+            //来自参数
+            if (ctx.param(name) == null) {
+                tmp.append(',').append(name);
             }
         }
 

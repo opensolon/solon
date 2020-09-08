@@ -15,9 +15,17 @@ public class NotBlankValidator implements Validator<NotBlank> {
 
     @Override
     public XResult validate(XContext ctx, NotBlank anno, String name, StringBuilder tmp) {
-        for (String key : anno.value()) {
-            if (XUtil.isBlank(ctx.param(key))) {
-                tmp.append(',').append(key);
+        if (name == null) {
+            //来自函数
+            for (String key : anno.value()) {
+                if (XUtil.isBlank(ctx.param(key))) {
+                    tmp.append(',').append(key);
+                }
+            }
+        } else {
+            //来自参数
+            if (XUtil.isBlank(ctx.param(name))) {
+                tmp.append(',').append(name);
             }
         }
 

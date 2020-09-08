@@ -5,10 +5,10 @@ import org.noear.solon.annotation.XNote;
 
 import java.lang.annotation.*;
 
-@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Pattern {
-    String expr();
+    String value();
 
     String message() default "";
 }

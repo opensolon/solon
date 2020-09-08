@@ -4,7 +4,7 @@ package org.noear.solon.extend.validation.annotation;
 import java.lang.annotation.*;
 
 
-@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Size {
     int min();

@@ -14,9 +14,17 @@ public class NotZeroValidator implements Validator<NotZero> {
 
     @Override
     public XResult validate(XContext ctx, NotZero anno, String name, StringBuilder tmp) {
-        for (String key : anno.value()) {
-            if (ctx.paramAsLong(key) == 0) {
-                tmp.append(',').append(key);
+        if (name == null) {
+            //来自函数
+            for (String key : anno.value()) {
+                if (ctx.paramAsLong(key) == 0) {
+                    tmp.append(',').append(key);
+                }
+            }
+        } else {
+            //来自参数
+            if (ctx.paramAsLong(name) == 0) {
+                tmp.append(',').append(name);
             }
         }
 
