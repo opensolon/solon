@@ -62,6 +62,8 @@ public class ValidatorManager implements XHandler {
         register(DecimalMax.class, DecimalMaxValidator.instance);
         register(DecimalMin.class, DecimalMinValidator.instance);
 
+        register(Email.class, EmailValidator.instance);
+
         register(Max.class, MaxValidator.instance);
         register(Min.class, MinValidator.instance);
 
