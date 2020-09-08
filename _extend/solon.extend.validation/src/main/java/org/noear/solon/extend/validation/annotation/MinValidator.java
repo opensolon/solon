@@ -17,7 +17,7 @@ public class MinValidator implements Validator<Min> {
     public XResult validate(XContext ctx, Min anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
 
-        if (StringUtils.isInteger(val) == false || Long.parseLong(name) < anno.value()) {
+        if (StringUtils.isInteger(val) == false || Long.parseLong(val) < anno.value()) {
             tmp.append(',').append(name);
         }
 
