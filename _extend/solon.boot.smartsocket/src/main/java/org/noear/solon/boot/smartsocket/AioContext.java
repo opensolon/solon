@@ -11,10 +11,10 @@ import java.net.URI;
 
 public class AioContext extends XContextEmpty {
     private InetSocketAddress _inetSocketAddress;
-    private AioSession<SocketMessage> _session;
+    private AioSession _session;
     private SocketMessage _message;
 
-    public AioContext(AioSession<SocketMessage> session, SocketMessage message) {
+    public AioContext(AioSession session, SocketMessage message) {
         _session = session;
         _message = message;
 

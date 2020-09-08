@@ -9,7 +9,7 @@ import org.smartboot.socket.transport.AioSession;
 
 public class AioProcessor implements MessageProcessor<SocketMessage> {
     @Override
-    public void process(AioSession<SocketMessage> session, SocketMessage request) {
+    public void process(AioSession session, SocketMessage request) {
         try {
             handle(session, request);
         } catch (Throwable e) {
@@ -18,11 +18,11 @@ public class AioProcessor implements MessageProcessor<SocketMessage> {
     }
 
     @Override
-    public void stateEvent(AioSession<SocketMessage> session, StateMachineEnum stateMachineEnum, Throwable throwable) {
+    public void stateEvent(AioSession session, StateMachineEnum stateMachineEnum, Throwable throwable) {
 
     }
 
-    public void handle(AioSession<SocketMessage> session, SocketMessage request) {
+    public void handle(AioSession session, SocketMessage request) {
         if (request == null) {
             return;
         }
