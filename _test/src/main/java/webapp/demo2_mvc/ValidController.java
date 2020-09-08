@@ -70,8 +70,8 @@ public class ValidController {
     }
 
     @XMapping("size")
-    public String size(@Size(min = 2, max = 5, message = "测试") String val1,
-                       @Size(min = 2, max = 5, message = "测试") String val2) {
+    public String size(@Length(min = 2, max = 5, message = "测试") String val1,
+                       @Length(min = 2, max = 5, message = "测试") String val2) {
         return "OK";
     }
 }

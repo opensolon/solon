@@ -14,8 +14,9 @@ public class DecimalMaxValidator implements Validator<DecimalMax> {
 
     @Override
     public XResult validate(XContext ctx, DecimalMax anno, String key, StringBuilder tmp) {
+        String val = ctx.param(key);
 
-        if (ctx.paramAsDouble(key) > anno.value()) {
+        if (Double.parseDouble(val) > anno.value()) {
             tmp.append(',').append(key);
         }
 

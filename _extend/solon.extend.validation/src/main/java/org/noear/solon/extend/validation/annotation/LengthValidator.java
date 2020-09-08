@@ -4,16 +4,16 @@ import org.noear.solon.core.XContext;
 import org.noear.solon.core.XResult;
 import org.noear.solon.extend.validation.Validator;
 
-public class SizeValidator implements Validator<Size> {
-    public static final SizeValidator instance = new SizeValidator();
+public class LengthValidator implements Validator<Length> {
+    public static final LengthValidator instance = new LengthValidator();
 
     @Override
-    public String message(Size anno) {
+    public String message(Length anno) {
         return anno.message();
     }
 
     @Override
-    public XResult validate(XContext ctx, Size anno, String key, StringBuilder tmp) {
+    public XResult validate(XContext ctx, Length anno, String key, StringBuilder tmp) {
         String val = ctx.param(key);
 
         if (val == null || val.length() < anno.min() || val.length() > anno.max()) {

@@ -2,6 +2,7 @@ package org.noear.solon.extend.validation.annotation;
 
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XResult;
+import org.noear.solon.extend.validation.StringUtils;
 import org.noear.solon.extend.validation.Validator;
 
 public class MinValidator implements Validator<Min> {
@@ -14,7 +15,9 @@ public class MinValidator implements Validator<Min> {
 
     @Override
     public XResult validate(XContext ctx, Min anno, String key, StringBuilder tmp) {
-        if (ctx.paramAsLong(key) < anno.value()) {
+        String val = ctx.param(key);
+
+        if (StringUtils.isNumeric(val) == false || Long.parseLong(key) < anno.value()) {
             tmp.append(',').append(key);
         }
 
