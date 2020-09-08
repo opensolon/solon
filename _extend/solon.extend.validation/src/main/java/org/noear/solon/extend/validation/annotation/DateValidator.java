@@ -36,9 +36,9 @@ public class DateValidator implements Validator<Date> {
     private boolean tryParse(Date anno, String val) {
         try {
             if (XUtil.isEmpty(anno.value())) {
-                LocalDateTime.parse(val);
+                DateTimeFormatter.ISO_LOCAL_DATE_TIME.parse(val);
             } else {
-                LocalDateTime.parse(val, DateTimeFormatter.ofPattern(anno.value()));
+                DateTimeFormatter.ofPattern(anno.value()).parse(val);
             }
 
             return true;

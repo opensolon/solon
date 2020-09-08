@@ -8,6 +8,16 @@ import org.noear.solon.extend.validation.annotation.*;
 @XValid
 @XController
 public class ValidController {
+    @XMapping("date")
+    public String date(@Date String val1) {
+        return "OK";
+    }
+
+    @XMapping("date2")
+    public String date2(@Date("yyyy-MM-dd") String val1) {
+        return "OK";
+    }
+
     @XMapping("dmax")
     public String dmax(@DecimalMax(10.0) double val1, @DecimalMax(10.0) double val2) {
         return "OK";
@@ -20,6 +30,12 @@ public class ValidController {
 
     @XMapping("email")
     public String email(@Email String val1) {
+        return "OK";
+    }
+
+
+    @XMapping("email2")
+    public String email2(@Email("\\w+\\@live.cn") String val1) {
         return "OK";
     }
 
