@@ -262,6 +262,7 @@ public class HttpTest {
     @Test
     public void test2v_max() throws IOException {
         assert get("/demo2/valid/max?val1=9&val2=9").equals("OK");
+        assert get("/demo2/valid/max?val1=9&val2=9.0").equals("OK") == false;
         assert get("/demo2/valid/max?val1=11&val2=11").equals("OK") == false;
     }
 
@@ -269,6 +270,7 @@ public class HttpTest {
     public void test2v_min() throws IOException {
         assert get("/demo2/valid/min?val1=9&val2=9").equals("OK") == false;
         assert get("/demo2/valid/min?val1=11&val2=11").equals("OK");
+        assert get("/demo2/valid/min?val1=11.0&val2=11").equals("OK") == false;
     }
 
     @Test
@@ -301,6 +303,7 @@ public class HttpTest {
     @Test
     public void test2v_nzero() throws IOException {
         assert get("/demo2/valid/nzero?val1=1&val2=2").equals("OK");
+        assert get("/demo2/valid/nzero?val1=1&val2=2.0").equals("OK") == false;
         assert get("/demo2/valid/nzero?val1=1&val2=").equals("OK") == false;
         assert get("/demo2/valid/nzero?val1=11").equals("OK") == false;
     }
