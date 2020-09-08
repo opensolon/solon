@@ -1,5 +1,6 @@
 package features;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
@@ -22,6 +23,8 @@ public class HttpTest {
     @Test
     public void test11() throws IOException{
        assert  get("/demo1/run0/?str=").equals("不是null(ok)");
+
+        //NumberUtils.isNumber()
     }
 
     @Test

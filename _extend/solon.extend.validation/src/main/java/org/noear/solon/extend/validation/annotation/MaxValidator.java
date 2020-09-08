@@ -17,7 +17,7 @@ public class MaxValidator implements Validator<Max> {
     public XResult validate(XContext ctx, Max anno, String key, StringBuilder tmp) {
         String val = ctx.param(key);
 
-        if (StringUtils.isNumeric(val) == false || Long.parseLong(key) > anno.value()) {
+        if (StringUtils.isInteger(val) == false || Long.parseLong(key) > anno.value()) {
             tmp.append(',').append(key);
         }
 

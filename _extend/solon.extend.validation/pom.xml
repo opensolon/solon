@@ -19,6 +19,13 @@
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.ver}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 

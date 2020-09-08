@@ -2,6 +2,7 @@ package org.noear.solon.extend.validation.annotation;
 
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XResult;
+import org.noear.solon.extend.validation.StringUtils;
 import org.noear.solon.extend.validation.Validator;
 
 public class DecimalMinValidator implements Validator<DecimalMin> {
@@ -16,7 +17,7 @@ public class DecimalMinValidator implements Validator<DecimalMin> {
     public XResult validate(XContext ctx, DecimalMin anno, String key, StringBuilder tmp) {
         String val = ctx.param(key);
 
-        if (Double.parseDouble(val) < anno.value()) {
+        if (StringUtils.isNumber(val) == false || Double.parseDouble(val) < anno.value()) {
             tmp.append(',').append(key);
         }
 
