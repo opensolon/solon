@@ -174,12 +174,20 @@ public class ValidatorManager implements XHandler {
             ctx.statusSet(400);
             try {
                 if (XUtil.isEmpty(message)) {
-                    message = new StringBuilder(100)
-                            .append("@")
-                            .append(ano.annotationType().getSimpleName())
-                            .append(" verification failed: ")
-                            .append(rst.getDescription())
-                            .toString();
+                    if(XUtil.isEmpty(rst.getDescription())){
+                        message = new StringBuilder(100)
+                                .append("@")
+                                .append(ano.annotationType().getSimpleName())
+                                .append(" verification failed")
+                                .toString();
+                    }else{
+                        message = new StringBuilder(100)
+                                .append("@")
+                                .append(ano.annotationType().getSimpleName())
+                                .append(" verification failed: ")
+                                .append(rst.getDescription())
+                                .toString();
+                    }
                 }
 
                 ctx.render(XResult.failure(400, message));
