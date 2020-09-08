@@ -77,6 +77,7 @@ public class ValidatorManager implements XHandler {
         register(NotZero.class, NotZeroValidator.instance);
 
         register(Null.class, NullValidator.instance);
+        register(Numeric.class, NumericValidator.instance);
 
         register(Pattern.class, PatternValidator.instance);
         register(Length.class, LengthValidator.instance);
