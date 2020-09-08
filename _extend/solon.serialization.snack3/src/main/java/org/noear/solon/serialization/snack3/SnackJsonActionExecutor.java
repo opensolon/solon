@@ -29,6 +29,10 @@ public class SnackJsonActionExecutor extends XActionExecutorDefault {
             return null;
         }
 
+        if (ctx.paramMap().containsKey(p.getName())) {
+            return super.changeValue(ctx, p, pi, pt, bodyObj);
+        }
+
         ONode tmp = (ONode) bodyObj;
 
         if (tmp.isObject()) {

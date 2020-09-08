@@ -31,6 +31,10 @@ public class FastjsonJsonActionExecutor extends XActionExecutorDefault {
             return null;
         }
 
+        if (ctx.paramMap().containsKey(p.getName())) {
+            return super.changeValue(ctx, p, pi, pt, bodyObj);
+        }
+
         if (bodyObj instanceof JSONObject) {
             JSONObject tmp = (JSONObject) bodyObj;
 
