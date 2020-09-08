@@ -69,13 +69,15 @@ public class DubboAdapter {
         {
             ProtocolConfig protocol = new ProtocolConfig();
             props = XApp.cfg().getXmap("dubbo.protocol");
+            protocol.setParameters(props);
+
             if (props.containsKey("name") == false) {
-                props.put("name", "dubbo");
+                protocol.setName("dubbo");
             }
             if (props.containsKey("port") == false) {
-                props.put("port", String.valueOf(XApp.global().port() + 20000));
+                protocol.setPort(XApp.global().port() + 20000);
             }
-            protocol.setParameters(props);
+
             ApplicationModel.getConfigManager().addProtocol(protocol);
         }
 
