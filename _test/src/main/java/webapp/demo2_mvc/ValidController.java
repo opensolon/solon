@@ -18,6 +18,12 @@ public class ValidController {
         return "OK";
     }
 
+    @XMapping("email")
+    public String email(@Email String val1) {
+        return "OK";
+    }
+
+
     @XMapping("max")
     public String max(@Max(10) int val1, @Max(10) int val2) {
         return "OK";

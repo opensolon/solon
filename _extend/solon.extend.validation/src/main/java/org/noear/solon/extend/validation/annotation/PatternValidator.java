@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PatternValidator implements Validator<Pattern> {
-    public static final PatternValidator instance = new PatternValidator();
-
     private static final Map<String, java.util.regex.Pattern> cached = new ConcurrentHashMap<>();
+
+    public static final PatternValidator instance = new PatternValidator();
 
     @Override
     public String message(Pattern anno) {

@@ -248,6 +248,12 @@ public class HttpTest {
     }
 
     @Test
+    public void test2v_email() throws IOException {
+        assert get("/demo2/valid/email?val1=noear@live.cn").equals("OK");
+        assert get("/demo2/valid/email?val1=noearlive.cn").equals("OK") == false;
+    }
+
+    @Test
     public void test2v_dmin() throws IOException {
         assert get("/demo2/valid/dmin?val1=9.0&val2=9.0").equals("OK") == false;
         assert get("/demo2/valid/dmin?val1=11.0&val2=11.0").equals("OK");

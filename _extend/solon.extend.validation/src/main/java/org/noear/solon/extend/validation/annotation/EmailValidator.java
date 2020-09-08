@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class EmailValidator implements Validator<Email> {
-    public static final EmailValidator instance = new EmailValidator();
-
     private static final Map<String, java.util.regex.Pattern> cached = new ConcurrentHashMap<>();
+
+    public static final EmailValidator instance = new EmailValidator();
 
     public EmailValidator(){
         cached.putIfAbsent("",java.util.regex.Pattern.compile("^[a-z]([a-z0-9]*[-_]?[a-z0-9]+)*@([a-z0-9]*[-_]?[a-z0-9]+)+[\\.][a-z]{2,3}([\\.][a-z]{2})?$"));
