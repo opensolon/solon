@@ -9,8 +9,8 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Email {
-    @XNote("正则表达式")
+public @interface Date {
+    @XNote("日期表达式, 默认为：ISO格式")
     String value() default  "";
 
     String message() default "";

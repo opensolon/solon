@@ -59,6 +59,8 @@ public class ValidatorManager implements XHandler {
     }
 
     protected void initialize() {
+        register(Date.class, DateValidator.instance);
+
         register(DecimalMax.class, DecimalMaxValidator.instance);
         register(DecimalMin.class, DecimalMinValidator.instance);
 
