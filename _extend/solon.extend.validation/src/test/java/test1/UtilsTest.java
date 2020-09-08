@@ -18,13 +18,13 @@ public class UtilsTest {
 
     @Test
     public void test2(){
-        assert  StringUtils.isDigits("0.1") == false;
-        assert  StringUtils.isDigits("1");
-        assert  StringUtils.isDigits("-1") == false;
-        assert  StringUtils.isDigits("+0.1") == false;
-        assert  StringUtils.isDigits("+0.s1") == false;
-        assert  StringUtils.isDigits("0");
-        assert  StringUtils.isDigits("0. 1") == false;
-        assert  StringUtils.isDigits("0..1") == false;
+        assert  StringUtils.isInteger("0.1") == false;
+        assert  StringUtils.isInteger("1");
+        assert  StringUtils.isInteger("-1");
+        assert  StringUtils.isInteger("+0.1") == false;
+        assert  StringUtils.isInteger("+0.s1") == false;
+        assert  StringUtils.isInteger("0");
+        assert  StringUtils.isInteger("0. 1") == false;
+        assert  StringUtils.isInteger("0..1") == false;
     }
 }
