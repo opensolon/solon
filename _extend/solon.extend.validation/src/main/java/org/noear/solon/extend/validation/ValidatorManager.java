@@ -16,7 +16,7 @@ import java.util.Map;
  * 只支持XController 和 XAction
  *
  * @author noear
- * @since 1.0.22
+ * @since 1.0.23
  * */
 public class ValidatorManager implements XHandler {
     private static ValidatorManager global = new ValidatorManager();
@@ -169,12 +169,17 @@ public class ValidatorManager implements XHandler {
     static class ValidatorEventHandlerImp implements ValidatorEventHandler {
 
         @Override
-        public boolean onFailure(XContext ctx, Annotation ano, XResult result, String message) {
+        public boolean onFailure(XContext ctx, Annotation ano, XResult rst, String message) {
             ctx.setHandled(true);
             ctx.statusSet(400);
             try {
                 if (XUtil.isEmpty(message)) {
-                    message = ano.annotationType().getSimpleName() + " verification failed: " + result.getDescription();
+                    message = new StringBuilder(100)
+                            .append("@")
+                            .append(ano.annotationType().getSimpleName())
+                            .append(" verification failed: ")
+                            .append(rst.getDescription())
+                            .toString();
                 }
 
                 ctx.render(XResult.failure(400, message));
