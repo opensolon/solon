@@ -37,6 +37,7 @@ public class DubboAdapter {
             if (props.containsKey("name") == false) {
                 props.put("name", "dubbo-service-demo");
             }
+
             XUtil.bindTo(props, application);
 
             MonitorConfig monitor = new MonitorConfig();
@@ -72,7 +73,7 @@ public class DubboAdapter {
                 props.put("name", "dubbo");
             }
             if (props.containsKey("port") == false) {
-                props.put("port", "" + (XApp.global().port() + 20000));
+                props.put("port", String.valueOf(XApp.global().port() + 20000));
             }
             protocol.setParameters(props);
             ApplicationModel.getConfigManager().addProtocol(protocol);
