@@ -9,25 +9,25 @@ import org.noear.solon.extend.validation.annotation.*;
 @XController
 public class ValidController {
 
-    @DecimalMax(value = {"val1", "val2"}, max = 10.0)
+    @DecimalMax(value =3{"val1", "val2"}, value = 10.0)
     @XMapping("dmax")
     public String dmax(double val1, double val2) {
         return "OK";
     }
 
-    @DecimalMin(value = {"val1", "val2"}, min = 10.0)
+    @DecimalMin(value = {"val1", "val2"}, value = 10.0)
     @XMapping("dmin")
     public String dmin(double val1, double val2) {
         return "OK";
     }
 
-    @Max(value = {"val1", "val2"}, max = 10)
+    @Max(value = {"val1", "val2"}, value = 10)
     @XMapping("max")
     public String max(int val1, int val2) {
         return "OK";
     }
 
-    @Min(value = {"val1", "val2"}, min = 10)
+    @Min(value = {"val1", "val2"}, value = 10)
     @XMapping("min")
     public String min(int val1, int val2) {
         return "OK";

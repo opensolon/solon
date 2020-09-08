@@ -14,7 +14,7 @@ public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
     }
 
     @Override
-    public XResult validate(XContext ctx, NoRepeatSubmit anno, StringBuilder tmp) {
+    public XResult validate(XContext ctx, NoRepeatSubmit anno, String name, StringBuilder tmp) {
         tmp.append(ctx.path()).append("::");
 
         for (HttpPart part : anno.value()) {

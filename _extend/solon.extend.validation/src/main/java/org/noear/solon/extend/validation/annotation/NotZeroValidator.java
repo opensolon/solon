@@ -13,7 +13,7 @@ public class NotZeroValidator implements Validator<NotZero> {
     }
 
     @Override
-    public XResult validate(XContext ctx, NotZero anno, StringBuilder tmp) {
+    public XResult validate(XContext ctx, NotZero anno, String name, StringBuilder tmp) {
         for (String key : anno.value()) {
             if (ctx.paramAsLong(key) == 0) {
                 tmp.append(',').append(key);

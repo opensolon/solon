@@ -1,6 +1,5 @@
 package org.noear.solon.extend.validation.annotation;
 
-import org.noear.solon.XUtil;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XResult;
 import org.noear.solon.extend.validation.Validator;
@@ -14,11 +13,10 @@ public class DecimalMinValidator implements Validator<DecimalMin> {
     }
 
     @Override
-    public XResult validate(XContext ctx, DecimalMin anno, StringBuilder tmp) {
-        for (String key : anno.value()) {
-            if (ctx.paramAsDouble(key) < anno.min()) {
-                tmp.append(',').append(key);
-            }
+    public XResult validate(XContext ctx, DecimalMin anno, String key, StringBuilder tmp) {
+
+        if (ctx.paramAsDouble(key) < anno.value()) {
+            tmp.append(',').append(key);
         }
 
         if (tmp.length() > 1) {

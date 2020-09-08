@@ -4,16 +4,10 @@ import org.noear.solon.annotation.XNote;
 
 import java.lang.annotation.*;
 
-@Target({ElementType.METHOD})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Min {
-    /**
-     * param names
-     * */
-    @XNote("param names")
-    String[] value();
-
-    long min();
+    long value();
 
     String message() default "";
 }

@@ -13,7 +13,7 @@ public class WhitelistValidator implements Validator<Whitelist> {
     }
 
     @Override
-    public XResult validate(XContext ctx, Whitelist anno, StringBuilder tmp) {
+    public XResult validate(XContext ctx, Whitelist anno, String name, StringBuilder tmp) {
         if (WhitelistCheckerImp.global().check(anno, ctx)) {
             return XResult.succeed();
         } else {

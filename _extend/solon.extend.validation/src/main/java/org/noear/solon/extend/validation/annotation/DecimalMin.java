@@ -1,19 +1,11 @@
 package org.noear.solon.extend.validation.annotation;
 
-import org.noear.solon.annotation.XNote;
-
 import java.lang.annotation.*;
 
-@Target({ElementType.METHOD})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DecimalMin {
-    /**
-     * param names
-     * */
-    @XNote("param names")
-    String[] value();
-
-    double min();
+    double value();
 
     String message() default "";
 }

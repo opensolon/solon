@@ -6,6 +6,7 @@ import org.noear.solon.core.*;
 import org.noear.solon.extend.validation.annotation.*;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -116,19 +117,27 @@ public class ValidatorManager implements XHandler {
         StringBuilder tmp = new StringBuilder();
 
         for (Annotation anno : action.bean().getAnnotations()) {
-            if (validateDo(ctx, anno, tmp)) {
+            if (validateDo(ctx, anno, null, tmp)) {
                 return;
             }
         }
 
         for (Annotation anno : action.method().getAnnotations()) {
-            if (validateDo(ctx, anno, tmp)) {
+            if (validateDo(ctx, anno, null, tmp)) {
                 return;
+            }
+        }
+
+        for (Parameter para : action.method().getParameters()) {
+            for (Annotation anno : para.getAnnotations()) {
+                if (validateDo(ctx, anno, para.getName(), tmp)) {
+                    return;
+                }
             }
         }
     }
 
-    protected boolean validateDo(XContext ctx, Annotation anno, StringBuilder tmp){
+    protected boolean validateDo(XContext ctx, Annotation anno, String name, StringBuilder tmp){
         if (ctx.getHandled()) {
             return true;
         }
@@ -137,7 +146,7 @@ public class ValidatorManager implements XHandler {
 
         if (valid != null) {
             tmp.setLength(0);
-            XResult rst = valid.validate(ctx, anno, tmp);
+            XResult rst = valid.validate(ctx, anno, name, tmp);
 
             if (rst.getCode() != 1) {
                 if (this.failureDo(ctx, anno, rst, valid.message(anno))) {

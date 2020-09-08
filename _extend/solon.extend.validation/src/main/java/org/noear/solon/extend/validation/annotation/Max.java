@@ -1,19 +1,11 @@
 package org.noear.solon.extend.validation.annotation;
 
-import org.noear.solon.annotation.XNote;
-
 import java.lang.annotation.*;
 
-@Target({ElementType.METHOD})
+@Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Max {
-    /**
-     * param names
-     * */
-    @XNote("param names")
-    String[] value();
-
-    long max();
+    long value();
 
     String message() default "";
 }

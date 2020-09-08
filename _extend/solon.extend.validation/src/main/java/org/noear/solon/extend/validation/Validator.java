@@ -11,5 +11,5 @@ public interface Validator<T extends Annotation> {
         return "";
     }
 
-    XResult validate(XContext ctx, T anno, StringBuilder tmp);
+    XResult validate(XContext ctx, T anno, String name, StringBuilder tmp);
 }

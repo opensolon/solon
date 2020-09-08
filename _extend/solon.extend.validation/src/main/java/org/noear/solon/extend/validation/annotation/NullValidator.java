@@ -13,7 +13,7 @@ public class NullValidator implements Validator<Null> {
     }
 
     @Override
-    public XResult validate(XContext ctx, Null anno, StringBuilder tmp) {
+    public XResult validate(XContext ctx, Null anno, String name, StringBuilder tmp) {
         for (String key : anno.value()) {
             if (ctx.param(key) != null) {
                 tmp.append(',').append(key);
