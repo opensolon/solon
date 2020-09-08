@@ -249,7 +249,7 @@ public class HttpTest {
     @Test
     public void test2v_date2() throws IOException {
         assert get("/demo2/valid/date2?val1=2020-12-12").equals("OK");
-        assert get("/demo2/valid/date?val1=2020-12-12T12:12:12").equals("OK") == false;
+        assert get("/demo2/valid/date2?val1=2020-12-12T12:12:12").equals("OK") == false;
         assert get("/demo2/valid/date2?val1=2020-12-12 12:12").equals("OK") == false;
     }
 
