@@ -13,11 +13,11 @@ public class LengthValidator implements Validator<Length> {
     }
 
     @Override
-    public XResult validate(XContext ctx, Length anno, String key, StringBuilder tmp) {
-        String val = ctx.param(key);
+    public XResult validate(XContext ctx, Length anno, String name, StringBuilder tmp) {
+        String val = ctx.param(name);
 
         if (val == null || val.length() < anno.min() || val.length() > anno.max()) {
-            tmp.append(',').append(key);
+            tmp.append(',').append(name);
         }
 
         if (tmp.length() > 1) {

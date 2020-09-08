@@ -14,11 +14,11 @@ public class DecimalMinValidator implements Validator<DecimalMin> {
     }
 
     @Override
-    public XResult validate(XContext ctx, DecimalMin anno, String key, StringBuilder tmp) {
-        String val = ctx.param(key);
+    public XResult validate(XContext ctx, DecimalMin anno, String name, StringBuilder tmp) {
+        String val = ctx.param(name);
 
         if (StringUtils.isNumber(val) == false || Double.parseDouble(val) < anno.value()) {
-            tmp.append(',').append(key);
+            tmp.append(',').append(name);
         }
 
         if (tmp.length() > 1) {

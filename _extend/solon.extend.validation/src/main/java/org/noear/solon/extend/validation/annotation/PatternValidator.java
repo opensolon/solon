@@ -18,7 +18,7 @@ public class PatternValidator implements Validator<Pattern> {
     }
 
     @Override
-    public XResult validate(XContext ctx, Pattern anno, String key, StringBuilder tmp) {
+    public XResult validate(XContext ctx, Pattern anno, String name, StringBuilder tmp) {
         java.util.regex.Pattern pt = cached.get(anno.value());
 
         if (pt == null) {
@@ -26,9 +26,9 @@ public class PatternValidator implements Validator<Pattern> {
             cached.putIfAbsent(anno.value(), pt);
         }
 
-        String val = ctx.param(key);
+        String val = ctx.param(name);
         if (val == null || pt.matcher(val).find() == false) {
-            tmp.append(',').append(key);
+            tmp.append(',').append(name);
         }
 
         if (tmp.length() > 1) {

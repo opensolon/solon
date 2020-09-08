@@ -14,11 +14,11 @@ public class MaxValidator implements Validator<Max> {
     }
 
     @Override
-    public XResult validate(XContext ctx, Max anno, String key, StringBuilder tmp) {
-        String val = ctx.param(key);
+    public XResult validate(XContext ctx, Max anno, String name, StringBuilder tmp) {
+        String val = ctx.param(name);
 
-        if (StringUtils.isInteger(val) == false || Long.parseLong(key) > anno.value()) {
-            tmp.append(',').append(key);
+        if (StringUtils.isInteger(val) == false || Long.parseLong(name) > anno.value()) {
+            tmp.append(',').append(name);
         }
 
         if (tmp.length() > 1) {
