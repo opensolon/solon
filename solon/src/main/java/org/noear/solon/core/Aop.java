@@ -8,6 +8,9 @@ import java.util.function.Consumer;
  * Aop 管理中心
  *
  * 负责常用对外接口
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class Aop {
     //::工厂

@@ -5,6 +5,11 @@ import org.noear.solon.core.TranPolicy;
 
 import java.lang.annotation.*;
 
+/**
+ *
+ * @author noear
+ * @since 1.0.20
+ * */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface XTran {

@@ -5,6 +5,9 @@ import java.lang.reflect.InvocationHandler;
 
 /**
  * 触发器：围绕处理（替代处理）
+ *
+ * @author noear
+ * @since 1.0.20
  * */
 @Inherited //要可继承
 @Target({ElementType.METHOD, ElementType.TYPE})

@@ -18,6 +18,9 @@ import java.util.function.Function;
  * 1.生成 bean
  * 2.构建 bean
  * 3.注入 字段或参数
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class AopFactory extends AopFactoryBase {
 

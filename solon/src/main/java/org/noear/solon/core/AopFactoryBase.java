@@ -17,7 +17,8 @@ import java.util.function.Function;
 /**
  * 为 AopFactory 提供存储 支持，并提供注册管理
  *
- *
+ * @author noear
+ * @since 1.0
  * */
 public abstract class AopFactoryBase {
     //////////////////////////

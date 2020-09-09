@@ -4,6 +4,9 @@ import java.lang.annotation.*;
 
 /**
  * 通用 组件
+ *
+ * @author noear
+ * @since 1.0
  * */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

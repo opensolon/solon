@@ -9,6 +9,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * 初始化（相当于 PostConstruct）
  *
  * Bean 构建过程：Constructor(构造方法) -> @XInject(依赖注入) -> @XInit(初始化)
+ *
+ * @author noear
+ * @since 1.0.10
  * */
 @Retention (RUNTIME)
 @Target(METHOD)

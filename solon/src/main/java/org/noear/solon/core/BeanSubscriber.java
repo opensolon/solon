@@ -4,6 +4,9 @@ import java.util.function.Consumer;
 
 /**
  * Bean 订阅者
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class BeanSubscriber {
     public Object key; //第2优先

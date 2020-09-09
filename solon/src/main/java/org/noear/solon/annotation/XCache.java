@@ -4,6 +4,9 @@ import java.lang.annotation.*;
 
 /**
  * 缓存注解器
+ *
+ * @author noear
+ * @since 1.0.21
  * */
 @Inherited //要可继承
 @Target({ElementType.METHOD})
