@@ -82,6 +82,11 @@
 <!--            <artifactId>solon.boot.smartsocket</artifactId>-->
 <!--        </dependency>-->
 
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.smarthttp</artifactId>
+        </dependency>
+
 <!--                <dependency>-->
 <!--                    <groupId>org.noear</groupId>-->
 <!--                    <artifactId>solon.boot.jlhttp</artifactId>-->
@@ -97,10 +102,7 @@
 <!--            <artifactId>solon.boot.jdksocket</artifactId>-->
 <!--        </dependency>-->
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.smarthttp</artifactId>-->
-<!--        </dependency>-->
+
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
@@ -119,16 +121,16 @@
 <!--        </dependency>-->
 
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.undertow</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.undertow</artifactId>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.undertow.jsp</artifactId>
-            <type>pom</type>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.extend.undertow.jsp</artifactId>-->
+<!--            <type>pom</type>-->
+<!--        </dependency>-->
 
 
 <!--        <dependency>-->
@@ -136,11 +138,11 @@
 <!--            <artifactId>solon.boot.jetty</artifactId>-->
 <!--        </dependency>-->
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.extend.jetty.jsp</artifactId>-->
-<!--            <type>pom</type>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.jetty.jsp</artifactId>
+            <type>pom</type>
+        </dependency>
 
 
         <dependency>
