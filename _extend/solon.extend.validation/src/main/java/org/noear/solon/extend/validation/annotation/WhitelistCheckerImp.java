@@ -6,6 +6,8 @@ import org.noear.solon.core.XContext;
  * 白名单检测
  *
  * 使用实需要换掉全局实现
+ * @author noear
+ * @since 1.0.23
  * */
 public class WhitelistCheckerImp implements WhitelistChecker{
     private static WhitelistChecker _global;

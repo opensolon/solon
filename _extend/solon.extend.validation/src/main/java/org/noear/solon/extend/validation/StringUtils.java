@@ -1,5 +1,10 @@
 package org.noear.solon.extend.validation;
 
+/**
+ *
+ * @author noear
+ * @since 1.0.23
+ * */
 public class StringUtils {
     /**
      * 是否全是数字

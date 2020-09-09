@@ -5,6 +5,11 @@ import org.noear.solon.core.XContext;
 import org.noear.solon.core.XResult;
 import org.noear.solon.extend.validation.Validator;
 
+/**
+ *
+ * @author noear
+ * @since 1.0.23
+ * */
 public class NotBlankValidator implements Validator<NotBlank> {
     public static final NotBlankValidator instance = new NotBlankValidator();
 

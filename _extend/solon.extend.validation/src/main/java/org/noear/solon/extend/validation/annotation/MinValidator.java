@@ -5,6 +5,11 @@ import org.noear.solon.core.XResult;
 import org.noear.solon.extend.validation.StringUtils;
 import org.noear.solon.extend.validation.Validator;
 
+/**
+ *
+ * @author noear
+ * @since 1.0.23
+ * */
 public class MinValidator implements Validator<Min> {
     public static final MinValidator instance = new MinValidator();
 

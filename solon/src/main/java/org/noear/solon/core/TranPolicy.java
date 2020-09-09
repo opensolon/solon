@@ -4,6 +4,7 @@ package org.noear.solon.core;
  * 事务策略
  *
  * @author noear
+ * @since 1.0.20
  * */
 public enum TranPolicy {
     /**

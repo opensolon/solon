@@ -9,6 +9,9 @@ import java.lang.annotation.Target;
 
 /**
  * 是个数值
+ *
+ * @author noear
+ * @since 1.0.23
  * */
 @Target({ElementType.METHOD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)

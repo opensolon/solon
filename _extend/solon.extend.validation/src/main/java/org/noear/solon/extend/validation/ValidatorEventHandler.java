@@ -8,6 +8,9 @@ import java.lang.annotation.Annotation;
 
 /**
  * 失败打印器
+ *
+ * @author noear
+ * @since 1.0.23
  * */
 public interface ValidatorEventHandler {
     /**

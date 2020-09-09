@@ -10,6 +10,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ *
+ * @author noear
+ * @since 1.0.23
+ * */
 public class DateValidator implements Validator<Date> {
     public static final DateValidator instance = new DateValidator();
 

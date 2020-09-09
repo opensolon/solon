@@ -5,6 +5,11 @@ import org.noear.solon.core.XResult;
 
 import java.lang.annotation.Annotation;
 
+/**
+ *
+ * @author noear
+ * @since 1.0.23
+ * */
 @FunctionalInterface
 public interface Validator<T extends Annotation> {
     default String message(T anno) {

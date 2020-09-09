@@ -5,6 +5,11 @@ import org.noear.solon.core.XResult;
 import org.noear.solon.extend.validation.StringUtils;
 import org.noear.solon.extend.validation.Validator;
 
+/**
+ *
+ * @author noear
+ * @since 1.0.23
+ * */
 public class DecimalMaxValidator implements Validator<DecimalMax> {
     public static final DecimalMaxValidator instance = new DecimalMaxValidator();
 

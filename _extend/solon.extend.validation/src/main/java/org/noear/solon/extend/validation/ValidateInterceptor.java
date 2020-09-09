@@ -3,6 +3,11 @@ package org.noear.solon.extend.validation;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XHandler;
 
+/**
+ *
+ * @author noear
+ * @since 1.0.23
+ * */
 public class ValidateInterceptor implements XHandler {
 
     @Override
