@@ -1,5 +1,10 @@
 package org.noear.solon.core;
 
+/**
+ * 事务隔离级别
+ *
+ * @author noear
+ * */
 public enum  TranIsolation {
     /**
      * 未申明（默认）
