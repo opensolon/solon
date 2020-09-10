@@ -168,3 +168,15 @@ class xxx{
 * 6.扫描并加载java bean
 * 7.加载渲染关系
 * 8.完成
+
+### 附5：Helloworld 的单机并发数
+
+> 机器：2017款 macbook pro i7 16g
+> 测试：wrk -t10 -c200 -d30s --latency "http://127.0.0.1:8080/"
+
+|  solon  | 大小 | QPS | spring boot  |  QPS  | 
+| -------- | -------- | -------- | -------- | -------- |
+| solon.boot.jlhttp (可独立运行)     | 0.1m     | 4.5万左右     | /   |    | 
+| /     |      |      | spring-boot-starter-tomcat   |  3.1万左右  | 
+| solon.boot.jetty (可独立运行)     | 1.8m     | 6.5万左右     | spring-boot-starter-jetty | 3.5万左右 |
+| solon.boot.undertow (可独立运行)     | 4.2m     | 7.9万左右     | spring-boot-starter-undertow | 4.9万左右 |
