@@ -106,37 +106,43 @@ public class MethodWrap {
      * 执行，并尝试事务
      */
     public Object invokeByAspect(Object obj, Object... args) throws Throwable {
-        return invokeTryCache(obj, args);
+        return invokeByAspect0(obj, args);
         //
         //try cache => try tran => try around;
         //
     }
 
-    private Object invokeTryCache(Object obj, Object... args) throws Throwable {
+    private Object invokeByAspect0(Object obj, Object... args) throws Throwable {
+        //try cache
+        //
         if (xCache == null) {
-            return invokeTryTran(obj, args);
+            return invokeByAspect1(obj, args);
         } else {
             return XBridge.cacheExecutor()
                     .execute(xCache, method, parameters, args,
-                            () -> invokeTryTran(obj, args));
+                            () -> invokeByAspect1(obj, args));
         }
     }
 
-    private Object invokeTryTran(Object obj, Object... args) throws Throwable {
+    private Object invokeByAspect1(Object obj, Object... args) throws Throwable {
+        //try tran
+        //
         if (xTran == null) {
-            return invokeTryAround(obj, args);
+            return invokeByAspect2(obj, args);
         } else {
             ValHolder val0 = new ValHolder();
 
             XBridge.tranExecutor().execute(xTran, () -> {
-                val0.value = invokeTryAround(obj, args);
+                val0.value = invokeByAspect2(obj, args);
             });
 
             return val0.value;
         }
     }
 
-    private Object invokeTryAround(Object obj, Object[] args) throws Throwable {
+    private Object invokeByAspect2(Object obj, Object[] args) throws Throwable {
+        //try around
+        //
         if (xAround == null) {
             return method.invoke(obj, args);
         } else {
