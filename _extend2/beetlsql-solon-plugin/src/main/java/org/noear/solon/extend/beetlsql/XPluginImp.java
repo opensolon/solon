@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        Aop.factory().beanCreatorAdd(org.beetl.sql.ext.solon.Db.class, (clz, wrap, anno)->{
+        Aop.factory().beanCreatorAdd(Db.class, (clz, wrap, anno)->{
             if(XUtil.isEmpty(anno.value()) || clz.isInterface() == false){
                 return;
             }
@@ -25,13 +25,13 @@ public class XPluginImp implements XPlugin {
                 if (bw.raw() instanceof DataSource) {
                     DataSource source = bw.raw();
 
-                    Object raw = org.beetl.sql.ext.solon.SQLManagerHolder.get(source).getMapper(clz);
+                    Object raw = SQLManagerHolder.get(source).getMapper(clz);
                     Aop.wrapAndPut(clz,raw);
                 }
             });
         });
 
-        Aop.factory().beanInjectorAdd(org.beetl.sql.ext.solon.Db.class, (varH, anno) -> {
+        Aop.factory().beanInjectorAdd(Db.class, (varH, anno) -> {
 
             if (XUtil.isEmpty(anno.value())) {
                 if (varH.getType().isInterface()) {
@@ -44,7 +44,7 @@ public class XPluginImp implements XPlugin {
                     if (bw.raw() instanceof DataSource) {
                         DataSource source = bw.raw();
 
-                        org.beetl.sql.ext.solon.SQLManagerHolder holder = org.beetl.sql.ext.solon.SQLManagerHolder.get(source);
+                        SQLManagerHolder holder = SQLManagerHolder.get(source);
 
                         if (varH.getType().isInterface()) {
                             Object mapper = holder.getMapper(varH.getType());
