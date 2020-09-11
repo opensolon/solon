@@ -201,8 +201,12 @@ public class XAction extends XHandlerAide implements XHandler{
                 }
             }
 
-            if (ex instanceof InvocationTargetException) {
-                ex = ((InvocationTargetException) ex).getTargetException();
+            while (true) {
+                if (ex instanceof InvocationTargetException) {
+                    ex = ((InvocationTargetException) ex).getTargetException();
+                }else{
+                    break;
+                }
             }
 
             c.setHandled(true); //停止处理
