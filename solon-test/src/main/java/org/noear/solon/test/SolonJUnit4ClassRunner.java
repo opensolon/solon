@@ -9,7 +9,7 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
     public SolonJUnit4ClassRunner(Class<?> klass) throws InitializationError {
         super(klass);
 
-        SolonBootTest anno = klass.getAnnotation(SolonBootTest.class);
+        SolonTest anno = klass.getAnnotation(SolonTest.class);
 
         if (anno != null && anno.value() != null) {
             if (anno.debug()) {
