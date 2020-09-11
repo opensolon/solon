@@ -35,7 +35,7 @@ public class XPluginImp implements XPlugin {
 
             if (XUtil.isEmpty(anno.value())) {
                 if (varH.getType().isInterface()) {
-                    Aop.getAsyn(varH.getType(), (bw) -> {
+                    Aop.getAsyn(DataSource.class, (bw) -> {
                         varH.setValue(bw.raw());
                     });
                 }
