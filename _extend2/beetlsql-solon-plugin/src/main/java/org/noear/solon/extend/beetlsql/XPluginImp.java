@@ -4,6 +4,8 @@ import org.beetl.sql.core.SQLManager;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.XPlugin;
 
 import javax.sql.DataSource;
@@ -36,30 +38,34 @@ public class XPluginImp implements XPlugin {
             if (XUtil.isEmpty(anno.value())) {
                 if (varH.getType().isInterface()) {
                     Aop.getAsyn(DataSource.class, (bw) -> {
-                        varH.setValue(bw.raw());
+                        injectorDo(bw, varH);
                     });
                 }
             } else {
                 Aop.getAsyn(anno.value(), (bw) -> {
                     if (bw.raw() instanceof DataSource) {
-                        DataSource source = bw.raw();
-
-                        SQLManagerHolder holder = SQLManagerHolder.get(source);
-
-                        if (varH.getType().isInterface()) {
-                            Object mapper = holder.getMapper(varH.getType());
-
-                            varH.setValue(mapper);
-                            return;
-                        }
-
-                        if (SQLManager.class.isAssignableFrom(varH.getType())) {
-                            varH.setValue(holder.sqlManager);
-                            return;
-                        }
+                        injectorDo(bw, varH);
                     }
                 });
             }
         });
+    }
+
+    private void injectorDo(BeanWrap bw, VarHolder varH){
+        DataSource source = bw.raw();
+
+        SQLManagerHolder holder = SQLManagerHolder.get(source);
+
+        if (varH.getType().isInterface()) {
+            Object mapper = holder.getMapper(varH.getType());
+
+            varH.setValue(mapper);
+            return;
+        }
+
+        if (SQLManager.class.isAssignableFrom(varH.getType())) {
+            varH.setValue(holder.sqlManager);
+            return;
+        }
     }
 }
