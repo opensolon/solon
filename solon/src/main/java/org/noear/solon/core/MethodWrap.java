@@ -106,14 +106,9 @@ public class MethodWrap {
      * 执行，并尝试事务
      */
     public Object invokeByAspect(Object obj, Object... args) throws Throwable {
-        return invokeByAspect0(obj, args);
-        //
-        //try cache => try tran => try around;
-        //
-    }
+        /* try cache => try tran => try around; */
 
-    private Object invokeByAspect0(Object obj, Object... args) throws Throwable {
-        //try cache
+        //0::try cache
         //
         if (xCache == null) {
             return invokeByAspect1(obj, args);
@@ -125,7 +120,7 @@ public class MethodWrap {
     }
 
     private Object invokeByAspect1(Object obj, Object... args) throws Throwable {
-        //try tran
+        //1::try tran
         //
         if (xTran == null) {
             return invokeByAspect2(obj, args);
@@ -141,7 +136,7 @@ public class MethodWrap {
     }
 
     private Object invokeByAspect2(Object obj, Object[] args) throws Throwable {
-        //try around
+        //2::try around
         //
         if (xAround == null) {
             return method.invoke(obj, args);
