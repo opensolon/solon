@@ -9,7 +9,7 @@ import java.lang.annotation.*;
  * 不能为空白的
  *
  * @author noear
- * @since 1.0.23
+ * @since 1.0.24
  * */
 @Target({ElementType.METHOD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)

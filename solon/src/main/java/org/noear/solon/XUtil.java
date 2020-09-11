@@ -3,6 +3,7 @@ package org.noear.solon;
 import org.noear.solon.core.*;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.security.MessageDigest;
@@ -53,12 +54,38 @@ public class XUtil {
         }
     }
 
-    public static void throwTr(Throwable ex){
+    public static void throwableWrap(Throwable ex){
         if(ex instanceof RuntimeException){
             throw (RuntimeException)ex;
         }else {
             throw new RuntimeException(ex);
         }
+    }
+
+    public static Throwable throwableUnwrap(Throwable ex) {
+        Throwable th = ex;
+
+        while (true) {
+            if (th instanceof RuntimeException) {
+                if (th.getCause() != null) {
+                    th = th.getCause();
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+
+        while (true) {
+            if (th instanceof InvocationTargetException) {
+                th = ((InvocationTargetException) th).getTargetException();
+            } else {
+                break;
+            }
+        }
+
+        return th;
     }
 
     /**
@@ -95,6 +122,8 @@ public class XUtil {
     public static boolean isWhitespace(int c) {
         return c == 32 || c == 9 || c == 10 || c == 12 || c == 13;
     }
+
+
 
     /**
      * 获取第一项或者null

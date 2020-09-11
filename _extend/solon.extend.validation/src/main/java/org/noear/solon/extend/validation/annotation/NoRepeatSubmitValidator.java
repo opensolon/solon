@@ -8,7 +8,7 @@ import org.noear.solon.extend.validation.Validator;
 /**
  *
  * @author noear
- * @since 1.0.23
+ * @since 1.0.24
  * */
 public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
     public static final NoRepeatSubmitValidator instance = new NoRepeatSubmitValidator();
@@ -29,7 +29,7 @@ public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
                         tmp.append("body:");
                         tmp.append(ctx.body()).append(";");
                     } catch (Exception ex) {
-                        XUtil.throwTr(ex);
+                        XUtil.throwableWrap(ex);
                     }
                     break;
                 }

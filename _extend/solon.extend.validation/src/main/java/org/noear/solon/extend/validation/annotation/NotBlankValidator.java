@@ -8,7 +8,7 @@ import org.noear.solon.extend.validation.Validator;
 /**
  *
  * @author noear
- * @since 1.0.23
+ * @since 1.0.24
  * */
 public class NotBlankValidator implements Validator<NotBlank> {
     public static final NotBlankValidator instance = new NotBlankValidator();

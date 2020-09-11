@@ -427,7 +427,9 @@ public class XApp implements XHandler,XHandlerSlots {
         try {
             handle(x);
         } catch (Throwable ex) {
-            x.status(500);
+            ex = XUtil.throwableUnwrap(ex);
+
+            x.statusSet(500);
             x.setHandled(true);
             x.output(XUtil.getFullStackTrace(ex));
         }

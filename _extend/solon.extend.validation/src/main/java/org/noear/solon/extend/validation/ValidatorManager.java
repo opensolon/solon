@@ -16,7 +16,7 @@ import java.util.Map;
  * 只支持XController 和 XAction
  *
  * @author noear
- * @since 1.0.23
+ * @since 1.0.24
  * */
 public class ValidatorManager implements XHandler {
     private static ValidatorManager global = new ValidatorManager();
@@ -193,7 +193,7 @@ public class ValidatorManager implements XHandler {
 
                 ctx.render(XResult.failure(400, message));
             } catch (Throwable ex) {
-                XUtil.throwTr(ex);
+                XUtil.throwableWrap(ex);
             }
 
             return true;

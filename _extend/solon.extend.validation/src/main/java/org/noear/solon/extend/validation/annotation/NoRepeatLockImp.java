@@ -8,7 +8,7 @@ import org.noear.solon.core.XBridge;
  *
  * 只适合地锁；分布式环境需要把锁实现换掉
  * @author noear
- * @since 1.0.23
+ * @since 1.0.24
  * */
 public class NoRepeatLockImp implements NoRepeatLock {
     private static NoRepeatLock _global;
