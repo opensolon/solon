@@ -15,7 +15,7 @@ public class XPluginImp implements XPlugin {
             XPropertiesLoader.global = PropertiesLoader.g;
 
             //尝试.yml的配置加载
-            app.prop().load(XUtil.getResource("application.yml"));
+            app.prop().loadAdd("application.yml");
         }
     }
 }
