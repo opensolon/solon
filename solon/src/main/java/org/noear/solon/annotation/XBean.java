@@ -12,7 +12,14 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface XBean {
+    /**
+     * name
+     * */
     String value() default ""; //as bean.name
-    String tag() default "";
+    /**
+     * tags
+     * */
+    String tags() default "";
+
     boolean remoting() default false; //是否开始远程服务
 }

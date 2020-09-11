@@ -2,7 +2,6 @@ package org.noear.solon.core;
 
 import org.noear.solon.annotation.XInit;
 import org.noear.solon.annotation.XSingleton;
-import sun.util.resources.cldr.ss.CurrencyNames_ss;
 
 import java.lang.annotation.Annotation;
 
@@ -18,7 +17,7 @@ public class BeanWrap {
     protected Object _raw;        // bean raw（初始实例）
     protected boolean _singleton; // 是否为单例
     protected boolean _remoting;  // 是否为远程服务
-    protected String _tag;
+    protected String _tags;
     protected BeanProxy _proxy;
     protected final Annotation[] _annotations;
 
@@ -93,8 +92,8 @@ public class BeanWrap {
     /**
      * bean tag
      * */
-    public String tag(){ return  _tag; }
-    protected void tagSet(String tag){ _tag = tag; }
+    public String tags(){ return _tags; }
+    protected void tagsSet(String tags){ _tags = tags; }
 
 
     public Annotation[] getAnnotations() {

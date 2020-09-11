@@ -3,6 +3,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.annotation.XBean;
 import org.noear.solon.annotation.XInject;
 import org.noear.solon.core.utils.TypeUtil;
 
@@ -221,19 +222,19 @@ public abstract class AopFactoryBase {
     /**
      * 尝试构建 bean
      *
-     * @param beanName bean 名字
+     * @param anno bean 注解
      * @param mWrap 方法包装器
      * @param bw bean 包装器
      * @param beanInj 类注入
      * @param injectVal 参数注入
      */
-    public void tryBuildBean(String beanName, MethodWrap mWrap, BeanWrap bw, XInject beanInj, Function<Parameter, String> injectVal) throws Exception {
+    public void tryBuildBean(XBean anno, MethodWrap mWrap, BeanWrap bw, XInject beanInj, Function<Parameter, String> injectVal) throws Exception {
         int size2 = mWrap.getParameters().length;
 
         if (size2 == 0) {
             //0.没有参数
             Object raw = mWrap.invoke(bw.raw());
-            tryBuildBean0(beanName, beanInj, raw);
+            tryBuildBean0(anno, beanInj, raw);
         } else {
             //1.构建参数
             List<Object> args2 = new ArrayList<>(size2);
@@ -254,7 +255,7 @@ public abstract class AopFactoryBase {
                     }
 
                     Object raw = mWrap.invoke(bw.raw(), args2.toArray());
-                    tryBuildBean0(beanName, beanInj, raw);
+                    tryBuildBean0(anno, beanInj, raw);
                 } catch (Throwable ex) {
                     XEventBus.push(ex);
                 }
@@ -264,7 +265,7 @@ public abstract class AopFactoryBase {
         }
     }
 
-    protected void tryBuildBean0(String beanName, XInject beanInj, Object raw) {
+    protected void tryBuildBean0(XBean anno, XInject beanInj, Object raw) {
         if (raw != null) {
             if (beanInj != null && XUtil.isEmpty(beanInj.value()) == false) {
                 if (beanInj.value().startsWith("${")) {
@@ -277,7 +278,8 @@ public abstract class AopFactoryBase {
 
             //动态构建的bean，都用新生成wrap（否则会类型混乱）
             BeanWrap m_bw = new BeanWrap(raw.getClass(), raw);
-            Aop.factory().beanRegister(m_bw, beanName);
+            m_bw.tagsSet(anno.tags());
+            Aop.factory().beanRegister(m_bw, anno.value());
         }
     }
 

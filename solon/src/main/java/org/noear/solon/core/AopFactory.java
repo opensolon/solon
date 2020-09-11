@@ -48,7 +48,7 @@ public class AopFactory extends AopFactoryBase {
                 if (m_an != null) {
                     XInject beanInj = mWrap.getMethod().getAnnotation(XInject.class);
 
-                    tryBuildBean(m_an.value(), mWrap, bw, beanInj, (p1) -> {
+                    tryBuildBean(m_an, mWrap, bw, beanInj, (p1) -> {
                         XInject tmp = p1.getAnnotation(XInject.class);
                         if (tmp == null) {
                             return null;
@@ -61,7 +61,7 @@ public class AopFactory extends AopFactoryBase {
         });
 
         beanCreatorAdd(XBean.class, (clz, bw, anno) -> {
-            bw.tagSet(anno.tag());
+            bw.tagsSet(anno.tags());
 
             if (XPlugin.class.isAssignableFrom(bw.clz())) {
                 //如果是插件，则插入
