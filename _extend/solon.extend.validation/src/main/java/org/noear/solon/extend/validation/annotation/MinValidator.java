@@ -8,7 +8,7 @@ import org.noear.solon.extend.validation.Validator;
 /**
  *
  * @author noear
- * @since 1.0.24
+ * @since 1.0.25
  * */
 public class MinValidator implements Validator<Min> {
     public static final MinValidator instance = new MinValidator();

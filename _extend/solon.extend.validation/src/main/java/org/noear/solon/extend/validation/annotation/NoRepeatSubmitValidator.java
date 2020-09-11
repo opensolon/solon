@@ -8,7 +8,7 @@ import org.noear.solon.extend.validation.Validator;
 /**
  *
  * @author noear
- * @since 1.0.24
+ * @since 1.0.25
  * */
 public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
     public static final NoRepeatSubmitValidator instance = new NoRepeatSubmitValidator();

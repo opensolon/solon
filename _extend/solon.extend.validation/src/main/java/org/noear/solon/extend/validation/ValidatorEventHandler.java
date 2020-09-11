@@ -10,7 +10,7 @@ import java.lang.annotation.Annotation;
  * 失败打印器
  *
  * @author noear
- * @since 1.0.24
+ * @since 1.0.25
  * */
 public interface ValidatorEventHandler {
     /**

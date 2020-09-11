@@ -3,7 +3,7 @@ package org.noear.solon.extend.validation;
 /**
  *
  * @author noear
- * @since 1.0.24
+ * @since 1.0.25
  * */
 public class StringUtils {
     /**

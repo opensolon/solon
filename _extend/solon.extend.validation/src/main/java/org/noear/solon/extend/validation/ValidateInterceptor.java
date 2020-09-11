@@ -6,7 +6,7 @@ import org.noear.solon.core.XHandler;
 /**
  *
  * @author noear
- * @since 1.0.24
+ * @since 1.0.25
  * */
 public class ValidateInterceptor implements XHandler {
 

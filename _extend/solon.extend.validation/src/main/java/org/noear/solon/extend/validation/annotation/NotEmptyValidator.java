@@ -8,7 +8,7 @@ import org.noear.solon.extend.validation.Validator;
 /**
  *
  * @author noear
- * @since 1.0.24
+ * @since 1.0.25
  * */
 public class NotEmptyValidator implements Validator<NotEmpty> {
     public static final NotEmptyValidator instance = new NotEmptyValidator();

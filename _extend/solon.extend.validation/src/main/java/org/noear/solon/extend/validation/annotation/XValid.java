@@ -8,7 +8,7 @@ import java.lang.annotation.*;
 /**
  *
  * @author noear
- * @since 1.0.24
+ * @since 1.0.25
  * */
 @XBefore({ValidateInterceptor.class})
 @Inherited
