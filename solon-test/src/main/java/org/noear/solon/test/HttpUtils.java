@@ -49,9 +49,17 @@ public class HttpUtils {
 
     private ConsumerEx3<Boolean, Response, Exception> _callback;
     private boolean _callAsync;
+    private String _url;
+    private boolean _enablePrintln = false;
 
     public HttpUtils(String url) {
         _builder = new Request.Builder().url(url);
+        _url = url;
+    }
+
+    public HttpUtils enablePrintln(boolean enable){
+        _enablePrintln = enable;
+        return this;
     }
 
     //@XNote("设置multipart")
@@ -311,7 +319,12 @@ public class HttpUtils {
 
     //@XNote("执行请求，返回字符串")
     public String exec2(String mothod) throws IOException {
-        return exec(mothod).body().string();
+        String rst = exec(mothod).body().string();
+        if (_enablePrintln) {
+            System.out.println(_url + ":: " + rst);
+        }
+
+        return rst;
     }
 
 

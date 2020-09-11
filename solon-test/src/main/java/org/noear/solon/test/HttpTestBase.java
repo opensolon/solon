@@ -3,11 +3,15 @@ package org.noear.solon.test;
 import org.noear.solon.XApp;
 
 public class HttpTestBase {
+    public boolean enablePrint(){
+        return false;
+    }
+
     public HttpUtils path(String path) {
         return http("http://localhost:" + XApp.global().port() + path);
     }
 
     public HttpUtils http(String url) {
-        return HttpUtils.http(url);
+        return HttpUtils.http(url).enablePrintln(enablePrint());
     }
 }
