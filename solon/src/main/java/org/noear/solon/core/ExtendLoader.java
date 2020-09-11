@@ -104,7 +104,7 @@ public class ExtendLoader {
 
                 //如果map不为null；尝试加载配置
                 if (path.endsWith(".properties")) {
-                    XApp.global().prop().load(file.toURI().toURL());
+                    XApp.cfg().loadAdd(file.toURI().toURL());
 
                     PrintUtil.blueln("loaded: "+path);
                     return;
@@ -115,7 +115,7 @@ public class ExtendLoader {
                         throw new RuntimeException("Do not support the *.yml");
                     }
 
-                    XApp.global().prop().load(file.toURI().toURL());
+                    XApp.cfg().loadAdd(file.toURI().toURL());
 
                     PrintUtil.blueln("loaded: " + path);
                     return;

@@ -32,8 +32,8 @@ public final class XAppProperties extends XProperties {
         _args = args;
 
         //2.加载文件的配置
-        load(XUtil.getResource("application.properties"));
-        load(XUtil.getResource("application.yml"));
+        loadAdd(XUtil.getResource("application.properties"));
+        loadAdd(XUtil.getResource("application.yml"));
 
         //3.同步启动参数
         _args.forEach((k, v) -> {
@@ -59,7 +59,7 @@ public final class XAppProperties extends XProperties {
      *
      * @param url 配置地址
      * */
-    public XAppProperties load(URL url) {
+    public XAppProperties loadAdd(URL url) {
         if (url != null) {
             Properties prop = XUtil.getProperties(url);
 
@@ -71,6 +71,12 @@ public final class XAppProperties extends XProperties {
 
         return this;
     }
+
+    public XAppProperties loadAdd(String url) {
+        return loadAdd(XUtil.getResource(url));
+    }
+
+
 
     /**
      * 插件扫描
@@ -101,7 +107,7 @@ public final class XAppProperties extends XProperties {
      * */
     private void plugsScanMapDo(URL url) {
         try {
-            XAppProperties p = new XAppProperties().load(url);
+            XProperties p = new XProperties(XUtil.getProperties(url));
 
             String temp = p.get("solon.plugin");
 
