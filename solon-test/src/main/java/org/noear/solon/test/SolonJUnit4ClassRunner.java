@@ -3,6 +3,7 @@ package org.noear.solon.test;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
 import org.noear.solon.XApp;
+import org.noear.solon.XUtil;
 import org.noear.solon.core.Aop;
 
 import java.lang.reflect.Method;
@@ -35,7 +36,7 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
                     }
                 }
             } catch (Throwable ex) {
-                ex.printStackTrace();
+                XUtil.throwableUnwrap(ex).printStackTrace();
             }
         } else {
             XApp.start(klass, debugArgs);
