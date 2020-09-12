@@ -49,6 +49,10 @@ public class TestController {
             return "出错了";
         }
 
+        if("test".equals(Aop.factory().getWrap(TestModel.class).tags()) == false){
+            return "出错了";
+        }
+
         return map;
     }
 
