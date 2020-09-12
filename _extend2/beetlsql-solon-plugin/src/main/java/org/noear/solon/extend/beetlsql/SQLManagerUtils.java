@@ -28,14 +28,14 @@ public class SQLManagerUtils {
         SQLConnectionSource cs = null;
         DataSource master = bw.raw();
 
-        if (XUtil.isNotEmpty(bw.tags())) {
-            String[] ss = bw.tags().split(",");
-            DataSource[] slaves = new DataSource[ss.length];
-            for (int i = 0, len = ss.length; i < len; i++) {
-                slaves[i] = Aop.get(ss[i]);
+        if (XUtil.isNotEmpty(bw.meta())) {
+            String[] slaveAry = bw.meta().split(",");
+            DataSource[] slaves = new DataSource[slaveAry.length];
+            for (int i = 0, len = slaveAry.length; i < len; i++) {
+                slaves[i] = Aop.get(slaveAry[i]);
 
                 if (slaves[i] == null) {
-                    throw new RuntimeException("SQLManagerHolder: This data source does not exist: " + ss[i]);
+                    throw new RuntimeException("SQLManagerHolder: This data source does not exist: " + slaveAry[i]);
                 }
             }
 
