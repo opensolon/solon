@@ -2,9 +2,11 @@ package org.noear.solon.extend.beetlsql;
 
 import org.beetl.sql.core.ConditionalSQLManager;
 import org.beetl.sql.core.SQLManager;
+import org.beetl.sql.core.SQLManagerBuilder;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.XEventBus;
 
 import javax.sql.DataSource;
 import java.util.Map;
@@ -36,7 +38,7 @@ public class SQLManagerUtils {
                 slaves[i] = Aop.get(slaveAry[i]);
 
                 if (slaves[i] == null) {
-                    throw new RuntimeException("SQLManagerHolder: This data source does not exist: " + slaveAry[i]);
+                    throw new RuntimeException("SQLManagerUtils: This data source does not exist: " + slaveAry[i]);
                 }
             }
 
@@ -45,7 +47,12 @@ public class SQLManagerUtils {
             cs = new SQLConnectionSource(master, null);
         }
 
-        return SQLManager.newBuilder(cs).build();
+        SQLManagerBuilder builder = SQLManager.newBuilder(cs);
+
+        //推到事件中心，用于扩展
+        XEventBus.push(builder);
+
+        return builder.build();
     }
 
     /**
