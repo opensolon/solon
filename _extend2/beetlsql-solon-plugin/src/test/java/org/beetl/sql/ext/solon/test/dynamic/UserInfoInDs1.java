@@ -6,7 +6,7 @@ import org.beetl.sql.annotation.entity.Table;
 import org.beetl.sql.annotation.entity.TargetSQLManager;
 
 @Table(name="user")
-@TargetSQLManager("sqlManager1")
+@TargetSQLManager("ds1")
 @Data
 public class UserInfoInDs1 {
     @AssignID

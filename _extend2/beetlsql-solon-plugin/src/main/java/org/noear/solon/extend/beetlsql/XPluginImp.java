@@ -44,11 +44,9 @@ public class XPluginImp implements XPlugin {
         Aop.factory().beanInjectorAdd(Db.class, (varH, anno) -> {
 
             if (XUtil.isEmpty(anno.value())) {
-                if (varH.getType().isInterface()) {
-                    Aop.getAsyn(DataSource.class, (bw) -> {
-                        injectDo(anno, bw, varH);
-                    });
-                }
+                Aop.getAsyn(DataSource.class, (bw) -> {
+                    injectDo(anno, bw, varH);
+                });
             } else {
                 Aop.getAsyn(anno.value(), (bw) -> {
                     if (bw.raw() instanceof DataSource) {
