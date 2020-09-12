@@ -12,7 +12,7 @@ public class TestConfig {
         return new Rockservice3();
     }
 
-    @XBean(value = "TestModel", typed = true, tags = "test")
+    @XBean(value = "TestModel", typed = true, tag = "test")
     public TestModel build4(){
         return new TestModel("12");
     }

@@ -5,7 +5,6 @@ import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.annotation.XInject;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.XContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,7 +48,7 @@ public class TestController {
             return "出错了";
         }
 
-        if("test".equals(Aop.factory().getWrap(TestModel.class).tags()) == false){
+        if("test".equals(Aop.factory().getWrap(TestModel.class).tag()) == false){
             return "出错了";
         }
 
