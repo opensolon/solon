@@ -11,4 +11,9 @@ public class TestConfig {
     public Rockapi build3(@XInject("rs1") Rockapi rs1){
         return new Rockservice3();
     }
+
+    @XBean(value = "TestModel", typed = true)
+    public TestModel build4(){
+        return new TestModel("12");
+    }
 }

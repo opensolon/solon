@@ -4,6 +4,7 @@ import org.noear.solon.XApp;
 import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.annotation.XInject;
+import org.noear.solon.core.Aop;
 import org.noear.solon.core.XContext;
 
 import java.util.HashMap;
@@ -42,6 +43,11 @@ public class TestController {
         map.put("rockapi2", rockapi2.test());
 
         map.put("rockapi132", rockapi132.test());
+
+        TestModel tmp = Aop.get(TestModel.class);
+        if("12".equals(tmp.name) == false){
+            return "出错了";
+        }
 
         return map;
     }
