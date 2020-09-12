@@ -16,7 +16,7 @@ public class DynamicService {
     @Db
     DynamicUserInfoMapper mapper;
 
-    //@XTran
+    @XTran
     public void test(){
         mapper.deleteById(19999);
         sqlManager.single(UserInfoInDs1.class,1);
