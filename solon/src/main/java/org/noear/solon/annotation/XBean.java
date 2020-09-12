@@ -18,6 +18,9 @@ public @interface XBean {
     @XNote("标签")
     String tags() default "";
 
+    @XNote("元信息")
+    String meta() default "";
+
     @XNote("同时注册类型，仅当名称非空时有效")
     boolean typed() default false;
 
