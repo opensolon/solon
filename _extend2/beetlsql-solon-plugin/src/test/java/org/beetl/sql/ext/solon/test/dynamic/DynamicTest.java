@@ -1,7 +1,5 @@
 package org.beetl.sql.ext.solon.test.dynamic;
 
-
-import org.beetl.sql.core.SQLManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.solon.extend.beetlsql.Db;

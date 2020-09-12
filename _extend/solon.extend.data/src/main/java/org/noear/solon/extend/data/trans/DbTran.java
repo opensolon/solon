@@ -1,5 +1,6 @@
 package org.noear.solon.extend.data.trans;
 
+import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XTran;
 import org.noear.solon.ext.RunnableEx;
 import org.noear.solon.extend.data.TranNode;
@@ -56,7 +57,7 @@ public abstract class DbTran extends DbTranNode implements TranNode {
                 rollback();
             }
 
-            throw ex;
+            throw XUtil.throwableUnwrap(ex);
         } finally {
             TranManager.currentRemove();
 
