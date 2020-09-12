@@ -97,7 +97,7 @@ public class BeanWrap {
     protected void tagSet(String tag){ _tag = tag; }
 
     /**
-     * bean 标签
+     * bean 特性
      * */
     public String attrs(){ return _attrs; }
     protected void attrsSet(String attrs){ _attrs = attrs; }
