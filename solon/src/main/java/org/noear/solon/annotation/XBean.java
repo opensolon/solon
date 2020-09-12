@@ -15,10 +15,10 @@ public @interface XBean {
     @XNote("注册名称")
     String value() default ""; //as bean.name
 
-    @XNote("标签")
+    @XNote("标签，用于快速查找")
     String tags() default "";
 
-    @XNote("特性")
+    @XNote("特性，用于辅助配置")
     String attrs() default "";
 
     @XNote("同时注册类型，仅当名称非空时有效")
