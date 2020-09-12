@@ -7,7 +7,7 @@ import org.noear.solon.extend.validation.Validator;
 /**
  *
  * @author noear
- * @since 1.0.25
+ * @since 1.0.26
  * */
 public class LengthValidator implements Validator<Length> {
     public static final LengthValidator instance = new LengthValidator();

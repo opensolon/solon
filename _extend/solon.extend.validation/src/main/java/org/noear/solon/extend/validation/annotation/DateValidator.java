@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  *
  * @author noear
- * @since 1.0.25
+ * @since 1.0.26
  * */
 public class DateValidator implements Validator<Date> {
     public static final DateValidator instance = new DateValidator();

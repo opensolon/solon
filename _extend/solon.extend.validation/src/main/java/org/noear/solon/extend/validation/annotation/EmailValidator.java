@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  *
  * @author noear
- * @since 1.0.25
+ * @since 1.0.26
  * */
 public class EmailValidator implements Validator<Email> {
     private static final Map<String, java.util.regex.Pattern> cached = new ConcurrentHashMap<>();
