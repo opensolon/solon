@@ -78,7 +78,7 @@ public class SQLManagerUtils {
 
         SQLManager tmp = cached.get(name);
         if (tmp == null) {
-            synchronized (cached) {
+            synchronized (name.intern()) {
                 tmp = cached.get(name);
                 if (tmp == null) {
                     tmp = build(bw);

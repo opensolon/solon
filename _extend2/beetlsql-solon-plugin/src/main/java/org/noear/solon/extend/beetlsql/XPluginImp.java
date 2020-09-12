@@ -68,6 +68,8 @@ public class XPluginImp implements XPlugin {
 
             BeanWrap defBw = Aop.factory().getWrap(DataSource.class);
             SQLManagerUtils.dynamicBuild(defBw);
+
+            Aop.wrapAndPut(SQLManager.class, SQLManagerUtils.dynamicGet());
         });
     }
 
@@ -88,7 +90,9 @@ public class XPluginImp implements XPlugin {
             if (XUtil.isNotEmpty(anno.value())) {
                 varH.setValue(tmp);
             } else {
-                varH.setValue(SQLManagerUtils.dynamicGet());
+                Aop.getAsyn(SQLManager.class, (bw2) -> {
+                    varH.setValue(bw2.raw());
+                });
             }
             return;
         }

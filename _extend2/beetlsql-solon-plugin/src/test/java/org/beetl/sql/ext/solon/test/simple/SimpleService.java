@@ -2,7 +2,6 @@ package org.beetl.sql.ext.solon.test.simple;
 
 import org.beetl.sql.core.SQLManager;
 import org.beetl.sql.ext.solon.test.UserInfo;
-import org.junit.Test;
 import org.noear.solon.annotation.XTran;
 import org.noear.solon.extend.aspect.annotation.XService;
 import org.noear.solon.extend.beetlsql.Db;
