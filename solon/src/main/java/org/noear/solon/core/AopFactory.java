@@ -59,7 +59,7 @@ public class AopFactory extends AopFactoryBase {
 
         beanCreatorAdd(XBean.class, (clz, bw, anno) -> {
             bw.tagsSet(anno.tags());
-            bw.metaSet(anno.meta());
+            bw.metaSet(anno.attrs());
 
             if (XPlugin.class.isAssignableFrom(bw.clz())) {
                 //如果是插件，则插入
