@@ -16,9 +16,8 @@ import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
 
 /**
- * @Created by: Yukai
- * @Date: 2019/3/28 15:49
- * @Description : Yukai is so handsome xxD
+ * @author  by: Yukai
+ * @since : 2019/3/28 15:49
  */
 public class XPluginUndertow implements XPlugin {
     // singleton

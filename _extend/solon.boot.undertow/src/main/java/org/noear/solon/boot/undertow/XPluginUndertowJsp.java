@@ -27,9 +27,8 @@ import java.net.URL;
 import java.util.HashMap;
 
 /**
- * @Created by: Yukai
- * @Date: 2019/3/28 15:50
- * @Description : Yukai is so handsome xxD
+ * @author by: Yukai
+ * @since: 2019/3/28 15:50
  */
 public class XPluginUndertowJsp implements XPlugin {
     private static Undertow.Builder serverBuilder = null;
