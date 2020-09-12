@@ -31,6 +31,7 @@ public class SQLManagerUtils {
         if (XUtil.isNotEmpty(bw.attrs())) {
             String[] slaveAry = bw.attrs().split(",");
             DataSource[] slaves = new DataSource[slaveAry.length];
+
             for (int i = 0, len = slaveAry.length; i < len; i++) {
                 slaves[i] = Aop.get(slaveAry[i]);
 

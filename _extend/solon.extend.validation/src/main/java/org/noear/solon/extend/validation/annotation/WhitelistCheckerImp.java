@@ -7,7 +7,7 @@ import org.noear.solon.core.XContext;
  *
  * 使用实需要换掉全局实现
  * @author noear
- * @since 1.0.26
+ * @since 1.0.27
  * */
 public class WhitelistCheckerImp implements WhitelistChecker{
     private static WhitelistChecker _global;

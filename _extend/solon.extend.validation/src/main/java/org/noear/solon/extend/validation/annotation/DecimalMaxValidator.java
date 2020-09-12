@@ -8,7 +8,7 @@ import org.noear.solon.extend.validation.Validator;
 /**
  *
  * @author noear
- * @since 1.0.26
+ * @since 1.0.27
  * */
 public class DecimalMaxValidator implements Validator<DecimalMax> {
     public static final DecimalMaxValidator instance = new DecimalMaxValidator();
