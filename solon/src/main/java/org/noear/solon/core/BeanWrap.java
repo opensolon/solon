@@ -18,7 +18,7 @@ public class BeanWrap {
     protected boolean _singleton; // 是否为单例
     protected boolean _remoting;  // 是否为远程服务
     protected String _tag;
-    protected String[] _attrs;
+    protected String _attrs;
     protected BeanProxy _proxy;
     protected final Annotation[] _annotations;
 
@@ -99,8 +99,8 @@ public class BeanWrap {
     /**
      * bean 标签
      * */
-    public String[] attrs(){ return _attrs; }
-    protected void attrsSet(String[] attrs){ _attrs = attrs; }
+    public String attrs(){ return _attrs; }
+    protected void attrsSet(String attrs){ _attrs = attrs; }
 
 
     public Annotation[] getAnnotations() {
