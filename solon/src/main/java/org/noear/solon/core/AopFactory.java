@@ -3,13 +3,10 @@ package org.noear.solon.core;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.*;
-import org.noear.solon.core.utils.TypeUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.Parameter;
 import java.util.*;
-import java.util.function.Function;
 
 /**
  * Aop 处理工厂（可以被继承重写）
@@ -71,7 +68,7 @@ public class AopFactory extends AopFactoryBase {
                 bw.remotingSet(anno.remoting());
 
                 //注册到管理中心
-                beanRegister(bw, anno.value(), anno.primary());
+                beanRegister(bw, anno.value(), anno.typed());
 
                 //如果是remoting状态，转到XApp路由器
                 if (bw.remoting()) {
@@ -136,13 +133,13 @@ public class AopFactory extends AopFactoryBase {
     /**
      * 注册到管理中心
      */
-    public void beanRegister(BeanWrap bw, String name, boolean primary) {
+    public void beanRegister(BeanWrap bw, String name, boolean typed) {
         if (XUtil.isNotEmpty(name)) {
             //有name的，只用name注入
             //
             Aop.factory().putWrap(name, bw);
-            if (primary == false) {
-                //如果非primary，则直接返回
+            if (typed == false) {
+                //如果非typed，则直接返回
                 return;
             }
         }

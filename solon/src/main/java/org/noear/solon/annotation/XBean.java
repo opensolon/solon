@@ -12,13 +12,14 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface XBean {
-    @XNote("been name")
+    @XNote("注册名称")
     String value() default ""; //as bean.name
 
-    @XNote("been tags")
+    @XNote("标签")
     String tags() default "";
 
-    boolean primary() default false;
+    @XNote("同时注册类型")
+    boolean typed() default false;
 
     boolean remoting() default false; //是否开始远程服务
 }

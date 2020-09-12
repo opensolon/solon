@@ -8,7 +8,6 @@ import org.noear.solon.annotation.XInject;
 import org.noear.solon.core.utils.TypeUtil;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Array;
 import java.lang.reflect.Parameter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -280,7 +279,7 @@ public abstract class AopFactoryBase {
             BeanWrap m_bw = new BeanWrap(raw.getClass(), raw);
             m_bw.tagsSet(anno.tags());
 
-            Aop.factory().beanRegister(m_bw, anno.value(), anno.primary());
+            Aop.factory().beanRegister(m_bw, anno.value(), anno.typed());
         }
     }
 
