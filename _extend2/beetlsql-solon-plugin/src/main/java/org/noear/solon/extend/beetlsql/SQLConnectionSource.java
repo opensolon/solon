@@ -13,6 +13,7 @@ import java.sql.SQLException;
  * 链接源（完成与Solon的事务注解对接）
  *
  * @author noear
+ * @since 2020-09-01
  * */
 public class SQLConnectionSource extends DefaultConnectionSource {
     public SQLConnectionSource(DataSource master, DataSource[] slaves) {

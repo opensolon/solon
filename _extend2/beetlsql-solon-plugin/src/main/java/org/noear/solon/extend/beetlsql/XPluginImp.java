@@ -14,57 +14,84 @@ import javax.sql.DataSource;
  * Solon 插件接口实现，完成对接与注入支持
  *
  * @author noear
+ * @since 2020-09-01
  * */
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        Aop.factory().beanCreatorAdd(Db.class, (clz, wrap, anno)->{
-            if(XUtil.isEmpty(anno.value()) || clz.isInterface() == false){
-                return;
+        //构建bean
+        //
+        Aop.factory().beanCreatorAdd(Db.class, (clz, wrap, anno) -> {
+            if (XUtil.isEmpty(anno.value())) {
+                Aop.getAsyn(DataSource.class, (bw) -> {
+                    if (clz.isInterface()) {
+                        Object raw = SQLManagerUtils.get(anno.value(), bw).getMapper(clz);
+                        Aop.wrapAndPut(clz, raw);
+                    }
+                });
+            } else {
+                Aop.getAsyn(anno.value(), (bw) -> {
+                    if (bw.raw() instanceof DataSource && clz.isInterface()) {
+                        Object raw = SQLManagerUtils.get(anno.value(), bw).getMapper(clz);
+                        Aop.wrapAndPut(clz, raw);
+                    }
+                });
             }
-
-            Aop.getAsyn(anno.value(),(bw)->{
-                if (bw.raw() instanceof DataSource) {
-                    DataSource source = bw.raw();
-
-                    Object raw = SQLManagerHolder.get(source).getMapper(clz);
-                    Aop.wrapAndPut(clz,raw);
-                }
-            });
         });
 
+        //注入bean
+        //
         Aop.factory().beanInjectorAdd(Db.class, (varH, anno) -> {
 
             if (XUtil.isEmpty(anno.value())) {
                 if (varH.getType().isInterface()) {
                     Aop.getAsyn(DataSource.class, (bw) -> {
-                        injectorDo(bw, varH);
+                        injectDo(anno, bw, varH);
                     });
                 }
             } else {
                 Aop.getAsyn(anno.value(), (bw) -> {
                     if (bw.raw() instanceof DataSource) {
-                        injectorDo(bw, varH);
+                        injectDo(anno, bw, varH);
                     }
                 });
             }
         });
+
+        //初始化管理器（主要为了生成动态管理器）
+        //
+        Aop.beanOnloaded(() -> {
+            //初始化所有 DataSource 对应的管理器
+            Aop.beanForeach((k, bw) -> {
+                if (bw.raw() instanceof DataSource) {
+                    SQLManagerUtils.get(k, bw);
+                }
+            });
+
+            BeanWrap defBw = Aop.factory().getWrap(DataSource.class);
+            SQLManagerUtils.dynamicBuild(defBw);
+        });
     }
 
-    private void injectorDo(BeanWrap bw, VarHolder varH){
-        DataSource source = bw.raw();
-
-        SQLManagerHolder holder = SQLManagerHolder.get(source);
+    /**
+     * 字段注入
+     */
+    private void injectDo(Db anno, BeanWrap bw, VarHolder varH) {
+        SQLManager tmp = SQLManagerUtils.get(anno.value(), bw);
 
         if (varH.getType().isInterface()) {
-            Object mapper = holder.getMapper(varH.getType());
+            Object mapper = tmp.getMapper(varH.getType());
 
             varH.setValue(mapper);
             return;
         }
 
         if (SQLManager.class.isAssignableFrom(varH.getType())) {
-            varH.setValue(holder.sqlManager);
+            if (XUtil.isNotEmpty(anno.value())) {
+                varH.setValue(tmp);
+            } else {
+                varH.setValue(SQLManagerUtils.dynamicGet());
+            }
             return;
         }
     }

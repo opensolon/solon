@@ -10,6 +10,7 @@ import java.lang.annotation.*;
  * @Db("db1") Mapper mapper;
  *
  * @author noear
+ * @since 2020-09-01
  * */
 @Target({ElementType.FIELD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
