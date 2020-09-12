@@ -44,16 +44,18 @@ public class SQLConnectionSource extends DefaultConnectionSource {
         return this.getReadConn(ctx);
     }
 
-    //Override
-    public boolean isTransaction() {
-        return XTranUtils.inTrans();
-    }
-
-    protected Connection doGetConnectoin(DataSource ds) {
+    @Override
+    protected Connection doGetConnection(DataSource ds) {
         try {
             return XTranUtils.getConnection(ds);
         } catch (SQLException e) {
             throw new BeetlSQLException(BeetlSQLException.CANNOT_GET_CONNECTION, e);
         }
     }
+
+    //Override
+    public boolean isTransaction() {
+        return XTranUtils.inTrans();
+    }
+
 }
