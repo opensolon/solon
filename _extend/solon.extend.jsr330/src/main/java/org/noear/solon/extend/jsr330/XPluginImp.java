@@ -23,7 +23,7 @@ public class XPluginImp implements XPlugin {
             } else {
 
                 //注册到管理中心
-                Aop.factory().beanRegister(bw, anno.value());
+                Aop.factory().beanRegister(bw, anno.value(), false);
 
                 //如果是remoting状态，转到XApp路由器
                 if (bw.remoting()) {

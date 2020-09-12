@@ -36,7 +36,7 @@ public class AopFactory extends AopFactoryBase {
 
         beanCreatorAdd(XConfiguration.class, (clz, bw, anno) -> {
             XInject typeInj = clz.getAnnotation(XInject.class);
-            if(typeInj != null && XUtil.isNotEmpty(typeInj.value())){
+            if (typeInj != null && XUtil.isNotEmpty(typeInj.value())) {
                 if (typeInj.value().startsWith("${")) {
                     Aop.inject(bw.raw(), XApp.cfg().getPropByExpr(typeInj.value()));
                 }
@@ -71,7 +71,7 @@ public class AopFactory extends AopFactoryBase {
                 bw.remotingSet(anno.remoting());
 
                 //注册到管理中心
-                beanRegister(bw, anno.value());
+                beanRegister(bw, anno.value(), anno.primary());
 
                 //如果是remoting状态，转到XApp路由器
                 if (bw.remoting()) {
@@ -136,23 +136,27 @@ public class AopFactory extends AopFactoryBase {
     /**
      * 注册到管理中心
      */
-    public void beanRegister(BeanWrap bw, String name) {
-        if (XUtil.isEmpty(name) == false) {
+    public void beanRegister(BeanWrap bw, String name, boolean primary) {
+        if (XUtil.isNotEmpty(name)) {
             //有name的，只用name注入
             //
             Aop.factory().putWrap(name, bw);
-        } else {
-            Aop.factory().putWrap(bw.clz(), bw);
-            Aop.factory().putWrap(bw.clz().getName(), bw);
+            if (primary == false) {
+                //如果非primary，则直接返回
+                return;
+            }
+        }
 
-            //如果有父级接口，则建立关系映射
-            Class<?>[] list = bw.clz().getInterfaces();
-            for (Class<?> c : list) {
-                if (c.getName().contains("java.") == false) {
-                    //建立关系映射
-                    clzMapping.putIfAbsent(c, bw.clz());
-                    Aop.factory().putWrap(c, bw);
-                }
+        Aop.factory().putWrap(bw.clz(), bw);
+        Aop.factory().putWrap(bw.clz().getName(), bw);
+
+        //如果有父级接口，则建立关系映射
+        Class<?>[] list = bw.clz().getInterfaces();
+        for (Class<?> c : list) {
+            if (c.getName().contains("java.") == false) {
+                //建立关系映射
+                clzMapping.putIfAbsent(c, bw.clz());
+                Aop.factory().putWrap(c, bw);
             }
         }
     }
