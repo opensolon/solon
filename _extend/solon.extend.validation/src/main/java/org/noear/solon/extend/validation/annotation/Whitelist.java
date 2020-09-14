@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 /**
  *
  * @author noear
- * @since 1.0.28
+ * @since 1.0
  * */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

@@ -8,7 +8,7 @@ import org.noear.solon.extend.validation.Validator;
 /**
  *
  * @author noear
- * @since 1.0.28
+ * @since 1.0
  * */
 public class NotZeroValidator implements Validator<NotZero> {
     public static final NotZeroValidator instance = new NotZeroValidator();

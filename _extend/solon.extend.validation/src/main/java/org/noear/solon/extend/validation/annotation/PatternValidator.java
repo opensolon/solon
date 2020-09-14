@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  *
  * @author noear
- * @since 1.0.28
+ * @since 1.0
  * */
 public class PatternValidator implements Validator<Pattern> {
     private static final Map<String, java.util.regex.Pattern> cached = new ConcurrentHashMap<>();

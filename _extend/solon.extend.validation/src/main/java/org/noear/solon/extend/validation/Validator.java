@@ -8,7 +8,7 @@ import java.lang.annotation.Annotation;
 /**
  *
  * @author noear
- * @since 1.0.28
+ * @since 1.0
  * */
 @FunctionalInterface
 public interface Validator<T extends Annotation> {
