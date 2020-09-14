@@ -221,10 +221,10 @@ public abstract class AopFactoryBase {
     /**
      * 尝试构建 bean
      *
-     * @param anno bean 注解
-     * @param mWrap 方法包装器
-     * @param bw bean 包装器
-     * @param beanInj 类注入
+     * @param anno      bean 注解
+     * @param mWrap     方法包装器
+     * @param bw        bean 包装器
+     * @param beanInj   类注入
      * @param injectVal 参数注入
      */
     public void tryBuildBean(XBean anno, MethodWrap mWrap, BeanWrap bw, XInject beanInj, Function<Parameter, String> injectVal) throws Exception {
@@ -233,7 +233,7 @@ public abstract class AopFactoryBase {
         if (size2 == 0) {
             //0.没有参数
             Object raw = mWrap.invoke(bw.raw());
-            tryBuildBean0(anno, beanInj, raw);
+            tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
         } else {
             //1.构建参数
             List<Object> args2 = new ArrayList<>(size2);
@@ -254,7 +254,7 @@ public abstract class AopFactoryBase {
                     }
 
                     Object raw = mWrap.invoke(bw.raw(), args2.toArray());
-                    tryBuildBean0(anno, beanInj, raw);
+                    tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
                 } catch (Throwable ex) {
                     XEventBus.push(ex);
                 }
@@ -264,7 +264,7 @@ public abstract class AopFactoryBase {
         }
     }
 
-    protected void tryBuildBean0(XBean anno, XInject beanInj, Object raw) {
+    protected void tryBuildBean0(XBean anno, XInject beanInj, Class<?> clz, Object raw) {
         if (raw != null) {
             if (beanInj != null && XUtil.isEmpty(beanInj.value()) == false) {
                 if (beanInj.value().startsWith("${")) {
@@ -301,7 +301,7 @@ public abstract class AopFactoryBase {
             //
             //demo:${classpath:user.yml}
             //
-            String url = name.substring(12,name.length()-1);
+            String url = name.substring(12, name.length() - 1);
             Properties val = XUtil.getProperties(XUtil.getResource(url));
 
             if (val == null) {
