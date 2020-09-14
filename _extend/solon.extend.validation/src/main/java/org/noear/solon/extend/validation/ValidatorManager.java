@@ -16,7 +16,7 @@ import java.util.Map;
  * 只支持XController 和 XAction
  *
  * @author noear
- * @since 1.0.27
+ * @since 1.0.28
  * */
 public class ValidatorManager implements XHandler {
     private static ValidatorManager global = new ValidatorManager();

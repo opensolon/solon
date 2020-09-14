@@ -5,7 +5,7 @@ import org.noear.solon.core.XContext;
 /**
  *
  * @author noear
- * @since 1.0.27
+ * @since 1.0.28
  * */
 public interface WhitelistChecker {
     boolean check(Whitelist anno, XContext ctx);
