@@ -30,14 +30,14 @@ public class NoRepeatLockImp implements NoRepeatLock {
     private CacheService _cache = XBridge.cacheServiceGet("");
 
     public boolean tryLock(String key, int inSeconds) {
-        String lkey = "lock." + key;
+        String key2 = "lock." + key;
 
-        synchronized (lkey.intern()) {
-            Object tmp = _cache.get(lkey);
+        synchronized (key2.intern()) {
+            Object tmp = _cache.get(key2);
 
             if (tmp == null) {
                 //如果还没有，则锁成功
-                _cache.store(lkey, "_", inSeconds);
+                _cache.store(key2, "_", inSeconds);
                 return true;
             } else {
                 return false;
