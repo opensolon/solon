@@ -14,7 +14,7 @@ public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
         Aop.getAsyn(ValidatorFailureHandler.class, (bw) -> {
-            ValidatorManager.global().setFailureHandler(bw.raw());
+            ValidatorManager.global().onFailure(bw.raw());
         });
 
         Aop.getAsyn(NoRepeatLock.class, (bw) -> {

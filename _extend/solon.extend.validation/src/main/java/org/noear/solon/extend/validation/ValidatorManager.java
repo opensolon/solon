@@ -58,7 +58,7 @@ public class ValidatorManager implements XHandler {
         initialize();
     }
 
-    public void setFailureHandler(ValidatorFailureHandler handler) {
+    public void onFailure(ValidatorFailureHandler handler) {
         if (handler != null) {
             this.failureHandler = handler;
         }
