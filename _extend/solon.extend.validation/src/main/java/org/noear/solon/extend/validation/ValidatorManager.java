@@ -121,7 +121,7 @@ public class ValidatorManager implements XHandler {
     protected void validate(XContext ctx, XAction action) throws Throwable {
         StringBuilder tmp = new StringBuilder();
 
-        for (Annotation anno : action.bean().getAnnotations()) {
+        for (Annotation anno : action.bean().annotations()) {
             if (validateDo(ctx, anno, null, tmp)) {
                 return;
             }

@@ -109,8 +109,14 @@ public class BeanWrap {
     protected void attrsSet(String attrs){ _attrs = attrs; }
 
 
-    public Annotation[] getAnnotations() {
+    /**
+     * 注解
+     * */
+    public Annotation[] annotations() {
         return _annotations;
+    }
+    public <T extends Annotation> T annotationGet(Class<T> clz){
+        return clz.getAnnotation(clz);
     }
 
     /**
