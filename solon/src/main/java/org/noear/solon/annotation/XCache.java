@@ -27,12 +27,12 @@ public @interface XCache {
     /**
      * 例：user_${user_id} ，user_id 为参数
      * */
-    @XNote("缓存标签")
+    @XNote("缓存标签，多个以逗号隔开")
     String tags() default "";
 
     /**
      * 例：user_${user_id} ，user_id 为参数
      * */
-    @XNote("清除缓存标签")
+    @XNote("清除缓存标签，多个以逗号隔开")
     String clearTags() default "";
 }
