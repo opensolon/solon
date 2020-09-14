@@ -7,12 +7,12 @@ import org.noear.solon.core.XResult;
 import java.lang.annotation.Annotation;
 
 /**
- * 失败打印器
+ * 失败处理者
  *
  * @author noear
  * @since 1.0.28
  * */
-public interface ValidatorEventHandler {
+public interface ValidatorFailureHandler {
     /**
      * @return 是否停止后续检查器
      */

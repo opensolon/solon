@@ -41,21 +41,27 @@ public class ValidatorManager implements XHandler {
 
 
     protected final Map<Class<? extends Annotation>, Validator> validMap = new HashMap<>();
-    protected final ValidatorEventHandler handler;
+    protected ValidatorFailureHandler failureHandler;
 
     public ValidatorManager() {
-        handler = new ValidatorEventHandlerImp();
+        failureHandler = new ValidatorFailureHandlerImp();
         initialize();
     }
 
-    public ValidatorManager(ValidatorEventHandler handler) {
+    public ValidatorManager(ValidatorFailureHandler handler) {
         if (handler == null) {
-            this.handler = new ValidatorEventHandlerImp();
+            this.failureHandler = new ValidatorFailureHandlerImp();
         } else {
-            this.handler = handler;
+            this.failureHandler = handler;
         }
 
         initialize();
+    }
+
+    public void setFailureHandler(ValidatorFailureHandler handler) {
+        if (handler != null) {
+            this.failureHandler = handler;
+        }
     }
 
     protected void initialize() {
@@ -164,10 +170,10 @@ public class ValidatorManager implements XHandler {
     }
 
     protected boolean failureDo(XContext ctx, Annotation ano, XResult result, String message){
-        return handler.onFailure(ctx,ano,result,message);
+        return failureHandler.onFailure(ctx,ano,result,message);
     }
 
-    static class ValidatorEventHandlerImp implements ValidatorEventHandler {
+    static class ValidatorFailureHandlerImp implements ValidatorFailureHandler {
 
         @Override
         public boolean onFailure(XContext ctx, Annotation ano, XResult rst, String message) {
