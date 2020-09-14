@@ -277,6 +277,7 @@ public abstract class AopFactoryBase {
 
             //动态构建的bean，都用新生成wrap（否则会类型混乱）
             BeanWrap m_bw = new BeanWrap(raw.getClass(), raw);
+            m_bw.nameSet(anno.value());
             m_bw.tagSet(anno.tag());
             m_bw.attrsSet(anno.attrs());
 
