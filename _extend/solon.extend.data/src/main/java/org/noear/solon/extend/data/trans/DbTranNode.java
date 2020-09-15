@@ -6,6 +6,12 @@ import org.noear.solon.extend.data.TranNode;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 数据事务节点（用于生成事务树）
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public abstract class DbTranNode implements TranNode {
     protected DbTranNode parent;
     protected List<DbTranNode> children = new ArrayList<>();

@@ -12,6 +12,12 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 数据事务
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public abstract class DbTran extends DbTranNode implements TranNode {
     private final XTran meta;
     private final Map<DataSource, Connection> conMap = new HashMap<>();
