@@ -16,21 +16,21 @@ public class XPluginImp implements XPlugin {
         if (app.enableCaching) {
             XBridge.cacheServiceAddIfAbsent("", new CacheServiceDefault());
             XBridge.cacheExecutorSet(CacheExecutorImp.global);
-        }
 
-        /**
-         * 通过容器获取并注册CacheService
-         * */
-        Aop.getAsyn(CacheService.class, (bw) -> {
-            XBridge.cacheServiceAdd("", bw.raw());
-        });
-
-        Aop.beanOnloaded(() -> {
-            Aop.beanForeach((k, bw) -> {
-                if (bw.raw() instanceof CacheService) {
-                    XBridge.cacheServiceAddIfAbsent(k, bw.raw());
-                }
+            /**
+             * 通过容器获取并注册CacheService
+             * */
+            Aop.getAsyn(CacheService.class, (bw) -> {
+                XBridge.cacheServiceAdd("", bw.raw());
             });
-        });
+
+            Aop.beanOnloaded(() -> {
+                Aop.beanForeach((k, bw) -> {
+                    if (bw.raw() instanceof CacheService) {
+                        XBridge.cacheServiceAddIfAbsent(k, bw.raw());
+                    }
+                });
+            });
+        }
     }
 }
