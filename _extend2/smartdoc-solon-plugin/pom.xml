@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>smart-doc-solon-plugin</artifactId>
+    <artifactId>smartdoc-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -19,6 +19,25 @@
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>snack3</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.shalousun</groupId>
+            <artifactId>smart-doc</artifactId>
+            <version>1.9.4</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
