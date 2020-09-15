@@ -24,12 +24,10 @@ public class XPluginImp implements XPlugin {
             }
         });
 
-        Aop.factory().beanInjectorAdd(Db.class, (fwT, anno) -> {
-            if (fwT.getType().isInterface()) {
-                getMapper(fwT.getType(), anno, fwT, (raw) -> {
-                    fwT.setValue(raw);
-                });
-            }
+        Aop.factory().beanInjectorAdd(Db.class, (varH, anno) -> {
+            getMapper(varH.getType(), anno, varH, (raw) -> {
+                varH.setValue(raw);
+            });
         });
 
         //加载xml sql
@@ -53,14 +51,20 @@ public class XPluginImp implements XPlugin {
     private void getMapper0(Class<?> clz, BeanWrap bw, VarHolder varH, Consumer<Object> callback) {
         DbContext db = bw.raw();
         Object obj = null;
-        //生成mapper
-        if (varH != null && varH.getGenericType() != null) {
-            if (clz == BaseMapper.class) {
-                obj = db.mapperBase((Class<?>) varH.getGenericType().getActualTypeArguments()[0]);
+
+        if(DbContext.class.isAssignableFrom(clz)){
+            obj = db;
+        }else{
+            //生成mapper
+            if (varH != null && varH.getGenericType() != null) {
+                if (clz == BaseMapper.class) {
+                    obj = db.mapperBase((Class<?>) varH.getGenericType().getActualTypeArguments()[0]);
+                }
+            } else {
+                obj = db.mapper(clz);
             }
-        } else {
-            obj = db.mapper(clz);
         }
+
 
         if (obj != null) {
             callback.accept(obj);
