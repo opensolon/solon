@@ -49,6 +49,10 @@ public class FieldWrap {
      * */
     public void setValue(Object tObj, Object val) {
         try {
+            if(val == null && field.getType().isPrimitive()){
+                return;
+            }
+
             if (_setter == null) {
                 field.set(tObj, val);
             } else {
