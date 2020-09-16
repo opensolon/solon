@@ -38,9 +38,20 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
             } catch (Throwable ex) {
                 XUtil.throwableUnwrap(ex).printStackTrace();
             }
+
+
+            //延迟秒数
+            if (anno.delay() > 0) {
+                try {
+                    Thread.sleep(anno.delay() * 1000);
+                } catch (Exception ex) {
+
+                }
+            }
         } else {
             XApp.start(klass, debugArgs);
         }
+
     }
 
     @Override
