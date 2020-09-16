@@ -19,20 +19,22 @@ import javax.sql.DataSource;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
+        app.onEvent(BeanWrap.class,new DsEventListener());
+
         //构建bean
         //
         Aop.factory().beanCreatorAdd(Db.class, (clz, wrap, anno) -> {
             if (XUtil.isEmpty(anno.value())) {
                 Aop.getAsyn(DataSource.class, (bw) -> {
                     if (clz.isInterface()) {
-                        Object raw = SQLManagerUtils.get(anno.value(), bw).getMapper(clz);
+                        Object raw = DbManager.global().get(anno.value(), bw).getMapper(clz);
                         Aop.wrapAndPut(clz, raw);
                     }
                 });
             } else {
                 Aop.getAsyn(anno.value(), (bw) -> {
                     if (bw.raw() instanceof DataSource && clz.isInterface()) {
-                        Object raw = SQLManagerUtils.get(anno.value(), bw).getMapper(clz);
+                        Object raw = DbManager.global().get(anno.value(), bw).getMapper(clz);
                         Aop.wrapAndPut(clz, raw);
                     }
                 });
@@ -62,14 +64,14 @@ public class XPluginImp implements XPlugin {
             //初始化所有 DataSource 对应的管理器
             Aop.beanForeach((k, bw) -> {
                 if (bw.raw() instanceof DataSource) {
-                    SQLManagerUtils.get(k, bw);
+                    DbManager.global().get(k, bw);
                 }
             });
 
             BeanWrap defBw = Aop.factory().getWrap(DataSource.class);
-            SQLManagerUtils.dynamicBuild(defBw);
+            DbManager.global().dynamicBuild(defBw);
 
-            Aop.wrapAndPut(SQLManager.class, SQLManagerUtils.dynamicGet());
+            Aop.wrapAndPut(SQLManager.class, DbManager.global().dynamicGet());
         });
     }
 
@@ -77,7 +79,7 @@ public class XPluginImp implements XPlugin {
      * 字段注入
      */
     private void injectDo(Db anno, BeanWrap bw, VarHolder varH) {
-        SQLManager tmp = SQLManagerUtils.get(anno.value(), bw);
+        SQLManager tmp = DbManager.global().get(anno.value(), bw);
 
         if (varH.getType().isInterface()) {
             Object mapper = tmp.getMapper(varH.getType());

@@ -18,15 +18,21 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author noear
  * @since 2020-09-01
  * */
-public class SQLManagerUtils {
+public class DbManager {
+    private static DbManager _global = new DbManager();
 
-    private final static Map<String, SQLManager> cached = new ConcurrentHashMap<>();
-    private static ConditionalSQLManager dynamic;
+    public static DbManager global() {
+        return _global;
+    }
+
+
+    private final  Map<String, SQLManager> cached = new ConcurrentHashMap<>();
+    private  ConditionalSQLManager dynamic;
 
     /**
      * 构建
      */
-    private static SQLManager build(BeanWrap bw) {
+    private  SQLManager build(BeanWrap bw) {
         SQLConnectionSource cs = null;
         DataSource master = bw.raw();
 
@@ -58,11 +64,11 @@ public class SQLManagerUtils {
     /**
      * 获取动态管理器
      */
-    public static ConditionalSQLManager dynamicGet() {
+    public  ConditionalSQLManager dynamicGet() {
         return dynamic;
     }
 
-    public static void dynamicBuild(BeanWrap def) {
+    public  void dynamicBuild(BeanWrap def) {
         SQLManager master = get("", def);
         if (master == null) {
             for (Map.Entry<String, SQLManager> kv : cached.entrySet()) {
@@ -79,7 +85,7 @@ public class SQLManagerUtils {
     /**
      * 获取管理器
      */
-    public static SQLManager get(String name, BeanWrap bw) {
+    public  SQLManager get(String name, BeanWrap bw) {
         if (bw == null || name == null) {
             return null;
         }
