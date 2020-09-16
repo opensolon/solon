@@ -7,6 +7,7 @@ import org.noear.solon.annotation.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -58,9 +59,13 @@ public class AopFactory extends AopFactoryBase {
             }
 
             if(XEventListener.class.isAssignableFrom(clz)) {
-                ParameterizedType pt = (ParameterizedType) clz.getGenericSuperclass();
-                Class<?> et = (Class<?>) pt.getActualTypeArguments()[0];
-                XEventBus.subscribe(et, bw.raw());
+                for (Type t1 : clz.getGenericInterfaces()) {
+                    if (t1 == XEventListener.class) {
+                        ParameterizedType pt = (ParameterizedType) t1;
+                        Class<?> et = (Class<?>) pt.getActualTypeArguments()[0];
+                        XEventBus.subscribe(et, bw.raw());
+                    }
+                }
             }
         });
 
