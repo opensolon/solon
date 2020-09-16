@@ -81,6 +81,9 @@ public class AopFactory extends AopFactoryBase {
                         //
                         bww.load(XApp.global());
                     }
+                }else{
+                    //@XBean 产生的 beanWrap（含 name,tag,attrs），进行事件通知
+                    XEventBus.push(bw);
                 }
             }
         });
