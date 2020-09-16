@@ -17,12 +17,12 @@ public class XPluginImp implements XPlugin {
         //
         // 用于提前初始化
         //
-        app.onEvent(BeanWrap.class, new DbEventListener());
+        app.onEvent(BeanWrap.class, new DsEventListener());
 
         //
         // 切换Weed的链接工厂，交于Solon托管这
         //
-        WeedConfig.connectionFactory = new DbConnectionFactoryImpl();
+        WeedConfig.connectionFactory = new DsConnectionFactoryImpl();
 
         Aop.factory().beanCreatorAdd(Db.class, (clz, cbw, anno) -> {
             if (clz.isInterface() == false) {
