@@ -7,7 +7,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class SolonDbConnectionFactory extends DbConnectionFactory {
+ class DbConnectionFactoryImpl extends DbConnectionFactory {
     @Override
     public Connection getConnection(DataSource ds) throws SQLException {
         return XTranUtils.getConnection(ds);

@@ -9,65 +9,76 @@ import org.noear.weed.WeedConfig;
 import org.noear.weed.annotation.Db;
 import org.noear.weed.xml.XmlSqlLoader;
 
-import java.util.function.Consumer;
+import javax.sql.DataSource;
 
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        WeedConfig.connectionFactory = new SolonDbConnectionFactory();
+        //
+        // 用于提前初始化
+        //
+        app.onEvent(BeanWrap.class, new DbEventListener());
 
-        Aop.factory().beanCreatorAdd(Db.class, (clz, bw, anno) -> {
-            if (clz.isInterface()) {
-                getMapper(clz, anno, null, (raw) -> {
-                    Aop.wrapAndPut(clz, raw);
+        //
+        // 切换Weed的链接工厂，交于Solon托管这
+        //
+        WeedConfig.connectionFactory = new DbConnectionFactoryImpl();
+
+        Aop.factory().beanCreatorAdd(Db.class, (clz, cbw, anno) -> {
+            if (clz.isInterface() == false) {
+                return;
+            }
+
+            if (XUtil.isEmpty(anno.value())) {
+                Aop.getAsyn(DataSource.class, (dsBw) -> {
+                    create0(clz, dsBw);
+                });
+            } else {
+                Aop.getAsyn(anno.value(), (dsBw) -> {
+                    if (dsBw.raw() instanceof DataSource) {
+                        create0(clz, dsBw);
+                    }
                 });
             }
         });
 
         Aop.factory().beanInjectorAdd(Db.class, (varH, anno) -> {
-            getMapper(varH.getType(), anno, varH, (raw) -> {
-                varH.setValue(raw);
-            });
+            if (XUtil.isEmpty(anno.value())) {
+                Aop.getAsyn(DataSource.class, (dsBw) -> {
+                    inject0(varH, dsBw);
+                });
+            } else {
+                Aop.getAsyn(anno.value(), (dsBw) -> {
+                    if (dsBw.raw() instanceof DataSource) {
+                        inject0(varH, dsBw);
+                    }
+                });
+            }
         });
 
         //加载xml sql
         XmlSqlLoader.tryLoad();
     }
 
-    public void getMapper(Class<?> clz, Db anno, VarHolder varH, Consumer<Object> callback) {
-        if (XUtil.isEmpty(anno.value())) {
-            //根据类型（用于支持主配置的概念）
-            Aop.getAsyn(DbContext.class, (bw) -> {
-                getMapper0(clz, bw, varH, callback);
-            });
-        } else {
-            //根据名字
-            Aop.getAsyn(anno.value(), (bw) -> {
-                getMapper0(clz, bw, varH, callback);
-            });
-        }
+    private void create0(Class<?> clz, BeanWrap dsBw) {
+        DbContext db = DbManager.global().get(dsBw);
+        Aop.wrapAndPut(clz, db.mapper(clz));
     }
 
-    private void getMapper0(Class<?> clz, BeanWrap bw, VarHolder varH, Consumer<Object> callback) {
-        DbContext db = bw.raw();
-        Object obj = null;
+    private void inject0(VarHolder varH, BeanWrap dsBw) {
+        DbContext db = DbManager.global().get(dsBw);
+        Class<?> clz = varH.getType();
 
-        if(DbContext.class.isAssignableFrom(clz)){
-            obj = db;
-        }else{
-            //生成mapper
-            if (varH != null && varH.getGenericType() != null) {
-                if (clz == BaseMapper.class) {
-                    obj = db.mapperBase((Class<?>) varH.getGenericType().getActualTypeArguments()[0]);
-                }
+        if (DbContext.class.isAssignableFrom(clz)) {
+            varH.setValue(db);
+        } else if (clz.isInterface()) {
+            if (clz == BaseMapper.class) {
+                Object obj = db.mapperBase((Class<?>) varH.getGenericType().getActualTypeArguments()[0]);
+                varH.setValue(obj);
             } else {
-                obj = db.mapper(clz);
+                Object obj = db.mapper(clz);
+                varH.setValue(obj);
             }
-        }
-
-
-        if (obj != null) {
-            callback.accept(obj);
         }
     }
 }
