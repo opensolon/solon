@@ -280,6 +280,7 @@ public abstract class AopFactoryBase {
             m_bw.nameSet(anno.value());
             m_bw.tagSet(anno.tag());
             m_bw.attrsSet(anno.attrs());
+            m_bw.typedSet(anno.typed());
 
             Aop.factory().beanRegister(m_bw, anno.value(), anno.typed());
 

@@ -20,6 +20,7 @@ public class BeanWrap {
     protected String _name;
     protected String _tag;
     protected String _attrs;
+    protected boolean _typed;
     protected BeanProxy _proxy;
     protected final Annotation[] _annotations;
 
@@ -108,6 +109,11 @@ public class BeanWrap {
     public String attrs(){ return _attrs; }
     protected void attrsSet(String attrs){ _attrs = attrs; }
 
+    /**
+     * bean 是否有类型化标识
+     * */
+    public boolean typed(){return _typed;}
+    protected void typedSet(boolean typed){_typed = typed; }
 
     /**
      * 注解

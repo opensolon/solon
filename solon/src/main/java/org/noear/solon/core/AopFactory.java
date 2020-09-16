@@ -61,6 +61,7 @@ public class AopFactory extends AopFactoryBase {
             bw.nameSet(anno.value());
             bw.tagSet(anno.tag());
             bw.attrsSet(anno.attrs());
+            bw.typedSet(anno.typed());
 
             if (XPlugin.class.isAssignableFrom(bw.clz())) {
                 //如果是插件，则插入
