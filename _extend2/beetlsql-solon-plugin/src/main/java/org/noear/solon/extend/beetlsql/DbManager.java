@@ -33,7 +33,7 @@ public class DbManager {
      * 构建
      */
     private  SQLManager build(BeanWrap bw) {
-        SQLConnectionSource cs = null;
+        DbConnectionSource cs = null;
         DataSource master = bw.raw();
 
         if (XUtil.isNotEmpty(bw.attrs())) {
@@ -48,9 +48,9 @@ public class DbManager {
                 }
             }
 
-            cs = new SQLConnectionSource(master, slaves);
+            cs = new DbConnectionSource(master, slaves);
         } else {
-            cs = new SQLConnectionSource(master, null);
+            cs = new DbConnectionSource(master, null);
         }
 
         SQLManagerBuilder builder = SQLManager.newBuilder(cs);
