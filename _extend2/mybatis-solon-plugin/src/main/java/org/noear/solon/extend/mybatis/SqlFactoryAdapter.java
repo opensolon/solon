@@ -28,7 +28,7 @@ import java.util.Properties;
  * 1.提供 mapperScan 能力
  * 2.生成 factory 的能力
  * */
-class MybatisAdapter {
+class SqlFactoryAdapter {
     protected Configuration config;
     protected SqlSessionFactory factory;
     protected List<String> mappers = new ArrayList<>();
@@ -39,11 +39,11 @@ class MybatisAdapter {
     /**
      * 使用默认的 typeAliases 和 mappers 配置
      */
-    public MybatisAdapter(BeanWrap dsWrap) {
+    public SqlFactoryAdapter(BeanWrap dsWrap) {
         this(dsWrap, XApp.cfg().getProp("mybatis"));
     }
 
-    public MybatisAdapter(BeanWrap dsWrap, Properties props) {
+    public SqlFactoryAdapter(BeanWrap dsWrap, Properties props) {
         this.dsWrap = dsWrap;
 
         DataSource dataSource = dsWrap.raw();
@@ -148,7 +148,7 @@ class MybatisAdapter {
         return factory;
     }
 
-    public MybatisAdapter mapperScan() {
+    public SqlFactoryAdapter mapperScan() {
         SqlSessionHolder proxy = DbManager.global().get(dsWrap);
 
         for (String val : mappers) {
@@ -163,7 +163,7 @@ class MybatisAdapter {
      * <p>
      * 扫描 basePackages 里的类，并生成 mapper 实例注册到bean中心
      */
-    public MybatisAdapter mapperScan(String basePackages) {
+    public SqlFactoryAdapter mapperScan(String basePackages) {
         SqlSessionHolder proxy = DbManager.global().get(dsWrap);
 
         mapperScan0(proxy, basePackages);

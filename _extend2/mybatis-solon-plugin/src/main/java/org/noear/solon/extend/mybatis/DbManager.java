@@ -44,12 +44,12 @@ class DbManager {
     }
 
     private SqlSessionFactory buildSqlSessionFactory(BeanWrap bw) {
-        MybatisAdapter adapter;
+        SqlFactoryAdapter adapter;
 
         if (XUtil.isEmpty(bw.name())) {
-            adapter = new MybatisAdapter(bw);
+            adapter = new SqlFactoryAdapter(bw);
         } else {
-            adapter = new MybatisAdapter(bw, XApp.cfg().getProp("mybatis." + bw.name()));
+            adapter = new SqlFactoryAdapter(bw, XApp.cfg().getProp("mybatis." + bw.name()));
         }
 
         adapter.mapperScan();
