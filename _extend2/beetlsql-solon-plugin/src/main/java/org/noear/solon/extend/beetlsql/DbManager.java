@@ -26,13 +26,13 @@ public class DbManager {
     }
 
 
-    private final  Map<String, SQLManager> cached = new ConcurrentHashMap<>();
-    private  ConditionalSQLManager dynamic;
+    private final Map<String, SQLManager> cached = new ConcurrentHashMap<>();
+    private ConditionalSQLManager dynamic;
 
     /**
      * 构建
      */
-    private  SQLManager build(BeanWrap bw) {
+    private SQLManager build(BeanWrap bw) {
         DbConnectionSource cs = null;
         DataSource master = bw.raw();
 
@@ -64,12 +64,12 @@ public class DbManager {
     /**
      * 获取动态管理器
      */
-    public  ConditionalSQLManager dynamicGet() {
+    public ConditionalSQLManager dynamicGet() {
         return dynamic;
     }
 
-    public  void dynamicBuild(BeanWrap def) {
-        SQLManager master = get("", def);
+    public void dynamicBuild(BeanWrap def) {
+        SQLManager master = get(def);
         if (master == null) {
             for (Map.Entry<String, SQLManager> kv : cached.entrySet()) {
                 master = kv.getValue();
@@ -85,23 +85,27 @@ public class DbManager {
     /**
      * 获取管理器
      */
-    public  SQLManager get(String name, BeanWrap bw) {
-        if (bw == null || name == null) {
+    public SQLManager get(BeanWrap bw) {
+        if (bw == null) {
             return null;
         }
 
-        SQLManager tmp = cached.get(name);
+        SQLManager tmp = cached.get(bw.name());
         if (tmp == null) {
-            synchronized (name.intern()) {
-                tmp = cached.get(name);
+            synchronized (bw.name().intern()) {
+                tmp = cached.get(bw.name());
                 if (tmp == null) {
                     tmp = build(bw);
 
-                    cached.put(name, tmp);
+                    cached.put(bw.name(), tmp);
                 }
             }
         }
 
         return tmp;
+    }
+
+    public void reg(BeanWrap bw) {
+        get(bw);
     }
 }

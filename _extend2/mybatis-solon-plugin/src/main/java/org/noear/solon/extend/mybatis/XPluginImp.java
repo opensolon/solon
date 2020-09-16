@@ -13,7 +13,7 @@ public class XPluginImp implements XPlugin {
     public void start(XApp app) {
         app.onEvent(BeanWrap.class, new DsEventListener());
 
-        Aop.factory().beanCreatorAdd(Db.class, (clz, cbw, anno) -> {
+        Aop.factory().beanCreatorAdd(Db.class, (clz, wrap, anno) -> {
             if (clz.isInterface() == false) {
                 return;
             }

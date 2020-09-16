@@ -20,40 +20,35 @@ import javax.sql.DataSource;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        app.onEvent(BeanWrap.class,new DsEventListener());
+        app.onEvent(BeanWrap.class, new DsEventListener());
 
-        //构建bean
-        //
         Aop.factory().beanCreatorAdd(Db.class, (clz, wrap, anno) -> {
+            if (clz.isInterface() == false) {
+                return;
+            }
+
             if (XUtil.isEmpty(anno.value())) {
-                Aop.getAsyn(DataSource.class, (bw) -> {
-                    if (clz.isInterface()) {
-                        Object raw = DbManager.global().get(anno.value(), bw).getMapper(clz);
-                        Aop.wrapAndPut(clz, raw);
-                    }
+                Aop.getAsyn(DataSource.class, (dsBw) -> {
+                    create0(clz, dsBw);
                 });
             } else {
-                Aop.getAsyn(anno.value(), (bw) -> {
-                    if (bw.raw() instanceof DataSource && clz.isInterface()) {
-                        Object raw = DbManager.global().get(anno.value(), bw).getMapper(clz);
-                        Aop.wrapAndPut(clz, raw);
+                Aop.getAsyn(anno.value(), (dsBw) -> {
+                    if (dsBw.raw() instanceof DataSource) {
+                        create0(clz, dsBw);
                     }
                 });
             }
         });
 
-        //注入bean
-        //
         Aop.factory().beanInjectorAdd(Db.class, (varH, anno) -> {
-
             if (XUtil.isEmpty(anno.value())) {
-                Aop.getAsyn(DataSource.class, (bw) -> {
-                    injectDo(anno, bw, varH);
+                Aop.getAsyn(DataSource.class, (dsBw) -> {
+                    inject0(anno, varH, dsBw);
                 });
             } else {
-                Aop.getAsyn(anno.value(), (bw) -> {
-                    if (bw.raw() instanceof DataSource) {
-                        injectDo(anno, bw, varH);
+                Aop.getAsyn(anno.value(), (dsBw) -> {
+                    if (dsBw.raw() instanceof DataSource) {
+                        inject0(anno, varH, dsBw);
                     }
                 });
             }
@@ -62,13 +57,6 @@ public class XPluginImp implements XPlugin {
         //初始化管理器（主要为了生成动态管理器）
         //
         Aop.beanOnloaded(() -> {
-            //初始化所有 DataSource 对应的管理器
-            Aop.beanForeach((k, bw) -> {
-                if (bw.raw() instanceof DataSource) {
-                    DbManager.global().get(k, bw);
-                }
-            });
-
             BeanWrap defBw = Aop.factory().getWrap(DataSource.class);
             DbManager.global().dynamicBuild(defBw);
 
@@ -76,11 +64,16 @@ public class XPluginImp implements XPlugin {
         });
     }
 
+    private void create0(Class<?> clz, BeanWrap dsBw) {
+        Object raw = DbManager.global().get(dsBw).getMapper(clz);
+        Aop.wrapAndPut(clz, raw);
+    }
+
     /**
      * 字段注入
      */
-    private void injectDo(Db anno, BeanWrap bw, VarHolder varH) {
-        SQLManager tmp = DbManager.global().get(anno.value(), bw);
+    private void inject0(Db anno, VarHolder varH, BeanWrap dsBw) {
+        SQLManager tmp = DbManager.global().get(dsBw);
 
         if (varH.getType().isInterface()) {
             Object mapper = tmp.getMapper(varH.getType());
