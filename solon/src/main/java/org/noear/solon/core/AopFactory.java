@@ -59,18 +59,8 @@ public class AopFactory extends AopFactoryBase {
             }
 
             //XEventListener
-            //
             if(XEventListener.class.isAssignableFrom(clz)) {
-                for (Type t1 : clz.getGenericInterfaces()) {
-                    if (t1 instanceof ParameterizedType) {
-                        ParameterizedType pt = (ParameterizedType) t1;
-                        if(pt.getRawType() == XEventListener.class) {
-                            Class<?> et = (Class<?>) pt.getActualTypeArguments()[0];
-                            XEventBus.subscribe(et, bw.raw());
-                            break;
-                        }
-                    }
-                }
+                addEventListener(clz, bw);
             }
         });
 
@@ -80,25 +70,33 @@ public class AopFactory extends AopFactoryBase {
             bw.attrsSet(anno.attrs());
             bw.typedSet(anno.typed());
 
+            //XPlugin
             if (XPlugin.class.isAssignableFrom(bw.clz())) {
                 //如果是插件，则插入
                 XApp.global().plug(bw.raw());
-            } else {
-                //设置remoting状态
-                bw.remotingSet(anno.remoting());
+                return;
+            }
 
-                //注册到管理中心
-                beanRegister(bw, anno.value(), anno.typed());
+            //XEventListener
+            if(XEventListener.class.isAssignableFrom(clz)) {
+                addEventListener(clz, bw);
+                return;
+            }
 
-                //如果是remoting状态，转到XApp路由器
-                if (bw.remoting()) {
-                    BeanWebWrap bww = new BeanWebWrap(bw);
-                    if (bww.mapping() != null) {
-                        //
-                        //如果没有xmapping，则不进行web注册
-                        //
-                        bww.load(XApp.global());
-                    }
+            //设置remoting状态
+            bw.remotingSet(anno.remoting());
+
+            //注册到管理中心
+            beanRegister(bw, anno.value(), anno.typed());
+
+            //如果是remoting状态，转到XApp路由器
+            if (bw.remoting()) {
+                BeanWebWrap bww = new BeanWebWrap(bw);
+                if (bww.mapping() != null) {
+                    //
+                    //如果没有xmapping，则不进行web注册
+                    //
+                    bww.load(XApp.global());
                 }
             }
         });
@@ -115,6 +113,19 @@ public class AopFactory extends AopFactoryBase {
             tryInjectByName(fwT, anno.value());
         }));
 
+    }
+
+    private void addEventListener(Class<?> clz, BeanWrap bw) {
+        for (Type t1 : clz.getGenericInterfaces()) {
+            if (t1 instanceof ParameterizedType) {
+                ParameterizedType pt = (ParameterizedType) t1;
+                if (pt.getRawType() == XEventListener.class) {
+                    Class<?> et = (Class<?>) pt.getActualTypeArguments()[0];
+                    XEventBus.subscribe(et, bw.raw());
+                    return;
+                }
+            }
+        }
     }
 
     /**
