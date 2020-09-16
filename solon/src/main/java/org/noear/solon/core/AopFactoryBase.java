@@ -283,7 +283,7 @@ public abstract class AopFactoryBase {
 
             Aop.factory().beanRegister(m_bw, anno.value(), anno.typed());
 
-            //@XBean 产生的 beanWrap（含 name,tag,attrs），进行事件通知
+            //@XBean 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
             XEventBus.push(m_bw);
         }
     }
