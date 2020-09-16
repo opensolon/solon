@@ -58,12 +58,17 @@ public class AopFactory extends AopFactoryBase {
                 }
             }
 
+            //XEventListener
+            //
             if(XEventListener.class.isAssignableFrom(clz)) {
                 for (Type t1 : clz.getGenericInterfaces()) {
-                    if (t1 == XEventListener.class) {
+                    if (t1 instanceof ParameterizedType) {
                         ParameterizedType pt = (ParameterizedType) t1;
-                        Class<?> et = (Class<?>) pt.getActualTypeArguments()[0];
-                        XEventBus.subscribe(et, bw.raw());
+                        if(pt.getRawType() == XEventListener.class) {
+                            Class<?> et = (Class<?>) pt.getActualTypeArguments()[0];
+                            XEventBus.subscribe(et, bw.raw());
+                            break;
+                        }
                     }
                 }
             }
