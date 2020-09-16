@@ -11,11 +11,9 @@ import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.session.Configuration;
 import org.noear.solon.annotation.XBean;
 import org.noear.solon.annotation.XConfiguration;
-import org.noear.solon.annotation.XEvent;
 import org.noear.solon.annotation.XInject;
 import org.noear.solon.core.XEventListener;
 
-@XEvent(Configuration.class)
 @XConfiguration
 public class SqlHelperMybatisAutoConfiguration implements XEventListener<Configuration> {
 

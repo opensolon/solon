@@ -6,6 +6,7 @@ import org.noear.solon.annotation.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.*;
 
 /**
@@ -55,6 +56,12 @@ public class AopFactory extends AopFactoryBase {
                     });
                 }
             }
+
+            if(XEventListener.class.isAssignableFrom(clz)) {
+                ParameterizedType pt = (ParameterizedType) clz.getGenericSuperclass();
+                Class<?> et = (Class<?>) pt.getActualTypeArguments()[0];
+                XEventBus.subscribe(et, bw.raw());
+            }
         });
 
         beanCreatorAdd(XBean.class, (clz, bw, anno) -> {
@@ -92,12 +99,6 @@ public class AopFactory extends AopFactoryBase {
 
         beanCreatorAdd(XInterceptor.class, (clz, bw, anno) -> {
             new BeanWebWrap(bw).main(false).load(XApp.global());
-        });
-
-        beanCreatorAdd(XEvent.class, (clz, bw, anno) -> {
-            if (bw.raw() instanceof XEventListener) {
-                XEventBus.subscribe(anno.value(), bw.raw());
-            }
         });
 
         beanInjectorAdd(XInject.class, ((fwT, anno) -> {
