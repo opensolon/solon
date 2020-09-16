@@ -6,22 +6,35 @@ import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.*;
 
+import javax.sql.DataSource;
+
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
         Aop.factory().beanCreatorAdd(Db.class, (clz, wrap, anno)->{
-            if(XUtil.isEmpty(anno.value()) || clz.isInterface() == false){
+            if(clz.isInterface() == false){
                 return;
             }
 
-            Aop.getAsyn(anno.value(),(bw)->{
-                if (bw.raw() instanceof SqlSessionFactory) {
-                    SqlSessionFactory factory = bw.raw();
+            if(XUtil.isEmpty(anno.value())){
+                Aop.getAsyn(SqlSessionFactory.class,(bw)->{
+                    if (bw.raw() instanceof SqlSessionFactory) {
+                        SqlSessionFactory factory = bw.raw();
 
-                    Object raw = MybatisUtil.get(factory).getMapper(clz);
-                    Aop.wrapAndPut(clz,raw);
-                }
-            });
+                        Object raw = MybatisUtil.get(factory).getMapper(clz);
+                        Aop.wrapAndPut(clz,raw);
+                    }
+                });
+            }else{
+                Aop.getAsyn(anno.value(),(bw)->{
+                    if (bw.raw() instanceof SqlSessionFactory) {
+                        SqlSessionFactory factory = bw.raw();
+
+                        Object raw = MybatisUtil.get(factory).getMapper(clz);
+                        Aop.wrapAndPut(clz,raw);
+                    }
+                });
+            }
         });
 
         Aop.factory().beanInjectorAdd(Db.class, (varH, anno) -> {
