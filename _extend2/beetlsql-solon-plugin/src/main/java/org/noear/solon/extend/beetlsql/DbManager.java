@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author noear
  * @since 2020-09-01
  * */
-public class DbManager {
+class DbManager {
     private static DbManager _global = new DbManager();
 
     public static DbManager global() {
@@ -105,6 +105,9 @@ public class DbManager {
         return tmp;
     }
 
+    /**
+     * 注册管理器
+     * */
     public void reg(BeanWrap bw) {
         get(bw);
     }
