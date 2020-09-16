@@ -31,6 +31,10 @@ class DbManager {
                     db = new SqlSessionHolder(df, buildSqlSessionProxy(df));
 
                     dbMap.putIfAbsent(bw.name(), db);
+
+                    if(bw.typed()){
+                        dbMap.putIfAbsent("", db);
+                    }
                 }
             }
 

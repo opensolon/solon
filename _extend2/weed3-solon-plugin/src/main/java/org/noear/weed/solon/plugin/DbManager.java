@@ -28,6 +28,10 @@ import java.util.concurrent.ConcurrentHashMap;
                     db = new DbContext(ds);
 
                     dbMap.putIfAbsent(bw.name(), db);
+
+                    if(bw.typed()){
+                        dbMap.putIfAbsent("", db);
+                    }
                 }
             }
 
