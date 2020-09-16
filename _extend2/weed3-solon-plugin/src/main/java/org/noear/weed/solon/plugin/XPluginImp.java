@@ -15,7 +15,7 @@ public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
         //
-        // 用于提前初始化
+        // 事件监听，用于时实初始化
         //
         app.onEvent(BeanWrap.class, new DsEventListener());
 
