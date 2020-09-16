@@ -20,6 +20,7 @@ import javax.sql.DataSource;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
+        //监听事件
         app.onEvent(BeanWrap.class, new DsEventListener());
 
         Aop.factory().beanCreatorAdd(Db.class, (clz, wrap, anno) -> {
