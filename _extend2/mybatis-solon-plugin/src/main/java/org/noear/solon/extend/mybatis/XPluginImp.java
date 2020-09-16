@@ -11,64 +11,66 @@ import javax.sql.DataSource;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        Aop.factory().beanCreatorAdd(Db.class, (clz, wrap, anno)->{
-            if(clz.isInterface() == false){
+        app.onEvent(BeanWrap.class, new DsEventListener());
+
+        Aop.factory().beanCreatorAdd(Db.class, (clz, cbw, anno) -> {
+            if (clz.isInterface() == false) {
                 return;
             }
 
-            if(XUtil.isEmpty(anno.value())){
-                Aop.getAsyn(SqlSessionFactory.class,(bw)->{
-                    if (bw.raw() instanceof SqlSessionFactory) {
-                        SqlSessionFactory factory = bw.raw();
-
-                        Object raw = MybatisUtil.get(factory).getMapper(clz);
-                        Aop.wrapAndPut(clz,raw);
-                    }
+            if (XUtil.isEmpty(anno.value())) {
+                Aop.getAsyn(DataSource.class, (dsBw) -> {
+                    create0(clz, dsBw);
                 });
-            }else{
-                Aop.getAsyn(anno.value(),(bw)->{
-                    if (bw.raw() instanceof SqlSessionFactory) {
-                        SqlSessionFactory factory = bw.raw();
-
-                        Object raw = MybatisUtil.get(factory).getMapper(clz);
-                        Aop.wrapAndPut(clz,raw);
+            } else {
+                Aop.getAsyn(anno.value(), (dsBw) -> {
+                    if (dsBw.raw() instanceof DataSource) {
+                        create0(clz, dsBw);
                     }
                 });
             }
         });
 
         Aop.factory().beanInjectorAdd(Db.class, (varH, anno) -> {
-
             if (XUtil.isEmpty(anno.value())) {
-                if (varH.getType().isInterface()) {
-                    Aop.getAsyn(varH.getType(), (bw) -> {
-                        varH.setValue(bw.raw());
-                    });
-                }
+                Aop.getAsyn(DataSource.class, (dsBw) -> {
+                    inject0(varH, dsBw);
+                });
             } else {
-                Aop.getAsyn(anno.value(), (bw) -> {
-                    if (bw.raw() instanceof SqlSessionFactory) {
-                        SqlSessionFactory factory = bw.raw();
-
-                        if (varH.getType().isInterface()) {
-                            Object mapper = MybatisUtil.get(factory).getMapper(varH.getType());
-
-                            varH.setValue(mapper);
-                            return;
-                        }
-
-                        if (SqlSession.class.isAssignableFrom(varH.getType())) {
-                            varH.setValue(MybatisUtil.get(factory));
-                            return;
-                        }
-
-                        if (SqlSessionFactory.class.isAssignableFrom(varH.getType())) {
-                            varH.setValue(factory);
-                            return;
-                        }
+                Aop.getAsyn(anno.value(), (dsBw) -> {
+                    if (dsBw.raw() instanceof DataSource) {
+                        inject0(varH, dsBw);
                     }
                 });
             }
         });
+    }
+
+    private void create0(Class<?> clz, BeanWrap dsBw) {
+        SqlSessionHolder holder = DbManager.global().get(dsBw);
+
+        Object raw = holder.getMapper(clz);
+        Aop.wrapAndPut(clz,raw);
+    }
+
+    private void inject0(VarHolder varH, BeanWrap dsBw) {
+        SqlSessionHolder holder = DbManager.global().get(dsBw);
+
+        if (varH.getType().isInterface()) {
+            Object mapper = holder.getMapper(varH.getType());
+
+            varH.setValue(mapper);
+            return;
+        }
+
+        if (SqlSession.class.isAssignableFrom(varH.getType())) {
+            varH.setValue(holder);
+            return;
+        }
+
+        if (SqlSessionFactory.class.isAssignableFrom(varH.getType())) {
+            varH.setValue(holder.getFactory());
+            return;
+        }
     }
 }

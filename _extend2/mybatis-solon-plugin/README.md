@@ -1,6 +1,6 @@
 
 ```yaml
-mybatis.db1f:
+mybatis.db1:
     typeAliases:
         - "webapp.model"    #支持包名
     mappers:

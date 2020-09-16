@@ -2,10 +2,7 @@ package org.noear.solon.extend.mybatis;
 
 import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.executor.BatchResult;
-import org.apache.ibatis.session.Configuration;
-import org.apache.ibatis.session.ResultHandler;
-import org.apache.ibatis.session.RowBounds;
-import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.*;
 
 import java.sql.Connection;
 import java.util.List;
@@ -17,126 +14,132 @@ import java.util.Map;
  * 目的：禁止进行手动执行事处动作
  * */
 public class SqlSessionHolder implements SqlSession {
-    private final SqlSession holder;
+    private final SqlSession real;
+    private final SqlSessionFactory factory;
 
-    public SqlSessionHolder(SqlSession session) {
-        holder = session;
+    public SqlSessionHolder(SqlSessionFactory factory, SqlSession session) {
+        this.factory = factory;
+        this.real = session;
+    }
+
+    public SqlSessionFactory getFactory() {
+        return factory;
     }
 
     @Override
     public <T> T selectOne(String s) {
-        return holder.selectOne(s);
+        return real.selectOne(s);
     }
 
     @Override
     public <T> T selectOne(String s, Object o) {
-        return holder.selectOne(s, o);
+        return real.selectOne(s, o);
     }
 
     @Override
     public <E> List<E> selectList(String s) {
-        return holder.selectList(s);
+        return real.selectList(s);
     }
 
     @Override
     public <E> List<E> selectList(String s, Object o) {
-        return holder.selectList(s, o);
+        return real.selectList(s, o);
     }
 
     @Override
     public <E> List<E> selectList(String s, Object o, RowBounds rowBounds) {
-        return holder.selectList(s, o, rowBounds);
+        return real.selectList(s, o, rowBounds);
     }
 
     @Override
     public <K, V> Map<K, V> selectMap(String s, String s1) {
-        return holder.selectMap(s, s1);
+        return real.selectMap(s, s1);
     }
 
     @Override
     public <K, V> Map<K, V> selectMap(String s, Object o, String s1) {
-        return holder.selectMap(s, o, s1);
+        return real.selectMap(s, o, s1);
     }
 
     @Override
     public <K, V> Map<K, V> selectMap(String s, Object o, String s1, RowBounds rowBounds) {
-        return holder.selectMap(s, o, s1, rowBounds);
+        return real.selectMap(s, o, s1, rowBounds);
     }
 
     @Override
     public <T> Cursor<T> selectCursor(String s) {
-        return holder.selectCursor(s);
+        return real.selectCursor(s);
     }
 
     @Override
     public <T> Cursor<T> selectCursor(String s, Object o) {
-        return holder.selectCursor(s, o);
+        return real.selectCursor(s, o);
     }
 
     @Override
     public <T> Cursor<T> selectCursor(String s, Object o, RowBounds rowBounds) {
-        return holder.selectCursor(s, o, rowBounds);
+        return real.selectCursor(s, o, rowBounds);
     }
 
     @Override
     public void select(String s, Object o, ResultHandler resultHandler) {
-        holder.select(s, o, resultHandler);
+        real.select(s, o, resultHandler);
     }
 
     @Override
     public void select(String s, ResultHandler resultHandler) {
-        holder.select(s, resultHandler);
+        real.select(s, resultHandler);
     }
 
     @Override
     public void select(String s, Object o, RowBounds rowBounds, ResultHandler resultHandler) {
-        holder.select(s, o, rowBounds, resultHandler);
+        real.select(s, o, rowBounds, resultHandler);
     }
 
     @Override
     public int insert(String s) {
-        return holder.insert(s);
+        return real.insert(s);
     }
 
     @Override
     public int insert(String s, Object o) {
-        return holder.insert(s, 0);
+        return real.insert(s, 0);
     }
 
     @Override
     public int update(String s) {
-        return holder.update(s);
+        return real.update(s);
     }
 
     @Override
     public int update(String s, Object o) {
-        return holder.update(s, o);
+        return real.update(s, o);
     }
 
     @Override
     public int delete(String s) {
-        return holder.delete(s);
+        return real.delete(s);
     }
 
     @Override
     public int delete(String s, Object o) {
-        return holder.delete(s, o);
+        return real.delete(s, o);
     }
 
     @Override
     public List<BatchResult> flushStatements() {
-        return holder.flushStatements();
+        return real.flushStatements();
     }
 
 
     @Override
     public void clearCache() {
-        holder.clearCache();
+        real.clearCache();
     }
 
     @Override
     public Configuration getConfiguration() {
-        return holder.getConfiguration();
+        return real.getConfiguration();
     }
 
     @Override
@@ -146,7 +149,7 @@ public class SqlSessionHolder implements SqlSession {
 
     @Override
     public Connection getConnection() {
-        return holder.getConnection();
+        return real.getConnection();
     }
 
     public void commit() {

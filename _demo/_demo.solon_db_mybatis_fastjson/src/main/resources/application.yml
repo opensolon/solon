@@ -14,13 +14,13 @@ test.db2:
   username: "demo"
   password: "UL0hHlg0Ybq60xyb"
 
-mybatis.case1:
+mybatis.db1:
   typeAliases:
     package: "webapp.model"
   mappers:
     package: "webapp.dso.db"
 
-mybatis.case2:
+mybatis.db2:
   typeAliases:
     package: "webapp.model"
   mappers:

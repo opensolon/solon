@@ -12,6 +12,7 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.XEventBus;
 import org.noear.solon.core.XScaner;
 
@@ -27,21 +28,26 @@ import java.util.Properties;
  * 1.提供 mapperScan 能力
  * 2.生成 factory 的能力
  * */
-public class MybatisAdapter {
+class MybatisAdapter {
     protected Configuration config;
     protected SqlSessionFactory factory;
     protected List<String> mappers = new ArrayList<>();
+    protected BeanWrap dsWrap;
 
     protected static int environmentIndex = 0;
 
     /**
      * 使用默认的 typeAliases 和 mappers 配置
      */
-    public MybatisAdapter(DataSource dataSource) {
-        this(dataSource, XApp.cfg().getProp("mybatis"));
+    public MybatisAdapter(BeanWrap dsWrap) {
+        this(dsWrap, XApp.cfg().getProp("mybatis"));
     }
 
-    public MybatisAdapter(DataSource dataSource, Properties props) {
+    public MybatisAdapter(BeanWrap dsWrap, Properties props) {
+        this.dsWrap = dsWrap;
+
+        DataSource dataSource = dsWrap.raw();
+
         String environment_id = props.getProperty("environment");
         if (XUtil.isEmpty(environment_id)) {
             environment_id = "solon-" + (environmentIndex++);
@@ -143,7 +149,7 @@ public class MybatisAdapter {
     }
 
     public MybatisAdapter mapperScan() {
-        SqlSessionHolder proxy = MybatisUtil.get(getFactory());
+        SqlSessionHolder proxy = DbManager.global().get(dsWrap);
 
         for (String val : mappers) {
             mapperScan0(proxy, val);
@@ -158,7 +164,9 @@ public class MybatisAdapter {
      * 扫描 basePackages 里的类，并生成 mapper 实例注册到bean中心
      */
     public MybatisAdapter mapperScan(String basePackages) {
-        mapperScan0(MybatisUtil.get(getFactory()), basePackages);
+        SqlSessionHolder proxy = DbManager.global().get(dsWrap);
+
+        mapperScan0(proxy, basePackages);
         return this;
     }
 

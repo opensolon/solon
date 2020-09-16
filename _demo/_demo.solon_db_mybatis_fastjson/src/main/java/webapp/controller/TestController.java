@@ -1,10 +1,8 @@
 package webapp.controller;
 
-import org.apache.ibatis.session.SqlSession;
 import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XInject;
 import org.noear.solon.annotation.XMapping;
-import org.noear.solon.annotation.XSingleton;
 import webapp.dso.db.AppxMapper;
 import webapp.dso.db.AppxMapper2;
 import webapp.model.AppxModel;
