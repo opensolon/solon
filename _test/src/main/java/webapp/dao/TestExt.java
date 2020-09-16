@@ -1,4 +1,4 @@
-package webapp;
+package webapp.dao;
 
 import org.noear.solon.XApp;
 import org.noear.solon.annotation.XBean;

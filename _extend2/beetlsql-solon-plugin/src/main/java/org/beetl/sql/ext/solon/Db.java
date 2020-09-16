@@ -1,4 +1,4 @@
-package org.noear.solon.extend.beetlsql;
+package org.beetl.sql.ext.solon;
 
 import java.lang.annotation.*;
 

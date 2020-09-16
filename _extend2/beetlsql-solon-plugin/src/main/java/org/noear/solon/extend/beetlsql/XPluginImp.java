@@ -1,6 +1,7 @@
 package org.noear.solon.extend.beetlsql;
 
 import org.beetl.sql.core.SQLManager;
+import org.beetl.sql.ext.solon.Db;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.Aop;
