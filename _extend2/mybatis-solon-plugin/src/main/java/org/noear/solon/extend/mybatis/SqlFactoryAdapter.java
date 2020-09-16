@@ -148,9 +148,7 @@ class SqlFactoryAdapter {
         return factory;
     }
 
-    public SqlFactoryAdapter mapperScan() {
-        SqlSessionHolder proxy = DbManager.global().get(dsWrap);
-
+    public SqlFactoryAdapter mapperScan(SqlSessionHolder proxy) {
         for (String val : mappers) {
             mapperScan0(proxy, val);
         }
@@ -163,9 +161,7 @@ class SqlFactoryAdapter {
      * <p>
      * 扫描 basePackages 里的类，并生成 mapper 实例注册到bean中心
      */
-    public SqlFactoryAdapter mapperScan(String basePackages) {
-        SqlSessionHolder proxy = DbManager.global().get(dsWrap);
-
+    public SqlFactoryAdapter mapperScan(SqlSessionHolder proxy, String basePackages) {
         mapperScan0(proxy, basePackages);
         return this;
     }

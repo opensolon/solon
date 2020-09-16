@@ -27,12 +27,11 @@ class DbManager {
             synchronized (bw.name().intern()) {
                 db = dbMap.get(bw.name());
                 if (db == null) {
-                    SqlSessionFactory df = buildSqlSessionFactory(bw);
-                    db = new SqlSessionHolder(df, buildSqlSessionProxy(df));
+                    db = buildSqlSessionFactory(bw);
 
                     dbMap.putIfAbsent(bw.name(), db);
 
-                    if(bw.typed()){
+                    if (bw.typed()) {
                         dbMap.putIfAbsent("", db);
                     }
                 }
@@ -47,7 +46,7 @@ class DbManager {
         get(bw);
     }
 
-    private SqlSessionFactory buildSqlSessionFactory(BeanWrap bw) {
+    private SqlSessionHolder buildSqlSessionFactory(BeanWrap bw) {
         SqlFactoryAdapter adapter;
 
         if (XUtil.isEmpty(bw.name())) {
@@ -56,9 +55,12 @@ class DbManager {
             adapter = new SqlFactoryAdapter(bw, XApp.cfg().getProp("mybatis." + bw.name()));
         }
 
-        adapter.mapperScan();
+        SqlSessionFactory factory = adapter.getFactory();
+        SqlSessionHolder holder = new SqlSessionHolder(factory, buildSqlSessionProxy(factory));
 
-        return adapter.getFactory();
+        adapter.mapperScan(holder);
+
+        return holder;
     }
 
     /**
