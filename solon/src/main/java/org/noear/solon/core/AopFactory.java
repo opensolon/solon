@@ -58,9 +58,17 @@ public class AopFactory extends AopFactoryBase {
                 }
             }
 
+            //XPlugin
+            if (XPlugin.class.isAssignableFrom(bw.clz())) {
+                //如果是插件，则插入
+                XApp.global().plug(bw.raw());
+                return;
+            }
+
             //XEventListener
             if(XEventListener.class.isAssignableFrom(clz)) {
                 addEventListener(clz, bw);
+                return;
             }
         });
 
