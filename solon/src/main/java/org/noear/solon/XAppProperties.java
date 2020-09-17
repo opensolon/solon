@@ -61,7 +61,7 @@ public final class XAppProperties extends XProperties {
      * */
     public XAppProperties loadAdd(URL url) {
         if (url != null) {
-            Properties prop = XUtil.getProperties(url);
+            Properties prop = XUtil.loadProperties(url);
 
             if (prop != null) {
                 putAll(prop);
@@ -107,7 +107,7 @@ public final class XAppProperties extends XProperties {
      * */
     private void plugsScanMapDo(URL url) {
         try {
-            XProperties p = new XProperties(XUtil.getProperties(url));
+            XProperties p = new XProperties(XUtil.loadProperties(url));
 
             String temp = p.get("solon.plugin");
 

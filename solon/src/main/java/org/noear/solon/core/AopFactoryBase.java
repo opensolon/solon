@@ -306,7 +306,7 @@ public abstract class AopFactoryBase {
             //demo:${classpath:user.yml}
             //
             String url = name.substring(12, name.length() - 1);
-            Properties val = XUtil.getProperties(XUtil.getResource(url));
+            Properties val = XUtil.loadProperties(XUtil.getResource(url));
 
             if (val == null) {
                 throw new RuntimeException(name + "  failed to load!");

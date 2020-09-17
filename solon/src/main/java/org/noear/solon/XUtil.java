@@ -192,7 +192,7 @@ public class XUtil {
     /**
      * 根据url加载配置集
      * */
-    public static Properties getProperties(URL url) {
+    public static Properties loadProperties(URL url) {
         if(url == null){
             return null;
         }
