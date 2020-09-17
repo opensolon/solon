@@ -209,9 +209,9 @@ public class XUtil {
     /**
      * 根据txt加载配置集
      * */
-    public static Properties getProperties(String txt) {
+    public static Properties buildProperties(String txt) {
         try {
-            return XPropertiesLoader.global.load(txt);
+            return XPropertiesLoader.global.build(txt);
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {

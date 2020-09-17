@@ -61,9 +61,9 @@ public class XPropertiesLoader {
     }
 
     /**
-     * 加载 txt 配置
+     * 构建 txt 配置
      * */
-    public Properties load(String txt) throws Exception {
+    public Properties build(String txt) throws Exception {
         int idx1 = txt.indexOf("=");
         int idx2 = txt.indexOf(":");
 

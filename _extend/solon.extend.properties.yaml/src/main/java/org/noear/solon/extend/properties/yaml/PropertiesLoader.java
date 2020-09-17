@@ -48,7 +48,7 @@ public class PropertiesLoader extends XPropertiesLoader {
     }
 
     @Override
-    public Properties load(String text) throws Exception {
+    public Properties build(String text) throws Exception {
         text = text.trim();
 
         int idx1 = text.indexOf("=");
