@@ -46,6 +46,12 @@ Solon 的插件也可以叫扩展组件，相当于Spring 的 starter。Solon已
 | Yaml配置支持插件:: | 说明 |
 | org.noear:solon.extend.properties.yaml | 扩展插件,添加yml配置文件支持 |
 | | |
+| 定时任务支持插件:: | 说明 |
+| org.noear:solon.extend.schedule | 扩展插件,实现定时任务支持（和 cron4j-solon-plugin 风格不同） |
+| | |
+| 远程关闭支持插件:: | 说明 |
+| org.noear:solon.extend.stop | 扩展插件,实现远程关闭支持 |
+| | |
 | Session插件:: | 说明（可将boot插件的session state服务，自动换掉） |
 | org.noear:solon.extend.sessionstate.local | 扩展插件,本地`session` |
 | org.noear:solon.extend.sessionstate.redis | 扩展插件,分布式`session`（其于`redis`构建） |
@@ -68,9 +74,12 @@ Solon 的插件也可以叫扩展组件，相当于Spring 的 starter。Solon已
 | org.noear:solonclient | solon rpc client 与solon 的 rpc service 配对 |
 | | |
 | 外部框架适配:: | 说明 |
+| org.noear:beetlsql-solon-plugin | beetlsql 适配插件 |
 | org.noear:cron4j-solon-plugin | cron4j 适配插件 |
 | org.noear:dubbo-solon-plugin | dubbo 适配插件|
+| org.noear:feign-solon-plugin | feign 适配插件|
 | org.noear:mybatis-solon-plugin | mybatis 适配插件|
+| org.noear:mybatis-sqlhelper-solon-plugin | mybatis 分页适配插件|
 | org.noear:weed3-solon-plugin | weed3 适配插件|
 
 怎么使用？直接在pom.xml中添加依赖即可。

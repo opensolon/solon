@@ -91,10 +91,11 @@ test.db1:
 //
 @XConfiguration
 public class Config{
-    
-    @XBean
-    pubblic HikariDataSource dataSource(@XInject("${test.db1}") HikariDataSource dataSource){
-        retun dataSource;
+    // 同时支持 name 和 类型 两种方式注入（注入时没有name，即为按类型注入）
+    //
+    @XBean(value = "db1", typed = true)   
+    pubblic DataSource dataSource(@XInject("${test.db1}") HikariDataSource ds){
+        return ds;
     }
 }
 
@@ -105,7 +106,7 @@ public class Config{
 //}
 ```
 
-之后就可以通过@XInject注解得到这个数据源了。实际上一般不会直接使用数据源。
+之后就可以通过@XInject注解得到这个数据源了。一般会改用加强注解对数据源进行自动转换；所有与solon对接的ORM框架皆采用这种方案。
 
 #### 6、数据库操作框架集成
 
@@ -121,24 +122,15 @@ Wee3是和Solon一样轻巧的一个框架，配置起来自然是简单的。
 </dependency>
 ```
 
-修改刚才的Config配置类及使用示例，先以单数据源场景演示：
+刚才的Config配置类即可复用。先以单数据源场景演示：
 ```java
-//修改刚才的配置
-//
-@XConfiguration
-public class Config{
-    
-    @XBean // @XBean("db1") 为多数据源模式
-    public DbContext db1(@XInject("${test.db1}") HikariDataSource dataSource) {
-        String schema = dataSource.getSchema();
-        return new DbContext(schema, dataSource);
-    }
-}
-
 //使用示例
 @XController
 public class DemoController{
-    @Db   //@Db("db1") 为多数据源模式  //@Db是weed3在Solon里的扩展注解 //可以注入 Mapper, BaseMapper, DbContext
+    //@Db 按类型注入  //或 @Db("db1") 按名字注入  
+    //@Db是weed3在Solon里的扩展注解 //可以注入 Mapper, BaseMapper, DbContext
+    //
+    @Db  
     BaseMapper<UserModel> userDao;
     
     @XMapping("/user/")
@@ -162,39 +154,22 @@ public class DemoController{
 添加mybatis mappers及相关的属性配置
 
 ```yml
-mybatis:
+mybatis.db1: #db1 要与数据源的bean name 对上
     typeAliases:    #支持包名 或 类名（.class 结尾）
         - "webapp.model"
     mappers:        #支持包名 或 类名（.class 结尾）或 xml（.xml结尾）；配置的mappers 会 mapperScan并交由Ioc容器托管
         - "webapp.dso.mapper.UserMapper.class"
-
-#mybatis.db1:  #多源配置模式
-#    typeAliases:   
-#        - "webapp.model"
-#    mappers:     
-#        - "webapp.dso.mapper.UserMapper.class"
 ```
 
-修改刚才的Config配置类及使用示例
+刚才的Config配置类即也可复用
 ```java
-//修改刚才的配置
-//
-@XConfiguration
-public class Config{
-    
-    @XBean    //@XBean("db1") 为多数据源模式
-    public SqlSessionFactory db1(@XInject("${test.db1}") HikariDataSource dataSource) {
-        return new MybatisAdapter(dataSource)
-                .mapperScan()   //此方法会扫描配置的mappers，并进行托管  //这块比Spring要简便些
-                .getFactory();
-    }
-}
-
 //使用示例
 @XController
 public class DemoController{
-    @Db    //@Db("db1") 为多数据源模式    //@Db 可注入 SqlSessionFactory，SqlSession，Mapper
-    UserMapper userDao;  //UserMapper 已被 db1 mapperScan并已托管，也可用 @XInject 注入
+    //@Db 是  mybatis-solon-plugin 里的扩展注解，可注入 SqlSessionFactory，SqlSession，Mapper
+    //
+    @Db    
+    UserMapper userDao;  //UserMapper 已被 db1 自动 mapperScan 并已托管，也可用 @XInject 注入
     
     @XMapping("/user/")
     pubblic UserModel geUser(long puid){
@@ -405,7 +380,7 @@ public class HelloworldController {
 
 #### 4、数据校验
 
-Solon框架的这块和Spring框架区别非常大。Solon校验的是XContext上的参数（即http传入的参数），是在XAction参数注入之前的预处理。
+Solon校验的是XContext上的参数（即http传入的参数），是在XAction参数注入之前的预处理。这与Spring验证框架区别是很大的。
 
 ```java
 @XValid  //为控制器开启校验能力；也可以做用在一个基类上
@@ -447,6 +422,7 @@ public class ValidationController {
 
 
 #### 5、统一异常处理
+
 ```java
 XApp.start(source, args)
     .onError(err->err.printStackTrace()); //或者记录到日志系统
@@ -467,6 +443,7 @@ Solon 的项目必须开启编译参数：-parameters
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version>
             <configuration>
                 <compilerArgument>-parameters</compilerArgument> 
                 <source>1.8</source>
@@ -477,7 +454,9 @@ Solon 的项目必须开启编译参数：-parameters
 
         <!-- 配置打包插件（设置主类，并打包成胖包） -->
         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-assembly-plugin</artifactId>
+            <version>3.3.0</version>
             <configuration>
                 <finalName>${project.name}</finalName>
                 <appendAssemblyId>false</appendAssemblyId>

@@ -19,7 +19,7 @@ public class UserController {
 
 ```
 
-相较于 Spring 的 Validator 是争对 Bean，Solon 则是争对 XContext（即http参数）。这点区别非常大，Solon 是在 XAction 执行之前对 http 参数进行校验。
+相较于 Spring 的 Validator 是争对 Bean，Solon 则是争对 XContext（即http参数）。这点区别非常大，Solon 的设计是在 XAction 执行之前对 http 参数进行校验。
 
 
 | 注解  | 作用范围 |  说明 | 
@@ -65,6 +65,8 @@ public class NoRepeatLockNew implements NoRepeatLock {
 ValidatorManager.setNoRepeatLock(new NoRepeatLockNew());
 ```
 
+或者 完全重写 NoRepeatSubmitValidator，并进行重新注册
+
 #### 2、@Whitelist 实现验证
 
 框架层面没办法为 Whitelist 提供一个名单库，所以需要通过一个接口实现完成对接。
@@ -82,6 +84,8 @@ public class WhitelistCheckerNew implements WhitelistChecker {
 ValidatorManager.setWhitelistChecker(new WhitelistCheckerNew());
 ```
 
+或者 完全重写 WhitelistValidator，并进行重新注册
+
 #### 3、改造校验输出
 
 solon.extend.validation 默认输出 http 400 状态 + json；尝试改改去掉 http 400 状态。
@@ -91,9 +95,9 @@ solon.extend.validation 默认输出 http 400 状态 + json；尝试改改去掉
 public class Config {
     @XBean  //Solon 的 @XBean 也支持空函数，为其它提运行申明
     public void adapter() {
-        ValidatorManager.globalSet(new ValidatorManager((ctx, ano, rst, message) -> {
+        ValidatorManager.global().onFailure((ctx, ano, rst, message) -> {
             ctx.setHandled(true);
-
+        
             if (XUtil.isEmpty(message)) {
                 message = new StringBuilder(100)
                         .append("@")
@@ -101,11 +105,11 @@ public class Config {
                         .append(" verification failed")
                         .toString();
             }
-
+        
             ctx.output(message);
-
+        
             return true;
-        }));
+        });
     }
 }
 ```
@@ -178,6 +182,9 @@ public class DateValidator implements Validator<Date> {
 public class Config {
     @XBean
     public void adapter() {
+        //
+        // 此处为注册验证器。如果有些验证器重写了，也是在此处注册
+        //
         ValidatorManager.global().register(Date.class, DateValidator.instance);
     }
 }
