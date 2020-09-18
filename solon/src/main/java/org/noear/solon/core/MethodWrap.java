@@ -116,9 +116,9 @@ public class MethodWrap {
 
         Object tmp = invokeByAspect0(obj, args);
 
-        if(xCacheRemove != null){
+        if (xCacheRemove != null) {
             XBridge.cacheExecutor()
-                    .cacheRemove(xCacheRemove,method,parameters,args);
+                    .cacheRemove(xCacheRemove, method, parameters, args);
         }
 
         return tmp;
