@@ -74,29 +74,33 @@ public abstract class DbTran extends DbTranNode implements TranNode {
     }
 
     @Override
-    public void commit() throws Throwable{
+    public void commit() throws Throwable {
         super.commit();
 
-        for(Map.Entry<DataSource,Connection> kv : conMap.entrySet()){
+        for (Map.Entry<DataSource, Connection> kv : conMap.entrySet()) {
             kv.getValue().commit();
         }
     }
 
     @Override
-    public void rollback() throws Throwable{
+    public void rollback() throws Throwable {
         super.rollback();
-        for(Map.Entry<DataSource,Connection> kv : conMap.entrySet()){
+        for (Map.Entry<DataSource, Connection> kv : conMap.entrySet()) {
             kv.getValue().rollback();
         }
     }
 
     @Override
-    public void close() throws Throwable{
+    public void close() throws Throwable {
         super.close();
-        for(Map.Entry<DataSource,Connection> kv : conMap.entrySet()){
+        for (Map.Entry<DataSource, Connection> kv : conMap.entrySet()) {
             //kv.getValue().setAutoCommit(true);
-            if(kv.getValue().isClosed() == false) {
-                kv.getValue().close();
+            try {
+                if (kv.getValue().isClosed() == false) {
+                    kv.getValue().close();
+                }
+            } catch (Exception ex) {
+
             }
         }
     }
