@@ -240,18 +240,17 @@ public class XBridge {
         return cacheServiceMap.get(name);
     }
 
-    private static XCacheExecutor _cacheExecutor = (anno, method, params, values, runnable) -> {
-        //默认不开启缓存
-        //
-        return runnable.get();
-        //throw new RuntimeException("XBridge: The cache actuator is not initialized");
-    };
+    private static XCacheExecutor _cacheExecutor;
 
     /**
      * 获取缓存执行器
      * */
     @XNote("获取缓存执行器")
     public static XCacheExecutor cacheExecutor() {
+        if(_cacheExecutor == null){
+            throw new RuntimeException("XBridge: The cache actuator is not initialized");
+        }
+
         return _cacheExecutor;
     }
 
