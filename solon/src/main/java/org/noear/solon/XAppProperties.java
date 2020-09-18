@@ -17,6 +17,7 @@ public final class XAppProperties extends XProperties {
     private List<XPluginEntity> _plugs = new ArrayList<>();
     private boolean _isDebugMode;
     private boolean _isDriftMode;
+    private boolean _isFilesMode;
 
     public XAppProperties() {
         super(System.getProperties());
@@ -45,6 +46,7 @@ public final class XAppProperties extends XProperties {
 
         _isDebugMode = argx().getInt("debug") == 1;
         _isDriftMode = argx().getInt("drift") == 1;
+        _isFilesMode = "file".equals(this.getClass().getProtectionDomain().getCodeSource().getLocation().getProtocol());
 
         //4.标识debug模式
         if (isDebugMode()) {
@@ -174,6 +176,13 @@ public final class XAppProperties extends XProperties {
      */
     public boolean isDebugMode() {
         return _isDebugMode;
+    }
+
+    /**
+     * 是否为文件运行模式
+     * */
+    public boolean isFilesMode(){
+        return _isFilesMode;
     }
 
     /**

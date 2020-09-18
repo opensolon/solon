@@ -24,7 +24,7 @@ public final class XEventBus {
                 //异常分发
                 push0(_sThrow, event);
 
-                if(XApp.cfg().isDebugMode()){
+                if(XApp.cfg().isDebugMode() || XApp.cfg().isFilesMode()){
                     ((Throwable) event).printStackTrace();
                 }
             } else {
