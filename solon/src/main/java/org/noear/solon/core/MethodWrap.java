@@ -113,6 +113,18 @@ public class MethodWrap {
 
         //0::try cache
         //
+
+        Object tmp = invokeByAspect0(obj, args);
+
+        if(xCacheRemove != null){
+            XBridge.cacheExecutor()
+                    .cacheRemove(xCacheRemove,method,parameters,args);
+        }
+
+        return tmp;
+    }
+
+    private Object invokeByAspect0(Object obj, Object... args) throws Throwable {
         if (xCachePut == null) {
             return invokeByAspect1(obj, args);
         } else {
