@@ -16,7 +16,7 @@ class CacheEventListener implements XEventListener<BeanWrap> {
                 XBridge.cacheServiceAddIfAbsent(bw.name(), bw.raw());
 
                 if (bw.typed()) {
-                    XBridge.cacheServiceAddIfAbsent("", bw.raw());
+                    XBridge.cacheServiceAdd("", bw.raw());
                 }
             }
         }
