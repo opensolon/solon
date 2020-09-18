@@ -21,7 +21,7 @@ public @interface XCachePut {
     /**
      * 0表示采用cache service的默认是境
      * */
-    @XNote("缓存时间")
+    @XNote("缓存时间，0表示缓存服务的默认时间")
     int seconds() default 0;
 
     /**
