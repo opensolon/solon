@@ -32,6 +32,9 @@ import java.util.concurrent.ConcurrentHashMap;
                     if(bw.typed()){
                         dbMap.putIfAbsent("", db);
                     }
+
+                    //初始化元信息（可起到热链接的作用）
+                    db.initMetaData();
                 }
             }
 
