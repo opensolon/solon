@@ -25,15 +25,15 @@ public class CacheExecutorImp implements XCacheExecutor {
      * 添加缓存
      * */
     @Override
-    public Object cache(XCache putAnno, Method method, Parameter[] params, Object[] values, SupplierEx callable) throws Throwable {
-        if (putAnno == null) {
+    public Object cache(XCache anno, Method method, Parameter[] params, Object[] values, SupplierEx callable) throws Throwable {
+        if (anno == null) {
             return callable.get();
         }
 
         Map<String, Object> parMap = new HashMap<>();
         Object result = null;
 
-        CacheService cs = XBridge.cacheServiceGet(putAnno.service());
+        CacheService cs = XBridge.cacheServiceGet(anno.service());
 
         //0.构建缓存key
         String key = buildKey(method, params, values, parMap);
@@ -50,10 +50,10 @@ public class CacheExecutorImp implements XCacheExecutor {
             if (result != null) {
                 //3.不为null，则进行缓存
                 //
-                cs.store(key, result, putAnno.seconds());
+                cs.store(key, result, anno.seconds());
 
-                if (XUtil.isNotEmpty(putAnno.tags())) {
-                    String tags = formatTags(putAnno.tags(), parMap);
+                if (XUtil.isNotEmpty(anno.tags())) {
+                    String tags = formatTags(anno.tags(), parMap);
                     CacheTags ct = new CacheTags(cs);
 
                     //4.添加缓存标签
@@ -71,19 +71,19 @@ public class CacheExecutorImp implements XCacheExecutor {
      * 清除缓存标签
      * */
     @Override
-    public void cacheRemove(XCacheRemove remAnno, Method method, Parameter[] params, Object[] values) {
-        if (remAnno == null || XUtil.isEmpty(remAnno.tags())) {
+    public void cacheRemove(XCacheRemove anno, Method method, Parameter[] params, Object[] values) {
+        if (anno == null || XUtil.isEmpty(anno.tags())) {
             return;
         }
 
-        CacheService cs = XBridge.cacheServiceGet(remAnno.service());
+        CacheService cs = XBridge.cacheServiceGet(anno.service());
         Map<String, Object> parMap = new HashMap<>();
         for (int i = 0, len = params.length; i < len; i++) {
             parMap.put(params[i].getName(), values[i]);
         }
 
 
-        String tags = formatTags(remAnno.tags(), parMap);
+        String tags = formatTags(anno.tags(), parMap);
         CacheTags ct = new CacheTags(cs);
 
         //清除缓存
