@@ -1,7 +1,8 @@
 package org.noear.solon.core;
 
 import org.noear.solon.annotation.XAround;
-import org.noear.solon.annotation.XCache;
+import org.noear.solon.annotation.XCachePut;
+import org.noear.solon.annotation.XCacheRemove;
 import org.noear.solon.annotation.XTran;
 
 import java.lang.annotation.Annotation;
@@ -37,7 +38,8 @@ public class MethodWrap {
         annotations = m.getAnnotations();
 
         xTran = m.getAnnotation(XTran.class);
-        xCache = m.getAnnotation(XCache.class);
+        xCachePut = m.getAnnotation(XCachePut.class);
+        xCacheRemove = m.getAnnotation(XCacheRemove.class);
         xAround = buildAround(m.getAnnotation(XAround.class));
     }
 
@@ -50,7 +52,8 @@ public class MethodWrap {
     }
 
     private final XTran xTran;
-    private final XCache xCache;
+    private final XCachePut xCachePut;
+    private final XCacheRemove xCacheRemove;
     private final InvocationHandler xAround;
     private final Method method;
     private final Parameter[] parameters;
@@ -110,11 +113,11 @@ public class MethodWrap {
 
         //0::try cache
         //
-        if (xCache == null) {
+        if (xCachePut == null) {
             return invokeByAspect1(obj, args);
         } else {
             return XBridge.cacheExecutor()
-                    .execute(xCache, method, parameters, args,
+                    .cachePut(xCachePut, method, parameters, args,
                             () -> invokeByAspect1(obj, args));
         }
     }

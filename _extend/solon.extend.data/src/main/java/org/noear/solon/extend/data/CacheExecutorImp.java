@@ -1,7 +1,8 @@
 package org.noear.solon.extend.data;
 
 import org.noear.solon.XUtil;
-import org.noear.solon.annotation.XCache;
+import org.noear.solon.annotation.XCachePut;
+import org.noear.solon.annotation.XCacheRemove;
 import org.noear.solon.core.CacheService;
 import org.noear.solon.core.XBridge;
 import org.noear.solon.core.XCacheExecutor;
@@ -20,71 +21,77 @@ import java.util.regex.Pattern;
 public class CacheExecutorImp implements XCacheExecutor {
     public static final CacheExecutorImp global = new CacheExecutorImp();
 
-
+    /**
+     * 添加缓存
+     * */
     @Override
-    public Object execute(XCache anno, Method method, Parameter[] params, Object[] values, SupplierEx callable) throws Throwable {
-        CacheService cs = XBridge.cacheServiceGet(anno.service());
+    public Object cachePut(XCachePut putAnno,  Method method, Parameter[] params, Object[] values, SupplierEx callable) throws Throwable {
+        if (putAnno == null) {
+            return callable.get();
+        }
+
         Map<String, Object> parMap = new HashMap<>();
         Object result = null;
 
-        if (anno.seconds() != 0 || XUtil.isNotEmpty(anno.tags())) {
-            //
-            //（一）执行缓存操作
-            //
-            String key = buildKey(method, params, values, parMap);
+        CacheService cs = XBridge.cacheServiceGet(putAnno.service());
 
-            //1.从缓存获取
-            //
-            result = cs.get(key);
+        //0.构建缓存key
+        String key = buildKey(method, params, values, parMap);
 
-            if (result == null) {
-                //2.执行调用，并返回
-                //
-                result = callable.get();
+        //1.从缓存获取
+        //
+        result = cs.get(key);
 
-                if (result != null) {
-                    //3.不为null，则进行缓存
-                    //
-                    cs.store(key, result, anno.seconds());
-
-                    if (XUtil.isNotEmpty(anno.tags())) {
-                        String tags = formatTags(anno.tags(), parMap);
-                        CacheTags ct = new CacheTags(cs);
-
-                        //4.添加缓存标签
-                        for (String tag : tags.split(",")) {
-                            ct.add(tag, key);
-                        }
-                    }
-                }
-            }
-        } else {
-            //
-            //（一）无缓存操作
+        if (result == null) {
+            //2.执行调用，并返回
             //
             result = callable.get();
-        }
 
-        //（二）清除缓存标签
-        //
-        if (XUtil.isNotEmpty(anno.clearTags())) {
-            if (parMap.size() == 0) {
-                for (int i = 0, len = params.length; i < len; i++) {
-                    parMap.put(params[i].getName(), values[i]);
+            if (result != null) {
+                //3.不为null，则进行缓存
+                //
+                cs.store(key, result, putAnno.seconds());
+
+                if (XUtil.isNotEmpty(putAnno.tags())) {
+                    String tags = formatTags(putAnno.tags(), parMap);
+                    CacheTags ct = new CacheTags(cs);
+
+                    //4.添加缓存标签
+                    for (String tag : tags.split(",")) {
+                        ct.add(tag, key);
+                    }
                 }
-            }
-
-            String tags = formatTags(anno.clearTags(), parMap);
-            CacheTags ct = new CacheTags(cs);
-
-            //清除缓存
-            for (String tag : tags.split(",")) {
-                ct.clear(tag);
             }
         }
 
         return result;
     }
+
+    /**
+     * 清除缓存标签
+     * */
+    @Override
+    public void cacheRemove(XCacheRemove remAnno, Method method, Parameter[] params, Object[] values) {
+        if (remAnno == null || XUtil.isEmpty(remAnno.tags())) {
+            return;
+        }
+
+        CacheService cs = XBridge.cacheServiceGet(remAnno.service());
+        Map<String, Object> parMap = new HashMap<>();
+        for (int i = 0, len = params.length; i < len; i++) {
+            parMap.put(params[i].getName(), values[i]);
+        }
+
+
+        String tags = formatTags(remAnno.tags(), parMap);
+        CacheTags ct = new CacheTags(cs);
+
+        //清除缓存
+        for (String tag : tags.split(",")) {
+            ct.clear(tag);
+        }
+    }
+
 
     protected String buildKey(Method method, Parameter[] params, Object[] values, Map<String, Object> parMap) {
         StringBuilder keyB = new StringBuilder();

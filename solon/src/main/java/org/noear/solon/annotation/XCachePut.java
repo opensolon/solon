@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Inherited //要可继承
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface XCache {
+public @interface XCachePut {
     /**
      * 缓存服务
      * */
@@ -29,10 +29,4 @@ public @interface XCache {
      * */
     @XNote("缓存标签，多个以逗号隔开")
     String tags() default "";
-
-    /**
-     * 例：user_${user_id} ，user_id 为参数
-     * */
-    @XNote("清除缓存标签，多个以逗号隔开")
-    String clearTags() default "";
 }
