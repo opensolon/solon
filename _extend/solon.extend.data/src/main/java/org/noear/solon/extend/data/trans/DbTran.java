@@ -94,8 +94,10 @@ public abstract class DbTran extends DbTranNode implements TranNode {
     public void close() throws Throwable{
         super.close();
         for(Map.Entry<DataSource,Connection> kv : conMap.entrySet()){
-            kv.getValue().setAutoCommit(true);
-            kv.getValue().close();
+            //kv.getValue().setAutoCommit(true);
+            if(kv.getValue().isClosed() == false) {
+                kv.getValue().close();
+            }
         }
     }
 }
