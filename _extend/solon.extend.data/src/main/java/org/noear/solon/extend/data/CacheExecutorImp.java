@@ -1,7 +1,7 @@
 package org.noear.solon.extend.data;
 
 import org.noear.solon.XUtil;
-import org.noear.solon.annotation.XCachePut;
+import org.noear.solon.annotation.XCache;
 import org.noear.solon.annotation.XCacheRemove;
 import org.noear.solon.core.CacheService;
 import org.noear.solon.core.XBridge;
@@ -25,7 +25,7 @@ public class CacheExecutorImp implements XCacheExecutor {
      * 添加缓存
      * */
     @Override
-    public Object cachePut(XCachePut putAnno,  Method method, Parameter[] params, Object[] values, SupplierEx callable) throws Throwable {
+    public Object cache(XCache putAnno, Method method, Parameter[] params, Object[] values, SupplierEx callable) throws Throwable {
         if (putAnno == null) {
             return callable.get();
         }
