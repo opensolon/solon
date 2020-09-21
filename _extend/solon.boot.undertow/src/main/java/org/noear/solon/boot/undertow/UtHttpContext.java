@@ -251,11 +251,10 @@ public class UtHttpContext extends XContext {
     }
 
     @Override
-    public void output(String str) {
+    public void output(byte[] bytes) {
         try {
-            PrintWriter writer = _response.getWriter();
-            writer.write(str);
-            writer.flush();
+            OutputStream out = _response.getOutputStream();
+            out.write(bytes);
         }catch (Throwable ex){
             throw new RuntimeException(ex);
         }
@@ -271,8 +270,6 @@ public class UtHttpContext extends XContext {
             while ((rc = stream.read(buff, 0, 100)) > 0) {
                 out.write(buff, 0, rc);
             }
-
-            out.flush();
         }catch (Throwable ex){
             throw new RuntimeException(ex);
         }

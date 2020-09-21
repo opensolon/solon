@@ -235,11 +235,6 @@ public class NtHttpContext extends XContext {
         return _response;
     }
 
-    @Override
-    public void charset(String charset) {
-        _charset = charset;
-    }
-    private String _charset = "UTF-8";
 
     @Override
     protected void contentTypeDoSet(String contentType) {
@@ -259,12 +254,11 @@ public class NtHttpContext extends XContext {
     }
 
     @Override
-    public void output(String str) {
+    public void output(byte[] bytes) {
         try {
             OutputStream out = _outputStream;
 
-            out.write(str.getBytes(_charset));
-            out.flush();
+            out.write(bytes);
         }catch (Throwable ex){
             throw new RuntimeException(ex);
         }
@@ -280,8 +274,6 @@ public class NtHttpContext extends XContext {
             while ((rc = stream.read(buff, 0, 100)) > 0) {
                 out.write(buff, 0, rc);
             }
-
-            out.flush();
         }catch (Throwable ex){
             throw new RuntimeException(ex);
         }

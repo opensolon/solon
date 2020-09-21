@@ -126,10 +126,6 @@ public class RhfContext extends XContext {
         return null;
     }
 
-    @Override
-    public void charset(String charset) {
-
-    }
 
     @Override
     protected void contentTypeDoSet(String contentType) {
@@ -137,7 +133,7 @@ public class RhfContext extends XContext {
     }
 
     @Override
-    public void output(String str) {
+    public void output(byte[] bytes) {
 
     }
 

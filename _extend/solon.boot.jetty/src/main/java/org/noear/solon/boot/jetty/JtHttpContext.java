@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.util.*;
 
 public class JtHttpContext extends XContext{
@@ -237,6 +238,7 @@ public class JtHttpContext extends XContext{
     @Override
     public void charset(String charset) {
         _response.setCharacterEncoding(charset);
+        _charset = Charset.forName(charset);
     }
 
     @Override
@@ -251,11 +253,10 @@ public class JtHttpContext extends XContext{
     }
 
     @Override
-    public void output(String str) {
+    public void output(byte[] bytes) {
         try {
-            PrintWriter writer = _response.getWriter();
-            writer.write(str);
-            writer.flush();
+            OutputStream out = _response.getOutputStream();
+            out.write(bytes);
         }catch (Throwable ex){
             throw new RuntimeException(ex);
         }
@@ -271,8 +272,6 @@ public class JtHttpContext extends XContext{
             while ((rc = stream.read(buff, 0, 100)) > 0) {
                 out.write(buff, 0, rc);
             }
-
-            out.flush();
         }catch (Throwable ex){
             throw new RuntimeException(ex);
         }

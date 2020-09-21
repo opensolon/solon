@@ -109,9 +109,9 @@ public class SocketContext extends XContextEmpty {
     }
 
     @Override
-    public void output(String str) {
+    public void output(byte[] bytes) {
         try {
-            outputStream().write(str.getBytes(_charset));
+            outputStream().write(bytes);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

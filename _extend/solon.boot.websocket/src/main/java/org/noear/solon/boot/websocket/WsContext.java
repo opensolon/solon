@@ -105,9 +105,9 @@ public class WsContext extends XContextEmpty {
     }
 
     @Override
-    public void output(String str)  {
+    public void output(byte[] bytes)  {
         try {
-            _outputStream.write(str.getBytes(_charset));
+            _outputStream.write(bytes);
         }catch (Exception ex){
             throw new RuntimeException(ex);
         }

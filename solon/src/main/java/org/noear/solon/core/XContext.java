@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -307,7 +309,11 @@ public abstract class XContext {
     public abstract Object response();
     /**设置字符集*/
     @XNote("设置字符集")
-    public abstract void charset(String charset);
+    public void charset(String charset) {
+        _charset = Charset.forName(charset);
+    }
+    protected Charset _charset = StandardCharsets.UTF_8;
+
     /**设置内容类型*/
     @XNote("设置内容类型")
     public void contentType(String contentType){
@@ -325,15 +331,26 @@ public abstract class XContext {
     private String _contentTypeNew;
     protected abstract void contentTypeDoSet(String contentType);
 
+
     /**输出内容*/
-    @XNote("输出内容:字符串")
-    public abstract void output(String str);
-    @XNote("输出内容:异常对象")
-    public void output(Throwable ex) { output(XUtil.getFullStackTrace(ex)); }
+    @XNote("输出内容:字节数组")
+    public abstract void output(byte[] bytes);
     @XNote("输出内容:stream")
     public abstract void output(InputStream stream);
     @XNote("获取输出流")
     public abstract OutputStream outputStream() throws IOException;
+
+    @XNote("输出内容:字符串")
+    public void output(String str) {
+        try {
+            output(str.getBytes(_charset));
+        } catch (Throwable ex) {
+            XUtil.throwableWrap(ex);
+        }
+    }
+    @XNote("输出内容:异常对象")
+    public void output(Throwable ex) { output(XUtil.getFullStackTrace(ex)); }
+
     @XNote("输出json")
     public void outputAsJson(String json) {
         contentType("application/json;charset=utf-8");

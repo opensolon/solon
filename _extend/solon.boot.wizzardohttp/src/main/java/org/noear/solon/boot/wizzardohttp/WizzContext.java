@@ -231,13 +231,6 @@ public class WizzContext extends XContext {
         return _response;
     }
 
-    @Override
-    public void charset(String charset) {
-        _charset = charset;
-    }
-
-    private String _charset = "UTF-8";
-
 
     @Override
     protected void contentTypeDoSet(String contentType) {
@@ -257,7 +250,7 @@ public class WizzContext extends XContext {
     }
 
     @Override
-    public void output(String str) {
+    public void output(byte[] bytes) {
         try {
             OutputStream out = outputStream();
 
@@ -265,7 +258,7 @@ public class WizzContext extends XContext {
                 return;
             }
 
-            out.write(str.getBytes(_charset));
+            out.write(bytes);
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
@@ -331,7 +324,7 @@ public class WizzContext extends XContext {
 
     @Override
     public void redirect(String url, int code)  {
-        status(code);
+        statusSet(code);
         _response.setHeader("Location", url);
     }
 

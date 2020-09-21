@@ -35,7 +35,7 @@ public class XContextEmpty extends XContext {
         });
     }
 
-    protected Charset _charset = StandardCharsets.UTF_8;
+
 
 
     private Map<String,Object> _sessionMap = null;
@@ -167,17 +167,12 @@ public class XContextEmpty extends XContext {
     }
 
     @Override
-    public void charset(String charset) {
-        _charset = Charset.forName(charset);
-    }
-
-    @Override
     protected void contentTypeDoSet(String contentType) {
 
     }
 
     @Override
-    public void output(String str) {
+    public void output(byte[] bytes) {
 
     }
 
