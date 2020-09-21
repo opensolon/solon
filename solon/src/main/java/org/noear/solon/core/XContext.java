@@ -342,10 +342,13 @@ public abstract class XContext {
 
     @XNote("输出内容:字符串")
     public void output(String str) {
-        try {
-            output(str.getBytes(_charset));
-        } catch (Throwable ex) {
-            XUtil.throwableWrap(ex);
+        if (str != null) {
+            try {
+                attrSet("output", str);
+                output(str.getBytes(_charset));
+            } catch (Throwable ex) {
+                XUtil.throwableWrap(ex);
+            }
         }
     }
     @XNote("输出内容:异常对象")
