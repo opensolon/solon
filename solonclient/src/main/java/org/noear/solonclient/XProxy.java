@@ -3,6 +3,7 @@ package org.noear.solonclient;
 import org.noear.solon.core.XUpstream;
 
 import java.lang.reflect.Proxy;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -91,6 +92,14 @@ public class XProxy {
      */
     public XProxy call(Map<String, String> headers, Map args) {
         try {
+            if (headers == null) {
+                headers = new LinkedHashMap<>();
+            }
+
+            if (_config.getOnCall() != null) {
+                _config.getOnCall().accept(headers, args);
+            }
+
             _result = _config.getChannel().call(_config, _url, headers, args);
         } catch (RuntimeException ex) {
             throw ex;

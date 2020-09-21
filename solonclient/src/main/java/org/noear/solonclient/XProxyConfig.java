@@ -8,6 +8,7 @@ import org.noear.solonclient.serializer.FormSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 public class XProxyConfig {
     private ISerializer serializer;
@@ -19,6 +20,8 @@ public class XProxyConfig {
     private String server;
 
     private Map<String, String> headers = new HashMap<>();
+
+    private BiConsumer<Map<String, String>, Map> onCall;
 
     public ISerializer getSerializer() {
         return serializer;
@@ -80,5 +83,13 @@ public class XProxyConfig {
         if (XUtil.isNotEmpty(name) && value != null) {
             headers.put(name, value);
         }
+    }
+
+    public void onCall(BiConsumer<Map<String, String>, Map> consumer) {
+        onCall = consumer;
+    }
+
+    public BiConsumer<Map<String, String>, Map> getOnCall() {
+        return onCall;
     }
 }
