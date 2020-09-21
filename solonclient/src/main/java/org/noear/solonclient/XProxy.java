@@ -28,6 +28,9 @@ public class XProxy {
     private final XProxyConfig _config;
 
 
+    public String url(){
+        return _url;
+    }
     public XProxyConfig config() {
         return _config;
     }
@@ -96,8 +99,8 @@ public class XProxy {
                 headers = new LinkedHashMap<>();
             }
 
-            if (_config.getOnCall() != null) {
-                _config.getOnCall().accept(headers, args);
+            for (IInterceptor call : _config.getInterceptors()) {
+                call.execute(this, headers, args);
             }
 
             _result = _config.getChannel().call(_config, _url, headers, args);
@@ -136,6 +139,11 @@ public class XProxy {
     //
     //////////////////////////////////
 
+
+    public XProxy interceptAdd(IInterceptor interceptor){
+        _config.interceptAdd(interceptor);
+        return this;
+    }
 
     /**
      * 设置全局头信息

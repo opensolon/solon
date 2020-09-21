@@ -6,8 +6,7 @@ import org.noear.solonclient.channel.HttpChannel;
 import org.noear.solonclient.serializer.FastjsonSerializerD;
 import org.noear.solonclient.serializer.FormSerializer;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 public class XProxyConfig {
@@ -19,9 +18,8 @@ public class XProxyConfig {
     private XUpstream upstream;
     private String server;
 
-    private Map<String, String> headers = new HashMap<>();
-
-    private BiConsumer<Map<String, String>, Map> onCall;
+    private Map<String, String> headers = new LinkedHashMap<>();
+    private Set<IInterceptor> interceptors = new LinkedHashSet<>();
 
     public ISerializer getSerializer() {
         return serializer;
@@ -85,11 +83,11 @@ public class XProxyConfig {
         }
     }
 
-    public void onCall(BiConsumer<Map<String, String>, Map> consumer) {
-        onCall = consumer;
+    protected void interceptAdd(IInterceptor interceptor){
+        interceptors.add(interceptor);
     }
 
-    public BiConsumer<Map<String, String>, Map> getOnCall() {
-        return onCall;
+    public Set<IInterceptor> getInterceptors() {
+        return interceptors;
     }
 }
