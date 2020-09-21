@@ -7,12 +7,10 @@ import server.dso.IGreetingService;
 
 public class GreetingServiceTest2 {
     public static void main(String[] args) throws Exception {
-        //RPC访问地址
-        XProxy.defaultSerializer = SnackSerializerD.instance_type;
-        XProxy.defaultDeserializer = HessionSerializerD.instance;
-
         //接口的动态代理工厂
         IGreetingService service = new XProxy()
+                .serializer(SnackSerializerD.instance_type)
+                .deserializer(HessionSerializerD.instance)
                 .filterAdd((p,h,a)->{
                     h.put("Solon-Serialization","@hession");
                 })
