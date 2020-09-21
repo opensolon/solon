@@ -1,14 +1,15 @@
 package webapp.demo5_rpc;
 
+import org.noear.fairy.Fairy;
+import org.noear.fairy.channel.HttpChannel;
+import org.noear.fairy.channel.SocketChannel;
+import org.noear.fairy.decoder.SnackDecoder;
+import org.noear.fairy.encoder.SnackEncoder;
 import org.noear.solon.XApp;
 import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XHandler;
-import org.noear.solonclient.XProxy;
-import org.noear.solonclient.channel.HttpChannel;
-import org.noear.solonclient.channel.SocketChannel;
-import org.noear.solonclient.serializer.SnackSerializerD;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,9 +30,9 @@ public class rpctest implements XHandler {
     private Object httpOf() {
         String root = "http://localhost:" + XApp.global().port();
 
-        rockapi client = new XProxy()
+        rockapi client = new Fairy()
                 .channel(HttpChannel.instance)
-                .serializer(SnackSerializerD.instance)
+                .decoder(SnackDecoder.instance)
                 .upstream(() -> root)
                 .create(rockapi.class);
 
@@ -41,9 +42,10 @@ public class rpctest implements XHandler {
     private Object socketOf() {
         String root = "s://localhost:" + (20000 + XApp.global().port());
 
-        rockapi client = new XProxy()
+        rockapi client = new Fairy()
                 .channel(SocketChannel.instance)
-                .serializer(SnackSerializerD.instance)
+                .encoder(SnackEncoder.instance)
+                .decoder(SnackDecoder.instance)
                 .upstream(() -> root)
                 .create(rockapi.class);
 

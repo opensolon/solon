@@ -1,9 +1,9 @@
 package webapp.demoh_socket;
 
 
+import org.noear.fairy.channel.SocketMessage;
+import org.noear.fairy.channel.SocketUtils;
 import org.noear.solon.XApp;
-import org.noear.solonclient.channel.SocketMessage;
-import org.noear.solonclient.channel.SocketUtils;
 
 public class SoDemoClientTest {
 

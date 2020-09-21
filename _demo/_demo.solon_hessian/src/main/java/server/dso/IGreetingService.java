@@ -1,10 +1,11 @@
 package server.dso;
 
-import org.noear.solonclient.annotation.XClient;
+
+import org.noear.fairy.annotation.FairyClient;
 
 import java.io.IOException;
 
-@XClient("test:/GreetingService/")
+@FairyClient("test:/GreetingService/")
 public interface IGreetingService {
-    public String greeting(String name) throws IOException;
+     String greeting(String name) throws IOException;
 }

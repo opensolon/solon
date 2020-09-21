@@ -140,6 +140,9 @@ public class XProxy {
     //////////////////////////////////
 
 
+    /**
+     * 添加过滤器
+     * */
     public XProxy filterAdd(IFilter filter){
         _config.filterAdd(filter);
         return this;

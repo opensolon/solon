@@ -1,9 +1,9 @@
 package webapp.demo5_rpc.rpc_gateway;
 
+import org.noear.fairy.Fairy;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.annotation.XController;
 import org.noear.solon.core.XContext;
-import org.noear.solonclient.XProxy;
 
 //用普通控制器，手动实现一个网关
 @XController
@@ -15,7 +15,7 @@ public class GatewayController {
         String url = "http://localhost:8080/test/";
 
         String rst =
-                new XProxy()
+                new Fairy()
                 .url(url, fun )
                 .call(context.headerMap(), context.paramMap())
                 .getString();

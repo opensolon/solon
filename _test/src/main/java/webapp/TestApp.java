@@ -1,19 +1,7 @@
 package webapp;
 
 import org.noear.solon.XApp;
-import org.noear.solon.annotation.XBean;
-import org.noear.solon.annotation.XInit;
 import org.noear.solon.core.XMethod;
-import org.noear.solon.core.XPlugin;
-import org.noear.solon.extend.validation.ValidatorManager;
-import org.noear.solonclient.channel.SocketMessage;
-import org.noear.solonclient.channel.SocketUtils;
-import webapp.demo2_mvc.MappingController;
-import webapp.demo2_mvc.ParamController;
-import webapp.demoe_websocket.WsDemoClientTest;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TestApp {
 

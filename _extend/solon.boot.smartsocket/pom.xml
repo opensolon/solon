@@ -21,10 +21,6 @@
             <artifactId>solon</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solonclient</artifactId>
-        </dependency>
 
         <!-- smart socket begin -->
         <dependency>

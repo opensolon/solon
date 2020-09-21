@@ -1,11 +1,11 @@
 package webapp.demo5_rpc;
 
-import org.noear.solonclient.annotation.XClient;
+import org.noear.fairy.annotation.FairyClient;
 import webapp.models.UserModel;
 
 import java.util.List;
 
-@XClient("demo:/demo5/test/")
+@FairyClient("demo:/demo5/test/")
 public interface rockapi {
     Object test1(Integer a);
     Object test2(int b);

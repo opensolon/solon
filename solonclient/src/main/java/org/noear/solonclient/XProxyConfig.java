@@ -70,11 +70,12 @@ public class XProxyConfig {
         this.server = server;
     }
 
+    public Set<IFilter> getFilters() {
+        return filters;
+    }
+
     protected void filterAdd(IFilter filter){
         filters.add(filter);
     }
 
-    public Set<IFilter> getFilters() {
-        return filters;
-    }
 }

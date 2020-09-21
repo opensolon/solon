@@ -1,6 +1,6 @@
 package org.noear.solon.boot.smartsocket;
 
-import org.noear.solonclient.channel.SocketMessage;
+import org.noear.solon.core.SocketMessage;
 import org.smartboot.socket.Protocol;
 import org.smartboot.socket.transport.AioSession;
 
@@ -15,7 +15,7 @@ public class AioProtocol implements Protocol<SocketMessage> {
 
     @Override
     public SocketMessage decode(ByteBuffer buffer, AioSession session) {
-        return SocketMessage.decode(buffer);
+        return SocketMessageUtils.decode(buffer);
     }
 }
 

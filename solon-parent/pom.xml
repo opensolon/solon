@@ -19,6 +19,7 @@
         <java.version>1.8</java.version>
 
         <solon.ver>1.0.33</solon.ver>
+        <fairy.ver>1.0</fairy.ver>
 
         <snack3.ver>3.1.10</snack3.ver>
         <weed3.ver>3.2.23</weed3.ver>
@@ -67,6 +68,12 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>fairy</artifactId>
+                <version>${fairy.ver}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon</artifactId>
@@ -271,11 +278,11 @@
             </dependency>
 
 
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solonclient</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.noear</groupId>-->
+<!--                <artifactId>solonclient</artifactId>-->
+<!--                <version>${solon.ver}</version>-->
+<!--            </dependency>-->
 
 
             <dependency>
@@ -559,7 +566,7 @@
 
 
 
-        <module>../solonclient</module>
+<!--        <module>../solonclient</module>-->
 
 
         <module>../solon-web</module>

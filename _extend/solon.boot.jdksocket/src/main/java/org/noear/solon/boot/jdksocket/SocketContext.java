@@ -1,8 +1,8 @@
 package org.noear.solon.boot.jdksocket;
 
+import org.noear.solon.core.SocketMessage;
 import org.noear.solon.core.XContextEmpty;
 import org.noear.solon.core.XMethod;
-import org.noear.solonclient.channel.SocketMessage;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -140,7 +140,7 @@ public class SocketContext extends XContextEmpty {
     protected void commit() throws IOException {
         if (_session.isOpen()) {
             synchronized (_session) {
-                SocketMessage msg = SocketMessage.wrap(_message.key, _message.resourceDescriptor, _outputStream.toByteArray());
+                SocketMessage msg = SocketMessageUtils.wrap(_message.key, _message.resourceDescriptor, _outputStream.toByteArray());
                 _session.publish(msg);
             }
         }

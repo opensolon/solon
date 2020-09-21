@@ -29,7 +29,8 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solonclient</artifactId>
+            <artifactId>fairy</artifactId>
+            <version>1.0</version>
         </dependency>
 
         <dependency>
