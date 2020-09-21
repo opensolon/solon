@@ -21,66 +21,17 @@ public class TestApp {
          * */
         XApp app = XApp.start(TestApp.class, args);
 
-
-
-
-        //socket client test
-        //SoDemoClientTest.test();
-
-
         //socket server
         app.socket("/seb/test",(c)->{
             String msg = c.body();
             c.output("收到了...:" + msg);
         });
 
-        //socket client
-//        String root = "s://localhost:" + (20000 + XApp.global().port());
-
-//        List<Integer> list = new ArrayList<>();
-//        for(int i=0; i<100; i++){
-//            list.add(i);
-//        }
-//
-//        list.parallelStream().forEach((i)->{
-//            try {
-//                SocketUtils.send(root + "/seb/test", "Hello 世界!+"+i, (msg, err) -> {
-//                    if(msg == null){
-//                        return;
-//                    }
-//                    System.out.println(msg.toString());
-//                });
-//            }catch (Exception ex){
-//                ex.printStackTrace();
-//            }
-//        });
-
-//        SocketUtils.create(root).send(root + "/seb/test", "Hello 世界!", (msg, err) -> {
-//            if(msg == null){
-//                return;
-//            }
-//            System.out.println(msg.toString());
-//        });
-//
-//        SocketUtils.create(root).send(root + "/seb/test", "Hello 世界!", (msg, err) -> {
-//            if(msg == null){
-//                return;
-//            }
-//            System.out.println(msg.toString());
-//        });
-
-
-
-
-
         //web socket wss 监听
-//        app.ws("/seb/test",(c)->{
-//            String msg = c.body();
-//            c.output("收到了...:" + msg);
-//        });
-
-        //web socket test
-//        WsDemoClientTest.test();
+        app.ws("/seb/test",(c)->{
+            String msg = c.body();
+            c.output("收到了...:" + msg);
+        });
     }
 
     void test1(){
