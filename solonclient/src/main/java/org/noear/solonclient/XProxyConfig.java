@@ -1,5 +1,6 @@
 package org.noear.solonclient;
 
+import org.noear.solon.XUtil;
 import org.noear.solon.core.XUpstream;
 import org.noear.solonclient.channel.HttpChannel;
 import org.noear.solonclient.serializer.FastjsonSerializerD;
@@ -24,9 +25,9 @@ public class XProxyConfig {
     }
 
     protected void setSerializer(ISerializer serializer) {
-        if(serializer == null){
+        if (serializer == null) {
             this.serializer = FormSerializer.instance;
-        }else {
+        } else {
             this.serializer = serializer;
         }
     }
@@ -36,9 +37,9 @@ public class XProxyConfig {
     }
 
     protected void setDeserializer(IDeserializer deserializer) {
-        if(deserializer == null){
+        if (deserializer == null) {
             this.deserializer = FastjsonSerializerD.instance;
-        }else {
+        } else {
             this.deserializer = deserializer;
         }
     }
@@ -48,9 +49,9 @@ public class XProxyConfig {
     }
 
     protected void setChannel(IChannel channel) {
-        if(channel == null){
+        if (channel == null) {
             this.channel = HttpChannel.instance;
-        }else {
+        } else {
             this.channel = channel;
         }
     }
@@ -75,7 +76,9 @@ public class XProxyConfig {
         return headers;
     }
 
-    protected void headerAdd(String name, String value){
-        headers.put(name,value);
+    protected void headerAdd(String name, String value) {
+        if (XUtil.isNotEmpty(name) && value != null) {
+            headers.put(name, value);
+        }
     }
 }
