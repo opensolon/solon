@@ -14,7 +14,9 @@ public class GreetingServiceTest2 {
 
         //接口的动态代理工厂
         IGreetingService service = new XProxy()
-                .headerAdd("Solon-Serialization","@hession")
+                .filterAdd((p,h,a)->{
+                    h.put("Solon-Serialization","@hession");
+                })
                 .upstream(()->{
                     return "http://localhost:8080";
                 }).create(IGreetingService.class);
