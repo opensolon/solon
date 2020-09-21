@@ -146,14 +146,6 @@ public class XProxy {
     }
 
     /**
-     * 设置全局头信息
-     */
-    public XProxy headerAdd(String name, String value) {
-        _config.headerAdd(name, value);
-        return this;
-    }
-
-    /**
      * 设置服务端
      */
     public XProxy server(String server) {

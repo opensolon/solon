@@ -1,6 +1,5 @@
 package org.noear.solonclient;
 
-import org.noear.solon.XUtil;
 import org.noear.solon.core.XUpstream;
 import org.noear.solonclient.channel.HttpChannel;
 import org.noear.solonclient.serializer.FastjsonSerializerD;
@@ -17,7 +16,6 @@ public class XProxyConfig {
     private XUpstream upstream;
     private String server;
 
-    private Map<String, String> headers = new LinkedHashMap<>();
     private Set<IFilter> filters = new LinkedHashSet<>();
 
     public ISerializer getSerializer() {
@@ -70,16 +68,6 @@ public class XProxyConfig {
 
     protected void setServer(String server) {
         this.server = server;
-    }
-
-    public Map<String, String> getHeaders() {
-        return headers;
-    }
-
-    protected void headerAdd(String name, String value) {
-        if (XUtil.isNotEmpty(name) && value != null) {
-            headers.put(name, value);
-        }
     }
 
     protected void filterAdd(IFilter filter){

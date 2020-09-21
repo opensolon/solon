@@ -57,8 +57,7 @@ public class XProxyHandler implements InvocationHandler {
 
         //构建headers
         Map<String, String> headers = new HashMap<>();
-        //>>添加全局header
-        headers.putAll(_cfg.getHeaders());
+
         //>>添加接口header
         if (c_meta.headers() != null) {
             for (String h : c_meta.headers()) {
