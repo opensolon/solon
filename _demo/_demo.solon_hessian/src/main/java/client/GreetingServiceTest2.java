@@ -1,16 +1,16 @@
 package client;
 
-import org.noear.solonclient.XProxy;
-import org.noear.solonclient.serializer.HessionSerializerD;
-import org.noear.solonclient.serializer.SnackSerializerD;
+import org.noear.fairy.Fairy;
+import org.noear.fairy.decoder.HessionDecoder;
+import org.noear.fairy.encoder.SnackEncoder;
 import server.dso.IGreetingService;
 
 public class GreetingServiceTest2 {
     public static void main(String[] args) throws Exception {
         //接口的动态代理工厂
-        IGreetingService service = new XProxy()
-                .serializer(SnackSerializerD.instance_type)
-                .deserializer(HessionSerializerD.instance)
+        IGreetingService service = new Fairy()
+                .encoder(SnackEncoder.instance_type)
+                .decoder(HessionDecoder.instance)
                 .filterAdd((p,h,a)->{
                     h.put("Solon-Serialization","@hession");
                 })
