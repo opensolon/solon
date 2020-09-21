@@ -58,10 +58,12 @@ class HttpUtils {
     }
 
     //@XNote("设置请求头")
-    public HttpUtils headers(Map<String,String> headers){
+    public HttpUtils headers(Map<String,String> headers) {
         if (headers != null) {
             headers.forEach((k, v) -> {
-                _builder.header(k, v);
+                if (k != null && v != null) {
+                    _builder.header(k, v);
+                }
             });
         }
 
@@ -70,7 +72,7 @@ class HttpUtils {
 
     //@XNote("设置请求头")
     public HttpUtils header(String name, String value) {
-        if(name!=null) {
+        if (name != null && value != null) {
             _builder.header(name, value);
         }
         return this;
