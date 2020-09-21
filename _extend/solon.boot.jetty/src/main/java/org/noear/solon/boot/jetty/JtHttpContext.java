@@ -328,4 +328,9 @@ public class JtHttpContext extends XContext{
     public void statusSet(int status) {
         _response.setStatus(status);
     }
+
+    @Override
+    public void flush() throws IOException {
+        outputStream().flush();
+    }
 }

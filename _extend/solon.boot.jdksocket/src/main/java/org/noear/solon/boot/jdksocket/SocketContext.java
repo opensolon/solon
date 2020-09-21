@@ -131,6 +131,10 @@ public class SocketContext extends XContextEmpty {
         }
     }
 
+    @Override
+    public void flush() throws IOException{
+        //不需要实现
+    }
 
     @Override
     protected void commit() throws IOException {

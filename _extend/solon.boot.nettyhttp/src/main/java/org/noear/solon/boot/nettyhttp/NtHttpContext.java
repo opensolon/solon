@@ -340,6 +340,11 @@ public class NtHttpContext extends XContext {
     }
 
     @Override
+    public void flush() throws IOException {
+        //不用实现
+    }
+
+    @Override
     protected void commit() throws IOException{
         _response.content().writeBytes(_outputStream.toByteArray());
     }

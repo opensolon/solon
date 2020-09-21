@@ -377,6 +377,15 @@ public class JdkHttpContext extends XContext {
     }
 
     @Override
+    public void flush() throws IOException {
+        sendHeaders();
+
+        if(_allows_write) {
+            outputStream().flush();
+        }
+    }
+
+    @Override
     protected void commit() throws IOException {
         sendHeaders();
 

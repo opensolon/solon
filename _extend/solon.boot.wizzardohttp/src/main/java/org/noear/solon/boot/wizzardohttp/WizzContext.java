@@ -337,4 +337,9 @@ public class WizzContext extends XContext {
     public void statusSet(int status) {
         _response.setStatus(Status.valueOf(status));
     }
+
+    @Override
+    public void flush() throws IOException {
+        outputStream().flush();
+    }
 }

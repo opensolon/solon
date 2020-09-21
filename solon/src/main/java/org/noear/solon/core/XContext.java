@@ -481,6 +481,9 @@ public abstract class XContext {
         _remoting = remote;
     }
 
+    @XNote("冲刷")
+    public abstract void flush() throws IOException;
+
     //一些特殊的boot才有效
     @XNote("提交响应")
     protected void commit() throws IOException{}

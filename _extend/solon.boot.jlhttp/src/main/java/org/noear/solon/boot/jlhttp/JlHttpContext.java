@@ -374,6 +374,13 @@ public class JlHttpContext extends XContext {
         _status = status; //jlhttp 的 状态，由 上下文代理 负责
     }
 
+    @Override
+    public void flush() throws IOException {
+        if (_allows_write) {
+            outputStream().flush();
+        }
+    }
+
 
     //jlhttp 需要先输出 header ，但是 header 后面可能会有变化；所以不直接使用  response.getOutputStream()
     @Override

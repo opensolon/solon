@@ -337,6 +337,11 @@ public class SmartHttpContext extends XContext {
     }
 
     @Override
+    public void flush() throws IOException {
+        //不用实现
+    }
+
+    @Override
     protected void commit() throws IOException{
         OutputStream out = _response.getOutputStream();
         _response.setHttpStatus(HttpStatus.valueOf(status()));

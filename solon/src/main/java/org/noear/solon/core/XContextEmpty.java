@@ -221,4 +221,9 @@ public class XContextEmpty extends XContext {
     public void statusSet(int status) {
         _status = status;
     }
+
+    @Override
+    public void flush() throws IOException{
+
+    }
 }

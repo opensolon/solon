@@ -306,4 +306,9 @@ public class RnHttpContext extends XContext {
         _status = status;
         _response.status(status);
     }
+
+    @Override
+    public void flush() throws IOException {
+        //不用实现
+    }
 }
