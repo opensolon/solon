@@ -7,7 +7,6 @@ import org.noear.solonclient.serializer.FastjsonSerializerD;
 import org.noear.solonclient.serializer.FormSerializer;
 
 import java.util.*;
-import java.util.function.BiConsumer;
 
 public class XProxyConfig {
     private ISerializer serializer;
@@ -19,7 +18,7 @@ public class XProxyConfig {
     private String server;
 
     private Map<String, String> headers = new LinkedHashMap<>();
-    private Set<IInterceptor> interceptors = new LinkedHashSet<>();
+    private Set<IFilter> filters = new LinkedHashSet<>();
 
     public ISerializer getSerializer() {
         return serializer;
@@ -83,11 +82,11 @@ public class XProxyConfig {
         }
     }
 
-    protected void interceptAdd(IInterceptor interceptor){
-        interceptors.add(interceptor);
+    protected void filterAdd(IFilter filter){
+        filters.add(filter);
     }
 
-    public Set<IInterceptor> getInterceptors() {
-        return interceptors;
+    public Set<IFilter> getFilters() {
+        return filters;
     }
 }

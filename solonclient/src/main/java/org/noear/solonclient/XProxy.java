@@ -99,8 +99,8 @@ public class XProxy {
                 headers = new LinkedHashMap<>();
             }
 
-            for (IInterceptor call : _config.getInterceptors()) {
-                call.execute(this, headers, args);
+            for (IFilter filter : _config.getFilters()) {
+                filter.handle(this, headers, args);
             }
 
             _result = _config.getChannel().call(_config, _url, headers, args);
@@ -140,8 +140,8 @@ public class XProxy {
     //////////////////////////////////
 
 
-    public XProxy interceptAdd(IInterceptor interceptor){
-        _config.interceptAdd(interceptor);
+    public XProxy filterAdd(IFilter filter){
+        _config.filterAdd(filter);
         return this;
     }
 
