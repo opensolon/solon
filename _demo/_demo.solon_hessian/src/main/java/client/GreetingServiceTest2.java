@@ -1,6 +1,5 @@
 package client;
 
-import org.noear.solonclient.Enctype;
 import org.noear.solonclient.XProxy;
 import org.noear.solonclient.serializer.HessionSerializerD;
 import org.noear.solonclient.serializer.SnackSerializerD;
