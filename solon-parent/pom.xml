@@ -20,8 +20,8 @@
 
         <solon.ver>1.0.33</solon.ver>
 
-        <snack3.ver>3.1.10</snack3.ver>
-        <weed3.ver>3.2.23</weed3.ver>
+        <snack3.ver>3.1.11</snack3.ver>
+        <weed3.ver>3.2.24</weed3.ver>
 
         <fastjson.ver>1.2.70</fastjson.ver>
         <jedis.ver>3.2.0</jedis.ver>
