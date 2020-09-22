@@ -110,7 +110,7 @@ public class XRenderManager implements XRender {
         //
         //
         XRender render = null;
-        String mode = ctx.header("Solon-Serialization");
+        String mode = ctx.header("X-Serialization");
 
         if(XUtil.isEmpty(mode)){
             mode = ctx.attr("@render");

@@ -16,9 +16,9 @@ public class HttpChannel implements IChannel {
         HttpUtils http = HttpUtils.http(url).headers(headers);
 
         if(cfg.getDeserializer().enctype() == Enctype.application_json){
-            http.header("Solon-Serialization","@type_json");
+            http.header("X-Serialization","@type_json");
         }else if(cfg.getDeserializer().enctype() == Enctype.application_hessian){
-            http.header("Solon-Serialization","@hession");
+            http.header("X-Serialization","@hession");
         }
 
         //1.执行并返回

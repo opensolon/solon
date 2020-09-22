@@ -13,7 +13,7 @@ public class GreetingServiceTest2 {
                 .encoder(SnackTypeEncoder.instance)
                 .decoder(HessionDecoder.instance)
                 .filterAdd((cfg,url,h,a)->{
-                    h.put("Solon-Serialization","@hession");
+                    h.put("X-Serialization","@hession");
                 })
                 .upstream(()->{
                     return "http://localhost:8080";
