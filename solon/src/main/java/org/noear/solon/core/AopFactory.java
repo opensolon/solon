@@ -66,7 +66,7 @@ public class AopFactory extends AopFactoryBase {
             }
 
             //XEventListener
-            if(XEventListener.class.isAssignableFrom(clz)) {
+            if (XEventListener.class.isAssignableFrom(clz)) {
                 addEventListener(clz, bw);
                 return;
             }
@@ -86,7 +86,7 @@ public class AopFactory extends AopFactoryBase {
             }
 
             //XEventListener
-            if(XEventListener.class.isAssignableFrom(clz)) {
+            if (XEventListener.class.isAssignableFrom(clz)) {
                 addEventListener(clz, bw);
                 return;
             }
@@ -202,11 +202,12 @@ public class AopFactory extends AopFactoryBase {
         }
 
         ClassWrap clzWrap = ClassWrap.get(obj.getClass());
-        Field[] fs = clzWrap.fields;
-        for (Field f : fs) {
-            Annotation[] annS = f.getDeclaredAnnotations();
+
+        //支持父类注入
+        for (Map.Entry<String, FieldWrap> kv : clzWrap.fieldAll().entrySet()) {
+            Annotation[] annS = kv.getValue().field.getDeclaredAnnotations();
             if (annS.length > 0) {
-                VarHolder varH = clzWrap.getFieldWrap(f).holder(obj);
+                VarHolder varH = kv.getValue().holder(obj);
                 tryInject(varH, annS);
             }
         }

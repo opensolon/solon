@@ -5,10 +5,7 @@ import org.noear.solon.core.utils.TypeUtil;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -40,14 +37,14 @@ public class ClassWrap {
     public final Class<?> clazz;                        //clz
     public final List<MethodWrap> methodWraps;          //clz.methodS
     public final Map<Method,MethodWrap> methodWrapsMap;          //clz.methodS
-    public final Field[] fields;                        //clz.fieldS
+    public final Field[] declaredFields;                        //clz.fieldS
     private final Map<String, FieldWrap> fieldWrapsMap;    //clz.all_fieldS
 
     protected ClassWrap(Class<?> clz) {
         clazz = clz;
 
         //自己申明的字段
-        fields = clz.getDeclaredFields();
+        declaredFields = clz.getDeclaredFields();
 
         //自己申明的函数
         methodWraps = new ArrayList<>();
@@ -64,6 +61,9 @@ public class ClassWrap {
         scanAllFields(clz, fieldWrapsMap::containsKey, fieldWrapsMap::put);
     }
 
+    public Map<String, FieldWrap> fieldAll(){
+        return Collections.unmodifiableMap(fieldWrapsMap);
+    }
 
 
     /** 扫描一个类的所有字段（不能与Snack3的复用；它需要排除非序列化字段） */
