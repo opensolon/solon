@@ -10,6 +10,4 @@ public interface IComplexModelService {
 
     //读取
     ComplexModel read(Integer modelId);
-
-
 }

@@ -2,7 +2,6 @@ package client;
 
 import org.noear.fairy.Fairy;
 import org.noear.fairy.decoder.HessionDecoder;
-import org.noear.fairy.encoder.SnackEncoder;
 import org.noear.fairy.encoder.SnackTypeEncoder;
 import server.dso.IGreetingService;
 
