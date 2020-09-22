@@ -16,7 +16,7 @@ import java.util.List;
 public class ComplextModelServiceTest3 {
     public static void main(String[] args) throws Exception {
         //配置接口代理
-        IComplexModelService service = new Fairy.Builder()
+        IComplexModelService service = Fairy.builder()
                 .encoder(SnackTypeEncoder.instance)
                 .decoder(HessionDecoder.instance)
                 .upstream(()->{

@@ -9,7 +9,7 @@ import server.dso.IGreetingService;
 public class GreetingServiceTest2 {
     public static void main(String[] args) throws Exception {
         //接口的动态代理工厂
-        IGreetingService service = new Fairy.Builder()
+        IGreetingService service = Fairy.builder()
                 .encoder(SnackTypeEncoder.instance)
                 .decoder(HessionDecoder.instance)
                 .filterAdd((cfg,url,h,a)->{
