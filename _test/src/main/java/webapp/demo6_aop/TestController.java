@@ -11,12 +11,7 @@ import java.util.Map;
 import java.util.Properties;
 
 @XController
-public class TestController {
-    @XInject("rs1") //会从bean库注入
-    public Rockapi  rockapi11;
-
-    @XInject("rs1")
-    public Rockapi  rockapi12;
+public class TestController extends TestControllerBase{
 
     @XInject("rs3")
     public Rockapi  rockapi13;
