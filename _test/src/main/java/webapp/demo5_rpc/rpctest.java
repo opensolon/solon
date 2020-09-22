@@ -30,7 +30,7 @@ public class rpctest implements XHandler {
     private Object httpOf() {
         String root = "http://localhost:" + XApp.global().port();
 
-        rockapi client = new Fairy()
+        rockapi client = new Fairy.Builder()
                 .channel(HttpChannel.instance)
                 .decoder(SnackDecoder.instance)
                 .upstream(() -> root)
@@ -42,7 +42,7 @@ public class rpctest implements XHandler {
     private Object socketOf() {
         String root = "s://localhost:" + (20000 + XApp.global().port());
 
-        rockapi client = new Fairy()
+        rockapi client = new Fairy.Builder()
                 .channel(SocketChannel.instance)
                 .encoder(SnackEncoder.instance)
                 .decoder(SnackDecoder.instance)
