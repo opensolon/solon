@@ -33,7 +33,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jlhttp</artifactId>
+            <artifactId>solon.boot.jetty</artifactId>
         </dependency>
 
         <dependency>
