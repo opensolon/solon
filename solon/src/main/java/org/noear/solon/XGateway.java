@@ -1,6 +1,7 @@
 package org.noear.solon;
 
 import org.noear.solon.annotation.XMapping;
+import org.noear.solon.annotation.XNote;
 import org.noear.solon.core.*;
 import org.noear.solon.ext.RunnableEx;
 
@@ -39,14 +40,22 @@ public abstract class XGateway extends XHandlerAide implements XHandler, XRender
     /**
      * 注册相关接口与拦截器
      */
+    @XNote("注册相关接口与拦截器")
     protected abstract void register();
 
     /**
      * 允许 Action Mapping 申明
      */
+    @XNote("允许 Action Mapping 申明")
     protected boolean allowActionMapping() {
         return true;
     }
+
+    /**
+     * 充许提前准备控制器
+     * */
+    @XNote("充许提前准备控制器")
+    protected boolean allowReadyController(){return true;}
 
 
     /**
@@ -74,18 +83,22 @@ public abstract class XGateway extends XHandlerAide implements XHandler, XRender
 
         //m 不可能为 null；有 _def 打底
         if (m != null) {
+            Boolean is_action = m instanceof XAction;
             //预加载控制器，确保所有的处理者可以都可以获取控制器
-            if (m instanceof XAction) {
-                obj = ((XAction) m).bean().get();
-                c.attrSet("controller", obj);
-                c.attrSet("action",m);
+            if (is_action) {
+                if(allowReadyController()) {
+                    obj = ((XAction) m).bean().get();
+                    c.attrSet("controller", obj);
+                }
+
+                c.attrSet("action", m);
             }
 
-            handle0(c, m, obj);
+            handle0(c, m, obj, is_action);
         }
     }
 
-    private void handle0(XContext c, XHandler m, Object obj) throws Throwable {
+    private void handle0(XContext c, XHandler m, Object obj, Boolean is_action) throws Throwable {
         /**
          * 1.保持与XAction相同的逻辑
          * */
@@ -100,10 +113,10 @@ public abstract class XGateway extends XHandlerAide implements XHandler, XRender
         //主处理（最多一次尝染）
         if (c.getHandled() == false) {
             handleDo(c, () -> {
-                if (obj == null) {
-                    m.handle(c);
-                } else {
+                if (is_action) {
                     ((XAction) m).invoke(c, obj);
+                }else{
+                    m.handle(c);
                 }
             });
         } else {
@@ -136,6 +149,7 @@ public abstract class XGateway extends XHandlerAide implements XHandler, XRender
     /**
      * 添加前置拦截器
      */
+    @XNote("添加前置拦截器")
     public <T extends XHandler> void before(Class<T> interceptorClz) {
         super.before(Aop.get(interceptorClz));
     }
@@ -144,6 +158,7 @@ public abstract class XGateway extends XHandlerAide implements XHandler, XRender
     /**
      * 添加后置拦截器
      */
+    @XNote("添加后置拦截器")
     public <T extends XHandler> void after(Class<T> interceptorClz) {
         super.after(Aop.get(interceptorClz));
     }
@@ -151,6 +166,7 @@ public abstract class XGateway extends XHandlerAide implements XHandler, XRender
     /**
      * 添加接口
      */
+    @XNote("添加接口")
     public void add(Class<?> beanClz) {
         if (beanClz != null) {
             BeanWrap bw = Aop.wrapAndPut(beanClz);
@@ -162,12 +178,14 @@ public abstract class XGateway extends XHandlerAide implements XHandler, XRender
     /**
      * 添加接口（remoting ? 采用@json进行渲染）
      */
+    @XNote("添加接口")
     public void add(Class<?> beanClz, boolean remoting) {
         if (beanClz != null) {
             add(Aop.wrapAndPut(beanClz), remoting);
         }
     }
 
+    @XNote("添加接口")
     public void add(BeanWrap beanWp) {
         add(beanWp, beanWp.remoting());
     }
@@ -175,6 +193,7 @@ public abstract class XGateway extends XHandlerAide implements XHandler, XRender
     /**
      * 添加接口（适用于，从Aop工厂遍历加入；或者把rpc代理包装成bw）
      */
+    @XNote("添加接口")
     public void add(BeanWrap beanWp, boolean remoting) {
         if (beanWp == null) {
             return;
@@ -198,6 +217,7 @@ public abstract class XGateway extends XHandlerAide implements XHandler, XRender
     /**
      * 添加二级路径处理
      */
+    @XNote("添加二级路径处理")
     public void add(String path, XHandler handler) {
         addDo(path, handler);
     }
