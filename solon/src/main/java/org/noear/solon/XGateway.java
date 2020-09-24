@@ -69,8 +69,6 @@ public abstract class XGateway extends XHandlerAide implements XHandler, XRender
      */
     @Override
     public void handle(XContext c) throws Throwable {
-
-
         XHandler m = findDo(c);
         Object obj = null;
 
