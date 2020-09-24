@@ -10,11 +10,15 @@ import java.util.Map;
 public class SocketChannelAdapter implements XHandler {
     @Override
     public void handle(XContext ctx) throws Throwable {
-        if(XMethod.SOCKET.name.equals(ctx.method())){
+        if (XMethod.SOCKET.name.equals(ctx.method())) {
             String json = ctx.body();
-            Map<String,String> tmp = (Map<String, String>) ONode.load(json).toData();
+            Map<String, Object> tmp = (Map<String, Object>) ONode.load(json).toData();
 
-            ctx.paramMap().putAll(tmp);
+            tmp.forEach((k, v) -> {
+                if (v != null) {
+                    ctx.paramMap().put(k, v.toString());
+                }
+            });
         }
     }
 }

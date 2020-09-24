@@ -21,7 +21,7 @@ public class rpctest implements XHandler {
     public void handle(XContext ctx) throws Throwable {
         Map<String, Object> map = new HashMap<>();
 
-        //map.put("HttpChannel", httpOf());
+        map.put("HttpChannel", httpOf());
         map.put("SocketChannel", socketOf());
 
         ctx.render(map);
