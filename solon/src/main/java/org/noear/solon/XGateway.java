@@ -70,9 +70,11 @@ public abstract class XGateway extends XHandlerAide implements XHandler, XRender
             return;
         }
 
+        //最多一次渲染
+        c.setRendered(true);
+
         c.result = obj;
 
-        c.setRendered(true);//最多一次渲染
         c.render(obj);
     }
 
@@ -90,6 +92,7 @@ public abstract class XGateway extends XHandlerAide implements XHandler, XRender
             //预加载控制器，确保所有的处理者可以都可以获取控制器
             if (is_action) {
                 if(allowReadyController()) {
+                    //提前准备控制器?（通过拦截器产生的参数，需要懒加载）
                     obj = ((XAction) m).bean().get();
                     c.attrSet("controller", obj);
                 }
@@ -118,7 +121,7 @@ public abstract class XGateway extends XHandlerAide implements XHandler, XRender
             handleDo(c, () -> {
                 if (is_action) {
                     ((XAction) m).invoke(c, obj);
-                }else{
+                } else {
                     m.handle(c);
                 }
             });
