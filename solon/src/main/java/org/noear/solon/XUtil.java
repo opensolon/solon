@@ -232,7 +232,7 @@ public class XUtil {
      * 合并两个路径
      */
     public static String mergePath(String path1, String path2) {
-        if (XUtil.isEmpty(path1)) {
+        if (XUtil.isEmpty(path1) || "**".equals(path1)) {
             if (path2.startsWith("/")) {
                 return path2;
             } else {

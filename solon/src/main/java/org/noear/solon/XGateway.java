@@ -57,6 +57,9 @@ public abstract class XGateway extends XHandlerAide implements XHandler, XRender
     @XNote("充许提前准备控制器")
     protected boolean allowReadyController(){return true;}
 
+    @XNote("充许路径合并")
+    protected boolean allowPathMerging(){return true;}
+
 
     /**
      * for XRender （用于接管 BeanWebWrap 和 XAction 的渲染）
@@ -224,7 +227,11 @@ public abstract class XGateway extends XHandlerAide implements XHandler, XRender
 
     protected void addDo(String path, XHandler handler) {
         //addPath 已处理 path1= null 的情况
-        _main.put(XUtil.mergePath(_path, path).toUpperCase(), handler);
+        if(allowPathMerging()) {
+            _main.put(XUtil.mergePath(_path, path).toUpperCase(), handler);
+        }else{
+            _main.put(XUtil.mergePath(null, path).toUpperCase(), handler);
+        }
     }
 
     /**
