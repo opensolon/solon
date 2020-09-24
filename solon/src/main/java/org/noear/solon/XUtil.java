@@ -256,6 +256,7 @@ public class XUtil {
             return path1 + path2;
         } else {
             if (path1.endsWith("*")) {
+                //支持多个*情况
                 int idx = path1.lastIndexOf('/') + 1;
                 if (idx < 1) {
                     return path2;
