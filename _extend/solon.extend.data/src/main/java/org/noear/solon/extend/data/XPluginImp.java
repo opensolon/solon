@@ -6,11 +6,11 @@ import org.noear.solon.core.*;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        if (app.enableTransaction) {
+        if (app.enableTransaction()) {
             XBridge.tranExecutorSet(TranExecutorImp.global);
         }
 
-        if (app.enableCaching) {
+        if (app.enableCaching()) {
             XBridge.cacheServiceAddIfAbsent("", new CacheServiceDefault());
             XBridge.cacheExecutorSet(CacheExecutorImp.global);
 

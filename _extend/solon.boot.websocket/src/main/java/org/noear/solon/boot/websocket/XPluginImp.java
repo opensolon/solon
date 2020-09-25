@@ -12,7 +12,7 @@ public class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
-        if(app.enableWebSocket == false){
+        if(app.enableWebSocket() == false){
             return;
         }
 

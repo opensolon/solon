@@ -11,7 +11,7 @@ public final class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
-        if(app.enableSocket == false){
+        if(app.enableSocket() == false){
             return;
         }
 

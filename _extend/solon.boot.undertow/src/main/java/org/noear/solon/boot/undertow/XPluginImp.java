@@ -14,7 +14,7 @@ public final class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
-        if(app.enableHttp == false){
+        if(app.enableHttp() == false){
             return;
         }
 
