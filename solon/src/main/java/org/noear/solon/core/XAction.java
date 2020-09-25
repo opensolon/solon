@@ -39,6 +39,13 @@ public class XAction extends XHandlerAide implements XHandler{
         _render = render;
         _poi_main = poi_main;
 
+        if(_render == null) {
+            //如果控制器是XRender
+            if (XRender.class.isAssignableFrom(bw.clz())) {
+                _render = bw.raw();
+            }
+        }
+
         if (mp != null) {
             _produces = mp.produces();
             _name = mp.value();
@@ -101,13 +108,13 @@ public class XAction extends XHandlerAide implements XHandler{
             if (_poi_main) {
                 //传递控制器实例
                 x.attrSet("controller", obj);
-                x.attrSet("action",this);
+                x.attrSet("action", this);
             }
 
             invoke0(x, obj);
         } catch (Throwable ex) {
             x.attrSet("error", ex);
-            x.render(ex);
+            renderDo(ex, x);
             XEventBus.push(ex);
         }
     }
