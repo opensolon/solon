@@ -445,9 +445,70 @@ public class XApp implements XHandler,XHandlerSlots {
         return this;
     }
 
-    public boolean enableHttp = true;
-    public boolean enableWebSocket = true;
-    public boolean enableSocket = true;
-    public boolean enableTransaction = true;
-    public boolean enableCaching = true;
+    /**
+     * 启用Http信号接入
+     * */
+    private boolean _enableHttp = true;
+    public boolean enableHttp(){
+        return _enableHttp;
+    }
+    public XApp enableHttp(boolean enable){
+        _enableHttp = enable;
+        return this;
+    }
+    /**
+     * 启用WebSocket信号接入
+     * */
+    private boolean _enableWebSocket = true;
+    public boolean enableWebSocket(){
+        return _enableWebSocket;
+    }
+    public XApp enableWebSocket(boolean enable){
+        _enableWebSocket = enable;
+        return this;
+    }
+    /**
+     * 启用Socket信号接入
+     * */
+    private boolean _enableSocket = true;
+    public boolean enableSocket(){
+        return _enableSocket;
+    }
+    public XApp enableSocket(boolean enable){
+        _enableSocket = enable;
+        return this;
+    }
+    /**
+     * 启用事务
+     * */
+    private boolean _enableTransaction = true;
+    public boolean enableTransaction(){
+        return _enableTransaction;
+    }
+    public XApp enableTransaction(boolean enable){
+        _enableTransaction = enable;
+        return this;
+    }
+    /**
+     * 启用缓存
+     * */
+    private boolean _enableCaching = true;
+    public boolean enableCaching(){
+        return _enableCaching;
+    }
+    public XApp enableCaching(boolean enable){
+        _enableCaching = enable;
+        return this;
+    }
+    /**
+     * 启用静态文件
+     * */
+    private boolean _enableStaticfiles = true;
+    public boolean enableStaticfiles(){
+        return _enableStaticfiles;
+    }
+    public XApp enableStaticfiles(boolean enable){
+        _enableStaticfiles = enable;
+        return this;
+    }
 }

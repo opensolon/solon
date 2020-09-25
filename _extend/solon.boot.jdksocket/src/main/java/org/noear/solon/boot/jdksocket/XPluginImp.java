@@ -7,7 +7,7 @@ public class XPluginImp implements XPlugin {
     SocketServer _server;
 
     public static String solon_boot_ver(){
-        return "jdk socket jdk8/1.0.34";
+        return "jdk socket jdk8/1.0.35";
     }
 
     @Override

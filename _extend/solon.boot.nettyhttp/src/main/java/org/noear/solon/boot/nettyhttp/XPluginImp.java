@@ -7,12 +7,12 @@ public class XPluginImp implements XPlugin {
     HttpServer _server;
 
     public static String solon_boot_ver(){
-        return "netty http 4.1/1.0.34";
+        return "netty http 4.1/1.0.35";
     }
 
     @Override
     public void start(XApp app) {
-        if(app.enableHttp == false){
+        if(app.enableHttp() == false){
             return;
         }
 

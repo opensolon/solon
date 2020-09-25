@@ -9,12 +9,12 @@ public final class XPluginImp implements XPlugin {
     HttpBootstrap _server = null;
 
     public static String solon_boot_ver(){
-        return "smart http 1.0.16/1.0.34";
+        return "smart http 1.0.16/1.0.35";
     }
 
     @Override
     public void start(XApp app) {
-        if(app.enableHttp == false){
+        if(app.enableHttp() == false){
             return;
         }
 
@@ -28,7 +28,7 @@ public final class XPluginImp implements XPlugin {
         _server.pipeline().next(_handler);
 
 
-        System.out.println("solon.Server:main: SmartHttpServer 1.0.34");
+        System.out.println("solon.Server:main: SmartHttpServer 1.0.35");
 
         try {
 

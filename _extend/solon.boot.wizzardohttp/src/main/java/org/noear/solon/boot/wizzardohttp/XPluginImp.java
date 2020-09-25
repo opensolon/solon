@@ -10,12 +10,12 @@ public final class XPluginImp implements XPlugin {
     private HttpServer<HttpConnection> _server = null;
 
     public static String solon_boot_ver(){
-        return "jlhttp 2.4/1.0.34";
+        return "jlhttp 2.4/1.0.35";
     }
 
     @Override
     public  void start(XApp app) {
-        if(app.enableHttp == false){
+        if(app.enableHttp() == false){
             return;
         }
 
