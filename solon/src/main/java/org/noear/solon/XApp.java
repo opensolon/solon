@@ -152,10 +152,16 @@ public class XApp implements XHandler,XHandlerSlots {
     private final Map<String,Object> _shared=new HashMap<>();
     private Map<String,Object> _shared_unmod;
 
+    /**
+     * 根据源加载bean
+     * */
     public void loadBean(Class<?> source){
         Aop.beanLoad(source);
     }
 
+    /**
+     * 根据类型构制bean
+     * */
     public void makeBean(Class<?> clz){
         Aop.beanMake(clz);
     }
