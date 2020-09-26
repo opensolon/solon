@@ -29,4 +29,14 @@ public @interface XCache {
      * */
     @XNote("缓存标签，多个以逗号隔开")
     String tags() default "";
+
+    /**
+     * 获取
+     * */
+    boolean get() default true;
+
+    /**
+     * 更新
+     * */
+    boolean put() default true;
 }

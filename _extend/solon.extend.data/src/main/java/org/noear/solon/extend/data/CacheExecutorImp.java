@@ -40,14 +40,16 @@ public class CacheExecutorImp implements XCacheExecutor {
 
         //1.从缓存获取
         //
-        result = cs.get(key);
+        if (anno.get()) {
+            result = cs.get(key);
+        }
 
         if (result == null) {
             //2.执行调用，并返回
             //
             result = callable.get();
 
-            if (result != null) {
+            if (result != null && anno.put()) {
                 //3.不为null，则进行缓存
                 //
                 cs.store(key, result, anno.seconds());
