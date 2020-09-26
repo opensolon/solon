@@ -33,10 +33,12 @@ public @interface XCache {
     /**
      * 获取
      * */
+    @XNote("获取")
     boolean get() default true;
 
     /**
-     * 更新
+     * 写入
      * */
+    @XNote("写入")
     boolean put() default true;
 }
