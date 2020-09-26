@@ -155,6 +155,7 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 根据源加载bean
      * */
+    @XNote("根据源加载bean")
     public void loadBean(Class<?> source){
         Aop.beanLoad(source);
     }
@@ -162,6 +163,7 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 根据类型构制bean
      * */
+    @XNote("根据类型构制bean")
     public void makeBean(Class<?> clz){
         Aop.beanMake(clz);
     }
@@ -169,6 +171,7 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 添加共享对象
      * */
+    @XNote("添加共享对象")
     public void sharedAdd(String key,Object obj) {
         _shared.put(key, obj);
         _onSharedAdd_event.forEach(fun->{
@@ -179,6 +182,7 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 获取共享对象（异步获取）
      * */
+    @XNote("获取共享对象（异步获取）")
     public <T> void sharedGet(String key, Consumer<T> event) {
         Object tmp = _shared.get(key);
         if (tmp != null) {
@@ -195,6 +199,7 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 共享对象添加事件
      * */
+    @XNote("共享对象添加事件")
     public void onSharedAdd(BiConsumer<String,Object> event){
         _onSharedAdd_event.add(event);
     }
@@ -202,6 +207,7 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 共享对象
      * */
+    @XNote("共享对象")
     public Map<String,Object> shared(){
         if(_shared_unmod == null) {
             _shared_unmod = Collections.unmodifiableMap(_shared);
@@ -215,19 +221,14 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 路由器
      */
+    @XNote("路由器")
     public XRouter router() {
         return _router;
     }
 
-    /**
-     * 端口
-     */
-    private final int _port;
-    /**
-     * 属性配置
-     */
-    private final XAppProperties _prop;
-    private final Class<?> _source;
+    private final int _port; //端口
+    private final XAppProperties _prop; //属性配置
+    private final Class<?> _source; //应用加载源
 
     protected XApp(Class<?> source, XMap args) {
         _source = source;
@@ -241,6 +242,7 @@ public class XApp implements XHandler,XHandlerSlots {
         _handler = new XRouterHandler(_router);
     }
 
+    @XNote("应用加载源")
     public Class<?> source(){
         return _source;
     }
@@ -248,6 +250,7 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 获取端口
      */
+    @XNote("端口")
     public int port() {
         return _port;
     }
@@ -255,6 +258,7 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 获取属性
      */
+    @XNote("应用属性")
     public XAppProperties prop() {
         return _prop;
     }
@@ -263,6 +267,7 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 插入插件
      */
+    @XNote("插入插件")
     public void plug(XPlugin plugin) {
         XPluginEntity p = new XPluginEntity(plugin);
         p.start();
