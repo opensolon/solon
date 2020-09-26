@@ -23,7 +23,7 @@ public class CacheExecutorImp implements XCacheExecutor {
 
     /**
      * 添加缓存
-     * */
+     */
     @Override
     public Object cache(XCache anno, Method method, Parameter[] params, Object[] values, SupplierEx callable) throws Throwable {
         if (anno == null) {
@@ -40,16 +40,14 @@ public class CacheExecutorImp implements XCacheExecutor {
 
         //1.从缓存获取
         //
-        if (anno.get()) {
-            result = cs.get(key);
-        }
+        result = cs.get(key);
 
         if (result == null) {
             //2.执行调用，并返回
             //
             result = callable.get();
 
-            if (result != null && anno.put()) {
+            if (result != null) {
                 //3.不为null，则进行缓存
                 //
                 cs.store(key, result, anno.seconds());
@@ -71,7 +69,7 @@ public class CacheExecutorImp implements XCacheExecutor {
 
     /**
      * 清除缓存标签
-     * */
+     */
     @Override
     public void cacheRemove(XCacheRemove anno, Method method, Parameter[] params, Object[] values) {
         if (anno == null || XUtil.isEmpty(anno.tags())) {
