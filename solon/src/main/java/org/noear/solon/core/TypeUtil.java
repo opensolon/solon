@@ -136,10 +136,6 @@ public class TypeUtil {
         throw new RuntimeException("不支持类型:" + type.getName());
     }
 
-    private static boolean is(Class<?> s, Class<?> t){
-        return s.isAssignableFrom(t);
-    }
-
     public static Object change(Class<?> type, String val) {
         if (Short.class == type || type == Short.TYPE) {
             return Short.parseShort(val);
@@ -189,5 +185,9 @@ public class TypeUtil {
         }
 
         return null;
+    }
+
+    private static boolean is(Class<?> s, Class<?> t){
+        return s.isAssignableFrom(t);
     }
 }
