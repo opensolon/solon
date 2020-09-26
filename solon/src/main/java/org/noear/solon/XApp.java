@@ -156,6 +156,10 @@ public class XApp implements XHandler,XHandlerSlots {
         Aop.beanLoad(source);
     }
 
+    public void makeBean(Class<?> clz){
+        Aop.beanMake(clz);
+    }
+
     /**
      * 添加共享对象
      * */

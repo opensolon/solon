@@ -7,6 +7,6 @@ public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
         //马上加载
-        app.loadBean(SqlHelperMybatisAutoConfiguration.class);
+        app.makeBean(SqlHelperMybatisAutoConfiguration.class);
     }
 }
