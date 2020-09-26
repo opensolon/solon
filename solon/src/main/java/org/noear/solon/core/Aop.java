@@ -1,5 +1,7 @@
 package org.noear.solon.core;
 
+import org.noear.solon.annotation.XNote;
+
 import java.util.Properties;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -117,15 +119,25 @@ public class Aop {
     //::bean事件处理
 
     /**
-     * 加载bean
+     * 加载bean（会扫描源下所有的类）
      */
+    @XNote("加载bean（会扫描源下所有的类）")
     public static void beanLoad(Class<?> source) {
         _f.beanLoad(source, false);
     }
 
     /**
+     * 制造bean（只处理类本身；是beanLoad的缩小版）
+     */
+    @XNote("制造bean（只处理类本身；是beanLoad的缩小版）")
+    public static BeanWrap beanMake(Class<?> clz) {
+        return _f.beanMake(clz);
+    }
+
+    /**
      * 添加bean加载完成事件
      */
+    @XNote("添加bean加载完成事件")
     public static void beanOnloaded(Runnable fun) {
         _f.loadedEvent.add(fun);
     }
@@ -133,6 +145,7 @@ public class Aop {
     /**
      * 遍历bean库 (拿到的是bean包装)
      */
+    @XNote("遍历bean库 (拿到的是bean包装)")
     public static void beanForeach(BiConsumer<String, BeanWrap> action) {
         _f.beans.forEach(action);
 
@@ -141,6 +154,7 @@ public class Aop {
     /**
      * 遍历bean包装库
      */
+    @XNote("遍历bean包装库")
     public static void beanForeach(Consumer<BeanWrap> action) {
         _f.beanWraps.forEach((k, bw) -> {
             action.accept(bw);
