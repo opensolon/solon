@@ -2,7 +2,6 @@ package org.noear.solon.core;
 
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XParam;
-import org.noear.solon.core.XContext;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Array;
