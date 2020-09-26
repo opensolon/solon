@@ -5,12 +5,13 @@ import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XBean;
 import org.noear.solon.annotation.XInject;
-import org.noear.solon.core.utils.TypeUtil;
+import org.noear.solon.ext.BiConsumerEx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -184,37 +185,35 @@ public abstract class AopFactoryBase {
      * 尝试生成 bean
      */
     public void tryCreateBean(Class<?> clz) {
+        tryCreateBean0(clz, (c, a) -> {
+            //包装
+            BeanWrap bw = this.wrap(clz, null);
+            c.handler(clz, bw, a);
+            //尝试入库
+            this.putWrap(clz, bw);
+        });
+    }
+
+    public void tryCreateBean(BeanWrap bw) {
+        tryCreateBean0(bw.clz(), (c, a) -> {
+            c.handler(bw.clz(), bw, a);
+        });
+    }
+
+    protected void tryCreateBean0(Class<?> clz, BiConsumerEx<BeanCreator, Annotation> consumer) {
         Annotation[] annS = clz.getDeclaredAnnotations();
 
         if (annS.length > 0) {
             try {
                 for (Annotation a : annS) {
-                    BeanCreator bc = beanCreators.get(a.annotationType());
-                    if (bc != null) {
-                        tryCreateBeanByAnno(clz, a, bc);
+                    BeanCreator creator = beanCreators.get(a.annotationType());
+                    if (creator != null) {
+                        consumer.accept(creator, a);
                     }
                 }
             } catch (Throwable ex) {
                 ex.printStackTrace();
             }
-        }
-    }
-
-
-    /**
-     * 尝试一个注解处理
-     */
-    protected <T extends Annotation> void tryCreateBeanByAnno(Class<?> clz, T anno, BeanCreator<T> loader) {
-        try {
-            //包装
-            BeanWrap wrap = this.wrap(clz, null);
-            loader.handler(clz, wrap, anno);
-            //尝试入库
-            this.putWrap(clz, wrap);
-        } catch (RuntimeException ex) {
-            throw ex;
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
         }
     }
 

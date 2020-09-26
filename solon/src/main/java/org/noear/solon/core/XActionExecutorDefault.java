@@ -1,7 +1,5 @@
 package org.noear.solon.core;
 
-import org.noear.solon.core.utils.TypeUtil;
-
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;

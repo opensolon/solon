@@ -1,4 +1,4 @@
-package org.noear.solon.core.utils;
+package org.noear.solon.core;
 
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XParam;

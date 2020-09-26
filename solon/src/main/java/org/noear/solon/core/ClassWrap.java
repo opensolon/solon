@@ -1,7 +1,5 @@
 package org.noear.solon.core;
 
-import org.noear.solon.core.utils.TypeUtil;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
