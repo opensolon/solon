@@ -1,8 +1,10 @@
 package webapp;
 
+import org.noear.fairy.annotation.EnableFairyClients;
 import org.noear.solon.XApp;
 import org.noear.solon.core.XMethod;
 
+@EnableFairyClients
 public class TestApp {
 
     public static void main(String[] args) throws Exception{
