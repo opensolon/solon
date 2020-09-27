@@ -58,18 +58,8 @@ public class AopFactory extends AopFactoryBase {
                 }
             }
 
-            //XPlugin
-            if (XPlugin.class.isAssignableFrom(bw.clz())) {
-                //如果是插件，则插入
-                XApp.global().plug(bw.raw());
-                return;
-            }
-
-            //XEventListener
-            if (XEventListener.class.isAssignableFrom(clz)) {
-                addEventListener(clz, bw);
-                return;
-            }
+            //添加bean形态处理
+            addBeanShape(clz, bw);
         });
 
         beanCreatorAdd(XBean.class, (clz, bw, anno) -> {
@@ -78,18 +68,8 @@ public class AopFactory extends AopFactoryBase {
             bw.attrsSet(anno.attrs());
             bw.typedSet(anno.typed());
 
-            //XPlugin
-            if (XPlugin.class.isAssignableFrom(bw.clz())) {
-                //如果是插件，则插入
-                XApp.global().plug(bw.raw());
-                return;
-            }
-
-            //XEventListener
-            if (XEventListener.class.isAssignableFrom(clz)) {
-                addEventListener(clz, bw);
-                return;
-            }
+            //添加bean形态处理
+            addBeanShape(clz, bw);
 
             //设置remoting状态
             bw.remotingSet(anno.remoting());
@@ -121,6 +101,26 @@ public class AopFactory extends AopFactoryBase {
             tryInjectByName(fwT, anno.value());
         }));
 
+    }
+
+    private void addBeanShape(Class<?> clz, BeanWrap bw){
+        //XPlugin
+        if (XPlugin.class.isAssignableFrom(bw.clz())) {
+            //如果是插件，则插入
+            XApp.global().plug(bw.raw());
+            return;
+        }
+
+        //XEventListener
+        if (XEventListener.class.isAssignableFrom(clz)) {
+            addEventListener(clz, bw);
+            return;
+        }
+
+        //XUpstreamFactory
+        if(XUpstreamFactory.class.isAssignableFrom(clz)){
+            XBridge.upstreamFactorySet(bw.raw());
+        }
     }
 
     private void addEventListener(Class<?> clz, BeanWrap bw) {

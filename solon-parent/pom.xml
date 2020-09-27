@@ -278,6 +278,12 @@
 <!--                <version>${solon.ver}</version>-->
 <!--            </dependency>-->
 
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>fairy</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>org.noear</groupId>
