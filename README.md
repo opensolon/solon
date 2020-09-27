@@ -10,8 +10,8 @@
 支持jdk8+；主框架0.1mb；组合不同的插件应对不同需求；方便定制；快速开发。
 
 * 采用Handler + Context 架构
-* 实现IOC & AOP容器，支持MVC
-* 支持Http（Serverlet 或 非Serverlet），WebSocket，Socket信号接入
+* 自带IOC & AOP容器，支持MVC
+* 支持Http（Serverlet 或 非Serverlet），WebSocket，Socket三种信号接入
 * 插件可扩展可切换：启动插件，扩展插件，序列化插件，会话状态插件，视图插件(可共存) 等...
 
 
@@ -43,7 +43,7 @@ public class App{
 ```
 
 
-### 主框架与开发包：
+### 主框架与快速集成开发包：
 
 ###### 主框架
 
