@@ -119,21 +119,21 @@ public class DemoController{
  */ 
 // - interface
 @FairyClient("rpc:/demo/") // 或 demorpc （使用water提供的注册服务；当然也可以改成别的...）
-public interface DemoRpc{
+public interface DemoService{
     void setName(Integer user_id, String name);
 }
 
 // - server
 @XMapping("/demo/*")
 @XBean(remoting = true)
-public class DemoService implements DemoRpc{
+public class DemoServiceImp implements DemoService{
     public void setName(Integer user_id, String name){
         
     }
 }
 
 // - client - 简单示例
-DemoRpc client = Fairy.builder().upstream(n->"http://127.0.0.1").create(DemoRpc.class); 
+DemoService client = Fairy.builder().upstream(n->"http://127.0.0.1").create(DemoService.class); 
 client.setName(1,'');
 ```
 * 获取应用配置
