@@ -152,6 +152,27 @@ public class Config{
 }
 ```
 
+* 事务与缓存控制
+```java
+@XController
+public class DemoController{
+    @Db
+    BaseMapper<UserModel> userService;
+    
+    @XCacheRemove(tags = "user_${user_id}")
+    @XTran
+    @XMapping("/user/update")
+    public void udpUser(int user_id, UserModel user){
+        userService.updateById(user);
+    }
+    
+    @XCache(tags = "user_${user_id}")
+    public UserModel getUser(int user_id){
+        return userService.selectById(user_id);
+    }
+}
+```
+
 ### 附2：示例参考
 * 项目内的：[_test](./_test/) 和 [_demo](./_demo/)
 * 更多示例：[solon_demo](https://gitee.com/noear/solon_demo)
