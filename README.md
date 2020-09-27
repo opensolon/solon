@@ -62,7 +62,7 @@ public class App{
 
 
 ### 附1：入门示例
-* Web 示例（aop,mvc,rpc）
+* Web 示例（mvc）
 ```xml
 <parent>
     <groupId>org.noear</groupId>
@@ -114,7 +114,11 @@ public class DemoController{
     }
     */
 }
+```
 
+* Rpc 示例
+
+```java
 /*
  * rpc服务
  */ 
@@ -134,9 +138,17 @@ public class DemoServiceImp implements DemoService{
 }
 
 // - client - 简单示例
-DemoService client = Fairy.builder().upstream(n->"http://127.0.0.1").create(DemoService.class); 
+//注入模式
+//@FairyClient("http://127.0.0.1:8080/demo/") 
+//DemoService client;
+
+//构建模式
+DemoService client = Fairy.builder().upstream(n->"http://127.0.0.1:8080").create(DemoService.class); 
 client.setName(1,'');
+
+
 ```
+
 * 获取应用配置
 ```java
 //非注入模式
