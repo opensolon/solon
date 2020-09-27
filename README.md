@@ -118,7 +118,7 @@ public class DemoController{
  * rpc服务
  */ 
 // - interface
-@XClient("rpc:/demo/") // 或 demorpc （使用water提供的注册服务；当然也可以改成别的...）
+@FairyClient("rpc:/demo/") // 或 demorpc （使用water提供的注册服务；当然也可以改成别的...）
 public interface DemoRpc{
     void setName(Integer user_id, String name);
 }
@@ -133,7 +133,7 @@ public class DemoService implements DemoRpc{
 }
 
 // - client - 简单示例
-DemoRpc client = new XProxy().upstream(n->"http://127.0.0.1").create(DemoRpc.class); 
+DemoRpc client = Fairy.builder().upstream(n->"http://127.0.0.1").create(DemoRpc.class); 
 client.setName(1,'');
 ```
 * 获取应用配置
