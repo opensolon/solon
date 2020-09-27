@@ -1,17 +1,12 @@
 package client;
 
 import client.dso.FairyConfigurationImp;
-import client.dso.UpstreamFactoryImp;
-import org.noear.fairy.Fairy;
+import org.noear.fairy.FairyConfigurationDefault;
 import org.noear.fairy.annotation.EnableFairyClients;
 import org.noear.fairy.annotation.FairyClient;
-import org.noear.fairy.decoder.SnackDecoder;
-import org.noear.fairy.encoder.SnackTypeEncoder;
 import org.noear.solon.XApp;
 import org.noear.solon.annotation.XBean;
-import org.noear.solon.annotation.XController;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.XBridge;
 import server.dso.IComplexModelService;
 import server.model.ComplexModel;
 import server.model.Person;
@@ -34,7 +29,7 @@ public class ComplextModelServiceTest5 {
 //            return "http://localhost:8080";
 //        }).create(IComplexModelService.class);
 
-        XBridge.upstreamFactorySet(new UpstreamFactoryImp());
+        FairyConfigurationDefault.proxy = new FairyConfigurationImp();
 
         XApp.start(ComplextModelServiceTest5.class, args, app -> app.enableHttp(false));
 
@@ -42,7 +37,7 @@ public class ComplextModelServiceTest5 {
         test5.test();
     }
 
-    @FairyClient(value = "test:/ComplexModelService/", configuration = FairyConfigurationImp.class)
+    @FairyClient
     IComplexModelService service;
 
     public void test() {
