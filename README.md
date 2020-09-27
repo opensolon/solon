@@ -57,6 +57,7 @@ public class App{
 | 组件 | 说明 |
 | --- | --- |
 | org.noear:solon-web | 可进行http api, mvc, rpc开发的快速集成包 |
+| org.noear:fairy | 可做为solon rpc 的客户端（伴生项目） |
 
 
 
