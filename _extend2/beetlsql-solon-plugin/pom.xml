@@ -23,8 +23,8 @@
 
         <dependency>
             <groupId>com.ibeetl</groupId>
-            <artifactId>beetlsql-all</artifactId>
-            <version>3.0.0-M5</version>
+            <artifactId>beetlsql</artifactId>
+            <version>3.0.0-M6</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
