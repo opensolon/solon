@@ -53,11 +53,3 @@
 | org.noear:dubbo-solon-plugin | dubbo 适配插件|
 | org.noear:mybatis-solon-plugin | mybatis 适配插件|
 | org.noear:weed3-solon-plugin | weed3 适配插件|
-
-
-### 伴生项目
-
-| 插件 | 说明 |
-| --- | --- |
-| rpc client:: | 说明 |
-| org.noear:fairy | solon rpc client 与solon 的 rpc service 配对 |
