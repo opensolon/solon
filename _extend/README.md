@@ -1,8 +1,5 @@
 
-
-
 ### 插件
-
 
 | 插件 | 说明 |
 | --- | --- |
@@ -47,9 +44,4 @@
 | org.noear:solon.view.thymeleaf | 视图插件，对 `thymeleaf` 适配，提供`html`视图输出 |
 | org.noear:solon.view.beetl | 视图插件，对 `beetl` 适配，提供`html`视图输出 |
 | org.noear:solon.view.enjoy | 视图插件，对 `enjoy` 适配，提供`html`视图输出 |
-| | |
-| 外部框架适配:: | 说明 |
-| org.noear:cron4j-solon-plugin | cron4j 适配插件 |
-| org.noear:dubbo-solon-plugin | dubbo 适配插件|
-| org.noear:mybatis-solon-plugin | mybatis 适配插件|
-| org.noear:weed3-solon-plugin | weed3 适配插件|
+
