@@ -116,7 +116,7 @@ public class DemoController{
 }
 ```
 
-* Rpc 示例
+* Rpc 示例（+验证注解）
 
 ```java
 // - interface : 定义协议
