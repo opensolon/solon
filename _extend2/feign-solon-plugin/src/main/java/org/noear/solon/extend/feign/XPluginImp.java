@@ -7,6 +7,9 @@ import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.*;
 
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+
 
 public class XPluginImp implements XPlugin {
     @Override
@@ -17,38 +20,55 @@ public class XPluginImp implements XPlugin {
         }
 
         Aop.factory().beanCreatorAdd(FeignClient.class, (clz, wrap, anno) -> {
-            Aop.wrapAndPut(clz, getProxy(clz, anno));
+            getProxy(clz, anno, obj -> Aop.wrapAndPut(clz, obj));
         });
 
         Aop.factory().beanInjectorAdd(FeignClient.class, (varH, anno) -> {
-            varH.setValue(getProxy(varH.getType(), anno));
+            getProxy(varH.getType(), anno, obj -> varH.setValue(obj));
         });
     }
 
-    private Object getProxy(Class<?> clz, FeignClient anno) {
+    private void getProxy(Class<?> clz, FeignClient anno, Consumer consumer) {
         //获取配置器
         FeignConfiguration configuration = Aop.get(anno.configuration());
 
         //生成构建器
-        Feign.Builder builder = Feign.builder();
+        Feign.Builder builder0 = Feign.builder();
 
         //初始化构建器
-        builder.options(new Request.Options(1000, 3500))
+        builder0.options(new Request.Options(1000, 3500))
                 .retryer(new Retryer.Default(5000, 5000, 3));
 
         //进行配置
-        builder = configuration.config(anno, builder);
+        builder0 = configuration.config(anno, builder0);
+
+        Feign.Builder builder = builder0;
 
         //构建target
-        FeignTarget target = null;
-
         if (XUtil.isEmpty(anno.url())) {
-            target = new FeignTarget(clz, anno.name(), anno.path(), XBridge.upstreamFactory().create(anno.name()));
+            XUpstream upstream = getUpstream(anno);
+            if (upstream != null) {
+                FeignTarget target = new FeignTarget(clz, anno.name(), anno.path(), upstream);
+                consumer.accept(builder.target(target));
+            } else {
+                Aop.getAsyn(anno.name(), (bw) -> {
+                    XUpstream tmp = bw.raw();
+                    FeignTarget target = new FeignTarget(clz, anno.name(), anno.path(), tmp);
+                    consumer.accept(builder.target(target));
+                });
+            }
         } else {
-            target = new FeignTarget(clz, anno.name(), anno.path(), () -> anno.url());
+            FeignTarget target = new FeignTarget(clz, anno.name(), anno.path(), () -> anno.url());
+            consumer.accept(builder.target(target));
+        }
+    }
+
+    private XUpstream getUpstream(FeignClient anno){
+        if(XBridge.upstreamFactory() == null){
+            return null;
         }
 
-        return builder.target(target);
+        return XBridge.upstreamFactory().create(anno.name());
     }
 
     @Override
