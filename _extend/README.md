@@ -1,20 +1,7 @@
 
-### 主框架与插件：
 
-###### 主框架
 
-| 组件 | 说明 |
-| --- | --- |
-| org.noear:solon-parent | 框架版本管理 |
-| org.noear:solon | 主框架 |
-
-###### 快速集成开发包
-
-| 组件 | 说明 |
-| --- | --- |
-| org.noear:solon-web | 可进行http api,mvc,rpc开发的快速集成包 |
-
-###### 插件
+#### 插件
 
 
 | 插件 | 说明 |
@@ -37,6 +24,9 @@
 | 数据操作支持插件:: | 说明 |
 | org.noear:solon.extend.data | 扩展插件,实现事务和缓存的注解支持 |
 | | |
+| 验证支持插件:: | 说明 |
+| org.noear:solon.extend.validation | 扩展插件,实现验证的注解支持 |
+| | |
 | Yaml配置支持插件:: | 说明 |
 | org.noear:solon.extend.properties.yaml | 扩展插件,添加yml配置文件支持 |
 | | |
@@ -58,11 +48,14 @@
 | org.noear:solon.view.beetl | 视图插件，对 `beetl` 适配，提供`html`视图输出 |
 | org.noear:solon.view.enjoy | 视图插件，对 `enjoy` 适配，提供`html`视图输出 |
 | | |
-| rpc client:: | 说明 |
-| org.noear:solonclient | solon rpc client 与solon 的 rpc service 配对 |
-| | |
 | 外部框架适配:: | 说明 |
 | org.noear:cron4j-solon-plugin | cron4j 适配插件 |
 | org.noear:dubbo-solon-plugin | dubbo 适配插件|
 | org.noear:mybatis-solon-plugin | mybatis 适配插件|
 | org.noear:weed3-solon-plugin | weed3 适配插件|
+
+
+| 插件 | 说明 |
+| --- | --- |
+| rpc client:: | 说明 |
+| org.noear:solonclient | solon rpc client 与solon 的 rpc service 配对 |
