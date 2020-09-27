@@ -125,10 +125,13 @@ public interface DemoService{
 }
 
 // - server : 实现协议
+@XValid
 @XMapping("/demo/*")
 @XBean(remoting = true)
 public class DemoServiceImp implements DemoService{
-    public void setName(Integer user_id, String name){
+    //添加验证注解
+    @NotZero("user_id")
+    public void setName(int user_id, String name){
         
     }
 }
