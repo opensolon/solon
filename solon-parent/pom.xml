@@ -561,6 +561,7 @@
 
 
 <!--        <module>../solonclient</module>-->
+        <module>../fairy</module>
 
 
         <module>../solon-web</module>
