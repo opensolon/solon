@@ -183,7 +183,7 @@ public class DemoController{
 
 ### 附2：示例参考
 * 项目内的：[_test](./_test/) 和 [_demo](./_demo/)
-* 更多示例：[solon_demo](.../../noear/solon_demo)
+* 更多示例：[solon_demo](https://gitee.com/noear/solon_demo)
 
 ### 附3：插件开发说明
 * 新建一个 maven 项目
