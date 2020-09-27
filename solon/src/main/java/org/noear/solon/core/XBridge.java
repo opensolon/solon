@@ -17,7 +17,7 @@ public class XBridge {
 
     /**
      * 设置Session状态管理器
-     * */
+     */
     @XNote("设置Session状态管理器")
     public static void sessionStateSet(XSessionState ss) {
         if (ss != null) {
@@ -35,7 +35,7 @@ public class XBridge {
 
     /**
      * 获取Session状态管理器
-     * */
+     */
     @XNote("获取Session状态管理器")
     public static XSessionState sessionState() {
         return _sessionState;
@@ -62,13 +62,11 @@ public class XBridge {
     //
     // UpstreamFactory 对接
     //
-    private static XUpstreamFactory _upstreamFactory = (service -> {
-        throw new RuntimeException("XBridge: The upstream factory is not initialized");
-    });
+    private static XUpstreamFactory _upstreamFactory = null;
 
     /**
      * 获取负载工厂
-     * */
+     */
     @XNote("获取负载工厂")
     public static XUpstreamFactory upstreamFactory() {
         return _upstreamFactory;
@@ -76,7 +74,7 @@ public class XBridge {
 
     /**
      * 设置负载工厂
-     * */
+     */
     @XNote("设置负载工厂")
     public static void upstreamFactorySet(XUpstreamFactory uf) {
         if (uf != null) {
@@ -100,7 +98,7 @@ public class XBridge {
 
     /**
      * 获取默认的Action执行器
-     * */
+     */
     @XNote("获取默认的Action执行器")
     public static XActionExecutor actionExecutorDef() {
         return _actionExecutorDef;
@@ -108,7 +106,7 @@ public class XBridge {
 
     /**
      * 设置默认的Action执行器
-     * */
+     */
     @XNote("设置默认的Action执行器")
     public static void actionExecutorDefSet(XActionExecutor ae) {
         if (ae != null) {
@@ -118,7 +116,7 @@ public class XBridge {
 
     /**
      * 获取所有Action执行器
-     * */
+     */
     @XNote("获取所有Action执行器")
     public static Set<XActionExecutor> actionExecutors() {
         return Collections.unmodifiableSet(_actionExecutors);
@@ -138,11 +136,12 @@ public class XBridge {
     //
     // XRender 对接
     //
+
     /**
      * 注册渲染器
      *
      * @param render 渲染器
-     * */
+     */
     @XNote("注册渲染器")
     public static void renderRegister(XRender render) {
         if (render != null) {
@@ -155,7 +154,7 @@ public class XBridge {
      *
      * @param suffix 文件后缀名
      * @param render 渲染器
-     * */
+     */
     @XNote("印射渲染关系")
     public static void renderMapping(String suffix, XRender render) {
         if (suffix != null && render != null) {
@@ -166,9 +165,9 @@ public class XBridge {
     /**
      * 印射渲染关系
      *
-     * @param suffix 文件后缀名
+     * @param suffix    文件后缀名
      * @param className 渲染器类名
-     * */
+     */
     @XNote("印射渲染关系")
     public static void renderMapping(String suffix, String className) {
         if (suffix != null && className != null) {
@@ -189,7 +188,7 @@ public class XBridge {
 
     /**
      * 获取事务执行器
-     * */
+     */
     @XNote("获取事务执行器")
     public static XTranExecutor tranExecutor() {
         return _tranExecutor;
@@ -197,7 +196,7 @@ public class XBridge {
 
     /**
      * 设置事务执行器
-     * */
+     */
     @XNote("设置事务执行器")
     public static void tranExecutorSet(XTranExecutor te) {
         if (te != null) {
@@ -208,12 +207,12 @@ public class XBridge {
     //
     // XCacheExecutor 对接
     //
-    private static Map<String,CacheService> cacheServiceMap = new HashMap<>();
+    private static Map<String, CacheService> cacheServiceMap = new HashMap<>();
 
 
     /**
      * 缓存服务集合；只读
-     * */
+     */
     @XNote("缓存服务集合；只读")
     public static Map<String, CacheService> cacheServiceMap() {
         return Collections.unmodifiableMap(cacheServiceMap);
@@ -221,20 +220,20 @@ public class XBridge {
 
     /**
      * 添加缓存服务
-     * */
+     */
     @XNote("添加缓存服务")
-    public static void cacheServiceAdd(String name, CacheService cs){
-        cacheServiceMap.put(name,cs);
+    public static void cacheServiceAdd(String name, CacheService cs) {
+        cacheServiceMap.put(name, cs);
     }
 
     @XNote("添加缓存服务")
-    public static void cacheServiceAddIfAbsent(String name, CacheService cs){
-        cacheServiceMap.putIfAbsent(name,cs);
+    public static void cacheServiceAddIfAbsent(String name, CacheService cs) {
+        cacheServiceMap.putIfAbsent(name, cs);
     }
 
     /**
      * 获取缓存服务
-     * */
+     */
     @XNote("获取缓存服务")
     public static CacheService cacheServiceGet(String name) {
         return cacheServiceMap.get(name);
@@ -244,10 +243,10 @@ public class XBridge {
 
     /**
      * 获取缓存执行器
-     * */
+     */
     @XNote("获取缓存执行器")
     public static XCacheExecutor cacheExecutor() {
-        if(_cacheExecutor == null){
+        if (_cacheExecutor == null) {
             throw new RuntimeException("XBridge: The cache actuator is not initialized");
         }
 
@@ -256,7 +255,7 @@ public class XBridge {
 
     /**
      * 设置缓存执行器
-     * */
+     */
     @XNote("设置缓存执行器")
     public static void cacheExecutorSet(XCacheExecutor ce) {
         if (ce != null) {
