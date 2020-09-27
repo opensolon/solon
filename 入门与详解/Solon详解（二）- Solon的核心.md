@@ -99,7 +99,7 @@ resources/static/ 为静态文件根目标
 resources/WEB-INF/view/ 为视图模板文件根目标（支持多视图共存）
 
 //调试模式：
-启动参数添加：-deubg=1 或 --debug=1
+启动参数添加：-debug=1 或 --debug=1
 ```
 
 ##### b.端口配置（以使用 application.yml 为例）
