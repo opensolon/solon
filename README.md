@@ -43,7 +43,7 @@ public class App{
 ```
 
 
-### 主框架与插件：
+### 主框架与开发包：
 
 ###### 主框架
 
@@ -56,7 +56,7 @@ public class App{
 
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon-web | 可进行http api,mvc,rpc开发的快速集成包 |
+| org.noear:solon-web | 可进行http api, mvc, rpc开发的快速集成包 |
 
 
 

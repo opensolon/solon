@@ -197,18 +197,18 @@ public class XAction extends XHandlerAide implements XHandler{
     protected void handleDo(XContext c, RunnableEx runnable) throws Throwable {
         try {
             runnable.run();
-        } catch (DataThrowable ex) {
+        } catch (Throwable ex) {
             c.setHandled(true); //停止处理
 
-            renderDo(ex, c);
-        } catch (Throwable ex) {
             ex = XUtil.throwableUnwrap(ex);
 
-            c.setHandled(true); //停止处理
-
-            c.attrSet("error", ex);
-            renderDo(ex, c);
-            XEventBus.push(ex);
+            if (ex instanceof DataThrowable) {
+                renderDo(ex, c);
+            } else {
+                c.attrSet("error", ex);
+                renderDo(ex, c);
+                XEventBus.push(ex);
+            }
         }
     }
 
