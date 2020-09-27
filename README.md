@@ -145,18 +145,20 @@ XApp.cfg().getProp("xxx.datasource"); //=>Properties
 
 //注入模式
 @XConfiguration //or @XController, or @XBean
-class xxx{
+public class Config{
     @XInject("${app_key}")
     String app_key;
 }
 ```
 
-### 附2：更多示例可参考 _test 和 _demo
+### 附2：示例参考
+* 项目内的：[_test](./_test/) 和 [_demo](./_demo/)
+* 更多示例：[solon_demo](https://gitee.com/noear/solon_demo)
 
 ### 附3：插件开发说明
 * 新建一个 maven 项目
 * 新建一个 java/{包名}/XPluginImp.java （implements XPlugin）
-* 新建一个 resources/`solonplugin`/{包名.properties}
+* 新建一个 resources/META-INF/solon/{包名.properties}
 *    添加配置：solon.plugin={包名}.XPluginImp
 
 ### 附4：启动顺序参考
