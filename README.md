@@ -119,16 +119,12 @@ public class DemoController{
 * Rpc 示例
 
 ```java
-/*
- * rpc服务
- */ 
-// - interface
-@FairyClient("rpc:/demo/") // 或 demorpc （使用water提供的注册服务；当然也可以改成别的...）
+// - interface : 定义协议
 public interface DemoService{
     void setName(Integer user_id, String name);
 }
 
-// - server
+// - server : 实现协议
 @XMapping("/demo/*")
 @XBean(remoting = true)
 public class DemoServiceImp implements DemoService{
