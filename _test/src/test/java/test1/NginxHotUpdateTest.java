@@ -1,6 +1,7 @@
 package test1;
 
 import org.junit.Test;
+import org.noear.solon.test.HttpUtils;
 
 public class NginxHotUpdateTest {
     @Test
