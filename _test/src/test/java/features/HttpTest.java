@@ -6,7 +6,6 @@ import org.noear.snack.ONode;
 import org.noear.solon.annotation.XInject;
 import org.noear.solon.test.SolonTest;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
-import org.noear.water.utils.HttpUtils;
 
 import java.io.IOException;
 import java.util.HashMap;

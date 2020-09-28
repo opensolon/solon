@@ -1,7 +1,7 @@
 package features;
 
 import org.noear.solon.test.HttpTestBase;
-import org.noear.water.utils.HttpUtils;
+import org.noear.solon.test.HttpUtils;
 
 import java.io.IOException;
 import java.util.Map;
