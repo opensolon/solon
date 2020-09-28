@@ -60,6 +60,6 @@ public class HttpMethodTest extends TestBase {
         Map<String, String> map = new HashMap<>();
         map.put("name", "中文");
 
-        assert path("/demo2/method/post_get").data(map).equals("/demo2/method/post_get");
+        assert path("/demo2/method/post_get").data(map).post().equals("/demo2/method/post_get");
     }
 }
