@@ -16,7 +16,7 @@ public class ProtobufDecoder implements IDecoder {
     @Override
     public <T> T decode(Result rst, Class<T> clz) {
         try {
-            return ProtoBuf.toObject(rst.body(), clz);
+            return (T) ProtoBuf.der(rst.body());
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

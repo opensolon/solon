@@ -18,6 +18,9 @@ public class ProtobufRender implements XRender {
         if(XPluginImp.output_meta) {
             ctx.headerSet("solon.serialization", "ProtobufRender");
         }
+
+        ctx.contentType("application/protobuf");
+
         byte[] bytes = null;
         if(obj instanceof ModelAndView){
             bytes = ProtoBuf.ser(new HashMap<>(((Map)obj)));
