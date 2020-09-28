@@ -22,6 +22,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.properties.yaml</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.ibeetl</groupId>
             <artifactId>beetlsql</artifactId>
             <version>3.0.0-M6</version>

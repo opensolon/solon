@@ -22,6 +22,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.properties.yaml</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>it.sauronsoftware.cron4j</groupId>
             <artifactId>cron4j</artifactId>
             <version>2.2.5</version>
