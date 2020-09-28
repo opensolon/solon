@@ -152,11 +152,11 @@ public class BeanWrap {
             Aop.inject(obj);
 
             //3.初始化
-            if(_clz_init != null){
+            if (_clz_init != null) {
                 _clz_init.getMethod().invoke(obj);
             }
 
-            if(_proxy!= null){
+            if (_proxy != null) {
                 obj = _proxy.getProxy(obj);
             }
 
