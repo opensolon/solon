@@ -5,6 +5,8 @@ import org.noear.fairy.Enctype;
 import org.noear.fairy.IEncoder;
 
 public class ProtobufEncoder implements IEncoder {
+    public static final ProtobufEncoder instance = new ProtobufEncoder();
+
     @Override
     public Enctype enctype() {
         return Enctype.application_protobuf;
