@@ -1,10 +1,12 @@
 package client;
 
-import org.noear.fairy.Fairy;
-import org.noear.fairy.decoder.ProtobufDecoder;
-import org.noear.fairy.decoder.SnackDecoder;
-import org.noear.fairy.encoder.ProtobufEncoder;
-import org.noear.fairy.encoder.SnackTypeEncoder;
+import client.dso.FairyConfigurationImp;
+import org.noear.fairy.FairyConfigurationDefault;
+import org.noear.fairy.annotation.EnableFairyClients;
+import org.noear.fairy.annotation.FairyClient;
+import org.noear.solon.XApp;
+import org.noear.solon.annotation.XBean;
+import org.noear.solon.core.Aop;
 import server.dso.IComplexModelService;
 import server.model.ComplexModel;
 import server.model.Person;
@@ -14,17 +16,31 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ComplextModelServiceTest5 {
+@EnableFairyClients
+@XBean
+public class ComplextModelServiceTest10 {
+
     public static void main(String[] args) throws Exception {
         //配置接口代理
-        IComplexModelService service =  Fairy.builder()
-                .encoder(ProtobufEncoder.instance)
-                .decoder(ProtobufDecoder.instance)
-                .upstream(()->{
-            return "http://localhost:8080";
-        }).create(IComplexModelService.class);
+//        IComplexModelService service =  Fairy.builder()
+//                .encoder(SnackTypeEncoder.instance)
+//                .decoder(SnackDecoder.instance)
+//                .upstream(()->{
+//            return "http://localhost:8080";
+//        }).create(IComplexModelService.class);
 
+        FairyConfigurationDefault.proxy = new FairyConfigurationImp();
 
+        XApp.start(ComplextModelServiceTest10.class, args, app -> app.enableHttp(false));
+
+        ComplextModelServiceTest10 test5 = Aop.get(ComplextModelServiceTest10.class);
+        test5.test();
+    }
+
+    @FairyClient
+    IComplexModelService service;
+
+    public void test() {
         ComplexModel<Point> model = new ComplexModel<Point>();
         model.setId(1);
         Person person = new Person();
@@ -51,9 +67,8 @@ public class ComplextModelServiceTest5 {
 
         model = service.read(model.getId());
         List<Point> points1 = model.getPoints();
-        for(Point elem : points1) {
+        for (Point elem : points1) {
             System.out.println(elem.getX() + "\t" + elem.getY());
         }
-
     }
 }
