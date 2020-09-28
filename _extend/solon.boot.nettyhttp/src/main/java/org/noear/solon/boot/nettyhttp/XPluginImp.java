@@ -7,7 +7,7 @@ public class XPluginImp implements XPlugin {
     HttpServer _server;
 
     public static String solon_boot_ver(){
-        return "netty http 4.1/1.0.37";
+        return "netty http 4.1/1.0.38";
     }
 
     @Override
