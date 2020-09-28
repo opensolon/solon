@@ -6,5 +6,6 @@ package org.noear.fairy;
 public enum  Enctype {
     form_urlencoded,
     application_json,
-    application_hessian;
+    application_hessian,
+    application_protobuf
 }

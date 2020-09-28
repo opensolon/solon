@@ -14,7 +14,7 @@ public class XPluginImp implements XPlugin {
         ProtobufRender render = new ProtobufRender();
 
         //XRenderManager.register(render);
-        XBridge.renderMapping("@protobuf-x", render);
+        XBridge.renderMapping("@protobuf", render);
         XBridge.actionExecutorAdd(new ProtobufActionExecutor());
     }
 }

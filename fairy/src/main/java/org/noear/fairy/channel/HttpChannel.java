@@ -20,8 +20,10 @@ public class HttpChannel implements IChannel {
 
         if(cfg.getDecoder().enctype() == Enctype.application_json){
             http.header("X-Serialization","@type_json");
-        }else if(cfg.getDecoder().enctype() == Enctype.application_hessian){
+        } else if(cfg.getDecoder().enctype() == Enctype.application_hessian){
             http.header("X-Serialization","@hession");
+        } else if(cfg.getDecoder().enctype() == Enctype.application_protobuf){
+            http.header("X-Serialization","@protobuf");
         }
 
         //1.执行并返回
@@ -43,6 +45,11 @@ public class HttpChannel implements IChannel {
         if (cfg.getEncoder().enctype() == Enctype.application_hessian) {
             InputStream stream = new ByteArrayInputStream((byte[]) cfg.getEncoder().encode(args));
             response = http.bodyRaw(stream, ContextTypes.hessian).exec("POST");
+        }
+
+        if (cfg.getEncoder().enctype() == Enctype.application_protobuf) {
+            InputStream stream = new ByteArrayInputStream((byte[]) cfg.getEncoder().encode(args));
+            response = http.bodyRaw(stream, ContextTypes.protobuf).exec("POST");
         }
 
         if (response == null) {
