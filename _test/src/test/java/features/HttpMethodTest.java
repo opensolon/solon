@@ -52,12 +52,14 @@ public class HttpMethodTest extends TestBase {
 
     @Test
     public void test24() throws IOException {
-        assert get("/demo2/method/post_get").equals("/demo2/method/post_get");
+        assert path("/demo2/method/post_get").get().equals("/demo2/method/post_get");
     }
 
     @Test
     public void test24_2() throws IOException {
         Map<String, String> map = new HashMap<>();
-        assert post("/demo2/method/post_get", map).equals("/demo2/method/post_get");
+        map.put("name", "中文");
+
+        assert path("/demo2/method/post_get").data(map).equals("/demo2/method/post_get");
     }
 }
