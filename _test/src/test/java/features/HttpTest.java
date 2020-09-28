@@ -337,6 +337,11 @@ public class HttpTest {
     }
 
     @Test
+    public void test2v_null2() throws IOException {
+        assert get("/demo2/valid/null").equals("OK");
+    }
+
+    @Test
     public void test2v_patt() throws IOException {
         assert get("/demo2/valid/patt?val1=111-12&val2=222-12").equals("OK");
         assert get("/demo2/valid/patt?val1=111-12&val2=").equals("OK") == false;
