@@ -68,6 +68,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
 <!--        <dependency>-->
 <!--            <groupId>com.caucho</groupId>-->
 <!--            <artifactId>hessian</artifactId>-->
