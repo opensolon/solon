@@ -1,15 +1,13 @@
 package features;
 
 import org.noear.solon.test.HttpTestBase;
-import org.noear.solon.test.HttpUtils;
 
 import java.io.IOException;
 import java.util.Map;
 
 public class TestBase extends HttpTestBase {
     protected String get(String path) throws IOException {
-        String url = "http://localhost:8080" + path;
-        String rst = HttpUtils.http(url).get();
+        String rst = path(path).get();
 
         System.out.println(path + " :: " + rst);
 
@@ -17,8 +15,7 @@ public class TestBase extends HttpTestBase {
     }
 
     protected int getStatus(String path) throws IOException {
-        String url = "http://localhost:8080" + path;
-        int rst = HttpUtils.http(url).exec("GET").code();
+        int rst = path(path).exec3("GET");
 
         System.out.println("code : " + rst);
 
@@ -26,8 +23,7 @@ public class TestBase extends HttpTestBase {
     }
 
     protected int headStatus(String path) throws IOException {
-        String url = "http://localhost:8080" + path;
-        int rst = HttpUtils.http(url).exec("HEAD").code();
+        int rst = path(path).exec3("HEAD");
 
         System.out.println("code : " + rst);
 
@@ -35,8 +31,7 @@ public class TestBase extends HttpTestBase {
     }
 
     protected String post(String path, String body) throws IOException {
-        String url = "http://localhost:8080" + path;
-        String rst = HttpUtils.http(url).bodyTxt(body, "text/plain").post();
+        String rst = path(path).bodyTxt(body, "text/plain").post();
 
         System.out.println(path + " :: " + rst);
 
@@ -44,26 +39,23 @@ public class TestBase extends HttpTestBase {
     }
 
     protected String put(String path, String body) throws IOException {
-        String url = "http://localhost:8080" + path;
-        String rst = HttpUtils.http(url).bodyTxt(body, "text/plain").put();
+        String rst = path(path).bodyTxt(body, "text/plain").put();
 
         System.out.println(path + " :: " + rst);
 
         return rst;
     }
 
-    protected String post(String path, Map<String,String> data) throws IOException {
-        String url = "http://localhost:8080" + path;
-        String rst =  HttpUtils.http(url).data(data).post();
+    protected String post(String path, Map<String, String> data) throws IOException {
+        String rst = path(path).data(data).post();
 
         System.out.println(path + " :: " + rst);
 
         return rst;
     }
 
-    protected String put(String path, Map<String,String> data) throws IOException {
-        String url = "http://localhost:8080" + path;
-        String rst =  HttpUtils.http(url).data(data).put();
+    protected String put(String path, Map<String, String> data) throws IOException {
+        String rst = path(path).data(data).put();
 
         System.out.println(path + " :: " + rst);
 

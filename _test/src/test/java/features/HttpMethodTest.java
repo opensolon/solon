@@ -31,7 +31,7 @@ public class HttpMethodTest extends TestBase {
         Map<String, String> map = new HashMap<>();
         map.put("name", "中文");
 
-        assert http("/demo2/method/put").data(map).put().equals("中文");
+        assert path("/demo2/method/put").data(map).put().equals("中文");
     }
 
     @Test
@@ -39,7 +39,7 @@ public class HttpMethodTest extends TestBase {
         Map<String, String> map = new HashMap<>();
         map.put("name", "中文");
 
-        assert http("/demo2/method/delete").data(map).delete().equals("中文");
+        assert path("/demo2/method/delete").data(map).delete().equals("中文");
     }
 
     @Test
@@ -47,7 +47,7 @@ public class HttpMethodTest extends TestBase {
         Map<String, String> map = new HashMap<>();
         map.put("name", "中文");
 
-        assert http("/demo2/method/patch").data(map).patch().equals("中文");
+        assert path("/demo2/method/patch").data(map).patch().equals("中文");
     }
 
     @Test
