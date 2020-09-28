@@ -1,6 +1,7 @@
 package org.noear.solon.serialization.protobuf;
 
 import org.noear.solon.XApp;
+import org.noear.solon.core.XBridge;
 import org.noear.solon.core.XRenderManager;
 import org.noear.solon.core.XPlugin;
 
@@ -14,6 +15,6 @@ public class XPluginImp implements XPlugin {
         ProtobufRender render = new ProtobufRender();
 
         //XRenderManager.register(render);
-        XRenderManager.mapping("@protobuf-x",render);
+        XBridge.renderMapping("@protobuf-x", render);
     }
 }

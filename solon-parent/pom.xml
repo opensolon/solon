@@ -520,8 +520,8 @@
         <module>../_extend/solon.serialization.gson</module>
         <module>../_extend/solon.serialization.snack3</module>
         <module>../_extend/solon.serialization.avro</module>
+        <module>../_extend/solon.serialization.protobuf</module>
 <!--        <module>../_extend/solon.serialization.jsoniter</module>-->
-<!--        <module>../_extend/solon.serialization.protobuf</module>-->
 <!--        <module>../_extend/solon.serialization.xstream</module>-->
 
         <module>../_extend/solon.view.freemarker</module>
