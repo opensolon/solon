@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
-public class HttpTest {
+public class HttpTest extends TestBase{
 
     @XInject("${username}")
     public String username;
@@ -97,31 +97,6 @@ public class HttpTest {
         assert  get("/demo2/mapping/a").equals("/demo2/mapping/a");
     }
 
-    @Test
-    public void test25() throws IOException{
-        assert  getStatus("/demo2/mapping/post") == 404;
-    }
-
-    @Test
-    public void test25_2() throws IOException{
-        Map<String,String> map = new HashMap<>();
-        map.put("name","中文");
-
-        assert  post("/demo2/mapping/post",map).equals("中文");
-    }
-
-    @Test
-    public void test25_3() throws IOException{
-        Map<String,String> map = new HashMap<>();
-        map.put("name","中文");
-
-        assert  put("/demo2/mapping/put",map).equals("中文");
-    }
-
-    @Test
-    public void test26() throws IOException{
-        assert  get("/demo2/mapping/post_get").equals("/demo2/mapping/post_get");
-    }
 
     @Test
     public void test27() throws IOException{
@@ -419,68 +394,5 @@ public class HttpTest {
                 "XInterceptor2::你被我拦截了(/demoa/**)!!!\n" +
                 "XInterceptor3::你被我拦截了(/demoa/**)!!!\n" +
                 "/demoa/triggerXInterceptor_aft::你被我拦截了(/demoa/**)!!!\n");
-    }
-
-    private String get(String path) throws IOException {
-        String url = "http://localhost:8080" + path;
-        String rst = HttpUtils.http(url).get();
-
-        System.out.println(path + " :: " + rst);
-
-        return rst;
-    }
-
-    private int getStatus(String path) throws IOException {
-        String url = "http://localhost:8080" + path;
-        int rst = HttpUtils.http(url).exec("GET").code();
-
-        System.out.println("code : " + rst);
-
-        return rst;
-    }
-
-    private int headStatus(String path) throws IOException {
-        String url = "http://localhost:8080" + path;
-        int rst = HttpUtils.http(url).exec("HEAD").code();
-
-        System.out.println("code : " + rst);
-
-        return rst;
-    }
-
-    private String post(String path, String body) throws IOException {
-        String url = "http://localhost:8080" + path;
-        String rst = HttpUtils.http(url).bodyTxt(body, "text/plain").post();
-
-        System.out.println(path + " :: " + rst);
-
-        return rst;
-    }
-
-    private String put(String path, String body) throws IOException {
-        String url = "http://localhost:8080" + path;
-        String rst = HttpUtils.http(url).bodyTxt(body, "text/plain").put();
-
-        System.out.println(path + " :: " + rst);
-
-        return rst;
-    }
-
-    private String post(String path, Map<String,String> data) throws IOException {
-        String url = "http://localhost:8080" + path;
-        String rst =  HttpUtils.http(url).data(data).post();
-
-        System.out.println(path + " :: " + rst);
-
-        return rst;
-    }
-
-    private String put(String path, Map<String,String> data) throws IOException {
-        String url = "http://localhost:8080" + path;
-        String rst =  HttpUtils.http(url).data(data).put();
-
-        System.out.println(path + " :: " + rst);
-
-        return rst;
     }
 }

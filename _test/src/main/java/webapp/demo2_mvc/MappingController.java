@@ -16,22 +16,6 @@ public class MappingController {
         return context.path();
     }
 
-    @XMapping(value = "post", method = {XMethod.POST})
-    public String test_post(XContext context) {
-        return context.param("name");
-    }
-
-    @XMapping(value = "put", method = {XMethod.PUT})
-    public String test_put(XContext context, String name) {
-        return context.param("name");
-    }
-
-
-    @XMapping(value = "post_get", method = {XMethod.POST, XMethod.GET})
-    public String test_post_get(XContext context) {
-        return context.path();
-    }
-
     //支持*一段路径匹配
     @XMapping("b/*")
     public String test_b(XContext context) {
