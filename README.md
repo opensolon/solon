@@ -43,7 +43,7 @@ public class App{
 ```
 
 
-### 主框架与快速集成开发包：
+### 主框架及快速集成开发包：
 
 ###### 主框架
 
@@ -51,14 +51,13 @@ public class App{
 | --- | --- |
 | org.noear:solon-parent | 框架版本管理 |
 | org.noear:solon | 主框架 |
+| org.noear:fairy | 伴生框架，（做为solon rpc 的客户端） |
 
 ###### 快速集成开发包
 
 | 组件 | 说明 |
 | --- | --- |
 | org.noear:solon-web | 可进行http api, mvc, rpc开发的快速集成包 |
-| org.noear:fairy | 可做为solon rpc 的客户端（伴生项目） |
-
 
 
 ### 附1：入门示例
