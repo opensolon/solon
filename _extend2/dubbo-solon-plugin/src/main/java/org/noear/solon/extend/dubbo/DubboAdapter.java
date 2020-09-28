@@ -96,6 +96,7 @@ public class DubboAdapter {
             if (props.containsKey("timeout") == false) {
                 props.put("timeout", "3000");
             }
+
             consumer.setParameters(props);
             ApplicationModel.getConfigManager().addConsumer(consumer);
         }
