@@ -327,6 +327,16 @@ public class HttpUtils {
         return rst;
     }
 
+    //@XNote("执行请求，返回状态码")
+    public int exec3(String mothod) throws IOException {
+        int code = exec(mothod).code();
+        if (_enablePrintln) {
+            System.out.println(_url + "::code:: " + code);
+        }
+
+        return code;
+    }
+
 
     //@XNote("发起GET请求，返回字符串（RESTAPI.select 从服务端获取一或多项资源）")
     public String get() throws IOException {

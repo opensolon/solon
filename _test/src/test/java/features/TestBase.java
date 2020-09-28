@@ -1,11 +1,12 @@
 package features;
 
+import org.noear.solon.test.HttpTestBase;
 import org.noear.water.utils.HttpUtils;
 
 import java.io.IOException;
 import java.util.Map;
 
-public class TestBase {
+public class TestBase extends HttpTestBase {
     protected String get(String path) throws IOException {
         String url = "http://localhost:8080" + path;
         String rst = HttpUtils.http(url).get();

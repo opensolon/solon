@@ -2,7 +2,6 @@ package webapp.demo2_mvc;
 
 import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
-import org.noear.solon.annotation.XSingleton;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XMethod;
 
@@ -16,6 +15,16 @@ public class MethodController {
 
     @XMapping(value = "put", method = {XMethod.PUT})
     public String test_put(XContext context, String name) {
+        return context.param("name");
+    }
+
+    @XMapping(value = "delete", method = {XMethod.DELETE})
+    public String test_delete(XContext context, String name) {
+        return context.param("name");
+    }
+
+    @XMapping(value = "patch", method = {XMethod.PATCH})
+    public String test_patch(XContext context, String name) {
         return context.param("name");
     }
 
