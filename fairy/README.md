@@ -5,7 +5,6 @@
 #### Rpc接口申明
 
 ```java
-@FairyClient("test:/ComplexModelService/")
 public interface IComplexModelService {
     //持久化
     void save(ComplexModel model);
@@ -24,7 +23,7 @@ public class Demo1{
     //
     // 直接注入，需要框架适配
     //
-    @XInject
+    @FairyClient("test:/ComplexModelService/")
     IComplexModelService service;
     
     public void test(){
@@ -43,7 +42,7 @@ public class Demo2{
                                         .encoder(SnackTypeEncoder.instance)
                                         .decoder(HessionDecoder.instance)
                                         .upstream(()->{
-                                            return "http://localhost:8080";
+                                            return "http://localhost:8080/ComplexModelService/";
                                         }).create(IComplexModelService.class);
     
     public void test(){
