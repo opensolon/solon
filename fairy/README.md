@@ -37,9 +37,6 @@ public class Demo2{
     IComplexModelService service = Fairy.builder()
                                         .encoder(SnackTypeEncoder.instance)
                                         .decoder(HessionDecoder.instance)
-                                        .filterAdd((cfg,url,h,a)->{
-                                            h.put("X-Serialization","@hession");
-                                        })
                                         .upstream(()->{
                                             return "http://localhost:8080";
                                         }).create(IComplexModelService.class);
