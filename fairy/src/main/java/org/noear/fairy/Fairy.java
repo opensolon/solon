@@ -29,7 +29,7 @@ public class Fairy {
 
 
     private String _url;
-    private String _method;
+    private String _method = "POST";
     private final FairyConfig _config;
 
     public Fairy() {
@@ -45,15 +45,20 @@ public class Fairy {
     }
 
     /**
+     * 设置请求方式
+     * */
+    public Fairy method(String method) {
+        if (method != null) {
+            _method = method;
+        }
+        return this;
+    }
+
+    /**
      * 设置请求地址
      */
     public Fairy url(String url) {
         _url = url;
-        return this;
-    }
-
-    public Fairy method(String method) {
-        _method = method;
         return this;
     }
 
