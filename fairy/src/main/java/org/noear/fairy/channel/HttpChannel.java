@@ -18,12 +18,12 @@ public class HttpChannel implements IChannel {
     public Result call(FairyConfig cfg, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
         HttpUtils http = HttpUtils.http(url).headers(headers);
 
-        if(cfg.getDecoder().enctype() == Enctype.application_json){
-            http.header("X-Serialization","@type_json");
-        } else if(cfg.getDecoder().enctype() == Enctype.application_hessian){
-            http.header("X-Serialization","@hession");
-        } else if(cfg.getDecoder().enctype() == Enctype.application_protobuf){
-            http.header("X-Serialization","@protobuf");
+        if (cfg.getDecoder().enctype() == Enctype.application_json) {
+            http.header("X-Serialization", ContextTypes.at_type_json);
+        } else if (cfg.getDecoder().enctype() == Enctype.application_hessian) {
+            http.header("X-Serialization", ContextTypes.at_hession);
+        } else if (cfg.getDecoder().enctype() == Enctype.application_protobuf) {
+            http.header("X-Serialization", ContextTypes.at_protobuf);
         }
 
         //1.执行并返回
@@ -39,17 +39,17 @@ public class HttpChannel implements IChannel {
 
         if (cfg.getEncoder().enctype() == Enctype.application_json) {
             String json = (String) cfg.getEncoder().encode(args);
-            response = http.bodyTxt(json, ContextTypes.json).exec("POST");
+            response = http.bodyTxt(json, ContextTypes.ct_json).exec("POST");
         }
 
         if (cfg.getEncoder().enctype() == Enctype.application_hessian) {
             InputStream stream = new ByteArrayInputStream((byte[]) cfg.getEncoder().encode(args));
-            response = http.bodyRaw(stream, ContextTypes.hessian).exec("POST");
+            response = http.bodyRaw(stream, ContextTypes.ct_hessian).exec("POST");
         }
 
         if (cfg.getEncoder().enctype() == Enctype.application_protobuf) {
             InputStream stream = new ByteArrayInputStream((byte[]) cfg.getEncoder().encode(args));
-            response = http.bodyRaw(stream, ContextTypes.protobuf).exec("POST");
+            response = http.bodyRaw(stream, ContextTypes.ct_protobuf).exec("POST");
         }
 
         if (response == null) {
