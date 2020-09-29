@@ -18,10 +18,19 @@ public class XClassLoader extends URLClassLoader {
         return _global;
     }
 
+
     private Map<URL, JarURLConnection> cachedMap = new HashMap<>();
 
-    protected XClassLoader() {
-        super(new URL[]{}, ClassLoader.getSystemClassLoader());
+    public XClassLoader() {
+        this(ClassLoader.getSystemClassLoader());
+    }
+
+    public XClassLoader(ClassLoader parent) {
+        super(new URL[]{}, parent);
+    }
+
+    public XClassLoader(URL[] urls, ClassLoader parent) {
+        super(urls, parent);
     }
 
     /**
@@ -32,19 +41,22 @@ public class XClassLoader extends URLClassLoader {
             // 打开并缓存文件url连接
             URLConnection uc = file.openConnection();
             if (uc instanceof JarURLConnection) {
-                uc.setUseCaches(true);
-                ((JarURLConnection) uc).getManifest();
-                cachedMap.put(file, (JarURLConnection) uc);
+                JarURLConnection juc = ((JarURLConnection) uc);
+                juc.setUseCaches(true);
+                juc.getManifest();
+
+                cachedMap.put(file, juc);
             }
         } catch (Throwable ex) {
             System.err.println("Failed to cache plugin JAR file: " + file.toExternalForm());
         }
+
         addURL(file);
     }
 
     /**
      * 卸载jar包
-     * */
+     */
     public void unloadJar(URL file) {
         JarURLConnection jarURL = cachedMap.get(file);
 
@@ -54,7 +66,6 @@ public class XClassLoader extends URLClassLoader {
 
         try {
             jarURL.getJarFile().close();
-            jarURL = null;
             cachedMap.remove(file);
             System.gc();
         } catch (Throwable ex) {
@@ -68,8 +79,8 @@ public class XClassLoader extends URLClassLoader {
     }
 
     /**
-     * 绑定线程
-     * */
+     * 绑定到当前线程
+     */
     public static void bindingThread() {
         Thread.currentThread().setContextClassLoader(global());
     }
