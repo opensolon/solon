@@ -2,7 +2,7 @@ package org.noear.fairy.annotation;
 
 import java.lang.annotation.*;
 
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Mapping {

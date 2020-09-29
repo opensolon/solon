@@ -19,7 +19,7 @@ import java.util.Map;
 public class FairyHandler implements InvocationHandler {
     private final FairyConfig config;
 
-    private final Map<String,String> headers0 = new LinkedHashMap<>();
+    private final Map<String, String> headers0 = new LinkedHashMap<>();
     private final String name0;
     private final String path0;
     private final String url0;
@@ -27,7 +27,7 @@ public class FairyHandler implements InvocationHandler {
     /**
      * @param config 配置
      * @param client 客户端注解
-     * */
+     */
     public FairyHandler(Class<?> clz, FairyConfig config, FairyClient client) {
         this.config = config;
 
@@ -67,7 +67,7 @@ public class FairyHandler implements InvocationHandler {
 
         //2.如果没有，就报错
         if (uri == null) {
-            throw new FairyException("FairyClient config is wrong: " +clz.getName());
+            throw new FairyException("FairyClient config is wrong: " + clz.getName());
         }
 
         if (uri.contains("://")) {
@@ -86,8 +86,8 @@ public class FairyHandler implements InvocationHandler {
             }
         }
 
-        if( url0 == null && config.getUpstream() == null){
-            throw new FairyException("FairyClient: Not found upstream: " +clz.getName());
+        if (url0 == null && config.getUpstream() == null) {
+            throw new FairyException("FairyClient: Not found upstream: " + clz.getName());
         }
     }
 
@@ -95,9 +95,14 @@ public class FairyHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] vals) throws Throwable {
         //构建 fun
         String fun = method.getName();
-        Mapping alias = method.getAnnotation(Mapping.class);
-        if (alias != null && isEmpty(alias.value()) == false) {
-            fun = alias.value();
+        String met = null;
+        Mapping mapping = method.getAnnotation(Mapping.class);
+        if (mapping != null && isEmpty(mapping.value()) == false) {
+            fun = mapping.value().trim();
+            if (fun.indexOf(" ") > 0) {
+                met = fun.split(" ")[0];
+                fun = fun.split(" ")[1];
+            }
         }
 
         //构建 args
@@ -110,7 +115,7 @@ public class FairyHandler implements InvocationHandler {
         }
 
         //构建 headers
-        Map<String,String> headers = new HashMap<>(headers0);
+        Map<String, String> headers = new HashMap<>(headers0);
 
         //构建 url
         String url = null;
@@ -141,6 +146,7 @@ public class FairyHandler implements InvocationHandler {
 
         //执行调用
         return new Fairy(config)
+                .method(met)
                 .url(url, fun)
                 .call(headers, args)
                 .getObject(method.getReturnType());
