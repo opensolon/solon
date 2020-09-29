@@ -18,10 +18,10 @@ import java.util.Map;
 public class FairyHandler implements InvocationHandler {
     private final FairyConfig config;
 
-    private final Map<String,String> headers = new LinkedHashMap<>();
-    private final String name;
-    private final String path;
-    private final String url;
+    private final Map<String,String> headers0 = new LinkedHashMap<>();
+    private final String name0;
+    private final String path0;
+    private final String url0;
 
     /**
      * @param config 配置
@@ -46,7 +46,7 @@ public class FairyHandler implements InvocationHandler {
             if (client.headers() != null) {
                 for (String h : client.headers()) {
                     String[] ss = h.split("=");
-                    headers.put(ss[0], ss[1]);
+                    headers0.put(ss[0], ss[1]);
                 }
             }
         }
@@ -70,22 +70,22 @@ public class FairyHandler implements InvocationHandler {
         }
 
         if (uri.contains("://")) {
-            url = uri;
-            name = null;
-            path = null;
+            url0 = uri;
+            name0 = null;
+            path0 = null;
         } else {
             if (uri.contains(":")) {
-                url = null;
-                name = uri.split(":")[0];
-                path = uri.split(":")[1];
+                url0 = null;
+                name0 = uri.split(":")[0];
+                path0 = uri.split(":")[1];
             } else {
-                url = null;
-                name = null;
-                path = uri;
+                url0 = null;
+                name0 = null;
+                path0 = uri;
             }
         }
 
-        if( url == null && config.getUpstream() == null){
+        if( url0 == null && config.getUpstream() == null){
             throw new FairyException("FairyClient: Not found upstream: " +clz.getName());
         }
     }
@@ -101,50 +101,49 @@ public class FairyHandler implements InvocationHandler {
             fun = alias.value();
         }
 
-        //构建 args2
-        Map<String, Object> args2 = new LinkedHashMap<>();
+        //构建 args
+        Map<String, Object> args = new LinkedHashMap<>();
         Parameter[] names = method.getParameters();
         for (int i = 0, len = names.length; i < len; i++) {
             if (vals[i] != null) {
-                args2.put(names[i].getName(), vals[i]);
+                args.put(names[i].getName(), vals[i]);
             }
         }
 
-        //构建 headers2
-        Map<String,String> headers2 = new LinkedHashMap<>();
-        headers2.putAll(headers);
+        //构建 headers
+        Map<String,String> headers = new LinkedHashMap<>(headers0);
 
-        //构建 url2
-        String url2 = null;
-        if (url == null) {
-            url2 = config.getUpstream().getServer();
+        //构建 url
+        String url = null;
+        if (url0 == null) {
+            url = config.getUpstream().getServer();
 
-            if (url2 == null) {
+            if (url == null) {
                 throw new FairyException("FairyClient: Not found upstream!");
             }
 
-            if (path != null) {
-                int idx = url2.indexOf("/", 9);//https://a
+            if (path0 != null) {
+                int idx = url.indexOf("/", 9);//https://a
                 if (idx > 0) {
-                    url2 = url2.substring(0, idx);
+                    url = url.substring(0, idx);
                 }
 
-                if (path.endsWith("/")) {
-                    fun = path + fun;
+                if (path0.endsWith("/")) {
+                    fun = path0 + fun;
                 } else {
-                    fun = path + "/" + fun;
+                    fun = path0 + "/" + fun;
                 }
             }
 
         } else {
-            url2 = url;
+            url = url0;
         }
 
 
         //执行调用
         return new Fairy(config)
-                .url(url2, fun)
-                .call(headers2, args2)
+                .url(url, fun)
+                .call(headers, args)
                 .getObject(method.getReturnType());
     }
 
