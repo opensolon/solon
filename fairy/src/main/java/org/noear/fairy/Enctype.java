@@ -1,7 +1,7 @@
 package org.noear.fairy;
 
 /**
- * body encode type
+ * 编码类型
  * */
 public enum  Enctype {
     form_urlencoded,
