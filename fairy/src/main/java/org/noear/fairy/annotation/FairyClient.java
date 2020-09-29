@@ -12,6 +12,5 @@ public @interface FairyClient {
     String value() default "";
     String[] headers() default {};
     Class<? extends FairyConfiguration> configuration() default FairyConfigurationDefault.class;
-
 }
 
