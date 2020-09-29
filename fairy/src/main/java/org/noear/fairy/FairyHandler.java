@@ -9,6 +9,12 @@ import java.lang.reflect.Parameter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Fairy - 调用处理程序
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public class FairyHandler implements InvocationHandler {
     private final FairyConfig config;
     private final FairyClient client;

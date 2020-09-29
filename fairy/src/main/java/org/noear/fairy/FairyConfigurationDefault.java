@@ -3,7 +3,7 @@ package org.noear.fairy;
 import org.noear.fairy.annotation.FairyClient;
 
 /**
- * 默认配置器
+ * Fairy - 默认配置器
  *
  * @author noear
  * @since 1.0

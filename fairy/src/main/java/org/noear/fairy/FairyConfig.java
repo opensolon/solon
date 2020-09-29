@@ -8,6 +8,12 @@ import org.noear.fairy.encoder.FormEncoder;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+/**
+ * Fairy - 配置
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public class FairyConfig {
     private static boolean HAS_SNACK3 = Utils.hasClass("org.noear.snack.ONode");
     private static boolean HAS_FASTJSON = Utils.hasClass("com.alibaba.fastjson.JSONObject");

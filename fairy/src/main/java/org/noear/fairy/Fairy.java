@@ -7,7 +7,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * 代理器
+ * Fairy - 代理器
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class Fairy {
     /**
