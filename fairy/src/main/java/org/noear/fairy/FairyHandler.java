@@ -18,11 +18,10 @@ import java.util.Map;
 public class FairyHandler implements InvocationHandler {
     private final FairyConfig config;
 
+    private final Map<String,String> headers = new LinkedHashMap<>();
     private final String name;
     private final String path;
     private final String url;
-
-    private String[] client_headers;
 
     /**
      * @param config 配置
@@ -33,8 +32,6 @@ public class FairyHandler implements InvocationHandler {
 
         //1.运行配置器
         if (client != null) {
-            client_headers = client.headers();
-
             try {
                 FairyConfiguration tmp = client.configuration().newInstance();
 
@@ -43,6 +40,14 @@ public class FairyHandler implements InvocationHandler {
                 }
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
+            }
+
+            //>>添加接口header
+            if (client.headers() != null) {
+                for (String h : client.headers()) {
+                    String[] ss = h.split("=");
+                    headers.put(ss[0], ss[1]);
+                }
             }
         }
 
@@ -81,7 +86,7 @@ public class FairyHandler implements InvocationHandler {
         }
 
         if( url == null && config.getUpstream() == null){
-            throw new FairyException("FairyClient config on upstream: " +clz.getName());
+            throw new FairyException("FairyClient: Not found upstream: " +clz.getName());
         }
     }
 
@@ -92,37 +97,30 @@ public class FairyHandler implements InvocationHandler {
 
         Alias alias = method.getAnnotation(Alias.class);
 
-
         if (alias != null && isEmpty(alias.value()) == false) {
             fun = alias.value();
         }
 
-        //构建args
-        Map<String, Object> args = new LinkedHashMap<>();
+        //构建 args2
+        Map<String, Object> args2 = new LinkedHashMap<>();
         Parameter[] names = method.getParameters();
         for (int i = 0, len = names.length; i < len; i++) {
             if (vals[i] != null) {
-                args.put(names[i].getName(), vals[i]);
+                args2.put(names[i].getName(), vals[i]);
             }
         }
 
-        //构建headers
-        Map<String, String> headers = new LinkedHashMap<>();
+        //构建 headers2
+        Map<String,String> headers2 = new LinkedHashMap<>();
+        headers2.putAll(headers);
 
-        //>>添加接口header
-        if (client_headers != null) {
-            for (String h : client_headers) {
-                String[] ss = h.split("=");
-                headers.put(ss[0], ss[1]);
-            }
-        }
-
+        //构建 url2
         String url2 = null;
         if (url == null) {
             url2 = config.getUpstream().getServer();
 
             if (url2 == null) {
-                throw new RuntimeException("Solon client proxy: Not found upstream!");
+                throw new FairyException("FairyClient: Not found upstream!");
             }
 
             if (path != null) {
@@ -142,10 +140,11 @@ public class FairyHandler implements InvocationHandler {
             url2 = url;
         }
 
+
         //执行调用
         return new Fairy(config)
                 .url(url2, fun)
-                .call(headers, args)
+                .call(headers2, args2)
                 .getObject(method.getReturnType());
     }
 
