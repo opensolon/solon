@@ -1,4 +1,4 @@
-package org.noear.fairy;
+package org.noear.fairy.channel;
 
 public class ContextTypes {
     //public static final String ct_hessian_x = "x-application/hessian";
