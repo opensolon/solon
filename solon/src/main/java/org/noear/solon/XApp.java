@@ -160,7 +160,7 @@ public class XApp implements XHandler,XHandlerSlots {
      * */
     @XNote("根据源扫描bean")
     public void beanScan(Class<?> source){
-        Aop.beanScan(source);
+        Aop.factory().beanScan(source);
     }
 
     /**
@@ -168,7 +168,7 @@ public class XApp implements XHandler,XHandlerSlots {
      * */
     @XNote("根据类型构制bean")
     public BeanWrap beanMake(Class<?> clz){
-        return Aop.beanMake(clz);
+        return Aop.factory().beanMake(clz);
     }
 
     /**

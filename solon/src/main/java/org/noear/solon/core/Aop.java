@@ -117,23 +117,6 @@ public class Aop {
     }
 
     //::bean事件处理
-
-    /**
-     * 加载bean（会扫描源下所有的类）
-     */
-    @XNote("加载bean（会扫描源下所有的类）")
-    public static void beanScan(Class<?> source) {
-        _f.beanScan(source, false);
-    }
-
-    /**
-     * 制造bean（只处理类本身；是beanLoad的缩小版）
-     */
-    @XNote("制造bean（只处理类本身；是beanLoad的缩小版）")
-    public static BeanWrap beanMake(Class<?> clz) {
-        return _f.beanMake(clz);
-    }
-
     /**
      * 添加bean加载完成事件
      */
