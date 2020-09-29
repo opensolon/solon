@@ -225,7 +225,7 @@ public class Fairy {
                 throw new FairyException("FairyClient only support interfaces");
             }
 
-            FairyHandler handler = new FairyHandler(_config, client);
+            FairyHandler handler = new FairyHandler(clz, _config, client);
 
             return Proxy.newProxyInstance(
                     clz.getClassLoader(),

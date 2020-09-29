@@ -28,7 +28,7 @@ public class FairyHandler implements InvocationHandler {
      * @param config 配置
      * @param client 客户端注解
      * */
-    public FairyHandler(FairyConfig config, FairyClient client) {
+    public FairyHandler(Class<?> clz, FairyConfig config, FairyClient client) {
         this.config = config;
 
         //1.运行配置器
@@ -61,7 +61,7 @@ public class FairyHandler implements InvocationHandler {
 
         //2.如果没有，就报错
         if (url0 == null) {
-            throw new FairyException("FairyClient config is wrong");
+            throw new FairyException("FairyClient config is wrong: " +clz.getName());
         }
 
         if (url0.contains("://")) {
@@ -81,7 +81,7 @@ public class FairyHandler implements InvocationHandler {
         }
 
         if( url == null && config.getUpstream() == null){
-            throw new FairyException("FairyClient config on upstream");
+            throw new FairyException("FairyClient config on upstream: " +clz.getName());
         }
     }
 

@@ -26,20 +26,6 @@ public class XPluginImp implements XPlugin {
             FairyConfigurationDefault.proxy = new FairyConfigurationSolon();
         }
 
-        Aop.factory().beanCreatorAdd(FairyClient.class, (clz, wrap, anno) -> {
-            if (clz.isInterface() == false) {
-                return;
-            }
-
-            if (XUtil.isEmpty(anno.value())) {
-                throw new FairyException("@FairyClient configuration error!");
-            }
-
-            Object obj = Fairy.builder().create(clz, anno);
-            Aop.wrapAndPut(clz, obj);
-            cached.putIfAbsent(anno, obj);
-        });
-
         Aop.factory().beanInjectorAdd(FairyClient.class, (varH, anno) -> {
             if (varH.getType().isInterface() == false) {
                 return;
