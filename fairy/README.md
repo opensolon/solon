@@ -40,6 +40,9 @@ public class TestUpstream implements XUpstream {
         return "http://localhost:8080";
     }
 }
+
+//切换更改默认配置器的代理，将编码器换掉
+FairyConfigurationDefault.proxy = (c,b)->b.encoder(SnackTypeEncoder.instance);
 ```
 
 #### 接口使用示例2
