@@ -15,14 +15,11 @@ public interface IComplexModelService {
 ```
 
 
-#### 使用示例1
+#### 使用示例1（直接注入，需要框架适配）
 
 ```java
 @XBean
 public class Demo1{
-    //
-    // 直接注入，需要框架适配
-    //
     @FairyClient("test:/ComplexModelService/")
     IComplexModelService service;
     
