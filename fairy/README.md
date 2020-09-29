@@ -1,10 +1,10 @@
 
 # Fairy demo
 
+
+#### Rpc接口申明
+
 ```java
-//
-// Rpc接口申明
-//
 @FairyClient("test:/ComplexModelService/")
 public interface IComplexModelService {
     //持久化
@@ -13,11 +13,12 @@ public interface IComplexModelService {
     //读取
     ComplexModel read(Integer modelId);
 }
+```
 
-//
-// 使用示例
-//
 
+#### 使用示例1
+
+```java
 @XBean
 public class Demo1{
     //
@@ -31,7 +32,11 @@ public class Demo1{
         service.save(tmp);
     }
 }
+```
 
+#### 使用示例2
+
+```java
 @XBean
 public class Demo2{
     IComplexModelService service = Fairy.builder()
@@ -46,5 +51,4 @@ public class Demo2{
         service.save(tmp);
     }
 }
-
 ```
