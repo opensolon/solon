@@ -11,9 +11,6 @@ public class GreetingServiceTest4 {
         IGreetingService service = Fairy.builder()
                 .encoder(ProtobufEncoder.instance)
                 .decoder(ProtobufDecoder.instance)
-                .filterAdd((cfg,url,h,a)->{
-                    h.put("X-Serialization","@hession");
-                })
                 .upstream(()->{
                     return "http://localhost:8080";
                 }).create(IGreetingService.class);
