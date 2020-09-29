@@ -92,11 +92,9 @@ public class FairyHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] vals) throws Throwable {
-        //调用准备
+        //构建 fun
         String fun = method.getName();
-
         Alias alias = method.getAnnotation(Alias.class);
-
         if (alias != null && isEmpty(alias.value()) == false) {
             fun = alias.value();
         }
