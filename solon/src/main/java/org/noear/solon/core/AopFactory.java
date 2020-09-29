@@ -158,11 +158,6 @@ public class AopFactory extends AopFactoryBase {
         });
     }
 
-    public void beanLoaded(){
-        //尝试加载事件（不用函数包装，是为了减少代码）
-        loadedEvent.forEach(f -> f.run());
-    }
-
     /**
      * ::制造当前 bean 及对应处理
      * */
@@ -177,6 +172,15 @@ public class AopFactory extends AopFactoryBase {
 
         return bw;
     }
+
+    /**
+     * 完成加载时调用，会进行事件通知
+     * */
+    public void beanLoaded(){
+        //尝试加载事件（不用函数包装，是为了减少代码）
+        loadedEvent.forEach(f -> f.run());
+    }
+
 
     /**
      * 注册到管理中心
