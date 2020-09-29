@@ -2,10 +2,11 @@ package demo;
 
 import io.edap.x.protobuf.ProtoBuf;
 import org.junit.Test;
+import server.model.ComplexModel;
+import server.model.Person;
+import server.model.Point;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ProtobufTest {
     @Test
@@ -35,5 +36,36 @@ public class ProtobufTest {
         byte[] tmp = ProtoBuf.ser(map);
 
         assert ((Map)ProtoBuf.der(tmp)).size() == 1;
+    }
+
+    @Test
+    public void test4() throws Exception {
+        ComplexModel<Point> model = new ComplexModel<Point>();
+        model.setId(1);
+        Person person = new Person();
+        person.setName("Tom");
+        person.setAge(86);
+        person.setBirthDay(new Date());
+        person.setSensitiveInformation("This should be private over the wire");
+        model.setPerson(person);
+
+        List<Point> points = new ArrayList<Point>();
+        Point point = new Point();
+        point.setX(3);
+        point.setY(4);
+        points.add(point);
+
+        point = new Point();
+        point.setX(100);
+        point.setY(100);
+        points.add(point);
+
+        //远程方法调用
+        model.setPoints(points);
+
+
+        byte[] tmp = ProtoBuf.ser(model);
+
+        assert ((ComplexModel<Point>)ProtoBuf.der(tmp)).getPoints().size() > 1;
     }
 }
