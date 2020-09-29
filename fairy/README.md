@@ -51,7 +51,7 @@ FairyConfigurationDefault.proxy = (c,b)->b.encoder(SnackTypeEncoder.instance);
 public class Demo2{
     IComplexModelService service = Fairy.builder()
                                         .encoder(SnackTypeEncoder.instance)
-                                        .url("http://localhost:8080/ComplexModelService/")
+                                        .uri("http://localhost:8080/ComplexModelService/")
                                         .create(IComplexModelService.class);
     
     public void test(){
@@ -67,7 +67,7 @@ public class Demo2{
 public class Demo3{
     IComplexModelService service = Fairy.builder()
                                         .encoder(SnackTypeEncoder.instance)
-                                        .url("test:/ComplexModelService/")
+                                        .uri("test:/ComplexModelService/")
                                         .upstream(()->"http://localhost:8080")
                                         .create(IComplexModelService.class);
     
