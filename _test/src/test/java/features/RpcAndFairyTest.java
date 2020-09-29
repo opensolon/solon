@@ -37,7 +37,7 @@ public class RpcAndFairyTest {
     @Test
     public void test3() {
         UserService userService3 = Fairy.builder()
-                .url("http://localhost:8080/demo5/user/")
+                .uri("http://localhost:8080/demo5/user/")
                 .create(UserService.class);
 
         UserModel user = userService3.getUser(23);
@@ -48,7 +48,7 @@ public class RpcAndFairyTest {
     @Test
     public void test3_2() {
         UserService userService3 = Fairy.builder()
-                .url("local:/demo5/user/")
+                .uri("local:/demo5/user/")
                 .upstream(() -> "http://localhost:8080")
                 .create(UserService.class);
 
@@ -60,7 +60,7 @@ public class RpcAndFairyTest {
     @Test
     public void test3_3() {
         UserService userService3 = Fairy.builder()
-                .url("/demo5/user/")
+                .uri("/demo5/user/")
                 .upstream(() -> "http://localhost:8080")
                 .create(UserService.class);
 
