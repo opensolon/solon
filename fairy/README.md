@@ -15,7 +15,7 @@ public interface IComplexModelService {
 ```
 
 
-#### 使用示例1（直接注入，需要框架适配）
+#### 使用示例1（直接注入，需要XUpstream适配）
 
 ```java
 @XBean
@@ -26,6 +26,15 @@ public class Demo1{
     public void test(){
         ComplexModel tmp = service.read(1);
         service.save(tmp);
+    }
+}
+
+//适配test upstream
+@XBean("test")
+public class TestUpstream implements XUpstream {
+    @Override
+    public String getServer() {
+        return "http://localhost:8080";
     }
 }
 ```
