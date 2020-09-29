@@ -66,6 +66,7 @@ public class XClassLoader extends URLClassLoader {
 
         try {
             jarURL.getJarFile().close();
+            jarURL = null; //后面进行gc
             cachedMap.remove(file);
             System.gc();
         } catch (Throwable ex) {
