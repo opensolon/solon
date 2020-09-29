@@ -122,8 +122,8 @@ public class Aop {
      * 加载bean（会扫描源下所有的类）
      */
     @XNote("加载bean（会扫描源下所有的类）")
-    public static void beanLoad(Class<?> source) {
-        _f.beanLoad(source, false);
+    public static void beanScan(Class<?> source) {
+        _f.beanScan(source, false);
     }
 
     /**

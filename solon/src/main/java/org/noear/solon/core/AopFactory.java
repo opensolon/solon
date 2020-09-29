@@ -137,9 +137,9 @@ public class AopFactory extends AopFactoryBase {
     }
 
     /**
-     * ::加载源下的所有 bean 及对应处理
+     * ::扫描源下的所有 bean 及对应处理
      */
-    public void beanLoad(Class<?> source, boolean loaded) {
+    public void beanScan(Class<?> source, boolean loaded) {
         //确定文件夹名
         String dir = "";
         if (source.getPackage() != null) {
@@ -164,7 +164,7 @@ public class AopFactory extends AopFactoryBase {
     }
 
     /**
-     * ::加载当前 bean 及对应处理
+     * ::制造当前 bean 及对应处理
      * */
     public BeanWrap beanMake(Class<?> clz) {
         //包装

@@ -98,7 +98,7 @@ public class XApp implements XHandler,XHandlerSlots {
 
         //4.再加载bean
         if (source != null) {
-            Aop.factory().beanLoad(source, true);
+            Aop.factory().beanScan(source, true);
         }
 
         //6.加载渲染关系
@@ -155,17 +155,17 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 根据源加载bean
      * */
-    @XNote("根据源加载bean")
-    public void loadBean(Class<?> source){
-        Aop.beanLoad(source);
+    @XNote("根据源扫描bean")
+    public void beanScan(Class<?> source){
+        Aop.beanScan(source);
     }
 
     /**
      * 根据类型构制bean
      * */
     @XNote("根据类型构制bean")
-    public void makeBean(Class<?> clz){
-        Aop.beanMake(clz);
+    public BeanWrap beanMake(Class<?> clz){
+        return Aop.beanMake(clz);
     }
 
     /**
