@@ -1,6 +1,6 @@
 package org.noear.fairy;
 
-import org.noear.fairy.annotation.Alias;
+import org.noear.fairy.annotation.Mapping;
 import org.noear.fairy.annotation.FairyClient;
 
 import java.lang.reflect.InvocationHandler;
@@ -95,7 +95,7 @@ public class FairyHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] vals) throws Throwable {
         //构建 fun
         String fun = method.getName();
-        Alias alias = method.getAnnotation(Alias.class);
+        Mapping alias = method.getAnnotation(Mapping.class);
         if (alias != null && isEmpty(alias.value()) == false) {
             fun = alias.value();
         }
