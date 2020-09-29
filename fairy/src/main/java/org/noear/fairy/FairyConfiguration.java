@@ -10,5 +10,8 @@ import org.noear.fairy.annotation.FairyClient;
  * */
 @FunctionalInterface
 public interface FairyConfiguration {
+    /**
+     * 配置客户端
+     * */
     void config(FairyClient client, Fairy.Builder builder);
 }

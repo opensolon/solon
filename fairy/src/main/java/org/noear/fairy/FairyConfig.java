@@ -24,6 +24,9 @@ public class FairyConfig {
         channel = Fairy.defaultChannel;
     }
 
+    /**
+     * 尝试初始化进行补缺
+     * */
     public FairyConfig tryInit() {
         if (encoder == null) {
             setEncoder(FormEncoder.instance);
@@ -50,74 +53,101 @@ public class FairyConfig {
     private IDecoder decoder;
     //通道
     private IChannel channel;
-
+    //上游
     private Upstream upstream;
-
+    //服务端
     private String server;
-
+    //过滤器
     private Set<IFilter> filters = new LinkedHashSet<>();
 
-
+    /**
+     * 获取编码器
+     * */
     public IEncoder getEncoder() {
         return encoder;
     }
-
+    /**
+     * 设置编码器
+     * */
     protected void setEncoder(IEncoder encoder) {
         if (encoder != null) {
             this.encoder = encoder;
         }
     }
 
+    /**
+     * 获取解码器
+     * */
     public IDecoder getDecoder() {
         return decoder;
     }
-
+    /**
+     * 设置解码器
+     * */
     protected void setDecoder(IDecoder decoder) {
         if (decoder != null) {
             this.decoder = decoder;
         }
     }
 
-
+    /**
+     * 获取通道
+     * */
     public IChannel getChannel() {
         return channel;
     }
-
+    /**
+     * 设置通道
+     * */
     protected void setChannel(IChannel channel) {
         if (channel != null) {
             this.channel = channel;
         }
     }
 
-
+    /**
+     * 获取上游
+     * */
     public Upstream getUpstream() {
         return upstream;
     }
-
+    /**
+     * 设置上游
+     * */
     protected void setUpstream(Upstream upstream) {
         this.upstream = upstream;
     }
 
-
+    /**
+     * 获取服务端
+     * */
     public String getServer() {
         return server;
     }
-
+    /**
+     * 设置服务端
+     * */
     protected void setServer(String server) {
         this.server = server;
     }
 
 
+    /**
+     * 获取过滤器
+     * */
     public Set<IFilter> getFilters() {
         return filters;
     }
-
+    /**
+     * 添加过滤器
+     * */
     protected void filterAdd(IFilter filter) {
         filters.add(filter);
     }
 
 
     //检查类是否存在
+    //
     private static boolean hasClass(String className) {
         try {
             Class.forName(className);

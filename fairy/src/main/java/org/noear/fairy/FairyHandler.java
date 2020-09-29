@@ -23,6 +23,10 @@ public class FairyHandler implements InvocationHandler {
     private final String path;
     private final String server;
 
+    /**
+     * @param config 配置
+     * @param client 客户端注解
+     * */
     public FairyHandler(FairyConfig config, FairyClient client) {
         this.config = config;
         this.client = client;

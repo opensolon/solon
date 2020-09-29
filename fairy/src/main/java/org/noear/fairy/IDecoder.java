@@ -1,5 +1,8 @@
 package org.noear.fairy;
 
+/**
+ * 解码器
+ * */
 public interface IDecoder {
     /**
      * 编码

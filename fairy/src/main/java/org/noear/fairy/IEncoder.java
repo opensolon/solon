@@ -1,5 +1,8 @@
 package org.noear.fairy;
 
+/**
+ * 编码器
+ * */
 public interface IEncoder {
     /**
      * 编码
