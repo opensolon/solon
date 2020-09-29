@@ -49,7 +49,6 @@ public class TestUpstream implements XUpstream {
 public class Demo2{
     IComplexModelService service = Fairy.builder()
                                         .encoder(SnackTypeEncoder.instance)
-                                        .decoder(HessionDecoder.instance)
                                         .url("http://localhost:8080/ComplexModelService/")
                                         .create(IComplexModelService.class);
     
@@ -67,7 +66,6 @@ public class Demo2{
 public class Demo3{
     IComplexModelService service = Fairy.builder()
                                         .encoder(SnackTypeEncoder.instance)
-                                        .decoder(HessionDecoder.instance)
                                         .url("test:/ComplexModelService/")
                                         .upstream(()->"http://localhost:8080")
                                         .create(IComplexModelService.class);
