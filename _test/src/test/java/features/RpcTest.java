@@ -2,6 +2,7 @@ package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.noear.fairy.Fairy;
 import org.noear.fairy.annotation.FairyClient;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
@@ -28,6 +29,13 @@ public class RpcTest {
 
     @Test
     public void test1() {
+        UserModel user = userService2.getUser(23);
+        System.out.println(user);
+        assert user.getId() == 23;
+    }
+
+    @Test
+    public void test2() {
         UserModel user = userService2.getUser(23);
         System.out.println(user);
         assert user.getId() == 23;
