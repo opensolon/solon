@@ -119,13 +119,13 @@ public class FairyConfig {
     }
 
     /**
-     * 获取服务端
+     * 获取服务完整url
      * */
     public String getUrl() {
         return url;
     }
     /**
-     * 设置服务端
+     * 设置服务完整url
      * */
     protected void setUrl(String url) {
         this.url = url;
