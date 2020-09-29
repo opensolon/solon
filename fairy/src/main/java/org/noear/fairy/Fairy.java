@@ -196,7 +196,7 @@ public class Fairy {
          * 设置服务端
          */
         public Builder server(String server) {
-            _config.setServer(server);
+            _config.setUrl(server);
             return this;
         }
 

@@ -56,7 +56,7 @@ public class FairyConfig {
     //上游
     private Upstream upstream;
     //服务端
-    private String server;
+    private String url;
     //过滤器
     private Set<IFilter> filters = new LinkedHashSet<>();
 
@@ -121,14 +121,14 @@ public class FairyConfig {
     /**
      * 获取服务端
      * */
-    public String getServer() {
-        return server;
+    public String getUrl() {
+        return url;
     }
     /**
      * 设置服务端
      * */
-    protected void setServer(String server) {
-        this.server = server;
+    protected void setUrl(String url) {
+        this.url = url;
     }
 
 

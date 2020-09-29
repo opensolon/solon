@@ -21,7 +21,7 @@ public class FairyHandler implements InvocationHandler {
 
     private final String name;
     private final String path;
-    private final String server;
+    private final String url;
 
     /**
      * @param config 配置
@@ -48,7 +48,7 @@ public class FairyHandler implements InvocationHandler {
         config.tryInit();
 
         //3.获取server or url
-        String sev = config.getServer();
+        String sev = config.getUrl();
 
         if (sev == null) {
             //1.优先从 XClient 获取服务地址或名称
@@ -63,16 +63,16 @@ public class FairyHandler implements InvocationHandler {
         }
 
         if (sev.contains("://")) {
-            server = sev;
+            url = sev;
             name = null;
             path = null;
         } else {
             if (sev.contains(":")) {
-                server = null;
+                url = null;
                 name = sev.split(":")[0];
                 path = sev.split(":")[1];
             } else {
-                server = null;
+                url = null;
                 name = null;
                 path = sev;
             }
@@ -115,18 +115,18 @@ public class FairyHandler implements InvocationHandler {
             }
         }
 
-        String url = null;
-        if (server == null) {
-            url = config.getUpstream().getServer();
+        String url2 = null;
+        if (url == null) {
+            url2 = config.getUpstream().getServer();
 
-            if (url == null) {
+            if (url2 == null) {
                 throw new RuntimeException("Solon client proxy: Not found upstream!");
             }
 
             if (path != null) {
-                int idx = url.indexOf("/", 9);//https://a
+                int idx = url2.indexOf("/", 9);//https://a
                 if (idx > 0) {
-                    url = url.substring(0, idx);
+                    url2 = url2.substring(0, idx);
                 }
 
                 if (path.endsWith("/")) {
@@ -137,12 +137,12 @@ public class FairyHandler implements InvocationHandler {
             }
 
         } else {
-            url = server;
+            url2 = url;
         }
 
         //执行调用
         return new Fairy(config)
-                .url(url, fun)
+                .url(url2, fun)
                 .call(headers, args)
                 .getObject(method.getReturnType());
     }
