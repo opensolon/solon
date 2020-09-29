@@ -17,11 +17,12 @@ import java.util.Map;
  * */
 public class FairyHandler implements InvocationHandler {
     private final FairyConfig config;
-    private final FairyClient client;
 
     private final String name;
     private final String path;
     private final String url;
+
+    private String[] client_headers;
 
     /**
      * @param config 配置
@@ -29,10 +30,11 @@ public class FairyHandler implements InvocationHandler {
      * */
     public FairyHandler(FairyConfig config, FairyClient client) {
         this.config = config;
-        this.client = client;
 
         //1.运行配置器
         if (client != null) {
+            client_headers = client.headers();
+
             try {
                 FairyConfiguration tmp = client.configuration().newInstance();
 
@@ -40,51 +42,51 @@ public class FairyHandler implements InvocationHandler {
                     tmp.config(client, new Fairy.Builder(config));
                 }
             } catch (Exception ex) {
-                throw new RuntimeException();
+                throw new RuntimeException(ex);
             }
         }
 
         //2.配置初始化
         config.tryInit();
 
-        //3.获取server or url
-        String sev = config.getUrl();
+        //3.获取 or url
+        String url0 = config.getUrl();
 
-        if (sev == null) {
+        if (url0 == null && client != null) {
             //1.优先从 XClient 获取服务地址或名称
             if (isEmpty(client.value()) == false) {
-                sev = client.value();
-            }
-
-            //2.如果没有，就报错
-            if (sev == null) {
-                throw new FairyException("@FairyClient no value");
+                url0 = client.value();
             }
         }
 
-        if (sev.contains("://")) {
-            url = sev;
+        //2.如果没有，就报错
+        if (url0 == null) {
+            throw new FairyException("FairyClient config is wrong");
+        }
+
+        if (url0.contains("://")) {
+            url = url0;
             name = null;
             path = null;
         } else {
-            if (sev.contains(":")) {
+            if (url0.contains(":")) {
                 url = null;
-                name = sev.split(":")[0];
-                path = sev.split(":")[1];
+                name = url0.split(":")[0];
+                path = url0.split(":")[1];
             } else {
                 url = null;
                 name = null;
-                path = sev;
+                path = url0;
             }
+        }
+
+        if( url == null && config.getUpstream() == null){
+            throw new FairyException("FairyClient config on upstream");
         }
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] vals) throws Throwable {
-        if (client == null) {
-            return null;
-        }
-
         //调用准备
         String fun = method.getName();
 
@@ -108,8 +110,8 @@ public class FairyHandler implements InvocationHandler {
         Map<String, String> headers = new LinkedHashMap<>();
 
         //>>添加接口header
-        if (client.headers() != null) {
-            for (String h : client.headers()) {
+        if (client_headers != null) {
+            for (String h : client_headers) {
                 String[] ss = h.split("=");
                 headers.put(ss[0], ss[1]);
             }

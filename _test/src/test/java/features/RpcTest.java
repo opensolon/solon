@@ -24,8 +24,11 @@ public class RpcTest {
         UserModel user = userService.getUser(12);
         System.out.println(user);
         assert user.getId() == 12;
+    }
 
-        user = userService2.getUser(23);
+    @Test
+    public void test1() {
+        UserModel user = userService2.getUser(23);
         System.out.println(user);
         assert user.getId() == 23;
     }

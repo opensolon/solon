@@ -210,10 +210,6 @@ public class Fairy {
         public <T> T create(Class<?> clz) {
             FairyClient client = clz.getAnnotation(FairyClient.class);
 
-            if (client == null) {
-                throw new FairyException(clz.getName() + " no @FairyClient");
-            }
-
             return (T) create(clz, client);
         }
 
@@ -221,12 +217,12 @@ public class Fairy {
          * 创建接口代理
          */
         public Object create(Class<?> clz, FairyClient client) {
-            if (clz == null || client == null) {
+            if (clz == null) {
                 return null;
             }
 
             if (clz.isInterface() == false) {
-                throw new FairyException("@FairyClient only support interfaces");
+                throw new FairyException("FairyClient only support interfaces");
             }
 
             FairyHandler handler = new FairyHandler(_config, client);
