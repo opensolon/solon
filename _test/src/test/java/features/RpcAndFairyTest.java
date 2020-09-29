@@ -56,4 +56,16 @@ public class RpcAndFairyTest {
         System.out.println(user);
         assert user.getId() == 23;
     }
+
+    @Test
+    public void test3_3() {
+        UserService userService3 = Fairy.builder()
+                .url("/demo5/user/")
+                .upstream(() -> "http://localhost:8080")
+                .create(UserService.class);
+
+        UserModel user = userService3.getUser(23);
+        System.out.println(user);
+        assert user.getId() == 23;
+    }
 }
