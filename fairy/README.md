@@ -8,6 +8,7 @@ Solon 伴生项目，为 Solon rpc 提供 client 支持。
 #### 接口申明
 
 ```java
+@FairyClient("test:/ComplexModelService/")
 public interface IComplexModelService {
     //持久化
     void save(ComplexModel model);
@@ -23,7 +24,7 @@ public interface IComplexModelService {
 ```java
 @XBean
 public class Demo1{
-    @FairyClient("test:/ComplexModelService/")
+    @FairyClient
     IComplexModelService service;
     
     public void test(){
@@ -51,7 +52,7 @@ public class Demo2{
                                         .encoder(SnackTypeEncoder.instance)
                                         .decoder(HessionDecoder.instance)
                                         .upstream(()->{
-                                            return "http://localhost:8080/ComplexModelService/";
+                                            return "http://localhost:8080";
                                         }).create(IComplexModelService.class);
     
     public void test(){
