@@ -139,7 +139,7 @@ public class AopFactory extends AopFactoryBase {
     /**
      * ::扫描源下的所有 bean 及对应处理
      */
-    public void beanScan(Class<?> source, boolean loaded) {
+    public void beanScan(Class<?> source) {
         //确定文件夹名
         String dir = "";
         if (source.getPackage() != null) {
@@ -156,11 +156,11 @@ public class AopFactory extends AopFactoryBase {
                 tryCreateBean(clz);
             }
         });
+    }
 
+    public void beanLoaded(){
         //尝试加载事件（不用函数包装，是为了减少代码）
-        if (loaded) {
-            loadedEvent.forEach(f -> f.run());
-        }
+        loadedEvent.forEach(f -> f.run());
     }
 
     /**

@@ -98,14 +98,17 @@ public class XApp implements XHandler,XHandlerSlots {
 
         //4.再加载bean
         if (source != null) {
-            Aop.factory().beanScan(source, true);
+            Aop.factory().beanScan(source);
         }
 
-        //6.加载渲染关系
+        //5.加载渲染关系
         XMap map = _global.prop().getXmap("solon.view.mapping");
         map.forEach((k, v) -> {
             XBridge.renderMapping("." + k, v);
         });
+
+        //6.bean加载完成
+        Aop.factory().beanLoaded();
 
         long time_end = System.currentTimeMillis();
         PrintUtil.blueln("solon.plugin:: End loading @" + (time_end - time_start) + "ms");
