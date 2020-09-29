@@ -111,6 +111,9 @@ public class Aop {
         return bean;
     }
 
+    /**
+     * 尝试用属性注入
+     */
     public static <T> T inject(T bean, Properties propS) {
         ClassWrap.get(bean.getClass()).fill(bean, propS::getProperty, null);
         return bean;
