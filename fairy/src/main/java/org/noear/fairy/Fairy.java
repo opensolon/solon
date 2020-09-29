@@ -195,8 +195,8 @@ public class Fairy {
         /**
          * 设置服务端
          */
-        public Builder url(String url) {
-            _config.setUrl(url);
+        public Builder uri(String uri) {
+            _config.setUri(uri);
             return this;
         }
 

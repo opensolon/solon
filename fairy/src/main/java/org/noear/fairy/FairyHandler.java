@@ -50,33 +50,33 @@ public class FairyHandler implements InvocationHandler {
         config.tryInit();
 
         //3.获取 or url
-        String url0 = config.getUrl();
+        String uri = config.getUri();
 
-        if (url0 == null && client != null) {
+        if (uri == null && client != null) {
             //1.优先从 XClient 获取服务地址或名称
             if (isEmpty(client.value()) == false) {
-                url0 = client.value();
+                uri = client.value();
             }
         }
 
         //2.如果没有，就报错
-        if (url0 == null) {
+        if (uri == null) {
             throw new FairyException("FairyClient config is wrong: " +clz.getName());
         }
 
-        if (url0.contains("://")) {
-            url = url0;
+        if (uri.contains("://")) {
+            url = uri;
             name = null;
             path = null;
         } else {
-            if (url0.contains(":")) {
+            if (uri.contains(":")) {
                 url = null;
-                name = url0.split(":")[0];
-                path = url0.split(":")[1];
+                name = uri.split(":")[0];
+                path = uri.split(":")[1];
             } else {
                 url = null;
                 name = null;
-                path = url0;
+                path = uri;
             }
         }
 
