@@ -48,7 +48,6 @@ FairyConfigurationDefault.proxy = (c,b)->b.encoder(SnackTypeEncoder.instance);
 #### 接口使用示例2
 
 ```java
-@XBean
 public class Demo2{
     IComplexModelService service = Fairy.builder()
                                         .encoder(SnackTypeEncoder.instance)
@@ -65,7 +64,6 @@ public class Demo2{
 #### 接口使用示例3
 
 ```java
-@XBean
 public class Demo3{
     IComplexModelService service = Fairy.builder()
                                         .encoder(SnackTypeEncoder.instance)
