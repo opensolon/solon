@@ -3,6 +3,7 @@ package org.noear.fairy;
 import org.noear.fairy.annotation.FairyClient;
 
 import java.lang.reflect.Proxy;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -90,7 +91,7 @@ public class Fairy {
     public Fairy call(Map<String, String> headers, Map args) {
         try {
             if (headers == null) {
-                headers = new LinkedHashMap<>();
+                headers = new HashMap<>();
             }
 
             for (IFilter filter : _config.getFilters()) {
