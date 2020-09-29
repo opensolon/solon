@@ -15,10 +15,10 @@ import java.util.Set;
  * @since 1.0
  * */
 public class FairyConfig {
-    private static boolean HAS_SNACK3 = Utils.hasClass("org.noear.snack.ONode");
-    private static boolean HAS_FASTJSON = Utils.hasClass("com.alibaba.fastjson.JSONObject");
+    private static boolean HAS_SNACK3 = hasClass("org.noear.snack.ONode");
+    private static boolean HAS_FASTJSON = hasClass("com.alibaba.fastjson.JSONObject");
 
-    public FairyConfig(){
+    public FairyConfig() {
         encoder = Fairy.defaultEncoder;
         decoder = Fairy.defaultDecoder;
         channel = Fairy.defaultChannel;
@@ -63,7 +63,7 @@ public class FairyConfig {
     }
 
     protected void setEncoder(IEncoder encoder) {
-        if(encoder != null){
+        if (encoder != null) {
             this.encoder = encoder;
         }
     }
@@ -73,8 +73,8 @@ public class FairyConfig {
     }
 
     protected void setDecoder(IDecoder decoder) {
-        if(decoder != null){
-           this.decoder = decoder;
+        if (decoder != null) {
+            this.decoder = decoder;
         }
     }
 
@@ -84,7 +84,7 @@ public class FairyConfig {
     }
 
     protected void setChannel(IChannel channel) {
-        if(channel != null){
+        if (channel != null) {
             this.channel = channel;
         }
     }
@@ -112,7 +112,18 @@ public class FairyConfig {
         return filters;
     }
 
-    protected void filterAdd(IFilter filter){
+    protected void filterAdd(IFilter filter) {
         filters.add(filter);
+    }
+
+
+    //检查类是否存在
+    private static boolean hasClass(String className) {
+        try {
+            Class.forName(className);
+            return true;
+        } catch (Throwable ex) {
+            return false;
+        }
     }
 }
