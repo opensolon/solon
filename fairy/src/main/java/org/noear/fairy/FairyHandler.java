@@ -6,6 +6,7 @@ import org.noear.fairy.annotation.FairyClient;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -109,7 +110,7 @@ public class FairyHandler implements InvocationHandler {
         }
 
         //构建 headers
-        Map<String,String> headers = new LinkedHashMap<>(headers0);
+        Map<String,String> headers = new HashMap<>(headers0);
 
         //构建 url
         String url = null;
