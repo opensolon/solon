@@ -1,8 +1,11 @@
 
-# Fairy demo
+# Fairy
 
+Solon 伴生项目，为 Solon rpc 提供 client 支持。
 
-#### Rpc接口申明
+## Demo
+
+#### 接口申明
 
 ```java
 public interface IComplexModelService {
@@ -15,7 +18,7 @@ public interface IComplexModelService {
 ```
 
 
-#### 使用示例1（直接注入，需要XUpstream适配）
+#### 接口使用示例1（直接注入，需要XUpstream适配）
 
 ```java
 @XBean
@@ -39,7 +42,7 @@ public class TestUpstream implements XUpstream {
 }
 ```
 
-#### 使用示例2
+#### 接口使用示例2
 
 ```java
 @XBean
