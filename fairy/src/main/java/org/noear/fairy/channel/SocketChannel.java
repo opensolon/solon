@@ -11,7 +11,7 @@ public class SocketChannel implements IChannel {
     public static final SocketChannel instance = new SocketChannel();
 
     @Override
-    public Result call(FairyConfig cfg, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
+    public Result call(FairyConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
         SocketMessage msg = SocketUtils.send(url, (String) cfg.getEncoder().encode(args));
 
         return new Result(msg.charset, msg.content);

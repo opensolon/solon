@@ -9,5 +9,5 @@ public interface IChannel {
     /**
      * 设用
      * */
-    Result call(FairyConfig cfg, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable;
+    Result call(FairyConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable;
 }

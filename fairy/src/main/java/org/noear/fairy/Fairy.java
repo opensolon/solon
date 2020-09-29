@@ -29,6 +29,7 @@ public class Fairy {
 
 
     private String _url;
+    private String _method;
     private final FairyConfig _config;
 
     public Fairy() {
@@ -48,6 +49,11 @@ public class Fairy {
      */
     public Fairy url(String url) {
         _url = url;
+        return this;
+    }
+
+    public Fairy method(String method) {
+        _method = method;
         return this;
     }
 
@@ -97,7 +103,7 @@ public class Fairy {
                 filter.handle(_config, _url, headers, args);
             }
 
-            _result = _config.getChannel().call(_config, _url, headers, args);
+            _result = _config.getChannel().call(_config, _method, _url, headers, args);
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {

@@ -15,7 +15,7 @@ public class HttpChannel implements IChannel {
     public static final HttpChannel instance = new HttpChannel();
 
     @Override
-    public Result call(FairyConfig cfg, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
+    public Result call(FairyConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
         HttpUtils http = HttpUtils.http(url).headers(headers);
 
         if (cfg.getDecoder().enctype() == Enctype.application_json) {
@@ -26,12 +26,16 @@ public class HttpChannel implements IChannel {
             http.header("X-Serialization", ContextTypes.at_protobuf);
         }
 
+        if(method == null || method.length() == 0){
+            method = "POST";
+        }
+
         //1.执行并返回
         Response response = null;
 
         if (cfg.getEncoder().enctype() == Enctype.form_urlencoded) {
             if (args != null && args.size() > 0) {
-                response = http.data(args).exec("POST");
+                response = http.data(args).exec(method);
             } else {
                 response = http.exec("GET");
             }
@@ -39,17 +43,17 @@ public class HttpChannel implements IChannel {
 
         if (cfg.getEncoder().enctype() == Enctype.application_json) {
             String json = (String) cfg.getEncoder().encode(args);
-            response = http.bodyTxt(json, ContextTypes.ct_json).exec("POST");
+            response = http.bodyTxt(json, ContextTypes.ct_json).exec(method);
         }
 
         if (cfg.getEncoder().enctype() == Enctype.application_hessian) {
             InputStream stream = new ByteArrayInputStream((byte[]) cfg.getEncoder().encode(args));
-            response = http.bodyRaw(stream, ContextTypes.ct_hessian).exec("POST");
+            response = http.bodyRaw(stream, ContextTypes.ct_hessian).exec(method);
         }
 
         if (cfg.getEncoder().enctype() == Enctype.application_protobuf) {
             InputStream stream = new ByteArrayInputStream((byte[]) cfg.getEncoder().encode(args));
-            response = http.bodyRaw(stream, ContextTypes.ct_protobuf).exec("POST");
+            response = http.bodyRaw(stream, ContextTypes.ct_protobuf).exec(method);
         }
 
         if (response == null) {
