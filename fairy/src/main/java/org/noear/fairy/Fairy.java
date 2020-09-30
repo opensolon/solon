@@ -139,7 +139,11 @@ public class Fairy {
      * 获取结果（返序列化为object）
      */
     public <T> T getObject(Class<T> returnType) {
-        return _config.getDecoder().decode(_result, returnType);
+        if (Void.TYPE.equals(returnType)) {
+            return null;
+        }else {
+            return _config.getDecoder().decode(_result, returnType);
+        }
     }
 
     //////////////////////////////////
