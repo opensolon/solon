@@ -98,10 +98,14 @@ public class FairyHandler implements InvocationHandler {
         String met = null;
         Mapping mapping = method.getAnnotation(Mapping.class);
         if (mapping != null && isEmpty(mapping.value()) == false) {
-            fun = mapping.value().trim();
-            if (fun.indexOf(" ") > 0) {
+            //格式1: GET
+            //格式2: GET user/a.0.1
+            String val = mapping.value().trim();
+            if (val.indexOf(" ") > 0) {
                 met = fun.split(" ")[0];
                 fun = fun.split(" ")[1];
+            }else{
+                met = val;
             }
         }
 

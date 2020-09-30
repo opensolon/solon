@@ -78,18 +78,29 @@ public class Demo3{
 }
 ```
 
-## 二、属性说明
+## 二、注解与属性说明
 
-| @FairyClient 字段 | 说明 | 
+#### @FairyClient
+
+| 字段 | 说明 | 
 | -------- | -------- | 
-| value     | uri 配置     | 
+| value     | Uri 申明（支持三种格式）     | 
 | headers     | 添加头信息     | 
 | configuration     | configuration 配置器     | 
 
-#### value(uri) 的三种格式：
+Uri 申明的三种格式：
 
-* url（例：`http://x.x.x/x/x/`），此格式不支持upstream
+* url（ 例：`http://x.x.x/x/x/` ），此格式不支持upstream
+* name:path（ 例：`local:/x/x/` ），此格式必须配合upstream
+* path（ 例：`/x/x` ），此格式必须配合upstream
 
-* name:path（例：`local:/x/x/`），此格式必须配合upstream
+#### @Mapping（默认不需要映射）
 
-* path（例：`/x/x`），此格式必须配合upstream
+| 字段 | 说明 | 
+| -------- | -------- | 
+| value     | 映射值（支持两种格式）     | 
+
+映射值的两种格式
+
+* method（ 例：`GET` ）
+* method path（ 例：`GET user/a.0.1` ）
