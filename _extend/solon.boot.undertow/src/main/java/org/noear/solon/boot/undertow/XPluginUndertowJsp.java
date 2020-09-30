@@ -59,8 +59,8 @@ public class XPluginUndertowJsp implements XPlugin {
 
         builder.addHttpListener(app.port(), "0.0.0.0");
 
-        //builder.setHandler(httpHandler);
-        builder.setHandler(websocket(new UtWebSocketHandler(), httpHandler));
+        builder.setHandler(httpHandler);
+//        builder.setHandler(websocket(new UtWebSocketHandler(), httpHandler));
 
         _server = builder.build();
 
