@@ -1,7 +1,6 @@
 package org.noear.fairy.channel;
 
 public class Constants {
-    //public static final String ct_hessian_x = "x-application/hessian";
     public static final String ct_hessian = "application/hessian";
     public static final String ct_protobuf = "application/protobuf";
     public static final String ct_json = "application/json";
