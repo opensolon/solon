@@ -7,7 +7,7 @@ import java.util.Map;
  * */
 public interface IFilter {
     /**
-     * 处理
+     * 过滤
      */
     void filter(FairyConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args);
 }
