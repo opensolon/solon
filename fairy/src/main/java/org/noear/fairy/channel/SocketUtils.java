@@ -62,7 +62,7 @@ public class SocketUtils {
             return null;
         }
 
-        SocketMessageDock msgD = new SocketMessageDock(SocketMessage.wrap(uri, message));
+        SocketMessageWrap msgD = new SocketMessageWrap(SocketMessage.wrap(uri, message));
 
         get(uri).sendDo(msgD, (m) -> {
             msgD.complete(null);
@@ -86,7 +86,7 @@ public class SocketUtils {
             return;
         }
 
-        SocketMessageDock msgD = new SocketMessageDock(SocketMessage.wrap(uri, message));
+        SocketMessageWrap msgD = new SocketMessageWrap(SocketMessage.wrap(uri, message));
         msgD.handler = callback;
 
         get(uri).sendDo(msgD, (m) -> {
@@ -111,7 +111,7 @@ public class SocketUtils {
         }
     }
 
-    private void sendDo(final SocketMessageDock msgD, Consumer<SocketMessageDock> callback) throws Exception {
+    private void sendDo(final SocketMessageWrap msgD, Consumer<SocketMessageWrap> callback) throws Exception {
         // 建立连接后获得输出流
         pool.execute(() -> {
             try {
@@ -193,7 +193,7 @@ public class SocketUtils {
         return num1 ^ num2 ^ num3 ^ num4;
     }
 
-    public static class SocketMessageDock extends CompletableFuture<Integer> {
+    public static class SocketMessageWrap extends CompletableFuture<Integer> {
         public SocketMessage req;
         public SocketMessage res;
         public Throwable err;
@@ -204,7 +204,7 @@ public class SocketUtils {
             return req.key;
         }
 
-        public SocketMessageDock(SocketMessage req){
+        public SocketMessageWrap(SocketMessage req){
             this.req = req;
         }
     }
