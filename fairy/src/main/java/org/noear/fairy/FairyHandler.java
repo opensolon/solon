@@ -102,8 +102,8 @@ public class FairyHandler implements InvocationHandler {
             //格式2: GET user/a.0.1
             String val = mapping.value().trim();
             if (val.indexOf(" ") > 0) {
-                met = fun.split(" ")[0];
-                fun = fun.split(" ")[1];
+                met = val.split(" ")[0];
+                fun = val.split(" ")[1];
             }else{
                 met = val;
             }
