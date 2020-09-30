@@ -2,6 +2,7 @@ package org.noear.solon.boot.websocket;
 
 import org.java_websocket.WebSocket;
 import org.noear.solon.core.*;
+import org.noear.solon.api.socket.SocketMessage;
 
 import java.io.*;
 import java.net.InetSocketAddress;

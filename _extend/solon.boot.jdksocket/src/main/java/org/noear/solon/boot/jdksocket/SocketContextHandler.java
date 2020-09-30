@@ -1,8 +1,8 @@
 package org.noear.solon.boot.jdksocket;
 
 import org.noear.solon.XApp;
-import org.noear.solon.core.SocketMessage;
 import org.noear.solon.core.XEventBus;
+import org.noear.solon.api.socket.SocketMessage;
 
 public class SocketContextHandler {
 

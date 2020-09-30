@@ -1,6 +1,6 @@
 package org.noear.solon.boot.jdksocket;
 
-import org.noear.solon.core.SocketMessage;
+import org.noear.solon.api.socket.SocketMessage;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -25,14 +25,14 @@ public class SocketServer {
     public void start(int port)  {
         new Thread(()->{
             try {
-                do_start(port);
+                start0(port);
             }catch (Exception ex){
                 throw new RuntimeException(ex);
             }
         }).start();
     }
 
-    private void do_start(int port) throws IOException {
+    private void start0(int port) throws IOException {
         server = new ServerSocket(port);
 
         System.out.println("Server started, waiting for customer connection...");

@@ -1,6 +1,7 @@
 package org.noear.solon.boot.websocket;
 
-import org.noear.solon.core.SocketMessage;
+
+import org.noear.solon.api.socket.SocketMessage;
 
 import java.nio.ByteBuffer;
 import java.util.UUID;

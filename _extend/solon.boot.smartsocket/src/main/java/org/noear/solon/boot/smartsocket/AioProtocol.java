@@ -1,6 +1,7 @@
 package org.noear.solon.boot.smartsocket;
 
-import org.noear.solon.core.SocketMessage;
+import org.noear.solon.api.socket.SocketMessage;
+
 import org.smartboot.socket.Protocol;
 import org.smartboot.socket.transport.AioSession;
 
