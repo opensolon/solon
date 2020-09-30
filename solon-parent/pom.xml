@@ -301,6 +301,13 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon-mvc-beetl</artifactId>
+                <version>${solon.ver}</version>
+                <type>pom</type>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-web</artifactId>
                 <version>${solon.ver}</version>
                 <type>pom</type>
@@ -308,10 +315,11 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-mvc-beetl</artifactId>
+                <artifactId>solon-cloud</artifactId>
                 <version>${solon.ver}</version>
                 <type>pom</type>
             </dependency>
+
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -571,6 +579,7 @@
 
 
         <module>../solon-web</module>
+        <module>../solon-cloud</module>
 
         <module>../solon-test</module>
 
