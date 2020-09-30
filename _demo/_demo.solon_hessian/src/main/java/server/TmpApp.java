@@ -12,6 +12,10 @@ public class TmpApp {
     public static void main(String[] args) {
         XApp.start(TmpApp.class, args);
 
+        XApp.global().before("**",XMethod.SOCKET,(ctx)->{
+            ctx.headerMap().put("Content-Type", "application/protobuf");
+        });
+
         XApp.global().add("/web/hessian", XMethod.HTTP,
                 new HessianHandler(IGreetingService.class, Aop.get(IGreetingService.class)));
 

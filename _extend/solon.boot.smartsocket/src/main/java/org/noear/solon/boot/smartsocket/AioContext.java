@@ -76,12 +76,16 @@ public class AioContext extends XContextEmpty {
 
     @Override
     public long contentLength() {
-        return 0;
+        if (_message.content == null) {
+            return 0;
+        } else {
+            return _message.content.length;
+        }
     }
 
     @Override
     public String contentType() {
-        return null;
+        return headerMap().get("Content-Type");
     }
 
     @Override
