@@ -49,6 +49,8 @@ public class ComplextModelServiceTest6 {
         model.setPoints(points);
         service.save(model);
 
+        Thread.sleep(100);
+
         model = service.read(model.getId());
         List<Point> points1 = model.getPoints();
         for(Point elem : points1) {

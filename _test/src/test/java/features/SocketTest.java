@@ -25,6 +25,11 @@ public class SocketTest {
         assert "我收到了：Hello 世界!".equals(msg.toString());
 
         Thread.sleep(100);
+        msg = SocketUtils.send(root + "/demog/中文/1", "Hello 世界!");
+        System.out.println(msg.toString());
+        assert "我收到了：Hello 世界!".equals(msg.toString());
+
+        Thread.sleep(100);
         msg = SocketUtils.send(root + "/demog/中文/2", "Hello 世界2!");
         System.out.println(msg.toString());
         assert "我收到了：Hello 世界2!".equals(msg.toString());
