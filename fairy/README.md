@@ -91,7 +91,7 @@ public class Demo3{
 Uri 申明的三种格式：
 * url（ 例：`http://x.x.x/x/x/` ），此格式不支持upstream
 * name:path（ 例：`local:/x/x/` ），此格式必须配合upstream
-* path（ 例：`/x/x` ），此格式必须配合upstream
+* name（ 例：`local` ），此格式必须配合upstream
 
 headers 格式说明：
 * `{"head1=a","head2=b"}`

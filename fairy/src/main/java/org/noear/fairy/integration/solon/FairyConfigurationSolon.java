@@ -19,10 +19,6 @@ public class FairyConfigurationSolon implements FairyConfiguration {
             return;
         }
 
-        if (client.value().contains(":") == false) {
-            return;
-        }
-
         String sev = client.value().split(":")[0];
 
         //尝试从负载工厂获取

@@ -81,8 +81,8 @@ public class FairyHandler implements InvocationHandler {
                 path0 = uri.split(":")[1];
             } else {
                 url0 = null;
-                name0 = null;
-                path0 = uri;
+                name0 = uri;
+                path0 = null;
             }
         }
 
