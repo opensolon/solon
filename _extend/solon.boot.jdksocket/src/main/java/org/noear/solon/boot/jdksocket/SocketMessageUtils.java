@@ -3,7 +3,6 @@ package org.noear.solon.boot.jdksocket;
 import org.noear.solon.api.socket.SocketMessage;
 
 import java.nio.ByteBuffer;
-import java.util.UUID;
 
 public class SocketMessageUtils {
 
