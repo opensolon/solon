@@ -1,6 +1,6 @@
 package org.noear.fairy;
 
-import org.noear.fairy.channel.HttpChannel;
+import org.noear.fairy.channel.OkHttpChannel;
 import org.noear.fairy.decoder.FastjsonDecoder;
 import org.noear.fairy.decoder.SnackDecoder;
 import org.noear.fairy.encoder.FormEncoder;
@@ -40,7 +40,7 @@ public class FairyConfig {
             }
         }
         if (channel == null) {
-            setChannel(HttpChannel.instance);
+            setChannel(OkHttpChannel.instance);
         }
 
         return this;

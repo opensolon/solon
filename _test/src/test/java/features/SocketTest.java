@@ -2,11 +2,11 @@ package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.fairy.channel.SocketMessage;
-import org.noear.fairy.channel.SocketUtils;
 import org.noear.solon.XApp;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.utils.SocketMessage;
+import webapp.utils.SocketUtils;
 
 import java.util.ArrayList;
 import java.util.List;

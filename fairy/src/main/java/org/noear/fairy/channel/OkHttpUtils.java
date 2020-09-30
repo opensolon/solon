@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-class HttpUtils {
+class OkHttpUtils {
     private final static Dispatcher dispatcher() {
         Dispatcher temp = new Dispatcher();
         temp.setMaxRequests(3000);
@@ -28,8 +28,8 @@ class HttpUtils {
             .dispatcher(dispatcher())
             .build();
 
-    public static HttpUtils http(String url){
-        return new HttpUtils(url);
+    public static OkHttpUtils http(String url){
+        return new OkHttpUtils(url);
     }
 
     private String _url;
@@ -40,25 +40,25 @@ class HttpUtils {
     private MultipartBody.Builder _part_builer;
 
     private Request.Builder _builder;
-    public HttpUtils(String url){
+    public OkHttpUtils(String url){
         _url = url;
         _builder = new Request.Builder().url(url);
     }
 
     //@XNote("设置UA")
-    public HttpUtils userAgent(String ua){
+    public OkHttpUtils userAgent(String ua){
         _builder.header("User-Agent", ua);
         return this;
     }
 
     //@XNote("设置charset")
-    public HttpUtils charset(String charset){
+    public OkHttpUtils charset(String charset){
         _charset = Charset.forName(charset);
         return this;
     }
 
     //@XNote("设置请求头")
-    public HttpUtils headers(Map<String,String> headers){
+    public OkHttpUtils headers(Map<String,String> headers){
         if (headers != null) {
             headers.forEach((k, v) -> {
                 _builder.header(k, v);
@@ -69,7 +69,7 @@ class HttpUtils {
     }
 
     //@XNote("设置请求头")
-    public HttpUtils header(String name, String value) {
+    public OkHttpUtils header(String name, String value) {
         if(name!=null) {
             _builder.header(name, value);
         }
@@ -77,7 +77,7 @@ class HttpUtils {
     }
 
     //@XNote("设置数据提交")
-    public HttpUtils data(Map<String,Object> data) {
+    public OkHttpUtils data(Map<String,Object> data) {
         if (data != null) {
             tryInitForm();
 
@@ -91,14 +91,14 @@ class HttpUtils {
         return this;
     }
 
-    public HttpUtils data(String key, String value){
+    public OkHttpUtils data(String key, String value){
         tryInitForm();
         _form.put(key,value);
         return this;
     }
 
     //@XNote("设置文件提交")
-    public HttpUtils data(String key, String filename, InputStream inputStream, String contentType) {
+    public OkHttpUtils data(String key, String filename, InputStream inputStream, String contentType) {
         tryInitPartBuilder(MultipartBody.FORM);
 
         _part_builer.addFormDataPart(key,
@@ -109,7 +109,7 @@ class HttpUtils {
     }
 
     //@XNote("设置BODY提交")
-    public HttpUtils bodyTxt(String txt, String contentType){
+    public OkHttpUtils bodyTxt(String txt, String contentType){
         if(contentType == null) {
             _body = FormBody.create(null, txt);
         }else{
@@ -119,7 +119,7 @@ class HttpUtils {
         return this;
     }
     //@XNote("设置BODY提交")
-    public HttpUtils bodyRaw(InputStream raw, String contentType) {
+    public OkHttpUtils bodyRaw(InputStream raw, String contentType) {
         _body = new StreamBody(contentType, raw);
 
         return this;
@@ -127,7 +127,7 @@ class HttpUtils {
 
 
     //@XNote("设置请求cookies")
-    public HttpUtils cookies(Map<String,Object> cookies){
+    public OkHttpUtils cookies(Map<String,Object> cookies){
         if (cookies != null) {
             tryInitCookies();
 

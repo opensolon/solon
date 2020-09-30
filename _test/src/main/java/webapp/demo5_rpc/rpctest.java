@@ -1,8 +1,7 @@
 package webapp.demo5_rpc;
 
 import org.noear.fairy.Fairy;
-import org.noear.fairy.channel.HttpChannel;
-import org.noear.fairy.channel.SocketChannel;
+import org.noear.fairy.channel.OkHttpChannel;
 import org.noear.fairy.decoder.SnackDecoder;
 import org.noear.fairy.encoder.SnackEncoder;
 import org.noear.solon.XApp;
@@ -10,6 +9,7 @@ import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XHandler;
+import webapp.utils.SocketChannel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +31,7 @@ public class rpctest implements XHandler {
         String root = "http://localhost:" + XApp.global().port();
 
         rockapi client =  Fairy.builder()
-                .channel(HttpChannel.instance)
+                .channel(OkHttpChannel.instance)
                 .decoder(SnackDecoder.instance)
                 .upstream(() -> root)
                 .create(rockapi.class);

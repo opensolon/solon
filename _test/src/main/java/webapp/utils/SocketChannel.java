@@ -1,10 +1,10 @@
-package org.noear.fairy.channel;
+package webapp.utils;
 
 
+import org.noear.fairy.FairyConfig;
 import org.noear.fairy.FairyException;
 import org.noear.fairy.IChannel;
 import org.noear.fairy.Result;
-import org.noear.fairy.FairyConfig;
 
 import java.util.Map;
 
@@ -36,8 +36,10 @@ public class SocketChannel implements IChannel {
             }
         }
 
-        SocketMessage msg = SocketUtils.send(url, message);
+        synchronized (url.intern()) {
+            SocketMessage msg = SocketUtils.send(url, message);
 
-        return new Result(msg.charset, msg.content);
+            return new Result(msg.charset, msg.content);
+        }
     }
 }

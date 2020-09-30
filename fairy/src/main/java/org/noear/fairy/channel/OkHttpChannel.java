@@ -11,8 +11,8 @@ import java.util.Map;
 /**
  * Http 通道
  * */
-public class HttpChannel implements IChannel {
-    public static final HttpChannel instance = new HttpChannel();
+public class OkHttpChannel implements IChannel {
+    public static final OkHttpChannel instance = new OkHttpChannel();
 
     @Override
     public Result call(FairyConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
@@ -35,7 +35,7 @@ public class HttpChannel implements IChannel {
         cfg.getDecoder().filter(cfg, method, url, headers, args);
 
         //0.开始构建http
-        HttpUtils http = HttpUtils.http(url).headers(headers);
+        OkHttpUtils http = OkHttpUtils.http(url).headers(headers);
         Response response = null;
 
 
