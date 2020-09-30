@@ -72,14 +72,6 @@ public class SocketMessageUtils {
         return buffer;
     }
 
-    public static String getString(SocketMessage msg) {
-        if (msg.content == null) {
-            return null;
-        } else {
-            return new String(msg.content, msg.charset);
-        }
-    }
-
     private static String readStr(ByteBuffer buffer, ByteBuffer sb) {
         sb.clear();
 
