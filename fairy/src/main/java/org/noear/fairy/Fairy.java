@@ -98,10 +98,14 @@ public class Fairy {
     /**
      * 执行完成呼叫
      */
-    public Fairy call(Map<String, String> headers, Map args) {
+    public Fairy call(Map<String, String> headers, Map<String,Object> args) {
         try {
             if (headers == null) {
                 headers = new HashMap<>();
+            }
+
+            if (args == null) {
+                args = new HashMap<>();
             }
 
             for (IFilter filter : _config.getFilters()) {
