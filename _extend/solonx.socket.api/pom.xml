@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.api.socket</artifactId>
+    <artifactId>solonx.socket.api</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

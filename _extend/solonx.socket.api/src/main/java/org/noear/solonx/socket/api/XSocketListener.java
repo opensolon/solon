@@ -1,4 +1,4 @@
-package org.noear.solon.api.socket;
+package org.noear.solonx.socket.api;
 
 public interface XSocketListener {
     void onOpen(XSession session);

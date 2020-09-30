@@ -1,9 +1,9 @@
 package org.noear.solon.boot.smartsocket;
 
-import org.noear.solon.api.socket.XSocketMessageUtils;
+import org.noear.solonx.socket.api.XSocketMessageUtils;
 import org.noear.solon.core.XContextEmpty;
 import org.noear.solon.core.XMethod;
-import org.noear.solon.api.socket.XSocketMessage;
+import org.noear.solonx.socket.api.XSocketMessage;
 
 import org.smartboot.socket.transport.AioSession;
 

@@ -76,7 +76,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.api.socket</artifactId>
+                <artifactId>solonx.socket.api</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
@@ -511,7 +511,7 @@
 
         <module>../solon</module>
 
-        <module>../_extend/solon.api.socket</module>
+        <module>../_extend/solonx.socket.api</module>
 
         <module>../_extend/solon.boot.jetty</module>
         <module>../_extend/solon.boot.jlhttp</module>

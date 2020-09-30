@@ -1,4 +1,4 @@
-package org.noear.solon.api.socket;
+package org.noear.solonx.socket.api;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

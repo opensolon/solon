@@ -1,10 +1,10 @@
 package org.noear.solon.boot.smartsocket;
 
 import org.noear.solon.XApp;
-import org.noear.solon.api.socket.XSocketListener;
+import org.noear.solonx.socket.api.XSocketListener;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
-import org.noear.solon.api.socket.XSocketMessage;
+import org.noear.solonx.socket.api.XSocketMessage;
 
 import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.StateMachineEnum;

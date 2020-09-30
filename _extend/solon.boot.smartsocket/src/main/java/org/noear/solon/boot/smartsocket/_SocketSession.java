@@ -1,6 +1,6 @@
 package org.noear.solon.boot.smartsocket;
 
-import org.noear.solon.api.socket.XSession;
+import org.noear.solonx.socket.api.XSession;
 import org.smartboot.socket.transport.AioSession;
 
 import java.io.IOException;

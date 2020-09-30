@@ -2,7 +2,7 @@ package org.noear.solon.boot.jdksocket;
 
 import org.noear.solon.core.XContextEmpty;
 import org.noear.solon.core.XMethod;
-import org.noear.solon.api.socket.XSocketMessage;
+import org.noear.solonx.socket.api.XSocketMessage;
 
 import java.io.*;
 import java.net.InetAddress;
