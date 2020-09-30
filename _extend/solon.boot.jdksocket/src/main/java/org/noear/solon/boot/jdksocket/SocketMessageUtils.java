@@ -48,7 +48,9 @@ public class SocketMessageUtils {
         //2.解码body
         int len = len0 - buffer.position();
         byte[] bytes = new byte[len];
-        buffer.get(bytes, 0, len);
+        if(len > 0) {
+            buffer.get(bytes, 0, len);
+        }
 
         SocketMessage msg = new SocketMessage();
         msg.key = key;

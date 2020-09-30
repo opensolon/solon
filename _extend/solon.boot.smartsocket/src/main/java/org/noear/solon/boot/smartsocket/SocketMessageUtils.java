@@ -8,15 +8,15 @@ import java.util.UUID;
 public class SocketMessageUtils {
     /**
      * 打包
-     * */
+     */
     public static SocketMessage wrap(String resourceDescriptor, byte[] bytes) {
         return wrap(UUID.randomUUID().toString(), resourceDescriptor, bytes);
     }
 
     /**
      * 打包
-     * */
-    public static SocketMessage wrap(String key ,String resourceDescriptor, byte[] bytes) {
+     */
+    public static SocketMessage wrap(String key, String resourceDescriptor, byte[] bytes) {
         SocketMessage msg = new SocketMessage();
 
         msg.key = key;
@@ -28,7 +28,7 @@ public class SocketMessageUtils {
 
     /**
      * 解码
-     * */
+     */
     public static SocketMessage decode(ByteBuffer buffer) {
         //1.解码key and uri
         ByteBuffer sb = ByteBuffer.allocate(Math.min(256, buffer.limit()));
@@ -48,7 +48,9 @@ public class SocketMessageUtils {
         //2.解码body
         int len = len0 - buffer.position();
         byte[] bytes = new byte[len];
-        buffer.get(bytes, 0, len);
+        if (len > 0) {
+            buffer.get(bytes, 0, len);
+        }
 
         SocketMessage msg = new SocketMessage();
         msg.key = key;
@@ -104,7 +106,7 @@ public class SocketMessageUtils {
 
             if (c == 10) { //10:'\n'
                 break;
-            } else if( c != 0){ //32:' '
+            } else if (c != 0) { //32:' '
                 sb.put(c);
             }
 
