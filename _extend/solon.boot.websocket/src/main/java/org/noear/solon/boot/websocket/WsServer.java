@@ -3,6 +3,9 @@ package org.noear.solon.boot.websocket;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
+import org.noear.solon.api.socket.SocketListening;
+import org.noear.solon.core.Aop;
+import org.noear.solon.core.XEventBus;
 
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
@@ -13,11 +16,14 @@ import java.nio.charset.StandardCharsets;
 @SuppressWarnings("unchecked")
 public class WsServer extends WebSocketServer {
     private WsContextHandler _contextHandler;
-    private Charset def_charset = StandardCharsets.UTF_8;
+    private Charset _charset = StandardCharsets.UTF_8;
+    private SocketListening listening;
 
     public WsServer(int port, WsContextHandler contextHandler) throws UnknownHostException {
         super(new InetSocketAddress(port));
         _contextHandler = contextHandler;
+
+        Aop.getAsyn(SocketListening.class, (bw) -> listening = bw.raw());
     }
 
     @Override
@@ -27,18 +33,30 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake shake) {
-        System.out.println("Solon.Server:Websocket onOpen=" + shake.getResourceDescriptor());
+        //System.out.println("Solon.Server:Websocket onOpen=" + shake.getResourceDescriptor());
+
+        if (listening != null) {
+            listening.onOpen(SocketSession.get(conn));
+        }
     }
 
     @Override
     public void onClose(WebSocket conn, int i, String s, boolean b) {
-        System.out.println("Solon.Server:Websocket onClose...");
+        //System.out.println("Solon.Server:Websocket onClose...");
+        if (listening != null) {
+            listening.onClose(SocketSession.get(conn));
+            SocketSession.remove(conn);
+        }
     }
 
     @Override
     public void onMessage(WebSocket conn, String data) {
         try {
-            _contextHandler.handle(conn, data.getBytes(def_charset), true);
+            if (listening != null) {
+                listening.onMessage(SocketSession.get(conn), SocketMessageUtils.wrap(conn.getResourceDescriptor(), data.getBytes(_charset)));
+            } else {
+                _contextHandler.handle(conn, data.getBytes(_charset), true);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -47,7 +65,11 @@ public class WsServer extends WebSocketServer {
     @Override
     public void onMessage(WebSocket conn, ByteBuffer data) {
         try {
-            _contextHandler.handle(conn, data.array(), false);
+            if (listening != null) {
+                listening.onMessage(SocketSession.get(conn), SocketMessageUtils.wrap(conn.getResourceDescriptor(), data.array()));
+            } else {
+                _contextHandler.handle(conn, data.array(), false);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -55,8 +77,13 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onError(WebSocket conn, Exception ex) {
-        System.out.println("Solon.Server:Websocket onError:");
-        ex.printStackTrace();
-    }
+        if (listening != null) {
+            listening.onError(SocketSession.get(conn), ex);
+        } else {
+            XEventBus.push(ex);
+        }
 
+        //System.out.println("Solon.Server:Websocket onError:");
+        //ex.printStackTrace();
+    }
 }
