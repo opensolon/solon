@@ -40,6 +40,22 @@ public class SocketTest {
         //socket client
         String root = "s://localhost:" + (20000 + XApp.global().port());
 
+        SocketUtils.send(root + "/seb/test", "Hello 世界!+1", (msg, err) -> {
+            if (msg == null) {
+                return;
+            }
+            System.out.println(msg.toString());
+        });
+
+
+        Thread.sleep(1000 * 2);
+    }
+
+    @Test
+    public void test3() throws Throwable {
+        //socket client
+        String root = "s://localhost:" + (20000 + XApp.global().port());
+
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             list.add(i);
@@ -57,6 +73,15 @@ public class SocketTest {
                 ex.printStackTrace();
             }
         });
+
+        Thread.sleep(1000 * 2);
+    }
+
+    @Test
+    public void test4() throws Throwable {
+        //socket client
+        String root = "s://localhost:" + (20000 + XApp.global().port());
+
 
         SocketUtils.create(root).send(root + "/seb/test", "Hello 世界!", (msg, err) -> {
             if (msg == null) {
