@@ -35,7 +35,6 @@ import static io.undertow.Handlers.websocket;
 public class XPluginUndertowJsp implements XPlugin {
     private static Undertow _server = null;
 
-
     @Override
     public void start(XApp app) {
         try {
@@ -70,7 +69,7 @@ public class XPluginUndertowJsp implements XPlugin {
 
     // 生成DeploymentManager来生成handler
     private DeploymentManager doGenerateManager() throws Exception{
-        final ServletContainer container = ServletContainer.Factory.newInstance();
+
         MultipartConfigElement configElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
 
         String fileRoot = getResourceRoot();
@@ -95,6 +94,9 @@ public class XPluginUndertowJsp implements XPlugin {
         HashMap<String, TagLibraryInfo> tagLibraryMap = JspTldLocator.createTldInfos("WEB-INF");
 
         JspServletBuilder.setupDeployment(builder, new HashMap<String, JspPropertyGroup>(), tagLibraryMap, new HackInstanceManager());
+
+
+        final ServletContainer container = ServletContainer.Factory.newInstance();
 
         DeploymentManager deploymentManager = container.addDeployment(builder);
         deploymentManager.deploy();

@@ -77,9 +77,11 @@ public class XPluginUndertow implements XPlugin {
             builder.setDefaultSessionTimeout(XServerProp.session_timeout);
         }
 
-        ServletContainer _container = Servlets.defaultContainer();
-        DeploymentManager deploymentManager = _container.addDeployment(builder);
+        final ServletContainer container = Servlets.defaultContainer();
+
+        DeploymentManager deploymentManager = container.addDeployment(builder);
         deploymentManager.deploy();
+
         return deploymentManager;
 
     }
