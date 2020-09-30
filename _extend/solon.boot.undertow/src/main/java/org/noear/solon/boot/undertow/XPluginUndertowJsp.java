@@ -26,12 +26,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
+import static io.undertow.Handlers.websocket;
+
 /**
  * @author by: Yukai
  * @since: 2019/3/28 15:50
  */
 public class XPluginUndertowJsp implements XPlugin {
-    private static Undertow.Builder serverBuilder = null;
     private static Undertow _server = null;
 
 
@@ -48,6 +49,27 @@ public class XPluginUndertowJsp implements XPlugin {
 
 
     protected void setup(XApp app) throws Throwable {
+        // 动作分发Handler
+        DeploymentManager manager = doGenerateManager();
+        HttpHandler httpHandler = manager.start();
+
+        //************************** init server start******************
+        Undertow.Builder builder =  Undertow.builder();
+
+        builder.setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE, false);
+
+        builder.addHttpListener(app.port(), "0.0.0.0");
+
+        //builder.setHandler(httpHandler);
+        builder.setHandler(websocket(new UtWebSocketHandler(), httpHandler));
+
+        _server = builder.build();
+
+        //************************* init server end********************
+    }
+
+    // 生成DeploymentManager来生成handler
+    private DeploymentManager doGenerateManager() throws Exception{
         final ServletContainer container = ServletContainer.Factory.newInstance();
         MultipartConfigElement configElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
 
@@ -74,33 +96,12 @@ public class XPluginUndertowJsp implements XPlugin {
 
         JspServletBuilder.setupDeployment(builder, new HashMap<String, JspPropertyGroup>(), tagLibraryMap, new HackInstanceManager());
 
-        DeploymentManager manager = container.addDeployment(builder);
-        manager.deploy();
-        HttpHandler httpHandler = manager.start();
+        DeploymentManager deploymentManager = container.addDeployment(builder);
+        deploymentManager.deploy();
 
-        //************************** init server start******************
-        serverBuilder = getInstance().setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE, false);
-
-        serverBuilder.addHttpListener(app.port(), "0.0.0.0");
-        serverBuilder.setHandler(httpHandler);
-
-        _server = serverBuilder.build();
-
-        //************************* init server end********************
+        return deploymentManager;
     }
 
-
-    // 允许在其他代码层访问容器构造器实例
-    public static Undertow.Builder getInstance() {
-        synchronized (XPluginImp.class) {
-            if (serverBuilder == null) {
-                synchronized (XPlugin.class) {
-                    serverBuilder = Undertow.builder();
-                }
-            }
-        }
-        return serverBuilder;
-    }
 
     @Override
     public void stop() throws Throwable {

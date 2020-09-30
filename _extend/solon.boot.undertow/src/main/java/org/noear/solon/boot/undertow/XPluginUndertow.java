@@ -21,8 +21,6 @@ import static io.undertow.Handlers.websocket;
  * @since : 2019/3/28 15:49
  */
 public class XPluginUndertow implements XPlugin {
-    // singleton
-    private static Undertow.Builder serverBuilder = null;
     private Undertow _server = null;
 
     @Override
@@ -37,26 +35,31 @@ public class XPluginUndertow implements XPlugin {
     }
 
     protected void setup(XApp app) throws Throwable {
-        Undertow.Builder builder = getInstance();
-        builder.setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE, false);
-
         // 动作分发Handler
-        UtHttpHandler _handler = new UtHttpHandler();
-        DeploymentManager manager = doGenerateManager(_handler, app);
-
+        DeploymentManager manager = doGenerateManager();
         HttpHandler httpHandler = manager.start();
 
+
+        //************************** init server start******************
+        Undertow.Builder builder = Undertow.builder();
+
+        builder.setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE, false);
+
         builder.addHttpListener(app.port(), "0.0.0.0");
-        //builder.setHandler(f_handler);
+
+        //builder.setHandler(httpHandler);
         builder.setHandler(websocket(new UtWebSocketHandler(), httpHandler));
 
         _server = builder.build();
+
+        //************************* init server end********************
     }
 
 
     // 生成DeploymentManager来生成handler
-    private DeploymentManager doGenerateManager(UtHttpHandler innerHandler, XApp app) {
-        HandlerWrapper wrapper = nothing -> innerHandler;
+    private DeploymentManager doGenerateManager() {
+        UtHttpHandler handler = new UtHttpHandler();
+        HandlerWrapper wrapper = nothing -> handler;
 
         MultipartConfigElement configElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
 
@@ -81,17 +84,6 @@ public class XPluginUndertow implements XPlugin {
 
     }
 
-    // 允许在其他代码层访问容器构造器实例
-    public static Undertow.Builder getInstance() {
-        synchronized (XPluginImp.class) {
-            if (serverBuilder == null) {
-                synchronized (XPlugin.class) {
-                    serverBuilder = Undertow.builder();
-                }
-            }
-        }
-        return serverBuilder;
-    }
 
     @Override
     public void stop() throws Throwable {
