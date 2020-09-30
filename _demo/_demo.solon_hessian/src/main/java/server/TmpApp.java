@@ -14,6 +14,7 @@ public class TmpApp {
 
         XApp.global().before("**",XMethod.SOCKET,(ctx)->{
             ctx.headerMap().put("Content-Type", "application/protobuf");
+            ctx.headerMap().put("X-Serialization","@protobuf");
         });
 
         XApp.global().add("/web/hessian", XMethod.HTTP,
