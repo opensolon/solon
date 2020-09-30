@@ -5,6 +5,8 @@ public interface SocketListening {
 
     void onMessage(Session session, SocketMessage message);
 
+    void onClosing(Session session);
+
     void onClose(Session session);
 
     void onError(Session session, Throwable throwable);

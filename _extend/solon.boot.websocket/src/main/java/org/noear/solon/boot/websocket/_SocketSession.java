@@ -6,16 +6,16 @@ import org.noear.solon.api.socket.Session;
 import java.io.IOException;
 import java.util.*;
 
-public class SocketSession implements Session {
+public class _SocketSession implements Session {
     public static Map<WebSocket,Session> sessions = new HashMap<>();
-    public static Session get(WebSocket webSocket) {
-        Session tmp = sessions.get(webSocket);
+    public static Session get(WebSocket real) {
+        Session tmp = sessions.get(real);
         if (tmp == null) {
-            synchronized (webSocket) {
-                tmp = sessions.get(webSocket);
+            synchronized (real) {
+                tmp = sessions.get(real);
                 if (tmp == null) {
-                    tmp = new SocketSession(webSocket);
-                    sessions.put(webSocket, tmp);
+                    tmp = new _SocketSession(real);
+                    sessions.put(real, tmp);
                 }
             }
         }
@@ -23,54 +23,51 @@ public class SocketSession implements Session {
         return tmp;
     }
 
-    public static void remove(WebSocket webSocket){
-        sessions.remove(webSocket);
+    public static void remove(WebSocket real){
+        sessions.remove(real);
     }
 
-    WebSocket socket;
-    public SocketSession(WebSocket socket){
-        this.socket = socket;
+
+
+    WebSocket real;
+    public _SocketSession(WebSocket real){
+        this.real = real;
     }
 
     @Override
     public void send(String message) {
-        socket.send(message);
+        real.send(message);
     }
 
     @Override
     public void send(byte[] message) {
-        socket.send(message);
+        real.send(message);
     }
 
     @Override
     public void close() throws IOException {
-        socket.close();
-        sessions.remove(socket);
+        real.close();
+        sessions.remove(real);
     }
 
     @Override
     public boolean isOpen() {
-        return socket.isOpen();
-    }
-
-    @Override
-    public boolean isClosing() {
-        return socket.isClosing();
+        return real.isOpen();
     }
 
     @Override
     public boolean isClosed() {
-        return socket.isClosed();
+        return real.isClosed();
     }
 
     @Override
     public void setAttachment(Object obj) {
-        socket.setAttachment(obj);
+        real.setAttachment(obj);
     }
 
     @Override
     public <T> T getAttachment() {
-        return socket.getAttachment();
+        return real.getAttachment();
     }
 
     @Override
@@ -78,16 +75,17 @@ public class SocketSession implements Session {
         return new ArrayList<>(sessions.values());
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SocketSession that = (SocketSession) o;
-        return Objects.equals(socket, that.socket);
+        _SocketSession that = (_SocketSession) o;
+        return Objects.equals(real, that.real);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(socket);
+        return Objects.hash(real);
     }
 }

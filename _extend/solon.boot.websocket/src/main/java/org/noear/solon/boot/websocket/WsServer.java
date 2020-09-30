@@ -37,7 +37,15 @@ public class WsServer extends WebSocketServer {
         //System.out.println("Solon.Server:Websocket onOpen=" + shake.getResourceDescriptor());
 
         if (listening != null) {
-            listening.onOpen(SocketSession.get(conn));
+            listening.onOpen(_SocketSession.get(conn));
+        }
+    }
+
+    @Override
+    public void onClosing(WebSocket conn, int code, String reason, boolean remote) {
+        if (listening != null) {
+            listening.onClosing(_SocketSession.get(conn));
+            _SocketSession.remove(conn);
         }
     }
 
@@ -45,8 +53,8 @@ public class WsServer extends WebSocketServer {
     public void onClose(WebSocket conn, int i, String s, boolean b) {
         //System.out.println("Solon.Server:Websocket onClose...");
         if (listening != null) {
-            listening.onClose(SocketSession.get(conn));
-            SocketSession.remove(conn);
+            listening.onClose(_SocketSession.get(conn));
+            _SocketSession.remove(conn);
         }
     }
 
@@ -54,10 +62,10 @@ public class WsServer extends WebSocketServer {
     public void onMessage(WebSocket conn, String data) {
         try {
             if (listening != null) {
-                listening.onMessage(SocketSession.get(conn), SocketMessage.wrap(conn.getResourceDescriptor(), data.getBytes(_charset)));
-            } else {
-                _contextHandler.handle(conn, data.getBytes(_charset), true);
+                listening.onMessage(_SocketSession.get(conn), SocketMessage.wrap(conn.getResourceDescriptor(), data.getBytes(_charset)));
             }
+
+            _contextHandler.handle(conn, data.getBytes(_charset), true);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -67,10 +75,10 @@ public class WsServer extends WebSocketServer {
     public void onMessage(WebSocket conn, ByteBuffer data) {
         try {
             if (listening != null) {
-                listening.onMessage(SocketSession.get(conn), SocketMessage.wrap(conn.getResourceDescriptor(), data.array()));
-            } else {
-                _contextHandler.handle(conn, data.array(), false);
+                listening.onMessage(_SocketSession.get(conn), SocketMessage.wrap(conn.getResourceDescriptor(), data.array()));
             }
+
+            _contextHandler.handle(conn, data.array(), false);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -79,7 +87,7 @@ public class WsServer extends WebSocketServer {
     @Override
     public void onError(WebSocket conn, Exception ex) {
         if (listening != null) {
-            listening.onError(SocketSession.get(conn), ex);
+            listening.onError(_SocketSession.get(conn), ex);
         } else {
             XEventBus.push(ex);
         }

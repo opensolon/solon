@@ -10,7 +10,6 @@ public interface Session {
     void close() throws IOException;
 
     boolean isOpen();
-    boolean isClosing();
     boolean isClosed();
 
     void setAttachment(Object obj);

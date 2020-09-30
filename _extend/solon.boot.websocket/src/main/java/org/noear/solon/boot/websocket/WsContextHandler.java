@@ -15,7 +15,9 @@ public class WsContextHandler {
 
             XApp.global().tryHandle(context);
 
-            context.commit();
+            if (context.getHandled()) {
+                context.commit();
+            }
         } catch (Exception ex) {
             XEventBus.push(ex);
         }

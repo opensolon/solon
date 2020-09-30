@@ -36,13 +36,13 @@ public class XRouterHandler implements XHandler {
         //汇总状态
         if (_handled) {
             if (context.status() < 1) {
-                context.status(200);
+                context.statusSet(200);
             }
             context.setHandled(true);
         }
 
         if (context.status() < 1) {
-            context.status(404);
+            context.statusSet(404);
         }
     }
 
