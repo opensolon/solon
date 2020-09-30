@@ -19,11 +19,11 @@ public class FairyConfigurationSolon implements FairyConfiguration {
             return;
         }
 
-        String sev = client.value().split(":")[0];
+        String name0 = client.value().split(":")[0];
 
         //尝试从负载工厂获取
         if (XBridge.upstreamFactory() != null) {
-            XUpstream upstream = XBridge.upstreamFactory().create(sev);
+            XUpstream upstream = XBridge.upstreamFactory().create(name0);
 
             if (upstream != null) {
                 builder.upstream(upstream::getServer);
@@ -32,7 +32,7 @@ public class FairyConfigurationSolon implements FairyConfiguration {
         }
 
         //尝试从Ioc容器获取
-        Aop.getAsyn(sev, (bw) -> {
+        Aop.getAsyn(name0, (bw) -> {
             XUpstream tmp = bw.raw();
             builder.upstream(tmp::getServer);
         });
