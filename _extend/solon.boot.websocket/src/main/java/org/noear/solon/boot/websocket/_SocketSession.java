@@ -4,6 +4,7 @@ import org.java_websocket.WebSocket;
 import org.noear.solon.api.socket.Session;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.util.*;
 
 public class _SocketSession implements Session {
@@ -58,6 +59,16 @@ public class _SocketSession implements Session {
     @Override
     public boolean isClosed() {
         return real.isClosed();
+    }
+
+    @Override
+    public InetSocketAddress getRemoteSocketAddress() throws IOException{
+        return real.getRemoteSocketAddress();
+    }
+
+    @Override
+    public InetSocketAddress getLocalSocketAddress() throws IOException{
+        return real.getLocalSocketAddress();
     }
 
     @Override

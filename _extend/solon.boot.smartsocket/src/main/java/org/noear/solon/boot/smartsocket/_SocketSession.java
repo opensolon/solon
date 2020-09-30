@@ -5,6 +5,7 @@ import org.smartboot.socket.transport.AioSession;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.InetSocketAddress;
 import java.util.*;
 
 public class _SocketSession implements Session {
@@ -65,6 +66,16 @@ public class _SocketSession implements Session {
     @Override
     public boolean isClosed() {
         return real.isInvalid();
+    }
+
+    @Override
+    public InetSocketAddress getRemoteSocketAddress() throws IOException{
+        return real.getRemoteAddress();
+    }
+
+    @Override
+    public InetSocketAddress getLocalSocketAddress() throws IOException{
+        return real.getLocalAddress();
     }
 
     @Override

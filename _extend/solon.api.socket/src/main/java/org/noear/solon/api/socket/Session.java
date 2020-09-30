@@ -1,6 +1,7 @@
 package org.noear.solon.api.socket;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.util.Collection;
 
 public interface Session {
@@ -11,6 +12,9 @@ public interface Session {
 
     boolean isOpen();
     boolean isClosed();
+
+    InetSocketAddress getRemoteSocketAddress() throws IOException;
+    InetSocketAddress getLocalSocketAddress() throws IOException;
 
     void setAttachment(Object obj);
     <T> T getAttachment();
