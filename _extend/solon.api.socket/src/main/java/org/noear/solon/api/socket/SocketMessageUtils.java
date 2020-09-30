@@ -1,7 +1,5 @@
-package org.noear.solon.boot.websocket;
+package org.noear.solon.api.socket;
 
-
-import org.noear.solon.api.socket.SocketMessage;
 
 import java.nio.ByteBuffer;
 
@@ -28,7 +26,9 @@ public class SocketMessageUtils {
         //2.解码body
         int len = len0 - buffer.position();
         byte[] bytes = new byte[len];
-        buffer.get(bytes, 0, len);
+        if(len > 0) {
+            buffer.get(bytes, 0, len);
+        }
 
         SocketMessage msg = new SocketMessage();
         msg.key = key;
@@ -67,7 +67,6 @@ public class SocketMessageUtils {
 
         return buffer;
     }
-
 
     private static String readStr(ByteBuffer buffer, ByteBuffer sb) {
         sb.clear();
