@@ -5,7 +5,7 @@ Solon 伴生项目，为 http rpc 或 rest api 提供 client 支持。
 
 ## 一、演示
 
-#### 接口申明
+##### 接口申明
 
 ```java
 public interface IComplexModelService {
@@ -18,7 +18,7 @@ public interface IComplexModelService {
 ```
 
 
-#### 接口使用示例1（直接注入，需要XUpstream适配）
+##### 接口使用示例1（直接注入，需要XUpstream适配）
 
 ```java
 @XBean
@@ -41,11 +41,11 @@ public class TestUpstream implements XUpstream {
     }
 }
 
-//切换更改默认配置器的代理，将编码器换掉
+//更改默认配置器的代理，将编码器换掉
 FairyConfigurationDefault.proxy = (c,b)->b.encoder(SnackTypeEncoder.instance);
 ```
 
-#### 接口使用示例2
+##### 接口使用示例2
 
 ```java
 public class Demo2{
@@ -61,7 +61,7 @@ public class Demo2{
 }
 ```
 
-#### 接口使用示例3
+##### 接口使用示例3
 
 ```java
 public class Demo3{
@@ -80,7 +80,7 @@ public class Demo3{
 
 ## 二、注解与属性说明
 
-#### @FairyClient
+##### @FairyClient 注解说明
 
 | 字段 | 说明 | 
 | -------- | -------- | 
@@ -89,18 +89,24 @@ public class Demo3{
 | configuration     | configuration 配置器     | 
 
 Uri 申明的三种格式：
-
 * url（ 例：`http://x.x.x/x/x/` ），此格式不支持upstream
 * name:path（ 例：`local:/x/x/` ），此格式必须配合upstream
 * path（ 例：`/x/x` ），此格式必须配合upstream
 
-#### @Mapping（默认不需要映射）
+headers 格式说明：
+* `{"head1=a","head2=b"}`
+
+##### @Mapping 注解说明
 
 | 字段 | 说明 | 
 | -------- | -------- | 
 | value     | 映射值（支持两种格式）     | 
 
-映射值的两种格式
-
+映射值的两种格式：
 * method（ 例：`GET` ）
 * method path（ 例：`GET user/a.0.1` ）
+
+##### @Mapping 没有时的说明，即默认
+* 函数名将做为path
+* 函数没有参数时，执行GET请求
+* 函数有参数时，执行POST请求
