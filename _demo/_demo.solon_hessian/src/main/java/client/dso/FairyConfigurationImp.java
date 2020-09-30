@@ -11,7 +11,6 @@ public class FairyConfigurationImp implements FairyConfiguration {
 
     @Override
     public void config(FairyClient client, Fairy.Builder builder) {
-
         builder.encoder(SnackTypeEncoder.instance);
         builder.upstream(test);
     }

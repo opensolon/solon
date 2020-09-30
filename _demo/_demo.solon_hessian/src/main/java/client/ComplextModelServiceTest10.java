@@ -21,17 +21,13 @@ import java.util.List;
 public class ComplextModelServiceTest10 {
 
     public static void main(String[] args) throws Exception {
-        //配置接口代理
-//        IComplexModelService service =  Fairy.builder()
-//                .encoder(SnackTypeEncoder.instance)
-//                .decoder(SnackDecoder.instance)
-//                .upstream(()->{
-//            return "http://localhost:8080";
-//        }).create(IComplexModelService.class);
-
         FairyConfigurationDefault.proxy = new FairyConfigurationImp();
 
-        XApp.start(ComplextModelServiceTest10.class, args, app -> app.enableHttp(false));
+        XApp.start(ComplextModelServiceTest10.class, args, app -> {
+            app.enableHttp(false);
+            app.enableWebSocket(false);
+            app.enableSocket(false);
+        });
 
         ComplextModelServiceTest10 test5 = Aop.get(ComplextModelServiceTest10.class);
         test5.test();
