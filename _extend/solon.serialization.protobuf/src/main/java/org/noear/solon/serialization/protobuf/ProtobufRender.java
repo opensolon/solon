@@ -28,6 +28,6 @@ public class ProtobufRender implements XRender {
             bytes = ProtoBuf.ser(obj);
         }
 
-        ctx.output(new ByteArrayInputStream(bytes));
+        ctx.output(bytes);
     }
 }

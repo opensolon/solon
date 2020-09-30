@@ -25,9 +25,9 @@ public class HessionRender implements XRender {
         ctx.contentType("application/hessian");
 
         if (obj instanceof ModelAndView) {
-            ctx.output(new ByteArrayInputStream(serializeDo(new LinkedHashMap((Map) obj))));
+            ctx.output(serializeDo(new LinkedHashMap((Map) obj)));
         } else {
-            ctx.output(new ByteArrayInputStream(serializeDo(obj)));
+            ctx.output(serializeDo(obj));
         }
     }
 
