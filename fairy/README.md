@@ -1,7 +1,7 @@
 
 # Fairy
 
-Solon 伴生项目，为 http rpc 或 rest api 提供 client 支持。
+Solon 伴生项目，为 http rpc 或 rest api 提供 client 支持；支持 http、socket、web socket三种通道
 
 ## 一、演示
 
