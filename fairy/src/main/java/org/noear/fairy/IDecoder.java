@@ -3,7 +3,7 @@ package org.noear.fairy;
 /**
  * 解码器
  * */
-public interface IDecoder {
+public interface IDecoder extends IFilter{
     /**
      * 编码
      * */

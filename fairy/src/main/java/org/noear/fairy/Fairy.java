@@ -46,9 +46,9 @@ public class Fairy {
 
     /**
      * 设置请求方式
-     * */
+     */
     public Fairy method(String method) {
-        if (method != null) {
+        if (method != null && method.length() > 0) {
             _method = method;
         }
         return this;
@@ -98,7 +98,7 @@ public class Fairy {
     /**
      * 执行完成呼叫
      */
-    public Fairy call(Map<String, String> headers, Map<String,Object> args) {
+    public Fairy call(Map<String, String> headers, Map args) {
         try {
             if (headers == null) {
                 headers = new HashMap<>();
@@ -109,7 +109,7 @@ public class Fairy {
             }
 
             for (IFilter filter : _config.getFilters()) {
-                filter.handle(_config, _url, headers, args);
+                filter.filter(_config, _method, _url, headers, args);
             }
 
             _result = _config.getChannel().call(_config, _method, _url, headers, args);

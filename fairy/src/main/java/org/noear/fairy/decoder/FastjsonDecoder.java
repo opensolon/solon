@@ -4,8 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.ParserConfig;
 import org.noear.fairy.Enctype;
+import org.noear.fairy.FairyConfig;
 import org.noear.fairy.IDecoder;
 import org.noear.fairy.Result;
+import org.noear.fairy.channel.Constants;
+
+import java.util.Map;
 
 public class FastjsonDecoder implements IDecoder {
     static {
@@ -45,5 +49,10 @@ public class FastjsonDecoder implements IDecoder {
         } else {
             return (T) returnVal;
         }
+    }
+
+    @Override
+    public void filter(FairyConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args) {
+        headers.put(Constants.h_serialization, Constants.at_type_json);
     }
 }

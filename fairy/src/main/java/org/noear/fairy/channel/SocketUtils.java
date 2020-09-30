@@ -54,7 +54,15 @@ public class SocketUtils {
     }
 
     public static SocketMessage send(String uri, String message) throws Throwable {
-        SocketMessageDock msgD = new SocketMessageDock(SocketMessage.wrap(uri, message.getBytes("utf-8")));
+        return send(uri, message.getBytes("UTF-8"));
+    }
+
+    public static SocketMessage send(String uri, byte[] message) throws Throwable {
+        if(message == null){
+            return null;
+        }
+
+        SocketMessageDock msgD = new SocketMessageDock(SocketMessage.wrap(uri, message));
 
         get(uri).sendDo(msgD, (m) -> {
             msgD.complete(null);
@@ -70,7 +78,15 @@ public class SocketUtils {
     }
 
     public static void send(String uri, String message, BiConsumer<SocketMessage,Throwable> callback) throws Throwable {
-        SocketMessageDock msgD = new SocketMessageDock(SocketMessage.wrap(uri, message.getBytes("utf-8")));
+        send(uri,message.getBytes("UTF-8"),callback);
+    }
+
+    public static void send(String uri, byte[] message, BiConsumer<SocketMessage,Throwable> callback) throws Throwable {
+        if(message == null){
+            return;
+        }
+
+        SocketMessageDock msgD = new SocketMessageDock(SocketMessage.wrap(uri, message));
         msgD.handler = callback;
 
         get(uri).sendDo(msgD, (m) -> {
