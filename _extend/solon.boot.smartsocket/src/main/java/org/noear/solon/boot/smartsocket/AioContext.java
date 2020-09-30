@@ -141,7 +141,7 @@ public class AioContext extends XContextEmpty {
     @Override
     protected void commit() throws IOException {
         if (_session.isInvalid() == false) {
-            SocketMessage msg =  SocketMessageUtils.wrap(_message.key, _message.resourceDescriptor, _outputStream.toByteArray());
+            SocketMessage msg =  SocketMessage.wrap(_message.key, _message.resourceDescriptor, _outputStream.toByteArray());
 
             _session.writeBuffer().writeAndFlush(SocketMessageUtils.encode(msg).array());
         }

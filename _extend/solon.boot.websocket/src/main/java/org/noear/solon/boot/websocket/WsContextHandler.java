@@ -9,7 +9,7 @@ public class WsContextHandler {
 
     public void handle(WebSocket socket, byte[] message, boolean messageIsString) {
         try {
-            SocketMessage request = SocketMessageUtils.wrap(null, socket.getResourceDescriptor(), message);
+            SocketMessage request = SocketMessage.wrap(null, socket.getResourceDescriptor(), message);
 
             WsContext context = new WsContext(socket, request, messageIsString);
 

@@ -4,6 +4,7 @@ import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 import org.noear.solon.api.socket.SocketListening;
+import org.noear.solon.api.socket.SocketMessage;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
 
@@ -53,7 +54,7 @@ public class WsServer extends WebSocketServer {
     public void onMessage(WebSocket conn, String data) {
         try {
             if (listening != null) {
-                listening.onMessage(SocketSession.get(conn), SocketMessageUtils.wrap(conn.getResourceDescriptor(), data.getBytes(_charset)));
+                listening.onMessage(SocketSession.get(conn), SocketMessage.wrap(conn.getResourceDescriptor(), data.getBytes(_charset)));
             } else {
                 _contextHandler.handle(conn, data.getBytes(_charset), true);
             }
@@ -66,7 +67,7 @@ public class WsServer extends WebSocketServer {
     public void onMessage(WebSocket conn, ByteBuffer data) {
         try {
             if (listening != null) {
-                listening.onMessage(SocketSession.get(conn), SocketMessageUtils.wrap(conn.getResourceDescriptor(), data.array()));
+                listening.onMessage(SocketSession.get(conn), SocketMessage.wrap(conn.getResourceDescriptor(), data.array()));
             } else {
                 _contextHandler.handle(conn, data.array(), false);
             }

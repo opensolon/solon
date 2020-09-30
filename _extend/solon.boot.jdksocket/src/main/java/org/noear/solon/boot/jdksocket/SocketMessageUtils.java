@@ -6,25 +6,7 @@ import java.nio.ByteBuffer;
 import java.util.UUID;
 
 public class SocketMessageUtils {
-    /**
-     * 打包
-     * */
-    public static SocketMessage wrap(String resourceDescriptor, byte[] bytes) {
-        return wrap(UUID.randomUUID().toString(), resourceDescriptor, bytes);
-    }
 
-    /**
-     * 打包
-     * */
-    public static SocketMessage wrap(String key ,String resourceDescriptor, byte[] bytes) {
-        SocketMessage msg = new SocketMessage();
-
-        msg.key = key;
-        msg.resourceDescriptor = resourceDescriptor;
-        msg.content = bytes;
-
-        return msg;
-    }
 
     /**
      * 解码

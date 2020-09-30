@@ -144,7 +144,7 @@ public class SocketContext extends XContextEmpty {
     protected void commit() throws IOException {
         if (_session.isOpen()) {
             synchronized (_session) {
-                SocketMessage msg = SocketMessageUtils.wrap(_message.key, _message.resourceDescriptor, _outputStream.toByteArray());
+                SocketMessage msg = SocketMessage.wrap(_message.key, _message.resourceDescriptor, _outputStream.toByteArray());
                 _session.publish(msg);
             }
         }

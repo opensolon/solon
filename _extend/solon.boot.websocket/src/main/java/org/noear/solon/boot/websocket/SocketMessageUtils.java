@@ -4,29 +4,8 @@ package org.noear.solon.boot.websocket;
 import org.noear.solon.api.socket.SocketMessage;
 
 import java.nio.ByteBuffer;
-import java.util.UUID;
 
 public class SocketMessageUtils {
-    /**
-     * 打包
-     * */
-    public static SocketMessage wrap(String resourceDescriptor, byte[] bytes) {
-        return wrap(UUID.randomUUID().toString(), resourceDescriptor, bytes);
-    }
-
-    /**
-     * 打包
-     * */
-    public static SocketMessage wrap(String key ,String resourceDescriptor, byte[] bytes) {
-        SocketMessage msg = new SocketMessage();
-
-        msg.key = key;
-        msg.resourceDescriptor = resourceDescriptor;
-        msg.content = bytes;
-
-        return msg;
-    }
-
     /**
      * 解码
      * */
@@ -89,13 +68,6 @@ public class SocketMessageUtils {
         return buffer;
     }
 
-    public static String getString(SocketMessage msg) {
-        if (msg.content == null) {
-            return null;
-        } else {
-            return new String(msg.content, msg.charset);
-        }
-    }
 
     private static String readStr(ByteBuffer buffer, ByteBuffer sb) {
         sb.clear();
