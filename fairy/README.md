@@ -3,7 +3,7 @@
 
 Solon 伴生项目，为 http rpc 或 rest api 提供 client 支持。
 
-## Demo
+## 一、演示
 
 #### 接口申明
 
@@ -77,3 +77,19 @@ public class Demo3{
     }
 }
 ```
+
+## 二、属性说明
+
+| @FairyClient 字段 | 说明 | 
+| -------- | -------- | 
+| value     | uri 配置     | 
+| headers     | 添加头信息     | 
+| configuration     | configuration 配置器     | 
+
+#### value(uri) 的三种格式：
+
+* url（例：`http://x.x.x/x/x/`），此格式不支持upstream
+
+* name:path（例：`local:/x/x/`），此格式必须配合upstream
+
+* path（例：`/x/x`），此格式必须配合upstream
