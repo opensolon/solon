@@ -104,7 +104,7 @@ headers 格式说明：
 
 映射值的两种格式：
 * method（ 例：`GET` ）
-* method path（ 例：`GET user/a.0.1` ）
+* method path（ 例：`PUT user/a.0.1` ）
 
 ##### @Mapping 没有时的说明，即默认
 * 函数名将做为path
