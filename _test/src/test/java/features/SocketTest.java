@@ -53,7 +53,7 @@ public class SocketTest {
         });
 
 
-        Thread.sleep(1000 * 2);
+        Thread.sleep(1000);
     }
 
     @Test
@@ -79,7 +79,7 @@ public class SocketTest {
             }
         });
 
-        Thread.sleep(1000 * 2);
+        Thread.sleep(1000);
     }
 
     @Test
@@ -102,6 +102,6 @@ public class SocketTest {
             System.out.println(msg.toString());
         });
 
-        Thread.sleep(1000 * 2);
+        Thread.sleep(1000);
     }
 }
