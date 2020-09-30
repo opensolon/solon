@@ -1,4 +1,4 @@
-package org.noear.solon.boot.undertow;
+package org.noear.solon.boot.undertow.http;
 
 import org.noear.solon.XUtil;
 import org.noear.solon.core.*;
@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.URI;
 import java.util.*;
 

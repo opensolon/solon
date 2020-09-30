@@ -1,6 +1,8 @@
-package org.noear.solon.boot.undertow;
+package org.noear.solon.boot.undertow.http;
 
 import org.noear.solon.XApp;
+import org.noear.solon.boot.undertow.XPluginImp;
+import org.noear.solon.boot.undertow.XServerProp;
 import org.noear.solon.core.XEventBus;
 
 import javax.servlet.ServletException;

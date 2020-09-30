@@ -14,6 +14,7 @@ import org.apache.jasper.deploy.JspPropertyGroup;
 import org.apache.jasper.deploy.TagLibraryInfo;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.boot.undertow.http.UtHttpHandlerJsp;
 import org.noear.solon.boot.undertow.jsp.JspResourceManager;
 import org.noear.solon.boot.undertow.jsp.JspServletEx;
 import org.noear.solon.boot.undertow.jsp.JspTldLocator;

@@ -1,0 +1,102 @@
+package org.noear.solon.boot.undertow.websocket;
+
+import io.undertow.websockets.core.WebSocketChannel;
+import org.noear.solonx.socket.api.XSession;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.util.*;
+
+public class _SocketSession implements XSession {
+    public static Map<WebSocketChannel, XSession> sessions = new HashMap<>();
+    public static XSession get(WebSocketChannel real) {
+        XSession tmp = sessions.get(real);
+        if (tmp == null) {
+            synchronized (real) {
+                tmp = sessions.get(real);
+                if (tmp == null) {
+                    tmp = new _SocketSession(real);
+                    sessions.put(real, tmp);
+                }
+            }
+        }
+
+        return tmp;
+    }
+
+    public static void remove(WebSocketChannel real){
+        sessions.remove(real);
+    }
+
+
+
+    WebSocketChannel real;
+    public _SocketSession(WebSocketChannel real){
+        this.real = real;
+    }
+
+    @Override
+    public void send(String message) {
+        //real.send(message);
+    }
+
+    @Override
+    public void send(byte[] message) {
+        //real.send(message);
+    }
+
+    @Override
+    public void close() throws IOException {
+        real.close();
+        sessions.remove(real);
+    }
+
+    @Override
+    public boolean isOpen() {
+        return real.isOpen();
+    }
+
+    @Override
+    public boolean isClosed() {
+        return real.isCloseFrameReceived();
+    }
+
+    @Override
+    public InetSocketAddress getRemoteSocketAddress() throws IOException{
+        return real.getSourceAddress();
+    }
+
+    @Override
+    public InetSocketAddress getLocalSocketAddress() throws IOException{
+        return real.getDestinationAddress();
+    }
+
+    @Override
+    public void setAttachment(Object obj) {
+        real.setAttribute("attachment",obj);
+    }
+
+    @Override
+    public <T> T getAttachment() {
+        return (T)real.getAttribute("attachment");
+    }
+
+    @Override
+    public Collection<XSession> getOpenSessions() {
+        return new ArrayList<>(sessions.values());
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        _SocketSession that = (_SocketSession) o;
+        return Objects.equals(real, that.real);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(real);
+    }
+}

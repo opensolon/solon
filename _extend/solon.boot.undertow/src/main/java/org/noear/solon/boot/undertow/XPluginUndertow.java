@@ -10,6 +10,7 @@ import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.servlet.api.ServletContainer;
 import io.undertow.servlet.util.DefaultClassIntrospector;
 import org.noear.solon.XApp;
+import org.noear.solon.boot.undertow.http.UtHttpHandler;
 import org.noear.solon.core.XPlugin;
 
 import javax.servlet.MultipartConfigElement;
