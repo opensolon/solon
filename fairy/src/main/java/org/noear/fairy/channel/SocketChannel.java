@@ -6,8 +6,6 @@ import org.noear.fairy.IChannel;
 import org.noear.fairy.Result;
 import org.noear.fairy.FairyConfig;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.Map;
 
 /**
