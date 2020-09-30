@@ -70,15 +70,16 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon</artifactId>
+                <artifactId>solonx.socket.api</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solonx.socket.api</artifactId>
+                <artifactId>solon</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+
 
             <dependency>
                 <groupId>org.noear</groupId>
