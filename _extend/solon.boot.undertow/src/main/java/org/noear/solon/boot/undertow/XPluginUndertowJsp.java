@@ -38,16 +38,16 @@ public class XPluginUndertowJsp implements XPlugin {
     @Override
     public void start(XApp app) {
         try {
-            setupJsp(app);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        _server.start();
+            setup(app);
 
+            _server.start();
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
 
-    public void setupJsp(XApp app) throws Exception {
+    protected void setup(XApp app) throws Throwable {
         final ServletContainer container = ServletContainer.Factory.newInstance();
         MultipartConfigElement configElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
 
@@ -76,13 +76,13 @@ public class XPluginUndertowJsp implements XPlugin {
 
         DeploymentManager manager = container.addDeployment(builder);
         manager.deploy();
-        HttpHandler jsp_handler = manager.start();
+        HttpHandler httpHandler = manager.start();
 
         //************************** init server start******************
         serverBuilder = getInstance().setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE, false);
 
         serverBuilder.addHttpListener(app.port(), "0.0.0.0");
-        serverBuilder.setHandler(jsp_handler);
+        serverBuilder.setHandler(httpHandler);
 
         _server = serverBuilder.build();
 

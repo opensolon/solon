@@ -1,26 +1,19 @@
 package org.noear.solon.boot.undertow;
 
-import io.undertow.Handlers;
 import io.undertow.Undertow;
 import io.undertow.UndertowOptions;
 import io.undertow.server.HandlerWrapper;
 import io.undertow.server.HttpHandler;
-import io.undertow.server.handlers.PathHandler;
 import io.undertow.servlet.Servlets;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.servlet.api.ServletContainer;
 import io.undertow.servlet.util.DefaultClassIntrospector;
-import io.undertow.websockets.WebSocketConnectionCallback;
-import io.undertow.websockets.core.WebSocketChannel;
-import io.undertow.websockets.spi.WebSocketHttpExchange;
 import org.noear.solon.XApp;
 import org.noear.solon.core.XPlugin;
 
 import javax.servlet.MultipartConfigElement;
-import javax.servlet.ServletException;
 
-import static io.undertow.Handlers.path;
 import static io.undertow.Handlers.websocket;
 
 /**
@@ -34,6 +27,16 @@ public class XPluginUndertow implements XPlugin {
 
     @Override
     public void start(XApp app) {
+        try {
+            setup(app);
+
+            _server.start();
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    protected void setup(XApp app) throws Throwable {
         Undertow.Builder builder = getInstance();
         builder.setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE, false);
 
@@ -41,25 +44,13 @@ public class XPluginUndertow implements XPlugin {
         UtHttpHandler _handler = new UtHttpHandler();
         DeploymentManager manager = doGenerateManager(_handler, app);
 
-        HttpHandler f_handler = null;
-        try {
-            f_handler = manager.start();
-        } catch (ServletException e) {
-            throw new RuntimeException(e);
-        }
-
+        HttpHandler httpHandler = manager.start();
 
         builder.addHttpListener(app.port(), "0.0.0.0");
-        builder.setHandler(f_handler);
-        //builder.setHandler(websocket(new UtWebSocketHandler(), f_handler));
+        //builder.setHandler(f_handler);
+        builder.setHandler(websocket(new UtWebSocketHandler(), httpHandler));
 
         _server = builder.build();
-
-        try {
-            _server.start();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
 
