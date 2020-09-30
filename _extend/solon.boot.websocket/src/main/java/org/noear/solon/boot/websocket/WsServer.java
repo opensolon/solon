@@ -63,9 +63,9 @@ public class WsServer extends WebSocketServer {
         try {
             if (listening != null) {
                 listening.onMessage(_SocketSession.get(conn), SocketMessage.wrap(conn.getResourceDescriptor(), data.getBytes(_charset)));
+            }else {
+                _contextHandler.handle(conn, data.getBytes(_charset), true);
             }
-
-            _contextHandler.handle(conn, data.getBytes(_charset), true);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

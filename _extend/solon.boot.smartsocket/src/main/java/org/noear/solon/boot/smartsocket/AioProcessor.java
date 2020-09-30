@@ -21,9 +21,9 @@ public class AioProcessor implements MessageProcessor<SocketMessage> {
         try {
             if (listening != null) {
                 listening.onMessage(_SocketSession.get(session), request);
+            }else {
+                handle(session, request);
             }
-
-            handle(session, request);
         } catch (Throwable e) {
             e.printStackTrace();
         }
