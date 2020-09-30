@@ -4,39 +4,6 @@ package org.noear.solon.api.socket;
 import java.nio.ByteBuffer;
 
 public class SocketMessageUtils {
-    /**
-     * 解码
-     * */
-    public static SocketMessage decode(ByteBuffer buffer) {
-        //1.解码key and uri
-        ByteBuffer sb = ByteBuffer.allocate(Math.min(256, buffer.limit()));
-
-        int len0 = buffer.getInt();
-
-        String key = readStr(buffer, sb);
-        if (key == null) {
-            return null;
-        }
-
-        String uri = readStr(buffer, sb);
-        if (uri == null) {
-            return null;
-        }
-
-        //2.解码body
-        int len = len0 - buffer.position();
-        byte[] bytes = new byte[len];
-        if(len > 0) {
-            buffer.get(bytes, 0, len);
-        }
-
-        SocketMessage msg = new SocketMessage();
-        msg.key = key;
-        msg.resourceDescriptor = uri;
-        msg.content = bytes;
-
-        return msg;
-    }
 
     /**
      * 编码
@@ -68,7 +35,42 @@ public class SocketMessageUtils {
         return buffer;
     }
 
-    private static String readStr(ByteBuffer buffer, ByteBuffer sb) {
+    /**
+     * 解码
+     * */
+    public static SocketMessage decode(ByteBuffer buffer) {
+        //1.解码key and uri
+        ByteBuffer sb = ByteBuffer.allocate(Math.min(256, buffer.limit()));
+
+        int len0 = buffer.getInt();
+
+        String key = decodeString(buffer, sb);
+        if (key == null) {
+            return null;
+        }
+
+        String uri = decodeString(buffer, sb);
+        if (uri == null) {
+            return null;
+        }
+
+        //2.解码body
+        int len = len0 - buffer.position();
+        byte[] bytes = new byte[len];
+        if(len > 0) {
+            buffer.get(bytes, 0, len);
+        }
+
+        SocketMessage msg = new SocketMessage();
+        msg.key = key;
+        msg.resourceDescriptor = uri;
+        msg.content = bytes;
+
+        return msg;
+    }
+
+
+    private static String decodeString(ByteBuffer buffer, ByteBuffer sb) {
         sb.clear();
 
         while (true) {
