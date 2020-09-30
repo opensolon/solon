@@ -4,7 +4,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
-public class SocketMessage {
+public class XSocketMessage {
     /**
      * 消息key
      */
@@ -34,22 +34,22 @@ public class SocketMessage {
     /**
      * 打包
      */
-    public static SocketMessage wrap(byte[] bytes) {
+    public static XSocketMessage wrap(byte[] bytes) {
         return wrap(null, null, bytes);
     }
 
     /**
      * 打包
      */
-    public static SocketMessage wrap(String resourceDescriptor, byte[] bytes) {
+    public static XSocketMessage wrap(String resourceDescriptor, byte[] bytes) {
         return wrap(UUID.randomUUID().toString(), resourceDescriptor, bytes);
     }
 
     /**
      * 打包
      */
-    public static SocketMessage wrap(String key, String resourceDescriptor, byte[] bytes) {
-        SocketMessage msg = new SocketMessage();
+    public static XSocketMessage wrap(String key, String resourceDescriptor, byte[] bytes) {
+        XSocketMessage msg = new XSocketMessage();
 
         msg.key = key;
         msg.resourceDescriptor = resourceDescriptor;

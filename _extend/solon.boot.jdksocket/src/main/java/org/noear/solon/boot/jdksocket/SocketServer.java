@@ -1,6 +1,6 @@
 package org.noear.solon.boot.jdksocket;
 
-import org.noear.solon.api.socket.SocketMessage;
+import org.noear.solon.api.socket.XSocketMessage;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -47,7 +47,7 @@ public class SocketServer {
                         return;
                     }
 
-                    SocketMessage msg = session.receive(protocol);
+                    XSocketMessage msg = session.receive(protocol);
                     if (msg != null) {
                         pool.execute(() -> {
                             handler.handle(session, msg);

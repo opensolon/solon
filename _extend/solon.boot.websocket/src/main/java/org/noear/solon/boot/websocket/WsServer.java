@@ -3,8 +3,8 @@ package org.noear.solon.boot.websocket;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
-import org.noear.solon.api.socket.SocketListening;
-import org.noear.solon.api.socket.SocketMessage;
+import org.noear.solon.api.socket.XSocketListener;
+import org.noear.solon.api.socket.XSocketMessage;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
 
@@ -18,13 +18,13 @@ import java.nio.charset.StandardCharsets;
 public class WsServer extends WebSocketServer {
     private WsContextHandler _contextHandler;
     private Charset _charset = StandardCharsets.UTF_8;
-    private SocketListening listening;
+    private XSocketListener listening;
 
     public WsServer(int port, WsContextHandler contextHandler) throws UnknownHostException {
         super(new InetSocketAddress(port));
         _contextHandler = contextHandler;
 
-        Aop.getAsyn(SocketListening.class, (bw) -> listening = bw.raw());
+        Aop.getAsyn(XSocketListener.class, (bw) -> listening = bw.raw());
     }
 
     @Override
@@ -62,7 +62,7 @@ public class WsServer extends WebSocketServer {
     public void onMessage(WebSocket conn, String data) {
         try {
             if (listening != null) {
-                listening.onMessage(_SocketSession.get(conn), SocketMessage.wrap(conn.getResourceDescriptor(), data.getBytes(_charset)));
+                listening.onMessage(_SocketSession.get(conn), XSocketMessage.wrap(conn.getResourceDescriptor(), data.getBytes(_charset)));
             }else {
                 _contextHandler.handle(conn, data.getBytes(_charset), true);
             }
@@ -75,7 +75,7 @@ public class WsServer extends WebSocketServer {
     public void onMessage(WebSocket conn, ByteBuffer data) {
         try {
             if (listening != null) {
-                listening.onMessage(_SocketSession.get(conn), SocketMessage.wrap(conn.getResourceDescriptor(), data.array()));
+                listening.onMessage(_SocketSession.get(conn), XSocketMessage.wrap(conn.getResourceDescriptor(), data.array()));
             }
 
             _contextHandler.handle(conn, data.array(), false);

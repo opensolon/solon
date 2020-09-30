@@ -1,23 +1,23 @@
 package org.noear.solon.boot.smartsocket;
 
 import org.noear.solon.XApp;
-import org.noear.solon.api.socket.SocketListening;
+import org.noear.solon.api.socket.XSocketListener;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
-import org.noear.solon.api.socket.SocketMessage;
+import org.noear.solon.api.socket.XSocketMessage;
 
 import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.StateMachineEnum;
 import org.smartboot.socket.transport.AioSession;
 
-public class AioProcessor implements MessageProcessor<SocketMessage> {
-    private SocketListening listening;
+public class AioProcessor implements MessageProcessor<XSocketMessage> {
+    private XSocketListener listening;
     public AioProcessor() {
-        Aop.getAsyn(SocketListening.class, (bw) -> listening = bw.raw());
+        Aop.getAsyn(XSocketListener.class, (bw) -> listening = bw.raw());
     }
 
     @Override
-    public void process(AioSession session, SocketMessage request) {
+    public void process(AioSession session, XSocketMessage request) {
         try {
             if (listening != null) {
                 listening.onMessage(_SocketSession.get(session), request);
@@ -58,7 +58,7 @@ public class AioProcessor implements MessageProcessor<SocketMessage> {
         }
     }
 
-    public void handle(AioSession session, SocketMessage request) {
+    public void handle(AioSession session, XSocketMessage request) {
         if (request == null) {
             return;
         }

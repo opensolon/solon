@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Collection;
 
-public interface Session {
+public interface XSession {
     void send(String message);
     void send(byte[] message);
 
@@ -19,5 +19,5 @@ public interface Session {
     void setAttachment(Object obj);
     <T> T getAttachment();
 
-    Collection<Session> getOpenSessions();
+    Collection<XSession> getOpenSessions();
 }

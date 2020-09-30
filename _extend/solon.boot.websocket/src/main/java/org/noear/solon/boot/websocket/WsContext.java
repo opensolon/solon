@@ -2,7 +2,7 @@ package org.noear.solon.boot.websocket;
 
 import org.java_websocket.WebSocket;
 import org.noear.solon.core.*;
-import org.noear.solon.api.socket.SocketMessage;
+import org.noear.solon.api.socket.XSocketMessage;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -11,9 +11,9 @@ import java.net.URI;
 public class WsContext extends XContextEmpty {
     private InetSocketAddress _inetSocketAddress;
     private WebSocket _socket;
-    private SocketMessage _message;
+    private XSocketMessage _message;
     private boolean _messageIsString;
-    public WsContext(WebSocket socket, SocketMessage message, boolean messageIsString){
+    public WsContext(WebSocket socket, XSocketMessage message, boolean messageIsString){
         _socket = socket;
         _message = message;
         _inetSocketAddress = socket.getRemoteSocketAddress();

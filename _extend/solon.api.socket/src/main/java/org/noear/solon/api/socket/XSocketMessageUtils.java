@@ -3,12 +3,12 @@ package org.noear.solon.api.socket;
 
 import java.nio.ByteBuffer;
 
-public class SocketMessageUtils {
+public class XSocketMessageUtils {
 
     /**
      * 编码
      */
-    public static ByteBuffer encode(SocketMessage msg) {
+    public static ByteBuffer encode(XSocketMessage msg) {
         byte[] keyB = msg.key.getBytes(msg.charset);
         byte[] rdB = msg.resourceDescriptor.getBytes(msg.charset);
 
@@ -38,7 +38,7 @@ public class SocketMessageUtils {
     /**
      * 解码
      * */
-    public static SocketMessage decode(ByteBuffer buffer) {
+    public static XSocketMessage decode(ByteBuffer buffer) {
         //1.解码key and uri
         ByteBuffer sb = ByteBuffer.allocate(Math.min(256, buffer.limit()));
 
@@ -61,7 +61,7 @@ public class SocketMessageUtils {
             buffer.get(bytes, 0, len);
         }
 
-        SocketMessage msg = new SocketMessage();
+        XSocketMessage msg = new XSocketMessage();
         msg.key = key;
         msg.resourceDescriptor = uri;
         msg.content = bytes;

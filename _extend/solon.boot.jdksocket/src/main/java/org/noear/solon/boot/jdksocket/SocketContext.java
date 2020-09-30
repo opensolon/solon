@@ -2,7 +2,7 @@ package org.noear.solon.boot.jdksocket;
 
 import org.noear.solon.core.XContextEmpty;
 import org.noear.solon.core.XMethod;
-import org.noear.solon.api.socket.SocketMessage;
+import org.noear.solon.api.socket.XSocketMessage;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -11,9 +11,9 @@ import java.net.URI;
 public class SocketContext extends XContextEmpty {
     private InetAddress _inetSocketAddress;
     private SocketSession _session;
-    private SocketMessage _message;
+    private XSocketMessage _message;
 
-    public SocketContext(SocketSession session, SocketMessage message) {
+    public SocketContext(SocketSession session, XSocketMessage message) {
         _session = session;
         _message = message;
 
@@ -144,7 +144,7 @@ public class SocketContext extends XContextEmpty {
     protected void commit() throws IOException {
         if (_session.isOpen()) {
             synchronized (_session) {
-                SocketMessage msg = SocketMessage.wrap(_message.key, _message.resourceDescriptor, _outputStream.toByteArray());
+                XSocketMessage msg = XSocketMessage.wrap(_message.key, _message.resourceDescriptor, _outputStream.toByteArray());
                 _session.publish(msg);
             }
         }

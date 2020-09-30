@@ -1,7 +1,7 @@
 package org.noear.solon.boot.jdksocket;
 
-import org.noear.solon.api.socket.SocketMessage;
-import org.noear.solon.api.socket.SocketMessageUtils;
+import org.noear.solon.api.socket.XSocketMessage;
+import org.noear.solon.api.socket.XSocketMessageUtils;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -31,7 +31,7 @@ public class SocketSession {
         return connector.getInetAddress();
     }
 
-    public SocketMessage receive(SocketProtocol protocol) {
+    public XSocketMessage receive(SocketProtocol protocol) {
         try {
             return protocol.decode(connector, connector.getInputStream());
         }
@@ -45,8 +45,8 @@ public class SocketSession {
         }
     }
 
-    public void publish(SocketMessage msg) throws IOException {
-        connector.getOutputStream().write(SocketMessageUtils.encode(msg).array());
+    public void publish(XSocketMessage msg) throws IOException {
+        connector.getOutputStream().write(XSocketMessageUtils.encode(msg).array());
         connector.getOutputStream().flush();
     }
 }

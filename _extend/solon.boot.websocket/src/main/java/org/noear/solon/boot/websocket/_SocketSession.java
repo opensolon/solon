@@ -1,16 +1,16 @@
 package org.noear.solon.boot.websocket;
 
 import org.java_websocket.WebSocket;
-import org.noear.solon.api.socket.Session;
+import org.noear.solon.api.socket.XSession;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.*;
 
-public class _SocketSession implements Session {
-    public static Map<WebSocket,Session> sessions = new HashMap<>();
-    public static Session get(WebSocket real) {
-        Session tmp = sessions.get(real);
+public class _SocketSession implements XSession {
+    public static Map<WebSocket, XSession> sessions = new HashMap<>();
+    public static XSession get(WebSocket real) {
+        XSession tmp = sessions.get(real);
         if (tmp == null) {
             synchronized (real) {
                 tmp = sessions.get(real);
@@ -82,7 +82,7 @@ public class _SocketSession implements Session {
     }
 
     @Override
-    public Collection<Session> getOpenSessions() {
+    public Collection<XSession> getOpenSessions() {
         return new ArrayList<>(sessions.values());
     }
 

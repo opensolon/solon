@@ -1,7 +1,7 @@
 package org.noear.solon.boot.jdksocket;
 
-import org.noear.solon.api.socket.SocketMessage;
-import org.noear.solon.api.socket.SocketMessageUtils;
+import org.noear.solon.api.socket.XSocketMessage;
+import org.noear.solon.api.socket.XSocketMessageUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 
 public class SocketProtocol {
-    public SocketMessage decode(Socket connector, InputStream input) throws IOException {
+    public XSocketMessage decode(Socket connector, InputStream input) throws IOException {
         if(input == null){
             return null;
         }
@@ -33,7 +33,7 @@ public class SocketProtocol {
 
         input.read(bytes, 4, len - 4);
 
-        return SocketMessageUtils.decode(ByteBuffer.wrap(bytes));
+        return XSocketMessageUtils.decode(ByteBuffer.wrap(bytes));
     }
 
 
