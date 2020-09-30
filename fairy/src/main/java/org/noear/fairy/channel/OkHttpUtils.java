@@ -5,9 +5,12 @@ import okhttp3.internal.Util;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Source;
+import org.noear.fairy.FairyException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +33,14 @@ class OkHttpUtils {
 
     public static OkHttpUtils http(String url){
         return new OkHttpUtils(url);
+    }
+
+    public static String urlEncode(String str) {
+        try {
+            return URLEncoder.encode(str, "utf-8");
+        } catch (UnsupportedEncodingException ex) {
+            throw new FairyException(ex);
+        }
     }
 
     private String _url;

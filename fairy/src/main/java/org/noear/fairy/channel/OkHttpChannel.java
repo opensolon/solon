@@ -24,7 +24,9 @@ public class OkHttpChannel implements IChannel {
             StringBuilder sb = new StringBuilder(url).append("?");
             args.forEach((k, v) -> {
                 if (v != null) {
-                    sb.append(k).append("=").append(v).append("&");
+                    sb.append(k).append("=")
+                            .append(OkHttpUtils.urlEncode(v.toString()))
+                            .append("&");
                 }
             });
 
