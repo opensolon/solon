@@ -20,9 +20,9 @@ public class FairyHandler implements InvocationHandler {
     private final FairyConfig config;
 
     private final Map<String, String> headers0 = new LinkedHashMap<>();
-    private final String name0;
-    private final String path0;
-    private final String url0;
+    private final String name0; //upstream name
+    private final String path0; //path
+    private final String url0;  //url
 
     /**
      * @param config 配置

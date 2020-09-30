@@ -19,6 +19,7 @@ public class FairyConfigurationSolon implements FairyConfiguration {
             return;
         }
 
+        //upstream name
         String name0 = client.value().split(":")[0];
 
         //尝试从负载工厂获取
