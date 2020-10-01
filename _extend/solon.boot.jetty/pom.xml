@@ -59,6 +59,12 @@
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty.websocket</groupId>
+            <artifactId>websocket-server</artifactId>
+            <version>${jetty.ver}</version>
+            <scope>provided</scope>
+        </dependency>
 
     </dependencies>
 
