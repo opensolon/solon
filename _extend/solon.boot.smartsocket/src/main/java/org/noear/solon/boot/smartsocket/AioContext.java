@@ -1,5 +1,6 @@
 package org.noear.solon.boot.smartsocket;
 
+import org.noear.solonx.socket.api.XSession;
 import org.noear.solonx.socket.api.XSocketMessageUtils;
 import org.noear.solon.core.XContextEmpty;
 import org.noear.solon.core.XMethod;
@@ -13,10 +14,10 @@ import java.net.URI;
 
 public class AioContext extends XContextEmpty {
     private InetSocketAddress _inetSocketAddress;
-    private AioSession _session;
+    private XSession _session;
     private XSocketMessage _message;
 
-    public AioContext(AioSession session, XSocketMessage message) {
+    public AioContext(XSession session, XSocketMessage message) {
         _session = session;
         _message = message;
 
@@ -141,10 +142,9 @@ public class AioContext extends XContextEmpty {
 
     @Override
     protected void commit() throws IOException {
-        if (_session.isInvalid() == false) {
+        if (_session.isValid()) {
             XSocketMessage msg =  XSocketMessage.wrap(_message.key, _message.resourceDescriptor, _outputStream.toByteArray());
-
-            _session.writeBuffer().writeAndFlush(XSocketMessageUtils.encode(msg).array());
+            _session.send(msg);
         }
     }
 

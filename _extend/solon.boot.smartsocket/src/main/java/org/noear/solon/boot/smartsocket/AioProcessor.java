@@ -1,6 +1,7 @@
 package org.noear.solon.boot.smartsocket;
 
 import org.noear.solon.XApp;
+import org.noear.solonx.socket.api.XSession;
 import org.noear.solonx.socket.api.XSocketListener;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
@@ -19,11 +20,12 @@ public class AioProcessor implements MessageProcessor<XSocketMessage> {
     @Override
     public void process(AioSession session, XSocketMessage request) {
         try {
+            XSession session1 = _SocketSession.get(session);
             if (listening != null) {
-                listening.onMessage(_SocketSession.get(session), request);
+                listening.onMessage(session1, request);
             }
 
-            process0(session, request);
+            process0(session1, request);
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }
@@ -58,7 +60,7 @@ public class AioProcessor implements MessageProcessor<XSocketMessage> {
         }
     }
 
-    protected void process0(AioSession session, XSocketMessage request) {
+    protected void process0(XSession session, XSocketMessage request) {
         if (request == null) {
             return;
         }
