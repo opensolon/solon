@@ -1,13 +1,13 @@
-package org.noear.solon.boot.websocket;
+package org.noear.solon.boot.undertow.websocket;
 
-import org.java_websocket.WebSocket;
+import io.undertow.websockets.core.WebSocketChannel;
 import org.noear.solon.XApp;
-import org.noear.solonx.socket.api.XSocketMessage;
 import org.noear.solon.core.XEventBus;
+import org.noear.solonx.socket.api.XSocketMessage;
 
 public class WsContextHandler {
 
-    public void handle(WebSocket socket, XSocketMessage message, boolean messageIsString) {
+    public void handle(WebSocketChannel socket, XSocketMessage message, boolean messageIsString) {
         try {
             WsContext context = new WsContext(socket, message, messageIsString);
 

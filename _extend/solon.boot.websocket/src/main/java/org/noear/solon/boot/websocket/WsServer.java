@@ -61,10 +61,12 @@ public class WsServer extends WebSocketServer {
     @Override
     public void onMessage(WebSocket conn, String data) {
         try {
+            XSocketMessage message = XSocketMessage.wrap(conn.getResourceDescriptor(), data.getBytes(_charset));
+
             if (listening != null) {
-                listening.onMessage(_SocketSession.get(conn), XSocketMessage.wrap(conn.getResourceDescriptor(), data.getBytes(_charset)));
+                listening.onMessage(_SocketSession.get(conn), message);
             }else {
-                _contextHandler.handle(conn, data.getBytes(_charset), true);
+                _contextHandler.handle(conn, message, true);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -74,11 +76,13 @@ public class WsServer extends WebSocketServer {
     @Override
     public void onMessage(WebSocket conn, ByteBuffer data) {
         try {
-            if (listening != null) {
-                listening.onMessage(_SocketSession.get(conn), XSocketMessage.wrap(conn.getResourceDescriptor(), data.array()));
-            }
+            XSocketMessage message = XSocketMessage.wrap(conn.getResourceDescriptor(), data.array());
 
-            _contextHandler.handle(conn, data.array(), false);
+            if (listening != null) {
+                listening.onMessage(_SocketSession.get(conn), message);
+            }else {
+                _contextHandler.handle(conn, message, false);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
