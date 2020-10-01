@@ -23,7 +23,7 @@ public interface XSession {
     void close() throws IOException;
 
     /**
-     * 是否有效
+     * 会话是否有效
      * */
     boolean isValid();
 
