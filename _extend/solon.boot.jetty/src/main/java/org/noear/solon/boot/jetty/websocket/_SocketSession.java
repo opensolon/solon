@@ -44,13 +44,21 @@ public class _SocketSession implements XSession {
 
     @Override
     public void send(String message) {
-        //WebSockets.sendText(message, real, null);
+        try {
+            real.getRemote().sendString(message);
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
     public void send(byte[] message) {
-        ByteBuffer buf = ByteBuffer.wrap(message);
-        //WebSockets.sendBinary(buf, real, null);
+        try {
+            ByteBuffer buf = ByteBuffer.wrap(message);
+            real.getRemote().sendBytes(buf);
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
