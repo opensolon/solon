@@ -8,8 +8,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
-public class SocketSession {
-    public final Socket connector;
+class SocketSession {
+    protected final Socket connector;
 
     public SocketSession(Socket connector) {
         this.connector = connector;

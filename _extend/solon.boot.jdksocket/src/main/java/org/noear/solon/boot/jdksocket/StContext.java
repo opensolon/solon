@@ -8,7 +8,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.URI;
 
-public class StContext extends XContextEmpty {
+class StContext extends XContextEmpty {
     private InetAddress _inetSocketAddress;
     private SocketSession _session;
     private XSocketMessage _message;

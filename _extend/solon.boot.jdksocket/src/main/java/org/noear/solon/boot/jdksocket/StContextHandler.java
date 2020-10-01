@@ -4,7 +4,7 @@ import org.noear.solon.XApp;
 import org.noear.solon.core.XEventBus;
 import org.noear.solonx.socket.api.XSocketMessage;
 
-public class StContextHandler {
+class StContextHandler {
 
     public void handle(SocketSession session, XSocketMessage message) {
         if (message == null) {
