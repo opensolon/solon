@@ -8,12 +8,12 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.URI;
 
-public class SocketContext extends XContextEmpty {
+public class StContext extends XContextEmpty {
     private InetAddress _inetSocketAddress;
     private SocketSession _session;
     private XSocketMessage _message;
 
-    public SocketContext(SocketSession session, XSocketMessage message) {
+    public StContext(SocketSession session, XSocketMessage message) {
         _session = session;
         _message = message;
 

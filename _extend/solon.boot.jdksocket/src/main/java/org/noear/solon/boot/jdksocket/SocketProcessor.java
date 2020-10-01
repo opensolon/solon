@@ -8,11 +8,11 @@ import org.noear.solonx.socket.api.XSocketMessage;
 import java.net.Socket;
 
 public class SocketProcessor {
-    private SocketContextHandler handler;
+    private StContextHandler handler;
     private XSocketListener listener;
 
     public SocketProcessor() {
-        handler = new SocketContextHandler();
+        handler = new StContextHandler();
         Aop.getAsyn(XSocketListener.class, (bw) -> listener = bw.raw());
     }
 
@@ -24,6 +24,7 @@ public class SocketProcessor {
         return new SocketSession(socket);
     }
 
+
     public void onMessage(SocketSession session, XSocketMessage message) {
         try {
             if (listener != null) {
@@ -33,6 +34,12 @@ public class SocketProcessor {
             handler.handle(session, message);
         } catch (Throwable ex) {
             XEventBus.push(ex);
+        }
+    }
+
+    public void onClosed(Socket socket) {
+        if (listener != null) {
+            listener.onClose(_SocketSession.get(socket));
         }
     }
 }

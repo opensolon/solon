@@ -4,7 +4,7 @@ import org.noear.solon.XApp;
 import org.noear.solon.core.XEventBus;
 import org.noear.solonx.socket.api.XSocketMessage;
 
-public class SocketContextHandler {
+public class StContextHandler {
 
     public void handle(SocketSession session, XSocketMessage message) {
         if (message == null) {
@@ -21,7 +21,7 @@ public class SocketContextHandler {
     }
 
     private void handleDo(SocketSession session, XSocketMessage message) {
-        SocketContext context = new SocketContext(session, message);
+        StContext context = new StContext(session, message);
 
         try {
             XApp.global().tryHandle(context);

@@ -41,6 +41,7 @@ public class SocketServer {
             pool.execute(() -> {
                 while (true) {
                     if (session.isOpen() == false) {
+                        processor.onOpen(connector);
                         return;
                     }
 
