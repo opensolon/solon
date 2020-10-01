@@ -1,7 +1,8 @@
 package org.noear.solon.boot.smartsocket;
 
-import org.noear.solon.XApp;
+import org.noear.solon.core.XMethod;
 import org.noear.solonx.socket.api.XSession;
+import org.noear.solonx.socket.api.XSocketHandler;
 import org.noear.solonx.socket.api.XSocketListener;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
@@ -12,20 +13,22 @@ import org.smartboot.socket.StateMachineEnum;
 import org.smartboot.socket.transport.AioSession;
 
 public class AioProcessor implements MessageProcessor<XSocketMessage> {
+    private XSocketHandler handler;
     private XSocketListener listening;
     public AioProcessor() {
+        handler = new XSocketHandler(XMethod.SOCKET);
         Aop.getAsyn(XSocketListener.class, (bw) -> listening = bw.raw());
     }
 
     @Override
-    public void process(AioSession session, XSocketMessage request) {
+    public void process(AioSession session, XSocketMessage message) {
         try {
             XSession session1 = _SocketSession.get(session);
             if (listening != null) {
-                listening.onMessage(session1, request);
+                listening.onMessage(session1, message);
             }
 
-            process0(session1, request);
+            handler.handle(session1, message, false);
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }
@@ -57,25 +60,6 @@ public class AioProcessor implements MessageProcessor<XSocketMessage> {
                     listening.onError(_SocketSession.get(session), throwable);
                     break;
             }
-        }
-    }
-
-    protected void process0(XSession session, XSocketMessage request) {
-        if (request == null) {
-            return;
-        }
-
-        try {
-            AioContext context = new AioContext(session, request);
-
-            XApp.global().tryHandle(context);
-
-            if(context.getHandled()) {
-                context.commit();
-            }
-
-        } catch (Throwable ex) {
-            XEventBus.push(ex);
         }
     }
 }

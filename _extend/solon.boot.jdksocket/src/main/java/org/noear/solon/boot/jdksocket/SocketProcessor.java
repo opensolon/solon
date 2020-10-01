@@ -2,18 +2,19 @@ package org.noear.solon.boot.jdksocket;
 
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
+import org.noear.solon.core.XMethod;
 import org.noear.solonx.socket.api.XSession;
+import org.noear.solonx.socket.api.XSocketHandler;
 import org.noear.solonx.socket.api.XSocketListener;
 import org.noear.solonx.socket.api.XSocketMessage;
 
-import java.net.Socket;
 
 public class SocketProcessor {
-    private StContextHandler handler;
+    private XSocketHandler handler;
     private XSocketListener listener;
 
     public SocketProcessor() {
-        handler = new StContextHandler();
+        handler = new XSocketHandler(XMethod.SOCKET);
         Aop.getAsyn(XSocketListener.class, (bw) -> listener = bw.raw());
     }
 
@@ -30,7 +31,7 @@ public class SocketProcessor {
                 listener.onMessage(session, message);
             }
 
-            handler.handle(session, message);
+            handler.handle(session, message, false);
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }

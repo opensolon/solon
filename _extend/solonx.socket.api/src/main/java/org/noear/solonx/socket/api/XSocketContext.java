@@ -1,34 +1,30 @@
-package org.noear.solon.boot.jdksocket;
+package org.noear.solonx.socket.api;
 
 import org.noear.solon.core.XContextEmpty;
 import org.noear.solon.core.XMethod;
-import org.noear.solonx.socket.api.XSession;
-import org.noear.solonx.socket.api.XSocketMessage;
 
 import java.io.*;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
 
-class StContext extends XContextEmpty {
+public class XSocketContext extends XContextEmpty {
     private InetSocketAddress _inetSocketAddress;
-    private XSession _session;
+    private XSession _sesssion;
     private XSocketMessage _message;
+    private boolean _messageIsString;
+    private XMethod _method;
 
-    public StContext(XSession session, XSocketMessage message) {
-        _session = session;
+    public XSocketContext(XSession session, XSocketMessage message, boolean messageIsString, XMethod method) {
+        _sesssion = session;
         _message = message;
-
-        try {
-            _inetSocketAddress = session.getRemoteAddress();
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+        _messageIsString = messageIsString;
+        _method = method;
+        _inetSocketAddress = session.getRemoteAddress();
     }
 
     @Override
     public Object request() {
-        return _session;
+        return _sesssion;
     }
 
     @Override
@@ -36,7 +32,7 @@ class StContext extends XContextEmpty {
         if (_inetSocketAddress == null)
             return null;
         else
-            return _inetSocketAddress.getAddress().getHostAddress();
+            return _inetSocketAddress.getAddress().toString();
     }
 
     @Override
@@ -46,12 +42,16 @@ class StContext extends XContextEmpty {
 
     @Override
     public String method() {
-        return XMethod.SOCKET.name;
+        return _method.name;
     }
 
     @Override
     public String protocol() {
-        return "SOCKET";
+        if (_method.code == XMethod.WEBSOCKET.code) {
+            return "WS";
+        } else {
+            return "SOCKET";
+        }
     }
 
     @Override
@@ -69,6 +69,7 @@ class StContext extends XContextEmpty {
     public String path() {
         return uri().getPath();
     }
+
 
     @Override
     public String url() {
@@ -98,14 +99,13 @@ class StContext extends XContextEmpty {
 
     @Override
     public Object response() {
-        return _session;
+        return _sesssion;
     }
 
     @Override
     public void contentType(String contentType) {
         headerSet("Content-Type", contentType);
     }
-
 
     ByteArrayOutputStream _outputStream = new ByteArrayOutputStream();
 
@@ -117,7 +117,7 @@ class StContext extends XContextEmpty {
     @Override
     public void output(byte[] bytes) {
         try {
-            outputStream().write(bytes);
+            _outputStream.write(bytes);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -129,7 +129,7 @@ class StContext extends XContextEmpty {
             byte[] buff = new byte[100];
             int rc = 0;
             while ((rc = stream.read(buff, 0, 100)) > 0) {
-                outputStream().write(buff, 0, rc);
+                _outputStream.write(buff, 0, rc);
             }
 
         } catch (Throwable ex) {
@@ -138,22 +138,19 @@ class StContext extends XContextEmpty {
     }
 
     @Override
-    public void flush() throws IOException{
-        //不需要实现
-    }
-
-    @Override
     protected void commit() throws IOException {
-        if (_session.isValid()) {
-            synchronized (_session) {
+        if (_sesssion.isValid()) {
+            if (_messageIsString) {
+                _sesssion.send(new String(_outputStream.toByteArray()));
+            } else {
                 XSocketMessage msg = XSocketMessage.wrap(_message.key, _message.resourceDescriptor, _outputStream.toByteArray());
-                _session.send(msg);
+                _sesssion.send(msg);
             }
         }
     }
 
     @Override
     public void close() throws IOException {
-        _session.close();
+        _sesssion.close();
     }
 }

@@ -3,8 +3,8 @@ package org.noear.solon.boot.websocket;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
-import org.noear.solonx.socket.api.XSocketListener;
-import org.noear.solonx.socket.api.XSocketMessage;
+import org.noear.solon.core.XMethod;
+import org.noear.solonx.socket.api.*;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
 
@@ -15,13 +15,14 @@ import java.nio.charset.StandardCharsets;
 
 @SuppressWarnings("unchecked")
 public class WsServer extends WebSocketServer {
-    private WsContextHandler _contextHandler;
     private Charset _charset = StandardCharsets.UTF_8;
+
+    private XSocketHandler handler;
     private XSocketListener listening;
 
     public WsServer(int port) {
         super(new InetSocketAddress(port));
-        _contextHandler = new WsContextHandler();
+        handler = new XSocketHandler(XMethod.WEBSOCKET);
 
         Aop.getAsyn(XSocketListener.class, (bw) -> listening = bw.raw());
     }
@@ -57,13 +58,14 @@ public class WsServer extends WebSocketServer {
     @Override
     public void onMessage(WebSocket conn, String data) {
         try {
+            XSession session = _SocketSession.get(conn);
             XSocketMessage message = XSocketMessage.wrap(conn.getResourceDescriptor(), data.getBytes(_charset));
 
             if (listening != null) {
-                listening.onMessage(_SocketSession.get(conn), message);
+                listening.onMessage(session, message);
             }
 
-            _contextHandler.handle(conn, message, true);
+            handler.handle(session, message, true);
 
         } catch (Throwable ex) {
             XEventBus.push(ex);
@@ -73,13 +75,14 @@ public class WsServer extends WebSocketServer {
     @Override
     public void onMessage(WebSocket conn, ByteBuffer data) {
         try {
+            XSession session = _SocketSession.get(conn);
             XSocketMessage message = XSocketMessage.wrap(conn.getResourceDescriptor(), data.array());
 
             if (listening != null) {
-                listening.onMessage(_SocketSession.get(conn), message);
+                listening.onMessage(session, message);
             }
 
-            _contextHandler.handle(conn, message, false);
+            handler.handle(session, message, false);
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }
@@ -92,8 +95,5 @@ public class WsServer extends WebSocketServer {
         } else {
             XEventBus.push(ex);
         }
-
-        //System.out.println("Solon.Server:Websocket onError:");
-        //ex.printStackTrace();
     }
 }
