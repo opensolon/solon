@@ -51,6 +51,9 @@ public class _SocketSession implements XSession {
     @Override
     public void send(byte[] message) {
         try {
+            //
+            //用 real message? 还是 XSocketMessage?
+            //
             real.writeBuffer().writeAndFlush(message);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
