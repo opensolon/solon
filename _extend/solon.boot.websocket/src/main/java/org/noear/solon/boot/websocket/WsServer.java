@@ -9,7 +9,6 @@ import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
 
 import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
