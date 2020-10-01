@@ -19,11 +19,11 @@ public class SocketServer {
         this.protocol = protocol;
     }
 
-    public void start(int port)  {
-        new Thread(()->{
+    public void start(int port) {
+        new Thread(() -> {
             try {
                 start0(port);
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
         }).start();
@@ -41,7 +41,7 @@ public class SocketServer {
             pool.execute(() -> {
                 while (true) {
                     if (session.isOpen() == false) {
-                        processor.onOpen(connector);
+                        processor.onClosed(connector);
                         return;
                     }
 
@@ -51,19 +51,20 @@ public class SocketServer {
                             processor.onMessage(session, message);
                         });
                     }
+
                 }
             });
         }
     }
 
-    public void stop(){
-        if(server.isClosed()){
+    public void stop() {
+        if (server.isClosed()) {
             return;
         }
 
         try {
             server.close();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
