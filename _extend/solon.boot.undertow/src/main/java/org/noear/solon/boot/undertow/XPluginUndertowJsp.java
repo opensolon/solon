@@ -75,7 +75,6 @@ public class XPluginUndertowJsp implements XPlugin {
 
     // 生成DeploymentManager来生成handler
     private DeploymentManager doGenerateManager() throws Exception{
-
         MultipartConfigElement configElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
 
         String fileRoot = getResourceRoot();

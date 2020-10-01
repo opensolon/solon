@@ -64,7 +64,6 @@ public class XPluginUndertow implements XPlugin {
     // 生成DeploymentManager来生成handler
     private DeploymentManager doGenerateManager() {
         UtHttpHandler handler = new UtHttpHandler();
-        HandlerWrapper wrapper = nothing -> handler;
 
         MultipartConfigElement configElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
 
@@ -76,7 +75,7 @@ public class XPluginUndertow implements XPlugin {
                 .setDefaultMultipartConfig(configElement)
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE);
 
-        builder.addInnerHandlerChainWrapper(wrapper);
+        builder.addInnerHandlerChainWrapper(h -> handler);
 
         if (XServerProp.session_timeout > 0) {
             builder.setDefaultSessionTimeout(XServerProp.session_timeout);
