@@ -13,6 +13,27 @@ import java.net.URI;
 public class WebSocketTest {
     @Test
     public void test() throws Throwable {
+        //
+        //测试websocket框架
+        //
+        Thread.sleep(2000);
+        WsDemoClient client = new WsDemoClient(URI.create("ws://127.0.0.1:18080/demoe/websocket"));
+        client.connect();
+
+        while (!client.isOpen()) {
+            Thread.sleep(100);
+            //System.out.println("还没有打开:" + client.getReadyState());
+        }
+        System.out.println("建立websocket连接");
+        client.send("asd");
+        Thread.sleep(100);
+    }
+
+    @Test
+    public void test1() throws Throwable {
+        //
+        // 测试 jetty or undertow 自带的 websocket
+        //
         Thread.sleep(2000);
         WsDemoClient client = new WsDemoClient(URI.create("ws://127.0.0.1:8080/demoe/websocket"));
         client.connect();
@@ -22,7 +43,7 @@ public class WebSocketTest {
             //System.out.println("还没有打开:" + client.getReadyState());
         }
         System.out.println("建立websocket连接");
-        client.send("asd");
+        client.send("dddc");
         Thread.sleep(100);
     }
 }
