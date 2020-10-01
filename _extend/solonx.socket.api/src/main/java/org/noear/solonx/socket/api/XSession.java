@@ -6,6 +6,9 @@ import java.util.Collection;
 
 /**
  * XSocket 会话
+ *
+ * @author noear
+ * @since 1.0
  * */
 public interface XSession {
     Object real();

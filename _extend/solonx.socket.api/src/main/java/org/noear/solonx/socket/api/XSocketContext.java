@@ -7,6 +7,12 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.URI;
 
+/**
+ * XSocket 上下文
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public class XSocketContext extends XContextEmpty {
     private InetSocketAddress _inetSocketAddress;
     private XSession _sesssion;

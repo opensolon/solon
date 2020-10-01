@@ -1,5 +1,11 @@
 package org.noear.solonx.socket.api;
 
+/**
+ * XSocket 监听者
+ *
+ * @author noear
+ * @since 1.0
+ * */
 @FunctionalInterface
 public interface XSocketListener {
     default void onOpen(XSession session){}

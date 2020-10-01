@@ -1,8 +1,13 @@
 package org.noear.solonx.socket.api;
 
-
 import java.nio.ByteBuffer;
 
+/**
+ * XSocket 编解工具
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public class XSocketMessageUtils {
 
     /**

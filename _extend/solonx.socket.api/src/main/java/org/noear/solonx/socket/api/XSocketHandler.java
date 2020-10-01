@@ -4,6 +4,12 @@ import org.noear.solon.XApp;
 import org.noear.solon.core.XEventBus;
 import org.noear.solon.core.XMethod;
 
+/**
+ * XSocket 处理者
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public class XSocketHandler {
     XMethod method;
 

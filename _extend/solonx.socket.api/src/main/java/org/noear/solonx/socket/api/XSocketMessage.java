@@ -4,6 +4,12 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
+/**
+ * XSocket 消息包
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public class XSocketMessage {
     /**
      * 消息key
