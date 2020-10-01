@@ -2,7 +2,7 @@ package org.noear.solon.boot.undertow;
 
 import org.noear.solon.XApp;
 
-class XServerProp {
+public class XServerProp {
     public static int request_maxRequestSize = 1024 * 1024 * 2;//默认2mb
     public static int session_timeout = 0;
     public static String session_state_domain;
