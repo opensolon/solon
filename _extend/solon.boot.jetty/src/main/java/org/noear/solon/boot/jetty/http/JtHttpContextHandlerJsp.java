@@ -1,4 +1,4 @@
-package org.noear.solon.boot.jetty;
+package org.noear.solon.boot.jetty.http;
 
 import org.eclipse.jetty.server.Request;
 import org.noear.solon.XApp;

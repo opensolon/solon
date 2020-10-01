@@ -1,8 +1,10 @@
-package org.noear.solon.boot.jetty;
+package org.noear.solon.boot.jetty.http;
 
 import org.noear.solon.XApp;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.noear.solon.boot.jetty.XPluginImp;
+import org.noear.solon.boot.jetty.XServerProp;
 import org.noear.solon.core.XEventBus;
 
 import javax.servlet.http.HttpServletRequest;

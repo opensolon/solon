@@ -1,4 +1,4 @@
-package org.noear.solon.boot.jetty;
+package org.noear.solon.boot.jetty.http;
 
 import org.noear.solon.core.*;
 import org.noear.solon.XUtil;
@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.*;

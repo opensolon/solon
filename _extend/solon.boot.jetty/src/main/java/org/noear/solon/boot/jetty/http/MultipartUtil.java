@@ -1,4 +1,4 @@
-package org.noear.solon.boot.jetty;
+package org.noear.solon.boot.jetty.http;
 
 
 import org.noear.solon.core.XFile;

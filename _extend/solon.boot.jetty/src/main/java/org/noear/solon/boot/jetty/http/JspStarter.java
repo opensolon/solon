@@ -1,4 +1,4 @@
-package org.noear.solon.boot.jetty;
+package org.noear.solon.boot.jetty.http;
 
 import org.apache.tomcat.util.scan.StandardJarScanner;
 import org.eclipse.jetty.apache.jsp.JettyJasperInitializer;

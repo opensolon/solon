@@ -7,6 +7,8 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.ResourceCollection;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.boot.jetty.http.JspStarter;
+import org.noear.solon.boot.jetty.http.JtHttpContextHandlerJsp;
 
 import java.io.File;
 import java.io.FileNotFoundException;
