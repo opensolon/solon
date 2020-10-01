@@ -21,11 +21,11 @@ public class AioProcessor implements MessageProcessor<XSocketMessage> {
         try {
             if (listening != null) {
                 listening.onMessage(_SocketSession.get(session), request);
-            }else {
-                handle(session, request);
             }
-        } catch (Throwable e) {
-            e.printStackTrace();
+
+            process0(session, request);
+        } catch (Throwable ex) {
+            XEventBus.push(ex);
         }
     }
 
@@ -58,7 +58,7 @@ public class AioProcessor implements MessageProcessor<XSocketMessage> {
         }
     }
 
-    public void handle(AioSession session, XSocketMessage request) {
+    protected void process0(AioSession session, XSocketMessage request) {
         if (request == null) {
             return;
         }
