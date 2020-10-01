@@ -1,5 +1,6 @@
 package org.noear.solon.boot.jdksocket;
 
+import org.noear.solonx.socket.api.XSession;
 import org.noear.solonx.socket.api.XSocketMessage;
 
 import java.io.IOException;
@@ -36,16 +37,18 @@ public class SocketServer {
 
         while (true) {
             Socket connector = server.accept();
-            SocketSession session = processor.onOpen(connector);
+            XSession session = _SocketSession.get(connector);
+
+            processor.onOpen(session);
 
             pool.execute(() -> {
                 while (true) {
-                    if (session.isOpen() == false) {
-                        processor.onClosed(connector);
+                    if (session.isValid() == false) {
+                        processor.onClosed(session);
                         return;
                     }
 
-                    XSocketMessage message = session.receive(protocol);
+                    XSocketMessage message = _SocketSession.receive(connector, protocol);
                     if (message != null) {
                         pool.execute(() -> {
                             processor.onMessage(session, message);

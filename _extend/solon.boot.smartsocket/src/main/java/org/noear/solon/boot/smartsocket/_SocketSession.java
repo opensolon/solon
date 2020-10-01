@@ -52,12 +52,16 @@ public class _SocketSession implements XSession {
 
     @Override
     public void send(byte[] message) {
+        send(XSocketMessage.wrap(message));
+    }
+
+    @Override
+    public void send(XSocketMessage message) {
         try {
             //
             // 转包为XSocketMessage，再转byte[]
             //
-            XSocketMessage msg = XSocketMessage.wrap(message);
-            byte[] bytes = XSocketMessageUtils.encode(msg).array();
+            byte[] bytes = XSocketMessageUtils.encode(message).array();
 
             real.writeBuffer().writeAndFlush(bytes);
         } catch (IOException ex) {

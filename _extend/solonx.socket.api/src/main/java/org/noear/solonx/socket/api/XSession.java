@@ -18,6 +18,10 @@ public interface XSession {
      * 发送消息
      * */
     void send(byte[] message);
+    /**
+     * 发送消息
+     * */
+    void send(XSocketMessage message);
 
     /**
      * 关闭会话

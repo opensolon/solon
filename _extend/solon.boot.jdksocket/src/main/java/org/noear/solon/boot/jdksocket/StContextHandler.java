@@ -2,11 +2,12 @@ package org.noear.solon.boot.jdksocket;
 
 import org.noear.solon.XApp;
 import org.noear.solon.core.XEventBus;
+import org.noear.solonx.socket.api.XSession;
 import org.noear.solonx.socket.api.XSocketMessage;
 
 class StContextHandler {
 
-    public void handle(SocketSession session, XSocketMessage message) {
+    public void handle(XSession session, XSocketMessage message) {
         if (message == null) {
             return;
         }
@@ -20,7 +21,7 @@ class StContextHandler {
         }
     }
 
-    private void handleDo(SocketSession session, XSocketMessage message) {
+    private void handleDo(XSession session, XSocketMessage message) {
         StContext context = new StContext(session, message);
 
         try {

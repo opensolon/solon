@@ -2,6 +2,7 @@ package org.noear.solon.boot.jdksocket;
 
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
+import org.noear.solonx.socket.api.XSession;
 import org.noear.solonx.socket.api.XSocketListener;
 import org.noear.solonx.socket.api.XSocketMessage;
 
@@ -16,19 +17,17 @@ public class SocketProcessor {
         Aop.getAsyn(XSocketListener.class, (bw) -> listener = bw.raw());
     }
 
-    public SocketSession onOpen(Socket socket) {
+    public void onOpen(XSession session) {
         if (listener != null) {
-            listener.onOpen(_SocketSession.get(socket));
+            listener.onOpen(session);
         }
-
-        return new SocketSession(socket);
     }
 
 
-    public void onMessage(SocketSession session, XSocketMessage message) {
+    public void onMessage(XSession session, XSocketMessage message) {
         try {
             if (listener != null) {
-                listener.onMessage(_SocketSession.get(session.connector), message);
+                listener.onMessage(session, message);
             }
 
             handler.handle(session, message);
@@ -37,9 +36,9 @@ public class SocketProcessor {
         }
     }
 
-    public void onClosed(Socket socket) {
+    public void onClosed(XSession session) {
         if (listener != null) {
-            listener.onClose(_SocketSession.get(socket));
+            listener.onClose(session);
         }
     }
 }

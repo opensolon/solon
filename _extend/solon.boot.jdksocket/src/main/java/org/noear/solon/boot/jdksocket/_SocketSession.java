@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.*;
 
 public class _SocketSession implements XSession {
@@ -54,12 +55,15 @@ public class _SocketSession implements XSession {
 
     @Override
     public void send(byte[] message) {
+        send(XSocketMessage.wrap(message));
+    }
+
+    public void send(XSocketMessage message) {
         try {
             //
             // 转包为XSocketMessage，再转byte[]
             //
-            XSocketMessage msg = XSocketMessage.wrap(message);
-            byte[] bytes = XSocketMessageUtils.encode(msg).array();
+            byte[] bytes = XSocketMessageUtils.encode(message).array();
 
             real.getOutputStream().write(bytes);
             real.getOutputStream().flush();
@@ -70,8 +74,13 @@ public class _SocketSession implements XSession {
 
     @Override
     public void close() throws IOException {
-        real.close();
-        sessions.remove(real);
+        synchronized (real) {
+            real.shutdownInput();
+            real.shutdownOutput();
+            real.close();
+
+            sessions.remove(real);
+        }
     }
 
     @Override
@@ -117,5 +126,20 @@ public class _SocketSession implements XSession {
     @Override
     public int hashCode() {
         return Objects.hash(real);
+    }
+
+    /**
+     * 接收数据
+     */
+    public static XSocketMessage receive(Socket socket, SocketProtocol protocol) {
+        try {
+            return protocol.decode(socket.getInputStream());
+        } catch (SocketException ex) {
+            return null;
+        } catch (Throwable ex) {
+            System.out.println("Decoding failure::");
+            ex.printStackTrace();
+            return null;
+        }
     }
 }

@@ -5,11 +5,10 @@ import org.noear.solonx.socket.api.XSocketMessageUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.Socket;
 import java.nio.ByteBuffer;
 
 public class SocketProtocol {
-    public XSocketMessage decode(Socket connector, InputStream input) throws IOException {
+    public XSocketMessage decode(InputStream input) throws IOException {
         if(input == null){
             return null;
         }

@@ -3,6 +3,7 @@ package org.noear.solon.boot.undertow.websocket;
 import io.undertow.websockets.core.WebSocketChannel;
 import io.undertow.websockets.core.WebSockets;
 import org.noear.solonx.socket.api.XSession;
+import org.noear.solonx.socket.api.XSocketMessage;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -51,6 +52,11 @@ public class _SocketSession implements XSession {
     public void send(byte[] message) {
         ByteBuffer buf = ByteBuffer.wrap(message);
         WebSockets.sendBinary(buf, real, null);
+    }
+
+    @Override
+    public void send(XSocketMessage message) {
+        send(message.content);
     }
 
     @Override

@@ -2,18 +2,20 @@ package org.noear.solon.boot.jdksocket;
 
 import org.noear.solon.core.XContextEmpty;
 import org.noear.solon.core.XMethod;
+import org.noear.solonx.socket.api.XSession;
 import org.noear.solonx.socket.api.XSocketMessage;
 
 import java.io.*;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.URI;
 
 class StContext extends XContextEmpty {
-    private InetAddress _inetSocketAddress;
-    private SocketSession _session;
+    private InetSocketAddress _inetSocketAddress;
+    private XSession _session;
     private XSocketMessage _message;
 
-    public StContext(SocketSession session, XSocketMessage message) {
+    public StContext(XSession session, XSocketMessage message) {
         _session = session;
         _message = message;
 
@@ -34,7 +36,7 @@ class StContext extends XContextEmpty {
         if (_inetSocketAddress == null)
             return null;
         else
-            return _inetSocketAddress.getHostAddress();
+            return _inetSocketAddress.getAddress().getHostAddress();
     }
 
     @Override
@@ -142,10 +144,10 @@ class StContext extends XContextEmpty {
 
     @Override
     protected void commit() throws IOException {
-        if (_session.isOpen()) {
+        if (_session.isValid()) {
             synchronized (_session) {
                 XSocketMessage msg = XSocketMessage.wrap(_message.key, _message.resourceDescriptor, _outputStream.toByteArray());
-                _session.publish(msg);
+                _session.send(msg);
             }
         }
     }
