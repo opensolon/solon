@@ -1,13 +1,14 @@
 package org.noear.solonx.socket.api;
 
+@FunctionalInterface
 public interface XSocketListener {
-    void onOpen(XSession session);
+    default void onOpen(XSession session){}
 
     void onMessage(XSession session, XSocketMessage message);
 
-    void onClosing(XSession session);
+    default void onClosing(XSession session){}
 
-    void onClose(XSession session);
+    default void onClose(XSession session){}
 
-    void onError(XSession session, Throwable throwable);
+    default void onError(XSession session, Throwable throwable){}
 }

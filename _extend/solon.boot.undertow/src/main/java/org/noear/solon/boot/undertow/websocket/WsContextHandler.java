@@ -13,7 +13,7 @@ public class WsContextHandler {
 
             XApp.global().tryHandle(context);
 
-            if (context.getHandled()) {
+            if (context.getHandled() && context.status() != 404) {
                 context.commit();
             }
         } catch (Exception ex) {
