@@ -35,7 +35,7 @@ public class XSocketMessage {
      * 打包
      */
     public static XSocketMessage wrap(byte[] bytes) {
-        return wrap(UUID.randomUUID().toString(), null, bytes);
+        return wrap("", "", bytes);
     }
 
     /**

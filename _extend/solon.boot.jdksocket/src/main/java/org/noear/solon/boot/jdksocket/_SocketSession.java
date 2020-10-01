@@ -1,6 +1,8 @@
 package org.noear.solon.boot.jdksocket;
 
 import org.noear.solonx.socket.api.XSession;
+import org.noear.solonx.socket.api.XSocketMessage;
+import org.noear.solonx.socket.api.XSocketMessageUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -54,9 +56,12 @@ public class _SocketSession implements XSession {
     public void send(byte[] message) {
         try {
             //
-            //用 real message? 还是 XSocketMessage?
+            // 转包为XSocketMessage，再转byte[]
             //
-            real.getOutputStream().write(message);
+            XSocketMessage msg = XSocketMessage.wrap(message);
+            byte[] bytes = XSocketMessageUtils.encode(msg).array();
+
+            real.getOutputStream().write(bytes);
             real.getOutputStream().flush();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
