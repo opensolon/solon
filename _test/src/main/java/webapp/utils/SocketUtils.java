@@ -16,6 +16,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+/**
+ * 此类，用于简单测试；复杂的，有bug...
+ * */
 public class SocketUtils {
     private static ExecutorService pool = Executors.newCachedThreadPool();
     private static Map<String, SocketUtils> clientMap = new HashMap<>();
