@@ -20,9 +20,9 @@ public class WsServer extends WebSocketServer {
     private Charset _charset = StandardCharsets.UTF_8;
     private XSocketListener listening;
 
-    public WsServer(int port, WsContextHandler contextHandler) throws UnknownHostException {
+    public WsServer(int port) {
         super(new InetSocketAddress(port));
-        _contextHandler = contextHandler;
+        _contextHandler = new WsContextHandler();
 
         Aop.getAsyn(XSocketListener.class, (bw) -> listening = bw.raw());
     }

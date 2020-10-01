@@ -10,9 +10,12 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class UtWsChannelListener extends AbstractReceiveListener {
+    private WsContextHandler _contextHandler;
     protected XSocketListener listener;
 
     public UtWsChannelListener() {
+        _contextHandler = new WsContextHandler();
+
         Aop.getAsyn(XSocketListener.class, (bw) -> listener = bw.raw());
     }
 
@@ -26,25 +29,30 @@ public class UtWsChannelListener extends AbstractReceiveListener {
 
     @Override
     protected void onFullBinaryMessage(WebSocketChannel channel, BufferedBinaryMessage message) throws IOException {
-        if (listener != null) {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            for (ByteBuffer buf : message.getData().getResource()) {
-                out.write(buf.array());
-            }
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        for (ByteBuffer buf : message.getData().getResource()) {
+            out.write(buf.array());
+        }
 
-            listener.onMessage(_SocketSession.get(channel),
-                    XSocketMessage.wrap(channel.getUrl(),
-                            out.toByteArray()));
+        XSocketMessage message1 = XSocketMessage.wrap(channel.getUrl(), out.toByteArray());
+
+        if (listener != null) {
+            listener.onMessage(_SocketSession.get(channel), message1);
+        } else {
+            _contextHandler.handle(channel, message1, false);
         }
         //super.onFullBinaryMessage(channel, message);
     }
 
     @Override
     protected void onFullTextMessage(WebSocketChannel channel, BufferedTextMessage message) throws IOException {
+        XSocketMessage message1 = XSocketMessage.wrap(channel.getUrl(),
+                message.getData().getBytes("UTF-8"));
+
         if (listener != null) {
-            listener.onMessage(_SocketSession.get(channel),
-                    XSocketMessage.wrap(channel.getUrl(),
-                            message.getData().getBytes("UTF-8")));
+            listener.onMessage(_SocketSession.get(channel), message1);
+        } else {
+            _contextHandler.handle(channel, message1, true);
         }
 
         //super.onFullTextMessage(channel, message);

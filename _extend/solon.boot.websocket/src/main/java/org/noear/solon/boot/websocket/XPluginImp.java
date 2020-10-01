@@ -20,12 +20,11 @@ public class XPluginImp implements XPlugin {
         int _port = 10000 + app.port();
         long time_start = System.currentTimeMillis();
 
-        WsContextHandler contextHandler = new WsContextHandler();
 
         System.out.println("solon.Server:main: WebSocket");
 
         try {
-            _server = new WsServer(_port, contextHandler);
+            _server = new WsServer(_port);
 
             _server.start();
 

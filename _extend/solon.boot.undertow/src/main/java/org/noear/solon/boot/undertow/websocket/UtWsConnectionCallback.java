@@ -12,5 +12,6 @@ public class UtWsConnectionCallback implements WebSocketConnectionCallback {
         listener.onOpen(channel);
 
         channel.getReceiveSetter().set(listener);
+        channel.resumeReceives();
     }
 }
