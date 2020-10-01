@@ -36,11 +36,11 @@ public interface XSession {
     /**
      * 远程地址
      * */
-    InetSocketAddress getRemoteAddress() throws IOException;
+    InetSocketAddress getRemoteAddress();
     /**
      * 本地地址
      * */
-    InetSocketAddress getLocalAddress() throws IOException;
+    InetSocketAddress getLocalAddress();
 
     /**
      * 设置附件

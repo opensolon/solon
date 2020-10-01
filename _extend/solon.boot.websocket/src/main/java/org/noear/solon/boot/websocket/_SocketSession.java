@@ -68,12 +68,12 @@ public class _SocketSession implements XSession {
     }
 
     @Override
-    public InetSocketAddress getRemoteAddress() throws IOException{
+    public InetSocketAddress getRemoteAddress(){
         return real.getRemoteSocketAddress();
     }
 
     @Override
-    public InetSocketAddress getLocalAddress() throws IOException{
+    public InetSocketAddress getLocalAddress(){
         return real.getLocalSocketAddress();
     }
 

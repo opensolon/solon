@@ -1,9 +1,9 @@
 package org.noear.solon.boot.undertow.websocket;
 
-import io.undertow.websockets.core.WebSocketChannel;
 import io.undertow.websockets.core.WebSockets;
 import org.noear.solon.core.XContextEmpty;
 import org.noear.solon.core.XMethod;
+import org.noear.solonx.socket.api.XSession;
 import org.noear.solonx.socket.api.XSocketMessage;
 
 import java.io.*;
@@ -13,24 +13,25 @@ import java.nio.ByteBuffer;
 
 public class WsContext extends XContextEmpty {
     private InetSocketAddress _inetSocketAddress;
-    private WebSocketChannel _socket;
+    private XSession _sesssion;
     private XSocketMessage _message;
     private boolean _messageIsString;
-    public WsContext(WebSocketChannel socket, XSocketMessage message, boolean messageIsString){
-        _socket = socket;
+
+    public WsContext(XSession session, XSocketMessage message, boolean messageIsString) {
+        _sesssion = session;
         _message = message;
-        _inetSocketAddress = socket.getSourceAddress();
+        _inetSocketAddress = session.getRemoteAddress();
         _messageIsString = messageIsString;
     }
 
     @Override
     public Object request() {
-        return _socket;
+        return _sesssion;
     }
 
     @Override
     public String ip() {
-        if(_inetSocketAddress == null)
+        if (_inetSocketAddress == null)
             return null;
         else
             return _inetSocketAddress.getAddress().toString();
@@ -53,19 +54,19 @@ public class WsContext extends XContextEmpty {
 
     @Override
     public URI uri() {
-        if(_uri == null) {
+        if (_uri == null) {
             _uri = URI.create(url());
         }
 
         return _uri;
     }
+
     private URI _uri;
 
     @Override
     public String path() {
         return uri().getPath();
     }
-
 
 
     @Override
@@ -96,12 +97,12 @@ public class WsContext extends XContextEmpty {
 
     @Override
     public Object response() {
-        return _socket;
+        return _sesssion;
     }
 
     @Override
     public void contentType(String contentType) {
-        headerSet("Content-Type",contentType );
+        headerSet("Content-Type", contentType);
     }
 
     ByteArrayOutputStream _outputStream = new ByteArrayOutputStream();
@@ -112,10 +113,10 @@ public class WsContext extends XContextEmpty {
     }
 
     @Override
-    public void output(byte[] bytes)  {
+    public void output(byte[] bytes) {
         try {
             _outputStream.write(bytes);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -129,25 +130,24 @@ public class WsContext extends XContextEmpty {
                 _outputStream.write(buff, 0, rc);
             }
 
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
 
     @Override
     protected void commit() throws IOException {
-        if (_socket.isOpen()) {
+        if (_sesssion.isValid()) {
             if (_messageIsString) {
-                WebSockets.sendText(new String(_outputStream.toByteArray()), _socket, null);
+                _sesssion.send(new String(_outputStream.toByteArray()));
             } else {
-                ByteBuffer buf = ByteBuffer.wrap(_outputStream.toByteArray());
-                WebSockets.sendBinary(buf, _socket, null);
+                _sesssion.send(_outputStream.toByteArray());
             }
         }
     }
 
     @Override
     public void close() throws IOException {
-        _socket.close();
+        _sesssion.close();
     }
 }

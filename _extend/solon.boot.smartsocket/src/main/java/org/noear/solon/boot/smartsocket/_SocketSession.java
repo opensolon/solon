@@ -81,13 +81,21 @@ public class _SocketSession implements XSession {
     }
 
     @Override
-    public InetSocketAddress getRemoteAddress() throws IOException{
-        return real.getRemoteAddress();
+    public InetSocketAddress getRemoteAddress() {
+        try {
+            return real.getRemoteAddress();
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
-    public InetSocketAddress getLocalAddress() throws IOException{
-        return real.getLocalAddress();
+    public InetSocketAddress getLocalAddress() {
+        try {
+            return real.getLocalAddress();
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override

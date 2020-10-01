@@ -3,6 +3,7 @@ package org.noear.solon.boot.undertow.websocket;
 import io.undertow.websockets.core.*;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
+import org.noear.solonx.socket.api.XSession;
 import org.noear.solonx.socket.api.XSocketListener;
 import org.noear.solonx.socket.api.XSocketMessage;
 
@@ -36,13 +37,14 @@ public class UtWsChannelListener extends AbstractReceiveListener {
                 out.write(buf.array());
             }
 
+            XSession session = _SocketSession.get(channel);
             XSocketMessage message1 = XSocketMessage.wrap(channel.getUrl(), out.toByteArray());
 
             if (listener != null) {
-                listener.onMessage(_SocketSession.get(channel), message1);
+                listener.onMessage(session, message1);
             }
 
-            _contextHandler.handle(channel, message1, false);
+            _contextHandler.handle(session, message1, false);
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }
@@ -54,11 +56,13 @@ public class UtWsChannelListener extends AbstractReceiveListener {
             XSocketMessage message1 = XSocketMessage.wrap(channel.getUrl(),
                     message.getData().getBytes("UTF-8"));
 
+            XSession session = _SocketSession.get(channel);
+
             if (listener != null) {
-                listener.onMessage(_SocketSession.get(channel), message1);
+                listener.onMessage(session, message1);
             }
 
-            _contextHandler.handle(channel, message1, true);
+            _contextHandler.handle(session, message1, true);
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }
