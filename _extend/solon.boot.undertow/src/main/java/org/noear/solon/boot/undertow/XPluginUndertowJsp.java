@@ -18,6 +18,7 @@ import org.noear.solon.boot.undertow.http.UtHttpHandlerJsp;
 import org.noear.solon.boot.undertow.jsp.JspResourceManager;
 import org.noear.solon.boot.undertow.jsp.JspServletEx;
 import org.noear.solon.boot.undertow.jsp.JspTldLocator;
+import org.noear.solon.boot.undertow.websocket.UtWsConnectionCallback;
 import org.noear.solon.core.XClassLoader;
 import org.noear.solon.core.XPlugin;
 
@@ -60,8 +61,8 @@ public class XPluginUndertowJsp implements XPlugin {
 
         builder.addHttpListener(app.port(), "0.0.0.0");
 
-        builder.setHandler(httpHandler);
-//        builder.setHandler(websocket(new UtWebSocketHandler(), httpHandler));
+//        builder.setHandler(httpHandler);
+        builder.setHandler(websocket(new UtWsConnectionCallback(), httpHandler));
 
         _server = builder.build();
 
