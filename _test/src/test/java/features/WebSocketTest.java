@@ -14,7 +14,7 @@ public class WebSocketTest {
     @Test
     public void test() throws Throwable {
         Thread.sleep(2000);
-        WsDemoClient client = new WsDemoClient(URI.create("ws://127.0.0.1:18080/demoe/websocket"));
+        WsDemoClient client = new WsDemoClient(URI.create("ws://127.0.0.1:8080/demoe/websocket"));
         client.connect();
 
         while (!client.isOpen()) {
@@ -23,5 +23,6 @@ public class WebSocketTest {
         }
         System.out.println("建立websocket连接");
         client.send("asd");
+        System.in.read();
     }
 }

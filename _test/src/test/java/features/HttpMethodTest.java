@@ -11,7 +11,7 @@ import java.util.Map;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
-public class HttpMethodTest extends TestBase {
+public class HttpMethodTest extends _TestBase {
 
     @Test
     public void test21() throws IOException {

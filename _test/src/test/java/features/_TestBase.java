@@ -5,7 +5,7 @@ import org.noear.solon.test.HttpTestBase;
 import java.io.IOException;
 import java.util.Map;
 
-public class TestBase extends HttpTestBase {
+public class _TestBase extends HttpTestBase {
     protected String get(String path) throws IOException {
         String rst = path(path).get();
 

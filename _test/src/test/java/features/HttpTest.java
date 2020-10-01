@@ -13,7 +13,7 @@ import java.util.Map;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
-public class HttpTest extends TestBase{
+public class HttpTest extends _TestBase {
 
     @XInject("${username}")
     public String username;

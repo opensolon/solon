@@ -17,7 +17,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
     }
 
 
-    public void onConnect(WebSocketChannel channel) {
+    public void onOpen(WebSocketChannel channel) {
         if (listener != null) {
             listener.onOpen(_SocketSession.get(channel));
         }
