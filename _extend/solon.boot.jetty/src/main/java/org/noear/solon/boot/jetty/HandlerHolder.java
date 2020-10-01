@@ -20,10 +20,14 @@ public class HandlerHolder extends AbstractHandler {
 
     @Override
     public void handle(String s, Request request, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-        if (request.getScheme().contains("http")) {
+        if("GET".equals(request.getMethod())){
+            if (request.getScheme().contains("http")) {
+                http.handle(s, request, req, res);
+            } else {
+                websocket.handle(s, request, req, res);
+            }
+        }else{
             http.handle(s, request, req, res);
-        } else {
-            websocket.handle(s, request, req, res);
         }
     }
 }
