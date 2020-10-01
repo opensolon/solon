@@ -21,6 +21,7 @@ class XPluginJetty implements XPlugin {
             //session 支持
             _server.setSessionIdManager(new DefaultSessionIdManager(_server));
             _server.setHandler(getServerHandler());
+//            _server.setHandler(new HandlerHolder(getServerHandler()));
 
             _server.setAttribute("org.eclipse.jetty.server.Request.maxFormContentSize",
                     XServerProp.request_maxRequestSize);
