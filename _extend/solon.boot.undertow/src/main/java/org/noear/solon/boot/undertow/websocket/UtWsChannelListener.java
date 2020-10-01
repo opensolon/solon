@@ -38,10 +38,9 @@ public class UtWsChannelListener extends AbstractReceiveListener {
 
         if (listener != null) {
             listener.onMessage(_SocketSession.get(channel), message1);
-        } else {
-            _contextHandler.handle(channel, message1, false);
         }
-        //super.onFullBinaryMessage(channel, message);
+
+        _contextHandler.handle(channel, message1, false);
     }
 
     @Override
@@ -51,11 +50,9 @@ public class UtWsChannelListener extends AbstractReceiveListener {
 
         if (listener != null) {
             listener.onMessage(_SocketSession.get(channel), message1);
-        } else {
-            _contextHandler.handle(channel, message1, true);
         }
 
-        //super.onFullTextMessage(channel, message);
+        _contextHandler.handle(channel, message1, true);
     }
 
     @Override
@@ -64,8 +61,6 @@ public class UtWsChannelListener extends AbstractReceiveListener {
             listener.onClose(_SocketSession.get(channel));
             _SocketSession.remove(channel);
         }
-
-        //super.onClose(webSocketChannel, channel);
     }
 
     @Override
@@ -73,6 +68,5 @@ public class UtWsChannelListener extends AbstractReceiveListener {
         if (listener != null) {
             listener.onClose(_SocketSession.get(channel));
         }
-        //super.onError(channel, error);
     }
 }
