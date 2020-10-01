@@ -38,6 +38,11 @@ public class _SocketSession implements XSession {
     }
 
     @Override
+    public Object real() {
+        return real;
+    }
+
+    @Override
     public void send(String message) {
         WebSockets.sendText(message, real, null);
     }

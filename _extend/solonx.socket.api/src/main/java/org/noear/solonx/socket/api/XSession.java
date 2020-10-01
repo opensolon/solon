@@ -8,6 +8,8 @@ import java.util.Collection;
  * XSocket 会话
  * */
 public interface XSession {
+    Object real();
+
     /**
      * 发送消息
      * */

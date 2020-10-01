@@ -36,6 +36,11 @@ public class _SocketSession implements XSession {
     }
 
     @Override
+    public Object real() {
+        return real;
+    }
+
+    @Override
     public void send(String message) {
         real.send(message);
     }
