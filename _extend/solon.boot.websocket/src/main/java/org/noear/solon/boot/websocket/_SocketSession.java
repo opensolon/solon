@@ -52,22 +52,17 @@ public class _SocketSession implements XSession {
     }
 
     @Override
-    public boolean isOpen() {
+    public boolean isValid() {
         return real.isOpen();
     }
 
     @Override
-    public boolean isClosed() {
-        return real.isClosed();
-    }
-
-    @Override
-    public InetSocketAddress getRemoteSocketAddress() throws IOException{
+    public InetSocketAddress getRemoteAddress() throws IOException{
         return real.getRemoteSocketAddress();
     }
 
     @Override
-    public InetSocketAddress getLocalSocketAddress() throws IOException{
+    public InetSocketAddress getLocalAddress() throws IOException{
         return real.getLocalSocketAddress();
     }
 
