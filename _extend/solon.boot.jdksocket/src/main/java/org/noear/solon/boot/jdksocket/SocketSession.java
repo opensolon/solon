@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.net.SocketException;
 
 public class SocketSession {
-    private final Socket connector;
+    public final Socket connector;
 
     public SocketSession(Socket connector) {
         this.connector = connector;
