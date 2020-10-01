@@ -12,11 +12,8 @@ public class SocketServer {
     private ServerSocket server;
     private SocketProtocol protocol;
     private ExecutorService pool = Executors.newCachedThreadPool();
-    private SocketContextHandler handler;
 
-    public void setHandler(SocketContextHandler handler){
-        this.handler = handler;
-    }
+    private SocketProcessor processor = new SocketProcessor();
 
     public void setProtocol(SocketProtocol protocol) {
         this.protocol = protocol;
@@ -39,18 +36,18 @@ public class SocketServer {
 
         while (true) {
             Socket connector = server.accept();
-            SocketSession session = new SocketSession(connector);
+            SocketSession session = processor.onOpen(connector);
 
             pool.execute(() -> {
                 while (true) {
-                    if(session.isOpen() == false){
+                    if (session.isOpen() == false) {
                         return;
                     }
 
-                    XSocketMessage msg = session.receive(protocol);
-                    if (msg != null) {
+                    XSocketMessage message = session.receive(protocol);
+                    if (message != null) {
                         pool.execute(() -> {
-                            handler.handle(session, msg);
+                            processor.onMessage(session, message);
                         });
                     }
                 }
