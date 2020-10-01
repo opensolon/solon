@@ -23,6 +23,6 @@ public class WebSocketTest {
         }
         System.out.println("建立websocket连接");
         client.send("asd");
-        System.in.read();
+        Thread.sleep(100);
     }
 }
