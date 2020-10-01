@@ -33,8 +33,6 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake shake) {
-        //System.out.println("Solon.Server:Websocket onOpen=" + shake.getResourceDescriptor());
-
         if (listening != null) {
             listening.onOpen(_SocketSession.get(conn));
         }
@@ -50,7 +48,6 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onClose(WebSocket conn, int i, String s, boolean b) {
-        //System.out.println("Solon.Server:Websocket onClose...");
         if (listening != null) {
             listening.onClose(_SocketSession.get(conn));
             _SocketSession.remove(conn);
@@ -64,11 +61,12 @@ public class WsServer extends WebSocketServer {
 
             if (listening != null) {
                 listening.onMessage(_SocketSession.get(conn), message);
-            }else {
-                _contextHandler.handle(conn, message, true);
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+
+            _contextHandler.handle(conn, message, true);
+
+        } catch (Throwable ex) {
+            XEventBus.push(ex);
         }
     }
 
@@ -79,11 +77,11 @@ public class WsServer extends WebSocketServer {
 
             if (listening != null) {
                 listening.onMessage(_SocketSession.get(conn), message);
-            }else {
-                _contextHandler.handle(conn, message, false);
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+
+            _contextHandler.handle(conn, message, false);
+        } catch (Throwable ex) {
+            XEventBus.push(ex);
         }
     }
 

@@ -2,6 +2,7 @@ package org.noear.solon.boot.undertow.websocket;
 
 import io.undertow.websockets.core.*;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.XEventBus;
 import org.noear.solonx.socket.api.XSocketListener;
 import org.noear.solonx.socket.api.XSocketMessage;
 
@@ -29,30 +30,38 @@ public class UtWsChannelListener extends AbstractReceiveListener {
 
     @Override
     protected void onFullBinaryMessage(WebSocketChannel channel, BufferedBinaryMessage message) throws IOException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        for (ByteBuffer buf : message.getData().getResource()) {
-            out.write(buf.array());
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            for (ByteBuffer buf : message.getData().getResource()) {
+                out.write(buf.array());
+            }
+
+            XSocketMessage message1 = XSocketMessage.wrap(channel.getUrl(), out.toByteArray());
+
+            if (listener != null) {
+                listener.onMessage(_SocketSession.get(channel), message1);
+            }
+
+            _contextHandler.handle(channel, message1, false);
+        } catch (Throwable ex) {
+            XEventBus.push(ex);
         }
-
-        XSocketMessage message1 = XSocketMessage.wrap(channel.getUrl(), out.toByteArray());
-
-        if (listener != null) {
-            listener.onMessage(_SocketSession.get(channel), message1);
-        }
-
-        _contextHandler.handle(channel, message1, false);
     }
 
     @Override
     protected void onFullTextMessage(WebSocketChannel channel, BufferedTextMessage message) throws IOException {
-        XSocketMessage message1 = XSocketMessage.wrap(channel.getUrl(),
-                message.getData().getBytes("UTF-8"));
+        try {
+            XSocketMessage message1 = XSocketMessage.wrap(channel.getUrl(),
+                    message.getData().getBytes("UTF-8"));
 
-        if (listener != null) {
-            listener.onMessage(_SocketSession.get(channel), message1);
+            if (listener != null) {
+                listener.onMessage(_SocketSession.get(channel), message1);
+            }
+
+            _contextHandler.handle(channel, message1, true);
+        } catch (Throwable ex) {
+            XEventBus.push(ex);
         }
-
-        _contextHandler.handle(channel, message1, true);
     }
 
     @Override
