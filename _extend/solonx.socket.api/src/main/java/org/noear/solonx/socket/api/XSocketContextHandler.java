@@ -5,7 +5,7 @@ import org.noear.solon.core.XEventBus;
 import org.noear.solon.core.XMethod;
 
 /**
- * XSocket context 处理者
+ * XSocket 上下文处理者
  *
  * @author noear
  * @since 1.0

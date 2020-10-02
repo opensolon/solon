@@ -36,6 +36,7 @@ public class XSocketMessage {
     }
 
     /////////////////////
+
     private XSocketMessage(String key, String resourceDescriptor, byte[] bytes) {
         this.key = (key == null ? "" : key);
         this.resourceDescriptor = (resourceDescriptor == null ? "" : resourceDescriptor);
@@ -67,6 +68,7 @@ public class XSocketMessage {
     }
 
     /////////////////////
+
     private boolean _handled;
 
     public void setHandled(boolean handled) {
