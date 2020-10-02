@@ -14,8 +14,7 @@ public class XSocketMessage {
     /**
      * 1.消息key
      */
-    private String key;
-
+    private final String key;
     public String key() {
         return key;
     }
@@ -23,8 +22,7 @@ public class XSocketMessage {
     /**
      * 2.资源描述
      */
-    private String resourceDescriptor;
-
+    private final String resourceDescriptor;
     public String resourceDescriptor() {
         return resourceDescriptor;
     }
@@ -32,10 +30,16 @@ public class XSocketMessage {
     /**
      * 3.消息内容
      */
-    private byte[] content;
-
+    private final byte[] content;
     public byte[] content() {
         return content;
+    }
+
+    /////////////////////
+    private XSocketMessage(String key, String resourceDescriptor, byte[] bytes) {
+        this.key = (key == null ? "" : key);
+        this.resourceDescriptor = (resourceDescriptor == null ? "" : resourceDescriptor);
+        this.content = bytes;
     }
 
     @Override
@@ -51,12 +55,15 @@ public class XSocketMessage {
      * 消息编码
      */
     private Charset charset = StandardCharsets.UTF_8;
+
     public Charset getCharset() {
         return charset;
     }
 
     public void setCharset(Charset charset) {
-        this.charset = charset;
+        if (charset != null) {
+            this.charset = charset;
+        }
     }
 
     /////////////////////
@@ -90,12 +97,6 @@ public class XSocketMessage {
      * 打包
      */
     public static XSocketMessage wrap(String key, String resourceDescriptor, byte[] bytes) {
-        XSocketMessage msg = new XSocketMessage();
-
-        msg.key = key;
-        msg.resourceDescriptor = resourceDescriptor;
-        msg.content = bytes;
-
-        return msg;
+        return new XSocketMessage(key, resourceDescriptor, bytes);
     }
 }
