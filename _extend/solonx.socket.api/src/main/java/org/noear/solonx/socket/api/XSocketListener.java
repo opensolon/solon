@@ -16,5 +16,5 @@ public interface XSocketListener {
 
     default void onClose(XSession session){}
 
-    default void onError(XSession session, Throwable throwable){}
+    default void onError(XSession session, Throwable error){}
 }
