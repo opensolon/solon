@@ -29,7 +29,7 @@ public class WsDemoController {
     @XMapping(value = "/demoe/websocket")
     public Object test_client(XContext ctx){
         ModelAndView mv = new ModelAndView("demoe/websocket.ftl");
-        mv.put("app_port", XApp.global().port() + 0);
+        mv.put("app_port", XApp.global().port() + 10000);
 
         return mv;
     }

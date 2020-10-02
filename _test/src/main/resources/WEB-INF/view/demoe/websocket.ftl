@@ -22,7 +22,7 @@
         sock.onmessage = function(e) {
             //服务器发送通知
             //开始处理
-            alert("message received: " + e.data);
+            document.getElementById("rst").append("message received: " + e.data+"<br/>");
         }
     };
 
@@ -39,6 +39,9 @@
     </p>
 </form>
 <button onclick="send();">Send Message</button>
+<div id="rst">
+
+</div>
 
 </body>
 </html>
