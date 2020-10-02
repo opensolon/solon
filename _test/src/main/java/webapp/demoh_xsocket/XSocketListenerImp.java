@@ -12,6 +12,9 @@ public class XSocketListenerImp implements XSocketListener {
         //System.out.println("X我收到了::" + message.toString());
         //session.send("X我收到了::" + message.toString());
 
+        if(message.resourceDescriptor() != null){
+
+        }
         session.getOpenSessions().forEach(s -> {
             s.send(message.toString());
         });

@@ -56,7 +56,7 @@ public class _SocketSession implements XSession {
 
     @Override
     public void send(XSocketMessage message) {
-        send(message.content);
+        send(message.content());
     }
 
     @Override

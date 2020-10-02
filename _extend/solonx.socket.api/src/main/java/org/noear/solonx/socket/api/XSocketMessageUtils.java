@@ -14,10 +14,10 @@ public class XSocketMessageUtils {
      * 编码
      */
     public static ByteBuffer encode(XSocketMessage msg) {
-        byte[] keyB = msg.key.getBytes(msg.charset);
-        byte[] rdB = msg.resourceDescriptor.getBytes(msg.charset);
+        byte[] keyB = msg.key().getBytes(msg.charset());
+        byte[] rdB = msg.resourceDescriptor().getBytes(msg.charset());
 
-        int len = keyB.length + rdB.length + msg.content.length + 2 * 2 + 4;
+        int len = keyB.length + rdB.length + msg.content().length + 2 * 2 + 4;
 
         ByteBuffer buffer = ByteBuffer.allocate(len);
 
@@ -33,7 +33,7 @@ public class XSocketMessageUtils {
         buffer.putChar('\n');
 
         //content
-        buffer.put(msg.content);
+        buffer.put(msg.content());
 
         buffer.flip();
 
@@ -42,7 +42,7 @@ public class XSocketMessageUtils {
 
     /**
      * 解码
-     * */
+     */
     public static XSocketMessage decode(ByteBuffer buffer) {
         //1.解码key and uri
         ByteBuffer sb = ByteBuffer.allocate(Math.min(256, buffer.limit()));
@@ -62,16 +62,11 @@ public class XSocketMessageUtils {
         //2.解码body
         int len = len0 - buffer.position();
         byte[] bytes = new byte[len];
-        if(len > 0) {
+        if (len > 0) {
             buffer.get(bytes, 0, len);
         }
 
-        XSocketMessage msg = new XSocketMessage();
-        msg.key = key;
-        msg.resourceDescriptor = uri;
-        msg.content = bytes;
-
-        return msg;
+        return XSocketMessage.wrap(key, uri, bytes);
     }
 
 
@@ -83,7 +78,7 @@ public class XSocketMessageUtils {
 
             if (c == 10) { //10:'\n'
                 break;
-            } else if( c != 0){ //32:' '
+            } else if (c != 0) { //32:' '
                 sb.put(c);
             }
 

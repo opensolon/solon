@@ -79,15 +79,15 @@ public class XSocketContext extends XContextEmpty {
 
     @Override
     public String url() {
-        return _message.resourceDescriptor;
+        return _message.resourceDescriptor();
     }
 
     @Override
     public long contentLength() {
-        if (_message.content == null) {
+        if (_message.content() == null) {
             return 0;
         } else {
-            return _message.content.length;
+            return _message.content().length;
         }
     }
 
@@ -98,7 +98,7 @@ public class XSocketContext extends XContextEmpty {
 
     @Override
     public InputStream bodyAsStream() throws IOException {
-        return new ByteArrayInputStream(_message.content);
+        return new ByteArrayInputStream(_message.content());
     }
 
     //==============
@@ -149,7 +149,7 @@ public class XSocketContext extends XContextEmpty {
             if (_messageIsString) {
                 _sesssion.send(new String(_outputStream.toByteArray()));
             } else {
-                XSocketMessage msg = XSocketMessage.wrap(_message.key, _message.resourceDescriptor, _outputStream.toByteArray());
+                XSocketMessage msg = XSocketMessage.wrap(_message.key(), _message.resourceDescriptor(), _outputStream.toByteArray());
                 _sesssion.send(msg);
             }
         }

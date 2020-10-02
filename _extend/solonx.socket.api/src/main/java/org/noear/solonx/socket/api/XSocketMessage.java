@@ -1,7 +1,5 @@
 package org.noear.solonx.socket.api;
 
-import org.noear.solon.annotation.XNote;
-
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
@@ -14,21 +12,31 @@ import java.util.UUID;
  * */
 public class XSocketMessage {
     /**
-     * 消息key
+     * 1.消息key
      */
-    public String key;
+    private String key;
+
+    public String key() {
+        return key;
+    }
+
     /**
-     * 资源描述
+     * 2.资源描述
      */
-    public String resourceDescriptor;
+    private String resourceDescriptor;
+
+    public String resourceDescriptor() {
+        return resourceDescriptor;
+    }
+
     /**
-     * 消息内容
+     * 3.消息内容
      */
-    public byte[] content;
-    /**
-     * 消息编码
-     */
-    public Charset charset = StandardCharsets.UTF_8;
+    private byte[] content;
+
+    public byte[] content() {
+        return content;
+    }
 
     @Override
     public String toString() {
@@ -39,12 +47,26 @@ public class XSocketMessage {
         }
     }
 
+    /**
+     * 消息编码
+     */
+    private Charset charset = StandardCharsets.UTF_8;
+    public Charset getCharset() {
+        return charset;
+    }
+
+    public void setCharset(Charset charset) {
+        this.charset = charset;
+    }
+
     /////////////////////
     private boolean _handled;
-    public void setHandled(boolean handled){
+
+    public void setHandled(boolean handled) {
         _handled = handled;
     }
-    public boolean getHandled(){
+
+    public boolean getHandled() {
         return _handled;
     }
 
