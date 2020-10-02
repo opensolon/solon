@@ -2,6 +2,7 @@ package webapp.utils;
 
 
 import org.noear.solon.XUtil;
+import org.noear.solonx.socket.api.XSocketMessage;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,16 +61,16 @@ public class SocketUtils {
         return new SocketUtils(uri1.getHost(), uri1.getPort());
     }
 
-    public static SocketMessage send(String uri, String message) throws Throwable {
+    public static XSocketMessage send(String uri, String message) throws Throwable {
         return send(uri, message.getBytes("UTF-8"));
     }
 
-    public static SocketMessage send(String uri, byte[] message) throws Throwable {
+    public static XSocketMessage send(String uri, byte[] message) throws Throwable {
         if(message == null){
             return null;
         }
 
-        SocketMessageWrap msgD = new SocketMessageWrap(SocketMessage.wrap(uri, message));
+        SocketMessageWrap msgD = new SocketMessageWrap(XSocketMessage.wrap(uri, message));
 
         get(uri).sendDo(msgD, (m) -> {
             msgD.complete(null);
@@ -84,16 +85,16 @@ public class SocketUtils {
         }
     }
 
-    public static void send(String uri, String message, BiConsumer<SocketMessage,Throwable> callback) throws Throwable {
+    public static void send(String uri, String message, BiConsumer<XSocketMessage,Throwable> callback) throws Throwable {
         send(uri,message.getBytes("UTF-8"),callback);
     }
 
-    public static void send(String uri, byte[] message, BiConsumer<SocketMessage,Throwable> callback) throws Throwable {
+    public static void send(String uri, byte[] message, BiConsumer<XSocketMessage,Throwable> callback) throws Throwable {
         if(message == null){
             return;
         }
 
-        SocketMessageWrap msgD = new SocketMessageWrap(SocketMessage.wrap(uri, message));
+        SocketMessageWrap msgD = new SocketMessageWrap(XSocketMessage.wrap(uri, message));
         msgD.handler = callback;
 
         XUtil.commonPool.submit(()->{
@@ -149,7 +150,7 @@ public class SocketUtils {
 
 
     private static int MESSAGE_MAX_SIZE = 1024 * 20;
-    private SocketMessage decode(InputStream input) throws IOException {
+    private XSocketMessage decode(InputStream input) throws IOException {
         if(input == null){
             return null;
         }
@@ -178,7 +179,7 @@ public class SocketUtils {
 
         input.read(bytes, 4, len - 4);
 
-        return SocketMessage.decode(ByteBuffer.wrap(bytes));
+        return XSocketMessage.decode(ByteBuffer.wrap(bytes));
     }
 
 
@@ -202,17 +203,17 @@ public class SocketUtils {
     }
 
     public static class SocketMessageWrap extends CompletableFuture<Integer> {
-        public SocketMessage req;
-        public SocketMessage res;
+        public XSocketMessage req;
+        public XSocketMessage res;
         public Throwable err;
 
-        public BiConsumer<SocketMessage,Throwable> handler;
+        public BiConsumer<XSocketMessage,Throwable> handler;
 
         public String getKey(){
-            return req.key;
+            return req.key();
         }
 
-        public SocketMessageWrap(SocketMessage req){
+        public SocketMessageWrap(XSocketMessage req){
             this.req = req;
         }
     }
