@@ -2,6 +2,7 @@ package org.noear.solon.boot.undertow.websocket;
 
 import io.undertow.websockets.core.WebSocketChannel;
 import io.undertow.websockets.core.WebSockets;
+import org.noear.solon.core.XSignal;
 import org.noear.solonx.socket.api.XSession;
 import org.noear.solonx.socket.api.XSocketMessage;
 
@@ -44,8 +45,8 @@ public class _SocketSession implements XSession {
     }
 
     @Override
-    public String protocol() {
-        return "WS";
+    public XSignal signal() {
+        return XSignal.WEBSOCKET;
     }
 
     @Override

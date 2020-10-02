@@ -1,5 +1,6 @@
 package org.noear.solon.boot.jdksocket;
 
+import org.noear.solon.core.XSignal;
 import org.noear.solonx.socket.api.XSession;
 import org.noear.solonx.socket.api.XSocketMessage;
 import org.noear.solonx.socket.api.XSocketMessageUtils;
@@ -45,8 +46,8 @@ public class _SocketSession implements XSession {
     }
 
     @Override
-    public String protocol() {
-        return "SOCKET";
+    public XSignal signal() {
+        return XSignal.SOCKET;
     }
 
     @Override
