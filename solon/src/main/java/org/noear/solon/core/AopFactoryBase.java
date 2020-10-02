@@ -145,17 +145,15 @@ public abstract class AopFactoryBase {
 
     /**
      * 获取一个bean包装
+     *
+     * @param key name or type
      */
     public BeanWrap getWrap(Object key) {
         if (key instanceof String) {
             return beans.get(key);
-        }
-
-        if (key instanceof Class<?>) {
+        }else{
             return beanWraps.get(key);
         }
-
-        return null;
     }
 
     public BeanWrap wrap(Class<?> clz, Object bean) {
