@@ -41,6 +41,16 @@ public class SocketTest {
     }
 
     @Test
+    public void test1() throws Throwable{
+        String root = "s://localhost:" + (20000 + XApp.global().port());
+
+
+        SocketMessage msg = SocketUtils.send(root + "/demog/中文/1", "Hello 世界!");
+        System.out.println(msg.toString());
+        assert "我收到了：Hello 世界!".equals(msg.toString());
+    }
+
+    @Test
     public void test2() throws Throwable {
         //socket client
         String root = "s://localhost:" + (20000 + XApp.global().port());
@@ -66,7 +76,7 @@ public class SocketTest {
             list.add(i);
         }
 
-        list.parallelStream().forEach((i) -> {
+        list.stream().forEach((i) -> {
             try {
                 SocketUtils.send(root + "/seb/test", "Hello 世界!+" + i, (msg, err) -> {
                     if (msg == null) {

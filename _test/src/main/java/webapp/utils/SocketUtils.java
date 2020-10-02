@@ -116,22 +116,20 @@ public class SocketUtils {
 
     private void sendDo(final SocketMessageWrap msgD, Consumer<SocketMessageWrap> callback) throws Exception {
         // 建立连接后获得输出流
-        pool.execute(() -> {
-            try {
-                tryConnect();
+        try {
+            tryConnect();
 
-                outputStream.write(msgD.req.encode().array());
-                outputStream.flush();
+            outputStream.write(msgD.req.encode().array());
+            outputStream.flush();
 
-                msgD.res = decode(connector, connector.getInputStream());
+            msgD.res = decode(connector.getInputStream());
 
-                callback.accept(msgD);
+            callback.accept(msgD);
 
-            } catch (Throwable ex) {
-                msgD.err = ex;
-                callback.accept(msgD);
-            }
-        });
+        } catch (Throwable ex) {
+            msgD.err = ex;
+            callback.accept(msgD);
+        }
     }
 
     public void stop() throws IOException {
@@ -144,7 +142,7 @@ public class SocketUtils {
 
 
     private static int MESSAGE_MAX_SIZE = 1024 * 20;
-    private SocketMessage decode(Socket connector, InputStream input) throws IOException {
+    private SocketMessage decode(InputStream input) throws IOException {
         if(input == null){
             return null;
         }
