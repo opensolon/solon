@@ -1,6 +1,7 @@
 package org.noear.solon.boot.websocket;
 
 import org.java_websocket.WebSocket;
+import org.noear.solon.core.XMethod;
 import org.noear.solonx.socket.api.XSession;
 import org.noear.solonx.socket.api.XSocketMessage;
 
