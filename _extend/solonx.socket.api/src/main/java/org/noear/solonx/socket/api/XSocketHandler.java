@@ -23,11 +23,13 @@ public class XSocketHandler {
         }
 
         try {
-            XSocketContext context = new XSocketContext(session, message, messageIsString, method);
+            XSocketContext ctx = new XSocketContext(session, message, messageIsString, method);
 
-            XApp.global().tryHandle(context);
+            XApp.global().tryHandle(ctx);
 
-            context.commit();
+            if (ctx.getHandled() && ctx.status() != 404) {
+                ctx.commit();
+            }
         } catch (Throwable ex) {
             //context 初始化时，可能会出错
             //
