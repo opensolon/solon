@@ -17,12 +17,12 @@ import java.nio.charset.StandardCharsets;
 public class WsServer extends WebSocketServer {
     private Charset _charset = StandardCharsets.UTF_8;
 
-    private XSocketHandler handler;
+    private XSocketContextHandler handler;
     private XSocketListener listening;
 
     public WsServer(int port) {
         super(new InetSocketAddress(port));
-        handler = new XSocketHandler(XMethod.WEBSOCKET);
+        handler = new XSocketContextHandler(XMethod.WEBSOCKET);
 
         Aop.getAsyn(XSocketListener.class, (bw) -> listening = bw.raw());
     }

@@ -10,10 +10,10 @@ import org.noear.solon.core.XMethod;
  * @author noear
  * @since 1.0
  * */
-public class XSocketHandler {
+public class XSocketContextHandler {
     XMethod method;
 
-    public XSocketHandler(XMethod method) {
+    public XSocketContextHandler(XMethod method) {
         this.method = method;
     }
 

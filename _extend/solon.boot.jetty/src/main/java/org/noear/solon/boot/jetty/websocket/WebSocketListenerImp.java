@@ -6,18 +6,18 @@ import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
 import org.noear.solon.core.XMethod;
 import org.noear.solonx.socket.api.XSession;
-import org.noear.solonx.socket.api.XSocketHandler;
+import org.noear.solonx.socket.api.XSocketContextHandler;
 import org.noear.solonx.socket.api.XSocketListener;
 import org.noear.solonx.socket.api.XSocketMessage;
 
 import java.nio.ByteBuffer;
 
 public class WebSocketListenerImp extends WebSocketAdapter {
-    XSocketHandler handler;
+    XSocketContextHandler handler;
     XSocketListener listener;
 
     public WebSocketListenerImp() {
-        handler = new XSocketHandler(XMethod.WEBSOCKET);
+        handler = new XSocketContextHandler(XMethod.WEBSOCKET);
         Aop.getAsyn(XSocketListener.class, (bw) -> handler = bw.raw());
     }
 

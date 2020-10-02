@@ -5,7 +5,7 @@ import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
 import org.noear.solon.core.XMethod;
 import org.noear.solonx.socket.api.XSession;
-import org.noear.solonx.socket.api.XSocketHandler;
+import org.noear.solonx.socket.api.XSocketContextHandler;
 import org.noear.solonx.socket.api.XSocketListener;
 import org.noear.solonx.socket.api.XSocketMessage;
 
@@ -14,11 +14,11 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class UtWsChannelListener extends AbstractReceiveListener {
-    private XSocketHandler handler;
+    private XSocketContextHandler handler;
     private XSocketListener listener;
 
     public UtWsChannelListener() {
-        handler = new XSocketHandler(XMethod.WEBSOCKET);
+        handler = new XSocketContextHandler(XMethod.WEBSOCKET);
 
         Aop.getAsyn(XSocketListener.class, (bw) -> listener = bw.raw());
     }

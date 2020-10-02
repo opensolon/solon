@@ -2,7 +2,7 @@ package org.noear.solon.boot.smartsocket;
 
 import org.noear.solon.core.XMethod;
 import org.noear.solonx.socket.api.XSession;
-import org.noear.solonx.socket.api.XSocketHandler;
+import org.noear.solonx.socket.api.XSocketContextHandler;
 import org.noear.solonx.socket.api.XSocketListener;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
@@ -13,10 +13,10 @@ import org.smartboot.socket.StateMachineEnum;
 import org.smartboot.socket.transport.AioSession;
 
 public class AioProcessor implements MessageProcessor<XSocketMessage> {
-    private XSocketHandler handler;
+    private XSocketContextHandler handler;
     private XSocketListener listening;
     public AioProcessor() {
-        handler = new XSocketHandler(XMethod.SOCKET);
+        handler = new XSocketContextHandler(XMethod.SOCKET);
         Aop.getAsyn(XSocketListener.class, (bw) -> listening = bw.raw());
     }
 
