@@ -4,10 +4,7 @@ import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 import org.noear.solon.core.XMethod;
-import org.noear.solon.extend.socketapi.XSession;
-import org.noear.solon.extend.socketapi.XSocketContextHandler;
-import org.noear.solon.extend.socketapi.XSocketListener;
-import org.noear.solon.extend.socketapi.XSocketMessage;
+import org.noear.solon.extend.socketapi.*;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
 
@@ -21,13 +18,12 @@ public class WsServer extends WebSocketServer {
     private Charset _charset = StandardCharsets.UTF_8;
 
     private XSocketContextHandler handler;
-    private XSocketListener listening;
+    private XSocketListener listener;
 
     public WsServer(int port) {
         super(new InetSocketAddress(port));
         handler = new XSocketContextHandler(XMethod.WEBSOCKET);
-
-        Aop.getAsyn(XSocketListener.class, (bw) -> listening = bw.raw());
+        listener = XSocketListenerProxy.getInstance();
     }
 
     @Override
@@ -37,23 +33,23 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake shake) {
-        if (listening != null) {
-            listening.onOpen(_SocketSession.get(conn));
+        if (listener != null) {
+            listener.onOpen(_SocketSession.get(conn));
         }
     }
 
     @Override
     public void onClosing(WebSocket conn, int code, String reason, boolean remote) {
-        if (listening != null) {
-            listening.onClosing(_SocketSession.get(conn));
+        if (listener != null) {
+            listener.onClosing(_SocketSession.get(conn));
             _SocketSession.remove(conn);
         }
     }
 
     @Override
     public void onClose(WebSocket conn, int i, String s, boolean b) {
-        if (listening != null) {
-            listening.onClose(_SocketSession.get(conn));
+        if (listener != null) {
+            listener.onClose(_SocketSession.get(conn));
             _SocketSession.remove(conn);
         }
     }
@@ -64,8 +60,8 @@ public class WsServer extends WebSocketServer {
             XSession session = _SocketSession.get(conn);
             XSocketMessage message = XSocketMessage.wrap(conn.getResourceDescriptor(), data.getBytes(_charset));
 
-            if (listening != null) {
-                listening.onMessage(session, message);
+            if (listener != null) {
+                listener.onMessage(session, message);
             }
 
             if (message.getHandled() == false) {
@@ -83,8 +79,8 @@ public class WsServer extends WebSocketServer {
             XSession session = _SocketSession.get(conn);
             XSocketMessage message = XSocketMessage.wrap(conn.getResourceDescriptor(), data.array());
 
-            if (listening != null) {
-                listening.onMessage(session, message);
+            if (listener != null) {
+                listener.onMessage(session, message);
             }
 
             if (message.getHandled() == false) {
@@ -97,8 +93,8 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onError(WebSocket conn, Exception ex) {
-        if (listening != null) {
-            listening.onError(_SocketSession.get(conn), ex);
+        if (listener != null) {
+            listener.onError(_SocketSession.get(conn), ex);
         } else {
             XEventBus.push(ex);
         }

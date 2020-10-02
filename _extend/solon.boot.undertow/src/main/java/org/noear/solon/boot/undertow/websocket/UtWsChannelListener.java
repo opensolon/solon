@@ -4,10 +4,7 @@ import io.undertow.websockets.core.*;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
 import org.noear.solon.core.XMethod;
-import org.noear.solon.extend.socketapi.XSession;
-import org.noear.solon.extend.socketapi.XSocketContextHandler;
-import org.noear.solon.extend.socketapi.XSocketListener;
-import org.noear.solon.extend.socketapi.XSocketMessage;
+import org.noear.solon.extend.socketapi.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -19,8 +16,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
 
     public UtWsChannelListener() {
         handler = new XSocketContextHandler(XMethod.WEBSOCKET);
-
-        Aop.getAsyn(XSocketListener.class, (bw) -> listener = bw.raw());
+        listener = XSocketListenerProxy.getInstance();
     }
 
 

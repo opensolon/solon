@@ -3,10 +3,7 @@ package org.noear.solon.boot.jdksocket;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
 import org.noear.solon.core.XMethod;
-import org.noear.solon.extend.socketapi.XSession;
-import org.noear.solon.extend.socketapi.XSocketContextHandler;
-import org.noear.solon.extend.socketapi.XSocketListener;
-import org.noear.solon.extend.socketapi.XSocketMessage;
+import org.noear.solon.extend.socketapi.*;
 
 
 public class SocketProcessor {
@@ -15,7 +12,7 @@ public class SocketProcessor {
 
     public SocketProcessor() {
         handler = new XSocketContextHandler(XMethod.SOCKET);
-        Aop.getAsyn(XSocketListener.class, (bw) -> listener = bw.raw());
+        listener = XSocketListenerProxy.getInstance();
     }
 
     public void onOpen(XSession session) {

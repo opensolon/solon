@@ -4,7 +4,14 @@ import org.noear.solon.XUtil;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
 
-public class XSocketListenerHolder implements XSocketListener {
+/**
+ * 监听代理
+ * */
+public class XSocketListenerProxy implements XSocketListener {
+    private static final XSocketListenerProxy instance = new XSocketListenerProxy();
+    public static XSocketListenerProxy getInstance() {
+        return instance;
+    }
 
     @Override
     public void onOpen(XSession session) {
