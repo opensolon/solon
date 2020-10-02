@@ -13,13 +13,17 @@ public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
 
-        long time_start = System.currentTimeMillis();
+        if(app.enableSocket() == false){
+            return;
+        }
 
-        SocketProtocol protocol = new SocketProtocol();
+        long time_start = System.currentTimeMillis();
 
         System.out.println("solon.Server:main: java.net.ServerSocket jdk8");
 
         int _port = 20000 + app.port();
+
+        SocketProtocol protocol = new SocketProtocol();
 
         try {
             _server = new SocketServer();
