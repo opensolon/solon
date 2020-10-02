@@ -44,10 +44,14 @@ public class XSocketMessageUtils {
      * 解码
      */
     public static XSocketMessage decode(ByteBuffer buffer) {
+        int len0 = buffer.getInt();
+
+        if(len0 < buffer.remaining()){
+            return null;
+        }
+
         //1.解码key and uri
         ByteBuffer sb = ByteBuffer.allocate(Math.min(256, buffer.limit()));
-
-        int len0 = buffer.getInt();
 
         String key = decodeString(buffer, sb);
         if (key == null) {

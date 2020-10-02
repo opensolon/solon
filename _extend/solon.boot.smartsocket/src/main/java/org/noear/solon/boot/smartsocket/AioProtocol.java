@@ -17,7 +17,19 @@ public class AioProtocol implements Protocol<XSocketMessage> {
 
     @Override
     public XSocketMessage decode(ByteBuffer buffer, AioSession session) {
-        return XSocketMessageUtils.decode(buffer);
+        if(buffer.remaining() < Integer.BYTES){
+            return null;
+        }
+
+        buffer.mark();
+
+        XSocketMessage tmp = XSocketMessageUtils.decode(buffer);
+
+        if (tmp == null) {
+            buffer.reset();
+        }
+
+        return tmp;
     }
 }
 
