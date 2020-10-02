@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.noear.solon.XApp;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
-import webapp.utils.SocketMessage;
+import org.noear.solonx.socket.api.XSocketMessage;
 import webapp.utils.SocketUtils;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class SocketTest {
         String root = "s://localhost:" + (20000 + XApp.global().port());
 
 
-        SocketMessage msg = SocketUtils.send(root + "/demog/中文/1", "Hello 世界!");
+        XSocketMessage msg = SocketUtils.send(root + "/demog/中文/1", "Hello 世界!");
         System.out.println(msg.toString());
         assert "我收到了：Hello 世界!".equals(msg.toString());
 
@@ -45,7 +45,7 @@ public class SocketTest {
         String root = "s://localhost:" + (20000 + XApp.global().port());
 
 
-        SocketMessage msg = SocketUtils.send(root + "/demog/中文/1", "Hello 世界!");
+        XSocketMessage msg = SocketUtils.send(root + "/demog/中文/1", "Hello 世界!");
         System.out.println(msg.toString());
         assert "我收到了：Hello 世界!".equals(msg.toString());
     }
