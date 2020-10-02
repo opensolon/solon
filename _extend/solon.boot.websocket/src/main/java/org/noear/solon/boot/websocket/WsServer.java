@@ -65,7 +65,9 @@ public class WsServer extends WebSocketServer {
                 listening.onMessage(session, message);
             }
 
-            handler.handle(session, message, true);
+            if (message.getHandled() == false) {
+                handler.handle(session, message, true);
+            }
 
         } catch (Throwable ex) {
             XEventBus.push(ex);
@@ -82,7 +84,9 @@ public class WsServer extends WebSocketServer {
                 listening.onMessage(session, message);
             }
 
-            handler.handle(session, message, false);
+            if (message.getHandled() == false) {
+                handler.handle(session, message, false);
+            }
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }

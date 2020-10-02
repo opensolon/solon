@@ -32,39 +32,43 @@ public class UtWsChannelListener extends AbstractReceiveListener {
 
 
     @Override
-    protected void onFullBinaryMessage(WebSocketChannel channel, BufferedBinaryMessage message) throws IOException {
+    protected void onFullBinaryMessage(WebSocketChannel channel, BufferedBinaryMessage msg) throws IOException {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            for (ByteBuffer buf : message.getData().getResource()) {
+            for (ByteBuffer buf : msg.getData().getResource()) {
                 out.write(buf.array());
             }
 
             XSession session = _SocketSession.get(channel);
-            XSocketMessage message1 = XSocketMessage.wrap(channel.getUrl(), out.toByteArray());
+            XSocketMessage message = XSocketMessage.wrap(channel.getUrl(), out.toByteArray());
 
             if (listener != null) {
-                listener.onMessage(session, message1);
+                listener.onMessage(session, message);
             }
 
-            handler.handle(session, message1, false);
+            if (message.getHandled() == false) {
+                handler.handle(session, message, false);
+            }
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }
     }
 
     @Override
-    protected void onFullTextMessage(WebSocketChannel channel, BufferedTextMessage message) throws IOException {
+    protected void onFullTextMessage(WebSocketChannel channel, BufferedTextMessage msg) throws IOException {
         try {
-            XSocketMessage message1 = XSocketMessage.wrap(channel.getUrl(),
-                    message.getData().getBytes("UTF-8"));
+            XSocketMessage message = XSocketMessage.wrap(channel.getUrl(),
+                    msg.getData().getBytes("UTF-8"));
 
             XSession session = _SocketSession.get(channel);
 
             if (listener != null) {
-                listener.onMessage(session, message1);
+                listener.onMessage(session, message);
             }
 
-            handler.handle(session, message1, true);
+            if (message.getHandled() == false) {
+                handler.handle(session, message, true);
+            }
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }

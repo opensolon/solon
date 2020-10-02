@@ -28,7 +28,9 @@ public class AioProcessor implements MessageProcessor<XSocketMessage> {
                 listening.onMessage(session1, message);
             }
 
-            handler.handle(session1, message, false);
+            if (message.getHandled() == false) {
+                handler.handle(session1, message, false);
+            }
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }

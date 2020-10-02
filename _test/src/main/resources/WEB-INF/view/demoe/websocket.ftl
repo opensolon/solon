@@ -22,7 +22,7 @@
         sock.onmessage = function(e) {
             //服务器发送通知
             //开始处理
-            document.getElementById("rst").append("message received: " + e.data+"<br/>");
+            document.getElementById("rst").append("message received: " + e.data+"\n");
         }
     };
 

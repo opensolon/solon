@@ -9,7 +9,11 @@ import org.noear.solonx.socket.api.XSocketMessage;
 public class XSocketListenerImp implements XSocketListener {
     @Override
     public void onMessage(XSession session, XSocketMessage message) {
-        System.out.println("X我收到了::" + message.toString());
+        //System.out.println("X我收到了::" + message.toString());
         //session.send("X我收到了::" + message.toString());
+
+        session.getOpenSessions().forEach(s -> {
+            s.send(message.toString());
+        });
     }
 }

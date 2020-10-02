@@ -41,8 +41,9 @@ public class WebSocketListenerImp extends WebSocketAdapter {
             if (listener != null) {
                 listener.onMessage(session, message);
             }
-
-            handler.handle(session, message, false);
+            if (message.getHandled() == false) {
+                handler.handle(session, message, false);
+            }
 
         } catch (Throwable ex) {
             XEventBus.push(ex);
@@ -60,7 +61,9 @@ public class WebSocketListenerImp extends WebSocketAdapter {
                 listener.onMessage(session, message);
             }
 
-            handler.handle(session, message, true);
+            if (message.getHandled() == false) {
+                handler.handle(session, message, true);
+            }
 
         } catch (Throwable ex) {
             XEventBus.push(ex);
