@@ -76,7 +76,7 @@ public class SocketTest {
             list.add(i);
         }
 
-        list.stream().forEach((i) -> {
+        list.parallelStream().forEach((i) -> {
             try {
                 SocketUtils.send(root + "/seb/test", "Hello 世界!+" + i, (msg, err) -> {
                     if (msg == null) {

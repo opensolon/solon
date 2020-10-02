@@ -1,6 +1,8 @@
 package webapp.utils;
 
 
+import org.noear.solon.XUtil;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -94,9 +96,12 @@ public class SocketUtils {
         SocketMessageWrap msgD = new SocketMessageWrap(SocketMessage.wrap(uri, message));
         msgD.handler = callback;
 
-        get(uri).sendDo(msgD, (m) -> {
-            msgD.handler.accept(msgD.res, msgD.err);
+        XUtil.commonPool.submit(()->{
+            get(uri).sendDo(msgD, (m) -> {
+                msgD.handler.accept(msgD.res, msgD.err);
+            });
         });
+
     }
 
     private Socket connector;
@@ -116,7 +121,7 @@ public class SocketUtils {
         }
     }
 
-    private void sendDo(final SocketMessageWrap msgD, Consumer<SocketMessageWrap> callback) throws Exception {
+    private void sendDo(final SocketMessageWrap msgD, Consumer<SocketMessageWrap> callback)  {
         // 建立连接后获得输出流
         try {
             tryConnect();
