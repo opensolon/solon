@@ -14,8 +14,8 @@ public class XSocketMessageUtils {
      * 编码
      */
     public static ByteBuffer encode(XSocketMessage msg) {
-        byte[] keyB = msg.key().getBytes(msg.charset());
-        byte[] rdB = msg.resourceDescriptor().getBytes(msg.charset());
+        byte[] keyB = msg.key().getBytes(msg.getCharset());
+        byte[] rdB = msg.resourceDescriptor().getBytes(msg.getCharset());
 
         int len = keyB.length + rdB.length + msg.content().length + 2 * 2 + 4;
 
