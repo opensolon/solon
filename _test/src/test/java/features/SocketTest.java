@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.noear.solon.XApp;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
-import org.noear.solon.extend.xsocket.XSocketMessage;
+import org.noear.solon.extend.socketapi.XSocketMessage;
 import webapp.utils.SocketUtils;
 
 import java.util.ArrayList;

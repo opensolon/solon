@@ -3,10 +3,10 @@ package org.noear.solon.boot.jdksocket;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
 import org.noear.solon.core.XMethod;
-import org.noear.solon.extend.xsocket.XSession;
-import org.noear.solon.extend.xsocket.XSocketContextHandler;
-import org.noear.solon.extend.xsocket.XSocketListener;
-import org.noear.solon.extend.xsocket.XSocketMessage;
+import org.noear.solon.extend.socketapi.XSession;
+import org.noear.solon.extend.socketapi.XSocketContextHandler;
+import org.noear.solon.extend.socketapi.XSocketListener;
+import org.noear.solon.extend.socketapi.XSocketMessage;
 
 
 public class SocketProcessor {

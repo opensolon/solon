@@ -70,7 +70,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.extend.xsocket</artifactId>
+                <artifactId>solon.extend.socketapi</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
@@ -512,7 +512,7 @@
 
         <module>../solon</module>
 
-        <module>../_extend/solon.extend.xsocket</module>
+        <module>../_extend/solon.extend.socketapi</module>
 
         <module>../_extend/solon.boot.jetty</module>
         <module>../_extend/solon.boot.jlhttp</module>

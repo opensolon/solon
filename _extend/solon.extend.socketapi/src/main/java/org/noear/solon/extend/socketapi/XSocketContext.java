@@ -1,4 +1,4 @@
-package org.noear.solon.extend.xsocket;
+package org.noear.solon.extend.socketapi;
 
 import org.noear.solon.core.XContextEmpty;
 import org.noear.solon.core.XMethod;

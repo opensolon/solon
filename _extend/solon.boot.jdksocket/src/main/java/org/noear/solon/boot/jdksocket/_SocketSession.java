@@ -1,9 +1,9 @@
 package org.noear.solon.boot.jdksocket;
 
-import org.noear.solon.extend.xsocket.XSession;
-import org.noear.solon.extend.xsocket.XSignal;
-import org.noear.solon.extend.xsocket.XSocketMessage;
-import org.noear.solon.extend.xsocket.XSocketMessageUtils;
+import org.noear.solon.extend.socketapi.XSession;
+import org.noear.solon.extend.socketapi.XSignal;
+import org.noear.solon.extend.socketapi.XSocketMessage;
+import org.noear.solon.extend.socketapi.XSocketMessageUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

@@ -1,4 +1,4 @@
-package org.noear.solon.extend.xsocket;
+package org.noear.solon.extend.socketapi;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

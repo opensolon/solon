@@ -2,8 +2,8 @@ package webapp.utils;
 
 
 import org.noear.solon.XUtil;
-import org.noear.solon.extend.xsocket.XSocketMessage;
-import org.noear.solon.extend.xsocket.XSocketMessageUtils;
+import org.noear.solon.extend.socketapi.XSocketMessage;
+import org.noear.solon.extend.socketapi.XSocketMessageUtils;
 
 import java.io.IOException;
 import java.io.InputStream;

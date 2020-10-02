@@ -1,4 +1,4 @@
-package org.noear.solon.extend.xsocket;
+package org.noear.solon.extend.socketapi;
 
 /**
  * 信号

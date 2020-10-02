@@ -1,4 +1,4 @@
-package org.noear.solon.extend.xsocket;
+package org.noear.solon.extend.socketapi;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
