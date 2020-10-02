@@ -10,8 +10,6 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -20,14 +18,18 @@ import java.util.function.Consumer;
  * 此类，用于简单测试；复杂的，有bug...
  * */
 public class SocketUtils {
-    private static ExecutorService pool = Executors.newCachedThreadPool();
-    private static Map<String, SocketUtils> clientMap = new HashMap<>();
-
+    private static ThreadLocal<Map<String, SocketUtils>> threadLocal = new ThreadLocal<>();
     public static SocketUtils get(String uri){
         URI uri1 = URI.create(uri);
 
         if("s".equals(uri1.getScheme()) == false) {
             throw new RuntimeException("Only [s] scheme is supported");
+        }
+
+        Map<String, SocketUtils> clientMap = threadLocal.get();
+        if(clientMap == null) {
+            clientMap = new HashMap<>();
+            threadLocal.set(clientMap);
         }
 
         String hostAndPort = uri1.getAuthority();
