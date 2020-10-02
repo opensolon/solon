@@ -40,15 +40,6 @@ public class SocketTest {
         assert msg == null;
     }
 
-    @Test
-    public void test1() throws Throwable{
-        String root = "s://localhost:" + (20000 + XApp.global().port());
-
-
-        XSocketMessage msg = SocketUtils.send(root + "/demog/中文/1", "Hello 世界!");
-        System.out.println(msg.toString());
-        assert "我收到了：Hello 世界!".equals(msg.toString());
-    }
 
     @Test
     public void test2() throws Throwable {
