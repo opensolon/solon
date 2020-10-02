@@ -3,7 +3,6 @@ package org.noear.solonx.socket.api;
 import java.nio.ByteBuffer;
 
 public class XSocketMessageUtils {
-    /////////////////////
     /**
      * 编码
      */

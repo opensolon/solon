@@ -1,6 +1,5 @@
 package org.noear.solonx.socket.api;
 
-import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
