@@ -5,6 +5,11 @@ package org.noear.solon.core;
  * */
 public enum XSignal {
     /**
+     * unspecified，未指明
+     * */
+    UNSPECIFIED("", 0),
+
+    /**
      * http
      */
     HTTP("HTTP", 20),
