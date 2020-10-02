@@ -78,6 +78,11 @@ public class _SocketSession implements XSession {
     }
 
     @Override
+    public String resourceDescriptor() {
+        return real.getUrl();
+    }
+
+    @Override
     public InetSocketAddress getRemoteAddress(){
         return real.getSourceAddress();
     }

@@ -42,6 +42,11 @@ public interface XSession {
     boolean isValid();
 
     /**
+     * 资源描述（socket 为 null）
+     * */
+    String resourceDescriptor();
+
+    /**
      * 远程地址
      * */
     InetSocketAddress getRemoteAddress();

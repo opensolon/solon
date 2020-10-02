@@ -95,6 +95,11 @@ public class _SocketSession implements XSession {
     }
 
     @Override
+    public String resourceDescriptor() {
+        return "";
+    }
+
+    @Override
     public InetSocketAddress getRemoteAddress()  {
         return (InetSocketAddress) real.getRemoteSocketAddress();
     }
