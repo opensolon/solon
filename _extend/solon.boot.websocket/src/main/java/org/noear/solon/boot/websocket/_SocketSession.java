@@ -42,6 +42,11 @@ public class _SocketSession implements XSession {
     }
 
     @Override
+    public String protocol() {
+        return "WS";
+    }
+
+    @Override
     public void send(String message) {
         real.send(message);
     }

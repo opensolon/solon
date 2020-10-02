@@ -14,6 +14,11 @@ public interface XSession {
     Object real();
 
     /**
+     * 协议
+     * */
+    String protocol();
+
+    /**
      * 发送消息
      * */
     void send(String message);

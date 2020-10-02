@@ -42,6 +42,11 @@ public class _SocketSession implements XSession {
     }
 
     @Override
+    public String protocol() {
+        return "SOCKET";
+    }
+
+    @Override
     public void send(String message) {
         try {
             send(message.getBytes("UTF-8"));
