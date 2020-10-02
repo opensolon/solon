@@ -276,7 +276,7 @@ public class HttpUtils {
                 _builder.method("PUT", _body);
                 break;
             case "DELETE":
-                _builder.method("DELETE", _body);
+                _builder.method("DELETE", _body); //有些server只支持queryString参数
                 break;
             case "PATCH":
                 _builder.method("PATCH", _body);

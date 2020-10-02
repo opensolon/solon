@@ -36,10 +36,8 @@ public class HttpMethodTest extends _TestBase {
 
     @Test
     public void test23_2() throws IOException {
-        Map<String, String> map = new HashMap<>();
-        map.put("name", "中文");
-
-        assert path("/demo2/method/delete").data(map).delete().equals("中文");
+        //delete ，有些 server 只支持 queryString param
+        assert path("/demo2/method/delete?name=中文").delete().equals("中文");
     }
 
     @Test
@@ -47,7 +45,7 @@ public class HttpMethodTest extends _TestBase {
         Map<String, String> map = new HashMap<>();
         map.put("name", "中文");
 
-        assert path("/demo2/method/patch").data(map).patch().equals("中文");
+        assert path("/demo2/method/patch").data(map).enablePrintln(true).patch().equals("中文");
     }
 
     @Test
