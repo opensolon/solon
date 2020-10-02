@@ -2,8 +2,8 @@ package webapp.demoh_xsocket;
 
 import org.noear.solon.XApp;
 import org.noear.solon.annotation.XBean;
-import org.noear.solon.core.XSignal;
 import org.noear.solon.extend.xsocket.XSession;
+import org.noear.solon.extend.xsocket.XSignal;
 import org.noear.solon.extend.xsocket.XSocketListener;
 import org.noear.solon.extend.xsocket.XSocketMessage;
 

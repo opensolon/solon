@@ -1,7 +1,7 @@
 package org.noear.solon.boot.jdksocket;
 
-import org.noear.solon.core.XSignal;
 import org.noear.solon.extend.xsocket.XSession;
+import org.noear.solon.extend.xsocket.XSignal;
 import org.noear.solon.extend.xsocket.XSocketMessage;
 import org.noear.solon.extend.xsocket.XSocketMessageUtils;
 
