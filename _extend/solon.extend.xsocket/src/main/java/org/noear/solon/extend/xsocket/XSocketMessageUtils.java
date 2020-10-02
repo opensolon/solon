@@ -1,4 +1,4 @@
-package org.noear.solonx.socket.api;
+package org.noear.solon.extend.xsocket;
 
 import java.nio.ByteBuffer;
 

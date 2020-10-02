@@ -1,7 +1,7 @@
 package org.noear.solon.boot.jdksocket;
 
-import org.noear.solonx.socket.api.XSocketMessage;
-import org.noear.solonx.socket.api.XSocketMessageUtils;
+import org.noear.solon.extend.xsocket.XSocketMessage;
+import org.noear.solon.extend.xsocket.XSocketMessageUtils;
 
 import java.io.IOException;
 import java.io.InputStream;

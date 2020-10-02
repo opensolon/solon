@@ -23,7 +23,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solonx.socket.api</artifactId>
+            <artifactId>solon.extend.xsocket</artifactId>
         </dependency>
 
         <!-- server core begin -->

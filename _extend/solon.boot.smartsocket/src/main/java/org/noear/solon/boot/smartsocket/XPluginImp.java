@@ -2,7 +2,7 @@ package org.noear.solon.boot.smartsocket;
 
 import org.noear.solon.XApp;
 import org.noear.solon.core.XPlugin;
-import org.noear.solonx.socket.api.XSocketMessage;
+import org.noear.solon.extend.xsocket.XSocketMessage;
 
 import org.smartboot.socket.transport.AioQuickServer;
 

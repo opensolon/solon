@@ -4,7 +4,11 @@ import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 import org.noear.solon.core.XMethod;
-import org.noear.solonx.socket.api.*;
+import org.noear.solon.extend.xsocket.XSession;
+import org.noear.solon.extend.xsocket.XSocketContextHandler;
+import org.noear.solon.extend.xsocket.XSocketListener;
+import org.noear.solon.extend.xsocket.XSocketMessage;
+import org.noear.solon.extend.xsocket.*;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
 

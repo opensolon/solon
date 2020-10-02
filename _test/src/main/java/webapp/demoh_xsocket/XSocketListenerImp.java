@@ -3,9 +3,9 @@ package webapp.demoh_xsocket;
 import org.noear.solon.XApp;
 import org.noear.solon.annotation.XBean;
 import org.noear.solon.core.XSignal;
-import org.noear.solonx.socket.api.XSession;
-import org.noear.solonx.socket.api.XSocketListener;
-import org.noear.solonx.socket.api.XSocketMessage;
+import org.noear.solon.extend.xsocket.XSession;
+import org.noear.solon.extend.xsocket.XSocketListener;
+import org.noear.solon.extend.xsocket.XSocketMessage;
 
 @XBean
 public class XSocketListenerImp implements XSocketListener {
