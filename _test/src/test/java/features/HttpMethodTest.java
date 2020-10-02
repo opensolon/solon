@@ -19,7 +19,7 @@ public class HttpMethodTest extends _TestBase {
     }
 
     @Test
-    public void test22() throws IOException {
+    public void test22_post() throws IOException {
         Map<String, String> map = new HashMap<>();
         map.put("name", "中文");
 
@@ -27,7 +27,7 @@ public class HttpMethodTest extends _TestBase {
     }
 
     @Test
-    public void test23() throws IOException {
+    public void test23_put() throws IOException {
         Map<String, String> map = new HashMap<>();
         map.put("name", "中文");
 
@@ -35,13 +35,13 @@ public class HttpMethodTest extends _TestBase {
     }
 
     @Test
-    public void test23_2() throws IOException {
+    public void test23_delete() throws IOException {
         //delete ，有些 server 只支持 queryString param
         assert path("/demo2/method/delete?name=中文").delete().equals("中文");
     }
 
     @Test
-    public void test23_3() throws IOException {
+    public void test23_patch() throws IOException {
         Map<String, String> map = new HashMap<>();
         map.put("name", "中文");
 
@@ -49,12 +49,12 @@ public class HttpMethodTest extends _TestBase {
     }
 
     @Test
-    public void test24() throws IOException {
+    public void test24_get() throws IOException {
         assert path("/demo2/method/post_get").get().equals("/demo2/method/post_get");
     }
 
     @Test
-    public void test24_2() throws IOException {
+    public void test24_post() throws IOException {
         Map<String, String> map = new HashMap<>();
         map.put("name", "中文");
 
