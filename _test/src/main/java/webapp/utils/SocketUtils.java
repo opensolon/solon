@@ -3,6 +3,7 @@ package webapp.utils;
 
 import org.noear.solon.XUtil;
 import org.noear.solonx.socket.api.XSocketMessage;
+import org.noear.solonx.socket.api.XSocketMessageUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -127,7 +128,7 @@ public class SocketUtils {
         try {
             tryConnect();
 
-            outputStream.write(msgD.req.encode().array());
+            outputStream.write(XSocketMessageUtils.encode(msgD.req).array());
             outputStream.flush();
 
             msgD.res = decode(connector.getInputStream());
@@ -179,7 +180,7 @@ public class SocketUtils {
 
         input.read(bytes, 4, len - 4);
 
-        return XSocketMessage.decode(ByteBuffer.wrap(bytes));
+        return XSocketMessageUtils.decode(ByteBuffer.wrap(bytes));
     }
 
 
