@@ -73,9 +73,14 @@ public class _SocketSession implements XSession {
         return real.isOpen();
     }
 
+    private String _resourceDescriptor;
     @Override
     public String resourceDescriptor() {
-        return real.getResourceDescriptor();
+        if(_resourceDescriptor == null) {
+            _resourceDescriptor = real.getResourceDescriptor();
+        }
+
+        return _resourceDescriptor;
     }
 
     @Override
