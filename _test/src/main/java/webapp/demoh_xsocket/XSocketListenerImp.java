@@ -5,9 +5,9 @@ import org.noear.solon.core.XMethod;
 import org.noear.solon.xsocket.XListener;
 import org.noear.solon.xsocket.XMessage;
 import org.noear.solon.xsocket.XSession;
-import org.noear.solon.xsocket.XSignalEndpoint;
+import org.noear.solon.xsocket.XServerEndpoint;
 
-@XSignalEndpoint("/demoe/websocket")
+@XServerEndpoint(value = "/demoe/websocket")
 public class XSocketListenerImp implements XListener {
     @Override
     public void onMessage(XSession session, XMessage message) {
