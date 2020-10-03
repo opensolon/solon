@@ -35,7 +35,7 @@ public class XSocketMessage {
         return content;
     }
 
-    /////////////////////
+    //////////////////////////////////////////
 
     private XSocketMessage(String key, String resourceDescriptor, byte[] bytes) {
         this.key = (key == null ? "" : key);
@@ -67,7 +67,7 @@ public class XSocketMessage {
         }
     }
 
-    /////////////////////
+    //////////////////////////////////////////
 
     private boolean _handled;
 
@@ -79,7 +79,7 @@ public class XSocketMessage {
         return _handled;
     }
 
-    /////////////////////
+    //////////////////////////////////////////
 
     /**
      * 打包
