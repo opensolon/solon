@@ -9,13 +9,9 @@ import org.noear.solon.extend.xsocket.XSocketContextHandler;
 import java.nio.ByteBuffer;
 
 public class WebSocketListenerImp extends WebSocketAdapter {
-    XSocketContextHandler handler;
-    XListener listener;
+    static XSocketContextHandler handler = new XSocketContextHandler(XMethod.WEBSOCKET);
+    static XListener listener = XListenerProxy.getGlobal();
 
-    public WebSocketListenerImp() {
-        handler = new XSocketContextHandler(XMethod.WEBSOCKET);
-        listener = XListenerProxy.getGlobal();
-    }
 
     @Override
     public void onWebSocketConnect(Session sess) {
