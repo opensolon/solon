@@ -35,7 +35,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
             }
 
             XSession session = _SocketSession.get(channel);
-            XMessage message = XMessage.wrap(channel.getUrl(), out.toByteArray());
+            XMessage message = XMessage.wrap(session.resourceDescriptor(), out.toByteArray());
 
             if (listener != null) {
                 listener.onMessage(session, message);

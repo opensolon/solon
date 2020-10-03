@@ -9,6 +9,8 @@ import org.noear.solon.extend.xsocket.XMessage;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.URI;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.*;
 
@@ -81,7 +83,7 @@ public class _SocketSession implements XSession {
     @Override
     public String resourceDescriptor() {
         if(_resourceDescriptor == null) {
-            _resourceDescriptor = real.getUrl();
+            _resourceDescriptor = URI.create(real.getUrl()).getPath();
         }
 
         return _resourceDescriptor;
