@@ -38,14 +38,6 @@ public class XSocketProxy implements XSocketListener {
     }
 
     @Override
-    public void onClosing(XSession session) {
-        XSocketListener sl = get(session);
-        if (sl != null) {
-            sl.onClosing(session);
-        }
-    }
-
-    @Override
     public void onClose(XSession session) {
         XSocketListener sl = get(session);
         if (sl != null) {

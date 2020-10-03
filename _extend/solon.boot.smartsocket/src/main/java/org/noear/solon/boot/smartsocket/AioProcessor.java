@@ -40,11 +40,6 @@ public class AioProcessor implements MessageProcessor<XSocketMessage> {
                     listener.onOpen(_SocketSession.get(session));
                     break;
 
-                case SESSION_CLOSING:
-                    listener.onClosing(_SocketSession.get(session));
-                    _SocketSession.remove(session);
-                    break;
-
                 case SESSION_CLOSED:
                     listener.onClose(_SocketSession.get(session));
                     _SocketSession.remove(session);

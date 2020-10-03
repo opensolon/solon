@@ -38,14 +38,6 @@ public class WsServer extends WebSocketServer {
     }
 
     @Override
-    public void onClosing(WebSocket conn, int code, String reason, boolean remote) {
-        if (listener != null) {
-            listener.onClosing(_SocketSession.get(conn));
-            _SocketSession.remove(conn);
-        }
-    }
-
-    @Override
     public void onClose(WebSocket conn, int i, String s, boolean b) {
         if (listener != null) {
             listener.onClose(_SocketSession.get(conn));
