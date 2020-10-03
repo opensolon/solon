@@ -77,15 +77,15 @@
 <!--            <artifactId>solon.boot.fineio</artifactId>-->
 <!--        </dependency>-->
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.jdksocket</artifactId>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.smartsocket</artifactId>
+            <artifactId>solon.boot.jdksocket</artifactId>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.smartsocket</artifactId>-->
+<!--        </dependency>-->
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
@@ -106,10 +106,10 @@
 
 
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.jdkhttp</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.jdkhttp</artifactId>
+        </dependency>
 
 
 <!--        <dependency>-->
@@ -123,10 +123,10 @@
 <!--        </dependency>-->
 
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.undertow</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.undertow</artifactId>-->
+<!--        </dependency>-->
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
@@ -140,11 +140,11 @@
 <!--            <artifactId>solon.boot.jetty</artifactId>-->
 <!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.jetty.jsp</artifactId>
-            <type>pom</type>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.extend.jetty.jsp</artifactId>-->
+<!--            <type>pom</type>-->
+<!--        </dependency>-->
 
 
         <dependency>
@@ -268,6 +268,18 @@
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>3.14.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.2</version>
         </dependency>
 
     </dependencies>

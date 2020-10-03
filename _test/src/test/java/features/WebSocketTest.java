@@ -29,7 +29,7 @@ public class WebSocketTest {
         Thread.sleep(100);
     }
 
-    @Test
+//    @Test
     public void test1() throws Throwable {
         //
         // 测试 jetty or undertow 自带的 websocket
