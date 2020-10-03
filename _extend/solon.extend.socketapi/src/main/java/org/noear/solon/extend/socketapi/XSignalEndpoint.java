@@ -5,6 +5,6 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface XServerEndpoint {
+public @interface XSignalEndpoint {
     String value() default "";
 }

@@ -3,7 +3,7 @@ package webapp.demoh_xsocket;
 import org.noear.solon.XApp;
 import org.noear.solon.extend.socketapi.*;
 
-@XServerEndpoint("/demoe/websocket")
+@XSignalEndpoint("/demoe/websocket")
 public class XSocketListenerImp implements XSocketListener {
     @Override
     public void onMessage(XSession session, XSocketMessage message) {

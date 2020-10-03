@@ -7,7 +7,7 @@ import org.noear.solon.core.XPlugin;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        Aop.factory().beanCreatorAdd(XServerEndpoint.class, (clz, wrap, anno) -> {
+        Aop.factory().beanCreatorAdd(XSignalEndpoint.class, (clz, wrap, anno) -> {
             if (XSocketListener.class.isAssignableFrom(clz)) {
                 XSocketProxy.getInstance().add(anno.value(), wrap);
             }
