@@ -2,6 +2,7 @@ package org.noear.solon.extend.xsocket;
 
 import org.noear.solon.core.XContextEmpty;
 import org.noear.solon.core.XMethod;
+import org.noear.solon.core.XSignal;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -26,6 +27,17 @@ public class XSocketContext extends XContextEmpty {
         _messageIsString = messageIsString;
         _method = method;
         _inetSocketAddress = session.getRemoteAddress();
+    }
+
+    @Override
+    public XSignal signal() {
+        if (_method == XMethod.SOCKET) {
+            return XSignal.SOCKET;
+        } else if (_method == XMethod.WEBSOCKET) {
+            return XSignal.WEBSOCKET;
+        } else {
+            return XSignal.HTTP;
+        }
     }
 
     @Override
