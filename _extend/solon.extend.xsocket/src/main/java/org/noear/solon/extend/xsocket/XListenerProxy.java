@@ -5,9 +5,6 @@ import org.noear.solon.core.Route;
 import org.noear.solon.core.RouteList;
 import org.noear.solon.core.XMethod;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * XSocket 监听者代理
  *
@@ -25,7 +22,7 @@ public class XListenerProxy implements XListener {
     }
 
     //监听器
-    private RouteList<BeanWrap> routes = new RouteList<>();
+    protected RouteList<BeanWrap> routes = new RouteList<>();
 
     protected void add(String path, BeanWrap bw) {
         routes.add(new Route<>(path, XMethod.ALL,0,bw));
