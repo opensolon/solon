@@ -2,7 +2,6 @@ package org.noear.solon.boot.jetty.websocket;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
 import org.noear.solon.core.XMethod;
 import org.noear.solon.extend.socketapi.*;
@@ -15,7 +14,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
 
     public WebSocketListenerImp() {
         handler = new XSocketContextHandler(XMethod.WEBSOCKET);
-        listener = XSocketListenerProxy.getInstance();
+        listener = XSocketProxy.getInstance();
     }
 
     @Override

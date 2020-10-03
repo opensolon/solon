@@ -2,7 +2,6 @@ package org.noear.solon.boot.smartsocket;
 
 import org.noear.solon.core.XMethod;
 import org.noear.solon.extend.socketapi.*;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
 
 import org.smartboot.socket.MessageProcessor;
@@ -14,7 +13,7 @@ public class AioProcessor implements MessageProcessor<XSocketMessage> {
     private XSocketListener listener;
     public AioProcessor() {
         handler = new XSocketContextHandler(XMethod.SOCKET);
-        listener = XSocketListenerProxy.getInstance();
+        listener = XSocketProxy.getInstance();
     }
 
     @Override

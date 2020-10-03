@@ -5,7 +5,6 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 import org.noear.solon.core.XMethod;
 import org.noear.solon.extend.socketapi.*;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
 
 import java.net.InetSocketAddress;
@@ -23,7 +22,7 @@ public class WsServer extends WebSocketServer {
     public WsServer(int port) {
         super(new InetSocketAddress(port));
         handler = new XSocketContextHandler(XMethod.WEBSOCKET);
-        listener = XSocketListenerProxy.getInstance();
+        listener = XSocketProxy.getInstance();
     }
 
     @Override

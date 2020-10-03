@@ -1,7 +1,6 @@
 package org.noear.solon.boot.undertow.websocket;
 
 import io.undertow.websockets.core.*;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
 import org.noear.solon.core.XMethod;
 import org.noear.solon.extend.socketapi.*;
@@ -16,7 +15,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
 
     public UtWsChannelListener() {
         handler = new XSocketContextHandler(XMethod.WEBSOCKET);
-        listener = XSocketListenerProxy.getInstance();
+        listener = XSocketProxy.getInstance();
     }
 
 

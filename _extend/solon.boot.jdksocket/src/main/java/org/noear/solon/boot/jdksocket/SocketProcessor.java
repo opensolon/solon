@@ -1,6 +1,5 @@
 package org.noear.solon.boot.jdksocket;
 
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventBus;
 import org.noear.solon.core.XMethod;
 import org.noear.solon.extend.socketapi.*;
@@ -12,7 +11,7 @@ public class SocketProcessor {
 
     public SocketProcessor() {
         handler = new XSocketContextHandler(XMethod.SOCKET);
-        listener = XSocketListenerProxy.getInstance();
+        listener = XSocketProxy.getInstance();
     }
 
     public void onOpen(XSession session) {

@@ -1,16 +1,24 @@
 package org.noear.solon.extend.socketapi;
 
-import org.noear.solon.XUtil;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 监听代理
  * */
-public class XSocketListenerProxy implements XSocketListener {
-    private static final XSocketListenerProxy instance = new XSocketListenerProxy();
-    public static XSocketListenerProxy getInstance() {
+public class XSocketProxy implements XSocketListener {
+    private static final XSocketProxy instance = new XSocketProxy();
+
+    public static XSocketProxy getInstance() {
         return instance;
+    }
+
+    private Map<String, BeanWrap> cached = new HashMap<>();
+
+    protected void add(String uri, BeanWrap bw) {
+        cached.put(uri, bw);
     }
 
     @Override
@@ -54,14 +62,7 @@ public class XSocketListenerProxy implements XSocketListener {
     }
 
     private XSocketListener get(XSession s) {
-        BeanWrap bw;
-
-        if (XUtil.isEmpty(s.resourceDescriptor())) {
-            bw = Aop.factory().getWrap(XSocketListener.class);
-        } else {
-            bw = Aop.factory().getWrap(s.resourceDescriptor());
-        }
-
-        return bw == null ? null : bw.raw();
+        BeanWrap bw = cached.get(s.resourceDescriptor());
+        return bw == null ? null : bw.get();
     }
 }
