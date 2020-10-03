@@ -23,6 +23,25 @@ public class TestApp {
          * */
         XApp app = XApp.start(TestApp.class, args);
 
+//        app.ws("/demoe/websocket",(session,message)->{
+//            System.out.println(session.resourceDescriptor());
+//
+//            if(XApp.cfg().isDebugMode()){
+//                return;
+//            }
+//
+//            if (session.method() == XMethod.WEBSOCKET) {
+//                message.setHandled(true);
+//
+//                session.getOpenSessions().forEach(s -> {
+//                    s.send(message.toString());
+//                });
+//            } else {
+//                System.out.println("X我收到了::" + message.toString());
+//                //session.send("X我收到了::" + message.toString());
+//            }
+//        });
+
         //socket server
         app.socket("/seb/test",(c)->{
             String msg = c.body();
