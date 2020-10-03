@@ -8,17 +8,21 @@ import java.util.Map;
 /**
  * 监听代理
  * */
-public class XSocketProxy implements XSocketListener {
-    private static final XSocketProxy instance = new XSocketProxy();
-
-    public static XSocketProxy getInstance() {
+public class XSocketListenerProxy implements XSocketListener {
+    //实例维护
+    private static XSocketListenerProxy instance = new XSocketListenerProxy();
+    public static XSocketListenerProxy getInstance() {
         return instance;
     }
+    public static void setInstance(XSocketListenerProxy instance) {
+        XSocketListenerProxy.instance = instance;
+    }
 
-    private Map<String, BeanWrap> cached = new HashMap<>();
+    //监听器
+    private Map<String, BeanWrap> listeners = new HashMap<>();
 
     protected void add(String uri, BeanWrap bw) {
-        cached.put(uri, bw);
+        listeners.put(uri, bw);
     }
 
     @Override
@@ -53,8 +57,9 @@ public class XSocketProxy implements XSocketListener {
         }
     }
 
+    //获取监听器
     private XSocketListener get(XSession s) {
-        BeanWrap bw = cached.get(s.resourceDescriptor());
+        BeanWrap bw = listeners.get(s.resourceDescriptor());
         return bw == null ? null : bw.get();
     }
 }

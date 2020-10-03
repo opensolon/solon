@@ -11,7 +11,7 @@ public class SocketProcessor {
 
     public SocketProcessor() {
         handler = new XSocketContextHandler(XMethod.SOCKET);
-        listener = XSocketProxy.getInstance();
+        listener = XSocketListenerProxy.getInstance();
     }
 
     public void onOpen(XSession session) {

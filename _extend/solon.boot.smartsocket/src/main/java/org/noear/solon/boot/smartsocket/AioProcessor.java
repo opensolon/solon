@@ -13,7 +13,7 @@ public class AioProcessor implements MessageProcessor<XSocketMessage> {
     private XSocketListener listener;
     public AioProcessor() {
         handler = new XSocketContextHandler(XMethod.SOCKET);
-        listener = XSocketProxy.getInstance();
+        listener = XSocketListenerProxy.getInstance();
     }
 
     @Override
