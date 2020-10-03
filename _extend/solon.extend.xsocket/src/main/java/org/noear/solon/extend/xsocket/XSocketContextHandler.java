@@ -1,4 +1,4 @@
-package org.noear.solon.extend.socketapi;
+package org.noear.solon.extend.xsocket;
 
 import org.noear.solon.XApp;
 import org.noear.solon.core.XEventBus;

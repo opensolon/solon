@@ -2,7 +2,7 @@ package org.noear.solon.boot.jdksocket;
 
 import org.noear.solon.core.XEventBus;
 import org.noear.solon.core.XMethod;
-import org.noear.solon.extend.socketapi.*;
+import org.noear.solon.extend.xsocket.*;
 
 
 public class SocketProcessor {

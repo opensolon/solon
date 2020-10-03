@@ -5,7 +5,7 @@ import org.noear.fairy.FairyConfig;
 import org.noear.fairy.FairyException;
 import org.noear.fairy.IChannel;
 import org.noear.fairy.Result;
-import org.noear.solon.extend.socketapi.XMessage;
+import org.noear.solon.extend.xsocket.XMessage;
 
 import java.util.Map;
 

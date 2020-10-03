@@ -1,7 +1,7 @@
 package webapp.demoh_xsocket;
 
 import org.noear.solon.XApp;
-import org.noear.solon.extend.socketapi.*;
+import org.noear.solon.extend.xsocket.*;
 
 @XSignalEndpoint("/demoe/websocket")
 public class XSocketListenerImp implements XListener {

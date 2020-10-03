@@ -1,7 +1,7 @@
 package org.noear.solon.boot.smartsocket;
 
 import org.noear.solon.core.XMethod;
-import org.noear.solon.extend.socketapi.*;
+import org.noear.solon.extend.xsocket.*;
 import org.noear.solon.core.XEventBus;
 
 import org.smartboot.socket.MessageProcessor;

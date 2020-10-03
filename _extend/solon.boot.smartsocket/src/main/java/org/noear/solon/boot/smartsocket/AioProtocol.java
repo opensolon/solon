@@ -1,8 +1,8 @@
 package org.noear.solon.boot.smartsocket;
 
-import org.noear.solon.extend.socketapi.XMessage;
+import org.noear.solon.extend.xsocket.XMessage;
 
-import org.noear.solon.extend.socketapi.XMessageUtils;
+import org.noear.solon.extend.xsocket.XMessageUtils;
 import org.smartboot.socket.Protocol;
 import org.smartboot.socket.transport.AioSession;
 

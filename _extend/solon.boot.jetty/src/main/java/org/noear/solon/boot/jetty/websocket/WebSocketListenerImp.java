@@ -4,7 +4,7 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 import org.noear.solon.core.XEventBus;
 import org.noear.solon.core.XMethod;
-import org.noear.solon.extend.socketapi.*;
+import org.noear.solon.extend.xsocket.*;
 
 import java.nio.ByteBuffer;
 
