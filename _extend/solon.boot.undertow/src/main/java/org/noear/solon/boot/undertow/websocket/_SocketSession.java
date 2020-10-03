@@ -3,14 +3,13 @@ package org.noear.solon.boot.undertow.websocket;
 import io.undertow.websockets.core.WebSocketChannel;
 import io.undertow.websockets.core.WebSockets;
 
-import org.noear.solon.extend.xsocket.XSession;
+import org.noear.solon.socket.XSession;
 import org.noear.solon.core.XSignal;
-import org.noear.solon.extend.xsocket.XMessage;
+import org.noear.solon.socket.XMessage;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.*;
 

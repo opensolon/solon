@@ -1,9 +1,8 @@
 package org.noear.solon.boot.undertow.websocket;
 
 import io.undertow.websockets.core.*;
-import org.noear.solon.core.XEventBus;
-import org.noear.solon.core.XMethod;
-import org.noear.solon.extend.xsocket.*;
+import org.noear.solon.core.*;
+import org.noear.solon.socket.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

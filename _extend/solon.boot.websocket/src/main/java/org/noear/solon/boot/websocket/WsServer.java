@@ -3,9 +3,8 @@ package org.noear.solon.boot.websocket;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
-import org.noear.solon.core.XMethod;
-import org.noear.solon.extend.xsocket.*;
-import org.noear.solon.core.XEventBus;
+import org.noear.solon.core.*;
+import org.noear.solon.socket.*;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;

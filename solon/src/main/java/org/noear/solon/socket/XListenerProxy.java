@@ -1,9 +1,7 @@
-package org.noear.solon.extend.xsocket;
+package org.noear.solon.socket;
 
-import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.Route;
-import org.noear.solon.core.RouteList;
-import org.noear.solon.core.XMethod;
+import org.noear.solon.XApp;
+import org.noear.solon.core.*;
 
 /**
  * XSocket 监听者代理
@@ -13,19 +11,14 @@ import org.noear.solon.core.XMethod;
  * */
 public class XListenerProxy implements XListener {
     //实例维护
-    private static XListenerProxy instance = new XListenerProxy();
-    public static XListenerProxy getInstance() {
+    private static XListener instance = new XListenerProxy();
+
+    public static XListener getInstance() {
         return instance;
     }
-    public static void setInstance(XListenerProxy instance) {
+
+    public static void setInstance(XListener instance) {
         XListenerProxy.instance = instance;
-    }
-
-    //监听器
-    protected RouteList<BeanWrap> routes = new RouteList<>();
-
-    protected void add(String path, BeanWrap bw) {
-        routes.add(new Route<>(path, XMethod.ALL,0,bw));
     }
 
     @Override
@@ -62,7 +55,6 @@ public class XListenerProxy implements XListener {
 
     //获取监听器
     private XListener get(XSession s) {
-        BeanWrap bw = routes.matchOne(s.resourceDescriptor(), XMethod.ALL);
-        return bw == null ? null : bw.get();
+        return XApp.global().router().matchOne(s, XEndpoint.main);
     }
 }
