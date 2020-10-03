@@ -1,7 +1,9 @@
-package org.noear.solon.xsocket;
+package org.noear.solon.extend.xsocket;
 
 import org.noear.solon.XApp;
-import org.noear.solon.core.*;
+import org.noear.solon.xsocket.XListener;
+import org.noear.solon.xsocket.XMessage;
+import org.noear.solon.xsocket.XSession;
 
 /**
  * XSocket 监听者代理

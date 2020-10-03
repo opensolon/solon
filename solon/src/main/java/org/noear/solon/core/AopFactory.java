@@ -22,7 +22,7 @@ import java.util.*;
  * @author noear
  * @since 1.0
  * */
-public class AopFactory extends AopFactoryBase {
+public class AopFactory extends AopContainer {
 
 
     public AopFactory() {

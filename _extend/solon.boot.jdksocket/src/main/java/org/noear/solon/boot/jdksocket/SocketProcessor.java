@@ -1,6 +1,7 @@
 package org.noear.solon.boot.jdksocket;
 
 import org.noear.solon.core.*;
+import org.noear.solon.extend.xsocket.XListenerProxy;
 import org.noear.solon.extend.xsocket.XSocketContextHandler;
 import org.noear.solon.xsocket.*;
 
