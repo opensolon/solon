@@ -100,7 +100,7 @@ public class _SocketSession implements XSession {
     }
 
     @Override
-    public String resourceDescriptor() {
+    public String path() {
         return "";
     }
 

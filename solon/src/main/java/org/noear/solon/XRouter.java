@@ -119,7 +119,7 @@ public class XRouter {
      * 区配一个目标（根据上上文）
      */
     public XListener matchOne(XSession session) {
-        String path = session.resourceDescriptor();
+        String path = session.path();
 
         return _routes_l.matchOne(path, session.method());
     }
@@ -128,7 +128,7 @@ public class XRouter {
      * 区配多个目标（根据上上文）
      */
     public List<XListener> matchAll(XSession session) {
-        String path = session.resourceDescriptor();
+        String path = session.path();
 
         return _routes_l.matchAll(path, session.method());
     }

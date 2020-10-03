@@ -19,6 +19,10 @@ public interface XSession {
      * 协议
      * */
     XMethod method();
+    /**
+     * 资源路径（socket 为空）
+     * */
+    String path();
 
     /**
      * 发送消息
@@ -46,11 +50,6 @@ public interface XSession {
      * 是否是安全的
      * */
     boolean isSecure();
-
-    /**
-     * 资源描述（socket 为 null）
-     * */
-    String resourceDescriptor();
 
     /**
      * 远程地址

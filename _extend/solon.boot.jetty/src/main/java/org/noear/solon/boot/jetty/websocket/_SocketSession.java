@@ -91,7 +91,7 @@ public class _SocketSession implements XSession {
 
     private String _resourceDescriptor;
     @Override
-    public String resourceDescriptor() {
+    public String path() {
         if(_resourceDescriptor == null) {
             _resourceDescriptor = real.getUpgradeRequest().getOrigin();
         }

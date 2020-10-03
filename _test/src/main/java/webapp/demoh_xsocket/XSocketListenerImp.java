@@ -11,7 +11,7 @@ import org.noear.solon.xsocket.XServerEndpoint;
 public class XSocketListenerImp implements XListener {
     @Override
     public void onMessage(XSession session, XMessage message) {
-        System.out.println(session.resourceDescriptor());
+        System.out.println(session.path());
 
         if(XApp.cfg().isDebugMode()){
             return;
