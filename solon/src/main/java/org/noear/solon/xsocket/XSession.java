@@ -16,7 +16,7 @@ public interface XSession {
     Object real();
 
     /**
-     * 协议
+     * 方法
      * */
     XMethod method();
     /**
