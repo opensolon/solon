@@ -7,6 +7,9 @@ import java.util.Map;
 
 /**
  * XSocket 监听者代理
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class XListenerProxy implements XListener {
     //实例维护

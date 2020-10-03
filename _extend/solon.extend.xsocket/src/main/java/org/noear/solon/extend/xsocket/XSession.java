@@ -1,5 +1,7 @@
 package org.noear.solon.extend.xsocket;
 
+import org.noear.solon.core.XSignal;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Collection;

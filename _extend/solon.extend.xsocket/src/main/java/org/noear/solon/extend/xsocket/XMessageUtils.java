@@ -4,6 +4,9 @@ import java.nio.ByteBuffer;
 
 /**
  * XSocket 消息包，提供编码解码示例
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class XMessageUtils {
     /**

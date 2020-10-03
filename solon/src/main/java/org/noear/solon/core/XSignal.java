@@ -1,7 +1,10 @@
-package org.noear.solon.extend.xsocket;
+package org.noear.solon.core;
 
 /**
- * 信号
+ * 信号类型
+ *
+ * @author noear
+ * @since 1.0
  * */
 public enum XSignal {
     /**

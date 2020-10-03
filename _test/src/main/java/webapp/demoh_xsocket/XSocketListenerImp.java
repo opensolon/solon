@@ -1,6 +1,7 @@
 package webapp.demoh_xsocket;
 
 import org.noear.solon.XApp;
+import org.noear.solon.core.XSignal;
 import org.noear.solon.extend.xsocket.*;
 
 @XSignalEndpoint("/demoe/websocket")
