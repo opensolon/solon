@@ -21,7 +21,7 @@ import java.util.function.Function;
  * @author noear
  * @since 1.0
  * */
-public abstract class AopContainer {
+public abstract class AopFactoryBase {
     //////////////////////////
     //
     // 基础存储
