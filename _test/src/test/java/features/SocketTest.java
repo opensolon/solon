@@ -6,7 +6,7 @@ import org.noear.solon.XApp;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import org.noear.solon.xsocket.XMessage;
-import webapp.utils.XSocketUtils;
+import webapp.utils.SocketUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,23 +20,23 @@ public class SocketTest {
         String root = "s://localhost:" + (20000 + XApp.global().port());
 
 
-        XMessage msg = XSocketUtils.send(root + "/demog/中文/1", "Hello 世界!");
+        XMessage msg = SocketUtils.send(root + "/demog/中文/1", "Hello 世界!");
         System.out.println(msg.toString());
         assert "我收到了：Hello 世界!".equals(msg.toString());
 
         Thread.sleep(100);
-        msg = XSocketUtils.send(root + "/demog/中文/1", "Hello 世界!");
+        msg = SocketUtils.send(root + "/demog/中文/1", "Hello 世界!");
         System.out.println(msg.toString());
         assert "我收到了：Hello 世界!".equals(msg.toString());
 
         Thread.sleep(100);
-        msg = XSocketUtils.send(root + "/demog/中文/2", "Hello 世界2!");
+        msg = SocketUtils.send(root + "/demog/中文/2", "Hello 世界2!");
         System.out.println(msg.toString());
         assert "我收到了：Hello 世界2!".equals(msg.toString());
 
         Thread.sleep(100);
 
-        msg = XSocketUtils.send(root + "/demog/中文/3", "close");
+        msg = SocketUtils.send(root + "/demog/中文/3", "close");
         assert msg == null;
     }
 
@@ -46,7 +46,7 @@ public class SocketTest {
         //socket client
         String root = "s://localhost:" + (20000 + XApp.global().port());
 
-        XSocketUtils.send(root + "/seb/test", "Hello 世界!+1", (msg, err) -> {
+        SocketUtils.send(root + "/seb/test", "Hello 世界!+1", (msg, err) -> {
             if (msg == null) {
                 return;
             }
@@ -69,7 +69,7 @@ public class SocketTest {
 
         list.parallelStream().forEach((i) -> {
             try {
-                XSocketUtils.send(root + "/seb/test", "Hello 世界!+" + i, (msg, err) -> {
+                SocketUtils.send(root + "/seb/test", "Hello 世界!+" + i, (msg, err) -> {
                     if (msg == null) {
                         return;
                     }
@@ -89,14 +89,14 @@ public class SocketTest {
         String root = "s://localhost:" + (20000 + XApp.global().port());
 
 
-        XSocketUtils.create(root).send(root + "/seb/test", "Hello 世界!", (msg, err) -> {
+        SocketUtils.create(root).send(root + "/seb/test", "Hello 世界!", (msg, err) -> {
             if (msg == null) {
                 return;
             }
             System.out.println(msg.toString());
         });
 
-        XSocketUtils.create(root).send(root + "/seb/test", "Hello 世界!", (msg, err) -> {
+        SocketUtils.create(root).send(root + "/seb/test", "Hello 世界!", (msg, err) -> {
             if (msg == null) {
                 return;
             }

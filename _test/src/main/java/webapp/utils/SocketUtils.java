@@ -21,16 +21,16 @@ import java.util.function.Consumer;
 /**
  * 此类，用于简单测试；复杂的，有bug...
  * */
-public class XSocketUtils {
-    private static ThreadLocal<Map<String, XSocketUtils>> threadLocal = new ThreadLocal<>();
-    public static XSocketUtils get(String uri){
+public class SocketUtils {
+    private static ThreadLocal<Map<String, SocketUtils>> threadLocal = new ThreadLocal<>();
+    public static SocketUtils get(String uri){
         URI uri1 = URI.create(uri);
 
         if("s".equals(uri1.getScheme()) == false) {
             throw new RuntimeException("Only [s] scheme is supported");
         }
 
-        Map<String, XSocketUtils> clientMap = threadLocal.get();
+        Map<String, SocketUtils> clientMap = threadLocal.get();
         if(clientMap == null) {
             clientMap = new HashMap<>();
             threadLocal.set(clientMap);
@@ -38,12 +38,12 @@ public class XSocketUtils {
 
         String hostAndPort = uri1.getAuthority();
 
-        XSocketUtils client = clientMap.get(hostAndPort);
+        SocketUtils client = clientMap.get(hostAndPort);
         if(client == null){
             synchronized (hostAndPort.intern()){
                 client = clientMap.get(hostAndPort);
                 if(client == null){
-                    client = new XSocketUtils(uri1.getHost(), uri1.getPort());
+                    client = new SocketUtils(uri1.getHost(), uri1.getPort());
                     clientMap.put(hostAndPort,client);
                 }
             }
@@ -52,14 +52,14 @@ public class XSocketUtils {
         return client;
     }
 
-    public static XSocketUtils create(String uri){
+    public static SocketUtils create(String uri){
         URI uri1 = URI.create(uri);
 
         if("s".equals(uri1.getScheme()) == false) {
             throw new RuntimeException("Only [s] scheme is supported");
         }
 
-        return new XSocketUtils(uri1.getHost(), uri1.getPort());
+        return new SocketUtils(uri1.getHost(), uri1.getPort());
     }
 
     public static XMessage send(String uri, String message) throws Throwable {
@@ -111,7 +111,7 @@ public class XSocketUtils {
     private final String host;
     private final int port;
 
-    private XSocketUtils(String host, int port){
+    private SocketUtils(String host, int port){
         this.host = host;
         this.port = port;
     }
