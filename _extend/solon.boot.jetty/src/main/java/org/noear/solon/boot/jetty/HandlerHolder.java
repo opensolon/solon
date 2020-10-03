@@ -14,18 +14,16 @@ public class HandlerHolder extends AbstractHandler {
     Handler http;
     Handler websocket = new WebSocketHandlerImp();
 
+    final String SEC_WEBSOCKET_KEY = "Sec-WebSocket-Key";
+
     public HandlerHolder(Handler http) {
         this.http = http;
     }
 
     @Override
     public void handle(String s, Request request, HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-        if("GET".equals(request.getMethod())){
-            if (request.getScheme().contains("http")) {
-                http.handle(s, request, req, res);
-            } else {
-                websocket.handle(s, request, req, res);
-            }
+        if(req.getHeader(SEC_WEBSOCKET_KEY) != null){
+            websocket.handle(s, request, req, res);
         }else{
             http.handle(s, request, req, res);
         }
