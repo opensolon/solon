@@ -78,6 +78,11 @@ public class _SocketSession implements XSession {
         return real.isOpen();
     }
 
+    @Override
+    public boolean isSecure() {
+        return real.isSecure();
+    }
+
     private String _resourceDescriptor;
     @Override
     public String resourceDescriptor() {

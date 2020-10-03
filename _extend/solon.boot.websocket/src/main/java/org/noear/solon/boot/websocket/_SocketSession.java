@@ -73,6 +73,11 @@ public class _SocketSession implements XSession {
         return real.isOpen();
     }
 
+    @Override
+    public boolean isSecure() {
+        return real.hasSSLSupport();
+    }
+
     private String _resourceDescriptor;
     @Override
     public String resourceDescriptor() {

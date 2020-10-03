@@ -39,9 +39,13 @@ public interface XSession {
     void close() throws IOException;
 
     /**
-     * 会话是否有效
+     * 是否是有效的
      * */
     boolean isValid();
+    /**
+     * 是否是安全的
+     * */
+    boolean isSecure();
 
     /**
      * 资源描述（socket 为 null）

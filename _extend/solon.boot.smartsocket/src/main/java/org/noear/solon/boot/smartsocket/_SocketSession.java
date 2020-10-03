@@ -87,6 +87,11 @@ public class _SocketSession implements XSession {
     }
 
     @Override
+    public boolean isSecure() {
+        return false;
+    }
+
+    @Override
     public String resourceDescriptor() {
         return "";
     }
