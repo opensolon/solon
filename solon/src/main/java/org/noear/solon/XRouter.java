@@ -3,12 +3,14 @@ package org.noear.solon;
 import org.noear.solon.core.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 通用路由器
  * */
 public class XRouter {
     private final RouteList<XHandler>[] _routes;
+    private final List<XHandler>[] _routes2;
 
     public XRouter() {
         _routes = new RouteList[6];
@@ -20,6 +22,10 @@ public class XRouter {
         _routes[4]  =new RouteList<>();
         _routes[5]  =new RouteList<>();//at after:5
 
+        _routes2 = new List[3];
+        _routes2[0] = new ArrayList<>();
+        _routes2[1] = new ArrayList<>();
+        _routes2[2] = new ArrayList<>();
     }
 
     /**
@@ -43,12 +49,11 @@ public class XRouter {
         Route xl = new Route(path, method, index, handler);
 
         if (endpoint != XEndpoint.main && "@@".equals(path)) {
-            endpoint += 3;
-
-            RouteList<XHandler> tmp = new RouteList<XHandler>(_routes[endpoint]);
+            RouteList<XHandler> tmp = _routes[endpoint+3];
             tmp.add(xl);
             tmp.sort(Comparator.comparing(l -> l.index));
-            _routes[endpoint] = tmp;
+
+            _routes2[endpoint] = tmp.stream().map(r->r.handler).collect(Collectors.toList());
         } else {
             _routes[endpoint].add(xl);
         }
@@ -88,12 +93,12 @@ public class XRouter {
     }
 
 
-    public List<Route<XHandler>> atBefore() {
-        return Collections.unmodifiableList(_routes[3]);
+    public List<XHandler> atBefore() {
+        return Collections.unmodifiableList(_routes2[0]);
     }
 
-    public List<Route<XHandler>> atAfter() {
-        return Collections.unmodifiableList(_routes[5]);
+    public List<XHandler> atAfter() {
+        return Collections.unmodifiableList(_routes2[2]);
     }
 
 }

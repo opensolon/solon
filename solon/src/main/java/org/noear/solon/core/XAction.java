@@ -131,8 +131,8 @@ public class XAction extends XHandlerAide implements XHandler{
         if (_poi_main) {
             handleDo(x, () -> {
 
-                for (Route<XHandler> r : XApp.global().router().atBefore()) {
-                    r.handler.handle(x);
+                for (XHandler h : XApp.global().router().atBefore()) {
+                    h.handle(x);
                 }
 
                 for (XHandler h : _ca._before) {
@@ -179,8 +179,8 @@ public class XAction extends XHandlerAide implements XHandler{
 
         //后置处理
         if (_poi_main) {
-            for (Route<XHandler> r : XApp.global().router().atAfter()) {
-                r.handler.handle(x);
+            for (XHandler h : XApp.global().router().atAfter()) {
+                h.handle(x);
             }
 
             for (XHandler h : _ca._after) {
