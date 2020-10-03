@@ -88,11 +88,11 @@ public class XRouter {
     }
 
 
-    public List<Route> atBefore() {
+    public List<Route<XHandler>> atBefore() {
         return Collections.unmodifiableList(_routes[3]);
     }
 
-    public List<Route> atAfter() {
+    public List<Route<XHandler>> atAfter() {
         return Collections.unmodifiableList(_routes[5]);
     }
 
