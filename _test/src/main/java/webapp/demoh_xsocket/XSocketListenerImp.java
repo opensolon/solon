@@ -3,11 +3,11 @@ package webapp.demoh_xsocket;
 import org.noear.solon.XApp;
 import org.noear.solon.extend.socketapi.*;
 
-@XServerEndpoint("")
+@XServerEndpoint("/demoe/websocket")
 public class XSocketListenerImp implements XSocketListener {
     @Override
     public void onMessage(XSession session, XSocketMessage message) {
-        System.out.println(message.resourceDescriptor());
+        System.out.println(session.resourceDescriptor());
 
         if(XApp.cfg().isDebugMode()){
             return;
