@@ -101,7 +101,7 @@ public class AopFactory extends AopFactoryBase {
         beanCreatorAdd(XSignalEndpoint.class, (clz, wrap, anno) -> {
             if (XListener.class.isAssignableFrom(clz)) {
                 XListener l = wrap.raw();
-                XApp.global().xs(anno.value(), anno.method(), l);
+                XApp.global().router().add(anno.value(), anno.method(), l);
             }
         });
 

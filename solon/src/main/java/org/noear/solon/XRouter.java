@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class XRouter {
     private final RouteList<XHandler>[] _routes_h; //for handler
     private final List<XHandler>[] _routes_h_c; //for controller
-    private final RouteList<XListener>[] _routes_l; //for listener
+    private final RouteList<XListener> _routes_l; //for listener
 
     public XRouter() {
         _routes_h = new RouteList[6];
@@ -30,10 +30,7 @@ public class XRouter {
         _routes_h_c[1] = new ArrayList<>();
         _routes_h_c[2] = new ArrayList<>();
 
-        _routes_l = new RouteList[3];
-        _routes_l[0] = new RouteList<>();
-        _routes_l[1] = new RouteList<>();
-        _routes_l[2] = new RouteList<>();
+        _routes_l = new RouteList<>();
     }
 
     /**
@@ -71,19 +68,18 @@ public class XRouter {
      * 添加路由关系 for XListener
      */
     public void add(String path, XListener listener) {
-        add(path, XEndpoint.main, XMethod.ALL, listener);
+        add(path, XMethod.ALL, listener);
     }
 
-    public void add(String path, int endpoint, XMethod method, XListener listener) {
-        add(path, endpoint, method, 0, listener);
+    public void add(String path, XMethod method, XListener listener) {
+        add(path, method, 0, listener);
     }
 
     /**
      * 添加路由关系 for XListener
      */
-    public void add(String path, int endpoint, XMethod method, int index, XListener listener) {
-        Route xl = new Route(path, method, index, listener);
-        _routes_l[endpoint].add(xl);
+    public void add(String path, XMethod method, int index, XListener listener) {
+        _routes_l.add(new Route(path, method, index, listener));
     }
 
     /**
@@ -122,19 +118,19 @@ public class XRouter {
     /**
      * 区配一个目标（根据上上文）
      */
-    public XListener matchOne(XSession session, int endpoint) {
+    public XListener matchOne(XSession session) {
         String path = session.resourceDescriptor();
 
-        return _routes_l[endpoint].matchOne(path, session.method());
+        return _routes_l.matchOne(path, session.method());
     }
 
     /**
      * 区配多个目标（根据上上文）
      */
-    public List<XListener> matchAll(XSession session, int endpoint) {
+    public List<XListener> matchAll(XSession session) {
         String path = session.resourceDescriptor();
 
-        return _routes_l[endpoint].matchAll(path, session.method());
+        return _routes_l.matchAll(path, session.method());
     }
 
 

@@ -55,6 +55,6 @@ public class XListenerProxy implements XListener {
 
     //获取监听器
     private XListener get(XSession s) {
-        return XApp.global().router().matchOne(s, XEndpoint.main);
+        return XApp.global().router().matchOne(s);
     }
 }
