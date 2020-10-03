@@ -8,6 +8,7 @@ package org.noear.solon.extend.socketapi;
  * */
 @FunctionalInterface
 public interface XSocketListener {
+
     default void onOpen(XSession session){}
 
     void onMessage(XSession session, XSocketMessage message);
