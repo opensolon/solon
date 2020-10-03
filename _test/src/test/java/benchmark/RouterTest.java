@@ -2,10 +2,11 @@ package benchmark;
 
 import org.junit.Test;
 import org.noear.solon.XRouter;
+import org.noear.solon.core.RouteList;
 import org.noear.solon.core.XEndpoint;
+import org.noear.solon.core.XHandler;
 import org.noear.solon.core.XMethod;
 
-import java.util.Collections;
 import java.util.Comparator;
 
 public class RouterTest {
@@ -59,7 +60,7 @@ public class RouterTest {
 
         new Thread(() -> {
             for (int i = 1; i < 1000000; i++) {
-                XRouter.XListenerList tmp = new XRouter.XListenerList(router.atBefore());
+                RouteList<XHandler> tmp = new RouteList(router.atBefore());
                 tmp.sort(Comparator.comparing(l -> l.index));
 
                 //router.atBefore(tmp);

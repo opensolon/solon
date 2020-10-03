@@ -1,10 +1,10 @@
 package org.noear.solon.core;
 
 /**
- * 路由监听器（为路由器服务）
+ * 路由
  * */
-public class XListener implements XHandler{
-    public XListener(String path, XMethod method, int index, XHandler handler) {
+public class Route<T> {
+    public Route(String path, XMethod method, int index, T handler) {
         _p = path;
         _pr = new PathAnalyzer(path);
         _m = method;
@@ -14,7 +14,7 @@ public class XListener implements XHandler{
     }
 
     public final int index; //顺序
-    public final XHandler handler;//代理
+    public final T handler;//代理
 
     private final String _p; //path
     private final PathAnalyzer _pr; //path rule 规则
@@ -23,7 +23,7 @@ public class XListener implements XHandler{
 
     /**
      * 是否匹配
-     * */
+     */
     public boolean matches(XMethod method2, String path2) {
         if (XMethod.ALL.code == _m.code) {
             return matches0(path2);
@@ -38,20 +38,15 @@ public class XListener implements XHandler{
         return false;
     }
 
-    private boolean matches0(String path2){
-        if("**".equals(_p)){
+    private boolean matches0(String path2) {
+        if ("**".equals(_p)) {
             return true;
         }
 
-        if(_p.equals(path2)){
+        if (_p.equals(path2)) {
             return true;
         }
 
         return _pr.matches(path2);
-    }
-
-    @Override
-    public void handle(XContext ctx) throws Throwable {
-        handler.handle(ctx);
     }
 }

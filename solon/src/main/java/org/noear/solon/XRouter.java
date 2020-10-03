@@ -3,20 +3,24 @@ package org.noear.solon;
 import org.noear.solon.core.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 通用路由器
  * */
 public class XRouter {
-    private final XListenerList[] _list = {
-            new XListenerList(), //before:0
-            new XListenerList(), //main
-            new XListenerList(), //after:2
+    private final RouteList<XHandler>[] _routes;
 
-            new XListenerList(), //at before:3
-            new XListenerList(),
-            new XListenerList()}; //at after:5
+    public XRouter() {
+        _routes = new RouteList[6];
+
+        _routes[0]  =new RouteList<>();//before:0
+        _routes[1]  =new RouteList<>();//main
+        _routes[2]  =new RouteList<>();//after:2
+        _routes[3]  =new RouteList<>();//at before:3
+        _routes[4]  =new RouteList<>();
+        _routes[5]  =new RouteList<>();//at after:5
+
+    }
 
     /**
      * 添加路由关系
@@ -36,17 +40,17 @@ public class XRouter {
      * 添加路由关系
      */
     public void add(String path, int endpoint, XMethod method, int index, XHandler handler) {
-        XListener xl = new XListener(path, method, index, handler);
+        Route xl = new Route(path, method, index, handler);
 
         if (endpoint != XEndpoint.main && "@@".equals(path)) {
             endpoint += 3;
 
-            XListenerList tmp = new XListenerList(_list[endpoint]);
+            RouteList<XHandler> tmp = new RouteList<XHandler>(_routes[endpoint]);
             tmp.add(xl);
             tmp.sort(Comparator.comparing(l -> l.index));
-            _list[endpoint] = tmp;
+            _routes[endpoint] = tmp;
         } else {
-            _list[endpoint].add(xl);
+            _routes[endpoint].add(xl);
         }
     }
 
@@ -54,13 +58,13 @@ public class XRouter {
      * 清空路由关系
      */
     public void clear() {
-        _list[0].clear();
-        _list[1].clear();
-        _list[2].clear();
+        _routes[0].clear();
+        _routes[1].clear();
+        _routes[2].clear();
 
-        _list[3].clear();
-        _list[4].clear();
-        _list[5].clear();
+        _routes[3].clear();
+        _routes[4].clear();
+        _routes[5].clear();
     }
 
     /**
@@ -70,13 +74,7 @@ public class XRouter {
         String path = context.path();
         XMethod method = XMethod.valueOf(context.method());
 
-        for (XListener l : _list[endpoint]) {
-            if (l.matches(method, path)) {
-                return l.handler;
-            }
-        }
-
-        return null;
+        return _routes[endpoint].matchOne(path, method);
     }
 
     /**
@@ -86,28 +84,16 @@ public class XRouter {
         String path = context.path();
         XMethod method = XMethod.valueOf(context.method());
 
-        return _list[endpoint].stream()
-                .filter(l -> l.matches(method, path))
-                .sorted(Comparator.comparingInt(l -> l.index))
-                .map(l->l.handler)
-                .collect(Collectors.toList());
+        return _routes[endpoint].matchAll(path, method);
     }
 
-    public List<XListener> atBefore() {
-        return Collections.unmodifiableList(_list[3]);
+
+    public List<Route> atBefore() {
+        return Collections.unmodifiableList(_routes[3]);
     }
 
-    public List<XListener> atAfter() {
-        return Collections.unmodifiableList(_list[5]);
+    public List<Route> atAfter() {
+        return Collections.unmodifiableList(_routes[5]);
     }
 
-    public static class XListenerList extends ArrayList<XListener> {
-        public XListenerList(){
-            super();
-        }
-
-        public XListenerList(Collection<XListener> coll){
-            super(coll);
-        }
-    }
 }

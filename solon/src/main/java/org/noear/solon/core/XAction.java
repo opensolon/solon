@@ -5,7 +5,6 @@ import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.ext.RunnableEx;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -132,8 +131,8 @@ public class XAction extends XHandlerAide implements XHandler{
         if (_poi_main) {
             handleDo(x, () -> {
 
-                for (XHandler h : XApp.global().router().atBefore()) {
-                    h.handle(x);
+                for (Route<XHandler> r : XApp.global().router().atBefore()) {
+                    r.handler.handle(x);
                 }
 
                 for (XHandler h : _ca._before) {
@@ -180,8 +179,8 @@ public class XAction extends XHandlerAide implements XHandler{
 
         //后置处理
         if (_poi_main) {
-            for (XHandler h : XApp.global().router().atAfter()) {
-                h.handle(x);
+            for (Route<XHandler> r : XApp.global().router().atAfter()) {
+                r.handler.handle(x);
             }
 
             for (XHandler h : _ca._after) {
