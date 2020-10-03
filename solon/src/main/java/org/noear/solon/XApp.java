@@ -4,7 +4,7 @@ import org.noear.solon.annotation.XNote;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.*;
 import org.noear.solon.ext.*;
-import org.noear.solon.xsocket.XListener;
+import org.noear.solon.core.XListener;
 
 import java.util.*;
 import java.util.function.BiConsumer;

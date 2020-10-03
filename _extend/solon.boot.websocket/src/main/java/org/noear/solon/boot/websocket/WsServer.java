@@ -6,7 +6,6 @@ import org.java_websocket.server.WebSocketServer;
 import org.noear.solon.core.*;
 import org.noear.solon.extend.xsocket.XListenerProxy;
 import org.noear.solon.extend.xsocket.XSocketContextHandler;
-import org.noear.solon.xsocket.*;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;

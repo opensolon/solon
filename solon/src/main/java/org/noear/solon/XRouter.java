@@ -1,8 +1,8 @@
 package org.noear.solon;
 
 import org.noear.solon.core.*;
-import org.noear.solon.xsocket.XListener;
-import org.noear.solon.xsocket.XSession;
+import org.noear.solon.core.XListener;
+import org.noear.solon.core.XSession;
 
 import java.util.*;
 import java.util.stream.Collectors;

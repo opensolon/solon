@@ -1,4 +1,4 @@
-package org.noear.solon.xsocket;
+package org.noear.solon.core;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

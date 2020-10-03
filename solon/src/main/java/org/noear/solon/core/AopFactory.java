@@ -3,8 +3,7 @@ package org.noear.solon.core;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.*;
-import org.noear.solon.xsocket.XListener;
-import org.noear.solon.xsocket.XServerEndpoint;
+import org.noear.solon.annotation.XServerEndpoint;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;

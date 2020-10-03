@@ -1,4 +1,4 @@
-package org.noear.solon.xsocket;
+package org.noear.solon.core;
 
 /**
  * XSocket 监听器

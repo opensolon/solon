@@ -1,4 +1,4 @@
-package org.noear.solon.xsocket;
+package org.noear.solon.annotation;
 
 import org.noear.solon.core.XMethod;
 
