@@ -9,12 +9,12 @@ import java.util.stream.Collectors;
 /**
  * 路由表
  * */
-public class RouteList<T> extends ArrayList<Route<T>> {
-    public RouteList() {
+public class RouteTable<T> extends ArrayList<Route<T>> {
+    public RouteTable() {
         super();
     }
 
-    public RouteList(Collection<Route<T>> coll) {
+    public RouteTable(Collection<Route<T>> coll) {
         super(coll);
     }
 

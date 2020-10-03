@@ -11,26 +11,26 @@ import java.util.stream.Collectors;
  * 通用路由器
  * */
 public class XRouter {
-    private final RouteList<XHandler>[] _routes_h; //for handler
+    private final RouteTable<XHandler>[] _routes_h; //for handler
     private final List<XHandler>[] _routes_h_c; //for controller
-    private final RouteList<XListener> _routes_l; //for listener
+    private final RouteTable<XListener> _routes_l; //for listener
 
     public XRouter() {
-        _routes_h = new RouteList[6];
+        _routes_h = new RouteTable[6];
 
-        _routes_h[0] = new RouteList<>();//before:0
-        _routes_h[1] = new RouteList<>();//main
-        _routes_h[2] = new RouteList<>();//after:2
-        _routes_h[3] = new RouteList<>();//at before:3
-        _routes_h[4] = new RouteList<>();
-        _routes_h[5] = new RouteList<>();//at after:5
+        _routes_h[0] = new RouteTable<>();//before:0
+        _routes_h[1] = new RouteTable<>();//main
+        _routes_h[2] = new RouteTable<>();//after:2
+        _routes_h[3] = new RouteTable<>();//at before:3
+        _routes_h[4] = new RouteTable<>();
+        _routes_h[5] = new RouteTable<>();//at after:5
 
         _routes_h_c = new List[3];
         _routes_h_c[0] = new ArrayList<>();
         _routes_h_c[1] = new ArrayList<>();
         _routes_h_c[2] = new ArrayList<>();
 
-        _routes_l = new RouteList<>();
+        _routes_l = new RouteTable<>();
     }
 
     /**
@@ -54,7 +54,7 @@ public class XRouter {
         Route xl = new Route(path, method, index, handler);
 
         if (endpoint != XEndpoint.main && "@@".equals(path)) {
-            RouteList<XHandler> tmp = _routes_h[endpoint + 3];
+            RouteTable<XHandler> tmp = _routes_h[endpoint + 3];
             tmp.add(xl);
             tmp.sort(Comparator.comparing(l -> l.index));
 
