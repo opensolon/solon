@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * */
 public class XRouter {
     private final RouteTable<XHandler>[] _routes_h; //for handler
-    private final List<XHandler>[] _routes_h_c; //for controller
+    private final List<XHandler>[] _routes_h_c; //for handler controller
     private final RouteTable<XListener> _routes_l; //for listener
 
     public XRouter() {
