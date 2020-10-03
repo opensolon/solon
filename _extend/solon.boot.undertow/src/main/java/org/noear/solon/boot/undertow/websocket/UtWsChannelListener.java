@@ -11,11 +11,11 @@ import java.nio.ByteBuffer;
 
 public class UtWsChannelListener extends AbstractReceiveListener {
     private XSocketContextHandler handler;
-    private XSocketListener listener;
+    private XListener listener;
 
     public UtWsChannelListener() {
         handler = new XSocketContextHandler(XMethod.WEBSOCKET);
-        listener = XSocketListenerProxy.getInstance();
+        listener = XListenerProxy.getInstance();
     }
 
 
@@ -35,7 +35,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
             }
 
             XSession session = _SocketSession.get(channel);
-            XSocketMessage message = XSocketMessage.wrap(channel.getUrl(), out.toByteArray());
+            XMessage message = XMessage.wrap(channel.getUrl(), out.toByteArray());
 
             if (listener != null) {
                 listener.onMessage(session, message);
@@ -52,7 +52,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
     @Override
     protected void onFullTextMessage(WebSocketChannel channel, BufferedTextMessage msg) throws IOException {
         try {
-            XSocketMessage message = XSocketMessage.wrap(channel.getUrl(),
+            XMessage message = XMessage.wrap(channel.getUrl(),
                     msg.getData().getBytes("UTF-8"));
 
             XSession session = _SocketSession.get(channel);

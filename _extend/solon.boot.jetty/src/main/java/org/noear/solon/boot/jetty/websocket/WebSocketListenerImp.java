@@ -10,11 +10,11 @@ import java.nio.ByteBuffer;
 
 public class WebSocketListenerImp extends WebSocketAdapter {
     XSocketContextHandler handler;
-    XSocketListener listener;
+    XListener listener;
 
     public WebSocketListenerImp() {
         handler = new XSocketContextHandler(XMethod.WEBSOCKET);
-        listener = XSocketListenerProxy.getInstance();
+        listener = XListenerProxy.getInstance();
     }
 
     @Override
@@ -31,7 +31,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
         try {
             ByteBuffer buf = ByteBuffer.wrap(payload, offset, len);
             XSession session = _SocketSession.get(getSession());
-            XSocketMessage message = XSocketMessage.wrap(getSession().getUpgradeRequest().getOrigin(),
+            XMessage message = XMessage.wrap(getSession().getUpgradeRequest().getOrigin(),
                     buf.array());
 
             if (listener != null) {
@@ -50,7 +50,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
     public void onWebSocketText(String text) {
         try {
             XSession session = _SocketSession.get(getSession());
-            XSocketMessage message = XSocketMessage.wrap(getSession().getUpgradeRequest().getOrigin(),
+            XMessage message = XMessage.wrap(getSession().getUpgradeRequest().getOrigin(),
                     text.getBytes("UTF-8"));
 
             if (listener != null) {

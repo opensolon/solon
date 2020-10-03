@@ -6,16 +6,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 监听代理
+ * XSocket 监听者代理
  * */
-public class XSocketListenerProxy implements XSocketListener {
+public class XListenerProxy implements XListener {
     //实例维护
-    private static XSocketListenerProxy instance = new XSocketListenerProxy();
-    public static XSocketListenerProxy getInstance() {
+    private static XListenerProxy instance = new XListenerProxy();
+    public static XListenerProxy getInstance() {
         return instance;
     }
-    public static void setInstance(XSocketListenerProxy instance) {
-        XSocketListenerProxy.instance = instance;
+    public static void setInstance(XListenerProxy instance) {
+        XListenerProxy.instance = instance;
     }
 
     //监听器
@@ -27,15 +27,15 @@ public class XSocketListenerProxy implements XSocketListener {
 
     @Override
     public void onOpen(XSession session) {
-        XSocketListener sl = get(session);
+        XListener sl = get(session);
         if (sl != null) {
             sl.onOpen(session);
         }
     }
 
     @Override
-    public void onMessage(XSession session, XSocketMessage message) {
-        XSocketListener sl = get(session);
+    public void onMessage(XSession session, XMessage message) {
+        XListener sl = get(session);
         if (sl != null) {
             sl.onMessage(session, message);
         }
@@ -43,7 +43,7 @@ public class XSocketListenerProxy implements XSocketListener {
 
     @Override
     public void onClose(XSession session) {
-        XSocketListener sl = get(session);
+        XListener sl = get(session);
         if (sl != null) {
             sl.onClose(session);
         }
@@ -51,14 +51,14 @@ public class XSocketListenerProxy implements XSocketListener {
 
     @Override
     public void onError(XSession session, Throwable error) {
-        XSocketListener sl = get(session);
+        XListener sl = get(session);
         if (sl != null) {
             sl.onError(session, error);
         }
     }
 
     //获取监听器
-    private XSocketListener get(XSession s) {
+    private XListener get(XSession s) {
         BeanWrap bw = listeners.get(s.resourceDescriptor());
         return bw == null ? null : bw.get();
     }

@@ -2,8 +2,8 @@ package webapp.utils;
 
 
 import org.noear.solon.XUtil;
-import org.noear.solon.extend.socketapi.XSocketMessage;
-import org.noear.solon.extend.socketapi.XSocketMessageUtils;
+import org.noear.solon.extend.socketapi.XMessage;
+import org.noear.solon.extend.socketapi.XMessageUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,16 +62,16 @@ public class SocketUtils {
         return new SocketUtils(uri1.getHost(), uri1.getPort());
     }
 
-    public static XSocketMessage send(String uri, String message) throws Throwable {
+    public static XMessage send(String uri, String message) throws Throwable {
         return send(uri, message.getBytes("UTF-8"));
     }
 
-    public static XSocketMessage send(String uri, byte[] message) throws Throwable {
+    public static XMessage send(String uri, byte[] message) throws Throwable {
         if(message == null){
             return null;
         }
 
-        SocketMessageWrap msgD = new SocketMessageWrap(XSocketMessage.wrap(uri, message));
+        SocketMessageWrap msgD = new SocketMessageWrap(XMessage.wrap(uri, message));
 
         get(uri).sendDo(msgD, (m) -> {
             msgD.complete(null);
@@ -86,16 +86,16 @@ public class SocketUtils {
         }
     }
 
-    public static void send(String uri, String message, BiConsumer<XSocketMessage,Throwable> callback) throws Throwable {
+    public static void send(String uri, String message, BiConsumer<XMessage,Throwable> callback) throws Throwable {
         send(uri,message.getBytes("UTF-8"),callback);
     }
 
-    public static void send(String uri, byte[] message, BiConsumer<XSocketMessage,Throwable> callback) throws Throwable {
+    public static void send(String uri, byte[] message, BiConsumer<XMessage,Throwable> callback) throws Throwable {
         if(message == null){
             return;
         }
 
-        SocketMessageWrap msgD = new SocketMessageWrap(XSocketMessage.wrap(uri, message));
+        SocketMessageWrap msgD = new SocketMessageWrap(XMessage.wrap(uri, message));
         msgD.handler = callback;
 
         XUtil.commonPool.submit(()->{
@@ -128,7 +128,7 @@ public class SocketUtils {
         try {
             tryConnect();
 
-            outputStream.write(XSocketMessageUtils.encode(msgD.req).array());
+            outputStream.write(XMessageUtils.encode(msgD.req).array());
             outputStream.flush();
 
             msgD.res = decode(connector.getInputStream());
@@ -151,7 +151,7 @@ public class SocketUtils {
 
 
     private static int MESSAGE_MAX_SIZE = 1024 * 20;
-    private XSocketMessage decode(InputStream input) throws IOException {
+    private XMessage decode(InputStream input) throws IOException {
         if(input == null){
             return null;
         }
@@ -180,7 +180,7 @@ public class SocketUtils {
 
         input.read(bytes, 4, len - 4);
 
-        return XSocketMessageUtils.decode(ByteBuffer.wrap(bytes));
+        return XMessageUtils.decode(ByteBuffer.wrap(bytes));
     }
 
 
@@ -204,17 +204,17 @@ public class SocketUtils {
     }
 
     public static class SocketMessageWrap extends CompletableFuture<Integer> {
-        public XSocketMessage req;
-        public XSocketMessage res;
+        public XMessage req;
+        public XMessage res;
         public Throwable err;
 
-        public BiConsumer<XSocketMessage,Throwable> handler;
+        public BiConsumer<XMessage,Throwable> handler;
 
         public String getKey(){
             return req.key();
         }
 
-        public SocketMessageWrap(XSocketMessage req){
+        public SocketMessageWrap(XMessage req){
             this.req = req;
         }
     }

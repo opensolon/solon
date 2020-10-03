@@ -7,11 +7,11 @@ import org.noear.solon.extend.socketapi.*;
 
 public class SocketProcessor {
     private XSocketContextHandler handler;
-    private XSocketListener listener;
+    private XListener listener;
 
     public SocketProcessor() {
         handler = new XSocketContextHandler(XMethod.SOCKET);
-        listener = XSocketListenerProxy.getInstance();
+        listener = XListenerProxy.getInstance();
     }
 
     public void onOpen(XSession session) {
@@ -21,7 +21,7 @@ public class SocketProcessor {
     }
 
 
-    public void onMessage(XSession session, XSocketMessage message) {
+    public void onMessage(XSession session, XMessage message) {
         try {
             if (listener != null) {
                 listener.onMessage(session, message);

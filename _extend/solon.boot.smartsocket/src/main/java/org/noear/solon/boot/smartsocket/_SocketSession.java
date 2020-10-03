@@ -2,8 +2,8 @@ package org.noear.solon.boot.smartsocket;
 
 import org.noear.solon.extend.socketapi.XSession;
 import org.noear.solon.extend.socketapi.XSignal;
-import org.noear.solon.extend.socketapi.XSocketMessage;
-import org.noear.solon.extend.socketapi.XSocketMessageUtils;
+import org.noear.solon.extend.socketapi.XMessage;
+import org.noear.solon.extend.socketapi.XMessageUtils;
 import org.smartboot.socket.transport.AioSession;
 
 import java.io.IOException;
@@ -58,16 +58,16 @@ public class _SocketSession implements XSession {
 
     @Override
     public void send(byte[] message) {
-        send(XSocketMessage.wrap(message));
+        send(XMessage.wrap(message));
     }
 
     @Override
-    public void send(XSocketMessage message) {
+    public void send(XMessage message) {
         try {
             //
             // 转包为XSocketMessage，再转byte[]
             //
-            byte[] bytes = XSocketMessageUtils.encode(message).array();
+            byte[] bytes = XMessageUtils.encode(message).array();
 
             real.writeBuffer().writeAndFlush(bytes);
         } catch (IOException ex) {

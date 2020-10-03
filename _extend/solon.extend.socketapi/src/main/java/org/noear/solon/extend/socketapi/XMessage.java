@@ -10,7 +10,7 @@ import java.util.UUID;
  * @author noear
  * @since 1.0
  * */
-public class XSocketMessage {
+public class XMessage {
     /**
      * 1.消息key
      */
@@ -37,7 +37,7 @@ public class XSocketMessage {
 
     //////////////////////////////////////////
 
-    private XSocketMessage(String key, String resourceDescriptor, byte[] bytes) {
+    private XMessage(String key, String resourceDescriptor, byte[] bytes) {
         this.key = (key == null ? "" : key);
         this.resourceDescriptor = (resourceDescriptor == null ? "" : resourceDescriptor);
         this.content = bytes;
@@ -84,22 +84,22 @@ public class XSocketMessage {
     /**
      * 打包
      */
-    public static XSocketMessage wrap(byte[] bytes) {
+    public static XMessage wrap(byte[] bytes) {
         return wrap("", "", bytes);
     }
 
     /**
      * 打包
      */
-    public static XSocketMessage wrap(String resourceDescriptor, byte[] bytes) {
+    public static XMessage wrap(String resourceDescriptor, byte[] bytes) {
         return wrap(UUID.randomUUID().toString(), resourceDescriptor, bytes);
     }
 
     /**
      * 打包
      */
-    public static XSocketMessage wrap(String key, String resourceDescriptor, byte[] bytes) {
-        return new XSocketMessage(key, resourceDescriptor, bytes);
+    public static XMessage wrap(String key, String resourceDescriptor, byte[] bytes) {
+        return new XMessage(key, resourceDescriptor, bytes);
     }
 
 }

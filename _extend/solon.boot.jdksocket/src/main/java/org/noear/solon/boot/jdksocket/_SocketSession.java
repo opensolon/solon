@@ -2,8 +2,8 @@ package org.noear.solon.boot.jdksocket;
 
 import org.noear.solon.extend.socketapi.XSession;
 import org.noear.solon.extend.socketapi.XSignal;
-import org.noear.solon.extend.socketapi.XSocketMessage;
-import org.noear.solon.extend.socketapi.XSocketMessageUtils;
+import org.noear.solon.extend.socketapi.XMessage;
+import org.noear.solon.extend.socketapi.XMessageUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -61,15 +61,15 @@ public class _SocketSession implements XSession {
 
     @Override
     public void send(byte[] message) {
-        send(XSocketMessage.wrap(message));
+        send(XMessage.wrap(message));
     }
 
-    public void send(XSocketMessage message) {
+    public void send(XMessage message) {
         try {
             //
             // 转包为XSocketMessage，再转byte[]
             //
-            byte[] bytes = XSocketMessageUtils.encode(message).array();
+            byte[] bytes = XMessageUtils.encode(message).array();
 
             real.getOutputStream().write(bytes);
             real.getOutputStream().flush();
@@ -142,7 +142,7 @@ public class _SocketSession implements XSession {
     /**
      * 接收数据
      */
-    public static XSocketMessage receive(Socket socket, SocketProtocol protocol) {
+    public static XMessage receive(Socket socket, SocketProtocol protocol) {
         try {
             return protocol.decode(socket.getInputStream());
         } catch (SocketException ex) {

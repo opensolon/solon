@@ -29,7 +29,7 @@ public interface XSession {
     /**
      * 发送消息
      * */
-    void send(XSocketMessage message);
+    void send(XMessage message);
 
     /**
      * 关闭会话

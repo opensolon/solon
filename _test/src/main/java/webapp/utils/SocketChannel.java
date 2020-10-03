@@ -5,7 +5,7 @@ import org.noear.fairy.FairyConfig;
 import org.noear.fairy.FairyException;
 import org.noear.fairy.IChannel;
 import org.noear.fairy.Result;
-import org.noear.solon.extend.socketapi.XSocketMessage;
+import org.noear.solon.extend.socketapi.XMessage;
 
 import java.util.Map;
 
@@ -38,7 +38,7 @@ public class SocketChannel implements IChannel {
         }
 
         synchronized (url.intern()) {
-            XSocketMessage msg = SocketUtils.send(url, message);
+            XMessage msg = SocketUtils.send(url, message);
 
             return new Result(msg.getCharset(), msg.content());
         }

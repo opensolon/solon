@@ -2,11 +2,14 @@ package org.noear.solon.extend.socketapi;
 
 import java.nio.ByteBuffer;
 
-public class XSocketMessageUtils {
+/**
+ * XSocket 消息包，提供编码解码示例
+ * */
+public class XMessageUtils {
     /**
      * 编码
      */
-    public static ByteBuffer encode(XSocketMessage msg) {
+    public static ByteBuffer encode(XMessage msg) {
         byte[] keyB = msg.key().getBytes(msg.getCharset());
         byte[] rdB = msg.resourceDescriptor().getBytes(msg.getCharset());
 
@@ -36,7 +39,7 @@ public class XSocketMessageUtils {
     /**
      * 解码
      */
-    public static XSocketMessage decode(ByteBuffer buffer) {
+    public static XMessage decode(ByteBuffer buffer) {
         int len0 = buffer.getInt();
 
         if(len0 < buffer.remaining()){
@@ -63,7 +66,7 @@ public class XSocketMessageUtils {
             buffer.get(bytes, 0, len);
         }
 
-        return XSocketMessage.wrap(key, uri, bytes);
+        return XMessage.wrap(key, uri, bytes);
     }
 
 

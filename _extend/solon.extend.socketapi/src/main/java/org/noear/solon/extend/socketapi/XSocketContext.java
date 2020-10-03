@@ -16,11 +16,11 @@ import java.net.URI;
 public class XSocketContext extends XContextEmpty {
     private InetSocketAddress _inetSocketAddress;
     private XSession _sesssion;
-    private XSocketMessage _message;
+    private XMessage _message;
     private boolean _messageIsString;
     private XMethod _method;
 
-    public XSocketContext(XSession session, XSocketMessage message, boolean messageIsString, XMethod method) {
+    public XSocketContext(XSession session, XMessage message, boolean messageIsString, XMethod method) {
         _sesssion = session;
         _message = message;
         _messageIsString = messageIsString;
@@ -149,7 +149,7 @@ public class XSocketContext extends XContextEmpty {
             if (_messageIsString) {
                 _sesssion.send(new String(_outputStream.toByteArray()));
             } else {
-                XSocketMessage msg = XSocketMessage.wrap(_message.key(), _message.resourceDescriptor(), _outputStream.toByteArray());
+                XMessage msg = XMessage.wrap(_message.key(), _message.resourceDescriptor(), _outputStream.toByteArray());
                 _sesssion.send(msg);
             }
         }

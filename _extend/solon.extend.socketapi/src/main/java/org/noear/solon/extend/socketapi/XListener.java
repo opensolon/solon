@@ -1,17 +1,17 @@
 package org.noear.solon.extend.socketapi;
 
 /**
- * XSocket 监听者
+ * XSocket 监听器
  *
  * @author noear
  * @since 1.0
  * */
 @FunctionalInterface
-public interface XSocketListener {
+public interface XListener {
 
     default void onOpen(XSession session){}
 
-    void onMessage(XSession session, XSocketMessage message);
+    void onMessage(XSession session, XMessage message);
 
     default void onClose(XSession session){}
 

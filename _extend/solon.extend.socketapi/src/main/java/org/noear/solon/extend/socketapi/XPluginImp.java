@@ -8,8 +8,8 @@ public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
         Aop.factory().beanCreatorAdd(XSignalEndpoint.class, (clz, wrap, anno) -> {
-            if (XSocketListener.class.isAssignableFrom(clz)) {
-                XSocketListenerProxy.getInstance().add(anno.value(), wrap);
+            if (XListener.class.isAssignableFrom(clz)) {
+                XListenerProxy.getInstance().add(anno.value(), wrap);
             }
         });
     }

@@ -1,14 +1,14 @@
 package org.noear.solon.boot.jdksocket;
 
-import org.noear.solon.extend.socketapi.XSocketMessage;
-import org.noear.solon.extend.socketapi.XSocketMessageUtils;
+import org.noear.solon.extend.socketapi.XMessage;
+import org.noear.solon.extend.socketapi.XMessageUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 public class SocketProtocol {
-    public XSocketMessage decode(InputStream input) throws IOException {
+    public XMessage decode(InputStream input) throws IOException {
         if(input == null){
             return null;
         }
@@ -32,7 +32,7 @@ public class SocketProtocol {
 
         input.read(bytes, 4, len - 4);
 
-        return XSocketMessageUtils.decode(ByteBuffer.wrap(bytes));
+        return XMessageUtils.decode(ByteBuffer.wrap(bytes));
     }
 
 

@@ -17,12 +17,12 @@ public class WsServer extends WebSocketServer {
     private Charset _charset = StandardCharsets.UTF_8;
 
     private XSocketContextHandler handler;
-    private XSocketListener listener;
+    private XListener listener;
 
     public WsServer(int port) {
         super(new InetSocketAddress(port));
         handler = new XSocketContextHandler(XMethod.WEBSOCKET);
-        listener = XSocketListenerProxy.getInstance();
+        listener = XListenerProxy.getInstance();
     }
 
     @Override
@@ -49,7 +49,7 @@ public class WsServer extends WebSocketServer {
     public void onMessage(WebSocket conn, String data) {
         try {
             XSession session = _SocketSession.get(conn);
-            XSocketMessage message = XSocketMessage.wrap(conn.getResourceDescriptor(), data.getBytes(_charset));
+            XMessage message = XMessage.wrap(conn.getResourceDescriptor(), data.getBytes(_charset));
 
             if (listener != null) {
                 listener.onMessage(session, message);
@@ -68,7 +68,7 @@ public class WsServer extends WebSocketServer {
     public void onMessage(WebSocket conn, ByteBuffer data) {
         try {
             XSession session = _SocketSession.get(conn);
-            XSocketMessage message = XSocketMessage.wrap(conn.getResourceDescriptor(), data.array());
+            XMessage message = XMessage.wrap(conn.getResourceDescriptor(), data.array());
 
             if (listener != null) {
                 listener.onMessage(session, message);

@@ -8,16 +8,16 @@ import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.StateMachineEnum;
 import org.smartboot.socket.transport.AioSession;
 
-public class AioProcessor implements MessageProcessor<XSocketMessage> {
+public class AioProcessor implements MessageProcessor<XMessage> {
     private XSocketContextHandler handler;
-    private XSocketListener listener;
+    private XListener listener;
     public AioProcessor() {
         handler = new XSocketContextHandler(XMethod.SOCKET);
-        listener = XSocketListenerProxy.getInstance();
+        listener = XListenerProxy.getInstance();
     }
 
     @Override
-    public void process(AioSession session, XSocketMessage message) {
+    public void process(AioSession session, XMessage message) {
         try {
             XSession session1 = _SocketSession.get(session);
             if (listener != null) {

@@ -4,9 +4,9 @@ import org.noear.solon.XApp;
 import org.noear.solon.extend.socketapi.*;
 
 @XSignalEndpoint("/demoe/websocket")
-public class XSocketListenerImp implements XSocketListener {
+public class XSocketListenerImp implements XListener {
     @Override
-    public void onMessage(XSession session, XSocketMessage message) {
+    public void onMessage(XSession session, XMessage message) {
         System.out.println(session.resourceDescriptor());
 
         if(XApp.cfg().isDebugMode()){

@@ -3,7 +3,7 @@ package org.noear.solon.boot.websocket;
 import org.java_websocket.WebSocket;
 import org.noear.solon.extend.socketapi.XSession;
 import org.noear.solon.extend.socketapi.XSignal;
-import org.noear.solon.extend.socketapi.XSocketMessage;
+import org.noear.solon.extend.socketapi.XMessage;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -58,7 +58,7 @@ public class _SocketSession implements XSession {
     }
 
     @Override
-    public void send(XSocketMessage message) {
+    public void send(XMessage message) {
         send(message.content());
     }
 

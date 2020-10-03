@@ -17,7 +17,7 @@ public class XSocketContextHandler {
         this.method = method;
     }
 
-    public void handle(XSession session, XSocketMessage message, boolean messageIsString) {
+    public void handle(XSession session, XMessage message, boolean messageIsString) {
         if (message == null) {
             return;
         }

@@ -1,7 +1,7 @@
 package org.noear.solon.boot.jdksocket;
 
 import org.noear.solon.extend.socketapi.XSession;
-import org.noear.solon.extend.socketapi.XSocketMessage;
+import org.noear.solon.extend.socketapi.XMessage;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -48,7 +48,7 @@ public class SocketServer {
                         return;
                     }
 
-                    XSocketMessage message = _SocketSession.receive(connector, protocol);
+                    XMessage message = _SocketSession.receive(connector, protocol);
                     if (message != null) {
                         pool.execute(() -> {
                             processor.onMessage(session, message);
