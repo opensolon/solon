@@ -16,7 +16,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
 
     public UtWsChannelListener() {
         handler = new XSocketContextHandler(XMethod.WEBSOCKET);
-        listener = XListenerProxy.getInstance();
+        listener = XListenerProxy.getGlobal();
     }
 
 

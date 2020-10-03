@@ -23,7 +23,7 @@ public class WsServer extends WebSocketServer {
     public WsServer(int port) {
         super(new InetSocketAddress(port));
         handler = new XSocketContextHandler(XMethod.WEBSOCKET);
-        listener = XListenerProxy.getInstance();
+        listener = XListenerProxy.getGlobal();
     }
 
     @Override

@@ -15,7 +15,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
 
     public WebSocketListenerImp() {
         handler = new XSocketContextHandler(XMethod.WEBSOCKET);
-        listener = XListenerProxy.getInstance();
+        listener = XListenerProxy.getGlobal();
     }
 
     @Override

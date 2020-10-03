@@ -13,15 +13,14 @@ import org.noear.solon.xsocket.XSession;
  * */
 public class XListenerProxy implements XListener {
     //实例维护
-    private static XListener instance = new XListenerProxy();
-
-    public static XListener getInstance() {
-        return instance;
+    private static XListener global = new XListenerProxy();
+    public static XListener getGlobal() {
+        return global;
+    }
+    public static void setGlobal(XListener global) {
+        XListenerProxy.global = global;
     }
 
-    public static void setInstance(XListener instance) {
-        XListenerProxy.instance = instance;
-    }
 
     @Override
     public void onOpen(XSession session) {

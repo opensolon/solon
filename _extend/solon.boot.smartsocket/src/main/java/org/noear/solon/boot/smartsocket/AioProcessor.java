@@ -14,7 +14,7 @@ public class AioProcessor implements MessageProcessor<XMessage> {
     private XListener listener;
     public AioProcessor() {
         handler = new XSocketContextHandler(XMethod.SOCKET);
-        listener = XListenerProxy.getInstance();
+        listener = XListenerProxy.getGlobal();
     }
 
     @Override

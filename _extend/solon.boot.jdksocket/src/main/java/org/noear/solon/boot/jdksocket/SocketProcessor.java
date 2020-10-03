@@ -12,7 +12,7 @@ public class SocketProcessor {
 
     public SocketProcessor() {
         handler = new XSocketContextHandler(XMethod.SOCKET);
-        listener = XListenerProxy.getInstance();
+        listener = XListenerProxy.getGlobal();
     }
 
     public void onOpen(XSession session) {
