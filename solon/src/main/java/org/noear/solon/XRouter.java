@@ -124,15 +124,6 @@ public class XRouter {
         return _routes_l.matchOne(path, session.method());
     }
 
-    /**
-     * 区配多个目标（根据上上文）
-     */
-    public List<XListener> matchAll(XSession session) {
-        String path = session.path();
-
-        return _routes_l.matchAll(path, session.method());
-    }
-
 
     public List<XHandler> atBefore() {
         return Collections.unmodifiableList(_routes_h_c[0]);
