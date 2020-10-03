@@ -51,6 +51,16 @@ public class _SocketSession implements XSession {
         return XMethod.WEBSOCKET;
     }
 
+    private String _path;
+    @Override
+    public String path() {
+        if(_path == null) {
+            _path = URI.create(real.getUrl()).getPath();
+        }
+
+        return _path;
+    }
+
     @Override
     public void send(String message) {
         WebSockets.sendText(message, real, null);
@@ -81,16 +91,6 @@ public class _SocketSession implements XSession {
     @Override
     public boolean isSecure() {
         return real.isSecure();
-    }
-
-    private String _resourceDescriptor;
-    @Override
-    public String path() {
-        if(_resourceDescriptor == null) {
-            _resourceDescriptor = URI.create(real.getUrl()).getPath();
-        }
-
-        return _resourceDescriptor;
     }
 
     @Override

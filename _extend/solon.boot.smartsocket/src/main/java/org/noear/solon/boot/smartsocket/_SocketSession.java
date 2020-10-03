@@ -48,6 +48,11 @@ public class _SocketSession implements XSession {
     }
 
     @Override
+    public String path() {
+        return "";
+    }
+
+    @Override
     public void send(String message) {
         try {
             send(message.getBytes("UTF-8"));
@@ -89,11 +94,6 @@ public class _SocketSession implements XSession {
     @Override
     public boolean isSecure() {
         return false;
-    }
-
-    @Override
-    public String path() {
-        return "";
     }
 
     @Override
