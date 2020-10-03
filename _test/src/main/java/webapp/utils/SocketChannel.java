@@ -38,7 +38,7 @@ public class SocketChannel implements IChannel {
         }
 
         synchronized (url.intern()) {
-            XMessage msg = SocketUtils.send(url, message);
+            XMessage msg = XSocketUtils.send(url, message);
 
             return new Result(msg.getCharset(), msg.content());
         }

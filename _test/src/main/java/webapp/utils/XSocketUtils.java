@@ -2,8 +2,8 @@ package webapp.utils;
 
 
 import org.noear.solon.XUtil;
-import org.noear.solon.xsocket.XMessage;
 import org.noear.solon.extend.xsocket.XMessageUtils;
+import org.noear.solon.xsocket.XMessage;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,16 +21,16 @@ import java.util.function.Consumer;
 /**
  * 此类，用于简单测试；复杂的，有bug...
  * */
-public class SocketUtils {
-    private static ThreadLocal<Map<String, SocketUtils>> threadLocal = new ThreadLocal<>();
-    public static SocketUtils get(String uri){
+public class XSocketUtils {
+    private static ThreadLocal<Map<String, XSocketUtils>> threadLocal = new ThreadLocal<>();
+    public static XSocketUtils get(String uri){
         URI uri1 = URI.create(uri);
 
         if("s".equals(uri1.getScheme()) == false) {
             throw new RuntimeException("Only [s] scheme is supported");
         }
 
-        Map<String, SocketUtils> clientMap = threadLocal.get();
+        Map<String, XSocketUtils> clientMap = threadLocal.get();
         if(clientMap == null) {
             clientMap = new HashMap<>();
             threadLocal.set(clientMap);
@@ -38,12 +38,12 @@ public class SocketUtils {
 
         String hostAndPort = uri1.getAuthority();
 
-        SocketUtils client = clientMap.get(hostAndPort);
+        XSocketUtils client = clientMap.get(hostAndPort);
         if(client == null){
             synchronized (hostAndPort.intern()){
                 client = clientMap.get(hostAndPort);
                 if(client == null){
-                    client = new SocketUtils(uri1.getHost(), uri1.getPort());
+                    client = new XSocketUtils(uri1.getHost(), uri1.getPort());
                     clientMap.put(hostAndPort,client);
                 }
             }
@@ -52,14 +52,14 @@ public class SocketUtils {
         return client;
     }
 
-    public static SocketUtils create(String uri){
+    public static XSocketUtils create(String uri){
         URI uri1 = URI.create(uri);
 
         if("s".equals(uri1.getScheme()) == false) {
             throw new RuntimeException("Only [s] scheme is supported");
         }
 
-        return new SocketUtils(uri1.getHost(), uri1.getPort());
+        return new XSocketUtils(uri1.getHost(), uri1.getPort());
     }
 
     public static XMessage send(String uri, String message) throws Throwable {
@@ -111,7 +111,7 @@ public class SocketUtils {
     private final String host;
     private final int port;
 
-    private SocketUtils(String host, int port){
+    private XSocketUtils(String host, int port){
         this.host = host;
         this.port = port;
     }
