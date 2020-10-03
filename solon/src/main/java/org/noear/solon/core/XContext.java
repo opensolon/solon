@@ -50,12 +50,6 @@ public abstract class XContext {
         return _rendered;
     }
 
-    /**信号类型*/
-    @XNote("信号类型")
-    public XSignal signal(){
-        return XSignal.HTTP;
-    }
-
     /**获取请求对象*/
     @XNote("获取请求对象")
     public abstract Object request();

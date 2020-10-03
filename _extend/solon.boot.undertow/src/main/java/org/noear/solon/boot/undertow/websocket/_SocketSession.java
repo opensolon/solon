@@ -3,9 +3,9 @@ package org.noear.solon.boot.undertow.websocket;
 import io.undertow.websockets.core.WebSocketChannel;
 import io.undertow.websockets.core.WebSockets;
 
-import org.noear.solon.socket.XSession;
-import org.noear.solon.core.XSignal;
-import org.noear.solon.socket.XMessage;
+import org.noear.solon.core.XMethod;
+import org.noear.solon.xsocket.XSession;
+import org.noear.solon.xsocket.XMessage;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -47,8 +47,8 @@ public class _SocketSession implements XSession {
     }
 
     @Override
-    public XSignal signal() {
-        return XSignal.WEBSOCKET;
+    public XMethod method() {
+        return XMethod.WEBSOCKET;
     }
 
     @Override

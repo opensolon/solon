@@ -1,6 +1,6 @@
-package org.noear.solon.socket;
+package org.noear.solon.xsocket;
 
-import org.noear.solon.core.XSignal;
+import org.noear.solon.core.XMethod;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -18,7 +18,7 @@ public interface XSession {
     /**
      * 协议
      * */
-    XSignal signal();
+    XMethod method();
 
     /**
      * 发送消息

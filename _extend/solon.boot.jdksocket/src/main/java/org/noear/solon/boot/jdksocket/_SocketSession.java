@@ -1,9 +1,9 @@
 package org.noear.solon.boot.jdksocket;
 
-import org.noear.solon.socket.XSession;
-import org.noear.solon.core.XSignal;
-import org.noear.solon.socket.XMessage;
-import org.noear.solon.socket.XMessageUtils;
+import org.noear.solon.core.XMethod;
+import org.noear.solon.xsocket.XSession;
+import org.noear.solon.xsocket.XMessage;
+import org.noear.solon.xsocket.XMessageUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -46,8 +46,8 @@ public class _SocketSession implements XSession {
     }
 
     @Override
-    public XSignal signal() {
-        return XSignal.SOCKET;
+    public XMethod method() {
+        return XMethod.SOCKET;
     }
 
     @Override

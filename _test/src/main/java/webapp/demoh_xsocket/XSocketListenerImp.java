@@ -1,11 +1,11 @@
 package webapp.demoh_xsocket;
 
 import org.noear.solon.XApp;
-import org.noear.solon.core.XSignal;
-import org.noear.solon.socket.XListener;
-import org.noear.solon.socket.XMessage;
-import org.noear.solon.socket.XSession;
-import org.noear.solon.socket.XSignalEndpoint;
+import org.noear.solon.core.XMethod;
+import org.noear.solon.xsocket.XListener;
+import org.noear.solon.xsocket.XMessage;
+import org.noear.solon.xsocket.XSession;
+import org.noear.solon.xsocket.XSignalEndpoint;
 
 @XSignalEndpoint("/demoe/websocket")
 public class XSocketListenerImp implements XListener {
@@ -17,7 +17,7 @@ public class XSocketListenerImp implements XListener {
             return;
         }
 
-        if (session.signal() == XSignal.WEBSOCKET) {
+        if (session.method() == XMethod.WEBSOCKET) {
             message.setHandled(true);
 
             session.getOpenSessions().forEach(s -> {

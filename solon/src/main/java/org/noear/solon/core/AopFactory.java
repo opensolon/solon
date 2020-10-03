@@ -3,9 +3,8 @@ package org.noear.solon.core;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.*;
-import org.noear.solon.socket.XListener;
-import org.noear.solon.socket.XListenerProxy;
-import org.noear.solon.socket.XSignalEndpoint;
+import org.noear.solon.xsocket.XListener;
+import org.noear.solon.xsocket.XSignalEndpoint;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
@@ -102,7 +101,7 @@ public class AopFactory extends AopFactoryBase {
         beanCreatorAdd(XSignalEndpoint.class, (clz, wrap, anno) -> {
             if (XListener.class.isAssignableFrom(clz)) {
                 XListener l = wrap.raw();
-                XApp.global().router().add(anno.value(), l);
+                XApp.global().router().add(anno.value(), anno.method(), l);
             }
         });
 

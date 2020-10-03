@@ -3,7 +3,7 @@ package org.noear.solon.boot.jetty.websocket;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 import org.noear.solon.core.*;
-import org.noear.solon.socket.*;
+import org.noear.solon.xsocket.*;
 
 import java.nio.ByteBuffer;
 

@@ -1,4 +1,6 @@
-package org.noear.solon.socket;
+package org.noear.solon.xsocket;
+
+import org.noear.solon.core.XMethod;
 
 import java.lang.annotation.*;
 
@@ -7,4 +9,5 @@ import java.lang.annotation.*;
 @Documented
 public @interface XSignalEndpoint {
     String value() default "";
+    XMethod method() default XMethod.ALL;
 }

@@ -4,7 +4,7 @@ import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 import org.noear.solon.core.*;
-import org.noear.solon.socket.*;
+import org.noear.solon.xsocket.*;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;

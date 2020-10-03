@@ -1,8 +1,8 @@
 package org.noear.solon;
 
 import org.noear.solon.core.*;
-import org.noear.solon.socket.XListener;
-import org.noear.solon.socket.XSession;
+import org.noear.solon.xsocket.XListener;
+import org.noear.solon.xsocket.XSession;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -71,11 +71,11 @@ public class XRouter {
      * 添加路由关系 for XListener
      */
     public void add(String path, XListener listener){
-        add(path, XEndpoint.main, XMethod.ALL,  listener);
+        add(path, XMethod.ALL,  listener);
     }
 
-    public void add(String path, int endpoint, XMethod method, XListener listener) {
-        add(path, endpoint, method, 0, listener);
+    public void add(String path, XMethod method, XListener listener) {
+        add(path, XEndpoint.main, method, 0, listener);
     }
 
     /**
@@ -124,9 +124,8 @@ public class XRouter {
      */
     public XListener matchOne(XSession session, int endpoint) {
         String path = session.resourceDescriptor();
-        XMethod method = XMethod.valueOf(session.signal().name);
 
-        return _routes_l[endpoint].matchOne(path, method);
+        return _routes_l[endpoint].matchOne(path, session.method());
     }
 
     /**
@@ -134,9 +133,8 @@ public class XRouter {
      */
     public List<XListener> matchAll(XSession session, int endpoint) {
         String path = session.resourceDescriptor();
-        XMethod method = XMethod.valueOf(session.signal().name);
 
-        return _routes_l[endpoint].matchAll(path, method);
+        return _routes_l[endpoint].matchAll(path, session.method());
     }
 
 

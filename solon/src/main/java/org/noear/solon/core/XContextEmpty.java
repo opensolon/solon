@@ -49,11 +49,6 @@ public class XContextEmpty extends XContext {
 
 
     @Override
-    public XSignal signal() {
-        return XSignal.UNSPECIFIED;
-    }
-
-    @Override
     public Object request() {
         return null;
     }
