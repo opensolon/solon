@@ -4,6 +4,7 @@ import org.noear.solon.annotation.XNote;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.*;
 import org.noear.solon.ext.*;
+import org.noear.solon.xsocket.XListener;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -340,6 +341,31 @@ public class XApp implements XHandler,XHandlerSlots {
      */
     public void all(String path, XHandler handler) {
         add(path, XMethod.ALL, handler);
+    }
+
+
+    public void xsBefore(String expr,  XListener listener){
+        xsBefore(expr,XMethod.ALL,listener);
+    }
+
+    public void xsBefore(String expr, XMethod method,  XListener listener){
+        _router.add(expr,XEndpoint.before,method,listener);
+    }
+
+    public void xs(String expr,  XListener listener){
+        xs(expr,XMethod.ALL,listener);
+    }
+
+    public void xs(String expr, XMethod method,  XListener listener){
+        _router.add(expr,XEndpoint.main,method,listener);
+    }
+
+    public void xsAfter(String expr,  XListener listener){
+        xsAfter(expr,XMethod.ALL,listener);
+    }
+
+    public void xsAfter(String expr, XMethod method,  XListener listener){
+        _router.add(expr,XEndpoint.after,method,listener);
     }
 
     //http

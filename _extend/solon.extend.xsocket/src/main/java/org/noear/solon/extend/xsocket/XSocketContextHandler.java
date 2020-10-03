@@ -1,8 +1,10 @@
-package org.noear.solon.xsocket;
+package org.noear.solon.extend.xsocket;
 
 import org.noear.solon.XApp;
 import org.noear.solon.core.XEventBus;
 import org.noear.solon.core.XMethod;
+import org.noear.solon.xsocket.XMessage;
+import org.noear.solon.xsocket.XSession;
 
 /**
  * XSocket 上下文处理者

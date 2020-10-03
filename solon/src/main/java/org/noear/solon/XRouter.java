@@ -18,12 +18,12 @@ public class XRouter {
     public XRouter() {
         _routes_h = new RouteList[6];
 
-        _routes_h[0]  =new RouteList<>();//before:0
-        _routes_h[1]  =new RouteList<>();//main
-        _routes_h[2]  =new RouteList<>();//after:2
-        _routes_h[3]  =new RouteList<>();//at before:3
-        _routes_h[4]  =new RouteList<>();
-        _routes_h[5]  =new RouteList<>();//at after:5
+        _routes_h[0] = new RouteList<>();//before:0
+        _routes_h[1] = new RouteList<>();//main
+        _routes_h[2] = new RouteList<>();//after:2
+        _routes_h[3] = new RouteList<>();//at before:3
+        _routes_h[4] = new RouteList<>();
+        _routes_h[5] = new RouteList<>();//at after:5
 
         _routes_h_c = new List[3];
         _routes_h_c[0] = new ArrayList<>();
@@ -57,11 +57,11 @@ public class XRouter {
         Route xl = new Route(path, method, index, handler);
 
         if (endpoint != XEndpoint.main && "@@".equals(path)) {
-            RouteList<XHandler> tmp = _routes_h[endpoint+3];
+            RouteList<XHandler> tmp = _routes_h[endpoint + 3];
             tmp.add(xl);
             tmp.sort(Comparator.comparing(l -> l.index));
 
-            _routes_h_c[endpoint] = tmp.stream().map(r->r.target).collect(Collectors.toList());
+            _routes_h_c[endpoint] = tmp.stream().map(r -> r.target).collect(Collectors.toList());
         } else {
             _routes_h[endpoint].add(xl);
         }
@@ -70,18 +70,18 @@ public class XRouter {
     /**
      * 添加路由关系 for XListener
      */
-    public void add(String path, XListener listener){
-        add(path, XMethod.ALL,  listener);
+    public void add(String path, XListener listener) {
+        add(path, XEndpoint.main, XMethod.ALL, listener);
     }
 
-    public void add(String path, XMethod method, XListener listener) {
-        add(path, XEndpoint.main, method, 0, listener);
+    public void add(String path, int endpoint, XMethod method, XListener listener) {
+        add(path, endpoint, method, 0, listener);
     }
 
     /**
      * 添加路由关系 for XListener
      */
-    public void add(String path, int endpoint, XMethod method, int index, XListener listener){
+    public void add(String path, int endpoint, XMethod method, int index, XListener listener) {
         Route xl = new Route(path, method, index, listener);
         _routes_l[endpoint].add(xl);
     }

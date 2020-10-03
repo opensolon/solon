@@ -2,6 +2,7 @@ package org.noear.solon.boot.smartsocket;
 
 import org.noear.solon.core.*;
 
+import org.noear.solon.extend.xsocket.XSocketContextHandler;
 import org.noear.solon.xsocket.*;
 import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.StateMachineEnum;

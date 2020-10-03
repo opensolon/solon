@@ -3,7 +3,7 @@ package org.noear.solon.boot.jdksocket;
 import org.noear.solon.core.XMethod;
 import org.noear.solon.xsocket.XSession;
 import org.noear.solon.xsocket.XMessage;
-import org.noear.solon.xsocket.XMessageUtils;
+import org.noear.solon.extend.xsocket.XMessageUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
