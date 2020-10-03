@@ -1,6 +1,9 @@
 package org.noear.solon.extend.xsocket;
 
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.Route;
+import org.noear.solon.core.RouteList;
+import org.noear.solon.core.XMethod;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,10 +25,10 @@ public class XListenerProxy implements XListener {
     }
 
     //监听器
-    private Map<String, BeanWrap> listeners = new HashMap<>();
+    private RouteList<BeanWrap> routes = new RouteList<>();
 
-    protected void add(String uri, BeanWrap bw) {
-        listeners.put(uri, bw);
+    protected void add(String path, BeanWrap bw) {
+        routes.add(new Route<>(path, XMethod.ALL,0,bw));
     }
 
     @Override
@@ -62,7 +65,7 @@ public class XListenerProxy implements XListener {
 
     //获取监听器
     private XListener get(XSession s) {
-        BeanWrap bw = listeners.get(s.resourceDescriptor());
+        BeanWrap bw = routes.matchOne(s.resourceDescriptor(), XMethod.ALL);
         return bw == null ? null : bw.get();
     }
 }

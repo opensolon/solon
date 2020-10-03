@@ -53,7 +53,7 @@ public class XRouter {
             tmp.add(xl);
             tmp.sort(Comparator.comparing(l -> l.index));
 
-            _routes2[endpoint] = tmp.stream().map(r->r.handler).collect(Collectors.toList());
+            _routes2[endpoint] = tmp.stream().map(r->r.target).collect(Collectors.toList());
         } else {
             _routes[endpoint].add(xl);
         }

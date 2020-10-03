@@ -25,7 +25,7 @@ public class RouteList<T> extends ArrayList<Route<T>> {
     public T matchOne(String path, XMethod method) {
         for (Route<T> l : this) {
             if (l.matches(method, path)) {
-                return l.handler;
+                return l.target;
             }
         }
 
@@ -39,7 +39,7 @@ public class RouteList<T> extends ArrayList<Route<T>> {
         return this.stream()
                 .filter(l -> l.matches(method, path))
                 .sorted(Comparator.comparingInt(l -> l.index))
-                .map(l -> l.handler)
+                .map(l -> l.target)
                 .collect(Collectors.toList());
     }
 }
