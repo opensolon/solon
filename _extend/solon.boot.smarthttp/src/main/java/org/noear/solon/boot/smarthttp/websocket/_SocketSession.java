@@ -5,7 +5,6 @@ import org.noear.solon.core.XMethod;
 import org.noear.solon.core.XSession;
 import org.smartboot.http.WebSocketRequest;
 import org.smartboot.http.WebSocketResponse;
-import org.smartboot.http.enums.WebsocketStatus;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
