@@ -7,7 +7,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.ResourceCollection;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
-import org.noear.solon.boot.jetty.http.JspStarter;
+import org.noear.solon.boot.jetty.http.JtJspStarter;
 import org.noear.solon.boot.jetty.http.JtHttpContextServlet;
 
 import java.io.File;
@@ -60,7 +60,7 @@ class XPluginJettyJsp extends XPluginJetty {
         handler.setClassLoader(jspClassLoader);
 
         // Manually call JettyJasperInitializer on context startup
-        handler.addBean(new JspStarter(handler));
+        handler.addBean(new JtJspStarter(handler));
 
         // Create / Register JSP Servlet (must be named "jsp" per spec)
         ServletHolder holderJsp = new ServletHolder("jsp", JettyJspServlet.class);

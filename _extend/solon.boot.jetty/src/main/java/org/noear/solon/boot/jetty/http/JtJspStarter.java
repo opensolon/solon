@@ -5,12 +5,12 @@ import org.eclipse.jetty.apache.jsp.JettyJasperInitializer;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.component.AbstractLifeCycle;
 
-public class JspStarter extends AbstractLifeCycle
+public class JtJspStarter extends AbstractLifeCycle
         implements ServletContextHandler.ServletContainerInitializerCaller {
     JettyJasperInitializer sci;
     ServletContextHandler context;
 
-    public JspStarter(ServletContextHandler context) {
+    public JtJspStarter(ServletContextHandler context) {
 
         this.sci = new JettyJasperInitializer();
         this.context = context;
