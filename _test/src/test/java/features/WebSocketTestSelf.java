@@ -24,7 +24,7 @@ public class WebSocketTestSelf {
 
         while (!client.isOpen()) {
             if (System.currentTimeMillis() - time_start > 1000 * 5) {
-                throw new RuntimeException("没有服务或服务链接超时");
+                throw new RuntimeException("没有自带WebSocket服务或链接超时");
             }
 
             Thread.sleep(100);
