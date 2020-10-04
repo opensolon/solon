@@ -198,28 +198,28 @@
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.jetty.jsp</artifactId>
                 <version>${solon.ver}</version>
-                <type>pom</type>
+                <type>jar</type>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.jetty.websocket</artifactId>
                 <version>${solon.ver}</version>
-                <type>pom</type>
+                <type>jar</type>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.undertow.jsp</artifactId>
                 <version>${solon.ver}</version>
-                <type>pom</type>
+                <type>jar</type>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.undertow.websocket</artifactId>
                 <version>${solon.ver}</version>
-                <type>pom</type>
+                <type>jar</type>
             </dependency>
 
 

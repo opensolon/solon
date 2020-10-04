@@ -29,7 +29,7 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.extend.jetty.jsp</artifactId>
-            <type>pom</type>
+            <type>jar</type>
         </dependency>
 
         <!-- jsp 视图渲染器

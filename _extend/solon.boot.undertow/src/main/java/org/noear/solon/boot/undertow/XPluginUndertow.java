@@ -37,12 +37,11 @@ public class XPluginUndertow implements XPlugin {
     }
 
     protected void setup(XApp app) throws Throwable {
-        Class<?> wsClz = XUtil.loadClass("org.noear.solon.extend.undertow.websocket.WsOn");
+        Class<?> wsClz = XUtil.loadClass("org.noear.solon.extend.undertow.websocket.Empty");
 
         // 动作分发Handler
         DeploymentManager manager = doGenerateManager();
         HttpHandler httpHandler = manager.start();
-
 
 
         //************************** init server start******************
@@ -52,9 +51,9 @@ public class XPluginUndertow implements XPlugin {
 
         builder.addHttpListener(app.port(), "0.0.0.0");
 
-        if(app.enableWebSocket() && wsClz!=null){
+        if (app.enableWebSocket() && wsClz != null) {
             builder.setHandler(websocket(new UtWsConnectionCallback(), httpHandler));
-        }else{
+        } else {
             //没有ws包 或 没有开启
             builder.setHandler(httpHandler);
         }

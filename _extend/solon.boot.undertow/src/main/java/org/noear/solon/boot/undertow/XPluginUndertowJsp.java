@@ -51,20 +51,22 @@ public class XPluginUndertowJsp implements XPlugin {
 
 
     protected void setup(XApp app) throws Throwable {
+        Class<?> wsClz = XUtil.loadClass("org.noear.solon.extend.undertow.websocket.Empty");
+
         // 动作分发Handler
         DeploymentManager manager = doGenerateManager();
         HttpHandler httpHandler = manager.start();
 
         //************************** init server start******************
-        Undertow.Builder builder =  Undertow.builder();
+        Undertow.Builder builder = Undertow.builder();
 
         builder.setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE, false);
 
         builder.addHttpListener(app.port(), "0.0.0.0");
 
-        if(app.enableWebSocket()){
+        if (app.enableWebSocket() && wsClz != null) {
             builder.setHandler(websocket(new UtWsConnectionCallback(), httpHandler));
-        }else{
+        } else {
             builder.setHandler(httpHandler);
         }
 

@@ -288,7 +288,6 @@ solon 的jsp支持，是基于视图模板的定位去处理的。根据启动�
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>solon.extend.jetty.jsp</artifactId>
-    <type>pom</type>
 </dependency>
 
 <!-- 添加 jsp 视图引擎 -->

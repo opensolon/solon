@@ -131,7 +131,7 @@
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
 <!--            <artifactId>solon.extend.undertow.jsp</artifactId>-->
-<!--            <type>pom</type>-->
+<!--            <type>jar</type>-->
 <!--        </dependency>-->
 
 
@@ -143,13 +143,13 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.extend.jetty.websocket</artifactId>
-            <type>pom</type>
+            <type>jar</type>
         </dependency>
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
 <!--            <artifactId>solon.extend.jetty.jsp</artifactId>-->
-<!--            <type>pom</type>-->
+<!--            <type>jar</type>-->
 <!--        </dependency>-->
 
 
