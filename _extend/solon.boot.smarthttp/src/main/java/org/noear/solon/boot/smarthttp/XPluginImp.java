@@ -36,6 +36,8 @@ public final class XPluginImp implements XPlugin {
                     .setPort(app.port())
                     .start();
 
+            app.before("**", new XFormContentFilter());
+
             long time_end = System.currentTimeMillis();
 
             System.out.println("solon.Connector:main: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
