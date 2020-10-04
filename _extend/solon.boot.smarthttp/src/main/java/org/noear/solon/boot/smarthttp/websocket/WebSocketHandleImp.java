@@ -23,7 +23,10 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
 
     @Override
     public void onClose(WebSocketRequest request, WebSocketResponse response) {
-        listener.onClose(_SocketSession.get(request, response));
+        _SocketSession session = _SocketSession.get(request, response);
+        session.onClose();
+
+        listener.onClose(session);
 
         _SocketSession.remove(request);
     }

@@ -14,10 +14,10 @@ import java.nio.ByteBuffer;
 import java.util.*;
 
 public class _SocketSession implements XSession {
-    public static Map<WebSocketRequest, XSession> sessions = new HashMap<>();
+    public static Map<WebSocketRequest, _SocketSession> sessions = new HashMap<>();
 
-    public static XSession get(WebSocketRequest req, WebSocketResponse res) {
-        XSession tmp = sessions.get(req);
+    public static _SocketSession get(WebSocketRequest req, WebSocketResponse res) {
+        _SocketSession tmp = sessions.get(req);
         if (tmp == null) {
             synchronized (req) {
                 tmp = sessions.get(req);
@@ -90,9 +90,13 @@ public class _SocketSession implements XSession {
         sessions.remove(request);
     }
 
+    protected void onClose(){
+        isOpen = false;
+    }
+
     @Override
     public boolean isValid() {
-        return isOpen && request.getWebsocketStatus() == WebsocketStatus.DataFrame;
+        return isOpen;
     }
 
     @Override
