@@ -18,16 +18,12 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
 
     @Override
     public void onHandShark(WebSocketRequest request, WebSocketResponse response) {
-        if (listener != null) {
-            listener.onOpen(_SocketSession.get(request, response));
-        }
+        listener.onOpen(_SocketSession.get(request, response));
     }
 
     @Override
     public void onClose(WebSocketRequest request, WebSocketResponse response) {
-        if (listener != null) {
-            listener.onClose(_SocketSession.get(request, response));
-        }
+        listener.onClose(_SocketSession.get(request, response));
 
         _SocketSession.remove(request);
     }
@@ -39,9 +35,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
             XMessage message = XMessage.wrap(request.getRequestURI(),
                     data.getBytes("UTF-8"));
 
-            if (listener != null) {
-                listener.onMessage(session, message);
-            }
+            listener.onMessage(session, message);
 
             if (message.getHandled() == false) {
                 handler.handle(session, message, true);
@@ -57,9 +51,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
             XSession session = _SocketSession.get(request, response);
             XMessage message = XMessage.wrap(request.getRequestURI(), data);
 
-            if (listener != null) {
-                listener.onMessage(session, message);
-            }
+            listener.onMessage(session, message);
 
             if (message.getHandled() == false) {
                 handler.handle(session, message, false);

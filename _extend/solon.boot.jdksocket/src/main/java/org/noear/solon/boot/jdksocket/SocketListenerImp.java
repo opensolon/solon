@@ -24,9 +24,7 @@ public class SocketListenerImp {
         try {
             XSession session = _SocketSession.get(socket);
 
-            if (listener != null) {
-                listener.onMessage(session, message);
-            }
+            listener.onMessage(session, message);
 
             if (message.getHandled() == false) {
                 handler.handle(session, message, false);

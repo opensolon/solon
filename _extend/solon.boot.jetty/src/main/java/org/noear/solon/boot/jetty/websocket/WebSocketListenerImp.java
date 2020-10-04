@@ -16,10 +16,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
     @Override
     public void onWebSocketConnect(Session sess) {
         super.onWebSocketConnect(sess);
-
-        if (listener != null) {
-            listener.onOpen(_SocketSession.get(getSession()));
-        }
+        listener.onOpen(_SocketSession.get(getSession()));
     }
 
     @Override
@@ -30,14 +27,11 @@ public class WebSocketListenerImp extends WebSocketAdapter {
             XMessage message = XMessage.wrap(getSession().getUpgradeRequest().getOrigin(),
                     buf.array());
 
-            if (listener != null) {
-                listener.onMessage(session, message);
-            }
+            listener.onMessage(session, message);
 
             if (message.getHandled() == false) {
                 handler.handle(session, message, false);
             }
-
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }
@@ -50,9 +44,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
             XMessage message = XMessage.wrap(getSession().getUpgradeRequest().getRequestURI().toString(),
                     text.getBytes("UTF-8"));
 
-            if (listener != null) {
-                listener.onMessage(session, message);
-            }
+            listener.onMessage(session, message);
 
             if (message.getHandled() == false) {
                 handler.handle(session, message, true);
@@ -65,9 +57,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
 
     @Override
     public void onWebSocketClose(int statusCode, String reason) {
-        if (listener != null) {
-            listener.onClose(_SocketSession.get(getSession()));
-        }
+        listener.onClose(_SocketSession.get(getSession()));
 
         _SocketSession.remove(getSession());
         super.onWebSocketClose(statusCode, reason);
@@ -75,8 +65,6 @@ public class WebSocketListenerImp extends WebSocketAdapter {
 
     @Override
     public void onWebSocketError(Throwable cause) {
-        if (listener != null) {
-            listener.onError(_SocketSession.get(getSession()), cause);
-        }
+        listener.onError(_SocketSession.get(getSession()), cause);
     }
 }
