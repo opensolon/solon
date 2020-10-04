@@ -1,4 +1,4 @@
-package org.noear.solon.boot.smarthttp;
+package org.noear.solon.boot.smarthttp.http;
 
 
 import org.noear.solon.XUtil;

@@ -2,6 +2,7 @@ package org.noear.solon.boot.smarthttp;
 
 import org.noear.solon.XApp;
 import org.noear.solon.boot.smarthttp.http.SmartHttpContextHandler;
+import org.noear.solon.boot.smarthttp.http.XFormContentFilter;
 import org.noear.solon.boot.smarthttp.websocket.WebSocketHandleImp;
 import org.noear.solon.core.XPlugin;
 import org.smartboot.http.HttpBootstrap;
