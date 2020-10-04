@@ -16,7 +16,7 @@ public class WebSocketSelfTest {
         //
         // 测试 jetty or undertow 自带的 websocket
         //
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         WsDemoClient client = new WsDemoClient(URI.create("ws://127.0.0.1:8080/demoe/websocket"));
         client.connect();
 
@@ -26,7 +26,7 @@ public class WebSocketSelfTest {
         }
         System.out.println("建立websocket连接");
         client.send("dddc");
-        System.in.read();
-//        Thread.sleep(1000);
+
+        Thread.sleep(100);
     }
 }

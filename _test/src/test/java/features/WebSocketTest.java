@@ -16,7 +16,7 @@ public class WebSocketTest {
         //
         //测试websocket框架
         //
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         WsDemoClient client = new WsDemoClient(URI.create("ws://127.0.0.1:18080/demoe/websocket"));
         client.connect();
 
