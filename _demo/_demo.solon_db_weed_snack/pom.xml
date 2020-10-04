@@ -29,7 +29,7 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>weed3</artifactId>
-            <version>3.2.8.5</version>
+            <version>${weed3.ver}</version>
         </dependency>
 
         <dependency>
