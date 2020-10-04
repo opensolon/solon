@@ -27,11 +27,11 @@ class XPluginJetty implements XPlugin {
             //session 支持
             _server.setSessionIdManager(new DefaultSessionIdManager(_server));
 
-            if(wsClz == null){
-                //没有websocket包
-                _server.setHandler(getServerHandler());
-            }else{
+            if(app.enableWebSocket() && wsClz != null){
                 _server.setHandler(new HandlerHub(getServerHandler()));
+            }else{
+                //没有ws包 或 没有开启
+                _server.setHandler(getServerHandler());
             }
 
 

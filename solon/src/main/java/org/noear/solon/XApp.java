@@ -493,7 +493,7 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 启用WebSocket信号接入
      * */
-    private boolean _enableWebSocket = false;
+    private boolean _enableWebSocket = true;
     public boolean enableWebSocket(){
         return _enableWebSocket;
     }
@@ -504,7 +504,7 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 启用Socket信号接入
      * */
-    private boolean _enableSocket = false;
+    private boolean _enableSocket = true;
     public boolean enableSocket(){
         return _enableSocket;
     }

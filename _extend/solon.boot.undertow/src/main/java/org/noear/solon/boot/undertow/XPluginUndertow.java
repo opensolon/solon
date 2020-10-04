@@ -2,7 +2,6 @@ package org.noear.solon.boot.undertow;
 
 import io.undertow.Undertow;
 import io.undertow.UndertowOptions;
-import io.undertow.server.HandlerWrapper;
 import io.undertow.server.HttpHandler;
 import io.undertow.servlet.Servlets;
 import io.undertow.servlet.api.DeploymentInfo;
@@ -10,6 +9,7 @@ import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.servlet.api.ServletContainer;
 import io.undertow.servlet.util.DefaultClassIntrospector;
 import org.noear.solon.XApp;
+import org.noear.solon.XUtil;
 import org.noear.solon.boot.undertow.http.UtHttpHandler;
 import org.noear.solon.boot.undertow.websocket.UtWsConnectionCallback;
 import org.noear.solon.core.XPlugin;
@@ -37,9 +37,12 @@ public class XPluginUndertow implements XPlugin {
     }
 
     protected void setup(XApp app) throws Throwable {
+        Class<?> wsClz = XUtil.loadClass("org.noear.solon.extend.undertow.websocket.WsOn");
+
         // 动作分发Handler
         DeploymentManager manager = doGenerateManager();
         HttpHandler httpHandler = manager.start();
+
 
 
         //************************** init server start******************
@@ -49,9 +52,10 @@ public class XPluginUndertow implements XPlugin {
 
         builder.addHttpListener(app.port(), "0.0.0.0");
 
-        if(app.enableWebSocket()){
+        if(app.enableWebSocket() && wsClz!=null){
             builder.setHandler(websocket(new UtWsConnectionCallback(), httpHandler));
         }else{
+            //没有ws包 或 没有开启
             builder.setHandler(httpHandler);
         }
 
