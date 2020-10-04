@@ -10,13 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class HandlerHolder extends HandlerCollection {
+public class HandlerHub extends HandlerCollection {
     Handler http;
     Handler websocket = new WebSocketHandlerImp();
 
     final String SEC_WEBSOCKET_KEY = "Sec-WebSocket-Key";
 
-    public HandlerHolder(Handler http) {
+    public HandlerHub(Handler http) {
         this.http = http;
         addHandler(http);
         addHandler(websocket);

@@ -18,14 +18,6 @@ public class WebSocketHandlerImp extends WebSocketHandler {
 
         //注册览听器
         factory.register(WebSocketListenerImp.class);
-//        final WebSocketCreator creator = factory.getCreator();
-//        factory.setCreator(new WebSocketCreator() {
-//            @Override
-//            public Object createWebSocket(ServletUpgradeRequest servletUpgradeRequest, ServletUpgradeResponse servletUpgradeResponse) {
-//                Object webSocket = creator.createWebSocket(servletUpgradeRequest,servletUpgradeResponse);
-//                return webSocket;
-//            }
-//        });
     }
 
     @Override
