@@ -2,6 +2,7 @@ package org.noear.solon.boot.jetty;
 
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.boot.jetty.http.JtFormContentFilter;
 import org.noear.solon.core.XPlugin;
 
 public final class XPluginImp implements XPlugin {
@@ -14,7 +15,7 @@ public final class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
-        if(app.enableHttp() == false){
+        if (app.enableHttp() == false) {
             return;
         }
 
@@ -32,6 +33,8 @@ public final class XPluginImp implements XPlugin {
         }
 
         _server.start(app);
+
+        app.before("**", new JtFormContentFilter());
 
         long time_end = System.currentTimeMillis();
 
