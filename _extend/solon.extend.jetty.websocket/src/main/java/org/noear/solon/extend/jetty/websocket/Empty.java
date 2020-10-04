@@ -1,4 +1,7 @@
 package org.noear.solon.extend.jetty.websocket;
 
-class Empty {
+/**
+ * 空类
+ * */
+public class Empty {
 }
