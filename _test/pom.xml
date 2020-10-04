@@ -140,6 +140,12 @@
             <artifactId>solon.boot.jetty</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.jetty.websocket</artifactId>
+            <type>pom</type>
+        </dependency>
+
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
 <!--            <artifactId>solon.extend.jetty.jsp</artifactId>-->
