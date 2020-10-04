@@ -22,22 +22,24 @@ public class SocketProcessor {
 
 
     public void onMessage(XSession session, XMessage message) {
-        try {
-            if (listener != null) {
-                listener.onMessage(session, message);
-            }
+        if (listener != null) {
+            listener.onMessage(session, message);
+        }
 
-            if (message.getHandled() == false) {
-                handler.handle(session, message, false);
-            }
-        } catch (Throwable ex) {
-            XEventBus.push(ex);
+        if (message.getHandled() == false) {
+            handler.handle(session, message, false);
         }
     }
 
     public void onClosed(XSession session) {
         if (listener != null) {
             listener.onClose(session);
+        }
+    }
+
+    public void onError(XSession session, Throwable error) {
+        if (listener != null) {
+            listener.onError(session, error);
         }
     }
 }

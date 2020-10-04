@@ -51,7 +51,11 @@ public class SocketServer {
                     XMessage message = _SocketSession.receive(connector, protocol);
                     if (message != null) {
                         pool.execute(() -> {
-                            processor.onMessage(session, message);
+                            try {
+                                processor.onMessage(session, message);
+                            } catch (Throwable ex) {
+                                processor.onError(session, ex);
+                            }
                         });
                     }
 
