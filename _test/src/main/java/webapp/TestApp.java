@@ -7,7 +7,7 @@ import org.noear.solon.core.XMethod;
 @EnableFairyClients
 public class TestApp {
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         /**
          *
          * http://t5_undertow.test.noear.org
@@ -21,7 +21,7 @@ public class TestApp {
          * http://t1_jetty.test.noear.org
          *
          * */
-        XApp app = XApp.start(TestApp.class, args);
+        XApp app = XApp.start(TestApp.class, args, x -> x.enableSocket(true).enableWebSocket(true));
 
 //        app.ws("/demoe/websocket",(session,message)->{
 //            System.out.println(session.resourceDescriptor());
@@ -43,27 +43,27 @@ public class TestApp {
 //        });
 
         //socket server
-        app.socket("/seb/test",(c)->{
+        app.socket("/seb/test", (c) -> {
             String msg = c.body();
             c.output("收到了...:" + msg);
         });
 
         //web socket wss 监听
-        app.ws("/seb/test",(c)->{
+        app.ws("/seb/test", (c) -> {
             String msg = c.body();
             c.output("收到了...:" + msg);
         });
     }
 
-    void test1(){
+    void test1() {
         //控制渲染的示例 //即拦截执行结果的机制
         //
-        XApp app = XApp.start(TestApp.class,null);
+        XApp app = XApp.start(TestApp.class, null);
 
         //开始之前把上下文置为已泻染
-        app.before("/user/**", XMethod.HTTP,c-> c.setRendered(true));
+        app.before("/user/**", XMethod.HTTP, c -> c.setRendered(true));
 
-        app.after("/user/**", XMethod.HTTP,c-> {
+        app.after("/user/**", XMethod.HTTP, c -> {
             //可对 c.result 进行处理 //并输出
         });
 
