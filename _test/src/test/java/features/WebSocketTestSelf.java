@@ -17,10 +17,16 @@ public class WebSocketTestSelf {
         // 测试 jetty or undertow 自带的 websocket
         //
         Thread.sleep(100);
+        long time_start = System.currentTimeMillis();
+
         WsDemoClient client = new WsDemoClient(URI.create("ws://127.0.0.1:8080/demoe/websocket"));
         client.connect();
 
         while (!client.isOpen()) {
+            if (System.currentTimeMillis() - time_start > 1000 * 5) {
+                throw new RuntimeException("没有服务或服务链接超时");
+            }
+
             Thread.sleep(100);
             //System.out.println("还没有打开:" + client.getReadyState());
         }
