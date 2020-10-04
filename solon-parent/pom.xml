@@ -198,6 +198,14 @@
                 <version>${solon.ver}</version>
                 <type>pom</type>
             </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.extend.jetty.websocket</artifactId>
+                <version>${solon.ver}</version>
+                <type>pom</type>
+            </dependency>
+
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.undertow.jsp</artifactId>
@@ -568,6 +576,7 @@
 
 
         <module>../_extend/solon.extend.jetty.jsp</module>
+        <module>../_extend/solon.extend.jetty.websocket</module>
         <module>../_extend/solon.extend.undertow.jsp</module>
 
 

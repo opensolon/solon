@@ -2,7 +2,6 @@ package org.noear.solon.boot.jetty;
 
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.noear.solon.boot.jetty.websocket.WebSocketHandlerImp;
 

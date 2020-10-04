@@ -6,6 +6,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.eclipse.jetty.server.session.SessionHandler;
 import org.noear.solon.XApp;
+import org.noear.solon.XUtil;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
 import org.noear.solon.boot.jetty.websocket.WebSocketHandlerImp;
 import org.noear.solon.core.XPlugin;
@@ -18,14 +19,21 @@ class XPluginJetty implements XPlugin {
     @Override
     public void start(XApp app) {
         try {
+
+            Class<?> wsClz = XUtil.loadClass("org.eclipse.jetty.websocket.server.WebSocketHandler");
+
             _server = new Server(app.port());
 
             //session 支持
             _server.setSessionIdManager(new DefaultSessionIdManager(_server));
 
-//            _server.setHandler(new WebSocketHandlerImp());
-            //_server.setHandler(getServerHandler());
-            _server.setHandler(new HandlerHolder(getServerHandler()));
+            if(wsClz == null){
+                //没有websocket包
+                _server.setHandler(getServerHandler());
+            }else{
+                _server.setHandler(new HandlerHolder(getServerHandler()));
+            }
+
 
             _server.setAttribute("org.eclipse.jetty.server.Request.maxFormContentSize",
                     XServerProp.request_maxRequestSize);
