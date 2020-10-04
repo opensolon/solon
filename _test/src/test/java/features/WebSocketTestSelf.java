@@ -10,7 +10,7 @@ import java.net.URI;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
-public class WebSocketSelfTest {
+public class WebSocketTestSelf {
     @Test
     public void test1() throws Throwable {
         //
