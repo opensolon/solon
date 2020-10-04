@@ -8,7 +8,7 @@ import org.eclipse.jetty.util.resource.ResourceCollection;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.boot.jetty.http.JspStarter;
-import org.noear.solon.boot.jetty.http.JtHttpContextHandlerJsp;
+import org.noear.solon.boot.jetty.http.JtHttpContextServlet;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,7 +28,8 @@ class XPluginJettyJsp extends XPluginJetty {
         ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
         handler.setContextPath("/");
         handler.setBaseResource(new ResourceCollection(getResourceURLs()));
-        handler.addServlet(JtHttpContextHandlerJsp.class, "/");
+        handler.addServlet(JtHttpContextServlet.class, "/");
+
 
         if (XServerProp.session_timeout > 0) {
             handler.getSessionHandler().setMaxInactiveInterval(XServerProp.session_timeout);

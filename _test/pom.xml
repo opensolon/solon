@@ -146,11 +146,11 @@
             <type>pom</type>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.extend.jetty.jsp</artifactId>-->
-<!--            <type>pom</type>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.jetty.jsp</artifactId>
+            <type>pom</type>
+        </dependency>
 
 
         <dependency>
@@ -279,7 +279,7 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
+            <version>${servlet.ver}</version>
         </dependency>
 
         <dependency>

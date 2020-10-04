@@ -27,6 +27,8 @@
         <jedis.ver>3.2.0</jedis.ver>
         <okhttp.ver>3.11.0</okhttp.ver>
 
+        <servlet.ver>4.0.1</servlet.ver>
+
         <beetl.ver>3.0.15.RELEASE</beetl.ver>
         <enjoy.ver>4.8</enjoy.ver>
 
