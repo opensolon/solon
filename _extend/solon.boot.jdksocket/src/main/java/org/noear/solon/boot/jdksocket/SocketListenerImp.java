@@ -16,9 +16,7 @@ public class SocketListenerImp {
     }
 
     public void onOpen(Socket socket) {
-        if (listener != null) {
-            listener.onOpen(_SocketSession.get(socket));
-        }
+        listener.onOpen(_SocketSession.get(socket));
     }
 
 
@@ -39,16 +37,12 @@ public class SocketListenerImp {
     }
 
     public void onClosed(Socket socket) {
-        if (listener != null) {
-            listener.onClose(_SocketSession.get(socket));
-        }
+        listener.onClose(_SocketSession.get(socket));
 
         _SocketSession.remove(socket);
     }
 
     public void onError(Socket socket, Throwable error) {
-        if (listener != null) {
-            listener.onError(_SocketSession.get(socket), error);
-        }
+        listener.onError(_SocketSession.get(socket), error);
     }
 }
