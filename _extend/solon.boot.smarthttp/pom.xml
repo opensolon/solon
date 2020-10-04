@@ -21,6 +21,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.xsocket</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.smartboot.http</groupId>
             <artifactId>smart-http-server</artifactId>
             <version>1.0.17</version>

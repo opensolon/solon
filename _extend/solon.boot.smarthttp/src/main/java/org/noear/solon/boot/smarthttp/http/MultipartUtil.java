@@ -1,7 +1,7 @@
-package org.noear.solon.boot.smarthttp;
+package org.noear.solon.boot.smarthttp.http;
 
 
-import org.noear.solon.boot.smarthttp.uploadfile.MultipartIterator;
+import org.noear.solon.boot.smarthttp.http.uploadfile.MultipartIterator;
 import org.noear.solon.core.XFile;
 import org.smartboot.http.HttpRequest;
 

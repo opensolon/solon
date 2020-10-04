@@ -1,4 +1,4 @@
-package org.noear.solon.boot.smarthttp.uploadfile;
+package org.noear.solon.boot.smarthttp.http.uploadfile;
 
 import java.io.FilterInputStream;
 import java.io.IOException;

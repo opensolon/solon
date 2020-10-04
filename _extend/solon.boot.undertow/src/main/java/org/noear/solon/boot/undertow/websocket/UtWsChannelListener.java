@@ -52,10 +52,9 @@ public class UtWsChannelListener extends AbstractReceiveListener {
     @Override
     protected void onFullTextMessage(WebSocketChannel channel, BufferedTextMessage msg) throws IOException {
         try {
+            XSession session = _SocketSession.get(channel);
             XMessage message = XMessage.wrap(channel.getUrl(),
                     msg.getData().getBytes("UTF-8"));
-
-            XSession session = _SocketSession.get(channel);
 
             if (listener != null) {
                 listener.onMessage(session, message);
@@ -80,7 +79,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
     @Override
     protected void onError(WebSocketChannel channel, Throwable error) {
         if (listener != null) {
-            listener.onClose(_SocketSession.get(channel));
+            listener.onError(_SocketSession.get(channel), error);
         }
     }
 }

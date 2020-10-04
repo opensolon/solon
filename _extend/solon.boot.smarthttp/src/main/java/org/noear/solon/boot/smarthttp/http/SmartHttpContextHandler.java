@@ -1,6 +1,8 @@
-package org.noear.solon.boot.smarthttp;
+package org.noear.solon.boot.smarthttp.http;
 
 import org.noear.solon.XApp;
+import org.noear.solon.boot.smarthttp.XPluginImp;
+import org.noear.solon.boot.smarthttp.XServerProp;
 import org.noear.solon.core.XEventBus;
 import org.smartboot.http.HttpRequest;
 import org.smartboot.http.HttpResponse;
