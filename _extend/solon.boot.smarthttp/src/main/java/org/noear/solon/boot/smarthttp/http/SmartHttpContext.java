@@ -18,7 +18,7 @@ import java.util.*;
 public class SmartHttpContext extends XContext {
     private HttpRequest _request;
     private HttpResponse _response;
-    protected Map<String,List<XFile>> _fileMap;
+    protected Map<String, List<XFile>> _fileMap;
 
     public SmartHttpContext(HttpRequest request, HttpResponse response) {
         _request = request;
@@ -29,7 +29,7 @@ public class SmartHttpContext extends XContext {
             try {
                 _fileMap = new HashMap<>();
                 MultipartUtil.buildParamsAndFiles(this);
-            }catch (Throwable ex){
+            } catch (Throwable ex) {
                 throw new RuntimeException(ex);
             }
         }
@@ -41,9 +41,10 @@ public class SmartHttpContext extends XContext {
     }
 
     private String _ip;
+
     @Override
     public String ip() {
-        if(_ip == null) {
+        if (_ip == null) {
             _ip = header("X-Forwarded-For");
 
             if (_ip == null) {
@@ -65,10 +66,11 @@ public class SmartHttpContext extends XContext {
     }
 
     private URI _uri;
+
     @Override
     public URI uri() {
-        if(_uri == null){
-            _uri =URI.create(url());
+        if (_uri == null) {
+            _uri = URI.create(url());
         }
         return _uri;
     }
@@ -79,6 +81,7 @@ public class SmartHttpContext extends XContext {
     }
 
     private String _url;
+
     @Override
     public String url() {
         if (_url == null) {
@@ -92,7 +95,7 @@ public class SmartHttpContext extends XContext {
     public long contentLength() {
         try {
             return _request.getContentLength();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             return 0;
         }
@@ -125,12 +128,12 @@ public class SmartHttpContext extends XContext {
         try {
             String temp = paramMap().get(key);
 
-            if(XUtil.isEmpty(temp)){
+            if (XUtil.isEmpty(temp)) {
                 return def;
-            }else{
+            } else {
                 return temp;
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
 
             return def;
@@ -138,14 +141,15 @@ public class SmartHttpContext extends XContext {
     }
 
     private XMap _paramMap;
+
     @Override
     public XMap paramMap() {
         if (_paramMap == null) {
             _paramMap = new XMap();
 
             try {
-                for(Map.Entry<String,String[]> entry:_request.getParameters().entrySet()){
-                    _paramMap.put(entry.getKey(),entry.getValue()[0]);
+                for (Map.Entry<String, String[]> entry : _request.getParameters().entrySet()) {
+                    _paramMap.put(entry.getKey(), entry.getValue()[0]);
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -156,6 +160,7 @@ public class SmartHttpContext extends XContext {
     }
 
     private Map<String, List<String>> _paramsMap;
+
     @Override
     public Map<String, List<String>> paramsMap() {
         if (_paramsMap == null) {
@@ -170,17 +175,16 @@ public class SmartHttpContext extends XContext {
     }
 
 
-
     @Override
     public List<XFile> files(String key) throws Exception {
-        if (isMultipartFormData()){
+        if (isMultipartFormData()) {
             List<XFile> temp = _fileMap.get(key);
-            if(temp == null){
+            if (temp == null) {
                 return new ArrayList<>();
-            }else{
+            } else {
                 return temp;
             }
-        }  else {
+        } else {
             return new ArrayList<>();
         }
     }
@@ -206,21 +210,23 @@ public class SmartHttpContext extends XContext {
 
         return _cookieMap;
     }
+
     private XMap _cookieMap;
 
 
     @Override
     public XMap headerMap() {
-        if(_headerMap == null) {
+        if (_headerMap == null) {
             _headerMap = new XMap();
 
-            for(String k : _request.getHeaderNames()){
-                _headerMap.put(k,_request.getHeader(k));
+            for (String k : _request.getHeaderNames()) {
+                _headerMap.put(k, _request.getHeader(k));
             }
         }
 
         return _headerMap;
     }
+
     private XMap _headerMap;
 
     //=================================
@@ -244,7 +250,7 @@ public class SmartHttpContext extends XContext {
 
 
     @Override
-    public OutputStream outputStream() throws IOException{
+    public OutputStream outputStream() throws IOException {
         return _outputStream;
     }
 
@@ -254,7 +260,7 @@ public class SmartHttpContext extends XContext {
             OutputStream out = _outputStream;
 
             out.write(bytes);
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -269,7 +275,7 @@ public class SmartHttpContext extends XContext {
             while ((rc = stream.read(buff, 0, 100)) > 0) {
                 out.write(buff, 0, rc);
             }
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -285,7 +291,7 @@ public class SmartHttpContext extends XContext {
 
     @Override
     public void headerAdd(String key, String val) {
-        _response.addHeader(key,val);
+        _response.addHeader(key, val);
     }
 
     @Override
@@ -310,8 +316,8 @@ public class SmartHttpContext extends XContext {
     }
 
     @Override
-    public void redirect(String url)  {
-        redirect(url,302);
+    public void redirect(String url) {
+        redirect(url, 302);
     }
 
     @Override
@@ -319,7 +325,7 @@ public class SmartHttpContext extends XContext {
         try {
             headerSet("Location", url);
             statusSet(code);
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -328,6 +334,7 @@ public class SmartHttpContext extends XContext {
     public int status() {
         return _status;
     }
+
     private int _status = 200;
 
     @Override
@@ -342,12 +349,16 @@ public class SmartHttpContext extends XContext {
     }
 
     @Override
-    protected void commit() throws IOException{
-        OutputStream out = _response.getOutputStream();
+    protected void commit() throws IOException {
         _response.setHttpStatus(HttpStatus.valueOf(status()));
-        _response.setContentLength(_outputStream.size());
-        _outputStream.writeTo(out);
-        out.close();
-    }
 
+        if ("HEAD".equals(method())) {
+            _response.setContentLength(0);
+        }else{
+            OutputStream out = _response.getOutputStream();
+            _response.setContentLength(_outputStream.size());
+            _outputStream.writeTo(out);
+            out.close();
+        }
+    }
 }
