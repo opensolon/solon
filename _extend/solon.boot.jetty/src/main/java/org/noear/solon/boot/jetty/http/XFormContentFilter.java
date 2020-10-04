@@ -18,7 +18,7 @@ public class XFormContentFilter implements XHandler {
     public void handle(XContext ctx) throws Throwable {
         String method = ctx.method();
 
-        if ("DELETE".equals(method) || "PATCH".equals(method)) {
+        if ("DELETE".equals(method) || "PATCH".equals(method) || "PUT".equals(method)) {
             parseBodyTry(ctx);
         }
     }
