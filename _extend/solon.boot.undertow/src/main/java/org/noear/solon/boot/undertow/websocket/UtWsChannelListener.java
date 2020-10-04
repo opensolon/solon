@@ -72,8 +72,9 @@ public class UtWsChannelListener extends AbstractReceiveListener {
     protected void onClose(WebSocketChannel channel, StreamSourceFrameChannel frameChannel) throws IOException {
         if (listener != null) {
             listener.onClose(_SocketSession.get(channel));
-            _SocketSession.remove(channel);
         }
+
+        _SocketSession.remove(channel);
     }
 
     @Override
