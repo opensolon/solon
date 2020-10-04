@@ -4,7 +4,7 @@ import org.noear.solon.XApp;
 
 public class HttpTestBase {
     public boolean enablePrint(){
-        return false;
+        return true;
     }
 
     public HttpUtils path(String path) {
