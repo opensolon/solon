@@ -27,8 +27,9 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
     public void onClose(WebSocketRequest request, WebSocketResponse response) {
         if (listener != null) {
             listener.onClose(_SocketSession.get(request, response));
-            _SocketSession.remove(request);
         }
+
+        _SocketSession.remove(request);
     }
 
     @Override
