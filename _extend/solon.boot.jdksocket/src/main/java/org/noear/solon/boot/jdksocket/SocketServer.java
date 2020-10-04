@@ -1,6 +1,11 @@
 package org.noear.solon.boot.jdksocket;
 
+import org.noear.solon.core.XListener;
 import org.noear.solon.core.XMessage;
+import org.noear.solon.core.XMethod;
+import org.noear.solon.core.XSession;
+import org.noear.solon.extend.xsocket.XListenerProxy;
+import org.noear.solon.extend.xsocket.XSocketContextHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -13,7 +18,8 @@ public class SocketServer {
     private SocketProtocol protocol;
     private ExecutorService pool = Executors.newCachedThreadPool();
 
-    private SocketListenerImp processor = new SocketListenerImp();
+    private XSocketContextHandler handler = new XSocketContextHandler(XMethod.SOCKET);
+    private XListener listener = XListenerProxy.getGlobal();
 
     public void setProtocol(SocketProtocol protocol) {
         this.protocol = protocol;
@@ -37,12 +43,13 @@ public class SocketServer {
         while (true) {
             Socket socket = server.accept();
 
-            processor.onOpen(socket);
+            XSession session = _SocketSession.get(socket);
+            listener.onOpen(session);
 
             pool.execute(() -> {
                 while (true) {
                     if (socket.isClosed()) {
-                        processor.onClosed(socket);
+                        listener.onClose(session);
                         break;
                     }
 
@@ -50,9 +57,13 @@ public class SocketServer {
                     if (message != null) {
                         pool.execute(() -> {
                             try {
-                                processor.onMessage(socket, message);
+                                listener.onMessage(session, message);
+
+                                if(message.getHandled() == false){
+                                    handler.handle(session,message,false);
+                                }
                             } catch (Throwable ex) {
-                                processor.onError(socket, ex);
+                                listener.onError(session, ex);
                             }
                         });
                     }
