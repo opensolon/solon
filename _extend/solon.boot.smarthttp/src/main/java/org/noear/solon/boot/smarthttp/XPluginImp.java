@@ -29,7 +29,10 @@ public final class XPluginImp implements XPlugin {
 
         _server = new HttpBootstrap();
         _server.pipeline().next(_handler);
-        _server.wsPipeline().next(new WebSocketHandleImp());
+
+        if(app.enableWebSocket()) {
+            _server.wsPipeline().next(new WebSocketHandleImp());
+        }
 
 
         System.out.println("solon.Server:main: SmartHttpServer 1.0.40");
