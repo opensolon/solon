@@ -33,13 +33,12 @@ public class JtFormContentFilter implements XHandler {
         if (ct.startsWith("application/x-www-form-urlencoded") == false) {
             return;
         }
-        String body = ctx.body();
 
-        if (XUtil.isEmpty(body)) {
+        if (XUtil.isEmpty(ctx.body())) {
             return;
         }
 
-        String[] ss = body.split("&");
+        String[] ss = ctx.body().split("&");
 
         for (String s1 : ss) {
             String[] ss2 = s1.split("=");
