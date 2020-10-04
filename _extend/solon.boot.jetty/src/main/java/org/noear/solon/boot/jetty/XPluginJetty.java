@@ -2,10 +2,12 @@ package org.noear.solon.boot.jetty;
 
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.eclipse.jetty.server.session.SessionHandler;
 import org.noear.solon.XApp;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
+import org.noear.solon.boot.jetty.websocket.WebSocketHandlerImp;
 import org.noear.solon.core.XPlugin;
 
 import java.io.IOException;
@@ -20,8 +22,10 @@ class XPluginJetty implements XPlugin {
 
             //session 支持
             _server.setSessionIdManager(new DefaultSessionIdManager(_server));
-            _server.setHandler(getServerHandler());
-//            _server.setHandler(new HandlerHolder(getServerHandler()));
+
+//            _server.setHandler(new WebSocketHandlerImp());
+            //_server.setHandler(getServerHandler());
+            _server.setHandler(new HandlerHolder(getServerHandler()));
 
             _server.setAttribute("org.eclipse.jetty.server.Request.maxFormContentSize",
                     XServerProp.request_maxRequestSize);

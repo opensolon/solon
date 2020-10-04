@@ -33,6 +33,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
             if (listener != null) {
                 listener.onMessage(session, message);
             }
+
             if (message.getHandled() == false) {
                 handler.handle(session, message, false);
             }
@@ -46,7 +47,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
     public void onWebSocketText(String text) {
         try {
             XSession session = _SocketSession.get(getSession());
-            XMessage message = XMessage.wrap(getSession().getUpgradeRequest().getOrigin(),
+            XMessage message = XMessage.wrap(getSession().getUpgradeRequest().getRequestURI().toString(),
                     text.getBytes("UTF-8"));
 
             if (listener != null) {

@@ -3,6 +3,7 @@ package org.noear.solon.boot.jetty;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.noear.solon.boot.jetty.websocket.WebSocketHandlerImp;
 
 import javax.servlet.ServletException;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class HandlerHolder extends AbstractHandler {
+public class HandlerHolder extends HandlerCollection {
     Handler http;
     Handler websocket = new WebSocketHandlerImp();
 
@@ -18,6 +19,8 @@ public class HandlerHolder extends AbstractHandler {
 
     public HandlerHolder(Handler http) {
         this.http = http;
+        addHandler(http);
+        addHandler(websocket);
     }
 
     @Override

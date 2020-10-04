@@ -52,7 +52,7 @@ public class _SocketSession implements XSession {
     @Override
     public String path() {
         if(_path == null) {
-            _path = real.getUpgradeRequest().getOrigin();
+            _path = real.getUpgradeRequest().getRequestURI().getPath();
         }
 
         return _path;
@@ -82,15 +82,17 @@ public class _SocketSession implements XSession {
         send(message.content());
     }
 
+    private boolean _open = true;
     @Override
     public void close() throws IOException {
+        _open = false; //jetty 的 close 不及时
         real.close();
         sessions.remove(real);
     }
 
     @Override
     public boolean isValid() {
-        return real.isOpen();
+        return _open && real.isOpen();
     }
 
     @Override
