@@ -23,7 +23,7 @@ public class WebSocketTestSelf {
         client.connect();
 
         while (!client.isOpen()) {
-            if (System.currentTimeMillis() - time_start > 1000 * 5) {
+            if (System.currentTimeMillis() - time_start > 1000 * 2) {
                 throw new RuntimeException("没有自带WebSocket服务或链接超时");
             }
 
