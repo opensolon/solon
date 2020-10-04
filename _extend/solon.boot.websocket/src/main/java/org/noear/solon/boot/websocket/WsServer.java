@@ -32,17 +32,14 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake shake) {
-        if (listener != null) {
-            listener.onOpen(_SocketSession.get(conn));
-        }
+        listener.onOpen(_SocketSession.get(conn));
     }
 
     @Override
     public void onClose(WebSocket conn, int i, String s, boolean b) {
-        if (listener != null) {
-            listener.onClose(_SocketSession.get(conn));
-            _SocketSession.remove(conn);
-        }
+        listener.onClose(_SocketSession.get(conn));
+
+        _SocketSession.remove(conn);
     }
 
     @Override
@@ -51,14 +48,11 @@ public class WsServer extends WebSocketServer {
             XSession session = _SocketSession.get(conn);
             XMessage message = XMessage.wrap(conn.getResourceDescriptor(), data.getBytes(_charset));
 
-            if (listener != null) {
-                listener.onMessage(session, message);
-            }
+            listener.onMessage(session, message);
 
             if (message.getHandled() == false) {
                 handler.handle(session, message, true);
             }
-
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }
@@ -70,9 +64,7 @@ public class WsServer extends WebSocketServer {
             XSession session = _SocketSession.get(conn);
             XMessage message = XMessage.wrap(conn.getResourceDescriptor(), data.array());
 
-            if (listener != null) {
-                listener.onMessage(session, message);
-            }
+            listener.onMessage(session, message);
 
             if (message.getHandled() == false) {
                 handler.handle(session, message, false);
@@ -84,10 +76,6 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onError(WebSocket conn, Exception ex) {
-        if (listener != null) {
-            listener.onError(_SocketSession.get(conn), ex);
-        } else {
-            XEventBus.push(ex);
-        }
+        listener.onError(_SocketSession.get(conn), ex);
     }
 }
