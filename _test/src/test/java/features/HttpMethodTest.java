@@ -27,7 +27,20 @@ public class HttpMethodTest extends _TestBase {
     }
 
     @Test
-    public void test23_put() throws IOException {
+    public void test23_get() throws IOException {
+        assert path("/demo2/method/post_get").get().equals("/demo2/method/post_get");
+    }
+
+    @Test
+    public void test23_post() throws IOException {
+        Map<String, String> map = new HashMap<>();
+        map.put("name", "中文");
+
+        assert path("/demo2/method/post_get").data(map).post().equals("/demo2/method/post_get");
+    }
+
+    @Test
+    public void test24_put() throws IOException {
         Map<String, String> map = new HashMap<>();
         map.put("name", "中文");
 
@@ -35,7 +48,12 @@ public class HttpMethodTest extends _TestBase {
     }
 
     @Test
-    public void test23_delete() throws IOException {
+    public void test24_put_2() throws IOException {
+        assert path("/demo2/method/put?name=中文").put().equals("中文");
+    }
+
+    @Test
+    public void test24_delete() throws IOException {
         //delete ，有些 server 只支持 queryString param
         Map<String, String> map = new HashMap<>();
         map.put("name", "中文");
@@ -44,7 +62,12 @@ public class HttpMethodTest extends _TestBase {
     }
 
     @Test
-    public void test23_patch() throws IOException {
+    public void test24_delete_2() throws IOException {
+        assert path("/demo2/method/delete?name=中文").delete().equals("中文");
+    }
+
+    @Test
+    public void test24_patch() throws IOException {
         Map<String, String> map = new HashMap<>();
         map.put("name", "中文");
 
@@ -52,15 +75,7 @@ public class HttpMethodTest extends _TestBase {
     }
 
     @Test
-    public void test24_get() throws IOException {
-        assert path("/demo2/method/post_get").get().equals("/demo2/method/post_get");
-    }
-
-    @Test
-    public void test24_post() throws IOException {
-        Map<String, String> map = new HashMap<>();
-        map.put("name", "中文");
-
-        assert path("/demo2/method/post_get").data(map).post().equals("/demo2/method/post_get");
+    public void test24_patch_2() throws IOException {
+        assert path("/demo2/method/patch?name=中文").patch().equals("中文");
     }
 }
