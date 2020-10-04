@@ -28,7 +28,7 @@ public class MethodController {
         return context.param("name");
     }
 
-    @XMapping(value = "post_get", method = {XMethod.POST, XMethod.GET})
+    @XMapping(value = "post_get", method = {XMethod.POST, XMethod.GET, XMethod.HEAD})
     public String test_post_get(XContext context) {
         return context.path();
     }
