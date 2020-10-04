@@ -12,7 +12,7 @@
     </parent>
 
     <artifactId>solon.extend.undertow.jsp</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <dependencies>
         <!--jsp try start-->

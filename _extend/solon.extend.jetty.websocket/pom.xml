@@ -12,7 +12,7 @@
     </parent>
 
     <artifactId>solon.extend.jetty.websocket</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
