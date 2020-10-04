@@ -18,11 +18,8 @@ public class UtWsChannelListener extends AbstractReceiveListener {
         listener = XListenerProxy.getGlobal();
     }
 
-
     public void onOpen(WebSocketChannel channel) {
-        if (listener != null) {
-            listener.onOpen(_SocketSession.get(channel));
-        }
+        listener.onOpen(_SocketSession.get(channel));
     }
 
 
@@ -37,9 +34,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
             XSession session = _SocketSession.get(channel);
             XMessage message = XMessage.wrap(channel.getUrl(), out.toByteArray());
 
-            if (listener != null) {
-                listener.onMessage(session, message);
-            }
+            listener.onMessage(session, message);
 
             if (message.getHandled() == false) {
                 handler.handle(session, message, false);
@@ -56,9 +51,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
             XMessage message = XMessage.wrap(channel.getUrl(),
                     msg.getData().getBytes("UTF-8"));
 
-            if (listener != null) {
-                listener.onMessage(session, message);
-            }
+            listener.onMessage(session, message);
 
             if (message.getHandled() == false) {
                 handler.handle(session, message, true);
@@ -70,17 +63,13 @@ public class UtWsChannelListener extends AbstractReceiveListener {
 
     @Override
     protected void onClose(WebSocketChannel channel, StreamSourceFrameChannel frameChannel) throws IOException {
-        if (listener != null) {
-            listener.onClose(_SocketSession.get(channel));
-        }
+        listener.onClose(_SocketSession.get(channel));
 
         _SocketSession.remove(channel);
     }
 
     @Override
     protected void onError(WebSocketChannel channel, Throwable error) {
-        if (listener != null) {
-            listener.onError(_SocketSession.get(channel), error);
-        }
+        listener.onError(_SocketSession.get(channel), error);
     }
 }

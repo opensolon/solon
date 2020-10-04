@@ -11,6 +11,7 @@ import org.smartboot.socket.transport.AioSession;
 public class AioProcessor implements MessageProcessor<XMessage> {
     private XSocketContextHandler handler;
     private XListener listener;
+
     public AioProcessor() {
         handler = new XSocketContextHandler(XMethod.SOCKET);
         listener = XListenerProxy.getGlobal();
@@ -20,9 +21,8 @@ public class AioProcessor implements MessageProcessor<XMessage> {
     public void process(AioSession session, XMessage message) {
         try {
             XSession session1 = _SocketSession.get(session);
-            if (listener != null) {
-                listener.onMessage(session1, message);
-            }
+
+            listener.onMessage(session1, message);
 
             if (message.getHandled() == false) {
                 handler.handle(session1, message, false);
@@ -34,7 +34,7 @@ public class AioProcessor implements MessageProcessor<XMessage> {
 
     @Override
     public void stateEvent(AioSession session, StateMachineEnum state, Throwable throwable) {
-        if(listener != null) {
+        if (listener != null) {
             switch (state) {
                 case NEW_SESSION:
                     listener.onOpen(_SocketSession.get(session));
