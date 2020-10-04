@@ -48,11 +48,6 @@ public class HttpMethodTest extends _TestBase {
     }
 
     @Test
-    public void test24_put_2() throws IOException {
-        assert path("/demo2/method/put?name=中文").put().equals("中文");
-    }
-
-    @Test
     public void test24_delete() throws IOException {
         //delete ，有些 server 只支持 queryString param
         Map<String, String> map = new HashMap<>();
@@ -72,10 +67,5 @@ public class HttpMethodTest extends _TestBase {
         map.put("name", "中文");
 
         assert path("/demo2/method/patch").data(map).patch().equals("中文");
-    }
-
-    @Test
-    public void test24_patch_2() throws IOException {
-        assert path("/demo2/method/patch?name=中文").patch().equals("中文");
     }
 }

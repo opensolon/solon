@@ -1,4 +1,4 @@
-package org.noear.solon.boot.jetty.http;
+package org.noear.solon.boot.smarthttp;
 
 
 import org.noear.solon.XUtil;
@@ -13,7 +13,7 @@ import java.net.URLDecoder;
  * @author noear
  * @since 1.0
  * */
-public class JtFormContentFilter implements XHandler {
+public class XFormContentFilter implements XHandler {
     @Override
     public void handle(XContext ctx) throws Throwable {
         String method = ctx.method();
