@@ -71,25 +71,27 @@ class XPluginJetty implements XPlugin {
      * 获取Server Handler
      * */
     protected Handler getServerHandler() throws IOException {
-        ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        handler.setContextPath("/");
-        handler.addServlet(JtHttpContextServlet.class, "/");
-
-        if (XServerProp.session_timeout > 0) {
-            handler.getSessionHandler().setMaxInactiveInterval(XServerProp.session_timeout);
-        }
-
-        return handler;
-
-//        SessionHandler s_handler = new SessionHandler();
+        //::走Servlet接口（需要多个包）
+//        ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+//        handler.setContextPath("/");
+//        handler.addServlet(JtHttpContextServlet.class, "/");
 //
 //        if (XServerProp.session_timeout > 0) {
-//            s_handler.setMaxInactiveInterval(XServerProp.session_timeout);
+//            handler.getSessionHandler().setMaxInactiveInterval(XServerProp.session_timeout);
 //        }
 //
-//        JtHttpContextHandler _handler = new JtHttpContextHandler();
-//        s_handler.setHandler(_handler);
-//
-//        return s_handler;
+//        return handler;
+
+        //::走Handler接口
+        SessionHandler s_handler = new SessionHandler();
+
+        if (XServerProp.session_timeout > 0) {
+            s_handler.setMaxInactiveInterval(XServerProp.session_timeout);
+        }
+
+        JtHttpContextHandler _handler = new JtHttpContextHandler();
+        s_handler.setHandler(_handler);
+
+        return s_handler;
     }
 }
