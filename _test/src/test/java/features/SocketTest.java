@@ -38,6 +38,8 @@ public class SocketTest {
 
         msg = SocketUtils.send(root + "/demog/中文/3", "close");
         assert msg == null;
+
+        Thread.sleep(100);
     }
 
 
@@ -54,7 +56,7 @@ public class SocketTest {
         });
 
 
-        Thread.sleep(1000);
+        Thread.sleep(100);
     }
 
     @Test
@@ -80,7 +82,7 @@ public class SocketTest {
             }
         });
 
-        Thread.sleep(1000);
+        Thread.sleep(100);
     }
 
     @Test
@@ -103,6 +105,6 @@ public class SocketTest {
             System.out.println(msg.toString());
         });
 
-        Thread.sleep(1000);
+        Thread.sleep(100);
     }
 }
