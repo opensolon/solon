@@ -209,9 +209,9 @@ public class DemoController{
 >
 > 测试：wrk -t10 -c200 -d30s --latency "http://127.0.0.1:8080/"
 
-|  solon  | 大小 | QPS | spring boot  |  QPS  | 
+|  solon 1.0.40 | 大小 | QPS | spring boot 2.3.3  |  QPS  | 
 | -------- | -------- | -------- | -------- | -------- |
 | solon.boot.jlhttp (可独立运行)     | 0.1m     | 4.5万左右     | /   |    | 
 | /     |      |      | spring-boot-starter-tomcat   |  3.1万左右  | 
-| solon.boot.jetty (可独立运行)     | 1.8m     | 6.5万左右     | spring-boot-starter-jetty | 3.5万左右 |
-| solon.boot.undertow (可独立运行)     | 4.2m     | 7.9万左右     | spring-boot-starter-undertow | 4.9万左右 |
+| solon.boot.jetty (可独立运行)     | 1.8m     | 10.5万左右     | spring-boot-starter-jetty | 3.5万左右 |
+| solon.boot.undertow (可独立运行)     | 4.2m     | 10.9万左右     | spring-boot-starter-undertow | 4.9万左右 |
