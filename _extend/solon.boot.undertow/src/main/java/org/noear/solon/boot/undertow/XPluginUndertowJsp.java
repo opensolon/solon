@@ -28,7 +28,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
-import static io.undertow.Handlers.path;
 import static io.undertow.Handlers.websocket;
 
 /**
