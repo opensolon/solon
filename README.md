@@ -214,5 +214,5 @@ public class DemoController{
 | solon.boot.jlhttp (可独立运行)     | 0.1m     | 4.5万左右     | /   |    | 
 | /     |      |      | spring-boot-starter-tomcat   |  3.1万左右  | 
 | solon.boot.jetty (可独立运行)     | 1.8m     | 10.5万左右     | spring-boot-starter-jetty | 3.5万左右 |
-| solon.boot.undertow (可独立运行)     | 4.2m     | 10.5万左右     | spring-boot-starter-undertow | 4.9万左右 |
+| solon.boot.undertow (可独立运行)     | 4.2m     | 10.5万左右     | spring-boot-starter-undertow | 3.9万左右 |
 | solon.boot.smarthttp (可独立运行)     | 0.3m     | 12万左右     | /   |    | 
