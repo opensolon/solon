@@ -43,7 +43,7 @@ public class AopContext extends AopContainer {
             XInject typeInj = clz.getAnnotation(XInject.class);
             if (typeInj != null && XUtil.isNotEmpty(typeInj.value())) {
                 if (typeInj.value().startsWith("${")) {
-                    Aop.inject(bw.raw(), XApp.cfg().getPropByExpr(typeInj.value()));
+                    XUtil.injectProperties(bw.raw(), XApp.cfg().getPropByExpr(typeInj.value()));
                 }
             }
 
@@ -321,7 +321,7 @@ public class AopContext extends AopContainer {
         if (raw != null) {
             if (beanInj != null && XUtil.isEmpty(beanInj.value()) == false) {
                 if (beanInj.value().startsWith("${")) {
-                    Aop.inject(raw, XApp.cfg().getPropByExpr(beanInj.value()));
+                    XUtil.injectProperties(raw, XApp.cfg().getPropByExpr(beanInj.value()));
                 }
             }
 

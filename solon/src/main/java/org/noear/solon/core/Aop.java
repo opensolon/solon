@@ -1,5 +1,6 @@
 package org.noear.solon.core;
 
+import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XNote;
 
 import java.util.Properties;
@@ -100,8 +101,7 @@ public class Aop {
      * 尝试用属性注入
      */
     public static <T> T inject(T bean, Properties propS) {
-        ClassWrap.get(bean.getClass()).fill(bean, propS::getProperty, null);
-        return bean;
+        return XUtil.injectProperties(bean, propS);
     }
 
     //::bean事件处理

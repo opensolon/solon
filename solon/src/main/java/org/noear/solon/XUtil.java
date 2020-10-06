@@ -219,6 +219,11 @@ public class XUtil {
         }
     }
 
+    public static <T> T injectProperties(T bean, Properties propS) {
+        ClassWrap.get(bean.getClass()).fill(bean, propS::getProperty, null);
+        return bean;
+    }
+
     /**
      * 获取异常的完整内容
      */
