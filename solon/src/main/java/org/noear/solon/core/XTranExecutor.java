@@ -11,9 +11,7 @@ public interface XTranExecutor {
     /**
      * 是否在事务中
      */
-    default boolean inTrans() {
-        return false;
-    }
+    boolean inTrans();
 
     /**
      * 是否在事务中且只读
@@ -28,9 +26,4 @@ public interface XTranExecutor {
     default Connection getConnection(DataSource ds) throws SQLException {
         return ds.getConnection();
     }
-
-    /**
-     * 执行事务
-     */
-    //void execute(XTran anno, RunnableEx runnable) throws Throwable;
 }

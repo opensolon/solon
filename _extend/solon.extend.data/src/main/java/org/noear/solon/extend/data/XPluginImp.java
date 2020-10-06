@@ -11,10 +11,15 @@ public class XPluginImp implements XPlugin {
         }
 
         if (app.enableCaching()) {
-            CacheLib.cacheServiceAddIfAbsent("", new CacheServiceDefault());
-            //XBridge.cacheExecutorSet(CacheExecutorImp.global);
+            CacheLib.cacheServiceAddIfAbsent("", CacheServiceDefault.instance);
 
             app.onEvent(BeanWrap.class, new CacheEventListener());
         }
+
+        Aop.beanOnloaded(() -> {
+            if (Aop.factory().getWrap(CacheService.class) == null) {
+                Aop.wrapAndPut(CacheService.class, CacheServiceDefault.instance);
+            }
+        });
     }
 }

@@ -156,6 +156,11 @@ public abstract class AopFactoryBase {
         }
     }
 
+    public <T> T getOnly(Object key) {
+        BeanWrap bw = getWrap(key);
+        return bw == null ? null : bw.get();
+    }
+
     public BeanWrap wrap(Class<?> clz, Object bean) {
         BeanWrap wrap = getWrap(clz);
         if (wrap == null) {

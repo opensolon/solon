@@ -179,12 +179,7 @@ public class XBridge {
     //
     // XTranExecutor 对接
     //
-    private static XTranExecutor _tranExecutor = new XTranExecutor() {
-        @Override
-        public boolean inTrans() {
-            return false;
-        }
-    };
+    private static XTranExecutor _tranExecutor = () -> false;
 
     /**
      * 获取事务执行器

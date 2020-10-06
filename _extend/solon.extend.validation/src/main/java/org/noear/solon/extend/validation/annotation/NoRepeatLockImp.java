@@ -1,7 +1,7 @@
 package org.noear.solon.extend.validation.annotation;
 
+import org.noear.solon.core.Aop;
 import org.noear.solon.core.CacheService;
-import org.noear.solon.core.XBridge;
 
 /**
  * 锁的默认实现
@@ -27,9 +27,13 @@ public class NoRepeatLockImp implements NoRepeatLock {
         }
     }
 
-    private CacheService _cache = XBridge.cacheServiceGet("");
-
     public boolean tryLock(String key, int inSeconds) {
+        CacheService _cache = Aop.factory().getOnly(CacheService.class);
+
+        if(_cache == null){
+            throw new RuntimeException("There is no default CacheService");
+        }
+
         String key2 = "lock." + key;
 
         synchronized (key2.intern()) {

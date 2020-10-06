@@ -1,15 +1,17 @@
 package webapp.demoa_interceptor;
 
-import org.noear.solon.annotation.XAround;
+import org.noear.solon.core.InvokeChain;
+import org.noear.solon.core.InvokeHandler;
 import org.noear.solon.core.XContext;
 
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 
-public class AroundHandler implements InvocationHandler {
+public class AroundHandler implements InvokeHandler {
+
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public Object doInvoke(Object obj, Method method, Parameter[] params, Object[] args, InvokeChain invokeChain) throws Throwable {
         XContext.current().output("@XAround:我也加一点；");
-        return method.invoke(proxy, args);
+        return invokeChain.doInvoke(obj, args);
     }
 }

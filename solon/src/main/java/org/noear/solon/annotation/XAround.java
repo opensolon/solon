@@ -10,8 +10,8 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.0.20
  * */
-@Inherited //要可继承
-@Target({ElementType.METHOD, ElementType.TYPE})
+//@Inherited //要可继承 // for type, 才有继承的意义
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface XAround {
     /**

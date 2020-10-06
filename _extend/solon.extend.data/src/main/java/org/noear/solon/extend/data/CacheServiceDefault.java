@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.concurrent.*;
 
 public class CacheServiceDefault implements CacheService {
+    public static CacheService instance = new CacheServiceDefault();
+
     private int _defaultSeconds;
 
     //缓存存储器
