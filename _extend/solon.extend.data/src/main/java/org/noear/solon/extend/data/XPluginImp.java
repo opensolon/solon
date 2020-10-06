@@ -11,7 +11,7 @@ public class XPluginImp implements XPlugin {
         }
 
         if (app.enableCaching()) {
-            XBridge.cacheServiceAddIfAbsent("", new CacheServiceDefault());
+            CacheLib.cacheServiceAddIfAbsent("", new CacheServiceDefault());
             //XBridge.cacheExecutorSet(CacheExecutorImp.global);
 
             app.onEvent(BeanWrap.class, new CacheEventListener());

@@ -32,7 +32,7 @@ public class CacheExecutorImp  {
         Map<String, Object> parMap = new HashMap<>();
         Object result = null;
 
-        CacheService cs = XBridge.cacheServiceGet(anno.service());
+        CacheService cs = CacheLib.cacheServiceGet(anno.service());
 
         //0.构建缓存key
         String key = buildKey(method, params, values, parMap);
@@ -75,7 +75,7 @@ public class CacheExecutorImp  {
             return;
         }
 
-        CacheService cs = XBridge.cacheServiceGet(anno.service());
+        CacheService cs = CacheLib.cacheServiceGet(anno.service());
         Map<String, Object> parMap = new HashMap<>();
         for (int i = 0, len = params.length; i < len; i++) {
             parMap.put(params[i].getName(), values[i]);
