@@ -3,13 +3,11 @@ package org.noear.solon.extend.jsr330;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.AopFactory;
 import org.noear.solon.core.BeanWebWrap;
 import org.noear.solon.core.XPlugin;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.inject.Scope;
 import javax.inject.Singleton;
 
 public class XPluginImp implements XPlugin {

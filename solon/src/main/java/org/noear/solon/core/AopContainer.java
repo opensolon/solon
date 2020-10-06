@@ -21,7 +21,7 @@ import java.util.function.Function;
  * @author noear
  * @since 1.0
  * */
-public abstract class AopFactoryBase {
+public class AopContainer {
     //////////////////////////
     //
     // 基础存储
@@ -367,6 +367,35 @@ public abstract class AopFactoryBase {
             Aop.getAsyn(name, (bw) -> {
                 varH.setValue(bw.get());
             });
+        }
+    }
+
+    //////////
+    /**
+     * 注册到管理中心
+     */
+    public void beanRegister(BeanWrap bw, String name, boolean typed) {
+        if (XUtil.isNotEmpty(name)) {
+            //有name的，只用name注入
+            //
+            Aop.factory().putWrap(name, bw);
+            if (typed == false) {
+                //如果非typed，则直接返回
+                return;
+            }
+        }
+
+        Aop.factory().putWrap(bw.clz(), bw);
+        Aop.factory().putWrap(bw.clz().getName(), bw);
+
+        //如果有父级接口，则建立关系映射
+        Class<?>[] list = bw.clz().getInterfaces();
+        for (Class<?> c : list) {
+            if (c.getName().contains("java.") == false) {
+                //建立关系映射
+                clzMapping.putIfAbsent(c, bw.clz());
+                Aop.factory().putWrap(c, bw);
+            }
         }
     }
 }

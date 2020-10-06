@@ -8,7 +8,8 @@ import org.noear.solon.annotation.XServerEndpoint;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.Comparator;
+import java.util.Map;
 
 /**
  * Aop 处理工厂（可以被继承重写）
@@ -21,10 +22,10 @@ import java.util.*;
  * @author noear
  * @since 1.0
  * */
-public class AopFactory extends AopFactoryBase {
+public class AopContext extends AopContainer {
 
 
-    public AopFactory() {
+    public AopContext() {
         initialize();
     }
 
@@ -33,7 +34,7 @@ public class AopFactory extends AopFactoryBase {
      */
     protected void initialize() {
 
-        beanCreatorAdd(XConfiguration.class, (clz, bw, anno) -> {
+        Aop.factory().beanCreatorAdd(XConfiguration.class, (clz, bw, anno) -> {
             XInject typeInj = clz.getAnnotation(XInject.class);
             if (typeInj != null && XUtil.isNotEmpty(typeInj.value())) {
                 if (typeInj.value().startsWith("${")) {
@@ -47,7 +48,7 @@ public class AopFactory extends AopFactoryBase {
                 if (m_an != null) {
                     XInject beanInj = mWrap.getMethod().getAnnotation(XInject.class);
 
-                    tryBuildBean(m_an, mWrap, bw, beanInj, (p1) -> {
+                    Aop.factory().tryBuildBean(m_an, mWrap, bw, beanInj, (p1) -> {
                         XInject tmp = p1.getAnnotation(XInject.class);
                         if (tmp == null) {
                             return null;
@@ -62,7 +63,7 @@ public class AopFactory extends AopFactoryBase {
             addBeanShape(clz, bw);
         });
 
-        beanCreatorAdd(XBean.class, (clz, bw, anno) -> {
+        Aop.factory().beanCreatorAdd(XBean.class, (clz, bw, anno) -> {
             bw.nameSet(anno.value());
             bw.tagSet(anno.tag());
             bw.attrsSet(anno.attrs());
@@ -75,7 +76,7 @@ public class AopFactory extends AopFactoryBase {
             bw.remotingSet(anno.remoting());
 
             //注册到管理中心
-            beanRegister(bw, anno.value(), anno.typed());
+            Aop.factory().beanRegister(bw, anno.value(), anno.typed());
 
             //如果是remoting状态，转到XApp路由器
             if (bw.remoting()) {
@@ -89,15 +90,15 @@ public class AopFactory extends AopFactoryBase {
             }
         });
 
-        beanCreatorAdd(XController.class, (clz, bw, anno) -> {
+        Aop.factory().beanCreatorAdd(XController.class, (clz, bw, anno) -> {
             new BeanWebWrap(bw).load(XApp.global());
         });
 
-        beanCreatorAdd(XInterceptor.class, (clz, bw, anno) -> {
+        Aop.factory().beanCreatorAdd(XInterceptor.class, (clz, bw, anno) -> {
             new BeanWebWrap(bw).main(false).load(XApp.global());
         });
 
-        beanCreatorAdd(XServerEndpoint.class, (clz, wrap, anno) -> {
+        Aop.factory().beanCreatorAdd(XServerEndpoint.class, (clz, wrap, anno) -> {
             if (XListener.class.isAssignableFrom(clz)) {
                 XListener l = wrap.raw();
                 XApp.global().router().add(anno.value(), anno.method(), l);
@@ -105,8 +106,8 @@ public class AopFactory extends AopFactoryBase {
         });
 
 
-        beanInjectorAdd(XInject.class, ((fwT, anno) -> {
-            tryInjectByName(fwT, anno.value());
+        Aop.factory().beanInjectorAdd(XInject.class, ((fwT, anno) -> {
+            Aop.factory().tryInjectByName(fwT, anno.value());
         }));
     }
 
@@ -142,6 +143,30 @@ public class AopFactory extends AopFactoryBase {
             }
         }
     }
+
+    //::注入
+
+    /**
+     * 为一个对象注入（可以重写）
+     */
+    public void beanInject(Object obj) {
+        if (obj == null) {
+            return;
+        }
+
+        ClassWrap clzWrap = ClassWrap.get(obj.getClass());
+
+        //支持父类注入
+        for (Map.Entry<String, FieldWrap> kv : clzWrap.fieldAll().entrySet()) {
+            Annotation[] annS = kv.getValue().field.getDeclaredAnnotations();
+            if (annS.length > 0) {
+                VarHolder varH = kv.getValue().holder(obj);
+                tryInject(varH, annS);
+            }
+        }
+    }
+
+    ////////////
 
     /**
      * ::扫描源下的所有 bean 及对应处理
@@ -186,56 +211,5 @@ public class AopFactory extends AopFactoryBase {
     public void beanLoaded(){
         //尝试加载事件（不用函数包装，是为了减少代码）
         loadedEvent.forEach(f -> f.run());
-    }
-
-
-    /**
-     * 注册到管理中心
-     */
-    public void beanRegister(BeanWrap bw, String name, boolean typed) {
-        if (XUtil.isNotEmpty(name)) {
-            //有name的，只用name注入
-            //
-            Aop.factory().putWrap(name, bw);
-            if (typed == false) {
-                //如果非typed，则直接返回
-                return;
-            }
-        }
-
-        Aop.factory().putWrap(bw.clz(), bw);
-        Aop.factory().putWrap(bw.clz().getName(), bw);
-
-        //如果有父级接口，则建立关系映射
-        Class<?>[] list = bw.clz().getInterfaces();
-        for (Class<?> c : list) {
-            if (c.getName().contains("java.") == false) {
-                //建立关系映射
-                clzMapping.putIfAbsent(c, bw.clz());
-                Aop.factory().putWrap(c, bw);
-            }
-        }
-    }
-
-    //::注入
-
-    /**
-     * 为一个对象注入（可以重写）
-     */
-    public void beanInject(Object obj) {
-        if (obj == null) {
-            return;
-        }
-
-        ClassWrap clzWrap = ClassWrap.get(obj.getClass());
-
-        //支持父类注入
-        for (Map.Entry<String, FieldWrap> kv : clzWrap.fieldAll().entrySet()) {
-            Annotation[] annS = kv.getValue().field.getDeclaredAnnotations();
-            if (annS.length > 0) {
-                VarHolder varH = kv.getValue().holder(obj);
-                tryInject(varH, annS);
-            }
-        }
     }
 }

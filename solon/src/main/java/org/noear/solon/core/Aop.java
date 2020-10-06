@@ -19,21 +19,15 @@ public class Aop {
     /**
      * Aop处理工厂
      */
-    private static AopFactory _f = new AopFactory();
+    private static AopContext _f = new AopContext();
 
     /**
      * 获取Aop处理工厂
      */
-    public static AopFactory factory() {
+    public static AopContext factory() {
         return _f;
     }
 
-    /**
-     * 设置Aop处理工厂
-     */
-    public static void factorySet(AopFactory factory) {
-        _f = factory;
-    }
 
     //::包装bean
 
