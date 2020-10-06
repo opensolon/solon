@@ -3,7 +3,6 @@ package org.noear.solon.core;
 import org.noear.solon.annotation.*;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -66,17 +65,9 @@ public class MethodWrap implements InvokeChain {
     }
 
     private void aroundAdd(XAround a) {
-        InvokeHandler h = aroundBuild(a);
+        InvokeHandler h = Aop.get(a.value());
 
         arounds.add(new InvokeHolder(this, a.index(), h));
-    }
-
-    private InvokeHandler aroundBuild(XAround a) {
-        if (a == null) {
-            return null;
-        } else {
-            return Aop.get(a.value());
-        }
     }
 
     private final Method method;
@@ -118,26 +109,15 @@ public class MethodWrap implements InvokeChain {
     }
 
     /**
-     * 获取注解
-     */
-    public <T extends Annotation> T getAnnotation(Class<T> clz) {
-        return method.getAnnotation(clz);
-    }
-
-    /**
      * 执行
      */
-    public Object invoke(Object obj, Object... args) throws Exception {
-        return doInvoke(obj, args);
-    }
-
     @Override
     public Object doInvoke(Object obj, Object[] args) throws Exception {
         return method.invoke(obj, args);
     }
 
     /**
-     * 执行，并尝试事务
+     * 执行，并尝试切面
      */
     public Object invokeByAspect(Object obj, Object[] args) throws Throwable {
         return invokeChain.doInvoke(obj, args);

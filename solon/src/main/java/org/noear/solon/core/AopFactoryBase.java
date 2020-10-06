@@ -234,7 +234,7 @@ public abstract class AopFactoryBase {
 
         if (size2 == 0) {
             //0.没有参数
-            Object raw = mWrap.invoke(bw.raw());
+            Object raw = mWrap.doInvoke(bw.raw(), new Object[]{});
             tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
         } else {
             //1.构建参数
@@ -255,7 +255,7 @@ public abstract class AopFactoryBase {
                         args2.add(p2.getValue());
                     }
 
-                    Object raw = mWrap.invoke(bw.raw(), args2.toArray());
+                    Object raw = mWrap.doInvoke(bw.raw(), args2.toArray());
                     tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
                 } catch (Throwable ex) {
                     XEventBus.push(ex);
