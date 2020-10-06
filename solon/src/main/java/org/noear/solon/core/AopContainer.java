@@ -3,7 +3,6 @@ package org.noear.solon.core;
 
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
-import org.noear.solon.annotation.XNote;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
@@ -292,7 +291,7 @@ public class AopContainer {
     /**
      * 遍历bean库 (拿到的是bean包装)
      */
-    @XNote("遍历bean库 (拿到的是bean包装)")
+    //@XNote("遍历bean库 (拿到的是bean包装)")
     public void beanForeach(BiConsumer<String, BeanWrap> action) {
         beans.forEach(action);
 
@@ -301,7 +300,7 @@ public class AopContainer {
     /**
      * 遍历bean包装库
      */
-    @XNote("遍历bean包装库")
+    //@XNote("遍历bean包装库")
     public void beanForeach(Consumer<BeanWrap> action) {
         beanWraps.forEach((k, bw) -> {
             action.accept(bw);

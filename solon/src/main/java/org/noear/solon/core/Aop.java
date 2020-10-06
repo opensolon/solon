@@ -54,7 +54,7 @@ public class Aop {
     //::获取bean
 
     /**
-     * 获取bean (key)
+     * 获取bean (key:name)
      */
     public static <T> T get(String key) {
         BeanWrap bw = _c.getWrap(key);
@@ -62,14 +62,21 @@ public class Aop {
     }
 
     /**
-     * 获取bean (clz)
+     * 获取bean (key:type)
      */
-    public static <T> T get(Class<?> clz) {
-        if (clz == null) {
+    public static <T> T get(Class<?> key) {
+        if (key == null) {
             return null;
         } else {
-            return wrapAndPut(clz).get();
+            return wrapAndPut(key).get();
         }
+    }
+
+    /**
+     * 是否有bean(key: name or type)
+     * */
+    public static boolean has(Object key){
+        return _c.getWrap(key) != null;
     }
 
     /**
