@@ -156,6 +156,16 @@ public class AopContainer {
         }
     }
 
+    public void getWrapAsync(Object key, Consumer<BeanWrap> callback) {
+        BeanWrap bw = getWrap(key);
+
+        if (bw == null || bw.raw() == null) {
+            beanSubscribe(key, callback);
+        } else {
+            callback.accept(bw);
+        }
+    }
+
     public <T> T getBean(Object key) {
         BeanWrap bw = getWrap(key);
         return bw == null ? null : bw.get();
@@ -217,7 +227,7 @@ public class AopContainer {
     public void beanInject(VarHolder varH, String name) {
         if (XUtil.isEmpty(name)) {
             //如果没有name,使用类型进行获取 bean
-            Aop.getAsyn(varH.getType(), (bw) -> {
+            getWrapAsync(varH.getType(), (bw) -> {
                 varH.setValue(bw.get());
             });
         } else if (name.startsWith("${classpath:")) {
@@ -281,7 +291,7 @@ public class AopContainer {
             }
         } else {
             //使用name, 获取BEAN
-            Aop.getAsyn(name, (bw) -> {
+            getWrapAsync(name, (bw) -> {
                 varH.setValue(bw.get());
             });
         }

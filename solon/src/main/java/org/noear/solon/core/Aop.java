@@ -77,25 +77,16 @@ public class Aop {
      * 异步获取bean (key)
      */
     public static void getAsyn(String key, Consumer<BeanWrap> callback) {
-        getAsynDo(key, callback);
+        _c.getWrapAsync(key, callback);
     }
 
     /**
      * 异步获取bean (clz)
      */
     public static void getAsyn(Class<?> clz, Consumer<BeanWrap> callback) { //FieldWrapTmp fwT,
-        getAsynDo(clz, callback);
+        _c.getWrapAsync(clz, callback);
     }
 
-    private static void getAsynDo(Object key, Consumer<BeanWrap> callback) {
-        BeanWrap wrap = _c.getWrap(key);
-
-        if (wrap == null || wrap.raw() == null) {
-            _c.beanSubscribe(key, callback);
-        } else {
-            callback.accept(wrap);
-        }
-    }
 
     /**
      * 尝试注入（建议使用：get(clz) ）
