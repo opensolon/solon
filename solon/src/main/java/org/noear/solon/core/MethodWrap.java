@@ -41,11 +41,7 @@ public class MethodWrap implements InvokeChain {
             if (anno instanceof XAround) {
                 aroundAdd((XAround) anno);
             } else {
-                for (Annotation anno2 : anno.annotationType().getAnnotations()) {
-                    if (anno2 instanceof XAround) {
-                        aroundAdd((XAround) anno2);
-                    }
-                }
+                aroundAdd(anno.annotationType().getAnnotation(XAround.class));
             }
         }
 
@@ -64,10 +60,11 @@ public class MethodWrap implements InvokeChain {
         }
     }
 
-    private void aroundAdd(XAround a) {
-        InvokeHandler h = Aop.get(a.value());
 
-        arounds.add(new InvokeHolder(this, a.index(), h));
+    private void aroundAdd(XAround a) {
+        if (a != null) {
+            arounds.add(new InvokeHolder(this, a.index(), Aop.get(a.value())));
+        }
     }
 
     private final Method method;
