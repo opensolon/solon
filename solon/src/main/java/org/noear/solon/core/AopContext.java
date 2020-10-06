@@ -107,7 +107,7 @@ public class AopContext extends AopContainer {
 
 
         Aop.context().beanInjectorAdd(XInject.class, ((fwT, anno) -> {
-            Aop.context().tryInjectByName(fwT, anno.value());
+            Aop.context().beanInject(fwT, anno.value());
         }));
     }
 

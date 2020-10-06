@@ -39,9 +39,9 @@ public class XPluginImp implements XPlugin {
         Aop.context().beanInjectorAdd(Inject.class, (fwT, anno) -> {
             Named tmp = fwT.getType().getAnnotation(Named.class);
             if(tmp == null || XUtil.isEmpty(tmp.value())){
-                Aop.context().tryInjectByName(fwT, null);
+                Aop.context().beanInject(fwT, null);
             }else{
-                Aop.context().tryInjectByName(fwT, tmp.value());
+                Aop.context().beanInject(fwT, tmp.value());
             }
         });
 

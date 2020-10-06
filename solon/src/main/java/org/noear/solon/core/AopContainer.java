@@ -108,11 +108,12 @@ public class AopContainer {
         });
     }
 
+
     //public abstract BeanWrap wrap(Class<?> clz, Object raw);
 
 
     /**
-     * 注册到bean库（注册成功会进行通知）
+     * 存入bean库（存入成功会进行通知）
      *
      * @param wrap 如果raw为null，拒绝注册
      */
@@ -126,7 +127,7 @@ public class AopContainer {
     }
 
     /**
-     * 注册到bean库（注册成功会进行通知）
+     * 存入到bean库（存入成功会进行通知）
      *
      * @param wrap 如果raw为null，拒绝注册
      */
@@ -155,11 +156,14 @@ public class AopContainer {
         }
     }
 
-    public <T> T getOnly(Object key) {
+    public <T> T getBean(Object key) {
         BeanWrap bw = getWrap(key);
         return bw == null ? null : bw.get();
     }
 
+    /**
+     * 包装
+     * */
     public BeanWrap wrap(Class<?> clz, Object bean) {
         BeanWrap wrap = getWrap(clz);
         if (wrap == null) {
@@ -169,126 +173,40 @@ public class AopContainer {
         return wrap;
     }
 
+    //////////////////////////
+    //
+    // bean 注册与注入
+    //
+    /////////////////////////
 
     /**
-     * 尝试为bean注入
+     * 尝试BEAN注册（按名字和类型存入容器；并进行类型印射）
      */
-    protected void tryInject(VarHolder varH, Annotation[] annS) {
-        for (Annotation a : annS) {
-            BeanInjector bi = beanInjectors.get(a.annotationType());
-            if (bi != null) {
-                bi.handler(varH, a);
+    public void beanRegister(BeanWrap bw, String name, boolean typed) {
+        if (XUtil.isNotEmpty(name)) {
+            //有name的，只用name注入
+            //
+            Aop.context().putWrap(name, bw);
+            if (typed == false) {
+                //如果非typed，则直接返回
+                return;
+            }
+        }
+
+        Aop.context().putWrap(bw.clz(), bw);
+        Aop.context().putWrap(bw.clz().getName(), bw);
+
+        //如果有父级接口，则建立关系映射
+        Class<?>[] list = bw.clz().getInterfaces();
+        for (Class<?> c : list) {
+            if (c.getName().contains("java.") == false) {
+                //建立关系映射
+                clzMapping.putIfAbsent(c, bw.clz());
+                Aop.context().putWrap(c, bw);
             }
         }
     }
 
-
-    /**
-     * 尝试生成 bean
-     */
-    public void tryCreateBean(Class<?> clz) {
-        tryCreateBean0(clz, (c, a) -> {
-            //包装
-            BeanWrap bw = this.wrap(clz, null);
-            c.handler(clz, bw, a);
-            //尝试入库
-            this.putWrap(clz, bw);
-        });
-    }
-
-    public void tryCreateBean(BeanWrap bw) {
-        tryCreateBean0(bw.clz(), (c, a) -> {
-            c.handler(bw.clz(), bw, a);
-        });
-    }
-
-    protected void tryCreateBean0(Class<?> clz, BiConsumerEx<BeanCreator, Annotation> consumer) {
-        Annotation[] annS = clz.getDeclaredAnnotations();
-
-        if (annS.length > 0) {
-            try {
-                for (Annotation a : annS) {
-                    BeanCreator creator = beanCreators.get(a.annotationType());
-                    if (creator != null) {
-                        consumer.accept(creator, a);
-                    }
-                }
-            } catch (Throwable ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-
-    /**
-     * 尝试构建 bean
-     *
-     * @param anno      bean 注解
-     * @param mWrap     方法包装器
-     * @param bw        bean 包装器
-     * @param beanInj   类注入
-     * @param injectVal 参数注入
-     */
-    public void tryBuildBean(XBean anno, MethodWrap mWrap, BeanWrap bw, XInject beanInj, Function<Parameter, String> injectVal) throws Exception {
-        int size2 = mWrap.getParameters().length;
-
-        if (size2 == 0) {
-            //0.没有参数
-            Object raw = mWrap.doInvoke(bw.raw(), new Object[]{});
-            tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
-        } else {
-            //1.构建参数
-            List<Object> args2 = new ArrayList<>(size2);
-            List<VarHolderParam> args1 = new ArrayList<>(size2);
-
-            for (Parameter p1 : mWrap.getParameters()) {
-                VarHolderParam p2 = new VarHolderParam(p1);
-                args1.add(p2);
-
-                tryInjectByName(p2, injectVal.apply(p1));
-            }
-
-            //异步获取注入值
-            XUtil.commonPool.submit(() -> {
-                try {
-                    for (VarHolderParam p2 : args1) {
-                        args2.add(p2.getValue());
-                    }
-
-                    Object raw = mWrap.doInvoke(bw.raw(), args2.toArray());
-                    tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
-                } catch (Throwable ex) {
-                    XEventBus.push(ex);
-                }
-
-                return true;
-            });
-        }
-    }
-
-    protected void tryBuildBean0(XBean anno, XInject beanInj, Class<?> clz, Object raw) {
-        if (raw != null) {
-            if (beanInj != null && XUtil.isEmpty(beanInj.value()) == false) {
-                if (beanInj.value().startsWith("${")) {
-                    Aop.inject(raw, XApp.cfg().getPropByExpr(beanInj.value()));
-                }
-            }
-
-            //动态构建的bean, 可通过广播进行扩展
-            XEventBus.push(raw);
-
-            //动态构建的bean，都用新生成wrap（否则会类型混乱）
-            BeanWrap m_bw = new BeanWrap(clz, raw);
-            m_bw.nameSet(anno.value());
-            m_bw.tagSet(anno.tag());
-            m_bw.attrsSet(anno.attrs());
-            m_bw.typedSet(anno.typed());
-
-            Aop.context().beanRegister(m_bw, anno.value(), anno.typed());
-
-            //@XBean 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
-            XEventBus.push(m_bw);
-        }
-    }
 
     /**
      * 尝试变量注入 字段或参数
@@ -296,7 +214,7 @@ public class AopContainer {
      * @param varH 变量包装器
      * @param name 名字（bean name || config ${name}）
      */
-    public void tryInjectByName(VarHolder varH, String name) {
+    public void beanInject(VarHolder varH, String name) {
         if (XUtil.isEmpty(name)) {
             //如果没有name,使用类型进行获取 bean
             Aop.getAsyn(varH.getType(), (bw) -> {
@@ -369,32 +287,127 @@ public class AopContainer {
         }
     }
 
-    //////////
+
+    ///////////
+
     /**
-     * 注册到管理中心
+     * 尝试为bean注入
      */
-    public void beanRegister(BeanWrap bw, String name, boolean typed) {
-        if (XUtil.isNotEmpty(name)) {
-            //有name的，只用name注入
-            //
-            Aop.context().putWrap(name, bw);
-            if (typed == false) {
-                //如果非typed，则直接返回
-                return;
-            }
-        }
-
-        Aop.context().putWrap(bw.clz(), bw);
-        Aop.context().putWrap(bw.clz().getName(), bw);
-
-        //如果有父级接口，则建立关系映射
-        Class<?>[] list = bw.clz().getInterfaces();
-        for (Class<?> c : list) {
-            if (c.getName().contains("java.") == false) {
-                //建立关系映射
-                clzMapping.putIfAbsent(c, bw.clz());
-                Aop.context().putWrap(c, bw);
+    protected void tryInject(VarHolder varH, Annotation[] annS) {
+        for (Annotation a : annS) {
+            BeanInjector bi = beanInjectors.get(a.annotationType());
+            if (bi != null) {
+                bi.handler(varH, a);
             }
         }
     }
+
+
+    /**
+     * 尝试生成 bean
+     */
+    protected void tryCreateBean(Class<?> clz) {
+        tryCreateBean0(clz, (c, a) -> {
+            //包装
+            BeanWrap bw = this.wrap(clz, null);
+            c.handler(clz, bw, a);
+            //尝试入库
+            this.putWrap(clz, bw);
+        });
+    }
+
+    protected void tryCreateBean(BeanWrap bw) {
+        tryCreateBean0(bw.clz(), (c, a) -> {
+            c.handler(bw.clz(), bw, a);
+        });
+    }
+
+    protected void tryCreateBean0(Class<?> clz, BiConsumerEx<BeanCreator, Annotation> consumer) {
+        Annotation[] annS = clz.getDeclaredAnnotations();
+
+        if (annS.length > 0) {
+            try {
+                for (Annotation a : annS) {
+                    BeanCreator creator = beanCreators.get(a.annotationType());
+                    if (creator != null) {
+                        consumer.accept(creator, a);
+                    }
+                }
+            } catch (Throwable ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 尝试构建 bean
+     *
+     * @param anno      bean 注解
+     * @param mWrap     方法包装器
+     * @param bw        bean 包装器
+     * @param beanInj   类注入
+     * @param injectVal 参数注入
+     */
+    protected void tryBuildBean(XBean anno, MethodWrap mWrap, BeanWrap bw, XInject beanInj, Function<Parameter, String> injectVal) throws Exception {
+        int size2 = mWrap.getParameters().length;
+
+        if (size2 == 0) {
+            //0.没有参数
+            Object raw = mWrap.doInvoke(bw.raw(), new Object[]{});
+            tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
+        } else {
+            //1.构建参数
+            List<Object> args2 = new ArrayList<>(size2);
+            List<VarHolderParam> args1 = new ArrayList<>(size2);
+
+            for (Parameter p1 : mWrap.getParameters()) {
+                VarHolderParam p2 = new VarHolderParam(p1);
+                args1.add(p2);
+
+                beanInject(p2, injectVal.apply(p1));
+            }
+
+            //异步获取注入值
+            XUtil.commonPool.submit(() -> {
+                try {
+                    for (VarHolderParam p2 : args1) {
+                        args2.add(p2.getValue());
+                    }
+
+                    Object raw = mWrap.doInvoke(bw.raw(), args2.toArray());
+                    tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
+                } catch (Throwable ex) {
+                    XEventBus.push(ex);
+                }
+
+                return true;
+            });
+        }
+    }
+
+    protected void tryBuildBean0(XBean anno, XInject beanInj, Class<?> clz, Object raw) {
+        if (raw != null) {
+            if (beanInj != null && XUtil.isEmpty(beanInj.value()) == false) {
+                if (beanInj.value().startsWith("${")) {
+                    Aop.inject(raw, XApp.cfg().getPropByExpr(beanInj.value()));
+                }
+            }
+
+            //动态构建的bean, 可通过广播进行扩展
+            XEventBus.push(raw);
+
+            //动态构建的bean，都用新生成wrap（否则会类型混乱）
+            BeanWrap m_bw = new BeanWrap(clz, raw);
+            m_bw.nameSet(anno.value());
+            m_bw.tagSet(anno.tag());
+            m_bw.attrsSet(anno.attrs());
+            m_bw.typedSet(anno.typed());
+
+            Aop.context().beanRegister(m_bw, anno.value(), anno.typed());
+
+            //@XBean 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
+            XEventBus.push(m_bw);
+        }
+    }
+
 }

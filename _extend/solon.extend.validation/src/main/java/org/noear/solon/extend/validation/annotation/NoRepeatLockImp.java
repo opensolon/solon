@@ -28,7 +28,7 @@ public class NoRepeatLockImp implements NoRepeatLock {
     }
 
     public boolean tryLock(String key, int inSeconds) {
-        CacheService _cache = Aop.context().getOnly(CacheService.class);
+        CacheService _cache = Aop.context().getBean(CacheService.class);
 
         if(_cache == null){
             throw new RuntimeException("There is no default CacheService");
