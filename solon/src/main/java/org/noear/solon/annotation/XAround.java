@@ -1,7 +1,8 @@
 package org.noear.solon.annotation;
 
+import org.noear.solon.core.InvokeHandler;
+
 import java.lang.annotation.*;
-import java.lang.reflect.InvocationHandler;
 
 /**
  * 触发器：围绕处理（替代处理）
@@ -16,7 +17,7 @@ public @interface XAround {
     /**
      * 调用处理程序
      * */
-    Class<? extends InvocationHandler> value();
+    Class<? extends InvokeHandler> value();
     /**
      * 调用顺位
      * */

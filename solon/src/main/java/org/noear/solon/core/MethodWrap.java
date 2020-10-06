@@ -1,14 +1,14 @@
 package org.noear.solon.core;
 
-import org.noear.solon.annotation.XAround;
-import org.noear.solon.annotation.XCache;
-import org.noear.solon.annotation.XCacheRemove;
-import org.noear.solon.annotation.XTran;
+import org.noear.solon.annotation.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * 和 FieldWrap 意图相同
  * */
-public class MethodWrap {
+public class MethodWrap implements InvokeChain {
     private static Map<Method, MethodWrap> _cache = new ConcurrentHashMap<>();
 
     public static MethodWrap get(Method method) {
@@ -36,28 +36,54 @@ public class MethodWrap {
         method = m;
         parameters = m.getParameters();
         annotations = m.getAnnotations();
+        arounds = new ArrayList<>();
 
-        xTran = m.getAnnotation(XTran.class);
-        xCache = m.getAnnotation(XCache.class);
-        xCacheRemove = m.getAnnotation(XCacheRemove.class);
-        xAround = buildAround(m.getAnnotation(XAround.class));
-    }
+        for (Annotation anno : annotations) {
+            if (anno instanceof XAround) {
+                aroundAdd((XAround) anno);
+            } else {
+                for (Annotation anno2 : anno.annotationType().getAnnotations()) {
+                    if (anno2 instanceof XAround) {
+                        aroundAdd((XAround) anno2);
+                    }
+                }
+            }
+        }
 
-    private InvocationHandler buildAround(XAround anno) {
-        if (anno == null) {
-            return null;
+        if (arounds.size() > 0) {
+            arounds.sort(Comparator.comparing(x -> x.index));
+
+            InvokeHolder node = arounds.get(0);
+            for (int i = 1, len = arounds.size(); i < len; i++) {
+                node.next = arounds.get(i);
+                node = arounds.get(i);
+            }
+            node.next = this;
+            invokeChain = arounds.get(0);
         } else {
-            return Aop.get(anno.value());
+            invokeChain = this;
         }
     }
 
-    private final XTran xTran;
-    private final XCache xCache;
-    private final XCacheRemove xCacheRemove;
-    private final InvocationHandler xAround;
+    private void aroundAdd(XAround a) {
+        InvokeHandler h = aroundBuild(a);
+
+        arounds.add(new InvokeHolder(this, a.index(), h));
+    }
+
+    private InvokeHandler aroundBuild(XAround a) {
+        if (a == null) {
+            return null;
+        } else {
+            return Aop.get(a.value());
+        }
+    }
+
     private final Method method;
     private final Parameter[] parameters;
     private final Annotation[] annotations;
+    private final List<InvokeHolder> arounds;
+    private final InvokeChain invokeChain;
 
     /**
      * 获取函数名
@@ -102,61 +128,18 @@ public class MethodWrap {
      * 执行
      */
     public Object invoke(Object obj, Object... args) throws Exception {
+        return doInvoke(obj, args);
+    }
+
+    @Override
+    public Object doInvoke(Object obj, Object[] args) throws Exception {
         return method.invoke(obj, args);
     }
 
     /**
      * 执行，并尝试事务
      */
-    public Object invokeByAspect(Object obj, Object... args) throws Throwable {
-        /* try cache => try tran => try around; */
-
-        //0::try cache
-        //
-
-        Object tmp = invokeByAspect0(obj, args);
-
-        if (xCacheRemove != null) {
-            XBridge.cacheExecutor()
-                    .cacheRemove(xCacheRemove, method, parameters, args);
-        }
-
-        return tmp;
-    }
-
-    private Object invokeByAspect0(Object obj, Object... args) throws Throwable {
-        if (xCache == null) {
-            return invokeByAspect1(obj, args);
-        } else {
-            return XBridge.cacheExecutor()
-                    .cache(xCache, method, parameters, args,
-                            () -> invokeByAspect1(obj, args));
-        }
-    }
-
-    private Object invokeByAspect1(Object obj, Object... args) throws Throwable {
-        //1::try tran
-        //
-        if (xTran == null) {
-            return invokeByAspect2(obj, args);
-        } else {
-            ValHolder val0 = new ValHolder();
-
-            XBridge.tranExecutor().execute(xTran, () -> {
-                val0.value = invokeByAspect2(obj, args);
-            });
-
-            return val0.value;
-        }
-    }
-
-    private Object invokeByAspect2(Object obj, Object[] args) throws Throwable {
-        //2::try around
-        //
-        if (xAround == null) {
-            return method.invoke(obj, args);
-        } else {
-            return xAround.invoke(obj, method, args);
-        }
+    public Object invokeByAspect(Object obj, Object[] args) throws Throwable {
+        return invokeChain.doInvoke(obj, args);
     }
 }

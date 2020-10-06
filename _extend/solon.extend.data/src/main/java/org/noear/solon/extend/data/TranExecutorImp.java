@@ -50,7 +50,7 @@ public class TranExecutorImp implements XTranExecutor {
     protected TranNode tranNever = new TranNeverImp();
     protected TranNode tranMandatory = new TranMandatoryImp();
 
-    @Override
+    //@Override
     public void execute(XTran meta, RunnableEx runnable) throws Throwable {
         if (meta == null) {
             //

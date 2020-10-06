@@ -179,11 +179,11 @@ public class XBridge {
     //
     // XTranExecutor 对接
     //
-    private static XTranExecutor _tranExecutor = (anno, runnable) -> {
-        //默认不开启事务
-        //
-        runnable.run();
-        //throw new RuntimeException("XBridge: The tran actuator is not initialized");
+    private static XTranExecutor _tranExecutor = new XTranExecutor() {
+        @Override
+        public boolean inTrans() {
+            return false;
+        }
     };
 
     /**
@@ -237,29 +237,5 @@ public class XBridge {
     @XNote("获取缓存服务")
     public static CacheService cacheServiceGet(String name) {
         return cacheServiceMap.get(name);
-    }
-
-    private static XCacheExecutor _cacheExecutor;
-
-    /**
-     * 获取缓存执行器
-     */
-    @XNote("获取缓存执行器")
-    public static XCacheExecutor cacheExecutor() {
-        if (_cacheExecutor == null) {
-            throw new RuntimeException("XBridge: The cache actuator is not initialized");
-        }
-
-        return _cacheExecutor;
-    }
-
-    /**
-     * 设置缓存执行器
-     */
-    @XNote("设置缓存执行器")
-    public static void cacheExecutorSet(XCacheExecutor ce) {
-        if (ce != null) {
-            _cacheExecutor = ce;
-        }
     }
 }

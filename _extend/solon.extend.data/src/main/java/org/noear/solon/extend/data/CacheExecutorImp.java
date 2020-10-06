@@ -5,7 +5,6 @@ import org.noear.solon.annotation.XCache;
 import org.noear.solon.annotation.XCacheRemove;
 import org.noear.solon.core.CacheService;
 import org.noear.solon.core.XBridge;
-import org.noear.solon.core.XCacheExecutor;
 import org.noear.solon.ext.SupplierEx;
 
 import java.lang.reflect.Method;
@@ -18,13 +17,13 @@ import java.util.regex.Pattern;
 /**
  * 缓存执行器
  * */
-public class CacheExecutorImp implements XCacheExecutor {
+public class CacheExecutorImp  {
     public static final CacheExecutorImp global = new CacheExecutorImp();
 
     /**
      * 添加缓存
      */
-    @Override
+    //@Override
     public Object cache(XCache anno, Method method, Parameter[] params, Object[] values, SupplierEx callable) throws Throwable {
         if (anno == null) {
             return callable.get();
@@ -70,7 +69,7 @@ public class CacheExecutorImp implements XCacheExecutor {
     /**
      * 清除缓存标签
      */
-    @Override
+    //@Override
     public void cacheRemove(XCacheRemove anno, Method method, Parameter[] params, Object[] values) {
         if (anno == null || XUtil.isEmpty(anno.tags())) {
             return;

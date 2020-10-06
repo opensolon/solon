@@ -1,8 +1,5 @@
 package org.noear.solon.core;
 
-import org.noear.solon.annotation.XTran;
-import org.noear.solon.ext.RunnableEx;
-
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -35,5 +32,5 @@ public interface XTranExecutor {
     /**
      * 执行事务
      */
-    void execute(XTran anno, RunnableEx runnable) throws Throwable;
+    //void execute(XTran anno, RunnableEx runnable) throws Throwable;
 }
