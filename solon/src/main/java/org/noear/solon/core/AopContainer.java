@@ -186,15 +186,15 @@ public class AopContainer {
         if (XUtil.isNotEmpty(name)) {
             //有name的，只用name注入
             //
-            Aop.context().putWrap(name, bw);
+            putWrap(name, bw);
             if (typed == false) {
                 //如果非typed，则直接返回
                 return;
             }
         }
 
-        Aop.context().putWrap(bw.clz(), bw);
-        Aop.context().putWrap(bw.clz().getName(), bw);
+        putWrap(bw.clz(), bw);
+        putWrap(bw.clz().getName(), bw);
 
         //如果有父级接口，则建立关系映射
         Class<?>[] list = bw.clz().getInterfaces();
@@ -202,7 +202,7 @@ public class AopContainer {
             if (c.getName().contains("java.") == false) {
                 //建立关系映射
                 clzMapping.putIfAbsent(c, bw.clz());
-                Aop.context().putWrap(c, bw);
+                putWrap(c, bw);
             }
         }
     }
@@ -286,6 +286,4 @@ public class AopContainer {
             });
         }
     }
-
-
 }
