@@ -13,5 +13,12 @@ import java.lang.reflect.InvocationHandler;
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface XAround {
+    /**
+     * 调用处理程序
+     * */
     Class<? extends InvocationHandler> value();
+    /**
+     * 调用顺位
+     * */
+    int index() default 0;
 }
