@@ -10,10 +10,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -210,13 +207,6 @@ public class AopContext extends AopContainer {
         return bw;
     }
 
-    /**
-     * 完成加载时调用，会进行事件通知
-     * */
-    public void beanLoaded(){
-        //尝试加载事件（不用函数包装，是为了减少代码）
-        loadedEvent.forEach(f -> f.run());
-    }
 
     ////////////////////////////////////////////////////
     //
@@ -340,5 +330,27 @@ public class AopContext extends AopContainer {
             //@XBean 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
             XEventBus.push(m_bw);
         }
+    }
+
+    /////////
+
+
+    private Set<Runnable> loadedEvent = new LinkedHashSet<>();
+
+    //::bean事件处理
+    /**
+     * 添加bean加载完成事件
+     */
+    @XNote("添加bean加载完成事件")
+    public void beanOnloaded(Runnable fun) {
+        loadedEvent.add(fun);
+    }
+
+    /**
+     * 完成加载时调用，会进行事件通知
+     * */
+    public void beanLoaded(){
+        //尝试加载事件（不用函数包装，是为了减少代码）
+        loadedEvent.forEach(f -> f.run());
     }
 }

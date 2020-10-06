@@ -1,10 +1,8 @@
 package org.noear.solon.core;
 
 import org.noear.solon.XUtil;
-import org.noear.solon.annotation.XNote;
 
 import java.util.Properties;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -102,33 +100,5 @@ public class Aop {
      */
     public static <T> T inject(T bean, Properties propS) {
         return XUtil.injectProperties(bean, propS);
-    }
-
-    //::bean事件处理
-    /**
-     * 添加bean加载完成事件
-     */
-    @XNote("添加bean加载完成事件")
-    public static void beanOnloaded(Runnable fun) {
-        _c.loadedEvent.add(fun);
-    }
-
-    /**
-     * 遍历bean库 (拿到的是bean包装)
-     */
-    @XNote("遍历bean库 (拿到的是bean包装)")
-    public static void beanForeach(BiConsumer<String, BeanWrap> action) {
-        _c.beans.forEach(action);
-
-    }
-
-    /**
-     * 遍历bean包装库
-     */
-    @XNote("遍历bean包装库")
-    public static void beanForeach(Consumer<BeanWrap> action) {
-        _c.beanWraps.forEach((k, bw) -> {
-            action.accept(bw);
-        });
     }
 }

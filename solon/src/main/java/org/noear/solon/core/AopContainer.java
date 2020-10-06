@@ -3,16 +3,13 @@ package org.noear.solon.core;
 
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
-import org.noear.solon.annotation.XBean;
-import org.noear.solon.annotation.XInject;
-import org.noear.solon.ext.BiConsumerEx;
+import org.noear.solon.annotation.XNote;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Parameter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * 为 AopFactory 提供存储 支持，并提供注册管理
@@ -60,17 +57,6 @@ public class AopContainer {
     public <T extends Annotation> void beanInjectorAdd(Class<T> anno, BeanInjector<T> injector) {
         beanInjectors.put(anno, injector);
     }
-
-    //////////////////////////
-    //
-    // bean 对外事件存储
-    //
-    /////////////////////////
-
-    /**
-     * bean 加载完成事件
-     */
-    protected final Set<Runnable> loadedEvent = new LinkedHashSet<>();
 
     //////////////////////////
     //
@@ -295,5 +281,30 @@ public class AopContainer {
                 varH.setValue(bw.get());
             });
         }
+    }
+
+    //////////////////////////
+    //
+    // bean 遍历
+    //
+    /////////////////////////
+
+    /**
+     * 遍历bean库 (拿到的是bean包装)
+     */
+    @XNote("遍历bean库 (拿到的是bean包装)")
+    public void beanForeach(BiConsumer<String, BeanWrap> action) {
+        beans.forEach(action);
+
+    }
+
+    /**
+     * 遍历bean包装库
+     */
+    @XNote("遍历bean包装库")
+    public void beanForeach(Consumer<BeanWrap> action) {
+        beanWraps.forEach((k, bw) -> {
+            action.accept(bw);
+        });
     }
 }
