@@ -24,7 +24,7 @@ public class XPluginImp implements XPlugin {
         //
         WeedConfig.connectionFactory = new DsConnectionFactoryImpl();
 
-        Aop.factory().beanCreatorAdd(Db.class, (clz, cbw, anno) -> {
+        Aop.context().beanCreatorAdd(Db.class, (clz, cbw, anno) -> {
             if (clz.isInterface() == false) {
                 return;
             }
@@ -42,7 +42,7 @@ public class XPluginImp implements XPlugin {
             }
         });
 
-        Aop.factory().beanInjectorAdd(Db.class, (varH, anno) -> {
+        Aop.context().beanInjectorAdd(Db.class, (varH, anno) -> {
             if (XUtil.isEmpty(anno.value())) {
                 Aop.getAsyn(DataSource.class, (dsBw) -> {
                     inject0(varH, dsBw);

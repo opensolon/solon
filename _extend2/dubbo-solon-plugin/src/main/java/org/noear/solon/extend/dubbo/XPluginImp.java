@@ -20,7 +20,7 @@ public class XPluginImp implements XPlugin {
         _server = DubboAdapter.global(app);
 
         //支持duboo.Service注解
-        Aop.factory().beanCreatorAdd(Service.class, ((clz, bw, anno) -> {
+        Aop.context().beanCreatorAdd(Service.class, ((clz, bw, anno) -> {
             Class<?>[] ifs = bw.clz().getInterfaces();
             if (ifs.length > 0) {
                 ServiceConfig cfg = new ServiceConfig(anno);
@@ -35,7 +35,7 @@ public class XPluginImp implements XPlugin {
         }));
 
         //支持dubbo.Reference注入
-        Aop.factory().beanInjectorAdd(Reference.class, ((fwT, anno) -> {
+        Aop.context().beanInjectorAdd(Reference.class, ((fwT, anno) -> {
             if (fwT.getType().isInterface()) {
                 Object raw = _server.getService(fwT.getType(), anno);
                 fwT.setValue(raw);

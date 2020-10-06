@@ -43,7 +43,7 @@ public class TestController extends TestControllerBase{
             return "出错了";
         }
 
-        if("test".equals(Aop.factory().getWrap(TestModel.class).tag()) == false){
+        if("test".equals(Aop.context().getWrap(TestModel.class).tag()) == false){
             return "出错了";
         }
 

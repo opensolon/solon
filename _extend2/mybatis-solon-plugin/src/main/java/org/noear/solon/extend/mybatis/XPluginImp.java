@@ -13,7 +13,7 @@ public class XPluginImp implements XPlugin {
     public void start(XApp app) {
         app.onEvent(BeanWrap.class, new DsEventListener());
 
-        Aop.factory().beanCreatorAdd(Db.class, (clz, wrap, anno) -> {
+        Aop.context().beanCreatorAdd(Db.class, (clz, wrap, anno) -> {
             if (clz.isInterface() == false) {
                 return;
             }
@@ -31,7 +31,7 @@ public class XPluginImp implements XPlugin {
             }
         });
 
-        Aop.factory().beanInjectorAdd(Db.class, (varH, anno) -> {
+        Aop.context().beanInjectorAdd(Db.class, (varH, anno) -> {
             if (XUtil.isEmpty(anno.value())) {
                 Aop.getAsyn(DataSource.class, (dsBw) -> {
                     inject0(varH, dsBw);

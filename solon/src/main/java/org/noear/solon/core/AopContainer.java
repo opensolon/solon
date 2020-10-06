@@ -11,7 +11,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -284,7 +283,7 @@ public class AopContainer {
             m_bw.attrsSet(anno.attrs());
             m_bw.typedSet(anno.typed());
 
-            Aop.factory().beanRegister(m_bw, anno.value(), anno.typed());
+            Aop.context().beanRegister(m_bw, anno.value(), anno.typed());
 
             //@XBean 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
             XEventBus.push(m_bw);
@@ -378,15 +377,15 @@ public class AopContainer {
         if (XUtil.isNotEmpty(name)) {
             //有name的，只用name注入
             //
-            Aop.factory().putWrap(name, bw);
+            Aop.context().putWrap(name, bw);
             if (typed == false) {
                 //如果非typed，则直接返回
                 return;
             }
         }
 
-        Aop.factory().putWrap(bw.clz(), bw);
-        Aop.factory().putWrap(bw.clz().getName(), bw);
+        Aop.context().putWrap(bw.clz(), bw);
+        Aop.context().putWrap(bw.clz().getName(), bw);
 
         //如果有父级接口，则建立关系映射
         Class<?>[] list = bw.clz().getInterfaces();
@@ -394,7 +393,7 @@ public class AopContainer {
             if (c.getName().contains("java.") == false) {
                 //建立关系映射
                 clzMapping.putIfAbsent(c, bw.clz());
-                Aop.factory().putWrap(c, bw);
+                Aop.context().putWrap(c, bw);
             }
         }
     }

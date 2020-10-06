@@ -7,7 +7,6 @@ import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.*;
 
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 
@@ -19,11 +18,11 @@ public class XPluginImp implements XPlugin {
             return;
         }
 
-        Aop.factory().beanCreatorAdd(FeignClient.class, (clz, wrap, anno) -> {
+        Aop.context().beanCreatorAdd(FeignClient.class, (clz, wrap, anno) -> {
             getProxy(clz, anno, obj -> Aop.wrapAndPut(clz, obj));
         });
 
-        Aop.factory().beanInjectorAdd(FeignClient.class, (varH, anno) -> {
+        Aop.context().beanInjectorAdd(FeignClient.class, (varH, anno) -> {
             getProxy(varH.getType(), anno, obj -> varH.setValue(obj));
         });
     }

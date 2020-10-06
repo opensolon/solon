@@ -26,7 +26,7 @@ public class XPluginImp implements XPlugin {
             FairyConfigurationDefault.proxy = new FairyConfigurationSolon();
         }
 
-        Aop.factory().beanInjectorAdd(FairyClient.class, (varH, anno) -> {
+        Aop.context().beanInjectorAdd(FairyClient.class, (varH, anno) -> {
             if (varH.getType().isInterface() == false) {
                 return;
             }

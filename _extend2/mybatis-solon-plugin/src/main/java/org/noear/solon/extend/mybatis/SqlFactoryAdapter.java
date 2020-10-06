@@ -194,7 +194,7 @@ class SqlFactoryAdapter {
         if (clz != null && clz.isInterface()) {
             Object mapper = proxy.getMapper(clz);
 
-            Aop.factory().putWrap(clz, Aop.wrap(clz,mapper));
+            Aop.context().putWrap(clz, Aop.wrap(clz,mapper));
         }
     }
 }

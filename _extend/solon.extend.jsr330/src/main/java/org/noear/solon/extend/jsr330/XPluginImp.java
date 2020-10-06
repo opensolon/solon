@@ -13,7 +13,7 @@ import javax.inject.Singleton;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        Aop.factory().beanCreatorAdd(Named.class, (clz, bw, anno) -> {
+        Aop.context().beanCreatorAdd(Named.class, (clz, bw, anno) -> {
 
             if (XPlugin.class.isAssignableFrom(bw.clz())) {
                 //如果是插件，则插入
@@ -21,7 +21,7 @@ public class XPluginImp implements XPlugin {
             } else {
 
                 //注册到管理中心
-                Aop.factory().beanRegister(bw, anno.value(), false);
+                Aop.context().beanRegister(bw, anno.value(), false);
 
                 //如果是remoting状态，转到XApp路由器
                 if (bw.remoting()) {
@@ -36,16 +36,16 @@ public class XPluginImp implements XPlugin {
             }
         });
 
-        Aop.factory().beanInjectorAdd(Inject.class, (fwT, anno) -> {
+        Aop.context().beanInjectorAdd(Inject.class, (fwT, anno) -> {
             Named tmp = fwT.getType().getAnnotation(Named.class);
             if(tmp == null || XUtil.isEmpty(tmp.value())){
-                Aop.factory().tryInjectByName(fwT, null);
+                Aop.context().tryInjectByName(fwT, null);
             }else{
-                Aop.factory().tryInjectByName(fwT, tmp.value());
+                Aop.context().tryInjectByName(fwT, tmp.value());
             }
         });
 
-        Aop.factory().beanCreatorAdd(Singleton.class, (clz, bw, anno) -> {
+        Aop.context().beanCreatorAdd(Singleton.class, (clz, bw, anno) -> {
             bw.singletonSet(true);
         });
     }

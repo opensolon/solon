@@ -15,17 +15,17 @@ import java.util.function.Consumer;
  * @since 1.0
  * */
 public class Aop {
-    //::工厂
+    //::上下文
     /**
-     * Aop处理工厂
+     * Aop上下文
      */
-    private static AopContext _f = new AopContext();
+    private static AopContext _c = new AopContext();
 
     /**
-     * 获取Aop处理工厂
+     * 获取Aop上下文
      */
-    public static AopContext factory() {
-        return _f;
+    public static AopContext context() {
+        return _c;
     }
 
 
@@ -35,7 +35,7 @@ public class Aop {
      * 包装bean（clz），不负责注册
      */
     public static BeanWrap wrap(Class<?> clz, Object bean) {
-        return  _f.wrap(clz, bean);
+        return  _c.wrap(clz, bean);
     }
 
     public static BeanWrap wrapAndPut(Class<?> clz) {
@@ -43,10 +43,10 @@ public class Aop {
     }
 
     public static BeanWrap wrapAndPut(Class<?> clz, Object bean) {
-        BeanWrap wrap = _f.getWrap(clz);
+        BeanWrap wrap = _c.getWrap(clz);
         if (wrap == null) {
             wrap = new BeanWrap(clz, bean);
-            _f.putWrap(clz, wrap);
+            _c.putWrap(clz, wrap);
         }
 
         return wrap;
@@ -58,7 +58,7 @@ public class Aop {
      * 获取bean (key)
      */
     public static <T> T get(String key) {
-        BeanWrap bw = _f.getWrap(key);
+        BeanWrap bw = _c.getWrap(key);
         return bw == null ? null : bw.get();
     }
 
@@ -88,10 +88,10 @@ public class Aop {
     }
 
     private static void getAsynDo(Object key, Consumer<BeanWrap> callback) {
-        BeanWrap wrap = _f.getWrap(key);
+        BeanWrap wrap = _c.getWrap(key);
 
         if (wrap == null || wrap.raw() == null) {
-            _f.beanSubscribe(key, callback);
+            _c.beanSubscribe(key, callback);
         } else {
             callback.accept(wrap);
         }
@@ -101,7 +101,7 @@ public class Aop {
      * 尝试注入（建议使用：get(clz) ）
      */
     public static <T> T inject(T bean) {
-        _f.beanInject(bean);
+        _c.beanInject(bean);
         return bean;
     }
 
@@ -119,7 +119,7 @@ public class Aop {
      */
     @XNote("添加bean加载完成事件")
     public static void beanOnloaded(Runnable fun) {
-        _f.loadedEvent.add(fun);
+        _c.loadedEvent.add(fun);
     }
 
     /**
@@ -127,7 +127,7 @@ public class Aop {
      */
     @XNote("遍历bean库 (拿到的是bean包装)")
     public static void beanForeach(BiConsumer<String, BeanWrap> action) {
-        _f.beans.forEach(action);
+        _c.beans.forEach(action);
 
     }
 
@@ -136,7 +136,7 @@ public class Aop {
      */
     @XNote("遍历bean包装库")
     public static void beanForeach(Consumer<BeanWrap> action) {
-        _f.beanWraps.forEach((k, bw) -> {
+        _c.beanWraps.forEach((k, bw) -> {
             action.accept(bw);
         });
     }

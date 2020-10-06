@@ -34,7 +34,7 @@ public class AopContext extends AopContainer {
      */
     protected void initialize() {
 
-        Aop.factory().beanCreatorAdd(XConfiguration.class, (clz, bw, anno) -> {
+        Aop.context().beanCreatorAdd(XConfiguration.class, (clz, bw, anno) -> {
             XInject typeInj = clz.getAnnotation(XInject.class);
             if (typeInj != null && XUtil.isNotEmpty(typeInj.value())) {
                 if (typeInj.value().startsWith("${")) {
@@ -48,7 +48,7 @@ public class AopContext extends AopContainer {
                 if (m_an != null) {
                     XInject beanInj = mWrap.getMethod().getAnnotation(XInject.class);
 
-                    Aop.factory().tryBuildBean(m_an, mWrap, bw, beanInj, (p1) -> {
+                    Aop.context().tryBuildBean(m_an, mWrap, bw, beanInj, (p1) -> {
                         XInject tmp = p1.getAnnotation(XInject.class);
                         if (tmp == null) {
                             return null;
@@ -63,7 +63,7 @@ public class AopContext extends AopContainer {
             addBeanShape(clz, bw);
         });
 
-        Aop.factory().beanCreatorAdd(XBean.class, (clz, bw, anno) -> {
+        Aop.context().beanCreatorAdd(XBean.class, (clz, bw, anno) -> {
             bw.nameSet(anno.value());
             bw.tagSet(anno.tag());
             bw.attrsSet(anno.attrs());
@@ -76,7 +76,7 @@ public class AopContext extends AopContainer {
             bw.remotingSet(anno.remoting());
 
             //注册到管理中心
-            Aop.factory().beanRegister(bw, anno.value(), anno.typed());
+            Aop.context().beanRegister(bw, anno.value(), anno.typed());
 
             //如果是remoting状态，转到XApp路由器
             if (bw.remoting()) {
@@ -90,15 +90,15 @@ public class AopContext extends AopContainer {
             }
         });
 
-        Aop.factory().beanCreatorAdd(XController.class, (clz, bw, anno) -> {
+        Aop.context().beanCreatorAdd(XController.class, (clz, bw, anno) -> {
             new BeanWebWrap(bw).load(XApp.global());
         });
 
-        Aop.factory().beanCreatorAdd(XInterceptor.class, (clz, bw, anno) -> {
+        Aop.context().beanCreatorAdd(XInterceptor.class, (clz, bw, anno) -> {
             new BeanWebWrap(bw).main(false).load(XApp.global());
         });
 
-        Aop.factory().beanCreatorAdd(XServerEndpoint.class, (clz, wrap, anno) -> {
+        Aop.context().beanCreatorAdd(XServerEndpoint.class, (clz, wrap, anno) -> {
             if (XListener.class.isAssignableFrom(clz)) {
                 XListener l = wrap.raw();
                 XApp.global().router().add(anno.value(), anno.method(), l);
@@ -106,8 +106,8 @@ public class AopContext extends AopContainer {
         });
 
 
-        Aop.factory().beanInjectorAdd(XInject.class, ((fwT, anno) -> {
-            Aop.factory().tryInjectByName(fwT, anno.value());
+        Aop.context().beanInjectorAdd(XInject.class, ((fwT, anno) -> {
+            Aop.context().tryInjectByName(fwT, anno.value());
         }));
     }
 
