@@ -14,10 +14,7 @@ import java.util.function.Consumer;
  * @since 1.0
  * */
 public class Aop {
-    //::上下文
-    /**
-     * Aop上下文
-     */
+
     private static AopContext _c = new AopContext();
 
     /**
@@ -28,7 +25,7 @@ public class Aop {
     }
 
 
-    //::包装bean
+    //::bean包装
 
     /**
      * 包装bean（clz），不负责注册
@@ -51,7 +48,16 @@ public class Aop {
         return wrap;
     }
 
-    //::获取bean
+    //::bean获取
+
+
+    /**
+     * 是否有bean(key: name or type)
+     * */
+    public static boolean has(Object key){
+        return _c.getWrap(key) != null;
+    }
+
 
     /**
      * 获取bean (key:name)
@@ -73,13 +79,6 @@ public class Aop {
     }
 
     /**
-     * 是否有bean(key: name or type)
-     * */
-    public static boolean has(Object key){
-        return _c.getWrap(key) != null;
-    }
-
-    /**
      * 异步获取bean (key)
      */
     public static void getAsyn(String key, Consumer<BeanWrap> callback) {
@@ -93,6 +92,8 @@ public class Aop {
         _c.getWrapAsync(clz, callback);
     }
 
+
+    //::bean注入
 
     /**
      * 尝试注入（建议使用：get(clz) ）
