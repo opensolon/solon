@@ -24,7 +24,7 @@ import java.util.function.Function;
  * @author noear
  * @since 1.0
  * */
-public class AopContext extends AopContainer {
+public class AopContext extends BeanContainer {
 
 
     public AopContext() {
@@ -36,7 +36,7 @@ public class AopContext extends AopContainer {
      */
     protected void initialize() {
 
-        beanCreatorAdd(XConfiguration.class, (clz, bw, anno) -> {
+        beanBuilderAdd(XConfiguration.class, (clz, bw, anno) -> {
             XInject typeInj = clz.getAnnotation(XInject.class);
             if (typeInj != null && XUtil.isNotEmpty(typeInj.value())) {
                 if (typeInj.value().startsWith("${")) {
@@ -65,7 +65,7 @@ public class AopContext extends AopContainer {
             addBeanShape(clz, bw);
         });
 
-        beanCreatorAdd(XBean.class, (clz, bw, anno) -> {
+        beanBuilderAdd(XBean.class, (clz, bw, anno) -> {
             bw.nameSet(anno.value());
             bw.tagSet(anno.tag());
             bw.attrsSet(anno.attrs());
@@ -92,15 +92,15 @@ public class AopContext extends AopContainer {
             }
         });
 
-        beanCreatorAdd(XController.class, (clz, bw, anno) -> {
+        beanBuilderAdd(XController.class, (clz, bw, anno) -> {
             new BeanWebWrap(bw).load(XApp.global());
         });
 
-        beanCreatorAdd(XInterceptor.class, (clz, bw, anno) -> {
+        beanBuilderAdd(XInterceptor.class, (clz, bw, anno) -> {
             new BeanWebWrap(bw).main(false).load(XApp.global());
         });
 
-        beanCreatorAdd(XServerEndpoint.class, (clz, wrap, anno) -> {
+        beanBuilderAdd(XServerEndpoint.class, (clz, wrap, anno) -> {
             if (XListener.class.isAssignableFrom(clz)) {
                 XListener l = wrap.raw();
                 XApp.global().router().add(anno.value(), anno.method(), l);
@@ -244,13 +244,13 @@ public class AopContext extends AopContainer {
         });
     }
 
-    protected void tryCreateBean0(Class<?> clz, BiConsumerEx<BeanCreator, Annotation> consumer) {
+    protected void tryCreateBean0(Class<?> clz, BiConsumerEx<BeanBuilder, Annotation> consumer) {
         Annotation[] annS = clz.getDeclaredAnnotations();
 
         if (annS.length > 0) {
             try {
                 for (Annotation a : annS) {
-                    BeanCreator creator = beanCreators.get(a.annotationType());
+                    BeanBuilder creator = beanBuilders.get(a.annotationType());
                     if (creator != null) {
                         consumer.accept(creator, a);
                     }

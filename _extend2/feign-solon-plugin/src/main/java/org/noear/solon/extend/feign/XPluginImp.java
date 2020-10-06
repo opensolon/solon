@@ -18,7 +18,7 @@ public class XPluginImp implements XPlugin {
             return;
         }
 
-        Aop.context().beanCreatorAdd(FeignClient.class, (clz, wrap, anno) -> {
+        Aop.context().beanBuilderAdd(FeignClient.class, (clz, wrap, anno) -> {
             getProxy(clz, anno, obj -> Aop.wrapAndPut(clz, obj));
         });
 

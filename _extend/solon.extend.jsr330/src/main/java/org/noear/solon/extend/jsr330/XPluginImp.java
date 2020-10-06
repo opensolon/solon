@@ -13,7 +13,7 @@ import javax.inject.Singleton;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        Aop.context().beanCreatorAdd(Named.class, (clz, bw, anno) -> {
+        Aop.context().beanBuilderAdd(Named.class, (clz, bw, anno) -> {
 
             if (XPlugin.class.isAssignableFrom(bw.clz())) {
                 //如果是插件，则插入
@@ -45,7 +45,7 @@ public class XPluginImp implements XPlugin {
             }
         });
 
-        Aop.context().beanCreatorAdd(Singleton.class, (clz, bw, anno) -> {
+        Aop.context().beanBuilderAdd(Singleton.class, (clz, bw, anno) -> {
             bw.singletonSet(true);
         });
     }

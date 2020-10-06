@@ -20,7 +20,7 @@ public class XPluginImp implements XPlugin {
         _server = DubboAdapter.global(app);
 
         //支持duboo.Service注解
-        Aop.context().beanCreatorAdd(Service.class, ((clz, bw, anno) -> {
+        Aop.context().beanBuilderAdd(Service.class, ((clz, bw, anno) -> {
             Class<?>[] ifs = bw.clz().getInterfaces();
             if (ifs.length > 0) {
                 ServiceConfig cfg = new ServiceConfig(anno);

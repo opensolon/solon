@@ -16,7 +16,7 @@ import java.util.function.Consumer;
  * @author noear
  * @since 1.0
  * */
-public class AopContainer {
+public class BeanContainer {
     //////////////////////////
     //
     // 容器存储
@@ -39,7 +39,7 @@ public class AopContainer {
     /**
      * bean loaders
      */
-    protected final Map<Class<?>, BeanCreator<?>> beanCreators = new HashMap<>();
+    protected final Map<Class<?>, BeanBuilder<?>> beanBuilders = new HashMap<>();
     /**
      * bean injectors
      */
@@ -47,10 +47,10 @@ public class AopContainer {
 
 
     /**
-     * 添加 bean creator, injector
+     * 添加 bean builder, injector
      */
-    public <T extends Annotation> void beanCreatorAdd(Class<T> anno, BeanCreator<T> creater) {
-        beanCreators.put(anno, creater);
+    public <T extends Annotation> void beanBuilderAdd(Class<T> anno, BeanBuilder<T> creater) {
+        beanBuilders.put(anno, creater);
     }
 
     public <T extends Annotation> void beanInjectorAdd(Class<T> anno, BeanInjector<T> injector) {

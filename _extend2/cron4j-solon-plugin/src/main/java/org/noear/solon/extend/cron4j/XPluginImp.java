@@ -14,7 +14,7 @@ public class XPluginImp implements XPlugin {
     public void start(XApp app) {
         JobManager.init();
 
-        Aop.context().beanCreatorAdd(Job.class, (clz, bw, anno) -> {
+        Aop.context().beanBuilderAdd(Job.class, (clz, bw, anno) -> {
             String cron4x = anno.cron4x();
             String name = anno.name();
             boolean enable = anno.enable();

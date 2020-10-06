@@ -23,7 +23,7 @@ public class XPluginImp implements XPlugin {
         //监听事件
         app.onEvent(BeanWrap.class, new DsEventListener());
 
-        Aop.context().beanCreatorAdd(Db.class, (clz, wrap, anno) -> {
+        Aop.context().beanBuilderAdd(Db.class, (clz, wrap, anno) -> {
             if (clz.isInterface() == false) {
                 return;
             }

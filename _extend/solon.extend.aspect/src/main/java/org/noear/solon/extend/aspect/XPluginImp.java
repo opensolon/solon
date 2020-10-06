@@ -9,11 +9,11 @@ import org.noear.solon.extend.aspect.annotation.XService;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        Aop.context().beanCreatorAdd(XDao.class, (clz, bw, anno) -> {
+        Aop.context().beanBuilderAdd(XDao.class, (clz, bw, anno) -> {
             bw.proxySet(BeanProxyImp.global());
         });
 
-        Aop.context().beanCreatorAdd(XService.class, (clz, bw, anno) -> {
+        Aop.context().beanBuilderAdd(XService.class, (clz, bw, anno) -> {
             bw.proxySet(BeanProxyImp.global());
         });
     }

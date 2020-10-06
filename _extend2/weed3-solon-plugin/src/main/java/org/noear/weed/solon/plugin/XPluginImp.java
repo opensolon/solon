@@ -24,7 +24,7 @@ public class XPluginImp implements XPlugin {
         //
         WeedConfig.connectionFactory = new DsConnectionFactoryImpl();
 
-        Aop.context().beanCreatorAdd(Db.class, (clz, cbw, anno) -> {
+        Aop.context().beanBuilderAdd(Db.class, (clz, cbw, anno) -> {
             if (clz.isInterface() == false) {
                 return;
             }
