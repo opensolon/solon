@@ -16,7 +16,7 @@ public class XPluginImp implements XPlugin {
             app.onEvent(BeanWrap.class, new CacheEventListener());
         }
 
-        Aop.beanOnloaded(() -> {
+        Aop.context().beanOnloaded(() -> {
             if (Aop.context().getWrap(CacheService.class) == null) {
                 Aop.wrapAndPut(CacheService.class, CacheServiceDefault.instance);
             }

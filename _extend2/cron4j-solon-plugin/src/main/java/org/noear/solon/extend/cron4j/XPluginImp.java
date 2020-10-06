@@ -39,8 +39,8 @@ public class XPluginImp implements XPlugin {
             scheduleAdd(name, cron4x, enable, bw);
         });
 
-        Aop.beanOnloaded(() -> {
-            Aop.beanForeach((k, bw) -> {
+        Aop.context().beanOnloaded(() -> {
+            Aop.context().beanForeach((k, bw) -> {
                 if (k.startsWith("job:") && k.length() > 5) {
                     String name = k.split(":")[1];
                     Properties prop = XApp.cfg().getProp("solon.schedule." + name);

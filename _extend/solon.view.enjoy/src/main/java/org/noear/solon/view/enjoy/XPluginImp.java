@@ -17,8 +17,8 @@ public class XPluginImp implements XPlugin {
 
         EnjoyRender render =  EnjoyRender.global();
 
-        Aop.beanOnloaded(() -> {
-            Aop.beanForeach((k, v) -> {
+        Aop.context().beanOnloaded(() -> {
+            Aop.context().beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
                     if(Directive.class.isAssignableFrom(v.clz())){
                         render.addDirective(k.split(":")[1], (Class<? extends Directive>)v.clz());

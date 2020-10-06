@@ -16,8 +16,8 @@ public class XPluginImp implements XPlugin {
 
         FreemarkerRender render = FreemarkerRender.global();
 
-        Aop.beanOnloaded(() -> {
-            Aop.beanForeach((k, v) -> {
+        Aop.context().beanOnloaded(() -> {
+            Aop.context().beanForeach((k, v) -> {
                 if (k.startsWith("view:") || k.startsWith("ftl:")) { //java view widget
                     if(TemplateDirectiveModel.class.isAssignableFrom(v.clz())) {
                         render.setSharedVariable(k.split(":")[1], v.raw());

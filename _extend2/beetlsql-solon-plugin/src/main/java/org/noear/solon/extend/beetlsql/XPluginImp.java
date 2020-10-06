@@ -57,7 +57,7 @@ public class XPluginImp implements XPlugin {
 
         //初始化管理器（主要为了生成动态管理器）
         //
-        Aop.beanOnloaded(() -> {
+        Aop.context().beanOnloaded(() -> {
             BeanWrap defBw = Aop.context().getWrap(DataSource.class);
             DbManager.global().dynamicBuild(defBw);
 
