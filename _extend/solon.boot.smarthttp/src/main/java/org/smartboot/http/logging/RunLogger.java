@@ -31,7 +31,7 @@ public class RunLogger {
     private RunLogger() {
         logger = Logger.getLogger(RunLogger.class.getName());
         logger.setUseParentHandlers(false);
-        logger.getParent().setLevel(Level.ALL);
+        logger.getParent().setLevel(Level.INFO);
     }
 
     public static RunLogger getLogger() {
@@ -130,7 +130,7 @@ public class RunLogger {
     private void setInnerLoggerCfg() {
         LoggerConfig cfg = new LoggerConfig();
         cfg.setLog2console(true);
-        cfg.setLevel(Level.ALL);
+        cfg.setLevel(Level.INFO);
         init(cfg);
     }
 
