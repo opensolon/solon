@@ -26,10 +26,11 @@
         </dependency>
 
         <dependency>
-            <groupId>org.smartboot.http</groupId>
-            <artifactId>smart-http-server</artifactId>
-            <version>1.0.17</version>
+            <groupId>org.smartboot.socket</groupId>
+            <artifactId>aio-core</artifactId>
+            <version>1.5.0</version>
         </dependency>
+
     </dependencies>
 
 </project>

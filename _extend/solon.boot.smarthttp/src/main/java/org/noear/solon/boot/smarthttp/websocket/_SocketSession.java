@@ -105,12 +105,12 @@ public class _SocketSession implements XSession {
 
     @Override
     public InetSocketAddress getRemoteAddress() {
-        return null;
+        return request.getRemoteAddress();
     }
 
     @Override
     public InetSocketAddress getLocalAddress() {
-        return null;
+        return request.getLocalAddress();
     }
 
     private Object _attachment;

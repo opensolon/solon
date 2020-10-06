@@ -29,6 +29,7 @@ public final class XPluginImp implements XPlugin {
         SmartHttpContextHandler _handler = new SmartHttpContextHandler();
 
         _server = new HttpBootstrap();
+        _server.setBannerEnabled(false);
         _server.pipeline().next(_handler);
 
         if (app.enableWebSocket()) {
