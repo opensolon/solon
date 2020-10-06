@@ -7,24 +7,24 @@ import java.util.regex.Pattern;
  * 路径分析器
  * */
 public class PathAnalyzer {
-    private Pattern pattern;
+    private Pattern ptn;
 
     public PathAnalyzer(String path){
-        pattern = Pattern.compile(expCompile(path), Pattern.CASE_INSENSITIVE);
+        ptn = Pattern.compile(expCompile(path), Pattern.CASE_INSENSITIVE);
     }
 
     /**
      * 获取路径匹配结果
      * */
     public Matcher matcher(String uri){
-        return pattern.matcher(uri);
+        return ptn.matcher(uri);
     }
 
     /**
      * 检测是否匹配
      * */
     public boolean matches(String uri){
-        return pattern.matcher(uri).find();
+        return ptn.matcher(uri).find();
     }
 
     /**
