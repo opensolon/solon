@@ -16,10 +16,9 @@ import java.util.function.Function;
 /**
  * Aop 处理工厂（可以被继承重写）
  *
- * 主要实现三个动作：
- * 1.生成 bean
- * 2.构建 bean
- * 3.注入 字段或参数
+ * 主要实现两个动作：
+ * 1.bean 构建
+ * 2.bean 注入（字段 或 参数）
  *
  * @author noear
  * @since 1.0
