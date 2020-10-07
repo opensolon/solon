@@ -66,7 +66,7 @@ public class App{
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.0.41</version>
+    <version>1.0.42</version>
 </parent>
 
 <dependencies>
@@ -209,7 +209,7 @@ public class DemoController{
 >
 > 测试：wrk -t10 -c200 -d30s --latency "http://127.0.0.1:8080/"
 
-|  solon 1.0.41 | 大小 | QPS | spring boot 2.3.3  |  QPS  | 
+|  solon 1.0.42 | 大小 | QPS | spring boot 2.3.3  |  QPS  | 
 | -------- | -------- | -------- | -------- | -------- |
 | solon.boot.jlhttp (可独立运行)     | 0.1m     | 4.7万左右     | /   |    | 
 | /     |      |      | spring-boot-starter-tomcat   |  3.2万左右  | 
