@@ -153,6 +153,10 @@ public class StringUtils {
     }
 
     public static String convertToString(char[] bytes, int offset, int length, List<StringCache>[] cacheList) {
+        if (length == 0) {
+            return "";
+        }
+
         if (length >= cacheList.length) {
             return new String(bytes, offset, length);
         }
