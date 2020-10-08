@@ -214,7 +214,7 @@ public class WizzContext extends XContext {
 
             for (Object kv : _request.headers().entrySet()) {
                 Map.Entry<String, MultiValue> kv2 = (Map.Entry<String, MultiValue>) kv;
-                _headerMap.put(kv2.getKey(), kv2.getValue().getValue());
+                _headerMap.put(kv2.getKey(), kv2.getValue().toString());
             }
         }
 
