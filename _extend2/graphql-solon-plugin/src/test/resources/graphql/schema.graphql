@@ -1,0 +1,5 @@
+type Author {
+    id: Int!
+    name: String
+    photo: String
+}
