@@ -53,7 +53,7 @@ public final class XPluginImp implements XPlugin {
                 XMethod.DELETE.name,
                 XMethod.PATCH.name);
 
-        System.out.println("solon.Server:main: JlHttpServer 2.4");
+        System.out.println("solon.Server:main: JlHttpServer 2.4(jlhttp)");
 
         try {
             _server.setPort(app.port());
@@ -61,8 +61,8 @@ public final class XPluginImp implements XPlugin {
 
             long time_end = System.currentTimeMillis();
 
-            System.out.println("solon.Connector:main: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
-            System.out.println("solon.Server:main: Started @" + (time_end - time_start) + "ms");
+            System.out.println("solon.Connector:main: jlhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
+            System.out.println("solon.Server:main: jlhttp: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -74,7 +74,7 @@ public final class XPluginImp implements XPlugin {
             _server.stop();
             _server = null;
 
-            System.out.println("solon.Server:main: Has Stopped " + solon_boot_ver());
+            System.out.println("solon.Server:main: jlhttp: Has Stopped " + solon_boot_ver());
         }
     }
 }

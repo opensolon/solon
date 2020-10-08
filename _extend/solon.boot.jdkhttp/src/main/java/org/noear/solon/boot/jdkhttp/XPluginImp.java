@@ -12,7 +12,7 @@ public final class XPluginImp implements XPlugin {
     private HttpServer _server = null;
 
     public static String solon_boot_ver(){
-        return "jdk http jdk8/1.0.42";
+        return "jdk http/1.0.42";
     }
 
     @Override
@@ -25,7 +25,7 @@ public final class XPluginImp implements XPlugin {
 
         long time_start = System.currentTimeMillis();
 
-        System.out.println("solon.Server:main: Sun.net.HttpServer jdk8");
+        System.out.println("solon.Server:main: Sun.net.HttpServer(jdkhttp)");
 
         try {
             _server = HttpServer.create(new InetSocketAddress(app.port()), 0);
@@ -38,8 +38,8 @@ public final class XPluginImp implements XPlugin {
 
             long time_end = System.currentTimeMillis();
 
-            System.out.println("solon.Connector:main: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
-            System.out.println("solon.Server:main: Started @" + (time_end - time_start) + "ms");
+            System.out.println("solon.Connector:main: jdkhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
+            System.out.println("solon.Server:main: jdkhttp: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -53,6 +53,6 @@ public final class XPluginImp implements XPlugin {
 
         _server.stop(0);
         _server = null;
-        System.out.println("solon.Server:main: Has Stopped " + solon_boot_ver());
+        System.out.println("solon.Server:main: jdkhttp: Has Stopped " + solon_boot_ver());
     }
 }

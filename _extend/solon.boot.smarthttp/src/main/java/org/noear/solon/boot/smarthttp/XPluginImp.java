@@ -13,7 +13,7 @@ public final class XPluginImp implements XPlugin {
     HttpBootstrap _server = null;
 
     public static String solon_boot_ver(){
-        return "smart http 1.0.16/1.0.42";
+        return "smart http 1.0.7/1.0.42";
     }
 
     @Override
@@ -37,7 +37,7 @@ public final class XPluginImp implements XPlugin {
         }
 
 
-        System.out.println("solon.Server:main: SmartHttpServer 1.0.42");
+        System.out.println("solon.Server:main: SmartHttpServer 1.0.7(smarthttp)");
 
         try {
 
@@ -49,8 +49,8 @@ public final class XPluginImp implements XPlugin {
 
             long time_end = System.currentTimeMillis();
 
-            System.out.println("solon.Connector:main: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
-            System.out.println("solon.Server:main: Started @" + (time_end - time_start) + "ms");
+            System.out.println("solon.Connector:main: smarthttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
+            System.out.println("solon.Server:main: smarthttp: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -62,7 +62,7 @@ public final class XPluginImp implements XPlugin {
             _server.shutdown();
             _server = null;
 
-            System.out.println("solon.Server:main: Has Stopped " + solon_boot_ver());
+            System.out.println("solon.Server:main: smarthttp: Has Stopped " + solon_boot_ver());
         }
     }
 }

@@ -10,7 +10,7 @@ public class XPluginImp implements XPlugin {
     DisposableServer _server = null;
 
     public static String solon_boot_ver() {
-        return "reactor-netty 0.9.1/1.0.4-b1";
+        return "reactor-netty 0.9.1/1.0.42";
     }
 
     @Override
@@ -24,7 +24,7 @@ public class XPluginImp implements XPlugin {
         long time_start = System.currentTimeMillis();
 
         try {
-            System.out.println("solon.Server:main: Reactornetty 0.9");
+            System.out.println("solon.Server:main: Reactornetty 0.9(reactor-netty)");
 
             RnHttpHandler handler = new RnHttpHandler();
 
@@ -46,8 +46,8 @@ public class XPluginImp implements XPlugin {
 
             long time_end = System.currentTimeMillis();
 
-            System.out.println("solon.Connector:main: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
-            System.out.println("solon.Server:main: Started @" + (time_end - time_start) + "ms");
+            System.out.println("solon.Connector:main: reactor-netty: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
+            System.out.println("solon.Server:main: reactor-netty: Started @" + (time_end - time_start) + "ms");
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -58,6 +58,8 @@ public class XPluginImp implements XPlugin {
         if (_server != null) {
             _server.dispose();
             _server = null;
+
+            System.out.println("solon.Server:main: reactor-netty: Has Stopped " + solon_boot_ver());
         }
     }
 }

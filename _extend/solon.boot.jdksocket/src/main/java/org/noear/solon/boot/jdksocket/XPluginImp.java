@@ -19,7 +19,7 @@ public class XPluginImp implements XPlugin {
 
         long time_start = System.currentTimeMillis();
 
-        System.out.println("solon.Server:main: java.net.ServerSocket jdk8");
+        System.out.println("solon.Server:main: java.net.ServerSocket(jdksocket)");
 
         int _port = 20000 + app.port();
 
@@ -33,8 +33,8 @@ public class XPluginImp implements XPlugin {
 
             long time_end = System.currentTimeMillis();
 
-            System.out.println("solon.Connector:main: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
-            System.out.println("solon.Server:main: Started @" + (time_end - time_start) + "ms");
+            System.out.println("solon.Connector:main: jdksocket: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
+            System.out.println("solon.Server:main: jdksocket: Started @" + (time_end - time_start) + "ms");
         }catch (Exception ex){
             ex.printStackTrace();
         }
@@ -48,6 +48,6 @@ public class XPluginImp implements XPlugin {
 
         _server.stop();
         _server = null;
-        System.out.println("solon.Server:main: Has Stopped " + solon_boot_ver());
+        System.out.println("solon.Server:main: jdksocket: Has Stopped " + solon_boot_ver());
     }
 }

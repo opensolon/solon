@@ -23,14 +23,14 @@ public class XPluginImp implements XPlugin {
         try {
             _server = new HttpServer(app.port());
 
-            System.out.println("solon.Server:main: NettyHttpServer 4.x");
+            System.out.println("solon.Server:main: NettyHttpServer 4.x(nettyhttp)");
 
             _server.start();
 
             long time_end = System.currentTimeMillis();
 
-            System.out.println("solon.Connector:main: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
-            System.out.println("solon.Server:main: Started @" + (time_end - time_start) + "ms");
+            System.out.println("solon.Connector:main: nettyhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
+            System.out.println("solon.Server:main: nettyhttp: Started @" + (time_end - time_start) + "ms");
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -42,7 +42,7 @@ public class XPluginImp implements XPlugin {
             _server.stop();
             _server = null;
 
-            System.out.println("solon.Server:main: Has Stopped " + solon_boot_ver());
+            System.out.println("solon.Server:main: nettyhttp: Has Stopped " + solon_boot_ver());
         }
     }
 }

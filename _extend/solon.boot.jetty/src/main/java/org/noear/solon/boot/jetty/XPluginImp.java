@@ -22,7 +22,7 @@ public final class XPluginImp implements XPlugin {
         XServerProp.init();
 
         long time_start = System.currentTimeMillis();
-        System.out.println("solon.Server:main: Jetty 9.4");
+        System.out.println("solon.Server:main: Jetty 9.4(jetty)");
 
         Class<?> jspClz = XUtil.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
 
@@ -38,8 +38,8 @@ public final class XPluginImp implements XPlugin {
 
         long time_end = System.currentTimeMillis();
 
-        System.out.println("solon.Connector:main: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
-        System.out.println("solon.Server:main: Started @" + (time_end - time_start) + "ms");
+        System.out.println("solon.Connector:main: jetty: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
+        System.out.println("solon.Server:main: jetty: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -48,7 +48,7 @@ public final class XPluginImp implements XPlugin {
             _server.stop();
             _server = null;
 
-            System.out.println("solon.Server:main: Has Stopped " + solon_boot_ver());
+            System.out.println("solon.Server:main: jetty: Has Stopped " + solon_boot_ver());
         }
     }
 }
