@@ -140,24 +140,7 @@ public abstract class XContext {
     public String body(String charset) throws IOException {
         if (_body == null) {
             try (InputStream ins = bodyAsStream()) {
-                if (ins == null) {
-                    return null;
-                }
-
-                ByteArrayOutputStream outs = new ByteArrayOutputStream(); //这个不需要关闭
-
-                int len = 0;
-                byte[] buf = new byte[512]; //0.5k
-                while ((len = ins.read(buf)) != -1) {
-                    outs.write(buf, 0, len);
-                }
-
-
-                if (charset == null) {
-                    _body = outs.toString();
-                } else {
-                    _body = outs.toString(charset);
-                }
+                _body = XUtil.getString(ins,charset);
             }
         }
 

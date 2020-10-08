@@ -189,6 +189,27 @@ public class XUtil {
         return url;
     }
 
+    public static String getString(InputStream ins, String charset) throws IOException {
+        if (ins == null) {
+            return null;
+        }
+
+        ByteArrayOutputStream outs = new ByteArrayOutputStream(); //这个不需要关闭
+
+        int len = 0;
+        byte[] buf = new byte[512]; //0.5k
+        while ((len = ins.read(buf)) != -1) {
+            outs.write(buf, 0, len);
+        }
+
+        if (charset == null) {
+            return outs.toString();
+        } else {
+            return outs.toString(charset);
+        }
+    }
+
+
     /**
      * 根据url加载配置集
      * */
