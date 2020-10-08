@@ -10,7 +10,7 @@ public final class XPluginImp implements XPlugin {
     private HttpServer<HttpConnection> _server = null;
 
     public static String solon_boot_ver(){
-        return "jlhttp 2.4/1.0.42";
+        return "Wizzardo.http 0.4/1.0.43";
     }
 
     @Override
@@ -27,7 +27,7 @@ public final class XPluginImp implements XPlugin {
 
         _server.getUrlMapping().append("*", new WizzContextHandler());
 
-        System.out.println("solon.Server:main: Wizzardo.http 0.3");
+        System.out.println("solon.Server:main: Wizzardo.http 0.4(wzhttp)");
 
         try {
             _server.setPort(app.port());
@@ -35,8 +35,8 @@ public final class XPluginImp implements XPlugin {
 
             long time_end = System.currentTimeMillis();
 
-            System.out.println("solon.Connector:main: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
-            System.out.println("solon.Server:main: Started @" + (time_end - time_start) + "ms");
+            System.out.println("solon.Connector:main: wzhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
+            System.out.println("solon.Server:main: wzhttp: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -47,7 +47,7 @@ public final class XPluginImp implements XPlugin {
         if(_server != null) {
             _server = null;
 
-            System.out.println("solon.Server:main: Has Stopped " + solon_boot_ver());
+            System.out.println("solon.Server:main: wzhttp: Has Stopped " + solon_boot_ver());
         }
     }
 }

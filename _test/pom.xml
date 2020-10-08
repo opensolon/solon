@@ -15,7 +15,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.0.42</version>
+        <version>1.0.43</version>
         <relativePath>../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -92,16 +92,16 @@
             <artifactId>solon.boot.smartsocket</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.smarthttp</artifactId>
-        </dependency>
-
-
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.wizzardohttp</artifactId>-->
+<!--            <artifactId>solon.boot.smarthttp</artifactId>-->
 <!--        </dependency>-->
+
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.wizzardohttp</artifactId>
+        </dependency>
 
 
 

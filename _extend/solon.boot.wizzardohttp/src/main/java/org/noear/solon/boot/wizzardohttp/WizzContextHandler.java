@@ -20,7 +20,7 @@ public class WizzContextHandler implements Handler {
         }catch (Throwable ex){
             XEventBus.push(ex);
 
-            context.status(500);
+            context.statusSet(500);
             context.setHandled(true);
             context.output(XUtil.getFullStackTrace(ex));
         }
