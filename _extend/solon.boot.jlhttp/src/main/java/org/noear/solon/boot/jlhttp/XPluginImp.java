@@ -1,6 +1,7 @@
 package org.noear.solon.boot.jlhttp;
 
 import org.noear.solon.XApp;
+import org.noear.solon.XUtil;
 import org.noear.solon.core.XMethod;
 import org.noear.solon.core.XPlugin;
 
@@ -16,6 +17,15 @@ public final class XPluginImp implements XPlugin {
     @Override
     public  void start(XApp app) {
         if(app.enableHttp() == false){
+            return;
+        }
+        //如果有jetty插件，就不启动了
+        if(XUtil.loadClass("org.noear.solon.boot.jetty.XPluginImp") != null){
+            return;
+        }
+
+        //如果有undrtow插件，就不启动了
+        if(XUtil.loadClass("org.noear.solon.boot.undertow.XPluginImp") != null){
             return;
         }
 
