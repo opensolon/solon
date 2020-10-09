@@ -29,7 +29,7 @@
 
         <servlet.ver>4.0.1</servlet.ver>
 
-        <beetl.ver>3.0.15.RELEASE</beetl.ver>
+        <beetl.ver>3.2.1.RELEASE</beetl.ver>
         <enjoy.ver>4.8</enjoy.ver>
 
         <jetty.ver>9.4.31.v20200723</jetty.ver>
@@ -309,7 +309,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon-mvc-beetl</artifactId>
+                <artifactId>beetl-web</artifactId>
                 <version>${solon.ver}</version>
                 <type>pom</type>
             </dependency>
@@ -579,7 +579,6 @@
         <!-- solon-web 替代它们 -->
         <module>../_extend/solon-mvc</module>
         <module>../_extend/solon-api</module>
-        <module>../_extend/solon-mvc-beetl</module>
 
 
 
@@ -605,6 +604,7 @@
 <!--        <module>../_extend2/smart-doc-solon-plugin</module>-->
 
 
+        <module>../_extend3/beetl-web</module>
 
 
     </modules>

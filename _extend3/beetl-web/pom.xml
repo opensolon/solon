@@ -11,50 +11,78 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon-mvc-beetl</artifactId>
+    <artifactId>beetl-web</artifactId>
     <packaging>pom</packaging>
 
     <dependencies>
+        <!-- 内核 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
         </dependency>
 
+        <!-- Http 启动器 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.boot.jlhttp</artifactId>
         </dependency>
 
+        <!-- 静态文件支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.extend.staticfiles</artifactId>
         </dependency>
 
+        <!-- 提供事务支持 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.data</artifactId>
+        </dependency>
+
+        <!-- 加强的动态代理支持组件 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.aspect</artifactId>
+        </dependency>
+
+        <!-- 验证扩展组件 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.validation</artifactId>
+        </dependency>
+
+        <!-- Json序列化支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.serialization.snack3</artifactId>
         </dependency>
 
+
+
+        <!-- 本地SessionSate支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.extend.sessionstate.local</artifactId>
         </dependency>
 
+        <!-- yml配置支持组件 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.properties.yaml</artifactId>
+        </dependency>
+
+        <!-- beetl模板支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.view.beetl</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.ibeetl</groupId>
-            <artifactId>beetlsql</artifactId>
-            <version>2.12.17.RELEASE</version>
-        </dependency>
-
+        <!-- beetlsql支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.properties.yaml</artifactId>
+            <artifactId>beetlsql-solon-plugin</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>
