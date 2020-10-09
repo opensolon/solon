@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>beetl-web</artifactId>
+    <artifactId>solon-beetl-web</artifactId>
     <packaging>pom</packaging>
 
     <dependencies>

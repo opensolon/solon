@@ -309,7 +309,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>beetl-web</artifactId>
+                <artifactId>solon-beetl-web</artifactId>
                 <version>${solon.ver}</version>
                 <type>pom</type>
             </dependency>
@@ -604,7 +604,7 @@
 <!--        <module>../_extend2/smart-doc-solon-plugin</module>-->
 
 
-        <module>../_extend3/beetl-web</module>
+        <module>../_extend3/solon-beetl-web</module>
 
 
     </modules>
