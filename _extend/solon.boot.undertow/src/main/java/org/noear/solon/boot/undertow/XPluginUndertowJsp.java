@@ -96,6 +96,8 @@ public class XPluginUndertowJsp extends XPluginUndertowBase implements XPlugin {
             builder.setDefaultSessionTimeout(XServerProp.session_timeout);
         }
 
+        builder.setEagerFilterInit(true);
+
         HashMap<String, TagLibraryInfo> tagLibraryMap = JspTldLocator.createTldInfos("WEB-INF");
 
         JspServletBuilder.setupDeployment(builder, new HashMap<String, JspPropertyGroup>(), tagLibraryMap, new HackInstanceManager());

@@ -3,6 +3,8 @@ package org.noear.solon.boot.undertow;
 import io.undertow.Undertow;
 import io.undertow.UndertowOptions;
 import io.undertow.server.HttpHandler;
+import io.undertow.server.handlers.resource.ClassPathResourceManager;
+import io.undertow.server.handlers.resource.FileResourceManager;
 import io.undertow.servlet.Servlets;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
@@ -17,6 +19,7 @@ import org.noear.solon.core.XPlugin;
 
 import javax.servlet.MultipartConfigElement;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
 
@@ -81,9 +84,16 @@ public class XPluginUndertow extends XPluginUndertowBase implements XPlugin {
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE);
 
         String fileRoot = getResourceRoot();
-        builder.setResourceManager(new JspResourceManager(XClassLoader.global(), fileRoot));
+        if(fileRoot.startsWith("classpath:")){
+            builder.setResourceManager(new ClassPathResourceManager(XClassLoader.global(),fileRoot));
+        }else {
+            builder.setResourceManager(new FileResourceManager(new File(fileRoot)));
+        }
+
 
         builder.addInnerHandlerChainWrapper(h -> handler);
+
+        builder.setEagerFilterInit(true);
 
         if (XServerProp.session_timeout > 0) {
             builder.setDefaultSessionTimeout(XServerProp.session_timeout);
