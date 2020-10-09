@@ -1,6 +1,6 @@
 package demo;
 
-import io.edap.x.protobuf.ProtoBuf;
+import io.edap.protobuf.ProtoBuf;
 import org.junit.Test;
 import server.model.ComplexModel;
 import server.model.Person;
