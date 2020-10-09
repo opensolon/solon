@@ -134,6 +134,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.boot.jdkudp</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.extend.aspect</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -526,6 +532,8 @@
 
         <module>../_extend/solon.boot.jdksocket</module>
         <module>../_extend/solon.boot.smartsocket</module>
+
+        <module>../_extend/solon.boot.jdkudp</module>
 
         <!--        <module>../solon.boot.tomcat</module>-->
 
