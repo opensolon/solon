@@ -280,7 +280,7 @@ public class AopContext extends BeanContainer {
             tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
         } else {
             //1.构建参数
-            VarGather varHub = new VarGather(size2, (args2)->{
+            VarGather gather = new VarGather(size2, (args2)->{
                 try {
                     Object raw = mWrap.doInvoke(bw.raw(), args2);
                     tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
@@ -290,7 +290,7 @@ public class AopContext extends BeanContainer {
             });
 
             for (Parameter p1 : mWrap.getParameters()) {
-                VarHolder p2 = varHub.add(p1);
+                VarHolder p2 = gather.add(p1);
                 beanInject(p2, injectVal.apply(p1));
             }
         }
