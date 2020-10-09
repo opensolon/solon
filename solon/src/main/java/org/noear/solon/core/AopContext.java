@@ -11,6 +11,7 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 /**
@@ -43,13 +44,20 @@ public class AopContext extends BeanContainer {
                 }
             }
 
+            ValHolder<Integer> locker = new ValHolder<>();
+            locker.value = 0;
+            locker.future = new CompletableFuture<>();
+
             for (MethodWrap mWrap : ClassWrap.get(bw.clz()).methodWraps) {
                 XBean m_an = mWrap.getMethod().getAnnotation(XBean.class);
 
                 if (m_an != null) {
+                    locker.value ++;
                     XInject beanInj = mWrap.getMethod().getAnnotation(XInject.class);
 
-                    tryBuildBean(m_an, mWrap, bw, beanInj, (p1) -> {
+                    //有参数的bean，采用线程池处理；所以需要锁等待
+                    //
+                    tryBuildBean(locker, m_an, mWrap, bw, beanInj, (p1) -> {
                         XInject tmp = p1.getAnnotation(XInject.class);
                         if (tmp == null) {
                             return null;
@@ -58,6 +66,10 @@ public class AopContext extends BeanContainer {
                         }
                     });
                 }
+            }
+
+            if (locker.value != 0) {
+                locker.future.get();
             }
 
             //添加bean形态处理
@@ -269,13 +281,14 @@ public class AopContext extends BeanContainer {
      * @param beanInj   类注入
      * @param injectVal 参数注入
      */
-    protected void tryBuildBean(XBean anno, MethodWrap mWrap, BeanWrap bw, XInject beanInj, Function<Parameter, String> injectVal) throws Exception {
+    protected void tryBuildBean(ValHolder<Integer> locker, XBean anno, MethodWrap mWrap, BeanWrap bw, XInject beanInj, Function<Parameter, String> injectVal) throws Exception {
         int size2 = mWrap.getParameters().length;
 
         if (size2 == 0) {
             //0.没有参数
             Object raw = mWrap.doInvoke(bw.raw(), new Object[]{});
             tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
+            locker.value--;
         } else {
             //1.构建参数
             List<Object> args2 = new ArrayList<>(size2);
@@ -299,6 +312,14 @@ public class AopContext extends BeanContainer {
                     tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
                 } catch (Throwable ex) {
                     XEventBus.push(ex);
+                }
+
+                //处理::异常转同步
+                synchronized (locker) {
+                    locker.value--;
+                    if (locker.value == 0) {
+                        locker.future.complete(1);
+                    }
                 }
 
                 return true;
