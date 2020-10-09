@@ -288,6 +288,7 @@ public class AopContext extends BeanContainer {
             //0.没有参数
             Object raw = mWrap.doInvoke(bw.raw(), new Object[]{});
             tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
+
             locker.value--;
         } else {
             //1.构建参数
