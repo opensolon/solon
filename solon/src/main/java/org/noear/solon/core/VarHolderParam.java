@@ -3,15 +3,16 @@ package org.noear.solon.core;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 public class VarHolderParam implements VarHolder{
     protected Parameter p;
-    protected CompletableFuture<Object> future;
-    public VarHolderParam(Parameter p){
+    protected Object val;
+    protected boolean done;
+    protected Runnable onDone;
+
+    public VarHolderParam(Parameter p, Runnable onDone){
         this.p = p;
-        this.future = new CompletableFuture<>();
+        this.onDone = onDone;
     }
 
     @Override
@@ -31,10 +32,19 @@ public class VarHolderParam implements VarHolder{
 
     @Override
     public void setValue(Object val) {
-        future.complete(val);
+        this.val = val;
+        this.done = true;
+
+        if(onDone != null){
+            onDone.run();
+        }
     }
 
-    public Object getValue() throws InterruptedException, ExecutionException {
-        return future.get();
+    public Object getValue(){
+        return val;
+    }
+
+    public boolean isDone() {
+        return done;
     }
 }

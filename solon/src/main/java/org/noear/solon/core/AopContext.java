@@ -11,7 +11,6 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 /**
@@ -281,31 +280,19 @@ public class AopContext extends BeanContainer {
             tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
         } else {
             //1.构建参数
-            List<Object> args2 = new ArrayList<>(size2);
-            List<VarHolderParam> args1 = new ArrayList<>(size2);
-
-            for (Parameter p1 : mWrap.getParameters()) {
-                VarHolderParam p2 = new VarHolderParam(p1);
-                args1.add(p2);
-
-                beanInject(p2, injectVal.apply(p1));
-            }
-
-            //异步获取注入值
-            XUtil.commonPool.submit(() -> {
+            VarHolderParamHub varHub = new VarHolderParamHub(size2, (args2)->{
                 try {
-                    for (VarHolderParam p2 : args1) {
-                        args2.add(p2.getValue());
-                    }
-
-                    Object raw = mWrap.doInvoke(bw.raw(), args2.toArray());
+                    Object raw = mWrap.doInvoke(bw.raw(), args2);
                     tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
-                } catch (Throwable ex) {
+                }catch (Throwable ex){
                     XEventBus.push(ex);
                 }
-
-                return true;
             });
+
+            for (Parameter p1 : mWrap.getParameters()) {
+                VarHolder p2 = varHub.add(p1);
+                beanInject(p2, injectVal.apply(p1));
+            }
         }
     }
 
