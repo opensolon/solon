@@ -34,7 +34,7 @@ import static io.undertow.Handlers.websocket;
  * @author by: Yukai
  * @since: 2019/3/28 15:50
  */
-public class XPluginUndertowJsp implements XPlugin {
+public class XPluginUndertowJsp extends XPluginUndertowBase implements XPlugin {
     private static Undertow _server = null;
 
     @Override
@@ -76,7 +76,7 @@ public class XPluginUndertowJsp implements XPlugin {
     private DeploymentManager doGenerateManager() throws Exception{
         MultipartConfigElement configElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
 
-        String fileRoot = getResourceRoot();
+
 
         DeploymentInfo builder = new DeploymentInfo()
                 .setClassLoader(XPluginUndertowJsp.class.getClassLoader())
@@ -87,6 +87,7 @@ public class XPluginUndertowJsp implements XPlugin {
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE);
 
 
+        String fileRoot = getResourceRoot();
         builder.setResourceManager(new JspResourceManager(XClassLoader.global(), fileRoot))
                 .addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"))
                 .addServlet(JspServletEx.createServlet("JSPServlet", "*.jsp"));
@@ -117,38 +118,5 @@ public class XPluginUndertowJsp implements XPlugin {
         }
     }
 
-    private String getResourceRoot() throws FileNotFoundException {
-        URL rootURL = getRootPath();
-        if (rootURL == null) {
-            throw new FileNotFoundException("Unable to find root");
-        }
-        String resURL = rootURL.toString();
 
-        boolean isDebug = XApp.cfg().isDebugMode();
-        if (isDebug && (resURL.startsWith("jar:") == false)) {
-            int endIndex = resURL.indexOf("target");
-            return resURL.substring(0, endIndex) + "src/main/resources/";
-        }
-
-        return "";
-    }
-
-    private URL getRootPath() {
-        URL root = XUtil.getResource("/");
-        if (root != null) {
-            return root;
-        }
-        try {
-            String path = XUtil.getResource("").toString();
-            if (path.startsWith("jar:")) {
-                int endIndex = path.indexOf("!");
-                path = path.substring(0, endIndex + 1) + "/";
-            } else {
-                return null;
-            }
-            return new URL(path);
-        } catch (MalformedURLException e) {
-            return null;
-        }
-    }
 }

@@ -32,7 +32,7 @@ public class JspResourceManager implements ResourceManager {
 
     @Override
     public Resource getResource(String path) throws IOException {
-        if (path == null || path.endsWith(".jsp") == false) {
+        if (path == null || path.endsWith(".jsp") == false || path.endsWith("web.xml") == false) {
             return null;
         }
 

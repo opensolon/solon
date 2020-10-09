@@ -10,10 +10,15 @@ import io.undertow.servlet.api.ServletContainer;
 import io.undertow.servlet.util.DefaultClassIntrospector;
 import org.noear.solon.XApp;
 import org.noear.solon.boot.undertow.http.UtHttpHandler;
+import org.noear.solon.boot.undertow.jsp.JspResourceManager;
 import org.noear.solon.boot.undertow.websocket.UtWsConnectionCallback;
+import org.noear.solon.core.XClassLoader;
 import org.noear.solon.core.XPlugin;
 
 import javax.servlet.MultipartConfigElement;
+
+import java.io.FileNotFoundException;
+import java.net.URL;
 
 import static io.undertow.Handlers.websocket;
 
@@ -21,7 +26,7 @@ import static io.undertow.Handlers.websocket;
  * @author  by: Yukai
  * @since : 2019/3/28 15:49
  */
-public class XPluginUndertow implements XPlugin {
+public class XPluginUndertow extends XPluginUndertowBase implements XPlugin {
     private Undertow _server = null;
 
     @Override
@@ -62,7 +67,7 @@ public class XPluginUndertow implements XPlugin {
 
 
     // 生成DeploymentManager来生成handler
-    private DeploymentManager doGenerateManager() {
+    private DeploymentManager doGenerateManager() throws Exception{
         UtHttpHandler handler = new UtHttpHandler();
 
         MultipartConfigElement configElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
@@ -74,6 +79,9 @@ public class XPluginUndertow implements XPlugin {
                 .setDefaultEncoding(XServerProp.encoding_request)
                 .setDefaultMultipartConfig(configElement)
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE);
+
+        String fileRoot = getResourceRoot();
+        builder.setResourceManager(new JspResourceManager(XClassLoader.global(), fileRoot));
 
         builder.addInnerHandlerChainWrapper(h -> handler);
 

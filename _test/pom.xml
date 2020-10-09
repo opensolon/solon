@@ -110,10 +110,10 @@
 <!--        </dependency>-->
 
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.undertow</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.undertow</artifactId>
+        </dependency>
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
@@ -121,15 +121,15 @@
 <!--        </dependency>-->
 
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jetty</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.jetty</artifactId>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.jetty.websocket</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.extend.jetty.websocket</artifactId>-->
+<!--        </dependency>-->
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
