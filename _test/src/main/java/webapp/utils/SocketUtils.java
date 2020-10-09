@@ -26,7 +26,7 @@ public class SocketUtils {
     public static SocketUtils get(String uri){
         URI uri1 = URI.create(uri);
 
-        if("s".equals(uri1.getScheme()) == false) {
+        if("tcp".equals(uri1.getScheme()) == false) {
             throw new RuntimeException("Only [s] scheme is supported");
         }
 
@@ -55,7 +55,7 @@ public class SocketUtils {
     public static SocketUtils create(String uri){
         URI uri1 = URI.create(uri);
 
-        if("s".equals(uri1.getScheme()) == false) {
+        if("tcp".equals(uri1.getScheme()) == false) {
             throw new RuntimeException("Only [s] scheme is supported");
         }
 

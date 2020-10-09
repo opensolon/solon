@@ -40,7 +40,7 @@ public class rpctest implements XHandler {
     }
 
     private Object socketOf() {
-        String root = "s://localhost:" + (20000 + XApp.global().port());
+        String root = "tcp://localhost:" + (20000 + XApp.global().port());
 
         rockapi client =  Fairy.builder()
                 .channel(SocketChannel.instance)
