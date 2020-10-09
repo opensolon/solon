@@ -1,6 +1,6 @@
 package org.noear.solon.serialization.protobuf;
 
-import io.edap.x.protobuf.ProtoBuf;
+import io.edap.protobuf.ProtoBuf;
 import org.noear.solon.core.XActionExecutorDefault;
 import org.noear.solon.core.XContext;
 
