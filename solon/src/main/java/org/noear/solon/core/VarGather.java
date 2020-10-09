@@ -5,11 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class VarHolderParamHub implements Runnable {
+/**
+ * 变量收集器
+ * */
+public class VarGather implements Runnable {
+    //变量
     List<VarHolderParam> vars;
+    //完成时
     Consumer<Object[]> done;
 
-    public VarHolderParamHub(int varSize, Consumer<Object[]> done) {
+    public VarGather(int varSize, Consumer<Object[]> done) {
         this.done = done;
         this.vars = new ArrayList<>(varSize);
     }

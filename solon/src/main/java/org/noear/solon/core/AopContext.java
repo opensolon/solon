@@ -280,7 +280,7 @@ public class AopContext extends BeanContainer {
             tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
         } else {
             //1.构建参数
-            VarHolderParamHub varHub = new VarHolderParamHub(size2, (args2)->{
+            VarGather varHub = new VarGather(size2, (args2)->{
                 try {
                     Object raw = mWrap.doInvoke(bw.raw(), args2);
                     tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
