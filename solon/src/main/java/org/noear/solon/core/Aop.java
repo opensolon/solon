@@ -3,6 +3,7 @@ package org.noear.solon.core;
 import org.noear.solon.XUtil;
 
 import java.util.Properties;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -108,5 +109,18 @@ public class Aop {
      */
     public static <T> T inject(T bean, Properties propS) {
         return XUtil.injectProperties(bean, propS);
+    }
+
+
+    public static void beanOnloaded(Runnable fun){
+        _c.beanOnloaded(fun);
+    }
+
+    public static void beanForeach(BiConsumer<String, BeanWrap> action) {
+        _c.beanForeach(action);
+    }
+
+    public static void beanForeach(Consumer<BeanWrap> action) {
+        _c.beanForeach(action);
     }
 }
