@@ -1,6 +1,6 @@
 ### 注解对比
 
-|  Solon 1.0.43 | Spring | JSR 330 | |
+|  Solon 1.1 | Spring | JSR 330 | |
 | -------- | -------- | -------- | -------- |
 | @XInject *     | @Autowired     | @Inject     | 注入Bean（by type）    |
 | @XInject("name")     | @Qualifier+@Autowired     | @Qualifier+@Inject     | 注入Bean（by name）    |

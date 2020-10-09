@@ -9,7 +9,7 @@ public final class XPluginImp implements XPlugin {
 
 
     public static String solon_boot_ver(){
-        return "undertow 2.1/1.0.43";
+        return "undertow 2.1/1.1";
     }
 
     @Override

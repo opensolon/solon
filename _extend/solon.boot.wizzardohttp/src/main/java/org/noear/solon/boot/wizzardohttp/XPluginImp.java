@@ -10,7 +10,7 @@ public final class XPluginImp implements XPlugin {
     private HttpServer<HttpConnection> _server = null;
 
     public static String solon_boot_ver(){
-        return "Wizzardo.http 0.4/1.0.43";
+        return "Wizzardo.http 0.4/1.1";
     }
 
     @Override
