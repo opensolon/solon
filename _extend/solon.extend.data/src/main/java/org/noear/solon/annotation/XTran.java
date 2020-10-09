@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
  * @author noear
  * @since 1.0.20
  * */
-@XAround(value = TranInvokeHandler.class, index = -97)
+@XAround(value = TranInvokeHandler.class, index = -7)
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface XTran {

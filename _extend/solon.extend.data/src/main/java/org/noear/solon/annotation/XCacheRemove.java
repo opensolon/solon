@@ -10,7 +10,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.0.21
  * */
-@XAround(value = CacheRemoveInvokeHandler.class, index = -99)
+@XAround(value = CacheRemoveInvokeHandler.class, index = -9)
 @Inherited //要可继承
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
