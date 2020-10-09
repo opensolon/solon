@@ -34,5 +34,6 @@ public class XPluginImp implements XPlugin {
 
         XBridge.renderRegister(render);
         XBridge.renderMapping(".htm",render);
+        XBridge.renderMapping(".btl",render);
     }
 }
