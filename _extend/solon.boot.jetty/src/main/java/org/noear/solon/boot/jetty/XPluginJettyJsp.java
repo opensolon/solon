@@ -2,6 +2,7 @@ package org.noear.solon.boot.jetty;
 
 import org.eclipse.jetty.jsp.JettyJspServlet;
 import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.ResourceCollection;
@@ -27,7 +28,8 @@ class XPluginJettyJsp extends XPluginJetty {
     @Override
     protected Handler getServerHandler() throws IOException{
         WebAppContext handler = new WebAppContext();
-        //ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        handler.setSessionHandler(new SessionHandler());
+//        ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
         handler.setContextPath("/");
         handler.setDescriptor("/WEB-INF/web.xml");
         handler.setBaseResource(new ResourceCollection(getResourceURLs()));
