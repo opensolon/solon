@@ -4,7 +4,6 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.eclipse.jetty.server.session.SessionHandler;
-import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
@@ -71,27 +70,36 @@ class XPluginJetty implements XPlugin {
      * 获取Server Handler
      * */
     protected Handler getServerHandler() throws IOException {
-        //::走Servlet接口（需要多个包）
-//        ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-//        handler.setContextPath("/");
-//        handler.addServlet(JtHttpContextServlet.class, "/");
-//
-//        if (XServerProp.session_timeout > 0) {
-//            handler.getSessionHandler().setMaxInactiveInterval(XServerProp.session_timeout);
-//        }
-//
-//        return handler;
+        if(XUtil.loadClass("org.eclipse.jetty.webapp.WebAppContext") == null){
+            //::走Handler接口
+            SessionHandler s_handler = new SessionHandler();
 
-        //::走Handler接口
-        SessionHandler s_handler = new SessionHandler();
+            if (XServerProp.session_timeout > 0) {
+                s_handler.setMaxInactiveInterval(XServerProp.session_timeout);
+            }
+
+            JtHttpContextHandler _handler = new JtHttpContextHandler();
+            s_handler.setHandler(_handler);
+
+            return s_handler;
+        }else{
+            //::走Servlet接口（需要多个包）
+            return getWebServerHandler();
+        }
+    }
+
+    private Handler getWebServerHandler() throws IOException{
+        org.eclipse.jetty.webapp.WebAppContext handler = new org.eclipse.jetty.webapp.WebAppContext();
+        handler.setSessionHandler(new SessionHandler());
+        handler.setContextPath("/");
+        handler.setDescriptor("/WEB-INF/web.xml");
+        handler.addServlet(JtHttpContextServlet.class, "/");
+
 
         if (XServerProp.session_timeout > 0) {
-            s_handler.setMaxInactiveInterval(XServerProp.session_timeout);
+            handler.getSessionHandler().setMaxInactiveInterval(XServerProp.session_timeout);
         }
 
-        JtHttpContextHandler _handler = new JtHttpContextHandler();
-        s_handler.setHandler(_handler);
-
-        return s_handler;
+        return handler;
     }
 }
