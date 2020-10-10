@@ -3,7 +3,7 @@ package org.noear.solon.annotation;
 import java.lang.annotation.*;
 
 /**
- * 通过注解，导入bean
+ * 导入器，通过注解必入bean（只在app source上有效）
  * */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
