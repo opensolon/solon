@@ -2,8 +2,11 @@ package webapp;
 
 import org.noear.fairy.annotation.EnableFairyClients;
 import org.noear.solon.XApp;
+import org.noear.solon.annotation.XImport;
 import org.noear.solon.core.XMethod;
+import webapp.demo6_aop.TestImport;
 
+@XImport(value = TestImport.class)
 @EnableFairyClients
 public class TestApp {
 
