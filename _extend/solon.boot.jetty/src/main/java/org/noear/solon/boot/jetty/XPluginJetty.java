@@ -98,7 +98,7 @@ class XPluginJetty implements XPlugin {
         handler.setContextPath("/");
         handler.setDescriptor("/WEB-INF/web.xml");
         handler.addServlet(JtHttpContextServlet.class, "/");
-        handler.setBaseResource(new ResourceCollection(new String[0]));
+        handler.setBaseResource(new ResourceCollection(getResourceURLs()));
 
 
         if (XServerProp.session_timeout > 0) {
