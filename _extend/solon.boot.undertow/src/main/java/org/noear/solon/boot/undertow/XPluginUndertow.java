@@ -83,14 +83,6 @@ public class XPluginUndertow extends XPluginUndertowBase implements XPlugin {
                 .setDefaultMultipartConfig(configElement)
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE);
 
-        String fileRoot = getResourceRoot();
-        if(fileRoot.startsWith("classpath:")){
-            builder.setResourceManager(new ClassPathResourceManager(XClassLoader.global(),fileRoot));
-        }else {
-            builder.setResourceManager(new FileResourceManager(new File(fileRoot)));
-        }
-
-
         builder.addInnerHandlerChainWrapper(h -> handler);
 
         builder.setEagerFilterInit(true);
