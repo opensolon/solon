@@ -96,13 +96,13 @@ public class XApp implements XHandler,XHandlerSlots {
             plugs.get(i).start();
         }
 
-        //3.4.通过注解导入bean
-        _global.importDo();
-
         //4.再加载bean
         if (source != null) {
             Aop.context().beanScan(source);
         }
+
+        //4.1.通过注解导入bean
+        _global.importDo();
 
         //5.加载渲染关系
         XMap map = _global.prop().getXmap("solon.view.mapping");
