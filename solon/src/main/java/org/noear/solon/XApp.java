@@ -96,14 +96,14 @@ public class XApp implements XHandler,XHandlerSlots {
             plugs.get(i).start();
         }
 
-        //3.4.通过注解导入bean（一般是些配置）
+        //3.4.通过注解导入bean（一般是些配置器）
         _global.importDo();
+
 
         //4.再扫描bean
         if (source != null) {
             Aop.context().beanScan(source);
         }
-
 
 
         //5.加载渲染关系
