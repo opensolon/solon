@@ -30,12 +30,10 @@
         <dependency>
             <groupId>io.undertow</groupId>
             <artifactId>undertow-core</artifactId>
-            <version>${undertow.ver}</version>
         </dependency>
         <dependency>
             <groupId>io.undertow</groupId>
             <artifactId>undertow-servlet</artifactId>
-            <version>${undertow.ver}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.jboss.spec.javax.servlet</groupId>
@@ -51,7 +49,6 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>${servlet.ver}</version>
         </dependency>
         <!-- server core end -->
 
@@ -59,7 +56,6 @@
         <dependency>
             <groupId>io.undertow.jastow</groupId>
             <artifactId>jastow</artifactId>
-            <version>${undertow.ver}</version>
             <exclusions>
                 <exclusion>
                     <groupId>io.undertow</groupId>
@@ -76,24 +72,20 @@
         <dependency>
             <groupId>org.jboss.metadata</groupId>
             <artifactId>jboss-metadata-common</artifactId>
-            <version>12.0.0.Final</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.metadata</groupId>
             <artifactId>jboss-metadata-web</artifactId>
-            <version>12.0.0.Final</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.jboss.spec.javax.servlet.jsp</groupId>
             <artifactId>jboss-jsp-api_2.3_spec</artifactId>
-            <version>2.0.0.Final</version>
             <scope>provided</scope>
         </dependency>
-
 
         <!--jsp try end-->
     </dependencies>
