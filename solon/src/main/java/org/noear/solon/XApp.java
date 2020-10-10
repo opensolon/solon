@@ -96,7 +96,7 @@ public class XApp implements XHandler,XHandlerSlots {
             plugs.get(i).start();
         }
 
-        //4.再加载bean
+        //4.再扫描bean
         if (source != null) {
             Aop.context().beanScan(source);
         }
