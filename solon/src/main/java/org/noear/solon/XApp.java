@@ -1,10 +1,12 @@
 package org.noear.solon;
 
+import org.noear.solon.annotation.XImport;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.*;
 import org.noear.solon.ext.*;
 import org.noear.solon.core.XListener;
 
+import java.lang.annotation.Annotation;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -94,6 +96,9 @@ public class XApp implements XHandler,XHandlerSlots {
             plugs.get(i).start();
         }
 
+        //3.4.通过注解导入bean
+        _global.importDo();
+
         //4.再加载bean
         if (source != null) {
             Aop.context().beanScan(source);
@@ -112,6 +117,29 @@ public class XApp implements XHandler,XHandlerSlots {
         PrintUtil.blueln("solon.plugin:: End loading @" + (time_end - time_start) + "ms");
 
         return _global;
+    }
+
+    //通过注解，导入bean
+    private void importDo() {
+        if (_source == null) {
+            return;
+        }
+
+        for (Annotation a1 : _source.getAnnotations()) {
+            if (a1 instanceof XImport) {
+                importDo0((XImport) a1);
+            } else {
+                importDo0(a1.annotationType().getAnnotation(XImport.class));
+            }
+        }
+    }
+
+    private void importDo0(XImport anno) {
+        if (anno != null) {
+            for (Class<?> clz : anno.value()) {
+                beanMake(clz);
+            }
+        }
     }
 
     /**
