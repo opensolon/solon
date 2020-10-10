@@ -26,7 +26,7 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
                     if (anno.debug()) {
                         main.invoke(null, new Object[]{debugArgs});
                     } else {
-                        main.invoke(null, new Object[]{});
+                        main.invoke(null, new Object[0]);
                     }
                 } else {
                     if (anno.debug()) {

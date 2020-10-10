@@ -29,11 +29,10 @@ class XPluginJettyJsp extends XPluginJetty {
     protected Handler getServerHandler() throws IOException{
         WebAppContext handler = new WebAppContext();
         handler.setSessionHandler(new SessionHandler());
-//        ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
         handler.setContextPath("/");
         handler.setDescriptor("/WEB-INF/web.xml");
-        handler.setBaseResource(new ResourceCollection(getResourceURLs()));
         handler.addServlet(JtHttpContextServlet.class, "/");
+        handler.setBaseResource(new ResourceCollection(getResourceURLs()));
 
 
         if (XServerProp.session_timeout > 0) {
@@ -77,39 +76,4 @@ class XPluginJettyJsp extends XPluginJetty {
         handler.addServlet(holderJsp, "*.jsp");
     }
 
-    private String[] getResourceURLs() throws FileNotFoundException {
-        URL rootURL = getRootPath();
-        if (rootURL == null) {
-            throw new FileNotFoundException("Unable to find root");
-        }
-        String resURL = rootURL.toString();
-
-        boolean isDebug = XApp.cfg().isDebugMode();
-        if (isDebug && (resURL.startsWith("jar:") == false)) {
-            int endIndex = resURL.indexOf("target");
-            String debugResURL = resURL.substring(0, endIndex) + "src/main/resources/";
-            return new String[]{debugResURL, resURL};
-        }
-
-        return new String[]{resURL};
-    }
-
-    private URL getRootPath() {
-        URL root = XUtil.getResource("/");
-        if (root != null) {
-            return root;
-        }
-        try {
-            String path = XUtil.getResource("").toString();
-            if (path.startsWith("jar:")) {
-                int endIndex = path.indexOf("!");
-                path = path.substring(0, endIndex + 1) + "/";
-            } else {
-                return null;
-            }
-            return new URL(path);
-        } catch (MalformedURLException e) {
-            return null;
-        }
-    }
 }

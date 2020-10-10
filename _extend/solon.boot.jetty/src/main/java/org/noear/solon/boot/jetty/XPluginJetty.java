@@ -4,13 +4,17 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.eclipse.jetty.server.session.SessionHandler;
+import org.eclipse.jetty.util.resource.ResourceCollection;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
 import org.noear.solon.boot.jetty.http.JtHttpContextServlet;
 import org.noear.solon.core.XPlugin;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 class XPluginJetty implements XPlugin {
     protected Server _server = null;
@@ -94,6 +98,7 @@ class XPluginJetty implements XPlugin {
         handler.setContextPath("/");
         handler.setDescriptor("/WEB-INF/web.xml");
         handler.addServlet(JtHttpContextServlet.class, "/");
+        handler.setBaseResource(new ResourceCollection(new String[0]));
 
 
         if (XServerProp.session_timeout > 0) {
@@ -101,5 +106,42 @@ class XPluginJetty implements XPlugin {
         }
 
         return handler;
+    }
+
+
+    protected String[] getResourceURLs() throws FileNotFoundException {
+        URL rootURL = getRootPath();
+        if (rootURL == null) {
+            throw new FileNotFoundException("Unable to find root");
+        }
+        String resURL = rootURL.toString();
+
+        boolean isDebug = XApp.cfg().isDebugMode();
+        if (isDebug && (resURL.startsWith("jar:") == false)) {
+            int endIndex = resURL.indexOf("target");
+            String debugResURL = resURL.substring(0, endIndex) + "src/main/resources/";
+            return new String[]{debugResURL, resURL};
+        }
+
+        return new String[]{resURL};
+    }
+
+    protected URL getRootPath() {
+        URL root = XUtil.getResource("/");
+        if (root != null) {
+            return root;
+        }
+        try {
+            String path = XUtil.getResource("").toString();
+            if (path.startsWith("jar:")) {
+                int endIndex = path.indexOf("!");
+                path = path.substring(0, endIndex + 1) + "/";
+            } else {
+                return null;
+            }
+            return new URL(path);
+        } catch (MalformedURLException e) {
+            return null;
+        }
     }
 }
