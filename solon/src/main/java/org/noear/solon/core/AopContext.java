@@ -333,13 +333,20 @@ public class AopContext extends BeanContainer {
     @XNote("添加bean加载完成事件")
     public void beanOnloaded(Runnable fun) {
         loadedEvent.add(fun);
+
+        //如果已加载完成，则直接返回
+        if(_beanLoaded){
+            fun.run();
+        }
     }
 
     /**
      * 完成加载时调用，会进行事件通知
      * */
     public void beanLoaded(){
+        _beanLoaded = true;
         //尝试加载事件（不用函数包装，是为了减少代码）
         loadedEvent.forEach(f -> f.run());
     }
+    private boolean _beanLoaded;
 }
