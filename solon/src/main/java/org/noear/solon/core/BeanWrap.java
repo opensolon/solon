@@ -45,11 +45,9 @@ public class BeanWrap {
         }
     }
 
-    public BeanWrap(Class<?> clz, Object raw, String tag, String attrs, boolean typed) {
+    public BeanWrap(Class<?> clz, Object raw, String attrs) {
         this(clz, raw);
-        tagSet(tag);
         attrsSet(attrs);
-        typedSet(typed);
     }
 
     public void proxySet(BeanProxy proxy){

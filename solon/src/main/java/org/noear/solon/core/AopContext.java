@@ -298,20 +298,26 @@ public class AopContext extends BeanContainer {
 
     protected void tryBuildBean0(XBean anno, XInject beanInj, Class<?> clz, Object raw) {
         if (raw != null) {
-            if (beanInj != null && XUtil.isEmpty(beanInj.value()) == false) {
-                if (beanInj.value().startsWith("${")) {
-                    XUtil.injectProperties(raw, XApp.cfg().getPropByExpr(beanInj.value()));
+            BeanWrap m_bw = null;
+            if(raw instanceof BeanWrap){
+                m_bw = (BeanWrap) raw;
+            }else{
+                if (beanInj != null && XUtil.isEmpty(beanInj.value()) == false) {
+                    if (beanInj.value().startsWith("${")) {
+                        XUtil.injectProperties(raw, XApp.cfg().getPropByExpr(beanInj.value()));
+                    }
                 }
+
+                //动态构建的bean, 可通过广播进行扩展
+                XEventBus.push(raw);
+
+                //动态构建的bean，都用新生成wrap（否则会类型混乱）
+                m_bw = new BeanWrap(clz, raw);
+                m_bw.attrsSet(anno.attrs());
             }
 
-            //动态构建的bean, 可通过广播进行扩展
-            XEventBus.push(raw);
-
-            //动态构建的bean，都用新生成wrap（否则会类型混乱）
-            BeanWrap m_bw = new BeanWrap(clz, raw);
             m_bw.nameSet(anno.value());
             m_bw.tagSet(anno.tag());
-            m_bw.attrsSet(anno.attrs());
             m_bw.typedSet(anno.typed());
 
             beanRegister(m_bw, anno.value(), anno.typed());
