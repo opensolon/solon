@@ -69,12 +69,7 @@ public class XApp implements XHandler,XHandlerSlots {
         _global = new XApp(source, argx);
 
         //2.尝试加载扩展文件夹
-        String _extend = argx.get("extend");
-        if (XUtil.isEmpty(_extend)) {
-            _extend = _global.prop().get("solon.extend");
-        }
-
-        ExtendLoader.load(_extend);
+        ExtendLoader.load(_global.prop().extend());
 
         //3.1.尝试扫描插件
         _global.prop().plugsScan();

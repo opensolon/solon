@@ -18,6 +18,7 @@ public final class XAppProperties extends XProperties {
     private boolean _isDebugMode;
     private boolean _isDriftMode;
     private boolean _isFilesMode;
+    private String _extend;
 
     public XAppProperties() {
         super(System.getProperties());
@@ -51,6 +52,12 @@ public final class XAppProperties extends XProperties {
         //4.标识debug模式
         if (isDebugMode()) {
             System.setProperty("debug", "1");
+        }
+
+        //5.扩展文件夹
+        _extend = _args.get("extend");
+        if (XUtil.isEmpty(_extend)) {
+            _extend = get("solon.extend");
         }
 
         return this;
@@ -169,6 +176,10 @@ public final class XAppProperties extends XProperties {
      */
     public int serverPort() {
         return getInt("server.port", 8080);
+    }
+
+    public String extend(){
+        return _extend;
     }
 
     /**
