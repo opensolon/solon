@@ -78,10 +78,8 @@ public class XApp implements XHandler,XHandlerSlots {
         if (builder != null) {
             try {
                 builder.accept(_global);
-            } catch (RuntimeException ex) {
-                throw ex;
             } catch (Throwable ex) {
-                throw new RuntimeException(ex);
+                XUtil.throwableWrap(ex);
             }
         }
 
@@ -92,7 +90,7 @@ public class XApp implements XHandler,XHandlerSlots {
         }
 
         //3.4.通过注解导入bean（一般是些配置器）
-        _global.importDo();
+        _global.importTry();
 
 
         //4.再扫描bean
@@ -117,21 +115,21 @@ public class XApp implements XHandler,XHandlerSlots {
     }
 
     //通过注解，导入bean
-    private void importDo() {
+    private void importTry() {
         if (_source == null) {
             return;
         }
 
         for (Annotation a1 : _source.getAnnotations()) {
             if (a1 instanceof XImport) {
-                importDo0((XImport) a1);
+                import0((XImport) a1);
             } else {
-                importDo0(a1.annotationType().getAnnotation(XImport.class));
+                import0(a1.annotationType().getAnnotation(XImport.class));
             }
         }
     }
 
-    private void importDo0(XImport anno) {
+    private void import0(XImport anno) {
         if (anno != null) {
             for (Class<?> clz : anno.value()) {
                 beanMake(clz);
