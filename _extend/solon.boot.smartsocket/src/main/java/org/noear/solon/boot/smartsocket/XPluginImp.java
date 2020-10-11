@@ -11,7 +11,7 @@ public final class XPluginImp implements XPlugin {
     private AioQuickServer<XMessage> server = null;
 
     public static String solon_boot_ver(){
-        return "smart socket 1.5.0/1.1";
+        return "smart socket 1.5.0/" + XApp.cfg().version();
     }
 
     @Override

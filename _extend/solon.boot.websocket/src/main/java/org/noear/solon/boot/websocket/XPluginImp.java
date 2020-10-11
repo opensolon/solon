@@ -7,7 +7,7 @@ public class XPluginImp implements XPlugin {
     private WsServer _server = null;
 
     public static String solon_boot_ver() {
-        return "org.java_websocket 1.5.0/1.1";
+        return "org.java_websocket 1.5.0/" + XApp.cfg().version();
     }
 
     @Override

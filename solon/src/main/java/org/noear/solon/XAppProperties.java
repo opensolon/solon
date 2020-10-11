@@ -178,8 +178,18 @@ public final class XAppProperties extends XProperties {
         return getInt("server.port", 8080);
     }
 
+    /**
+     * 包部扩展文件夹
+     * */
     public String extend(){
         return _extend;
+    }
+
+    /**
+     * 框架版本号
+     * */
+    public String version(){
+        return "1.1.1";
     }
 
     /**
