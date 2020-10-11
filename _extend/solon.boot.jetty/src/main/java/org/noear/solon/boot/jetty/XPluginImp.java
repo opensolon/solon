@@ -7,7 +7,7 @@ import org.noear.solon.core.Aop;
 import org.noear.solon.core.XPlugin;
 
 public final class XPluginImp implements XPlugin {
-    private XPlugin _server = null;
+    private XPluginJetty _server = null;
 
     public static String solon_boot_ver(){
         return "jetty 9.4/" + XApp.cfg().version();
@@ -35,6 +35,7 @@ public final class XPluginImp implements XPlugin {
             long time_start = System.currentTimeMillis();
             System.out.println("solon.Server:main: Jetty 9.4(jetty)");
 
+            _server.init();
             _server.start(app);
 
             long time_end = System.currentTimeMillis();

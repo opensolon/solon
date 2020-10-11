@@ -2,8 +2,10 @@ package org.noear.solon.boot.jetty;
 
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.eclipse.jetty.server.session.SessionHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.resource.ResourceCollection;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
@@ -11,6 +13,7 @@ import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
 import org.noear.solon.boot.jetty.http.JtHttpContextServlet;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XPlugin;
+import org.noear.solon.servlet.ListenerHolder;
 
 import javax.servlet.ServletContext;
 import java.io.FileNotFoundException;
@@ -62,6 +65,7 @@ class XPluginJetty implements XPlugin {
         }
     }
 
+
     @Override
     public void start(XApp app) {
         try {
@@ -76,6 +80,18 @@ class XPluginJetty implements XPlugin {
         if (_server != null) {
             _server.stop();
             _server = null;
+        }
+    }
+
+    public void init() {
+        if (XUtil.loadClass("org.eclipse.jetty.servlet.ServletContextHandler") != null) {
+            ServletContextHandler handler = Aop.getOrNull(ServletContextHandler.class);
+            if (handler != null) {
+                ListenerHolder holder = Aop.getOrNull(ListenerHolder.class);
+                if (holder != null) {
+                    handler.addEventListener(holder.getListener());
+                }
+            }
         }
     }
 
@@ -116,6 +132,7 @@ class XPluginJetty implements XPlugin {
 
         //将ServletContext注入容器
         Aop.wrapAndPut(ServletContext.class, handler.getServletContext());
+        Aop.wrapAndPut(ServletContextHandler.class,handler);
 
         return handler;
     }

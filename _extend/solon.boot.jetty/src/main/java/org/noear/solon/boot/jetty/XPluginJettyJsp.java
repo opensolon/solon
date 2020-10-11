@@ -41,7 +41,8 @@ class XPluginJettyJsp extends XPluginJetty {
         }
 
         //将ServletContext注入容器
-        Aop.wrapAndPut(ServletContext.class,handler.getServletContext());
+        Aop.wrapAndPut(ServletContext.class, handler.getServletContext());
+        Aop.wrapAndPut(ServletContextHandler.class,handler);
 
         enableJspSupport(handler);
 
