@@ -21,8 +21,7 @@ import java.net.URL;
 class XPluginJetty implements XPlugin {
     protected Server _server = null;
 
-    @Override
-    public void start(XApp app) {
+    public XPluginJetty(XApp app){
         try {
 
             Class<?> wsClz = XUtil.loadClass("org.eclipse.jetty.websocket.server.WebSocketHandler");
@@ -57,11 +56,19 @@ class XPluginJetty implements XPlugin {
                 }
             });
 
-            _server.start();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
 
+        } catch (Exception ex) {
+            XUtil.throwableWrap(ex);
+        }
+    }
+
+    @Override
+    public void start(XApp app) {
+        try {
+            _server.start();
+        }catch (Exception ex){
+            XUtil.throwableWrap(ex);
+        }
     }
 
     @Override
@@ -108,7 +115,7 @@ class XPluginJetty implements XPlugin {
         }
 
         //将ServletContext注入容器
-        Aop.wrapAndPut(ServletContext.class,handler.getServletContext());
+        Aop.wrapAndPut(ServletContext.class, handler.getServletContext());
 
         return handler;
     }

@@ -19,6 +19,9 @@ import java.net.URLClassLoader;
 import java.util.Properties;
 
 class XPluginJettyJsp extends XPluginJetty {
+    public XPluginJettyJsp(XApp app){
+        super(app);
+    }
 
     /**
      * 获取Server Handler

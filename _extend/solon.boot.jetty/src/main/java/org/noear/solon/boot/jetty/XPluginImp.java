@@ -3,6 +3,7 @@ package org.noear.solon.boot.jetty;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.boot.jetty.http.XFormContentFilter;
+import org.noear.solon.core.Aop;
 import org.noear.solon.core.XPlugin;
 
 public final class XPluginImp implements XPlugin {
@@ -21,25 +22,28 @@ public final class XPluginImp implements XPlugin {
 
         XServerProp.init();
 
-        long time_start = System.currentTimeMillis();
-        System.out.println("solon.Server:main: Jetty 9.4(jetty)");
 
         Class<?> jspClz = XUtil.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
 
         if (jspClz == null) {
-            _server = new XPluginJetty();
+            _server = new XPluginJetty(app);
         } else {
-            _server = new XPluginJettyJsp();
+            _server = new XPluginJettyJsp(app);
         }
 
-        _server.start(app);
+        Aop.beanOnloaded(()->{
+            long time_start = System.currentTimeMillis();
+            System.out.println("solon.Server:main: Jetty 9.4(jetty)");
+
+            _server.start(app);
+
+            long time_end = System.currentTimeMillis();
+
+            System.out.println("solon.Connector:main: jetty: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
+            System.out.println("solon.Server:main: jetty: Started @" + (time_end - time_start) + "ms");
+        });
 
         app.before("**", new XFormContentFilter());
-
-        long time_end = System.currentTimeMillis();
-
-        System.out.println("solon.Connector:main: jetty: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
-        System.out.println("solon.Server:main: jetty: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override
