@@ -1,7 +1,9 @@
 package org.noear.solon.core;
 
 
+import java.io.IOException;
 import java.net.*;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,5 +86,19 @@ public class XClassLoader extends URLClassLoader {
      */
     public static void bindingThread() {
         Thread.currentThread().setContextClassLoader(global());
+    }
+
+    /////////////////////////////////////////////////////////////////
+
+
+    @Override
+    public Enumeration<URL> getResources(String name) throws IOException {
+        Enumeration<URL> urls =  super.getResources(name);
+
+        if (urls == null || urls.hasMoreElements() == false) {
+            urls = ClassLoader.getSystemResources(name);
+        }
+
+        return urls;
     }
 }

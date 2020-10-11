@@ -168,12 +168,7 @@ public class XUtil {
      * 获取资源URL集
      */
     public static Enumeration<URL> getResources(String name) throws IOException {
-        Enumeration<URL> urls = XClassLoader.global().getResources(name); //XUtil.class.getClassLoader().getResources(name);
-        if (urls == null || urls.hasMoreElements() == false) {
-            urls = ClassLoader.getSystemResources(name);
-        }
-
-        return urls;
+        return XClassLoader.global().getResources(name); //XUtil.class.getClassLoader().getResources(name);
     }
 
     /**
