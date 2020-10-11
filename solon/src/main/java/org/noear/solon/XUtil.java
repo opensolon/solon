@@ -340,10 +340,7 @@ public class XUtil {
      * 构建应用扩展目录
      * */
     public static String buildExt(String ext_dir, boolean autoCreate) {
-        URL temp = XUtil.getResource("application.properties");
-        if (temp == null) {
-            temp = XUtil.getResource("application.yml");
-        }
+        URL temp = XUtil.getResource("");
 
         if (temp == null) {
             return null;
