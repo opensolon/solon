@@ -350,7 +350,8 @@ public class XUtil {
         } else {
             String uri = temp.toString();
             if (uri.startsWith("file:/")) {
-                uri = uri.substring(5, uri.length() - 30);
+                int idx = uri.lastIndexOf("/target/");
+                uri = uri.substring(5, idx + 8);
             } else {
                 int idx = uri.indexOf("jar!/");
                 idx = uri.lastIndexOf("/", idx) + 1;
