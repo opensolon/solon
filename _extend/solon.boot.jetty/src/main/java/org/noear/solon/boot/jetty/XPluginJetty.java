@@ -9,8 +9,10 @@ import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
 import org.noear.solon.boot.jetty.http.JtHttpContextServlet;
+import org.noear.solon.core.Aop;
 import org.noear.solon.core.XPlugin;
 
+import javax.servlet.ServletContext;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -104,6 +106,9 @@ class XPluginJetty implements XPlugin {
         if (XServerProp.session_timeout > 0) {
             handler.getSessionHandler().setMaxInactiveInterval(XServerProp.session_timeout);
         }
+
+        //将ServletContext注入容器
+        Aop.wrapAndPut(ServletContext.class,handler.getServletContext());
 
         return handler;
     }
