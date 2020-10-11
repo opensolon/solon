@@ -184,6 +184,13 @@ public class XApp implements XHandler,XHandlerSlots {
     }
 
     /**
+     * 根据包加载bean
+     * */
+    public void beanScan(String basePackage){
+        Aop.context().beanScan(basePackage);
+    }
+
+    /**
      * 根据类型构制bean
      * */
     public BeanWrap beanMake(Class<?> clz){
