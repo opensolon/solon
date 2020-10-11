@@ -6,16 +6,12 @@ import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.ResourceCollection;
-import org.eclipse.jetty.webapp.WebAppContext;
 import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
 import org.noear.solon.boot.jetty.http.JtJspStarter;
 import org.noear.solon.boot.jetty.http.JtHttpContextServlet;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Properties;
@@ -27,10 +23,10 @@ class XPluginJettyJsp extends XPluginJetty {
      * */
     @Override
     protected Handler getServerHandler() throws IOException{
-        WebAppContext handler = new WebAppContext();
+        ServletContextHandler handler = new ServletContextHandler();
         handler.setSessionHandler(new SessionHandler());
         handler.setContextPath("/");
-        handler.setDescriptor("/WEB-INF/web.xml");
+//        handler.setDescriptor("/WEB-INF/web.xml");
         handler.addServlet(JtHttpContextServlet.class, "/");
         handler.setBaseResource(new ResourceCollection(getResourceURLs()));
 

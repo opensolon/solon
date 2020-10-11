@@ -127,21 +127,21 @@
         </dependency>
 
 
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.extend.jetty.websocket</artifactId>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.jetty.websocket</artifactId>
+            <artifactId>solon.extend.jetty.jsp</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.extend.jetty.jsp</artifactId>-->
-<!--        </dependency>-->
 
-
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.view.jsp</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.view.jsp</artifactId>
+        </dependency>
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
