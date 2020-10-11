@@ -2,9 +2,9 @@ package org.noear.solon.boot.jetty;
 
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.eclipse.jetty.server.session.SessionHandler;
+import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.resource.ResourceCollection;
 import org.noear.solon.XApp;
@@ -13,13 +13,16 @@ import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
 import org.noear.solon.boot.jetty.http.JtHttpContextServlet;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XPlugin;
-import org.noear.solon.servlet.ListenerHolder;
 
+import javax.servlet.DispatcherType;
+import javax.servlet.Filter;
 import javax.servlet.ServletContext;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.EnumSet;
+import java.util.EventListener;
 
 class XPluginJetty implements XPlugin {
     protected Server _server = null;
@@ -87,10 +90,13 @@ class XPluginJetty implements XPlugin {
         if (XUtil.loadClass("org.eclipse.jetty.servlet.ServletContextHandler") != null) {
             ServletContextHandler handler = Aop.getOrNull(ServletContextHandler.class);
             if (handler != null) {
-                ListenerHolder holder = Aop.getOrNull(ListenerHolder.class);
-                if (holder != null) {
-                    handler.addEventListener(holder.getListener());
-                }
+                Aop.beanForeach((k, bw) -> {
+                    if (bw.raw() instanceof EventListener) {
+                        handler.addEventListener((EventListener) bw.raw());
+                    }else if(bw.raw() instanceof Filter){
+                        handler.addFilter(new FilterHolder((Filter) bw.raw()),bw.attrs(),EnumSet.of(DispatcherType.REQUEST));
+                    }
+                });
             }
         }
     }
