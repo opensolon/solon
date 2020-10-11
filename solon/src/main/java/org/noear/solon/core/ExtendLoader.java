@@ -28,7 +28,12 @@ public class ExtendLoader {
      * 加载扩展文件夹（或文件）
      * */
     public static void load(String path, boolean autoCreate) {
-        if (XUtil.isEmpty(path) == false) {
+        if (XUtil.isNotEmpty(path)) {
+            if (path.startsWith("!")) {
+                path = path.substring(1);
+                autoCreate = true;
+            }
+
             if (path.indexOf("/") < 0) {
                 path = XUtil.buildExt(path, autoCreate);
             }
