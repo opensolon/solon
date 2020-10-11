@@ -176,10 +176,20 @@ public class AopContext extends BeanContainer {
      */
     public void beanScan(Class<?> source) {
         //确定文件夹名
-        String dir = "";
         if (source.getPackage() != null) {
-            dir = source.getPackage().getName().replace('.', '/');
+            beanScan(source.getPackage().getName());
         }
+    }
+
+    /**
+     * ::扫描源下的所有 bean 及对应处理
+     */
+    public void beanScan(String basePackage){
+        if(XUtil.isEmpty(basePackage)){
+            return;
+        }
+
+        String dir = basePackage.replace('.', '/');
 
         //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
         XScaner.scan(dir, n -> n.endsWith(".class"))

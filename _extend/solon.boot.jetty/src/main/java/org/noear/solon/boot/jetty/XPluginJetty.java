@@ -93,8 +93,8 @@ class XPluginJetty implements XPlugin {
                 Aop.beanForeach((k, bw) -> {
                     if (bw.raw() instanceof EventListener) {
                         handler.addEventListener((EventListener) bw.raw());
-                    }else if(bw.raw() instanceof Filter){
-                        handler.addFilter(new FilterHolder((Filter) bw.raw()),bw.attrs(),EnumSet.of(DispatcherType.REQUEST));
+                    } else if (bw.raw() instanceof Filter) {
+                        handler.addFilter(new FilterHolder((Filter) bw.raw()), bw.attrs(), EnumSet.of(DispatcherType.REQUEST));
                     }
                 });
             }
