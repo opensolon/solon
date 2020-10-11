@@ -175,13 +175,7 @@ public class XUtil {
      * 获取资源URL
      */
     public static URL getResource(String name) {
-        URL url = XClassLoader.global().getResource(name);//XUtil.class.getResource(name);
-
-        if (url == null) {
-            url = XUtil.class.getResource(name);
-        }
-
-        return url;
+        return XClassLoader.global().getResource(name);//XUtil.class.getResource(name);
     }
 
     public static String getString(InputStream ins, String charset) throws IOException {

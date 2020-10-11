@@ -1,6 +1,8 @@
 package org.noear.solon.core;
 
 
+import org.noear.solon.XUtil;
+
 import java.io.IOException;
 import java.net.*;
 import java.util.Enumeration;
@@ -100,5 +102,16 @@ public class XClassLoader extends URLClassLoader {
         }
 
         return urls;
+    }
+
+    @Override
+    public URL getResource(String name) {
+        URL url =  super.getResource(name);
+
+        if (url == null) {
+            url = XClassLoader.class.getResource(name);
+        }
+
+        return url;
     }
 }
