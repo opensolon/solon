@@ -65,10 +65,7 @@ class XPluginJetty implements XPlugin {
     @Override
     public void stop() throws Throwable {
         if (_server != null) {
-            if(_server.isRunning()) {
-                _server.stop();
-            }
-
+            _server.stop();
             _server = null;
         }
     }
