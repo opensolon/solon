@@ -48,7 +48,7 @@ public class XPluginEntity {
             try {
                 plugin.stop();
             } catch (Throwable ex) {
-                ex.printStackTrace();
+                //ex.printStackTrace();
             }
         }
     }
