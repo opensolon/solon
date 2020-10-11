@@ -79,6 +79,11 @@ public class Aop {
         }
     }
 
+    public static <T> T getOrNull(Class<?> key) {
+        BeanWrap bw = _c.getWrap(key);
+        return bw == null ? null : bw.get();
+    }
+
     /**
      * 异步获取bean (key)
      */
