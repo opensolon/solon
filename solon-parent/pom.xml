@@ -449,6 +449,12 @@
                 <version>${jetty.ver}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-servlet</artifactId>
+                <version>${jetty.ver}</version>
+            </dependency>
+
             <!-- jetty web socket -->
             <dependency>
                 <groupId>org.eclipse.jetty.websocket</groupId>
