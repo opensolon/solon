@@ -4,13 +4,11 @@ import io.undertow.Undertow;
 import io.undertow.UndertowOptions;
 import io.undertow.server.HttpHandler;
 import io.undertow.servlet.Servlets;
-import io.undertow.servlet.api.DeploymentInfo;
-import io.undertow.servlet.api.DeploymentManager;
-import io.undertow.servlet.api.ServletContainer;
-import io.undertow.servlet.api.ServletContainerInitializerInfo;
+import io.undertow.servlet.api.*;
 import io.undertow.servlet.util.DefaultClassIntrospector;
 import org.noear.solon.XApp;
 import org.noear.solon.boot.undertow.http.UtHttpHandler;
+import org.noear.solon.boot.undertow.http.UtHttpHandlerJsp;
 import org.noear.solon.boot.undertow.websocket.UtWsConnectionCallback;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XPlugin;
@@ -67,7 +65,7 @@ public class XPluginUndertow extends XPluginUndertowBase implements XPlugin {
     // 生成DeploymentManager来生成handler
     private DeploymentManager doGenerateManager() throws Exception {
 
-        UtHttpHandler handler = new UtHttpHandler();
+        //UtHttpHandler handler = new UtHttpHandler();
 
         MultipartConfigElement configElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
 
@@ -80,7 +78,7 @@ public class XPluginUndertow extends XPluginUndertowBase implements XPlugin {
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE);
 
         //尝试添加容器初始器
-        Aop.beanForeach((k, bw)-> {
+        Aop.beanForeach((k, bw) -> {
             if (bw.raw() instanceof ServletContainerInitializer) {
                 ServletContainerInitializer initializer = bw.raw();
                 if (initializer != null) {
@@ -90,10 +88,9 @@ public class XPluginUndertow extends XPluginUndertowBase implements XPlugin {
         });
 
 
-
         builder.setEagerFilterInit(true);
-
-        builder.addInnerHandlerChainWrapper(h -> handler);
+        builder.addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"));
+        //builder.addInnerHandlerChainWrapper(h -> handler);
 
         if (XServerProp.session_timeout > 0) {
             builder.setDefaultSessionTimeout(XServerProp.session_timeout);
