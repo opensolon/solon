@@ -8,7 +8,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.resource.ResourceCollection;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
-import org.noear.solon.boot.jetty.http.JtStartingListener;
+import org.noear.solon.boot.jetty.http.JtContainerInitializerProxy;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
 import org.noear.solon.boot.jetty.http.JtHttpContextServlet;
 import org.noear.solon.core.Aop;
@@ -103,15 +103,8 @@ class XPluginJetty implements XPlugin {
         handler.setBaseResource(new ResourceCollection(getResourceURLs()));
 
 
-        //尝试添加容器初始器
-        Aop.beanForeach((k, bw)->{
-            if(bw.raw() instanceof ServletContainerInitializer){
-                ServletContainerInitializer initializer = bw.raw();
-                if (initializer != null) {
-                    handler.addLifeCycleListener(new JtStartingListener(handler.getServletContext(), initializer));
-                }
-            }
-        });
+        //添加容器初始器
+        handler.addLifeCycleListener(new JtContainerInitializerProxy(handler.getServletContext()));
 
 
         if (XServerProp.session_timeout > 0) {

@@ -10,21 +10,16 @@ import io.undertow.servlet.util.DefaultClassIntrospector;
 import org.apache.jasper.deploy.JspPropertyGroup;
 import org.apache.jasper.deploy.TagLibraryInfo;
 import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
+import org.noear.solon.boot.undertow.http.UtContainerInitializerProxy;
 import org.noear.solon.boot.undertow.http.UtHttpHandlerJsp;
 import org.noear.solon.boot.undertow.jsp.JspResourceManager;
 import org.noear.solon.boot.undertow.jsp.JspServletEx;
 import org.noear.solon.boot.undertow.jsp.JspTldLocator;
 import org.noear.solon.boot.undertow.websocket.UtWsConnectionCallback;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.XClassLoader;
 import org.noear.solon.core.XPlugin;
 
 import javax.servlet.MultipartConfigElement;
-import javax.servlet.ServletContainerInitializer;
-import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 
 import static io.undertow.Handlers.websocket;
@@ -85,15 +80,8 @@ public class XPluginUndertowJsp extends XPluginUndertowBase implements XPlugin {
                 .setDefaultMultipartConfig(configElement)
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE);
 
-        //尝试添加容器初始器
-        Aop.beanForeach((k, bw)-> {
-            if(bw.raw() instanceof ServletContainerInitializer){
-                ServletContainerInitializer initializer = bw.raw();
-                if (initializer != null) {
-                    builder.addServletContainerInitializer(new ServletContainerInitializerInfo(initializer.getClass(), null));
-                }
-            }
-        });
+        //添加容器初始器
+        builder.addServletContainerInitializer(UtContainerInitializerProxy.info());
 
         builder.setEagerFilterInit(true);
 

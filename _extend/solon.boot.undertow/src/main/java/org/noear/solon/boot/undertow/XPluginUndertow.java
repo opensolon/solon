@@ -7,14 +7,12 @@ import io.undertow.servlet.Servlets;
 import io.undertow.servlet.api.*;
 import io.undertow.servlet.util.DefaultClassIntrospector;
 import org.noear.solon.XApp;
-import org.noear.solon.boot.undertow.http.UtHttpHandler;
+import org.noear.solon.boot.undertow.http.UtContainerInitializerProxy;
 import org.noear.solon.boot.undertow.http.UtHttpHandlerJsp;
 import org.noear.solon.boot.undertow.websocket.UtWsConnectionCallback;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.XPlugin;
 
 import javax.servlet.MultipartConfigElement;
-import javax.servlet.ServletContainerInitializer;
 
 import static io.undertow.Handlers.websocket;
 
@@ -77,16 +75,8 @@ public class XPluginUndertow extends XPluginUndertowBase implements XPlugin {
                 .setDefaultMultipartConfig(configElement)
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE);
 
-        //尝试添加容器初始器
-        Aop.beanForeach((k, bw) -> {
-            if (bw.raw() instanceof ServletContainerInitializer) {
-                ServletContainerInitializer initializer = bw.raw();
-                if (initializer != null) {
-                    builder.addServletContainerInitializer(new ServletContainerInitializerInfo(initializer.getClass(), null));
-                }
-            }
-        });
-
+        //添加容器初始器
+        builder.addServletContainerInitializer(UtContainerInitializerProxy.info());
 
         builder.setEagerFilterInit(true);
         builder.addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"));

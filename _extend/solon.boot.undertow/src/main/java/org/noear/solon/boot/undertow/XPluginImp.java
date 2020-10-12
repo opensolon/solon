@@ -5,6 +5,10 @@ import org.noear.solon.XUtil;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XPlugin;
 
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.annotation.WebListener;
+import javax.servlet.annotation.WebServlet;
+
 public final class XPluginImp implements XPlugin {
     private XPlugin _server = null;
 
@@ -18,6 +22,10 @@ public final class XPluginImp implements XPlugin {
         if (app.enableHttp() == false) {
             return;
         }
+
+        Aop.context().beanBuilderAdd(WebFilter.class,(clz,bw,ano)->{});
+        Aop.context().beanBuilderAdd(WebServlet.class,(clz, bw, ano)->{});
+        Aop.context().beanBuilderAdd(WebListener.class,(clz, bw, ano)->{});
 
         XServerProp.init();
 
