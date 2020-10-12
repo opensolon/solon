@@ -90,7 +90,7 @@ public class XPluginUndertow extends XPluginUndertowBase implements XPlugin {
 
         builder.setEagerFilterInit(true);
         builder.addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"));
-        //builder.addInnerHandlerChainWrapper(h -> handler);
+        //builder.addInnerHandlerChainWrapper(h -> handler); //这个会使过滤器不能使用
 
         if (XServerProp.session_timeout > 0) {
             builder.setDefaultSessionTimeout(XServerProp.session_timeout);
