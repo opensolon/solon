@@ -12,5 +12,5 @@ import java.lang.annotation.*;
 @Documented
 public @interface XImport {
     Class<?>[] value() default {};
-    String[] basePackages() default {};
+    String[] scanPackages() default {};
 }
