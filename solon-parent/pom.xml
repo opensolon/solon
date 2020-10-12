@@ -408,6 +408,12 @@
                 <artifactId>feign-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>hasor-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
 <!--            <dependency>-->
 <!--                <groupId>org.noear</groupId>-->
 <!--                <artifactId>mqtt-solon-plugin</artifactId>-->
@@ -715,6 +721,7 @@
         <module>../_extend2/dubbo-solon-plugin</module>
         <module>../_extend2/feign-solon-plugin</module>
         <module>../_extend2/graphql-solon-plugin</module>
+        <module>../_extend2/hasor-solon-plugin</module>
 <!--        <module>../_extend2/mqtt-solon-plugin</module>-->
         <module>../_extend2/weed3-solon-plugin</module>
         <module>../_extend2/mybatis-solon-plugin</module>
