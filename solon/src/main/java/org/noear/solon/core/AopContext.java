@@ -4,6 +4,7 @@ import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.*;
 import org.noear.solon.annotation.XServerEndpoint;
+import org.noear.solon.event.BeanLoadedEvent;
 import org.noear.solon.ext.BiConsumerEx;
 
 import java.lang.annotation.Annotation;
@@ -384,7 +385,11 @@ public class AopContext extends BeanContainer {
      */
     public void beanLoaded() {
         _beanLoaded = true;
-        //尝试加载事件（不用函数包装，是为了减少代码）
+
+        //1.广播事件
+        XEventBus.push(BeanLoadedEvent.loaded);
+
+        //2.执行加载事件（不用函数包装，是为了减少代码）
         _loadedEvent.forEach(f -> f.run());
     }
 }
