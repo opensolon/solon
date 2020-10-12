@@ -4,6 +4,7 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.eclipse.jetty.server.session.SessionHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.resource.ResourceCollection;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
@@ -95,7 +96,7 @@ class XPluginJetty implements XPlugin {
     }
 
     private Handler getWebServerHandler() throws IOException{
-        org.eclipse.jetty.servlet.ServletContextHandler handler = new org.eclipse.jetty.servlet.ServletContextHandler();
+        ServletContextHandler handler = new ServletContextHandler();
         handler.setSessionHandler(new SessionHandler());
         handler.setContextPath("/");
         handler.addServlet(JtHttpContextServlet.class, "/");
@@ -103,7 +104,7 @@ class XPluginJetty implements XPlugin {
 
 
         //尝试添加容器初始器
-        Aop.beanForeach((bw)->{
+        Aop.beanForeach((k, bw)->{
             if(bw.raw() instanceof ServletContainerInitializer){
                 ServletContainerInitializer initializer = bw.raw();
                 if (initializer != null) {

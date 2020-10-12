@@ -29,12 +29,11 @@ class XPluginJettyJsp extends XPluginJetty {
         ServletContextHandler handler = new ServletContextHandler();
         handler.setSessionHandler(new SessionHandler());
         handler.setContextPath("/");
-//        handler.setDescriptor("/WEB-INF/web.xml");
         handler.addServlet(JtHttpContextServlet.class, "/");
         handler.setBaseResource(new ResourceCollection(getResourceURLs()));
 
         //尝试添加容器初始器
-        Aop.beanForeach((bw)->{
+        Aop.beanForeach((k, bw)->{
             if(bw.raw() instanceof ServletContainerInitializer){
                 ServletContainerInitializer initializer = bw.raw();
                 if (initializer != null) {
