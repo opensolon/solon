@@ -15,15 +15,16 @@ import java.util.*;
 
 public class JtContainerInitializerProxy extends AbstractLifeCycle.AbstractLifeCycleListener {
     ServletContext sc;
-    List<ServletContainerInitializer> initializers = new ArrayList<>();
-    List<FilterHodler> filters = new ArrayList<>();
-    List<EventListener> listeners = new ArrayList<>();
-    List<ServletHolder> servlets = new ArrayList<>();
+
+    Set<ServletContainerInitializer> initializers = new LinkedHashSet<>();
+    Set<FilterHodler> filters = new LinkedHashSet<>();
+    Set<EventListener> listeners = new LinkedHashSet<>();
+    Set<ServletHolder> servlets = new LinkedHashSet<>();
 
     public JtContainerInitializerProxy(ServletContext servletContext) {
         sc = servletContext;
 
-        Aop.beanForeach((k, bw) -> {
+        Aop.beanForeach((bw) -> {
             if (bw.raw() instanceof ServletContainerInitializer) {
                 initializers.add(bw.raw());
             }
