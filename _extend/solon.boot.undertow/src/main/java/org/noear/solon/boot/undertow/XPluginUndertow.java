@@ -80,10 +80,15 @@ public class XPluginUndertow extends XPluginUndertowBase implements XPlugin {
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE);
 
         //尝试添加容器初始器
-        ServletContainerInitializer initializer = Aop.getOrNull(ServletContainerInitializer.class);
-        if (initializer != null) {
-            builder.addServletContainerInitializer(new ServletContainerInitializerInfo(initializer.getClass(), null));
-        }
+        Aop.beanForeach(bw->{
+            if(bw.raw() instanceof ServletContainerInitializer){
+                ServletContainerInitializer initializer = bw.raw();
+                if (initializer != null) {
+                    builder.addServletContainerInitializer(new ServletContainerInitializerInfo(initializer.getClass(), null));
+                }
+            }
+        });
+
 
 
         builder.setEagerFilterInit(true);
