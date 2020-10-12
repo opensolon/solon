@@ -3,9 +3,7 @@ package net.hasor.solon.boot;
 import net.hasor.core.AppContext;
 import net.hasor.core.Module;
 import net.hasor.utils.ExceptionUtils;
-import net.hasor.utils.ResourcesUtils;
 import net.hasor.utils.StringUtils;
-import net.hasor.utils.io.IOUtils;
 import org.noear.solon.XApp;
 import org.noear.solon.annotation.XConfiguration;
 import org.noear.solon.core.Aop;
@@ -15,8 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
 
 /**
  * 将注解的配置转到 BuildConfig 实例上
@@ -73,30 +69,6 @@ public class HasorConfiguration implements XEventListener<BeanLoadedEvent> {
                 buildConfig.customProperties.put(name, property.value());
             }
         }
-
-        //
-        // .打印 Hello
-        printLogo();
-    }
-
-    private AppContext initAppContext() {
-        try {
-            return BuildConfig.getInstance().build(null);
-        } catch (IOException e) {
-            throw ExceptionUtils.toRuntimeException(e);
-        }
-    }
-
-    private void printLogo() {
-        try {
-            InputStream inputStream = ResourcesUtils.getResourceAsStream("/META-INF/hasor-framework/hasor-spring-hello.txt");
-            List<String> helloText = IOUtils.readLines(inputStream, "utf-8");
-            StringBuilder builder = new StringBuilder("\n");
-            for (String msg : helloText) {
-                builder.append(msg).append("\n");
-            }
-            logger.info(builder.toString());
-        } catch (Exception e) { /**/ }
     }
 
     @Override
@@ -104,8 +76,16 @@ public class HasorConfiguration implements XEventListener<BeanLoadedEvent> {
         //没有EnableHasorWeb时，生成AppContext并注入容器
         //
         if (XApp.global().source().getAnnotation(EnableHasorWeb.class) == null) {
-            //所有bean加载完成之后，再注入AppContext
+            //所有bean加载完成之后，手动注入AppContext
             Aop.wrapAndPut(AppContext.class, initAppContext());
+        }
+    }
+
+    private AppContext initAppContext() {
+        try {
+            return BuildConfig.getInstance().build(null);
+        } catch (IOException e) {
+            throw ExceptionUtils.toRuntimeException(e);
         }
     }
 }

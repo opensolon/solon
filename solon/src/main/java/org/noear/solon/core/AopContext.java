@@ -387,7 +387,7 @@ public class AopContext extends BeanContainer {
         _beanLoaded = true;
 
         //1.广播事件
-        XEventBus.push(BeanLoadedEvent.loaded);
+        XEventBus.push(BeanLoadedEvent.instance);
 
         //2.执行加载事件（不用函数包装，是为了减少代码）
         _loadedEvent.forEach(f -> f.run());

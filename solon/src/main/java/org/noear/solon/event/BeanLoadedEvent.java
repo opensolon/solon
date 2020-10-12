@@ -1,5 +1,5 @@
 package org.noear.solon.event;
 
-public enum BeanLoadedEvent {
-    loaded
+public class BeanLoadedEvent {
+    public static final BeanLoadedEvent instance = new BeanLoadedEvent();
 }
