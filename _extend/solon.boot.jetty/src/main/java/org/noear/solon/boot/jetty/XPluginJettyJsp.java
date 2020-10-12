@@ -19,7 +19,7 @@ class XPluginJettyJsp extends XPluginJetty {
      * 获取Server Handler
      * */
     @Override
-    protected Handler getServerHandler() throws IOException{
+    protected Handler buildHandler() throws IOException{
         ServletContextHandler handler = getServletHandler();
 
         enableJspSupport(handler);
@@ -58,5 +58,4 @@ class XPluginJettyJsp extends XPluginJetty {
 
         handler.addServlet(holderJsp, "*.jsp");
     }
-
 }

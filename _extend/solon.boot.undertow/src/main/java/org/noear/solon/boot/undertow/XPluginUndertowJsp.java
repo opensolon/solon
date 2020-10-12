@@ -2,6 +2,7 @@ package org.noear.solon.boot.undertow;
 
 import io.undertow.jsp.HackInstanceManager;
 import io.undertow.jsp.JspServletBuilder;
+import io.undertow.server.HttpHandler;
 import io.undertow.servlet.api.*;
 import org.apache.jasper.deploy.JspPropertyGroup;
 import org.apache.jasper.deploy.TagLibraryInfo;
@@ -17,10 +18,10 @@ import java.util.HashMap;
  * @author by: Yukai
  * @since: 2019/3/28 15:50
  */
-public class XPluginUndertowJsp extends XPluginUndertowBase {
+public class XPluginUndertowJsp extends XPluginUndertow {
 
     @Override
-    protected DeploymentManager doGenerateManager() throws Exception{
+    protected HttpHandler buildHandler() throws Exception{
         DeploymentInfo builder = initDeploymentInfo();
 
         //添加jsp处理
@@ -38,9 +39,9 @@ public class XPluginUndertowJsp extends XPluginUndertowBase {
 
         //开始部署
         final ServletContainer container = ServletContainer.Factory.newInstance();
-        DeploymentManager deploymentManager = container.addDeployment(builder);
-        deploymentManager.deploy();
+        DeploymentManager manager = container.addDeployment(builder);
+        manager.deploy();
 
-        return deploymentManager;
+        return manager.start();
     }
 }
