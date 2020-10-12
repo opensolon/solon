@@ -62,11 +62,11 @@ public class AopContext extends BeanContainer {
                 }
             }
 
-            //注册自己
-            beanRegister(bw,bw.name(),bw.typed());
-
             //添加bean形态处理
             addBeanShape(clz, bw);
+
+            //注册到管理中心
+            beanRegister(bw,bw.name(),bw.typed());
         });
 
         beanBuilderAdd(XBean.class, (clz, bw, anno) -> {
