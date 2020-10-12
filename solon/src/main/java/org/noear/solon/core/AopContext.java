@@ -62,6 +62,9 @@ public class AopContext extends BeanContainer {
                 }
             }
 
+            //注册自己
+            beanRegister(bw,bw.name(),bw.typed());
+
             //添加bean形态处理
             addBeanShape(clz, bw);
         });
