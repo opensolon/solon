@@ -22,27 +22,30 @@ public final class XPluginImp implements XPlugin {
 
         XServerProp.init();
 
+        Aop.beanOnloaded(() -> {
+            start0(app);
+        });
+    }
 
+    private void start0(XApp app) {
         Class<?> jspClz = XUtil.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
 
         if (jspClz == null) {
-            _server = new XPluginJetty(app);
+            _server = new XPluginJetty();
         } else {
-            _server = new XPluginJettyJsp(app);
+            _server = new XPluginJettyJsp();
         }
 
-        Aop.beanOnloaded(()->{
-            long time_start = System.currentTimeMillis();
-            System.out.println("solon.Server:main: Jetty 9.4(jetty)");
+        long time_start = System.currentTimeMillis();
+        System.out.println("solon.Server:main: Jetty 9.4(jetty)");
 
-            _server.init();
-            _server.start(app);
+        _server.start(app);
 
-            long time_end = System.currentTimeMillis();
+        long time_end = System.currentTimeMillis();
 
-            System.out.println("solon.Connector:main: jetty: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
-            System.out.println("solon.Server:main: jetty: Started @" + (time_end - time_start) + "ms");
-        });
+        System.out.println("solon.Connector:main: jetty: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
+        System.out.println("solon.Server:main: jetty: Started @" + (time_end - time_start) + "ms");
+
 
         app.before("**", new XFormContentFilter());
     }

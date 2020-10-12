@@ -79,7 +79,7 @@ public class XApp implements XHandler,XHandlerSlots {
             try {
                 builder.accept(_global);
             } catch (Throwable ex) {
-                XUtil.throwableWrap(ex);
+                throw XUtil.throwableWrap(ex);
             }
         }
 

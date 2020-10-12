@@ -199,7 +199,7 @@ public class ValidatorManager implements XHandler {
 
                 ctx.render(XResult.failure(400, message));
             } catch (Throwable ex) {
-                XUtil.throwableWrap(ex);
+                throw XUtil.throwableWrap(ex);
             }
 
             return true;

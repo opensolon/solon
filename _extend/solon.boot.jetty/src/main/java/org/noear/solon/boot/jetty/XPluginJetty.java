@@ -4,30 +4,29 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.eclipse.jetty.server.session.SessionHandler;
-import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.resource.ResourceCollection;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.boot.jetty.http.JettyStartingListener;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
 import org.noear.solon.boot.jetty.http.JtHttpContextServlet;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XPlugin;
 
-import javax.servlet.DispatcherType;
-import javax.servlet.Filter;
+import javax.servlet.ServletContainerInitializer;
 import javax.servlet.ServletContext;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.EnumSet;
 import java.util.EventListener;
 
 class XPluginJetty implements XPlugin {
     protected Server _server = null;
 
-    public XPluginJetty(XApp app){
+    @Override
+    public void start(XApp app) {
         try {
 
             Class<?> wsClz = XUtil.loadClass("org.eclipse.jetty.websocket.server.WebSocketHandler");
@@ -62,19 +61,9 @@ class XPluginJetty implements XPlugin {
                 }
             });
 
-
-        } catch (Exception ex) {
-            XUtil.throwableWrap(ex);
-        }
-    }
-
-
-    @Override
-    public void start(XApp app) {
-        try {
             _server.start();
-        }catch (Exception ex){
-            XUtil.throwableWrap(ex);
+        } catch (Exception ex) {
+            throw XUtil.throwableWrap(ex);
         }
     }
 
@@ -83,21 +72,6 @@ class XPluginJetty implements XPlugin {
         if (_server != null) {
             _server.stop();
             _server = null;
-        }
-    }
-
-    public void init() {
-        if (XUtil.loadClass("org.eclipse.jetty.servlet.ServletContextHandler") != null) {
-            ServletContextHandler handler = Aop.getOrNull(ServletContextHandler.class);
-            if (handler != null) {
-                Aop.beanForeach((k, bw) -> {
-                    if (bw.raw() instanceof EventListener) {
-                        handler.addEventListener((EventListener) bw.raw());
-                    } else if (bw.raw() instanceof Filter) {
-                        handler.addFilter(new FilterHolder((Filter) bw.raw()), bw.attrs(), EnumSet.of(DispatcherType.REQUEST));
-                    }
-                });
-            }
         }
     }
 
@@ -132,13 +106,17 @@ class XPluginJetty implements XPlugin {
         handler.setBaseResource(new ResourceCollection(getResourceURLs()));
 
 
+        //尝试添加容器初始器
+        ServletContainerInitializer initializer = Aop.getOrNull(ServletContainerInitializer.class);
+        if (initializer != null) {
+            handler.addLifeCycleListener(new JettyStartingListener(handler.getServletContext(), initializer));
+        }
+
+
         if (XServerProp.session_timeout > 0) {
             handler.getSessionHandler().setMaxInactiveInterval(XServerProp.session_timeout);
         }
 
-        //将ServletContext注入容器
-        Aop.wrapAndPut(ServletContext.class, handler.getServletContext());
-        Aop.wrapAndPut(ServletContextHandler.class,handler);
 
         return handler;
     }

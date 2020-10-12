@@ -29,7 +29,7 @@ public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
                         tmp.append("body:");
                         tmp.append(ctx.body()).append(";");
                     } catch (Exception ex) {
-                        XUtil.throwableWrap(ex);
+                        throw XUtil.throwableWrap(ex);
                     }
                     break;
                 }

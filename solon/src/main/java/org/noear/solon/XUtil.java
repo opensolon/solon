@@ -54,11 +54,11 @@ public class XUtil {
         }
     }
 
-    public static void throwableWrap(Throwable ex){
+    public static RuntimeException throwableWrap(Throwable ex){
         if(ex instanceof RuntimeException){
-            throw (RuntimeException)ex;
+            return  (RuntimeException)ex;
         }else {
-            throw new RuntimeException(ex);
+            return new RuntimeException(ex);
         }
     }
 

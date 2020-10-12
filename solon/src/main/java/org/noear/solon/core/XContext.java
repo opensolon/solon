@@ -329,7 +329,7 @@ public abstract class XContext {
                 attrSet("output", str);
                 output(str.getBytes(_charset));
             } catch (Throwable ex) {
-                XUtil.throwableWrap(ex);
+                throw XUtil.throwableWrap(ex);
             }
         }
     }
