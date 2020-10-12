@@ -20,7 +20,7 @@ public class BootEnableHasor_3_Test {
     @Test
     public void contextLoads() {
         Set<Class<?>> hasType = new HashSet<>();
-        Aop.beanForeach((k, bw)->{
+        Aop.beanForeach((bw)->{
             hasType.add(bw.clz());
         });
         //
@@ -39,13 +39,32 @@ public class BootEnableHasor_3_Test {
         //
         assert appContext.getBindInfo(TestModuleD.class) == null;
         assert !hasType.contains(TestModuleD.class);
+
+    }
+
+    @Test
+    public void contextLoads21() {
+        Set<Class<?>> hasType = new HashSet<>();
+        Aop.beanForeach((bw)->{
+            hasType.add(bw.clz());
+        });
         //
         //
         // 有DimModule、在ComponentScan范围外、在EnableHasor范围内、无Component
         assert appContext.getBindInfo(TestDimModuleA.class) != null; // Hasor 加载了
-        assert !hasType.contains(TestDimModuleA.class);// 无Component，Spring 中不存在它。
+        assert hasType.contains(TestDimModuleA.class);// 无Component，Spring 中不存在它。
         TestDimModuleA dimModuleA = appContext.getInstance(TestDimModuleA.class);
         //assert dimModuleA.getApplicationContext() == null;
+
+    }
+
+    @Test
+    public void contextLoads22() {
+        Set<Class<?>> hasType = new HashSet<>();
+        Aop.beanForeach((bw)->{
+            hasType.add(bw.clz());
+        });
+
         //
         //
         // 有DimModule、在ComponentScan范围外、在EnableHasor范围内、有Component
@@ -55,6 +74,16 @@ public class BootEnableHasor_3_Test {
         TestDimModuleB dimModuleB_2 = Aop.get(TestDimModuleB.class);
         //assert dimModuleB_1.getApplicationContext() == applicationContext;// Hasor 当成普通 Bean 创建
         //assert dimModuleB_2.getApplicationContext() == applicationContext;// Spring 会创建它
+
+    }
+
+    @Test
+    public void contextLoads23() {
+        Set<Class<?>> hasType = new HashSet<>();
+        Aop.beanForeach((bw) -> {
+            hasType.add(bw.clz());
+        });
+
         //
         //
         // 无DimModule、在ComponentScan范围外、在EnableHasor范围内、有Component

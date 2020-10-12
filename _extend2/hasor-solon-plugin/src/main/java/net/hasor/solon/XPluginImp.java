@@ -23,11 +23,10 @@ public class XPluginImp implements XPlugin {
             // 把Solon 中所有标记了 @DimModule 的 Module，捞进来。
             //
             if (Module.class.isAssignableFrom(type)) {
-                if (BuildConfig.getInstance().needCheckRepeat.contains(bw.clz()) == false) {
-                    BuildConfig.getInstance().needCheckRepeat.add(bw.clz());
-                    BuildConfig.getInstance().loadModules.add(bw.raw());
-                }
+                BuildConfig.getInstance().addModules(bw.raw());
             }
         });
+
+
     }
 }

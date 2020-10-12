@@ -1,4 +1,4 @@
-package net.hasor.solon.beans;
+package net.hasor.solon.boot;
 
 import net.hasor.core.TypeSupplier;
 import org.noear.solon.core.Aop;

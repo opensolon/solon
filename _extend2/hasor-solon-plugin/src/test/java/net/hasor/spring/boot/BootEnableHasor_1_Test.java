@@ -43,7 +43,7 @@ public class BootEnableHasor_1_Test {
     }
 
     @Test
-    public void contextLoads2(){
+    public void contextLoads21(){
         Set<Class<?>> hasType = new HashSet<>();
         Aop.beanForeach((bw)->{
             hasType.add(bw.clz());
@@ -53,9 +53,16 @@ public class BootEnableHasor_1_Test {
         //
         // 有DimModule、在ComponentScan范围内、在EnableHasor范围内、无Component
         assert appContext.getBindInfo(TestDimModuleA.class) != null; // Hasor 加载了
-        assert !hasType.contains(TestDimModuleA.class);// 无Component，Spring 中不存在它。
+        assert hasType.contains(TestDimModuleA.class);// 无Component，Spring 中不存在它。
         TestDimModuleA dimModuleA = appContext.getInstance(TestDimModuleA.class);
-        //assert dimModuleA.getApplicationContext() == null;
+    }
+
+    @Test
+    public void contextLoads22(){
+        Set<Class<?>> hasType = new HashSet<>();
+        Aop.beanForeach((bw)->{
+            hasType.add(bw.clz());
+        });
         //
         //
         // 有DimModule、在ComponentScan范围内、在EnableHasor范围内、有Component
@@ -63,6 +70,15 @@ public class BootEnableHasor_1_Test {
         assert hasType.contains(TestDimModuleB.class);
         TestDimModuleB dimModuleB = appContext.getInstance(TestDimModuleB.class);
         assert dimModuleB != null;
+    }
+
+    @Test
+    public void contextLoads23(){
+        Set<Class<?>> hasType = new HashSet<>();
+        Aop.beanForeach((bw)->{
+            hasType.add(bw.clz());
+        });
+
         //
         //
         // 无DimModule、在ComponentScan范围内、在EnableHasor范围内、有Component

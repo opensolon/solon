@@ -64,7 +64,7 @@ public class HasorWebConfiguration implements ServletContainerInitializer {
 
     private AppContext initAppContext(ServletContext servletContext) {
         try {
-            return BuildConfig.getInstance().build(servletContext).build();
+            return BuildConfig.getInstance().build(servletContext);
         } catch (IOException e) {
             throw ExceptionUtils.toRuntimeException(e);
         }

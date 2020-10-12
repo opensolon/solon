@@ -2,8 +2,6 @@ package net.hasor.solon.boot;
 
 import net.hasor.core.AppContext;
 import net.hasor.core.Module;
-import net.hasor.core.exts.aop.Matchers;
-import net.hasor.solon.beans.ScanPackagesModule;
 import net.hasor.utils.ExceptionUtils;
 import net.hasor.utils.ResourcesUtils;
 import net.hasor.utils.StringUtils;
@@ -48,19 +46,21 @@ public class HasorConfiguration {
 
         // 处理startWith
         for (Class<? extends Module> startWith : enableHasor.startWith()) {
-            buildConfig.loadModules.add(Aop.get(startWith));
+            buildConfig.addModules(Aop.get(startWith));
         }
 
-        buildConfig.needCheckRepeat.addAll(Arrays.asList(enableHasor.startWith()));
         // 把Solon 中所有标记了 @DimModule 的 Module，捞进来。 //交给XPluginImp处理
 
         //
         // 处理scanPackages
         if (enableHasor.scanPackages().length != 0) {
-            ScanPackagesModule autoScanModule = new ScanPackagesModule(
-                    enableHasor.scanPackages(),
-                    Matchers.anyClassExcludes(buildConfig.needCheckRepeat));
-            buildConfig.loadModules.add(autoScanModule);
+            for (String p : enableHasor.scanPackages()) {
+                if (p.endsWith(".*")) {
+                    XApp.global().beanScan(p.substring(0, p.length() - 2));
+                } else {
+                    XApp.global().beanScan(p);
+                }
+            }
         }
 
         // 处理customProperties
@@ -79,13 +79,18 @@ public class HasorConfiguration {
         //将AppContext注入容器
         //
         if (XApp.global().source().getAnnotation(EnableHasorWeb.class) == null) {
-            Aop.wrapAndPut(AppContext.class, initAppContext());
+            Aop.beanOnloaded(()->{
+                //
+                //所有bean加载完成之后，再注入AppContext
+                //
+                Aop.wrapAndPut(AppContext.class, initAppContext());
+            });
         }
     }
 
     private AppContext initAppContext() {
         try {
-            return BuildConfig.getInstance().build(null).build();
+            return BuildConfig.getInstance().build(null);
         } catch (IOException e) {
             throw ExceptionUtils.toRuntimeException(e);
         }

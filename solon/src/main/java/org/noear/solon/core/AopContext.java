@@ -4,6 +4,7 @@ import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.*;
 import org.noear.solon.annotation.XServerEndpoint;
+import org.noear.solon.event.BeanLoadedEvent;
 import org.noear.solon.ext.BiConsumerEx;
 
 import java.lang.annotation.Annotation;
@@ -117,7 +118,7 @@ public class AopContext extends BeanContainer {
         }));
     }
 
-    private void addBeanShape(Class<?> clz, BeanWrap bw){
+    private void addBeanShape(Class<?> clz, BeanWrap bw) {
         //XPlugin
         if (XPlugin.class.isAssignableFrom(bw.clz())) {
             //如果是插件，则插入
@@ -132,7 +133,7 @@ public class AopContext extends BeanContainer {
         }
 
         //XUpstreamFactory
-        if(XUpstreamFactory.class.isAssignableFrom(clz)){
+        if (XUpstreamFactory.class.isAssignableFrom(clz)) {
             XBridge.upstreamFactorySet(bw.raw());
         }
     }
@@ -187,8 +188,8 @@ public class AopContext extends BeanContainer {
     /**
      * ::扫描源下的所有 bean 及对应处理
      */
-    public void beanScan(String basePackage){
-        if(XUtil.isEmpty(basePackage)){
+    public void beanScan(String basePackage) {
+        if (XUtil.isEmpty(basePackage)) {
             return;
         }
 
@@ -208,7 +209,7 @@ public class AopContext extends BeanContainer {
 
     /**
      * ::制造当前 bean 及对应处理
-     * */
+     */
     public BeanWrap beanMake(Class<?> clz) {
         //包装
         BeanWrap bw = wrap(clz, null);
@@ -293,11 +294,11 @@ public class AopContext extends BeanContainer {
             tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
         } else {
             //1.构建参数
-            VarGather gather = new VarGather(size2, (args2)->{
+            VarGather gather = new VarGather(size2, (args2) -> {
                 try {
                     Object raw = mWrap.doInvoke(bw.raw(), args2);
                     tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
-                }catch (Throwable ex){
+                } catch (Throwable ex) {
                     XEventBus.push(ex);
                 }
             });
@@ -312,9 +313,9 @@ public class AopContext extends BeanContainer {
     protected void tryBuildBean0(XBean anno, XInject beanInj, Class<?> clz, Object raw) {
         if (raw != null) {
             BeanWrap m_bw = null;
-            if(raw instanceof BeanWrap){
+            if (raw instanceof BeanWrap) {
                 m_bw = (BeanWrap) raw;
-            }else{
+            } else {
                 if (beanInj != null && XUtil.isEmpty(beanInj.value()) == false) {
                     if (beanInj.value().startsWith("${")) {
                         XUtil.injectProperties(raw, XApp.cfg().getPropByExpr(beanInj.value()));
@@ -347,6 +348,7 @@ public class AopContext extends BeanContainer {
     private Set<Runnable> _loadedEvent = new LinkedHashSet<>();
 
     //::bean事件处理
+
     /**
      * 添加bean加载完成事件
      */
@@ -355,18 +357,18 @@ public class AopContext extends BeanContainer {
         _loadedEvent.add(fun);
 
         //如果已加载完成，则直接返回
-        if(_beanLoaded){
+        if (_beanLoaded) {
             fun.run();
         }
     }
 
     /**
      * 完成加载时调用，会进行事件通知
-     * */
-    public void beanLoaded(){
+     */
+    public void beanLoaded() {
         _beanLoaded = true;
         //尝试加载事件（不用函数包装，是为了减少代码）
         _loadedEvent.forEach(f -> f.run());
+        XEventBus.push(BeanLoadedEvent.instance);
     }
-
 }

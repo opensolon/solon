@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package net.hasor.solon.boot;
+import net.hasor.core.AppContext;
 import net.hasor.core.Hasor;
 import net.hasor.core.Module;
 import net.hasor.utils.StringUtils;
@@ -46,9 +47,9 @@ public class BuildConfig {
     public Properties          refProperties    = null; // 2st,通过 refProperties 配置的 K/V
     public Map<Object, Object> customProperties = null; // 3st,利用 property 额外扩充的 K/V
     public boolean             useProperties    = true; // 是否把属性导入到Settings
-    public Set<Module>         loadModules      = null; // 要加载的模块
+    private Set<Module>        loadModules      = null; // 要加载的模块
 
-    public Set<Class<?>> needCheckRepeat = new HashSet<>();
+    private Set<Class<?>> needCheckRepeat = new HashSet<>();
 
     public BuildConfig() {
         this.customProperties = new HashMap<>();
@@ -57,7 +58,17 @@ public class BuildConfig {
         this.envProperties = XApp.cfg();
     }
 
-    public Hasor build(Object parentObject) throws IOException {
+    public void addModules(Module module) {
+        if (needCheckRepeat.contains(module.getClass())) {
+            return;
+        } else {
+            needCheckRepeat.add(module.getClass());
+        }
+
+        loadModules.add(module);
+    }
+
+    public AppContext build(Object parentObject) throws IOException {
         Hasor hasorBuild = (parentObject == null) ? Hasor.create() : Hasor.create(parentObject);
         hasorBuild.parentClassLoaderWith(BuildConfig.class.getClassLoader());
         //
@@ -93,6 +104,6 @@ public class BuildConfig {
             hasorBuild.importVariablesToSettings();
         }
         //
-        return hasorBuild.addModules(new ArrayList<>(this.loadModules));
+        return hasorBuild.addModules(new ArrayList<>(this.loadModules)).build();
     }
 }

@@ -14,7 +14,7 @@ public class Hello {
     @RenderType("json")
     public Object execute() {
         return new HashMap<String, String>() {{
-            put("spring", "I'm not a spring");
+            put("spring", "1");
             put("message", "HelloWord");
         }};
     }
