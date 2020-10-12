@@ -6,14 +6,13 @@ import org.noear.solon.XUtil;
 
 import javax.servlet.ServletContainerInitializer;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import java.util.HashSet;
 
-public class JettyStartingListener extends AbstractLifeCycle.AbstractLifeCycleListener {
+public class JtStartingListener extends AbstractLifeCycle.AbstractLifeCycleListener {
     ServletContext sc;
     ServletContainerInitializer sci;
 
-    public JettyStartingListener(ServletContext servletContext, ServletContainerInitializer initializer) {
+    public JtStartingListener(ServletContext servletContext, ServletContainerInitializer initializer) {
         sc = servletContext;
         sci = initializer;
     }

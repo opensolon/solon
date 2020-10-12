@@ -4,23 +4,20 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.eclipse.jetty.server.session.SessionHandler;
-import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.resource.ResourceCollection;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
-import org.noear.solon.boot.jetty.http.JettyStartingListener;
+import org.noear.solon.boot.jetty.http.JtStartingListener;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
 import org.noear.solon.boot.jetty.http.JtHttpContextServlet;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XPlugin;
 
 import javax.servlet.ServletContainerInitializer;
-import javax.servlet.ServletContext;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.EventListener;
 
 class XPluginJetty implements XPlugin {
     protected Server _server = null;
@@ -109,7 +106,7 @@ class XPluginJetty implements XPlugin {
         //尝试添加容器初始器
         ServletContainerInitializer initializer = Aop.getOrNull(ServletContainerInitializer.class);
         if (initializer != null) {
-            handler.addLifeCycleListener(new JettyStartingListener(handler.getServletContext(), initializer));
+            handler.addLifeCycleListener(new JtStartingListener(handler.getServletContext(), initializer));
         }
 
 
