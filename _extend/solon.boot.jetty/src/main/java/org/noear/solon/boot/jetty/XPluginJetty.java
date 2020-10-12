@@ -89,11 +89,11 @@ class XPluginJetty implements XPlugin {
             return s_handler;
         }else{
             //::走Servlet接口（需要多个包）
-            return getWebServerHandler();
+            return getServletHandler();
         }
     }
 
-    private Handler getWebServerHandler() throws IOException{
+    protected ServletContextHandler getServletHandler() throws IOException{
         ServletContextHandler handler = new ServletContextHandler();
         handler.setSessionHandler(new SessionHandler());
         handler.setContextPath("/");
