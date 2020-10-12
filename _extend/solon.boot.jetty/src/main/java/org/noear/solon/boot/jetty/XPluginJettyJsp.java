@@ -10,9 +10,7 @@ import org.noear.solon.XApp;
 import org.noear.solon.boot.jetty.http.JtContainerInitializerProxy;
 import org.noear.solon.boot.jetty.http.JtJspStarter;
 import org.noear.solon.boot.jetty.http.JtHttpContextServlet;
-import org.noear.solon.core.Aop;
 
-import javax.servlet.ServletContainerInitializer;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;

@@ -11,10 +11,8 @@ import org.noear.solon.XUtil;
 import org.noear.solon.boot.jetty.http.JtContainerInitializerProxy;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
 import org.noear.solon.boot.jetty.http.JtHttpContextServlet;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.XPlugin;
 
-import javax.servlet.ServletContainerInitializer;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
