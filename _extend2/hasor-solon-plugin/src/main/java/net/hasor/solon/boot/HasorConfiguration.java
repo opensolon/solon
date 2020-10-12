@@ -1,6 +1,8 @@
 package net.hasor.solon.boot;
 
+import net.hasor.core.AppContext;
 import net.hasor.core.Module;
+import net.hasor.utils.ExceptionUtils;
 import net.hasor.utils.ResourcesUtils;
 import net.hasor.utils.StringUtils;
 import net.hasor.utils.io.IOUtils;
@@ -10,6 +12,8 @@ import org.noear.solon.core.Aop;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.ServletContext;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
@@ -52,9 +56,14 @@ public class HasorConfiguration {
         // 处理scanPackages
         if (enableHasor.scanPackages().length != 0) {
             for (String p : enableHasor.scanPackages()) {
-                XApp.global().beanScan(p);
+                if (p.endsWith("/*")) {
+                    XApp.global().beanScan(p.substring(0, p.length() - 2));
+                } else {
+                    XApp.global().beanScan(p);
+                }
             }
         }
+
         // 处理customProperties
         Property[] customProperties = enableHasor.customProperties();
         for (Property property : customProperties) {
@@ -67,6 +76,20 @@ public class HasorConfiguration {
         //
         // .打印 Hello
         printLogo();
+
+        //将AppContext注入容器
+        //
+        if (XApp.global().source().getAnnotation(EnableHasorWeb.class) == null) {
+            Aop.wrapAndPut(AppContext.class, initAppContext());
+        }
+    }
+
+    private AppContext initAppContext() {
+        try {
+            return BuildConfig.getInstance().build(null).build();
+        } catch (IOException e) {
+            throw ExceptionUtils.toRuntimeException(e);
+        }
     }
 
     private void printLogo() {

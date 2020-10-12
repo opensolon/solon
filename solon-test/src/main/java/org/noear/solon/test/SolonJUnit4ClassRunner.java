@@ -19,8 +19,9 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
 
 
         if (anno != null) {
+
             try {
-                Method main = anno.value().getMethod("main", String[].class);
+                Method main = getMain(anno);
 
                 if (main != null && Modifier.isStatic(main.getModifiers())) {
                     if (anno.debug()) {
@@ -52,6 +53,14 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
             XApp.start(klass, debugArgs);
         }
 
+    }
+
+    private Method getMain(SolonTest anno) {
+        try {
+            return anno.value().getMethod("main", String[].class);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     @Override

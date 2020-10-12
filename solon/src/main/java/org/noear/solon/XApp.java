@@ -134,6 +134,10 @@ public class XApp implements XHandler,XHandlerSlots {
             for (Class<?> clz : anno.value()) {
                 beanMake(clz);
             }
+
+            for (String pkg : anno.basePackages()) {
+                beanScan(pkg);
+            }
         }
     }
 
