@@ -1,4 +1,4 @@
-package net.hasor.spring.boot;
+package net.hasor.solon.boot;
 import net.hasor.core.AppContext;
 import net.hasor.core.Environment;
 import net.hasor.core.Settings;
@@ -9,8 +9,8 @@ import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(BootShareHasor_1.class)
-public class BootShareHasor_1_Test {
+@SolonTest(BootShareHasor_2.class)
+public class BootShareHasor_2_Test {
     @XInject
     private AppContext appContext;
 
@@ -21,6 +21,6 @@ public class BootShareHasor_1_Test {
         Settings settings = environment.getSettings();
         //
         assert "HelloWord".equals(environment.getVariable("msg"));
-        assert "HelloWord".equals(settings.getString("msg"));
+        assert !"HelloWord".equals(settings.getString("msg"));
     }
 }

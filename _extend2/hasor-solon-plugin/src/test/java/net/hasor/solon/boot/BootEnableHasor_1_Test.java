@@ -1,4 +1,4 @@
-package net.hasor.spring.boot;
+package net.hasor.solon.boot;
 import net.hasor.test.spring.mod1.*;
 import net.hasor.core.AppContext;
 import org.junit.Test;

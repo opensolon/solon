@@ -1,11 +1,8 @@
-package net.hasor.spring.boot;
-import net.hasor.solon.boot.SolonModule;
+package net.hasor.solon.boot;
 import net.hasor.test.spring.web.Hello;
 import net.hasor.test.spring.web.JsonRender;
 import net.hasor.core.TypeSupplier;
 
-import net.hasor.solon.boot.EnableHasor;
-import net.hasor.solon.boot.EnableHasorWeb;
 import net.hasor.web.WebApiBinder;
 import net.hasor.web.WebModule;
 import org.noear.solon.annotation.XImport;

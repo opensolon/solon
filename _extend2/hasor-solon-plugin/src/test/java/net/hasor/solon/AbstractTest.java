@@ -1,4 +1,4 @@
-package net.hasor.spring;
+package net.hasor.solon;
 import net.hasor.test.spring.mod1.TestModuleA;
 import net.hasor.test.spring.mod1.TestModuleB;
 import net.hasor.test.spring.mod1.TestModuleC;

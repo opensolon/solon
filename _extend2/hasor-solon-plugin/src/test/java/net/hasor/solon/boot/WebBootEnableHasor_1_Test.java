@@ -1,7 +1,6 @@
-package net.hasor.spring.boot;
+package net.hasor.solon.boot;
 import com.alibaba.fastjson.JSONObject;
 import net.hasor.core.AppContext;
-import okhttp3.MediaType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.solon.annotation.XInject;
