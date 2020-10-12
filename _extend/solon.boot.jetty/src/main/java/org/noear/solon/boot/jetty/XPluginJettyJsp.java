@@ -34,10 +34,15 @@ class XPluginJettyJsp extends XPluginJetty {
         handler.setBaseResource(new ResourceCollection(getResourceURLs()));
 
         //尝试添加容器初始器
-        ServletContainerInitializer initializer = Aop.getOrNull(ServletContainerInitializer.class);
-        if (initializer != null) {
-            handler.addLifeCycleListener(new JtStartingListener(handler.getServletContext(), initializer));
-        }
+        Aop.beanForeach((bw)->{
+            if(bw.raw() instanceof ServletContainerInitializer){
+                ServletContainerInitializer initializer = bw.raw();
+                if (initializer != null) {
+                    handler.addLifeCycleListener(new JtStartingListener(handler.getServletContext(), initializer));
+                }
+            }
+        });
+
 
         if (XServerProp.session_timeout > 0) {
             handler.getSessionHandler().setMaxInactiveInterval(XServerProp.session_timeout);
