@@ -20,7 +20,7 @@ public class XPluginImp implements XPlugin {
                 XApp.global().plug(bw.raw());
             } else {
 
-                //注册到管理中心
+                //注册到容器
                 Aop.context().beanRegister(bw, anno.value(), false);
 
                 //如果是remoting状态，转到XApp路由器
