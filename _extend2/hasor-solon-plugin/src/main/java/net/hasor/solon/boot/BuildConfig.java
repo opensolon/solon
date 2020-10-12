@@ -48,6 +48,8 @@ public class BuildConfig {
     public boolean             useProperties    = true; // 是否把属性导入到Settings
     public Set<Module>         loadModules      = null; // 要加载的模块
 
+    public Set<Class<?>> needCheckRepeat = new HashSet<>();
+
     public BuildConfig() {
         this.customProperties = new HashMap<>();
         this.loadModules = new LinkedHashSet<>();

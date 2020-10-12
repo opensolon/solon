@@ -2,6 +2,8 @@ package net.hasor.solon.boot;
 
 import net.hasor.core.AppContext;
 import net.hasor.core.Module;
+import net.hasor.core.exts.aop.Matchers;
+import net.hasor.solon.beans.AutoScanPackagesModule;
 import net.hasor.utils.ExceptionUtils;
 import net.hasor.utils.ResourcesUtils;
 import net.hasor.utils.StringUtils;
@@ -50,18 +52,16 @@ public class HasorConfiguration {
             buildConfig.loadModules.add(Aop.get(startWith));
         }
 
+        buildConfig.needCheckRepeat.addAll(Arrays.asList(enableHasor.startWith()));
         // 把Solon 中所有标记了 @DimModule 的 Module，捞进来。 //交给XPluginImp处理
 
         //
         // 处理scanPackages
         if (enableHasor.scanPackages().length != 0) {
-            for (String p : enableHasor.scanPackages()) {
-                if (p.endsWith("/*")) {
-                    XApp.global().beanScan(p.substring(0, p.length() - 2));
-                } else {
-                    XApp.global().beanScan(p);
-                }
-            }
+            AutoScanPackagesModule autoScanModule = new AutoScanPackagesModule(
+                    enableHasor.scanPackages(),
+                    Matchers.anyClassExcludes(buildConfig.needCheckRepeat));
+            buildConfig.loadModules.add(autoScanModule);
         }
 
         // 处理customProperties
