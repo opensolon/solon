@@ -13,16 +13,16 @@ import org.slf4j.LoggerFactory;
 import java.util.Set;
 import java.util.function.Predicate;
 
-public class AutoScanPackagesModule implements Module {
-    protected static Logger logger             = LoggerFactory.getLogger(AutoScanPackagesModule.class);
+public class ScanPackagesModule implements Module {
+    protected static Logger logger             = LoggerFactory.getLogger(ScanPackagesModule.class);
     private          String[]            loadModulePackages = null;
     private Predicate<Class<?>> include;
 
-    public AutoScanPackagesModule(String[] packages) {
+    public ScanPackagesModule(String[] packages) {
         this(packages, null);
     }
 
-    public AutoScanPackagesModule(String[] packages, Predicate<Class<?>> include) {
+    public ScanPackagesModule(String[] packages, Predicate<Class<?>> include) {
         this.loadModulePackages = packages;
         this.include = include == null ? Matchers.anyClass() : include;
     }

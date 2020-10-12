@@ -3,7 +3,7 @@ package net.hasor.solon.boot;
 import net.hasor.core.AppContext;
 import net.hasor.core.Module;
 import net.hasor.core.exts.aop.Matchers;
-import net.hasor.solon.beans.AutoScanPackagesModule;
+import net.hasor.solon.beans.ScanPackagesModule;
 import net.hasor.utils.ExceptionUtils;
 import net.hasor.utils.ResourcesUtils;
 import net.hasor.utils.StringUtils;
@@ -14,7 +14,6 @@ import org.noear.solon.core.Aop;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -58,7 +57,7 @@ public class HasorConfiguration {
         //
         // 处理scanPackages
         if (enableHasor.scanPackages().length != 0) {
-            AutoScanPackagesModule autoScanModule = new AutoScanPackagesModule(
+            ScanPackagesModule autoScanModule = new ScanPackagesModule(
                     enableHasor.scanPackages(),
                     Matchers.anyClassExcludes(buildConfig.needCheckRepeat));
             buildConfig.loadModules.add(autoScanModule);
