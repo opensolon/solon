@@ -1,4 +1,4 @@
-package net.hasor.solon.boot;
+package net.hasor.solon.boot.test;
 import net.hasor.core.AppContext;
 import net.hasor.core.Environment;
 import net.hasor.core.Settings;

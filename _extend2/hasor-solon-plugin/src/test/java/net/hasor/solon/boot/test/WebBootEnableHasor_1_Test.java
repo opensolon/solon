@@ -1,4 +1,4 @@
-package net.hasor.solon.boot;
+package net.hasor.solon.boot.test;
 import com.alibaba.fastjson.JSONObject;
 import net.hasor.core.AppContext;
 import org.junit.Test;

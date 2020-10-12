@@ -1,4 +1,7 @@
-package net.hasor.solon.boot;
+package net.hasor.solon.boot.test;
+import net.hasor.solon.boot.EnableHasor;
+import net.hasor.solon.boot.EnableHasorWeb;
+import net.hasor.solon.boot.SolonModule;
 import net.hasor.test.spring.web.Hello;
 import net.hasor.test.spring.web.JsonRender;
 import net.hasor.core.TypeSupplier;
