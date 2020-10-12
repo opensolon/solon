@@ -122,24 +122,13 @@ public class XApp implements XHandler,XHandlerSlots {
 
         for (Annotation a1 : _source.getAnnotations()) {
             if (a1 instanceof XImport) {
-                import0((XImport) a1);
+                Aop.context().beanImport((XImport) a1);
             } else {
-                import0(a1.annotationType().getAnnotation(XImport.class));
+                Aop.context().beanImport(a1.annotationType().getAnnotation(XImport.class));
             }
         }
     }
 
-    private void import0(XImport anno) {
-        if (anno != null) {
-            for (Class<?> clz : anno.value()) {
-                beanMake(clz);
-            }
-
-            for (String pkg : anno.scanPackages()) {
-                beanScan(pkg);
-            }
-        }
-    }
 
     /**
      * 停止服务（为web方式停止服务提供支持）

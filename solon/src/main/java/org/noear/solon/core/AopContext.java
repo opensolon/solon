@@ -65,6 +65,9 @@ public class AopContext extends BeanContainer {
             //添加bean形态处理
             addBeanShape(clz, bw);
 
+            //尝试导入
+            beanImport(clz.getAnnotation(XImport.class));
+
             //注册到容器 //XConfiguration 不进入二次注册
             //beanRegister(bw,bw.name(),bw.typed());
         });
@@ -173,6 +176,21 @@ public class AopContext extends BeanContainer {
     }
 
     ////////////
+
+    /**
+     * 根据配置导入bean
+     * */
+    public void beanImport(XImport anno) {
+        if (anno != null) {
+            for (Class<?> clz : anno.value()) {
+                beanMake(clz);
+            }
+
+            for (String pkg : anno.scanPackages()) {
+                beanScan(pkg);
+            }
+        }
+    }
 
     /**
      * ::扫描源下的所有 bean 及对应处理
