@@ -28,93 +28,30 @@ import static io.undertow.Handlers.websocket;
  * @author by: Yukai
  * @since: 2019/3/28 15:50
  */
-public class XPluginUndertowJsp extends XPluginUndertowBase implements XPlugin {
-    private static Undertow _server = null;
+public class XPluginUndertowJsp extends XPluginUndertowBase {
 
     @Override
-    public void start(XApp app) {
-        try {
-            setup(app);
+    protected DeploymentManager doGenerateManager() throws Exception{
+        DeploymentInfo builder = initDeploymentInfo();
 
-            _server.start();
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-
-    protected void setup(XApp app) throws Throwable {
-        // 动作分发Handler
-        DeploymentManager manager = doGenerateManager();
-        HttpHandler httpHandler = manager.start();
-
-        //************************** init server start******************
-        Undertow.Builder builder = Undertow.builder();
-
-        builder.setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE, false);
-
-        builder.addHttpListener(app.port(), "0.0.0.0");
-
-        if (app.enableWebSocket()) {
-            builder.setHandler(websocket(new UtWsConnectionCallback(), httpHandler));
-        } else {
-            builder.setHandler(httpHandler);
-        }
-
-        _server = builder.build();
-
-        //************************* init server end********************
-    }
-
-    // 生成DeploymentManager来生成handler
-    private DeploymentManager doGenerateManager() throws Exception{
-        MultipartConfigElement configElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
-
-
-
-        DeploymentInfo builder = new DeploymentInfo()
-                .setClassLoader(XPluginUndertowJsp.class.getClassLoader())
-                .setDeploymentName("solon")
-                .setContextPath("/")
-                .setDefaultEncoding(XServerProp.encoding_request)
-                .setDefaultMultipartConfig(configElement)
-                .setClassIntrospecter(DefaultClassIntrospector.INSTANCE);
-
-        //添加容器初始器
-        builder.addServletContainerInitializer(UtContainerInitializerProxy.info());
-
-        builder.setEagerFilterInit(true);
-
+        //添加jsp处理
         String fileRoot = getResourceRoot();
         builder.setResourceManager(new JspResourceManager(XClassLoader.global(), fileRoot))
                 .addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"))
                 .addServlet(JspServletEx.createServlet("JSPServlet", "*.jsp"));
 
-        if (XServerProp.session_timeout > 0) {
-            builder.setDefaultSessionTimeout(XServerProp.session_timeout);
-        }
 
+        //添加taglib支持
         HashMap<String, TagLibraryInfo> tagLibraryMap = JspTldLocator.createTldInfos("WEB-INF");
-
         JspServletBuilder.setupDeployment(builder, new HashMap<String, JspPropertyGroup>(), tagLibraryMap, new HackInstanceManager());
 
 
-        final ServletContainer container = ServletContainer.Factory.newInstance();
 
+        //开始部署
+        final ServletContainer container = ServletContainer.Factory.newInstance();
         DeploymentManager deploymentManager = container.addDeployment(builder);
         deploymentManager.deploy();
 
         return deploymentManager;
     }
-
-
-    @Override
-    public void stop() throws Throwable {
-        if (_server != null) {
-            _server.stop();
-            _server = null;
-        }
-    }
-
-
 }
