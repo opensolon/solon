@@ -9,6 +9,8 @@ import net.hasor.utils.io.IOUtils;
 import org.noear.solon.XApp;
 import org.noear.solon.annotation.XConfiguration;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.XEventListener;
+import org.noear.solon.event.BeanLoadedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +25,7 @@ import java.util.*;
  * @since 2020.10.10
  * */
 @XConfiguration
-public class HasorConfiguration {
+public class HasorConfiguration implements XEventListener<BeanLoadedEvent> {
     private static Logger logger = LoggerFactory.getLogger(HasorConfiguration.class);
 
     public HasorConfiguration() {
@@ -75,17 +77,6 @@ public class HasorConfiguration {
         //
         // .打印 Hello
         printLogo();
-
-        //将AppContext注入容器
-        //
-        if (XApp.global().source().getAnnotation(EnableHasorWeb.class) == null) {
-            Aop.beanOnloaded(()->{
-                //
-                //所有bean加载完成之后，再注入AppContext
-                //
-                Aop.wrapAndPut(AppContext.class, initAppContext());
-            });
-        }
     }
 
     private AppContext initAppContext() {
@@ -106,5 +97,15 @@ public class HasorConfiguration {
             }
             logger.info(builder.toString());
         } catch (Exception e) { /**/ }
+    }
+
+    @Override
+    public void onEvent(BeanLoadedEvent beanLoadedEvent) {
+        //没有EnableHasorWeb时，生成AppContext并注入容器
+        //
+        if (XApp.global().source().getAnnotation(EnableHasorWeb.class) == null) {
+            //所有bean加载完成之后，再注入AppContext
+            Aop.wrapAndPut(AppContext.class, initAppContext());
+        }
     }
 }
