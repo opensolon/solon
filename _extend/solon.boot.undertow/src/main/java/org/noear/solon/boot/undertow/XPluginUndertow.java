@@ -14,12 +14,13 @@ public class XPluginUndertow extends XPluginUndertowBase {
     protected DeploymentManager doGenerateManager() throws Exception {
         DeploymentInfo builder = initDeploymentInfo();
 
+        //添加servlet
         builder.addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"));
         //builder.addInnerHandlerChainWrapper(h -> handler); //这个会使过滤器不能使用
 
 
+        //开始部署
         final ServletContainer container = Servlets.defaultContainer();
-
         DeploymentManager deploymentManager = container.addDeployment(builder);
         deploymentManager.deploy();
 
