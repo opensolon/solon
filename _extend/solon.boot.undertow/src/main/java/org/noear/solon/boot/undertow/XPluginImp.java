@@ -2,6 +2,7 @@ package org.noear.solon.boot.undertow;
 
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.core.Aop;
 import org.noear.solon.core.XPlugin;
 
 public final class XPluginImp implements XPlugin {
@@ -14,12 +15,18 @@ public final class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
-        if(app.enableHttp() == false){
+        if (app.enableHttp() == false) {
             return;
         }
 
         XServerProp.init();
 
+        Aop.beanOnloaded(() -> {
+            start0(app);
+        });
+    }
+
+    private void start0(XApp app){
         long time_start = System.currentTimeMillis();
         System.out.println("solon.Server:main: Undertow 2.1.09(undertow)");
 

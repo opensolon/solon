@@ -5,10 +5,7 @@ import io.undertow.UndertowOptions;
 import io.undertow.jsp.HackInstanceManager;
 import io.undertow.jsp.JspServletBuilder;
 import io.undertow.server.HttpHandler;
-import io.undertow.servlet.api.DeploymentInfo;
-import io.undertow.servlet.api.DeploymentManager;
-import io.undertow.servlet.api.ServletContainer;
-import io.undertow.servlet.api.ServletInfo;
+import io.undertow.servlet.api.*;
 import io.undertow.servlet.util.DefaultClassIntrospector;
 import org.apache.jasper.deploy.JspPropertyGroup;
 import org.apache.jasper.deploy.TagLibraryInfo;
@@ -19,10 +16,12 @@ import org.noear.solon.boot.undertow.jsp.JspResourceManager;
 import org.noear.solon.boot.undertow.jsp.JspServletEx;
 import org.noear.solon.boot.undertow.jsp.JspTldLocator;
 import org.noear.solon.boot.undertow.websocket.UtWsConnectionCallback;
+import org.noear.solon.core.Aop;
 import org.noear.solon.core.XClassLoader;
 import org.noear.solon.core.XPlugin;
 
 import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletContainerInitializer;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -86,6 +85,13 @@ public class XPluginUndertowJsp extends XPluginUndertowBase implements XPlugin {
                 .setDefaultMultipartConfig(configElement)
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE);
 
+        //尝试添加容器初始器
+        ServletContainerInitializer initializer = Aop.getOrNull(ServletContainerInitializer.class);
+        if (initializer != null) {
+            builder.addServletContainerInitializer(new ServletContainerInitializerInfo(initializer.getClass(), null));
+        }
+
+        builder.setEagerFilterInit(true);
 
         String fileRoot = getResourceRoot();
         builder.setResourceManager(new JspResourceManager(XClassLoader.global(), fileRoot))
@@ -95,8 +101,6 @@ public class XPluginUndertowJsp extends XPluginUndertowBase implements XPlugin {
         if (XServerProp.session_timeout > 0) {
             builder.setDefaultSessionTimeout(XServerProp.session_timeout);
         }
-
-        builder.setEagerFilterInit(true);
 
         HashMap<String, TagLibraryInfo> tagLibraryMap = JspTldLocator.createTldInfos("WEB-INF");
 

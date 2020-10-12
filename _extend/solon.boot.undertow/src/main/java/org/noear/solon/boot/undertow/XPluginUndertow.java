@@ -3,25 +3,20 @@ package org.noear.solon.boot.undertow;
 import io.undertow.Undertow;
 import io.undertow.UndertowOptions;
 import io.undertow.server.HttpHandler;
-import io.undertow.server.handlers.resource.ClassPathResourceManager;
-import io.undertow.server.handlers.resource.FileResourceManager;
 import io.undertow.servlet.Servlets;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.servlet.api.ServletContainer;
+import io.undertow.servlet.api.ServletContainerInitializerInfo;
 import io.undertow.servlet.util.DefaultClassIntrospector;
 import org.noear.solon.XApp;
 import org.noear.solon.boot.undertow.http.UtHttpHandler;
-import org.noear.solon.boot.undertow.jsp.JspResourceManager;
 import org.noear.solon.boot.undertow.websocket.UtWsConnectionCallback;
-import org.noear.solon.core.XClassLoader;
+import org.noear.solon.core.Aop;
 import org.noear.solon.core.XPlugin;
 
 import javax.servlet.MultipartConfigElement;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.URL;
+import javax.servlet.ServletContainerInitializer;
 
 import static io.undertow.Handlers.websocket;
 
@@ -70,7 +65,8 @@ public class XPluginUndertow extends XPluginUndertowBase implements XPlugin {
 
 
     // 生成DeploymentManager来生成handler
-    private DeploymentManager doGenerateManager() throws Exception{
+    private DeploymentManager doGenerateManager() throws Exception {
+
         UtHttpHandler handler = new UtHttpHandler();
 
         MultipartConfigElement configElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
@@ -83,9 +79,16 @@ public class XPluginUndertow extends XPluginUndertowBase implements XPlugin {
                 .setDefaultMultipartConfig(configElement)
                 .setClassIntrospecter(DefaultClassIntrospector.INSTANCE);
 
-        builder.addInnerHandlerChainWrapper(h -> handler);
+        //尝试添加容器初始器
+        ServletContainerInitializer initializer = Aop.getOrNull(ServletContainerInitializer.class);
+        if (initializer != null) {
+            builder.addServletContainerInitializer(new ServletContainerInitializerInfo(initializer.getClass(), null));
+        }
+
 
         builder.setEagerFilterInit(true);
+
+        builder.addInnerHandlerChainWrapper(h -> handler);
 
         if (XServerProp.session_timeout > 0) {
             builder.setDefaultSessionTimeout(XServerProp.session_timeout);
