@@ -11,7 +11,7 @@
 
 * 采用Handler + Context 架构
 * 自带IOC & AOP容器，支持MVC
-* 支持Http，支持Servlet（也支持NoServlet），WebSocket，Socket三种信号接入
+* 支持Http（支持Servlet 或 NoServlet），WebSocket，Socket三种信号接入
 * 插件可扩展可切换：启动插件，扩展插件，序列化插件，会话状态插件，视图插件(可共存) 等...
 
 
