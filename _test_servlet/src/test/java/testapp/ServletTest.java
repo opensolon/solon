@@ -32,9 +32,9 @@ public class ServletTest extends HttpTestBase {
 
     @Test
     public void test2_s_ok() throws Exception{
-        assert  path("/heihe/").get().equals("OK");
-        assert  path("/heihe/a").get().equals("OK");
-        assert  path("/heihe/a/a").get().equals("OK");
+        assert  path("/heihei/").get().equals("OK");
+        assert  path("/heihei/a").get().equals("OK");
+        assert  path("/heihei/a/a").get().equals("OK");
     }
 
     @Test
