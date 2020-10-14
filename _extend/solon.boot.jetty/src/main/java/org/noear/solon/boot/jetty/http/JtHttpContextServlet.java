@@ -28,6 +28,7 @@ public class JtHttpContextServlet extends HttpServlet {
                 ((Request) request).setHandled(true);
             } else {
                 response.setStatus(404);
+                ((Request) request).setHandled(true);
             }
 
         } catch (Throwable ex) {
