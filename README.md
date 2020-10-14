@@ -183,6 +183,17 @@ public class DemoController{
 }
 ```
 
+* Servlet 支持
+```java
+@WebFilter("/hello/*")
+public class HelloFilter implements Filter {
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        servletResponse.getWriter().write("Hello，我把你过滤了");
+    }
+}
+```
+
 ### 附2：示例参考
 * 项目内的：[_test](./_test/) 和 [_demo](./_demo/)
 * 更多示例：[solon_demo](https://gitee.com/noear/solon_demo)
@@ -213,8 +224,8 @@ public class DemoController{
 | -------- | -------- | -------- | -------- | -------- |
 | solon.boot.jlhttp (可独立运行)     | 0.1m     | 4.7万左右     | /   |    | 
 | /     |      |      | spring-boot-starter-tomcat   |  3.2万左右  | 
-| solon.boot.jetty (可独立运行)     | 1.8m     | 10.7万左右     | spring-boot-starter-jetty | 3.7万左右 |
-| solon.boot.undertow (可独立运行)     | 4.2m     | 11.3万左右     | spring-boot-starter-undertow | 4.4万左右 |
+| solon.boot.jetty (支持Servlet，可独立运行)     | 1.8m     | 10.7万左右     | spring-boot-starter-jetty | 3.7万左右 |
+| solon.boot.undertow (支持Servlet，可独立运行)     | 4.2m     | 11.3万左右     | spring-boot-starter-undertow | 4.4万左右 |
 
 
 | javalin 3.1.0  | 大小 |  QPS  | 
