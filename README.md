@@ -183,7 +183,7 @@ public class DemoController{
 }
 ```
 
-* Servlet 支持
+* Servlet 注解支持
 ```java
 @WebFilter("/hello/*")
 public class HelloFilter implements Filter {
