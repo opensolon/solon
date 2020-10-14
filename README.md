@@ -9,6 +9,7 @@
 
 支持jdk8+；主框架0.1mb；组合不同的插件应对不同需求；方便定制；快速开发。
 
+* 强调灵巧、强大、克制
 * 自带IOC & AOP容器，支持MVC
 * 采用Handler + Context 架构；强调插件式扩展
 * 统一Http（支持 Servlet 或 NoServlet），WebSocket，Socket三种信号接入
