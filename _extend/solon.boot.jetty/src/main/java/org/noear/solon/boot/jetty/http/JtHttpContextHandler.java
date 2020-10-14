@@ -49,6 +49,7 @@ public class JtHttpContextHandler extends AbstractHandler {
             baseRequest.setHandled(true);
         }else{
             response.setStatus(404);
+            baseRequest.setHandled(true);
         }
     }
 }
