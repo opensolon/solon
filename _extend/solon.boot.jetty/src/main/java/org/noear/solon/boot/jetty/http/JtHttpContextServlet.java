@@ -1,7 +1,8 @@
 package org.noear.solon.boot.jetty.http;
 
-import org.eclipse.jetty.server.Request;
 import org.noear.solon.XApp;
+import org.noear.solon.boot.jetty.XPluginImp;
+import org.noear.solon.boot.jetty.XServerProp;
 import org.noear.solon.core.XEventBus;
 
 import javax.servlet.ServletException;
@@ -13,34 +14,26 @@ import java.io.IOException;
 public class JtHttpContextServlet extends HttpServlet {
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        call(req, resp);
-    }
-
-    private void call(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         JtHttpContext context = new JtHttpContext(request, response);
         context.contentType("text/plain;charset=UTF-8");
+
+        if (XServerProp.output_meta) {
+            context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
+        }
 
         try {
             XApp.global().handle(context);
 
-            if (context.getHandled() && context.status() != 404) {
-                ((Request) request).setHandled(true);
-            } else {
+            if (context.getHandled() == false || context.status() == 404) {
                 response.setStatus(404);
-                ((Request) request).setHandled(true);
             }
-
         } catch (Throwable ex) {
-            //context 初始化时，可能会出错
-            //
             XEventBus.push(ex);
-
             response.setStatus(500);
-            ((Request) request).setHandled(true);
 
             if (XApp.cfg().isDebugMode()) {
-                ex.printStackTrace();
+                ex.printStackTrace(response.getWriter());
             }
         }
     }

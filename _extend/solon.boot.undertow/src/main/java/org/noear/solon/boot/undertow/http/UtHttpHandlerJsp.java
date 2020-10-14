@@ -15,8 +15,8 @@ import java.io.IOException;
 public class UtHttpHandlerJsp extends HttpServlet {
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UtHttpContext context = new UtHttpContext(req, resp);
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        UtHttpContext context = new UtHttpContext(request, response);
         context.contentType("text/plain;charset=UTF-8");
 
         if (XServerProp.output_meta) {
@@ -27,14 +27,14 @@ public class UtHttpHandlerJsp extends HttpServlet {
             XApp.global().handle(context);
 
             if (context.getHandled() == false || context.status() == 404) {
-                resp.setStatus(404);
+                response.setStatus(404);
             }
         } catch (Throwable ex) {
             XEventBus.push(ex);
-            resp.setStatus(500);
+            response.setStatus(500);
 
             if (XApp.cfg().isDebugMode()) {
-                ex.printStackTrace(resp.getWriter());
+                ex.printStackTrace(response.getWriter());
             }
         }
     }
