@@ -331,7 +331,7 @@ public class XUtil {
     /**
      * 构建应用扩展目录
      * */
-    public static String buildExt(String ext_dir, boolean autoCreate) {
+    public static String buildExt(String ext_dir, boolean autoMake) {
         URL temp = XUtil.getResource("");
 
         if (temp == null) {
@@ -358,7 +358,7 @@ public class XUtil {
             File dir = new File(uri);
 
             if (dir.exists() == false) {
-                if (autoCreate) {
+                if (autoMake) {
                     dir.mkdir();
                 } else {
                     return null;

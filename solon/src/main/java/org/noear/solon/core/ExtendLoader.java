@@ -16,37 +16,45 @@ public class ExtendLoader {
     private static final ExtendLoader _g = new ExtendLoader();
     private static String _path;
 
+    /**
+     * 扩展文件夹（绝对路径）
+     * */
     public static String path(){
         return _path;
     }
 
     /**
      * 加载扩展文件夹（或文件）
+     *
+     * @param extPath 扩展路径
      * */
-    public static void load(String path) {
-        load(path,false);
+    public static void load(String extPath) {
+        load(extPath,false);
     }
 
     /**
      * 加载扩展文件夹（或文件）
+     *
+     * @param extPath 扩展路径
+     * @param autoMake 是否自动生成
      * */
-    public static void load(String path, boolean autoCreate) {
-        if (XUtil.isNotEmpty(path)) {
-            if (path.startsWith("!")) {
-                path = path.substring(1);
-                autoCreate = true;
+    public static void load(String extPath, boolean autoMake) {
+        if (XUtil.isNotEmpty(extPath)) {
+            if (extPath.startsWith("!")) {
+                extPath = extPath.substring(1);
+                autoMake = true;
             }
 
-            if (path.indexOf("/") < 0) {
-                path = XUtil.buildExt(path, autoCreate);
+            if (extPath.indexOf("/") < 0) {
+                extPath = XUtil.buildExt(extPath, autoMake);
             }
 
-            if (path != null) {
-                _path = path;
+            if (extPath != null) {
+                _path = extPath;
 
-                PrintUtil.blueln("solon.extend: " + path);
+                PrintUtil.blueln("solon.extend: " + extPath);
 
-                File file = new File(path);
+                File file = new File(extPath);
                 _g.loadFile(file);
             }
         }
