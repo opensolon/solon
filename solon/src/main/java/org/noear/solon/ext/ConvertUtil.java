@@ -32,7 +32,7 @@ public class ConvertUtil {
      * @param val 值
      * @param ctx 通用上下文
      * */
-    public static Object to(AnnotatedElement element, Class<?> type, String key, String val, XContext ctx) {
+    public static Object to(AnnotatedElement element, Class<?> type, String key, String val, XContext ctx) throws ClassCastException{
         if (String.class == (type)) {
             return val;
         }
@@ -121,7 +121,7 @@ public class ConvertUtil {
         }
 
 
-        throw new RuntimeException("不支持类型:" + type.getName());
+        throw new ClassCastException("不支持类型:" + type.getName());
     }
 
     /**
@@ -130,7 +130,7 @@ public class ConvertUtil {
      * @param type 目标类型
      * @param val 属性值
      * */
-    public static Object to(Class<?> type, String val) {
+    public static Object to(Class<?> type, String val) throws ClassCastException{
         if (String.class == (type)) {
             return val;
         }
@@ -156,7 +156,7 @@ public class ConvertUtil {
         }
 
 
-        throw new RuntimeException("不支持类型:" + type.getName());
+        throw new ClassCastException("不支持类型:" + type.getName());
     }
 
     /**
