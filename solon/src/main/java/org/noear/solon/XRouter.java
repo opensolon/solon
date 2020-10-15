@@ -16,28 +16,28 @@ import java.util.stream.Collectors;
  * */
 public class XRouter {
     //for handler
-    private final RouteTable<XHandler>[] routesH;
+    private final XRouteTable<XHandler>[] routesH;
     //for handler of controller
     private final List<XHandler>[] routesHC;
     //for listener
-    private final RouteTable<XListener> routesL;
+    private final XRouteTable<XListener> routesL;
 
     public XRouter() {
-        routesH = new RouteTable[6];
+        routesH = new XRouteTable[6];
 
-        routesH[0] = new RouteTable<>();//before:0
-        routesH[1] = new RouteTable<>();//main
-        routesH[2] = new RouteTable<>();//after:2
-        routesH[3] = new RouteTable<>();//at before:3
-        routesH[4] = new RouteTable<>();
-        routesH[5] = new RouteTable<>();//at after:5
+        routesH[0] = new XRouteTable<>();//before:0
+        routesH[1] = new XRouteTable<>();//main
+        routesH[2] = new XRouteTable<>();//after:2
+        routesH[3] = new XRouteTable<>();//at before:3
+        routesH[4] = new XRouteTable<>();
+        routesH[5] = new XRouteTable<>();//at after:5
 
         routesHC = new List[3];
         routesHC[0] = new ArrayList<>();
         routesHC[1] = new ArrayList<>();
         routesHC[2] = new ArrayList<>();
 
-        routesL = new RouteTable<>();
+        routesL = new XRouteTable<>();
     }
 
     /**
@@ -58,10 +58,10 @@ public class XRouter {
      * 添加路由关系 for XHandler
      */
     public void add(String path, int endpoint, XMethod method, int index, XHandler handler) {
-        RouteTable.Route xl = new RouteTable.Route(path, method, index, handler);
+        XRouteTable.Route xl = new XRouteTable.Route(path, method, index, handler);
 
         if (endpoint != XEndpoint.main && "@@".equals(path)) {
-            RouteTable<XHandler> tmp = routesH[endpoint + 3];
+            XRouteTable<XHandler> tmp = routesH[endpoint + 3];
             tmp.add(xl);
             tmp.sort(Comparator.comparing(l -> l.index));
 
@@ -86,7 +86,7 @@ public class XRouter {
      * 添加路由关系 for XListener
      */
     public void add(String path, XMethod method, int index, XListener listener) {
-        routesL.add(new RouteTable.Route(path, method, index, listener));
+        routesL.add(new XRouteTable.Route(path, method, index, listener));
     }
 
     /**

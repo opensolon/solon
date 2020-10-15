@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
  * @author noear
  * @since 1.0
  * */
-public class RouteTable<T> extends ArrayList<RouteTable.Route<T>> {
-    public RouteTable() {
+public class XRouteTable<T> extends ArrayList<XRouteTable.Route<T>> {
+    public XRouteTable() {
         super();
     }
 
-    public RouteTable(Collection<Route<T>> coll) {
+    public XRouteTable(Collection<Route<T>> coll) {
         super(coll);
     }
 
@@ -46,6 +46,9 @@ public class RouteTable<T> extends ArrayList<RouteTable.Route<T>> {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 路由记录
+     * */
     public static class Route<T> {
         public Route(String path, XMethod method, int index, T target) {
             _p = path;

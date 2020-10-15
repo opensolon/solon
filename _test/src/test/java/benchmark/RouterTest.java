@@ -2,7 +2,7 @@ package benchmark;
 
 import org.junit.Test;
 import org.noear.solon.XRouter;
-import org.noear.solon.core.RouteTable;
+import org.noear.solon.core.XRouteTable;
 import org.noear.solon.core.XEndpoint;
 import org.noear.solon.core.XHandler;
 import org.noear.solon.core.XMethod;
@@ -60,7 +60,7 @@ public class RouterTest {
 
         new Thread(() -> {
             for (int i = 1; i < 1000000; i++) {
-                RouteTable<XHandler> tmp = new RouteTable(router.atBefore());
+                XRouteTable<XHandler> tmp = new XRouteTable(router.atBefore());
                 tmp.sort(Comparator.comparing(l -> l.index));
 
                 //router.atBefore(tmp);
