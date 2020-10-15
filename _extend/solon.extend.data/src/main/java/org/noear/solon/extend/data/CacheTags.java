@@ -51,10 +51,6 @@ public class CacheTags {
      * 更新标签相关的所有缓存
      * */
     public void update(String tag, Object newValue, int seconds) {
-        if(newValue == null){
-            return;
-        }
-
         List<String> keys = $get(tagKey(tag));
 
         for (String key : keys) {
@@ -63,9 +59,14 @@ public class CacheTags {
                 continue;
             }
 
-            //类型一样才能更新 //避免引起莫名的错
-            if(newValue.getClass() == temp.getClass()){
-                _Cache.store(key, newValue, seconds);
+            if(newValue == null){
+                //如果值为null，则删除
+                _Cache.remove(key);
+            }else{
+                //类型一样才更新 //避免引起莫名的错
+                if(newValue.getClass() == temp.getClass()){
+                    _Cache.store(key, newValue, seconds);
+                }
             }
         }
     }
