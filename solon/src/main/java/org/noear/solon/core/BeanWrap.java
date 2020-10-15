@@ -34,7 +34,7 @@ public class BeanWrap {
     // bean 是否按注册类型
     private boolean typed;
     // bean 代理（为ASM代理提供接口支持）
-    private BeanProxy proxy;
+    private BeanWrap.Proxy proxy;
     // bean clz 的注解（算是缓存起来）
     private final Annotation[] annotations;
 
@@ -65,7 +65,7 @@ public class BeanWrap {
     }
 
     //设置代理
-    public void proxySet(BeanProxy proxy){
+    public void proxySet(BeanWrap.Proxy proxy){
         this.proxy = proxy;
 
         if(raw != null){
@@ -214,5 +214,19 @@ public class BeanWrap {
                 break;
             }
         }
+    }
+
+    /**
+     * Bean 代理接口（为BeanWrap 提供切换代码的能力）
+     *
+     * @author noear
+     * @since 1.0
+     * */
+    @FunctionalInterface
+    public interface Proxy {
+        /**
+         * 获取代理
+         * */
+        Object getProxy(Object bean);
     }
 }

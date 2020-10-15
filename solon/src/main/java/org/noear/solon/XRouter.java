@@ -16,28 +16,28 @@ import java.util.stream.Collectors;
  * */
 public class XRouter {
     //for handler
-    private final RouteTable<XHandler>[] _routes_h;
-    //for handler controller
-    private final List<XHandler>[] _routes_h_c;
+    private final RouteTable<XHandler>[] routesH;
+    //for handler of controller
+    private final List<XHandler>[] routesHC;
     //for listener
-    private final RouteTable<XListener> _routes_l;
+    private final RouteTable<XListener> routesL;
 
     public XRouter() {
-        _routes_h = new RouteTable[6];
+        routesH = new RouteTable[6];
 
-        _routes_h[0] = new RouteTable<>();//before:0
-        _routes_h[1] = new RouteTable<>();//main
-        _routes_h[2] = new RouteTable<>();//after:2
-        _routes_h[3] = new RouteTable<>();//at before:3
-        _routes_h[4] = new RouteTable<>();
-        _routes_h[5] = new RouteTable<>();//at after:5
+        routesH[0] = new RouteTable<>();//before:0
+        routesH[1] = new RouteTable<>();//main
+        routesH[2] = new RouteTable<>();//after:2
+        routesH[3] = new RouteTable<>();//at before:3
+        routesH[4] = new RouteTable<>();
+        routesH[5] = new RouteTable<>();//at after:5
 
-        _routes_h_c = new List[3];
-        _routes_h_c[0] = new ArrayList<>();
-        _routes_h_c[1] = new ArrayList<>();
-        _routes_h_c[2] = new ArrayList<>();
+        routesHC = new List[3];
+        routesHC[0] = new ArrayList<>();
+        routesHC[1] = new ArrayList<>();
+        routesHC[2] = new ArrayList<>();
 
-        _routes_l = new RouteTable<>();
+        routesL = new RouteTable<>();
     }
 
     /**
@@ -61,13 +61,13 @@ public class XRouter {
         RouteTable.Route xl = new RouteTable.Route(path, method, index, handler);
 
         if (endpoint != XEndpoint.main && "@@".equals(path)) {
-            RouteTable<XHandler> tmp = _routes_h[endpoint + 3];
+            RouteTable<XHandler> tmp = routesH[endpoint + 3];
             tmp.add(xl);
             tmp.sort(Comparator.comparing(l -> l.index));
 
-            _routes_h_c[endpoint] = tmp.stream().map(r -> r.target).collect(Collectors.toList());
+            routesHC[endpoint] = tmp.stream().map(r -> r.target).collect(Collectors.toList());
         } else {
-            _routes_h[endpoint].add(xl);
+            routesH[endpoint].add(xl);
         }
     }
 
@@ -86,20 +86,20 @@ public class XRouter {
      * 添加路由关系 for XListener
      */
     public void add(String path, XMethod method, int index, XListener listener) {
-        _routes_l.add(new RouteTable.Route(path, method, index, listener));
+        routesL.add(new RouteTable.Route(path, method, index, listener));
     }
 
     /**
      * 清空路由关系
      */
     public void clear() {
-        _routes_h[0].clear();
-        _routes_h[1].clear();
-        _routes_h[2].clear();
+        routesH[0].clear();
+        routesH[1].clear();
+        routesH[2].clear();
 
-        _routes_h[3].clear();
-        _routes_h[4].clear();
-        _routes_h[5].clear();
+        routesH[3].clear();
+        routesH[4].clear();
+        routesH[5].clear();
     }
 
     /**
@@ -109,7 +109,7 @@ public class XRouter {
         String path = context.path();
         XMethod method = XMethod.valueOf(context.method());
 
-        return _routes_h[endpoint].matchOne(path, method);
+        return routesH[endpoint].matchOne(path, method);
     }
 
     /**
@@ -119,7 +119,7 @@ public class XRouter {
         String path = context.path();
         XMethod method = XMethod.valueOf(context.method());
 
-        return _routes_h[endpoint].matchAll(path, method);
+        return routesH[endpoint].matchAll(path, method);
     }
 
     /**
@@ -128,16 +128,16 @@ public class XRouter {
     public XListener matchOne(XSession session) {
         String path = session.path();
 
-        return _routes_l.matchOne(path, session.method());
+        return routesL.matchOne(path, session.method());
     }
 
 
     public List<XHandler> atBefore() {
-        return Collections.unmodifiableList(_routes_h_c[0]);
+        return Collections.unmodifiableList(routesHC[0]);
     }
 
     public List<XHandler> atAfter() {
-        return Collections.unmodifiableList(_routes_h_c[2]);
+        return Collections.unmodifiableList(routesHC[2]);
     }
 
 }

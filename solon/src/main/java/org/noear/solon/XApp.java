@@ -18,13 +18,13 @@ import java.util.function.Consumer;
  * @since 1.0
  * */
 public class XApp implements XHandler,XHandlerSlots {
-    private static XApp _global;
+    private static XApp global;
 
     /**
      * 全局实例
      */
     public static XApp global() {
-        return _global;
+        return global;
     }
 
     /**
@@ -55,8 +55,8 @@ public class XApp implements XHandler,XHandlerSlots {
     }
 
     public static XApp start(Class<?> source, XMap argx, ConsumerEx<XApp> builder) {
-        if (_global != null) {
-            return _global;
+        if (global != null) {
+            return global;
         }
 
         //添加关闭勾子
@@ -69,31 +69,31 @@ public class XApp implements XHandler,XHandlerSlots {
         PrintUtil.blueln("solon.plugin:: Start loading");
 
         //1.初始化应用
-        _global = new XApp(source, argx);
+        global = new XApp(source, argx);
 
         //2.尝试加载扩展文件夹
-        ExtendLoader.load(_global.prop().extend());
+        ExtendLoader.load(global.prop().extend());
 
         //3.1.尝试扫描插件
-        _global.prop().plugsScan();
+        global.prop().plugsScan();
 
         //3.2.尝试预构建
         if (builder != null) {
             try {
-                builder.accept(_global);
+                builder.accept(global);
             } catch (Throwable ex) {
                 throw XUtil.throwableWrap(ex);
             }
         }
 
         //3.3.尝试加载插件（顺序不能乱） //不能用forEach，以免当中有插进来
-        List<XPluginEntity> plugs = _global.prop().plugs();
+        List<XPluginEntity> plugs = global.prop().plugs();
         for (int i = 0,len = plugs.size(); i < len; i++) {
             plugs.get(i).start();
         }
 
         //3.4.通过注解导入bean（一般是些配置器）
-        _global.importTry();
+        global.importTry();
 
 
         //4.再扫描bean
@@ -103,7 +103,7 @@ public class XApp implements XHandler,XHandlerSlots {
 
 
         //5.加载渲染关系
-        XMap map = _global.prop().getXmap("solon.view.mapping");
+        XMap map = global.prop().getXmap("solon.view.mapping");
         map.forEach((k, v) -> {
             XBridge.renderMapping("." + k, v);
         });
@@ -114,7 +114,7 @@ public class XApp implements XHandler,XHandlerSlots {
         long time_end = System.currentTimeMillis();
         PrintUtil.blueln("solon.plugin:: End loading @" + (time_end - time_start) + "ms");
 
-        return _global;
+        return global;
     }
 
     //通过注解，导入bean
@@ -142,7 +142,7 @@ public class XApp implements XHandler,XHandlerSlots {
     }
 
     public static void stop(boolean exit, long delay) {
-        if (_global == null) {
+        if (global == null) {
             return;
         }
 
@@ -153,8 +153,8 @@ public class XApp implements XHandler,XHandlerSlots {
                 Thread.sleep(delay);
             }
 
-            _global.prop().plugs().forEach(p -> p.stop());
-            _global = null;
+            global.prop().plugs().forEach(p -> p.stop());
+            global = null;
 
             if (exit) {
                 System.exit(0);

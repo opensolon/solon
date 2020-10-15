@@ -21,8 +21,8 @@ import java.util.regex.Pattern;
  * @since 1.0
  * */
 public class XUtil {
-    public static ExecutorService commonPool = Executors.newCachedThreadPool();
-    private static final char[] _hexDigits = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+    public static final ExecutorService commonPool = Executors.newCachedThreadPool();
+    private static final char[] HEX_DIGITS = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
     /**
      * 生成UGID
@@ -47,8 +47,8 @@ public class XUtil {
 
             for (int i = 0; i < j; ++i) {
                 byte byte0 = md[i];
-                chars[k++] = _hexDigits[byte0 >>> 4 & 15];
-                chars[k++] = _hexDigits[byte0 & 15];
+                chars[k++] = HEX_DIGITS[byte0 >>> 4 & 15];
+                chars[k++] = HEX_DIGITS[byte0 & 15];
             }
 
             return new String(chars);

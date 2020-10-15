@@ -16,12 +16,12 @@ import java.util.function.BiConsumer;
  * @since 1.0
  * */
 public final class XAppProperties extends XProperties {
-    private XMap _args;
-    private List<XPluginEntity> _plugs = new ArrayList<>();
-    private boolean _isDebugMode;
-    private boolean _isDriftMode;
-    private boolean _isFilesMode;
-    private String _extend;
+    private XMap args;
+    private List<XPluginEntity> plugs = new ArrayList<>();
+    private boolean isDebugMode;
+    private boolean isDriftMode;
+    private boolean isFilesMode;
+    private String  extend;
 
     public XAppProperties() {
         super(System.getProperties());
@@ -34,23 +34,23 @@ public final class XAppProperties extends XProperties {
      * */
     public XAppProperties load(XMap args) {
         //1.接收启动参数
-        _args = args;
+        this.args = args;
 
         //2.加载文件的配置
         loadAdd(XUtil.getResource("application.properties"));
         loadAdd(XUtil.getResource("application.yml"));
 
         //3.同步启动参数
-        _args.forEach((k, v) -> {
+        this.args.forEach((k, v) -> {
             if (k.indexOf(".") >= 0) {
                 this.setProperty(k, v);
                 System.setProperty(k, v);
             }
         });
 
-        _isDebugMode = argx().getInt("debug") == 1;
-        _isDriftMode = argx().getInt("drift") == 1;
-        _isFilesMode = "file".equals(this.getClass().getProtectionDomain().getCodeSource().getLocation().getProtocol());
+        isDebugMode = argx().getInt("debug") == 1;
+        isDriftMode = argx().getInt("drift") == 1;
+        isFilesMode = "file".equals(this.getClass().getProtectionDomain().getCodeSource().getLocation().getProtocol());
 
         //4.标识debug模式
         if (isDebugMode()) {
@@ -58,9 +58,9 @@ public final class XAppProperties extends XProperties {
         }
 
         //5.扩展文件夹
-        _extend = _args.get("extend");
-        if (XUtil.isEmpty(_extend)) {
-            _extend = get("solon.extend");
+        extend = this.args.get("extend");
+        if (XUtil.isEmpty(extend)) {
+            extend = get("solon.extend");
         }
 
         return this;
@@ -105,10 +105,10 @@ public final class XAppProperties extends XProperties {
                 .map(k -> XUtil.getResource(k))
                 .forEach(url -> plugsScanMapDo(url));
 
-        if (_plugs.size() > 0) {
+        if (plugs.size() > 0) {
             //进行优先级顺排（数值要倒排）
             //
-            _plugs.sort(Comparator.comparingInt(XPluginEntity::getPriority).reversed());
+            plugs.sort(Comparator.comparingInt(XPluginEntity::getPriority).reversed());
         }
     }
 
@@ -128,7 +128,7 @@ public final class XAppProperties extends XProperties {
                 ent.clzName = temp;
                 ent.priority = p.getInt("solon.plugin.priority", 0);
 
-                _plugs.add(ent);
+                plugs.add(ent);
             }
         } catch (RuntimeException ex) {
             throw ex;
@@ -163,14 +163,14 @@ public final class XAppProperties extends XProperties {
      * 获取启动参数
      */
     public XMap argx() {
-        return _args;
+        return args;
     }
 
     /**
      * 获取插件列表
      */
     public List<XPluginEntity> plugs() {
-        return _plugs;
+        return plugs;
     }
 
 
@@ -185,7 +185,7 @@ public final class XAppProperties extends XProperties {
      * 包部扩展文件夹
      * */
     public String extend(){
-        return _extend;
+        return extend;
     }
 
     /**
@@ -199,20 +199,20 @@ public final class XAppProperties extends XProperties {
      * 是否为 debug mode
      */
     public boolean isDebugMode() {
-        return _isDebugMode;
+        return isDebugMode;
     }
 
     /**
      * 是否为文件运行模式
      * */
     public boolean isFilesMode(){
-        return _isFilesMode;
+        return isFilesMode;
     }
 
     /**
      * 是否为 drift mode (of ip)
      * */
     public boolean isDriftMode() {
-        return _isDriftMode;
+        return isDriftMode;
     }
 }
