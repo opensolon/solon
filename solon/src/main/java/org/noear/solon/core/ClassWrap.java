@@ -37,15 +37,13 @@ public class ClassWrap {
     //clz.methodS
     private final Map<Method,MethodWrap> methodWrapsMap;
     //clz.fieldS
-    private final Field[] fieldS;
+    private final List<FieldWrap> fieldWraps;
     //clz.all_fieldS
     private final Map<String, FieldWrap> fieldAllWrapsMap;
 
     protected ClassWrap(Class<?> clz) {
         this.clz = clz;
 
-        //自己申明的字段
-        fieldS = clz.getDeclaredFields();
 
         //自己申明的函数
         methodWraps = new ArrayList<>();
@@ -54,12 +52,21 @@ public class ClassWrap {
         for (Method m : clz.getDeclaredMethods()) {
             MethodWrap m1 = MethodWrap.get(m);
             methodWraps.add(m1);
-            methodWrapsMap.put(m,m1);
+            methodWrapsMap.put(m, m1);
         }
 
         //所有字段的包装（自己的 + 父类的）
         fieldAllWrapsMap = new ConcurrentHashMap<>();
         TypeUtil.scanAllFields(clz, fieldAllWrapsMap::containsKey, fieldAllWrapsMap::put);
+
+        fieldWraps = new ArrayList<>();
+        //自己申明的字段
+        for (Field f : clz.getDeclaredFields()) {
+            FieldWrap fw = fieldAllWrapsMap.get(f.getName());
+            if (fw != null) {
+                fieldWraps.add(fw);
+            }
+        }
     }
 
     public Map<String, FieldWrap> getfieldAllWraps(){
@@ -83,6 +90,13 @@ public class ClassWrap {
     }
 
     /**
+     * 获取类申明的字段包装
+     * */
+    public List<FieldWrap> getFieldWraps(){
+        return Collections.unmodifiableList(fieldWraps);
+    }
+
+    /**
      * 获取一个方法包装
      * */
     public MethodWrap getMethodWrap(Method m1) {
@@ -97,6 +111,9 @@ public class ClassWrap {
         return tmp;
     }
 
+    /**
+     * 获取类申明的方法包装
+     * */
     public List<MethodWrap> getMethodWraps() {
         return Collections.unmodifiableList(methodWraps);
     }
