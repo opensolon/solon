@@ -261,7 +261,7 @@ public class AopContext extends BeanContainer {
         for (Annotation a : annS) {
             BeanInjector bi = beanInjectors.get(a.annotationType());
             if (bi != null) {
-                bi.handler(varH, a);
+                bi.inject(varH, a);
             }
         }
     }
@@ -274,7 +274,7 @@ public class AopContext extends BeanContainer {
         tryCreateBean0(clz, (c, a) -> {
             //包装
             BeanWrap bw = this.wrap(clz, null);
-            c.handler(clz, bw, a);
+            c.build(clz, bw, a);
             //尝试入库
             this.putWrap(clz, bw);
         });
@@ -282,7 +282,7 @@ public class AopContext extends BeanContainer {
 
     protected void tryCreateBean(BeanWrap bw) {
         tryCreateBean0(bw.clz(), (c, a) -> {
-            c.handler(bw.clz(), bw, a);
+            c.build(bw.clz(), bw, a);
         });
     }
 

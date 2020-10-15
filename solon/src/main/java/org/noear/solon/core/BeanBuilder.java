@@ -8,6 +8,7 @@ import java.lang.annotation.Annotation;
  * @author noear
  * @since 1.0
  * */
+@FunctionalInterface
 public interface BeanBuilder<T extends Annotation> {
-    void handler(Class<?> clz, BeanWrap wrap, T anno) throws Exception;
+    void build(Class<?> clz, BeanWrap wrap, T anno) throws Exception;
 }

@@ -8,6 +8,7 @@ import java.lang.annotation.Annotation;
  * @author noear
  * @since 1.0
  * */
+@FunctionalInterface
 public interface BeanInjector<T extends Annotation> {
-    void handler(VarHolder varH, T anno);
+    void inject(VarHolder varH, T anno);
 }

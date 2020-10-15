@@ -6,6 +6,7 @@ package org.noear.solon.core;
  * @author noear
  * @since 1.0
  * */
+@FunctionalInterface
 public interface BeanProxy {
     Object getProxy(Object bean);
 }
