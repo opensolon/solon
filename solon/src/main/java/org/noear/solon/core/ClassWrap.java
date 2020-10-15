@@ -2,9 +2,12 @@ package org.noear.solon.core;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Class 包装，用于缓存类的方法和字段等相关信息
@@ -57,7 +60,7 @@ public class ClassWrap {
 
         //所有字段的包装（自己的 + 父类的）
         fieldAllWrapsMap = new ConcurrentHashMap<>();
-        TypeUtil.scanAllFields(clz, fieldAllWrapsMap::containsKey, fieldAllWrapsMap::put);
+        scanAllFields(clz, fieldAllWrapsMap::containsKey, fieldAllWrapsMap::put);
 
         fieldWraps = new ArrayList<>();
         //自己申明的字段
@@ -150,6 +153,30 @@ public class ClassWrap {
                 Object val = TypeUtil.convertByCtx(fw.field, fw.type, key, val0, ctx);
                 fw.setValue(target, val);
             }
+        }
+    }
+
+    /** 扫描一个类的所有字段（不能与Snack3的复用；它需要排除非序列化字段） */
+    private static void scanAllFields(Class<?> clz, Predicate<String> checker, BiConsumer<String,FieldWrap> consumer) {
+        if (clz == null) {
+            return;
+        }
+
+        for (Field f : clz.getDeclaredFields()) {
+            int mod = f.getModifiers();
+
+            if (!Modifier.isStatic(mod)) {
+                f.setAccessible(true);
+
+                if (checker.test(f.getName()) == false) {
+                    consumer.accept(f.getName(), new FieldWrap(clz, f));
+                }
+            }
+        }
+
+        Class<?> sup = clz.getSuperclass();
+        if (sup != Object.class) {
+            scanAllFields(sup, checker, consumer);
         }
     }
 }

@@ -15,12 +15,30 @@ import java.lang.reflect.Type;
  * @since 1.0
  * */
 public class FieldWrap {
+    /**
+     * 实例类型
+     * */
     public final Class<?> entityClz;
+    /**
+     * 字段
+     * */
     public final Field field;
+    /**
+     * 自己申明的注解
+     * */
     public final Annotation[] annoS;
+    /**
+     * 字段类型
+     * */
     public final Class<?> type;
+    /**
+     * 字段泛型类型（可能为null）
+     * */
     public final ParameterizedType genericType;
 
+    /**
+     * 值设置器
+     * */
     private Method _setter;
 
     public FieldWrap(Class<?> clz, Field f1) {

@@ -5,8 +5,6 @@ import org.noear.solon.annotation.XParam;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
@@ -14,8 +12,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
-import java.util.function.BiConsumer;
-import java.util.function.Predicate;
 
 /**
  * 类型转换工具
@@ -212,29 +208,4 @@ public class TypeUtil {
         return s.isAssignableFrom(t);
     }
 
-
-
-    /** 扫描一个类的所有字段（不能与Snack3的复用；它需要排除非序列化字段） */
-    public static void scanAllFields(Class<?> clz, Predicate<String> checker, BiConsumer<String,FieldWrap> consumer) {
-        if (clz == null) {
-            return;
-        }
-
-        for (Field f : clz.getDeclaredFields()) {
-            int mod = f.getModifiers();
-
-            if (!Modifier.isStatic(mod)) {
-                f.setAccessible(true);
-
-                if (checker.test(f.getName()) == false) {
-                    consumer.accept(f.getName(), new FieldWrap(clz, f));
-                }
-            }
-        }
-
-        Class<?> sup = clz.getSuperclass();
-        if (sup != Object.class) {
-            scanAllFields(sup, checker, consumer);
-        }
-    }
 }
