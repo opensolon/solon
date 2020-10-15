@@ -72,14 +72,14 @@ public class ClassWrap {
         }
     }
 
-    public Class<?> getClz() {
+    public Class<?> clz() {
         return clz;
     }
 
     /**
      * 获取所有字段的包装（含超类）
      * */
-    public Map<String, FieldWrap> getfieldAllWraps(){
+    public Map<String, FieldWrap> getFieldAllWraps(){
         return Collections.unmodifiableMap(fieldAllWrapsMap);
     }
 

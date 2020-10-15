@@ -176,7 +176,7 @@ public class AopContext extends BeanContainer {
         ClassWrap clzWrap = ClassWrap.get(obj.getClass());
 
         //支持父类注入
-        for (Map.Entry<String, FieldWrap> kv : clzWrap.getfieldAllWraps().entrySet()) {
+        for (Map.Entry<String, FieldWrap> kv : clzWrap.getFieldAllWraps().entrySet()) {
             Annotation[] annS = kv.getValue().annoS;
             if (annS.length > 0) {
                 VarHolder varH = kv.getValue().holder(obj);

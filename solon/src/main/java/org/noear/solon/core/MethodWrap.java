@@ -70,26 +70,17 @@ public class MethodWrap implements MethodChain {
         }
     }
 
-    /**
-     * 函数
-     * */
+    //函数
     private final Method method;
-    /**
-     * 函数参数
-     * */
+    //函数参数
     private final Parameter[] parameters;
-    /**
-     * 函数注解
-     * */
+    //函数注解
     private final Annotation[] annotations;
-    /**
-     * 函数包围列表（扩展切点）
-     * */
+    //函数包围列表（扩展切点）
     private final List<MethodChain.Entity> arounds;
-    /**
-     * 函数调用链
-     * */
+    //函数调用链
     private final MethodChain invokeChain;
+
 
     /**
      * 获取函数名
