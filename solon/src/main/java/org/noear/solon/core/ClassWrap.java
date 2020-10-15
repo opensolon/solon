@@ -34,7 +34,7 @@ public class ClassWrap {
     }
 
     //clz
-    public final Class<?> clz;
+    private final Class<?> clz;
     //clz.methodS
     private final List<MethodWrap> methodWraps;
     //clz.methodS
@@ -72,6 +72,13 @@ public class ClassWrap {
         }
     }
 
+    public Class<?> getClz() {
+        return clz;
+    }
+
+    /**
+     * 获取所有字段的包装（含超类）
+     * */
     public Map<String, FieldWrap> getfieldAllWraps(){
         return Collections.unmodifiableMap(fieldAllWrapsMap);
     }
