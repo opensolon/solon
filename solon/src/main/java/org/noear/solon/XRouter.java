@@ -11,9 +11,12 @@ import java.util.stream.Collectors;
  * 通用路由器
  * */
 public class XRouter {
-    private final RouteTable<XHandler>[] _routes_h; //for handler
-    private final List<XHandler>[] _routes_h_c; //for handler controller
-    private final RouteTable<XListener> _routes_l; //for listener
+    //for handler
+    private final RouteTable<XHandler>[] _routes_h;
+    //for handler controller
+    private final List<XHandler>[] _routes_h_c;
+    //for listener
+    private final RouteTable<XListener> _routes_l;
 
     public XRouter() {
         _routes_h = new RouteTable[6];
@@ -51,7 +54,7 @@ public class XRouter {
      * 添加路由关系 for XHandler
      */
     public void add(String path, int endpoint, XMethod method, int index, XHandler handler) {
-        Route xl = new Route(path, method, index, handler);
+        RouteTable.Route xl = new RouteTable.Route(path, method, index, handler);
 
         if (endpoint != XEndpoint.main && "@@".equals(path)) {
             RouteTable<XHandler> tmp = _routes_h[endpoint + 3];
@@ -79,7 +82,7 @@ public class XRouter {
      * 添加路由关系 for XListener
      */
     public void add(String path, XMethod method, int index, XListener listener) {
-        _routes_l.add(new Route(path, method, index, listener));
+        _routes_l.add(new RouteTable.Route(path, method, index, listener));
     }
 
     /**
