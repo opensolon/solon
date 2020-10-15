@@ -15,16 +15,27 @@ import java.lang.annotation.Annotation;
  * */
 @SuppressWarnings("unchecked")
 public class BeanWrap {
-    protected Class<?> _clz;      // bean clz
+    // bean clz
+    protected Class<?> _clz;
+    // bean clz init method
     protected MethodWrap _clz_init;
-    protected Object _raw;        // bean raw（初始实例）
-    protected boolean _singleton; // 是否为单例
-    protected boolean _remoting;  // 是否为远程服务
+    // bean raw（初始实例）
+    protected Object _raw;
+    // 是否为单例
+    protected boolean _singleton;
+    // 是否为远程服务
+    protected boolean _remoting;
+    // bean name
     protected String _name;
+    // bean tag
     protected String _tag;
+    // bean 申明的属性
     protected String _attrs;
+    // bean 是否按注册类型
     protected boolean _typed;
+    // bean 代理（为ASM代理提供接口支持）
     protected BeanProxy _proxy;
+    // bean clz 的注解（算是缓存起来）
     protected final Annotation[] _annotations;
 
 
@@ -39,7 +50,7 @@ public class BeanWrap {
         _singleton = (ano == null || ano.value()); //默认为单例
         _annotations = clz.getAnnotations();
 
-        _buildInit();
+        _tryBuildInit();
 
         if (raw == null) {
             _raw = _new();
@@ -53,10 +64,12 @@ public class BeanWrap {
         attrsSet(attrs);
     }
 
+    //设置代理
     public void proxySet(BeanProxy proxy){
         _proxy = proxy;
 
         if(_raw != null){
+            //如果_raw存在，则进行代理转换
             _raw = proxy.getProxy(_raw);
         }
     }
@@ -134,7 +147,7 @@ public class BeanWrap {
     }
 
     /**
-     * bean对象
+     * bean 获取对象
      */
     public <T> T get() {
         if (_singleton) {
@@ -176,7 +189,10 @@ public class BeanWrap {
         }
     }
 
-    protected void _buildInit() {
+    /**
+     * 尝试构建初始化函数
+     * */
+    protected void _tryBuildInit() {
         if (_clz_init != null) {
             return;
         }
@@ -188,7 +204,7 @@ public class BeanWrap {
         ClassWrap clzWrap = ClassWrap.get(_clz);
 
         //查找初始化函数
-        for (MethodWrap mw : clzWrap.methodWraps) {
+        for (MethodWrap mw : clzWrap.getMethodWraps()) {
             if (mw.getMethod().getAnnotation(XInit.class) != null) {
                 if (mw.getParameters().length == 0) {
                     //只接收没有参数的

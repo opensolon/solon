@@ -33,17 +33,22 @@ public class ClassWrap {
         return cw;
     }
 
-    public final Class<?> clz;                        //clz
-    public final List<MethodWrap> methodWraps;          //clz.methodS
-    public final Map<Method,MethodWrap> methodWrapsMap;          //clz.methodS
-    public final Field[] declaredFields;                        //clz.fieldS
-    private final Map<String, FieldWrap> fieldWrapsMap;    //clz.all_fieldS
+    //clz
+    public final Class<?> clz;
+    //clz.methodS
+    private final List<MethodWrap> methodWraps;
+    //clz.methodS
+    private final Map<Method,MethodWrap> methodWrapsMap;
+    //clz.fieldS
+    private final Field[] fields;
+    //clz.all_fieldS
+    private final Map<String, FieldWrap> fieldAllWrapsMap;
 
     protected ClassWrap(Class<?> clz) {
         this.clz = clz;
 
         //自己申明的字段
-        declaredFields = clz.getDeclaredFields();
+        fields = clz.getDeclaredFields();
 
         //自己申明的函数
         methodWraps = new ArrayList<>();
@@ -56,47 +61,23 @@ public class ClassWrap {
         }
 
         //所有字段的包装（自己的 + 父类的）
-        fieldWrapsMap = new ConcurrentHashMap<>();
-        scanAllFields(clz, fieldWrapsMap::containsKey, fieldWrapsMap::put);
+        fieldAllWrapsMap = new ConcurrentHashMap<>();
+        TypeUtil.scanAllFields(clz, fieldAllWrapsMap::containsKey, fieldAllWrapsMap::put);
     }
 
-    public Map<String, FieldWrap> fieldAll(){
-        return Collections.unmodifiableMap(fieldWrapsMap);
+    public Map<String, FieldWrap> getfieldAllWraps(){
+        return Collections.unmodifiableMap(fieldAllWrapsMap);
     }
 
-
-    /** 扫描一个类的所有字段（不能与Snack3的复用；它需要排除非序列化字段） */
-    private static void scanAllFields(Class<?> clz, Predicate<String> checker, BiConsumer<String,FieldWrap> consumer) {
-        if (clz == null) {
-            return;
-        }
-
-        for (Field f : clz.getDeclaredFields()) {
-            int mod = f.getModifiers();
-
-            if (!Modifier.isStatic(mod)) {
-                f.setAccessible(true);
-
-                if (checker.test(f.getName()) == false) {
-                    consumer.accept(f.getName(), new FieldWrap(clz, f));
-                }
-            }
-        }
-
-        Class<?> sup = clz.getSuperclass();
-        if (sup != Object.class) {
-            scanAllFields(sup, checker, consumer);
-        }
-    }
 
     /**
      * 获取一个字段包装
      */
     public FieldWrap getFieldWrap(Field f1) {
-        FieldWrap tmp = fieldWrapsMap.get(f1.getName());
+        FieldWrap tmp = fieldAllWrapsMap.get(f1.getName());
         if (tmp == null) {
             tmp = new FieldWrap(clz, f1);
-            FieldWrap l = fieldWrapsMap.putIfAbsent(f1.getName(), tmp);
+            FieldWrap l = fieldAllWrapsMap.putIfAbsent(f1.getName(), tmp);
             if (l != null) {
                 tmp = l;
             }
@@ -119,6 +100,13 @@ public class ClassWrap {
         return tmp;
     }
 
+    public List<MethodWrap> getMethodWraps() {
+        return Collections.unmodifiableList(methodWraps);
+    }
+
+    /**
+     * 新建实例
+     * */
     public <T> T newBy(Function<String, String> data) {
         try {
             Object obj = clz.newInstance();
@@ -134,10 +122,10 @@ public class ClassWrap {
     }
 
     /**
-     * 为一个对象填充数据
+     * 为实例填充数据
      * */
     public void fill(Object target, Function<String, String> data, XContext ctx) {
-        for (Map.Entry<String,FieldWrap> kv : fieldWrapsMap.entrySet()) {
+        for (Map.Entry<String,FieldWrap> kv : fieldAllWrapsMap.entrySet()) {
             String key = kv.getKey();
             String val0 = data.apply(key);
 
@@ -145,7 +133,7 @@ public class ClassWrap {
                 FieldWrap fw = kv.getValue();
 
                 //将 string 转为目标 type，并为字段赋值
-                Object val = ConvertUtil.convertByCtx(fw.field, fw.type, key, val0, ctx);
+                Object val = TypeUtil.convertByCtx(fw.field, fw.type, key, val0, ctx);
                 fw.setValue(target, val);
             }
         }

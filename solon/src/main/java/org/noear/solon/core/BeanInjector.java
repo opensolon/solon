@@ -10,5 +10,8 @@ import java.lang.annotation.Annotation;
  * */
 @FunctionalInterface
 public interface BeanInjector<T extends Annotation> {
+    /**
+     * 注入
+     * */
     void inject(VarHolder varH, T anno);
 }

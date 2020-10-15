@@ -270,7 +270,7 @@ public class BeanContainer {
                         varH.setValue(val2);
                     }
                 } else {
-                    Object val2 = ConvertUtil.convertByProp(varH.getType(), val);
+                    Object val2 = TypeUtil.convertByProp(varH.getType(), val);
                     varH.setValue(val2);
                 }
             }

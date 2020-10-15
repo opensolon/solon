@@ -45,7 +45,7 @@ public class AopContext extends BeanContainer {
                 }
             }
 
-            for (MethodWrap mWrap : ClassWrap.get(bw.clz()).methodWraps) {
+            for (MethodWrap mWrap : ClassWrap.get(bw.clz()).getMethodWraps()) {
                 XBean m_an = mWrap.getMethod().getAnnotation(XBean.class);
 
                 if (m_an != null) {
@@ -176,8 +176,8 @@ public class AopContext extends BeanContainer {
         ClassWrap clzWrap = ClassWrap.get(obj.getClass());
 
         //支持父类注入
-        for (Map.Entry<String, FieldWrap> kv : clzWrap.fieldAll().entrySet()) {
-            Annotation[] annS = kv.getValue().field.getDeclaredAnnotations();
+        for (Map.Entry<String, FieldWrap> kv : clzWrap.getfieldAllWraps().entrySet()) {
+            Annotation[] annS = kv.getValue().annoS;
             if (annS.length > 0) {
                 VarHolder varH = kv.getValue().holder(obj);
                 tryInject(varH, annS);

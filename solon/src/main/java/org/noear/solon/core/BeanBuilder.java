@@ -10,5 +10,8 @@ import java.lang.annotation.Annotation;
  * */
 @FunctionalInterface
 public interface BeanBuilder<T extends Annotation> {
+    /**
+     * 构建
+     * */
     void build(Class<?> clz, BeanWrap wrap, T anno) throws Exception;
 }
