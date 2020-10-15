@@ -12,6 +12,9 @@ import java.util.Map;
 /**
  * 本地网关
  * 提供容器，重新组织处理者运行；只支持HASH路由
+ *
+ * @author noear
+ * @since 1.0
  * */
 public abstract class XGateway extends XHandlerAide implements XHandler, XRender {
     private XHandler _def;

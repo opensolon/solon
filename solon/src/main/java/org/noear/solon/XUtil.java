@@ -16,6 +16,9 @@ import java.util.regex.Pattern;
 
 /**
  * 内部专用工具
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class XUtil {
     public static ExecutorService commonPool = Executors.newCachedThreadPool();

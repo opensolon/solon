@@ -11,6 +11,9 @@ import java.util.function.BiConsumer;
 
 /**
  * 统一配置加载器
+ *
+ * @author noear
+ * @since 1.0
  * */
 public final class XAppProperties extends XProperties {
     private XMap _args;

@@ -13,6 +13,9 @@ import java.util.function.Consumer;
 
 /**
  * 应用管理中心
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class XApp implements XHandler,XHandlerSlots {
     private static XApp _global;
