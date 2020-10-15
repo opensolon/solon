@@ -1,5 +1,7 @@
 package org.noear.solon.core;
 
+import org.noear.solon.ext.ConvertUtil;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -157,7 +159,7 @@ public class ClassWrap {
                 FieldWrap fw = kv.getValue();
 
                 //将 string 转为目标 type，并为字段赋值
-                Object val = TypeUtil.convertByCtx(fw.field, fw.type, key, val0, ctx);
+                Object val = ConvertUtil.ctxTo(fw.field, fw.type, key, val0, ctx);
                 fw.setValue(target, val);
             }
         }

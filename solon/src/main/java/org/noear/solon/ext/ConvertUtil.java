@@ -1,7 +1,8 @@
-package org.noear.solon.core;
+package org.noear.solon.ext;
 
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XParam;
+import org.noear.solon.core.XContext;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Array;
@@ -19,22 +20,15 @@ import java.util.Date;
  * @author noear
  * @since 1.0
  * */
-public class TypeUtil {
+public class ConvertUtil {
     private static final SimpleDateFormat DATE_DEF_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     /**
-     * 转换 ctx 上的值
+     * 转换 context 的值
      * */
-    public static Object convertByCtx(AnnotatedElement p, Class<?> type, String key, String val, XContext ctx) {
-        if (String.class == (type)) {
-            return val;
-        }
+    public static Object ctxTo(AnnotatedElement p, Class<?> type, String key, String val, XContext ctx) {
 
-        if (val.length() == 0) {
-            return null;
-        }
-
-        Object rst = convert(type, val);
+        Object rst = strTo(type, val, false);
 
         if (rst != null) {
             return rst;
@@ -46,7 +40,7 @@ public class TypeUtil {
 
             if (xd != null && XUtil.isEmpty(xd.value()) == false) {
                 format = new SimpleDateFormat(xd.value());
-            }else{
+            } else {
                 format = DATE_DEF_FORMAT;
             }
 
@@ -59,7 +53,7 @@ public class TypeUtil {
             }
         }
 
-        if(type.isArray()) {
+        if (type.isArray()) {
             if (ctx == null) {
                 return null;
             } else {
@@ -106,7 +100,7 @@ public class TypeUtil {
                     Class<?> c = type.getComponentType();
                     Object[] ary2 = (Object[]) Array.newInstance(c, len);
                     for (int i = 0; i < len; i++) {
-                        ary2[i] = convert(c, ary[i]);
+                        ary2[i] = strTo(c, ary[i], false);
                     }
                     return ary2;
                 }
@@ -118,9 +112,22 @@ public class TypeUtil {
     }
 
     /**
-     * 转换 prop 上的值
+     * 转换 properties 的值
      * */
-    public static Object convertByProp(Class<?> type, String val) {
+    public static Object proTo(Class<?> type, String val) {
+        Object rst = strTo(type, val, true);
+        if (rst != null) {
+            return rst;
+        }
+
+
+        throw new RuntimeException("不支持类型:" + type.getName());
+    }
+
+    /**
+     * 转换 string 值
+     * */
+    public static Object strTo(Class<?> type, String val, boolean incDate) {
         if (String.class == (type)) {
             return val;
         }
@@ -129,28 +136,6 @@ public class TypeUtil {
             return null;
         }
 
-        Object rst = convert(type, val);
-        if (rst != null) {
-            return rst;
-        }
-
-        if (Date.class == (type)) {
-            try {
-                return DATE_DEF_FORMAT.parse(val);
-            } catch (RuntimeException ex) {
-                throw ex;
-            } catch (Throwable ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-
-        throw new RuntimeException("不支持类型:" + type.getName());
-    }
-
-    /**
-     * 转换
-     * */
-    public static Object convert(Class<?> type, String val) {
         if (Short.class == type || type == Short.TYPE) {
             return Short.parseShort(val);
         }
@@ -175,27 +160,37 @@ public class TypeUtil {
             return Boolean.parseBoolean(val);
         }
 
-        if(LocalDate.class == type){
+        if (LocalDate.class == type) {
             //as "2007-12-03", not null
             return LocalDate.parse(val);
         }
 
-        if(LocalTime.class == type){
+        if (LocalTime.class == type) {
             //as "10:15:30", not null
             return LocalTime.parse(val);
         }
 
-        if(LocalDateTime.class == type){
+        if (LocalDateTime.class == type) {
             //as "2007-12-03T10:15:30", not null
             return LocalDateTime.parse(val);
         }
 
-        if(BigDecimal.class == type){
+        if (BigDecimal.class == type) {
             return new BigDecimal(val);
         }
 
-        if(BigInteger.class == type){
+        if (BigInteger.class == type) {
             return new BigInteger(val);
+        }
+
+        if (incDate && Date.class == (type)) {
+            try {
+                return DATE_DEF_FORMAT.parse(val);
+            } catch (RuntimeException ex) {
+                throw ex;
+            } catch (Throwable ex) {
+                throw new RuntimeException(ex);
+            }
         }
 
         return null;
