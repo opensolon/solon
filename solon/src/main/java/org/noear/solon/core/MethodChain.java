@@ -2,7 +2,7 @@ package org.noear.solon.core;
 
 
 /**
- * 方法执行链
+ * 方法调用链（用于支持 @XAround ）
  *
  * @author noear
  * @since 1.0
@@ -12,11 +12,11 @@ public interface MethodChain {
 
     class Entity implements MethodChain {
         public final int index;
-        public final MethodHandler handler;
+        public final MethodInterceptor handler;
         public MethodChain next;
         private MethodWrap mw;
 
-        Entity(MethodWrap m, int i, MethodHandler h) {
+        Entity(MethodWrap m, int i, MethodInterceptor h) {
             index = i;
             handler = h;
             mw = m;
