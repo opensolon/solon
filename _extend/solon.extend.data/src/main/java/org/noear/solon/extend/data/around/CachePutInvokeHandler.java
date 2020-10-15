@@ -15,7 +15,7 @@ public class CachePutInvokeHandler implements MethodHandler {
 
         XCachePut anno = method.getAnnotation(XCachePut.class);
         CacheExecutorImp.global
-                .cacheUpdate(anno, method, parameters, args, tmp);
+                .cachePut(anno, method, parameters, args, tmp);
 
         return tmp;
     }

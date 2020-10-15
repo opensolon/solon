@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 /**
  * 缓存执行器
  * */
-public class CacheExecutorImp  {
+public class CacheExecutorImp {
     public static final CacheExecutorImp global = new CacheExecutorImp();
 
     /**
@@ -67,9 +67,8 @@ public class CacheExecutorImp  {
     }
 
     /**
-     * 清除缓存标签
+     * 清除缓存
      */
-    //@Override
     public void cacheRemove(XCacheRemove anno, Method method, Parameter[] params, Object[] values) {
         if (anno == null || XUtil.isEmpty(anno.tags())) {
             return;
@@ -91,7 +90,10 @@ public class CacheExecutorImp  {
         }
     }
 
-    public void cacheUpdate(XCachePut anno, Method method, Parameter[] params, Object[] values, Object newValue) {
+    /**
+     * 更新缓存
+     */
+    public void cachePut(XCachePut anno, Method method, Parameter[] params, Object[] values, Object newValue) {
         if (anno == null || XUtil.isEmpty(anno.tags())) {
             return;
         }
