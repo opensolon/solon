@@ -13,14 +13,14 @@ import java.io.File;
  * @since 1.0
  * */
 public class ExtendLoader {
-    private static final ExtendLoader _g = new ExtendLoader();
-    private static String _folder;
+    private static final ExtendLoader el = new ExtendLoader();
+    private static String folder;
 
     /**
      * 扩展文件夹（绝对路径）
      * */
     public static String folder(){
-        return _folder;
+        return folder;
     }
 
     /**
@@ -50,12 +50,12 @@ public class ExtendLoader {
             }
 
             if (path != null) {
-                _folder = path;
+                folder = path;
 
-                PrintUtil.blueln("solon.extend: " + _folder);
+                PrintUtil.blueln("solon.extend: " + folder);
 
-                File file = new File(_folder);
-                _g.loadFile(file);
+                File file = new File(folder);
+                el.loadFile(file);
             }
         }
     }

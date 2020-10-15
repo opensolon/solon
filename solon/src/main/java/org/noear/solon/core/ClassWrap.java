@@ -16,16 +16,16 @@ import java.util.function.Predicate;
  * @since 1.0
  * */
 public class ClassWrap {
-    private static Map<Class<?>, ClassWrap> _cache = new ConcurrentHashMap<>();
+    private static Map<Class<?>, ClassWrap> cached = new ConcurrentHashMap<>();
 
     /**
      * 根据clz获取一个ClassWrap
      */
     public static ClassWrap get(Class<?> clz) {
-        ClassWrap cw = _cache.get(clz);
+        ClassWrap cw = cached.get(clz);
         if (cw == null) {
             cw = new ClassWrap(clz);
-            ClassWrap l = _cache.putIfAbsent(clz, cw);
+            ClassWrap l = cached.putIfAbsent(clz, cw);
             if (l != null) {
                 cw = l;
             }
@@ -60,7 +60,7 @@ public class ClassWrap {
 
         //所有字段的包装（自己的 + 父类的）
         fieldAllWrapsMap = new ConcurrentHashMap<>();
-        scanAllFields(clz, fieldAllWrapsMap::containsKey, fieldAllWrapsMap::put);
+        doScanAllFields(clz, fieldAllWrapsMap::containsKey, fieldAllWrapsMap::put);
 
         fieldWraps = new ArrayList<>();
         //自己申明的字段
@@ -164,7 +164,7 @@ public class ClassWrap {
     }
 
     /** 扫描一个类的所有字段（不能与Snack3的复用；它需要排除非序列化字段） */
-    private static void scanAllFields(Class<?> clz, Predicate<String> checker, BiConsumer<String,FieldWrap> consumer) {
+    private static void doScanAllFields(Class<?> clz, Predicate<String> checker, BiConsumer<String,FieldWrap> consumer) {
         if (clz == null) {
             return;
         }
@@ -183,7 +183,7 @@ public class ClassWrap {
 
         Class<?> sup = clz.getSuperclass();
         if (sup != Object.class) {
-            scanAllFields(sup, checker, consumer);
+            doScanAllFields(sup, checker, consumer);
         }
     }
 }

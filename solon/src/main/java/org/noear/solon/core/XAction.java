@@ -18,41 +18,49 @@ import java.util.regex.Pattern;
  * @since 1.0
  * */
 public class XAction extends XHandlerAide implements XHandler{
-    protected final BeanWrap _bw;//
-    protected final XHandlerAide _ca;
-    protected final MethodWrap _mw;
-    protected String _produces;//输出产品
-    protected XRender _render;
-    protected boolean _poi_main;
+    //bean 包装器
+    protected final BeanWrap bw;
+    //bean 相关aide
+    protected final XHandlerAide bAide;
+    //bean 相关reader
+    protected XRender bRender;
+    //bean 是否为 main endpoint
+    protected boolean bIsMain;
+    //method 包装器
+    protected final MethodWrap mw;
+    //method 相关的 produces（输出产品）
+    protected String mProduces;
 
-    private String _name;
-    private boolean _remoting;
+    //action name
+    private String mName;
+    //action remoting
+    private boolean mRemoting;
 
     private PathAnalyzer _pr;//路径分析器
     private List<String> _pks;
     private static Pattern _pkr = Pattern.compile("\\{([^\\\\}]+)\\}");
 
     public XAction(BeanWrap bw, XHandlerAide ca, boolean poi_main, Method m, XMapping mp, String path, boolean remoting, XRender render) {
-        _bw = bw;
-        _ca = ca;
-        _mw = MethodWrap.get(m);
+        this.bw = bw;
+        bAide = ca;
+        mw = MethodWrap.get(m);
 
-        _remoting = remoting;
-        _render = render;
-        _poi_main = poi_main;
+        mRemoting = remoting;
+        bRender = render;
+        bIsMain = poi_main;
 
-        if(_render == null) {
+        if(bRender == null) {
             //如果控制器是XRender
             if (XRender.class.isAssignableFrom(bw.clz())) {
-                _render = bw.raw();
+                bRender = bw.raw();
             }
         }
 
         if (mp != null) {
-            _produces = mp.produces();
-            _name = mp.value();
+            mProduces = mp.produces();
+            mName = mp.value();
         } else {
-            _name = m.getName();
+            mName = m.getName();
         }
 
         //支持path变量
@@ -73,21 +81,21 @@ public class XAction extends XHandlerAide implements XHandler{
      * 接口名称
      */
     public String name() {
-        return _name;
+        return mName;
     }
 
     /**
      * 函数包装器
      */
     public MethodWrap method() {
-        return _mw;
+        return mw;
     }
 
     /**
      * 控制器类包装
      */
     public BeanWrap bean() {
-        return _bw;
+        return bw;
     }
 
     @Override
@@ -99,15 +107,15 @@ public class XAction extends XHandlerAide implements XHandler{
      * 调用
      */
     public void invoke(XContext x, Object obj) throws Throwable {
-        x.remotingSet(_remoting);
+        x.remotingSet(mRemoting);
 
         try {
             //预加载控制器，确保所有的处理者可以都可以获取控制器
             if (obj == null) {
-                obj = _bw.get();
+                obj = bw.get();
             }
 
-            if (_poi_main) {
+            if (bIsMain) {
                 //传递控制器实例
                 x.attrSet("controller", obj);
                 x.attrSet("action", this);
@@ -131,18 +139,18 @@ public class XAction extends XHandlerAide implements XHandler{
          * */
 
         //前置处理（最多一次渲染）
-        if (_poi_main) {
+        if (bIsMain) {
             handleDo(x, () -> {
 
                 for (XHandler h : XApp.global().router().atBefore()) {
                     h.handle(x);
                 }
 
-                for (XHandler h : _ca._before) {
+                for (XHandler h : bAide.befores) {
                     h.handle(x);
                 }
 
-                for (XHandler h : _before) {
+                for (XHandler h : befores) {
                     h.handle(x);
                 }
             });
@@ -162,17 +170,17 @@ public class XAction extends XHandlerAide implements XHandler{
                     }
                 }
 
-                Object tmp = callDo(x, obj, _mw);
+                Object tmp = callDo(x, obj, mw);
 
                 //如果是主处理（不支持非主控的返回值；有可能是拦截器）
-                if (_poi_main) {
+                if (bIsMain) {
 
                     //记录返回值（后续不一定会再记录）
                     x.result = tmp;
 
                     //设定输出产品（放在这个位置正好）
-                    if (XUtil.isEmpty(_produces) == false) {
-                        x.contentType(_produces);
+                    if (XUtil.isEmpty(mProduces) == false) {
+                        x.contentType(mProduces);
                     }
 
                     renderDo(tmp, x);
@@ -181,16 +189,16 @@ public class XAction extends XHandlerAide implements XHandler{
         }
 
         //后置处理
-        if (_poi_main) {
+        if (bIsMain) {
             for (XHandler h : XApp.global().router().atAfter()) {
                 h.handle(x);
             }
 
-            for (XHandler h : _ca._after) {
+            for (XHandler h : bAide.afters) {
                 h.handle(x);
             }
 
-            for (XHandler h : _after) {
+            for (XHandler h : afters) {
                 h.handle(x);
             }
         }
@@ -240,11 +248,11 @@ public class XAction extends XHandlerAide implements XHandler{
 
         x.result = result;
 
-        if (_render == null) {
+        if (bRender == null) {
             x.setRendered(true); //最多一次渲染
             x.render(result);
         } else {
-            _render.render(result, x);
+            bRender.render(result, x);
         }
     }
 }

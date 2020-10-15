@@ -237,7 +237,7 @@ public class JtHttpContext extends XContext{
     @Override
     public void charset(String charset) {
         _response.setCharacterEncoding(charset);
-        _charset = Charset.forName(charset);
+        this.charset = Charset.forName(charset);
     }
 
     @Override

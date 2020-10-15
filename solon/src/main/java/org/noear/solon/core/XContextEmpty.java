@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -41,13 +39,13 @@ public class XContextEmpty extends XContext {
 
 
 
-    private Map<String,Object> _sessionMap = null;
+    private Map<String,Object> sessionMap = null;
     public Map<String,Object> sessionMap(){
-        if(_sessionMap == null){
-            _sessionMap = new HashMap<>();
+        if(sessionMap == null){
+            sessionMap = new HashMap<>();
         }
 
-        return _sessionMap;
+        return sessionMap;
     }
 
 
@@ -116,13 +114,13 @@ public class XContextEmpty extends XContext {
         return paramMap().getOrDefault(key, def);
     }
 
-    private XMap _paramMap = null;
+    private XMap paramMap = null;
     @Override
     public XMap paramMap() {
-        if(_paramMap == null){
-            _paramMap = new XMap();
+        if(paramMap == null){
+            paramMap = new XMap();
         }
-        return _paramMap;
+        return paramMap;
     }
 
     @Override
@@ -145,22 +143,22 @@ public class XContextEmpty extends XContext {
         return cookieMap().getOrDefault(key,def);
     }
 
-    XMap _cookieMap = null;
+    XMap cookieMap = null;
     @Override
     public XMap cookieMap() {
-        if(_cookieMap == null){
-            _cookieMap = new XMap();
+        if(cookieMap == null){
+            cookieMap = new XMap();
         }
-        return _cookieMap;
+        return cookieMap;
     }
 
-    private XMap _headerMap = null;
+    private XMap headerMap = null;
     @Override
     public XMap headerMap() {
-        if(_headerMap == null){
-            _headerMap = new XMap();
+        if(headerMap == null){
+            headerMap = new XMap();
         }
-        return _headerMap;
+        return headerMap;
     }
 
     @Override
@@ -213,15 +211,15 @@ public class XContextEmpty extends XContext {
 
     }
 
-    private int _status = 0;
+    private int status = 0;
     @Override
     public int status() {
-        return _status;
+        return status;
     }
 
     @Override
     public void statusSet(int status) {
-        _status = status;
+        this.status = status;
     }
 
     @Override

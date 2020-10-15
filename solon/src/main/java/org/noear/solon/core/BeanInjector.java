@@ -13,5 +13,5 @@ public interface BeanInjector<T extends Annotation> {
     /**
      * 注入
      * */
-    void inject(VarHolder varH, T anno);
+    void doInject(VarHolder varH, T anno);
 }

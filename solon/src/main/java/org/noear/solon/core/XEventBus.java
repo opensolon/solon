@@ -9,11 +9,10 @@ import java.util.Set;
  * 监听器（内部类，外部不要使用）
  * */
 public final class XEventBus {
-    /**
-     * 订阅者
-     */
-    private static Set<HH> _sThrow = new HashSet<>();
-    private static Set<HH> _sOther = new HashSet<>();
+    //异常订阅者
+    private static Set<HH> sThrow = new HashSet<>();
+    //其它订阅者
+    private static Set<HH> sOther = new HashSet<>();
 
     /**
      * 推送事件
@@ -22,14 +21,14 @@ public final class XEventBus {
         if (event != null) {
             if (event instanceof Throwable) {
                 //异常分发
-                push0(_sThrow, event);
+                push0(sThrow, event);
 
                 if(XApp.cfg().isDebugMode() || XApp.cfg().isFilesMode()){
                     ((Throwable) event).printStackTrace();
                 }
             } else {
                 //其它事件分发
-                push0(_sOther, event);
+                push0(sOther, event);
             }
         }
     }
@@ -51,9 +50,9 @@ public final class XEventBus {
      */
     public static <T> void subscribe(Class<T> eventType, XEventListener<T> handler) {
         if (Throwable.class.isAssignableFrom(eventType)) {
-            _sThrow.add(new HH(eventType, handler));
+            sThrow.add(new HH(eventType, handler));
         } else {
-            _sOther.add(new HH(eventType, handler));
+            sOther.add(new HH(eventType, handler));
         }
     }
 

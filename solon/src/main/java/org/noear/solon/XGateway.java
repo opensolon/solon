@@ -111,7 +111,7 @@ public abstract class XGateway extends XHandlerAide implements XHandler, XRender
 
         //前置处理（最多一次渲染）
         handleDo(c, () -> {
-            for (XHandler h : _before) {
+            for (XHandler h : befores) {
                 h.handle(c);
             }
         });
@@ -130,7 +130,7 @@ public abstract class XGateway extends XHandlerAide implements XHandler, XRender
         }
 
         //后置处理（确保不受前面的异常影响）
-        for (XHandler h : _after) {
+        for (XHandler h : afters) {
             h.handle(c);
         }
     }

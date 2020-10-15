@@ -11,17 +11,17 @@ import java.util.List;
  * */
 public class XHandlerAide {
     /** 前置处理 */
-    protected List<XHandler> _before  =new ArrayList<>();
+    protected List<XHandler> befores =new ArrayList<>();
     /** 后置处理 */
-    protected List<XHandler> _after  =new ArrayList<>();
+    protected List<XHandler> afters =new ArrayList<>();
 
     /** 添加前置处理 */
     public void before(XHandler handler){
-        _before.add(handler);
+        befores.add(handler);
     }
 
     /** 添加后置处理 */
     public void after(XHandler handler){
-        _after.add(handler);
+        afters.add(handler);
     }
 }

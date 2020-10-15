@@ -16,7 +16,6 @@ import reactor.netty.http.server.HttpServerResponse;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -206,9 +205,9 @@ public class RnHttpContext extends XContext {
 
     @Override
     protected void contentTypeDoSet(String contentType) {
-        if (_charset != null) {
+        if (charset != null) {
             if (contentType.indexOf(";") < 0) {
-                headerSet("Content-Type", contentType + ";charset=" + _charset);
+                headerSet("Content-Type", contentType + ";charset=" + charset);
                 return;
             }
         }

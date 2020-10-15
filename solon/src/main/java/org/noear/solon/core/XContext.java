@@ -1,6 +1,5 @@
 package org.noear.solon.core;
 
-import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XNote;
 
@@ -32,25 +31,25 @@ public abstract class XContext {
 
 
     /**是否已处理（用于控制处理链）*/
-    private boolean _handled;
+    private boolean handled;
     @XNote("设置处理状态")
     public void setHandled(boolean handled){
-        _handled = handled;
+        this.handled = handled;
     }
     @XNote("获取处理状态")
     public boolean getHandled(){
-        return _handled;
+        return handled;
     }
 
     /**是否已渲染（用于控制渲染链）*/
-    private boolean _rendered;
+    private boolean rendered;
     @XNote("设置渲染状态")
     public void setRendered(boolean rendered){
-        _rendered = rendered;
+        this.rendered = rendered;
     }
     @XNote("获取渲染状态")
     public boolean getRendered(){
-        return _rendered;
+        return rendered;
     }
 
     /**获取请求对象*/
@@ -87,14 +86,14 @@ public abstract class XContext {
     public abstract String protocol();
 
     /**获取请求协议并大写*/
-    private String _protocolAsUpper;
+    private String protocolAsUpper;
     @XNote("获取请求协议并大写")
     public String protocolAsUpper(){
-        if (_protocolAsUpper == null) {
-            _protocolAsUpper = protocol().toUpperCase();
+        if (protocolAsUpper == null) {
+            protocolAsUpper = protocol().toUpperCase();
         }
 
-        return _protocolAsUpper;
+        return protocolAsUpper;
     }
     /**获取请求的URI*/
     @XNote("获取请求的URI")
@@ -109,14 +108,14 @@ public abstract class XContext {
     }
 
     /**获取请求的URI路径并大写*/
-    private String _pathAsUpper;
+    private String pathAsUpper;
     @XNote("获取请求的URI路径并大写")
     public String pathAsUpper() {
-        if (_pathAsUpper == null) {
-            _pathAsUpper = path().toUpperCase();
+        if (pathAsUpper == null) {
+            pathAsUpper = path().toUpperCase();
         }
 
-        return _pathAsUpper;
+        return pathAsUpper;
     }
 
     /**获取请求的UA*/
@@ -132,7 +131,7 @@ public abstract class XContext {
     @XNote("获取内容类型")
     public abstract String contentType();
 
-    private String _body;
+    private String body;
     /**获取RAW内容*/
     @XNote("获取RAW内容")
     public String body() throws IOException{
@@ -141,13 +140,13 @@ public abstract class XContext {
 
     @XNote("获取RAW内容")
     public String body(String charset) throws IOException {
-        if (_body == null) {
+        if (body == null) {
             try (InputStream ins = bodyAsStream()) {
-                _body = XUtil.getString(ins,charset);
+                body = XUtil.getString(ins,charset);
             }
         }
 
-        return _body;
+        return body;
     }
 
     /**获取RAW内容为byte[]*/
@@ -260,33 +259,34 @@ public abstract class XContext {
     public abstract XMap headerMap();
 
     /**SESSION_STATE对象*/
-    private XSessionState _sessionState = XBridge.sessionState();
+    private XSessionState sessionState = XBridge.sessionState();
     protected void sessionStateInit(XSessionState sessionState){
-        if(_sessionState.replaceable()){
-            _sessionState = sessionState;
+        if(this.sessionState.replaceable()){
+            this.sessionState = sessionState;
         }
     }
     protected XSessionState sessionState(){
-        return _sessionState;
+        return sessionState;
     }
 
     /**获取SESSION_ID*/
     @XNote("获取SESSION_ID")
     public final String sessionId(){
-        return _sessionState.sessionId();
+        return sessionState.sessionId();
     }
     /**获取SESSION状态*/
     @XNote("获取SESSION状态")
     public final Object session(String key){
-        return _sessionState.sessionGet(key);
+        return sessionState.sessionGet(key);
     }
     /**设置SESSION状态*/
     @XNote("设置SESSION状态")
     public final void sessionSet(String key, Object val){
-        _sessionState.sessionSet(key,val);
+        sessionState.sessionSet(key,val);
     }
     @XNote("清空SESSION状态")
-    public final void sessionClear(){_sessionState.sessionClear();}
+    public final void sessionClear(){
+        sessionState.sessionClear();}
 
     //======================
     /**获取输出对象*/
@@ -295,9 +295,9 @@ public abstract class XContext {
     /**设置字符集*/
     @XNote("设置字符集")
     public void charset(String charset) {
-        _charset = Charset.forName(charset);
+        this.charset = Charset.forName(charset);
     }
-    protected Charset _charset = StandardCharsets.UTF_8;
+    protected Charset charset = StandardCharsets.UTF_8;
 
     /**设置内容类型*/
     @XNote("设置内容类型")
@@ -306,14 +306,14 @@ public abstract class XContext {
 
         //只记录非默认值
         if(XContextUtil.contentTypeDef.equals(contentType) == false) {
-            _contentTypeNew = contentType;
+            contentTypeNew = contentType;
         }
     }
     @XNote("获取设置的内容类型")
     public String contentTypeNew(){
-        return _contentTypeNew;
+        return contentTypeNew;
     }
-    private String _contentTypeNew;
+    private String contentTypeNew;
     protected abstract void contentTypeDoSet(String contentType);
 
 
@@ -330,7 +330,7 @@ public abstract class XContext {
         if (str != null) {
             try {
                 attrSet("output", str);
-                output(str.getBytes(_charset));
+                output(str.getBytes(charset));
             } catch (Throwable ex) {
                 throw XUtil.throwableWrap(ex);
             }
@@ -405,14 +405,14 @@ public abstract class XContext {
     public abstract void statusSet(int status);
 
 
-    private Map<String,Object> _attrMap = null;
+    private Map<String,Object> attrMap = null;
     @XNote("获取自定义特性并转为Map")
     public Map<String,Object> attrMap(){//改为懒加载
-        if(_attrMap == null){
-            _attrMap = new HashMap<>();
+        if(attrMap == null){
+            attrMap = new HashMap<>();
         }
 
-        return _attrMap;
+        return attrMap;
     }
     /**获取自定义特性*/
     @XNote("获取自定义特性")

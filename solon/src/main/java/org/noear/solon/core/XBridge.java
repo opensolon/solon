@@ -15,8 +15,8 @@ public class XBridge {
     //
     // SessionState 对接
     //
-    private static XSessionState _sessionState = new XSessionStateDefault();
-    private static boolean _sessionStateUpdated;
+    private static XSessionState sessionState = new XSessionStateDefault();
+    private static boolean sessionStateUpdated;
 
     /**
      * 设置Session状态管理器
@@ -24,13 +24,13 @@ public class XBridge {
     @XNote("设置Session状态管理器")
     public static void sessionStateSet(XSessionState ss) {
         if (ss != null) {
-            _sessionState = ss;
+            sessionState = ss;
 
-            if (_sessionStateUpdated == false) {
-                _sessionStateUpdated = true;
+            if (sessionStateUpdated == false) {
+                sessionStateUpdated = true;
 
                 XApp.global().before("**", XMethod.HTTP, (c) -> {
-                    _sessionState.sessionRefresh();
+                    sessionState.sessionRefresh();
                 });
             }
         }
@@ -41,7 +41,7 @@ public class XBridge {
      */
     @XNote("获取Session状态管理器")
     public static XSessionState sessionState() {
-        return _sessionState;
+        return sessionState;
     }
 
     static class XSessionStateDefault implements XSessionState {
@@ -65,14 +65,14 @@ public class XBridge {
     //
     // UpstreamFactory 对接
     //
-    private static XUpstream.Factory _upstreamFactory = null;
+    private static XUpstream.Factory upstreamFactory = null;
 
     /**
      * 获取负载工厂
      */
     @XNote("获取负载工厂")
     public static XUpstream.Factory upstreamFactory() {
-        return _upstreamFactory;
+        return upstreamFactory;
     }
 
     /**
@@ -81,7 +81,7 @@ public class XBridge {
     @XNote("设置负载工厂")
     public static void upstreamFactorySet(XUpstream.Factory uf) {
         if (uf != null) {
-            _upstreamFactory = uf;
+            upstreamFactory = uf;
         }
     }
 
@@ -93,18 +93,18 @@ public class XBridge {
     /**
      * 动作默认执行器
      */
-    private static XActionExecutor _actionExecutorDef = new XActionExecutorDefault();
+    private static XActionExecutor actionExecutorDef = new XActionExecutorDefault();
     /**
      * 动作执行库
      */
-    private static Set<XActionExecutor> _actionExecutors = new HashSet<>();
+    private static Set<XActionExecutor> actionExecutors = new HashSet<>();
 
     /**
      * 获取默认的Action执行器
      */
     @XNote("获取默认的Action执行器")
     public static XActionExecutor actionExecutorDef() {
-        return _actionExecutorDef;
+        return actionExecutorDef;
     }
 
     /**
@@ -113,7 +113,7 @@ public class XBridge {
     @XNote("设置默认的Action执行器")
     public static void actionExecutorDefSet(XActionExecutor ae) {
         if (ae != null) {
-            _actionExecutorDef = ae;
+            actionExecutorDef = ae;
         }
     }
 
@@ -122,7 +122,7 @@ public class XBridge {
      */
     @XNote("获取所有Action执行器")
     public static Set<XActionExecutor> actionExecutors() {
-        return Collections.unmodifiableSet(_actionExecutors);
+        return Collections.unmodifiableSet(actionExecutors);
     }
 
     /**
@@ -131,7 +131,7 @@ public class XBridge {
     @XNote("添加Action执行器")
     public static void actionExecutorAdd(XActionExecutor e) {
         if (e != null) {
-            _actionExecutors.add(e);
+            actionExecutors.add(e);
         }
     }
 
@@ -182,14 +182,14 @@ public class XBridge {
     //
     // XTranExecutor 对接
     //
-    private static XTranExecutor _tranExecutor = () -> false;
+    private static XTranExecutor tranExecutor = () -> false;
 
     /**
      * 获取事务执行器
      */
     @XNote("获取事务执行器")
     public static XTranExecutor tranExecutor() {
-        return _tranExecutor;
+        return tranExecutor;
     }
 
     /**
@@ -198,7 +198,7 @@ public class XBridge {
     @XNote("设置事务执行器")
     public static void tranExecutorSet(XTranExecutor te) {
         if (te != null) {
-            _tranExecutor = te;
+            tranExecutor = te;
         }
     }
 

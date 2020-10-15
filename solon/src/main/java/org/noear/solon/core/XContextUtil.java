@@ -11,26 +11,26 @@ public class XContextUtil {
 
     public static final String contentTypeDef = "text/plain;charset=UTF-8";
 
-    private final static ThreadLocal<XContext> _threadLocal = new ThreadLocal<>();
+    private final static ThreadLocal<XContext> threadLocal = new ThreadLocal<>();
 
     /**
      * 设置当前线程的上下文
      * */
     public static void currentSet(XContext context){
-        _threadLocal.set(context);
+        threadLocal.set(context);
     }
 
     /**
      * 移除当前线程的上下文
      * */
     public static void currentRemove(){
-        _threadLocal.remove();
+        threadLocal.remove();
     }
 
     /**
      * 获取当前线程的上下文
      * */
     public static XContext current(){
-        return _threadLocal.get();
+        return threadLocal.get();
     }
 }

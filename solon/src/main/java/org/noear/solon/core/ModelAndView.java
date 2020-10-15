@@ -10,12 +10,12 @@ import java.util.Map;
  * @since 1.0
  * */
 public class ModelAndView extends LinkedHashMap{
-    private transient String __view;
+    private transient String view;
 
     public ModelAndView(){super();}
     public ModelAndView(String view) {
         this();
-        __view = view;
+        this.view = view;
     }
     public ModelAndView(String view, Map<String, ?> model) {
         this(view);
@@ -27,10 +27,10 @@ public class ModelAndView extends LinkedHashMap{
 
     /** 视图 */
     public String view() {
-        return __view;
+        return view;
     }
     public ModelAndView view(String view){
-        __view = view;
+        this.view = view;
         return this;
     }
 
@@ -40,11 +40,11 @@ public class ModelAndView extends LinkedHashMap{
     @Override
     public void clear() {
         super.clear();
-        __view = null;
+        view = null;
     }
 
     /** 是否为空 */
     public boolean isEmpty() {
-        return __view == null && size()==0;
+        return view == null && size()==0;
     }
 }

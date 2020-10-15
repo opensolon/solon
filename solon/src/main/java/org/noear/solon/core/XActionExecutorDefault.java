@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 默认的XActionExecutor实现
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public class XActionExecutorDefault implements XActionExecutor {
     @Override
     public boolean matched(XContext ctx, String ct) {

@@ -10,24 +10,24 @@ import java.util.regex.Pattern;
  * @since 1.0
  * */
 public class PathAnalyzer {
-    private Pattern ptn;
+    private Pattern pattern;
 
     public PathAnalyzer(String path){
-        ptn = Pattern.compile(expCompile(path), Pattern.CASE_INSENSITIVE);
+        pattern = Pattern.compile(expCompile(path), Pattern.CASE_INSENSITIVE);
     }
 
     /**
      * 获取路径匹配结果
      * */
     public Matcher matcher(String uri){
-        return ptn.matcher(uri);
+        return pattern.matcher(uri);
     }
 
     /**
      * 检测是否匹配
      * */
     public boolean matches(String uri){
-        return ptn.matcher(uri).find();
+        return pattern.matcher(uri).find();
     }
 
     /**

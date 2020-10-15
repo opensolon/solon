@@ -261,7 +261,7 @@ public class AopContext extends BeanContainer {
         for (Annotation a : annS) {
             BeanInjector bi = beanInjectors.get(a.annotationType());
             if (bi != null) {
-                bi.inject(varH, a);
+                bi.doInject(varH, a);
             }
         }
     }
@@ -274,7 +274,7 @@ public class AopContext extends BeanContainer {
         tryCreateBean0(clz, (c, a) -> {
             //包装
             BeanWrap bw = this.wrap(clz, null);
-            c.build(clz, bw, a);
+            c.doBuild(clz, bw, a);
             //尝试入库
             this.putWrap(clz, bw);
         });
@@ -282,7 +282,7 @@ public class AopContext extends BeanContainer {
 
     protected void tryCreateBean(BeanWrap bw) {
         tryCreateBean0(bw.clz(), (c, a) -> {
-            c.build(bw.clz(), bw, a);
+            c.doBuild(bw.clz(), bw, a);
         });
     }
 
@@ -370,9 +370,10 @@ public class AopContext extends BeanContainer {
 
     /////////
 
-
-    private boolean _beanLoaded;
-    private Set<Runnable> _loadedEvent = new LinkedHashSet<>();
+    //加载完成标志
+    private boolean loadDone;
+    //加载事件
+    private Set<Runnable> loadEvent = new LinkedHashSet<>();
 
     //::bean事件处理
 
@@ -381,10 +382,10 @@ public class AopContext extends BeanContainer {
      */
     @XNote("添加bean加载完成事件")
     public void beanOnloaded(Runnable fun) {
-        _loadedEvent.add(fun);
+        loadEvent.add(fun);
 
         //如果已加载完成，则直接返回
-        if (_beanLoaded) {
+        if (loadDone) {
             fun.run();
         }
     }
@@ -393,12 +394,12 @@ public class AopContext extends BeanContainer {
      * 完成加载时调用，会进行事件通知
      */
     public void beanLoaded() {
-        _beanLoaded = true;
+        loadDone = true;
 
         //1.广播事件
         XEventBus.push(BeanLoadedEvent.instance);
 
         //2.执行加载事件（不用函数包装，是为了减少代码）
-        _loadedEvent.forEach(f -> f.run());
+        loadEvent.forEach(f -> f.run());
     }
 }

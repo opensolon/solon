@@ -238,9 +238,9 @@ public class SmartHttpContext extends XContext {
 
     @Override
     protected void contentTypeDoSet(String contentType) {
-        if (_charset != null) {
+        if (charset != null) {
             if (contentType.indexOf(";") < 0) {
-                headerSet("Content-Type", contentType + ";charset=" + _charset);
+                headerSet("Content-Type", contentType + ";charset=" + charset);
                 return;
             }
         }

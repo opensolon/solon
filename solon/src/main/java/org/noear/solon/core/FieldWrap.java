@@ -55,7 +55,7 @@ public class FieldWrap {
         }
 
         field.setAccessible(true);
-        _setter = findSetter(clz, f1);
+        _setter = doFindSetter(clz, f1);
     }
 
     /**
@@ -97,7 +97,7 @@ public class FieldWrap {
     /**
      * 查找设置器
      * */
-    private static Method findSetter(Class<?> tCls, Field field) {
+    private static Method doFindSetter(Class<?> tCls, Field field) {
         String fieldName = field.getName();
         String firstLetter = fieldName.substring(0, 1).toUpperCase();
         String setMethodName = "set" + firstLetter + fieldName.substring(1);
