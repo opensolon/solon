@@ -1,7 +1,7 @@
 package org.noear.solon.core;
 
 /**
- * XSocket 监听器
+ * XSocket 监听器（实现 XMessage + XListener 架构）
  *
  * @author noear
  * @since 1.0

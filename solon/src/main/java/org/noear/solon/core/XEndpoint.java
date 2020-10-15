@@ -2,6 +2,9 @@ package org.noear.solon.core;
 
 /**
  * 处理点（配合路由器使用）
+ *
+ * @author noear
+ * @since 1.0
  * */
 public final class XEndpoint {
     /**前置处理*/

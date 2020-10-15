@@ -6,6 +6,9 @@ import java.io.Serializable;
 
 /**
  * 结果
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class XResult<T> implements Serializable {
     private static final XResult _SUCCEED = new XResultReadonly(null);
@@ -112,5 +115,34 @@ public class XResult<T> implements Serializable {
     @XNote("失败的结果")
     public static <T> XResult<T> failure(String description) {
         return new XResult<>(0, description);
+    }
+
+
+    /**
+     * 只读 XResult
+     * */
+    static class XResultReadonly<T> extends XResult<T> {
+        public XResultReadonly(T data) {
+            super(data);
+        }
+
+        public XResultReadonly(int code, String description) {
+            super(code, description);
+        }
+
+        @Override
+        public void setCode(int code) {
+            throw new RuntimeException("Thes result is readonly!");
+        }
+
+        @Override
+        public void setData(T data) {
+            throw new RuntimeException("Thes result is readonly!");
+        }
+
+        @Override
+        public void setDescription(String description) {
+            throw new RuntimeException("Thes result is readonly!");
+        }
     }
 }

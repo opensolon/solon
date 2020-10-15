@@ -4,6 +4,9 @@ import java.io.InputStream;
 
 /**
  * 通用上传文件模型（例：通过http上传的文件）
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class XFile {
     /**内容类型*/

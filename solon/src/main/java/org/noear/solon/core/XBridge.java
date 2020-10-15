@@ -7,6 +7,9 @@ import java.util.*;
 
 /**
  * 内部扩展桥接器
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class XBridge {
     //

@@ -1,7 +1,15 @@
 package org.noear.solon.core;
 
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
- * 函数执行器
+ * 动作执行器
+ *
+ * @author noear
+ * @since 1.0
  * */
 public interface XActionExecutor {
     /**
@@ -20,4 +28,5 @@ public interface XActionExecutor {
      * @param mWrap 函数包装器
      * */
     Object execute(XContext ctx, Object obj, MethodWrap mWrap) throws Throwable;
+
 }

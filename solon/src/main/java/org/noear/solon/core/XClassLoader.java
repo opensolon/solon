@@ -10,9 +10,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 自定义类加载器
+ * 自定义类加载器，为了方便加载扩展jar包
  *
- * 为了方便加载扩展jar包
+ * @author noear
+ * @since 1.0
  * */
 public class XClassLoader extends URLClassLoader {
 

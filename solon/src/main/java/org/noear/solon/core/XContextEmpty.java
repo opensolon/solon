@@ -10,6 +10,9 @@ import java.util.*;
 
 /**
  * 通用上下文，空对象
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class XContextEmpty extends XContext {
     public static XContext create(){

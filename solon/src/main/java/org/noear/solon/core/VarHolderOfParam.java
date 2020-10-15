@@ -8,6 +8,9 @@ import java.lang.reflect.ParameterizedType;
  * 参数变量容器 临时对象
  *
  * 为了稳藏 Parameter 的一些特性，并统一对外接口
+ *
+ * @author noear
+ * @since 1.0
  * */
 class VarHolderOfParam implements VarHolder{
     protected Parameter p;

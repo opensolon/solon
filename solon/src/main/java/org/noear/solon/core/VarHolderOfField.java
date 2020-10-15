@@ -7,6 +7,9 @@ import java.lang.reflect.ParameterizedType;
  * 字段变量容器 临时对象
  *
  * 为了稳藏 FieldWrap 的一些特性，并统一对外接口
+ *
+ * @author noear
+ * @since 1.0
  * */
 class VarHolderOfField implements VarHolder{
     protected final FieldWrap fw;

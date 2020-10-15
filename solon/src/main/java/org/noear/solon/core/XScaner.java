@@ -14,6 +14,9 @@ import java.util.jar.JarFile;
 
 /**
  * 资源扫描器
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class XScaner {
     /**

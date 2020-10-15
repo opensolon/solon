@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * 变量收集器
+ * 变量收集器（主要为 XConfiguration 构建 method bean 时服务）
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class VarGather implements Runnable {
     //变量

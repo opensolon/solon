@@ -10,6 +10,9 @@ import java.util.function.Function;
  * 通用属性集合
  *
  * 在 Properties 基础上，添加了些方法
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class XProperties extends Properties {
 

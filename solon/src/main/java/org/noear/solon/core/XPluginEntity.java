@@ -5,6 +5,9 @@ import org.noear.solon.XUtil;
 
 /**
  * 插件实体
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class XPluginEntity {
     /** 类名（全路径） */

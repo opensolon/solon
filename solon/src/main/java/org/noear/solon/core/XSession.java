@@ -5,13 +5,18 @@ import java.net.InetSocketAddress;
 import java.util.Collection;
 
 /**
- * XSocket 会话
+ * XSocket 会话（为 XMessage + XListener 架构服务 ）
  *
  * @author noear
  * @since 1.0
  * */
 public interface XSession {
     Object real();
+
+    /**
+     * 会话ID
+     * */
+    String sessionId();
 
     /**
      * 方法

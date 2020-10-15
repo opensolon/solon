@@ -8,7 +8,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
- * 通用处理接口，加载器（根据bean加载）
+ * 通用处理接口加载器（根据bean加载）
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class XHandlerLoader extends XHandlerAide {
     protected BeanWrap _bw;

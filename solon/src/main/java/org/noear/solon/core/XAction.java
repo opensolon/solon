@@ -13,6 +13,9 @@ import java.util.regex.Pattern;
 
 /**
  * mvc:动作
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class XAction extends XHandlerAide implements XHandler{
     protected final BeanWrap _bw;//

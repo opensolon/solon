@@ -1,8 +1,7 @@
-package org.noear.solon.ext;
+package org.noear.solon.core;
 
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XParam;
-import org.noear.solon.core.XContext;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Array;
@@ -21,9 +20,12 @@ import java.util.Date;
  * @since 1.0
  * */
 public class ConvertUtil {
-    private static final SimpleDateFormat date_def_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    private static final SimpleDateFormat DATE_DEF_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
-    public static Object changeOfCtx(AnnotatedElement p, Class<?> type, String key, String val, XContext ctx) {
+    /**
+     * 转换 ctx 上的值
+     * */
+    public static Object convertByCtx(AnnotatedElement p, Class<?> type, String key, String val, XContext ctx) {
         if (String.class == (type)) {
             return val;
         }
@@ -32,7 +34,7 @@ public class ConvertUtil {
             return null;
         }
 
-        Object rst = change(type, val);
+        Object rst = convert(type, val);
 
         if (rst != null) {
             return rst;
@@ -45,7 +47,7 @@ public class ConvertUtil {
             if (xd != null && XUtil.isEmpty(xd.value()) == false) {
                 format = new SimpleDateFormat(xd.value());
             }else{
-                format = date_def_format;
+                format = DATE_DEF_FORMAT;
             }
 
             try {
@@ -104,7 +106,7 @@ public class ConvertUtil {
                     Class<?> c = type.getComponentType();
                     Object[] ary2 = (Object[]) Array.newInstance(c, len);
                     for (int i = 0; i < len; i++) {
-                        ary2[i] = change(c, ary[i]);
+                        ary2[i] = convert(c, ary[i]);
                     }
                     return ary2;
                 }
@@ -115,7 +117,10 @@ public class ConvertUtil {
         throw new RuntimeException("不支持类型:" + type.getName());
     }
 
-    public static Object changeOfPop(Class<?> type, String val) {
+    /**
+     * 转换 prop 上的值
+     * */
+    public static Object convertByProp(Class<?> type, String val) {
         if (String.class == (type)) {
             return val;
         }
@@ -124,14 +129,14 @@ public class ConvertUtil {
             return null;
         }
 
-        Object rst = change(type, val);
+        Object rst = convert(type, val);
         if (rst != null) {
             return rst;
         }
 
         if (Date.class == (type)) {
             try {
-                return date_def_format.parse(val);
+                return DATE_DEF_FORMAT.parse(val);
             } catch (RuntimeException ex) {
                 throw ex;
             } catch (Throwable ex) {
@@ -142,7 +147,10 @@ public class ConvertUtil {
         throw new RuntimeException("不支持类型:" + type.getName());
     }
 
-    public static Object change(Class<?> type, String val) {
+    /**
+     * 转换
+     * */
+    public static Object convert(Class<?> type, String val) {
         if (Short.class == type || type == Short.TYPE) {
             return Short.parseShort(val);
         }
@@ -193,6 +201,9 @@ public class ConvertUtil {
         return null;
     }
 
+    /**
+     * 检测类型
+     * */
     private static boolean is(Class<?> s, Class<?> t){
         return s.isAssignableFrom(t);
     }

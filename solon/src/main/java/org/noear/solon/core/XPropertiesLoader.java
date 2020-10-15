@@ -10,6 +10,9 @@ import java.util.Properties;
  * 属性加载器
  *
  * 通过 global 进行重写
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class XPropertiesLoader {
     public static XPropertiesLoader global = new XPropertiesLoader();

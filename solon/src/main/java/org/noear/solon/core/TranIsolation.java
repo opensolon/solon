@@ -4,7 +4,7 @@ package org.noear.solon.core;
  * 事务隔离级别
  *
  * @author noear
- * @since 1.0.20
+ * @since 1.0
  * */
 public enum  TranIsolation {
     /**

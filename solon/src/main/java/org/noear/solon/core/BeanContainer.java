@@ -3,7 +3,6 @@ package org.noear.solon.core;
 
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
-import org.noear.solon.ext.ConvertUtil;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
@@ -271,7 +270,7 @@ public class BeanContainer {
                         varH.setValue(val2);
                     }
                 } else {
-                    Object val2 = ConvertUtil.changeOfPop(varH.getType(), val);
+                    Object val2 = ConvertUtil.convertByProp(varH.getType(), val);
                     varH.setValue(val2);
                 }
             }

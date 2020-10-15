@@ -3,7 +3,10 @@ package org.noear.solon.core;
 import org.noear.solon.XApp;
 
 /**
- * 通用插件接口
+ * 通用插件接口（实现 XPlugin 架构）
+ *
+ * @author noear
+ * @since 1.0
  * */
 @FunctionalInterface
 public interface XPlugin {

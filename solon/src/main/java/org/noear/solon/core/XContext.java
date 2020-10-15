@@ -18,7 +18,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 通用上下文接口
+ * 通用上下文接口（实现：XContext + XHandler 架构）
+ *
+ * @author noear
+ * @since 1.0
  * */
 public abstract class XContext {
     /**获取当前线程的上下文*/
