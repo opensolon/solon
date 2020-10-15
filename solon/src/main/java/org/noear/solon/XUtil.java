@@ -211,7 +211,7 @@ public class XUtil {
         }
 
         try {
-            return XPropertiesLoader.global.load(url);
+            return XPropertiesLoader.global().load(url);
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {
@@ -224,7 +224,7 @@ public class XUtil {
      * */
     public static Properties buildProperties(String txt) {
         try {
-            return XPropertiesLoader.global.build(txt);
+            return XPropertiesLoader.global().build(txt);
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {

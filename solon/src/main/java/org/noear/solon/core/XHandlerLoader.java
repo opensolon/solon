@@ -14,27 +14,27 @@ import java.lang.reflect.Method;
  * @since 1.0
  * */
 public class XHandlerLoader extends XHandlerAide {
-    protected BeanWrap _bw;
-    protected XRender _render;
-    protected boolean _allowMapping;
+    protected BeanWrap bw;
+    protected XRender  bRender;
+    protected boolean  bIsMain = true;
+    protected XMapping bMapping;
+    protected String   bPath;
+    protected boolean  bRemoting;
 
-    protected boolean _poi_main = true;
-    protected XMapping c_map;
-    protected String c_path;
-    protected boolean c_remoting;
+    protected boolean allowMapping;
 
     public XHandlerLoader main(boolean poi_main) {
-        _poi_main = poi_main;
+        bIsMain = poi_main;
         return this;
     }
 
     public XHandlerLoader(BeanWrap wrap) {
-        c_map = wrap.clz().getAnnotation(XMapping.class);
+        bMapping = wrap.clz().getAnnotation(XMapping.class);
 
-        if (c_map == null) {
+        if (bMapping == null) {
             initDo(wrap, null, wrap.remoting(), null, true);
         } else {
-            initDo(wrap, c_map.value(), wrap.remoting(), null, true);
+            initDo(wrap, bMapping.value(), wrap.remoting(), null, true);
         }
     }
 
@@ -51,22 +51,22 @@ public class XHandlerLoader extends XHandlerAide {
     }
 
     private void initDo(BeanWrap wrap, String mapping, boolean remoting, XRender render, boolean allowMapping) {
-        _bw = wrap;
-        _render = render;
-        _allowMapping = allowMapping;
+        bw = wrap;
+        bRender = render;
+        this.allowMapping = allowMapping;
 
         if (mapping != null) {
-            c_path = mapping;
+            bPath = mapping;
         }
 
-        c_remoting = remoting;
+        bRemoting = remoting;
     }
 
     /**
      * mapping expr
      */
     public String mapping() {
-        return c_path;
+        return bPath;
     }
 
     /**
@@ -75,7 +75,7 @@ public class XHandlerLoader extends XHandlerAide {
      * @param slots 接收加载结果的容器（槽）
      */
     public void load(XHandlerSlots slots) {
-        load(c_remoting, slots);
+        load(bRemoting, slots);
     }
 
     /**
@@ -85,10 +85,10 @@ public class XHandlerLoader extends XHandlerAide {
      * @param slots 接收加载结果的容器（槽）
      */
     public void load(boolean all, XHandlerSlots slots) {
-        if (XHandler.class.isAssignableFrom(_bw.clz())) {
+        if (XHandler.class.isAssignableFrom(bw.clz())) {
             loadHandlerDo(slots);
         } else {
-            loadActionDo(slots, all || c_remoting);
+            loadActionDo(slots, all || bRemoting);
         }
     }
 
@@ -96,18 +96,18 @@ public class XHandlerLoader extends XHandlerAide {
      * 加载处理
      */
     protected void loadHandlerDo(XHandlerSlots slots) {
-        if (c_map == null) {
-            throw new RuntimeException(_bw.clz().getName() + " No @XMapping!");
+        if (bMapping == null) {
+            throw new RuntimeException(bw.clz().getName() + " No @XMapping!");
         }
 
-        for (XMethod m1 : c_map.method()) {
-            if (_poi_main) {
-                slots.add(c_map.value(), m1, _bw.raw());
+        for (XMethod m1 : bMapping.method()) {
+            if (bIsMain) {
+                slots.add(bMapping.value(), m1, bw.raw());
             } else {
-                if (c_map.after()) {
-                    slots.after(c_map.value(), m1, c_map.index(), _bw.raw());
+                if (bMapping.after()) {
+                    slots.after(bMapping.value(), m1, bMapping.index(), bw.raw());
                 } else {
-                    slots.before(c_map.value(), m1, c_map.index(), _bw.raw());
+                    slots.before(bMapping.value(), m1, bMapping.index(), bw.raw());
                 }
             }
         }
@@ -120,8 +120,8 @@ public class XHandlerLoader extends XHandlerAide {
     protected void loadActionDo(XHandlerSlots slots, boolean all) {
         String m_path;
 
-        if (c_path == null) {
-            c_path = "";
+        if (bPath == null) {
+            bPath = "";
         }
 
         loadControllerAide();
@@ -131,7 +131,7 @@ public class XHandlerLoader extends XHandlerAide {
         int m_index = 0;
 
         //只支持public函数为XAction
-        for (Method method : _bw.clz().getDeclaredMethods()) {
+        for (Method method : bw.clz().getDeclaredMethods()) {
             m_map = method.getAnnotation(XMapping.class);
 
             m_index = 0;
@@ -143,23 +143,23 @@ public class XHandlerLoader extends XHandlerAide {
                 m_index = m_map.index();
             } else {
                 m_path = method.getName();
-                if (c_map == null) {
+                if (bMapping == null) {
                     m_method = new XMethod[]{XMethod.HTTP};
                 } else {
-                    m_method = c_map.method();
+                    m_method = bMapping.method();
                 }
             }
 
             //如果是service，method 就不需要map
             if (m_map != null || all) {
-                String newPath = XUtil.mergePath(c_path, m_path);
+                String newPath = XUtil.mergePath(bPath, m_path);
 
-                XAction action = createAction(_bw, _poi_main, method, m_map, newPath, c_remoting);
+                XAction action = createAction(bw, bIsMain, method, m_map, newPath, bRemoting);
 
                 loadActionAide(method, action);
 
                 for (XMethod m1 : m_method) {
-                    if (_poi_main) {
+                    if (bIsMain) {
                         slots.add(newPath, m1, action);
                     } else {
                         if (m_map.after()) {
@@ -175,7 +175,7 @@ public class XHandlerLoader extends XHandlerAide {
 
 
     protected void loadControllerAide() {
-        for (Annotation anno : _bw.clz().getAnnotations()) {
+        for (Annotation anno : bw.clz().getAnnotations()) {
             if (anno instanceof XBefore) {
                 addDo(((XBefore) anno).value(), (b) -> this.before(Aop.get(b)));
             } else if (anno instanceof XAfter) {
@@ -214,10 +214,10 @@ public class XHandlerLoader extends XHandlerAide {
      * 构建 XAction
      */
     protected XAction createAction(BeanWrap bw, boolean poi_main, Method method, XMapping mp, String path, boolean remoting) {
-        if (_allowMapping) {
-            return new XAction(bw, this, poi_main, method, mp, path, remoting, _render);
+        if (allowMapping) {
+            return new XAction(bw, this, poi_main, method, mp, path, remoting, bRender);
         } else {
-            return new XAction(bw, this, poi_main, method, null, path, remoting, _render);
+            return new XAction(bw, this, poi_main, method, null, path, remoting, bRender);
         }
     }
 

@@ -15,7 +15,16 @@ import java.util.Properties;
  * @since 1.0
  * */
 public class XPropertiesLoader {
-    public static XPropertiesLoader global = new XPropertiesLoader();
+    private static XPropertiesLoader global = new XPropertiesLoader();
+    public static XPropertiesLoader global() {
+        return global;
+    }
+    public static void globalSet(XPropertiesLoader instance) {
+        if(instance != null) {
+            XPropertiesLoader.global = instance;
+        }
+    }
+
 
     static {
         //默认的扩展加载器

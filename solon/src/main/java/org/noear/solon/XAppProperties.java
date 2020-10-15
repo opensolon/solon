@@ -125,7 +125,7 @@ public final class XAppProperties extends XProperties {
 
             if (XUtil.isEmpty(temp) == false) {
                 XPluginEntity ent = new XPluginEntity();
-                ent.className = temp;
+                ent.clzName = temp;
                 ent.priority = p.getInt("solon.plugin.priority", 0);
 
                 _plugs.add(ent);

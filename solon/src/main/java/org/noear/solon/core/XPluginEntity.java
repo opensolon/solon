@@ -11,7 +11,7 @@ import org.noear.solon.XUtil;
  * */
 public class XPluginEntity {
     /** 类名（全路径） */
-    public String className;
+    public String clzName;
     /*** 优先级（大的优先） */
     public int priority = 0;
     /** 插件 */
@@ -35,7 +35,7 @@ public class XPluginEntity {
      * */
     public void start() {
         if (plugin == null) {
-            plugin = XUtil.newInstance(className);
+            plugin = XUtil.newInstance(clzName);
         }
 
         if (plugin != null) {
