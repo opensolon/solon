@@ -25,8 +25,14 @@ public class ConvertUtil {
 
     /**
      * 转换 context 的值
+     *
+     * @param element 目标注解元素
+     * @param type 目标类型
+     * @param key 变量名
+     * @param val 值
+     * @param ctx 通用上下文
      * */
-    public static Object contextTo(AnnotatedElement p, Class<?> type, String key, String val, XContext ctx) {
+    public static Object contextTo(AnnotatedElement element, Class<?> type, String key, String val, XContext ctx) {
         if (String.class == (type)) {
             return val;
         }
@@ -35,14 +41,14 @@ public class ConvertUtil {
             return null;
         }
 
-        Object rst = stringTo(type, val);
+        Object rst = to(type, val);
 
         if (rst != null) {
             return rst;
         }
 
-        if (Date.class == (type) && p != null) {
-            XParam xd = p.getAnnotation(XParam.class);
+        if (Date.class == (type) && element != null) {
+            XParam xd = element.getAnnotation(XParam.class);
             SimpleDateFormat format = null;
 
             if (xd != null && XUtil.isEmpty(xd.value()) == false) {
@@ -107,7 +113,7 @@ public class ConvertUtil {
                     Class<?> c = type.getComponentType();
                     Object[] ary2 = (Object[]) Array.newInstance(c, len);
                     for (int i = 0; i < len; i++) {
-                        ary2[i] = stringTo(c, ary[i]);
+                        ary2[i] = to(c, ary[i]);
                     }
                     return ary2;
                 }
@@ -120,6 +126,9 @@ public class ConvertUtil {
 
     /**
      * 转换 properties 的值
+     *
+     * @param type 目标类型
+     * @param val 属性值
      * */
     public static Object propertieTo(Class<?> type, String val) {
         if (String.class == (type)) {
@@ -130,7 +139,7 @@ public class ConvertUtil {
             return null;
         }
 
-        Object rst = stringTo(type, val);
+        Object rst = to(type, val);
 
         if (rst != null) {
             return rst;
@@ -152,8 +161,11 @@ public class ConvertUtil {
 
     /**
      * 转换 string 值
+     *
+     * @param type 目标类型
+     * @param val 值
      * */
-    public static Object stringTo(Class<?> type, String val) {
+    public static Object to(Class<?> type, String val) {
         if (Short.class == type || type == Short.TYPE) {
             return Short.parseShort(val);
         }
@@ -205,7 +217,10 @@ public class ConvertUtil {
     }
 
     /**
-     * 检测类型
+     * 检测类型是否相同
+     *
+     * @param s 源类型
+     * @param t 目标类型
      * */
     private static boolean is(Class<?> s, Class<?> t){
         return s.isAssignableFrom(t);
