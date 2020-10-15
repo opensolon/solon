@@ -4,6 +4,12 @@ import org.noear.solon.core.XMethod;
 
 import java.lang.annotation.*;
 
+/**
+ * 服务器处理端点
+ *
+ * @author noear
+ * @since 1.0
+ * */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

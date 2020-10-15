@@ -6,9 +6,12 @@ import org.noear.solon.annotation.XSingleton;
 import java.lang.annotation.Annotation;
 
 /**
- * Bean 包装（可以被继承重写）
+ * Bean 包装
  *
  * Bean 构建过程：Constructor(构造方法) -> @XInject(依赖注入) -> @XInit(初始化，相当于 PostConstruct)
+ *
+ * @author noear
+ * @since 1.0
  * */
 @SuppressWarnings("unchecked")
 public class BeanWrap {

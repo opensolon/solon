@@ -11,7 +11,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
- * 为 AopFactory 提供存储 支持，并提供注册管理
+ * Bean 容器，提供注册及关系映射管理
  *
  * @author noear
  * @since 1.0
@@ -37,11 +37,11 @@ public class BeanContainer {
 
     //启动时写入
     /**
-     * bean loaders
+     * bean 构建器
      */
     protected final Map<Class<?>, BeanBuilder<?>> beanBuilders = new HashMap<>();
     /**
-     * bean injectors
+     * bean 注入器
      */
     protected final Map<Class<?>, BeanInjector<?>> beanInjectors = new HashMap<>();
 
@@ -66,14 +66,14 @@ public class BeanContainer {
     /**
      * bean订阅者
      */
-    protected final Set<SubscriberEntity> subSet = new LinkedHashSet<>();
+    protected final Set<SubscriberEntity> beanSubscribers = new LinkedHashSet<>();
 
     /**
      * bean订阅
      */
     public void beanSubscribe(Object key, Consumer<BeanWrap> callback) {
         if (key != null) {
-            subSet.add(new SubscriberEntity(key, callback));
+            beanSubscribers.add(new SubscriberEntity(key, callback));
         }
     }
 
@@ -86,7 +86,7 @@ public class BeanContainer {
         }
 
         //避免在forEach时，对它进行add
-        new ArrayList<>(subSet).forEach(s1 -> {
+        new ArrayList<>(beanSubscribers).forEach(s1 -> {
             if (s1.key.equals(key)) {
                 s1.callback.accept(wrap);
             }

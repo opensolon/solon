@@ -10,6 +10,9 @@ import java.lang.reflect.Type;
  * 字段包装
  *
  * 用于缓存类的字段，并附加些功能（和 ClassWrap 差不多意图）
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class FieldWrap {
     public final Class<?> entityClz;

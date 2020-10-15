@@ -1,10 +1,16 @@
 package org.noear.solon.core;
 
 
+/**
+ * 方法执行链
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public interface MethodChain {
     Object doInvoke(Object obj, Object[] args) throws Throwable;
 
-    static class Entity implements MethodChain {
+    class Entity implements MethodChain {
         public final int index;
         public final MethodHandler handler;
         public MethodChain next;

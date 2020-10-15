@@ -1,5 +1,11 @@
 package org.noear.solon.core;
 
+/**
+ * 缓存服务接口
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public interface CacheService {
     /**
      * 保存

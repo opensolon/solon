@@ -8,6 +8,9 @@ import java.io.File;
 
 /**
  * 外部扩展加载器（对于动态扩展）
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class ExtendLoader {
     private static final ExtendLoader _g = new ExtendLoader();

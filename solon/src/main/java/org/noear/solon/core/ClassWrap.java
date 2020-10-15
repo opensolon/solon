@@ -10,9 +10,10 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
- * Class 包装
+ * Class 包装，用于缓存类的方法和字段等相关信息
  *
- *  用于缓存类的方法
+ * @author noear
+ * @since 1.0
  * */
 public class ClassWrap {
     private static Map<Class<?>, ClassWrap> _cache = new ConcurrentHashMap<>();
@@ -32,14 +33,14 @@ public class ClassWrap {
         return cw;
     }
 
-    public final Class<?> clazz;                        //clz
+    public final Class<?> clz;                        //clz
     public final List<MethodWrap> methodWraps;          //clz.methodS
     public final Map<Method,MethodWrap> methodWrapsMap;          //clz.methodS
     public final Field[] declaredFields;                        //clz.fieldS
     private final Map<String, FieldWrap> fieldWrapsMap;    //clz.all_fieldS
 
     protected ClassWrap(Class<?> clz) {
-        clazz = clz;
+        this.clz = clz;
 
         //自己申明的字段
         declaredFields = clz.getDeclaredFields();
@@ -94,7 +95,7 @@ public class ClassWrap {
     public FieldWrap getFieldWrap(Field f1) {
         FieldWrap tmp = fieldWrapsMap.get(f1.getName());
         if (tmp == null) {
-            tmp = new FieldWrap(clazz, f1);
+            tmp = new FieldWrap(clz, f1);
             FieldWrap l = fieldWrapsMap.putIfAbsent(f1.getName(), tmp);
             if (l != null) {
                 tmp = l;
@@ -120,7 +121,7 @@ public class ClassWrap {
 
     public <T> T newBy(Function<String, String> data) {
         try {
-            Object obj = clazz.newInstance();
+            Object obj = clz.newInstance();
 
             fill(obj, data, null);
 
