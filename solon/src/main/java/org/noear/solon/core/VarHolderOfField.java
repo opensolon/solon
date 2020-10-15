@@ -4,9 +4,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 
 /**
- * 字段包装 临时对象
+ * 字段变量容器 临时对象
  *
- * 为了稳藏 FieldWrap 的一些特性
+ * 为了稳藏 FieldWrap 的一些特性，并统一对外接口
  * */
 class VarHolderOfField implements VarHolder{
     protected final FieldWrap fw;
