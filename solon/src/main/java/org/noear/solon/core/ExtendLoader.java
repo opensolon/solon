@@ -17,7 +17,7 @@ public class ExtendLoader {
     private static String path;
 
     /**
-     * 扩展文件夹（绝对路径）
+     * 扩展路径（绝对路径）
      * */
     public static String path(){
         return path;
@@ -26,7 +26,7 @@ public class ExtendLoader {
     /**
      * 加载扩展文件夹（或文件）
      *
-     * @param extend 扩展路径
+     * @param extend 扩展配置
      * */
     public static void load(String extend) {
         load(extend,false);
@@ -35,7 +35,7 @@ public class ExtendLoader {
     /**
      * 加载扩展文件夹（或文件）
      *
-     * @param extend 路径
+     * @param extend 扩展配置
      * @param autoMake 是否自动生成
      * */
     public static void load(String extend, boolean autoMake) {
