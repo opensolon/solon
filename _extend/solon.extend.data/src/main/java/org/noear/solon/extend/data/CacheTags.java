@@ -50,7 +50,7 @@ public class CacheTags {
     /**
      * 更新标签相关的所有缓存
      * */
-    public void update(String tag, Object newValue) {
+    public void update(String tag, Object newValue, int seconds) {
         if(newValue == null){
             return;
         }
@@ -65,7 +65,7 @@ public class CacheTags {
 
             //类型一样才能更新 //避免引起莫名的错
             if(newValue.getClass() == temp.getClass()){
-                _Cache.store(key, newValue, 0);
+                _Cache.store(key, newValue, seconds);
             }
         }
     }

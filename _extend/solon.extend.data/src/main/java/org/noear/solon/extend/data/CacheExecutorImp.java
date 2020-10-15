@@ -108,7 +108,7 @@ public class CacheExecutorImp  {
 
         //清除缓存
         for (String tag : tags.split(",")) {
-            ct.update(tag, newValue);
+            ct.update(tag, newValue, anno.seconds());
         }
     }
 
