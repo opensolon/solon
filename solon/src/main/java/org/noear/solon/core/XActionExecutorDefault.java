@@ -1,5 +1,7 @@
 package org.noear.solon.core;
 
+import org.noear.solon.ext.ConvertUtil;
+
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +120,7 @@ public class XActionExecutorDefault implements XActionExecutor {
             }
         } else {
             //如果拿到了具体的参数值，则开始转换
-            tv = TypeUtil.changeOfCtx(p, pt, pn, pv, ctx);
+            tv = ConvertUtil.changeOfCtx(p, pt, pn, pv, ctx);
         }
 
         return tv;

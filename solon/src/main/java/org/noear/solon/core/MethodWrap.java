@@ -14,7 +14,10 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 方法包装
  *
- * 和 FieldWrap 意图相同
+ * 用于缓存类的方法，并附加些功能（和 FieldWrap 意图相同）
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class MethodWrap implements MethodChain {
     private static Map<Method, MethodWrap> _cache = new ConcurrentHashMap<>();

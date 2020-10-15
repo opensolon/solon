@@ -12,11 +12,11 @@ public interface MethodChain {
 
     class Entity implements MethodChain {
         public final int index;
-        public final MethodInterceptor handler;
+        public final MethodHandler handler;
         public MethodChain next;
         private MethodWrap mw;
 
-        Entity(MethodWrap m, int i, MethodInterceptor h) {
+        Entity(MethodWrap m, int i, MethodHandler h) {
             index = i;
             handler = h;
             mw = m;

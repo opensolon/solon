@@ -1,7 +1,8 @@
-package org.noear.solon.core;
+package org.noear.solon.ext;
 
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XParam;
+import org.noear.solon.core.XContext;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Array;
@@ -13,7 +14,13 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
-public class TypeUtil {
+/**
+ * 类型转换工具
+ *
+ * @author noear
+ * @since 1.0
+ * */
+public class ConvertUtil {
     private static final SimpleDateFormat date_def_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     public static Object changeOfCtx(AnnotatedElement p, Class<?> type, String key, String val, XContext ctx) {

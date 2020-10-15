@@ -8,6 +8,9 @@ import java.util.stream.Collectors;
 
 /**
  * 路由表
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class RouteTable<T> extends ArrayList<RouteTable.Route<T>> {
     public RouteTable() {

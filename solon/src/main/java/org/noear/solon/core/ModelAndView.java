@@ -5,6 +5,9 @@ import java.util.Map;
 
 /**
  * mvc:模型与视图
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class ModelAndView extends LinkedHashMap{
     private transient String __view;

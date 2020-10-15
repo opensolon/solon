@@ -1,13 +1,13 @@
 package webapp.demoa_interceptor;
 
 import org.noear.solon.core.MethodChain;
-import org.noear.solon.core.MethodInterceptor;
+import org.noear.solon.core.MethodHandler;
 import org.noear.solon.core.XContext;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 
-public class AroundHandler implements MethodInterceptor {
+public class AroundHandler implements MethodHandler {
 
     @Override
     public Object doInvoke(Object obj, Method method, Parameter[] params, Object[] args, MethodChain invokeChain) throws Throwable {

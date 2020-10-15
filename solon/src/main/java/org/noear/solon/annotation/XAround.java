@@ -1,6 +1,6 @@
 package org.noear.solon.annotation;
 
-import org.noear.solon.core.MethodInterceptor;
+import org.noear.solon.core.MethodHandler;
 
 import java.lang.annotation.*;
 
@@ -17,7 +17,7 @@ public @interface XAround {
     /**
      * 调用处理程序
      * */
-    Class<? extends MethodInterceptor> value();
+    Class<? extends MethodHandler> value();
     /**
      * 调用顺位
      * */
