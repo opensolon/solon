@@ -29,16 +29,22 @@ public class Aop {
     //::bean包装
 
     /**
-     * 包装bean（clz），不负责注册
+     * 包装bean（clz），不注册
      */
     public static BeanWrap wrap(Class<?> clz, Object bean) {
         return  _c.wrap(clz, bean);
     }
 
+    /**
+     * 包装bean（clz），并尝试注册
+     * */
     public static BeanWrap wrapAndPut(Class<?> clz) {
         return wrapAndPut(clz, null);
     }
 
+    /**
+     * 包装bean（clz），并尝试注册
+     * */
     public static BeanWrap wrapAndPut(Class<?> clz, Object bean) {
         BeanWrap wrap = _c.getWrap(clz);
         if (wrap == null) {
@@ -51,9 +57,8 @@ public class Aop {
 
     //::bean获取
 
-
     /**
-     * 是否有bean(key: name or type)
+     * 检楂是否有bean(key: name or type)
      * */
     public static boolean has(Object key){
         return _c.getWrap(key) != null;
@@ -117,14 +122,23 @@ public class Aop {
     }
 
 
+    /**
+     * 添加Onloaded事件
+     * */
     public static void beanOnloaded(Runnable fun){
         _c.beanOnloaded(fun);
     }
 
+    /**
+     * 遍历有name的bean包装
+     * */
     public static void beanForeach(BiConsumer<String, BeanWrap> action) {
         _c.beanForeach(action);
     }
 
+    /**
+     * 遍历没有name的bean包装
+     * */
     public static void beanForeach(Consumer<BeanWrap> action) {
         _c.beanForeach(action);
     }

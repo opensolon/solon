@@ -36,6 +36,7 @@ public class AopContext extends BeanContainer {
      */
     protected void initialize() {
 
+        //注册 @XConfiguration 构建器
         beanBuilderAdd(XConfiguration.class, (clz, bw, anno) -> {
             XInject typeInj = clz.getAnnotation(XInject.class);
             if (typeInj != null && XUtil.isNotEmpty(typeInj.value())) {
@@ -73,6 +74,7 @@ public class AopContext extends BeanContainer {
             //beanRegister(bw,bw.name(),bw.typed());
         });
 
+        //注册 @XBean 构建器
         beanBuilderAdd(XBean.class, (clz, bw, anno) -> {
             bw.nameSet(anno.value());
             bw.tagSet(anno.tag());
@@ -100,14 +102,17 @@ public class AopContext extends BeanContainer {
             }
         });
 
+        //注册 @XController 构建器
         beanBuilderAdd(XController.class, (clz, bw, anno) -> {
             new XHandlerLoader(bw).load(XApp.global());
         });
 
+        //注册 @XInterceptor 构建器
         beanBuilderAdd(XInterceptor.class, (clz, bw, anno) -> {
             new XHandlerLoader(bw).main(false).load(XApp.global());
         });
 
+        //注册 @XServerEndpoint 构建器
         beanBuilderAdd(XServerEndpoint.class, (clz, wrap, anno) -> {
             if (XListener.class.isAssignableFrom(clz)) {
                 XListener l = wrap.raw();
@@ -115,12 +120,15 @@ public class AopContext extends BeanContainer {
             }
         });
 
-
+        //注册 @XInject 构建器
         beanInjectorAdd(XInject.class, ((fwT, anno) -> {
             beanInject(fwT, anno.value());
         }));
     }
 
+    /**
+     * 添加bean的不同形态
+     * */
     private void addBeanShape(Class<?> clz, BeanWrap bw) {
         //XPlugin
         if (XPlugin.class.isAssignableFrom(bw.clz())) {
@@ -141,6 +149,7 @@ public class AopContext extends BeanContainer {
         }
     }
 
+    //添加事件监听
     private void addEventListener(Class<?> clz, BeanWrap bw) {
         for (Type t1 : clz.getGenericInterfaces()) {
             if (t1 instanceof ParameterizedType) {
