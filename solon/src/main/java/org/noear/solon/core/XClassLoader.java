@@ -1,8 +1,5 @@
 package org.noear.solon.core;
 
-
-import org.noear.solon.XUtil;
-
 import java.io.IOException;
 import java.net.*;
 import java.util.Enumeration;
