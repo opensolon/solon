@@ -14,47 +14,47 @@ import java.io.File;
  * */
 public class ExtendLoader {
     private static final ExtendLoader _g = new ExtendLoader();
-    private static String _path;
+    private static String _folder;
 
     /**
      * 扩展文件夹（绝对路径）
      * */
-    public static String path(){
-        return _path;
+    public static String folder(){
+        return _folder;
     }
 
     /**
      * 加载扩展文件夹（或文件）
      *
-     * @param extPath 扩展路径
+     * @param path 扩展路径
      * */
-    public static void load(String extPath) {
-        load(extPath,false);
+    public static void load(String path) {
+        load(path,false);
     }
 
     /**
      * 加载扩展文件夹（或文件）
      *
-     * @param extPath 扩展路径
+     * @param path 路径
      * @param autoMake 是否自动生成
      * */
-    public static void load(String extPath, boolean autoMake) {
-        if (XUtil.isNotEmpty(extPath)) {
-            if (extPath.startsWith("!")) {
-                extPath = extPath.substring(1);
+    public static void load(String path, boolean autoMake) {
+        if (XUtil.isNotEmpty(path)) {
+            if (path.startsWith("!")) {
+                path = path.substring(1);
                 autoMake = true;
             }
 
-            if (extPath.indexOf("/") < 0) {
-                extPath = XUtil.buildExt(extPath, autoMake);
+            if (path.indexOf("/") < 0) {
+                path = XUtil.buildExt(path, autoMake);
             }
 
-            if (extPath != null) {
-                _path = extPath;
+            if (path != null) {
+                _folder = path;
 
-                PrintUtil.blueln("solon.extend: " + extPath);
+                PrintUtil.blueln("solon.extend: " + _folder);
 
-                File file = new File(extPath);
+                File file = new File(_folder);
                 _g.loadFile(file);
             }
         }
