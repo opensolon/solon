@@ -11,8 +11,8 @@ import java.io.Serializable;
  * @since 1.0
  * */
 public class XResult<T> implements Serializable {
-    private static final XResult _SUCCEED = new XResultReadonly(null);
-    private static final XResult _FAILURE = new XResultReadonly(0,"");
+    private static final XResult SUCCEED = new XResultReadonly(null);
+    private static final XResult FAILURE = new XResultReadonly(0,"");
 
     /**
      * 状态码
@@ -77,7 +77,7 @@ public class XResult<T> implements Serializable {
      */
     @XNote("成功的空结果")
     public static <T> XResult<T> succeed() {
-        return _SUCCEED;
+        return SUCCEED;
     }
 
     /**
@@ -93,7 +93,7 @@ public class XResult<T> implements Serializable {
      */
     @XNote("失败的空结果")
     public static <T> XResult<T> failure() {
-        return _FAILURE;
+        return FAILURE;
     }
 
     /**

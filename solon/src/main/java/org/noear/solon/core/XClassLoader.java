@@ -14,7 +14,7 @@ import java.util.Map;
  * */
 public class XClassLoader extends URLClassLoader {
 
-    private final static XClassLoader global = new XClassLoader();
+    private static XClassLoader global = new XClassLoader();
     public static XClassLoader global() {
         return global;
     }
