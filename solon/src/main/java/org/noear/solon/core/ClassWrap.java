@@ -2,12 +2,9 @@ package org.noear.solon.core;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 /**
  * Class 包装，用于缓存类的方法和字段等相关信息
@@ -40,7 +37,7 @@ public class ClassWrap {
     //clz.methodS
     private final Map<Method,MethodWrap> methodWrapsMap;
     //clz.fieldS
-    private final Field[] fields;
+    private final Field[] fieldS;
     //clz.all_fieldS
     private final Map<String, FieldWrap> fieldAllWrapsMap;
 
@@ -48,7 +45,7 @@ public class ClassWrap {
         this.clz = clz;
 
         //自己申明的字段
-        fields = clz.getDeclaredFields();
+        fieldS = clz.getDeclaredFields();
 
         //自己申明的函数
         methodWraps = new ArrayList<>();
