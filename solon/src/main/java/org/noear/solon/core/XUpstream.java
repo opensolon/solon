@@ -2,6 +2,9 @@ package org.noear.solon.core;
 
 /**
  * 负载器
+ *
+ * @author noear
+ * @since 1.0
  * */
 @FunctionalInterface
 public interface XUpstream {

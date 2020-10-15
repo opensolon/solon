@@ -6,6 +6,9 @@ import java.sql.SQLException;
 
 /**
  * 事务执行器
+ *
+ * @author noear
+ * @since 1.0
  * */
 public interface XTranExecutor {
     /**

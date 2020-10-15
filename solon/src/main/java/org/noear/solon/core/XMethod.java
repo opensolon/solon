@@ -1,7 +1,10 @@
 package org.noear.solon.core;
 
 /**
- * HTTP方法
+ * 方法枚举
+ *
+ * @author noear
+ * @since 1.0
  * */
 public enum XMethod {
     //http

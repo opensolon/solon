@@ -8,6 +8,9 @@ import java.sql.SQLException;
 
 /**
  * 事务工具
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class XTranUtils {
     /**
