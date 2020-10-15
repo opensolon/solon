@@ -48,12 +48,14 @@ public class ExtendLoader {
             extend = XUtil.buildExt(extend, autoMake);
 
             if (extend != null) {
+                //缓存扩展目径
                 path = extend;
 
+                //打印
                 PrintUtil.blueln("solon.extend: " + path);
 
-                File file = new File(path);
-                el.loadFile(file);
+                //加载扩展内容
+                el.loadFile(new File(path));
             }
         }
     }
