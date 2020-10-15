@@ -159,7 +159,7 @@ public class ClassWrap {
                 FieldWrap fw = kv.getValue();
 
                 //将 string 转为目标 type，并为字段赋值
-                Object val = ConvertUtil.ctxTo(fw.field, fw.type, key, val0, ctx);
+                Object val = ConvertUtil.contextTo(fw.field, fw.type, key, val0, ctx);
                 fw.setValue(target, val);
             }
         }

@@ -271,7 +271,7 @@ public class BeanContainer {
                         varH.setValue(val2);
                     }
                 } else {
-                    Object val2 = ConvertUtil.proTo(varH.getType(), val);
+                    Object val2 = ConvertUtil.propertieTo(varH.getType(), val);
                     varH.setValue(val2);
                 }
             }

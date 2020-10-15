@@ -26,9 +26,16 @@ public class ConvertUtil {
     /**
      * 转换 context 的值
      * */
-    public static Object ctxTo(AnnotatedElement p, Class<?> type, String key, String val, XContext ctx) {
+    public static Object contextTo(AnnotatedElement p, Class<?> type, String key, String val, XContext ctx) {
+        if (String.class == (type)) {
+            return val;
+        }
 
-        Object rst = strTo(type, val, false);
+        if (val.length() == 0) {
+            return null;
+        }
+
+        Object rst = stringTo(type, val);
 
         if (rst != null) {
             return rst;
@@ -100,7 +107,7 @@ public class ConvertUtil {
                     Class<?> c = type.getComponentType();
                     Object[] ary2 = (Object[]) Array.newInstance(c, len);
                     for (int i = 0; i < len; i++) {
-                        ary2[i] = strTo(c, ary[i], false);
+                        ary2[i] = stringTo(c, ary[i]);
                     }
                     return ary2;
                 }
@@ -114,10 +121,29 @@ public class ConvertUtil {
     /**
      * 转换 properties 的值
      * */
-    public static Object proTo(Class<?> type, String val) {
-        Object rst = strTo(type, val, true);
+    public static Object propertieTo(Class<?> type, String val) {
+        if (String.class == (type)) {
+            return val;
+        }
+
+        if (val.length() == 0) {
+            return null;
+        }
+
+        Object rst = stringTo(type, val);
+
         if (rst != null) {
             return rst;
+        }
+
+        if (Date.class == (type)) {
+            try {
+                return DATE_DEF_FORMAT.parse(val);
+            } catch (RuntimeException ex) {
+                throw ex;
+            } catch (Throwable ex) {
+                throw new RuntimeException(ex);
+            }
         }
 
 
@@ -127,15 +153,7 @@ public class ConvertUtil {
     /**
      * 转换 string 值
      * */
-    public static Object strTo(Class<?> type, String val, boolean incDate) {
-        if (String.class == (type)) {
-            return val;
-        }
-
-        if (val.length() == 0) {
-            return null;
-        }
-
+    public static Object stringTo(Class<?> type, String val) {
         if (Short.class == type || type == Short.TYPE) {
             return Short.parseShort(val);
         }
@@ -181,16 +199,6 @@ public class ConvertUtil {
 
         if (BigInteger.class == type) {
             return new BigInteger(val);
-        }
-
-        if (incDate && Date.class == (type)) {
-            try {
-                return DATE_DEF_FORMAT.parse(val);
-            } catch (RuntimeException ex) {
-                throw ex;
-            } catch (Throwable ex) {
-                throw new RuntimeException(ex);
-            }
         }
 
         return null;
