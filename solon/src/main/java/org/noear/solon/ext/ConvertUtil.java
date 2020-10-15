@@ -32,7 +32,7 @@ public class ConvertUtil {
      * @param val 值
      * @param ctx 通用上下文
      * */
-    public static Object contextTo(AnnotatedElement element, Class<?> type, String key, String val, XContext ctx) {
+    public static Object to(AnnotatedElement element, Class<?> type, String key, String val, XContext ctx) {
         if (String.class == (type)) {
             return val;
         }
@@ -41,7 +41,7 @@ public class ConvertUtil {
             return null;
         }
 
-        Object rst = to(type, val);
+        Object rst = tryTo(type, val);
 
         if (rst != null) {
             return rst;
@@ -113,7 +113,7 @@ public class ConvertUtil {
                     Class<?> c = type.getComponentType();
                     Object[] ary2 = (Object[]) Array.newInstance(c, len);
                     for (int i = 0; i < len; i++) {
-                        ary2[i] = to(c, ary[i]);
+                        ary2[i] = tryTo(c, ary[i]);
                     }
                     return ary2;
                 }
@@ -130,7 +130,7 @@ public class ConvertUtil {
      * @param type 目标类型
      * @param val 属性值
      * */
-    public static Object propertieTo(Class<?> type, String val) {
+    public static Object to(Class<?> type, String val) {
         if (String.class == (type)) {
             return val;
         }
@@ -139,7 +139,7 @@ public class ConvertUtil {
             return null;
         }
 
-        Object rst = to(type, val);
+        Object rst = tryTo(type, val);
 
         if (rst != null) {
             return rst;
@@ -165,7 +165,7 @@ public class ConvertUtil {
      * @param type 目标类型
      * @param val 值
      * */
-    public static Object to(Class<?> type, String val) {
+    public static Object tryTo(Class<?> type, String val) {
         if (Short.class == type || type == Short.TYPE) {
             return Short.parseShort(val);
         }
