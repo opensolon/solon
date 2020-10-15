@@ -1,5 +1,6 @@
 package org.noear.solon.boot.smarthttp.websocket;
 
+import org.noear.solon.XUtil;
 import org.noear.solon.core.XMessage;
 import org.noear.solon.core.XMethod;
 import org.noear.solon.core.XSession;
@@ -46,6 +47,12 @@ public class _SocketSession implements XSession {
     @Override
     public Object real() {
         return request;
+    }
+
+    private String _sessionId = XUtil.guid();
+    @Override
+    public String sessionId() {
+        return _sessionId;
     }
 
     @Override

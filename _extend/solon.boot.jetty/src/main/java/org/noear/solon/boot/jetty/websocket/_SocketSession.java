@@ -1,6 +1,7 @@
 package org.noear.solon.boot.jetty.websocket;
 
 import org.eclipse.jetty.websocket.api.Session;
+import org.noear.solon.XUtil;
 import org.noear.solon.core.XMethod;
 import org.noear.solon.core.XSession;
 import org.noear.solon.core.XMessage;
@@ -41,6 +42,12 @@ public class _SocketSession implements XSession {
     @Override
     public Object real() {
         return real;
+    }
+
+    private String _sessionId = XUtil.guid();
+    @Override
+    public String sessionId() {
+        return _sessionId;
     }
 
     @Override
