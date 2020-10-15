@@ -2,9 +2,9 @@ package org.noear.solon.extend.data;
 
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XCache;
+import org.noear.solon.annotation.XCacheUpdate;
 import org.noear.solon.annotation.XCacheRemove;
 import org.noear.solon.core.CacheService;
-import org.noear.solon.core.XBridge;
 import org.noear.solon.ext.SupplierEx;
 
 import java.lang.reflect.Method;
@@ -87,7 +87,28 @@ public class CacheExecutorImp  {
 
         //清除缓存
         for (String tag : tags.split(",")) {
-            ct.clear(tag);
+            ct.remove(tag);
+        }
+    }
+
+    public void cacheUpdate(XCacheUpdate anno, Method method, Parameter[] params, Object[] values, Object newValue) {
+        if (anno == null || XUtil.isEmpty(anno.tags())) {
+            return;
+        }
+
+        CacheService cs = CacheLib.cacheServiceGet(anno.service());
+        Map<String, Object> parMap = new HashMap<>();
+        for (int i = 0, len = params.length; i < len; i++) {
+            parMap.put(params[i].getName(), values[i]);
+        }
+
+
+        String tags = formatTags(anno.tags(), parMap);
+        CacheTags ct = new CacheTags(cs);
+
+        //清除缓存
+        for (String tag : tags.split(",")) {
+            ct.update(tag, newValue);
         }
     }
 

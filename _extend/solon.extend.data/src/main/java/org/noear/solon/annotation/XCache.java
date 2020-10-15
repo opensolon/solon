@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * 缓存注解器
  *
  * @author noear
- * @since 1.0.21
+ * @since 1.0
  * */
 @XAround(value = CacheInvokeHandler.class, index = -8)
 @Inherited //要可继承

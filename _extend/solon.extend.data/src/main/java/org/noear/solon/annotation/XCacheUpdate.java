@@ -1,20 +1,20 @@
 package org.noear.solon.annotation;
 
-import org.noear.solon.extend.data.around.CacheRemoveInvokeHandler;
+import org.noear.solon.extend.data.around.CachePutInvokeHandler;
 
 import java.lang.annotation.*;
 
 /**
- * 缓存移除注解器
+ * 缓存更新注解器（之前有缓存才会被更新；不然无法进行类型检测）
  *
  * @author noear
  * @since 1.0
  * */
-@XAround(value = CacheRemoveInvokeHandler.class, index = -9)
+@XAround(value = CachePutInvokeHandler.class, index = -9)
 @Inherited //要可继承
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface XCacheRemove {
+public @interface XCacheUpdate {
     /**
      * 缓存服务
      * */
@@ -23,6 +23,6 @@ public @interface XCacheRemove {
     /**
      * 例：user_${user_id} ，user_id 为参数
      * */
-    @XNote("清除缓存标签，多个以逗号隔开")
+    @XNote("更新缓存标签，多个以逗号隔开")
     String tags();
 }
