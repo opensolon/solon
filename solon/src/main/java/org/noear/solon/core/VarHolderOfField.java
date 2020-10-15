@@ -8,11 +8,11 @@ import java.lang.reflect.ParameterizedType;
  *
  * 为了稳藏 FieldWrap 的一些特性
  * */
-public class VarHolderField implements VarHolder{
+class VarHolderOfField implements VarHolder{
     protected final FieldWrap fw;
     protected final Object obj;
 
-    public VarHolderField(FieldWrap fw, Object obj) {
+    public VarHolderOfField(FieldWrap fw, Object obj) {
         this.fw = fw;
         this.obj = obj;
     }

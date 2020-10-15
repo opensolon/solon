@@ -62,13 +62,13 @@ public class XBridge {
     //
     // UpstreamFactory 对接
     //
-    private static XUpstreamFactory _upstreamFactory = null;
+    private static XUpstream.Factory _upstreamFactory = null;
 
     /**
      * 获取负载工厂
      */
     @XNote("获取负载工厂")
-    public static XUpstreamFactory upstreamFactory() {
+    public static XUpstream.Factory upstreamFactory() {
         return _upstreamFactory;
     }
 
@@ -76,7 +76,7 @@ public class XBridge {
      * 设置负载工厂
      */
     @XNote("设置负载工厂")
-    public static void upstreamFactorySet(XUpstreamFactory uf) {
+    public static void upstreamFactorySet(XUpstream.Factory uf) {
         if (uf != null) {
             _upstreamFactory = uf;
         }

@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * 和 FieldWrap 意图相同
  * */
-public class MethodWrap implements InvokeChain {
+public class MethodWrap implements MethodChain {
     private static Map<Method, MethodWrap> _cache = new ConcurrentHashMap<>();
 
     public static MethodWrap get(Method method) {
@@ -48,7 +48,7 @@ public class MethodWrap implements InvokeChain {
         if (arounds.size() > 0) {
             arounds.sort(Comparator.comparing(x -> x.index));
 
-            InvokeHolder node = arounds.get(0);
+            MethodChain.Entity node = arounds.get(0);
             for (int i = 1, len = arounds.size(); i < len; i++) {
                 node.next = arounds.get(i);
                 node = arounds.get(i);
@@ -63,15 +63,15 @@ public class MethodWrap implements InvokeChain {
 
     private void aroundAdd(XAround a) {
         if (a != null) {
-            arounds.add(new InvokeHolder(this, a.index(), Aop.get(a.value())));
+            arounds.add(new MethodChain.Entity(this, a.index(), Aop.get(a.value())));
         }
     }
 
     private final Method method;
     private final Parameter[] parameters;
     private final Annotation[] annotations;
-    private final List<InvokeHolder> arounds;
-    private final InvokeChain invokeChain;
+    private final List<MethodChain.Entity> arounds;
+    private final MethodChain invokeChain;
 
     /**
      * 获取函数名

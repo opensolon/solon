@@ -10,7 +10,7 @@ import java.util.function.Consumer;
  * */
 public class VarGather implements Runnable {
     //变量
-    List<VarHolderParam> vars;
+    List<VarHolderOfParam> vars;
     //完成时
     Consumer<Object[]> done;
 
@@ -20,21 +20,21 @@ public class VarGather implements Runnable {
     }
 
     public VarHolder add(Parameter p) {
-        VarHolderParam p2 = new VarHolderParam(p, this);
+        VarHolderOfParam p2 = new VarHolderOfParam(p, this);
         vars.add(p2);
         return p2;
     }
 
     @Override
     public void run() {
-        for(VarHolderParam p1 : vars){
+        for(VarHolderOfParam p1 : vars){
             if(p1.isDone() == false){
                 return;
             }
         }
 
         List<Object> args = new ArrayList<>(vars.size());
-        for(VarHolderParam p1 : vars){
+        for(VarHolderOfParam p1 : vars){
             args.add(p1.getValue());
         }
 

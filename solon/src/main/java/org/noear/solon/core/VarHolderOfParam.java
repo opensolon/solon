@@ -4,13 +4,13 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 
-public class VarHolderParam implements VarHolder{
+class VarHolderOfParam implements VarHolder{
     protected Parameter p;
     protected Object val;
     protected boolean done;
     protected Runnable onDone;
 
-    public VarHolderParam(Parameter p, Runnable onDone){
+    public VarHolderOfParam(Parameter p, Runnable onDone){
         this.p = p;
         this.onDone = onDone;
     }

@@ -136,7 +136,7 @@ public class AopContext extends BeanContainer {
         }
 
         //XUpstreamFactory
-        if (XUpstreamFactory.class.isAssignableFrom(clz)) {
+        if (XUpstream.Factory.class.isAssignableFrom(clz)) {
             XBridge.upstreamFactorySet(bw.raw());
         }
     }
