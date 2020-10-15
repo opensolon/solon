@@ -3,7 +3,7 @@ package org.noear.solon.extend.jsr330;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.BeanWebWrap;
+import org.noear.solon.core.XHandlerLoader;
 import org.noear.solon.core.XPlugin;
 
 import javax.inject.Inject;
@@ -25,7 +25,7 @@ public class XPluginImp implements XPlugin {
 
                 //如果是remoting状态，转到XApp路由器
                 if (bw.remoting()) {
-                    BeanWebWrap bww = new BeanWebWrap(bw);
+                    XHandlerLoader bww = new XHandlerLoader(bw);
                     if (bww.mapping() != null) {
                         //
                         //如果没有xmapping，则不进行web注册

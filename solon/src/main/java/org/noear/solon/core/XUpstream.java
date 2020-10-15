@@ -11,6 +11,9 @@ public interface XUpstream {
      * */
     String getServer();
 
+    /**
+     * 负载器工厂
+     * */
     interface Factory{
         XUpstream create(String service);
     }

@@ -6,13 +6,11 @@ import org.noear.solon.ext.ConsumerEx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Web Bean 包装
+ * 通用处理接口，加载器（根据bean加载）
  * */
-public class BeanWebWrap extends XHandlerAide {
+public class XHandlerLoader extends XHandlerAide {
     protected BeanWrap _bw;
     protected XRender _render;
     protected boolean _allowMapping;
@@ -22,12 +20,12 @@ public class BeanWebWrap extends XHandlerAide {
     protected String c_path;
     protected boolean c_remoting;
 
-    public BeanWebWrap main(boolean poi_main) {
+    public XHandlerLoader main(boolean poi_main) {
         _poi_main = poi_main;
         return this;
     }
 
-    public BeanWebWrap(BeanWrap wrap) {
+    public XHandlerLoader(BeanWrap wrap) {
         c_map = wrap.clz().getAnnotation(XMapping.class);
 
         if (c_map == null) {
@@ -37,15 +35,15 @@ public class BeanWebWrap extends XHandlerAide {
         }
     }
 
-    public BeanWebWrap(BeanWrap wrap, String mapping) {
+    public XHandlerLoader(BeanWrap wrap, String mapping) {
         initDo(wrap, mapping, wrap.remoting(), null, true);
     }
 
-    public BeanWebWrap(BeanWrap wrap, String mapping, boolean remoting) {
+    public XHandlerLoader(BeanWrap wrap, String mapping, boolean remoting) {
         initDo(wrap, mapping, remoting, null, true);
     }
 
-    public BeanWebWrap(BeanWrap wrap, String mapping, boolean remoting, XRender render, boolean allowMapping) {
+    public XHandlerLoader(BeanWrap wrap, String mapping, boolean remoting, XRender render, boolean allowMapping) {
         initDo(wrap, mapping, remoting, render, allowMapping);
     }
 

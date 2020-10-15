@@ -66,14 +66,14 @@ public class BeanContainer {
     /**
      * bean订阅者
      */
-    protected final Set<BeanSubscriber> subSet = new LinkedHashSet<>();
+    protected final Set<SubscriberEntity> subSet = new LinkedHashSet<>();
 
     /**
      * bean订阅
      */
     public void beanSubscribe(Object key, Consumer<BeanWrap> callback) {
         if (key != null) {
-            subSet.add(new BeanSubscriber(key, callback));
+            subSet.add(new SubscriberEntity(key, callback));
         }
     }
 
@@ -136,7 +136,7 @@ public class BeanContainer {
     public BeanWrap getWrap(Object key) {
         if (key instanceof String) {
             return beans.get(key);
-        }else{
+        } else {
             return beanWraps.get(key);
         }
     }
@@ -158,7 +158,7 @@ public class BeanContainer {
 
     /**
      * 包装
-     * */
+     */
     public BeanWrap wrap(Class<?> clz, Object bean) {
         BeanWrap wrap = getWrap(clz);
         if (wrap == null) {
@@ -305,5 +305,18 @@ public class BeanContainer {
         beanWraps.forEach((k, bw) -> {
             action.accept(bw);
         });
+    }
+
+    /**
+     * Bean 订阅者
+     */
+    class SubscriberEntity {
+        public Object key; //第2优先
+        public Consumer<BeanWrap> callback;
+
+        public SubscriberEntity(Object key, Consumer<BeanWrap> callback) {
+            this.key = key;
+            this.callback = callback;
+        }
     }
 }

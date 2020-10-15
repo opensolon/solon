@@ -90,7 +90,7 @@ public class AopContext extends BeanContainer {
 
             //如果是remoting状态，转到XApp路由器
             if (bw.remoting()) {
-                BeanWebWrap bww = new BeanWebWrap(bw);
+                XHandlerLoader bww = new XHandlerLoader(bw);
                 if (bww.mapping() != null) {
                     //
                     //如果没有xmapping，则不进行web注册
@@ -101,11 +101,11 @@ public class AopContext extends BeanContainer {
         });
 
         beanBuilderAdd(XController.class, (clz, bw, anno) -> {
-            new BeanWebWrap(bw).load(XApp.global());
+            new XHandlerLoader(bw).load(XApp.global());
         });
 
         beanBuilderAdd(XInterceptor.class, (clz, bw, anno) -> {
-            new BeanWebWrap(bw).main(false).load(XApp.global());
+            new XHandlerLoader(bw).main(false).load(XApp.global());
         });
 
         beanBuilderAdd(XServerEndpoint.class, (clz, wrap, anno) -> {

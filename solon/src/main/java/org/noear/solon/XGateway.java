@@ -10,11 +10,8 @@ import java.util.Map;
 
 
 /**
- * 本地网关（替代旧的XNav）
- *
+ * 本地网关
  * 提供容器，重新组织处理者运行；只支持HASH路由
- *
- * 问题：如何获取主控制器实例???
  * */
 public abstract class XGateway extends XHandlerAide implements XHandler, XRender {
     private XHandler _def;
@@ -205,7 +202,7 @@ public abstract class XGateway extends XHandlerAide implements XHandler, XRender
             return;
         }
 
-        BeanWebWrap uw = new BeanWebWrap(beanWp, _path, remoting, this, allowActionMapping());
+        XHandlerLoader uw = new XHandlerLoader(beanWp, _path, remoting, this, allowActionMapping());
 
         uw.load((path, m, h) -> {
             if (h instanceof XAction) {
