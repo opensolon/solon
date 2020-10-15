@@ -1,6 +1,6 @@
 package org.noear.solon.extend.data.around;
 
-import org.noear.solon.annotation.XCacheUpdate;
+import org.noear.solon.annotation.XCachePut;
 import org.noear.solon.core.MethodChain;
 import org.noear.solon.core.MethodHandler;
 import org.noear.solon.extend.data.CacheExecutorImp;
@@ -13,7 +13,7 @@ public class CachePutInvokeHandler implements MethodHandler {
     public Object doInvoke(Object obj, Method method, Parameter[] parameters, Object[] args, MethodChain invokeChain) throws Throwable {
         Object tmp = invokeChain.doInvoke(obj, args);
 
-        XCacheUpdate anno = method.getAnnotation(XCacheUpdate.class);
+        XCachePut anno = method.getAnnotation(XCachePut.class);
         CacheExecutorImp.global
                 .cacheUpdate(anno, method, parameters, args, tmp);
 

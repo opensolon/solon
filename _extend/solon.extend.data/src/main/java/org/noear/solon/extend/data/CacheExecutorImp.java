@@ -2,7 +2,7 @@ package org.noear.solon.extend.data;
 
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XCache;
-import org.noear.solon.annotation.XCacheUpdate;
+import org.noear.solon.annotation.XCachePut;
 import org.noear.solon.annotation.XCacheRemove;
 import org.noear.solon.core.CacheService;
 import org.noear.solon.ext.SupplierEx;
@@ -91,7 +91,7 @@ public class CacheExecutorImp  {
         }
     }
 
-    public void cacheUpdate(XCacheUpdate anno, Method method, Parameter[] params, Object[] values, Object newValue) {
+    public void cacheUpdate(XCachePut anno, Method method, Parameter[] params, Object[] values, Object newValue) {
         if (anno == null || XUtil.isEmpty(anno.tags())) {
             return;
         }

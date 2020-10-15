@@ -14,7 +14,7 @@ import java.lang.annotation.*;
 @Inherited //要可继承
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface XCacheUpdate {
+public @interface XCachePut {
     /**
      * 缓存服务
      * */
