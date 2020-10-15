@@ -14,47 +14,45 @@ import java.io.File;
  * */
 public class ExtendLoader {
     private static final ExtendLoader el = new ExtendLoader();
-    private static String folder;
+    private static String path;
 
     /**
      * 扩展文件夹（绝对路径）
      * */
-    public static String folder(){
-        return folder;
+    public static String path(){
+        return path;
     }
 
     /**
      * 加载扩展文件夹（或文件）
      *
-     * @param path 扩展路径
+     * @param extend 扩展路径
      * */
-    public static void load(String path) {
-        load(path,false);
+    public static void load(String extend) {
+        load(extend,false);
     }
 
     /**
      * 加载扩展文件夹（或文件）
      *
-     * @param path 路径
+     * @param extend 路径
      * @param autoMake 是否自动生成
      * */
-    public static void load(String path, boolean autoMake) {
-        if (XUtil.isNotEmpty(path)) {
-            if (path.startsWith("!")) {
-                path = path.substring(1);
+    public static void load(String extend, boolean autoMake) {
+        if (XUtil.isNotEmpty(extend)) {
+            if (extend.startsWith("!")) {
+                extend = extend.substring(1);
                 autoMake = true;
             }
 
-            if (path.indexOf("/") < 0) {
-                path = XUtil.buildExt(path, autoMake);
-            }
+            extend = XUtil.buildExt(extend, autoMake);
 
-            if (path != null) {
-                folder = path;
+            if (extend != null) {
+                path = extend;
 
-                PrintUtil.blueln("solon.extend: " + folder);
+                PrintUtil.blueln("solon.extend: " + path);
 
-                File file = new File(folder);
+                File file = new File(path);
                 el.loadFile(file);
             }
         }

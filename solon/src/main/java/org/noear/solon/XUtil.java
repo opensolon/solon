@@ -330,8 +330,20 @@ public class XUtil {
 
     /**
      * 构建应用扩展目录
+     *
+     * @param extend 扩展配置
+     * @param autoMake 是否自动创建
      * */
-    public static String buildExt(String ext_dir, boolean autoMake) {
+    public static String buildExt(String extend, boolean autoMake) {
+        if (extend == null) {
+            return null;
+        }
+
+        if (extend.contains("/")) {
+            //如果全路径，直接返回
+            return extend;
+        }
+
         URL temp = XUtil.getResource("");
 
         if (temp == null) {
@@ -354,7 +366,7 @@ public class XUtil {
                 uri = uri.substring(9, idx);
             }
 
-            uri = uri + ext_dir + "/";
+            uri = uri + extend + "/";
             File dir = new File(uri);
 
             if (dir.exists() == false) {
