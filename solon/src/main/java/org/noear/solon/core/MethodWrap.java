@@ -135,7 +135,14 @@ public class MethodWrap implements MethodChain {
     }
 
     /**
-     * 执行，并尝试切面
+     * 执行
+     */
+    public Object invoke(Object obj, Object[] args) throws Exception {
+        return method.invoke(obj, args);
+    }
+
+    /**
+     * 执行切面
      */
     public Object invokeByAspect(Object obj, Object[] args) throws Throwable {
         return invokeChain.doInvoke(obj, args);
