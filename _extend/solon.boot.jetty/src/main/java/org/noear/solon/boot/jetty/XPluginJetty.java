@@ -38,7 +38,9 @@ class XPluginJetty extends XPluginJettyBase implements XPlugin {
         _server = new Server(app.port());
 
         //session 支持
-        _server.setSessionIdManager(new DefaultSessionIdManager(_server));
+        if(XApp.global().enableSessionState()) {
+            _server.setSessionIdManager(new DefaultSessionIdManager(_server));
+        }
 
         if(app.enableWebSocket() && wsClz != null){
             _server.setHandler(new HandlerHub(buildHandler()));
@@ -73,16 +75,25 @@ class XPluginJetty extends XPluginJettyBase implements XPlugin {
     protected Handler buildHandler() throws IOException {
         if(XUtil.loadClass("org.eclipse.jetty.servlet.ServletContextHandler") == null){
             //::走Handler接口
-            SessionHandler s_handler = new SessionHandler();
-
-            if (XServerProp.session_timeout > 0) {
-                s_handler.setMaxInactiveInterval(XServerProp.session_timeout);
-            }
-
             JtHttpContextHandler _handler = new JtHttpContextHandler();
-            s_handler.setHandler(_handler);
 
-            return s_handler;
+            if(XApp.global().enableSessionState()) {
+                //需要session state
+                //
+                SessionHandler s_handler = new SessionHandler();
+
+                if (XServerProp.session_timeout > 0) {
+                    s_handler.setMaxInactiveInterval(XServerProp.session_timeout);
+                }
+
+                s_handler.setHandler(_handler);
+
+                return s_handler;
+            }else{
+                //不需要session state
+                //
+                return _handler;
+            }
         }else{
             //::走Servlet接口（需要多个包）
             return getServletHandler();

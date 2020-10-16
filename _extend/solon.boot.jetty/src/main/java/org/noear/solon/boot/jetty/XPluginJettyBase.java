@@ -16,20 +16,22 @@ import java.net.URL;
 public class XPluginJettyBase {
     protected ServletContextHandler getServletHandler() throws IOException {
         ServletContextHandler handler = new ServletContextHandler();
-        handler.setSessionHandler(new SessionHandler());
         handler.setContextPath("/");
         handler.addServlet(JtHttpContextServlet.class, "/");
         handler.setBaseResource(new ResourceCollection(getResourceURLs()));
 
 
-        //添加容器初始器
-        handler.addLifeCycleListener(new JtContainerInitializerProxy(handler.getServletContext()));
+        //添加session state 支持
+        if(XApp.global().enableSessionState()) {
+            handler.setSessionHandler(new SessionHandler());
 
-
-        if (XServerProp.session_timeout > 0) {
-            handler.getSessionHandler().setMaxInactiveInterval(XServerProp.session_timeout);
+            if (XServerProp.session_timeout > 0) {
+                handler.getSessionHandler().setMaxInactiveInterval(XServerProp.session_timeout);
+            }
         }
 
+        //添加容器初始器
+        handler.addLifeCycleListener(new JtContainerInitializerProxy(handler.getServletContext()));
 
         return handler;
     }

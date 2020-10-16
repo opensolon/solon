@@ -565,4 +565,16 @@ public class XApp implements XHandler,XHandlerSlots {
         _enableStaticfiles = enable;
         return this;
     }
+
+    /**
+     * 启用会话状态
+     * */
+    private boolean _enableSessionState = true;
+    public boolean enableSessionState(){
+        return _enableSessionState;
+    }
+    public XApp enableSessionState(boolean enable){
+        _enableSessionState = enable;
+        return this;
+    }
 }

@@ -1,5 +1,6 @@
 package org.noear.solon.boot.undertow.http;
 
+import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.*;
 
@@ -21,7 +22,7 @@ public class UtHttpContext extends XContext {
         _request = request;
         _response = response;
 
-        if(sessionState().replaceable()){
+        if(sessionState().replaceable() && XApp.global().enableSessionState()){
             sessionStateInit(new XSessionState() {
                 @Override
                 public String sessionId() {

@@ -7,6 +7,10 @@ import org.noear.solon.core.XPlugin;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
+        if(XApp.global().enableSessionState() == false){
+            return;
+        }
+
         if (XBridge.sessionState() != null
                 && XBridge.sessionState().priority() >= LocalSessionState.SESSION_STATE_PRIORITY) {
             return;
