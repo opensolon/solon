@@ -3,7 +3,7 @@ package org.noear.solon;
 import org.noear.solon.core.XMap;
 import org.noear.solon.core.XPluginEntity;
 import org.noear.solon.core.XProperties;
-import org.noear.solon.core.XScaner;
+import org.noear.solon.ext.ResourceScaner;
 
 import java.net.URL;
 import java.util.*;
@@ -105,12 +105,12 @@ public final class XAppProperties extends XProperties {
      * */
     protected void plugsScan() {
         //3.查找插件配置（如果出错，让它抛出异常）
-        XScaner.scan("solonplugin", n -> n.endsWith(".properties") || n.endsWith(".yml"))
+        ResourceScaner.scan("solonplugin", n -> n.endsWith(".properties") || n.endsWith(".yml"))
                 .stream()
                 .map(k -> XUtil.getResource(k))
                 .forEach(url -> plugsScanMapDo(url));
 
-        XScaner.scan("META-INF/solon", n -> n.endsWith(".properties") || n.endsWith(".yml"))
+        ResourceScaner.scan("META-INF/solon", n -> n.endsWith(".properties") || n.endsWith(".yml"))
                 .stream()
                 .map(k -> XUtil.getResource(k))
                 .forEach(url -> plugsScanMapDo(url));

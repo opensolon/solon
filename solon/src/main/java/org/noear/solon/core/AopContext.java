@@ -6,6 +6,7 @@ import org.noear.solon.annotation.*;
 import org.noear.solon.annotation.XServerEndpoint;
 import org.noear.solon.event.BeanLoadedEvent;
 import org.noear.solon.ext.BiConsumerEx;
+import org.noear.solon.ext.ResourceScaner;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -220,7 +221,7 @@ public class AopContext extends BeanContainer {
         String dir = basePackage.replace('.', '/');
 
         //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
-        XScaner.scan(dir, n -> n.endsWith(".class"))
+        ResourceScaner.scan(dir, n -> n.endsWith(".class"))
                 .stream().sorted(Comparator.comparing(s -> s.length())).forEach(name -> {
             String className = name.substring(0, name.length() - 6);
 

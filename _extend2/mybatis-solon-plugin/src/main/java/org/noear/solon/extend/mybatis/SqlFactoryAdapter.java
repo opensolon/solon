@@ -14,7 +14,7 @@ import org.noear.solon.XUtil;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.XEventBus;
-import org.noear.solon.core.XScaner;
+import org.noear.solon.ext.ResourceScaner;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
@@ -179,7 +179,7 @@ class SqlFactoryAdapter {
     }
 
     private void mapperScanDo(SqlSessionHolder proxy, String dir) {
-        XScaner.scan(dir, n -> n.endsWith(".class"))
+        ResourceScaner.scan(dir, n -> n.endsWith(".class"))
                 .stream()
                 .map(name -> {
                     String className = name.substring(0, name.length() - 6);

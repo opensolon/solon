@@ -1,5 +1,6 @@
 package org.noear.solon;
 
+import org.noear.solon.ext.PathAnalyzer;
 import org.noear.solon.core.*;
 
 import java.io.*;

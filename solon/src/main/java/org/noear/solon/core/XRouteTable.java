@@ -1,5 +1,7 @@
 package org.noear.solon.core;
 
+import org.noear.solon.ext.PathAnalyzer;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;

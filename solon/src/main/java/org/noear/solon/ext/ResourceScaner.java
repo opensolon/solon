@@ -1,4 +1,4 @@
-package org.noear.solon.core;
+package org.noear.solon.ext;
 
 import org.noear.solon.XUtil;
 
@@ -18,7 +18,7 @@ import java.util.jar.JarFile;
  * @author noear
  * @since 1.0
  * */
-public class XScaner {
+public class ResourceScaner {
     /**
      * 扫描路径下的的资源（path 扫描路径，suffix 文件后缀）
      * */
