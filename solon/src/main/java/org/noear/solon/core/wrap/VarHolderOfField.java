@@ -1,4 +1,6 @@
-package org.noear.solon.core;
+package org.noear.solon.core.wrap;
+
+import org.noear.solon.core.VarHolder;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
@@ -11,7 +13,7 @@ import java.lang.reflect.ParameterizedType;
  * @author noear
  * @since 1.0
  * */
-class VarHolderOfField implements VarHolder{
+public class VarHolderOfField implements VarHolder {
     protected final FieldWrap fw;
     protected final Object obj;
 

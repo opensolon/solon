@@ -1,6 +1,9 @@
-package org.noear.solon.core;
+package org.noear.solon.core.wrap;
 
 import org.noear.solon.annotation.*;
+import org.noear.solon.core.Aop;
+import org.noear.solon.core.MethodHolder;
+import org.noear.solon.core.XInterceptorChain;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -15,7 +18,7 @@ import java.util.*;
  * @author noear
  * @since 1.0
  * */
-public class MethodWrap implements XInterceptorChain, MethodHolder{
+public class MethodWrap implements XInterceptorChain, MethodHolder {
     private static Map<Method, MethodWrap> cached = new HashMap<>();
 
     public static MethodWrap get(Method method) {

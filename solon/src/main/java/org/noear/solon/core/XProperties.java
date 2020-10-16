@@ -1,6 +1,7 @@
 package org.noear.solon.core;
 
 import org.noear.solon.XUtil;
+import org.noear.solon.core.wrap.ClassWrap;
 
 import java.util.Properties;
 import java.util.function.BiConsumer;

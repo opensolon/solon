@@ -1,9 +1,6 @@
 package org.noear.solon.core;
 
-import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import org.noear.solon.core.wrap.MethodWrap;
 
 /**
  * 动作执行器

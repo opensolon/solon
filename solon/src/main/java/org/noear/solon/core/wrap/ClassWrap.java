@@ -1,5 +1,6 @@
-package org.noear.solon.core;
+package org.noear.solon.core.wrap;
 
+import org.noear.solon.core.XContext;
 import org.noear.solon.ext.ConvertUtil;
 
 import java.lang.reflect.Field;

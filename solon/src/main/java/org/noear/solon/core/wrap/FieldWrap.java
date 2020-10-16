@@ -1,4 +1,6 @@
-package org.noear.solon.core;
+package org.noear.solon.core.wrap;
+
+import org.noear.solon.core.VarHolder;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

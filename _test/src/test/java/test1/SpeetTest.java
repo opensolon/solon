@@ -2,8 +2,7 @@ package test1;
 
 import model.UserModel;
 import org.junit.Test;
-import org.noear.solon.core.ClassWrap;
-import org.noear.solon.core.MethodWrap;
+import org.noear.solon.core.wrap.ClassWrap;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;

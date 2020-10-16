@@ -2,6 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.annotation.XInit;
 import org.noear.solon.annotation.XSingleton;
+import org.noear.solon.core.wrap.ClassWrap;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

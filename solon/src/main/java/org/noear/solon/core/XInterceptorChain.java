@@ -1,6 +1,8 @@
 package org.noear.solon.core;
 
 
+import org.noear.solon.core.wrap.MethodWrap;
+
 /**
  * 方法拦截调用链（用于支持 @XAround ）
  *
@@ -29,7 +31,7 @@ public interface XInterceptorChain {
         public final int index;
         public XInterceptorChain next;
 
-        Entity(MethodWrap m, int i, XInterceptor h) {
+        public Entity(MethodWrap m, int i, XInterceptor h) {
             index = i;
             handler = h;
             methodWrap = m;

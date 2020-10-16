@@ -1,6 +1,7 @@
 package org.noear.solon.core;
 
 import org.noear.solon.XUtil;
+import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.ext.PathAnalyzer;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.ext.RunnableEx;
