@@ -6,11 +6,16 @@ package org.noear.solon.core;
  * @author noear
  * @since 1.0
  * */
-public final class XEndpoint {
+public enum  XEndpoint {
     /**前置处理*/
-    public static final int before = 0;
+    before(0),
     /**主体处理*/
-    public static final int main   = 1;
+    main(1),
     /**后置处理*/
-    public static final int after  = 2;
+    after(2);
+
+    public final int code;
+    XEndpoint(int code){
+        this.code = code;
+    }
 }

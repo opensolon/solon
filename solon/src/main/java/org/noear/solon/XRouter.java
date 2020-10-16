@@ -62,15 +62,15 @@ public class XRouter {
     /**
      * 添加路由关系 for XHandler
      */
-    public void add(String path, int endpoint, XMethod method, XHandler handler) {
+    public void add(String path, XEndpoint endpoint, XMethod method, XHandler handler) {
         add(path, endpoint, method, 0, handler);
     }
 
     /**
      * 添加路由关系 for XHandler
      */
-    public void add(String path, int endpoint, XMethod method, int index, XHandler handler) {
-        routesH[endpoint].add(new XRouteTable.Route(path, method, index, handler));
+    public void add(String path, XEndpoint endpoint, XMethod method, int index, XHandler handler) {
+        routesH[endpoint.code].add(new XRouteTable.Route(path, method, index, handler));
     }
 
     /**
@@ -105,21 +105,21 @@ public class XRouter {
     /**
      * 区配一个目标（根据上上文）
      */
-    public XHandler matchOne(XContext context, int endpoint) {
+    public XHandler matchOne(XContext context, XEndpoint endpoint) {
         String path = context.path();
         XMethod method = XMethod.valueOf(context.method());
 
-        return routesH[endpoint].matchOne(path, method);
+        return routesH[endpoint.code].matchOne(path, method);
     }
 
     /**
      * 区配多个目标（根据上上文）
      */
-    public List<XHandler> matchAll(XContext context, int endpoint) {
+    public List<XHandler> matchAll(XContext context, XEndpoint endpoint) {
         String path = context.path();
         XMethod method = XMethod.valueOf(context.method());
 
-        return routesH[endpoint].matchAll(path, method);
+        return routesH[endpoint.code].matchAll(path, method);
     }
 
     /**
