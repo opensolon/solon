@@ -7,6 +7,7 @@ import java.util.Map;
  * mvc:模型与视图
  *
  * <pre><code>
+ * @XMapping("/")
  * @XController
  * public class DemoController{
  *     @XMapping("login")
@@ -15,6 +16,11 @@ import java.util.Map;
  *         mv.put("slogan","欢迎登录");
  *
  *         return mv;
+ *     }
+ *
+ *     @XMapping("")
+ *     public ModelAndView home(){
+ *         return new ModelAndView("home.ftl");
  *     }
  * }
  * </code></pre>
