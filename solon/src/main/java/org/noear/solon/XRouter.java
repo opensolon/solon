@@ -5,7 +5,6 @@ import org.noear.solon.core.XListener;
 import org.noear.solon.core.XSession;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 通用路由器
@@ -40,25 +39,15 @@ import java.util.stream.Collectors;
 public class XRouter {
     //for handler
     private final XRouteTable<XHandler>[] routesH;
-    //for handler of controller
-    private final List<XHandler>[] routesHC;
     //for listener
     private final XRouteTable<XListener> routesL;
 
     public XRouter() {
-        routesH = new XRouteTable[6];
+        routesH = new XRouteTable[3];
 
         routesH[0] = new XRouteTable<>();//before:0
         routesH[1] = new XRouteTable<>();//main
         routesH[2] = new XRouteTable<>();//after:2
-        routesH[3] = new XRouteTable<>();//at before:3
-        routesH[4] = new XRouteTable<>();
-        routesH[5] = new XRouteTable<>();//at after:5
-
-        routesHC = new List[3];
-        routesHC[0] = new ArrayList<>();
-        routesHC[1] = new ArrayList<>();
-        routesHC[2] = new ArrayList<>();
 
         routesL = new XRouteTable<>();
     }
@@ -81,17 +70,7 @@ public class XRouter {
      * 添加路由关系 for XHandler
      */
     public void add(String path, int endpoint, XMethod method, int index, XHandler handler) {
-        XRouteTable.Route xl = new XRouteTable.Route(path, method, index, handler);
-
-        if (endpoint != XEndpoint.main && "@@".equals(path)) {
-            XRouteTable<XHandler> tmp = routesH[endpoint + 3];
-            tmp.add(xl);
-            tmp.sort(Comparator.comparing(l -> l.index));
-
-            routesHC[endpoint] = tmp.stream().map(r -> r.target).collect(Collectors.toList());
-        } else {
-            routesH[endpoint].add(xl);
-        }
+        routesH[endpoint].add(new XRouteTable.Route(path, method, index, handler));
     }
 
     /**
@@ -120,9 +99,7 @@ public class XRouter {
         routesH[1].clear();
         routesH[2].clear();
 
-        routesH[3].clear();
-        routesH[4].clear();
-        routesH[5].clear();
+        routesL.clear();
     }
 
     /**
@@ -153,14 +130,4 @@ public class XRouter {
 
         return routesL.matchOne(path, session.method());
     }
-
-
-    public List<XHandler> atBefore() {
-        return Collections.unmodifiableList(routesHC[0]);
-    }
-
-    public List<XHandler> atAfter() {
-        return Collections.unmodifiableList(routesHC[2]);
-    }
-
 }

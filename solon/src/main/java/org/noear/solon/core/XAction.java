@@ -145,11 +145,6 @@ public class XAction extends XHandlerAide implements XHandler{
         //前置处理（最多一次渲染）
         if (mIsMain) {
             handleDo(x, () -> {
-
-                for (XHandler h : XApp.global().router().atBefore()) {
-                    h.handle(x);
-                }
-
                 for (XHandler h : bAide.befores) {
                     h.handle(x);
                 }
@@ -194,10 +189,6 @@ public class XAction extends XHandlerAide implements XHandler{
 
         //后置处理
         if (mIsMain) {
-            for (XHandler h : XApp.global().router().atAfter()) {
-                h.handle(x);
-            }
-
             for (XHandler h : bAide.afters) {
                 h.handle(x);
             }
