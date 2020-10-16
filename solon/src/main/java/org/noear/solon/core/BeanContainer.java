@@ -12,16 +12,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
- * Bean 容器，提供注册及关系映射管理（不直接使用；由 Aop 提供 BeanContainer 的手动使用模式 ）
- *
- * <pre><code>
- * //容器 手动使用模式
- * UserService userService = Aop.get(UserService.class)
- *
- * //容器的自动使用模式（会通过回调模式，确保Bean存在）
- * @XInject
- * UserService userService;
- * </code></pre>
+ * Bean 容器，提供注册及关系映射管理（不直接使用；作为AopContext的基类）
  *
  * @author noear
  * @since 1.0

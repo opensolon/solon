@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.function.Function;
 
 /**
- * Aop 处理工厂（可以被继承重写）
+ * Aop 处理工厂（可以被继承重写；一般由 Aop 提供 AopContext 的手动使用模式）
  *
  * 主要实现两个动作：
  * 1.bean 构建

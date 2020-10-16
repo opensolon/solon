@@ -7,9 +7,21 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
- * Aop 管理中心
+ * Aop 管理中心，提供了手动操控Bean容器的接口
  *
- * 负责常用对外接口
+ * <pre><code>
+ * //手动使用模式（同步模式；因为顺序关系，Bean可能未生成）
+ * UserService userService = Aop.getOrNull(UserService.class)
+ *
+ * //手动使用模式(异步模式；可确保Bean总会生成）
+ * Aop.getAsyn(UserService.class,(bw)->{
+ *     UserService userService = bw.get();
+ * });
+ *
+ * //附：容器自动模式（会通过异步模式；可确保Bean总会生成）
+ * @XInject
+ * UserService userService;
+ * </code></pre>
  *
  * @author noear
  * @since 1.0
