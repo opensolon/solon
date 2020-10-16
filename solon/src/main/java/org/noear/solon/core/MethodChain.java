@@ -12,7 +12,7 @@ public interface MethodChain {
 
     class Entity implements MethodChain {
         private final MethodInterceptor handler;
-        private final MethodWrap mw;
+        private final MethodWrap methodWrap;
 
         public final int index;
         public MethodChain next;
@@ -20,12 +20,12 @@ public interface MethodChain {
         Entity(MethodWrap m, int i, MethodInterceptor h) {
             index = i;
             handler = h;
-            mw = m;
+            methodWrap = m;
         }
 
         @Override
         public Object doInvoke(Object obj, Object[] args) throws Throwable {
-            return handler.doIntercept(obj, mw, args, next);
+            return handler.doIntercept(obj, methodWrap, args, next);
         }
     }
 }
