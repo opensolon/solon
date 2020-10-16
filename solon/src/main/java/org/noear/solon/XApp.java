@@ -502,7 +502,7 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 启用Http信号接入
      * */
-    private boolean _enableHttp = true;
+    private boolean _enableHttp = true; //与函数同名，_开头
     public boolean enableHttp(){
         return _enableHttp;
     }
