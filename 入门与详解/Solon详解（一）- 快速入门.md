@@ -115,7 +115,7 @@ public class Test {
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.1.3</version>
+    <version>1.1.4</version>
 </parent>
 ```
 

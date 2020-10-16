@@ -28,9 +28,9 @@ public @interface XMapping {
     String produces() default "";
 
     /**
-     * @XInterceptor 的类，以下才有效
+     * 顺序位（before 或 after =true 时有效）
      * */
-    int index() default 0;//顺序位
+    int index() default 0;
     boolean before() default false;
     boolean after() default false;
 }
