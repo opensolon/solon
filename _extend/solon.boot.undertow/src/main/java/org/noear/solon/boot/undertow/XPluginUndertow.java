@@ -67,7 +67,6 @@ public class XPluginUndertow extends XPluginUndertowBase implements XPlugin {
         //builder.addInnerHandlerChainWrapper(h -> handler); //这个会使过滤器不能使用
 
 
-
         //开始部署
         final ServletContainer container = Servlets.defaultContainer();
         DeploymentManager manager = container.addDeployment(builder);
