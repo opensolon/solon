@@ -7,7 +7,7 @@ package org.noear.solon.core;
  * @author noear
  * @since 1.0
  * */
-public interface XInterceptor {
+public interface MethodInterceptor {
     /**
      * 拦截
      *
@@ -16,5 +16,5 @@ public interface XInterceptor {
      * @param args 参数值
      * @param invokeChain 调用链
      * */
-    Object doIntercept(Object obj, MethodHolder method, Object[] args, XInterceptorChain invokeChain) throws Throwable;
+    Object doIntercept(Object obj, MethodHolder method, Object[] args, MethodChain invokeChain) throws Throwable;
 }

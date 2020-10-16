@@ -15,7 +15,7 @@ import java.util.*;
  * @author noear
  * @since 1.0
  * */
-public class MethodWrap implements XInterceptorChain, MethodHolder{
+public class MethodWrap implements MethodChain, MethodHolder{
     private static Map<Method, MethodWrap> cached = new HashMap<>();
 
     public static MethodWrap get(Method method) {
@@ -63,7 +63,7 @@ public class MethodWrap implements XInterceptorChain, MethodHolder{
         if (arounds.size() > 0) {
             arounds.sort(Comparator.comparing(x -> x.index));
 
-            XInterceptorChain.Entity node = arounds.get(0);
+            MethodChain.Entity node = arounds.get(0);
             for (int i = 1, len = arounds.size(); i < len; i++) {
                 node.next = arounds.get(i);
                 node = arounds.get(i);
@@ -78,7 +78,7 @@ public class MethodWrap implements XInterceptorChain, MethodHolder{
 
     private void doAroundAdd(XAround a) {
         if (a != null) {
-            arounds.add(new XInterceptorChain.Entity(this, a.index(), Aop.get(a.value())));
+            arounds.add(new MethodChain.Entity(this, a.index(), Aop.get(a.value())));
         }
     }
 
@@ -91,9 +91,9 @@ public class MethodWrap implements XInterceptorChain, MethodHolder{
     //函数注解
     private final Annotation[] annotations;
     //函数包围列表（扩展切点）
-    private final List<XInterceptorChain.Entity> arounds;
+    private final List<MethodChain.Entity> arounds;
     //函数调用链
-    private final XInterceptorChain invokeChain;
+    private final MethodChain invokeChain;
 
 
     /**
