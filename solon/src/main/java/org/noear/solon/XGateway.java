@@ -13,6 +13,22 @@ import java.util.Map;
  * 本地网关
  * 提供容器，重新组织处理者运行；只支持HASH路由
  *
+ * <pre><code>
+ * @XMapping("/*")
+ * @XController
+ * public class ApiGateway extends XGateway {
+ *     @Override
+ *     protected void register() {
+ *         before(StartHandler.class); //添加前置拦截器，开始计时+记录请求日志
+ *         before(IpHandler.class);    //添加前置拦截器，检查IP白名单
+ *
+ *         after(EndHandler.class);    //添加后置拦截器，结束计时+记录输出日志+记录接口性能
+ *
+ *         add(DemoService.class, true);
+ *     }
+ * }
+ * </code></pre>
+ *
  * @author noear
  * @since 1.0
  * */

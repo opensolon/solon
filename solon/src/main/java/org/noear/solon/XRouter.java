@@ -10,6 +10,29 @@ import java.util.stream.Collectors;
 /**
  * 通用路由器
  *
+ * <pre><code>
+ * public class DemoApp{
+ *     public static void main(String[] args){
+ *         XApp.start(DemoApp.class, args,app->{
+ *             //
+ *             //路由手写模式
+ *             //
+ *             app.get("/hello/*",c->coutput("heollo world;"));
+ *         });
+ *     }
+ * }
+ *
+ * //
+ * //容器自动模式
+ * //
+ * @XController
+ * public class HelloController{
+ *     @XMapping("/hello/*")
+ *     public String hello(){
+ *         return "heollo world;";
+ *     }
+ * }
+ * </code></pre>
  *
  * @author noear
  * @since 1.0

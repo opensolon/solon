@@ -3,8 +3,15 @@ package org.noear.solon.annotation;
 import java.lang.annotation.*;
 
 /**
- * 拦截器（争对全局路径拦截）
+ * 拦截器（争对路径拦截，以控制器的模式写拦截器）
  *
+ * <pre><code>
+ * @XInterceptor
+ * public class DemoInterceptor{
+ *
+ * }
+ *
+ * </code></pre>
  * @author noear
  * @since 1.0
  * */

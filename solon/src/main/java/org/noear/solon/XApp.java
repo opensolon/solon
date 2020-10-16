@@ -14,6 +14,14 @@ import java.util.function.Consumer;
 /**
  * 应用管理中心
  *
+ * <pre><code>
+ * public class DemoApp{
+ *     public static void main(String[] args){
+ *         XApp.start(DemoApp.class, args);
+ *     }
+ * }
+ * </code></pre>
+ *
  * @author noear
  * @since 1.0
  * */

@@ -5,6 +5,26 @@ import java.lang.annotation.*;
 /**
  * 配置器（主要为了动态构建XBean）
  *
+ * <pre><code>
+ * //或构建一些组件
+ * @XConfiguration
+ * public class Config{
+ *     @XBean
+ *     public DataSource db1(@XInject("${db1}") HikariDataSource ds){
+ *         return ds;
+ *     }
+ * }
+ *
+ * //或完成一些适配
+ * @XConfiguration
+ * public class ServletConfig implements ServletContainerInitializer {
+ *     @Override
+ *     public void onStartup(Set<Class<?>> set, ServletContext sc) throws ServletException {
+ *
+ *     }
+ * }
+ * </code></pre>
+ *
  * @author noear
  * @since 1.0
  * */

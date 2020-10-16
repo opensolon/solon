@@ -12,6 +12,16 @@ import java.util.function.BiConsumer;
 /**
  * 统一配置加载器
  *
+ * <pre><code>
+ * //
+ * // 手动获取配置模式（容器自动模式可用: @XInject("${water.logger}")）
+ * //
+ * XApp.cfg()
+ * XApp.cfg().isDebugMode()
+ * XApp.cfg().isDriftMode()
+ * XApp.cfg().get("water.logger")
+ * </code></pre>
+ *
  * @author noear
  * @since 1.0
  * */

@@ -5,6 +5,24 @@ import java.lang.annotation.*;
 /**
  * 通用 组件
  *
+ * <pre><code>
+ * //注解在类上
+ * @XBean
+ * public class DemoBean{
+ *     @XInject
+ *     DataSource db1;
+ * }
+ *
+ * //注解在配置器的函数上
+ * @XConfiguration
+ * public class Config{
+ *     @XBean
+ *     public DataSource db1(@XInject("${db1}") HikariDataSource ds){
+ *         return ds;
+ *     }
+ * }
+ * </code></pre>
+ *
  * @author noear
  * @since 1.0
  * */
