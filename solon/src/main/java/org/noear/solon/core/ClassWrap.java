@@ -1,7 +1,9 @@
 package org.noear.solon.core;
 
+import org.noear.solon.annotation.XAround;
 import org.noear.solon.ext.ConvertUtil;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -35,8 +37,8 @@ public class ClassWrap {
         return cw;
     }
 
-    //clz
-    private final Class<?> clz;
+    //clz //与函数同名，_开头
+    private final Class<?> _clz;
     //clz.methodS
     private final List<MethodWrap> methodWraps;
     //clz.methodS
@@ -46,9 +48,9 @@ public class ClassWrap {
     //clz.all_fieldS
     private final Map<String, FieldWrap> fieldAllWrapsMap;
 
-    protected ClassWrap(Class<?> clz) {
-        this.clz = clz;
 
+    protected ClassWrap(Class<?> clz) {
+        _clz = clz;
 
         //自己申明的函数
         methodWraps = new ArrayList<>();
@@ -75,7 +77,7 @@ public class ClassWrap {
     }
 
     public Class<?> clz() {
-        return clz;
+        return _clz;
     }
 
     /**
@@ -92,7 +94,7 @@ public class ClassWrap {
     public FieldWrap getFieldWrap(Field f1) {
         FieldWrap tmp = fieldAllWrapsMap.get(f1.getName());
         if (tmp == null) {
-            tmp = new FieldWrap(clz, f1);
+            tmp = new FieldWrap(clz(), f1);
             FieldWrap l = fieldAllWrapsMap.putIfAbsent(f1.getName(), tmp);
             if (l != null) {
                 tmp = l;
@@ -135,7 +137,7 @@ public class ClassWrap {
      * */
     public <T> T newBy(Function<String, String> data) {
         try {
-            Object obj = clz.newInstance();
+            Object obj = clz().newInstance();
 
             fill(obj, data, null);
 

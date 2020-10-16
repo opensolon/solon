@@ -42,7 +42,7 @@ import java.util.*;
  * */
 public class XBridge {
     //
-    // SessionState 对接
+    // SessionState 对接 //与函数同名，_开头
     //
     private static XSessionState _sessionState = new XSessionStateDefault();
     private static boolean sessionStateUpdated;
