@@ -320,6 +320,9 @@ public class AopContext extends BeanContainer {
             //1.构建参数
             VarGather gather = new VarGather(size2, (args2) -> {
                 try {
+                    //
+                    //变量收集完成后，会回调此处
+                    //
                     Object raw = mWrap.doIntercept(bw.raw(), args2);
                     tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
                 } catch (Throwable ex) {
@@ -327,6 +330,7 @@ public class AopContext extends BeanContainer {
                 }
             });
 
+            //1.1.添加要收集的参数；并为参数注入（注入是异步的；全部完成后，VarGather 会回调）
             for (Parameter p1 : mWrap.getParameters()) {
                 VarHolder p2 = gather.add(p1);
                 beanInject(p2, injectVal.apply(p1));
