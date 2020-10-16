@@ -33,7 +33,7 @@ package org.noear.solon.core;
  * </code></pre>
  *
  * @author noear
- * @since 1.1
+ * @since 1.0
  * */
 public interface XInterceptor {
     /**

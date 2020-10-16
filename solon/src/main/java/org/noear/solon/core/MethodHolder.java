@@ -5,10 +5,10 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 
 /**
- * 函数容器
+ * 方法容器
  *
  * @author noear
- * @since 1.1
+ * @since 1.0
  * */
 public interface MethodHolder {
     /**
