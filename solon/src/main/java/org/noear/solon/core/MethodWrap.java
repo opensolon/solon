@@ -5,10 +5,7 @@ import org.noear.solon.annotation.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -20,31 +17,47 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 1.0
  * */
 public class MethodWrap implements MethodChain {
-    private static Map<Method, MethodWrap> _cache = new ConcurrentHashMap<>();
+    private static Map<Method, MethodWrap> cached = new HashMap<>();
 
     public static MethodWrap get(Method method) {
-        MethodWrap mw = _cache.get(method);
+        MethodWrap mw = cached.get(method);
         if (mw == null) {
-            mw = new MethodWrap(method);
-            MethodWrap l = _cache.putIfAbsent(method, mw);
-            if (l != null) {
-                mw = l;
+            synchronized (method) {
+                mw = cached.get(method);
+                if (mw == null) {
+                    mw = new MethodWrap(method);
+                    cached.put(method, mw);
+                }
             }
         }
+
         return mw;
     }
 
+
     protected MethodWrap(Method m) {
+        entityClz = m.getDeclaringClass();
+
         method = m;
         parameters = m.getParameters();
         annotations = m.getAnnotations();
         arounds = new ArrayList<>();
 
+        //scan cless @XAround
+        for(Annotation anno : entityClz.getAnnotations()){
+            if (anno instanceof XAround) {
+                doAroundAdd((XAround) anno);
+            } else {
+                doAroundAdd(anno.annotationType().getAnnotation(XAround.class));
+            }
+        }
+
+        //scan method @XAround
         for (Annotation anno : annotations) {
             if (anno instanceof XAround) {
-                aroundAdd((XAround) anno);
+                doAroundAdd((XAround) anno);
             } else {
-                aroundAdd(anno.annotationType().getAnnotation(XAround.class));
+                doAroundAdd(anno.annotationType().getAnnotation(XAround.class));
             }
         }
 
@@ -64,12 +77,14 @@ public class MethodWrap implements MethodChain {
     }
 
 
-    private void aroundAdd(XAround a) {
+    private void doAroundAdd(XAround a) {
         if (a != null) {
             arounds.add(new MethodChain.Entity(this, a.index(), Aop.get(a.value())));
         }
     }
 
+    //实体类型
+    private final Class<?> entityClz;
     //函数
     private final Method method;
     //函数参数

@@ -38,7 +38,8 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.0
  * */
-@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
+@Inherited //要可继承
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface XAround {
     /**

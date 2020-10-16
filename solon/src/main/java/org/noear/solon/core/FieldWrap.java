@@ -16,7 +16,7 @@ import java.lang.reflect.Type;
  * */
 public class FieldWrap {
     /**
-     * 实例类型
+     * 实体类型
      * */
     public final Class<?> entityClz;
     /**
