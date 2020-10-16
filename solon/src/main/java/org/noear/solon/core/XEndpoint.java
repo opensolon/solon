@@ -3,6 +3,7 @@ package org.noear.solon.core;
 /**
  * 处理点（配合路由器使用）
  *
+ * @see org.noear.solon.XRouter#add(String, XEndpoint, XMethod, int, XHandler)
  * @author noear
  * @since 1.0
  * */
