@@ -10,7 +10,6 @@ import java.lang.reflect.Method;
 
 public class BeanInvocationHandler implements InvocationHandler {
     private Object bean;
-    private ClassWrap clazzWrap;
     private Object proxy;
 
     public BeanInvocationHandler(Object bean) {
@@ -23,7 +22,6 @@ public class BeanInvocationHandler implements InvocationHandler {
             Object[] constructorParam = new Object[]{};
 
             this.bean = bean;
-            this.clazzWrap = ClassWrap.get(clazz);
             this.proxy = Proxy.newProxyInstance(clazz.getClassLoader(), this, clazz, constructor, constructorParam);
         } catch (RuntimeException ex) {
             throw ex;
