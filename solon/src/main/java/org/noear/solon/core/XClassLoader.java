@@ -1,5 +1,6 @@
 package org.noear.solon.core;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.*;
 import java.util.Enumeration;
@@ -7,8 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 自定义类加载器，为了方便加载扩展jar包
+ * 自定义类加载器，为了方便加载扩展jar包（配合扩展加载器，热加载扩展jar包）
  *
+ * @see ExtendLoader#loadJar(File)
+ * @see ExtendLoader#unloadJar(File)
  * @author noear
  * @since 1.0
  * */
@@ -38,12 +41,19 @@ public class XClassLoader extends URLClassLoader {
      * 加载jar包
      */
     public void loadJar(URL file) {
+        loadJar(file, true);
+    }
+
+    /**
+     * 加载jar包
+     */
+    public void loadJar(URL file, boolean useCaches) {
         try {
             // 打开并缓存文件url连接
             URLConnection uc = file.openConnection();
             if (uc instanceof JarURLConnection) {
                 JarURLConnection juc = ((JarURLConnection) uc);
-                juc.setUseCaches(true);
+                juc.setUseCaches(useCaches);
                 juc.getManifest();
 
                 cachedMap.put(file, juc);
@@ -61,15 +71,11 @@ public class XClassLoader extends URLClassLoader {
     public void unloadJar(URL file) {
         JarURLConnection jarURL = cachedMap.get(file);
 
-        if (jarURL == null) {
-            return;
-        }
-
         try {
-            jarURL.getJarFile().close();
-            jarURL = null; //后面进行gc
-            cachedMap.remove(file);
-            System.gc();
+            if (jarURL != null) {
+                jarURL.getJarFile().close();
+                cachedMap.remove(file);
+            }
         } catch (Throwable ex) {
             System.err.println("Failed to unload JAR file\n" + ex);
         }
