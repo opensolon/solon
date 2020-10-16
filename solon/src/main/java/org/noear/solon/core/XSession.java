@@ -23,7 +23,7 @@ public interface XSession {
      * */
     XMethod method();
     /**
-     * 资源路径（socket 为空）
+     * 路径（socket 可能为null）
      * */
     String path();
 
