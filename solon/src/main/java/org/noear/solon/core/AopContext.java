@@ -314,13 +314,13 @@ public class AopContext extends BeanContainer {
 
         if (size2 == 0) {
             //0.没有参数
-            Object raw = mWrap.doInvoke(bw.raw(), new Object[]{});
+            Object raw = mWrap.doIntercept(bw.raw(), new Object[]{});
             tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
         } else {
             //1.构建参数
             VarGather gather = new VarGather(size2, (args2) -> {
                 try {
-                    Object raw = mWrap.doInvoke(bw.raw(), args2);
+                    Object raw = mWrap.doIntercept(bw.raw(), args2);
                     tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
                 } catch (Throwable ex) {
                     XEventBus.push(ex);

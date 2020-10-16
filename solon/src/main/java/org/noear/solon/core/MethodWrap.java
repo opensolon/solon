@@ -15,7 +15,7 @@ import java.util.*;
  * @author noear
  * @since 1.0
  * */
-public class MethodWrap implements MethodChain, MethodHolder{
+public class MethodWrap implements XInterceptorChain, MethodHolder{
     private static Map<Method, MethodWrap> cached = new HashMap<>();
 
     public static MethodWrap get(Method method) {
@@ -65,7 +65,7 @@ public class MethodWrap implements MethodChain, MethodHolder{
             arounds.sort(Comparator.comparing(x -> x.index));
 
             //生成调用链
-            MethodChain.Entity node = arounds.get(0);
+            XInterceptorChain.Entity node = arounds.get(0);
             for (int i = 1, len = arounds.size(); i < len; i++) {
                 node.next = arounds.get(i);
                 node = arounds.get(i);
@@ -82,7 +82,7 @@ public class MethodWrap implements MethodChain, MethodHolder{
 
     private void doAroundAdd(XAround a) {
         if (a != null) {
-            arounds.add(new MethodChain.Entity(this, a.index(), Aop.get(a.value())));
+            arounds.add(new XInterceptorChain.Entity(this, a.index(), Aop.get(a.value())));
         }
     }
 
@@ -95,9 +95,9 @@ public class MethodWrap implements MethodChain, MethodHolder{
     //函数注解
     private final Annotation[] annotations;
     //函数包围列表（扩展切点）
-    private final List<MethodChain.Entity> arounds;
+    private final List<XInterceptorChain.Entity> arounds;
     //函数调用链
-    private final MethodChain invokeChain;
+    private final XInterceptorChain invokeChain;
 
 
     /**
@@ -142,11 +142,17 @@ public class MethodWrap implements MethodChain, MethodHolder{
         return method.getAnnotation(type);
     }
 
-    /**
-     * 执行
-     */
+
+
+    //::XInterceptorChain
     @Override
-    public Object doInvoke(Object obj, Object[] args) throws Exception {
+    public MethodHolder method() {
+        return this;
+    }
+
+    //::XInterceptorChain
+    @Override
+    public Object doIntercept(Object obj, Object[] args) throws Exception {
         return method.invoke(obj, args);
     }
 
@@ -161,6 +167,6 @@ public class MethodWrap implements MethodChain, MethodHolder{
      * 执行切面
      */
     public Object invokeByAspect(Object obj, Object[] args) throws Throwable {
-        return invokeChain.doInvoke(obj, args);
+        return invokeChain.doIntercept(obj, args);
     }
 }
