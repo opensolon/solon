@@ -6,6 +6,19 @@ import java.util.Map;
 /**
  * mvc:模型与视图
  *
+ * <pre><code>
+ * @XController
+ * public class DemoController{
+ *     @XMapping("login")
+ *     public ModelAndView login(){
+ *         ModelAndView mv = new ModelAndView("login.ftl");
+ *         mv.put("slogan","欢迎登录");
+ *
+ *         return mv;
+ *     }
+ * }
+ * </code></pre>
+ *
  * @author noear
  * @since 1.0
  * */

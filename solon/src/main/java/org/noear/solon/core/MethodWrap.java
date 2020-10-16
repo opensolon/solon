@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * 方法包装
  *
- * 用于缓存类的方法，并附加些功能（和 FieldWrap 意图相同）
+ * 用于缓存类的方法，并附加些功能（和 ClassWrap、FieldWrap 意图相同）
  *
  * @author noear
  * @since 1.0

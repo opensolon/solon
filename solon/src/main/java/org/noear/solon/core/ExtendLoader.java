@@ -13,7 +13,7 @@ import java.io.File;
  * @since 1.0
  * */
 public class ExtendLoader {
-    private static final ExtendLoader el = new ExtendLoader();
+    private static final ExtendLoader instance = new ExtendLoader();
     private static String path;
 
     /**
@@ -55,7 +55,7 @@ public class ExtendLoader {
                 PrintUtil.blueln("solon.extend: " + path);
 
                 //加载扩展内容
-                el.loadFile(new File(path));
+                instance.loadFile(new File(path));
             }
         }
     }
