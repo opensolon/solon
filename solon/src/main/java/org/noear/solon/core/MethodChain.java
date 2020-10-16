@@ -11,10 +11,11 @@ public interface MethodChain {
     Object doInvoke(Object obj, Object[] args) throws Throwable;
 
     class Entity implements MethodChain {
+        private final MethodInterceptor handler;
+        private final MethodWrap mw;
+
         public final int index;
-        public final MethodInterceptor handler;
         public MethodChain next;
-        private MethodWrap mw;
 
         Entity(MethodWrap m, int i, MethodInterceptor h) {
             index = i;

@@ -61,14 +61,18 @@ public class MethodWrap implements MethodChain, MethodHolder{
         }
 
         if (arounds.size() > 0) {
+            //排序
             arounds.sort(Comparator.comparing(x -> x.index));
 
+            //生成调用链
             MethodChain.Entity node = arounds.get(0);
             for (int i = 1, len = arounds.size(); i < len; i++) {
                 node.next = arounds.get(i);
                 node = arounds.get(i);
             }
             node.next = this;
+
+            //设定根节点
             invokeChain = arounds.get(0);
         } else {
             invokeChain = this;
