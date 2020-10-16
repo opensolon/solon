@@ -5,6 +5,16 @@ import java.io.InputStream;
 /**
  * 通用上传文件模型（例：通过http上传的文件）
  *
+ * <pre><code>
+ * @XController
+ * public class DemoController{
+ *     @XMapping("/update/")
+ *     public String update(XFile file){
+ *         return "我收到文件：" + file.name;
+ *     }
+ * }
+ * </code></pre>
+ *
  * @author noear
  * @since 1.0
  * */
