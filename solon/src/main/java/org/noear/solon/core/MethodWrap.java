@@ -6,7 +6,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 方法包装
@@ -16,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author noear
  * @since 1.0
  * */
-public class MethodWrap implements MethodChain {
+public class MethodWrap implements XInterceptorChain, MethodHolder{
     private static Map<Method, MethodWrap> cached = new HashMap<>();
 
     public static MethodWrap get(Method method) {
@@ -64,7 +63,7 @@ public class MethodWrap implements MethodChain {
         if (arounds.size() > 0) {
             arounds.sort(Comparator.comparing(x -> x.index));
 
-            MethodChain.Entity node = arounds.get(0);
+            XInterceptorChain.Entity node = arounds.get(0);
             for (int i = 1, len = arounds.size(); i < len; i++) {
                 node.next = arounds.get(i);
                 node = arounds.get(i);
@@ -79,7 +78,7 @@ public class MethodWrap implements MethodChain {
 
     private void doAroundAdd(XAround a) {
         if (a != null) {
-            arounds.add(new MethodChain.Entity(this, a.index(), Aop.get(a.value())));
+            arounds.add(new XInterceptorChain.Entity(this, a.index(), Aop.get(a.value())));
         }
     }
 
@@ -92,9 +91,9 @@ public class MethodWrap implements MethodChain {
     //函数注解
     private final Annotation[] annotations;
     //函数包围列表（扩展切点）
-    private final List<MethodChain.Entity> arounds;
+    private final List<XInterceptorChain.Entity> arounds;
     //函数调用链
-    private final MethodChain invokeChain;
+    private final XInterceptorChain invokeChain;
 
 
     /**
@@ -126,10 +125,17 @@ public class MethodWrap implements MethodChain {
     }
 
     /**
-     * 获取函数注解
+     * 获取函数所有注解
      * */
     public Annotation[] getAnnotations() {
         return annotations;
+    }
+
+    /**
+     * 获取函数某种注解
+     * */
+    public <T extends Annotation> T getAnnotation(Class<T> type) {
+        return method.getAnnotation(type);
     }
 
     /**

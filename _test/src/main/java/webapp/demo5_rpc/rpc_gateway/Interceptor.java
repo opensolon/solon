@@ -2,14 +2,14 @@ package webapp.demo5_rpc.rpc_gateway;
 
 import org.noear.solon.annotation.XAfter;
 import org.noear.solon.annotation.XBefore;
-import org.noear.solon.annotation.XInterceptor;
+import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XHandler;
 
 @XAfter({Interceptor.ApiIntercepter.class})
 @XBefore({ Interceptor.AuthInterceptor.class})
-@XInterceptor
+@XController
 public class Interceptor {
 
     @XMapping(value = "/demo52/**",index = 1, before = true)

@@ -2,21 +2,21 @@ package org.noear.solon.core;
 
 
 /**
- * 方法调用链（用于支持 @XAround ）
+ * 方法拦截调用链（用于支持 @XAround ）
  *
  * @author noear
  * @since 1.0
  * */
-public interface MethodChain {
+public interface XInterceptorChain {
     Object doInvoke(Object obj, Object[] args) throws Throwable;
 
-    class Entity implements MethodChain {
+    class Entity implements XInterceptorChain {
         public final int index;
-        public final MethodHandler handler;
-        public MethodChain next;
+        public final XInterceptor handler;
+        public XInterceptorChain next;
         private MethodWrap mw;
 
-        Entity(MethodWrap m, int i, MethodHandler h) {
+        Entity(MethodWrap m, int i, XInterceptor h) {
             index = i;
             handler = h;
             mw = m;
@@ -24,7 +24,7 @@ public interface MethodChain {
 
         @Override
         public Object doInvoke(Object obj, Object[] args) throws Throwable {
-            return handler.doInvoke(obj, mw.getMethod(), mw.getParameters(), args, next);
+            return handler.doIntercept(obj, mw, args, next);
         }
     }
 

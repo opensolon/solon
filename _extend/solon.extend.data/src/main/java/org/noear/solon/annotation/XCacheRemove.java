@@ -1,6 +1,6 @@
 package org.noear.solon.annotation;
 
-import org.noear.solon.extend.data.around.CacheRemoveInvokeHandler;
+import org.noear.solon.extend.data.around.CacheRemoveInterceptor;
 
 import java.lang.annotation.*;
 
@@ -10,7 +10,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.0
  * */
-@XAround(value = CacheRemoveInvokeHandler.class, index = -9)
+@XAround(value = CacheRemoveInterceptor.class, index = -9)
 @Inherited //要可继承
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

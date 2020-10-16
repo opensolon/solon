@@ -1,6 +1,6 @@
 package org.noear.solon.annotation;
 
-import org.noear.solon.extend.data.around.CacheInvokeHandler;
+import org.noear.solon.extend.data.around.CacheInterceptor;
 
 import java.lang.annotation.*;
 
@@ -10,7 +10,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.0
  * */
-@XAround(value = CacheInvokeHandler.class, index = -8)
+@XAround(value = CacheInterceptor.class, index = -8)
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface XCache {

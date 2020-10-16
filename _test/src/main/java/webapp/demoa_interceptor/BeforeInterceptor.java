@@ -1,14 +1,11 @@
 package webapp.demoa_interceptor;
 
-import org.noear.solon.annotation.XAfter;
-import org.noear.solon.annotation.XBefore;
-import org.noear.solon.annotation.XInterceptor;
+import org.noear.solon.annotation.XController;
 import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.XContext;
-import org.noear.solon.core.XHandler;
 
 
-@XInterceptor
+@XController
 public class BeforeInterceptor {
 
     @XMapping(value = "/demoa/**",index = 1, before = true)

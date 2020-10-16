@@ -2,7 +2,7 @@ package org.noear.solon.annotation;
 
 import org.noear.solon.core.TranIsolation;
 import org.noear.solon.core.TranPolicy;
-import org.noear.solon.extend.data.around.TranInvokeHandler;
+import org.noear.solon.extend.data.around.TranInterceptor;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  * @author noear
  * @since 1.0
  * */
-@XAround(value = TranInvokeHandler.class, index = -7)
+@XAround(value = TranInterceptor.class, index = -7)
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface XTran {
