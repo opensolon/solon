@@ -19,60 +19,64 @@ import java.util.regex.Pattern;
  * */
 public class XAction extends XHandlerAide implements XHandler{
     //bean 包装器
-    protected final BeanWrap bw;
+    private final BeanWrap bWrap;
     //bean 相关aide
-    protected final XHandlerAide bAide;
+    private final XHandlerAide bAide;
     //bean 相关reader
-    protected XRender bRender;
-    //bean 是否为 main endpoint
-    protected boolean bIsMain;
+    private XRender bRender;
+
+    //method 是否为 main endpoint
+    private final boolean mIsMain;
     //method 包装器
-    protected final MethodWrap mw;
+    private final MethodWrap mWrap;
     //method 相关的 produces（输出产品）
-    protected String mProduces;
-
+    private String mProduces;
     //action name
-    private String mName;
+    private final String mName;
     //action remoting
-    private boolean mRemoting;
+    private final boolean mRemoting;
 
-    private PathAnalyzer _pr;//路径分析器
-    private List<String> _pks;
-    private static Pattern _pkr = Pattern.compile("\\{([^\\\\}]+)\\}");
+    //path 分析器
+    private PathAnalyzer pathAnalyzer;//路径分析器
+    //path key 列表
+    private List<String> pathKeys;
+    //path key 表达式
+    private static Pattern pathKeyExpr = Pattern.compile("\\{([^\\\\}]+)\\}");
 
-    public XAction(BeanWrap bw, XHandlerAide ca, boolean poi_main, Method m, XMapping mp, String path, boolean remoting, XRender render) {
-        this.bw = bw;
-        bAide = ca;
-        mw = MethodWrap.get(m);
+    public XAction(BeanWrap bWrap, XHandlerAide bAide, Method method, XMapping mapping, String path, boolean remoting, XRender render) {
+        this.bWrap = bWrap;
+        this.bAide = bAide;
 
+        mWrap = MethodWrap.get(method);
         mRemoting = remoting;
         bRender = render;
-        bIsMain = poi_main;
 
         if(bRender == null) {
             //如果控制器是XRender
-            if (XRender.class.isAssignableFrom(bw.clz())) {
-                bRender = bw.raw();
+            if (XRender.class.isAssignableFrom(bWrap.clz())) {
+                bRender = bWrap.raw();
             }
         }
 
-        if (mp != null) {
-            mProduces = mp.produces();
-            mName = mp.value();
-        } else {
-            mName = m.getName();
+        if (mapping == null) {
+            mName = method.getName();
+            mIsMain = true;
+        }else{
+            mProduces = mapping.produces();
+            mName = mapping.value();
+            mIsMain = !(mapping.after() || mapping.before());
         }
 
         //支持path变量
         if (path != null && path.indexOf("{") >= 0) {
-            _pks = new ArrayList<>();
-            Matcher pm = _pkr.matcher(path);
+            pathKeys = new ArrayList<>();
+            Matcher pm = pathKeyExpr.matcher(path);
             while (pm.find()) {
-                _pks.add(pm.group(1));
+                pathKeys.add(pm.group(1));
             }
 
-            if (_pks.size() > 0) {
-                _pr = new PathAnalyzer(path);
+            if (pathKeys.size() > 0) {
+                pathAnalyzer = new PathAnalyzer(path);
             }
         }
     }
@@ -88,14 +92,14 @@ public class XAction extends XHandlerAide implements XHandler{
      * 函数包装器
      */
     public MethodWrap method() {
-        return mw;
+        return mWrap;
     }
 
     /**
      * 控制器类包装
      */
     public BeanWrap bean() {
-        return bw;
+        return bWrap;
     }
 
     @Override
@@ -112,10 +116,10 @@ public class XAction extends XHandlerAide implements XHandler{
         try {
             //预加载控制器，确保所有的处理者可以都可以获取控制器
             if (obj == null) {
-                obj = bw.get();
+                obj = bWrap.get();
             }
 
-            if (bIsMain) {
+            if (mIsMain) {
                 //传递控制器实例
                 x.attrSet("controller", obj);
                 x.attrSet("action", this);
@@ -139,7 +143,7 @@ public class XAction extends XHandlerAide implements XHandler{
          * */
 
         //前置处理（最多一次渲染）
-        if (bIsMain) {
+        if (mIsMain) {
             handleDo(x, () -> {
 
                 for (XHandler h : XApp.global().router().atBefore()) {
@@ -161,19 +165,19 @@ public class XAction extends XHandlerAide implements XHandler{
         if (x.getHandled() == false) {
             handleDo(x, () -> {
                 //获取path var
-                if (_pr != null) {
-                    Matcher pm = _pr.matcher(x.path());
+                if (pathAnalyzer != null) {
+                    Matcher pm = pathAnalyzer.matcher(x.path());
                     if (pm.find()) {
-                        for (int i = 0, len = _pks.size(); i < len; i++) {
-                            x.paramSet(_pks.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
+                        for (int i = 0, len = pathKeys.size(); i < len; i++) {
+                            x.paramSet(pathKeys.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
                         }
                     }
                 }
 
-                Object tmp = callDo(x, obj, mw);
+                Object tmp = callDo(x, obj, mWrap);
 
                 //如果是主处理（不支持非主控的返回值；有可能是拦截器）
-                if (bIsMain) {
+                if (mIsMain) {
 
                     //记录返回值（后续不一定会再记录）
                     x.result = tmp;
@@ -189,7 +193,7 @@ public class XAction extends XHandlerAide implements XHandler{
         }
 
         //后置处理
-        if (bIsMain) {
+        if (mIsMain) {
             for (XHandler h : XApp.global().router().atAfter()) {
                 h.handle(x);
             }

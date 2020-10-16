@@ -109,11 +109,6 @@ public class AopContext extends BeanContainer {
             new XHandlerLoader(bw).load(XApp.global());
         });
 
-        //注册 @XInterceptor 构建器
-        beanBuilderAdd(XInterceptor.class, (clz, bw, anno) -> {
-            new XHandlerLoader(bw).main(false).load(XApp.global());
-        });
-
         //注册 @XServerEndpoint 构建器
         beanBuilderAdd(XServerEndpoint.class, (clz, wrap, anno) -> {
             if (XListener.class.isAssignableFrom(clz)) {

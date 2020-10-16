@@ -16,17 +16,11 @@ import java.lang.reflect.Method;
 public class XHandlerLoader extends XHandlerAide {
     protected BeanWrap bw;
     protected XRender  bRender;
-    protected boolean  bIsMain = true;
     protected XMapping bMapping;
     protected String   bPath;
     protected boolean  bRemoting;
 
     protected boolean allowMapping;
-
-    public XHandlerLoader main(boolean poi_main) {
-        bIsMain = poi_main;
-        return this;
-    }
 
     public XHandlerLoader(BeanWrap wrap) {
         bMapping = wrap.clz().getAnnotation(XMapping.class);
@@ -101,14 +95,14 @@ public class XHandlerLoader extends XHandlerAide {
         }
 
         for (XMethod m1 : bMapping.method()) {
-            if (bIsMain) {
-                slots.add(bMapping.value(), m1, bw.raw());
-            } else {
+            if (bMapping.after() || bMapping.before()) {
                 if (bMapping.after()) {
                     slots.after(bMapping.value(), m1, bMapping.index(), bw.raw());
                 } else {
                     slots.before(bMapping.value(), m1, bMapping.index(), bw.raw());
                 }
+            }else{
+                slots.add(bMapping.value(), m1, bw.raw());
             }
         }
     }
@@ -154,18 +148,22 @@ public class XHandlerLoader extends XHandlerAide {
             if (m_map != null || all) {
                 String newPath = XUtil.mergePath(bPath, m_path);
 
-                XAction action = createAction(bw, bIsMain, method, m_map, newPath, bRemoting);
+                XAction action = createAction(bw, method, m_map, newPath, bRemoting);
 
                 loadActionAide(method, action);
 
                 for (XMethod m1 : m_method) {
-                    if (bIsMain) {
+                    if (m_map == null) {
                         slots.add(newPath, m1, action);
-                    } else {
-                        if (m_map.after()) {
-                            slots.after(newPath, m1, m_index, action);
+                    }else{
+                        if ((m_map.after() || m_map.before())) {
+                            if (m_map.after()) {
+                                slots.after(newPath, m1, m_index, action);
+                            } else {
+                                slots.before(newPath, m1, m_index, action);
+                            }
                         } else {
-                            slots.before(newPath, m1, m_index, action);
+                            slots.add(newPath, m1, action);
                         }
                     }
                 }
@@ -213,11 +211,11 @@ public class XHandlerLoader extends XHandlerAide {
     /**
      * 构建 XAction
      */
-    protected XAction createAction(BeanWrap bw, boolean poi_main, Method method, XMapping mp, String path, boolean remoting) {
+    protected XAction createAction(BeanWrap bw, Method method, XMapping mp, String path, boolean remoting) {
         if (allowMapping) {
-            return new XAction(bw, this, poi_main, method, mp, path, remoting, bRender);
+            return new XAction(bw, this,  method, mp, path, remoting, bRender);
         } else {
-            return new XAction(bw, this, poi_main, method, null, path, remoting, bRender);
+            return new XAction(bw, this, method, null, path, remoting, bRender);
         }
     }
 
