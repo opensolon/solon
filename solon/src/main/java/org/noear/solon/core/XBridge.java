@@ -8,6 +8,35 @@ import java.util.*;
 /**
  * 内部扩展桥接器
  *
+ * <pre><code>
+ * //示例：替换 SessionState 服务 (solon.extend.sessionstate.redis: org.noear.solon.extend.sessionstate.redis.XPluginImp.class)
+ * public class XPluginImp implements XPlugin{
+ *     @Override
+ *     public void start(XApp app) {
+ *         //检测 sessionState 是否存在；且优先级是否低于 RedisSessionState
+ *         if (XBridge.sessionState() != null
+ *                 && XBridge.sessionState().priority() >= RedisSessionState.SESSION_STATE_PRIORITY) {
+ *             return;
+ *         }
+ *
+ *         //如果条件满足，则替换掉已有的 sessionState
+ *         XBridge.sessionStateSet(RedisSessionState.create());
+ *     }
+ * }
+ *
+ * //示例：替换 TranExecutor 服务 (solon.extend.data: org.noear.solon.extend.data.XPluginImp.class)
+ * public class XPluginImp implements XPlugin{
+ *     @Override
+ *     public void start(XApp app) {
+ *         if (app.enableTransaction()) {
+ *             //如果有启用事务，则替换 tranExecutor
+ *             XBridge.tranExecutorSet(TranExecutorImp.global);
+ *         }
+ *     }
+ * }
+ *
+ * </code></pre>
+ *
  * @author noear
  * @since 1.0
  * */
@@ -15,7 +44,7 @@ public class XBridge {
     //
     // SessionState 对接
     //
-    private static XSessionState sessionState = new XSessionStateDefault();
+    private static XSessionState _sessionState = new XSessionStateDefault();
     private static boolean sessionStateUpdated;
 
     /**
@@ -24,13 +53,13 @@ public class XBridge {
     @XNote("设置Session状态管理器")
     public static void sessionStateSet(XSessionState ss) {
         if (ss != null) {
-            sessionState = ss;
+            _sessionState = ss;
 
             if (sessionStateUpdated == false) {
                 sessionStateUpdated = true;
 
                 XApp.global().before("**", XMethod.HTTP, (c) -> {
-                    sessionState.sessionRefresh();
+                    _sessionState.sessionRefresh();
                 });
             }
         }
@@ -41,7 +70,7 @@ public class XBridge {
      */
     @XNote("获取Session状态管理器")
     public static XSessionState sessionState() {
-        return sessionState;
+        return _sessionState;
     }
 
     static class XSessionStateDefault implements XSessionState {
@@ -65,14 +94,14 @@ public class XBridge {
     //
     // UpstreamFactory 对接
     //
-    private static XUpstream.Factory upstreamFactory = null;
+    private static XUpstream.Factory _upstreamFactory = null;
 
     /**
      * 获取负载工厂
      */
     @XNote("获取负载工厂")
     public static XUpstream.Factory upstreamFactory() {
-        return upstreamFactory;
+        return _upstreamFactory;
     }
 
     /**
@@ -81,7 +110,7 @@ public class XBridge {
     @XNote("设置负载工厂")
     public static void upstreamFactorySet(XUpstream.Factory uf) {
         if (uf != null) {
-            upstreamFactory = uf;
+            _upstreamFactory = uf;
         }
     }
 
@@ -93,18 +122,18 @@ public class XBridge {
     /**
      * 动作默认执行器
      */
-    private static XActionExecutor actionExecutorDef = new XActionExecutorDefault();
+    private static XActionExecutor _actionExecutorDef = new XActionExecutorDefault();
     /**
      * 动作执行库
      */
-    private static Set<XActionExecutor> actionExecutors = new HashSet<>();
+    private static Set<XActionExecutor> _actionExecutors = new HashSet<>();
 
     /**
      * 获取默认的Action执行器
      */
     @XNote("获取默认的Action执行器")
     public static XActionExecutor actionExecutorDef() {
-        return actionExecutorDef;
+        return _actionExecutorDef;
     }
 
     /**
@@ -113,7 +142,7 @@ public class XBridge {
     @XNote("设置默认的Action执行器")
     public static void actionExecutorDefSet(XActionExecutor ae) {
         if (ae != null) {
-            actionExecutorDef = ae;
+            _actionExecutorDef = ae;
         }
     }
 
@@ -122,7 +151,7 @@ public class XBridge {
      */
     @XNote("获取所有Action执行器")
     public static Set<XActionExecutor> actionExecutors() {
-        return Collections.unmodifiableSet(actionExecutors);
+        return Collections.unmodifiableSet(_actionExecutors);
     }
 
     /**
@@ -131,7 +160,7 @@ public class XBridge {
     @XNote("添加Action执行器")
     public static void actionExecutorAdd(XActionExecutor e) {
         if (e != null) {
-            actionExecutors.add(e);
+            _actionExecutors.add(e);
         }
     }
 
@@ -182,14 +211,14 @@ public class XBridge {
     //
     // XTranExecutor 对接
     //
-    private static XTranExecutor tranExecutor = () -> false;
+    private static XTranExecutor _tranExecutor = () -> false;
 
     /**
      * 获取事务执行器
      */
     @XNote("获取事务执行器")
     public static XTranExecutor tranExecutor() {
-        return tranExecutor;
+        return _tranExecutor;
     }
 
     /**
@@ -198,7 +227,7 @@ public class XBridge {
     @XNote("设置事务执行器")
     public static void tranExecutorSet(XTranExecutor te) {
         if (te != null) {
-            tranExecutor = te;
+            _tranExecutor = te;
         }
     }
 
