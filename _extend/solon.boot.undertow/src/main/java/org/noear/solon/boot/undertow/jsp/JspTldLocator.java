@@ -35,7 +35,7 @@ import org.jboss.metadata.web.spec.TagMetaData;
 import org.jboss.metadata.web.spec.TldMetaData;
 import org.jboss.metadata.web.spec.VariableMetaData;
 import org.noear.solon.XUtil;
-import org.noear.solon.ext.ResourceScaner;
+import org.noear.solon.core.util.ResourceScaner;
 import org.noear.solon.ext.SupplierEx;
 
 /**

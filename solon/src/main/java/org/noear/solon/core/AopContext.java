@@ -10,7 +10,7 @@ import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.VarGather;
 import org.noear.solon.event.BeanLoadedEvent;
 import org.noear.solon.ext.BiConsumerEx;
-import org.noear.solon.ext.ResourceScaner;
+import org.noear.solon.core.util.ResourceScaner;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

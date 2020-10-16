@@ -1,4 +1,4 @@
-package org.noear.solon.ext;
+package org.noear.solon.core.util;
 
 public class PrintUtil {
     public static final String ANSI_RESET = "\u001B[0m";

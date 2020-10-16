@@ -1,4 +1,4 @@
-package org.noear.solon.ext;
+package org.noear.solon.core.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

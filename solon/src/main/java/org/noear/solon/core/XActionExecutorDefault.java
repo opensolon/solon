@@ -2,7 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.MethodWrap;
-import org.noear.solon.ext.ConvertUtil;
+import org.noear.solon.core.util.ConvertUtil;
 
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;

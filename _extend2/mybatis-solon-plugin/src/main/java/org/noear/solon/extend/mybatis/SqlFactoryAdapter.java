@@ -14,7 +14,7 @@ import org.noear.solon.XUtil;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.XEventBus;
-import org.noear.solon.ext.ResourceScaner;
+import org.noear.solon.core.util.ResourceScaner;
 
 import javax.sql.DataSource;
 import java.io.InputStream;

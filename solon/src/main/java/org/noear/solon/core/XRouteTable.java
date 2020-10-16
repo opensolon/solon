@@ -1,6 +1,6 @@
 package org.noear.solon.core;
 
-import org.noear.solon.ext.PathAnalyzer;
+import org.noear.solon.core.util.PathAnalyzer;
 
 import java.util.ArrayList;
 import java.util.Collection;

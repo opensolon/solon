@@ -3,7 +3,7 @@ package org.noear.solon;
 import org.noear.solon.core.XMap;
 import org.noear.solon.core.XPluginEntity;
 import org.noear.solon.core.XProperties;
-import org.noear.solon.ext.ResourceScaner;
+import org.noear.solon.core.util.ResourceScaner;
 
 import java.net.URL;
 import java.util.*;

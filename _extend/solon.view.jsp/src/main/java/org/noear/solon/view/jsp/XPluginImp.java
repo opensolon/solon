@@ -3,9 +3,8 @@ package org.noear.solon.view.jsp;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.XBridge;
-import org.noear.solon.core.XRenderManager;
 import org.noear.solon.core.XPlugin;
-import org.noear.solon.ext.PrintUtil;
+import org.noear.solon.core.util.PrintUtil;
 
 public class XPluginImp implements XPlugin {
     public static boolean output_meta = false;
