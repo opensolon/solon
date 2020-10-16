@@ -11,7 +11,6 @@ import java.lang.annotation.*;
  * @since 1.0
  * */
 @XAround(value = CacheInvokeHandler.class, index = -8)
-@Inherited //要可继承
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface XCache {
