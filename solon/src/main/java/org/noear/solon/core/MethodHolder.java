@@ -6,6 +6,9 @@ import java.lang.reflect.Parameter;
 
 /**
  * 函数容器
+ *
+ * @author noear
+ * @since 1.1
  * */
 public interface MethodHolder {
     /**

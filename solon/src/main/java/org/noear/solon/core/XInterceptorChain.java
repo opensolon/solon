@@ -5,7 +5,7 @@ package org.noear.solon.core;
  * 方法拦截调用链（用于支持 @XAround ）
  *
  * @author noear
- * @since 1.0
+ * @since 1.1
  * */
 public interface XInterceptorChain {
     MethodHolder method();
