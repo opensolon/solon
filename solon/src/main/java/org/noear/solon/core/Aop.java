@@ -93,14 +93,14 @@ public class Aop {
      * 异步获取bean (key)
      */
     public static void getAsyn(String key, Consumer<BeanWrap> callback) {
-        ac.getWrapAsync(key, callback);
+        ac.getWrapAsyn(key, callback);
     }
 
     /**
      * 异步获取bean (clz)
      */
     public static void getAsyn(Class<?> clz, Consumer<BeanWrap> callback) { //FieldWrapTmp fwT,
-        ac.getWrapAsync(clz, callback);
+        ac.getWrapAsyn(clz, callback);
     }
 
 

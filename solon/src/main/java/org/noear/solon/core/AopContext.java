@@ -373,7 +373,7 @@ public class AopContext extends BeanContainer {
     //加载完成标志
     private boolean loadDone;
     //加载事件
-    private Set<Runnable> loadEvent = new LinkedHashSet<>();
+    private Set<Runnable> loadEvents = new LinkedHashSet<>();
 
     //::bean事件处理
 
@@ -382,7 +382,7 @@ public class AopContext extends BeanContainer {
      */
     @XNote("添加bean加载完成事件")
     public void beanOnloaded(Runnable fun) {
-        loadEvent.add(fun);
+        loadEvents.add(fun);
 
         //如果已加载完成，则直接返回
         if (loadDone) {
@@ -400,6 +400,6 @@ public class AopContext extends BeanContainer {
         XEventBus.push(BeanLoadedEvent.instance);
 
         //2.执行加载事件（不用函数包装，是为了减少代码）
-        loadEvent.forEach(f -> f.run());
+        loadEvents.forEach(f -> f.run());
     }
 }

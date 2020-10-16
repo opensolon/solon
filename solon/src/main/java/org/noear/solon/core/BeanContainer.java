@@ -12,7 +12,16 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
- * Bean 容器，提供注册及关系映射管理
+ * Bean 容器，提供注册及关系映射管理（不直接使用；由 Aop 提供 BeanContainer 的手动使用模式 ）
+ *
+ * <pre><code>
+ * //容器 手动使用模式
+ * UserService userService = Aop.get(UserService.class)
+ *
+ * //容器的自动使用模式（会通过回调模式，确保Bean存在）
+ * @XInject
+ * UserService userService;
+ * </code></pre>
  *
  * @author noear
  * @since 1.0
@@ -142,7 +151,7 @@ public class BeanContainer {
         }
     }
 
-    public void getWrapAsync(Object key, Consumer<BeanWrap> callback) {
+    public void getWrapAsyn(Object key, Consumer<BeanWrap> callback) {
         BeanWrap bw = getWrap(key);
 
         if (bw == null || bw.raw() == null) {
@@ -213,7 +222,7 @@ public class BeanContainer {
     public void beanInject(VarHolder varH, String name) {
         if (XUtil.isEmpty(name)) {
             //如果没有name,使用类型进行获取 bean
-            getWrapAsync(varH.getType(), (bw) -> {
+            getWrapAsyn(varH.getType(), (bw) -> {
                 varH.setValue(bw.get());
             });
         } else if (name.startsWith("${classpath:")) {
@@ -277,7 +286,7 @@ public class BeanContainer {
             }
         } else {
             //使用name, 获取BEAN
-            getWrapAsync(name, (bw) -> {
+            getWrapAsyn(name, (bw) -> {
                 varH.setValue(bw.get());
             });
         }
