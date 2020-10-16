@@ -5,7 +5,7 @@ import org.noear.solon.core.XMethod;
 import java.lang.annotation.*;
 
 /**
- * 服务器处理端点
+ * 服务器处理端点（为 XMessage + XListener 架构，提供容器化支持）
  *
  * <pre><code>
  * @XServerEndpoint(value = "/demoe/websocket")
