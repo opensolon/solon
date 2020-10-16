@@ -31,8 +31,8 @@ public class SpeetTest {
         long start = System.currentTimeMillis();
 
         for (int i = 0; i < 100000; i++) {
-            for(MethodWrap mw: ClassWrap.get(UserModel.class).getMethodWraps()){
-                for(Parameter p : mw.getParameters()){
+            for(Method m: ClassWrap.get(UserModel.class).getMethods()){
+                for(Parameter p : m.getParameters()){
 
                 }
             }

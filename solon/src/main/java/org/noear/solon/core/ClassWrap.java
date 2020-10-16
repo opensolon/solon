@@ -1,9 +1,7 @@
 package org.noear.solon.core;
 
-import org.noear.solon.annotation.XAround;
 import org.noear.solon.ext.ConvertUtil;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -40,9 +38,7 @@ public class ClassWrap {
     //clz //与函数同名，_开头
     private final Class<?> _clz;
     //clz.methodS
-    private final List<MethodWrap> methodWraps;
-    //clz.methodS
-    private final Map<Method,MethodWrap> methodWrapsMap;
+    private final Method[] methods;
     //clz.fieldS
     private final List<FieldWrap> fieldWraps;
     //clz.all_fieldS
@@ -53,14 +49,7 @@ public class ClassWrap {
         _clz = clz;
 
         //自己申明的函数
-        methodWraps = new ArrayList<>();
-        methodWrapsMap = new HashMap<>();
-
-        for (Method m : clz.getDeclaredMethods()) {
-            MethodWrap m1 = MethodWrap.get(m);
-            methodWraps.add(m1);
-            methodWrapsMap.put(m, m1);
-        }
+        methods = clz.getDeclaredMethods();
 
         //所有字段的包装（自己的 + 父类的）
         fieldAllWrapsMap = new ConcurrentHashMap<>();
@@ -87,49 +76,8 @@ public class ClassWrap {
         return Collections.unmodifiableMap(fieldAllWrapsMap);
     }
 
-
-    /**
-     * 获取一个字段包装
-     */
-    public FieldWrap getFieldWrap(Field f1) {
-        FieldWrap tmp = fieldAllWrapsMap.get(f1.getName());
-        if (tmp == null) {
-            tmp = new FieldWrap(clz(), f1);
-            FieldWrap l = fieldAllWrapsMap.putIfAbsent(f1.getName(), tmp);
-            if (l != null) {
-                tmp = l;
-            }
-        }
-        return tmp;
-    }
-
-    /**
-     * 获取类申明的字段包装
-     * */
-    public List<FieldWrap> getFieldWraps(){
-        return Collections.unmodifiableList(fieldWraps);
-    }
-
-    /**
-     * 获取一个方法包装
-     * */
-    public MethodWrap getMethodWrap(Method m1) {
-        MethodWrap tmp = methodWrapsMap.get(m1);
-        if (tmp == null) {
-            tmp = new MethodWrap(m1);
-            MethodWrap l = methodWrapsMap.putIfAbsent(m1, tmp);
-            if (l != null) {
-                tmp = l;
-            }
-        }
-        return tmp;
-    }
-
-    /**
-     * 获取类申明的方法包装
-     * */
-    public List<MethodWrap> getMethodWraps() {
-        return Collections.unmodifiableList(methodWraps);
+    public Method[] getMethods() {
+        return methods;
     }
 
     /**

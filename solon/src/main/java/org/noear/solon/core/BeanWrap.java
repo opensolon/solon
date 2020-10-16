@@ -4,6 +4,7 @@ import org.noear.solon.annotation.XInit;
 import org.noear.solon.annotation.XSingleton;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 /**
  * Bean 包装
@@ -18,7 +19,7 @@ public class BeanWrap {
     // bean clz
     private Class<?> clz;
     // bean clz init method
-    private MethodWrap clzInit;
+    private Method clzInit;
     // bean raw（初始实例）
     private Object raw;
     // 是否为单例
@@ -50,7 +51,7 @@ public class BeanWrap {
         singleton = (ano == null || ano.value()); //默认为单例
         annotations = clz.getAnnotations();
 
-        _tryBuildInit();
+        tryBuildInit();
 
         if (raw == null) {
             this.raw = _new();
@@ -175,7 +176,7 @@ public class BeanWrap {
 
             //3.初始化
             if (clzInit != null) {
-                clzInit.getMethod().invoke(obj);
+                clzInit.invoke(obj);
             }
 
             if (proxy != null) {
@@ -193,7 +194,7 @@ public class BeanWrap {
     /**
      * 尝试构建初始化函数
      * */
-    protected void _tryBuildInit() {
+    protected void tryBuildInit() {
         if (clzInit != null) {
             return;
         }
@@ -205,11 +206,11 @@ public class BeanWrap {
         ClassWrap clzWrap = ClassWrap.get(clz);
 
         //查找初始化函数
-        for (MethodWrap mw : clzWrap.getMethodWraps()) {
-            if (mw.getMethod().getAnnotation(XInit.class) != null) {
-                if (mw.getParameters().length == 0) {
+        for (Method m : clzWrap.getMethods()) {
+            if (m.getAnnotation(XInit.class) != null) {
+                if (m.getParameters().length == 0) {
                     //只接收没有参数的
-                    clzInit = mw;
+                    clzInit = m;
                 }
                 break;
             }

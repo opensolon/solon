@@ -1,6 +1,7 @@
 package org.noear.solon.extend.aspect;
 
 import org.noear.solon.core.ClassWrap;
+import org.noear.solon.core.MethodWrap;
 import org.noear.solon.extend.aspect.asm.Proxy;
 
 import java.lang.reflect.Constructor;
@@ -39,7 +40,7 @@ public class BeanInvocationHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         method.setAccessible(true);
 
-        Object result = clazzWrap.getMethodWrap(method).invokeByAspect(bean, args);
+        Object result = MethodWrap.get(method).invokeByAspect(bean, args);
 
         return result;
     }

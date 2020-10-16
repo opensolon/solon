@@ -8,6 +8,7 @@ import org.noear.solon.event.BeanLoadedEvent;
 import org.noear.solon.ext.BiConsumerEx;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -45,11 +46,12 @@ public class AopContext extends BeanContainer {
                 }
             }
 
-            for (MethodWrap mWrap : ClassWrap.get(bw.clz()).getMethodWraps()) {
-                XBean m_an = mWrap.getMethod().getAnnotation(XBean.class);
+            for (Method m  : ClassWrap.get(bw.clz()).getMethods()) {
+                XBean m_an = m.getAnnotation(XBean.class);
 
                 if (m_an != null) {
-                    XInject beanInj = mWrap.getMethod().getAnnotation(XInject.class);
+                    MethodWrap mWrap = MethodWrap.get(m);
+                    XInject beanInj = m.getAnnotation(XInject.class);
 
                     //有参数的bean，采用线程池处理；所以需要锁等待
                     //
