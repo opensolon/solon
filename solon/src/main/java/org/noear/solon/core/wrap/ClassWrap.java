@@ -90,10 +90,20 @@ public class ClassWrap {
      * @param data 填充数据
      * */
     public <T> T newBy(Function<String, String> data) {
+        return newBy(data, null);
+    }
+
+    /**
+     * 新建实例
+     *
+     * @param data 填充数据
+     * @param ctx 上下文
+     * */
+    public <T> T newBy(Function<String, String> data, XContext ctx) {
         try {
             Object obj = clz().newInstance();
 
-            fill(obj, data, null);
+            fill(obj, data, ctx);
 
             return (T)obj;
         } catch (RuntimeException ex) {
@@ -105,8 +115,11 @@ public class ClassWrap {
 
     /**
      * 为实例填充数据
+     *
+     * @param data 填充数据
+     * @param ctx 上下文
      * */
-    public void fill(Object target, Function<String, String> data, XContext ctx) {
+    public void fill(Object bean, Function<String, String> data, XContext ctx) {
         for (Map.Entry<String,FieldWrap> kv : fieldAllWrapsMap.entrySet()) {
             String key = kv.getKey();
             String val0 = data.apply(key);
@@ -116,7 +129,7 @@ public class ClassWrap {
 
                 //将 string 转为目标 type，并为字段赋值
                 Object val = ConvertUtil.to(fw.field, fw.type, key, val0, ctx);
-                fw.setValue(target, val);
+                fw.setValue(bean, val);
             }
         }
     }

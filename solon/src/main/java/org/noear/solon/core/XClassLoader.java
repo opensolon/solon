@@ -29,16 +29,25 @@ public class XClassLoader extends URLClassLoader {
         this(ClassLoader.getSystemClassLoader());
     }
 
+    /**
+     * @param parent 父加载器
+     * */
     public XClassLoader(ClassLoader parent) {
         super(new URL[]{}, parent);
     }
 
-    public XClassLoader(URL[] urls, ClassLoader parent) {
-        super(urls, parent);
+    /**
+     * @param files jar files
+     * @param parent 父加载器
+     * */
+    public XClassLoader(URL[] files, ClassLoader parent) {
+        super(files, parent);
     }
 
     /**
      * 加载jar包
+     *
+     * @param file jar file
      */
     public void loadJar(URL file) {
         loadJar(file, true);
@@ -46,6 +55,9 @@ public class XClassLoader extends URLClassLoader {
 
     /**
      * 加载jar包
+     *
+     * @param file jar file
+     * @param useCaches 是否使用缓存
      */
     public void loadJar(URL file, boolean useCaches) {
         try {
@@ -67,6 +79,8 @@ public class XClassLoader extends URLClassLoader {
 
     /**
      * 卸载jar包
+     *
+     * @param file jar file
      */
     public void unloadJar(URL file) {
         JarURLConnection jarURL = cachedMap.get(file);
@@ -81,9 +95,14 @@ public class XClassLoader extends URLClassLoader {
         }
     }
 
+    /**
+     * 加载类
+     *
+     * @param clzName 类名
+     * */
     @Override
-    public Class<?> loadClass(String name) throws ClassNotFoundException {
-        return super.loadClass(name);
+    public Class<?> loadClass(String clzName) throws ClassNotFoundException {
+        return super.loadClass(clzName);
     }
 
     /**

@@ -2,6 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.XUtil;
 import org.noear.solon.annotation.XNote;
+import org.noear.solon.core.wrap.ClassWrap;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -202,6 +203,11 @@ public abstract class XContext {
         }else{
             return new BigDecimal(tmp);
         }
+    }
+    @XNote("获取参数并转为Bean")
+    public <T> T paramAsBean(Class<T> type){
+        //不如参数注入的强；不支持 body 转换;
+        return ClassWrap.get(type).newBy(this::param,this);
     }
 
     @XNote("获取所有参数并转为map")
