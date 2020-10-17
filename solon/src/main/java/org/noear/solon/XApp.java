@@ -339,14 +339,6 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 主体监听
      */
-
-    /**
-     * 添加所有方法监听
-     */
-    public void add(String path, XHandler handler) {
-        add(path, XMethod.ALL, handler);
-    }
-
     @Override
     public void add(String expr, XMethod method, XHandler handler) {
         _router.add(expr, XEndpoint.main, method, handler);
@@ -367,7 +359,12 @@ public class XApp implements XHandler,XHandlerSlots {
     }
 
 
-    //http
+    /**
+     * 添加所有方法监听
+     */
+    public void all(String path, XHandler handler) {
+        add(path, XMethod.ALL, handler);
+    }
 
     /**
      * 添加HTTP所有方法的监听（GET,POST,PUT,PATCH,DELETE,HEAD）
