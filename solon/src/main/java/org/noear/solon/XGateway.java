@@ -74,6 +74,9 @@ public abstract class XGateway extends XHandlerAide implements XHandler, XRender
     @XNote("充许提前准备控制器")
     protected boolean allowReadyController(){return true;}
 
+    /**
+     * 充许路径合并
+     * */
     @XNote("充许路径合并")
     protected boolean allowPathMerging(){return true;}
 
