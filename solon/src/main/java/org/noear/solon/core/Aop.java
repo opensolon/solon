@@ -41,9 +41,9 @@ public class Aop {
     //::bean包装
 
     /**
-     * 包装bean（clz），不注册
+     * 包装bean，不注册
      *
-     * @param type 类
+     * @param type 类型
      * @param bean 实例
      */
     public static BeanWrap wrap(Class<?> type, Object bean) {
@@ -51,18 +51,18 @@ public class Aop {
     }
 
     /**
-     * 包装bean（clz），并尝试注册
+     * 包装bean，并尝试注册
      *
-     * @param type 类
+     * @param type 类型
      * */
     public static BeanWrap wrapAndPut(Class<?> type) {
         return wrapAndPut(type, null);
     }
 
     /**
-     * 包装bean（clz），并尝试注册
+     * 包装bean，并尝试注册
      *
-     * @param type 类
+     * @param type 类型
      * @param bean 实例
      * */
     public static BeanWrap wrapAndPut(Class<?> type, Object bean) {
@@ -78,7 +78,7 @@ public class Aop {
     //::bean获取
 
     /**
-     * 检楂是否有bean(key: name or type)
+     * 检楂是否有bean
      *
      * @param nameOrType bean name or type
      * */
@@ -88,7 +88,7 @@ public class Aop {
 
 
     /**
-     * 获取bean (key:name)
+     * 获取bean
      *
      * @param name bean name
      */
@@ -98,7 +98,7 @@ public class Aop {
     }
 
     /**
-     * 获取bean (key:type)
+     * 获取bean
      *
      * @param type bean type
      */
@@ -111,6 +111,8 @@ public class Aop {
     }
 
     /**
+     * 获取bean
+     *
      * @param type bean type
      * */
     public static <T> T getOrNull(Class<?> type) {
@@ -119,14 +121,18 @@ public class Aop {
     }
 
     /**
-     * 异步获取bean (key)
+     * 异步获取bean
+     *
+     * @param name bean name
      */
     public static void getAsyn(String name, Consumer<BeanWrap> callback) {
         ac.getWrapAsyn(name, callback);
     }
 
     /**
-     * 异步获取bean (clz)
+     * 异步获取bean
+     *
+     * @param type bean type
      */
     public static void getAsyn(Class<?> type, Consumer<BeanWrap> callback) { //FieldWrapTmp fwT,
         ac.getWrapAsyn(type, callback);
@@ -136,7 +142,9 @@ public class Aop {
     //::bean注入
 
     /**
-     * 尝试注入（建议使用：get(clz) ）
+     * 尝试注入
+     *
+     * @param bean 实例
      */
     public static <T> T inject(T bean) {
         ac.beanInject(bean);
@@ -145,6 +153,9 @@ public class Aop {
 
     /**
      * 尝试用属性注入
+     *
+     * @param bean 实例
+     * @param propS 属性
      */
     public static <T> T inject(T bean, Properties propS) {
         return XUtil.injectProperties(bean, propS);

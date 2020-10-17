@@ -74,9 +74,9 @@ public class BeanContainer {
     /**
      * bean订阅
      */
-    public void beanSubscribe(Object key, Consumer<BeanWrap> callback) {
-        if (key != null) {
-            beanSubscribers.add(new SubscriberEntity(key, callback));
+    public void beanSubscribe(Object nameOrType, Consumer<BeanWrap> callback) {
+        if (nameOrType != null) {
+            beanSubscribers.add(new SubscriberEntity(nameOrType, callback));
         }
     }
 
