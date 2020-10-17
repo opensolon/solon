@@ -4,6 +4,7 @@ package org.noear.solon.core;
 /**
  * 上下文状态处理工具（独立出来，可为别的业务服务）
  *
+ * @see org.noear.solon.XApp#handle(XContext) 
  * @author noear
  * @since 1.0
  * */
