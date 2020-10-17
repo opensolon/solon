@@ -8,7 +8,7 @@ package org.noear.solon.core;
  * */
 public enum TranPolicy {
     /**
-     * 支持当前事务，如果没有则创建一个新的（需要入栈）
+     * 默认。支持当前事务，如果没有则创建一个新的（需要入栈）
      */
     required(1),
 
