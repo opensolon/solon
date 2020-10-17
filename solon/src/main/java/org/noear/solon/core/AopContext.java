@@ -327,7 +327,7 @@ public class AopContext extends BeanContainer {
         if (size2 == 0) {
             //0.没有参数
             Object raw = mWrap.doIntercept(bw.raw(), new Object[]{});
-            tryBuildBean0(anno, mWrap,raw);
+            tryBuildBean0(mWrap, anno, raw);
         } else {
             //1.构建参数
             VarGather gather = new VarGather(size2, (args2) -> {
@@ -336,7 +336,7 @@ public class AopContext extends BeanContainer {
                     //变量收集完成后，会回调此处
                     //
                     Object raw = mWrap.doIntercept(bw.raw(), args2);
-                    tryBuildBean0(anno, mWrap, raw);
+                    tryBuildBean0(mWrap, anno, raw);
                 } catch (Throwable ex) {
                     XEventBus.push(ex);
                 }
@@ -350,7 +350,7 @@ public class AopContext extends BeanContainer {
         }
     }
 
-    protected void tryBuildBean0(XBean anno,  MethodWrap mWrap, Object raw) {
+    protected void tryBuildBean0(MethodWrap mWrap, XBean anno, Object raw) {
         if (raw != null) {
             Class<?> beanClz = mWrap.getReturnType();
             XInject  beanInj = mWrap.getAnnotation(XInject.class);
