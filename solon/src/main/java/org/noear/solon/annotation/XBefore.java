@@ -35,6 +35,7 @@ import java.lang.annotation.*;
 @Inherited //要可继承
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
 public @interface XBefore {
     Class<? extends XHandler>[] value();
 }

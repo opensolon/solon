@@ -3,7 +3,7 @@ package org.noear.solon.annotation;
 import java.lang.annotation.*;
 
 /**
- * 导入器，通过注解导入类或者包（只在app 或 config 有效）
+ * 导入器，通过注解导入类或者包（最终作用在app source 或 config 上有效）
  *
  * <pre><code>
  * //注解传导示例

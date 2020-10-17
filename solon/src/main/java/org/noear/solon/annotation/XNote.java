@@ -1,9 +1,6 @@
 package org.noear.solon.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * 注释
@@ -13,6 +10,7 @@ import java.lang.annotation.Target;
  * */
 @Target({ElementType.METHOD, ElementType.TYPE, ElementType.FIELD,ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
 public @interface XNote {
     String value() default "";
 }

@@ -5,7 +5,7 @@ import org.noear.solon.core.XInterceptor;
 import java.lang.annotation.*;
 
 /**
- * 触发器：围绕处理（争对 XController、XAction、XService、XDao 等所有基于MethodWrap运行的目标）
+ * 触发器：围绕处理（争对 XController、XService、XDao 等所有基于MethodWrap运行的目标）
  *
  * <pre><code>
  * @XController
@@ -41,6 +41,7 @@ import java.lang.annotation.*;
 @Inherited //要可继承
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
 public @interface XAround {
     /**
      * 调用处理程序

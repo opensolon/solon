@@ -9,13 +9,14 @@ import java.lang.annotation.*;
  * @XValid        //增加验证支持
  * @XController
  * public class DemoController{
+ *     @NotNull({"name","message"})
  *     @XMapping("/hello/")
- *     public String hello(@NotNull String name){
+ *     public String hello(String name, String message){
  *         return "Hello " + name;
  *     }
  *
  *     @XMapping("/cmd/{cmd}")
- *     public String cmd(String cmd){
+ *     public String cmd(@NotNull String cmd){
  *         return "cmd = " + cmd;
  *     }
  * }

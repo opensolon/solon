@@ -3,7 +3,7 @@ package org.noear.solon.annotation;
 import java.lang.annotation.*;
 
 /**
- * 配置器（主要为了动态构建XBean）
+ * 配置器（主要为了动态构建组件 或 适配些接口）
  *
  * <pre><code>
  * //或构建一些组件

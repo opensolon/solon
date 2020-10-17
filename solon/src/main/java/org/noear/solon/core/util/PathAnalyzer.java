@@ -1,11 +1,19 @@
 package org.noear.solon.core.util;
 
+import org.noear.solon.annotation.XMapping;
+import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.XHandlerAide;
+import org.noear.solon.core.XRender;
+
+import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * 路径分析器，用于路由器和路径变量分析
  *
+ * @see org.noear.solon.core.XRouteTable.Route
+ * @see org.noear.solon.core.XAction
  * @author noear
  * @since 1.0
  * */
