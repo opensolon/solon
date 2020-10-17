@@ -77,12 +77,17 @@ public class ClassWrap {
         return Collections.unmodifiableMap(fieldAllWrapsMap);
     }
 
+    /**
+     * 获取申明的Method
+     * */
     public Method[] getMethods() {
         return methods;
     }
 
     /**
      * 新建实例
+     *
+     * @param data 填充数据
      * */
     public <T> T newBy(Function<String, String> data) {
         try {

@@ -83,14 +83,14 @@ public class BeanContainer {
     /**
      * bean通知
      */
-    public void beanNotice(Object key, BeanWrap wrap) {
+    public void beanNotice(Object nameOrType, BeanWrap wrap) {
         if (wrap.raw() == null) {
             return;
         }
 
         //避免在forEach时，对它进行add
         new ArrayList<>(beanSubscribers).forEach(s1 -> {
-            if (s1.key.equals(key)) {
+            if (s1.key.equals(nameOrType)) {
                 s1.callback.accept(wrap);
             }
         });
@@ -105,11 +105,11 @@ public class BeanContainer {
      *
      * @param wrap 如果raw为null，拒绝注册
      */
-    public void putWrap(String key, BeanWrap wrap) {
-        if (XUtil.isEmpty(key) == false && wrap.raw() != null) {
-            if (beans.containsKey(key) == false) {
-                beans.put(key, wrap);
-                beanNotice(key, wrap);
+    public void putWrap(String name, BeanWrap wrap) {
+        if (XUtil.isEmpty(name) == false && wrap.raw() != null) {
+            if (beans.containsKey(name) == false) {
+                beans.put(name, wrap);
+                beanNotice(name, wrap);
             }
         }
     }
@@ -119,14 +119,14 @@ public class BeanContainer {
      *
      * @param wrap 如果raw为null，拒绝注册
      */
-    public void putWrap(Class<?> key, BeanWrap wrap) {
-        if (key != null && wrap.raw() != null) {
+    public void putWrap(Class<?> type, BeanWrap wrap) {
+        if (type != null && wrap.raw() != null) {
             //
             //wrap.raw()==null, 说明它是接口；等它完成代理再注册；以@Db为例，可以看一下
             //
-            if (beanWraps.containsKey(key) == false) {
-                beanWraps.put(key, wrap);
-                beanNotice(key, wrap);
+            if (beanWraps.containsKey(type) == false) {
+                beanWraps.put(type, wrap);
+                beanNotice(type, wrap);
             }
         }
     }
@@ -134,38 +134,38 @@ public class BeanContainer {
     /**
      * 获取一个bean包装
      *
-     * @param key name or type
+     * @param nameOrType bean name or type
      */
-    public BeanWrap getWrap(Object key) {
-        if (key instanceof String) {
-            return beans.get(key);
+    public BeanWrap getWrap(Object nameOrType) {
+        if (nameOrType instanceof String) {
+            return beans.get(nameOrType);
         } else {
-            return beanWraps.get(key);
+            return beanWraps.get(nameOrType);
         }
     }
 
-    public void getWrapAsyn(Object key, Consumer<BeanWrap> callback) {
-        BeanWrap bw = getWrap(key);
+    public void getWrapAsyn(Object nameOrType, Consumer<BeanWrap> callback) {
+        BeanWrap bw = getWrap(nameOrType);
 
         if (bw == null || bw.raw() == null) {
-            beanSubscribe(key, callback);
+            beanSubscribe(nameOrType, callback);
         } else {
             callback.accept(bw);
         }
     }
 
-    public <T> T getBean(Object key) {
-        BeanWrap bw = getWrap(key);
+    public <T> T getBean(Object nameOrType) {
+        BeanWrap bw = getWrap(nameOrType);
         return bw == null ? null : bw.get();
     }
 
     /**
      * 包装
      */
-    public BeanWrap wrap(Class<?> clz, Object bean) {
-        BeanWrap wrap = getWrap(clz);
+    public BeanWrap wrap(Class<?> type, Object bean) {
+        BeanWrap wrap = getWrap(type);
         if (wrap == null) {
-            wrap = new BeanWrap(clz, bean);
+            wrap = new BeanWrap(type, bean);
         }
 
         return wrap;

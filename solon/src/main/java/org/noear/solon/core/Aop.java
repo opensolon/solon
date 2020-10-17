@@ -42,26 +42,34 @@ public class Aop {
 
     /**
      * 包装bean（clz），不注册
+     *
+     * @param type 类
+     * @param bean 实例
      */
-    public static BeanWrap wrap(Class<?> clz, Object bean) {
-        return  ac.wrap(clz, bean);
+    public static BeanWrap wrap(Class<?> type, Object bean) {
+        return  ac.wrap(type, bean);
     }
 
     /**
      * 包装bean（clz），并尝试注册
+     *
+     * @param type 类
      * */
-    public static BeanWrap wrapAndPut(Class<?> clz) {
-        return wrapAndPut(clz, null);
+    public static BeanWrap wrapAndPut(Class<?> type) {
+        return wrapAndPut(type, null);
     }
 
     /**
      * 包装bean（clz），并尝试注册
+     *
+     * @param type 类
+     * @param bean 实例
      * */
-    public static BeanWrap wrapAndPut(Class<?> clz, Object bean) {
-        BeanWrap wrap = ac.getWrap(clz);
+    public static BeanWrap wrapAndPut(Class<?> type, Object bean) {
+        BeanWrap wrap = ac.getWrap(type);
         if (wrap == null) {
-            wrap = new BeanWrap(clz, bean);
-            ac.putWrap(clz, wrap);
+            wrap = new BeanWrap(type, bean);
+            ac.putWrap(type, wrap);
         }
 
         return wrap;
@@ -71,48 +79,57 @@ public class Aop {
 
     /**
      * 检楂是否有bean(key: name or type)
+     *
+     * @param nameOrType bean name or type
      * */
-    public static boolean has(Object key){
-        return ac.getWrap(key) != null;
+    public static boolean has(Object nameOrType){
+        return ac.getWrap(nameOrType) != null;
     }
 
 
     /**
      * 获取bean (key:name)
+     *
+     * @param name bean name
      */
-    public static <T> T get(String key) {
-        BeanWrap bw = ac.getWrap(key);
+    public static <T> T get(String name) {
+        BeanWrap bw = ac.getWrap(name);
         return bw == null ? null : bw.get();
     }
 
     /**
      * 获取bean (key:type)
+     *
+     * @param type bean type
      */
-    public static <T> T get(Class<?> key) {
-        if (key == null) {
+    public static <T> T get(Class<?> type) {
+        if (type == null) {
             return null;
         } else {
-            return wrapAndPut(key).get();
+            return wrapAndPut(type).get();
         }
     }
 
-    public static <T> T getOrNull(Class<?> key) {
-        BeanWrap bw = ac.getWrap(key);
+    /**
+     * @param type bean type
+     * */
+    public static <T> T getOrNull(Class<?> type) {
+        BeanWrap bw = ac.getWrap(type);
         return bw == null ? null : bw.get();
     }
 
     /**
      * 异步获取bean (key)
      */
-    public static void getAsyn(String key, Consumer<BeanWrap> callback) {
-        ac.getWrapAsyn(key, callback);
+    public static void getAsyn(String name, Consumer<BeanWrap> callback) {
+        ac.getWrapAsyn(name, callback);
     }
 
     /**
      * 异步获取bean (clz)
      */
-    public static void getAsyn(Class<?> clz, Consumer<BeanWrap> callback) { //FieldWrapTmp fwT,
-        ac.getWrapAsyn(clz, callback);
+    public static void getAsyn(Class<?> type, Consumer<BeanWrap> callback) { //FieldWrapTmp fwT,
+        ac.getWrapAsyn(type, callback);
     }
 
 

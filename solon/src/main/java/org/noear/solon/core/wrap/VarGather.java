@@ -2,7 +2,6 @@ package org.noear.solon.core.wrap;
 
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.VarHolder;
-import org.noear.solon.core.wrap.VarHolderOfParam;
 
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
