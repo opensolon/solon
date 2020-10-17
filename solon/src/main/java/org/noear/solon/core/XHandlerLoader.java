@@ -94,17 +94,8 @@ public class XHandlerLoader extends XHandlerAide {
             throw new RuntimeException(bw.clz().getName() + " No @XMapping!");
         }
 
-        for (XMethod m1 : bMapping.method()) {
-            if (bMapping.after() || bMapping.before()) {
-                if (bMapping.after()) {
-                    slots.after(bMapping.value(), m1, bMapping.index(), bw.raw());
-                } else {
-                    slots.before(bMapping.value(), m1, bMapping.index(), bw.raw());
-                }
-            }else{
-                slots.add(bMapping.value(), m1, bw.raw());
-            }
-        }
+        XHandler handler = bw.raw();
+        slots.add(bMapping, handler);
     }
 
 

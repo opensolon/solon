@@ -1,5 +1,6 @@
 package org.noear.solon;
 
+import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.annotation.XImport;
 import org.noear.solon.core.Aop;
@@ -338,6 +339,14 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 主体监听
      */
+
+    /**
+     * 添加所有方法监听
+     */
+    public void add(String path, XHandler handler) {
+        add(path, XMethod.ALL, handler);
+    }
+
     @Override
     public void add(String expr, XMethod method, XHandler handler) {
         _router.add(expr, XEndpoint.main, method, handler);
@@ -357,11 +366,19 @@ public class XApp implements XHandler,XHandlerSlots {
         }
     }
 
-    /**
-     * 添加所有方法监听
-     */
-    public void all(String path, XHandler handler) {
-        add(path, XMethod.ALL, handler);
+    @Override
+    public void add(XMapping mapping, XHandler handler) {
+        for (XMethod m1 : mapping.method()) {
+            if (mapping.after() || mapping.before()) {
+                if (mapping.after()) {
+                    after(mapping.value(), m1, mapping.index(), handler);
+                } else {
+                    before(mapping.value(), m1, mapping.index(), handler);
+                }
+            } else {
+                add(mapping.value(), m1, handler);
+            }
+        }
     }
 
 

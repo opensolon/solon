@@ -133,7 +133,7 @@ public class AopContext extends BeanContainer {
      * */
     private void addBeanShape(Class<?> clz, BeanWrap bw) {
         //XPlugin
-        if (XPlugin.class.isAssignableFrom(bw.clz())) {
+        if (XPlugin.class.isAssignableFrom(clz)) {
             //如果是插件，则插入
             XApp.global().plug(bw.raw());
             return;
@@ -148,6 +148,15 @@ public class AopContext extends BeanContainer {
         //XUpstreamFactory
         if (XUpstream.Factory.class.isAssignableFrom(clz)) {
             XBridge.upstreamFactorySet(bw.raw());
+        }
+
+        //XHandler
+        if (XHandler.class.isAssignableFrom(clz)) {
+            XMapping mapping = clz.getAnnotation(XMapping.class);
+            if (mapping != null) {
+                XHandler handler = bw.raw();
+                XApp.global().add(mapping,handler);
+            }
         }
     }
 
