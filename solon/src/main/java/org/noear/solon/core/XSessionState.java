@@ -9,10 +9,17 @@ package org.noear.solon.core;
  * @since 1.0
  * */
 public interface XSessionState {
+    /** 刷新SESSION状态 */
+    default void sessionRefresh(){}
+
+    /** 优先级 */
+    default int priority(){return 0;}
+
     /** 是否可替换 */
     default boolean replaceable(){
         return true;
     }
+
 
     /** 获取SESSION_ID */
     String sessionId();
@@ -26,8 +33,5 @@ public interface XSessionState {
     /** 清除SESSION状态 */
     default void sessionClear(){}
 
-    /** 刷新SESSION状态 */
-    default void sessionRefresh(){}
 
-    default int priority(){return 0;}
 }

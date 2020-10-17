@@ -5,7 +5,7 @@ import org.noear.solon.annotation.XNote;
 import java.io.Serializable;
 
 /**
- * 结果
+ * 结果（可用于接口开发返回统一结果）
  *
  * @author noear
  * @since 1.0

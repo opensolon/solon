@@ -3,7 +3,6 @@ package org.noear.solon.core;
 import org.noear.solon.core.util.PathAnalyzer;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,11 +17,6 @@ public class XRouteTable<T> extends ArrayList<XRouteTable.Route<T>> {
     public XRouteTable() {
         super();
     }
-
-    public XRouteTable(Collection<Route<T>> coll) {
-        super(coll);
-    }
-
 
     /**
      * 区配一个目标（根据上上文）
