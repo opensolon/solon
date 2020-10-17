@@ -56,11 +56,10 @@ public class AopContext extends BeanContainer {
 
                 if (m_an != null) {
                     MethodWrap mWrap = MethodWrap.get(m);
-                    XInject beanInj = m.getAnnotation(XInject.class);
 
                     //有参数的bean，采用线程池处理；所以需要锁等待
                     //
-                    tryBuildBean(m_an, mWrap, bw, beanInj, (p1) -> {
+                    tryBuildBean(m_an, mWrap, bw, (p1) -> {
                         XInject tmp = p1.getAnnotation(XInject.class);
                         if (tmp == null) {
                             return null;
@@ -320,16 +319,15 @@ public class AopContext extends BeanContainer {
      * @param anno      bean 注解
      * @param mWrap     方法包装器
      * @param bw        bean 包装器
-     * @param beanInj   类注入
      * @param injectVal 参数注入
      */
-    protected void tryBuildBean(XBean anno, MethodWrap mWrap, BeanWrap bw, XInject beanInj, Function<Parameter, String> injectVal) throws Exception {
+    protected void tryBuildBean(XBean anno, MethodWrap mWrap, BeanWrap bw, Function<Parameter, String> injectVal) throws Exception {
         int size2 = mWrap.getParameters().length;
 
         if (size2 == 0) {
             //0.没有参数
             Object raw = mWrap.doIntercept(bw.raw(), new Object[]{});
-            tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
+            tryBuildBean0(anno, mWrap,raw);
         } else {
             //1.构建参数
             VarGather gather = new VarGather(size2, (args2) -> {
@@ -338,7 +336,7 @@ public class AopContext extends BeanContainer {
                     //变量收集完成后，会回调此处
                     //
                     Object raw = mWrap.doIntercept(bw.raw(), args2);
-                    tryBuildBean0(anno, beanInj, mWrap.getReturnType(), raw);
+                    tryBuildBean0(anno, mWrap, raw);
                 } catch (Throwable ex) {
                     XEventBus.push(ex);
                 }
@@ -352,8 +350,11 @@ public class AopContext extends BeanContainer {
         }
     }
 
-    protected void tryBuildBean0(XBean anno, XInject beanInj, Class<?> clz, Object raw) {
+    protected void tryBuildBean0(XBean anno,  MethodWrap mWrap, Object raw) {
         if (raw != null) {
+            Class<?> beanClz = mWrap.getReturnType();
+            XInject  beanInj = mWrap.getAnnotation(XInject.class);
+
             BeanWrap m_bw = null;
             if (raw instanceof BeanWrap) {
                 m_bw = (BeanWrap) raw;
@@ -368,7 +369,7 @@ public class AopContext extends BeanContainer {
                 XEventBus.push(raw);
 
                 //动态构建的bean，都用新生成wrap（否则会类型混乱）
-                m_bw = new BeanWrap(clz, raw);
+                m_bw = new BeanWrap(beanClz, raw);
                 m_bw.attrsSet(anno.attrs());
             }
 
