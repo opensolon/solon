@@ -20,6 +20,7 @@ import java.util.function.BiConsumer;
  * XApp.cfg().isDebugMode()
  * XApp.cfg().isDriftMode()
  * XApp.cfg().get("water.logger")
+ * XApp.cfg().getProp("db1")
  * </code></pre>
  *
  * @author noear

@@ -3,6 +3,13 @@ package org.noear.solon.ext;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * 忽略大小写的LinkedMap
+ *
+ * @see org.noear.solon.core.XMap
+ * @author noear
+ * @since 1.0
+ * */
 @SuppressWarnings("serial")
 public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable, Cloneable {
 
