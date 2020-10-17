@@ -34,6 +34,8 @@ public class XRenderManager implements XRender {
 
     /**
      * 登记渲染器
+     *
+     * @param render 渲染器
      */
     protected static void register(XRender render) {
         _def = render;
@@ -47,7 +49,8 @@ public class XRenderManager implements XRender {
     /**
      * 印射后缀和渲染器的关系
      *
-     * @param suffix = .ftl
+     * @param suffix 后缀（例：.ftl）
+     * @param render 渲染器
      */
     protected static void mapping(String suffix, XRender render) {
         //suffix=.ftl
@@ -59,28 +62,32 @@ public class XRenderManager implements XRender {
     /**
      * 印射后缀和渲染器的关系
      *
-     * @param suffix = .ftl
+     * @param suffix 后缀（例：.ftl）
+     * @param clzName  渲染器类名
      */
-    protected static void mapping(String suffix, String className) {
-        XRender render = _lib.get(className);
+    protected static void mapping(String suffix, String clzName) {
+        XRender render = _lib.get(clzName);
         if (render == null) {
-            PrintUtil.redln("solon:: " + className + " not exists!");
+            PrintUtil.redln("solon:: " + clzName + " not exists!");
             return;
             //throw new RuntimeException(classSimpleName + " not exists!");
         }
 
         _mapping.put(suffix, render);
 
-        PrintUtil.blueln("solon:: view mapping: " + suffix + "=" + className);
+        PrintUtil.blueln("solon:: view mapping: " + suffix + "=" + clzName);
     }
 
     /**
-     * 执行渲染
+     * 渲染
+     *
+     * @param data 数据
+     * @param ctx 上下文
      */
     @Override
-    public void render(Object obj, XContext ctx) throws Throwable {
-        if (obj instanceof ModelAndView) {
-            ModelAndView mv = (ModelAndView) obj;
+    public void render(Object data, XContext ctx) throws Throwable {
+        if (data instanceof ModelAndView) {
+            ModelAndView mv = (ModelAndView) data;
 
             if (XUtil.isEmpty(mv.view()) == false) {
                 //
@@ -138,11 +145,11 @@ public class XRenderManager implements XRender {
         }
 
         if (render != null) {
-            render.render(obj, ctx);
+            render.render(data, ctx);
         } else {
             //最后只有 def
             //
-            _def.render(obj, ctx);
+            _def.render(data, ctx);
         }
     }
 }

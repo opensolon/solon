@@ -7,5 +7,11 @@ package org.noear.solon.core;
  * @since 1.0
  * */
 public interface XRender {
-    void render(Object object, XContext context) throws Throwable;
+    /**
+     * 渲染
+     *
+     * @param data 数据
+     * @param ctx 上下文
+     */
+    void render(Object data, XContext ctx) throws Throwable;
 }

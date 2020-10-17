@@ -7,6 +7,22 @@ import java.io.Serializable;
 /**
  * 结果（可用于接口开发返回统一结果）
  *
+ * <pre><code>
+ * @XMapping("api")
+ * @XController
+ * public class DemoController{
+ *     @XMapping("A.0.1")
+ *     public XResult api1(){
+ *         return XResult.SUCCEED;
+ *     }
+ *
+ *     @XMapping("A.0.2")
+ *     public XResult api2(){
+ *         return XResult.succeed(12);
+ *     }
+ * }
+ * </code></pre>
+ *
  * @author noear
  * @since 1.0
  * */

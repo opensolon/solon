@@ -9,8 +9,9 @@ import java.util.Properties;
 /**
  * 属性加载器
  *
- * 通过 global 进行重写
+ * 通过 globalSet 可进行重写
  *
+ * @see XUtil#loadProperties(URL)
  * @author noear
  * @since 1.0
  * */

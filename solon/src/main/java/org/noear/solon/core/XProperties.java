@@ -8,10 +8,11 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 /**
- * 通用属性集合
+ * 通用属性集合（为 XAppProperties 的基类）
  *
  * 在 Properties 基础上，添加了些方法
  *
+ * @see org.noear.solon.XAppProperties
  * @author noear
  * @since 1.0
  * */
@@ -32,22 +33,47 @@ public class XProperties extends Properties {
         return getProperty(key);
     }
 
+    /**
+     * 获取某项配置（如果没有，输出默认值）
+     *
+     * @param def 默认值
+     */
     public String get(String key, String def) {
         return getProperty(key, def);
     }
 
+    /**
+     * 获取某项配置，并转为布尔型（如果没有，输出默认值）
+     *
+     * @param def 默认值
+     */
     public boolean getBool(String key, boolean def) {
         return getOrDef(key, def, Boolean::parseBoolean);
     }
 
+    /**
+     * 获取某项配置，并转为整型（如果没有，输出默认值）
+     *
+     * @param def 默认值
+     */
     public int getInt(String key, int def) {
         return getOrDef(key, def, Integer::parseInt);
     }
 
+    /**
+     * 获取某项配置，并转为长整型（如果没有，输出默认值）
+     *
+     * @param def 默认值
+     */
     public long getLong(String key, long def) {
         return getOrDef(key, def, Long::parseLong);
     }
 
+    /**
+     * 获取某项配置，并转为又精度型（如果没有，输出默认值）
+     *
+     * @param def 默认值
+     */
     public Double getDouble(String key, double def) {
         return getOrDef(key, def, Double::parseDouble);
     }
@@ -68,8 +94,8 @@ public class XProperties extends Properties {
      *
      * @param keyStarts key 的开始字符
      * */
-    public <T> T getBean(String keyStarts, Class<T> clz) {
-        return ClassWrap.get(clz).newBy(getProp(keyStarts)::getProperty);
+    public <T> T getBean(String keyStarts, Class<T> type) {
+        return ClassWrap.get(type).newBy(getProp(keyStarts)::getProperty);
     }
 
     /**
@@ -79,7 +105,7 @@ public class XProperties extends Properties {
      * */
     public XProperties getProp(String keyStarts) {
         XProperties prop = new XProperties();
-        findDo(keyStarts, prop::put);
+        doFind(keyStarts, prop::put);
         return prop;
     }
 
@@ -103,11 +129,11 @@ public class XProperties extends Properties {
      * */
     public XMap getXmap(String keyStarts) {
         XMap map = new XMap();
-        findDo(keyStarts, map::put);
+        doFind(keyStarts, map::put);
         return map;
     }
 
-    private void findDo(String keyStarts, BiConsumer<String, String> setFun) {
+    private void doFind(String keyStarts, BiConsumer<String, String> setFun) {
         String key2 = keyStarts + ".";
         int idx2 = key2.length();
 
