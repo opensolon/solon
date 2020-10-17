@@ -366,21 +366,6 @@ public class XApp implements XHandler,XHandlerSlots {
         }
     }
 
-    @Override
-    public void add(XMapping mapping, XHandler handler) {
-        for (XMethod m1 : mapping.method()) {
-            if (mapping.after() || mapping.before()) {
-                if (mapping.after()) {
-                    after(mapping.value(), m1, mapping.index(), handler);
-                } else {
-                    before(mapping.value(), m1, mapping.index(), handler);
-                }
-            } else {
-                add(mapping.value(), m1, handler);
-            }
-        }
-    }
-
 
     //http
 
