@@ -3,6 +3,7 @@ package org.noear.solon.core;
 /**
  * 通用渲染接口
  *
+ * @see XRenderManager#register(XRender)
  * @author noear
  * @since 1.0
  * */

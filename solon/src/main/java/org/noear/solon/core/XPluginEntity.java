@@ -1,11 +1,13 @@
 package org.noear.solon.core;
 
 import org.noear.solon.XApp;
+import org.noear.solon.XAppProperties;
 import org.noear.solon.XUtil;
 
 /**
  * 插件实体
  *
+ * @see XAppProperties#plugsScan()
  * @author noear
  * @since 1.0
  * */
