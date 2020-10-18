@@ -36,7 +36,7 @@
         <jackson.ver>2.10.5</jackson.ver>
         <hessian.ver>4.0.63</hessian.ver>
 
-        <junit.ver>4.12</junit.ver>
+        <junit.ver>4.13.1</junit.ver>
         <undertow.ver>2.1.0.Final</undertow.ver>
 
         <mybatis.ver>3.5.3</mybatis.ver>
