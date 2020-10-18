@@ -8,6 +8,7 @@ import io.undertow.servlet.api.*;
 import org.noear.solon.XApp;
 import org.noear.solon.boot.undertow.http.UtHttpHandlerJsp;
 import org.noear.solon.boot.undertow.websocket.UtWsConnectionCallback;
+import org.noear.solon.core.XEventBus;
 import org.noear.solon.core.XPlugin;
 
 import static io.undertow.Handlers.websocket;
@@ -38,13 +39,13 @@ public class XPluginUndertow extends XPluginUndertowBase implements XPlugin {
     }
 
     protected void setup(XApp app) throws Throwable {
-        // 动作分发Handler
         HttpHandler httpHandler = buildHandler();
 
         //************************** init server start******************
         Undertow.Builder builder = Undertow.builder();
 
         builder.setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE, false);
+        builder.setServerOption(UndertowOptions.MAX_ENTITY_SIZE, XServerProp.request_maxRequestSize);
 
         builder.addHttpListener(app.port(), "0.0.0.0");
 
@@ -53,6 +54,10 @@ public class XPluginUndertow extends XPluginUndertowBase implements XPlugin {
         } else {
             builder.setHandler(httpHandler);
         }
+
+
+        //分发事件（充许外部扩展）
+        XEventBus.push(builder);
 
         _server = builder.build();
 

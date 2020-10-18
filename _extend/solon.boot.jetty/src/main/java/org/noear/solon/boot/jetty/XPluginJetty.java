@@ -7,6 +7,7 @@ import org.eclipse.jetty.server.session.SessionHandler;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
+import org.noear.solon.core.XEventBus;
 import org.noear.solon.core.XPlugin;
 
 import java.io.IOException;
@@ -67,6 +68,8 @@ class XPluginJetty extends XPluginJettyBase implements XPlugin {
             }
         });
 
+        //分发事件（充许外部扩展）
+        XEventBus.push(_server);
     }
 
     /**
