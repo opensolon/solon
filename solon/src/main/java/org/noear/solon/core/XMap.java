@@ -12,6 +12,7 @@ import java.util.Map;
  *
  * 用于：参数解析，Header，Param 处理
  *
+ * @see XContext#paramMap()
  * @author noear
  * @since 1.0
  * */

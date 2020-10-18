@@ -7,6 +7,7 @@ import java.util.UUID;
 /**
  * XSocket 消息包（实现 XMessage + XListener 架构）
  *
+ * @see XListener#onMessage(XSession, XMessage)
  * @author noear
  * @since 1.0
  * */

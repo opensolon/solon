@@ -13,6 +13,8 @@ import java.lang.reflect.ParameterizedType;
  * });
  * </code></pre>
  *
+ * @author noear
+ * @since 1.0
  * */
 public interface VarHolder {
 

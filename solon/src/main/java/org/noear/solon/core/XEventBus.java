@@ -7,6 +7,9 @@ import java.util.Set;
 
 /**
  * 监听器（内部类，外部不要使用）
+ *
+ * @see AopContext#beanLoaded()
+ * @see XApp#onEvent(Class, XEventListener)
  * */
 public final class XEventBus {
     //异常订阅者

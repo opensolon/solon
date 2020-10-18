@@ -6,6 +6,8 @@ import java.util.List;
 /**
  * 处理助手，提供前置与后置处理的存储
  *
+ * @see org.noear.solon.XGateway
+ * @see XAction
  * @author noear
  * @since 1.0
  * */
