@@ -23,7 +23,6 @@ package org.noear.solon.core;
  *
  * //推送事件
  * XEventBus.push(new ComAdaptor());
- *
  * </code></pre>
  * @author noear
  * @since 1.0
