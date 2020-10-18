@@ -5,10 +5,13 @@ import io.undertow.server.HttpServerExchange;
 import io.undertow.servlet.handlers.ServletRequestContext;
 import org.noear.solon.XApp;
 import org.noear.solon.boot.undertow.XPluginImp;
+import org.noear.solon.boot.undertow.XServerProp;
 import org.noear.solon.core.XEventBus;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * author : Yukai
@@ -27,27 +30,34 @@ public class UtHttpHandler implements HttpHandler {
         HttpServletRequest request = (HttpServletRequest) servletRequestContext.getServletRequest();
         HttpServletResponse response = (HttpServletResponse) servletRequestContext.getServletResponse();
 
+        try {
+            service(request, response);
+        }finally {
+            exchange.endExchange();
+        }
+    }
+
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UtHttpContext context = new UtHttpContext(request, response);
         context.contentType("text/plain;charset=UTF-8");
-        context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
+
+        if (XServerProp.output_meta) {
+            context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
+        }
 
         try {
-            if (exchange.getRequestURI() != null && !exchange.getRequestURI().endsWith(".jsp")) {
-                XApp.global().tryHandle(context);
-            }
+            XApp.global().handle(context);
 
             if (context.getHandled() == false || context.status() == 404) {
-                exchange.setStatusCode(404);
+                response.setStatus(404);
             }
         } catch (Throwable ex) {
             XEventBus.push(ex);
-            exchange.setStatusCode(500);
+            response.setStatus(500);
 
             if (XApp.cfg().isDebugMode()) {
                 ex.printStackTrace(response.getWriter());
             }
-        } finally {
-            exchange.endExchange();
         }
     }
 }
