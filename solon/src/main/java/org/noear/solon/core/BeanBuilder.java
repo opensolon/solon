@@ -6,13 +6,13 @@ import java.lang.annotation.Annotation;
  * Bean 构建器（此类用于扩展AopContext，为其添加构建器）
  *
  * <pre><code>
- * //@Job 构建器添加
- * Aop.context().beanBuilderAdd(Job.classs, (clz, bw, anno)->{
+ * //@Cron4j 构建器添加
+ * Aop.context().beanBuilderAdd(Cron4j.classs, (clz, bw, anno)->{
  *     ...
  * });
  *
- * //@Job demo
- * @Job(cron4x = "*\/1 * * * *")
+ * //@Cron4j demo
+ * @Cron4j(cronx = "*\/1 * * * *")
  * public class DemoJob implements Task{
  *     @Db("db1")
  *     UserMapper userMapper;

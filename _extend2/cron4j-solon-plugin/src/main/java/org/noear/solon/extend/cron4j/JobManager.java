@@ -2,6 +2,7 @@ package org.noear.solon.extend.cron4j;
 
 import it.sauronsoftware.cron4j.Scheduler;
 import it.sauronsoftware.cron4j.Task;
+import org.noear.solon.core.BeanWrap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,12 +30,26 @@ public final class JobManager {
             _server.stop();
 
             jobMap.forEach((k,v)->{
-                if(v.getFuture() != null){
-                    v.getFuture().cancel(true);
-                }
+                v.stop();
             });
 
             _server = null;
+        }
+    }
+
+    protected static void doAddBean(String name, String cronx, boolean enable, BeanWrap bw){
+        if (enable == false) {
+            return;
+        }
+
+        if (Task.class.isAssignableFrom(bw.clz())) {
+            if (cronx.indexOf(" ") < 0) {
+                throw new RuntimeException("Job cronx only supported Runnable：" + bw.clz().getName());
+            }
+        }
+
+        if (Runnable.class.isAssignableFrom(bw.clz()) || Task.class.isAssignableFrom(bw.clz())) {
+            JobManager.addJob(new JobEntity(name, cronx, enable, bw));
         }
     }
 
@@ -44,34 +59,34 @@ public final class JobManager {
     public static void addJob(JobEntity jobEntity) {
         jobMap.putIfAbsent(jobEntity.beanWrap.clz(), jobEntity);
 
-        if (jobEntity.cron4x.indexOf(" ") < 0) {
-            if (jobEntity.cron4x.endsWith("ms")) {
-                long period = Long.parseLong(jobEntity.cron4x.substring(0, jobEntity.cron4x.length() - 2));
+        if (jobEntity.cronx.indexOf(" ") < 0) {
+            if (jobEntity.cronx.endsWith("ms")) {
+                long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 2));
                 addFuture(jobEntity, period, TimeUnit.MILLISECONDS);
-            } else if (jobEntity.cron4x.endsWith("s")) {
-                long period = Long.parseLong(jobEntity.cron4x.substring(0, jobEntity.cron4x.length() - 1));
+            } else if (jobEntity.cronx.endsWith("s")) {
+                long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
                 addFuture(jobEntity, period, TimeUnit.SECONDS);
-            } else if (jobEntity.cron4x.endsWith("m")) {
-                long period = Long.parseLong(jobEntity.cron4x.substring(0, jobEntity.cron4x.length() - 1));
-                addSchedule(jobEntity, "*/"+period+" * * * *");
-            } else if (jobEntity.cron4x.endsWith("h")) {
-                long period = Long.parseLong(jobEntity.cron4x.substring(0, jobEntity.cron4x.length() - 1));
-                addSchedule(jobEntity, "* */"+period+" * * *");
-            } else if (jobEntity.cron4x.endsWith("d")) {
-                long period = Long.parseLong(jobEntity.cron4x.substring(0, jobEntity.cron4x.length() - 1));
-                addSchedule(jobEntity, "* * */"+period+" * *");
+            } else if (jobEntity.cronx.endsWith("m")) {
+                long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
+                addFuture(jobEntity, period, TimeUnit.MINUTES);
+            } else if (jobEntity.cronx.endsWith("h")) {
+                long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
+                addFuture(jobEntity, period, TimeUnit.HOURS);
+            } else if (jobEntity.cronx.endsWith("d")) {
+                long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
+                addFuture(jobEntity, period, TimeUnit.DAYS);
             }
         } else{
-            addSchedule(jobEntity, jobEntity.cron4x);
+            addSchedule(jobEntity, jobEntity.cronx);
         }
     }
 
-    private static void addSchedule(JobEntity jobEntity, String cron4x) {
+    private static void addSchedule(JobEntity jobEntity, String cronx) {
         String jobID = null;
         if(jobEntity.beanWrap.raw() instanceof Runnable) {
-            jobID = _server.schedule(cron4x, jobEntity::exec);
+            jobID = _server.schedule(cronx, jobEntity::start);
         } else if(jobEntity.beanWrap.raw() instanceof Task){
-            jobID = _server.schedule(cron4x, (Task)jobEntity.beanWrap.raw());
+            jobID = _server.schedule(cronx, (Task)jobEntity.beanWrap.raw());
         } else{
             return;
         }
@@ -80,7 +95,7 @@ public final class JobManager {
     }
 
     private static void addFuture(JobEntity jobEntity, long period, TimeUnit unit) {
-        ScheduledFuture<?> future =  _taskScheduler.scheduleAtFixedRate(jobEntity::exec, 0, period, unit);
+        ScheduledFuture<?> future =  _taskScheduler.scheduleAtFixedRate(jobEntity::start, 0, period, unit);
         jobEntity.setFuture(future);
     }
 }

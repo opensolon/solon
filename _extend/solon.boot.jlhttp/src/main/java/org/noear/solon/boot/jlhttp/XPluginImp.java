@@ -2,6 +2,7 @@ package org.noear.solon.boot.jlhttp;
 
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.core.Aop;
 import org.noear.solon.core.XMethod;
 import org.noear.solon.core.XPlugin;
 
@@ -31,6 +32,12 @@ public final class XPluginImp implements XPlugin {
 
         XServerProp.init();
 
+        Aop.beanOnloaded(() -> {
+            start0(app);
+        });
+    }
+
+    private void start0(XApp app){
         _server = new HTTPServer();
 
         long time_start = System.currentTimeMillis();

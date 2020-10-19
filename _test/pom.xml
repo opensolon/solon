@@ -256,6 +256,11 @@
             <artifactId>cron4j-solon-plugin</artifactId>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>quartz-solon-plugin</artifactId>
+            <scope>compile</scope>
+        </dependency>
 
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>

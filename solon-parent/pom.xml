@@ -397,6 +397,14 @@
                 <artifactId>cron4j-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>quartz-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>dubbo-solon-plugin</artifactId>
@@ -726,6 +734,7 @@
         <module>../_extend2/weed3-solon-plugin</module>
         <module>../_extend2/mybatis-solon-plugin</module>
         <module>../_extend2/mybatis-sqlhelper-solon-plugin</module>
+        <module>../_extend2/quartz-solon-plugin</module>
 <!--        <module>../_extend2/smart-doc-solon-plugin</module>-->
 
 

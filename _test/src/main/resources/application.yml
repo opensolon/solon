@@ -35,8 +35,12 @@ solon.stop:
   path: /demox/_stop
   host: localhost
 
-solon.schedule.Task3Run:
-  cron4x: "*/1 * * * *"
+solon.quartz.QuartzRun1:
+  cron7x: "0 0/1 * * * ? *"
+  enable: true
+
+solon.cron4j.Cron4jRun1:
+  cron5x: "*/1 * * * *"
   enable: true
 
 custom:
