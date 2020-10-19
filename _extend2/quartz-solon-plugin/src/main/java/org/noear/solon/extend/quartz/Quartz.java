@@ -14,7 +14,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface Quartz {
     @XNote("cronx = 或cron：支持7位（秒，分，时，天，月，周，年） 或速配： 100ms,2s,1m,1h,1d(ms:毫秒；s:秒；m:分；h:小时；d:天)")
-    String cronx();
+    String cron7x();
     boolean enable() default true;
     String name() default "";
 }

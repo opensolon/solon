@@ -47,7 +47,7 @@ public final class JobManager {
         if (XUtil.isEmpty(jobID)) {
             return null;
         } else {
-            return getJob(jobID);
+            return jobMap.get(jobID);
         }
     }
 
@@ -80,7 +80,7 @@ public final class JobManager {
     }
 
     private static void addSchedule(JobEntity jobEntity, String cronx) throws Exception {
-        JobDetail jobDetail = JobBuilder.newJob(JobProxy.class)
+        JobDetail jobDetail = JobBuilder.newJob(QuartzProxy.class)
                 .withIdentity(jobEntity.jobID, "solon")
                 .usingJobData("__jobID", jobEntity.jobID)
                 .build();
@@ -116,7 +116,7 @@ public final class JobManager {
                 return;
         }
 
-        JobDetail jobDetail = JobBuilder.newJob(JobProxy.class)
+        JobDetail jobDetail = JobBuilder.newJob(QuartzProxy.class)
                 .withIdentity(jobEntity.jobID, "solon")
                 .usingJobData("__jobID", jobEntity.jobID)
                 .build();

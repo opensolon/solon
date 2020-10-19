@@ -4,11 +4,13 @@ import it.sauronsoftware.cron4j.Task;
 import it.sauronsoftware.cron4j.TaskExecutionContext;
 import org.noear.solon.extend.cron4j.Cron4j;
 
-@Cron4j(cronx = "*/1 * * * *")
-public class Cron4jRun0 extends Task {
+import java.util.Date;
+
+@Cron4j(cron5x = "*/1 * * * *")
+public class Cron4jTask extends Task {
 
     @Override
     public void execute(TaskExecutionContext context) throws RuntimeException {
-        System.out.println("我是定时任务: Cron4jRun0(*/1 * * * *)");
+        System.out.println("我是定时任务: Cron4jTask(*/1 * * * *) -- " + new Date().toString());
     }
 }

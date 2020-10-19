@@ -17,7 +17,7 @@ public class XPluginImp implements XPlugin {
         }
 
         Aop.context().beanBuilderAdd(Quartz.class, (clz, bw, anno) -> {
-            String cronx = anno.cronx();
+            String cronx = anno.cron7x();
             String name = anno.name();
             boolean enable = anno.enable();
 

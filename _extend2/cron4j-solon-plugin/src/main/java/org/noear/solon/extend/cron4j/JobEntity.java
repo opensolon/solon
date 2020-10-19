@@ -1,6 +1,7 @@
 package org.noear.solon.extend.cron4j;
 
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.XEventBus;
 
 import java.util.concurrent.ScheduledFuture;
 
@@ -31,7 +32,7 @@ public class JobEntity {
         try {
             job.run();
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            XEventBus.push(ex);
         }
     }
 
