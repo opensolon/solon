@@ -26,7 +26,7 @@ import java.lang.annotation.*;
  * </code></pre>
  *
  * @author noear
- * @since 1.0
+ * @since 1.1
  * */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
