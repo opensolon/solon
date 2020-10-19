@@ -203,7 +203,7 @@ public final class XAppProperties extends XProperties {
      * 框架版本号
      * */
     public String version(){
-        return "1.1.4";
+        return "1.1.5";
     }
 
     /**
