@@ -24,15 +24,18 @@ public class JobEntity {
         this.enable = enable;
     }
 
-    public void exec(){
-        exec0(beanWrap.raw());
-    }
-
-    private void exec0(Runnable job) {
+    public void start(){
         try {
+            Runnable job = beanWrap.raw();
             job.run();
         } catch (Throwable ex) {
             XEventBus.push(ex);
+        }
+    }
+
+    public void stop(){
+        if(future != null){
+            future.cancel(true);
         }
     }
 

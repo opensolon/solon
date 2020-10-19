@@ -30,9 +30,7 @@ public final class JobManager {
             _server.stop();
 
             jobMap.forEach((k,v)->{
-                if(v.getFuture() != null){
-                    v.getFuture().cancel(true);
-                }
+                v.stop();
             });
 
             _server = null;
@@ -86,7 +84,7 @@ public final class JobManager {
     private static void addSchedule(JobEntity jobEntity, String cronx) {
         String jobID = null;
         if(jobEntity.beanWrap.raw() instanceof Runnable) {
-            jobID = _server.schedule(cronx, jobEntity::exec);
+            jobID = _server.schedule(cronx, jobEntity::start);
         } else if(jobEntity.beanWrap.raw() instanceof Task){
             jobID = _server.schedule(cronx, (Task)jobEntity.beanWrap.raw());
         } else{
@@ -97,7 +95,7 @@ public final class JobManager {
     }
 
     private static void addFuture(JobEntity jobEntity, long period, TimeUnit unit) {
-        ScheduledFuture<?> future =  _taskScheduler.scheduleAtFixedRate(jobEntity::exec, 0, period, unit);
+        ScheduledFuture<?> future =  _taskScheduler.scheduleAtFixedRate(jobEntity::start, 0, period, unit);
         jobEntity.setFuture(future);
     }
 }
