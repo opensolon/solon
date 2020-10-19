@@ -5,7 +5,7 @@ import org.noear.solon.extend.cron4j.Cron4j;
 
 import java.util.Date;
 
-//@Cron4j(cronx = "200ms")
+//@Cron4j(cron5x = "200ms")
 public class Cron4jRun1 implements Runnable {
 
     @Override

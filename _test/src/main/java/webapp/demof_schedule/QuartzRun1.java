@@ -4,7 +4,7 @@ import org.noear.solon.extend.quartz.Quartz;
 
 import java.util.Date;
 
-//@Quartz(cronx = "200ms")
+//@Quartz(cron7x = "200ms")
 public class QuartzRun1 implements Runnable {
 
     @Override
