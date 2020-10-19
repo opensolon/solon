@@ -7,7 +7,26 @@ import java.lang.annotation.*;
 /**
  * Quartz 任务注解，支持：java.lang.Runnable 或 org.quartz.Job
  *
+ * <pre><code>
+ * @Quartz(cron7x = "0 0/1 * * * ? *")
+ * public class QuartzJob implements Job {
+ *     @Override
+ *     public void execute(JobExecutionContext ctx) throws JobExecutionException {
+ *         ...
+ *     }
+ * }
  *
+ * @Quartz(cron7x = "200ms")
+ * public class QuartzRun1 implements Runnable {
+ *     @Override
+ *     public void run() {
+ *         ...
+ *     }
+ * }
+ * </code></pre>
+ *
+ * @author noear
+ * @since 1.0
  * */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

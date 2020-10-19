@@ -6,6 +6,25 @@ import java.lang.annotation.*;
 
 /**
  * Cron4j 任务注解，支持：java.lang.Runnable 或 Task接口
+ *
+ * <pre><code>
+ * @Cron4j(cron5x = "*\/1 * * * *")
+ * public class Cron4jTask extends Task {
+ *     @Override
+ *     public void execute(TaskExecutionContext context) throws RuntimeException {
+ *         ...
+ *     }
+ * }
+ *
+ * @Cron4j(cron5x = "200ms")
+ * public class Cron4jRun1 implements Runnable {
+ *     @Override
+ *     public void run() {
+ *         ...
+ *     }
+ * }
+ * </code></pre>
+ *
  * */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
