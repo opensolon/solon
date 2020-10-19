@@ -1,10 +1,8 @@
-package org.noear.solon.extend.cron4j;
+package org.noear.solon.extend.quartz;
 
-import it.sauronsoftware.cron4j.Task;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.XPlugin;
 
 import java.util.Properties;
@@ -12,9 +10,13 @@ import java.util.Properties;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
-        JobManager.init();
+        try {
+            JobManager.init();
+        } catch (Exception ex) {
+            throw XUtil.throwableWrap(ex);
+        }
 
-        Aop.context().beanBuilderAdd(Job.class, (clz, bw, anno) -> {
+        Aop.context().beanBuilderAdd(QuartzJob.class, (clz, bw, anno) -> {
             String cron4x = anno.cron4x();
             String name = anno.name();
             boolean enable = anno.enable();
@@ -36,39 +38,16 @@ public class XPluginImp implements XPlugin {
                 }
             }
 
-            scheduleAdd(name, cron4x, enable, bw);
+            JobManager.doAddBean(name, cron4x, enable, bw);
         });
 
         Aop.context().beanOnloaded(() -> {
-            Aop.context().beanForeach((k, bw) -> {
-                if (k.startsWith("job:") && k.length() > 5) {
-                    String name = k.split(":")[1];
-                    Properties prop = XApp.cfg().getProp("solon.schedule." + name);
-                    if (prop.size() > 0) {
-                        String cron4x = prop.getProperty("cron4x");
-                        boolean enable = !("false".equals(prop.getProperty("enable")));
-
-                        scheduleAdd(name, cron4x, enable, bw);
-                    }
-                }
-            });
-
-            JobManager.start();
-        });
-    }
-
-    private void scheduleAdd(String name, String cron4x, boolean enable, BeanWrap bw) {
-        if (enable == false) {
-            return;
-        }
-
-        if (Task.class.isAssignableFrom(bw.clz())) {
-            if (cron4x.indexOf(" ") < 0) {
-                throw new RuntimeException("Job only supported Runnable：" + bw.clz().getName());
+            try {
+                JobManager.start();
+            } catch (Exception ex) {
+                throw XUtil.throwableWrap(ex);
             }
-        }
-
-        JobManager.addJob(new JobEntity(name, cron4x, enable, bw));
+        });
     }
 
     @Override

@@ -1,6 +1,9 @@
-package org.noear.solon.extend.cron4j;
+package org.noear.solon.extend.quartz;
 
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.XEventBus;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
 
 import java.util.concurrent.ScheduledFuture;
 
@@ -12,42 +15,28 @@ public class JobEntity {
     public final String cron4x;
     public final BeanWrap beanWrap;
     public final boolean enable;
+    public final String jobID;
 
-    private String jobID;
-    private ScheduledFuture<?> future;
+    private boolean isRunnable;
 
     public JobEntity(String name, String cron4x, boolean enable, BeanWrap beanWrap){
         this.name = name;
         this.cron4x = cron4x;
         this.beanWrap = beanWrap;
         this.enable = enable;
+        this.jobID = beanWrap.clz().getName();
+        this.isRunnable = Runnable.class.isAssignableFrom(beanWrap.clz());
     }
 
-    public void exec(){
-        exec0(beanWrap.raw());
-    }
-
-    private void exec0(Runnable job) {
+    public void exec(JobExecutionContext ctx){
         try {
-            job.run();
-        } catch (Throwable ex) {
-            ex.printStackTrace();
+            if (isRunnable) {
+                ((Runnable) beanWrap.raw()).run();
+            } else {
+                ((Job) beanWrap.raw()).execute(ctx);
+            }
+        }catch (Throwable ex){
+            XEventBus.push(ex);
         }
-    }
-
-    public String getJobID() {
-        return jobID;
-    }
-
-    public void setJobID(String jobID) {
-        this.jobID = jobID;
-    }
-
-    public ScheduledFuture<?> getFuture() {
-        return future;
-    }
-
-    public void setFuture(ScheduledFuture<?> future) {
-        this.future = future;
     }
 }

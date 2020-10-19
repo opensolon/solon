@@ -2,6 +2,7 @@ package org.noear.solon.extend.cron4j;
 
 import it.sauronsoftware.cron4j.Scheduler;
 import it.sauronsoftware.cron4j.Task;
+import org.noear.solon.core.BeanWrap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +37,20 @@ public final class JobManager {
 
             _server = null;
         }
+    }
+
+    protected static void doAddBean(String name, String cron4x, boolean enable, BeanWrap bw){
+        if (enable == false) {
+            return;
+        }
+
+        if (Task.class.isAssignableFrom(bw.clz())) {
+            if (cron4x.indexOf(" ") < 0) {
+                throw new RuntimeException("Job only supported Runnable：" + bw.clz().getName());
+            }
+        }
+
+        JobManager.addJob(new JobEntity(name, cron4x, enable, bw));
     }
 
     /**

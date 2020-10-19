@@ -1,48 +1,56 @@
-package org.noear.solon.extend.cron4j;
+package org.noear.solon.extend.quartz;
 
-import it.sauronsoftware.cron4j.Scheduler;
-import it.sauronsoftware.cron4j.Task;
+
+import org.noear.solon.core.BeanWrap;
+import org.quartz.*;
+import org.quartz.impl.StdSchedulerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public final class JobManager {
     static Scheduler _server = null;
-    static ScheduledThreadPoolExecutor _taskScheduler;
-    static Map<Class<?>, JobEntity> jobMap = new HashMap<>();
+    static Map<String, JobEntity> jobMap = new HashMap<>();
 
-    protected static void init() {
-        _server = new Scheduler();
-        _taskScheduler = new ScheduledThreadPoolExecutor(1);
+    protected static void init() throws Exception {
+        SchedulerFactory schedulerFactory = new StdSchedulerFactory();
+
+        _server = schedulerFactory.getScheduler();
     }
 
-    protected static void start() {
+    protected static void start() throws Exception {
         _server.start();
     }
 
-    protected static void stop() {
+    protected static void stop() throws Exception {
 
         if (_server != null) {
-            _server.stop();
-
-            jobMap.forEach((k,v)->{
-                if(v.getFuture() != null){
-                    v.getFuture().cancel(true);
-                }
-            });
+            _server.shutdown();
 
             _server = null;
         }
     }
 
+    protected static void doAddBean(String name, String cron4x, boolean enable, BeanWrap bw) throws Exception {
+        if (enable == false) {
+            return;
+        }
+
+        if (Runnable.class.isAssignableFrom(bw.clz()) || Job.class.isAssignableFrom(bw.clz())) {
+            JobManager.addJob(new JobEntity(name, cron4x, enable, bw));
+        }
+    }
+
+    public JobEntity getJob(String jobID) {
+        return getJob(jobID);
+    }
+
     /**
      *
-     * */
-    public static void addJob(JobEntity jobEntity) {
-        jobMap.putIfAbsent(jobEntity.beanWrap.clz(), jobEntity);
+     */
+    public static void addJob(JobEntity jobEntity) throws Exception {
+        jobMap.putIfAbsent(jobEntity.jobID, jobEntity);
 
         if (jobEntity.cron4x.indexOf(" ") < 0) {
             if (jobEntity.cron4x.endsWith("ms")) {
@@ -53,34 +61,67 @@ public final class JobManager {
                 addFuture(jobEntity, period, TimeUnit.SECONDS);
             } else if (jobEntity.cron4x.endsWith("m")) {
                 long period = Long.parseLong(jobEntity.cron4x.substring(0, jobEntity.cron4x.length() - 1));
-                addSchedule(jobEntity, "*/"+period+" * * * *");
+                addFuture(jobEntity, period, TimeUnit.MINUTES);
             } else if (jobEntity.cron4x.endsWith("h")) {
                 long period = Long.parseLong(jobEntity.cron4x.substring(0, jobEntity.cron4x.length() - 1));
-                addSchedule(jobEntity, "* */"+period+" * * *");
+                addFuture(jobEntity, period, TimeUnit.HOURS);
             } else if (jobEntity.cron4x.endsWith("d")) {
                 long period = Long.parseLong(jobEntity.cron4x.substring(0, jobEntity.cron4x.length() - 1));
-                addSchedule(jobEntity, "* * */"+period+" * *");
+                addFuture(jobEntity, period, TimeUnit.DAYS);
             }
-        } else{
+        } else {
             addSchedule(jobEntity, jobEntity.cron4x);
         }
     }
 
-    private static void addSchedule(JobEntity jobEntity, String cron4x) {
-        String jobID = null;
-        if(jobEntity.beanWrap.raw() instanceof Runnable) {
-            jobID = _server.schedule(cron4x, jobEntity::exec);
-        } else if(jobEntity.beanWrap.raw() instanceof Task){
-            jobID = _server.schedule(cron4x, (Task)jobEntity.beanWrap.raw());
-        } else{
-            return;
-        }
+    private static void addSchedule(JobEntity jobEntity, String cron4x) throws Exception {
+        JobDetail jobDetail = JobBuilder.newJob(JobHandler.class)
+                .withIdentity(jobEntity.jobID, "solon")
+                .usingJobData("jobID", jobEntity.jobID)
+                .build();
 
-        jobEntity.setJobID(jobID);
+        Trigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity(jobEntity.jobID, "solon")
+                .startNow()
+                .withSchedule(CronScheduleBuilder.cronSchedule(cron4x))
+                .build();
+
+        _server.scheduleJob(jobDetail, trigger);
     }
 
-    private static void addFuture(JobEntity jobEntity, long period, TimeUnit unit) {
-        ScheduledFuture<?> future =  _taskScheduler.scheduleAtFixedRate(jobEntity::exec, 0, period, unit);
-        jobEntity.setFuture(future);
+    private static void addFuture(JobEntity jobEntity, long period, TimeUnit unit) throws Exception {
+        SimpleScheduleBuilder ssb = SimpleScheduleBuilder.simpleSchedule();
+        switch (unit) {
+            case MILLISECONDS:
+                ssb.withIntervalInMilliseconds(period);
+                break;
+            case SECONDS:
+                ssb.withIntervalInSeconds((int) period);
+                break;
+            case MINUTES:
+                ssb.withIntervalInMinutes((int) period);
+                break;
+            case HOURS:
+                ssb.withIntervalInHours((int) period);
+                break;
+            case DAYS:
+                ssb.withIntervalInSeconds((int) period);
+                break;
+            default:
+                return;
+        }
+
+        JobDetail jobDetail = JobBuilder.newJob(JobHandler.class)
+                .withIdentity(jobEntity.jobID, "solon")
+                .usingJobData("jobID", jobEntity.jobID)
+                .build();
+
+        Trigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity(jobEntity.jobID, "solon")
+                .startNow()
+                .withSchedule(ssb.repeatForever())
+                .build();
+
+        _server.scheduleJob(jobDetail, trigger);
     }
 }
