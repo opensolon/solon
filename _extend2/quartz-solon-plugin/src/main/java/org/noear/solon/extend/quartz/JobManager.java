@@ -1,6 +1,7 @@
 package org.noear.solon.extend.quartz;
 
 
+import org.noear.solon.XUtil;
 import org.noear.solon.core.BeanWrap;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
@@ -32,18 +33,22 @@ public final class JobManager {
         }
     }
 
-    protected static void doAddBean(String name, String cron4x, boolean enable, BeanWrap bw) throws Exception {
+    protected static void doAddBean(String name, String cronx, boolean enable, BeanWrap bw) throws Exception {
         if (enable == false) {
             return;
         }
 
         if (Runnable.class.isAssignableFrom(bw.clz()) || Job.class.isAssignableFrom(bw.clz())) {
-            JobManager.addJob(new JobEntity(name, cron4x, enable, bw));
+            JobManager.addJob(new JobEntity(name, cronx, enable, bw));
         }
     }
 
-    public JobEntity getJob(String jobID) {
-        return getJob(jobID);
+    public static JobEntity getJob(String jobID) {
+        if (XUtil.isEmpty(jobID)) {
+            return null;
+        } else {
+            return getJob(jobID);
+        }
     }
 
     /**
@@ -52,38 +57,38 @@ public final class JobManager {
     public static void addJob(JobEntity jobEntity) throws Exception {
         jobMap.putIfAbsent(jobEntity.jobID, jobEntity);
 
-        if (jobEntity.cron4x.indexOf(" ") < 0) {
-            if (jobEntity.cron4x.endsWith("ms")) {
-                long period = Long.parseLong(jobEntity.cron4x.substring(0, jobEntity.cron4x.length() - 2));
+        if (jobEntity.cronx.indexOf(" ") < 0) {
+            if (jobEntity.cronx.endsWith("ms")) {
+                long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 2));
                 addFuture(jobEntity, period, TimeUnit.MILLISECONDS);
-            } else if (jobEntity.cron4x.endsWith("s")) {
-                long period = Long.parseLong(jobEntity.cron4x.substring(0, jobEntity.cron4x.length() - 1));
+            } else if (jobEntity.cronx.endsWith("s")) {
+                long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
                 addFuture(jobEntity, period, TimeUnit.SECONDS);
-            } else if (jobEntity.cron4x.endsWith("m")) {
-                long period = Long.parseLong(jobEntity.cron4x.substring(0, jobEntity.cron4x.length() - 1));
+            } else if (jobEntity.cronx.endsWith("m")) {
+                long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
                 addFuture(jobEntity, period, TimeUnit.MINUTES);
-            } else if (jobEntity.cron4x.endsWith("h")) {
-                long period = Long.parseLong(jobEntity.cron4x.substring(0, jobEntity.cron4x.length() - 1));
+            } else if (jobEntity.cronx.endsWith("h")) {
+                long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
                 addFuture(jobEntity, period, TimeUnit.HOURS);
-            } else if (jobEntity.cron4x.endsWith("d")) {
-                long period = Long.parseLong(jobEntity.cron4x.substring(0, jobEntity.cron4x.length() - 1));
+            } else if (jobEntity.cronx.endsWith("d")) {
+                long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 1));
                 addFuture(jobEntity, period, TimeUnit.DAYS);
             }
         } else {
-            addSchedule(jobEntity, jobEntity.cron4x);
+            addSchedule(jobEntity, jobEntity.cronx);
         }
     }
 
-    private static void addSchedule(JobEntity jobEntity, String cron4x) throws Exception {
-        JobDetail jobDetail = JobBuilder.newJob(JobHandler.class)
+    private static void addSchedule(JobEntity jobEntity, String cronx) throws Exception {
+        JobDetail jobDetail = JobBuilder.newJob(JobProxy.class)
                 .withIdentity(jobEntity.jobID, "solon")
-                .usingJobData("jobID", jobEntity.jobID)
+                .usingJobData("__jobID", jobEntity.jobID)
                 .build();
 
         Trigger trigger = TriggerBuilder.newTrigger()
                 .withIdentity(jobEntity.jobID, "solon")
                 .startNow()
-                .withSchedule(CronScheduleBuilder.cronSchedule(cron4x))
+                .withSchedule(CronScheduleBuilder.cronSchedule(cronx))
                 .build();
 
         _server.scheduleJob(jobDetail, trigger);
@@ -111,9 +116,9 @@ public final class JobManager {
                 return;
         }
 
-        JobDetail jobDetail = JobBuilder.newJob(JobHandler.class)
+        JobDetail jobDetail = JobBuilder.newJob(JobProxy.class)
                 .withIdentity(jobEntity.jobID, "solon")
-                .usingJobData("jobID", jobEntity.jobID)
+                .usingJobData("__jobID", jobEntity.jobID)
                 .build();
 
         Trigger trigger = TriggerBuilder.newTrigger()

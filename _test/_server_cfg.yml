@@ -37,11 +37,11 @@ solon.mime.xxx: "application/xxx"
 
 #定时任务配置
 solon.schedule.job1:
-  cron4x: 2s
+  cronx: 2s
   enable: true
 
 solon.schedule.job2:
-  cron4x: "*/1 * * * *"
+  cronx: "*/1 * * * *"
   enable: true
 
 dubbo:

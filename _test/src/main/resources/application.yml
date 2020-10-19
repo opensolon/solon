@@ -36,7 +36,7 @@ solon.stop:
   host: localhost
 
 solon.schedule.Task3Run:
-  cron4x: "*/1 * * * *"
+  cronx: "*/1 * * * *"
   enable: true
 
 custom:

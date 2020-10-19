@@ -12,8 +12,8 @@ public class XPluginImp implements XPlugin {
     public void start(XApp app) {
         JobManager.init();
 
-        Aop.context().beanBuilderAdd(Job.class, (clz, bw, anno) -> {
-            String cron4x = anno.cron4x();
+        Aop.context().beanBuilderAdd(Cron4j.class, (clz, bw, anno) -> {
+            String cronx = anno.cronx();
             String name = anno.name();
             boolean enable = anno.enable();
 
@@ -21,36 +21,23 @@ public class XPluginImp implements XPlugin {
                 Properties prop = XApp.cfg().getProp("solon.schedule." + name);
 
                 if (prop.size() > 0) {
-                    String cron4xTmp = prop.getProperty("cron4x");
+                    String cronxTmp = prop.getProperty("cronx");
                     String enableTmp = prop.getProperty("enable");
 
                     if ("false".equals(enableTmp)) {
                         enable = false;
                     }
 
-                    if (XUtil.isNotEmpty(cron4xTmp)) {
-                        cron4x = cron4xTmp;
+                    if (XUtil.isNotEmpty(cronxTmp)) {
+                        cronx = cronxTmp;
                     }
                 }
             }
 
-            JobManager.doAddBean(name, cron4x, enable, bw);
+            JobManager.doAddBean(name, cronx, enable, bw);
         });
 
         Aop.context().beanOnloaded(() -> {
-            Aop.context().beanForeach((k, bw) -> {
-                if (k.startsWith("job:") && k.length() > 5) {
-                    String name = k.split(":")[1];
-                    Properties prop = XApp.cfg().getProp("solon.schedule." + name);
-                    if (prop.size() > 0) {
-                        String cron4x = prop.getProperty("cron4x");
-                        boolean enable = !("false".equals(prop.getProperty("enable")));
-
-                        JobManager.doAddBean(name, cron4x, enable, bw);
-                    }
-                }
-            });
-
             JobManager.start();
         });
     }
