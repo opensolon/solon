@@ -35,13 +35,22 @@ solon.view.mapping.vm: org.noear.solon.view.velocity.VelocityRender #全名（�
 
 solon.mime.xxx: "application/xxx"
 
-#定时任务配置（支持：cron4j-solon-plugin，quartz-solon-plugin）
-solon.schedule.job1:
-  cronx: "2s"
+#定时任务配置（支持：cron4j-solon-plugin）
+solon.cron4j.job1:
+  cron5x: "2s"
   enable: true
 
-solon.schedule.job2:
-  cronx: "*/1 * * * *"
+solon.cron4j.job2:
+  cron5x: "*/1 * * * *"
+  enable: true
+
+#定时任务配置（支持：quartz-solon-plugin）
+solon.quartz.job1:
+  cron7x: "2s"
+  enable: true
+
+solon.quartz.job2:
+  cron7x: "0 0/1 * * * * ?"
   enable: true
 
 dubbo:

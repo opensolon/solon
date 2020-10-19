@@ -22,10 +22,10 @@ public class XPluginImp implements XPlugin {
             boolean enable = anno.enable();
 
             if (XUtil.isNotEmpty(name)) {
-                Properties prop = XApp.cfg().getProp("solon.schedule." + name);
+                Properties prop = XApp.cfg().getProp("solon.quartz." + name);
 
                 if (prop.size() > 0) {
-                    String cronxTmp = prop.getProperty("cronx");
+                    String cronxTmp = prop.getProperty("cron7x");
                     String enableTmp = prop.getProperty("enable");
 
                     if ("false".equals(enableTmp)) {
