@@ -25,9 +25,9 @@ Action...
 | -------- | -------- | 
 | IDEA     | 2020.2     | 
 | Maven     | 4.0     | 
-| Solon     | 1.1.5    | 
-| mybatis-solon-plugin | 1.1.5  |
-| mybatis-sqlhelper-solon-plugin | 1.1.5  |
+| Solon     | 1.1.6    | 
+| mybatis-solon-plugin | 1.1.6  |
+| mybatis-sqlhelper-solon-plugin | 1.1.6  |
 | Mybatis     | 5.3.3     | 
 | JDK     | 1.8     | 
 
@@ -41,7 +41,7 @@ Action...
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.1.5</version>
+    <version>1.1.6</version>
     <relativePath />
 </parent>
 
