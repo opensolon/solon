@@ -10,6 +10,10 @@ import java.util.Properties;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
+        if(app.source().getAnnotation(EnableCron4j.class) == null){
+            return;
+        }
+
         JobManager.init();
 
         Aop.context().beanBuilderAdd(Cron4j.class, (clz, bw, anno) -> {

@@ -10,6 +10,10 @@ import java.util.Properties;
 public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
+        if(app.source().getAnnotation(EnableQuartz.class) == null){
+            return;
+        }
+
         try {
             JobManager.init();
         } catch (Exception ex) {

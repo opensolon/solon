@@ -248,7 +248,8 @@ public class XApp implements XHandler,XHandlerSlots {
     }
 
 
-    private final XRouter _router;
+
+    private final XRouter _router; //与函数同名，_开头
     /**
      * 路由器
      */
@@ -489,11 +490,16 @@ public class XApp implements XHandler,XHandlerSlots {
         }
     }
 
+    /**
+     * 订阅异常事件
+     * */
     public XApp onError(XEventListener<Throwable> handler) {
-        XEventBus.subscribe(Throwable.class, handler);
-        return this;
+        return onEvent(Throwable.class, handler);
     }
 
+    /**
+     * 订阅事件
+     * */
     public <T> XApp onEvent(Class<T> type, XEventListener<T> handler) {
         XEventBus.subscribe(type, handler);
         return this;
