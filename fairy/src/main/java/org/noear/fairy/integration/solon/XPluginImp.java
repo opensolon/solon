@@ -3,7 +3,7 @@ package org.noear.fairy.integration.solon;
 import org.noear.fairy.Fairy;
 import org.noear.fairy.FairyConfigurationDefault;
 import org.noear.fairy.FairyException;
-import org.noear.fairy.annotation.EnableFairyClients;
+import org.noear.fairy.annotation.EnableFairyClient;
 import org.noear.fairy.annotation.FairyClient;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
@@ -18,7 +18,7 @@ public class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
-        if (app.source().getAnnotation(EnableFairyClients.class) == null) {
+        if (app.source().getAnnotation(EnableFairyClient.class) == null) {
             return;
         }
 

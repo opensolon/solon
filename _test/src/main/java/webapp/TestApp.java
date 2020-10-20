@@ -1,13 +1,17 @@
 package webapp;
 
-import org.noear.fairy.annotation.EnableFairyClients;
+import org.noear.fairy.annotation.EnableFairyClient;
 import org.noear.solon.XApp;
 import org.noear.solon.annotation.XImport;
 import org.noear.solon.core.XMethod;
+import org.noear.solon.extend.cron4j.EnableCron4j;
+import org.noear.solon.extend.quartz.EnableQuartz;
 import webapp.demo6_aop.TestImport;
 
 @XImport(value = TestImport.class)
-@EnableFairyClients
+@EnableCron4j
+@EnableQuartz
+@EnableFairyClient
 public class TestApp {
 
     public static void main(String[] args) throws Exception {

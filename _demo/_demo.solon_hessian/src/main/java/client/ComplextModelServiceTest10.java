@@ -2,7 +2,7 @@ package client;
 
 import client.dso.FairyConfigurationImp;
 import org.noear.fairy.FairyConfigurationDefault;
-import org.noear.fairy.annotation.EnableFairyClients;
+import org.noear.fairy.annotation.EnableFairyClient;
 import org.noear.fairy.annotation.FairyClient;
 import org.noear.solon.XApp;
 import org.noear.solon.annotation.XBean;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@EnableFairyClients
+@EnableFairyClient
 @XBean
 public class ComplextModelServiceTest10 {
 

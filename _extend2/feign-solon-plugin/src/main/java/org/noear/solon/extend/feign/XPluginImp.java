@@ -14,7 +14,7 @@ public class XPluginImp implements XPlugin {
     @Override
     public void start(XApp app) {
         //检查是否启用了@FeignClient
-        if (app.source().getAnnotation(EnableFeignClients.class) == null) {
+        if (app.source().getAnnotation(EnableFeignClient.class) == null) {
             return;
         }
 

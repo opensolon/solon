@@ -2,9 +2,9 @@ package webapp;
 
 import org.noear.solon.XApp;
 import org.noear.solon.core.XBridge;
-import org.noear.solon.extend.feign.EnableFeignClients;
+import org.noear.solon.extend.feign.EnableFeignClient;
 
-@EnableFeignClients
+@EnableFeignClient
 public class TmpApp {
     public static void main(String[] args) {
         XApp.start(TmpApp.class, args, (app) -> {
