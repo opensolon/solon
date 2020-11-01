@@ -80,16 +80,10 @@ public class XApp implements XHandler,XHandlerSlots {
         long time_start = System.currentTimeMillis();
         PrintUtil.blueln("solon.plugin:: Start loading");
 
-        //1.初始化应用
+        //1.创建应用
         global = new XApp(source, argx);
 
-        //2.尝试加载扩展文件夹
-        ExtendLoader.load(global.prop().extend());
-
-        //3.1.尝试扫描插件
-        global.prop().plugsScan();
-
-        //3.2.尝试初始化
+        //2.尝试初始化
         if (initialize != null) {
             try {
                 initialize.accept(global);
@@ -98,39 +92,8 @@ public class XApp implements XHandler,XHandlerSlots {
             }
         }
 
-        //4.1.尝试加载插件（顺序不能乱） //不能用forEach，以免当中有插进来
-        List<XPluginEntity> plugs = global.prop().plugs();
-        for (int i = 0,len = plugs.size(); i < len; i++) {
-            plugs.get(i).start();
-        }
-
-        //event::4.x.推送Plugin load end事件
-        XEventBus.push(PluginLoadEndEvent.instance);
-
-
-        //5.1.通过注解导入bean（一般是些配置器）
-        global.importTry();
-
-        //5.2.通过源扫描bean
-        if (source != null) {
-            Aop.context().beanScan(source);
-        }
-
-        //event::5.x.推送Bean load end事件
-        XEventBus.push(BeanLoadEndEvent.instance);
-
-
-        //6.加载渲染关系
-        XMap map = global.prop().getXmap("solon.view.mapping");
-        map.forEach((k, v) -> {
-            XBridge.renderMapping("." + k, v);
-        });
-
-        //7.bean加载完成
-        Aop.context().beanLoaded();
-
-        //event::8.x.推送App load end事件
-        XEventBus.push(AppLoadEndEvent.instance);
+        //3.运行
+        global.run();
 
         long time_end = System.currentTimeMillis();
         PrintUtil.blueln("solon.plugin:: End loading @" + (time_end - time_start) + "ms");
@@ -138,8 +101,47 @@ public class XApp implements XHandler,XHandlerSlots {
         return global;
     }
 
+    /**
+     * 运行应用
+     * */
+    protected void run() {
+        //1.1.尝试启动插件（顺序不能乱） //不能用forEach，以免当中有插进来
+        List<XPluginEntity> plugs = prop().plugs();
+        for (int i = 0, len = plugs.size(); i < len; i++) {
+            plugs.get(i).start();
+        }
+
+        //event::1.x.推送Plugin load end事件
+        XEventBus.push(PluginLoadEndEvent.instance);
+
+
+        //2.1.通过注解导入bean（一般是些配置器）
+        importTry();
+
+        //2.2.通过源扫描bean
+        if (source() != null) {
+            Aop.context().beanScan(source());
+        }
+
+        //event::2.x.推送Bean load end事件
+        XEventBus.push(BeanLoadEndEvent.instance);
+
+
+        //3.加载渲染关系
+        XMap map = prop().getXmap("solon.view.mapping");
+        map.forEach((k, v) -> {
+            XBridge.renderMapping("." + k, v);
+        });
+
+        //3.1.标识上下文加载完成
+        Aop.context().beanLoaded();
+
+        //event::4.x.推送App load end事件
+        XEventBus.push(AppLoadEndEvent.instance);
+    }
+
     //通过注解，导入bean
-    private void importTry() {
+    protected void importTry() {
         if (_source == null) {
             return;
         }
@@ -282,7 +284,14 @@ public class XApp implements XHandler,XHandlerSlots {
         _router = new XRouter();
 
         _handler = new XRouterHandler(_router);
+
+        //a.尝试加载扩展文件夹
+        ExtendLoader.load(prop().extend());
+
+        //b.尝试扫描插件
+        prop().plugsScan();
     }
+
 
     public Class<?> source(){
         return _source;
