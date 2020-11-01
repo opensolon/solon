@@ -60,13 +60,13 @@ public class XApp implements XHandler,XHandlerSlots {
         return start(source, args, null);
     }
 
-    public static XApp start(Class<?> source, String[] args, ConsumerEx<XApp> builder){
+    public static XApp start(Class<?> source, String[] args, ConsumerEx<XApp> initialize) {
         //1.初始化应用，加载配置
         XMap argx = XMap.from(args);
-        return start(source,argx,builder);
+        return start(source, argx, initialize);
     }
 
-    public static XApp start(Class<?> source, XMap argx, ConsumerEx<XApp> builder) {
+    public static XApp start(Class<?> source, XMap argx, ConsumerEx<XApp> initialize) {
         if (global != null) {
             return global;
         }
@@ -89,10 +89,10 @@ public class XApp implements XHandler,XHandlerSlots {
         //3.1.尝试扫描插件
         global.prop().plugsScan();
 
-        //3.2.尝试预构建
-        if (builder != null) {
+        //3.2.尝试初始化
+        if (initialize != null) {
             try {
-                builder.accept(global);
+                initialize.accept(global);
             } catch (Throwable ex) {
                 throw XUtil.throwableWrap(ex);
             }
