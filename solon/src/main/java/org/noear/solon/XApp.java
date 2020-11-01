@@ -78,7 +78,7 @@ public class XApp implements XHandler,XHandlerSlots {
         XClassLoader.bindingThread();
 
         long time_start = System.currentTimeMillis();
-        PrintUtil.blueln("solon app:: Start loading");
+        PrintUtil.blueln("solon.App:: Start loading");
 
         //1.创建应用
         global = new XApp(source, argx);
@@ -96,7 +96,7 @@ public class XApp implements XHandler,XHandlerSlots {
         global.run();
 
         long time_end = System.currentTimeMillis();
-        PrintUtil.blueln("solon app:: End loading @" + (time_end - time_start) + "ms");
+        PrintUtil.blueln("solon.App:: End loading @" + (time_end - time_start) + "ms");
 
         return global;
     }
