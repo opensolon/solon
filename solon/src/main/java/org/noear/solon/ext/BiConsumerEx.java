@@ -1,7 +1,5 @@
 package org.noear.solon.ext;
 
-import java.util.function.BiConsumer;
-
 /**
  * 双参数消费者
  *
