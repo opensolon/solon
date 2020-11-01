@@ -1,6 +1,5 @@
 package org.noear.solon;
 
-import org.noear.solon.annotation.XMapping;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.annotation.XImport;
 import org.noear.solon.core.Aop;
