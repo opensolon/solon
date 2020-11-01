@@ -68,7 +68,7 @@ class XPluginJetty extends XPluginJettyBase implements XPlugin {
             }
         });
 
-        //1.1.6:分发事件（充许外部扩展）
+        //1.1.7:分发事件（充许外部扩展）
         XEventBus.push(_server);
     }
 
