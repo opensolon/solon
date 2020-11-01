@@ -8,7 +8,7 @@ import org.noear.solon.XApp;
 import org.noear.solon.annotation.XConfiguration;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.XEventListener;
-import org.noear.solon.event.BeanLoadedEvent;
+import org.noear.solon.event.BeanLoadEndEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +21,7 @@ import java.io.IOException;
  * @since 2020.10.10
  * */
 @XConfiguration
-public class HasorConfiguration implements XEventListener<BeanLoadedEvent> {
+public class HasorConfiguration implements XEventListener<BeanLoadEndEvent> {
     private static Logger logger = LoggerFactory.getLogger(HasorConfiguration.class);
 
     public HasorConfiguration() {
@@ -72,7 +72,7 @@ public class HasorConfiguration implements XEventListener<BeanLoadedEvent> {
     }
 
     @Override
-    public void onEvent(BeanLoadedEvent beanLoadedEvent) {
+    public void onEvent(BeanLoadEndEvent beanLoadedEvent) {
         //没有EnableHasorWeb时，生成AppContext并注入容器
         //
         if (XApp.global().source().getAnnotation(EnableHasorWeb.class) == null) {

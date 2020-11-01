@@ -4,6 +4,9 @@ import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.annotation.XImport;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.*;
+import org.noear.solon.event.AppLoadEndEvent;
+import org.noear.solon.event.BeanLoadEndEvent;
+import org.noear.solon.event.PluginLoadEndEvent;
 import org.noear.solon.ext.*;
 import org.noear.solon.core.XListener;
 
@@ -95,30 +98,39 @@ public class XApp implements XHandler,XHandlerSlots {
             }
         }
 
-        //3.3.尝试加载插件（顺序不能乱） //不能用forEach，以免当中有插进来
+        //4.1.尝试加载插件（顺序不能乱） //不能用forEach，以免当中有插进来
         List<XPluginEntity> plugs = global.prop().plugs();
         for (int i = 0,len = plugs.size(); i < len; i++) {
             plugs.get(i).start();
         }
 
-        //3.4.通过注解导入bean（一般是些配置器）
+        //event::4.x.推送Plugin load end事件
+        XEventBus.push(PluginLoadEndEvent.instance);
+
+
+        //5.1.通过注解导入bean（一般是些配置器）
         global.importTry();
 
-
-        //4.再扫描bean
+        //5.2.通过源扫描bean
         if (source != null) {
             Aop.context().beanScan(source);
         }
 
+        //event::5.x.推送Bean load end事件
+        XEventBus.push(BeanLoadEndEvent.instance);
 
-        //5.加载渲染关系
+
+        //6.加载渲染关系
         XMap map = global.prop().getXmap("solon.view.mapping");
         map.forEach((k, v) -> {
             XBridge.renderMapping("." + k, v);
         });
 
-        //6.bean加载完成
+        //7.bean加载完成
         Aop.context().beanLoaded();
+
+        //event::8.x.推送App load end事件
+        XEventBus.push(AppLoadEndEvent.instance);
 
         long time_end = System.currentTimeMillis();
         PrintUtil.blueln("solon.plugin:: End loading @" + (time_end - time_start) + "ms");

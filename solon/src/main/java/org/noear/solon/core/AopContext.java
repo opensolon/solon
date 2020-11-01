@@ -8,7 +8,7 @@ import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.FieldWrap;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.VarGather;
-import org.noear.solon.event.BeanLoadedEvent;
+import org.noear.solon.event.BeanLoadEndEvent;
 import org.noear.solon.ext.BiConsumerEx;
 import org.noear.solon.core.util.ResourceScaner;
 
@@ -412,10 +412,7 @@ public class AopContext extends BeanContainer {
     public void beanLoaded() {
         loadDone = true;
 
-        //1.广播事件
-        XEventBus.push(BeanLoadedEvent.instance);
-
-        //2.执行加载事件（不用函数包装，是为了减少代码）
+        //执行加载事件（不用函数包装，是为了减少代码）
         loadEvents.forEach(f -> f.run());
     }
 }

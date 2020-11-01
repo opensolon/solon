@@ -26,7 +26,5 @@ public class XPluginImp implements XPlugin {
                 BuildConfig.getInstance().addModules(bw.raw());
             }
         });
-
-
     }
 }
