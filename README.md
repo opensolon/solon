@@ -184,6 +184,17 @@ public class DemoController{
 }
 ```
 
+* 文件上传
+```java
+@XController
+public class DemoController{
+    @XMapping("/file/upload")
+    public void upload(XFile file){
+        IoUtil.save(file.content, "/data/file_" + file.name);
+    }
+}
+```
+
 * Servlet 注解支持
 ```java
 @WebFilter("/hello/*")
