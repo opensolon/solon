@@ -82,6 +82,7 @@ public class XApp implements XHandler,XHandlerSlots {
 
         //1.创建应用
         global = new XApp(source, argx);
+        global.initExtend();
 
         //2.尝试初始化
         if (initialize != null) {
@@ -99,6 +100,17 @@ public class XApp implements XHandler,XHandlerSlots {
         PrintUtil.blueln("solon.App:: End loading @" + (time_end - time_start) + "ms");
 
         return global;
+    }
+
+    /**
+     * 初始化扩展包
+     * */
+    protected void initExtend(){
+        //a.尝试加载扩展文件夹
+        ExtendLoader.load(prop().extend());
+
+        //b.尝试扫描插件
+        prop().plugsScan();
     }
 
     /**
@@ -284,13 +296,8 @@ public class XApp implements XHandler,XHandlerSlots {
         _router = new XRouter();
 
         _handler = new XRouterHandler(_router);
-
-        //a.尝试加载扩展文件夹
-        ExtendLoader.load(prop().extend());
-
-        //b.尝试扫描插件
-        prop().plugsScan();
     }
+
 
 
     public Class<?> source(){
