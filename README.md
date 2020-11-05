@@ -221,7 +221,7 @@ public class HelloTask implements Runnable {
 }
 ```
 
-### 附2：示例参考
+### 附2：更多示例参考
 * 项目内的：[_test](./_test/) 和 [_demo](./_demo/)
 * 更多示例：[solon_demo](https://gitee.com/noear/solon_demo)
 
