@@ -82,7 +82,7 @@ public class XApp implements XHandler,XHandlerSlots {
 
         //1.创建应用
         global = new XApp(source, argx);
-        global.initExtend();
+        global.init();
 
         //2.尝试初始化
         if (initialize != null) {
@@ -103,9 +103,9 @@ public class XApp implements XHandler,XHandlerSlots {
     }
 
     /**
-     * 初始化扩展包
+     * 初始化（不能合在构建函数里）
      * */
-    protected void initExtend(){
+    protected void init(){
         //a.尝试加载扩展文件夹
         ExtendLoader.load(prop().extend());
 
