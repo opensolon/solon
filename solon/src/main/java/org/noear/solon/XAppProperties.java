@@ -33,6 +33,7 @@ public final class XAppProperties extends XProperties {
     private boolean isDriftMode;
     private boolean isFilesMode;
     private String  extend;
+    private String  extendFilter;
 
     public XAppProperties() {
         super(System.getProperties());
@@ -72,6 +73,11 @@ public final class XAppProperties extends XProperties {
         extend = this.args.get("extend");
         if (XUtil.isEmpty(extend)) {
             extend = get("solon.extend");
+        }
+
+        extendFilter = this.args.get("extend.filter");
+        if (XUtil.isEmpty(extendFilter)) {
+            extendFilter = get("solon.extend.filter");
         }
 
         return this;
@@ -193,10 +199,17 @@ public final class XAppProperties extends XProperties {
     }
 
     /**
-     * 包部扩展文件夹
+     * 扩展文件夹
      * */
     public String extend(){
         return extend;
+    }
+
+    /**
+     * 扩展文件夹过滤（.mysql.;.roperties;）
+     * */
+    public String extendFilter(){
+        return extendFilter;
     }
 
     /**

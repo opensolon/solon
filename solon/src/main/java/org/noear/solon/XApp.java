@@ -105,9 +105,26 @@ public class XApp implements XHandler,XHandlerSlots {
     /**
      * 初始化（不能合在构建函数里）
      * */
-    protected void init(){
+    protected void init() {
         //a.尝试加载扩展文件夹
-        ExtendLoader.load(prop().extend());
+        String filterStr = prop().extendFilter();
+        if (XUtil.isEmpty(filterStr)) {
+            //不需要过滤
+            ExtendLoader.load(prop().extend(), false);
+        } else {
+            //增加过滤
+            String[] filterS = filterStr.split(";");
+            ExtendLoader.load(prop().extend(), false, (path) -> {
+                for (String f : filterS) {
+                    if (path.contains(f)) {
+                        return true;
+                    }
+                }
+
+                return false;
+            });
+        }
+
 
         //b.尝试扫描插件
         prop().plugsScan();
