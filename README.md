@@ -206,6 +206,21 @@ public class HelloFilter implements Filter {
 }
 ```
 
+* Quartz 定时任务
+```java
+@Quartz(cron7x = "0 0/1 * * * ? *")
+public class HelloTask implements Runnable {
+    public static void main(String[] args){
+        XApp.start(QuartzRun2.class,args);
+    }
+    
+    @Override
+    public void run() {
+        System.out.println("Hello world");
+    }
+}
+```
+
 ### 附2：示例参考
 * 项目内的：[_test](./_test/) 和 [_demo](./_demo/)
 * 更多示例：[solon_demo](https://gitee.com/noear/solon_demo)
