@@ -361,6 +361,10 @@ public class HttpTest extends _TestBase {
         assert  get("/demo7/test").equals("/demo7/test");
     }
     @Test
+    public void test72() throws IOException{
+        assert  get("/demo7/exception").contains("出错了");
+    }
+    @Test
     public void test81() throws IOException{
         assert  get("/demo8/config_inject").equals("{\"username\":\"noear\",\"paasword\":1234,\"test\":{\"url\":\"jdbc:mysql://127.0.0.1/user\",\"paasword\":\"12\",\"username\":\"root\"},\"nameuser_2\":\"noear\",\"dbcfg\":{\"url\":\"jdbc:mysql://127.0.0.1/user\",\"paasword\":\"12\",\"username\":\"root\"}}");
     }
