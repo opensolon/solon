@@ -1,5 +1,6 @@
 package org.noear.solon.core;
 
+import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.ext.DataThrowable;
 import org.noear.solon.core.wrap.MethodWrap;
@@ -19,7 +20,7 @@ import java.util.regex.Pattern;
  * @author noear
  * @since 1.0
  * */
-public class XAction extends XHandlerAide implements XHandler{
+public class XAction extends XHandlerAide implements XHandler {
     //bean 包装器
     private final BeanWrap bWrap;
     //bean 相关aide
@@ -53,7 +54,7 @@ public class XAction extends XHandlerAide implements XHandler{
         mRemoting = remoting;
         bRender = render;
 
-        if(bRender == null) {
+        if (bRender == null) {
             //如果控制器是XRender
             if (XRender.class.isAssignableFrom(bWrap.clz())) {
                 bRender = bWrap.raw();
@@ -63,7 +64,7 @@ public class XAction extends XHandlerAide implements XHandler{
         if (mapping == null) {
             mName = method.getName();
             mIsMain = true;
-        }else{
+        } else {
             mProduces = mapping.produces();
             mName = mapping.value();
             mIsMain = !(mapping.after() || mapping.before());
@@ -129,6 +130,8 @@ public class XAction extends XHandlerAide implements XHandler{
 
             invoke0(x, obj);
         } catch (Throwable ex) {
+            ex = XUtil.throwableUnwrap(ex);
+
             x.attrSet("error", ex);
             renderDo(ex, x);
             XEventBus.push(ex);
@@ -246,8 +249,22 @@ public class XAction extends XHandlerAide implements XHandler{
         x.result = result;
 
         if (bRender == null) {
-            x.setRendered(true); //最多一次渲染
-            x.render(result);
+            //最多一次渲染
+            x.setRendered(true);
+
+            if (result instanceof Throwable) {
+                if (x.remoting()) {
+                    x.render(result);
+                }else {
+                    x.statusSet(500);
+
+                    if (XApp.cfg().isDebugMode()) {
+                        x.output(XUtil.getFullStackTrace(((Throwable) result)));
+                    }
+                }
+            } else {
+                x.render(result);
+            }
         } else {
             bRender.render(result, x);
         }
