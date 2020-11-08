@@ -4,20 +4,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.noear</groupId>
-    <artifactId>_demo.solon_feign</artifactId>
-    <version>1.0.0</version>
-    <packaging>jar</packaging>
-
-    <name>${project.artifactId}</name>
-    <description>java project for solon demo</description>
-
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
         <version>1.1.9</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
+
+    <groupId>org.noear</groupId>
+    <artifactId>_demo.solon_feign</artifactId>
+    <packaging>jar</packaging>
+
+    <name>${project.artifactId}</name>
+    <description>java project for solon demo</description>
 
     <!--
      多模板引擎共存时，模板文件后缀默认对应关系：
