@@ -10,4 +10,9 @@ public class TestController {
     public void test(XContext c) throws Exception{
         c.output(c.path());
     }
+
+    @XMapping("/demo7/exception")
+    public void exception(XContext c) throws Exception{
+        throw new RuntimeException("出错了");
+    }
 }
