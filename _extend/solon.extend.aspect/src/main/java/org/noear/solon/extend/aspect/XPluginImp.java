@@ -11,10 +11,14 @@ public class XPluginImp implements XPlugin {
     public void start(XApp app) {
         Aop.context().beanBuilderAdd(XDao.class, (clz, bw, anno) -> {
             bw.proxySet(BeanProxyImp.global());
+
+            Aop.context().beanRegister(bw,"",true);
         });
 
         Aop.context().beanBuilderAdd(XService.class, (clz, bw, anno) -> {
             bw.proxySet(BeanProxyImp.global());
+
+            Aop.context().beanRegister(bw,"",true);
         });
     }
 }
