@@ -171,6 +171,8 @@ public class XUtil {
 
     /**
      * 获取资源URL集
+     *
+     * @param name 资源名称
      */
     public static Enumeration<URL> getResources(String name) throws IOException {
         return XClassLoader.global().getResources(name); //XUtil.class.getClassLoader().getResources(name);
@@ -178,9 +180,21 @@ public class XUtil {
 
     /**
      * 获取资源URL
+     *
+     * @param name 资源名称
      */
     public static URL getResource(String name) {
         return XClassLoader.global().getResource(name);//XUtil.class.getResource(name);
+    }
+
+    /**
+     * 获取资源并转为String
+     *
+     * @param name 资源名称
+     * @param charset 编码
+     * */
+    public static String getResourceAsString(String name, String charset) throws IOException{
+        return getString(getResource(name).openStream(), charset);
     }
 
     public static String getString(InputStream ins, String charset) throws IOException {
