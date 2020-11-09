@@ -193,8 +193,13 @@ public class XUtil {
      * @param name 资源名称
      * @param charset 编码
      * */
-    public static String getResourceAsString(String name, String charset) throws IOException{
-        return getString(getResource(name).openStream(), charset);
+    public static String getResourceAsString(String name, String charset) throws IOException {
+        URL url = getResource(name);
+        if (url != null) {
+            return getString(url.openStream(), charset);
+        } else {
+            return null;
+        }
     }
 
     public static String getString(InputStream ins, String charset) throws IOException {
