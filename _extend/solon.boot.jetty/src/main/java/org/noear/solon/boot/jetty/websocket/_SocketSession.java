@@ -89,6 +89,11 @@ public class _SocketSession implements XSession {
         send(message.content());
     }
 
+    @Override
+    public XMessage sendAndResponse(XMessage message) {
+        return null;
+    }
+
     private boolean _open = true;
     @Override
     public void close() throws IOException {

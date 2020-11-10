@@ -41,6 +41,11 @@ public interface XSession {
     void send(XMessage message);
 
     /**
+     * 发送消息并等待响应
+     * */
+    XMessage sendAndResponse(XMessage message);
+
+    /**
      * 关闭会话
      * */
     void close() throws IOException;

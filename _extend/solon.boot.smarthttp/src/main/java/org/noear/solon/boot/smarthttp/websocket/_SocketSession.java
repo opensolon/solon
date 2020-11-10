@@ -87,6 +87,11 @@ public class _SocketSession implements XSession {
         send(message.content());
     }
 
+    @Override
+    public XMessage sendAndResponse(XMessage message) {
+        return null;
+    }
+
     private boolean isOpen = true;
 
     @Override

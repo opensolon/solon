@@ -85,6 +85,11 @@ public class _SocketSession implements XSession {
     }
 
     @Override
+    public XMessage sendAndResponse(XMessage message) {
+        return null;
+    }
+
+    @Override
     public void close() throws IOException {
         real.close();
         sessions.remove(real);
