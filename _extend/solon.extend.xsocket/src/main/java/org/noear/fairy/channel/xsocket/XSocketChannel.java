@@ -8,7 +8,6 @@ import org.noear.solon.XUtil;
 import org.noear.solon.core.XMessage;
 import org.noear.solon.core.XSession;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class XSocketChannel implements IChannel {
