@@ -11,16 +11,17 @@ public abstract class XSessionBase implements XSession {
     @Override
     public XMessage sendAndResponse(XMessage message) {
         if (XUtil.isEmpty(message.key())) {
-            throw new RuntimeException("SendAndResponse message no key!");
+            throw new IllegalArgumentException("SendAndResponse message no key");
         }
 
-        CompletableFuture<XMessage> future = new CompletableFuture<>();
-        XListenerProxy.addFuture(message,future);
+        //注册请求
+        CompletableFuture<XMessage> request = new CompletableFuture<>();
+        XListenerProxy.regRequest(message, request);
 
         send(message);
 
         try {
-            return future.get(10, TimeUnit.SECONDS);
+            return request.get(10, TimeUnit.SECONDS);
         } catch (Throwable ex) {
             throw XUtil.throwableWrap(ex);
         }

@@ -33,10 +33,11 @@ public class XListenerProxy implements XListener {
     }
 
 
-    private static Map<String, CompletableFuture<XMessage>> messageFutures = new ConcurrentHashMap<>();
-    public static void addFuture(XMessage message, CompletableFuture<XMessage> future) {
-        messageFutures.putIfAbsent(message.key(), future);
+    private static Map<String, CompletableFuture<XMessage>> requests = new ConcurrentHashMap<>();
+    public static void regRequest(XMessage message, CompletableFuture<XMessage> future) {
+        requests.putIfAbsent(message.key(), future);
     }
+
 
     @Override
     public void onOpen(XSession session) {
@@ -48,11 +49,22 @@ public class XListenerProxy implements XListener {
 
     @Override
     public void onMessage(XSession session, XMessage message, boolean messageIsString) {
+        CompletableFuture<XMessage> request = requests.get(message.key());
+
+        //请求模式
+        if(request != null){
+            request.complete(message);
+            return;
+        }
+
+
+        //监听模式
         XListener sl = get(session);
         if (sl != null) {
             sl.onMessage(session, message, messageIsString);
         }
 
+        //代理模式
         if (message.getHandled() == false) {
             socketContextHandler.handle(session, message, messageIsString);
         }
