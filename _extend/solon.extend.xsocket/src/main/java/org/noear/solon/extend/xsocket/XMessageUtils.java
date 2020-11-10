@@ -15,9 +15,12 @@ public class XMessageUtils {
      * 编码
      */
     public static ByteBuffer encode(XMessage msg) {
+        //key
         byte[] keyB = msg.key().getBytes(msg.getCharset());
+        //resourceDescriptor
         byte[] rdB = msg.resourceDescriptor().getBytes(msg.getCharset());
 
+        //length (key + resourceDescriptor + content)
         int len = keyB.length + rdB.length + msg.content().length + 2 * 2 + 4;
 
         ByteBuffer buffer = ByteBuffer.allocate(len);
@@ -51,7 +54,7 @@ public class XMessageUtils {
             return null;
         }
 
-        //1.解码key and uri
+        //1.解码key and resourceDescriptor
         ByteBuffer sb = ByteBuffer.allocate(Math.min(256, buffer.limit()));
 
         String key = decodeString(buffer, sb);
@@ -64,7 +67,7 @@ public class XMessageUtils {
             return null;
         }
 
-        //2.解码body
+        //2.解码 content
         int len = len0 - buffer.position();
         byte[] bytes = new byte[len];
         if (len > 0) {

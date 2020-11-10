@@ -5,12 +5,13 @@ import org.noear.solon.XUtil;
 import org.noear.solon.core.XMethod;
 import org.noear.solon.core.XSession;
 import org.noear.solon.core.XMessage;
+import org.noear.solon.extend.xsocket.XSessionBase;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.*;
 
-public class _SocketSession implements XSession {
+public class _SocketSession extends XSessionBase {
     public static Map<WebSocket, XSession> sessions = new HashMap<>();
     public static XSession get(WebSocket real) {
         XSession tmp = sessions.get(real);
@@ -79,10 +80,6 @@ public class _SocketSession implements XSession {
         send(message.content());
     }
 
-    @Override
-    public XMessage sendAndResponse(XMessage message) {
-        return null;
-    }
 
     @Override
     public void close() throws IOException {

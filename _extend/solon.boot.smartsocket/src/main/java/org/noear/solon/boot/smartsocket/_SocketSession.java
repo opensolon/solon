@@ -5,6 +5,7 @@ import org.noear.solon.core.XMethod;
 import org.noear.solon.core.XSession;
 import org.noear.solon.core.XMessage;
 import org.noear.solon.extend.xsocket.XMessageUtils;
+import org.noear.solon.extend.xsocket.XSessionBase;
 import org.smartboot.socket.transport.AioSession;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.util.*;
 
-public class _SocketSession implements XSession {
+public class _SocketSession extends XSessionBase {
     public static Map<AioSession, XSession> sessions = new HashMap<>();
     public static XSession get(AioSession real) {
         XSession tmp = sessions.get(real);
@@ -87,10 +88,6 @@ public class _SocketSession implements XSession {
         }
     }
 
-    @Override
-    public XMessage sendAndResponse(XMessage message) {
-        return null;
-    }
 
     @Override
     public void close() throws IOException {

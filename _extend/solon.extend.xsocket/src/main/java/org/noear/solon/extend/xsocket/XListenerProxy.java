@@ -5,6 +5,11 @@ import org.noear.solon.core.XListener;
 import org.noear.solon.core.XMessage;
 import org.noear.solon.core.XSession;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * XSocket 监听者代理
  *
@@ -25,6 +30,12 @@ public class XListenerProxy implements XListener {
 
     public XListenerProxy(){
         socketContextHandler = new XSocketContextHandler();
+    }
+
+
+    private static Map<String, CompletableFuture<XMessage>> messageFutures = new ConcurrentHashMap<>();
+    public static void addFuture(XMessage message, CompletableFuture<XMessage> future) {
+        messageFutures.putIfAbsent(message.key(), future);
     }
 
     @Override

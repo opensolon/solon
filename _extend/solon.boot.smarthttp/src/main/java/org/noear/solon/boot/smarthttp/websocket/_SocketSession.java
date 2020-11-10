@@ -4,6 +4,7 @@ import org.noear.solon.XUtil;
 import org.noear.solon.core.XMessage;
 import org.noear.solon.core.XMethod;
 import org.noear.solon.core.XSession;
+import org.noear.solon.extend.xsocket.XSessionBase;
 import org.smartboot.http.WebSocketRequest;
 import org.smartboot.http.WebSocketResponse;
 
@@ -13,7 +14,7 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.*;
 
-public class _SocketSession implements XSession {
+public class _SocketSession extends XSessionBase {
     public static Map<WebSocketRequest, _SocketSession> sessions = new HashMap<>();
 
     public static _SocketSession get(WebSocketRequest req, WebSocketResponse res) {
@@ -87,10 +88,6 @@ public class _SocketSession implements XSession {
         send(message.content());
     }
 
-    @Override
-    public XMessage sendAndResponse(XMessage message) {
-        return null;
-    }
 
     private boolean isOpen = true;
 

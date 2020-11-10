@@ -4,9 +4,11 @@ package org.noear.fairy.channel.xsocket;
 import org.noear.fairy.FairyConfig;
 import org.noear.fairy.IChannel;
 import org.noear.fairy.Result;
+import org.noear.solon.XUtil;
 import org.noear.solon.core.XMessage;
 import org.noear.solon.core.XSession;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class XSocketChannel implements IChannel {
@@ -22,29 +24,28 @@ public class XSocketChannel implements IChannel {
         //0.尝试解码器的过滤
         cfg.getDecoder().filter(cfg, method, url, headers, body);
 
-        XMessage message = null;
-        Map<String, Object> data = body;//new HashMap<>();
+        XMessage message     = null;
+        String   message_key = XUtil.guid();
+        Map<String, Object> data = body;//new LinkedHashMap<>();
 //        data.put("headers", headers);
 //        data.put("body", body);
 
-
         //1.执行并返回
-
 
         switch (cfg.getEncoder().enctype()) {
             case application_hessian: {
-                message = XMessage.wrap(url, (byte[]) cfg.getEncoder().encode(data));
+                message = XMessage.wrap(message_key, url, (byte[]) cfg.getEncoder().encode(data));
                 break;
             }
             case application_protobuf: {
-                message = XMessage.wrap(url, (byte[]) cfg.getEncoder().encode(data));
+                message = XMessage.wrap(message_key, url, (byte[]) cfg.getEncoder().encode(data));
                 break;
             }
             default: {
                 // 默认：application_json
                 //
                 String json = (String) cfg.getEncoder().encode(data);
-                message = XMessage.wrap(url, json.getBytes());
+                message = XMessage.wrap(message_key, url, json.getBytes());
                 break;
             }
         }

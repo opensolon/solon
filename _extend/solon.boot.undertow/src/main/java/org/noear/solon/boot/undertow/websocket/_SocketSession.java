@@ -7,6 +7,7 @@ import org.noear.solon.XUtil;
 import org.noear.solon.core.XMethod;
 import org.noear.solon.core.XSession;
 import org.noear.solon.core.XMessage;
+import org.noear.solon.extend.xsocket.XSessionBase;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -14,7 +15,7 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.*;
 
-public class _SocketSession implements XSession {
+public class _SocketSession extends XSessionBase {
     public static Map<WebSocketChannel, XSession> sessions = new HashMap<>();
     public static XSession get(WebSocketChannel real) {
         XSession tmp = sessions.get(real);
@@ -84,10 +85,6 @@ public class _SocketSession implements XSession {
         send(message.content());
     }
 
-    @Override
-    public XMessage sendAndResponse(XMessage message) {
-        return null;
-    }
 
     @Override
     public void close() throws IOException {
