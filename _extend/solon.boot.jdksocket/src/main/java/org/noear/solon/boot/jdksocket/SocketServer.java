@@ -2,7 +2,6 @@ package org.noear.solon.boot.jdksocket;
 
 import org.noear.solon.core.XListener;
 import org.noear.solon.core.XMessage;
-import org.noear.solon.core.XMethod;
 import org.noear.solon.core.XSession;
 import org.noear.solon.extend.xsocket.XListenerProxy;
 

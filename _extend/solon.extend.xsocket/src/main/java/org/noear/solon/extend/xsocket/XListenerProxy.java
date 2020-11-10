@@ -33,12 +33,18 @@ public class XListenerProxy implements XListener {
     }
 
 
+    //
+    // 内部使用
+    //
     private static Map<String, CompletableFuture<XMessage>> requests = new ConcurrentHashMap<>();
-    public static void regRequest(XMessage message, CompletableFuture<XMessage> future) {
+    protected static void regRequest(XMessage message, CompletableFuture<XMessage> future) {
         requests.putIfAbsent(message.key(), future);
     }
 
 
+    //
+    // XListener 实现
+    //
     @Override
     public void onOpen(XSession session) {
         XListener sl = get(session);
