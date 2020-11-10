@@ -18,32 +18,29 @@ public class XSocketChannel implements IChannel {
     }
 
     @Override
-    public Result call(FairyConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> body) throws Throwable {
+    public Result call(FairyConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
 
         //0.尝试解码器的过滤
-        cfg.getDecoder().filter(cfg, method, url, headers, body);
+        cfg.getDecoder().filter(cfg, method, url, headers, args);
 
         XMessage message     = null;
         String   message_key = XUtil.guid();
-        Map<String, Object> data = body;//new LinkedHashMap<>();
-//        data.put("headers", headers);
-//        data.put("body", body);
 
         //1.执行并返回
 
         switch (cfg.getEncoder().enctype()) {
             case application_hessian: {
-                message = XMessage.wrap(message_key, url, (byte[]) cfg.getEncoder().encode(data));
+                message = XMessage.wrap(message_key, url, (byte[]) cfg.getEncoder().encode(args));
                 break;
             }
             case application_protobuf: {
-                message = XMessage.wrap(message_key, url, (byte[]) cfg.getEncoder().encode(data));
+                message = XMessage.wrap(message_key, url, (byte[]) cfg.getEncoder().encode(args));
                 break;
             }
             default: {
                 // 默认：application_json
                 //
-                String json = (String) cfg.getEncoder().encode(data);
+                String json = (String) cfg.getEncoder().encode(args);
                 message = XMessage.wrap(message_key, url, json.getBytes());
                 break;
             }
