@@ -42,6 +42,9 @@ public final class XPluginImp implements XPlugin {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
+        //AioQuickClient<XMessage> client = new AioQuickClient<>("127.0.0.1",12121, protocol,processor);
+        //client.start();
     }
 
     @Override
