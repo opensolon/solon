@@ -23,7 +23,7 @@ public abstract class XSessionBase implements XSession {
 
         try {
             //等待响应
-            return request.get(10, TimeUnit.SECONDS);
+            return request.get(XListenerProxy.REQUEST_AND_RESPONSE_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         } catch (Throwable ex) {
             throw XUtil.throwableWrap(ex);
         }

@@ -33,6 +33,8 @@ public class XListenerProxy implements XListener {
     }
 
 
+    public static long REQUEST_AND_RESPONSE_TIMEOUT_SECONDS = 5;
+
     //
     // 内部使用
     //
