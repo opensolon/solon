@@ -18,9 +18,11 @@ public abstract class XSessionBase implements XSession {
         CompletableFuture<XMessage> request = new CompletableFuture<>();
         XListenerProxy.regRequest(message, request);
 
+        //发送消息
         send(message);
 
         try {
+            //等待响应
             return request.get(10, TimeUnit.SECONDS);
         } catch (Throwable ex) {
             throw XUtil.throwableWrap(ex);
