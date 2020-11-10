@@ -23,11 +23,8 @@ public class XPluginImp implements XPlugin {
 
         int _port = 20000 + app.port();
 
-        SocketProtocol protocol = new SocketProtocol();
-
         try {
             _server = new SocketServer();
-            _server.setProtocol(protocol);
 
             _server.start(_port);
 

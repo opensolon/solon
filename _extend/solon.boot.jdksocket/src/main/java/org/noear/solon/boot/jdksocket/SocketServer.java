@@ -12,12 +12,7 @@ import java.util.concurrent.Executors;
 
 public class SocketServer {
     private ServerSocket server;
-    private SocketProtocol protocol;
     private ExecutorService pool = Executors.newCachedThreadPool();
-
-    public void setProtocol(SocketProtocol protocol) {
-        this.protocol = protocol;
-    }
 
     public void start(int port) {
         new Thread(() -> {
@@ -47,7 +42,7 @@ public class SocketServer {
                         break;
                     }
 
-                    XMessage message = _SocketSession.receive(socket, protocol);
+                    XMessage message = _SocketSession.receive(socket);
                     if (message != null) {
                         pool.execute(() -> {
                             try {
@@ -57,7 +52,6 @@ public class SocketServer {
                             }
                         });
                     }
-
                 }
             });
         }

@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 public class SocketProtocol {
+    public static final SocketProtocol instance = new SocketProtocol();
+
     public XMessage decode(InputStream input) throws IOException {
         if(input == null){
             return null;

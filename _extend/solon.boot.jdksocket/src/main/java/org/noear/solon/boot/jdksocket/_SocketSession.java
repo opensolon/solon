@@ -4,7 +4,6 @@ import org.noear.solon.XUtil;
 import org.noear.solon.core.XMethod;
 import org.noear.solon.core.XSession;
 import org.noear.solon.core.XMessage;
-import org.noear.solon.ext.LinkedCaseInsensitiveMap;
 import org.noear.solon.extend.xsocket.XMessageUtils;
 import org.noear.solon.extend.xsocket.XSessionBase;
 
@@ -14,8 +13,6 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 
 public class _SocketSession extends XSessionBase {
     public static Map<Socket, XSession> sessions = new HashMap<>();
@@ -52,6 +49,7 @@ public class _SocketSession extends XSessionBase {
     }
 
     private String _sessionId = XUtil.guid();
+
     @Override
     public String sessionId() {
         return _sessionId;
@@ -95,6 +93,12 @@ public class _SocketSession extends XSessionBase {
         }
     }
 
+    @Override
+    public XMessage sendAndResponse(XMessage message) {
+        send(message);
+
+        return receive(real);
+    }
 
     @Override
     public void close() throws IOException {
@@ -118,7 +122,7 @@ public class _SocketSession extends XSessionBase {
     }
 
     @Override
-    public InetSocketAddress getRemoteAddress()  {
+    public InetSocketAddress getRemoteAddress() {
         return (InetSocketAddress) real.getRemoteSocketAddress();
     }
 
@@ -160,9 +164,9 @@ public class _SocketSession extends XSessionBase {
     /**
      * 接收数据
      */
-    public static XMessage receive(Socket socket, SocketProtocol protocol) {
+    public static XMessage receive(Socket socket) {
         try {
-            return protocol.decode(socket.getInputStream());
+            return SocketProtocol.instance.decode(socket.getInputStream());
         } catch (SocketException ex) {
             return null;
         } catch (Throwable ex) {
