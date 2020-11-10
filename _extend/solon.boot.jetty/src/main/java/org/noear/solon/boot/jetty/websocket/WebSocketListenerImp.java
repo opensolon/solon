@@ -8,13 +8,11 @@ import org.noear.solon.extend.xsocket.XListenerProxy;
 import java.nio.ByteBuffer;
 
 public class WebSocketListenerImp extends WebSocketAdapter {
-    static XListener listener = XListenerProxy.getGlobal();
-
 
     @Override
     public void onWebSocketConnect(Session sess) {
         super.onWebSocketConnect(sess);
-        listener.onOpen(_SocketSession.get(getSession()));
+        XListenerProxy.getGlobal().onOpen(_SocketSession.get(getSession()));
     }
 
     @Override
@@ -25,7 +23,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
             XMessage message = XMessage.wrap(getSession().getUpgradeRequest().getOrigin(),
                     buf.array());
 
-            listener.onMessage(session, message, false);
+            XListenerProxy.getGlobal().onMessage(session, message, false);
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }
@@ -38,7 +36,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
             XMessage message = XMessage.wrap(getSession().getUpgradeRequest().getRequestURI().toString(),
                     text.getBytes("UTF-8"));
 
-            listener.onMessage(session, message, true);
+            XListenerProxy.getGlobal().onMessage(session, message, true);
 
         } catch (Throwable ex) {
             XEventBus.push(ex);
@@ -47,7 +45,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
 
     @Override
     public void onWebSocketClose(int statusCode, String reason) {
-        listener.onClose(_SocketSession.get(getSession()));
+        XListenerProxy.getGlobal().onClose(_SocketSession.get(getSession()));
 
         _SocketSession.remove(getSession());
         super.onWebSocketClose(statusCode, reason);
@@ -55,6 +53,6 @@ public class WebSocketListenerImp extends WebSocketAdapter {
 
     @Override
     public void onWebSocketError(Throwable cause) {
-        listener.onError(_SocketSession.get(getSession()), cause);
+        XListenerProxy.getGlobal().onError(_SocketSession.get(getSession()), cause);
     }
 }

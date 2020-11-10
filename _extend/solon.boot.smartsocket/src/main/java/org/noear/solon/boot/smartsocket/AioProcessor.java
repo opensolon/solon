@@ -8,18 +8,12 @@ import org.smartboot.socket.StateMachineEnum;
 import org.smartboot.socket.transport.AioSession;
 
 public class AioProcessor implements MessageProcessor<XMessage> {
-    private XListener listener;
-
-    public AioProcessor() {
-        listener = XListenerProxy.getGlobal();
-    }
-
     @Override
     public void process(AioSession session, XMessage message) {
         try {
             XSession session1 = _SocketSession.get(session);
 
-            listener.onMessage(session1, message, false);
+            XListenerProxy.getGlobal().onMessage(session1, message, false);
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }
@@ -27,25 +21,25 @@ public class AioProcessor implements MessageProcessor<XMessage> {
 
     @Override
     public void stateEvent(AioSession session, StateMachineEnum state, Throwable throwable) {
-        if (listener != null) {
-            switch (state) {
-                case NEW_SESSION:
-                    listener.onOpen(_SocketSession.get(session));
-                    break;
 
-                case SESSION_CLOSED:
-                    listener.onClose(_SocketSession.get(session));
-                    _SocketSession.remove(session);
-                    break;
+        switch (state) {
+            case NEW_SESSION:
+                XListenerProxy.getGlobal().onOpen(_SocketSession.get(session));
+                break;
 
-                case PROCESS_EXCEPTION:
-                case DECODE_EXCEPTION:
-                case INPUT_EXCEPTION:
-                case ACCEPT_EXCEPTION:
-                case OUTPUT_EXCEPTION:
-                    listener.onError(_SocketSession.get(session), throwable);
-                    break;
-            }
+            case SESSION_CLOSED:
+                XListenerProxy.getGlobal().onClose(_SocketSession.get(session));
+                _SocketSession.remove(session);
+                break;
+
+            case PROCESS_EXCEPTION:
+            case DECODE_EXCEPTION:
+            case INPUT_EXCEPTION:
+            case ACCEPT_EXCEPTION:
+            case OUTPUT_EXCEPTION:
+                XListenerProxy.getGlobal().onError(_SocketSession.get(session), throwable);
+                break;
         }
+
     }
 }

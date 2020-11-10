@@ -18,9 +18,6 @@ public class SocketServer {
     private SocketProtocol protocol;
     private ExecutorService pool = Executors.newCachedThreadPool();
 
-    private XSocketContextHandler handler = new XSocketContextHandler(XMethod.SOCKET);
-    private XListener listener = XListenerProxy.getGlobal();
-
     public void setProtocol(SocketProtocol protocol) {
         this.protocol = protocol;
     }
@@ -44,12 +41,12 @@ public class SocketServer {
             Socket socket = server.accept();
 
             XSession session = _SocketSession.get(socket);
-            listener.onOpen(session);
+            XListenerProxy.getGlobal().onOpen(session);
 
             pool.execute(() -> {
                 while (true) {
                     if (socket.isClosed()) {
-                        listener.onClose(session);
+                        XListenerProxy.getGlobal().onClose(session);
                         break;
                     }
 
@@ -57,13 +54,9 @@ public class SocketServer {
                     if (message != null) {
                         pool.execute(() -> {
                             try {
-                                listener.onMessage(session, message);
-
-                                if(message.getHandled() == false){
-                                    handler.handle(session,message,false);
-                                }
+                                XListenerProxy.getGlobal().onMessage(session, message, false);
                             } catch (Throwable ex) {
-                                listener.onError(session, ex);
+                                XListenerProxy.getGlobal().onError(session, ex);
                             }
                         });
                     }

@@ -7,15 +7,10 @@ import org.smartboot.http.WebSocketResponse;
 import org.smartboot.http.server.handle.WebSocketDefaultHandle;
 
 public class WebSocketHandleImp extends WebSocketDefaultHandle {
-    private XListener listener;
-
-    public WebSocketHandleImp() {
-        listener = XListenerProxy.getGlobal();
-    }
 
     @Override
     public void onHandShark(WebSocketRequest request, WebSocketResponse response) {
-        listener.onOpen(_SocketSession.get(request, response));
+        XListenerProxy.getGlobal().onOpen(_SocketSession.get(request, response));
     }
 
     @Override
@@ -23,7 +18,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
         _SocketSession session = _SocketSession.get(request, response);
         session.onClose();
 
-        listener.onClose(session);
+        XListenerProxy.getGlobal().onClose(session);
 
         _SocketSession.remove(request);
     }
@@ -35,7 +30,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
             XMessage message = XMessage.wrap(request.getRequestURI(),
                     data.getBytes("UTF-8"));
 
-            listener.onMessage(session, message, true);
+            XListenerProxy.getGlobal().onMessage(session, message, true);
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }
@@ -47,7 +42,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
             XSession session = _SocketSession.get(request, response);
             XMessage message = XMessage.wrap(request.getRequestURI(), data);
 
-            listener.onMessage(session, message, false);
+            XListenerProxy.getGlobal().onMessage(session, message, false);
 
         } catch (Throwable ex) {
             XEventBus.push(ex);

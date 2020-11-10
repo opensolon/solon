@@ -15,11 +15,8 @@ import java.nio.charset.StandardCharsets;
 public class WsServer extends WebSocketServer {
     private Charset _charset = StandardCharsets.UTF_8;
 
-    private XListener listener;
-
     public WsServer(int port) {
         super(new InetSocketAddress(port));
-        listener = XListenerProxy.getGlobal();
     }
 
     @Override
@@ -29,12 +26,12 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake shake) {
-        listener.onOpen(_SocketSession.get(conn));
+        XListenerProxy.getGlobal().onOpen(_SocketSession.get(conn));
     }
 
     @Override
     public void onClose(WebSocket conn, int i, String s, boolean b) {
-        listener.onClose(_SocketSession.get(conn));
+        XListenerProxy.getGlobal().onClose(_SocketSession.get(conn));
 
         _SocketSession.remove(conn);
     }
@@ -45,7 +42,7 @@ public class WsServer extends WebSocketServer {
             XSession session = _SocketSession.get(conn);
             XMessage message = XMessage.wrap(conn.getResourceDescriptor(), data.getBytes(_charset));
 
-            listener.onMessage(session, message, true);
+            XListenerProxy.getGlobal().onMessage(session, message, true);
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }
@@ -57,7 +54,7 @@ public class WsServer extends WebSocketServer {
             XSession session = _SocketSession.get(conn);
             XMessage message = XMessage.wrap(conn.getResourceDescriptor(), data.array());
 
-            listener.onMessage(session, message, false);
+            XListenerProxy.getGlobal().onMessage(session, message, false);
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }
@@ -65,6 +62,6 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onError(WebSocket conn, Exception ex) {
-        listener.onError(_SocketSession.get(conn), ex);
+        XListenerProxy.getGlobal().onError(_SocketSession.get(conn), ex);
     }
 }
