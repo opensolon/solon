@@ -4,12 +4,10 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 import org.noear.solon.core.*;
 import org.noear.solon.extend.xsocket.XListenerProxy;
-import org.noear.solon.extend.xsocket.XSocketContextHandler;
 
 import java.nio.ByteBuffer;
 
 public class WebSocketListenerImp extends WebSocketAdapter {
-    static XSocketContextHandler handler = new XSocketContextHandler(XMethod.WEBSOCKET);
     static XListener listener = XListenerProxy.getGlobal();
 
 
@@ -27,11 +25,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
             XMessage message = XMessage.wrap(getSession().getUpgradeRequest().getOrigin(),
                     buf.array());
 
-            listener.onMessage(session, message);
-
-            if (message.getHandled() == false) {
-                handler.handle(session, message, false);
-            }
+            listener.onMessage(session, message, false);
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }
@@ -44,11 +38,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
             XMessage message = XMessage.wrap(getSession().getUpgradeRequest().getRequestURI().toString(),
                     text.getBytes("UTF-8"));
 
-            listener.onMessage(session, message);
-
-            if (message.getHandled() == false) {
-                handler.handle(session, message, true);
-            }
+            listener.onMessage(session, message, true);
 
         } catch (Throwable ex) {
             XEventBus.push(ex);

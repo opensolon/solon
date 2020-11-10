@@ -21,6 +21,11 @@ public class XListenerProxy implements XListener {
         XListenerProxy.global = global;
     }
 
+    private XSocketContextHandler socketContextHandler;
+
+    public XListenerProxy(){
+        socketContextHandler = new XSocketContextHandler();
+    }
 
     @Override
     public void onOpen(XSession session) {
@@ -31,10 +36,14 @@ public class XListenerProxy implements XListener {
     }
 
     @Override
-    public void onMessage(XSession session, XMessage message) {
+    public void onMessage(XSession session, XMessage message, boolean messageIsString) {
         XListener sl = get(session);
         if (sl != null) {
-            sl.onMessage(session, message);
+            sl.onMessage(session, message, messageIsString);
+        }
+
+        if (message.getHandled() == false) {
+            socketContextHandler.handle(session, message, messageIsString);
         }
     }
 

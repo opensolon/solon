@@ -5,7 +5,6 @@ import org.noear.solon.core.XMessage;
 import org.noear.solon.core.XMethod;
 import org.noear.solon.core.XSession;
 import org.noear.solon.extend.xsocket.XListenerProxy;
-import org.noear.solon.extend.xsocket.XSocketContextHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -18,7 +17,6 @@ public class SocketServer {
     private SocketProtocol protocol;
     private ExecutorService pool = Executors.newCachedThreadPool();
 
-    private XSocketContextHandler handler = new XSocketContextHandler(XMethod.SOCKET);
     private XListener listener = XListenerProxy.getGlobal();
 
     public void setProtocol(SocketProtocol protocol) {
@@ -57,11 +55,7 @@ public class SocketServer {
                     if (message != null) {
                         pool.execute(() -> {
                             try {
-                                listener.onMessage(session, message);
-
-                                if(message.getHandled() == false){
-                                    handler.handle(session,message,false);
-                                }
+                                listener.onMessage(session, message, false);
                             } catch (Throwable ex) {
                                 listener.onError(session, ex);
                             }

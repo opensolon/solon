@@ -3,17 +3,14 @@ package org.noear.solon.boot.smartsocket;
 import org.noear.solon.core.*;
 
 import org.noear.solon.extend.xsocket.XListenerProxy;
-import org.noear.solon.extend.xsocket.XSocketContextHandler;
 import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.StateMachineEnum;
 import org.smartboot.socket.transport.AioSession;
 
 public class AioProcessor implements MessageProcessor<XMessage> {
-    private XSocketContextHandler handler;
     private XListener listener;
 
     public AioProcessor() {
-        handler = new XSocketContextHandler(XMethod.SOCKET);
         listener = XListenerProxy.getGlobal();
     }
 
@@ -22,11 +19,7 @@ public class AioProcessor implements MessageProcessor<XMessage> {
         try {
             XSession session1 = _SocketSession.get(session);
 
-            listener.onMessage(session1, message);
-
-            if (message.getHandled() == false) {
-                handler.handle(session1, message, false);
-            }
+            listener.onMessage(session1, message, false);
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }

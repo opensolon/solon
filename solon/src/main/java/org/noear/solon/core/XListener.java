@@ -27,7 +27,7 @@ public interface XListener {
 
     default void onOpen(XSession session){}
 
-    void onMessage(XSession session, XMessage message);
+    void onMessage(XSession session, XMessage message, boolean messageIsString);
 
     default void onClose(XSession session){}
 

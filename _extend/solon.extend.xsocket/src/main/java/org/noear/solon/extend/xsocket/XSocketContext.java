@@ -22,11 +22,11 @@ public class XSocketContext extends XContextEmpty {
     private boolean _messageIsString;
     private XMethod _method;
 
-    public XSocketContext(XSession session, XMessage message, boolean messageIsString, XMethod method) {
+    public XSocketContext(XSession session, XMessage message, boolean messageIsString) {
         _sesssion = session;
         _message = message;
         _messageIsString = messageIsString;
-        _method = method;
+        _method = session.method();
         _inetSocketAddress = session.getRemoteAddress();
     }
 

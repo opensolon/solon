@@ -2,17 +2,14 @@ package org.noear.solon.boot.smarthttp.websocket;
 
 import org.noear.solon.core.*;
 import org.noear.solon.extend.xsocket.XListenerProxy;
-import org.noear.solon.extend.xsocket.XSocketContextHandler;
 import org.smartboot.http.WebSocketRequest;
 import org.smartboot.http.WebSocketResponse;
 import org.smartboot.http.server.handle.WebSocketDefaultHandle;
 
 public class WebSocketHandleImp extends WebSocketDefaultHandle {
-    private XSocketContextHandler handler;
     private XListener listener;
 
     public WebSocketHandleImp() {
-        handler = new XSocketContextHandler(XMethod.WEBSOCKET);
         listener = XListenerProxy.getGlobal();
     }
 
@@ -38,11 +35,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
             XMessage message = XMessage.wrap(request.getRequestURI(),
                     data.getBytes("UTF-8"));
 
-            listener.onMessage(session, message);
-
-            if (message.getHandled() == false) {
-                handler.handle(session, message, true);
-            }
+            listener.onMessage(session, message, true);
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }
@@ -54,11 +47,8 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
             XSession session = _SocketSession.get(request, response);
             XMessage message = XMessage.wrap(request.getRequestURI(), data);
 
-            listener.onMessage(session, message);
+            listener.onMessage(session, message, false);
 
-            if (message.getHandled() == false) {
-                handler.handle(session, message, false);
-            }
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }

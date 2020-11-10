@@ -10,7 +10,7 @@ import org.noear.solon.annotation.XServerEndpoint;
 @XServerEndpoint(value = "/demoe/websocket")
 public class XSocketListenerImp implements XListener {
     @Override
-    public void onMessage(XSession session, XMessage message) {
+    public void onMessage(XSession session, XMessage message, boolean messageIsString) {
         System.out.println(session.path());
 
         if(XApp.cfg().isDebugMode()){

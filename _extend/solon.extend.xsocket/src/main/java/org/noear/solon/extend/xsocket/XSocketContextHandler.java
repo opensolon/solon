@@ -12,12 +12,7 @@ import org.noear.solon.core.XSession;
  * @author noear
  * @since 1.0
  * */
-public class XSocketContextHandler {
-    XMethod method;
-
-    public XSocketContextHandler(XMethod method) {
-        this.method = method;
-    }
+class XSocketContextHandler {
 
     public void handle(XSession session, XMessage message, boolean messageIsString) {
         if (message == null) {
@@ -25,7 +20,7 @@ public class XSocketContextHandler {
         }
 
         try {
-            XSocketContext ctx = new XSocketContext(session, message, messageIsString, method);
+            XSocketContext ctx = new XSocketContext(session, message, messageIsString);
 
             XApp.global().tryHandle(ctx);
 

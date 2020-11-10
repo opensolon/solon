@@ -3,18 +3,15 @@ package org.noear.solon.boot.undertow.websocket;
 import io.undertow.websockets.core.*;
 import org.noear.solon.core.*;
 import org.noear.solon.extend.xsocket.XListenerProxy;
-import org.noear.solon.extend.xsocket.XSocketContextHandler;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class UtWsChannelListener extends AbstractReceiveListener {
-    private XSocketContextHandler handler;
     private XListener listener;
 
     public UtWsChannelListener() {
-        handler = new XSocketContextHandler(XMethod.WEBSOCKET);
         listener = XListenerProxy.getGlobal();
     }
 
@@ -34,11 +31,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
             XSession session = _SocketSession.get(channel);
             XMessage message = XMessage.wrap(channel.getUrl(), out.toByteArray());
 
-            listener.onMessage(session, message);
-
-            if (message.getHandled() == false) {
-                handler.handle(session, message, false);
-            }
+            listener.onMessage(session, message, false);
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }
@@ -51,11 +44,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
             XMessage message = XMessage.wrap(channel.getUrl(),
                     msg.getData().getBytes("UTF-8"));
 
-            listener.onMessage(session, message);
-
-            if (message.getHandled() == false) {
-                handler.handle(session, message, true);
-            }
+            listener.onMessage(session, message, true);
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }

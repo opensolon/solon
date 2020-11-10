@@ -5,7 +5,6 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 import org.noear.solon.core.*;
 import org.noear.solon.extend.xsocket.XListenerProxy;
-import org.noear.solon.extend.xsocket.XSocketContextHandler;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -16,12 +15,10 @@ import java.nio.charset.StandardCharsets;
 public class WsServer extends WebSocketServer {
     private Charset _charset = StandardCharsets.UTF_8;
 
-    private XSocketContextHandler handler;
     private XListener listener;
 
     public WsServer(int port) {
         super(new InetSocketAddress(port));
-        handler = new XSocketContextHandler(XMethod.WEBSOCKET);
         listener = XListenerProxy.getGlobal();
     }
 
@@ -48,11 +45,7 @@ public class WsServer extends WebSocketServer {
             XSession session = _SocketSession.get(conn);
             XMessage message = XMessage.wrap(conn.getResourceDescriptor(), data.getBytes(_charset));
 
-            listener.onMessage(session, message);
-
-            if (message.getHandled() == false) {
-                handler.handle(session, message, true);
-            }
+            listener.onMessage(session, message, true);
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }
@@ -64,11 +57,7 @@ public class WsServer extends WebSocketServer {
             XSession session = _SocketSession.get(conn);
             XMessage message = XMessage.wrap(conn.getResourceDescriptor(), data.array());
 
-            listener.onMessage(session, message);
-
-            if (message.getHandled() == false) {
-                handler.handle(session, message, false);
-            }
+            listener.onMessage(session, message, false);
         } catch (Throwable ex) {
             XEventBus.push(ex);
         }
