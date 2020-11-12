@@ -17,7 +17,11 @@ public class XPluginImp implements XPlugin {
         }
 
 
-        int _port = 10000 + app.port();
+        int _port = app.prop().getInt("server.websocket.port",0);
+        if(_port < 1) {
+            _port = 10000 + app.port();
+        }
+
         long time_start = System.currentTimeMillis();
 
 

@@ -21,7 +21,10 @@ public class XPluginImp implements XPlugin {
 
         System.out.println("solon.Server:main: java.net.ServerSocket(jdksocket)");
 
-        int _port = 20000 + app.port();
+        int _port = app.prop().getInt("server.socket.port",0);
+        if(_port < 1) {
+            _port = 20000 + app.port();
+        }
 
         try {
             _server = new SocketServer();
