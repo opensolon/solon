@@ -1,9 +1,10 @@
 package org.noear.solon.boot.rsocket;
 
+import io.rsocket.RSocket;
+import io.rsocket.util.DefaultPayload;
 import org.noear.solon.XUtil;
-import org.noear.solon.core.XMessage;
-import org.noear.solon.core.XMethod;
-import org.noear.solon.core.XSession;
+import org.noear.solon.core.*;
+import org.noear.solon.extend.xsocket.XListenerProxy;
 import org.noear.solon.extend.xsocket.XMessageUtils;
 import org.noear.solon.extend.xsocket.XSessionBase;
 
@@ -12,12 +13,14 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.nio.Buffer;
+import java.nio.ByteBuffer;
 import java.util.*;
 
 public class _SocketSession extends XSessionBase {
-    public static Map<Socket, XSession> sessions = new HashMap<>();
+    public static Map<RSocket, XSession> sessions = new HashMap<>();
 
-    public static XSession get(Socket real) {
+    public static XSession get(RSocket real) {
         XSession tmp = sessions.get(real);
         if (tmp == null) {
             synchronized (real) {
@@ -25,6 +28,9 @@ public class _SocketSession extends XSessionBase {
                 if (tmp == null) {
                     tmp = new _SocketSession(real);
                     sessions.put(real, tmp);
+
+                    //算第一次
+                    XListenerProxy.getGlobal().onOpen(tmp);
                 }
             }
         }
@@ -36,9 +42,9 @@ public class _SocketSession extends XSessionBase {
         sessions.remove(real);
     }
 
-    Socket real;
+    RSocket real;
 
-    public _SocketSession(Socket real) {
+    public _SocketSession(RSocket real) {
         this.real = real;
     }
 
@@ -78,26 +84,32 @@ public class _SocketSession extends XSessionBase {
     }
 
     public void send(XMessage message) {
-        try {
-            //
-            // 转包为XSocketMessage，再转byte[]
-            //
-            byte[] bytes = XMessageUtils.encode(message).array();
+        //
+        // 转包为XSocketMessage，再转byte[]
+        //
+        ByteBuffer buffer = XMessageUtils.encode(message);
 
-            real.getOutputStream().write(bytes);
-            real.getOutputStream().flush();
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
+        real.requestResponse(DefaultPayload.create(buffer));
     }
 
+    @Override
+    public XMessage sendAndResponse(XMessage message) {
+        ByteBuffer buffer = XMessageUtils.encode(message);
+
+        ValHolder<XMessage> holder = new ValHolder<>();
+
+        real.requestResponse(DefaultPayload.create(buffer))
+                .map(d -> XMessageUtils.decode(d.getData()))
+                .doOnNext(m -> holder.value = m)
+                .block();
+
+        return holder.value;
+    }
 
     @Override
     public void close() throws IOException {
         synchronized (real) {
-            real.shutdownInput();
-            real.shutdownOutput();
-            real.close();
+            real.dispose();
 
             sessions.remove(real);
         }
@@ -105,7 +117,7 @@ public class _SocketSession extends XSessionBase {
 
     @Override
     public boolean isValid() {
-        return real.isConnected();
+        return real.isDisposed() == false;
     }
 
     @Override
@@ -115,12 +127,14 @@ public class _SocketSession extends XSessionBase {
 
     @Override
     public InetSocketAddress getRemoteAddress()  {
-        return (InetSocketAddress) real.getRemoteSocketAddress();
+        return null;
+        //return (InetSocketAddress) real.getRemoteSocketAddress();
     }
 
     @Override
     public InetSocketAddress getLocalAddress() {
-        return (InetSocketAddress) real.getLocalSocketAddress();
+        return null;
+        //return (InetSocketAddress) real.getLocalSocketAddress();
     }
 
     private Object attachment;

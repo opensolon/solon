@@ -38,7 +38,7 @@ public class SocketServer {
         while (true) {
             Socket socket = server.accept();
 
-            XSession session = _SocketSession.get(socket);
+            XSession session = null;//_SocketSession.get(socket);
             XListenerProxy.getGlobal().onOpen(session);
 
             pool.execute(() -> {

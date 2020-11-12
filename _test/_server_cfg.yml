@@ -1,5 +1,9 @@
 server.port: 8080
 
+server.http.port: 8080
+server.socket.port: 28080
+server.websocket.port: 18080
+
 server.request.maxRequestSize: 2Mb #kb,mb
 
 
