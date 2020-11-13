@@ -57,10 +57,8 @@ public class XListenerProxy implements XListener {
 
     @Override
     public void onMessage(XSession session, XMessage message, boolean messageIsString) {
-        if(message.isRequest() == false) {
-            //
-            // 客户端也服务端在同一个进程时，此处会出问题
-            //
+        if(message.flag() == 1) {
+            //flag = 1，为响应标志
             CompletableFuture<XMessage> request = requests.get(message.key());
 
             //请求模式

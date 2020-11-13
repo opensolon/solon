@@ -95,24 +95,13 @@ public class XMessage {
     //////////////////////////////////////////
 
     private boolean _handled;
-
     public void setHandled(boolean handled) {
         _handled = handled;
     }
-
     public boolean getHandled() {
         return _handled;
     }
 
-    private boolean _request;
-
-    public void setRequest(boolean request) {
-        _request = request;
-    }
-
-    public boolean isRequest() {
-        return _request;
-    }
     //////////////////////////////////////////
 
     /**
