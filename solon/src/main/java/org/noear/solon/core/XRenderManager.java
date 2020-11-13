@@ -78,6 +78,37 @@ public class XRenderManager implements XRender {
         PrintUtil.blueln("solon:: view mapping: " + suffix + "=" + clzName);
     }
 
+    @Override
+    public String renderAndReturn(Object data, XContext ctx) throws Throwable {
+        if (data instanceof ModelAndView) {
+            ModelAndView mv = (ModelAndView) data;
+
+            if (XUtil.isNotEmpty(mv.view())) {
+                //
+                //如果有视图
+                //
+                int suffix_idx = mv.view().lastIndexOf(".");
+                if (suffix_idx > 0) {
+                    String suffix = mv.view().substring(suffix_idx);
+                    XRender render = _mapping.get(suffix);
+
+                    if (render != null) {
+                        //如果找到对应的渲染器
+                        //
+                        return render.renderAndReturn(mv, ctx);
+                    }
+                }
+
+                //如果没有则用默认渲染器
+                //
+                return _def.renderAndReturn(mv, ctx);
+            }
+
+        }
+
+        throw new IllegalArgumentException("RenderAndReturn: Only support ModelAndView data");
+    }
+
     /**
      * 渲染
      *

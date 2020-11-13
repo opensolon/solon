@@ -463,6 +463,11 @@ public abstract class XContext {
         render(new ModelAndView(view,data));
     }
 
+    @XNote("渲染数据")
+    public final String renderAndReturn(ModelAndView modelAndView) throws Throwable {
+        return XRenderManager.global.renderAndReturn(modelAndView, this);
+    }
+
     private boolean _remoting;
     @XNote("是否为远程调用")
     public boolean remoting(){
