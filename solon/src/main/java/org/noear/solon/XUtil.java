@@ -193,32 +193,40 @@ public class XUtil {
      * @param name 资源名称
      * @param charset 编码
      * */
-    public static String getResourceAsString(String name, String charset) throws IOException {
+    public static String getResourceAsString(String name, String charset){
         URL url = getResource(name);
         if (url != null) {
-            return getString(url.openStream(), charset);
+            try {
+                return getString(url.openStream(), charset);
+            }catch (Exception ex){
+                throw throwableWrap(ex);
+            }
         } else {
             return null;
         }
     }
 
-    public static String getString(InputStream ins, String charset) throws IOException {
+    public static String getString(InputStream ins, String charset) {
         if (ins == null) {
             return null;
         }
 
         ByteArrayOutputStream outs = new ByteArrayOutputStream(); //这个不需要关闭
 
-        int len = 0;
-        byte[] buf = new byte[512]; //0.5k
-        while ((len = ins.read(buf)) != -1) {
-            outs.write(buf, 0, len);
-        }
+        try {
+            int len = 0;
+            byte[] buf = new byte[512]; //0.5k
+            while ((len = ins.read(buf)) != -1) {
+                outs.write(buf, 0, len);
+            }
 
-        if (charset == null) {
-            return outs.toString();
-        } else {
-            return outs.toString(charset);
+            if (charset == null) {
+                return outs.toString();
+            } else {
+                return outs.toString(charset);
+            }
+        } catch (Exception ex) {
+            throw throwableWrap(ex);
         }
     }
 
