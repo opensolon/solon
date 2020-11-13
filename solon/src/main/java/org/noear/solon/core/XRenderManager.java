@@ -29,7 +29,7 @@ public class XRenderManager implements XRender {
     }
 
     //不能放上面
-    public static XRender global = new XRenderManager();
+    public static XRenderManager global = new XRenderManager();
 
 
     /**
@@ -78,6 +78,16 @@ public class XRenderManager implements XRender {
         PrintUtil.blueln("solon:: view mapping: " + suffix + "=" + clzName);
     }
 
+    /**
+     * 渲染并返回
+     * */
+    public String renderAndReturn(ModelAndView modelAndView) throws Throwable {
+        return renderAndReturn(modelAndView, XContext.current());
+    }
+
+    /**
+     * 渲染并返回
+     * */
     @Override
     public String renderAndReturn(Object data, XContext ctx) throws Throwable {
         if (data instanceof ModelAndView) {
