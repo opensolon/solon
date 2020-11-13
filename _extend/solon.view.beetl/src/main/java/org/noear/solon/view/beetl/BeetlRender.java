@@ -7,6 +7,7 @@ import org.beetl.core.resource.ClasspathResourceLoader;
 import org.beetl.core.resource.FileResourceLoader;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
+import org.noear.solon.core.XClassLoader;
 import org.noear.solon.core.XRender;
 import org.noear.solon.core.ModelAndView;
 import org.noear.solon.core.XContext;
@@ -94,7 +95,7 @@ public class BeetlRender implements XRender {
 
     private void forRelease() {
         try {
-            ClasspathResourceLoader loader = new ClasspathResourceLoader(this.getClass().getClassLoader(), _baseUri);
+            ClasspathResourceLoader loader = new ClasspathResourceLoader(XClassLoader.global(), _baseUri);
             gt = new GroupTemplate(loader, cfg);
         } catch (Exception ex) {
             ex.printStackTrace();

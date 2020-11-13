@@ -2,10 +2,7 @@ package org.noear.solon.view.thymeleaf;
 
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
-import org.noear.solon.core.Aop;
-import org.noear.solon.core.ModelAndView;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XRender;
+import org.noear.solon.core.*;
 import org.noear.solon.ext.SupplierEx;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -98,7 +95,7 @@ public class ThymeleafRender implements XRender {
     }
 
     private void forRelease() {
-        ClassLoaderTemplateResolver _loader = new ClassLoaderTemplateResolver();
+        ClassLoaderTemplateResolver _loader = new ClassLoaderTemplateResolver(XClassLoader.global());
 
         _loader.setPrefix(_baseUri);
         _loader.setTemplateMode(TemplateMode.HTML);
