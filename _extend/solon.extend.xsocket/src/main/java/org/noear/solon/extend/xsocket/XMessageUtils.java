@@ -20,13 +20,16 @@ public class XMessageUtils {
         //resourceDescriptor
         byte[] rdB = msg.resourceDescriptor().getBytes(msg.getCharset());
 
-        //length (key + resourceDescriptor + content)
-        int len = keyB.length + rdB.length + msg.content().length + 2 * 2 + 4;
+        //length (key + flag + resourceDescriptor + content)
+        int len = keyB.length + rdB.length + msg.content().length + 2 * 2 + 4 + 4;
 
         ByteBuffer buffer = ByteBuffer.allocate(len);
 
         //长度
         buffer.putInt(len);
+
+        //flag
+        buffer.putInt(msg.flag());
 
         //key
         buffer.put(keyB);
@@ -50,18 +53,22 @@ public class XMessageUtils {
     public static XMessage decode(ByteBuffer buffer) {
         int len0 = buffer.getInt();
 
-        if(len0 < buffer.remaining()){
+        if (len0 < buffer.remaining()) {
             return null;
         }
+
+        int flag = buffer.getInt();
 
         //1.解码key and resourceDescriptor
         ByteBuffer sb = ByteBuffer.allocate(Math.min(256, buffer.limit()));
 
+        //key
         String key = decodeString(buffer, sb);
         if (key == null) {
             return null;
         }
 
+        //resourceDescriptor
         String uri = decodeString(buffer, sb);
         if (uri == null) {
             return null;
@@ -74,7 +81,7 @@ public class XMessageUtils {
             buffer.get(bytes, 0, len);
         }
 
-        return XMessage.wrap(key, uri, bytes);
+        return XMessage.wrap(flag, key, uri, bytes);
     }
 
 
