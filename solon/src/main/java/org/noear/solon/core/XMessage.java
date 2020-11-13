@@ -3,6 +3,7 @@ package org.noear.solon.core;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
+import java.util.function.Function;
 
 /**
  * XSocket 消息包（实现 XMessage + XListener 架构）
@@ -34,6 +35,15 @@ public class XMessage {
     private final byte[] content;
     public byte[] content() {
         return content;
+    }
+
+    //////////////////////////////////////////
+
+    /**
+     * 消息转换
+     * */
+    public <T> T map(Function<XMessage,T> mapper){
+        return mapper.apply(this);
     }
 
     //////////////////////////////////////////
