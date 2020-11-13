@@ -30,7 +30,7 @@ public final class XPluginImp implements XPlugin {
         }
 
         AioProtocol protocol = new AioProtocol();
-        AioProcessor processor = new AioProcessor(true);
+        AioProcessor processor = new AioProcessor();
 
         try {
             server = new AioQuickServer<>(_port, protocol, processor);

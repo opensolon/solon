@@ -44,7 +44,7 @@ public class SocketResponseTest {
     public void test2() throws Throwable{
         int _port = XApp.global().port() + 20000;
 
-        AioQuickClient<XMessage> client = new AioQuickClient<>("localhost",_port, new AioProtocol(), new AioProcessor(false));
+        AioQuickClient<XMessage> client = new AioQuickClient<>("localhost",_port, new AioProtocol(), new AioProcessor());
         AsynchronousChannelGroup asynchronousChannelGroup = AsynchronousChannelGroup.withFixedThreadPool(Runtime.getRuntime().availableProcessors(), new ThreadFactory() {
             @Override
             public Thread newThread(Runnable r) {

@@ -8,17 +8,11 @@ import org.smartboot.socket.StateMachineEnum;
 import org.smartboot.socket.transport.AioSession;
 
 public class AioProcessor implements MessageProcessor<XMessage> {
-    private boolean isServer;
-    public AioProcessor(boolean isServer){
-        this.isServer = isServer;
-    }
+
     @Override
     public void process(AioSession session, XMessage message) {
         try {
             XSession session1 = _SocketSession.get(session);
-            if(isServer) {
-                message.setRequest(true);
-            }
 
             XListenerProxy.getGlobal().onMessage(session1, message, false);
         } catch (Throwable ex) {
