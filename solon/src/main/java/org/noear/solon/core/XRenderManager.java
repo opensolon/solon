@@ -29,7 +29,7 @@ public class XRenderManager implements XRender {
     }
 
     //不能放上面
-    public static XRenderManager global = new XRenderManager();
+    public static XRender global = new XRenderManager();
 
 
     /**
@@ -81,8 +81,12 @@ public class XRenderManager implements XRender {
     /**
      * 渲染并返回
      * */
-    public String renderAndReturn(ModelAndView modelAndView) throws Throwable {
-        return renderAndReturn(modelAndView, XContext.current());
+    public static String renderAndReturn(ModelAndView modelAndView) {
+        try {
+            return global.renderAndReturn(modelAndView, XContext.current());
+        } catch (Throwable e) {
+            throw XUtil.throwableWrap(e);
+        }
     }
 
     /**
