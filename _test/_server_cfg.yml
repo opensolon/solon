@@ -16,6 +16,9 @@ server.session.state.redis.password: AVsVSKd1
 server.session.state.redis.db: 31
 server.session.state.redis.maxTotaol: 200
 
+# 配置切换
+solon.profiles.active: dev
+
 solon.debug:
   enableCaching: false
   enableTransaction: true

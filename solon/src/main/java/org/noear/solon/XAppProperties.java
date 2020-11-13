@@ -52,6 +52,13 @@ public final class XAppProperties extends XProperties {
         loadAdd(XUtil.getResource("application.properties"));
         loadAdd(XUtil.getResource("application.yml"));
 
+        //2.2.加载活动配置
+        String active = get("solon.profiles.active");
+        if(XUtil.isNotEmpty(active)) {
+            loadAdd(XUtil.getResource("application-" + active + ".properties"));
+            loadAdd(XUtil.getResource("application-" + active + ".yml"));
+        }
+
         //3.同步启动参数
         this.args.forEach((k, v) -> {
             if (k.indexOf(".") >= 0) {
