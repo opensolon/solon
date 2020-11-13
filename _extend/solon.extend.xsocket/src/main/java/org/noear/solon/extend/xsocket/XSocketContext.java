@@ -150,7 +150,7 @@ public class XSocketContext extends XContextEmpty {
     protected void commit() throws IOException {
         if (_sesssion.isValid()) {
             if (_messageIsString) {
-                _sesssion.send(new String(_outputStream.toByteArray()));
+                _sesssion.send(_outputStream.toString());
             } else {
                 XMessage msg = XMessage.wrap(_message.key(), _message.resourceDescriptor(), _outputStream.toByteArray());
                 _sesssion.send(msg);
