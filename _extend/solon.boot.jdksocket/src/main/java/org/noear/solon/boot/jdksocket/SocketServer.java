@@ -44,6 +44,8 @@ public class SocketServer {
 
                     XMessage message = _SocketSession.receive(socket);
                     if (message != null) {
+                        message.setRequest(true);
+
                         pool.execute(() -> {
                             try {
                                 XListenerProxy.getGlobal().onMessage(session, message, false);

@@ -57,12 +57,14 @@ public class XListenerProxy implements XListener {
 
     @Override
     public void onMessage(XSession session, XMessage message, boolean messageIsString) {
-        CompletableFuture<XMessage> request = requests.get(message.key());
+        if(message.isRequest() == false) {
+            CompletableFuture<XMessage> request = requests.get(message.key());
 
-        //请求模式
-        if(request != null){
-            request.complete(message);
-            return;
+            //请求模式
+            if (request != null) {
+                request.complete(message);
+                return;
+            }
         }
 
 

@@ -78,6 +78,13 @@ public class XMessage {
         return _handled;
     }
 
+    private boolean _request;
+    public void setRequest(boolean request) {
+        _request = request;
+    }
+    public boolean isRequest() {
+        return _request;
+    }
     //////////////////////////////////////////
 
     /**

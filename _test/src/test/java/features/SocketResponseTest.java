@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.solon.XApp;
 //import org.noear.solon.boot.jdksocket._SocketSession;
-import org.noear.solon.boot.smartsocket.AioClientProcessor;
 import org.noear.solon.boot.smartsocket.AioProcessor;
 import org.noear.solon.boot.smartsocket.AioProtocol;
 import org.noear.solon.boot.smartsocket._SocketSession;
@@ -45,7 +44,7 @@ public class SocketResponseTest {
     public void test2() throws Throwable{
         int _port = XApp.global().port() + 20000;
 
-        AioQuickClient<XMessage> client = new AioQuickClient<>("localhost",_port, new AioProtocol(), new AioClientProcessor());
+        AioQuickClient<XMessage> client = new AioQuickClient<>("localhost",_port, new AioProtocol(), new AioProcessor(false));
         AsynchronousChannelGroup asynchronousChannelGroup = AsynchronousChannelGroup.withFixedThreadPool(Runtime.getRuntime().availableProcessors(), new ThreadFactory() {
             @Override
             public Thread newThread(Runnable r) {
