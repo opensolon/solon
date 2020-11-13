@@ -8,6 +8,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public abstract class XSessionBase implements XSession {
+    /**
+     * 用于支持双向RPC
+     * */
     @Override
     public XMessage sendAndResponse(XMessage message) {
         if (XUtil.isEmpty(message.key())) {
