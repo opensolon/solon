@@ -10,6 +10,7 @@ import org.noear.solon.XUtil;
 import org.noear.solon.core.XRender;
 import org.noear.solon.core.ModelAndView;
 import org.noear.solon.core.XContext;
+import org.noear.solon.ext.SupplierEx;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -20,8 +21,9 @@ import java.net.URI;
 public class EnjoyRender implements XRender {
 
     private static EnjoyRender _global;
-    public static EnjoyRender global(){
-        if(_global==null){
+
+    public static EnjoyRender global() {
+        if (_global == null) {
             _global = new EnjoyRender();
         }
 
@@ -29,29 +31,29 @@ public class EnjoyRender implements XRender {
     }
 
 
-
     Engine engine = Engine.use();
 
-    private String _baseUri ="/WEB-INF/view/";
+    private String _baseUri = "/WEB-INF/view/";
+
     //不要要入参，方便后面多视图混用
     //
     public EnjoyRender() {
 
         String baseUri = XApp.global().prop().get("slon.mvc.view.prefix");
 
-        if(XUtil.isEmpty(baseUri)==false){
+        if (XUtil.isEmpty(baseUri) == false) {
             _baseUri = baseUri;
         }
 
 
         if (XApp.cfg().isDebugMode()) {
             forDebug();
-        }else{
+        } else {
             forRelease();
         }
 
-        XApp.global().onSharedAdd((k,v)->{
-            setSharedVariable(k,v);
+        XApp.global().onSharedAdd((k, v) -> {
+            setSharedVariable(k, v);
         });
     }
 
@@ -82,7 +84,7 @@ public class EnjoyRender implements XRender {
         }
     }
 
-    private void forRelease(){
+    private void forRelease() {
         try {
             engine.setBaseTemplatePath(_baseUri);
             engine.setSourceFactory(new ClassPathSourceFactory());
@@ -91,63 +93,63 @@ public class EnjoyRender implements XRender {
         }
     }
 
-    public void addDirective(String name, Class<? extends Directive> clz){
+    public void addDirective(String name, Class<? extends Directive> clz) {
         try {
             engine.addDirective(name, clz);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public void setSharedVariable(String name,Object value) {
+    public void setSharedVariable(String name, Object value) {
         try {
             engine.addSharedObject(name, value);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     @Override
-    public void render(Object obj, XContext ctx) throws Exception {
-        if(obj == null){
+    public void render(Object obj, XContext ctx) throws Throwable {
+        if (obj == null) {
             return;
         }
 
         if (obj instanceof ModelAndView) {
-            render_mav((ModelAndView) obj, ctx, ctx.outputStream());
-        }else{
+            render_mav((ModelAndView) obj, ctx, () -> ctx.outputStream());
+        } else {
             ctx.output(obj.toString());
         }
     }
 
     @Override
     public String renderAndReturn(Object obj, XContext ctx) throws Throwable {
-        if(obj == null){
+        if (obj == null) {
             return null;
         }
 
         if (obj instanceof ModelAndView) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            render_mav((ModelAndView) obj, ctx, outputStream);
+            render_mav((ModelAndView) obj, ctx, () -> outputStream);
 
             return outputStream.toString();
-        }else{
+        } else {
             return obj.toString();
         }
     }
 
-    public void render_mav(ModelAndView mv, XContext ctx, OutputStream outputStream) throws Exception {
-        if(ctx.contentTypeNew() == null) {
+    public void render_mav(ModelAndView mv, XContext ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
+        if (ctx.contentTypeNew() == null) {
             ctx.contentType("text/html;charset=utf-8");
         }
 
-        if(XPluginImp.output_meta){
-            ctx.headerSet("solon.view","EnjoyRender");
+        if (XPluginImp.output_meta) {
+            ctx.headerSet("solon.view", "EnjoyRender");
         }
 
         Template template = engine.getTemplate(mv.view());
 
-        PrintWriter writer = new PrintWriter(outputStream);
+        PrintWriter writer = new PrintWriter(outputStream.get());
         template.render(mv.model(), writer);
         writer.flush();
     }

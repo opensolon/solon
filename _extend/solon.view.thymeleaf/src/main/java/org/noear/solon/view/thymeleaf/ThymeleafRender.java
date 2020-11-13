@@ -6,6 +6,7 @@ import org.noear.solon.core.Aop;
 import org.noear.solon.core.ModelAndView;
 import org.noear.solon.core.XContext;
 import org.noear.solon.core.XRender;
+import org.noear.solon.ext.SupplierEx;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -19,8 +20,9 @@ import java.util.Map;
 
 public class ThymeleafRender implements XRender {
     private static ThymeleafRender _global;
-    public static ThymeleafRender global(){
-        if(_global==null){
+
+    public static ThymeleafRender global() {
+        if (_global == null) {
             _global = new ThymeleafRender();
         }
 
@@ -28,12 +30,11 @@ public class ThymeleafRender implements XRender {
     }
 
 
-
     private TemplateEngine _engine = new TemplateEngine();
 
-    private Map<String,Object> _sharedVariable = new HashMap<>();
+    private Map<String, Object> _sharedVariable = new HashMap<>();
 
-    private String _baseUri ="/WEB-INF/view/";
+    private String _baseUri = "/WEB-INF/view/";
 
     public ThymeleafRender() {
         String baseUri = XApp.global().prop().get("slon.mvc.view.prefix");
@@ -96,7 +97,7 @@ public class ThymeleafRender implements XRender {
         }
     }
 
-    private void forRelease(){
+    private void forRelease() {
         ClassLoaderTemplateResolver _loader = new ClassLoaderTemplateResolver();
 
         _loader.setPrefix(_baseUri);
@@ -109,47 +110,46 @@ public class ThymeleafRender implements XRender {
     }
 
 
-
-    public void setSharedVariable(String name,Object obj){
+    public void setSharedVariable(String name, Object obj) {
         _sharedVariable.put(name, obj);
     }
 
     @Override
     public void render(Object obj, XContext ctx) throws Throwable {
-        if(obj == null){
+        if (obj == null) {
             return;
         }
 
         if (obj instanceof ModelAndView) {
-            render_mav((ModelAndView) obj, ctx, ctx.outputStream());
-        }else{
+            render_mav((ModelAndView) obj, ctx, () -> ctx.outputStream());
+        } else {
             ctx.output(obj.toString());
         }
     }
 
     @Override
     public String renderAndReturn(Object obj, XContext ctx) throws Throwable {
-        if(obj == null){
+        if (obj == null) {
             return null;
         }
 
         if (obj instanceof ModelAndView) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            render_mav((ModelAndView) obj, ctx, outputStream);
+            render_mav((ModelAndView) obj, ctx, () -> outputStream);
 
             return outputStream.toString();
-        }else{
+        } else {
             return obj.toString();
         }
     }
 
-    public void render_mav(ModelAndView mv, XContext ctx, OutputStream outputStream) throws Throwable {
-        if(ctx.contentTypeNew() == null) {
+    public void render_mav(ModelAndView mv, XContext ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
+        if (ctx.contentTypeNew() == null) {
             ctx.contentType("text/html;charset=utf-8");
         }
 
-        if(XPluginImp.output_meta){
-            ctx.headerSet("solon.view","ThymeleafRender");
+        if (XPluginImp.output_meta) {
+            ctx.headerSet("solon.view", "ThymeleafRender");
         }
 
         Context context = new Context();
@@ -157,7 +157,7 @@ public class ThymeleafRender implements XRender {
         context.setVariables(mv);
 
 
-        PrintWriter writer = new PrintWriter(outputStream);
+        PrintWriter writer = new PrintWriter(outputStream.get());
         _engine.process(mv.view(), context, writer);
         writer.flush();
     }

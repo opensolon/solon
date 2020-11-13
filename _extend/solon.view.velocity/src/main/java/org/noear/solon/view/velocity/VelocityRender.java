@@ -9,6 +9,7 @@ import org.noear.solon.XUtil;
 import org.noear.solon.core.ModelAndView;
 import org.noear.solon.core.XRender;
 import org.noear.solon.core.XContext;
+import org.noear.solon.ext.SupplierEx;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -20,8 +21,9 @@ import java.util.Map;
 
 public class VelocityRender implements XRender {
     private static VelocityRender _global;
-    public static VelocityRender global(){
-        if(_global==null){
+
+    public static VelocityRender global() {
+        if (_global == null) {
             _global = new VelocityRender();
         }
 
@@ -29,9 +31,9 @@ public class VelocityRender implements XRender {
     }
 
     private VelocityEngine velocity = new VelocityEngine();
-    private Map<String,Object> _sharedVariable=new HashMap<>();
+    private Map<String, Object> _sharedVariable = new HashMap<>();
 
-    private String _baseUri ="/WEB-INF/view/";
+    private String _baseUri = "/WEB-INF/view/";
 
     //不要要入参，方便后面多视图混用
     //
@@ -43,11 +45,10 @@ public class VelocityRender implements XRender {
         }
 
 
-
         if (XApp.cfg().isDebugMode()) {
             forDebug();
-        }else{
-           forRelease();
+        } else {
+            forRelease();
         }
 
         velocity.setProperty(Velocity.ENCODING_DEFAULT, getEncoding());
@@ -93,61 +94,61 @@ public class VelocityRender implements XRender {
         }
     }
 
-    private void forRelease(){
+    private void forRelease() {
         String root_path = XUtil.getResource(_baseUri).getPath();
 
         velocity.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, true);
         velocity.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, root_path);
     }
 
-    public void loadDirective(Object obj){
+    public void loadDirective(Object obj) {
         velocity.loadDirective(obj.getClass().getName());
     }
 
-    public void setSharedVariable(String key, Object obj){
+    public void setSharedVariable(String key, Object obj) {
         _sharedVariable.put(key, obj);
     }
 
-    public String getEncoding(){
+    public String getEncoding() {
         return "utf-8";
     }
 
     @Override
-    public void render(Object obj, XContext ctx) throws Exception {
-        if(obj == null){
+    public void render(Object obj, XContext ctx) throws Throwable {
+        if (obj == null) {
             return;
         }
 
         if (obj instanceof ModelAndView) {
-            render_mav((ModelAndView) obj, ctx, ctx.outputStream());
-        }else{
+            render_mav((ModelAndView) obj, ctx, () -> ctx.outputStream());
+        } else {
             ctx.output(obj.toString());
         }
     }
 
     @Override
     public String renderAndReturn(Object obj, XContext ctx) throws Throwable {
-        if(obj == null){
+        if (obj == null) {
             return null;
         }
 
         if (obj instanceof ModelAndView) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            render_mav((ModelAndView) obj, ctx, outputStream);
+            render_mav((ModelAndView) obj, ctx, () -> outputStream);
 
             return outputStream.toString();
-        }else{
+        } else {
             return obj.toString();
         }
     }
 
-    public void render_mav(ModelAndView mv, XContext ctx, OutputStream outputStream) throws Exception {
-        if(ctx.contentTypeNew() == null) {
+    public void render_mav(ModelAndView mv, XContext ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
+        if (ctx.contentTypeNew() == null) {
             ctx.contentType("text/html;charset=utf-8");
         }
 
-        if(XPluginImp.output_meta){
-            ctx.headerSet("solon.view","VelocityRender");
+        if (XPluginImp.output_meta) {
+            ctx.headerSet("solon.view", "VelocityRender");
         }
 
         String view = mv.view();
@@ -160,7 +161,7 @@ public class VelocityRender implements XRender {
         _sharedVariable.forEach((k, v) -> vc.put(k, v));
 
         // 输出流
-        PrintWriter writer = new PrintWriter(outputStream);
+        PrintWriter writer = new PrintWriter(outputStream.get());
         // 转换输出
         t.merge(vc, writer);
         writer.flush();
