@@ -71,11 +71,11 @@ public class XApp implements XHandler,XHandlerSlots {
             return global;
         }
 
-        //添加关闭勾子
-        Runtime.getRuntime().addShutdownHook(new Thread(()->stop(false, 0)));
-
         //绑定类加载器
         XClassLoader.bindingThread();
+
+        //添加关闭勾子
+        Runtime.getRuntime().addShutdownHook(new Thread(()->stop(false, 0)));
 
         long time_start = System.currentTimeMillis();
         PrintUtil.blueln("solon.App:: Start loading");

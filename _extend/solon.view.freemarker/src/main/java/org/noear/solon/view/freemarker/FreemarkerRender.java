@@ -4,10 +4,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
-import org.noear.solon.core.Aop;
-import org.noear.solon.core.XRender;
-import org.noear.solon.core.ModelAndView;
-import org.noear.solon.core.XContext;
+import org.noear.solon.core.*;
 import org.noear.solon.ext.SupplierEx;
 
 import java.io.ByteArrayOutputStream;
@@ -86,7 +83,7 @@ public class FreemarkerRender implements XRender {
     //使用 发布模式 进行实始化
     private void forRelease() {
         try {
-            cfg.setClassForTemplateLoading(this.getClass(), _baseUri);
+            cfg.setClassLoaderForTemplateLoading(XClassLoader.global(), _baseUri);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
