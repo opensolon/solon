@@ -14,6 +14,24 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.*;
 
+/**
+ *
+ * <pre><code>
+ * public void test() throws Throwable{
+ *     String root = "tcp://localhost:" + (20000 + XApp.global().port());
+ *     XMessage message =  XMessage.wrap(root + "/demog/中文/1", "Hello 世界!".getBytes());
+ *
+ *     Socket socket = new Socket("localhost", XApp.global().port() + 20000);
+ *
+ *     XSession session = _SocketSession.get(socket);
+ *     XMessage rst = session.sendAndResponse(message);
+ *
+ *     System.out.println(rst.toString());
+ *
+ *     assert "我收到了：Hello 世界!".equals(rst.toString());
+ * }
+ * </code></pre>
+ * */
 public class _SocketSession extends XSessionBase {
     public static Map<Socket, XSession> sessions = new HashMap<>();
 

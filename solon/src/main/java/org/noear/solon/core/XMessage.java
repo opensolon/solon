@@ -71,11 +71,9 @@ public class XMessage {
     //////////////////////////////////////////
 
     private boolean _handled;
-
     public void setHandled(boolean handled) {
         _handled = handled;
     }
-
     public boolean getHandled() {
         return _handled;
     }
