@@ -12,9 +12,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
 
-import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -123,13 +121,29 @@ public class ThymeleafRender implements XRender {
         }
 
         if (obj instanceof ModelAndView) {
-            render_mav((ModelAndView) obj, ctx);
+            render_mav((ModelAndView) obj, ctx, ctx.outputStream());
         }else{
             ctx.output(obj.toString());
         }
     }
 
-    public void render_mav(ModelAndView mv, XContext ctx) throws Throwable {
+    @Override
+    public String renderAndReturn(Object obj, XContext ctx) throws Throwable {
+        if(obj == null){
+            return null;
+        }
+
+        if (obj instanceof ModelAndView) {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            render_mav((ModelAndView) obj, ctx, outputStream);
+
+            return outputStream.toString();
+        }else{
+            return obj.toString();
+        }
+    }
+
+    public void render_mav(ModelAndView mv, XContext ctx, OutputStream outputStream) throws Throwable {
         if(ctx.contentTypeNew() == null) {
             ctx.contentType("text/html;charset=utf-8");
         }
@@ -143,7 +157,7 @@ public class ThymeleafRender implements XRender {
         context.setVariables(mv);
 
 
-        PrintWriter writer = new PrintWriter(ctx.outputStream());
+        PrintWriter writer = new PrintWriter(outputStream);
         _engine.process(mv.view(), context, writer);
         writer.flush();
     }
