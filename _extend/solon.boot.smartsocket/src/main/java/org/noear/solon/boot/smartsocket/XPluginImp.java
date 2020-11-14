@@ -21,10 +21,14 @@ public final class XPluginImp implements XPlugin {
     public void start(XApp app) {
         String tmp = app.prop().get("solon.xsocket.readBufferSize", "1Mb").toLowerCase();
 
-        if (tmp.length() >2 && tmp.endsWith("mb")) {
-            readBufferSize = Integer.parseInt(tmp.substring(0, tmp.length() - 2)) * 1024;
-        } else {
-            readBufferSize = 1024 * 1024;
+        if (tmp.length() >2) {
+            if(tmp.endsWith("kb")) {
+                readBufferSize = Integer.parseInt(tmp.substring(0, tmp.length() - 2)) * 1024;
+            }
+
+            if(tmp.endsWith("mb")) {
+                readBufferSize = Integer.parseInt(tmp.substring(0, tmp.length() - 2)) * 1024 * 1024;
+            }
         }
 
 
