@@ -1,6 +1,7 @@
 package org.noear.solon.boot.smartsocket;
 
 import org.noear.solon.XApp;
+import org.noear.solon.XUtil;
 import org.noear.solon.core.XPlugin;
 import org.noear.solon.core.XMessage;
 
@@ -9,14 +10,24 @@ import org.smartboot.socket.transport.AioQuickServer;
 
 public final class XPluginImp implements XPlugin {
 
+    protected static int readBufferSize = 0;
     private AioQuickServer<XMessage> server = null;
 
-    public static String solon_boot_ver(){
+    public static String solon_boot_ver() {
         return "smart socket 1.5.0/" + XApp.cfg().version();
     }
 
     @Override
     public void start(XApp app) {
+        String tmp = app.prop().get("solon.xsocket.readBufferSize", "1m");
+
+        if (tmp.endsWith("m")) {
+            readBufferSize = Integer.parseInt(tmp.substring(0, tmp.length() - 1)) * 1024;
+        } else {
+            readBufferSize = 1024 * 1024 * 2;
+        }
+
+
         //注册会话工厂
         XSessionFactory.setInstance(new _SessionFactoryImpl());
 
@@ -40,7 +51,7 @@ public final class XPluginImp implements XPlugin {
         try {
             server = new AioQuickServer<>(_port, protocol, processor);
             server.setBannerEnabled(false);
-            server.setReadBufferSize(1024 * 1024 * 2);
+            server.setReadBufferSize(readBufferSize);
             server.start();
 
             long time_end = System.currentTimeMillis();

@@ -40,6 +40,9 @@ solon.view.mapping.html: ThymeleafRender
 solon.view.mapping.vm: org.noear.solon.view.velocity.VelocityRender #全名（一般用简写）
 
 
+solon.xsocket.readBufferSize=2m
+
+
 solon.mime.xxx: "application/xxx"
 
 #定时任务配置（支持：cron4j-solon-plugin）
