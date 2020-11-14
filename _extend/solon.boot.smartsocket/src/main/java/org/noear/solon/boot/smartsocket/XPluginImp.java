@@ -21,7 +21,7 @@ public final class XPluginImp implements XPlugin {
         XSessionFactory.setInstance(new _SessionFactoryImpl());
 
 
-        if(app.enableSocket() == false){
+        if (app.enableSocket() == false) {
             return;
         }
 
@@ -29,8 +29,8 @@ public final class XPluginImp implements XPlugin {
 
         System.out.println("solon.Server:main: SmartSocket 1.5.0(smartsocket)");
 
-        int _port = app.prop().getInt("server.socket.port",0);
-        if(_port < 1) {
+        int _port = app.prop().getInt("server.socket.port", 0);
+        if (_port < 1) {
             _port = 20000 + app.port();
         }
 
@@ -40,7 +40,7 @@ public final class XPluginImp implements XPlugin {
         try {
             server = new AioQuickServer<>(_port, protocol, processor);
             server.setBannerEnabled(false);
-            server.setReadBufferSize(1024*5);
+            server.setReadBufferSize(1024 * 1024 * 2);
             server.start();
 
             long time_end = System.currentTimeMillis();
