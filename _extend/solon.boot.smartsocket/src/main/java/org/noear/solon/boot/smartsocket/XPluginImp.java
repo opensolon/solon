@@ -10,7 +10,7 @@ import org.smartboot.socket.transport.AioQuickServer;
 
 public final class XPluginImp implements XPlugin {
 
-    protected static int readBufferSize = 0;
+    protected static int readBufferSize = 1024;
     private AioQuickServer<XMessage> server = null;
 
     public static String solon_boot_ver() {
@@ -19,10 +19,10 @@ public final class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
-        String tmp = app.prop().get("solon.xsocket.readBufferSize", "1m");
+        String tmp = app.prop().get("solon.xsocket.readBufferSize", "1Mb").toLowerCase();
 
-        if (tmp.endsWith("m")) {
-            readBufferSize = Integer.parseInt(tmp.substring(0, tmp.length() - 1)) * 1024;
+        if (tmp.length() >2 && tmp.endsWith("mb")) {
+            readBufferSize = Integer.parseInt(tmp.substring(0, tmp.length() - 2)) * 1024;
         } else {
             readBufferSize = 1024 * 1024 * 2;
         }
