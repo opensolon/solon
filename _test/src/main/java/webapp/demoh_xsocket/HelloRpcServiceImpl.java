@@ -7,7 +7,7 @@ import org.noear.solon.core.XMethod;
 
 @XMapping(value = "/demoe/rpc", method = XMethod.SOCKET)
 @XBean(remoting = true)
-public class XSocketRpcDemo implements XSocketRpc {
+public class HelloRpcServiceImpl implements HelloRpcService {
     @XMapping(value = "*", method = XMethod.SOCKET, before = true)
     public void bef(XContext ctx) {
         ctx.headerSet("Content-Type","test/json");

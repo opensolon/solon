@@ -14,7 +14,7 @@ import org.noear.solon.core.XSession;
 import org.noear.solon.extend.xsocket.XSessionFactory;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
-import webapp.demoh_xsocket.XSocketRpc;
+import webapp.demoh_xsocket.HelloRpcService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,12 +68,12 @@ public class SocketResponseTest {
         XSession session = XSessionFactory.create("localhost",_port);
         XSocketChannel channel = new XSocketChannel(session);
 
-        XSocketRpc rpc = Fairy.builder()
+        HelloRpcService rpc = Fairy.builder()
                 .encoder(SnackEncoder.instance)
                 .decoder(SnackDecoder.instance)
                 .upstream(() -> "tcp://localhost:" + _port)
                 .channel(channel)
-                .create(XSocketRpc.class);
+                .create(HelloRpcService.class);
 
         String rst = rpc.hello("noear");
 
