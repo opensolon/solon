@@ -53,7 +53,7 @@ public class XMessageUtils {
     public static XMessage decode(ByteBuffer buffer) {
         int len0 = buffer.getInt();
 
-        if (len0 > buffer.remaining()) {
+        if (len0 < buffer.remaining()) {
             return null;
         }
 

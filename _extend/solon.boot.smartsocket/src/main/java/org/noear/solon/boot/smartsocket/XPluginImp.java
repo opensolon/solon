@@ -40,6 +40,7 @@ public final class XPluginImp implements XPlugin {
         try {
             server = new AioQuickServer<>(_port, protocol, processor);
             server.setBannerEnabled(false);
+            server.setReadBufferSize(1024*5);
             server.start();
 
             long time_end = System.currentTimeMillis();

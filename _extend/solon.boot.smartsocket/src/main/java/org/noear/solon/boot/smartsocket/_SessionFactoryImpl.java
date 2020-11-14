@@ -20,6 +20,7 @@ class _SessionFactoryImpl extends XSessionFactory {
     @Override
     protected XSession createSession(String host, int port) {
         AioQuickClient<XMessage> client = new AioQuickClient<>(host, port, new AioProtocol(), new AioProcessor());
+        client.setReadBufferSize(1024 * 5);
 
         try {
             AioSession conn = client.start();
