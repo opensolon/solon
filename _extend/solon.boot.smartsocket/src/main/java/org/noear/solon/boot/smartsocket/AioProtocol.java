@@ -17,18 +17,18 @@ public class AioProtocol implements Protocol<XMessage> {
 
     @Override
     public XMessage decode(ByteBuffer buffer, AioSession session) {
-        int remaining = buffer.remaining();
-        if (remaining < Integer.BYTES) {
+
+        if (buffer.remaining() < Integer.BYTES) {
             return null;
         }
         buffer.mark();
-        int length = buffer.getInt();
+        int length = buffer.getInt() - 4;
         if (length > buffer.remaining()) {
             buffer.reset();
             return null;
         }
 
-
+        buffer.reset();
         XMessage tmp = XMessageUtils.decode(buffer);
 
         if (tmp == null) {
