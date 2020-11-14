@@ -10,7 +10,7 @@ import org.smartboot.socket.transport.AioQuickServer;
 
 public final class XPluginImp implements XPlugin {
 
-    protected static int readBufferSize = 1024;
+    protected static int readBufferSize = 1024 * 1024;
     private AioQuickServer<XMessage> server = null;
 
     public static String solon_boot_ver() {
@@ -24,7 +24,7 @@ public final class XPluginImp implements XPlugin {
         if (tmp.length() >2 && tmp.endsWith("mb")) {
             readBufferSize = Integer.parseInt(tmp.substring(0, tmp.length() - 2)) * 1024;
         } else {
-            readBufferSize = 1024 * 1024 * 2;
+            readBufferSize = 1024 * 1024;
         }
 
 
