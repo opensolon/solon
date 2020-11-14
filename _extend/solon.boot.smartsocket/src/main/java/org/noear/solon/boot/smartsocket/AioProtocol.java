@@ -28,7 +28,7 @@ public class AioProtocol implements Protocol<XMessage> {
             return null;
         }
 
-        buffer.reset();
+        buffer.reset();//内部会重新开始读
         XMessage tmp = XMessageUtils.decode(buffer);
 
         if (tmp == null) {
