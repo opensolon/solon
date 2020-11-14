@@ -4,6 +4,7 @@ package org.noear.fairy.channel.xsocket;
 import org.noear.fairy.FairyConfig;
 import org.noear.fairy.IChannel;
 import org.noear.fairy.Result;
+import org.noear.solon.XApp;
 import org.noear.solon.XUtil;
 import org.noear.solon.core.XMessage;
 import org.noear.solon.core.XSession;
@@ -23,8 +24,8 @@ public class XSocketChannel implements IChannel {
         //0.尝试解码器的过滤
         cfg.getDecoder().filter(cfg, method, url, headers, args);
 
-        XMessage message     = null;
-        String   message_key = XUtil.guid();
+        XMessage message = null;
+        String message_key = XUtil.guid();
 
         //1.执行并返回
 
@@ -44,6 +45,10 @@ public class XSocketChannel implements IChannel {
                 message = XMessage.wrap(message_key, url, json.getBytes());
                 break;
             }
+        }
+
+        if (XApp.cfg().isFilesMode()) {
+            System.out.println(message.toString());
         }
 
         XMessage response = session.sendAndResponse(message);
