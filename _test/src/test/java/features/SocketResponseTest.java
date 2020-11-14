@@ -1,6 +1,5 @@
 package features;
 
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.fairy.Fairy;
@@ -8,7 +7,6 @@ import org.noear.fairy.channel.xsocket.XSocketChannel;
 import org.noear.fairy.decoder.SnackDecoder;
 import org.noear.fairy.encoder.SnackEncoder;
 import org.noear.snack.ONode;
-import org.noear.solon.XApp;
 import org.noear.solon.core.XMessage;
 import org.noear.solon.core.XSession;
 import org.noear.solon.extend.xsocket.XSessionFactory;
@@ -24,7 +22,7 @@ import java.util.Map;
 public class SocketResponseTest {
     @Test
     public void test() throws Throwable{
-        int _port = XApp.global().port() + 20000;
+        int _port = 8080 + 20000;
 
         XSession session = XSessionFactory.create("localhost",_port);
 
