@@ -17,6 +17,10 @@ public final class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
+        //注册会话工厂
+        XSessionFactory.setInstance(new _SessionFactoryImpl());
+
+
         if(app.enableSocket() == false){
             return;
         }
@@ -37,9 +41,6 @@ public final class XPluginImp implements XPlugin {
             server = new AioQuickServer<>(_port, protocol, processor);
             server.setBannerEnabled(false);
             server.start();
-
-            //注册会话工厂
-            XSessionFactory.setInstance(new _SessionFactoryImpl());
 
             long time_end = System.currentTimeMillis();
 

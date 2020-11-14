@@ -24,9 +24,8 @@ class XSocketContextHandler {
 
             XApp.global().tryHandle(ctx);
 
-            if (ctx.getHandled() && ctx.status() != 404) {
-                ctx.commit();
-            }
+            //不管有没有成功，都返回
+            ctx.commit();
         } catch (Throwable ex) {
             //context 初始化时，可能会出错
             //

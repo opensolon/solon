@@ -13,6 +13,8 @@ public class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
+        //注册会话工厂
+        XSessionFactory.setInstance(new _SessionFactoryImpl());
 
         if (app.enableSocket() == false) {
             return;
@@ -30,9 +32,6 @@ public class XPluginImp implements XPlugin {
         try {
             _server = new SocketServer();
             _server.start(_port);
-
-            //注册会话工厂
-            XSessionFactory.setInstance(new _SessionFactoryImpl());
 
             long time_end = System.currentTimeMillis();
 
