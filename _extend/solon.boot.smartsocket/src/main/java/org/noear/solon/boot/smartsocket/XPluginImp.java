@@ -19,7 +19,7 @@ public final class XPluginImp implements XPlugin {
 
     @Override
     public void start(XApp app) {
-        String tmp = app.prop().get("solon.xsocket.readBufferSize", "1Mb").toLowerCase();
+        String tmp = app.prop().get("solon.xsocket.readBufferSize", "").toLowerCase();
 
         if (tmp.length() >2) {
             if(tmp.endsWith("kb")) {
