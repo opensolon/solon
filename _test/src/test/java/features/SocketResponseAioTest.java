@@ -16,15 +16,9 @@ import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.demoh_xsocket.XSocketRpc;
 
-import java.net.Socket;
-import java.nio.channels.AsynchronousChannelGroup;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.smartboot.socket.transport.AioQuickClient;
-import org.smartboot.socket.transport.AioSession;
-import org.noear.solon.boot.smartsocket.AioProcessor;
-import org.noear.solon.boot.smartsocket.AioProtocol;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
@@ -34,9 +28,7 @@ public class SocketResponseAioTest {
     public void test2() throws Throwable{
         int _port = XApp.global().port() + 20000;
 
-        AioQuickClient<XMessage> client = new AioQuickClient<>("localhost",_port, new AioProtocol(), new AioProcessor());
-        AioSession conn = client.start();
-        XSession session = XSessionFactory.get(conn);
+        XSession session = XSessionFactory.create("localhost",_port);
 
 
         String root = "tcp://localhost:" + _port;
@@ -53,9 +45,7 @@ public class SocketResponseAioTest {
     public void test_rpc() throws Throwable {
         int _port = 8080 + 20000;
 
-        AioQuickClient<XMessage> client = new AioQuickClient<>("localhost",_port, new AioProtocol(), new AioProcessor());
-        AioSession conn = client.start();
-        XSession session = XSessionFactory.get(conn);
+        XSession session = XSessionFactory.create("localhost",_port);
 
 
         String root = "tcp://localhost:" + _port;
@@ -77,9 +67,7 @@ public class SocketResponseAioTest {
     public void test_rpc2() throws Throwable {
         int _port = 8080 + 20000;
 
-        AioQuickClient<XMessage> client = new AioQuickClient<>("localhost",_port, new AioProtocol(), new AioProcessor());
-        AioSession conn = client.start();
-        XSession session = XSessionFactory.get(conn);
+        XSession session = XSessionFactory.create("localhost",_port);
         XSocketChannel channel = new XSocketChannel(session);
 
         XSocketRpc rpc = Fairy.builder()

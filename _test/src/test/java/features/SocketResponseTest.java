@@ -18,21 +18,17 @@ import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.demoh_xsocket.XSocketRpc;
 
-import java.net.Socket;
-import java.nio.channels.AsynchronousChannelGroup;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ThreadFactory;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
-public class SocketResponseTest{
+public class SocketResponseTest {
     @Test
     public void test() throws Throwable {
         int _port = 8080 + 20000;
 
-        Socket conn = new Socket("localhost", _port);
-        XSession session = XSessionFactory.get(conn);
+        XSession session = XSessionFactory.create("localhost", _port);
 
 
         String root = "tcp://localhost:" + _port;
@@ -49,13 +45,12 @@ public class SocketResponseTest{
     public void test_rpc() throws Throwable {
         int _port = 8080 + 20000;
 
-        Socket conn = new Socket("localhost", _port);
-        XSession session = XSessionFactory.get(conn);
+        XSession session = XSessionFactory.create("localhost", _port);
 
 
         String root = "tcp://localhost:" + _port;
-        Map<String,Object> map = new HashMap<>();
-        map.put("name","noear");
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", "noear");
         String map_josn = ONode.stringify(map);
 
         XMessage message = XMessage.wrap(root + "/demoe/rpc/hello", map_josn.getBytes());
@@ -72,16 +67,15 @@ public class SocketResponseTest{
     public void test_rpc2() throws Throwable {
         int _port = 8080 + 20000;
 
-        Socket conn = new Socket("localhost", _port);
-        XSession session = XSessionFactory.get(conn);
+        XSession session = XSessionFactory.create("localhost", _port);
         XSocketChannel channel = new XSocketChannel(session);
 
         XSocketRpc rpc = Fairy.builder()
-                              .encoder(SnackEncoder.instance)
-                              .decoder(SnackDecoder.instance)
-                              .upstream(() -> "tcp://localhost:" + _port)
-                              .channel(channel)
-                              .create(XSocketRpc.class);
+                .encoder(SnackEncoder.instance)
+                .decoder(SnackDecoder.instance)
+                .upstream(() -> "tcp://localhost:" + _port)
+                .channel(channel)
+                .create(XSocketRpc.class);
 
         String rst = rpc.hello("noear");
 
