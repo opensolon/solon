@@ -13,7 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.util.*;
 
-public class _SocketSession extends XSessionBase {
+class _SocketSession extends XSessionBase {
     public static Map<AioSession, XSession> sessions = new HashMap<>();
     public static XSession get(AioSession real) {
         XSession tmp = sessions.get(real);

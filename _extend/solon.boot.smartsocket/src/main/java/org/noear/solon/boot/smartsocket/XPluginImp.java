@@ -4,6 +4,7 @@ import org.noear.solon.XApp;
 import org.noear.solon.core.XPlugin;
 import org.noear.solon.core.XMessage;
 
+import org.noear.solon.extend.xsocket.XSessionFactory;
 import org.smartboot.socket.transport.AioQuickServer;
 
 public final class XPluginImp implements XPlugin {
@@ -35,8 +36,10 @@ public final class XPluginImp implements XPlugin {
         try {
             server = new AioQuickServer<>(_port, protocol, processor);
             server.setBannerEnabled(false);
-
             server.start();
+
+            //注册会话工厂
+            XSessionFactory.setInstance(new _SessionFactoryImpl());
 
             long time_end = System.currentTimeMillis();
 

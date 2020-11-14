@@ -32,7 +32,7 @@ import java.util.*;
  * }
  * </code></pre>
  * */
-public class _SocketSession extends XSessionBase {
+class _SocketSession extends XSessionBase {
     public static Map<Socket, XSession> sessions = new HashMap<>();
 
     public static XSession get(Socket real) {
