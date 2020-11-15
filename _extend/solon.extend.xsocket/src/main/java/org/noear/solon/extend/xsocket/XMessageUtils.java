@@ -20,7 +20,7 @@ public class XMessageUtils {
         //resourceDescriptor
         byte[] rdB = msg.resourceDescriptor().getBytes(msg.getCharset());
 
-        //length (key + flag + resourceDescriptor + content)
+        //length (flag + key + resourceDescriptor + content)
         int len = keyB.length + rdB.length + msg.content().length + 2 * 2 + 4 + 4;
 
         ByteBuffer buffer = ByteBuffer.allocate(len);
