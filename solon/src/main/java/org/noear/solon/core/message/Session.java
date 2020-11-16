@@ -12,7 +12,7 @@ import java.util.Collection;
  * @author noear
  * @since 1.0
  * */
-public interface MessageSession {
+public interface Session {
     Object real();
 
     /**
@@ -82,5 +82,5 @@ public interface MessageSession {
     /**
      * 获取所有会话
      * */
-    Collection<MessageSession> getOpenSessions();
+    Collection<Session> getOpenSessions();
 }

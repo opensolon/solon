@@ -1,7 +1,7 @@
 package org.noear.solon.boot.rsocket;
 
 import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.xsocket.MessageListenerProxy;
 
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class SocketServer {
         while (true) {
             Socket socket = server.accept();
 
-            MessageSession session = null;//_SocketSession.get(socket);
+            Session session = null;//_SocketSession.get(socket);
             MessageListenerProxy.getGlobal().onOpen(session);
 
             pool.execute(() -> {

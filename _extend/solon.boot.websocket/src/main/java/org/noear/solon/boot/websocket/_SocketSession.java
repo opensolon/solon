@@ -3,7 +3,7 @@ package org.noear.solon.boot.websocket;
 import org.java_websocket.WebSocket;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.xsocket.MessageSessionBase;
 
@@ -12,9 +12,9 @@ import java.net.InetSocketAddress;
 import java.util.*;
 
 public class _SocketSession extends MessageSessionBase {
-    public static Map<WebSocket, MessageSession> sessions = new HashMap<>();
-    public static MessageSession get(WebSocket real) {
-        MessageSession tmp = sessions.get(real);
+    public static Map<WebSocket, Session> sessions = new HashMap<>();
+    public static Session get(WebSocket real) {
+        Session tmp = sessions.get(real);
         if (tmp == null) {
             synchronized (real) {
                 tmp = sessions.get(real);
@@ -118,7 +118,7 @@ public class _SocketSession extends MessageSessionBase {
     }
 
     @Override
-    public Collection<MessageSession> getOpenSessions() {
+    public Collection<Session> getOpenSessions() {
         return new ArrayList<>(sessions.values());
     }
 

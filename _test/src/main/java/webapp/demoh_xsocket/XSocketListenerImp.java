@@ -2,15 +2,15 @@ package webapp.demoh_xsocket;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.message.MessageListener;
+import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.core.message.Session;
 import org.noear.solon.annotation.ServerEndpoint;
 
 @ServerEndpoint(value = "/demoe/websocket")
-public class XSocketListenerImp implements MessageListener {
+public class XSocketListenerImp implements Listener {
     @Override
-    public void onMessage(MessageSession session, Message message, boolean messageIsString) {
+    public void onMessage(Session session, Message message, boolean messageIsString) {
         System.out.println(session.path());
 
         if(Solon.cfg().isDebugMode()){

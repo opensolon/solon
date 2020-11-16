@@ -1,8 +1,8 @@
 package org.noear.solon.core.route;
 
 import org.noear.solon.core.handle.Endpoint;
-import org.noear.solon.core.message.MessageListener;
-import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.core.message.Listener;
+import org.noear.solon.core.message.Session;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
@@ -43,7 +43,7 @@ public class Router {
     //for handler
     private final RouteTable<Handler>[] routesH;
     //for listener
-    private final RouteTable<MessageListener> routesL;
+    private final RouteTable<Listener> routesL;
 
     public Router() {
         routesH = new RouteTable[3];
@@ -79,18 +79,18 @@ public class Router {
     /**
      * 添加路由关系 for XListener
      */
-    public void add(String path, MessageListener listener) {
+    public void add(String path, Listener listener) {
         add(path, MethodType.ALL, listener);
     }
 
-    public void add(String path, MethodType method, MessageListener listener) {
+    public void add(String path, MethodType method, Listener listener) {
         add(path, method, 0, listener);
     }
 
     /**
      * 添加路由关系 for XListener
      */
-    public void add(String path, MethodType method, int index, MessageListener listener) {
+    public void add(String path, MethodType method, int index, Listener listener) {
         routesL.add(new RouteTable.Route(path, method, index, listener));
     }
 
@@ -128,7 +128,7 @@ public class Router {
     /**
      * 区配一个目标（根据上上文）
      */
-    public MessageListener matchOne(MessageSession session) {
+    public Listener matchOne(Session session) {
         String path = session.path();
 
         return routesL.matchOne(path, session.method());

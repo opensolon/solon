@@ -3,7 +3,7 @@ package org.noear.solon.extend.xsocket;
 import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.core.message.Session;
 
 /**
  * XSocket 上下文处理者
@@ -13,7 +13,7 @@ import org.noear.solon.core.message.MessageSession;
  * */
 class SocketContextHandler {
 
-    public void handle(MessageSession session, Message message, boolean messageIsString) {
+    public void handle(Session session, Message message, boolean messageIsString) {
         if (message == null) {
             return;
         }

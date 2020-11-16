@@ -2,7 +2,7 @@ package org.noear.solon.boot.smartsocket;
 
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.xsocket.MessageListenerProxy;
 import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.StateMachineEnum;
@@ -13,7 +13,7 @@ public class AioProcessor implements MessageProcessor<Message> {
     @Override
     public void process(AioSession session, Message message) {
         try {
-            MessageSession session1 = _SocketSession.get(session);
+            Session session1 = _SocketSession.get(session);
 
             MessageListenerProxy.getGlobal().onMessage(session1, message, false);
         } catch (Throwable ex) {

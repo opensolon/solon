@@ -2,7 +2,7 @@ package org.noear.solon.boot.smarthttp.websocket;
 
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.xsocket.MessageListenerProxy;
 import org.smartboot.http.WebSocketRequest;
 import org.smartboot.http.WebSocketResponse;
@@ -28,7 +28,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
     @Override
     public void handleTextMessage(WebSocketRequest request, WebSocketResponse response, String data) {
         try {
-            MessageSession session = _SocketSession.get(request, response);
+            Session session = _SocketSession.get(request, response);
             Message message = Message.wrap(request.getRequestURI(),
                     data.getBytes("UTF-8"));
 
@@ -41,7 +41,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
     @Override
     public void handleBinaryMessage(WebSocketRequest request, WebSocketResponse response, byte[] data) {
         try {
-            MessageSession session = _SocketSession.get(request, response);
+            Session session = _SocketSession.get(request, response);
             Message message = Message.wrap(request.getRequestURI(), data);
 
             MessageListenerProxy.getGlobal().onMessage(session, message, false);

@@ -7,14 +7,14 @@ import org.noear.fairy.Result;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.core.message.Session;
 
 import java.util.Map;
 
 public class SocketChannel implements IChannel {
-    public MessageSession session;
+    public Session session;
 
-    public SocketChannel(MessageSession session) {
+    public SocketChannel(Session session) {
         this.session = session;
     }
 

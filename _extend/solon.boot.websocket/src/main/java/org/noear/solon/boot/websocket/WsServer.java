@@ -5,7 +5,7 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.xsocket.MessageListenerProxy;
 
 import java.net.InetSocketAddress;
@@ -41,7 +41,7 @@ public class WsServer extends WebSocketServer {
     @Override
     public void onMessage(WebSocket conn, String data) {
         try {
-            MessageSession session = _SocketSession.get(conn);
+            Session session = _SocketSession.get(conn);
             Message message = Message.wrap(conn.getResourceDescriptor(), data.getBytes(_charset));
 
             MessageListenerProxy.getGlobal().onMessage(session, message, true);
@@ -53,7 +53,7 @@ public class WsServer extends WebSocketServer {
     @Override
     public void onMessage(WebSocket conn, ByteBuffer data) {
         try {
-            MessageSession session = _SocketSession.get(conn);
+            Session session = _SocketSession.get(conn);
             Message message = Message.wrap(conn.getResourceDescriptor(), data.array());
 
             MessageListenerProxy.getGlobal().onMessage(session, message, false);

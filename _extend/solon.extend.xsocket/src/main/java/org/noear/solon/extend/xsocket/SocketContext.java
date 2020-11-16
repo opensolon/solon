@@ -3,7 +3,7 @@ package org.noear.solon.extend.xsocket;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.core.message.Session;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -17,12 +17,12 @@ import java.net.URI;
  * */
 public class SocketContext extends ContextEmpty {
     private InetSocketAddress _inetSocketAddress;
-    private MessageSession _sesssion;
+    private Session _sesssion;
     private Message _message;
     private boolean _messageIsString;
     private MethodType _method;
 
-    public SocketContext(MessageSession session, Message message, boolean messageIsString) {
+    public SocketContext(Session session, Message message, boolean messageIsString) {
         _sesssion = session;
         _message = message;
         _messageIsString = messageIsString;

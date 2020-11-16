@@ -2,7 +2,7 @@ package org.noear.solon.boot.jdksocket;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.xsocket.MessageUtils;
 import org.noear.solon.extend.xsocket.MessageSessionBase;
@@ -33,10 +33,10 @@ import java.util.*;
  * </code></pre>
  * */
 class _SocketSession extends MessageSessionBase {
-    public static Map<Socket, MessageSession> sessions = new HashMap<>();
+    public static Map<Socket, Session> sessions = new HashMap<>();
 
-    public static MessageSession get(Socket real) {
-        MessageSession tmp = sessions.get(real);
+    public static Session get(Socket real) {
+        Session tmp = sessions.get(real);
         if (tmp == null) {
             synchronized (real) {
                 tmp = sessions.get(real);
@@ -162,7 +162,7 @@ class _SocketSession extends MessageSessionBase {
     }
 
     @Override
-    public Collection<MessageSession> getOpenSessions() {
+    public Collection<Session> getOpenSessions() {
         return new ArrayList<>(sessions.values());
     }
 

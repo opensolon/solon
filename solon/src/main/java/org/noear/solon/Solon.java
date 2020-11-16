@@ -13,7 +13,7 @@ import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.event.BeanLoadEndEvent;
 import org.noear.solon.core.event.PluginLoadEndEvent;
 import org.noear.solon.ext.*;
-import org.noear.solon.core.message.MessageListener;
+import org.noear.solon.core.message.Listener;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
@@ -475,7 +475,7 @@ public class Solon implements Handler, HandlerSlots {
     /**
      * 添加web socket方法的监听
      */
-    public void ws(String path, MessageListener listener){
+    public void ws(String path, Listener listener){
         _router.add(path, MethodType.WEBSOCKET, listener);
     }
 
@@ -489,7 +489,7 @@ public class Solon implements Handler, HandlerSlots {
     /**
      * 添加socket方法的监听
      */
-    public void socket(String path, MessageListener listener){
+    public void socket(String path, Listener listener){
         _router.add(path, MethodType.SOCKET, listener);
     }
 

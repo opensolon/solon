@@ -3,7 +3,7 @@ package org.noear.solon.boot.smarthttp.websocket;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.xsocket.MessageSessionBase;
 import org.smartboot.http.WebSocketRequest;
 import org.smartboot.http.WebSocketResponse;
@@ -134,7 +134,7 @@ public class _SocketSession extends MessageSessionBase {
     }
 
     @Override
-    public Collection<MessageSession> getOpenSessions() {
+    public Collection<Session> getOpenSessions() {
         return new ArrayList<>(sessions.values());
     }
 

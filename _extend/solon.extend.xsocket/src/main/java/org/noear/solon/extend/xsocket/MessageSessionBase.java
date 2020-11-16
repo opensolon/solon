@@ -2,12 +2,12 @@ package org.noear.solon.extend.xsocket;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.core.message.Session;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-public abstract class MessageSessionBase implements MessageSession {
+public abstract class MessageSessionBase implements Session {
     /**
      * 用于支持双向RPC
      * */

@@ -3,7 +3,7 @@ package org.noear.solon.boot.undertow.websocket;
 import io.undertow.websockets.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.xsocket.MessageListenerProxy;
 
 import java.io.ByteArrayOutputStream;
@@ -25,7 +25,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
                 out.write(buf.array());
             }
 
-            MessageSession session = _SocketSession.get(channel);
+            Session session = _SocketSession.get(channel);
             Message message = Message.wrap(channel.getUrl(), out.toByteArray());
 
             MessageListenerProxy.getGlobal().onMessage(session, message, false);
@@ -37,7 +37,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
     @Override
     protected void onFullTextMessage(WebSocketChannel channel, BufferedTextMessage msg) throws IOException {
         try {
-            MessageSession session = _SocketSession.get(channel);
+            Session session = _SocketSession.get(channel);
             Message message = Message.wrap(channel.getUrl(),
                     msg.getData().getBytes("UTF-8"));
 

@@ -6,7 +6,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.xsocket.MessageListenerProxy;
 import org.noear.solon.extend.xsocket.MessageUtils;
 import org.noear.solon.extend.xsocket.MessageSessionBase;
@@ -20,10 +20,10 @@ import java.nio.ByteBuffer;
 import java.util.*;
 
 public class _SocketSession extends MessageSessionBase {
-    public static Map<RSocket, MessageSession> sessions = new HashMap<>();
+    public static Map<RSocket, Session> sessions = new HashMap<>();
 
-    public static MessageSession get(RSocket real) {
-        MessageSession tmp = sessions.get(real);
+    public static Session get(RSocket real) {
+        Session tmp = sessions.get(real);
         if (tmp == null) {
             synchronized (real) {
                 tmp = sessions.get(real);
@@ -152,7 +152,7 @@ public class _SocketSession extends MessageSessionBase {
     }
 
     @Override
-    public Collection<MessageSession> getOpenSessions() {
+    public Collection<Session> getOpenSessions() {
         return new ArrayList<>(sessions.values());
     }
 

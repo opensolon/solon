@@ -4,7 +4,7 @@ import io.rsocket.ConnectionSetupPayload;
 import io.rsocket.RSocket;
 import io.rsocket.SocketAcceptor;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.xsocket.MessageListenerProxy;
 import org.noear.solon.extend.xsocket.MessageUtils;
 import reactor.core.publisher.Mono;
@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 public class SocketAcceptorImpl implements SocketAcceptor {
     @Override
     public Mono<RSocket> accept(ConnectionSetupPayload rPayload, RSocket rSocket) {
-        MessageSession session = _SocketSession.get(rSocket);
+        Session session = _SocketSession.get(rSocket);
         Message message = MessageUtils.decode(rPayload.getData());
         if (message != null) {
 

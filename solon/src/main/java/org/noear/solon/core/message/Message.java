@@ -8,7 +8,7 @@ import java.util.function.Function;
 /**
  * XSocket 消息包（实现 Message + Listener 架构）
  *
- * @see MessageListener#onMessage(MessageSession, Message, boolean)
+ * @see Listener#onMessage(Session, Message, boolean)
  * @author noear
  * @since 1.0
  * */

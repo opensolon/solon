@@ -8,7 +8,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.HandlerLoader;
-import org.noear.solon.core.message.MessageListener;
+import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.FieldWrap;
 import org.noear.solon.core.wrap.MethodWrap;
@@ -119,8 +119,8 @@ public class AopContext extends BeanContainer {
 
         //注册 @XServerEndpoint 构建器
         beanBuilderAdd(ServerEndpoint.class, (clz, wrap, anno) -> {
-            if (MessageListener.class.isAssignableFrom(clz)) {
-                MessageListener l = wrap.raw();
+            if (Listener.class.isAssignableFrom(clz)) {
+                Listener l = wrap.raw();
                 Solon.global().router().add(anno.value(), anno.method(), l);
             }
         });

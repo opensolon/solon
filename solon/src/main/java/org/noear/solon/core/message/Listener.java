@@ -23,13 +23,13 @@ package org.noear.solon.core.message;
  * @since 1.0
  * */
 @FunctionalInterface
-public interface MessageListener {
+public interface Listener {
 
-    default void onOpen(MessageSession session){}
+    default void onOpen(Session session){}
 
-    void onMessage(MessageSession session, Message message, boolean messageIsString);
+    void onMessage(Session session, Message message, boolean messageIsString);
 
-    default void onClose(MessageSession session){}
+    default void onClose(Session session){}
 
-    default void onError(MessageSession session, Throwable error){}
+    default void onError(Session session, Throwable error){}
 }

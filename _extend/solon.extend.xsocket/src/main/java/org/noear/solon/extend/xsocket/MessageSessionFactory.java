@@ -1,6 +1,6 @@
 package org.noear.solon.extend.xsocket;
 
-import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.core.message.Session;
 
 public abstract class MessageSessionFactory {
     private static MessageSessionFactory instance;
@@ -9,12 +9,12 @@ public abstract class MessageSessionFactory {
         instance = factory;
     }
 
-    protected abstract MessageSession getSession(Object conn);
+    protected abstract Session getSession(Object conn);
 
-    protected abstract MessageSession createSession(String host, int port);
+    protected abstract Session createSession(String host, int port);
 
 
-    public static MessageSession get(Object conn) {
+    public static Session get(Object conn) {
         if (instance == null) {
             throw new IllegalArgumentException("XSessionFactory uninitialized");
         }
@@ -22,7 +22,7 @@ public abstract class MessageSessionFactory {
         return instance.getSession(conn);
     }
 
-    public static MessageSession create(String host, int port) {
+    public static Session create(String host, int port) {
         if (instance == null) {
             throw new IllegalArgumentException("XSessionFactory uninitialized");
         }
