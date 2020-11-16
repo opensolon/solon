@@ -1,6 +1,6 @@
 package org.noear.solon.boot.jlhttp;
 
-import org.noear.solon.core.MapX;
+import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handler.Context;
 import org.noear.solon.core.handler.UploadedFile;
@@ -159,12 +159,12 @@ public class JlHttpContext extends Context {
         }
     }
 
-    private MapX _paramMap;
+    private NvMap _paramMap;
 
     @Override
-    public MapX paramMap() {
+    public NvMap paramMap() {
         if (_paramMap == null) {
-            _paramMap = new MapX();
+            _paramMap = new NvMap();
 
             try {
                 _paramMap.putAll(_request.getParams());
@@ -217,21 +217,21 @@ public class JlHttpContext extends Context {
     }
 
     @Override
-    public MapX cookieMap() {
+    public NvMap cookieMap() {
         if (_cookieMap == null) {
-            _cookieMap = new MapX(_request.getHeaders().getParams("Cookie"));
+            _cookieMap = new NvMap(_request.getHeaders().getParams("Cookie"));
         }
 
         return _cookieMap;
     }
 
-    private MapX _cookieMap;
+    private NvMap _cookieMap;
 
 
     @Override
-    public MapX headerMap() {
+    public NvMap headerMap() {
         if (_headerMap == null) {
-            _headerMap = new MapX();
+            _headerMap = new NvMap();
 
             HTTPServer.Headers headers = _request.getHeaders();
 
@@ -245,7 +245,7 @@ public class JlHttpContext extends Context {
         return _headerMap;
     }
 
-    private MapX _headerMap;
+    private NvMap _headerMap;
 
     //=================================
 

@@ -17,13 +17,13 @@ import java.util.function.Function;
  * @author noear
  * @since 1.0
  * */
-public class PropertiesX extends Properties {
+public class PropertiesEx extends Properties {
 
-    public PropertiesX() {
+    public PropertiesEx() {
         super();
     }
 
-    public PropertiesX(Properties defaults) {
+    public PropertiesEx(Properties defaults) {
         super(defaults);
     }
 
@@ -104,8 +104,8 @@ public class PropertiesX extends Properties {
      *
      * @param keyStarts key 的开始字符
      * */
-    public PropertiesX getProp(String keyStarts) {
-        PropertiesX prop = new PropertiesX();
+    public PropertiesEx getProp(String keyStarts) {
+        PropertiesEx prop = new PropertiesEx();
         doFind(keyStarts, prop::put);
         return prop;
     }
@@ -114,7 +114,7 @@ public class PropertiesX extends Properties {
      *
      * @param expr 兼容 ${key} or key
      * */
-    public PropertiesX getPropByExpr(String expr) {
+    public PropertiesEx getPropByExpr(String expr) {
         String name = expr;
         if (name.startsWith("${") && name.endsWith("}")) {
             name = expr.substring(2, name.length() - 1);
@@ -128,8 +128,8 @@ public class PropertiesX extends Properties {
      *
      * @param keyStarts key 的开始字符
      * */
-    public MapX getXmap(String keyStarts) {
-        MapX map = new MapX();
+    public NvMap getXmap(String keyStarts) {
+        NvMap map = new NvMap();
         doFind(keyStarts, map::put);
         return map;
     }

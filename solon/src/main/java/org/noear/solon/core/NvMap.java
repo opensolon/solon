@@ -17,23 +17,23 @@ import java.util.Map;
  * @author noear
  * @since 1.0
  * */
-public class MapX extends LinkedCaseInsensitiveMap<String> {
+public class NvMap extends LinkedCaseInsensitiveMap<String> {
 
-    public MapX() {
+    public NvMap() {
         super();
     }
 
-    public MapX(Map<String, String> map) {
+    public NvMap(Map<String, String> map) {
         super();
         putAll(map);
     }
 
-    public static MapX from(String[] args) {
+    public static NvMap from(String[] args) {
         return from(Arrays.asList(args));
     }
 
-    public static MapX from(List<String> args) {
-        MapX d = new MapX();
+    public static NvMap from(List<String> args) {
+        NvMap d = new NvMap();
 
         if (args != null) {
             int len = args.size();

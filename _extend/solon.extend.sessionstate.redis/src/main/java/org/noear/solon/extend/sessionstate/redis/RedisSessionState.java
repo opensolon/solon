@@ -6,7 +6,7 @@ import org.noear.snack.core.Feature;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handler.Context;
-import org.noear.solon.core.MapX;
+import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handler.SessionState;
 
 /**
@@ -18,7 +18,7 @@ public class RedisSessionState implements SessionState {
     public final static String SESSIONID_encrypt = "&L8e!@T0";
 
     private RedisX redisX;
-    private RedisSessionState(MapX map){
+    private RedisSessionState(NvMap map){
         if (XServerProp.session_timeout > 0) {
             _expiry = XServerProp.session_timeout;
         }
@@ -36,7 +36,7 @@ public class RedisSessionState implements SessionState {
     }
 
     public static RedisSessionState create(){
-        MapX map = Solon.cfg().getXmap("server.session.state.redis");
+        NvMap map = Solon.cfg().getXmap("server.session.state.redis");
 
         if(map.size() < 4){
             System.err.println("Error configuration: solon.session.state.redis");

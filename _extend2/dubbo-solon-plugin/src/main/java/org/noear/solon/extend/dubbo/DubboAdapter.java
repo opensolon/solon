@@ -5,7 +5,7 @@ import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.rpc.model.ApplicationModel;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.MapX;
+import org.noear.solon.core.NvMap;
 
 import java.util.Map;
 import java.util.Properties;
@@ -30,7 +30,7 @@ public class DubboAdapter {
 
         // 当前应用配置
         //
-        MapX props = null;
+        NvMap props = null;
         {
             application = new ApplicationConfig();
             props = Solon.cfg().getXmap("dubbo.application");

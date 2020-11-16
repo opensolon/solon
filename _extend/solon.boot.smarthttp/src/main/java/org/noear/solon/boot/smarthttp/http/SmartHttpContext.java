@@ -1,6 +1,6 @@
 package org.noear.solon.boot.smarthttp.http;
 
-import org.noear.solon.core.MapX;
+import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handler.Context;
 import org.noear.solon.core.handler.UploadedFile;
@@ -140,12 +140,12 @@ public class SmartHttpContext extends Context {
         }
     }
 
-    private MapX _paramMap;
+    private NvMap _paramMap;
 
     @Override
-    public MapX paramMap() {
+    public NvMap paramMap() {
         if (_paramMap == null) {
-            _paramMap = new MapX();
+            _paramMap = new NvMap();
 
             try {
                 for (Map.Entry<String, String[]> entry : _request.getParameters().entrySet()) {
@@ -190,9 +190,9 @@ public class SmartHttpContext extends Context {
     }
 
     @Override
-    public MapX cookieMap() {
+    public NvMap cookieMap() {
         if (_cookieMap == null) {
-            _cookieMap = new MapX();
+            _cookieMap = new NvMap();
 
             String _cookieMapStr = header("Cookie");
             if (_cookieMapStr != null) {
@@ -211,13 +211,13 @@ public class SmartHttpContext extends Context {
         return _cookieMap;
     }
 
-    private MapX _cookieMap;
+    private NvMap _cookieMap;
 
 
     @Override
-    public MapX headerMap() {
+    public NvMap headerMap() {
         if (_headerMap == null) {
-            _headerMap = new MapX();
+            _headerMap = new NvMap();
 
             for (String k : _request.getHeaderNames()) {
                 _headerMap.put(k, _request.getHeader(k));
@@ -227,7 +227,7 @@ public class SmartHttpContext extends Context {
         return _headerMap;
     }
 
-    private MapX _headerMap;
+    private NvMap _headerMap;
 
     //=================================
 

@@ -4,7 +4,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
-import org.noear.solon.core.MapX;
+import org.noear.solon.core.NvMap;
 import org.noear.weed.DbContext;
 import org.noear.weed.cache.ICacheServiceEx;
 import org.noear.weed.cache.LocalCache;
@@ -31,7 +31,7 @@ public class DbConfig {
     //使用连接池 配置 数据库上下文
     //
     private final static HikariDataSource dataSource(){
-        MapX map = Solon.cfg().getXmap("test.db2");
+        NvMap map = Solon.cfg().getXmap("test.db2");
 
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(map.get("url"));

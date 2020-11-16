@@ -105,7 +105,7 @@ public abstract class Context {
     public abstract String path();
     /**获取请求的URI路径变量,根据路径表达式*/
     @Note("获取请求的URI路径变量,根据路径表达式")
-    public MapX pathMap(String expr) {
+    public NvMap pathMap(String expr) {
         return Utils.pathVarMap(path(),expr);
     }
 
@@ -212,7 +212,7 @@ public abstract class Context {
     }
 
     @Note("获取所有参数并转为map")
-    public abstract MapX paramMap();
+    public abstract NvMap paramMap();
 
     @Note("设置参数")
     public void paramSet(String key,String val) {
@@ -251,7 +251,7 @@ public abstract class Context {
         return cookieMap().getOrDefault(key,def);
     }
     @Note("获取所有COOKIE并转为map")
-    public abstract MapX cookieMap();
+    public abstract NvMap cookieMap();
 
     /**获取HEADER*/
     @Note("获取HEADER")
@@ -263,7 +263,7 @@ public abstract class Context {
         return headerMap().getOrDefault(key,def);
     }
     @Note("获取所有HEADER并转为map")
-    public abstract MapX headerMap();
+    public abstract NvMap headerMap();
 
     /**SESSION_STATE对象*/
     private SessionState sessionState = Bridge.sessionState();

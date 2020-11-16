@@ -321,8 +321,8 @@ public class Utils {
     /**
      * 将路径根据表达式转成map
      * */
-    public static MapX pathVarMap(String path, String expr) {
-        MapX _map = new MapX();
+    public static NvMap pathVarMap(String path, String expr) {
+        NvMap _map = new NvMap();
 
         //支持path变量
         if (expr.indexOf("{") >= 0) {
