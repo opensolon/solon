@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
 @Around(value = TranInterceptor.class, index = -7)
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface XTran {
+public @interface Tran {
     /**
      * 事务传导策略
      * */

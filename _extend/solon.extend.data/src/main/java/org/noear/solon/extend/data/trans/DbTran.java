@@ -1,7 +1,7 @@
 package org.noear.solon.extend.data.trans;
 
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.XTran;
+import org.noear.solon.annotation.Tran;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.ext.RunnableEx;
 import org.noear.solon.extend.data.TranNode;
@@ -20,10 +20,10 @@ import java.util.Map;
  * @since 1.0
  * */
 public abstract class DbTran extends DbTranNode implements TranNode {
-    private final XTran meta;
+    private final Tran meta;
     private final Map<DataSource, Connection> conMap = new HashMap<>();
 
-    public XTran getMeta() {
+    public Tran getMeta() {
         return meta;
     }
 
@@ -42,7 +42,7 @@ public abstract class DbTran extends DbTranNode implements TranNode {
         }
     }
 
-    public DbTran(XTran meta) {
+    public DbTran(Tran meta) {
         this.meta = meta;
     }
 

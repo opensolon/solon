@@ -1,6 +1,6 @@
 package org.noear.solon.extend.data.around;
 
-import org.noear.solon.annotation.XTran;
+import org.noear.solon.annotation.Tran;
 import org.noear.solon.core.handler.InterceptorChain;
 import org.noear.solon.core.handler.Interceptor;
 import org.noear.solon.extend.data.TranExecutorImp;
@@ -11,7 +11,7 @@ public class TranInterceptor implements Interceptor {
     public Object doIntercept(Object obj, Object[] args, InterceptorChain chain) throws Throwable{
         ValHolder val0 = new ValHolder();
 
-        XTran anno = chain.method().getAnnotation(XTran.class);
+        Tran anno = chain.method().getAnnotation(Tran.class);
         TranExecutorImp.global.execute(anno, () -> {
             val0.value = chain.doIntercept(obj, args);
         });

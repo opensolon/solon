@@ -1,9 +1,9 @@
 package org.noear.solon.extend.data;
 
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.XCache;
-import org.noear.solon.annotation.XCachePut;
-import org.noear.solon.annotation.XCacheRemove;
+import org.noear.solon.annotation.Cache;
+import org.noear.solon.annotation.CachePut;
+import org.noear.solon.annotation.CacheRemove;
 import org.noear.solon.core.cache.CacheService;
 import org.noear.solon.ext.SupplierEx;
 
@@ -24,7 +24,7 @@ public class CacheExecutorImp {
      * 添加缓存
      */
     //@Override
-    public Object cache(XCache anno, Method method, Parameter[] params, Object[] values, SupplierEx callable) throws Throwable {
+    public Object cache(Cache anno, Method method, Parameter[] params, Object[] values, SupplierEx callable) throws Throwable {
         if (anno == null) {
             return callable.get();
         }
@@ -69,7 +69,7 @@ public class CacheExecutorImp {
     /**
      * 清除缓存
      */
-    public void cacheRemove(XCacheRemove anno, Method method, Parameter[] params, Object[] values) {
+    public void cacheRemove(CacheRemove anno, Method method, Parameter[] params, Object[] values) {
         if (anno == null || Utils.isEmpty(anno.tags())) {
             return;
         }
@@ -93,7 +93,7 @@ public class CacheExecutorImp {
     /**
      * 更新缓存
      */
-    public void cachePut(XCachePut anno, Method method, Parameter[] params, Object[] values, Object newValue) {
+    public void cachePut(CachePut anno, Method method, Parameter[] params, Object[] values, Object newValue) {
         if (anno == null || Utils.isEmpty(anno.tags())) {
             return;
         }

@@ -1,6 +1,6 @@
 package org.noear.solon.extend.data;
 
-import org.noear.solon.annotation.XTran;
+import org.noear.solon.annotation.Tran;
 import org.noear.solon.core.*;
 import org.noear.solon.core.tran.TranExecutor;
 import org.noear.solon.ext.RunnableEx;
@@ -52,7 +52,7 @@ public class TranExecutorImp implements TranExecutor {
     protected TranNode tranMandatory = new TranMandatoryImp();
 
     //@Override
-    public void execute(XTran meta, RunnableEx runnable) throws Throwable {
+    public void execute(Tran meta, RunnableEx runnable) throws Throwable {
         if (meta == null) {
             //
             //如果没有注解或工厂，直接运行
@@ -93,7 +93,7 @@ public class TranExecutorImp implements TranExecutor {
     /**
      * 执行根节点的事务
      */
-    protected void forRoot(Stack<TranEntity> stack, XTran meta, RunnableEx runnable) throws Throwable {
+    protected void forRoot(Stack<TranEntity> stack, Tran meta, RunnableEx runnable) throws Throwable {
         //::必须 或新建 或嵌套  //::入栈
         //
         TranNode tran = create(meta);
@@ -110,7 +110,7 @@ public class TranExecutorImp implements TranExecutor {
     /**
      * 执行非根节点的事务
      */
-    protected void forNotRoot(Stack<TranEntity> stack, XTran meta, RunnableEx runnable) throws Throwable {
+    protected void forNotRoot(Stack<TranEntity> stack, Tran meta, RunnableEx runnable) throws Throwable {
         switch (meta.policy()) {
             case required: {
                 //::支持当前事务
@@ -139,7 +139,7 @@ public class TranExecutorImp implements TranExecutor {
     }
 
 
-    protected void applyDo(Stack<TranEntity> stack, TranNode tran, XTran meta, RunnableEx runnable) throws Throwable {
+    protected void applyDo(Stack<TranEntity> stack, TranNode tran, Tran meta, RunnableEx runnable) throws Throwable {
         if (meta.policy().code <= TranPolicy.nested.code) {
             //required || requires_new || nested ，需要入栈
             //
@@ -161,7 +161,7 @@ public class TranExecutorImp implements TranExecutor {
     /**
      * 创建一个事务节点
      */
-    protected TranNode create(XTran meta) {
+    protected TranNode create(Tran meta) {
         if (meta.policy() == TranPolicy.not_supported) {
             //事务排除
             return tranNot;

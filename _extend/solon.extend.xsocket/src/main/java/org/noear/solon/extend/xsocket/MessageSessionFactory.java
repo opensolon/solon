@@ -2,10 +2,10 @@ package org.noear.solon.extend.xsocket;
 
 import org.noear.solon.core.message.MessageSession;
 
-public abstract class XSessionFactory {
-    private static XSessionFactory instance;
+public abstract class MessageSessionFactory {
+    private static MessageSessionFactory instance;
 
-    public static void setInstance(XSessionFactory factory) {
+    public static void setInstance(MessageSessionFactory factory) {
         instance = factory;
     }
 

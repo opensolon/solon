@@ -6,7 +6,7 @@ import org.java_websocket.server.WebSocketServer;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.MessageSession;
-import org.noear.solon.extend.xsocket.XListenerProxy;
+import org.noear.solon.extend.xsocket.MessageListenerProxy;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -28,12 +28,12 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake shake) {
-        XListenerProxy.getGlobal().onOpen(_SocketSession.get(conn));
+        MessageListenerProxy.getGlobal().onOpen(_SocketSession.get(conn));
     }
 
     @Override
     public void onClose(WebSocket conn, int i, String s, boolean b) {
-        XListenerProxy.getGlobal().onClose(_SocketSession.get(conn));
+        MessageListenerProxy.getGlobal().onClose(_SocketSession.get(conn));
 
         _SocketSession.remove(conn);
     }
@@ -44,7 +44,7 @@ public class WsServer extends WebSocketServer {
             MessageSession session = _SocketSession.get(conn);
             Message message = Message.wrap(conn.getResourceDescriptor(), data.getBytes(_charset));
 
-            XListenerProxy.getGlobal().onMessage(session, message, true);
+            MessageListenerProxy.getGlobal().onMessage(session, message, true);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -56,7 +56,7 @@ public class WsServer extends WebSocketServer {
             MessageSession session = _SocketSession.get(conn);
             Message message = Message.wrap(conn.getResourceDescriptor(), data.array());
 
-            XListenerProxy.getGlobal().onMessage(session, message, false);
+            MessageListenerProxy.getGlobal().onMessage(session, message, false);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -64,6 +64,6 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onError(WebSocket conn, Exception ex) {
-        XListenerProxy.getGlobal().onError(_SocketSession.get(conn), ex);
+        MessageListenerProxy.getGlobal().onError(_SocketSession.get(conn), ex);
     }
 }

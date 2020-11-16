@@ -5,21 +5,21 @@ import io.rsocket.RSocket;
 import io.rsocket.SocketAcceptor;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.MessageSession;
-import org.noear.solon.extend.xsocket.XListenerProxy;
-import org.noear.solon.extend.xsocket.XMessageUtils;
+import org.noear.solon.extend.xsocket.MessageListenerProxy;
+import org.noear.solon.extend.xsocket.MessageUtils;
 import reactor.core.publisher.Mono;
 
 public class SocketAcceptorImpl implements SocketAcceptor {
     @Override
     public Mono<RSocket> accept(ConnectionSetupPayload rPayload, RSocket rSocket) {
         MessageSession session = _SocketSession.get(rSocket);
-        Message message = XMessageUtils.decode(rPayload.getData());
+        Message message = MessageUtils.decode(rPayload.getData());
         if (message != null) {
 
             try {
-                XListenerProxy.getGlobal().onMessage(session, message, false);
+                MessageListenerProxy.getGlobal().onMessage(session, message, false);
             } catch (Throwable ex) {
-                XListenerProxy.getGlobal().onError(session, ex);
+                MessageListenerProxy.getGlobal().onError(session, ex);
             }
 
         }

@@ -4,7 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.message.Message;
 
-import org.noear.solon.extend.xsocket.XSessionFactory;
+import org.noear.solon.extend.xsocket.MessageSessionFactory;
 import org.smartboot.socket.transport.AioQuickServer;
 
 public final class XPluginImp implements Plugin {
@@ -32,7 +32,7 @@ public final class XPluginImp implements Plugin {
 
 
         //注册会话工厂
-        XSessionFactory.setInstance(new _SessionFactoryImpl());
+        MessageSessionFactory.setInstance(new _SessionFactoryImpl());
 
 
         if (app.enableSocket() == false) {

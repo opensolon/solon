@@ -13,7 +13,7 @@ import java.lang.annotation.*;
 @Around(value = CacheInterceptor.class, index = -8)
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface XCache {
+public @interface Cache {
     /**
      * 缓存服务
      * */

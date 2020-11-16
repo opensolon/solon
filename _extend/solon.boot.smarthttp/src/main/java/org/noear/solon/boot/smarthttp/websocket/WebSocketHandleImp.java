@@ -3,7 +3,7 @@ package org.noear.solon.boot.smarthttp.websocket;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.MessageSession;
-import org.noear.solon.extend.xsocket.XListenerProxy;
+import org.noear.solon.extend.xsocket.MessageListenerProxy;
 import org.smartboot.http.WebSocketRequest;
 import org.smartboot.http.WebSocketResponse;
 import org.smartboot.http.server.handle.WebSocketDefaultHandle;
@@ -12,7 +12,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
 
     @Override
     public void onHandShark(WebSocketRequest request, WebSocketResponse response) {
-        XListenerProxy.getGlobal().onOpen(_SocketSession.get(request, response));
+        MessageListenerProxy.getGlobal().onOpen(_SocketSession.get(request, response));
     }
 
     @Override
@@ -20,7 +20,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
         _SocketSession session = _SocketSession.get(request, response);
         session.onClose();
 
-        XListenerProxy.getGlobal().onClose(session);
+        MessageListenerProxy.getGlobal().onClose(session);
 
         _SocketSession.remove(request);
     }
@@ -32,7 +32,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
             Message message = Message.wrap(request.getRequestURI(),
                     data.getBytes("UTF-8"));
 
-            XListenerProxy.getGlobal().onMessage(session, message, true);
+            MessageListenerProxy.getGlobal().onMessage(session, message, true);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -44,7 +44,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
             MessageSession session = _SocketSession.get(request, response);
             Message message = Message.wrap(request.getRequestURI(), data);
 
-            XListenerProxy.getGlobal().onMessage(session, message, false);
+            MessageListenerProxy.getGlobal().onMessage(session, message, false);
 
         } catch (Throwable ex) {
             EventBus.push(ex);

@@ -2,7 +2,7 @@ package org.noear.solon.boot.jdksocket;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.extend.xsocket.XSessionFactory;
+import org.noear.solon.extend.xsocket.MessageSessionFactory;
 
 public class XPluginImp implements Plugin {
     SocketServer _server;
@@ -14,7 +14,7 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(Solon app) {
         //注册会话工厂
-        XSessionFactory.setInstance(new _SessionFactoryImpl());
+        MessageSessionFactory.setInstance(new _SessionFactoryImpl());
 
         if (app.enableSocket() == false) {
             return;

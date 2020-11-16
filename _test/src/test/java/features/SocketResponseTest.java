@@ -9,7 +9,7 @@ import org.noear.fairy.encoder.SnackEncoder;
 import org.noear.snack.ONode;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.MessageSession;
-import org.noear.solon.extend.xsocket.XSessionFactory;
+import org.noear.solon.extend.xsocket.MessageSessionFactory;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.demoh_xsocket.HelloRpcService;
@@ -24,7 +24,7 @@ public class SocketResponseTest {
     public void test() throws Throwable{
         int _port = 8080 + 20000;
 
-        MessageSession session = XSessionFactory.create("localhost",_port);
+        MessageSession session = MessageSessionFactory.create("localhost",_port);
 
 
         String root = "tcp://localhost:" + _port;
@@ -41,7 +41,7 @@ public class SocketResponseTest {
     public void test_rpc_message() throws Throwable {
         int _port = 8080 + 20000;
 
-        MessageSession session = XSessionFactory.create("localhost",_port);
+        MessageSession session = MessageSessionFactory.create("localhost",_port);
 
 
         String root = "tcp://localhost:" + _port;
@@ -63,7 +63,7 @@ public class SocketResponseTest {
     public void test_rpc_api() throws Throwable {
         int _port = 8080 + 20000;
 
-        MessageSession session = XSessionFactory.create("localhost",_port);
+        MessageSession session = MessageSessionFactory.create("localhost",_port);
         XSocketChannel channel = new XSocketChannel(session);
 
         HelloRpcService rpc = Fairy.builder()

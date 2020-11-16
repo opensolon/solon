@@ -4,14 +4,14 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handler.MethodType;
 import org.noear.solon.core.message.MessageSession;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.extend.xsocket.XSessionBase;
+import org.noear.solon.extend.xsocket.MessageSessionBase;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.*;
 
-public class _SocketSession extends XSessionBase {
+public class _SocketSession extends MessageSessionBase {
     public static Map<org.eclipse.jetty.websocket.api.Session, MessageSession> sessions = new HashMap<>();
     public static MessageSession get(org.eclipse.jetty.websocket.api.Session real) {
         MessageSession tmp = sessions.get(real);

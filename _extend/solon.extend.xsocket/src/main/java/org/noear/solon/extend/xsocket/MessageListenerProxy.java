@@ -15,20 +15,20 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author noear
  * @since 1.0
  * */
-public class XListenerProxy implements MessageListener {
+public class MessageListenerProxy implements MessageListener {
     //实例维护
-    private static MessageListener global = new XListenerProxy();
+    private static MessageListener global = new MessageListenerProxy();
     public static MessageListener getGlobal() {
         return global;
     }
     public static void setGlobal(MessageListener global) {
-        XListenerProxy.global = global;
+        MessageListenerProxy.global = global;
     }
 
-    private XSocketContextHandler socketContextHandler;
+    private SocketContextHandler socketContextHandler;
 
-    public XListenerProxy(){
-        socketContextHandler = new XSocketContextHandler();
+    public MessageListenerProxy(){
+        socketContextHandler = new SocketContextHandler();
     }
 
 

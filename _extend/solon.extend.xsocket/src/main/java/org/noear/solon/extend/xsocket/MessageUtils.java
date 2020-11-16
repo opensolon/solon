@@ -10,7 +10,7 @@ import java.nio.ByteBuffer;
  * @author noear
  * @since 1.0
  * */
-public class XMessageUtils {
+public class MessageUtils {
     /**
      * 编码
      */

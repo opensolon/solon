@@ -2,7 +2,7 @@ package org.noear.solon.boot.jdksocket;
 
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.MessageSession;
-import org.noear.solon.extend.xsocket.XListenerProxy;
+import org.noear.solon.extend.xsocket.MessageListenerProxy;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -33,12 +33,12 @@ public class SocketServer {
             Socket socket = server.accept();
 
             MessageSession session = _SocketSession.get(socket);
-            XListenerProxy.getGlobal().onOpen(session);
+            MessageListenerProxy.getGlobal().onOpen(session);
 
             pool.execute(() -> {
                 while (true) {
                     if (socket.isClosed()) {
-                        XListenerProxy.getGlobal().onClose(session);
+                        MessageListenerProxy.getGlobal().onClose(session);
                         break;
                     }
 
@@ -47,9 +47,9 @@ public class SocketServer {
 
                         pool.execute(() -> {
                             try {
-                                XListenerProxy.getGlobal().onMessage(session, message, false);
+                                MessageListenerProxy.getGlobal().onMessage(session, message, false);
                             } catch (Throwable ex) {
-                                XListenerProxy.getGlobal().onError(session, ex);
+                                MessageListenerProxy.getGlobal().onError(session, ex);
                             }
                         });
                     }

@@ -7,9 +7,9 @@ import org.noear.solon.core.*;
 import org.noear.solon.core.handler.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.MessageSession;
-import org.noear.solon.extend.xsocket.XListenerProxy;
-import org.noear.solon.extend.xsocket.XMessageUtils;
-import org.noear.solon.extend.xsocket.XSessionBase;
+import org.noear.solon.extend.xsocket.MessageListenerProxy;
+import org.noear.solon.extend.xsocket.MessageUtils;
+import org.noear.solon.extend.xsocket.MessageSessionBase;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -19,7 +19,7 @@ import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.util.*;
 
-public class _SocketSession extends XSessionBase {
+public class _SocketSession extends MessageSessionBase {
     public static Map<RSocket, MessageSession> sessions = new HashMap<>();
 
     public static MessageSession get(RSocket real) {
@@ -32,7 +32,7 @@ public class _SocketSession extends XSessionBase {
                     sessions.put(real, tmp);
 
                     //算第一次
-                    XListenerProxy.getGlobal().onOpen(tmp);
+                    MessageListenerProxy.getGlobal().onOpen(tmp);
                 }
             }
         }
@@ -89,19 +89,19 @@ public class _SocketSession extends XSessionBase {
         //
         // 转包为XSocketMessage，再转byte[]
         //
-        ByteBuffer buffer = XMessageUtils.encode(message);
+        ByteBuffer buffer = MessageUtils.encode(message);
 
         real.requestResponse(DefaultPayload.create(buffer));
     }
 
     @Override
     public Message sendAndResponse(Message message) {
-        ByteBuffer buffer = XMessageUtils.encode(message);
+        ByteBuffer buffer = MessageUtils.encode(message);
 
         ValHolder<Message> holder = new ValHolder<>();
 
         real.requestResponse(DefaultPayload.create(buffer))
-                .map(d -> XMessageUtils.decode(d.getData()))
+                .map(d -> MessageUtils.decode(d.getData()))
                 .doOnNext(m -> holder.value = m)
                 .block();
 

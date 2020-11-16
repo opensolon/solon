@@ -5,13 +5,13 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handler.MethodType;
 import org.noear.solon.core.message.MessageSession;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.extend.xsocket.XSessionBase;
+import org.noear.solon.extend.xsocket.MessageSessionBase;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.*;
 
-public class _SocketSession extends XSessionBase {
+public class _SocketSession extends MessageSessionBase {
     public static Map<WebSocket, MessageSession> sessions = new HashMap<>();
     public static MessageSession get(WebSocket real) {
         MessageSession tmp = sessions.get(real);

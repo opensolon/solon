@@ -3,11 +3,11 @@ package org.noear.solon.boot.smartsocket;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.MessageSession;
-import org.noear.solon.extend.xsocket.XSessionFactory;
+import org.noear.solon.extend.xsocket.MessageSessionFactory;
 import org.smartboot.socket.transport.AioQuickClient;
 import org.smartboot.socket.transport.AioSession;
 
-class _SessionFactoryImpl extends XSessionFactory {
+class _SessionFactoryImpl extends MessageSessionFactory {
     @Override
     protected MessageSession getSession(Object conn) {
         if (conn instanceof AioSession) {

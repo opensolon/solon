@@ -15,14 +15,14 @@ import java.net.URI;
  * @author noear
  * @since 1.0
  * */
-public class XSocketContext extends ContextEmpty {
+public class SocketContext extends ContextEmpty {
     private InetSocketAddress _inetSocketAddress;
     private MessageSession _sesssion;
     private Message _message;
     private boolean _messageIsString;
     private MethodType _method;
 
-    public XSocketContext(MessageSession session, Message message, boolean messageIsString) {
+    public SocketContext(MessageSession session, Message message, boolean messageIsString) {
         _sesssion = session;
         _message = message;
         _messageIsString = messageIsString;

@@ -11,7 +11,7 @@ import org.noear.solon.core.message.MessageSession;
  * @author noear
  * @since 1.0
  * */
-class XSocketContextHandler {
+class SocketContextHandler {
 
     public void handle(MessageSession session, Message message, boolean messageIsString) {
         if (message == null) {
@@ -19,7 +19,7 @@ class XSocketContextHandler {
         }
 
         try {
-            XSocketContext ctx = new XSocketContext(session, message, messageIsString);
+            SocketContext ctx = new SocketContext(session, message, messageIsString);
 
             Solon.global().tryHandle(ctx);
 

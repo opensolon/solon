@@ -2,7 +2,7 @@ package org.noear.solon.boot.smartsocket;
 
 import org.noear.solon.core.message.Message;
 
-import org.noear.solon.extend.xsocket.XMessageUtils;
+import org.noear.solon.extend.xsocket.MessageUtils;
 import org.smartboot.socket.Protocol;
 import org.smartboot.socket.transport.AioSession;
 
@@ -29,7 +29,7 @@ public class AioProtocol implements Protocol<Message> {
         }
 
         buffer.reset();//内部会重新开始读
-        Message tmp = XMessageUtils.decode(buffer);
+        Message tmp = MessageUtils.decode(buffer);
 
         if (tmp == null) {
             buffer.reset();

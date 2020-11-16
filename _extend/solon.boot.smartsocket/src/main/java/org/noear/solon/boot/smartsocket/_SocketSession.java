@@ -4,8 +4,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handler.MethodType;
 import org.noear.solon.core.message.MessageSession;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.extend.xsocket.XMessageUtils;
-import org.noear.solon.extend.xsocket.XSessionBase;
+import org.noear.solon.extend.xsocket.MessageUtils;
+import org.noear.solon.extend.xsocket.MessageSessionBase;
 import org.smartboot.socket.transport.AioSession;
 
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.util.*;
 
-class _SocketSession extends XSessionBase {
+class _SocketSession extends MessageSessionBase {
     public static Map<AioSession, MessageSession> sessions = new HashMap<>();
     public static MessageSession get(AioSession real) {
         MessageSession tmp = sessions.get(real);
@@ -80,7 +80,7 @@ class _SocketSession extends XSessionBase {
             //
             // 转包为XSocketMessage，再转byte[]
             //
-            byte[] bytes = XMessageUtils.encode(message).array();
+            byte[] bytes = MessageUtils.encode(message).array();
 
             real.writeBuffer().writeAndFlush(bytes);
         } catch (IOException ex) {
