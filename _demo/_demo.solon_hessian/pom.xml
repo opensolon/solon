@@ -55,10 +55,6 @@
             <artifactId>solon.serialization.hession</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.protobuf</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>

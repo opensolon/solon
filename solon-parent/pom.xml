@@ -244,11 +244,6 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.serialization.protobuf</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>solon.serialization.xstream</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -670,7 +665,6 @@
         <module>../_extend/solon.serialization.gson</module>
         <module>../_extend/solon.serialization.snack3</module>
         <module>../_extend/solon.serialization.avro</module>
-        <module>../_extend/solon.serialization.protobuf</module>
 <!--        <module>../_extend/solon.serialization.jsoniter</module>-->
 <!--        <module>../_extend/solon.serialization.xstream</module>-->
 

@@ -180,10 +180,6 @@
 <!--            <artifactId>solon.serialization.jackson</artifactId>-->
 <!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.protobuf</artifactId>
-        </dependency>
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
 <!--            <artifactId>solon.serialization.xstream</artifactId>-->

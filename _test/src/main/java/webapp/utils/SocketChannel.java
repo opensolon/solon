@@ -28,10 +28,6 @@ public class SocketChannel implements IChannel {
                 message = (byte[]) cfg.getEncoder().encode(args);
                 break;
             }
-            case application_protobuf: {
-                message = (byte[]) cfg.getEncoder().encode(args);
-                break;
-            }
             default: {
                 throw new FairyException("SocketChannel not support: " + cfg.getEncoder().enctype().name());
             }

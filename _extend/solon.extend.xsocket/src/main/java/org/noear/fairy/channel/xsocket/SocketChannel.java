@@ -34,10 +34,6 @@ public class SocketChannel implements IChannel {
                 message = Message.wrap(message_key, url, (byte[]) cfg.getEncoder().encode(args));
                 break;
             }
-            case application_protobuf: {
-                message = Message.wrap(message_key, url, (byte[]) cfg.getEncoder().encode(args));
-                break;
-            }
             default: {
                 // 默认：application_json
                 //

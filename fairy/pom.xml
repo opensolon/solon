@@ -41,13 +41,6 @@
         </dependency>
 
         <dependency>
-            <groupId>io.edap</groupId>
-            <artifactId>edapx-protobuf</artifactId>
-            <version>0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
             <scope>provided</scope>

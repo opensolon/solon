@@ -57,11 +57,6 @@ public class OkHttpChannel implements IChannel {
                     response = http.bodyRaw(stream, Constants.ct_hessian).exec(method);
                     break;
                 }
-                case application_protobuf: {
-                    InputStream stream = new ByteArrayInputStream((byte[]) cfg.getEncoder().encode(args));
-                    response = http.bodyRaw(stream, Constants.ct_protobuf).exec(method);
-                    break;
-                }
                 default: {
                     if (args.size() == 0) {
                         //没参数按GET来
