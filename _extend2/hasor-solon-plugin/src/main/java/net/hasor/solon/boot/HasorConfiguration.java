@@ -8,7 +8,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.event.EventListener;
-import org.noear.solon.event.BeanLoadEndEvent;
+import org.noear.solon.core.event.BeanLoadEndEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

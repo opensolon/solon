@@ -1,7 +1,7 @@
 package webapp.demoa_interceptor;
 
-import org.noear.solon.core.InterceptorChain;
-import org.noear.solon.core.Interceptor;
+import org.noear.solon.core.handler.InterceptorChain;
+import org.noear.solon.core.handler.Interceptor;
 import org.noear.solon.core.handler.Context;
 
 public class AroundHandler implements Interceptor {

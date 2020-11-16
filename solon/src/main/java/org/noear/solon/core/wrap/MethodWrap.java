@@ -2,7 +2,7 @@ package org.noear.solon.core.wrap;
 
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.InterceptorChain;
+import org.noear.solon.core.handler.InterceptorChain;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

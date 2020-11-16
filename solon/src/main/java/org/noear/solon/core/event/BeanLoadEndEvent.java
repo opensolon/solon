@@ -1,4 +1,4 @@
-package org.noear.solon.event;
+package org.noear.solon.core.event;
 
 /**
  * Bean load end 事件
