@@ -54,7 +54,7 @@ public class FairyConfig {
     //通道
     private IChannel channel;
     //上游
-    private Upstream upstream;
+    private UpstreamService upstream;
     //服务端
     private String uri;
     //过滤器
@@ -108,13 +108,13 @@ public class FairyConfig {
     /**
      * 获取上游
      * */
-    public Upstream getUpstream() {
+    public UpstreamService getUpstream() {
         return upstream;
     }
     /**
      * 设置上游
      * */
-    protected void setUpstream(Upstream upstream) {
+    protected void setUpstream(UpstreamService upstream) {
         this.upstream = upstream;
     }
 

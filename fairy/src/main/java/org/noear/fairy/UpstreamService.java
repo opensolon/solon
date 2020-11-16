@@ -4,7 +4,7 @@ package org.noear.fairy;
  * 上游
  * */
 @FunctionalInterface
-public interface Upstream {
+public interface UpstreamService {
 
     /**
      * 获取节点

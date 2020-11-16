@@ -171,7 +171,7 @@ public class Fairy {
         /**
          * 设置负载代理
          */
-        public Builder upstream(Upstream upstream) {
+        public Builder upstream(UpstreamService upstream) {
             _config.setUpstream(upstream);
             return this;
         }

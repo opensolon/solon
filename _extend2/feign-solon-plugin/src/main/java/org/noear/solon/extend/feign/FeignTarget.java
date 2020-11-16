@@ -4,15 +4,15 @@ import feign.Request;
 import feign.RequestTemplate;
 import feign.Target;
 import org.noear.solon.Utils;
-import org.noear.solon.core.UpstreamService;
+import org.noear.solon.core.Upstream;
 
 public class FeignTarget<T> implements Target<T> {
     private final Class<T> type;
     private final String name;
     private final String path;
-    private final UpstreamService upstream;
+    private final Upstream upstream;
 
-    public FeignTarget(Class<T> type, String name, String path, UpstreamService upstream) {
+    public FeignTarget(Class<T> type, String name, String path, Upstream upstream) {
         this.type = type;
         this.name = name;
         this.path = path;

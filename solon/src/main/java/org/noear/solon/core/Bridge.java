@@ -96,13 +96,13 @@ public class Bridge {
     //
     // UpstreamFactory 对接
     //
-    private static UpstreamService.Factory _upstreamFactory = null;
+    private static Upstream.Factory _upstreamFactory = null;
 
     /**
      * 获取负载工厂
      */
     @Note("获取负载工厂")
-    public static UpstreamService.Factory upstreamFactory() {
+    public static Upstream.Factory upstreamFactory() {
         return _upstreamFactory;
     }
 
@@ -110,7 +110,7 @@ public class Bridge {
      * 设置负载工厂
      */
     @Note("设置负载工厂")
-    public static void upstreamFactorySet(UpstreamService.Factory uf) {
+    public static void upstreamFactorySet(Upstream.Factory uf) {
         if (uf != null) {
             _upstreamFactory = uf;
         }

@@ -45,13 +45,13 @@ public class XPluginImp implements Plugin {
 
         //构建target
         if (Utils.isEmpty(anno.url())) {
-            UpstreamService upstream = getUpstream(anno);
+            Upstream upstream = getUpstream(anno);
             if (upstream != null) {
                 FeignTarget target = new FeignTarget(clz, anno.name(), anno.path(), upstream);
                 consumer.accept(builder.target(target));
             } else {
                 Aop.getAsyn(anno.name(), (bw) -> {
-                    UpstreamService tmp = bw.raw();
+                    Upstream tmp = bw.raw();
                     FeignTarget target = new FeignTarget(clz, anno.name(), anno.path(), tmp);
                     consumer.accept(builder.target(target));
                 });
@@ -62,7 +62,7 @@ public class XPluginImp implements Plugin {
         }
     }
 
-    private UpstreamService getUpstream(FeignClient anno){
+    private Upstream getUpstream(FeignClient anno){
         if(Bridge.upstreamFactory() == null){
             return null;
         }
