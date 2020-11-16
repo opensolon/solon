@@ -85,7 +85,7 @@ public class AopContext extends BeanContainer {
         });
 
         //注册 @XBean 构建器
-        beanBuilderAdd(Bean.class, (clz, bw, anno) -> {
+        beanBuilderAdd(Component.class, (clz, bw, anno) -> {
             bw.nameSet(anno.value());
             bw.tagSet(anno.tag());
             bw.attrsSet(anno.attrs());

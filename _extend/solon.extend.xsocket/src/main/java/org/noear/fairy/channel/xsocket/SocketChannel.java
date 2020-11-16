@@ -11,10 +11,10 @@ import org.noear.solon.core.message.MessageSession;
 
 import java.util.Map;
 
-public class XSocketChannel implements IChannel {
+public class SocketChannel implements IChannel {
     public MessageSession session;
 
-    public XSocketChannel(MessageSession session) {
+    public SocketChannel(MessageSession session) {
         this.session = session;
     }
 

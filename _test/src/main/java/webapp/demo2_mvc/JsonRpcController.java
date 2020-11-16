@@ -1,6 +1,7 @@
 package webapp.demo2_mvc;
 
 import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handler.Context;
 
@@ -10,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Mapping("/demo2/rpc/")
-@Bean(remoting = true)
+@Component(remoting = true)
 public class JsonRpcController {
 
     public Object json(Context ctx){

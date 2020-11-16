@@ -6,23 +6,21 @@ import java.lang.annotation.*;
  * 通用 组件
  *
  * <pre><code>
- * //注解在配置器的函数上
- * @Configuration
- * public class Config{
- *     @Bean
- *     public DataSource db1(@XInject("${db1}") HikariDataSource ds){
- *         return ds;
- *     }
+ * //注解在类上
+ * @Component
+ * public class DemoBean{
+ *     @Inject
+ *     DataSource db1;
  * }
  * </code></pre>
  *
  * @author noear
- * @since 1.0
+ * @since 1.2
  * */
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Bean {
+public @interface Component {
     @Note("注册名称")
     String value() default ""; //as bean.name
 
@@ -34,4 +32,6 @@ public @interface Bean {
 
     @Note("同时注册类型，仅当名称非空时有效")
     boolean typed() default false;
+
+    boolean remoting() default false; //是否开始远程服务
 }

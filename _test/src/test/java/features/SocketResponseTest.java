@@ -3,7 +3,7 @@ package features;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.fairy.Fairy;
-import org.noear.fairy.channel.xsocket.XSocketChannel;
+import org.noear.fairy.channel.xsocket.SocketChannel;
 import org.noear.fairy.decoder.SnackDecoder;
 import org.noear.fairy.encoder.SnackEncoder;
 import org.noear.snack.ONode;
@@ -64,7 +64,7 @@ public class SocketResponseTest {
         int _port = 8080 + 20000;
 
         MessageSession session = MessageSessionFactory.create("localhost",_port);
-        XSocketChannel channel = new XSocketChannel(session);
+        SocketChannel channel = new SocketChannel(session);
 
         HelloRpcService rpc = Fairy.builder()
                 .encoder(SnackEncoder.instance)
