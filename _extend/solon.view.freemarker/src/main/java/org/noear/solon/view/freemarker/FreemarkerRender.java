@@ -35,7 +35,7 @@ public class FreemarkerRender implements Render {
     //不要要入参，方便后面多视图混用
     //
     public FreemarkerRender() {
-        String baseUri = Solon.global().prop().get("slon.mvc.view.prefix");
+        String baseUri = Solon.global().props().get("slon.mvc.view.prefix");
 
         if (Utils.isEmpty(baseUri) == false) {
             _baseUri = baseUri;
@@ -86,7 +86,7 @@ public class FreemarkerRender implements Render {
     //使用 发布模式 进行实始化
     private void forRelease() {
         try {
-            cfg.setClassLoaderForTemplateLoading(ClassLoaderX.global(), _baseUri);
+            cfg.setClassLoaderForTemplateLoading(JarClassLoader.global(), _baseUri);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

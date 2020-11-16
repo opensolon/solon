@@ -16,14 +16,14 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        if ("0".equals(app.prop().get("org.noear.solon.extend.staticfiles.enabled"))) {
+        if ("0".equals(app.props().get("org.noear.solon.extend.staticfiles.enabled"))) {
             return;
         }
 
         if (Utils.getResource("/static") != null) {
             //1.加载自定义的mime
             //
-            NvMap mimeTypes = app.prop().getXmap("solon.mime");
+            NvMap mimeTypes = app.props().getXmap("solon.mime");
             mimeTypes.forEach((k, v) -> {
                 StaticFiles.instance().putIfAbsent("." + k, v);
             });

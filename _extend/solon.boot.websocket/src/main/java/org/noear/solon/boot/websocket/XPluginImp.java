@@ -17,7 +17,7 @@ public class XPluginImp implements Plugin {
         }
 
 
-        int _port = app.prop().getInt("server.websocket.port",0);
+        int _port = app.props().getInt("server.websocket.port",0);
         if(_port < 1) {
             _port = 10000 + app.port();
         }

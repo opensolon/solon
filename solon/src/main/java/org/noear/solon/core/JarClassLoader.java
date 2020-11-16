@@ -15,24 +15,24 @@ import java.util.Map;
  * @author noear
  * @since 1.0
  * */
-public class ClassLoaderX extends URLClassLoader {
+public class JarClassLoader extends URLClassLoader {
 
-    private static ClassLoaderX global = new ClassLoaderX();
-    public static ClassLoaderX global() {
+    private static JarClassLoader global = new JarClassLoader();
+    public static JarClassLoader global() {
         return global;
     }
 
 
     private Map<URL, JarURLConnection> cachedMap = new HashMap<>();
 
-    public ClassLoaderX() {
+    public JarClassLoader() {
         this(ClassLoader.getSystemClassLoader());
     }
 
     /**
      * @param parent 父加载器
      * */
-    public ClassLoaderX(ClassLoader parent) {
+    public JarClassLoader(ClassLoader parent) {
         super(new URL[]{}, parent);
     }
 
@@ -40,7 +40,7 @@ public class ClassLoaderX extends URLClassLoader {
      * @param files jar files
      * @param parent 父加载器
      * */
-    public ClassLoaderX(URL[] files, ClassLoader parent) {
+    public JarClassLoader(URL[] files, ClassLoader parent) {
         super(files, parent);
     }
 
@@ -131,7 +131,7 @@ public class ClassLoaderX extends URLClassLoader {
         URL url =  super.getResource(name);
 
         if (url == null) {
-            url = ClassLoaderX.class.getResource(name);
+            url = JarClassLoader.class.getResource(name);
         }
 
         return url;

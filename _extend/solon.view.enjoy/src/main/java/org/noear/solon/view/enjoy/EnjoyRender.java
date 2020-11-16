@@ -39,7 +39,7 @@ public class EnjoyRender implements Render {
     //
     public EnjoyRender() {
 
-        String baseUri = Solon.global().prop().get("slon.mvc.view.prefix");
+        String baseUri = Solon.global().props().get("slon.mvc.view.prefix");
 
         if (Utils.isEmpty(baseUri) == false) {
             _baseUri = baseUri;

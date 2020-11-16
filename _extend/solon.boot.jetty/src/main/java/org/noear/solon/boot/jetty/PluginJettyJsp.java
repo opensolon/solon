@@ -53,7 +53,7 @@ class PluginJettyJsp extends PluginJetty {
         ServletHolder holderJsp = new ServletHolder("jsp", JettyJspServlet.class);
         holderJsp.setInitOrder(0);
 
-        Properties properties = Solon.global().prop().getProp("solon.jetty.jsp");
+        Properties properties = Solon.global().props().getProp("solon.jetty.jsp");
         properties.forEach((k, v) -> holderJsp.setInitParameter((String)k, (String)v));
 
         handler.addServlet(holderJsp, "*.jsp");

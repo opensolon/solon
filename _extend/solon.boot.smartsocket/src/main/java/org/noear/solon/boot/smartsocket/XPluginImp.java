@@ -18,7 +18,7 @@ public final class XPluginImp implements Plugin {
 
     @Override
     public void start(Solon app) {
-        String tmp = app.prop().get("solon.xsocket.readBufferSize", "").toLowerCase();
+        String tmp = app.props().get("solon.xsocket.readBufferSize", "").toLowerCase();
 
         if (tmp.length() >2) {
             if(tmp.endsWith("kb")) {
@@ -43,7 +43,7 @@ public final class XPluginImp implements Plugin {
 
         System.out.println("solon.Server:main: SmartSocket 1.5.0(smartsocket)");
 
-        int _port = app.prop().getInt("server.socket.port", 0);
+        int _port = app.props().getInt("server.socket.port", 0);
         if (_port < 1) {
             _port = 20000 + app.port();
         }

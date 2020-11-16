@@ -10,7 +10,7 @@ import org.noear.solon.boot.undertow.http.UtHttpHandlerJsp;
 import org.noear.solon.boot.undertow.jsp.JspResourceManager;
 import org.noear.solon.boot.undertow.jsp.JspServletEx;
 import org.noear.solon.boot.undertow.jsp.JspTldLocator;
-import org.noear.solon.core.ClassLoaderX;
+import org.noear.solon.core.JarClassLoader;
 
 import java.util.HashMap;
 
@@ -25,7 +25,7 @@ class PluginUndertowJsp extends PluginUndertow {
 
         //添加jsp处理
         String fileRoot = getResourceRoot();
-        builder.setResourceManager(new JspResourceManager(ClassLoaderX.global(), fileRoot))
+        builder.setResourceManager(new JspResourceManager(JarClassLoader.global(), fileRoot))
                 .addServlet(new ServletInfo("ACTServlet", UtHttpHandlerJsp.class).addMapping("/"))
                 .addServlet(JspServletEx.createServlet("JSPServlet", "*.jsp"));
 

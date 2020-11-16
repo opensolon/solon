@@ -9,7 +9,7 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(Solon app) {
-        output_meta = app.prop().getInt("solon.output.meta", 0) > 0;
+        output_meta = app.props().getInt("solon.output.meta", 0) > 0;
 
         Bridge.renderMapping("@json", new GsonRender(false));
         Bridge.renderMapping("@type_json", new GsonRender(true));

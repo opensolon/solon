@@ -36,7 +36,7 @@ public class ThymeleafRender implements Render {
     private String _baseUri = "/WEB-INF/view/";
 
     public ThymeleafRender() {
-        String baseUri = Solon.global().prop().get("slon.mvc.view.prefix");
+        String baseUri = Solon.global().props().get("slon.mvc.view.prefix");
 
         if (Utils.isEmpty(baseUri) == false) {
             _baseUri = baseUri;
@@ -97,7 +97,7 @@ public class ThymeleafRender implements Render {
     }
 
     private void forRelease() {
-        ClassLoaderTemplateResolver _loader = new ClassLoaderTemplateResolver(ClassLoaderX.global());
+        ClassLoaderTemplateResolver _loader = new ClassLoaderTemplateResolver(JarClassLoader.global());
 
         _loader.setPrefix(_baseUri);
         _loader.setTemplateMode(TemplateMode.HTML);

@@ -55,14 +55,14 @@ class PluginJetty extends PluginJettyBase implements Plugin {
                 XServerProp.request_maxRequestSize);
 
 
-        app.prop().forEach((k, v) -> {
+        app.props().forEach((k, v) -> {
             String key = k.toString();
             if (key.indexOf(".jetty.") > 0) {
                 _server.setAttribute(key, v);
             }
         });
 
-        app.prop().onChange((k, v) -> {
+        app.props().onChange((k, v) -> {
             if (k.indexOf(".jetty.") > 0) {
                 _server.setAttribute(k, v);
             }

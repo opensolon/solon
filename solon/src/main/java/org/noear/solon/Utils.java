@@ -146,7 +146,7 @@ public class Utils {
      */
     public static Class<?> loadClass(String className) {
         try {
-            return ClassLoaderX.global().loadClass(className); //Class.forName(className);
+            return JarClassLoader.global().loadClass(className); //Class.forName(className);
         } catch (Throwable ex) {
             return null;
         }
@@ -175,7 +175,7 @@ public class Utils {
      * @param name 资源名称
      */
     public static Enumeration<URL> getResources(String name) throws IOException {
-        return ClassLoaderX.global().getResources(name); //XUtil.class.getClassLoader().getResources(name);
+        return JarClassLoader.global().getResources(name); //XUtil.class.getClassLoader().getResources(name);
     }
 
     /**
@@ -184,7 +184,7 @@ public class Utils {
      * @param name 资源名称
      */
     public static URL getResource(String name) {
-        return ClassLoaderX.global().getResource(name);//XUtil.class.getResource(name);
+        return JarClassLoader.global().getResource(name);//XUtil.class.getResource(name);
     }
 
     /**

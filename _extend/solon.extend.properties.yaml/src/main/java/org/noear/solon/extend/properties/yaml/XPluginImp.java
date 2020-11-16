@@ -14,7 +14,7 @@ public class XPluginImp implements Plugin {
             PropsLoader.globalSet(org.noear.solon.extend.properties.yaml.PropertiesLoader.g);
 
             //尝试.yml的配置加载
-            app.prop().loadAdd("application.yml");
+            app.props().loadAdd("application.yml");
         }
     }
 }

@@ -48,7 +48,7 @@ public class Solon implements Handler, HandlerSlots {
      * 应用配置
      * */
     public static SolonProps cfg(){
-        return global().prop();
+        return global().props();
     }
 
 
@@ -77,7 +77,7 @@ public class Solon implements Handler, HandlerSlots {
         }
 
         //绑定类加载器
-        ClassLoaderX.bindingThread();
+        JarClassLoader.bindingThread();
 
         //添加关闭勾子
         Runtime.getRuntime().addShutdownHook(new Thread(()->stop(false, 0)));
@@ -112,14 +112,14 @@ public class Solon implements Handler, HandlerSlots {
      * */
     protected void init() {
         //a.尝试加载扩展文件夹
-        String filterStr = prop().extendFilter();
+        String filterStr = props().extendFilter();
         if (Utils.isEmpty(filterStr)) {
             //不需要过滤
-            ExtendLoader.load(prop().extend(), false);
+            ExtendLoader.load(props().extend(), false);
         } else {
             //增加过滤
             String[] filterS = filterStr.split(";");
-            ExtendLoader.load(prop().extend(), false, (path) -> {
+            ExtendLoader.load(props().extend(), false, (path) -> {
                 for (String f : filterS) {
                     if (path.contains(f)) {
                         return true;
@@ -132,7 +132,7 @@ public class Solon implements Handler, HandlerSlots {
 
 
         //b.尝试扫描插件
-        prop().plugsScan();
+        props().plugsScan();
     }
 
     /**
@@ -140,7 +140,7 @@ public class Solon implements Handler, HandlerSlots {
      * */
     protected void run() {
         //1.1.尝试启动插件（顺序不能乱） //不能用forEach，以免当中有插进来
-        List<PluginEntity> plugs = prop().plugs();
+        List<PluginEntity> plugs = props().plugs();
         for (int i = 0, len = plugs.size(); i < len; i++) {
             plugs.get(i).start();
         }
@@ -162,7 +162,7 @@ public class Solon implements Handler, HandlerSlots {
 
 
         //3.加载渲染关系
-        NvMap map = prop().getXmap("solon.view.mapping");
+        NvMap map = props().getXmap("solon.view.mapping");
         map.forEach((k, v) -> {
             Bridge.renderMapping("." + k, v);
         });
@@ -210,7 +210,7 @@ public class Solon implements Handler, HandlerSlots {
                 Thread.sleep(delay);
             }
 
-            global.prop().plugs().forEach(p -> p.stop());
+            global.props().plugs().forEach(p -> p.stop());
             global = null;
 
             if (exit) {
@@ -336,7 +336,7 @@ public class Solon implements Handler, HandlerSlots {
     /**
      * 获取属性
      */
-    public SolonProps prop() {
+    public SolonProps props() {
         return _prop;
     }
 
@@ -347,7 +347,7 @@ public class Solon implements Handler, HandlerSlots {
     public void plug(Plugin plugin) {
         PluginEntity p = new PluginEntity(plugin);
         p.start();
-        prop().plugs().add(p);
+        props().plugs().add(p);
     }
 
     ///////////////////////////////////////////////
