@@ -5,6 +5,7 @@ import org.noear.fairy.FairyConfig;
 import org.noear.fairy.IChannel;
 import org.noear.fairy.Result;
 import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;

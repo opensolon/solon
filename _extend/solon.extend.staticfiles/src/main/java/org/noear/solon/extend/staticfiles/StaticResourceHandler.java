@@ -1,6 +1,6 @@
 package org.noear.solon.extend.staticfiles;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;

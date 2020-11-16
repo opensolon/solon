@@ -3,7 +3,7 @@ package org.noear.solon.extend.feign;
 import feign.Feign;
 import feign.Request;
 import feign.Retryer;
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 
@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(Solon app) {
+    public void start(SolonApp app) {
         //检查是否启用了@FeignClient
         if (app.source().getAnnotation(EnableFeignClient.class) == null) {
             return;

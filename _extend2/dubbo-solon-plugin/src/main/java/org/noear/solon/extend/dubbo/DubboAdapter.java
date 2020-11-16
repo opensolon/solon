@@ -3,7 +3,7 @@ package org.noear.solon.extend.dubbo;
 import org.apache.dubbo.config.*;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.rpc.model.ApplicationModel;
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.NvMap;
 
@@ -17,7 +17,7 @@ public class DubboAdapter {
 
     private static DubboAdapter _global;
 
-    public static DubboAdapter global(Solon app) {
+    public static DubboAdapter global(SolonApp app) {
         if (_global == null) {
             _global = new DubboAdapter(app);
         }
@@ -26,7 +26,7 @@ public class DubboAdapter {
     }
 
 
-    private DubboAdapter(Solon app) {
+    private DubboAdapter(SolonApp app) {
 
         // 当前应用配置
         //

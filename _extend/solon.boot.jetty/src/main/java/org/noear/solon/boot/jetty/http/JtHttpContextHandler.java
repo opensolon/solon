@@ -1,6 +1,6 @@
 package org.noear.solon.boot.jetty.http;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.noear.solon.boot.jetty.XPluginImp;

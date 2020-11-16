@@ -1,6 +1,6 @@
 package org.noear.solon.boot.reactornetty;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
 import reactor.netty.DisposableServer;
 import reactor.netty.http.HttpProtocol;
@@ -14,7 +14,7 @@ public class XPluginImp implements Plugin {
     }
 
     @Override
-    public void start(Solon app) {
+    public void start(SolonApp app) {
         if (app.enableHttp() == false) {
             return;
         }

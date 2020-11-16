@@ -1,6 +1,7 @@
 package org.noear.solon.boot.jetty;
 
 import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.jetty.http.XFormContentFilter;
 import org.noear.solon.core.Aop;
@@ -19,7 +20,7 @@ public final class XPluginImp implements Plugin {
 
 
     @Override
-    public void start(Solon app) {
+    public void start(SolonApp app) {
         if (app.enableHttp() == false) {
             return;
         }
@@ -35,7 +36,7 @@ public final class XPluginImp implements Plugin {
         });
     }
 
-    private void start0(Solon app) {
+    private void start0(SolonApp app) {
         Class<?> jspClz = Utils.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
 
         if (jspClz == null) {

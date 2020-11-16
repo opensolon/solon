@@ -1,6 +1,6 @@
 package org.noear.weed.solon.plugin;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.noear.weed.BaseMapper;
@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(Solon app) {
+    public void start(SolonApp app) {
         //
         // 事件监听，用于时实初始化
         //

@@ -1,6 +1,6 @@
 package server;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.MethodType;
 import server.controller.ComplexModelService;
@@ -10,7 +10,7 @@ import server.dso.IGreetingService;
 
 public class TmpApp {
     public static void main(String[] args) {
-        Solon.start(TmpApp.class, args);
+        SolonApp.start(TmpApp.class, args);
 
         Solon.global().before("**", MethodType.SOCKET,(ctx)->{
             ctx.headerMap().put("Content-Type", "application/protobuf");

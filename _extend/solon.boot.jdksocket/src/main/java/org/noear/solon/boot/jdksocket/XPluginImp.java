@@ -1,6 +1,6 @@
 package org.noear.solon.boot.jdksocket;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.extend.xsocket.SessionFactory;
 
@@ -12,7 +12,7 @@ public class XPluginImp implements Plugin {
     }
 
     @Override
-    public void start(Solon app) {
+    public void start(SolonApp app) {
         //注册会话工厂
         SessionFactory.setInstance(new _SessionFactoryImpl());
 
@@ -24,7 +24,7 @@ public class XPluginImp implements Plugin {
 
         System.out.println("solon.Server:main: java.net.ServerSocket(jdksocket)");
 
-        int _port = app.props().getInt("server.socket.port", 0);
+        int _port = app.cfg().getInt("server.socket.port", 0);
         if (_port < 1) {
             _port = 20000 + app.port();
         }

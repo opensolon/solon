@@ -2,7 +2,7 @@ package org.noear.solon.extend.beetlsql;
 
 import org.beetl.sql.core.SQLManager;
 import org.beetl.sql.ext.solon.Db;
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
@@ -19,7 +19,7 @@ import javax.sql.DataSource;
  * */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(Solon app) {
+    public void start(SolonApp app) {
         //监听事件
         app.onEvent(BeanWrap.class, new DsEventListener());
 

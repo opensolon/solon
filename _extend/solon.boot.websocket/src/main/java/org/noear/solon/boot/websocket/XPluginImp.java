@@ -1,6 +1,6 @@
 package org.noear.solon.boot.websocket;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
 
 public class XPluginImp implements Plugin {
@@ -11,13 +11,13 @@ public class XPluginImp implements Plugin {
     }
 
     @Override
-    public void start(Solon app) {
+    public void start(SolonApp app) {
         if(app.enableWebSocket() == false){
             return;
         }
 
 
-        int _port = app.props().getInt("server.websocket.port",0);
+        int _port = app.cfg().getInt("server.websocket.port",0);
         if(_port < 1) {
             _port = 10000 + app.port();
         }

@@ -2,7 +2,7 @@ package org.noear.solon.extend.mybatis;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 
@@ -10,7 +10,7 @@ import javax.sql.DataSource;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(Solon app) {
+    public void start(SolonApp app) {
         app.onEvent(BeanWrap.class, new DsEventListener());
 
         Aop.context().beanBuilderAdd(Db.class, (clz, wrap, anno) -> {

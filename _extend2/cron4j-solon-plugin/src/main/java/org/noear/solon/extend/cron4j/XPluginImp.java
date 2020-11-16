@@ -1,6 +1,6 @@
 package org.noear.solon.extend.cron4j;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
@@ -9,7 +9,7 @@ import java.util.Properties;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(Solon app) {
+    public void start(SolonApp app) {
         if(app.source().getAnnotation(EnableCron4j.class) == null){
             return;
         }

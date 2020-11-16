@@ -1,12 +1,12 @@
 package org.noear.solon.extend.data;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.core.*;
 import org.noear.solon.core.cache.CacheService;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(Solon app) {
+    public void start(SolonApp app) {
         if (app.enableTransaction()) {
             Bridge.tranExecutorSet(TranExecutorImp.global);
         }

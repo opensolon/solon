@@ -5,7 +5,7 @@ import org.noear.fairy.FairyConfigurationDefault;
 import org.noear.fairy.FairyException;
 import org.noear.fairy.annotation.EnableFairyClient;
 import org.noear.fairy.annotation.FairyClient;
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
@@ -17,7 +17,7 @@ public class XPluginImp implements Plugin {
     private Map<FairyClient, Object> cached = new ConcurrentHashMap<>();
 
     @Override
-    public void start(Solon app) {
+    public void start(SolonApp app) {
         if (app.source().getAnnotation(EnableFairyClient.class) == null) {
             return;
         }

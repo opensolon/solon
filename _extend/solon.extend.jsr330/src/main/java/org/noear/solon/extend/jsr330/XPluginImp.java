@@ -1,6 +1,6 @@
 package org.noear.solon.extend.jsr330;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.HandlerLoader;
@@ -12,7 +12,7 @@ import javax.inject.Singleton;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(Solon app) {
+    public void start(SolonApp app) {
         Aop.context().beanBuilderAdd(Named.class, (clz, bw, anno) -> {
 
             if (Plugin.class.isAssignableFrom(bw.clz())) {

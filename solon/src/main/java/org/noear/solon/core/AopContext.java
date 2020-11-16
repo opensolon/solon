@@ -1,6 +1,7 @@
 package org.noear.solon.core;
 
 import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.annotation.ServerEndpoint;

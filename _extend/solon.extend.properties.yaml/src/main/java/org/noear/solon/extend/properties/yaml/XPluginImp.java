@@ -1,12 +1,12 @@
 package org.noear.solon.extend.properties.yaml;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.PropsLoader;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(Solon app) {
+    public void start(SolonApp app) {
         if (PropsLoader.global() instanceof org.noear.solon.extend.properties.yaml.PropertiesLoader) {
             return;
         } else {
@@ -14,7 +14,7 @@ public class XPluginImp implements Plugin {
             PropsLoader.globalSet(org.noear.solon.extend.properties.yaml.PropertiesLoader.g);
 
             //尝试.yml的配置加载
-            app.props().loadAdd("application.yml");
+            app.cfg().loadAdd("application.yml");
         }
     }
 }

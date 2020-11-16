@@ -4,7 +4,7 @@ import net.hasor.core.AppContext;
 import net.hasor.utils.ExceptionUtils;
 import net.hasor.web.startup.RuntimeFilter;
 import net.hasor.web.startup.RuntimeListener;
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.core.Aop;
 import org.slf4j.Logger;

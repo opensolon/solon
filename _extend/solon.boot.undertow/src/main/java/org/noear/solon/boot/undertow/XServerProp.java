@@ -1,6 +1,6 @@
 package org.noear.solon.boot.undertow;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 
 public class XServerProp {
     public static long request_maxRequestSize = 1024 * 1024 * 2;//默认2mb

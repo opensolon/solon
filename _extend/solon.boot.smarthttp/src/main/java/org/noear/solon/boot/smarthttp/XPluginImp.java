@@ -1,6 +1,6 @@
 package org.noear.solon.boot.smarthttp;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.boot.smarthttp.http.SmartHttpContextHandler;
 import org.noear.solon.boot.smarthttp.http.XFormContentFilter;
 import org.noear.solon.boot.smarthttp.websocket.WebSocketHandleImp;
@@ -17,7 +17,7 @@ public final class XPluginImp implements Plugin {
     }
 
     @Override
-    public void start(Solon app) {
+    public void start(SolonApp app) {
         if (app.enableHttp() == false) {
             return;
         }

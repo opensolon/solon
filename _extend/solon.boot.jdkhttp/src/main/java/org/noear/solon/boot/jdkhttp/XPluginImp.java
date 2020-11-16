@@ -2,7 +2,7 @@ package org.noear.solon.boot.jdkhttp;
 
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
 
 import java.net.InetSocketAddress;
@@ -16,7 +16,7 @@ public final class XPluginImp implements Plugin {
     }
 
     @Override
-    public  void start(Solon app) {
+    public  void start(SolonApp app) {
         if (app.enableHttp() == false) {
             return;
         }

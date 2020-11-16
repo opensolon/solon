@@ -1,6 +1,6 @@
 package org.noear.solon.view.thymeleaf;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
@@ -10,8 +10,8 @@ public class XPluginImp implements Plugin {
     public static boolean output_meta = false;
 
     @Override
-    public void start(Solon app) {
-        output_meta = app.props().getInt("solon.output.meta", 0) > 0;
+    public void start(SolonApp app) {
+        output_meta = app.cfg().getInt("solon.output.meta", 0) > 0;
 
         ThymeleafRender render = ThymeleafRender.global();
 

@@ -5,6 +5,7 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.boot.jetty.http.JtJspStarter;
 
 import java.io.File;
@@ -53,7 +54,7 @@ class PluginJettyJsp extends PluginJetty {
         ServletHolder holderJsp = new ServletHolder("jsp", JettyJspServlet.class);
         holderJsp.setInitOrder(0);
 
-        Properties properties = Solon.global().props().getProp("solon.jetty.jsp");
+        Properties properties = Solon.cfg().getProp("solon.jetty.jsp");
         properties.forEach((k, v) -> holderJsp.setInitParameter((String)k, (String)v));
 
         handler.addServlet(holderJsp, "*.jsp");

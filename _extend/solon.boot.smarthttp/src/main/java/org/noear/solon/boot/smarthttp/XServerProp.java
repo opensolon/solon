@@ -1,6 +1,6 @@
 package org.noear.solon.boot.smarthttp;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 
 public class XServerProp {
     public static int request_maxRequestSize = 1024 * 1024 * 2;//默认2mb

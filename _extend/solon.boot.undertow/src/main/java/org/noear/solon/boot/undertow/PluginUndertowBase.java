@@ -2,7 +2,7 @@ package org.noear.solon.boot.undertow;
 
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.util.DefaultClassIntrospector;
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.undertow.http.UtContainerInitializerProxy;
 

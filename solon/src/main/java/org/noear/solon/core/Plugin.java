@@ -1,6 +1,6 @@
 package org.noear.solon.core;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 
 /**
  * 通用插件接口（实现 Plugin 架构；通过Solon ISP进行申明）
@@ -13,7 +13,7 @@ public interface Plugin {
     /**
      * 启动 （stop 可通过: app.onStop(..) 实现）
      */
-    void start(Solon app);
+    void start(SolonApp app);
 
     /**
      * 停止

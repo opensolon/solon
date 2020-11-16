@@ -1,6 +1,7 @@
 package org.noear.solon.extend.xsocket;
 
 import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;

@@ -1,6 +1,6 @@
 package org.noear.solon.boot.rsocket;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
 
 public class XPluginImp implements Plugin {
@@ -11,7 +11,7 @@ public class XPluginImp implements Plugin {
     }
 
     @Override
-    public void start(Solon app) {
+    public void start(SolonApp app) {
 
         if(app.enableSocket() == false){
             return;

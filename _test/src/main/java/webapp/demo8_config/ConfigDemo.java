@@ -1,6 +1,6 @@
 package webapp.demo8_config;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 

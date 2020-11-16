@@ -1,14 +1,14 @@
 package org.noear.solon.extend.stop;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
 
 public class XPluginImp implements Plugin {
     @Override
-    public void start(Solon app) {
-        boolean enabled = app.props().getBool("solon.stop.enabled", false);
-        String path = app.props().get("solon.stop.path", "/run/stop/");
-        String host = app.props().get("solon.stop.host", "127.0.0.1");
+    public void start(SolonApp app) {
+        boolean enabled = app.cfg().getBool("solon.stop.enabled", false);
+        String path = app.cfg().get("solon.stop.path", "/run/stop/");
+        String host = app.cfg().get("solon.stop.host", "127.0.0.1");
 
         long delay = Solon.cfg().getLong("solon.stop.delay", 0);
 
@@ -22,9 +22,9 @@ public class XPluginImp implements Plugin {
                 }
 
                 if ("*".equals(host)) {
-                    Solon.stop(true, delay2);
+                    SolonApp.stop(true, delay2);
                 } else if (host.equals(c.uri().getHost())) {
-                    Solon.stop(true, delay2);
+                    SolonApp.stop(true, delay2);
                 }
             });
         }

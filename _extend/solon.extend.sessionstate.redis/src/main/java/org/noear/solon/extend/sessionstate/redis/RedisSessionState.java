@@ -3,7 +3,7 @@ package org.noear.solon.extend.sessionstate.redis;
 import org.noear.snack.ONode;
 import org.noear.snack.core.Constants;
 import org.noear.snack.core.Feature;
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.NvMap;

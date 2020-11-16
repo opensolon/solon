@@ -3,7 +3,7 @@ package org.noear.solon.extend.dubbo;
 import org.apache.dubbo.config.ServiceConfig;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.config.annotation.Service;
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 
@@ -12,7 +12,7 @@ public class XPluginImp implements Plugin {
     DubboAdapter _server;
 
     @Override
-    public void start(Solon app) {
+    public void start(SolonApp app) {
         if (app.source().getAnnotation(EnableDubbo.class) == null) {
             return;
         }

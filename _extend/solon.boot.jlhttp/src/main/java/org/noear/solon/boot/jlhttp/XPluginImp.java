@@ -1,6 +1,6 @@
 package org.noear.solon.boot.jlhttp;
 
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.MethodType;
@@ -16,7 +16,7 @@ public final class XPluginImp implements Plugin {
     }
 
     @Override
-    public  void start(Solon app) {
+    public  void start(SolonApp app) {
         if(app.enableHttp() == false){
             return;
         }
@@ -37,7 +37,7 @@ public final class XPluginImp implements Plugin {
         });
     }
 
-    private void start0(Solon app){
+    private void start0(SolonApp app){
         _server = new HTTPServer();
 
         long time_start = System.currentTimeMillis();

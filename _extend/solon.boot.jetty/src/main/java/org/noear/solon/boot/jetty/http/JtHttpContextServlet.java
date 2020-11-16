@@ -1,6 +1,7 @@
 package org.noear.solon.boot.jetty.http;
 
 import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.boot.jetty.XPluginImp;
 import org.noear.solon.boot.jetty.XServerProp;
 import org.noear.solon.core.event.EventBus;

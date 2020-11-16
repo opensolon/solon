@@ -5,6 +5,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.eclipse.jetty.server.session.SessionHandler;
 import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
 import org.noear.solon.core.event.EventBus;
@@ -16,7 +17,7 @@ class PluginJetty extends PluginJettyBase implements Plugin {
     protected Server _server = null;
 
     @Override
-    public void start(Solon app) {
+    public void start(SolonApp app) {
         try {
             setup(app);
             _server.start();
@@ -33,7 +34,7 @@ class PluginJetty extends PluginJettyBase implements Plugin {
         }
     }
 
-    protected void setup(Solon app) throws Throwable{
+    protected void setup(SolonApp app) throws Throwable{
         Class<?> wsClz = Utils.loadClass("org.eclipse.jetty.websocket.server.WebSocketHandler");
 
         _server = new Server(app.port());
@@ -55,14 +56,14 @@ class PluginJetty extends PluginJettyBase implements Plugin {
                 XServerProp.request_maxRequestSize);
 
 
-        app.props().forEach((k, v) -> {
+        app.cfg().forEach((k, v) -> {
             String key = k.toString();
             if (key.indexOf(".jetty.") > 0) {
                 _server.setAttribute(key, v);
             }
         });
 
-        app.props().onChange((k, v) -> {
+        app.cfg().onChange((k, v) -> {
             if (k.indexOf(".jetty.") > 0) {
                 _server.setAttribute(k, v);
             }

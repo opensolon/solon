@@ -3,7 +3,7 @@ package org.noear.solon.boot.undertow.http;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.servlet.handlers.ServletRequestContext;
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.boot.undertow.XPluginImp;
 import org.noear.solon.boot.undertow.XServerProp;
 import org.noear.solon.core.event.EventBus;

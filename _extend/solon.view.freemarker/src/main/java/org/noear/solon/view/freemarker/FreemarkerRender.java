@@ -2,7 +2,7 @@ package org.noear.solon.view.freemarker;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.noear.solon.core.handle.Context;
