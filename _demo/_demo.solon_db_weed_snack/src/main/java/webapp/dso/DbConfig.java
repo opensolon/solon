@@ -1,6 +1,7 @@
 package webapp.dso;
 
 import com.zaxxer.hikari.HikariDataSource;
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
