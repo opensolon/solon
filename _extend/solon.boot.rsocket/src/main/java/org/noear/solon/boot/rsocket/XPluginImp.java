@@ -1,5 +1,6 @@
 package org.noear.solon.boot.rsocket;
 
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
 

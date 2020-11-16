@@ -2,6 +2,7 @@ package org.noear.solon.view.freemarker;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
@@ -35,7 +36,7 @@ public class FreemarkerRender implements Render {
     //不要要入参，方便后面多视图混用
     //
     public FreemarkerRender() {
-        String baseUri = Solon.global().props().get("slon.mvc.view.prefix");
+        String baseUri = Solon.cfg().get("slon.mvc.view.prefix");
 
         if (Utils.isEmpty(baseUri) == false) {
             _baseUri = baseUri;
