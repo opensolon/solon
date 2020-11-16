@@ -1,13 +1,13 @@
 package org.noear.solon.core;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonProperties;
+import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
 
 /**
  * 插件实体
  *
- * @see SolonProperties#plugsScan()
+ * @see SolonProps#plugsScan()
  * @author noear
  * @since 1.0
  * */

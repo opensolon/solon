@@ -1,6 +1,6 @@
 package org.noear.solon.core;
 
-import org.noear.solon.SolonProperties;
+import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
 import org.noear.solon.core.wrap.ClassWrap;
 
@@ -13,17 +13,17 @@ import java.util.function.Function;
  *
  * 在 Properties 基础上，添加了些方法
  *
- * @see SolonProperties
+ * @see SolonProps
  * @author noear
  * @since 1.0
  * */
-public class PropertiesEx extends Properties {
+public class Props extends Properties {
 
-    public PropertiesEx() {
+    public Props() {
         super();
     }
 
-    public PropertiesEx(Properties defaults) {
+    public Props(Properties defaults) {
         super(defaults);
     }
 
@@ -104,8 +104,8 @@ public class PropertiesEx extends Properties {
      *
      * @param keyStarts key 的开始字符
      * */
-    public PropertiesEx getProp(String keyStarts) {
-        PropertiesEx prop = new PropertiesEx();
+    public Props getProp(String keyStarts) {
+        Props prop = new Props();
         doFind(keyStarts, prop::put);
         return prop;
     }
@@ -114,7 +114,7 @@ public class PropertiesEx extends Properties {
      *
      * @param expr 兼容 ${key} or key
      * */
-    public PropertiesEx getPropByExpr(String expr) {
+    public Props getPropByExpr(String expr) {
         String name = expr;
         if (name.startsWith("${") && name.endsWith("}")) {
             name = expr.substring(2, name.length() - 1);

@@ -240,7 +240,7 @@ public class Utils {
         }
 
         try {
-            return PropertiesLoader.global().load(url);
+            return PropsLoader.global().load(url);
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {
@@ -253,7 +253,7 @@ public class Utils {
      * */
     public static Properties buildProperties(String txt) {
         try {
-            return PropertiesLoader.global().build(txt);
+            return PropsLoader.global().build(txt);
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {

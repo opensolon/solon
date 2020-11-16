@@ -2,7 +2,7 @@ package org.noear.solon;
 
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.PluginEntity;
-import org.noear.solon.core.PropertiesEx;
+import org.noear.solon.core.Props;
 import org.noear.solon.core.util.ResourceScaner;
 
 import java.net.URL;
@@ -26,7 +26,7 @@ import java.util.function.BiConsumer;
  * @author noear
  * @since 1.0
  * */
-public final class SolonProperties extends PropertiesEx {
+public final class SolonProps extends Props {
     private NvMap args;
     private List<PluginEntity> plugs = new ArrayList<>();
     private boolean isDebugMode;
@@ -35,7 +35,7 @@ public final class SolonProperties extends PropertiesEx {
     private String  extend;
     private String  extendFilter;
 
-    public SolonProperties() {
+    public SolonProps() {
         super(System.getProperties());
     }
 
@@ -44,7 +44,7 @@ public final class SolonProperties extends PropertiesEx {
      *
      * @param args 启用参数
      * */
-    public SolonProperties load(NvMap args) {
+    public SolonProps load(NvMap args) {
         //1.接收启动参数
         this.args = args;
 
@@ -95,7 +95,7 @@ public final class SolonProperties extends PropertiesEx {
      *
      * @param url 配置地址
      * */
-    public SolonProperties loadAdd(URL url) {
+    public SolonProps loadAdd(URL url) {
         if (url != null) {
             Properties prop = Utils.loadProperties(url);
 
@@ -108,7 +108,7 @@ public final class SolonProperties extends PropertiesEx {
         return this;
     }
 
-    public SolonProperties loadAdd(String url) {
+    public SolonProps loadAdd(String url) {
         return loadAdd(Utils.getResource(url));
     }
 
@@ -143,7 +143,7 @@ public final class SolonProperties extends PropertiesEx {
      * */
     private void plugsScanMapDo(URL url) {
         try {
-            PropertiesEx p = new PropertiesEx(Utils.loadProperties(url));
+            Props p = new Props(Utils.loadProperties(url));
 
             String temp = p.get("solon.plugin");
 

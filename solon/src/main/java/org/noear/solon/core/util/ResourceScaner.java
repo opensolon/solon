@@ -1,6 +1,6 @@
 package org.noear.solon.core.util;
 
-import org.noear.solon.SolonProperties;
+import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
 
 import java.io.File;
@@ -16,7 +16,7 @@ import java.util.jar.JarFile;
 /**
  * 资源扫描器（用于扫描插件配置等资源...）
  *
- * @see SolonProperties#plugsScan()
+ * @see SolonProps#plugsScan()
  * @author noear
  * @since 1.0
  * */

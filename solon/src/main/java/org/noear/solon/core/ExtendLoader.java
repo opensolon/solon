@@ -149,7 +149,7 @@ public class ExtendLoader {
                 }
 
                 if (path.endsWith(".yml")) {
-                    if (PropertiesLoader.global().isSupport(path) == false) {
+                    if (PropsLoader.global().isSupport(path) == false) {
                         throw new RuntimeException("Do not support the *.yml");
                     }
 

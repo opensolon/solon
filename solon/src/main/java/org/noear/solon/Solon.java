@@ -47,7 +47,7 @@ public class Solon implements Handler, HandlerSlots {
     /**
      * 应用配置
      * */
-    public static SolonProperties cfg(){
+    public static SolonProps cfg(){
         return global().prop();
     }
 
@@ -305,13 +305,13 @@ public class Solon implements Handler, HandlerSlots {
     }
 
     private final int _port; //端口
-    private final SolonProperties _prop; //属性配置
+    private final SolonProps _prop; //属性配置
     private final Class<?> _source; //应用加载源
 
     protected Solon(Class<?> source, NvMap args) {
         _source = source;
 
-        _prop = new SolonProperties().load(args);
+        _prop = new SolonProps().load(args);
         _port = _prop.serverPort();
 
         //顺序不能换
@@ -336,7 +336,7 @@ public class Solon implements Handler, HandlerSlots {
     /**
      * 获取属性
      */
-    public SolonProperties prop() {
+    public SolonProps prop() {
         return _prop;
     }
 

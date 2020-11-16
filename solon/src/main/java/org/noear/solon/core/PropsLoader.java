@@ -15,14 +15,14 @@ import java.util.Properties;
  * @author noear
  * @since 1.0
  * */
-public class PropertiesLoader {
-    private static PropertiesLoader global = new PropertiesLoader();
-    public static PropertiesLoader global() {
+public class PropsLoader {
+    private static PropsLoader global = new PropsLoader();
+    public static PropsLoader global() {
         return global;
     }
-    public static void globalSet(PropertiesLoader instance) {
+    public static void globalSet(PropsLoader instance) {
         if(instance != null) {
-            PropertiesLoader.global = instance;
+            PropsLoader.global = instance;
         }
     }
 
@@ -32,7 +32,7 @@ public class PropertiesLoader {
         //
         String loader = "org.noear.solon.extend.properties.yaml.PropertiesLoader";
 
-        PropertiesLoader tmp = Utils.newInstance(loader);
+        PropsLoader tmp = Utils.newInstance(loader);
         if (tmp != null) {
             global = tmp;
         }
