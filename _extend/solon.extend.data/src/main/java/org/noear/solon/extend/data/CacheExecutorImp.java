@@ -1,9 +1,9 @@
 package org.noear.solon.extend.data;
 
 import org.noear.solon.Utils;
-import org.noear.solon.data.annotation.Cache;
-import org.noear.solon.data.annotation.CachePut;
-import org.noear.solon.data.annotation.CacheRemove;
+import org.noear.solon.extend.data.annotation.Cache;
+import org.noear.solon.extend.data.annotation.CachePut;
+import org.noear.solon.extend.data.annotation.CacheRemove;
 import org.noear.solon.core.cache.CacheService;
 import org.noear.solon.ext.SupplierEx;
 

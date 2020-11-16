@@ -1,21 +1,20 @@
-package org.noear.solon.data.annotation;
+package org.noear.solon.extend.data.annotation;
 
-import org.noear.solon.extend.data.around.CacheInterceptor;
-
+import org.noear.solon.extend.data.around.CachePutInterceptor;
+import org.noear.solon.annotation.*;
 import java.lang.annotation.*;
 
-import org.noear.solon.annotation.*;
-
 /**
- * 缓存注解器
+ * 缓存更新注解器（之前有缓存才会被更新；不然无法进行类型检测）
  *
  * @author noear
  * @since 1.0
  * */
-@Around(value = CacheInterceptor.class, index = -8)
+@Around(value = CachePutInterceptor.class, index = -9)
+@Inherited //要可继承
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Cache {
+public @interface CachePut {
     /**
      * 缓存服务
      * */

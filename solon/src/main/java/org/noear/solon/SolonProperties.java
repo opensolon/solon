@@ -223,7 +223,7 @@ public final class SolonProperties extends PropertiesEx {
      * 框架版本号
      * */
     public String version(){
-        return "1.1.13";
+        return "1.2";
     }
 
     /**

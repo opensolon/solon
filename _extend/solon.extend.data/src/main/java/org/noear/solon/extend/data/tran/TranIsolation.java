@@ -1,4 +1,4 @@
-package org.noear.solon.data.tran;
+package org.noear.solon.extend.data.tran;
 
 /**
  * 事务隔离级别

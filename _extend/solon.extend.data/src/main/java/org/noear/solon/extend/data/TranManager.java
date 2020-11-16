@@ -1,6 +1,6 @@
 package org.noear.solon.extend.data;
 
-import org.noear.solon.extend.data.trans.DbTran;
+import org.noear.solon.extend.data.tranImp.DbTran;
 
 /**
  * 事务管理器

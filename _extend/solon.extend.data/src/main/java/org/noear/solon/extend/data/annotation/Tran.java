@@ -1,7 +1,7 @@
-package org.noear.solon.data.annotation;
+package org.noear.solon.extend.data.annotation;
 
-import org.noear.solon.data.tran.TranIsolation;
-import org.noear.solon.data.tran.TranPolicy;
+import org.noear.solon.extend.data.tran.TranIsolation;
+import org.noear.solon.extend.data.tran.TranPolicy;
 import org.noear.solon.extend.data.around.TranInterceptor;
 import org.noear.solon.annotation.*;
 

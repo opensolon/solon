@@ -1,10 +1,10 @@
 package org.noear.solon.extend.data;
 
-import org.noear.solon.data.annotation.Tran;
+import org.noear.solon.extend.data.annotation.Tran;
 import org.noear.solon.core.tran.TranExecutor;
-import org.noear.solon.data.tran.TranPolicy;
+import org.noear.solon.extend.data.tran.TranPolicy;
 import org.noear.solon.ext.RunnableEx;
-import org.noear.solon.extend.data.trans.*;
+import org.noear.solon.extend.data.tranImp.*;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

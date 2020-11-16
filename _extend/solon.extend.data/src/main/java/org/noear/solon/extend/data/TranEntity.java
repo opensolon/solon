@@ -1,6 +1,6 @@
 package org.noear.solon.extend.data;
 
-import org.noear.solon.data.annotation.Tran;
+import org.noear.solon.extend.data.annotation.Tran;
 
 class TranEntity {
     protected TranNode tran;
