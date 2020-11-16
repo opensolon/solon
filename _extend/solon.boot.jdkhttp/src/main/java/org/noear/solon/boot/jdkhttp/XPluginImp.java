@@ -2,6 +2,7 @@ package org.noear.solon.boot.jdkhttp;
 
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
 

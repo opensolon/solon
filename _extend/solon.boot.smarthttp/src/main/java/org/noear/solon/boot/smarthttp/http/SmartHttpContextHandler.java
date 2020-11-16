@@ -1,5 +1,6 @@
 package org.noear.solon.boot.smarthttp.http;
 
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.boot.smarthttp.XPluginImp;
 import org.noear.solon.boot.smarthttp.XServerProp;

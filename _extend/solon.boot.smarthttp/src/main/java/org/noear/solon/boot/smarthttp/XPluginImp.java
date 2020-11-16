@@ -1,5 +1,6 @@
 package org.noear.solon.boot.smarthttp;
 
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.boot.smarthttp.http.SmartHttpContextHandler;
 import org.noear.solon.boot.smarthttp.http.XFormContentFilter;

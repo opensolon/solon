@@ -1,5 +1,6 @@
 package org.noear.solon.boot.jlhttp;
 
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 
 class XServerProp {

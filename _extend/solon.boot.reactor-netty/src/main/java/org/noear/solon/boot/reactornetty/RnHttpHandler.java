@@ -2,6 +2,7 @@ package org.noear.solon.boot.reactornetty;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.*;
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Mono;
