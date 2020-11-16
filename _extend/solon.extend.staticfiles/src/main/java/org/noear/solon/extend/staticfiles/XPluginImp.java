@@ -3,7 +3,7 @@ package org.noear.solon.extend.staticfiles;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handler.HandlerLink;
-import org.noear.solon.core.ParamMap;
+import org.noear.solon.core.MapX;
 import org.noear.solon.core.Plugin;
 
 public class XPluginImp implements Plugin {
@@ -23,7 +23,7 @@ public class XPluginImp implements Plugin {
         if (Utils.getResource("/static") != null) {
             //1.加载自定义的mime
             //
-            ParamMap mimeTypes = app.prop().getXmap("solon.mime");
+            MapX mimeTypes = app.prop().getXmap("solon.mime");
             mimeTypes.forEach((k, v) -> {
                 StaticFiles.instance().putIfAbsent("." + k, v);
             });

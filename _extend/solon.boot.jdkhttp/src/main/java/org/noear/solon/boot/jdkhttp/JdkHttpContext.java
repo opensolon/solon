@@ -5,7 +5,7 @@ import com.sun.net.httpserver.HttpExchange;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handler.Context;
 import org.noear.solon.core.handler.UploadedFile;
-import org.noear.solon.core.ParamMap;
+import org.noear.solon.core.MapX;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -161,12 +161,12 @@ public class JdkHttpContext extends Context {
         }
     }
 
-    private ParamMap _paramMap;
+    private MapX _paramMap;
 
     @Override
-    public ParamMap paramMap() {
+    public MapX paramMap() {
         if (_paramMap == null) {
-            _paramMap = new ParamMap();
+            _paramMap = new MapX();
 
             _parameters.forEach((k, v) -> {
                 if (v instanceof List) {
@@ -215,9 +215,9 @@ public class JdkHttpContext extends Context {
     }
 
     @Override
-    public ParamMap cookieMap() {
+    public MapX cookieMap() {
         if (_cookieMap == null) {
-            _cookieMap = new ParamMap();
+            _cookieMap = new MapX();
 
             String tmp = header("Cookie", "");
             String[] ss = tmp.split(";");
@@ -234,12 +234,12 @@ public class JdkHttpContext extends Context {
         return _cookieMap;
     }
 
-    private ParamMap _cookieMap;
+    private MapX _cookieMap;
 
     @Override
-    public ParamMap headerMap() {
+    public MapX headerMap() {
         if (_headerMap == null) {
-            _headerMap = new ParamMap();
+            _headerMap = new MapX();
 
             Headers headers = _exchange.getRequestHeaders();
 
@@ -255,7 +255,7 @@ public class JdkHttpContext extends Context {
         return _headerMap;
     }
 
-    private ParamMap _headerMap;
+    private MapX _headerMap;
 
     @Override
     public Object response() {

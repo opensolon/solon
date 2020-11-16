@@ -1,6 +1,6 @@
 package org.noear.solon.core.handler;
 
-import org.noear.solon.core.ParamMap;
+import org.noear.solon.core.MapX;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -116,11 +116,11 @@ public class ContextEmpty extends Context {
         return paramMap().getOrDefault(key, def);
     }
 
-    private ParamMap paramMap = null;
+    private MapX paramMap = null;
     @Override
-    public ParamMap paramMap() {
+    public MapX paramMap() {
         if(paramMap == null){
-            paramMap = new ParamMap();
+            paramMap = new MapX();
         }
         return paramMap;
     }
@@ -145,20 +145,20 @@ public class ContextEmpty extends Context {
         return cookieMap().getOrDefault(key,def);
     }
 
-    ParamMap cookieMap = null;
+    MapX cookieMap = null;
     @Override
-    public ParamMap cookieMap() {
+    public MapX cookieMap() {
         if(cookieMap == null){
-            cookieMap = new ParamMap();
+            cookieMap = new MapX();
         }
         return cookieMap;
     }
 
-    private ParamMap headerMap = null;
+    private MapX headerMap = null;
     @Override
-    public ParamMap headerMap() {
+    public MapX headerMap() {
         if(headerMap == null){
-            headerMap = new ParamMap();
+            headerMap = new MapX();
         }
         return headerMap;
     }

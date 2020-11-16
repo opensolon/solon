@@ -86,7 +86,7 @@ public class FreemarkerRender implements Render {
     //使用 发布模式 进行实始化
     private void forRelease() {
         try {
-            cfg.setClassLoaderForTemplateLoading(SolonClassLoader.global(), _baseUri);
+            cfg.setClassLoaderForTemplateLoading(ClassLoaderX.global(), _baseUri);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

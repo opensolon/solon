@@ -15,24 +15,24 @@ import java.util.Map;
  * @author noear
  * @since 1.0
  * */
-public class SolonClassLoader extends URLClassLoader {
+public class ClassLoaderX extends URLClassLoader {
 
-    private static SolonClassLoader global = new SolonClassLoader();
-    public static SolonClassLoader global() {
+    private static ClassLoaderX global = new ClassLoaderX();
+    public static ClassLoaderX global() {
         return global;
     }
 
 
     private Map<URL, JarURLConnection> cachedMap = new HashMap<>();
 
-    public SolonClassLoader() {
+    public ClassLoaderX() {
         this(ClassLoader.getSystemClassLoader());
     }
 
     /**
      * @param parent 父加载器
      * */
-    public SolonClassLoader(ClassLoader parent) {
+    public ClassLoaderX(ClassLoader parent) {
         super(new URL[]{}, parent);
     }
 
@@ -40,7 +40,7 @@ public class SolonClassLoader extends URLClassLoader {
      * @param files jar files
      * @param parent 父加载器
      * */
-    public SolonClassLoader(URL[] files, ClassLoader parent) {
+    public ClassLoaderX(URL[] files, ClassLoader parent) {
         super(files, parent);
     }
 
@@ -131,7 +131,7 @@ public class SolonClassLoader extends URLClassLoader {
         URL url =  super.getResource(name);
 
         if (url == null) {
-            url = SolonClassLoader.class.getResource(name);
+            url = ClassLoaderX.class.getResource(name);
         }
 
         return url;

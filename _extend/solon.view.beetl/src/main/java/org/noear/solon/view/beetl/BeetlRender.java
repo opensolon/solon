@@ -7,7 +7,7 @@ import org.beetl.core.resource.ClasspathResourceLoader;
 import org.beetl.core.resource.FileResourceLoader;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.SolonClassLoader;
+import org.noear.solon.core.ClassLoaderX;
 import org.noear.solon.core.handler.Render;
 import org.noear.solon.core.handler.ModelAndView;
 import org.noear.solon.core.handler.Context;
@@ -93,7 +93,7 @@ public class BeetlRender implements Render {
 
     private void forRelease() {
         try {
-            ClasspathResourceLoader loader = new ClasspathResourceLoader(SolonClassLoader.global(), _baseUri);
+            ClasspathResourceLoader loader = new ClasspathResourceLoader(ClassLoaderX.global(), _baseUri);
             gt = new GroupTemplate(loader, cfg);
         } catch (Exception ex) {
             ex.printStackTrace();

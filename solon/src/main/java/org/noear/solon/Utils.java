@@ -146,7 +146,7 @@ public class Utils {
      */
     public static Class<?> loadClass(String className) {
         try {
-            return SolonClassLoader.global().loadClass(className); //Class.forName(className);
+            return ClassLoaderX.global().loadClass(className); //Class.forName(className);
         } catch (Throwable ex) {
             return null;
         }
@@ -175,7 +175,7 @@ public class Utils {
      * @param name 资源名称
      */
     public static Enumeration<URL> getResources(String name) throws IOException {
-        return SolonClassLoader.global().getResources(name); //XUtil.class.getClassLoader().getResources(name);
+        return ClassLoaderX.global().getResources(name); //XUtil.class.getClassLoader().getResources(name);
     }
 
     /**
@@ -184,7 +184,7 @@ public class Utils {
      * @param name 资源名称
      */
     public static URL getResource(String name) {
-        return SolonClassLoader.global().getResource(name);//XUtil.class.getResource(name);
+        return ClassLoaderX.global().getResource(name);//XUtil.class.getResource(name);
     }
 
     /**
@@ -321,8 +321,8 @@ public class Utils {
     /**
      * 将路径根据表达式转成map
      * */
-    public static ParamMap pathVarMap(String path, String expr) {
-        ParamMap _map = new ParamMap();
+    public static MapX pathVarMap(String path, String expr) {
+        MapX _map = new MapX();
 
         //支持path变量
         if (expr.indexOf("{") >= 0) {

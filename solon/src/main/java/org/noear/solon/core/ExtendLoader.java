@@ -69,7 +69,7 @@ public class ExtendLoader {
      */
     public static boolean loadJar(File file) {
         try {
-            SolonClassLoader.global().loadJar(file.toURI().toURL());
+            ClassLoaderX.global().loadJar(file.toURI().toURL());
             return true;
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -82,7 +82,7 @@ public class ExtendLoader {
      */
     public static boolean unloadJar(File file) {
         try {
-            SolonClassLoader.global().unloadJar(file.toURI().toURL());
+            ClassLoaderX.global().unloadJar(file.toURI().toURL());
             return true;
         } catch (Throwable ex) {
             ex.printStackTrace();

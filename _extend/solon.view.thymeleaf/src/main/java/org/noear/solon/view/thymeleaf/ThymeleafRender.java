@@ -97,7 +97,7 @@ public class ThymeleafRender implements Render {
     }
 
     private void forRelease() {
-        ClassLoaderTemplateResolver _loader = new ClassLoaderTemplateResolver(SolonClassLoader.global());
+        ClassLoaderTemplateResolver _loader = new ClassLoaderTemplateResolver(ClassLoaderX.global());
 
         _loader.setPrefix(_baseUri);
         _loader.setTemplateMode(TemplateMode.HTML);

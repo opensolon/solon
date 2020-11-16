@@ -8,7 +8,7 @@ import io.netty.handler.codec.http.cookie.Cookie;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handler.Context;
 import org.noear.solon.core.handler.UploadedFile;
-import org.noear.solon.core.ParamMap;
+import org.noear.solon.core.MapX;
 import reactor.netty.http.server.HttpServerRequest;
 import reactor.netty.http.server.HttpServerResponse;
 
@@ -138,11 +138,11 @@ public class RnHttpContext extends Context {
         }
     }
 
-    private ParamMap _paramMap;
+    private MapX _paramMap;
     @Override
-    public ParamMap paramMap() {
+    public MapX paramMap() {
         if(_paramMap == null){
-            _paramMap = new ParamMap();
+            _paramMap = new MapX();
 
             _request_parse.parmMap.forEach((k,l)->{
                 if(l.size() > 0){
@@ -164,11 +164,11 @@ public class RnHttpContext extends Context {
         return _request_parse.fileMap.get(key);
     }
 
-    private ParamMap _cookieMap;
+    private MapX _cookieMap;
     @Override
-    public ParamMap cookieMap() {
+    public MapX cookieMap() {
         if(_cookieMap == null){
-            _cookieMap = new ParamMap();
+            _cookieMap = new MapX();
 
             String _cookieMapStr = _request.requestHeaders().get(COOKIE);
             if (_cookieMapStr != null) {
@@ -183,11 +183,11 @@ public class RnHttpContext extends Context {
         return _cookieMap;
     }
 
-    private ParamMap _headerMap;
+    private MapX _headerMap;
     @Override
-    public ParamMap headerMap() {
+    public MapX headerMap() {
         if(_headerMap == null) {
-            _headerMap = new ParamMap();
+            _headerMap = new MapX();
             HttpHeaders headers = _request.requestHeaders();
 
             for(Map.Entry<String, String> kv : headers){

@@ -67,17 +67,17 @@ public class Solon implements Handler, HandlerSlots {
 
     public static Solon start(Class<?> source, String[] args, ConsumerEx<Solon> initialize) {
         //1.初始化应用，加载配置
-        ParamMap argx = ParamMap.from(args);
+        MapX argx = MapX.from(args);
         return start(source, argx, initialize);
     }
 
-    public static Solon start(Class<?> source, ParamMap argx, ConsumerEx<Solon> initialize) {
+    public static Solon start(Class<?> source, MapX argx, ConsumerEx<Solon> initialize) {
         if (global != null) {
             return global;
         }
 
         //绑定类加载器
-        SolonClassLoader.bindingThread();
+        ClassLoaderX.bindingThread();
 
         //添加关闭勾子
         Runtime.getRuntime().addShutdownHook(new Thread(()->stop(false, 0)));
@@ -162,7 +162,7 @@ public class Solon implements Handler, HandlerSlots {
 
 
         //3.加载渲染关系
-        ParamMap map = prop().getXmap("solon.view.mapping");
+        MapX map = prop().getXmap("solon.view.mapping");
         map.forEach((k, v) -> {
             Bridge.renderMapping("." + k, v);
         });
@@ -308,7 +308,7 @@ public class Solon implements Handler, HandlerSlots {
     private final SolonProperties _prop; //属性配置
     private final Class<?> _source; //应用加载源
 
-    protected Solon(Class<?> source, ParamMap args) {
+    protected Solon(Class<?> source, MapX args) {
         _source = source;
 
         _prop = new SolonProperties().load(args);

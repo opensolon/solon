@@ -1,8 +1,8 @@
 package org.noear.solon;
 
-import org.noear.solon.core.ParamMap;
+import org.noear.solon.core.MapX;
 import org.noear.solon.core.PluginEntity;
-import org.noear.solon.core.PropertiesEx;
+import org.noear.solon.core.PropertiesX;
 import org.noear.solon.core.util.ResourceScaner;
 
 import java.net.URL;
@@ -26,8 +26,8 @@ import java.util.function.BiConsumer;
  * @author noear
  * @since 1.0
  * */
-public final class SolonProperties extends PropertiesEx {
-    private ParamMap args;
+public final class SolonProperties extends PropertiesX {
+    private MapX args;
     private List<PluginEntity> plugs = new ArrayList<>();
     private boolean isDebugMode;
     private boolean isDriftMode;
@@ -44,7 +44,7 @@ public final class SolonProperties extends PropertiesEx {
      *
      * @param args 启用参数
      * */
-    public SolonProperties load(ParamMap args) {
+    public SolonProperties load(MapX args) {
         //1.接收启动参数
         this.args = args;
 
@@ -143,7 +143,7 @@ public final class SolonProperties extends PropertiesEx {
      * */
     private void plugsScanMapDo(URL url) {
         try {
-            PropertiesEx p = new PropertiesEx(Utils.loadProperties(url));
+            PropertiesX p = new PropertiesX(Utils.loadProperties(url));
 
             String temp = p.get("solon.plugin");
 
@@ -186,7 +186,7 @@ public final class SolonProperties extends PropertiesEx {
     /**
      * 获取启动参数
      */
-    public ParamMap argx() {
+    public MapX argx() {
         return args;
     }
 

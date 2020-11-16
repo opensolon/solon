@@ -146,11 +146,11 @@ public class UtHttpContext extends Context {
     }
 
 
-    private ParamMap _paramMap;
+    private MapX _paramMap;
     @Override
-    public ParamMap paramMap() {
+    public MapX paramMap() {
         if (_paramMap == null) {
-            _paramMap = new ParamMap();
+            _paramMap = new MapX();
 
             Enumeration<String> names = _request.getParameterNames();
 
@@ -192,12 +192,12 @@ public class UtHttpContext extends Context {
         }
     }
 
-    private ParamMap _cookieMap;
+    private MapX _cookieMap;
 
     @Override
-    public ParamMap cookieMap() {
+    public MapX cookieMap() {
         if (_cookieMap == null) {
-            _cookieMap = new ParamMap();
+            _cookieMap = new MapX();
 
             Cookie[] _cookies = _request.getCookies();
 
@@ -212,9 +212,9 @@ public class UtHttpContext extends Context {
     }
 
     @Override
-    public ParamMap headerMap() {
+    public MapX headerMap() {
         if(_headerMap == null) {
-            _headerMap = new ParamMap();
+            _headerMap = new MapX();
             Enumeration<String> headers = _request.getHeaderNames();
 
             while (headers.hasMoreElements()) {
@@ -226,7 +226,7 @@ public class UtHttpContext extends Context {
 
         return _headerMap;
     }
-    private ParamMap _headerMap;
+    private MapX _headerMap;
 
 
 
