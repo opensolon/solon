@@ -6,7 +6,7 @@ import org.noear.fairy.annotation.FairyClient;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Bridge;
-import org.noear.solon.core.Upstream;
+import org.noear.solon.core.UpstreamService;
 
 public class FairyConfigurationSolon implements FairyConfiguration {
     @Override
@@ -24,7 +24,7 @@ public class FairyConfigurationSolon implements FairyConfiguration {
 
         //尝试从负载工厂获取
         if (Bridge.upstreamFactory() != null) {
-            Upstream upstream = Bridge.upstreamFactory().create(name0);
+            UpstreamService upstream = Bridge.upstreamFactory().create(name0);
 
             if (upstream != null) {
                 builder.upstream(upstream::getServer);
@@ -34,7 +34,7 @@ public class FairyConfigurationSolon implements FairyConfiguration {
 
         //尝试从Ioc容器获取
         Aop.getAsyn(name0, (bw) -> {
-            Upstream tmp = bw.raw();
+            UpstreamService tmp = bw.raw();
             builder.upstream(tmp::getServer);
         });
     }

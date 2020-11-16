@@ -31,7 +31,7 @@ package org.noear.solon.core;
  * @since 1.0
  * */
 @FunctionalInterface
-public interface Upstream {
+public interface UpstreamService {
 
     /**
      * 获取节点
@@ -42,6 +42,6 @@ public interface Upstream {
      * 负载器工厂
      * */
     interface Factory{
-        Upstream create(String service);
+        UpstreamService create(String service);
     }
 }

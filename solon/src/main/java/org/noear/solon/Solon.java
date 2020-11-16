@@ -205,7 +205,7 @@ public class Solon implements Handler, HandlerSlots {
 
         _stopped = true;
 
-        Utils.commonPool.submit(() -> {
+        Utils.pools.submit(() -> {
             if (delay > 0) {
                 Thread.sleep(delay);
             }
