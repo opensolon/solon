@@ -1,5 +1,6 @@
 package org.noear.solon.view.thymeleaf;
 
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
@@ -36,7 +37,7 @@ public class ThymeleafRender implements Render {
     private String _baseUri = "/WEB-INF/view/";
 
     public ThymeleafRender() {
-        String baseUri = Solon.global().props().get("slon.mvc.view.prefix");
+        String baseUri = Solon.cfg().get("slon.mvc.view.prefix");
 
         if (Utils.isEmpty(baseUri) == false) {
             _baseUri = baseUri;

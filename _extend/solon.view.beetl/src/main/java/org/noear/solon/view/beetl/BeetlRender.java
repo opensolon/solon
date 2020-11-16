@@ -5,6 +5,7 @@ import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.resource.ClasspathResourceLoader;
 import org.beetl.core.resource.FileResourceLoader;
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.JarClassLoader;
@@ -47,7 +48,7 @@ public class BeetlRender implements Render {
         }
 
 
-        String baseUri = Solon.global().props().get("slon.mvc.view.prefix");
+        String baseUri = Solon.cfg().get("slon.mvc.view.prefix");
 
         if (Utils.isEmpty(baseUri) == false) {
             _baseUri = baseUri;

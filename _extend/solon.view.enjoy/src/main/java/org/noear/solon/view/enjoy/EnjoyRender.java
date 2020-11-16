@@ -5,6 +5,7 @@ import com.jfinal.template.Engine;
 import com.jfinal.template.Template;
 import com.jfinal.template.source.ClassPathSourceFactory;
 import com.jfinal.template.source.FileSourceFactory;
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Render;
@@ -39,7 +40,7 @@ public class EnjoyRender implements Render {
     //
     public EnjoyRender() {
 
-        String baseUri = Solon.global().props().get("slon.mvc.view.prefix");
+        String baseUri = Solon.cfg().get("slon.mvc.view.prefix");
 
         if (Utils.isEmpty(baseUri) == false) {
             _baseUri = baseUri;
