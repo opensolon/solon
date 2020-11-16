@@ -5,12 +5,12 @@ import org.noear.solon.core.handler.Interceptor;
 import java.lang.annotation.*;
 
 /**
- * 触发器：围绕处理（争对 XController、XService、XDao 等所有基于MethodWrap运行的目标）
+ * 触发器：围绕处理（争对 Controller、Service、Dao 等所有基于MethodWrap运行的目标）
  *
  * <pre><code>
  * @Controller
  * public class DemoController{
- *     @Around(TranInterceptor.class)  //@XTran 注解即通过 @XAround 实现
+ *     @Around(TranInterceptor.class)  //@Tran 注解即通过 @Around 实现
  *     @Mapping("/demo/*")
  *     public String hello(){
  *         return "heollo world;";
@@ -23,14 +23,14 @@ import java.lang.annotation.*;
  * @Around(value = TranInterceptor.class, index = -7)
  * @Target({ElementType.METHOD})
  * @Retention(RetentionPolicy.RUNTIME)
- * public @interface XTran {
+ * public @interface Tran {
  *     ....
  * }
  *
  * @Around(value = CacheInterceptor.class, index = -8)
  * @Target({ElementType.METHOD})
  * @Retention(RetentionPolicy.RUNTIME)
- * public @interface XCache {
+ * public @interface Cache {
  *     ...
  * }
  * </code></pre>

@@ -3,7 +3,7 @@ package org.noear.solon.annotation;
 import java.lang.annotation.*;
 
 /**
- * mvc::Web 组件（控制器，一般与@XMapping 配合使用）
+ * mvc::Web 组件（控制器，一般与@Mapping 配合使用）
  *
  * <pre><code>
  * @Valid        //增加验证支持

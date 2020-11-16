@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 /**
  * 注入
  *
- * 可注入到字段或参数或类型（类型和参数只在XConfiguration有效）
+ * 可注入到字段或参数或类型（类型和参数只在@Configuration有效）
  *
  * 禁止注入在类型上；可避免让非单例bean的注入变复杂，进而避免影有响性能
  *
@@ -20,7 +20,7 @@ import java.lang.annotation.*;
  *     Db1Model db1Config;
  * }
  *
- * //注解在@XConfiguration类上
+ * //注解在@Configuration类上
  * @Inject("${db1}")
  * @Configuration
  * public class Db1Model{
@@ -30,11 +30,11 @@ import java.lang.annotation.*;
  *     public String driverClassName;
  * }
  *
- * //注解在@XConfiguration的Bean构建参数上
+ * //注解在@Configuration的Bean构建参数上
  * @Configuration
  * public class Config{
  *     @Bean
- *     public DataSource db1(@XInject("${db1}") HikariDataSource ds){
+ *     public DataSource db1(@Inject("${db1}") HikariDataSource ds){
  *         return ds;
  *     }
  * }

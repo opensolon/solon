@@ -10,7 +10,7 @@ import java.lang.annotation.*;
  * @Configuration
  * public class Config{
  *     @Bean
- *     public DataSource db1(@XInject("${db1}") HikariDataSource ds){
+ *     public DataSource db1(@Inject("${db1}") HikariDataSource ds){
  *         return ds;
  *     }
  * }

@@ -2,33 +2,34 @@
 
 |  Solon 1.1 | Spring | JSR 330 | |
 | -------- | -------- | -------- | -------- |
-| @XInject *     | @Autowired     | @Inject     | 注入Bean（by type）    |
-| @XInject("name")     | @Qualifier+@Autowired     | @Qualifier+@Inject     | 注入Bean（by name）    |
-| @XInject("${name}")     | @Value("${name}")     | -     | 注入配置    |
-| @XBean *     | @Component     | @Named     | 托管Bean     |
-| @XSingleton     | @Scope(“singleton”)     | @Singleton     | 单例（Solon 默认是单例）     |
-| @XSingleton(false)     | @Scope(“prototype”)     | -     | 非单例     |
+| @Inject *     | @Autowired     | @Inject     | 注入Bean（by type）    |
+| @Inject("name")     | @Qualifier+@Autowired     | @Qualifier+@Inject     | 注入Bean（by name）    |
+| @Inject("${name}")     | @Value("${name}")     | -     | 注入配置    |
+| @Component     | @Component     | @Named     | 托管Bean     |
+| @Bean     | @Bean     | @Named     | 托管Bean     |
+| @Singleton     | @Scope(“singleton”)     | @Singleton     | 单例（Solon 默认是单例）     |
+| @Singleton(false)     | @Scope(“prototype”)     | -     | 非单例     |
 | | | |
-| @XInit *     | @PostConstruct     | -     | 构造完成并注入后的初始化     |
-| @XConfiguration | @Configuration | - | 配置类 |
-| @XController | @Controller,@RestController | - | 控制器类 |
-| @XMapping | @RequestMapping,@GetMapping... | - | 映射 |
+| @Init *     | @PostConstruct     | -     | 构造完成并注入后的初始化     |
+| @Configuration | @Configuration | - | 配置类 |
+| @Controller | @Controller,@RestController | - | 控制器类 |
+| @Mapping | @RequestMapping,@GetMapping... | - | 映射 |
 
 
-* Solon 的 @XInject 算是： Spring 的@Value、@Autowired、@Qualifier 三者的结合，但又不完全等价
-* Solon 托管的 Bean 初始化顺序：new() - > @XInject - > @XInit -> Method@XBean
-* 注1：Method@XBean，只执行一次（只在 @XConfiguration 里有效）
-* 注2：@XInject 的参数注入，只在Method@XBean上有效
-* 注3：@XInject 的类型注入，只在@XConfiguration类上有效
+* Solon 的 @Inject 算是： Spring 的@Value、@Autowired、@Qualifier 三者的结合，但又不完全等价
+* Solon 托管的 Bean 初始化顺序：new() - > @Inject - > @Init -> Method@Bean
+* 注1：Method@Bean，只执行一次（只在 @Configuration 里有效）
+* 注2：@Inject 的参数注入，只在Method@Bean上有效
+* 注3：@Inject 的类型注入，只在@Configuration类上有效
 
 ### 部分用例说明
 
 > Solon 强调有节制的注解使用，尤其对于增加处理链路的操会比较节制。
 
-* @XBean（Bean的托管：基于 name 或者 类型；且只记录第一次的注册）
+* @Component（Bean的托管：基于 name 或者 类型；且只记录第一次的注册）
 
 ```java
-@XBean
+@Component
 public class UserService{
     @Db("db1")    //@Db为第三方扩展的注入注解
     BaseMapper<User> mapper;

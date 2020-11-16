@@ -23,21 +23,21 @@
 //Handler 模式：
 public class App{
     public static void main(String[] args){
-        XApp app = XApp.start(App.class,args);
+        Solon app = Solon.start(App.class,args);
         
         app.get("/",(c)->c.output("Hello world!"));
     }
 }
 
 //Controller 模式：
-@XController
+@Controller
 public class App{
     public static void main(String[] args){
-        XApp.start(App.class,args);
+        Solon.start(App.class,args);
     }
   
-    @XMapping("/")
-    public Object home(XContext c){
+    @Mapping("/")
+    public Object home(Context c){
         return "Hello world!";  
     }
 }
@@ -91,24 +91,24 @@ resources/WEB-INF/view/ 为视图文件根目标（支持多视图共存）
 ```java
 public class App{
     public static void main(String[] args){
-        XApp.start(App.class, args);
+        Solon.start(App.class, args);
     }
 }
 
 /*
  * mvc控制器
  */
-@XController
+@Controller
 public class DemoController{
     //for http
-    @XMapping("/hallo/{u_u}")
+    @Mapping("/hallo/{u_u}")
     public ModelAndView hallo(String u_u){
         return new ModelAndView("hallo");
     }
     
     /*
     //for web socket （需添加：solon.boot.websocket 插件）
-    @XMapping(value="/hallo/{u_u}", method = XMethod.SEND)
+    @Mapping(value="/hallo/{u_u}", method = MethodType.SEND)
     public ModelAndView hallo_ws(String u_u){
         return new ModelAndView("hallo");
     }
@@ -125,9 +125,9 @@ public interface DemoService{
 }
 
 // - server : 实现协议
-@XValid
-@XMapping("/demo/*")
-@XBean(remoting = true)
+@Valid
+@Mapping("/demo/*")
+@Bean(remoting = true)
 public class DemoServiceImp implements DemoService{
     //添加验证注解
     @NotZero("user_id")

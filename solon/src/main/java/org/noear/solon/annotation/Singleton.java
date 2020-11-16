@@ -5,11 +5,11 @@ import java.lang.annotation.*;
 /**
  * 单例
  *
- * 一般附加在XController上；可继承；（所有Bean默认都是单例）
+ * 一般附加在Controller上；可继承；（所有Bean默认都是单例）
  *
  * <pre><code>
- * @XSingleton(false)
- * @XController
+ * @Singleton(false)
+ * @Controller
  * public class DemoController{
  *
  * }

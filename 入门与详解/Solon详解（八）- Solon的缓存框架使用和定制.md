@@ -1,20 +1,20 @@
-`solon.extend.data` 框加在完成 @XTran 注解的支持同时，还提供了 @XCache、@XCacheRemove 注解的支持；可以为业务开发提供良好的便利性
+`solon.extend.data` 框加在完成 @Tran 注解的支持同时，还提供了 @Cache、@CacheRemove 注解的支持；可以为业务开发提供良好的便利性
 
 
-Solon 的缓存注解只支持：XController 、XService 、XDao 类下的方法。且借签了Weed3的简洁设计方案。
+Solon 的缓存注解只支持：Controller 、Service 、Dao 类下的方法。且借签了Weed3的简洁设计方案。
 
 ### （一）示例
 
 从Demo开始，先感受一把
 
 ```java
-@XController
+@Controller
 public class CacheController {
     /**
      * 执行结果缓存10秒，并添加 test_${label} 和 test1 标签
      * */
-    @XCache(tags = "test_${label},test1" , seconds = 10)
-    @XMapping("/cache/")
+    @Cache(tags = "test_${label},test1" , seconds = 10)
+    @Mapping("/cache/")
     public Object test(int label) {
         return new Date();
     }
@@ -22,8 +22,8 @@ public class CacheController {
     /**
      * 执行后，清除 标签为 test  的缓存（不过，目前没有 test 的示签...）
      * */
-    @XCacheRemove(tags = "test")
-    @XMapping("/cache/clear")
+    @CacheRemove(tags = "test")
+    @Mapping("/cache/clear")
     public String clear() {
         return "清除成功(其实无效)-" + new Date();
     }
@@ -31,8 +31,8 @@ public class CacheController {
     /**
      * 执行后，清除 标签为 test_${label}  的缓存
      * */
-    @XCacheRemove(tags = "test_${label}")
-    @XMapping("/cache/clear2")
+    @CacheRemove(tags = "test_${label}")
+    @Mapping("/cache/clear2")
     public String clear2(int label) {
         return "清除成功-" + new Date();
     }
@@ -95,11 +95,11 @@ public class MemCacheService implements CacheService{
 #### 3. 通过配置换掉默认的缓存服务：
 
 ```java
-@XConfiguration
+@Configuration
 public class Config {
     //此缓存，将替代默认的缓存服务
-    @XBean
-    public CacheService cache(@XInject("${cache}") Properties props) {
+    @Bean
+    public CacheService cache(@Inject("${cache}") Properties props) {
         return new MemCacheService(props);
     }
 }
@@ -107,7 +107,7 @@ public class Config {
 
 ### （三）注解说明
 
-**@XCache 注解：**
+**@Cache 注解：**
 
 | 属性 | 说明 | 
 | -------- | -------- | 
@@ -116,7 +116,7 @@ public class Config {
 | tags()     | 缓存标签，多个以逗号隔开（为当前缓存块添加标签，用于清除）     | 
 
 
-**@XCacheRemove 注解：**
+**@CacheRemove 注解：**
 
 | 属性 | 说明 | 
 | -------- | -------- | 
