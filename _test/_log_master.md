@@ -30,8 +30,8 @@
 * 7.取消 XContext.output() 部分显示异常，改由内部RuntimeEx..
 * 8.取消 rpc 的概念，用 remoting 和 solon.reader.mode=serialize 代替。同时改则 @XBean(remoting=true) 来注解
 * 9.XMapping 的 XMethod 改为多选模式（原为单选）
-* a.将XApp.render(obj,ctx) 转移到  XContext.render(obj)（使用更自然）
-* b.模板引擎 添加 XApp.share() 同步支持（可以通过共享对象接口，为所有引擎动态添加变量）
+* a.将Solon.render(obj,ctx) 转移到  XContext.render(obj)（使用更自然）
+* b.模板引擎 添加 Solon.share() 同步支持（可以通过共享对象接口，为所有引擎动态添加变量）
 * c.增加扩展文件夹加载支持（运行时,如要加载额外的配置或jar包，可通过机制此实现）
 * d.强化mvc参数注入能放：
 * d.1.强化模型接收参数，不再需要 XParam 注解

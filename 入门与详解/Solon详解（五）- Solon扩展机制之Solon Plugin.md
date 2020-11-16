@@ -28,25 +28,25 @@ XPlugin的作用：
 ```java
 package org.noear.solon.extend.aspect;
 
-import org.noear.solon.XApp;
+import org.noear.solon.Solon;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.XPlugin;
-import org.noear.solon.extend.aspect.annotation.XDao;
-import org.noear.solon.extend.aspect.annotation.XService;
+import org.noear.solon.core.Plugin;
+import org.noear.solon.extend.aspect.annotation.Dao;
+import org.noear.solon.extend.aspect.annotation.Service;
 
-public class XPluginImp implements XPlugin {
+public class XPluginImp implements Plugin {
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         //向Aop工厂注册Bean生成器；代理XDao注解的处理
         //
-        Aop.factory().beanCreatorAdd(XDao.class, (clz, bw, anno) -> {
+        Aop.factory().beanCreatorAdd(Dao.class, (clz, bw, anno) -> {
             //为BeanWrap设置class代理
             bw.proxySet(BeanProxyImp.global());
         });
 
         //向Aop工厂注册Bean生成器；代理XService注解的处理
         //
-        Aop.factory().beanCreatorAdd(XService.class, (clz, bw, anno) -> {
+        Aop.factory().beanCreatorAdd(Service.class, (clz, bw, anno) -> {
             //为BeanWrap设置class代理
             bw.proxySet(BeanProxyImp.global());
         });
@@ -83,7 +83,7 @@ public class AppService {
 
 ### 三、附：Solon应用启动顺序
 
-1. 实例化 XApp.global()
+1. 实例化 Solon.global()
 2. 加载应用属性配置
 3. 加载扩展文件夹
 4. 扫描插件并排序记录（插件也可叫扩展组件）

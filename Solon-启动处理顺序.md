@@ -1,7 +1,7 @@
 
 ## Solon 启动处理顺序
 
-* 1.实例化 XApp.global() 并加载配置
+* 1.实例化 Solon.global() 并加载配置
 * 2.加载扩展文件夹
 * 3.扫描插件
 * 4.运行builder函数

@@ -487,7 +487,7 @@ public class Solon implements Handler, HandlerSlots {
     }
 
     /**
-     * XApp Handler
+     * Solon Handler
      */
     private Handler _handler = null;
 

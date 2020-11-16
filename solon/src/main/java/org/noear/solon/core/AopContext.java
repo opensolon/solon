@@ -100,7 +100,7 @@ public class AopContext extends BeanContainer {
             //注册到容器
             beanRegister(bw, anno.value(), anno.typed());
 
-            //如果是remoting状态，转到XApp路由器
+            //如果是remoting状态，转到 Solon 路由器
             if (bw.remoting()) {
                 HandlerLoader bww = new HandlerLoader(bw);
                 if (bww.mapping() != null) {

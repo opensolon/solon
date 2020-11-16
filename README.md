@@ -151,9 +151,9 @@ client.setName(1,'');
 * 获取应用配置
 ```java
 //非注入模式
-XApp.cfg().get("app_key"); //=>String
-XApp.cfg().getInt("app_id",0); //=>int
-XApp.cfg().getProp("xxx.datasource"); //=>Properties
+Solon.cfg().get("app_key"); //=>String
+Solon.cfg().getInt("app_id",0); //=>int
+Solon.cfg().getProp("xxx.datasource"); //=>Properties
 
 //注入模式
 @XConfiguration //or @XController, or @XBean
@@ -211,7 +211,7 @@ public class HelloFilter implements Filter {
 @Quartz(cron7x = "0 0/1 * * * ? *")
 public class HelloTask implements Runnable {
     public static void main(String[] args){
-        XApp.start(QuartzRun2.class,args);
+        Solon.start(QuartzRun2.class,args);
     }
     
     @Override
@@ -232,7 +232,7 @@ public class HelloTask implements Runnable {
 *    添加配置：solon.plugin={包名}.XPluginImp
 
 ### 附4：启动顺序参考
-* 1.实例化 XApp.global() 并加载配置
+* 1.实例化 Solon.global() 并加载配置
 * 2.加载扩展文件夹
 * 3.扫描插件
 * 4.运行builder函数

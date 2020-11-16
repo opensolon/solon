@@ -23,7 +23,7 @@ Solon里所有的处理，都属于XHandler。可以用handler 的模式写，�
 ```java
 // handler模式
 //
-XApp.global().before("/hello/", ctx->{
+Solon.global().before("/hello/", ctx->{
     if(ctx.param("name") == null){    
         ctx.setHandled(true);    //如果没有name, 则终止处理
     }
@@ -102,7 +102,7 @@ public class Config{
 //静态类模式
 //
 //public class Config{
-//    pubblic static HikariDataSource dataSource = XApp.cfg().getBean("test.db1", HikariDataSource.class);
+//    pubblic static HikariDataSource dataSource = Solon.cfg().getBean("test.db1", HikariDataSource.class);
 //}
 ```
 
@@ -423,7 +423,7 @@ public class ValidationController {
 #### 5、统一异常处理
 
 ```java
-XApp.start(source, args)
+Solon.start(source, args)
     .onError(err->err.printStackTrace()); //或者记录到日志系统
 ```
 

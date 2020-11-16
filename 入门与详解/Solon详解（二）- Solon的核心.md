@@ -2,9 +2,9 @@
 
 在上篇中我们成功运行了一个简单的web应用；本篇将对它的启动过程、扩展体系和应用属性配置进行介绍。
 
-#### （一）XApp.start(source, args, builder) 内部执行过程（即Solon的启动过程）
+#### （一）Solon.start(source, args, builder) 内部执行过程（即Solon的启动过程）
 
-1. 实例化 XApp.global() 
+1. 实例化 Solon.global() 
 2. 加载应用属性配置
 3. 加载扩展文件夹
 4. 扫描插件并排序记录（插件也可叫扩展组件）
@@ -146,7 +146,7 @@ server.session.state.redis.maxTotaol: 200
 Solon默认没有对接外部日志框架，而是通过事件总线接收应用内所有的异常。
 
 ```java
-XApp.start(...).onEerror(err-> ..)
+Solon.start(...).onEerror(err-> ..)
 ```
 
 ##### i.页面跳转
@@ -178,7 +178,7 @@ message: "${user.name} 你好!" #这个不支持（有需要的时候，自己�
 @XInject("${user.name}")
 
 //代码模式
-XApp.cfg().get("user.name")
+Solon.cfg().get("user.name")
 ```
 
 ##### d.属性转对象
@@ -204,8 +204,8 @@ public class test{
 }
 
 //代码模式
-UserModel user = XApp.cfg().getBean("user", UserModel.class);
-HikariDataSource dataSource =  XApp.cfg().getBean("test.db1", HikariDataSource.class);
+UserModel user = Solon.cfg().getBean("user", UserModel.class);
+HikariDataSource dataSource =  Solon.cfg().getBean("test.db1", HikariDataSource.class);
 ```
 
 

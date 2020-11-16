@@ -5,7 +5,7 @@ package org.noear.solon.core.event;
  *
  * <pre><code>
  * //demo1: 在手动添加Listener
- * XApp.global().onEvent(Throwable.class, (err)->{
+ * Solon.global().onEvent(Throwable.class, (err)->{
  *
  * });
  *
@@ -19,7 +19,7 @@ package org.noear.solon.core.event;
  *
  * //demo3: 自定义事件及监听（事件可以是任何对象）
  * //订阅事件
- * XApp.global().onEvent(ComAdaptor.class,(oc)->{ ... });
+ * Solon.global().onEvent(ComAdaptor.class,(oc)->{ ... });
  *
  * //推送事件
  * XEventBus.push(new ComAdaptor());

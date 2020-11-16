@@ -33,7 +33,7 @@ public class TestApp {
 //        app.ws("/demoe/websocket",(session,message)->{
 //            System.out.println(session.resourceDescriptor());
 //
-//            if(XApp.cfg().isDebugMode()){
+//            if(Solon.cfg().isDebugMode()){
 //                return;
 //            }
 //

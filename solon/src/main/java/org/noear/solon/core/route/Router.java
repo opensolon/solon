@@ -15,7 +15,7 @@ import java.util.*;
  * <pre><code>
  * public class DemoApp{
  *     public static void main(String[] args){
- *         XApp.start(DemoApp.class, args,app->{
+ *         Solon.start(DemoApp.class, args,app->{
  *             //
  *             //路由手写模式
  *             //

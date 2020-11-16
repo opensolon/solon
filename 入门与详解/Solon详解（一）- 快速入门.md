@@ -89,7 +89,7 @@ public class UserService {
 public class Test {
     public static void main(String[] args) {
         //启动容器服务
-        XApp.start(Test.class, args);
+        Solon.start(Test.class, args);
         
         //或通过Aop对象获取托管的Bean（或者注解方式）
         //
@@ -138,7 +138,7 @@ public class Test {
 @XController    //这标明是一个solon的控制器
 public class HelloApp {
     public static void main(String[] args) {    //这是程序入口
-        XApp.start(HelloApp.class, args);
+        Solon.start(HelloApp.class, args);
     }
 
     @XMapping("/hello")
@@ -148,7 +148,7 @@ public class HelloApp {
 }
 ```
 
-> Solon 程序的重点是要：在main函数的入口处，通过XApp.start(...) 启动Solon的容器服务，进而启动它的所有机能。
+> Solon 程序的重点是要：在main函数的入口处，通过 Solon.start(...) 启动Solon的容器服务，进而启动它的所有机能。
 
 运行HelloApp中的main()方法，启动该web应用后，在地址栏输入"http://localhost:8080/hello"，就可以看到输出结果了。
 

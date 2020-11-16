@@ -23,7 +23,7 @@ public class XPluginImp implements Plugin {
                 //注册到容器
                 Aop.context().beanRegister(bw, anno.value(), false);
 
-                //如果是remoting状态，转到XApp路由器
+                //如果是remoting状态，转到 Solon 路由器
                 if (bw.remoting()) {
                     HandlerLoader bww = new HandlerLoader(bw);
                     if (bww.mapping() != null) {
