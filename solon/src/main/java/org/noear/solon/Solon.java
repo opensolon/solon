@@ -230,6 +230,13 @@ public class Solon implements Handler, HandlerSlots {
     private Map<String,Object> _shared_unmod;
 
     /**
+     * 获取类加载器
+     * */
+    public ClassLoader classLoader(){
+        return JarClassLoader.global();
+    }
+
+    /**
      * 根据源加载bean
      * */
     public void beanScan(Class<?> source){
