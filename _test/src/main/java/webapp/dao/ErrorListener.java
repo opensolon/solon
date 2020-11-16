@@ -1,10 +1,10 @@
 package webapp.dao;
 
-import org.noear.solon.annotation.XConfiguration;
-import org.noear.solon.core.XEventListener;
+import org.noear.solon.annotation.Configuration;
+import org.noear.solon.core.event.EventListener;
 
-@XConfiguration
-public class ErrorListener implements XEventListener<Throwable> {
+@Configuration
+public class ErrorListener implements EventListener<Throwable> {
     @Override
     public void onEvent(Throwable err) {
         err.printStackTrace();

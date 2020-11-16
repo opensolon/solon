@@ -1,7 +1,7 @@
 package org.noear.solon.extend.quartz;
 
 
-import org.noear.solon.XUtil;
+import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
@@ -44,7 +44,7 @@ public final class JobManager {
     }
 
     public static JobEntity getJob(String jobID) {
-        if (XUtil.isEmpty(jobID)) {
+        if (Utils.isEmpty(jobID)) {
             return null;
         } else {
             return jobMap.get(jobID);

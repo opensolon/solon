@@ -1,9 +1,9 @@
 package webapp.utils;
 
 
-import org.noear.solon.XUtil;
+import org.noear.solon.Utils;
 import org.noear.solon.extend.xsocket.XMessageUtils;
-import org.noear.solon.core.XMessage;
+import org.noear.solon.core.message.Message;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,16 +62,16 @@ public class SocketUtils {
         return new SocketUtils(uri1.getHost(), uri1.getPort());
     }
 
-    public static XMessage send(String uri, String message) throws Throwable {
+    public static Message send(String uri, String message) throws Throwable {
         return send(uri, message.getBytes("UTF-8"));
     }
 
-    public static XMessage send(String uri, byte[] message) throws Throwable {
+    public static Message send(String uri, byte[] message) throws Throwable {
         if(message == null){
             return null;
         }
 
-        SocketMessageWrap msgD = new SocketMessageWrap(XMessage.wrap(uri, message));
+        SocketMessageWrap msgD = new SocketMessageWrap(Message.wrap(uri, message));
 
         get(uri).sendDo(msgD, (m) -> {
             msgD.complete(null);
@@ -86,19 +86,19 @@ public class SocketUtils {
         }
     }
 
-    public static void send(String uri, String message, BiConsumer<XMessage,Throwable> callback) throws Throwable {
+    public static void send(String uri, String message, BiConsumer<Message,Throwable> callback) throws Throwable {
         send(uri,message.getBytes("UTF-8"),callback);
     }
 
-    public static void send(String uri, byte[] message, BiConsumer<XMessage,Throwable> callback) throws Throwable {
+    public static void send(String uri, byte[] message, BiConsumer<Message,Throwable> callback) throws Throwable {
         if(message == null){
             return;
         }
 
-        SocketMessageWrap msgD = new SocketMessageWrap(XMessage.wrap(uri, message));
+        SocketMessageWrap msgD = new SocketMessageWrap(Message.wrap(uri, message));
         msgD.handler = callback;
 
-        XUtil.commonPool.submit(()->{
+        Utils.commonPool.submit(()->{
             get(uri).sendDo(msgD, (m) -> {
                 msgD.handler.accept(msgD.res, msgD.err);
             });
@@ -151,7 +151,7 @@ public class SocketUtils {
 
 
     private static int MESSAGE_MAX_SIZE = 1024 * 20;
-    private XMessage decode(InputStream input) throws IOException {
+    private Message decode(InputStream input) throws IOException {
         if(input == null){
             return null;
         }
@@ -204,17 +204,17 @@ public class SocketUtils {
     }
 
     public static class SocketMessageWrap extends CompletableFuture<Integer> {
-        public XMessage req;
-        public XMessage res;
+        public Message req;
+        public Message res;
         public Throwable err;
 
-        public BiConsumer<XMessage,Throwable> handler;
+        public BiConsumer<Message,Throwable> handler;
 
         public String getKey(){
             return req.key();
         }
 
-        public SocketMessageWrap(XMessage req){
+        public SocketMessageWrap(Message req){
             this.req = req;
         }
     }

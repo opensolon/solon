@@ -1,8 +1,8 @@
 package webapp.dso.service;
 
-import org.noear.solon.annotation.XBean;
+import org.noear.solon.annotation.Bean;
 
-@XBean
+@Bean
 public class ServiceTest2Imp implements ServiceTest2{
     public String test(){
         return "ddd";

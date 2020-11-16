@@ -4,8 +4,8 @@ import net.hasor.core.AppContext;
 import net.hasor.utils.ExceptionUtils;
 import net.hasor.web.startup.RuntimeFilter;
 import net.hasor.web.startup.RuntimeListener;
-import org.noear.solon.XApp;
-import org.noear.solon.annotation.XConfiguration;
+import org.noear.solon.Solon;
+import org.noear.solon.annotation.Configuration;
 import org.noear.solon.core.Aop;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,14 +21,14 @@ import java.util.Set;
  * @author noear
  * @since 2020.10.10
  * */
-@XConfiguration
+@Configuration
 public class HasorWebConfiguration implements ServletContainerInitializer {
     private static final Logger logger = LoggerFactory.getLogger(HasorWebConfiguration.class);
     private String filterPath = "/*";
     private int filterOrder = 0;
 
     public HasorWebConfiguration() {
-        this(XApp.global().source().getAnnotation(EnableHasorWeb.class));
+        this(Solon.global().source().getAnnotation(EnableHasorWeb.class));
     }
 
     /**

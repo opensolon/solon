@@ -1,13 +1,13 @@
 package org.noear.solon.extend.data.around;
 
 import org.noear.solon.annotation.XCache;
-import org.noear.solon.core.XInterceptorChain;
-import org.noear.solon.core.XInterceptor;
+import org.noear.solon.core.InterceptorChain;
+import org.noear.solon.core.Interceptor;
 import org.noear.solon.extend.data.CacheExecutorImp;
 
-public class CacheInterceptor implements XInterceptor {
+public class CacheInterceptor implements Interceptor {
     @Override
-    public Object doIntercept(Object obj, Object[] args, XInterceptorChain chain) throws Throwable {
+    public Object doIntercept(Object obj, Object[] args, InterceptorChain chain) throws Throwable {
         XCache anno = chain.method().getAnnotation(XCache.class);
 
         return CacheExecutorImp.global

@@ -1,7 +1,7 @@
 package org.noear.solon.boot.undertow.http;
 
 import io.undertow.servlet.api.ServletContainerInitializerInfo;
-import org.noear.solon.XUtil;
+import org.noear.solon.Utils;
 import org.noear.solon.boot.undertow.holder.FilterHodler;
 import org.noear.solon.boot.undertow.holder.ServletHolder;
 import org.noear.solon.core.Aop;
@@ -66,7 +66,7 @@ public class UtContainerInitializerProxy implements ServletContainerInitializer 
 
 
             String name = f.anno.filterName();
-            if (XUtil.isEmpty(name)) {
+            if (Utils.isEmpty(name)) {
                 name = f.filter.getClass().getSimpleName();
             }
 
@@ -96,7 +96,7 @@ public class UtContainerInitializerProxy implements ServletContainerInitializer 
             }
 
             String name = s.anno.name();
-            if (XUtil.isEmpty(name)) {
+            if (Utils.isEmpty(name)) {
                 name = s.servlet.getClass().getSimpleName();
             }
 

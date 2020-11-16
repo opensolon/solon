@@ -1,6 +1,6 @@
 package org.noear.solon.test;
 
-import org.noear.solon.XApp;
+import org.noear.solon.Solon;
 
 public class HttpTestBase {
     public boolean enablePrint(){
@@ -8,7 +8,7 @@ public class HttpTestBase {
     }
 
     public HttpUtils path(String path) {
-        return http("http://localhost:" + XApp.global().port() + path);
+        return http("http://localhost:" + Solon.global().port() + path);
     }
 
     public HttpUtils http(String url) {

@@ -1,6 +1,6 @@
 package org.noear.solon.extend.validation.annotation;
 
-import org.noear.solon.core.XContext;
+import org.noear.solon.core.handler.Context;
 
 /**
  * 白名单检测
@@ -28,7 +28,7 @@ public class WhitelistCheckerImp implements WhitelistChecker{
 
 
     @Override
-    public boolean check(Whitelist anno, XContext ctx) {
+    public boolean check(Whitelist anno, Context ctx) {
         return false;
     }
 }

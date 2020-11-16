@@ -1,6 +1,6 @@
 package org.noear.solon.extend.data;
 
-import org.noear.solon.core.CacheService;
+import org.noear.solon.core.cache.CacheService;
 
 /**
  * 二级缓存

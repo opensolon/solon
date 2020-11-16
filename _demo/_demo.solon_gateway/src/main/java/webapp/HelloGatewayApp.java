@@ -1,9 +1,9 @@
 package webapp;
 
-import org.noear.solon.XApp;
+import org.noear.solon.Solon;
 
 public class HelloGatewayApp {
     public static void main(String[] args) {
-        XApp.start(HelloGatewayApp.class, args);
+        Solon.start(HelloGatewayApp.class, args);
     }
 }

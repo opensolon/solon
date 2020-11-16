@@ -4,14 +4,14 @@ import org.apache.avro.io.BinaryEncoder;
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.specific.SpecificDatumWriter;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XRender;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Render;
 
 import java.io.ByteArrayOutputStream;
 
-public class AvroRender implements XRender {
+public class AvroRender implements Render {
     @Override
-    public void render(Object obj, XContext ctx) throws Throwable {
+    public void render(Object obj, Context ctx) throws Throwable {
 
 
         //非序列化处理

@@ -1,6 +1,8 @@
 package org.noear.solon.boot.smarthttp.websocket;
 
-import org.noear.solon.core.*;
+import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.message.Message;
+import org.noear.solon.core.message.MessageSession;
 import org.noear.solon.extend.xsocket.XListenerProxy;
 import org.smartboot.http.WebSocketRequest;
 import org.smartboot.http.WebSocketResponse;
@@ -26,26 +28,26 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
     @Override
     public void handleTextMessage(WebSocketRequest request, WebSocketResponse response, String data) {
         try {
-            XSession session = _SocketSession.get(request, response);
-            XMessage message = XMessage.wrap(request.getRequestURI(),
+            MessageSession session = _SocketSession.get(request, response);
+            Message message = Message.wrap(request.getRequestURI(),
                     data.getBytes("UTF-8"));
 
             XListenerProxy.getGlobal().onMessage(session, message, true);
         } catch (Throwable ex) {
-            XEventBus.push(ex);
+            EventBus.push(ex);
         }
     }
 
     @Override
     public void handleBinaryMessage(WebSocketRequest request, WebSocketResponse response, byte[] data) {
         try {
-            XSession session = _SocketSession.get(request, response);
-            XMessage message = XMessage.wrap(request.getRequestURI(), data);
+            MessageSession session = _SocketSession.get(request, response);
+            Message message = Message.wrap(request.getRequestURI(), data);
 
             XListenerProxy.getGlobal().onMessage(session, message, false);
 
         } catch (Throwable ex) {
-            XEventBus.push(ex);
+            EventBus.push(ex);
         }
     }
 

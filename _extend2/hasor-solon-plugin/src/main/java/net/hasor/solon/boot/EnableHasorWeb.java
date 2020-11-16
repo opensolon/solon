@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package net.hasor.solon.boot;
-import org.noear.solon.annotation.XImport;
+import org.noear.solon.annotation.Import;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@XImport(value = { HasorWebConfiguration.class })
+@Import(value = { HasorWebConfiguration.class })
 public @interface EnableHasorWeb {
     /**
      * Hasor 全局拦截器工作的目录

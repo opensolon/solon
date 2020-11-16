@@ -18,8 +18,8 @@ import net.hasor.core.AppContext;
 import net.hasor.core.Hasor;
 import net.hasor.core.Module;
 import net.hasor.utils.StringUtils;
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -55,7 +55,7 @@ public class BuildConfig {
         this.customProperties = new HashMap<>();
         this.loadModules = new LinkedHashSet<>();
 
-        this.envProperties = XApp.cfg();
+        this.envProperties = Solon.cfg();
     }
 
     public void addModules(Module module) {
@@ -76,7 +76,7 @@ public class BuildConfig {
         String config = this.mainConfig;
         if (!StringUtils.isBlank(config)) {
             //config = SystemPropertyUtils.resolvePlaceholders(config);
-            URL resource = XUtil.getResource(config); //StringUtils.isNotBlank(config) ? applicationContext.getResource(config) : null;
+            URL resource = Utils.getResource(config); //StringUtils.isNotBlank(config) ? applicationContext.getResource(config) : null;
             if (resource != null) {
                 hasorBuild.mainSettingWith(resource);
             }

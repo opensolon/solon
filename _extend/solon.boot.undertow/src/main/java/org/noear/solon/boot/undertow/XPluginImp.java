@@ -1,24 +1,24 @@
 package org.noear.solon.boot.undertow;
 
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.core.Plugin;
 
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
-public final class XPluginImp implements XPlugin {
-    private XPlugin _server = null;
+public final class XPluginImp implements Plugin {
+    private Plugin _server = null;
 
 
     public static String solon_boot_ver(){
-        return "undertow 2.1/" + XApp.cfg().version();
+        return "undertow 2.1/" + Solon.cfg().version();
     }
 
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         if (app.enableHttp() == false) {
             return;
         }
@@ -34,11 +34,11 @@ public final class XPluginImp implements XPlugin {
         });
     }
 
-    private void start0(XApp app){
+    private void start0(Solon app){
         long time_start = System.currentTimeMillis();
         System.out.println("solon.Server:main: Undertow 2.1.09(undertow)");
 
-        Class<?> jspClz = XUtil.loadClass("io.undertow.jsp.JspServletBuilder");
+        Class<?> jspClz = Utils.loadClass("io.undertow.jsp.JspServletBuilder");
 
         if (jspClz == null) {
             _server = new XPluginUndertow();

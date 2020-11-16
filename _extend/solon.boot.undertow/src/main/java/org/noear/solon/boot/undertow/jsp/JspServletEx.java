@@ -2,7 +2,7 @@ package org.noear.solon.boot.undertow.jsp;
 
 import io.undertow.servlet.api.ServletInfo;
 import org.apache.jasper.servlet.JspServlet;
-import org.noear.solon.core.XContext;
+import org.noear.solon.core.handler.Context;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -21,7 +21,7 @@ public class JspServletEx extends JspServlet {
 
     @Override
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
-        if(XContext.current() == null){
+        if(Context.current() == null){
             return;
         }
 

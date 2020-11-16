@@ -1,11 +1,10 @@
 package org.noear.solon.core;
 
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.util.PrintUtil;
 
 import java.io.File;
-import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 /**
@@ -43,13 +42,13 @@ public class ExtendLoader {
      * @param autoMake 是否自动生成
      */
     public static void load(String extend, boolean autoMake, Predicate<String> filter) {
-        if (XUtil.isNotEmpty(extend)) {
+        if (Utils.isNotEmpty(extend)) {
             if (extend.startsWith("!")) {
                 extend = extend.substring(1);
                 autoMake = true;
             }
 
-            extend = XUtil.buildExt(extend, autoMake);
+            extend = Utils.buildExt(extend, autoMake);
 
             if (extend != null) {
                 //缓存扩展目径
@@ -70,7 +69,7 @@ public class ExtendLoader {
      */
     public static boolean loadJar(File file) {
         try {
-            XClassLoader.global().loadJar(file.toURI().toURL());
+            SolonClassLoader.global().loadJar(file.toURI().toURL());
             return true;
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -83,7 +82,7 @@ public class ExtendLoader {
      */
     public static boolean unloadJar(File file) {
         try {
-            XClassLoader.global().unloadJar(file.toURI().toURL());
+            SolonClassLoader.global().unloadJar(file.toURI().toURL());
             return true;
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -143,18 +142,18 @@ public class ExtendLoader {
 
                 //如果map不为null；尝试加载配置
                 if (path.endsWith(".properties")) {
-                    XApp.cfg().loadAdd(file.toURI().toURL());
+                    Solon.cfg().loadAdd(file.toURI().toURL());
 
                     PrintUtil.blueln("loaded: " + path);
                     return;
                 }
 
                 if (path.endsWith(".yml")) {
-                    if (XPropertiesLoader.global().isSupport(path) == false) {
+                    if (PropertiesLoader.global().isSupport(path) == false) {
                         throw new RuntimeException("Do not support the *.yml");
                     }
 
-                    XApp.cfg().loadAdd(file.toURI().toURL());
+                    Solon.cfg().loadAdd(file.toURI().toURL());
 
                     PrintUtil.blueln("loaded: " + path);
                     return;

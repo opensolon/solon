@@ -1,8 +1,8 @@
 package server;
 
-import org.noear.solon.XApp;
+import org.noear.solon.Solon;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.XMethod;
+import org.noear.solon.core.handler.MethodType;
 import server.controller.ComplexModelService;
 import server.dso.IComplexModelService;
 import server.wrap.HessianHandler;
@@ -10,18 +10,18 @@ import server.dso.IGreetingService;
 
 public class TmpApp {
     public static void main(String[] args) {
-        XApp.start(TmpApp.class, args);
+        Solon.start(TmpApp.class, args);
 
-        XApp.global().before("**",XMethod.SOCKET,(ctx)->{
+        Solon.global().before("**", MethodType.SOCKET,(ctx)->{
             ctx.headerMap().put("Content-Type", "application/protobuf");
             ctx.headerMap().put("X-Serialization","@protobuf");
         });
 
-        XApp.global().add("/web/hessian", XMethod.HTTP,
+        Solon.global().add("/web/hessian", MethodType.HTTP,
                 new HessianHandler(IGreetingService.class, Aop.get(IGreetingService.class)));
 
 
-        XApp.global().add("/web/hessian_complex", XMethod.HTTP,
+        Solon.global().add("/web/hessian_complex", MethodType.HTTP,
                 new HessianHandler(IComplexModelService.class, Aop.get(ComplexModelService.class)));
 
         //HessianServlet

@@ -1,6 +1,6 @@
 package org.noear.solon.extend.validation.annotation;
 
-import org.noear.solon.annotation.XNote;
+import org.noear.solon.annotation.Note;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Whitelist {
-    @XNote("whitelist tag")
+    @Note("whitelist tag")
     String value() default "";
 
     String message() default "";

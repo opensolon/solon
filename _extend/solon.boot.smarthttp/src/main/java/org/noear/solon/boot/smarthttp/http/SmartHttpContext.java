@@ -1,9 +1,9 @@
 package org.noear.solon.boot.smarthttp.http;
 
-import org.noear.solon.core.XMap;
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XFile;
+import org.noear.solon.core.ParamMap;
+import org.noear.solon.Utils;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.UploadedFile;
 import org.smartboot.http.HttpRequest;
 import org.smartboot.http.HttpResponse;
 import org.smartboot.http.enums.HttpStatus;
@@ -15,10 +15,10 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.util.*;
 
-public class SmartHttpContext extends XContext {
+public class SmartHttpContext extends Context {
     private HttpRequest _request;
     private HttpResponse _response;
-    protected Map<String, List<XFile>> _fileMap;
+    protected Map<String, List<UploadedFile>> _fileMap;
 
     public SmartHttpContext(HttpRequest request, HttpResponse response) {
         _request = request;
@@ -128,7 +128,7 @@ public class SmartHttpContext extends XContext {
         try {
             String temp = paramMap().get(key);
 
-            if (XUtil.isEmpty(temp)) {
+            if (Utils.isEmpty(temp)) {
                 return def;
             } else {
                 return temp;
@@ -140,12 +140,12 @@ public class SmartHttpContext extends XContext {
         }
     }
 
-    private XMap _paramMap;
+    private ParamMap _paramMap;
 
     @Override
-    public XMap paramMap() {
+    public ParamMap paramMap() {
         if (_paramMap == null) {
-            _paramMap = new XMap();
+            _paramMap = new ParamMap();
 
             try {
                 for (Map.Entry<String, String[]> entry : _request.getParameters().entrySet()) {
@@ -176,9 +176,9 @@ public class SmartHttpContext extends XContext {
 
 
     @Override
-    public List<XFile> files(String key) throws Exception {
+    public List<UploadedFile> files(String key) throws Exception {
         if (isMultipartFormData()) {
-            List<XFile> temp = _fileMap.get(key);
+            List<UploadedFile> temp = _fileMap.get(key);
             if (temp == null) {
                 return new ArrayList<>();
             } else {
@@ -190,9 +190,9 @@ public class SmartHttpContext extends XContext {
     }
 
     @Override
-    public XMap cookieMap() {
+    public ParamMap cookieMap() {
         if (_cookieMap == null) {
-            _cookieMap = new XMap();
+            _cookieMap = new ParamMap();
 
             String _cookieMapStr = header("Cookie");
             if (_cookieMapStr != null) {
@@ -211,13 +211,13 @@ public class SmartHttpContext extends XContext {
         return _cookieMap;
     }
 
-    private XMap _cookieMap;
+    private ParamMap _cookieMap;
 
 
     @Override
-    public XMap headerMap() {
+    public ParamMap headerMap() {
         if (_headerMap == null) {
-            _headerMap = new XMap();
+            _headerMap = new ParamMap();
 
             for (String k : _request.getHeaderNames()) {
                 _headerMap.put(k, _request.getHeader(k));
@@ -227,7 +227,7 @@ public class SmartHttpContext extends XContext {
         return _headerMap;
     }
 
-    private XMap _headerMap;
+    private ParamMap _headerMap;
 
     //=================================
 
@@ -300,7 +300,7 @@ public class SmartHttpContext extends XContext {
         StringBuilder sb = new StringBuilder();
         sb.append(key).append("=").append(val).append(";");
 
-        if (XUtil.isNotEmpty(path)) {
+        if (Utils.isNotEmpty(path)) {
             sb.append("path=").append(path).append(";");
         }
 
@@ -308,7 +308,7 @@ public class SmartHttpContext extends XContext {
             sb.append("max-age=").append(maxAge).append(";");
         }
 
-        if (XUtil.isNotEmpty(domain)) {
+        if (Utils.isNotEmpty(domain)) {
             sb.append("domain=").append(domain.toLowerCase()).append(";");
         }
 

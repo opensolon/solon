@@ -1,32 +1,32 @@
 package org.noear.solon.boot.jlhttp;
 
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.XMethod;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.Plugin;
 
 import javax.net.ssl.SSLServerSocketFactory;
 
-public final class XPluginImp implements XPlugin {
+public final class XPluginImp implements Plugin {
     private HTTPServer _server = null;
 
     public static String solon_boot_ver(){
-        return "jlhttp 2.4/" + XApp.cfg().version();
+        return "jlhttp 2.4/" + Solon.cfg().version();
     }
 
     @Override
-    public  void start(XApp app) {
+    public  void start(Solon app) {
         if(app.enableHttp() == false){
             return;
         }
         //如果有jetty插件，就不启动了
-        if(XUtil.loadClass("org.noear.solon.boot.jetty.XPluginImp") != null){
+        if(Utils.loadClass("org.noear.solon.boot.jetty.XPluginImp") != null){
             return;
         }
 
         //如果有undrtow插件，就不启动了
-        if(XUtil.loadClass("org.noear.solon.boot.undertow.XPluginImp") != null){
+        if(Utils.loadClass("org.noear.solon.boot.undertow.XPluginImp") != null){
             return;
         }
 
@@ -37,7 +37,7 @@ public final class XPluginImp implements XPlugin {
         });
     }
 
-    private void start0(XApp app){
+    private void start0(Solon app){
         _server = new HTTPServer();
 
         long time_start = System.currentTimeMillis();
@@ -53,12 +53,12 @@ public final class XPluginImp implements XPlugin {
         host.setDirectoryIndex(null);
 
         host.addContext("/", _handler,
-                XMethod.HEAD.name,
-                XMethod.GET.name,
-                XMethod.POST.name,
-                XMethod.PUT.name,
-                XMethod.DELETE.name,
-                XMethod.PATCH.name);
+                MethodType.HEAD.name,
+                MethodType.GET.name,
+                MethodType.POST.name,
+                MethodType.PUT.name,
+                MethodType.DELETE.name,
+                MethodType.PATCH.name);
 
         System.out.println("solon.Server:main: JlHttpServer 2.4(jlhttp)");
 

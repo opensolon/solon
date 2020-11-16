@@ -1,7 +1,7 @@
 package org.noear.solon.extend.validation;
 
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XResult;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Result;
 
 import java.lang.annotation.Annotation;
 
@@ -16,5 +16,5 @@ public interface Validator<T extends Annotation> {
         return "";
     }
 
-    XResult validate(XContext ctx, T anno, String name, StringBuilder tmp);
+    Result validate(Context ctx, T anno, String name, StringBuilder tmp);
 }

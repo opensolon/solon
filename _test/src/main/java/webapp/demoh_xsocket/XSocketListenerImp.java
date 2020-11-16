@@ -1,23 +1,23 @@
 package webapp.demoh_xsocket;
 
-import org.noear.solon.XApp;
-import org.noear.solon.core.XMethod;
-import org.noear.solon.core.XListener;
-import org.noear.solon.core.XMessage;
-import org.noear.solon.core.XSession;
-import org.noear.solon.annotation.XServerEndpoint;
+import org.noear.solon.Solon;
+import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.message.MessageListener;
+import org.noear.solon.core.message.Message;
+import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.annotation.ServerEndpoint;
 
-@XServerEndpoint(value = "/demoe/websocket")
-public class XSocketListenerImp implements XListener {
+@ServerEndpoint(value = "/demoe/websocket")
+public class XSocketListenerImp implements MessageListener {
     @Override
-    public void onMessage(XSession session, XMessage message, boolean messageIsString) {
+    public void onMessage(MessageSession session, Message message, boolean messageIsString) {
         System.out.println(session.path());
 
-        if(XApp.cfg().isDebugMode()){
+        if(Solon.cfg().isDebugMode()){
             return;
         }
 
-        if (session.method() == XMethod.WEBSOCKET) {
+        if (session.method() == MethodType.WEBSOCKET) {
             message.setHandled(true);
 
             session.getOpenSessions().forEach(s -> {

@@ -1,7 +1,7 @@
 package org.noear.solon.boot.jlhttp;
 
 
-import org.noear.solon.core.XFile;
+import org.noear.solon.core.handler.UploadedFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -27,12 +27,12 @@ class MultipartUtil {
     }
 
     private static void doBuildFiles(JlHttpContext context, HTTPServer.MultipartIterator.Part part) throws IOException{
-        List<XFile> list = context._fileMap.get(part.getName());
+        List<UploadedFile> list = context._fileMap.get(part.getName());
         if(list == null){
             list = new ArrayList<>();
             context._fileMap.put(part.getName(), list);
 
-            XFile f = new XFile();
+            UploadedFile f = new UploadedFile();
             f.contentType = part.getHeaders().get("Content-Type");
             f.content = read(part.getBody());
             f.name = part.getFilename();

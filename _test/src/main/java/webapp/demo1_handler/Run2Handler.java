@@ -1,15 +1,15 @@
 package webapp.demo1_handler;
 
-import org.noear.solon.XGateway;
-import org.noear.solon.annotation.XMapping;
-import org.noear.solon.annotation.XController;
+import org.noear.solon.core.handler.Gateway;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Controller;
 
 /**
  * 简单的http处理(带简单的内部导航 + 前后置处理)
  * */
-@XMapping("/demo1/run2/*")
-@XController
-public class Run2Handler extends XGateway {
+@Mapping("/demo1/run2/*")
+@Controller
+public class Run2Handler extends Gateway {
     @Override
     protected void register() {
         before(c->{if(false){}});

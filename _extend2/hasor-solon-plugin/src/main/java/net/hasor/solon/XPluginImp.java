@@ -3,9 +3,9 @@ package net.hasor.solon;
 import net.hasor.core.DimModule;
 import net.hasor.core.Module;
 import net.hasor.solon.boot.BuildConfig;
-import org.noear.solon.XApp;
+import org.noear.solon.Solon;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.core.Plugin;
 
 /**
  * Solon 插件（获取 start 入口）
@@ -13,9 +13,9 @@ import org.noear.solon.core.XPlugin;
  * @author noear
  * @since 2020.10.10
  * */
-public class XPluginImp implements XPlugin {
+public class XPluginImp implements Plugin {
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         //
         //注册bean构建器
         //

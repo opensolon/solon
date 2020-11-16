@@ -2,9 +2,12 @@ package org.noear.solon.view.freemarker;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.*;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.ModelAndView;
+import org.noear.solon.core.handler.Render;
 import org.noear.solon.ext.SupplierEx;
 
 import java.io.ByteArrayOutputStream;
@@ -13,7 +16,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URI;
 
-public class FreemarkerRender implements XRender {
+public class FreemarkerRender implements Render {
     private static FreemarkerRender _global;
 
     public static FreemarkerRender global() {
@@ -32,14 +35,14 @@ public class FreemarkerRender implements XRender {
     //不要要入参，方便后面多视图混用
     //
     public FreemarkerRender() {
-        String baseUri = XApp.global().prop().get("slon.mvc.view.prefix");
+        String baseUri = Solon.global().prop().get("slon.mvc.view.prefix");
 
-        if (XUtil.isEmpty(baseUri) == false) {
+        if (Utils.isEmpty(baseUri) == false) {
             _baseUri = baseUri;
         }
 
 
-        if (XApp.cfg().isDebugMode()) {
+        if (Solon.cfg().isDebugMode()) {
             forDebug();
         } else {
             forRelease();
@@ -48,14 +51,14 @@ public class FreemarkerRender implements XRender {
         cfg.setNumberFormat("#");
         cfg.setDefaultEncoding("utf-8");
 
-        XApp.global().onSharedAdd((k, v) -> {
+        Solon.global().onSharedAdd((k, v) -> {
             setSharedVariable(k, v);
         });
     }
 
     //尝试 调试模式 进行实始化
     private void forDebug() {
-        String dirroot = XUtil.getResource("/").toString().replace("target/classes/", "");
+        String dirroot = Utils.getResource("/").toString().replace("target/classes/", "");
         File dir = null;
 
         if (dirroot.startsWith("file:")) {
@@ -83,7 +86,7 @@ public class FreemarkerRender implements XRender {
     //使用 发布模式 进行实始化
     private void forRelease() {
         try {
-            cfg.setClassLoaderForTemplateLoading(XClassLoader.global(), _baseUri);
+            cfg.setClassLoaderForTemplateLoading(SolonClassLoader.global(), _baseUri);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -100,7 +103,7 @@ public class FreemarkerRender implements XRender {
     }
 
     @Override
-    public void render(Object obj, XContext ctx) throws Throwable {
+    public void render(Object obj, Context ctx) throws Throwable {
         if (obj == null) {
             return;
         }
@@ -113,7 +116,7 @@ public class FreemarkerRender implements XRender {
     }
 
     @Override
-    public String renderAndReturn(Object obj, XContext ctx) throws Throwable {
+    public String renderAndReturn(Object obj, Context ctx) throws Throwable {
         if (obj == null) {
             return null;
         }
@@ -128,7 +131,7 @@ public class FreemarkerRender implements XRender {
         }
     }
 
-    public void render_mav(ModelAndView mv, XContext ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
+    public void render_mav(ModelAndView mv, Context ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
         if (ctx.contentTypeNew() == null) {
             ctx.contentType("text/html;charset=utf-8");
         }

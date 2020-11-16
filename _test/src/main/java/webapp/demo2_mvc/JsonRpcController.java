@@ -1,19 +1,19 @@
 package webapp.demo2_mvc;
 
-import org.noear.solon.annotation.XBean;
-import org.noear.solon.annotation.XMapping;
-import org.noear.solon.core.XContext;
+import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.core.handler.Context;
 
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@XMapping("/demo2/rpc/")
-@XBean(remoting = true)
+@Mapping("/demo2/rpc/")
+@Bean(remoting = true)
 public class JsonRpcController {
 
-    public Object json(XContext ctx){
+    public Object json(Context ctx){
 //        ctx.headerMap().put("serialization","@avro");
 
         Map<String,Object> model = new HashMap<>();

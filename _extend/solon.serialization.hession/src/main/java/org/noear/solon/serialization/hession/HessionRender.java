@@ -1,23 +1,20 @@
 package org.noear.solon.serialization.hession;
 
 import com.caucho.hessian.io.Hessian2Output;
-import org.noear.solon.core.ModelAndView;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XRender;
+import org.noear.solon.core.handler.ModelAndView;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Render;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 //不要要入参，方便后面多视图混用
 //
-public class HessionRender implements XRender {
+public class HessionRender implements Render {
 
     @Override
-    public void render(Object obj, XContext ctx) throws Throwable {
+    public void render(Object obj, Context ctx) throws Throwable {
         if (XPluginImp.output_meta) {
             ctx.headerSet("solon.serialization", "HessionRender");
         }

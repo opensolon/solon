@@ -5,22 +5,20 @@ import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.resource.ClasspathResourceLoader;
 import org.beetl.core.resource.FileResourceLoader;
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XClassLoader;
-import org.noear.solon.core.XRender;
-import org.noear.solon.core.ModelAndView;
-import org.noear.solon.core.XContext;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+import org.noear.solon.core.SolonClassLoader;
+import org.noear.solon.core.handler.Render;
+import org.noear.solon.core.handler.ModelAndView;
+import org.noear.solon.core.handler.Context;
 import org.noear.solon.ext.SupplierEx;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStream;
 import java.net.URI;
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
-public class BeetlRender implements XRender {
+public class BeetlRender implements Render {
 
     private static BeetlRender _global;
 
@@ -49,27 +47,27 @@ public class BeetlRender implements XRender {
         }
 
 
-        String baseUri = XApp.global().prop().get("slon.mvc.view.prefix");
+        String baseUri = Solon.global().prop().get("slon.mvc.view.prefix");
 
-        if (XUtil.isEmpty(baseUri) == false) {
+        if (Utils.isEmpty(baseUri) == false) {
             _baseUri = baseUri;
         }
 
 
-        if (XApp.cfg().isDebugMode()) {
+        if (Solon.cfg().isDebugMode()) {
             forDebug();
         } else {
             forRelease();
         }
 
-        XApp.global().onSharedAdd((k, v) -> {
+        Solon.global().onSharedAdd((k, v) -> {
             setSharedVariable(k, v);
         });
     }
 
     private void forDebug() {
         //添加调试模式
-        String dirroot = XUtil.getResource("/").toString().replace("target/classes/", "");
+        String dirroot = Utils.getResource("/").toString().replace("target/classes/", "");
         File dir = null;
 
         if (dirroot.startsWith("file:")) {
@@ -95,7 +93,7 @@ public class BeetlRender implements XRender {
 
     private void forRelease() {
         try {
-            ClasspathResourceLoader loader = new ClasspathResourceLoader(XClassLoader.global(), _baseUri);
+            ClasspathResourceLoader loader = new ClasspathResourceLoader(SolonClassLoader.global(), _baseUri);
             gt = new GroupTemplate(loader, cfg);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -120,7 +118,7 @@ public class BeetlRender implements XRender {
     }
 
     @Override
-    public void render(Object obj, XContext ctx) throws Throwable {
+    public void render(Object obj, Context ctx) throws Throwable {
         if (obj == null) {
             return;
         }
@@ -133,7 +131,7 @@ public class BeetlRender implements XRender {
     }
 
     @Override
-    public String renderAndReturn(Object obj, XContext ctx) throws Throwable {
+    public String renderAndReturn(Object obj, Context ctx) throws Throwable {
         if (obj == null) {
             return null;
         }
@@ -148,7 +146,7 @@ public class BeetlRender implements XRender {
         }
     }
 
-    private void render_mav(ModelAndView mv, XContext ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
+    private void render_mav(ModelAndView mv, Context ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
         if (ctx.contentTypeNew() == null) {
             ctx.contentType("text/html;charset=utf-8");
         }

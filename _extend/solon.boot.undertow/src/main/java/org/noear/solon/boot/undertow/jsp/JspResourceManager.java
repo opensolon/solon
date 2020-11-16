@@ -5,7 +5,7 @@ import io.undertow.server.handlers.resource.Resource;
 import io.undertow.server.handlers.resource.ResourceChangeListener;
 import io.undertow.server.handlers.resource.ResourceManager;
 import io.undertow.server.handlers.resource.URLResource;
-import org.noear.solon.core.XContext;
+import org.noear.solon.core.handler.Context;
 
 import java.io.IOException;
 import java.net.URI;
@@ -36,7 +36,7 @@ public class JspResourceManager implements ResourceManager {
             return null;
         }
 
-        if(XContext.current() == null){
+        if(Context.current() == null){
             //说明先走的是jsp请求 //禁止
             return null;
         }

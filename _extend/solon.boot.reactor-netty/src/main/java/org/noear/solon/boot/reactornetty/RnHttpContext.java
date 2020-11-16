@@ -5,10 +5,10 @@ import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
 import io.netty.handler.codec.http.cookie.Cookie;
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XFile;
-import org.noear.solon.core.XMap;
+import org.noear.solon.Utils;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.UploadedFile;
+import org.noear.solon.core.ParamMap;
 import reactor.netty.http.server.HttpServerRequest;
 import reactor.netty.http.server.HttpServerResponse;
 
@@ -24,7 +24,7 @@ import static io.netty.handler.codec.http.HttpHeaderNames.SET_COOKIE;
 import static io.netty.handler.codec.http.HttpHeaderNames.COOKIE;
 
 
-public class RnHttpContext extends XContext {
+public class RnHttpContext extends Context {
     private final HttpServerRequest _request;
     private final HttpServerResponse _response;
     private final HttpRequestParser _request_parse;
@@ -138,11 +138,11 @@ public class RnHttpContext extends XContext {
         }
     }
 
-    private XMap _paramMap;
+    private ParamMap _paramMap;
     @Override
-    public XMap paramMap() {
+    public ParamMap paramMap() {
         if(_paramMap == null){
-            _paramMap = new XMap();
+            _paramMap = new ParamMap();
 
             _request_parse.parmMap.forEach((k,l)->{
                 if(l.size() > 0){
@@ -160,15 +160,15 @@ public class RnHttpContext extends XContext {
     }
 
     @Override
-    public List<XFile> files(String key) throws Exception {
+    public List<UploadedFile> files(String key) throws Exception {
         return _request_parse.fileMap.get(key);
     }
 
-    private XMap _cookieMap;
+    private ParamMap _cookieMap;
     @Override
-    public XMap cookieMap() {
+    public ParamMap cookieMap() {
         if(_cookieMap == null){
-            _cookieMap = new XMap();
+            _cookieMap = new ParamMap();
 
             String _cookieMapStr = _request.requestHeaders().get(COOKIE);
             if (_cookieMapStr != null) {
@@ -183,11 +183,11 @@ public class RnHttpContext extends XContext {
         return _cookieMap;
     }
 
-    private XMap _headerMap;
+    private ParamMap _headerMap;
     @Override
-    public XMap headerMap() {
+    public ParamMap headerMap() {
         if(_headerMap == null) {
-            _headerMap = new XMap();
+            _headerMap = new ParamMap();
             HttpHeaders headers = _request.requestHeaders();
 
             for(Map.Entry<String, String> kv : headers){
@@ -263,7 +263,7 @@ public class RnHttpContext extends XContext {
         StringBuilder sb = new StringBuilder();
         sb.append(key).append("=").append(val).append(";");
 
-        if (XUtil.isNotEmpty(path)) {
+        if (Utils.isNotEmpty(path)) {
             sb.append("path=").append(path).append(";");
         }
 
@@ -271,7 +271,7 @@ public class RnHttpContext extends XContext {
             sb.append("max-age=").append(maxAge).append(";");
         }
 
-        if (XUtil.isNotEmpty(domain)) {
+        if (Utils.isNotEmpty(domain)) {
             sb.append("domain=").append(domain.toLowerCase()).append(";");
         }
 

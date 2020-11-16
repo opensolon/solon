@@ -1,15 +1,15 @@
 package org.noear.solon.view.jsp;
 
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
-import org.noear.solon.core.ModelAndView;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XRender;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+import org.noear.solon.core.handler.ModelAndView;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Render;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class JspRender implements XRender {
+public class JspRender implements Render {
     private static JspRender _global;
     public static JspRender global(){
         if(_global==null){
@@ -23,15 +23,15 @@ public class JspRender implements XRender {
     //不要要入参，方便后面多视图混用
     //
     public JspRender(){
-        String baseUri = XApp.global().prop().get("slon.mvc.view.prefix");
+        String baseUri = Solon.global().prop().get("slon.mvc.view.prefix");
 
-        if(XUtil.isEmpty(baseUri)==false) {
+        if(Utils.isEmpty(baseUri)==false) {
             _baseUri = baseUri;
         }
     }
 
     @Override
-    public void render(Object obj, XContext ctx) throws Throwable {
+    public void render(Object obj, Context ctx) throws Throwable {
         if(obj == null){
             return;
         }
@@ -43,7 +43,7 @@ public class JspRender implements XRender {
         }
     }
 
-    public void render_mav(ModelAndView mv, XContext ctx) throws Throwable {
+    public void render_mav(ModelAndView mv, Context ctx) throws Throwable {
         if(ctx.contentTypeNew() == null) {
             ctx.contentType("text/html;charset=utf-8");
         }

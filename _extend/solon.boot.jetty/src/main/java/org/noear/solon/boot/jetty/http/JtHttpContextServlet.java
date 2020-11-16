@@ -1,9 +1,9 @@
 package org.noear.solon.boot.jetty.http;
 
-import org.noear.solon.XApp;
+import org.noear.solon.Solon;
 import org.noear.solon.boot.jetty.XPluginImp;
 import org.noear.solon.boot.jetty.XServerProp;
-import org.noear.solon.core.XEventBus;
+import org.noear.solon.core.event.EventBus;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,16 +23,16 @@ public class JtHttpContextServlet extends HttpServlet {
         }
 
         try {
-            XApp.global().handle(context);
+            Solon.global().handle(context);
 
             if (context.getHandled() == false || context.status() == 404) {
                 response.setStatus(404);
             }
         } catch (Throwable ex) {
-            XEventBus.push(ex);
+            EventBus.push(ex);
             response.setStatus(500);
 
-            if (XApp.cfg().isDebugMode()) {
+            if (Solon.cfg().isDebugMode()) {
                 ex.printStackTrace(response.getWriter());
             }
         }

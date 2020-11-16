@@ -2,12 +2,12 @@ package features.dso;
 
 import features.model.Author;
 import graphql.kickstart.tools.GraphQLQueryResolver;
-import org.noear.solon.annotation.XBean;
-import org.noear.solon.annotation.XInject;
+import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Inject;
 
-@XBean
+@Bean
 public class AuthorQuery implements GraphQLQueryResolver {
-    @XInject
+    @Inject
     private AuthorService authorService;
 
 

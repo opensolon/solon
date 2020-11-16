@@ -1,11 +1,11 @@
 package webapp.demo6_aop;
 
-import org.noear.solon.annotation.XBean;
-import org.noear.solon.annotation.XInject;
+import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Inject;
 
-@XBean
+@Bean
 public class Bean1 {
-    @XInject
+    @Inject
     Bean2 bean2;
 
     public String name(){

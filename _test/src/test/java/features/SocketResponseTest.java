@@ -7,8 +7,8 @@ import org.noear.fairy.channel.xsocket.XSocketChannel;
 import org.noear.fairy.decoder.SnackDecoder;
 import org.noear.fairy.encoder.SnackEncoder;
 import org.noear.snack.ONode;
-import org.noear.solon.core.XMessage;
-import org.noear.solon.core.XSession;
+import org.noear.solon.core.message.Message;
+import org.noear.solon.core.message.MessageSession;
 import org.noear.solon.extend.xsocket.XSessionFactory;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
@@ -24,13 +24,13 @@ public class SocketResponseTest {
     public void test() throws Throwable{
         int _port = 8080 + 20000;
 
-        XSession session = XSessionFactory.create("localhost",_port);
+        MessageSession session = XSessionFactory.create("localhost",_port);
 
 
         String root = "tcp://localhost:" + _port;
-        XMessage message =  XMessage.wrap(root + "/demog/中文/1", "Hello 世界!".getBytes());
+        Message message =  Message.wrap(root + "/demog/中文/1", "Hello 世界!".getBytes());
 
-        XMessage rst = session.sendAndResponse(message);
+        Message rst = session.sendAndResponse(message);
 
         System.out.println(rst.toString());
 
@@ -41,7 +41,7 @@ public class SocketResponseTest {
     public void test_rpc_message() throws Throwable {
         int _port = 8080 + 20000;
 
-        XSession session = XSessionFactory.create("localhost",_port);
+        MessageSession session = XSessionFactory.create("localhost",_port);
 
 
         String root = "tcp://localhost:" + _port;
@@ -49,9 +49,9 @@ public class SocketResponseTest {
         map.put("name","noear");
         String map_josn = ONode.stringify(map);
 
-        XMessage message = XMessage.wrap(root + "/demoe/rpc/hello", map_josn.getBytes());
+        Message message = Message.wrap(root + "/demoe/rpc/hello", map_josn.getBytes());
 
-        XMessage rst = session.sendAndResponse(message);
+        Message rst = session.sendAndResponse(message);
         String rst_str = ONode.deserialize(rst.toString());
 
         System.out.println(rst_str);
@@ -63,7 +63,7 @@ public class SocketResponseTest {
     public void test_rpc_api() throws Throwable {
         int _port = 8080 + 20000;
 
-        XSession session = XSessionFactory.create("localhost",_port);
+        MessageSession session = XSessionFactory.create("localhost",_port);
         XSocketChannel channel = new XSocketChannel(session);
 
         HelloRpcService rpc = Fairy.builder()

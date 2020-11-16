@@ -2,6 +2,7 @@ package org.noear.solon.extend.data;
 
 import org.noear.solon.annotation.XTran;
 import org.noear.solon.core.*;
+import org.noear.solon.core.tran.TranExecutor;
 import org.noear.solon.ext.RunnableEx;
 import org.noear.solon.extend.data.trans.*;
 
@@ -15,7 +16,7 @@ import java.util.Stack;
  *
  * 基于 节点 与 栈管理
  * */
-public class TranExecutorImp implements XTranExecutor {
+public class TranExecutorImp implements TranExecutor {
     public static final TranExecutorImp global = new TranExecutorImp();
 
     protected TranExecutorImp() {

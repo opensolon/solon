@@ -2,15 +2,15 @@ package org.noear.solon.extend.mybatis;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 
 import javax.sql.DataSource;
 
-public class XPluginImp implements XPlugin {
+public class XPluginImp implements Plugin {
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         app.onEvent(BeanWrap.class, new DsEventListener());
 
         Aop.context().beanBuilderAdd(Db.class, (clz, wrap, anno) -> {
@@ -18,7 +18,7 @@ public class XPluginImp implements XPlugin {
                 return;
             }
 
-            if (XUtil.isEmpty(anno.value())) {
+            if (Utils.isEmpty(anno.value())) {
                 Aop.getAsyn(DataSource.class, (dsBw) -> {
                     create0(clz, dsBw);
                 });
@@ -32,7 +32,7 @@ public class XPluginImp implements XPlugin {
         });
 
         Aop.context().beanInjectorAdd(Db.class, (varH, anno) -> {
-            if (XUtil.isEmpty(anno.value())) {
+            if (Utils.isEmpty(anno.value())) {
                 Aop.getAsyn(DataSource.class, (dsBw) -> {
                     inject0(varH, dsBw);
                 });

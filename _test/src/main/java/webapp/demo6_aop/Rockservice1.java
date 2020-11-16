@@ -1,8 +1,8 @@
 package webapp.demo6_aop;
 
-import org.noear.solon.annotation.XBean;
+import org.noear.solon.annotation.Bean;
 
-@XBean("rs1")
+@Bean("rs1")
 public class Rockservice1 implements Rockapi {
     @Override
     public String test() {

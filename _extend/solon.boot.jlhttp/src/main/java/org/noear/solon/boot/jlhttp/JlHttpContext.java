@@ -1,9 +1,9 @@
 package org.noear.solon.boot.jlhttp;
 
-import org.noear.solon.core.XMap;
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XFile;
+import org.noear.solon.core.ParamMap;
+import org.noear.solon.Utils;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.UploadedFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -12,10 +12,10 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.util.*;
 
-public class JlHttpContext extends XContext {
+public class JlHttpContext extends Context {
     private HTTPServer.Request _request;
     private HTTPServer.Response _response;
-    protected Map<String, List<XFile>> _fileMap;
+    protected Map<String, List<UploadedFile>> _fileMap;
 
     public JlHttpContext(HTTPServer.Request request, HTTPServer.Response response) {
         _request = request;
@@ -147,7 +147,7 @@ public class JlHttpContext extends XContext {
         try {
             String temp = paramMap().get(key);
 
-            if (XUtil.isEmpty(temp)) {
+            if (Utils.isEmpty(temp)) {
                 return def;
             } else {
                 return temp;
@@ -159,12 +159,12 @@ public class JlHttpContext extends XContext {
         }
     }
 
-    private XMap _paramMap;
+    private ParamMap _paramMap;
 
     @Override
-    public XMap paramMap() {
+    public ParamMap paramMap() {
         if (_paramMap == null) {
-            _paramMap = new XMap();
+            _paramMap = new ParamMap();
 
             try {
                 _paramMap.putAll(_request.getParams());
@@ -203,9 +203,9 @@ public class JlHttpContext extends XContext {
     }
 
     @Override
-    public List<XFile> files(String key) throws Exception {
+    public List<UploadedFile> files(String key) throws Exception {
         if (isMultipartFormData()) {
-            List<XFile> temp = _fileMap.get(key);
+            List<UploadedFile> temp = _fileMap.get(key);
             if (temp == null) {
                 return new ArrayList<>();
             } else {
@@ -217,21 +217,21 @@ public class JlHttpContext extends XContext {
     }
 
     @Override
-    public XMap cookieMap() {
+    public ParamMap cookieMap() {
         if (_cookieMap == null) {
-            _cookieMap = new XMap(_request.getHeaders().getParams("Cookie"));
+            _cookieMap = new ParamMap(_request.getHeaders().getParams("Cookie"));
         }
 
         return _cookieMap;
     }
 
-    private XMap _cookieMap;
+    private ParamMap _cookieMap;
 
 
     @Override
-    public XMap headerMap() {
+    public ParamMap headerMap() {
         if (_headerMap == null) {
-            _headerMap = new XMap();
+            _headerMap = new ParamMap();
 
             HTTPServer.Headers headers = _request.getHeaders();
 
@@ -245,7 +245,7 @@ public class JlHttpContext extends XContext {
         return _headerMap;
     }
 
-    private XMap _headerMap;
+    private ParamMap _headerMap;
 
     //=================================
 
@@ -332,7 +332,7 @@ public class JlHttpContext extends XContext {
         StringBuilder sb = new StringBuilder();
         sb.append(key).append("=").append(val).append(";");
 
-        if (XUtil.isNotEmpty(path)) {
+        if (Utils.isNotEmpty(path)) {
             sb.append("path=").append(path).append(";");
         }
 
@@ -340,7 +340,7 @@ public class JlHttpContext extends XContext {
             sb.append("max-age=").append(maxAge).append(";");
         }
 
-        if (XUtil.isNotEmpty(domain)) {
+        if (Utils.isNotEmpty(domain)) {
             sb.append("domain=").append(domain.toLowerCase()).append(";");
         }
 

@@ -1,8 +1,10 @@
 package org.noear.solon.extend.staticfiles;
 
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
-import org.noear.solon.core.*;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Handler;
+import org.noear.solon.core.handler.MethodType;
 
 import java.io.File;
 import java.net.URI;
@@ -10,7 +12,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.regex.Pattern;
 
-class XResourceHandler implements XHandler {
+class XResourceHandler implements Handler {
     private static final String CACHE_CONTROL = "Cache-Control";
     private static final String LAST_MODIFIED = "Last-Modified";
 
@@ -22,8 +24,8 @@ class XResourceHandler implements XHandler {
     public XResourceHandler(String baseUri) {
         _baseUri = baseUri;
 
-        if(XApp.cfg().isDebugMode()){
-            String dirroot = XUtil.getResource("/").toString().replace("target/classes/", "");
+        if(Solon.cfg().isDebugMode()){
+            String dirroot = Utils.getResource("/").toString().replace("target/classes/", "");
             if(dirroot.startsWith("file:")) {
                 _debugBaseUri = dirroot + "src/main/resources" + _baseUri;
             }
@@ -45,17 +47,17 @@ class XResourceHandler implements XHandler {
                 return null;
             }
         }else{
-            return XUtil.getResource(_baseUri + path);
+            return Utils.getResource(_baseUri + path);
         }
     }
 
     @Override
-    public void handle(XContext context) throws Exception {
+    public void handle(Context context) throws Exception {
         if (context.getHandled()) {
             return;
         }
 
-        if(XMethod.GET.name.equals( context.method()) == false){
+        if(MethodType.GET.name.equals( context.method()) == false){
             return;
         }
 

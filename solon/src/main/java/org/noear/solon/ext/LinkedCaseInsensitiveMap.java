@@ -1,12 +1,14 @@
 package org.noear.solon.ext;
 
+import org.noear.solon.core.ParamMap;
+
 import java.io.Serializable;
 import java.util.*;
 
 /**
  * 忽略大小写的LinkedMap
  *
- * @see org.noear.solon.core.XMap
+ * @see ParamMap
  * @author noear
  * @since 1.0
  * */

@@ -3,7 +3,7 @@ package org.noear.solon.extend.beetlsql;
 import org.beetl.sql.clazz.kit.BeetlSQLException;
 import org.beetl.sql.core.DefaultConnectionSource;
 import org.beetl.sql.core.ExecuteContext;
-import org.noear.solon.core.XTranUtils;
+import org.noear.solon.core.tran.TranUtils;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -35,7 +35,7 @@ class DbConnectionSource extends DefaultConnectionSource {
 
         //在事物里都用master，除了readonly事物
         if (isTransaction()) {
-            boolean isReadOnly = XTranUtils.inTransAndReadOnly();
+            boolean isReadOnly = TranUtils.inTransAndReadOnly();
             if (!isReadOnly) {
                 return this.getWriteConn(ctx);
             }
@@ -47,7 +47,7 @@ class DbConnectionSource extends DefaultConnectionSource {
     @Override
     protected Connection doGetConnection(DataSource ds) {
         try {
-            return XTranUtils.getConnection(ds);
+            return TranUtils.getConnection(ds);
         } catch (SQLException e) {
             throw new BeetlSQLException(BeetlSQLException.CANNOT_GET_CONNECTION, e);
         }
@@ -55,7 +55,7 @@ class DbConnectionSource extends DefaultConnectionSource {
 
     //Override
     public boolean isTransaction() {
-        return XTranUtils.inTrans();
+        return TranUtils.inTrans();
     }
 
 }

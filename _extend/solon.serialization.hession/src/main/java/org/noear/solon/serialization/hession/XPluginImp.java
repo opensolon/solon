@@ -1,21 +1,20 @@
 package org.noear.solon.serialization.hession;
 
-import org.noear.solon.XApp;
-import org.noear.solon.core.XBridge;
-import org.noear.solon.core.XRenderManager;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.Solon;
+import org.noear.solon.core.Bridge;
+import org.noear.solon.core.Plugin;
 
-public class XPluginImp implements XPlugin {
+public class XPluginImp implements Plugin {
     public static boolean output_meta = false;
 
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         output_meta = app.prop().getInt("solon.output.meta", 0) > 0;
 
         HessionRender render = new HessionRender();
 
         //XRenderManager.register(render);
-        XBridge.renderMapping("@hession",render);
-        XBridge.actionExecutorAdd(new HessianActionExecutor());
+        Bridge.renderMapping("@hession",render);
+        Bridge.actionExecutorAdd(new HessianActionExecutor());
     }
 }

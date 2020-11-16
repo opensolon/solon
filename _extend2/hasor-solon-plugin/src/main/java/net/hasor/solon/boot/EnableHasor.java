@@ -15,7 +15,7 @@
  */
 package net.hasor.solon.boot;
 import net.hasor.core.Module;
-import org.noear.solon.annotation.XImport;
+import org.noear.solon.annotation.Import;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
  * */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@XImport(value = HasorConfiguration.class)
+@Import(value = HasorConfiguration.class)
 public @interface EnableHasor {
     /**
      * 扫描范围，配置的 scanPackages，会交给Solon进行手动扫描。

@@ -3,10 +3,10 @@ package org.noear.solon.boot.undertow.websocket;
 import io.undertow.websockets.core.WebSocketChannel;
 import io.undertow.websockets.core.WebSockets;
 
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XMethod;
-import org.noear.solon.core.XSession;
-import org.noear.solon.core.XMessage;
+import org.noear.solon.Utils;
+import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.xsocket.XSessionBase;
 
 import java.io.IOException;
@@ -16,9 +16,9 @@ import java.nio.ByteBuffer;
 import java.util.*;
 
 public class _SocketSession extends XSessionBase {
-    public static Map<WebSocketChannel, XSession> sessions = new HashMap<>();
-    public static XSession get(WebSocketChannel real) {
-        XSession tmp = sessions.get(real);
+    public static Map<WebSocketChannel, MessageSession> sessions = new HashMap<>();
+    public static MessageSession get(WebSocketChannel real) {
+        MessageSession tmp = sessions.get(real);
         if (tmp == null) {
             synchronized (real) {
                 tmp = sessions.get(real);
@@ -48,15 +48,15 @@ public class _SocketSession extends XSessionBase {
         return real;
     }
 
-    private String _sessionId = XUtil.guid();
+    private String _sessionId = Utils.guid();
     @Override
     public String sessionId() {
         return _sessionId;
     }
 
     @Override
-    public XMethod method() {
-        return XMethod.WEBSOCKET;
+    public MethodType method() {
+        return MethodType.WEBSOCKET;
     }
 
     private String _path;
@@ -81,7 +81,7 @@ public class _SocketSession extends XSessionBase {
     }
 
     @Override
-    public void send(XMessage message) {
+    public void send(Message message) {
         send(message.content());
     }
 
@@ -123,7 +123,7 @@ public class _SocketSession extends XSessionBase {
     }
 
     @Override
-    public Collection<XSession> getOpenSessions() {
+    public Collection<MessageSession> getOpenSessions() {
         return new ArrayList<>(sessions.values());
     }
 

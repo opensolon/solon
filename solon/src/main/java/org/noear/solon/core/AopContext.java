@@ -1,14 +1,18 @@
 package org.noear.solon.core;
 
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
-import org.noear.solon.annotation.XServerEndpoint;
+import org.noear.solon.annotation.ServerEndpoint;
+import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.event.EventListener;
+import org.noear.solon.core.handler.Handler;
+import org.noear.solon.core.handler.HandlerLoader;
+import org.noear.solon.core.message.MessageListener;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.FieldWrap;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.VarGather;
-import org.noear.solon.event.BeanLoadEndEvent;
 import org.noear.solon.ext.BiConsumerEx;
 import org.noear.solon.core.util.ResourceScaner;
 
@@ -43,16 +47,16 @@ public class AopContext extends BeanContainer {
     protected void initialize() {
 
         //注册 @XConfiguration 构建器
-        beanBuilderAdd(XConfiguration.class, (clz, bw, anno) -> {
-            XInject typeInj = clz.getAnnotation(XInject.class);
-            if (typeInj != null && XUtil.isNotEmpty(typeInj.value())) {
+        beanBuilderAdd(Configuration.class, (clz, bw, anno) -> {
+            Inject typeInj = clz.getAnnotation(Inject.class);
+            if (typeInj != null && Utils.isNotEmpty(typeInj.value())) {
                 if (typeInj.value().startsWith("${")) {
-                    XUtil.injectProperties(bw.raw(), XApp.cfg().getPropByExpr(typeInj.value()));
+                    Utils.injectProperties(bw.raw(), Solon.cfg().getPropByExpr(typeInj.value()));
                 }
             }
 
             for (Method m  : ClassWrap.get(bw.clz()).getMethods()) {
-                XBean m_an = m.getAnnotation(XBean.class);
+                Bean m_an = m.getAnnotation(Bean.class);
 
                 if (m_an != null) {
                     MethodWrap mWrap = MethodWrap.get(m);
@@ -60,7 +64,7 @@ public class AopContext extends BeanContainer {
                     //有参数的bean，采用线程池处理；所以需要锁等待
                     //
                     tryBuildBean(m_an, mWrap, bw, (p1) -> {
-                        XInject tmp = p1.getAnnotation(XInject.class);
+                        Inject tmp = p1.getAnnotation(Inject.class);
                         if (tmp == null) {
                             return null;
                         } else {
@@ -74,14 +78,14 @@ public class AopContext extends BeanContainer {
             addBeanShape(clz, bw);
 
             //尝试导入
-            beanImport(clz.getAnnotation(XImport.class));
+            beanImport(clz.getAnnotation(Import.class));
 
             //注册到容器 //XConfiguration 不进入二次注册
             //beanRegister(bw,bw.name(),bw.typed());
         });
 
         //注册 @XBean 构建器
-        beanBuilderAdd(XBean.class, (clz, bw, anno) -> {
+        beanBuilderAdd(Bean.class, (clz, bw, anno) -> {
             bw.nameSet(anno.value());
             bw.tagSet(anno.tag());
             bw.attrsSet(anno.attrs());
@@ -98,31 +102,31 @@ public class AopContext extends BeanContainer {
 
             //如果是remoting状态，转到XApp路由器
             if (bw.remoting()) {
-                XHandlerLoader bww = new XHandlerLoader(bw);
+                HandlerLoader bww = new HandlerLoader(bw);
                 if (bww.mapping() != null) {
                     //
                     //如果没有xmapping，则不进行web注册
                     //
-                    bww.load(XApp.global());
+                    bww.load(Solon.global());
                 }
             }
         });
 
         //注册 @XController 构建器
-        beanBuilderAdd(XController.class, (clz, bw, anno) -> {
-            new XHandlerLoader(bw).load(XApp.global());
+        beanBuilderAdd(Controller.class, (clz, bw, anno) -> {
+            new HandlerLoader(bw).load(Solon.global());
         });
 
         //注册 @XServerEndpoint 构建器
-        beanBuilderAdd(XServerEndpoint.class, (clz, wrap, anno) -> {
-            if (XListener.class.isAssignableFrom(clz)) {
-                XListener l = wrap.raw();
-                XApp.global().router().add(anno.value(), anno.method(), l);
+        beanBuilderAdd(ServerEndpoint.class, (clz, wrap, anno) -> {
+            if (MessageListener.class.isAssignableFrom(clz)) {
+                MessageListener l = wrap.raw();
+                Solon.global().router().add(anno.value(), anno.method(), l);
             }
         });
 
         //注册 @XInject 构建器
-        beanInjectorAdd(XInject.class, ((fwT, anno) -> {
+        beanInjectorAdd(Inject.class, ((fwT, anno) -> {
             beanInject(fwT, anno.value());
         }));
     }
@@ -132,29 +136,29 @@ public class AopContext extends BeanContainer {
      * */
     private void addBeanShape(Class<?> clz, BeanWrap bw) {
         //XPlugin
-        if (XPlugin.class.isAssignableFrom(clz)) {
+        if (Plugin.class.isAssignableFrom(clz)) {
             //如果是插件，则插入
-            XApp.global().plug(bw.raw());
+            Solon.global().plug(bw.raw());
             return;
         }
 
         //XEventListener
-        if (XEventListener.class.isAssignableFrom(clz)) {
+        if (org.noear.solon.core.event.EventListener.class.isAssignableFrom(clz)) {
             addEventListener(clz, bw);
             return;
         }
 
         //XUpstreamFactory
-        if (XUpstream.Factory.class.isAssignableFrom(clz)) {
-            XBridge.upstreamFactorySet(bw.raw());
+        if (Upstream.Factory.class.isAssignableFrom(clz)) {
+            Bridge.upstreamFactorySet(bw.raw());
         }
 
         //XHandler
-        if (XHandler.class.isAssignableFrom(clz)) {
-            XMapping mapping = clz.getAnnotation(XMapping.class);
+        if (Handler.class.isAssignableFrom(clz)) {
+            Mapping mapping = clz.getAnnotation(Mapping.class);
             if (mapping != null) {
-                XHandler handler = bw.raw();
-                XApp.global().add(mapping,handler);
+                Handler handler = bw.raw();
+                Solon.global().add(mapping,handler);
             }
         }
     }
@@ -164,9 +168,9 @@ public class AopContext extends BeanContainer {
         for (Type t1 : clz.getGenericInterfaces()) {
             if (t1 instanceof ParameterizedType) {
                 ParameterizedType pt = (ParameterizedType) t1;
-                if (pt.getRawType() == XEventListener.class) {
+                if (pt.getRawType() == EventListener.class) {
                     Class<?> et = (Class<?>) pt.getActualTypeArguments()[0];
-                    XEventBus.subscribe(et, bw.raw());
+                    EventBus.subscribe(et, bw.raw());
                     return;
                 }
             }
@@ -200,7 +204,7 @@ public class AopContext extends BeanContainer {
     /**
      * 根据配置导入bean
      * */
-    public void beanImport(XImport anno) {
+    public void beanImport(Import anno) {
         if (anno != null) {
             for (Class<?> clz : anno.value()) {
                 beanMake(clz);
@@ -226,7 +230,7 @@ public class AopContext extends BeanContainer {
      * ::扫描源下的所有 bean 及对应处理
      */
     public void beanScan(String basePackage) {
-        if (XUtil.isEmpty(basePackage)) {
+        if (Utils.isEmpty(basePackage)) {
             return;
         }
 
@@ -237,7 +241,7 @@ public class AopContext extends BeanContainer {
                 .stream().sorted(Comparator.comparing(s -> s.length())).forEach(name -> {
             String className = name.substring(0, name.length() - 6);
 
-            Class<?> clz = XUtil.loadClass(className.replace("/", "."));
+            Class<?> clz = Utils.loadClass(className.replace("/", "."));
             if (clz != null) {
                 tryCreateBean(clz);
             }
@@ -321,7 +325,7 @@ public class AopContext extends BeanContainer {
      * @param bw        bean 包装器
      * @param injectVal 参数注入
      */
-    protected void tryBuildBean(XBean anno, MethodWrap mWrap, BeanWrap bw, Function<Parameter, String> injectVal) throws Exception {
+    protected void tryBuildBean(Bean anno, MethodWrap mWrap, BeanWrap bw, Function<Parameter, String> injectVal) throws Exception {
         int size2 = mWrap.getParameters().length;
 
         if (size2 == 0) {
@@ -338,7 +342,7 @@ public class AopContext extends BeanContainer {
                     Object raw = mWrap.doIntercept(bw.raw(), args2);
                     tryBuildBean0(mWrap, anno, raw);
                 } catch (Throwable ex) {
-                    XEventBus.push(ex);
+                    EventBus.push(ex);
                 }
             });
 
@@ -350,23 +354,23 @@ public class AopContext extends BeanContainer {
         }
     }
 
-    protected void tryBuildBean0(MethodWrap mWrap, XBean anno, Object raw) {
+    protected void tryBuildBean0(MethodWrap mWrap, Bean anno, Object raw) {
         if (raw != null) {
             Class<?> beanClz = mWrap.getReturnType();
-            XInject  beanInj = mWrap.getAnnotation(XInject.class);
+            Inject beanInj = mWrap.getAnnotation(Inject.class);
 
             BeanWrap m_bw = null;
             if (raw instanceof BeanWrap) {
                 m_bw = (BeanWrap) raw;
             } else {
-                if (beanInj != null && XUtil.isEmpty(beanInj.value()) == false) {
+                if (beanInj != null && Utils.isEmpty(beanInj.value()) == false) {
                     if (beanInj.value().startsWith("${")) {
-                        XUtil.injectProperties(raw, XApp.cfg().getPropByExpr(beanInj.value()));
+                        Utils.injectProperties(raw, Solon.cfg().getPropByExpr(beanInj.value()));
                     }
                 }
 
                 //动态构建的bean, 可通过广播进行扩展
-                XEventBus.push(raw);
+                EventBus.push(raw);
 
                 //动态构建的bean，都用新生成wrap（否则会类型混乱）
                 m_bw = new BeanWrap(beanClz, raw);
@@ -380,7 +384,7 @@ public class AopContext extends BeanContainer {
             beanRegister(m_bw, anno.value(), anno.typed());
 
             //@XBean 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
-            XEventBus.push(m_bw);
+            EventBus.push(m_bw);
         }
     }
 
@@ -396,7 +400,7 @@ public class AopContext extends BeanContainer {
     /**
      * 添加bean加载完成事件
      */
-    @XNote("添加bean加载完成事件")
+    @Note("添加bean加载完成事件")
     public void beanOnloaded(Runnable fun) {
         loadEvents.add(fun);
 

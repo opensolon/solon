@@ -1,8 +1,11 @@
 package org.noear.solon.extend.validation;
 
-import org.noear.solon.XUtil;
-import org.noear.solon.annotation.XNote;
-import org.noear.solon.core.*;
+import org.noear.solon.Utils;
+import org.noear.solon.annotation.Note;
+import org.noear.solon.core.handler.Action;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Handler;
+import org.noear.solon.core.handler.Result;
 import org.noear.solon.extend.validation.annotation.*;
 
 import java.lang.annotation.Annotation;
@@ -18,7 +21,7 @@ import java.util.Map;
  * @author noear
  * @since 1.0
  * */
-public class ValidatorManager implements XHandler {
+public class ValidatorManager implements Handler {
     private static ValidatorManager global = new ValidatorManager();
 
     public static ValidatorManager global() {
@@ -93,7 +96,7 @@ public class ValidatorManager implements XHandler {
     /**
      * 清除所有验证器
      * */
-    @XNote("清除所有验证器")
+    @Note("清除所有验证器")
     public void clear() {
         validMap.clear();
     }
@@ -101,7 +104,7 @@ public class ValidatorManager implements XHandler {
     /**
      * 移除某个类型的验证器
      * */
-    @XNote("移除某个类型的验证器")
+    @Note("移除某个类型的验证器")
     public <T extends Annotation> void remove(Class<T> type){
         validMap.remove(type);
     }
@@ -109,22 +112,22 @@ public class ValidatorManager implements XHandler {
     /**
      * 注册验证器
      * */
-    @XNote("注册验证器")
+    @Note("注册验证器")
     public <T extends Annotation> void register(Class<T> type, Validator<T> validator) {
         validMap.put(type, validator);
     }
 
 
     @Override
-    public void handle(XContext ctx) throws Throwable {
-        XAction action = ctx.action();
+    public void handle(Context ctx) throws Throwable {
+        Action action = ctx.action();
 
         if (action != null) {
             validate(ctx, action);
         }
     }
 
-    protected void validate(XContext ctx, XAction action) throws Throwable {
+    protected void validate(Context ctx, Action action) throws Throwable {
         StringBuilder tmp = new StringBuilder();
 
         for (Annotation anno : action.bean().annotations()) {
@@ -148,7 +151,7 @@ public class ValidatorManager implements XHandler {
         }
     }
 
-    protected boolean validateDo(XContext ctx, Annotation anno, String name, StringBuilder tmp){
+    protected boolean validateDo(Context ctx, Annotation anno, String name, StringBuilder tmp){
         if (ctx.getHandled()) {
             return true;
         }
@@ -157,7 +160,7 @@ public class ValidatorManager implements XHandler {
 
         if (valid != null) {
             tmp.setLength(0);
-            XResult rst = valid.validate(ctx, anno, name, tmp);
+            Result rst = valid.validate(ctx, anno, name, tmp);
 
             if (rst.getCode() != 1) {
                 if (this.failureDo(ctx, anno, rst, valid.message(anno))) {
@@ -169,19 +172,19 @@ public class ValidatorManager implements XHandler {
         return false;
     }
 
-    protected boolean failureDo(XContext ctx, Annotation ano, XResult result, String message){
+    protected boolean failureDo(Context ctx, Annotation ano, Result result, String message){
         return failureHandler.onFailure(ctx,ano,result,message);
     }
 
     static class ValidatorFailureHandlerImp implements ValidatorFailureHandler {
 
         @Override
-        public boolean onFailure(XContext ctx, Annotation ano, XResult rst, String message) {
+        public boolean onFailure(Context ctx, Annotation ano, Result rst, String message) {
             ctx.setHandled(true);
             ctx.statusSet(400);
             try {
-                if (XUtil.isEmpty(message)) {
-                    if(XUtil.isEmpty(rst.getDescription())){
+                if (Utils.isEmpty(message)) {
+                    if(Utils.isEmpty(rst.getDescription())){
                         message = new StringBuilder(100)
                                 .append("@")
                                 .append(ano.annotationType().getSimpleName())
@@ -197,9 +200,9 @@ public class ValidatorManager implements XHandler {
                     }
                 }
 
-                ctx.render(XResult.failure(400, message));
+                ctx.render(Result.failure(400, message));
             } catch (Throwable ex) {
-                throw XUtil.throwableWrap(ex);
+                throw Utils.throwableWrap(ex);
             }
 
             return true;

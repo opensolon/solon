@@ -1,22 +1,21 @@
 package org.noear.solon.serialization.fastjson;
 
-import org.noear.solon.XApp;
-import org.noear.solon.core.XBridge;
-import org.noear.solon.core.XRenderManager;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.Solon;
+import org.noear.solon.core.Bridge;
+import org.noear.solon.core.Plugin;
 
-public class XPluginImp implements XPlugin {
+public class XPluginImp implements Plugin {
     public static boolean output_meta = false;
 
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         output_meta = app.prop().getInt("solon.output.meta", 0) > 0;
 
         //XRenderManager.register(render);
-        XBridge.renderMapping("@json", new FastjsonRender(false));
-        XBridge.renderMapping("@type_json", new FastjsonRender(true));
+        Bridge.renderMapping("@json", new FastjsonRender(false));
+        Bridge.renderMapping("@type_json", new FastjsonRender(true));
 
         //支持Json内容类型执行
-        XBridge.actionExecutorAdd(new FastjsonJsonActionExecutor());
+        Bridge.actionExecutorAdd(new FastjsonJsonActionExecutor());
     }
 }

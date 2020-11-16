@@ -1,97 +1,97 @@
 package webapp.demo2_mvc;
 
-import org.noear.solon.annotation.XController;
-import org.noear.solon.annotation.XMapping;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
 import org.noear.solon.extend.validation.annotation.*;
 
-@XMapping("/demo2/valid")
+@Mapping("/demo2/valid")
 @XValid
-@XController
+@Controller
 public class ValidController {
-    @XMapping("date")
+    @Mapping("date")
     public String date(@Date String val1) {
         return "OK";
     }
 
-    @XMapping("date2")
+    @Mapping("date2")
     public String date2(@Date("yyyy-MM-dd") String val1) {
         return "OK";
     }
 
-    @XMapping("dmax")
+    @Mapping("dmax")
     public String dmax(@DecimalMax(10.0) double val1, @DecimalMax(10.0) double val2) {
         return "OK";
     }
 
-    @XMapping("dmin")
+    @Mapping("dmin")
     public String dmin(@DecimalMin(10.0) double val1, @DecimalMin(10.0) double val2) {
         return "OK";
     }
 
-    @XMapping("email")
+    @Mapping("email")
     public String email(@Email String val1) {
         return "OK";
     }
 
 
-    @XMapping("email2")
+    @Mapping("email2")
     public String email2(@Email("\\w+\\@live.cn") String val1) {
         return "OK";
     }
 
 
-    @XMapping("max")
+    @Mapping("max")
     public String max(@Max(10) int val1, @Max(10) int val2) {
         return "OK";
     }
 
-    @XMapping("min")
+    @Mapping("min")
     public String min(@Min(10) int val1, @Min(10)int val2) {
         return "OK";
     }
 
     @NoRepeatSubmit
-    @XMapping("nrs")
+    @Mapping("nrs")
     public String nrs() {
         return "OK";
     }
 
     @NotBlank({"val1", "val2"})
-    @XMapping("nblank")
+    @Mapping("nblank")
     public String nblank(String val1, String val2) {
         return "OK";
     }
 
     @NotEmpty({"val1", "val2"})
-    @XMapping("nempty")
+    @Mapping("nempty")
     public String nempty(String val1, String val2) {
         return "OK";
     }
 
     @NotNull({"val1", "val2"})
-    @XMapping("nnull")
+    @Mapping("nnull")
     public String nnull(String val1, String val2) {
         return "OK";
     }
 
     @NotZero({"val1", "val2"})
-    @XMapping("nzero")
+    @Mapping("nzero")
     public String nzero(String val1, String val2) {
         return "OK";
     }
 
     @Null({"val1", "val2"})
-    @XMapping("null")
+    @Mapping("null")
     public String nullx(String val1, String val2) {
         return "OK";
     }
 
-    @XMapping("patt")
+    @Mapping("patt")
     public String patt(@Pattern("\\d{3}-\\d+") String val1, @Pattern("\\d{3}-\\d+") String val2) {
         return "OK";
     }
 
-    @XMapping("size")
+    @Mapping("size")
     public String size(@Length(min = 2, max = 5, message = "测试") String val1,
                        @Length(min = 2, max = 5, message = "测试") String val2) {
         return "OK";

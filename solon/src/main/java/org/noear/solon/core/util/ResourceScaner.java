@@ -1,7 +1,7 @@
 package org.noear.solon.core.util;
 
-import org.noear.solon.XAppProperties;
-import org.noear.solon.XUtil;
+import org.noear.solon.SolonProperties;
+import org.noear.solon.Utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.util.jar.JarFile;
 /**
  * 资源扫描器（用于扫描插件配置等资源...）
  *
- * @see XAppProperties#plugsScan()
+ * @see SolonProperties#plugsScan()
  * @author noear
  * @since 1.0
  * */
@@ -32,7 +32,7 @@ public class ResourceScaner {
 
         try {
             //1.查找资源
-            Enumeration<URL> roots = XUtil.getResources(path);
+            Enumeration<URL> roots = Utils.getResources(path);
             while (roots.hasMoreElements()) {
                 //2.资源遍历
                 URL url = roots.nextElement();

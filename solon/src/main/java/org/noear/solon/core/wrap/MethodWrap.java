@@ -2,8 +2,7 @@ package org.noear.solon.core.wrap;
 
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.MethodHolder;
-import org.noear.solon.core.XInterceptorChain;
+import org.noear.solon.core.InterceptorChain;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -18,7 +17,7 @@ import java.util.*;
  * @author noear
  * @since 1.0
  * */
-public class MethodWrap implements XInterceptorChain, MethodHolder {
+public class MethodWrap implements InterceptorChain, MethodHolder {
     private static Map<Method, MethodWrap> cached = new HashMap<>();
 
     public static MethodWrap get(Method method) {
@@ -47,19 +46,19 @@ public class MethodWrap implements XInterceptorChain, MethodHolder {
 
         //scan cless @XAround
         for(Annotation anno : entityClz.getAnnotations()){
-            if (anno instanceof XAround) {
-                doAroundAdd((XAround) anno);
+            if (anno instanceof Around) {
+                doAroundAdd((Around) anno);
             } else {
-                doAroundAdd(anno.annotationType().getAnnotation(XAround.class));
+                doAroundAdd(anno.annotationType().getAnnotation(Around.class));
             }
         }
 
         //scan method @XAround
         for (Annotation anno : annotations) {
-            if (anno instanceof XAround) {
-                doAroundAdd((XAround) anno);
+            if (anno instanceof Around) {
+                doAroundAdd((Around) anno);
             } else {
-                doAroundAdd(anno.annotationType().getAnnotation(XAround.class));
+                doAroundAdd(anno.annotationType().getAnnotation(Around.class));
             }
         }
 
@@ -68,7 +67,7 @@ public class MethodWrap implements XInterceptorChain, MethodHolder {
             arounds.sort(Comparator.comparing(x -> x.index));
 
             //生成调用链
-            XInterceptorChain.Entity node = arounds.get(0);
+            InterceptorChain.Entity node = arounds.get(0);
             for (int i = 1, len = arounds.size(); i < len; i++) {
                 node.next = arounds.get(i);
                 node = arounds.get(i);
@@ -83,9 +82,9 @@ public class MethodWrap implements XInterceptorChain, MethodHolder {
     }
 
 
-    private void doAroundAdd(XAround a) {
+    private void doAroundAdd(Around a) {
         if (a != null) {
-            arounds.add(new XInterceptorChain.Entity(this, a.index(), Aop.get(a.value())));
+            arounds.add(new InterceptorChain.Entity(this, a.index(), Aop.get(a.value())));
         }
     }
 
@@ -98,9 +97,9 @@ public class MethodWrap implements XInterceptorChain, MethodHolder {
     //函数注解
     private final Annotation[] annotations;
     //函数包围列表（扩展切点）
-    private final List<XInterceptorChain.Entity> arounds;
+    private final List<InterceptorChain.Entity> arounds;
     //函数调用链
-    private final XInterceptorChain invokeChain;
+    private final InterceptorChain invokeChain;
 
 
     /**

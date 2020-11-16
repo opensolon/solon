@@ -1,24 +1,24 @@
 package webapp.demo2_mvc;
 
-import org.noear.solon.annotation.XController;
-import org.noear.solon.annotation.XMapping;
-import org.noear.solon.core.XContext;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.core.handler.Context;
 
-@XMapping("/demo2/session")
-@XController
+@Mapping("/demo2/session")
+@Controller
 public class SessionController {
-    @XMapping("id")
+    @Mapping("id")
     public String id(String val){
-       return XContext.current().sessionId();
+       return Context.current().sessionId();
     }
 
-    @XMapping("set")
+    @Mapping("set")
     public void set(String val){
-        XContext.current().sessionSet("val", val);
+        Context.current().sessionSet("val", val);
     }
 
-    @XMapping("get")
+    @Mapping("get")
     public Object get(){
-        return XContext.current().session("val");
+        return Context.current().session("val");
     }
 }

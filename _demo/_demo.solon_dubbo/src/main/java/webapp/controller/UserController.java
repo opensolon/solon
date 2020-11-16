@@ -1,8 +1,8 @@
 package webapp.controller;
 
-import org.noear.solon.annotation.XController;
-import org.noear.solon.annotation.XMapping;
-import org.noear.solon.core.XContext;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.core.handler.Context;
 import webapp.model.User;
 
 import java.util.Arrays;
@@ -10,16 +10,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@XMapping("users")
-@XController
+@Mapping("users")
+@Controller
 public class UserController {
-    @XMapping(value = "get1")
+    @Mapping(value = "get1")
     public String get1(String name) {
         return name.toUpperCase();
     }
 
-    @XMapping(value = "get2")
-    public void get2(String name, XContext ctx) throws Throwable{
+    @Mapping(value = "get2")
+    public void get2(String name, Context ctx) throws Throwable{
         User user = new User();
 
         user.setName(name);
@@ -39,8 +39,8 @@ public class UserController {
         ctx.remotingSet(false);
     }
 
-    @XMapping(value = "get3")
-    public Object get3(String name, XContext ctx) throws Throwable{
+    @Mapping(value = "get3")
+    public Object get3(String name, Context ctx) throws Throwable{
         User user = new User();
 
         user.setName(name);

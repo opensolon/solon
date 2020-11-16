@@ -3,7 +3,7 @@ package features;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
-import org.noear.solon.annotation.XInject;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonTest;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 
@@ -15,7 +15,7 @@ import java.util.Map;
 @SolonTest(webapp.TestApp.class)
 public class HttpTest extends _TestBase {
 
-    @XInject("${username}")
+    @Inject("${username}")
     public String username;
 
     @Test

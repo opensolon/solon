@@ -1,17 +1,17 @@
 package org.noear.solon.extend.validation;
 
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XHandler;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Handler;
 
 /**
  *
  * @author noear
  * @since 1.0
  * */
-public class ValidateInterceptor implements XHandler {
+public class ValidateInterceptor implements Handler {
 
     @Override
-    public void handle(XContext ctx) throws Throwable {
+    public void handle(Context ctx) throws Throwable {
         if (ValidatorManager.global() != null) {
             ValidatorManager.global().handle(ctx);
         }

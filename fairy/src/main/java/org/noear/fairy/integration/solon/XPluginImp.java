@@ -5,19 +5,19 @@ import org.noear.fairy.FairyConfigurationDefault;
 import org.noear.fairy.FairyException;
 import org.noear.fairy.annotation.EnableFairyClient;
 import org.noear.fairy.annotation.FairyClient;
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.core.Plugin;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class XPluginImp implements XPlugin {
+public class XPluginImp implements Plugin {
     private Map<FairyClient, Object> cached = new ConcurrentHashMap<>();
 
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         if (app.source().getAnnotation(EnableFairyClient.class) == null) {
             return;
         }
@@ -31,14 +31,14 @@ public class XPluginImp implements XPlugin {
                 return;
             }
 
-            if (XUtil.isEmpty(anno.value())) {
+            if (Utils.isEmpty(anno.value())) {
                 FairyClient anno2 = varH.getType().getAnnotation(FairyClient.class);
                 if (anno2 != null) {
                     anno = anno2;
                 }
             }
 
-            if (XUtil.isEmpty(anno.value())) {
+            if (Utils.isEmpty(anno.value())) {
                 throw new FairyException("@FairyClient configuration error!");
             }
 

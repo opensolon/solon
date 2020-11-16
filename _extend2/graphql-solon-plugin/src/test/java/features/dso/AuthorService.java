@@ -1,9 +1,9 @@
 package features.dso;
 
 import features.model.Author;
-import org.noear.solon.annotation.XBean;
+import org.noear.solon.annotation.Bean;
 
-@XBean
+@Bean
 public class AuthorService {
     public Author findById(int id) {
         Author author = new Author();

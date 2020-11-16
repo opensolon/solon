@@ -1,19 +1,18 @@
 package webapp.demo1_handler;
 
-import org.noear.solon.annotation.XMapping;
-import org.noear.solon.annotation.XController;
-import org.noear.solon.annotation.XSingleton;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XHandler;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Handler;
 
 /**
  * 简单的http处理
  * */
-@XMapping("/demo1/run1/*")
-@XController
-public class Run1Handler implements XHandler {
+@Mapping("/demo1/run1/*")
+@Controller
+public class Run1Handler implements Handler {
     @Override
-    public void handle(XContext cxt) throws Exception {
+    public void handle(Context cxt) throws Exception {
         cxt.output(cxt.url());
     }
 }

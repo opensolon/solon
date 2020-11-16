@@ -9,11 +9,11 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.XEventBus;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ResourceScaner;
 
 import javax.sql.DataSource;
@@ -40,7 +40,7 @@ class SqlFactoryAdapter {
      * 使用默认的 typeAliases 和 mappers 配置
      */
     public SqlFactoryAdapter(BeanWrap dsWrap) {
-        this(dsWrap, XApp.cfg().getProp("mybatis"));
+        this(dsWrap, Solon.cfg().getProp("mybatis"));
     }
 
     public SqlFactoryAdapter(BeanWrap dsWrap, Properties props) {
@@ -49,7 +49,7 @@ class SqlFactoryAdapter {
         DataSource dataSource = dsWrap.raw();
 
         String environment_id = props.getProperty("environment");
-        if (XUtil.isEmpty(environment_id)) {
+        if (Utils.isEmpty(environment_id)) {
             environment_id = "solon-" + (environmentIndex++);
         }
 
@@ -58,7 +58,7 @@ class SqlFactoryAdapter {
         config = new Configuration(environment);
 
         //分发事件，推给扩展处理
-        XEventBus.push(config);
+        EventBus.push(config);
 
         init0(config, props);
     }
@@ -73,7 +73,7 @@ class SqlFactoryAdapter {
                     if (key.startsWith("typeAliases[")) {
                         if (key.endsWith(".class")) {
                             //type class
-                            Class<?> clz = XUtil.loadClass(val.substring(0, val.length() - 6));
+                            Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
                             if (clz != null) {
                                 cfg().getTypeAliasRegistry().registerAlias(clz);
                             }
@@ -98,7 +98,7 @@ class SqlFactoryAdapter {
                             mappers.add(val);
                         } else if (val.endsWith(".class")) {
                             //mapper class
-                            Class<?> clz = XUtil.loadClass(val.substring(0, val.length() - 6));
+                            Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
                             if (clz != null) {
                                 cfg().addMapper(clz);
                                 mappers.add(val);
@@ -132,7 +132,7 @@ class SqlFactoryAdapter {
             XMLMapperBuilder mapperParser = new XMLMapperBuilder(stream, cfg(), val, cfg().getSqlFragments());
             mapperParser.parse();
         } catch (Throwable ex) {
-            XEventBus.push(ex);
+            EventBus.push(ex);
         }
     }
 
@@ -170,7 +170,7 @@ class SqlFactoryAdapter {
         if (val.endsWith(".xml")) {
 
         } else if (val.endsWith(".class")) {
-            Class<?> clz = XUtil.loadClass(val.substring(0, val.length() - 6));
+            Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
             mapperBindDo(proxy, clz);
         } else {
             String dir = val.replace('.', '/');
@@ -183,7 +183,7 @@ class SqlFactoryAdapter {
                 .stream()
                 .map(name -> {
                     String className = name.substring(0, name.length() - 6);
-                    return XUtil.loadClass(className.replace("/", "."));
+                    return Utils.loadClass(className.replace("/", "."));
                 })
                 .forEach((clz) -> {
                     mapperBindDo(proxy, clz);

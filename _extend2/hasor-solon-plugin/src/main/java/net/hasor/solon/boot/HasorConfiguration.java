@@ -4,10 +4,10 @@ import net.hasor.core.AppContext;
 import net.hasor.core.Module;
 import net.hasor.utils.ExceptionUtils;
 import net.hasor.utils.StringUtils;
-import org.noear.solon.XApp;
-import org.noear.solon.annotation.XConfiguration;
+import org.noear.solon.Solon;
+import org.noear.solon.annotation.Configuration;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.XEventListener;
+import org.noear.solon.core.event.EventListener;
 import org.noear.solon.event.BeanLoadEndEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,12 +20,12 @@ import java.io.IOException;
  * @author noear
  * @since 2020.10.10
  * */
-@XConfiguration
-public class HasorConfiguration implements XEventListener<BeanLoadEndEvent> {
+@Configuration
+public class HasorConfiguration implements EventListener<BeanLoadEndEvent> {
     private static Logger logger = LoggerFactory.getLogger(HasorConfiguration.class);
 
     public HasorConfiguration() {
-        this(XApp.global().source().getAnnotation(EnableHasor.class));
+        this(Solon.global().source().getAnnotation(EnableHasor.class));
     }
 
     /**
@@ -54,9 +54,9 @@ public class HasorConfiguration implements XEventListener<BeanLoadEndEvent> {
         if (enableHasor.scanPackages().length != 0) {
             for (String p : enableHasor.scanPackages()) {
                 if (p.endsWith(".*")) {
-                    XApp.global().beanScan(p.substring(0, p.length() - 2));
+                    Solon.global().beanScan(p.substring(0, p.length() - 2));
                 } else {
-                    XApp.global().beanScan(p);
+                    Solon.global().beanScan(p);
                 }
             }
         }
@@ -75,7 +75,7 @@ public class HasorConfiguration implements XEventListener<BeanLoadEndEvent> {
     public void onEvent(BeanLoadEndEvent beanLoadedEvent) {
         //没有EnableHasorWeb时，生成AppContext并注入容器
         //
-        if (XApp.global().source().getAnnotation(EnableHasorWeb.class) == null) {
+        if (Solon.global().source().getAnnotation(EnableHasorWeb.class) == null) {
             //所有bean加载完成之后，手动注入AppContext
             Aop.wrapAndPut(AppContext.class, initAppContext());
         }

@@ -2,7 +2,7 @@ package org.noear.solon.boot.jetty.http;
 
 import org.eclipse.jetty.util.component.AbstractLifeCycle;
 import org.eclipse.jetty.util.component.LifeCycle;
-import org.noear.solon.XUtil;
+import org.noear.solon.Utils;
 import org.noear.solon.boot.jetty.holder.FilterHodler;
 import org.noear.solon.boot.jetty.holder.ServletHolder;
 import org.noear.solon.core.Aop;
@@ -58,7 +58,7 @@ public class JtContainerInitializerProxy extends AbstractLifeCycle.AbstractLifeC
         try {
             onStartup(new HashSet<Class<?>>(), sc);
         } catch (Exception ex) {
-            throw XUtil.throwableWrap(ex);
+            throw Utils.throwableWrap(ex);
         }
     }
 
@@ -79,7 +79,7 @@ public class JtContainerInitializerProxy extends AbstractLifeCycle.AbstractLifeC
 
 
             String name = f.anno.filterName();
-            if (XUtil.isEmpty(name)) {
+            if (Utils.isEmpty(name)) {
                 name = f.filter.getClass().getSimpleName();
             }
 
@@ -109,7 +109,7 @@ public class JtContainerInitializerProxy extends AbstractLifeCycle.AbstractLifeC
             }
 
             String name = s.anno.name();
-            if (XUtil.isEmpty(name)) {
+            if (Utils.isEmpty(name)) {
                 name = s.servlet.getClass().getSimpleName();
             }
 

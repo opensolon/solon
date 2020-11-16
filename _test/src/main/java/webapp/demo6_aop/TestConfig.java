@@ -1,18 +1,18 @@
 package webapp.demo6_aop;
 
-import org.noear.solon.annotation.XBean;
-import org.noear.solon.annotation.XConfiguration;
-import org.noear.solon.annotation.XInject;
+import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Inject;
 
-@XConfiguration
+@Configuration
 public class TestConfig {
 
-    @XBean("rs3")
-    public Rockapi build3(@XInject("rs1") Rockapi rs1){
+    @Bean("rs3")
+    public Rockapi build3(@Inject("rs1") Rockapi rs1){
         return new Rockservice3();
     }
 
-    @XBean(value = "TestModel", typed = true, tag = "test")
+    @Bean(value = "TestModel", typed = true, tag = "test")
     public TestModel build4(){
         return new TestModel("12");
     }

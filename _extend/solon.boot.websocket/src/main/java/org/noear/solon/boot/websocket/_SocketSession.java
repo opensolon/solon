@@ -1,10 +1,10 @@
 package org.noear.solon.boot.websocket;
 
 import org.java_websocket.WebSocket;
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XMethod;
-import org.noear.solon.core.XSession;
-import org.noear.solon.core.XMessage;
+import org.noear.solon.Utils;
+import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.xsocket.XSessionBase;
 
 import java.io.IOException;
@@ -12,9 +12,9 @@ import java.net.InetSocketAddress;
 import java.util.*;
 
 public class _SocketSession extends XSessionBase {
-    public static Map<WebSocket, XSession> sessions = new HashMap<>();
-    public static XSession get(WebSocket real) {
-        XSession tmp = sessions.get(real);
+    public static Map<WebSocket, MessageSession> sessions = new HashMap<>();
+    public static MessageSession get(WebSocket real) {
+        MessageSession tmp = sessions.get(real);
         if (tmp == null) {
             synchronized (real) {
                 tmp = sessions.get(real);
@@ -44,15 +44,15 @@ public class _SocketSession extends XSessionBase {
         return real;
     }
 
-    private String _sessionId = XUtil.guid();
+    private String _sessionId = Utils.guid();
     @Override
     public String sessionId() {
         return _sessionId;
     }
 
     @Override
-    public XMethod method() {
-        return XMethod.WEBSOCKET;
+    public MethodType method() {
+        return MethodType.WEBSOCKET;
     }
 
     private String _path;
@@ -76,7 +76,7 @@ public class _SocketSession extends XSessionBase {
     }
 
     @Override
-    public void send(XMessage message) {
+    public void send(Message message) {
         send(message.content());
     }
 
@@ -118,7 +118,7 @@ public class _SocketSession extends XSessionBase {
     }
 
     @Override
-    public Collection<XSession> getOpenSessions() {
+    public Collection<MessageSession> getOpenSessions() {
         return new ArrayList<>(sessions.values());
     }
 

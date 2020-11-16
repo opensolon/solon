@@ -1,15 +1,15 @@
 package webapp.demoh_xsocket;
 
-import org.noear.solon.annotation.XBean;
-import org.noear.solon.annotation.XMapping;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XMethod;
+import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.MethodType;
 
-@XMapping(value = "/demoe/rpc", method = XMethod.SOCKET)
-@XBean(remoting = true)
+@Mapping(value = "/demoe/rpc", method = MethodType.SOCKET)
+@Bean(remoting = true)
 public class NameRpcServiceImpl implements NameRpcService{
-    @XMapping(value = "*", method = XMethod.SOCKET, before = true)
-    public void bef(XContext ctx) {
+    @Mapping(value = "*", method = MethodType.SOCKET, before = true)
+    public void bef(Context ctx) {
         ctx.headerSet("Content-Type","test/json");
     }
 

@@ -4,8 +4,8 @@ import client.dso.FairyConfigurationImp;
 import org.noear.fairy.FairyConfigurationDefault;
 import org.noear.fairy.annotation.EnableFairyClient;
 import org.noear.fairy.annotation.FairyClient;
-import org.noear.solon.XApp;
-import org.noear.solon.annotation.XBean;
+import org.noear.solon.Solon;
+import org.noear.solon.annotation.Bean;
 import org.noear.solon.core.Aop;
 import server.dso.IComplexModelService;
 import server.model.ComplexModel;
@@ -17,13 +17,13 @@ import java.util.Date;
 import java.util.List;
 
 @EnableFairyClient
-@XBean
+@Bean
 public class ComplextModelServiceTest10 {
 
     public static void main(String[] args) throws Exception {
         FairyConfigurationDefault.proxy = new FairyConfigurationImp();
 
-        XApp.start(ComplextModelServiceTest10.class, args, app -> {
+        Solon.start(ComplextModelServiceTest10.class, args, app -> {
             app.enableHttp(false);
             app.enableWebSocket(false);
             app.enableSocket(false);

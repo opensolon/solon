@@ -1,8 +1,8 @@
 package org.noear.solon.extend.validation.annotation;
 
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XResult;
+import org.noear.solon.Utils;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Result;
 import org.noear.solon.extend.validation.Validator;
 
 /**
@@ -19,25 +19,25 @@ public class NotEmptyValidator implements Validator<NotEmpty> {
     }
 
     @Override
-    public XResult validate(XContext ctx, NotEmpty anno, String name, StringBuilder tmp) {
+    public Result validate(Context ctx, NotEmpty anno, String name, StringBuilder tmp) {
         if (name == null) {
             //来自函数
             for (String key : anno.value()) {
-                if (XUtil.isEmpty(ctx.param(key))) {
+                if (Utils.isEmpty(ctx.param(key))) {
                     tmp.append(',').append(key);
                 }
             }
         } else {
             //来自参数
-            if (XUtil.isEmpty(ctx.param(name))) {
+            if (Utils.isEmpty(ctx.param(name))) {
                 tmp.append(',').append(name);
             }
         }
 
         if (tmp.length() > 1) {
-            return XResult.failure(tmp.substring(1));
+            return Result.failure(tmp.substring(1));
         } else {
-            return XResult.succeed();
+            return Result.succeed();
         }
     }
 }

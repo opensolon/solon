@@ -1,7 +1,7 @@
 package org.noear.solon.extend.validation.annotation;
 
 
-import org.noear.solon.annotation.XNote;
+import org.noear.solon.annotation.Note;
 
 import java.lang.annotation.*;
 
@@ -17,7 +17,7 @@ public @interface NotEmpty {
     /**
      * param names
      * */
-    @XNote("param names")
+    @Note("param names")
     String[] value() default {};
 
     String message() default "";

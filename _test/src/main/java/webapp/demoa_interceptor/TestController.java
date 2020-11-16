@@ -1,15 +1,15 @@
 package webapp.demoa_interceptor;
 
-import org.noear.solon.annotation.XAround;
-import org.noear.solon.annotation.XBefore;
-import org.noear.solon.annotation.XController;
-import org.noear.solon.annotation.XMapping;
+import org.noear.solon.annotation.Around;
+import org.noear.solon.annotation.Before;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
 
-@XBefore({BeforeHandler.class})
-@XController
+@Before({BeforeHandler.class})
+@Controller
 public class TestController {
-    @XAround(AroundHandler.class)
-    @XMapping("/demoa/test/")
+    @Around(AroundHandler.class)
+    @Mapping("/demoa/test/")
     public void test(){
 
     }

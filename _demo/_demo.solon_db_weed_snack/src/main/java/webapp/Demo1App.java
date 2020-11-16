@@ -1,6 +1,6 @@
 package webapp;
 
-import org.noear.solon.XApp;
+import org.noear.solon.Solon;
 import org.noear.weed.cache.ICacheServiceEx;
 import org.noear.weed.cache.LocalCache;
 
@@ -9,7 +9,7 @@ public class Demo1App {
 
         ICacheServiceEx cache = new LocalCache("test",60).nameSet("test");
 
-        XApp app = XApp.start(Demo1App.class,args);
+        Solon app = Solon.start(Demo1App.class,args);
 
         app.get("/",(c)->{
             c.render("nav.htm", null);

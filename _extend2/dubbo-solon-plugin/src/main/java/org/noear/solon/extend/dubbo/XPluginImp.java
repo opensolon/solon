@@ -3,16 +3,16 @@ package org.noear.solon.extend.dubbo;
 import org.apache.dubbo.config.ServiceConfig;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.config.annotation.Service;
-import org.noear.solon.XApp;
+import org.noear.solon.Solon;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.core.Plugin;
 
 
-public class XPluginImp implements XPlugin {
+public class XPluginImp implements Plugin {
     DubboAdapter _server;
 
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         if (app.source().getAnnotation(EnableDubbo.class) == null) {
             return;
         }

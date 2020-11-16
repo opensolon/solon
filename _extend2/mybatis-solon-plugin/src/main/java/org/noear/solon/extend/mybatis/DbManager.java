@@ -2,8 +2,8 @@ package org.noear.solon.extend.mybatis;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
 
 import java.lang.reflect.Proxy;
@@ -49,10 +49,10 @@ class DbManager {
     private SqlSessionHolder buildSqlSessionFactory(BeanWrap bw) {
         SqlFactoryAdapter adapter;
 
-        if (XUtil.isEmpty(bw.name())) {
+        if (Utils.isEmpty(bw.name())) {
             adapter = new SqlFactoryAdapter(bw);
         } else {
-            adapter = new SqlFactoryAdapter(bw, XApp.cfg().getProp("mybatis." + bw.name()));
+            adapter = new SqlFactoryAdapter(bw, Solon.cfg().getProp("mybatis." + bw.name()));
         }
 
         SqlSessionFactory factory = adapter.getFactory();

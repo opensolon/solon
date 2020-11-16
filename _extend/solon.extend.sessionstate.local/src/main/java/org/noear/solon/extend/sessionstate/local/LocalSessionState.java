@@ -1,14 +1,14 @@
 package org.noear.solon.extend.sessionstate.local;
 
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XSessionState;
+import org.noear.solon.Utils;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.SessionState;
 
 
 /**
  * 它会是个单例，不能有上下文数据
  * */
-public class LocalSessionState implements XSessionState {
+public class LocalSessionState implements SessionState {
     public final static String SESSIONID_KEY = "SOLONID";
 
     public final static String SESSIONID_MD5() {
@@ -43,11 +43,11 @@ public class LocalSessionState implements XSessionState {
     private String _domain = null;
 
     public String cookieGet(String key) {
-        return XContext.current().cookie(key);
+        return Context.current().cookie(key);
     }
 
     public  void   cookieSet(String key, String val) {
-        XContext ctx = XContext.current();
+        Context ctx = Context.current();
 
         if (XServerProp.session_state_domain_auto) {
             if (_domain != null) {
@@ -75,11 +75,11 @@ public class LocalSessionState implements XSessionState {
 
     @Override
     public String sessionId() {
-        String _sessionId = XContext.current().attr("sessionId", null);
+        String _sessionId = Context.current().attr("sessionId", null);
 
         if (_sessionId == null) {
             _sessionId = sessionId_get();
-            XContext.current().attrSet("sessionId", _sessionId);
+            Context.current().attrSet("sessionId", _sessionId);
         }
 
         return _sessionId;
@@ -89,7 +89,7 @@ public class LocalSessionState implements XSessionState {
         String skey = cookieGet(SESSIONID_KEY);
         String smd5 = cookieGet(SESSIONID_MD5());
 
-        if (XUtil.isEmpty(skey) == false && XUtil.isEmpty(smd5) == false) {
+        if (Utils.isEmpty(skey) == false && Utils.isEmpty(smd5) == false) {
             if (EncryptUtil.md5(skey + SESSIONID_encrypt).equals(smd5)) {
                 return skey;
             }
@@ -120,7 +120,7 @@ public class LocalSessionState implements XSessionState {
     public void sessionRefresh() {
         String skey = cookieGet(SESSIONID_KEY);
 
-        if (XUtil.isEmpty(skey) == false) {
+        if (Utils.isEmpty(skey) == false) {
             cookieSet(SESSIONID_KEY, skey);
             cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_encrypt));
 

@@ -3,10 +3,10 @@ package org.noear.solon.extend.beetlsql;
 import org.beetl.sql.core.ConditionalSQLManager;
 import org.beetl.sql.core.SQLManager;
 import org.beetl.sql.core.SQLManagerBuilder;
-import org.noear.solon.XUtil;
+import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.XEventBus;
+import org.noear.solon.core.event.EventBus;
 
 import javax.sql.DataSource;
 import java.util.Map;
@@ -36,7 +36,7 @@ class DbManager {
         DbConnectionSource cs = null;
         DataSource master = bw.raw();
 
-        if (XUtil.isNotEmpty(bw.attrs())) {
+        if (Utils.isNotEmpty(bw.attrs())) {
             String[] slaveAry = bw.attrs().split(",");
             DataSource[] slaves = new DataSource[slaveAry.length];
 
@@ -56,7 +56,7 @@ class DbManager {
         SQLManagerBuilder builder = SQLManager.newBuilder(cs);
 
         //推到事件中心，用于扩展
-        XEventBus.push(builder);
+        EventBus.push(builder);
 
         return builder.build();
     }

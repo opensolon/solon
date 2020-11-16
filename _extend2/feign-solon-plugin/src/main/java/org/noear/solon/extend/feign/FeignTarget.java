@@ -3,16 +3,16 @@ package org.noear.solon.extend.feign;
 import feign.Request;
 import feign.RequestTemplate;
 import feign.Target;
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XUpstream;
+import org.noear.solon.Utils;
+import org.noear.solon.core.Upstream;
 
 public class FeignTarget<T> implements Target<T> {
     private final Class<T> type;
     private final String name;
     private final String path;
-    private final XUpstream upstream;
+    private final Upstream upstream;
 
-    public FeignTarget(Class<T> type, String name, String path, XUpstream upstream) {
+    public FeignTarget(Class<T> type, String name, String path, Upstream upstream) {
         this.type = type;
         this.name = name;
         this.path = path;
@@ -31,7 +31,7 @@ public class FeignTarget<T> implements Target<T> {
 
     @Override
     public String url() {
-        if (XUtil.isEmpty(path)) {
+        if (Utils.isEmpty(path)) {
             return this.upstream.getServer();
         } else {
             return this.upstream.getServer() + path;

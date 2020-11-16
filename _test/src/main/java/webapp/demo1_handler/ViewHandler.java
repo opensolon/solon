@@ -1,20 +1,19 @@
 package webapp.demo1_handler;
 
-import org.noear.solon.XApp;
-import org.noear.solon.annotation.XController;
-import org.noear.solon.annotation.XMapping;
-import org.noear.solon.core.ModelAndView;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XHandler;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.core.handler.ModelAndView;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Handler;
 
 /**
  * 实现简单的 mvc 效果
  * */
-@XMapping("/demo1/view/*")
-@XController
-public class ViewHandler implements XHandler {
+@Mapping("/demo1/view/*")
+@Controller
+public class ViewHandler implements Handler {
     @Override
-    public void handle(XContext cxt) throws Throwable {
+    public void handle(Context cxt) throws Throwable {
         ModelAndView model = new ModelAndView("dock.ftl");
         model.put("title","dock");
         model.put("msg","你好 world! in XController");

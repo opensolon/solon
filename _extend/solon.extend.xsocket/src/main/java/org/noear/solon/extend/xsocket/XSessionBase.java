@@ -1,24 +1,24 @@
 package org.noear.solon.extend.xsocket;
 
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XMessage;
-import org.noear.solon.core.XSession;
+import org.noear.solon.Utils;
+import org.noear.solon.core.message.Message;
+import org.noear.solon.core.message.MessageSession;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-public abstract class XSessionBase implements XSession {
+public abstract class XSessionBase implements MessageSession {
     /**
      * 用于支持双向RPC
      * */
     @Override
-    public XMessage sendAndResponse(XMessage message) {
-        if (XUtil.isEmpty(message.key())) {
+    public Message sendAndResponse(Message message) {
+        if (Utils.isEmpty(message.key())) {
             throw new IllegalArgumentException("SendAndResponse message no key");
         }
 
         //注册请求
-        CompletableFuture<XMessage> request = new CompletableFuture<>();
+        CompletableFuture<Message> request = new CompletableFuture<>();
         XListenerProxy.regRequest(message, request);
 
         //发送消息
@@ -28,7 +28,7 @@ public abstract class XSessionBase implements XSession {
             //等待响应
             return request.get(XListenerProxy.REQUEST_AND_RESPONSE_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         } catch (Throwable ex) {
-            throw XUtil.throwableWrap(ex);
+            throw Utils.throwableWrap(ex);
         }
     }
 }

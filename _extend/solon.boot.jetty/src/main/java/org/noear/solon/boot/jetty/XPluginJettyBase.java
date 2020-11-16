@@ -3,8 +3,8 @@ package org.noear.solon.boot.jetty;
 import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.resource.ResourceCollection;
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.boot.jetty.http.JtContainerInitializerProxy;
 import org.noear.solon.boot.jetty.http.JtHttpContextServlet;
 
@@ -22,7 +22,7 @@ public class XPluginJettyBase {
 
 
         //添加session state 支持
-        if(XApp.global().enableSessionState()) {
+        if(Solon.global().enableSessionState()) {
             handler.setSessionHandler(new SessionHandler());
 
             if (XServerProp.session_timeout > 0) {
@@ -44,7 +44,7 @@ public class XPluginJettyBase {
         }
         String resURL = rootURL.toString();
 
-        boolean isDebug = XApp.cfg().isDebugMode();
+        boolean isDebug = Solon.cfg().isDebugMode();
         if (isDebug && (resURL.startsWith("jar:") == false)) {
             int endIndex = resURL.indexOf("target");
             String debugResURL = resURL.substring(0, endIndex) + "src/main/resources/";
@@ -55,12 +55,12 @@ public class XPluginJettyBase {
     }
 
     protected URL getRootPath() {
-        URL root = XUtil.getResource("/");
+        URL root = Utils.getResource("/");
         if (root != null) {
             return root;
         }
         try {
-            String path = XUtil.getResource("").toString();
+            String path = Utils.getResource("").toString();
             if (path.startsWith("jar:")) {
                 int endIndex = path.indexOf("!");
                 path = path.substring(0, endIndex + 1) + "/";

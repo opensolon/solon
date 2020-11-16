@@ -1,12 +1,10 @@
 package org.noear.solon.extend.properties.yaml;
 
-import org.noear.solon.core.XPropertiesLoader;
-
 import java.io.StringReader;
 import java.net.URL;
 import java.util.Properties;
 
-public class PropertiesLoader extends XPropertiesLoader {
+public class PropertiesLoader extends org.noear.solon.core.PropertiesLoader {
 
     public static final PropertiesLoader g = new PropertiesLoader();
 

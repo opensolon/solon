@@ -2,10 +2,10 @@ package org.noear.solon.boot.jdkhttp;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XFile;
-import org.noear.solon.core.XMap;
+import org.noear.solon.Utils;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.UploadedFile;
+import org.noear.solon.core.ParamMap;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -14,10 +14,10 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.util.*;
 
-public class JdkHttpContext extends XContext {
+public class JdkHttpContext extends Context {
     private HttpExchange _exchange;
     private Map<String, Object> _parameters;
-    protected Map<String, List<XFile>> _fileMap;
+    protected Map<String, List<UploadedFile>> _fileMap;
 
     public JdkHttpContext(HttpExchange exchange) {
         _exchange = exchange;
@@ -149,7 +149,7 @@ public class JdkHttpContext extends XContext {
         try {
             String temp = paramMap().get(key);
 
-            if (XUtil.isEmpty(temp)) {
+            if (Utils.isEmpty(temp)) {
                 return def;
             } else {
                 return temp;
@@ -161,12 +161,12 @@ public class JdkHttpContext extends XContext {
         }
     }
 
-    private XMap _paramMap;
+    private ParamMap _paramMap;
 
     @Override
-    public XMap paramMap() {
+    public ParamMap paramMap() {
         if (_paramMap == null) {
-            _paramMap = new XMap();
+            _paramMap = new ParamMap();
 
             _parameters.forEach((k, v) -> {
                 if (v instanceof List) {
@@ -201,9 +201,9 @@ public class JdkHttpContext extends XContext {
     }
 
     @Override
-    public List<XFile> files(String key) throws Exception {
+    public List<UploadedFile> files(String key) throws Exception {
         if (isMultipartFormData()) {
-            List<XFile> temp = _fileMap.get(key);
+            List<UploadedFile> temp = _fileMap.get(key);
             if (temp == null) {
                 return new ArrayList<>();
             } else {
@@ -215,9 +215,9 @@ public class JdkHttpContext extends XContext {
     }
 
     @Override
-    public XMap cookieMap() {
+    public ParamMap cookieMap() {
         if (_cookieMap == null) {
-            _cookieMap = new XMap();
+            _cookieMap = new ParamMap();
 
             String tmp = header("Cookie", "");
             String[] ss = tmp.split(";");
@@ -234,12 +234,12 @@ public class JdkHttpContext extends XContext {
         return _cookieMap;
     }
 
-    private XMap _cookieMap;
+    private ParamMap _cookieMap;
 
     @Override
-    public XMap headerMap() {
+    public ParamMap headerMap() {
         if (_headerMap == null) {
-            _headerMap = new XMap();
+            _headerMap = new ParamMap();
 
             Headers headers = _exchange.getRequestHeaders();
 
@@ -255,7 +255,7 @@ public class JdkHttpContext extends XContext {
         return _headerMap;
     }
 
-    private XMap _headerMap;
+    private ParamMap _headerMap;
 
     @Override
     public Object response() {
@@ -334,7 +334,7 @@ public class JdkHttpContext extends XContext {
         StringBuilder sb = new StringBuilder();
         sb.append(key).append("=").append(val).append(";");
 
-        if (XUtil.isNotEmpty(path)) {
+        if (Utils.isNotEmpty(path)) {
             sb.append("path=").append(path).append(";");
         }
 
@@ -342,7 +342,7 @@ public class JdkHttpContext extends XContext {
             sb.append("max-age=").append(maxAge).append(";");
         }
 
-        if (XUtil.isNotEmpty(domain)) {
+        if (Utils.isNotEmpty(domain)) {
             sb.append("domain=").append(domain.toLowerCase()).append(";");
         }
 

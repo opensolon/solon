@@ -1,6 +1,6 @@
 package org.noear.solon.boot.jdksocket;
 
-import org.noear.solon.core.XMessage;
+import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.xsocket.XMessageUtils;
 
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.nio.ByteBuffer;
 public class SocketProtocol {
     public static final SocketProtocol instance = new SocketProtocol();
 
-    public XMessage decode(InputStream input) throws IOException {
+    public Message decode(InputStream input) throws IOException {
         if(input == null){
             return null;
         }

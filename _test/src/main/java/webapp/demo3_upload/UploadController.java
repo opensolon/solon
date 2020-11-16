@@ -1,23 +1,19 @@
 package webapp.demo3_upload;
 
-import org.noear.solon.annotation.XController;
-import org.noear.solon.annotation.XMapping;
-import org.noear.solon.annotation.XParam;
-import org.noear.solon.annotation.XSingleton;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XFile;
-import webapp.models.UserModel;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Singleton;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.UploadedFile;
 
-import java.util.Date;
-
-@XSingleton(false)
-@XMapping("/demo3/upload")
-@XController
+@Singleton(false)
+@Mapping("/demo3/upload")
+@Controller
 public class UploadController {
 
     //支持上传文件参数（file 变量名，与表单变量名保持一至）
-    @XMapping("f1")
-    public String test_f1(XContext context, XFile file) throws Exception {
+    @Mapping("f1")
+    public String test_f1(Context context, UploadedFile file) throws Exception {
         if (file != null) {
             return "成功：" + file.name;
         }
@@ -26,9 +22,9 @@ public class UploadController {
     }
 
     //支持上传文件参数
-    @XMapping("f2")
-    public String test_f2(XContext context) throws Exception{
-        XFile file = context.file("file"); //（file 变量名，与表单变量名保持一至）
+    @Mapping("f2")
+    public String test_f2(Context context) throws Exception{
+        UploadedFile file = context.file("file"); //（file 变量名，与表单变量名保持一至）
 
         return context.path();
     }

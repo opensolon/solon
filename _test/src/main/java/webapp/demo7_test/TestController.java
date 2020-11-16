@@ -1,18 +1,18 @@
 package webapp.demo7_test;
 
-import org.noear.solon.annotation.XController;
-import org.noear.solon.annotation.XMapping;
-import org.noear.solon.core.XContext;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.core.handler.Context;
 
-@XController
+@Controller
 public class TestController {
-    @XMapping("/demo7/test")
-    public void test(XContext c) throws Exception{
+    @Mapping("/demo7/test")
+    public void test(Context c) throws Exception{
         c.output(c.path());
     }
 
-    @XMapping("/demo7/exception")
-    public void exception(XContext c) throws Exception{
+    @Mapping("/demo7/exception")
+    public void exception(Context c) throws Exception{
         throw new RuntimeException("出错了");
     }
 }

@@ -1,23 +1,23 @@
 package org.noear.solon.extend.jsr330;
 
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.XHandlerLoader;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.core.handler.HandlerLoader;
+import org.noear.solon.core.Plugin;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-public class XPluginImp implements XPlugin {
+public class XPluginImp implements Plugin {
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         Aop.context().beanBuilderAdd(Named.class, (clz, bw, anno) -> {
 
-            if (XPlugin.class.isAssignableFrom(bw.clz())) {
+            if (Plugin.class.isAssignableFrom(bw.clz())) {
                 //如果是插件，则插入
-                XApp.global().plug(bw.raw());
+                Solon.global().plug(bw.raw());
             } else {
 
                 //注册到容器
@@ -25,12 +25,12 @@ public class XPluginImp implements XPlugin {
 
                 //如果是remoting状态，转到XApp路由器
                 if (bw.remoting()) {
-                    XHandlerLoader bww = new XHandlerLoader(bw);
+                    HandlerLoader bww = new HandlerLoader(bw);
                     if (bww.mapping() != null) {
                         //
                         //如果没有xmapping，则不进行web注册
                         //
-                        bww.load(XApp.global());
+                        bww.load(Solon.global());
                     }
                 }
             }
@@ -38,7 +38,7 @@ public class XPluginImp implements XPlugin {
 
         Aop.context().beanInjectorAdd(Inject.class, (fwT, anno) -> {
             Named tmp = fwT.getType().getAnnotation(Named.class);
-            if(tmp == null || XUtil.isEmpty(tmp.value())){
+            if(tmp == null || Utils.isEmpty(tmp.value())){
                 Aop.context().beanInject(fwT, null);
             }else{
                 Aop.context().beanInject(fwT, tmp.value());

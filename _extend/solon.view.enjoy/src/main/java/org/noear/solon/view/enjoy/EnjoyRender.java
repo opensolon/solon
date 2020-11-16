@@ -5,11 +5,11 @@ import com.jfinal.template.Engine;
 import com.jfinal.template.Template;
 import com.jfinal.template.source.ClassPathSourceFactory;
 import com.jfinal.template.source.FileSourceFactory;
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XRender;
-import org.noear.solon.core.ModelAndView;
-import org.noear.solon.core.XContext;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+import org.noear.solon.core.handler.Render;
+import org.noear.solon.core.handler.ModelAndView;
+import org.noear.solon.core.handler.Context;
 import org.noear.solon.ext.SupplierEx;
 
 import java.io.ByteArrayOutputStream;
@@ -18,7 +18,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URI;
 
-public class EnjoyRender implements XRender {
+public class EnjoyRender implements Render {
 
     private static EnjoyRender _global;
 
@@ -39,27 +39,27 @@ public class EnjoyRender implements XRender {
     //
     public EnjoyRender() {
 
-        String baseUri = XApp.global().prop().get("slon.mvc.view.prefix");
+        String baseUri = Solon.global().prop().get("slon.mvc.view.prefix");
 
-        if (XUtil.isEmpty(baseUri) == false) {
+        if (Utils.isEmpty(baseUri) == false) {
             _baseUri = baseUri;
         }
 
 
-        if (XApp.cfg().isDebugMode()) {
+        if (Solon.cfg().isDebugMode()) {
             forDebug();
         } else {
             forRelease();
         }
 
-        XApp.global().onSharedAdd((k, v) -> {
+        Solon.global().onSharedAdd((k, v) -> {
             setSharedVariable(k, v);
         });
     }
 
     private void forDebug() {
         //添加调试模式
-        String dirroot = XUtil.getResource("/").toString().replace("target/classes/", "");
+        String dirroot = Utils.getResource("/").toString().replace("target/classes/", "");
         File dir = null;
 
         if (dirroot.startsWith("file:")) {
@@ -110,7 +110,7 @@ public class EnjoyRender implements XRender {
     }
 
     @Override
-    public void render(Object obj, XContext ctx) throws Throwable {
+    public void render(Object obj, Context ctx) throws Throwable {
         if (obj == null) {
             return;
         }
@@ -123,7 +123,7 @@ public class EnjoyRender implements XRender {
     }
 
     @Override
-    public String renderAndReturn(Object obj, XContext ctx) throws Throwable {
+    public String renderAndReturn(Object obj, Context ctx) throws Throwable {
         if (obj == null) {
             return null;
         }
@@ -138,7 +138,7 @@ public class EnjoyRender implements XRender {
         }
     }
 
-    public void render_mav(ModelAndView mv, XContext ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
+    public void render_mav(ModelAndView mv, Context ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
         if (ctx.contentTypeNew() == null) {
             ctx.contentType("text/html;charset=utf-8");
         }

@@ -1,10 +1,10 @@
 package org.noear.solon.extend.data;
 
-import org.noear.solon.XUtil;
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.XCache;
 import org.noear.solon.annotation.XCachePut;
 import org.noear.solon.annotation.XCacheRemove;
-import org.noear.solon.core.CacheService;
+import org.noear.solon.core.cache.CacheService;
 import org.noear.solon.ext.SupplierEx;
 
 import java.lang.reflect.Method;
@@ -51,7 +51,7 @@ public class CacheExecutorImp {
                 //
                 cs.store(key, result, anno.seconds());
 
-                if (XUtil.isNotEmpty(anno.tags())) {
+                if (Utils.isNotEmpty(anno.tags())) {
                     String tags = formatTags(anno.tags(), parMap);
                     CacheTags ct = new CacheTags(cs);
 
@@ -70,7 +70,7 @@ public class CacheExecutorImp {
      * 清除缓存
      */
     public void cacheRemove(XCacheRemove anno, Method method, Parameter[] params, Object[] values) {
-        if (anno == null || XUtil.isEmpty(anno.tags())) {
+        if (anno == null || Utils.isEmpty(anno.tags())) {
             return;
         }
 
@@ -94,7 +94,7 @@ public class CacheExecutorImp {
      * 更新缓存
      */
     public void cachePut(XCachePut anno, Method method, Parameter[] params, Object[] values, Object newValue) {
-        if (anno == null || XUtil.isEmpty(anno.tags())) {
+        if (anno == null || Utils.isEmpty(anno.tags())) {
             return;
         }
 

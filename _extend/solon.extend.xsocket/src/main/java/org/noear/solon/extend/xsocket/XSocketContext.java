@@ -1,9 +1,9 @@
 package org.noear.solon.extend.xsocket;
 
-import org.noear.solon.core.XContextEmpty;
-import org.noear.solon.core.XMethod;
-import org.noear.solon.core.XMessage;
-import org.noear.solon.core.XSession;
+import org.noear.solon.core.handler.ContextEmpty;
+import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.message.Message;
+import org.noear.solon.core.message.MessageSession;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -15,14 +15,14 @@ import java.net.URI;
  * @author noear
  * @since 1.0
  * */
-public class XSocketContext extends XContextEmpty {
+public class XSocketContext extends ContextEmpty {
     private InetSocketAddress _inetSocketAddress;
-    private XSession _sesssion;
-    private XMessage _message;
+    private MessageSession _sesssion;
+    private Message _message;
     private boolean _messageIsString;
-    private XMethod _method;
+    private MethodType _method;
 
-    public XSocketContext(XSession session, XMessage message, boolean messageIsString) {
+    public XSocketContext(MessageSession session, Message message, boolean messageIsString) {
         _sesssion = session;
         _message = message;
         _messageIsString = messageIsString;
@@ -56,7 +56,7 @@ public class XSocketContext extends XContextEmpty {
 
     @Override
     public String protocol() {
-        if (_method.code == XMethod.WEBSOCKET.code) {
+        if (_method.code == MethodType.WEBSOCKET.code) {
             return "WS";
         } else {
             return "SOCKET";
@@ -152,7 +152,7 @@ public class XSocketContext extends XContextEmpty {
             if (_messageIsString) {
                 _sesssion.send(_outputStream.toString());
             } else {
-                XMessage msg = XMessage.wrap(1, _message.key(), _message.resourceDescriptor(), _outputStream.toByteArray());
+                Message msg = Message.wrap(1, _message.key(), _message.resourceDescriptor(), _outputStream.toByteArray());
                 _sesssion.send(msg);
             }
         }

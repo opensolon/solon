@@ -1,48 +1,47 @@
 package webapp.demo2_mvc;
 
-import org.noear.solon.annotation.XMapping;
-import org.noear.solon.annotation.XController;
-import org.noear.solon.annotation.XSingleton;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XMethod;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Singleton;
+import org.noear.solon.core.handler.Context;
 
-@XSingleton(false)
-@XMapping("/demo2/mapping")
-@XController
+@Singleton(false)
+@Mapping("/demo2/mapping")
+@Controller
 public class MappingController {
     //支持与父XMapping叠国路径
-    @XMapping("a")
-    public String test_a(XContext context) {
+    @Mapping("a")
+    public String test_a(Context context) {
         return context.path();
     }
 
     //支持*一段路径匹配
-    @XMapping("b/*")
-    public String test_b(XContext context) {
+    @Mapping("b/*")
+    public String test_b(Context context) {
         return context.path();
     }
 
     //支持**不限长度匹配
-    @XMapping("c/**")
-    public String test_c(XContext context) {
+    @Mapping("c/**")
+    public String test_c(Context context) {
         return context.path();
     }
 
     //支持特征路径匹配1
-    @XMapping("d1/**/$*")
-    public String test_d1(XContext context) {
+    @Mapping("d1/**/$*")
+    public String test_d1(Context context) {
         return context.path();
     }
 
     //支持特征路径匹配2
-    @XMapping("d1/**/@*")
-    public String test_d2(XContext context) {
+    @Mapping("d1/**/@*")
+    public String test_d2(Context context) {
         return context.path();
     }
 
     //支持path var匹配
-    @XMapping("e/{p_q}/{obj}/{id}")
-    public String test_e(XContext context, String p_q, String obj, String id) {
+    @Mapping("e/{p_q}/{obj}/{id}")
+    public String test_e(Context context, String p_q, String obj, String id) {
         return context.path() + "::" + p_q + "-" + obj + "-" + id;
     }
 }

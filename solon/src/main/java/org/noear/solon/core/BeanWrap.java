@@ -1,7 +1,7 @@
 package org.noear.solon.core;
 
-import org.noear.solon.annotation.XInit;
-import org.noear.solon.annotation.XSingleton;
+import org.noear.solon.annotation.Init;
+import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.wrap.ClassWrap;
 
 import java.lang.annotation.Annotation;
@@ -48,7 +48,7 @@ public class BeanWrap {
     public BeanWrap(Class<?> clz, Object raw) {
         this.clz = clz;
 
-        XSingleton ano = clz.getAnnotation(XSingleton.class);
+        Singleton ano = clz.getAnnotation(Singleton.class);
         singleton = (ano == null || ano.value()); //默认为单例
         annotations = clz.getAnnotations();
 
@@ -208,7 +208,7 @@ public class BeanWrap {
 
         //查找初始化函数
         for (Method m : clzWrap.getMethods()) {
-            if (m.getAnnotation(XInit.class) != null) {
+            if (m.getAnnotation(Init.class) != null) {
                 if (m.getParameters().length == 0) {
                     //只接收没有参数的
                     clzInit = m;

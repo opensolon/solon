@@ -1,11 +1,10 @@
 package org.noear.solon.extend.xsocket;
 
-import org.noear.solon.XApp;
-import org.noear.solon.core.XListener;
-import org.noear.solon.core.XMessage;
-import org.noear.solon.core.XSession;
+import org.noear.solon.Solon;
+import org.noear.solon.core.message.MessageListener;
+import org.noear.solon.core.message.Message;
+import org.noear.solon.core.message.MessageSession;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,13 +15,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author noear
  * @since 1.0
  * */
-public class XListenerProxy implements XListener {
+public class XListenerProxy implements MessageListener {
     //实例维护
-    private static XListener global = new XListenerProxy();
-    public static XListener getGlobal() {
+    private static MessageListener global = new XListenerProxy();
+    public static MessageListener getGlobal() {
         return global;
     }
-    public static void setGlobal(XListener global) {
+    public static void setGlobal(MessageListener global) {
         XListenerProxy.global = global;
     }
 
@@ -38,8 +37,8 @@ public class XListenerProxy implements XListener {
     //
     // 内部使用
     //
-    private static Map<String, CompletableFuture<XMessage>> requests = new ConcurrentHashMap<>();
-    protected static void regRequest(XMessage message, CompletableFuture<XMessage> future) {
+    private static Map<String, CompletableFuture<Message>> requests = new ConcurrentHashMap<>();
+    protected static void regRequest(Message message, CompletableFuture<Message> future) {
         requests.putIfAbsent(message.key(), future);
     }
 
@@ -48,18 +47,18 @@ public class XListenerProxy implements XListener {
     // XListener 实现
     //
     @Override
-    public void onOpen(XSession session) {
-        XListener sl = get(session);
+    public void onOpen(MessageSession session) {
+        MessageListener sl = get(session);
         if (sl != null) {
             sl.onOpen(session);
         }
     }
 
     @Override
-    public void onMessage(XSession session, XMessage message, boolean messageIsString) {
+    public void onMessage(MessageSession session, Message message, boolean messageIsString) {
         if(message.flag() == 1) {
             //flag = 1，为响应标志
-            CompletableFuture<XMessage> request = requests.get(message.key());
+            CompletableFuture<Message> request = requests.get(message.key());
 
             //请求模式
             if (request != null) {
@@ -70,7 +69,7 @@ public class XListenerProxy implements XListener {
 
 
         //监听模式
-        XListener sl = get(session);
+        MessageListener sl = get(session);
         if (sl != null) {
             sl.onMessage(session, message, messageIsString);
         }
@@ -82,23 +81,23 @@ public class XListenerProxy implements XListener {
     }
 
     @Override
-    public void onClose(XSession session) {
-        XListener sl = get(session);
+    public void onClose(MessageSession session) {
+        MessageListener sl = get(session);
         if (sl != null) {
             sl.onClose(session);
         }
     }
 
     @Override
-    public void onError(XSession session, Throwable error) {
-        XListener sl = get(session);
+    public void onError(MessageSession session, Throwable error) {
+        MessageListener sl = get(session);
         if (sl != null) {
             sl.onError(session, error);
         }
     }
 
     //获取监听器
-    private XListener get(XSession s) {
-        return XApp.global().router().matchOne(s);
+    private MessageListener get(MessageSession s) {
+        return Solon.global().router().matchOne(s);
     }
 }

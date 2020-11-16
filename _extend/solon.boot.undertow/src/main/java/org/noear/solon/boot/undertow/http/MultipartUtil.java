@@ -1,6 +1,6 @@
 package org.noear.solon.boot.undertow.http;
 
-import org.noear.solon.core.XFile;
+import org.noear.solon.core.handler.UploadedFile;
 
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
@@ -25,13 +25,13 @@ public class MultipartUtil {
     }
 
     private static void doBuildFiles(UtHttpContext context, Part part) throws IOException{
-        List<XFile> list = context._fileMap.get(part.getName());
+        List<UploadedFile> list = context._fileMap.get(part.getName());
         if(list == null){
             list = new ArrayList<>();
             context._fileMap.put(part.getName(), list);
 
 
-            XFile f = new XFile();
+            UploadedFile f = new UploadedFile();
             f.contentType = part.getContentType();
             try {
                 f.content = part.getInputStream(); //可以转成 ByteArrayInputStream

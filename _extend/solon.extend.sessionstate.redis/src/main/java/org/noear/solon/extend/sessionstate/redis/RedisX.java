@@ -1,6 +1,6 @@
 package org.noear.solon.extend.sessionstate.redis;
 
-import org.noear.solon.XUtil;
+import org.noear.solon.Utils;
 import redis.clients.jedis.*;
 import redis.clients.jedis.params.SetParams;
 
@@ -169,7 +169,7 @@ class RedisX {
 
         public long val(){
             String temp = client.get(_key);
-            if(XUtil.isEmpty(temp)){
+            if(Utils.isEmpty(temp)){
                 return 0;
             }else{
                 return Long.parseLong(temp);
@@ -279,7 +279,7 @@ class RedisX {
         public long hashVal(String field) {
             String temp = client.hget(_key, field);
 
-            if(XUtil.isEmpty(temp))
+            if(Utils.isEmpty(temp))
                 return 0;
             else
                 return Long.parseLong(temp);

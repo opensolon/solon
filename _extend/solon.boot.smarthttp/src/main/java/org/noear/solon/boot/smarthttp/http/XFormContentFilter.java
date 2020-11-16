@@ -1,9 +1,9 @@
 package org.noear.solon.boot.smarthttp.http;
 
 
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XHandler;
+import org.noear.solon.Utils;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Handler;
 
 import java.net.URLDecoder;
 
@@ -13,9 +13,9 @@ import java.net.URLDecoder;
  * @author noear
  * @since 1.0
  * */
-public class XFormContentFilter implements XHandler {
+public class XFormContentFilter implements Handler {
     @Override
-    public void handle(XContext ctx) throws Throwable {
+    public void handle(Context ctx) throws Throwable {
         String method = ctx.method();
 
         if ("DELETE".equals(method) || "PATCH".equals(method) || "PUT".equals(method)) {
@@ -23,7 +23,7 @@ public class XFormContentFilter implements XHandler {
         }
     }
 
-    private void parseBodyTry(XContext ctx) throws Exception {
+    private void parseBodyTry(Context ctx) throws Exception {
         String ct = ctx.contentType();
 
         if (ct == null || ctx.paramMap().size() > 0) {
@@ -34,7 +34,7 @@ public class XFormContentFilter implements XHandler {
             return;
         }
 
-        if (XUtil.isEmpty(ctx.body())) {
+        if (Utils.isEmpty(ctx.body())) {
             return;
         }
 

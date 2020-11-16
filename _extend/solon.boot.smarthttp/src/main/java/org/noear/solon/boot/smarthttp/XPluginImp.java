@@ -1,23 +1,23 @@
 package org.noear.solon.boot.smarthttp;
 
-import org.noear.solon.XApp;
+import org.noear.solon.Solon;
 import org.noear.solon.boot.smarthttp.http.SmartHttpContextHandler;
 import org.noear.solon.boot.smarthttp.http.XFormContentFilter;
 import org.noear.solon.boot.smarthttp.websocket.WebSocketHandleImp;
-import org.noear.solon.core.XMethod;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.Plugin;
 import org.smartboot.http.HttpBootstrap;
 
-public final class XPluginImp implements XPlugin {
+public final class XPluginImp implements Plugin {
 
     HttpBootstrap _server = null;
 
     public static String solon_boot_ver(){
-        return "smart http 1.0.7/" + XApp.cfg().version();
+        return "smart http 1.0.7/" + Solon.cfg().version();
     }
 
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         if (app.enableHttp() == false) {
             return;
         }
@@ -45,7 +45,7 @@ public final class XPluginImp implements XPlugin {
                     .setPort(app.port())
                     .start();
 
-            app.before("**", XMethod.ALL, -9, new XFormContentFilter());
+            app.before("**", MethodType.ALL, -9, new XFormContentFilter());
 
             long time_end = System.currentTimeMillis();
 

@@ -3,16 +3,16 @@ package org.noear.solon.extend.feign;
 import feign.Feign;
 import feign.Request;
 import feign.Retryer;
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 
 import java.util.function.Consumer;
 
 
-public class XPluginImp implements XPlugin {
+public class XPluginImp implements Plugin {
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         //检查是否启用了@FeignClient
         if (app.source().getAnnotation(EnableFeignClient.class) == null) {
             return;
@@ -44,14 +44,14 @@ public class XPluginImp implements XPlugin {
         Feign.Builder builder = builder0;
 
         //构建target
-        if (XUtil.isEmpty(anno.url())) {
-            XUpstream upstream = getUpstream(anno);
+        if (Utils.isEmpty(anno.url())) {
+            Upstream upstream = getUpstream(anno);
             if (upstream != null) {
                 FeignTarget target = new FeignTarget(clz, anno.name(), anno.path(), upstream);
                 consumer.accept(builder.target(target));
             } else {
                 Aop.getAsyn(anno.name(), (bw) -> {
-                    XUpstream tmp = bw.raw();
+                    Upstream tmp = bw.raw();
                     FeignTarget target = new FeignTarget(clz, anno.name(), anno.path(), tmp);
                     consumer.accept(builder.target(target));
                 });
@@ -62,12 +62,12 @@ public class XPluginImp implements XPlugin {
         }
     }
 
-    private XUpstream getUpstream(FeignClient anno){
-        if(XBridge.upstreamFactory() == null){
+    private Upstream getUpstream(FeignClient anno){
+        if(Bridge.upstreamFactory() == null){
             return null;
         }
 
-        return XBridge.upstreamFactory().create(anno.name());
+        return Bridge.upstreamFactory().create(anno.name());
     }
 
     @Override

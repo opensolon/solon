@@ -1,10 +1,10 @@
 package webapp.demo5_rpc;
 
-import org.noear.solon.core.XUpstream;
+import org.noear.solon.core.Upstream;
 
-public class UserUpstreamFactory implements XUpstream.Factory {
+public class UserUpstreamFactory implements Upstream.Factory {
     @Override
-    public XUpstream create(String service) {
+    public Upstream create(String service) {
         return null;
     }
 }

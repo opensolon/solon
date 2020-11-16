@@ -4,21 +4,21 @@ import org.noear.fairy.Fairy;
 import org.noear.fairy.channel.OkHttpChannel;
 import org.noear.fairy.decoder.SnackDecoder;
 import org.noear.fairy.encoder.SnackEncoder;
-import org.noear.solon.XApp;
-import org.noear.solon.annotation.XController;
-import org.noear.solon.annotation.XMapping;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XHandler;
+import org.noear.solon.Solon;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Handler;
 import webapp.utils.SocketChannel;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@XMapping("/demo5/rpctest/")
-@XController
-public class rpctest implements XHandler {
+@Mapping("/demo5/rpctest/")
+@Controller
+public class rpctest implements Handler {
     @Override
-    public void handle(XContext ctx) throws Throwable {
+    public void handle(Context ctx) throws Throwable {
         Map<String, Object> map = new HashMap<>();
 
         map.put("HttpChannel", httpOf());
@@ -28,7 +28,7 @@ public class rpctest implements XHandler {
     }
 
     private Object httpOf() {
-        String root = "http://localhost:" + XApp.global().port();
+        String root = "http://localhost:" + Solon.global().port();
 
         rockapi client =  Fairy.builder()
                 .channel(OkHttpChannel.instance)
@@ -40,7 +40,7 @@ public class rpctest implements XHandler {
     }
 
     private Object socketOf() {
-        String root = "tcp://localhost:" + (20000 + XApp.global().port());
+        String root = "tcp://localhost:" + (20000 + Solon.global().port());
 
         rockapi client =  Fairy.builder()
                 .channel(SocketChannel.instance)

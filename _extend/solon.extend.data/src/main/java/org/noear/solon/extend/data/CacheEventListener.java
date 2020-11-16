@@ -1,16 +1,15 @@
 package org.noear.solon.extend.data;
 
-import org.noear.solon.XUtil;
+import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.CacheService;
-import org.noear.solon.core.XBridge;
-import org.noear.solon.core.XEventListener;
+import org.noear.solon.core.cache.CacheService;
+import org.noear.solon.core.event.EventListener;
 
-class CacheEventListener implements XEventListener<BeanWrap> {
+class CacheEventListener implements EventListener<BeanWrap> {
     @Override
     public void onEvent(BeanWrap bw) {
         if (bw.raw() instanceof CacheService) {
-            if (XUtil.isEmpty(bw.name())) {
+            if (Utils.isEmpty(bw.name())) {
                 CacheLib.cacheServiceAdd("", bw.raw());
             } else {
                 CacheLib.cacheServiceAddIfAbsent(bw.name(), bw.raw());

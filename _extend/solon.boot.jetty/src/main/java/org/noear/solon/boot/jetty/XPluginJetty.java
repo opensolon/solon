@@ -4,24 +4,24 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.session.DefaultSessionIdManager;
 import org.eclipse.jetty.server.session.SessionHandler;
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
-import org.noear.solon.core.XEventBus;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.Plugin;
 
 import java.io.IOException;
 
-class XPluginJetty extends XPluginJettyBase implements XPlugin {
+class XPluginJetty extends XPluginJettyBase implements Plugin {
     protected Server _server = null;
 
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         try {
             setup(app);
             _server.start();
         } catch (Throwable ex) {
-            throw XUtil.throwableWrap(ex);
+            throw Utils.throwableWrap(ex);
         }
     }
 
@@ -33,13 +33,13 @@ class XPluginJetty extends XPluginJettyBase implements XPlugin {
         }
     }
 
-    protected void setup(XApp app) throws Throwable{
-        Class<?> wsClz = XUtil.loadClass("org.eclipse.jetty.websocket.server.WebSocketHandler");
+    protected void setup(Solon app) throws Throwable{
+        Class<?> wsClz = Utils.loadClass("org.eclipse.jetty.websocket.server.WebSocketHandler");
 
         _server = new Server(app.port());
 
         //session 支持
-        if(XApp.global().enableSessionState()) {
+        if(Solon.global().enableSessionState()) {
             _server.setSessionIdManager(new DefaultSessionIdManager(_server));
         }
 
@@ -69,18 +69,18 @@ class XPluginJetty extends XPluginJettyBase implements XPlugin {
         });
 
         //1.1:分发事件（充许外部扩展）
-        XEventBus.push(_server);
+        EventBus.push(_server);
     }
 
     /**
      * 获取Server Handler
      * */
     protected Handler buildHandler() throws IOException {
-        if(XUtil.loadClass("org.eclipse.jetty.servlet.ServletContextHandler") == null){
+        if(Utils.loadClass("org.eclipse.jetty.servlet.ServletContextHandler") == null){
             //::走Handler接口
             JtHttpContextHandler _handler = new JtHttpContextHandler();
 
-            if(XApp.global().enableSessionState()) {
+            if(Solon.global().enableSessionState()) {
                 //需要session state
                 //
                 SessionHandler s_handler = new SessionHandler();

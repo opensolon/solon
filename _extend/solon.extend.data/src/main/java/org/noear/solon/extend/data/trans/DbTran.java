@@ -1,8 +1,8 @@
 package org.noear.solon.extend.data.trans;
 
-import org.noear.solon.XUtil;
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.XTran;
-import org.noear.solon.core.XEventBus;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.ext.RunnableEx;
 import org.noear.solon.extend.data.TranNode;
 import org.noear.solon.extend.data.TranManager;
@@ -64,7 +64,7 @@ public abstract class DbTran extends DbTranNode implements TranNode {
                 rollback();
             }
 
-            throw XUtil.throwableUnwrap(ex);
+            throw Utils.throwableUnwrap(ex);
         } finally {
             TranManager.currentRemove();
 
@@ -101,7 +101,7 @@ public abstract class DbTran extends DbTranNode implements TranNode {
                     kv.getValue().close();
                 }
             } catch (Throwable ex) {
-                XEventBus.push(ex);
+                EventBus.push(ex);
             }
         }
     }

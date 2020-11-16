@@ -1,6 +1,6 @@
 package org.noear.solon.core.wrap;
 
-import org.noear.solon.core.XContext;
+import org.noear.solon.core.handler.Context;
 import org.noear.solon.core.util.ConvertUtil;
 
 import java.lang.reflect.Field;
@@ -99,7 +99,7 @@ public class ClassWrap {
      * @param data 填充数据
      * @param ctx 上下文
      * */
-    public <T> T newBy(Function<String, String> data, XContext ctx) {
+    public <T> T newBy(Function<String, String> data, Context ctx) {
         try {
             Object obj = clz().newInstance();
 
@@ -119,7 +119,7 @@ public class ClassWrap {
      * @param data 填充数据
      * @param ctx 上下文
      * */
-    public void fill(Object bean, Function<String, String> data, XContext ctx) {
+    public void fill(Object bean, Function<String, String> data, Context ctx) {
         for (Map.Entry<String,FieldWrap> kv : fieldAllWrapsMap.entrySet()) {
             String key = kv.getKey();
             String val0 = data.apply(key);

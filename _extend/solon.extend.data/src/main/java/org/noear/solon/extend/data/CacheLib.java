@@ -1,7 +1,7 @@
 package org.noear.solon.extend.data;
 
-import org.noear.solon.annotation.XNote;
-import org.noear.solon.core.CacheService;
+import org.noear.solon.annotation.Note;
+import org.noear.solon.core.cache.CacheService;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ public class CacheLib {
     /**
      * 缓存服务集合；只读
      */
-    @XNote("缓存服务集合；只读")
+    @Note("缓存服务集合；只读")
     public static Map<String, CacheService> cacheServiceMap() {
         return Collections.unmodifiableMap(cacheServiceMap);
     }
@@ -25,12 +25,12 @@ public class CacheLib {
     /**
      * 添加缓存服务
      */
-    @XNote("添加缓存服务")
+    @Note("添加缓存服务")
     public static void cacheServiceAdd(String name, CacheService cs) {
         cacheServiceMap.put(name, cs);
     }
 
-    @XNote("添加缓存服务")
+    @Note("添加缓存服务")
     public static void cacheServiceAddIfAbsent(String name, CacheService cs) {
         cacheServiceMap.putIfAbsent(name, cs);
     }
@@ -38,7 +38,7 @@ public class CacheLib {
     /**
      * 获取缓存服务
      */
-    @XNote("获取缓存服务")
+    @Note("获取缓存服务")
     public static CacheService cacheServiceGet(String name) {
         return cacheServiceMap.get(name);
     }

@@ -1,35 +1,35 @@
 package webapp.demo2_mvc;
 
-import org.noear.solon.annotation.XController;
-import org.noear.solon.annotation.XMapping;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XMethod;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.MethodType;
 
-@XMapping("/demo2/method")
-@XController
+@Mapping("/demo2/method")
+@Controller
 public class MethodController {
-    @XMapping(value = "post", method = {XMethod.POST})
-    public String test_post(XContext context) {
+    @Mapping(value = "post", method = {MethodType.POST})
+    public String test_post(Context context) {
         return context.param("name");
     }
 
-    @XMapping(value = "put", method = {XMethod.PUT})
-    public String test_put(XContext context, String name) {
+    @Mapping(value = "put", method = {MethodType.PUT})
+    public String test_put(Context context, String name) {
         return context.param("name");
     }
 
-    @XMapping(value = "delete", method = {XMethod.DELETE})
-    public String test_delete(XContext context, String name) {
+    @Mapping(value = "delete", method = {MethodType.DELETE})
+    public String test_delete(Context context, String name) {
         return context.param("name");
     }
 
-    @XMapping(value = "patch", method = {XMethod.PATCH})
-    public String test_patch(XContext context, String name) {
+    @Mapping(value = "patch", method = {MethodType.PATCH})
+    public String test_patch(Context context, String name) {
         return context.param("name");
     }
 
-    @XMapping(value = "post_get", method = {XMethod.POST, XMethod.GET, XMethod.HEAD})
-    public String test_post_get(XContext context) {
+    @Mapping(value = "post_get", method = {MethodType.POST, MethodType.GET, MethodType.HEAD})
+    public String test_post_get(Context context) {
         return context.path();
     }
 }

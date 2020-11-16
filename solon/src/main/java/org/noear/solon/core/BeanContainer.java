@@ -1,9 +1,9 @@
 package org.noear.solon.core;
 
 
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
-import org.noear.solon.annotation.XNote;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+import org.noear.solon.annotation.Note;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.util.ConvertUtil;
 
@@ -106,7 +106,7 @@ public class BeanContainer {
      * @param wrap 如果raw为null，拒绝注册
      */
     public void putWrap(String name, BeanWrap wrap) {
-        if (XUtil.isEmpty(name) == false && wrap.raw() != null) {
+        if (Utils.isEmpty(name) == false && wrap.raw() != null) {
             if (beans.containsKey(name) == false) {
                 beans.put(name, wrap);
                 beanNotice(name, wrap);
@@ -181,7 +181,7 @@ public class BeanContainer {
      * 尝试BEAN注册（按名字和类型存入容器；并进行类型印射）
      */
     public void beanRegister(BeanWrap bw, String name, boolean typed) {
-        if (XUtil.isNotEmpty(name)) {
+        if (Utils.isNotEmpty(name)) {
             //有name的，只用name注入
             //
             putWrap(name, bw);
@@ -213,7 +213,7 @@ public class BeanContainer {
      * @param name 名字（bean name || config ${name}）
      */
     public void beanInject(VarHolder varH, String name) {
-        if (XUtil.isEmpty(name)) {
+        if (Utils.isEmpty(name)) {
             //如果没有name,使用类型进行获取 bean
             getWrapAsyn(varH.getType(), (bw) -> {
                 varH.setValue(bw.get());
@@ -223,7 +223,7 @@ public class BeanContainer {
             //demo:${classpath:user.yml}
             //
             String url = name.substring(12, name.length() - 1);
-            Properties val = XUtil.loadProperties(XUtil.getResource(url));
+            Properties val = Utils.loadProperties(Utils.getResource(url));
 
             if (val == null) {
                 throw new RuntimeException(name + "  failed to load!");
@@ -250,15 +250,15 @@ public class BeanContainer {
 
             if (Properties.class == varH.getType()) {
                 //如果是 Properties
-                Properties val = XApp.cfg().getProp(name);
+                Properties val = Solon.cfg().getProp(name);
                 varH.setValue(val);
             } else if (Map.class == varH.getType()) {
                 //如果是 Map
-                Map val = XApp.cfg().getXmap(name);
+                Map val = Solon.cfg().getXmap(name);
                 varH.setValue(val);
             } else {
                 //2.然后尝试获取配置
-                String val = XApp.cfg().get(name);
+                String val = Solon.cfg().get(name);
                 if (val == null) {
                     Class<?> pt = varH.getType();
 
@@ -268,7 +268,7 @@ public class BeanContainer {
                         varH.setValue(null); //暂时不支持数组注入
                     } else {
                         //尝试转为实体
-                        Properties val0 = XApp.cfg().getProp(name);
+                        Properties val0 = Solon.cfg().getProp(name);
                         Object val2 = ClassWrap.get(pt).newBy(val0::getProperty);
                         varH.setValue(val2);
                     }
@@ -294,7 +294,7 @@ public class BeanContainer {
     /**
      * 遍历bean库 (拿到的是bean包装)
      */
-    @XNote("遍历bean库 (拿到的是bean包装)")
+    @Note("遍历bean库 (拿到的是bean包装)")
     public void beanForeach(BiConsumer<String, BeanWrap> action) {
         beans.forEach(action);
     }
@@ -302,7 +302,7 @@ public class BeanContainer {
     /**
      * 遍历bean包装库
      */
-    @XNote("遍历bean包装库")
+    @Note("遍历bean包装库")
     public void beanForeach(Consumer<BeanWrap> action) {
         beanWraps.forEach((k, bw) -> {
             action.accept(bw);

@@ -1,15 +1,15 @@
 package org.noear.solon.extend.cron4j;
 
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.core.Plugin;
 
 import java.util.Properties;
 
-public class XPluginImp implements XPlugin {
+public class XPluginImp implements Plugin {
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         if(app.source().getAnnotation(EnableCron4j.class) == null){
             return;
         }
@@ -21,8 +21,8 @@ public class XPluginImp implements XPlugin {
             String name = anno.name();
             boolean enable = anno.enable();
 
-            if (XUtil.isNotEmpty(name)) {
-                Properties prop = XApp.cfg().getProp("solon.cron4j." + name);
+            if (Utils.isNotEmpty(name)) {
+                Properties prop = Solon.cfg().getProp("solon.cron4j." + name);
 
                 if (prop.size() > 0) {
                     String cronxTmp = prop.getProperty("cron5x");
@@ -32,7 +32,7 @@ public class XPluginImp implements XPlugin {
                         enable = false;
                     }
 
-                    if (XUtil.isNotEmpty(cronxTmp)) {
+                    if (Utils.isNotEmpty(cronxTmp)) {
                         cronx = cronxTmp;
                     }
                 }

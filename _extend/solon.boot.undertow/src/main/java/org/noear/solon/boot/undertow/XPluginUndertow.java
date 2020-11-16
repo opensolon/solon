@@ -5,11 +5,11 @@ import io.undertow.UndertowOptions;
 import io.undertow.server.HttpHandler;
 import io.undertow.servlet.Servlets;
 import io.undertow.servlet.api.*;
-import org.noear.solon.XApp;
+import org.noear.solon.Solon;
 import org.noear.solon.boot.undertow.http.UtHttpHandlerJsp;
 import org.noear.solon.boot.undertow.websocket.UtWsConnectionCallback;
-import org.noear.solon.core.XEventBus;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.Plugin;
 
 import static io.undertow.Handlers.websocket;
 
@@ -17,10 +17,10 @@ import static io.undertow.Handlers.websocket;
  * @author  by: Yukai
  * @since : 2019/3/28 15:49
  */
-public class XPluginUndertow extends XPluginUndertowBase implements XPlugin {
+public class XPluginUndertow extends XPluginUndertowBase implements Plugin {
     Undertow _server;
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         try {
             setup(app);
 
@@ -38,7 +38,7 @@ public class XPluginUndertow extends XPluginUndertowBase implements XPlugin {
         }
     }
 
-    protected void setup(XApp app) throws Throwable {
+    protected void setup(Solon app) throws Throwable {
         HttpHandler httpHandler = buildHandler();
 
         //************************** init server start******************
@@ -57,7 +57,7 @@ public class XPluginUndertow extends XPluginUndertowBase implements XPlugin {
 
 
         //1.1:分发事件（充许外部扩展）
-        XEventBus.push(builder);
+        EventBus.push(builder);
 
         _server = builder.build();
 

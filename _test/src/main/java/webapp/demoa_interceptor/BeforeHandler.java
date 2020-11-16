@@ -1,11 +1,11 @@
 package webapp.demoa_interceptor;
 
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XHandler;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Handler;
 
-public class BeforeHandler implements XHandler {
+public class BeforeHandler implements Handler {
     @Override
-    public void handle(XContext c) throws Throwable {
+    public void handle(Context c) throws Throwable {
         c.attrSet("_start",System.currentTimeMillis());
     }
 }

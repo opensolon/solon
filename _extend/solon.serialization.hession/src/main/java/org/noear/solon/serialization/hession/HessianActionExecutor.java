@@ -1,18 +1,18 @@
 package org.noear.solon.serialization.hession;
 
 import com.caucho.hessian.io.Hessian2Input;
-import org.noear.solon.core.XActionExecutorDefault;
-import org.noear.solon.core.XContext;
+import org.noear.solon.core.handler.ActionExecutorDefault;
+import org.noear.solon.core.handler.Context;
 
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Parameter;
 import java.util.Map;
 
-public class HessianActionExecutor extends XActionExecutorDefault {
+public class HessianActionExecutor extends ActionExecutorDefault {
     private static final String label = "application/hessian";
 
     @Override
-    public boolean matched(XContext ctx, String ct) {
+    public boolean matched(Context ctx, String ct) {
         if (ct != null && ct.startsWith(label)) {
             return true;
         } else {
@@ -21,13 +21,13 @@ public class HessianActionExecutor extends XActionExecutorDefault {
     }
 
     @Override
-    protected Object changeBody(XContext ctx) throws Exception {
+    protected Object changeBody(Context ctx) throws Exception {
         Hessian2Input hi = new Hessian2Input(new ByteArrayInputStream(ctx.bodyAsBytes()));
         return hi.readObject();
     }
 
     @Override
-    protected Object changeValue(XContext ctx, Parameter p, int pi, Class<?> pt, Object bodyObj) throws Exception {
+    protected Object changeValue(Context ctx, Parameter p, int pi, Class<?> pt, Object bodyObj) throws Exception {
         if (bodyObj == null) {
             return null;
         } else {

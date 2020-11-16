@@ -1,15 +1,15 @@
 package webapp.demoa_interceptor;
 
-import org.noear.solon.annotation.XController;
-import org.noear.solon.annotation.XMapping;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XHandler;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Handler;
 
-@XMapping("/demoa/trigger")
-@XController
-public class demoa_handler implements XHandler {
+@Mapping("/demoa/trigger")
+@Controller
+public class demoa_handler implements Handler {
     @Override
-    public void handle(XContext context) throws Throwable {
+    public void handle(Context context) throws Throwable {
         context.output(context.path());
     }
 }

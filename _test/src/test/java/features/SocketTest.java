@@ -2,10 +2,10 @@ package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.solon.XApp;
+import org.noear.solon.Solon;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
-import org.noear.solon.core.XMessage;
+import org.noear.solon.core.message.Message;
 import webapp.utils.SocketUtils;
 
 import java.util.ArrayList;
@@ -17,10 +17,10 @@ import java.util.List;
 public class SocketTest {
     @Test
     public void test() throws Throwable {
-        String root = "tcp://localhost:" + (20000 + XApp.global().port());
+        String root = "tcp://localhost:" + (20000 + Solon.global().port());
 
 
-        XMessage msg = SocketUtils.send(root + "/demog/中文/1", "Hello 世界!");
+        Message msg = SocketUtils.send(root + "/demog/中文/1", "Hello 世界!");
         System.out.println(msg.toString());
         assert "我收到了：Hello 世界!".equals(msg.toString());
 
@@ -46,7 +46,7 @@ public class SocketTest {
     @Test
     public void test2() throws Throwable {
         //socket client
-        String root = "tcp://localhost:" + (20000 + XApp.global().port());
+        String root = "tcp://localhost:" + (20000 + Solon.global().port());
 
         SocketUtils.send(root + "/seb/test", "Hello 世界!+1", (msg, err) -> {
             if (msg == null) {
@@ -62,7 +62,7 @@ public class SocketTest {
     @Test
     public void test3() throws Throwable {
         //socket client
-        String root = "tcp://localhost:" + (20000 + XApp.global().port());
+        String root = "tcp://localhost:" + (20000 + Solon.global().port());
 
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
@@ -88,7 +88,7 @@ public class SocketTest {
     @Test
     public void test4() throws Throwable {
         //socket client
-        String root = "tcp://localhost:" + (20000 + XApp.global().port());
+        String root = "tcp://localhost:" + (20000 + Solon.global().port());
 
 
         SocketUtils.create(root).send(root + "/seb/test", "Hello 世界!", (msg, err) -> {

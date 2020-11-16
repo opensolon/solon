@@ -2,8 +2,11 @@ package org.noear.solon.boot.rsocket;
 
 import io.rsocket.RSocket;
 import io.rsocket.util.DefaultPayload;
-import org.noear.solon.XUtil;
+import org.noear.solon.Utils;
 import org.noear.solon.core.*;
+import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.message.Message;
+import org.noear.solon.core.message.MessageSession;
 import org.noear.solon.extend.xsocket.XListenerProxy;
 import org.noear.solon.extend.xsocket.XMessageUtils;
 import org.noear.solon.extend.xsocket.XSessionBase;
@@ -13,15 +16,14 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.util.*;
 
 public class _SocketSession extends XSessionBase {
-    public static Map<RSocket, XSession> sessions = new HashMap<>();
+    public static Map<RSocket, MessageSession> sessions = new HashMap<>();
 
-    public static XSession get(RSocket real) {
-        XSession tmp = sessions.get(real);
+    public static MessageSession get(RSocket real) {
+        MessageSession tmp = sessions.get(real);
         if (tmp == null) {
             synchronized (real) {
                 tmp = sessions.get(real);
@@ -53,15 +55,15 @@ public class _SocketSession extends XSessionBase {
         return real;
     }
 
-    private String _sessionId = XUtil.guid();
+    private String _sessionId = Utils.guid();
     @Override
     public String sessionId() {
         return _sessionId;
     }
 
     @Override
-    public XMethod method() {
-        return XMethod.SOCKET;
+    public MethodType method() {
+        return MethodType.SOCKET;
     }
 
     @Override
@@ -80,10 +82,10 @@ public class _SocketSession extends XSessionBase {
 
     @Override
     public void send(byte[] message) {
-        send(XMessage.wrap(message));
+        send(Message.wrap(message));
     }
 
-    public void send(XMessage message) {
+    public void send(Message message) {
         //
         // 转包为XSocketMessage，再转byte[]
         //
@@ -93,10 +95,10 @@ public class _SocketSession extends XSessionBase {
     }
 
     @Override
-    public XMessage sendAndResponse(XMessage message) {
+    public Message sendAndResponse(Message message) {
         ByteBuffer buffer = XMessageUtils.encode(message);
 
-        ValHolder<XMessage> holder = new ValHolder<>();
+        ValHolder<Message> holder = new ValHolder<>();
 
         real.requestResponse(DefaultPayload.create(buffer))
                 .map(d -> XMessageUtils.decode(d.getData()))
@@ -150,7 +152,7 @@ public class _SocketSession extends XSessionBase {
     }
 
     @Override
-    public Collection<XSession> getOpenSessions() {
+    public Collection<MessageSession> getOpenSessions() {
         return new ArrayList<>(sessions.values());
     }
 
@@ -170,7 +172,7 @@ public class _SocketSession extends XSessionBase {
     /**
      * 接收数据
      */
-    public static XMessage receive(Socket socket, SocketProtocol protocol) {
+    public static Message receive(Socket socket, SocketProtocol protocol) {
         try {
             return protocol.decode(socket.getInputStream());
         } catch (SocketException ex) {

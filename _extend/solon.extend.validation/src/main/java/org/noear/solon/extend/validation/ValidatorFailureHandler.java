@@ -1,8 +1,8 @@
 package org.noear.solon.extend.validation;
 
-import org.noear.solon.annotation.XNote;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XResult;
+import org.noear.solon.annotation.Note;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Result;
 
 import java.lang.annotation.Annotation;
 
@@ -16,6 +16,6 @@ public interface ValidatorFailureHandler {
     /**
      * @return 是否停止后续检查器
      */
-    @XNote("@return 是否停止后续检查器")
-    boolean onFailure(XContext ctx, Annotation ano, XResult result, String message);
+    @Note("@return 是否停止后续检查器")
+    boolean onFailure(Context ctx, Annotation ano, Result result, String message);
 }

@@ -1,7 +1,7 @@
 package org.noear.solon.extend.validation.annotation;
 
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XResult;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Result;
 import org.noear.solon.extend.validation.StringUtils;
 import org.noear.solon.extend.validation.Validator;
 
@@ -19,7 +19,7 @@ public class MaxValidator implements Validator<Max> {
     }
 
     @Override
-    public XResult validate(XContext ctx, Max anno, String name, StringBuilder tmp) {
+    public Result validate(Context ctx, Max anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
 
         if (StringUtils.isInteger(val) == false || Long.parseLong(val) > anno.value()) {
@@ -27,9 +27,9 @@ public class MaxValidator implements Validator<Max> {
         }
 
         if (tmp.length() > 1) {
-            return XResult.failure(tmp.substring(1));
+            return Result.failure(tmp.substring(1));
         } else {
-            return XResult.succeed();
+            return Result.succeed();
         }
     }
 }

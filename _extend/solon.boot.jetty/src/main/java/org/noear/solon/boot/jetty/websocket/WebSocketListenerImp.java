@@ -1,8 +1,9 @@
 package org.noear.solon.boot.jetty.websocket;
 
-import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
-import org.noear.solon.core.*;
+import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.message.Message;
+import org.noear.solon.core.message.MessageSession;
 import org.noear.solon.extend.xsocket.XListenerProxy;
 
 import java.nio.ByteBuffer;
@@ -10,7 +11,7 @@ import java.nio.ByteBuffer;
 public class WebSocketListenerImp extends WebSocketAdapter {
 
     @Override
-    public void onWebSocketConnect(Session sess) {
+    public void onWebSocketConnect(org.eclipse.jetty.websocket.api.Session sess) {
         super.onWebSocketConnect(sess);
         XListenerProxy.getGlobal().onOpen(_SocketSession.get(getSession()));
     }
@@ -19,27 +20,27 @@ public class WebSocketListenerImp extends WebSocketAdapter {
     public void onWebSocketBinary(byte[] payload, int offset, int len) {
         try {
             ByteBuffer buf = ByteBuffer.wrap(payload, offset, len);
-            XSession session = _SocketSession.get(getSession());
-            XMessage message = XMessage.wrap(getSession().getUpgradeRequest().getOrigin(),
+            MessageSession session = _SocketSession.get(getSession());
+            Message message = Message.wrap(getSession().getUpgradeRequest().getOrigin(),
                     buf.array());
 
             XListenerProxy.getGlobal().onMessage(session, message, false);
         } catch (Throwable ex) {
-            XEventBus.push(ex);
+            EventBus.push(ex);
         }
     }
 
     @Override
     public void onWebSocketText(String text) {
         try {
-            XSession session = _SocketSession.get(getSession());
-            XMessage message = XMessage.wrap(getSession().getUpgradeRequest().getRequestURI().toString(),
+            MessageSession session = _SocketSession.get(getSession());
+            Message message = Message.wrap(getSession().getUpgradeRequest().getRequestURI().toString(),
                     text.getBytes("UTF-8"));
 
             XListenerProxy.getGlobal().onMessage(session, message, true);
 
         } catch (Throwable ex) {
-            XEventBus.push(ex);
+            EventBus.push(ex);
         }
     }
 

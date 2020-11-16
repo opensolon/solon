@@ -1,8 +1,11 @@
 package org.noear.solon.boot.jetty.http;
 
-import org.noear.solon.XApp;
+import org.noear.solon.Solon;
 import org.noear.solon.core.*;
-import org.noear.solon.XUtil;
+import org.noear.solon.Utils;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.SessionState;
+import org.noear.solon.core.handler.UploadedFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -14,17 +17,17 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.*;
 
-public class JtHttpContext extends XContext{
+public class JtHttpContext extends Context {
     private HttpServletRequest _request;
     private HttpServletResponse _response;
-    protected Map<String,List<XFile>> _fileMap;
+    protected Map<String,List<UploadedFile>> _fileMap;
 
     public JtHttpContext(HttpServletRequest request, HttpServletResponse response) {
         _request = request;
         _response = response;
 
-        if(sessionState().replaceable() && XApp.global().enableSessionState()){
-            sessionStateInit(new XSessionState() {
+        if(sessionState().replaceable() && Solon.global().enableSessionState()){
+            sessionStateInit(new SessionState() {
                 @Override
                 public String sessionId() {
                     return _request.getRequestedSessionId();
@@ -136,7 +139,7 @@ public class JtHttpContext extends XContext{
     public String param(String key, String def) {
         String temp = paramMap().get(key); //因为会添加参数，所以必须用这个
 
-        if(XUtil.isEmpty(temp)){
+        if(Utils.isEmpty(temp)){
             return def;
         }else{
             return temp;
@@ -144,11 +147,11 @@ public class JtHttpContext extends XContext{
     }
 
 
-    private XMap _paramMap;
+    private ParamMap _paramMap;
     @Override
-    public XMap paramMap() {
+    public ParamMap paramMap() {
         if (_paramMap == null) {
-            _paramMap = new XMap();
+            _paramMap = new ParamMap();
 
             Enumeration<String> names = _request.getParameterNames();
 
@@ -177,9 +180,9 @@ public class JtHttpContext extends XContext{
     }
 
     @Override
-    public List<XFile> files(String key) throws Exception{
+    public List<UploadedFile> files(String key) throws Exception{
          if (isMultipartFormData()){
-             List<XFile> temp = _fileMap.get(key);
+             List<UploadedFile> temp = _fileMap.get(key);
              if(temp == null){
                  return new ArrayList<>();
              }else{
@@ -190,12 +193,12 @@ public class JtHttpContext extends XContext{
          }
     }
 
-    private XMap _cookieMap;
+    private ParamMap _cookieMap;
 
     @Override
-    public XMap cookieMap() {
+    public ParamMap cookieMap() {
         if (_cookieMap == null) {
-            _cookieMap = new XMap();
+            _cookieMap = new ParamMap();
 
             Cookie[] _cookies = _request.getCookies();
 
@@ -210,9 +213,9 @@ public class JtHttpContext extends XContext{
     }
 
     @Override
-    public XMap headerMap() {
+    public ParamMap headerMap() {
         if(_headerMap == null) {
-            _headerMap = new XMap();
+            _headerMap = new ParamMap();
             Enumeration<String> headers = _request.getHeaderNames();
 
             while (headers.hasMoreElements()) {
@@ -224,7 +227,7 @@ public class JtHttpContext extends XContext{
 
         return _headerMap;
     }
-    private XMap _headerMap;
+    private ParamMap _headerMap;
 
 
 
@@ -291,13 +294,13 @@ public class JtHttpContext extends XContext{
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
         Cookie c = new Cookie(key,val);
 
-        if (XUtil.isNotEmpty(path)) {
+        if (Utils.isNotEmpty(path)) {
             c.setPath(path);
         }
 
         c.setMaxAge(maxAge);
 
-        if (XUtil.isNotEmpty(domain)) {
+        if (Utils.isNotEmpty(domain)) {
             c.setDomain(domain);
         }
 

@@ -2,21 +2,21 @@ package org.noear.solon.boot.jdkhttp;
 
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
-import org.noear.solon.XApp;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.Solon;
+import org.noear.solon.core.Plugin;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
-public final class XPluginImp implements XPlugin {
+public final class XPluginImp implements Plugin {
     private HttpServer _server = null;
 
     public static String solon_boot_ver(){
-        return "jdk http/"+XApp.cfg().version();
+        return "jdk http/"+ Solon.cfg().version();
     }
 
     @Override
-    public  void start(XApp app) {
+    public  void start(Solon app) {
         if (app.enableHttp() == false) {
             return;
         }

@@ -1,6 +1,6 @@
 package org.noear.solon.extend.xsocket;
 
-import org.noear.solon.core.XMessage;
+import org.noear.solon.core.message.Message;
 
 import java.nio.ByteBuffer;
 
@@ -14,7 +14,7 @@ public class XMessageUtils {
     /**
      * 编码
      */
-    public static ByteBuffer encode(XMessage msg) {
+    public static ByteBuffer encode(Message msg) {
         //key
         byte[] keyB = msg.key().getBytes(msg.getCharset());
         //resourceDescriptor
@@ -50,7 +50,7 @@ public class XMessageUtils {
     /**
      * 解码
      */
-    public static XMessage decode(ByteBuffer buffer) {
+    public static Message decode(ByteBuffer buffer) {
         int len0 = buffer.getInt();
 
         if (len0 > (buffer.remaining() + 4)) {
@@ -81,7 +81,7 @@ public class XMessageUtils {
             buffer.get(bytes, 0, len);
         }
 
-        return XMessage.wrap(flag, key, uri, bytes);
+        return Message.wrap(flag, key, uri, bytes);
     }
 
 

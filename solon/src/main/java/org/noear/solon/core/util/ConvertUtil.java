@@ -1,8 +1,8 @@
 package org.noear.solon.core.util;
 
-import org.noear.solon.XUtil;
-import org.noear.solon.annotation.XParam;
-import org.noear.solon.core.XContext;
+import org.noear.solon.Utils;
+import org.noear.solon.annotation.Param;
+import org.noear.solon.core.handler.Context;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Array;
@@ -32,7 +32,7 @@ public class ConvertUtil {
      * @param val 值
      * @param ctx 通用上下文
      * */
-    public static Object to(AnnotatedElement element, Class<?> type, String key, String val, XContext ctx) throws ClassCastException{
+    public static Object to(AnnotatedElement element, Class<?> type, String key, String val, Context ctx) throws ClassCastException{
         if (String.class == (type)) {
             return val;
         }
@@ -48,10 +48,10 @@ public class ConvertUtil {
         }
 
         if (Date.class == (type) && element != null) {
-            XParam xd = element.getAnnotation(XParam.class);
+            Param xd = element.getAnnotation(Param.class);
             SimpleDateFormat format = null;
 
-            if (xd != null && XUtil.isEmpty(xd.value()) == false) {
+            if (xd != null && Utils.isEmpty(xd.value()) == false) {
                 format = new SimpleDateFormat(xd.value());
             } else {
                 format = DATE_DEF_FORMAT;

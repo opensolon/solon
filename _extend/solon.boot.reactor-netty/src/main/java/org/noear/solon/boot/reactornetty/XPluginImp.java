@@ -1,20 +1,20 @@
 package org.noear.solon.boot.reactornetty;
 
-import org.noear.solon.XApp;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.Solon;
+import org.noear.solon.core.Plugin;
 import reactor.netty.DisposableServer;
 import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.server.HttpServer;
 
-public class XPluginImp implements XPlugin {
+public class XPluginImp implements Plugin {
     DisposableServer _server = null;
 
     public static String solon_boot_ver() {
-        return "reactor-netty 0.9.1/" + XApp.cfg().version();
+        return "reactor-netty 0.9.1/" + Solon.cfg().version();
     }
 
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         if (app.enableHttp() == false) {
             return;
         }

@@ -1,23 +1,23 @@
 package webapp.controller;
 
-import org.noear.solon.annotation.XController;
-import org.noear.solon.annotation.XInject;
-import org.noear.solon.annotation.XMapping;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Mapping;
 import webapp.dso.db.AppxMapper;
 import webapp.dso.db.AppxMapper2;
 import webapp.model.AppxModel;
 
-@XMapping("/test")
-@XController
+@Mapping("/test")
+@Controller
 public class TestController {
 
-    @XInject
+    @Inject
     AppxMapper appxMapper;
 
-    @XInject
+    @Inject
     AppxMapper2 appxMapper2;
 
-    @XMapping("demo1")
+    @Mapping("demo1")
     public Object test1() throws Exception {
 
         AppxModel tmp = appxMapper.appx_get();
@@ -25,7 +25,7 @@ public class TestController {
         return tmp;
     }
 
-    @XMapping("demo2")
+    @Mapping("demo2")
     public Object test2() throws Exception {
 
         AppxModel tmp = appxMapper2.appx_get2(48);
@@ -34,14 +34,14 @@ public class TestController {
     }
 
 
-    @XMapping("demo11")
+    @Mapping("demo11")
     public Object test11() throws Exception {
         AppxModel tmp = appxMapper.appx_get();
 
         return tmp;
     }
 
-    @XMapping("demo12")
+    @Mapping("demo12")
     public Object test12() throws Exception {
         AppxModel tmp = appxMapper2.appx_get2(48);
 

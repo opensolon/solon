@@ -1,6 +1,6 @@
 package org.noear.solon.boot.smartsocket;
 
-import org.noear.solon.core.XMessage;
+import org.noear.solon.core.message.Message;
 
 import org.noear.solon.extend.xsocket.XMessageUtils;
 import org.smartboot.socket.Protocol;
@@ -13,10 +13,10 @@ import java.nio.ByteBuffer;
  * /date/xxx/sss\n...
  *
  * */
-public class AioProtocol implements Protocol<XMessage> {
+public class AioProtocol implements Protocol<Message> {
 
     @Override
-    public XMessage decode(ByteBuffer buffer, AioSession session) {
+    public Message decode(ByteBuffer buffer, AioSession session) {
 
         if (buffer.remaining() < Integer.BYTES) {
             return null;
@@ -29,7 +29,7 @@ public class AioProtocol implements Protocol<XMessage> {
         }
 
         buffer.reset();//内部会重新开始读
-        XMessage tmp = XMessageUtils.decode(buffer);
+        Message tmp = XMessageUtils.decode(buffer);
 
         if (tmp == null) {
             buffer.reset();

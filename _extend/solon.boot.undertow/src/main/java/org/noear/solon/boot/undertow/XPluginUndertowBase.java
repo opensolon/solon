@@ -2,8 +2,8 @@ package org.noear.solon.boot.undertow;
 
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.util.DefaultClassIntrospector;
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.boot.undertow.http.UtContainerInitializerProxy;
 
 import javax.servlet.MultipartConfigElement;
@@ -42,7 +42,7 @@ public abstract class XPluginUndertowBase {
         }
         String resURL = rootURL.toString();
 
-        boolean isDebug = XApp.cfg().isDebugMode();
+        boolean isDebug = Solon.cfg().isDebugMode();
         if (isDebug && (resURL.startsWith("jar:") == false)) {
             int endIndex = resURL.indexOf("target");
             return resURL.substring(0, endIndex) + "src/main/resources/";
@@ -52,12 +52,12 @@ public abstract class XPluginUndertowBase {
     }
 
     protected URL getRootPath() {
-        URL root = XUtil.getResource("/");
+        URL root = Utils.getResource("/");
         if (root != null) {
             return root;
         }
         try {
-            String path = XUtil.getResource("").toString();
+            String path = Utils.getResource("").toString();
             if (path.startsWith("jar:")) {
                 int endIndex = path.indexOf("!");
                 path = path.substring(0, endIndex + 1) + "/";

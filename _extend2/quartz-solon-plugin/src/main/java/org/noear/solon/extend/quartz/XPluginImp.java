@@ -1,15 +1,15 @@
 package org.noear.solon.extend.quartz;
 
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.core.Plugin;
 
 import java.util.Properties;
 
-public class XPluginImp implements XPlugin {
+public class XPluginImp implements Plugin {
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         if(app.source().getAnnotation(EnableQuartz.class) == null){
             return;
         }
@@ -17,7 +17,7 @@ public class XPluginImp implements XPlugin {
         try {
             JobManager.init();
         } catch (Exception ex) {
-            throw XUtil.throwableWrap(ex);
+            throw Utils.throwableWrap(ex);
         }
 
         Aop.context().beanBuilderAdd(Quartz.class, (clz, bw, anno) -> {
@@ -25,8 +25,8 @@ public class XPluginImp implements XPlugin {
             String name = anno.name();
             boolean enable = anno.enable();
 
-            if (XUtil.isNotEmpty(name)) {
-                Properties prop = XApp.cfg().getProp("solon.quartz." + name);
+            if (Utils.isNotEmpty(name)) {
+                Properties prop = Solon.cfg().getProp("solon.quartz." + name);
 
                 if (prop.size() > 0) {
                     String cronxTmp = prop.getProperty("cron7x");
@@ -36,7 +36,7 @@ public class XPluginImp implements XPlugin {
                         enable = false;
                     }
 
-                    if (XUtil.isNotEmpty(cronxTmp)) {
+                    if (Utils.isNotEmpty(cronxTmp)) {
                         cronx = cronxTmp;
                     }
                 }
@@ -49,7 +49,7 @@ public class XPluginImp implements XPlugin {
             try {
                 JobManager.start();
             } catch (Exception ex) {
-                throw XUtil.throwableWrap(ex);
+                throw Utils.throwableWrap(ex);
             }
         });
     }

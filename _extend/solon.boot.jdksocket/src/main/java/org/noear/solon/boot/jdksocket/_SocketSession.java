@@ -1,9 +1,9 @@
 package org.noear.solon.boot.jdksocket;
 
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XMethod;
-import org.noear.solon.core.XSession;
-import org.noear.solon.core.XMessage;
+import org.noear.solon.Utils;
+import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.message.MessageSession;
+import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.xsocket.XMessageUtils;
 import org.noear.solon.extend.xsocket.XSessionBase;
 
@@ -33,10 +33,10 @@ import java.util.*;
  * </code></pre>
  * */
 class _SocketSession extends XSessionBase {
-    public static Map<Socket, XSession> sessions = new HashMap<>();
+    public static Map<Socket, MessageSession> sessions = new HashMap<>();
 
-    public static XSession get(Socket real) {
-        XSession tmp = sessions.get(real);
+    public static MessageSession get(Socket real) {
+        MessageSession tmp = sessions.get(real);
         if (tmp == null) {
             synchronized (real) {
                 tmp = sessions.get(real);
@@ -66,7 +66,7 @@ class _SocketSession extends XSessionBase {
         return real;
     }
 
-    private String _sessionId = XUtil.guid();
+    private String _sessionId = Utils.guid();
 
     @Override
     public String sessionId() {
@@ -74,8 +74,8 @@ class _SocketSession extends XSessionBase {
     }
 
     @Override
-    public XMethod method() {
-        return XMethod.SOCKET;
+    public MethodType method() {
+        return MethodType.SOCKET;
     }
 
     @Override
@@ -94,10 +94,10 @@ class _SocketSession extends XSessionBase {
 
     @Override
     public void send(byte[] message) {
-        send(XMessage.wrap(message));
+        send(Message.wrap(message));
     }
 
-    public void send(XMessage message) {
+    public void send(Message message) {
         try {
             //
             // 转包为XSocketMessage，再转byte[]
@@ -112,7 +112,7 @@ class _SocketSession extends XSessionBase {
     }
 
     @Override
-    public XMessage sendAndResponse(XMessage message) {
+    public Message sendAndResponse(Message message) {
         send(message);
 
         return receive(real);
@@ -162,7 +162,7 @@ class _SocketSession extends XSessionBase {
     }
 
     @Override
-    public Collection<XSession> getOpenSessions() {
+    public Collection<MessageSession> getOpenSessions() {
         return new ArrayList<>(sessions.values());
     }
 
@@ -182,7 +182,7 @@ class _SocketSession extends XSessionBase {
     /**
      * 接收数据
      */
-    public static XMessage receive(Socket socket) {
+    public static Message receive(Socket socket) {
         try {
             return SocketProtocol.instance.decode(socket.getInputStream());
         } catch (SocketException ex) {

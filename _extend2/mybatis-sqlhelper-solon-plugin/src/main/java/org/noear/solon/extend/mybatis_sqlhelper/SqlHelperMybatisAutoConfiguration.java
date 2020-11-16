@@ -8,25 +8,24 @@ import com.jn.sqlhelper.mybatis.plugins.CustomScriptLanguageDriver;
 import com.jn.sqlhelper.mybatis.plugins.SqlHelperMybatisPlugin;
 import com.jn.sqlhelper.mybatis.plugins.pagination.PaginationConfig;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
-import org.apache.ibatis.session.Configuration;
-import org.noear.solon.annotation.XBean;
-import org.noear.solon.annotation.XConfiguration;
-import org.noear.solon.annotation.XInject;
-import org.noear.solon.core.XEventListener;
+import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.core.event.EventListener;
 
-@XConfiguration
-public class SqlHelperMybatisAutoConfiguration implements XEventListener<Configuration> {
+@Configuration
+public class SqlHelperMybatisAutoConfiguration implements EventListener<org.apache.ibatis.session.Configuration> {
 
-    @XBean
+    @Bean
     public DatabaseIdProvider databaseIdProvider() {
         return MybatisUtils.vendorDatabaseIdProvider();
     }
 
 
-    @XBean
+    @Bean
     public SqlHelperMybatisProperties sqlHelperMybatisProperties(
-            @XInject("${sqlhelper.mybatis.instrumentor}") SQLInstrumentorConfig sqlInstrumentConfig,
-            @XInject("${sqlhelper.mybatis.pagination}") PaginationConfig paginationPluginConfig) {
+            @Inject("${sqlhelper.mybatis.instrumentor}") SQLInstrumentorConfig sqlInstrumentConfig,
+            @Inject("${sqlhelper.mybatis.pagination}") PaginationConfig paginationPluginConfig) {
         SqlHelperMybatisProperties p = new SqlHelperMybatisProperties();
         p.setInstrumentor(sqlInstrumentConfig);
         p.setPagination(paginationPluginConfig);
@@ -35,13 +34,13 @@ public class SqlHelperMybatisAutoConfiguration implements XEventListener<Configu
 
     private SqlHelperMybatisProperties sqlHelperMybatisProperties;
 
-    @XBean
+    @Bean
     public void setSqlHelperMybatisProperties(SqlHelperMybatisProperties sqlHelperMybatisProperties) {
         this.sqlHelperMybatisProperties = sqlHelperMybatisProperties;
     }
 
     @Override
-    public void onEvent(Configuration configuration) {
+    public void onEvent(org.apache.ibatis.session.Configuration configuration) {
         if(sqlHelperMybatisProperties == null){
             return;
         }

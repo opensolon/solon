@@ -1,9 +1,9 @@
 package webapp;
 
-import org.noear.solon.XApp;
+import org.noear.solon.Solon;
 
 public class MybatisApp {
     public static void main(String[] args){
-        XApp.start(MybatisApp.class,args);
+        Solon.start(MybatisApp.class,args);
     }
 }

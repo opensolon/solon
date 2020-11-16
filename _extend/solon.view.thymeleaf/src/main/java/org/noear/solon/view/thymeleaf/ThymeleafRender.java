@@ -1,11 +1,13 @@
 package org.noear.solon.view.thymeleaf;
 
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.*;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.ModelAndView;
+import org.noear.solon.core.handler.Render;
 import org.noear.solon.ext.SupplierEx;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
@@ -15,7 +17,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ThymeleafRender implements XRender {
+public class ThymeleafRender implements Render {
     private static ThymeleafRender _global;
 
     public static ThymeleafRender global() {
@@ -34,13 +36,13 @@ public class ThymeleafRender implements XRender {
     private String _baseUri = "/WEB-INF/view/";
 
     public ThymeleafRender() {
-        String baseUri = XApp.global().prop().get("slon.mvc.view.prefix");
+        String baseUri = Solon.global().prop().get("slon.mvc.view.prefix");
 
-        if (XUtil.isEmpty(baseUri) == false) {
+        if (Utils.isEmpty(baseUri) == false) {
             _baseUri = baseUri;
         }
 
-        if (XApp.cfg().isDebugMode()) {
+        if (Solon.cfg().isDebugMode()) {
             forDebug();
         } else {
             forRelease();
@@ -48,7 +50,7 @@ public class ThymeleafRender implements XRender {
 
 
         try {
-            XApp.global().shared().forEach((k, v) -> {
+            Solon.global().shared().forEach((k, v) -> {
                 setSharedVariable(k, v);
             });
 
@@ -56,13 +58,13 @@ public class ThymeleafRender implements XRender {
             ex.printStackTrace();
         }
 
-        XApp.global().onSharedAdd((k, v) -> {
+        Solon.global().onSharedAdd((k, v) -> {
             setSharedVariable(k, v);
         });
     }
 
     private void forDebug() {
-        String dirroot = XUtil.getResource("/").toString().replace("target/classes/", "");
+        String dirroot = Utils.getResource("/").toString().replace("target/classes/", "");
         File dir = null;
 
         if (dirroot.startsWith("file:")) {
@@ -95,7 +97,7 @@ public class ThymeleafRender implements XRender {
     }
 
     private void forRelease() {
-        ClassLoaderTemplateResolver _loader = new ClassLoaderTemplateResolver(XClassLoader.global());
+        ClassLoaderTemplateResolver _loader = new ClassLoaderTemplateResolver(SolonClassLoader.global());
 
         _loader.setPrefix(_baseUri);
         _loader.setTemplateMode(TemplateMode.HTML);
@@ -112,7 +114,7 @@ public class ThymeleafRender implements XRender {
     }
 
     @Override
-    public void render(Object obj, XContext ctx) throws Throwable {
+    public void render(Object obj, Context ctx) throws Throwable {
         if (obj == null) {
             return;
         }
@@ -125,7 +127,7 @@ public class ThymeleafRender implements XRender {
     }
 
     @Override
-    public String renderAndReturn(Object obj, XContext ctx) throws Throwable {
+    public String renderAndReturn(Object obj, Context ctx) throws Throwable {
         if (obj == null) {
             return null;
         }
@@ -140,7 +142,7 @@ public class ThymeleafRender implements XRender {
         }
     }
 
-    public void render_mav(ModelAndView mv, XContext ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
+    public void render_mav(ModelAndView mv, Context ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
         if (ctx.contentTypeNew() == null) {
             ctx.contentType("text/html;charset=utf-8");
         }
@@ -149,7 +151,7 @@ public class ThymeleafRender implements XRender {
             ctx.headerSet("solon.view", "ThymeleafRender");
         }
 
-        Context context = new Context();
+        org.thymeleaf.context.Context context = new org.thymeleaf.context.Context();
         context.setVariables(_sharedVariable);
         context.setVariables(mv);
 

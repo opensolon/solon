@@ -3,7 +3,9 @@ package org.noear.solon.boot.websocket;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
-import org.noear.solon.core.*;
+import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.message.Message;
+import org.noear.solon.core.message.MessageSession;
 import org.noear.solon.extend.xsocket.XListenerProxy;
 
 import java.net.InetSocketAddress;
@@ -39,24 +41,24 @@ public class WsServer extends WebSocketServer {
     @Override
     public void onMessage(WebSocket conn, String data) {
         try {
-            XSession session = _SocketSession.get(conn);
-            XMessage message = XMessage.wrap(conn.getResourceDescriptor(), data.getBytes(_charset));
+            MessageSession session = _SocketSession.get(conn);
+            Message message = Message.wrap(conn.getResourceDescriptor(), data.getBytes(_charset));
 
             XListenerProxy.getGlobal().onMessage(session, message, true);
         } catch (Throwable ex) {
-            XEventBus.push(ex);
+            EventBus.push(ex);
         }
     }
 
     @Override
     public void onMessage(WebSocket conn, ByteBuffer data) {
         try {
-            XSession session = _SocketSession.get(conn);
-            XMessage message = XMessage.wrap(conn.getResourceDescriptor(), data.array());
+            MessageSession session = _SocketSession.get(conn);
+            Message message = Message.wrap(conn.getResourceDescriptor(), data.array());
 
             XListenerProxy.getGlobal().onMessage(session, message, false);
         } catch (Throwable ex) {
-            XEventBus.push(ex);
+            EventBus.push(ex);
         }
     }
 

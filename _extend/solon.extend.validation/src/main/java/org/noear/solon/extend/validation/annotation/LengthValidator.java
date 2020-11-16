@@ -1,7 +1,7 @@
 package org.noear.solon.extend.validation.annotation;
 
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XResult;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Result;
 import org.noear.solon.extend.validation.Validator;
 
 /**
@@ -18,7 +18,7 @@ public class LengthValidator implements Validator<Length> {
     }
 
     @Override
-    public XResult validate(XContext ctx, Length anno, String name, StringBuilder tmp) {
+    public Result validate(Context ctx, Length anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
 
         if (val == null || val.length() < anno.min() || val.length() > anno.max()) {
@@ -26,9 +26,9 @@ public class LengthValidator implements Validator<Length> {
         }
 
         if (tmp.length() > 1) {
-            return XResult.failure(tmp.substring(1));
+            return Result.failure(tmp.substring(1));
         } else {
-            return XResult.succeed();
+            return Result.succeed();
         }
     }
 }

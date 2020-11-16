@@ -2,10 +2,10 @@ package org.noear.solon.serialization.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XRender;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Render;
 
-public class JacksonRender implements XRender {
+public class JacksonRender implements Render {
     ObjectMapper mapper = new ObjectMapper();
     ObjectMapper mapper_serialize = new ObjectMapper();
 
@@ -27,7 +27,7 @@ public class JacksonRender implements XRender {
     }
 
     @Override
-    public void render(Object obj, XContext ctx) throws Throwable {
+    public void render(Object obj, Context ctx) throws Throwable {
         String txt = null;
 
         if (_typedJson) {

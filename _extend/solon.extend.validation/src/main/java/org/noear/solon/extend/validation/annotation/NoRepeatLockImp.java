@@ -1,7 +1,7 @@
 package org.noear.solon.extend.validation.annotation;
 
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.CacheService;
+import org.noear.solon.core.cache.CacheService;
 
 /**
  * 锁的默认实现

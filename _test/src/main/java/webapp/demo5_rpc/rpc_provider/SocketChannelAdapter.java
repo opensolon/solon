@@ -1,16 +1,16 @@
 package webapp.demo5_rpc.rpc_provider;
 
 import org.noear.snack.ONode;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XHandler;
-import org.noear.solon.core.XMethod;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Handler;
+import org.noear.solon.core.handler.MethodType;
 
 import java.util.Map;
 
-public class SocketChannelAdapter implements XHandler {
+public class SocketChannelAdapter implements Handler {
     @Override
-    public void handle(XContext ctx) throws Throwable {
-        if (XMethod.SOCKET.name.equals(ctx.method())) {
+    public void handle(Context ctx) throws Throwable {
+        if (MethodType.SOCKET.name.equals(ctx.method())) {
             String json = ctx.body();
             Map<String, Object> tmp = (Map<String, Object>) ONode.load(json).toData();
 

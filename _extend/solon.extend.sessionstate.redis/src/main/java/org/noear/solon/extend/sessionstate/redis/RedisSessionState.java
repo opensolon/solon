@@ -3,22 +3,22 @@ package org.noear.solon.extend.sessionstate.redis;
 import org.noear.snack.ONode;
 import org.noear.snack.core.Constants;
 import org.noear.snack.core.Feature;
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XMap;
-import org.noear.solon.core.XSessionState;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.ParamMap;
+import org.noear.solon.core.handler.SessionState;
 
 /**
  * 它会是个单例，不能有上下文数据
  * */
-public class RedisSessionState implements XSessionState {
+public class RedisSessionState implements SessionState {
     public final static String SESSIONID_KEY = "SOLONID";
     public final static String SESSIONID_MD5(){return SESSIONID_KEY+"2";}
     public final static String SESSIONID_encrypt = "&L8e!@T0";
 
     private RedisX redisX;
-    private RedisSessionState(XMap map){
+    private RedisSessionState(ParamMap map){
         if (XServerProp.session_timeout > 0) {
             _expiry = XServerProp.session_timeout;
         }
@@ -36,7 +36,7 @@ public class RedisSessionState implements XSessionState {
     }
 
     public static RedisSessionState create(){
-        XMap map = XApp.cfg().getXmap("server.session.state.redis");
+        ParamMap map = Solon.cfg().getXmap("server.session.state.redis");
 
         if(map.size() < 4){
             System.err.println("Error configuration: solon.session.state.redis");
@@ -53,10 +53,10 @@ public class RedisSessionState implements XSessionState {
     private String _domain=null;
 
     public  String cookieGet(String key){
-        return XContext.current().cookie(key);
+        return Context.current().cookie(key);
     }
     public  void   cookieSet(String key, String val) {
-        XContext ctx = XContext.current();
+        Context ctx = Context.current();
 
         if (XServerProp.session_state_domain_auto) {
             if (_domain != null) {
@@ -82,11 +82,11 @@ public class RedisSessionState implements XSessionState {
 
     @Override
     public String sessionId() {
-        String _sessionId = XContext.current().attr("sessionId",null);
+        String _sessionId = Context.current().attr("sessionId",null);
 
         if(_sessionId == null){
             _sessionId = sessionId_get();
-            XContext.current().attrSet("sessionId",_sessionId);
+            Context.current().attrSet("sessionId",_sessionId);
         }
 
         return _sessionId;
@@ -96,7 +96,7 @@ public class RedisSessionState implements XSessionState {
         String skey = cookieGet(SESSIONID_KEY);
         String smd5 = cookieGet(SESSIONID_MD5());
 
-        if(XUtil.isEmpty(skey)==false && XUtil.isEmpty(smd5)==false) {
+        if(Utils.isEmpty(skey)==false && Utils.isEmpty(smd5)==false) {
             if (EncryptUtil.md5(skey + SESSIONID_encrypt).equals(smd5)) {
                 return skey;
             }
@@ -169,7 +169,7 @@ public class RedisSessionState implements XSessionState {
     public void sessionRefresh() {
         String skey = cookieGet(SESSIONID_KEY);
 
-        if (XUtil.isEmpty(skey) == false) {
+        if (Utils.isEmpty(skey) == false) {
             cookieSet(SESSIONID_KEY, skey);
             cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_encrypt));
 

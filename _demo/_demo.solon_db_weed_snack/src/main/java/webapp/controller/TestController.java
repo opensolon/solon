@@ -8,20 +8,20 @@ import webapp.dso.service.ServiceTest2;
 import java.util.HashMap;
 import java.util.Map;
 
-@XMapping("/test")
-@XSingleton(true)
-@XController
+@Mapping("/test")
+@Singleton(true)
+@Controller
 public class TestController {
-    @XInject("db1")
+    @Inject("db1")
     DbContext db2;
 
-    @XInject
+    @Inject
     ServiceTest serviceTest;
 
-    @XInject
+    @Inject
     ServiceTest2 serviceTest2;
 
-    @XMapping("demo0")
+    @Mapping("demo0")
     public Object test0(){
         Map<String,Object> map = new HashMap<>();
         map.put("serviceTest",serviceTest.test());
@@ -30,7 +30,7 @@ public class TestController {
         return map;
     }
 
-    @XMapping("demo1")
+    @Mapping("demo1")
     public Object test(String sql) throws Exception {
 
         //
@@ -51,7 +51,7 @@ public class TestController {
         }
     }
 
-    @XMapping("demo2")
+    @Mapping("demo2")
     public Object test2(String sql) throws Exception {
         //
         // mysql 8.0 才支持

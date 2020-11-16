@@ -1,6 +1,6 @@
 package org.noear.solon.extend.validation.annotation;
 
-import org.noear.solon.annotation.XNote;
+import org.noear.solon.annotation.Note;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -19,7 +19,7 @@ public @interface Numeric {
     /**
      * param names
      * */
-    @XNote("param names")
+    @Note("param names")
     String[] value() default {};
 
     String message() default "";

@@ -1,17 +1,16 @@
 package org.noear.solon.view.thymeleaf;
 
-import org.noear.solon.XApp;
+import org.noear.solon.Solon;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.XBridge;
-import org.noear.solon.core.XRenderManager;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.core.Bridge;
+import org.noear.solon.core.Plugin;
 import org.thymeleaf.processor.element.IElementTagProcessor;
 
-public class XPluginImp implements XPlugin {
+public class XPluginImp implements Plugin {
     public static boolean output_meta = false;
 
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         output_meta = app.prop().getInt("solon.output.meta", 0) > 0;
 
         ThymeleafRender render = ThymeleafRender.global();
@@ -32,7 +31,7 @@ public class XPluginImp implements XPlugin {
             });
         });
 
-        XBridge.renderRegister(render);
-        XBridge.renderMapping(".html",render);
+        Bridge.renderRegister(render);
+        Bridge.renderMapping(".html",render);
     }
 }

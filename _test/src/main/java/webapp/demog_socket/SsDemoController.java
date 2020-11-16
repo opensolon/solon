@@ -1,15 +1,15 @@
 package webapp.demog_socket;
 
-import org.noear.solon.annotation.XController;
-import org.noear.solon.annotation.XMapping;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XMethod;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.MethodType;
 
-@XController
+@Controller
 public class SsDemoController {
 
-    @XMapping(value = "/demog/**", method = XMethod.SOCKET)
-    public void test(XContext ctx) throws Exception {
+    @Mapping(value = "/demog/**", method = MethodType.SOCKET)
+    public void test(Context ctx) throws Exception {
         if (ctx == null) {
             return;
         }

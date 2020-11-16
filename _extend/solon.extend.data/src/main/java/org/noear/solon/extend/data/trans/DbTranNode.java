@@ -1,6 +1,6 @@
 package org.noear.solon.extend.data.trans;
 
-import org.noear.solon.core.XEventBus;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.extend.data.TranNode;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public abstract class DbTranNode implements TranNode {
             try {
                 n1.rollback();
             } catch (Throwable ex) {
-                XEventBus.push(ex);
+                EventBus.push(ex);
             }
         }
     }
@@ -51,7 +51,7 @@ public abstract class DbTranNode implements TranNode {
             try {
                 n1.close();
             } catch (Throwable ex) {
-                XEventBus.push(ex);
+                EventBus.push(ex);
             }
         }
     }

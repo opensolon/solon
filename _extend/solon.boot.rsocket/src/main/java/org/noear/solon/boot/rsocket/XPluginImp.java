@@ -1,17 +1,17 @@
 package org.noear.solon.boot.rsocket;
 
-import org.noear.solon.XApp;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.Solon;
+import org.noear.solon.core.Plugin;
 
-public class XPluginImp implements XPlugin {
+public class XPluginImp implements Plugin {
     SocketServer _server;
 
     public static String solon_boot_ver(){
-        return "jdk tpc socket/" + XApp.cfg().version();
+        return "jdk tpc socket/" + Solon.cfg().version();
     }
 
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
 
         if(app.enableSocket() == false){
             return;

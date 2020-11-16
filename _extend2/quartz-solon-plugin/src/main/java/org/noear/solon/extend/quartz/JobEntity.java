@@ -1,7 +1,7 @@
 package org.noear.solon.extend.quartz;
 
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.XEventBus;
+import org.noear.solon.core.event.EventBus;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 
@@ -34,7 +34,7 @@ public class JobEntity {
                 ((Job) beanWrap.raw()).execute(ctx);
             }
         }catch (Throwable ex){
-            XEventBus.push(ex);
+            EventBus.push(ex);
         }
     }
 }

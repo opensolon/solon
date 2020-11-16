@@ -1,16 +1,16 @@
 package webapp.demoe_websocket;
 
-import org.noear.solon.XApp;
-import org.noear.solon.annotation.XController;
-import org.noear.solon.annotation.XMapping;
-import org.noear.solon.core.ModelAndView;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XMethod;
+import org.noear.solon.Solon;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.core.handler.ModelAndView;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.MethodType;
 
-@XController
+@Controller
 public class WsDemoController {
-    @XMapping(value = "/demoe/*",method = XMethod.WEBSOCKET)
-    public void test(XContext ctx) throws Exception{
+    @Mapping(value = "/demoe/*",method = MethodType.WEBSOCKET)
+    public void test(Context ctx) throws Exception{
         if(ctx == null){
             return;
         }
@@ -26,10 +26,10 @@ public class WsDemoController {
         }
     }
 
-    @XMapping(value = "/demoe/websocket")
-    public Object test_client(XContext ctx){
+    @Mapping(value = "/demoe/websocket")
+    public Object test_client(Context ctx){
         ModelAndView mv = new ModelAndView("demoe/websocket.ftl");
-        mv.put("app_port", XApp.global().port() + 10000);
+        mv.put("app_port", Solon.global().port() + 10000);
 
         return mv;
     }

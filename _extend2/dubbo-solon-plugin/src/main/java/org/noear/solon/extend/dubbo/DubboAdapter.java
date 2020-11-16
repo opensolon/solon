@@ -3,9 +3,9 @@ package org.noear.solon.extend.dubbo;
 import org.apache.dubbo.config.*;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.rpc.model.ApplicationModel;
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XMap;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+import org.noear.solon.core.ParamMap;
 
 import java.util.Map;
 import java.util.Properties;
@@ -17,7 +17,7 @@ public class DubboAdapter {
 
     private static DubboAdapter _global;
 
-    public static DubboAdapter global(XApp app) {
+    public static DubboAdapter global(Solon app) {
         if (_global == null) {
             _global = new DubboAdapter(app);
         }
@@ -26,22 +26,22 @@ public class DubboAdapter {
     }
 
 
-    private DubboAdapter(XApp app) {
+    private DubboAdapter(Solon app) {
 
         // 当前应用配置
         //
-        XMap props = null;
+        ParamMap props = null;
         {
             application = new ApplicationConfig();
-            props = XApp.cfg().getXmap("dubbo.application");
+            props = Solon.cfg().getXmap("dubbo.application");
             if (props.containsKey("name") == false) {
                 props.put("name", "dubbo-service-demo");
             }
 
-            XUtil.bindTo(props, application);
+            Utils.bindTo(props, application);
 
             MonitorConfig monitor = new MonitorConfig();
-            props = XApp.cfg().getXmap("dubbo.monitor");
+            props = Solon.cfg().getXmap("dubbo.monitor");
             if (props.size() > 0) {
                 monitor.setParameters(props);
                 application.setMonitor(monitor);
@@ -55,7 +55,7 @@ public class DubboAdapter {
         //
         {
             RegistryConfig registry = new RegistryConfig();
-            props = XApp.cfg().getXmap("dubbo.registry");
+            props = Solon.cfg().getXmap("dubbo.registry");
             if (props.containsKey("address") == false) {
                 props.put("address", "A/N");
             }
@@ -68,7 +68,7 @@ public class DubboAdapter {
         //
         {
             ProtocolConfig protocol = new ProtocolConfig();
-            props = XApp.cfg().getXmap("dubbo.protocol");
+            props = Solon.cfg().getXmap("dubbo.protocol");
             protocol.setParameters(props);
 
             if (props.containsKey("name") == false) {
@@ -77,7 +77,7 @@ public class DubboAdapter {
             }
 
             if (props.containsKey("port") == false) {
-                int port = XApp.global().port() + 20000;
+                int port = Solon.global().port() + 20000;
                 props.put("port", String.valueOf(port));
                 protocol.setPort(port);
             }
@@ -89,7 +89,7 @@ public class DubboAdapter {
         //
         {
             ConsumerConfig  consumer = new ConsumerConfig();
-            props = XApp.cfg().getXmap("dubbo.consumer");
+            props = Solon.cfg().getXmap("dubbo.consumer");
             if (props.containsKey("check") == false) {
                 props.put("check", "false");
             }
@@ -124,9 +124,9 @@ public class DubboAdapter {
     }
 
     public void regService(ServiceConfig cfg) {
-        Properties prop = XApp.cfg().getProp("dubbo.service." + cfg.getInterface());
+        Properties prop = Solon.cfg().getProp("dubbo.service." + cfg.getInterface());
         if (prop.size() > 0) {
-            XUtil.bindTo(prop, cfg);
+            Utils.bindTo(prop, cfg);
         }
 
         cfg.export();
@@ -148,9 +148,9 @@ public class DubboAdapter {
             cfg = new ReferenceConfig<T>(ref); // 此实例很重，封装了与注册中心的连接以及与提供者的连接，请自行缓存，否则可能造成内存和连接泄漏
             cfg.setInterface(clz);
 
-            Properties prop = XApp.cfg().getProp("dubbo.reference." + cfg.getInterface());
+            Properties prop = Solon.cfg().getProp("dubbo.reference." + cfg.getInterface());
             if (prop.size() > 0) {
-                XUtil.bindTo(prop, cfg);
+                Utils.bindTo(prop, cfg);
             }
 
             ReferenceConfig<T> l = refMap.putIfAbsent(clzKey, cfg);

@@ -1,13 +1,14 @@
 package org.noear.solon.extend.data;
 
-import org.noear.solon.XApp;
+import org.noear.solon.Solon;
 import org.noear.solon.core.*;
+import org.noear.solon.core.cache.CacheService;
 
-public class XPluginImp implements XPlugin {
+public class XPluginImp implements Plugin {
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         if (app.enableTransaction()) {
-            XBridge.tranExecutorSet(TranExecutorImp.global);
+            Bridge.tranExecutorSet(TranExecutorImp.global);
         }
 
         if (app.enableCaching()) {

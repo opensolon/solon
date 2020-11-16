@@ -1,7 +1,7 @@
 package org.noear.solon.boot.jlhttp;
 
-import org.noear.solon.XApp;
-import org.noear.solon.core.XEventBus;
+import org.noear.solon.Solon;
+import org.noear.solon.core.event.EventBus;
 
 import java.io.IOException;
 
@@ -9,7 +9,7 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
     protected boolean debug;
 
     public JlHttpContextHandler() {
-        this.debug = XApp.cfg().isDebugMode();
+        this.debug = Solon.cfg().isDebugMode();
     }
 
     @Override
@@ -29,7 +29,7 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
         } catch (Throwable ex) {
             //context 初始化时，可能会出错
             //
-            XEventBus.push( ex);
+            EventBus.push( ex);
 
             response.sendHeaders(500);
             return 0;
@@ -45,7 +45,7 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
             context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
         }
 
-        XApp.global().tryHandle(context);
+        Solon.global().tryHandle(context);
 
         if (context.getHandled() && context.status() != 404) {
             context.commit();

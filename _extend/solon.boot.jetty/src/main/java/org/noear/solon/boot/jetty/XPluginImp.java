@@ -1,25 +1,25 @@
 package org.noear.solon.boot.jetty;
 
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.boot.jetty.http.XFormContentFilter;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.core.Plugin;
 
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
-public final class XPluginImp implements XPlugin {
+public final class XPluginImp implements Plugin {
     private XPluginJetty _server = null;
 
     public static String solon_boot_ver(){
-        return "jetty 9.4/" + XApp.cfg().version();
+        return "jetty 9.4/" + Solon.cfg().version();
     }
 
 
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         if (app.enableHttp() == false) {
             return;
         }
@@ -35,8 +35,8 @@ public final class XPluginImp implements XPlugin {
         });
     }
 
-    private void start0(XApp app) {
-        Class<?> jspClz = XUtil.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
+    private void start0(Solon app) {
+        Class<?> jspClz = Utils.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
 
         if (jspClz == null) {
             _server = new XPluginJetty();

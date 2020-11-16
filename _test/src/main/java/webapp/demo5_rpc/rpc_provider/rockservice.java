@@ -1,29 +1,29 @@
 package webapp.demo5_rpc.rpc_provider;
 
-import org.noear.solon.annotation.XBean;
-import org.noear.solon.annotation.XBefore;
-import org.noear.solon.annotation.XMapping;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XMethod;
+import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Before;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.MethodType;
 import webapp.demo5_rpc.rockapi;
 import webapp.models.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@XBefore({SocketChannelAdapter.class})
-@XMapping(value = "/demo5/test", method = {XMethod.HTTP, XMethod.SOCKET})
-@XBean(remoting = true)
+@Before({SocketChannelAdapter.class})
+@Mapping(value = "/demo5/test", method = {MethodType.HTTP, MethodType.SOCKET})
+@Bean(remoting = true)
 public class rockservice implements rockapi {
 
     @Override
     public Object test1(Integer a) {
-        return XContext.current().method() + "::test1=" + a;
+        return Context.current().method() + "::test1=" + a;
     }
 
     @Override
     public Object test2(int b){
-        return XContext.current().path();
+        return Context.current().path();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package webapp.widget;
 
-import org.noear.solon.core.XContext;
+import org.noear.solon.core.handler.Context;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -10,7 +10,7 @@ public class FooterTag extends TagSupport {
     public int doStartTag() throws JspException {
         try {
             //当前视图path
-            String cPath = XContext.current().path();
+            String cPath = Context.current().path();
 
             StringBuffer sb = new StringBuffer();
             sb.append("<footer>");

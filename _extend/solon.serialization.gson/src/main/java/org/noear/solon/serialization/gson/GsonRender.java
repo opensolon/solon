@@ -2,10 +2,10 @@ package org.noear.solon.serialization.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XRender;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Render;
 
-public class GsonRender implements XRender {
+public class GsonRender implements Render {
     Gson stringify = new GsonBuilder()
             .registerTypeAdapter(java.util.Date.class,new GsonDateSerialize())
             .create();//json输出
@@ -20,7 +20,7 @@ public class GsonRender implements XRender {
     }
 
     @Override
-    public void render(Object obj, XContext ctx) throws Throwable {
+    public void render(Object obj, Context ctx) throws Throwable {
         String txt = null;
 
         if (_typedJson) {

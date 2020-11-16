@@ -1,33 +1,33 @@
 package webapp.demo6_aop;
 
-import org.noear.solon.XApp;
-import org.noear.solon.annotation.XController;
-import org.noear.solon.annotation.XMapping;
-import org.noear.solon.annotation.XInject;
+import org.noear.solon.Solon;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.Aop;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-@XController
+@Controller
 public class TestController extends TestControllerBase{
 
-    @XInject("rs3")
+    @Inject("rs3")
     public Rockapi  rockapi13;
 
-    @XInject //会自动生成
+    @Inject //会自动生成
     public Rockservice2  rockapi2;
 
 
-    @XInject
+    @Inject
     public Rockapi  rockapi132;
 
-    public String   test_aaa = XApp.cfg().get("demo6.test.aaa");
-    public int      test_bbb = XApp.cfg().getInt("demo6.test.bbb",0);
-    public Properties prop   = XApp.cfg().getProp("mytbae.bcf");
+    public String   test_aaa = Solon.cfg().get("demo6.test.aaa");
+    public int      test_bbb = Solon.cfg().getInt("demo6.test.bbb",0);
+    public Properties prop   = Solon.cfg().getProp("mytbae.bcf");
 
-    @XMapping("/demo6/aop")
+    @Mapping("/demo6/aop")
     public Object test() throws Exception {
         Map<String, Object> map = new HashMap<>();
 
@@ -50,7 +50,7 @@ public class TestController extends TestControllerBase{
         return map;
     }
 
-    @XMapping("/demo6/aop3")
+    @Mapping("/demo6/aop3")
     public Object test3() throws Exception {
         return rockapi13.test();
     }

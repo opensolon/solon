@@ -1,15 +1,15 @@
 package org.noear.solon.boot.smartsocket;
 
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XMessage;
-import org.noear.solon.core.XSession;
+import org.noear.solon.Utils;
+import org.noear.solon.core.message.Message;
+import org.noear.solon.core.message.MessageSession;
 import org.noear.solon.extend.xsocket.XSessionFactory;
 import org.smartboot.socket.transport.AioQuickClient;
 import org.smartboot.socket.transport.AioSession;
 
 class _SessionFactoryImpl extends XSessionFactory {
     @Override
-    protected XSession getSession(Object conn) {
+    protected MessageSession getSession(Object conn) {
         if (conn instanceof AioSession) {
             return _SocketSession.get((AioSession) conn);
         } else {
@@ -18,8 +18,8 @@ class _SessionFactoryImpl extends XSessionFactory {
     }
 
     @Override
-    protected XSession createSession(String host, int port) {
-        AioQuickClient<XMessage> client = new AioQuickClient<>(host, port, new AioProtocol(), new AioProcessor());
+    protected MessageSession createSession(String host, int port) {
+        AioQuickClient<Message> client = new AioQuickClient<>(host, port, new AioProtocol(), new AioProcessor());
         client.setReadBufferSize(XPluginImp.readBufferSize);
 
         try {
@@ -27,7 +27,7 @@ class _SessionFactoryImpl extends XSessionFactory {
 
             return _SocketSession.get(conn);
         } catch (Exception ex) {
-            throw XUtil.throwableWrap(ex);
+            throw Utils.throwableWrap(ex);
         }
     }
 }

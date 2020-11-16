@@ -1,14 +1,14 @@
 package webapp.demo9_multiple_view;
 
-import org.noear.solon.annotation.XController;
-import org.noear.solon.annotation.XMapping;
-import org.noear.solon.annotation.XSingleton;
-import org.noear.solon.core.ModelAndView;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Singleton;
+import org.noear.solon.core.handler.ModelAndView;
 
-@XSingleton(false)
-@XController
+@Singleton(false)
+@Controller
 public class BeetlView {
-    @XMapping("/demo9/view/beetl")
+    @Mapping("/demo9/view/beetl")
     public ModelAndView dock(){
         ModelAndView model = new ModelAndView("beetl.htm");
         model.put("title","dock");

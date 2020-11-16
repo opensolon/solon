@@ -1,17 +1,17 @@
 package org.noear.solon.boot.websocket;
 
-import org.noear.solon.XApp;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.Solon;
+import org.noear.solon.core.Plugin;
 
-public class XPluginImp implements XPlugin {
+public class XPluginImp implements Plugin {
     private WsServer _server = null;
 
     public static String solon_boot_ver() {
-        return "org.java_websocket 1.5.0/" + XApp.cfg().version();
+        return "org.java_websocket 1.5.0/" + Solon.cfg().version();
     }
 
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         if(app.enableWebSocket() == false){
             return;
         }

@@ -1,22 +1,23 @@
 package org.noear.solon.boot.smartsocket;
 
-import org.noear.solon.core.*;
-
+import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.message.Message;
+import org.noear.solon.core.message.MessageSession;
 import org.noear.solon.extend.xsocket.XListenerProxy;
 import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.StateMachineEnum;
 import org.smartboot.socket.transport.AioSession;
 
-public class AioProcessor implements MessageProcessor<XMessage> {
+public class AioProcessor implements MessageProcessor<Message> {
 
     @Override
-    public void process(AioSession session, XMessage message) {
+    public void process(AioSession session, Message message) {
         try {
-            XSession session1 = _SocketSession.get(session);
+            MessageSession session1 = _SocketSession.get(session);
 
             XListenerProxy.getGlobal().onMessage(session1, message, false);
         } catch (Throwable ex) {
-            XEventBus.push(ex);
+            EventBus.push(ex);
         }
     }
 

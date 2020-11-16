@@ -1,12 +1,12 @@
 package org.noear.solon.serialization.snack3;
 
 import org.noear.snack.ONode;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XRender;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Render;
 
 //不要要入参，方便后面多视图混用
 //
-public class SnackRender implements XRender {
+public class SnackRender implements Render {
 
     private boolean _typedJson;
     public SnackRender(boolean typedJson) {
@@ -14,7 +14,7 @@ public class SnackRender implements XRender {
     }
 
     @Override
-    public void render(Object obj, XContext ctx) throws Throwable {
+    public void render(Object obj, Context ctx) throws Throwable {
         String txt = null;
 
         if (_typedJson) {

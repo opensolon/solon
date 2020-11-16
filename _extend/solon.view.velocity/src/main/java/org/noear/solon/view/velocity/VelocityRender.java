@@ -4,11 +4,11 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
-import org.noear.solon.core.ModelAndView;
-import org.noear.solon.core.XRender;
-import org.noear.solon.core.XContext;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+import org.noear.solon.core.handler.ModelAndView;
+import org.noear.solon.core.handler.Render;
+import org.noear.solon.core.handler.Context;
 import org.noear.solon.ext.SupplierEx;
 
 import java.io.ByteArrayOutputStream;
@@ -19,7 +19,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-public class VelocityRender implements XRender {
+public class VelocityRender implements Render {
     private static VelocityRender _global;
 
     public static VelocityRender global() {
@@ -38,14 +38,14 @@ public class VelocityRender implements XRender {
     //不要要入参，方便后面多视图混用
     //
     public VelocityRender() {
-        String baseUri = XApp.cfg().get("slon.mvc.view.prefix");
+        String baseUri = Solon.cfg().get("slon.mvc.view.prefix");
 
-        if (XUtil.isEmpty(baseUri) == false) {
+        if (Utils.isEmpty(baseUri) == false) {
             _baseUri = baseUri;
         }
 
 
-        if (XApp.cfg().isDebugMode()) {
+        if (Solon.cfg().isDebugMode()) {
             forDebug();
         } else {
             forRelease();
@@ -54,7 +54,7 @@ public class VelocityRender implements XRender {
         velocity.setProperty(Velocity.ENCODING_DEFAULT, getEncoding());
         velocity.setProperty(Velocity.INPUT_ENCODING, getEncoding());
 
-        XApp.cfg().forEach((k, v) -> {
+        Solon.cfg().forEach((k, v) -> {
             String key = k.toString();
             if (key.startsWith("veloci")) {
                 velocity.setProperty(key, v);
@@ -63,13 +63,13 @@ public class VelocityRender implements XRender {
 
         velocity.init();
 
-        XApp.global().onSharedAdd((k, v) -> {
+        Solon.global().onSharedAdd((k, v) -> {
             setSharedVariable(k, v);
         });
     }
 
     private void forDebug() {
-        String dirroot = XUtil.getResource("/").toString().replace("target/classes/", "");
+        String dirroot = Utils.getResource("/").toString().replace("target/classes/", "");
         File dir = null;
 
         if (dirroot.startsWith("file:")) {
@@ -95,7 +95,7 @@ public class VelocityRender implements XRender {
     }
 
     private void forRelease() {
-        String root_path = XUtil.getResource(_baseUri).getPath();
+        String root_path = Utils.getResource(_baseUri).getPath();
 
         velocity.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, true);
         velocity.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, root_path);
@@ -114,7 +114,7 @@ public class VelocityRender implements XRender {
     }
 
     @Override
-    public void render(Object obj, XContext ctx) throws Throwable {
+    public void render(Object obj, Context ctx) throws Throwable {
         if (obj == null) {
             return;
         }
@@ -127,7 +127,7 @@ public class VelocityRender implements XRender {
     }
 
     @Override
-    public String renderAndReturn(Object obj, XContext ctx) throws Throwable {
+    public String renderAndReturn(Object obj, Context ctx) throws Throwable {
         if (obj == null) {
             return null;
         }
@@ -142,7 +142,7 @@ public class VelocityRender implements XRender {
         }
     }
 
-    public void render_mav(ModelAndView mv, XContext ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
+    public void render_mav(ModelAndView mv, Context ctx, SupplierEx<OutputStream> outputStream) throws Throwable {
         if (ctx.contentTypeNew() == null) {
             ctx.contentType("text/html;charset=utf-8");
         }

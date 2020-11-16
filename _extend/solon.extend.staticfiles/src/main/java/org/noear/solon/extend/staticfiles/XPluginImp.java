@@ -1,16 +1,14 @@
 package org.noear.solon.extend.staticfiles;
 
-import org.noear.solon.XApp;
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XHandlerLink;
-import org.noear.solon.core.XMap;
-import org.noear.solon.core.XPlugin;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+import org.noear.solon.core.handler.HandlerLink;
+import org.noear.solon.core.ParamMap;
+import org.noear.solon.core.Plugin;
 
-import java.util.Properties;
-
-public class XPluginImp implements XPlugin {
+public class XPluginImp implements Plugin {
     @Override
-    public void start(XApp app) {
+    public void start(Solon app) {
         //通过动态控制是否启用
         //
 
@@ -22,16 +20,16 @@ public class XPluginImp implements XPlugin {
             return;
         }
 
-        if (XUtil.getResource("/static") != null) {
+        if (Utils.getResource("/static") != null) {
             //1.加载自定义的mime
             //
-            XMap mimeTypes = app.prop().getXmap("solon.mime");
+            ParamMap mimeTypes = app.prop().getXmap("solon.mime");
             mimeTypes.forEach((k, v) -> {
                 XStaticFiles.instance().putIfAbsent("." + k, v);
             });
 
             //2.切换代理（让静态文件优先）
-            XHandlerLink link = new XHandlerLink();
+            HandlerLink link = new HandlerLink();
             link.node = new XResourceHandler("/static");
             link.nextNode = app.handlerGet();
 

@@ -1,17 +1,17 @@
 package org.noear.solon.serialization.protobuf;
 
 import io.edap.protobuf.ProtoBuf;
-import org.noear.solon.core.XActionExecutorDefault;
-import org.noear.solon.core.XContext;
+import org.noear.solon.core.handler.ActionExecutorDefault;
+import org.noear.solon.core.handler.Context;
 
 import java.lang.reflect.Parameter;
 import java.util.Map;
 
-public class ProtobufActionExecutor extends XActionExecutorDefault {
+public class ProtobufActionExecutor extends ActionExecutorDefault {
     private static final String label = "application/protobuf";
 
     @Override
-    public boolean matched(XContext ctx, String ct) {
+    public boolean matched(Context ctx, String ct) {
         if (ct != null && ct.startsWith(label)) {
             return true;
         } else {
@@ -20,12 +20,12 @@ public class ProtobufActionExecutor extends XActionExecutorDefault {
     }
 
     @Override
-    protected Object changeBody(XContext ctx) throws Exception {
+    protected Object changeBody(Context ctx) throws Exception {
         return ProtoBuf.der(ctx.bodyAsBytes());
     }
 
     @Override
-    protected Object changeValue(XContext ctx, Parameter p, int pi, Class<?> pt, Object bodyObj) throws Exception {
+    protected Object changeValue(Context ctx, Parameter p, int pi, Class<?> pt, Object bodyObj) throws Exception {
         if (bodyObj == null) {
             return null;
         } else {

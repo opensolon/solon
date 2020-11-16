@@ -3,13 +3,13 @@ package org.noear.solon.serialization.hession;
 
 import com.caucho.hessian.io.SerializerFactory;
 import com.caucho.hessian.server.HessianSkeleton;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XHandler;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Handler;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class HessianHandler implements XHandler {
+public class HessianHandler implements Handler {
     private Class<?> _homeAPI;
     private Object _homeImpl;
 
@@ -27,7 +27,7 @@ public class HessianHandler implements XHandler {
     }
 
     @Override
-    public void handle(XContext ctx) throws Throwable {
+    public void handle(Context ctx) throws Throwable {
 
         try {
             InputStream is = ctx.bodyAsStream();

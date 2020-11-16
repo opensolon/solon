@@ -1,15 +1,14 @@
 package webapp.demoa_interceptor;
 
-import org.noear.solon.core.XInterceptorChain;
-import org.noear.solon.core.XInterceptor;
-import org.noear.solon.core.MethodHolder;
-import org.noear.solon.core.XContext;
+import org.noear.solon.core.InterceptorChain;
+import org.noear.solon.core.Interceptor;
+import org.noear.solon.core.handler.Context;
 
-public class AroundHandler implements XInterceptor {
+public class AroundHandler implements Interceptor {
 
     @Override
-    public Object doIntercept(Object obj, Object[] args, XInterceptorChain chain) throws Throwable {
-        XContext.current().output("@XAround:我也加一点；");
+    public Object doIntercept(Object obj, Object[] args, InterceptorChain chain) throws Throwable {
+        Context.current().output("@XAround:我也加一点；");
         return chain.doIntercept(obj, args);
     }
 }

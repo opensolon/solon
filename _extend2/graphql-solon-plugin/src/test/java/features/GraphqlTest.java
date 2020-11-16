@@ -1,9 +1,9 @@
 package features;
 
-import org.noear.solon.XApp;
+import org.noear.solon.Solon;
 
 public class GraphqlTest {
     public static void main(String[] args) {
-        XApp.start(GraphqlTest.class, args);
+        Solon.start(GraphqlTest.class, args);
     }
 }

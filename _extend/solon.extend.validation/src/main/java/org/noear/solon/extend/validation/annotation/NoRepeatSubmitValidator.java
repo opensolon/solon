@@ -1,8 +1,8 @@
 package org.noear.solon.extend.validation.annotation;
 
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XContext;
-import org.noear.solon.core.XResult;
+import org.noear.solon.Utils;
+import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handler.Result;
 import org.noear.solon.extend.validation.Validator;
 
 /**
@@ -19,7 +19,7 @@ public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
     }
 
     @Override
-    public XResult validate(XContext ctx, NoRepeatSubmit anno, String name, StringBuilder tmp) {
+    public Result validate(Context ctx, NoRepeatSubmit anno, String name, StringBuilder tmp) {
         tmp.append(ctx.path()).append("::");
 
         for (HttpPart part : anno.value()) {
@@ -29,7 +29,7 @@ public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
                         tmp.append("body:");
                         tmp.append(ctx.body()).append(";");
                     } catch (Exception ex) {
-                        throw XUtil.throwableWrap(ex);
+                        throw Utils.throwableWrap(ex);
                     }
                     break;
                 }
@@ -50,10 +50,10 @@ public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
             }
         }
 
-        if (NoRepeatLockImp.global().tryLock(XUtil.md5(tmp.toString()), anno.seconds())) {
-            return XResult.succeed();
+        if (NoRepeatLockImp.global().tryLock(Utils.md5(tmp.toString()), anno.seconds())) {
+            return Result.succeed();
         } else {
-            return XResult.failure();
+            return Result.failure();
         }
     }
 }

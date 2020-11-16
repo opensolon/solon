@@ -2,8 +2,8 @@ package org.noear.solon.boot.jdkhttp;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.noear.solon.XApp;
-import org.noear.solon.core.XEventBus;
+import org.noear.solon.Solon;
+import org.noear.solon.core.event.EventBus;
 
 public class JdkHttpContextHandler implements HttpHandler {
     @Override
@@ -13,7 +13,7 @@ public class JdkHttpContextHandler implements HttpHandler {
         } catch (Throwable ex) {
             //context 初始化时，可能会出错
             //
-            XEventBus.push( ex);
+            EventBus.push( ex);
         } finally {
             exchange.close();
         }
@@ -31,7 +31,7 @@ public class JdkHttpContextHandler implements HttpHandler {
                 context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
             }
 
-            XApp.global().tryHandle(context);
+            Solon.global().tryHandle(context);
 
             if (context.getHandled() && context.status() != 404) {
                 context.commit();
@@ -41,7 +41,7 @@ public class JdkHttpContextHandler implements HttpHandler {
             }
 
         } catch (Throwable err) {
-            XEventBus.push(err);
+            EventBus.push(err);
         }
     }
 }

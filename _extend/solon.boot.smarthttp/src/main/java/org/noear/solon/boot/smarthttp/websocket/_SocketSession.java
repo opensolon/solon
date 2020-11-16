@@ -1,9 +1,9 @@
 package org.noear.solon.boot.smarthttp.websocket;
 
-import org.noear.solon.XUtil;
-import org.noear.solon.core.XMessage;
-import org.noear.solon.core.XMethod;
-import org.noear.solon.core.XSession;
+import org.noear.solon.Utils;
+import org.noear.solon.core.message.Message;
+import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.message.MessageSession;
 import org.noear.solon.extend.xsocket.XSessionBase;
 import org.smartboot.http.WebSocketRequest;
 import org.smartboot.http.WebSocketResponse;
@@ -50,15 +50,15 @@ public class _SocketSession extends XSessionBase {
         return request;
     }
 
-    private String _sessionId = XUtil.guid();
+    private String _sessionId = Utils.guid();
     @Override
     public String sessionId() {
         return _sessionId;
     }
 
     @Override
-    public XMethod method() {
-        return XMethod.WEBSOCKET;
+    public MethodType method() {
+        return MethodType.WEBSOCKET;
     }
 
     private String _path;
@@ -84,7 +84,7 @@ public class _SocketSession extends XSessionBase {
     }
 
     @Override
-    public void send(XMessage message) {
+    public void send(Message message) {
         send(message.content());
     }
 
@@ -134,7 +134,7 @@ public class _SocketSession extends XSessionBase {
     }
 
     @Override
-    public Collection<XSession> getOpenSessions() {
+    public Collection<MessageSession> getOpenSessions() {
         return new ArrayList<>(sessions.values());
     }
 
