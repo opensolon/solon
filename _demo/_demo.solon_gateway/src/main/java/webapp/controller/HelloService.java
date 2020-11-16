@@ -1,9 +1,9 @@
 package webapp.controller;
 
-import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Mapping;
 
-@Bean
+@Component
 public class HelloService {
     @Mapping("hello")
     public String hello(String name){
