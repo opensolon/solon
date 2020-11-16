@@ -1,9 +1,10 @@
 package webapp.demo6_aop;
 
 import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 
-@Bean
+@Component
 public class Bean1 {
     @Inject
     Bean2 bean2;

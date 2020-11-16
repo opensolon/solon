@@ -2,11 +2,12 @@ package webapp.dao;
 
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Component;
 import org.noear.solon.core.Plugin;
 import webapp.demo2_mvc.MappingController;
 import webapp.demo2_mvc.ParamController;
 
-@Bean
+@Component
 public class TestExt implements Plugin {
     @Override
     public void start(Solon app) {

@@ -2,9 +2,10 @@ package webapp.demo4_plug_bean;
 
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Component;
 import org.noear.solon.core.Plugin;
 
-@Bean
+@Component
 public class Demo4Plug implements Plugin {
     @Override
     public void start(Solon app) {
