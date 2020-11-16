@@ -19,7 +19,7 @@ import java.util.function.Consumer;
  * });
  *
  * //附：容器自动模式（会通过异步模式；可确保Bean总会生成）
- * @XInject
+ * @Inject
  * UserService userService;
  * </code></pre>
  *

@@ -12,7 +12,7 @@ import java.lang.annotation.Annotation;
  * });
  *
  * //@Db demo
- * @XBean
+ * @Component
  * public class DemoBean{
  *     @Db("db1")
  *     UserMapper userMapper;

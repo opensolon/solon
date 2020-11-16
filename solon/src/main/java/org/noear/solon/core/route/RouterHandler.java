@@ -5,7 +5,7 @@ import org.noear.solon.core.handler.Context;
 import org.noear.solon.core.handler.Handler;
 
 /**
- * XApp router Handler
+ * Solon router Handler
  *
  * @author noear
  * @since 1.0

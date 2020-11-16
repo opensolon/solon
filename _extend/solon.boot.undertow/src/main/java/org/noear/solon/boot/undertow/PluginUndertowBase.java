@@ -11,8 +11,7 @@ import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public abstract class XPluginUndertowBase {
-
+abstract class PluginUndertowBase {
     protected DeploymentInfo initDeploymentInfo() {
         MultipartConfigElement configElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
 

@@ -8,11 +8,11 @@ import java.lang.annotation.*;
  * 触发器：后置处理（争对 XController 或 XAction 的拦截器）
  *
  * <pre><code>
- * @XBefore({StartHandler.class, IpHandler.class})
- * @XAfter(EndHandler.class)
- * @XController
+ * @Before({StartHandler.class, IpHandler.class})
+ * @After(EndHandler.class)
+ * @Controller
  * public class DemoController{
- *     @XMapping("/demo/*")
+ *     @Mapping("/demo/*")
  *     public String hello(){
  *         return "heollo world;";
  *     }

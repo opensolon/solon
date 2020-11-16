@@ -18,9 +18,9 @@ import java.util.Map;
  * 提供容器，重新组织处理者运行；只支持HASH路由
  *
  * <pre><code>
- * @XMapping("/*")
- * @XController
- * public class ApiGateway extends XGateway {
+ * @Mapping("/*")
+ * @Controller
+ * public class ApiGateway extends Gateway {
  *     @Override
  *     protected void register() {
  *         before(StartHandler.class);   //添加前置拦截器，开始计时+记录请求日志

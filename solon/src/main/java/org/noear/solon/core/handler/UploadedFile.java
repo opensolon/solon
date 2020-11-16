@@ -6,10 +6,10 @@ import java.io.InputStream;
  * 通用上传文件模型（例：通过http上传的文件）
  *
  * <pre><code>
- * @XController
+ * @Controller
  * public class DemoController{
- *     @XMapping("/update/")
- *     public String update(XFile file){
+ *     @Mapping("/update/")
+ *     public String update(UploadedFile file){
  *         return "我收到文件：" + file.name;
  *     }
  * }

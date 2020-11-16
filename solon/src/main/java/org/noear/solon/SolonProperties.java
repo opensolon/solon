@@ -16,11 +16,11 @@ import java.util.function.BiConsumer;
  * //
  * // 手动获取配置模式（容器自动模式可用: @XInject("${water.logger}")）
  * //
- * XApp.cfg()
- * XApp.cfg().isDebugMode()
- * XApp.cfg().isDriftMode()
- * XApp.cfg().get("water.logger")
- * XApp.cfg().getProp("db1")
+ * Solon.cfg()
+ * Solon.cfg().isDebugMode()
+ * Solon.cfg().isDriftMode()
+ * Solon.cfg().get("water.logger")
+ * Solon.cfg().getProp("db1")
  * </code></pre>
  *
  * @author noear

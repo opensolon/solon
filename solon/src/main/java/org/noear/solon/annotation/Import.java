@@ -9,13 +9,13 @@ import java.lang.annotation.*;
  * //注解传导示例
  * @Retention(RetentionPolicy.RUNTIME)
  * @Target(ElementType.TYPE)
- * @XImport(value = DubboConfiguration.class)
+ * @Import(value = DubboConfiguration.class)
  * public @interface EnableDubbo {
  *     ...
  * }
  *
  * //注解在应用上
- * @XImport(value = DemoConfiguration.class)
+ * @Import(value = DemoConfiguration.class)
  * @EnableDubbo
  * public class DemoApp{
  *     public static void main(String[] args){

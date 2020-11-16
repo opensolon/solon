@@ -5,7 +5,7 @@ package org.noear.solon.core;
  *
  * <pre><code>
  * //定义 local upstream
- * @XBean("local")
+ * @Component("local")
  * public class TestUpstream implements XUpstream {
  *     @Override
  *     public String getServer() {
@@ -16,7 +16,7 @@ package org.noear.solon.core;
  * }
  *
  * //通过 FairyClient 使用，然后调用一个restful api（注：FairyClient 已与 XUpstream 适配）
- * @XBean
+ * @Component
  * public class DemoBean{
  *     @FairyClient("local:/demo/hello/")    //此处的local，对上面的local
  *     HelloService demo;

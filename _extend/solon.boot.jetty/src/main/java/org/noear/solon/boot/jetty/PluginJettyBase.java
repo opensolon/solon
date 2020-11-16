@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class XPluginJettyBase {
+class PluginJettyBase {
     protected ServletContextHandler getServletHandler() throws IOException {
         ServletContextHandler handler = new ServletContextHandler();
         handler.setContextPath("/");

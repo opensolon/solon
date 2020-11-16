@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 默认的XActionExecutor实现
+ * 默认的ActionExecutor实现
  *
  * @see Action#callDo(Context, Object, MethodWrap)
  * @author noear

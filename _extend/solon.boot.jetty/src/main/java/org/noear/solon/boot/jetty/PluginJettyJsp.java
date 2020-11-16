@@ -13,7 +13,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Properties;
 
-class XPluginJettyJsp extends XPluginJetty {
+class PluginJettyJsp extends PluginJetty {
 
     /**
      * 获取Server Handler

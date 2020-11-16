@@ -27,9 +27,9 @@ import java.util.*;
  * //
  * //容器自动模式
  * //
- * @XController
+ * @Controller
  * public class HelloController{
- *     @XMapping("/hello/*")
+ *     @Mapping("/hello/*")
  *     public String hello(){
  *         return "heollo world;";
  *     }

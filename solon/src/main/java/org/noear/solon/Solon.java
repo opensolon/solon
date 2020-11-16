@@ -26,7 +26,7 @@ import java.util.function.Consumer;
  * <pre><code>
  * public class DemoApp{
  *     public static void main(String[] args){
- *         XApp.start(DemoApp.class, args);
+ *         Solon.start(DemoApp.class, args);
  *     }
  * }
  * </code></pre>

@@ -17,7 +17,7 @@ import static io.undertow.Handlers.websocket;
  * @author  by: Yukai
  * @since : 2019/3/28 15:49
  */
-public class XPluginUndertow extends XPluginUndertowBase implements Plugin {
+class PluginUndertow extends PluginUndertowBase implements Plugin {
     Undertow _server;
     @Override
     public void start(Solon app) {

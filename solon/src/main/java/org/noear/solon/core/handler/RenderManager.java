@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 通过 XRender 管理员，以此实现多模板引擎处理
+ * 通过 Render 管理员，以此实现多模板引擎处理
  *
  * @author noear
  * @since 1.0

@@ -6,7 +6,7 @@ import java.util.UUID;
 import java.util.function.Function;
 
 /**
- * XSocket 消息包（实现 XMessage + XListener 架构）
+ * XSocket 消息包（实现 Message + Listener 架构）
  *
  * @see MessageListener#onMessage(MessageSession, Message, boolean)
  * @author noear

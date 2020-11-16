@@ -11,18 +11,18 @@ import java.lang.annotation.*;
  *
  * <pre><code>
  * //注解在bean的字段上
- * @XBean
+ * @Component
  * public class DemoBean{
- *     @XInject
+ *     @Inject
  *     UserService userService;
  *
- *     @XInject
+ *     @Inject
  *     Db1Model db1Config;
  * }
  *
  * //注解在@XConfiguration类上
- * @XInject("${db1}")
- * @XConfiguration
+ * @Inject("${db1}")
+ * @Configuration
  * public class Db1Model{
  *     public String jdbcUrl;
  *     public String username;
@@ -31,9 +31,9 @@ import java.lang.annotation.*;
  * }
  *
  * //注解在@XConfiguration的Bean构建参数上
- * @XConfiguration
+ * @Configuration
  * public class Config{
- *     @XBean
+ *     @Bean
  *     public DataSource db1(@XInject("${db1}") HikariDataSource ds){
  *         return ds;
  *     }

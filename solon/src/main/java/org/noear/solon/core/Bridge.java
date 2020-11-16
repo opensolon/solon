@@ -12,27 +12,27 @@ import java.util.*;
  *
  * <pre><code>
  * //示例：替换 SessionState 服务 (solon.extend.sessionstate.redis: org.noear.solon.extend.sessionstate.redis.XPluginImp.class)
- * public class XPluginImp implements XPlugin{
+ * public class PluginImp implements Plugin{
  *     @Override
  *     public void start(XApp app) {
  *         //检测 sessionState 是否存在；且优先级是否低于 RedisSessionState
- *         if (XBridge.sessionState() != null
- *                 && XBridge.sessionState().priority() >= RedisSessionState.SESSION_STATE_PRIORITY) {
+ *         if (Bridge.sessionState() != null
+ *                 && Bridge.sessionState().priority() >= RedisSessionState.SESSION_STATE_PRIORITY) {
  *             return;
  *         }
  *
  *         //如果条件满足，则替换掉已有的 sessionState
- *         XBridge.sessionStateSet(RedisSessionState.create());
+ *         Bridge.sessionStateSet(RedisSessionState.create());
  *     }
  * }
  *
  * //示例：替换 TranExecutor 服务 (solon.extend.data: org.noear.solon.extend.data.XPluginImp.class)
- * public class XPluginImp implements XPlugin{
+ * public class PluginImp implements Plugin{
  *     @Override
  *     public void start(XApp app) {
  *         if (app.enableTransaction()) {
  *             //如果有启用事务，则替换 tranExecutor
- *             XBridge.tranExecutorSet(TranExecutorImp.global);
+ *             Bridge.tranExecutorSet(TranExecutorImp.global);
  *         }
  *     }
  * }

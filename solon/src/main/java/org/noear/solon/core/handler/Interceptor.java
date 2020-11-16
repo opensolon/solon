@@ -5,10 +5,10 @@ package org.noear.solon.core.handler;
  * 方法拦截器（通过 @XAround 随载）
  *
  * <pre><code>
- * @XController
+ * @Controller
  * public class DemoController{
- *     @XAround(TranInterceptor.class)  //@XTran 注解即通过 @XAround 实现
- *     @XMapping("/demo/*")
+ *     @Around(TranInterceptor.class)  //@XTran 注解即通过 @XAround 实现
+ *     @Mapping("/demo/*")
  *     public String hello(){
  *         return "heollo world;";
  *     }
@@ -17,14 +17,14 @@ package org.noear.solon.core.handler;
  * //
  * // 注解传导示例：（用于简化使用）
  * //
- * @XAround(value = TranInterceptor.class, index = -7)
+ * @Around(value = TranInterceptor.class, index = -7)
  * @Target({ElementType.METHOD})
  * @Retention(RetentionPolicy.RUNTIME)
  * public @interface XTran {
  *     ....
  * }
  *
- * @XAround(value = CacheInterceptor.class, index = -8)
+ * @Around(value = CacheInterceptor.class, index = -8)
  * @Target({ElementType.METHOD})
  * @Retention(RetentionPolicy.RUNTIME)
  * public @interface XCache {

@@ -7,11 +7,11 @@ import java.lang.annotation.*;
  * 触发器：前置处理（争对 XController 和 XAction 的拦截器）
  *
  * <pre><code>
- * @XBefore({StartHandler.class, IpHandler.class})
- * @XAfter(EndHandler.class)
- * @XController
+ * @Before({StartHandler.class, IpHandler.class})
+ * @After(EndHandler.class)
+ * @Controller
  * public class DemoController{
- *     @XMapping("/demo/*")
+ *     @Mapping("/demo/*")
  *     public String hello(){
  *         return "heollo world;";
  *     }
@@ -20,7 +20,7 @@ import java.lang.annotation.*;
  * //
  * // 注解传导示例：（用于简化使用）
  * //
- * @XBefore({ValidateInterceptor.class})
+ * @Before({ValidateInterceptor.class})
  * @Inherited
  * @Target({ElementType.TYPE, ElementType.METHOD})
  * @Retention(RetentionPolicy.RUNTIME)

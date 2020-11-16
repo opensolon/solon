@@ -7,10 +7,10 @@ import java.util.Map;
  * mvc:模型与视图
  *
  * <pre><code>
- * @XMapping("/")
- * @XController
+ * @Mapping("/")
+ * @Controller
  * public class DemoController{
- *     @XMapping("login")
+ *     @Mapping("login")
  *     public ModelAndView login(){
  *         ModelAndView mv = new ModelAndView("login.ftl");
  *         mv.put("slogan","欢迎登录");
@@ -18,7 +18,7 @@ import java.util.Map;
  *         return mv;
  *     }
  *
- *     @XMapping("")
+ *     @Mapping("")
  *     public ModelAndView home(){
  *         return new ModelAndView("home.ftl");
  *     }

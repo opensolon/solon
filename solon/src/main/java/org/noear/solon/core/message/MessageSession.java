@@ -7,7 +7,7 @@ import java.net.InetSocketAddress;
 import java.util.Collection;
 
 /**
- * XSocket 会话（为 XMessage + XListener 架构服务 ）
+ * XSocket 会话（为 Message + Listener 架构服务 ）
  *
  * @author noear
  * @since 1.0

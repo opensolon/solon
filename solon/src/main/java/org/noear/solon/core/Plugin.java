@@ -3,7 +3,7 @@ package org.noear.solon.core;
 import org.noear.solon.Solon;
 
 /**
- * 通用插件接口（实现 XPlugin 架构；通过Solon ISP进行申明）
+ * 通用插件接口（实现 Plugin 架构；通过Solon ISP进行申明）
  *
  * @author noear
  * @since 1.0

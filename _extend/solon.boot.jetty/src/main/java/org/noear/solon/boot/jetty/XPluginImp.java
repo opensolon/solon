@@ -11,7 +11,7 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
 public final class XPluginImp implements Plugin {
-    private XPluginJetty _server = null;
+    private PluginJetty _server = null;
 
     public static String solon_boot_ver(){
         return "jetty 9.4/" + Solon.cfg().version();
@@ -39,9 +39,9 @@ public final class XPluginImp implements Plugin {
         Class<?> jspClz = Utils.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
 
         if (jspClz == null) {
-            _server = new XPluginJetty();
+            _server = new PluginJetty();
         } else {
-            _server = new XPluginJettyJsp();
+            _server = new PluginJettyJsp();
         }
 
         long time_start = System.currentTimeMillis();

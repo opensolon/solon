@@ -12,7 +12,7 @@ import org.noear.solon.core.Plugin;
 
 import java.io.IOException;
 
-class XPluginJetty extends XPluginJettyBase implements Plugin {
+class PluginJetty extends PluginJettyBase implements Plugin {
     protected Server _server = null;
 
     @Override

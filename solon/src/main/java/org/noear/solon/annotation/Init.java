@@ -11,19 +11,19 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Bean 构建过程：Constructor(构造方法) -> @XInject(依赖注入) -> @XInit(初始化)
  *
  * <pre><code>
- * @XBean
+ * @Component
  * public class DemoBean{
- *     @XInject("${db1}")
+ *     @Inject("${db1}")
  *     Properties props;
  *
- *     @XInject("${user.name}")
+ *     @Inject("${user.name}")
  *     String name;
  *
  *     public DemoBean(){
  *         //此时 props,name === null
  *     }
  *
- *     @XInit
+ *     @Init
  *     public void init(){
  *         //此时 props,name !== null
  *     }

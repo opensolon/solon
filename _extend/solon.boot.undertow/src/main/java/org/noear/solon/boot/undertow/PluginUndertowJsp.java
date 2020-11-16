@@ -18,8 +18,7 @@ import java.util.HashMap;
  * @author by: Yukai
  * @since: 2019/3/28 15:50
  */
-public class XPluginUndertowJsp extends XPluginUndertow {
-
+class PluginUndertowJsp extends PluginUndertow {
     @Override
     protected HttpHandler buildHandler() throws Exception{
         DeploymentInfo builder = initDeploymentInfo();
