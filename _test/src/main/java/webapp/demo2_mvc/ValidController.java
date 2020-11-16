@@ -5,7 +5,7 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.extend.validation.annotation.*;
 
 @Mapping("/demo2/valid")
-@XValid
+@Valid
 @Controller
 public class ValidController {
     @Mapping("date")

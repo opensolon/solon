@@ -1,6 +1,6 @@
 package org.noear.solon.extend.data.trans;
 
-import org.noear.solon.annotation.Tran;
+import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.ext.RunnableEx;
 import org.noear.solon.extend.data.TranNode;
 import org.noear.solon.extend.data.TranManager;

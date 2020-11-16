@@ -1,8 +1,10 @@
-package org.noear.solon.annotation;
+package org.noear.solon.data.annotation;
 
 import org.noear.solon.extend.data.around.CacheInterceptor;
 
 import java.lang.annotation.*;
+
+import org.noear.solon.annotation.*;
 
 /**
  * 缓存注解器

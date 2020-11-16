@@ -12,16 +12,16 @@ import java.net.URL;
 import java.util.Date;
 import java.util.regex.Pattern;
 
-class XResourceHandler implements Handler {
+class StaticResourceHandler implements Handler {
     private static final String CACHE_CONTROL = "Cache-Control";
     private static final String LAST_MODIFIED = "Last-Modified";
 
     private String _debugBaseUri;
     private String _baseUri;
-    private XStaticFiles staticFiles =  XStaticFiles.instance();
+    private StaticFiles staticFiles =  StaticFiles.instance();
     private Pattern _rule;
 
-    public XResourceHandler(String baseUri) {
+    public StaticResourceHandler(String baseUri) {
         _baseUri = baseUri;
 
         if(Solon.cfg().isDebugMode()){

@@ -1,7 +1,7 @@
-package org.noear.solon.annotation;
+package org.noear.solon.data.annotation;
 
 import org.noear.solon.extend.data.around.CacheRemoveInterceptor;
-
+import org.noear.solon.annotation.*;
 import java.lang.annotation.*;
 
 /**

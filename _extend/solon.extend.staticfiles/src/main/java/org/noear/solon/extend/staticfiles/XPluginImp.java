@@ -25,12 +25,12 @@ public class XPluginImp implements Plugin {
             //
             ParamMap mimeTypes = app.prop().getXmap("solon.mime");
             mimeTypes.forEach((k, v) -> {
-                XStaticFiles.instance().putIfAbsent("." + k, v);
+                StaticFiles.instance().putIfAbsent("." + k, v);
             });
 
             //2.切换代理（让静态文件优先）
             HandlerLink link = new HandlerLink();
-            link.node = new XResourceHandler("/static");
+            link.node = new StaticResourceHandler("/static");
             link.nextNode = app.handlerGet();
 
             app.handlerSet(link);

@@ -1,6 +1,6 @@
 package org.noear.solon.extend.data.around;
 
-import org.noear.solon.annotation.Tran;
+import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.core.handler.InterceptorChain;
 import org.noear.solon.core.handler.Interceptor;
 import org.noear.solon.extend.data.TranExecutorImp;

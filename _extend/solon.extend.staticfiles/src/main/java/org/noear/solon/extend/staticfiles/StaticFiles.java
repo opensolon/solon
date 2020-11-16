@@ -2,8 +2,8 @@ package org.noear.solon.extend.staticfiles;
 
 import java.util.HashMap;
 
-public class XStaticFiles extends HashMap<String,String> {
-    private XStaticFiles() {
+public class StaticFiles extends HashMap<String,String> {
+    private StaticFiles() {
         super();
         put(".txt", "text/plain");
 
@@ -34,11 +34,11 @@ public class XStaticFiles extends HashMap<String,String> {
 
     }
 
-    private static XStaticFiles _instance;
+    private static StaticFiles _instance;
 
-    public static XStaticFiles instance() {
+    public static StaticFiles instance() {
         if (_instance == null) {
-            _instance = new XStaticFiles();
+            _instance = new StaticFiles();
         }
 
         return _instance;

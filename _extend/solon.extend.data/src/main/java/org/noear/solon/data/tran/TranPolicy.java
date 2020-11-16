@@ -1,4 +1,4 @@
-package org.noear.solon.core;
+package org.noear.solon.data.tran;
 
 /**
  * 事务策略
