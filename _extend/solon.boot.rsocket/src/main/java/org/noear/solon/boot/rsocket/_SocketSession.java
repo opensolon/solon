@@ -7,9 +7,9 @@ import org.noear.solon.core.*;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.xsocket.MessageListenerProxy;
+import org.noear.solon.extend.xsocket.ListenerProxy;
 import org.noear.solon.extend.xsocket.MessageUtils;
-import org.noear.solon.extend.xsocket.MessageSessionBase;
+import org.noear.solon.extend.xsocket.SessionBase;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -19,7 +19,7 @@ import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.util.*;
 
-public class _SocketSession extends MessageSessionBase {
+public class _SocketSession extends SessionBase {
     public static Map<RSocket, Session> sessions = new HashMap<>();
 
     public static Session get(RSocket real) {
@@ -32,7 +32,7 @@ public class _SocketSession extends MessageSessionBase {
                     sessions.put(real, tmp);
 
                     //算第一次
-                    MessageListenerProxy.getGlobal().onOpen(tmp);
+                    ListenerProxy.getGlobal().onOpen(tmp);
                 }
             }
         }

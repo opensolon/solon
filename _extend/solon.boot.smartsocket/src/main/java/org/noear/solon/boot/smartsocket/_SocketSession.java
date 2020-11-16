@@ -5,7 +5,7 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.xsocket.MessageUtils;
-import org.noear.solon.extend.xsocket.MessageSessionBase;
+import org.noear.solon.extend.xsocket.SessionBase;
 import org.smartboot.socket.transport.AioSession;
 
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.util.*;
 
-class _SocketSession extends MessageSessionBase {
+class _SocketSession extends SessionBase {
     public static Map<AioSession, Session> sessions = new HashMap<>();
     public static Session get(AioSession real) {
         Session tmp = sessions.get(real);

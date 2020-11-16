@@ -15,19 +15,19 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author noear
  * @since 1.0
  * */
-public class MessageListenerProxy implements Listener {
+public class ListenerProxy implements Listener {
     //实例维护
-    private static Listener global = new MessageListenerProxy();
+    private static Listener global = new ListenerProxy();
     public static Listener getGlobal() {
         return global;
     }
     public static void setGlobal(Listener global) {
-        MessageListenerProxy.global = global;
+        ListenerProxy.global = global;
     }
 
     private SocketContextHandler socketContextHandler;
 
-    public MessageListenerProxy(){
+    public ListenerProxy(){
         socketContextHandler = new SocketContextHandler();
     }
 

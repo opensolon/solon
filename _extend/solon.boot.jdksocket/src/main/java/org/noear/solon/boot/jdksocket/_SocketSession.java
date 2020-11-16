@@ -5,7 +5,7 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.xsocket.MessageUtils;
-import org.noear.solon.extend.xsocket.MessageSessionBase;
+import org.noear.solon.extend.xsocket.SessionBase;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -32,7 +32,7 @@ import java.util.*;
  * }
  * </code></pre>
  * */
-class _SocketSession extends MessageSessionBase {
+class _SocketSession extends SessionBase {
     public static Map<Socket, Session> sessions = new HashMap<>();
 
     public static Session get(Socket real) {

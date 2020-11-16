@@ -3,7 +3,7 @@ package org.noear.solon.boot.smarthttp.websocket;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.xsocket.MessageListenerProxy;
+import org.noear.solon.extend.xsocket.ListenerProxy;
 import org.smartboot.http.WebSocketRequest;
 import org.smartboot.http.WebSocketResponse;
 import org.smartboot.http.server.handle.WebSocketDefaultHandle;
@@ -12,7 +12,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
 
     @Override
     public void onHandShark(WebSocketRequest request, WebSocketResponse response) {
-        MessageListenerProxy.getGlobal().onOpen(_SocketSession.get(request, response));
+        ListenerProxy.getGlobal().onOpen(_SocketSession.get(request, response));
     }
 
     @Override
@@ -20,7 +20,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
         _SocketSession session = _SocketSession.get(request, response);
         session.onClose();
 
-        MessageListenerProxy.getGlobal().onClose(session);
+        ListenerProxy.getGlobal().onClose(session);
 
         _SocketSession.remove(request);
     }
@@ -32,7 +32,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
             Message message = Message.wrap(request.getRequestURI(),
                     data.getBytes("UTF-8"));
 
-            MessageListenerProxy.getGlobal().onMessage(session, message, true);
+            ListenerProxy.getGlobal().onMessage(session, message, true);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -44,7 +44,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
             Session session = _SocketSession.get(request, response);
             Message message = Message.wrap(request.getRequestURI(), data);
 
-            MessageListenerProxy.getGlobal().onMessage(session, message, false);
+            ListenerProxy.getGlobal().onMessage(session, message, false);
 
         } catch (Throwable ex) {
             EventBus.push(ex);

@@ -2,11 +2,11 @@ package org.noear.solon.boot.jdksocket;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.xsocket.MessageSessionFactory;
+import org.noear.solon.extend.xsocket.SessionFactory;
 
 import java.net.Socket;
 
-class _SessionFactoryImpl extends MessageSessionFactory {
+class _SessionFactoryImpl extends SessionFactory {
     @Override
     protected Session getSession(Object conn) {
         if (conn instanceof Socket) {

@@ -7,7 +7,7 @@ import org.noear.solon.core.message.Session;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-public abstract class MessageSessionBase implements Session {
+public abstract class SessionBase implements Session {
     /**
      * 用于支持双向RPC
      * */
@@ -19,14 +19,14 @@ public abstract class MessageSessionBase implements Session {
 
         //注册请求
         CompletableFuture<Message> request = new CompletableFuture<>();
-        MessageListenerProxy.regRequest(message, request);
+        ListenerProxy.regRequest(message, request);
 
         //发送消息
         send(message);
 
         try {
             //等待响应
-            return request.get(MessageListenerProxy.REQUEST_AND_RESPONSE_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+            return request.get(ListenerProxy.REQUEST_AND_RESPONSE_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         } catch (Throwable ex) {
             throw Utils.throwableWrap(ex);
         }

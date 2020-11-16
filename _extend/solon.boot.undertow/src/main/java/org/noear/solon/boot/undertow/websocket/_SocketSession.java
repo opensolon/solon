@@ -7,7 +7,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.extend.xsocket.MessageSessionBase;
+import org.noear.solon.extend.xsocket.SessionBase;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -15,7 +15,7 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.*;
 
-public class _SocketSession extends MessageSessionBase {
+public class _SocketSession extends SessionBase {
     public static Map<WebSocketChannel, Session> sessions = new HashMap<>();
     public static Session get(WebSocketChannel real) {
         Session tmp = sessions.get(real);

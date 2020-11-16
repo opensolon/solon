@@ -4,7 +4,7 @@ import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.xsocket.MessageListenerProxy;
+import org.noear.solon.extend.xsocket.ListenerProxy;
 
 import java.nio.ByteBuffer;
 
@@ -13,7 +13,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
     @Override
     public void onWebSocketConnect(org.eclipse.jetty.websocket.api.Session sess) {
         super.onWebSocketConnect(sess);
-        MessageListenerProxy.getGlobal().onOpen(_SocketSession.get(getSession()));
+        ListenerProxy.getGlobal().onOpen(_SocketSession.get(getSession()));
     }
 
     @Override
@@ -24,7 +24,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
             Message message = Message.wrap(getSession().getUpgradeRequest().getOrigin(),
                     buf.array());
 
-            MessageListenerProxy.getGlobal().onMessage(session, message, false);
+            ListenerProxy.getGlobal().onMessage(session, message, false);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -37,7 +37,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
             Message message = Message.wrap(getSession().getUpgradeRequest().getRequestURI().toString(),
                     text.getBytes("UTF-8"));
 
-            MessageListenerProxy.getGlobal().onMessage(session, message, true);
+            ListenerProxy.getGlobal().onMessage(session, message, true);
 
         } catch (Throwable ex) {
             EventBus.push(ex);
@@ -46,7 +46,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
 
     @Override
     public void onWebSocketClose(int statusCode, String reason) {
-        MessageListenerProxy.getGlobal().onClose(_SocketSession.get(getSession()));
+        ListenerProxy.getGlobal().onClose(_SocketSession.get(getSession()));
 
         _SocketSession.remove(getSession());
         super.onWebSocketClose(statusCode, reason);
@@ -54,6 +54,6 @@ public class WebSocketListenerImp extends WebSocketAdapter {
 
     @Override
     public void onWebSocketError(Throwable cause) {
-        MessageListenerProxy.getGlobal().onError(_SocketSession.get(getSession()), cause);
+        ListenerProxy.getGlobal().onError(_SocketSession.get(getSession()), cause);
     }
 }
