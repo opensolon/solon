@@ -2,6 +2,7 @@ package org.noear.solon.test;
 
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
@@ -31,9 +32,9 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
                     }
                 } else {
                     if (anno.debug()) {
-                        SolonApp.start(anno.value(), debugArgs);
+                        Solon.start(anno.value(), debugArgs);
                     } else {
-                        SolonApp.start(anno.value(), new String[]{});
+                        Solon.start(anno.value(), new String[]{});
                     }
                 }
             } catch (Throwable ex) {
@@ -50,7 +51,7 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
                 }
             }
         } else {
-            SolonApp.start(klass, debugArgs);
+            Solon.start(klass, debugArgs);
         }
 
     }

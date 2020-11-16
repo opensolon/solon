@@ -3,6 +3,7 @@ package org.noear.solon.extend.dubbo;
 import org.apache.dubbo.config.*;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.rpc.model.ApplicationModel;
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.NvMap;

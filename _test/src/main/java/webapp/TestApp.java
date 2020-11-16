@@ -1,6 +1,7 @@
 package webapp;
 
 import org.noear.fairy.annotation.EnableFairyClient;
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.handle.MethodType;
@@ -28,7 +29,7 @@ public class TestApp {
          * http://t1_jetty.test.noear.org
          *
          * */
-        SolonApp app = SolonApp.start(TestApp.class, args, x -> x.enableSocket(true).enableWebSocket(true));
+        SolonApp app = Solon.start(TestApp.class, args, x -> x.enableSocket(true).enableWebSocket(true));
 
 //        app.ws("/demoe/websocket",(session,message)->{
 //            System.out.println(session.resourceDescriptor());
@@ -65,7 +66,7 @@ public class TestApp {
     void test1() {
         //控制渲染的示例 //即拦截执行结果的机制
         //
-        SolonApp app = SolonApp.start(TestApp.class, null);
+        SolonApp app = Solon.start(TestApp.class, null);
 
         //开始之前把上下文置为已泻染
         app.before("/user/**", MethodType.HTTP, c -> c.setRendered(true));

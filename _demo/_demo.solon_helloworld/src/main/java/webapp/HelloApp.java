@@ -1,5 +1,6 @@
 package webapp;
 
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
@@ -7,7 +8,7 @@ import org.noear.solon.annotation.Mapping;
 @Controller
 public class HelloApp {
     public static void main(String[] args) {
-        SolonApp.start(HelloApp.class, args);
+        Solon.start(HelloApp.class, args);
     }
 
     @Mapping("/")

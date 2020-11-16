@@ -1,5 +1,6 @@
 package webapp.demo6_aop;
 
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;

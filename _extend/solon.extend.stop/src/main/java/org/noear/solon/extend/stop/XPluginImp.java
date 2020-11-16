@@ -1,5 +1,6 @@
 package org.noear.solon.extend.stop;
 
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
 
@@ -22,9 +23,9 @@ public class XPluginImp implements Plugin {
                 }
 
                 if ("*".equals(host)) {
-                    SolonApp.stop(true, delay2);
+                    Solon.stop(true, delay2);
                 } else if (host.equals(c.uri().getHost())) {
-                    SolonApp.stop(true, delay2);
+                    Solon.stop(true, delay2);
                 }
             });
         }

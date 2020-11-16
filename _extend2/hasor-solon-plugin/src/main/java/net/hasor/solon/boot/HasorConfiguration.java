@@ -4,6 +4,7 @@ import net.hasor.core.AppContext;
 import net.hasor.core.Module;
 import net.hasor.utils.ExceptionUtils;
 import net.hasor.utils.StringUtils;
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.core.Aop;

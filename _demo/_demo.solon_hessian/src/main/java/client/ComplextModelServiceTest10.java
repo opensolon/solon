@@ -4,6 +4,7 @@ import client.dso.FairyConfigurationImp;
 import org.noear.fairy.FairyConfigurationDefault;
 import org.noear.fairy.annotation.EnableFairyClient;
 import org.noear.fairy.annotation.FairyClient;
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.core.Aop;
@@ -23,7 +24,7 @@ public class ComplextModelServiceTest10 {
     public static void main(String[] args) throws Exception {
         FairyConfigurationDefault.proxy = new FairyConfigurationImp();
 
-        SolonApp.start(ComplextModelServiceTest10.class, args, app -> {
+        Solon.start(ComplextModelServiceTest10.class, args, app -> {
             app.enableHttp(false);
             app.enableWebSocket(false);
             app.enableSocket(false);
