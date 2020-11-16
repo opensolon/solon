@@ -1,4 +1,4 @@
-package org.noear.solon.core.handler;
+package org.noear.solon.core.handle;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;

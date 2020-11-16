@@ -5,7 +5,7 @@ import io.netty.handler.codec.http.multipart.Attribute;
 import io.netty.handler.codec.http.multipart.FileUpload;
 import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
 import io.netty.handler.codec.http.multipart.InterfaceHttpData;
-import org.noear.solon.core.handler.UploadedFile;
+import org.noear.solon.core.handle.UploadedFile;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;

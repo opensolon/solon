@@ -2,7 +2,7 @@ package org.noear.solon.boot.websocket;
 
 import org.java_websocket.WebSocket;
 import org.noear.solon.Utils;
-import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.MessageSession;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.xsocket.MessageSessionBase;

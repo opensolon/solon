@@ -1,7 +1,7 @@
 package org.noear.solon.boot.jlhttp;
 
 
-import org.noear.solon.core.handler.UploadedFile;
+import org.noear.solon.core.handle.UploadedFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

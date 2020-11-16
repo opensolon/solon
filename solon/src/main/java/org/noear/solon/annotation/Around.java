@@ -1,6 +1,6 @@
 package org.noear.solon.annotation;
 
-import org.noear.solon.core.handler.Interceptor;
+import org.noear.solon.core.handle.Interceptor;
 
 import java.lang.annotation.*;
 

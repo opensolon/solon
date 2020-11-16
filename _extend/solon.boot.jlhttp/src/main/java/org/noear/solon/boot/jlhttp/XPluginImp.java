@@ -3,7 +3,7 @@ package org.noear.solon.boot.jlhttp;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.Plugin;
 
 import javax.net.ssl.SSLServerSocketFactory;

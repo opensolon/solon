@@ -3,8 +3,8 @@ package org.noear.solon.boot.jdkhttp;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import org.noear.solon.Utils;
-import org.noear.solon.core.handler.Context;
-import org.noear.solon.core.handler.UploadedFile;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.NvMap;
 
 import java.io.ByteArrayOutputStream;

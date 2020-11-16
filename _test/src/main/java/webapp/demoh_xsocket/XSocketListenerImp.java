@@ -1,7 +1,7 @@
 package webapp.demoh_xsocket;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.MessageListener;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.MessageSession;

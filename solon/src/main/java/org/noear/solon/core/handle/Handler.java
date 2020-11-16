@@ -1,4 +1,4 @@
-package org.noear.solon.core.handler;
+package org.noear.solon.core.handle;
 
 /**
  * 通用处理接口（实现：XContext + XHandler 架构）

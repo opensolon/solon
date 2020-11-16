@@ -1,6 +1,6 @@
 package webapp.controller;
 
-import org.noear.solon.core.handler.Gateway;
+import org.noear.solon.core.handle.Gateway;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 

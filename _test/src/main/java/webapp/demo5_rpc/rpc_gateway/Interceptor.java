@@ -4,8 +4,8 @@ import org.noear.solon.annotation.After;
 import org.noear.solon.annotation.Before;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.core.handler.Context;
-import org.noear.solon.core.handler.Handler;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.Handler;
 
 @After({Interceptor.ApiIntercepter.class})
 @Before({ Interceptor.AuthInterceptor.class})

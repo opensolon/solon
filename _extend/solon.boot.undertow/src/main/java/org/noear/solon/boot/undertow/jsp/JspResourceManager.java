@@ -5,7 +5,7 @@ import io.undertow.server.handlers.resource.Resource;
 import io.undertow.server.handlers.resource.ResourceChangeListener;
 import io.undertow.server.handlers.resource.ResourceManager;
 import io.undertow.server.handlers.resource.URLResource;
-import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handle.Context;
 
 import java.io.IOException;
 import java.net.URI;

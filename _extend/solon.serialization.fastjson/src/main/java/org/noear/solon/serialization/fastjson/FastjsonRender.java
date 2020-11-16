@@ -2,8 +2,8 @@ package org.noear.solon.serialization.fastjson;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import org.noear.solon.core.handler.Context;
-import org.noear.solon.core.handler.Render;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.Render;
 
 //不要要入参，方便后面多视图混用
 //

@@ -3,9 +3,9 @@ package webapp.demoe_websocket;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.core.handler.ModelAndView;
-import org.noear.solon.core.handler.Context;
-import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.MethodType;
 
 @Controller
 public class WsDemoController {

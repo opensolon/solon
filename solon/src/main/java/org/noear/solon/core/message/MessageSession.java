@@ -1,6 +1,6 @@
 package org.noear.solon.core.message;
 
-import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.handle.MethodType;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

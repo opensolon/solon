@@ -3,7 +3,7 @@ package webapp.demo9_multiple_view;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Singleton;
-import org.noear.solon.core.handler.ModelAndView;
+import org.noear.solon.core.handle.ModelAndView;
 
 @Singleton(false)
 @Controller

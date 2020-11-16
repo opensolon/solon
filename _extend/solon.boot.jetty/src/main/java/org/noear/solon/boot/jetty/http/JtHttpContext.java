@@ -3,9 +3,9 @@ package org.noear.solon.boot.jetty.http;
 import org.noear.solon.Solon;
 import org.noear.solon.core.*;
 import org.noear.solon.Utils;
-import org.noear.solon.core.handler.Context;
-import org.noear.solon.core.handler.SessionState;
-import org.noear.solon.core.handler.UploadedFile;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.SessionState;
+import org.noear.solon.core.handle.UploadedFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

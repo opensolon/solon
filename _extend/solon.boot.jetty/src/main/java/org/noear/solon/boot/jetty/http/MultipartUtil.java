@@ -1,7 +1,7 @@
 package org.noear.solon.boot.jetty.http;
 
 
-import org.noear.solon.core.handler.UploadedFile;
+import org.noear.solon.core.handle.UploadedFile;
 
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;

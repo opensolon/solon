@@ -2,7 +2,7 @@ package webapp.demo2_mvc;
 
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Controller;
-import org.noear.solon.core.handler.ModelAndView;
+import org.noear.solon.core.handle.ModelAndView;
 
 import java.time.LocalDate;
 import java.util.Date;

@@ -3,7 +3,7 @@ package webapp.demo5_rpc.rpc_gateway;
 import org.noear.fairy.Fairy;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Controller;
-import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handle.Context;
 
 //用普通控制器，手动实现一个网关
 @Controller

@@ -3,7 +3,7 @@ package webapp;
 import org.noear.fairy.annotation.EnableFairyClient;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Import;
-import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.extend.cron4j.EnableCron4j;
 import org.noear.solon.extend.quartz.EnableQuartz;
 import webapp.demo6_aop.TestImport;

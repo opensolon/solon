@@ -4,9 +4,9 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Param;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Singleton;
-import org.noear.solon.core.handler.Context;
-import org.noear.solon.core.handler.UploadedFile;
-import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.core.handle.MethodType;
 import webapp.models.UserModel;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package org.noear.solon.core.handler;
+package org.noear.solon.core.handle;
 
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.MethodWrap;

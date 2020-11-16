@@ -4,7 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.core.handler.Context;
+import org.noear.solon.core.handle.Context;
 import webapp.models.UserModel;
 
 @Controller

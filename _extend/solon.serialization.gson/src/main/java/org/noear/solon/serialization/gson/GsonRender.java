@@ -2,8 +2,8 @@ package org.noear.solon.serialization.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.noear.solon.core.handler.Context;
-import org.noear.solon.core.handler.Render;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.Render;
 
 public class GsonRender implements Render {
     Gson stringify = new GsonBuilder()

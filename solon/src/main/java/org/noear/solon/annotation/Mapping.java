@@ -1,6 +1,6 @@
 package org.noear.solon.annotation;
 
-import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.handle.MethodType;
 
 import java.lang.annotation.*;
 

@@ -1,4 +1,4 @@
-package org.noear.solon.core.handler;
+package org.noear.solon.core.handle;
 
 /**
  * 处理助手，提供处理链的存储

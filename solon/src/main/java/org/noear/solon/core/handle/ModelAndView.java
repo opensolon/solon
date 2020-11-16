@@ -1,4 +1,4 @@
-package org.noear.solon.core.handler;
+package org.noear.solon.core.handle;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

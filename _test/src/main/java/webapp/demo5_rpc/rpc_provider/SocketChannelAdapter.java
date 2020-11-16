@@ -1,9 +1,9 @@
 package webapp.demo5_rpc.rpc_provider;
 
 import org.noear.snack.ONode;
-import org.noear.solon.core.handler.Context;
-import org.noear.solon.core.handler.Handler;
-import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.Handler;
+import org.noear.solon.core.handle.MethodType;
 
 import java.util.Map;
 

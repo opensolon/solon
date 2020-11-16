@@ -1,9 +1,8 @@
 package server.controller;
 
-import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.handle.MethodType;
 import server.dso.IComplexModelService;
 import server.model.ComplexModel;
 

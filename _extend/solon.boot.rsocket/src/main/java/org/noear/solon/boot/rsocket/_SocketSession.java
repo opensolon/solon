@@ -4,7 +4,7 @@ import io.rsocket.RSocket;
 import io.rsocket.util.DefaultPayload;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
-import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.MessageSession;
 import org.noear.solon.extend.xsocket.MessageListenerProxy;

@@ -3,8 +3,8 @@ package webapp.demo2_mvc;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Singleton;
-import org.noear.solon.core.handler.Context;
-import org.noear.solon.core.handler.UploadedFile;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.UploadedFile;
 
 @Singleton(false)
 @Mapping("/demo2/upload")

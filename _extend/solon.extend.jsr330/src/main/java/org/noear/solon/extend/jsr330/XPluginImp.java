@@ -3,7 +3,7 @@ package org.noear.solon.extend.jsr330;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.handler.HandlerLoader;
+import org.noear.solon.core.handle.HandlerLoader;
 import org.noear.solon.core.Plugin;
 
 import javax.inject.Inject;

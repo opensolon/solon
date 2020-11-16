@@ -4,7 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.boot.smarthttp.http.SmartHttpContextHandler;
 import org.noear.solon.boot.smarthttp.http.XFormContentFilter;
 import org.noear.solon.boot.smarthttp.websocket.WebSocketHandleImp;
-import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.Plugin;
 import org.smartboot.http.HttpBootstrap;
 

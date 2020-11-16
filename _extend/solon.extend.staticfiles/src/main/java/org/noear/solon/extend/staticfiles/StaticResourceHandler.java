@@ -2,9 +2,9 @@ package org.noear.solon.extend.staticfiles;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.handler.Context;
-import org.noear.solon.core.handler.Handler;
-import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.Handler;
+import org.noear.solon.core.handle.MethodType;
 
 import java.io.File;
 import java.net.URI;

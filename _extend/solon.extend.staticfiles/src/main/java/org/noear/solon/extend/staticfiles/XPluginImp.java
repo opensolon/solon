@@ -2,7 +2,7 @@ package org.noear.solon.extend.staticfiles;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.handler.HandlerLink;
+import org.noear.solon.core.handle.HandlerLink;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.Plugin;
 

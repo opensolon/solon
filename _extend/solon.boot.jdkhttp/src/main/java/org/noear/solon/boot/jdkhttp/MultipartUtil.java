@@ -3,7 +3,7 @@ package org.noear.solon.boot.jdkhttp;
 
 import com.sun.net.httpserver.HttpExchange;
 import org.noear.solon.boot.jdkhttp.uploadfile.MultipartIterator;
-import org.noear.solon.core.handler.UploadedFile;
+import org.noear.solon.core.handle.UploadedFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

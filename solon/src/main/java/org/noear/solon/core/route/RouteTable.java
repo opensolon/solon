@@ -1,6 +1,6 @@
 package org.noear.solon.core.route;
 
-import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.PathAnalyzer;
 
 import java.util.ArrayList;

@@ -4,7 +4,7 @@ import io.undertow.websockets.core.WebSocketChannel;
 import io.undertow.websockets.core.WebSockets;
 
 import org.noear.solon.Utils;
-import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.MessageSession;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.xsocket.MessageSessionBase;

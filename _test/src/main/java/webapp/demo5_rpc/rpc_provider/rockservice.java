@@ -3,8 +3,8 @@ package webapp.demo5_rpc.rpc_provider;
 import org.noear.solon.annotation.Before;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.core.handler.Context;
-import org.noear.solon.core.handler.MethodType;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.MethodType;
 import webapp.demo5_rpc.rockapi;
 import webapp.models.UserModel;
 

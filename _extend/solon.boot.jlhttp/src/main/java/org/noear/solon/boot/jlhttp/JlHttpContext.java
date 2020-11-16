@@ -2,8 +2,8 @@ package org.noear.solon.boot.jlhttp;
 
 import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
-import org.noear.solon.core.handler.Context;
-import org.noear.solon.core.handler.UploadedFile;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.UploadedFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

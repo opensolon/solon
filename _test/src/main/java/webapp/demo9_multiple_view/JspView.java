@@ -2,9 +2,9 @@ package webapp.demo9_multiple_view;
 
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.core.handler.ModelAndView;
-import org.noear.solon.core.handler.Context;
-import org.noear.solon.core.handler.Handler;
+import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.Handler;
 
 /**
  * 实现简单的 mvc 效果
