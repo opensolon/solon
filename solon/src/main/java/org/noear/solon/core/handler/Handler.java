@@ -1,7 +1,5 @@
 package org.noear.solon.core.handler;
 
-import org.noear.solon.core.handler.Context;
-
 /**
  * 通用处理接口（实现：XContext + XHandler 架构）
  *

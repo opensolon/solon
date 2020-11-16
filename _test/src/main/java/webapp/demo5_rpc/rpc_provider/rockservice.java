@@ -1,6 +1,5 @@
 package webapp.demo5_rpc.rpc_provider;
 
-import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Before;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Mapping;

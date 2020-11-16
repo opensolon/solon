@@ -1,6 +1,5 @@
 package webapp.demoh_xsocket;
 
-import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handler.Context;
