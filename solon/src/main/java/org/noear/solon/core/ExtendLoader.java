@@ -65,7 +65,7 @@ public class ExtendLoader {
                 PrintUtil.blueln("solon.extend: " + path);
 
                 //加载扩展内容
-                instance.loadFile(new File(path), filter);
+                instance.loadFile(loaders, new File(path), filter);
             }
         }
 
@@ -76,17 +76,19 @@ public class ExtendLoader {
     /**
      * 加载扩展具体的jar文件
      */
-    public static ClassLoader loadJar(String path, File file) {
+    public static boolean loadJar(List<ClassLoader> loaders, String path, File file) {
         try {
-            if (path.endsWith("!.jar") || path.endsWith("!.zip")) {
-                return JarClassLoader.fromJar(file.toURI().toURL());
+            //启用了扩展隔离或者强制隔离
+            if (Solon.global().enableExtIsolation() || path.endsWith("!.jar") || path.endsWith("!.zip")) {
+                loaders.add(JarClassLoader.fromJar(file.toURI().toURL()));
             } else {
                 JarClassLoader.global().loadJar(file.toURI().toURL());
-                return null;
             }
+
+            return true;
         } catch (Throwable ex) {
             ex.printStackTrace();
-            return null;
+            return false;
         }
     }
 
@@ -114,18 +116,18 @@ public class ExtendLoader {
      *
      * @param filter 过滤器
      */
-    private ClassLoader loadFile(File file, Predicate<String> filter) {
+    private void loadFile(List<ClassLoader> loaders, File file, Predicate<String> filter) {
         if (file.exists() == false) {
-            return null;
+            return;
         }
 
         if (file.isDirectory()) {
             File[] tmps = file.listFiles();
             for (File tmp : tmps) {
-                loadFileDo(tmp, filter);
+                loadFileDo(loaders, tmp, filter);
             }
         } else {
-            loadFileDo(file, filter);
+            loadFileDo(loaders, file, filter);
         }
     }
 
@@ -136,21 +138,22 @@ public class ExtendLoader {
      * @param filter 过滤器
      * @return 新加的类加载器
      */
-    private ClassLoader loadFileDo(File file, Predicate<String> filter) {
+    private void loadFileDo(List<ClassLoader> loaders, File file, Predicate<String> filter) {
         if (file.isFile()) {
             String path = file.getAbsolutePath();
 
             //先尝试过滤
             if (filter != null) {
                 if (filter.test(path) == false) {
-                    return null;
+                    return;
                 }
             }
 
             try {
                 //尝试加载jar包
                 if (path.endsWith(".jar") || path.endsWith(".zip")) {
-                    return loadJar(path,file);
+                     loadJar(loaders,path,file);
+                     return;
                 }
 
                 //如果map不为null；尝试加载配置
@@ -158,7 +161,7 @@ public class ExtendLoader {
                     Solon.cfg().loadAdd(file.toURI().toURL());
 
                     PrintUtil.blueln("loaded: " + path);
-                    return null;
+                    return;
                 }
 
                 if (path.endsWith(".yml")) {
@@ -169,13 +172,11 @@ public class ExtendLoader {
                     Solon.cfg().loadAdd(file.toURI().toURL());
 
                     PrintUtil.blueln("loaded: " + path);
-                    return null;
+                    return;
                 }
             } catch (Throwable ex) {
                 ex.printStackTrace();
             }
         }
-
-        return null;
     }
 }

@@ -37,15 +37,18 @@ public class SolonApp implements Handler, HandlerSlots {
      * 初始化（不能合在构建函数里）
      * */
     protected void init() {
+
+        List<ClassLoader> loaderList;
+
         //a.尝试加载扩展文件夹
         String filterStr = cfg().extendFilter();
         if (Utils.isEmpty(filterStr)) {
             //不需要过滤
-            ExtendLoader.load(cfg().extend(), false);
+            loaderList = ExtendLoader.load(cfg().extend(), false);
         } else {
             //增加过滤
             String[] filterS = filterStr.split(";");
-            ExtendLoader.load(cfg().extend(), false, (path) -> {
+            loaderList = ExtendLoader.load(cfg().extend(), false, (path) -> {
                 for (String f : filterS) {
                     if (path.contains(f)) {
                         return true;
@@ -58,7 +61,7 @@ public class SolonApp implements Handler, HandlerSlots {
 
 
         //b.尝试扫描插件
-        cfg().plugsScan();
+        cfg().plugsScan(loaderList);
     }
 
     /**
@@ -535,6 +538,18 @@ public class SolonApp implements Handler, HandlerSlots {
     }
     public SolonApp enableSessionState(boolean enable){
         _enableSessionState = enable;
+        return this;
+    }
+
+    /**
+     * 启用扩展隔离
+     * */
+    private boolean _enableExtIsolation = true;
+    public boolean enableExtIsolation(){
+        return _enableExtIsolation;
+    }
+    public SolonApp enableExtIsolation(boolean enable){
+        _enableExtIsolation = enable;
         return this;
     }
 }

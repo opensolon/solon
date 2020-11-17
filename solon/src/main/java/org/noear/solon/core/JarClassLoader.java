@@ -3,9 +3,7 @@ package org.noear.solon.core;
 import java.io.File;
 import java.io.IOException;
 import java.net.*;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 自定义类加载器，为了方便加载扩展jar包（配合扩展加载器，热加载扩展jar包）
@@ -22,6 +20,7 @@ public class JarClassLoader extends URLClassLoader {
         return global;
     }
 
+    //public static List<JarClassLoader> loaderList = new ArrayList<>();
 
     public static JarClassLoader fromJar(URL url) {
         JarClassLoader loader = new JarClassLoader();

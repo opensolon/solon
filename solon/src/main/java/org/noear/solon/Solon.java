@@ -72,9 +72,8 @@ public class Solon {
 
         //1.创建应用
         global = new SolonApp(source, argx);
-        global.init();
 
-        //2.尝试初始化
+        //2.1.自定义初始化
         if (initialize != null) {
             try {
                 initialize.accept(global);
@@ -82,6 +81,9 @@ public class Solon {
                 throw Utils.throwableWrap(ex);
             }
         }
+
+        //2.2.内部初始化
+        global.init();
 
         //3.运行
         global.run();

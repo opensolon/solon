@@ -2,6 +2,7 @@ package org.noear.solon.core.util;
 
 import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
+import org.noear.solon.core.JarClassLoader;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +17,6 @@ import java.util.jar.JarFile;
 /**
  * 资源扫描器（用于扫描插件配置等资源...）
  *
- * @see SolonProps#plugsScan(List)
  * @author noear
  * @since 1.0
  * */
@@ -27,6 +27,10 @@ public class ResourceScaner {
      * @param path 路径
      * @param filter 过滤条件
      * */
+    public static Set<String> scan(String path, Predicate<String> filter) {
+        return scan(JarClassLoader.global(),path,filter);
+    }
+
     public static Set<String> scan(ClassLoader classLoader, String path, Predicate<String> filter) {
         Set<String> urls = new LinkedHashSet<>();
 
