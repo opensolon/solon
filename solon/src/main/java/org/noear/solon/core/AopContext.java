@@ -223,7 +223,7 @@ public class AopContext extends BeanContainer {
     public void beanScan(Class<?> source) {
         //确定文件夹名
         if (source.getPackage() != null) {
-            beanScan(source.getPackage().getName());
+            beanScan(source.getClassLoader(), source.getPackage().getName());
         }
     }
 
@@ -231,7 +231,18 @@ public class AopContext extends BeanContainer {
      * ::扫描源下的所有 bean 及对应处理
      */
     public void beanScan(String basePackage) {
+        beanScan(JarClassLoader.global(), basePackage);
+    }
+
+    /**
+     * ::扫描源下的所有 bean 及对应处理
+     */
+    public void beanScan(ClassLoader classLoader, String basePackage) {
         if (Utils.isEmpty(basePackage)) {
+            return;
+        }
+
+        if (classLoader == null) {
             return;
         }
 
@@ -242,7 +253,7 @@ public class AopContext extends BeanContainer {
                 .stream().sorted(Comparator.comparing(s -> s.length())).forEach(name -> {
             String className = name.substring(0, name.length() - 6);
 
-            Class<?> clz = Utils.loadClass(className.replace("/", "."));
+            Class<?> clz = Utils.loadClass(classLoader, className.replace("/", "."));
             if (clz != null) {
                 tryCreateBean(clz);
             }

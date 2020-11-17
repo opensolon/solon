@@ -146,7 +146,18 @@ public class Utils {
      */
     public static Class<?> loadClass(String className) {
         try {
-            return JarClassLoader.global().loadClass(className); //Class.forName(className);
+            return loadClass(JarClassLoader.global(), className); //Class.forName(className);
+        } catch (Throwable ex) {
+            return null;
+        }
+    }
+
+    /**
+     * 根据字符串加载为一个类
+     */
+    public static Class<?> loadClass(ClassLoader classLoader, String className) {
+        try {
+            return classLoader.loadClass(className); //Class.forName(className);
         } catch (Throwable ex) {
             return null;
         }
@@ -156,8 +167,15 @@ public class Utils {
      * 根据字段串加载为一个对象
      */
     public static <T> T newInstance(String className) {
+        return newInstance(JarClassLoader.global(), className);
+    }
+
+    /**
+     * 根据字段串加载为一个对象
+     */
+    public static <T> T newInstance(ClassLoader classLoader,String className) {
         try {
-            Class<?> clz = loadClass(className);
+            Class<?> clz = loadClass(classLoader, className);
             if (clz == null) {
                 return null;
             } else {
@@ -175,7 +193,11 @@ public class Utils {
      * @param name 资源名称
      */
     public static Enumeration<URL> getResources(String name) throws IOException {
-        return JarClassLoader.global().getResources(name); //XUtil.class.getClassLoader().getResources(name);
+        return getResources(JarClassLoader.global(), name); //XUtil.class.getClassLoader().getResources(name);
+    }
+
+    public static Enumeration<URL> getResources(ClassLoader classLoader, String name) throws IOException {
+        return classLoader.getResources(name); //XUtil.class.getClassLoader().getResources(name);
     }
 
     /**
@@ -184,7 +206,11 @@ public class Utils {
      * @param name 资源名称
      */
     public static URL getResource(String name) {
-        return JarClassLoader.global().getResource(name);//XUtil.class.getResource(name);
+        return getResource(JarClassLoader.global(), name);//XUtil.class.getResource(name);
+    }
+
+    public static URL getResource(ClassLoader classLoader, String name) {
+        return classLoader.getResource(name);//XUtil.class.getResource(name);
     }
 
     /**
@@ -193,12 +219,16 @@ public class Utils {
      * @param name 资源名称
      * @param charset 编码
      * */
-    public static String getResourceAsString(String name, String charset){
-        URL url = getResource(name);
+    public static String getResourceAsString(String name, String charset) {
+        return getResourceAsString(JarClassLoader.global(), name, charset);
+    }
+
+    public static String getResourceAsString(ClassLoader classLoader, String name, String charset) {
+        URL url = getResource(classLoader, name);
         if (url != null) {
             try {
                 return getString(url.openStream(), charset);
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 throw throwableWrap(ex);
             }
         } else {
