@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 可排序，不区分大小写
+ * 可排序，不区分大小写（Name value map）
  *
  * 用于：参数解析，Header，Param 处理
  *
