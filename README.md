@@ -23,7 +23,7 @@
 //Handler 模式：
 public class App{
     public static void main(String[] args){
-        Solon app = Solon.start(App.class,args);
+        SolonApp app = Solon.start(App.class,args);
         
         app.get("/",(c)->c.output("Hello world!"));
     }
@@ -156,28 +156,28 @@ Solon.cfg().getInt("app_id",0); //=>int
 Solon.cfg().getProp("xxx.datasource"); //=>Properties
 
 //注入模式
-@XConfiguration //or @XController, or @XBean
+@Configuration //or @Controller, or @Bean
 public class Config{
-    @XInject("${app_key}")
+    @Inject("${app_key}")
     String app_key;
 }
 ```
 
 * 事务与缓存控制
 ```java
-@XController
+@Controller
 public class DemoController{
     @Db
     BaseMapper<UserModel> userService;
     
-    @XCacheRemove(tags = "user_${user_id}")
-    @XTran
-    @XMapping("/user/update")
+    @CacheRemove(tags = "user_${user_id}")
+    @Tran
+    @Mapping("/user/update")
     public void udpUser(int user_id, UserModel user){
         userService.updateById(user);
     }
     
-    @XCache(tags = "user_${user_id}")
+    @Cache(tags = "user_${user_id}")
     public UserModel getUser(int user_id){
         return userService.selectById(user_id);
     }
@@ -186,10 +186,10 @@ public class DemoController{
 
 * 文件上传
 ```java
-@XController
+@Controller
 public class DemoController{
-    @XMapping("/file/upload")
-    public void upload(XFile file){
+    @Mapping("/file/upload")
+    public void upload(UploadedFile file){
         IoUtil.save(file.content, "/data/file_" + file.name);
     }
 }
