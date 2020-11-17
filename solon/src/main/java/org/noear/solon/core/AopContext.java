@@ -140,11 +140,13 @@ public class AopContext extends BeanContainer {
         if (Plugin.class.isAssignableFrom(clz)) {
             //如果是插件，则插入
             Solon.global().plug(bw.raw());
+            return;
         }
 
         //XEventListener
         if (org.noear.solon.core.event.EventListener.class.isAssignableFrom(clz)) {
             addEventListener(clz, bw);
+            return;
         }
 
         //XUpstreamFactory
