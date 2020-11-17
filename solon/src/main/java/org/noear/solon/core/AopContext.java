@@ -144,7 +144,7 @@ public class AopContext extends BeanContainer {
         }
 
         //XEventListener
-        if (org.noear.solon.core.event.EventListener.class.isAssignableFrom(clz)) {
+        if (EventListener.class.isAssignableFrom(clz)) {
             addEventListener(clz, bw);
             return;
         }
