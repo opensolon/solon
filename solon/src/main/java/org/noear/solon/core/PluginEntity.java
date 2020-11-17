@@ -13,32 +13,43 @@ import org.noear.solon.Utils;
  * @since 1.0
  * */
 public class PluginEntity {
-    /** 类名（全路径） */
-    public String clzName;
+    /**
+     * 类名（全路径）
+     */
+    private String className;
+    private ClassLoader classLoader;
+
+
     /*** 优先级（大的优先） */
     public int priority = 0;
-    /** 插件 */
+    /**
+     * 插件
+     */
     public Plugin plugin;
 
-    public PluginEntity(){}
-    public PluginEntity(Plugin plugin){
+    public PluginEntity(ClassLoader classLoader, String className) {
+        this.classLoader = classLoader;
+        this.className = className;
+    }
+
+    public PluginEntity(Plugin plugin) {
         this.plugin = plugin;
     }
 
 
     /**
      * 优先级
-     * */
+     */
     public int getPriority() {
         return priority;
     }
 
     /**
      * 启动
-     * */
+     */
     public void start() {
         if (plugin == null) {
-            plugin = Utils.newInstance(clzName);
+            plugin = Utils.newInstance(classLoader, className);
         }
 
         if (plugin != null) {
@@ -48,8 +59,8 @@ public class PluginEntity {
 
     /**
      * 停止
-     * */
-    public void stop(){
+     */
+    public void stop() {
         if (plugin != null) {
             try {
                 plugin.stop();

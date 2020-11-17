@@ -16,7 +16,7 @@ import java.util.jar.JarFile;
 /**
  * 资源扫描器（用于扫描插件配置等资源...）
  *
- * @see SolonProps#plugsScan()
+ * @see SolonProps#plugsScan(List)
  * @author noear
  * @since 1.0
  * */
@@ -27,12 +27,16 @@ public class ResourceScaner {
      * @param path 路径
      * @param filter 过滤条件
      * */
-    public static Set<String> scan(String path, Predicate<String> filter) {
+    public static Set<String> scan(ClassLoader classLoader, String path, Predicate<String> filter) {
         Set<String> urls = new LinkedHashSet<>();
+
+        if (classLoader == null) {
+            return urls;
+        }
 
         try {
             //1.查找资源
-            Enumeration<URL> roots = Utils.getResources(path);
+            Enumeration<URL> roots = Utils.getResources(classLoader, path);
             while (roots.hasMoreElements()) {
                 //2.资源遍历
                 URL url = roots.nextElement();
@@ -43,7 +47,7 @@ public class ResourceScaner {
                     //
                     String fp = URLDecoder.decode(url.getFile(), "UTF-8");
                     doScanByFile(new File(fp), path, filter, urls);
-                } else if("jar".equals(p)){
+                } else if ("jar".equals(p)) {
                     //3.2.找到jar包
                     //
                     JarFile jar = ((JarURLConnection) url.openConnection()).getJarFile();

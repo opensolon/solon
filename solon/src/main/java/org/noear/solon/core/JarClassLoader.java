@@ -23,6 +23,19 @@ public class JarClassLoader extends URLClassLoader {
     }
 
 
+    public static JarClassLoader fromJar(URL url) {
+        JarClassLoader loader = new JarClassLoader();
+        try {
+            loader.loadJar(url);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return loader;
+    }
+
+
+
     private Map<URL, JarURLConnection> cachedMap = new HashMap<>();
 
     public JarClassLoader() {
@@ -43,6 +56,8 @@ public class JarClassLoader extends URLClassLoader {
     public JarClassLoader(URL[] files, ClassLoader parent) {
         super(files, parent);
     }
+
+
 
     /**
      * 加载jar包

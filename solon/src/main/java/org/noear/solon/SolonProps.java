@@ -1,5 +1,6 @@
 package org.noear.solon;
 
+import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.PluginEntity;
 import org.noear.solon.core.Props;
@@ -117,17 +118,19 @@ public final class SolonProps extends Props {
     /**
      * 插件扫描
      * */
-    protected void plugsScan() {
-        //3.查找插件配置（如果出错，让它抛出异常）
-        ResourceScaner.scan("solonplugin", n -> n.endsWith(".properties") || n.endsWith(".yml"))
-                .stream()
-                .map(k -> Utils.getResource(k))
-                .forEach(url -> plugsScanMapDo(url));
+    protected void plugsScan(List<ClassLoader> classLoaders) {
+        for (ClassLoader classLoader : classLoaders) {
+            //3.查找插件配置（如果出错，让它抛出异常）
+            ResourceScaner.scan(classLoader, "solonplugin", n -> n.endsWith(".properties") || n.endsWith(".yml"))
+                    .stream()
+                    .map(k -> Utils.getResource(k))
+                    .forEach(url -> plugsScanMapDo(classLoader, url));
 
-        ResourceScaner.scan("META-INF/solon", n -> n.endsWith(".properties") || n.endsWith(".yml"))
-                .stream()
-                .map(k -> Utils.getResource(k))
-                .forEach(url -> plugsScanMapDo(url));
+            ResourceScaner.scan(classLoader, "META-INF/solon", n -> n.endsWith(".properties") || n.endsWith(".yml"))
+                    .stream()
+                    .map(k -> Utils.getResource(k))
+                    .forEach(url -> plugsScanMapDo(classLoader, url));
+        }
 
         if (plugs.size() > 0) {
             //进行优先级顺排（数值要倒排）
@@ -141,15 +144,14 @@ public final class SolonProps extends Props {
      *
      * @param url 资源地址
      * */
-    private void plugsScanMapDo(URL url) {
+    private void plugsScanMapDo(ClassLoader classLoader, URL url) {
         try {
             Props p = new Props(Utils.loadProperties(url));
 
-            String temp = p.get("solon.plugin");
+            String clzName = p.get("solon.plugin");
 
-            if (Utils.isEmpty(temp) == false) {
-                PluginEntity ent = new PluginEntity();
-                ent.clzName = temp;
+            if (Utils.isEmpty(clzName) == false) {
+                PluginEntity ent = new PluginEntity(classLoader, clzName);
                 ent.priority = p.getInt("solon.plugin.priority", 0);
 
                 plugs.add(ent);

@@ -6,6 +6,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.util.PrintUtil;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 /**
@@ -31,8 +33,8 @@ public class ExtendLoader {
      * @param extend   扩展配置
      * @param autoMake 是否自动生成
      */
-    public static void load(String extend, boolean autoMake) {
-        load(extend, autoMake, null);
+    public static List<ClassLoader> load(String extend, boolean autoMake) {
+        return load(extend, autoMake, null);
     }
 
     /**
@@ -42,7 +44,11 @@ public class ExtendLoader {
      * @param filter   过滤器
      * @param autoMake 是否自动生成
      */
-    public static void load(String extend, boolean autoMake, Predicate<String> filter) {
+    public static List<ClassLoader> load(String extend, boolean autoMake, Predicate<String> filter) {
+        List<ClassLoader> loaders = new ArrayList<>();
+
+        loaders.add(JarClassLoader.global());
+
         if (Utils.isNotEmpty(extend)) {
             if (extend.startsWith("!")) {
                 extend = extend.substring(1);
@@ -62,19 +68,25 @@ public class ExtendLoader {
                 instance.loadFile(new File(path), filter);
             }
         }
+
+        return loaders;
     }
 
 
     /**
      * 加载扩展具体的jar文件
      */
-    public static boolean loadJar(File file) {
+    public static ClassLoader loadJar(String path, File file) {
         try {
-            JarClassLoader.global().loadJar(file.toURI().toURL());
-            return true;
+            if (path.endsWith("!.jar") || path.endsWith("!.zip")) {
+                return JarClassLoader.fromJar(file.toURI().toURL());
+            } else {
+                JarClassLoader.global().loadJar(file.toURI().toURL());
+                return null;
+            }
         } catch (Throwable ex) {
             ex.printStackTrace();
-            return false;
+            return null;
         }
     }
 
@@ -102,9 +114,9 @@ public class ExtendLoader {
      *
      * @param filter 过滤器
      */
-    private void loadFile(File file, Predicate<String> filter) {
+    private ClassLoader loadFile(File file, Predicate<String> filter) {
         if (file.exists() == false) {
-            return;
+            return null;
         }
 
         if (file.isDirectory()) {
@@ -122,23 +134,23 @@ public class ExtendLoader {
      * 加载一个具体的文件
      *
      * @param filter 过滤器
+     * @return 新加的类加载器
      */
-    private void loadFileDo(File file, Predicate<String> filter) {
+    private ClassLoader loadFileDo(File file, Predicate<String> filter) {
         if (file.isFile()) {
             String path = file.getAbsolutePath();
 
             //先尝试过滤
             if (filter != null) {
                 if (filter.test(path) == false) {
-                    return;
+                    return null;
                 }
             }
 
             try {
                 //尝试加载jar包
                 if (path.endsWith(".jar") || path.endsWith(".zip")) {
-                    loadJar(file);
-                    return;
+                    return loadJar(path,file);
                 }
 
                 //如果map不为null；尝试加载配置
@@ -146,7 +158,7 @@ public class ExtendLoader {
                     Solon.cfg().loadAdd(file.toURI().toURL());
 
                     PrintUtil.blueln("loaded: " + path);
-                    return;
+                    return null;
                 }
 
                 if (path.endsWith(".yml")) {
@@ -157,11 +169,13 @@ public class ExtendLoader {
                     Solon.cfg().loadAdd(file.toURI().toURL());
 
                     PrintUtil.blueln("loaded: " + path);
-                    return;
+                    return null;
                 }
             } catch (Throwable ex) {
                 ex.printStackTrace();
             }
         }
+
+        return null;
     }
 }
