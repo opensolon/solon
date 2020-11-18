@@ -123,12 +123,12 @@ public final class SolonProps extends Props {
             //3.查找插件配置（如果出错，让它抛出异常）
             ResourceScaner.scan(classLoader, "solonplugin", n -> n.endsWith(".properties") || n.endsWith(".yml"))
                     .stream()
-                    .map(k -> Utils.getResource(k))
+                    .map(k -> Utils.getResource(classLoader, k))
                     .forEach(url -> plugsScanMapDo(classLoader, url));
 
             ResourceScaner.scan(classLoader, "META-INF/solon", n -> n.endsWith(".properties") || n.endsWith(".yml"))
                     .stream()
-                    .map(k -> Utils.getResource(k))
+                    .map(k -> Utils.getResource(classLoader, k))
                     .forEach(url -> plugsScanMapDo(classLoader, url));
         }
 

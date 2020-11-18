@@ -1,5 +1,7 @@
 package org.noear.solon.core;
 
+import org.noear.solon.Utils;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.*;
@@ -20,25 +22,29 @@ public class JarClassLoader extends URLClassLoader {
         return global;
     }
 
-    //public static List<JarClassLoader> loaderList = new ArrayList<>();
-
-    public static JarClassLoader fromJar(URL url) {
+    public static JarClassLoader loadJar(URL url) {
         JarClassLoader loader = new JarClassLoader();
-        try {
-            loader.loadJar(url);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+        loader.addJar(url);
+
+        return loader;
+    }
+
+    public static JarClassLoader loadJar(File fileOrDir) {
+        JarClassLoader loader = new JarClassLoader();
+        loader.addJar(fileOrDir);
 
         return loader;
     }
 
 
+    //
+    //
+    //
 
     private Map<URL, JarURLConnection> cachedMap = new HashMap<>();
 
     public JarClassLoader() {
-        this(ClassLoader.getSystemClassLoader());
+        this(Utils.getClassLoader());
     }
 
     /**
@@ -48,61 +54,65 @@ public class JarClassLoader extends URLClassLoader {
         super(new URL[]{}, parent);
     }
 
-    /**
-     * @param files jar files
-     * @param parent 父加载器
-     * */
-    public JarClassLoader(URL[] files, ClassLoader parent) {
-        super(files, parent);
-    }
-
-
 
     /**
-     * 加载jar包
+     * 添加jar包
      *
-     * @param file jar file
+     * @param url jar url
      */
-    public void loadJar(URL file) {
-        loadJar(file, true);
+    public void addJar(URL url) {
+        addJar(url, true);
     }
 
     /**
-     * 加载jar包
+     * 添加jar包
      *
-     * @param file jar file
+     * @param fileOrDir jar file or dir
+     */
+    public void addJar(File fileOrDir) {
+        try {
+            addJar(fileOrDir.toURI().toURL(), true);
+        } catch (Exception ex) {
+            throw Utils.throwableWrap(ex);
+        }
+    }
+
+    /**
+     * 添加jar包
+     *
+     * @param url jar url
      * @param useCaches 是否使用缓存
      */
-    public void loadJar(URL file, boolean useCaches) {
+    public void addJar(URL url, boolean useCaches) {
         try {
             // 打开并缓存文件url连接
-            URLConnection uc = file.openConnection();
+            URLConnection uc = url.openConnection();
             if (uc instanceof JarURLConnection) {
                 JarURLConnection juc = ((JarURLConnection) uc);
                 juc.setUseCaches(useCaches);
                 juc.getManifest();
 
-                cachedMap.put(file, juc);
+                cachedMap.put(url, juc);
             }
         } catch (Throwable ex) {
-            System.err.println("Failed to cache plugin JAR file: " + file.toExternalForm());
+            System.err.println("Failed to cache plugin JAR file: " + url.toExternalForm());
         }
 
-        addURL(file);
+        addURL(url);
     }
 
     /**
-     * 卸载jar包
+     * 移除jar包
      *
-     * @param file jar file
+     * @param url jar file
      */
-    public void unloadJar(URL file) {
-        JarURLConnection jarURL = cachedMap.get(file);
+    public void removeJar(URL url) {
+        JarURLConnection jarURL = cachedMap.get(url);
 
         try {
             if (jarURL != null) {
                 jarURL.getJarFile().close();
-                cachedMap.remove(file);
+                cachedMap.remove(url);
             }
         } catch (Throwable ex) {
             System.err.println("Failed to unload JAR file\n" + ex);

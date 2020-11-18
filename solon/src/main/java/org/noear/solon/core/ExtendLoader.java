@@ -1,7 +1,6 @@
 package org.noear.solon.core;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.PrintUtil;
 
@@ -80,9 +79,9 @@ public class ExtendLoader {
         try {
             //启用了扩展隔离或者强制隔离
             if (Solon.global().enableExtIsolation() || path.endsWith("!.jar") || path.endsWith("!.zip")) {
-                loaders.add(JarClassLoader.fromJar(file.toURI().toURL()));
+                loaders.add(JarClassLoader.loadJar(file.toURI().toURL()));
             } else {
-                JarClassLoader.global().loadJar(file.toURI().toURL());
+                JarClassLoader.global().addJar(file.toURI().toURL());
             }
 
             return true;
@@ -97,7 +96,7 @@ public class ExtendLoader {
      */
     public static boolean unloadJar(File file) {
         try {
-            JarClassLoader.global().unloadJar(file.toURI().toURL());
+            JarClassLoader.global().removeJar(file.toURI().toURL());
             return true;
         } catch (Throwable ex) {
             ex.printStackTrace();

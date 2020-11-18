@@ -464,4 +464,20 @@ public class Utils {
 
         ClassWrap.get(target.getClass()).fill(target,source,null);
     }
+
+    public static ClassLoader getContextClassLoader() {
+        return Thread.currentThread().getContextClassLoader();
+    }
+
+    public static ClassLoader getClassLoader() {
+        ClassLoader classLoader = getContextClassLoader();
+        if (classLoader == null) {
+            classLoader = Utils.class.getClassLoader();
+            if (null == classLoader) {
+                classLoader = ClassLoader.getSystemClassLoader();
+            }
+        }
+
+        return classLoader;
+    }
 }
