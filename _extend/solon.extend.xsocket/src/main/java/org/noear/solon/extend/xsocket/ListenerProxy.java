@@ -58,7 +58,8 @@ public class ListenerProxy implements Listener {
     @Override
     public void onMessage(Session session, Message message, boolean messageIsString) {
         if(message.flag() == 1) {
-            //flag = 1，为响应标志
+            //flag 消息标志（-1握手包；0发起包； 1响应包）
+            //
             CompletableFuture<Message> request = requests.get(message.key());
 
             //请求模式

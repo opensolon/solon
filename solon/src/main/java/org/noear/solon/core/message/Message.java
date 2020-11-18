@@ -14,7 +14,7 @@ import java.util.function.Function;
  * */
 public class Message {
     /**
-     * 1.消息标志（0发起； 1响应）
+     * 1.消息标志（-1握手包；0发起包； 1响应包）
      */
     private final int flag;
 

@@ -39,6 +39,7 @@ public class SocketServer {
                 while (true) {
                     if (socket.isClosed()) {
                         ListenerProxy.getGlobal().onClose(session);
+                        _SocketSession.remove(socket);
                         break;
                     }
 

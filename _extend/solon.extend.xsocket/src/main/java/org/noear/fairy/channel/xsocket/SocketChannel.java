@@ -19,6 +19,8 @@ public class SocketChannel implements IChannel {
         this.session = session;
     }
 
+    //public SocketChannel handshake();
+
     @Override
     public Result call(FairyConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
 

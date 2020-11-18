@@ -17,6 +17,15 @@ class _SessionFactoryImpl extends SessionFactory {
     }
 
     @Override
+    protected void removeSession(Object conn) {
+        if (conn instanceof Socket) {
+            _SocketSession.remove((Socket) conn);
+        } else {
+            throw new IllegalArgumentException("This conn requires a socket type");
+        }
+    }
+
+    @Override
     protected Session createSession(String host, int port) {
         try {
             Socket socket = new Socket(host, port);
