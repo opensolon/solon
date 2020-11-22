@@ -45,7 +45,9 @@ public class HasorConfiguration implements EventListener<BeanLoadEndEvent> {
 
         // 处理startWith
         for (Class<? extends Module> startWith : enableHasor.startWith()) {
-            buildConfig.addModules(Aop.get(startWith));
+            Aop.getAsyn(startWith, (bw) -> {
+                buildConfig.addModules(bw.get());
+            });
         }
 
         // 把Solon 中所有标记了 @DimModule 的 Module，捞进来。 //交给XPluginImp处理

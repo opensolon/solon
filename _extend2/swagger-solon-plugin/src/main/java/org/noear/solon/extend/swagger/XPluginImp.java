@@ -1,5 +1,4 @@
-package org.noear.solon.extend.plugin.smartdoc;
-
+package org.noear.solon.extend.swagger;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
@@ -7,6 +6,10 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
+        if (app.source().getAnnotation(EnableSwagger.class) == null) {
+            return;
+        }
+
 
     }
 }

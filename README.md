@@ -5,7 +5,7 @@
 
 # solon for java
 
-一个微型Java开发框架。
+一个类似Spring 的 mini 型开发框架。
 
 支持jdk8+；主框架0.1mb；组合不同的插件应对不同需求；方便定制；快速开发。
 

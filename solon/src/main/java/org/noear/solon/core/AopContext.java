@@ -213,6 +213,10 @@ public class AopContext extends BeanContainer {
             for (String pkg : anno.scanPackages()) {
                 beanScan(pkg);
             }
+
+            for (Class<?> src : anno.scanPackageClasses()) {
+                beanScan(src);
+            }
         }
     }
 

@@ -35,4 +35,5 @@ import java.lang.annotation.*;
 public @interface Import {
     Class<?>[] value() default {};
     String[] scanPackages() default {};
+    Class<?>[] scanPackageClasses() default {};
 }
