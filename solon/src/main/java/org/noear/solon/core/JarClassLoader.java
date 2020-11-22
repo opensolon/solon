@@ -2,6 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.Utils;
 
+import javax.rmi.CORBA.Util;
 import java.io.File;
 import java.io.IOException;
 import java.net.*;
@@ -67,11 +68,11 @@ public class JarClassLoader extends URLClassLoader {
     /**
      * 添加jar包
      *
-     * @param fileOrDir jar file or dir
+     * @param file jar file
      */
-    public void addJar(File fileOrDir) {
+    public void addJar(File file) {
         try {
-            addJar(fileOrDir.toURI().toURL(), true);
+            addJar(file.toURI().toURL(), true);
         } catch (Exception ex) {
             throw Utils.throwableWrap(ex);
         }
@@ -116,6 +117,13 @@ public class JarClassLoader extends URLClassLoader {
             }
         } catch (Throwable ex) {
             System.err.println("Failed to unload JAR file\n" + ex);
+        }
+    }
+    public void removeJar(File file) {
+        try {
+            removeJar(file.toURI().toURL());
+        } catch (Exception ex) {
+            throw Utils.throwableWrap(ex);
         }
     }
 
