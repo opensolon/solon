@@ -1,7 +1,6 @@
 package org.noear.solon.core.handle;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
@@ -38,6 +37,8 @@ public class Action extends HandlerAide implements Handler {
     private final MethodWrap mWrap;
     //method 相关的 produces（输出产品）
     private String mProduces;
+    //method 相关的 consumes（输入产品）
+    private String mConsumes;
     //action name
     private final String mName;
     //action remoting
@@ -70,6 +71,7 @@ public class Action extends HandlerAide implements Handler {
             mIsMain = true;
         } else {
             mProduces = mapping.produces();
+            mConsumes = mapping.consumes();
             mName = mapping.value();
             mIsMain = !(mapping.after() || mapping.before());
         }
@@ -111,6 +113,13 @@ public class Action extends HandlerAide implements Handler {
 
     @Override
     public void handle(Context x) throws Throwable {
+        if (Utils.isNotEmpty(mConsumes)) {
+            if (x.contentType() == null || x.contentType().contains(mConsumes) == false) {
+                x.statusSet(404);
+                return;
+            }
+        }
+
         invoke(x, null);
     }
 
