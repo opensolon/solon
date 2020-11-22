@@ -542,14 +542,14 @@ public class SolonApp implements Handler, HandlerSlots {
     }
 
     /**
-     * 启用扩展隔离
+     * 启用扩展Jar隔离
      * */
-    private boolean _enableExtIsolation = true;
-    public boolean enableExtIsolation(){
-        return _enableExtIsolation;
+    private boolean _enableJarIsolation = false;
+    public boolean enableJarIsolation(){
+        return _enableJarIsolation;
     }
-    public SolonApp enableExtIsolation(boolean enable){
-        _enableExtIsolation = enable;
+    public SolonApp enableJarIsolation(boolean enable){
+        _enableJarIsolation = enable;
         return this;
     }
 }

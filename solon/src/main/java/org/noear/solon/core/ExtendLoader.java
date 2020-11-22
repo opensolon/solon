@@ -78,7 +78,7 @@ public class ExtendLoader {
     public static boolean loadJar(List<ClassLoader> loaders, String path, File file) {
         try {
             //启用了扩展隔离或者强制隔离
-            if (Solon.global().enableExtIsolation() || path.endsWith("!.jar") || path.endsWith("!.zip")) {
+            if (Solon.global().enableJarIsolation() || path.endsWith("!.jar") || path.endsWith("!.zip")) {
                 loaders.add(JarClassLoader.loadJar(file.toURI().toURL()));
             } else {
                 JarClassLoader.global().addJar(file.toURI().toURL());
