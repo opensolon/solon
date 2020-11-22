@@ -25,6 +25,7 @@ import java.lang.annotation.*;
 public @interface Mapping {
     String value() default "";
     MethodType[] method() default {MethodType.HTTP};
+    String consumes() default "";
     String produces() default "";
 
     /**
