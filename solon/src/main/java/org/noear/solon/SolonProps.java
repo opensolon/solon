@@ -83,6 +83,7 @@ public final class SolonProps extends Props {
             extend = get("solon.extend");
         }
 
+        //5.1.扩展文件夹过滤器
         extendFilter = this.args.get("extend.filter");
         if (Utils.isEmpty(extendFilter)) {
             extendFilter = get("solon.extend.filter");

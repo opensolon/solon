@@ -40,14 +40,14 @@ public class SolonApp implements Handler, HandlerSlots {
 
         List<ClassLoader> loaderList;
 
-        //a.尝试加载扩展文件夹
+        //1.尝试加载扩展文件夹
         String filterStr = cfg().extendFilter();
         if (Utils.isEmpty(filterStr)) {
             //不需要过滤
             loaderList = ExtendLoader.load(cfg().extend(), false);
         } else {
             //增加过滤
-            String[] filterS = filterStr.split(";");
+            String[] filterS = filterStr.split(",");
             loaderList = ExtendLoader.load(cfg().extend(), false, (path) -> {
                 for (String f : filterS) {
                     if (path.contains(f)) {
@@ -60,7 +60,7 @@ public class SolonApp implements Handler, HandlerSlots {
         }
 
 
-        //b.尝试扫描插件
+        //2.尝试扫描插件
         cfg().plugsScan(loaderList);
     }
 
