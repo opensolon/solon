@@ -42,21 +42,11 @@ public abstract class BeanContainer {
     /**
      * bean 构建器
      */
-    protected final Map<Class<?>, BeanBuilder<?>> beanBuilders;
+    protected final Map<Class<?>, BeanBuilder<?>> beanBuilders = new HashMap<>();
     /**
      * bean 注入器
      */
-    protected final Map<Class<?>, BeanInjector<?>> beanInjectors;
-
-    public BeanContainer(){
-        beanBuilders = new HashMap<>();
-        beanInjectors = new HashMap<>();
-    }
-
-    public BeanContainer(BeanContainer parent) {
-        beanBuilders = parent.beanBuilders;
-        beanInjectors = parent.beanInjectors;
-    }
+    protected final Map<Class<?>, BeanInjector<?>> beanInjectors = new HashMap<>();
 
 
 
@@ -67,8 +57,20 @@ public abstract class BeanContainer {
         beanBuilders.put(anno, creater);
     }
 
+    public void beanBuildersCopy(BeanContainer container){
+        container.beanBuilders.forEach((k,v)->{
+            beanBuilders.putIfAbsent(k,v);
+        });
+    }
+
     public <T extends Annotation> void beanInjectorAdd(Class<T> anno, BeanInjector<T> injector) {
         beanInjectors.put(anno, injector);
+    }
+
+    public void beanInjectorsCopy(BeanContainer container){
+        container.beanInjectors.forEach((k,v)->{
+            beanInjectors.putIfAbsent(k,v);
+        });
     }
 
     //////////////////////////

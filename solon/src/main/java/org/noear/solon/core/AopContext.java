@@ -36,20 +36,8 @@ import java.util.function.Function;
  * */
 public class AopContext extends BeanContainer {
 
-
     public AopContext() {
-        super();
-        //
-        //初始注解能力
-        //
         initialize();
-    }
-
-    public AopContext(AopContext parent) {
-        //
-        //注解能力从父级引用
-        //
-        super(parent);
     }
 
     /**
