@@ -726,12 +726,13 @@
         <module>../_extend2/graphql-solon-plugin</module>
         <module>../_extend2/hasor-solon-plugin</module>
 <!--        <module>../_extend2/mqtt-solon-plugin</module>-->
-        <module>../_extend2/swagger-solon-plugin</module>
         <module>../_extend2/weed3-solon-plugin</module>
         <module>../_extend2/mybatis-solon-plugin</module>
         <module>../_extend2/mybatis-sqlhelper-solon-plugin</module>
         <module>../_extend2/quartz-solon-plugin</module>
-<!--        <module>../_extend2/smart-doc-solon-plugin</module>-->
+
+        <module>../_extend2/swagger-solon-plugin</module>
+        <module>../_extend2/smartdoc-solon-plugin</module>
 
 
         <module>../_extend3/solon-beetl-web</module>
