@@ -54,7 +54,7 @@ public class AopContext extends BeanContainer {
                 }
             }
 
-            for (Method m  : ClassWrap.get(bw.clz()).getMethods()) {
+            for (Method m : ClassWrap.get(bw.clz()).getMethods()) {
                 Bean m_an = m.getAnnotation(Bean.class);
 
                 if (m_an != null) {
@@ -77,7 +77,13 @@ public class AopContext extends BeanContainer {
             addBeanShape(clz, bw);
 
             //尝试导入
-            beanImport(clz.getAnnotation(Import.class));
+            for(Annotation a1 : clz.getAnnotations()){
+                if (anno instanceof Import) {
+                    beanImport((Import) anno);
+                } else {
+                    beanImport(anno.annotationType().getAnnotation(Import.class));
+                }
+            }
 
             //注册到容器 //XConfiguration 不进入二次注册
             //beanRegister(bw,bw.name(),bw.typed());
