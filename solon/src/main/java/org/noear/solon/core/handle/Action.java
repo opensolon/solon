@@ -115,7 +115,7 @@ public class Action extends HandlerAide implements Handler {
     public void handle(Context x) throws Throwable {
         if (Utils.isNotEmpty(mConsumes)) {
             if (x.contentType() == null || x.contentType().contains(mConsumes) == false) {
-                x.statusSet(404);
+                x.statusSet(415);
                 return;
             }
         }
