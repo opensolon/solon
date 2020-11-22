@@ -42,11 +42,22 @@ public abstract class BeanContainer {
     /**
      * bean 构建器
      */
-    protected final Map<Class<?>, BeanBuilder<?>> beanBuilders = new HashMap<>();
+    protected final Map<Class<?>, BeanBuilder<?>> beanBuilders;
     /**
      * bean 注入器
      */
-    protected final Map<Class<?>, BeanInjector<?>> beanInjectors = new HashMap<>();
+    protected final Map<Class<?>, BeanInjector<?>> beanInjectors;
+
+    public BeanContainer(){
+        beanBuilders = new HashMap<>();
+        beanInjectors = new HashMap<>();
+    }
+
+    public BeanContainer(BeanContainer parent) {
+        beanBuilders = parent.beanBuilders;
+        beanInjectors = parent.beanInjectors;
+    }
+
 
 
     /**
