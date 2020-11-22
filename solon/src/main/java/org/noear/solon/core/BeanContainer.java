@@ -19,7 +19,7 @@ import java.util.function.Consumer;
  * @author noear
  * @since 1.0
  * */
-public class BeanContainer {
+public abstract class BeanContainer {
     //////////////////////////
     //
     // 容器存储
