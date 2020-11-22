@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 内部专用工具
+ * 内部专用工具（外部项目不建议使用，随时可能会变动）
  *
  * @author noear
  * @since 1.0
@@ -59,6 +59,9 @@ public class Utils {
         }
     }
 
+    /**
+     * 包装异常
+     * */
     public static RuntimeException throwableWrap(Throwable ex){
         if(ex instanceof RuntimeException){
             return  (RuntimeException)ex;
@@ -67,6 +70,9 @@ public class Utils {
         }
     }
 
+    /**
+     * 解包异常
+     * */
     public static Throwable throwableUnwrap(Throwable ex) {
         Throwable th = ex;
 
@@ -206,11 +212,11 @@ public class Utils {
      * @param name 资源名称
      */
     public static URL getResource(String name) {
-        return getResource(JarClassLoader.global(), name);//XUtil.class.getResource(name);
+        return getResource(JarClassLoader.global(), name); //XUtil.class.getResource(name);
     }
 
     public static URL getResource(ClassLoader classLoader, String name) {
-        return classLoader.getResource(name);//XUtil.class.getResource(name);
+        return classLoader.getResource(name); //XUtil.class.getResource(name);
     }
 
     /**
@@ -291,6 +297,9 @@ public class Utils {
         }
     }
 
+    /**
+     * 注入属性
+     * */
     public static <T> T injectProperties(T bean, Properties propS) {
         ClassWrap.get(bean.getClass()).fill(bean, propS::getProperty, null);
         return bean;
@@ -465,10 +474,16 @@ public class Utils {
         ClassWrap.get(target.getClass()).fill(target,source,null);
     }
 
+    /**
+     * 获取当前线程的ClassLoader
+     * */
     public static ClassLoader getContextClassLoader() {
         return Thread.currentThread().getContextClassLoader();
     }
 
+    /**
+     * 获取ClassLoader
+     * */
     public static ClassLoader getClassLoader() {
         ClassLoader classLoader = getContextClassLoader();
         if (classLoader == null) {
