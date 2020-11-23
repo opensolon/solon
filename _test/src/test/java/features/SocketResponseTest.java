@@ -24,7 +24,7 @@ public class SocketResponseTest {
     public void test() throws Throwable{
         int _port = 8080 + 20000;
 
-        Session session = SessionFactory.create("localhost",_port);
+        Session session = SessionFactory.create("localhost",_port, true);
 
 
         String root = "tcp://localhost:" + _port;
@@ -41,7 +41,7 @@ public class SocketResponseTest {
     public void test_rpc_message() throws Throwable {
         int _port = 8080 + 20000;
 
-        Session session = SessionFactory.create("localhost",_port);
+        Session session = SessionFactory.create("localhost",_port, true);
 
 
         String root = "tcp://localhost:" + _port;
@@ -63,7 +63,7 @@ public class SocketResponseTest {
     public void test_rpc_api() throws Throwable {
         int _port = 8080 + 20000;
 
-        Session session = SessionFactory.create("localhost",_port);
+        Session session = SessionFactory.create("localhost",_port, true);
         SocketChannel channel = new SocketChannel(session);
 
         HelloRpcService rpc = Fairy.builder()
