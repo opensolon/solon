@@ -61,6 +61,23 @@ class _SocketSession extends SessionBase {
         this.real = real;
     }
 
+    BioClient client;
+    boolean clientAutoReconnect;
+    public _SocketSession(BioClient client, boolean autoReconnect) {
+        this.client = client;
+        this.clientAutoReconnect = clientAutoReconnect;
+
+        this.real = client.start();
+    }
+
+    private void prepareSend() {
+        if (clientAutoReconnect) {
+            if (real.isClosed() || real.isOutputShutdown()) {
+                real = client.start();
+            }
+        }
+    }
+
     @Override
     public Object real() {
         return real;
@@ -99,6 +116,8 @@ class _SocketSession extends SessionBase {
 
     public void send(Message message) {
         try {
+            prepareSend();
+
             //
             // 转包为XSocketMessage，再转byte[]
             //
@@ -184,7 +203,7 @@ class _SocketSession extends SessionBase {
      */
     public static Message receive(Socket socket) {
         try {
-            return SocketProtocol.instance.decode(socket.getInputStream());
+            return BioProtocol.instance.decode(socket.getInputStream());
         } catch (SocketException ex) {
             return null;
         } catch (Throwable ex) {

@@ -29,16 +29,10 @@ class _SessionFactoryImpl extends SessionFactory {
     }
 
     @Override
-    protected Session createSession(String host, int port) {
-        AioQuickClient<Message> client = new AioQuickClient<>(host, port, new AioProtocol(), new AioProcessor());
+    protected Session createSession(String host, int port, boolean autoReconnect) {
+        AioClient client = new AioClient(host, port, new AioProtocol(), new AioProcessor());
         client.setReadBufferSize(XPluginImp.readBufferSize);
 
-        try {
-            AioSession conn = client.start();
-
-            return _SocketSession.get(conn);
-        } catch (Exception ex) {
-            throw Utils.throwableWrap(ex);
-        }
+        return new _SocketSession(client, autoReconnect);
     }
 }

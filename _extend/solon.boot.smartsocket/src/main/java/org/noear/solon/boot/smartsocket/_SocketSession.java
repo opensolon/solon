@@ -6,6 +6,7 @@ import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.xsocket.MessageUtils;
 import org.noear.solon.extend.xsocket.SessionBase;
+import org.smartboot.socket.transport.AioQuickClient;
 import org.smartboot.socket.transport.AioSession;
 
 import java.io.IOException;
@@ -37,6 +38,24 @@ class _SocketSession extends SessionBase {
     AioSession real;
     public _SocketSession(AioSession real){
         this.real = real;
+    }
+
+
+    AioClient client;
+    boolean clientAutoReconnect;
+    public _SocketSession(AioClient client, boolean autoReconnect) {
+        this.client = client;
+        this.clientAutoReconnect = autoReconnect;
+
+        this.real = client.start();
+    }
+
+    private void prepareSend() {
+        if (clientAutoReconnect) {
+            if (real.isInvalid()) {
+                real = client.start();
+            }
+        }
     }
 
     @Override
@@ -77,6 +96,8 @@ class _SocketSession extends SessionBase {
     @Override
     public void send(Message message) {
         try {
+            prepareSend();
+
             //
             // 转包为XSocketMessage，再转byte[]
             //

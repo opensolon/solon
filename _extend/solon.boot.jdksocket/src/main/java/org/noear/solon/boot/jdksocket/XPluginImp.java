@@ -6,7 +6,7 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.extend.xsocket.SessionFactory;
 
 public class XPluginImp implements Plugin {
-    SocketServer _server;
+    BioServer _server;
 
     public static String solon_boot_ver(){
         return "jdk tpc socket/" + Solon.cfg().version();
@@ -31,7 +31,7 @@ public class XPluginImp implements Plugin {
         }
 
         try {
-            _server = new SocketServer();
+            _server = new BioServer();
             _server.start(_port);
 
             long time_end = System.currentTimeMillis();

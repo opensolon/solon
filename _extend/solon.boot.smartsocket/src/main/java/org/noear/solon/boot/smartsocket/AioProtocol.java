@@ -13,7 +13,7 @@ import java.nio.ByteBuffer;
  * /date/xxx/sss\n...
  *
  * */
-public class AioProtocol implements Protocol<Message> {
+class AioProtocol implements Protocol<Message> {
 
     @Override
     public Message decode(ByteBuffer buffer, AioSession session) {

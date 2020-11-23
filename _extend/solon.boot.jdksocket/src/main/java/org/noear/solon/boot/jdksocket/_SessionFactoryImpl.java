@@ -26,10 +26,11 @@ class _SessionFactoryImpl extends SessionFactory {
     }
 
     @Override
-    protected Session createSession(String host, int port) {
+    protected Session createSession(String host, int port, boolean autoReconnect) {
         try {
-            Socket socket = new Socket(host, port);
-            return _SocketSession.get(socket);
+            BioClient bioClient = new BioClient(host, port);
+
+            return new _SocketSession(bioClient, autoReconnect);
         } catch (Exception ex) {
             throw Utils.throwableWrap(ex);
         }

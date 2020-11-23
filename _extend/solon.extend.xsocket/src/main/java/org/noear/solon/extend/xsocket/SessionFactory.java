@@ -12,7 +12,7 @@ public abstract class SessionFactory {
     protected abstract Session getSession(Object conn);
     protected abstract void removeSession(Object conn);
 
-    protected abstract Session createSession(String host, int port);
+    protected abstract Session createSession(String host, int port, boolean autoReconnect);
 
 
 
@@ -33,11 +33,11 @@ public abstract class SessionFactory {
         instance.removeSession(conn);
     }
 
-    public static Session create(String host, int port) {
+    public static Session create(String host, int port, boolean autoReconnect) {
         if (instance == null) {
             throw new IllegalArgumentException("XSessionFactory uninitialized");
         }
 
-        return instance.createSession(host, port);
+        return instance.createSession(host, port, autoReconnect);
     }
 }

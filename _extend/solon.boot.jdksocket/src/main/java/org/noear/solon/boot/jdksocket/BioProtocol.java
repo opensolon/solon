@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
-public class SocketProtocol {
-    public static final SocketProtocol instance = new SocketProtocol();
+public class BioProtocol {
+    public static final BioProtocol instance = new BioProtocol();
 
     public Message decode(InputStream input) throws IOException {
         if(input == null){
