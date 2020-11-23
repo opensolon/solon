@@ -72,7 +72,7 @@ class _SocketSession extends SessionBase {
 
     private void prepareSend() {
         if (clientAutoReconnect) {
-            if (real.isClosed() || real.isOutputShutdown()) {
+            if (real.isClosed() || !real.isConnected() || real.isOutputShutdown()) {
                 real = client.start();
             }
         }
