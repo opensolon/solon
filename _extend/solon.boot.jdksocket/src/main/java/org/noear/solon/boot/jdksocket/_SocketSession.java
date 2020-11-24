@@ -65,14 +65,14 @@ class _SocketSession extends SessionBase {
     boolean clientAutoReconnect;
     public _SocketSession(BioClient client, boolean autoReconnect) {
         this.client = client;
-        this.clientAutoReconnect = clientAutoReconnect;
+        this.clientAutoReconnect = autoReconnect;
 
         this.real = client.start();
     }
 
     private void prepareSend() {
         if (clientAutoReconnect) {
-            if (real.isClosed() || !real.isConnected() || real.isOutputShutdown()) {
+            if (real == null) {
                 real = client.start();
             }
         }
@@ -125,7 +125,13 @@ class _SocketSession extends SessionBase {
 
             real.getOutputStream().write(bytes);
             real.getOutputStream().flush();
-        } catch (IOException ex) {
+        } catch (SocketException ex) {
+            if (clientAutoReconnect) {
+                real = null;
+            } else {
+                throw new RuntimeException(ex);
+            }
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
