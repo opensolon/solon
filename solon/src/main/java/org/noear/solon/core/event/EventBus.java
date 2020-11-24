@@ -2,6 +2,7 @@ package org.noear.solon.core.event;
 
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
 import org.noear.solon.core.AopContext;
 
 import java.util.HashSet;
@@ -20,25 +21,40 @@ public final class EventBus {
     private static Set<HH> sOther = new HashSet<>();
 
     /**
+     * 异步推送事件
+     */
+    public static void pushAsyn(Object event) {
+        if (event != null) {
+            Utils.pools.submit(() -> {
+                push0(event);
+            });
+        }
+    }
+
+    /**
      * 推送事件
      */
     public static void push(Object event) {
         if (event != null) {
-            if (event instanceof Throwable) {
-                //异常分发
-                push0(sThrow, event);
-
-                if(Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode()){
-                    ((Throwable) event).printStackTrace();
-                }
-            } else {
-                //其它事件分发
-                push0(sOther, event);
-            }
+            push0(event);
         }
     }
 
-    private static void push0(Set<HH> hhs, Object event) {
+    private static void push0(Object event) {
+        if (event instanceof Throwable) {
+            //异常分发
+            push1(sThrow, event);
+
+            if (Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode()) {
+                ((Throwable) event).printStackTrace();
+            }
+        } else {
+            //其它事件分发
+            push1(sOther, event);
+        }
+    }
+
+    private static void push1(Set<HH> hhs, Object event) {
         for (HH h1 : hhs) {
             if (h1.t.isInstance(event)) {
                 try {
