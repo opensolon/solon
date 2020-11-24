@@ -15,7 +15,10 @@ class BioClient {
 
     public Socket start() {
         try {
-            return new Socket(host, port);
+            Socket socket = new Socket(host, port);
+            socket.setSoTimeout(1000 * 5);
+
+            return socket;
         } catch (Exception ex) {
             throw Utils.throwableWrap(ex);
         }

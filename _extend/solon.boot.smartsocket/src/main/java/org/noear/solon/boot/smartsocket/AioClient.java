@@ -12,6 +12,7 @@ class AioClient {
 
     public AioClient(String host, int port, Protocol<Message> protocol, MessageProcessor<Message> messageProcessor) {
         real = new AioQuickClient<>(host, port, protocol, messageProcessor);
+        //real.connectTimeout(1000 * 5);
     }
 
     public void setReadBufferSize(int size) {
