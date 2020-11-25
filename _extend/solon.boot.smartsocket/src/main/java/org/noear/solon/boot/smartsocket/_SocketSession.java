@@ -11,6 +11,7 @@ import org.smartboot.socket.transport.AioSession;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.util.*;
 
@@ -46,14 +47,16 @@ class _SocketSession extends SessionBase {
     public _SocketSession(AioClient client, boolean autoReconnect) {
         this.client = client;
         this.clientAutoReconnect = autoReconnect;
-
-        this.real = client.start();
     }
 
-    private void prepareSend() {
-        if (clientAutoReconnect) {
-            if (real.isInvalid()) {
-                real = client.start();
+    private void prepareSend() throws IOException {
+        if (real == null) {
+            this.real = client.start();
+        } else {
+            if (clientAutoReconnect) {
+                if (real.isInvalid()) {
+                    real = client.start();
+                }
             }
         }
     }
@@ -104,7 +107,12 @@ class _SocketSession extends SessionBase {
             byte[] bytes = MessageUtils.encode(message).array();
 
             real.writeBuffer().writeAndFlush(bytes);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
+            Throwable eh = Utils.throwableUnwrap2(ex);
+            if (eh instanceof ConnectException) {
+                real = null;
+            }
+
             throw new RuntimeException(ex);
         }
     }

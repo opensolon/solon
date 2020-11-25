@@ -99,6 +99,28 @@ public class Utils {
         return th;
     }
 
+    public static Throwable throwableUnwrap2(Throwable ex) {
+        Throwable th = ex;
+
+        while (true) {
+            if(th.getCause() == null){
+                break;
+            }else{
+                th = th.getCause();
+            }
+        }
+
+        while (true) {
+            if (th instanceof InvocationTargetException) {
+                th = ((InvocationTargetException) th).getTargetException();
+            } else {
+                break;
+            }
+        }
+
+        return th;
+    }
+
     /**
      * 检查字符串是否为空
      */
