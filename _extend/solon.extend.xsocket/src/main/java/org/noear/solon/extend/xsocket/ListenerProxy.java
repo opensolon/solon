@@ -64,6 +64,7 @@ public class ListenerProxy implements Listener {
 
             //请求模式
             if (request != null) {
+                requests.remove(message.key());
                 request.complete(message);
                 return;
             }
