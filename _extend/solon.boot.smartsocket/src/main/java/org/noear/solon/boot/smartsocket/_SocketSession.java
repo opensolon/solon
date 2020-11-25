@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
+import java.nio.channels.ClosedChannelException;
 import java.util.*;
 
 class _SocketSession extends SessionBase {
@@ -107,12 +108,11 @@ class _SocketSession extends SessionBase {
             byte[] bytes = MessageUtils.encode(message).array();
 
             real.writeBuffer().writeAndFlush(bytes);
-        } catch (Exception ex) {
-            Throwable eh = Utils.throwableUnwrap2(ex);
-            if (eh instanceof ConnectException) {
+        } catch (ClosedChannelException ex) {
+            if (clientAutoReconnect) {
                 real = null;
             }
-
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
