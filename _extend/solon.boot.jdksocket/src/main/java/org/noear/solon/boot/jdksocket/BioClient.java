@@ -16,7 +16,6 @@ class BioClient {
     public Socket start() {
         try {
             Socket socket = new Socket(host, port);
-            socket.setSoTimeout(1000 * 5);
 
             return socket;
         } catch (Exception ex) {

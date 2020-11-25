@@ -66,14 +66,16 @@ class _SocketSession extends SessionBase {
     public _SocketSession(BioClient client, boolean autoReconnect) {
         this.client = client;
         this.clientAutoReconnect = autoReconnect;
-
-        this.real = client.start();
     }
 
     private void prepareSend() {
-        if (clientAutoReconnect) {
-            if (real == null) {
-                real = client.start();
+        if (real == null) {
+            real = client.start();
+        }else {
+            if (clientAutoReconnect) {
+                if (real == null) {
+                    real = client.start();
+                }
             }
         }
     }
