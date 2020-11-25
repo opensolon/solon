@@ -100,14 +100,16 @@ class _SocketSession extends SessionBase {
     @Override
     public void send(Message message) {
         try {
-            prepareSend();
+            synchronized (this) {
+                prepareSend();
 
-            //
-            // 转包为XSocketMessage，再转byte[]
-            //
-            byte[] bytes = MessageUtils.encode(message).array();
+                //
+                // 转包为XSocketMessage，再转byte[]
+                //
+                byte[] bytes = MessageUtils.encode(message).array();
 
-            real.writeBuffer().writeAndFlush(bytes);
+                real.writeBuffer().writeAndFlush(bytes);
+            }
         } catch (ClosedChannelException ex) {
             if (clientAutoReconnect) {
                 real = null;

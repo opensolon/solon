@@ -118,15 +118,17 @@ class _SocketSession extends SessionBase {
 
     public void send(Message message) {
         try {
-            prepareSend();
+            synchronized (this) {
+                prepareSend();
 
-            //
-            // 转包为XSocketMessage，再转byte[]
-            //
-            byte[] bytes = MessageUtils.encode(message).array();
+                //
+                // 转包为XSocketMessage，再转byte[]
+                //
+                byte[] bytes = MessageUtils.encode(message).array();
 
-            real.getOutputStream().write(bytes);
-            real.getOutputStream().flush();
+                real.getOutputStream().write(bytes);
+                real.getOutputStream().flush();
+            }
         } catch (SocketException ex) {
             if (clientAutoReconnect) {
                 real = null;
