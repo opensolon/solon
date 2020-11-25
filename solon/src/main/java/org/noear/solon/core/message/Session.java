@@ -1,10 +1,14 @@
 package org.noear.solon.core.message;
 
+import javafx.util.Callback;
 import org.noear.solon.core.handle.MethodType;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Collection;
+import java.util.concurrent.Callable;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * XSocket 会话（为 Message + Listener 架构服务 ）
@@ -46,6 +50,11 @@ public interface Session {
      * 发送消息并等待响应
      * */
     Message sendAndResponse(Message message);
+
+    /**
+     * 发送消息并异步回调
+     * */
+    void sendAndCallback(Message message, BiConsumer<Message,Throwable> callback);
 
     /**
      * 关闭会话
