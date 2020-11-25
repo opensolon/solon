@@ -113,6 +113,8 @@ class _SocketSession extends SessionBase {
         } catch (ClosedChannelException ex) {
             if (clientAutoReconnect) {
                 real = null;
+            } else {
+                throw new RuntimeException(ex);
             }
         } catch (Exception ex) {
             throw new RuntimeException(ex);
