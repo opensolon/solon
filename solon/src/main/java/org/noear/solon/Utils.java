@@ -99,18 +99,26 @@ public class Utils {
         return th;
     }
 
-    public static Throwable throwableUnwrap2(Throwable ex) {
+    public static boolean throwableHas(Throwable ex, Class<? extends Throwable> clz) {
         Throwable th = ex;
 
         while (true) {
-            if(th.getCause() == null){
-                break;
-            }else{
+            if (clz.isAssignableFrom(th.getClass())) {
+                return true;
+            }
+
+            if (th.getCause() != null) {
                 th = th.getCause();
+            } else {
+                break;
             }
         }
 
         while (true) {
+            if (clz.isAssignableFrom(th.getClass())) {
+                return true;
+            }
+
             if (th instanceof InvocationTargetException) {
                 th = ((InvocationTargetException) th).getTargetException();
             } else {
@@ -118,7 +126,7 @@ public class Utils {
             }
         }
 
-        return th;
+        return false;
     }
 
     /**
