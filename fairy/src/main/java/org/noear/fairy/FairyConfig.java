@@ -7,6 +7,7 @@ import org.noear.fairy.encoder.FormEncoder;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.function.Supplier;
 
 /**
  * Fairy - 配置
@@ -54,7 +55,7 @@ public class FairyConfig {
     //通道
     private IChannel channel;
     //上游
-    private UpstreamService upstream;
+    private Supplier<String> upstream;
     //服务端
     private String uri;
     //过滤器
@@ -108,13 +109,13 @@ public class FairyConfig {
     /**
      * 获取上游
      * */
-    public UpstreamService getUpstream() {
+    public Supplier<String> getUpstream() {
         return upstream;
     }
     /**
      * 设置上游
      * */
-    protected void setUpstream(UpstreamService upstream) {
+    protected void setUpstream(Supplier<String> upstream) {
         this.upstream = upstream;
     }
 

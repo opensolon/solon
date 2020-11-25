@@ -5,6 +5,7 @@ import org.noear.fairy.annotation.FairyClient;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Fairy - 代理器
@@ -171,7 +172,7 @@ public class Fairy {
         /**
          * 设置负载代理
          */
-        public Builder upstream(UpstreamService upstream) {
+        public Builder upstream(Supplier<String> upstream) {
             _config.setUpstream(upstream);
             return this;
         }

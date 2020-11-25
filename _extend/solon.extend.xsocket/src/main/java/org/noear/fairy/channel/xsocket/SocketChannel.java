@@ -5,18 +5,18 @@ import org.noear.fairy.FairyConfig;
 import org.noear.fairy.IChannel;
 import org.noear.fairy.Result;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class SocketChannel implements IChannel {
-    public Session session;
+    public Supplier<Session> sessions;
 
-    public SocketChannel(Session session) {
-        this.session = session;
+    public SocketChannel(Supplier<Session> sessions) {
+        this.sessions = sessions;
     }
 
     //public SocketChannel handshake();
@@ -50,7 +50,7 @@ public class SocketChannel implements IChannel {
             System.out.println(message.toString());
         }
 
-        Message response = session.sendAndResponse(message);
+        Message response = sessions.get().sendAndResponse(message);
 
         if (response == null) {
             return null;

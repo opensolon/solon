@@ -124,7 +124,7 @@ public class FairyHandler implements InvocationHandler {
         //构建 url
         String url = null;
         if (url0 == null) {
-            url = config.getUpstream().getServer();
+            url = config.getUpstream().get();
 
             if (url == null) {
                 throw new FairyException("FairyClient: Not found upstream!");

@@ -17,7 +17,7 @@ public class Test2App {
         int _port = 8080 + 20000;
 
         Session session = SessionFactory.create("localhost", _port, true);
-        SocketChannel channel = new SocketChannel(session);
+        SocketChannel channel = new SocketChannel(()->session);
 
         HelloRpcService rpc = Fairy.builder()
                 .encoder(SnackEncoder.instance)
