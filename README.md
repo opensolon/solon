@@ -228,6 +228,47 @@ ext/
 ext/ext.markdown.jar
 ```
 
+* 双向RPC 
+```java 
+//server
+@Mapping(value = "/demoe/rpc", method = MethodType.SOCKET)
+@Component(remoting = true)
+public class HelloRpcServiceImpl implements HelloRpcService {
+    @Mapping(value = "*", method = MethodType.SOCKET, before = true)
+    public void bef(Context ctx) {
+        ctx.headerSet("Content-Type","test/json");
+    }
+
+    public String hello(String name) {
+// 此处，可以根据 cient session 创建一个新的 rpc client
+//        XContext ctx = XContext.current();
+//        XSocketChannel channel = new XSocketChannel((XSession) ctx.request());
+//
+//        NameRpcService rpc = Fairy.builder()
+//                .encoder(SnackEncoder.instance)
+//                .decoder(SnackDecoder.instance)
+//                .channel(channel)
+//                .create(NameRpcService.class);
+//
+//        String name2 = rpc.name(name);
+
+        return "name=" + name;
+    }
+}
+
+//client
+Session session = SessionFactory.create("localhost",_port, true);
+SocketChannel channel = new SocketChannel(()->session);
+
+HelloRpcService rpc = Fairy.builder()
+                           .encoder(SnackEncoder.instance)
+                           .decoder(SnackDecoder.instance)
+                           .channel(channel)
+                           .create(HelloRpcService.class);
+
+String rst = rpc.hello("noear");
+```
+
 ### 附2：更多示例参考
 * 项目内的：[_test](./_test/) 和 [_demo](./_demo/)
 * 更多示例：[solon_demo](https://gitee.com/noear/solon_demo)
