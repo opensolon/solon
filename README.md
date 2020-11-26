@@ -223,9 +223,9 @@ public class HelloTask implements Runnable {
 
 * 体外扩展加载 jar 
 ```
-demoApp.jar
-ext/
-ext/ext.markdown.jar
+demoApp.jar             #主程序
+ext/                    #扩展目录
+ext/ext.markdown.jar    #扩展包
 ```
 
 * 双向RPC（客户端链上服务端之后，形成双向RPC）
@@ -240,7 +240,7 @@ public class HelloRpcServiceImpl implements HelloRpcService {
     }
 
     public String hello(String name) {
-//        //此处，可以根据 client session 创建一个链接 client 的 rpc service
+//        //此处，可以根据 client session 创建一个连接 client 的 rpc service
 //        Context ctx = Context.current();
 //        NameRpcService rpc = XSocket.create(ctx.session(), NameRpcService.class);
 //
