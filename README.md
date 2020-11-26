@@ -241,14 +241,8 @@ public class HelloRpcServiceImpl implements HelloRpcService {
 
     public String hello(String name) {
 // 此处，可以根据 client session 创建一个新的 rpc client
-//        XContext ctx = XContext.current();
-//        XSocketChannel channel = new XSocketChannel((XSession) ctx.request());
-//
-//        NameRpcService rpc = Fairy.builder()
-//                .encoder(SnackEncoder.instance)
-//                .decoder(SnackDecoder.instance)
-//                .channel(channel)
-//                .create(NameRpcService.class);
+//        Context ctx = Context.current();
+//        NameRpcService rpc = XSocket.get((XSession) ctx.request(), NameRpcService.class);
 //
 //        String name2 = rpc.name(name);
 
@@ -257,14 +251,7 @@ public class HelloRpcServiceImpl implements HelloRpcService {
 }
 
 //client
-Session session = SessionFactory.create("localhost",_port, true);
-SocketChannel channel = new SocketChannel(()->session);
-
-HelloRpcService rpc = Fairy.builder()
-                           .encoder(SnackEncoder.instance)
-                           .decoder(SnackDecoder.instance)
-                           .channel(channel)
-                           .create(HelloRpcService.class);
+HelloRpcService rpc = XSocket.get("localhost",_port, HelloRpcService.class);
 
 String rst = rpc.hello("noear");
 ```
