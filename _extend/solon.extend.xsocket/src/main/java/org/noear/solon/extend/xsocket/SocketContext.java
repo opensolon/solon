@@ -17,13 +17,13 @@ import java.net.URI;
  * */
 public class SocketContext extends ContextEmpty {
     private InetSocketAddress _inetSocketAddress;
-    private Session _sesssion;
+    private Session _session;
     private Message _message;
     private boolean _messageIsString;
     private MethodType _method;
 
     public SocketContext(Session session, Message message, boolean messageIsString) {
-        _sesssion = session;
+        _session = session;
         _message = message;
         _messageIsString = messageIsString;
         _method = session.method();
@@ -33,7 +33,7 @@ public class SocketContext extends ContextEmpty {
 
     @Override
     public Object request() {
-        return _sesssion;
+        return _session;
     }
 
     @Override
@@ -104,11 +104,16 @@ public class SocketContext extends ContextEmpty {
         return new ByteArrayInputStream(_message.content());
     }
 
+    @Override
+    public Session session() {
+        return _session;
+    }
+
     //==============
 
     @Override
     public Object response() {
-        return _sesssion;
+        return _session;
     }
 
     @Override
@@ -148,18 +153,18 @@ public class SocketContext extends ContextEmpty {
 
     @Override
     protected void commit() throws IOException {
-        if (_sesssion.isValid()) {
+        if (_session.isValid()) {
             if (_messageIsString) {
-                _sesssion.send(_outputStream.toString());
+                _session.send(_outputStream.toString());
             } else {
                 Message msg = Message.wrap(1, _message.key(), _message.resourceDescriptor(), _outputStream.toByteArray());
-                _sesssion.send(msg);
+                _session.send(msg);
             }
         }
     }
 
     @Override
     public void close() throws IOException {
-        _sesssion.close();
+        _session.close();
     }
 }
