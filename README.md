@@ -242,7 +242,7 @@ public class HelloRpcServiceImpl implements HelloRpcService {
     public String hello(String name) {
 //        //此处，可以根据 client session 创建一个链接 client 的 rpc service
 //        Context ctx = Context.current();
-//        NameRpcService rpc = XSocket.create((XSession) ctx.request(), NameRpcService.class);
+//        NameRpcService rpc = XSocket.create((Session) ctx.request(), NameRpcService.class);
 //
 //        String name2 = rpc.name(name);
 
