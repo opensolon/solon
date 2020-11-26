@@ -75,7 +75,7 @@ public class ExtendLoader {
     /**
      * 加载扩展具体的jar文件
      */
-    public static boolean loadJar(List<ClassLoader> loaders, String path, File file) {
+    public static boolean loadJar(List<ClassLoader> loaders, File file) {
         try {
             //启用了扩展隔离或者强制隔离
             if (Solon.global().enableJarIsolation()) {
@@ -84,6 +84,16 @@ public class ExtendLoader {
                 JarClassLoader.global().addJar(file);
             }
 
+            return true;
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean loadJar(File file) {
+        try {
+            JarClassLoader.global().addJar(file);
             return true;
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -151,8 +161,8 @@ public class ExtendLoader {
             try {
                 //尝试加载jar包
                 if (path.endsWith(".jar") || path.endsWith(".zip")) {
-                     loadJar(loaders,path,file);
-                     return;
+                    loadJar(loaders, file);
+                    return;
                 }
 
                 //如果map不为null；尝试加载配置
