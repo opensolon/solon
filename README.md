@@ -221,7 +221,7 @@ public class HelloTask implements Runnable {
 }
 ```
 
-* 扩展 jar 加载
+* 体外扩展加载 jar 
 ```
 demoApp.jar
 ext/
