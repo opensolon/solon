@@ -73,7 +73,7 @@ public class Solon {
         //1.创建应用
         global = new SolonApp(source, argx);
 
-        //2.1.内部初始化
+        //2.1.内部初始化（顺序不能乱!）
         global.init();
 
         //2.2.自定义初始化
