@@ -48,7 +48,7 @@ public abstract class SessionBase implements Session {
         ListenerProxy.regRequest(message, request);
 
         //等待响应
-        request.whenComplete(callback);
+        request.whenCompleteAsync(callback);
 
         //发送消息
         send(message);

@@ -16,6 +16,7 @@ import webapp.demoh_xsocket.HelloRpcService;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
@@ -41,28 +42,6 @@ public class SocketResponseTest {
     public void test_rpc_message() throws Throwable {
         int _port = 8080 + 20000;
 
-        Session session = SessionFactory.create("localhost",_port, true);
-
-
-        String root = "tcp://localhost:" + _port;
-        Map<String,Object> map = new HashMap<>();
-        map.put("name","noear");
-        String map_josn = ONode.stringify(map);
-
-        Message message = Message.wrap(root + "/demoe/rpc/hello", map_josn.getBytes());
-
-        Message rst = session.sendAndResponse(message);
-        String rst_str = ONode.deserialize(rst.toString());
-
-        System.out.println(rst_str);
-
-        assert "name=noear".equals(rst_str);
-    }
-
-    @Test
-    public void test_callback_message() throws Throwable {
-        int _port = 8080 + 20000;
-
         Session session = SessionFactory.create("localhost", _port, true);
 
 
@@ -73,15 +52,12 @@ public class SocketResponseTest {
 
         Message message = Message.wrap(root + "/demoe/rpc/hello", map_josn.getBytes());
 
-        session.sendAndCallback(message, (rst, err) -> {
-            String rst_str = ONode.deserialize(rst.toString());
+        Message rst = session.sendAndResponse(message);
+        String rst_str = ONode.deserialize(rst.toString());
 
-            System.out.println(rst_str);
+        System.out.println("收到:" + rst_str);
 
-            assert "name=noear".equals(rst_str);
-        });
-
-        System.in.read();
+        assert "name=noear".equals(rst_str);
     }
 
     @Test
