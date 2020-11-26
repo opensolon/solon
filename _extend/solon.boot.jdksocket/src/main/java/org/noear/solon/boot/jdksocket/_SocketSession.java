@@ -13,6 +13,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 
 /**
  *
@@ -145,6 +147,14 @@ class _SocketSession extends SessionBase {
         send(message);
 
         return receive(real);
+    }
+
+    @Override
+    public void sendAndCallback(Message message, BiConsumer<Message, Throwable> callback) {
+        send(message);
+
+        CompletableFuture.supplyAsync(() -> receive(real))
+                .whenCompleteAsync(callback);
     }
 
     @Override
