@@ -2,9 +2,9 @@ package org.noear.fairy.encoder;
 
 
 import org.noear.fairy.Enctype;
-import org.noear.fairy.IEncoder;
+import org.noear.fairy.Encoder;
 
-public class FormEncoder implements IEncoder {
+public class FormEncoder implements Encoder {
     public static final FormEncoder instance = new FormEncoder();
 
     @Override

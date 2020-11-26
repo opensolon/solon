@@ -5,7 +5,7 @@ import java.util.Map;
 /**
  * 过滤器
  * */
-public interface IFilter {
+public interface Filter {
     /**
      * 过滤
      */

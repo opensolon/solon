@@ -2,10 +2,10 @@ package org.noear.fairy.encoder;
 
 import com.caucho.hessian.io.Hessian2Output;
 import org.noear.fairy.Enctype;
-import org.noear.fairy.IEncoder;
+import org.noear.fairy.Encoder;
 import java.io.ByteArrayOutputStream;
 
-public class HessionEncoder implements IEncoder {
+public class HessionEncoder implements Encoder {
     public static final HessionEncoder instance = new HessionEncoder();
 
     @Override

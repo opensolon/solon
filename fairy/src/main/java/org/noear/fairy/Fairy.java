@@ -17,16 +17,16 @@ public class Fairy {
     /**
      * 默认的通讯通道（涉及第三方框架引用，不做定义）
      */
-    public static IChannel defaultChannel;
+    public static FairyChannel defaultChannel;
     /**
      * 默认的序列化器（涉及第三方框架引用，不做定义）
      */
-    public static IEncoder defaultEncoder;
+    public static Encoder defaultEncoder;
 
     /**
      * 默认的反序列化器（涉及第三方框架引用，不做定义）
      */
-    public static IDecoder defaultDecoder;
+    public static Decoder defaultDecoder;
 
 
     private String _url;
@@ -109,7 +109,7 @@ public class Fairy {
                 args = new HashMap<>();
             }
 
-            for (IFilter filter : _config.getFilters()) {
+            for (Filter filter : _config.getFilters()) {
                 filter.filter(_config, _method, _url, headers, args);
             }
 
@@ -180,7 +180,7 @@ public class Fairy {
         /**
          * 设置序列化器
          */
-        public Builder encoder(IEncoder encoder) {
+        public Builder encoder(Encoder encoder) {
             _config.setEncoder(encoder);
             return this;
         }
@@ -188,7 +188,7 @@ public class Fairy {
         /**
          * 设置反序列器
          */
-        public Builder decoder(IDecoder decoder) {
+        public Builder decoder(Decoder decoder) {
             _config.setDecoder(decoder);
             return this;
         }
@@ -197,7 +197,7 @@ public class Fairy {
         /**
          * 设置通信通道
          */
-        public Builder channel(IChannel channel) {
+        public Builder channel(FairyChannel channel) {
             _config.setChannel(channel);
             return this;
         }
@@ -206,7 +206,7 @@ public class Fairy {
         /**
          * 添加过滤器
          */
-        public Builder filterAdd(IFilter filter) {
+        public Builder filterAdd(Filter filter) {
             _config.filterAdd(filter);
             return this;
         }

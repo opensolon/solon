@@ -2,14 +2,14 @@ package org.noear.fairy.decoder;
 
 import org.noear.fairy.Enctype;
 import org.noear.fairy.FairyConfig;
-import org.noear.fairy.IDecoder;
+import org.noear.fairy.Decoder;
 import org.noear.fairy.Result;
 import org.noear.fairy.channel.Constants;
 import org.noear.snack.ONode;
 
 import java.util.Map;
 
-public class SnackDecoder implements IDecoder {
+public class SnackDecoder implements Decoder {
     public static final SnackDecoder instance = new SnackDecoder();
 
     @Override

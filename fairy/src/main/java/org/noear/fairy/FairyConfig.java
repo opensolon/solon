@@ -49,28 +49,28 @@ public class FairyConfig {
 
 
     //编码器
-    private IEncoder encoder;
+    private Encoder encoder;
     //解码器
-    private IDecoder decoder;
+    private Decoder decoder;
     //通道
-    private IChannel channel;
+    private FairyChannel channel;
     //上游
     private Supplier<String> upstream;
     //服务端
     private String uri;
     //过滤器
-    private Set<IFilter> filters = new LinkedHashSet<>();
+    private Set<Filter> filters = new LinkedHashSet<>();
 
     /**
      * 获取编码器
      * */
-    public IEncoder getEncoder() {
+    public Encoder getEncoder() {
         return encoder;
     }
     /**
      * 设置编码器
      * */
-    protected void setEncoder(IEncoder encoder) {
+    protected void setEncoder(Encoder encoder) {
         if (encoder != null) {
             this.encoder = encoder;
         }
@@ -79,13 +79,13 @@ public class FairyConfig {
     /**
      * 获取解码器
      * */
-    public IDecoder getDecoder() {
+    public Decoder getDecoder() {
         return decoder;
     }
     /**
      * 设置解码器
      * */
-    protected void setDecoder(IDecoder decoder) {
+    protected void setDecoder(Decoder decoder) {
         if (decoder != null) {
             this.decoder = decoder;
         }
@@ -94,13 +94,13 @@ public class FairyConfig {
     /**
      * 获取通道
      * */
-    public IChannel getChannel() {
+    public FairyChannel getChannel() {
         return channel;
     }
     /**
      * 设置通道
      * */
-    protected void setChannel(IChannel channel) {
+    protected void setChannel(FairyChannel channel) {
         if (channel != null) {
             this.channel = channel;
         }
@@ -136,13 +136,13 @@ public class FairyConfig {
     /**
      * 获取过滤器
      * */
-    public Set<IFilter> getFilters() {
+    public Set<Filter> getFilters() {
         return filters;
     }
     /**
      * 添加过滤器
      * */
-    protected void filterAdd(IFilter filter) {
+    protected void filterAdd(Filter filter) {
         filters.add(filter);
     }
 

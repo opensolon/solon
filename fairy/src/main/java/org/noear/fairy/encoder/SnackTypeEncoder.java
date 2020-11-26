@@ -1,10 +1,10 @@
 package org.noear.fairy.encoder;
 
 import org.noear.fairy.Enctype;
-import org.noear.fairy.IEncoder;
+import org.noear.fairy.Encoder;
 import org.noear.snack.ONode;
 
-public class SnackTypeEncoder implements IEncoder {
+public class SnackTypeEncoder implements Encoder {
     public static final SnackTypeEncoder instance = new SnackTypeEncoder();
 
     @Override

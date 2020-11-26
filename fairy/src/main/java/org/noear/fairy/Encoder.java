@@ -3,7 +3,7 @@ package org.noear.fairy;
 /**
  * 编码器
  * */
-public interface IEncoder {
+public interface Encoder {
     /**
      * 编码
      * */

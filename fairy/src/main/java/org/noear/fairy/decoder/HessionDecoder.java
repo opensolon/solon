@@ -3,14 +3,14 @@ package org.noear.fairy.decoder;
 import com.caucho.hessian.io.Hessian2Input;
 import org.noear.fairy.Enctype;
 import org.noear.fairy.FairyConfig;
-import org.noear.fairy.IDecoder;
+import org.noear.fairy.Decoder;
 import org.noear.fairy.Result;
 import org.noear.fairy.channel.Constants;
 
 import java.io.ByteArrayInputStream;
 import java.util.Map;
 
-public class HessionDecoder implements IDecoder {
+public class HessionDecoder implements Decoder {
     public static final HessionDecoder instance = new HessionDecoder();
 
     @Override

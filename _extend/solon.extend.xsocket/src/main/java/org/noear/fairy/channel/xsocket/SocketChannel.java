@@ -2,7 +2,7 @@ package org.noear.fairy.channel.xsocket;
 
 
 import org.noear.fairy.FairyConfig;
-import org.noear.fairy.IChannel;
+import org.noear.fairy.FairyChannel;
 import org.noear.fairy.Result;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
@@ -12,7 +12,7 @@ import org.noear.solon.core.message.Session;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class SocketChannel implements IChannel {
+public class SocketChannel implements FairyChannel {
     public Supplier<Session> sessions;
 
     public SocketChannel(Supplier<Session> sessions) {

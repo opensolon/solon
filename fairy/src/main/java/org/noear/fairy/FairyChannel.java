@@ -5,7 +5,7 @@ import java.util.Map;
 /**
  * 执行通道
  * */
-public interface IChannel {
+public interface FairyChannel {
     /**
      * 设用
      * */

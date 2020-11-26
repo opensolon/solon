@@ -3,7 +3,7 @@ package webapp.utils;
 
 import org.noear.fairy.FairyConfig;
 import org.noear.fairy.FairyException;
-import org.noear.fairy.IChannel;
+import org.noear.fairy.FairyChannel;
 import org.noear.fairy.Result;
 import org.noear.solon.core.message.Message;
 
@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Socket 通道
  * */
-public class SocketChannel implements IChannel {
+public class SocketChannel implements FairyChannel {
     public static final SocketChannel instance = new SocketChannel();
 
     @Override

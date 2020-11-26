@@ -5,13 +5,13 @@ import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.ParserConfig;
 import org.noear.fairy.Enctype;
 import org.noear.fairy.FairyConfig;
-import org.noear.fairy.IDecoder;
+import org.noear.fairy.Decoder;
 import org.noear.fairy.Result;
 import org.noear.fairy.channel.Constants;
 
 import java.util.Map;
 
-public class FastjsonDecoder implements IDecoder {
+public class FastjsonDecoder implements Decoder {
     static {
         ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
     }

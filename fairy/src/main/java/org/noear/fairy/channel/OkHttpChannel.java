@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Http 通道
  * */
-public class OkHttpChannel implements IChannel {
+public class OkHttpChannel implements FairyChannel {
     public static final OkHttpChannel instance = new OkHttpChannel();
 
     @Override
