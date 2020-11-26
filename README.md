@@ -228,7 +228,7 @@ ext/
 ext/ext.markdown.jar
 ```
 
-* 双向RPC 
+* 双向RPC（客户端链上服务端之后，形成双向RPC）
 ```java 
 //server
 @Mapping(value = "/demoe/rpc", method = MethodType.SOCKET)
