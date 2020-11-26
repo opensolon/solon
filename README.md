@@ -240,7 +240,7 @@ public class HelloRpcServiceImpl implements HelloRpcService {
     }
 
     public String hello(String name) {
-// 此处，可以根据 client session 创建一个新的 rpc client
+//        //此处，可以根据 client session 创建一个链接 client 的 rpc service
 //        Context ctx = Context.current();
 //        NameRpcService rpc = XSocket.get((XSession) ctx.request(), NameRpcService.class);
 //
@@ -251,7 +251,7 @@ public class HelloRpcServiceImpl implements HelloRpcService {
 }
 
 //client
-HelloRpcService rpc = XSocket.get("localhost",_port, HelloRpcService.class);
+HelloRpcService rpc = XSocket.createx("localhost",_port, HelloRpcService.class);
 
 String rst = rpc.hello("noear");
 ```
