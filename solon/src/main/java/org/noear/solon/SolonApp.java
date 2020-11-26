@@ -550,7 +550,7 @@ public class SolonApp implements Handler, HandlerSlots {
     public boolean enableJarIsolation(){
         return _enableJarIsolation;
     }
-    public SolonApp enableJarIsolation(boolean enable){
+    private SolonApp enableJarIsolation(boolean enable){
         _enableJarIsolation = enable;
         return this;
     }
