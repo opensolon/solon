@@ -225,7 +225,7 @@ public class HelloTask implements Runnable {
 ```
 demoApp.jar             #主程序
 ext/                    #扩展目录
-ext/ext.markdown.jar    #扩展包
+ext/ext.markdown.jar    #MD格式支持扩展包
 ```
 
 * 双向RPC（客户端链上服务端之后，形成双向RPC）
