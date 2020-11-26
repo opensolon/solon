@@ -127,7 +127,7 @@ public interface DemoService{
 // - server : 实现协议
 @Valid
 @Mapping("/demo/*")
-@Bean(remoting = true)
+@Component(remoting = true)
 public class DemoServiceImp implements DemoService{
     //添加验证注解
     @NotZero("user_id")
@@ -156,7 +156,7 @@ Solon.cfg().getInt("app_id",0); //=>int
 Solon.cfg().getProp("xxx.datasource"); //=>Properties
 
 //注入模式
-@Configuration //or @Controller, or @Bean
+@Configuration //or @Controller, or @Component
 public class Config{
     @Inject("${app_key}")
     String app_key;
