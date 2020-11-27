@@ -8,13 +8,13 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.annotation.ServerEndpoint;
 
-@ServerEndpoint(value = "/demoe/websocket")
+@ServerEndpoint(value = "**")
 public class XSocketListenerImp implements Listener {
     @Override
     public void onMessage(Session session, Message message, boolean messageIsString) {
-        System.out.println(session.path());
+        System.out.println(session.path() + ":" + message.resourceDescriptor());
 
-        if(Solon.cfg().isDebugMode()){
+        if (Solon.cfg().isDebugMode()) {
             return;
         }
 

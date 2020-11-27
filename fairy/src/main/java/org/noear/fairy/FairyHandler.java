@@ -3,6 +3,8 @@ package org.noear.fairy;
 import org.noear.fairy.annotation.Mapping;
 import org.noear.fairy.annotation.FairyClient;
 
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -91,8 +93,22 @@ public class FairyHandler implements InvocationHandler {
         }
     }
 
+
+    protected MethodHandles.Lookup lookup;
+
     @Override
     public Object invoke(Object proxy, Method method, Object[] vals) throws Throwable {
+        Class caller = method.getDeclaringClass();
+        if (Object.class == caller) {
+            if (this.lookup == null) {
+                Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class.getDeclaredConstructor(Class.class, Integer.TYPE);
+                constructor.setAccessible(true);
+                this.lookup = constructor.newInstance(caller, MethodHandles.Lookup.PRIVATE);
+            }
+
+            return this.lookup.unreflectSpecial(method, caller).bindTo(proxy).invokeWithArguments(vals);
+        }
+
         //构建 fun
         String fun = method.getName();
         String met = null;
