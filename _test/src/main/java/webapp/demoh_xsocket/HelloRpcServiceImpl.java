@@ -15,8 +15,7 @@ public class HelloRpcServiceImpl implements HelloRpcService {
     }
 
     public String hello(String name) {
-//        Context ctx = Context.current();
-//        NameRpcService rpc = XSocket.create(ctx.session(), NameRpcService.class);
+//        NameRpcService rpc = XSocket.create(Context.current(), NameRpcService.class);
 //
 //        String name2 = rpc.name(name);
 

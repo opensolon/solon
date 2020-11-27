@@ -104,11 +104,6 @@ public class SocketContext extends ContextEmpty {
         return new ByteArrayInputStream(_message.content());
     }
 
-    @Override
-    public Session session() {
-        return _session;
-    }
-
     //==============
 
     @Override

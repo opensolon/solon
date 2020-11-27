@@ -296,12 +296,6 @@ public abstract class Context {
     public final void sessionClear(){
         sessionState.sessionClear();}
 
-    /** SESSION for SOCKET */
-    @Note("SESSION for SOCKET")
-    public Session session() {
-        throw new UnsupportedOperationException();
-    }
-
     //======================
     /**获取输出对象*/
     @Note("获取输出对象")
