@@ -1,6 +1,7 @@
 package org.noear.solon.boot.jdksocket;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.xsocket.ListenerProxy;
@@ -33,7 +34,11 @@ class BioClient {
                 Message message = BioReceiver.receive(socket);
 
                 if (message != null) {
-                    ListenerProxy.getGlobal().onMessage(session, message, false);
+                    try {
+                        ListenerProxy.getGlobal().onMessage(session, message, false);
+                    } catch (Throwable ex) {
+                        EventBus.push(ex);
+                    }
                 } else {
                     break;
                 }
