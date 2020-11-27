@@ -1,6 +1,5 @@
 package org.noear.solon.boot.smartsocket;
 
-import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.Protocol;

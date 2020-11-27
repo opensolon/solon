@@ -43,7 +43,7 @@ class BioServer {
                         break;
                     }
 
-                    Message message = _SocketSession.receive(socket);
+                    Message message = BioReceiver.receive(socket);
                     if (message != null) {
 
                         pool.execute(() -> {

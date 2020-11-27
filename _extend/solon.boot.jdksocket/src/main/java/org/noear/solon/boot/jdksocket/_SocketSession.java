@@ -73,12 +73,8 @@ class _SocketSession extends SessionBase {
     private void prepareSend() {
         if (real == null) {
             real = client.start();
-        }else {
-            if (clientAutoReconnect) {
-                if (real == null) {
-                    real = client.start();
-                }
-            }
+
+            client.startReceive(this, real);
         }
     }
 
@@ -143,21 +139,6 @@ class _SocketSession extends SessionBase {
     }
 
     @Override
-    public Message sendAndResponse(Message message) {
-        send(message);
-
-        return receive(real);
-    }
-
-    @Override
-    public void sendAndCallback(Message message, BiConsumer<Message, Throwable> callback) {
-        send(message);
-
-        CompletableFuture.supplyAsync(() -> receive(real))
-                .whenCompleteAsync(callback);
-    }
-
-    @Override
     public void close() throws IOException {
         synchronized (real) {
             real.shutdownInput();
@@ -218,18 +199,4 @@ class _SocketSession extends SessionBase {
         return Objects.hash(real);
     }
 
-    /**
-     * 接收数据
-     */
-    public static Message receive(Socket socket) {
-        try {
-            return BioProtocol.instance.decode(socket.getInputStream());
-        } catch (SocketException ex) {
-            return null;
-        } catch (Throwable ex) {
-            System.out.println("Decoding failure::");
-            ex.printStackTrace();
-            return null;
-        }
-    }
 }
