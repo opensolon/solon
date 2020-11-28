@@ -47,12 +47,6 @@
         </dependency>
 
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.jboss.spec.javax.servlet.jsp</groupId>
             <artifactId>jboss-jsp-api_2.3_spec</artifactId>
         </dependency>

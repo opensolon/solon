@@ -2,6 +2,7 @@ package webapp;
 
 import org.noear.fairy.Fairy;
 import org.noear.fairy.channel.xsocket.SocketChannel;
+import org.noear.fairy.channel.xsocket.XSocket;
 import org.noear.fairy.decoder.SnackDecoder;
 import org.noear.fairy.encoder.SnackEncoder;
 import org.noear.solon.Solon;
@@ -16,15 +17,7 @@ public class Test2App {
 
         int _port = 8080 + 20000;
 
-        Session session = SessionFactory.create("localhost", _port, true);
-        SocketChannel channel = new SocketChannel(()->session);
-
-        HelloRpcService rpc = Fairy.builder()
-                .encoder(SnackEncoder.instance)
-                .decoder(SnackDecoder.instance)
-                .upstream(() -> "tcp://localhost:" + _port)
-                .channel(channel)
-                .create(HelloRpcService.class);
+        HelloRpcService rpc = XSocket.create("localhost", _port, HelloRpcService.class);
 
         while (true) {
             try {
