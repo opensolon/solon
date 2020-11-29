@@ -144,13 +144,6 @@ public class Message {
     /**
      * 打包
      */
-    public static Message wrap(int flag, String key, String resourceDescriptor, byte[] body) {
-        return wrap(flag, key, resourceDescriptor, null, body);
-    }
-
-    /**
-     * 打包
-     */
     public static Message wrap(int flag, String key, String resourceDescriptor, String header, byte[] body) {
         return new Message(flag, key, resourceDescriptor, header, body);
     }
