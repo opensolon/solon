@@ -40,13 +40,21 @@ public class Message {
         return resourceDescriptor;
     }
 
+
+    private final String header;
+
+    public String header() {
+        return header;
+    }
+
+
     /**
      * 4.消息内容
      */
-    private final byte[] content;
+    private final byte[] body;
 
-    public byte[] content() {
-        return content;
+    public byte[] body() {
+        return body;
     }
 
     //////////////////////////////////////////
@@ -60,20 +68,21 @@ public class Message {
 
     //////////////////////////////////////////
 
-    private Message(int flag, String key, String resourceDescriptor, byte[] bytes) {
+    private Message(int flag, String key, String resourceDescriptor, String header, byte[] body) {
         this.flag = flag;
 
         this.key = (key == null ? "" : key);
         this.resourceDescriptor = (resourceDescriptor == null ? "" : resourceDescriptor);
-        this.content = bytes;
+        this.header = (header == null ? "" : header);
+        this.body = body;
     }
 
     @Override
     public String toString() {
-        if (content == null) {
+        if (body == null) {
             return null;
         } else {
-            return new String(content, charset);
+            return new String(body, charset);
         }
     }
 
@@ -95,9 +104,11 @@ public class Message {
     //////////////////////////////////////////
 
     private boolean _handled;
+
     public void setHandled(boolean handled) {
         _handled = handled;
     }
+
     public boolean getHandled() {
         return _handled;
     }
@@ -107,25 +118,39 @@ public class Message {
     /**
      * 打包
      */
-    public static Message wrap(byte[] bytes) {
-        return wrap(0, "", "", bytes);
+    public static Message wrap(byte[] body) {
+        return wrap(null, body);
     }
 
     /**
      * 打包
      */
-    public static Message wrap(String resourceDescriptor, byte[] bytes) {
-        return wrap(0, UUID.randomUUID().toString(), resourceDescriptor, bytes);
-    }
-
-    public static Message wrap(String key, String resourceDescriptor, byte[] bytes) {
-        return wrap(0, key, resourceDescriptor, bytes);
+    public static Message wrap(String resourceDescriptor, byte[] body) {
+        return wrap(0, UUID.randomUUID().toString(), resourceDescriptor, body);
     }
 
     /**
      * 打包
      */
-    public static Message wrap(int flag, String key, String resourceDescriptor, byte[] bytes) {
-        return new Message(flag, key, resourceDescriptor, bytes);
+    public static Message wrap(String key, String resourceDescriptor, byte[] body) {
+        return wrap(0, key, resourceDescriptor, body);
+    }
+
+    public static Message wrap(String key, String resourceDescriptor, String header, byte[] body) {
+        return wrap(0, key, resourceDescriptor, header, body);
+    }
+
+    /**
+     * 打包
+     */
+    public static Message wrap(int flag, String key, String resourceDescriptor, byte[] body) {
+        return wrap(flag, key, resourceDescriptor, null, body);
+    }
+
+    /**
+     * 打包
+     */
+    public static Message wrap(int flag, String key, String resourceDescriptor, String header, byte[] body) {
+        return new Message(flag, key, resourceDescriptor, header, body);
     }
 }

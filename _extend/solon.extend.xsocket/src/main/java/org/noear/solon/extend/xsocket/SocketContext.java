@@ -87,10 +87,10 @@ public class SocketContext extends ContextEmpty {
 
     @Override
     public long contentLength() {
-        if (_message.content() == null) {
+        if (_message.body() == null) {
             return 0;
         } else {
-            return _message.content().length;
+            return _message.body().length;
         }
     }
 
@@ -101,7 +101,7 @@ public class SocketContext extends ContextEmpty {
 
     @Override
     public InputStream bodyAsStream() throws IOException {
-        return new ByteArrayInputStream(_message.content());
+        return new ByteArrayInputStream(_message.body());
     }
 
     //==============

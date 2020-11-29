@@ -18,10 +18,12 @@ public class MessageUtils {
         //key
         byte[] keyB = msg.key().getBytes(msg.getCharset());
         //resourceDescriptor
-        byte[] rdB = msg.resourceDescriptor().getBytes(msg.getCharset());
+        byte[] resourceDescriptorB = msg.resourceDescriptor().getBytes(msg.getCharset());
+        //header
+        byte[] headerB = msg.header().getBytes(msg.getCharset());
 
         //length (flag + key + resourceDescriptor + content)
-        int len = keyB.length + rdB.length + msg.content().length + 2 * 2 + 4 + 4;
+        int len = keyB.length + resourceDescriptorB.length + headerB.length + msg.body().length + 2 * 3 + 4 + 4;
 
         ByteBuffer buffer = ByteBuffer.allocate(len);
 
@@ -36,11 +38,14 @@ public class MessageUtils {
         buffer.putChar('\n');
 
         //resourceDescriptor
-        buffer.put(rdB);
+        buffer.put(resourceDescriptorB);
+        buffer.putChar('\n');
+        //header
+        buffer.put(headerB);
         buffer.putChar('\n');
 
         //content
-        buffer.put(msg.content());
+        buffer.put(msg.body());
 
         buffer.flip();
 
@@ -63,29 +68,35 @@ public class MessageUtils {
         ByteBuffer sb = ByteBuffer.allocate(Math.min(256, buffer.limit()));
 
         //key
-        String key = decodeString(buffer, sb);
+        String key = decodeString(buffer, sb, 256);
         if (key == null) {
             return null;
         }
 
         //resourceDescriptor
-        String uri = decodeString(buffer, sb);
-        if (uri == null) {
+        String resourceDescriptor = decodeString(buffer, sb, 256);
+        if (resourceDescriptor == null) {
+            return null;
+        }
+
+        //header
+        String header = decodeString(buffer, sb, 0);
+        if (header == null) {
             return null;
         }
 
         //2.解码 content
         int len = len0 - buffer.position();
-        byte[] bytes = new byte[len];
+        byte[] body = new byte[len];
         if (len > 0) {
-            buffer.get(bytes, 0, len);
+            buffer.get(body, 0, len);
         }
 
-        return Message.wrap(flag, key, uri, bytes);
+        return Message.wrap(flag, key, resourceDescriptor, header, body);
     }
 
 
-    private static String decodeString(ByteBuffer buffer, ByteBuffer sb) {
+    private static String decodeString(ByteBuffer buffer, ByteBuffer sb, int maxLen) {
         sb.clear();
 
         while (true) {
@@ -98,7 +109,7 @@ public class MessageUtils {
             }
 
             //url 太长了
-            if (256 < sb.position()) {
+            if (maxLen > 0 && maxLen < sb.position()) {
                 return null;
             }
         }

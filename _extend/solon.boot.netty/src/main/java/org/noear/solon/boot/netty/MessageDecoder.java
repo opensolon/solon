@@ -28,6 +28,7 @@ public class MessageDecoder extends ByteToMessageDecoder {
 
         out.add(message);
 
+        byteBuffer.compact();
         byteBuf.discardReadBytes();
     }
 }

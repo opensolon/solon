@@ -82,7 +82,7 @@ public class _SocketSession extends SessionBase {
 
     @Override
     public void send(Message message) {
-        send(message.content());
+        send(message.body());
     }
 
 

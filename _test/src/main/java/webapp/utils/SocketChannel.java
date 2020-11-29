@@ -36,7 +36,7 @@ public class SocketChannel implements FairyChannel {
         synchronized (url.intern()) {
             Message msg = SocketUtils.send(url, message);
 
-            return new Result(msg.getCharset(), msg.content());
+            return new Result(msg.getCharset(), msg.body());
         }
     }
 }
