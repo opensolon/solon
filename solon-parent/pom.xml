@@ -123,12 +123,17 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.boot.jdksocket</artifactId>
+                <artifactId>solon.boot.xsocket.jdksocket</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.boot.smartsocket</artifactId>
+                <artifactId>solon.boot.xsocket.netty</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.boot.xsocket.smartsocket</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
@@ -649,9 +654,9 @@
 
         <module>../_extend/solon.boot.websocket</module>
 
-        <module>../_extend/solon.boot.netty</module>
-        <module>../_extend/solon.boot.jdksocket</module>
-        <module>../_extend/solon.boot.smartsocket</module>
+        <module>../_extend/solon.boot.xsocket.netty</module>
+        <module>../_extend/solon.boot.xsocket.jdksocket</module>
+        <module>../_extend/solon.boot.xsocket.smartsocket</module>
         <module>../_extend/solon.boot.rsocket</module>
 
 <!--        <module>../_extend/solon.boot.jdkudp</module>-->
