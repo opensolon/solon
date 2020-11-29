@@ -3,7 +3,7 @@ package features;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.fairy.Fairy;
-import org.noear.fairy.channel.xsocket.SocketChannel;
+import org.noear.nami.channel.xsocket.SocketChannel;
 import org.noear.fairy.decoder.SnackDecoder;
 import org.noear.fairy.encoder.SnackEncoder;
 import org.noear.snack.ONode;
@@ -16,7 +16,6 @@ import webapp.demoh_xsocket.HelloRpcService;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)

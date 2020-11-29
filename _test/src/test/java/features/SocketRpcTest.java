@@ -2,7 +2,7 @@ package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.fairy.channel.xsocket.XSocket;
+import org.noear.nami.channel.xsocket.XSocket;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.demoh_xsocket.HelloRpcService;

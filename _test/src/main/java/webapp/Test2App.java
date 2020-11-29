@@ -1,14 +1,8 @@
 package webapp;
 
-import org.noear.fairy.Fairy;
-import org.noear.fairy.channel.xsocket.SocketChannel;
-import org.noear.fairy.channel.xsocket.XSocket;
-import org.noear.fairy.decoder.SnackDecoder;
-import org.noear.fairy.encoder.SnackEncoder;
+import org.noear.nami.channel.xsocket.XSocket;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.xsocket.SessionFactory;
 import webapp.demoh_xsocket.HelloRpcService;
 
 public class Test2App {

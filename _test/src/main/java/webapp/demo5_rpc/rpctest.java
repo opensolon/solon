@@ -2,16 +2,13 @@ package webapp.demo5_rpc;
 
 import org.noear.fairy.Fairy;
 import org.noear.fairy.channel.OkHttpChannel;
-import org.noear.fairy.channel.xsocket.XSocket;
+import org.noear.nami.channel.xsocket.XSocket;
 import org.noear.fairy.decoder.SnackDecoder;
-import org.noear.fairy.encoder.SnackEncoder;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
-import webapp.utils.SocketChannel;
 
 import java.util.HashMap;
 import java.util.Map;
