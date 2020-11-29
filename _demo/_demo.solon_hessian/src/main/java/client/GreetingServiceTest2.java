@@ -1,14 +1,14 @@
 package client;
 
-import org.noear.fairy.Fairy;
-import org.noear.fairy.decoder.HessionDecoder;
-import org.noear.fairy.encoder.SnackTypeEncoder;
+import org.noear.nami.Nami;
+import org.noear.nami.decoder.HessionDecoder;
+import org.noear.nami.encoder.SnackTypeEncoder;
 import server.dso.IGreetingService;
 
 public class GreetingServiceTest2 {
     public static void main(String[] args) throws Exception {
         //接口的动态代理工厂
-        IGreetingService service = Fairy.builder()
+        IGreetingService service = Nami.builder()
                 .encoder(SnackTypeEncoder.instance)
                 .decoder(HessionDecoder.instance)
                 .upstream(()->{
