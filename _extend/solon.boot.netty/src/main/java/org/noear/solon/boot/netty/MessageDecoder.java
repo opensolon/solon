@@ -9,7 +9,7 @@ import org.noear.solon.extend.xsocket.MessageUtils;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-public class MessageDecoder extends ByteToMessageDecoder {
+class MessageDecoder extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> out) throws Exception {

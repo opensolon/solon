@@ -6,12 +6,10 @@ import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.xsocket.MessageUtils;
 import org.noear.solon.extend.xsocket.SessionBase;
-import org.smartboot.socket.transport.AioQuickClient;
 import org.smartboot.socket.transport.AioSession;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.nio.channels.ClosedChannelException;
 import java.util.*;
@@ -43,20 +41,20 @@ class _SocketSession extends SessionBase {
     }
 
 
-    AioClient client;
-    boolean clientAutoReconnect;
-    public _SocketSession(AioClient client, boolean autoReconnect) {
-        this.client = client;
-        this.clientAutoReconnect = autoReconnect;
+    AioConnector connector;
+    boolean autoReconnect;
+    public _SocketSession(AioConnector connector, boolean autoReconnect) {
+        this.connector = connector;
+        this.autoReconnect = autoReconnect;
     }
 
     private void prepareSend() throws IOException {
         if (real == null) {
-            this.real = client.start();
+            this.real = connector.start();
         } else {
-            if (clientAutoReconnect) {
+            if (autoReconnect) {
                 if (real.isInvalid()) {
-                    real = client.start();
+                    real = connector.start();
                 }
             }
         }
@@ -111,7 +109,7 @@ class _SocketSession extends SessionBase {
                 real.writeBuffer().writeAndFlush(bytes);
             }
         } catch (ClosedChannelException ex) {
-            if (clientAutoReconnect) {
+            if (autoReconnect) {
                 real = null;
             } else {
                 throw new RuntimeException(ex);

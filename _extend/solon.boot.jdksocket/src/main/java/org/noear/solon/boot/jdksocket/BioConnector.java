@@ -9,11 +9,11 @@ import org.noear.solon.extend.xsocket.ListenerProxy;
 import java.net.Socket;
 import java.net.SocketException;
 
-class BioClient {
+class BioConnector {
     String host;
     int port;
 
-    public BioClient(String host, int port) {
+    public BioConnector(String host, int port) {
         this.host = host;
         this.port = port;
     }

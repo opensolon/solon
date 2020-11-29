@@ -14,6 +14,7 @@ import java.nio.ByteBuffer;
  *
  * */
 class AioProtocol implements Protocol<Message> {
+    public static final AioProtocol instance = new AioProtocol();
 
     @Override
     public Message decode(ByteBuffer buffer, AioSession session) {

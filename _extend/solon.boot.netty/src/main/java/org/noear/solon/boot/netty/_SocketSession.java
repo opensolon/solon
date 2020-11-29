@@ -1,41 +1,21 @@
-package org.noear.solon.boot.jdksocket;
+package org.noear.solon.boot.netty;
 
+import io.netty.channel.Channel;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
+import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.xsocket.MessageUtils;
 import org.noear.solon.extend.xsocket.SessionBase;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketException;
 import java.util.*;
 
-/**
- *
- * <pre><code>
- * public void test() throws Throwable{
- *     String root = "tcp://localhost:" + (20000 + Solon.global().port());
- *     XMessage message =  XMessage.wrap(root + "/demog/中文/1", "Hello 世界!".getBytes());
- *
- *     Socket socket = new Socket("localhost", Solon.global().port() + 20000);
- *
- *     XSession session = _SocketSession.get(socket);
- *     XMessage rst = session.sendAndResponse(message);
- *
- *     System.out.println(rst.toString());
- *
- *     assert "我收到了：Hello 世界!".equals(rst.toString());
- * }
- * </code></pre>
- * */
 class _SocketSession extends SessionBase {
-    public static Map<Socket, Session> sessions = new HashMap<>();
-
-    public static Session get(Socket real) {
+    public static Map<Channel, Session> sessions = new HashMap<>();
+    public static Session get(Channel real) {
         Session tmp = sessions.get(real);
         if (tmp == null) {
             synchronized (real) {
@@ -50,29 +30,32 @@ class _SocketSession extends SessionBase {
         return tmp;
     }
 
-    public static void remove(Socket real) {
+    public static void remove(Channel real){
         sessions.remove(real);
     }
 
-
-    Socket real;
-
-    public _SocketSession(Socket real) {
+    Channel real;
+    public _SocketSession(Channel real){
         this.real = real;
     }
 
-    BioConnector connector;
+
+    NioConnector connector;
     boolean autoReconnect;
-    public _SocketSession(BioConnector connector, boolean autoReconnect) {
+    public _SocketSession(NioConnector connector, boolean autoReconnect) {
         this.connector = connector;
         this.autoReconnect = autoReconnect;
     }
 
-    private void prepareSend() {
+    private void prepareSend() throws IOException {
         if (real == null) {
-            real = connector.start();
-
-            connector.startReceive(this, real);
+            this.real = connector.start();
+        } else {
+            if (autoReconnect) {
+                if (real.isActive()) {
+                    real = connector.start();
+                }
+            }
         }
     }
 
@@ -82,7 +65,6 @@ class _SocketSession extends SessionBase {
     }
 
     private String _sessionId = Utils.guid();
-
     @Override
     public String sessionId() {
         return _sessionId;
@@ -112,6 +94,7 @@ class _SocketSession extends SessionBase {
         send(Message.wrap(message));
     }
 
+    @Override
     public void send(Message message) {
         try {
             synchronized (this) {
@@ -122,34 +105,23 @@ class _SocketSession extends SessionBase {
                 //
                 byte[] bytes = MessageUtils.encode(message).array();
 
-                real.getOutputStream().write(bytes);
-                real.getOutputStream().flush();
+                real.writeAndFlush(bytes);
             }
-        } catch (SocketException ex) {
-            if (autoReconnect) {
-                real = null;
-            }
-
-            throw new RuntimeException(ex);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
 
+
     @Override
     public void close() throws IOException {
-        synchronized (real) {
-            real.shutdownInput();
-            real.shutdownOutput();
-            real.close();
-
-            sessions.remove(real);
-        }
+        real.close();
+        sessions.remove(real);
     }
 
     @Override
     public boolean isValid() {
-        return real.isConnected();
+        return real.isActive();
     }
 
     @Override
@@ -159,16 +131,23 @@ class _SocketSession extends SessionBase {
 
     @Override
     public InetSocketAddress getRemoteAddress() {
-        return (InetSocketAddress) real.getRemoteSocketAddress();
+        try {
+            return (InetSocketAddress)real.remoteAddress();
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
     public InetSocketAddress getLocalAddress() {
-        return (InetSocketAddress) real.getLocalSocketAddress();
+        try {
+            return (InetSocketAddress)real.localAddress();
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     private Object attachment;
-
     @Override
     public void setAttachment(Object obj) {
         attachment = obj;
@@ -176,7 +155,7 @@ class _SocketSession extends SessionBase {
 
     @Override
     public <T> T getAttachment() {
-        return (T) attachment;
+        return (T)attachment;
     }
 
     @Override
@@ -196,5 +175,4 @@ class _SocketSession extends SessionBase {
     public int hashCode() {
         return Objects.hash(real);
     }
-
 }

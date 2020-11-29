@@ -8,18 +8,18 @@ import org.smartboot.socket.transport.AioSession;
 
 import java.io.IOException;
 
-class AioClient {
+class AioConnector {
     private String host;
     private int port;
     private Protocol<Message> protocol;
     private MessageProcessor<Message> messageProcessor;
     private int readBufferSize;
 
-    public AioClient(String host, int port, Protocol<Message> protocol, MessageProcessor<Message> messageProcessor) {
+    public AioConnector(String host, int port) {
         this.host = host;
         this.port = port;
-        this.protocol = protocol;
-        this.messageProcessor = messageProcessor;
+        this.protocol = AioProtocol.instance;
+        this.messageProcessor = AioProcessor.instance;
     }
 
     public void setReadBufferSize(int size) {

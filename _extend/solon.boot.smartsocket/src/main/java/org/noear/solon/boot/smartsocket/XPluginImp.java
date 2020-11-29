@@ -21,12 +21,12 @@ public final class XPluginImp implements Plugin {
     public void start(SolonApp app) {
         String tmp = app.cfg().get("solon.xsocket.readBufferSize", "").toLowerCase();
 
-        if (tmp.length() >2) {
-            if(tmp.endsWith("kb")) {
+        if (tmp.length() > 2) {
+            if (tmp.endsWith("kb")) {
                 readBufferSize = Integer.parseInt(tmp.substring(0, tmp.length() - 2)) * 1024;
             }
 
-            if(tmp.endsWith("mb")) {
+            if (tmp.endsWith("mb")) {
                 readBufferSize = Integer.parseInt(tmp.substring(0, tmp.length() - 2)) * 1024 * 1024;
             }
         }
@@ -49,11 +49,8 @@ public final class XPluginImp implements Plugin {
             _port = 20000 + app.port();
         }
 
-        AioProtocol protocol = new AioProtocol();
-        AioProcessor processor = new AioProcessor();
-
         try {
-            server = new AioQuickServer<>(_port, protocol, processor);
+            server = new AioQuickServer<>(_port, AioProtocol.instance, AioProcessor.instance);
             server.setBannerEnabled(false);
             server.setReadBufferSize(readBufferSize);
             server.start();

@@ -6,10 +6,7 @@ import io.netty.handler.codec.MessageToByteEncoder;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.xsocket.MessageUtils;
 
-import java.util.List;
-
-public class MessageEncoder extends MessageToByteEncoder<Message> {
-
+class MessageEncoder extends MessageToByteEncoder<Message> {
     @Override
     protected void encode(ChannelHandlerContext channelHandlerContext, Message message, ByteBuf byteBuf) throws Exception {
         if (message != null) {

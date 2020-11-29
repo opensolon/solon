@@ -1,14 +1,14 @@
-package org.noear.solon.boot.smartsocket;
+package org.noear.solon.boot.netty;
 
+import io.netty.channel.Channel;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.xsocket.SessionFactory;
-import org.smartboot.socket.transport.AioSession;
 
 class _SessionFactoryImpl extends SessionFactory {
     @Override
     protected Session getSession(Object conn) {
-        if (conn instanceof AioSession) {
-            return _SocketSession.get((AioSession) conn);
+        if (conn instanceof Channel) {
+            return _SocketSession.get((Channel) conn);
         } else {
             throw new IllegalArgumentException("This conn requires a AioSession type");
         }
@@ -16,8 +16,8 @@ class _SessionFactoryImpl extends SessionFactory {
 
     @Override
     protected void removeSession(Object conn) {
-        if (conn instanceof AioSession) {
-            _SocketSession.remove((AioSession) conn);
+        if (conn instanceof Channel) {
+            _SocketSession.remove((Channel) conn);
         } else {
             throw new IllegalArgumentException("This conn requires a socket type");
         }
@@ -25,9 +25,8 @@ class _SessionFactoryImpl extends SessionFactory {
 
     @Override
     protected Session createSession(String host, int port, boolean autoReconnect) {
-        AioConnector client = new AioConnector(host, port);
-        client.setReadBufferSize(XPluginImp.readBufferSize);
+        NioConnector connector = new NioConnector(host, port);
 
-        return new _SocketSession(client, autoReconnect);
+        return new _SocketSession(connector, autoReconnect);
     }
 }
