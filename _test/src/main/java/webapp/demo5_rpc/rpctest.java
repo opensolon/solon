@@ -2,6 +2,7 @@ package webapp.demo5_rpc;
 
 import org.noear.fairy.Fairy;
 import org.noear.fairy.channel.OkHttpChannel;
+import org.noear.fairy.channel.xsocket.XSocket;
 import org.noear.fairy.decoder.SnackDecoder;
 import org.noear.fairy.encoder.SnackEncoder;
 import org.noear.solon.Solon;
@@ -31,7 +32,7 @@ public class rpctest implements Handler {
     private Object httpOf() {
         String root = "http://localhost:" + Solon.global().port();
 
-        rockapi client =  Fairy.builder()
+        rockapi client = Fairy.builder()
                 .channel(OkHttpChannel.instance)
                 .decoder(SnackDecoder.instance)
                 .upstream(() -> root)
@@ -41,14 +42,7 @@ public class rpctest implements Handler {
     }
 
     private Object socketOf() {
-        String root = "tcp://localhost:" + (20000 + Solon.global().port());
-
-        rockapi client =  Fairy.builder()
-                .channel(SocketChannel.instance)
-                .encoder(SnackEncoder.instance)
-                .decoder(SnackDecoder.instance)
-                .upstream(() -> root)
-                .create(rockapi.class);
+        rockapi client = XSocket.create("localhost", (20000 + Solon.global().port()), rockapi.class);
 
         return client.test1(12);
     }
