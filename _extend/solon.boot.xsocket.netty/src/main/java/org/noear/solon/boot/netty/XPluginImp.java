@@ -26,12 +26,6 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        new Thread(()->{
-            start0(app);
-        }).start();
-    }
-
-    private void start0(SolonApp app){
         long time_start = System.currentTimeMillis();
 
         System.out.println("solon.Server:main: java.net.ServerSocket(netty-xsocket)");
@@ -57,15 +51,15 @@ public class XPluginImp implements Plugin {
 
             System.out.println("solon.Connector:main: netty-xsocket: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
             System.out.println("solon.Server:main: netty-xsocket: Started @" + (time_end - time_start) + "ms");
-
-            _server.channel().closeFuture().sync();
         } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
+
             bossGroup.shutdownGracefully();
             wokerGroup.shutdownGracefully();
+
+            ex.printStackTrace();
         }
     }
+
 
     @Override
     public void stop() throws Throwable {
