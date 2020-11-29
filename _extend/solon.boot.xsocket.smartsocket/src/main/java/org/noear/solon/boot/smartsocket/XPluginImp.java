@@ -14,7 +14,7 @@ public final class XPluginImp implements Plugin {
     private AioQuickServer<Message> server = null;
 
     public static String solon_boot_ver() {
-        return "smart socket 1.5.0/" + Solon.cfg().version();
+        return "smartsocket-xsocket 1.5.0/" + Solon.cfg().version();
     }
 
     @Override
@@ -42,7 +42,7 @@ public final class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        System.out.println("solon.Server:main: SmartSocket 1.5.0(smartsocket)");
+        System.out.println("solon.Server:main: SmartSocket 1.5.0(smartsocket-xsocket)");
 
         int _port = app.cfg().getInt("server.socket.port", 0);
         if (_port < 1) {
@@ -57,8 +57,8 @@ public final class XPluginImp implements Plugin {
 
             long time_end = System.currentTimeMillis();
 
-            System.out.println("solon.Connector:main: smartsocket: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
-            System.out.println("solon.Server:main: smartsocket: Started @" + (time_end - time_start) + "ms");
+            System.out.println("solon.Connector:main: smartsocket-xsocket: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
+            System.out.println("solon.Server:main: smartsocket-xsocket: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -73,7 +73,7 @@ public final class XPluginImp implements Plugin {
             server.shutdown();
             server = null;
 
-            System.out.println("solon.Server:main: smartsocket: Has Stopped " + solon_boot_ver());
+            System.out.println("solon.Server:main: smartsocket-xsocket: Has Stopped " + solon_boot_ver());
         }
     }
 }
