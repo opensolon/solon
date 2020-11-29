@@ -65,7 +65,7 @@ public class MessageUtils {
         int flag = buffer.getInt();
 
         //1.解码key and resourceDescriptor
-        ByteBuffer sb = ByteBuffer.allocate(Math.min(256, buffer.limit()));
+        ByteBuffer sb = ByteBuffer.allocate(Math.min(1024, buffer.limit()));
 
         //key
         String key = decodeString(buffer, sb, 256);

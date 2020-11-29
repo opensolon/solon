@@ -11,9 +11,9 @@ import org.noear.solon.core.handle.MethodType;
 public class HelloRpcServiceImpl implements HelloRpcService {
 
     public String hello(String name) {
-        NameRpcService rpc = XSocket.create(Context.current(), NameRpcService.class);
+        //NameRpcService rpc = XSocket.create(Context.current(), NameRpcService.class);
 
-        name = rpc.name(name);
+        //name = rpc.name(name);
 
         return "name=" + name;
     }

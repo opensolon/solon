@@ -5,13 +5,14 @@ import org.noear.solon.extend.xsocket.MessageUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 
 public class BioProtocol {
     public static final BioProtocol instance = new BioProtocol();
 
     public Message decode(InputStream input) throws IOException {
-        if(input == null){
+        if (input == null) {
             return null;
         }
 
@@ -22,7 +23,7 @@ public class BioProtocol {
 
         int len = bytesToInt32(lenBts);
 
-        if(len < 6){
+        if (len == 0) {
             return null;
         }
 
@@ -38,22 +39,12 @@ public class BioProtocol {
     }
 
 
-    private static int bytesToInt32(byte[] bs) {
-        //获取最高八位
-        int num1 = 0;
-        num1 = (num1 ^ (int) bs[0]);
-        num1 = num1 << 24;
-        //获取第二高八位
-        int num2 = 0;
-        num2 = (num2 ^ (int) bs[1]);
-        num2 = num2 << 16;
-        //获取第二低八位
-        int num3 = 0;
-        num3 = (num3 ^ (int) bs[2]);
-        num3 = num3 << 8;
-        //获取低八位
-        int num4 = 0;
-        num4 = (num4 ^ (int) bs[3]);
-        return num1 ^ num2 ^ num3 ^ num4;
+    private static int bytesToInt32(byte[] bytes) {
+        int value = 0;
+        for (int i = 0; i < 4; i++) {
+            int shift = (3 - i) * 8;
+            value += (bytes[i] & 0xFF) << shift;
+        }
+        return value;
     }
 }
