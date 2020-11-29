@@ -11,7 +11,7 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.extend.xsocket.SessionFactory;
 
 public class XPluginImp implements Plugin {
-    ServerBootstrap _server;
+    ChannelFuture _server;
 
     public static String solon_boot_ver() {
         return "netty-xsocket/" + Solon.cfg().version();
@@ -26,9 +26,12 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup wokerGroup = new NioEventLoopGroup();
+        new Thread(()->{
+            start0(app);
+        }).start();
+    }
 
+    private void start0(SolonApp app){
         long time_start = System.currentTimeMillis();
 
         System.out.println("solon.Server:main: java.net.ServerSocket(netty-xsocket)");
@@ -38,25 +41,29 @@ public class XPluginImp implements Plugin {
             _port = 20000 + app.port();
         }
 
+
+        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup wokerGroup = new NioEventLoopGroup();
+
         try {
-            _server = new ServerBootstrap();
+            ServerBootstrap bootstrap = new ServerBootstrap();
             //在服务器端的handler()方法表示对bossGroup起作用，而childHandler表示对wokerGroup起作用
-            _server.group(bossGroup, wokerGroup).channel(NioServerSocketChannel.class)
+            bootstrap.group(bossGroup, wokerGroup).channel(NioServerSocketChannel.class)
                     .childHandler(new NioChannelInitializer());
 
-            ChannelFuture channelFuture = _server.bind(_port).sync();
-            //channelFuture.channel().closeFuture().sync();
-
+            _server = bootstrap.bind(_port).sync();
 
             long time_end = System.currentTimeMillis();
 
             System.out.println("solon.Connector:main: netty-xsocket: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
             System.out.println("solon.Server:main: netty-xsocket: Started @" + (time_end - time_start) + "ms");
+
+            _server.channel().closeFuture().sync();
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
-//            bossGroup.shutdownGracefully();
-//            wokerGroup.shutdownGracefully();
+            bossGroup.shutdownGracefully();
+            wokerGroup.shutdownGracefully();
         }
     }
 
@@ -65,6 +72,9 @@ public class XPluginImp implements Plugin {
         if (_server == null) {
             return;
         }
+
+        _server.channel().close();
+        _server = null;
 
         System.out.println("solon.Server:main: netty-xsocket: Has Stopped " + solon_boot_ver());
     }
