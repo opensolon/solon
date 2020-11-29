@@ -1,9 +1,8 @@
 package client;
 
-import org.noear.fairy.Fairy;
-import org.noear.fairy.decoder.SnackDecoder;
-import org.noear.fairy.encoder.SnackEncoder;
-import org.noear.fairy.encoder.SnackTypeEncoder;
+import org.noear.nami.Nami;
+import org.noear.nami.decoder.SnackDecoder;
+import org.noear.nami.encoder.SnackTypeEncoder;
 import server.dso.IComplexModelService;
 import server.model.ComplexModel;
 import server.model.Person;
@@ -16,7 +15,7 @@ import java.util.List;
 public class ComplextModelServiceTest4 {
     public static void main(String[] args) throws Exception {
         //配置接口代理
-        IComplexModelService service =  Fairy.builder()
+        IComplexModelService service =  Nami.builder()
                 .encoder(SnackTypeEncoder.instance)
                 .decoder(SnackDecoder.instance)
                 .upstream(()->{

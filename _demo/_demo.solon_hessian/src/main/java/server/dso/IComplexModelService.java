@@ -1,9 +1,9 @@
 package server.dso;
 
-import org.noear.fairy.annotation.FairyClient;
+import org.noear.nami.annotation.NamiClient;
 import server.model.ComplexModel;
 
-@FairyClient("test:/ComplexModelService/")
+@NamiClient("test:/ComplexModelService/")
 public interface IComplexModelService {
     //持久化
     void save(ComplexModel model);

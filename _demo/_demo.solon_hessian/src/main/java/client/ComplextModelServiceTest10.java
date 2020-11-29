@@ -1,11 +1,10 @@
 package client;
 
 import client.dso.FairyConfigurationImp;
-import org.noear.fairy.FairyConfigurationDefault;
-import org.noear.fairy.annotation.EnableFairyClient;
-import org.noear.fairy.annotation.FairyClient;
+import org.noear.nami.NamiConfigurationDefault;
+import org.noear.nami.annotation.EnableNamiClient;
+import org.noear.nami.annotation.NamiClient;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.core.Aop;
 import server.dso.IComplexModelService;
@@ -17,12 +16,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@EnableFairyClient
+@EnableNamiClient
 @Component
 public class ComplextModelServiceTest10 {
 
     public static void main(String[] args) throws Exception {
-        FairyConfigurationDefault.proxy = new FairyConfigurationImp();
+        NamiConfigurationDefault.proxy = new FairyConfigurationImp();
 
         Solon.start(ComplextModelServiceTest10.class, args, app -> {
             app.enableHttp(false);
@@ -34,7 +33,7 @@ public class ComplextModelServiceTest10 {
         test5.test();
     }
 
-    @FairyClient
+    @NamiClient
     IComplexModelService service;
 
     public void test() {

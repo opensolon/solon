@@ -1,11 +1,11 @@
 package server.dso;
 
 
-import org.noear.fairy.annotation.FairyClient;
+import org.noear.nami.annotation.NamiClient;
 
 import java.io.IOException;
 
-@FairyClient("test:/GreetingService/")
+@NamiClient("test:/GreetingService/")
 public interface IGreetingService {
      String greeting(String name) throws IOException;
 }
