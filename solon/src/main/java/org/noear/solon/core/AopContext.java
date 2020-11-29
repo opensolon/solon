@@ -140,25 +140,25 @@ public class AopContext extends BeanContainer {
      * 添加bean的不同形态
      * */
     private void addBeanShape(Class<?> clz, BeanWrap bw) {
-        //XPlugin
+        //Plugin
         if (Plugin.class.isAssignableFrom(clz)) {
             //如果是插件，则插入
             Solon.global().plug(bw.raw());
             return;
         }
 
-        //XEventListener
+        //EventListener
         if (EventListener.class.isAssignableFrom(clz)) {
             addEventListener(clz, bw);
             return;
         }
 
-        //XUpstreamFactory
+        //LoadBalance.Factory
         if (LoadBalance.Factory.class.isAssignableFrom(clz)) {
             Bridge.upstreamFactorySet(bw.raw());
         }
 
-        //XHandler
+        //Handler
         if (Handler.class.isAssignableFrom(clz)) {
             Mapping mapping = clz.getAnnotation(Mapping.class);
             if (mapping != null) {
