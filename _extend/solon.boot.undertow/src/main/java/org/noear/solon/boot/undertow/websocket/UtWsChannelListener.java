@@ -26,7 +26,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
             }
 
             Session session = _SocketSession.get(channel);
-            Message message = Message.wrap(channel.getUrl(), out.toByteArray());
+            Message message = Message.wrap(channel.getUrl(), null,out.toByteArray());
 
             ListenerProxy.getGlobal().onMessage(session, message, false);
         } catch (Throwable ex) {
@@ -38,7 +38,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
     protected void onFullTextMessage(WebSocketChannel channel, BufferedTextMessage msg) throws IOException {
         try {
             Session session = _SocketSession.get(channel);
-            Message message = Message.wrap(channel.getUrl(),
+            Message message = Message.wrap(channel.getUrl(),null,
                     msg.getData().getBytes("UTF-8"));
 
             ListenerProxy.getGlobal().onMessage(session, message, true);

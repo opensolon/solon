@@ -29,7 +29,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
     public void handleTextMessage(WebSocketRequest request, WebSocketResponse response, String data) {
         try {
             Session session = _SocketSession.get(request, response);
-            Message message = Message.wrap(request.getRequestURI(),
+            Message message = Message.wrap(request.getRequestURI(),null,
                     data.getBytes("UTF-8"));
 
             ListenerProxy.getGlobal().onMessage(session, message, true);
@@ -42,7 +42,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
     public void handleBinaryMessage(WebSocketRequest request, WebSocketResponse response, byte[] data) {
         try {
             Session session = _SocketSession.get(request, response);
-            Message message = Message.wrap(request.getRequestURI(), data);
+            Message message = Message.wrap(request.getRequestURI(),null, data);
 
             ListenerProxy.getGlobal().onMessage(session, message, false);
 

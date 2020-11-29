@@ -119,23 +119,24 @@ public class Message {
      * 打包
      */
     public static Message wrap(byte[] body) {
-        return wrap(null, body);
+        return wrap(null, null,body);
+    }
+
+    public static Message wrapJson(String resourceDescriptor, byte[] body) {
+        return wrap(resourceDescriptor, "Content-Type=application/json", body);
     }
 
     /**
      * 打包
      */
-    public static Message wrap(String resourceDescriptor, byte[] body) {
-        return wrap(0, UUID.randomUUID().toString(), resourceDescriptor, body);
+    public static Message wrap(String resourceDescriptor, String header, byte[] body) {
+        return wrap(0, UUID.randomUUID().toString(), resourceDescriptor, header, body);
     }
+
 
     /**
      * 打包
      */
-    public static Message wrap(String key, String resourceDescriptor, byte[] body) {
-        return wrap(0, key, resourceDescriptor, body);
-    }
-
     public static Message wrap(String key, String resourceDescriptor, String header, byte[] body) {
         return wrap(0, key, resourceDescriptor, header, body);
     }

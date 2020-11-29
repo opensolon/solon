@@ -21,7 +21,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
         try {
             ByteBuffer buf = ByteBuffer.wrap(payload, offset, len);
             Session session = _SocketSession.get(getSession());
-            Message message = Message.wrap(getSession().getUpgradeRequest().getOrigin(),
+            Message message = Message.wrap(getSession().getUpgradeRequest().getOrigin(),null,
                     buf.array());
 
             ListenerProxy.getGlobal().onMessage(session, message, false);
@@ -34,7 +34,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
     public void onWebSocketText(String text) {
         try {
             Session session = _SocketSession.get(getSession());
-            Message message = Message.wrap(getSession().getUpgradeRequest().getRequestURI().toString(),
+            Message message = Message.wrap(getSession().getUpgradeRequest().getRequestURI().toString(),null,
                     text.getBytes("UTF-8"));
 
             ListenerProxy.getGlobal().onMessage(session, message, true);

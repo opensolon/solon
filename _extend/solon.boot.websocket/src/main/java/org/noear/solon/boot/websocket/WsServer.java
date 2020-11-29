@@ -42,7 +42,7 @@ public class WsServer extends WebSocketServer {
     public void onMessage(WebSocket conn, String data) {
         try {
             Session session = _SocketSession.get(conn);
-            Message message = Message.wrap(conn.getResourceDescriptor(), data.getBytes(_charset));
+            Message message = Message.wrap(conn.getResourceDescriptor(), null,data.getBytes(_charset));
 
             ListenerProxy.getGlobal().onMessage(session, message, true);
         } catch (Throwable ex) {
@@ -54,7 +54,7 @@ public class WsServer extends WebSocketServer {
     public void onMessage(WebSocket conn, ByteBuffer data) {
         try {
             Session session = _SocketSession.get(conn);
-            Message message = Message.wrap(conn.getResourceDescriptor(), data.array());
+            Message message = Message.wrap(conn.getResourceDescriptor(), null,data.array());
 
             ListenerProxy.getGlobal().onMessage(session, message, false);
         } catch (Throwable ex) {

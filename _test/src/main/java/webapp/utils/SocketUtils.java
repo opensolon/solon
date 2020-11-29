@@ -71,7 +71,7 @@ public class SocketUtils {
             return null;
         }
 
-        SocketMessageWrap msgD = new SocketMessageWrap(Message.wrap(uri, message));
+        SocketMessageWrap msgD = new SocketMessageWrap(Message.wrap(uri,null, message));
 
         get(uri).sendDo(msgD, (m) -> {
             msgD.complete(null);
@@ -95,7 +95,7 @@ public class SocketUtils {
             return;
         }
 
-        SocketMessageWrap msgD = new SocketMessageWrap(Message.wrap(uri, message));
+        SocketMessageWrap msgD = new SocketMessageWrap(Message.wrap(uri, null,message));
         msgD.handler = callback;
 
         Utils.pools.submit(()->{
