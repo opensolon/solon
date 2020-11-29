@@ -7,17 +7,19 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class MyClient {
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
 
-        try{
+        try {
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class)
-                    .handler(new MyClientInitializer());
+                    .handler(new ChannelInitializerImpl(new MyClientHandler2()));
 
-            ChannelFuture channelFuture = bootstrap.connect("localhost",8899).sync();
+            ChannelFuture channelFuture = bootstrap.connect("localhost", 8899).sync();
             channelFuture.channel().closeFuture().sync();
-        }finally {
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
             eventLoopGroup.shutdownGracefully();
         }
     }

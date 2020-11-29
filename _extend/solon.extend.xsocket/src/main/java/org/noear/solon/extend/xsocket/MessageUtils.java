@@ -105,7 +105,7 @@ public class MessageUtils {
 
         sb.flip();
         if (sb.limit() < 1) {
-            return null;
+            return "";
         }
 
         return new String(sb.array(), 0, sb.limit());
