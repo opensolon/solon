@@ -4,6 +4,7 @@ package org.noear.fairy.channel.xsocket;
 import org.noear.fairy.FairyConfig;
 import org.noear.fairy.FairyChannel;
 import org.noear.fairy.Result;
+import org.noear.fairy.channel.Constants;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
@@ -30,25 +31,21 @@ public class SocketChannel implements FairyChannel {
         Message message = null;
         String message_key = Utils.guid();
 
-        StringBuilder header = new StringBuilder();
-        if (headers != null) {
-            headers.forEach((k, v) -> {
-                header.append(k).append("=").append(v).append(";");
-            });
-        }
 
         //1.执行并返回
 
         switch (cfg.getEncoder().enctype()) {
             case application_hessian: {
-                message = Message.wrap(message_key, url, header.toString(), (byte[]) cfg.getEncoder().encode(args));
+                headers.put("Content-Type", Constants.ct_hessian);
+                message = Message.wrap(message_key, url, headerToString(headers), (byte[]) cfg.getEncoder().encode(args));
                 break;
             }
             default: {
                 // 默认：application_json
                 //
+                headers.put("Content-Type", Constants.ct_json);
                 String json = (String) cfg.getEncoder().encode(args);
-                message = Message.wrap(message_key, url, header.toString(), json.getBytes());
+                message = Message.wrap(message_key, url, headerToString(headers), json.getBytes());
                 break;
             }
         }
@@ -68,5 +65,16 @@ public class SocketChannel implements FairyChannel {
 
         //3.返回结果
         return result;
+    }
+
+    private String headerToString(Map<String, String> headers) {
+        StringBuilder header = new StringBuilder();
+        if (headers != null) {
+            headers.forEach((k, v) -> {
+                header.append(k).append("=").append(v).append(";");
+            });
+        }
+
+        return header.toString();
     }
 }

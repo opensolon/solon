@@ -8,10 +8,6 @@ import org.noear.solon.core.handle.MethodType;
 @Mapping(value = "/demoe/rpc/name", method = MethodType.SOCKET)
 @Component(remoting = true)
 public class NameRpcServiceImpl implements NameRpcService{
-    @Mapping(value = "*", method = MethodType.SOCKET, before = true)
-    public void bef(Context ctx) {
-        ctx.headerSet("Content-Type","test/json");
-    }
 
     @Override
     public String name(String name) {
