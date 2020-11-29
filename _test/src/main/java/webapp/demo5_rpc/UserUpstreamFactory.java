@@ -1,10 +1,10 @@
 package webapp.demo5_rpc;
 
-import org.noear.solon.core.Upstream;
+import org.noear.solon.core.LoadBalance;
 
-public class UserUpstreamFactory implements Upstream.Factory {
+public class UserUpstreamFactory implements LoadBalance.Factory {
     @Override
-    public Upstream create(String service) {
+    public LoadBalance create(String service) {
         return null;
     }
 }

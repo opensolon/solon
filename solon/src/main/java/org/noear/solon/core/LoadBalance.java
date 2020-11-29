@@ -1,12 +1,12 @@
 package org.noear.solon.core;
 
 /**
- * 负载器（为服务提供一个简单的负载接口）
+ * 负载均衡器（为服务提供一个简单的负载接口；起到适配中介效果）
  *
  * <pre><code>
- * //定义 local upstream
+ * //定义 local LoadBalance
  * @Component("local")
- * public class TestUpstream implements XUpstream {
+ * public class TestLoadBalance implements LoadBalance {
  *     @Override
  *     public String getServer() {
  *         //可以有多个server地址，根据策略输出
@@ -15,7 +15,7 @@ package org.noear.solon.core;
  *     }
  * }
  *
- * //通过 FairyClient 使用，然后调用一个restful api（注：FairyClient 已与 XUpstream 适配）
+ * //通过 FairyClient 使用，然后调用一个restful api（注：FairyClient 已与 LoadBalance 适配）
  * @Component
  * public class DemoBean{
  *     @FairyClient("local:/demo/hello/")    //此处的local，对上面的local
@@ -31,7 +31,7 @@ package org.noear.solon.core;
  * @since 1.0
  * */
 @FunctionalInterface
-public interface Upstream {
+public interface LoadBalance {
 
     /**
      * 获取节点
@@ -42,6 +42,6 @@ public interface Upstream {
      * 负载器工厂
      * */
     interface Factory{
-        Upstream create(String service);
+        LoadBalance create(String service);
     }
 }

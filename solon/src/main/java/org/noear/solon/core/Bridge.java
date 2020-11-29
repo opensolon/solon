@@ -1,7 +1,6 @@
 package org.noear.solon.core;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.tran.TranExecutor;
@@ -97,13 +96,13 @@ public class Bridge {
     //
     // UpstreamFactory 对接
     //
-    private static Upstream.Factory _upstreamFactory = null;
+    private static LoadBalance.Factory _upstreamFactory = null;
 
     /**
      * 获取负载工厂
      */
     @Note("获取负载工厂")
-    public static Upstream.Factory upstreamFactory() {
+    public static LoadBalance.Factory upstreamFactory() {
         return _upstreamFactory;
     }
 
@@ -111,7 +110,7 @@ public class Bridge {
      * 设置负载工厂
      */
     @Note("设置负载工厂")
-    public static void upstreamFactorySet(Upstream.Factory uf) {
+    public static void upstreamFactorySet(LoadBalance.Factory uf) {
         if (uf != null) {
             _upstreamFactory = uf;
         }
