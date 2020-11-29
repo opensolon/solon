@@ -25,13 +25,11 @@ public class NioConnector {
                     .handler(new NioChannelInitializer());
 
             ChannelFuture channelFuture = bootstrap.connect(host, port).sync();
-            //channelFuture.channel().closeFuture().sync();
 
             return channelFuture.channel();
         } catch (Exception ex) {
+            eventLoopGroup.shutdownGracefully();
             throw new RuntimeException(ex);
-        } finally {
-            //eventLoopGroup.shutdownGracefully();
         }
     }
 }
