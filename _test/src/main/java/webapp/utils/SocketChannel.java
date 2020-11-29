@@ -1,10 +1,10 @@
 package webapp.utils;
 
 
-import org.noear.fairy.FairyConfig;
-import org.noear.fairy.FairyException;
-import org.noear.fairy.FairyChannel;
-import org.noear.fairy.Result;
+import org.noear.nami.NamiChannel;
+import org.noear.nami.NamiConfig;
+import org.noear.nami.NamiException;
+import org.noear.nami.Result;
 import org.noear.solon.core.message.Message;
 
 import java.util.Map;
@@ -12,11 +12,11 @@ import java.util.Map;
 /**
  * Socket 通道
  * */
-public class SocketChannel implements FairyChannel {
+public class SocketChannel implements NamiChannel {
     public static final SocketChannel instance = new SocketChannel();
 
     @Override
-    public Result call(FairyConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
+    public Result call(NamiConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
         byte[] message;
         switch (cfg.getEncoder().enctype()) {
             case application_json: {
@@ -29,7 +29,7 @@ public class SocketChannel implements FairyChannel {
                 break;
             }
             default: {
-                throw new FairyException("SocketChannel not support: " + cfg.getEncoder().enctype().name());
+                throw new NamiException("SocketChannel not support encoder: " + cfg.getEncoder().enctype().name());
             }
         }
 

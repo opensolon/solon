@@ -1,6 +1,6 @@
 package webapp;
 
-import org.noear.fairy.annotation.EnableFairyClient;
+import org.noear.nami.annotation.EnableNamiClient;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Import;
@@ -12,7 +12,7 @@ import webapp.demo6_aop.TestImport;
 @Import(value = TestImport.class)
 @EnableCron4j
 @EnableQuartz
-@EnableFairyClient
+@EnableNamiClient
 public class TestApp {
 
     public static void main(String[] args) throws Exception {

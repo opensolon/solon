@@ -2,8 +2,8 @@ package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.fairy.Fairy;
-import org.noear.fairy.annotation.FairyClient;
+import org.noear.nami.Nami;
+import org.noear.nami.annotation.NamiClient;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.demo5_rpc.protocol.UserModel;
@@ -15,11 +15,11 @@ import webapp.demo5_rpc.protocol.UserService5;
 @SolonTest(webapp.TestApp.class)
 public class RpcAndFairyTest {
     //直接指定服务端地址
-    @FairyClient("http://localhost:8080/demo5/user/")
+    @NamiClient("http://localhost:8080/demo5/user/")
     UserService userService;
 
     //使用负载
-    @FairyClient("local:/demo5/user/")
+    @NamiClient("local:/demo5/user/")
     UserService userService2;
 
     @Test
@@ -38,7 +38,7 @@ public class RpcAndFairyTest {
 
     @Test
     public void test3() {
-        UserService userService3 = Fairy.builder()
+        UserService userService3 = Nami.builder()
                 .uri("http://localhost:8080/demo5/user/")
                 .create(UserService.class);
 
@@ -49,7 +49,7 @@ public class RpcAndFairyTest {
 
     @Test
     public void test3_2() {
-        UserService userService3 = Fairy.builder()
+        UserService userService3 = Nami.builder()
                 .uri("local:/demo5/user/")
                 .upstream(() -> "http://localhost:8080")
                 .create(UserService.class);
@@ -61,7 +61,7 @@ public class RpcAndFairyTest {
 
     @Test
     public void test4() {
-        UserService4 userService4 = Fairy.builder()
+        UserService4 userService4 = Nami.builder()
                 .uri("http://localhost:8080/demo5/user/")
                 .create(UserService4.class);
 
@@ -72,7 +72,7 @@ public class RpcAndFairyTest {
 
     @Test
     public void test5() {
-        UserService5 userService5 = Fairy.builder()
+        UserService5 userService5 = Nami.builder()
                 .uri("http://localhost:8080/demo5/")
                 .create(UserService5.class);
 

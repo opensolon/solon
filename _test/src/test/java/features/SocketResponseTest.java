@@ -2,10 +2,10 @@ package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.fairy.Fairy;
+import org.noear.nami.Nami;
 import org.noear.nami.channel.xsocket.SocketChannel;
-import org.noear.fairy.decoder.SnackDecoder;
-import org.noear.fairy.encoder.SnackEncoder;
+import org.noear.nami.decoder.SnackDecoder;
+import org.noear.nami.encoder.SnackEncoder;
 import org.noear.snack.ONode;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
@@ -66,7 +66,7 @@ public class SocketResponseTest {
         Session session = SessionFactory.create("localhost",_port, true);
         SocketChannel channel = new SocketChannel(()->session);
 
-        HelloRpcService rpc = Fairy.builder()
+        HelloRpcService rpc = Nami.builder()
                 .encoder(SnackEncoder.instance)
                 .decoder(SnackDecoder.instance)
                 .upstream(() -> "tcp://localhost:" + _port)

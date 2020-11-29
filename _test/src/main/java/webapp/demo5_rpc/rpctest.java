@@ -1,9 +1,9 @@
 package webapp.demo5_rpc;
 
-import org.noear.fairy.Fairy;
-import org.noear.fairy.channel.OkHttpChannel;
+import org.noear.nami.Nami;
+import org.noear.nami.channel.OkHttpChannel;
 import org.noear.nami.channel.xsocket.XSocket;
-import org.noear.fairy.decoder.SnackDecoder;
+import org.noear.nami.decoder.SnackDecoder;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
@@ -29,7 +29,7 @@ public class rpctest implements Handler {
     private Object httpOf() {
         String root = "http://localhost:" + Solon.global().port();
 
-        rockapi client = Fairy.builder()
+        rockapi client = Nami.builder()
                 .channel(OkHttpChannel.instance)
                 .decoder(SnackDecoder.instance)
                 .upstream(() -> root)
