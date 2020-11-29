@@ -11,7 +11,7 @@
         <relativePath>../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>fairy</artifactId>
+    <artifactId>nami</artifactId>
     <packaging>jar</packaging>
 
     <description>Java project for fairy</description>

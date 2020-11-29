@@ -294,7 +294,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>fairy</artifactId>
+                <artifactId>nami</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
@@ -716,7 +716,7 @@
 
 
 <!--        <module>../solonclient</module>-->
-        <module>../fairy</module>
+        <module>../nami</module>
 
 
         <module>../solon-web</module>
