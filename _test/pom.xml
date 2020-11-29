@@ -71,25 +71,34 @@
             <artifactId>solon.boot.websocket</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.fineio</artifactId>-->
-<!--        </dependency>-->
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
 <!--            <artifactId>solon.boot.xsocket.jdksocket</artifactId>-->
 <!--        </dependency>-->
 
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.xsocket.netty</artifactId>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.xsocket.smartsocket</artifactId>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.fineio</artifactId>-->
+<!--        </dependency>-->
+
+
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
 <!--            <artifactId>solon.boot.jlhttp</artifactId>-->
 <!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.xsocket.smartsocket</artifactId>
-        </dependency>
+
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->

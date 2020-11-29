@@ -6,7 +6,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 
-public class NioChannelInitializer extends ChannelInitializer<SocketChannel> {
+class NioChannelInitializer extends ChannelInitializer<SocketChannel> {
 
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {

@@ -6,8 +6,6 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.xsocket.ListenerProxy;
 
-import java.util.UUID;
-
 public class NioProcessor extends SimpleChannelInboundHandler<Message> {
 
     @Override
@@ -17,8 +15,27 @@ public class NioProcessor extends SimpleChannelInboundHandler<Message> {
     }
 
     @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        super.channelActive(ctx);
+
+        Session session = _SocketSession.get(ctx.channel());
+        ListenerProxy.getGlobal().onOpen(session);
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        super.channelInactive(ctx);
+
+        Session session = _SocketSession.get(ctx.channel());
+        ListenerProxy.getGlobal().onClose(session);
+    }
+
+    @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        cause.printStackTrace();
+        Session session = _SocketSession.get(ctx.channel());
+        ListenerProxy.getGlobal().onError(session, cause);
+
+        //cause.printStackTrace();
         ctx.close();
     }
 }
