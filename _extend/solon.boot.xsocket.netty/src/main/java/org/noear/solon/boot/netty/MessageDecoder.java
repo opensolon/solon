@@ -14,21 +14,22 @@ class MessageDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> out) throws Exception {
         int len = byteBuf.readInt();
-        byte[] bytes = new byte[len - Integer.BYTES];
+        if(len > 0) {
+            byte[] bytes = new byte[len - Integer.BYTES];
+            byteBuf.readBytes(bytes);
 
-        byteBuf.readBytes(bytes);
+            ByteBuffer byteBuffer = ByteBuffer.allocate(len);
+            byteBuffer.putInt(len);
+            byteBuffer.put(bytes);
+            byteBuffer.flip();
 
+            Message message = MessageUtils.decode(byteBuffer);
+            if (message != null) {
+                out.add(message);
+            }
 
-        ByteBuffer byteBuffer = ByteBuffer.allocate(len);
-        byteBuffer.putInt(len);
-        byteBuffer.put(bytes);
-        byteBuffer.flip();
-
-        Message message = MessageUtils.decode(byteBuffer);
-
-        out.add(message);
-
-        byteBuffer.compact();
+            byteBuffer.compact();
+        }
         byteBuf.discardReadBytes();
     }
 }
