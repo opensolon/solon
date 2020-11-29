@@ -24,14 +24,14 @@ public class NioConnector {
             bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class)
                     .handler(new NioChannelInitializer());
 
-            ChannelFuture channelFuture = bootstrap.connect("localhost", 8899).sync();
-            channelFuture.channel().closeFuture().sync();
+            ChannelFuture channelFuture = bootstrap.connect(host, port).sync();
+            //channelFuture.channel().closeFuture().sync();
 
             return channelFuture.channel();
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         } finally {
-            eventLoopGroup.shutdownGracefully();
+            //eventLoopGroup.shutdownGracefully();
         }
     }
 }

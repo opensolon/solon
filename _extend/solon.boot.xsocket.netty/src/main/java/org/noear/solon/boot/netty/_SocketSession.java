@@ -103,9 +103,9 @@ class _SocketSession extends SessionBase {
                 //
                 // 转包为XSocketMessage，再转byte[]
                 //
-                byte[] bytes = MessageUtils.encode(message).array();
+                //byte[] bytes = MessageUtils.encode(message).array();
 
-                real.writeAndFlush(bytes);
+                real.writeAndFlush(message);
             }
         } catch (Exception ex) {
             throw new RuntimeException(ex);

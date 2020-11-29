@@ -45,7 +45,7 @@ public class XPluginImp implements Plugin {
                     .childHandler(new NioChannelInitializer());
 
             ChannelFuture channelFuture = _server.bind(_port).sync();
-            channelFuture.channel().closeFuture().sync();
+            //channelFuture.channel().closeFuture().sync();
 
 
             long time_end = System.currentTimeMillis();
@@ -55,8 +55,8 @@ public class XPluginImp implements Plugin {
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
-            bossGroup.shutdownGracefully();
-            wokerGroup.shutdownGracefully();
+//            bossGroup.shutdownGracefully();
+//            wokerGroup.shutdownGracefully();
         }
     }
 
@@ -66,7 +66,6 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        _server = null;
         System.out.println("solon.Server:main: netty-xsocket: Has Stopped " + solon_boot_ver());
     }
 }
