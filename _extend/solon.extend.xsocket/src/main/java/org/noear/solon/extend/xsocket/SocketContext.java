@@ -1,5 +1,6 @@
 package org.noear.solon.extend.xsocket;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
@@ -28,6 +29,15 @@ public class SocketContext extends ContextEmpty {
         _messageIsString = messageIsString;
         _method = session.method();
         _inetSocketAddress = session.getRemoteAddress();
+
+        if (Utils.isNotEmpty(message.header())) {
+            String[] ss = message.header().split(";");
+            for (String s : ss) {
+                String[] kv = s.split("=");
+
+                headerMap().put(kv[0], kv[1]);
+            }
+        }
     }
 
 
