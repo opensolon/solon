@@ -26,6 +26,12 @@ public class XPluginImp implements Plugin {
             return;
         }
 
+        new Thread(() -> {
+            start0(app);
+        }).start();
+    }
+
+    private void start0(SolonApp app) {
         long time_start = System.currentTimeMillis();
 
         System.out.println("solon.Server:main: java.net.ServerSocket(netty-xsocket)");
@@ -42,7 +48,8 @@ public class XPluginImp implements Plugin {
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
             //在服务器端的handler()方法表示对bossGroup起作用，而childHandler表示对wokerGroup起作用
-            bootstrap.group(bossGroup, wokerGroup).channel(NioServerSocketChannel.class)
+            bootstrap.group(bossGroup, wokerGroup)
+                    .channel(NioServerSocketChannel.class)
                     .childHandler(new NioChannelInitializer());
 
             _server = bootstrap.bind(_port).sync();
