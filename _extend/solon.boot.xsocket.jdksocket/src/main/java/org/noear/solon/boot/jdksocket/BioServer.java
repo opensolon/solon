@@ -44,8 +44,8 @@ class BioServer {
                     }
 
                     Message message = BioReceiver.receive(socket);
-                    if (message != null) {
 
+                    if (message != null) {
                         pool.execute(() -> {
                             try {
                                 ListenerProxy.getGlobal().onMessage(session, message, false);
