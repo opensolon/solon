@@ -1,7 +1,7 @@
 
 # Nami
 
-Solon 伴生项目，为 solon rpc 提供 client 支持（支持http * xsocket）
+Solon 伴生项目，为 solon rpc 提供 client 支持（支持http & socket）
 
 ## 一、演示
 
