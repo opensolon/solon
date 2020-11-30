@@ -1,7 +1,7 @@
 
-# Fairy
+# Nami
 
-Solon 伴生项目，为 http rpc 提供 client 支持。
+Solon 伴生项目，为 solon rpc 提供 client 支持（支持http * xsocket）
 
 ## 一、演示
 
@@ -18,12 +18,12 @@ public interface IComplexModelService {
 ```
 
 
-##### 接口使用示例1（直接注入，需要XUpstream适配）
+##### 接口使用示例1（直接注入，需要 LoadBalance 适配）
 
 ```java
-@XBean
+@Component
 public class Demo1{
-    @FairyClient("test:/ComplexModelService/")
+    @NamiClient("test:/ComplexModelService/")
     IComplexModelService service;
     
     public void test(){
@@ -33,8 +33,8 @@ public class Demo1{
 }
 
 //适配test upstream
-@XBean("test")
-public class TestUpstream implements XUpstream {
+@Component("test")
+public class TestUpstream implements LoadBalance {
     @Override
     public String getServer() {
         return "http://localhost:8080";
@@ -42,14 +42,14 @@ public class TestUpstream implements XUpstream {
 }
 
 //更改默认配置器的代理，将编码器换掉
-FairyConfigurationDefault.proxy = (c,b)->b.encoder(SnackTypeEncoder.instance);
+NamiConfigurationDefault.proxy = (c,b)->b.encoder(SnackTypeEncoder.instance);
 ```
 
 ##### 接口使用示例2
 
 ```java
 public class Demo2{
-    IComplexModelService service = Fairy.builder()
+    IComplexModelService service = Nami.builder()
                                         .encoder(SnackTypeEncoder.instance)
                                         .uri("http://localhost:8080/ComplexModelService/")
                                         .create(IComplexModelService.class);
@@ -65,7 +65,7 @@ public class Demo2{
 
 ```java
 public class Demo3{
-    IComplexModelService service = Fairy.builder()
+    IComplexModelService service = Nami.builder()
                                         .encoder(SnackTypeEncoder.instance)
                                         .uri("test:/ComplexModelService/")
                                         .upstream(()->"http://localhost:8080")
@@ -80,7 +80,7 @@ public class Demo3{
 
 ## 二、注解与属性说明
 
-##### @FairyClient 注解说明
+##### @NamiClient 注解说明
 
 | 字段 | 说明 | 
 | -------- | -------- | 
