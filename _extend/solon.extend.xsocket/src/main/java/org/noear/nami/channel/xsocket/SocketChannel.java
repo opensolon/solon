@@ -71,7 +71,7 @@ public class SocketChannel implements NamiChannel {
         StringBuilder header = new StringBuilder();
         if (headers != null) {
             headers.forEach((k, v) -> {
-                header.append(k).append("=").append(v).append(";");
+                header.append(k).append("=").append(v).append("&");
             });
         }
 

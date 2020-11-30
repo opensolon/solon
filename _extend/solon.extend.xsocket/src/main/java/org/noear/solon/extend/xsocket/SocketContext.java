@@ -31,7 +31,7 @@ public class SocketContext extends ContextEmpty {
         _inetSocketAddress = session.getRemoteAddress();
 
         if (Utils.isNotEmpty(message.header())) {
-            String[] ss = message.header().split(";");
+            String[] ss = message.header().split("&");
             for (String s : ss) {
                 String[] kv = s.split("=");
 
