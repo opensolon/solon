@@ -14,7 +14,7 @@
     <artifactId>nami</artifactId>
     <packaging>jar</packaging>
 
-    <description>Java project for fairy</description>
+    <description>Java project for nami</description>
 
 
     <dependencies>
