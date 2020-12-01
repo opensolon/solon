@@ -49,8 +49,8 @@ public class RouteTable<T> extends ArrayList<RouteTable.Route<T>> {
     public static class Route<T> {
         public Route(String path, MethodType method, int index, T target) {
             _pr = new PathAnalyzer(path);
-            _m = method;
 
+            this.method = method;
             this.path = path;
             this.index = index;
             this.target = target;
@@ -59,22 +59,22 @@ public class RouteTable<T> extends ArrayList<RouteTable.Route<T>> {
         public final String path; //path
         public final int index; //顺序
         public final T target;//代理
+        public final MethodType method; //方式
 
         private final PathAnalyzer _pr; //path rule 规则
-        private final MethodType _m; //方式
 
 
         /**
          * 是否匹配
          */
         public boolean matches(MethodType method2, String path2) {
-            if (MethodType.ALL.code == _m.code) {
+            if (MethodType.ALL.code == method.code) {
                 return matches0(path2);
-            } else if (MethodType.HTTP.code == _m.code) { //不是null时，不能用==
+            } else if (MethodType.HTTP.code == method.code) { //不是null时，不能用==
                 if (method2.isHttpMethod()) {
                     return matches0(path2);
                 }
-            } else if (method2.code == _m.code) {
+            } else if (method2.code == method.code) {
                 return matches0(path2);
             }
 

@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.models.*;
 import io.swagger.models.parameters.FormParameter;
 import io.swagger.models.parameters.Parameter;
+import io.swagger.models.parameters.QueryParameter;
 import io.swagger.models.parameters.RefParameter;
 import org.noear.snack.ONode;
 import org.noear.solon.Solon;
@@ -15,6 +16,7 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Handler;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.route.RouteTable;
 import org.noear.solon.ext.LinkedCaseInsensitiveMap;
 
@@ -67,7 +69,7 @@ public class XPluginImp implements Plugin {
         System.out.println(ONode.stringify(swagger));
     }
 
-    private void buildTags(){
+    private void buildTags() {
         Aop.context().beanForeach((bw) -> {
             if (bw.annotationGet(Controller.class) != null) {
                 Tag tag = new Tag();
@@ -86,8 +88,8 @@ public class XPluginImp implements Plugin {
                 Action action = (Action) route.target;
 
                 Path path = new Path();
-                for(java.lang.reflect.Parameter p0: action.method().getParameters()){
-                    Parameter p1 = new FormParameter();
+                for (java.lang.reflect.Parameter p0 : action.method().getParameters()) {
+                    Parameter p1 = (route.method == MethodType.GET ? new QueryParameter() : new FormParameter());
                     p1.setName(p0.getName());
 
                     path.addParameter(p1);
