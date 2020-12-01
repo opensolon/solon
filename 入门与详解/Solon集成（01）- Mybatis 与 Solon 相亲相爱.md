@@ -41,7 +41,7 @@ Action...
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
     <relativePath />
 </parent>
 

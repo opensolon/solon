@@ -138,7 +138,7 @@ public class DemoServiceImp implements DemoService{
 
 // - client - 简单示例
 //注入模式
-//@FairyClient("http://127.0.0.1:8080/demo/") 
+//@NamiClient("http://127.0.0.1:8080/demo/") 
 //DemoService client;
 
 //构建模式

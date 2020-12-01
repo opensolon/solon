@@ -39,7 +39,7 @@ public class XPluginImp implements Plugin {
             }
 
             if (Utils.isEmpty(anno.value())) {
-                throw new NamiException("@FairyClient configuration error!");
+                throw new NamiException("@NamiClient configuration error!");
             }
 
             Object obj = cached.get(anno);
