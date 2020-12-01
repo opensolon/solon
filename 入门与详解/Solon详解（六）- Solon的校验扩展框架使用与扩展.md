@@ -1,17 +1,16 @@
 在业务的实现过程中，尤其是对外接口开发，我们需要对请求进行大量的验证并返回错误状态码和描述。lombok 框架有很多很赞的注解，但是人家是throw一个异常，这与有些需求不一定能匹配。
 
-该文将介绍Solon的扩展验证框架：`solon.extend.validation` 的使用和扩展（ `org.noear:solon-web` 已包含）。效果如下：
+该文将介绍Spring min -Solon的扩展验证框架：`solon.extend.validation` 的使用和扩展（ `org.noear:solon-web` 已包含）。效果如下：
 
 ```java
-
-@XValid
-@XController
+@Valid
+@Controller
 public class UserController {
     @NoRepeatSubmit  //重复提交验证
     @Whitelist     //白名单验证
     @NotNull({"name", "mobile", "icon", "code"})  //非NULL验证
     @Numeric({"code"})
-    @XMapping("/user/add")
+    @Mapping("/user/add")
     public void addUser(String name, @Pattern("^http") String icon, int code, @Pattern("^13\\d{9}$") String mobile){
         //...
     }
@@ -19,7 +18,7 @@ public class UserController {
 
 ```
 
-相较于 Spring 的 Validator 是争对 Bean，Solon 则是争对 XContext（即http参数）。这点区别非常大，Solon 的设计是在 XAction 执行之前对 http 参数进行校验。
+相较于 Spring 的 Validator 是争对 Bean，Solon 则是争对 Context（即http参数）。这点区别非常大，Solon 的设计是在 Action 执行之前对 http 参数进行校验。
 
 
 | 注解  | 作用范围 |  说明 | 
@@ -40,7 +39,8 @@ public class UserController {
 | Numeric    | 动作 或 参数 | 校验注解的参数值为数字格式    | 
 | Pattern(value)    | 参数 | 校验注解的参数值与指定的正则表达式匹配    | 
 | Whitelist    | 控制器 或 动作 | 校验本次请求在白名单范围内     | 
-| XValid | 控制器 或 动作 | 为控制器 或 动作启用验证能力 |
+| | |
+| Valid | 控制器 或 动作 | 为控制器 或 动作启用验证能力 |
 
 可作用在 [动作 或 参数] 上的注解，加在动作上时可支持多个参数的校验。
 
@@ -74,7 +74,7 @@ ValidatorManager.setNoRepeatLock(new NoRepeatLockNew());
 ```java
 public class WhitelistCheckerNew implements WhitelistChecker {
     @Override
-    public boolean check(Whitelist anno, XContext ctx) {
+    public boolean check(Whitelist anno, Context ctx) {
         String ip = IPUtils.getIP(ctx);
 
         return WaterClient.Whitelist.existsOfServerIp(ip);
@@ -91,14 +91,14 @@ ValidatorManager.setWhitelistChecker(new WhitelistCheckerNew());
 solon.extend.validation 默认输出 http 400 状态 + json；尝试改改去掉 http 400 状态。
 
 ```java
-@XConfiguration
+@Configuration
 public class Config {
-    @XBean  //Solon 的 @XBean 也支持空函数，为其它提运行申明
+    @Bean  //Solon 的 @Bean 也支持空函数，为其它提运行申明
     public void adapter() {
         ValidatorManager.global().onFailure((ctx, ano, rst, message) -> {
             ctx.setHandled(true);
         
-            if (XUtil.isEmpty(message)) {
+            if (Utils.isEmpty(message)) {
                 message = new StringBuilder(100)
                         .append("@")
                         .append(ano.annotationType().getSimpleName())
@@ -123,10 +123,10 @@ public class Config {
 偷懒一下，直接把自带的扔出来了。只要看着能自己搞就行了:-P
 
 ```java
-@Target({ElementType.PARAMETER})   //只让它作用到参数，不管作用在哪，最终都是对XContext的校验
+@Target({ElementType.PARAMETER})   //只让它作用到参数，不管作用在哪，最终都是对Context的校验
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Date {
-    @XNote("日期表达式, 默认为：ISO格式")  //用XNote注解，是为了用时还能看到这个注释
+    @Note("日期表达式, 默认为：ISO格式")  //用Note注解，是为了用时还能看到这个注释
     String value() default  "";
 
     String message() default "";
@@ -146,22 +146,22 @@ public class DateValidator implements Validator<Date> {
     }
 
     @Override
-    public XResult validate(XContext ctx, Date anno, String name, StringBuilder tmp) {
+    public Result validate(Context ctx, Date anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
         if (val == null || tryParse(anno, val) == false) {
             tmp.append(',').append(name);
         }
 
         if (tmp.length() > 1) {
-            return XResult.failure(tmp.substring(1));
+            return Result.failure(tmp.substring(1));
         } else {
-            return XResult.succeed();
+            return Result.succeed();
         }
     }
 
     private boolean tryParse(Date anno, String val) {
         try {
-            if (XUtil.isEmpty(anno.value())) {
+            if (Utils.isEmpty(anno.value())) {
                 DateTimeFormatter.ISO_LOCAL_DATE_TIME.parse(val);
             } else {
                 DateTimeFormatter.ofPattern(anno.value()).parse(val);
@@ -178,9 +178,9 @@ public class DateValidator implements Validator<Date> {
 #### 3、注册到校验管理器
 
 ```java
-@XConfiguration
+@Configuration
 public class Config {
-    @XBean
+    @Bean
     public void adapter() {
         //
         // 此处为注册验证器。如果有些验证器重写了，也是在此处注册
@@ -193,16 +193,25 @@ public class Config {
 #### 4、使用一下
 
 ```java
-@XValid
-@XController
+@Valid
+@Controller
 public class UserController extends VerifyController{
-    @XMapping("/user/add")
+    @Mapping("/user/add")
     public void addUser(String name, @Date("yyyy-MM-dd") String birthday){
         //...
     }
 }
 
 ```
+
+
+
+### 附：项目地址
+
+* gitee:  [https://gitee.com/noear/solon](https://gitee.com/noear/solon)
+* github:  [https://github.com/noear/solon](https://github.com/noear/solon)
+
+
 
 
 

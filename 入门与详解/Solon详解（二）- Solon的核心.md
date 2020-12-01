@@ -1,4 +1,4 @@
-### Solon的核心
+### Spring mini - Solon 的核心
 
 在上篇中我们成功运行了一个简单的web应用；本篇将对它的启动过程、扩展体系和应用属性配置进行介绍。
 
@@ -16,7 +16,7 @@
 
 > 了解这个过程非常之重要，尤其是有兴致开发插件的同学：你的插件在运行之前，配置已经存在了，但java bean仍未加载。
 
-#### （二）XPlugin 插件体系
+#### （二）Plugin 插件体系
 
 Solon 的插件也可以叫扩展组件，相当于Spring 的 starter。Solon已经提供了大量的基础插件，但对第三方的框架适配目前较少。
 
@@ -27,15 +27,19 @@ Solon 的插件也可以叫扩展组件，相当于Spring 的 starter。Solon已
 | org.noear:solon.boot.jetty* | boot插件,对`jetty`适配,提供`http`服务（网友@khb提供） |
 | org.noear:solon.boot.undertow* | boot插件,对`undertow`适配,提供`http`服务（网友@tyk提供） |
 | org.noear:solon.boot.websocket | boot插件,对`java-websocket`适配，提供`websocket`服务 |
-| org.noear:solon.boot.smartsocket | boot插件,对`smart-bsocket`适配，提供`socket`服务 |
 | org.noear:solon.extend.jetty.jsp | 扩展插件,为`jetty`添加`jsp`支持（不建议使用jsp）（网友@khb提供） |
 | org.noear:solon.extend.undertow.jsp | 扩展插件,为`undertow`添加`jsp`支持（不建议使用jsp）（网友@tyk提供） |
+| | |
+| XSocket boot插件:: | 说明 |
+| org.noear:solon.boot.xsocket.jdksocket | boot插件,对`jdk-socket`适配，提供`xsocket`服务 |
+| org.noear:solon.boot.xsocket.netty | boot插件,对`netty`适配，提供`xsocket`服务 |
+| org.noear:solon.boot.xsocket.smartsocket | boot插件,对`smart-bsocket`适配，提供`xsocket`服务 |
 | | |
 | 静态文件支持插件:: | 说明 |
 | org.noear:solon.extend.staticfiles | 扩展插件,添加静态文件支持（监视 resources/static 文件夹） |
 | | |
 | 切面支持插件:: | 说明 |
-| org.noear:solon.extend.aspect | 扩展插件,添加XDao、XService注解支持；进而支持事务和缓存注解 |
+| org.noear:solon.extend.aspect | 扩展插件,添加Dao、Service注解支持；进而支持事务和缓存注解 |
 | | |
 | 数据操作支持插件:: | 说明 |
 | org.noear:solon.extend.data | 扩展插件,实现事务和缓存的注解支持 |
@@ -71,15 +75,17 @@ Solon 的插件也可以叫扩展组件，相当于Spring 的 starter。Solon已
 | org.noear:solon.view.enjoy | 视图插件，对 `enjoy` 适配，提供`html`视图输出 |
 | | |
 | rpc client:: | 说明 |
-| org.noear:solonclient | solon rpc client 与solon 的 rpc service 配对 |
+| org.noear:nami | 做为 solon rpc client 使用（支持http, socket, web socket） |
 | | |
 | 外部框架适配:: | 说明 |
 | org.noear:beetlsql-solon-plugin | beetlsql 适配插件 |
 | org.noear:cron4j-solon-plugin | cron4j 适配插件 |
 | org.noear:dubbo-solon-plugin | dubbo 适配插件|
 | org.noear:feign-solon-plugin | feign 适配插件|
+| org.noear:hasor-solon-plugin | hasor 适配插件|
 | org.noear:mybatis-solon-plugin | mybatis 适配插件|
 | org.noear:mybatis-sqlhelper-solon-plugin | mybatis 分页适配插件|
+| org.noear:quartz-solon-plugin| quartz 适配插件 |
 | org.noear:weed3-solon-plugin | weed3 适配插件|
 
 怎么使用？直接在pom.xml中添加依赖即可。
@@ -154,7 +160,7 @@ Solon.start(...).onEerror(err-> ..)
 ```java
 ctx.redirect("http://www.noear.org");
 //or
-XContext.current.redirect("http://www.noear.org");
+Context.current().redirect("http://www.noear.org");
 ```
 
 #### （四）其它配置说明
@@ -175,7 +181,7 @@ message: "${user.name} 你好!" #这个不支持（有需要的时候，自己�
 ##### c.如何获取属性配置
 ```java
 //注解模式
-@XInject("${user.name}")
+@Inject("${user.name}")
 
 //代码模式
 Solon.cfg().get("user.name")
@@ -188,17 +194,17 @@ Solon.cfg().get("user.name")
 ```java
 //注解模式
 //
-@XConfiguration  // XConfiguration或别的类注解，都可
+@Configuration  // Configuration或别的类注解，都可
 public class test{
     //注入字段，在任何托管Bean里有效
     //
-    @XInject("${user}")
+    @Inject("${user}")
     UserModel user;
     
-    //注入参数，只在@XConfiguration类有效
+    //注入参数，只在@Configuration类有效
     //
-    @XBean
-    public Xxxxx buildXxxx(@XInject("${test.db1}") HikariDataSource dataSource){    
+    @Bean
+    public Xxxxx buildXxxx(@Inject("${test.db1}") HikariDataSource dataSource){    
     
     }
 }
@@ -210,6 +216,13 @@ HikariDataSource dataSource =  Solon.cfg().getBean("test.db1", HikariDataSource.
 
 
 本篇到此结束，主要介绍了Solon中几个的问题：1，启动过程；2，扩展体系，3，应用属性配置，同时解决上篇中的几个问题，从下篇开始，将针对Solon的web开发进一步展开介绍。
+
+
+
+### 附：项目地址
+
+* gitee:  [https://gitee.com/noear/solon](https://gitee.com/noear/solon)
+* github:  [https://github.com/noear/solon](https://github.com/noear/solon)
 
 
 

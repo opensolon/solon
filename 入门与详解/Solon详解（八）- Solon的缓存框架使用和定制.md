@@ -1,4 +1,4 @@
-`solon.extend.data` 框加在完成 @Tran 注解的支持同时，还提供了 @Cache、@CacheRemove 注解的支持；可以为业务开发提供良好的便利性
+`solon.extend.data` 框加在完成 @Tran 注解的支持同时，还提供了 @Cache、@CachePut、@CacheRemove 注解的支持；可以为业务开发提供良好的便利性
 
 
 Solon 的缓存注解只支持：Controller 、Service 、Dao 类下的方法。且借签了Weed3的简洁设计方案。
@@ -115,6 +115,14 @@ public class Config {
 | seconds()     | 缓存时间     | 
 | tags()     | 缓存标签，多个以逗号隔开（为当前缓存块添加标签，用于清除）     | 
 
+**@CachePut 注解：**
+
+| 属性 | 说明 | 
+| -------- | -------- | 
+| service()     | 缓存服务     | 
+| seconds()     | 缓存时间     | 
+| tags()     | 缓存标签，多个以逗号隔开（为当前缓存块添加标签，用于清除）     | 
+
 
 **@CacheRemove 注解：**
 
@@ -122,6 +130,13 @@ public class Config {
 | -------- | -------- | 
 | service()     | 缓存服务     | 
 | tags()     | 清除缓存标签，多个以逗号隔开     | 
+
+
+### 附：项目地址
+
+* gitee:  [https://gitee.com/noear/solon](https://gitee.com/noear/solon)
+* github:  [https://github.com/noear/solon](https://github.com/noear/solon)
+
 
 
 

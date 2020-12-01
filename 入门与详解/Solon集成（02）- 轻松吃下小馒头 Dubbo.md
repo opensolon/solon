@@ -1,4 +1,4 @@
-Dubbo是阿里巴巴公司开源的一个高性能优秀的服务框架，使得应用可通过高性能的 RPC 实现服务的输出和输入功能，可以和Spring框架无缝集成。现在，也可以和Solon框架无缝集成。。。今天主要讲讲Solon如何集成官方的Dubbo。
+Dubbo是阿里巴巴公司开源的一个高性能优秀的服务框架，使得应用可通过高性能的 RPC 实现服务的输出和输入功能，可以和Spring框架无缝集成。现在，也可以和Solon框架无缝集成。。。今天主要讲讲Spring mini - Solon如何集成官方的Dubbo。
 
 
 ### 一、运行工具与环境
@@ -6,7 +6,7 @@ Dubbo是阿里巴巴公司开源的一个高性能优秀的服务框架，使得
 * 技术栈：Solon 1.1+、Dubbo 2.7.5+、Nacos 1.3+
 * 工具：IntelliJ IDEA、谷歌浏览器
 
-### 二、Springboot快速集成Dubbo关键的依赖
+### 二、Solon快速集成Dubbo关键的依赖
 ```xml
 <dependency>
     <groupId>org.noear</groupId>
@@ -73,7 +73,7 @@ public class DubboProviderApp {
 
 ```java
 @EnableDubbo
-@XController
+@Controller
 public class DubboConsumeApp {
     //同时加个应用启动入口；方便测试
     public static void main(String[] args) {
@@ -87,7 +87,7 @@ public class DubboConsumeApp {
     @Reference(group = "hello")
     HelloService helloService;
 
-    @XMapping("/")
+    @Mapping("/")
     public String home() {
         return helloService.sayHello("noear");
     }
@@ -103,6 +103,16 @@ public class DubboConsumeApp {
 hello, noear
 ```
 
-#### 五、项目地址
+### 五、还示项目源码
 
 [https://gitee.com/noear/solon_demo/tree/master/demo23.solon_dubbo_sml](https://gitee.com/noear/solon_demo/tree/master/demo23.solon_dubbo_sml)
+
+
+
+
+### 附：项目地址
+
+* gitee:  [https://gitee.com/noear/solon](https://gitee.com/noear/solon)
+* github:  [https://github.com/noear/solon](https://github.com/noear/solon)
+
+

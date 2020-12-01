@@ -1,487 +1,203 @@
-### 一、Web基础配置
+> 在前面的篇章里我们已经见识了 Spring mini - Solon 对事务的控制，及其优雅曼妙的身姿。该篇将对事务及其处理策略进行详解。出于对用户的学习成本考虑，Solon 借签了Spring 的事务传播策略；所以体验上几乎一样。
 
-```xml
-//资源路径说明（不用配置；也不能配置）
-resources/application.properties（或 application.yml） 为应用配置文件
-resources/static/ 为静态文件根目标
-resources/WEB-INF/view/ 为视图模板文件根目标（支持多视图共存）
+### 一、为什么要有传播机制？
 
-//调试模式：
-启动参数添加：-debug=1
+Solon 对事务的控制，是使用 aop 切面实现的，所以不用关心事务的开始，提交 ，回滚，只需要在方法上加 `@Tran` 注解即可。
+因为这些都是暗的，看不见的，所以也容易产生一些疑惑：
+
+* 场景一：classA 方法调用了 classB 方法，但两个方法都有事务
+```
+如果 classB 方法异常，是让 classB 方法提交，还是两个一起回滚？
 ```
 
-#### 1、访问静态资源
-
-Solon 的默认静态资源的路径为：（这个没得改，也不让改；为了简化套路）
-```xml
-resources/static/
+* 场景二：classA 方法调用了 classB 方法，但是只有 classA 方法加了事务
 ```
-在默放的处理规则下，所有请求，都会先执行静态文件代理。静态文件代理会检测是否存在静态文件，有则输出，没有则跳过处理。输出的静态文件会做304控制。
-
-#### 2、自定义拦截器
-Solon里所有的处理，都属于XHandler。可以用handler 的模式写，也可以用controller的模式写（XAction 也是 XHandler）
-```java
-// handler模式
-//
-Solon.global().before("/hello/", ctx->{
-    if(ctx.param("name") == null){    
-        ctx.setHandled(true);    //如果没有name, 则终止处理
-    }
-});
-
-// controller模式（只是换了个注解）
-//
-@XInterceptor
-public class HelloInterceptor  {
-    @XMapping(value = "/hello/" , before = true)
-    public void handle(XContext ctx, String name) {
-        if(name == null){            
-            ctx.setHandled(true);  //如果没有name, 则终止处理
-        }
-    }
-}
+是否把 classB 也加入 classA 的事务，如果 classB 异常，是否回滚 classA？
 ```
 
-#### 3、读取外部的配置文件
-```java
-@XConfiguration
-public class Config{
-    @XInject("${classpath:user.yml}")
-    private UserModel user;
-}
+* 场景三：classA 方法调用了 classB 方法，两者都有事务，classB 已经正常执行完，但 classA 异常
+```
+是否需要回滚 classB 的数据？
 ```
 
-#### 4、HikariCP DataSource的配置
+这个时候，传说中的事务传播机制和策略就派上用场了
 
-HiKariCP是数据库连接池的一个后起之秀，号称性能最好，可以完美地PK掉其他连接池。作者特别喜欢它。
+### 二、传播机制生效条件
 
-##### a.引入依赖
+所有用 aop 实现的事务控制方案 ，都是针对于接口或类的。所以在同一个类中两个方法的调用，传播机制是不生效的。
 
-```xml
-<dependency>
-    <groupId>com.zaxxer</groupId>
-    <artifactId>HikariCP</artifactId>
-    <version>3.3.1</version>
-</dependency>
 
-<dependency>
-    <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
-    <version>8.0.18</version>
-</dependency>
-```
+### 三、传播机制的策略
 
-##### b.添加配置
-```yml
-test.db1:
-    schema: "rock"
-    jdbcUrl: "jdbc:mysql://localdb:3306/rock?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true"
-    driverClassName: "com.mysql.cj.jdbc.Driver"
-    username: "demo"
-    password: "UL0hHlg0Ybq60xyb"
-    maxLifetime: 1000000
-```
+下面的类型都是针对于被调用方法来说的，理解起来要想象成两个 class 方法的调用才可以。
 
-##### c.配置HikariCP数据源
 
-建议这种操作，都安排在 @XConfiguration 配置类里执行。
+|  传番策略 | 说明 | 
+| -------- | -------- | 
+| TranPolicy.required     | 支持当前事务，如果没有则创建一个新的。这是最常见的选择。也是默认。     |
+| TranPolicy.requires_new     | 新建事务，如果当前存在事务，把当前事务挂起。     |
+| TranPolicy.nested     | 如果当前有事务，则在当前事务内部嵌套一个事务；否则新建事务。     |
+| TranPolicy.mandatory     | 支持当前事务，如果没有事务则报错。     |
+| TranPolicy.supports     | 支持当前事务，如果没有则不使用事务。     |
+| TranPolicy.not_supported    | 以无事务的方式执行，如果当前有事务则将其挂起。     |
+| TranPolicy.never    | 以无事务的方式执行，如果当前有事务则报错。     |
+
+### 四、事务的隔离级别
+
+| 属性 | 说明 | 
+| -------- | -------- | 
+| unspecified     | 默认（JDBC默认）    | 
+| read_uncommitted     | 脏读：其它事务，可读取未提交数据     | 
+| read_committed     | 只读取提交数据：其它事务，只能读取已提交数据  | 
+| repeatable_read     | 可重复读：保证在同一个事务中多次读取同样数据的结果是一样的  | 
+| serializable     | 可串行化读：要求事务串行化执行，事务只能一个接着一个执行，不能并发执行  | 
+
+### 五、@Tran 属性说明
+
+
+| 属性 | 说明 | 
+| -------- | -------- | 
+| policy     | 事务传导策略     | 
+| isolation     | 事务隔离等级     | 
+| readOnly     | 是否为只读事务  | 
+
+
+
+### 六、示例
+
+* 父回滚，子回滚
 
 ```java
-//注解模式
-//
-@XConfiguration
-public class Config{
-    // 同时支持 name 和 类型 两种方式注入（注入时没有name，即为按类型注入）
-    //
-    @XBean(value = "db1", typed = true)   
-    pubblic DataSource dataSource(@XInject("${test.db1}") HikariDataSource ds){
-        return ds;
-    }
-}
-
-//静态类模式
-//
-//public class Config{
-//    pubblic static HikariDataSource dataSource = Solon.cfg().getBean("test.db1", HikariDataSource.class);
-//}
-```
-
-之后就可以通过@XInject注解得到这个数据源了。一般会改用加强注解对数据源进行自动转换；所有与solon对接的ORM框架皆采用这种方案。
-
-#### 6、数据库操作框架集成
-
-##### a.Weed3集成
-
-Wee3是和Solon一样轻巧的一个框架，配置起来自然是简单的。
-
-在pom.xml中引用weed3扩展组件
-```xml
-<dependency>
-    <groupId>org.noear</groupId>
-    <artifactId>weed3-solon-plugin</artifactId>
-</dependency>
-```
-
-刚才的Config配置类即可复用。先以单数据源场景演示：
-```java
-//使用示例
-@XController
-public class DemoController{
-    //@Db 按类型注入  //或 @Db("db1") 按名字注入  
-    //@Db是weed3在Solon里的扩展注解 //可以注入 Mapper, BaseMapper, DbContext
-    //
-    @Db  
-    BaseMapper<UserModel> userDao;
-    
-    @XMapping("/user/")
-    pubblic UserModel geUser(long puid){
-        return userDao.selectById(puid);
-    }
-}
-```
-
-##### b.Mybatis集成
-
-在pom.xml中引用mybatis扩展组件
-
-```xml
-<dependency>
-    <groupId>org.noear</groupId>
-    <artifactId>mybatis-solon-plugin</artifactId>
-</dependency>
-```
-
-添加mybatis mappers及相关的属性配置
-
-```yml
-mybatis.db1: #db1 要与数据源的bean name 对上
-    typeAliases:    #支持包名 或 类名（.class 结尾）
-        - "webapp.model"
-    mappers:        #支持包名 或 类名（.class 结尾）或 xml（.xml结尾）；配置的mappers 会 mapperScan并交由Ioc容器托管
-        - "webapp.dso.mapper.UserMapper.class"
-```
-
-刚才的Config配置类即也可复用
-```java
-//使用示例
-@XController
-public class DemoController{
-    //@Db 是  mybatis-solon-plugin 里的扩展注解，可注入 SqlSessionFactory，SqlSession，Mapper
-    //
-    @Db    
-    UserMapper userDao;  //UserMapper 已被 db1 自动 mapperScan 并已托管，也可用 @XInject 注入
-    
-    @XMapping("/user/")
-    pubblic UserModel geUser(long puid){
-        return userDao.geUser(puid);
-    }
-}
-```
-
-#### 7、使用事务
-
-Solon中推荐使用@XTran注解来申明和管理事务。
-
-> @XTran 支持多数据源事务，且使用方便
-
-##### a.Weed3的事务
-```java
-//使用示例
-@XController
-public class DemoController{
-    @Db  //@Db("db1") 为多数据源模式
-    BaseMapper<UserModel> userDao;
-    
-    @XTran 
-    @XMapping("/user/add")
-    pubblic Long addUser(UserModel user){
-        return userDao.insert(user, true); 
-    }
-}
-```
-
-##### b.Mybatis的事务
-```java
-@XController
-public class DemoController{
-    @Db  
-    UserMapper userDao;  //UserMapper 已被 db1 mapperScan并已托管，也可用 @XInject 注入
-    
-    @XTran 
-    @XMapping("/user/add")
-    pubblic Long addUser(UserModel user){
-        return userDao.addUser(user); 
-    }
-}
-```
-
-##### c.混合多源事务（这个时候，我们需要Service层参演了）
-```java
-@XService
+@Service
 public class UserService{
-    @Db("db1")  //数据库1
-    UserMapper userDao;  
+    @Tran
+    public void addUser(UserModel user){
+        //....
+    }
+}
+
+@Controller
+public class DemoController{
+    @Inject
+    UserService userService; 
     
-    @XTran
+    //父回滚，子回滚
+    //
+    @Tran
+    @Mapping("/user/add2")
+    pubblic void addUser2(UserModel user){
+        userService.addUser(user); 
+        throw new RuntimeException("不让你加");
+    }
+}
+```
+
+* 父回滚，子不回滚
+
+```java
+@Service
+public class UserService{
+    @Tran(policy = TranPolicy.requires_new)
+    public void addUser(UserModel user){
+        //....
+    }
+}
+
+@Controller
+public class DemoController{
+    @Inject
+    UserService userService; 
+    
+    //父回滚，子不回滚
+    //
+    @Tran
+    @Mapping("/user/add2")
+    pubblic void addUser2(UserModel user){
+        userService.addUser(user); 
+        throw new RuntimeException("不让你加；但还是加了:(");
+    }
+}
+```
+
+* 子回滚父不回滚
+
+```java
+@Service
+public class UserService{
+    @Tran(policy = TranPolicy.nested)
+    public void addUser(UserModel user){
+        //....
+        throw new RuntimeException("不让你加");
+    }
+}
+
+@Controller
+public class DemoController{
+    @Inject
+    UserService userService; 
+    
+    //子回滚父不回滚
+    //
+    @Tran
+    @Mapping("/user/add2")
+    pubblic void addUser2(UserModel user){
+        try{
+            userService.addUser(user); 
+        }catch(ex){ }
+    }
+}
+```
+
+* 多数据源事务示例
+
+```java
+@Service
+public class UserService{
+    @Db("db1")
+    UserMapper userDao;
+    
+    @Tran
     public void addUser(UserModel user){
         userDao.insert(user);
     }
 }
 
-@XService
+@Service
 public class AccountService{
-    @Db("db2")  //数据库2
-    AccountMapper accountDao;  
-    
-    @XTran
+    @Db("db2")
+    AccountMappeer accountDao;
+
+    @Tran
     public void addAccount(UserModel user){
         accountDao.insert(user);
     }
 }
 
-@XController
+@Controller
 public class DemoController{
-    @XInject
+    @Inject
     AccountService accountService; 
     
-    @XInject
+    @Inject
     UserService userService; 
     
-    @XTran
-    @XMapping("/user/add")
-    pubblic Long geUser(UserModel user){
-        Long puid = userService.addUser(user);     //会执行db1事务
+    @Tran
+    @Mapping("/user/add")
+    pubblic void addUser(UserModel user){
+        userService.addUser(user);     //会执行db1事务
         
         accountService.addAccount(user);    //会执行db2事务
-        
-        return puid;
     }
 }
 ```
 
 
-#### 8、开始jsp支持（不建议用）
+### 附：项目地址
 
-solon 的jsp支持，是基于视图模板的定位去处理的。根据启动器组件的不同，配置略有不同：
-```xml
-<!-- 添加 solon web 开发包 -->
-<dependency>
-    <groupId>org.noear</groupId>
-    <artifactId>solon-web</artifactId>
-    <type>pom</type>
-    <exclusions>
-        <!-- 排除默认的 jlhttp 启动器 -->
-        <exclusion>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jlhttp</artifactId>
-        </exclusion>
-    </exclusions>
-</dependency>
-
-<!-- 添加 jetty 或 undertow 启动器 -->
-<dependency>
-    <groupId>org.noear</groupId>
-    <artifactId>solon.boot.jetty</artifactId>
-</dependency>
-
-<!-- 添加 jetty 或 undertow jsp 扩展支持包 -->
-<dependency>
-    <groupId>org.noear</groupId>
-    <artifactId>solon.extend.jetty.jsp</artifactId>
-</dependency>
-
-<!-- 添加 jsp 视图引擎 -->
-<dependency>
-    <groupId>org.noear</groupId>
-    <artifactId>solon.view.jsp</artifactId>
-</dependency>
-```
-
-### 二、Web开发进阶
-
-#### 1、Solon的MVC注解
-
-##### a.@XController
-
-控制器，只有一个注解。会自动通过不同的返回值做不同的处理
-```java
-@XController
-public class DemoController{
-    @XMapping("/test1/")
-    public void test1(){
-        //没返回
-    }
-    
-    @XMapping("/test2/")
-    public String test2(){
-        return "返回字符串并输出";
-    }
-    
-    @XMapping("/test3/")
-    public UseModel test3(){
-        return new UseModel(2, "noear"); //返回个模型，默认会渲染为json格式输出
-    }
-    
-    @XMapping("/test4/")
-    public ModelAndView test4(){
-        return new ModelAndView("view path", map); //返回模型与视图，会被视图引擎渲染后再输出，默认是html格式
-    }
-}
-```
-
-##### b.@XMapping(value, method, produces)
-
-默认只需要设定value值即可，method默认为XMethod.HTTP，即接收所有的http方法请求。
-
-```
-@XMapping("/user/")
-```
-
-#### 2、视图模板开发
-freemaerker 视图
-
-```html
-<!doctype html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>${title}</title>
-</head>
-<body>
-<div>
-     ${message}
-</div>
-</body>
-</html>
-```
-
-控制器
-```java
-@XController
-public class HelloworldController {
-    @XMapping("/helloworld")
-    public Object helloworld(){
-        ModelAndView vm = new ModelAndView("helloworld.ftl");
-
-        vm.put("title","demo");
-        vm.put("message","hello world!");
-
-        return vm;
-    }
-}
-```
-
-#### 3、模板调试模式（即：模板修改后，浏览器刷新即可）
-```xml
-//调试模式：
-启动参数添加：-deubg=1 或 --deubg=1
-```
-
-#### 4、数据校验
-
-Solon校验的是XContext上的参数（即http传入的参数），是在XAction参数注入之前的预处理。这与Spring验证框架区别是很大的。
-
-```java
-@XValid  //为控制器开启校验能力；也可以做用在一个基类上
-@XController
-public class ValidationController {
-
-    @NoRepeatSubmit
-    @NotNull({"name", "icon", "mobile"})
-    @XMapping("/valid")
-    public void test(String name, String icon, @Pattern("13\\d{9}") String mobile) {
-
-    }
-}
-```
-
-下面是更多的校验注解，可以研究一下：
-
-| 注解  | 作用范围 |  说明 | 
-| -------- | -------- | -------- | 
-| Date    | 参数 | 校验注解的参数值为日期格式    | 
-| DecimalMax(value)    | 参数 | 校验注解的参数值小于等于@ DecimalMax指定的value值     | 
-| DecimalMin(value)     | 参数 | 校验注解的参数值大于等于@ DecimalMin指定的value值     | 
-| Email    | 参数 | 校验注解的参数值为电子邮箱格式    | 
-| Length(min, max)    | 参数 | 校验注解的参数值长度在min和max区间内     | 
-| Max(value)    |  参数 | 校验注解的参数值小于等于@Max指定的value值     | 
-| Min(value)     | 参数 | 校验注解的参数值大于等于@Min指定的value值     | 
-| NoRepeatSubmit    | 控制器 或 动作  | 校验本次请求没有重复     | 
-| NotBlank    | 动作 或 参数 | 校验注解的参数值不是空白     | 
-| NotEmpty    | 动作 或 参数 | 校验注解的参数值不是空     | 
-| NotNull   | 动作 或 参数 | 校验注解的参数值不是null     | 
-| NotZero  | 动作 或 参数 | 校验注解的参数值不是0     | 
-| Null    | 动作 或 参数 | 校验注解的参数值是null     | 
-| Numeric    | 动作 或 参数 | 校验注解的参数值为数字格式    | 
-| Pattern(value)    | 参数 | 校验注解的参数值与指定的正则表达式匹配    | 
-| Whitelist    | 控制器 或 动作 | 校验本次请求在白名单范围内     | 
+* gitee:  [https://gitee.com/noear/solon](https://gitee.com/noear/solon)
+* github:  [https://github.com/noear/solon](https://github.com/noear/solon)
 
 
 
 
 
-#### 5、统一异常处理
-
-```java
-Solon.start(source, args)
-    .onError(err->err.printStackTrace()); //或者记录到日志系统
-```
-
-### 三、打包与部署
-
-#### 1、在pom.xml中配置打包的相关插件
-
-Solon 的项目必须开启编译参数：-parameters
-
-```xml
-<build>
-    <finalName>${project.name}</finalName>
-    <plugins>
-
-        <!-- 配置编译插件 -->
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.1</version>
-            <configuration>
-                <compilerArgument>-parameters</compilerArgument> 
-                <source>1.8</source>
-                <target>1.8</target>
-                <encoding>UTF-8</encoding>
-            </configuration>
-        </plugin>
-
-        <!-- 配置打包插件（设置主类，并打包成胖包） -->
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <version>3.3.0</version>
-            <configuration>
-                <finalName>${project.name}</finalName>
-                <appendAssemblyId>false</appendAssemblyId>
-                <descriptorRefs>
-                    <descriptorRef>jar-with-dependencies</descriptorRef>
-                </descriptorRefs>
-                <archive>
-                    <manifest>
-                        <mainClass>webapp.DemoApp</mainClass>
-                    </manifest>
-                </archive>
-            </configuration>
-            <executions>
-                <execution>
-                    <id>make-assembly</id>
-                    <phase>package</phase>
-                    <goals>
-                        <goal>single</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
-    </plugins>
-</build>
-```
-
-#### 2、运行 maven 的 package 指令完成打包（IDEA的右侧边界面，就有这个菜单）
-
-#### 3、终端运行：`java -jar DemoApp.jar` 即可启动

@@ -1,8 +1,8 @@
-> 在前面的篇章里我们已经见识了 Solon 对事务的控制，及其优雅曼妙的身姿。该篇将对事务及其处理策略进行详解。出于对用户的学习成本考虑，Solon 借签了Spring 的事务传播策略；所以体验上几乎一样。
+> 在前面的篇章里我们已经见识了 Spring mini - Solon 对事务的控制，及其优雅曼妙的身姿。该篇将对事务及其处理策略进行详解。出于对用户的学习成本考虑，Solon 借签了Spring 的事务传播策略；所以体验上几乎一样。
 
 ### 一、为什么要有传播机制？
 
-Solon 对事务的控制，是使用 aop 切面实现的，所以不用关心事务的开始，提交 ，回滚，只需要在方法上加 `@XTran` 注解即可。
+Solon 对事务的控制，是使用 aop 切面实现的，所以不用关心事务的开始，提交 ，回滚，只需要在方法上加 `@Tran` 注解即可。
 因为这些都是暗的，看不见的，所以也容易产生一些疑惑：
 
 * 场景一：classA 方法调用了 classB 方法，但两个方法都有事务
@@ -52,7 +52,7 @@ Solon 对事务的控制，是使用 aop 切面实现的，所以不用关心事
 | repeatable_read     | 可重复读：保证在同一个事务中多次读取同样数据的结果是一样的  | 
 | serializable     | 可串行化读：要求事务串行化执行，事务只能一个接着一个执行，不能并发执行  | 
 
-### 五、@XTran 属性说明
+### 五、@Tran 属性说明
 
 
 | 属性 | 说明 | 
@@ -68,23 +68,23 @@ Solon 对事务的控制，是使用 aop 切面实现的，所以不用关心事
 * 父回滚，子回滚
 
 ```java
-@XService
+@Service
 public class UserService{
-    @XTran
+    @Tran
     public void addUser(UserModel user){
         //....
     }
 }
 
-@XController
+@Controller
 public class DemoController{
-    @XInject
+    @Inject
     UserService userService; 
     
     //父回滚，子回滚
     //
-    @XTran
-    @XMapping("/user/add2")
+    @Tran
+    @Mapping("/user/add2")
     pubblic void addUser2(UserModel user){
         userService.addUser(user); 
         throw new RuntimeException("不让你加");
@@ -95,23 +95,23 @@ public class DemoController{
 * 父回滚，子不回滚
 
 ```java
-@XService
+@Service
 public class UserService{
-    @XTran(policy = TranPolicy.requires_new)
+    @Tran(policy = TranPolicy.requires_new)
     public void addUser(UserModel user){
         //....
     }
 }
 
-@XController
+@Controller
 public class DemoController{
-    @XInject
+    @Inject
     UserService userService; 
     
     //父回滚，子不回滚
     //
-    @XTran
-    @XMapping("/user/add2")
+    @Tran
+    @Mapping("/user/add2")
     pubblic void addUser2(UserModel user){
         userService.addUser(user); 
         throw new RuntimeException("不让你加；但还是加了:(");
@@ -122,24 +122,24 @@ public class DemoController{
 * 子回滚父不回滚
 
 ```java
-@XService
+@Service
 public class UserService{
-    @XTran(policy = TranPolicy.nested)
+    @Tran(policy = TranPolicy.nested)
     public void addUser(UserModel user){
         //....
         throw new RuntimeException("不让你加");
     }
 }
 
-@XController
+@Controller
 public class DemoController{
-    @XInject
+    @Inject
     UserService userService; 
     
     //子回滚父不回滚
     //
-    @XTran
-    @XMapping("/user/add2")
+    @Tran
+    @Mapping("/user/add2")
     pubblic void addUser2(UserModel user){
         try{
             userService.addUser(user); 
@@ -151,45 +151,53 @@ public class DemoController{
 * 多数据源事务示例
 
 ```java
-@XService
+@Service
 public class UserService{
     @Db("db1")
     UserMapper userDao;
     
-    @XTran
+    @Tran
     public void addUser(UserModel user){
         userDao.insert(user);
     }
 }
 
-@XService
+@Service
 public class AccountService{
     @Db("db2")
     AccountMappeer accountDao;
 
-    @XTran
+    @Tran
     public void addAccount(UserModel user){
         accountDao.insert(user);
     }
 }
 
-@XController
+@Controller
 public class DemoController{
-    @XInject
+    @Inject
     AccountService accountService; 
     
-    @XInject
+    @Inject
     UserService userService; 
     
-    @XTran
-    @XMapping("/user/add")
-    pubblic void addUser(UserModel user){
+    @Tran
+    @Mapping("/user/add")
+    public void addUser(UserModel user){
         userService.addUser(user);     //会执行db1事务
         
         accountService.addAccount(user);    //会执行db2事务
     }
 }
 ```
+
+
+### 附：项目地址
+
+* gitee:  [https://gitee.com/noear/solon](https://gitee.com/noear/solon)
+* github:  [https://github.com/noear/solon](https://github.com/noear/solon)
+
+
 
 
 

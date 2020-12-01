@@ -1,26 +1,30 @@
-### 一、Solon
+### 一、Spring min -Solon
 
-最近号称小而美的的Solon框架，终于得空，搞了一把，发觉Solon确实好用，那Solon到底是什么，又是怎么好用呢？
+最近号称 Spring mini 的 Solon框架，得空搞了一把，发觉Solon确实好用，小巧而快速。那Solon到底是什么，又是怎么好用呢？
 
 #### 什么是Solon?
 
-Solon参考过Spring boot 和 Javalin 的设计。吸取了两者的的优点，避开了很多繁重的设计，使其支持http, websocket, socket 三种通讯信号接入。Solon 2M即可支撑起普通的mvc开发了，0.1秒就可以完成启动；相对于言，Spring boot 的一个普通mvc项目，基本上20M起步，5秒左右完成启动。
+Solon是参考Spring boot 和 Javalin 而设计。吸取了两者的的优点，避开了很多繁重的设计，使其支持http, websocket, socket 三种通讯信号接入。Solon 2M即可支撑起普通的mvc开发了，0.1秒就可以完成启动；相对于言，Spring boot 的一个普通mvc项目，基本上20M起步，启动要3秒以上，而且qps也弱了很多。
 
-总体来说，Solon 有着类似于 Spring boot的开发体验。
+总体来说，Solon 有着类似于 Spring boot的开发体验；故而号称Spring mini。
+
+项目源码：[https://gitee.com/noear/solon](https://gitee.com/noear/solon)
 
 #### Solon的优缺点
 
 **优点**
 
-1. 小巧美丽
+1. 小而快
 2. 快速构建项目
 3. 项目可独立运行，不需要外部的web容器（jar直接部署）
 4. 部署效率高
+5. 支持插件化构建项目
+6. 体验与Spring boot相近
 
 **缺点**
 
-1. 文档少
-2. 第三方项目的适配少（与Spring生态没法比）
+1. 新框架的通证：文档少
+2. 第三方项目的适配较少
 
 ### 二、快速入门
 
@@ -28,20 +32,27 @@ Solon参考过Spring boot 和 Javalin 的设计。吸取了两者的的优点，
 
 使用Solon，可以零配置就让你的项目快速运行起来，完全使用代码和注解取代配置。使用java代码方式可以更好的理解你配置的Bean，下面就先来看看两个最基本的注释：
 
-##### 1）@XConfiguration 和 @XBean
+##### 1）@Configuration + @Bean 方式
 
-Solon的java配置方式是通过@XConfiguration 和 @XBean这两个注释实现的：
-
-* @XConfiguration 作用于类上，对Bean进行配置
-* @XBean 用在类上，也可以作用在 @XConfiguration 类的方法上
-
-##### 2）示例
-> 该示例将通过java配置方式配置Bean，实现Solon IOC功能。
-
-下面是一个简单的模拟从数据库获取User数据的Dao类（使用了@XBean注解，说明它将交给Solon容器管理）。
+Solon 的java配置方式是通过@Configuration 和 @Bean这两个注释实现的（没有xml方案）：
 
 ```java
-@XBean 
+@Configuration
+public class SolonConfig {
+    @Bean
+    public UserDao getUserDao() {
+        return new UserDao();
+    }
+}
+```
+
+##### 2）@Component
+> 该示例将通过java配置方式配置Component，实现Solon IOC功能。
+
+下面是一个简单的模拟从数据库获取User数据的Dao类（使用了@Component注解，说明它将交给Solon容器管理）。
+
+```java
+@Component 
 public class UserDao {
     public List<String> queryUserList() {
         //为省事儿，此处不操作数据库
@@ -52,25 +63,15 @@ public class UserDao {
         return list;
     }
 }
-
-//也可以通过配置器构建Bean
-//
-//@XConfiguration
-//public class SolonConfig {
-//    @XBean
-//    public UserDao getUserDao() {
-//        return new UserDao();
-//    }
-//}
 ```
 
 然后是一个最最常见的Service，通过注入UserDao，使用UserDao的方法获取用户数据。
 
 ```java
-@XBean
+@Component
 public class UserService {
 
-    @XInject
+    @Inject
     UserDao userDao;
 
     public void getUserList() {
@@ -101,7 +102,7 @@ public class Test {
 
 像普通的java程序一样，直接运行Test类中的main方法即可在控制台看到用户数据输出了。
 
-> 应该可以发现了,和以往的Spring boot 很像，又很不一样。
+> 可以发现和以往的Spring boot 很像；又有点不一样，尤其是手写AOP模式。
 
 #### 2、第一个Web应用
 
@@ -115,7 +116,7 @@ public class Test {
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.2.3</version>
+    <version>1.2</version>
 </parent>
 ```
 
@@ -135,13 +136,13 @@ public class Test {
 
 ##### 2）小示例
 ```java
-@XController    //这标明是一个solon的控制器
+@Controller    //这标明是一个solon的控制器
 public class HelloApp {
     public static void main(String[] args) {    //这是程序入口
         Solon.start(HelloApp.class, args);
     }
 
-    @XMapping("/hello")
+    @Mapping("/hello")
     public String hello(String name){
         return "Hello world!";
     }
@@ -167,3 +168,11 @@ Hello world!
 5. 等等...
 
 淡定，后续文章将会对一些常见的问题展开说明。
+
+
+### 附：项目地址
+
+* gitee:  [https://gitee.com/noear/solon](https://gitee.com/noear/solon)
+* github:  [https://github.com/noear/solon](https://github.com/noear/solon)
+
+

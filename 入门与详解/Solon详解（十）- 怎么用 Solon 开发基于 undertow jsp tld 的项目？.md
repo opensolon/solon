@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.1</version>
+        <version>1.2.3</version>
     </parent>
     
     <dependencies>
@@ -69,15 +69,15 @@ resources/WEB-INF/view/ 为视图文件根目标（支持多视图共存）
 * 添加个控制器 `src/main/java/webapp/controller/HelloworldController.java`
 
 ```java
-@XController
+@Controller
 public class HelloworldController {
 
     //这里注入个配置
-    @XInject("${custom.user}")
+    @Inject("${custom.user}")
     protected String user;
 
-    @XMapping("/helloworld")
-    public ModelAndView helloworld(XContext ctx){
+    @Mapping("/helloworld")
+    public ModelAndView helloworld(Context ctx){
         UserModel m = new UserModel();
         m.setId(10);
         m.setName("刘之西东");
@@ -106,7 +106,7 @@ public class FooterTag extends TagSupport {
     @Override
     public int doStartTag() throws JspException {
         try {
-            String path = XContext.current().path();
+            String path = Context.current().path();
 
             //当前视图path
             StringBuffer sb = new StringBuffer();
@@ -184,3 +184,12 @@ http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd" version="2.0">
 #### 四、 源码
 
 [源码：demo05.solon_mvc_undertow_jsp](https://gitee.com/noear/solon_demo/tree/master/demo05.solon_mvc_undertow_jsp)
+
+
+
+### 附：项目地址
+
+* gitee:  [https://gitee.com/noear/solon](https://gitee.com/noear/solon)
+* github:  [https://github.com/noear/solon](https://github.com/noear/solon)
+
+
