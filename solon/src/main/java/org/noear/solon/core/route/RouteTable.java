@@ -48,18 +48,18 @@ public class RouteTable<T> extends ArrayList<RouteTable.Route<T>> {
      * */
     public static class Route<T> {
         public Route(String path, MethodType method, int index, T target) {
-            _p = path;
             _pr = new PathAnalyzer(path);
             _m = method;
 
+            this.path = path;
             this.index = index;
             this.target = target;
         }
 
+        public final String path; //path
         public final int index; //顺序
         public final T target;//代理
 
-        private final String _p; //path
         private final PathAnalyzer _pr; //path rule 规则
         private final MethodType _m; //方式
 
@@ -82,11 +82,11 @@ public class RouteTable<T> extends ArrayList<RouteTable.Route<T>> {
         }
 
         private boolean matches0(String path2) {
-            if ("**".equals(_p)) {
+            if ("**".equals(path)) {
                 return true;
             }
 
-            if (_p.equals(path2)) {
+            if (path.equals(path2)) {
                 return true;
             }
 

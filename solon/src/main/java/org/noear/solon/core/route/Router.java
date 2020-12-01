@@ -55,6 +55,10 @@ public class Router {
         routesL = new RouteTable<>();
     }
 
+    public RouteTable<Handler> main(){
+        return routesH[1];
+    }
+
     /**
      * 添加路由关系 for XHandler
      */

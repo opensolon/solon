@@ -422,6 +422,15 @@
                 <artifactId>hasor-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>swagger-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+
 <!--            <dependency>-->
 <!--                <groupId>org.noear</groupId>-->
 <!--                <artifactId>mqtt-solon-plugin</artifactId>-->
@@ -738,6 +747,7 @@
         <module>../_extend2/quartz-solon-plugin</module>
 
 
+        <module>../_extend2/swagger-solon-plugin</module>
 
         <module>../_extend3/solon-beetl-web</module>
 

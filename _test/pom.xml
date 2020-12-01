@@ -33,6 +33,11 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>swagger-solon-plugin</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon.extend.staticfiles</artifactId>
         </dependency>
 
