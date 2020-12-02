@@ -19,16 +19,18 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ListenerProxy implements Listener {
     //实例维护
     private static Listener global = new ListenerProxy();
+
     public static Listener getGlobal() {
         return global;
     }
+
     public static void setGlobal(Listener global) {
         ListenerProxy.global = global;
     }
 
     private SocketContextHandler socketContextHandler;
 
-    public ListenerProxy(){
+    public ListenerProxy() {
         socketContextHandler = new SocketContextHandler();
     }
 
@@ -39,6 +41,7 @@ public class ListenerProxy implements Listener {
     // 内部使用
     //
     private static Map<String, CompletableFuture<Message>> requests = new ConcurrentHashMap<>();
+
     protected static void regRequest(Message message, CompletableFuture<Message> future) {
         requests.putIfAbsent(message.key(), future);
     }
@@ -53,11 +56,16 @@ public class ListenerProxy implements Listener {
         if (sl != null) {
             sl.onOpen(session);
         }
+
+        //实例监听者
+        if (session.listener() != null) {
+            session.listener().onOpen(session);
+        }
     }
 
     @Override
     public void onMessage(Session session, Message message, boolean messageIsString) {
-        if(message.flag() == 1) {
+        if (message.flag() == 1) {
             //flag 消息标志（-1握手包；0发起包； 1响应包）
             //
             CompletableFuture<Message> request = requests.get(message.key());
@@ -71,10 +79,15 @@ public class ListenerProxy implements Listener {
         }
 
 
-        //监听模式
+        //路径监听模式
         Listener sl = get(session);
         if (sl != null) {
             sl.onMessage(session, message, messageIsString);
+        }
+
+        //实例监听者
+        if (session.listener() != null) {
+            session.listener().onMessage(session, message, messageIsString);
         }
 
         //代理模式
@@ -89,6 +102,11 @@ public class ListenerProxy implements Listener {
         if (sl != null) {
             sl.onClose(session);
         }
+
+        //实例监听者
+        if (session.listener() != null) {
+            session.listener().onClose(session);
+        }
     }
 
     @Override
@@ -96,6 +114,11 @@ public class ListenerProxy implements Listener {
         Listener sl = get(session);
         if (sl != null) {
             sl.onError(session, error);
+        }
+
+        //实例监听者
+        if (session.listener() != null) {
+            session.listener().onError(session, error);
         }
     }
 
