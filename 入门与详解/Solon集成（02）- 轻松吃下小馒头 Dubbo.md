@@ -11,7 +11,7 @@ Dubbo是阿里巴巴公司开源的一个高性能优秀的服务框架，使得
 <dependency>
     <groupId>org.noear</groupId>
     <artifactId>dubbo-solon-plugin</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.4</version>
 </dependency>
 ```
 
