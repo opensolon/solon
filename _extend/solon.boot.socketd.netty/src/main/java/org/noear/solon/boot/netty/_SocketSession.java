@@ -49,11 +49,11 @@ class _SocketSession extends SessionBase {
 
     private void prepareSend() throws IOException {
         if (real == null) {
-            this.real = connector.start();
+            this.real = connector.start(this);
         } else {
             if (autoReconnect) {
                 if (real.isActive() == false) {
-                    real = connector.start();
+                    real = connector.start(this);
                 }
             }
         }

@@ -6,7 +6,7 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.ListenerProxy;
 
-public class NioProcessor extends SimpleChannelInboundHandler<Message> {
+public class NioServerProcessor extends SimpleChannelInboundHandler<Message> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {

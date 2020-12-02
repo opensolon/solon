@@ -6,6 +6,7 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import org.noear.solon.core.message.Session;
 
 public class NioConnector {
     private String host;
@@ -16,7 +17,7 @@ public class NioConnector {
         this.port = port;
     }
 
-    public Channel start() {
+    public Channel start(Session session) {
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
 
         try {
@@ -24,7 +25,7 @@ public class NioConnector {
 
             bootstrap.group(eventLoopGroup)
                     .channel(NioSocketChannel.class)
-                    .handler(new NioChannelInitializer());
+                    .handler(new NioChannelInitializer(new NioClientProcessor(session)));
 
             ChannelFuture channelFuture = bootstrap.connect(host, port).sync();
 
