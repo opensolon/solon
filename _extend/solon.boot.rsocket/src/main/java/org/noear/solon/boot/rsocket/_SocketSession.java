@@ -7,9 +7,9 @@ import org.noear.solon.core.*;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.xsocket.ListenerProxy;
-import org.noear.solon.extend.xsocket.MessageUtils;
-import org.noear.solon.extend.xsocket.SessionBase;
+import org.noear.solon.extend.socketd.ListenerProxy;
+import org.noear.solon.extend.socketd.MessageUtils;
+import org.noear.solon.extend.socketd.SessionBase;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -87,7 +87,7 @@ public class _SocketSession extends SessionBase {
 
     public void send(Message message) {
         //
-        // 转包为XSocketMessage，再转byte[]
+        // 转包为Message，再转byte[]
         //
         ByteBuffer buffer = MessageUtils.encode(message);
 

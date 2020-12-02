@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.xsocket.SessionFactory;
+import org.noear.solon.extend.socketd.SessionFactory;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 

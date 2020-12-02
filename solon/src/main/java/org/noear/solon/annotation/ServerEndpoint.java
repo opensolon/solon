@@ -8,10 +8,10 @@ import java.lang.annotation.*;
  * 服务器处理端点（为 XMessage + XListener 架构，提供容器化支持）
  *
  * <pre><code>
- * @XServerEndpoint(value = "/demoe/websocket")
- * public class XSocketListenerImp implements XListener {
+ * @ServerEndpoint(value = "/demoe/websocket")
+ * public class SocketListenerImp implements Listener {
  *     @Override
- *     public void onMessage(XSession session, XMessage message) {
+ *     public void onMessage(Session session, Message message) {
  *         //表示已处理
  *         message.setHandled(true);
  *

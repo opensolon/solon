@@ -11,7 +11,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
- * XSocket 会话（为 Message + Listener 架构服务 ）
+ * SocketD 会话（为 Message + Listener 架构服务 ）
  *
  * @author noear
  * @since 1.0

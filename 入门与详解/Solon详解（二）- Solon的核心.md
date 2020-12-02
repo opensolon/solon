@@ -30,10 +30,10 @@ Solon 的插件也可以叫扩展组件，相当于Spring 的 starter。Solon已
 | org.noear:solon.extend.jetty.jsp | 扩展插件,为`jetty`添加`jsp`支持（不建议使用jsp）（网友@khb提供） |
 | org.noear:solon.extend.undertow.jsp | 扩展插件,为`undertow`添加`jsp`支持（不建议使用jsp）（网友@tyk提供） |
 | | |
-| XSocket boot插件:: | 说明 |
-| org.noear:solon.boot.xsocket.jdksocket | boot插件,对`jdk-socket`适配，提供`xsocket`服务 |
-| org.noear:solon.boot.xsocket.netty | boot插件,对`netty`适配，提供`xsocket`服务 |
-| org.noear:solon.boot.xsocket.smartsocket | boot插件,对`smart-bsocket`适配，提供`xsocket`服务 |
+| SocketD boot插件:: | 说明 |
+| org.noear:solon.boot.socketd.jdksocket | boot插件,对`jdk-socket`适配，提供`socketd`服务 |
+| org.noear:solon.boot.socketd.netty | boot插件,对`netty`适配，提供`socketd`服务 |
+| org.noear:solon.boot.socketd.smartsocket | boot插件,对`smart-bsocket`适配，提供`socketd`服务 |
 | | |
 | 静态文件支持插件:: | 说明 |
 | org.noear:solon.extend.staticfiles | 扩展插件,添加静态文件支持（监视 resources/static 文件夹） |

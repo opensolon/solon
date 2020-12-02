@@ -2,10 +2,10 @@ package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.nami.channel.xsocket.XSocket;
+import org.noear.nami.channel.socketd.SocketD;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
-import webapp.demoh_xsocket.HelloRpcService;
+import webapp.demoh_socketd.HelloRpcService;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
@@ -15,7 +15,7 @@ public class SocketRpcTest {
     public void test_rpc_api() throws Throwable {
         int _port = 8080 + 20000;
 
-        HelloRpcService rpc = XSocket.create("localhost", _port, HelloRpcService.class);
+        HelloRpcService rpc = SocketD.create("localhost", _port, HelloRpcService.class);
 
         String rst = rpc.hello("noear");
 

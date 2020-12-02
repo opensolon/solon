@@ -1,7 +1,7 @@
 package org.noear.solon.core.message;
 
 /**
- * XSocket 监听器（实现 Message + Listener 架构）
+ * SocketD 监听器（实现 Message + Listener 架构）
  *
  * <pre><code>
  * @ServerEndpoint(value = "/demoe/websocket")

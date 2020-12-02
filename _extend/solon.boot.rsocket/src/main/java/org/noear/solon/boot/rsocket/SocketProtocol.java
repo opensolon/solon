@@ -1,7 +1,7 @@
 package org.noear.solon.boot.rsocket;
 
 import org.noear.solon.core.message.Message;
-import org.noear.solon.extend.xsocket.MessageUtils;
+import org.noear.solon.extend.socketd.MessageUtils;
 
 import java.io.IOException;
 import java.io.InputStream;

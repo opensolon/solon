@@ -2,7 +2,7 @@ package webapp.demo5_rpc;
 
 import org.noear.nami.Nami;
 import org.noear.nami.channel.OkHttpChannel;
-import org.noear.nami.channel.xsocket.XSocket;
+import org.noear.nami.channel.socketd.SocketD;
 import org.noear.nami.decoder.SnackDecoder;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
@@ -39,7 +39,7 @@ public class rpctest implements Handler {
     }
 
     private Object socketOf() {
-        rockapi client = XSocket.create("localhost", (20000 + Solon.global().port()), rockapi.class);
+        rockapi client = SocketD.create("localhost", (20000 + Solon.global().port()), rockapi.class);
 
         return client.test1(12);
     }

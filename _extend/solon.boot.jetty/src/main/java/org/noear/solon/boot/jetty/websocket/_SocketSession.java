@@ -4,7 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.extend.xsocket.SessionBase;
+import org.noear.solon.extend.socketd.SessionBase;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

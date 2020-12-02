@@ -1,9 +1,9 @@
 package webapp;
 
-import org.noear.nami.channel.xsocket.XSocket;
+import org.noear.nami.channel.socketd.SocketD;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import webapp.demoh_xsocket.HelloRpcService;
+import webapp.demoh_socketd.HelloRpcService;
 
 public class Test2App {
     public static void main(String[] args) {
@@ -11,7 +11,7 @@ public class Test2App {
 
         int _port = 8080 + 20000;
 
-        HelloRpcService rpc = XSocket.create("localhost", _port, HelloRpcService.class);
+        HelloRpcService rpc = SocketD.create("localhost", _port, HelloRpcService.class);
 
         while (true) {
             try {
