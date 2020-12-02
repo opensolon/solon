@@ -5,10 +5,10 @@ import org.noear.solon.core.handle.MethodType;
 import java.lang.annotation.*;
 
 /**
- * 服务器处理端点（为 XMessage + XListener 架构，提供容器化支持）
+ * 监听处理端点（为 Message + Listener 架构，提供容器化支持）
  *
  * <pre><code>
- * @ServerEndpoint(value = "/demoe/websocket")
+ * @ListenEndpoint(value = "/demoe/websocket")
  * public class SocketListenerImp implements Listener {
  *     @Override
  *     public void onMessage(Session session, Message message) {
@@ -29,7 +29,7 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface ServerEndpoint {
+public @interface ListenEndpoint {
     /**
      * 资源描述
      * */
