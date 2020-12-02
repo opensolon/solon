@@ -1,4 +1,4 @@
-package org.noear.solon.extend.swagger;
+package org.noear.solonfox.swagger2;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
@@ -6,7 +6,6 @@ import io.swagger.models.*;
 import io.swagger.models.parameters.FormParameter;
 import io.swagger.models.parameters.Parameter;
 import io.swagger.models.parameters.QueryParameter;
-import io.swagger.models.parameters.RefParameter;
 import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
@@ -18,9 +17,7 @@ import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.route.RouteTable;
-import org.noear.solon.ext.LinkedCaseInsensitiveMap;
 
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -29,7 +26,7 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(SolonApp app) {
-        if (app.source().getAnnotation(EnableSwagger.class) == null) {
+        if (app.source().getAnnotation(EnableSwagger2.class) == null) {
             return;
         }
 

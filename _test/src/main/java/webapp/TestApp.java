@@ -7,11 +7,11 @@ import org.noear.solon.annotation.Import;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.extend.cron4j.EnableCron4j;
 import org.noear.solon.extend.quartz.EnableQuartz;
-import org.noear.solon.extend.swagger.EnableSwagger;
+import org.noear.solonfox.swagger2.EnableSwagger2;
 import webapp.demo6_aop.TestImport;
 
 @Import(value = TestImport.class)
-@EnableSwagger
+@EnableSwagger2
 @EnableCron4j
 @EnableQuartz
 @EnableNamiClient

@@ -426,7 +426,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>swagger2-solon-plugin</artifactId>
+                <artifactId>solonfox-swagger2</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
@@ -747,7 +747,7 @@
         <module>../_extend2/quartz-solon-plugin</module>
 
 
-        <module>../_extend2/swagger2-solon-plugin</module>
+        <module>../_extend2/solonfox-swagger2</module>
 
         <module>../_extend3/solon-beetl-web</module>
 
