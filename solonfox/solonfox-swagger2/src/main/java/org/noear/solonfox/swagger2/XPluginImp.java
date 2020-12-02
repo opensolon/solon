@@ -43,8 +43,10 @@ public class XPluginImp implements Plugin {
             swagger.addTag(tag);
         });
 
-        app.onEvent(AppLoadEndEvent.class, (event) -> {
-            onAppLoadEnd();
+        Aop.beanOnloaded(this::onAppLoadEnd);
+
+        app.get("/v2/api-doc",(c)->{
+            c.outputAsJson(ONode.stringify(swagger));
         });
 
     }
@@ -62,8 +64,6 @@ public class XPluginImp implements Plugin {
         buildTags();
 
         buildPaths();
-
-        System.out.println(ONode.stringify(swagger));
     }
 
     private void buildTags() {
