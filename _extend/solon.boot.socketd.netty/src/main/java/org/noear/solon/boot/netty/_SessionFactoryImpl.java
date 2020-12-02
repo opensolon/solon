@@ -10,7 +10,7 @@ class _SessionFactoryImpl extends SessionFactory {
         if (conn instanceof Channel) {
             return _SocketSession.get((Channel) conn);
         } else {
-            throw new IllegalArgumentException("This conn requires a AioSession type");
+            throw new IllegalArgumentException("This conn requires a netty Channel type");
         }
     }
 
@@ -19,7 +19,7 @@ class _SessionFactoryImpl extends SessionFactory {
         if (conn instanceof Channel) {
             _SocketSession.remove((Channel) conn);
         } else {
-            throw new IllegalArgumentException("This conn requires a socket type");
+            throw new IllegalArgumentException("This conn requires a netty Channel type");
         }
     }
 

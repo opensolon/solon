@@ -10,7 +10,7 @@ class _SessionFactoryImpl extends SessionFactory {
         if (conn instanceof AioSession) {
             return _SocketSession.get((AioSession) conn);
         } else {
-            throw new IllegalArgumentException("This conn requires a AioSession type");
+            throw new IllegalArgumentException("This conn requires a smartsocket AioSession type");
         }
     }
 
@@ -19,7 +19,7 @@ class _SessionFactoryImpl extends SessionFactory {
         if (conn instanceof AioSession) {
             _SocketSession.remove((AioSession) conn);
         } else {
-            throw new IllegalArgumentException("This conn requires a socket type");
+            throw new IllegalArgumentException("This conn requires a smartsocket AioSession type");
         }
     }
 

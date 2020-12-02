@@ -12,7 +12,7 @@ class _SessionFactoryImpl extends SessionFactory {
         if (conn instanceof Socket) {
             return _SocketSession.get((Socket) conn);
         } else {
-            throw new IllegalArgumentException("This conn requires a socket type");
+            throw new IllegalArgumentException("This conn requires a Socket type");
         }
     }
 
@@ -21,7 +21,7 @@ class _SessionFactoryImpl extends SessionFactory {
         if (conn instanceof Socket) {
             _SocketSession.remove((Socket) conn);
         } else {
-            throw new IllegalArgumentException("This conn requires a socket type");
+            throw new IllegalArgumentException("This conn requires a Socket type");
         }
     }
 
