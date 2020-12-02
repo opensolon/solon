@@ -57,6 +57,15 @@ public interface Session {
     void sendAndCallback(Message message, BiConsumer<Message,Throwable> callback);
 
     /**
+     * 当前实例监听者（ListenEndpoint 为路径监听者，不限实例）
+     * */
+    default void listener(Listener listener){}
+    /**
+     * 当前实例监听者
+     * */
+    default Listener listener(){return null;}
+
+    /**
      * 关闭会话
      * */
     void close() throws IOException;

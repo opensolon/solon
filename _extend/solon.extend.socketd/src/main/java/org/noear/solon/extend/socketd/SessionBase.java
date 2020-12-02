@@ -1,6 +1,7 @@
 package org.noear.solon.extend.socketd;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 
@@ -52,5 +53,20 @@ public abstract class SessionBase implements Session {
 
         //发送消息
         send(message);
+    }
+
+    private Listener listener;
+
+    /**
+     * 当前实例监听者（ListenEndpoint 为路径监听者，不限实例）
+     * */
+    @Override
+    public Listener listener() {
+        return listener;
+    }
+
+    @Override
+    public void listener(Listener listener) {
+        this.listener = listener;
     }
 }
