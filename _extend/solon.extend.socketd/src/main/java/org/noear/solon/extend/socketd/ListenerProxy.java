@@ -52,19 +52,32 @@ public class ListenerProxy implements Listener {
     //
     @Override
     public void onOpen(Session session) {
-        Listener sl = get(session);
-        if (sl != null) {
-            sl.onOpen(session);
-        }
-
         //实例监听者
         if (session.listener() != null) {
             session.listener().onOpen(session);
+        }
+
+        //路由监听模式
+        Listener sl = get(session);
+        if (sl != null) {
+            sl.onOpen(session);
         }
     }
 
     @Override
     public void onMessage(Session session, Message message, boolean messageIsString) {
+        //实例监听者
+        if (session.listener() != null) {
+            session.listener().onMessage(session, message, messageIsString);
+        }
+
+        //路由监听模式
+        Listener sl = get(session);
+        if (sl != null) {
+            sl.onMessage(session, message, messageIsString);
+        }
+
+        //如果是响应体，则直接通知Request
         if (message.flag() == 1) {
             //flag 消息标志（-1握手包；0发起包； 1响应包）
             //
@@ -78,18 +91,6 @@ public class ListenerProxy implements Listener {
             }
         }
 
-
-        //路径监听模式
-        Listener sl = get(session);
-        if (sl != null) {
-            sl.onMessage(session, message, messageIsString);
-        }
-
-        //实例监听者
-        if (session.listener() != null) {
-            session.listener().onMessage(session, message, messageIsString);
-        }
-
         //代理模式
         if (message.getHandled() == false) {
             socketContextHandler.handle(session, message, messageIsString);
@@ -98,32 +99,37 @@ public class ListenerProxy implements Listener {
 
     @Override
     public void onClose(Session session) {
-        Listener sl = get(session);
-        if (sl != null) {
-            sl.onClose(session);
-        }
-
         //实例监听者
         if (session.listener() != null) {
             session.listener().onClose(session);
+        }
+
+        //路由监听模式
+        Listener sl = get(session);
+        if (sl != null) {
+            sl.onClose(session);
         }
     }
 
     @Override
     public void onError(Session session, Throwable error) {
-        Listener sl = get(session);
-        if (sl != null) {
-            sl.onError(session, error);
-        }
-
         //实例监听者
         if (session.listener() != null) {
             session.listener().onError(session, error);
+        }
+
+        //路由监听模式
+        Listener sl = get(session);
+        if (sl != null) {
+            sl.onError(session, error);
         }
     }
 
     //获取监听器
     private Listener get(Session s) {
+        //
+        //路由监听模式，可实现双向RPC模式
+        //
         return Solon.global().router().matchOne(s);
     }
 }

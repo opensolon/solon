@@ -3,6 +3,7 @@ package features;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
+import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.SessionFactory;
@@ -22,6 +23,12 @@ public class SocketCallbackTest {
 
         Session session = SessionFactory.create("localhost", _port, true);
 
+        session.listener(new Listener() {
+            @Override
+            public void onMessage(Session session, Message message, boolean messageIsString) {
+                System.out.println("实例监到，收到了："+message);
+            }
+        });
 
         String root = "tcp://localhost:" + _port;
         Map<String, Object> map = new HashMap<>();

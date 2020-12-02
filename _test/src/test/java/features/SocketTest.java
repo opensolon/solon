@@ -17,6 +17,9 @@ import java.util.List;
 public class SocketTest {
     @Test
     public void test() throws Throwable {
+        //
+        //这是短链接模式
+        //
         String root = "tcp://localhost:" + (20000 + Solon.global().port());
 
 

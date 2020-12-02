@@ -13,7 +13,7 @@ import webapp.demo5_rpc.protocol.UserService5;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
-public class RpcAndFairyTest {
+public class RpcAndNamiTest {
     //直接指定服务端地址
     @NamiClient("http://localhost:8080/demo5/user/")
     UserService userService;
