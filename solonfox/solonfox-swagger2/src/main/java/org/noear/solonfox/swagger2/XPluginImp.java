@@ -12,7 +12,6 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
