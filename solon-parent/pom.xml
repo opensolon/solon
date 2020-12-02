@@ -430,6 +430,12 @@
                 <version>${solon.ver}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solonfox-swagger-ui</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
 
 <!--            <dependency>-->
 <!--                <groupId>org.noear</groupId>-->
@@ -747,7 +753,8 @@
         <module>../_extend2/quartz-solon-plugin</module>
 
 
-        <module>../_extend2/solonfox-swagger2</module>
+        <module>../solonfox/solonfox-swagger2</module>
+        <module>../solonfox/solonfox-swagger-ui</module>
 
         <module>../_extend3/solon-beetl-web</module>
 

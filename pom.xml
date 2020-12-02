@@ -35,7 +35,6 @@
 <!--        <module>_demo/_demo.solon_tmp</module>-->
 
         <module>_extend2/smartdoc-solon-plugin</module>
-        <module>_extend2/solonfox-swagger-ui</module>
 
     </modules>
 </project>
