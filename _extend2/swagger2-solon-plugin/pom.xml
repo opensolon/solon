@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>swagger-solon-plugin</artifactId>
+    <artifactId>swagger2-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

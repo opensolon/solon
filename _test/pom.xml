@@ -33,7 +33,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>swagger-solon-plugin</artifactId>
+            <artifactId>swagger2-solon-plugin</artifactId>
         </dependency>
 
         <dependency>
