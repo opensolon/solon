@@ -1,10 +1,12 @@
 package org.noear.solon.core.message;
 
 import org.noear.solon.core.handle.MethodType;
+import org.noear.solon.core.util.HeaderUtils;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Collection;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 /**
@@ -89,11 +91,12 @@ public interface Session {
 
     /**
      * 设置握手状态
-     * */
+     */
     void setHandshaked(boolean handshaked);
+
     /**
      * 获取握手状态
-     * */
+     */
     boolean getHandshaked();
 
     //////////////////////////////////////////
@@ -136,16 +139,27 @@ public interface Session {
 
     /**
      * 发送握手
+     *
      * @param header 头
-     * @param body 主体
+     * @param body   主体
      */
     void sendHandshake(String header, byte[] body);
 
     /**
      * 发送握手
+     *
      * @param header 头
      */
     default void sendHandshake(String header) {
         sendHandshake(header, null);
+    }
+
+    /**
+     * 发送握手
+     *
+     * @param header 头
+     */
+    default void sendHandshake(Map<String, String> header) {
+        sendHandshake(HeaderUtils.encodeHeaderMap(header), null);
     }
 }
