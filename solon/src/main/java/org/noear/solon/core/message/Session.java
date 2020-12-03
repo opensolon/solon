@@ -1,12 +1,10 @@
 package org.noear.solon.core.message;
 
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.util.HeaderUtils;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Collection;
-import java.util.Map;
 import java.util.function.BiConsumer;
 
 /**
