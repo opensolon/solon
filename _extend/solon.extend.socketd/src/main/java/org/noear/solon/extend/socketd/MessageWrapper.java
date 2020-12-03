@@ -1,8 +1,10 @@
 package org.noear.solon.extend.socketd;
 
 import org.noear.solon.core.message.Message;
+import org.noear.solon.core.util.HeaderUtils;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 import java.util.UUID;
 
 public class MessageWrapper {
@@ -64,6 +66,10 @@ public class MessageWrapper {
 
     public static Message wrapHandshake(String header) {
         return wrapHandshake(header, null);
+    }
+
+    public static Message wrapHandshake(Map<String,String> header) {
+        return wrapHandshake(HeaderUtils.encodeHeaderMap(header), null);
     }
 
     /**

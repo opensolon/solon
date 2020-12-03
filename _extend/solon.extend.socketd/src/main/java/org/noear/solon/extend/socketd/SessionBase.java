@@ -90,7 +90,8 @@ public abstract class SessionBase implements Session {
         this.listener = listener;
 
         Message tmp = listener.onHandshake();
-        if (tmp != null) {
+
+        if (tmp != null && tmp.flag() == -1) {
             handshakeMessage = tmp;
         }
     }
