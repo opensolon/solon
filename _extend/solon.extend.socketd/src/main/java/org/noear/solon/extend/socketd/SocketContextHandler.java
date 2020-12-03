@@ -13,7 +13,8 @@ import org.noear.solon.core.message.Session;
  * @author noear
  * @since 1.0
  * */
-class SocketContextHandler {
+public class SocketContextHandler {
+    public static final SocketContextHandler instance = new SocketContextHandler();
 
     public void handle(Session session, Message message, boolean messageIsString) {
         if (message == null) {
