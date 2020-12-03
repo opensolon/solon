@@ -39,6 +39,10 @@ public class _SocketSession extends SessionBase {
         this.real = real;
     }
 
+    public _SocketSession(WsConnector connector, boolean autoReconnect){
+
+    }
+
     @Override
     public Object real() {
         return real;
