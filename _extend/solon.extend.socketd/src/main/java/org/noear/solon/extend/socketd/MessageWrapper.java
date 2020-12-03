@@ -58,18 +58,14 @@ public class MessageWrapper {
     }
 
     /**
-     * 包装握手包
+     * 包装握手包（只支持用头）
      */
-    public static Message wrapHandshake(String header, byte[] body) {
-        return new Message(-1, UUID.randomUUID().toString(), "", header, body);
-    }
-
     public static Message wrapHandshake(String header) {
-        return wrapHandshake(header, null);
+        return new Message(-1, UUID.randomUUID().toString(), "", header, null);
     }
 
     public static Message wrapHandshake(Map<String,String> header) {
-        return wrapHandshake(HeaderUtils.encodeHeaderMap(header), null);
+        return wrapHandshake(HeaderUtils.encodeHeaderMap(header));
     }
 
     /**

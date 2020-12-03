@@ -24,12 +24,7 @@ package org.noear.solon.core.message;
  * */
 @FunctionalInterface
 public interface Listener {
-
     default void onOpen(Session session) {
-    }
-
-    default Message onHandshake() {
-        return null;
     }
 
     void onMessage(Session session, Message message, boolean messageIsString);

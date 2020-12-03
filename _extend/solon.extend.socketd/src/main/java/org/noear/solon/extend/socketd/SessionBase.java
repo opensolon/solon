@@ -8,7 +8,6 @@ import org.noear.solon.core.message.Session;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public abstract class SessionBase implements Session {
     //////////////////////////////////////////
@@ -88,12 +87,6 @@ public abstract class SessionBase implements Session {
     @Override
     public void listener(Listener listener) {
         this.listener = listener;
-
-        Message tmp = listener.onHandshake();
-
-        if (tmp != null && tmp.flag() == -1) {
-            handshakeMessage = tmp;
-        }
     }
 
 
@@ -123,8 +116,8 @@ public abstract class SessionBase implements Session {
     protected Message handshakeMessage;
 
     @Override
-    public void sendHandshake(String header, byte[] body) {
-        handshakeMessage = MessageWrapper.wrapHandshake(header, body);
+    public void sendHandshake(String header) {
+        handshakeMessage = MessageWrapper.wrapHandshake(header);
         send(handshakeMessage);
     }
 }

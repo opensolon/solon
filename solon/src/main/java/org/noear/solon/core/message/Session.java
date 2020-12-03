@@ -138,10 +138,9 @@ public interface Session {
     void sendHeartbeatAuto(int intervalSeconds);
 
     /**
-     * 发送握手
+     * 发送握手（只支持发头）
      *
      * @param header 头
-     * @param body   主体
      */
-    void sendHandshake(String header, byte[] body);
+    void sendHandshake(String header);
 }
