@@ -7,7 +7,6 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.ListenerProxy;
 
-@ChannelHandler.Sharable
 public class NioClientProcessor extends SimpleChannelInboundHandler<Message> {
     Session session;
     public NioClientProcessor(Session session){
