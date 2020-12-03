@@ -1,7 +1,13 @@
 package org.noear.solon.core.message;
 
+import org.noear.solon.Utils;
+import org.noear.solon.core.NvMap;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -45,6 +51,24 @@ public class Message {
 
     public String header() {
         return header;
+    }
+
+    private Map<String,String> headerMap;
+    public Map<String,String> headerMap() {
+        if (headerMap == null) {
+            headerMap = new NvMap();
+
+            if (Utils.isNotEmpty(header())) {
+                String[] ss = header().split("&");
+                for (String s : ss) {
+                    String[] kv = s.split("=");
+
+                    headerMap.put(kv[0], kv[1]);
+                }
+            }
+        }
+
+        return Collections.unmodifiableMap(headerMap);
     }
 
 
