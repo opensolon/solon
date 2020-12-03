@@ -19,12 +19,17 @@ public @interface ClientListenEndpoint {
     MethodType method() default MethodType.ALL;
 
     /**
-     * server host
+     * 主机
      * */
     String host();
 
     /**
-     * server port
+     * 端口
      * */
     int port();
+
+    /**
+     * 心跳频率（单位：秒）
+     * */
+    int heartbeatRate() default 10;
 }
