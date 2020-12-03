@@ -1,10 +1,12 @@
 package org.noear.solon.boot.undertow.websocket;
 
 import io.undertow.websockets.core.*;
+import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.ListenerProxy;
+import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.extend.socketd.MessageWrapper;
 
 import java.io.ByteArrayOutputStream;
@@ -27,7 +29,13 @@ public class UtWsChannelListener extends AbstractReceiveListener {
             }
 
             Session session = _SocketSession.get(channel);
-            Message message = MessageWrapper.wrap(channel.getUrl(), null,out.toByteArray());
+            Message message = null;
+
+            if (Solon.global().enableWebSocketD()) {
+                message = MessageUtils.decode(ByteBuffer.wrap(out.toByteArray()));
+            } else {
+                message = MessageWrapper.wrap(channel.getUrl(), null, out.toByteArray());
+            }
 
             ListenerProxy.getGlobal().onMessage(session, message, false);
         } catch (Throwable ex) {

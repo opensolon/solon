@@ -1,13 +1,17 @@
 package org.noear.solon.boot.smarthttp.websocket;
 
+import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.ListenerProxy;
+import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.extend.socketd.MessageWrapper;
 import org.smartboot.http.WebSocketRequest;
 import org.smartboot.http.WebSocketResponse;
 import org.smartboot.http.server.handle.WebSocketDefaultHandle;
+
+import java.nio.ByteBuffer;
 
 public class WebSocketHandleImp extends WebSocketDefaultHandle {
 
@@ -43,7 +47,13 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
     public void handleBinaryMessage(WebSocketRequest request, WebSocketResponse response, byte[] data) {
         try {
             Session session = _SocketSession.get(request, response);
-            Message message = MessageWrapper.wrap(request.getRequestURI(),null, data);
+            Message message = null;
+
+            if (Solon.global().enableWebSocketD()) {
+                message = MessageUtils.decode(ByteBuffer.wrap(data));
+            } else {
+                message = MessageWrapper.wrap(request.getRequestURI(), null, data);
+            }
 
             ListenerProxy.getGlobal().onMessage(session, message, false);
 

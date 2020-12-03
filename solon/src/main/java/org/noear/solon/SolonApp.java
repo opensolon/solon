@@ -487,6 +487,17 @@ public class SolonApp implements Handler, HandlerSlots {
         return this;
     }
     /**
+     * 启用WebSocket as socketd 信号接入
+     * */
+    private boolean _enableWebSocketD = false;
+    public boolean enableWebSocketD(){
+        return _enableWebSocketD;
+    }
+    public SolonApp enableWebSocketD(boolean enable){
+        _enableWebSocketD = enable;
+        return this;
+    }
+    /**
      * 启用Socket信号接入
      * */
     private boolean _enableSocket = false;

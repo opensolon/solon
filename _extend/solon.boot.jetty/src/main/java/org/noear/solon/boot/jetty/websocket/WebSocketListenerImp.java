@@ -1,10 +1,12 @@
 package org.noear.solon.boot.jetty.websocket;
 
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
+import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.ListenerProxy;
+import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.extend.socketd.MessageWrapper;
 
 import java.nio.ByteBuffer;
@@ -22,8 +24,15 @@ public class WebSocketListenerImp extends WebSocketAdapter {
         try {
             ByteBuffer buf = ByteBuffer.wrap(payload, offset, len);
             Session session = _SocketSession.get(getSession());
-            Message message = MessageWrapper.wrap(getSession().getUpgradeRequest().getOrigin(),null,
-                    buf.array());
+
+            Message message = null;
+
+            if (Solon.global().enableWebSocketD()) {
+                message = MessageUtils.decode(buf);
+            } else {
+                message = MessageWrapper.wrap(getSession().getUpgradeRequest().getOrigin(), null,
+                        buf.array());
+            }
 
             ListenerProxy.getGlobal().onMessage(session, message, false);
         } catch (Throwable ex) {
