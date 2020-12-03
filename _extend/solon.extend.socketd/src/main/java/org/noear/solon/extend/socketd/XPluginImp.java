@@ -21,9 +21,6 @@ public class XPluginImp implements Plugin {
 
                 //绑定监听
                 session.listener(l);
-
-                //发送心跳
-                session.sendHeartbeat();
             }
         });
     }

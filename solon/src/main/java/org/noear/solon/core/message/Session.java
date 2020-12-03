@@ -1,10 +1,12 @@
 package org.noear.solon.core.message;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 
 /**
@@ -60,6 +62,7 @@ public interface Session {
      * 当前实例监听者（ListenEndpoint 为路径监听者，不限实例）
      */
     default void listener(Listener listener) {
+
     }
 
     /**
@@ -116,6 +119,11 @@ public interface Session {
     default void sendHeartbeat() {
         send(Message.wrapHeartbeat());
     }
+
+    /**
+     * 发送心跳
+     */
+    void sendHeartbeatAuto(int intervalSeconds);
 
     /**
      * 发送握手

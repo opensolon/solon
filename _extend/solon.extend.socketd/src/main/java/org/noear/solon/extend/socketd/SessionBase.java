@@ -69,4 +69,19 @@ public abstract class SessionBase implements Session {
     public void listener(Listener listener) {
         this.listener = listener;
     }
+
+
+    private boolean _sendHeartbeatAuto = false;
+
+    @Override
+    public void sendHeartbeatAuto(int intervalSeconds) {
+        if (_sendHeartbeatAuto) {
+            return;
+        }
+
+        _sendHeartbeatAuto = true;
+
+        Utils.scheduled.scheduleWithFixedDelay(
+                this::sendHeartbeat, 0, intervalSeconds, TimeUnit.SECONDS);
+    }
 }
