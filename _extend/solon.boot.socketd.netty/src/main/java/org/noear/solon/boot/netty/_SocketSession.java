@@ -54,7 +54,7 @@ class _SocketSession extends SessionBase {
     /**
      * @return 是否为新链接
      */
-    private boolean prepareSend() throws IOException {
+    private boolean prepareNew() throws IOException {
         if (real == null) {
             real = connector.start(this);
 
@@ -120,7 +120,7 @@ class _SocketSession extends SessionBase {
     public void send(Message message) {
         try {
             synchronized (this) {
-                if (prepareSend()) {
+                if (prepareNew()) {
                     send0(handshakeMessage);
                 }
 
