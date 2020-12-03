@@ -130,4 +130,18 @@ public abstract class SessionBase implements Session {
         //发完之后，再缓存 //不然，会发两次
         handshakeMessage = req;
     }
+
+    @Override
+    public Message sendHandshakeAndResponse(Message message) {
+        if (message.flag() == -1) {
+            Message rst = sendAndResponse(message);
+
+            //发完之后，再缓存 //不然，会发两次
+            handshakeMessage = message;
+
+            return rst;
+        } else {
+            throw new IllegalArgumentException("The message flag not -1");
+        }
+    }
 }

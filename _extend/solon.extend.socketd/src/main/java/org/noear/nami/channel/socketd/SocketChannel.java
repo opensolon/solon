@@ -71,7 +71,12 @@ public class SocketChannel implements NamiChannel {
             System.out.println(message.toString());
         }
 
-        Message response = sessions.get().sendAndResponse(message);
+        Message response = null;
+        if(message.flag() == -1){
+            response = sessions.get().sendHandshakeAndResponse(message);
+        }else {
+            response = sessions.get().sendAndResponse(message);
+        }
 
         if (response == null) {
             return null;
