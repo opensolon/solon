@@ -30,7 +30,9 @@ public class SocketContext extends ContextEmpty {
         _method = session.method();
         _inetSocketAddress = session.getRemoteAddress();
 
-        headerMap().putAll(_message.headerMap());
+        if (Utils.isNotEmpty(message.header())) {
+            headerMap().putAll(_message.headerMap());
+        }
     }
 
 
