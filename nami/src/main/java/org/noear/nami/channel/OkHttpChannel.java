@@ -8,6 +8,7 @@ import org.noear.nami.Result;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
@@ -17,9 +18,9 @@ public class OkHttpChannel implements NamiChannel {
     public static final OkHttpChannel instance = new OkHttpChannel();
 
     @Override
-    public Result call(NamiConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
+    public Result call(NamiConfig cfg, Method method,  String action, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
         //0.检测method
-        boolean is_get = Constants.m_get.equals(method);
+        boolean is_get = Constants.m_get.equals(action);
 
         //0.尝试重构url
         if (is_get && args.size() > 0) {
@@ -36,7 +37,7 @@ public class OkHttpChannel implements NamiChannel {
         }
 
         //0.尝试解码器的过滤
-        cfg.getDecoder().filter(cfg, method, url, headers, args);
+        cfg.getDecoder().filter(cfg, action, url, headers, args);
 
         //0.开始构建http
         OkHttpUtils http = OkHttpUtils.http(url).headers(headers);
@@ -51,12 +52,12 @@ public class OkHttpChannel implements NamiChannel {
             switch (cfg.getEncoder().enctype()) {
                 case application_json: {
                     String json = (String) cfg.getEncoder().encode(args);
-                    response = http.bodyTxt(json, Constants.ct_json).exec(method);
+                    response = http.bodyTxt(json, Constants.ct_json).exec(action);
                     break;
                 }
                 case application_hessian: {
                     InputStream stream = new ByteArrayInputStream((byte[]) cfg.getEncoder().encode(args));
-                    response = http.bodyRaw(stream, Constants.ct_hessian).exec(method);
+                    response = http.bodyRaw(stream, Constants.ct_hessian).exec(action);
                     break;
                 }
                 default: {
@@ -64,7 +65,7 @@ public class OkHttpChannel implements NamiChannel {
                         //没参数按GET来
                         response = http.exec(Constants.m_get);
                     } else {
-                        response = http.data(args).exec(method);
+                        response = http.data(args).exec(action);
                     }
                 }
             }

@@ -5,6 +5,12 @@ import org.noear.solon.core.NvMap;
 
 import java.util.Map;
 
+/**
+ * 头信息处理工具
+ *
+ * @author noear
+ * @since 1.2
+ * */
 public class HeaderUtils {
     public static String encodeHeaderMap(Map<String, String> headers) {
         StringBuilder header = new StringBuilder();
@@ -12,6 +18,10 @@ public class HeaderUtils {
             headers.forEach((k, v) -> {
                 header.append(k).append("=").append(v).append("&");
             });
+
+            if (header.length() > 0) {
+                header.setLength(header.length() - 1);
+            }
         }
 
         return header.toString();
@@ -24,8 +34,9 @@ public class HeaderUtils {
             String[] ss = header.split("&");
             for (String s : ss) {
                 String[] kv = s.split("=");
-
-                headerMap.put(kv[0], kv[1]);
+                if (kv.length == 2) {
+                    headerMap.put(kv[0], kv[1]);
+                }
             }
         }
 

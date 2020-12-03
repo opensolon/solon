@@ -7,6 +7,7 @@ import org.noear.nami.NamiException;
 import org.noear.nami.Result;
 import org.noear.solon.core.message.Message;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
@@ -16,7 +17,7 @@ public class SocketChannel implements NamiChannel {
     public static final SocketChannel instance = new SocketChannel();
 
     @Override
-    public Result call(NamiConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
+    public Result call(NamiConfig cfg, Method method, String action, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
         byte[] message;
         switch (cfg.getEncoder().enctype()) {
             case application_json: {

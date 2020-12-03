@@ -10,9 +10,10 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.util.HeaderUtils;
-import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.extend.socketd.MessageWrapper;
+import org.noear.solon.extend.socketd.annotation.Handshake;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -26,13 +27,26 @@ public class SocketChannel implements NamiChannel {
     //public SocketChannel handshake();
 
     @Override
-    public Result call(NamiConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
+    public Result call(NamiConfig cfg, Method method, String action, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
 
         //0.尝试解码器的过滤
-        cfg.getDecoder().filter(cfg, method, url, headers, args);
+        cfg.getDecoder().filter(cfg, action, url, headers, args);
 
         Message message = null;
         String message_key = Utils.guid();
+        int flag = 0;
+
+        if (method != null) {
+            Handshake handshake = method.getAnnotation(Handshake.class);
+            if (handshake != null) {
+                flag = -1;
+
+                if (Utils.isNotEmpty(handshake.handshakeHeader())) {
+                    Map<String, String> headerMap = HeaderUtils.decodeHeaderMap(handshake.handshakeHeader());
+                    headers.putAll(headerMap);
+                }
+            }
+        }
 
 
         //1.执行并返回
@@ -40,7 +54,7 @@ public class SocketChannel implements NamiChannel {
         switch (cfg.getEncoder().enctype()) {
             case application_hessian: {
                 headers.put("Content-Type", Constants.ct_hessian);
-                message = MessageWrapper.wrap(message_key, url, HeaderUtils.encodeHeaderMap(headers), (byte[]) cfg.getEncoder().encode(args));
+                message = new Message(flag, message_key, url, HeaderUtils.encodeHeaderMap(headers), (byte[]) cfg.getEncoder().encode(args));
                 break;
             }
             default: {
@@ -48,7 +62,7 @@ public class SocketChannel implements NamiChannel {
                 //
                 headers.put("Content-Type", Constants.ct_json);
                 String json = (String) cfg.getEncoder().encode(args);
-                message = MessageWrapper.wrap(message_key, url, HeaderUtils.encodeHeaderMap(headers), json.getBytes());
+                message = new Message(flag, message_key, url, HeaderUtils.encodeHeaderMap(headers), json.getBytes());
                 break;
             }
         }

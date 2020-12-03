@@ -2,6 +2,7 @@ package org.noear.nami;
 
 import org.noear.nami.annotation.NamiClient;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +31,8 @@ public class Nami {
 
 
     private String _url;
-    private String _method = "POST";
+    private String _action = "POST";
+    private Method _method;
     private final NamiConfig _config;
 
     public Nami() {
@@ -46,11 +48,22 @@ public class Nami {
     }
 
     /**
-     * 设置请求方式
+     * 设置请求方法
      */
-    public Nami method(String method) {
-        if (method != null && method.length() > 0) {
+    public Nami method(Method method) {
+        if (method != null) {
             _method = method;
+        }
+        return this;
+    }
+
+
+    /**
+     * 设置请求动作
+     */
+    public Nami action(String action) {
+        if (action != null && action.length() > 0) {
+            _action = action;
         }
         return this;
     }
@@ -110,10 +123,10 @@ public class Nami {
             }
 
             for (Filter filter : _config.getFilters()) {
-                filter.filter(_config, _method, _url, headers, args);
+                filter.filter(_config, _action, _url, headers, args);
             }
 
-            _result = _config.getChannel().call(_config, _method, _url, headers, args);
+            _result = _config.getChannel().call(_config, _method, _action, _url, headers, args);
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {

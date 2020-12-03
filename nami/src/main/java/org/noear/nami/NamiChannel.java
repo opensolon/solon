@@ -1,5 +1,6 @@
 package org.noear.nami;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
@@ -9,5 +10,5 @@ public interface NamiChannel {
     /**
      * 设用
      * */
-    Result call(NamiConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable;
+    Result call(NamiConfig cfg, Method method, String action, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable;
 }

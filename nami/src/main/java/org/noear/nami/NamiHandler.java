@@ -111,17 +111,17 @@ public class NamiHandler implements InvocationHandler {
 
         //构建 fun
         String fun = method.getName();
-        String met = null;
+        String act = null;
         Mapping mapping = method.getAnnotation(Mapping.class);
         if (mapping != null && isEmpty(mapping.value()) == false) {
             //格式1: GET
             //格式2: GET user/a.0.1
             String val = mapping.value().trim();
             if (val.indexOf(" ") > 0) {
-                met = val.split(" ")[0];
+                act = val.split(" ")[0];
                 fun = val.split(" ")[1];
             }else{
-                met = val;
+                act = val;
             }
         }
 
@@ -166,7 +166,8 @@ public class NamiHandler implements InvocationHandler {
 
         //执行调用
         return new Nami(config)
-                .method(met)
+                .method(method)
+                .action(act)
                 .url(url, fun)
                 .call(headers, args)
                 .getObject(method.getReturnType());
