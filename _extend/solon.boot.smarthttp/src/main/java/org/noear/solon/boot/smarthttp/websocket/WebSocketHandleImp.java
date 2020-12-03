@@ -4,6 +4,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.ListenerProxy;
+import org.noear.solon.extend.socketd.MessageWrapper;
 import org.smartboot.http.WebSocketRequest;
 import org.smartboot.http.WebSocketResponse;
 import org.smartboot.http.server.handle.WebSocketDefaultHandle;
@@ -29,7 +30,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
     public void handleTextMessage(WebSocketRequest request, WebSocketResponse response, String data) {
         try {
             Session session = _SocketSession.get(request, response);
-            Message message = Message.wrap(request.getRequestURI(),null,
+            Message message = MessageWrapper.wrap(request.getRequestURI(),null,
                     data.getBytes("UTF-8"));
 
             ListenerProxy.getGlobal().onMessage(session, message, true);
@@ -42,7 +43,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
     public void handleBinaryMessage(WebSocketRequest request, WebSocketResponse response, byte[] data) {
         try {
             Session session = _SocketSession.get(request, response);
-            Message message = Message.wrap(request.getRequestURI(),null, data);
+            Message message = MessageWrapper.wrap(request.getRequestURI(),null, data);
 
             ListenerProxy.getGlobal().onMessage(session, message, false);
 

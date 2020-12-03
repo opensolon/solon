@@ -68,7 +68,7 @@ public class Message {
 
     //////////////////////////////////////////
 
-    private Message(int flag, String key, String resourceDescriptor, String header, byte[] body) {
+    public Message(int flag, String key, String resourceDescriptor, String header, byte[] body) {
         this.flag = flag;
 
         this.key = (key == null ? "" : key);
@@ -116,48 +116,16 @@ public class Message {
     //////////////////////////////////////////
 
     /**
-     * 打包
+     * 包装心跳包
      */
-    public static Message wrap(byte[] body) {
-        return wrap(null, null, body);
-    }
-
-    public static Message wrapJson(String resourceDescriptor, byte[] body) {
-        return wrap(resourceDescriptor, "Content-Type=application/json", body);
-    }
-
     public static Message wrapHeartbeat() {
-        return wrapHeartbeat("", new byte[]{});
+        return new Message(-2, UUID.randomUUID().toString(), "", null, null);
     }
 
-    public static Message wrapHeartbeat(String header, byte[] body) {
-        return new Message(-2, UUID.randomUUID().toString(), "", header, body);
-    }
-
+    /**
+     * 包装握手包
+     */
     public static Message wrapHandshake(String header, byte[] body) {
         return new Message(-1, UUID.randomUUID().toString(), "", header, body);
-    }
-
-
-    /**
-     * 打包
-     */
-    public static Message wrap(String resourceDescriptor, String header, byte[] body) {
-        return wrap(0, UUID.randomUUID().toString(), resourceDescriptor, header, body);
-    }
-
-
-    /**
-     * 打包
-     */
-    public static Message wrap(String key, String resourceDescriptor, String header, byte[] body) {
-        return wrap(0, key, resourceDescriptor, header, body);
-    }
-
-    /**
-     * 打包
-     */
-    public static Message wrap(int flag, String key, String resourceDescriptor, String header, byte[] body) {
-        return new Message(flag, key, resourceDescriptor, header, body);
     }
 }

@@ -1,12 +1,10 @@
 package org.noear.solon.core.message;
 
-import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Collection;
-import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 
 /**
@@ -129,6 +127,6 @@ public interface Session {
      * 发送握手
      */
     default void sendHandshake(String header, byte[] body) {
-        send(Message.wrapHeartbeat(header, body));
+        send(Message.wrapHandshake(header, body));
     }
 }

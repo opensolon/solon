@@ -5,6 +5,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.ListenerProxy;
+import org.noear.solon.extend.socketd.MessageWrapper;
 
 import java.nio.ByteBuffer;
 
@@ -21,7 +22,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
         try {
             ByteBuffer buf = ByteBuffer.wrap(payload, offset, len);
             Session session = _SocketSession.get(getSession());
-            Message message = Message.wrap(getSession().getUpgradeRequest().getOrigin(),null,
+            Message message = MessageWrapper.wrap(getSession().getUpgradeRequest().getOrigin(),null,
                     buf.array());
 
             ListenerProxy.getGlobal().onMessage(session, message, false);
@@ -34,7 +35,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
     public void onWebSocketText(String text) {
         try {
             Session session = _SocketSession.get(getSession());
-            Message message = Message.wrap(getSession().getUpgradeRequest().getRequestURI().toString(),null,
+            Message message = MessageWrapper.wrap(getSession().getUpgradeRequest().getRequestURI().toString(),null,
                     text.getBytes("UTF-8"));
 
             ListenerProxy.getGlobal().onMessage(session, message, true);

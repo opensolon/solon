@@ -92,7 +92,7 @@ public class MessageUtils {
             buffer.get(body, 0, len);
         }
 
-        return Message.wrap(flag, key, resourceDescriptor, header, body);
+        return MessageWrapper.wrap(flag, key, resourceDescriptor, header, body);
     }
 
 

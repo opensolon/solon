@@ -9,6 +9,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.extend.socketd.MessageWrapper;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -37,7 +38,7 @@ public class SocketChannel implements NamiChannel {
         switch (cfg.getEncoder().enctype()) {
             case application_hessian: {
                 headers.put("Content-Type", Constants.ct_hessian);
-                message = Message.wrap(message_key, url, headerToString(headers), (byte[]) cfg.getEncoder().encode(args));
+                message = MessageWrapper.wrap(message_key, url, headerToString(headers), (byte[]) cfg.getEncoder().encode(args));
                 break;
             }
             default: {
@@ -45,7 +46,7 @@ public class SocketChannel implements NamiChannel {
                 //
                 headers.put("Content-Type", Constants.ct_json);
                 String json = (String) cfg.getEncoder().encode(args);
-                message = Message.wrap(message_key, url, headerToString(headers), json.getBytes());
+                message = MessageWrapper.wrap(message_key, url, headerToString(headers), json.getBytes());
                 break;
             }
         }
