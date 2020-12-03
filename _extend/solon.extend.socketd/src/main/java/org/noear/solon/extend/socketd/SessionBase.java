@@ -130,15 +130,4 @@ public abstract class SessionBase implements Session {
         //发完之后，再缓存 //不然，会发两次
         handshakeMessage = req;
     }
-
-    @Override
-    public Message sendHandshakeAndResponse(String header) {
-        Message req = MessageWrapper.wrapHandshake(header);
-        Message rst = sendAndResponse(req);
-
-        //发完之后，再缓存 //不然，会发两次
-        handshakeMessage = req;
-
-        return rst;
-    }
 }

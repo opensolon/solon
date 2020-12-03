@@ -143,11 +143,4 @@ public interface Session {
      * @param header 头
      */
     void sendHandshake(String header);
-
-    /**
-     * 发送握手并等待（只支持发头）
-     *
-     * @param header 头
-     */
-    Message sendHandshakeAndResponse(String header);
 }
