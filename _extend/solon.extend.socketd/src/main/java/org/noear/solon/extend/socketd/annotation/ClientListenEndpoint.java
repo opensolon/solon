@@ -31,5 +31,5 @@ public @interface ClientListenEndpoint {
     /**
      * 心跳频率（单位：秒）
      * */
-    int heartbeatRate() default 10;
+    int heartbeatRate() default 30;
 }
