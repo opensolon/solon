@@ -115,17 +115,5 @@ public class Message {
 
     //////////////////////////////////////////
 
-    /**
-     * 包装心跳包
-     */
-    public static Message wrapHeartbeat() {
-        return new Message(-2, UUID.randomUUID().toString(), "", null, null);
-    }
 
-    /**
-     * 包装握手包
-     */
-    public static Message wrapHandshake(String header, byte[] body) {
-        return new Message(-1, UUID.randomUUID().toString(), "", header, body);
-    }
 }

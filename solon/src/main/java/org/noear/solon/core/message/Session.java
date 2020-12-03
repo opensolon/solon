@@ -114,9 +114,7 @@ public interface Session {
     /**
      * 发送心跳
      */
-    default void sendHeartbeat() {
-        send(Message.wrapHeartbeat());
-    }
+    void sendHeartbeat();
 
     /**
      * 发送心跳
@@ -126,7 +124,5 @@ public interface Session {
     /**
      * 发送握手
      */
-    default void sendHandshake(String header, byte[] body) {
-        send(Message.wrapHandshake(header, body));
-    }
+    void sendHandshake(String header, byte[] body);
 }

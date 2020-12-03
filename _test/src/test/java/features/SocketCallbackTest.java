@@ -6,6 +6,7 @@ import org.noear.snack.ONode;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.extend.socketd.MessageWrapper;
 import org.noear.solon.extend.socketd.SessionFactory;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
@@ -35,7 +36,7 @@ public class SocketCallbackTest {
         map.put("name", "noear");
         String map_josn = ONode.stringify(map);
 
-        Message message = Message.wrapJson(root + "/demoe/rpc/hello", map_josn.getBytes());
+        Message message = MessageWrapper.wrapJson(root + "/demoe/rpc/hello", map_josn.getBytes());
 
 
         CompletableFuture<Boolean> check = new CompletableFuture<>();

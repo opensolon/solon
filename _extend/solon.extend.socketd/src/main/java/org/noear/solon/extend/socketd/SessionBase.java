@@ -71,6 +71,14 @@ public abstract class SessionBase implements Session {
     }
 
 
+    /**
+     * 发送心跳
+     */
+    @Override
+    public void sendHeartbeat() {
+        send(MessageWrapper.wrapHeartbeat());
+    }
+
     private boolean _sendHeartbeatAuto = false;
 
     @Override
@@ -83,5 +91,10 @@ public abstract class SessionBase implements Session {
 
         Utils.scheduled.scheduleWithFixedDelay(
                 this::sendHeartbeat, 0, intervalSeconds, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public void sendHandshake(String header, byte[] body) {
+        send(MessageWrapper.wrapHandshake(header, body));
     }
 }

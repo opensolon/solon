@@ -9,6 +9,7 @@ import org.noear.nami.encoder.SnackEncoder;
 import org.noear.snack.ONode;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.extend.socketd.MessageWrapper;
 import org.noear.solon.extend.socketd.SessionFactory;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
@@ -28,7 +29,7 @@ public class SocketResponseTest {
 
 
         String root = "tcp://localhost:" + _port;
-        Message message =  Message.wrap(root + "/demog/中文/1",null, "Hello 世界!".getBytes());
+        Message message =  MessageWrapper.wrap(root + "/demog/中文/1",null, "Hello 世界!".getBytes());
 
         Message rst = session.sendAndResponse(message);
 
@@ -49,7 +50,7 @@ public class SocketResponseTest {
         map.put("name", "noear");
         String map_josn = ONode.stringify(map);
 
-        Message message = Message.wrapJson(root + "/demoe/rpc/hello", map_josn.getBytes());
+        Message message = MessageWrapper.wrapJson(root + "/demoe/rpc/hello", map_josn.getBytes());
 
         Message rst = session.sendAndResponse(message);
         String rst_str = ONode.deserialize(rst.toString());
