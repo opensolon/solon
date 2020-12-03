@@ -14,7 +14,7 @@ import java.util.function.Function;
  * */
 public class Message {
     /**
-     * 1.消息标志（-1握手包；0发起包； 1响应包）
+     * 1.消息标志（-2心跳包, -1握手包；0发起包； 1响应包）
      */
     private final int flag;
 
@@ -119,11 +119,15 @@ public class Message {
      * 打包
      */
     public static Message wrap(byte[] body) {
-        return wrap(null, null,body);
+        return wrap(null, null, body);
     }
 
     public static Message wrapJson(String resourceDescriptor, byte[] body) {
         return wrap(resourceDescriptor, "Content-Type=application/json", body);
+    }
+
+    public static Message wrapHeartbeat() {
+        return new Message(-2, UUID.randomUUID().toString(), "", "", new byte[]{});
     }
 
     /**

@@ -77,6 +77,11 @@ public class ListenerProxy implements Listener {
             sl.onMessage(session, message, messageIsString);
         }
 
+        //心跳包不进入处理流程
+        if(message.flag() == -2){
+            return;
+        }
+
         //如果是响应体，则直接通知Request
         if (message.flag() == 1) {
             //flag 消息标志（-1握手包；0发起包； 1响应包）

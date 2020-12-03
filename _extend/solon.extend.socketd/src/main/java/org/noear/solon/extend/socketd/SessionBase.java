@@ -59,7 +59,7 @@ public abstract class SessionBase implements Session {
 
     /**
      * 当前实例监听者（ListenEndpoint 为路径监听者，不限实例）
-     * */
+     */
     @Override
     public Listener listener() {
         return listener;
@@ -68,5 +68,6 @@ public abstract class SessionBase implements Session {
     @Override
     public void listener(Listener listener) {
         this.listener = listener;
+        send(Message.wrapHeartbeat());
     }
 }
