@@ -14,7 +14,7 @@ public class SocketD {
     //
     // session client
     //
-    public static Session create(String host, int port, boolean autoReconnect) {
+    public static Session create(String host, int port) {
         return SessionFactory.create(host, port, true);
     }
 
