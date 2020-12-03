@@ -117,7 +117,10 @@ public abstract class SessionBase implements Session {
 
     @Override
     public void sendHandshake(String header) {
-        handshakeMessage = MessageWrapper.wrapHandshake(header);
+        Message tmp = MessageWrapper.wrapHandshake(header);
         send(handshakeMessage);
+
+        //发完之后，再缓存 //不然，会发两次
+        handshakeMessage = tmp;
     }
 }
