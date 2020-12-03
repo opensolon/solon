@@ -10,9 +10,12 @@ import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.SessionFactory;
 
 public class SocketD {
+    public static Session create(String host, int port) {
+        return SessionFactory.create(host, port, true);
+    }
+
     public static <T> T create(String host, int port, Class<T> service) {
-        Session session = SessionFactory.create(host, port, true);
-        return create(session, service);
+        return create(create(host, port), service);
     }
 
     public static <T> T create(Context context, Class<T> service) {

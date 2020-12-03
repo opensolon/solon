@@ -74,7 +74,7 @@ public class Message {
         this.key = (key == null ? "" : key);
         this.resourceDescriptor = (resourceDescriptor == null ? "" : resourceDescriptor);
         this.header = (header == null ? "" : header);
-        this.body = body;
+        this.body = (body == null ? new byte[]{} : body);
     }
 
     @Override

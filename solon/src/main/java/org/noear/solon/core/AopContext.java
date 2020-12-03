@@ -3,7 +3,6 @@ package org.noear.solon.core;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
-import org.noear.solon.annotation.ListenEndpoint;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.Handler;
@@ -45,7 +44,7 @@ public class AopContext extends BeanContainer {
      */
     protected void initialize() {
 
-        //注册 @XConfiguration 构建器
+        //注册 @Configuration 构建器
         beanBuilderAdd(Configuration.class, (clz, bw, anno) -> {
             Inject typeInj = clz.getAnnotation(Inject.class);
             if (typeInj != null && Utils.isNotEmpty(typeInj.value())) {
@@ -77,7 +76,7 @@ public class AopContext extends BeanContainer {
             addBeanShape(clz, bw);
 
             //尝试导入
-            for(Annotation a1 : clz.getAnnotations()){
+            for (Annotation a1 : clz.getAnnotations()) {
                 if (anno instanceof Import) {
                     beanImport((Import) anno);
                 } else {
@@ -89,7 +88,7 @@ public class AopContext extends BeanContainer {
             //beanRegister(bw,bw.name(),bw.typed());
         });
 
-        //注册 @XBean 构建器
+        //注册 @Component 构建器
         beanBuilderAdd(Component.class, (clz, bw, anno) -> {
             bw.nameSet(anno.value());
             bw.tagSet(anno.tag());
@@ -117,23 +116,23 @@ public class AopContext extends BeanContainer {
             }
         });
 
-        //注册 @XController 构建器
+        //注册 @Controller 构建器
         beanBuilderAdd(Controller.class, (clz, bw, anno) -> {
             new HandlerLoader(bw).load(Solon.global());
         });
 
-        //注册 @XServerEndpoint 构建器
+        //注册 @Inject 构建器
+        beanInjectorAdd(Inject.class, ((fwT, anno) -> {
+            beanInject(fwT, anno.value());
+        }));
+
+        //注册 @ListenEndpoint 构建器
         beanBuilderAdd(ListenEndpoint.class, (clz, wrap, anno) -> {
             if (Listener.class.isAssignableFrom(clz)) {
                 Listener l = wrap.raw();
                 Solon.global().router().add(anno.value(), anno.method(), l);
             }
         });
-
-        //注册 @XInject 构建器
-        beanInjectorAdd(Inject.class, ((fwT, anno) -> {
-            beanInject(fwT, anno.value());
-        }));
     }
 
     /**

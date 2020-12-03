@@ -68,6 +68,5 @@ public abstract class SessionBase implements Session {
     @Override
     public void listener(Listener listener) {
         this.listener = listener;
-        send(Message.wrapHeartbeat());
     }
 }

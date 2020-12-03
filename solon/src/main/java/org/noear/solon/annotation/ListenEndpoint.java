@@ -32,10 +32,11 @@ import java.lang.annotation.*;
 public @interface ListenEndpoint {
     /**
      * 资源描述
-     * */
+     */
     String value() default "";
+
     /**
      * 方法
-     * */
+     */
     MethodType method() default MethodType.ALL;
 }
