@@ -58,20 +58,14 @@ class _SocketSession extends SessionBase {
     private boolean prepareNew() throws IOException {
         if (real == null) {
             real = connector.start(this);
-
-            if (listener() == null) {
-                listener().onOpen(this);
-            }
+            onOpen();
 
             return true;
         } else {
             if (autoReconnect) {
                 if (real.isInvalid()) {
                     real = connector.start(this);
-
-                    if (listener() == null) {
-                        listener().onOpen(this);
-                    }
+                    onOpen();
 
                     return true;
                 }

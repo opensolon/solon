@@ -57,20 +57,14 @@ class _SocketSession extends SessionBase {
     private boolean prepareNew() throws IOException {
         if (real == null) {
             real = connector.start(this);
-
-            if (listener() == null) {
-                listener().onOpen(this);
-            }
+            onOpen();
 
             return true;
         } else {
             if (autoReconnect) {
                 if (real.isActive() == false) {
                     real = connector.start(this);
-
-                    if (listener() == null) {
-                        listener().onOpen(this);
-                    }
+                    onOpen();
 
                     return true;
                 }

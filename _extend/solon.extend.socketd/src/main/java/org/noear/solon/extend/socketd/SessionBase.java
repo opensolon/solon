@@ -89,6 +89,12 @@ public abstract class SessionBase implements Session {
         this.listener = listener;
     }
 
+    protected void onOpen(){
+        if (listener() != null) {
+            listener().onOpen(this);
+        }
+    }
+
 
     /**
      * 发送心跳

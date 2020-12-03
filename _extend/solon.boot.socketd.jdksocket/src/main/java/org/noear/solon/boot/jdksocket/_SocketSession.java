@@ -76,10 +76,7 @@ class _SocketSession extends SessionBase {
     private boolean prepareNew() {
         if (real == null) {
             real = connector.start(this);
-
-            if (listener() == null) {
-                listener().onOpen(this);
-            }
+            onOpen();
 
             return true;
         } else {
