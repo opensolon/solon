@@ -1,8 +1,9 @@
-package org.noear.nami.channel.socketd;
+package org.noear.solon.extend.socketd;
 
 import org.noear.nami.Decoder;
 import org.noear.nami.Encoder;
 import org.noear.nami.Nami;
+import org.noear.nami.channel.socketd.SocketChannel;
 import org.noear.nami.decoder.SnackDecoder;
 import org.noear.nami.encoder.SnackTypeEncoder;
 import org.noear.solon.core.handle.Context;
@@ -10,12 +11,14 @@ import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.SessionFactory;
 
 public class SocketD {
-    public static Session create(String host, int port) {
-        return SessionFactory.create(host, port, true);
-    }
+
+    //
+    // rpc client
+    //
 
     public static <T> T create(String host, int port, Class<T> service) {
-        return create(create(host, port), service);
+        Session session = SessionFactory.create(host, port, true);
+        return create(session, service);
     }
 
     public static <T> T create(Context context, Class<T> service) {

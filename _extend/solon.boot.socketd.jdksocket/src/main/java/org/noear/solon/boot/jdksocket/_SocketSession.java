@@ -179,7 +179,7 @@ class _SocketSession extends SessionBase {
 
     @Override
     public Collection<Session> getOpenSessions() {
-        return new ArrayList<>(sessions.values());
+        return Collections.unmodifiableCollection(sessions.values());
     }
 
     @Override

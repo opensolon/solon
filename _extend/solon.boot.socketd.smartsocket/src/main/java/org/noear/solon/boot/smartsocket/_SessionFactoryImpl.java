@@ -4,6 +4,9 @@ import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.SessionFactory;
 import org.smartboot.socket.transport.AioSession;
 
+import java.util.Collection;
+import java.util.Collections;
+
 class _SessionFactoryImpl extends SessionFactory {
     @Override
     protected Session getSession(Object conn) {
@@ -12,6 +15,11 @@ class _SessionFactoryImpl extends SessionFactory {
         } else {
             throw new IllegalArgumentException("This conn requires a smartsocket AioSession type");
         }
+    }
+
+    @Override
+    protected Collection<Session> getOpenSessions() {
+        return Collections.unmodifiableCollection(_SocketSession.sessions.values());
     }
 
     @Override

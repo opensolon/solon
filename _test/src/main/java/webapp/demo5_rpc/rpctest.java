@@ -2,7 +2,7 @@ package webapp.demo5_rpc;
 
 import org.noear.nami.Nami;
 import org.noear.nami.channel.OkHttpChannel;
-import org.noear.nami.channel.socketd.SocketD;
+import org.noear.solon.extend.socketd.SocketD;
 import org.noear.nami.decoder.SnackDecoder;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
