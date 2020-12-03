@@ -33,9 +33,9 @@ public class SocketResponseTest {
 
         Message rst = session.sendAndResponse(message);
 
-        System.out.println(rst.toString());
+        System.out.println(rst.bodyAsString());
 
-        assert "我收到了：Hello 世界!".equals(rst.toString());
+        assert "我收到了：Hello 世界!".equals(rst.bodyAsString());
     }
 
     @Test
@@ -53,7 +53,7 @@ public class SocketResponseTest {
         Message message = MessageWrapper.wrapJson(root + "/demoe/rpc/hello", map_josn.getBytes());
 
         Message rst = session.sendAndResponse(message);
-        String rst_str = ONode.deserialize(rst.toString());
+        String rst_str = ONode.deserialize(rst.bodyAsString());
 
         System.out.println("收到:" + rst_str);
 

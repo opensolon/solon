@@ -24,18 +24,18 @@ public class SocketTest {
 
 
         Message msg = SocketUtils.send(root + "/demog/中文/1", "Hello 世界!");
-        System.out.println(msg.toString());
-        assert "我收到了：Hello 世界!".equals(msg.toString());
+        System.out.println(msg.bodyAsString());
+        assert "我收到了：Hello 世界!".equals(msg.bodyAsString());
 
         Thread.sleep(100);
         msg = SocketUtils.send(root + "/demog/中文/1", "Hello 世界!");
         System.out.println(msg.toString());
-        assert "我收到了：Hello 世界!".equals(msg.toString());
+        assert "我收到了：Hello 世界!".equals(msg.bodyAsString());
 
         Thread.sleep(100);
         msg = SocketUtils.send(root + "/demog/中文/2", "Hello 世界2!");
         System.out.println(msg.toString());
-        assert "我收到了：Hello 世界2!".equals(msg.toString());
+        assert "我收到了：Hello 世界2!".equals(msg.bodyAsString());
 
         Thread.sleep(100);
 
