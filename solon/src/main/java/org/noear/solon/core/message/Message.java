@@ -72,6 +72,14 @@ public class Message {
         return body;
     }
 
+    public String bodyAsString() {
+        if (body == null) {
+            return null;
+        } else {
+            return new String(body, charset);
+        }
+    }
+
     //////////////////////////////////////////
 
     /**
@@ -92,13 +100,15 @@ public class Message {
         this.body = (body == null ? new byte[]{} : body);
     }
 
+
     @Override
     public String toString() {
-        if (body == null) {
-            return null;
-        } else {
-            return new String(body, charset);
-        }
+        return "Message{" +
+                "flag=" + flag +
+                ", key='" + key + '\'' +
+                ", resourceDescriptor='" + resourceDescriptor + '\'' +
+                ", header='" + header + '\'' +
+                '}';
     }
 
     /**
