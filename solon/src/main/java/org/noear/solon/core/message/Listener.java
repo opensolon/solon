@@ -1,5 +1,7 @@
 package org.noear.solon.core.message;
 
+import java.io.IOException;
+
 /**
  * SocketD 监听器（实现 Message + Listener 架构）
  *
@@ -27,7 +29,7 @@ public interface Listener {
     default void onOpen(Session session) {
     }
 
-    void onMessage(Session session, Message message, boolean messageIsString);
+    void onMessage(Session session, Message message, boolean messageIsString) throws IOException;
 
     default void onClose(Session session) {
     }
