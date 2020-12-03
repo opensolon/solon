@@ -1,6 +1,7 @@
 package org.noear.solon.extend.socketd;
 
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.message.Listener;
@@ -20,6 +21,11 @@ public class XPluginImp implements Plugin {
 
                 //绑定监听
                 session.listener(l);
+
+                //发送握手包
+                if (Utils.isNotEmpty(anno.handshakeHeader())) {
+                    session.sendHandshake(anno.handshakeHeader());
+                }
 
                 //设定自动心跳
                 session.sendHeartbeatAuto(anno.heartbeatRate());
