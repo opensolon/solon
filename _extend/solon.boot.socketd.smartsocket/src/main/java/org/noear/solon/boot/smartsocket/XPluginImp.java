@@ -50,7 +50,7 @@ public final class XPluginImp implements Plugin {
         }
 
         try {
-            server = new AioQuickServer<>(_port, AioProtocol.instance, AioProcessor.instance);
+            server = new AioQuickServer<>(_port, AioProtocol.instance, new AioServerProcessor());
             server.setBannerEnabled(false);
             server.setReadBufferSize(readBufferSize);
             server.start();

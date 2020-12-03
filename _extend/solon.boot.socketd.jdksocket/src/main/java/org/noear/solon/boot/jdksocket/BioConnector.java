@@ -18,9 +18,11 @@ class BioConnector {
         this.port = port;
     }
 
-    public Socket start() {
+    public Socket start(Session session) {
         try {
             Socket socket = new Socket(host, port);
+
+            startReceive(session, socket);
 
             return socket;
         } catch (Exception ex) {
@@ -28,7 +30,7 @@ class BioConnector {
         }
     }
 
-    public void startReceive(Session session, Socket socket) {
+    void startReceive(Session session, Socket socket) {
         Utils.pools.submit(() -> {
             while (true) {
                 Message message = BioReceiver.receive(socket);

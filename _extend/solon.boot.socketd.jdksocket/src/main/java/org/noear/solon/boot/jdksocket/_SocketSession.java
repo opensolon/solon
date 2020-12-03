@@ -70,9 +70,7 @@ class _SocketSession extends SessionBase {
 
     private void prepareSend() {
         if (real == null) {
-            real = connector.start();
-
-            connector.startReceive(this, real);
+            real = connector.start(this);
         }
     }
 

@@ -8,9 +8,7 @@ import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.StateMachineEnum;
 import org.smartboot.socket.transport.AioSession;
 
-class AioProcessor implements MessageProcessor<Message> {
-    public static final AioProcessor instance = new AioProcessor();
-
+class AioServerProcessor implements MessageProcessor<Message> {
     @Override
     public void process(AioSession session, Message message) {
         try {
