@@ -123,6 +123,16 @@ public interface Session {
 
     /**
      * 发送握手
+     * @param header 头
+     * @param body 主体
      */
     void sendHandshake(String header, byte[] body);
+
+    /**
+     * 发送握手
+     * @param header 头
+     */
+    default void sendHandshake(String header) {
+        sendHandshake(header, null);
+    }
 }
