@@ -90,7 +90,7 @@ public abstract class SessionBase implements Session {
         this.listener = listener;
     }
 
-    protected void onOpen(){
+    protected void onOpen() {
         if (listener() != null) {
             listener().onOpen(this);
         }
@@ -124,10 +124,21 @@ public abstract class SessionBase implements Session {
 
     @Override
     public void sendHandshake(String header) {
-        Message tmp = MessageWrapper.wrapHandshake(header);
-        send(tmp);
+        Message req = MessageWrapper.wrapHandshake(header);
+        send(req);
 
         //发完之后，再缓存 //不然，会发两次
-        handshakeMessage = tmp;
+        handshakeMessage = req;
+    }
+
+    @Override
+    public Message sendHandshakeAndResponse(String header) {
+        Message req = MessageWrapper.wrapHandshake(header);
+        Message rst = sendAndResponse(req);
+
+        //发完之后，再缓存 //不然，会发两次
+        handshakeMessage = req;
+
+        return rst;
     }
 }
