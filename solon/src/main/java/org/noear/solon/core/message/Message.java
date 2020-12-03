@@ -134,6 +134,11 @@ public class Message {
         return new Message(-2, UUID.randomUUID().toString(), "", header, body);
     }
 
+    public static Message wrapHandshake(String header, byte[] body) {
+        return new Message(-1, UUID.randomUUID().toString(), "", header, body);
+    }
+
+
     /**
      * 打包
      */
