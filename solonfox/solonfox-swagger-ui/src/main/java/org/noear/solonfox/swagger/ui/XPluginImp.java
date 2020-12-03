@@ -1,5 +1,5 @@
 package org.noear.solonfox.swagger.ui;
 
-class XPluginImp {
+public class XPluginImp {
 
 }
