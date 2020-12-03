@@ -88,6 +88,11 @@ public abstract class SessionBase implements Session {
     @Override
     public void listener(Listener listener) {
         this.listener = listener;
+
+        Message tmp = listener.onHandshake();
+        if (tmp != null) {
+            handshakeMessage = tmp;
+        }
     }
 
 
