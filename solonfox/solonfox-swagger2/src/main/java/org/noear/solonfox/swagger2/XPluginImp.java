@@ -44,7 +44,7 @@ public class XPluginImp implements Plugin {
 
         Aop.beanOnloaded(this::onAppLoadEnd);
 
-        app.get("/v2/api-doc",(c)->{
+        app.get("v2/swagger.json",(c)->{
             c.outputAsJson(ONode.stringify(swagger));
         });
 
