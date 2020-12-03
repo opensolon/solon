@@ -1,11 +1,13 @@
 package org.noear.solon.boot.netty;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.ListenerProxy;
 
+@ChannelHandler.Sharable
 public class NioServerProcessor extends SimpleChannelInboundHandler<Message> {
 
     @Override
