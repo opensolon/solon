@@ -28,7 +28,9 @@ public class XPluginImp implements Plugin {
                 }
 
                 //设定自动心跳
-                session.sendHeartbeatAuto(anno.heartbeatRate());
+                if (anno.heartbeatRate() > 0) {
+                    session.sendHeartbeatAuto(anno.heartbeatRate());
+                }
             }
         });
     }
