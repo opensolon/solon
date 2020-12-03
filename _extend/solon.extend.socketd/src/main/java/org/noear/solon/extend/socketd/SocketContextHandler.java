@@ -24,8 +24,9 @@ class SocketContextHandler {
 
             Solon.global().tryHandle(ctx);
 
-            //不管有没有成功，都返回
-            ctx.commit();
+            if (ctx.getHandled() || ctx.status() != 404) {
+                ctx.commit();
+            }
         } catch (Throwable ex) {
             //context 初始化时，可能会出错
             //
