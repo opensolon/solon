@@ -42,6 +42,8 @@
         <mybatis.ver>3.5.3</mybatis.ver>
         <feign.ver>8.18.0</feign.ver>
         <dubbo.ver>2.7.5</dubbo.ver>
+
+        <swagger.ver>1.5.13</swagger.ver>
     </properties>
 
 
