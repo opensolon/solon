@@ -52,7 +52,7 @@ public class App{
 | --- | --- |
 | org.noear:solon-parent | 框架版本管理 |
 | org.noear:solon | 主框架 |
-| org.noear:nami | 伴生框架（做为solon rpc 的客户端） |
+| org.noear:nami | 伴生框架（做为solon rpc 的客户端）；由 Fairy 更名而来 |
 
 ###### 快速集成开发包
 
