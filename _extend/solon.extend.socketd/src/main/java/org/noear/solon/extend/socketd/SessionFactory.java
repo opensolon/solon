@@ -12,13 +12,12 @@ public abstract class SessionFactory {
     }
 
     protected abstract Session getSession(Object conn);
+
     protected abstract Collection<Session> getOpenSessions();
 
     protected abstract void removeSession(Object conn);
 
     protected abstract Session createSession(String host, int port, boolean autoReconnect);
-
-
 
 
     //
@@ -32,7 +31,7 @@ public abstract class SessionFactory {
         return instance.getSession(conn);
     }
 
-    public static Collection<Session> getOpens(){
+    public static Collection<Session> getOpens() {
         if (instance == null) {
             throw new IllegalArgumentException("SessionFactory uninitialized");
         }
@@ -58,6 +57,9 @@ public abstract class SessionFactory {
             throw new IllegalArgumentException("SessionFactory uninitialized");
         }
 
-        return instance.createSession(host, port, autoReconnect);
+        Session session = instance.createSession(host, port, autoReconnect);
+        session.setHandshaked(true);
+
+        return session;
     }
 }
