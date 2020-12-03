@@ -50,7 +50,7 @@ public class XPluginImp implements Plugin {
             //在服务器端的handler()方法表示对bossGroup起作用，而childHandler表示对wokerGroup起作用
             bootstrap.group(bossGroup, wokerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .childHandler(new NioChannelInitializer(new NioServerProcessor()));
+                    .childHandler(new NioChannelInitializer(() -> new NioServerProcessor()));
 
             _server = bootstrap.bind(_port).sync();
 

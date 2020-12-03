@@ -25,7 +25,7 @@ public class NioConnector {
 
             bootstrap.group(eventLoopGroup)
                     .channel(NioSocketChannel.class)
-                    .handler(new NioChannelInitializer(new NioClientProcessor(session)));
+                    .handler(new NioChannelInitializer(() -> new NioClientProcessor(session)));
 
             ChannelFuture channelFuture = bootstrap.connect(host, port).sync();
 

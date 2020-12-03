@@ -6,9 +6,11 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
 import org.noear.solon.core.message.Message;
 
+import java.util.function.Supplier;
+
 class NioChannelInitializer extends ChannelInitializer<SocketChannel> {
-    SimpleChannelInboundHandler<Message> processor;
-    NioChannelInitializer(SimpleChannelInboundHandler<Message> processor){
+    Supplier<SimpleChannelInboundHandler<Message>> processor;
+    NioChannelInitializer(Supplier<SimpleChannelInboundHandler<Message>> processor){
         this.processor = processor;
     }
 
@@ -18,6 +20,6 @@ class NioChannelInitializer extends ChannelInitializer<SocketChannel> {
 
         pipeline.addLast(new MessageDecoder());
         pipeline.addLast(new MessageEncoder());
-        pipeline.addLast(processor);
+        pipeline.addLast(processor.get());
     }
 }
