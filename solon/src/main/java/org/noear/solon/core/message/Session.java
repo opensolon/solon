@@ -144,22 +144,4 @@ public interface Session {
      * @param body   主体
      */
     void sendHandshake(String header, byte[] body);
-
-    /**
-     * 发送握手
-     *
-     * @param header 头
-     */
-    default void sendHandshake(String header) {
-        sendHandshake(header, null);
-    }
-
-    /**
-     * 发送握手
-     *
-     * @param header 头
-     */
-    default void sendHandshake(Map<String, String> header) {
-        sendHandshake(HeaderUtils.encodeHeaderMap(header), null);
-    }
 }

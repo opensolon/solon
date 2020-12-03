@@ -64,18 +64,26 @@ class _SocketSession extends SessionBase {
 
     BioConnector connector;
     boolean autoReconnect;
+
     public _SocketSession(BioConnector connector, boolean autoReconnect) {
         this.connector = connector;
         this.autoReconnect = autoReconnect;
     }
 
-    private void prepareSend() {
+    /**
+     * @return 是否为新链接
+     */
+    private boolean prepareSend() {
         if (real == null) {
             real = connector.start(this);
 
             if (listener() == null) {
                 listener().onOpen(this);
             }
+
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -118,15 +126,14 @@ class _SocketSession extends SessionBase {
     public void send(Message message) {
         try {
             synchronized (this) {
-                prepareSend();
+                if (prepareSend()) {
+                    send0(handshakeMessage);
+                }
 
                 //
                 // 转包为Message，再转byte[]
                 //
-                byte[] bytes = MessageUtils.encode(message).array();
-
-                real.getOutputStream().write(bytes);
-                real.getOutputStream().flush();
+                send0(message);
             }
         } catch (SocketException ex) {
             if (autoReconnect) {
@@ -137,6 +144,17 @@ class _SocketSession extends SessionBase {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    private void send0(Message message) throws IOException {
+        if (message == null) {
+            return;
+        }
+
+        byte[] bytes = MessageUtils.encode(message).array();
+
+        real.getOutputStream().write(bytes);
+        real.getOutputStream().flush();
     }
 
     @Override
@@ -199,5 +217,4 @@ class _SocketSession extends SessionBase {
     public int hashCode() {
         return Objects.hash(real);
     }
-
 }

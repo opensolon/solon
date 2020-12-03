@@ -17,6 +17,7 @@ import java.util.*;
 
 class _SocketSession extends SessionBase {
     public static Map<AioSession, Session> sessions = new HashMap<>();
+
     public static Session get(AioSession real) {
         Session tmp = sessions.get(real);
         if (tmp == null) {
@@ -32,30 +33,37 @@ class _SocketSession extends SessionBase {
         return tmp;
     }
 
-    public static void remove(AioSession real){
+    public static void remove(AioSession real) {
         sessions.remove(real);
     }
 
     AioSession real;
-    public _SocketSession(AioSession real){
+
+    public _SocketSession(AioSession real) {
         this.real = real;
     }
 
 
     AioConnector connector;
     boolean autoReconnect;
+
     public _SocketSession(AioConnector connector, boolean autoReconnect) {
         this.connector = connector;
         this.autoReconnect = autoReconnect;
     }
 
-    private void prepareSend() throws IOException {
+    /**
+     * @return 是否为新链接
+     */
+    private boolean prepareSend() throws IOException {
         if (real == null) {
             real = connector.start(this);
 
             if (listener() == null) {
                 listener().onOpen(this);
             }
+
+            return true;
         } else {
             if (autoReconnect) {
                 if (real.isInvalid()) {
@@ -64,9 +72,13 @@ class _SocketSession extends SessionBase {
                     if (listener() == null) {
                         listener().onOpen(this);
                     }
+
+                    return true;
                 }
             }
         }
+
+        return false;
     }
 
     @Override
@@ -75,6 +87,7 @@ class _SocketSession extends SessionBase {
     }
 
     private String _sessionId = Utils.guid();
+
     @Override
     public String sessionId() {
         return _sessionId;
@@ -108,14 +121,14 @@ class _SocketSession extends SessionBase {
     public void send(Message message) {
         try {
             synchronized (this) {
-                prepareSend();
+                if (prepareSend()) {
+                    send0(handshakeMessage);
+                }
 
                 //
                 // 转包为Message，再转byte[]
                 //
-                byte[] bytes = MessageUtils.encode(message).array();
-
-                real.writeBuffer().writeAndFlush(bytes);
+                send0(message);
             }
         } catch (ClosedChannelException ex) {
             if (autoReconnect) {
@@ -126,6 +139,16 @@ class _SocketSession extends SessionBase {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    private void send0(Message message) throws IOException {
+        if (message == null) {
+            return;
+        }
+
+        byte[] bytes = MessageUtils.encode(message).array();
+
+        real.writeBuffer().writeAndFlush(bytes);
     }
 
 

@@ -16,6 +16,7 @@ import java.util.*;
 
 class _SocketSession extends SessionBase {
     public static Map<Channel, Session> sessions = new HashMap<>();
+
     public static Session get(Channel real) {
         Session tmp = sessions.get(real);
         if (tmp == null) {
@@ -31,30 +32,37 @@ class _SocketSession extends SessionBase {
         return tmp;
     }
 
-    public static void remove(Channel real){
+    public static void remove(Channel real) {
         sessions.remove(real);
     }
 
     Channel real;
-    public _SocketSession(Channel real){
+
+    public _SocketSession(Channel real) {
         this.real = real;
     }
 
 
     NioConnector connector;
     boolean autoReconnect;
+
     public _SocketSession(NioConnector connector, boolean autoReconnect) {
         this.connector = connector;
         this.autoReconnect = autoReconnect;
     }
 
-    private void prepareSend() throws IOException {
+    /**
+     * @return 是否为新链接
+     */
+    private boolean prepareSend() throws IOException {
         if (real == null) {
             real = connector.start(this);
 
             if (listener() == null) {
                 listener().onOpen(this);
             }
+
+            return true;
         } else {
             if (autoReconnect) {
                 if (real.isActive() == false) {
@@ -63,9 +71,13 @@ class _SocketSession extends SessionBase {
                     if (listener() == null) {
                         listener().onOpen(this);
                     }
+
+                    return true;
                 }
             }
         }
+
+        return false;
     }
 
     @Override
@@ -74,6 +86,7 @@ class _SocketSession extends SessionBase {
     }
 
     private String _sessionId = Utils.guid();
+
     @Override
     public String sessionId() {
         return _sessionId;
@@ -107,14 +120,16 @@ class _SocketSession extends SessionBase {
     public void send(Message message) {
         try {
             synchronized (this) {
-                prepareSend();
+                if (prepareSend()) {
+                    send0(handshakeMessage);
+                }
 
                 //
                 // 转包为Message，再转byte[]
                 //
                 //byte[] bytes = MessageUtils.encode(message).array();
 
-                real.writeAndFlush(message);
+                send0(message);
             }
         } catch (RuntimeException ex) {
             Throwable ex2 = Utils.throwableUnwrap(ex);
@@ -127,6 +142,14 @@ class _SocketSession extends SessionBase {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    private void send0(Message message) throws IOException {
+        if (message == null) {
+            return;
+        }
+
+        real.writeAndFlush(message);
     }
 
 
@@ -149,7 +172,7 @@ class _SocketSession extends SessionBase {
     @Override
     public InetSocketAddress getRemoteAddress() {
         try {
-            return (InetSocketAddress)real.remoteAddress();
+            return (InetSocketAddress) real.remoteAddress();
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
@@ -158,13 +181,14 @@ class _SocketSession extends SessionBase {
     @Override
     public InetSocketAddress getLocalAddress() {
         try {
-            return (InetSocketAddress)real.localAddress();
+            return (InetSocketAddress) real.localAddress();
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
 
     private Object attachment;
+
     @Override
     public void setAttachment(Object obj) {
         attachment = obj;
@@ -172,7 +196,7 @@ class _SocketSession extends SessionBase {
 
     @Override
     public <T> T getAttachment() {
-        return (T)attachment;
+        return (T) attachment;
     }
 
     @Override

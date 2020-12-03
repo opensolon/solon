@@ -14,15 +14,17 @@ public abstract class SessionBase implements Session {
     //////////////////////////////////////////
 
     private boolean _handshaked;
+
     /**
      * 设置握手状态
-     * */
+     */
     public void setHandshaked(boolean handshaked) {
         _handshaked = handshaked;
     }
+
     /**
      * 获取握手状态
-     * */
+     */
     public boolean getHandshaked() {
         return _handshaked;
     }
@@ -111,8 +113,12 @@ public abstract class SessionBase implements Session {
                 this::sendHeartbeat, 0, intervalSeconds, TimeUnit.SECONDS);
     }
 
+    //保存最后一次握手的信息；之后重链时使用
+    protected Message handshakeMessage;
+
     @Override
     public void sendHandshake(String header, byte[] body) {
-        send(MessageWrapper.wrapHandshake(header, body));
+        handshakeMessage = MessageWrapper.wrapHandshake(header, body);
+        send(handshakeMessage);
     }
 }
