@@ -7,25 +7,26 @@ import org.noear.solon.core.message.Session;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 
 public abstract class SessionBase implements Session {
     //////////////////////////////////////////
 
-    private boolean _handshaked;
+    private AtomicBoolean _handshaked = new AtomicBoolean();
 
     /**
      * 设置握手状态
      */
     public void setHandshaked(boolean handshaked) {
-        _handshaked = handshaked;
+        _handshaked.set(handshaked);
     }
 
     /**
      * 获取握手状态
      */
     public boolean getHandshaked() {
-        return _handshaked;
+        return _handshaked.get();
     }
 
     //////////////////////////////////////////
