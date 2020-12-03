@@ -14,7 +14,6 @@ public class MessageWrapper {
     }
 
 
-
     /**
      * 打包
      */
@@ -59,5 +58,9 @@ public class MessageWrapper {
      */
     public static Message wrapHandshake(String header, byte[] body) {
         return new Message(-1, UUID.randomUUID().toString(), "", header, body);
+    }
+
+    public static Message wrapResponse(Message request, String header, byte[] body) {
+        return wrap(1, request.key(), request.resourceDescriptor(), header, body);
     }
 }
