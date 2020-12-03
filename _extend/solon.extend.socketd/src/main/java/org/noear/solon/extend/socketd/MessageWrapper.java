@@ -2,6 +2,7 @@ package org.noear.solon.extend.socketd;
 
 import org.noear.solon.core.message.Message;
 
+import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
 public class MessageWrapper {
@@ -43,6 +44,14 @@ public class MessageWrapper {
 
     public static Message wrapJson(String resourceDescriptor, byte[] body) {
         return wrap(resourceDescriptor, "Content-Type=application/json", body);
+    }
+
+    public static Message wrapJson(String resourceDescriptor, String body) {
+        try {
+            return wrapJson(resourceDescriptor, body.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
 
