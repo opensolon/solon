@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface ClientListenEndpoint {
+public @interface ClientEndpoint {
     /**
      * 资源描述
      */

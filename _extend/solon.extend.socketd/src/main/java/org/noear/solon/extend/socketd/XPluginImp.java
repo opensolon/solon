@@ -5,13 +5,13 @@ import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.annotation.ClientListenEndpoint;
+import org.noear.solon.extend.socketd.annotation.ClientEndpoint;
 
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
         //注册 @ClientListenEndpoint 构建器
-        Aop.context().beanBuilderAdd(ClientListenEndpoint.class, (clz, wrap, anno) -> {
+        Aop.context().beanBuilderAdd(ClientEndpoint.class, (clz, wrap, anno) -> {
             if (Listener.class.isAssignableFrom(clz)) {
                 Listener l = wrap.raw();
 
