@@ -16,7 +16,7 @@ public class XPluginImp implements Plugin {
                 Listener l = wrap.raw();
 
                 //创建会话
-                Session session = SessionFactory.create(anno.host(), anno.port(),true);
+                Session session = SocketD.create(anno.host(), anno.port(),true);
 
                 //绑定监听
                 session.listener(l);

@@ -11,6 +11,12 @@ import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.SessionFactory;
 
 public class SocketD {
+    //
+    // session client
+    //
+    public static Session create(String host, int port, boolean autoReconnect) {
+        return SessionFactory.create(host, port, true);
+    }
 
     //
     // rpc client
