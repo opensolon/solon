@@ -85,6 +85,19 @@ public interface Session {
      */
     boolean isSecure();
 
+    //////////////////////////////////////////
+
+    /**
+     * 设置握手状态
+     * */
+    void setHandshaked(boolean handshaked);
+    /**
+     * 获取握手状态
+     * */
+    boolean getHandshaked();
+
+    //////////////////////////////////////////
+
     /**
      * 远程地址
      */

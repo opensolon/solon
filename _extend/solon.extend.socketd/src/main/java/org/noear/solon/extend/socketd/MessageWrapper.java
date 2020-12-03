@@ -19,7 +19,7 @@ public class MessageWrapper {
      * 打包
      */
     public static Message wrap(String resourceDescriptor, String header, byte[] body) {
-        return wrap(0, UUID.randomUUID().toString(), resourceDescriptor, header, body);
+        return new Message(0, UUID.randomUUID().toString(), resourceDescriptor, header, body);
     }
 
 
@@ -27,14 +27,7 @@ public class MessageWrapper {
      * 打包
      */
     public static Message wrap(String key, String resourceDescriptor, String header, byte[] body) {
-        return wrap(0, key, resourceDescriptor, header, body);
-    }
-
-    /**
-     * 打包
-     */
-    public static Message wrap(int flag, String key, String resourceDescriptor, String header, byte[] body) {
-        return new Message(flag, key, resourceDescriptor, header, body);
+        return new Message(0, key, resourceDescriptor, header, body);
     }
 
 
@@ -69,7 +62,18 @@ public class MessageWrapper {
         return new Message(-1, UUID.randomUUID().toString(), "", header, body);
     }
 
+    public static Message wrapHandshake(String header) {
+        return wrapHandshake(header, null);
+    }
+
+    /**
+     * 包装响应包
+     */
     public static Message wrapResponse(Message request, String header, byte[] body) {
-        return wrap(1, request.key(), request.resourceDescriptor(), header, body);
+        return new Message(1, request.key(), request.resourceDescriptor(), header, body);
+    }
+
+    public static Message wrapResponse(Message request, byte[] body) {
+        return wrapResponse(request, body);
     }
 }

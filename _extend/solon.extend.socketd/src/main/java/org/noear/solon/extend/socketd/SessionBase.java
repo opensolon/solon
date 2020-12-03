@@ -11,6 +11,24 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public abstract class SessionBase implements Session {
+    //////////////////////////////////////////
+
+    private boolean _handshaked;
+    /**
+     * 设置握手状态
+     * */
+    public void setHandshaked(boolean handshaked) {
+        _handshaked = handshaked;
+    }
+    /**
+     * 获取握手状态
+     * */
+    public boolean getHandshaked() {
+        return _handshaked;
+    }
+
+    //////////////////////////////////////////
+
     /**
      * 用于支持双向RPC
      */

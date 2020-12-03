@@ -2,6 +2,7 @@ package org.noear.solon.extend.socketd;
 
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
@@ -16,6 +17,11 @@ class SocketContextHandler {
 
     public void handle(Session session, Message message, boolean messageIsString) {
         if (message == null) {
+            return;
+        }
+
+        //没有资源描述的，不进入Handler体系
+        if (Utils.isEmpty(message.resourceDescriptor())) {
             return;
         }
 
