@@ -127,7 +127,11 @@ public class Message {
     }
 
     public static Message wrapHeartbeat() {
-        return new Message(-2, UUID.randomUUID().toString(), "", "", new byte[]{});
+        return wrapHeartbeat("", new byte[]{});
+    }
+
+    public static Message wrapHeartbeat(String header, byte[] body) {
+        return new Message(-2, UUID.randomUUID().toString(), "", header, body);
     }
 
     /**
