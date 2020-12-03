@@ -127,7 +127,7 @@ public class AopContext extends BeanContainer {
         }));
 
         //注册 @ListenEndpoint 构建器
-        beanBuilderAdd(ListenEndpoint.class, (clz, wrap, anno) -> {
+        beanBuilderAdd(ServerEndpoint.class, (clz, wrap, anno) -> {
             if (Listener.class.isAssignableFrom(clz)) {
                 Listener l = wrap.raw();
                 Solon.global().router().add(anno.value(), anno.method(), l);

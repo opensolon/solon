@@ -5,9 +5,9 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.annotation.ListenEndpoint;
+import org.noear.solon.annotation.ServerEndpoint;
 
-@ListenEndpoint(value = "**")
+@ServerEndpoint(value = "**")
 public class SocketListenerImp implements Listener {
     @Override
     public void onMessage(Session session, Message message, boolean messageIsString) {
