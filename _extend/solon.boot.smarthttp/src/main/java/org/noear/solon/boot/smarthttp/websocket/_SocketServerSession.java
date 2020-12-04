@@ -1,9 +1,11 @@
 package org.noear.solon.boot.smarthttp.websocket;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.extend.socketd.SessionBase;
 import org.smartboot.http.WebSocketRequest;
 import org.smartboot.http.WebSocketResponse;
@@ -11,19 +13,18 @@ import org.smartboot.http.WebSocketResponse;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.nio.ByteBuffer;
 import java.util.*;
 
-public class _SocketSession extends SessionBase {
-    public static Map<WebSocketRequest, _SocketSession> sessions = new HashMap<>();
+public class _SocketServerSession extends SessionBase {
+    public static Map<WebSocketRequest, _SocketServerSession> sessions = new HashMap<>();
 
-    public static _SocketSession get(WebSocketRequest req, WebSocketResponse res) {
-        _SocketSession tmp = sessions.get(req);
+    public static _SocketServerSession get(WebSocketRequest req, WebSocketResponse res) {
+        _SocketServerSession tmp = sessions.get(req);
         if (tmp == null) {
             synchronized (req) {
                 tmp = sessions.get(req);
                 if (tmp == null) {
-                    tmp = new _SocketSession(req, res);
+                    tmp = new _SocketServerSession(req, res);
                     sessions.put(req, tmp);
                 }
             }
@@ -32,7 +33,7 @@ public class _SocketSession extends SessionBase {
         return tmp;
     }
 
-    public static _SocketSession getOnly(WebSocketRequest real){
+    public static _SocketServerSession getOnly(WebSocketRequest real){
         return sessions.get(real);
     }
 
@@ -44,7 +45,7 @@ public class _SocketSession extends SessionBase {
     WebSocketRequest request;
     WebSocketResponse response;
 
-    public _SocketSession(WebSocketRequest request, WebSocketResponse response) {
+    public _SocketServerSession(WebSocketRequest request, WebSocketResponse response) {
         this.request = request;
         this.response = response;
     }
@@ -83,14 +84,18 @@ public class _SocketSession extends SessionBase {
 
     @Override
     public void send(byte[] message) {
-        ByteBuffer buf = ByteBuffer.wrap(message);
-        response.sendBinaryMessage(buf.array());
+        response.sendBinaryMessage(message);
     }
 
     @Override
     public void send(Message message) {
-        send(message.body());
+        if (Solon.global().enableWebSocketD()) {
+            send(MessageUtils.encode(message).array());
+        } else {
+            send(message.body());
+        }
     }
+
 
 
     private boolean isOpen = true;
@@ -147,7 +152,7 @@ public class _SocketSession extends SessionBase {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        _SocketSession that = (_SocketSession) o;
+        _SocketServerSession that = (_SocketServerSession) o;
         return Objects.equals(request, that.request);
     }
 

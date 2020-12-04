@@ -17,23 +17,23 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
 
     @Override
     public void onHandShark(WebSocketRequest request, WebSocketResponse response) {
-        ListenerProxy.getGlobal().onOpen(_SocketSession.get(request, response));
+        ListenerProxy.getGlobal().onOpen(_SocketServerSession.get(request, response));
     }
 
     @Override
     public void onClose(WebSocketRequest request, WebSocketResponse response) {
-        _SocketSession session = _SocketSession.get(request, response);
+        _SocketServerSession session = _SocketServerSession.get(request, response);
         session.onClose();
 
         ListenerProxy.getGlobal().onClose(session);
 
-        _SocketSession.remove(request);
+        _SocketServerSession.remove(request);
     }
 
     @Override
     public void handleTextMessage(WebSocketRequest request, WebSocketResponse response, String data) {
         try {
-            Session session = _SocketSession.get(request, response);
+            Session session = _SocketServerSession.get(request, response);
             Message message = MessageWrapper.wrap(request.getRequestURI(),null,
                     data.getBytes("UTF-8"));
 
@@ -46,7 +46,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
     @Override
     public void handleBinaryMessage(WebSocketRequest request, WebSocketResponse response, byte[] data) {
         try {
-            Session session = _SocketSession.get(request, response);
+            Session session = _SocketServerSession.get(request, response);
             Message message = null;
 
             if (Solon.global().enableWebSocketD()) {

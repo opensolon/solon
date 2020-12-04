@@ -16,14 +16,14 @@ public class WebSocketListenerImp extends WebSocketAdapter {
     @Override
     public void onWebSocketConnect(org.eclipse.jetty.websocket.api.Session sess) {
         super.onWebSocketConnect(sess);
-        ListenerProxy.getGlobal().onOpen(_SocketSession.get(getSession()));
+        ListenerProxy.getGlobal().onOpen(_SocketServerSession.get(getSession()));
     }
 
     @Override
     public void onWebSocketBinary(byte[] payload, int offset, int len) {
         try {
             ByteBuffer buf = ByteBuffer.wrap(payload, offset, len);
-            Session session = _SocketSession.get(getSession());
+            Session session = _SocketServerSession.get(getSession());
 
             Message message = null;
 
@@ -43,7 +43,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
     @Override
     public void onWebSocketText(String text) {
         try {
-            Session session = _SocketSession.get(getSession());
+            Session session = _SocketServerSession.get(getSession());
             Message message = MessageWrapper.wrap(getSession().getUpgradeRequest().getRequestURI().toString(),null,
                     text.getBytes("UTF-8"));
 
@@ -56,14 +56,14 @@ public class WebSocketListenerImp extends WebSocketAdapter {
 
     @Override
     public void onWebSocketClose(int statusCode, String reason) {
-        ListenerProxy.getGlobal().onClose(_SocketSession.get(getSession()));
+        ListenerProxy.getGlobal().onClose(_SocketServerSession.get(getSession()));
 
-        _SocketSession.remove(getSession());
+        _SocketServerSession.remove(getSession());
         super.onWebSocketClose(statusCode, reason);
     }
 
     @Override
     public void onWebSocketError(Throwable cause) {
-        ListenerProxy.getGlobal().onError(_SocketSession.get(getSession()), cause);
+        ListenerProxy.getGlobal().onError(_SocketServerSession.get(getSession()), cause);
     }
 }

@@ -1,9 +1,11 @@
 package org.noear.solon.boot.jetty.websocket;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
+import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.extend.socketd.SessionBase;
 
 import java.io.IOException;
@@ -11,7 +13,7 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.*;
 
-public class _SocketSession extends SessionBase {
+public class _SocketServerSession extends SessionBase {
     public static Map<org.eclipse.jetty.websocket.api.Session, Session> sessions = new HashMap<>();
     public static Session get(org.eclipse.jetty.websocket.api.Session real) {
         Session tmp = sessions.get(real);
@@ -19,7 +21,7 @@ public class _SocketSession extends SessionBase {
             synchronized (real) {
                 tmp = sessions.get(real);
                 if (tmp == null) {
-                    tmp = new _SocketSession(real);
+                    tmp = new _SocketServerSession(real);
                     sessions.put(real, tmp);
                 }
             }
@@ -35,12 +37,8 @@ public class _SocketSession extends SessionBase {
 
 
     org.eclipse.jetty.websocket.api.Session real;
-    public _SocketSession(org.eclipse.jetty.websocket.api.Session real){
+    public _SocketServerSession(org.eclipse.jetty.websocket.api.Session real){
         this.real = real;
-    }
-
-    public _SocketSession(WsConnector connector, boolean autoReconnect){
-
     }
 
     @Override
@@ -80,17 +78,24 @@ public class _SocketSession extends SessionBase {
 
     @Override
     public void send(byte[] message) {
-        try {
-            ByteBuffer buf = ByteBuffer.wrap(message);
-            real.getRemote().sendBytes(buf);
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
-        }
+        sendBytes(ByteBuffer.wrap(message));
     }
 
     @Override
     public void send(Message message) {
-        send(message.body());
+        if (Solon.global().enableWebSocketD()) {
+            sendBytes(MessageUtils.encode(message));
+        } else {
+            send(message.body());
+        }
+    }
+
+    private void sendBytes(ByteBuffer buf) {
+        try {
+            real.getRemote().sendBytes(buf);
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
 
@@ -144,7 +149,7 @@ public class _SocketSession extends SessionBase {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        _SocketSession that = (_SocketSession) o;
+        _SocketServerSession that = (_SocketServerSession) o;
         return Objects.equals(real, that.real);
     }
 

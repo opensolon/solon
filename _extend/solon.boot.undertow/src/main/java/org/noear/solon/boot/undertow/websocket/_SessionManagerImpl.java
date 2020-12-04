@@ -11,7 +11,7 @@ public class _SessionManagerImpl extends SessionManager {
     @Override
     protected Session getSession(Object conn) {
         if (conn instanceof WebSocketChannel) {
-            return _SocketSession.get((WebSocketChannel) conn);
+            return _SocketServerSession.get((WebSocketChannel) conn);
         } else {
             throw new IllegalArgumentException("This conn requires a undertow WebSocketChannel type");
         }
@@ -19,13 +19,13 @@ public class _SessionManagerImpl extends SessionManager {
 
     @Override
     protected Collection<Session> getOpenSessions() {
-        return Collections.unmodifiableCollection(_SocketSession.sessions.values());
+        return Collections.unmodifiableCollection(_SocketServerSession.sessions.values());
     }
 
     @Override
     protected void removeSession(Object conn) {
         if (conn instanceof WebSocketChannel) {
-            _SocketSession.remove((WebSocketChannel) conn);
+            _SocketServerSession.remove((WebSocketChannel) conn);
         } else {
             throw new IllegalArgumentException("This conn requires a undertow WebSocketChannel type");
         }

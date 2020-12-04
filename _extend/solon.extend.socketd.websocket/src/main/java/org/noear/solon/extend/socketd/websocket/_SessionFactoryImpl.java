@@ -1,5 +1,6 @@
-package org.noear.solon.extend.socketd.client.websocket;
+package org.noear.solon.extend.socketd.websocket;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.SessionFactory;
 
@@ -13,6 +14,12 @@ public class _SessionFactoryImpl implements SessionFactory {
 
     @Override
     public Session createSession(URI uri, boolean autoReconnect) {
-        return null;
+        try {
+            WsConnector bioClient = new WsConnector(uri);
+
+            return new _SocketClientSession(bioClient, autoReconnect);
+        } catch (Exception ex) {
+            throw Utils.throwableWrap(ex);
+        }
     }
 }

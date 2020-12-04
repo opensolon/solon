@@ -16,7 +16,7 @@ import java.nio.ByteBuffer;
 public class UtWsChannelListener extends AbstractReceiveListener {
 
     public void onOpen(WebSocketChannel channel) {
-        ListenerProxy.getGlobal().onOpen(_SocketSession.get(channel));
+        ListenerProxy.getGlobal().onOpen(_SocketServerSession.get(channel));
     }
 
 
@@ -28,7 +28,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
                 out.write(buf.array());
             }
 
-            Session session = _SocketSession.get(channel);
+            Session session = _SocketServerSession.get(channel);
             Message message = null;
 
             if (Solon.global().enableWebSocketD()) {
@@ -46,7 +46,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
     @Override
     protected void onFullTextMessage(WebSocketChannel channel, BufferedTextMessage msg) throws IOException {
         try {
-            Session session = _SocketSession.get(channel);
+            Session session = _SocketServerSession.get(channel);
             Message message = MessageWrapper.wrap(channel.getUrl(),null,
                     msg.getData().getBytes("UTF-8"));
 
@@ -58,13 +58,13 @@ public class UtWsChannelListener extends AbstractReceiveListener {
 
     @Override
     protected void onClose(WebSocketChannel channel, StreamSourceFrameChannel frameChannel) throws IOException {
-        ListenerProxy.getGlobal().onClose(_SocketSession.get(channel));
+        ListenerProxy.getGlobal().onClose(_SocketServerSession.get(channel));
 
-        _SocketSession.remove(channel);
+        _SocketServerSession.remove(channel);
     }
 
     @Override
     protected void onError(WebSocketChannel channel, Throwable error) {
-        ListenerProxy.getGlobal().onError(_SocketSession.get(channel), error);
+        ListenerProxy.getGlobal().onError(_SocketServerSession.get(channel), error);
     }
 }

@@ -80,6 +80,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.extend.socketd.websocket</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -671,7 +677,7 @@
         <module>../solon</module>
 
         <module>../_extend/solon.extend.socketd</module>
-        <module>../_extend/solon.extend.socketd.client.websocket</module>
+        <module>../_extend/solon.extend.socketd.websocket</module>
 
         <module>../_extend/solon.boot.jetty</module>
         <module>../_extend/solon.boot.jlhttp</module>

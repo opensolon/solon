@@ -3,10 +3,12 @@ package org.noear.solon.boot.undertow.websocket;
 import io.undertow.websockets.core.WebSocketChannel;
 import io.undertow.websockets.core.WebSockets;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
+import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.extend.socketd.SessionBase;
 
 import java.io.IOException;
@@ -15,7 +17,7 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.*;
 
-public class _SocketSession extends SessionBase {
+public class _SocketServerSession extends SessionBase {
     public static Map<WebSocketChannel, Session> sessions = new HashMap<>();
     public static Session get(WebSocketChannel real) {
         Session tmp = sessions.get(real);
@@ -23,7 +25,7 @@ public class _SocketSession extends SessionBase {
             synchronized (real) {
                 tmp = sessions.get(real);
                 if (tmp == null) {
-                    tmp = new _SocketSession(real);
+                    tmp = new _SocketServerSession(real);
                     sessions.put(real, tmp);
                 }
             }
@@ -39,7 +41,7 @@ public class _SocketSession extends SessionBase {
 
 
     WebSocketChannel real;
-    public _SocketSession(WebSocketChannel real){
+    public _SocketServerSession(WebSocketChannel real){
         this.real = real;
     }
 
@@ -76,13 +78,20 @@ public class _SocketSession extends SessionBase {
 
     @Override
     public void send(byte[] message) {
-        ByteBuffer buf = ByteBuffer.wrap(message);
-        WebSockets.sendBinary(buf, real, null);
+        sendBytes(ByteBuffer.wrap(message));
     }
 
     @Override
     public void send(Message message) {
-        send(message.body());
+        if (Solon.global().enableWebSocketD()) {
+            sendBytes(MessageUtils.encode(message));
+        } else {
+            send(message.body());
+        }
+    }
+
+    private void sendBytes(ByteBuffer buf) {
+        WebSockets.sendBinary(buf, real, null);
     }
 
 
@@ -132,7 +141,7 @@ public class _SocketSession extends SessionBase {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        _SocketSession that = (_SocketSession) o;
+        _SocketServerSession that = (_SocketServerSession) o;
         return Objects.equals(real, that.real);
     }
 
