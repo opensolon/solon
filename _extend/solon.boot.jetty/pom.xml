@@ -38,6 +38,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.eclipse.jetty.websocket</groupId>
+            <artifactId>websocket-client</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- jetty jsp -->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>

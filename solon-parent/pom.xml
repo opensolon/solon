@@ -492,6 +492,11 @@
                 <artifactId>websocket-server</artifactId>
                 <version>${jetty.ver}</version>
             </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty.websocket</groupId>
+                <artifactId>websocket-client</artifactId>
+                <version>${jetty.ver}</version>
+            </dependency>
 
             <!-- jetty jsp -->
             <dependency>
@@ -554,6 +559,12 @@
                 <groupId>org.jboss.spec.javax.servlet.jsp</groupId>
                 <artifactId>jboss-jsp-api_2.3_spec</artifactId>
                 <version>2.0.0.Final</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.java-websocket</groupId>
+                <artifactId>Java-WebSocket</artifactId>
+                <version>1.5.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
