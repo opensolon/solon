@@ -4,37 +4,16 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.SessionFactory;
 
-import java.net.Socket;
 import java.net.URI;
-import java.util.Collection;
-import java.util.Collections;
 
-class _SessionFactoryImpl extends SessionFactory {
+public class _SessionFactoryImpl implements SessionFactory {
     @Override
-    protected Session getSession(Object conn) {
-        if (conn instanceof Socket) {
-            return _SocketSession.get((Socket) conn);
-        } else {
-            throw new IllegalArgumentException("This conn requires a Socket type");
-        }
+    public String[] schemes() {
+        return new String[]{"tcp"};
     }
 
     @Override
-    protected Collection<Session> getOpenSessions() {
-        return Collections.unmodifiableCollection(_SocketSession.sessions.values());
-    }
-
-    @Override
-    protected void removeSession(Object conn) {
-        if (conn instanceof Socket) {
-            _SocketSession.remove((Socket) conn);
-        } else {
-            throw new IllegalArgumentException("This conn requires a Socket type");
-        }
-    }
-
-    @Override
-    protected Session createSession(URI uri, boolean autoReconnect) {
+    public Session createSession(URI uri, boolean autoReconnect) {
         try {
             BioConnector bioClient = new BioConnector(uri.getHost(), uri.getPort());
 

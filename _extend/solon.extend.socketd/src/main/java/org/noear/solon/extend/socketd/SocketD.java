@@ -8,7 +8,6 @@ import org.noear.nami.decoder.SnackDecoder;
 import org.noear.nami.encoder.SnackTypeEncoder;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.SessionFactory;
 
 import java.net.URI;
 
@@ -17,7 +16,7 @@ public class SocketD {
     // session client
     //
     public static Session create(URI uri, boolean autoReconnect) {
-        return SessionFactory.create(uri, autoReconnect);
+        return SessionFactoryManager.create(uri, autoReconnect);
     }
 
     public static Session create(URI uri) {
