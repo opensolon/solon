@@ -11,8 +11,9 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.extend.socketd</artifactId>
+    <artifactId>solon.extend.socketd.client.websocket</artifactId>
     <packaging>jar</packaging>
+
 
     <dependencies>
         <dependency>
@@ -22,7 +23,13 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami</artifactId>
+            <artifactId>solon.extend.socketd</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.java-websocket</groupId>
+            <artifactId>Java-WebSocket</artifactId>
         </dependency>
     </dependencies>
 

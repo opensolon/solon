@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.util.Collection;
 import java.util.Collections;
 
-public class _SessionFactoryImpl extends SessionManager {
+public class _SessionManagerImpl extends SessionManager {
     @Override
     protected Session getSession(Object conn) {
         if (conn instanceof Socket) {
