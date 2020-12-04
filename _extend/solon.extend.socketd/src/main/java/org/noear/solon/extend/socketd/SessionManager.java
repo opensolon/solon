@@ -17,6 +17,11 @@ public abstract class SessionManager {
         instance = factory;
     }
 
+    public static void setInstanceIfAbsent(SessionManager factory) {
+        if (instance == null) {
+            instance = factory;
+        }
+    }
 
     protected abstract Session getSession(Object conn);
 

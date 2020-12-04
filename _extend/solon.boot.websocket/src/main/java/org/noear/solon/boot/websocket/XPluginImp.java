@@ -18,8 +18,10 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        if(app.enableWebSocketD()){
+        if (app.enableWebSocketD()) {
             SessionManager.setInstance(new _SessionManagerImpl());
+        } else {
+            SessionManager.setInstanceIfAbsent(new _SessionManagerImpl());
         }
 
 

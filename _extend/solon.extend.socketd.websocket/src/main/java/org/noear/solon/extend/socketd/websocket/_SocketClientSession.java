@@ -6,6 +6,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.ext.RunnableEx;
 import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.extend.socketd.MessageWrapper;
 import org.noear.solon.extend.socketd.SessionBase;
@@ -74,9 +75,9 @@ public class _SocketClientSession extends SessionBase {
     @Override
     public void send(String message) {
         if (Solon.global().enableWebSocketD()) {
-            sendDo(MessageWrapper.wrap(message.getBytes(StandardCharsets.UTF_8)));
+            sendD(MessageWrapper.wrap(message.getBytes(StandardCharsets.UTF_8)));
         }else{
-            real.send(message);
+            sendW(() -> real.send(message));
         }
     }
 
@@ -84,22 +85,43 @@ public class _SocketClientSession extends SessionBase {
     @Override
     public void send(byte[] message) {
         if (Solon.global().enableWebSocketD()) {
-            sendDo(MessageWrapper.wrap(message));
+            sendD(MessageWrapper.wrap(message));
         } else {
-            real.send(message);
+            sendW(() -> real.send(message));
         }
     }
 
     @Override
     public void send(Message message) {
         if (Solon.global().enableWebSocketD()) {
-            sendDo(message);
+            sendD(message);
         } else {
-            real.send(message.body());
+            sendW(() -> real.send(message.body()));
         }
     }
 
-    public void sendDo(Message message) {
+    private void sendW(RunnableEx runnable){
+        try {
+            synchronized (this) {
+                prepareNew();
+
+                //
+                // 转包为Message，再转byte[]
+                //
+                runnable.run();
+            }
+        } catch (SocketException ex) {
+            if (autoReconnect) {
+                real = null;
+            }
+
+            throw new RuntimeException(ex);
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private void sendD(Message message) {
         try {
             synchronized (this) {
                 if (prepareNew()) {

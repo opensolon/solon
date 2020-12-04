@@ -38,8 +38,10 @@ public final class XPluginImp implements Plugin {
         if (app.enableWebSocket()) {
             _server.wsPipeline().next(new WebSocketHandleImp());
 
-            if(app.enableWebSocketD()){
+            if (app.enableWebSocketD()) {
                 SessionManager.setInstance(new _SessionManagerImpl());
+            } else {
+                SessionManager.setInstanceIfAbsent(new _SessionManagerImpl());
             }
         }
 
