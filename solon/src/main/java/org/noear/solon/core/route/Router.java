@@ -55,7 +55,7 @@ public class Router {
         routesL = new RouteTable<>();
     }
 
-    public RouteTable<Handler> main(){
+    public RouteTable<Handler> main() {
         return routesH[1];
     }
 
@@ -135,6 +135,10 @@ public class Router {
     public Listener matchOne(Session session) {
         String path = session.path();
 
-        return routesL.matchOne(path, session.method());
+        if (path == null) {
+            return null;
+        } else {
+            return routesL.matchOne(path, session.method());
+        }
     }
 }
