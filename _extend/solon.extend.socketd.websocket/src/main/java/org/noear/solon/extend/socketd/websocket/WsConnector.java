@@ -28,7 +28,7 @@ public class WsConnector {
                 enableTls(socket);
             }
 
-            socket.connect();
+            socket.connectBlocking();
 
             return socket;
         } catch (Throwable ex) {

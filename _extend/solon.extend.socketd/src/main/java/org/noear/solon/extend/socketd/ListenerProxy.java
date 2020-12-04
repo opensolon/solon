@@ -153,6 +153,10 @@ public class ListenerProxy implements Listener {
         //
         //路由监听模式，可实现双向RPC模式
         //
-        return Solon.global().router().matchOne(s);
+        if (s.path() == null) {
+            return null;
+        } else {
+            return Solon.global().router().matchOne(s);
+        }
     }
 }
