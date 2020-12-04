@@ -42,7 +42,7 @@ public class SocketResponseTest {
     public void test_rpc_message() throws Throwable {
         int _port = 8080 + 20000;
 
-        Session session = SocketD.create("tpc://localhost:"+ _port);
+        Session session = SocketD.create("tcp://localhost:"+ _port);
 
 
         String root = "tcp://localhost:" + _port;

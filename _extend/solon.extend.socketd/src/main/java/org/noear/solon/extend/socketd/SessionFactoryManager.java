@@ -18,6 +18,10 @@ public class SessionFactoryManager {
     public static Session create(URI uri, boolean autoReconnect) {
         SessionFactory factory = cached.get(uri.getScheme());
 
+        if (factory == null) {
+            throw new IllegalArgumentException("The " + uri.getScheme() + " protocol is not supported");
+        }
+
         Session session = factory.createSession(uri, autoReconnect);
         session.setHandshaked(true);
 
