@@ -32,6 +32,10 @@ public class _SocketSession extends SessionBase {
         return tmp;
     }
 
+    public static _SocketSession getOnly(WebSocketRequest real){
+        return sessions.get(real);
+    }
+
     public static void remove(WebSocketRequest real) {
         sessions.remove(real);
     }

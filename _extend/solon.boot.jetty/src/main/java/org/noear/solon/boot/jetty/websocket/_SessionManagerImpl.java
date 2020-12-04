@@ -10,7 +10,7 @@ import java.util.Collections;
 public class _SessionManagerImpl extends SessionManager {
     @Override
     protected Session getSession(Object conn) {
-        if (conn instanceof Socket) {
+        if (conn instanceof org.eclipse.jetty.websocket.api.Session) {
             return _SocketSession.get((org.eclipse.jetty.websocket.api.Session) conn);
         } else {
             throw new IllegalArgumentException("This conn requires a jetty websocket Session type");
@@ -24,7 +24,7 @@ public class _SessionManagerImpl extends SessionManager {
 
     @Override
     protected void removeSession(Object conn) {
-        if (conn instanceof Socket) {
+        if (conn instanceof org.eclipse.jetty.websocket.api.Session) {
             _SocketSession.remove((org.eclipse.jetty.websocket.api.Session) conn);
         } else {
             throw new IllegalArgumentException("This conn requires a jetty websocket Session type");
