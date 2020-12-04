@@ -9,7 +9,7 @@ import java.net.URI;
 public class _SessionFactoryImpl implements SessionFactory {
     @Override
     public String[] schemes() {
-        return new String[]{"ws"};
+        return new String[]{"ws", "wss"};
     }
 
     @Override
