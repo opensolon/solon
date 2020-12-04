@@ -20,6 +20,10 @@ public class WsConnector {
         this.uri = uri;
     }
 
+    public URI getUri() {
+        return uri;
+    }
+
     public WebSocket start(Session session) {
         try {
             WebSocketClient socket = new WsSocketClientImp(uri, session);

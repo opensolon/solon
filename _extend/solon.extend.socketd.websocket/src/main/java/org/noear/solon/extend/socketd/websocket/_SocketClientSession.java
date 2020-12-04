@@ -20,8 +20,8 @@ public class _SocketClientSession extends SessionBase {
 
     WebSocket real;
 
-    WsConnector connector;
-    boolean autoReconnect;
+    final WsConnector connector;
+    final boolean autoReconnect;
 
     public _SocketClientSession(WsConnector connector, boolean autoReconnect) {
         this.connector = connector;
@@ -65,7 +65,7 @@ public class _SocketClientSession extends SessionBase {
     @Override
     public String path() {
         if (_path == null) {
-            _path = real.getResourceDescriptor();
+            _path = connector.getUri().getPath();
         }
 
         return _path;

@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.2.5</version>
+        <version>1.2.6</version>
     </parent>
     
     <dependencies>
