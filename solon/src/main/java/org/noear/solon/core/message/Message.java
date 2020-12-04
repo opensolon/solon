@@ -108,6 +108,7 @@ public class Message {
                 ", key='" + key + '\'' +
                 ", resourceDescriptor='" + resourceDescriptor + '\'' +
                 ", header='" + header + '\'' +
+                ", body='" + bodyAsString() + '\'' +
                 '}';
     }
 
