@@ -5,8 +5,10 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.boot.smarthttp.http.SmartHttpContextHandler;
 import org.noear.solon.boot.smarthttp.http.XFormContentFilter;
 import org.noear.solon.boot.smarthttp.websocket.WebSocketHandleImp;
+import org.noear.solon.boot.smarthttp.websocket._SessionManagerImpl;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.extend.socketd.SessionManager;
 import org.smartboot.http.HttpBootstrap;
 
 public final class XPluginImp implements Plugin {
@@ -35,8 +37,11 @@ public final class XPluginImp implements Plugin {
 
         if (app.enableWebSocket()) {
             _server.wsPipeline().next(new WebSocketHandleImp());
-        }
 
+            if(app.enableWebSocketD()){
+                SessionManager.setInstance(new _SessionManagerImpl());
+            }
+        }
 
         System.out.println("solon.Server:main: SmartHttpServer 1.0.7(smarthttp)");
 

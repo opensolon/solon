@@ -4,8 +4,10 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.jetty.http.XFormContentFilter;
+import org.noear.solon.boot.jetty.websocket._SessionManagerImpl;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.extend.socketd.SessionManager;
 
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebListener;

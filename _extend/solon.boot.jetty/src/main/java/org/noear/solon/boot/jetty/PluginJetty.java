@@ -8,8 +8,10 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
+import org.noear.solon.boot.jetty.websocket._SessionManagerImpl;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.extend.socketd.SessionManager;
 
 import java.io.IOException;
 
@@ -46,6 +48,10 @@ class PluginJetty extends PluginJettyBase implements Plugin {
 
         if(app.enableWebSocket() && wsClz != null){
             _server.setHandler(new HandlerHub(buildHandler()));
+
+            if(app.enableWebSocketD()){
+                SessionManager.setInstance(new _SessionManagerImpl());
+            }
         }else{
             //没有ws包 或 没有开启
             _server.setHandler(buildHandler());

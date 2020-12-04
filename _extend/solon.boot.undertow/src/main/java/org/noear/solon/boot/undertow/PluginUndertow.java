@@ -8,8 +8,10 @@ import io.undertow.servlet.api.*;
 import org.noear.solon.SolonApp;
 import org.noear.solon.boot.undertow.http.UtHttpHandlerJsp;
 import org.noear.solon.boot.undertow.websocket.UtWsConnectionCallback;
+import org.noear.solon.boot.undertow.websocket._SessionManagerImpl;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.extend.socketd.SessionManager;
 
 import static io.undertow.Handlers.websocket;
 
@@ -51,6 +53,10 @@ class PluginUndertow extends PluginUndertowBase implements Plugin {
 
         if (app.enableWebSocket()) {
             builder.setHandler(websocket(new UtWsConnectionCallback(), httpHandler));
+
+            if(app.enableWebSocketD()){
+                SessionManager.setInstance(new _SessionManagerImpl());
+            }
         } else {
             builder.setHandler(httpHandler);
         }
