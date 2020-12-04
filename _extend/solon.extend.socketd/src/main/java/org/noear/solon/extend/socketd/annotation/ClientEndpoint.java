@@ -4,6 +4,7 @@ import org.noear.solon.annotation.Note;
 import org.noear.solon.core.handle.MethodType;
 
 import java.lang.annotation.*;
+import java.net.URI;
 
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -12,22 +13,12 @@ public @interface ClientEndpoint {
     /**
      * 资源描述
      */
-    String value() default "";
+    String uri();
 
     /**
      * 方法
      */
     MethodType method() default MethodType.ALL;
-
-    /**
-     * 主机
-     */
-    String host();
-
-    /**
-     * 端口
-     */
-    int port();
 
     /**
      * 握手包头

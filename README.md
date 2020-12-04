@@ -250,7 +250,7 @@ public class HelloRpcServiceImpl implements HelloRpcService {
 }
 
 //client
-HelloRpcService rpc = SocketD.create("localhost",_port, HelloRpcService.class);
+HelloRpcService rpc = SocketD.create("tcp://localhost:"+_port, HelloRpcService.class);
 
 String rst = rpc.hello("noear");
 ```

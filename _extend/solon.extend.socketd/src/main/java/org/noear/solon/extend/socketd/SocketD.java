@@ -10,20 +10,40 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.SessionFactory;
 
+import java.net.URI;
+
 public class SocketD {
     //
     // session client
     //
-    public static Session create(String host, int port) {
-        return SessionFactory.create(host, port, true);
+    public static Session create(URI uri, boolean autoReconnect) {
+        return SessionFactory.create(uri, autoReconnect);
     }
+
+    public static Session create(URI uri) {
+        return create(uri, true);
+    }
+
+    public static Session create(String uri, boolean autoReconnect) {
+        return create(URI.create(uri), autoReconnect);
+    }
+
+    public static Session create(String uri) {
+        return create(uri, true);
+    }
+
 
     //
     // rpc client
     //
 
-    public static <T> T create(String host, int port, Class<T> service) {
-        Session session = SessionFactory.create(host, port, true);
+    public static <T> T create(URI uri, Class<T> service) {
+        Session session = create(uri, true);
+        return create(session, service);
+    }
+
+    public static <T> T create(String uri, Class<T> service) {
+        Session session = create(uri,true);
         return create(session, service);
     }
 

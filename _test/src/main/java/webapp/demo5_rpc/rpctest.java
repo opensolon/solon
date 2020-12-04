@@ -10,6 +10,7 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +40,8 @@ public class rpctest implements Handler {
     }
 
     private Object socketOf() {
-        rockapi client = SocketD.create("localhost", (20000 + Solon.global().port()), rockapi.class);
+        int _port = 20000 + Solon.global().port();
+        rockapi client = SocketD.create("tcp://localhost:" + _port, rockapi.class);
 
         return client.test1(12);
     }

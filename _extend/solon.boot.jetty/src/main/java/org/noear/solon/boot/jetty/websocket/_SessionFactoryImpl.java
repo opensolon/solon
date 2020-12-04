@@ -5,6 +5,7 @@ import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.SessionFactory;
 
 import java.net.Socket;
+import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -33,9 +34,9 @@ public class _SessionFactoryImpl extends SessionFactory {
     }
 
     @Override
-    protected Session createSession(String host, int port, boolean autoReconnect) {
+    protected Session createSession(URI uri, boolean autoReconnect) {
         try {
-            WsConnector bioClient = new WsConnector(host, port);
+            WsConnector bioClient = new WsConnector(uri.getHost(), uri.getPort());
 
             return new _SocketSession(bioClient, autoReconnect);
         } catch (Exception ex) {

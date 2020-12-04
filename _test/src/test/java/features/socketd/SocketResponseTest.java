@@ -11,10 +11,12 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.MessageWrapper;
 import org.noear.solon.extend.socketd.SessionFactory;
+import org.noear.solon.extend.socketd.SocketD;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.demoh_socketd.HelloRpcService;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +27,7 @@ public class SocketResponseTest {
     public void test() throws Throwable{
         int _port = 8080 + 20000;
 
-        Session session = SessionFactory.create("localhost",_port, true);
+        Session session = SocketD.create("tcp://localhost:"+_port);
 
 
         String root = "tcp://localhost:" + _port;
@@ -42,7 +44,7 @@ public class SocketResponseTest {
     public void test_rpc_message() throws Throwable {
         int _port = 8080 + 20000;
 
-        Session session = SessionFactory.create("localhost", _port, true);
+        Session session = SocketD.create("tpc://localhost:"+ _port);
 
 
         String root = "tcp://localhost:" + _port;
@@ -64,7 +66,7 @@ public class SocketResponseTest {
     public void test_rpc_api() throws Throwable {
         int _port = 8080 + 20000;
 
-        Session session = SessionFactory.create("localhost",_port, true);
+        Session session = SocketD.create("tcp://localhost:"+_port);
         SocketChannel channel = new SocketChannel(()->session);
 
         HelloRpcService rpc = Nami.builder()

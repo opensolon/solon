@@ -8,6 +8,7 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.MessageWrapper;
 import org.noear.solon.extend.socketd.SessionFactory;
+import org.noear.solon.extend.socketd.SocketD;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
@@ -22,7 +23,7 @@ public class SocketCallbackTest {
     public void test_callback_message() throws Throwable {
         int _port = 8080 + 20000;
 
-        Session session = SessionFactory.create("localhost", _port, true);
+        Session session = SocketD.create("tcp://localhost:"+ _port, true);
 
         session.listener(new Listener() {
             @Override

@@ -8,6 +8,8 @@ import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.annotation.ClientEndpoint;
 
+import java.net.URI;
+
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
@@ -17,7 +19,7 @@ public class XPluginImp implements Plugin {
                 Listener l = wrap.raw();
 
                 //创建会话
-                Session session = SocketD.create(anno.host(), anno.port());
+                Session session = SocketD.create(anno.uri());
 
                 //绑定监听
                 session.listener(l);

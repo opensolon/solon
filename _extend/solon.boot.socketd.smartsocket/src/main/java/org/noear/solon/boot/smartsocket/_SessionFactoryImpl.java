@@ -4,6 +4,7 @@ import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.SessionFactory;
 import org.smartboot.socket.transport.AioSession;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -32,8 +33,8 @@ class _SessionFactoryImpl extends SessionFactory {
     }
 
     @Override
-    protected Session createSession(String host, int port, boolean autoReconnect) {
-        AioConnector client = new AioConnector(host, port);
+    protected Session createSession(URI uri, boolean autoReconnect) {
+        AioConnector client = new AioConnector(uri.getHost(), uri.getPort());
         client.setReadBufferSize(XPluginImp.readBufferSize);
 
         return new _SocketSession(client, autoReconnect);

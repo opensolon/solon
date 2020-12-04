@@ -5,13 +5,15 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import webapp.demoh_socketd.HelloRpcService;
 
+import java.net.URI;
+
 public class Test2App {
     public static void main(String[] args) {
         Solon.start(TestApp.class, args, x -> x.enableHttp(false));
 
         int _port = 8080 + 20000;
 
-        HelloRpcService rpc = SocketD.create("localhost", _port, HelloRpcService.class);
+        HelloRpcService rpc = SocketD.create("tcp://localhost:"+_port, HelloRpcService.class);
 
         while (true) {
             try {

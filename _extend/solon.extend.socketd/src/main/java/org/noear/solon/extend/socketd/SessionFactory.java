@@ -2,6 +2,7 @@ package org.noear.solon.extend.socketd;
 
 import org.noear.solon.core.message.Session;
 
+import java.net.URI;
 import java.util.Collection;
 
 public abstract class SessionFactory {
@@ -17,7 +18,7 @@ public abstract class SessionFactory {
 
     protected abstract void removeSession(Object conn);
 
-    protected abstract Session createSession(String host, int port, boolean autoReconnect);
+    protected abstract Session createSession(URI uri, boolean autoReconnect);
 
 
     //
@@ -52,12 +53,12 @@ public abstract class SessionFactory {
     // for client
     //
 
-    public static Session create(String host, int port, boolean autoReconnect) {
+    public static Session create(URI uri, boolean autoReconnect) {
         if (instance == null) {
             throw new IllegalArgumentException("SessionFactory uninitialized");
         }
 
-        Session session = instance.createSession(host, port, autoReconnect);
+        Session session = instance.createSession(uri, autoReconnect);
         session.setHandshaked(true);
 
         return session;
