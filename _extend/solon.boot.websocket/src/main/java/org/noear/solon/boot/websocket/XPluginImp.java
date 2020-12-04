@@ -3,6 +3,7 @@ package org.noear.solon.boot.websocket;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.extend.socketd.SessionManager;
 
 public class XPluginImp implements Plugin {
     private WsServer _server = null;
@@ -15,6 +16,10 @@ public class XPluginImp implements Plugin {
     public void start(SolonApp app) {
         if(app.enableWebSocket() == false){
             return;
+        }
+
+        if(app.enableWebSocketD()){
+            SessionManager.setInstance(new _SessionManagerImpl());
         }
 
 

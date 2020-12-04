@@ -9,16 +9,19 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.socketd.MessageUtils;
+import org.noear.solon.extend.socketd.MessageWrapper;
 import org.noear.solon.extend.socketd.SessionBase;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class _SocketServerSession extends SessionBase {
     public static Map<WebSocketChannel, Session> sessions = new HashMap<>();
+
     public static Session get(WebSocketChannel real) {
         Session tmp = sessions.get(real);
         if (tmp == null) {
@@ -34,14 +37,14 @@ public class _SocketServerSession extends SessionBase {
         return tmp;
     }
 
-    public static void remove(WebSocketChannel real){
+    public static void remove(WebSocketChannel real) {
         sessions.remove(real);
     }
 
 
-
     WebSocketChannel real;
-    public _SocketServerSession(WebSocketChannel real){
+
+    public _SocketServerSession(WebSocketChannel real) {
         this.real = real;
     }
 
@@ -51,6 +54,7 @@ public class _SocketServerSession extends SessionBase {
     }
 
     private String _sessionId = Utils.guid();
+
     @Override
     public String sessionId() {
         return _sessionId;
@@ -62,9 +66,10 @@ public class _SocketServerSession extends SessionBase {
     }
 
     private String _path;
+
     @Override
     public String path() {
-        if(_path == null) {
+        if (_path == null) {
             _path = URI.create(real.getUrl()).getPath();
         }
 
@@ -73,12 +78,20 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public void send(String message) {
-        WebSockets.sendText(message, real, null);
+        if (Solon.global().enableWebSocketD()) {
+            sendBytes(MessageUtils.encode(MessageWrapper.wrap(message.getBytes(StandardCharsets.UTF_8))));
+        } else {
+            WebSockets.sendText(message, real, null);
+        }
     }
 
     @Override
     public void send(byte[] message) {
-        sendBytes(ByteBuffer.wrap(message));
+        if (Solon.global().enableWebSocketD()) {
+            sendBytes(MessageUtils.encode(MessageWrapper.wrap(message)));
+        } else {
+            sendBytes(ByteBuffer.wrap(message));
+        }
     }
 
     @Override
@@ -86,7 +99,7 @@ public class _SocketServerSession extends SessionBase {
         if (Solon.global().enableWebSocketD()) {
             sendBytes(MessageUtils.encode(message));
         } else {
-            send(message.body());
+            sendBytes(ByteBuffer.wrap(message.body()));
         }
     }
 
@@ -112,23 +125,23 @@ public class _SocketServerSession extends SessionBase {
     }
 
     @Override
-    public InetSocketAddress getRemoteAddress(){
+    public InetSocketAddress getRemoteAddress() {
         return real.getSourceAddress();
     }
 
     @Override
-    public InetSocketAddress getLocalAddress(){
+    public InetSocketAddress getLocalAddress() {
         return real.getDestinationAddress();
     }
 
     @Override
     public void setAttachment(Object obj) {
-        real.setAttribute("attachment",obj);
+        real.setAttribute("attachment", obj);
     }
 
     @Override
     public <T> T getAttachment() {
-        return (T)real.getAttribute("attachment");
+        return (T) real.getAttribute("attachment");
     }
 
     @Override

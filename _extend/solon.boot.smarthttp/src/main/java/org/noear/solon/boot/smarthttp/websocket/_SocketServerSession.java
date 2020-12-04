@@ -6,6 +6,7 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.MessageUtils;
+import org.noear.solon.extend.socketd.MessageWrapper;
 import org.noear.solon.extend.socketd.SessionBase;
 import org.smartboot.http.WebSocketRequest;
 import org.smartboot.http.WebSocketResponse;
@@ -13,6 +14,7 @@ import org.smartboot.http.WebSocketResponse;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class _SocketServerSession extends SessionBase {
@@ -79,21 +81,33 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public void send(String message) {
-        response.sendTextMessage(message);
+        if (Solon.global().enableWebSocketD()) {
+            sendBytes(MessageUtils.encode(MessageWrapper.wrap(message.getBytes(StandardCharsets.UTF_8))).array());
+        } else {
+            response.sendTextMessage(message);
+        }
     }
 
     @Override
     public void send(byte[] message) {
-        response.sendBinaryMessage(message);
+        if (Solon.global().enableWebSocketD()) {
+            sendBytes(MessageUtils.encode(MessageWrapper.wrap(message)).array());
+        } else {
+            sendBytes(message);
+        }
     }
 
     @Override
     public void send(Message message) {
         if (Solon.global().enableWebSocketD()) {
-            send(MessageUtils.encode(message).array());
+            sendBytes(MessageUtils.encode(message).array());
         } else {
-            send(message.body());
+            sendBytes(message.body());
         }
+    }
+
+    private void sendBytes(byte[] message){
+        response.sendBinaryMessage(message);
     }
 
 

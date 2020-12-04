@@ -29,20 +29,20 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake shake) {
-        ListenerProxy.getGlobal().onOpen(_SocketSession.get(conn));
+        ListenerProxy.getGlobal().onOpen(_SocketServerSession.get(conn));
     }
 
     @Override
     public void onClose(WebSocket conn, int i, String s, boolean b) {
-        ListenerProxy.getGlobal().onClose(_SocketSession.get(conn));
+        ListenerProxy.getGlobal().onClose(_SocketServerSession.get(conn));
 
-        _SocketSession.remove(conn);
+        _SocketServerSession.remove(conn);
     }
 
     @Override
     public void onMessage(WebSocket conn, String data) {
         try {
-            Session session = _SocketSession.get(conn);
+            Session session = _SocketServerSession.get(conn);
             Message message = MessageWrapper.wrap(conn.getResourceDescriptor(), null,data.getBytes(_charset));
 
             ListenerProxy.getGlobal().onMessage(session, message, true);
@@ -54,7 +54,7 @@ public class WsServer extends WebSocketServer {
     @Override
     public void onMessage(WebSocket conn, ByteBuffer data) {
         try {
-            Session session = _SocketSession.get(conn);
+            Session session = _SocketServerSession.get(conn);
             Message message = MessageWrapper.wrap(conn.getResourceDescriptor(), null,data.array());
 
             ListenerProxy.getGlobal().onMessage(session, message, false);
@@ -65,6 +65,6 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onError(WebSocket conn, Exception ex) {
-        ListenerProxy.getGlobal().onError(_SocketSession.get(conn), ex);
+        ListenerProxy.getGlobal().onError(_SocketServerSession.get(conn), ex);
     }
 }

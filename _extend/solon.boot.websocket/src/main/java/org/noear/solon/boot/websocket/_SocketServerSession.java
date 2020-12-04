@@ -1,25 +1,30 @@
 package org.noear.solon.boot.websocket;
 
 import org.java_websocket.WebSocket;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
+import org.noear.solon.extend.socketd.MessageUtils;
+import org.noear.solon.extend.socketd.MessageWrapper;
 import org.noear.solon.extend.socketd.SessionBase;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-public class _SocketSession extends SessionBase {
+public class _SocketServerSession extends SessionBase {
     public static Map<WebSocket, Session> sessions = new HashMap<>();
+
     public static Session get(WebSocket real) {
         Session tmp = sessions.get(real);
         if (tmp == null) {
             synchronized (real) {
                 tmp = sessions.get(real);
                 if (tmp == null) {
-                    tmp = new _SocketSession(real);
+                    tmp = new _SocketServerSession(real);
                     sessions.put(real, tmp);
                 }
             }
@@ -28,14 +33,14 @@ public class _SocketSession extends SessionBase {
         return tmp;
     }
 
-    public static void remove(WebSocket real){
+    public static void remove(WebSocket real) {
         sessions.remove(real);
     }
 
 
-
     WebSocket real;
-    public _SocketSession(WebSocket real){
+
+    public _SocketServerSession(WebSocket real) {
         this.real = real;
     }
 
@@ -45,6 +50,7 @@ public class _SocketSession extends SessionBase {
     }
 
     private String _sessionId = Utils.guid();
+
     @Override
     public String sessionId() {
         return _sessionId;
@@ -56,9 +62,10 @@ public class _SocketSession extends SessionBase {
     }
 
     private String _path;
+
     @Override
     public String path() {
-        if(_path == null) {
+        if (_path == null) {
             _path = real.getResourceDescriptor();
         }
 
@@ -67,17 +74,33 @@ public class _SocketSession extends SessionBase {
 
     @Override
     public void send(String message) {
-        real.send(message);
+        if (Solon.global().enableWebSocketD()) {
+            sendBytes(MessageUtils.encode(MessageWrapper.wrap(message.getBytes(StandardCharsets.UTF_8))).array());
+        } else {
+            real.send(message);
+        }
     }
 
     @Override
     public void send(byte[] message) {
-        real.send(message);
+        if (Solon.global().enableWebSocketD()) {
+            sendBytes(MessageUtils.encode(MessageWrapper.wrap(message)).array());
+        } else {
+            sendBytes(message);
+        }
     }
 
     @Override
     public void send(Message message) {
-        send(message.body());
+        if (Solon.global().enableWebSocketD()) {
+            sendBytes(MessageUtils.encode(message).array());
+        } else {
+            sendBytes(message.body());
+        }
+    }
+
+    private void sendBytes(byte[] message) {
+        real.send(message);
     }
 
 
@@ -98,12 +121,12 @@ public class _SocketSession extends SessionBase {
     }
 
     @Override
-    public InetSocketAddress getRemoteAddress(){
+    public InetSocketAddress getRemoteAddress() {
         return real.getRemoteSocketAddress();
     }
 
     @Override
-    public InetSocketAddress getLocalAddress(){
+    public InetSocketAddress getLocalAddress() {
         return real.getLocalSocketAddress();
     }
 
@@ -127,7 +150,7 @@ public class _SocketSession extends SessionBase {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        _SocketSession that = (_SocketSession) o;
+        _SocketServerSession that = (_SocketServerSession) o;
         return Objects.equals(real, that.real);
     }
 

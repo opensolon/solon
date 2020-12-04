@@ -13,6 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -108,11 +109,7 @@ class _SocketSession extends SessionBase {
 
     @Override
     public void send(String message) {
-        try {
-            send(message.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException ex) {
-            throw new RuntimeException(ex);
-        }
+        send(message.getBytes(StandardCharsets.UTF_8));
     }
 
     @Override

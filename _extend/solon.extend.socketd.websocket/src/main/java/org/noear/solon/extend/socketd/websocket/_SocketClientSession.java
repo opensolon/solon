@@ -7,11 +7,13 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.MessageUtils;
+import org.noear.solon.extend.socketd.MessageWrapper;
 import org.noear.solon.extend.socketd.SessionBase;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class _SocketClientSession extends SessionBase {
@@ -71,13 +73,21 @@ public class _SocketClientSession extends SessionBase {
 
     @Override
     public void send(String message) {
-        real.send(message);
+        if (Solon.global().enableWebSocketD()) {
+            sendDo(MessageWrapper.wrap(message.getBytes(StandardCharsets.UTF_8)));
+        }else{
+            real.send(message);
+        }
     }
 
 
     @Override
     public void send(byte[] message) {
-        real.send(message);
+        if (Solon.global().enableWebSocketD()) {
+            sendDo(MessageWrapper.wrap(message));
+        } else {
+            real.send(message);
+        }
     }
 
     @Override
@@ -85,7 +95,7 @@ public class _SocketClientSession extends SessionBase {
         if (Solon.global().enableWebSocketD()) {
             sendDo(message);
         } else {
-            send(message.body());
+            real.send(message.body());
         }
     }
 

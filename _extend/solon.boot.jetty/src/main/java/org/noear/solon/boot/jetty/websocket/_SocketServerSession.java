@@ -6,11 +6,13 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.socketd.MessageUtils;
+import org.noear.solon.extend.socketd.MessageWrapper;
 import org.noear.solon.extend.socketd.SessionBase;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class _SocketServerSession extends SessionBase {
@@ -70,7 +72,11 @@ public class _SocketServerSession extends SessionBase {
     @Override
     public void send(String message) {
         try {
-            real.getRemote().sendString(message);
+            if (Solon.global().enableWebSocketD()) {
+                sendBytes(MessageUtils.encode(MessageWrapper.wrap(message.getBytes(StandardCharsets.UTF_8))));
+            } else {
+                real.getRemote().sendString(message);
+            }
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
@@ -78,7 +84,11 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public void send(byte[] message) {
-        sendBytes(ByteBuffer.wrap(message));
+        if (Solon.global().enableWebSocketD()) {
+            sendBytes(MessageUtils.encode(MessageWrapper.wrap(message)));
+        } else {
+            sendBytes(ByteBuffer.wrap(message));
+        }
     }
 
     @Override
@@ -86,7 +96,7 @@ public class _SocketServerSession extends SessionBase {
         if (Solon.global().enableWebSocketD()) {
             sendBytes(MessageUtils.encode(message));
         } else {
-            send(message.body());
+            sendBytes(ByteBuffer.wrap(message.body()));
         }
     }
 
