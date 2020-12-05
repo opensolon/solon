@@ -13,7 +13,7 @@ public class _SessionFactoryImpl implements SessionFactory {
 
     @Override
     public Session createSession(URI uri, boolean autoReconnect) {
-        AioConnector client = new AioConnector(uri.getHost(), uri.getPort());
+        AioConnector client = new AioConnector(uri);
         client.setReadBufferSize(XPluginImp.readBufferSize);
 
         return new _SocketSession(client, autoReconnect);

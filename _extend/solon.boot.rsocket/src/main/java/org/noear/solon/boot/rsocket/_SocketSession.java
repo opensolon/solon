@@ -17,6 +17,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.*;
 
@@ -65,6 +66,11 @@ public class _SocketSession extends SessionBase {
     @Override
     public MethodType method() {
         return MethodType.SOCKET;
+    }
+
+    @Override
+    public URI uri() {
+        return null;
     }
 
     @Override
