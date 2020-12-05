@@ -42,7 +42,7 @@ public class SocketD {
     }
 
     public static <T> T create(String uri, Class<T> service) {
-        Session session = create(uri,true);
+        Session session = create(uri, true);
         return create(session, service);
     }
 
@@ -61,10 +61,17 @@ public class SocketD {
     public static <T> T create(Session session, Encoder encoder, Decoder decoder, Class<T> service) {
         SocketChannel channel = new SocketChannel(() -> session);
 
+        URI uri = session.uri();
+        if (uri == null) {
+            uri = URI.create("tcp://socketd");
+        }
+
+        String server = uri.getScheme() + uri.getSchemeSpecificPart();
+
         return Nami.builder()
                 .encoder(encoder)
                 .decoder(decoder)
-                .upstream(() -> "tcp://socketd")
+                .upstream(() -> server)
                 .channel(channel)
                 .create(service);
     }
