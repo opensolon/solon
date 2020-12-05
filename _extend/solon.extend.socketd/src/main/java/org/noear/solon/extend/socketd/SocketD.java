@@ -1,13 +1,13 @@
-package org.noear.nami.channel.socketd;
+package org.noear.solon.extend.socketd;
 
 import org.noear.nami.Decoder;
 import org.noear.nami.Encoder;
 import org.noear.nami.Nami;
+import org.noear.nami.channel.socketd.SocketChannel;
 import org.noear.nami.decoder.SnackDecoder;
 import org.noear.nami.encoder.SnackTypeEncoder;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.SessionFactoryManager;
 
 import java.net.URI;
 

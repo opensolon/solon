@@ -1,5 +1,7 @@
 package org.noear.solon.extend.socketd;
 
+import org.noear.solon.core.SignalType;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 
 import java.util.Collection;
@@ -11,50 +13,42 @@ import java.util.Collection;
  * @since 1.2
  * */
 public abstract class SessionManager {
-    private static SessionManager instance;
+    private static SessionManager socket;
+    private static SessionManager websocket;
 
-    public static void setInstance(SessionManager factory) {
-        instance = factory;
-    }
+    public static void register(SessionManager factory) {
+        if (factory.signalType() == SignalType.SOCKET) {
+            socket = factory;
+        }
 
-    public static void setInstanceIfAbsent(SessionManager factory) {
-        if (instance == null) {
-            instance = factory;
+        if (factory.signalType() == SignalType.WEBSOCKET) {
+            websocket = factory;
         }
     }
 
-    protected abstract Session getSession(Object conn);
-
-    protected abstract Collection<Session> getOpenSessions();
-
-    protected abstract void removeSession(Object conn);
-
-
-    //
-    // for server
-    //
-    public static Session get(Object conn) {
-        if (instance == null) {
-            throw new IllegalArgumentException("SessionFactory uninitialized");
+    public static SessionManager socket(){
+        if(socket == null){
+            throw new IllegalArgumentException("Socket session manager uninitialized");
         }
 
-        return instance.getSession(conn);
+        return socket;
     }
 
-    public static Collection<Session> getOpens() {
-        if (instance == null) {
-            throw new IllegalArgumentException("SessionFactory uninitialized");
+    public static SessionManager websocket(){
+        if(websocket == null){
+            throw new IllegalArgumentException("WeSocket session manager uninitialized");
         }
 
-        return instance.getOpenSessions();
+        return websocket;
     }
 
 
-    public static void remove(Object conn) {
-        if (instance == null) {
-            throw new IllegalArgumentException("SessionFactory uninitialized");
-        }
+    protected abstract SignalType signalType();
 
-        instance.removeSession(conn);
-    }
+    public abstract Session getSession(Object conn);
+
+    public abstract Collection<Session> getOpenSessions();
+
+    public abstract void removeSession(Object conn);
+
 }

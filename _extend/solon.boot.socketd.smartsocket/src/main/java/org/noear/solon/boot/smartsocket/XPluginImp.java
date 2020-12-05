@@ -34,7 +34,7 @@ public final class XPluginImp implements Plugin {
 
 
         //注册会话工厂
-        SessionManager.setInstance(new _SessionManagerImpl());
+        SessionManager.register(new _SessionManagerImpl());
         SessionFactoryManager.register(new _SessionFactoryImpl());
 
 

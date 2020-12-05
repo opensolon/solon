@@ -49,11 +49,7 @@ class PluginJetty extends PluginJettyBase implements Plugin {
         if(app.enableWebSocket() && wsClz != null) {
             _server.setHandler(new HandlerHub(buildHandler()));
 
-            if (app.enableWebSocketD()) {
-                SessionManager.setInstance(new _SessionManagerImpl());
-            } else {
-                SessionManager.setInstanceIfAbsent(new _SessionManagerImpl());
-            }
+            SessionManager.register(new _SessionManagerImpl());
         }else {
             //没有ws包 或 没有开启
             _server.setHandler(buildHandler());

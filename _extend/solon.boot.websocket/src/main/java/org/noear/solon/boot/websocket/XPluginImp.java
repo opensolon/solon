@@ -18,12 +18,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        if (app.enableWebSocketD()) {
-            SessionManager.setInstance(new _SessionManagerImpl());
-        } else {
-            SessionManager.setInstanceIfAbsent(new _SessionManagerImpl());
-        }
-
+        SessionManager.register(new _SessionManagerImpl());
 
         int _port = app.cfg().getInt("server.websocket.port",0);
         if(_port < 1) {

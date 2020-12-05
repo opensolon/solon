@@ -1,6 +1,8 @@
 package org.noear.solon.boot.netty;
 
 import io.netty.channel.Channel;
+import org.noear.solon.core.SignalType;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.SessionFactory;
 import org.noear.solon.extend.socketd.SessionManager;
@@ -11,7 +13,12 @@ import java.util.Collections;
 
 class _SessionManagerImpl extends SessionManager {
     @Override
-    protected Session getSession(Object conn) {
+    protected SignalType signalType() {
+        return SignalType.SOCKET;
+    }
+
+    @Override
+    public Session getSession(Object conn) {
         if (conn instanceof Channel) {
             return _SocketSession.get((Channel) conn);
         } else {
@@ -20,12 +27,12 @@ class _SessionManagerImpl extends SessionManager {
     }
 
     @Override
-    protected Collection<Session> getOpenSessions() {
+    public Collection<Session> getOpenSessions() {
         return Collections.unmodifiableCollection(_SocketSession.sessions.values());
     }
 
     @Override
-    protected void removeSession(Object conn) {
+    public void removeSession(Object conn) {
         if (conn instanceof Channel) {
             _SocketSession.remove((Channel) conn);
         } else {

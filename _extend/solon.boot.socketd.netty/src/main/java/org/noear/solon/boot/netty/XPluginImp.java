@@ -21,7 +21,7 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
         //注册会话工厂
-        SessionManager.setInstance(new _SessionManagerImpl());
+        SessionManager.register(new _SessionManagerImpl());
         SessionFactoryManager.register(new _SessionFactoryImpl());
 
         if (app.enableSocket() == false) {

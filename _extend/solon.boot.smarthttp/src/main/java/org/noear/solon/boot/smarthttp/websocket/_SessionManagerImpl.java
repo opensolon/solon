@@ -1,5 +1,6 @@
 package org.noear.solon.boot.smarthttp.websocket;
 
+import org.noear.solon.core.SignalType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.SessionManager;
 import org.smartboot.http.WebSocketRequest;
@@ -9,7 +10,12 @@ import java.util.Collections;
 
 public class _SessionManagerImpl extends SessionManager {
     @Override
-    protected Session getSession(Object conn) {
+    protected SignalType signalType() {
+        return SignalType.WEBSOCKET;
+    }
+
+    @Override
+    public Session getSession(Object conn) {
         if (conn instanceof WebSocketRequest) {
             return _SocketServerSession.getOnly((WebSocketRequest) conn);
         } else {
@@ -18,12 +24,12 @@ public class _SessionManagerImpl extends SessionManager {
     }
 
     @Override
-    protected Collection<Session> getOpenSessions() {
+    public Collection<Session> getOpenSessions() {
         return Collections.unmodifiableCollection(_SocketServerSession.sessions.values());
     }
 
     @Override
-    protected void removeSession(Object conn) {
+    public void removeSession(Object conn) {
         if (conn instanceof WebSocketRequest) {
             _SocketServerSession.remove((WebSocketRequest) conn);
         } else {
