@@ -4,6 +4,7 @@ import org.noear.solon.core.handle.MethodType;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.URI;
 import java.util.Collection;
 import java.util.function.BiConsumer;
 
@@ -26,6 +27,10 @@ public interface Session {
      */
     MethodType method();
 
+    /**
+     * URI（socket 可能为null）
+     * */
+    URI uri();
     /**
      * 路径（socket 可能为null）
      */

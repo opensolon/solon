@@ -65,12 +65,22 @@ public class _SocketServerSession extends SessionBase {
         return MethodType.WEBSOCKET;
     }
 
+    private URI _uri;
+    @Override
+    public URI uri() {
+        if(_uri == null){
+            _uri = URI.create(real.getUrl());
+        }
+
+        return _uri;
+    }
+
     private String _path;
 
     @Override
     public String path() {
         if (_path == null) {
-            _path = URI.create(real.getUrl()).getPath();
+            _path = uri().getPath();
         }
 
         return _path;

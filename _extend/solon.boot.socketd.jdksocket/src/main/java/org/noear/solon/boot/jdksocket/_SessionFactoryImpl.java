@@ -15,7 +15,7 @@ public class _SessionFactoryImpl implements SessionFactory {
     @Override
     public Session createSession(URI uri, boolean autoReconnect) {
         try {
-            BioConnector bioClient = new BioConnector(uri.getHost(), uri.getPort());
+            BioConnector bioClient = new BioConnector(uri);
 
             return new _SocketSession(bioClient, autoReconnect);
         } catch (Exception ex) {

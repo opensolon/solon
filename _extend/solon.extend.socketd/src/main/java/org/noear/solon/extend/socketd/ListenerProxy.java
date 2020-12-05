@@ -37,7 +37,7 @@ public class ListenerProxy implements Listener {
     }
 
 
-    public static long REQUEST_AND_RESPONSE_TIMEOUT_SECONDS = 10l;
+    public static long REQUEST_AND_RESPONSE_TIMEOUT_SECONDS = 30l;
 
     //
     // 内部使用

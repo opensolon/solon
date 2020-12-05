@@ -64,7 +64,7 @@ public class SocketD {
         return Nami.builder()
                 .encoder(encoder)
                 .decoder(decoder)
-                .upstream(() -> "tpc://socketd")
+                .upstream(() -> "tcp://socketd")
                 .channel(channel)
                 .create(service);
     }

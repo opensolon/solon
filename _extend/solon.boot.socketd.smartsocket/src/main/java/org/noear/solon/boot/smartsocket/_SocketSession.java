@@ -12,6 +12,7 @@ import org.smartboot.socket.transport.AioSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
+import java.net.URI;
 import java.nio.channels.ClosedChannelException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -94,8 +95,21 @@ class _SocketSession extends SessionBase {
     }
 
     @Override
+    public URI uri() {
+        if(connector == null){
+            return null;
+        }else {
+            return connector.getUri();
+        }
+    }
+
+    @Override
     public String path() {
-        return "";
+        if (connector == null) {
+            return "";
+        } else {
+            return connector.getUri().getPath();
+        }
     }
 
     @Override

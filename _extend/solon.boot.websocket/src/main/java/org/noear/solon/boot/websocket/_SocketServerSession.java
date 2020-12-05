@@ -12,6 +12,7 @@ import org.noear.solon.extend.socketd.SessionBase;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -59,6 +60,16 @@ public class _SocketServerSession extends SessionBase {
     @Override
     public MethodType method() {
         return MethodType.WEBSOCKET;
+    }
+
+    private URI _uri;
+    @Override
+    public URI uri() {
+        if(_uri == null){
+            _uri = URI.create(real.getResourceDescriptor());
+        }
+
+        return _uri;
     }
 
     private String _path;

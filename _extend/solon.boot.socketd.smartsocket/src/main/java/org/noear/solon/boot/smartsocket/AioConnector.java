@@ -8,17 +8,20 @@ import org.smartboot.socket.transport.AioQuickClient;
 import org.smartboot.socket.transport.AioSession;
 
 import java.io.IOException;
+import java.net.URI;
 
 class AioConnector {
-    private String host;
-    private int port;
+    private URI uri;
     private Protocol<Message> protocol;
     private int readBufferSize;
 
-    public AioConnector(String host, int port) {
-        this.host = host;
-        this.port = port;
+    public AioConnector(URI uri) {
+        this.uri = uri;
         this.protocol = AioProtocol.instance;
+    }
+
+    public URI getUri() {
+        return uri;
     }
 
     public void setReadBufferSize(int size) {
@@ -26,7 +29,11 @@ class AioConnector {
     }
 
     public AioSession start(Session session) throws IOException {
-        AioQuickClient client = new AioQuickClient<>(host, port, protocol, new AioClientProcessor(session));
+        AioQuickClient client = new AioQuickClient<>(uri.getHost(), uri.getPort(), protocol, new AioClientProcessor(session));
+        if (readBufferSize > 0) {
+            client.setReadBufferSize(readBufferSize);
+        }
+
         return client.start();
     }
 }

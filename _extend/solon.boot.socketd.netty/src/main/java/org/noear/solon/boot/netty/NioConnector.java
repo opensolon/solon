@@ -8,13 +8,17 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.noear.solon.core.message.Session;
 
-public class NioConnector {
-    private String host;
-    private int port;
+import java.net.URI;
 
-    public NioConnector(String host, int port) {
-        this.host = host;
-        this.port = port;
+public class NioConnector {
+    URI uri;
+
+    public NioConnector(URI uri) {
+        this.uri = uri;
+    }
+
+    public URI getUri() {
+        return uri;
     }
 
     public Channel start(Session session) {
@@ -27,7 +31,7 @@ public class NioConnector {
                     .channel(NioSocketChannel.class)
                     .handler(new NioChannelInitializer(() -> new NioClientProcessor(session)));
 
-            ChannelFuture channelFuture = bootstrap.connect(host, port).sync();
+            ChannelFuture channelFuture = bootstrap.connect(uri.getHost(), uri.getPort()).sync();
 
             return channelFuture.channel();
         } catch (Exception ex) {

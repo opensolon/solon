@@ -8,19 +8,22 @@ import org.noear.solon.extend.socketd.ListenerProxy;
 
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.URI;
 
 class BioConnector {
-    String host;
-    int port;
+    URI uri;
 
-    public BioConnector(String host, int port) {
-        this.host = host;
-        this.port = port;
+    public BioConnector(URI uri) {
+        this.uri = uri;
+    }
+
+    public URI getUri() {
+        return uri;
     }
 
     public Socket start(Session session) {
         try {
-            Socket socket = new Socket(host, port);
+            Socket socket = new Socket(uri.getHost(), uri.getPort());
 
             startReceive(session, socket);
 

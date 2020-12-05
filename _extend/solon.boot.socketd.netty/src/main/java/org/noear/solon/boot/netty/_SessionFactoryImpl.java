@@ -13,7 +13,7 @@ public class _SessionFactoryImpl implements SessionFactory {
 
     @Override
     public Session createSession(URI uri, boolean autoReconnect) {
-        NioConnector connector = new NioConnector(uri.getHost(), uri.getPort());
+        NioConnector connector = new NioConnector(uri);
 
         return new _SocketSession(connector, autoReconnect);
     }
