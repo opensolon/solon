@@ -10,6 +10,7 @@ import org.noear.solon.extend.socketd.MessageWrapper;
 import org.noear.solon.extend.socketd.SessionBase;
 import org.smartboot.http.WebSocketRequest;
 import org.smartboot.http.WebSocketResponse;
+import org.smartboot.http.server.WebSocketRequestImpl;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -72,7 +73,7 @@ public class _SocketServerSession extends SessionBase {
     @Override
     public URI uri() {
         if(_uri == null) {
-            _uri = URI.create(request.getRequestURI());
+            _uri = URI.create(((WebSocketRequestImpl) request).getRequestURL());
         }
 
         return _uri;
