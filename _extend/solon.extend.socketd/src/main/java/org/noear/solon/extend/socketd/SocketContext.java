@@ -61,7 +61,7 @@ public class SocketContext extends ContextEmpty {
 
     @Override
     public String protocol() {
-        if (_method.code == MethodType.WEBSOCKET.code) {
+        if (_method == MethodType.WEBSOCKET) {
             return "WS";
         } else {
             return "SOCKET";

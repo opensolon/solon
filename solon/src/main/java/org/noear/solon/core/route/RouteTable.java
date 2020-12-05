@@ -1,5 +1,6 @@
 package org.noear.solon.core.route;
 
+import org.noear.solon.core.SignalType;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.PathAnalyzer;
 
@@ -68,13 +69,13 @@ public class RouteTable<T> extends ArrayList<RouteTable.Route<T>> {
          * 是否匹配
          */
         public boolean matches(MethodType method2, String path2) {
-            if (MethodType.ALL.code == method.code) {
+            if (MethodType.ALL == method) {
                 return matches0(path2);
-            } else if (MethodType.HTTP.code == method.code) { //不是null时，不能用==
-                if (method2.isHttpMethod()) {
+            } else if (MethodType.HTTP == method) { //不是null时，不能用==
+                if (method2.signal == SignalType.HTTP) {
                     return matches0(path2);
                 }
-            } else if (method2.code == method.code) {
+            } else if (method2 == method) {
                 return matches0(path2);
             }
 
