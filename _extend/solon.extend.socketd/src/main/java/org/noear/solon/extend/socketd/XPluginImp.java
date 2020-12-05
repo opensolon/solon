@@ -1,5 +1,6 @@
 package org.noear.solon.extend.socketd;
 
+import org.noear.nami.channel.socket.SocketD;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
@@ -7,8 +8,6 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.annotation.ClientEndpoint;
-
-import java.net.URI;
 
 public class XPluginImp implements Plugin {
     @Override

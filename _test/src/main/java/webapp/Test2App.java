@@ -1,11 +1,9 @@
 package webapp;
 
-import org.noear.solon.extend.socketd.SocketD;
+import org.noear.nami.channel.socket.SocketD;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import webapp.demoh_socketd.HelloRpcService;
-
-import java.net.URI;
 
 public class Test2App {
     public static void main(String[] args) {

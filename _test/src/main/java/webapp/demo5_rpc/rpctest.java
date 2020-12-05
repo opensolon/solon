@@ -1,8 +1,8 @@
 package webapp.demo5_rpc;
 
 import org.noear.nami.Nami;
-import org.noear.nami.channel.OkHttpChannel;
-import org.noear.solon.extend.socketd.SocketD;
+import org.noear.nami.channel.http.HttpChannel;
+import org.noear.nami.channel.socket.SocketD;
 import org.noear.nami.decoder.SnackDecoder;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
@@ -10,7 +10,6 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +30,7 @@ public class rpctest implements Handler {
         String root = "http://localhost:" + Solon.global().port();
 
         rockapi client = Nami.builder()
-                .channel(OkHttpChannel.instance)
+                .channel(HttpChannel.instance)
                 .decoder(SnackDecoder.instance)
                 .upstream(() -> root)
                 .create(rockapi.class);

@@ -1,6 +1,6 @@
 package org.noear.nami;
 
-import org.noear.nami.channel.OkHttpChannel;
+import org.noear.nami.channel.http.HttpChannel;
 import org.noear.nami.decoder.FastjsonDecoder;
 import org.noear.nami.decoder.SnackDecoder;
 import org.noear.nami.encoder.FormEncoder;
@@ -41,7 +41,7 @@ public class NamiConfig {
             }
         }
         if (channel == null) {
-            setChannel(OkHttpChannel.instance);
+            setChannel(HttpChannel.instance);
         }
 
         return this;

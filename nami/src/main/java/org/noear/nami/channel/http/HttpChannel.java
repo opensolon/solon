@@ -1,10 +1,11 @@
-package org.noear.nami.channel;
+package org.noear.nami.channel.http;
 
 import okhttp3.MediaType;
 import okhttp3.Response;
 import org.noear.nami.NamiChannel;
 import org.noear.nami.NamiConfig;
 import org.noear.nami.Result;
+import org.noear.nami.channel.Constants;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -14,8 +15,8 @@ import java.util.Map;
 /**
  * Http 通道
  * */
-public class OkHttpChannel implements NamiChannel {
-    public static final OkHttpChannel instance = new OkHttpChannel();
+public class HttpChannel implements NamiChannel {
+    public static final HttpChannel instance = new HttpChannel();
 
     @Override
     public Result call(NamiConfig cfg, Method method,  String action, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
@@ -28,7 +29,7 @@ public class OkHttpChannel implements NamiChannel {
             args.forEach((k, v) -> {
                 if (v != null) {
                     sb.append(k).append("=")
-                            .append(OkHttpUtils.urlEncode(v.toString()))
+                            .append(HttpUtils.urlEncode(v.toString()))
                             .append("&");
                 }
             });
@@ -40,7 +41,7 @@ public class OkHttpChannel implements NamiChannel {
         cfg.getDecoder().filter(cfg, action, url, headers, args);
 
         //0.开始构建http
-        OkHttpUtils http = OkHttpUtils.http(url).headers(headers);
+        HttpUtils http = HttpUtils.http(url).headers(headers);
         Response response = null;
 
 

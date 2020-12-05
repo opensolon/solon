@@ -1,13 +1,13 @@
-package org.noear.solon.extend.socketd;
+package org.noear.nami.channel.socket;
 
 import org.noear.nami.Decoder;
 import org.noear.nami.Encoder;
 import org.noear.nami.Nami;
-import org.noear.nami.channel.socketd.SocketChannel;
 import org.noear.nami.decoder.SnackDecoder;
 import org.noear.nami.encoder.SnackTypeEncoder;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.extend.socketd.SessionFactoryManager;
 
 import java.net.URI;
 
@@ -15,20 +15,20 @@ public class SocketD {
     //
     // session client
     //
-    public static Session create(URI uri, boolean autoReconnect) {
-        return SessionFactoryManager.create(uri, autoReconnect);
+    public static Session create(URI serverUri, boolean autoReconnect) {
+        return SessionFactoryManager.create(serverUri, autoReconnect);
     }
 
-    public static Session create(URI uri) {
-        return create(uri, true);
+    public static Session create(URI serverUri) {
+        return create(serverUri, true);
     }
 
-    public static Session create(String uri, boolean autoReconnect) {
-        return create(URI.create(uri), autoReconnect);
+    public static Session create(String serverUri, boolean autoReconnect) {
+        return create(URI.create(serverUri), autoReconnect);
     }
 
-    public static Session create(String uri) {
-        return create(uri, true);
+    public static Session create(String serverUri) {
+        return create(serverUri, true);
     }
 
 
@@ -36,13 +36,13 @@ public class SocketD {
     // rpc client
     //
 
-    public static <T> T create(URI uri, Class<T> service) {
-        Session session = create(uri, true);
+    public static <T> T create(URI serverUri, Class<T> service) {
+        Session session = create(serverUri, true);
         return create(session, service);
     }
 
-    public static <T> T create(String uri, Class<T> service) {
-        Session session = create(uri, true);
+    public static <T> T create(String serverUri, Class<T> service) {
+        Session session = create(serverUri, true);
         return create(session, service);
     }
 
@@ -66,7 +66,7 @@ public class SocketD {
             uri = URI.create("tcp://socketd");
         }
 
-        String server = uri.getScheme() + uri.getSchemeSpecificPart();
+        String server = uri.getScheme() + ":" + uri.getSchemeSpecificPart();
 
         return Nami.builder()
                 .encoder(encoder)

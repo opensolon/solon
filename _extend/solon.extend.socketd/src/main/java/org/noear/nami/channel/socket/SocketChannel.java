@@ -1,4 +1,4 @@
-package org.noear.nami.channel.socketd;
+package org.noear.nami.channel.socket;
 
 
 import org.noear.nami.NamiChannel;
@@ -10,7 +10,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.util.HeaderUtils;
-import org.noear.solon.extend.socketd.MessageWrapper;
 import org.noear.solon.extend.socketd.annotation.Handshake;
 
 import java.lang.reflect.Method;
