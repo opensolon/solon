@@ -67,7 +67,7 @@ public class SocketChannel implements NamiChannel {
         }
 
         if (Solon.cfg().isFilesMode()) {
-            System.out.println(message.toString());
+            System.out.println("Nami send:" + message);
         }
 
         Message response = null;
