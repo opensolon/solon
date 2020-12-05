@@ -1,6 +1,6 @@
 package webapp;
 
-import org.noear.nami.channel.socket.SocketD;
+import org.noear.nami.channel.socketd.SocketD;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import webapp.demoh_socketd.HelloRpcService;

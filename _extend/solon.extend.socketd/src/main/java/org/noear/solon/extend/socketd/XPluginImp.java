@@ -1,6 +1,6 @@
 package org.noear.solon.extend.socketd;
 
-import org.noear.nami.channel.socket.SocketD;
+import org.noear.nami.channel.socketd.SocketD;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;

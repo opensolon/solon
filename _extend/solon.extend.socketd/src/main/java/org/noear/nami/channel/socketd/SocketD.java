@@ -1,4 +1,4 @@
-package org.noear.nami.channel.socket;
+package org.noear.nami.channel.socketd;
 
 import org.noear.nami.Decoder;
 import org.noear.nami.Encoder;
