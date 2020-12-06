@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * SocketD 监听者代理
@@ -20,6 +22,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 1.0
  * */
 public class ListenerProxy implements Listener {
+
+    public static final ExecutorService executors = Executors.newCachedThreadPool();
+
     //实例维护
     private static Listener global = new ListenerProxy();
 
@@ -30,6 +35,8 @@ public class ListenerProxy implements Listener {
     public static void setGlobal(Listener global) {
         ListenerProxy.global = global;
     }
+
+
 
     private SocketContextHandler socketContextHandler;
 
@@ -73,7 +80,10 @@ public class ListenerProxy implements Listener {
 
     @Override
     public void onMessage(Session session, Message message, boolean messageIsString) throws IOException {
-        Utils.pools.submit(() -> {
+        //
+        //线程池处理，免得被卡住
+        //
+        executors.submit(() -> {
             onMessage0(session, message, messageIsString);
         });
     }
