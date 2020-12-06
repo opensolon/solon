@@ -133,6 +133,8 @@ class _SocketSession extends SessionBase {
 
     public void send(Message message) {
         try {
+            super.send(message);
+
             synchronized (this) {
                 if (prepareNew()) {
                     send0(handshakeMessage);

@@ -3,10 +3,12 @@ package org.noear.solon.boot.websocket;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
+import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.ListenerProxy;
+import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.extend.socketd.MessageWrapper;
 
 import java.net.InetSocketAddress;
@@ -55,7 +57,12 @@ public class WsServer extends WebSocketServer {
     public void onMessage(WebSocket conn, ByteBuffer data) {
         try {
             Session session = _SocketServerSession.get(conn);
-            Message message = MessageWrapper.wrap(conn.getResourceDescriptor(), null,data.array());
+            Message message = null;
+            if(Solon.global().enableWebSocketD()){
+                message = MessageUtils.decode(data);
+            }else{
+                message = MessageWrapper.wrap(conn.getResourceDescriptor(), null,data.array());;
+            }
 
             ListenerProxy.getGlobal().onMessage(session, message, false);
         } catch (Throwable ex) {

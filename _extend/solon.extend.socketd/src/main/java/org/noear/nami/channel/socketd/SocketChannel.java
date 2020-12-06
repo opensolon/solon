@@ -66,10 +66,6 @@ public class SocketChannel implements NamiChannel {
             }
         }
 
-        if (Solon.cfg().isFilesMode()) {
-            System.out.println("Nami send:" + message);
-        }
-
         Message response = null;
         if(message.flag() == -1){
             response = sessions.get().sendHandshakeAndResponse(message);

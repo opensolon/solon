@@ -110,6 +110,8 @@ public class _SocketServerSession extends SessionBase {
 
     @Override
     public void send(Message message) {
+        super.send(message);
+        
         if (Solon.global().enableWebSocketD()) {
             sendBytes(MessageUtils.encode(message).array());
         } else {
