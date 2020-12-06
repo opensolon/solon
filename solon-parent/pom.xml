@@ -44,6 +44,8 @@
         <dubbo.ver>2.7.5</dubbo.ver>
 
         <swagger.ver>1.5.13</swagger.ver>
+
+        <slf4j.ver>1.7.30</slf4j.ver>
     </properties>
 
 
@@ -571,6 +573,18 @@
                 <groupId>org.java-websocket</groupId>
                 <artifactId>Java-WebSocket</artifactId>
                 <version>1.5.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.ver}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
