@@ -8,7 +8,7 @@ public class XPluginImp implements Plugin {
     SocketServer _server;
 
     public static String solon_boot_ver(){
-        return "jdk tpc socket/" + Solon.cfg().version();
+        return "jdk tcp socket/" + Solon.cfg().version();
     }
 
     @Override

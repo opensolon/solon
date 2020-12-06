@@ -8,7 +8,7 @@ import java.net.URI;
 public class _SessionFactoryImpl implements SessionFactory {
     @Override
     public String[] schemes() {
-        return new String[]{"tpc"};
+        return new String[]{"tcp"};
     }
 
     @Override
