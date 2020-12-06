@@ -96,6 +96,7 @@ public class _SocketServerSession extends SessionBase {
             sendBytes(MessageUtils.encode(MessageWrapper.wrap(message.getBytes(StandardCharsets.UTF_8))).array());
         } else {
             response.sendTextMessage(message);
+            response.flush();
         }
     }
 
@@ -121,6 +122,7 @@ public class _SocketServerSession extends SessionBase {
 
     private void sendBytes(byte[] message){
         response.sendBinaryMessage(message);
+        response.flush();
     }
 
 
