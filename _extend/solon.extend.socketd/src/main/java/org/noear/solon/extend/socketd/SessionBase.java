@@ -1,5 +1,6 @@
 package org.noear.solon.extend.socketd;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Message;
@@ -40,6 +41,10 @@ public abstract class SessionBase implements Session {
             throw new IllegalArgumentException("SendAndResponse message no key");
         }
 
+        if(Solon.cfg().isFilesMode() || Solon.cfg().isDebugMode()) {
+            System.out.println("Session send and response: "+message);
+        }
+
         //注册请求
         CompletableFuture<Message> request = new CompletableFuture<>();
         ListenerProxy.regRequest(message, request);
@@ -62,6 +67,10 @@ public abstract class SessionBase implements Session {
     public void sendAndCallback(Message message, BiConsumer<Message, Throwable> callback) {
         if (Utils.isEmpty(message.key())) {
             throw new IllegalArgumentException("sendAndCallback message no key");
+        }
+
+        if(Solon.cfg().isFilesMode() || Solon.cfg().isDebugMode()) {
+            System.out.println("Session send and callback: "+message);
         }
 
         //注册请求

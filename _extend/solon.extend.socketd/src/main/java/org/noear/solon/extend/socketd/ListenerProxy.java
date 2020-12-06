@@ -2,6 +2,7 @@ package org.noear.solon.extend.socketd;
 
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Message;
@@ -72,7 +73,17 @@ public class ListenerProxy implements Listener {
 
     @Override
     public void onMessage(Session session, Message message, boolean messageIsString) throws IOException {
+        Utils.pools.submit(() -> {
+            onMessage0(session, message, messageIsString);
+        });
+    }
+
+    private void onMessage0(Session session, Message message, boolean messageIsString) {
         try {
+            if(Solon.cfg().isFilesMode() || Solon.cfg().isDebugMode()) {
+                System.out.println("Listener proxy receive: " + message);
+            }
+
             //实例监听者
             if (session.listener() != null) {
                 session.listener().onMessage(session, message, messageIsString);

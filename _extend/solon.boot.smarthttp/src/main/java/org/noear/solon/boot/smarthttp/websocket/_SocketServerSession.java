@@ -122,7 +122,6 @@ public class _SocketServerSession extends SessionBase {
     }
 
 
-
     private boolean isOpen = true;
 
     @Override

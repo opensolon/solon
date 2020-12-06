@@ -8,6 +8,7 @@ import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.ListenerProxy;
 import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.extend.socketd.MessageWrapper;
+import org.xnio.Pooled;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -23,21 +24,27 @@ public class UtWsChannelListener extends AbstractReceiveListener {
     @Override
     protected void onFullBinaryMessage(WebSocketChannel channel, BufferedBinaryMessage msg) throws IOException {
         try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            for (ByteBuffer buf : msg.getData().getResource()) {
-                out.write(buf.array());
+            Pooled<ByteBuffer[]> pulledData = msg.getData();
+
+            try {
+                ByteBuffer[] resource = pulledData.getResource();
+                ByteBuffer byteBuffer = WebSockets.mergeBuffers(resource);
+
+                Session session = _SocketServerSession.get(channel);
+                Message message = null;
+
+                if (Solon.global().enableWebSocketD()) {
+                    message = MessageUtils.decode(byteBuffer);
+                } else {
+                    message = MessageWrapper.wrap(channel.getUrl(), null, byteBuffer.array());
+                }
+
+                ListenerProxy.getGlobal().onMessage(session, message, false);
+
+            } finally {
+                pulledData.discard();
             }
 
-            Session session = _SocketServerSession.get(channel);
-            Message message = null;
-
-            if (Solon.global().enableWebSocketD()) {
-                message = MessageUtils.decode(ByteBuffer.wrap(out.toByteArray()));
-            } else {
-                message = MessageWrapper.wrap(channel.getUrl(), null, out.toByteArray());
-            }
-
-            ListenerProxy.getGlobal().onMessage(session, message, false);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
