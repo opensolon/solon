@@ -4,6 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.*;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 
 import java.io.ByteArrayOutputStream;
@@ -107,7 +108,7 @@ public abstract class Context {
     /**获取请求的URI路径变量,根据路径表达式*/
     @Note("获取请求的URI路径变量,根据路径表达式")
     public NvMap pathMap(String expr) {
-        return Utils.pathVarMap(path(),expr);
+        return PathUtil.pathVarMap(path(),expr);
     }
 
     /**获取请求的URI路径并大写*/

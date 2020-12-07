@@ -1,21 +1,17 @@
 package org.noear.solon;
 
 import org.noear.solon.core.wrap.ClassWrap;
-import org.noear.solon.core.util.PathAnalyzer;
 import org.noear.solon.core.*;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 内部专用工具（外部项目不建议使用，随时可能会变动）
@@ -347,87 +343,7 @@ public class Utils {
         return sw.getBuffer().toString();
     }
 
-    /**
-     * 合并两个路径
-     */
-    public static String mergePath(String path1, String path2) {
-        if (Utils.isEmpty(path1) || "**".equals(path1)) {
-            if (path2.startsWith("/")) {
-                return path2;
-            } else {
-                return "/" + path2;
-            }
-        }
 
-        if (path1.startsWith("/") == false) {
-            path1 = "/" + path1;
-        }
-
-        if (Utils.isEmpty(path2)) {
-            return path1;
-        }
-
-        if (path2.startsWith("/")) {
-            path2 = path2.substring(1);
-        }
-
-        if (path1.endsWith("/")) {
-            return path1 + path2;
-        } else {
-            if (path1.endsWith("*")) {
-                //支持多个*情况
-                int idx = path1.lastIndexOf('/') + 1;
-                if (idx < 1) {
-                    return path2;
-                } else {
-                    return path1.substring(0, idx) + path2;
-                }
-            } else {
-                return path1 + "/" + path2;
-            }
-        }
-    }
-
-    private static Pattern _pkr = Pattern.compile("\\{([^\\\\}]+)\\}");
-
-    /**
-     * 将路径根据表达式转成map
-     * */
-    public static NvMap pathVarMap(String path, String expr) {
-        NvMap _map = new NvMap();
-
-        //支持path变量
-        if (expr.indexOf("{") >= 0) {
-            String path2 = null;
-            try {
-                path2 = URLDecoder.decode(path, "utf-8");
-            } catch (Throwable ex) {
-                path2 = path;
-            }
-
-            Matcher pm = _pkr.matcher(expr);
-
-            List<String> _pks = new ArrayList<>();
-
-            while (pm.find()) {
-                _pks.add(pm.group(1));
-            }
-
-            if (_pks.size() > 0) {
-                PathAnalyzer _pr = new PathAnalyzer(expr);
-                //Pattern _pr = Pattern.compile(XUtil.expCompile(expr), Pattern.CASE_INSENSITIVE);
-
-                pm = _pr.matcher(path2);
-                if (pm.find()) {
-                    for (int i = 0, len = _pks.size(); i < len; i++) {
-                        _map.put(_pks.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
-                    }
-                }
-            }
-        }
-
-        return _map;
-    }
 
     /**
      * 构建应用扩展目录

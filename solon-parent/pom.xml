@@ -446,6 +446,12 @@
                 <version>${solon.ver}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solonfox-swagger-bootstrap-ui</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
 
 <!--            <dependency>-->
 <!--                <groupId>org.noear</groupId>-->
@@ -789,6 +795,7 @@
 
         <module>../solonfox/solonfox-swagger2</module>
         <module>../solonfox/solonfox-swagger-ui</module>
+        <module>../solonfox/solonfox-swagger-bootstrap-ui</module>
 
         <module>../_extend3/solon-beetl-web</module>
 

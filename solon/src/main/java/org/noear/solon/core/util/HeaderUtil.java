@@ -11,7 +11,7 @@ import java.util.Map;
  * @author noear
  * @since 1.2
  * */
-public class HeaderUtils {
+public class HeaderUtil {
     public static String encodeHeaderMap(Map<String, String> headers) {
         StringBuilder header = new StringBuilder();
         if (headers != null) {

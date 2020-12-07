@@ -5,11 +5,10 @@ import org.noear.nami.NamiChannel;
 import org.noear.nami.NamiConfig;
 import org.noear.nami.Result;
 import org.noear.nami.channel.Constants;
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.core.util.HeaderUtils;
+import org.noear.solon.core.util.HeaderUtil;
 import org.noear.solon.extend.socketd.annotation.Handshake;
 
 import java.lang.reflect.Method;
@@ -41,7 +40,7 @@ public class SocketChannel implements NamiChannel {
                 flag = -1;
 
                 if (Utils.isNotEmpty(handshake.handshakeHeader())) {
-                    Map<String, String> headerMap = HeaderUtils.decodeHeaderMap(handshake.handshakeHeader());
+                    Map<String, String> headerMap = HeaderUtil.decodeHeaderMap(handshake.handshakeHeader());
                     headers.putAll(headerMap);
                 }
             }
@@ -53,7 +52,7 @@ public class SocketChannel implements NamiChannel {
         switch (cfg.getEncoder().enctype()) {
             case application_hessian: {
                 headers.put("Content-Type", Constants.ct_hessian);
-                message = new Message(flag, message_key, url, HeaderUtils.encodeHeaderMap(headers), (byte[]) cfg.getEncoder().encode(args));
+                message = new Message(flag, message_key, url, HeaderUtil.encodeHeaderMap(headers), (byte[]) cfg.getEncoder().encode(args));
                 break;
             }
             default: {
@@ -61,7 +60,7 @@ public class SocketChannel implements NamiChannel {
                 //
                 headers.put("Content-Type", Constants.ct_json);
                 String json = (String) cfg.getEncoder().encode(args);
-                message = new Message(flag, message_key, url, HeaderUtils.encodeHeaderMap(headers), json.getBytes());
+                message = new Message(flag, message_key, url, HeaderUtil.encodeHeaderMap(headers), json.getBytes());
                 break;
             }
         }

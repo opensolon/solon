@@ -1,7 +1,7 @@
 package org.noear.solon.core.message;
 
 import org.noear.solon.annotation.Note;
-import org.noear.solon.core.util.HeaderUtils;
+import org.noear.solon.core.util.HeaderUtil;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -56,7 +56,7 @@ public class Message {
     private Map<String,String> headerMap;
     public Map<String,String> headerMap() {
         if (headerMap == null) {
-            headerMap = HeaderUtils.decodeHeaderMap(header);
+            headerMap = HeaderUtil.decodeHeaderMap(header);
         }
 
         return Collections.unmodifiableMap(headerMap);

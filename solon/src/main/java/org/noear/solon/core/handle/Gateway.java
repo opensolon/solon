@@ -5,6 +5,7 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.ext.RunnableEx;
 import org.noear.solon.ext.DataThrowable;
 
@@ -253,9 +254,9 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     protected void addDo(String path, Handler handler) {
         //addPath 已处理 path1= null 的情况
         if(allowPathMerging()) {
-            _main.put(Utils.mergePath(_path, path).toUpperCase(), handler);
+            _main.put(PathUtil.mergePath(_path, path).toUpperCase(), handler);
         }else{
-            _main.put(Utils.mergePath(null, path).toUpperCase(), handler);
+            _main.put(PathUtil.mergePath(null, path).toUpperCase(), handler);
         }
     }
 

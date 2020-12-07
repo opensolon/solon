@@ -4,6 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.ext.ConsumerEx;
 
 import java.lang.annotation.Annotation;
@@ -139,7 +140,7 @@ public class HandlerLoader extends HandlerAide {
 
             //如果是service，method 就不需要map
             if (m_map != null || all) {
-                String newPath = Utils.mergePath(bPath, m_path);
+                String newPath = PathUtil.mergePath(bPath, m_path);
 
                 Action action = createAction(bw, method, m_map, newPath, bRemoting);
 

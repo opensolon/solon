@@ -1,7 +1,7 @@
 package org.noear.solon.extend.socketd;
 
 import org.noear.solon.core.message.Message;
-import org.noear.solon.core.util.HeaderUtils;
+import org.noear.solon.core.util.HeaderUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
@@ -201,7 +201,7 @@ public class MessageUtils {
     }
 
     public static Message wrapHandshake(Map<String, String> header, byte[] body) {
-        return wrapHandshake(HeaderUtils.encodeHeaderMap(header), body);
+        return wrapHandshake(HeaderUtil.encodeHeaderMap(header), body);
     }
 
 
