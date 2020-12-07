@@ -140,7 +140,13 @@ public interface Session {
      */
     void sendHeartbeatAuto(int intervalSeconds);
 
+    /**
+     * 发送握手
+     */
     void sendHandshake(Message message);
 
+    /**
+     * 发送握手并等待响应
+     */
     Message sendHandshakeAndResponse(Message message);
 }
