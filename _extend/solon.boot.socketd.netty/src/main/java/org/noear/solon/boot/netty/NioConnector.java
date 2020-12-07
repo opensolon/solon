@@ -24,7 +24,7 @@ public class NioConnector implements Connector<Channel> {
     }
 
     @Override
-    public Channel connect(Session session) {
+    public Channel open(Session session) {
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
 
         try {

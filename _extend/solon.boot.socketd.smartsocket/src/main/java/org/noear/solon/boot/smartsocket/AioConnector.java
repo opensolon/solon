@@ -30,7 +30,7 @@ class AioConnector implements Connector<AioSession> {
     }
 
     @Override
-    public AioSession connect(Session session) throws IOException {
+    public AioSession open(Session session) throws IOException {
         AioQuickClient client = new AioQuickClient<>(uri.getHost(), uri.getPort(), protocol, new AioClientProcessor(session));
         if (readBufferSize > 0) {
             client.setReadBufferSize(readBufferSize);

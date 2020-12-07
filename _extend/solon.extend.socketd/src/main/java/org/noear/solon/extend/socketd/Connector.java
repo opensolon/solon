@@ -14,5 +14,5 @@ import java.net.URI;
 public interface Connector<T> {
     URI getUri();
 
-    T connect(Session session) throws IOException;
+    T open(Session session) throws IOException;
 }

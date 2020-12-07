@@ -76,7 +76,7 @@ class _SocketSession extends SessionBase {
      */
     private boolean prepareNew() {
         if (real == null) {
-            real = connector.connect(this);
+            real = connector.open(this);
             onOpen();
 
             return true;

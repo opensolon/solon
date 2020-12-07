@@ -27,7 +27,7 @@ public class WsConnector implements Connector<WebSocket> {
     }
 
     @Override
-    public WebSocket connect(Session session) {
+    public WebSocket open(Session session) {
         try {
             WebSocketClient socket = new WsSocketClientImp(uri, session);
 

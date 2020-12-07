@@ -23,7 +23,7 @@ class BioConnector implements Connector<Socket> {
     }
 
     @Override
-    public Socket connect(Session session) {
+    public Socket open(Session session) {
         try {
             Socket socket = new Socket(uri.getHost(), uri.getPort());
 
