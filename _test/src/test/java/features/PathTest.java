@@ -6,10 +6,10 @@ import org.noear.solon.core.util.PathUtil;
 public class PathTest {
     @Test
     public void test(){
-        String tmp = PathUtil.mergePath("/user/*","");
+        assert  PathUtil.mergePath("/user/*","").equals("/user/");
 
-        System.out.println(tmp);
+        assert  PathUtil.mergePath("","/user/*").equals("/user/*");
 
-        assert "/user/".equals(tmp);
+        assert  PathUtil.mergePath("/","/user/*").equals("/user/*");
     }
 }
