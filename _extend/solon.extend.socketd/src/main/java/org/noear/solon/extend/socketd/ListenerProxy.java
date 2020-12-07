@@ -63,15 +63,15 @@ public class ListenerProxy implements Listener {
     @Override
     public void onOpen(Session session) {
         try {
-            //实例监听者
-            if (session.listener() != null) {
-                session.listener().onOpen(session);
-            }
-
-            //路由监听模式
+            //路由监听模式（起到过滤器作用）
             Listener sl = get(session);
             if (sl != null) {
                 sl.onOpen(session);
+            }
+
+            //实例监听者
+            if (session.listener() != null) {
+                session.listener().onOpen(session);
             }
         } catch (Throwable ex) {
             EventBus.push(ex);
@@ -94,15 +94,15 @@ public class ListenerProxy implements Listener {
                 System.out.println("Listener proxy receive: " + message);
             }
 
-            //实例监听者
-            if (session.listener() != null) {
-                session.listener().onMessage(session, message, messageIsString);
-            }
-
-            //路由监听模式
+            //路由监听模式（起到过滤器作用）
             Listener sl = get(session);
             if (sl != null) {
                 sl.onMessage(session, message, messageIsString);
+            }
+
+            //实例监听者
+            if (session.listener() != null) {
+                session.listener().onMessage(session, message, messageIsString);
             }
 
             //心跳包不进入处理流程
@@ -136,15 +136,15 @@ public class ListenerProxy implements Listener {
     @Override
     public void onClose(Session session) {
         try {
-            //实例监听者
-            if (session.listener() != null) {
-                session.listener().onClose(session);
-            }
-
             //路由监听模式
             Listener sl = get(session);
             if (sl != null) {
                 sl.onClose(session);
+            }
+
+            //实例监听者
+            if (session.listener() != null) {
+                session.listener().onClose(session);
             }
         } catch (Throwable ex) {
             EventBus.push(ex);
@@ -154,15 +154,15 @@ public class ListenerProxy implements Listener {
     @Override
     public void onError(Session session, Throwable error) {
         try {
-            //实例监听者
-            if (session.listener() != null) {
-                session.listener().onError(session, error);
-            }
-
-            //路由监听模式
+            //路由监听模式（起到过滤器作用）
             Listener sl = get(session);
             if (sl != null) {
                 sl.onError(session, error);
+            }
+
+            //实例监听者
+            if (session.listener() != null) {
+                session.listener().onError(session, error);
             }
         } catch (Throwable ex) {
             EventBus.push(ex);
