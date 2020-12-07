@@ -27,7 +27,17 @@ public class PathUtil {
         }
 
         if (Utils.isEmpty(path2)) {
-            return path1;
+            if (path1.endsWith("*")) {
+                //支持多个*情况
+                int idx = path1.lastIndexOf('/') + 1;
+                if (idx < 1) {
+                    return "/";
+                } else {
+                    return path1.substring(0, idx) + path2;
+                }
+            }else {
+                return path1;
+            }
         }
 
         if (path2.startsWith("/")) {
