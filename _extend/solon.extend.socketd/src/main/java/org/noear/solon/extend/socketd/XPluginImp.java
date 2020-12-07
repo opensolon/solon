@@ -24,7 +24,7 @@ public class XPluginImp implements Plugin {
 
                 //发送握手包
                 if (Utils.isNotEmpty(anno.handshakeHeader())) {
-                    session.sendHandshake(MessageWrapper.wrapHandshake(anno.handshakeHeader()));
+                    session.sendHandshake(MessageUtils.wrapHandshake(anno.handshakeHeader()));
                 }
 
                 //设定自动心跳

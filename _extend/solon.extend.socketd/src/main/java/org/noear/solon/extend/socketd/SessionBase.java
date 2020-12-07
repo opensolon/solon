@@ -111,7 +111,7 @@ public abstract class SessionBase implements Session {
      */
     @Override
     public void sendHeartbeat() {
-        send(MessageWrapper.wrapHeartbeat());
+        send(MessageUtils.wrapHeartbeat());
     }
 
     private boolean _sendHeartbeatAuto = false;

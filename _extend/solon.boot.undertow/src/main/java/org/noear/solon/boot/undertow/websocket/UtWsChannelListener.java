@@ -7,10 +7,8 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.ListenerProxy;
 import org.noear.solon.extend.socketd.MessageUtils;
-import org.noear.solon.extend.socketd.MessageWrapper;
 import org.xnio.Pooled;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
@@ -36,7 +34,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
                 if (Solon.global().enableWebSocketD()) {
                     message = MessageUtils.decode(byteBuffer);
                 } else {
-                    message = MessageWrapper.wrap(channel.getUrl(), null, byteBuffer.array());
+                    message = MessageUtils.wrap(channel.getUrl(), null, byteBuffer.array());
                 }
 
                 ListenerProxy.getGlobal().onMessage(session, message, false);
@@ -54,7 +52,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
     protected void onFullTextMessage(WebSocketChannel channel, BufferedTextMessage msg) throws IOException {
         try {
             Session session = _SocketServerSession.get(channel);
-            Message message = MessageWrapper.wrap(channel.getUrl(),null,
+            Message message = MessageUtils.wrap(channel.getUrl(),null,
                     msg.getData().getBytes("UTF-8"));
 
             ListenerProxy.getGlobal().onMessage(session, message, true);

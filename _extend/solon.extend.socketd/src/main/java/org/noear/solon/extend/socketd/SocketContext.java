@@ -157,7 +157,7 @@ public class SocketContext extends ContextEmpty {
             if (_messageIsString) {
                 _session.send(_outputStream.toString());
             } else {
-                Message msg = MessageWrapper.wrapResponse(_message, null, _outputStream.toByteArray());
+                Message msg = MessageUtils.wrapResponse(_message, null, _outputStream.toByteArray());
                 _session.send(msg);
             }
         }
