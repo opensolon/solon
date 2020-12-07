@@ -133,7 +133,7 @@ public abstract class SessionBase implements Session {
 
     @Override
     public void sendHandshake(Message message) {
-        if (message.flag() == -1) {
+        if (message.flag() == MessageFlag.handshake) {
             send(message);
 
             //发完之后，再缓存 //不然，会发两次
@@ -145,7 +145,7 @@ public abstract class SessionBase implements Session {
 
     @Override
     public Message sendHandshakeAndResponse(Message message) {
-        if (message.flag() == -1) {
+        if (message.flag() == MessageFlag.handshake) {
             Message rst = sendAndResponse(message);
 
             //发完之后，再缓存 //不然，会发两次

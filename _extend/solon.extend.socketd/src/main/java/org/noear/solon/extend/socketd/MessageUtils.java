@@ -15,7 +15,7 @@ import java.util.UUID;
  * @since 1.0
  * */
 public class MessageUtils {
-    
+
     //
     // encode & decode
     //
@@ -149,7 +149,7 @@ public class MessageUtils {
      * 打包
      */
     public static Message wrap(String resourceDescriptor, String header, byte[] body) {
-        return new Message(0, UUID.randomUUID().toString(), resourceDescriptor, header, body);
+        return new Message(MessageFlag.message, UUID.randomUUID().toString(), resourceDescriptor, header, body);
     }
 
 
@@ -157,7 +157,7 @@ public class MessageUtils {
      * 打包
      */
     public static Message wrap(String key, String resourceDescriptor, String header, byte[] body) {
-        return new Message(0, key, resourceDescriptor, header, body);
+        return new Message(MessageFlag.message, key, resourceDescriptor, header, body);
     }
 
 
@@ -181,16 +181,15 @@ public class MessageUtils {
      * 包装心跳包
      */
     public static Message wrapHeartbeat() {
-        return new Message(-2, UUID.randomUUID().toString(), "", null, null);
+        return new Message(MessageFlag.heartbeat, UUID.randomUUID().toString(), "", null, null);
     }
-
 
 
     /**
      * 包装握手包（只支持用头）
      */
     public static Message wrapHandshake(String header, byte[] body) {
-        return new Message(-1, UUID.randomUUID().toString(), "", header, body);
+        return new Message(MessageFlag.handshake, UUID.randomUUID().toString(), "", header, body);
     }
 
     public static Message wrapHandshake(String header) {
@@ -206,12 +205,11 @@ public class MessageUtils {
     }
 
 
-
     /**
      * 包装响应包
      */
     public static Message wrapResponse(Message request, String header, byte[] body) {
-        return new Message(1, request.key(), request.resourceDescriptor(), header, body);
+        return new Message(MessageFlag.response, request.key(), request.resourceDescriptor(), header, body);
     }
 
     public static Message wrapResponse(Message request, byte[] body) {
