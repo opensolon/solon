@@ -6,6 +6,7 @@ import org.noear.nami.Nami;
 import org.noear.nami.channel.socketd.SocketChannel;
 import org.noear.nami.decoder.SnackDecoder;
 import org.noear.nami.encoder.SnackTypeEncoder;
+import org.noear.solon.annotation.Note;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.message.Session;
 
@@ -16,18 +17,22 @@ public class SocketD {
     //
     // session client
     //
+    @Note("ServerUri 以：ws:// 或 wss:// 或 tcp:// 开头")
     public static Session createSession(URI serverUri, boolean autoReconnect) {
         return SessionFactoryManager.create(serverUri, autoReconnect);
     }
 
+    @Note("ServerUri 以：ws:// 或 wss:// 或 tcp:// 开头")
     public static Session createSession(URI serverUri) {
         return createSession(serverUri, true);
     }
 
+    @Note("ServerUri 以：ws:// 或 wss:// 或 tcp:// 开头")
     public static Session createSession(String serverUri, boolean autoReconnect) {
         return createSession(URI.create(serverUri), autoReconnect);
     }
 
+    @Note("ServerUri 以：ws:// 或 wss:// 或 tcp:// 开头")
     public static Session createSession(String serverUri) {
         return createSession(serverUri, true);
     }
