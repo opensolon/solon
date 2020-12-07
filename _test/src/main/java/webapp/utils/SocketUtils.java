@@ -4,7 +4,6 @@ package webapp.utils;
 import org.noear.solon.Utils;
 import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.extend.socketd.MessageWrapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -72,7 +71,7 @@ public class SocketUtils {
             return null;
         }
 
-        SocketMessageWrap msgD = new SocketMessageWrap(MessageWrapper.wrap(uri,null, message));
+        SocketMessageWrap msgD = new SocketMessageWrap(MessageUtils.wrap(uri,null, message));
 
         get(uri).sendDo(msgD, (m) -> {
             msgD.complete(null);
@@ -96,7 +95,7 @@ public class SocketUtils {
             return;
         }
 
-        SocketMessageWrap msgD = new SocketMessageWrap(MessageWrapper.wrap(uri, null,message));
+        SocketMessageWrap msgD = new SocketMessageWrap(MessageUtils.wrap(uri, null,message));
         msgD.handler = callback;
 
         Utils.pools.submit(()->{

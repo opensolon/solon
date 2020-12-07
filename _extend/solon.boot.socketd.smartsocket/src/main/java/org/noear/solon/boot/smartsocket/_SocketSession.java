@@ -5,7 +5,6 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.socketd.MessageUtils;
-import org.noear.solon.extend.socketd.MessageWrapper;
 import org.noear.solon.extend.socketd.SessionBase;
 import org.smartboot.socket.transport.AioSession;
 
@@ -118,7 +117,7 @@ class _SocketSession extends SessionBase {
 
     @Override
     public void send(byte[] message) {
-        send(MessageWrapper.wrap(message));
+        send(MessageUtils.wrap(message));
     }
 
     @Override

@@ -9,7 +9,6 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.ListenerProxy;
 import org.noear.solon.extend.socketd.MessageUtils;
-import org.noear.solon.extend.socketd.MessageWrapper;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -45,7 +44,7 @@ public class WsServer extends WebSocketServer {
     public void onMessage(WebSocket conn, String data) {
         try {
             Session session = _SocketServerSession.get(conn);
-            Message message = MessageWrapper.wrap(conn.getResourceDescriptor(), null,data.getBytes(_charset));
+            Message message = MessageUtils.wrap(conn.getResourceDescriptor(), null,data.getBytes(_charset));
 
             ListenerProxy.getGlobal().onMessage(session, message, true);
         } catch (Throwable ex) {
@@ -61,7 +60,7 @@ public class WsServer extends WebSocketServer {
             if(Solon.global().enableWebSocketD()){
                 message = MessageUtils.decode(data);
             }else{
-                message = MessageWrapper.wrap(conn.getResourceDescriptor(), null,data.array());;
+                message = MessageUtils.wrap(conn.getResourceDescriptor(), null,data.array());;
             }
 
             ListenerProxy.getGlobal().onMessage(session, message, false);
