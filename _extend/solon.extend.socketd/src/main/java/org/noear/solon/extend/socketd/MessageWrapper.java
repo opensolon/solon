@@ -49,7 +49,6 @@ public class MessageWrapper {
         }
     }
 
-
     /**
      * 包装心跳包
      */
@@ -57,16 +56,28 @@ public class MessageWrapper {
         return new Message(-2, UUID.randomUUID().toString(), "", null, null);
     }
 
+
+
     /**
      * 包装握手包（只支持用头）
      */
-    public static Message wrapHandshake(String header) {
-        return new Message(-1, UUID.randomUUID().toString(), "", header, null);
+    public static Message wrapHandshake(String header, byte[] body) {
+        return new Message(-1, UUID.randomUUID().toString(), "", header, body);
     }
 
-    public static Message wrapHandshake(Map<String,String> header) {
-        return wrapHandshake(HeaderUtils.encodeHeaderMap(header));
+    public static Message wrapHandshake(String header) {
+        return wrapHandshake(header, null);
     }
+
+    public static Message wrapHandshake(Map<String, String> header) {
+        return wrapHandshake(header, null);
+    }
+
+    public static Message wrapHandshake(Map<String, String> header, byte[] body) {
+        return wrapHandshake(HeaderUtils.encodeHeaderMap(header), body);
+    }
+
+
 
     /**
      * 包装响应包

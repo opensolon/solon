@@ -35,8 +35,8 @@ public abstract class SessionBase implements Session {
 
     @Override
     public void send(Message message) {
-        if(Solon.cfg().isFilesMode() || Solon.cfg().isDebugMode()) {
-            System.out.println("Session send: "+message);
+        if (Solon.cfg().isFilesMode() || Solon.cfg().isDebugMode()) {
+            System.out.println("Session send: " + message);
         }
     }
 
@@ -132,12 +132,15 @@ public abstract class SessionBase implements Session {
     protected Message handshakeMessage;
 
     @Override
-    public void sendHandshake(String header) {
-        Message req = MessageWrapper.wrapHandshake(header);
-        send(req);
+    public void sendHandshake(Message message) {
+        if (message.flag() == -1) {
+            send(message);
 
-        //发完之后，再缓存 //不然，会发两次
-        handshakeMessage = req;
+            //发完之后，再缓存 //不然，会发两次
+            handshakeMessage = message;
+        } else {
+            throw new IllegalArgumentException("The message flag not -1");
+        }
     }
 
     @Override
