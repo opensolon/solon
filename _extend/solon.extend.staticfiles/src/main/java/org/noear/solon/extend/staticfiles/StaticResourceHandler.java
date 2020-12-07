@@ -66,7 +66,7 @@ public class StaticResourceHandler implements Handler {
 
         String path = context.path();
 
-        URL uri = getResource(path.substring(1));
+        URL uri = getResource(path);
 
         if (uri == null) {
             return;
