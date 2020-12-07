@@ -3,6 +3,9 @@ package org.noear.solon.extend.staticfiles;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 
+import java.io.File;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class StaticMappings extends ArrayList<StaticMapping> {
@@ -39,5 +42,30 @@ public class StaticMappings extends ArrayList<StaticMapping> {
         this.add(mapping);
 
         return this;
+    }
+
+    protected URL find(String path) throws Exception {
+        URL rst = null;
+
+        for (StaticMapping m : this) {
+            if (path.startsWith(m.path)) {
+                if (m.locationDebug != null) {
+                    URI uri = URI.create(m.locationDebug + path);
+                    File file = new File(uri);
+
+                    if (file.exists()) {
+                        rst = uri.toURL();
+                    }
+                } else {
+                    rst = Utils.getResource(m.location + path);
+                }
+
+                if (rst != null) {
+                    return rst;
+                }
+            }
+        }
+
+        return null;
     }
 }

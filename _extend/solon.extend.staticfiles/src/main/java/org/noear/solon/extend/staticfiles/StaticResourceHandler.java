@@ -25,30 +25,6 @@ public class StaticResourceHandler implements Handler {
         _rule = Pattern.compile(expr, Pattern.CASE_INSENSITIVE);
     }
 
-    protected URL getResource(String path) throws Exception {
-        URL rst = null;
-
-        for (StaticMapping m : staticMappings) {
-            if (path.startsWith(m.path)) {
-                if (m.locationDebug != null) {
-                    URI uri = URI.create(m.locationDebug + path);
-                    File file = new File(uri);
-
-                    if (file.exists()) {
-                        rst = uri.toURL();
-                    }
-                } else {
-                    rst = Utils.getResource(m.location + path);
-                }
-
-                if (rst != null) {
-                    return rst;
-                }
-            }
-        }
-
-        return null;
-    }
 
     @Override
     public void handle(Context context) throws Exception {
@@ -66,7 +42,7 @@ public class StaticResourceHandler implements Handler {
 
         String path = context.path();
 
-        URL uri = getResource(path);
+        URL uri = staticMappings.find(path);
 
         if (uri == null) {
             return;
