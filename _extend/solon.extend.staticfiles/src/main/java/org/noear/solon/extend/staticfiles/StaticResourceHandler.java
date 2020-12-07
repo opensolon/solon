@@ -1,7 +1,5 @@
 package org.noear.solon.extend.staticfiles;
 
-import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
@@ -10,46 +8,46 @@ import org.noear.solon.core.handle.MethodType;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
-import java.util.Date;
+import java.util.*;
 import java.util.regex.Pattern;
 
-class StaticResourceHandler implements Handler {
+public class StaticResourceHandler implements Handler {
     private static final String CACHE_CONTROL = "Cache-Control";
     private static final String LAST_MODIFIED = "Last-Modified";
 
-    private String _debugBaseUri;
-    private String _baseUri;
-    private StaticFiles staticFiles =  StaticFiles.instance();
+    private StaticMappings staticMappings = StaticMappings.instance();
+    private StaticFiles    staticFiles =  StaticFiles.instance();
     private Pattern _rule;
 
-    public StaticResourceHandler(String baseUri) {
-        _baseUri = baseUri;
-
-        if(Solon.cfg().isDebugMode()){
-            String dirroot = Utils.getResource("/").toString().replace("target/classes/", "");
-            if(dirroot.startsWith("file:")) {
-                _debugBaseUri = dirroot + "src/main/resources" + _baseUri;
-            }
-        }
-
+    public StaticResourceHandler(){
         String expr = "(" + String.join("|", staticFiles.keySet()) + ")$";
 
         _rule = Pattern.compile(expr, Pattern.CASE_INSENSITIVE);
     }
 
-    public URL getResource(String path) throws Exception{
-        if(_debugBaseUri != null){
-            URI uri = URI.create(_debugBaseUri+path);
-            File file = new File(uri);
+    protected URL getResource(String path) throws Exception {
+        URL rst = null;
 
-            if(file.exists()){
-                return uri.toURL();
-            }else{
-                return null;
+        for (StaticMapping m : staticMappings) {
+            if (path.startsWith(m.path)) {
+                if (m.locationDebug != null) {
+                    URI uri = URI.create(m.locationDebug + path);
+                    File file = new File(uri);
+
+                    if (file.exists()) {
+                        rst = uri.toURL();
+                    }
+                } else {
+                    rst = Utils.getResource(m.location + path);
+                }
+
+                if (rst != null) {
+                    return rst;
+                }
             }
-        }else{
-            return Utils.getResource(_baseUri + path);
         }
+
+        return null;
     }
 
     @Override
@@ -68,7 +66,7 @@ class StaticResourceHandler implements Handler {
 
         String path = context.path();
 
-        URL uri = getResource(path);
+        URL uri = getResource(path.substring(1));
 
         if (uri == null) {
             return;

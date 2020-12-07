@@ -12,7 +12,7 @@ public class XPluginImp implements Plugin {
         //通过动态控制是否启用
         //
 
-        if(app.enableStaticfiles() == false){
+        if (app.enableStaticfiles() == false) {
             return;
         }
 
@@ -28,9 +28,11 @@ public class XPluginImp implements Plugin {
                 StaticFiles.instance().putIfAbsent("." + k, v);
             });
 
+            StaticMappings.instance().add("/", "/static/");
+
             //2.切换代理（让静态文件优先）
             HandlerLink link = new HandlerLink();
-            link.node = new StaticResourceHandler("/static");
+            link.node = new StaticResourceHandler();
             link.nextNode = app.handlerGet();
 
             app.handlerSet(link);
