@@ -10,25 +10,26 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.message.Session;
 
 import java.net.URI;
+import java.util.function.Supplier;
 
 public class SocketD {
     //
     // session client
     //
-    public static Session create(URI serverUri, boolean autoReconnect) {
+    public static Session createSession(URI serverUri, boolean autoReconnect) {
         return SessionFactoryManager.create(serverUri, autoReconnect);
     }
 
-    public static Session create(URI serverUri) {
-        return create(serverUri, true);
+    public static Session createSession(URI serverUri) {
+        return createSession(serverUri, true);
     }
 
-    public static Session create(String serverUri, boolean autoReconnect) {
-        return create(URI.create(serverUri), autoReconnect);
+    public static Session createSession(String serverUri, boolean autoReconnect) {
+        return createSession(URI.create(serverUri), autoReconnect);
     }
 
-    public static Session create(String serverUri) {
-        return create(serverUri, true);
+    public static Session createSession(String serverUri) {
+        return createSession(serverUri, true);
     }
 
 
@@ -37,31 +38,40 @@ public class SocketD {
     //
 
     public static <T> T create(URI serverUri, Class<T> service) {
-        Session session = create(serverUri, true);
-        return create(session, service);
+        Session session = createSession(serverUri, true);
+        return create(() -> session, service);
     }
 
     public static <T> T create(String serverUri, Class<T> service) {
-        Session session = create(serverUri, true);
-        return create(session, service);
+        Session session = createSession(serverUri, true);
+        return create(() -> session, service);
     }
 
     public static <T> T create(Context context, Class<T> service) {
         if (context.request() instanceof Session) {
-            return create((Session) context.request(), SnackTypeEncoder.instance, SnackDecoder.instance, service);
+            Session session = (Session) context.request();
+            return create(() -> session, SnackTypeEncoder.instance, SnackDecoder.instance, service);
         } else {
             throw new IllegalArgumentException("Request context nonsupport socketd");
         }
     }
 
     public static <T> T create(Session session, Class<T> service) {
-        return create(session, SnackTypeEncoder.instance, SnackDecoder.instance, service);
+        return create(() -> session, service);
+    }
+
+    public static <T> T create(Supplier<Session> sessions, Class<T> service) {
+        return create(sessions, SnackTypeEncoder.instance, SnackDecoder.instance, service);
     }
 
     public static <T> T create(Session session, Encoder encoder, Decoder decoder, Class<T> service) {
-        SocketChannel channel = new SocketChannel(() -> session);
+        return create(() -> session, encoder, decoder, service);
+    }
 
-        URI uri = session.uri();
+    public static <T> T create(Supplier<Session> sessions, Encoder encoder, Decoder decoder, Class<T> service) {
+        SocketChannel channel = new SocketChannel(sessions);
+
+        URI uri = sessions.get().uri();
         if (uri == null) {
             uri = URI.create("tcp://socketd");
         }

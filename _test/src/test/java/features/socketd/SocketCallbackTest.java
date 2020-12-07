@@ -22,7 +22,7 @@ public class SocketCallbackTest {
     public void test_callback_message() throws Throwable {
         int _port = 8080 + 20000;
 
-        Session session = SocketD.create("tcp://localhost:"+ _port, true);
+        Session session = SocketD.createSession("tcp://localhost:"+ _port, true);
 
         session.listener(new Listener() {
             @Override

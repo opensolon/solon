@@ -39,6 +39,10 @@
             <groupId>org.noear</groupId>
             <artifactId>solonfox-swagger-ui</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solonfox-swagger-bootstrap-ui</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
