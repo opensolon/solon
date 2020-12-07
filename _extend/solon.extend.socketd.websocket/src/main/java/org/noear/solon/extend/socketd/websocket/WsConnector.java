@@ -3,6 +3,7 @@ package org.noear.solon.extend.socketd.websocket;
 import org.java_websocket.WebSocket;
 import org.java_websocket.client.WebSocketClient;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.extend.socketd.SessionConnector;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
@@ -12,7 +13,7 @@ import java.net.URI;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 
-public class WsConnector {
+public class WsConnector implements SessionConnector<WebSocket> {
     URI uri;
     SSLSocketFactory sslSocketFactory;
 
@@ -20,10 +21,12 @@ public class WsConnector {
         this.uri = uri;
     }
 
+    @Override
     public URI getUri() {
         return uri;
     }
 
+    @Override
     public WebSocket start(Session session) {
         try {
             WebSocketClient socket = new WsSocketClientImp(uri, session);

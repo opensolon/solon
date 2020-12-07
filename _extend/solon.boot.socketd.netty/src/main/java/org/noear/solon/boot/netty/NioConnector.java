@@ -7,20 +7,23 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.extend.socketd.SessionConnector;
 
 import java.net.URI;
 
-public class NioConnector {
+public class NioConnector implements SessionConnector<Channel> {
     URI uri;
 
     public NioConnector(URI uri) {
         this.uri = uri;
     }
 
+    @Override
     public URI getUri() {
         return uri;
     }
 
+    @Override
     public Channel start(Session session) {
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
 
