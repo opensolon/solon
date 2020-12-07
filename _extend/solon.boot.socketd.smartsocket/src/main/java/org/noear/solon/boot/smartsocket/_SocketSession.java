@@ -10,7 +10,6 @@ import org.noear.solon.extend.socketd.SessionBase;
 import org.smartboot.socket.transport.AioSession;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.channels.ClosedChannelException;
@@ -59,14 +58,14 @@ class _SocketSession extends SessionBase {
      */
     private boolean prepareNew() throws IOException {
         if (real == null) {
-            real = connector.start(this);
+            real = connector.connect(this);
             onOpen();
 
             return true;
         } else {
             if (autoReconnect) {
                 if (real.isInvalid()) {
-                    real = connector.start(this);
+                    real = connector.connect(this);
                     onOpen();
 
                     return true;

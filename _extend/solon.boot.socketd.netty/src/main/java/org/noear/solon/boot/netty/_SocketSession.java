@@ -9,7 +9,6 @@ import org.noear.solon.extend.socketd.MessageWrapper;
 import org.noear.solon.extend.socketd.SessionBase;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -58,14 +57,14 @@ class _SocketSession extends SessionBase {
      */
     private boolean prepareNew() throws IOException {
         if (real == null) {
-            real = connector.start(this);
+            real = connector.connect(this);
             onOpen();
 
             return true;
         } else {
             if (autoReconnect) {
                 if (real.isActive() == false) {
-                    real = connector.start(this);
+                    real = connector.connect(this);
                     onOpen();
 
                     return true;

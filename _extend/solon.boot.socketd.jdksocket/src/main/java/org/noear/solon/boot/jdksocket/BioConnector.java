@@ -5,13 +5,12 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.ListenerProxy;
-import org.noear.solon.extend.socketd.SessionConnector;
+import org.noear.solon.extend.socketd.Connector;
 
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.URI;
 
-class BioConnector implements SessionConnector<Socket> {
+class BioConnector implements Connector<Socket> {
     URI uri;
 
     public BioConnector(URI uri) {
@@ -24,7 +23,7 @@ class BioConnector implements SessionConnector<Socket> {
     }
 
     @Override
-    public Socket start(Session session) {
+    public Socket connect(Session session) {
         try {
             Socket socket = new Socket(uri.getHost(), uri.getPort());
 

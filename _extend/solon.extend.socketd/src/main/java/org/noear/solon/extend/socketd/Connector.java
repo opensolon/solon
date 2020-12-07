@@ -5,8 +5,8 @@ import org.noear.solon.core.message.Session;
 import java.io.IOException;
 import java.net.URI;
 
-public interface SessionConnector<T> {
+public interface Connector<T> {
     URI getUri();
 
-    T start(Session session) throws IOException;
+    T connect(Session session) throws IOException;
 }

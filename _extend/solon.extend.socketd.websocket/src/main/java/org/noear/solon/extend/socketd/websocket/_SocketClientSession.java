@@ -35,7 +35,7 @@ public class _SocketClientSession extends SessionBase {
      */
     private boolean prepareNew() {
         if (real == null) {
-            real = connector.start(this);
+            real = connector.connect(this);
             onOpen();
 
             return true;
