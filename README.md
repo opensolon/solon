@@ -15,6 +15,7 @@
 * 采用Handler + Context 架构；强调插件式扩展
 * 统一Http（支持 Servlet 或 NoServlet），WebSocket，Socket三种信号接入
 * 插件可扩展可切换：启动插件，扩展插件，序列化插件，数据插件，会话状态插件，视图插件(可共存) 等...
+* 体验与Springboot近似，迁移成本低
 
 
 ### Hello world：
@@ -234,16 +235,11 @@ ext/ext.markdown.jar    #MD格式支持扩展包
 @Mapping(value = "/demoe/rpc", method = MethodType.SOCKET)
 @Component(remoting = true)
 public class HelloRpcServiceImpl implements HelloRpcService {
-    @Mapping(value = "*", method = MethodType.SOCKET, before = true)
-    public void bef(Context ctx) {
-        ctx.headerSet("Content-Type","test/json");
-    }
-
     public String hello(String name) {
-//        //此处，可以根据 client session 创建一个连接 client 的 rpc service
-//        NameRpcService rpc = SocketD.create(Context.current(), NameRpcService.class);
-//
-//        String name2 = rpc.name(name);
+        //此处，可以根据 client session 创建一个连接 client 的 rpc service
+        NameRpcService rpc = SocketD.create(Context.current(), NameRpcService.class);
+
+        String name2 = rpc.name(name);
 
         return "name=" + name;
     }
