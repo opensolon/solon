@@ -1,10 +1,10 @@
-### Spring mini - Solon 的核心
+### Springboot mini - Solon 的核心
 
 在上篇中我们成功运行了一个简单的web应用；本篇将对它的启动过程、扩展体系和应用属性配置进行介绍。
 
 #### （一）Solon.start(source, args, builder) 内部执行过程（即Solon的启动过程）
 
-1. 实例化 Solon.global() 
+1. 实例化 Solon.global()
 2. 加载应用属性配置
 3. 加载扩展文件夹
 4. 扫描插件并排序记录（插件也可叫扩展组件）
@@ -33,7 +33,7 @@ Solon 的插件也可以叫扩展组件，相当于Spring 的 starter。Solon已
 | SocketD boot插件:: | 说明 |
 | org.noear:solon.boot.socketd.jdksocket | boot插件,对`jdk-socket`适配，提供`socketd`服务 |
 | org.noear:solon.boot.socketd.netty | boot插件,对`netty`适配，提供`socketd`服务 |
-| org.noear:solon.boot.socketd.smartsocket | boot插件,对`smart-bsocket`适配，提供`socketd`服务 |
+| org.noear:solon.boot.socketd.smartsocket | boot插件,对`smartboot-socket`适配，提供`socketd`服务 |
 | | |
 | 静态文件支持插件:: | 说明 |
 | org.noear:solon.extend.staticfiles | 扩展插件,添加静态文件支持（监视 resources/static 文件夹） |
@@ -219,7 +219,7 @@ HikariDataSource dataSource =  Solon.cfg().getBean("test.db1", HikariDataSource.
 
 
 
-### 附：项目地址
+### 附：Solon项目地址
 
 * gitee:  [https://gitee.com/noear/solon](https://gitee.com/noear/solon)
 * github:  [https://github.com/noear/solon](https://github.com/noear/solon)

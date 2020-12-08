@@ -1,12 +1,12 @@
-### 一、Spring min -Solon
+### 一、Springboot min -Solon
 
-最近号称 Spring mini 的 Solon框架，得空搞了一把，发觉Solon确实好用，小巧而快速。那Solon到底是什么，又是怎么好用呢？
+最近号称 Springboot mini 的 Solon框架，得空搞了一把，发觉Solon确实好用，小巧而快速。那Solon到底是什么，又是怎么好用呢？
 
 #### 什么是Solon?
 
 Solon是参考Spring boot 和 Javalin 而设计。吸取了两者的的优点，避开了很多繁重的设计，使其支持http, websocket, socket 三种通讯信号接入。Solon 2M即可支撑起普通的mvc开发了，0.1秒就可以完成启动；相对于言，Spring boot 的一个普通mvc项目，基本上20M起步，启动要3秒以上，而且qps也弱了很多。
 
-总体来说，Solon 有着类似于 Spring boot的开发体验；故而号称Spring mini。
+总体来说，Solon 有着类似于 Spring boot的开发体验；故而号称Springboot mini。
 
 项目源码：[https://gitee.com/noear/solon](https://gitee.com/noear/solon)
 
@@ -14,12 +14,12 @@ Solon是参考Spring boot 和 Javalin 而设计。吸取了两者的的优点，
 
 **优点**
 
-1. 小而快
+1. 更小、更快、更自由
 2. 快速构建项目
 3. 项目可独立运行，不需要外部的web容器（jar直接部署）
 4. 部署效率高
 5. 支持插件化构建项目
-6. 体验与Spring boot相近
+6. 体验与Spring boot相近，迁移成本低
 
 **缺点**
 
@@ -116,7 +116,7 @@ public class Test {
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.2</version>
+    <version>1.2.7</version>
 </parent>
 ```
 
@@ -170,7 +170,7 @@ Hello world!
 淡定，后续文章将会对一些常见的问题展开说明。
 
 
-### 附：项目地址
+### 附：Solon项目地址
 
 * gitee:  [https://gitee.com/noear/solon](https://gitee.com/noear/solon)
 * github:  [https://github.com/noear/solon](https://github.com/noear/solon)

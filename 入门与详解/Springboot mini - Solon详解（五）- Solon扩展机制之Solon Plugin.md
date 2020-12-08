@@ -1,4 +1,4 @@
-Spring mini - Solon 中也有一种非常解耦的扩展机制：Solon Plugin。这种扩展机制和Spring Factories像，和java SPI也很像。
+Springboot mini - Solon 中也有一种非常解耦的扩展机制：Solon Plugin。这种扩展机制和Spring Factories像，和java SPI也很像。
 
 ### 一、Solon 中的扩展机制
 
@@ -19,7 +19,7 @@ Plugin的作用：
 
 在应用启动过程中，在特定的序顺位置，获取运行权限；进而进行框架扩展。
 
-### 二、扩展示例，插件：solon.extend.aspect 
+### 二、扩展示例，插件：solon.extend.aspect
 
 这个插件，是为Solon提供 `@Dao` 和 `@Service` 扩展注解，进而实现class的动态代理能力；基于ASM实现，但算是比较克制，暂时没加别的功能。本例完整的项目源码：[https://gitee.com/noear/solon/tree/master/_extend/solon.extend.aspect](https://gitee.com/noear/solon/tree/master/_extend/solon.extend.aspect)，此处主要展示与扩展机制有关系的代码和配置。
 
@@ -94,7 +94,7 @@ public class AppService {
 
 
 
-### 附：项目地址
+### 附：Solon项目地址
 
 * gitee:  [https://gitee.com/noear/solon](https://gitee.com/noear/solon)
 * github:  [https://github.com/noear/solon](https://github.com/noear/solon)

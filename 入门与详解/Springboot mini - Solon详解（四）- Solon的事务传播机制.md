@@ -1,4 +1,4 @@
-> 在前面的篇章里我们已经见识了 Spring mini - Solon 对事务的控制，及其优雅曼妙的身姿。该篇将对事务及其处理策略进行详解。出于对用户的学习成本考虑，Solon 借签了Spring 的事务传播策略；所以体验上几乎一样。
+> 在前面的篇章里我们已经见识了 Springboot mini - Solon 对事务的控制，及其优雅曼妙的身姿。该篇将对事务及其处理策略进行详解。出于对用户的学习成本考虑，Solon 借签了Spring 的事务传播策略；所以体验上几乎一样。
 
 ### 一、为什么要有传播机制？
 
@@ -192,7 +192,7 @@ public class DemoController{
 ```
 
 
-### 附：项目地址
+### 附：Solon项目地址
 
 * gitee:  [https://gitee.com/noear/solon](https://gitee.com/noear/solon)
 * github:  [https://github.com/noear/solon](https://github.com/noear/solon)
