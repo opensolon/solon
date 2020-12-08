@@ -1,7 +1,7 @@
 package org.noear.solon.extend.staticfiles;
 
-class StaticMapping {
-    public String path;
+public class StaticLocation {
+    public String start;
     public String location;
     public String locationDebug;
 }

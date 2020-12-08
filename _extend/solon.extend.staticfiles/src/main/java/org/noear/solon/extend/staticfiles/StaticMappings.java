@@ -8,7 +8,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class StaticMappings extends ArrayList<StaticMapping> {
+public class StaticMappings extends ArrayList<StaticLocation> {
     private StaticMappings() {
         super();
     }
@@ -24,9 +24,9 @@ public class StaticMappings extends ArrayList<StaticMapping> {
     }
 
 
-    public StaticMappings add(String path, String location) {
-        StaticMapping mapping = new StaticMapping();
-        mapping.path = path;
+    public StaticMappings add(String start, String location) {
+        StaticLocation mapping = new StaticLocation();
+        mapping.start = start;
         if (location.endsWith("/")) {
             mapping.location = location.substring(0, location.length() - 1);
         } else {
@@ -52,8 +52,8 @@ public class StaticMappings extends ArrayList<StaticMapping> {
     protected URL find(String path) throws Exception {
         URL rst = null;
 
-        for (StaticMapping m : this) {
-            if (path.startsWith(m.path)) {
+        for (StaticLocation m : this) {
+            if (path.startsWith(m.start)) {
                 if (m.locationDebug != null) {
                     URI uri = URI.create(m.locationDebug + path);
                     File file = new File(uri);
