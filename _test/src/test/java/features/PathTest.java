@@ -2,6 +2,7 @@ package features;
 
 import org.junit.Test;
 import org.noear.solon.core.util.PathUtil;
+import org.noear.solon.extend.staticfiles.StaticMappings;
 
 public class PathTest {
     @Test
@@ -11,5 +12,10 @@ public class PathTest {
         assert  PathUtil.mergePath("","/user/*").equals("/user/*");
 
         assert  PathUtil.mergePath("/","/user/*").equals("/user/*");
+    }
+
+    @Test
+    public void test2(){
+        StaticMappings.instance().add("/a/","/test/");
     }
 }
