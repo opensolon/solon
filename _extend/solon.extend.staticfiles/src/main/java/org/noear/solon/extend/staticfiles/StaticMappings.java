@@ -27,7 +27,12 @@ public class StaticMappings extends ArrayList<StaticMapping> {
     public StaticMappings add(String path, String location) {
         StaticMapping mapping = new StaticMapping();
         mapping.path = path;
-        mapping.location = location;
+        if (location.endsWith("/")) {
+            mapping.location = location.substring(0, location.length() - 1);
+        } else {
+            mapping.location = location;
+        }
+
 
         if (Solon.cfg().isDebugMode()) {
             String dirroot = Utils.getResource("/")

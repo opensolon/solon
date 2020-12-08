@@ -20,7 +20,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        if (Utils.getResource("/static") != null) {
+        if (Utils.getResource("/static/") != null) {
             //1.加载自定义的mime
             //
             NvMap mimeTypes = app.cfg().getXmap("solon.mime");
