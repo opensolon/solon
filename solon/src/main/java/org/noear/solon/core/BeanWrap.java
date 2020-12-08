@@ -145,8 +145,8 @@ public class BeanWrap {
     public Annotation[] annotations() {
         return annotations;
     }
-    public <T extends Annotation> T annotationGet(Class<T> clz){
-        return clz.getAnnotation(clz);
+    public <T extends Annotation> T annotationGet(Class<T> annClz){
+        return clz.getAnnotation(annClz);
     }
 
     /**

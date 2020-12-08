@@ -21,7 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class XPluginImp implements Plugin {
-    Swagger swagger = new Swagger();
+    protected static Swagger swagger = new Swagger();
 
     @Override
     public void start(SolonApp app) {
@@ -42,12 +42,10 @@ public class XPluginImp implements Plugin {
             swagger.addTag(tag);
         });
 
+
+        app.beanScan(SwaggerController.class);
+
         Aop.beanOnloaded(this::onAppLoadEnd);
-
-        app.get("v2/swagger.json",(c)->{
-            c.outputAsJson(ONode.stringify(swagger));
-        });
-
     }
 
     private void onAppLoadEnd() {
