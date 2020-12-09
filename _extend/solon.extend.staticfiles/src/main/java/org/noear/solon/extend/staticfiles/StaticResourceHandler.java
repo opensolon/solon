@@ -16,10 +16,10 @@ public class StaticResourceHandler implements Handler {
     private static final String LAST_MODIFIED = "Last-Modified";
 
     private StaticMappings staticMappings = StaticMappings.instance();
-    private StaticFiles    staticFiles =  StaticFiles.instance();
+    private StaticFiles staticFiles = StaticFiles.instance();
     private Pattern _rule;
 
-    public StaticResourceHandler(){
+    public StaticResourceHandler() {
         String expr = "(" + String.join("|", staticFiles.keySet()) + ")$";
 
         _rule = Pattern.compile(expr, Pattern.CASE_INSENSITIVE);
@@ -32,11 +32,11 @@ public class StaticResourceHandler implements Handler {
             return;
         }
 
-        if(MethodType.GET.name.equals( context.method()) == false){
+        if (MethodType.GET.name.equals(context.method()) == false) {
             return;
         }
 
-        if(_rule.matcher(context.path()).find()==false){
+        if (_rule.matcher(context.path()).find() == false) {
             return;
         }
 

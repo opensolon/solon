@@ -14,10 +14,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.handle.Action;
-import org.noear.solon.core.handle.Handler;
-import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.RouteTable;
 
 import java.util.LinkedHashMap;
@@ -145,6 +142,10 @@ public class XPluginImp implements Plugin {
         }
 
         for (java.lang.reflect.Parameter p0 : action.method().getParameters()) {
+            if(p0.getType() == Context.class){
+                continue;
+            }
+
             String n1 = "{" + p0.getName() + "}";
             Parameter p1 = null;
 
