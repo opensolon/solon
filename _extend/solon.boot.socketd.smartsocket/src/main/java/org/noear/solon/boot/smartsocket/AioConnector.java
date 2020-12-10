@@ -3,6 +3,7 @@ package org.noear.solon.boot.smartsocket;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.Connector;
+import org.noear.solon.extend.socketd.SocketProps;
 import org.smartboot.socket.Protocol;
 import org.smartboot.socket.transport.AioQuickClient;
 import org.smartboot.socket.transport.AioSession;
@@ -13,7 +14,6 @@ import java.net.URI;
 class AioConnector implements Connector<AioSession> {
     private URI uri;
     private Protocol<Message> protocol;
-    private int readBufferSize;
 
     public AioConnector(URI uri) {
         this.uri = uri;
@@ -25,15 +25,15 @@ class AioConnector implements Connector<AioSession> {
         return uri;
     }
 
-    public void setReadBufferSize(int size) {
-        readBufferSize = size;
-    }
-
     @Override
     public AioSession open(Session session) throws IOException {
         AioQuickClient client = new AioQuickClient<>(uri.getHost(), uri.getPort(), protocol, new AioClientProcessor(session));
-        if (readBufferSize > 0) {
-            client.setReadBufferSize(readBufferSize);
+        if (SocketProps.readBufferSize() > 0) {
+            client.setReadBufferSize(SocketProps.readBufferSize());
+        }
+
+        if (SocketProps.writeBufferSize() > 0) {
+            client.setWriteBuffer(SocketProps.writeBufferSize(), 16);
         }
 
         return client.start();

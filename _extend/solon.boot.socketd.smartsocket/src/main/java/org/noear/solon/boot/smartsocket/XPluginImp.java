@@ -40,8 +40,12 @@ public final class XPluginImp implements Plugin {
         try {
             server = new AioQuickServer<>(_port, AioProtocol.instance, new AioServerProcessor());
             server.setBannerEnabled(false);
-            server.setReadBufferSize(SocketProps.readBufferSize());
-            server.setWriteBuffer(SocketProps.writeBufferSize(),16);
+            if (SocketProps.readBufferSize() > 0) {
+                server.setReadBufferSize(SocketProps.readBufferSize());
+            }
+            if (SocketProps.writeBufferSize() > 0) {
+                server.setWriteBuffer(SocketProps.writeBufferSize(), 16);
+            }
             server.start();
 
             long time_end = System.currentTimeMillis();
@@ -51,9 +55,6 @@ public final class XPluginImp implements Plugin {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-        //AioQuickClient<XMessage> client = new AioQuickClient<>("127.0.0.1",12121, protocol,processor);
-        //client.start();
     }
 
     @Override
