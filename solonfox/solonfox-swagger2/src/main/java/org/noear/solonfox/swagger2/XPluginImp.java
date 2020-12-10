@@ -3,10 +3,7 @@ package org.noear.solonfox.swagger2;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.models.*;
-import io.swagger.models.parameters.FormParameter;
-import io.swagger.models.parameters.Parameter;
-import io.swagger.models.parameters.PathParameter;
-import io.swagger.models.parameters.QueryParameter;
+import io.swagger.models.parameters.*;
 import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
@@ -106,7 +103,11 @@ public class XPluginImp implements Plugin {
                         }
                         case HTTP: {
                             //path.get(buildPathPperation(route, true));
-                            path.post(buildPathPperation(route, false));
+                            if(action.method().getParameters().length == 0){
+                                path.get(buildPathPperation(route, true));
+                            }else{
+                                path.post(buildPathPperation(route, false));
+                            }
                             //path.put(buildPathPperation(route, false));
                             //path.delete(buildPathPperation(route, false));
                             //path.patch(buildPathPperation(route, false));
@@ -147,7 +148,7 @@ public class XPluginImp implements Plugin {
             }
 
             String n1 = "{" + p0.getName() + "}";
-            Parameter p1 = null;
+            SerializableParameter p1 = null;
 
             if (route.path.indexOf(n1) > 0) {
                 p1 = new PathParameter();
@@ -160,6 +161,7 @@ public class XPluginImp implements Plugin {
             }
 
             p1.setName(p0.getName());
+            p1.setType(p0.getType().getSimpleName());
 
             operation.addParameter(p1);
         }
