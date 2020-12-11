@@ -4,7 +4,7 @@ import org.noear.solon.core.message.Message;
 
 import java.nio.ByteBuffer;
 
-public class MessageProtocolImpl implements MessageProtocol {
+public class MessageProtocolDefault implements MessageProtocol {
     @Override
     public ByteBuffer encode(Message message) {
         //key

@@ -3,7 +3,6 @@ package org.noear.solon.extend.socketd;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.FrameFlag;
 import org.noear.solon.core.util.HeaderUtil;
-import org.noear.solon.extend.socketd.protocol.MessageProtocolManager;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
