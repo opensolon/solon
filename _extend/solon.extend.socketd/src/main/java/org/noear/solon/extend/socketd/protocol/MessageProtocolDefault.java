@@ -1,51 +1,75 @@
 package org.noear.solon.extend.socketd.protocol;
 
+import org.noear.solon.core.message.FrameFlag;
 import org.noear.solon.core.message.Message;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class MessageProtocolDefault implements MessageProtocol {
+    public static final MessageProtocol instance = new MessageProtocolDefault();
+
     @Override
-    public ByteBuffer encode(Message message) {
-        //key
-        byte[] keyB = message.key().getBytes(message.getCharset());
-        //resourceDescriptor
-        byte[] resourceDescriptorB = message.resourceDescriptor().getBytes(message.getCharset());
-        //header
-        byte[] headerB = message.header().getBytes(message.getCharset());
+    public ByteBuffer encode(Message message) throws IOException {
+        if (message.flag() == FrameFlag.container) {
+            //length (flag + content + int.bytes)
+            int len = message.body().length + 4 + 4;
 
-        //length (flag + key + resourceDescriptor + content)
-        int len = keyB.length + resourceDescriptorB.length + headerB.length + message.body().length + 2 * 3 + 4 + 4;
+            ByteBuffer buffer = ByteBuffer.allocate(len);
 
-        ByteBuffer buffer = ByteBuffer.allocate(len);
+            //长度
+            buffer.putInt(len);
 
-        //长度
-        buffer.putInt(len);
+            //flag
+            buffer.putInt(message.flag());
 
-        //flag
-        buffer.putInt(message.flag());
+            //content
+            buffer.put(message.body());
 
-        //key
-        buffer.put(keyB);
-        buffer.putChar('\n');
+            buffer.flip();
 
-        //resourceDescriptor
-        buffer.put(resourceDescriptorB);
-        buffer.putChar('\n');
-        //header
-        buffer.put(headerB);
-        buffer.putChar('\n');
+            return buffer;
+        } else {
+            //key
+            byte[] keyB = message.key().getBytes(message.getCharset());
+            //resourceDescriptor
+            byte[] resourceDescriptorB = message.resourceDescriptor().getBytes(message.getCharset());
+            //header
+            byte[] headerB = message.header().getBytes(message.getCharset());
 
-        //content
-        buffer.put(message.body());
+            //length (flag + key + resourceDescriptor + content + int.bytes)
+            int len = keyB.length + resourceDescriptorB.length + headerB.length + message.body().length + 2 * 3 + 4 + 4;
 
-        buffer.flip();
+            ByteBuffer buffer = ByteBuffer.allocate(len);
 
-        return buffer;
+            //长度
+            buffer.putInt(len);
+
+            //flag
+            buffer.putInt(message.flag());
+
+            //key
+            buffer.put(keyB);
+            buffer.putChar('\n');
+
+            //resourceDescriptor
+            buffer.put(resourceDescriptorB);
+            buffer.putChar('\n');
+            //header
+            buffer.put(headerB);
+            buffer.putChar('\n');
+
+            //content
+            buffer.put(message.body());
+
+            buffer.flip();
+
+            return buffer;
+        }
     }
 
     @Override
-    public Message decode(ByteBuffer buffer) {
+    public Message decode(ByteBuffer buffer) throws IOException {
         int len0 = buffer.getInt();
 
         if (len0 > (buffer.remaining() + 4)) {
@@ -54,35 +78,46 @@ public class MessageProtocolDefault implements MessageProtocol {
 
         int flag = buffer.getInt();
 
-        //1.解码key and resourceDescriptor
-        ByteBuffer sb = ByteBuffer.allocate(Math.min(1024, buffer.limit()));
+        if (flag == FrameFlag.container) {
+            //2.解码 content
+            int len = len0 - buffer.position();
+            byte[] body = new byte[len];
+            if (len > 0) {
+                buffer.get(body, 0, len);
+            }
 
-        //key
-        String key = decodeString(buffer, sb, 256);
-        if (key == null) {
-            return null;
+            return new Message(flag, null, null, null, body);
+        } else {
+            //1.解码key and resourceDescriptor
+            ByteBuffer sb = ByteBuffer.allocate(Math.min(1024, buffer.limit()));
+
+            //key
+            String key = decodeString(buffer, sb, 256);
+            if (key == null) {
+                return null;
+            }
+
+            //resourceDescriptor
+            String resourceDescriptor = decodeString(buffer, sb, 256);
+            if (resourceDescriptor == null) {
+                return null;
+            }
+
+            //header
+            String header = decodeString(buffer, sb, 0);
+            if (header == null) {
+                return null;
+            }
+
+            //2.解码 content
+            int len = len0 - buffer.position();
+            byte[] body = new byte[len];
+            if (len > 0) {
+                buffer.get(body, 0, len);
+            }
+
+            return new Message(flag, key, resourceDescriptor, header, body);
         }
-
-        //resourceDescriptor
-        String resourceDescriptor = decodeString(buffer, sb, 256);
-        if (resourceDescriptor == null) {
-            return null;
-        }
-
-        //header
-        String header = decodeString(buffer, sb, 0);
-        if (header == null) {
-            return null;
-        }
-
-        //2.解码 content
-        int len = len0 - buffer.position();
-        byte[] body = new byte[len];
-        if (len > 0) {
-            buffer.get(body, 0, len);
-        }
-
-        return new Message(flag, key, resourceDescriptor, header, body);
     }
 
     protected String decodeString(ByteBuffer buffer, ByteBuffer sb, int maxLen) {

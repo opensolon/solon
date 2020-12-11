@@ -4,6 +4,7 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.FrameFlag;
 import org.noear.solon.core.util.HeaderUtil;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -25,14 +26,22 @@ public class MessageUtils {
      * 编码
      */
     public static ByteBuffer encode(Message message) {
-        return MessageProtocolManager.encode(message);
+        try {
+            return MessageProtocolManager.encode(message);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     /**
      * 解码
      */
     public static Message decode(ByteBuffer buffer) {
-        return MessageProtocolManager.decode(buffer);
+        try {
+            return MessageProtocolManager.decode(buffer);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
 
@@ -79,6 +88,10 @@ public class MessageUtils {
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    public static Message wrapContainer(byte[] body) {
+        return new Message(FrameFlag.container, null, null, null, body);
     }
 
     /**
