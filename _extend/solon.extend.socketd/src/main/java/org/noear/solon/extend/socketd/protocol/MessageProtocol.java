@@ -12,7 +12,7 @@ import java.nio.ByteBuffer;
  * @since 1.2
  * */
 public interface MessageProtocol {
-    ByteBuffer encode(Message message) throws IOException;
+    ByteBuffer encode(Message message) throws Exception;
 
-    Message decode(ByteBuffer buffer) throws IOException;
+    Message decode(ByteBuffer buffer) throws Exception;
 }

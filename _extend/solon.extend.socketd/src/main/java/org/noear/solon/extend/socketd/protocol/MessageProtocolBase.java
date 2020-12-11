@@ -16,7 +16,7 @@ public class MessageProtocolBase implements MessageProtocol {
     public static final MessageProtocol instance = new MessageProtocolBase();
 
     @Override
-    public ByteBuffer encode(Message message) throws IOException {
+    public ByteBuffer encode(Message message) throws Exception {
         if (message.flag() == FrameFlag.container) {
             //length (flag + content + int.bytes)
             int len = message.body().length + 4 + 4;
@@ -75,7 +75,7 @@ public class MessageProtocolBase implements MessageProtocol {
     }
 
     @Override
-    public Message decode(ByteBuffer buffer) throws IOException {
+    public Message decode(ByteBuffer buffer) throws Exception {
         int len0 = buffer.getInt();
 
         if (len0 > (buffer.remaining() + 4)) {

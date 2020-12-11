@@ -28,16 +28,16 @@ public class MessageProtocolCompress implements MessageProtocol {
 
 
 
-    public byte[] compress(byte[] bytes) throws IOException {
+    public byte[] compress(byte[] bytes) throws Exception {
         return GzipUtil.compress(bytes);
     }
 
-    public byte[] uncompress(byte[] bytes) throws IOException {
+    public byte[] uncompress(byte[] bytes) throws Exception {
         return GzipUtil.uncompress(bytes);
     }
 
     @Override
-    public ByteBuffer encode(Message message) throws IOException {
+    public ByteBuffer encode(Message message) throws Exception {
         ByteBuffer buffer = baseProtocol.encode(message);
 
         byte[] bytes = compress(buffer.array());
@@ -47,7 +47,7 @@ public class MessageProtocolCompress implements MessageProtocol {
     }
 
     @Override
-    public Message decode(ByteBuffer buffer) throws IOException {
+    public Message decode(ByteBuffer buffer) throws Exception {
         Message message = baseProtocol.decode(buffer);
 
         if (message.flag() == FrameFlag.container) {

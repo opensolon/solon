@@ -16,11 +16,11 @@ public class MessageProtocolManager {
         }
     }
 
-    public static ByteBuffer encode(Message message) throws IOException {
+    public static ByteBuffer encode(Message message) throws Exception {
         return protocol.encode(message);
     }
 
-    public static Message decode(ByteBuffer buffer) throws IOException{
+    public static Message decode(ByteBuffer buffer) throws Exception{
         return protocol.decode(buffer);
     }
 }

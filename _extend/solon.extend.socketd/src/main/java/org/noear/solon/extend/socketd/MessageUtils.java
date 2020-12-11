@@ -29,7 +29,7 @@ public class MessageUtils {
     public static ByteBuffer encode(Message message) {
         try {
             return MessageProtocolManager.encode(message);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             EventBus.push(ex);
             throw new RuntimeException(ex);
         }
@@ -41,7 +41,7 @@ public class MessageUtils {
     public static Message decode(ByteBuffer buffer) {
         try {
             return MessageProtocolManager.decode(buffer);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             EventBus.push(ex);
             throw new RuntimeException(ex);
         }

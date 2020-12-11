@@ -30,32 +30,25 @@ public abstract class MessageProtocolSecret implements MessageProtocol {
     public abstract byte[] decrypt(byte[] bytes) throws Exception;
 
     @Override
-    public ByteBuffer encode(Message message) throws IOException {
+    public ByteBuffer encode(Message message) throws Exception {
         ByteBuffer buffer = baseProtocol.encode(message);
 
-        try {
-            byte[] bytes = encrypt(buffer.array());
-            message = MessageUtils.wrapContainer(bytes);
 
-            return baseProtocol.encode(message);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+        byte[] bytes = encrypt(buffer.array());
+        message = MessageUtils.wrapContainer(bytes);
+
+        return baseProtocol.encode(message);
     }
 
     @Override
-    public Message decode(ByteBuffer buffer) throws IOException {
+    public Message decode(ByteBuffer buffer) throws Exception {
         Message message = baseProtocol.decode(buffer);
 
         if (message.flag() == FrameFlag.container) {
-            try {
-                byte[] bytes = decrypt(message.body());
-                buffer = ByteBuffer.wrap(bytes);
+            byte[] bytes = decrypt(message.body());
+            buffer = ByteBuffer.wrap(bytes);
 
-                message = baseProtocol.decode(buffer);
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
+            message = baseProtocol.decode(buffer);
         }
 
         return message;
