@@ -1,5 +1,6 @@
 package org.noear.solon.extend.socketd;
 
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.FrameFlag;
 import org.noear.solon.core.util.HeaderUtil;
@@ -29,6 +30,7 @@ public class MessageUtils {
         try {
             return MessageProtocolManager.encode(message);
         } catch (IOException ex) {
+            EventBus.push(ex);
             throw new RuntimeException(ex);
         }
     }
@@ -40,6 +42,7 @@ public class MessageUtils {
         try {
             return MessageProtocolManager.decode(buffer);
         } catch (IOException ex) {
+            EventBus.push(ex);
             throw new RuntimeException(ex);
         }
     }
