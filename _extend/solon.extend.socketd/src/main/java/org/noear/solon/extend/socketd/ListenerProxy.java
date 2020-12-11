@@ -106,12 +106,12 @@ public class ListenerProxy implements Listener {
             }
 
             //心跳包不进入处理流程
-            if (message.flag() == -2) {
+            if (message.flag() == MessageFlag.heartbeat) {
                 return;
             }
 
             //如果是响应体，则直接通知Request
-            if (message.flag() == 1) {
+            if (message.flag() == MessageFlag.response) {
                 //flag 消息标志（-1握手包；0发起包； 1响应包）
                 //
                 CompletableFuture<Message> request = requests.get(message.key());

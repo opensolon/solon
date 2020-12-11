@@ -139,7 +139,7 @@ public abstract class SessionBase implements Session {
             //发完之后，再缓存 //不然，会发两次
             handshakeMessage = message;
         } else {
-            throw new IllegalArgumentException("The message flag not -1");
+            throw new IllegalArgumentException("The message flag not handshake");
         }
     }
 
@@ -153,7 +153,7 @@ public abstract class SessionBase implements Session {
 
             return rst;
         } else {
-            throw new IllegalArgumentException("The message flag not -1");
+            throw new IllegalArgumentException("The message flag not handshake");
         }
     }
 }
