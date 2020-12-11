@@ -1,6 +1,7 @@
 package org.noear.solon.extend.socketd;
 
 import org.noear.solon.core.message.Message;
+import org.noear.solon.core.message.FrameFlag;
 import org.noear.solon.core.util.HeaderUtil;
 
 import java.io.UnsupportedEncodingException;
@@ -149,7 +150,7 @@ public class MessageUtils {
      * 打包
      */
     public static Message wrap(String resourceDescriptor, String header, byte[] body) {
-        return new Message(MessageFlag.message, UUID.randomUUID().toString(), resourceDescriptor, header, body);
+        return new Message(FrameFlag.message, UUID.randomUUID().toString(), resourceDescriptor, header, body);
     }
 
 
@@ -157,7 +158,7 @@ public class MessageUtils {
      * 打包
      */
     public static Message wrap(String key, String resourceDescriptor, String header, byte[] body) {
-        return new Message(MessageFlag.message, key, resourceDescriptor, header, body);
+        return new Message(FrameFlag.message, key, resourceDescriptor, header, body);
     }
 
 
@@ -181,7 +182,7 @@ public class MessageUtils {
      * 包装心跳包
      */
     public static Message wrapHeartbeat() {
-        return new Message(MessageFlag.heartbeat, UUID.randomUUID().toString(), "", null, null);
+        return new Message(FrameFlag.heartbeat, UUID.randomUUID().toString(), "", null, null);
     }
 
 
@@ -189,7 +190,7 @@ public class MessageUtils {
      * 包装握手包（只支持用头）
      */
     public static Message wrapHandshake(String header, byte[] body) {
-        return new Message(MessageFlag.handshake, UUID.randomUUID().toString(), "", header, body);
+        return new Message(FrameFlag.handshake, UUID.randomUUID().toString(), "", header, body);
     }
 
     public static Message wrapHandshake(String header) {
@@ -209,7 +210,7 @@ public class MessageUtils {
      * 包装响应包
      */
     public static Message wrapResponse(Message request, String header, byte[] body) {
-        return new Message(MessageFlag.response, request.key(), request.resourceDescriptor(), header, body);
+        return new Message(FrameFlag.response, request.key(), request.resourceDescriptor(), header, body);
     }
 
     public static Message wrapResponse(Message request, byte[] body) {
