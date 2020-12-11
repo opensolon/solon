@@ -22,11 +22,15 @@ public class FixedLengthFrameDecoder {
     public boolean read(ByteBuffer byteBuffer) {
         int len0 = length - buffer.position();
         if (len0 > byteBuffer.remaining()) {
-            buffer.put(byteBuffer.array());
+            byte[] bytes = new byte[byteBuffer.remaining()];
+            byteBuffer.get(bytes, 0, byteBuffer.remaining());
+
+            buffer.put(bytes);
             return false;
         } else {
             byte[] bytes = new byte[len0];
             byteBuffer.get(bytes, 0, len0);
+
             buffer.put(bytes);
             return true;
         }

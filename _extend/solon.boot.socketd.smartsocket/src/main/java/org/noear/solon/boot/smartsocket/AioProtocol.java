@@ -19,7 +19,6 @@ class AioProtocol implements Protocol<Message> {
 
     @Override
     public Message decode(ByteBuffer buffer, AioSession session) {
-
         FixedLengthFrameDecoder decoder = session.getAttachment();
         if(decoder == null){
             if (buffer.remaining() < Integer.BYTES) {
@@ -41,26 +40,6 @@ class AioProtocol implements Protocol<Message> {
         }
 
         return MessageUtils.decode(buffer);
-
-
-//        if (buffer.remaining() < Integer.BYTES) {
-//            return null;
-//        }
-//        buffer.mark();
-//        int length = buffer.getInt() - 4;
-//        if (length > buffer.remaining()) {
-//            buffer.reset();
-//            return null;
-//        }
-//
-//        buffer.reset();//内部会重新开始读
-//        Message tmp = MessageUtils.decode(buffer);
-//
-//        if (tmp == null) {
-//            buffer.reset();
-//        }
-//
-//        return tmp;
     }
 }
 
