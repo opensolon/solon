@@ -5,7 +5,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.core.message.MessageFlag;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;

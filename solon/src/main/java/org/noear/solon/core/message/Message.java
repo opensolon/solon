@@ -19,7 +19,6 @@ import java.util.function.Function;
 public class Message{
     /**
      * 1.消息标志
-     * @see MessageFlag
      */
     private final int flag;
     @Note("1.消息标志")

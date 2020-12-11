@@ -1,6 +1,6 @@
 package org.noear.solon.extend.socketd.protocol;
 
-import org.noear.solon.core.message.MessageFlag;
+import org.noear.solon.extend.socketd.MessageFlag;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.extend.socketd.protocol.util.GzipUtil;

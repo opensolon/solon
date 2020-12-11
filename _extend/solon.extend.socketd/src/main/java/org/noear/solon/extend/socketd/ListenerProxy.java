@@ -5,7 +5,6 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.core.message.MessageFlag;
 
 import java.io.IOException;
 import java.util.Map;
