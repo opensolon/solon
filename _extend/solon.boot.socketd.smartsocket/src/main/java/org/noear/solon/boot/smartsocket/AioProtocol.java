@@ -1,5 +1,6 @@
 package org.noear.solon.boot.smartsocket;
 
+import org.noear.solon.boot.smartsocket.decoder.FixedLengthFrameDecoder;
 import org.noear.solon.core.message.Message;
 
 import org.noear.solon.extend.socketd.MessageUtils;
@@ -19,24 +20,47 @@ class AioProtocol implements Protocol<Message> {
     @Override
     public Message decode(ByteBuffer buffer, AioSession session) {
 
-        if (buffer.remaining() < Integer.BYTES) {
+        FixedLengthFrameDecoder decoder = session.getAttachment();
+        if(decoder == null){
+            if (buffer.remaining() < Integer.BYTES) {
+                return null;
+            }else{
+                buffer.mark();
+                decoder = new FixedLengthFrameDecoder(buffer.getInt());
+                buffer.reset();
+                session.setAttachment(decoder);
+            }
+        }
+
+        if(decoder.read(buffer) == false){
             return null;
-        }
-        buffer.mark();
-        int length = buffer.getInt() - 4;
-        if (length > buffer.remaining()) {
-            buffer.reset();
-            return null;
+        }else{
+            session.setAttachment(null);
+            buffer = decoder.getBuffer();
+            buffer.flip();
         }
 
-        buffer.reset();//内部会重新开始读
-        Message tmp = MessageUtils.decode(buffer);
+        return MessageUtils.decode(buffer);
 
-        if (tmp == null) {
-            buffer.reset();
-        }
 
-        return tmp;
+//        if (buffer.remaining() < Integer.BYTES) {
+//            return null;
+//        }
+//        buffer.mark();
+//        int length = buffer.getInt() - 4;
+//        if (length > buffer.remaining()) {
+//            buffer.reset();
+//            return null;
+//        }
+//
+//        buffer.reset();//内部会重新开始读
+//        Message tmp = MessageUtils.decode(buffer);
+//
+//        if (tmp == null) {
+//            buffer.reset();
+//        }
+//
+//        return tmp;
     }
 }
 
