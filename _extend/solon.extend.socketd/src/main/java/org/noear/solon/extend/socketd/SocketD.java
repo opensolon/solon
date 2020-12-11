@@ -9,11 +9,16 @@ import org.noear.nami.encoder.SnackTypeEncoder;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.extend.socketd.protocol.MessageProtocol;
 
 import java.net.URI;
 import java.util.function.Supplier;
 
 public class SocketD {
+    public static void setProtocol(MessageProtocol protocol) {
+        MessageProtocolManager.setProtocol(protocol);
+    }
+
     //
     // session client
     //
