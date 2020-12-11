@@ -26,8 +26,6 @@ public class MessageProtocolCompress implements MessageProtocol {
     }
 
 
-
-
     public byte[] compress(byte[] bytes) throws Exception {
         return GzipUtil.compress(bytes);
     }
