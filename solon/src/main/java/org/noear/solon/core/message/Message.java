@@ -16,7 +16,17 @@ import java.util.function.Function;
  * @author noear
  * @since 1.0
  * */
-public class Message extends Frame{
+public class Message implements Frame{
+    /**
+     * 1.消息标志
+     * @see FrameFlag
+     */
+    private final int flag;
+
+    public int flag() {
+        return flag;
+    }
+
     /**
      * 2.消息key
      */
@@ -82,8 +92,7 @@ public class Message extends Frame{
     //////////////////////////////////////////
 
     public Message(int flag, String key, String resourceDescriptor, String header, byte[] body) {
-        super(flag);
-
+        this.flag = flag;
         this.key = (key == null ? "" : key);
         this.resourceDescriptor = (resourceDescriptor == null ? "" : resourceDescriptor);
         this.header = (header == null ? "" : header);
