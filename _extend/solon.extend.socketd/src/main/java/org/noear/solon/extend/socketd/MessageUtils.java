@@ -6,6 +6,7 @@ import org.noear.solon.core.util.HeaderUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.UUID;
 
@@ -56,6 +57,10 @@ public class MessageUtils {
      */
     public static Message wrap(byte[] body) {
         return wrap(null, null, body);
+    }
+
+    public static Message wrap(String body) {
+        return wrap(body.getBytes(StandardCharsets.UTF_8));
     }
 
 

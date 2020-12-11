@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.net.URI;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -154,9 +155,11 @@ public class _SocketClientSession extends SessionBase {
             return;
         }
 
-        byte[] bytes = MessageUtils.encode(message).array();
+        ByteBuffer buffer = MessageUtils.encode(message);
 
-        real.send(bytes);
+        if (buffer != null) {
+            real.send(buffer.array());
+        }
     }
 
 

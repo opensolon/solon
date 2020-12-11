@@ -12,6 +12,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.URI;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -159,10 +160,12 @@ class _SocketSession extends SessionBase {
             return;
         }
 
-        byte[] bytes = MessageUtils.encode(message).array();
+        ByteBuffer buffer = MessageUtils.encode(message);
 
-        real.getOutputStream().write(bytes);
-        real.getOutputStream().flush();
+        if (buffer != null) {
+            real.getOutputStream().write(buffer.array());
+            real.getOutputStream().flush();
+        }
     }
 
     @Override

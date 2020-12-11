@@ -96,22 +96,24 @@ public class _SocketSession extends SessionBase {
         // 转包为Message，再转byte[]
         //
         ByteBuffer buffer = MessageUtils.encode(message);
+        if (buffer == null) {
+            return;
+        }
 
-        real.requestResponse(DefaultPayload.create(buffer));
+        real.fireAndForget(DefaultPayload.create(buffer));
     }
 
     @Override
     public Message sendAndResponse(Message message) {
         ByteBuffer buffer = MessageUtils.encode(message);
 
-        ValHolder<Message> holder = new ValHolder<>();
+        if(buffer == null){
+            return null;
+        }
 
-        real.requestResponse(DefaultPayload.create(buffer))
+        return real.requestResponse(DefaultPayload.create(buffer))
                 .map(d -> MessageUtils.decode(d.getData()))
-                .doOnNext(m -> holder.value = m)
                 .block();
-
-        return holder.value;
     }
 
     @Override
@@ -178,15 +180,15 @@ public class _SocketSession extends SessionBase {
     /**
      * 接收数据
      */
-    public static Message receive(Socket socket, SocketProtocol protocol) {
-        try {
-            return protocol.decode(socket.getInputStream());
-        } catch (SocketException ex) {
-            return null;
-        } catch (Throwable ex) {
-            System.out.println("Decoding failure::");
-            ex.printStackTrace();
-            return null;
-        }
-    }
+//    public static Message receive(Socket socket, SocketProtocol protocol) {
+//        try {
+//            return protocol.decode(socket.getInputStream());
+//        } catch (SocketException ex) {
+//            return null;
+//        } catch (Throwable ex) {
+//            System.out.println("Decoding failure::");
+//            ex.printStackTrace();
+//            return null;
+//        }
+//    }
 }

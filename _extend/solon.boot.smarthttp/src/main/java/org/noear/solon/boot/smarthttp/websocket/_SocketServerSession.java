@@ -14,6 +14,7 @@ import org.smartboot.http.server.WebSocketRequestImpl;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -94,7 +95,7 @@ public class _SocketServerSession extends SessionBase {
     @Override
     public void send(String message) {
         if (Solon.global().enableWebSocketD()) {
-            sendBytes(MessageUtils.encode(MessageUtils.wrap(message.getBytes(StandardCharsets.UTF_8))).array());
+            sendBuffer(MessageUtils.encode(MessageUtils.wrap(message)));
         } else {
             response.sendTextMessage(message);
             response.flush();
@@ -104,7 +105,7 @@ public class _SocketServerSession extends SessionBase {
     @Override
     public void send(byte[] message) {
         if (Solon.global().enableWebSocketD()) {
-            sendBytes(MessageUtils.encode(MessageUtils.wrap(message)).array());
+            sendBuffer(MessageUtils.encode(MessageUtils.wrap(message)));
         } else {
             sendBytes(message);
         }
@@ -115,9 +116,15 @@ public class _SocketServerSession extends SessionBase {
         super.send(message);
 
         if (Solon.global().enableWebSocketD()) {
-            sendBytes(MessageUtils.encode(message).array());
+            sendBuffer(MessageUtils.encode(message));
         } else {
             sendBytes(message.body());
+        }
+    }
+
+    private void sendBuffer(ByteBuffer buffer) {
+        if (buffer != null) {
+            sendBytes(buffer.array());
         }
     }
 
@@ -125,7 +132,6 @@ public class _SocketServerSession extends SessionBase {
         response.sendBinaryMessage(message);
         response.flush();
     }
-
 
     private boolean isOpen = true;
 
