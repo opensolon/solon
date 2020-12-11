@@ -2,6 +2,12 @@ package org.noear.solon.core.message;
 
 import org.noear.solon.annotation.Note;
 
+/**
+ * 帧
+ *
+ * @author noear
+ * @since 1.2
+ * */
 public class Frame {
     /**
      * 1.消息标志（-2心跳包, -1握手包；0发起包； 1响应包）
