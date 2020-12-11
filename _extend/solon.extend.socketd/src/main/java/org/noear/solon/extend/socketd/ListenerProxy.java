@@ -22,9 +22,10 @@ import java.util.concurrent.Executors;
  * */
 public class ListenerProxy implements Listener {
 
-    public static final ExecutorService executors = Executors.newCachedThreadPool();
+    //消息处理线程池
+    static final ExecutorService executors = Executors.newCachedThreadPool();
 
-    //实例维护
+    //全局实例维护
     private static Listener global = new ListenerProxy();
 
     public static Listener getGlobal() {
@@ -35,12 +36,7 @@ public class ListenerProxy implements Listener {
         ListenerProxy.global = global;
     }
 
-
-
-    private SocketContextHandler socketContextHandler;
-
     public ListenerProxy() {
-        socketContextHandler = new SocketContextHandler();
     }
 
 
@@ -89,7 +85,7 @@ public class ListenerProxy implements Listener {
 
     private void onMessage0(Session session, Message message, boolean messageIsString) {
         try {
-            if(Solon.cfg().isFilesMode() || Solon.cfg().isDebugMode()) {
+            if (Solon.cfg().isFilesMode() || Solon.cfg().isDebugMode()) {
                 System.out.println("Listener proxy receive: " + message);
             }
 
@@ -109,7 +105,7 @@ public class ListenerProxy implements Listener {
                 return;
             }
 
-            //如果是响应体，则直接通知Request
+            //如果是响应体，尝试直接通知Request
             if (message.flag() == FrameFlag.response) {
                 //flag 消息标志（-1握手包；0发起包； 1响应包）
                 //
@@ -125,7 +121,7 @@ public class ListenerProxy implements Listener {
 
             //代理模式
             if (message.getHandled() == false) {
-                socketContextHandler.handle(session, message, messageIsString);
+                SocketContextHandler.instance.handle(session, message, messageIsString);
             }
         } catch (Throwable ex) {
             EventBus.push(ex);
