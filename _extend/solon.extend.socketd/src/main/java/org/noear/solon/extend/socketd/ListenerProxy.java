@@ -5,7 +5,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.core.message.FrameFlag;
+import org.noear.solon.core.message.MessageFlag;
 
 import java.io.IOException;
 import java.util.Map;
@@ -107,12 +107,12 @@ public class ListenerProxy implements Listener {
             }
 
             //心跳包不进入处理流程
-            if (message.flag() == FrameFlag.heartbeat) {
+            if (message.flag() == MessageFlag.heartbeat) {
                 return;
             }
 
             //如果是响应体，尝试直接通知Request
-            if (message.flag() == FrameFlag.response) {
+            if (message.flag() == MessageFlag.response) {
                 //flag 消息标志（-1握手包；0发起包； 1响应包）
                 //
                 CompletableFuture<Message> request = requests.get(message.key());

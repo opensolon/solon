@@ -5,7 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.core.message.FrameFlag;
+import org.noear.solon.core.message.MessageFlag;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -134,7 +134,7 @@ public abstract class SessionBase implements Session {
 
     @Override
     public void sendHandshake(Message message) {
-        if (message.flag() == FrameFlag.handshake) {
+        if (message.flag() == MessageFlag.handshake) {
             send(message);
 
             //发完之后，再缓存 //不然，会发两次
@@ -146,7 +146,7 @@ public abstract class SessionBase implements Session {
 
     @Override
     public Message sendHandshakeAndResponse(Message message) {
-        if (message.flag() == FrameFlag.handshake) {
+        if (message.flag() == MessageFlag.handshake) {
             Message rst = sendAndResponse(message);
 
             //发完之后，再缓存 //不然，会发两次

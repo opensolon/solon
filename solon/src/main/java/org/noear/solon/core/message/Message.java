@@ -16,13 +16,13 @@ import java.util.function.Function;
  * @author noear
  * @since 1.0
  * */
-public class Message implements Frame{
+public class Message{
     /**
      * 1.消息标志
-     * @see FrameFlag
+     * @see MessageFlag
      */
     private final int flag;
-
+    @Note("1.消息标志")
     public int flag() {
         return flag;
     }

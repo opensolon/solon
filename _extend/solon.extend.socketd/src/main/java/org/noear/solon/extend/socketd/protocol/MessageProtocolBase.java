@@ -1,9 +1,8 @@
 package org.noear.solon.extend.socketd.protocol;
 
-import org.noear.solon.core.message.FrameFlag;
+import org.noear.solon.core.message.MessageFlag;
 import org.noear.solon.core.message.Message;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
 /**
@@ -17,7 +16,7 @@ public class MessageProtocolBase implements MessageProtocol {
 
     @Override
     public ByteBuffer encode(Message message) throws Exception {
-        if (message.flag() == FrameFlag.container) {
+        if (message.flag() == MessageFlag.container) {
             //length (flag + content + int.bytes)
             int len = message.body().length + 4 + 4;
 
@@ -84,7 +83,7 @@ public class MessageProtocolBase implements MessageProtocol {
 
         int flag = buffer.getInt();
 
-        if (flag == FrameFlag.container) {
+        if (flag == MessageFlag.container) {
             //2.解码 content
             int len = len0 - buffer.position();
             byte[] body = new byte[len];

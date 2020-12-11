@@ -3,12 +3,12 @@ package org.noear.solon.core.message;
 import org.noear.solon.annotation.Note;
 
 /**
- * 帧标志
+ * 消息标志
  *
  * @author noear
  * @since 1.2
  * */
-public interface FrameFlag {
+public interface MessageFlag {
     /**
      * 容器包（承载另一个消息包的字节码；一般用于加密）
      * */

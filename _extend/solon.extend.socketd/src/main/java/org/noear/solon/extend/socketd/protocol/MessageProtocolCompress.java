@@ -1,6 +1,6 @@
 package org.noear.solon.extend.socketd.protocol;
 
-import org.noear.solon.core.message.FrameFlag;
+import org.noear.solon.core.message.MessageFlag;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.extend.socketd.protocol.util.GzipUtil;
@@ -63,7 +63,7 @@ public class MessageProtocolCompress implements MessageProtocol {
     public Message decode(ByteBuffer buffer) throws Exception {
         Message message = baseProtocol.decode(buffer);
 
-        if (message.flag() == FrameFlag.container) {
+        if (message.flag() == MessageFlag.container) {
             byte[] bytes = uncompress(message.body());
             buffer = ByteBuffer.wrap(bytes);
 
