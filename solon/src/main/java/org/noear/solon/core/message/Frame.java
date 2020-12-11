@@ -1,9 +1,5 @@
 package org.noear.solon.core.message;
 
-import org.noear.solon.annotation.Note;
-
-import javax.net.ssl.SSLContext;
-
 /**
  * 帧
  *
