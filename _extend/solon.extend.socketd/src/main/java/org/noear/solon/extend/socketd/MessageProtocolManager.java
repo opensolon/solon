@@ -4,24 +4,17 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.socketd.protocol.MessageProtocol;
 import org.noear.solon.extend.socketd.protocol.MessageProtocolBase;
 
-import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class MessageProtocolManager {
     private static MessageProtocol protocol = MessageProtocolBase.instance;
-    private static SSLContext sslContext;
 
     public static void setProtocol(MessageProtocol protocol) {
         if (protocol != null) {
             MessageProtocolManager.protocol = protocol;
         }
     }
-
-    public static void setSslContext(SSLContext sslContext){
-        MessageProtocolManager.sslContext = sslContext;
-    }
-
 
     public static ByteBuffer encode(Message message) throws IOException {
         return protocol.encode(message);
