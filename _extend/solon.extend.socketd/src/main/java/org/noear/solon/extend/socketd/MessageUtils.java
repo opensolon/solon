@@ -30,7 +30,7 @@ public class MessageUtils {
             return MessageProtocolManager.encode(message);
         } catch (Exception ex) {
             EventBus.push(ex);
-            throw new RuntimeException(ex);
+            return null;
         }
     }
 
@@ -42,7 +42,7 @@ public class MessageUtils {
             return MessageProtocolManager.decode(buffer);
         } catch (Exception ex) {
             EventBus.push(ex);
-            throw new RuntimeException(ex);
+            return null;
         }
     }
 

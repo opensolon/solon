@@ -80,6 +80,10 @@ public class ListenerProxy implements Listener {
 
     @Override
     public void onMessage(Session session, Message message, boolean messageIsString) throws IOException {
+        if(message == null){
+            return;
+        }
+
         //
         //线程池处理，免得被卡住
         //
