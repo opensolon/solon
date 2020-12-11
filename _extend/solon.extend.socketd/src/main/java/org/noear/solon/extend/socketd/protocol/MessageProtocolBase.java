@@ -6,8 +6,14 @@ import org.noear.solon.core.message.Message;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-public class MessageProtocolDefault implements MessageProtocol {
-    public static final MessageProtocol instance = new MessageProtocolDefault();
+/**
+ * 基础协议
+ *
+ * @author noear
+ * @since 1.2
+ * */
+public class MessageProtocolBase implements MessageProtocol {
+    public static final MessageProtocol instance = new MessageProtocolBase();
 
     @Override
     public ByteBuffer encode(Message message) throws IOException {

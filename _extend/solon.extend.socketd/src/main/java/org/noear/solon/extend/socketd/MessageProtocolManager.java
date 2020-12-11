@@ -2,14 +2,14 @@ package org.noear.solon.extend.socketd;
 
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.socketd.protocol.MessageProtocol;
-import org.noear.solon.extend.socketd.protocol.MessageProtocolDefault;
+import org.noear.solon.extend.socketd.protocol.MessageProtocolBase;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class MessageProtocolManager {
-    private static MessageProtocol protocol = MessageProtocolDefault.instance;
+    private static MessageProtocol protocol = MessageProtocolBase.instance;
     private static SSLContext sslContext;
 
     public static void setProtocol(MessageProtocol protocol) {
