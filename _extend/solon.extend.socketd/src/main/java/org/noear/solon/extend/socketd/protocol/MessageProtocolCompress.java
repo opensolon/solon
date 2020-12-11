@@ -5,7 +5,6 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.extend.socketd.protocol.util.GzipUtil;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
 /**
@@ -25,11 +24,23 @@ public class MessageProtocolCompress implements MessageProtocol {
         this.baseProtocol = baseProtocol;
     }
 
+    /**
+     * 是否充许压缩
+     */
+    public boolean allowCompress(int bufferSize) {
+        return (bufferSize > 1024);
+    }
 
+    /**
+     * 压缩
+     */
     public byte[] compress(byte[] bytes) throws Exception {
         return GzipUtil.compress(bytes);
     }
 
+    /**
+     * 解压
+     */
     public byte[] uncompress(byte[] bytes) throws Exception {
         return GzipUtil.uncompress(bytes);
     }
@@ -38,10 +49,14 @@ public class MessageProtocolCompress implements MessageProtocol {
     public ByteBuffer encode(Message message) throws Exception {
         ByteBuffer buffer = baseProtocol.encode(message);
 
-        byte[] bytes = compress(buffer.array());
-        message = MessageUtils.wrapContainer(bytes);
+        if (allowCompress(buffer.array().length)) {
+            byte[] bytes = compress(buffer.array());
+            message = MessageUtils.wrapContainer(bytes);
 
-        return baseProtocol.encode(message);
+            buffer = baseProtocol.encode(message);
+        }
+
+        return buffer;
     }
 
     @Override
