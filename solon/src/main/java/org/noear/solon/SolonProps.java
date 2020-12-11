@@ -242,6 +242,9 @@ public final class SolonProps extends Props {
     public boolean isFilesMode(){
         return isFilesMode;
     }
+    public void isFilesMode(boolean isFilesMode){
+        this.isFilesMode = isFilesMode;
+    }
 
     /**
      * 是否为 drift mode (of ip)

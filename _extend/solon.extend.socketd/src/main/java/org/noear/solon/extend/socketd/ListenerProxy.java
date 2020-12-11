@@ -90,7 +90,7 @@ public class ListenerProxy implements Listener {
 
     private void onMessage0(Session session, Message message, boolean messageIsString) {
         try {
-            if(Solon.cfg().isDebugMode()) {
+            if(Solon.cfg().isFilesMode() || Solon.cfg().isDebugMode()) {
                 System.out.println("Listener proxy receive: " + message);
             }
 

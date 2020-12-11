@@ -35,7 +35,7 @@ public abstract class SessionBase implements Session {
 
     @Override
     public void send(Message message) {
-        if (Solon.cfg().isDebugMode()) {
+        if (Solon.cfg().isFilesMode() || Solon.cfg().isDebugMode()) {
             System.out.println("Session send: " + message);
         }
     }
