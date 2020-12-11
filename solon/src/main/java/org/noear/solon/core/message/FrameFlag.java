@@ -10,9 +10,9 @@ import org.noear.solon.annotation.Note;
  * */
 public interface FrameFlag {
     /**
-     * 容器包（承载另一个消息包；一般用于加密）
+     * 容器包（承载另一个消息包的字节码；一般用于加密）
      * */
-    @Note("容器包（承载另一个消息包）")
+    @Note("容器包（承载另一个消息包的字节码）")
     int container = 1;
 
     /**
