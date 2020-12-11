@@ -16,17 +16,7 @@ import java.util.function.Function;
  * @author noear
  * @since 1.0
  * */
-public class Message {
-    /**
-     * 1.消息标志（-2心跳包, -1握手包；0发起包； 1响应包）
-     */
-    private final int flag;
-
-    @Note("1.消息标志（-2心跳包, -1握手包；0发起包； 1响应包）")
-    public int flag() {
-        return flag;
-    }
-
+public class Message extends Frame{
     /**
      * 2.消息key
      */
@@ -92,7 +82,7 @@ public class Message {
     //////////////////////////////////////////
 
     public Message(int flag, String key, String resourceDescriptor, String header, byte[] body) {
-        this.flag = flag;
+        super(flag);
 
         this.key = (key == null ? "" : key);
         this.resourceDescriptor = (resourceDescriptor == null ? "" : resourceDescriptor);
@@ -104,10 +94,10 @@ public class Message {
     @Override
     public String toString() {
         return "Message{" +
-                "flag=" + flag +
-                ", key='" + key + '\'' +
-                ", resourceDescriptor='" + resourceDescriptor + '\'' +
-                ", header='" + header + '\'' +
+                "flag=" + flag() +
+                ", key='" + key() + '\'' +
+                ", resourceDescriptor='" + resourceDescriptor() + '\'' +
+                ", header='" + header() + '\'' +
                 ", body='" + bodyAsString() + '\'' +
                 '}';
     }
