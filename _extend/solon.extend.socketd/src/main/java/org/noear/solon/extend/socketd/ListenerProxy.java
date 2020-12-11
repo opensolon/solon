@@ -80,7 +80,7 @@ public class ListenerProxy implements Listener {
 
     @Override
     public void onMessage(Session session, Message message, boolean messageIsString) throws IOException {
-        if(message == null){
+        if (message == null) {
             return;
         }
 
@@ -133,6 +133,7 @@ public class ListenerProxy implements Listener {
                 SocketContextHandler.instance.handle(session, message, messageIsString);
             }
         } catch (Throwable ex) {
+            onError0(session, ex);
             EventBus.push(ex);
         }
     }
