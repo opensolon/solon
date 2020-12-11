@@ -2,6 +2,8 @@ package org.noear.solon.core.message;
 
 import org.noear.solon.annotation.Note;
 
+import javax.net.ssl.SSLContext;
+
 /**
  * 帧
  *
@@ -10,11 +12,11 @@ import org.noear.solon.annotation.Note;
  * */
 public class Frame {
     /**
-     * 1.消息标志（-2心跳包, -1握手包；0发起包； 1响应包）
+     * 1.消息标志
+     * @see FrameFlag
      */
     private final int flag;
 
-    @Note("1.消息标志（-2心跳包, -1握手包；0发起包； 1响应包）")
     public int flag() {
         return flag;
     }
