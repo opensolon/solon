@@ -57,6 +57,12 @@ public class ListenerProxy implements Listener {
     //
     @Override
     public void onOpen(Session session) {
+        executors.submit(() -> {
+            onOpen0(session);
+        });
+    }
+
+    private void onOpen0(Session session) {
         try {
             //路由监听模式（起到过滤器作用）
             Listener sl = get(session);
@@ -130,6 +136,12 @@ public class ListenerProxy implements Listener {
 
     @Override
     public void onClose(Session session) {
+        executors.submit(() -> {
+            onClose0(session);
+        });
+    }
+
+    private void onClose0(Session session) {
         try {
             //路由监听模式
             Listener sl = get(session);
@@ -148,6 +160,12 @@ public class ListenerProxy implements Listener {
 
     @Override
     public void onError(Session session, Throwable error) {
+        executors.submit(() -> {
+            onError0(session, error);
+        });
+    }
+
+    private void onError0(Session session, Throwable error) {
         try {
             //路由监听模式（起到过滤器作用）
             Listener sl = get(session);
