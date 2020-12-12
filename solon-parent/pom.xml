@@ -694,7 +694,7 @@
 
     <modules>
 
-        <module>../solon</module>
+        <module>../solon-core</module>
 
         <module>../_extend/solon.extend.socketd</module>
         <module>../_extend/solon.extend.socketd.websocket</module>
