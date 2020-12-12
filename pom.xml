@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.noear</groupId>
-    <artifactId>solon_java</artifactId>
+    <artifactId>solon-root</artifactId>
     <version>root</version>
     <packaging>pom</packaging>
 
-    <name>root</name>
+    <name>solon-root</name>
     <description>Java project for solon</description>
 
     <properties>
