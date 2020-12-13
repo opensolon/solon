@@ -2,7 +2,6 @@ package org.noear.solon.core;
 
 import org.noear.solon.Utils;
 
-import javax.rmi.CORBA.Util;
 import java.io.File;
 import java.io.IOException;
 import java.net.*;
