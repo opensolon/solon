@@ -14,7 +14,15 @@ import org.noear.solon.extend.socketd.protocol.MessageProtocol;
 import java.net.URI;
 import java.util.function.Supplier;
 
+/**
+ *
+ * @author noear
+ * @since 1.2
+ * */
 public class SocketD {
+    //
+    // protocol
+    //
     public static void setProtocol(MessageProtocol protocol) {
         MessageProtocolManager.setProtocol(protocol);
     }
