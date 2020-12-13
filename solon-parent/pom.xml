@@ -147,11 +147,11 @@
                 <version>${solon.ver}</version>
             </dependency>
 
-<!--            <dependency>-->
-<!--                <groupId>org.noear</groupId>-->
-<!--                <artifactId>solon.boot.jdkudp</artifactId>-->
-<!--                <version>${solon.ver}</version>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>org.noear</groupId>-->
+            <!--                <artifactId>solon.boot.jdkudp</artifactId>-->
+            <!--                <version>${solon.ver}</version>-->
+            <!--            </dependency>-->
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -296,11 +296,11 @@
             </dependency>
 
 
-<!--            <dependency>-->
-<!--                <groupId>org.noear</groupId>-->
-<!--                <artifactId>solonclient</artifactId>-->
-<!--                <version>${solon.ver}</version>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>org.noear</groupId>-->
+            <!--                <artifactId>solonclient</artifactId>-->
+            <!--                <version>${solon.ver}</version>-->
+            <!--            </dependency>-->
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -453,11 +453,11 @@
             </dependency>
 
 
-<!--            <dependency>-->
-<!--                <groupId>org.noear</groupId>-->
-<!--                <artifactId>mqtt-solon-plugin</artifactId>-->
-<!--                <version>${solon.ver}</version>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>org.noear</groupId>-->
+            <!--                <artifactId>mqtt-solon-plugin</artifactId>-->
+            <!--                <version>${solon.ver}</version>-->
+            <!--            </dependency>-->
 
 
 
@@ -600,55 +600,53 @@
         <profile>
             <id>release</id>
             <build>
-                <pluginManagement>
-                    <plugins>
-                        <!-- Source -->
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-source-plugin</artifactId>
-                            <version>3.1.0</version>
-                            <executions>
-                                <execution>
-                                    <phase>package</phase>
-                                    <goals>
-                                        <goal>jar-no-fork</goal>
-                                    </goals>
-                                </execution>
-                            </executions>
-                        </plugin>
-                        <!-- Javadoc -->
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-javadoc-plugin</artifactId>
-                            <version>3.0.1</version>
-                            <executions>
-                                <execution>
-                                    <phase>package</phase>
-                                    <goals>
-                                        <goal>jar</goal>
-                                    </goals>
-                                    <configuration>
-                                        <doclint>none</doclint>
-                                    </configuration>
-                                </execution>
-                            </executions>
-                        </plugin>
-                        <!-- GPG -->
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-gpg-plugin</artifactId>
-                            <version>1.6</version>
-                            <executions>
-                                <execution>
-                                    <phase>verify</phase>
-                                    <goals>
-                                        <goal>sign</goal>
-                                    </goals>
-                                </execution>
-                            </executions>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
+                <plugins>
+                    <!-- Source -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Javadoc -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.10.3</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration>
+                                    <additionalparam>-Xdoclint:none</additionalparam>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- GPG -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
             </build>
 
             <distributionManagement>
@@ -716,20 +714,20 @@
         <module>../_extend/solon.boot.socketd.smartsocket</module>
         <module>../_extend/solon.boot.rsocket</module>
 
-<!--        <module>../_extend/solon.boot.jdkudp</module>-->
+        <!--        <module>../_extend/solon.boot.jdkudp</module>-->
 
         <!--        <module>../solon.boot.tomcat</module>-->
 
         <module>../_extend/solon.serialization.hession</module>
-<!--        <module>../_extend/solon.serialization.thrift</module>-->
+        <!--        <module>../_extend/solon.serialization.thrift</module>-->
 
         <module>../_extend/solon.serialization.fastjson</module>
         <module>../_extend/solon.serialization.jackson</module>
         <module>../_extend/solon.serialization.gson</module>
         <module>../_extend/solon.serialization.snack3</module>
         <module>../_extend/solon.serialization.avro</module>
-<!--        <module>../_extend/solon.serialization.jsoniter</module>-->
-<!--        <module>../_extend/solon.serialization.xstream</module>-->
+        <!--        <module>../_extend/solon.serialization.jsoniter</module>-->
+        <!--        <module>../_extend/solon.serialization.xstream</module>-->
 
         <module>../_extend/solon.view.freemarker</module>
         <module>../_extend/solon.view.jsp</module>
@@ -760,9 +758,9 @@
         <module>../_extend/solon.extend.undertow.jsp</module>
 
 
-<!--        <module>../_extend/solon.boot.rapidoid-http-fast</module>-->
-<!--        <module>../_extend/solon.boot.tomcat</module>-->
-<!--        <module>../_extend/solon.view.rocker</module>-->
+        <!--        <module>../_extend/solon.boot.rapidoid-http-fast</module>-->
+        <!--        <module>../_extend/solon.boot.tomcat</module>-->
+        <!--        <module>../_extend/solon.view.rocker</module>-->
 
 
 
@@ -772,7 +770,7 @@
 
 
 
-<!--        <module>../solonclient</module>-->
+        <!--        <module>../solonclient</module>-->
         <module>../nami</module>
 
 
@@ -788,7 +786,7 @@
         <module>../_extend2/feign-solon-plugin</module>
         <module>../_extend2/graphql-solon-plugin</module>
         <module>../_extend2/hasor-solon-plugin</module>
-<!--        <module>../_extend2/mqtt-solon-plugin</module>-->
+        <!--        <module>../_extend2/mqtt-solon-plugin</module>-->
         <module>../_extend2/weed3-solon-plugin</module>
         <module>../_extend2/mybatis-solon-plugin</module>
         <module>../_extend2/mybatis-sqlhelper-solon-plugin</module>
