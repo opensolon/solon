@@ -7,11 +7,10 @@ import org.noear.solon.core.message.Message;
 
 import org.noear.solon.extend.socketd.SessionFactoryManager;
 import org.noear.solon.extend.socketd.SessionManager;
+import org.noear.solon.extend.socketd.SocketProps;
 import org.smartboot.socket.transport.AioQuickServer;
 
 public final class XPluginImp implements Plugin {
-
-    protected static int readBufferSize = 1024 * 1024;
     private AioQuickServer<Message> server = null;
 
     public static String solon_boot_ver() {
@@ -20,19 +19,6 @@ public final class XPluginImp implements Plugin {
 
     @Override
     public void start(SolonApp app) {
-        String tmp = app.cfg().get("solon.socketd.readBufferSize", "").toLowerCase();
-
-        if (tmp.length() > 2) {
-            if (tmp.endsWith("kb")) {
-                readBufferSize = Integer.parseInt(tmp.substring(0, tmp.length() - 2)) * 1024;
-            }
-
-            if (tmp.endsWith("mb")) {
-                readBufferSize = Integer.parseInt(tmp.substring(0, tmp.length() - 2)) * 1024 * 1024;
-            }
-        }
-
-
         //注册会话工厂
         SessionManager.register(new _SessionManagerImpl());
         SessionFactoryManager.register(new _SessionFactoryImpl());
@@ -54,7 +40,12 @@ public final class XPluginImp implements Plugin {
         try {
             server = new AioQuickServer<>(_port, AioProtocol.instance, new AioServerProcessor());
             server.setBannerEnabled(false);
-            server.setReadBufferSize(readBufferSize);
+            if (SocketProps.readBufferSize() > 0) {
+                server.setReadBufferSize(SocketProps.readBufferSize());
+            }
+            if (SocketProps.writeBufferSize() > 0) {
+                server.setWriteBuffer(SocketProps.writeBufferSize(), 16);
+            }
             server.start();
 
             long time_end = System.currentTimeMillis();
@@ -64,9 +55,6 @@ public final class XPluginImp implements Plugin {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-        //AioQuickClient<XMessage> client = new AioQuickClient<>("127.0.0.1",12121, protocol,processor);
-        //client.start();
     }
 
     @Override

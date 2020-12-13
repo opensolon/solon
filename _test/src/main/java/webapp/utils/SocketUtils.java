@@ -128,12 +128,16 @@ public class SocketUtils {
         try {
             tryConnect();
 
-            outputStream.write(MessageUtils.encode(msgD.req).array());
-            outputStream.flush();
+            ByteBuffer buffer = MessageUtils.encode(msgD.req);
 
-            msgD.res = decode(connector.getInputStream());
+            if(buffer != null) {
+                outputStream.write(buffer.array());
+                outputStream.flush();
 
-            callback.accept(msgD);
+                msgD.res = decode(connector.getInputStream());
+
+                callback.accept(msgD);
+            }
 
         } catch (Throwable ex) {
             msgD.err = ex;

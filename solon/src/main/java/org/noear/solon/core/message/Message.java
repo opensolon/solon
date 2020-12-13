@@ -12,17 +12,19 @@ import java.util.function.Function;
 /**
  * SocketD 消息包（实现 Message + Listener 架构）
  *
+ * 格式一：{flag + body}
+ * 格式二：{flag + key + resourceDescriptor + header + body}
+ *
  * @see Listener#onMessage(Session, Message, boolean)
  * @author noear
  * @since 1.0
  * */
-public class Message {
+public class Message{
     /**
-     * 1.消息标志（-2心跳包, -1握手包；0发起包； 1响应包）
+     * 1.消息标志
      */
     private final int flag;
-
-    @Note("1.消息标志（-2心跳包, -1握手包；0发起包； 1响应包）")
+    @Note("1.消息标志")
     public int flag() {
         return flag;
     }
@@ -93,7 +95,6 @@ public class Message {
 
     public Message(int flag, String key, String resourceDescriptor, String header, byte[] body) {
         this.flag = flag;
-
         this.key = (key == null ? "" : key);
         this.resourceDescriptor = (resourceDescriptor == null ? "" : resourceDescriptor);
         this.header = (header == null ? "" : header);
@@ -104,10 +105,10 @@ public class Message {
     @Override
     public String toString() {
         return "Message{" +
-                "flag=" + flag +
-                ", key='" + key + '\'' +
-                ", resourceDescriptor='" + resourceDescriptor + '\'' +
-                ", header='" + header + '\'' +
+                "flag=" + flag() +
+                ", key='" + key() + '\'' +
+                ", resourceDescriptor='" + resourceDescriptor() + '\'' +
+                ", header='" + header() + '\'' +
                 ", body='" + bodyAsString() + '\'' +
                 '}';
     }

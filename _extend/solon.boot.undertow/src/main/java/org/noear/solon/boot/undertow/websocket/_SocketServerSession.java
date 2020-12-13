@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class _SocketServerSession extends SessionBase {
@@ -88,7 +87,7 @@ public class _SocketServerSession extends SessionBase {
     @Override
     public void send(String message) {
         if (Solon.global().enableWebSocketD()) {
-            sendBytes(MessageUtils.encode(MessageUtils.wrap(message.getBytes(StandardCharsets.UTF_8))));
+            sendBuffer(MessageUtils.encode(MessageUtils.wrap(message)));
         } else {
             WebSockets.sendText(message, real, null);
         }
@@ -97,9 +96,9 @@ public class _SocketServerSession extends SessionBase {
     @Override
     public void send(byte[] message) {
         if (Solon.global().enableWebSocketD()) {
-            sendBytes(MessageUtils.encode(MessageUtils.wrap(message)));
+            sendBuffer(MessageUtils.encode(MessageUtils.wrap(message)));
         } else {
-            sendBytes(ByteBuffer.wrap(message));
+            sendBuffer(ByteBuffer.wrap(message));
         }
     }
 
@@ -108,14 +107,16 @@ public class _SocketServerSession extends SessionBase {
         super.send(message);
 
         if (Solon.global().enableWebSocketD()) {
-            sendBytes(MessageUtils.encode(message));
+            sendBuffer(MessageUtils.encode(message));
         } else {
-            sendBytes(ByteBuffer.wrap(message.body()));
+            sendBuffer(ByteBuffer.wrap(message.body()));
         }
     }
 
-    private void sendBytes(ByteBuffer buf) {
-        WebSockets.sendBinary(buf, real, null);
+    private void sendBuffer(ByteBuffer buf) {
+        if (buf != null) {
+            WebSockets.sendBinary(buf, real, null);
+        }
     }
 
 

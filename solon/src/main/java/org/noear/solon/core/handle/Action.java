@@ -111,6 +111,13 @@ public class Action extends HandlerAide implements Handler {
         return bWrap;
     }
 
+    public String produces(){
+        return mProduces;
+    }
+    public String consumes(){
+        return mConsumes;
+    }
+
     @Override
     public void handle(Context x) throws Throwable {
         if (Utils.isNotEmpty(mConsumes)) {

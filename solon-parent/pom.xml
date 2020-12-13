@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.2.8</version>
+    <version>1.2.9</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -18,7 +18,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.2.8</solon.ver>
+        <solon.ver>1.2.9</solon.ver>
 
         <snack3.ver>3.1.12</snack3.ver>
         <weed3.ver>3.2.27</weed3.ver>
@@ -147,11 +147,11 @@
                 <version>${solon.ver}</version>
             </dependency>
 
-<!--            <dependency>-->
-<!--                <groupId>org.noear</groupId>-->
-<!--                <artifactId>solon.boot.jdkudp</artifactId>-->
-<!--                <version>${solon.ver}</version>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>org.noear</groupId>-->
+            <!--                <artifactId>solon.boot.jdkudp</artifactId>-->
+            <!--                <version>${solon.ver}</version>-->
+            <!--            </dependency>-->
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -296,11 +296,11 @@
             </dependency>
 
 
-<!--            <dependency>-->
-<!--                <groupId>org.noear</groupId>-->
-<!--                <artifactId>solonclient</artifactId>-->
-<!--                <version>${solon.ver}</version>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>org.noear</groupId>-->
+            <!--                <artifactId>solonclient</artifactId>-->
+            <!--                <version>${solon.ver}</version>-->
+            <!--            </dependency>-->
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -453,11 +453,11 @@
             </dependency>
 
 
-<!--            <dependency>-->
-<!--                <groupId>org.noear</groupId>-->
-<!--                <artifactId>mqtt-solon-plugin</artifactId>-->
-<!--                <version>${solon.ver}</version>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>org.noear</groupId>-->
+            <!--                <artifactId>mqtt-solon-plugin</artifactId>-->
+            <!--                <version>${solon.ver}</version>-->
+            <!--            </dependency>-->
 
 
 
@@ -714,20 +714,20 @@
         <module>../_extend/solon.boot.socketd.smartsocket</module>
         <module>../_extend/solon.boot.rsocket</module>
 
-<!--        <module>../_extend/solon.boot.jdkudp</module>-->
+        <!--        <module>../_extend/solon.boot.jdkudp</module>-->
 
         <!--        <module>../solon.boot.tomcat</module>-->
 
         <module>../_extend/solon.serialization.hession</module>
-<!--        <module>../_extend/solon.serialization.thrift</module>-->
+        <!--        <module>../_extend/solon.serialization.thrift</module>-->
 
         <module>../_extend/solon.serialization.fastjson</module>
         <module>../_extend/solon.serialization.jackson</module>
         <module>../_extend/solon.serialization.gson</module>
         <module>../_extend/solon.serialization.snack3</module>
         <module>../_extend/solon.serialization.avro</module>
-<!--        <module>../_extend/solon.serialization.jsoniter</module>-->
-<!--        <module>../_extend/solon.serialization.xstream</module>-->
+        <!--        <module>../_extend/solon.serialization.jsoniter</module>-->
+        <!--        <module>../_extend/solon.serialization.xstream</module>-->
 
         <module>../_extend/solon.view.freemarker</module>
         <module>../_extend/solon.view.jsp</module>
@@ -758,9 +758,9 @@
         <module>../_extend/solon.extend.undertow.jsp</module>
 
 
-<!--        <module>../_extend/solon.boot.rapidoid-http-fast</module>-->
-<!--        <module>../_extend/solon.boot.tomcat</module>-->
-<!--        <module>../_extend/solon.view.rocker</module>-->
+        <!--        <module>../_extend/solon.boot.rapidoid-http-fast</module>-->
+        <!--        <module>../_extend/solon.boot.tomcat</module>-->
+        <!--        <module>../_extend/solon.view.rocker</module>-->
 
 
 
@@ -770,7 +770,7 @@
 
 
 
-<!--        <module>../solonclient</module>-->
+        <!--        <module>../solonclient</module>-->
         <module>../nami</module>
 
 
@@ -786,7 +786,7 @@
         <module>../_extend2/feign-solon-plugin</module>
         <module>../_extend2/graphql-solon-plugin</module>
         <module>../_extend2/hasor-solon-plugin</module>
-<!--        <module>../_extend2/mqtt-solon-plugin</module>-->
+        <!--        <module>../_extend2/mqtt-solon-plugin</module>-->
         <module>../_extend2/weed3-solon-plugin</module>
         <module>../_extend2/mybatis-solon-plugin</module>
         <module>../_extend2/mybatis-sqlhelper-solon-plugin</module>

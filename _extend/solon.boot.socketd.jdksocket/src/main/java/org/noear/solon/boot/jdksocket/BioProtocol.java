@@ -26,15 +26,31 @@ public class BioProtocol {
             return null;
         }
 
-        byte[] bytes = new byte[len];
-        bytes[0] = lenBts[0];
-        bytes[1] = lenBts[1];
-        bytes[2] = lenBts[2];
-        bytes[3] = lenBts[3];
+        ByteBuffer buffer = ByteBuffer.allocate(len);
+        buffer.putInt(len);
 
-        input.read(bytes, 4, len - 4);
+        int bufSize = 512;
+        byte[] buf = new byte[bufSize];
 
-        return MessageUtils.decode(ByteBuffer.wrap(bytes));
+        int readSize = 0;
+
+        while (true) {
+            if (buffer.remaining() > bufSize) {
+                readSize = bufSize;
+            } else {
+                readSize = buffer.remaining();
+            }
+
+            if ((readSize = input.read(buf, 0, readSize)) > 0) {
+                buffer.put(buf, 0, readSize);
+            } else {
+                break;
+            }
+        }
+
+        buffer.flip();
+
+        return MessageUtils.decode(buffer);
     }
 
 

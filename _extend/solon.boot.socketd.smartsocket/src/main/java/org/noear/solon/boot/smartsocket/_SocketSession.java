@@ -11,6 +11,7 @@ import org.smartboot.socket.transport.AioSession;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -151,9 +152,11 @@ class _SocketSession extends SessionBase {
             return;
         }
 
-        byte[] bytes = MessageUtils.encode(message).array();
+        ByteBuffer buffer = MessageUtils.encode(message);
 
-        real.writeBuffer().writeAndFlush(bytes);
+        if (buffer != null) {
+            real.writeBuffer().writeAndFlush(buffer.array());
+        }
     }
 
 

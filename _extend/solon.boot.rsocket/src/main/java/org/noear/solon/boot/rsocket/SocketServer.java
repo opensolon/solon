@@ -40,26 +40,26 @@ public class SocketServer {
             Session session = null;//_SocketSession.get(socket);
             ListenerProxy.getGlobal().onOpen(session);
 
-            pool.execute(() -> {
-                while (true) {
-                    if (socket.isClosed()) {
-                        ListenerProxy.getGlobal().onClose(session);
-                        break;
-                    }
-
-                    Message message = _SocketSession.receive(socket, protocol);
-                    if (message != null) {
-                        pool.execute(() -> {
-                            try {
-                                ListenerProxy.getGlobal().onMessage(session, message, false);
-                            } catch (Throwable ex) {
-                                ListenerProxy.getGlobal().onError(session, ex);
-                            }
-                        });
-                    }
-
-                }
-            });
+//            pool.execute(() -> {
+//                while (true) {
+//                    if (socket.isClosed()) {
+//                        ListenerProxy.getGlobal().onClose(session);
+//                        break;
+//                    }
+//
+//                    Message message = _SocketSession.receive(socket, protocol);
+//                    if (message != null) {
+//                        pool.execute(() -> {
+//                            try {
+//                                ListenerProxy.getGlobal().onMessage(session, message, false);
+//                            } catch (Throwable ex) {
+//                                ListenerProxy.getGlobal().onError(session, ex);
+//                            }
+//                        });
+//                    }
+//
+//                }
+//            });
         }
     }
 

@@ -226,7 +226,7 @@ public final class SolonProps extends Props {
      * 框架版本号
      * */
     public String version(){
-        return "1.2.8";
+        return "1.2.9";
     }
 
     /**
@@ -241,6 +241,9 @@ public final class SolonProps extends Props {
      * */
     public boolean isFilesMode(){
         return isFilesMode;
+    }
+    public void isFilesMode(boolean isFilesMode){
+        this.isFilesMode = isFilesMode;
     }
 
     /**
