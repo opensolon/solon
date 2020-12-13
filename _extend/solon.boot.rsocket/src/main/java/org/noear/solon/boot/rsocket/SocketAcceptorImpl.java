@@ -14,8 +14,8 @@ public class SocketAcceptorImpl implements SocketAcceptor {
     public Mono<RSocket> accept(ConnectionSetupPayload rPayload, RSocket rSocket) {
         Session session = _SocketSession.get(rSocket);
         Message message = MessageUtils.decode(rPayload.getData());
-        if (message != null) {
 
+        if (message != null) {
             try {
                 ListenerProxy.getGlobal().onMessage(session, message, false);
             } catch (Throwable ex) {

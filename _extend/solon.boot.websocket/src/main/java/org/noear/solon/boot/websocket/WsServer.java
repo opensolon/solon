@@ -57,6 +57,7 @@ public class WsServer extends WebSocketServer {
         try {
             Session session = _SocketServerSession.get(conn);
             Message message = null;
+
             if(Solon.global().enableWebSocketD()){
                 message = MessageUtils.decode(data);
             }else{

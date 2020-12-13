@@ -8,8 +8,8 @@ import org.noear.solon.Solon;
 // solon.socketd.writeBufferSize
 //
 public class SocketProps {
-    private static int readBufferSize = 1024 * 1024;
-    private static int writeBufferSize = 512;
+    private static int readBufferSize = 0;
+    private static int writeBufferSize = 0;
 
     public static int readBufferSize() {
         return readBufferSize;

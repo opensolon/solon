@@ -9,11 +9,16 @@ import org.noear.nami.encoder.SnackTypeEncoder;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.extend.socketd.protocol.MessageProtocol;
 
 import java.net.URI;
 import java.util.function.Supplier;
 
 public class SocketD {
+    public static void setProtocol(MessageProtocol protocol) {
+        MessageProtocolManager.setProtocol(protocol);
+    }
+
     //
     // session client
     //
@@ -47,9 +52,18 @@ public class SocketD {
         return create(() -> session, service);
     }
 
+    public static <T> T create(URI serverUri, int poolSize, Class<T> service) {
+        SessionPools sessionPools = new SessionPools(serverUri, true, poolSize);
+        return create(sessionPools, service);
+    }
+
     public static <T> T create(String serverUri, Class<T> service) {
         Session session = createSession(serverUri, true);
         return create(() -> session, service);
+    }
+
+    public static <T> T create(String serverUri, int poolSize, Class<T> service) {
+        return create(URI.create(serverUri), poolSize, service);
     }
 
     public static <T> T create(Context context, Class<T> service) {

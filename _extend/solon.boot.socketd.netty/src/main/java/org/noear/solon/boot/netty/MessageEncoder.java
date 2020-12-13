@@ -6,12 +6,17 @@ import io.netty.handler.codec.MessageToByteEncoder;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.socketd.MessageUtils;
 
+import java.nio.ByteBuffer;
+
 class MessageEncoder extends MessageToByteEncoder<Message> {
     @Override
     protected void encode(ChannelHandlerContext channelHandlerContext, Message message, ByteBuf byteBuf) throws Exception {
         if (message != null) {
-            byte[] bytes = MessageUtils.encode(message).array();
-            byteBuf.writeBytes(bytes);
+            ByteBuffer buffer = MessageUtils.encode(message);
+
+            if (buffer != null) {
+                byteBuf.writeBytes(buffer.array());
+            }
         }
     }
 }
