@@ -1,5 +1,6 @@
 package org.noear.solon;
 
+import org.noear.solon.annotation.Note;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.*;
 
@@ -19,6 +20,7 @@ import java.util.function.Function;
  * @author noear
  * @since 1.0
  * */
+@Note("内部专用工具（外部项目不建议使用，随时可能会变动）")
 public class Utils {
     public static final ExecutorService pools = Executors.newCachedThreadPool();
     public static final ScheduledExecutorService scheduled = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
