@@ -27,8 +27,8 @@ public class MessageProtocolCompress implements MessageProtocol {
     /**
      * 是否充许压缩
      */
-    public boolean allowCompress(int bufferSize) {
-        return (bufferSize > 1024);
+    public boolean allowCompress(int byteSize) {
+        return (byteSize > 1024);
     }
 
     /**
