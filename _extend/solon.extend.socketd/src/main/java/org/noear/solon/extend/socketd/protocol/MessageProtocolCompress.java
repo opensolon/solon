@@ -15,20 +15,30 @@ import java.nio.ByteBuffer;
  * */
 public class MessageProtocolCompress implements MessageProtocol {
     protected MessageProtocol baseProtocol = MessageProtocolBase.instance;
+    protected int allowCompressSize = 1024;
 
     public MessageProtocolCompress() {
 
+    }
+
+    public MessageProtocolCompress(int allowCompressSize) {
+        this.allowCompressSize = allowCompressSize;
     }
 
     public MessageProtocolCompress(MessageProtocol baseProtocol) {
         this.baseProtocol = baseProtocol;
     }
 
+    public MessageProtocolCompress(int allowCompressSize, MessageProtocol baseProtocol) {
+        this.baseProtocol = baseProtocol;
+        this.allowCompressSize = allowCompressSize;
+    }
+
     /**
      * 是否充许压缩
      */
     public boolean allowCompress(int byteSize) {
-        return (byteSize > 1024);
+        return (byteSize > allowCompressSize);
     }
 
     /**
