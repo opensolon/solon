@@ -4,29 +4,15 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.extend.socketd.ConnectorSimple;
 import org.noear.solon.extend.socketd.ListenerProxy;
-import org.noear.solon.extend.socketd.Connector;
 
 import java.net.Socket;
 import java.net.URI;
 
-class BioConnector implements Connector<Socket> {
-    private URI uri;
-    private boolean autoReconnect;
-
+class BioConnector extends ConnectorSimple<Socket> {
     public BioConnector(URI uri, boolean autoReconnect) {
-        this.uri = uri;
-        this.autoReconnect = autoReconnect;
-    }
-
-    @Override
-    public URI getUri() {
-        return uri;
-    }
-
-    @Override
-    public boolean autoReconnect() {
-        return autoReconnect;
+        super(uri, autoReconnect);
     }
 
     @Override
@@ -37,7 +23,7 @@ class BioConnector implements Connector<Socket> {
     @Override
     public Socket open(Session session) {
         try {
-            Socket socket = new Socket(uri.getHost(), uri.getPort());
+            Socket socket = new Socket(uri().getHost(), uri().getPort());
 
             startReceive(session, socket);
 

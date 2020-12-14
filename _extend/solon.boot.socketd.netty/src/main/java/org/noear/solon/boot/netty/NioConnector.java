@@ -7,30 +7,18 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.Connector;
+import org.noear.solon.extend.socketd.ConnectorSimple;
 
 import java.net.URI;
 
-public class NioConnector implements Connector<Channel> {
-    private URI uri;
-    private boolean autoReconnect;
+ class NioConnector extends ConnectorSimple<Channel> {
 
-    public NioConnector(URI uri, boolean autoReconnect) {
-        this.uri = uri;
-        this.autoReconnect = autoReconnect;
-    }
 
-    @Override
-    public URI getUri() {
-        return uri;
-    }
+     public NioConnector(URI uri, boolean autoReconnect) {
+         super(uri, autoReconnect);
+     }
 
-    @Override
-    public boolean autoReconnect() {
-        return autoReconnect;
-    }
-
-    @Override
+     @Override
     public Class<Channel> realType() {
         return Channel.class;
     }
@@ -46,7 +34,7 @@ public class NioConnector implements Connector<Channel> {
                     .channel(NioSocketChannel.class)
                     .handler(new NioChannelInitializer(() -> new NioClientProcessor(session)));
 
-            ChannelFuture channelFuture = bootstrap.connect(uri.getHost(), uri.getPort()).sync();
+            ChannelFuture channelFuture = bootstrap.connect(uri().getHost(), uri().getPort()).sync();
 
             return channelFuture.channel();
         } catch (Exception ex) {

@@ -98,7 +98,7 @@ class _SocketSession extends SessionBase {
         if(connector == null){
             return null;
         }else {
-            return connector.getUri();
+            return connector.uri();
         }
     }
 
@@ -107,7 +107,7 @@ class _SocketSession extends SessionBase {
         if (connector == null) {
             return "";
         } else {
-            return connector.getUri().getPath();
+            return connector.uri().getPath();
         }
     }
 

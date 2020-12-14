@@ -3,16 +3,21 @@ package org.noear.solon.boot.rsocket;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.extend.socketd.SessionFactoryManager;
+import org.noear.solon.extend.socketd.SessionManager;
 
 public class XPluginImp implements Plugin {
-    SocketServer _server;
+    RsocketServer _server;
 
     public static String solon_boot_ver(){
-        return "jdk tcp socket/" + Solon.cfg().version();
+        return "rsocket-socketd/" + Solon.cfg().version();
     }
 
     @Override
     public void start(SolonApp app) {
+        //注册会话工厂
+        SessionManager.register(new _SessionManagerImpl());
+        SessionFactoryManager.register(new _SessionFactoryImpl());
 
         if(app.enableSocket() == false){
             return;
@@ -20,22 +25,19 @@ public class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        System.out.println("solon.Server:main: java.net.ServerSocket(jdksocket)");
+        System.out.println("solon.Server:main: java.net.ServerSocket(rsocket-socketd)");
 
         int _port = 20000 + app.port();
 
-        SocketProtocol protocol = new SocketProtocol();
-
         try {
-            _server = new SocketServer();
-            _server.setProtocol(protocol);
+            _server = new RsocketServer();
 
             _server.start(_port);
 
             long time_end = System.currentTimeMillis();
 
-            System.out.println("solon.Connector:main: jdksocket: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
-            System.out.println("solon.Server:main: jdksocket: Started @" + (time_end - time_start) + "ms");
+            System.out.println("solon.Connector:main: rsocket-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
+            System.out.println("solon.Server:main: rsocket-socketd: Started @" + (time_end - time_start) + "ms");
         }catch (Exception ex){
             ex.printStackTrace();
         }
@@ -49,6 +51,6 @@ public class XPluginImp implements Plugin {
 
         _server.stop();
         _server = null;
-        System.out.println("solon.Server:main: jdksocket: Has Stopped " + solon_boot_ver());
+        System.out.println("solon.Server:main: rsocket-socketd: Has Stopped " + solon_boot_ver());
     }
 }

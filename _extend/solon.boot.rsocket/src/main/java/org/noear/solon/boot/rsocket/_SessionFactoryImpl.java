@@ -1,18 +1,15 @@
 package org.noear.solon.boot.rsocket;
 
 import io.rsocket.RSocket;
-import io.rsocket.core.RSocketConnector;
-import io.rsocket.transport.netty.client.TcpClientTransport;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.Connector;
 import org.noear.solon.extend.socketd.SessionFactory;
-import reactor.util.retry.Retry;
 
 import java.net.URI;
-import java.time.Duration;
 
 /**
  * @author noear 2020/12/14 created
+ * @since 1.2
  */
 public class _SessionFactoryImpl implements SessionFactory {
     @Override
@@ -22,17 +19,15 @@ public class _SessionFactoryImpl implements SessionFactory {
 
     @Override
     public Session createSession(Connector connector) {
-        return null;
+        if (connector.realType() == RSocket.class) {
+            return new _SocketSession((Connector<RSocket>) connector);
+        } else {
+            throw new IllegalArgumentException("Only support Connector<RSocket> connector");
+        }
     }
 
     @Override
     public Session createSession(URI uri, boolean autoReconnect) {
-        RSocket rSocket = RSocketConnector
-                .create()
-                .reconnect(Retry.backoff(50, Duration.ofMillis(500)))
-                .connect(TcpClientTransport.create(uri.getHost(), uri.getPort()))
-                .block();
-
-        return new _SocketSession(rSocket);
+        return new _SocketSession(new RsConnector(uri, autoReconnect));
     }
 }

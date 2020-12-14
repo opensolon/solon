@@ -3,7 +3,7 @@ package org.noear.solon.extend.socketd.websocket;
 import org.java_websocket.WebSocket;
 import org.java_websocket.client.WebSocketClient;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.Connector;
+import org.noear.solon.extend.socketd.ConnectorSimple;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
@@ -13,25 +13,14 @@ import java.net.URI;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 
-public class WsConnector implements Connector<WebSocket> {
-    private URI uri;
-    private boolean autoReconnect;
+class WsConnector extends ConnectorSimple<WebSocket> {
+
     private SSLSocketFactory sslSocketFactory;
 
     public WsConnector(URI uri, boolean autoReconnect) {
-        this.uri = uri;
-        this.autoReconnect = autoReconnect;
+        super(uri, autoReconnect);
     }
 
-    @Override
-    public URI getUri() {
-        return uri;
-    }
-
-    @Override
-    public boolean autoReconnect() {
-        return autoReconnect;
-    }
 
     @Override
     public Class<WebSocket> realType() {
@@ -41,9 +30,9 @@ public class WsConnector implements Connector<WebSocket> {
     @Override
     public WebSocket open(Session session) {
         try {
-            WebSocketClient socket = new WsSocketClientImp(uri, session);
+            WebSocketClient socket = new WsSocketClientImp(uri(), session);
 
-            if ("wss".equals(uri.getScheme())) {
+            if ("wss".equals(uri().getScheme())) {
                 enableTls(socket);
             }
 

@@ -1,6 +1,5 @@
 package org.noear.solon.boot.rsocket;
 
-import io.netty.channel.Channel;
 import io.rsocket.RSocket;
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.message.Session;
@@ -11,6 +10,7 @@ import java.util.Collections;
 
 /**
  * @author noear 2020/12/14 created
+ * @since 1.2
  */
 public class _SessionManagerImpl extends SessionManager {
     @Override

@@ -12,7 +12,7 @@ import java.net.URI;
  * @since 1.2
  * */
 public interface Connector<T> {
-    URI getUri();
+    URI uri();
 
     boolean autoReconnect();
 

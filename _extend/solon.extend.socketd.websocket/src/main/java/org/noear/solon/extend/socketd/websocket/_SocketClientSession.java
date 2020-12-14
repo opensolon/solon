@@ -65,7 +65,7 @@ public class _SocketClientSession extends SessionBase {
 
     @Override
     public URI uri() {
-        return connector.getUri();
+        return connector.uri();
     }
 
     private String _path;
@@ -73,7 +73,7 @@ public class _SocketClientSession extends SessionBase {
     @Override
     public String path() {
         if (_path == null) {
-            _path = connector.getUri().getPath();
+            _path = connector.uri().getPath();
         }
 
         return _path;
