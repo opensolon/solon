@@ -151,7 +151,8 @@ public class _SocketSession extends SessionBase {
             return;
         }
 
-        real.fireAndForget(DefaultPayload.create(MessageUtils.encode(message)));
+        real.fireAndForget(DefaultPayload.create(MessageUtils.encode(message)))
+                .block();
     }
 
     @Override

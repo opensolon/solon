@@ -17,6 +17,7 @@ import java.nio.ByteBuffer;
  * @since 1.2
  */
 public class RsocketHandler implements RSocket {
+    public static final RSocket instance = new RsocketHandler();
 
     @Override
     public Mono<Void> fireAndForget(Payload payload) {

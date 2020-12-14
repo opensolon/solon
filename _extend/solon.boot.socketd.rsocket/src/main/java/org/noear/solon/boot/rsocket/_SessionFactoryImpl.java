@@ -14,7 +14,7 @@ import java.net.URI;
 public class _SessionFactoryImpl implements SessionFactory {
     @Override
     public String[] schemes() {
-        return new String[]{"tcp"};
+        return new String[]{"tcp","rtcp"};
     }
 
     @Override
