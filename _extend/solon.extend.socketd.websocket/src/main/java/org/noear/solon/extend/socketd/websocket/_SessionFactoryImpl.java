@@ -1,7 +1,9 @@
 package org.noear.solon.extend.socketd.websocket;
 
+import org.java_websocket.WebSocket;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.extend.socketd.Connector;
 import org.noear.solon.extend.socketd.SessionFactory;
 
 import java.net.URI;
@@ -13,11 +15,20 @@ public class _SessionFactoryImpl implements SessionFactory {
     }
 
     @Override
+    public Session createSession(Connector connector) {
+        if (connector.realType() == WebSocket.class) {
+            return new _SocketClientSession((Connector<WebSocket>) connector);
+        } else {
+            throw new IllegalArgumentException("Only support Connector<WebSocket> connector");
+        }
+    }
+
+    @Override
     public Session createSession(URI uri, boolean autoReconnect) {
         try {
-            WsConnector bioClient = new WsConnector(uri);
+            WsConnector bioClient = new WsConnector(uri, autoReconnect);
 
-            return new _SocketClientSession(bioClient, autoReconnect);
+            return new _SocketClientSession(bioClient);
         } catch (Exception ex) {
             throw Utils.throwableWrap(ex);
         }

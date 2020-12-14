@@ -7,6 +7,7 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.ext.RunnableEx;
+import org.noear.solon.extend.socketd.Connector;
 import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.extend.socketd.SessionBase;
 
@@ -22,18 +23,18 @@ public class _SocketClientSession extends SessionBase {
 
     WebSocket real;
 
-    final WsConnector connector;
+    final Connector<WebSocket> connector;
     final boolean autoReconnect;
 
-    public _SocketClientSession(WsConnector connector, boolean autoReconnect) {
+    public _SocketClientSession(Connector<WebSocket> connector) {
         this.connector = connector;
-        this.autoReconnect = autoReconnect;
+        this.autoReconnect = connector.autoReconnect();
     }
 
     /**
      * @return 是否为新链接
      */
-    private boolean prepareNew() {
+    private boolean prepareNew() throws IOException{
         if (real == null) {
             real = connector.open(this);
             onOpen();

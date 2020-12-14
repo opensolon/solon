@@ -14,16 +14,28 @@ import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 
 public class WsConnector implements Connector<WebSocket> {
-    URI uri;
-    SSLSocketFactory sslSocketFactory;
+    private URI uri;
+    private boolean autoReconnect;
+    private SSLSocketFactory sslSocketFactory;
 
-    public WsConnector(URI uri) {
+    public WsConnector(URI uri, boolean autoReconnect) {
         this.uri = uri;
+        this.autoReconnect = autoReconnect;
     }
 
     @Override
     public URI getUri() {
         return uri;
+    }
+
+    @Override
+    public boolean autoReconnect() {
+        return autoReconnect;
+    }
+
+    @Override
+    public Class<WebSocket> realType() {
+        return WebSocket.class;
     }
 
     @Override
