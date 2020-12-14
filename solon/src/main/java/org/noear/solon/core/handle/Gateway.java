@@ -52,7 +52,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         _path = _mapping.value();
 
         //默认为404错误输出
-        _def = (c) -> c.status(404);
+        _def = (c) -> c.statusSet(404);
 
         register();
     }
