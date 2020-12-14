@@ -15,7 +15,7 @@ import java.time.Duration;
 /**
  * @author noear 2020/12/14 created
  */
-public class RsConnector extends ConnectorSimple<RSocket> {
+class RsConnector extends ConnectorSimple<RSocket> {
 
     public RsConnector(URI uri, boolean autoReconnect) {
         super(uri, autoReconnect);

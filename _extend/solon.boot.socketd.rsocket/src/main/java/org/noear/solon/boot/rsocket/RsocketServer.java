@@ -8,7 +8,7 @@ import io.rsocket.transport.netty.server.TcpServerTransport;
 
 import java.io.IOException;
 
-public class RsocketServer {
+class RsocketServer {
     private CloseableChannel server;
 
     public void start(int port) {

@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 /**
  * @author noear 2020/12/14 created
  */
-public class RsocketAcceptor implements SocketAcceptor {
+class RsocketAcceptor implements SocketAcceptor {
     public static final RsocketAcceptor instance = new RsocketAcceptor();
 
     private RsocketHandler handler = new RsocketHandler();
