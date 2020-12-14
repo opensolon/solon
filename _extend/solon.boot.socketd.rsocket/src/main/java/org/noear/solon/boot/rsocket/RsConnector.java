@@ -26,6 +26,11 @@ public class RsConnector extends ConnectorSimple<RSocket> {
     }
 
     @Override
+    public boolean autoReconnect() {
+        return false;
+    }
+
+    @Override
     public RSocket open(Session session) throws IOException {
         return RSocketConnector
                 .create()
