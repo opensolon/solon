@@ -9,7 +9,10 @@ import reactor.core.publisher.Mono;
  * @author noear 2020/12/14 created
  */
 public class RsocketAcceptor implements SocketAcceptor {
+    public static final SocketAcceptor instance = new RsocketAcceptor();
+
     private RsocketHandler handler = new RsocketHandler();
+
     @Override
     public Mono<RSocket> accept(ConnectionSetupPayload connectionSetupPayload, RSocket rSocket) {
         return Mono.just(handler);
