@@ -16,7 +16,7 @@ class BioConnector extends ConnectorSimple<Socket> {
     }
 
     @Override
-    public Class<Socket> realType() {
+    public Class<Socket> driveType() {
         return Socket.class;
     }
 

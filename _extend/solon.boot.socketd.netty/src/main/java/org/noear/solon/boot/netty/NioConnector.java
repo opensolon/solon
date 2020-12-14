@@ -19,7 +19,7 @@ import java.net.URI;
      }
 
      @Override
-    public Class<Channel> realType() {
+    public Class<Channel> driveType() {
         return Channel.class;
     }
 

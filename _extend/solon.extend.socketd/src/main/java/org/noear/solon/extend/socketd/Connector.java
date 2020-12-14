@@ -16,7 +16,7 @@ public interface Connector<T> {
 
     boolean autoReconnect();
 
-    Class<T> realType();
+    Class<T> driveType();
 
     T open(Session session) throws IOException;
 }

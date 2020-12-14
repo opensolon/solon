@@ -14,8 +14,13 @@ public class _SessionFactoryImpl implements SessionFactory {
     }
 
     @Override
+    public Class<?> driveType() {
+        return Channel.class;
+    }
+
+    @Override
     public Session createSession(Connector connector) {
-        if (connector.realType() == Channel.class) {
+        if (connector.driveType() == Channel.class) {
             return new _SocketSession((Connector<Channel>) connector);
         } else {
             throw new IllegalArgumentException("Only support Connector<Channel> connector");

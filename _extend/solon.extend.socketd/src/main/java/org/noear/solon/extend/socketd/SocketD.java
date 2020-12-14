@@ -31,6 +31,11 @@ public class SocketD {
     // session client
     //
     @Note("ServerUri 以：ws:// 或 wss:// 或 tcp:// 开头")
+    public static Session createSession(Connector connector) {
+        return SessionFactoryManager.create(connector);
+    }
+
+    @Note("ServerUri 以：ws:// 或 wss:// 或 tcp:// 开头")
     public static Session createSession(URI serverUri, boolean autoReconnect) {
         return SessionFactoryManager.create(serverUri, autoReconnect);
     }

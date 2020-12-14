@@ -18,8 +18,13 @@ public class _SessionFactoryImpl implements SessionFactory {
     }
 
     @Override
+    public Class<?> driveType() {
+        return RSocket.class;
+    }
+
+    @Override
     public Session createSession(Connector connector) {
-        if (connector.realType() == RSocket.class) {
+        if (connector.driveType() == RSocket.class) {
             return new _SocketSession((Connector<RSocket>) connector);
         } else {
             throw new IllegalArgumentException("Only support Connector<RSocket> connector");

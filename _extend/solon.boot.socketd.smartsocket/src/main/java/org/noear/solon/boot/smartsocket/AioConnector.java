@@ -16,7 +16,7 @@ class AioConnector extends ConnectorSimple<AioSession> {
     }
 
     @Override
-    public Class<AioSession> realType() {
+    public Class<AioSession> driveType() {
         return AioSession.class;
     }
 

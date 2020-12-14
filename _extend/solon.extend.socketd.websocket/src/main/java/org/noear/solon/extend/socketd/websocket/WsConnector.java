@@ -23,7 +23,7 @@ class WsConnector extends ConnectorSimple<WebSocket> {
 
 
     @Override
-    public Class<WebSocket> realType() {
+    public Class<WebSocket> driveType() {
         return WebSocket.class;
     }
 

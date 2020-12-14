@@ -13,6 +13,8 @@ import java.net.URI;
 public interface SessionFactory {
     String[] schemes();
 
+    Class<?> driveType();
+
     Session createSession(Connector connector);
 
     Session createSession(URI uri, boolean autoReconnect);

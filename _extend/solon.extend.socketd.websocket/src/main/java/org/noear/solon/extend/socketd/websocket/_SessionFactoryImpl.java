@@ -15,8 +15,13 @@ public class _SessionFactoryImpl implements SessionFactory {
     }
 
     @Override
+    public Class<?> driveType() {
+        return WebSocket.class;
+    }
+
+    @Override
     public Session createSession(Connector connector) {
-        if (connector.realType() == WebSocket.class) {
+        if (connector.driveType() == WebSocket.class) {
             return new _SocketClientSession((Connector<WebSocket>) connector);
         } else {
             throw new IllegalArgumentException("Only support Connector<WebSocket> connector");

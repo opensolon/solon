@@ -21,7 +21,7 @@ public class RsConnector extends ConnectorSimple<RSocket> {
     }
 
     @Override
-    public Class<RSocket> realType() {
+    public Class<RSocket> driveType() {
         return RSocket.class;
     }
 
