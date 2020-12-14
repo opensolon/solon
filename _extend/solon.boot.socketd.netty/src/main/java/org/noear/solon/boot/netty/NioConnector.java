@@ -12,15 +12,27 @@ import org.noear.solon.extend.socketd.Connector;
 import java.net.URI;
 
 public class NioConnector implements Connector<Channel> {
-    URI uri;
+    private URI uri;
+    private boolean autoReconnect;
 
-    public NioConnector(URI uri) {
+    public NioConnector(URI uri, boolean autoReconnect) {
         this.uri = uri;
+        this.autoReconnect = autoReconnect;
     }
 
     @Override
     public URI getUri() {
         return uri;
+    }
+
+    @Override
+    public boolean autoReconnect() {
+        return autoReconnect;
+    }
+
+    @Override
+    public Class<Channel> realType() {
+        return Channel.class;
     }
 
     @Override

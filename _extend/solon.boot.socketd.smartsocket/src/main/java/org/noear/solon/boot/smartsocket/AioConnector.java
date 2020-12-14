@@ -13,16 +13,28 @@ import java.net.URI;
 
 class AioConnector implements Connector<AioSession> {
     private URI uri;
+    private boolean autoReconnect;
     private Protocol<Message> protocol;
 
-    public AioConnector(URI uri) {
+    public AioConnector(URI uri, boolean autoReconnect) {
         this.uri = uri;
+        this.autoReconnect = autoReconnect;
         this.protocol = AioProtocol.instance;
     }
 
     @Override
     public URI getUri() {
         return uri;
+    }
+
+    @Override
+    public boolean autoReconnect() {
+        return autoReconnect;
+    }
+
+    @Override
+    public Class<AioSession> realType() {
+        return AioSession.class;
     }
 
     @Override

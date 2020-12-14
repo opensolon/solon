@@ -3,21 +3,17 @@ package org.noear.solon.boot.rsocket;
 import io.rsocket.RSocket;
 import io.rsocket.util.DefaultPayload;
 import org.noear.solon.Utils;
-import org.noear.solon.core.*;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.extend.socketd.Connector;
 import org.noear.solon.extend.socketd.ListenerProxy;
 import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.extend.socketd.SessionBase;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketException;
-import java.net.URI;
-import java.nio.ByteBuffer;
+import java.net.*;
 import java.util.*;
 
 public class _SocketSession extends SessionBase {
@@ -41,7 +37,7 @@ public class _SocketSession extends SessionBase {
         return tmp;
     }
 
-    public static void remove(Socket real) {
+    public static void remove(RSocket real) {
         sessions.remove(real);
     }
 
@@ -49,6 +45,27 @@ public class _SocketSession extends SessionBase {
 
     public _SocketSession(RSocket real) {
         this.real = real;
+    }
+
+    Connector<RSocket> connector;
+    boolean autoReconnect;
+
+    public _SocketSession(Connector<RSocket> connector) {
+        this.connector = connector;
+    }
+
+    /**
+     * @return 是否为新链接
+     */
+    private boolean prepareNew() throws IOException {
+        if (real == null) {
+            real = connector.open(this);
+            onOpen();
+
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -69,12 +86,20 @@ public class _SocketSession extends SessionBase {
 
     @Override
     public URI uri() {
-        return null;
+        if(connector == null){
+            return null;
+        }else {
+            return connector.getUri();
+        }
     }
 
     @Override
     public String path() {
-        return "";
+        if (connector == null) {
+            return "";
+        } else {
+            return connector.getUri().getPath();
+        }
     }
 
     @Override
@@ -91,29 +116,42 @@ public class _SocketSession extends SessionBase {
         send(MessageUtils.wrap(message));
     }
 
+    @Override
     public void send(Message message) {
-        //
-        // 转包为Message，再转byte[]
-        //
-        ByteBuffer buffer = MessageUtils.encode(message);
-        if (buffer == null) {
+        try {
+            super.send(message);
+
+            synchronized (this) {
+                if (prepareNew()) {
+                    send0(handshakeMessage);
+                }
+
+                //
+                // 转包为Message，再转byte[]
+                //
+                //byte[] bytes = MessageUtils.encode(message).array();
+
+                send0(message);
+            }
+        } catch (RuntimeException ex) {
+            Throwable ex2 = Utils.throwableUnwrap(ex);
+            if (ex2 instanceof ConnectException) {
+                if (autoReconnect) {
+                    real = null;
+                }
+            }
+            throw ex;
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private void send0(Message message) throws IOException {
+        if (message == null) {
             return;
         }
 
-        real.fireAndForget(DefaultPayload.create(buffer));
-    }
-
-    @Override
-    public Message sendAndResponse(Message message) {
-        ByteBuffer buffer = MessageUtils.encode(message);
-
-        if(buffer == null){
-            return null;
-        }
-
-        return real.requestResponse(DefaultPayload.create(buffer))
-                .map(d -> MessageUtils.decode(d.getData()))
-                .block();
+        real.fireAndForget(DefaultPayload.create(MessageUtils.encode(message)));
     }
 
     @Override
@@ -138,13 +176,11 @@ public class _SocketSession extends SessionBase {
     @Override
     public InetSocketAddress getRemoteAddress()  {
         return null;
-        //return (InetSocketAddress) real.getRemoteSocketAddress();
     }
 
     @Override
     public InetSocketAddress getLocalAddress() {
         return null;
-        //return (InetSocketAddress) real.getLocalSocketAddress();
     }
 
     private Object attachment;
@@ -176,19 +212,4 @@ public class _SocketSession extends SessionBase {
     public int hashCode() {
         return Objects.hash(real);
     }
-
-    /**
-     * 接收数据
-     */
-//    public static Message receive(Socket socket, SocketProtocol protocol) {
-//        try {
-//            return protocol.decode(socket.getInputStream());
-//        } catch (SocketException ex) {
-//            return null;
-//        } catch (Throwable ex) {
-//            System.out.println("Decoding failure::");
-//            ex.printStackTrace();
-//            return null;
-//        }
-//    }
 }

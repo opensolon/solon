@@ -11,15 +11,27 @@ import java.net.Socket;
 import java.net.URI;
 
 class BioConnector implements Connector<Socket> {
-    URI uri;
+    private URI uri;
+    private boolean autoReconnect;
 
-    public BioConnector(URI uri) {
+    public BioConnector(URI uri, boolean autoReconnect) {
         this.uri = uri;
+        this.autoReconnect = autoReconnect;
     }
 
     @Override
     public URI getUri() {
         return uri;
+    }
+
+    @Override
+    public boolean autoReconnect() {
+        return autoReconnect;
+    }
+
+    @Override
+    public Class<Socket> realType() {
+        return Socket.class;
     }
 
     @Override

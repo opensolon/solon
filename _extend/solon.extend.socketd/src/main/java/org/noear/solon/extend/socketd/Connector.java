@@ -14,5 +14,9 @@ import java.net.URI;
 public interface Connector<T> {
     URI getUri();
 
+    boolean autoReconnect();
+
+    Class<T> realType();
+
     T open(Session session) throws IOException;
 }

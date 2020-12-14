@@ -4,6 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
+import org.noear.solon.extend.socketd.Connector;
 import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.extend.socketd.SessionBase;
 
@@ -63,18 +64,18 @@ class _SocketSession extends SessionBase {
         this.real = real;
     }
 
-    BioConnector connector;
+    Connector<Socket> connector;
     boolean autoReconnect;
 
-    public _SocketSession(BioConnector connector, boolean autoReconnect) {
+    public _SocketSession(Connector<Socket> connector) {
         this.connector = connector;
-        this.autoReconnect = autoReconnect;
+        this.autoReconnect = connector.autoReconnect();
     }
 
     /**
      * @return 是否为新链接
      */
-    private boolean prepareNew() {
+    private boolean prepareNew() throws IOException{
         if (real == null) {
             real = connector.open(this);
             onOpen();

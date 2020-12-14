@@ -4,6 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
+import org.noear.solon.extend.socketd.Connector;
 import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.extend.socketd.SessionBase;
 import org.smartboot.socket.transport.AioSession;
@@ -45,12 +46,12 @@ class _SocketSession extends SessionBase {
     }
 
 
-    AioConnector connector;
+    Connector<AioSession> connector;
     boolean autoReconnect;
 
-    public _SocketSession(AioConnector connector, boolean autoReconnect) {
+    public _SocketSession(Connector<AioSession> connector) {
         this.connector = connector;
-        this.autoReconnect = autoReconnect;
+        this.autoReconnect = connector.autoReconnect();
     }
 
     /**
