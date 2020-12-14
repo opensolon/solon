@@ -46,10 +46,10 @@ public class PathAnalyzer {
         p = p.replace("$", "\\$");
 
         //替换中间的**值
-        p = p.replace("**", ".+?");
+        p = p.replace("**", ".{0,}");
 
         //替换*值
-        p = p.replace("*", "[^/]+");
+        p = p.replace("*", "[^/]*");
 
         //替换{x}值
         if (p.indexOf("{") >= 0) {
