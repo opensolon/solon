@@ -23,7 +23,7 @@ public class RsocketServer {
 
     private void start0(int port) throws IOException {
         server = RSocketServer
-                .create(SocketAcceptor.with(RsocketHandler.instance))
+                .create(RsocketAcceptor.instance)
                 .bind(TcpServerTransport.create("localhost", port))
                 .block();
 
