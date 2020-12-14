@@ -31,6 +31,17 @@ public class RenderManager implements Render {
     //不能放上面
     public static Render global = new RenderManager();
 
+    /**
+     * 获取渲染器
+     * */
+    public static Render get(String name) {
+        Render tmp = _lib.get(name);
+        if (tmp == null) {
+            tmp = _mapping.get(name);
+        }
+
+        return tmp;
+    }
 
     /**
      * 登记渲染器
