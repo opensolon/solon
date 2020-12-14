@@ -88,7 +88,6 @@ public class PathUtil {
 
             if (_pks.size() > 0) {
                 PathAnalyzer _pr = new PathAnalyzer(expr);
-                //Pattern _pr = Pattern.compile(XUtil.expCompile(expr), Pattern.CASE_INSENSITIVE);
 
                 pm = _pr.matcher(path2);
                 if (pm.find()) {
