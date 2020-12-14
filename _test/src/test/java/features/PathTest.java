@@ -12,6 +12,8 @@ public class PathTest {
         assert  PathUtil.mergePath("","/user/*").equals("/user/*");
 
         assert  PathUtil.mergePath("/","/user/*").equals("/user/*");
+
+        assert PathUtil.mergePath("/render/direct/","*").equals("/render/direct/*");
     }
 
     @Test
