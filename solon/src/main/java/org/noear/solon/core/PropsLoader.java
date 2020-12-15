@@ -2,6 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.Utils;
 
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.Properties;
@@ -66,7 +67,7 @@ public class PropsLoader {
             System.out.println(url);
 
             Properties tmp = new Properties();
-            tmp.load(url.openStream());
+            tmp.load(new InputStreamReader(url.openStream()));
             return tmp;
         }
 
