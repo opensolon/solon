@@ -12,7 +12,6 @@ import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.extend.socketd.SessionBase;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
