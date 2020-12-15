@@ -185,13 +185,21 @@ public class DemoController{
 }
 ```
 
-* 文件上传
+* 文件上传与输出
 ```java
 @Controller
 public class DemoController{
     @Mapping("/file/upload")
     public void upload(UploadedFile file){
         IoUtil.save(file.content, "/data/file_" + file.name);
+    }
+
+    @Mapping("/file/down")
+    public void down(Context ctx, String path){
+        URL uri = Utils.getResource(path);
+
+        ctx.contentType("json/text");
+        ctx.output(uri.openStream());
     }
 }
 ```
