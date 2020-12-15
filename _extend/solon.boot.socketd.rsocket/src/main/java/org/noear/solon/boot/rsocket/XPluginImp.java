@@ -7,7 +7,7 @@ import org.noear.solon.extend.socketd.SessionFactoryManager;
 import org.noear.solon.extend.socketd.SessionManager;
 
 public class XPluginImp implements Plugin {
-    RsocketServer _server;
+    RsServer _server;
 
     public static String solon_boot_ver(){
         return "rsocket-socketd/" + Solon.cfg().version();
@@ -30,7 +30,7 @@ public class XPluginImp implements Plugin {
         int _port = 20000 + app.port();
 
         try {
-            _server = new RsocketServer();
+            _server = new RsServer();
 
             _server.start(_port);
 

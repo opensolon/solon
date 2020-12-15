@@ -1,14 +1,13 @@
 package org.noear.solon.boot.rsocket;
 
 
-import io.rsocket.SocketAcceptor;
 import io.rsocket.core.RSocketServer;
 import io.rsocket.transport.netty.server.CloseableChannel;
 import io.rsocket.transport.netty.server.TcpServerTransport;
 
 import java.io.IOException;
 
-class RsocketServer {
+class RsServer {
     private CloseableChannel server;
 
     public void start(int port) {
@@ -23,7 +22,7 @@ class RsocketServer {
 
     private void start0(int port) throws IOException {
         server = RSocketServer
-                .create(RsocketAcceptor.instance)
+                .create(RsAcceptor.instance)
                 .bind(TcpServerTransport.create("localhost", port))
                 .block();
 

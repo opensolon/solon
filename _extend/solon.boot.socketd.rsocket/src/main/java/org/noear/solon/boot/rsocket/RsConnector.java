@@ -1,7 +1,6 @@
 package org.noear.solon.boot.rsocket;
 
 import io.rsocket.RSocket;
-import io.rsocket.SocketAcceptor;
 import io.rsocket.core.RSocketConnector;
 import io.rsocket.transport.netty.client.TcpClientTransport;
 import org.noear.solon.core.message.Session;
@@ -35,7 +34,7 @@ class RsConnector extends ConnectorSimple<RSocket> {
     public RSocket open(Session session) throws IOException {
         return RSocketConnector
                 .create()
-                .acceptor(RsocketAcceptor.instance)
+                .acceptor(RsAcceptor.instance)
                 .reconnect(Retry.backoff(50, Duration.ofMillis(500)))
                 .connect(TcpClientTransport.create(uri().getHost(), uri().getPort()))
                 .block();

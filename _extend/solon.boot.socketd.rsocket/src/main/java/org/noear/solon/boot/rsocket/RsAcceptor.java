@@ -1,8 +1,10 @@
 package org.noear.solon.boot.rsocket;
 
 import io.netty.buffer.ByteBuf;
+import io.rsocket.ConnectionSetupPayload;
 import io.rsocket.Payload;
 import io.rsocket.RSocket;
+import io.rsocket.SocketAcceptor;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
@@ -14,11 +16,26 @@ import java.nio.ByteBuffer;
 
 /**
  * @author noear 2020/12/14 created
- * @since 1.2
  */
-public class RsocketHandler implements RSocket {
-    public static final RSocket instance = new RsocketHandler();
+class RsAcceptor implements SocketAcceptor, RSocket {
+    public static final RsAcceptor instance = new RsAcceptor();
 
+    //
+    // SocketAcceptor
+    //
+    @Override
+    public Mono<RSocket> accept(ConnectionSetupPayload connectionSetupPayload, RSocket rSocket) {
+
+        //open
+        Session session = _SocketSession.get(rSocket);
+        ListenerProxy.getGlobal().onOpen(session);
+
+        return Mono.just(this);
+    }
+
+    //
+    // RSocket
+    //
     @Override
     public Mono<Void> fireAndForget(Payload payload) {
         ByteBuf byteBuf = payload.data();
