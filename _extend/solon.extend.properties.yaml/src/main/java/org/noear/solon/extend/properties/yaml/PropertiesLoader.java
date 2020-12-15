@@ -2,6 +2,7 @@ package org.noear.solon.extend.properties.yaml;
 
 import org.noear.solon.core.PropsLoader;
 
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.Properties;
@@ -32,7 +33,7 @@ public class PropertiesLoader extends PropsLoader {
             System.out.println(url);
 
             Properties tmp = new Properties();
-            tmp.load(url.openStream());
+            tmp.load(new InputStreamReader(url.openStream()));
             return tmp;
         }
 
@@ -40,7 +41,7 @@ public class PropertiesLoader extends PropsLoader {
             System.out.println(url);
 
             PropertiesYaml tmp = new PropertiesYaml();
-            tmp.loadYml(url.openStream());
+            tmp.loadYml(new InputStreamReader(url.openStream()));
             return tmp;
         }
 
