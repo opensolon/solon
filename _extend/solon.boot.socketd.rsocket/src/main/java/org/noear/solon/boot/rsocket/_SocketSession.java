@@ -14,6 +14,8 @@ import org.noear.solon.extend.socketd.SessionBase;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class _SocketSession extends SessionBase {
@@ -104,11 +106,7 @@ public class _SocketSession extends SessionBase {
 
     @Override
     public void send(String message) {
-        try {
-            send(message.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException ex) {
-            throw new RuntimeException(ex);
-        }
+        send(message.getBytes(StandardCharsets.UTF_8));
     }
 
     @Override
@@ -146,17 +144,24 @@ public class _SocketSession extends SessionBase {
         }
     }
 
-    private void send0(Message message) throws IOException {
+    private void send0(Message message) {
         if (message == null) {
             return;
         }
 
-        real.fireAndForget(DefaultPayload.create(MessageUtils.encode(message)))
-                .block();
+        ByteBuffer byteBuffer = MessageUtils.encode(message);
+
+        if (byteBuffer != null) {
+            real.fireAndForget(DefaultPayload.create(byteBuffer))
+                    .doOnError((err) -> {
+                        ListenerProxy.getGlobal().onError(this, err);
+                    })
+                    .subscribe();
+        }
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         synchronized (real) {
             real.dispose();
 
