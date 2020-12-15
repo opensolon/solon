@@ -11,7 +11,7 @@ import java.net.URI;
  * @author noear 2020/12/14 created
  * @since 1.2
  */
-public class _SessionFactoryImpl implements SessionFactory {
+class _SessionFactoryImpl implements SessionFactory {
     @Override
     public String[] schemes() {
         return new String[]{"tcp","rtcp"};

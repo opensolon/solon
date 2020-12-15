@@ -12,7 +12,7 @@ import java.util.Collections;
  * @author noear 2020/12/14 created
  * @since 1.2
  */
-public class _SessionManagerImpl extends SessionManager {
+class _SessionManagerImpl extends SessionManager {
     @Override
     protected SignalType signalType() {
         return SignalType.SOCKET;

@@ -17,7 +17,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-public class _SocketSession extends SessionBase {
+class _SocketSession extends SessionBase {
     public static Map<RSocket, Session> sessions = new HashMap<>();
 
     public static Session get(RSocket real) {

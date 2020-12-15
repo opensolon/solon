@@ -17,7 +17,7 @@ import java.nio.ByteBuffer;
 /**
  * @author noear 2020/12/14 created
  */
-class RsAcceptor implements SocketAcceptor, RSocket {
+public class RsAcceptor implements SocketAcceptor, RSocket {
     public static final RsAcceptor instance = new RsAcceptor();
 
     //
