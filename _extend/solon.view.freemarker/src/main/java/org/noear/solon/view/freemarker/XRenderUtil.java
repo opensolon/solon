@@ -6,7 +6,7 @@ import freemarker.template.Template;
 import java.io.StringWriter;
 
 public class XRenderUtil {
-    public static String reander(String template, Object model) throws Exception {
+    public static String render(String template, Object model) throws Exception {
         StringWriter writer = new StringWriter();
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_28);
         cfg.setNumberFormat("#");

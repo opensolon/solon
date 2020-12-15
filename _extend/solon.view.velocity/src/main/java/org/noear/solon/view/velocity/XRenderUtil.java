@@ -8,7 +8,7 @@ import java.util.Map;
 public class XRenderUtil {
     static VelocityEngine engine = null;
 
-    public static String reander(String template, Map<String, Object> model) throws Exception {
+    public static String render(String template, Map<String, Object> model) throws Exception {
 
         if (engine == null) {
             engine = new VelocityEngine();
