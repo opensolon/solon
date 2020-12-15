@@ -68,7 +68,7 @@ public class App{
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.2.8</version>
+    <version>1.2.10</version>
 </parent>
 
 <dependencies>
@@ -229,7 +229,7 @@ ext/                    #扩展目录
 ext/ext.markdown.jar    #MD格式支持扩展包
 ```
 
-* 双向RPC（客户端链上服务端之后，形成双向RPC）
+* 单链接双向RPC（客户端链上服务端之后，形成双向RPC）
 ```java 
 //server
 @Mapping(value = "/demoe/rpc", method = MethodType.SOCKET)
