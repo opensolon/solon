@@ -21,10 +21,6 @@ public @interface Param {
      * */
     String format() default "";
     /**
-     * 是否必须
-     * */
-    boolean required() default false;
-    /**
      * 默认值
      * */
     String defaultValue() default "";
