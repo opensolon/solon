@@ -12,5 +12,20 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Param {
-    String value() default "";
+    /**
+     * 参数名
+     * */
+    String name() default "";
+    /**
+     * 格式（主要为日期之类的服务）
+     * */
+    String format() default "";
+    /**
+     * 是否必须
+     * */
+    boolean required() default false;
+    /**
+     * 默认值
+     * */
+    String defaultValue() default "";
 }
