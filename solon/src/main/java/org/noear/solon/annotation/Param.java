@@ -21,7 +21,11 @@ public @interface Param {
      * */
     String format() default "";
     /**
+     * 必须的
+     * */
+    boolean required() default false;
+    /**
      * 默认值
      * */
-    String defaultValue() default "";
+    String defaultValue() default "\n\t\t\n\t\t\n\ue000\ue001\ue002\n\t\t\t\t\n";
 }
