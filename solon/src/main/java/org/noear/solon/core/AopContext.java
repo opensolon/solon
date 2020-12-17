@@ -387,7 +387,7 @@ public class AopContext extends BeanContainer {
                     }
                 }
 
-                //动态构建的bean, 可通过广播进行扩展
+                //@Bean 动态构建的bean, 可通过事件广播进行扩展
                 EventBus.push(raw);
 
                 //动态构建的bean，都用新生成wrap（否则会类型混乱）
@@ -401,7 +401,7 @@ public class AopContext extends BeanContainer {
 
             beanRegister(m_bw, anno.value(), anno.typed());
 
-            //@XBean 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
+            //@Bean 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
             EventBus.push(m_bw);
         }
     }
