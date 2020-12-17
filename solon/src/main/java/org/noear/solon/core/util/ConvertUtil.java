@@ -213,6 +213,10 @@ public class ConvertUtil {
             return new BigInteger(val);
         }
 
+        if (type.isEnum()) {
+            return Enum.valueOf((Class<Enum>) type, val);
+        }
+
         return null;
     }
 
