@@ -21,7 +21,7 @@ public @interface Param {
      * */
     String format() default "";
     /**
-     * 必须的
+     * 必须的(只做标识，不做检查)
      * */
     boolean required() default false;
     /**
