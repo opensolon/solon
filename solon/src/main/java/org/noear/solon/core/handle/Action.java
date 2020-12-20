@@ -152,8 +152,11 @@ public class Action extends HandlerAide implements Handler {
         } catch (Throwable ex) {
             ex = Utils.throwableUnwrap(ex);
 
-            x.attrSet("error", ex);
-            renderDo(ex, x);
+            if (x.status() < 400) {
+                x.attrSet("error", ex);
+                renderDo(ex, x);
+            }
+
             EventBus.push(ex);
         }
     }
