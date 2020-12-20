@@ -12,7 +12,7 @@ public class CacheRemoveInterceptor implements Interceptor {
 
         CacheRemove anno = chain.method().getAnnotation(CacheRemove.class);
         CacheExecutorImp.global
-                .cacheRemove(anno, chain.method().getMethod(), chain.method().getParameters(), args);
+                .cacheRemove(anno, chain.method().getMethod(), chain.method().getParamWraps(), args);
 
         return tmp;
     }

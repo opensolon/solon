@@ -18,7 +18,7 @@ public interface MethodHolder {
     /**
      * 获取函数参数
      */
-    ParamWrap[] getParameters();
+    ParamWrap[] getParamWraps();
     /**
      * 获取函数反回类型
      */

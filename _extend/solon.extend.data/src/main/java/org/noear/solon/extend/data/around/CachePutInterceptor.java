@@ -13,7 +13,7 @@ public class CachePutInterceptor implements Interceptor {
 
         CachePut anno = chain.method().getAnnotation(CachePut.class);
         CacheExecutorImp.global
-                .cachePut(anno, chain.method().getMethod(), chain.method().getParameters(), args, tmp);
+                .cachePut(anno, chain.method().getMethod(), chain.method().getParamWraps(), args, tmp);
 
         return tmp;
     }

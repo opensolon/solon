@@ -10,7 +10,6 @@ import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.extend.validation.annotation.*;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -143,7 +142,7 @@ public class ValidatorManager implements Handler {
             }
         }
 
-        for (ParamWrap para : action.method().getParameters()) {
+        for (ParamWrap para : action.method().getParamWraps()) {
             for (Annotation anno : para.getParameter().getAnnotations()) {
                 if (validateDo(ctx, anno, para.getName(), tmp)) {
                     return;

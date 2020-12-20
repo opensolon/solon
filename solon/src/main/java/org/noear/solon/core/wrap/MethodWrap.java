@@ -135,7 +135,7 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
     /**
      * 获取函数参数
      */
-    public ParamWrap[] getParameters() {
+    public ParamWrap[] getParamWraps() {
         return parameters;
     }
 

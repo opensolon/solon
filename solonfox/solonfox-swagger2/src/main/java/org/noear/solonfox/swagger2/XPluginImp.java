@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.models.*;
 import io.swagger.models.parameters.*;
-import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
@@ -104,7 +103,7 @@ public class XPluginImp implements Plugin {
                         }
                         case HTTP: {
                             //path.get(buildPathPperation(route, true));
-                            if(action.method().getParameters().length == 0){
+                            if(action.method().getParamWraps().length == 0){
                                 path.get(buildPathPperation(route, true));
                             }else{
                                 path.post(buildPathPperation(route, false));
@@ -143,7 +142,7 @@ public class XPluginImp implements Plugin {
             operation.addConsumes(action.consumes());
         }
 
-        for (ParamWrap p0 : action.method().getParameters()) {
+        for (ParamWrap p0 : action.method().getParamWraps()) {
             if(p0.getType() == Context.class){
                 continue;
             }

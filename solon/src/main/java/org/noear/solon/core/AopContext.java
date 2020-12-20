@@ -341,7 +341,7 @@ public class AopContext extends BeanContainer {
      * @param injectVal 参数注入
      */
     protected void tryBuildBean(Bean anno, MethodWrap mWrap, BeanWrap bw, Function<Parameter, String> injectVal) throws Exception {
-        int size2 = mWrap.getParameters().length;
+        int size2 = mWrap.getParamWraps().length;
 
         if (size2 == 0) {
             //0.没有参数
@@ -362,7 +362,7 @@ public class AopContext extends BeanContainer {
             });
 
             //1.1.添加要收集的参数；并为参数注入（注入是异步的；全部完成后，VarGather 会回调）
-            for (ParamWrap p1 : mWrap.getParameters()) {
+            for (ParamWrap p1 : mWrap.getParamWraps()) {
                 VarHolder p2 = gather.add(p1.getParameter());
                 beanInject(p2, injectVal.apply(p1.getParameter()));
             }

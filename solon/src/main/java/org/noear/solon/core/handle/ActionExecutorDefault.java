@@ -5,7 +5,6 @@ import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.util.ConvertUtil;
 import org.noear.solon.core.wrap.ParamWrap;
 
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +24,7 @@ public class ActionExecutorDefault implements ActionExecutor {
 
     @Override
     public Object execute(Context ctx, Object obj, MethodWrap mWrap) throws Throwable {
-        List<Object> args = buildArgs(ctx, mWrap.getParameters());
+        List<Object> args = buildArgs(ctx, mWrap.getParamWraps());
         return mWrap.invokeByAspect(obj, args.toArray());
     }
 

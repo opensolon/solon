@@ -11,7 +11,7 @@ public class CacheInterceptor implements Interceptor {
         Cache anno = chain.method().getAnnotation(Cache.class);
 
         return CacheExecutorImp.global
-                .cache(anno, chain.method().getMethod(), chain.method().getParameters(), args,
+                .cache(anno, chain.method().getMethod(), chain.method().getParamWraps(), args,
                         () -> chain.doIntercept(obj, args));
     }
 }
