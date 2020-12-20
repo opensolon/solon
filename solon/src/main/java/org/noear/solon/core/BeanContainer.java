@@ -11,7 +11,9 @@ import java.lang.annotation.Annotation;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * Bean 容器，提供注册及关系映射管理（不直接使用；作为AopContext的基类）
@@ -300,7 +302,7 @@ public abstract class BeanContainer {
 
     //////////////////////////
     //
-    // bean 遍历
+    // bean 遍历与查找
     //
     /////////////////////////
 
@@ -320,6 +322,36 @@ public abstract class BeanContainer {
         beanWraps.forEach((k, bw) -> {
             action.accept(bw);
         });
+    }
+
+    /**
+     * 查找Bean
+     */
+    @Note("查找bean库 (拿到的是bean包装)")
+    public List<BeanWrap> beanFind(BiPredicate<String, BeanWrap> condition) {
+        List<BeanWrap> list = new ArrayList<>();
+        beanForeach((k, v) -> {
+            if (condition.test(k, v)) {
+                list.add(v);
+            }
+        });
+
+        return list;
+    }
+
+    /**
+     * 查找Bean
+     */
+    @Note("查找bean包装库")
+    public List<BeanWrap> beanFind(Predicate<BeanWrap> condition) {
+        List<BeanWrap> list = new ArrayList<>();
+        beanForeach((v) -> {
+            if (condition.test(v)) {
+                list.add(v);
+            }
+        });
+
+        return list;
     }
 
     /**

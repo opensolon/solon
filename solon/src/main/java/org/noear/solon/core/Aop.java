@@ -2,9 +2,13 @@ package org.noear.solon.core;
 
 import org.noear.solon.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.function.BiConsumer;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * Aop 管理中心，提供了手动操控Bean容器的接口
@@ -47,14 +51,14 @@ public class Aop {
      * @param bean 实例
      */
     public static BeanWrap wrap(Class<?> type, Object bean) {
-        return  ac.wrap(type, bean);
+        return ac.wrap(type, bean);
     }
 
     /**
      * 包装bean，并尝试注册
      *
      * @param type 类型
-     * */
+     */
     public static BeanWrap wrapAndPut(Class<?> type) {
         return wrapAndPut(type, null);
     }
@@ -64,7 +68,7 @@ public class Aop {
      *
      * @param type 类型
      * @param bean 实例
-     * */
+     */
     public static BeanWrap wrapAndPut(Class<?> type, Object bean) {
         BeanWrap wrap = ac.getWrap(type);
         if (wrap == null) {
@@ -81,8 +85,8 @@ public class Aop {
      * 检楂是否有bean
      *
      * @param nameOrType bean name or type
-     * */
-    public static boolean has(Object nameOrType){
+     */
+    public static boolean has(Object nameOrType) {
         return ac.getWrap(nameOrType) != null;
     }
 
@@ -114,7 +118,7 @@ public class Aop {
      * 获取bean
      *
      * @param type bean type
-     * */
+     */
     public static <T> T getOrNull(Class<?> type) {
         BeanWrap bw = ac.getWrap(type);
         return bw == null ? null : bw.get();
@@ -154,7 +158,7 @@ public class Aop {
     /**
      * 尝试用属性注入
      *
-     * @param bean 实例
+     * @param bean  实例
      * @param propS 属性
      */
     public static <T> T inject(T bean, Properties propS) {
@@ -164,22 +168,36 @@ public class Aop {
 
     /**
      * 添加Onloaded事件
-     * */
-    public static void beanOnloaded(Runnable fun){
+     */
+    public static void beanOnloaded(Runnable fun) {
         ac.beanOnloaded(fun);
     }
 
     /**
      * 遍历有name的bean包装
-     * */
+     */
     public static void beanForeach(BiConsumer<String, BeanWrap> action) {
         ac.beanForeach(action);
     }
 
     /**
      * 遍历没有name的bean包装
-     * */
+     */
     public static void beanForeach(Consumer<BeanWrap> action) {
         ac.beanForeach(action);
+    }
+
+    /**
+     * 查找Bean
+     */
+    public static List<BeanWrap> beanFind(BiPredicate<String, BeanWrap> filter) {
+        return ac.beanFind(filter);
+    }
+
+    /**
+     * 查找Bean
+     */
+    public static List<BeanWrap> beanFind(Predicate<BeanWrap> filter) {
+        return ac.beanFind(filter);
     }
 }
