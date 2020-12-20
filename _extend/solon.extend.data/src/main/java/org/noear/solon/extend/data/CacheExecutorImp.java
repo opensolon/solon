@@ -1,6 +1,7 @@
 package org.noear.solon.extend.data;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.extend.data.annotation.Cache;
 import org.noear.solon.extend.data.annotation.CachePut;
 import org.noear.solon.extend.data.annotation.CacheRemove;
@@ -24,7 +25,7 @@ public class CacheExecutorImp {
      * 添加缓存
      */
     //@Override
-    public Object cache(Cache anno, Method method, Parameter[] params, Object[] values, SupplierEx callable) throws Throwable {
+    public Object cache(Cache anno, Method method, ParamWrap[] params, Object[] values, SupplierEx callable) throws Throwable {
         if (anno == null) {
             return callable.get();
         }
@@ -69,7 +70,7 @@ public class CacheExecutorImp {
     /**
      * 清除缓存
      */
-    public void cacheRemove(CacheRemove anno, Method method, Parameter[] params, Object[] values) {
+    public void cacheRemove(CacheRemove anno, Method method, ParamWrap[] params, Object[] values) {
         if (anno == null || Utils.isEmpty(anno.tags())) {
             return;
         }
@@ -93,7 +94,7 @@ public class CacheExecutorImp {
     /**
      * 更新缓存
      */
-    public void cachePut(CachePut anno, Method method, Parameter[] params, Object[] values, Object newValue) {
+    public void cachePut(CachePut anno, Method method, ParamWrap[] params, Object[] values, Object newValue) {
         if (anno == null || Utils.isEmpty(anno.tags())) {
             return;
         }
@@ -115,7 +116,7 @@ public class CacheExecutorImp {
     }
 
 
-    protected String buildKey(Method method, Parameter[] params, Object[] values, Map<String, Object> parMap) {
+    protected String buildKey(Method method, ParamWrap[] params, Object[] values, Map<String, Object> parMap) {
         StringBuilder keyB = new StringBuilder();
 
         keyB.append(method.getDeclaringClass().getName()).append(":");

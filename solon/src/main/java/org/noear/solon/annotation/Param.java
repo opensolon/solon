@@ -1,5 +1,7 @@
 package org.noear.solon.annotation;
 
+import org.noear.solon.core.Constants;
+
 import java.lang.annotation.*;
 
 /**
@@ -15,7 +17,7 @@ public @interface Param {
     /**
      * 参数名
      * */
-    //String name() default "";
+    String name() default "";
     /**
      * 格式（主要为日期之类的服务）
      * */
@@ -23,9 +25,9 @@ public @interface Param {
     /**
      * 必须的(只做标识，不做检查)
      * */
-    //boolean required() default false;
+    boolean required() default false;
     /**
      * 默认值
      * */
-    //String defaultValue() default "\n\t\t\n\t\t\n\ue000\ue001\ue002\n\t\t\t\t\n";
+    String defaultValue() default Constants.PARM_UNDEFINED_VALUE;
 }

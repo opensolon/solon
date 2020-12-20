@@ -6,6 +6,7 @@ import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.Result;
+import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.extend.validation.annotation.*;
 
 import java.lang.annotation.Annotation;
@@ -142,8 +143,8 @@ public class ValidatorManager implements Handler {
             }
         }
 
-        for (Parameter para : action.method().getParameters()) {
-            for (Annotation anno : para.getAnnotations()) {
+        for (ParamWrap para : action.method().getParameters()) {
+            for (Annotation anno : para.getParameter().getAnnotations()) {
                 if (validateDo(ctx, anno, para.getName(), tmp)) {
                     return;
                 }

@@ -8,10 +8,7 @@ import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.HandlerLoader;
 import org.noear.solon.core.message.Listener;
-import org.noear.solon.core.wrap.ClassWrap;
-import org.noear.solon.core.wrap.FieldWrap;
-import org.noear.solon.core.wrap.MethodWrap;
-import org.noear.solon.core.wrap.VarGather;
+import org.noear.solon.core.wrap.*;
 import org.noear.solon.ext.BiConsumerEx;
 import org.noear.solon.core.util.ResourceScaner;
 
@@ -365,9 +362,9 @@ public class AopContext extends BeanContainer {
             });
 
             //1.1.添加要收集的参数；并为参数注入（注入是异步的；全部完成后，VarGather 会回调）
-            for (Parameter p1 : mWrap.getParameters()) {
-                VarHolder p2 = gather.add(p1);
-                beanInject(p2, injectVal.apply(p1));
+            for (ParamWrap p1 : mWrap.getParameters()) {
+                VarHolder p2 = gather.add(p1.getParameter());
+                beanInject(p2, injectVal.apply(p1.getParameter()));
             }
         }
     }

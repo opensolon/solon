@@ -40,11 +40,11 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
         entityClz = m.getDeclaringClass();
 
         method = m;
-        parameters = m.getParameters();
+        parameters = paramsWrap(m.getParameters());
         annotations = m.getAnnotations();
         arounds = new ArrayList<>();
 
-        //scan cless @XAround
+        //scan cless @Around
         for(Annotation anno : entityClz.getAnnotations()){
             if (anno instanceof Around) {
                 doAroundAdd((Around) anno);
@@ -53,7 +53,7 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
             }
         }
 
-        //scan method @XAround
+        //scan method @Around
         for (Annotation anno : annotations) {
             if (anno instanceof Around) {
                 doAroundAdd((Around) anno);
@@ -81,6 +81,15 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
         }
     }
 
+    private ParamWrap[] paramsWrap(Parameter[] pAry) {
+        ParamWrap[] tmp = new ParamWrap[pAry.length];
+        for (int i = 0, len = pAry.length; i < len; i++) {
+            tmp[i] = new ParamWrap(pAry[i]);
+        }
+
+        return tmp;
+    }
+
 
     private void doAroundAdd(Around a) {
         if (a != null) {
@@ -93,7 +102,7 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
     //函数
     private final Method method;
     //函数参数
-    private final Parameter[] parameters;
+    private final ParamWrap[] parameters;
     //函数注解
     private final Annotation[] annotations;
     //函数包围列表（扩展切点）
@@ -126,7 +135,7 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
     /**
      * 获取函数参数
      */
-    public Parameter[] getParameters() {
+    public ParamWrap[] getParameters() {
         return parameters;
     }
 

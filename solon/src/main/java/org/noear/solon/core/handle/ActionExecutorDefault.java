@@ -3,6 +3,7 @@ package org.noear.solon.core.handle;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.util.ConvertUtil;
+import org.noear.solon.core.wrap.ParamWrap;
 
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class ActionExecutorDefault implements ActionExecutor {
     /**
      * 构建执行参数
      */
-    protected List<Object> buildArgs(Context ctx, Parameter[] pSet) throws Exception {
+    protected List<Object> buildArgs(Context ctx, ParamWrap[] pSet) throws Exception {
         List<Object> args = new ArrayList<>(pSet.length);
 
         Object bodyObj = changeBody(ctx);
@@ -40,7 +41,7 @@ public class ActionExecutorDefault implements ActionExecutor {
         //p 参数
         //pt 参数原类型
         for (int i = 0, len = pSet.length; i < len; i++) {
-            Parameter p = pSet[i];
+            ParamWrap p = pSet[i];
             Class<?> pt = p.getType();
 
             if (Context.class.isAssignableFrom(pt)) {
@@ -99,7 +100,7 @@ public class ActionExecutorDefault implements ActionExecutor {
     /**
      * 尝试将值按类型转换
      */
-    protected Object changeValue(Context ctx, Parameter p, int pi, Class<?> pt, Object bodyObj) throws Exception {
+    protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
         String pn = p.getName();    //参数名
         String pv = ctx.param(pn);  //参数值
         Object tv = null;
@@ -129,7 +130,7 @@ public class ActionExecutorDefault implements ActionExecutor {
             }
         } else {
             //如果拿到了具体的参数值，则开始转换
-            tv = ConvertUtil.to(p, pt, pn, pv, ctx);
+            tv = ConvertUtil.to(p.getParameter(), pt, pn, pv, ctx);
         }
 
         return tv;

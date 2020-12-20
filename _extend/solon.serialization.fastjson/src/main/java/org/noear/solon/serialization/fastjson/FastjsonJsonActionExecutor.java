@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.noear.solon.core.handle.ActionExecutorDefault;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.wrap.ParamWrap;
 
 import java.lang.reflect.Parameter;
 
@@ -26,7 +27,7 @@ public class FastjsonJsonActionExecutor extends ActionExecutorDefault {
     }
 
     @Override
-    protected Object changeValue(Context ctx, Parameter p, int pi, Class<?> pt, Object bodyObj) throws Exception {
+    protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
         if (bodyObj == null) {
             return null;
         }

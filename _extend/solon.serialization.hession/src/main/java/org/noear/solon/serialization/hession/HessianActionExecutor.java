@@ -3,6 +3,7 @@ package org.noear.solon.serialization.hession;
 import com.caucho.hessian.io.Hessian2Input;
 import org.noear.solon.core.handle.ActionExecutorDefault;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.wrap.ParamWrap;
 
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Parameter;
@@ -27,7 +28,7 @@ public class HessianActionExecutor extends ActionExecutorDefault {
     }
 
     @Override
-    protected Object changeValue(Context ctx, Parameter p, int pi, Class<?> pt, Object bodyObj) throws Exception {
+    protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
         if (bodyObj == null) {
             return null;
         } else {

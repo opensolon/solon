@@ -13,6 +13,7 @@ import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.RouteTable;
+import org.noear.solon.core.wrap.ParamWrap;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -142,7 +143,7 @@ public class XPluginImp implements Plugin {
             operation.addConsumes(action.consumes());
         }
 
-        for (java.lang.reflect.Parameter p0 : action.method().getParameters()) {
+        for (ParamWrap p0 : action.method().getParameters()) {
             if(p0.getType() == Context.class){
                 continue;
             }
