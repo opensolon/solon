@@ -153,6 +153,9 @@ public class Action extends HandlerAide implements Handler {
             ex = Utils.throwableUnwrap(ex);
 
             if (x.status() < 400) {
+                //
+                // 如果没有申明异常状态，则做异常输出
+                //
                 x.attrSet("error", ex);
                 renderDo(ex, x);
             }
