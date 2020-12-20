@@ -82,6 +82,12 @@ public class ActionExecutorDefault implements ActionExecutor {
                     }
                 }
 
+                if(tv == null){
+                    if(p.getRequired()){
+                        throw new IllegalArgumentException("Please enter a valid parameter @" + p.getName());
+                    }
+                }
+
                 args.add(tv);
             }
         }
@@ -102,12 +108,15 @@ public class ActionExecutorDefault implements ActionExecutor {
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
         String pn = p.getName();    //参数名
         String pv = ctx.param(pn);  //参数值
-        Object tv = null;
+        Object tv = null;           //目标值
 
+        if(pv == null) {
+            pv = p.getDefaultValue();
+        }
 
         if (pv == null) {
             //
-            // 没有从ctx.param 直接找到值
+            // 没有从 ctx.param 直接找到值
             //
             if (UploadedFile.class == pt) {
                 //1.如果是 XFile 类型
