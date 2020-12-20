@@ -24,6 +24,7 @@
             <groupId>org.noear</groupId>
             <artifactId>solon.boot.jetty</artifactId>
         </dependency>
+
     </dependencies>
 
     <build>
