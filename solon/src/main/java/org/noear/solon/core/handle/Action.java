@@ -111,10 +111,11 @@ public class Action extends HandlerAide implements Handler {
         return bWrap;
     }
 
-    public String produces(){
+    public String produces() {
         return mProduces;
     }
-    public String consumes(){
+
+    public String consumes() {
         return mConsumes;
     }
 
@@ -152,14 +153,8 @@ public class Action extends HandlerAide implements Handler {
         } catch (Throwable ex) {
             ex = Utils.throwableUnwrap(ex);
 
-            if (x.status() < 400) {
-                //
-                // 如果没有申明异常状态，则做异常输出
-                //
-                x.attrSet("error", ex);
-                renderDo(ex, x);
-            }
-
+            x.attrSet("error", ex);
+            renderDo(ex, x);
             EventBus.push(ex);
         }
     }
@@ -281,8 +276,10 @@ public class Action extends HandlerAide implements Handler {
             if (result instanceof Throwable) {
                 if (x.remoting()) {
                     x.render(result);
-                }else {
-                    x.statusSet(500);
+                } else {
+                    if (x.status() < 400) {
+                        x.statusSet(500);
+                    }
 
                     if (Solon.cfg().isDebugMode()) {
                         x.output(Utils.getFullStackTrace(((Throwable) result)));
