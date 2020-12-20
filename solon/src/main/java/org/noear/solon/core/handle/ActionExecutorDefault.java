@@ -84,7 +84,8 @@ public class ActionExecutorDefault implements ActionExecutor {
 
                 if(tv == null){
                     if(p.getRequired()){
-                        throw new IllegalArgumentException("Please enter a valid parameter @" + p.getName());
+                        ctx.statusSet(400);
+                        throw new IllegalArgumentException("Required parameter @" + p.getName());
                     }
                 }
 
