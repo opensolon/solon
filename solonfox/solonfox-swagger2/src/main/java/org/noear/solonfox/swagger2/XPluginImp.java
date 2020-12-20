@@ -2,6 +2,7 @@ package org.noear.solonfox.swagger2;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiParam;
 import io.swagger.models.*;
 import io.swagger.models.parameters.*;
 import org.noear.solon.Solon;
@@ -103,16 +104,17 @@ public class XPluginImp implements Plugin {
                         }
                         case HTTP: {
                             //path.get(buildPathPperation(route, true));
-                            if(action.method().getParamWraps().length == 0){
+                            if (action.method().getParamWraps().length == 0) {
                                 path.get(buildPathPperation(route, true));
-                            }else{
+                            } else {
                                 path.post(buildPathPperation(route, false));
                             }
                             //path.put(buildPathPperation(route, false));
                             //path.delete(buildPathPperation(route, false));
                             //path.patch(buildPathPperation(route, false));
                             break;
-                        } default:{
+                        }
+                        default: {
                             path.post(buildPathPperation(route, false));
                         }
                     }
@@ -134,7 +136,7 @@ public class XPluginImp implements Plugin {
 
         if (Utils.isNotEmpty(action.produces())) {
             operation.addProduces(action.produces());
-        }else{
+        } else {
             operation.addProduces("*/*");
         }
 
@@ -143,9 +145,11 @@ public class XPluginImp implements Plugin {
         }
 
         for (ParamWrap p0 : action.method().getParamWraps()) {
-            if(p0.getType() == Context.class){
+            if (p0.getType() == Context.class) {
                 continue;
             }
+
+            ApiParam apiParam = p0.getParameter().getAnnotation(ApiParam.class);
 
             String n1 = "{" + p0.getName() + "}";
             SerializableParameter p1 = null;
@@ -160,8 +164,15 @@ public class XPluginImp implements Plugin {
                 }
             }
 
+            p1.setRequired(p1.getRequired());
             p1.setName(p0.getName());
             p1.setType(p0.getType().getSimpleName());
+
+            if (apiParam != null) {
+                p1.setRequired(apiParam.required());
+                p1.setName(apiParam.name());
+                p1.setAccess(apiParam.access());
+            }
 
             operation.addParameter(p1);
         }
