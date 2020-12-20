@@ -9,6 +9,6 @@ import org.noear.solon.core.event.EventListener;
 public class ErrorListener implements EventListener<Throwable> {
     @Override
     public void onEvent(Throwable err) {
-        log.error("onEvent", err);
+        //log.error("onEvent", err);
     }
 }
