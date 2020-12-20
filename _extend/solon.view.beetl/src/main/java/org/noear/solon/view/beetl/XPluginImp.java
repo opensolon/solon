@@ -15,8 +15,8 @@ public class XPluginImp implements Plugin {
 
         BeetlRender render =  BeetlRender.global();
 
-        Aop.context().beanOnloaded(() -> {
-            Aop.context().beanForeach((k, v) -> {
+        Aop.beanOnloaded(() -> {
+            Aop.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
                     if(Tag.class.isAssignableFrom(v.clz())) {
                         render.registerTag(k.split(":")[1], v.clz());

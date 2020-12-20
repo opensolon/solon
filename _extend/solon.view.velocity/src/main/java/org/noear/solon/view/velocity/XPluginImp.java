@@ -15,8 +15,8 @@ public class XPluginImp implements Plugin {
 
         VelocityRender render =  VelocityRender.global();
 
-        Aop.context().beanOnloaded(() -> {
-            Aop.context().beanForeach((k, v) -> {
+        Aop.beanOnloaded(() -> {
+            Aop.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
                     if (v.raw() instanceof Directive) {
                         render.loadDirective(v.raw());
