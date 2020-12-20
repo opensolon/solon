@@ -28,7 +28,7 @@
         <dependency>
             <groupId>org.smartboot.http</groupId>
             <artifactId>smart-http-server</artifactId>
-            <version>1.0.19</version>
+            <version>1.0.21</version>
         </dependency>
 
     </dependencies>
