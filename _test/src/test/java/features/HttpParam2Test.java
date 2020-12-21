@@ -21,7 +21,7 @@ public class HttpParam2Test extends HttpTestBase {
     }
 
     @Test
-    public void test1() throws IOException {
+    public void test1_required() throws IOException {
         assert path("/demo2/param2/anno/required").exec3("GET") == 400;
 
         assert path("/demo2/param2/anno/required?name=hi").exec3("GET") != 400;
@@ -33,7 +33,7 @@ public class HttpParam2Test extends HttpTestBase {
     }
 
     @Test
-    public void test3() throws IOException {
+    public void test3_def() throws IOException {
         assert path("/demo2/param2/anno/def").get().equals("noear");
     }
 
@@ -42,5 +42,18 @@ public class HttpParam2Test extends HttpTestBase {
         assert path("/demo2/param2/anno/name?n2=noear").get().equals("noear");
 
         assert path("/demo2/param2/anno/name?n2=hi").get().equals("hi");
+    }
+
+    @Test
+    public void test5_header() throws IOException {
+        assert path("/demo2/param2/anno/header")
+                .header("X-Name","noear")
+                .get().equals("noear");
+    }
+
+    @Test
+    public void test6_attr() throws IOException {
+        assert path("/demo2/param2/anno/attr")
+                .get().equals("noear1");
     }
 }

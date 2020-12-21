@@ -45,12 +45,12 @@ public class Param2AnnoController {
 
     @Mapping(value = "attr", before = true)
     public void test_pm_attr(Context ctx) {
-        ctx.attrSet("A-Name", "noear");
-        ctx.attrSet("A-Num", 1);
+        ctx.attrSet("name", "noear");
+        ctx.attrSet("_num", 1);
     }
 
     @Mapping("attr")
-    public Object test_pm_attr(@Param(attrName = "A-Name") String name, @Param(attrName = "A-Num") Integer num) throws IOException {
+    public Object test_pm_attr(@Param(attrName = "name") String name, @Param(attrName = "_num") Integer num) throws IOException {
         return name + num;
     }
 }
