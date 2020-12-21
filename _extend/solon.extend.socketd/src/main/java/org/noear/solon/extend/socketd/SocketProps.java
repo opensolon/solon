@@ -11,6 +11,10 @@ public class SocketProps {
     private static int readBufferSize = 0;
     private static int writeBufferSize = 0;
 
+    private static int connectTimeout = 0;
+    private static int socketTimeout = 0;
+
+
     public static int readBufferSize() {
         return readBufferSize;
     }
@@ -19,9 +23,21 @@ public class SocketProps {
         return writeBufferSize;
     }
 
+
+    public static int connectTimeout() {
+        return connectTimeout;
+    }
+
+    public static int socketTimeout() {
+        return socketTimeout;
+    }
+
+
     static {
         loadReadBufferSize();
-        loadwriteBufferSize();
+        loadWriteBufferSize();
+        loadConnectTimeout();
+        loadSocketTimeout();
     }
 
     private static void loadReadBufferSize() {
@@ -38,7 +54,7 @@ public class SocketProps {
         }
     }
 
-    private static void loadwriteBufferSize() {
+    private static void loadWriteBufferSize() {
         String tmp = Solon.cfg().get("solon.socketd.writeBufferSize", "").toLowerCase();
 
         if (tmp.length() > 2) {
@@ -48,6 +64,34 @@ public class SocketProps {
 
             if (tmp.endsWith("mb")) {
                 writeBufferSize = Integer.parseInt(tmp.substring(0, tmp.length() - 2)) * 1024 * 1024;
+            }
+        }
+    }
+
+    private static void loadConnectTimeout() {
+        String tmp = Solon.cfg().get("solon.socketd.connectTimeout", "").toLowerCase();
+
+        if (tmp.length() > 2) {
+            if (tmp.endsWith("ms")) {
+                connectTimeout = Integer.parseInt(tmp.substring(0, tmp.length() - 2));
+            }
+
+            if (tmp.endsWith("s")) {
+                connectTimeout = Integer.parseInt(tmp.substring(0, tmp.length() - 1)) * 1000;
+            }
+        }
+    }
+
+    private static void loadSocketTimeout() {
+        String tmp = Solon.cfg().get("solon.socketd.socketTimeout", "").toLowerCase();
+
+        if (tmp.length() > 2) {
+            if (tmp.endsWith("ms")) {
+                socketTimeout = Integer.parseInt(tmp.substring(0, tmp.length() - 2));
+            }
+
+            if (tmp.endsWith("s")) {
+                socketTimeout = Integer.parseInt(tmp.substring(0, tmp.length() - 1)) * 1000;
             }
         }
     }

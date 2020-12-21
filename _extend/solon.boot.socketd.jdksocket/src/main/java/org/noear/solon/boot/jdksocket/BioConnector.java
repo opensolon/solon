@@ -6,6 +6,7 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.ConnectorSimple;
 import org.noear.solon.extend.socketd.ListenerProxy;
+import org.noear.solon.extend.socketd.SocketProps;
 
 import java.net.Socket;
 import java.net.URI;
@@ -24,6 +25,10 @@ class BioConnector extends ConnectorSimple<Socket> {
     public Socket open(Session session) {
         try {
             Socket socket = new Socket(uri().getHost(), uri().getPort());
+
+            if (SocketProps.socketTimeout() > 0) {
+                socket.setSoTimeout(SocketProps.socketTimeout());
+            }
 
             startReceive(session, socket);
 
