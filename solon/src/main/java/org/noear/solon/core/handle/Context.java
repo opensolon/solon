@@ -179,28 +179,28 @@ public abstract class Context {
 
     /**获取参数*/
     @Note("获取参数数组")
-    public abstract String[] paramValues(String key);
+    public abstract String[] paramValues(String name);
     @Note("获取参数")
-    public abstract String param(String key);
+    public abstract String param(String name);
     @Note("获取参数")
-    public abstract String param(String key, String def);
+    public abstract String param(String name, String def);
     @Note("获取参数并转为int")
-    public int paramAsInt(String key){return paramAsInt(key,0);}
+    public int paramAsInt(String name){return paramAsInt(name,0);}
     @Note("获取参数并转为int")
-    public int paramAsInt(String key, int def){return Integer.parseInt(param(key,String.valueOf(def)));}
+    public int paramAsInt(String name, int def){return Integer.parseInt(param(name,String.valueOf(def)));}
     @Note("获取参数并转为long")
-    public long paramAsLong(String key){return paramAsLong(key,0);}
+    public long paramAsLong(String name){return paramAsLong(name,0);}
     @Note("获取参数并转为long")
-    public long paramAsLong(String key, long def){return Long.parseLong(param(key,String.valueOf(def)));}
+    public long paramAsLong(String name, long def){return Long.parseLong(param(name,String.valueOf(def)));}
     @Note("获取参数并转为double")
-    public double paramAsDouble(String key){return paramAsDouble(key,0);}
+    public double paramAsDouble(String name){return paramAsDouble(name,0);}
     @Note("获取参数并转为double")
-    public double paramAsDouble(String key, double def){return Double.parseDouble(param(key,String.valueOf(def)));}
+    public double paramAsDouble(String name, double def){return Double.parseDouble(param(name,String.valueOf(def)));}
     @Note("获取参数并转为BigDecimal")
-    public BigDecimal paramAsDecimal(String key){return paramAsDecimal(key, BigDecimal.ZERO);}
+    public BigDecimal paramAsDecimal(String name){return paramAsDecimal(name, BigDecimal.ZERO);}
     @Note("获取参数并转为BigDecimal")
-    public BigDecimal paramAsDecimal(String key, BigDecimal def){
-        String tmp = param(key);
+    public BigDecimal paramAsDecimal(String name, BigDecimal def){
+        String tmp = param(name);
         if(Utils.isEmpty(tmp)){
             return def;
         }else{
@@ -217,19 +217,19 @@ public abstract class Context {
     public abstract NvMap paramMap();
 
     @Note("设置参数")
-    public void paramSet(String key,String val) {
-        paramMap().put(key, val);
-        paramsAdd(key,val);
+    public void paramSet(String name,String val) {
+        paramMap().put(name, val);
+        paramsAdd(name,val);
     }
 
     @Note("获取所有参数并转为Map")
     public abstract Map<String,List<String>> paramsMap();
-    public void paramsAdd(String key,String val) {
+    public void paramsAdd(String name,String val) {
         if (paramsMap() != null) {
-            List<String> ary = paramsMap().get(key);
+            List<String> ary = paramsMap().get(name);
             if (ary == null) {
                 ary = new ArrayList<>();
-                paramsMap().put(key, ary);
+                paramsMap().put(name, ary);
             }
             ary.add(val);
         }
@@ -237,32 +237,32 @@ public abstract class Context {
 
     /**获取文件*/
     @Note("获取上传文件")
-    public abstract List<UploadedFile> files(String key) throws Exception;
+    public abstract List<UploadedFile> files(String name) throws Exception;
     @Note("获取上传文件")
-    public UploadedFile file(String key) throws Exception{
-        return Utils.firstOrNull(files(key));
+    public UploadedFile file(String name) throws Exception{
+        return Utils.firstOrNull(files(name));
     }
 
     /**获取COOKIE*/
     @Note("获取COOKIE")
-    public String cookie(String key){
-        return cookieMap().get(key);
+    public String cookie(String name){
+        return cookieMap().get(name);
     }
     @Note("获取COOKIE")
-    public String cookie(String key, String def){
-        return cookieMap().getOrDefault(key,def);
+    public String cookie(String name, String def){
+        return cookieMap().getOrDefault(name,def);
     }
     @Note("获取所有COOKIE并转为map")
     public abstract NvMap cookieMap();
 
     /**获取HEADER*/
     @Note("获取HEADER")
-    public String header(String key){
-        return headerMap().get(key);
+    public String header(String name){
+        return headerMap().get(name);
     }
     @Note("获取HEADER")
-    public String header(String key, String def){
-        return headerMap().getOrDefault(key,def);
+    public String header(String name, String def){
+        return headerMap().getOrDefault(name,def);
     }
     @Note("获取所有HEADER并转为map")
     public abstract NvMap headerMap();
@@ -285,13 +285,13 @@ public abstract class Context {
     }
     /**获取SESSION状态*/
     @Note("获取SESSION状态")
-    public final Object session(String key){
-        return sessionState.sessionGet(key);
+    public final Object session(String name){
+        return sessionState.sessionGet(name);
     }
     /**设置SESSION状态*/
     @Note("设置SESSION状态")
-    public final void sessionSet(String key, Object val){
-        sessionState.sessionSet(key,val);
+    public final void sessionSet(String name, Object val){
+        sessionState.sessionSet(name,val);
     }
     @Note("清空SESSION状态")
     public final void sessionClear(){
@@ -371,28 +371,28 @@ public abstract class Context {
 
     /**设置HEADER*/
     @Note("设置HEADER")
-    public abstract void headerSet(String key, String val);
+    public abstract void headerSet(String name, String val);
     @Note("添加HEADER")
-    public abstract void headerAdd(String key, String val);
+    public abstract void headerAdd(String name, String val);
 
     /**设置COOKIE*/
     @Note("设置COOKIE")
-    public void cookieSet(String key, String val){
-        cookieSet(key, val, null, -1);
+    public void cookieSet(String name, String val){
+        cookieSet(name, val, null, -1);
     }
     @Note("设置COOKIE")
-    public void cookieSet(String key, String val, int maxAge){
-        cookieSet(key, val, null, maxAge);
+    public void cookieSet(String name, String val, int maxAge){
+        cookieSet(name, val, null, maxAge);
     }
     @Note("设置COOKIE")
-    public void cookieSet(String key, String val, String domain, int maxAge){
-        cookieSet(key, val, domain, "/", maxAge);
+    public void cookieSet(String name, String val, String domain, int maxAge){
+        cookieSet(name, val, domain, "/", maxAge);
     }
     @Note("设置COOKIE")
-    public abstract void cookieSet(String key, String val, String domain, String path,int maxAge);
+    public abstract void cookieSet(String name, String val, String domain, String path,int maxAge);
     /**移徐COOKIE*/
     @Note("移徐COOKIE")
-    public void cookieRemove(String key){cookieSet(key,"",0);}
+    public void cookieRemove(String name){cookieSet(name,"",0);}
 
     /**跳转地址*/
     @Note("跳转地址")
@@ -425,8 +425,8 @@ public abstract class Context {
     }
     /**获取自定义特性*/
     @Note("获取自定义特性")
-    public <T> T attr(String key, T def){
-        Object val = attrMap().get(key);
+    public <T> T attr(String name, T def){
+        Object val = attrMap().get(name);
 
         if(val == null) {
             return def;
@@ -435,13 +435,13 @@ public abstract class Context {
         return (T) val;
     }
 
-    public <T> T attr(String key){
-        return (T) attrMap().get(key);
+    public <T> T attr(String name){
+        return (T) attrMap().get(name);
     }
     /**设置上下文特性*/
     @Note("设置自定义特性")
-    public void attrSet(String key, Object val){
-        attrMap().put(key,val);
+    public void attrSet(String name, Object val){
+        attrMap().put(name,val);
     }
     @Note("设置自定义特性")
     public void attrSet(Map<String,Object> map){

@@ -43,6 +43,7 @@ public class Param2AnnoController {
     }
 
 
+    //前置处理，可以在别处实施
     @Mapping(value = "attr", before = true)
     public void test_pm_attr(Context ctx) {
         ctx.attrSet("name", "noear");
