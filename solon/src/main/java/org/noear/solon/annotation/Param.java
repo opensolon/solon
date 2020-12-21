@@ -35,10 +35,10 @@ public @interface Param {
     /**
      * 使用头
      * */
-    String headerName() default "";
+    String header() default "";
 
     /**
      * 使用特性
      * */
-    String attrName() default "";
+    String attr() default "";
 }

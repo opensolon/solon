@@ -34,8 +34,8 @@ public class ParamWrap {
             }
 
             required = paramAnno.required();
-            headerName = paramAnno.headerName();
-            attrName = paramAnno.attrName();
+            headerName = paramAnno.header();
+            attrName = paramAnno.attr();
         }
     }
 
