@@ -262,7 +262,9 @@ public class Action extends HandlerAide implements Handler {
      * 执行渲染（便于重写）
      */
     protected void renderDo(Object result, Context x) throws Throwable {
+        //
         //可以通过before关掉render
+        //
         if (x.getRendered()) {
             return;
         }
@@ -270,7 +272,9 @@ public class Action extends HandlerAide implements Handler {
         x.result = result;
 
         if (bRender == null) {
+            //
             //最多一次渲染
+            //
             x.setRendered(true);
 
             if (result instanceof Throwable) {
