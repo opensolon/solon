@@ -31,6 +31,10 @@ class AioConnector extends ConnectorSimple<AioSession> {
             client.setWriteBuffer(SocketProps.writeBufferSize(), 16);
         }
 
+        if (SocketProps.connectTimeout() > 0) {
+            client.connectTimeout(SocketProps.connectTimeout());
+        }
+
         return client.start();
     }
 }

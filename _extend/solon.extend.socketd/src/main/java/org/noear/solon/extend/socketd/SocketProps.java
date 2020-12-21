@@ -51,6 +51,10 @@ public class SocketProps {
             if (tmp.endsWith("mb")) {
                 readBufferSize = Integer.parseInt(tmp.substring(0, tmp.length() - 2)) * 1024 * 1024;
             }
+
+            if (tmp.indexOf("b") < 0) {
+                readBufferSize = Integer.parseInt(tmp);
+            }
         }
     }
 
@@ -64,6 +68,10 @@ public class SocketProps {
 
             if (tmp.endsWith("mb")) {
                 writeBufferSize = Integer.parseInt(tmp.substring(0, tmp.length() - 2)) * 1024 * 1024;
+            }
+
+            if (tmp.indexOf("b") < 0) {
+                writeBufferSize = Integer.parseInt(tmp);
             }
         }
     }
@@ -79,6 +87,10 @@ public class SocketProps {
             if (tmp.endsWith("s")) {
                 connectTimeout = Integer.parseInt(tmp.substring(0, tmp.length() - 1)) * 1000;
             }
+
+            if (tmp.indexOf("s") < 0) {
+                connectTimeout = Integer.parseInt(tmp);
+            }
         }
     }
 
@@ -92,6 +104,10 @@ public class SocketProps {
 
             if (tmp.endsWith("s")) {
                 socketTimeout = Integer.parseInt(tmp.substring(0, tmp.length() - 1)) * 1000;
+            }
+
+            if (tmp.indexOf("s") < 0) {
+                socketTimeout = Integer.parseInt(tmp);
             }
         }
     }

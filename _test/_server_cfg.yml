@@ -44,7 +44,11 @@ solon.view.mapping.html: ThymeleafRender
 solon.view.mapping.vm: org.noear.solon.view.velocity.VelocityRender #全名（一般用简写）
 
 
-solon.socketd.readBufferSize: 2Mb
+solon.socketd:
+  readBufferSize: "1kb"
+  writeBufferSize: "1kb"
+  connectTimeout: "60s"
+  socketTimeout: "60s"
 
 
 solon.mime.xxx: "application/xxx"

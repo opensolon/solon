@@ -11,6 +11,11 @@ demo8.test:
 username: noear
 paasword: 1234
 
+solon.socketd:
+  readBufferSize: "512b"
+  writeBufferSize: "128b"
+  connectTimeout: "60s"
+  socketTimeout: "60s"
 
 water:
   host: http://water.zmapi.cn/
