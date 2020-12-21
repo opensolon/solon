@@ -36,22 +36,4 @@ public class Param2AnnoController {
     public Object test_pm_name(@Param(name = "n2") String name) throws IOException {
         return name;
     }
-
-    @Mapping("header")
-    public Object test_pm_header(@Param(name = "X-Name", useHeader = true) String name) throws IOException {
-        return name;
-    }
-
-
-    //前置处理，可以在别处实施
-    @Mapping(value = "attr", before = true)
-    public void test_pm_attr(Context ctx) {
-        ctx.attrSet("name", "noear");
-        ctx.attrSet("_num", 1);
-    }
-
-    @Mapping("attr")
-    public Object test_pm_attr(@Param(useAttr = true) String name, @Param(name = "_num", useAttr = true) Integer num) throws IOException {
-        return name + num;
-    }
 }

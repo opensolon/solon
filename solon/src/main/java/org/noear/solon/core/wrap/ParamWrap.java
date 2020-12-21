@@ -15,8 +15,6 @@ public class ParamWrap {
     private String name;
     private String defaultValue;
     private boolean required;
-    private boolean useHeader;
-    private boolean useAttr;
 
     public ParamWrap(Parameter parameter) {
         this.parameter = parameter;
@@ -34,8 +32,6 @@ public class ParamWrap {
             }
 
             required = paramAnno.required();
-            useHeader = paramAnno.useHeader();
-            useAttr = paramAnno.useAttr();
         }
     }
 
@@ -53,14 +49,6 @@ public class ParamWrap {
 
     public boolean required() {
         return required;
-    }
-
-    public boolean useHeader() {
-        return useHeader;
-    }
-
-    public boolean useAttr() {
-        return useAttr;
     }
 
     public String defaultValue() {

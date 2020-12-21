@@ -107,27 +107,13 @@ public class ActionExecutorDefault implements ActionExecutor {
      * 尝试将值按类型转换
      */
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
-        if (p.useAttr()) {
-            //从特性取变量
-            return ctx.attr(p.getName());
-        }
-
         String pn = p.getName();    //参数名
-        String pv = null;           //参数值
+        String pv = ctx.param(pn);  //参数值
         Object tv = null;           //目标值
-
-        if (p.useHeader()) {
-            //从头取变量
-            pv = ctx.header(pn);
-        } else {
-            //从参数取变量
-            pv = ctx.param(pn);
-        }
 
         if (pv == null) {
             pv = p.defaultValue();
         }
-
 
         if (pv == null) {
             //

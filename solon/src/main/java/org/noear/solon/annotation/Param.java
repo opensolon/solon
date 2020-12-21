@@ -31,14 +31,4 @@ public @interface Param {
      * 默认值
      * */
     String defaultValue() default Constants.PARM_UNDEFINED_VALUE;
-
-    /**
-     * 使用头
-     * */
-    boolean useHeader() default false;
-
-    /**
-     * 使用特性
-     * */
-    boolean useAttr() default false;
 }
