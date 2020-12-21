@@ -1,6 +1,5 @@
 package org.noear.solon.core.handle;
 
-import org.noear.solon.Utils;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.util.ConvertUtil;
@@ -84,7 +83,7 @@ public class ActionExecutorDefault implements ActionExecutor {
                 }
 
                 if (tv == null) {
-                    if (p.getRequired()) {
+                    if (p.required()) {
                         ctx.statusSet(400);
                         throw new IllegalArgumentException("Required parameter @" + p.getName());
                     }
@@ -108,25 +107,25 @@ public class ActionExecutorDefault implements ActionExecutor {
      * 尝试将值按类型转换
      */
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
-        if (Utils.isNotEmpty(p.getAttrName())) {
+        if (p.useAttr()) {
             //从特性取变量
-            return ctx.attr(p.getAttrName());
+            return ctx.attr(p.getName());
         }
 
         String pn = p.getName();    //参数名
         String pv = null;           //参数值
         Object tv = null;           //目标值
 
-        if (Utils.isNotEmpty(p.getHeaderName())) {
+        if (p.useHeader()) {
             //从头取变量
-            pv = ctx.header(p.getHeaderName());
+            pv = ctx.header(pn);
         } else {
             //从参数取变量
             pv = ctx.param(pn);
         }
 
         if (pv == null) {
-            pv = p.getDefaultValue();
+            pv = p.defaultValue();
         }
 
 

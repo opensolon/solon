@@ -38,7 +38,7 @@ public class Param2AnnoController {
     }
 
     @Mapping("header")
-    public Object test_pm_header(@Param(headerName = "X-Name") String name) throws IOException {
+    public Object test_pm_header(@Param(name = "X-Name", useHeader = true) String name) throws IOException {
         return name;
     }
 
@@ -51,7 +51,7 @@ public class Param2AnnoController {
     }
 
     @Mapping("attr")
-    public Object test_pm_attr(@Param(attrName = "name") String name, @Param(attrName = "_num") Integer num) throws IOException {
+    public Object test_pm_attr(@Param(useAttr = true) String name, @Param(name = "_num", useAttr = true) Integer num) throws IOException {
         return name + num;
     }
 }

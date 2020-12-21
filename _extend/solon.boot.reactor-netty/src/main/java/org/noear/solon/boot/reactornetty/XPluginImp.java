@@ -22,6 +22,12 @@ public class XPluginImp implements Plugin {
 
         XServerProp.init();
 
+        new Thread(() -> {
+            start0(app);
+        });
+    }
+
+    private void start0(SolonApp app) {
         long time_start = System.currentTimeMillis();
 
         try {
@@ -40,10 +46,9 @@ public class XPluginImp implements Plugin {
                     .handle(handler)
                     .bindNow();
 
-            new Thread(() -> {
-                _server.onDispose()
-                        .block();
-            }).start();
+
+            _server.onDispose()
+                    .block();
 
             long time_end = System.currentTimeMillis();
 
