@@ -43,17 +43,4 @@ public class HttpParam2Test extends HttpTestBase {
 
         assert path("/demo2/param2/anno/name?n2=hi").get().equals("hi");
     }
-
-    @Test
-    public void test5_header() throws IOException {
-        assert path("/demo2/param2/anno/header")
-                .header("X-Name","noear")
-                .get().equals("noear");
-    }
-
-    @Test
-    public void test6_attr() throws IOException {
-        assert path("/demo2/param2/anno/attr")
-                .get().equals("noear1");
-    }
 }
