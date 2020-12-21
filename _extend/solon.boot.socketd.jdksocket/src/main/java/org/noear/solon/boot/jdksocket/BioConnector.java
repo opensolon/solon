@@ -8,7 +8,9 @@ import org.noear.solon.extend.socketd.ConnectorSimple;
 import org.noear.solon.extend.socketd.ListenerProxy;
 import org.noear.solon.extend.socketd.SocketProps;
 
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.URI;
 
 class BioConnector extends ConnectorSimple<Socket> {
@@ -24,10 +26,17 @@ class BioConnector extends ConnectorSimple<Socket> {
     @Override
     public Socket open(Session session) {
         try {
-            Socket socket = new Socket(uri().getHost(), uri().getPort());
+            SocketAddress socketAddress = new InetSocketAddress(uri().getHost(), uri().getPort());
+            Socket socket = new Socket();
 
             if (SocketProps.socketTimeout() > 0) {
                 socket.setSoTimeout(SocketProps.socketTimeout());
+            }
+
+            if (SocketProps.connectTimeout() > 0) {
+                socket.connect(socketAddress, SocketProps.connectTimeout());
+            } else {
+                socket.connect(socketAddress);
             }
 
             startReceive(session, socket);
