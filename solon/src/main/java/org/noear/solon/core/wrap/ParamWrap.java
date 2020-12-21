@@ -15,6 +15,8 @@ public class ParamWrap {
     private String name;
     private String defaultValue;
     private boolean required;
+    private String headerName;
+    private String attrName;
 
     public ParamWrap(Parameter parameter) {
         this.parameter = parameter;
@@ -32,6 +34,8 @@ public class ParamWrap {
             }
 
             required = paramAnno.required();
+            headerName = paramAnno.headerName();
+            attrName = paramAnno.attrName();
         }
     }
 
@@ -41,6 +45,14 @@ public class ParamWrap {
 
     public String getName() {
         return name;
+    }
+
+    public String getHeaderName() {
+        return headerName;
+    }
+
+    public String getAttrName() {
+        return attrName;
     }
 
     public Class<?> getType() {
@@ -54,4 +66,6 @@ public class ParamWrap {
     public String getDefaultValue() {
         return defaultValue;
     }
+
+
 }

@@ -1,5 +1,6 @@
 package org.noear.solon.core.handle;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.util.ConvertUtil;
@@ -82,8 +83,8 @@ public class ActionExecutorDefault implements ActionExecutor {
                     }
                 }
 
-                if(tv == null){
-                    if(p.getRequired()){
+                if (tv == null) {
+                    if (p.getRequired()) {
                         ctx.statusSet(400);
                         throw new IllegalArgumentException("Required parameter @" + p.getName());
                     }
@@ -107,20 +108,34 @@ public class ActionExecutorDefault implements ActionExecutor {
      * 尝试将值按类型转换
      */
     protected Object changeValue(Context ctx, ParamWrap p, int pi, Class<?> pt, Object bodyObj) throws Exception {
+        if (Utils.isNotEmpty(p.getAttrName())) {
+            //从特性取变量
+            return ctx.attr(p.getAttrName());
+        }
+
         String pn = p.getName();    //参数名
-        String pv = ctx.param(pn);  //参数值
+        String pv = null;           //参数值
         Object tv = null;           //目标值
 
-        if(pv == null) {
+        if (Utils.isNotEmpty(p.getHeaderName())) {
+            //从头取变量
+            pv = ctx.header(p.getHeaderName());
+        } else {
+            //从参数取变量
+            pv = ctx.param(pn);
+        }
+
+        if (pv == null) {
             pv = p.getDefaultValue();
         }
+
 
         if (pv == null) {
             //
             // 没有从 ctx.param 直接找到值
             //
             if (UploadedFile.class == pt) {
-                //1.如果是 XFile 类型
+                //1.如果是 UploadedFile 类型
                 tv = ctx.file(pn);
             } else {
                 //$name 的变量，从attr里找

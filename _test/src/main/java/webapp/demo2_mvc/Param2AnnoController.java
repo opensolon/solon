@@ -4,6 +4,7 @@ import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Param;
 import org.noear.solon.annotation.Singleton;
+import org.noear.solon.core.handle.Context;
 
 import java.io.IOException;
 
@@ -34,5 +35,22 @@ public class Param2AnnoController {
     @Mapping("name")
     public Object test_pm_name(@Param(name = "n2") String name) throws IOException {
         return name;
+    }
+
+    @Mapping("header")
+    public Object test_pm_header(@Param(headerName = "X-Name") String name) throws IOException {
+        return name;
+    }
+
+
+    @Mapping(value = "attr", before = true)
+    public void test_pm_attr(Context ctx) {
+        ctx.attrSet("A-Name", "noear");
+        ctx.attrSet("A-Num", 1);
+    }
+
+    @Mapping("attr")
+    public Object test_pm_attr(@Param(attrName = "A-Name") String name, @Param(attrName = "A-Num") Integer num) throws IOException {
+        return name + num;
     }
 }

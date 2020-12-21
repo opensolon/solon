@@ -26,8 +26,19 @@ public @interface Param {
      * 必须的(只做标识，不做检查)
      * */
     boolean required() default false;
+
     /**
      * 默认值
      * */
     String defaultValue() default Constants.PARM_UNDEFINED_VALUE;
+
+    /**
+     * 使用头
+     * */
+    String headerName() default "";
+
+    /**
+     * 使用特性
+     * */
+    String attrName() default "";
 }
