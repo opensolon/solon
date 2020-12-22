@@ -28,7 +28,7 @@ public @interface Component {
     String tag() default "";
 
     @Note("特性，用于辅助配置")
-    String attrs() default "";
+    String[] attrs() default {};
 
     @Note("同时注册类型，仅当名称非空时有效")
     boolean typed() default false;

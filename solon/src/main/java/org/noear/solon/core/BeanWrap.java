@@ -32,7 +32,7 @@ public class BeanWrap {
     // bean tag
     private String tag;
     // bean 申明的属性
-    private String attrs;
+    private String[] attrs;
     // bean 是否按注册类型
     private boolean typed;
     // bean 代理（为ASM代理提供接口支持）
@@ -61,7 +61,7 @@ public class BeanWrap {
         }
     }
 
-    public BeanWrap(Class<?> clz, Object raw, String attrs) {
+    public BeanWrap(Class<?> clz, Object raw, String[] attrs) {
         this(clz, raw);
         attrsSet(attrs);
     }
@@ -129,8 +129,8 @@ public class BeanWrap {
     /**
      * bean 特性
      * */
-    public String attrs(){ return attrs; }
-    protected void attrsSet(String attrs){ this.attrs = attrs; }
+    public String[] attrs(){ return attrs; }
+    protected void attrsSet(String[] attrs){ this.attrs = attrs; }
 
     /**
      * bean 是否有类型化标识
