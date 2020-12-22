@@ -299,7 +299,9 @@ public class JtHttpContext extends Context {
             c.setPath(path);
         }
 
-        c.setMaxAge(maxAge);
+        if(maxAge > 0) {
+            c.setMaxAge(maxAge);
+        }
 
         if (Utils.isNotEmpty(domain)) {
             c.setDomain(domain);
