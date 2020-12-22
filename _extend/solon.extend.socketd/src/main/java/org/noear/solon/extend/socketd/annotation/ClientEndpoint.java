@@ -4,7 +4,6 @@ import org.noear.solon.annotation.Note;
 import org.noear.solon.core.handle.MethodType;
 
 import java.lang.annotation.*;
-import java.net.URI;
 
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
