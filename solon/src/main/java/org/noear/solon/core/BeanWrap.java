@@ -6,6 +6,8 @@ import org.noear.solon.core.wrap.ClassWrap;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Bean 包装
@@ -33,6 +35,8 @@ public class BeanWrap {
     private String tag;
     // bean 申明的属性
     private String[] attrs;
+    // bean 申明的属性Map形态
+    private Map<String, String> attrMap;
     // bean 是否按注册类型
     private boolean typed;
     // bean 代理（为ASM代理提供接口支持）
@@ -131,6 +135,25 @@ public class BeanWrap {
      * */
     public String[] attrs(){ return attrs; }
     protected void attrsSet(String[] attrs){ this.attrs = attrs; }
+
+    public String attrGet(String name) {
+        if (attrs == null) {
+            return null;
+        }
+
+        if (attrMap == null) {
+            attrMap = new HashMap<>();
+
+            for (String kv : attrs) {
+                String[] ss = kv.split("=");
+                if (ss.length == 2) {
+                    attrMap.put(ss[0], ss[1]);
+                }
+            }
+        }
+
+        return attrMap.get(name);
+    }
 
     /**
      * bean 是否有类型化标识
