@@ -120,17 +120,17 @@ class DbManager {
     }
 
     private void buildStyle(BeanWrap bw, SQLManagerBuilder builder) {
-        String style_str = bw.attrGet("style");
+        String dialect = bw.attrGet("dialect");
 
-        if (Utils.isNotEmpty(style_str)) {
+        if (Utils.isNotEmpty(dialect)) {
             DBStyle style = null;
 
-            if (style_str.indexOf(".") > 0) {
-                style = Utils.newInstance(style_str);
+            if (dialect.indexOf(".") > 0) {
+                style = Utils.newInstance(dialect);
 
             } else {
-                style_str = style_str.toLowerCase();
-                switch (style_str) {
+                dialect = dialect.toLowerCase();
+                switch (dialect) {
                     case "oracle":
                         style = new OracleStyle();
                         break;
