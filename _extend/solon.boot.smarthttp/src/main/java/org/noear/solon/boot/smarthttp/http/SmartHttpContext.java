@@ -7,6 +7,7 @@ import org.noear.solon.core.handle.UploadedFile;
 import org.smartboot.http.HttpRequest;
 import org.smartboot.http.HttpResponse;
 import org.smartboot.http.enums.HttpStatus;
+import org.smartboot.http.server.Cookie;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -296,23 +297,21 @@ public class SmartHttpContext extends Context {
 
     @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(key).append("=").append(val).append(";");
+        Cookie cookie = new Cookie(key,val);
 
         if (Utils.isNotEmpty(path)) {
-            sb.append("path=").append(path).append(";");
+            cookie.setPath(path);
         }
 
         if (maxAge >= 0) {
-            sb.append("max-age=").append(maxAge).append(";");
+            cookie.setMaxAge(maxAge);
         }
 
         if (Utils.isNotEmpty(domain)) {
-            sb.append("domain=").append(domain.toLowerCase()).append(";");
+            cookie.setDomain(domain);
         }
 
-        _response.setHeader("Set-Cookie", sb.toString());
+        _response.addCookie(cookie);
     }
 
     @Override
