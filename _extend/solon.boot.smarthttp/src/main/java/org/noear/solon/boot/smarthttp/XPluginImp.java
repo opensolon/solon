@@ -3,7 +3,7 @@ package org.noear.solon.boot.smarthttp;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.boot.smarthttp.http.SmartHttpContextHandler;
-import org.noear.solon.boot.smarthttp.http.XFormContentFilter;
+import org.noear.solon.boot.smarthttp.http.FormContentFilter;
 import org.noear.solon.boot.smarthttp.websocket.WebSocketHandleImp;
 import org.noear.solon.boot.smarthttp.websocket._SessionManagerImpl;
 import org.noear.solon.core.handle.MethodType;
@@ -49,7 +49,7 @@ public final class XPluginImp implements Plugin {
                     .setPort(app.port())
                     .start();
 
-            app.before("**", MethodType.ALL, -9, new XFormContentFilter());
+            app.before("**", MethodType.ALL, -9, new FormContentFilter());
 
             long time_end = System.currentTimeMillis();
 

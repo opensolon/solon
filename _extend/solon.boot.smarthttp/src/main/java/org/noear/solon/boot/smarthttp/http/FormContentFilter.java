@@ -13,7 +13,7 @@ import java.net.URLDecoder;
  * @author noear
  * @since 1.0
  * */
-public class XFormContentFilter implements Handler {
+public class FormContentFilter implements Handler {
     @Override
     public void handle(Context ctx) throws Throwable {
         String method = ctx.method();
