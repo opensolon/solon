@@ -130,6 +130,7 @@ class DbManager {
 
             } else {
                 dialect = dialect.toLowerCase();
+
                 switch (dialect) {
                     case "oracle":
                         style = new OracleStyle();
@@ -144,6 +145,7 @@ class DbManager {
                         style = new SqlServer2012Style();
                         break;
                     case "postgres":
+                    case "postgresql":
                     case "pgsql":
                         style = new PostgresStyle();
                         break;
