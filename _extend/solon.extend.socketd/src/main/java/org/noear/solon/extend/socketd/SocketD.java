@@ -24,7 +24,7 @@ public class SocketD {
     // protocol
     //
     public static void setProtocol(MessageProtocol protocol) {
-        MessageProtocolManager.setProtocol(protocol);
+        ProtocolManager.setProtocol(protocol);
     }
 
     //
@@ -65,18 +65,9 @@ public class SocketD {
         return create(() -> session, service);
     }
 
-    public static <T> T create(URI serverUri, int poolSize, Class<T> service) {
-        SessionPools sessionPools = new SessionPools(serverUri, true, poolSize);
-        return create(sessionPools, service);
-    }
-
     public static <T> T create(String serverUri, Class<T> service) {
         Session session = createSession(serverUri, true);
         return create(() -> session, service);
-    }
-
-    public static <T> T create(String serverUri, int poolSize, Class<T> service) {
-        return create(URI.create(serverUri), poolSize, service);
     }
 
     public static <T> T create(Context context, Class<T> service) {

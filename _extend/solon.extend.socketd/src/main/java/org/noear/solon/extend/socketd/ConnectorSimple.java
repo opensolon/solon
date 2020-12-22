@@ -10,10 +10,6 @@ public abstract class ConnectorSimple<T> implements Connector<T> {
     private URI uri;
     private boolean autoReconnect;
 
-    public ConnectorSimple(URI uri) {
-        this(uri, true);
-    }
-
     public ConnectorSimple(URI uri, boolean autoReconnect) {
         this.uri = uri;
         this.autoReconnect = autoReconnect;

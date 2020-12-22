@@ -4,15 +4,14 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.socketd.protocol.MessageProtocol;
 import org.noear.solon.extend.socketd.protocol.MessageProtocolBase;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
-public class MessageProtocolManager {
+public class ProtocolManager {
     private static MessageProtocol protocol = MessageProtocolBase.instance;
 
     public static void setProtocol(MessageProtocol protocol) {
         if (protocol != null) {
-            MessageProtocolManager.protocol = protocol;
+            ProtocolManager.protocol = protocol;
         }
     }
 

@@ -27,7 +27,7 @@ public class MessageUtils {
      */
     public static ByteBuffer encode(Message message) {
         try {
-            return MessageProtocolManager.encode(message);
+            return ProtocolManager.encode(message);
         } catch (Exception ex) {
             EventBus.push(ex);
             return null;
@@ -39,7 +39,7 @@ public class MessageUtils {
      */
     public static Message decode(ByteBuffer buffer) {
         try {
-            return MessageProtocolManager.decode(buffer);
+            return ProtocolManager.decode(buffer);
         } catch (Exception ex) {
             EventBus.push(ex);
             return null;
