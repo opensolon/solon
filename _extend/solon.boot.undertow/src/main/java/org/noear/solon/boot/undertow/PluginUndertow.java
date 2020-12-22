@@ -21,6 +21,7 @@ import static io.undertow.Handlers.websocket;
  */
 class PluginUndertow extends PluginUndertowBase implements Plugin {
     Undertow _server;
+
     @Override
     public void start(SolonApp app) {
         try {
@@ -54,9 +55,7 @@ class PluginUndertow extends PluginUndertowBase implements Plugin {
         if (app.enableWebSocket()) {
             builder.setHandler(websocket(new UtWsConnectionCallback(), httpHandler));
 
-            if(app.enableWebSocketD()) {
-                SessionManager.register(new _SessionManagerImpl());
-            }
+            SessionManager.register(new _SessionManagerImpl());
         } else {
             builder.setHandler(httpHandler);
         }

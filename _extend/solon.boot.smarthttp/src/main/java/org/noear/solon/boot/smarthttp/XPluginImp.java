@@ -15,7 +15,7 @@ public final class XPluginImp implements Plugin {
 
     HttpBootstrap _server = null;
 
-    public static String solon_boot_ver(){
+    public static String solon_boot_ver() {
         return "smart http 1.0.21/" + Solon.cfg().version();
     }
 
@@ -38,9 +38,7 @@ public final class XPluginImp implements Plugin {
         if (app.enableWebSocket()) {
             _server.wsPipeline().next(new WebSocketHandleImp());
 
-            if(app.enableWebSocketD()) {
-                SessionManager.register(new _SessionManagerImpl());
-            }
+            SessionManager.register(new _SessionManagerImpl());
         }
 
         System.out.println("solon.Server:main: SmartHttpServer 1.0.21(smarthttp)");

@@ -14,16 +14,14 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(SolonApp app) {
-        if(app.enableWebSocket() == false){
+        if (app.enableWebSocket() == false) {
             return;
         }
 
-        if(app.enableWebSocketD()) {
-            SessionManager.register(new _SessionManagerImpl());
-        }
+        SessionManager.register(new _SessionManagerImpl());
 
-        int _port = app.cfg().getInt("server.websocket.port",0);
-        if(_port < 1) {
+        int _port = app.cfg().getInt("server.websocket.port", 0);
+        if (_port < 1) {
             _port = 10000 + app.port();
         }
 
