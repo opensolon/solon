@@ -5,7 +5,7 @@ import org.apache.velocity.app.VelocityEngine;
 import java.io.StringWriter;
 import java.util.Map;
 
-public class XRenderUtil {
+public class RenderUtil {
     static VelocityEngine engine = null;
 
     public static String render(String template, Map<String, Object> model) throws Exception {
