@@ -14,7 +14,7 @@ public final class XPluginImp implements Plugin {
     private AioQuickServer<Message> server = null;
 
     public static String solon_boot_ver() {
-        return "smartsocket-socketd 1.5.0/" + Solon.cfg().version();
+        return "smartsocket-socketd 1.5.4/" + Solon.cfg().version();
     }
 
     @Override
@@ -30,7 +30,7 @@ public final class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        System.out.println("solon.Server:main: SmartSocket 1.5.0(smartsocket-socketd)");
+        System.out.println("solon.Server:main: SmartSocket 1.5.4(smartsocket-socketd)");
 
         int _port = app.cfg().getInt("server.socket.port", 0);
         if (_port < 1) {
