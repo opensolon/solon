@@ -2,11 +2,10 @@ package org.noear.solon.extend.socketd;
 
 import org.noear.solon.Solon;
 
-//
-//
-// solon.socketd.readBufferSize
-// solon.socketd.writeBufferSize
-//
+/**
+ * @author noear
+ * @since 1.2
+ * */
 public class SocketProps {
     private static int readBufferSize = 0;
     private static int writeBufferSize = 0;
@@ -34,81 +33,52 @@ public class SocketProps {
 
 
     static {
-        loadReadBufferSize();
-        loadWriteBufferSize();
-        loadConnectTimeout();
-        loadSocketTimeout();
+        readBufferSize = loadBufferSize("solon.socketd.readBufferSize");
+        writeBufferSize = loadBufferSize("solon.socketd.writeBufferSize");
+
+        connectTimeout = loadTimeout("solon.socketd.connectTimeout");
+        socketTimeout = loadTimeout("solon.socketd.socketTimeout");
     }
 
-    private static void loadReadBufferSize() {
-        String tmp = Solon.cfg().get("solon.socketd.readBufferSize", "").toLowerCase();
+
+    private static int loadBufferSize(String cfgKey) {
+        String tmp = Solon.cfg().get(cfgKey, "").toLowerCase();
 
         if (tmp.length() > 2) {
             if (tmp.endsWith("kb")) {
-                readBufferSize = Integer.parseInt(tmp.substring(0, tmp.length() - 2)) * 1024;
+                return Integer.parseInt(tmp.substring(0, tmp.length() - 2)) * 1024;
             }
 
             if (tmp.endsWith("mb")) {
-                readBufferSize = Integer.parseInt(tmp.substring(0, tmp.length() - 2)) * 1024 * 1024;
+                return Integer.parseInt(tmp.substring(0, tmp.length() - 2)) * 1024 * 1024;
             }
 
             if (tmp.indexOf("b") < 0) {
-                readBufferSize = Integer.parseInt(tmp);
+                return Integer.parseInt(tmp);
             }
         }
+
+        return 0;
     }
 
-    private static void loadWriteBufferSize() {
-        String tmp = Solon.cfg().get("solon.socketd.writeBufferSize", "").toLowerCase();
-
-        if (tmp.length() > 2) {
-            if (tmp.endsWith("kb")) {
-                writeBufferSize = Integer.parseInt(tmp.substring(0, tmp.length() - 2)) * 1024;
-            }
-
-            if (tmp.endsWith("mb")) {
-                writeBufferSize = Integer.parseInt(tmp.substring(0, tmp.length() - 2)) * 1024 * 1024;
-            }
-
-            if (tmp.indexOf("b") < 0) {
-                writeBufferSize = Integer.parseInt(tmp);
-            }
-        }
-    }
-
-    private static void loadConnectTimeout() {
-        String tmp = Solon.cfg().get("solon.socketd.connectTimeout", "").toLowerCase();
+    private static int loadTimeout(String cfgKey) {
+        String tmp = Solon.cfg().get(cfgKey, "").toLowerCase();
 
         if (tmp.length() > 2) {
             if (tmp.endsWith("ms")) {
-                connectTimeout = Integer.parseInt(tmp.substring(0, tmp.length() - 2));
+                return Integer.parseInt(tmp.substring(0, tmp.length() - 2));
             }
 
             if (tmp.endsWith("s")) {
-                connectTimeout = Integer.parseInt(tmp.substring(0, tmp.length() - 1)) * 1000;
+                return Integer.parseInt(tmp.substring(0, tmp.length() - 1)) * 1000;
             }
 
             if (tmp.indexOf("s") < 0) {
-                connectTimeout = Integer.parseInt(tmp);
+                //ms
+                return Integer.parseInt(tmp);
             }
         }
-    }
 
-    private static void loadSocketTimeout() {
-        String tmp = Solon.cfg().get("solon.socketd.socketTimeout", "").toLowerCase();
-
-        if (tmp.length() > 2) {
-            if (tmp.endsWith("ms")) {
-                socketTimeout = Integer.parseInt(tmp.substring(0, tmp.length() - 2));
-            }
-
-            if (tmp.endsWith("s")) {
-                socketTimeout = Integer.parseInt(tmp.substring(0, tmp.length() - 1)) * 1000;
-            }
-
-            if (tmp.indexOf("s") < 0) {
-                socketTimeout = Integer.parseInt(tmp);
-            }
-        }
+        return 0;
     }
 }
