@@ -4,7 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.ConnectorSimple;
+import org.noear.solon.extend.socketd.ConnectorBase;
 import org.noear.solon.extend.socketd.ListenerProxy;
 import org.noear.solon.extend.socketd.SocketProps;
 
@@ -13,7 +13,7 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.URI;
 
-class BioConnector extends ConnectorSimple<Socket> {
+class BioConnector extends ConnectorBase<Socket> {
     public BioConnector(URI uri, boolean autoReconnect) {
         super(uri, autoReconnect);
     }

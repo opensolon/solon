@@ -35,12 +35,12 @@ public class SocketChannel implements NamiChannel {
         int flag = 0;
 
         if (method != null) {
-            Handshake handshake = method.getAnnotation(Handshake.class);
-            if (handshake != null) {
+            Handshake h = method.getAnnotation(Handshake.class);
+            if (h != null) {
                 flag = -1;
 
-                if (Utils.isNotEmpty(handshake.handshakeHeader())) {
-                    Map<String, String> headerMap = HeaderUtil.decodeHeaderMap(handshake.handshakeHeader());
+                if (Utils.isNotEmpty(h.handshakeHeader())) {
+                    Map<String, String> headerMap = HeaderUtil.decodeHeaderMap(h.handshakeHeader());
                     headers.putAll(headerMap);
                 }
             }
@@ -65,14 +65,14 @@ public class SocketChannel implements NamiChannel {
             }
         }
 
-        Message response = sessions.get().sendAndResponse(message);
+        Message res = sessions.get().sendAndResponse(message);
 
-        if (response == null) {
+        if (res == null) {
             return null;
         }
 
         //2.构建结果
-        Result result = new Result(200, response.body());
+        Result result = new Result(200, res.body());
 
         //3.返回结果
         return result;

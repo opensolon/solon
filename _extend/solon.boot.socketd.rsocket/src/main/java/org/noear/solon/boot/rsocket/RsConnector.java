@@ -4,7 +4,7 @@ import io.rsocket.RSocket;
 import io.rsocket.core.RSocketConnector;
 import io.rsocket.transport.netty.client.TcpClientTransport;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.ConnectorSimple;
+import org.noear.solon.extend.socketd.ConnectorBase;
 import reactor.util.retry.Retry;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.time.Duration;
 /**
  * @author noear 2020/12/14 created
  */
-class RsConnector extends ConnectorSimple<RSocket> {
+class RsConnector extends ConnectorBase<RSocket> {
 
     public RsConnector(URI uri, boolean autoReconnect) {
         super(uri, autoReconnect);

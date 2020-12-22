@@ -1,7 +1,7 @@
 package org.noear.solon.boot.smartsocket;
 
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.ConnectorSimple;
+import org.noear.solon.extend.socketd.ConnectorBase;
 import org.noear.solon.extend.socketd.SocketProps;
 import org.smartboot.socket.transport.AioQuickClient;
 import org.smartboot.socket.transport.AioSession;
@@ -9,7 +9,7 @@ import org.smartboot.socket.transport.AioSession;
 import java.io.IOException;
 import java.net.URI;
 
-class AioConnector extends ConnectorSimple<AioSession> {
+class AioConnector extends ConnectorBase<AioSession> {
 
     public AioConnector(URI uri, boolean autoReconnect) {
         super(uri, autoReconnect);

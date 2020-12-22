@@ -7,11 +7,11 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.ConnectorSimple;
+import org.noear.solon.extend.socketd.ConnectorBase;
 
 import java.net.URI;
 
- class NioConnector extends ConnectorSimple<Channel> {
+ class NioConnector extends ConnectorBase<Channel> {
 
 
      public NioConnector(URI uri, boolean autoReconnect) {

@@ -17,19 +17,19 @@ public class XPluginImp implements Plugin {
                 Listener l = wrap.raw();
 
                 //创建会话
-                Session session = SocketD.createSession(anno.uri());
+                Session s = SocketD.createSession(anno.uri());
 
                 //绑定监听
-                session.listener(l);
+                s.listener(l);
 
                 //发送握手包
                 if (Utils.isNotEmpty(anno.handshakeHeader())) {
-                    session.sendHandshake(MessageUtils.wrapHandshake(anno.handshakeHeader()));
+                    s.sendHandshake(MessageUtils.wrapHandshake(anno.handshakeHeader()));
                 }
 
                 //设定自动心跳
                 if (anno.heartbeatRate() > 0) {
-                    session.sendHeartbeatAuto(anno.heartbeatRate());
+                    s.sendHeartbeatAuto(anno.heartbeatRate());
                 }
             }
         });

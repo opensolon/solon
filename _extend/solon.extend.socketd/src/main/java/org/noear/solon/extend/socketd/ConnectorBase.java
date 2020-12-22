@@ -6,11 +6,11 @@ import java.net.URI;
  * @author noear 2020/12/14 created
  * @since 1.2
  */
-public abstract class ConnectorSimple<T> implements Connector<T> {
+public abstract class ConnectorBase<T> implements Connector<T> {
     private URI uri;
     private boolean autoReconnect;
 
-    public ConnectorSimple(URI uri, boolean autoReconnect) {
+    public ConnectorBase(URI uri, boolean autoReconnect) {
         this.uri = uri;
         this.autoReconnect = autoReconnect;
     }
