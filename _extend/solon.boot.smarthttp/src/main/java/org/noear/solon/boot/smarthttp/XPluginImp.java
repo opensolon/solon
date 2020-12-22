@@ -38,7 +38,9 @@ public final class XPluginImp implements Plugin {
         if (app.enableWebSocket()) {
             _server.wsPipeline().next(new WebSocketHandleImp());
 
-            SessionManager.register(new _SessionManagerImpl());
+            if(app.enableWebSocketD()) {
+                SessionManager.register(new _SessionManagerImpl());
+            }
         }
 
         System.out.println("solon.Server:main: SmartHttpServer 1.0.21(smarthttp)");

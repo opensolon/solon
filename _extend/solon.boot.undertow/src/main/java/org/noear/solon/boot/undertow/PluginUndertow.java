@@ -53,7 +53,10 @@ class PluginUndertow extends PluginUndertowBase implements Plugin {
 
         if (app.enableWebSocket()) {
             builder.setHandler(websocket(new UtWsConnectionCallback(), httpHandler));
-            SessionManager.register(new _SessionManagerImpl());
+
+            if(app.enableWebSocketD()) {
+                SessionManager.register(new _SessionManagerImpl());
+            }
         } else {
             builder.setHandler(httpHandler);
         }
