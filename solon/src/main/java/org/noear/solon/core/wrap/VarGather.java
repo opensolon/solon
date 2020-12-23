@@ -18,11 +18,13 @@ import java.util.function.Consumer;
 public class VarGather implements Runnable {
     //变量
     List<VarHolderOfParam> vars;
+    int varSize;
     //完成时
     Consumer<Object[]> done;
 
     public VarGather(int varSize, Consumer<Object[]> done) {
         this.done = done;
+        this.varSize = varSize;
         this.vars = new ArrayList<>(varSize);
     }
 
@@ -38,6 +40,10 @@ public class VarGather implements Runnable {
             if(p1.isDone() == false){
                 return;
             }
+        }
+
+        if(vars.size() != varSize){
+            return;
         }
 
         List<Object> args = new ArrayList<>(vars.size());
