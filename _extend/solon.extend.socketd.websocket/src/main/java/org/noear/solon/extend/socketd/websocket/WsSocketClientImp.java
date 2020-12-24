@@ -26,9 +26,9 @@ public class WsSocketClientImp extends WebSocketClient {
     }
 
     @Override
-    public void onMessage(String s) {
+    public void onMessage(String test) {
         try {
-            ListenerProxy.getGlobal().onMessage(session, Message.wrap(s));
+            ListenerProxy.getGlobal().onMessage(session, Message.wrap(test).isString(true));
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
