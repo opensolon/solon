@@ -5,7 +5,7 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.socketd.Connector;
-import org.noear.solon.extend.socketd.MessageUtils;
+import org.noear.solon.extend.socketd.util.MessageUtil;
 import org.noear.solon.extend.socketd.ProtocolManager;
 import org.noear.solon.extend.socketd.SessionBase;
 
@@ -15,7 +15,6 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.URI;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -124,7 +123,7 @@ class _SocketSession extends SessionBase {
 
     @Override
     public void send(String message) {
-        send(MessageUtils.wrap(message));
+        send(MessageUtil.wrap(message));
     }
 
 //    @Override

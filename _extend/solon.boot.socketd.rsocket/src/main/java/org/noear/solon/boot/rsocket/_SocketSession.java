@@ -7,11 +7,11 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.*;
+import org.noear.solon.extend.socketd.util.MessageUtil;
 
 import java.io.IOException;
 import java.net.*;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 class _SocketSession extends SessionBase {
@@ -102,7 +102,7 @@ class _SocketSession extends SessionBase {
 
     @Override
     public void send(String message) {
-        send(MessageUtils.wrap(message));
+        send(MessageUtil.wrap(message));
     }
 
 //    @Override

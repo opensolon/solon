@@ -1,6 +1,7 @@
-package org.noear.solon.extend.socketd;
+package org.noear.solon.extend.socketd.util;
 
 import org.noear.solon.core.message.Message;
+import org.noear.solon.extend.socketd.MessageFlag;
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
@@ -11,7 +12,7 @@ import java.util.UUID;
  * @author noear
  * @since 1.0
  * */
-public class MessageUtils {
+public class MessageUtil {
     public static String guid() {
         return UUID.randomUUID().toString();
     }

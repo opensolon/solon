@@ -9,7 +9,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.MessageFlag;
-import org.noear.solon.extend.socketd.MessageUtils;
+import org.noear.solon.extend.socketd.util.MessageUtil;
 import org.noear.solon.extend.socketd.annotation.Handshake;
 import org.noear.solon.extend.socketd.util.HeaderUtil;
 
@@ -33,7 +33,7 @@ public class SocketChannel implements NamiChannel {
         cfg.getDecoder().filter(cfg, action, url, headers, args);
 
         Message message = null;
-        String message_key = MessageUtils.guid();
+        String message_key = MessageUtil.guid();
         int flag = MessageFlag.request;
 
         if (method != null) {

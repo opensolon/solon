@@ -2,7 +2,7 @@ package org.noear.solon.extend.socketd.protocol;
 
 import org.noear.solon.extend.socketd.MessageFlag;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.extend.socketd.MessageUtils;
+import org.noear.solon.extend.socketd.util.MessageUtil;
 import org.noear.solon.extend.socketd.protocol.util.GzipUtil;
 
 import java.nio.ByteBuffer;
@@ -61,7 +61,7 @@ public class MessageProtocolCompress implements MessageProtocol {
 
         if (allowCompress(buffer.array().length)) {
             byte[] bytes = compress(buffer.array());
-            message = MessageUtils.wrapContainer(bytes);
+            message = MessageUtil.wrapContainer(bytes);
 
             buffer = baseProtocol.encode(message);
         }

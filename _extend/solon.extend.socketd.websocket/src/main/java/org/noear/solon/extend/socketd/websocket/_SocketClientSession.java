@@ -8,7 +8,7 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.ext.RunnableEx;
 import org.noear.solon.extend.socketd.Connector;
-import org.noear.solon.extend.socketd.MessageUtils;
+import org.noear.solon.extend.socketd.util.MessageUtil;
 import org.noear.solon.extend.socketd.ProtocolManager;
 import org.noear.solon.extend.socketd.SessionBase;
 
@@ -83,7 +83,7 @@ public class _SocketClientSession extends SessionBase {
     @Override
     public void send(String message) {
         if (Solon.global().enableWebSocketD()) {
-            sendD(MessageUtils.wrap(message.getBytes(StandardCharsets.UTF_8)));
+            sendD(MessageUtil.wrap(message.getBytes(StandardCharsets.UTF_8)));
         }else{
             sendW(() -> real.send(message));
         }

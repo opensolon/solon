@@ -6,6 +6,7 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.util.HeaderUtil;
+import org.noear.solon.extend.socketd.util.MessageUtil;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -160,7 +161,7 @@ public class SocketContext extends ContextEmpty {
             if (_messageIsString) {
                 _session.send(_outputStream.toString());
             } else {
-                Message msg = MessageUtils.wrapResponse(_message, _outputStream.toByteArray());
+                Message msg = MessageUtil.wrapResponse(_message, _outputStream.toByteArray());
                 _session.send(msg);
             }
         }
