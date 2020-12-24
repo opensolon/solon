@@ -103,7 +103,11 @@ public class _SocketClientSession extends SessionBase {
         if (Solon.global().enableWebSocketD()) {
             sendD(message);
         } else {
-            sendW(() -> real.send(message.body()));
+            if (message.isString()) {
+                send(message.bodyAsString());
+            } else {
+                sendW(() -> real.send(message.body()));
+            }
         }
     }
 

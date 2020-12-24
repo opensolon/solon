@@ -21,7 +21,7 @@ public class SocketListenerImp implements Listener {
             message.setHandled(true);
 
             session.getOpenSessions().forEach(s -> {
-                s.send(message.toString());
+                s.send(message);
             });
         } else {
             System.out.println("X我收到了::" + message.toString());

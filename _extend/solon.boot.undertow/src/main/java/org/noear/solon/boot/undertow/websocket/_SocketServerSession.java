@@ -109,7 +109,11 @@ public class _SocketServerSession extends SessionBase {
         if (Solon.global().enableWebSocketD()) {
             sendBuffer(ProtocolManager.encode(message));
         } else {
-            sendBuffer(ByteBuffer.wrap(message.body()));
+            if (message.isString()) {
+                send(message.bodyAsString());
+            } else {
+                sendBuffer(ByteBuffer.wrap(message.body()));
+            }
         }
     }
 
