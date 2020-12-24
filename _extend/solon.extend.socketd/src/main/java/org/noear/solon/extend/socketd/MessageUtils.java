@@ -1,11 +1,7 @@
 package org.noear.solon.extend.socketd;
 
-import org.noear.solon.Utils;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
@@ -16,12 +12,15 @@ import java.util.UUID;
  * @since 1.0
  * */
 public class MessageUtils {
+    private static String guid() {
+        return UUID.randomUUID().toString();
+    }
 
     /**
      * 打包
      */
     public static Message wrap(byte[] body) {
-        return wrap(null, null, body);
+        return new Message(MessageFlag.message, guid(), body);
     }
 
     public static Message wrap(String body) {
@@ -33,7 +32,11 @@ public class MessageUtils {
      * 打包
      */
     public static Message wrap(String resourceDescriptor, String header, byte[] body) {
-        return new Message(MessageFlag.message, Utils.guid(), resourceDescriptor, header, body);
+        return new Message(MessageFlag.message, guid(), resourceDescriptor, header, body);
+    }
+
+    public static Message wrap(String resourceDescriptor, String header, String body) {
+        return wrap(resourceDescriptor, header, body.getBytes(StandardCharsets.UTF_8));
     }
 
 
@@ -44,32 +47,27 @@ public class MessageUtils {
         return new Message(MessageFlag.message, key, resourceDescriptor, header, body);
     }
 
+    public static Message wrap(String key, String resourceDescriptor, String header, String body) {
+        return wrap(key, resourceDescriptor, header, body.getBytes(StandardCharsets.UTF_8));
+    }
+
 
     //
     //属性打包
     //
 
-    public static Message wrapJson(String resourceDescriptor, byte[] body) {
-        return wrap(resourceDescriptor, "Content-Type=application/json", body);
-    }
-
-    public static Message wrapJson(String resourceDescriptor, String body) {
-        try {
-            return wrapJson(resourceDescriptor, body.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
+    /**
+     * 包装容器包（用于二次编码，如加密、压缩...）
+     * */
     public static Message wrapContainer(byte[] body) {
-        return new Message(MessageFlag.container,  body);
+        return new Message(MessageFlag.container, body);
     }
 
     /**
      * 包装心跳包
      */
     public static Message wrapHeartbeat() {
-        return new Message(MessageFlag.heartbeat, UUID.randomUUID().toString(), null);
+        return new Message(MessageFlag.heartbeat, guid(), null);
     }
 
 
@@ -77,7 +75,7 @@ public class MessageUtils {
      * 包装握手包（只支持用头）
      */
     public static Message wrapHandshake(String header, byte[] body) {
-        return new Message(MessageFlag.handshake, UUID.randomUUID().toString(), "", header, body);
+        return new Message(MessageFlag.handshake, guid(), "", header, body);
     }
 
     public static Message wrapHandshake(String header) {

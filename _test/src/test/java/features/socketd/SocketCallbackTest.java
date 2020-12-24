@@ -36,7 +36,7 @@ public class SocketCallbackTest {
         map.put("name", "noear");
         String map_josn = ONode.stringify(map);
 
-        Message message = MessageUtils.wrapJson(root + "/demoe/rpc/hello", map_josn);
+        Message message = MessageUtils.wrap(root + "/demoe/rpc/hello","Content-Type=application/json", map_josn);
 
 
         CompletableFuture<Boolean> check = new CompletableFuture<>();

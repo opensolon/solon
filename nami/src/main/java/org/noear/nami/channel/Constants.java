@@ -13,4 +13,5 @@ public class Constants {
     public static final String m_post = "POST";
 
     public static final String h_serialization = "X-Serialization";
+    public static final String h_content_type = "Content-Type";
 }

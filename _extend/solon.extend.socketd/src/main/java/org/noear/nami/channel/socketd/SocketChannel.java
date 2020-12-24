@@ -51,14 +51,14 @@ public class SocketChannel implements NamiChannel {
 
         switch (cfg.getEncoder().enctype()) {
             case application_hessian: {
-                headers.put("Content-Type", Constants.ct_hessian);
+                headers.put(Constants.h_content_type, Constants.ct_hessian);
                 message = new Message(flag, message_key, url, HeaderUtil.encodeHeaderMap(headers), (byte[]) cfg.getEncoder().encode(args));
                 break;
             }
             default: {
                 // 默认：application_json
                 //
-                headers.put("Content-Type", Constants.ct_json);
+                headers.put(Constants.h_content_type, Constants.ct_json);
                 String json = (String) cfg.getEncoder().encode(args);
                 message = new Message(flag, message_key, url, HeaderUtil.encodeHeaderMap(headers), json.getBytes());
                 break;
