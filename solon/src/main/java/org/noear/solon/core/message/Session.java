@@ -68,18 +68,6 @@ public interface Session {
     void sendAndCallback(Message message, BiConsumer<Message, Throwable> callback);
 
 
-
-    /**
-     * 发送响应消息
-     */
-    void sendResponse(String key, String message);
-
-    /**
-     * 发送响应消息
-     */
-    void sendResponse(String key, Message message);
-
-
     /**
      * 当前实例监听者（ListenEndpoint 为路径监听者，不限实例）
      */
