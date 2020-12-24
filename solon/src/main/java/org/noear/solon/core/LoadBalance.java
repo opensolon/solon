@@ -15,7 +15,7 @@ package org.noear.solon.core;
  *     }
  * }
  *
- * //通过 FairyClient 使用，然后调用一个restful api（注：FairyClient 已与 LoadBalance 适配）
+ * //通过 NamiClient 使用，然后调用一个restful api（注：NamiClient 已与 LoadBalance 适配）
  * @Component
  * public class DemoBean{
  *     @NamiClient("local:/demo/hello/")    //此处的local，对上面的local

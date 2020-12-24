@@ -255,7 +255,7 @@ public class Nami {
             }
 
             if (clz.isInterface() == false) {
-                throw new NamiException("FairyClient only support interfaces");
+                throw new NamiException("NamiClient only support interfaces");
             }
 
             NamiHandler handler = new NamiHandler(clz, _config, client);

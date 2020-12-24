@@ -69,7 +69,7 @@ public class NamiHandler implements InvocationHandler {
 
         //2.如果没有，就报错
         if (uri == null) {
-            throw new NamiException("FairyClient config is wrong: " + clz.getName());
+            throw new NamiException("NamiClient config is wrong: " + clz.getName());
         }
 
         if (uri.contains("://")) {
@@ -89,7 +89,7 @@ public class NamiHandler implements InvocationHandler {
         }
 
         if (url0 == null && config.getUpstream() == null) {
-            throw new NamiException("FairyClient: Not found upstream: " + clz.getName());
+            throw new NamiException("NamiClient: Not found upstream: " + clz.getName());
         }
     }
 
@@ -143,7 +143,7 @@ public class NamiHandler implements InvocationHandler {
             url = config.getUpstream().get();
 
             if (url == null) {
-                throw new NamiException("FairyClient: Not found upstream!");
+                throw new NamiException("NamiClient: Not found upstream!");
             }
 
             if (path0 != null) {
