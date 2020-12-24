@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 /**
- * SocketD 消息包，提供编码解码示例
+ * Message 工具，提供编码解码示例
  *
  * @author noear
  * @since 1.0
