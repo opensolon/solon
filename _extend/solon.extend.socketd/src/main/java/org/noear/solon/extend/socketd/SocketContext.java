@@ -108,6 +108,11 @@ public class SocketContext extends ContextEmpty {
     }
 
     @Override
+    public String queryString() {
+        return uri().getQuery();
+    }
+
+    @Override
     public InputStream bodyAsStream() throws IOException {
         return new ByteArrayInputStream(_message.body());
     }
