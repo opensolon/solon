@@ -1,4 +1,4 @@
-package org.noear.solon.core.util;
+package org.noear.solon.extend.socketd.util;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.NvMap;

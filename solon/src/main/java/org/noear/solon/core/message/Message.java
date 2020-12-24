@@ -1,12 +1,9 @@
 package org.noear.solon.core.message;
 
 import org.noear.solon.annotation.Note;
-import org.noear.solon.core.util.HeaderUtil;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -19,11 +16,12 @@ import java.util.function.Function;
  * @author noear
  * @since 1.0
  * */
-public class Message{
+public class Message {
     /**
      * 1.消息标志
      */
     private final int flag;
+
     @Note("1.消息标志")
     public int flag() {
         return flag;
@@ -33,6 +31,7 @@ public class Message{
      * 2.消息key
      */
     private final String key;
+
     @Note("2.消息key")
     public String key() {
         return key;
@@ -42,6 +41,7 @@ public class Message{
      * 3.资源描述
      */
     private final String resourceDescriptor;
+
     @Note("3.资源描述")
     public String resourceDescriptor() {
         return resourceDescriptor;
@@ -55,20 +55,12 @@ public class Message{
         return header;
     }
 
-    private Map<String,String> headerMap;
-    public Map<String,String> headerMap() {
-        if (headerMap == null) {
-            headerMap = HeaderUtil.decodeHeaderMap(header);
-        }
-
-        return Collections.unmodifiableMap(headerMap);
-    }
-
 
     /**
      * 5.消息主体
      */
     private final byte[] body;
+
     @Note("5.消息主体")
     public byte[] body() {
         return body;
@@ -101,6 +93,17 @@ public class Message{
         this.body = (body == null ? new byte[]{} : body);
     }
 
+    public Message(int flag, String key, String resourceDescriptor, byte[] body) {
+        this(flag, key, resourceDescriptor, null, body);
+    }
+
+    public Message(int flag, String key, byte[] body) {
+        this(flag, key, null, null, body);
+    }
+
+    public Message(int flag, byte[] body) {
+        this(flag, null, null, null, body);
+    }
 
     @Override
     public String toString() {
@@ -141,6 +144,4 @@ public class Message{
     }
 
     //////////////////////////////////////////
-
-
 }

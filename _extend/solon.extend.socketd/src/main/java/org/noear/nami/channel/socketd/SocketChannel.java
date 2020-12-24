@@ -8,8 +8,8 @@ import org.noear.nami.channel.Constants;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.core.util.HeaderUtil;
 import org.noear.solon.extend.socketd.annotation.Handshake;
+import org.noear.solon.extend.socketd.util.HeaderUtil;
 
 import java.lang.reflect.Method;
 import java.util.Map;

@@ -41,8 +41,8 @@ public abstract class SessionBase implements Session {
     }
 
     @Override
-    public Message sendAndResponse(String message) {
-        return sendAndResponse(MessageUtils.wrap(message));
+    public String sendAndResponse(String message) {
+        return sendAndResponse(MessageUtils.wrap(message)).bodyAsString();
     }
 
     /**
@@ -70,8 +70,14 @@ public abstract class SessionBase implements Session {
     }
 
     @Override
-    public void sendAndCallback(String message, BiConsumer<Message, Throwable> callback) {
-        sendAndCallback(MessageUtils.wrap(message), callback);
+    public void sendAndCallback(String message, BiConsumer<String, Throwable> callback) {
+        sendAndCallback(MessageUtils.wrap(message), (msg, err) -> {
+            if (msg == null) {
+                callback.accept(null, err);
+            } else {
+                callback.accept(msg.bodyAsString(), err);
+            }
+        });
     }
 
     /**

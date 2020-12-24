@@ -1,13 +1,12 @@
 package org.noear.solon.extend.socketd;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.core.util.HeaderUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -68,7 +67,7 @@ public class MessageUtils {
      * 打包
      */
     public static Message wrap(String resourceDescriptor, String header, byte[] body) {
-        return new Message(MessageFlag.message, UUID.randomUUID().toString(), resourceDescriptor, header, body);
+        return new Message(MessageFlag.message, Utils.guid(), resourceDescriptor, header, body);
     }
 
 
@@ -97,14 +96,14 @@ public class MessageUtils {
     }
 
     public static Message wrapContainer(byte[] body) {
-        return new Message(MessageFlag.container, null, null, null, body);
+        return new Message(MessageFlag.container,  body);
     }
 
     /**
      * 包装心跳包
      */
     public static Message wrapHeartbeat() {
-        return new Message(MessageFlag.heartbeat, UUID.randomUUID().toString(), "", null, null);
+        return new Message(MessageFlag.heartbeat, UUID.randomUUID().toString(), null);
     }
 
 
@@ -119,23 +118,14 @@ public class MessageUtils {
         return wrapHandshake(header, null);
     }
 
-    public static Message wrapHandshake(Map<String, String> header) {
-        return wrapHandshake(header, null);
-    }
-
-    public static Message wrapHandshake(Map<String, String> header, byte[] body) {
-        return wrapHandshake(HeaderUtil.encodeHeaderMap(header), body);
-    }
-
-
     /**
      * 包装响应包
      */
-    public static Message wrapResponse(Message request, String header, byte[] body) {
-        return new Message(MessageFlag.response, request.key(), request.resourceDescriptor(), header, body);
+    public static Message wrapResponse(Message request, byte[] body) {
+        return new Message(MessageFlag.response, request.key(), body);
     }
 
-    public static Message wrapResponse(Message request, byte[] body) {
-        return wrapResponse(request, body);
+    public static Message wrapResponse(Message request, String body) {
+        return new Message(MessageFlag.response, request.key(), body.getBytes(StandardCharsets.UTF_8));
     }
 }
