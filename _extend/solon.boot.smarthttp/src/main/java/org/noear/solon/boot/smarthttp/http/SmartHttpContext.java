@@ -86,7 +86,7 @@ public class SmartHttpContext extends Context {
     @Override
     public String url() {
         if (_url == null) {
-            _url = _request.getRequestURL();
+            _url = _request.getRequestURI();
         }
 
         return _url;
