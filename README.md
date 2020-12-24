@@ -143,7 +143,7 @@ public class DemoServiceImp implements DemoService{
 //DemoService client;
 
 //构建模式
-DemoService client = Fairy.builder().upstream(n->"http://127.0.0.1:8080/demo/").create(DemoService.class); 
+DemoService client = Nami.builder().upstream(n->"http://127.0.0.1:8080/demo/").create(DemoService.class); 
 client.setName(1,'');
 
 
