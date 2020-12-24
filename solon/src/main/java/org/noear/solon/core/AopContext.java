@@ -123,7 +123,7 @@ public class AopContext extends BeanContainer {
             beanInject(fwT, anno.value());
         }));
 
-        //注册 @ListenEndpoint 构建器
+        //注册 @ServerEndpoint 构建器
         beanBuilderAdd(ServerEndpoint.class, (clz, wrap, anno) -> {
             if (Listener.class.isAssignableFrom(clz)) {
                 Listener l = wrap.raw();
