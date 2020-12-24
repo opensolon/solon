@@ -40,6 +40,11 @@ public abstract class SessionBase implements Session {
         }
     }
 
+    @Override
+    public Message sendAndResponse(String message) {
+        return sendAndResponse(MessageUtils.wrap(message));
+    }
+
     /**
      * 用于支持双向RPC
      */
@@ -62,6 +67,11 @@ public abstract class SessionBase implements Session {
         } catch (Throwable ex) {
             throw Utils.throwableWrap(ex);
         }
+    }
+
+    @Override
+    public void sendAndCallback(String message, BiConsumer<Message, Throwable> callback) {
+        sendAndCallback(MessageUtils.wrap(message), callback);
     }
 
     /**
