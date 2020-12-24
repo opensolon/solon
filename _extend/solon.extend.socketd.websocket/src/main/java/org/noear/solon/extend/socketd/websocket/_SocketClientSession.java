@@ -89,14 +89,14 @@ public class _SocketClientSession extends SessionBase {
     }
 
 
-    @Override
-    public void send(byte[] message) {
-        if (Solon.global().enableWebSocketD()) {
-            sendD(MessageUtils.wrap(message));
-        } else {
-            sendW(() -> real.send(message));
-        }
-    }
+//    @Override
+//    public void send(byte[] message) {
+//        if (Solon.global().enableWebSocketD()) {
+//            sendD(MessageUtils.wrap(message));
+//        } else {
+//            sendW(() -> real.send(message));
+//        }
+//    }
 
     @Override
     public void send(Message message) {

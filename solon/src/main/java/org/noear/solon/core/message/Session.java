@@ -44,7 +44,7 @@ public interface Session {
     /**
      * 发送消息
      */
-    void send(byte[] message);
+    //void send(byte[] message);
 
     /**
      * 发送消息

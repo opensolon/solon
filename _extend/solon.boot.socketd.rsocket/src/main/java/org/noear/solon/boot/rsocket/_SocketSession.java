@@ -105,13 +105,13 @@ class _SocketSession extends SessionBase {
 
     @Override
     public void send(String message) {
-        send(message.getBytes(StandardCharsets.UTF_8));
-    }
-
-    @Override
-    public void send(byte[] message) {
         send(MessageUtils.wrap(message));
     }
+
+//    @Override
+//    public void send(byte[] message) {
+//        send(MessageUtils.wrap(message));
+//    }
 
     @Override
     public void send(Message message) {
