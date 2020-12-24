@@ -40,18 +40,6 @@ public class MessageUtils {
     }
 
 
-    /**
-     * 打包
-     */
-    public static Message wrap(String key, String resourceDescriptor, String header, byte[] body) {
-        return new Message(MessageFlag.message, key, resourceDescriptor, header, body);
-    }
-
-    public static Message wrap(String key, String resourceDescriptor, String header, String body) {
-        return wrap(key, resourceDescriptor, header, body.getBytes(StandardCharsets.UTF_8));
-    }
-
-
     //
     //属性打包
     //
