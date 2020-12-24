@@ -62,9 +62,14 @@ public class JlHttpContext extends Context {
         return _request.getVersion();
     }
 
+    private URI _uri;
     @Override
     public URI uri() {
-        return URI.create(url());
+        if(_uri == null) {
+            _uri = URI.create(url());
+        }
+
+        return _uri;
     }
 
     @Override
@@ -79,25 +84,32 @@ public class JlHttpContext extends Context {
         if (_url == null) {
             _url = _request.getURI().toString();
 
-            if (_url != null && _url.startsWith("/")) {
-                String host = header("Host");
-
-                if (host == null) {
-                    host = header(":authority");
-                    String scheme = header(":scheme");
+            if (_url != null) {
+                if (_url.startsWith("/")) {
+                    String host = header("Host");
 
                     if (host == null) {
-                        host = "localhost";
-                    }
+                        host = header(":authority");
+                        String scheme = header(":scheme");
 
-                    if (scheme != null) {
-                        _url = "https://" + host + _url;
+                        if (host == null) {
+                            host = "localhost";
+                        }
+
+                        if (scheme != null) {
+                            _url = "https://" + host + _url;
+                        } else {
+                            _url = scheme + "://" + host + _url;
+                        }
+
                     } else {
-                        _url = scheme + "://" + host + _url;
+                        _url = "http://" + host + _url;
                     }
+                }
 
-                } else {
-                    _url = "http://" + host + _url;
+                int idx = _url.indexOf("?");
+                if (idx > 0) {
+                    _url = _url.substring(0, idx);
                 }
             }
         }
