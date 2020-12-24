@@ -4,6 +4,7 @@ import org.noear.solon.annotation.Note;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 import java.util.function.Function;
 
 /**
@@ -106,10 +107,6 @@ public class Message {
 
     public Message(int flag, byte[] body) {
         this(flag, null, null, null, body);
-    }
-
-    public Message(byte[] body) {
-        this(0, null, null, null, body);
     }
 
     @Override
