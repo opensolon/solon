@@ -36,6 +36,7 @@ public interface Session {
      */
     String path();
 
+
     /**
      * 发送消息
      */
@@ -65,6 +66,19 @@ public interface Session {
      * 发送消息并异步回调
      */
     void sendAndCallback(Message message, BiConsumer<Message, Throwable> callback);
+
+
+
+    /**
+     * 发送响应消息
+     */
+    void sendResponse(String key, String message);
+
+    /**
+     * 发送响应消息
+     */
+    void sendResponse(String key, Message message);
+
 
     /**
      * 当前实例监听者（ListenEndpoint 为路径监听者，不限实例）

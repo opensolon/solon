@@ -85,12 +85,15 @@ public class Message {
 
     //////////////////////////////////////////
 
+    private static final byte[] EMPTY_B = new byte[]{};
+    private static final String EMPTY_S = "";
+
     public Message(int flag, String key, String resourceDescriptor, String header, byte[] body) {
         this.flag = flag;
-        this.key = (key == null ? "" : key);
-        this.resourceDescriptor = (resourceDescriptor == null ? "" : resourceDescriptor);
-        this.header = (header == null ? "" : header);
-        this.body = (body == null ? new byte[]{} : body);
+        this.key = (key == null ? EMPTY_S : key);
+        this.resourceDescriptor = (resourceDescriptor == null ? EMPTY_S : resourceDescriptor);
+        this.header = (header == null ? EMPTY_S : header);
+        this.body = (body == null ? EMPTY_B : body);
     }
 
     public Message(int flag, String key, String resourceDescriptor, byte[] body) {
@@ -103,6 +106,10 @@ public class Message {
 
     public Message(int flag, byte[] body) {
         this(flag, null, null, null, body);
+    }
+
+    public Message(byte[] body) {
+        this(0, null, null, null, body);
     }
 
     @Override

@@ -6,6 +6,7 @@ import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -98,6 +99,16 @@ public abstract class SessionBase implements Session {
 
         //发送消息
         send(message);
+    }
+
+    @Override
+    public void sendResponse(String key, String message) {
+        send(new Message(MessageFlag.response, key, message.getBytes(StandardCharsets.UTF_8)));
+    }
+
+    @Override
+    public void sendResponse(String key, Message message) {
+        send(new Message(MessageFlag.response, key, message.body()));
     }
 
     private Listener listener;

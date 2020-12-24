@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 /**
- * Message 工具，提供编码解码示例
+ * Message 包装类
  *
  * @author noear
  * @since 1.0
