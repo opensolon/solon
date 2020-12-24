@@ -12,7 +12,7 @@ import java.util.UUID;
  * @since 1.0
  * */
 public class MessageUtils {
-    private static String guid() {
+    public static String guid() {
         return UUID.randomUUID().toString();
     }
 
@@ -46,7 +46,7 @@ public class MessageUtils {
 
     /**
      * 包装容器包（用于二次编码，如加密、压缩...）
-     * */
+     */
     public static Message wrapContainer(byte[] body) {
         return new Message(MessageFlag.container, body);
     }
@@ -79,5 +79,16 @@ public class MessageUtils {
 
     public static Message wrapResponse(Message request, String body) {
         return new Message(MessageFlag.response, request.key(), body.getBytes(StandardCharsets.UTF_8));
+    }
+
+    /**
+     * 包装请求包（一般用不到）
+     */
+    public static Message wrapRequest(String resourceDescriptor, String header, byte[] body) {
+        return new Message(MessageFlag.request, guid(), resourceDescriptor, header, body);
+    }
+
+    public static Message wrapRequest(String resourceDescriptor, String header, String body) {
+        return wrapRequest(resourceDescriptor, header, body.getBytes(StandardCharsets.UTF_8));
     }
 }

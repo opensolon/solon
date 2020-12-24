@@ -8,6 +8,8 @@ import org.noear.nami.channel.Constants;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.extend.socketd.MessageFlag;
+import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.extend.socketd.annotation.Handshake;
 import org.noear.solon.extend.socketd.util.HeaderUtil;
 
@@ -31,13 +33,13 @@ public class SocketChannel implements NamiChannel {
         cfg.getDecoder().filter(cfg, action, url, headers, args);
 
         Message message = null;
-        String message_key = Utils.guid();
-        int flag = 0;
+        String message_key = MessageUtils.guid();
+        int flag = MessageFlag.request;
 
         if (method != null) {
             Handshake h = method.getAnnotation(Handshake.class);
             if (h != null) {
-                flag = -1;
+                flag = MessageFlag.handshake;
 
                 if (Utils.isNotEmpty(h.handshakeHeader())) {
                     Map<String, String> headerMap = HeaderUtil.decodeHeaderMap(h.handshakeHeader());
