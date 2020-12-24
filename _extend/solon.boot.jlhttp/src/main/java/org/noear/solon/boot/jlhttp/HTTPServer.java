@@ -1419,6 +1419,10 @@ public class HTTPServer {
             return uri.getPath();
         }
 
+        public String getQueryString(){
+            return baseURL.getQuery();
+        }
+
         /**
          * Sets the path component of the request URI. This can be useful
          * in URL rewriting, etc.
@@ -1428,8 +1432,10 @@ public class HTTPServer {
          */
         public void setPath(String path) {
             try {
-                uri = new URI(uri.getScheme(), uri.getHost(),
-                        trimDuplicates(path, '/'), uri.getFragment());//xyj,20181220,+query // 20201227 - query
+                uri = new URI(uri.getScheme(),
+                        uri.getHost(),
+                        trimDuplicates(path, '/'),
+                        uri.getFragment());//xyj,20181220,+query // 20201227 - query
                 context = null; // clear cached context so it will be recalculated
             } catch (URISyntaxException use) {
                 throw new IllegalArgumentException("error setting path", use);

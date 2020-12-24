@@ -27,7 +27,7 @@ public class HttpTest extends _TestBase {
 
     @Test
     public void test12_get() throws IOException{
-        assert  get("/demo1/run1/*?a=1").equals("http://localhost:8080/demo1/run1/*?a=1");
+        assert  get("/demo1/run1/*?@=1").equals("http://localhost:8080/demo1/run1/*");
     }
 
     @Test

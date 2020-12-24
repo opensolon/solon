@@ -108,6 +108,11 @@ public class SmartHttpContext extends Context {
     }
 
     @Override
+    public String queryString() {
+        return _request.getQueryString();
+    }
+
+    @Override
     public InputStream bodyAsStream() throws IOException {
         return _request.getInputStream();
     }

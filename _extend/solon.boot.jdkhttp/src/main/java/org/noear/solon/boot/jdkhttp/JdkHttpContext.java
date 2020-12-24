@@ -123,6 +123,11 @@ public class JdkHttpContext extends Context {
     }
 
     @Override
+    public String queryString() {
+        return _exchange.getRequestURI().getQuery();
+    }
+
+    @Override
     public InputStream bodyAsStream() throws IOException {
         return _exchange.getRequestBody();
     }

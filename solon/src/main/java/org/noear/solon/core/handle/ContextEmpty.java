@@ -97,6 +97,11 @@ public class ContextEmpty extends Context {
     }
 
     @Override
+    public String queryString() {
+        return null;
+    }
+
+    @Override
     public InputStream bodyAsStream() throws IOException {
         return null;
     }
