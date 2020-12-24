@@ -100,15 +100,15 @@
 <!--            <artifactId>solon.boot.socketd.jdksocket</artifactId>-->
 <!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.socketd.netty</artifactId>
-        </dependency>
-
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.socketd.smartsocket</artifactId>-->
+<!--            <artifactId>solon.boot.socketd.netty</artifactId>-->
 <!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.socketd.smartsocket</artifactId>
+        </dependency>
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
@@ -122,17 +122,16 @@
 <!--        </dependency>-->
 
 
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.smarthttp</artifactId>
+        </dependency>
+
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.smarthttp</artifactId>-->
+<!--            <artifactId>solon.boot.jdkhttp</artifactId>-->
 <!--        </dependency>-->
-
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jdkhttp</artifactId>
-        </dependency>
 
 
 <!--        <dependency>-->
