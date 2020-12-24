@@ -9,7 +9,6 @@ import org.noear.solon.extend.socketd.ListenerProxy;
 import org.noear.solon.extend.socketd.ProtocolManager;
 
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 
 public class WebSocketListenerImp extends WebSocketAdapter {
 
@@ -44,8 +43,7 @@ public class WebSocketListenerImp extends WebSocketAdapter {
     public void onWebSocketText(String text) {
         try {
             Session session = _SocketServerSession.get(getSession());
-            Message message = Message.wrap(getSession().getUpgradeRequest().getRequestURI().toString(),null,
-                    text.getBytes(StandardCharsets.UTF_8));
+            Message message = Message.wrap(getSession().getUpgradeRequest().getRequestURI().toString(), null, text);
 
             ListenerProxy.getGlobal().onMessage(session, message.isString(true));
 

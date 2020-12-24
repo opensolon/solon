@@ -11,7 +11,6 @@ import org.xnio.Pooled;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 
 public class UtWsChannelListener extends AbstractReceiveListener {
 
@@ -53,8 +52,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
     protected void onFullTextMessage(WebSocketChannel channel, BufferedTextMessage msg) throws IOException {
         try {
             Session session = _SocketServerSession.get(channel);
-            Message message = Message.wrap(channel.getUrl(),null,
-                    msg.getData().getBytes(StandardCharsets.UTF_8));
+            Message message = Message.wrap(channel.getUrl(), null, msg.getData());
 
             ListenerProxy.getGlobal().onMessage(session, message.isString(true));
         } catch (Throwable ex) {

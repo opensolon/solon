@@ -12,13 +12,9 @@ import org.noear.solon.extend.socketd.ProtocolManager;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 @SuppressWarnings("unchecked")
 public class WsServer extends WebSocketServer {
-    private Charset _charset = StandardCharsets.UTF_8;
-
     public WsServer(int port) {
         super(new InetSocketAddress(port));
     }
@@ -44,7 +40,7 @@ public class WsServer extends WebSocketServer {
     public void onMessage(WebSocket conn, String data) {
         try {
             Session session = _SocketServerSession.get(conn);
-            Message message = Message.wrap(conn.getResourceDescriptor(), null,data.getBytes(_charset));
+            Message message = Message.wrap(conn.getResourceDescriptor(), null, data);
 
             ListenerProxy.getGlobal().onMessage(session, message.isString(true));
         } catch (Throwable ex) {
