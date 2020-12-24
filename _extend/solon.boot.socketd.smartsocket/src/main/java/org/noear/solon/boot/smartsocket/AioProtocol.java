@@ -3,7 +3,7 @@ package org.noear.solon.boot.smartsocket;
 import org.noear.solon.boot.smartsocket.decoder.FixedLengthFrameDecoder;
 import org.noear.solon.core.message.Message;
 
-import org.noear.solon.extend.socketd.MessageUtils;
+import org.noear.solon.extend.socketd.ProtocolManager;
 import org.smartboot.socket.Protocol;
 import org.smartboot.socket.transport.AioSession;
 
@@ -39,7 +39,7 @@ class AioProtocol implements Protocol<Message> {
             buffer.flip();
         }
 
-        return MessageUtils.decode(buffer);
+        return ProtocolManager.decode(buffer);
     }
 }
 

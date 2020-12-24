@@ -6,6 +6,7 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.MessageUtils;
+import org.noear.solon.extend.socketd.ProtocolManager;
 import org.noear.solon.extend.socketd.SessionBase;
 import org.smartboot.http.WebSocketRequest;
 import org.smartboot.http.WebSocketResponse;
@@ -95,7 +96,7 @@ public class _SocketServerSession extends SessionBase {
     @Override
     public void send(String message) {
         if (Solon.global().enableWebSocketD()) {
-            sendBuffer(MessageUtils.encode(MessageUtils.wrap(message)));
+            sendBuffer(ProtocolManager.encode(MessageUtils.wrap(message)));
         } else {
             response.sendTextMessage(message);
             response.flush();
@@ -116,7 +117,7 @@ public class _SocketServerSession extends SessionBase {
         super.send(message);
 
         if (Solon.global().enableWebSocketD()) {
-            sendBuffer(MessageUtils.encode(message));
+            sendBuffer(ProtocolManager.encode(message));
         } else {
             sendBytes(message.body());
         }

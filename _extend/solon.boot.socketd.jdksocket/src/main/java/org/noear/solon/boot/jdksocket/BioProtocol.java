@@ -2,6 +2,7 @@ package org.noear.solon.boot.jdksocket;
 
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.socketd.MessageUtils;
+import org.noear.solon.extend.socketd.ProtocolManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,7 +51,7 @@ public class BioProtocol {
 
         buffer.flip();
 
-        return MessageUtils.decode(buffer);
+        return ProtocolManager.decode(buffer);
     }
 
 

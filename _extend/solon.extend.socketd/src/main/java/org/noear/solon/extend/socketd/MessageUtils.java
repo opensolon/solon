@@ -17,40 +17,6 @@ import java.util.UUID;
  * */
 public class MessageUtils {
 
-    //
-    // encode & decode
-    //
-
-    /**
-     * 编码
-     */
-    public static ByteBuffer encode(Message message) {
-        try {
-            return ProtocolManager.encode(message);
-        } catch (Exception ex) {
-            EventBus.push(ex);
-            return null;
-        }
-    }
-
-    /**
-     * 解码
-     */
-    public static Message decode(ByteBuffer buffer) {
-        try {
-            return ProtocolManager.decode(buffer);
-        } catch (Exception ex) {
-            EventBus.push(ex);
-            return null;
-        }
-    }
-
-
-    //
-    // warp
-    //
-
-
     /**
      * 打包
      */

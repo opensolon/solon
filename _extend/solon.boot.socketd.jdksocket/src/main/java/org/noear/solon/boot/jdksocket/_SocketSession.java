@@ -6,6 +6,7 @@ import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.socketd.Connector;
 import org.noear.solon.extend.socketd.MessageUtils;
+import org.noear.solon.extend.socketd.ProtocolManager;
 import org.noear.solon.extend.socketd.SessionBase;
 
 import java.io.IOException;
@@ -161,7 +162,7 @@ class _SocketSession extends SessionBase {
             return;
         }
 
-        ByteBuffer buffer = MessageUtils.encode(message);
+        ByteBuffer buffer = ProtocolManager.encode(message);
 
         if (buffer != null) {
             real.getOutputStream().write(buffer.array());

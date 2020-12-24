@@ -8,6 +8,7 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.ListenerProxy;
 import org.noear.solon.extend.socketd.MessageUtils;
+import org.noear.solon.extend.socketd.ProtocolManager;
 
 import java.net.URI;
 import java.nio.ByteBuffer;
@@ -40,7 +41,7 @@ public class WsSocketClientImp extends WebSocketClient {
         try {
             Message message = null;
             if (Solon.global().enableWebSocketD()) {
-                message = MessageUtils.decode(bytes);
+                message = ProtocolManager.decode(bytes);
             } else {
                 message = MessageUtils.wrap(bytes.array());
             }

@@ -6,10 +6,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.Connector;
-import org.noear.solon.extend.socketd.ListenerProxy;
-import org.noear.solon.extend.socketd.MessageUtils;
-import org.noear.solon.extend.socketd.SessionBase;
+import org.noear.solon.extend.socketd.*;
 
 import java.io.IOException;
 import java.net.*;
@@ -148,7 +145,7 @@ class _SocketSession extends SessionBase {
             return;
         }
 
-        ByteBuffer byteBuffer = MessageUtils.encode(message);
+        ByteBuffer byteBuffer = ProtocolManager.encode(message);
 
         if (byteBuffer != null) {
             real.fireAndForget(DefaultPayload.create(byteBuffer))

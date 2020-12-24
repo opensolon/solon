@@ -4,6 +4,7 @@ package webapp.utils;
 import org.noear.solon.Utils;
 import org.noear.solon.extend.socketd.MessageUtils;
 import org.noear.solon.core.message.Message;
+import org.noear.solon.extend.socketd.ProtocolManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -128,7 +129,7 @@ public class SocketUtils {
         try {
             tryConnect();
 
-            ByteBuffer buffer = MessageUtils.encode(msgD.req);
+            ByteBuffer buffer = ProtocolManager.encode(msgD.req);
 
             if(buffer != null) {
                 outputStream.write(buffer.array());
@@ -184,7 +185,7 @@ public class SocketUtils {
 
         input.read(bytes, 4, len - 4);
 
-        return MessageUtils.decode(ByteBuffer.wrap(bytes));
+        return ProtocolManager.decode(ByteBuffer.wrap(bytes));
     }
 
 

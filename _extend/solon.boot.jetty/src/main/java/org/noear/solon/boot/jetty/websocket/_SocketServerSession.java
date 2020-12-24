@@ -6,6 +6,7 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.socketd.MessageUtils;
+import org.noear.solon.extend.socketd.ProtocolManager;
 import org.noear.solon.extend.socketd.SessionBase;
 
 import java.io.IOException;
@@ -77,7 +78,7 @@ public class _SocketServerSession extends SessionBase {
     public void send(String message) {
         try {
             if (Solon.global().enableWebSocketD()) {
-                sendBytes(MessageUtils.encode(MessageUtils.wrap(message)));
+                sendBytes(ProtocolManager.encode(MessageUtils.wrap(message)));
             } else {
                 real.getRemote().sendString(message);
             }
@@ -100,7 +101,7 @@ public class _SocketServerSession extends SessionBase {
         super.send(message);
 
         if (Solon.global().enableWebSocketD()) {
-            sendBytes(MessageUtils.encode(message));
+            sendBytes(ProtocolManager.encode(message));
         } else {
             sendBytes(ByteBuffer.wrap(message.body()));
         }

@@ -1,5 +1,6 @@
 package org.noear.solon.extend.socketd;
 
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.extend.socketd.protocol.MessageProtocol;
 import org.noear.solon.extend.socketd.protocol.MessageProtocolBase;
@@ -15,11 +16,21 @@ public class ProtocolManager {
         }
     }
 
-    public static ByteBuffer encode(Message message) throws Exception {
-        return protocol.encode(message);
+    public static ByteBuffer encode(Message message) {
+        try {
+            return protocol.encode(message);
+        } catch (Throwable ex) {
+            EventBus.push(ex);
+            return null;
+        }
     }
 
-    public static Message decode(ByteBuffer buffer) throws Exception{
-        return protocol.decode(buffer);
+    public static Message decode(ByteBuffer buffer)  {
+        try {
+            return protocol.decode(buffer);
+        } catch (Throwable ex) {
+            EventBus.push(ex);
+            return null;
+        }
     }
 }
