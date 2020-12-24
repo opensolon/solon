@@ -32,8 +32,8 @@ public class SocketChannel implements NamiChannel {
         cfg.getDecoder().filter(cfg, action, url, headers, args);
 
         Message message = null;
-        String message_key = Message.createKey();
-        int flag = MessageFlag.request;
+        String message_key = Message.guid();
+        int flag = MessageFlag.message;
 
         if (method != null) {
             Handshake h = method.getAnnotation(Handshake.class);

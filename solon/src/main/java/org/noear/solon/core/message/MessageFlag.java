@@ -31,13 +31,8 @@ public interface MessageFlag {
     @Note("握手消息包")
     int handshake = 12;
     /**
-     * 请求体消息包
-     * */
-    @Note("请求体消息包")
-    int request = 13;
-    /**
      * 响应体消息包
      * */
     @Note("响应体消息包")
-    int response = 14;
+    int response = 13;
 }

@@ -153,7 +153,7 @@ public class Message {
     //
     //////////////////////////////////////////
 
-    public static String createKey() {
+    public static String guid() {
         return UUID.randomUUID().toString();
     }
 
@@ -161,7 +161,7 @@ public class Message {
      * 打包
      */
     public static Message wrap(byte[] body) {
-        return new Message(MessageFlag.message, createKey(), body);
+        return new Message(MessageFlag.message, guid(), body);
     }
 
     public static Message wrap(String body) {
@@ -173,7 +173,7 @@ public class Message {
      * 打包
      */
     public static Message wrap(String resourceDescriptor, String header, byte[] body) {
-        return new Message(MessageFlag.message, createKey(), resourceDescriptor, header, body);
+        return new Message(MessageFlag.message, guid(), resourceDescriptor, header, body);
     }
 
     public static Message wrap(String resourceDescriptor, String header, String body) {
@@ -196,7 +196,7 @@ public class Message {
      * 包装心跳包
      */
     public static Message wrapHeartbeat() {
-        return new Message(MessageFlag.heartbeat, createKey(), null);
+        return new Message(MessageFlag.heartbeat, guid(), null);
     }
 
 
@@ -204,7 +204,7 @@ public class Message {
      * 包装握手包（只支持用头）
      */
     public static Message wrapHandshake(String header, byte[] body) {
-        return new Message(MessageFlag.handshake, createKey(), "", header, body);
+        return new Message(MessageFlag.handshake, guid(), "", header, body);
     }
 
     public static Message wrapHandshake(String header) {
@@ -220,16 +220,5 @@ public class Message {
 
     public static Message wrapResponse(Message request, String body) {
         return new Message(MessageFlag.response, request.key(), body.getBytes(StandardCharsets.UTF_8));
-    }
-
-    /**
-     * 包装请求包（一般用不到）
-     */
-    public static Message wrapRequest(String resourceDescriptor, String header, byte[] body) {
-        return new Message(MessageFlag.request, createKey(), resourceDescriptor, header, body);
-    }
-
-    public static Message wrapRequest(String resourceDescriptor, String header, String body) {
-        return wrapRequest(resourceDescriptor, header, body.getBytes(StandardCharsets.UTF_8));
     }
 }
