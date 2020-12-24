@@ -25,6 +25,7 @@ public class NamiHandler implements InvocationHandler {
     private final String name0; //upstream name
     private final String path0; //path
     private final String url0;  //url
+    private final Class<?> clz0;
 
     /**
      * @param config 配置
@@ -32,6 +33,8 @@ public class NamiHandler implements InvocationHandler {
      */
     public NamiHandler(Class<?> clz, NamiConfig config, NamiClient client) {
         this.config = config;
+
+        this.clz0 = clz;
 
         //1.运行配置器
         if (client != null) {
@@ -87,10 +90,6 @@ public class NamiHandler implements InvocationHandler {
                 path0 = null;
             }
         }
-
-        if (url0 == null && config.getUpstream() == null) {
-            throw new NamiException("NamiClient: Not found upstream: " + clz.getName());
-        }
     }
 
 
@@ -98,6 +97,10 @@ public class NamiHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] vals) throws Throwable {
+        if (url0 == null && config.getUpstream() == null) {
+            throw new NamiException("NamiClient: Not found upstream: " + clz0.getName());
+        }
+
         Class caller = method.getDeclaringClass();
         if (Object.class == caller) {
             if (this.lookup == null) {
