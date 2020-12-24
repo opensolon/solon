@@ -10,7 +10,7 @@ import org.noear.solon.annotation.ServerEndpoint;
 @ServerEndpoint(value = "**")
 public class SocketListenerImp implements Listener {
     @Override
-    public void onMessage(Session session, Message message, boolean messageIsString) {
+    public void onMessage(Session session, Message message) {
         System.out.println(session.path() + ":" + message.resourceDescriptor());
 
         if (Solon.cfg().isDebugMode()) {

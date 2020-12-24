@@ -25,10 +25,10 @@ public class SocketContext extends ContextEmpty {
     private boolean _messageIsString;
     private MethodType _method;
 
-    public SocketContext(Session session, Message message, boolean messageIsString) {
+    public SocketContext(Session session, Message message) {
         _session = session;
         _message = message;
-        _messageIsString = messageIsString;
+        _messageIsString = message.isString();
         _method = session.method();
         _inetSocketAddress = session.getRemoteAddress();
 

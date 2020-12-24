@@ -54,7 +54,7 @@ class BioConnector extends ConnectorBase<Socket> {
 
                 if (message != null) {
                     try {
-                        ListenerProxy.getGlobal().onMessage(session, message, false);
+                        ListenerProxy.getGlobal().onMessage(session, message);
                     } catch (Throwable ex) {
                         EventBus.push(ex);
                     }

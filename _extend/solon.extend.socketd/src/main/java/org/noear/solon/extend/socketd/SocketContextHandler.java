@@ -16,7 +16,7 @@ import org.noear.solon.core.message.Session;
 public class SocketContextHandler {
     public static final SocketContextHandler instance = new SocketContextHandler();
 
-    public void handle(Session session, Message message, boolean messageIsString) {
+    public void handle(Session session, Message message) {
         if (message == null) {
             return;
         }
@@ -27,7 +27,7 @@ public class SocketContextHandler {
         }
 
         try {
-            SocketContext ctx = new SocketContext(session, message, messageIsString);
+            SocketContext ctx = new SocketContext(session, message);
 
             Solon.global().tryHandle(ctx);
 

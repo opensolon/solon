@@ -13,7 +13,7 @@ public class NioServerProcessor extends SimpleChannelInboundHandler<Message> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
         Session session = _SocketSession.get(ctx.channel());
-        ListenerProxy.getGlobal().onMessage(session, msg, false);
+        ListenerProxy.getGlobal().onMessage(session, msg);
     }
 
     @Override

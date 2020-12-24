@@ -11,6 +11,7 @@ import org.xnio.Pooled;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 public class UtWsChannelListener extends AbstractReceiveListener {
 
@@ -37,7 +38,7 @@ public class UtWsChannelListener extends AbstractReceiveListener {
                     message = Message.wrap(channel.getUrl(), null, byteBuffer.array());
                 }
 
-                ListenerProxy.getGlobal().onMessage(session, message, false);
+                ListenerProxy.getGlobal().onMessage(session, message);
 
             } finally {
                 pulledData.discard();
@@ -53,9 +54,9 @@ public class UtWsChannelListener extends AbstractReceiveListener {
         try {
             Session session = _SocketServerSession.get(channel);
             Message message = Message.wrap(channel.getUrl(),null,
-                    msg.getData().getBytes("UTF-8"));
+                    msg.getData().getBytes(StandardCharsets.UTF_8));
 
-            ListenerProxy.getGlobal().onMessage(session, message, true);
+            ListenerProxy.getGlobal().onMessage(session, message.isString(true));
         } catch (Throwable ex) {
             EventBus.push(ex);
         }

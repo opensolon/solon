@@ -53,7 +53,7 @@ public class RsAcceptor implements SocketAcceptor, RSocket {
             Session session = _SocketSession.get(this);
 
             try {
-                ListenerProxy.getGlobal().onMessage(session, message, false);
+                ListenerProxy.getGlobal().onMessage(session, message);
             } catch (Throwable ex) {
                 EventBus.push(ex);
             }

@@ -135,6 +135,19 @@ public class Message {
         }
     }
 
+    /**
+     * 是否为消息？为兼容WebSocket
+     * */
+    private boolean isString;
+
+    public boolean isString() {
+        return isString;
+    }
+    public Message isString(boolean isString){
+        this.isString = isString;
+        return this;
+    }
+
     //////////////////////////////////////////
 
     private boolean _handled;

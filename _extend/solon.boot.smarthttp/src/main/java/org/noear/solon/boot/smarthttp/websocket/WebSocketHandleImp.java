@@ -11,6 +11,7 @@ import org.smartboot.http.WebSocketResponse;
 import org.smartboot.http.server.handle.WebSocketDefaultHandle;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 public class WebSocketHandleImp extends WebSocketDefaultHandle {
 
@@ -34,9 +35,9 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
         try {
             Session session = _SocketServerSession.get(request, response);
             Message message = Message.wrap(request.getRequestURI(),null,
-                    data.getBytes("UTF-8"));
+                    data.getBytes(StandardCharsets.UTF_8));
 
-            ListenerProxy.getGlobal().onMessage(session, message, true);
+            ListenerProxy.getGlobal().onMessage(session, message.isString(true));
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -54,7 +55,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
                 message = Message.wrap(request.getRequestURI(), null, data);
             }
 
-            ListenerProxy.getGlobal().onMessage(session, message, false);
+            ListenerProxy.getGlobal().onMessage(session, message);
 
         } catch (Throwable ex) {
             EventBus.push(ex);

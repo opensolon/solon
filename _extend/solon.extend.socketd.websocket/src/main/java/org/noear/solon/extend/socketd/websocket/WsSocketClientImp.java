@@ -28,7 +28,7 @@ public class WsSocketClientImp extends WebSocketClient {
     @Override
     public void onMessage(String s) {
         try {
-            ListenerProxy.getGlobal().onMessage(session, Message.wrap(s.getBytes()), true);
+            ListenerProxy.getGlobal().onMessage(session, Message.wrap(s));
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -45,7 +45,7 @@ public class WsSocketClientImp extends WebSocketClient {
                 message = Message.wrap(bytes.array());
             }
 
-            ListenerProxy.getGlobal().onMessage(session, message, false);
+            ListenerProxy.getGlobal().onMessage(session, message);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }

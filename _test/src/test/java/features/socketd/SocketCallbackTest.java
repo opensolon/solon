@@ -25,7 +25,7 @@ public class SocketCallbackTest {
 
         session.listener(new Listener() {
             @Override
-            public void onMessage(Session session, Message message, boolean messageIsString) {
+            public void onMessage(Session session, Message message) {
                 System.out.println("实例监到，收到了："+message);
             }
         });

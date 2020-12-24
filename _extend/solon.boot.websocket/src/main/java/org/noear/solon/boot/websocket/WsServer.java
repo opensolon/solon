@@ -46,7 +46,7 @@ public class WsServer extends WebSocketServer {
             Session session = _SocketServerSession.get(conn);
             Message message = Message.wrap(conn.getResourceDescriptor(), null,data.getBytes(_charset));
 
-            ListenerProxy.getGlobal().onMessage(session, message, true);
+            ListenerProxy.getGlobal().onMessage(session, message.isString(true));
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -64,7 +64,7 @@ public class WsServer extends WebSocketServer {
                 message = Message.wrap(conn.getResourceDescriptor(), null,data.array());;
             }
 
-            ListenerProxy.getGlobal().onMessage(session, message, false);
+            ListenerProxy.getGlobal().onMessage(session, message);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
