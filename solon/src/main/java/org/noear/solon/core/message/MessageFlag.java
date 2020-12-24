@@ -1,4 +1,4 @@
-package org.noear.solon.extend.socketd;
+package org.noear.solon.core.message;
 
 import org.noear.solon.annotation.Note;
 

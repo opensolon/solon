@@ -1,8 +1,7 @@
 package org.noear.solon.extend.socketd.protocol;
 
-import org.noear.solon.extend.socketd.MessageFlag;
+import org.noear.solon.core.message.MessageFlag;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.extend.socketd.util.MessageUtil;
 
 import java.nio.ByteBuffer;
 
@@ -34,7 +33,7 @@ public abstract class MessageProtocolSecret implements MessageProtocol {
 
 
         byte[] bytes = encrypt(buffer.array());
-        message = MessageUtil.wrapContainer(bytes);
+        message = Message.wrapContainer(bytes);
 
         return baseProtocol.encode(message);
     }

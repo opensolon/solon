@@ -2,10 +2,7 @@ package org.noear.solon.extend.socketd;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.message.Listener;
-import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.util.MessageUtil;
+import org.noear.solon.core.message.*;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -43,7 +40,7 @@ public abstract class SessionBase implements Session {
 
     @Override
     public String sendAndResponse(String message) {
-        return sendAndResponse(MessageUtil.wrap(message)).bodyAsString();
+        return sendAndResponse(Message.wrap(message)).bodyAsString();
     }
 
     /**
@@ -72,7 +69,7 @@ public abstract class SessionBase implements Session {
 
     @Override
     public void sendAndCallback(String message, BiConsumer<String, Throwable> callback) {
-        sendAndCallback(MessageUtil.wrap(message), (msg, err) -> {
+        sendAndCallback(Message.wrap(message), (msg, err) -> {
             if (msg == null) {
                 callback.accept(null, err);
             } else {
@@ -128,7 +125,7 @@ public abstract class SessionBase implements Session {
      */
     @Override
     public void sendHeartbeat() {
-        send(MessageUtil.wrapHeartbeat());
+        send(Message.wrapHeartbeat());
     }
 
     private boolean _sendHeartbeatAuto = false;
