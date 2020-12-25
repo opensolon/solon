@@ -16,6 +16,7 @@ server.session.state.redis.password: AVsVSKd1
 server.session.state.redis.db: 31
 server.session.state.redis.maxTotaol: 200
 
+solon.app.name: "water"
 
 solon.extend: "ext"
 solon.extend.solation: true

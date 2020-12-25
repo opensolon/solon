@@ -35,6 +35,7 @@ public final class SolonProps extends Props {
     private boolean isFilesMode;
     private String  extend;
     private String  extendFilter;
+    private String  appName;
 
     public SolonProps() {
         super(System.getProperties());
@@ -87,6 +88,12 @@ public final class SolonProps extends Props {
         extendFilter = this.args.get("extend.filter");
         if (Utils.isEmpty(extendFilter)) {
             extendFilter = get("solon.extend.filter");
+        }
+
+        //6.应用名
+        appName = this.args.get("app.name");
+        if (Utils.isEmpty(appName)) {
+            appName = get("solon.app.name");
         }
 
         return this;
@@ -220,6 +227,13 @@ public final class SolonProps extends Props {
      * */
     public String extendFilter(){
         return extendFilter;
+    }
+
+    /**
+     * 应用名
+     * */
+    public String appName() {
+        return appName;
     }
 
     /**
