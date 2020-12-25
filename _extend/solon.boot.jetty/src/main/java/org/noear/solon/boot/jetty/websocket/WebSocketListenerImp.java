@@ -6,7 +6,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.ListenerProxy;
-import org.noear.solon.extend.socketd.MessageUtils;
+import org.noear.solon.extend.socketd.ProtocolManager;
 
 import java.nio.ByteBuffer;
 
@@ -27,13 +27,13 @@ public class WebSocketListenerImp extends WebSocketAdapter {
             Message message = null;
 
             if (Solon.global().enableWebSocketD()) {
-                message = MessageUtils.decode(buf);
+                message = ProtocolManager.decode(buf);
             } else {
-                message = MessageUtils.wrap(getSession().getUpgradeRequest().getOrigin(), null,
+                message = Message.wrap(getSession().getUpgradeRequest().getOrigin(), null,
                         buf.array());
             }
 
-            ListenerProxy.getGlobal().onMessage(session, message, false);
+            ListenerProxy.getGlobal().onMessage(session, message);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -43,10 +43,9 @@ public class WebSocketListenerImp extends WebSocketAdapter {
     public void onWebSocketText(String text) {
         try {
             Session session = _SocketServerSession.get(getSession());
-            Message message = MessageUtils.wrap(getSession().getUpgradeRequest().getRequestURI().toString(),null,
-                    text.getBytes("UTF-8"));
+            Message message = Message.wrap(getSession().getUpgradeRequest().getRequestURI().toString(), null, text);
 
-            ListenerProxy.getGlobal().onMessage(session, message, true);
+            ListenerProxy.getGlobal().onMessage(session, message.isString(true));
 
         } catch (Throwable ex) {
             EventBus.push(ex);

@@ -5,10 +5,12 @@ import org.noear.solon.core.handle.ContextEmpty;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.extend.socketd.util.HeaderUtil;
 
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.util.Map;
 
 /**
  * SocketD 上下文
@@ -23,15 +25,16 @@ public class SocketContext extends ContextEmpty {
     private boolean _messageIsString;
     private MethodType _method;
 
-    public SocketContext(Session session, Message message, boolean messageIsString) {
+    public SocketContext(Session session, Message message) {
         _session = session;
         _message = message;
-        _messageIsString = messageIsString;
+        _messageIsString = message.isString();
         _method = session.method();
         _inetSocketAddress = session.getRemoteAddress();
 
         if (Utils.isNotEmpty(message.header())) {
-            headerMap().putAll(_message.headerMap());
+            Map<String,String> headerMap = HeaderUtil.decodeHeaderMap(message.header());
+            headerMap().putAll(headerMap);
         }
     }
 
@@ -105,6 +108,11 @@ public class SocketContext extends ContextEmpty {
     }
 
     @Override
+    public String queryString() {
+        return uri().getQuery();
+    }
+
+    @Override
     public InputStream bodyAsStream() throws IOException {
         return new ByteArrayInputStream(_message.body());
     }
@@ -157,7 +165,7 @@ public class SocketContext extends ContextEmpty {
             if (_messageIsString) {
                 _session.send(_outputStream.toString());
             } else {
-                Message msg = MessageUtils.wrapResponse(_message, null, _outputStream.toByteArray());
+                Message msg = Message.wrapResponse(_message, _outputStream.toByteArray());
                 _session.send(msg);
             }
         }

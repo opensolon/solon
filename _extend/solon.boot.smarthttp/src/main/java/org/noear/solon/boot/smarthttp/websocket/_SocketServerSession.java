@@ -5,7 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.MessageUtils;
+import org.noear.solon.extend.socketd.ProtocolManager;
 import org.noear.solon.extend.socketd.SessionBase;
 import org.smartboot.http.WebSocketRequest;
 import org.smartboot.http.WebSocketResponse;
@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class _SocketServerSession extends SessionBase {
@@ -95,30 +94,34 @@ public class _SocketServerSession extends SessionBase {
     @Override
     public void send(String message) {
         if (Solon.global().enableWebSocketD()) {
-            sendBuffer(MessageUtils.encode(MessageUtils.wrap(message)));
+            sendBuffer(ProtocolManager.encode(Message.wrap(message)));
         } else {
             response.sendTextMessage(message);
             response.flush();
         }
     }
 
-    @Override
-    public void send(byte[] message) {
-        if (Solon.global().enableWebSocketD()) {
-            sendBuffer(MessageUtils.encode(MessageUtils.wrap(message)));
-        } else {
-            sendBytes(message);
-        }
-    }
+//    @Override
+//    public void send(byte[] message) {
+//        if (Solon.global().enableWebSocketD()) {
+//            sendBuffer(MessageUtils.encode(MessageUtils.wrap(message)));
+//        } else {
+//            sendBytes(message);
+//        }
+//    }
 
     @Override
     public void send(Message message) {
         super.send(message);
 
         if (Solon.global().enableWebSocketD()) {
-            sendBuffer(MessageUtils.encode(message));
+            sendBuffer(ProtocolManager.encode(message));
         } else {
-            sendBytes(message.body());
+            if (message.isString()) {
+                send(message.bodyAsString());
+            } else {
+                sendBytes(message.body());
+            }
         }
     }
 

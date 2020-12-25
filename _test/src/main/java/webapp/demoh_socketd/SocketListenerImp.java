@@ -10,7 +10,7 @@ import org.noear.solon.annotation.ServerEndpoint;
 @ServerEndpoint(value = "**")
 public class SocketListenerImp implements Listener {
     @Override
-    public void onMessage(Session session, Message message, boolean messageIsString) {
+    public void onMessage(Session session, Message message) {
         System.out.println(session.path() + ":" + message.resourceDescriptor());
 
         if (Solon.cfg().isDebugMode()) {
@@ -21,7 +21,7 @@ public class SocketListenerImp implements Listener {
             message.setHandled(true);
 
             session.getOpenSessions().forEach(s -> {
-                s.send(message.toString());
+                s.send(message);
             });
         } else {
             System.out.println("X我收到了::" + message.toString());

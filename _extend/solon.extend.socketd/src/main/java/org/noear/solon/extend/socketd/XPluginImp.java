@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.message.Listener;
+import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.annotation.ClientEndpoint;
 
@@ -24,7 +25,7 @@ public class XPluginImp implements Plugin {
 
                 //发送握手包
                 if (Utils.isNotEmpty(anno.handshakeHeader())) {
-                    s.sendHandshake(MessageUtils.wrapHandshake(anno.handshakeHeader()));
+                    s.sendHandshake(Message.wrapHandshake(anno.handshakeHeader()));
                 }
 
                 //设定自动心跳

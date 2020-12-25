@@ -2,9 +2,7 @@ package org.noear.solon.extend.socketd;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.message.Listener;
-import org.noear.solon.core.message.Message;
-import org.noear.solon.core.message.Session;
+import org.noear.solon.core.message.*;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -40,6 +38,11 @@ public abstract class SessionBase implements Session {
         }
     }
 
+    @Override
+    public String sendAndResponse(String message) {
+        return sendAndResponse(Message.wrap(message)).bodyAsString();
+    }
+
     /**
      * 用于支持双向RPC
      */
@@ -62,6 +65,17 @@ public abstract class SessionBase implements Session {
         } catch (Throwable ex) {
             throw Utils.throwableWrap(ex);
         }
+    }
+
+    @Override
+    public void sendAndCallback(String message, BiConsumer<String, Throwable> callback) {
+        sendAndCallback(Message.wrap(message), (msg, err) -> {
+            if (msg == null) {
+                callback.accept(null, err);
+            } else {
+                callback.accept(msg.bodyAsString(), err);
+            }
+        });
     }
 
     /**
@@ -111,7 +125,7 @@ public abstract class SessionBase implements Session {
      */
     @Override
     public void sendHeartbeat() {
-        send(MessageUtils.wrapHeartbeat());
+        send(Message.wrapHeartbeat());
     }
 
     private boolean _sendHeartbeatAuto = false;

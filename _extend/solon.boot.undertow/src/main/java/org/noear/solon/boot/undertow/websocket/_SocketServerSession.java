@@ -8,7 +8,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.extend.socketd.MessageUtils;
+import org.noear.solon.extend.socketd.ProtocolManager;
 import org.noear.solon.extend.socketd.SessionBase;
 
 import java.io.IOException;
@@ -87,29 +87,33 @@ public class _SocketServerSession extends SessionBase {
     @Override
     public void send(String message) {
         if (Solon.global().enableWebSocketD()) {
-            sendBuffer(MessageUtils.encode(MessageUtils.wrap(message)));
+            sendBuffer(ProtocolManager.encode(Message.wrap(message)));
         } else {
             WebSockets.sendText(message, real, null);
         }
     }
 
-    @Override
-    public void send(byte[] message) {
-        if (Solon.global().enableWebSocketD()) {
-            sendBuffer(MessageUtils.encode(MessageUtils.wrap(message)));
-        } else {
-            sendBuffer(ByteBuffer.wrap(message));
-        }
-    }
+//    @Override
+//    public void send(byte[] message) {
+//        if (Solon.global().enableWebSocketD()) {
+//            sendBuffer(MessageUtils.encode(MessageUtils.wrap(message)));
+//        } else {
+//            sendBuffer(ByteBuffer.wrap(message));
+//        }
+//    }
 
     @Override
     public void send(Message message) {
         super.send(message);
 
         if (Solon.global().enableWebSocketD()) {
-            sendBuffer(MessageUtils.encode(message));
+            sendBuffer(ProtocolManager.encode(message));
         } else {
-            sendBuffer(ByteBuffer.wrap(message.body()));
+            if (message.isString()) {
+                send(message.bodyAsString());
+            } else {
+                sendBuffer(ByteBuffer.wrap(message.body()));
+            }
         }
     }
 

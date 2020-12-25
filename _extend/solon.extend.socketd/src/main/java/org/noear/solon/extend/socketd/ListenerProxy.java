@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Message;
+import org.noear.solon.core.message.MessageFlag;
 import org.noear.solon.core.message.Session;
 
 import java.io.IOException;
@@ -79,7 +80,7 @@ public class ListenerProxy implements Listener {
     }
 
     @Override
-    public void onMessage(Session session, Message message, boolean messageIsString) throws IOException {
+    public void onMessage(Session session, Message message) throws IOException {
         if (message == null) {
             return;
         }
@@ -88,11 +89,11 @@ public class ListenerProxy implements Listener {
         //线程池处理，免得被卡住
         //
         executors.submit(() -> {
-            onMessage0(session, message, messageIsString);
+            onMessage0(session, message);
         });
     }
 
-    private void onMessage0(Session session, Message message, boolean messageIsString) {
+    private void onMessage0(Session session, Message message) {
         try {
             if (Solon.cfg().isFilesMode() || Solon.cfg().isDebugMode()) {
                 System.out.println("Listener proxy receive: " + message);
@@ -101,12 +102,12 @@ public class ListenerProxy implements Listener {
             //路由监听模式（起到过滤器作用）
             Listener sl = get(session);
             if (sl != null) {
-                sl.onMessage(session, message, messageIsString);
+                sl.onMessage(session, message);
             }
 
             //实例监听者
             if (session.listener() != null) {
-                session.listener().onMessage(session, message, messageIsString);
+                session.listener().onMessage(session, message);
             }
 
             //心跳包不进入处理流程
@@ -130,7 +131,7 @@ public class ListenerProxy implements Listener {
 
             //代理模式
             if (message.getHandled() == false) {
-                SocketContextHandler.instance.handle(session, message, messageIsString);
+                SocketContextHandler.instance.handle(session, message);
             }
         } catch (Throwable ex) {
             onError0(session, ex);

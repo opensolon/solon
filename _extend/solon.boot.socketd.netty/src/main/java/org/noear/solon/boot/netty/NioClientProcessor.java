@@ -15,7 +15,7 @@ public class NioClientProcessor extends SimpleChannelInboundHandler<Message> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
-        ListenerProxy.getGlobal().onMessage(session, msg, false);
+        ListenerProxy.getGlobal().onMessage(session, msg);
     }
 
     @Override

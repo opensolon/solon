@@ -29,7 +29,7 @@ public interface Listener {
     default void onOpen(Session session) {
     }
 
-    void onMessage(Session session, Message message, boolean messageIsString) throws IOException;
+    void onMessage(Session session, Message message) throws IOException;
 
     default void onClose(Session session) {
     }

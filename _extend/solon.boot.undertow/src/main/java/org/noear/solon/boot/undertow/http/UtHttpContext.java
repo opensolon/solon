@@ -117,6 +117,11 @@ public class UtHttpContext extends Context {
         return _request.getContentType();
     }
 
+    @Override
+    public String queryString() {
+        return _request.getQueryString();
+    }
+
 
     @Override
     public InputStream bodyAsStream() throws IOException {

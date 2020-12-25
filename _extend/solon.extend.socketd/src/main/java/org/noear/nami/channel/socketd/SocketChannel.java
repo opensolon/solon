@@ -8,8 +8,9 @@ import org.noear.nami.channel.Constants;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.core.util.HeaderUtil;
+import org.noear.solon.core.message.MessageFlag;
 import org.noear.solon.extend.socketd.annotation.Handshake;
+import org.noear.solon.extend.socketd.util.HeaderUtil;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -31,13 +32,13 @@ public class SocketChannel implements NamiChannel {
         cfg.getDecoder().filter(cfg, action, url, headers, args);
 
         Message message = null;
-        String message_key = Utils.guid();
-        int flag = 0;
+        String message_key = Message.guid();
+        int flag = MessageFlag.message;
 
         if (method != null) {
             Handshake h = method.getAnnotation(Handshake.class);
             if (h != null) {
-                flag = -1;
+                flag = MessageFlag.handshake;
 
                 if (Utils.isNotEmpty(h.handshakeHeader())) {
                     Map<String, String> headerMap = HeaderUtil.decodeHeaderMap(h.handshakeHeader());
@@ -51,14 +52,14 @@ public class SocketChannel implements NamiChannel {
 
         switch (cfg.getEncoder().enctype()) {
             case application_hessian: {
-                headers.put("Content-Type", Constants.ct_hessian);
+                headers.put(Constants.h_content_type, Constants.ct_hessian);
                 message = new Message(flag, message_key, url, HeaderUtil.encodeHeaderMap(headers), (byte[]) cfg.getEncoder().encode(args));
                 break;
             }
             default: {
                 // 默认：application_json
                 //
-                headers.put("Content-Type", Constants.ct_json);
+                headers.put(Constants.h_content_type, Constants.ct_json);
                 String json = (String) cfg.getEncoder().encode(args);
                 message = new Message(flag, message_key, url, HeaderUtil.encodeHeaderMap(headers), json.getBytes());
                 break;

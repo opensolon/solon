@@ -1419,6 +1419,10 @@ public class HTTPServer {
             return uri.getPath();
         }
 
+        public String getQueryString(){
+            return uri.getQuery();
+        }
+
         /**
          * Sets the path component of the request URI. This can be useful
          * in URL rewriting, etc.

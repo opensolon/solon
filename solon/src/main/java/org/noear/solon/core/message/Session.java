@@ -36,15 +36,11 @@ public interface Session {
      */
     String path();
 
-    /**
-     * 发送消息
-     */
-    void send(String message);
 
     /**
      * 发送消息
      */
-    void send(byte[] message);
+    void send(String message);
 
     /**
      * 发送消息
@@ -54,12 +50,23 @@ public interface Session {
     /**
      * 发送消息并等待响应
      */
+    String sendAndResponse(String message);
+
+    /**
+     * 发送消息并等待响应
+     */
     Message sendAndResponse(Message message);
 
     /**
      * 发送消息并异步回调
      */
+    void sendAndCallback(String message, BiConsumer<String, Throwable> callback);
+
+    /**
+     * 发送消息并异步回调
+     */
     void sendAndCallback(Message message, BiConsumer<Message, Throwable> callback);
+
 
     /**
      * 当前实例监听者（ListenEndpoint 为路径监听者，不限实例）

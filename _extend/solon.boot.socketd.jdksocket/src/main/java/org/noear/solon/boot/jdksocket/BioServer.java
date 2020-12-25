@@ -48,7 +48,7 @@ class BioServer {
                     if (message != null) {
                         pool.execute(() -> {
                             try {
-                                ListenerProxy.getGlobal().onMessage(session, message, false);
+                                ListenerProxy.getGlobal().onMessage(session, message);
                             } catch (Throwable ex) {
                                 ListenerProxy.getGlobal().onError(session, ex);
                             }

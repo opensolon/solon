@@ -134,6 +134,8 @@ public abstract class Context {
     /**获取内容类型*/
     @Note("获取内容类型")
     public abstract String contentType();
+    @Note("获取查询字符串")
+    public abstract String queryString();
 
     private String body;
     /**获取RAW内容*/

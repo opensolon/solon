@@ -8,17 +8,13 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.ListenerProxy;
-import org.noear.solon.extend.socketd.MessageUtils;
+import org.noear.solon.extend.socketd.ProtocolManager;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 @SuppressWarnings("unchecked")
 public class WsServer extends WebSocketServer {
-    private Charset _charset = StandardCharsets.UTF_8;
-
     public WsServer(int port) {
         super(new InetSocketAddress(port));
     }
@@ -44,9 +40,9 @@ public class WsServer extends WebSocketServer {
     public void onMessage(WebSocket conn, String data) {
         try {
             Session session = _SocketServerSession.get(conn);
-            Message message = MessageUtils.wrap(conn.getResourceDescriptor(), null,data.getBytes(_charset));
+            Message message = Message.wrap(conn.getResourceDescriptor(), null, data);
 
-            ListenerProxy.getGlobal().onMessage(session, message, true);
+            ListenerProxy.getGlobal().onMessage(session, message.isString(true));
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
@@ -59,12 +55,12 @@ public class WsServer extends WebSocketServer {
             Message message = null;
 
             if(Solon.global().enableWebSocketD()){
-                message = MessageUtils.decode(data);
+                message = ProtocolManager.decode(data);
             }else{
-                message = MessageUtils.wrap(conn.getResourceDescriptor(), null,data.array());;
+                message = Message.wrap(conn.getResourceDescriptor(), null,data.array());;
             }
 
-            ListenerProxy.getGlobal().onMessage(session, message, false);
+            ListenerProxy.getGlobal().onMessage(session, message);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }

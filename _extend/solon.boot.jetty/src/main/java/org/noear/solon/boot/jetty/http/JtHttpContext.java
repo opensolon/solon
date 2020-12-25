@@ -103,9 +103,14 @@ public class JtHttpContext extends Context {
         return uri().getPath();
     }
 
+    private String _url;
     @Override
     public String url() {
-        return _request.getRequestURL().toString();
+        if(_url == null) {
+            _url = _request.getRequestURL().toString();
+        }
+
+        return _url;
     }
 
     @Override
@@ -116,6 +121,11 @@ public class JtHttpContext extends Context {
     @Override
     public String contentType() {
         return _request.getContentType();
+    }
+
+    @Override
+    public String queryString() {
+        return _request.getQueryString();
     }
 
 

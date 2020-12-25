@@ -14,7 +14,7 @@ class AioServerProcessor implements MessageProcessor<Message> {
         try {
             Session session1 = _SocketSession.get(session);
 
-            ListenerProxy.getGlobal().onMessage(session1, message, false);
+            ListenerProxy.getGlobal().onMessage(session1, message);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }

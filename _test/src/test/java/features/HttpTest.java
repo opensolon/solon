@@ -30,6 +30,7 @@ public class HttpTest extends _TestBase {
         assert  get("/demo1/run1/*").equals("http://localhost:8080/demo1/run1/*");
     }
 
+
     @Test
     public void test12_post() throws IOException {
         assert post("/demo1/run1/*", "").equals("http://localhost:8080/demo1/run1/*");

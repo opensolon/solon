@@ -17,7 +17,7 @@ class AioClientProcessor implements MessageProcessor<Message> {
     @Override
     public void process(AioSession s, Message message) {
         try {
-            ListenerProxy.getGlobal().onMessage(session, message, false);
+            ListenerProxy.getGlobal().onMessage(session, message);
         } catch (Throwable ex) {
             EventBus.push(ex);
         }

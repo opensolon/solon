@@ -1,4 +1,4 @@
-package org.noear.solon.extend.socketd;
+package org.noear.solon.core.message;
 
 import org.noear.solon.annotation.Note;
 
@@ -12,7 +12,7 @@ public interface MessageFlag {
     /**
      * 容器包（承载另一个消息包的字节码；一般用于加密）
      * */
-    @Note("容器包（承载另一个消息包的字节码）")
+    @Note("容器包（用于二次编码）")
     int container = 1;
 
     /**
