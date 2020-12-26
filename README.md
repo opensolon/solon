@@ -280,20 +280,22 @@ String rst = rpc.hello("noear");
 * 7.加载渲染关系
 * 8.完成
 
-### 附5：Helloworld 的单机并发数
+### 附5：Helloworld 的单机并发数 [helloworld_wrk_test](https://gitee.com/noear/helloworld_wrk_test)
 
-> 机器：2017款 macbook pro 13, i7, 16g, jdk11
->
+#### 机器：2017 macbook pro 13, i7, 16g, MacOS 10.15, jdk11；时间：2020-10-05；测试人：@Noear
+
 > 测试：wrk -t10 -c200 -d30s --latency "http://127.0.0.1:8080/"
 
-|  solon 1.0.40 | 大小 | QPS | spring boot 2.3.3  |  QPS  | 
-| -------- | -------- | -------- | -------- | -------- |
-| solon.boot.jlhttp (可独立运行)     | 0.1m     | 4.7万左右     | /   |    | 
-| /     |      |      | spring-boot-starter-tomcat   |  3.2万左右  | 
-| solon.boot.jetty (支持Servlet，可独立运行)     | 1.8m     | 10.7万左右     | spring-boot-starter-jetty | 3.7万左右 |
-| solon.boot.undertow (支持Servlet，可独立运行)     | 4.2m     | 11.3万左右     | spring-boot-starter-undertow | 4.4万左右 |
+|  solon 1.2.12 | 大小 | QPS | 
+| -------- | -------- | -------- | 
+| solon.boot.jlhttp(bio)     | 0.2m     | 4.7万左右     |
+| solon.boot.jetty(nio, 支持servlet api)     | 1.9m     | 10.7万左右     | 
+| solon.boot.undertow(nio, 支持servlet api)     | 4.3m     | 11.3万左右     | 
+| solon.boot.smarthttp(aio)     | 0.4m     | 12.4万左右     | 
 
 
-| javalin 3.1.0  | 大小 |  QPS  | 
+| spring boot 2.3.3  | 大小 |  QPS  | 
 | -------- | -------- | -------- |
-| javalin(jetty)   | 4.8m |  9.8万左右  | 
+| spring-boot-starter-tomcat   | 16.1m |  3.2万左右  | 
+| spring-boot-starter-jetty | 16m | 3.7万左右 |
+| spring-boot-starter-undertow | 16.8m | 4.4万左右 |
