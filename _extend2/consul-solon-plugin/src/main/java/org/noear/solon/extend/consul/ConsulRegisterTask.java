@@ -43,7 +43,7 @@ class ConsulRegisterTask implements Runnable {
 
         //::确定hostname
         if (Utils.isEmpty(hostname)) {
-            hostname = Tool.getLocalAddress();
+            hostname = Tools.getLocalAddress();
         }
 
 

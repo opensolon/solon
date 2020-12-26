@@ -56,7 +56,7 @@ public class XPluginImp implements Plugin {
             //开始先获取一下配置，避免使用@Inject("${prop.name}")这种配置方式获取的值位null
             configTask.run();
 
-            long interval = Tool.getInterval(app.cfg().get(Constants.CONFIG_INTERVAL, "10s"));
+            long interval = Tools.getInterval(app.cfg().get(Constants.CONFIG_INTERVAL, "10s"));
 
             if (interval > 0) {
                 clientTimer.schedule(configTask, interval, interval);
@@ -69,7 +69,7 @@ public class XPluginImp implements Plugin {
             LoadBalanceSimpleFactory factory = new LoadBalanceSimpleFactory();
             Bridge.upstreamFactorySet(factory);
 
-            long interval = Tool.getInterval(app.cfg().get(Constants.LOCATOR_INTERVAL, "10s"));
+            long interval = Tools.getInterval(app.cfg().get(Constants.LOCATOR_INTERVAL, "10s"));
 
             ConsulLocatorTask locatorTask = new ConsulLocatorTask(client, factory);
             locatorTask.run();
