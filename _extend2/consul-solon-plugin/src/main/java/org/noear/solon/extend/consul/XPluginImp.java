@@ -9,22 +9,7 @@ import org.noear.solon.core.*;
 import java.util.*;
 
 /**
- * 集成Consul,配置application.properties:
- *
- * #应用ID
- * application.name=solon-consul-test
- * #应用服务ID,其中应用ID用来标示唯一的一个服务，服务ID标示一组相同的服务
- * application.service=solon-consul-test
- * #服务发现，把自身注册到consul，默认为true
- * consul.discovery.enable=true
- * #开启负载均衡，可在使用Nami,Feign等插件时，直接使用`服务ID`调用RPC服务,默认false
- * consul.locator.enable=true
- * 负载自动刷新，单位ms,值<=0时不自动刷新,默认为10000（10s）
- * consul.locator.interval=10000
- * #开启配置获取，默认为false
- * consul.config.enable=true
- * #配置自动刷新，单位ms,值<=0时不自动刷新,默认为10000（10s）
- * consul.config.interval=10000
+ * 集成Consul,配置 application.properties
  *
  * @author 夜の孤城
  * @since 1.2
