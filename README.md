@@ -15,7 +15,7 @@
 * 采用Handler + Context 架构；强调插件式扩展
 * 统一Http（支持 Servlet 或 NoServlet），WebSocket，Socket三种信号接入
 * 插件可扩展可切换：启动插件，扩展插件，序列化插件，数据插件，会话状态插件，视图插件(可共存) 等...
-* 体验与Springboot近似，迁移成本低
+* 体验与Springboot近似，迁移成本低。
 
 
 ### Hello world：
