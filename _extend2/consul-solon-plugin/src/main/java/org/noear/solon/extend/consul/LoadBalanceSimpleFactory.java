@@ -16,41 +16,46 @@ class LoadBalanceSimpleFactory implements LoadBalance.Factory {
 
     /**
      * 注册
-     * */
-    public void register(String service, LoadBalanceSimple loadBalance){
-        cached.put(service,loadBalance);
+     */
+    public void register(String service, LoadBalanceSimple loadBalance) {
+        cached.put(service, loadBalance);
     }
 
     /**
      * 获取
-     * */
-    public LoadBalanceSimple get(String service){
+     */
+    public LoadBalanceSimple get(String service) {
         return cached.get(service);
     }
 
 
     /**
      * 生成负载平衡
-     * */
+     */
     @Override
     public LoadBalance create(String service) {
         return new LoadBalanceProxy(service);
     }
 
-    class LoadBalanceProxy implements LoadBalance{
+    class LoadBalanceProxy implements LoadBalance {
         String service;
+        LoadBalance real;
 
-        private LoadBalanceProxy(String service){
-            this.service=service;
+        private LoadBalanceProxy(String service) {
+            this.service = service;
+            this.real = get(service);
         }
 
         public synchronized String getServer() {
-            LoadBalance lb=get(service);
-
-            if(lb==null){
-                return null;
+            if (real == null) {
+                real = get(service);
             }
-            return lb.getServer();
+
+            if (real == null) {
+                return null;
+            } else {
+                return real.getServer();
+            }
         }
     }
 }
