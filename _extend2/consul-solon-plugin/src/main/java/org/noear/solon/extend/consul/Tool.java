@@ -1,5 +1,7 @@
 package org.noear.solon.extend.consul;
 
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.util.PrintUtil;
 
 import java.io.IOException;
@@ -15,7 +17,7 @@ import java.util.Enumeration;
  * @author 夜の孤城
  * @since 1.2
  */
-public class LocalUtils {
+public class Tool {
     private static String localAddress;
 
     public static String getLocalAddress() {
@@ -27,7 +29,7 @@ public class LocalUtils {
         return localAddress;
     }
 
-    public static InetAddress findFirstNonLoopbackAddress() {
+    private static InetAddress findFirstNonLoopbackAddress() {
         InetAddress result = null;
         try {
             int lowest = Integer.MAX_VALUE;
@@ -65,5 +67,28 @@ public class LocalUtils {
         }
 
         return null;
+    }
+
+    public static int getInterval(String val) {
+        if (Utils.isEmpty(val)) {
+            return 0;
+        }
+
+        if (val.length() > 1) {
+            if (val.endsWith("ms")) {
+                return Integer.parseInt(val.substring(0, val.length() - 2));
+            }
+
+            if (val.endsWith("s")) {
+                return Integer.parseInt(val.substring(0, val.length() - 1)) * 1000;
+            }
+
+            if (val.indexOf("s") < 0) {
+                //ms
+                return Integer.parseInt(val);
+            }
+        }
+
+        return 0;
     }
 }
