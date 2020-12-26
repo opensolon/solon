@@ -8,13 +8,13 @@ import org.noear.solon.annotation.Mapping;
 @Controller
 public class HelloController {
 
-    @NamiClient("solon-consul-test")
+    @NamiClient("solon-consul-test:/")
     HelloInterface helloInterface;
 
     @Mapping("/hello")
     public String sayHello() {
 
-        return "config:" + Solon.cfg().get("hello");//+",rpc:"+helloInterface.hello0();
+        return "config:" + Solon.cfg().get("hello")+",rpc:"+helloInterface.hello0();
     }
 
     @Mapping("/hello0")

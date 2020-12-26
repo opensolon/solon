@@ -40,12 +40,15 @@ class ConsulConfigTask extends TimerTask {
     public ConsulConfigTask(ConsulClient client) {
         this.client = client;
 
+        //1.优先用config.key
         configKey = Solon.cfg().get(Constants.CONFIG_KEY);
 
+        //2.其次用app group
         if(Utils.isEmpty(configKey)){
             configKey = Solon.cfg().appGroup();
         }
 
+        //3.再镒用app name
         if(Utils.isEmpty(configKey)){
             configKey = Solon.cfg().appName();
         }

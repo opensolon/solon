@@ -36,7 +36,7 @@ interface Constants {
     String DISCOVERY_ENABLE = "consul.discovery.enable";
     String DISCOVERY_HOSTNAME = "consul.discovery.hostname";
     String DISCOVERY_TAGS = "consul.discovery.tags";
-    String DISCOVERY_HEALTH_CHECK_URL = "consul.discovery.healthCheckUrl";
+    String DISCOVERY_HEALTH_CHECK_PATH = "consul.discovery.healthCheckPath";
     String DISCOVERY_HEALTH_CHECK_INTERVAL = "consul.discovery.healthCheckInterval";
 
     String LOCATOR_ENABLE = "consul.locator.enable";

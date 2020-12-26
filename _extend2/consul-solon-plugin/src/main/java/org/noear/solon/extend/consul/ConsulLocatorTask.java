@@ -27,11 +27,11 @@ class ConsulLocatorTask extends TimerTask {
     @Override
     public void run() {
 
-        //client.getHealthServices("",)
         Response<Map<String, Service>> services = client.getAgentServices();
-        //System.out.println(services.getValue());
 
-        for (Service service : services.getValue().values()) {
+        for (Map.Entry<String, Service> kv : services.getValue().entrySet()) {
+            Service service = kv.getValue();
+
             if (Utils.isEmpty(service.getAddress())) {
                 continue;
             }

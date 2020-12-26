@@ -6,7 +6,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * 注册任务
@@ -23,43 +23,60 @@ class ConsulRegisterTask implements Runnable {
 
     @Override
     public void run() {
-        SolonApp app = Solon.global();
+        String healthCheckInterval = Solon.cfg().get(Constants.DISCOVERY_HEALTH_CHECK_INTERVAL, "10s");
+        String healthCheckPath     = Solon.cfg().get(Constants.DISCOVERY_HEALTH_CHECK_PATH, "/run/check/");
+        String hostname            = Solon.cfg().get(Constants.DISCOVERY_HOSTNAME);
+        String tags_str            = Solon.cfg().get(Constants.DISCOVERY_TAGS);
+        Set<String> tags = new LinkedHashSet<>();
+
+        tags.add("solon");
+
+        //::构建tags
+        //
+        if (Utils.isNotEmpty(Solon.cfg().appGroup())) {
+            tags.add(Solon.cfg().appGroup());
+        }
+
+        if (Utils.isNotEmpty(tags_str)) {
+            tags.addAll(Arrays.asList(tags_str.split(",")));
+        }
+
+
+        //::确定hostname
+        if (Utils.isEmpty(hostname)) {
+            hostname = LocalUtils.getLocalAddress();
+        }
+
 
         NewService newService = new NewService();
 
-        newService.setPort(app.port());
+        newService.setPort(Solon.global().port());
+        newService.setId(Solon.cfg().appName() + "-" + Solon.global().port());
+        newService.setName(Solon.cfg().appName());
+        newService.setTags(new ArrayList<>(tags));
+        newService.setAddress(hostname);
 
-        String discovery_address = app.cfg().get(Constants.DISCOVERY_HOSTNAME);
-        if (Utils.isEmpty(discovery_address)) {
-            discovery_address = LocalUtils.getLocalAddress();
-        }
 
-        newService.setId(app.cfg().appName() + "-" + app.port());
-        newService.setName(app.cfg().appName());
-        newService.setTags(Arrays.asList("solon", app.cfg().appGroup()));
-        newService.setAddress(discovery_address);
-
-        String interval = app.cfg().get(Constants.DISCOVERY_HEALTH_CHECK_INTERVAL, "10s");
-
-        if (Utils.isNotEmpty(interval)) {
+        if (Utils.isNotEmpty(healthCheckInterval)) {
             //1.添加Solon服务，提供检测用
             //
-            String path = app.cfg().get(Constants.DISCOVERY_HEALTH_CHECK_URL, "/actuator/health");
-            app.get(path, ctx -> {
+            Solon.global().get(healthCheckPath, ctx -> {
                 ctx.output("OK");
             });
 
             //2.添加检测器
             //
-            // discovery_address="127.0.0.1";
-            String checkUrl = "http://" + discovery_address + ":" + app.port();
-            if (path.startsWith("/")) {
-                checkUrl = checkUrl + path;
+            String checkUrl = "http://" + hostname + ":" + Solon.global().port();
+            if (healthCheckPath.startsWith("/")) {
+                checkUrl = checkUrl + healthCheckPath;
             } else {
-                checkUrl = checkUrl + "/" + path;
+                checkUrl = checkUrl + "/" + healthCheckPath;
             }
+
+            //3.添加检测
+            //
             NewService.Check check = new NewService.Check();
-            check.setInterval(interval);
+            check.setInterval(healthCheckInterval);
             check.setMethod("GET");
             check.setHttp(checkUrl);
             check.setDeregisterCriticalServiceAfter("60s");
@@ -67,8 +84,7 @@ class ConsulRegisterTask implements Runnable {
             newService.setCheck(check);
         }
 
-        //3.注册到consul
-        client.agentServiceRegister(newService);
 
+        client.agentServiceRegister(newService);
     }
 }
