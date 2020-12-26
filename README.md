@@ -282,9 +282,8 @@ String rst = rpc.hello("noear");
 
 ### 附5：Helloworld 的单机并发数 [《helloworld_wrk_test》](https://gitee.com/noear/helloworld_wrk_test)
 
-#### 机器：2017 macbook pro 13, i7, 16g, MacOS 10.15, jdk11
-
-> 测试：wrk -t10 -c200 -d30s --latency "http://127.0.0.1:8080/"
+> * 机器：2017 macbook pro 13, i7, 16g, MacOS 10.15, jdk11
+> * 测试：wrk -t10 -c200 -d30s --latency "http://127.0.0.1:8080/"
 
 |  solon 1.1.2 | 大小 | QPS | 
 | -------- | -------- | -------- | 
