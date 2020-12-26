@@ -4,5 +4,5 @@ import org.noear.nami.annotation.Mapping;
 
 public interface HelloInterface {
     @Mapping
-     String hello0();
+    String hello0();
 }

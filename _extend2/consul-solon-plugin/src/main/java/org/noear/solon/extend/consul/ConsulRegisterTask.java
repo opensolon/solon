@@ -29,7 +29,7 @@ class ConsulRegisterTask implements Runnable {
 
         newService.setPort(app.port());
 
-        String discovery_address = app.cfg().get(Constants.DISCOVERY_ADDRESS);
+        String discovery_address = app.cfg().get(Constants.DISCOVERY_HOSTNAME);
         if (Utils.isEmpty(discovery_address)) {
             discovery_address = LocalUtils.getLocalAddress();
         }
@@ -39,12 +39,12 @@ class ConsulRegisterTask implements Runnable {
         newService.setTags(Arrays.asList("solon", app.cfg().appGroup()));
         newService.setAddress(discovery_address);
 
-        String interval = app.cfg().get(Constants.DISCOVERY_INTERVAL, "10s");
+        String interval = app.cfg().get(Constants.DISCOVERY_HEALTH_CHECK_INTERVAL, "10s");
 
         if (Utils.isNotEmpty(interval)) {
             //1.添加Solon服务，提供检测用
             //
-            String path = app.cfg().get(Constants.DISCOVERY_CHECK_PATH, "/actuator/health");
+            String path = app.cfg().get(Constants.DISCOVERY_HEALTH_CHECK_URL, "/actuator/health");
             app.get(path, ctx -> {
                 ctx.output("OK");
             });

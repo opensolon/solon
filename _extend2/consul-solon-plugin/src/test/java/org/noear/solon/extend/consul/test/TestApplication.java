@@ -6,6 +6,6 @@ import org.noear.solon.Solon;
 @EnableNamiClient
 public class TestApplication {
     public static void main(String[] args) {
-        Solon.start(TestApplication.class,args);
+        Solon.start(TestApplication.class, args);
     }
 }
