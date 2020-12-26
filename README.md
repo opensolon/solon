@@ -286,12 +286,12 @@ String rst = rpc.hello("noear");
 
 > 测试：wrk -t10 -c200 -d30s --latency "http://127.0.0.1:8080/"
 
-|  solon 1.2.12 | 大小 | QPS | 
+|  solon 1.1.2 | 大小 | QPS | 
 | -------- | -------- | -------- | 
-| solon.boot.jlhttp(bio)     | 0.2m     | 4.7万左右     |
-| solon.boot.jetty(nio, 支持servlet api)     | 1.9m     | 10.7万左右     | 
-| solon.boot.undertow(nio, 支持servlet api)     | 4.3m     | 11.3万左右     | 
-| solon.boot.smarthttp(aio)     | 0.4m     | 12.4万左右     | 
+| solon.boot.jlhttp(bio)     | 0.1m     | 4.7万左右     |
+| solon.boot.jetty(nio, 支持servlet api)     | 1.8m     | 10.7万左右     | 
+| solon.boot.undertow(nio, 支持servlet api)     | 4.2m     | 11.3万左右     | 
+| solon.boot.smarthttp(aio)     | 0.3m     | 12.4万左右     | 
 
 
 | spring boot 2.3.3  | 大小 |  QPS  | 
