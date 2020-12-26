@@ -1,5 +1,6 @@
-solon.app.name=test-consul-api
-solon.app.group=test
+```properties
+solon.app.name=solon-consul-test
+solon.app.group=water
 
 consul.host=localhost
 
@@ -13,5 +14,6 @@ consul.host=localhost
 #consul.locator.interval=10000
 
 #consul.config.enable=true
-#consul.config.key=test
+#consul.config.key=test/app
 #consul.config.interval=10000
+```

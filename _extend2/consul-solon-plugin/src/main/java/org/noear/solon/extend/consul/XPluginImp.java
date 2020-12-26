@@ -51,7 +51,7 @@ public class XPluginImp implements Plugin {
         }
 
         // 2.Config::尝试获取配置
-        if (app.cfg().getBool(Constants.CONFIG_ENABLE, false)) {
+        if (app.cfg().getBool(Constants.CONFIG_ENABLE, true)) {
             ConsulConfigTask configTask = new ConsulConfigTask(client);
             //开始先获取一下配置，避免使用@Inject("${prop.name}")这种配置方式获取的值位null
             configTask.run();
@@ -65,7 +65,7 @@ public class XPluginImp implements Plugin {
         }
 
         // 3.Locator::尝试获取负载
-        if (app.cfg().getBool(Constants.LOCATOR_ENABLE, false)) {
+        if (app.cfg().getBool(Constants.LOCATOR_ENABLE, true)) {
             LoadBalanceSimpleFactory factory = new LoadBalanceSimpleFactory();
             Bridge.upstreamFactorySet(factory);
 
