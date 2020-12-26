@@ -382,6 +382,11 @@
             </dependency>
 
 
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>consul-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -787,6 +792,7 @@
 
 
         <module>../_extend2/beetlsql-solon-plugin</module>
+        <module>../_extend2/consul-solon-plugin</module>
         <module>../_extend2/cron4j-solon-plugin</module>
         <module>../_extend2/dubbo-solon-plugin</module>
         <module>../_extend2/feign-solon-plugin</module>

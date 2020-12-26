@@ -26,6 +26,7 @@
             <artifactId>consul-api</artifactId>
             <version>${consul-api.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>nami</artifactId>

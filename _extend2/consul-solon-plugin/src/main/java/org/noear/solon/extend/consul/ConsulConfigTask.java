@@ -56,6 +56,7 @@ class ConsulConfigTask extends TimerTask {
                 configVer = gv.getModifyIndex();
                 String configValue=gv.getDecodedValue();
                 Properties keyValues= Utils.buildProperties(configValue);
+
                 if(keyValues!=null){
                     Solon.cfg().putAll(keyValues);
                 }

@@ -36,13 +36,17 @@ class LoadBalanceSimpleFactory implements LoadBalance.Factory {
     public LoadBalance create(String service) {
         return new LoadBalanceProxy(service);
     }
+
     class LoadBalanceProxy implements LoadBalance{
         String service;
+
         private LoadBalanceProxy(String service){
             this.service=service;
         }
+
         public synchronized String getServer() {
             LoadBalance lb=get(service);
+
             if(lb==null){
                 return null;
             }
