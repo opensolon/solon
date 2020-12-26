@@ -1,0 +1,20 @@
+solon:
+  app:
+    name: "solon-consul-test"
+    group: "test"
+
+consul:
+  host: "localhost"
+  discovery:
+    enable: true
+    hostname: "12.12.12:12"
+    tags: "dev"
+    healthCheckInterval: "10s"
+    healthCheckPath: "/run/check/"
+  locator:
+    enable: true
+    interval: "10s"
+  config:
+    key: "test/app"
+    enable: true
+    interval: "10s"

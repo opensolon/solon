@@ -16,9 +16,15 @@ import java.util.Enumeration;
  * @since 1.2
  */
 public class LocalUtils {
+    private static String localAddress;
+
     public static String getLocalAddress() {
-        InetAddress address = findFirstNonLoopbackAddress();
-        return address.getHostAddress();
+        if (localAddress == null) {
+            InetAddress address = findFirstNonLoopbackAddress();
+            localAddress = address.getHostAddress();
+        }
+
+        return localAddress;
     }
 
     public static InetAddress findFirstNonLoopbackAddress() {
@@ -37,7 +43,7 @@ public class LocalUtils {
                     }
                     for (Enumeration<InetAddress> addrs = ifc.getInetAddresses(); addrs.hasMoreElements(); ) {
                         InetAddress address = addrs.nextElement();
-                        if (address instanceof Inet4Address&& !address.isLoopbackAddress()
+                        if (address instanceof Inet4Address && !address.isLoopbackAddress()
                         ) {
                             result = address;
                         }
