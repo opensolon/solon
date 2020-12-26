@@ -17,7 +17,7 @@ class LoadBalanceSimpleFactory implements LoadBalance.Factory {
     /**
      * 注册
      */
-    public void update(Map<String, LoadBalanceSimple> map) {
+    protected void update(Map<String, LoadBalanceSimple> map) {
         if (map != null) {
             cached = map;
         }
@@ -26,7 +26,7 @@ class LoadBalanceSimpleFactory implements LoadBalance.Factory {
     /**
      * 获取
      */
-    public LoadBalanceSimple get(String service) {
+    protected LoadBalanceSimple get(String service) {
         return cached.get(service);
     }
 

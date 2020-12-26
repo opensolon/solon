@@ -30,7 +30,7 @@ class LoadBalanceSimple implements LoadBalance {
     /**
      * 添加 server
      * */
-    public void addServer(String server) {
+    protected void addServer(String server) {
         servers.add(server);
     }
 }
