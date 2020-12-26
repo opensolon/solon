@@ -84,6 +84,9 @@ class ConsulRegisterTask implements Runnable {
         }
 
 
+        //
+        // 注册服务
+        //
         client.agentServiceRegister(newService);
     }
 }

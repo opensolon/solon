@@ -12,14 +12,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 1.2
  * */
 class LoadBalanceSimpleFactory implements LoadBalance.Factory {
-    private Map<String, LoadBalanceSimple> cached = new HashMap<>();
+    private Map<String, LoadBalanceSimple> storage = new HashMap<>();
 
     /**
-     * 注册
+     * 更新仓库
      */
-    protected void update(Map<String, LoadBalanceSimple> map) {
-        if (map != null) {
-            cached = map;
+    protected void update(Map<String, LoadBalanceSimple> storage) {
+        if (storage != null) {
+            this.storage = storage;
         }
     }
 
@@ -27,7 +27,7 @@ class LoadBalanceSimpleFactory implements LoadBalance.Factory {
      * 获取
      */
     protected LoadBalanceSimple get(String service) {
-        return cached.get(service);
+        return storage.get(service);
     }
 
 

@@ -27,7 +27,7 @@ class ConsulLocatorTask extends TimerTask {
 
     @Override
     public void run() {
-        Map<String, LoadBalanceSimple> tmp = new HashMap<>();
+        Map<String, LoadBalanceSimple> storage = new HashMap<>();
         Response<Map<String, Service>> services = client.getAgentServices();
 
 
@@ -40,11 +40,11 @@ class ConsulLocatorTask extends TimerTask {
 
             String name = service.getService();
 
-            LoadBalanceSimple loadBalance = tmp.get(name);
+            LoadBalanceSimple loadBalance = storage.get(name);
 
             if (loadBalance == null) {
                 loadBalance = new LoadBalanceSimple();
-                tmp.put(name, loadBalance);
+                storage.put(name, loadBalance);
             }
 
             loadBalance.addServer("http://" + service.getAddress() + ":" + service.getPort());
@@ -53,6 +53,6 @@ class ConsulLocatorTask extends TimerTask {
         //
         // 因为不知道哪个服务无效了；所以采用替换策略
         //
-        factory.update(tmp);
+        factory.update(storage);
     }
 }
