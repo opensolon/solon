@@ -45,7 +45,7 @@ class Tools {
                         continue;
                     }
 
-                    if (Solon.cfg().isFilesMode() || Solon.cfg().isDebugMode()) {
+                    if (Solon.cfg().isDebugMode()) {
                         System.out.println("Testing network interface: " + ifc.getDisplayName());
                     }
 
