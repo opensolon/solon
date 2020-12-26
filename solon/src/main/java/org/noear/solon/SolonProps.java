@@ -36,6 +36,7 @@ public final class SolonProps extends Props {
     private String  extend;
     private String  extendFilter;
     private String  appName;
+    private String  appGroup;
 
     public SolonProps() {
         super(System.getProperties());
@@ -94,6 +95,11 @@ public final class SolonProps extends Props {
         appName = this.args.get("app.name");
         if (Utils.isEmpty(appName)) {
             appName = get("solon.app.name");
+        }
+
+        appGroup = this.args.get("app.group");
+        if (Utils.isEmpty(appGroup)) {
+            appGroup = get("solon.app.group");
         }
 
         return this;
@@ -237,10 +243,17 @@ public final class SolonProps extends Props {
     }
 
     /**
+     * 应用组
+     * */
+    public String appGroup() {
+        return appGroup;
+    }
+
+    /**
      * 框架版本号
      * */
     public String version(){
-        return "1.2.12";
+        return "1.2.12.1";
     }
 
     /**

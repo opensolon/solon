@@ -1,7 +1,6 @@
 package org.noear.solon.extend.consul;
 
 import com.ecwid.consul.v1.ConsulClient;
-import com.ecwid.consul.v1.agent.model.NewCheck;
 import com.ecwid.consul.v1.agent.model.NewService;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
@@ -35,10 +34,10 @@ class ConsulRegisterTask implements Runnable {
             discovery_address = LocalUtils.getLocalAddress();
         }
 
+        newService.setId(app.cfg().appName() + "-" + app.port());
+        newService.setName(app.cfg().appName());
+        newService.setTags(Arrays.asList("solon", app.cfg().appGroup()));
         newService.setAddress(discovery_address);
-        newService.setId(app.cfg().get(Constants.APP_NAME) + "-" + app.port());
-        newService.setName(app.cfg().get(Constants.APP_SERVICE_NAME));
-        newService.setTags(Arrays.asList("SOLON"));
 
         String interval = app.cfg().get(Constants.DISCOVERY_INTERVAL, "10s");
 

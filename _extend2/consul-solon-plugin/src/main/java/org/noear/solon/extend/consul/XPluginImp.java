@@ -33,6 +33,7 @@ public class XPluginImp implements Plugin {
     private Timer clientTimer = new Timer();
     private ConsulClient client;
     private String serviceId;
+
     @Override
     public void start(SolonApp app) {
         String host = app.cfg().get(Constants.HOST);
@@ -42,7 +43,8 @@ public class XPluginImp implements Plugin {
         }
 
         client = new ConsulClient(host);
-        serviceId=app.cfg().get(Constants.APP_NAME) + "-" + app.port();
+        serviceId = app.cfg().appName() + "-" + app.port();
+
         // 1.Discovery::尝试注册服务
         if (app.cfg().getBool(Constants.DISCOVERY_ENABLE, true)) {
             new ConsulRegisterTask(client).run();
@@ -50,11 +52,13 @@ public class XPluginImp implements Plugin {
 
         // 2.Config::尝试获取配置
         if (app.cfg().getBool(Constants.CONFIG_ENABLE, false)) {
-            ConsulConfigTask configTask=new ConsulConfigTask(client);
+            ConsulConfigTask configTask = new ConsulConfigTask(client);
             //开始先获取一下配置，避免使用@Inject("${prop.name}")这种配置方式获取的值位null
             configTask.run();
-            long interval=app.cfg().getLong(Constants.CONFIG_INTERVAL,10000);
-            if(interval>0){
+
+            long interval = app.cfg().getLong(Constants.CONFIG_INTERVAL, 10000);
+
+            if (interval > 0) {
                 clientTimer.schedule(configTask, interval, interval);
             }
 
@@ -64,10 +68,13 @@ public class XPluginImp implements Plugin {
         if (app.cfg().getBool(Constants.LOCATOR_ENABLE, false)) {
             LoadBalanceSimpleFactory factory = new LoadBalanceSimpleFactory();
             Bridge.upstreamFactorySet(factory);
-            long interval=app.cfg().getLong(Constants.LOCATOR_INTERVAL,10000);
-            ConsulLocatorTask locatorTask=new ConsulLocatorTask(client, factory);
+
+            long interval = app.cfg().getLong(Constants.LOCATOR_INTERVAL, 10000);
+
+            ConsulLocatorTask locatorTask = new ConsulLocatorTask(client, factory);
             locatorTask.run();
-            if(interval>0){
+
+            if (interval > 0) {
                 clientTimer.schedule(locatorTask, interval, interval);
             }
         }
@@ -75,7 +82,7 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void stop() throws Throwable {
-        if(client!=null){
+        if (client != null) {
             client.agentServiceDeregister(serviceId);
         }
     }

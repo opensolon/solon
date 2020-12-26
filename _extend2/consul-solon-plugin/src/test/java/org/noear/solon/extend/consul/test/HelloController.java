@@ -17,7 +17,7 @@ public class HelloController {
     @Mapping("/hello")
     public String sayHello(){
 
-        return "config:"+Solon.cfg().get("hello")+",rpc:"+helloInterface.hello0();
+        return "config:"+Solon.cfg().get("hello");//+",rpc:"+helloInterface.hello0();
     }
 
     @Mapping("/hello0")
