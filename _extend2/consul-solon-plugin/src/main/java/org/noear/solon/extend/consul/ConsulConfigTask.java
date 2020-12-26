@@ -4,6 +4,7 @@ import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.kv.model.GetValue;
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.PropsLoader;
 
 import java.util.Map;
@@ -54,13 +55,9 @@ class ConsulConfigTask extends TimerTask {
             if (gv.getModifyIndex() > configVer) {
                 configVer = gv.getModifyIndex();
                 String configValue=gv.getDecodedValue();
-                try {
-                    Properties p= PropsLoader.global().build(configValue);
-                    if(p!=null){
-                        Solon.cfg().putAll(p);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                Properties keyValues= Utils.buildProperties(configValue);
+                if(keyValues!=null){
+                    Solon.cfg().putAll(keyValues);
                 }
             }
         }else{

@@ -10,8 +10,8 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
     <groupId>org.noear</groupId>
-    <artifactId>solon-consul-plugin</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>consul-solon-plugin</artifactId>
+    <version>${solon.ver}</version>
     <properties>
         <consul-api.version>1.4.5</consul-api.version>
     </properties>
