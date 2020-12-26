@@ -1,5 +1,6 @@
 package org.noear.solon.extend.consul;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.PrintUtil;
 
@@ -39,12 +40,16 @@ class Tools {
                     .hasMoreElements(); ) {
                 NetworkInterface ifc = nics.nextElement();
                 if (ifc.isUp()) {
-                    PrintUtil.blueln("Testing interface: " + ifc.getDisplayName());
+                    if(Solon.cfg().isDebugMode()) {
+                        PrintUtil.blueln("Testing interface: " + ifc.getDisplayName());
+                    }
+
                     if (ifc.getIndex() < lowest || result == null) {
                         lowest = ifc.getIndex();
                     } else if (result != null) {
                         continue;
                     }
+
                     for (Enumeration<InetAddress> addrs = ifc.getInetAddresses(); addrs.hasMoreElements(); ) {
                         InetAddress address = addrs.nextElement();
                         if (address instanceof Inet4Address && !address.isLoopbackAddress()
