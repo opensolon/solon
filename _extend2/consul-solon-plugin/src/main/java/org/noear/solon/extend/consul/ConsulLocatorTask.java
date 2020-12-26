@@ -50,6 +50,9 @@ class ConsulLocatorTask extends TimerTask {
             loadBalance.addServer("http://" + service.getAddress() + ":" + service.getPort());
         }
 
+        //
+        // 因为不知道哪个服务无效了；所以采用替换策略
+        //
         factory.update(tmp);
     }
 }

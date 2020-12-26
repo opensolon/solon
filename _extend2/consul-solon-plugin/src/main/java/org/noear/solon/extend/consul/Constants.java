@@ -13,17 +13,17 @@ interface Constants {
      *
      * consul.host=localhost
      *
-     * consul.config.enable = true
-     * consul.config.key = test
-     * consul.config.interval = 10s
+     * #consul.config.enable = true
+     * #consul.config.key = test
+     * #consul.config.interval = 10s
      *
-     * consul.discovery.enable = true
-     * consul.discovery.hostname = 127.0.0.1
-     * consul.discovery.healthCheckInterval = 10000
-     * consul.discovery.healthCheckPath = /run/check/
+     * #consul.discovery.enable = true
+     * #consul.discovery.hostname = 127.0.0.1
+     * #consul.discovery.healthCheckInterval = 10000
+     * #consul.discovery.healthCheckPath = /run/check/
      *
-     * consul.locator.enable=true
-     * consul.locator.interval=10s
+     * #consul.locator.enable=true
+     * #consul.locator.interval=10s
      *
      */
 
