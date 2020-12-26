@@ -33,11 +33,4 @@ class LoadBalanceSimple implements LoadBalance {
     public void addServer(String server) {
         servers.add(server);
     }
-
-    /**
-     * 去掉 server
-     * */
-    public void subServer(String server){
-        servers.remove(server);
-    }
 }

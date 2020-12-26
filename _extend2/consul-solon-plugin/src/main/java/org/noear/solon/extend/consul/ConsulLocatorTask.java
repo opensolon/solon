@@ -5,6 +5,7 @@ import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.agent.model.Service;
 import org.noear.solon.Utils;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TimerTask;
 
@@ -26,8 +27,9 @@ class ConsulLocatorTask extends TimerTask {
 
     @Override
     public void run() {
-
+        Map<String, LoadBalanceSimple> cached = new HashMap<>();
         Response<Map<String, Service>> services = client.getAgentServices();
+
 
         for (Map.Entry<String, Service> kv : services.getValue().entrySet()) {
             Service service = kv.getValue();
@@ -38,14 +40,16 @@ class ConsulLocatorTask extends TimerTask {
 
             String name = service.getService();
 
-            LoadBalanceSimple loadBalance = factory.get(name);
+            LoadBalanceSimple loadBalance = cached.get(name);
 
             if (loadBalance == null) {
                 loadBalance = new LoadBalanceSimple();
-                factory.register(name, loadBalance);
+                cached.put(name, loadBalance);
             }
 
             loadBalance.addServer("http://" + service.getAddress() + ":" + service.getPort());
         }
+
+        factory.update(cached);
     }
 }
