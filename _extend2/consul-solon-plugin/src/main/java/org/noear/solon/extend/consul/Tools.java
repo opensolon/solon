@@ -2,7 +2,6 @@ package org.noear.solon.extend.consul;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.util.PrintUtil;
 
 import java.io.IOException;
 import java.net.Inet4Address;
@@ -40,27 +39,26 @@ class Tools {
                     .hasMoreElements(); ) {
                 NetworkInterface ifc = nics.nextElement();
                 if (ifc.isUp()) {
-                    if(Solon.cfg().isDebugMode()) {
-                        PrintUtil.blueln("Testing interface: " + ifc.getDisplayName());
-                    }
-
                     if (ifc.getIndex() < lowest || result == null) {
                         lowest = ifc.getIndex();
                     } else if (result != null) {
                         continue;
                     }
 
+                    if (Solon.cfg().isFilesMode() || Solon.cfg().isDebugMode()) {
+                        System.out.println("Testing network interface: " + ifc.getDisplayName());
+                    }
+
                     for (Enumeration<InetAddress> addrs = ifc.getInetAddresses(); addrs.hasMoreElements(); ) {
                         InetAddress address = addrs.nextElement();
-                        if (address instanceof Inet4Address && !address.isLoopbackAddress()
-                        ) {
+                        if (address instanceof Inet4Address && !address.isLoopbackAddress()) {
                             result = address;
                         }
                     }
                 }
             }
         } catch (IOException ex) {
-            PrintUtil.redln("Cannot get first non-loopback address" + ex.getStackTrace());
+            System.err.println("Cannot get first non-loopback address" + ex.getStackTrace());
         }
 
         if (result != null) {
@@ -70,7 +68,7 @@ class Tools {
         try {
             return InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
-            PrintUtil.redln("Unable to retrieve localhost");
+            System.err.println("Unable to retrieve localhost");
         }
 
         return null;
