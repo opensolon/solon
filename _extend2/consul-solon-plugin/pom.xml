@@ -6,15 +6,13 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.2.12</version>
+        <version>1.2.12.1</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
+
     <groupId>org.noear</groupId>
     <artifactId>consul-solon-plugin</artifactId>
-    <version>${solon.ver}</version>
-    <properties>
-        <consul-api.version>1.4.5</consul-api.version>
-    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
@@ -24,13 +22,12 @@
         <dependency>
             <groupId>com.ecwid.consul</groupId>
             <artifactId>consul-api</artifactId>
-            <version>${consul-api.version}</version>
+            <version>1.4.5</version>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>nami</artifactId>
-            <version>1.2.11</version>
             <scope>test</scope>
         </dependency>
 
