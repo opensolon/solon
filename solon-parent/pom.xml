@@ -46,6 +46,7 @@
         <swagger.ver>1.5.13</swagger.ver>
 
         <slf4j.ver>1.7.30</slf4j.ver>
+        <consul.ver>1.4.5</consul.ver>
     </properties>
 
 
