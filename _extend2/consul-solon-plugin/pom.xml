@@ -18,7 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
+            <artifactId>solon.extend.properties.yaml</artifactId>
         </dependency>
 
         <dependency>
@@ -33,6 +33,7 @@
             <version>1.2.11</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-api</artifactId>
