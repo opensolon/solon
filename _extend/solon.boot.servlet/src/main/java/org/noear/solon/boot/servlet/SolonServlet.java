@@ -2,6 +2,7 @@ package org.noear.solon.boot.servlet;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.handle.Context;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,23 +10,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public abstract class ServletHandler extends HttpServlet {
+public abstract class SolonServlet extends HttpServlet {
 
-    protected void preHandle(){
+    protected void preHandle(Context ctx){
 
     }
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ServletContext context = new ServletContext(request, response);
-        context.contentType("text/plain;charset=UTF-8");
+        SolonServletContext ctx = new SolonServletContext(request, response);
+        ctx.contentType("text/plain;charset=UTF-8");
 
-        preHandle();
+        preHandle(ctx);
 
         try {
-            Solon.global().handle(context);
+            Solon.global().handle(ctx);
 
-            if (context.getHandled() == false || context.status() == 404) {
+            if (ctx.getHandled() == false || ctx.status() == 404) {
                 response.setStatus(404);
             }
         } catch (Throwable ex) {

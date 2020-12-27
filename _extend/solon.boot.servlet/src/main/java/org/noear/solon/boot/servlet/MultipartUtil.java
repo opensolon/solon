@@ -12,7 +12,7 @@ import java.util.List;
 
 class MultipartUtil {
 
-    public static void buildParamsAndFiles(ServletContext context) throws IOException, ServletException{
+    public static void buildParamsAndFiles(SolonServletContext context) throws IOException, ServletException{
         HttpServletRequest request = (HttpServletRequest) context.request();
 
         request.setAttribute("org.eclipse.jetty.multipartConfig",
@@ -25,7 +25,7 @@ class MultipartUtil {
         }
     }
 
-    private static void doBuildFiles(ServletContext context, Part part) throws IOException{
+    private static void doBuildFiles(SolonServletContext context, Part part) throws IOException{
         List<UploadedFile> list = context._fileMap.get(part.getName());
         if(list == null){
             list = new ArrayList<>();

@@ -16,16 +16,13 @@ import java.util.*;
 /**
  * @author noear 2020/12/28 created
  */
-public class ServletContainerInitializer {
-    javax.servlet.ServletContext sc;
-
+public class SolonServletContainerInitializer {
     Set<javax.servlet.ServletContainerInitializer> initializers = new LinkedHashSet<>();
     Set<FilterHodler> filters = new LinkedHashSet<>();
     Set<EventListener> listeners = new LinkedHashSet<>();
     Set<ServletHolder> servlets = new LinkedHashSet<>();
 
-    public ServletContainerInitializer(ServletContext servletContext) {
-        sc = servletContext;
+    public SolonServletContainerInitializer() {
 
         Aop.beanForeach((bw) -> {
             if (bw.raw() instanceof javax.servlet.ServletContainerInitializer) {
