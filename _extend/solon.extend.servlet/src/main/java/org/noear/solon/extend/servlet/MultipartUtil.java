@@ -1,4 +1,4 @@
-package org.noear.solon.boot.servlet;
+package org.noear.solon.extend.servlet;
 
 import org.noear.solon.core.handle.UploadedFile;
 

@@ -1,8 +1,8 @@
-package org.noear.solon.boot.servlet;
+package org.noear.solon.extend.servlet;
 
 import org.noear.solon.Utils;
-import org.noear.solon.boot.servlet.holder.FilterHodler;
-import org.noear.solon.boot.servlet.holder.ServletHolder;
+import org.noear.solon.extend.servlet.holder.FilterHodler;
+import org.noear.solon.extend.servlet.holder.ServletHolder;
 import org.noear.solon.core.Aop;
 
 import javax.servlet.*;
@@ -15,17 +15,17 @@ import java.util.*;
 
 /**
  * @author noear 2020/12/28 created
+ * @since 1.2
  */
-public class SolonServletContainerInitializer {
-    Set<javax.servlet.ServletContainerInitializer> initializers = new LinkedHashSet<>();
+public class SolonServletInstaller {
+    Set<ServletContainerInitializer> initializers = new LinkedHashSet<>();
     Set<FilterHodler> filters = new LinkedHashSet<>();
     Set<EventListener> listeners = new LinkedHashSet<>();
     Set<ServletHolder> servlets = new LinkedHashSet<>();
 
-    public SolonServletContainerInitializer() {
-
+    public SolonServletInstaller() {
         Aop.beanForeach((bw) -> {
-            if (bw.raw() instanceof javax.servlet.ServletContainerInitializer) {
+            if (bw.raw() instanceof ServletContainerInitializer) {
                 initializers.add(bw.raw());
             }
 
@@ -52,7 +52,7 @@ public class SolonServletContainerInitializer {
         });
     }
 
-    public void onStartup(Set<Class<?>> set, ServletContext sc) throws ServletException {
+    public void startup(Set<Class<?>> set, ServletContext sc) throws ServletException {
         for (javax.servlet.ServletContainerInitializer si : initializers) {
             si.onStartup(set, sc);
         }

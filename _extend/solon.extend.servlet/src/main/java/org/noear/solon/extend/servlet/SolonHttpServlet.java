@@ -1,4 +1,4 @@
-package org.noear.solon.boot.servlet;
+package org.noear.solon.extend.servlet;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public abstract class SolonServlet extends HttpServlet {
+public abstract class SolonHttpServlet extends HttpServlet {
 
     protected void preHandle(Context ctx){
 

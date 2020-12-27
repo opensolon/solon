@@ -1,4 +1,4 @@
-package org.noear.solon.boot.servlet;
+package org.noear.solon.extend.servlet;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
@@ -17,6 +17,9 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.*;
 
+/**
+ * @since 1.2
+ * */
 public class SolonServletContext extends Context {
     private HttpServletRequest _request;
     private HttpServletResponse _response;
