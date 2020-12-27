@@ -21,7 +21,7 @@
         <solon.ver>1.2.12.1</solon.ver>
 
         <snack3.ver>3.1.12</snack3.ver>
-        <weed3.ver>3.2.27</weed3.ver>
+        <weed3.ver>3.2.28</weed3.ver>
 
         <fastjson.ver>1.2.70</fastjson.ver>
         <jedis.ver>3.2.0</jedis.ver>
@@ -108,6 +108,11 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.reactor-netty</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.boot.servlet</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
             <dependency>
@@ -712,6 +717,7 @@
         <module>../_extend/solon.boot.jdkhttp</module>
         <module>../_extend/solon.boot.reactor-netty</module>
         <!--        <module>../_extend/solon.boot.rapidoid-http-fast</module>-->
+        <module>../_extend/solon.boot.servlet</module>
         <module>../_extend/solon.boot.smarthttp</module>
         <module>../_extend/solon.boot.undertow</module>
 

@@ -25,6 +25,11 @@
             <artifactId>solon.extend.socketd</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.servlet</artifactId>
+        </dependency>
+
         <!-- jetty http -->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>

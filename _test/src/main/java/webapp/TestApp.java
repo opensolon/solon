@@ -4,6 +4,8 @@ import org.noear.nami.annotation.EnableNamiClient;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Import;
+import org.noear.solon.core.LoadBalance;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.extend.cron4j.EnableCron4j;
 import org.noear.solon.extend.quartz.EnableQuartz;
@@ -15,9 +17,14 @@ import webapp.demo6_aop.TestImport;
 @EnableCron4j
 @EnableQuartz
 @EnableNamiClient
-public class TestApp {
+public class TestApp   {
 
     public static void main(String[] args) throws Exception {
+
+        EventBus.subscribe(Throwable.class,(event)->{
+            event.printStackTrace();
+        });
+
         /**
          *
          * http://t5_undertow.test.noear.org
@@ -51,6 +58,8 @@ public class TestApp {
 //                //session.send("X我收到了::" + message.toString());
 //            }
 //        });
+
+
 
         //socket server
         app.socket("/seb/test", (c) -> {
