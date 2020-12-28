@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class SolonHttpServlet extends HttpServlet {
+public class SolonServletHandler extends HttpServlet {
 
     protected void preHandle(Context ctx){
 
