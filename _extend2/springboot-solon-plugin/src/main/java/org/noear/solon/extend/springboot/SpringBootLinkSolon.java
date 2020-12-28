@@ -11,5 +11,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Import(ConfigurationSolon.class)
 @Documented
-public @interface EnableSolon {
+public @interface SpringBootLinkSolon {
 }
