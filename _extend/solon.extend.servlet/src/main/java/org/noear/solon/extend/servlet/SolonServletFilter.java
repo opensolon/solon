@@ -2,6 +2,7 @@ package org.noear.solon.extend.servlet;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.handle.ContextUtil;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -14,15 +15,16 @@ import java.io.IOException;
 public class SolonServletFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        SolonServletContext ctx = new SolonServletContext((HttpServletRequest)request, (HttpServletResponse)response);
+        SolonServletContext ctx = new SolonServletContext((HttpServletRequest) request, (HttpServletResponse) response);
         ctx.contentType("text/plain;charset=UTF-8");
 
 
         try {
             Solon.global().handle(ctx);
 
-            if(ctx.getHandled() == false){
-                filterChain.doFilter(request,response);
+            if (ctx.getHandled() == false) {
+                ContextUtil.currentSet(ctx);
+                filterChain.doFilter(request, response);
             }
 
         } catch (Throwable ex) {
@@ -32,6 +34,8 @@ public class SolonServletFilter implements Filter {
             if (Solon.cfg().isDebugMode()) {
                 ex.printStackTrace(response.getWriter());
             }
+        } finally {
+            ContextUtil.currentRemove();
         }
     }
 }
