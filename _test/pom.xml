@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.2.12.1</version>
+        <version>1.2.12.2</version>
         <relativePath>../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -122,10 +122,10 @@
 <!--        </dependency>-->
 
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.smarthttp</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.smarthttp</artifactId>-->
+<!--        </dependency>-->
 
 
 <!--        <dependency>-->
@@ -139,10 +139,10 @@
 <!--            <artifactId>solon.boot.reactor-netty</artifactId>-->
 <!--        </dependency>-->
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.undertow</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.undertow</artifactId>
+        </dependency>
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->

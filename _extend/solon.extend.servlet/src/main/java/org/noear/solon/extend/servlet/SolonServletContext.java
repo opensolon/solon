@@ -1,9 +1,8 @@
-package org.noear.solon.boot.jetty.http;
+package org.noear.solon.extend.servlet;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
-import org.noear.solon.core.*;
 import org.noear.solon.Utils;
+import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
 import org.noear.solon.core.handle.UploadedFile;
@@ -18,12 +17,15 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.*;
 
-public class JtHttpContext extends Context {
+/**
+ * @since 1.2
+ * */
+public class SolonServletContext extends Context {
     private HttpServletRequest _request;
     private HttpServletResponse _response;
     protected Map<String,List<UploadedFile>> _fileMap;
 
-    public JtHttpContext(HttpServletRequest request, HttpServletResponse response) {
+    public SolonServletContext(HttpServletRequest request, HttpServletResponse response) {
         _request = request;
         _response = response;
 

@@ -1,5 +1,4 @@
-package org.noear.solon.boot.jetty.http;
-
+package org.noear.solon.extend.servlet;
 
 import org.noear.solon.core.handle.UploadedFile;
 
@@ -13,7 +12,7 @@ import java.util.List;
 
 class MultipartUtil {
 
-    public static void buildParamsAndFiles(JtHttpContext context) throws IOException, ServletException{
+    public static void buildParamsAndFiles(SolonServletContext context) throws IOException, ServletException{
         HttpServletRequest request = (HttpServletRequest) context.request();
 
         request.setAttribute("org.eclipse.jetty.multipartConfig",
@@ -26,7 +25,7 @@ class MultipartUtil {
         }
     }
 
-    private static void doBuildFiles(JtHttpContext context, Part part) throws IOException{
+    private static void doBuildFiles(SolonServletContext context, Part part) throws IOException{
         List<UploadedFile> list = context._fileMap.get(part.getName());
         if(list == null){
             list = new ArrayList<>();

@@ -1,4 +1,4 @@
-package org.noear.solon.boot.jetty.holder;
+package org.noear.solon.extend.servlet.holder;
 
 import javax.servlet.Filter;
 import javax.servlet.annotation.WebFilter;

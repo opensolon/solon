@@ -1,11 +1,11 @@
 package org.noear.solon.boot.jetty.http;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.noear.solon.boot.jetty.XPluginImp;
 import org.noear.solon.boot.jetty.XServerProp;
+import org.noear.solon.extend.servlet.SolonServletContext;
 import org.noear.solon.core.event.EventBus;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +37,7 @@ public class JtHttpContextHandler extends AbstractHandler {
     }
 
     private void handleDo(Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
-        JtHttpContext context = new JtHttpContext(request, response);
+        SolonServletContext context = new SolonServletContext(request, response);
 
         context.contentType("text/plain;charset=UTF-8");
         if (XServerProp.output_meta) {

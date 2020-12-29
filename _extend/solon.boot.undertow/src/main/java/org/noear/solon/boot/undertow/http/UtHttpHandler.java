@@ -4,7 +4,7 @@ import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.servlet.handlers.ServletRequestContext;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
+import org.noear.solon.extend.servlet.SolonServletContext;
 import org.noear.solon.boot.undertow.XPluginImp;
 import org.noear.solon.boot.undertow.XServerProp;
 import org.noear.solon.core.event.EventBus;
@@ -39,7 +39,7 @@ public class UtHttpHandler implements HttpHandler {
     }
 
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UtHttpContext context = new UtHttpContext(request, response);
+        SolonServletContext context = new SolonServletContext(request, response);
         context.contentType("text/plain;charset=UTF-8");
 
         if (XServerProp.output_meta) {

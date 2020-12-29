@@ -4,10 +4,9 @@ import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.resource.ResourceCollection;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.jetty.http.JtContainerInitializerProxy;
-import org.noear.solon.boot.jetty.http.JtHttpContextServlet;
+import org.noear.solon.boot.jetty.http.JtHttpContextServletHandler;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,7 +17,7 @@ class PluginJettyBase {
     protected ServletContextHandler getServletHandler() throws IOException {
         ServletContextHandler handler = new ServletContextHandler();
         handler.setContextPath("/");
-        handler.addServlet(JtHttpContextServlet.class, "/");
+        handler.addServlet(JtHttpContextServletHandler.class, "/");
         handler.setBaseResource(new ResourceCollection(getResourceURLs()));
 
 

@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.2.12.1</version>
+    <version>1.2.12.2</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -18,10 +18,10 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.2.12.1</solon.ver>
+        <solon.ver>1.2.12.2</solon.ver>
 
         <snack3.ver>3.1.12</snack3.ver>
-        <weed3.ver>3.2.27</weed3.ver>
+        <weed3.ver>3.2.28</weed3.ver>
 
         <fastjson.ver>1.2.70</fastjson.ver>
         <jedis.ver>3.2.0</jedis.ver>
@@ -172,6 +172,11 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.data</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.extend.servlet</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
             <dependency>
@@ -444,6 +449,11 @@
                 <version>${solon.ver}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>springboot-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -712,6 +722,7 @@
         <module>../_extend/solon.boot.jdkhttp</module>
         <module>../_extend/solon.boot.reactor-netty</module>
         <!--        <module>../_extend/solon.boot.rapidoid-http-fast</module>-->
+
         <module>../_extend/solon.boot.smarthttp</module>
         <module>../_extend/solon.boot.undertow</module>
 
@@ -752,6 +763,8 @@
 
         <module>../_extend/solon.extend.aspect</module>
         <module>../_extend/solon.extend.staticfiles</module>
+
+        <module>../_extend/solon.extend.servlet</module>
 
         <module>../_extend/solon.extend.sessionstate.redis</module>
         <module>../_extend/solon.extend.sessionstate.local</module>
@@ -804,6 +817,8 @@
         <module>../_extend2/mybatis-solon-plugin</module>
         <module>../_extend2/mybatis-sqlhelper-solon-plugin</module>
         <module>../_extend2/quartz-solon-plugin</module>
+
+        <module>../_extend2/springboot-solon-plugin</module>
 
 
         <module>../solonfox/solonfox-swagger2</module>
