@@ -15,7 +15,11 @@ public class BeanPostProcessorSolon implements BeanPostProcessor {
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         BeanWrap bw = Aop.wrap(bean.getClass(), bean);
 
-        Aop.context().beanRegister(bw, beanName, true);
+        if(bean.getClass().getSimpleName().equalsIgnoreCase(beanName)) {
+            Aop.context().beanRegister(bw, null, true);
+        }else{
+            Aop.context().beanRegister(bw, beanName, true);
+        }
 
         return bean;
     }
