@@ -1,5 +1,6 @@
 package org.noear.solon.extend.consul;
 
+import com.ecwid.consul.json.GsonFactory;
 import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.agent.model.NewService;
 import org.noear.solon.Solon;
@@ -17,7 +18,9 @@ class ConsulRegisterTask implements Runnable {
     ConsulClient client;
 
     public ConsulRegisterTask(ConsulClient client) {
+
         this.client = client;
+
     }
 
     @Override
@@ -26,6 +29,7 @@ class ConsulRegisterTask implements Runnable {
         String healthCheckPath     = Solon.cfg().get(Constants.DISCOVERY_HEALTH_CHECK_PATH, "/run/check/");
         String hostname            = Solon.cfg().get(Constants.DISCOVERY_HOSTNAME);
         String tags_str            = Solon.cfg().get(Constants.DISCOVERY_TAGS);
+        String token            = Solon.cfg().get(Constants.TOKEN);
         Set<String> tags = new LinkedHashSet<>();
 
         tags.add("solon");
@@ -59,8 +63,16 @@ class ConsulRegisterTask implements Runnable {
         if (Utils.isNotEmpty(healthCheckInterval)) {
             //1.添加Solon服务，提供检测用
             //
+            HealthDetector detector=new HealthDetector();
+            detector.startDetect(Solon.global());
+
             Solon.global().get(healthCheckPath, ctx -> {
-                ctx.output("OK");
+
+                Map<String,Object> info=new HashMap<>();
+                info.put("status","OK");
+                info.putAll(detector.getInfo());
+                ctx.outputAsJson( GsonFactory.getGson().toJson(info));
+
             });
 
             //2.添加检测器
@@ -78,7 +90,7 @@ class ConsulRegisterTask implements Runnable {
             check.setInterval(healthCheckInterval);
             check.setMethod("GET");
             check.setHttp(checkUrl);
-            check.setDeregisterCriticalServiceAfter("60s");
+            check.setDeregisterCriticalServiceAfter("30s");
             check.setTimeout("60s");
             newService.setCheck(check);
         }
@@ -87,6 +99,6 @@ class ConsulRegisterTask implements Runnable {
         //
         // 注册服务
         //
-        client.agentServiceRegister(newService);
+        client.agentServiceRegister(newService,token);
     }
 }

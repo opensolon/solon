@@ -27,7 +27,9 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        client = new ConsulClient(host);
+        int consulPort=app.cfg().getInt(Constants.PORT,8500);
+        client = new ConsulClient(host,consulPort);
+
         serviceId = app.cfg().appName() + "-" + app.port();
 
         // 1.Discovery::尝试注册服务
@@ -70,5 +72,6 @@ public class XPluginImp implements Plugin {
         if (client != null) {
             client.agentServiceDeregister(serviceId);
         }
+        clientTimer.cancel();
     }
 }
