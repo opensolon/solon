@@ -5,9 +5,9 @@ import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.kv.model.GetValue;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.event.EventBus;
 
-import java.util.Properties;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * 配置获取任务
@@ -30,15 +30,21 @@ import java.util.TimerTask;
  */
 class ConsulConfigTask extends TimerTask {
     ConsulClient client;
+    Map<String,Long> watchedIndex=new HashMap<>();
 
     /**
      * 配置版本号
      */
     long configVer = 0;
+    String token;
     String configKey;
+    Set<String> watchKeys=new HashSet<>();
 
     public ConsulConfigTask(ConsulClient client) {
         this.client = client;
+
+        //token 可为null
+        token=Solon.cfg().get(Constants.TOKEN);
 
         //1.优先用config.key
         configKey = Solon.cfg().get(Constants.CONFIG_KEY);
@@ -52,11 +58,18 @@ class ConsulConfigTask extends TimerTask {
         if(Utils.isEmpty(configKey)){
             configKey = Solon.cfg().appName();
         }
+
+        //需要监听的配置项
+        String watchKeys=Solon.cfg().get(Constants.CONFIG_WATCH);
+        if(Utils.isNotEmpty(watchKeys)){
+            this.watchKeys.addAll(Arrays.asList(watchKeys.split(",")));
+        }
     }
 
     @Override
     public void run() {
-        Response<GetValue> v = client.getKVValue(configKey);
+        Response<GetValue> v = client.getKVValue(configKey,token);
+
         GetValue gv = v.getValue();
 
         if (gv != null) {
@@ -70,6 +83,23 @@ class ConsulConfigTask extends TimerTask {
                     Solon.cfg().putAll(keyValues);
                 }
             }
+        }
+        Map<String,String> updatedValues=new HashMap<>();
+        for(String key:watchKeys){
+            Response<List<GetValue>> response= client.getKVValues(key,token);
+            List<GetValue> getValues=response.getValue();
+            if(getValues!=null){
+                for(GetValue value:getValues){
+                   Long index= watchedIndex.get(value.getKey());
+                   if(index==null||index.longValue()!=value.getModifyIndex()){
+                       watchedIndex.put(value.getKey(),value.getModifyIndex());
+                       updatedValues.put(value.getKey(),value.getDecodedValue());
+                   }
+                }
+            }
+        }
+        if(updatedValues.size()>0){
+            EventBus.push(new ConsulKvUpdateEvent(updatedValues));
         }
     }
 }
