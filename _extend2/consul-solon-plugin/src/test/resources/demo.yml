@@ -12,6 +12,7 @@ consul:
     tags: "dev"
     healthCheckInterval: "10s"
     healthCheckPath: "/run/check/"
+    healthDetector: ""
   locator:
     enable: true
     interval: "10s"
@@ -19,3 +20,4 @@ consul:
     key: "test/app"
     enable: true
     interval: "10s"
+    watch: ""
