@@ -254,7 +254,9 @@ public class AopContext extends BeanContainer {
 
         //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
         ResourceScaner.scan(classLoader, dir, n -> n.endsWith(".class"))
-                .stream().sorted(Comparator.comparing(s -> s.length())).forEach(name -> {
+                .stream()
+                .sorted(Comparator.comparing(s -> s.length()))
+                .forEach(name -> {
             String className = name.substring(0, name.length() - 6);
 
             Class<?> clz = Utils.loadClass(classLoader, className.replace("/", "."));
