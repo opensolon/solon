@@ -5,6 +5,7 @@ solon:
 
 consul:
   host: "localhost"
+  port: 8500
   discovery:
     enable: true
     hostname: "12.12.12:12"
