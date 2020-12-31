@@ -800,6 +800,7 @@
 
 
         <module>../solon-web</module>
+        <module>../solon-rpc</module>
         <module>../solon-cloud</module>
 
         <module>../solon-test</module>
