@@ -4,7 +4,7 @@ import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.MethodType;
 
-@Mapping(value = "/demoe/rpc", method = MethodType.SOCKET)
+@Mapping(value = "/demoh/rpc", method = MethodType.ALL)
 @Component(remoting = true)
 public class HelloRpcServiceImpl implements HelloRpcService {
 

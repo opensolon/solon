@@ -30,7 +30,7 @@ public class SocketRpcTest {
         int _port = 8080 + 20000;
 
         HelloRpcService rpc = Nami.builder()
-                .uri("tcp://localhost:" + _port + "/demoe/rpc")
+                .uri("tcp://localhost:" + _port + "/demoh/rpc")
                 .create(HelloRpcService.class);
 
         String rst = rpc.hello("noear");
@@ -46,6 +46,21 @@ public class SocketRpcTest {
 
         HelloRpcService rpc = Nami.builder()
                 .upstream(() -> "tcp://localhost:" + _port)
+                .create(HelloRpcService.class);
+
+        String rst = rpc.hello("noear");
+
+        System.out.println(rst);
+
+        assert "name=noear".equals(rst);
+    }
+
+    @Test
+    public void test_rpc_api_http1() throws Throwable {
+        int _port = 8080;
+
+        HelloRpcService rpc = Nami.builder()
+                .upstream(() -> "http://localhost:" + _port)
                 .create(HelloRpcService.class);
 
         String rst = rpc.hello("noear");
