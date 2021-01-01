@@ -75,6 +75,14 @@ public class SocketChannel implements NamiChannel {
         //2.构建结果
         Result result = new Result(200, res.body());
 
+        //2.1.设置头
+        if(Utils.isNotEmpty(res.header())) {
+            Map<String, String> map = HeaderUtil.decodeHeaderMap(res.header());
+            map.forEach((k, v) -> {
+                result.headerAdd(k, v);
+            });
+        }
+
         //3.返回结果
         return result;
     }
