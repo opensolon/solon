@@ -54,15 +54,16 @@ public class SocketChannel implements NamiChannel {
         switch (cfg.getEncoder().enctype()) {
             case application_hessian: {
                 headers.put(Constants.h_content_type, Constants.ct_hessian);
-                message = new Message(flag, message_key, url, HeaderUtil.encodeHeaderMap(headers), (byte[]) cfg.getEncoder().encode(args));
+                byte[] bytes = cfg.getEncoder().encode(args);
+                message = new Message(flag, message_key, url, HeaderUtil.encodeHeaderMap(headers), bytes);
                 break;
             }
             default: {
                 // 默认：application_json
                 //
                 headers.put(Constants.h_content_type, Constants.ct_json);
-                String json = (String) cfg.getEncoder().encode(args);
-                message = new Message(flag, message_key, url, HeaderUtil.encodeHeaderMap(headers), json.getBytes());
+                byte[] bytes = cfg.getEncoder().encode(args);
+                message = new Message(flag, message_key, url, HeaderUtil.encodeHeaderMap(headers), bytes);
                 break;
             }
         }
@@ -77,7 +78,7 @@ public class SocketChannel implements NamiChannel {
         Result result = new Result(200, res.body());
 
         //2.1.设置头
-        if(Utils.isNotEmpty(res.header())) {
+        if (Utils.isNotEmpty(res.header())) {
             Map<String, String> map = HeaderUtil.decodeHeaderMap(res.header());
             map.forEach((k, v) -> {
                 result.headerAdd(k, v);

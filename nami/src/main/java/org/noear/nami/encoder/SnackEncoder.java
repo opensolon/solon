@@ -4,6 +4,8 @@ import org.noear.nami.Enctype;
 import org.noear.nami.Encoder;
 import org.noear.snack.ONode;
 
+import java.nio.charset.StandardCharsets;
+
 public class SnackEncoder implements Encoder {
     public static final SnackEncoder instance = new SnackEncoder();
 
@@ -13,7 +15,7 @@ public class SnackEncoder implements Encoder {
     }
 
     @Override
-    public Object encode(Object obj) {
-        return ONode.stringify(obj);
+    public byte[] encode(Object obj) {
+        return ONode.stringify(obj).getBytes(StandardCharsets.UTF_8);
     }
 }

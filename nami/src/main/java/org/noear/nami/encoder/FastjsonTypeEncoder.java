@@ -6,6 +6,8 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.noear.nami.Enctype;
 import org.noear.nami.Encoder;
 
+import java.nio.charset.StandardCharsets;
+
 
 public class FastjsonTypeEncoder implements Encoder {
     static {
@@ -21,11 +23,12 @@ public class FastjsonTypeEncoder implements Encoder {
     }
 
     @Override
-    public Object encode(Object obj) {
+    public byte[] encode(Object obj) {
         return JSON.toJSONString(obj,
                 SerializerFeature.BrowserCompatible,
                 SerializerFeature.WriteClassName,
-                SerializerFeature.DisableCircularReferenceDetect);
+                SerializerFeature.DisableCircularReferenceDetect)
+                .getBytes(StandardCharsets.UTF_8);
 
     }
 }

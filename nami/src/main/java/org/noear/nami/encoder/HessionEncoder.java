@@ -14,7 +14,7 @@ public class HessionEncoder implements Encoder {
     }
 
     @Override
-    public Object encode(Object obj) {
+    public byte[] encode(Object obj) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         Hessian2Output ho = new Hessian2Output(out);
 

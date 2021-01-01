@@ -2,10 +2,7 @@ package org.noear.nami.channel.http;
 
 import okhttp3.MediaType;
 import okhttp3.Response;
-import org.noear.nami.Enctype;
-import org.noear.nami.NamiChannel;
-import org.noear.nami.NamiConfig;
-import org.noear.nami.Result;
+import org.noear.nami.*;
 import org.noear.nami.channel.Constants;
 
 import java.io.ByteArrayInputStream;
@@ -44,36 +41,36 @@ public class HttpChannel implements NamiChannel {
         //0.开始构建http
         HttpUtils http = HttpUtils.http(url).headers(headers);
         Response response = null;
+        Encoder encoder = null;
 
 
         //1.执行并返回
         if (is_get) {
             response = http.exec(Constants.m_get);
         } else {
-
             String ct0 = headers.getOrDefault(Constants.h_content_type, "");
             Enctype ct1 = cfg.getEncoder().enctype();
 
-            if (ct1 == Enctype.application_json || ct0.indexOf("json") > 0) {
-                //post body json
-                //
-                String json = (String) cfg.getEncoder().encode(args);
-                response = http.bodyTxt(json, Constants.ct_json).exec(action);
-            } else if (ct1 == Enctype.application_json || ct0.indexOf("hessian") > 0) {
-                //post body hessian
-                //
-                InputStream stream = new ByteArrayInputStream((byte[]) cfg.getEncoder().encode(args));
-                response = http.bodyRaw(stream, Constants.ct_hessian).exec(action);
-            } else {
-                //post form
-                //
-                if (args.size() == 0) {
-                    //没参数按GET来
-                    response = http.exec(Constants.m_get);
+            if (ct1.contentType.equals(Constants.ct_form_urlencoded)) {
+                if (ct0.length() == 0) {
+                    if (args.size() == 0) {
+                        //没参数按GET来
+                        response = http.exec(Constants.m_get);
+                    } else {
+                        response = http.data(args).exec(action);
+                    }
                 } else {
-                    response = http.data(args).exec(action);
+                    encoder = NamiManager.getEncoder(ct0);
                 }
+            } else {
+                encoder = cfg.getEncoder();
             }
+        }
+
+        if (encoder != null) {
+            byte[] bytes = encoder.encode(args);
+            InputStream stream = new ByteArrayInputStream(bytes);
+            response = http.bodyRaw(stream, encoder.enctype().contentType).exec(action);
         }
 
         if (response == null) {

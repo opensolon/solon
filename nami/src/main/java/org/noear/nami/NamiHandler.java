@@ -2,7 +2,6 @@ package org.noear.nami;
 
 import org.noear.nami.annotation.Mapping;
 import org.noear.nami.annotation.NamiClient;
-import org.noear.solon.core.util.PathAnalyzer;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;

@@ -319,6 +319,12 @@
                 <version>${solon.ver}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -820,6 +826,8 @@
         <module>../_extend2/quartz-solon-plugin</module>
 
         <module>../_extend2/springboot-solon-plugin</module>
+
+        <module>../_extend2/nami-solon-plugin</module>
 
 
         <module>../solonfox/solonfox-swagger2</module>

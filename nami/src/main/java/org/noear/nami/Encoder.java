@@ -12,5 +12,5 @@ public interface Encoder {
     /**
      * 序列化
      * */
-    Object encode(Object obj);
+    byte[] encode(Object obj);
 }

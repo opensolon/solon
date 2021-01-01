@@ -13,7 +13,7 @@ public class FormEncoder implements Encoder {
     }
 
     @Override
-    public Object encode(Object obj) {
+    public byte[] encode(Object obj) {
         return null;
     }
 }
