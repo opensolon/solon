@@ -1,6 +1,5 @@
 package org.noear.nami;
 
-import org.noear.nami.channel.http.HttpChannel;
 import org.noear.nami.decoder.FastjsonDecoder;
 import org.noear.nami.decoder.SnackDecoder;
 import org.noear.nami.encoder.FormEncoder;
@@ -16,13 +15,13 @@ import java.util.function.Supplier;
  * @since 1.0
  * */
 public class NamiConfig {
-    private static boolean HAS_SNACK3 = hasClass("org.noear.snack.ONode");
-    private static boolean HAS_FASTJSON = hasClass("com.alibaba.fastjson.JSONObject");
+    public static boolean HAS_SNACK3 = hasClass("org.noear.snack.ONode");
+    public static boolean HAS_FASTJSON = hasClass("com.alibaba.fastjson.JSONObject");
+    public static boolean HAN_HESSIAN = hasClass("com.caucho.hessian.io.Hessian2Input");
 
     public NamiConfig() {
         encoder = Nami.defaultEncoder;
         decoder = Nami.defaultDecoder;
-        channel = Nami.defaultChannel;
     }
 
     /**
@@ -40,9 +39,6 @@ public class NamiConfig {
                 setDecoder(SnackDecoder.instance);
             }
         }
-        if (channel == null) {
-            setChannel(HttpChannel.instance);
-        }
 
         return this;
     }
@@ -52,8 +48,7 @@ public class NamiConfig {
     private Encoder encoder;
     //解码器
     private Decoder decoder;
-    //通道
-    private NamiChannel channel;
+
     //上游
     private Supplier<String> upstream;
     //服务端
@@ -88,21 +83,6 @@ public class NamiConfig {
     protected void setDecoder(Decoder decoder) {
         if (decoder != null) {
             this.decoder = decoder;
-        }
-    }
-
-    /**
-     * 获取通道
-     * */
-    public NamiChannel getChannel() {
-        return channel;
-    }
-    /**
-     * 设置通道
-     * */
-    protected void setChannel(NamiChannel channel) {
-        if (channel != null) {
-            this.channel = channel;
         }
     }
 

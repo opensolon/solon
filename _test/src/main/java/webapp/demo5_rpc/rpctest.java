@@ -30,7 +30,6 @@ public class rpctest implements Handler {
         String root = "http://localhost:" + Solon.global().port();
 
         rockapi client = Nami.builder()
-                .channel(HttpChannel.instance)
                 .decoder(SnackDecoder.instance)
                 .upstream(() -> root)
                 .create(rockapi.class);

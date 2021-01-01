@@ -64,14 +64,10 @@ public class SocketResponseTest {
     public void test_rpc_api() throws Throwable {
         int _port = 8080 + 20000;
 
-        Session session = SocketD.createSession("tcp://localhost:"+_port);
-        SocketChannel channel = new SocketChannel(()->session);
-
         HelloRpcService rpc = Nami.builder()
                 .encoder(SnackEncoder.instance)
                 .decoder(SnackDecoder.instance)
                 .upstream(() -> "tcp://localhost:" + _port)
-                .channel(channel)
                 .create(HelloRpcService.class);
 
         String rst = rpc.hello("noear");

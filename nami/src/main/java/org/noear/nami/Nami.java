@@ -16,10 +16,6 @@ import java.util.function.Supplier;
  * */
 public class Nami {
     /**
-     * 默认的通讯通道（涉及第三方框架引用，不做定义）
-     */
-    public static NamiChannel defaultChannel;
-    /**
      * 默认的序列化器（涉及第三方框架引用，不做定义）
      */
     public static Encoder defaultEncoder;
@@ -126,7 +122,21 @@ public class Nami {
                 filter.filter(_config, _action, _url, headers, args);
             }
 
-            _result = _config.getChannel().call(_config, _method, _action, _url, headers, args);
+            NamiChannel channel = null;
+
+            //1.通过 scheme 获取通道
+            int idx = _url.indexOf("://");
+            if(idx > 0){
+                String scheme = _url.substring(0,idx);
+                channel = NamiManager.getChannel(scheme);
+            }
+
+            if(channel == null){
+                throw new NamiException("There are no channels available");
+            }
+
+
+            _result = channel.call(_config, _method, _action, _url, headers, args);
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {
@@ -205,16 +215,6 @@ public class Nami {
             _config.setDecoder(decoder);
             return this;
         }
-
-
-        /**
-         * 设置通信通道
-         */
-        public Builder channel(NamiChannel channel) {
-            _config.setChannel(channel);
-            return this;
-        }
-
 
         /**
          * 添加过滤器

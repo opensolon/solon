@@ -105,7 +105,6 @@ public class SocketD {
                 .encoder(encoder)
                 .decoder(decoder)
                 .upstream(() -> server)
-                .channel(channel)
                 .create(service);
     }
 }

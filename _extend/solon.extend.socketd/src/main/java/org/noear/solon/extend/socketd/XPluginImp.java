@@ -1,5 +1,8 @@
 package org.noear.solon.extend.socketd;
 
+import org.noear.nami.NamiManager;
+import org.noear.nami.channel.socketd.SocketChannel;
+import org.noear.nami.channel.socketd.SocketClientChannel;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
@@ -12,6 +15,10 @@ import org.noear.solon.extend.socketd.annotation.ClientEndpoint;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
+        NamiManager.reg("tcp", new SocketClientChannel());
+        NamiManager.reg("ws", new SocketClientChannel());
+        NamiManager.reg("wss", new SocketClientChannel());
+
         //注册 @ClientListenEndpoint 构建器
         Aop.context().beanBuilderAdd(ClientEndpoint.class, (clz, wrap, anno) -> {
             if (Listener.class.isAssignableFrom(clz)) {
