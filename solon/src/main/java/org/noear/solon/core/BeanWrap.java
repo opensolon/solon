@@ -190,7 +190,7 @@ public class BeanWrap {
         //a.注入
         Aop.inject(bean);
 
-        //b.初始化
+        //b.调用初始化函数
         if (clzInit != null) {
             try {
                 clzInit.invoke(bean);
