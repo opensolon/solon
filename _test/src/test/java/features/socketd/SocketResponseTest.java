@@ -50,7 +50,7 @@ public class SocketResponseTest {
         map.put("name", "noear");
         String map_josn = ONode.stringify(map);
 
-        Message message = Message.wrap(root + "/demoe/rpc/hello", ContentTypes.JSON, map_josn.getBytes());
+        Message message = Message.wrap(root + "/demoh/rpc/hello", ContentTypes.JSON, map_josn.getBytes());
 
         Message rst = session.sendAndResponse(message);
         String rst_str = ONode.deserialize(rst.bodyAsString());

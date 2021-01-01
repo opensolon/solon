@@ -240,7 +240,7 @@ ext/ext.markdown.jar    #MD格式支持扩展包
 * 单链接双向RPC（客户端链上服务端之后，形成双向RPC）
 ```java 
 //server
-@Mapping(value = "/demoe/rpc", method = MethodType.SOCKET)
+@Mapping(value = "/demoh/rpc", method = MethodType.SOCKET)
 @Component(remoting = true)
 public class HelloRpcServiceImpl implements HelloRpcService {
     public String hello(String name) {
