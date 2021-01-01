@@ -39,10 +39,8 @@ class HttpUtils {
 
     private String _url;
     private Charset _charset;
-    private Map<String,String> _cookies;
     private RequestBody _body;
     private Map<String,String> _form;
-    private MultipartBody.Builder _part_builer;
 
     private Request.Builder _builder;
     public HttpUtils(String url){
@@ -100,28 +98,14 @@ class HttpUtils {
 
     //@XNote("执行请求，返回响应对象")
     public Response exec(String mothod) throws Exception {
-        if (_part_builer != null) {
-            if (_form != null) {
-                _form.forEach((k, v) -> {
-                    _part_builer.addFormDataPart(k, v);
-                });
-            }
+        if (_form != null) {
+            FormBody.Builder fb = new FormBody.Builder(_charset);
 
-            _body = _part_builer.build();
-        } else {
-            if (_form != null) {
-                FormBody.Builder fb = new FormBody.Builder(_charset);
+            _form.forEach((k, v) -> {
+                fb.add(k, v);
+            });
 
-                _form.forEach((k, v) -> {
-                    fb.add(k, v);
-                });
-
-                _body = fb.build();
-            }
-        }
-
-        if (_cookies != null) {
-            _builder.header("Cookie", getRequestCookieString(_cookies));
+            _body = fb.build();
         }
 
         switch (mothod.toUpperCase()){
@@ -138,34 +122,6 @@ class HttpUtils {
 
         Call call = httpClient.newCall(_builder.build());
         return call.execute();
-    }
-
-    //@XNote("执行请求，返回字符串")
-    public String exec2(String mothod) throws Exception {
-        Response tmp = exec(mothod);
-        int code = tmp.code();
-        String text = tmp.body().string();
-        if (code >= 200 && code <= 300) {
-            return text;
-        } else {
-            throw new RuntimeException(code + "错误：" + text);
-        }
-    }
-
-    private static String getRequestCookieString(Map<String,String> cookies) {
-        StringBuilder sb = new StringBuilder();
-        boolean first = true;
-
-        for(Map.Entry<String,String> kv : cookies.entrySet()){
-            sb.append(kv.getKey()).append('=').append(kv.getValue());
-            if (!first) {
-                sb.append("; ");
-            } else {
-                first = false;
-            }
-        }
-
-        return sb.toString();
     }
 
     private void tryInitForm(){
