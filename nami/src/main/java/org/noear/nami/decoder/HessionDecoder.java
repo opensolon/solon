@@ -8,6 +8,7 @@ import org.noear.nami.Result;
 import org.noear.nami.channel.Constants;
 
 import java.io.ByteArrayInputStream;
+import java.lang.reflect.Type;
 import java.util.Map;
 
 public class HessionDecoder implements Decoder {
@@ -20,11 +21,11 @@ public class HessionDecoder implements Decoder {
 
 
     @Override
-    public <T> T decode(Result rst, Class<T> clz) {
+    public <T> T decode(Result rst, Type type) {
         Hessian2Input hi = new Hessian2Input(new ByteArrayInputStream(rst.body()));
 
         try {
-            if (Void.TYPE == clz) {
+            if (Void.TYPE == type) {
                 return null;
             } else {
                 return (T) hi.readObject();

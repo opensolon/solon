@@ -7,6 +7,7 @@ import org.noear.nami.encoder.SnackTypeEncoder;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -166,7 +167,7 @@ public class Nami {
     /**
      * 获取结果（返序列化为object）
      */
-    public <T> T getObject(Class<T> returnType) {
+    public <T> T getObject(Type returnType) {
         if (Void.TYPE.equals(returnType)) {
             return null;
         } else {

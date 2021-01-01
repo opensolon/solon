@@ -7,6 +7,7 @@ import org.noear.nami.Result;
 import org.noear.nami.channel.Constants;
 import org.noear.snack.ONode;
 
+import java.lang.reflect.Type;
 import java.util.Map;
 
 public class SnackDecoder implements Decoder {
@@ -19,7 +20,7 @@ public class SnackDecoder implements Decoder {
 
 
     @Override
-    public <T> T decode(Result rst, Class<T> clz) {
+    public <T> T decode(Result rst, Type type) {
         String str = rst.bodyAsString();
 
         Object returnVal = null;
@@ -27,7 +28,7 @@ public class SnackDecoder implements Decoder {
             if (str == null) {
                 return (T) str;
             }
-            returnVal = ONode.deserialize(str, clz);
+            returnVal = ONode.deserialize(str, (Class<?>) type);
 
         } catch (Throwable ex) {
             returnVal = ex;

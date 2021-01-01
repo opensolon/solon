@@ -1,5 +1,7 @@
 package org.noear.nami;
 
+import java.lang.reflect.Type;
+
 /**
  * 解码器
  * */
@@ -12,5 +14,5 @@ public interface Decoder extends Filter {
     /**
      * 反序列化
      * */
-    <T> T decode(Result rst, Class<T> clz);
+    <T> T decode(Result rst, Type clz);
 }

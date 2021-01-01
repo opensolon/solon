@@ -9,6 +9,7 @@ import org.noear.nami.Decoder;
 import org.noear.nami.Result;
 import org.noear.nami.channel.Constants;
 
+import java.lang.reflect.Type;
 import java.util.Map;
 
 public class FastjsonDecoder implements Decoder {
@@ -25,7 +26,7 @@ public class FastjsonDecoder implements Decoder {
     }
 
     @Override
-    public <T> T decode(Result rst, Class<T> clz) {
+    public <T> T decode(Result rst, Type type) {
         String str = rst.bodyAsString();
 
         Object returnVal = null;
@@ -33,8 +34,7 @@ public class FastjsonDecoder implements Decoder {
             if (str == null) {
                 return (T) str;
             }
-            returnVal = JSONObject.parseObject(str, new TypeReference<T>() {
-            });
+            returnVal = JSONObject.parseObject(str, type);
 
         } catch (Throwable ex) {
             returnVal = ex;

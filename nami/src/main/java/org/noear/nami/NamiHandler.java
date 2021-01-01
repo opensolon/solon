@@ -4,10 +4,7 @@ import org.noear.nami.annotation.Mapping;
 import org.noear.nami.annotation.NamiClient;
 
 import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
+import java.lang.reflect.*;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -206,6 +203,11 @@ public class NamiHandler implements InvocationHandler {
             }
         }
 
+        Type type = method.getGenericReturnType();
+        if(type == null){
+            type = method.getReturnType();
+        }
+
 
         //执行调用
         return new Nami(config)
@@ -213,7 +215,7 @@ public class NamiHandler implements InvocationHandler {
                 .action(act)
                 .url(url, fun)
                 .call(headers, args)
-                .getObject(method.getReturnType());
+                .getObject(type);
     }
 
 
