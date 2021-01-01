@@ -1,7 +1,6 @@
 package org.noear.nami;
 
-import org.noear.nami.decoder.FastjsonDecoder;
-import org.noear.nami.decoder.SnackDecoder;
+import org.noear.nami.channel.Constants;
 import org.noear.nami.encoder.FormEncoder;
 
 import java.util.LinkedHashSet;
@@ -33,11 +32,7 @@ public class NamiConfig {
         }
 
         if (decoder == null) {
-            if (HAS_FASTJSON) {
-                setDecoder(FastjsonDecoder.instance);
-            } else if (HAS_SNACK3) {
-                setDecoder(SnackDecoder.instance);
-            }
+            setDecoder(NamiManager.getDecoder(Constants.ct_json));
         }
 
         return this;
