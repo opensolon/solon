@@ -2,6 +2,7 @@ package org.noear.nami.channel.http;
 
 import okhttp3.MediaType;
 import okhttp3.Response;
+import org.noear.nami.Enctype;
 import org.noear.nami.NamiChannel;
 import org.noear.nami.NamiConfig;
 import org.noear.nami.Result;
@@ -19,7 +20,7 @@ public class HttpChannel implements NamiChannel {
     public static final HttpChannel instance = new HttpChannel();
 
     @Override
-    public Result call(NamiConfig cfg, Method method,  String action, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
+    public Result call(NamiConfig cfg, Method method, String action, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
         //0.检测method
         boolean is_get = Constants.m_get.equals(action);
 
@@ -50,24 +51,27 @@ public class HttpChannel implements NamiChannel {
             response = http.exec(Constants.m_get);
         } else {
 
-            switch (cfg.getEncoder().enctype()) {
-                case application_json: {
-                    String json = (String) cfg.getEncoder().encode(args);
-                    response = http.bodyTxt(json, Constants.ct_json).exec(action);
-                    break;
-                }
-                case application_hessian: {
-                    InputStream stream = new ByteArrayInputStream((byte[]) cfg.getEncoder().encode(args));
-                    response = http.bodyRaw(stream, Constants.ct_hessian).exec(action);
-                    break;
-                }
-                default: {
-                    if (args.size() == 0) {
-                        //没参数按GET来
-                        response = http.exec(Constants.m_get);
-                    } else {
-                        response = http.data(args).exec(action);
-                    }
+            String ct0 = headers.getOrDefault(Constants.h_content_type, "");
+            Enctype ct1 = cfg.getEncoder().enctype();
+
+            if (ct1 == Enctype.application_json || ct0.indexOf("json") > 0) {
+                //post body json
+                //
+                String json = (String) cfg.getEncoder().encode(args);
+                response = http.bodyTxt(json, Constants.ct_json).exec(action);
+            } else if (ct1 == Enctype.application_json || ct0.indexOf("hessian") > 0) {
+                //post body hessian
+                //
+                InputStream stream = new ByteArrayInputStream((byte[]) cfg.getEncoder().encode(args));
+                response = http.bodyRaw(stream, Constants.ct_hessian).exec(action);
+            } else {
+                //post form
+                //
+                if (args.size() == 0) {
+                    //没参数按GET来
+                    response = http.exec(Constants.m_get);
+                } else {
+                    response = http.data(args).exec(action);
                 }
             }
         }

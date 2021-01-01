@@ -119,6 +119,18 @@ public class NamiHandler implements InvocationHandler {
             return this.lookup.unreflectSpecial(method, caller).bindTo(proxy).invokeWithArguments(vals);
         }
 
+        //构建 headers
+        Map<String, String> headers = new HashMap<>(headers0);
+
+        //构建 args
+        Map<String, Object> args = new LinkedHashMap<>();
+        Parameter[] names = method.getParameters();
+        for (int i = 0, len = names.length; i < len; i++) {
+            if (vals[i] != null) {
+                args.put(names[i].getName(), vals[i]);
+            }
+        }
+
         //构建 fun
         String fun = method.getName();
         String act = null;
@@ -135,19 +147,18 @@ public class NamiHandler implements InvocationHandler {
             }else{
                 act = mappingVal;
             }
-        }
 
-        //构建 args
-        Map<String, Object> args = new LinkedHashMap<>();
-        Parameter[] names = method.getParameters();
-        for (int i = 0, len = names.length; i < len; i++) {
-            if (vals[i] != null) {
-                args.put(names[i].getName(), vals[i]);
+            if (mapping.headers() != null) {
+                for (String h : mapping.headers()) {
+                    String[] ss = h.split("=");
+                    headers.put(ss[0], ss[1]);
+                }
             }
         }
 
-        //构建 headers
-        Map<String, String> headers = new HashMap<>(headers0);
+
+
+
 
         //构建 url
         String url = null;
