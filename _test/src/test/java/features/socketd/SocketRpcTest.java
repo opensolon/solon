@@ -62,20 +62,20 @@ public class SocketRpcTest {
         assert "name=noear".equals(rst);
     }
 
-    @Test
-    public void test_rpc_api_ws1() throws Throwable {
-        HelloRpcService rpc = Nami.builder()
-                .upstream(() -> "ws://localhost:" + (Solon.global().port() + 10000))
-                .create(HelloRpcService.class);
-        //ws,须开启WebSocketD
-        boolean tmp = Solon.global().enableWebSocketD();
-        Solon.global().enableWebSocketD(true);
-
-        String rst = rpc.hello("noear");
-        System.out.println(rst);
-
-        Solon.global().enableWebSocketD(tmp);
-
-        assert "name=noear".equals(rst);
-    }
+//    @Test
+//    public void test_rpc_api_ws1() throws Throwable {
+//        HelloRpcService rpc = Nami.builder()
+//                .upstream(() -> "ws://localhost:" + (Solon.global().port() + 10000))
+//                .create(HelloRpcService.class);
+//        //ws,须开启WebSocketD
+//        boolean tmp = Solon.global().enableWebSocketD();
+//        Solon.global().enableWebSocketD(true);
+//
+//        String rst = rpc.hello("noear");
+//        System.out.println(rst);
+//
+//        Solon.global().enableWebSocketD(tmp);
+//
+//        assert "name=noear".equals(rst);
+//    }
 }
