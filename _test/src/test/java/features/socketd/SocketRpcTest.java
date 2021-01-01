@@ -29,7 +29,9 @@ public class SocketRpcTest {
     public void test_rpc_api2() throws Throwable {
         int _port = 8080 + 20000;
 
-        HelloRpcService rpc = Nami.create("tcp://localhost:" + _port + "/demoe/rpc", HelloRpcService.class);
+        HelloRpcService rpc = Nami.builder()
+                .uri("tcp://localhost:" + _port + "/demoe/rpc")
+                .create(HelloRpcService.class);
 
         String rst = rpc.hello("noear");
 
@@ -42,7 +44,9 @@ public class SocketRpcTest {
     public void test_rpc_api3() throws Throwable {
         int _port = 8080 + 20000;
 
-        HelloRpcService rpc = Nami.create( HelloRpcService.class);
+        HelloRpcService rpc = Nami.builder()
+                .upstream(() -> "tcp://localhost:" + _port)
+                .create(HelloRpcService.class);
 
         String rst = rpc.hello("noear");
 

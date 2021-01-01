@@ -180,24 +180,6 @@ public class Nami {
         }
     }
 
-    //////////////////////////////////
-    //
-    // 静态快速创建
-    //
-    //////////////////////////////////
-
-
-    public static <T> T create(String serverUri, Class<T> service) {
-        return builder().uri(serverUri)
-                .create(service);
-    }
-
-    public static <T> T create(Class<T> service) {
-        NamiClient client = service.getAnnotation(NamiClient.class);
-
-        return (T) builder()
-                .create(service, client);
-    }
 
     //////////////////////////////////
     //
