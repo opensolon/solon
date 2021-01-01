@@ -92,8 +92,6 @@ public class SocketD {
     }
 
     public static <T> T create(Supplier<Session> sessions, Encoder encoder, Decoder decoder, Class<T> service) {
-        SocketChannel channel = new SocketChannel(sessions);
-
         URI uri = sessions.get().uri();
         if (uri == null) {
             uri = URI.create("tcp://socketd");
