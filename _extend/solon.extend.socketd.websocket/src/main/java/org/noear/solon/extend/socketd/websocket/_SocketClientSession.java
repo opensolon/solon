@@ -81,7 +81,7 @@ public class _SocketClientSession extends SessionBase {
 
     @Override
     public void send(String message) {
-        if (Solon.global().enableWebSocketD()) {
+        if (Solon.global().enableWebSocketD() || uri().getScheme().endsWith("d")) {
             sendD(Message.wrap(message.getBytes(StandardCharsets.UTF_8)));
         }else{
             sendW(() -> real.send(message));
@@ -90,7 +90,7 @@ public class _SocketClientSession extends SessionBase {
 
     @Override
     public void send(Message message) {
-        if (Solon.global().enableWebSocketD()) {
+        if (Solon.global().enableWebSocketD() || uri().getScheme().endsWith("d")) {
             sendD(message);
         } else {
             if (message.isString()) {
