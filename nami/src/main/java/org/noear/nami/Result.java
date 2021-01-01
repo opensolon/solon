@@ -1,6 +1,7 @@
 package org.noear.nami;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ public class Result {
     public Result(int code,  byte[] body) {
         this();
         this.code = code;
-        this.charset = charset;
+        this.charset = StandardCharsets.UTF_8;
         this.body = body;
     }
 
