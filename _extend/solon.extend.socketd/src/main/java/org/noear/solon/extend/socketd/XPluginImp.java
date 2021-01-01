@@ -18,6 +18,8 @@ public class XPluginImp implements Plugin {
         NamiManager.reg("tcp", SocketClientChannel.instance);
         NamiManager.reg("ws", SocketClientChannel.instance);
         NamiManager.reg("wss", SocketClientChannel.instance);
+        NamiManager.reg("wsd", SocketClientChannel.instance);
+        NamiManager.reg("wssd", SocketClientChannel.instance);
 
         //注册 @ClientListenEndpoint 构建器
         Aop.context().beanBuilderAdd(ClientEndpoint.class, (clz, wrap, anno) -> {

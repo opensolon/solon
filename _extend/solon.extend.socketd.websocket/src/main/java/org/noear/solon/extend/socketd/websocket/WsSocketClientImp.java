@@ -39,7 +39,7 @@ public class WsSocketClientImp extends WebSocketClient {
 
         try {
             Message message = null;
-            if (Solon.global().enableWebSocketD()) {
+            if (Solon.global().enableWebSocketD() || session.uri().getScheme().endsWith("d")) {
                 message = ProtocolManager.decode(bytes);
             } else {
                 message = Message.wrap(bytes.array());

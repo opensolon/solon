@@ -32,7 +32,7 @@ class WsConnector extends ConnectorBase<WebSocket> {
         try {
             WebSocketClient socket = new WsSocketClientImp(uri(), session);
 
-            if ("wss".equals(uri().getScheme())) {
+            if (uri().getScheme().startsWith("wss")) {
                 enableTls(socket);
             }
 
