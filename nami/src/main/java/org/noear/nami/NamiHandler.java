@@ -80,7 +80,8 @@ public class NamiHandler implements InvocationHandler {
 
         //2.如果没有，就报错
         if (uri == null) {
-            throw new NamiException("NamiClient config is wrong: " + clz.getName());
+            uri = "";
+            //throw new NamiException("NamiClient config is wrong: " + clz.getName());
         }
 
         if (uri.contains("://")) {
@@ -135,18 +136,18 @@ public class NamiHandler implements InvocationHandler {
         //构建 fun
         String fun = method.getName();
         String act = null;
-        String mappingVal = null;
+
         Mapping mapping = method.getAnnotation(Mapping.class);
         if (mapping != null && isEmpty(mapping.value()) == false) {
             //格式1: GET
             //格式2: GET user/a.0.1
-            mappingVal = mapping.value().trim();
+            String val = mapping.value().trim();
 
-            if (mappingVal.indexOf(" ") > 0) {
-                act = mappingVal.split(" ")[0];
-                fun = mappingVal.split(" ")[1];
+            if (val.indexOf(" ") > 0) {
+                act = val.split(" ")[0];
+                fun = val.split(" ")[1];
             }else{
-                act = mappingVal;
+                act = val;
             }
 
             if (mapping.headers() != null) {
@@ -189,17 +190,17 @@ public class NamiHandler implements InvocationHandler {
             url = url0;
         }
 
-        if(mappingVal !=null && mappingVal.indexOf("{") > 0) {
+        if(fun !=null && fun.indexOf("{") > 0) {
             //
             //处理Path参数
             //
-            Map<String, String> pathKeys = buildPathKeys(mappingVal);
+            Map<String, String> pathKeys = buildPathKeys(fun);
 
             for (Map.Entry<String, String> kv : pathKeys.entrySet()) {
                 String val = (String) args.get(kv.getValue());
 
                 if (val != null) {
-                    url.replace(kv.getKey(), val);
+                    fun = fun.replace(kv.getKey(), val);
                     args.remove(kv.getValue());
                 }
             }
