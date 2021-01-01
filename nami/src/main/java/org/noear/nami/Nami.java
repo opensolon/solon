@@ -182,9 +182,14 @@ public class Nami {
 
     public static <T> T create(String serverUri, Class<T> service) {
         return builder().uri(serverUri)
-                .encoder(SnackTypeEncoder.instance)
-                .decoder(SnackDecoder.instance)
                 .create(service);
+    }
+
+    public static <T> T create(Class<T> service) {
+        NamiClient client = service.getAnnotation(NamiClient.class);
+
+        return (T) builder()
+                .create(service, client);
     }
 
     //////////////////////////////////

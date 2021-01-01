@@ -1,9 +1,7 @@
 package org.noear.nami.channel.socketd;
 
 
-import org.noear.nami.NamiChannel;
-import org.noear.nami.NamiConfig;
-import org.noear.nami.Result;
+import org.noear.nami.*;
 import org.noear.nami.channel.Constants;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
@@ -49,25 +47,18 @@ public class SocketChannel implements NamiChannel {
             }
         }
 
-
-        //1.执行并返回
-        switch (cfg.getEncoder().enctype()) {
-            case application_hessian: {
-                headers.put(Constants.h_content_type, Constants.ct_hessian);
-                byte[] bytes = cfg.getEncoder().encode(args);
-                message = new Message(flag, message_key, url, HeaderUtil.encodeHeaderMap(headers), bytes);
-                break;
-            }
-            default: {
-                // 默认：application_json
-                //
-                headers.put(Constants.h_content_type, Constants.ct_json);
-                byte[] bytes = cfg.getEncoder().encode(args);
-                message = new Message(flag, message_key, url, HeaderUtil.encodeHeaderMap(headers), bytes);
-                break;
-            }
+        //1.确定编码器
+        Encoder encoder = cfg.getEncoder();
+        if(encoder == null){
+            NamiManager.getEncoder(Constants.ct_json);
         }
 
+        //2.构建消息
+        headers.put(Constants.h_content_type, encoder.enctype().contentType);
+        byte[] bytes = encoder.encode(args);
+        message = new Message(flag, message_key, url, HeaderUtil.encodeHeaderMap(headers), bytes);
+
+        //3.发送消息
         Message res = sessions.get().sendAndResponse(message);
 
         if (res == null) {
