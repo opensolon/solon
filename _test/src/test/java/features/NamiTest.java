@@ -4,6 +4,7 @@ import features.rpc.Contributor;
 import features.rpc.GitHub;
 import org.junit.Test;
 import org.noear.nami.Nami;
+import org.noear.nami.decoder.SnackDecoder;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class NamiTest {
     @Test
     public void test() {
         GitHub github = Nami.builder()
+                .decoder(SnackDecoder.instance)
                 .upstream(() -> "https://api.github.com")
                 .create(GitHub.class);
 
@@ -21,5 +23,7 @@ public class NamiTest {
         for (Contributor contributor : contributors) {
             System.out.println(contributor.login + " (" + contributor.contributions + ")");
         }
+
+        assert contributors.size() > 1;
     }
 }

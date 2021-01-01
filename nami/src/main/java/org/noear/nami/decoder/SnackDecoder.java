@@ -28,7 +28,7 @@ public class SnackDecoder implements Decoder {
             if (str == null) {
                 return (T) str;
             }
-            returnVal = ONode.deserialize(str, (Class<?>) type);
+            returnVal = ONode.deserialize(str, type);
 
         } catch (Throwable ex) {
             returnVal = ex;
