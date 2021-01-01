@@ -15,9 +15,9 @@ import org.noear.solon.extend.socketd.annotation.ClientEndpoint;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        NamiManager.reg("tcp", new SocketClientChannel());
-        NamiManager.reg("ws", new SocketClientChannel());
-        NamiManager.reg("wss", new SocketClientChannel());
+        NamiManager.reg("tcp", SocketClientChannel.instance);
+        NamiManager.reg("ws", SocketClientChannel.instance);
+        NamiManager.reg("wss", SocketClientChannel.instance);
 
         //注册 @ClientListenEndpoint 构建器
         Aop.context().beanBuilderAdd(ClientEndpoint.class, (clz, wrap, anno) -> {

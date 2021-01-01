@@ -3,6 +3,7 @@ package org.noear.nami.channel.socketd;
 import org.noear.nami.NamiChannel;
 import org.noear.nami.NamiConfig;
 import org.noear.nami.Result;
+import org.noear.nami.encoder.FastjsonEncoder;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.extend.socketd.SocketD;
 
@@ -15,6 +16,8 @@ import java.util.Map;
  * @author noear 2021/1/1 created
  */
 public class SocketClientChannel implements NamiChannel {
+    public static final SocketClientChannel instance = new SocketClientChannel();
+
     Map<String, SocketChannel> channelMap = new HashMap<>();
 
     private SocketChannel get(URI uri) {
