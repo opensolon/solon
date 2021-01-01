@@ -22,7 +22,7 @@ public class XPluginImp implements Plugin {
 
         int _port = app.cfg().getInt("server.websocket.port", 0);
         if (_port < 1) {
-            _port = 5000 + app.port();
+            _port = 15000 + app.port();
         }
 
         long time_start = System.currentTimeMillis();
