@@ -67,14 +67,9 @@ public class SocketRpcTest {
         HelloRpcService rpc = Nami.builder()
                 .upstream(() -> "ws://localhost:" + (Solon.global().port() + 15000))
                 .create(HelloRpcService.class);
-        //ws,须开启WebSocketD
-        boolean tmp = Solon.global().enableWebSocketD();
-        Solon.global().enableWebSocketD(true);
 
         String rst = rpc.hello("noear");
         System.out.println(rst);
-
-        Solon.global().enableWebSocketD(tmp);
 
         assert "name=noear".equals(rst);
     }

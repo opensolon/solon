@@ -1,14 +1,8 @@
 package org.noear.nami.channel.http;
 
 import okhttp3.*;
-import okhttp3.internal.Util;
-import okio.BufferedSink;
-import okio.Okio;
-import okio.Source;
 import org.noear.nami.NamiException;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
@@ -56,11 +50,6 @@ class HttpUtils {
         _builder = new Request.Builder().url(url);
     }
 
-    //@XNote("设置UA")
-    public HttpUtils userAgent(String ua){
-        _builder.header("User-Agent", ua);
-        return this;
-    }
 
     //@XNote("设置charset")
     public HttpUtils charset(String charset){
@@ -79,13 +68,6 @@ class HttpUtils {
         return this;
     }
 
-    //@XNote("设置请求头")
-    public HttpUtils header(String name, String value) {
-        if(name!=null) {
-            _builder.header(name, value);
-        }
-        return this;
-    }
 
     //@XNote("设置数据提交")
     public HttpUtils data(Map<String,Object> data) {
@@ -108,47 +90,13 @@ class HttpUtils {
         return this;
     }
 
-    //@XNote("设置文件提交")
-    public HttpUtils data(String key, String filename, InputStream inputStream, String contentType) {
-        tryInitPartBuilder(MultipartBody.FORM);
-
-        _part_builer.addFormDataPart(key,
-                filename,
-                new StreamBody(contentType,inputStream) );
-
-        return this;
-    }
-
     //@XNote("设置BODY提交")
-    public HttpUtils bodyTxt(String txt, String contentType){
-        if(contentType == null) {
-            _body = FormBody.create(null, txt);
-        }else{
-            _body = FormBody.create(MediaType.parse(contentType), txt);
-        }
-
-        return this;
-    }
-    //@XNote("设置BODY提交")
-    public HttpUtils bodyRaw(InputStream raw, String contentType) {
-        _body = new StreamBody(contentType, raw);
+    public HttpUtils bodyRaw(byte[] bytes, String contentType) {
+        _body = FormBody.create(MediaType.parse(contentType), bytes);
 
         return this;
     }
 
-
-    //@XNote("设置请求cookies")
-    public HttpUtils cookies(Map<String,Object> cookies){
-        if (cookies != null) {
-            tryInitCookies();
-
-            cookies.forEach((k, v) -> {
-                _cookies.put(k, v.toString());
-            });
-        }
-
-        return this;
-    }
 
     //@XNote("执行请求，返回响应对象")
     public Response exec(String mothod) throws Exception {
@@ -204,31 +152,6 @@ class HttpUtils {
         }
     }
 
-    //@XNote("发起GET请求，返回字符串（RESTAPI.select 从服务端获取一或多项资源）")
-    public String get() throws Exception{
-        return exec2("GET");
-    }
-
-    //@XNote("发起POST请求，返回字符串（RESTAPI.create 在服务端新建一项资源）")
-    public String post() throws Exception{
-        return exec2("POST");
-    }
-
-    //@XNote("发起PUT请求，返回字符串（RESTAPI.update 客户端提供改变后的完整资源）")
-    public String put() throws Exception {
-        return exec2("PUT");
-    }
-
-    //@XNote("发起PATCH请求，返回字符串（RESTAPI.update 客户端提供改变的属性）")
-    public String patch() throws Exception {
-        return exec2("PATCH");
-    }
-
-    //@XNote("发起DELETE请求，返回字符串（RESTAPI.delete 从服务端删除资源）")
-    public String delete() throws Exception {
-        return exec2("DELETE");
-    }
-
     private static String getRequestCookieString(Map<String,String> cookies) {
         StringBuilder sb = new StringBuilder();
         boolean first = true;
@@ -245,54 +168,9 @@ class HttpUtils {
         return sb.toString();
     }
 
-    private void tryInitPartBuilder(MediaType type){
-        if(_part_builer == null){
-            _part_builer = new MultipartBody.Builder().setType(type);
-        }
-    }
-
     private void tryInitForm(){
         if(_form ==null){
             _form = new HashMap<>();
-        }
-    }
-
-    private void tryInitCookies(){
-        if(_cookies==null){
-            _cookies = new HashMap<>();
-        }
-    }
-
-    public static class StreamBody extends RequestBody{
-        private  MediaType _contentType = null;
-        private InputStream _inputStream = null;
-        public StreamBody(String contentType, InputStream inputStream) {
-            if (contentType != null) {
-                _contentType = MediaType.parse(contentType);
-            }
-
-            _inputStream = inputStream;
-        }
-        @Override
-        public MediaType contentType() {
-            return _contentType;
-        }
-
-        @Override
-        public long contentLength() throws IOException {
-            return _inputStream.available();
-        }
-
-        @Override
-        public void writeTo(BufferedSink sink) throws IOException {
-            Source source = null;
-
-            try {
-                source = Okio.source(_inputStream);
-                sink.writeAll(source);
-            } finally {
-                Util.closeQuietly(source);
-            }
         }
     }
 }
