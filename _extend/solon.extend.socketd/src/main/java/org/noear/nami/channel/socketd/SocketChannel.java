@@ -49,8 +49,8 @@ public class SocketChannel implements NamiChannel {
 
         //1.确定编码器
         Encoder encoder = cfg.getEncoder();
-        if(encoder == null){
-            NamiManager.getEncoder(Constants.ct_json);
+        if(encoder == null || encoder.enctype() == Enctype.form_urlencoded){
+            encoder = NamiManager.getEncoder(Constants.ct_json);
         }
 
         //2.构建消息
