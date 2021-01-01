@@ -15,10 +15,10 @@
     <packaging>pom</packaging>
 
     <dependencies>
-        <!-- 内核 -->
+        <!-- Nami 插件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami</artifactId>
+            <artifactId>nami-solon-plugin</artifactId>
         </dependency>
 
         <!-- Http 启动器 -->
@@ -27,7 +27,7 @@
             <artifactId>solon.boot.jlhttp</artifactId>
         </dependency>
 
-        <!-- Json序列化支持组件 -->
+        <!-- Json 序列化支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.serialization.snack3</artifactId>
