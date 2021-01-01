@@ -59,7 +59,9 @@ public class NamiHandler implements InvocationHandler {
             if (client.headers() != null) {
                 for (String h : client.headers()) {
                     String[] ss = h.split("=");
-                    headers0.put(ss[0], ss[1]);
+                    if (ss.length == 2) {
+                        headers0.put(ss[0].trim(), ss[1].trim());
+                    }
                 }
             }
         }
@@ -151,7 +153,9 @@ public class NamiHandler implements InvocationHandler {
             if (mapping.headers() != null) {
                 for (String h : mapping.headers()) {
                     String[] ss = h.split("=");
-                    headers.put(ss[0], ss[1]);
+                    if (ss.length == 2) {
+                        headers.put(ss[0].trim(), ss[1].trim());
+                    }
                 }
             }
         }
