@@ -184,6 +184,25 @@ public class BeanWrap {
     }
 
     /**
+     * bean 初始化
+     * */
+    public void init(Object bean) {
+        //2.注入
+        Aop.inject(bean);
+
+        //3.初始化
+        if (clzInit != null) {
+            try {
+                clzInit.invoke(bean);
+            } catch (RuntimeException ex) {
+                throw ex;
+            } catch (ReflectiveOperationException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    }
+
+    /**
      * bean 新建对象
      */
     protected Object _new() {
@@ -193,21 +212,16 @@ public class BeanWrap {
 
         try {
             //1.构造
-            Object obj = clz.newInstance();
+            Object bean = clz.newInstance();
 
-            //2.注入
-            Aop.inject(obj);
-
-            //3.初始化
-            if (clzInit != null) {
-                clzInit.invoke(obj);
-            }
+            //
+            init(bean);
 
             if (proxy != null) {
-                obj = proxy.getProxy(obj);
+                bean = proxy.getProxy(bean);
             }
 
-            return obj;
+            return bean;
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {
