@@ -1,6 +1,7 @@
 package org.noear.nami;
 
 import org.noear.nami.annotation.NamiClient;
+import org.noear.nami.channel.Constants;
 import org.noear.nami.decoder.SnackDecoder;
 import org.noear.nami.encoder.SnackTypeEncoder;
 
@@ -168,8 +169,14 @@ public class Nami {
     public <T> T getObject(Class<T> returnType) {
         if (Void.TYPE.equals(returnType)) {
             return null;
-        }else {
-            return _config.getDecoder().decode(_result, returnType);
+        } else {
+            Decoder decoder = _config.getDecoder();
+
+            if (decoder == null) {
+                decoder = NamiManager.getDecoder(Constants.ct_json);
+            }
+
+            return decoder.decode(_result, returnType);
         }
     }
 

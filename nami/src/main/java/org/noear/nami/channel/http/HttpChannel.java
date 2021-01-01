@@ -41,18 +41,23 @@ public class HttpChannel implements NamiChannel {
         //0.开始构建http
         HttpUtils http = HttpUtils.http(url).headers(headers);
         Response response = null;
-        Encoder encoder = null;
+        Encoder encoder = cfg.getEncoder();
 
+        if(encoder == null){
+            encoder = NamiManager.getEncoder(Constants.ct_form_urlencoded);
+        }
 
         //1.执行并返回
         if (is_get) {
             response = http.exec(Constants.m_get);
         } else {
             String ct0 = headers.getOrDefault(Constants.h_content_type, "");
-            Enctype ct1 = cfg.getEncoder().enctype();
 
-            if (ct1.contentType.equals(Constants.ct_form_urlencoded)) {
+            if (encoder.enctype().contentType.equals(Constants.ct_form_urlencoded)) {
                 if (ct0.length() == 0) {
+                    //将编码器軒为null
+                    encoder = null;
+
                     if (args.size() == 0) {
                         //没参数按GET来
                         response = http.exec(Constants.m_get);
