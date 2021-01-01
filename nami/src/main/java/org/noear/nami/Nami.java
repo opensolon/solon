@@ -1,9 +1,12 @@
 package org.noear.nami;
 
 import org.noear.nami.annotation.NamiClient;
+import org.noear.nami.decoder.SnackDecoder;
+import org.noear.nami.encoder.SnackTypeEncoder;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -168,6 +171,20 @@ public class Nami {
         }else {
             return _config.getDecoder().decode(_result, returnType);
         }
+    }
+
+    //////////////////////////////////
+    //
+    // 静态快速创建
+    //
+    //////////////////////////////////
+
+
+    public static <T> T create(String serverUri, Class<T> service) {
+        return builder().uri(serverUri)
+                .encoder(SnackTypeEncoder.instance)
+                .decoder(SnackDecoder.instance)
+                .create(service);
     }
 
     //////////////////////////////////

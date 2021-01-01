@@ -2,6 +2,7 @@ package features.socketd;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.noear.nami.Nami;
 import org.noear.solon.extend.socketd.SocketD;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
@@ -16,6 +17,19 @@ public class SocketRpcTest {
         int _port = 8080 + 20000;
 
         HelloRpcService rpc = SocketD.create("tcp://localhost:"+_port, HelloRpcService.class);
+
+        String rst = rpc.hello("noear");
+
+        System.out.println(rst);
+
+        assert "name=noear".equals(rst);
+    }
+
+    @Test
+    public void test_rpc_api2() throws Throwable {
+        int _port = 8080 + 20000;
+
+        HelloRpcService rpc = Nami.create("tcp://localhost:"+_port, HelloRpcService.class);
 
         String rst = rpc.hello("noear");
 
