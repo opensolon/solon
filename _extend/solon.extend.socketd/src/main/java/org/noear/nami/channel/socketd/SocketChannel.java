@@ -36,6 +36,8 @@ public class SocketChannel implements NamiChannel {
         int flag = MessageFlag.message;
 
         if (method != null) {
+            //是否为握手
+            //
             Handshake h = method.getAnnotation(Handshake.class);
             if (h != null) {
                 flag = MessageFlag.handshake;
@@ -49,7 +51,6 @@ public class SocketChannel implements NamiChannel {
 
 
         //1.执行并返回
-
         switch (cfg.getEncoder().enctype()) {
             case application_hessian: {
                 headers.put(Constants.h_content_type, Constants.ct_hessian);
