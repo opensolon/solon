@@ -40,5 +40,6 @@ public class HessionDecoder implements Decoder {
     @Override
     public void filter(NamiConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args) {
         headers.put(Constants.h_serialization, Constants.at_hession);
+        headers.put(Constants.h_accept, Constants.ct_hessian);
     }
 }
