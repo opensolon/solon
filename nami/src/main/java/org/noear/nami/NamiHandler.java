@@ -2,6 +2,7 @@ package org.noear.nami;
 
 import org.noear.nami.annotation.Mapping;
 import org.noear.nami.annotation.NamiClient;
+import org.noear.solon.core.util.PathAnalyzer;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
@@ -11,6 +12,9 @@ import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Fairy - 调用处理程序
@@ -19,6 +23,8 @@ import java.util.Map;
  * @since 1.0
  * */
 public class NamiHandler implements InvocationHandler {
+    private static Pattern pathKeyExpr = Pattern.compile("\\{([^\\\\}]+)\\}");
+
     private final NamiConfig config;
 
     private final Map<String, String> headers0 = new LinkedHashMap<>();
@@ -26,6 +32,7 @@ public class NamiHandler implements InvocationHandler {
     private final String path0; //path
     private final String url0;  //url
     private final Class<?> clz0;
+    private final Map<String,Map> pathKeysCached = new ConcurrentHashMap<>();
 
     /**
      * @param config 配置
@@ -115,16 +122,18 @@ public class NamiHandler implements InvocationHandler {
         //构建 fun
         String fun = method.getName();
         String act = null;
+        String mappingVal = null;
         Mapping mapping = method.getAnnotation(Mapping.class);
         if (mapping != null && isEmpty(mapping.value()) == false) {
             //格式1: GET
             //格式2: GET user/a.0.1
-            String val = mapping.value().trim();
-            if (val.indexOf(" ") > 0) {
-                act = val.split(" ")[0];
-                fun = val.split(" ")[1];
+            mappingVal = mapping.value().trim();
+
+            if (mappingVal.indexOf(" ") > 0) {
+                act = mappingVal.split(" ")[0];
+                fun = mappingVal.split(" ")[1];
             }else{
-                act = val;
+                act = mappingVal;
             }
         }
 
@@ -166,6 +175,22 @@ public class NamiHandler implements InvocationHandler {
             url = url0;
         }
 
+        if(mappingVal !=null && mappingVal.indexOf("{") > 0) {
+            //
+            //处理Path参数
+            //
+            Map<String, String> pathKeys = buildPathKeys(mappingVal);
+
+            for (Map.Entry<String, String> kv : pathKeys.entrySet()) {
+                String val = (String) args.get(kv.getValue());
+
+                if (val != null) {
+                    url.replace(kv.getKey(), val);
+                    args.remove(kv.getValue());
+                }
+            }
+        }
+
 
         //执行调用
         return new Nami(config)
@@ -179,5 +204,25 @@ public class NamiHandler implements InvocationHandler {
 
     private static boolean isEmpty(String str) {
         return str == null || str.length() == 0;
+    }
+
+    private  Map<String,String> buildPathKeys(String path){
+        Map<String,String> pathKeys = pathKeysCached.get(path);
+        if(pathKeys == null){
+            synchronized (path.intern()){
+                pathKeys = pathKeysCached.get(path);
+                if(pathKeys == null){
+                    pathKeys = new LinkedHashMap<>();
+
+                    Matcher pm = pathKeyExpr.matcher(path);
+
+                    while (pm.find()) {
+                        pathKeys.put(pm.group(), pm.group(1));
+                    }
+                }
+            }
+        }
+
+        return pathKeys;
     }
 }
