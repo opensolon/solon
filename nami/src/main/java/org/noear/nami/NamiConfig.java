@@ -14,9 +14,6 @@ import java.util.function.Supplier;
  * @since 1.0
  * */
 public class NamiConfig {
-    public static boolean HAS_SNACK3 = hasClass("org.noear.snack.ONode");
-    public static boolean HAS_FASTJSON = hasClass("com.alibaba.fastjson.JSONObject");
-    public static boolean HAN_HESSIAN = hasClass("com.caucho.hessian.io.Hessian2Input");
 
     public NamiConfig() {
         encoder = Nami.defaultEncoder;
@@ -121,15 +118,4 @@ public class NamiConfig {
         filters.add(filter);
     }
 
-
-    //检查类是否存在
-    //
-    private static boolean hasClass(String className) {
-        try {
-            Class.forName(className);
-            return true;
-        } catch (Throwable ex) {
-            return false;
-        }
-    }
 }

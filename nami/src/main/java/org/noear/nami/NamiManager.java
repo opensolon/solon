@@ -16,6 +16,22 @@ import java.util.Map;
  * @since 1.2
  */
 public class NamiManager {
+    static boolean HAS_SNACK3 = hasClass("org.noear.snack.ONode");
+    static boolean HAS_FASTJSON = hasClass("com.alibaba.fastjson.JSONObject");
+    static boolean HAN_HESSIAN = hasClass("com.caucho.hessian.io.Hessian2Input");
+
+    //检查类是否存在
+    //
+    private static boolean hasClass(String className) {
+        try {
+            Class.forName(className);
+            return true;
+        } catch (Throwable ex) {
+            return false;
+        }
+    }
+
+
     static final Map<String, Decoder> decoderMap = new HashMap<>();
     static final Map<String, Encoder> encoderMap = new HashMap<>();
     static final Map<String, NamiChannel> channelMap = new HashMap<>();
@@ -74,22 +90,22 @@ public class NamiManager {
 
 
     static {
-        if (NamiConfig.HAN_HESSIAN) {
-            NamiManager.regIfAbsent(HessionDecoder.instance);
-            NamiManager.regIfAbsent(HessionEncoder.instance);
+        if (HAN_HESSIAN) {
+            regIfAbsent(HessionDecoder.instance);
+            regIfAbsent(HessionEncoder.instance);
         }
 
-        if (NamiConfig.HAS_FASTJSON) {
-            NamiManager.regIfAbsent(FastjsonDecoder.instance);
-            NamiManager.regIfAbsent(FastjsonEncoder.instance);
+        if (HAS_FASTJSON) {
+            regIfAbsent(FastjsonDecoder.instance);
+            regIfAbsent(FastjsonEncoder.instance);
         }
 
-        if (NamiConfig.HAS_SNACK3) {
-            NamiManager.regIfAbsent(FastjsonDecoder.instance);
-            NamiManager.regIfAbsent(FastjsonEncoder.instance);
+        if (HAS_SNACK3) {
+            regIfAbsent(FastjsonDecoder.instance);
+            regIfAbsent(FastjsonEncoder.instance);
         }
 
-        NamiManager.regIfAbsent("http", HttpChannel.instance);
-        NamiManager.regIfAbsent("https", HttpChannel.instance);
+        regIfAbsent("http", HttpChannel.instance);
+        regIfAbsent("https", HttpChannel.instance);
     }
 }
