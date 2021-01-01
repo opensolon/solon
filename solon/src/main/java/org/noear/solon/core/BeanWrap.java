@@ -187,10 +187,10 @@ public class BeanWrap {
      * bean 初始化
      * */
     public void init(Object bean) {
-        //2.注入
+        //a.注入
         Aop.inject(bean);
 
-        //3.初始化
+        //b.初始化
         if (clzInit != null) {
             try {
                 clzInit.invoke(bean);
@@ -214,7 +214,7 @@ public class BeanWrap {
             //1.构造
             Object bean = clz.newInstance();
 
-            //
+            //2.初始化
             init(bean);
 
             if (proxy != null) {
