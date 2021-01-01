@@ -137,6 +137,10 @@ public abstract class Context {
     @Note("获取查询字符串")
     public abstract String queryString();
 
+    public String accept(){
+        return header("Accept","");
+    }
+
     private String body;
     /**获取RAW内容*/
     @Note("获取RAW内容")
