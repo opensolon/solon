@@ -7,6 +7,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 
 /**
  * @author noear 2020/12/29 created
+ * @since 1.2
  */
 public class BeanPostProcessorSolon implements BeanPostProcessor {
     @Override
