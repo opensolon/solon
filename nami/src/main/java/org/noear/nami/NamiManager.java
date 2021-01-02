@@ -3,8 +3,10 @@ package org.noear.nami;
 import org.noear.nami.channel.http.HttpChannel;
 import org.noear.nami.decoder.FastjsonDecoder;
 import org.noear.nami.decoder.HessionDecoder;
+import org.noear.nami.decoder.SnackDecoder;
 import org.noear.nami.encoder.FastjsonEncoder;
 import org.noear.nami.encoder.HessionEncoder;
+import org.noear.nami.encoder.SnackEncoder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -102,8 +104,8 @@ public class NamiManager {
         }
 
         if (HAS_SNACK3) {
-            regIfAbsent(FastjsonDecoder.instance);
-            regIfAbsent(FastjsonEncoder.instance);
+            regIfAbsent(SnackDecoder.instance);
+            regIfAbsent(SnackEncoder.instance);
         }
 
         if (HAS_OKHTTP) {
