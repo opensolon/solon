@@ -41,17 +41,13 @@ public class HttpChannel implements NamiChannel {
         Response response = null;
         Encoder encoder = cfg.getEncoder();
 
-        if (encoder == null) {
-            encoder = NamiManager.getEncoder(Constants.ct_form_urlencoded);
-        }
-
         //1.执行并返回
         if (is_get || args.size() == 0) {
             response = http.exec(Constants.m_get);
         } else {
-            String ct0 = headers.getOrDefault(Constants.h_content_type, "");
+            if (encoder == null || encoder.enctype().contentType.equals(Constants.ct_form_urlencoded)) {
+                String ct0 = headers.getOrDefault(Constants.h_content_type, "");
 
-            if (encoder.enctype().contentType.equals(Constants.ct_form_urlencoded)) {
                 if (ct0.length() == 0) {
                     response = http.data(args).exec(action);
                 } else {
@@ -64,7 +60,7 @@ public class HttpChannel implements NamiChannel {
 
         if (response == null && encoder != null) {
             byte[] bytes = encoder.encode(args);
-            if (bytes == null) {
+            if (bytes != null) {
                 response = http.bodyRaw(bytes, encoder.enctype().contentType).exec(action);
             }
         }
