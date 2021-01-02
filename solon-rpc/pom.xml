@@ -21,6 +21,12 @@
             <artifactId>nami-solon-plugin</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp.ver}</version>
+        </dependency>
+
         <!-- Http 启动器 -->
         <dependency>
             <groupId>org.noear</groupId>
