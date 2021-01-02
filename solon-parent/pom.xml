@@ -89,6 +89,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.socketd.client.jdksocket</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon</artifactId>
                 <version>${solon.ver}</version>
             </dependency>

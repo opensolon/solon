@@ -22,7 +22,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.socketd</artifactId>
+            <artifactId>solon.socketd.client.jdksocket</artifactId>
         </dependency>
 
     </dependencies>

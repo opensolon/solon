@@ -3,6 +3,8 @@ package org.noear.solon.boot.socketd.jdksocket;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.ListenerProxy;
+import org.noear.solon.socketd.client.jdksocket.BioReceiver;
+import org.noear.solon.socketd.client.jdksocket._SocketSession;
 
 import java.io.IOException;
 import java.net.ServerSocket;

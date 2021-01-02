@@ -34,7 +34,7 @@ import java.util.*;
  * }
  * </code></pre>
  * */
-class _SocketSession extends SessionBase {
+public class _SocketSession extends SessionBase {
     public static Map<Socket, Session> sessions = new HashMap<>();
 
     public static Session get(Socket real) {

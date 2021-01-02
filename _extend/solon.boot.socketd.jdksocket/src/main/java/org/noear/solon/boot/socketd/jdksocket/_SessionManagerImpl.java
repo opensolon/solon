@@ -3,6 +3,7 @@ package org.noear.solon.boot.socketd.jdksocket;
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.SessionManager;
+import org.noear.solon.socketd.client.jdksocket._SocketSession;
 
 import java.net.Socket;
 import java.util.Collection;

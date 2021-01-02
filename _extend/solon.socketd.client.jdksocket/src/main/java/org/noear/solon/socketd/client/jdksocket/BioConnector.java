@@ -13,7 +13,7 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.URI;
 
-class BioConnector extends ConnectorBase<Socket> {
+public class BioConnector extends ConnectorBase<Socket> {
     public BioConnector(URI uri, boolean autoReconnect) {
         super(uri, autoReconnect);
     }
