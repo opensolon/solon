@@ -4,6 +4,7 @@ import org.noear.nami.NamiChannel;
 import org.noear.nami.NamiConfig;
 import org.noear.nami.Result;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.socketd.SessionFlag;
 import org.noear.solon.socketd.SocketD;
 
 import java.lang.reflect.Method;
@@ -29,6 +30,7 @@ public class SocketClientChannel implements NamiChannel {
 
                 if (channel == null) {
                     Session session = SocketD.createSession(uri);
+                    session.flagSet(SessionFlag.socketd);
                     channel = new SocketChannel(() -> session);
                     channelMap.put(hostname, channel);
                 }

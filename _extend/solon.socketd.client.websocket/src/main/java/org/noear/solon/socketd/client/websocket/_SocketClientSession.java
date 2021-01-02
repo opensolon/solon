@@ -10,6 +10,7 @@ import org.noear.solon.ext.RunnableEx;
 import org.noear.solon.socketd.Connector;
 import org.noear.solon.socketd.ProtocolManager;
 import org.noear.solon.socketd.SessionBase;
+import org.noear.solon.socketd.SessionFlag;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -29,6 +30,10 @@ public class _SocketClientSession extends SessionBase {
     public _SocketClientSession(Connector<WebSocket> connector) {
         this.connector = connector;
         this.autoReconnect = connector.autoReconnect();
+    }
+
+    private boolean isWebSocketD() {
+        return Solon.global().enableWebSocketD() || flag() == SessionFlag.socketd;
     }
 
     /**
@@ -81,7 +86,7 @@ public class _SocketClientSession extends SessionBase {
 
     @Override
     public void send(String message) {
-        if (Solon.global().enableWebSocketD() || uri().getScheme().endsWith("d")) {
+        if (isWebSocketD()) {
             sendD(Message.wrap(message.getBytes(StandardCharsets.UTF_8)));
         }else{
             sendW(() -> real.send(message));
@@ -90,7 +95,7 @@ public class _SocketClientSession extends SessionBase {
 
     @Override
     public void send(Message message) {
-        if (Solon.global().enableWebSocketD() || uri().getScheme().endsWith("d")) {
+        if (isWebSocketD()) {
             sendD(message);
         } else {
             if (message.isString()) {

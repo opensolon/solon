@@ -36,6 +36,16 @@ public interface Session {
      */
     String path();
 
+    /**
+     * 标识（为特定业务提供帮助）
+     * */
+    int flag();
+
+    /**
+     * 标识设置
+     * */
+    void flagSet(int flag);
+
 
     /**
      * 发送消息

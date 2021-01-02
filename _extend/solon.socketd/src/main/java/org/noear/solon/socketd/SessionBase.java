@@ -10,6 +10,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 
 public abstract class SessionBase implements Session {
+    private int _flag;
+    @Override
+    public int flag() {
+        return _flag;
+    }
+
+    @Override
+    public void flagSet(int flag) {
+        _flag = flag;
+    }
+
     //////////////////////////////////////////
 
     private AtomicBoolean _handshaked = new AtomicBoolean();
