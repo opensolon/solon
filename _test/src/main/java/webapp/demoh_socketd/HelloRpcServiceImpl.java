@@ -4,6 +4,7 @@ import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.MethodType;
+import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.SocketD;
 
 @Mapping(value = "/demoh/rpc", method = MethodType.ALL)
@@ -11,8 +12,12 @@ import org.noear.solon.socketd.SocketD;
 public class HelloRpcServiceImpl implements HelloRpcService {
 
     public String hello(String name) {
-//        NameRpcService rpc = SocketD.create(Context.current(), NameRpcService.class);
-//        name = rpc.name(name);
+//        Context ctx = Context.current();
+//
+//        if(ctx.request() instanceof Session) {
+//            NameRpcService rpc = SocketD.create(ctx, NameRpcService.class);
+//            name = rpc.name(name);
+//        }
 
         return "name=" + name;
     }

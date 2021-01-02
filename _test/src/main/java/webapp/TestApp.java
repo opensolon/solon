@@ -13,9 +13,9 @@ import org.noear.solonfox.swagger2.EnableSwagger2;
 import webapp.demo6_aop.TestImport;
 
 @Import(value = TestImport.class)
-@EnableSwagger2
-@EnableCron4j
-@EnableQuartz
+//@EnableSwagger2
+//@EnableCron4j
+//@EnableQuartz
 @EnableNamiClient
 public class TestApp   {
 

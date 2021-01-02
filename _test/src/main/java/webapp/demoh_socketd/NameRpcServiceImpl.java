@@ -5,7 +5,7 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.MethodType;
 
-@Mapping(value = "/demoh/rpc/name", method = MethodType.SOCKET)
+@Mapping(value = "/demoh/rpc/name", method = MethodType.ALL)
 @Component(remoting = true)
 public class NameRpcServiceImpl implements NameRpcService{
 
