@@ -326,6 +326,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>nami.channel.okhttp</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>nami-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -649,23 +655,7 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <!-- Javadoc -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.10.3</version>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                                <configuration>
-                                    <additionalparam>-Xdoclint:none</additionalparam>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
+
                     <!-- GPG -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -721,6 +711,27 @@
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                 </configuration>
+            </plugin>
+
+            <!-- Javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.3</version>
+                <configuration>
+                    <charset>utf-8</charset>
+                    <encoding>utf-8</encoding>
+                    <additionalparam>-Xdoclint:none</additionalparam>
+                    <quiet>true</quiet>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -795,6 +806,9 @@
         <module>../_extend/solon.extend.jetty.jsp</module>
         <module>../_extend/solon.extend.jetty.websocket</module>
         <module>../_extend/solon.extend.undertow.jsp</module>
+
+
+        <module>../_extend/nami.channel.okhttp</module>
 
 
         <!--        <module>../_extend/solon.boot.rapidoid-http-fast</module>-->
