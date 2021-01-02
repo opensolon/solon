@@ -86,7 +86,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.socketd.websocket</artifactId>
+            <artifactId>solon.extend.socketd.client.websocket</artifactId>
         </dependency>
 
         <dependency>

@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.extend.socketd.websocket</artifactId>
+    <artifactId>solon.extend.socketd.client.websocket</artifactId>
     <packaging>jar</packaging>
 
 
