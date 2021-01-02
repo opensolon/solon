@@ -41,6 +41,8 @@ public class NamiConfig {
     //解码器
     private Decoder decoder;
 
+    private NamiChannel channel;
+
     //上游
     private Supplier<String> upstream;
     //服务端
@@ -76,6 +78,14 @@ public class NamiConfig {
         if (decoder != null) {
             this.decoder = decoder;
         }
+    }
+
+    public NamiChannel getChannel() {
+        return channel;
+    }
+
+    public void setChannel(NamiChannel channel) {
+        this.channel = channel;
     }
 
     /**

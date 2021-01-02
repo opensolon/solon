@@ -127,13 +127,15 @@ public class Nami {
                 filter.filter(_config, _action, _url, headers, args);
             }
 
-            NamiChannel channel = null;
+            NamiChannel channel = _config.getChannel();
 
-            //1.通过 scheme 获取通道
-            int idx = _url.indexOf("://");
-            if(idx > 0){
-                String scheme = _url.substring(0,idx);
-                channel = NamiManager.getChannel(scheme);
+            if(channel == null) {
+                //通过 scheme 获取通道
+                int idx = _url.indexOf("://");
+                if (idx > 0) {
+                    String scheme = _url.substring(0, idx);
+                    channel = NamiManager.getChannel(scheme);
+                }
             }
 
             if(channel == null){
@@ -225,6 +227,14 @@ public class Nami {
          */
         public Builder decoder(Decoder decoder) {
             _config.setDecoder(decoder);
+            return this;
+        }
+
+        /**
+         * 设置反序列器
+         */
+        public Builder channel(NamiChannel channel) {
+            _config.setChannel(channel);
             return this;
         }
 

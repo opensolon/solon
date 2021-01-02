@@ -3,6 +3,7 @@ package org.noear.solon.socketd;
 import org.noear.nami.Decoder;
 import org.noear.nami.Encoder;
 import org.noear.nami.Nami;
+import org.noear.nami.channel.socketd.SocketChannel;
 import org.noear.nami.decoder.SnackDecoder;
 import org.noear.nami.encoder.SnackTypeEncoder;
 import org.noear.solon.annotation.Note;
@@ -101,6 +102,7 @@ public class SocketD {
         return Nami.builder()
                 .encoder(encoder)
                 .decoder(decoder)
+                .channel(new SocketChannel(sessions))
                 .upstream(() -> server)
                 .create(service);
     }
