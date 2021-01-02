@@ -44,7 +44,7 @@ public class NamiConfig {
     private NamiChannel channel;
 
     //上游
-    private Upstream upstream;
+    private Supplier<String> upstream;
     //服务端
     private String uri;
     //过滤器
@@ -91,13 +91,13 @@ public class NamiConfig {
     /**
      * 获取上游
      * */
-    public Upstream getUpstream() {
+    public Supplier<String> getUpstream() {
         return upstream;
     }
     /**
      * 设置上游
      * */
-    protected void setUpstream(Upstream upstream) {
+    protected void setUpstream(Supplier<String> upstream) {
         this.upstream = upstream;
     }
 

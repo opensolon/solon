@@ -209,7 +209,7 @@ public class Nami {
         /**
          * 设置负载代理
          */
-        public Builder upstream(Upstream upstream) {
+        public Builder upstream(Supplier<String> upstream) {
             _config.setUpstream(upstream);
             return this;
         }
