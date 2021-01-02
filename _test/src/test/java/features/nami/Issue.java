@@ -1,4 +1,4 @@
-package features.rpc;
+package features.nami;
 
 import java.util.List;
 

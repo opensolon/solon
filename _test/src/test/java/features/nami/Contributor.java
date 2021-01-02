@@ -1,4 +1,4 @@
-package features.rpc;
+package features.nami;
 
 /**
  * @author noear 2021/1/1 created

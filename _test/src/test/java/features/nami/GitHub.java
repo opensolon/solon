@@ -1,4 +1,4 @@
-package features.rpc;
+package features.nami;
 
 import org.noear.nami.annotation.Mapping;
 
