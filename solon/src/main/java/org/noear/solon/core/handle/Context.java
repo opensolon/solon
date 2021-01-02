@@ -137,8 +137,13 @@ public abstract class Context {
     @Note("获取查询字符串")
     public abstract String queryString();
 
+    private String accept;
     public String accept(){
-        return header("Accept","");
+        if(accept == null) {
+            accept = header("Accept", "");
+        }
+
+        return accept;
     }
 
     private String body;
