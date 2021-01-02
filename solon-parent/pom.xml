@@ -367,6 +367,18 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>nami.coder.fastjson</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami.coder.snack3</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>nami-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -860,6 +872,8 @@
 
         <module>../_extend/nami.channel.okhttp</module>
         <module>../_extend/nami.channel.socketd</module>
+        <module>../_extend/nami.coder.fastjson</module>
+        <module>../_extend/nami.coder.snack3</module>
 
 
 
