@@ -9,7 +9,8 @@ import org.noear.solon.core.handle.Render;
 //
 public class FastjsonRender implements Render {
     private boolean _typedJson;
-    public FastjsonRender(boolean typedJson){
+
+    public FastjsonRender(boolean typedJson) {
         _typedJson = typedJson;
     }
 
@@ -24,6 +25,10 @@ public class FastjsonRender implements Render {
                     SerializerFeature.BrowserCompatible,
                     SerializerFeature.WriteClassName,
                     SerializerFeature.DisableCircularReferenceDetect);
+        } else if (ctx.accept().indexOf("/json") > 0) {
+            txt = JSON.toJSONString(obj,
+                    SerializerFeature.BrowserCompatible,
+                    SerializerFeature.DisableCircularReferenceDetect);
         } else {
             //非序列化处理
             //
@@ -35,7 +40,7 @@ public class FastjsonRender implements Render {
                 throw (Throwable) obj;
             }
 
-            if (obj instanceof String && ctx.accept().indexOf("/json") < 0) {
+            if (obj instanceof String) {
                 ctx.output((String) obj); //不能做为json输出
                 return;
             }
@@ -45,7 +50,7 @@ public class FastjsonRender implements Render {
                     SerializerFeature.DisableCircularReferenceDetect);
         }
 
-        if(XPluginImp.output_meta) {
+        if (XPluginImp.output_meta) {
             ctx.headerSet("solon.serialization", "FastjsonRender");
         }
 

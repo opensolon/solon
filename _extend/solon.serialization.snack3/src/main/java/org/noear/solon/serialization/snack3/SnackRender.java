@@ -9,6 +9,7 @@ import org.noear.solon.core.handle.Render;
 public class SnackRender implements Render {
 
     private boolean _typedJson;
+
     public SnackRender(boolean typedJson) {
         _typedJson = typedJson;
     }
@@ -21,6 +22,8 @@ public class SnackRender implements Render {
             //序列化处理
             //
             txt = ONode.serialize(obj);
+        } else if (ctx.accept().indexOf("/json") > 0) {
+            txt = ONode.stringify(obj);
         } else {
             //非序列化处理
             //
@@ -40,7 +43,7 @@ public class SnackRender implements Render {
             txt = ONode.stringify(obj);
         }
 
-        if(XPluginImp.output_meta) {
+        if (XPluginImp.output_meta) {
             ctx.headerSet("solon.serialization", "SnackRender");
         }
 

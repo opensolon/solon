@@ -10,6 +10,7 @@ public class JacksonRender implements Render {
     ObjectMapper mapper_serialize = new ObjectMapper();
 
     private boolean _typedJson;
+
     public JacksonRender(boolean typedJson) {
         _typedJson = typedJson;
 
@@ -34,6 +35,8 @@ public class JacksonRender implements Render {
             //序列化处理
             //
             txt = mapper_serialize.writeValueAsString(obj);
+        } else if (ctx.accept().indexOf("/json") > 0) {
+            txt = mapper.writeValueAsString(obj);
         } else {
             //非序列化处理
             //
@@ -53,7 +56,7 @@ public class JacksonRender implements Render {
             txt = mapper.writeValueAsString(obj);
         }
 
-        if(XPluginImp.output_meta) {
+        if (XPluginImp.output_meta) {
             ctx.headerSet("solon.serialization", "JacksonRender");
         }
 

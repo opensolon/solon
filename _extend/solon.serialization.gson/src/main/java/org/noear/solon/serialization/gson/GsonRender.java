@@ -7,15 +7,16 @@ import org.noear.solon.core.handle.Render;
 
 public class GsonRender implements Render {
     Gson stringify = new GsonBuilder()
-            .registerTypeAdapter(java.util.Date.class,new GsonDateSerialize())
+            .registerTypeAdapter(java.util.Date.class, new GsonDateSerialize())
             .create();//json输出
 
     Gson serialize = new GsonBuilder()
-            .registerTypeAdapter(java.util.Date.class,new GsonDateSerialize())
+            .registerTypeAdapter(java.util.Date.class, new GsonDateSerialize())
             .create();//序列化输出
 
     private boolean _typedJson;
-    public GsonRender(boolean typedJson){
+
+    public GsonRender(boolean typedJson) {
         _typedJson = typedJson;
     }
 
@@ -27,6 +28,8 @@ public class GsonRender implements Render {
             //序列化处理
             //
             txt = serialize.toJson(obj, obj.getClass());
+        } else if (ctx.accept().indexOf("/json") > 0) {
+            txt = stringify.toJson(obj);
         } else {
             //非序列化处理
             //
@@ -38,7 +41,7 @@ public class GsonRender implements Render {
                 throw (Throwable) obj;
             }
 
-            if (obj instanceof String && ctx.accept().indexOf("/json") < 0) {
+            if (obj instanceof String) {
                 ctx.output((String) obj); //不能做为json输出
                 return;
             }
@@ -46,7 +49,7 @@ public class GsonRender implements Render {
             txt = stringify.toJson(obj);
         }
 
-        if(XPluginImp.output_meta) {
+        if (XPluginImp.output_meta) {
             ctx.headerSet("solon.serialization", "GsonRender");
         }
 
