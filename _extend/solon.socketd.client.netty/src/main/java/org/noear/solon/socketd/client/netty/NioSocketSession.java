@@ -1,4 +1,4 @@
-package org.noear.solon.boot.socketd.netty;
+package org.noear.solon.socketd.client.netty;
 
 import io.netty.channel.Channel;
 import org.noear.solon.Utils;
@@ -14,7 +14,7 @@ import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.*;
 
-class _SocketSession extends SessionBase {
+public class NioSocketSession extends SessionBase {
     public static Map<Channel, Session> sessions = new HashMap<>();
 
     public static Session get(Channel real) {
@@ -23,7 +23,7 @@ class _SocketSession extends SessionBase {
             synchronized (real) {
                 tmp = sessions.get(real);
                 if (tmp == null) {
-                    tmp = new _SocketSession(real);
+                    tmp = new NioSocketSession(real);
                     sessions.put(real, tmp);
                 }
             }
@@ -38,7 +38,7 @@ class _SocketSession extends SessionBase {
 
     Channel real;
 
-    public _SocketSession(Channel real) {
+    public NioSocketSession(Channel real) {
         this.real = real;
     }
 
@@ -46,7 +46,7 @@ class _SocketSession extends SessionBase {
     Connector<Channel> connector;
     boolean autoReconnect;
 
-    public _SocketSession(Connector<Channel> connector) {
+    public NioSocketSession(Connector<Channel> connector) {
         this.connector = connector;
         this.autoReconnect = connector.autoReconnect();
     }
@@ -213,7 +213,7 @@ class _SocketSession extends SessionBase {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        _SocketSession that = (_SocketSession) o;
+        NioSocketSession that = (NioSocketSession) o;
         return Objects.equals(real, that.real);
     }
 

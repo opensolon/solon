@@ -1,4 +1,4 @@
-package org.noear.solon.boot.socketd.netty;
+package org.noear.solon.socketd.client.netty;
 
 import io.netty.channel.Channel;
 import org.noear.solon.core.message.Session;
@@ -21,7 +21,7 @@ public class _SessionFactoryImpl implements SessionFactory {
     @Override
     public Session createSession(Connector connector) {
         if (connector.driveType() == Channel.class) {
-            return new _SocketSession((Connector<Channel>) connector);
+            return new NioSocketSession((Connector<Channel>) connector);
         } else {
             throw new IllegalArgumentException("Only support Connector<Channel> connector");
         }
@@ -31,6 +31,6 @@ public class _SessionFactoryImpl implements SessionFactory {
     public Session createSession(URI uri, boolean autoReconnect) {
         NioConnector connector = new NioConnector(uri, autoReconnect);
 
-        return new _SocketSession(connector);
+        return new NioSocketSession(connector);
     }
 }

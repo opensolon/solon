@@ -4,6 +4,7 @@ import io.netty.channel.Channel;
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.SessionManager;
+import org.noear.solon.socketd.client.netty.NioSocketSession;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -17,7 +18,7 @@ class _SessionManagerImpl extends SessionManager {
     @Override
     public Session getSession(Object conn) {
         if (conn instanceof Channel) {
-            return _SocketSession.get((Channel) conn);
+            return NioSocketSession.get((Channel) conn);
         } else {
             throw new IllegalArgumentException("This conn requires a netty Channel type");
         }
@@ -25,13 +26,13 @@ class _SessionManagerImpl extends SessionManager {
 
     @Override
     public Collection<Session> getOpenSessions() {
-        return Collections.unmodifiableCollection(_SocketSession.sessions.values());
+        return Collections.unmodifiableCollection(NioSocketSession.sessions.values());
     }
 
     @Override
     public void removeSession(Object conn) {
         if (conn instanceof Channel) {
-            _SocketSession.remove((Channel) conn);
+            NioSocketSession.remove((Channel) conn);
         } else {
             throw new IllegalArgumentException("This conn requires a netty Channel type");
         }

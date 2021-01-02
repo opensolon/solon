@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.boot.socketd.smartsocket</artifactId>
+    <artifactId>solon.socketd.client.netty</artifactId>
     <packaging>jar</packaging>
 
 
@@ -23,9 +23,15 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.socketd.client.smartsocket</artifactId>
+            <artifactId>solon.socketd</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>${netty.ver}</version>
+            <!-- 如果与 undertow 同用时；注意netty版本号的统一 -->
+        </dependency>
     </dependencies>
 
 </project>

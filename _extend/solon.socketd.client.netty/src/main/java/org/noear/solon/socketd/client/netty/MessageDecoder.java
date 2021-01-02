@@ -1,4 +1,4 @@
-package org.noear.solon.boot.socketd.netty;
+package org.noear.solon.socketd.client.netty;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

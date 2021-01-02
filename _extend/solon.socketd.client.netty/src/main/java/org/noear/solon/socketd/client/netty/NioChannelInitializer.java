@@ -1,4 +1,4 @@
-package org.noear.solon.boot.socketd.netty;
+package org.noear.solon.socketd.client.netty;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -9,9 +9,9 @@ import org.noear.solon.core.message.Message;
 
 import java.util.function.Supplier;
 
-class NioChannelInitializer extends ChannelInitializer<SocketChannel> {
+public class NioChannelInitializer extends ChannelInitializer<SocketChannel> {
     Supplier<SimpleChannelInboundHandler<Message>> processor;
-    NioChannelInitializer(Supplier<SimpleChannelInboundHandler<Message>> processor){
+    public NioChannelInitializer(Supplier<SimpleChannelInboundHandler<Message>> processor){
         this.processor = processor;
     }
 
