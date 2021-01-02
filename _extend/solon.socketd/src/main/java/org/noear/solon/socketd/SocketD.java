@@ -5,7 +5,7 @@ import org.noear.nami.Encoder;
 import org.noear.nami.Nami;
 import org.noear.nami.channel.socketd.SocketChannel;
 import org.noear.nami.decoder.SnackDecoder;
-import org.noear.nami.encoder.SnackTypeEncoder;
+import org.noear.nami.encoder.SnackEncoder;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.message.Session;
@@ -73,7 +73,7 @@ public class SocketD {
     public static <T> T create(Context context, Class<T> service) {
         if (context.request() instanceof Session) {
             Session session = (Session) context.request();
-            return create(() -> session, SnackTypeEncoder.instance, SnackDecoder.instance, service);
+            return create(() -> session, SnackEncoder.instance, SnackDecoder.instance, service);
         } else {
             throw new IllegalArgumentException("Request context nonsupport socketd");
         }
@@ -84,7 +84,7 @@ public class SocketD {
     }
 
     public static <T> T create(Supplier<Session> sessions, Class<T> service) {
-        return create(sessions, SnackTypeEncoder.instance, SnackDecoder.instance, service);
+        return create(sessions, SnackEncoder.instance, SnackDecoder.instance, service);
     }
 
     public static <T> T create(Session session, Encoder encoder, Decoder decoder, Class<T> service) {

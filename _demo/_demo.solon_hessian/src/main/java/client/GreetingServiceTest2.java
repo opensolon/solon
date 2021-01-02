@@ -2,14 +2,14 @@ package client;
 
 import org.noear.nami.Nami;
 import org.noear.nami.decoder.HessionDecoder;
-import org.noear.nami.encoder.SnackTypeEncoder;
+import org.noear.nami.encoder.SnackEncoder;
 import server.dso.IGreetingService;
 
 public class GreetingServiceTest2 {
     public static void main(String[] args) throws Exception {
         //接口的动态代理工厂
         IGreetingService service = Nami.builder()
-                .encoder(SnackTypeEncoder.instance)
+                .encoder(SnackEncoder.instance)
                 .decoder(HessionDecoder.instance)
                 .upstream(()->{
                     return "http://localhost:8080";

@@ -2,7 +2,7 @@ package client;
 
 import org.noear.nami.Nami;
 import org.noear.nami.decoder.SnackDecoder;
-import org.noear.nami.encoder.SnackTypeEncoder;
+import org.noear.nami.encoder.SnackEncoder;
 import server.dso.IComplexModelService;
 import server.model.ComplexModel;
 import server.model.Person;
@@ -16,7 +16,7 @@ public class ComplextModelServiceTest4 {
     public static void main(String[] args) throws Exception {
         //配置接口代理
         IComplexModelService service =  Nami.builder()
-                .encoder(SnackTypeEncoder.instance)
+                .encoder(SnackEncoder.instance)
                 .decoder(SnackDecoder.instance)
                 .upstream(()->{
             return "http://localhost:8080";
