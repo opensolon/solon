@@ -12,12 +12,12 @@ import org.noear.solon.socketd.SocketD;
 public class HelloRpcServiceImpl implements HelloRpcService {
 
     public String hello(String name) {
-        Context ctx = Context.current();
-
-        if(ctx.request() instanceof Session) {
-            NameRpcService rpc = SocketD.create(ctx, NameRpcService.class);
-            name = rpc.name(name);
-        }
+//        Context ctx = Context.current();
+//
+//        if(ctx.request() instanceof Session) {
+//            NameRpcService rpc = SocketD.create(ctx, NameRpcService.class);
+//            name = rpc.name(name);
+//        }
 
         return "name=" + name;
     }
