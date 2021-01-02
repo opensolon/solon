@@ -332,6 +332,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>nami.channel.socketd</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>nami-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -810,6 +816,7 @@
 
 
         <module>../_extend/nami.channel.okhttp</module>
+        <module>../_extend/nami.channel.socketd</module>
 
 
         <!--        <module>../_extend/solon.boot.rapidoid-http-fast</module>-->
