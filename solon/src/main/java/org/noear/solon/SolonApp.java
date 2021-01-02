@@ -493,8 +493,11 @@ public class SolonApp implements Handler, HandlerSlots {
     public boolean enableWebSocketD(){
         return _enableWebSocketD;
     }
-    public SolonApp enableWebSocketD(boolean enable){
+    public SolonApp enableWebSocketD(boolean enable) {
         _enableWebSocketD = enable;
+        if (enable) {
+            _enableWebSocket = enable;
+        }
         return this;
     }
     /**
