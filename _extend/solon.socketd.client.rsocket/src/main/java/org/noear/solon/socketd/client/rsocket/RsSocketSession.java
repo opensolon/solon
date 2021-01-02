@@ -18,7 +18,7 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.*;
 
-public class _SocketSession extends SessionBase {
+public class RsSocketSession extends SessionBase {
     public static Map<RSocket, Session> sessions = new HashMap<>();
 
     public static Session get(RSocket real) {
@@ -27,7 +27,7 @@ public class _SocketSession extends SessionBase {
             synchronized (real) {
                 tmp = sessions.get(real);
                 if (tmp == null) {
-                    tmp = new _SocketSession(real);
+                    tmp = new RsSocketSession(real);
                     sessions.put(real, tmp);
 
                     //算第一次
@@ -45,14 +45,14 @@ public class _SocketSession extends SessionBase {
 
     RSocket real;
 
-    public _SocketSession(RSocket real) {
+    public RsSocketSession(RSocket real) {
         this.real = real;
     }
 
     Connector<RSocket> connector;
     boolean autoReconnect;
 
-    public _SocketSession(Connector<RSocket> connector) {
+    public RsSocketSession(Connector<RSocket> connector) {
         this.connector = connector;
     }
 
@@ -210,7 +210,7 @@ public class _SocketSession extends SessionBase {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        _SocketSession that = (_SocketSession) o;
+        RsSocketSession that = (RsSocketSession) o;
         return Objects.equals(real, that.real);
     }
 

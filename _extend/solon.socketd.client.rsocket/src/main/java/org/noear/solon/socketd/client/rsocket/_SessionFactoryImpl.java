@@ -25,7 +25,7 @@ class _SessionFactoryImpl implements SessionFactory {
     @Override
     public Session createSession(Connector connector) {
         if (connector.driveType() == RSocket.class) {
-            return new _SocketSession((Connector<RSocket>) connector);
+            return new RsSocketSession((Connector<RSocket>) connector);
         } else {
             throw new IllegalArgumentException("Only support Connector<RSocket> connector");
         }
@@ -33,6 +33,6 @@ class _SessionFactoryImpl implements SessionFactory {
 
     @Override
     public Session createSession(URI uri, boolean autoReconnect) {
-        return new _SocketSession(new RsConnector(uri, autoReconnect));
+        return new RsSocketSession(new RsConnector(uri, autoReconnect));
     }
 }

@@ -27,7 +27,7 @@ public class RsAcceptor implements SocketAcceptor, RSocket {
     public Mono<RSocket> accept(ConnectionSetupPayload connectionSetupPayload, RSocket rSocket) {
 
         //open
-        Session session = _SocketSession.get(rSocket);
+        Session session = RsSocketSession.get(rSocket);
         ListenerProxy.getGlobal().onOpen(session);
 
         return Mono.just(this);
@@ -50,7 +50,7 @@ public class RsAcceptor implements SocketAcceptor, RSocket {
             byteBuffer.flip();
 
             Message message = ProtocolManager.decode(byteBuffer);
-            Session session = _SocketSession.get(this);
+            Session session = RsSocketSession.get(this);
 
             try {
                 ListenerProxy.getGlobal().onMessage(session, message);
@@ -64,7 +64,7 @@ public class RsAcceptor implements SocketAcceptor, RSocket {
 
     @Override
     public Mono<Void> onClose() {
-        _SocketSession.remove(this);
+        RsSocketSession.remove(this);
         return Mono.empty();
     }
 }
