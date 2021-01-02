@@ -46,19 +46,14 @@ public class HttpChannel implements NamiChannel {
         }
 
         //1.执行并返回
-        if (is_get) {
+        if (is_get || args.size() == 0) {
             response = http.exec(Constants.m_get);
         } else {
             String ct0 = headers.getOrDefault(Constants.h_content_type, "");
 
             if (encoder.enctype().contentType.equals(Constants.ct_form_urlencoded)) {
                 if (ct0.length() == 0) {
-                    if (args.size() == 0) {
-                        //没参数按GET来
-                        response = http.exec(Constants.m_get);
-                    } else {
-                        response = http.data(args).exec(action);
-                    }
+                    response = http.data(args).exec(action);
                 } else {
                     encoder = NamiManager.getEncoder(ct0);
                 }

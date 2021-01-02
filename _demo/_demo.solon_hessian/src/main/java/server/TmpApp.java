@@ -13,11 +13,6 @@ public class TmpApp {
     public static void main(String[] args) {
         Solon.start(TmpApp.class, args);
 
-        Solon.global().before("**", MethodType.SOCKET,(ctx)->{
-            ctx.headerMap().put("Content-Type", "application/protobuf");
-            ctx.headerMap().put("X-Serialization","@protobuf");
-        });
-
         Solon.global().add("/web/hessian", MethodType.HTTP,
                 new HessianHandler(IGreetingService.class, Aop.get(IGreetingService.class)));
 
