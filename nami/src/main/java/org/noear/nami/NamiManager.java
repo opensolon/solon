@@ -18,7 +18,8 @@ import java.util.Map;
 public class NamiManager {
     static boolean HAS_SNACK3 = hasClass("org.noear.snack.ONode");
     static boolean HAS_FASTJSON = hasClass("com.alibaba.fastjson.JSONObject");
-    static boolean HAN_HESSIAN = hasClass("com.caucho.hessian.io.Hessian2Input");
+    static boolean HAS_HESSIAN = hasClass("com.caucho.hessian.io.Hessian2Input");
+    static boolean HAS_OKHTTP = hasClass("okhttp3.Response");
 
     //检查类是否存在
     //
@@ -90,7 +91,7 @@ public class NamiManager {
 
 
     static {
-        if (HAN_HESSIAN) {
+        if (HAS_HESSIAN) {
             regIfAbsent(HessionDecoder.instance);
             regIfAbsent(HessionEncoder.instance);
         }
@@ -105,7 +106,9 @@ public class NamiManager {
             regIfAbsent(FastjsonEncoder.instance);
         }
 
-        regIfAbsent("http", HttpChannel.instance);
-        regIfAbsent("https", HttpChannel.instance);
+        if (HAS_OKHTTP) {
+            regIfAbsent("http", HttpChannel.instance);
+            regIfAbsent("https", HttpChannel.instance);
+        }
     }
 }

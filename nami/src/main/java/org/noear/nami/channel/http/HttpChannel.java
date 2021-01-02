@@ -5,8 +5,6 @@ import okhttp3.Response;
 import org.noear.nami.*;
 import org.noear.nami.channel.Constants;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.Map;
 

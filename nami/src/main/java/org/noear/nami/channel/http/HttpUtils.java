@@ -37,14 +37,12 @@ class HttpUtils {
         }
     }
 
-    private String _url;
     private Charset _charset;
     private RequestBody _body;
     private Map<String,String> _form;
 
     private Request.Builder _builder;
     public HttpUtils(String url){
-        _url = url;
         _builder = new Request.Builder().url(url);
     }
 
