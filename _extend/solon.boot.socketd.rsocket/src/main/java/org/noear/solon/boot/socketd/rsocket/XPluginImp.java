@@ -3,7 +3,6 @@ package org.noear.solon.boot.socketd.rsocket;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.socketd.SessionFactoryManager;
 import org.noear.solon.socketd.SessionManager;
 
 public class XPluginImp implements Plugin {
@@ -15,9 +14,8 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(SolonApp app) {
-        //注册会话工厂
+        //注册会话管理器
         SessionManager.register(new _SessionManagerImpl());
-        SessionFactoryManager.register(new _SessionFactoryImpl());
 
         if(app.enableSocket() == false){
             return;

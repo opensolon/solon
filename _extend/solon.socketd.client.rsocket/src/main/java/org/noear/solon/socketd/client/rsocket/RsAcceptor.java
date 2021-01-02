@@ -1,4 +1,4 @@
-package org.noear.solon.boot.socketd.rsocket;
+package org.noear.solon.socketd.client.rsocket;
 
 import io.netty.buffer.ByteBuf;
 import io.rsocket.ConnectionSetupPayload;

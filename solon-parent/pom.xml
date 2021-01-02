@@ -50,6 +50,7 @@
 
         <smartsocket.ver>1.5.4</smartsocket.ver>
         <netty.ver>4.1.48.Final</netty.ver>
+        <rsocket.ver>1.1.0</rsocket.ver>
     </properties>
 
 
@@ -94,6 +95,12 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.socketd.client.netty</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.socketd.client.rsocket</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 

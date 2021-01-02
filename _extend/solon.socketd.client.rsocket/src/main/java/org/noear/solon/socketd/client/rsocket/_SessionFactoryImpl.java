@@ -1,4 +1,4 @@
-package org.noear.solon.boot.socketd.rsocket;
+package org.noear.solon.socketd.client.rsocket;
 
 import io.rsocket.RSocket;
 import org.noear.solon.core.message.Session;

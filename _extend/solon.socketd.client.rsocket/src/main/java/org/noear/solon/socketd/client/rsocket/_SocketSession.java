@@ -1,4 +1,4 @@
-package org.noear.solon.boot.socketd.rsocket;
+package org.noear.solon.socketd.client.rsocket;
 
 import io.rsocket.RSocket;
 import io.rsocket.util.DefaultPayload;
@@ -12,11 +12,13 @@ import org.noear.solon.socketd.ProtocolManager;
 import org.noear.solon.socketd.SessionBase;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.ConnectException;
+import java.net.InetSocketAddress;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.*;
 
-class _SocketSession extends SessionBase {
+public class _SocketSession extends SessionBase {
     public static Map<RSocket, Session> sessions = new HashMap<>();
 
     public static Session get(RSocket real) {

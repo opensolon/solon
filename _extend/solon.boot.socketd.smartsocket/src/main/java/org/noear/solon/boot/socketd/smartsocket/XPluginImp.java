@@ -19,7 +19,7 @@ public final class XPluginImp implements Plugin {
 
     @Override
     public void start(SolonApp app) {
-        //注册会话工厂
+        //注册会话管理器
         SessionManager.register(new _SessionManagerImpl());
 
 
