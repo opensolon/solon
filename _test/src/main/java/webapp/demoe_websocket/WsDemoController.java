@@ -10,7 +10,7 @@ import org.noear.solon.core.handle.MethodType;
 
 @Controller
 public class WsDemoController {
-    @Mapping(value = "/demoe/*",method = MethodType.ALL)
+    @Mapping(value = "/demoe/*",method = MethodType.WEBSOCKET)
     public void test(Context ctx) throws Exception{
         if(ctx == null){
             return;
