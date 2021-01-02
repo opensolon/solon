@@ -4,7 +4,7 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.ListenerProxy;
 import org.noear.solon.socketd.client.jdksocket.BioReceiver;
-import org.noear.solon.socketd.client.jdksocket._SocketSession;
+import org.noear.solon.socketd.client.jdksocket.BioSocketSession;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -34,14 +34,14 @@ class BioServer {
         while (true) {
             Socket socket = server.accept();
 
-            Session session = _SocketSession.get(socket);
+            Session session = BioSocketSession.get(socket);
             ListenerProxy.getGlobal().onOpen(session);
 
             pool.execute(() -> {
                 while (true) {
                     if (socket.isClosed()) {
                         ListenerProxy.getGlobal().onClose(session);
-                        _SocketSession.remove(socket);
+                        BioSocketSession.remove(socket);
                         break;
                     }
 

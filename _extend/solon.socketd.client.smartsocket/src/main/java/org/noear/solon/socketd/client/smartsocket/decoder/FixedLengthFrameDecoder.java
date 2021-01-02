@@ -1,4 +1,4 @@
-package org.noear.solon.boot.socketd.smartsocket.decoder;
+package org.noear.solon.socketd.client.smartsocket.decoder;
 
 import java.nio.ByteBuffer;
 

@@ -1,4 +1,4 @@
-package org.noear.solon.boot.socketd.smartsocket;
+package org.noear.solon.socketd.client.smartsocket;
 
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
@@ -33,7 +33,7 @@ class AioClientProcessor implements MessageProcessor<Message> {
 
             case SESSION_CLOSED:
                 ListenerProxy.getGlobal().onClose(session);
-                _SocketSession.remove(s);
+                AioSocketSession.remove(s);
                 break;
 
             case PROCESS_EXCEPTION:

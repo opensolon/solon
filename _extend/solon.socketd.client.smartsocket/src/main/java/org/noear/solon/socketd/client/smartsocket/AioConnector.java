@@ -1,4 +1,4 @@
-package org.noear.solon.boot.socketd.smartsocket;
+package org.noear.solon.socketd.client.smartsocket;
 
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.ConnectorBase;

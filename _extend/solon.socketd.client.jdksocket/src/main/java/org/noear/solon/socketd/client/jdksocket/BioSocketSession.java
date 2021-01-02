@@ -1,31 +1,49 @@
-package org.noear.solon.boot.socketd.smartsocket;
+package org.noear.solon.socketd.client.jdksocket;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
+import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.Connector;
 import org.noear.solon.socketd.ProtocolManager;
 import org.noear.solon.socketd.SessionBase;
-import org.smartboot.socket.transport.AioSession;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketException;
 import java.net.URI;
 import java.nio.ByteBuffer;
-import java.nio.channels.ClosedChannelException;
 import java.util.*;
 
-class _SocketSession extends SessionBase {
-    public static Map<AioSession, Session> sessions = new HashMap<>();
+/**
+ *
+ * <pre><code>
+ * public void test() throws Throwable{
+ *     String root = "tcp://localhost:" + (20000 + Solon.global().port());
+ *     XMessage message =  XMessage.wrap(root + "/demog/中文/1", "Hello 世界!".getBytes());
+ *
+ *     Socket socket = new Socket("localhost", Solon.global().port() + 20000);
+ *
+ *     XSession session = _SocketSession.get(socket);
+ *     XMessage rst = session.sendAndResponse(message);
+ *
+ *     System.out.println(rst.toString());
+ *
+ *     assert "我收到了：Hello 世界!".equals(rst.toString());
+ * }
+ * </code></pre>
+ * */
+public class BioSocketSession extends SessionBase {
+    public static Map<Socket, Session> sessions = new HashMap<>();
 
-    public static Session get(AioSession real) {
+    public static Session get(Socket real) {
         Session tmp = sessions.get(real);
         if (tmp == null) {
             synchronized (real) {
                 tmp = sessions.get(real);
                 if (tmp == null) {
-                    tmp = new _SocketSession(real);
+                    tmp = new BioSocketSession(real);
                     sessions.put(real, tmp);
                 }
             }
@@ -34,21 +52,21 @@ class _SocketSession extends SessionBase {
         return tmp;
     }
 
-    public static void remove(AioSession real) {
+    public static void remove(Socket real) {
         sessions.remove(real);
     }
 
-    AioSession real;
 
-    public _SocketSession(AioSession real) {
+    Socket real;
+
+    public BioSocketSession(Socket real) {
         this.real = real;
     }
 
-
-    Connector<AioSession> connector;
+    Connector<Socket> connector;
     boolean autoReconnect;
 
-    public _SocketSession(Connector<AioSession> connector) {
+    public BioSocketSession(Connector<Socket> connector) {
         this.connector = connector;
         this.autoReconnect = connector.autoReconnect();
     }
@@ -56,24 +74,15 @@ class _SocketSession extends SessionBase {
     /**
      * @return 是否为新链接
      */
-    private boolean prepareNew() throws IOException {
+    private boolean prepareNew() throws IOException{
         if (real == null) {
             real = connector.open(this);
             onOpen();
 
             return true;
         } else {
-            if (autoReconnect) {
-                if (real.isInvalid()) {
-                    real = connector.open(this);
-                    onOpen();
-
-                    return true;
-                }
-            }
+            return false;
         }
-
-        return false;
     }
 
     @Override
@@ -121,7 +130,6 @@ class _SocketSession extends SessionBase {
 //        send(MessageUtils.wrap(message));
 //    }
 
-    @Override
     public void send(Message message) {
         try {
             super.send(message);
@@ -136,12 +144,12 @@ class _SocketSession extends SessionBase {
                 //
                 send0(message);
             }
-        } catch (ClosedChannelException ex) {
+        } catch (SocketException ex) {
             if (autoReconnect) {
                 real = null;
-            } else {
-                throw new RuntimeException(ex);
             }
+
+            throw new RuntimeException(ex);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -155,20 +163,25 @@ class _SocketSession extends SessionBase {
         ByteBuffer buffer = ProtocolManager.encode(message);
 
         if (buffer != null) {
-            real.writeBuffer().writeAndFlush(buffer.array());
+            real.getOutputStream().write(buffer.array());
+            real.getOutputStream().flush();
         }
     }
 
-
     @Override
     public void close() throws IOException {
-        real.close();
-        sessions.remove(real);
+        synchronized (real) {
+            real.shutdownInput();
+            real.shutdownOutput();
+            real.close();
+
+            sessions.remove(real);
+        }
     }
 
     @Override
     public boolean isValid() {
-        return real.isInvalid() == false;
+        return real.isConnected();
     }
 
     @Override
@@ -178,42 +191,36 @@ class _SocketSession extends SessionBase {
 
     @Override
     public InetSocketAddress getRemoteAddress() {
-        try {
-            return real.getRemoteAddress();
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
-        }
+        return (InetSocketAddress) real.getRemoteSocketAddress();
     }
 
     @Override
     public InetSocketAddress getLocalAddress() {
-        try {
-            return real.getLocalAddress();
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
-        }
+        return (InetSocketAddress) real.getLocalSocketAddress();
     }
+
+    private Object attachment;
 
     @Override
     public void setAttachment(Object obj) {
-        real.setAttachment(obj);
+        attachment = obj;
     }
 
     @Override
     public <T> T getAttachment() {
-        return real.getAttachment();
+        return (T) attachment;
     }
 
     @Override
     public Collection<Session> getOpenSessions() {
-        return new ArrayList<>(sessions.values());
+        return Collections.unmodifiableCollection(sessions.values());
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        _SocketSession that = (_SocketSession) o;
+        BioSocketSession that = (BioSocketSession) o;
         return Objects.equals(real, that.real);
     }
 

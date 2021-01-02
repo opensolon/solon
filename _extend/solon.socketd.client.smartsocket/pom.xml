@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.boot.socketd.smartsocket</artifactId>
+    <artifactId>solon.socketd.client.smartsocket</artifactId>
     <packaging>jar</packaging>
 
 
@@ -26,11 +26,13 @@
             <artifactId>solon.socketd</artifactId>
         </dependency>
 
-
+        <!-- smart socket begin -->
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.socketd.client.smartsocket</artifactId>
+            <groupId>org.smartboot.socket</groupId>
+            <artifactId>aio-core</artifactId>
+            <version>${smartsocket.ver}</version>
         </dependency>
+        <!-- smart socket end -->
 
     </dependencies>
 

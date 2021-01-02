@@ -22,7 +22,7 @@ public class _SessionFactoryImpl implements SessionFactory {
     @Override
     public Session createSession(Connector connector) {
         if (connector.driveType() == Socket.class) {
-            return new _SocketSession((Connector<Socket>) connector);
+            return new BioSocketSession((Connector<Socket>) connector);
         } else {
             throw new IllegalArgumentException("Only support Connector<Socket> connector");
         }
@@ -33,7 +33,7 @@ public class _SessionFactoryImpl implements SessionFactory {
         try {
             BioConnector bioClient = new BioConnector(uri, autoReconnect);
 
-            return new _SocketSession(bioClient);
+            return new BioSocketSession(bioClient);
         } catch (Exception ex) {
             throw Utils.throwableWrap(ex);
         }

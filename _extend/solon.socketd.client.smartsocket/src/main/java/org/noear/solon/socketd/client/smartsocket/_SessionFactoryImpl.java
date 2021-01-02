@@ -1,4 +1,4 @@
-package org.noear.solon.boot.socketd.smartsocket;
+package org.noear.solon.socketd.client.smartsocket;
 
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.Connector;
@@ -7,7 +7,7 @@ import org.smartboot.socket.transport.AioSession;
 
 import java.net.URI;
 
-public class _SessionFactoryImpl implements SessionFactory {
+class _SessionFactoryImpl implements SessionFactory {
     @Override
     public String[] schemes() {
         return new String[]{"tcp"};
@@ -21,7 +21,7 @@ public class _SessionFactoryImpl implements SessionFactory {
     @Override
     public Session createSession(Connector connector) {
         if (connector.driveType() == AioSession.class) {
-            return new _SocketSession((Connector<AioSession>) connector);
+            return new AioSocketSession((Connector<AioSession>) connector);
         } else {
             throw new IllegalArgumentException("Only support Connector<AioSession> connector");
         }
@@ -31,6 +31,6 @@ public class _SessionFactoryImpl implements SessionFactory {
     public Session createSession(URI uri, boolean autoReconnect) {
         AioConnector client = new AioConnector(uri, autoReconnect);
 
-        return new _SocketSession(client);
+        return new AioSocketSession(client);
     }
 }

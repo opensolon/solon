@@ -1,9 +1,8 @@
-package org.noear.solon.boot.socketd.smartsocket;
+package org.noear.solon.socketd.client.smartsocket;
 
-import org.noear.solon.boot.socketd.smartsocket.decoder.FixedLengthFrameDecoder;
 import org.noear.solon.core.message.Message;
-
 import org.noear.solon.socketd.ProtocolManager;
+import org.noear.solon.socketd.client.smartsocket.decoder.FixedLengthFrameDecoder;
 import org.smartboot.socket.Protocol;
 import org.smartboot.socket.transport.AioSession;
 
@@ -14,7 +13,7 @@ import java.nio.ByteBuffer;
  * /date/xxx/sss\n...
  *
  * */
-class AioProtocol implements Protocol<Message> {
+public class AioProtocol implements Protocol<Message> {
     public static final AioProtocol instance = new AioProtocol();
 
     @Override

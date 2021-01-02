@@ -3,6 +3,8 @@ package org.noear.solon.boot.socketd.smartsocket;
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.SessionManager;
+import org.noear.solon.socketd.client.smartsocket.AioSocketSession;
+
 import org.smartboot.socket.transport.AioSession;
 
 import java.util.Collection;
@@ -17,7 +19,7 @@ class _SessionManagerImpl extends SessionManager {
     @Override
     public Session getSession(Object conn) {
         if (conn instanceof AioSession) {
-            return _SocketSession.get((AioSession) conn);
+            return AioSocketSession.get((AioSession) conn);
         } else {
             throw new IllegalArgumentException("This conn requires a smartsocket AioSession type");
         }
@@ -25,13 +27,13 @@ class _SessionManagerImpl extends SessionManager {
 
     @Override
     public Collection<Session> getOpenSessions() {
-        return Collections.unmodifiableCollection(_SocketSession.sessions.values());
+        return Collections.unmodifiableCollection(AioSocketSession.sessions.values());
     }
 
     @Override
     public void removeSession(Object conn) {
         if (conn instanceof AioSession) {
-            _SocketSession.remove((AioSession) conn);
+            AioSocketSession.remove((AioSession) conn);
         } else {
             throw new IllegalArgumentException("This conn requires a smartsocket AioSession type");
         }

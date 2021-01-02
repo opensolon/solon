@@ -3,7 +3,7 @@ package org.noear.solon.boot.socketd.jdksocket;
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.SessionManager;
-import org.noear.solon.socketd.client.jdksocket._SocketSession;
+import org.noear.solon.socketd.client.jdksocket.BioSocketSession;
 
 import java.net.Socket;
 import java.util.Collection;
@@ -18,7 +18,7 @@ class _SessionManagerImpl extends SessionManager {
     @Override
     public Session getSession(Object conn) {
         if (conn instanceof Socket) {
-            return _SocketSession.get((Socket) conn);
+            return BioSocketSession.get((Socket) conn);
         } else {
             throw new IllegalArgumentException("This conn requires a Socket type");
         }
@@ -26,13 +26,13 @@ class _SessionManagerImpl extends SessionManager {
 
     @Override
     public Collection<Session> getOpenSessions() {
-        return Collections.unmodifiableCollection(_SocketSession.sessions.values());
+        return Collections.unmodifiableCollection(BioSocketSession.sessions.values());
     }
 
     @Override
     public void removeSession(Object conn) {
         if (conn instanceof Socket) {
-            _SocketSession.remove((Socket) conn);
+            BioSocketSession.remove((Socket) conn);
         } else {
             throw new IllegalArgumentException("This conn requires a Socket type");
         }

@@ -5,9 +5,9 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.message.Message;
 
-import org.noear.solon.socketd.SessionFactoryManager;
 import org.noear.solon.socketd.SessionManager;
 import org.noear.solon.socketd.SocketProps;
+import org.noear.solon.socketd.client.smartsocket.AioProtocol;
 import org.smartboot.socket.transport.AioQuickServer;
 
 public final class XPluginImp implements Plugin {
@@ -21,7 +21,6 @@ public final class XPluginImp implements Plugin {
     public void start(SolonApp app) {
         //注册会话工厂
         SessionManager.register(new _SessionManagerImpl());
-        SessionFactoryManager.register(new _SessionFactoryImpl());
 
 
         if (app.enableSocket() == false) {
