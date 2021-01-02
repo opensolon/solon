@@ -17,6 +17,11 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>nami</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon.socketd</artifactId>
             <version>${solon.ver}</version>
         </dependency>
