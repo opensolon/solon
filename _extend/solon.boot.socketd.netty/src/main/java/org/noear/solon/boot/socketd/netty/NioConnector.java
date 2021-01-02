@@ -7,7 +7,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.ConnectorBase;
+import org.noear.solon.socketd.ConnectorBase;
 
 import java.net.URI;
 

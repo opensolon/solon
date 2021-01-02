@@ -2,8 +2,8 @@ package org.noear.solon.boot.socketd.netty;
 
 import io.netty.channel.Channel;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.Connector;
-import org.noear.solon.extend.socketd.SessionFactory;
+import org.noear.solon.socketd.Connector;
+import org.noear.solon.socketd.SessionFactory;
 
 import java.net.URI;
 

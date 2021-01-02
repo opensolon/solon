@@ -1,6 +1,6 @@
 package webapp;
 
-import org.noear.solon.extend.socketd.SocketD;
+import org.noear.solon.socketd.SocketD;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import webapp.demoh_socketd.HelloRpcService;

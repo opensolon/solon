@@ -3,7 +3,7 @@ package org.noear.solon.boot.websocket;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.extend.socketd.SessionManager;
+import org.noear.solon.socketd.SessionManager;
 
 public class XPluginImp implements Plugin {
     private WsServer _server = null;

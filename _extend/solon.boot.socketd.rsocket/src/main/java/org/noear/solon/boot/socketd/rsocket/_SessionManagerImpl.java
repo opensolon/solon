@@ -3,7 +3,7 @@ package org.noear.solon.boot.socketd.rsocket;
 import io.rsocket.RSocket;
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.SessionManager;
+import org.noear.solon.socketd.SessionManager;
 
 import java.util.Collection;
 import java.util.Collections;

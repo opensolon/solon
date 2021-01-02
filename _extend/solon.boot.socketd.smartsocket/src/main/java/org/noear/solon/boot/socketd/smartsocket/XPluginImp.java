@@ -5,9 +5,9 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.message.Message;
 
-import org.noear.solon.extend.socketd.SessionFactoryManager;
-import org.noear.solon.extend.socketd.SessionManager;
-import org.noear.solon.extend.socketd.SocketProps;
+import org.noear.solon.socketd.SessionFactoryManager;
+import org.noear.solon.socketd.SessionManager;
+import org.noear.solon.socketd.SocketProps;
 import org.smartboot.socket.transport.AioQuickServer;
 
 public final class XPluginImp implements Plugin {

@@ -4,9 +4,9 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.extend.socketd.Connector;
-import org.noear.solon.extend.socketd.ProtocolManager;
-import org.noear.solon.extend.socketd.SessionBase;
+import org.noear.solon.socketd.Connector;
+import org.noear.solon.socketd.ProtocolManager;
+import org.noear.solon.socketd.SessionBase;
 import org.smartboot.socket.transport.AioSession;
 
 import java.io.IOException;

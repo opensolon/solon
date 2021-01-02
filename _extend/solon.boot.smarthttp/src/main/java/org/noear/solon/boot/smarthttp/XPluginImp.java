@@ -8,7 +8,7 @@ import org.noear.solon.boot.smarthttp.websocket.WebSocketHandleImp;
 import org.noear.solon.boot.smarthttp.websocket._SessionManagerImpl;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.extend.socketd.SessionManager;
+import org.noear.solon.socketd.SessionManager;
 import org.smartboot.http.HttpBootstrap;
 
 public final class XPluginImp implements Plugin {

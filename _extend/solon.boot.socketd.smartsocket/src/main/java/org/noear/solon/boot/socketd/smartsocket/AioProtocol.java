@@ -3,7 +3,7 @@ package org.noear.solon.boot.socketd.smartsocket;
 import org.noear.solon.boot.socketd.smartsocket.decoder.FixedLengthFrameDecoder;
 import org.noear.solon.core.message.Message;
 
-import org.noear.solon.extend.socketd.ProtocolManager;
+import org.noear.solon.socketd.ProtocolManager;
 import org.smartboot.socket.Protocol;
 import org.smartboot.socket.transport.AioSession;
 

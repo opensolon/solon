@@ -1,11 +1,10 @@
 package org.noear.solon.boot.socketd.netty;
 
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.ListenerProxy;
+import org.noear.solon.socketd.ListenerProxy;
 
 public class NioClientProcessor extends SimpleChannelInboundHandler<Message> {
     Session session;

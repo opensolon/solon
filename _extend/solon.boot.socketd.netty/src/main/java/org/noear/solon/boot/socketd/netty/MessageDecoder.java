@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import org.noear.solon.core.message.Message;
-import org.noear.solon.extend.socketd.ProtocolManager;
+import org.noear.solon.socketd.ProtocolManager;
 
 import java.nio.ByteBuffer;
 import java.util.List;

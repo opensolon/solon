@@ -77,13 +77,13 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.extend.socketd</artifactId>
+                <artifactId>solon.socketd</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.extend.socketd.client.websocket</artifactId>
+                <artifactId>solon.socketd.client.websocket</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
@@ -746,8 +746,8 @@
         <module>../_extend/solon.boot.socketd.rsocket</module>
         <module>../_extend/solon.boot.socketd.websocket</module>
 
-        <module>../_extend/solon.extend.socketd</module>
-        <module>../_extend/solon.extend.socketd.client.websocket</module>
+        <module>../_extend/solon.socketd</module>
+        <module>../_extend/solon.socketd.client.websocket</module>
 
         <!--        <module>../_extend/solon.boot.jdkudp</module>-->
 

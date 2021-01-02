@@ -2,9 +2,8 @@ package org.noear.solon.boot.undertow.websocket;
 
 import io.undertow.websockets.core.WebSocketChannel;
 import org.noear.solon.core.SignalType;
-import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.SessionManager;
+import org.noear.solon.socketd.SessionManager;
 
 import java.util.Collection;
 import java.util.Collections;

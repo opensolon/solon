@@ -3,7 +3,7 @@ package org.noear.solon.boot.socketd.smartsocket;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.ListenerProxy;
+import org.noear.solon.socketd.ListenerProxy;
 import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.StateMachineEnum;
 import org.smartboot.socket.transport.AioSession;

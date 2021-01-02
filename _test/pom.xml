@@ -81,12 +81,12 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.socketd</artifactId>
+            <artifactId>solon.socketd</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.socketd.client.websocket</artifactId>
+            <artifactId>solon.socketd.client.websocket</artifactId>
         </dependency>
 
         <dependency>

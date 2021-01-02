@@ -11,7 +11,7 @@ import org.noear.solon.boot.jetty.http.JtHttpContextHandler;
 import org.noear.solon.boot.jetty.websocket._SessionManagerImpl;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.extend.socketd.SessionManager;
+import org.noear.solon.socketd.SessionManager;
 
 import java.io.IOException;
 

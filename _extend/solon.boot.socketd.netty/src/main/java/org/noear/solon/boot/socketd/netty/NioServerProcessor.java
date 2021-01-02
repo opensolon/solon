@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.ListenerProxy;
+import org.noear.solon.socketd.ListenerProxy;
 
 @ChannelHandler.Sharable
 public class NioServerProcessor extends SimpleChannelInboundHandler<Message> {

@@ -3,12 +3,11 @@ package org.noear.solon.boot.socketd.websocket;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
-import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.ListenerProxy;
-import org.noear.solon.extend.socketd.ProtocolManager;
+import org.noear.solon.socketd.ListenerProxy;
+import org.noear.solon.socketd.ProtocolManager;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;

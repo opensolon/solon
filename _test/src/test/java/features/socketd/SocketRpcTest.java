@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.nami.Nami;
 import org.noear.solon.Solon;
-import org.noear.solon.extend.socketd.SocketD;
+import org.noear.solon.socketd.SocketD;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.demoh_socketd.HelloRpcService;

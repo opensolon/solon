@@ -8,8 +8,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.extend.socketd.SessionFactoryManager;
-import org.noear.solon.extend.socketd.SessionManager;
+import org.noear.solon.socketd.SessionFactoryManager;
+import org.noear.solon.socketd.SessionManager;
 
 public class XPluginImp implements Plugin {
     ChannelFuture _server;

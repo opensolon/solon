@@ -4,7 +4,7 @@ import io.rsocket.RSocket;
 import io.rsocket.core.RSocketConnector;
 import io.rsocket.transport.netty.client.TcpClientTransport;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.ConnectorBase;
+import org.noear.solon.socketd.ConnectorBase;
 import reactor.util.retry.Retry;
 
 import java.io.IOException;

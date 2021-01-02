@@ -4,9 +4,9 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.ConnectorBase;
-import org.noear.solon.extend.socketd.ListenerProxy;
-import org.noear.solon.extend.socketd.SocketProps;
+import org.noear.solon.socketd.ConnectorBase;
+import org.noear.solon.socketd.ListenerProxy;
+import org.noear.solon.socketd.SocketProps;
 
 import java.net.InetSocketAddress;
 import java.net.Socket;

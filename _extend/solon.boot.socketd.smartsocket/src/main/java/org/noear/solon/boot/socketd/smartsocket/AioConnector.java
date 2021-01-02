@@ -1,8 +1,8 @@
 package org.noear.solon.boot.socketd.smartsocket;
 
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.ConnectorBase;
-import org.noear.solon.extend.socketd.SocketProps;
+import org.noear.solon.socketd.ConnectorBase;
+import org.noear.solon.socketd.SocketProps;
 import org.smartboot.socket.transport.AioQuickClient;
 import org.smartboot.socket.transport.AioSession;
 

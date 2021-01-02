@@ -2,7 +2,7 @@ package org.noear.solon.boot.socketd.smartsocket;
 
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.message.Session;
-import org.noear.solon.extend.socketd.SessionManager;
+import org.noear.solon.socketd.SessionManager;
 import org.smartboot.socket.transport.AioSession;
 
 import java.util.Collection;
