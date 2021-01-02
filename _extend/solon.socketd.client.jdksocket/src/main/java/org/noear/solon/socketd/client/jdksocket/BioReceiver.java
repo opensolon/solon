@@ -1,4 +1,4 @@
-package org.noear.solon.boot.socketd.jdksocket;
+package org.noear.solon.socketd.client.jdksocket;
 
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
