@@ -1,7 +1,6 @@
 package org.noear.nami;
 
 import org.noear.nami.channel.Constants;
-import org.noear.nami.encoder.FormEncoder;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -23,10 +22,6 @@ public class NamiConfig {
      * 尝试初始化进行补缺
      * */
     public NamiConfig tryInit() {
-        if (encoder == null) {
-            setEncoder(FormEncoder.instance);
-        }
-
         if (decoder == null) {
             setDecoder(NamiManager.getDecoder(Constants.ct_json));
         }
