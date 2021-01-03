@@ -1,6 +1,5 @@
 package org.noear.solon.socketd;
 
-import org.noear.nami.NamiManager;
 import org.noear.nami.channel.socketd.SocketClientChannel;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
@@ -14,10 +13,8 @@ import org.noear.solon.socketd.annotation.ClientEndpoint;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        if(Utils.loadClass("org.noear.nami.NamiManager") == null) {
-            NamiManager.reg("tcp", SocketClientChannel.instance);
-            NamiManager.reg("ws", SocketClientChannel.instance);
-            NamiManager.reg("wss", SocketClientChannel.instance);
+        if(Utils.loadClass("org.noear.nami.NamiManager") != null) {
+            SocketClientChannel.reg();
         }
 
         //注册 @ClientListenEndpoint 构建器
