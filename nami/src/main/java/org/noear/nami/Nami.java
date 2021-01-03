@@ -231,8 +231,8 @@ public class Nami {
         /**
          * 设置头
          * */
-        public Builder headerSet(String name,String val){
-            _config.headerSet(name,val);
+        public Builder headerSet(String name,String val) {
+            _config.setHeader(name, val);
             return this;
         }
 
@@ -285,6 +285,23 @@ public class Nami {
             if (clz.isInterface() == false) {
                 throw new NamiException("NamiClient only support interfaces");
             }
+
+            if(_config.getDecoder() == null) {
+                Decoder decoder = NamiManager.getDecoder(_config.getHeader(Constants.h_accept));
+
+                if (decoder != null) {
+                    _config.setDecoder(decoder);
+                }
+            }
+
+            if(_config.getEncoder() == null) {
+                Encoder encoder = NamiManager.getEncoder(_config.getHeader(Constants.h_content_type));
+
+                if (encoder != null) {
+                    _config.setEncoder(encoder);
+                }
+            }
+
 
             NamiHandler handler = new NamiHandler(clz, _config, client);
 

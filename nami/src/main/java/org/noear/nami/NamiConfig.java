@@ -113,8 +113,12 @@ public class NamiConfig {
     /**
      * 设置头
      * */
-    protected void headerSet(String name, String val){
+    protected void setHeader(String name, String val){
         headers.put(name,val);
+    }
+
+    public String getHeader(String name){
+        return headers.get(name);
     }
 
     public Map<String,String> getHeaders(){
