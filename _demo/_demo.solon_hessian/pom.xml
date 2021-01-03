@@ -37,7 +37,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami-solon-plugin</artifactId>
+            <artifactId>nami</artifactId>
         </dependency>
 
         <dependency>
