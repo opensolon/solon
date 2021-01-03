@@ -379,6 +379,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>nami.coder.hessian</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon-api</artifactId>
                 <version>${solon.ver}</version>
                 <type>pom</type>
@@ -867,6 +873,7 @@
         <module>../_extend/nami.channel.socketd</module>
         <module>../_extend/nami.coder.fastjson</module>
         <module>../_extend/nami.coder.snack3</module>
+        <module>../_extend/nami.coder.hession</module>
 
 
 

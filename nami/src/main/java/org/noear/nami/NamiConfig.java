@@ -3,8 +3,7 @@ package org.noear.nami;
 import org.noear.nami.channel.Constants;
 import org.noear.nami.encoder.FormEncoder;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Supplier;
 
 /**
@@ -49,6 +48,8 @@ public class NamiConfig {
     private String uri;
     //过滤器
     private Set<Filter> filters = new LinkedHashSet<>();
+    //头信息
+    private Map<String,String> headers = new LinkedHashMap<>();
 
     /**
      * 获取编码器
@@ -114,6 +115,16 @@ public class NamiConfig {
         this.uri = uri;
     }
 
+    /**
+     * 设置头
+     * */
+    protected void headerSet(String name, String val){
+        headers.put(name,val);
+    }
+
+    public Map<String,String> getHeaders(){
+        return Collections.unmodifiableMap(headers);
+    }
 
     /**
      * 获取过滤器

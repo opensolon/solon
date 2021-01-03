@@ -1,13 +1,5 @@
 package org.noear.nami;
 
-import org.noear.nami.channel.http.HttpChannel;
-import org.noear.nami.decoder.FastjsonDecoder;
-import org.noear.nami.decoder.HessionDecoder;
-import org.noear.nami.decoder.SnackDecoder;
-import org.noear.nami.encoder.FastjsonEncoder;
-import org.noear.nami.encoder.HessionEncoder;
-import org.noear.nami.encoder.SnackEncoder;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,23 +10,6 @@ import java.util.Map;
  * @since 1.2
  */
 public class NamiManager {
-    static boolean HAS_SNACK3 = hasClass("org.noear.snack.ONode");
-    static boolean HAS_FASTJSON = hasClass("com.alibaba.fastjson.JSONObject");
-    static boolean HAS_HESSIAN = hasClass("com.caucho.hessian.io.Hessian2Input");
-    static boolean HAS_OKHTTP = hasClass("okhttp3.Response");
-
-    //检查类是否存在
-    //
-    private static boolean hasClass(String className) {
-        try {
-            Class.forName(className);
-            return true;
-        } catch (Throwable ex) {
-            return false;
-        }
-    }
-
-
     static final Map<String, Decoder> decoderMap = new HashMap<>();
     static final Map<String, Encoder> encoderMap = new HashMap<>();
     static final Map<String, NamiChannel> channelMap = new HashMap<>();
@@ -91,26 +66,4 @@ public class NamiManager {
         return channelMap.get(scheme);
     }
 
-
-    static {
-        if (HAS_HESSIAN) {
-            regIfAbsent(HessionDecoder.instance);
-            regIfAbsent(HessionEncoder.instance);
-        }
-
-        if (HAS_FASTJSON) {
-            regIfAbsent(FastjsonDecoder.instance);
-            regIfAbsent(FastjsonEncoder.instance);
-        }
-
-        if (HAS_SNACK3) {
-            regIfAbsent(SnackDecoder.instance);
-            regIfAbsent(SnackEncoder.instance);
-        }
-
-        if (HAS_OKHTTP) {
-            regIfAbsent("http", HttpChannel.instance);
-            regIfAbsent("https", HttpChannel.instance);
-        }
-    }
 }

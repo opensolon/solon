@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>nami.coder.snack3</artifactId>
+    <artifactId>nami.coder.hession</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -27,9 +27,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>snack3</artifactId>
-            <version>${snack3.ver}</version>
+            <groupId>com.caucho</groupId>
+            <artifactId>hessian</artifactId>
+            <version>${hessian.ver}</version>
         </dependency>
     </dependencies>
 

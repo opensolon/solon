@@ -1,7 +1,5 @@
 package features.nami;
 
-import features.nami.Contributor;
-import features.nami.GitHub;
 import org.junit.Test;
 import org.noear.nami.Nami;
 import org.noear.nami.decoder.SnackDecoder;

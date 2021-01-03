@@ -229,6 +229,14 @@ public class Nami {
         }
 
         /**
+         * 设置头
+         * */
+        public Builder headerSet(String name,String val){
+            _config.headerSet(name,val);
+            return this;
+        }
+
+        /**
          * 设置反序列器
          */
         public Builder channel(NamiChannel channel) {
