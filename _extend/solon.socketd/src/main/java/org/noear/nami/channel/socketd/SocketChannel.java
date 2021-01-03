@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class SocketChannel implements NamiChannel {
+public class SocketChannel extends SocketChannelFilter implements NamiChannel {
     public Supplier<Session> sessions;
 
     public SocketChannel(Supplier<Session> sessions) {
@@ -86,28 +86,5 @@ public class SocketChannel implements NamiChannel {
 
         //3.返回结果
         return result;
-    }
-
-    @Override
-    public void filter(NamiConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args) {
-        if (cfg.getDecoder() == null) {
-            String at = cfg.getHeader(Constants.h_accept);
-
-            if (at == null) {
-                at = Constants.ct_json;
-            }
-
-            cfg.setDecoder(NamiManager.getDecoder(at));
-        }
-
-        if (cfg.getEncoder() == null) {
-            String ct = cfg.getHeader(Constants.h_content_type);
-
-            if (ct == null) {
-                ct = Constants.ct_json;
-            }
-
-            cfg.setEncoder(NamiManager.getEncoder(ct));
-        }
     }
 }
