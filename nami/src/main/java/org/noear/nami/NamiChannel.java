@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * 执行通道
  * */
-public interface NamiChannel {
+public interface NamiChannel extends Filter{
     /**
      * 设用
      * */

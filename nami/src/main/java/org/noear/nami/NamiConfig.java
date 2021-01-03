@@ -55,7 +55,7 @@ public class NamiConfig {
     /**
      * 设置编码器
      * */
-    protected void setEncoder(Encoder encoder) {
+    public void setEncoder(Encoder encoder) {
         if (encoder != null) {
             this.encoder = encoder;
         }
@@ -70,7 +70,7 @@ public class NamiConfig {
     /**
      * 设置解码器
      * */
-    protected void setDecoder(Decoder decoder) {
+    public void setDecoder(Decoder decoder) {
         if (decoder != null) {
             this.decoder = decoder;
         }

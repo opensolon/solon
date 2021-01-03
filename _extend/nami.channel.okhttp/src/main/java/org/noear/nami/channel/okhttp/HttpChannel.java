@@ -33,7 +33,7 @@ public class HttpChannel implements NamiChannel {
             url = sb.substring(0, sb.length() - 1);
         }
 
-        if(cfg.getDecoder() == null){
+        if (cfg.getDecoder() == null) {
             throw new IllegalArgumentException("There is no suitable decoder");
         }
 
@@ -89,5 +89,26 @@ public class HttpChannel implements NamiChannel {
 
         //3.返回结果
         return result;
+    }
+
+    @Override
+    public void filter(NamiConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args) {
+        if (cfg.getDecoder() == null) {
+            String at = cfg.getHeader(Constants.h_accept);
+
+            if (at == null) {
+                at = Constants.ct_json;
+            }
+
+            cfg.setDecoder(NamiManager.getDecoder(at));
+        }
+
+        if (cfg.getEncoder() == null) {
+            String ct = cfg.getHeader(Constants.h_content_type);
+
+            if (ct != null) {
+                cfg.setEncoder(NamiManager.getEncoder(ct));
+            }
+        }
     }
 }

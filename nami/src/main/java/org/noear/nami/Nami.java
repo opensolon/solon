@@ -286,23 +286,6 @@ public class Nami {
                 throw new NamiException("NamiClient only support interfaces");
             }
 
-            if(_config.getDecoder() == null) {
-                Decoder decoder = NamiManager.getDecoder(_config.getHeader(Constants.h_accept));
-
-                if (decoder != null) {
-                    _config.setDecoder(decoder);
-                }
-            }
-
-            if(_config.getEncoder() == null) {
-                Encoder encoder = NamiManager.getEncoder(_config.getHeader(Constants.h_content_type));
-
-                if (encoder != null) {
-                    _config.setEncoder(encoder);
-                }
-            }
-
-
             NamiHandler handler = new NamiHandler(clz, _config, client);
 
             return Proxy.newProxyInstance(
