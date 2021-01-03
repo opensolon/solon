@@ -6,13 +6,12 @@ import org.noear.nami.channel.Constants;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * Fairy - 代理器
+ * Nami（Solon rest * rpc client）
  *
  * @author noear
  * @since 1.0
