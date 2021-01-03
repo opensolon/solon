@@ -33,6 +33,10 @@ public class HttpChannel implements NamiChannel {
             url = sb.substring(0, sb.length() - 1);
         }
 
+        if(cfg.getDecoder() == null){
+            throw new IllegalArgumentException("There is no suitable decoder");
+        }
+
         //0.尝试解码器的过滤
         cfg.getDecoder().filter(cfg, action, url, headers, args);
 

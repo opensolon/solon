@@ -26,6 +26,10 @@ public class SocketChannel implements NamiChannel {
     @Override
     public Result call(NamiConfig cfg, Method method, String action, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
 
+        if(cfg.getDecoder() == null){
+            throw new IllegalArgumentException("There is no suitable decoder");
+        }
+
         //0.尝试解码器的过滤
         cfg.getDecoder().filter(cfg, action, url, headers, args);
 
