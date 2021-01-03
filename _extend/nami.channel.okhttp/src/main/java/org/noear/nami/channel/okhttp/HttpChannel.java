@@ -45,7 +45,7 @@ public class HttpChannel implements NamiChannel {
         if (is_get || args.size() == 0) {
             response = http.exec(Constants.m_get);
         } else {
-            if (encoder == null || encoder.enctype().contentType.equals(Constants.ct_form_urlencoded)) {
+            if (encoder == null) {
                 String ct0 = headers.getOrDefault(Constants.h_content_type, "");
 
                 if (ct0.length() == 0) {

@@ -47,7 +47,7 @@ public class NamiConfig {
     private Map<String,String> headers = new LinkedHashMap<>();
 
     /**
-     * 获取编码器
+     * 获取编码器（可以为Null）
      * */
     public Encoder getEncoder() {
         return encoder;
