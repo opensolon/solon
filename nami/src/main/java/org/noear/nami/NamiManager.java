@@ -18,25 +18,25 @@ public class NamiManager {
      * 登记解码器
      */
     public static void reg(Decoder decoder) {
-        decoderMap.put(decoder.enctype().contentType, decoder);
+        decoderMap.put(decoder.enctype(), decoder);
     }
 
     public static void regIfAbsent(Decoder decoder) {
-        decoderMap.putIfAbsent(decoder.enctype().contentType, decoder);
+        decoderMap.putIfAbsent(decoder.enctype(), decoder);
     }
 
     /**
      * 登记编码器
      */
     public static void reg(Encoder encoder) {
-        encoderMap.put(encoder.enctype().contentType, encoder);
+        encoderMap.put(encoder.enctype(), encoder);
     }
 
     /**
      * 登记编码器
      */
     public static void regIfAbsent(Encoder encoder) {
-        encoderMap.putIfAbsent(encoder.enctype().contentType, encoder);
+        encoderMap.putIfAbsent(encoder.enctype(), encoder);
     }
 
 
@@ -54,13 +54,14 @@ public class NamiManager {
         channelMap.putIfAbsent(scheme, namiChannel);
     }
 
-    public static Decoder getDecoder(String contentType) {
-        return decoderMap.get(contentType);
+    public static Decoder getDecoder(String enctype) {
+        return decoderMap.get(enctype);
     }
 
-    public static Encoder getEncoder(String contentType) {
-        return encoderMap.get(contentType);
+    public static Encoder getEncoder(String enctype) {
+        return encoderMap.get(enctype);
     }
+
 
     public static NamiChannel getChannel(String scheme) {
         return channelMap.get(scheme);

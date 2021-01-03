@@ -9,7 +9,7 @@ public interface Decoder extends Filter {
     /**
      * 编码
      * */
-    Enctype enctype();
+    String enctype();
 
     /**
      * 反序列化

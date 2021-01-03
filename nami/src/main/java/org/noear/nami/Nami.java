@@ -140,6 +140,9 @@ public class Nami {
                 throw new NamiException("There are no channels available");
             }
 
+            //执行通道过滤器
+            channel.filter(_config, _action, _url, headers, args);
+
 
             _result = channel.call(_config, _method, _action, _url, headers, args);
         } catch (RuntimeException ex) {

@@ -62,7 +62,7 @@ public class SocketChannel extends SocketChannelFilter implements NamiChannel {
         }
 
         //2.构建消息
-        headers.put(Constants.h_content_type, encoder.enctype().contentType);
+        headers.put(Constants.h_content_type, encoder.enctype());
         byte[] bytes = encoder.encode(args);
         message = new Message(flag, message_key, url, HeaderUtil.encodeHeaderMap(headers), bytes);
 

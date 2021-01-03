@@ -7,7 +7,7 @@ public interface Encoder {
     /**
      * 编码
      * */
-    Enctype enctype();
+    String enctype();
 
     /**
      * 序列化

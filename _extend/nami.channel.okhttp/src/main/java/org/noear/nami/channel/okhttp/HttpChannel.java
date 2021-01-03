@@ -65,7 +65,7 @@ public class HttpChannel implements NamiChannel {
         if (response == null && encoder != null) {
             byte[] bytes = encoder.encode(args);
             if (bytes != null) {
-                response = http.bodyRaw(bytes, encoder.enctype().contentType).exec(action);
+                response = http.bodyRaw(bytes, encoder.enctype()).exec(action);
             }
         }
 

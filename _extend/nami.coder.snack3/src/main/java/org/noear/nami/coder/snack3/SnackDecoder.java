@@ -1,6 +1,5 @@
 package org.noear.nami.coder.snack3;
 
-import org.noear.nami.Enctype;
 import org.noear.nami.NamiConfig;
 import org.noear.nami.Decoder;
 import org.noear.nami.Result;
@@ -14,10 +13,9 @@ public class SnackDecoder implements Decoder {
     public static final SnackDecoder instance = new SnackDecoder();
 
     @Override
-    public Enctype enctype() {
-        return Enctype.application_json;
+    public String enctype() {
+        return Constants.ct_json;
     }
-
 
     @Override
     public <T> T decode(Result rst, Type type) {

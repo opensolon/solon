@@ -1,7 +1,6 @@
 package org.noear.nami.coder.hession;
 
 import com.caucho.hessian.io.Hessian2Input;
-import org.noear.nami.Enctype;
 import org.noear.nami.NamiConfig;
 import org.noear.nami.Decoder;
 import org.noear.nami.Result;
@@ -15,8 +14,8 @@ public class HessianDecoder implements Decoder {
     public static final HessianDecoder instance = new HessianDecoder();
 
     @Override
-    public Enctype enctype() {
-        return Enctype.application_hessian;
+    public String enctype() {
+        return Constants.ct_hessian;
     }
 
 
