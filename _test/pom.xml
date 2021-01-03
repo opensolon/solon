@@ -34,6 +34,14 @@
             <groupId>org.noear</groupId>
             <artifactId>nami.coder.snack3</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>nami.channel.okhttp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>nami.channel.socketd</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
