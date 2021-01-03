@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>nami.coder.hession</artifactId>
+    <artifactId>nami.coder.hessian</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

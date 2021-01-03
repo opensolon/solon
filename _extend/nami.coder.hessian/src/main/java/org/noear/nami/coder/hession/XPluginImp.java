@@ -11,7 +11,7 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        NamiManager.reg(HessionDecoder.instance);
-        NamiManager.reg(HessionEncoder.instance);
+        NamiManager.reg(HessianDecoder.instance);
+        NamiManager.reg(HessianEncoder.instance);
     }
 }

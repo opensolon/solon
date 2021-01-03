@@ -5,8 +5,8 @@ import org.noear.nami.Enctype;
 import org.noear.nami.Encoder;
 import java.io.ByteArrayOutputStream;
 
-public class HessionEncoder implements Encoder {
-    public static final HessionEncoder instance = new HessionEncoder();
+public class HessianEncoder implements Encoder {
+    public static final HessianEncoder instance = new HessianEncoder();
 
     @Override
     public Enctype enctype() {

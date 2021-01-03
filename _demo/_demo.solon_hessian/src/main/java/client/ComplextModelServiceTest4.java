@@ -1,8 +1,8 @@
 package client;
 
 import org.noear.nami.Nami;
-import org.noear.nami.decoder.SnackDecoder;
-import org.noear.nami.encoder.SnackTypeEncoder;
+import org.noear.nami.coder.snack3.SnackDecoder;
+import org.noear.nami.coder.snack3.SnackTypeEncoder;
 import server.dso.IComplexModelService;
 import server.model.ComplexModel;
 import server.model.Person;

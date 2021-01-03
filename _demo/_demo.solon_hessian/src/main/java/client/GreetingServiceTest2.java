@@ -1,8 +1,8 @@
 package client;
 
 import org.noear.nami.Nami;
-import org.noear.nami.decoder.HessionDecoder;
-import org.noear.nami.encoder.SnackEncoder;
+import org.noear.nami.coder.hession.HessianDecoder;
+import org.noear.nami.coder.snack3.SnackEncoder;
 import server.dso.IGreetingService;
 
 public class GreetingServiceTest2 {
@@ -10,10 +10,9 @@ public class GreetingServiceTest2 {
         //接口的动态代理工厂
         IGreetingService service = Nami.builder()
                 .encoder(SnackEncoder.instance)
-                .decoder(HessionDecoder.instance)
-                .upstream(()->{
-                    return "http://localhost:8080";
-                }).create(IGreetingService.class);
+                .decoder(HessianDecoder.instance)
+                .upstream(()-> "http://localhost:8080")
+                .create(IGreetingService.class);
 
 
         String result = service.greeting("tom");

@@ -11,8 +11,8 @@ import java.io.ByteArrayInputStream;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-public class HessionDecoder implements Decoder {
-    public static final HessionDecoder instance = new HessionDecoder();
+public class HessianDecoder implements Decoder {
+    public static final HessianDecoder instance = new HessianDecoder();
 
     @Override
     public Enctype enctype() {

@@ -2,7 +2,7 @@ package features.nami;
 
 import org.junit.Test;
 import org.noear.nami.Nami;
-import org.noear.nami.decoder.SnackDecoder;
+import org.noear.nami.coder.snack3.SnackDecoder;
 
 import java.util.List;
 
