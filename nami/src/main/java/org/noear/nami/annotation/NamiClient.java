@@ -13,7 +13,7 @@ public @interface NamiClient {
      * uri:
      * 1. http://x.x.x/x/x/ (url)
      * 2. name:/x/x/ (name:path)
-     * 3. /x/x/ (path)
+     * 3. name
      * */
     String value() default "";
     /**
