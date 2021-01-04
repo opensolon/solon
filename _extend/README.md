@@ -1,5 +1,13 @@
 
 ### Nami 插件
+| 插件 | 说明 |
+| --- | --- |
+| nami插件:: | 说明 |
+| nami.coder.fastjson | 对`fastjson`的编解码适配 |
+| nami.coder.hessian | 对`hessian`的编解码适配 |
+| nami.coder.snack3 | 对`snack3`的编解码适配 |
+| nami.channel.okhttp | 对`okhttp`的通道适配 |
+| nami.channel.socketd | 对`socketd`的通道适配（适配后，可使用org.noear:solon.sockted.client.* 做为客户端） |
 
 ### Solon 插件
 
@@ -42,13 +50,13 @@
 | Session插件:: | 说明（可将boot插件的session state服务，自动换掉） |
 | org.noear:solon.extend.sessionstate.local | 扩展插件,本地`session` |
 | org.noear:solon.extend.sessionstate.redis | 扩展插件,分布式`session`（其于`redis`构建） |
+| | |
 | Socketd 插件:: | 说明 |
 | org.noear:solon.sockted | 扩展插件,sockted 协议的编解码、会话等基础支持 |
 | org.noear:solon.sockted.client.jdksocket | 扩展插件,sockted 协议的 jdksocket 客户端适配 |
 | org.noear:solon.sockted.client.netty | 扩展插件,sockted 协议的 netty 客户端适配 |
 | org.noear:solon.sockted.smartsocket | 扩展插件,sockted 协议的 smartsocket 客户端适配 |
 | org.noear:solon.sockted.websocket | 扩展插件,sockted 协议的 websocket 客户端适配 |
-| | |
 | | |
 | 序列化插件:: | 说明 |
 | org.noear:solon.serialization.fastjson* | 序列化插件，对 `fastjson` 适配，提供`json`视图输出 或 序列化输出 |
