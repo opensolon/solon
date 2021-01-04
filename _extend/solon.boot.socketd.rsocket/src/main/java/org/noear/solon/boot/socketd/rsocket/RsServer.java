@@ -23,7 +23,7 @@ class RsServer {
 
     private void start0(int port) throws IOException {
         server = RSocketServer
-                .create(RsAcceptor.instance)
+                .create(new RsAcceptor())
                 .bind(TcpServerTransport.create("localhost", port))
                 .block();
 

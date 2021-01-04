@@ -34,7 +34,7 @@ class RsConnector extends ConnectorBase<RSocket> {
     public RSocket open(Session session) throws IOException {
         return RSocketConnector
                 .create()
-                .acceptor(RsAcceptor.instance)
+                .acceptor(new RsAcceptor(session))
                 .reconnect(Retry.backoff(50, Duration.ofMillis(500)))
                 .connect(TcpClientTransport.create(uri().getHost(), uri().getPort()))
                 .block();

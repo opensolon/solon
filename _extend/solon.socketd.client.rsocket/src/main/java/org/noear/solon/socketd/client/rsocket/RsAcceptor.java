@@ -18,7 +18,15 @@ import java.nio.ByteBuffer;
  * @author noear 2020/12/14 created
  */
 public class RsAcceptor implements SocketAcceptor, RSocket {
-    public static final RsAcceptor instance = new RsAcceptor();
+    public RsAcceptor() {
+
+    }
+
+    private Session session;
+
+    public RsAcceptor(Session session) {
+        this.session = session;
+    }
 
     //
     // SocketAcceptor
@@ -26,9 +34,14 @@ public class RsAcceptor implements SocketAcceptor, RSocket {
     @Override
     public Mono<RSocket> accept(ConnectionSetupPayload connectionSetupPayload, RSocket rSocket) {
 
-        //open
-        Session session = RsSocketSession.get(rSocket);
-        ListenerProxy.getGlobal().onOpen(session);
+        if (session == null) {
+            //for server
+            Session session1 = RsSocketSession.get(rSocket);
+            ListenerProxy.getGlobal().onOpen(session1);
+        } else {
+            //for client
+            ListenerProxy.getGlobal().onOpen(session);
+        }
 
         return Mono.just(this);
     }
@@ -40,6 +53,7 @@ public class RsAcceptor implements SocketAcceptor, RSocket {
     public Mono<Void> fireAndForget(Payload payload) {
         ByteBuf byteBuf = payload.data();
         int len = byteBuf.readInt();
+
         if (len > 0) {
             byte[] bytes = new byte[len - Integer.BYTES];
             byteBuf.readBytes(bytes);
@@ -50,10 +64,14 @@ public class RsAcceptor implements SocketAcceptor, RSocket {
             byteBuffer.flip();
 
             Message message = ProtocolManager.decode(byteBuffer);
-            Session session = RsSocketSession.get(this);
 
             try {
-                ListenerProxy.getGlobal().onMessage(session, message);
+                if (session == null) {
+                    Session session1 = RsSocketSession.get(this);
+                    ListenerProxy.getGlobal().onMessage(session1, message);
+                } else {
+                    ListenerProxy.getGlobal().onMessage(session, message);
+                }
             } catch (Throwable ex) {
                 EventBus.push(ex);
             }
@@ -64,7 +82,10 @@ public class RsAcceptor implements SocketAcceptor, RSocket {
 
     @Override
     public Mono<Void> onClose() {
-        RsSocketSession.remove(this);
+        if (session == null) {
+            RsSocketSession.remove(this);
+        }
+
         return Mono.empty();
     }
 }
