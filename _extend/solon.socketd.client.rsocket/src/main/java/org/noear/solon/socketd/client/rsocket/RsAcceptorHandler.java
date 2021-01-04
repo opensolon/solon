@@ -24,9 +24,6 @@ public class RsAcceptorHandler implements RSocket {
         this.rSocket = rSocket;
     }
 
-    //
-    // RSocket
-    //
     @Override
     public Mono<Void> fireAndForget(Payload payload) {
         ByteBuf byteBuf = payload.data();
@@ -56,7 +53,6 @@ public class RsAcceptorHandler implements RSocket {
     @Override
     public Mono<Void> onClose() {
         RsSocketSession.remove(rSocket);
-
         return Mono.empty();
     }
 }
