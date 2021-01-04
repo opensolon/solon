@@ -1,16 +1,22 @@
 
-### 插件
+### Nami 插件
+
+### Solon 插件
 
 | 插件 | 说明 |
 | --- | --- |
 | boot插件:: | 说明 |
 | org.noear:solon.boot.jlhttp* | boot插件,对`jlhttp`适配,提供`http`服务（不自带session state） |
 | org.noear:solon.boot.jetty* | boot插件,对`jetty`适配,提供`http`服务（网友@khb提供） |
+| org.noear:solon.extend.jetty.jsp | 扩展插件,为`jetty`添加`jsp`支持（不建议使用jsp）（网友@khb提供） |
 | org.noear:solon.boot.undertow* | boot插件,对`undertow`适配,提供`http`服务（网友@tyk提供） |
 | org.noear:solon.boot.websocket | boot插件,对`java-websocket`适配，提供`websocket`服务 |
-| org.noear:solon.boot.smartsocket | boot插件,对`smart-bsocket`适配，提供`socket`服务 |
-| org.noear:solon.extend.jetty.jsp | 扩展插件,为`jetty`添加`jsp`支持（不建议使用jsp）（网友@khb提供） |
 | org.noear:solon.extend.undertow.jsp | 扩展插件,为`undertow`添加`jsp`支持（不建议使用jsp）（网友@tyk提供） |
+| org.noear:solon.boot.socketd.jdksocket | sockted boot插件,对`jdksocket`适配，提供`socketd`服务 |
+| org.noear:solon.boot.socketd.netty | sockted boot插件,对`netty`适配，提供`socketd`服务 |
+| org.noear:solon.boot.socketd.rsocket | sockted boot插件,对`rsocket`适配，提供`socketd`服务 |
+| org.noear:solon.boot.socketd.smartsocket | sockted boot插件,对`smart-socket`适配，提供`socketd`服务 |
+| org.noear:solon.boot.socketd.websocket | sockted boot插件,对`websocket`适配，提供`socketd`服务 |
 | | |
 | 静态文件支持插件:: | 说明 |
 | org.noear:solon.extend.staticfiles | 扩展插件,添加静态文件支持（监视 resources/static 文件夹） |
@@ -27,9 +33,22 @@
 | Yaml配置支持插件:: | 说明 |
 | org.noear:solon.extend.properties.yaml | 扩展插件,添加yml配置文件支持 |
 | | |
+| Data插件:: | 说明 |
+| org.noear:solon.extend.data | 扩展插件,添加事件（@Tran）、缓存（@Cache）支持 |
+| | |
+| Validation插件:: | 说明 |
+| org.noear:solon.extend.validation | 扩展插件,添加验证（@Valid）支持 |
+| | |
 | Session插件:: | 说明（可将boot插件的session state服务，自动换掉） |
 | org.noear:solon.extend.sessionstate.local | 扩展插件,本地`session` |
 | org.noear:solon.extend.sessionstate.redis | 扩展插件,分布式`session`（其于`redis`构建） |
+| Socketd 插件:: | 说明 |
+| org.noear:solon.sockted | 扩展插件,sockted 协议的编解码、会话等基础支持 |
+| org.noear:solon.sockted.client.jdksocket | 扩展插件,sockted 协议的 jdksocket 客户端适配 |
+| org.noear:solon.sockted.client.netty | 扩展插件,sockted 协议的 netty 客户端适配 |
+| org.noear:solon.sockted.smartsocket | 扩展插件,sockted 协议的 smartsocket 客户端适配 |
+| org.noear:solon.sockted.websocket | 扩展插件,sockted 协议的 websocket 客户端适配 |
+| | |
 | | |
 | 序列化插件:: | 说明 |
 | org.noear:solon.serialization.fastjson* | 序列化插件，对 `fastjson` 适配，提供`json`视图输出 或 序列化输出 |
