@@ -2,9 +2,11 @@ package org.noear.nami;
 
 import org.noear.nami.annotation.Mapping;
 import org.noear.nami.annotation.NamiClient;
+import org.noear.nami.channel.UpstreamFixed;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.*;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -28,7 +30,7 @@ public class NamiHandler implements InvocationHandler {
     private final String path0; //path
     private final String url0;  //url
     private final Class<?> clz0;
-    private final Map<String,Map> pathKeysCached = new ConcurrentHashMap<>();
+    private final Map<String, Map> pathKeysCached = new ConcurrentHashMap<>();
 
     /**
      * @param config 配置
@@ -58,6 +60,13 @@ public class NamiHandler implements InvocationHandler {
                     if (ss.length == 2) {
                         headers0.put(ss[0].trim(), ss[1].trim());
                     }
+                }
+            }
+
+            //>>添加upstream
+            if (client.upstream() != null) {
+                if (client.upstream().length > 0) {
+                    config.setUpstream(new UpstreamFixed(Arrays.asList(client.upstream())));
                 }
             }
         }
@@ -143,7 +152,7 @@ public class NamiHandler implements InvocationHandler {
             if (val.indexOf(" ") > 0) {
                 act = val.split(" ")[0];
                 fun = val.split(" ")[1];
-            }else{
+            } else {
                 act = val;
             }
 
@@ -156,9 +165,6 @@ public class NamiHandler implements InvocationHandler {
                 }
             }
         }
-
-
-
 
 
         //构建 url
@@ -187,7 +193,7 @@ public class NamiHandler implements InvocationHandler {
             url = url0;
         }
 
-        if(fun !=null && fun.indexOf("{") > 0) {
+        if (fun != null && fun.indexOf("{") > 0) {
             //
             //处理Path参数
             //
@@ -204,7 +210,7 @@ public class NamiHandler implements InvocationHandler {
         }
 
         Type type = method.getGenericReturnType();
-        if(type == null){
+        if (type == null) {
             type = method.getReturnType();
         }
 
@@ -223,12 +229,12 @@ public class NamiHandler implements InvocationHandler {
         return str == null || str.length() == 0;
     }
 
-    private  Map<String,String> buildPathKeys(String path){
-        Map<String,String> pathKeys = pathKeysCached.get(path);
-        if(pathKeys == null){
-            synchronized (path.intern()){
+    private Map<String, String> buildPathKeys(String path) {
+        Map<String, String> pathKeys = pathKeysCached.get(path);
+        if (pathKeys == null) {
+            synchronized (path.intern()) {
                 pathKeys = pathKeysCached.get(path);
-                if(pathKeys == null){
+                if (pathKeys == null) {
                     pathKeys = new LinkedHashMap<>();
 
                     Matcher pm = pathKeyExpr.matcher(path);

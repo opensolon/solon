@@ -22,6 +22,12 @@ public @interface NamiClient {
      * 例：{"xxx=xxx","yyy=yyy"}
      * */
     String[] headers() default {};
+
+    /**
+     * 上游负载
+     * */
+    String[] upstream() default {};
+
     /**
      * 指定配置器
      * */
