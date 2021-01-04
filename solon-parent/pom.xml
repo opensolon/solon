@@ -398,6 +398,13 @@
             </dependency>
 
             <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-rpc</artifactId>
+                <version>${solon.ver}</version>
+                <type>pom</type>
+            </dependency>
+
+            <dependency>
                 <groupId>org.noear.solon</groupId>
                 <artifactId>beetl-web</artifactId>
                 <version>${solon.ver}</version>
