@@ -24,7 +24,7 @@ public @interface NamiClient {
     String[] headers() default {};
 
     /**
-     * 上游负载
+     * 负载（用于方便演示）
      * */
     String[] upstream() default {};
 
