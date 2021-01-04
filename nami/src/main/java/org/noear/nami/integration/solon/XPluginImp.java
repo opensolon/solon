@@ -38,7 +38,7 @@ public class XPluginImp implements Plugin {
                 }
             }
 
-            if (Utils.isEmpty(anno.value())) {
+            if (Utils.isEmpty(anno.value()) && anno.upstream().length == 0) {
                 throw new NamiException("@NamiClient configuration error!");
             }
 

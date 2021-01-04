@@ -54,7 +54,7 @@ public class NamiHandler implements InvocationHandler {
             }
 
             //>>添加接口header
-            if (client.headers() != null) {
+            if (client.headers().length > 0) {
                 for (String h : client.headers()) {
                     String[] ss = h.split("=");
                     if (ss.length == 2) {
@@ -64,10 +64,8 @@ public class NamiHandler implements InvocationHandler {
             }
 
             //>>添加upstream
-            if (client.upstream() != null) {
-                if (client.upstream().length > 0) {
-                    config.setUpstream(new UpstreamFixed(Arrays.asList(client.upstream())));
-                }
+            if (client.upstream().length > 0) {
+                config.setUpstream(new UpstreamFixed(Arrays.asList(client.upstream())));
             }
         }
 
