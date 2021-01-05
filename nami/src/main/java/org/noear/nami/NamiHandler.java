@@ -4,6 +4,7 @@ import org.noear.nami.annotation.Body;
 import org.noear.nami.annotation.Mapping;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.common.Constants;
+import org.noear.nami.common.MethodWrap;
 import org.noear.nami.common.UpstreamFixed;
 
 import java.lang.invoke.MethodHandles;
@@ -116,6 +117,9 @@ public class NamiHandler implements InvocationHandler {
             throw new NamiException("NamiClient: Not found upstream: " + clz0.getName());
         }
 
+        MethodWrap methodWrap = MethodWrap.get(method);
+
+        //Object 函数调用
         Class caller = method.getDeclaringClass();
         if (Object.class == caller) {
             if (this.lookup == null) {
@@ -133,22 +137,19 @@ public class NamiHandler implements InvocationHandler {
         //构建 args
         Map<String, Object> args = new LinkedHashMap<>();
         Object body = null;
-        Parameter[] names = method.getParameters();
+        Parameter[] names = methodWrap.getParameters();
         for (int i = 0, len = names.length; i < len; i++) {
             if (vals[i] != null) {
                 args.put(names[i].getName(), vals[i]);
+            }
+        }
 
-                //支持@body参数
-                if (body == null) {
-                    Body anno = names[i].getAnnotation(Body.class);
-                    if (anno != null) {
-                        body = vals[i];
+        //确定body及默认编码
+        if(methodWrap.getBodyName() != null){
+            body = args.get(methodWrap.getBodyName());
 
-                        if (config.getEncoder() == null) {
-                            headers.putIfAbsent(Constants.h_content_type, anno.contentType());
-                        }
-                    }
-                }
+            if (config.getEncoder() == null) {
+                headers.putIfAbsent(Constants.h_content_type, methodWrap.getBodyAnno().contentType());
             }
         }
 
@@ -156,7 +157,8 @@ public class NamiHandler implements InvocationHandler {
         String fun = method.getName();
         String act = null;
 
-        Mapping mapping = method.getAnnotation(Mapping.class);
+        //处理mapping
+        Mapping mapping = methodWrap.getMappingAnno();
         if (mapping != null && isEmpty(mapping.value()) == false) {
             //格式1: GET
             //格式2: GET user/a.0.1
@@ -222,6 +224,7 @@ public class NamiHandler implements InvocationHandler {
             }
         }
 
+        //确定返回类型
         Type type = method.getGenericReturnType();
         if (type == null) {
             type = method.getReturnType();
