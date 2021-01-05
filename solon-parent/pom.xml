@@ -362,6 +362,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>nami.channel.hutoolhttp</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>nami.channel.socketd</artifactId>
                 <version>${solon.ver}</version>
             </dependency>

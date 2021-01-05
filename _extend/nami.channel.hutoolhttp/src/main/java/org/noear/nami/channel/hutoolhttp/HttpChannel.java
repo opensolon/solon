@@ -89,7 +89,7 @@ public class HttpChannel implements NamiChannel {
         });
 
         //2.2.设置字符码
-        String charset = response.contentEncoding();
+        String charset = response.charset();
         if (charset != null) {
             result.charsetSet(Charset.forName(charset));
         }
