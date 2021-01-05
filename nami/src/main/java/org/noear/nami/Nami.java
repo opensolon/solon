@@ -171,13 +171,21 @@ public class Nami {
      * 获取结果（以string形式）
      */
     public String getString() {
-        return _result.bodyAsString();
+        if(_result == null){
+            return null;
+        }else {
+            return _result.bodyAsString();
+        }
     }
 
     /**
      * 获取结果（返序列化为object）
      */
     public <T> T getObject(Type returnType) {
+        if(_result == null){
+            return null;
+        }
+
         if (Void.TYPE.equals(returnType)) {
             return null;
         } else {

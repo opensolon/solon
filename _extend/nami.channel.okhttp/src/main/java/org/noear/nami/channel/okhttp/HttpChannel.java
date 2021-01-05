@@ -41,6 +41,10 @@ public class HttpChannel implements NamiChannel {
         //0.尝试解码器的过滤
         cfg.getDecoder().filter(cfg, action, url, headers, args);
 
+        if(cfg.getDecoder() != null) {
+            return null;
+        }
+
         //0.开始构建http
         HttpUtils http = HttpUtils.http(url).headers(headers);
         Response response = null;
