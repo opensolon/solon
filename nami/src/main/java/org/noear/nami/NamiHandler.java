@@ -1,8 +1,8 @@
 package org.noear.nami;
 
+import org.noear.nami.annotation.Body;
 import org.noear.nami.annotation.Mapping;
 import org.noear.nami.annotation.NamiClient;
-import org.noear.nami.common.MethodWrap;
 import org.noear.nami.common.UpstreamFixed;
 
 import java.lang.invoke.MethodHandles;
@@ -131,10 +131,16 @@ public class NamiHandler implements InvocationHandler {
 
         //构建 args
         Map<String, Object> args = new LinkedHashMap<>();
+        Object body = null;
         Parameter[] names = method.getParameters();
         for (int i = 0, len = names.length; i < len; i++) {
             if (vals[i] != null) {
                 args.put(names[i].getName(), vals[i]);
+
+                //支持@body参数
+                if (body == null && names[i].getAnnotation(Body.class) != null) {
+                    body = vals[i];
+                }
             }
         }
 
@@ -219,7 +225,7 @@ public class NamiHandler implements InvocationHandler {
                 .method(method)
                 .action(act)
                 .url(url, fun)
-                .call(headers, args)
+                .call(headers, args, body)
                 .getObject(type);
     }
 
