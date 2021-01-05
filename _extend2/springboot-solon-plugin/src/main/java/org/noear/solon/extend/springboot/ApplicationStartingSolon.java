@@ -6,7 +6,7 @@ import org.springframework.boot.context.event.ApplicationStartingEvent;
 import org.springframework.context.ApplicationListener;
 
 /**
- * @author noear 2021/1/2 created
+ * @author noear
  * @since 1.2
  */
 public class ApplicationStartingSolon implements ApplicationListener<ApplicationStartingEvent> {

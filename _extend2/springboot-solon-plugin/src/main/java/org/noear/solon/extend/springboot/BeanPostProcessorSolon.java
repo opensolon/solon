@@ -6,7 +6,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
 /**
- * @author noear 2020/12/29 created
+ * @author noear
  * @since 1.2
  */
 public class BeanPostProcessorSolon implements BeanPostProcessor {
