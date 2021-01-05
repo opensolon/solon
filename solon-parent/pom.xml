@@ -51,6 +51,7 @@
         <smartsocket.ver>1.5.4</smartsocket.ver>
         <netty.ver>4.1.48.Final</netty.ver>
         <rsocket.ver>1.1.0</rsocket.ver>
+        <hutool.ver>5.5.6</hutool.ver>
     </properties>
 
 
@@ -877,6 +878,7 @@
         <module>../_extend/solon-api</module>
 
         <module>../_extend/nami.channel.okhttp</module>
+        <module>../_extend/nami.channel.hutoolhttp</module>
         <module>../_extend/nami.channel.socketd</module>
         <module>../_extend/nami.coder.fastjson</module>
         <module>../_extend/nami.coder.snack3</module>
