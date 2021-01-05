@@ -41,10 +41,10 @@ public class SocketClientChannel extends SocketChannelFilter implements NamiChan
     }
 
     @Override
-    public Result call(NamiConfig cfg, Method method, String action, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
+    public Result call(NamiConfig cfg, Method method, String action, String url, Map<String, String> headers, Map<String, Object> args, Object body) throws Throwable {
         URI uri = URI.create(url);
         SocketChannel channel = get(uri);
 
-        return channel.call(cfg, method, action, url, headers, args);
+        return channel.call(cfg, method, action, url, headers, args, body);
     }
 }

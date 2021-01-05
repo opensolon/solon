@@ -12,5 +12,5 @@ public interface NamiChannel extends Filter{
     /**
      * 设用
      * */
-    Result call(NamiConfig cfg, Method method, String action, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable;
+    Result call(NamiConfig cfg, Method method, String action, String url, Map<String, String> headers, Map<String, Object> args, Object body) throws Throwable;
 }

@@ -25,7 +25,7 @@ public class SocketChannel extends SocketChannelFilter implements NamiChannel {
     //public SocketChannel handshake();
 
     @Override
-    public Result call(NamiConfig cfg, Method method, String action, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
+    public Result call(NamiConfig cfg, Method method, String action, String url, Map<String, String> headers, Map<String, Object> args, Object body) throws Throwable {
 
         if(cfg.getDecoder() == null){
             throw new IllegalArgumentException("There is no suitable decoder");
@@ -64,7 +64,7 @@ public class SocketChannel extends SocketChannelFilter implements NamiChannel {
 
         //2.构建消息
         headers.put(Constants.h_content_type, encoder.enctype());
-        byte[] bytes = encoder.encode(args);
+        byte[] bytes = encoder.encode(body);
         message = new Message(flag, message_key, url, HeaderUtil.encodeHeaderMap(headers), bytes);
 
         //3.发送消息

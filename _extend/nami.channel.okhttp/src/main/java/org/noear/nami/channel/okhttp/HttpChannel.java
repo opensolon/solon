@@ -4,6 +4,7 @@ import okhttp3.MediaType;
 import okhttp3.Response;
 import org.noear.nami.*;
 import org.noear.nami.common.Constants;
+import org.noear.nami.common.MethodWrap;
 import org.noear.nami.common.Result;
 
 import java.lang.reflect.Method;
@@ -16,7 +17,7 @@ public class HttpChannel implements NamiChannel {
     public static final HttpChannel instance = new HttpChannel();
 
     @Override
-    public Result call(NamiConfig cfg, Method method, String action, String url, Map<String, String> headers, Map<String, Object> args) throws Throwable {
+    public Result call(NamiConfig cfg, Method method, String action, String url, Map<String, String> headers, Map<String, Object> args, Object body) throws Throwable {
         //0.检测method
         boolean is_get = Constants.m_get.equals(action);
 
@@ -64,7 +65,8 @@ public class HttpChannel implements NamiChannel {
         }
 
         if (response == null && encoder != null) {
-            byte[] bytes = encoder.encode(args);
+            byte[] bytes = encoder.encode(body);
+
             if (bytes != null) {
                 response = http.bodyRaw(bytes, encoder.enctype()).exec(action);
             }

@@ -2,6 +2,7 @@ package org.noear.nami;
 
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.common.Constants;
+import org.noear.nami.common.MethodWrap;
 import org.noear.nami.common.Result;
 
 import java.lang.reflect.Method;
@@ -142,9 +143,21 @@ public class Nami {
 
             //执行通道过滤器
             channel.filter(_config, _action, _url, headers, args);
+            Object body = args;
+
+            if(_method!=null) {
+                boolean hasBody = MethodWrap.get(_method).hasBody();
+
+                if (hasBody) {
+                    //参数检测
+                    if (args.size() != 1) {
+                        throw new IllegalArgumentException("@Body method Lack of parameter");
+                    }
+                }
+            }
 
 
-            _result = channel.call(_config, _method, _action, _url, headers, args);
+            _result = channel.call(_config, _method, _action, _url, headers, args, body);
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {
