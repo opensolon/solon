@@ -1,5 +1,6 @@
 package features.nami;
 
+import org.noear.nami.annotation.Body;
 import org.noear.nami.annotation.Mapping;
 
 import java.util.List;
@@ -12,5 +13,5 @@ public interface GitHub {
     List<Contributor> contributors(String owner, String repo);
 
     @Mapping("POST /repos/{owner}/{repo}/issues")
-    void createIssue(Issue issue, String owner, String repo);
+    void createIssue(@Body Issue issue, String owner, String repo);
 }

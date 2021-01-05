@@ -1,5 +1,7 @@
 package org.noear.nami.annotation;
 
+import org.noear.nami.common.Constants;
+
 import java.lang.annotation.*;
 
 /**
@@ -10,4 +12,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Body {
+    String contentType() default Constants.ct_json;
 }

@@ -3,6 +3,7 @@ package org.noear.nami;
 import org.noear.nami.annotation.Body;
 import org.noear.nami.annotation.Mapping;
 import org.noear.nami.annotation.NamiClient;
+import org.noear.nami.common.Constants;
 import org.noear.nami.common.UpstreamFixed;
 
 import java.lang.invoke.MethodHandles;
@@ -138,8 +139,15 @@ public class NamiHandler implements InvocationHandler {
                 args.put(names[i].getName(), vals[i]);
 
                 //支持@body参数
-                if (body == null && names[i].getAnnotation(Body.class) != null) {
-                    body = vals[i];
+                if (body == null) {
+                    Body anno = names[i].getAnnotation(Body.class);
+                    if (anno != null) {
+                        body = vals[i];
+
+                        if (config.getEncoder() == null) {
+                            headers.putIfAbsent(Constants.h_content_type, anno.contentType());
+                        }
+                    }
                 }
             }
         }
