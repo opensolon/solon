@@ -12,7 +12,7 @@ import java.lang.annotation.*;
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Import(ConfigurationSolonWeb.class)
+@Import({ConfigurationSolon.class,ConfigurationSolonWeb.class})
 @Documented
 public @interface SpringBootLinkSolonWeb {
 }
