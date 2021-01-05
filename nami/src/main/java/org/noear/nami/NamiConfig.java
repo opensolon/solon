@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.function.Supplier;
 
 /**
- * Fairy - 配置
+ * Nami - 配置
  *
  * @author noear
  * @since 1.0

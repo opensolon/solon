@@ -3,7 +3,7 @@ package org.noear.nami;
 import org.noear.nami.annotation.NamiClient;
 
 /**
- * Fairy - 配置器
+ * Nami - 配置器
  *
  * @author noear
  * @since 1.0

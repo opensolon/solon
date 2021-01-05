@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
- * 执行通道
+ * Nami 执行通道
  * */
 public interface NamiChannel extends Filter{
     /**

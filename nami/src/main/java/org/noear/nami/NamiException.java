@@ -1,7 +1,7 @@
 package org.noear.nami;
 
 /**
- * Fairy - 异常
+ * Nami - 异常
  *
  * @author noear
  * @since 1.0
