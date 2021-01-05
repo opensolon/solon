@@ -23,6 +23,8 @@ public class NamiTest {
                 .upstream(() -> "https://api.github.com")
                 .create(GitHub.class);
 
+        github.contributors("OpenFeign", "feign");
+
         long start = System.currentTimeMillis();
         for (int i = 0; i < 100000; i++) {
             github.contributors("OpenFeign", "feign");
@@ -40,6 +42,8 @@ public class NamiTest {
         Issue issue = new Issue();
         issue.title = "测试";
         issue.body = "同题";
+
+        github.createIssue(issue, "OpenFeign", "feign");
 
         long start = System.currentTimeMillis();
         for (int i = 0; i < 100000; i++) {

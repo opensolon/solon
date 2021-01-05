@@ -69,8 +69,8 @@ public class ParamController {
     }
 
     @Mapping("model")
-    public void test_h1(Context ctx, UserModel model) throws Throwable {
-        ctx.render(model);
+    public UserModel test_h1(Context ctx, UserModel model) throws Throwable {
+        return model;
     }
 
     //支持时间参数（要加XParam指定格式）
