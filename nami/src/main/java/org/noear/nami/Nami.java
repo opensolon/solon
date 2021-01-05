@@ -111,6 +111,10 @@ public class Nami {
     /**
      * 执行完成呼叫
      */
+    public Nami call(Map<String, String> headers, Map args) {
+        return call(headers, args, null);
+    }
+
     public Nami call(Map<String, String> headers, Map args, Object body) {
         try {
             if (headers == null) {
