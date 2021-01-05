@@ -1,6 +1,5 @@
 package org.noear.nami;
 
-import org.noear.nami.annotation.Body;
 import org.noear.nami.annotation.Mapping;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.common.Constants;
@@ -159,25 +158,17 @@ public class NamiHandler implements InvocationHandler {
 
         //处理mapping
         Mapping mapping = methodWrap.getMappingAnno();
-        if (mapping != null && isEmpty(mapping.value()) == false) {
-            //格式1: GET
-            //格式2: GET user/a.0.1
-            String val = mapping.value().trim();
-
-            if (val.indexOf(" ") > 0) {
-                act = val.split(" ")[0];
-                fun = val.split(" ")[1];
-            } else {
-                act = val;
+        if (mapping != null) {
+            if(methodWrap.getAct() != null){
+                act = methodWrap.getAct();
             }
 
-            if (mapping.headers() != null) {
-                for (String h : mapping.headers()) {
-                    String[] ss = h.split("=");
-                    if (ss.length == 2) {
-                        headers.put(ss[0].trim(), ss[1].trim());
-                    }
-                }
+            if(methodWrap.getFun() != null){
+                fun = methodWrap.getFun();
+            }
+
+            if (methodWrap.getMappingHeaders() != null) {
+                headers.putAll(methodWrap.getMappingHeaders());
             }
         }
 
