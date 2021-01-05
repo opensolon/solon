@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.ParserConfig;
 import org.noear.nami.NamiConfig;
 import org.noear.nami.Decoder;
-import org.noear.nami.Result;
-import org.noear.nami.channel.Constants;
+import org.noear.nami.common.Result;
+import org.noear.nami.common.Constants;
 
 import java.lang.reflect.Type;
 import java.util.Map;

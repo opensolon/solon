@@ -2,7 +2,7 @@ package org.noear.nami;
 
 import org.noear.nami.annotation.Mapping;
 import org.noear.nami.annotation.NamiClient;
-import org.noear.nami.channel.UpstreamFixed;
+import org.noear.nami.common.UpstreamFixed;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.*;

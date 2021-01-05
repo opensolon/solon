@@ -3,7 +3,7 @@ package org.noear.nami.channel.socketd;
 import org.noear.nami.Filter;
 import org.noear.nami.NamiConfig;
 import org.noear.nami.NamiManager;
-import org.noear.nami.channel.Constants;
+import org.noear.nami.common.Constants;
 
 import java.util.Map;
 

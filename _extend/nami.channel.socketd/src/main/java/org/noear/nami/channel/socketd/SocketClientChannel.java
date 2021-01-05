@@ -2,9 +2,7 @@ package org.noear.nami.channel.socketd;
 
 import org.noear.nami.NamiChannel;
 import org.noear.nami.NamiConfig;
-import org.noear.nami.NamiManager;
-import org.noear.nami.Result;
-import org.noear.nami.channel.Constants;
+import org.noear.nami.common.Result;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.SessionFlag;
 import org.noear.solon.socketd.SocketD;

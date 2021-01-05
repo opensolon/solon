@@ -1,6 +1,6 @@
 package org.noear.nami;
 
-import org.noear.nami.channel.Constants;
+import org.noear.nami.common.Constants;
 
 import java.util.*;
 import java.util.function.Supplier;

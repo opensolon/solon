@@ -2,7 +2,7 @@ package org.noear.nami.coder.hession;
 
 import com.caucho.hessian.io.Hessian2Output;
 import org.noear.nami.Encoder;
-import org.noear.nami.channel.Constants;
+import org.noear.nami.common.Constants;
 
 import java.io.ByteArrayOutputStream;
 

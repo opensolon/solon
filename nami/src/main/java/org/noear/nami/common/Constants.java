@@ -1,4 +1,4 @@
-package org.noear.nami.channel;
+package org.noear.nami.common;
 
 public class Constants {
     public static final String ct_hessian = "application/hessian";

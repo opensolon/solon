@@ -1,4 +1,4 @@
-package org.noear.nami.channel;
+package org.noear.nami.common;
 
 import java.util.Iterator;
 import java.util.List;

@@ -3,8 +3,8 @@ package org.noear.nami.coder.hession;
 import com.caucho.hessian.io.Hessian2Input;
 import org.noear.nami.NamiConfig;
 import org.noear.nami.Decoder;
-import org.noear.nami.Result;
-import org.noear.nami.channel.Constants;
+import org.noear.nami.common.Result;
+import org.noear.nami.common.Constants;
 
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Type;

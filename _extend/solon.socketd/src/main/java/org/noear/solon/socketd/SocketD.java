@@ -3,7 +3,7 @@ package org.noear.solon.socketd;
 import org.noear.nami.Decoder;
 import org.noear.nami.Encoder;
 import org.noear.nami.Nami;
-import org.noear.nami.channel.Constants;
+import org.noear.nami.common.Constants;
 import org.noear.nami.channel.socketd.SocketChannel;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.handle.Context;
