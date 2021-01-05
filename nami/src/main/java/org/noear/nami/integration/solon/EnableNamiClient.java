@@ -1,4 +1,4 @@
-package org.noear.nami.annotation;
+package org.noear.nami.integration.solon;
 
 import java.lang.annotation.*;
 

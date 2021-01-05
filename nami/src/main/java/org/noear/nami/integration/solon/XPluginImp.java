@@ -3,7 +3,6 @@ package org.noear.nami.integration.solon;
 import org.noear.nami.Nami;
 import org.noear.nami.NamiConfigurationDefault;
 import org.noear.nami.NamiException;
-import org.noear.nami.annotation.EnableNamiClient;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;

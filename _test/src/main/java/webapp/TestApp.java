@@ -1,15 +1,11 @@
 package webapp;
 
-import org.noear.nami.annotation.EnableNamiClient;
+import org.noear.nami.integration.solon.EnableNamiClient;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Import;
-import org.noear.solon.core.LoadBalance;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.extend.cron4j.EnableCron4j;
-import org.noear.solon.extend.quartz.EnableQuartz;
-import org.noear.solonfox.swagger2.EnableSwagger2;
 import webapp.demo6_aop.TestImport;
 
 @Import(value = TestImport.class)

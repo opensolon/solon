@@ -1,6 +1,6 @@
 package org.noear.solon.extend.consul.test;
 
-import org.noear.nami.annotation.EnableNamiClient;
+import org.noear.nami.integration.solon.EnableNamiClient;
 import org.noear.solon.Solon;
 import org.noear.solon.extend.consul.ConsulKvUpdateEvent;
 
