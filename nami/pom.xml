@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.2.15</version>
+        <version>1.2.16</version>
         <relativePath>../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -22,6 +22,12 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>springboot-solon-plugin</artifactId>
             <scope>provided</scope>
         </dependency>
 
