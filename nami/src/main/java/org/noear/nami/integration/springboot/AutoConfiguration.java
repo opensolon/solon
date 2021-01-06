@@ -17,7 +17,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @author noear 2021/1/5 created
+ * @author noear
+ * @since 1.2
  */
 @SpringBootLinkSolon
 @Configuration
@@ -25,7 +26,7 @@ public class AutoConfiguration extends InstantiationAwareBeanPostProcessorAdapte
     private Map<NamiClient, Object> cached = new ConcurrentHashMap<>();
 
     @Override
-    public PropertyValues postProcessPropertyValues(PropertyValues pvs, PropertyDescriptor[] pds, Object bean, String beanName) throws BeansException {
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         Class<?> beanClz = bean.getClass();
 
         ReflectionUtils.doWithFields(beanClz, (field -> {
@@ -40,7 +41,7 @@ public class AutoConfiguration extends InstantiationAwareBeanPostProcessorAdapte
             }
         }));
 
-        return pvs;
+        return bean;
     }
 
     private Object postAnno(NamiClient anno, Field field){
