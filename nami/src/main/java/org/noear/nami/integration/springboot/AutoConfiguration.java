@@ -35,7 +35,7 @@ public class AutoConfiguration extends InstantiationAwareBeanPostProcessorAdapte
                 if (field.getType().isInterface()) {
 
                     field.setAccessible(true);
-                    field.set(bean, postClient(client, field));
+                    field.set(bean, postAnno(client, field));
                 }
             }
         }));
@@ -43,7 +43,7 @@ public class AutoConfiguration extends InstantiationAwareBeanPostProcessorAdapte
         return pvs;
     }
 
-    private Object postClient(NamiClient anno, Field field){
+    private Object postAnno(NamiClient anno, Field field){
         if (Utils.isEmpty(anno.value())) {
             NamiClient anno2 = field.getType().getAnnotation(NamiClient.class);
             if (anno2 != null) {
