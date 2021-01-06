@@ -6,12 +6,10 @@ import org.noear.nami.annotation.NamiClient;
 import org.noear.solon.Utils;
 import org.noear.solon.extend.springboot.SpringBootLinkSolon;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ReflectionUtils;
 
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
