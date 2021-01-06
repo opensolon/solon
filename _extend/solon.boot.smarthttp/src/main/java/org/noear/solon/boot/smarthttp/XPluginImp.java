@@ -53,7 +53,13 @@ public final class XPluginImp implements Plugin {
 
             long time_end = System.currentTimeMillis();
 
-            System.out.println("solon.Connector:main: smarthttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
+            String connectorInfo = "solon.Connector:main: smarthttp: Started ServerConnector@{HTTP/1.1,[http/1.1]";
+            if (app.enableWebSocket()) {
+                System.out.println(connectorInfo + "[WebSocket]}{0.0.0.0:" + app.port() + "}");
+            } else {
+                System.out.println(connectorInfo + "}{0.0.0.0:" + app.port() + "}");
+            }
+
             System.out.println("solon.Server:main: smarthttp: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
             ex.printStackTrace();

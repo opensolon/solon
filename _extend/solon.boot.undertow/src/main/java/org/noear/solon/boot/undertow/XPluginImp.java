@@ -35,7 +35,7 @@ public final class XPluginImp implements Plugin {
         });
     }
 
-    private void start0(SolonApp app){
+    private void start0(SolonApp app) {
         long time_start = System.currentTimeMillis();
         System.out.println("solon.Server:main: Undertow 2.1.09(undertow)");
 
@@ -43,7 +43,7 @@ public final class XPluginImp implements Plugin {
 
         if (jspClz == null) {
             _server = new PluginUndertow();
-        }else{
+        } else {
             _server = new PluginUndertowJsp();
         }
 
@@ -51,7 +51,13 @@ public final class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        System.out.println("solon.Connector:main: undertow: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
+        String connectorInfo = "solon.Connector:main: undertow: Started ServerConnector@{HTTP/1.1,[http/1.1]";
+        if (app.enableWebSocket()) {
+            System.out.println(connectorInfo + "[WebSocket]}{0.0.0.0:" + app.port() + "}");
+        } else {
+            System.out.println(connectorInfo + "}{0.0.0.0:" + app.port() + "}");
+        }
+
         System.out.println("solon.Server:main: undertow: Started @" + (time_end - time_start) + "ms");
     }
 
