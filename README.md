@@ -109,7 +109,7 @@ public class DemoController{
     
     /*
     //for web socket （需添加：solon.boot.websocket 插件）
-    @Mapping(value="/hallo/{u_u}", method = MethodType.SEND)
+    @Mapping(value="/hallo/{u_u}", method = MethodType.WEBSOCKET)
     public ModelAndView hallo_ws(String u_u){
         return new ModelAndView("hallo");
     }
