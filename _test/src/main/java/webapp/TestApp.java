@@ -34,7 +34,7 @@ public class TestApp   {
          * http://t1_jetty.test.noear.org
          *
          * */
-        SolonApp app = Solon.start(TestApp.class, args, x -> x.enableSocket(true).enableWebSocket(true));
+        SolonApp app = Solon.start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
 
 //        app.ws("/demoe/websocket",(session,message)->{
 //            System.out.println(session.resourceDescriptor());

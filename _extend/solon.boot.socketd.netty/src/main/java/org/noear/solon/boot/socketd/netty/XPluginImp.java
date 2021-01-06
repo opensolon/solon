@@ -23,7 +23,7 @@ public class XPluginImp implements Plugin {
         //注册会话管理器
         SessionManager.register(new _SessionManagerImpl());
 
-        if (app.enableSocket() == false) {
+        if (app.enableSocketD() == false) {
             return;
         }
 

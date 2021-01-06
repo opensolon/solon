@@ -501,14 +501,14 @@ public class SolonApp implements Handler, HandlerSlots {
         return this;
     }
     /**
-     * 启用Socket信号接入
+     * 启用Socket as sockted 信号接入
      * */
-    private boolean _enableSocket = false;
-    public boolean enableSocket(){
-        return _enableSocket;
+    private boolean _enableSocketD = false;
+    public boolean enableSocketD(){
+        return _enableSocketD;
     }
-    public SolonApp enableSocket(boolean enable){
-        _enableSocket = enable;
+    public SolonApp enableSocketD(boolean enable){
+        _enableSocketD = enable;
         return this;
     }
     /**

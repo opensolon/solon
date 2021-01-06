@@ -23,7 +23,7 @@ public final class XPluginImp implements Plugin {
         SessionManager.register(new _SessionManagerImpl());
 
 
-        if (app.enableSocket() == false) {
+        if (app.enableSocketD() == false) {
             return;
         }
 

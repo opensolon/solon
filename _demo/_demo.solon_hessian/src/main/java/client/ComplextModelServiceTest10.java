@@ -26,7 +26,7 @@ public class ComplextModelServiceTest10 {
         Solon.start(ComplextModelServiceTest10.class, args, app -> {
             app.enableHttp(false);
             app.enableWebSocket(false);
-            app.enableSocket(false);
+            app.enableSocketD(false);
         });
 
         ComplextModelServiceTest10 test5 = Aop.get(ComplextModelServiceTest10.class);
