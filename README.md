@@ -3,7 +3,7 @@
 
 ` QQ交流群：22200020 ` 
 
-# solon for java
+# Solon rpc for java
 
 一个微型的Java RPC开发框架。
 
