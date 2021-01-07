@@ -1,4 +1,4 @@
-package org.noear.nami.channel.okhttp;
+package org.noear.nami.channel.http.okhttp;
 
 import okhttp3.MediaType;
 import okhttp3.Response;

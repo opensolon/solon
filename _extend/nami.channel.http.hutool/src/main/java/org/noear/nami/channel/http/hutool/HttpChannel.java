@@ -1,4 +1,4 @@
-package org.noear.nami.channel.hutoolhttp;
+package org.noear.nami.channel.http.hutool;
 
 import cn.hutool.http.HttpResponse;
 import org.noear.nami.Encoder;
