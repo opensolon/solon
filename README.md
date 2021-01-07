@@ -5,13 +5,13 @@
 
 # solon for java
 
-一个类似Springboot 的 微型开发框架。
+一个微型的PRC开发框架。
 
 支持jdk8+；主框架0.1mb；组合不同的插件应对不同需求；方便定制；快速开发。
 
 * 更快、更小、更自由
 * 支持注解与手动两种控制模式，自由切换
-* 自带IOC & AOP容器，支持API、MVC、PRC开发
+* 自带IOC & AOP容器，支持PRC、REST、MVC开发
 * 采用Handler + Context 架构；强调插件式扩展
 * 统一Http（支持 Servlet 或 NoServlet），WebSocket，Socket三种信号接入
 * 插件可扩展可切换：启动插件，扩展插件，序列化插件，数据插件，会话状态插件，视图插件(可共存) 等...
@@ -68,7 +68,7 @@ public class App{
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.2.15</version>
+    <version>1.2.16</version>
 </parent>
 
 <dependencies>
