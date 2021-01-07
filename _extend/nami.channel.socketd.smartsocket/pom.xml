@@ -8,32 +8,21 @@
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
         <version>1.2.16</version>
-        <relativePath>../solon-parent/pom.xml</relativePath>
+        <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon-rpc</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>nami.channel.socketd.smartsocket</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
-        <!-- rpc client -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami.channel.http.okhttp</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>nami.coder.snack3</artifactId>
+            <artifactId>nami.channel.socketd</artifactId>
         </dependency>
 
-
-        <!-- rpc server -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jlhttp</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.snack3</artifactId>
+            <artifactId>solon.socketd.client.smartsocket</artifactId>
         </dependency>
     </dependencies>
 

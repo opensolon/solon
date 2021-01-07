@@ -6,7 +6,7 @@
 | nami.coder.fastjson | 对`fastjson`的编解码适配 |
 | nami.coder.hessian | 对`hessian`的编解码适配 |
 | nami.coder.snack3 | 对`snack3`的编解码适配 |
-| nami.channel.okhttp | 对`okhttp`的通道适配 |
+| nami.channel.http.okhttp | 对`okhttp`的通道适配 |
 | nami.channel.socketd | 对`socketd`的通道适配（适配后，可使用org.noear:solon.sockted.client.* 做为客户端） |
 
 ### Solon 插件

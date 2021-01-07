@@ -358,19 +358,44 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>nami.channel.okhttp</artifactId>
+                <artifactId>nami.channel.http.okhttp</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>nami.channel.hutoolhttp</artifactId>
+                <artifactId>nami.channel.http.hutool</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.channel.socketd</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami.channel.socketd.jdksocket</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami.channel.socketd.netty</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami.channel.socketd.rsocket</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami.channel.socketd.smartsocket</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>nami.channel.socketd.websocket</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
@@ -891,9 +916,14 @@
         <module>../_extend/solon-mvc</module>
         <module>../_extend/solon-api</module>
 
-        <module>../_extend/nami.channel.okhttp</module>
-        <module>../_extend/nami.channel.hutoolhttp</module>
+        <module>../_extend/nami.channel.http.okhttp</module>
+        <module>../_extend/nami.channel.http.hutool</module>
         <module>../_extend/nami.channel.socketd</module>
+        <module>../_extend/nami.channel.socketd.jdksocket</module>
+        <module>../_extend/nami.channel.socketd.netty</module>
+        <module>../_extend/nami.channel.socketd.rsocket</module>
+        <module>../_extend/nami.channel.socketd.smartsocket</module>
+        <module>../_extend/nami.channel.socketd.websocket</module>
         <module>../_extend/nami.coder.fastjson</module>
         <module>../_extend/nami.coder.snack3</module>
         <module>../_extend/nami.coder.hessian</module>
