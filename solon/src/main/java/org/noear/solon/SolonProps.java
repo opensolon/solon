@@ -1,6 +1,5 @@
 package org.noear.solon;
 
-import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.PluginEntity;
 import org.noear.solon.core.Props;
