@@ -57,27 +57,39 @@ public class NvMap extends LinkedCaseInsensitiveMap<String> {
     }
 
     public int getInt(String key) {
+        return getInt(key, 0);
+    }
+
+    public int getInt(String key, int def) {
         String temp = get(key);
         if (Utils.isEmpty(temp)) {
-            return 0;
+            return def;
         } else {
             return Integer.parseInt(temp);
         }
     }
 
     public long getLong(String key) {
+        return getLong(key, 0l);
+    }
+
+    public long getLong(String key, long def) {
         String temp = get(key);
         if (Utils.isEmpty(temp)) {
-            return 0l;
+            return def;
         } else {
             return Long.parseLong(temp);
         }
     }
 
     public double getDouble(String key) {
+        return getDouble(key, 0d);
+    }
+
+    public double getDouble(String key, double def) {
         String temp = get(key);
         if (Utils.isEmpty(temp)) {
-            return 0d;
+            return def;
         } else {
             return Double.parseDouble(temp);
         }

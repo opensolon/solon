@@ -32,6 +32,7 @@ public final class SolonProps extends Props {
     private boolean isDebugMode;
     private boolean isDriftMode;
     private boolean isFilesMode;
+    private boolean isWhiteMode;
     private String  extend;
     private String  extendFilter;
     private String  appName;
@@ -71,6 +72,7 @@ public final class SolonProps extends Props {
 
         isDebugMode = argx().getInt("debug") == 1;
         isDriftMode = argx().getInt("drift") == 1;
+        isWhiteMode = argx().getInt("white",1) == 1;
         isFilesMode = "file".equals(this.getClass().getProtectionDomain().getCodeSource().getLocation().getProtocol());
 
         //4.标识debug模式
@@ -277,5 +279,12 @@ public final class SolonProps extends Props {
      * */
     public boolean isDriftMode() {
         return isDriftMode;
+    }
+
+    /**
+     * 是否为白色模式（即白名单模式）
+     * */
+    public boolean isWhiteMode() {
+        return isWhiteMode;
     }
 }
