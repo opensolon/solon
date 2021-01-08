@@ -1,13 +1,13 @@
 package webapp.controller;
 
-import org.noear.solon.annotation.XController;
-import org.noear.solon.annotation.XMapping;
-import org.noear.solon.core.ModelAndView;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.core.handle.ModelAndView;
 import webapp.model.UserModel;
 
-@XController
+@Controller
 public class HelloworldController {
-    @XMapping("/helloworld")
+    @Mapping("/helloworld")
     public Object helloworld(){
         UserModel m = new UserModel();
         m.id=10;
