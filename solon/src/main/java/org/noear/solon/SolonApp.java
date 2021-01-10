@@ -397,6 +397,13 @@ public class SolonApp implements Handler, HandlerSlots {
     }
 
     /**
+     * 添加监听
+     * */
+    public void listen(String path, Listener listener) {
+        _router.add(path, MethodType.ALL, listener);
+    }
+
+    /**
      * Solon Handler
      */
     private Handler _handler = null;
