@@ -70,6 +70,10 @@ public class BeanWrap {
         attrsSet(attrs);
     }
 
+    public Proxy proxy(){
+        return proxy;
+    }
+
     //设置代理
     public void proxySet(BeanWrap.Proxy proxy){
         this.proxy = proxy;
