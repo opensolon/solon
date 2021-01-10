@@ -166,10 +166,12 @@ public abstract class SessionBase implements Session {
     @Override
     public void sendHandshake(Message message) {
         if (message.flag() == MessageFlag.handshake) {
-            send(message);
-
-            //发完之后，再缓存 //不然，会发两次
-            handshakeMessage = message;
+            try {
+                send(message);
+            }finally {
+                //发完之后，再缓存 //不然，会发两次
+                handshakeMessage = message;
+            }
         } else {
             throw new IllegalArgumentException("The message flag not handshake");
         }
