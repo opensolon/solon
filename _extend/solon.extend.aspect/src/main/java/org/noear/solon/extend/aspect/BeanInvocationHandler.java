@@ -1,7 +1,7 @@
 package org.noear.solon.extend.aspect;
 
 import org.noear.solon.core.wrap.MethodWrap;
-import org.noear.solon.extend.aspect.asm.Proxy;
+import org.noear.solon.extend.aspect.asm.AsmProxy;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
@@ -21,7 +21,7 @@ public class BeanInvocationHandler implements InvocationHandler {
             Object[] constructorParam = new Object[]{};
 
             this.bean = bean;
-            this.proxy = Proxy.newProxyInstance(clazz.getClassLoader(), this, clazz, constructor, constructorParam);
+            this.proxy = AsmProxy.newProxyInstance(clazz.getClassLoader(), this, clazz, constructor, constructorParam);
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {

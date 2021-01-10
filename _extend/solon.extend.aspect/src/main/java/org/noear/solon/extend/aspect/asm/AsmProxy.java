@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Proxy {
+public class AsmProxy {
     public static final int ASM_VERSION = Opcodes.ASM7;
     public static final int ASM_JDK_VERSION = Opcodes.V1_7;
 

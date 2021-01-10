@@ -16,7 +16,7 @@ public class TargetClassVisitor extends ClassVisitor {
     private List<MethodBean> constructors = new ArrayList<>();
 
     public TargetClassVisitor() {
-        super(Proxy.ASM_VERSION);
+        super(AsmProxy.ASM_VERSION);
     }
 
     @Override
