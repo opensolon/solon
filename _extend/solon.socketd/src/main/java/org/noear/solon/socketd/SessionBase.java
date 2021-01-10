@@ -2,6 +2,7 @@ package org.noear.solon.socketd;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.*;
 
 import java.util.concurrent.CompletableFuture;
@@ -150,7 +151,13 @@ public abstract class SessionBase implements Session {
         _sendHeartbeatAuto = true;
 
         Utils.scheduled.scheduleWithFixedDelay(
-                this::sendHeartbeat, 1, intervalSeconds, TimeUnit.SECONDS);
+                () -> {
+                    try {
+                        sendHeartbeat();
+                    } catch (Throwable ex) {
+                        EventBus.push(ex);
+                    }
+                }, 1, intervalSeconds, TimeUnit.SECONDS);
     }
 
     //保存最后一次握手的信息；之后重链时使用
