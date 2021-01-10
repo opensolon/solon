@@ -117,7 +117,7 @@ public class DemoController{
 }
 ```
 
-* Rpc 示例（+验证注解）
+* Rpc 示例
 
 ```java
 // - interface : 定义协议
@@ -126,12 +126,9 @@ public interface DemoService{
 }
 
 // - server : 实现协议
-@Valid
 @Mapping("/demo/*")
 @Component(remoting = true)
 public class DemoServiceImp implements DemoService{
-    //添加验证注解
-    @NotZero("user_id")
     public void setName(int user_id, String name){
         
     }
@@ -164,20 +161,23 @@ public class Config{
 }
 ```
 
-* 事务与缓存控制
+* 事务与缓存控制（+验证）
 ```java
+@Valid
 @Controller
 public class DemoController{
     @Db
     BaseMapper<UserModel> userService;
     
+    @NotZero("user_id")
     @CacheRemove(tags = "user_${user_id}")
     @Tran
     @Mapping("/user/update")
     public void udpUser(int user_id, UserModel user){
         userService.updateById(user);
     }
-    
+
+    @NotZero("user_id")
     @Cache(tags = "user_${user_id}")
     public UserModel getUser(int user_id){
         return userService.selectById(user_id);
