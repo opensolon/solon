@@ -57,7 +57,14 @@
             <artifactId>solon.serialization.snack3</artifactId>
         </dependency>
 
+        <!-- yml配置支持组件 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.properties.yaml</artifactId>
+        </dependency>
 
+
+        <!-- 相对于 solon-api 多出来的内容： -->
 
         <!-- 本地SessionSate支持组件 -->
         <dependency>
@@ -69,12 +76,6 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.view.freemarker</artifactId>
-        </dependency>
-
-        <!-- yml配置支持组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.properties.yaml</artifactId>
         </dependency>
     </dependencies>
 
