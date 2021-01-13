@@ -62,8 +62,17 @@ public class App{
 | org.noear:solon-rpc | 可进行rpc开发的快速集成包 |
 | org.noear:solon-web | 可进行web开发的快速集成包 |
 
+### 附1：与其它框架的异同性
 
-### 附1：入门示例
+#### [《Solon 特性简集，相较于 Springboot 有什么区别？》](https://my.oschina.net/noear/blog/4863844)
+
+
+### 附2：示例与文章
+* 项目内的：[_test](./_test/) 和 [_demo](./_demo/)
+* 更多示例：[solon_demo](https://gitee.com/noear/solon_demo)、[solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo)、[solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo)
+* 更多文章：[https://www.cnblogs.com/noear/](https://www.cnblogs.com/noear/)
+
+### 附3：快速入门示例
 * Web 示例（mvc）
 ```xml
 <parent>
@@ -259,18 +268,14 @@ HelloRpcService rpc = SocketD.create("tcp://localhost:"+_port, HelloRpcService.c
 String rst = rpc.hello("noear");
 ```
 
-### 附2：参考示例与文章
-* 项目内的：[_test](./_test/) 和 [_demo](./_demo/)
-* 更多示例：[solon_demo](https://gitee.com/noear/solon_demo)、[solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo)、[solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo)
-* 更多文章：[https://www.cnblogs.com/noear/](https://www.cnblogs.com/noear/)
 
-### 附3：插件开发说明
+### 附4：插件开发说明
 * 新建一个 maven 项目
 * 新建一个 java/{包名}/XPluginImp.java （implements XPlugin）
 * 新建一个 resources/META-INF/solon/{包名.properties}
 *    添加配置：solon.plugin={包名}.XPluginImp
 
-### 附4：启动顺序参考
+### 附5：启动顺序参考
 * 1.实例化 Solon.global() 并加载配置
 * 2.加载扩展文件夹
 * 3.扫描插件
@@ -280,7 +285,7 @@ String rst = rpc.hello("noear");
 * 7.加载渲染关系
 * 8.完成
 
-### 附5：Helloworld 的单机并发数 [《helloworld_wrk_test》](https://gitee.com/noear/helloworld_wrk_test)
+### 附6：Helloworld 的单机并发数 [《helloworld_wrk_test》](https://gitee.com/noear/helloworld_wrk_test)
 
 > * 机器：2017 macbook pro 13, i7, 16g, MacOS 10.15, jdk11
 > * 测试：wrk -t10 -c200 -d30s --latency "http://127.0.0.1:8080/"
