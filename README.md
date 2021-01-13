@@ -65,6 +65,7 @@ public class App{
 ### 附1：与其它框架的异同性
 
 #### [《Solon 特性简集，相较于 Springboot 有什么区别？》](https://my.oschina.net/noear/blog/4863844)
+#### [《Solon rpc 特性简集，相较于Dubbo有什么区别？》]()
 
 
 ### 附2：示例与文章
