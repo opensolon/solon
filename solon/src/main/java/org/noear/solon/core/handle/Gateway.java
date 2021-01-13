@@ -11,6 +11,8 @@ import org.noear.solon.ext.DataThrowable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
 
 /**
@@ -62,6 +64,16 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      */
     @Note("注册相关接口与拦截器")
     protected abstract void register();
+
+    protected void loadBean(Predicate<BeanWrap> where) {
+        Aop.beanOnloaded(() -> {
+            Aop.beanForeach(bw -> {
+                if (where.test(bw)) {
+                    add(bw);
+                }
+            });
+        });
+    }
 
     /**
      * 允许 Action Mapping 申明
