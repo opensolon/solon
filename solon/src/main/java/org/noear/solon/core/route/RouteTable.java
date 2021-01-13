@@ -84,7 +84,7 @@ public class RouteTable<T> extends ArrayList<RouteTable.Route<T>> {
 
         private boolean matches0(String path2) {
             //1.如果当前为**，任何路径都可命中
-            if ("**".equals(path)) {
+            if ("**".equals(path) || "/**".equals(path)) {
                 return true;
             }
 
