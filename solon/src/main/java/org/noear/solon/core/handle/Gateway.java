@@ -65,15 +65,6 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     @Note("注册相关接口与拦截器")
     protected abstract void register();
 
-    protected void loadBean(Predicate<BeanWrap> where) {
-        Aop.beanOnloaded(() -> {
-            Aop.beanForeach(bw -> {
-                if (where.test(bw)) {
-                    add(bw);
-                }
-            });
-        });
-    }
 
     /**
      * 允许 Action Mapping 申明
@@ -204,6 +195,17 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         super.after(Aop.get(interceptorClz));
     }
 
+    @Note("添加接口")
+    public void addBeans(Predicate<BeanWrap> where) {
+        Aop.beanOnloaded(() -> {
+            Aop.beanForeach(bw -> {
+                if (where.test(bw)) {
+                    add(bw);
+                }
+            });
+        });
+    }
+
     /**
      * 添加接口
      */
@@ -262,6 +264,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     public void add(String path, Handler handler) {
         addDo(path, handler);
     }
+
 
     protected void addDo(String path, Handler handler) {
         //addPath 已处理 path1= null 的情况
