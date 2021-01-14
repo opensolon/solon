@@ -2,6 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.Utils;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URL;
@@ -13,6 +14,7 @@ import java.util.Properties;
  * 通过 globalSet 可进行重写
  *
  * @see Utils#loadProperties(URL)
+ * @see org.noear.solon.extend.properties.yaml.PropertiesLoader
  * @author noear
  * @since 1.0
  * */
@@ -56,7 +58,7 @@ public class PropsLoader {
     /**
      * 加载 url 配置
      * */
-    public Properties load(URL url) throws Exception {
+    public Properties load(URL url) throws IOException {
         if (url == null) {
             return null;
         }
@@ -77,7 +79,7 @@ public class PropsLoader {
     /**
      * 构建 txt 配置
      * */
-    public Properties build(String txt) throws Exception {
+    public Properties build(String txt) throws IOException {
         int idx1 = txt.indexOf("=");
         int idx2 = txt.indexOf(":");
 

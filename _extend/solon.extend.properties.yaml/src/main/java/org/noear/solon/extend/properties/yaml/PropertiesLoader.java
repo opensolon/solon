@@ -2,6 +2,7 @@ package org.noear.solon.extend.properties.yaml;
 
 import org.noear.solon.core.PropsLoader;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URL;
@@ -22,7 +23,7 @@ public class PropertiesLoader extends PropsLoader {
     }
 
     @Override
-    public Properties load(URL url) throws Exception {
+    public Properties load(URL url) throws IOException {
         if (url == null) {
             return null;
         }
@@ -49,7 +50,7 @@ public class PropertiesLoader extends PropsLoader {
     }
 
     @Override
-    public Properties build(String text) throws Exception {
+    public Properties build(String text) throws IOException {
         text = text.trim();
 
         int idx1 = text.indexOf("=");
