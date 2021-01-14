@@ -20,7 +20,7 @@ public class XPluginImp implements Plugin {
         });
 
         Aop.context().beanBuilderAdd(Proxy.class, (clz, bw, anno) -> {
-            proxyRegister(bw);
+            bw.proxySet(BeanProxyImp.global());
         });
     }
 
