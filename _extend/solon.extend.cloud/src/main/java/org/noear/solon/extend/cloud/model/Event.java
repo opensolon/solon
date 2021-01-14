@@ -1,22 +1,26 @@
 package org.noear.solon.extend.cloud.model;
 
 /**
- * 消息
+ * 事件
  *
  * @author noear
  * @since 1.2
  */
 public class Event {
     /**
-     * 消息键
+     * 事件id
      * */
-    public String key;
+    public String id;
     /**
-     * 消息主题
+     * 事件标签
+     * */
+    public String tags;
+    /**
+     * 事件主题
      * */
     public String topic;
     /**
-     * 消息内容
+     * 事件内容
      * */
     public String content;
 }

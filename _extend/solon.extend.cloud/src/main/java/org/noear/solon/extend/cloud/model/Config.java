@@ -22,7 +22,6 @@ public class Config {
     public String value;
 
     private Properties _props;
-
     public Properties toProps() throws IOException {
         if (_props == null) {
             _props = PropsLoader.global().build(value);
