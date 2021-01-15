@@ -5,7 +5,10 @@ import org.noear.solon.annotation.Note;
 import java.lang.annotation.*;
 
 /**
- * @author noear 2021/1/14 created
+ * 发现订阅
+ *
+ * @author noear
+ * @since 1.2
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

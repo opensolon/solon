@@ -5,7 +5,8 @@ import org.noear.solon.extend.cloud.model.ConfigSet;
 /**
  * 云配置处理
  *
- * @author noear 2021/1/14 created
+ * @author noear
+ * @since 1.2
  */
 @FunctionalInterface
 public interface CloudConfigHandler {

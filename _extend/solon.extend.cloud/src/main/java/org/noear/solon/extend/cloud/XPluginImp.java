@@ -8,7 +8,8 @@ import org.noear.solon.extend.cloud.annotation.CloudDiscovery;
 import org.noear.solon.extend.cloud.annotation.CloudEvent;
 
 /**
- * @author noear 2021/1/14 created
+ * @author noear
+ * @since 1.2
  */
 public class XPluginImp implements Plugin {
     @Override

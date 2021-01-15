@@ -7,7 +7,8 @@ import java.lang.annotation.*;
 /**
  * 配置订阅
  *
- * @author noear 2021/1/14 created
+ * @author noear
+ * @since 1.2
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

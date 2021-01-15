@@ -5,7 +5,8 @@ import org.noear.solon.extend.cloud.model.Event;
 /**
  * 云事件处理
  *
- * @author noear 2021/1/14 created
+ * @author noear
+ * @since 1.2
  */
 @FunctionalInterface
 public interface CloudEventHandler {

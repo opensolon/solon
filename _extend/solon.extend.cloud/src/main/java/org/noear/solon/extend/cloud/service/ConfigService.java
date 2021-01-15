@@ -4,7 +4,8 @@ import org.noear.solon.extend.cloud.model.Config;
 import org.noear.solon.extend.cloud.model.ConfigSet;
 
 /**
- * @author noear 2021/1/15 created
+ * @author noear
+ * @since 1.2
  */
 public interface ConfigService {
     Config get(String group, String key);

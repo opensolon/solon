@@ -2,7 +2,9 @@ package org.noear.solon.extend.cloud.model;
 
 /**
  * 服务实例
- * @author noear 2021/1/14 created
+ *
+ * @author noear
+ * @since 1.2
  */
 public class Instance {
     /**

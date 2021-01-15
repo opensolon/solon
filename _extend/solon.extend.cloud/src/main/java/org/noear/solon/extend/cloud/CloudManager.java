@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 云处理管理
+ * 云管理
  *
  * @author noear
  * @since 1.2
