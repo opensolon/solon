@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * 配置
+ * 配置模型
+ *
  * @author noear
  * @since 1.2
  */

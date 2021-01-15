@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 发现
+ * 发现模型
  *
  * @author noear
  * @since 1.2

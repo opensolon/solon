@@ -11,12 +11,14 @@ public interface CloudEventService {
      * 发送事件
      * */
     void send(String topic, String content);
+
     /**
      * 发送事件
      * */
     void send(String id, String topic, String content);
+
     /**
-     * 发送事件
+     * 订阅事件
      * */
     void subscribe(String topic);
 }

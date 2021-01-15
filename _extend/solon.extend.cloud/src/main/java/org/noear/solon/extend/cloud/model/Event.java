@@ -1,7 +1,7 @@
 package org.noear.solon.extend.cloud.model;
 
 /**
- * 事件
+ * 事件模型
  *
  * @author noear
  * @since 1.2

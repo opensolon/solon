@@ -5,7 +5,7 @@ import org.noear.solon.core.Props;
 import java.util.Map;
 
 /**
- * 配置集合
+ * 配置集合模型
  *
  * @author noear
  * @since 1.2
@@ -14,7 +14,7 @@ public class ConfigSet {
     /**
      * 集合名
      */
-    public String name;
+    public String group;
     /**
      * 配置
      */
