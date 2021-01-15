@@ -215,8 +215,10 @@ public class SolonApp implements Handler, HandlerSlots {
     private final int _port; //端口
     private final SolonProps _prop; //属性配置
     private final Class<?> _source; //应用加载源
+    private final long _startupTime;
 
     protected SolonApp(Class<?> source, NvMap args) {
+        _startupTime = System.currentTimeMillis();
         _source = source;
 
         _prop = new SolonProps().load(args);
@@ -230,6 +232,9 @@ public class SolonApp implements Handler, HandlerSlots {
         enableJarIsolation(_prop.getBool("solon.extend.solation", false));
     }
 
+    protected long elapsedTimes(){
+        return System.currentTimeMillis() - _startupTime;
+    }
 
 
     public Class<?> source(){

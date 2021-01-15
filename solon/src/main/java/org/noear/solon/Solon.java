@@ -67,7 +67,6 @@ public class Solon {
         //添加关闭勾子
         Runtime.getRuntime().addShutdownHook(new Thread(()->stop(false, 0)));
 
-        long time_start = System.currentTimeMillis();
         PrintUtil.blueln("solon.App:: Start loading");
 
         //1.创建应用
@@ -88,8 +87,7 @@ public class Solon {
         //3.运行
         global.run();
 
-        long time_end = System.currentTimeMillis();
-        PrintUtil.blueln("solon.App:: End loading @" + (time_end - time_start) + "ms");
+        PrintUtil.blueln("solon.App:: End loading @" + global.elapsedTimes() + "ms");
 
         return global;
     }
