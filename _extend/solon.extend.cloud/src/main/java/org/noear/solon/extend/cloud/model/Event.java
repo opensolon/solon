@@ -12,10 +12,6 @@ public class Event {
      * */
     public String id;
     /**
-     * 事件标签
-     * */
-    public String tags;
-    /**
      * 事件主题
      * */
     public String topic;
