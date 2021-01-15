@@ -3,9 +3,9 @@ package org.noear.solon.extend.cloud;
 import org.noear.solon.extend.cloud.annotation.CloudConfig;
 import org.noear.solon.extend.cloud.annotation.CloudDiscovery;
 import org.noear.solon.extend.cloud.annotation.CloudEvent;
-import org.noear.solon.extend.cloud.service.ConfigService;
-import org.noear.solon.extend.cloud.service.EventService;
-import org.noear.solon.extend.cloud.service.RegisterService;
+import org.noear.solon.extend.cloud.service.CloudConfigService;
+import org.noear.solon.extend.cloud.service.CloudEventService;
+import org.noear.solon.extend.cloud.service.CloudRegisterService;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -19,9 +19,9 @@ import java.util.Set;
  * @since 1.2
  */
 public class CloudManager {
-    private static Set<RegisterService> registerServiceSet = new LinkedHashSet<>();
-    private static Set<ConfigService> configServiceSet = new LinkedHashSet<>();
-    private static Set<EventService> eventServiceSet = new LinkedHashSet<>();
+    private static Set<CloudRegisterService> registerServiceSet = new LinkedHashSet<>();
+    private static Set<CloudConfigService> configServiceSet = new LinkedHashSet<>();
+    private static Set<CloudEventService> eventServiceSet = new LinkedHashSet<>();
 
     private static Map<String, CloudConfigHandler> configHandlerMap = new LinkedHashMap<>();
     private static Map<String, CloudDiscoveryHandler> discoveryHandlerMap = new LinkedHashMap<>();
@@ -51,21 +51,21 @@ public class CloudManager {
     /**
      * 登记配置服务
      */
-    public static void register(ConfigService service) {
+    public static void register(CloudConfigService service) {
         configServiceSet.add(service);
     }
 
     /**
      * 登记注册服务
      */
-    public static void register(RegisterService service) {
+    public static void register(CloudRegisterService service) {
         registerServiceSet.add(service);
     }
 
     /**
      * 登记事件服务
      */
-    public static void register(EventService service) {
+    public static void register(CloudEventService service) {
         eventServiceSet.add(service);
     }
 }

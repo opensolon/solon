@@ -21,6 +21,17 @@ public class Config {
      */
     public String value;
 
+
+    public Config(){
+
+    }
+
+    public Config(String key, String value){
+        this.key = key;
+        this.value = value;
+    }
+
+
     private Properties _props;
     public Properties toProps() throws IOException {
         if (_props == null) {

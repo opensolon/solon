@@ -1,5 +1,6 @@
 package org.noear.solon.extend.cloud.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,10 +12,19 @@ import java.util.List;
 public class Discovery {
     /**
      * 服务名
-     * */
+     */
     public String service;
     /**
      * 集群
-     * */
-    public List<String> cluster;
+     */
+    public List<Node> cluster;
+
+    public Discovery() {
+
+    }
+
+    public Discovery(String service) {
+        this.service = service;
+        this.cluster = new ArrayList<>();
+    }
 }
