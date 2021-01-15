@@ -3,8 +3,10 @@ package org.noear.solon.extend.cloud;
 import org.noear.solon.extend.cloud.annotation.CloudConfig;
 import org.noear.solon.extend.cloud.annotation.CloudDiscovery;
 import org.noear.solon.extend.cloud.annotation.CloudEvent;
+import org.noear.solon.extend.cloud.service.RegisterService;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 云处理管理
@@ -13,6 +15,8 @@ import java.util.Map;
  * @since 1.2
  */
 public class CloudManager {
+    private static Set<RegisterService> registerServiceSet;
+
     private static Map<String, CloudConfigHandler> configHandlerMap;
     private static Map<String, CloudDiscoveryHandler> discoveryHandlerMap;
     private static Map<String, CloudEventHandler> eventHandlerMap;

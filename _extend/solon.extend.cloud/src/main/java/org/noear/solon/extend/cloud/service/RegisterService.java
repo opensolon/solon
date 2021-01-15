@@ -1,4 +1,4 @@
-package org.noear.solon.extend.cloud;
+package org.noear.solon.extend.cloud.service;
 
 import org.noear.solon.extend.cloud.model.Instance;
 
@@ -7,6 +7,6 @@ import org.noear.solon.extend.cloud.model.Instance;
  *
  * @author noear 2021/1/14 created
  */
-public interface CloudRegisterService {
+public interface RegisterService {
     void register(Instance instance);
 }
