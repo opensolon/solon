@@ -28,7 +28,7 @@ public class CloudRegisterServiceImp implements CloudRegisterService {
     }
 
     @Override
-    public void put(Node instance) {
+    public void register(Node instance) {
         try {
             real.registerInstance(instance.service, Solon.cfg().appGroup(), instance.ip, instance.port);
         } catch (NacosException ex) {
@@ -37,7 +37,7 @@ public class CloudRegisterServiceImp implements CloudRegisterService {
     }
 
     @Override
-    public void remove(Node instance) {
+    public void deregister(Node instance) {
         try {
             real.deregisterInstance(instance.service, Solon.cfg().appGroup(), instance.ip, instance.port);
         } catch (NacosException ex) {
@@ -46,7 +46,7 @@ public class CloudRegisterServiceImp implements CloudRegisterService {
     }
 
     @Override
-    public Discovery get(String service) {
+    public Discovery find(String service) {
         Discovery discovery = new Discovery(service);
 
         try {

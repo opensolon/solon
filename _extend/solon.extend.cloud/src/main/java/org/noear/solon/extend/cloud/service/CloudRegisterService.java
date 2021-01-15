@@ -11,16 +11,16 @@ import org.noear.solon.extend.cloud.model.Node;
  */
 public interface CloudRegisterService {
     /**
-     * 注册
+     * 注册服务实例
      * */
-    void put(Node instance);
+    void register(Node instance);
     /**
-     * 取消注册
+     * 注销服务实例
      * */
-    void remove(Node instance);
+    void deregister(Node instance);
 
     /**
-     * 获取
+     * 查询服务
      * */
-    Discovery get(String service);
+    Discovery find(String service);
 }
