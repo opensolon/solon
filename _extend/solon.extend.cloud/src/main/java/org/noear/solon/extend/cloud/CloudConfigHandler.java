@@ -1,6 +1,6 @@
 package org.noear.solon.extend.cloud;
 
-import org.noear.solon.extend.cloud.model.ConfigSet;
+import org.noear.solon.extend.cloud.model.Config;
 
 /**
  * 云配置处理
@@ -10,5 +10,5 @@ import org.noear.solon.extend.cloud.model.ConfigSet;
  */
 @FunctionalInterface
 public interface CloudConfigHandler {
-    void handler(ConfigSet configSet);
+    void handler(Config config);
 }

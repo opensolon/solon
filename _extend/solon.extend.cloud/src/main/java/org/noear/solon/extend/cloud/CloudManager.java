@@ -21,29 +21,29 @@ public class CloudManager {
     private static CloudConfigService configService;
     private static CloudEventService eventService;
 
-    private static Map<String, CloudConfigHandler> configHandlerMap = new LinkedHashMap<>();
-    private static Map<String, CloudDiscoveryHandler> discoveryHandlerMap = new LinkedHashMap<>();
-    private static Map<String, CloudEventHandler> eventHandlerMap = new LinkedHashMap<>();
+    protected final static Map<CloudConfig, CloudConfigHandler> configHandlerMap = new LinkedHashMap<>();
+    protected final static Map<CloudDiscovery, CloudDiscoveryHandler> discoveryHandlerMap = new LinkedHashMap<>();
+    protected final static Map<CloudEvent, CloudEventHandler> eventHandlerMap = new LinkedHashMap<>();
 
     /**
      * 登记配置订阅
      */
     public static void register(CloudConfig anno, CloudConfigHandler handler) {
-        configHandlerMap.put(anno.value(), handler);
+        configHandlerMap.put(anno, handler);
     }
 
     /**
      * 登记发现订阅
      */
     public static void register(CloudDiscovery anno, CloudDiscoveryHandler handler) {
-        discoveryHandlerMap.put(anno.value(), handler);
+        discoveryHandlerMap.put(anno, handler);
     }
 
     /**
      * 登记事件订阅
      */
     public static void register(CloudEvent anno, CloudEventHandler handler) {
-        eventHandlerMap.put(anno.value(), handler);
+        eventHandlerMap.put(anno, handler);
     }
 
     /**

@@ -34,5 +34,26 @@ public class XPluginImp implements Plugin {
         });
 
         Aop.context().beanInjectorAdd(CloudConfig.class, CloudBeanInjector.instance);
+
+        Aop.context().beanOnloaded(() -> {
+            if (CloudManager.configService() != null) {
+                CloudManager.configHandlerMap.forEach((anno, handler) -> {
+                    String[] ss = anno.value().split("/");
+                    if (ss.length > 1) {
+                        CloudManager.configService().attention(ss[0], ss[1], (group, cfg) -> {
+                            handler.handler(cfg);
+                        });
+                    }
+                });
+            }
+
+            if (CloudManager.registerService() != null) {
+                CloudManager.discoveryHandlerMap.forEach((anno, handler) -> {
+                    CloudManager.registerService().attention(anno.value(), (dis) -> {
+                        handler.handler(dis);
+                    });
+                });
+            }
+        });
     }
 }
