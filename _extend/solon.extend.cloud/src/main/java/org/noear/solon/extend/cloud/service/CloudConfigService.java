@@ -3,6 +3,7 @@ package org.noear.solon.extend.cloud.service;
 import org.noear.solon.extend.cloud.model.Config;
 
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * @author noear
@@ -26,6 +27,6 @@ public interface CloudConfigService {
 
     /**
      * 关注配置
-     * */
-    void attention(String group, String key, BiConsumer<String, Config> observer);
+     */
+    void attention(String group, String key, Consumer<Config> observer);
 }

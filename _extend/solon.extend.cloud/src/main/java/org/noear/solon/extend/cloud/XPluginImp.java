@@ -39,11 +39,12 @@ public class XPluginImp implements Plugin {
             if (CloudManager.configService() != null) {
                 CloudManager.configHandlerMap.forEach((anno, handler) -> {
                     String[] ss = anno.value().split("/");
-                    if (ss.length > 1) {
-                        CloudManager.configService().attention(ss[0], ss[1], (group, cfg) -> {
-                            handler.handler(cfg);
-                        });
-                    }
+                    String group = ss[0];
+                    String key = (ss.length > 1 ? ss[1] : "*");
+
+                    CloudManager.configService().attention(group, key, cfg -> {
+                        handler.handler(cfg);
+                    });
                 });
             }
 

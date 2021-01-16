@@ -11,7 +11,7 @@ import org.noear.solon.extend.cloud.service.CloudConfigService;
 
 import java.util.Properties;
 import java.util.concurrent.Executor;
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * 配置服务适配
@@ -74,7 +74,7 @@ public class CloudConfigServiceImp implements CloudConfigService {
     }
 
     @Override
-    public void attention(String group, String key, BiConsumer<String, Config> observer) {
+    public void attention(String group, String key, Consumer<Config> observer) {
         try {
             real.addListener(key, group, new Listener() {
                 @Override
@@ -84,7 +84,7 @@ public class CloudConfigServiceImp implements CloudConfigService {
 
                 @Override
                 public void receiveConfigInfo(String value) {
-                    observer.accept(group, new Config(key, value));
+                    observer.accept(new Config(key, value));
                 }
             });
         } catch (NacosException ex) {
