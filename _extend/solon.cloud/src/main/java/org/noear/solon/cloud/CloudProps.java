@@ -17,8 +17,10 @@ public class CloudProps {
 
     private String DISCOVERY_ENABLE = "solon.cloud.@@.discovery.enable";
     private String DISCOVERY_HOSTNAME = "solon.cloud.@@.discovery.hostname";
+    private String DISCOVERY_TAGS = "solon.cloud.@@.discovery.tags";
     private String DISCOVERY_HEALTH_CHECK_PATH = "solon.cloud.@@.discovery.healthCheckPath";
     private String DISCOVERY_HEALTH_CHECK_INTERVAL = "solon.cloud.@@.discovery.healthCheckInterval";
+    private String DISCOVERY_HEALTH_DETECTOR = "solon.cloud.@@.discovery.healthDetector";
 
     public CloudProps(String frame) {
         SERVER = SERVER.replace("@@", frame);
@@ -32,8 +34,10 @@ public class CloudProps {
 
         DISCOVERY_ENABLE = DISCOVERY_ENABLE.replace("@@", frame);
         DISCOVERY_HOSTNAME = DISCOVERY_HOSTNAME.replace("@@", frame);
+        DISCOVERY_TAGS = DISCOVERY_TAGS.replace("@@", frame);
         DISCOVERY_HEALTH_CHECK_PATH = DISCOVERY_HEALTH_CHECK_PATH.replace("@@", frame);
         DISCOVERY_HEALTH_CHECK_INTERVAL = DISCOVERY_HEALTH_CHECK_INTERVAL.replace("@@", frame);
+        DISCOVERY_HEALTH_DETECTOR = DISCOVERY_HEALTH_DETECTOR.replace("@@", frame);
     }
 
 
@@ -71,6 +75,9 @@ public class CloudProps {
     public String getDiscoveryHostname() {
         return Solon.cfg().get(DISCOVERY_HOSTNAME);
     }
+    public String getDiscoveryTags() {
+        return Solon.cfg().get(DISCOVERY_TAGS);
+    }
 
     public String getDiscoveryHealthCheckPath() {
         return Solon.cfg().get(DISCOVERY_HEALTH_CHECK_PATH);
@@ -78,5 +85,8 @@ public class CloudProps {
 
     public String getDiscoveryHealthCheckInterval() {
         return Solon.cfg().get(DISCOVERY_HEALTH_CHECK_INTERVAL);
+    }
+    public String getDiscoveryHealthDetector() {
+        return Solon.cfg().get(DISCOVERY_HEALTH_DETECTOR);
     }
 }
