@@ -270,18 +270,22 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      * */
     protected void addDo(String path, Handler handler) {
         //addPath 已处理 path1= null 的情况
-        if(allowPathMerging()) {
+        if (allowPathMerging()) {
             main.put(PathUtil.mergePath(mapping, path).toUpperCase(), handler);
-        }else{
-            main.put(PathUtil.mergePath(null, path).toUpperCase(), handler);
+        } else {
+            main.put(path.toUpperCase(), handler);
         }
     }
 
     /**
      * 获取接口
      * */
-    protected Handler getDo(String path){
-        return main.get(path);
+    protected Handler getDo(String path) {
+        if (path == null) {
+            return null;
+        } else {
+            return main.get(path);
+        }
     }
 
     /**
