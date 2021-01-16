@@ -49,16 +49,12 @@ public class XPluginImp implements Plugin {
         Aop.context().beanOnloaded(() -> {
             if (CloudClient.config() != null) {
                 CloudManager.configHandlerMap.forEach((anno, handler) -> {
-                    String[] ss = anno.value().split("/");
-                    String group = ss[0];
-                    String key = (ss.length > 1 ? ss[1] : "*");
-
-                    Config config = CloudClient.config().get(group, key);
+                    Config config = CloudClient.config().get(anno.group(), anno.value());
                     if (config != null) {
                         handler.handler(config);
                     }
 
-                    CloudClient.config().attention(group, key, handler);
+                    CloudClient.config().attention(anno.group(), anno.value(), handler);
                 });
             }
 

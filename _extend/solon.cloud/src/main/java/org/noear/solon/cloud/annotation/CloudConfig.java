@@ -14,6 +14,11 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface CloudConfig {
-    @Note("group/key")
+    @Note("key")
     String value();
+
+    /**
+     * 分组
+     * */
+    String group() default "";
 }

@@ -34,15 +34,7 @@ public class CloudBeanInjector implements BeanInjector<CloudConfig> {
             return null;
         }
 
-        String[] ss = anno.value().split("/");
-        String group = ss[0];
-        String key = (ss.length > 1 ? ss[1] : "*");
-
-        if ("*".equals(key)) {
-            return null;
-        }
-
-        Config cfg = CloudClient.config().get(group, key);
+        Config cfg = CloudClient.config().get(anno.group(), anno.value());
 
         if (cfg == null || cfg.value == null) {
             return null;
