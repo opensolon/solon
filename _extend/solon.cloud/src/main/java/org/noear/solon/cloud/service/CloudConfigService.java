@@ -1,8 +1,7 @@
 package org.noear.solon.cloud.service;
 
+import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.model.Config;
-
-import java.util.function.Consumer;
 
 /**
  * @author noear
@@ -27,5 +26,5 @@ public interface CloudConfigService {
     /**
      * 关注配置
      */
-    void attention(String group, String key, Consumer<Config> observer);
+    void attention(String group, String key, CloudConfigHandler observer);
 }

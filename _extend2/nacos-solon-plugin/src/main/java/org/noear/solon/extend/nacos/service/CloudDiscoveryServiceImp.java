@@ -5,6 +5,7 @@ import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Node;
@@ -12,7 +13,6 @@ import org.noear.solon.cloud.service.CloudDiscoveryService;
 
 import java.util.List;
 import java.util.Properties;
-import java.util.function.Consumer;
 
 /**
  * @author noear 2021/1/15 created
@@ -84,11 +84,11 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
     }
 
     @Override
-    public void attention(String service, Consumer<Discovery> observer) {
+    public void attention(String service, CloudDiscoveryHandler observer) {
         try {
             real.subscribe(service, (event) -> {
                 Discovery discovery = find(service);
-                observer.accept(discovery);
+                observer.handler(discovery);
             });
         } catch (NacosException ex) {
             throw new RuntimeException();

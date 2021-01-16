@@ -44,19 +44,11 @@ public class CloudManager {
         configService = service;
     }
 
-    public static CloudConfigService configService() {
-        return configService;
-    }
-
     /**
      * 登记注册服务
      */
     public static void register(CloudDiscoveryService service) {
         discoveryService = service;
-    }
-
-    public static CloudDiscoveryService discoveryService() {
-        return discoveryService;
     }
 
     /**
@@ -66,7 +58,16 @@ public class CloudManager {
         eventService = service;
     }
 
-    public static CloudEventService eventService() {
+
+    protected static CloudConfigService configService() {
+        return configService;
+    }
+
+    protected static CloudDiscoveryService discoveryService() {
+        return discoveryService;
+    }
+
+    protected static CloudEventService eventService() {
         return eventService;
     }
 }

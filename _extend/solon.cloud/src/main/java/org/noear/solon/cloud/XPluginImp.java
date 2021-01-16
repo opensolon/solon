@@ -47,33 +47,36 @@ public class XPluginImp implements Plugin {
         Aop.context().beanInjectorAdd(CloudConfig.class, CloudBeanInjector.instance);
 
         Aop.context().beanOnloaded(() -> {
-            if (CloudManager.configService() != null) {
+            if (CloudClient.config() != null) {
                 CloudManager.configHandlerMap.forEach((anno, handler) -> {
                     String[] ss = anno.value().split("/");
                     String group = ss[0];
                     String key = (ss.length > 1 ? ss[1] : "*");
 
-                    Config config = CloudManager.configService().get(group, key);
+                    Config config = CloudClient.config().get(group, key);
                     if (config != null) {
                         handler.handler(config);
                     }
 
-                    CloudManager.configService().attention(group, key, cfg -> {
-                        handler.handler(cfg);
-                    });
+                    CloudClient.config().attention(group, key, handler);
+                });
+            }
+
+            if(CloudClient.event() != null) {
+                CloudManager.eventHandlerMap.forEach((anno, handler) -> {
+                    CloudClient.event().attention(anno.value(),handler);
                 });
             }
         });
 
 
-        if (CloudManager.configService() != null) {
-
+        if (CloudClient.config() != null) {
             //加载配置
             if (Utils.isNotEmpty(CloudProps.getConfigLoad())) {
                 String[] ss = CloudProps.getConfigLoad().split("/");
                 String group = ss[0];
                 String key = (ss.length > 1 ? ss[1] : "*");
-                Config config = CloudManager.configService().get(group, key);
+                Config config = CloudClient.config().get(group, key);
 
                 if (config != null && Utils.isNotEmpty(config.value)) {
                     Properties properties = Utils.buildProperties(config.value);
@@ -82,7 +85,7 @@ public class XPluginImp implements Plugin {
             }
         }
 
-        if (CloudManager.discoveryService() != null) {
+        if (CloudClient.discovery() != null) {
             //设置负载工厂
             Bridge.upstreamFactorySet(CloudLoadBalanceFactory.instance);
 
@@ -94,7 +97,7 @@ public class XPluginImp implements Plugin {
                 node.port = Solon.global().port();
                 node.protocol = "http";
 
-                CloudManager.discoveryService().register(node);
+                CloudClient.discovery().register(node);
             }
         }
     }
@@ -102,7 +105,7 @@ public class XPluginImp implements Plugin {
     @Override
     public void stop() throws Throwable {
         if (Solon.cfg().isDriftMode()) {
-            if (CloudManager.discoveryService() != null) {
+            if (CloudClient.discovery() != null) {
                 if (Utils.isNotEmpty(Solon.cfg().appName())) {
                     Node node = new Node();
                     node.service = Solon.cfg().appName();
@@ -110,7 +113,7 @@ public class XPluginImp implements Plugin {
                     node.port = Solon.global().port();
                     node.protocol = "http";
 
-                    CloudManager.discoveryService().deregister(node);
+                    CloudClient.discovery().deregister(node);
                 }
             }
         }

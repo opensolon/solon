@@ -1,9 +1,8 @@
 package org.noear.solon.cloud.service;
 
+import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Node;
-
-import java.util.function.Consumer;
 
 /**
  * 注册与发现服务
@@ -30,5 +29,5 @@ public interface CloudDiscoveryService {
     /**
      * 关注服务列表
      */
-    void attention(String service, Consumer<Discovery> observer);
+    void attention(String service, CloudDiscoveryHandler observer);
 }

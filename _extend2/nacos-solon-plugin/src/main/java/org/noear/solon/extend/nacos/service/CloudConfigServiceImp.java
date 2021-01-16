@@ -5,6 +5,7 @@ import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.exception.NacosException;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigService;
@@ -74,7 +75,7 @@ public class CloudConfigServiceImp implements CloudConfigService {
     }
 
     @Override
-    public void attention(String group, String key, Consumer<Config> observer) {
+    public void attention(String group, String key, CloudConfigHandler observer) {
         try {
             real.addListener(key, group, new Listener() {
                 @Override
@@ -84,7 +85,7 @@ public class CloudConfigServiceImp implements CloudConfigService {
 
                 @Override
                 public void receiveConfigInfo(String value) {
-                    observer.accept(new Config(key, value));
+                    observer.handler(new Config(key, value));
                 }
             });
         } catch (NacosException ex) {

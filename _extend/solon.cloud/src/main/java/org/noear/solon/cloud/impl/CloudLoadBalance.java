@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.impl;
 
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.LoadBalance;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.model.Discovery;
@@ -21,10 +22,10 @@ public class CloudLoadBalance implements LoadBalance {
     public CloudLoadBalance(String service) {
         this.service = service;
 
-        if (CloudManager.discoveryService() != null) {
-            this.discovery = CloudManager.discoveryService().find(service);
+        if (CloudClient.discovery() != null) {
+            this.discovery = CloudClient.discovery().find(service);
 
-            CloudManager.discoveryService().attention(service, d1 -> {
+            CloudClient.discovery().attention(service, d1 -> {
                 this.discovery = d1;
             });
         }
