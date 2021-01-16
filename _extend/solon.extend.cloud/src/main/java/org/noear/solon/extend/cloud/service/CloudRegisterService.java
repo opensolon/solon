@@ -3,7 +3,7 @@ package org.noear.solon.extend.cloud.service;
 import org.noear.solon.extend.cloud.model.Discovery;
 import org.noear.solon.extend.cloud.model.Node;
 
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * 注册服务
@@ -25,10 +25,10 @@ public interface CloudRegisterService {
     /**
      * 查询服务列表
      */
-    Discovery find(String group, String service);
+    Discovery find(String service);
 
     /**
      * 关注服务列表
      */
-    void attention(String group, String service, BiConsumer<String, Discovery> observer);
+    void attention(String service, Consumer<Discovery> observer);
 }

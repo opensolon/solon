@@ -3,10 +3,7 @@ package org.noear.solon.extend.nacos.service;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
-import com.alibaba.nacos.api.naming.listener.Event;
-import com.alibaba.nacos.api.naming.listener.EventListener;
 import com.alibaba.nacos.api.naming.pojo.Instance;
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.extend.cloud.CloudProps;
 import org.noear.solon.extend.cloud.model.Discovery;
@@ -15,7 +12,6 @@ import org.noear.solon.extend.cloud.service.CloudRegisterService;
 
 import java.util.List;
 import java.util.Properties;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -48,7 +44,7 @@ public class CloudRegisterServiceImp implements CloudRegisterService {
     @Override
     public void register(Node instance) {
         try {
-            real.registerInstance(instance.service, Solon.cfg().appGroup(), instance.ip, instance.port);
+            real.registerInstance(instance.service, instance.ip, instance.port);
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
         }
@@ -57,18 +53,18 @@ public class CloudRegisterServiceImp implements CloudRegisterService {
     @Override
     public void deregister(Node instance) {
         try {
-            real.deregisterInstance(instance.service, Solon.cfg().appGroup(), instance.ip, instance.port);
+            real.deregisterInstance(instance.service, instance.ip, instance.port);
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
         }
     }
 
     @Override
-    public Discovery find(String group, String service) {
+    public Discovery find(String service) {
         Discovery discovery = new Discovery(service);
 
         try {
-            List<Instance> list = real.selectInstances(service, group, true);
+            List<Instance> list = real.selectInstances(service, true);
 
             for (Instance i1 : list) {
                 Node n1 = new Node();
@@ -87,11 +83,11 @@ public class CloudRegisterServiceImp implements CloudRegisterService {
     }
 
     @Override
-    public void attention(String group, String service, BiConsumer<String, Discovery> observer) {
+    public void attention(String service, Consumer<Discovery> observer) {
         try {
-            real.subscribe(service, group, (event) -> {
-                Discovery discovery = find(group, service);
-                observer.accept(group, discovery);
+            real.subscribe(service, (event) -> {
+                Discovery discovery = find(service);
+                observer.accept(discovery);
             });
         } catch (NacosException ex) {
             throw new RuntimeException();

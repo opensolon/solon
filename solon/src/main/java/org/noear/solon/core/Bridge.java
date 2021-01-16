@@ -96,24 +96,40 @@ public class Bridge {
     //
     // UpstreamFactory 对接
     //
-    private static LoadBalance.Factory _upstreamFactory = null;
+    private static LoadBalance.Factory _loadBalanceFactory = null;
 
     /**
      * 获取负载工厂
      */
     @Note("获取负载工厂")
-    public static LoadBalance.Factory upstreamFactory() {
-        return _upstreamFactory;
+    public static LoadBalance.Factory loadBalanceFactory() {
+        return _loadBalanceFactory;
     }
 
     /**
      * 设置负载工厂
      */
     @Note("设置负载工厂")
-    public static void upstreamFactorySet(LoadBalance.Factory uf) {
+    public static void loadBalanceFactorySet(LoadBalance.Factory uf) {
         if (uf != null) {
-            _upstreamFactory = uf;
+            _loadBalanceFactory = uf;
         }
+    }
+
+    /**
+     * 获取负载工厂
+     */
+    @Deprecated
+    public static LoadBalance.Factory upstreamFactory() {
+        return loadBalanceFactory();
+    }
+
+    /**
+     * 设置负载工厂
+     */
+    @Deprecated
+    public static void upstreamFactorySet(LoadBalance.Factory uf) {
+        loadBalanceFactorySet(uf);
     }
 
 

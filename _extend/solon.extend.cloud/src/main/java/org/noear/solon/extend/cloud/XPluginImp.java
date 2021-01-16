@@ -2,10 +2,12 @@ package org.noear.solon.extend.cloud;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.extend.cloud.annotation.CloudConfig;
 import org.noear.solon.extend.cloud.annotation.CloudDiscovery;
 import org.noear.solon.extend.cloud.annotation.CloudEvent;
+import org.noear.solon.extend.cloud.impl.CloudLoadBalanceFactory;
 
 /**
  * @author noear
@@ -31,5 +33,9 @@ public class XPluginImp implements Plugin {
                 CloudManager.register(anno, bw.raw());
             }
         });
+
+        if(CloudManager.registerService() != null){
+            Bridge.loadBalanceFactorySet(CloudLoadBalanceFactory.instance);
+        }
     }
 }
