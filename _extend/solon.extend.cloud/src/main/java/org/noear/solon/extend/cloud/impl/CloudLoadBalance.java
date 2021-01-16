@@ -20,9 +20,12 @@ public class CloudLoadBalance implements LoadBalance {
 
     public CloudLoadBalance(String service) {
         this.service = service;
-        CloudManager.registerService().attention(service, d1 -> {
-            this.discovery = d1;
-        });
+
+        if (CloudManager.registerService() != null) {
+            CloudManager.registerService().attention(service, d1 -> {
+                this.discovery = d1;
+            });
+        }
     }
 
     @Override
