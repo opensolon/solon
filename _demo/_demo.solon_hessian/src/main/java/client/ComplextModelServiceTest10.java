@@ -2,7 +2,6 @@ package client;
 
 import client.dso.FairyConfigurationImp;
 import org.noear.nami.NamiConfigurationDefault;
-import org.noear.nami.integration.solon.EnableNamiClient;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@EnableNamiClient
 @Component
 public class ComplextModelServiceTest10 {
 
