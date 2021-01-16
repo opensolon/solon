@@ -1,17 +1,10 @@
 package org.noear.solon.extend.consul;
 
-import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.extend.consul.detector.*;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class HealthDetector {
 
