@@ -1,6 +1,8 @@
 package org.noear.solon.extend.cloud;
 
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
@@ -8,6 +10,8 @@ import org.noear.solon.extend.cloud.annotation.CloudConfig;
 import org.noear.solon.extend.cloud.annotation.CloudDiscovery;
 import org.noear.solon.extend.cloud.annotation.CloudEvent;
 import org.noear.solon.extend.cloud.impl.CloudLoadBalanceFactory;
+import org.noear.solon.extend.cloud.model.Node;
+import org.noear.solon.extend.cloud.utils.LocalUtils;
 
 /**
  * @author noear
@@ -34,8 +38,18 @@ public class XPluginImp implements Plugin {
             }
         });
 
-        if(CloudManager.registerService() != null){
+        if (CloudManager.registerService() != null) {
             Bridge.loadBalanceFactorySet(CloudLoadBalanceFactory.instance);
+
+            if (Utils.isNotEmpty(Solon.cfg().appName())) {
+                Node node = new Node();
+                node.service = Solon.cfg().appName();
+                node.ip = LocalUtils.getLocalAddress();
+                node.port = Solon.global().port();
+                node.protocol = "http";
+
+                CloudManager.registerService().register(node);
+            }
         }
     }
 }
