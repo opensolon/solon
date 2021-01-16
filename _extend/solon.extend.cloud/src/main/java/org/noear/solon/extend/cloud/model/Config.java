@@ -1,6 +1,7 @@
 package org.noear.solon.extend.cloud.model;
 
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.PropsLoader;
 
 import java.io.IOException;
@@ -23,20 +24,21 @@ public class Config {
     public String value;
 
 
-    public Config(){
+    public Config() {
 
     }
 
-    public Config(String key, String value){
+    public Config(String key, String value) {
         this.key = key;
         this.value = value;
     }
 
 
     private Properties _props;
-    public Properties toProps() throws IOException {
+
+    public Properties toProps() {
         if (_props == null) {
-            _props = PropsLoader.global().build(value);
+            _props = Utils.buildProperties(value);
         }
         return _props;
     }

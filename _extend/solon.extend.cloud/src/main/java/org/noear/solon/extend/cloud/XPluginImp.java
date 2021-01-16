@@ -1,21 +1,12 @@
 package org.noear.solon.extend.cloud;
 
-import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
-import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.extend.cloud.annotation.CloudConfig;
 import org.noear.solon.extend.cloud.annotation.CloudDiscovery;
 import org.noear.solon.extend.cloud.annotation.CloudEvent;
-import org.noear.solon.extend.cloud.impl.CloudLoadBalanceFactory;
-import org.noear.solon.extend.cloud.model.Config;
-import org.noear.solon.extend.cloud.model.Node;
-import org.noear.solon.extend.cloud.utils.LocalUtils;
-
-import java.io.IOException;
-import java.util.Properties;
+import org.noear.solon.extend.cloud.impl.CloudBeanInjector;
 
 /**
  * @author noear
@@ -41,5 +32,7 @@ public class XPluginImp implements Plugin {
                 CloudManager.register(anno, bw.raw());
             }
         });
+
+        Aop.context().beanInjectorAdd(CloudConfig.class, CloudBeanInjector.instance);
     }
 }
