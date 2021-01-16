@@ -39,7 +39,7 @@ public class XPluginImp implements Plugin {
         });
 
         if (CloudManager.registerService() != null) {
-            Bridge.loadBalanceFactorySet(CloudLoadBalanceFactory.instance);
+            Bridge.upstreamFactorySet(CloudLoadBalanceFactory.instance);
 
             if (Utils.isNotEmpty(Solon.cfg().appName())) {
                 Node node = new Node();
@@ -49,6 +49,21 @@ public class XPluginImp implements Plugin {
                 node.protocol = "http";
 
                 CloudManager.registerService().register(node);
+            }
+        }
+    }
+
+    @Override
+    public void stop() throws Throwable {
+        if (CloudManager.registerService() != null) {
+            if (Utils.isNotEmpty(Solon.cfg().appName())) {
+                Node node = new Node();
+                node.service = Solon.cfg().appName();
+                node.ip = LocalUtils.getLocalAddress();
+                node.port = Solon.global().port();
+                node.protocol = "http";
+
+                CloudManager.registerService().deregister(node);
             }
         }
     }
