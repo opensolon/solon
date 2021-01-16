@@ -21,10 +21,10 @@ public class CloudLoadBalance implements LoadBalance {
     public CloudLoadBalance(String service) {
         this.service = service;
 
-        if (CloudManager.registerService() != null) {
-            this.discovery = CloudManager.registerService().find(service);
+        if (CloudManager.discoveryService() != null) {
+            this.discovery = CloudManager.discoveryService().find(service);
 
-            CloudManager.registerService().attention(service, d1 -> {
+            CloudManager.discoveryService().attention(service, d1 -> {
                 this.discovery = d1;
             });
         }

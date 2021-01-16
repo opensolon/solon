@@ -1,12 +1,11 @@
-package org.noear.solon.extend.nacos;
+package org.noear.solon.extend.zookeeper;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Plugin;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.extend.nacos.service.CloudConfigServiceImp;
-import org.noear.solon.extend.nacos.service.CloudDiscoveryServiceImp;
+import org.noear.solon.core.Plugin;
+import org.noear.solon.extend.zookeeper.service.CloudDiscoveryServiceImp;
 
 /**
  * @author noear 2021/1/9 created
@@ -14,10 +13,6 @@ import org.noear.solon.extend.nacos.service.CloudDiscoveryServiceImp;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        if (Utils.isNotEmpty(CloudProps.getConfigServer())) {
-            CloudManager.register(new CloudConfigServiceImp());
-        }
-
         if (Utils.isNotEmpty(CloudProps.getDiscoveryServer())) {
             CloudManager.register(new CloudDiscoveryServiceImp());
         }

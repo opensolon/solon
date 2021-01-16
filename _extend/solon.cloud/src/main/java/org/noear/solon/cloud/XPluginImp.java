@@ -82,7 +82,7 @@ public class XPluginImp implements Plugin {
             }
         }
 
-        if (CloudManager.registerService() != null) {
+        if (CloudManager.discoveryService() != null) {
             //设置负载工厂
             Bridge.upstreamFactorySet(CloudLoadBalanceFactory.instance);
 
@@ -94,7 +94,7 @@ public class XPluginImp implements Plugin {
                 node.port = Solon.global().port();
                 node.protocol = "http";
 
-                CloudManager.registerService().register(node);
+                CloudManager.discoveryService().register(node);
             }
         }
     }
@@ -102,7 +102,7 @@ public class XPluginImp implements Plugin {
     @Override
     public void stop() throws Throwable {
         if (Solon.cfg().isDriftMode()) {
-            if (CloudManager.registerService() != null) {
+            if (CloudManager.discoveryService() != null) {
                 if (Utils.isNotEmpty(Solon.cfg().appName())) {
                     Node node = new Node();
                     node.service = Solon.cfg().appName();
@@ -110,7 +110,7 @@ public class XPluginImp implements Plugin {
                     node.port = Solon.global().port();
                     node.protocol = "http";
 
-                    CloudManager.registerService().deregister(node);
+                    CloudManager.discoveryService().deregister(node);
                 }
             }
         }

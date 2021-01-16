@@ -8,7 +8,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Node;
-import org.noear.solon.cloud.service.CloudRegisterService;
+import org.noear.solon.cloud.service.CloudDiscoveryService;
 
 import java.util.List;
 import java.util.Properties;
@@ -17,11 +17,11 @@ import java.util.function.Consumer;
 /**
  * @author noear 2021/1/15 created
  */
-public class CloudRegisterServiceImp implements CloudRegisterService {
+public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
     static final String REGISTER_GROUP = "SOLON";
     NamingService real;
 
-    public CloudRegisterServiceImp() {
+    public CloudDiscoveryServiceImp() {
         String server = CloudProps.getDiscoveryServer();
         String username = CloudProps.getDiscoveryUsername();
         String password = CloudProps.getDiscoveryPassword();

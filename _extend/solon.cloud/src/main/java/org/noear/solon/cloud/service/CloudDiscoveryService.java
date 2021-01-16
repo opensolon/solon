@@ -1,17 +1,17 @@
 package org.noear.solon.cloud.service;
 
-import org.noear.solon.cloud.model.Node;
 import org.noear.solon.cloud.model.Discovery;
+import org.noear.solon.cloud.model.Node;
 
 import java.util.function.Consumer;
 
 /**
- * 注册服务
+ * 注册与发现服务
  *
  * @author noear
  * @since 1.2
  */
-public interface CloudRegisterService {
+public interface CloudDiscoveryService {
     /**
      * 注册服务实例
      */

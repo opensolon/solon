@@ -4,7 +4,7 @@ import org.noear.solon.cloud.annotation.CloudConfig;
 import org.noear.solon.cloud.annotation.CloudEvent;
 import org.noear.solon.cloud.service.CloudConfigService;
 import org.noear.solon.cloud.service.CloudEventService;
-import org.noear.solon.cloud.service.CloudRegisterService;
+import org.noear.solon.cloud.service.CloudDiscoveryService;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -16,7 +16,7 @@ import java.util.Map;
  * @since 1.2
  */
 public class CloudManager {
-    private static CloudRegisterService registerService;
+    private static CloudDiscoveryService discoveryService;
     private static CloudConfigService configService;
     private static CloudEventService eventService;
 
@@ -51,12 +51,12 @@ public class CloudManager {
     /**
      * 登记注册服务
      */
-    public static void register(CloudRegisterService service) {
-        registerService = service;
+    public static void register(CloudDiscoveryService service) {
+        discoveryService = service;
     }
 
-    public static CloudRegisterService registerService() {
-        return registerService;
+    public static CloudDiscoveryService discoveryService() {
+        return discoveryService;
     }
 
     /**
