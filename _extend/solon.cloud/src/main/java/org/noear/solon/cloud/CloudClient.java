@@ -25,15 +25,12 @@ public class CloudClient {
     /**
      * 配置配置
      * */
-    public static void configLoad(String tagKey){
+    public static void configLoad(String group, String key) {
         if (CloudClient.config() == null) {
             return;
         }
 
-        if (Utils.isNotEmpty(tagKey)) {
-            String[] ss = tagKey.split("/");
-            String group = ss[0];
-            String key = (ss.length > 1 ? ss[1] : "*");
+        if (Utils.isNotEmpty(key)) {
             Config config = CloudClient.config().get(group, key);
 
             if (config != null && Utils.isNotEmpty(config.value)) {
