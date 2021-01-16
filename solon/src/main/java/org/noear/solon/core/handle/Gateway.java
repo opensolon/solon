@@ -109,30 +109,34 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     @Override
     public void handle(Context c) throws Throwable {
         //预处理（应对需要预处理的场景）
-        handlePre(c);
+        try {
+            handlePre(c);
 
-        Handler m = findDo(c);
-        Object obj = null;
+            Handler m = findDo(c);
+            Object obj = null;
 
-        //m 不可能为 null；有 _def 打底
-        if (m != null) {
-            Boolean is_action = m instanceof Action;
-            //预加载控制器，确保所有的处理者可以都可以获取控制器
-            if (is_action) {
-                if(allowReadyController()) {
-                    //提前准备控制器?（通过拦截器产生的参数，需要懒加载）
-                    obj = ((Action) m).bean().get();
-                    c.attrSet("controller", obj);
+            //m 不可能为 null；有 _def 打底
+            if (m != null) {
+                Boolean is_action = m instanceof Action;
+                //预加载控制器，确保所有的处理者可以都可以获取控制器
+                if (is_action) {
+                    if (allowReadyController()) {
+                        //提前准备控制器?（通过拦截器产生的参数，需要懒加载）
+                        obj = ((Action) m).bean().get();
+                        c.attrSet("controller", obj);
+                    }
+
+                    c.attrSet("action", m);
                 }
 
-                c.attrSet("action", m);
+                handle0(c, m, obj, is_action);
             }
-
-            handle0(c, m, obj, is_action);
+        } catch (Throwable ex) {
+            render(ex, c);
         }
     }
 
-    protected void handlePre(Context c){
+    protected void handlePre(Context c) throws Throwable{
         //应对需要预处理的场景，比如需要提前解码的处理
     }
 
