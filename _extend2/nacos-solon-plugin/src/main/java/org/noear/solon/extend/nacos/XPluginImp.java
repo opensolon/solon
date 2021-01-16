@@ -8,8 +8,6 @@ import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.extend.nacos.service.CloudConfigServiceImp;
 import org.noear.solon.extend.nacos.service.CloudDiscoveryServiceImp;
 
-import java.util.Properties;
-
 /**
  * @author noear 2021/1/9 created
  */
