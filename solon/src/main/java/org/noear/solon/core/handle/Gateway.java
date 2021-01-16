@@ -38,8 +38,8 @@ import java.util.function.Predicate;
  * @since 1.0
  * */
 public abstract class Gateway extends HandlerAide implements Handler, Render {
-    protected Handler mainDef;
-    protected final Map<String, Handler> main = new HashMap<>();
+    private Handler mainDef;
+    private final Map<String, Handler> main = new HashMap<>();
     private final String mapping;
     private Mapping mappingAnno;
 
