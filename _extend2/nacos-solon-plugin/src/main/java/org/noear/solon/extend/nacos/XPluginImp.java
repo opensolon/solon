@@ -1,8 +1,10 @@
 package org.noear.solon.extend.nacos;
 
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.extend.cloud.CloudManager;
+import org.noear.solon.extend.cloud.CloudProps;
 import org.noear.solon.extend.nacos.service.CloudConfigServiceImp;
 import org.noear.solon.extend.nacos.service.CloudRegisterServiceImp;
 
@@ -12,7 +14,12 @@ import org.noear.solon.extend.nacos.service.CloudRegisterServiceImp;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        CloudManager.register(new CloudConfigServiceImp());
-        CloudManager.register(new CloudRegisterServiceImp());
+        if (Utils.isNotEmpty(CloudProps.getConfigServer())) {
+            CloudManager.register(new CloudConfigServiceImp());
+        }
+
+        if (Utils.isNotEmpty(CloudProps.getDiscoveryServer())) {
+            CloudManager.register(new CloudRegisterServiceImp());
+        }
     }
 }
