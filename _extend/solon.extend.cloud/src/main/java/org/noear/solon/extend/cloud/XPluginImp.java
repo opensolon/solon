@@ -3,11 +3,14 @@ package org.noear.solon.extend.cloud;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.extend.cloud.annotation.CloudConfig;
 import org.noear.solon.extend.cloud.annotation.CloudDiscovery;
 import org.noear.solon.extend.cloud.annotation.CloudEvent;
 import org.noear.solon.extend.cloud.impl.CloudBeanInjector;
 import org.noear.solon.extend.cloud.model.Config;
+
+import java.util.Properties;
 
 /**
  * @author noear
@@ -19,6 +22,14 @@ public class XPluginImp implements Plugin {
         Aop.context().beanBuilderAdd(CloudConfig.class, (clz, bw, anno) -> {
             if (bw.raw() instanceof CloudConfigHandler) {
                 CloudManager.register(anno, bw.raw());
+            }else {
+                CloudManager.register(anno, new CloudConfigHandler() {
+                    @Override
+                    public void handler(Config cfg) {
+                        Properties val0 = cfg.toProps();
+                        ClassWrap.get(clz).fill(bw.raw(), val0::getProperty);
+                    }
+                });
             }
         });
 

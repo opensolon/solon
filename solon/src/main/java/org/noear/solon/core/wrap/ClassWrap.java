@@ -117,6 +117,15 @@ public class ClassWrap {
      * 为实例填充数据
      *
      * @param data 填充数据
+     * */
+    public void fill(Object bean, Function<String, String> data) {
+        fill(bean, data, null);
+    }
+
+    /**
+     * 为实例填充数据
+     *
+     * @param data 填充数据
      * @param ctx 上下文
      * */
     public void fill(Object bean, Function<String, String> data, Context ctx) {
