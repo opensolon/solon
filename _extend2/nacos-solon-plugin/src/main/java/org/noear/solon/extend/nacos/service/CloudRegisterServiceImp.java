@@ -18,6 +18,7 @@ import java.util.function.Consumer;
  * @author noear 2021/1/15 created
  */
 public class CloudRegisterServiceImp implements CloudRegisterService {
+    static final String REGISTER_GROUP  ="SOLON";
     NamingService real;
 
     public CloudRegisterServiceImp() {
@@ -44,7 +45,7 @@ public class CloudRegisterServiceImp implements CloudRegisterService {
     @Override
     public void register(Node instance) {
         try {
-            real.registerInstance(instance.service, instance.ip, instance.port);
+            real.registerInstance(instance.service, REGISTER_GROUP, instance.ip, instance.port);
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
         }
@@ -53,7 +54,7 @@ public class CloudRegisterServiceImp implements CloudRegisterService {
     @Override
     public void deregister(Node instance) {
         try {
-            real.deregisterInstance(instance.service, instance.ip, instance.port);
+            real.deregisterInstance(instance.service, REGISTER_GROUP, instance.ip, instance.port);
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
         }
