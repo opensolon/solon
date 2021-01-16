@@ -75,15 +75,19 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
     /**
      * 充许提前准备控制器
-     * */
+     */
     @Note("充许提前准备控制器")
-    protected boolean allowReadyController(){return true;}
+    protected boolean allowReadyController() {
+        return true;
+    }
 
     /**
      * 充许路径合并
-     * */
+     */
     @Note("充许路径合并")
-    protected boolean allowPathMerging(){return true;}
+    protected boolean allowPathMerging() {
+        return true;
+    }
 
 
     /**
@@ -136,7 +140,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         }
     }
 
-    protected void handlePre(Context c) throws Throwable{
+    protected void handlePre(Context c) throws Throwable {
         //应对需要预处理的场景，比如需要提前解码的处理
     }
 
@@ -278,7 +282,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
     /**
      * 添加接口
-     * */
+     */
     protected void addDo(String path, Handler handler) {
         //addPath 已处理 path1= null 的情况
         if (allowPathMerging()) {
@@ -290,7 +294,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
     /**
      * 获取接口
-     * */
+     */
     protected Handler getDo(String path) {
         if (path == null) {
             return null;
@@ -300,17 +304,14 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     }
 
     /**
-     * 获取接口路径
-     * */
-    protected String getPathDo(Context c){
-        return c.pathAsUpper();
-    }
-
-    /**
      * 查找接口
      */
     protected Handler findDo(Context c) throws Throwable {
-        Handler h = getDo(getPathDo(c));
+        return findDo0(c, c.pathAsUpper());
+    }
+
+    protected Handler findDo0(Context c, String path) throws Throwable {
+        Handler h = getDo(path);
 
         if (h == null) {
             mainDef.handle(c);
