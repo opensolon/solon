@@ -10,10 +10,10 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.2
  */
-@Target({ElementType.TYPE})
+@Target({ElementType.TYPE, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface CloudConfig {
-    @Note("group")
+    @Note("group/key")
     String value();
 }
