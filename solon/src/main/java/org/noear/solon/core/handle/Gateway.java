@@ -38,8 +38,8 @@ import java.util.function.Predicate;
  * @since 1.0
  * */
 public abstract class Gateway extends HandlerAide implements Handler, Render {
-    private Handler mainDef;
-    private final Map<String, Handler> main = new HashMap<>();
+    protected Handler mainDef;
+    protected final Map<String, Handler> main = new HashMap<>();
     private final String mapping;
     private Mapping mappingAnno;
 
@@ -287,7 +287,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     /**
      * 获取接口路径
      * */
-    protected String getPath(Context c){
+    protected String getPathDo(Context c){
         return c.pathAsUpper();
     }
 
@@ -295,7 +295,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      * 查找接口
      */
     protected Handler findDo(Context c) throws Throwable {
-        Handler h = getDo(getPath(c));
+        Handler h = getDo(getPathDo(c));
 
         if (h == null) {
             mainDef.handle(c);
