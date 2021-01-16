@@ -13,8 +13,8 @@ import org.noear.solon.extend.zookeeper.service.CloudDiscoveryServiceImp;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        if (Utils.isNotEmpty(CloudProps.getDiscoveryServer())) {
-            CloudManager.register(new CloudDiscoveryServiceImp());
-        }
+//        if (Utils.isNotEmpty(CloudProps.getDiscoveryServer())) {
+//            CloudManager.register(new CloudDiscoveryServiceImp());
+//        }
     }
 }
