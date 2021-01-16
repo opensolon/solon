@@ -25,11 +25,15 @@ public class CloudLoadBalanceFactory implements LoadBalance.Factory {
                 tmp = cached.get(service);
 
                 if (tmp == null) {
-                    tmp = new CloudLoadBalance(service);
+                    tmp = createDo(service);
                     cached.put(service, tmp);
                 }
             }
         }
         return tmp;
+    }
+
+    protected LoadBalance createDo(String service){
+        return new CloudLoadBalance(service);
     }
 }
