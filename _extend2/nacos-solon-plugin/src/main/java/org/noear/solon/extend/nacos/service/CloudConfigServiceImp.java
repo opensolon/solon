@@ -46,6 +46,7 @@ public class CloudConfigServiceImp implements CloudConfigService {
     public Config get(String group, String key) {
         //String getConfig(String dataId, String group, long timeoutMs)
         try {
+            group = groupReview(group);
             String value = real.getConfig(key, group, 3000);
             return new Config(key, value);
         } catch (NacosException ex) {
@@ -57,6 +58,7 @@ public class CloudConfigServiceImp implements CloudConfigService {
     public boolean set(String group, String key, String value) {
         //boolean publishConfig(String dataId, String group, String content) throws NacosException
         try {
+            group = groupReview(group);
             return real.publishConfig(key, group, value);
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
@@ -65,8 +67,9 @@ public class CloudConfigServiceImp implements CloudConfigService {
 
     @Override
     public boolean remove(String group, String key) {
+        //boolean removeConfig(String dataId, String group) throws NacosException
         try {
-            //boolean removeConfig(String dataId, String group) throws NacosException
+            group = groupReview(group);
             return real.removeConfig(key, group);
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
@@ -76,6 +79,7 @@ public class CloudConfigServiceImp implements CloudConfigService {
     @Override
     public void attention(String group, String key, CloudConfigHandler observer) {
         try {
+            group = groupReview(group);
             real.addListener(key, group, new Listener() {
                 @Override
                 public Executor getExecutor() {
@@ -89,6 +93,14 @@ public class CloudConfigServiceImp implements CloudConfigService {
             });
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
+        }
+    }
+
+    private String groupReview(String group){
+        if(Utils.isEmpty(group)){
+            return null;
+        }else{
+            return group;
         }
     }
 }

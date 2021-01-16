@@ -12,7 +12,8 @@ public class CloudProps {
     private String PASSWORD = "solon.cloud.@@.password";
 
     private String CONFIG_ENABLE = "solon.cloud.@@.config.enable";
-    private String CONFIG_LOAD = "solon.cloud.@@.config.load";
+    private String CONFIG_LOAD_GROUP = "solon.cloud.@@.config.loadGroup";
+    private String CONFIG_LOAD_KEY = "solon.cloud.@@.config.loadKey";
 
     private String DISCOVERY_ENABLE = "solon.cloud.@@.discovery.enable";
     private String DISCOVERY_HOSTNAME = "solon.cloud.@@.discovery.hostname";
@@ -26,7 +27,8 @@ public class CloudProps {
         PASSWORD = PASSWORD.replace("@@", frame);
 
         CONFIG_ENABLE = CONFIG_ENABLE.replace("@@", frame);
-        CONFIG_LOAD = CONFIG_LOAD.replace("@@", frame);
+        CONFIG_LOAD_GROUP = CONFIG_LOAD_GROUP.replace("@@", frame);
+        CONFIG_LOAD_KEY = CONFIG_LOAD_KEY.replace("@@", frame);
 
         DISCOVERY_ENABLE = DISCOVERY_ENABLE.replace("@@", frame);
         DISCOVERY_HOSTNAME = DISCOVERY_HOSTNAME.replace("@@", frame);
@@ -54,9 +56,11 @@ public class CloudProps {
     public boolean getConfigEnable() {
         return Solon.cfg().getBool(CONFIG_ENABLE, true);
     }
-
-    public String getConfigLoad() {
-        return Solon.cfg().get(CONFIG_LOAD);
+    public String getConfigLoadGroup() {
+        return Solon.cfg().get(CONFIG_LOAD_GROUP);
+    }
+    public String getConfigLoadKey() {
+        return Solon.cfg().get(CONFIG_LOAD_KEY);
     }
 
 

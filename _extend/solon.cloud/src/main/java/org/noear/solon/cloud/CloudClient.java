@@ -25,7 +25,7 @@ public class CloudClient {
     /**
      * 配置配置
      * */
-    public static void configLoad(String group, String key) {
+    public static void configLoad(String group, String key){
         if (CloudClient.config() == null) {
             return;
         }
@@ -48,7 +48,7 @@ public class CloudClient {
     }
 
     /**
-     * 发现服务推送
+     * 发现服务
      * */
     public static void discoveryPush(String hostname){
         if (CloudClient.discovery() == null) {
