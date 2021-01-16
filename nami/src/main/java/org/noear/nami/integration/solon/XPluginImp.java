@@ -4,7 +4,6 @@ import org.noear.nami.Nami;
 import org.noear.nami.NamiConfigurationDefault;
 import org.noear.nami.NamiException;
 import org.noear.nami.annotation.NamiClient;
-import org.noear.nami.integration.springboot.EnableNamiClients;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
@@ -18,19 +17,6 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(SolonApp app) {
-        boolean enableNamiClient = false;
-        enableNamiClient = (app.source().getAnnotation(EnableNamiClient.class) != null);
-
-        if (enableNamiClient == false) {
-            if (Utils.loadClass("org.springframework.context.annotation.Import") != null) {
-                enableNamiClient = (app.source().getAnnotation(EnableNamiClients.class) != null);
-            }
-        }
-
-        if (enableNamiClient == false) {
-            return;
-        }
-
         if (NamiConfigurationDefault.proxy == null) {
             NamiConfigurationDefault.proxy = new NamiConfigurationSolon();
         }
