@@ -116,7 +116,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         try {
             handlePre(c);
 
-            Handler m = findDo(c);
+            Handler m = find(c);
             Object obj = null;
 
             //m 不可能为 null；有 _def 打底
@@ -306,11 +306,11 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     /**
      * 查找接口
      */
-    protected Handler findDo(Context c) throws Throwable {
-        return findDo0(c, c.pathAsUpper());
+    protected Handler find(Context c) throws Throwable {
+        return findDo(c, c.pathAsUpper());
     }
 
-    protected Handler findDo0(Context c, String path) throws Throwable {
+    protected Handler findDo(Context c, String path) throws Throwable {
         Handler h = getDo(path);
 
         if (h == null) {
