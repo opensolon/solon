@@ -1,10 +1,8 @@
 package org.noear.solon.extend.nacos;
 
-import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
-import org.noear.solon.cloud.model.Config;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.extend.nacos.service.CloudConfigServiceImp;
@@ -28,20 +26,14 @@ public class XPluginImp implements Plugin {
             }
         }
 
-
         if (CloudClient.config() != null) {
-            //加载配置
-            if (Utils.isNotEmpty(NacosProps.instance.getConfigLoad())) {
-                String[] ss = NacosProps.instance.getConfigLoad().split("/");
-                String group = ss[0];
-                String key = (ss.length > 1 ? ss[1] : "*");
-                Config config = CloudClient.config().get(group, key);
+            //配置加载
+            CloudClient.configLoad(NacosProps.instance.getConfigLoad());
+        }
 
-                if (config != null && Utils.isNotEmpty(config.value)) {
-                    Properties properties = Utils.buildProperties(config.value);
-                    Solon.cfg().loadAdd(properties);
-                }
-            }
+        if (CloudClient.discovery() != null) {
+            //发现提交
+            CloudClient.discoveryPush(NacosProps.instance.getDiscoveryHostname());
         }
     }
 }

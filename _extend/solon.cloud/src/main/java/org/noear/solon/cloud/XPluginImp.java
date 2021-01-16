@@ -62,9 +62,9 @@ public class XPluginImp implements Plugin {
                 });
             }
 
-            if(CloudClient.event() != null) {
+            if (CloudClient.event() != null) {
                 CloudManager.eventHandlerMap.forEach((anno, handler) -> {
-                    CloudClient.event().attention(anno.value(),handler);
+                    CloudClient.event().attention(anno.value(), handler);
                 });
             }
         });
@@ -72,17 +72,6 @@ public class XPluginImp implements Plugin {
         if (CloudClient.discovery() != null) {
             //设置负载工厂
             Bridge.upstreamFactorySet(CloudLoadBalanceFactory.instance);
-
-            //注册服务
-            if (Utils.isNotEmpty(Solon.cfg().appName())) {
-                Node node = new Node();
-                node.service = Solon.cfg().appName();
-                node.ip = LocalUtils.getLocalAddress();
-                node.port = Solon.global().port();
-                node.protocol = "http";
-
-                CloudClient.discovery().register(node);
-            }
         }
     }
 
