@@ -113,29 +113,8 @@ public final class SolonProps extends Props {
      * */
     public SolonProps loadAdd(URL url) {
         if (url != null) {
-            Properties prop = Utils.loadProperties(url);
-
-            if (prop != null) {
-                for (Map.Entry<Object, Object> kv : prop.entrySet()) {
-                    Object v1 = kv.getValue();
-                    if (v1 instanceof String) {
-                        // db1.url=xxx
-                        // db1.jdbcUrl=${db1.url}
-                        String tmpV = (String) v1;
-                        if (tmpV.startsWith("${") && tmpV.endsWith("}")) {
-                            String tmpK = tmpV.substring(2, tmpV.length() - 1);
-                            tmpV = prop.getProperty(tmpK);
-                            if (tmpV == null) {
-                                tmpV = getProperty(tmpK);
-                            }
-                            v1 = tmpV;
-                        }
-                    }
-
-                    put(kv.getKey(), v1);
-                    System.getProperties().put(kv.getKey(), v1);
-                }
-            }
+            Properties props = Utils.loadProperties(url);
+            loadAdd(props);
         }
 
         return this;
@@ -143,6 +122,32 @@ public final class SolonProps extends Props {
 
     public SolonProps loadAdd(String url) {
         return loadAdd(Utils.getResource(url));
+    }
+
+    public SolonProps loadAdd(Properties props) {
+        if (props != null) {
+            for (Map.Entry<Object, Object> kv : props.entrySet()) {
+                Object v1 = kv.getValue();
+                if (v1 instanceof String) {
+                    // db1.url=xxx
+                    // db1.jdbcUrl=${db1.url}
+                    String tmpV = (String) v1;
+                    if (tmpV.startsWith("${") && tmpV.endsWith("}")) {
+                        String tmpK = tmpV.substring(2, tmpV.length() - 1);
+                        tmpV = props.getProperty(tmpK);
+                        if (tmpV == null) {
+                            tmpV = getProperty(tmpK);
+                        }
+                        v1 = tmpV;
+                    }
+                }
+
+                put(kv.getKey(), v1);
+                System.getProperties().put(kv.getKey(), v1);
+            }
+        }
+
+        return this;
     }
 
 

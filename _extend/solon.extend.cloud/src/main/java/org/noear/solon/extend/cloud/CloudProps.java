@@ -10,6 +10,7 @@ public class CloudProps {
     public static final String CONFIG_TOKEN     = "solon.cloud.config.token";
     public static final String CONFIG_USERNAME  = "solon.cloud.config.username";
     public static final String CONFIG_PASSWORD  = "solon.cloud.config.password";
+    public static final String CONFIG_LOAD      = "solon.cloud.config.load";
 
 
     public static final String DISCOVERY_SERVER     = "solon.cloud.discovery.server";
@@ -39,6 +40,9 @@ public class CloudProps {
         return Solon.cfg().get(CONFIG_PASSWORD);
     }
 
+    public static String getConfigLoad(){
+        return Solon.cfg().get(CONFIG_LOAD);
+    }
 
 
     public static String getDiscoveryServer() {
