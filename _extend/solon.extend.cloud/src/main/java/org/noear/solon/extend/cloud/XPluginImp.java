@@ -7,6 +7,7 @@ import org.noear.solon.extend.cloud.annotation.CloudConfig;
 import org.noear.solon.extend.cloud.annotation.CloudDiscovery;
 import org.noear.solon.extend.cloud.annotation.CloudEvent;
 import org.noear.solon.extend.cloud.impl.CloudBeanInjector;
+import org.noear.solon.extend.cloud.model.Config;
 
 /**
  * @author noear
@@ -41,6 +42,11 @@ public class XPluginImp implements Plugin {
                     String[] ss = anno.value().split("/");
                     String group = ss[0];
                     String key = (ss.length > 1 ? ss[1] : "*");
+
+                    Config config = CloudManager.configService().get(group, key);
+                    if (config != null) {
+                        handler.handler(config);
+                    }
 
                     CloudManager.configService().attention(group, key, cfg -> {
                         handler.handler(cfg);
