@@ -1,7 +1,6 @@
 package org.noear.solon.cloud.impl;
 
 import org.noear.solon.cloud.CloudClient;
-import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.core.BeanInjector;
 import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.util.ConvertUtil;
@@ -34,7 +33,7 @@ public class CloudBeanInjector implements BeanInjector<CloudConfig> {
             return null;
         }
 
-        Config cfg = CloudClient.config().get(anno.group(), anno.value());
+        Config cfg = CloudClient.config().get(anno.group(), anno.key());
 
         if (cfg == null || cfg.value == null) {
             return null;

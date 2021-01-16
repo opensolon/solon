@@ -14,8 +14,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface CloudConfig {
-    @Note("key")
-    String value();
+    String key();
 
     /**
      * 分组

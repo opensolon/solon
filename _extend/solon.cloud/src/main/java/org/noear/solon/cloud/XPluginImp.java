@@ -49,18 +49,18 @@ public class XPluginImp implements Plugin {
         Aop.context().beanOnloaded(() -> {
             if (CloudClient.config() != null) {
                 CloudManager.configHandlerMap.forEach((anno, handler) -> {
-                    Config config = CloudClient.config().get(anno.group(), anno.value());
+                    Config config = CloudClient.config().get(anno.group(), anno.key());
                     if (config != null) {
                         handler.handler(config);
                     }
 
-                    CloudClient.config().attention(anno.group(), anno.value(), handler);
+                    CloudClient.config().attention(anno.group(), anno.key(), handler);
                 });
             }
 
             if (CloudClient.event() != null) {
                 CloudManager.eventHandlerMap.forEach((anno, handler) -> {
-                    CloudClient.event().attention(anno.value(), handler);
+                    CloudClient.event().attention(anno.topic(), handler);
                 });
             }
         });

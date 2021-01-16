@@ -14,8 +14,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface CloudEvent {
-    @Note("topic")
-    String value();
+    String topic();
 
     /**
      * 队列
