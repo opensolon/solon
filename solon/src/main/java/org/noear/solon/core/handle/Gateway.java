@@ -11,7 +11,6 @@ import org.noear.solon.ext.DataThrowable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 
@@ -39,22 +38,22 @@ import java.util.function.Predicate;
  * @since 1.0
  * */
 public abstract class Gateway extends HandlerAide implements Handler, Render {
-    private Handler _def;
-    private final Map<String, Handler> _main = new HashMap<>();
-    private final String _path;
-    private Mapping _mapping;
+    private Handler mainDef;
+    private final Map<String, Handler> main = new HashMap<>();
+    private final String mapping;
+    private Mapping mappingAnno;
 
     public Gateway() {
         super();
-        _mapping = this.getClass().getAnnotation(Mapping.class);
-        if (_mapping == null) {
+        mappingAnno = this.getClass().getAnnotation(Mapping.class);
+        if (mappingAnno == null) {
             throw new RuntimeException("No XMapping!");
         }
 
-        _path = _mapping.value();
+        mapping = mappingAnno.value();
 
         //默认为404错误输出
-        _def = (c) -> c.statusSet(404);
+        mainDef = (c) -> c.statusSet(404);
 
         register();
     }
@@ -242,14 +241,14 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             return;
         }
 
-        HandlerLoader uw = new HandlerLoader(beanWp, _path, remoting, this, allowActionMapping());
+        HandlerLoader uw = new HandlerLoader(beanWp, mapping, remoting, this, allowActionMapping());
 
         uw.load((path, m, h) -> {
             if (h instanceof Action) {
                 Action h2 = (Action) h;
 
                 if (Utils.isEmpty(h2.name())) {
-                    _def = h2;
+                    mainDef = h2;
                 } else {
                     add(h2.name(), h2);
                 }
@@ -266,25 +265,35 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     }
 
 
+    /**
+     * 添加接口
+     * */
     protected void addDo(String path, Handler handler) {
         //addPath 已处理 path1= null 的情况
         if(allowPathMerging()) {
-            _main.put(PathUtil.mergePath(_path, path).toUpperCase(), handler);
+            main.put(PathUtil.mergePath(mapping, path).toUpperCase(), handler);
         }else{
-            _main.put(PathUtil.mergePath(null, path).toUpperCase(), handler);
+            main.put(PathUtil.mergePath(null, path).toUpperCase(), handler);
         }
+    }
+
+    /**
+     * 获取接口
+     * */
+    protected Handler getDo(String path){
+        return main.get(path);
     }
 
     /**
      * 查找接口
      */
     protected Handler findDo(Context c) throws Throwable {
-        Handler h = _main.get(c.pathAsUpper());
+        Handler h = getDo(c.pathAsUpper());
 
         if (h == null) {
-            _def.handle(c);
+            mainDef.handle(c);
             c.setHandled(true);
-            return _def;
+            return mainDef;
         } else {
             if (h instanceof Action) {
                 c.attrSet("handler_name", ((Action) h).name());
