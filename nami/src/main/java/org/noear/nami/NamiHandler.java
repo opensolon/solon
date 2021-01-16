@@ -182,6 +182,10 @@ public class NamiHandler implements InvocationHandler {
                 throw new NamiException("NamiClient: Not found upstream!");
             }
 
+            if (url.indexOf("://") < 0) {
+                url = "http://";
+            }
+
             if (path0 != null) {
                 int idx = url.indexOf("/", 9);//https://a
                 if (idx > 0) {
