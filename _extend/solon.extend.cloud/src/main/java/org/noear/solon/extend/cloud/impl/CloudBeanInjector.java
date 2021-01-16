@@ -21,8 +21,16 @@ public class CloudBeanInjector implements BeanInjector<CloudConfig> {
 
     @Override
     public void doInject(VarHolder varH, CloudConfig anno) {
+        Object val2 = build(varH.getType(), anno);
+
+        if (val2 != null) {
+            varH.setValue(val2);
+        }
+    }
+
+    public Object build(Class<?> type, CloudConfig anno) {
         if (CloudManager.configService() == null) {
-            return;
+            return null;
         }
 
         String[] ss = anno.value().split("/");
@@ -30,23 +38,15 @@ public class CloudBeanInjector implements BeanInjector<CloudConfig> {
         String key = (ss.length > 1 ? ss[1] : "*");
 
         if ("*".equals(key)) {
-            return;
+            return null;
         }
 
-        Config config = CloudManager.configService().get(group, key);
+        Config cfg = CloudManager.configService().get(group, key);
 
-        if (config == null || config.value == null) {
-            return;
+        if (cfg == null || cfg.value == null) {
+            return null;
         }
 
-        Object val2 = build(varH.getType(), config);
-
-        if (val2 != null) {
-            varH.setValue(val2);
-        }
-    }
-
-    public Object build(Class<?> type, Config cfg) {
         if (Properties.class.isAssignableFrom(type)) {
             return cfg.toProps();
         }
