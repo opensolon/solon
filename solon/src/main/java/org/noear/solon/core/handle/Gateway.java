@@ -285,10 +285,17 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     }
 
     /**
+     * 获取接口路径
+     * */
+    protected String getPath(Context c){
+        return c.pathAsUpper();
+    }
+
+    /**
      * 查找接口
      */
     protected Handler findDo(Context c) throws Throwable {
-        Handler h = getDo(c.pathAsUpper());
+        Handler h = getDo(getPath(c));
 
         if (h == null) {
             mainDef.handle(c);
