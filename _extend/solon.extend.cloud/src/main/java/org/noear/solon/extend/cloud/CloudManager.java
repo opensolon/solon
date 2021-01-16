@@ -1,7 +1,6 @@
 package org.noear.solon.extend.cloud;
 
 import org.noear.solon.extend.cloud.annotation.CloudConfig;
-import org.noear.solon.extend.cloud.annotation.CloudDiscovery;
 import org.noear.solon.extend.cloud.annotation.CloudEvent;
 import org.noear.solon.extend.cloud.service.CloudConfigService;
 import org.noear.solon.extend.cloud.service.CloudEventService;
@@ -22,7 +21,6 @@ public class CloudManager {
     private static CloudEventService eventService;
 
     protected final static Map<CloudConfig, CloudConfigHandler> configHandlerMap = new LinkedHashMap<>();
-    protected final static Map<CloudDiscovery, CloudDiscoveryHandler> discoveryHandlerMap = new LinkedHashMap<>();
     protected final static Map<CloudEvent, CloudEventHandler> eventHandlerMap = new LinkedHashMap<>();
 
     /**
@@ -30,13 +28,6 @@ public class CloudManager {
      */
     public static void register(CloudConfig anno, CloudConfigHandler handler) {
         configHandlerMap.put(anno, handler);
-    }
-
-    /**
-     * 登记发现订阅
-     */
-    public static void register(CloudDiscovery anno, CloudDiscoveryHandler handler) {
-        discoveryHandlerMap.put(anno, handler);
     }
 
     /**

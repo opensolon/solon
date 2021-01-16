@@ -8,7 +8,6 @@ import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.extend.cloud.annotation.CloudConfig;
-import org.noear.solon.extend.cloud.annotation.CloudDiscovery;
 import org.noear.solon.extend.cloud.annotation.CloudEvent;
 import org.noear.solon.extend.cloud.impl.CloudBeanInjector;
 import org.noear.solon.extend.cloud.impl.CloudLoadBalanceFactory;
@@ -39,12 +38,6 @@ public class XPluginImp implements Plugin {
             }
         });
 
-        Aop.context().beanBuilderAdd(CloudDiscovery.class, (clz, bw, anno) -> {
-            if (bw.raw() instanceof CloudDiscoveryHandler) {
-                CloudManager.register(anno, bw.raw());
-            }
-        });
-
         Aop.context().beanBuilderAdd(CloudEvent.class, (clz, bw, anno) -> {
             if (bw.raw() instanceof CloudEventHandler) {
                 CloudManager.register(anno, bw.raw());
@@ -67,14 +60,6 @@ public class XPluginImp implements Plugin {
 
                     CloudManager.configService().attention(group, key, cfg -> {
                         handler.handler(cfg);
-                    });
-                });
-            }
-
-            if (CloudManager.registerService() != null) {
-                CloudManager.discoveryHandlerMap.forEach((anno, handler) -> {
-                    CloudManager.registerService().attention(anno.value(), (dis) -> {
-                        handler.handler(dis);
                     });
                 });
             }
