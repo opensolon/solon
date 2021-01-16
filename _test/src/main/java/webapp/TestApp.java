@@ -1,6 +1,5 @@
 package webapp;
 
-import org.noear.nami.integration.solon.EnableNamiClient;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Import;
@@ -12,7 +11,6 @@ import webapp.demo6_aop.TestImport;
 //@EnableSwagger2
 //@EnableCron4j
 //@EnableQuartz
-@EnableNamiClient
 public class TestApp   {
 
     public static void main(String[] args) throws Exception {
