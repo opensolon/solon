@@ -16,4 +16,9 @@ import java.lang.annotation.*;
 public @interface CloudEvent {
     @Note("topic")
     String value();
+
+    /**
+     * 队列
+     * */
+    String queue() default "";
 }

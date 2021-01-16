@@ -11,6 +11,12 @@ public class Event {
      * 事件id
      * */
     public String id;
+
+    /**
+     * 队列
+     * */
+    public String queue;
+
     /**
      * 事件主题
      * */
