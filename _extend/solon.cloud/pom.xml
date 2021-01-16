@@ -11,22 +11,29 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>nacos-solon-plugin</artifactId>
+    <!-- 添加事务支持和缓存支持 -->
+    <artifactId>solon.cloud</artifactId>
     <packaging>jar</packaging>
-
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.cloud</artifactId>
+            <artifactId>solon</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.alibaba.nacos</groupId>
-            <artifactId>nacos-client</artifactId>
-            <version>${nacos.ver}</version>
+            <groupId>org.noear</groupId>
+            <artifactId>springboot-solon-plugin</artifactId>
+            <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <version>${springboot.ver}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
+
 
 </project>

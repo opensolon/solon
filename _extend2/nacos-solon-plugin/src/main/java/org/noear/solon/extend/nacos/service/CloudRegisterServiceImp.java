@@ -5,10 +5,10 @@ import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import org.noear.solon.Utils;
-import org.noear.solon.extend.cloud.CloudProps;
-import org.noear.solon.extend.cloud.model.Discovery;
-import org.noear.solon.extend.cloud.model.Node;
-import org.noear.solon.extend.cloud.service.CloudRegisterService;
+import org.noear.solon.cloud.CloudProps;
+import org.noear.solon.cloud.model.Discovery;
+import org.noear.solon.cloud.model.Node;
+import org.noear.solon.cloud.service.CloudRegisterService;
 
 import java.util.List;
 import java.util.Properties;

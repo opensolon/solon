@@ -242,11 +242,6 @@
                 <artifactId>solon.extend.schedule</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.extend.cloud</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -346,6 +341,13 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.view.beetl</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.cloud</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
@@ -898,7 +900,6 @@
         <module>../_extend/solon.extend.schedule</module>
         <module>../_extend/solon.extend.validation</module>
         <module>../_extend/solon.extend.data</module>
-        <module>../_extend/solon.extend.cloud</module>
 
 
         <module>../_extend/solon.extend.jetty.jsp</module>
@@ -910,6 +911,7 @@
         <!--        <module>../_extend/solon.boot.tomcat</module>-->
         <!--        <module>../_extend/solon.view.rocker</module>-->
 
+        <module>../_extend/solon.cloud</module>
 
 
         <!-- solon-web 替代它们 -->

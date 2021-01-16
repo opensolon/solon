@@ -5,9 +5,9 @@ import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.exception.NacosException;
 import org.noear.solon.Utils;
-import org.noear.solon.extend.cloud.CloudProps;
-import org.noear.solon.extend.cloud.model.Config;
-import org.noear.solon.extend.cloud.service.CloudConfigService;
+import org.noear.solon.cloud.CloudProps;
+import org.noear.solon.cloud.model.Config;
+import org.noear.solon.cloud.service.CloudConfigService;
 
 import java.util.Properties;
 import java.util.concurrent.Executor;
