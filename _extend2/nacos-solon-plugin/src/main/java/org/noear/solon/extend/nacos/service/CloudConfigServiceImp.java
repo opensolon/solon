@@ -6,13 +6,12 @@ import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.exception.NacosException;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
-import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigService;
+import org.noear.solon.extend.nacos.NacosProps;
 
 import java.util.Properties;
 import java.util.concurrent.Executor;
-import java.util.function.Consumer;
 
 /**
  * 配置服务适配
@@ -23,9 +22,9 @@ public class CloudConfigServiceImp implements CloudConfigService {
     ConfigService real;
 
     public CloudConfigServiceImp() {
-        String server = CloudProps.getConfigServer();
-        String username = CloudProps.getConfigUsername();
-        String password = CloudProps.getConfigPassword();
+        String server = NacosProps.instance.getServer();
+        String username = NacosProps.instance.getUsername();
+        String password = NacosProps.instance.getPassword();
 
         Properties properties = new Properties();
         properties.put("serverAddr", server);

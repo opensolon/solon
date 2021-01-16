@@ -6,10 +6,10 @@ import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
-import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Node;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
+import org.noear.solon.extend.nacos.NacosProps;
 
 import java.util.List;
 import java.util.Properties;
@@ -22,9 +22,9 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
     NamingService real;
 
     public CloudDiscoveryServiceImp() {
-        String server = CloudProps.getDiscoveryServer();
-        String username = CloudProps.getDiscoveryUsername();
-        String password = CloudProps.getDiscoveryPassword();
+        String server = NacosProps.instance.getServer();
+        String username = NacosProps.instance.getUsername();
+        String password = NacosProps.instance.getPassword();
 
         Properties properties = new Properties();
         properties.put("serverAddr", server);

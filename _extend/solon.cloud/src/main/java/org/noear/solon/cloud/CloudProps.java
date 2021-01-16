@@ -6,70 +6,73 @@ import org.noear.solon.Solon;
  * @author noear 2021/1/15 created
  */
 public class CloudProps {
-    public static final String CONFIG_SERVER    = "solon.cloud.config.server";
-    public static final String CONFIG_TOKEN     = "solon.cloud.config.token";
-    public static final String CONFIG_USERNAME  = "solon.cloud.config.username";
-    public static final String CONFIG_PASSWORD  = "solon.cloud.config.password";
-    public static final String CONFIG_LOAD      = "solon.cloud.config.load";
+    private String SERVER = "solon.cloud.@@.server";
+    private String TOKEN = "solon.cloud.@@.token";
+    private String USERNAME = "solon.cloud.@@.username";
+    private String PASSWORD = "solon.cloud.@@.password";
 
+    private String CONFIG_ENABLE = "solon.cloud.@@.config.enable";
+    private String CONFIG_LOAD = "solon.cloud.@@.config.load";
 
-    public static final String DISCOVERY_SERVER     = "solon.cloud.discovery.server";
-    public static final String DISCOVERY_TOKEN      = "solon.cloud.discovery.token";
-    public static final String DISCOVERY_USERNAME   = "solon.cloud.discovery.username";
-    public static final String DISCOVERY_PASSWORD   = "solon.cloud.discovery.password";
+    private String DISCOVERY_ENABLE = "solon.cloud.@@.discovery.enable";
+    private String DISCOVERY_HOSTNAME = "solon.cloud.@@.discovery.hostname";
+    private String DISCOVERY_HEALTH_CHECK_PATH = "solon.cloud.@@.discovery.healthCheckPath";
+    private String DISCOVERY_HEALTH_CHECK_INTERVAL = "solon.cloud.@@.discovery.healthCheckInterval";
 
-    public static final String DISCOVERY_HOSTNAME   = "solon.cloud.discovery.hostname";
+    public CloudProps(String frame) {
+        SERVER = SERVER.replace("@@", frame);
+        TOKEN = TOKEN.replace("@@", frame);
+        USERNAME = USERNAME.replace("@@", frame);
+        PASSWORD = PASSWORD.replace("@@", frame);
 
-    public static final String DISCOVERY_HEALTH_CHECK_PATH      = "solon.cloud.discovery.healthCheckPath";
-    public static final String DISCOVERY_HEALTH_CHECK_INTERVAL  = "solon.cloud.discovery.healthCheckInterval";
+        CONFIG_ENABLE = CONFIG_ENABLE.replace("@@", frame);
+        CONFIG_LOAD = CONFIG_LOAD.replace("@@", frame);
 
-
-    public static String getConfigServer(){
-        return Solon.cfg().get(CONFIG_SERVER);
+        DISCOVERY_ENABLE = DISCOVERY_ENABLE.replace("@@", frame);
+        DISCOVERY_HOSTNAME = DISCOVERY_HOSTNAME.replace("@@", frame);
+        DISCOVERY_HEALTH_CHECK_PATH = DISCOVERY_HEALTH_CHECK_PATH.replace("@@", frame);
+        DISCOVERY_HEALTH_CHECK_INTERVAL = DISCOVERY_HEALTH_CHECK_INTERVAL.replace("@@", frame);
     }
 
-    public static String getConfigToken(){
-        return Solon.cfg().get(CONFIG_TOKEN);
+
+    public String getServer() {
+        return Solon.cfg().get(SERVER);
     }
 
-    public static String getConfigUsername(){
-        return Solon.cfg().get(CONFIG_USERNAME);
+    public String getToken() {
+        return Solon.cfg().get(TOKEN);
     }
 
-    public static String getConfigPassword(){
-        return Solon.cfg().get(CONFIG_PASSWORD);
+    public String getUsername() {
+        return Solon.cfg().get(USERNAME);
     }
 
-    public static String getConfigLoad(){
+    public String getPassword() {
+        return Solon.cfg().get(PASSWORD);
+    }
+
+    public boolean getConfigEnable() {
+        return Solon.cfg().getBool(CONFIG_ENABLE, true);
+    }
+
+    public String getConfigLoad() {
         return Solon.cfg().get(CONFIG_LOAD);
     }
 
 
-    public static String getDiscoveryServer() {
-        return Solon.cfg().get(DISCOVERY_SERVER);
+    public boolean getDiscoveryEnable() {
+        return Solon.cfg().getBool(DISCOVERY_ENABLE, true);
     }
 
-    public static String getDiscoveryToken() {
-        return Solon.cfg().get(DISCOVERY_TOKEN);
-    }
-
-    public static String getDiscoveryUsername() {
-        return Solon.cfg().get(DISCOVERY_USERNAME);
-    }
-
-    public static String getDiscoveryPassword() {
-        return Solon.cfg().get(DISCOVERY_PASSWORD);
-    }
-
-    public static String getDiscoveryHostname() {
+    public String getDiscoveryHostname() {
         return Solon.cfg().get(DISCOVERY_HOSTNAME);
     }
 
-    public static String getDiscoveryHealthCheckPath() {
+    public String getDiscoveryHealthCheckPath() {
         return Solon.cfg().get(DISCOVERY_HEALTH_CHECK_PATH);
     }
 
-    public static String getDiscoveryHealthCheckInterval() {
+    public String getDiscoveryHealthCheckInterval() {
         return Solon.cfg().get(DISCOVERY_HEALTH_CHECK_INTERVAL);
     }
 }

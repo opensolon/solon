@@ -69,22 +69,6 @@ public class XPluginImp implements Plugin {
             }
         });
 
-
-        if (CloudClient.config() != null) {
-            //加载配置
-            if (Utils.isNotEmpty(CloudProps.getConfigLoad())) {
-                String[] ss = CloudProps.getConfigLoad().split("/");
-                String group = ss[0];
-                String key = (ss.length > 1 ? ss[1] : "*");
-                Config config = CloudClient.config().get(group, key);
-
-                if (config != null && Utils.isNotEmpty(config.value)) {
-                    Properties properties = Utils.buildProperties(config.value);
-                    Solon.cfg().loadAdd(properties);
-                }
-            }
-        }
-
         if (CloudClient.discovery() != null) {
             //设置负载工厂
             Bridge.upstreamFactorySet(CloudLoadBalanceFactory.instance);
