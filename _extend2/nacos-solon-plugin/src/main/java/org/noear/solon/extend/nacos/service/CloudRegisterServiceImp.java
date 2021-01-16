@@ -3,13 +3,20 @@ package org.noear.solon.extend.nacos.service;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
+import com.alibaba.nacos.api.naming.listener.Event;
+import com.alibaba.nacos.api.naming.listener.EventListener;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+import org.noear.solon.extend.cloud.CloudProps;
 import org.noear.solon.extend.cloud.model.Discovery;
 import org.noear.solon.extend.cloud.model.Node;
 import org.noear.solon.extend.cloud.service.CloudRegisterService;
 
 import java.util.List;
+import java.util.Properties;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * @author noear 2021/1/15 created
@@ -18,10 +25,21 @@ public class CloudRegisterServiceImp implements CloudRegisterService {
     NamingService real;
 
     public CloudRegisterServiceImp() {
-        String host = Solon.cfg().get("nacos.host");
+        String server = CloudProps.getDiscoveryServer();
+        String username = CloudProps.getDiscoveryUsername();
+        String password = CloudProps.getDiscoveryPassword();
+
+        Properties properties = new Properties();
+        properties.put("serverAddr", server);
+        if (Utils.isNotEmpty(username)) {
+            properties.put("username", username);
+        }
+        if (Utils.isNotEmpty(password)) {
+            properties.put("password", password);
+        }
 
         try {
-            real = NamingFactory.createNamingService(host);
+            real = NamingFactory.createNamingService(properties);
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
         }
@@ -46,11 +64,12 @@ public class CloudRegisterServiceImp implements CloudRegisterService {
     }
 
     @Override
-    public Discovery find(String service) {
+    public Discovery find(String group, String service) {
         Discovery discovery = new Discovery(service);
 
         try {
-            List<Instance> list = real.selectInstances(service, Solon.cfg().appGroup(), true);
+            List<Instance> list = real.selectInstances(service, group, true);
+
             for (Instance i1 : list) {
                 Node n1 = new Node();
                 n1.service = service;
@@ -62,6 +81,18 @@ public class CloudRegisterServiceImp implements CloudRegisterService {
             }
 
             return discovery;
+        } catch (NacosException ex) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public void attention(String group, String service, BiConsumer<String, Discovery> observer) {
+        try {
+            real.subscribe(service, group, (event) -> {
+                Discovery discovery = find(group, service);
+                observer.accept(group, discovery);
+            });
         } catch (NacosException ex) {
             throw new RuntimeException();
         }

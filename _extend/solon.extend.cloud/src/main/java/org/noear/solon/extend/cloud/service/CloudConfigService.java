@@ -1,7 +1,8 @@
 package org.noear.solon.extend.cloud.service;
 
 import org.noear.solon.extend.cloud.model.Config;
-import org.noear.solon.extend.cloud.model.ConfigSet;
+
+import java.util.function.BiConsumer;
 
 /**
  * @author noear
@@ -14,11 +15,6 @@ public interface CloudConfigService {
     Config get(String group, String key);
 
     /**
-     * 获取配置
-     * */
-    ConfigSet get(String group);
-
-    /**
      * 设置配置
      */
     boolean set(String group, String key, String value);
@@ -27,4 +23,9 @@ public interface CloudConfigService {
      * 移除配置
      */
     boolean remove(String group, String key);
+
+    /**
+     * 关注配置
+     * */
+    void attention(String group, String key, BiConsumer<String, Config> observer);
 }

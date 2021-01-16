@@ -1,13 +1,17 @@
 package org.noear.solon.extend.nacos.service;
 
-
 import com.alibaba.nacos.api.config.ConfigFactory;
 import com.alibaba.nacos.api.config.ConfigService;
+import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.exception.NacosException;
-import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+import org.noear.solon.extend.cloud.CloudProps;
 import org.noear.solon.extend.cloud.model.Config;
-import org.noear.solon.extend.cloud.model.ConfigSet;
 import org.noear.solon.extend.cloud.service.CloudConfigService;
+
+import java.util.Properties;
+import java.util.concurrent.Executor;
+import java.util.function.BiConsumer;
 
 /**
  * 配置服务适配
@@ -18,10 +22,21 @@ public class CloudConfigServiceImp implements CloudConfigService {
     ConfigService real;
 
     public CloudConfigServiceImp() {
-        String host = Solon.cfg().get("nacos.host");
+        String server = CloudProps.getConfigServer();
+        String username = CloudProps.getConfigUsername();
+        String password = CloudProps.getConfigPassword();
+
+        Properties properties = new Properties();
+        properties.put("serverAddr", server);
+        if (Utils.isNotEmpty(username)) {
+            properties.put("username", username);
+        }
+        if (Utils.isNotEmpty(password)) {
+            properties.put("password", password);
+        }
 
         try {
-            real = ConfigFactory.createConfigService(host);
+            real = ConfigFactory.createConfigService(properties);
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
         }
@@ -39,11 +54,6 @@ public class CloudConfigServiceImp implements CloudConfigService {
     }
 
     @Override
-    public ConfigSet get(String group) {
-        return null;
-    }
-
-    @Override
     public boolean set(String group, String key, String value) {
         //boolean publishConfig(String dataId, String group, String content) throws NacosException
         try {
@@ -58,6 +68,25 @@ public class CloudConfigServiceImp implements CloudConfigService {
         try {
             //boolean removeConfig(String dataId, String group) throws NacosException
             return real.removeConfig(key, group);
+        } catch (NacosException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public void attention(String group, String key, BiConsumer<String, Config> observer) {
+        try {
+            real.addListener(key, group, new Listener() {
+                @Override
+                public Executor getExecutor() {
+                    return null;
+                }
+
+                @Override
+                public void receiveConfigInfo(String value) {
+                    observer.accept(group, new Config(key, value));
+                }
+            });
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
         }

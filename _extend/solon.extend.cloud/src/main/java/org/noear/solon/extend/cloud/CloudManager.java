@@ -8,9 +8,7 @@ import org.noear.solon.extend.cloud.service.CloudEventService;
 import org.noear.solon.extend.cloud.service.CloudRegisterService;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 接口管理器
@@ -19,9 +17,9 @@ import java.util.Set;
  * @since 1.2
  */
 public class CloudManager {
-    private static Set<CloudRegisterService> registerServiceSet = new LinkedHashSet<>();
-    private static Set<CloudConfigService> configServiceSet = new LinkedHashSet<>();
-    private static Set<CloudEventService> eventServiceSet = new LinkedHashSet<>();
+    private static CloudRegisterService registerService;
+    private static CloudConfigService configService;
+    private static CloudEventService eventService;
 
     private static Map<String, CloudConfigHandler> configHandlerMap = new LinkedHashMap<>();
     private static Map<String, CloudDiscoveryHandler> discoveryHandlerMap = new LinkedHashMap<>();
@@ -52,20 +50,32 @@ public class CloudManager {
      * 登记配置服务
      */
     public static void register(CloudConfigService service) {
-        configServiceSet.add(service);
+        configService = service;
+    }
+
+    public static CloudConfigService configService() {
+        return configService;
     }
 
     /**
      * 登记注册服务
      */
     public static void register(CloudRegisterService service) {
-        registerServiceSet.add(service);
+        registerService = service;
+    }
+
+    public static CloudRegisterService registerService() {
+        return registerService;
     }
 
     /**
      * 登记事件服务
      */
     public static void register(CloudEventService service) {
-        eventServiceSet.add(service);
+        eventService = service;
+    }
+
+    public static CloudEventService eventService() {
+        return eventService;
     }
 }

@@ -1,5 +1,9 @@
 package org.noear.solon.extend.cloud.service;
 
+import org.noear.solon.extend.cloud.model.Event;
+
+import java.util.function.Consumer;
+
 /**
  * 事件服务
  *
@@ -18,7 +22,7 @@ public interface CloudEventService {
     void send(String id, String topic, String content);
 
     /**
-     * 订阅事件
+     * 关注事件
      * */
-    void subscribe(String topic);
+    void attention(String topic, Consumer<Event> observer);
 }
