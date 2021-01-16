@@ -18,7 +18,7 @@ import java.util.function.Consumer;
  * @author noear 2021/1/15 created
  */
 public class CloudRegisterServiceImp implements CloudRegisterService {
-    static final String REGISTER_GROUP  ="SOLON";
+    static final String REGISTER_GROUP = "SOLON";
     NamingService real;
 
     public CloudRegisterServiceImp() {
@@ -65,7 +65,7 @@ public class CloudRegisterServiceImp implements CloudRegisterService {
         Discovery discovery = new Discovery(service);
 
         try {
-            List<Instance> list = real.selectInstances(service, true);
+            List<Instance> list = real.selectInstances(service, REGISTER_GROUP, true);
 
             for (Instance i1 : list) {
                 Node n1 = new Node();
