@@ -3,6 +3,7 @@ package org.noear.solon.core.wrap;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.ConvertUtil;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -91,6 +92,18 @@ public class ClassWrap {
      * */
     public <T> T newBy(Function<String, String> data) {
         return newBy(data, null);
+    }
+
+    public <T> T newBy(Properties data) {
+        try {
+            Constructor constructor = clz().getConstructor(Properties.class);
+            if (constructor != null) {
+                return (T) constructor.newInstance(data);
+            }
+        } catch (Throwable ex) {
+        }
+
+        return newBy(data::getProperty);
     }
 
     /**

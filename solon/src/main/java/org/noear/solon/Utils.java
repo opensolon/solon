@@ -332,7 +332,7 @@ public class Utils {
      * 注入属性
      * */
     public static <T> T injectProperties(T bean, Properties propS) {
-        ClassWrap.get(bean.getClass()).fill(bean, propS::getProperty, null);
+        ClassWrap.get(bean.getClass()).fill(bean, propS::getProperty);
         return bean;
     }
 

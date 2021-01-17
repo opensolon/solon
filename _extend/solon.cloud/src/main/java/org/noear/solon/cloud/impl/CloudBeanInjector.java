@@ -51,7 +51,7 @@ public class CloudBeanInjector implements BeanInjector<CloudConfig> {
             //尝试转为实体
             //
             Properties val0 = cfg.toProps();
-            return ClassWrap.get(type).newBy(val0::getProperty);
+            return ClassWrap.get(type).newBy(val0);
         }
     }
 }

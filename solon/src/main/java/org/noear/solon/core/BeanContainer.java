@@ -255,7 +255,7 @@ public abstract class BeanContainer {
                 });
                 varH.setValue(val2);
             } else {
-                Object val2 = ClassWrap.get(varH.getType()).newBy(val::getProperty);
+                Object val2 = ClassWrap.get(varH.getType()).newBy(val);
                 varH.setValue(val2);
             }
 
@@ -284,7 +284,7 @@ public abstract class BeanContainer {
                     } else {
                         //尝试转为实体
                         Properties val0 = Solon.cfg().getProp(name);
-                        Object val2 = ClassWrap.get(pt).newBy(val0::getProperty);
+                        Object val2 = ClassWrap.get(pt).newBy(val0);
                         varH.setValue(val2);
                     }
                 } else {
