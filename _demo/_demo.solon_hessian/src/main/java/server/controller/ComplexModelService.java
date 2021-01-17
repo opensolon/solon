@@ -5,6 +5,7 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.MethodType;
 import server.dso.IComplexModelService;
 import server.model.ComplexModel;
+import server.model.Point;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,7 @@ public class ComplexModelService implements IComplexModelService {
 
 
     @Override
-    public void save(ComplexModel model) {
+    public void save(ComplexModel<Point> model) {
         if (model.getId() == null){
             throw new IllegalArgumentException("id could not be null");
         }
