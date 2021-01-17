@@ -18,7 +18,6 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
