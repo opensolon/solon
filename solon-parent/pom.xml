@@ -974,6 +974,7 @@
 
         <module>../_extend3/consul-solon-plugin</module>
         <module>../_extend3/nacos-solon-plugin</module>
+        <module>../_extend3/water-solon-plugin</module>
 
 
         <module>../solonfox/solonfox-swagger2</module>
