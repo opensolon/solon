@@ -12,5 +12,6 @@ public class XPluginImp implements Plugin {
     public void start(SolonApp app) {
         NamiManager.reg(JacksonDecoder.instance);
         NamiManager.reg(JacksonEncoder.instance);
+        NamiManager.reg(JacksonTypeEncoder.instance);
     }
 }

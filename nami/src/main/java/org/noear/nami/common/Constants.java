@@ -4,6 +4,7 @@ public class Constants {
     public static final String ct_hessian = "application/hessian";
     public static final String ct_protobuf = "application/protobuf";
     public static final String ct_json = "application/json";
+    public static final String ct_json_type = "application/json-type";
     public static final String ct_form_urlencoded = "application/x-www-form-urlencoded";
 
     //

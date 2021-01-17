@@ -13,5 +13,6 @@ public class XPluginImp implements Plugin {
     public void start(SolonApp app) {
         NamiManager.reg(FastjsonDecoder.instance);
         NamiManager.reg(FastjsonEncoder.instance);
+        NamiManager.reg(FastjsonTypeEncoder.instance);
     }
 }

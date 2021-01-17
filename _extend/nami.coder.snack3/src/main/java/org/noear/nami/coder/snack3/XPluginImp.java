@@ -13,5 +13,6 @@ public class XPluginImp implements Plugin {
     public void start(SolonApp app) {
         NamiManager.reg(SnackDecoder.instance);
         NamiManager.reg(SnackEncoder.instance);
+        NamiManager.reg(SnackTypeEncoder.instance);
     }
 }

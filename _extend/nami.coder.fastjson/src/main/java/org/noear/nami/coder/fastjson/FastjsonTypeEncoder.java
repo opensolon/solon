@@ -18,7 +18,7 @@ public class FastjsonTypeEncoder implements Encoder {
 
     @Override
     public String enctype() {
-        return Constants.ct_json;
+        return Constants.ct_json_type;
     }
 
     @Override
