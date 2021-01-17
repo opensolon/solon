@@ -10,9 +10,9 @@ import java.util.Date;
  */
 public class Event {
     /**
-     * 事件id
+     * 事件唯一标识
      * */
-    public String id;
+    public String uuid;
 
     /**
      * 队列
@@ -29,7 +29,7 @@ public class Event {
     public String content;
 
     /**
-     * 标签
+     * 检索标签
      * */
     public String tags;
 
