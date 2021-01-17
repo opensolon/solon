@@ -47,6 +47,11 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>nami.coder.protostuff</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>nami.channel.http.okhttp</artifactId>
         </dependency>
 
@@ -59,6 +64,11 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.serialization.jackson</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.serialization.protostuff</artifactId>
         </dependency>
 
         <dependency>
