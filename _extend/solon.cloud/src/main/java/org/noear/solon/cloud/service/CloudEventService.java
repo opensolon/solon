@@ -11,16 +11,16 @@ import org.noear.solon.cloud.CloudEventHandler;
 public interface CloudEventService {
     /**
      * 发送事件
-     * */
-    void send(String topic, String content);
+     */
+    void send(String queue, String topic, String content);
 
     /**
      * 发送事件
-     * */
-    void send(String id, String topic, String content);
+     */
+    void send(String id, String queue, String topic, String content);
 
     /**
      * 关注事件
-     * */
-    void attention(String topic, CloudEventHandler observer);
+     */
+    void attention(String queue, String topic, CloudEventHandler observer);
 }

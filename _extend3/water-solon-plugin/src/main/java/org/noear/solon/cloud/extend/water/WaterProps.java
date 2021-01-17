@@ -7,4 +7,6 @@ import org.noear.solon.cloud.CloudProps;
  */
 public class WaterProps {
     public static final CloudProps instance = new CloudProps("water");
+
+    public static final String service_secretKey = "wt4Om2AvhyI3JL1F";
 }

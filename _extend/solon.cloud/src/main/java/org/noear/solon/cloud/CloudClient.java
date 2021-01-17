@@ -3,6 +3,7 @@ package org.noear.solon.cloud;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.model.Config;
+import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.model.Node;
 import org.noear.solon.cloud.service.CloudConfigService;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
@@ -17,15 +18,15 @@ import java.util.Properties;
 public class CloudClient {
     /**
      * 配置服务
-     * */
+     */
     public static CloudConfigService config() {
         return CloudManager.configService();
     }
 
     /**
      * 配置配置
-     * */
-    public static void configLoad(String group, String key){
+     */
+    public static void configLoad(String group, String key) {
         if (CloudClient.config() == null) {
             return;
         }
@@ -42,15 +43,15 @@ public class CloudClient {
 
     /**
      * 发现服务
-     * */
+     */
     public static CloudDiscoveryService discovery() {
         return CloudManager.discoveryService();
     }
 
     /**
      * 发现服务
-     * */
-    public static void discoveryPush(String hostname){
+     */
+    public static void discoveryPush(String hostname) {
         if (CloudClient.discovery() == null) {
             return;
         }
@@ -73,8 +74,21 @@ public class CloudClient {
 
     /**
      * 事件服务
-     * */
-    public static CloudEventService event(){
+     */
+    public static CloudEventService event() {
         return CloudManager.eventService();
     }
+
+//    public static void eventReceive(Event event) {
+//        CloudEventHandler handler;
+//        if (Utils.isEmpty(event.queue)) {
+//            handler = CloudManager.eventHandlerMap2.get(event.topic);
+//        } else {
+//            handler = CloudManager.eventHandlerMap2.get(event.queue + "::" + event.topic);
+//        }
+//
+//        if (handler != null) {
+//            handler.handler(event);
+//        }
+//    }
 }

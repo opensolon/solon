@@ -22,6 +22,7 @@ public class CloudManager {
 
     protected final static Map<CloudConfig, CloudConfigHandler> configHandlerMap = new LinkedHashMap<>();
     protected final static Map<CloudEvent, CloudEventHandler> eventHandlerMap = new LinkedHashMap<>();
+    //protected final static Map<String, CloudEventHandler> eventHandlerMap2 = new LinkedHashMap<>();
 
     /**
      * 登记配置订阅
@@ -35,6 +36,12 @@ public class CloudManager {
      */
     public static void register(CloudEvent anno, CloudEventHandler handler) {
         eventHandlerMap.put(anno, handler);
+
+//        if (Utils.isEmpty(anno.queue())) {
+//            eventHandlerMap2.put(anno.topic(), handler);
+//        } else {
+//            eventHandlerMap2.put(anno.queue() + "::" + anno.topic(), handler);
+//        }
     }
 
     /**

@@ -25,45 +25,41 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
         Aop.context().beanBuilderAdd(CloudConfig.class, (clz, bw, anno) -> {
+            CloudConfigHandler handler;
             if (bw.raw() instanceof CloudConfigHandler) {
-                CloudManager.register(anno, bw.raw());
+                handler = bw.raw();
             } else {
-                CloudManager.register(anno, new CloudConfigHandler() {
-                    @Override
-                    public void handler(Config cfg) {
-                        Properties val0 = cfg.toProps();
-                        ClassWrap.get(clz).fill(bw.raw(), val0::getProperty);
-                    }
-                });
+                handler = (Config cfg) -> {
+                    Properties val0 = cfg.toProps();
+                    ClassWrap.get(clz).fill(bw.raw(), val0::getProperty);
+                };
+            }
+
+            CloudManager.register(anno, handler);
+
+            if (CloudClient.config() != null) {
+                Config config = CloudClient.config().get(anno.group(), anno.key());
+                if (config != null) {
+                    handler.handler(config);
+                }
+
+                //关注配置
+                CloudClient.config().attention(anno.group(), anno.key(), handler);
             }
         });
 
         Aop.context().beanBuilderAdd(CloudEvent.class, (clz, bw, anno) -> {
             if (bw.raw() instanceof CloudEventHandler) {
                 CloudManager.register(anno, bw.raw());
+
+                if (CloudClient.event() != null) {
+                    //关注事件
+                    CloudClient.event().attention(anno.queue(), anno.topic(), bw.raw());
+                }
             }
         });
 
         Aop.context().beanInjectorAdd(CloudConfig.class, CloudBeanInjector.instance);
-
-        Aop.context().beanOnloaded(() -> {
-            if (CloudClient.config() != null) {
-                CloudManager.configHandlerMap.forEach((anno, handler) -> {
-                    Config config = CloudClient.config().get(anno.group(), anno.key());
-                    if (config != null) {
-                        handler.handler(config);
-                    }
-
-                    CloudClient.config().attention(anno.group(), anno.key(), handler);
-                });
-            }
-
-            if (CloudClient.event() != null) {
-                CloudManager.eventHandlerMap.forEach((anno, handler) -> {
-                    CloudClient.event().attention(anno.topic(), handler);
-                });
-            }
-        });
 
         if (CloudClient.discovery() != null) {
             //设置负载工厂

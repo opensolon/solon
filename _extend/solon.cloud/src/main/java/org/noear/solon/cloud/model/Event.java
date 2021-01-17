@@ -25,4 +25,9 @@ public class Event {
      * 事件内容
      * */
     public String content;
+
+    /**
+     * 事件标签
+     * */
+    public String tags;
 }
