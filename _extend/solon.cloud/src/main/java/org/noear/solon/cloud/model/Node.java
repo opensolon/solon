@@ -1,5 +1,7 @@
 package org.noear.solon.cloud.model;
 
+import java.util.Map;
+
 /**
  * 服务节点模型
  *
@@ -31,4 +33,9 @@ public class Node {
      * 权重
      * */
     public double weight = 1.0D;
+
+    /**
+     * 元信息s
+     * */
+    public Map<String,String> meta;
 }
