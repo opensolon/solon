@@ -4,7 +4,7 @@ import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.model.Event;
 
 /**
- * 云端事件服务
+ * 云端事件服务（事件总线服务）
  *
  * @author noear
  * @since 1.2
