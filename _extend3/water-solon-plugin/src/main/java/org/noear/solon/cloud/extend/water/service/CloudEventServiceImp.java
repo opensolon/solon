@@ -11,20 +11,18 @@ import org.noear.water.WaterClient;
  * @author noear 2021/1/17 created
  */
 public class CloudEventServiceImp implements CloudEventService {
-
     @Override
-    public void send(String queue, String topic, String content) {
-        try {
-            WaterClient.Message.sendMessage(topic, content);
-        } catch (Throwable ex) {
-            throw Utils.throwableWrap(ex);
+    public void send(Event event) {
+        if(Utils.isEmpty(event.topic)){
+            throw new IllegalArgumentException("Event missing topic");
         }
-    }
 
-    @Override
-    public void send(String id, String queue, String topic, String content) {
+        if(Utils.isEmpty(event.content)){
+            throw new IllegalArgumentException("Event missing content");
+        }
+
         try {
-            WaterClient.Message.sendMessage(id, topic, content);
+            WaterClient.Message.sendMessageAndTags(event.id, event.topic, event.content, event.scheduled, event.tags);
         } catch (Throwable ex) {
             throw Utils.throwableWrap(ex);
         }

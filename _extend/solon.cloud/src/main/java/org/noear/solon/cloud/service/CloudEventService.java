@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.service;
 
 import org.noear.solon.cloud.CloudEventHandler;
+import org.noear.solon.cloud.model.Event;
 
 /**
  * 事件服务
@@ -12,12 +13,7 @@ public interface CloudEventService {
     /**
      * 发送事件
      */
-    void send(String queue, String topic, String content);
-
-    /**
-     * 发送事件
-     */
-    void send(String id, String queue, String topic, String content);
+    void send(Event event);
 
     /**
      * 关注事件

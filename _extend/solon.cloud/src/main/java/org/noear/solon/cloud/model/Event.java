@@ -1,5 +1,7 @@
 package org.noear.solon.cloud.model;
 
+import java.util.Date;
+
 /**
  * 事件模型
  *
@@ -18,16 +20,21 @@ public class Event {
     public String queue;
 
     /**
-     * 事件主题
+     * 主题
      * */
     public String topic;
     /**
-     * 事件内容
+     * 内容
      * */
     public String content;
 
     /**
-     * 事件标签
+     * 标签
      * */
     public String tags;
+
+    /**
+     * 预定执行时间
+     * */
+    public Date scheduled;
 }
