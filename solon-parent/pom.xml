@@ -306,12 +306,12 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.serialization.avro</artifactId>
+                <artifactId>solon.serialization.protostuff</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.serialization.xstream</artifactId>
+                <artifactId>solon.serialization.avro</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
