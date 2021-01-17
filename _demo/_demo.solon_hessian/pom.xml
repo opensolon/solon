@@ -37,7 +37,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami.coder.snack3</artifactId>
+            <artifactId>nami.coder.jackson</artifactId>
         </dependency>
 
         <dependency>
@@ -58,7 +58,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.snack3</artifactId>
+            <artifactId>solon.serialization.jackson</artifactId>
         </dependency>
 
         <dependency>

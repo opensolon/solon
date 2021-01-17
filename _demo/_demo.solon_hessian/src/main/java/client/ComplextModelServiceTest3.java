@@ -2,7 +2,7 @@ package client;
 
 import org.noear.nami.Nami;
 import org.noear.nami.coder.hession.HessianDecoder;
-import org.noear.nami.coder.snack3.SnackTypeEncoder;
+import org.noear.nami.coder.jackson.JacksonTypeEncoder;
 import server.dso.IComplexModelService;
 import server.model.ComplexModel;
 import server.model.Person;
@@ -16,7 +16,7 @@ public class ComplextModelServiceTest3 {
     public static void main(String[] args) throws Exception {
         //配置接口代理
         IComplexModelService service = Nami.builder()
-                .encoder(SnackTypeEncoder.instance)
+                .encoder(JacksonTypeEncoder.instance)
                 .decoder(HessianDecoder.instance)
                 .upstream(()->"http://localhost:8080")
                 .create(IComplexModelService.class);
