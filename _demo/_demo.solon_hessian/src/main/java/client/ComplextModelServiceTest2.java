@@ -3,6 +3,7 @@ package client;
 import org.noear.nami.Nami;
 import org.noear.nami.coder.hession.HessianDecoder;
 import org.noear.nami.coder.hession.HessianEncoder;
+import org.noear.solon.Solon;
 import server.dso.IComplexModelService;
 import server.model.ComplexModel;
 import server.model.Person;
@@ -14,6 +15,8 @@ import java.util.List;
 
 public class ComplextModelServiceTest2 {
     public static void main(String[] args) throws Exception {
+        Solon.start(ClientApp.class, args, app->app.enableHttp(false));
+
         //配置接口代理
         IComplexModelService service = Nami.builder()
                 .encoder(HessianEncoder.instance)

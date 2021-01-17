@@ -19,6 +19,8 @@ import java.util.List;
 public class ComplextModelServiceTest10 {
 
     public static void main(String[] args) throws Exception {
+        Solon.start(ClientApp.class, args, app->app.enableHttp(false));
+
         NamiConfigurationDefault.proxy = new FairyConfigurationImp();
 
         Solon.start(ComplextModelServiceTest10.class, args, app -> {
