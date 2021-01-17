@@ -19,8 +19,6 @@ import java.util.List;
 public class ComplextModelServiceTest10 {
 
     public static void main(String[] args) throws Exception {
-        Solon.start(ClientApp.class, args, app->app.enableHttp(false));
-
         NamiConfigurationDefault.proxy = new FairyConfigurationImp();
 
         Solon.start(ComplextModelServiceTest10.class, args, app -> {
@@ -28,6 +26,7 @@ public class ComplextModelServiceTest10 {
             app.enableWebSocket(false);
             app.enableSocketD(false);
         });
+
 
         ComplextModelServiceTest10 test5 = Aop.get(ComplextModelServiceTest10.class);
         test5.test();
