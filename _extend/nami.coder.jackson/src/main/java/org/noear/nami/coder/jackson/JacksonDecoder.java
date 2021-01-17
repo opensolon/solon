@@ -14,7 +14,8 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 /**
- * @author noear 2021/1/17 created
+ * @author noear
+ * @since 1.2
  */
 public class JacksonDecoder implements Decoder {
     public static final JacksonDecoder instance = new JacksonDecoder();

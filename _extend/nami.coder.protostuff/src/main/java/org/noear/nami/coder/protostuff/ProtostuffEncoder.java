@@ -1,9 +1,5 @@
 package org.noear.nami.coder.protostuff;
 
-import io.protostuff.LinkedBuffer;
-import io.protostuff.ProtobufIOUtil;
-import io.protostuff.Schema;
-import io.protostuff.runtime.RuntimeSchema;
 import org.noear.nami.Encoder;
 import org.noear.nami.common.Constants;
 
@@ -21,6 +17,6 @@ public class ProtostuffEncoder implements Encoder {
 
     @Override
     public byte[] encode(Object obj) {
-        return ProtostuffUtil.serializer(obj);
+        return ProtostuffUtil.serialize(obj);
     }
 }

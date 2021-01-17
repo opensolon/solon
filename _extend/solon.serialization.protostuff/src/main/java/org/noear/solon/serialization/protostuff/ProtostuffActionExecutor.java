@@ -4,8 +4,11 @@ import org.noear.solon.core.handle.ActionExecutorDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
 
+import java.util.Map;
+
 /**
- * @author noear 2021/1/17 created
+ * @author noear
+ * @since 1.2
  */
 public class ProtostuffActionExecutor extends ActionExecutorDefault {
     private static final String label = "application/protobuf";
@@ -21,7 +24,7 @@ public class ProtostuffActionExecutor extends ActionExecutorDefault {
 
     @Override
     protected Object changeBody(Context ctx) throws Exception {
-        return ctx.bodyAsBytes();
+        return ProtostuffUtil.deserialize(ctx.bodyAsBytes());
     }
 
     @Override
@@ -29,14 +32,19 @@ public class ProtostuffActionExecutor extends ActionExecutorDefault {
         if (bodyObj == null) {
             return null;
         } else {
-            if (ctx.paramMap().containsKey(p.getName())) {
-                //有可能是path变量
-                //
-                return super.changeValue(ctx, p, pi, pt, bodyObj);
-            }else{
-                Object obj = ProtostuffUtil.deserializer((byte[]) bodyObj, pt);
-                return obj;
+            if (bodyObj instanceof Map) {
+                Map<String, Object> tmp = (Map<String, Object>) bodyObj;
+
+                if (tmp.containsKey(p.getName())) {
+                    return tmp.get(p.getName());
+                } else if (ctx.paramMap().containsKey(p.getName())) {
+                    //有可能是path变量
+                    //
+                    return super.changeValue(ctx, p, pi, pt, bodyObj);
+                }
             }
+
+            return null;
         }
     }
 }

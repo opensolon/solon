@@ -5,7 +5,8 @@ import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
 
 /**
- * @author noear 2021/1/17 created
+ * @author noear
+ * @since 1.2
  */
 public class XPluginImp implements Plugin {
     public static boolean output_meta = false;

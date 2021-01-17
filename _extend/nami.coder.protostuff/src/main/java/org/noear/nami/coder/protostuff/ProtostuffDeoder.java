@@ -1,8 +1,5 @@
 package org.noear.nami.coder.protostuff;
 
-import io.protostuff.ProtobufIOUtil;
-import io.protostuff.Schema;
-import io.protostuff.runtime.RuntimeSchema;
 import org.noear.nami.Decoder;
 import org.noear.nami.NamiConfig;
 import org.noear.nami.common.Constants;
@@ -26,7 +23,7 @@ public class ProtostuffDeoder implements Decoder {
 
     @Override
     public <T> T decode(Result rst, Type clz) {
-        return ProtostuffUtil.deserializer(rst.body(), (Class<T>) clz);
+        return ProtostuffUtil.deserialize(rst.body());
     }
 
     @Override

@@ -6,7 +6,8 @@ import org.noear.nami.Encoder;
 import org.noear.nami.common.Constants;
 
 /**
- * @author noear 2021/1/17 created
+ * @author noear
+ * @since 1.2
  */
 public class JacksonEncoder implements Encoder {
     public static final JacksonEncoder instance = new JacksonEncoder();

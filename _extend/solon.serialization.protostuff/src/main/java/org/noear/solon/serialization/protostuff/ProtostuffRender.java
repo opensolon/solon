@@ -4,7 +4,8 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Render;
 
 /**
- * @author noear 2021/1/17 created
+ * @author noear
+ * @since 1.2
  */
 public class ProtostuffRender implements Render {
     @Override
@@ -18,6 +19,6 @@ public class ProtostuffRender implements Render {
     }
 
     private byte[] serializeDo(Object obj) throws Throwable {
-        return ProtostuffUtil.serializer(obj);
+        return ProtostuffUtil.serialize(obj);
     }
 }
