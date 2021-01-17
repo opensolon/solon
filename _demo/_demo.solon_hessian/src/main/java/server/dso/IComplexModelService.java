@@ -8,8 +8,8 @@ import server.model.Point;
 @NamiClient("test:/ComplexModelService/")
 public interface IComplexModelService {
     //持久化
-    void save(@Body ComplexModel model);
+    void save(ComplexModel model);
 
     //读取
-    ComplexModel read(@Body Integer modelId);
+    ComplexModel read(Integer modelId);
 }
