@@ -8,6 +8,7 @@ import org.noear.solon.cloud.extend.water.integration.WaterAdapter;
 import org.noear.solon.cloud.extend.water.integration.WaterAdapterImp;
 import org.noear.solon.cloud.extend.water.service.CloudConfigServiceImp;
 import org.noear.solon.cloud.extend.water.service.CloudDiscoveryServiceImp;
+import org.noear.solon.cloud.extend.water.service.CloudEventServiceImp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 
@@ -36,6 +37,10 @@ public class XPluginImp implements Plugin {
 
             if (WaterProps.instance.getDiscoveryEnable()) {
                 CloudManager.register(new CloudDiscoveryServiceImp());
+            }
+
+            if (WaterProps.instance.getEventEnable()) {
+                CloudManager.register(new CloudEventServiceImp());
             }
 
 

@@ -22,6 +22,9 @@ public class CloudProps {
     private String DISCOVERY_HEALTH_CHECK_INTERVAL = "solon.cloud.@@.discovery.healthCheckInterval";
     private String DISCOVERY_HEALTH_DETECTOR = "solon.cloud.@@.discovery.healthDetector";
 
+    private String EVENT_ENABLE = "solon.cloud.@@.event.enable";
+    private String EVENT_SECRET_KEY = "solon.cloud.@@.event.secretKey";
+
     public CloudProps(String frame) {
         SERVER = SERVER.replace("@@", frame);
         TOKEN = TOKEN.replace("@@", frame);
@@ -41,6 +44,9 @@ public class CloudProps {
     }
 
 
+    //
+    //公共
+    //
     public String getServer() {
         return Solon.cfg().get(SERVER);
     }
@@ -57,6 +63,9 @@ public class CloudProps {
         return Solon.cfg().get(PASSWORD);
     }
 
+    //
+    //配置
+    //
     public boolean getConfigEnable() {
         return Solon.cfg().getBool(CONFIG_ENABLE, true);
     }
@@ -68,6 +77,9 @@ public class CloudProps {
     }
 
 
+    //
+    //发现
+    //
     public boolean getDiscoveryEnable() {
         return Solon.cfg().getBool(DISCOVERY_ENABLE, true);
     }
@@ -88,5 +100,16 @@ public class CloudProps {
     }
     public String getDiscoveryHealthDetector() {
         return Solon.cfg().get(DISCOVERY_HEALTH_DETECTOR);
+    }
+
+
+    //
+    //事件
+    //
+    public boolean getEventEnable() {
+        return Solon.cfg().getBool(EVENT_ENABLE, true);
+    }
+    public String getEventSecretKey() {
+        return Solon.cfg().get(EVENT_SECRET_KEY);
     }
 }

@@ -7,14 +7,10 @@ import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventService;
 import org.noear.water.WaterClient;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author noear 2021/1/17 created
  */
 public class CloudEventServiceImp implements CloudEventService {
-    Map<String, CloudEventHandler> eventHandlerMap = new HashMap<>();
 
     @Override
     public void send(String queue, String topic, String content) {
