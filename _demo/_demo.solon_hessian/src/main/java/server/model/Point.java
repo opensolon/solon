@@ -1,13 +1,11 @@
 package server.model;
 
 import io.protostuff.Tag;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.io.Serializable;
 
-@Getter
-@Setter
+@Data
 public class Point implements Serializable {
     @Tag(1)
     private int x;

@@ -26,12 +26,7 @@ public class ProtostuffDeoder implements Decoder {
 
     @Override
     public <T> T decode(Result rst, Type clz) {
-        Schema schema = RuntimeSchema.getSchema((Class<?>) clz);
-
-        Object obj = schema.newMessage();
-        ProtobufIOUtil.mergeFrom(rst.body(), obj, schema);
-
-        return (T) obj;
+        return ProtostuffUtil.deserializer(rst.body(), (Class<T>) clz);
     }
 
     @Override

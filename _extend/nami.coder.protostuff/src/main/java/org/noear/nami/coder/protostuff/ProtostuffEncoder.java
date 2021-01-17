@@ -21,7 +21,6 @@ public class ProtostuffEncoder implements Encoder {
 
     @Override
     public byte[] encode(Object obj) {
-        Schema schema = RuntimeSchema.getSchema(obj.getClass());
-        return ProtobufIOUtil.toByteArray(obj, schema, LinkedBuffer.allocate());
+        return ProtostuffUtil.serializer(obj);
     }
 }

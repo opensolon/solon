@@ -37,10 +37,7 @@ public class ProtostuffActionExecutor extends ActionExecutorDefault {
                 //
                 return super.changeValue(ctx, p, pi, pt, bodyObj);
             }else{
-                Schema schema = RuntimeSchema.getSchema((Class<?>) pt);
-
-                Object obj = schema.newMessage();
-                ProtobufIOUtil.mergeFrom((byte[]) bodyObj, obj, schema);
+                Object obj = ProtostuffUtil.deserializer((byte[]) bodyObj, pt);
                 return obj;
             }
         }

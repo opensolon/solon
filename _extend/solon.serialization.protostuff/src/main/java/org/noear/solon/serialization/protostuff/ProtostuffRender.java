@@ -22,7 +22,6 @@ public class ProtostuffRender implements Render {
     }
 
     private byte[] serializeDo(Object obj) throws Throwable {
-        Schema schema = RuntimeSchema.getSchema(obj.getClass());
-        return ProtobufIOUtil.toByteArray(obj, schema, LinkedBuffer.allocate());
+        return ProtostuffUtil.serializer(obj);
     }
 }

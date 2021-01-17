@@ -1,14 +1,12 @@
 package server.model;
 
 import io.protostuff.Tag;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
 
-@Setter
-@Getter
+@Data
 public class ComplexModel<T> implements Serializable {
     @Tag(1)
     private Integer id;
