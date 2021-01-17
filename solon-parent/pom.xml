@@ -436,6 +436,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>nami.coder.protostuff</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>nami-springboot-starter</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -891,6 +897,7 @@
         <module>../_extend/solon.serialization.gson</module>
         <module>../_extend/solon.serialization.snack3</module>
         <module>../_extend/solon.serialization.avro</module>
+        <module>../_extend/solon.serialization.protostuff</module>
         <!--        <module>../_extend/solon.serialization.jsoniter</module>-->
         <!--        <module>../_extend/solon.serialization.xstream</module>-->
 
