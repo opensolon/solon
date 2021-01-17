@@ -55,6 +55,7 @@
 
         <springboot.ver>2.0.4.RELEASE</springboot.ver>
         <nacos.ver>1.4.0</nacos.ver>
+        <water.ver>2.0.9</water.ver>
     </properties>
 
 
@@ -921,10 +922,8 @@
 
         <module>../_extend/solon.cloud</module>
 
-
-        <!-- solon-web 替代它们 -->
-        <module>../_extend/solon-mvc</module>
-        <module>../_extend/solon-api</module>
+        <!--        <module>../solonclient</module>-->
+        <module>../nami</module>
 
         <module>../_extend/nami.channel.http.okhttp</module>
         <module>../_extend/nami.channel.http.hutool</module>
@@ -939,9 +938,13 @@
         <module>../_extend/nami.coder.hessian</module>
 
 
+        <!-- solon-web 替代它们 -->
+        <module>../_extend/solon-mvc</module>
+        <module>../_extend/solon-api</module>
+        <module>../_extend/solon-beetl-web</module>
 
-        <!--        <module>../solonclient</module>-->
-        <module>../nami</module>
+
+
 
 
         <module>../solon-web</module>
@@ -952,7 +955,6 @@
 
 
         <module>../_extend2/beetlsql-solon-plugin</module>
-        <module>../_extend2/consul-solon-plugin</module>
         <module>../_extend2/cron4j-solon-plugin</module>
         <module>../_extend2/dubbo-solon-plugin</module>
         <module>../_extend2/feign-solon-plugin</module>
@@ -970,14 +972,14 @@
 
 
 
-        <module>../_extend2/nacos-solon-plugin</module>
+        <module>../_extend3/consul-solon-plugin</module>
+        <module>../_extend3/nacos-solon-plugin</module>
 
 
         <module>../solonfox/solonfox-swagger2</module>
         <module>../solonfox/solonfox-swagger-ui</module>
         <module>../solonfox/solonfox-swagger-bootstrap-ui</module>
 
-        <module>../_extend3/solon-beetl-web</module>
 
 
     </modules>
