@@ -1,4 +1,4 @@
-package org.noear.solon.extend.nacos.service;
+package org.noear.solon.cloud.extend.nacos.service;
 
 import com.alibaba.nacos.api.config.ConfigFactory;
 import com.alibaba.nacos.api.config.ConfigService;
@@ -8,7 +8,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigService;
-import org.noear.solon.extend.nacos.NacosProps;
+import org.noear.solon.cloud.extend.nacos.NacosProps;
 
 import java.util.Properties;
 import java.util.concurrent.Executor;

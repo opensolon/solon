@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.extend.water.service.CloudConfigServiceImp;
+import org.noear.solon.cloud.extend.water.service.CloudDiscoveryServiceImp;
 import org.noear.solon.core.Plugin;
 
 /**

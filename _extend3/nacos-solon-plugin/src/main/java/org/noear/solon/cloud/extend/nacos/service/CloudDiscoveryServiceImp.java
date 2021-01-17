@@ -1,4 +1,4 @@
-package org.noear.solon.extend.nacos.service;
+package org.noear.solon.cloud.extend.nacos.service;
 
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
@@ -9,7 +9,7 @@ import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Node;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
-import org.noear.solon.extend.nacos.NacosProps;
+import org.noear.solon.cloud.extend.nacos.NacosProps;
 
 import java.util.List;
 import java.util.Properties;
