@@ -17,7 +17,7 @@ public class ComplexModelService implements IComplexModelService {
 
 
     @Override
-    public void save(ComplexModel<Point> model) {
+    public void save(ComplexModel model) {
         if (model.getId() == null){
             throw new IllegalArgumentException("id could not be null");
         }

@@ -1,8 +1,10 @@
 package org.noear.solon.serialization.jackson;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.noear.solon.core.handle.ActionExecutorDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
@@ -10,7 +12,15 @@ import org.noear.solon.core.wrap.ParamWrap;
 public class JacksonActionExecutor extends ActionExecutorDefault {
     private static final String label = "/json";
 
-    ObjectMapper mapper = new ObjectMapper();
+    ObjectMapper mapper_type = new ObjectMapper();
+
+    public JacksonActionExecutor(){
+        mapper_type.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        mapper_type.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        mapper_type.activateDefaultTypingAsProperty(
+                mapper_type.getPolymorphicTypeValidator(),
+                ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE, "@type");
+    }
 
     @Override
     public boolean matched(Context ctx, String ct) {
@@ -23,7 +33,7 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
 
     @Override
     protected Object changeBody(Context ctx) throws Exception {
-        return mapper.readTree(ctx.body());
+        return mapper_type.readTree(ctx.body());
     }
 
     @Override
@@ -43,7 +53,7 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
             if (tmp.has(p.getName())) {
                 JsonNode m1 = tmp.get(p.getName());
 
-                return mapper.readValue(mapper.treeAsTokens(m1), new TypeReferenceImp(p));
+                return mapper_type.readValue(mapper_type.treeAsTokens(m1), new TypeReferenceImp(p));
             } else if (ctx.paramMap().containsKey(p.getName())) {
                 //有可能是path变量
                 //
@@ -51,16 +61,16 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
             } else {
                 //return tmp.toObject(pt);
 
-                return mapper.readValue(mapper.treeAsTokens(tmp), new TypeReferenceImp(p));
+                return mapper_type.readValue(mapper_type.treeAsTokens(tmp), new TypeReferenceImp(p));
             }
         }
 
         if (tmp.isArray()) {
             //return tmp.toObject(pt);
-            return mapper.readValue(mapper.treeAsTokens(tmp), new TypeReferenceImp(p));
+            return mapper_type.readValue(mapper_type.treeAsTokens(tmp), new TypeReferenceImp(p));
         }
 
         //return tmp.val().getRaw();
-        return mapper.readValue(mapper.treeAsTokens(tmp), new TypeReferenceImp(p));
+        return mapper_type.readValue(mapper_type.treeAsTokens(tmp), new TypeReferenceImp(p));
     }
 }

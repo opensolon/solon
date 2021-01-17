@@ -1,5 +1,7 @@
 package org.noear.solon.serialization.jackson;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.noear.solon.core.handle.Context;
@@ -7,7 +9,7 @@ import org.noear.solon.core.handle.Render;
 
 public class JacksonRender implements Render {
     ObjectMapper mapper = new ObjectMapper();
-    ObjectMapper mapper_serialize = new ObjectMapper();
+    ObjectMapper mapper_type = new ObjectMapper();
 
     private boolean _typedJson;
 
@@ -16,13 +18,11 @@ public class JacksonRender implements Render {
 
         mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-        mapper_serialize.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
-        //没有@type，不好反序列化异常类
-//        mapper_serialize.activateDefaultTypingAsProperty(
-//                mapper_serialize.getPolymorphicTypeValidator(),
-//                ObjectMapper.DefaultTyping.NON_FINAL,
-//                "@type");
+        mapper_type.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        mapper_type.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        mapper_type.activateDefaultTypingAsProperty(
+                mapper_type.getPolymorphicTypeValidator(),
+                ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE, "@type");
     }
 
     @Override
@@ -32,7 +32,7 @@ public class JacksonRender implements Render {
         if (_typedJson) {
             //序列化处理
             //
-            txt = mapper_serialize.writeValueAsString(obj);
+            txt = mapper_type.writeValueAsString(obj);
         } else if (ctx.accept().indexOf("/json") > 0) {
             txt = mapper.writeValueAsString(obj);
         } else {
