@@ -1,4 +1,4 @@
-package org.noear.solon.extend.water.service;
+package org.noear.solon.cloud.extend.water.service;
 
 import org.noear.snack.ONode;
 import org.noear.solon.Solon;

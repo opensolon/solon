@@ -1,4 +1,4 @@
-package org.noear.solon.extend.water.service;
+package org.noear.solon.cloud.extend.water.service;
 
 import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.model.Config;
@@ -37,7 +37,7 @@ public class CloudConfigServiceImp implements CloudConfigService {
         return false;
     }
 
-    Map<CloudConfigHandler, CloudConfigObserverEntity> observerMap = new HashMap<>();
+    private Map<CloudConfigHandler, CloudConfigObserverEntity> observerMap = new HashMap<>();
 
     @Override
     public void attention(String group, String key, CloudConfigHandler observer) {

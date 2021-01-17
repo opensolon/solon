@@ -1,4 +1,4 @@
-package org.noear.solon.extend.water.service;
+package org.noear.solon.cloud.extend.water.service;
 
 import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.model.Config;

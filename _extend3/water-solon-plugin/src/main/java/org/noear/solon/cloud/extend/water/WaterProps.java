@@ -1,4 +1,4 @@
-package org.noear.solon.extend.water;
+package org.noear.solon.cloud.extend.water;
 
 import org.noear.solon.cloud.CloudProps;
 

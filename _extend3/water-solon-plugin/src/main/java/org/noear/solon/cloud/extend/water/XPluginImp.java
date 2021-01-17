@@ -1,12 +1,11 @@
-package org.noear.solon.extend.water;
+package org.noear.solon.cloud.extend.water;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
+import org.noear.solon.cloud.extend.water.service.CloudConfigServiceImp;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.extend.water.service.CloudConfigServiceImp;
-import org.noear.solon.extend.water.service.CloudDiscoveryServiceImp;
 
 /**
  * @author noear 2021/1/17 created
