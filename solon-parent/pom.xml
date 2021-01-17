@@ -936,6 +936,7 @@
         <module>../_extend/nami.coder.fastjson</module>
         <module>../_extend/nami.coder.snack3</module>
         <module>../_extend/nami.coder.hessian</module>
+        <module>../_extend/nami.coder.jackson</module>
 
 
         <!-- solon-web 替代它们 -->

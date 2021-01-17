@@ -18,13 +18,11 @@ public class JacksonRender implements Render {
 
         mapper_serialize.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-
         //没有@type，不好反序列化异常类
-//        mapper_serialize.activateDefaultTypingAsProperty(
-//                mapper_serialize.getPolymorphicTypeValidator(),
-//                ObjectMapper.DefaultTyping.NON_FINAL,
-//                "@type");
-
+        mapper_serialize.activateDefaultTypingAsProperty(
+                mapper_serialize.getPolymorphicTypeValidator(),
+                ObjectMapper.DefaultTyping.NON_FINAL,
+                "@type");
     }
 
     @Override
