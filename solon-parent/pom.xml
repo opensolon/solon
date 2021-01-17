@@ -588,6 +588,12 @@
                 <version>${solon.ver}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>water-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
 
 
             <dependency>
@@ -991,6 +997,7 @@
 
         <module>../_extend3/consul-solon-plugin</module>
         <module>../_extend3/nacos-solon-plugin</module>
+        <module>../_extend3/water-solon-plugin</module>
 
 
         <module>../solonfox/solonfox-swagger2</module>

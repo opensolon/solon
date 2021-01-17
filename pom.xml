@@ -37,6 +37,5 @@
         <module>_extend2/smartdoc-solon-plugin</module>
 
         <module>_extend3/zookeeper-solon-plugin</module>
-        <module>_extend3/water-solon-plugin</module>
     </modules>
 </project>
