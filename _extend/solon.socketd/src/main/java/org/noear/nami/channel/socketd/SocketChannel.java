@@ -55,7 +55,7 @@ public class SocketChannel extends SocketChannelFilter implements NamiChannel {
         //1.确定编码器
         Encoder encoder = cfg.getEncoder();
         if(encoder == null){
-            encoder = NamiManager.getEncoder(Constants.ct_json);
+            encoder = NamiManager.getEncoder(Constants.CONTENT_TYPE_JSON);
         }
 
         if(encoder == null){
@@ -63,7 +63,7 @@ public class SocketChannel extends SocketChannelFilter implements NamiChannel {
         }
 
         //2.构建消息
-        headers.put(Constants.h_content_type, encoder.enctype());
+        headers.put(Constants.HEADER_CONTENT_TYPE, encoder.enctype());
         byte[] bytes = encoder.encode(body);
         message = new Message(flag, message_key, url, HeaderUtil.encodeHeaderMap(headers), bytes);
 

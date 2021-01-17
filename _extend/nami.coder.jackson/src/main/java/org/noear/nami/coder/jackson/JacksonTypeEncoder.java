@@ -27,7 +27,7 @@ public class JacksonTypeEncoder implements Encoder {
 
     @Override
     public String enctype() {
-        return Constants.ct_json_type;
+        return Constants.CONTENT_TYPE_JSON_TYPE;
     }
 
     @Override

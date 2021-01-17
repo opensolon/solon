@@ -148,7 +148,7 @@ public class NamiHandler implements InvocationHandler {
             body = args.get(methodWrap.getBodyName());
 
             if (config.getEncoder() == null) {
-                headers.putIfAbsent(Constants.h_content_type, methodWrap.getBodyAnno().contentType());
+                headers.putIfAbsent(Constants.HEADER_CONTENT_TYPE, methodWrap.getBodyAnno().contentType());
             }
         }
 

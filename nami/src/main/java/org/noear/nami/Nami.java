@@ -192,7 +192,7 @@ public class Nami {
             Decoder decoder = _config.getDecoder();
 
             if (decoder == null) {
-                decoder = NamiManager.getDecoder(Constants.ct_json);
+                decoder = NamiManager.getDecoder(Constants.CONTENT_TYPE_JSON);
             }
 
             return decoder.decode(_result, returnType);

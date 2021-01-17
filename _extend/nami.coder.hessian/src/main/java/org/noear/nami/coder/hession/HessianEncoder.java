@@ -11,7 +11,7 @@ public class HessianEncoder implements Encoder {
 
     @Override
     public String enctype() {
-        return Constants.ct_hessian;
+        return Constants.CONTENT_TYPE_HESSIAN;
     }
 
     @Override

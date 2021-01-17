@@ -101,8 +101,8 @@ public class SocketD {
         return Nami.builder()
                 .encoder(encoder)
                 .decoder(decoder)
-                .headerSet(Constants.h_accept, Constants.ct_json)
-                .headerSet(Constants.h_content_type, Constants.ct_json)
+                .headerSet(Constants.HEADER_ACCEPT, Constants.CONTENT_TYPE_JSON)
+                .headerSet(Constants.HEADER_CONTENT_TYPE, Constants.CONTENT_TYPE_JSON)
                 .channel(new SocketChannel(sessions))
                 .upstream(() -> server)
                 .create(service);

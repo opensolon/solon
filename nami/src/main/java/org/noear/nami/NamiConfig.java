@@ -23,18 +23,18 @@ public class NamiConfig {
      * */
     protected NamiConfig init() {
         if (decoder == null) {
-            String at = headers.get(Constants.h_accept);
+            String at = headers.get(Constants.HEADER_ACCEPT);
             if (at != null) {
                 decoder = NamiManager.getDecoder(at);
             }
 
             if (decoder == null) {
-                setDecoder(NamiManager.getDecoder(Constants.ct_json));
+                setDecoder(NamiManager.getDecoder(Constants.CONTENT_TYPE_JSON));
             }
         }
 
         if (encoder == null) {
-            String ct = headers.get(Constants.h_content_type);
+            String ct = headers.get(Constants.HEADER_CONTENT_TYPE);
             if (ct != null) {
                 encoder = NamiManager.getEncoder(ct);
             }

@@ -20,7 +20,7 @@ public class FastjsonDecoder implements Decoder {
 
     @Override
     public String enctype() {
-        return Constants.ct_json;
+        return Constants.CONTENT_TYPE_JSON;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class FastjsonDecoder implements Decoder {
 
     @Override
     public void filter(NamiConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args) {
-        headers.put(Constants.h_serialization, Constants.at_type_json);
-        headers.put(Constants.h_accept, Constants.ct_json);
+        headers.put(Constants.HEADER_SERIALIZATION, Constants.AT_TYPE_JSON);
+        headers.put(Constants.HEADER_ACCEPT, Constants.CONTENT_TYPE_JSON);
     }
 }

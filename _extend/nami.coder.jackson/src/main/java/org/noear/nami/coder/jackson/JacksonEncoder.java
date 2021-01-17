@@ -20,7 +20,7 @@ public class JacksonEncoder implements Encoder {
 
     @Override
     public String enctype() {
-        return Constants.ct_json;
+        return Constants.CONTENT_TYPE_JSON;
     }
 
     @Override

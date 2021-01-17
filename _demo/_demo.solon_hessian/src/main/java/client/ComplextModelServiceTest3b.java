@@ -18,8 +18,8 @@ public class ComplextModelServiceTest3b {
 
         //配置接口代理
         IComplexModelService service = Nami.builder()
-                .headerSet(Constants.h_content_type,Constants.ct_json_type)
-                .headerSet(Constants.h_accept,Constants.ct_hessian)
+                .headerSet(Constants.HEADER_CONTENT_TYPE,Constants.CONTENT_TYPE_JSON_TYPE)
+                .headerSet(Constants.HEADER_ACCEPT,Constants.CONTENT_TYPE_HESSIAN)
                 .upstream(()->"http://localhost:8080")
                 .create(IComplexModelService.class);
 

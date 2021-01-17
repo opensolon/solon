@@ -15,7 +15,7 @@ public class HessianDecoder implements Decoder {
 
     @Override
     public String enctype() {
-        return Constants.ct_hessian;
+        return Constants.CONTENT_TYPE_HESSIAN;
     }
 
 
@@ -38,7 +38,7 @@ public class HessianDecoder implements Decoder {
 
     @Override
     public void filter(NamiConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args) {
-        headers.put(Constants.h_serialization, Constants.at_hession);
-        headers.put(Constants.h_accept, Constants.ct_hessian);
+        headers.put(Constants.HEADER_SERIALIZATION, Constants.AT_HESSION);
+        headers.put(Constants.HEADER_ACCEPT, Constants.CONTENT_TYPE_HESSIAN);
     }
 }

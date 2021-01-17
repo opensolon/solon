@@ -21,7 +21,7 @@ public class HttpChannel implements NamiChannel {
     @Override
     public Result call(NamiConfig cfg, Method method, String action, String url, Map<String, String> headers, Map<String, Object> args, Object body) throws Throwable {
         //0.检测method
-        boolean is_get = Constants.m_get.equals(action);
+        boolean is_get = Constants.METHOD_GET.equals(action);
 
         //0.尝试重构url
         if (is_get && args.size() > 0) {
@@ -51,10 +51,10 @@ public class HttpChannel implements NamiChannel {
 
         //1.执行并返回
         if (is_get || args.size() == 0) {
-            response = http.exec(Constants.m_get);
+            response = http.exec(Constants.METHOD_GET);
         } else {
             if (encoder == null) {
-                String ct0 = headers.getOrDefault(Constants.h_content_type, "");
+                String ct0 = headers.getOrDefault(Constants.HEADER_CONTENT_TYPE, "");
 
                 if (ct0.length() == 0) {
                     response = http.data(args).exec(action);
@@ -101,17 +101,17 @@ public class HttpChannel implements NamiChannel {
     @Override
     public void filter(NamiConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args) {
         if (cfg.getDecoder() == null) {
-            String at = cfg.getHeader(Constants.h_accept);
+            String at = cfg.getHeader(Constants.HEADER_ACCEPT);
 
             if (at == null) {
-                at = Constants.ct_json;
+                at = Constants.CONTENT_TYPE_JSON;
             }
 
             cfg.setDecoder(NamiManager.getDecoder(at));
         }
 
         if (cfg.getEncoder() == null) {
-            String ct = cfg.getHeader(Constants.h_content_type);
+            String ct = cfg.getHeader(Constants.HEADER_CONTENT_TYPE);
 
             if (ct != null) {
                 cfg.setEncoder(NamiManager.getEncoder(ct));
