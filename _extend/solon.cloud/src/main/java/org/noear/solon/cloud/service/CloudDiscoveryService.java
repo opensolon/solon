@@ -5,7 +5,7 @@ import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Node;
 
 /**
- * 注册与发现服务
+ * 云端注册与发现服务
  *
  * @author noear
  * @since 1.2

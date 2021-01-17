@@ -4,6 +4,8 @@ import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.model.Config;
 
 /**
+ * 云端配置服务
+ *
  * @author noear
  * @since 1.2
  */
