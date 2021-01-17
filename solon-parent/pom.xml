@@ -53,6 +53,8 @@
         <rsocket.ver>1.1.0</rsocket.ver>
         <hutool.ver>5.5.6</hutool.ver>
 
+        <protostuff.ver>1.7.2</protostuff.ver>
+
         <springboot.ver>2.0.4.RELEASE</springboot.ver>
         <nacos.ver>1.4.0</nacos.ver>
         <water.ver>2.0.9</water.ver>
@@ -943,6 +945,7 @@
         <module>../_extend/nami.coder.snack3</module>
         <module>../_extend/nami.coder.hessian</module>
         <module>../_extend/nami.coder.jackson</module>
+        <module>../_extend/nami.coder.protostuff</module>
 
 
         <!-- solon-web 替代它们 -->
