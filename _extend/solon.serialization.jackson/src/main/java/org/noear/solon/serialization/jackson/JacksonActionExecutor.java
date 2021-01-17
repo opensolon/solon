@@ -1,5 +1,6 @@
 package org.noear.solon.serialization.jackson;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.noear.solon.core.handle.ActionExecutorDefault;
@@ -31,6 +32,7 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
             return null;
         }
 
+
         if (ctx.paramMap().containsKey(p.getName())) {
             return super.changeValue(ctx, p, pi, pt, bodyObj);
         }
@@ -41,7 +43,7 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
             if (tmp.has(p.getName())) {
                 JsonNode m1 = tmp.get(p.getName());
 
-                return mapper.treeToValue(m1, p.getType());
+                return mapper.readValues(mapper.treeAsTokens(m1), new TypeReferenceImp(p));
             } else if (ctx.paramMap().containsKey(p.getName())) {
                 //有可能是path变量
                 //
@@ -49,16 +51,16 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
             } else {
                 //return tmp.toObject(pt);
 
-                return mapper.treeToValue(tmp, pt);
+                return mapper.readValues(mapper.treeAsTokens(tmp), new TypeReferenceImp(p));
             }
         }
 
         if (tmp.isArray()) {
             //return tmp.toObject(pt);
-            return mapper.treeToValue(tmp, pt);
+            return mapper.readValues(mapper.treeAsTokens(tmp), new TypeReferenceImp(p));
         }
 
         //return tmp.val().getRaw();
-        return mapper.treeToValue(tmp, pt);
+        return mapper.readValues(mapper.treeAsTokens(tmp), new TypeReferenceImp(p));
     }
 }

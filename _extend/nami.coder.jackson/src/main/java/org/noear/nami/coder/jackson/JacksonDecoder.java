@@ -37,7 +37,7 @@ public class JacksonDecoder implements Decoder {
             if (str == null) {
                 return (T) str;
             }
-            returnVal = mapper.readValue(str, (Class)type);
+            returnVal = mapper.readValue(str, new TypeReferenceImp(type));
 
         } catch (Throwable ex) {
             returnVal = ex;
