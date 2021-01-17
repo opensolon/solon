@@ -12,7 +12,7 @@ public class CloudProps {
     private String PASSWORD = "solon.cloud.@@.password";
 
     private String CONFIG_ENABLE = "solon.cloud.@@.config.enable";
-    private String CONFIG_LOAD_GROUP = "solon.cloud.@@.config.loadGroup";
+    private String CONFIG_LOAD_GROUP = "solon.cloud.@@.config.loadGroup"; //（对某些框架来讲，可能没用处）
     private String CONFIG_LOAD_KEY = "solon.cloud.@@.config.loadKey";
 
     private String DISCOVERY_ENABLE = "solon.cloud.@@.discovery.enable";
@@ -80,11 +80,11 @@ public class CloudProps {
     }
 
     public String getDiscoveryHealthCheckPath() {
-        return Solon.cfg().get(DISCOVERY_HEALTH_CHECK_PATH);
+        return Solon.cfg().get(DISCOVERY_HEALTH_CHECK_PATH,"/run/check/");
     }
 
     public String getDiscoveryHealthCheckInterval() {
-        return Solon.cfg().get(DISCOVERY_HEALTH_CHECK_INTERVAL);
+        return Solon.cfg().get(DISCOVERY_HEALTH_CHECK_INTERVAL,"5s");
     }
     public String getDiscoveryHealthDetector() {
         return Solon.cfg().get(DISCOVERY_HEALTH_DETECTOR);
