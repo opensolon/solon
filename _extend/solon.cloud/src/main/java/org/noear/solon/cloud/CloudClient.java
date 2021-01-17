@@ -3,11 +3,11 @@ package org.noear.solon.cloud;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.model.Config;
-import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.model.Node;
 import org.noear.solon.cloud.service.CloudConfigService;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
 import org.noear.solon.cloud.service.CloudEventService;
+import org.noear.solon.cloud.service.CloudLogService;
 import org.noear.solon.cloud.utils.LocalUtils;
 
 import java.util.Properties;
@@ -79,16 +79,7 @@ public class CloudClient {
         return CloudManager.eventService();
     }
 
-//    public static void eventReceive(Event event) {
-//        CloudEventHandler handler;
-//        if (Utils.isEmpty(event.queue)) {
-//            handler = CloudManager.eventHandlerMap2.get(event.topic);
-//        } else {
-//            handler = CloudManager.eventHandlerMap2.get(event.queue + "::" + event.topic);
-//        }
-//
-//        if (handler != null) {
-//            handler.handler(event);
-//        }
-//    }
+    public static CloudLogService log(){
+        return CloudManager.logService();
+    }
 }
