@@ -16,10 +16,10 @@ public class JacksonTypeEncoder implements Encoder {
     public JacksonTypeEncoder(){
         mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-        mapper.activateDefaultTypingAsProperty(
-                mapper.getPolymorphicTypeValidator(),
-                ObjectMapper.DefaultTyping.NON_FINAL,
-                "@type");
+//        mapper.activateDefaultTypingAsProperty(
+//                mapper.getPolymorphicTypeValidator(),
+//                ObjectMapper.DefaultTyping.NON_FINAL,
+//                "@type");
     }
 
     @Override
