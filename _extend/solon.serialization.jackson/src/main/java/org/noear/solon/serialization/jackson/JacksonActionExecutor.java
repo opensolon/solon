@@ -2,9 +2,7 @@ package org.noear.solon.serialization.jackson;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.*;
 import org.noear.solon.core.handle.ActionExecutorDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
@@ -16,6 +14,7 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
 
     public JacksonActionExecutor(){
         mapper_type.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        mapper_type.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper_type.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         mapper_type.activateDefaultTypingAsProperty(
                 mapper_type.getPolymorphicTypeValidator(),
@@ -53,7 +52,7 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
             if (tmp.has(p.getName())) {
                 JsonNode m1 = tmp.get(p.getName());
 
-                return mapper_type.readValue(mapper_type.treeAsTokens(m1), new TypeReferenceImp(p));
+                return mapper_type.readValue(mapper_type.treeAsTokens(m1), new TypeReferenceImp<>(p));
             } else if (ctx.paramMap().containsKey(p.getName())) {
                 //有可能是path变量
                 //
@@ -61,16 +60,16 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
             } else {
                 //return tmp.toObject(pt);
 
-                return mapper_type.readValue(mapper_type.treeAsTokens(tmp), new TypeReferenceImp(p));
+                return mapper_type.readValue(mapper_type.treeAsTokens(tmp), new TypeReferenceImp<>(p));
             }
         }
 
         if (tmp.isArray()) {
             //return tmp.toObject(pt);
-            return mapper_type.readValue(mapper_type.treeAsTokens(tmp), new TypeReferenceImp(p));
+            return mapper_type.readValue(mapper_type.treeAsTokens(tmp), new TypeReferenceImp<>(p));
         }
 
         //return tmp.val().getRaw();
-        return mapper_type.readValue(mapper_type.treeAsTokens(tmp), new TypeReferenceImp(p));
+        return mapper_type.readValue(mapper_type.treeAsTokens(tmp), new TypeReferenceImp<>(p));
     }
 }

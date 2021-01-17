@@ -2,6 +2,7 @@ package org.noear.solon.serialization.jackson;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.noear.solon.core.handle.Context;
@@ -19,6 +20,7 @@ public class JacksonRender implements Render {
         mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
         mapper_type.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        mapper_type.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper_type.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         mapper_type.activateDefaultTypingAsProperty(
                 mapper_type.getPolymorphicTypeValidator(),
