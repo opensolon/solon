@@ -21,9 +21,23 @@ public class NamiConfig {
     /**
      * 尝试初始化进行补缺
      * */
-    public NamiConfig tryInit() {
+    protected NamiConfig init() {
         if (decoder == null) {
-            setDecoder(NamiManager.getDecoder(Constants.ct_json));
+            String at = headers.get(Constants.h_accept);
+            if (at != null) {
+                decoder = NamiManager.getDecoder(at);
+            }
+
+            if (decoder == null) {
+                setDecoder(NamiManager.getDecoder(Constants.ct_json));
+            }
+        }
+
+        if (encoder == null) {
+            String ct = headers.get(Constants.h_content_type);
+            if (ct != null) {
+                encoder = NamiManager.getEncoder(ct);
+            }
         }
 
         return this;

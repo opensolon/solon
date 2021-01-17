@@ -35,7 +35,7 @@ public class Nami {
     private final NamiConfig _config;
 
     public Nami() {
-        _config = new NamiConfig().tryInit();
+        _config = new NamiConfig().init();
     }
 
     /**
@@ -43,7 +43,7 @@ public class Nami {
      */
     protected Nami(NamiConfig config) {
         _config = config;
-        config.tryInit();
+        config.init();
     }
 
     /**

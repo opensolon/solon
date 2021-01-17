@@ -72,7 +72,7 @@ public class NamiHandler implements InvocationHandler {
         }
 
         //2.配置初始化
-        config.tryInit();
+        config.init();
 
         //3.获取 or url
         String uri = config.getUri();
