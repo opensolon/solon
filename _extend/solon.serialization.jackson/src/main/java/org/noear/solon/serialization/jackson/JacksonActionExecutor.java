@@ -9,7 +9,7 @@ import org.noear.solon.core.wrap.ParamWrap;
 public class JacksonActionExecutor extends ActionExecutorDefault {
     private static final String label = "/json";
 
-    ObjectMapper mapper_serialize = new ObjectMapper();
+    ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public boolean matched(Context ctx, String ct) {
@@ -22,7 +22,7 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
 
     @Override
     protected Object changeBody(Context ctx) throws Exception {
-        return mapper_serialize.readTree(ctx.body());
+        return mapper.readTree(ctx.body());
     }
 
     @Override
@@ -41,7 +41,7 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
             if (tmp.has(p.getName())) {
                 JsonNode m1 = tmp.get(p.getName());
 
-                return mapper_serialize.treeToValue(m1, pt);
+                return mapper.treeToValue(m1, p.getType());
             } else if (ctx.paramMap().containsKey(p.getName())) {
                 //有可能是path变量
                 //
@@ -49,16 +49,16 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
             } else {
                 //return tmp.toObject(pt);
 
-                return mapper_serialize.treeToValue(tmp, pt);
+                return mapper.treeToValue(tmp, pt);
             }
         }
 
         if (tmp.isArray()) {
             //return tmp.toObject(pt);
-            return mapper_serialize.treeToValue(tmp, pt);
+            return mapper.treeToValue(tmp, pt);
         }
 
         //return tmp.val().getRaw();
-        return mapper_serialize.treeToValue(tmp, pt);
+        return mapper.treeToValue(tmp, pt);
     }
 }
