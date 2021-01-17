@@ -8,7 +8,7 @@ import java.lang.reflect.Type;
 /**
  * @author noear 2021/1/17 created
  */
-public class TypeReferenceImp extends TypeReference {
+public class TypeReferenceImp<T> extends TypeReference<T> {
     protected final Type _type2;
 
     public TypeReferenceImp(ParamWrap p) {

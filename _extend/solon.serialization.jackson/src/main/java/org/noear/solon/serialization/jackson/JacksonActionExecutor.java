@@ -43,7 +43,7 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
             if (tmp.has(p.getName())) {
                 JsonNode m1 = tmp.get(p.getName());
 
-                return mapper.readValues(mapper.treeAsTokens(m1), new TypeReferenceImp(p));
+                return mapper.readValue(mapper.treeAsTokens(m1), new TypeReferenceImp(p));
             } else if (ctx.paramMap().containsKey(p.getName())) {
                 //有可能是path变量
                 //
@@ -51,16 +51,16 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
             } else {
                 //return tmp.toObject(pt);
 
-                return mapper.readValues(mapper.treeAsTokens(tmp), new TypeReferenceImp(p));
+                return mapper.readValue(mapper.treeAsTokens(tmp), new TypeReferenceImp(p));
             }
         }
 
         if (tmp.isArray()) {
             //return tmp.toObject(pt);
-            return mapper.readValues(mapper.treeAsTokens(tmp), new TypeReferenceImp(p));
+            return mapper.readValue(mapper.treeAsTokens(tmp), new TypeReferenceImp(p));
         }
 
         //return tmp.val().getRaw();
-        return mapper.readValues(mapper.treeAsTokens(tmp), new TypeReferenceImp(p));
+        return mapper.readValue(mapper.treeAsTokens(tmp), new TypeReferenceImp(p));
     }
 }
