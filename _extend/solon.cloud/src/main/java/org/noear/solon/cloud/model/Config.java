@@ -3,6 +3,7 @@ package org.noear.solon.cloud.model;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.PropsLoader;
+import org.noear.solon.core.wrap.ClassWrap;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -39,7 +40,22 @@ public class Config {
     public Properties toProps() {
         if (_props == null) {
             _props = Utils.buildProperties(value);
+
+            _props.forEach((k,v)->{
+                if(v instanceof String) {
+                    String tmpV = (String) v;
+                    if (tmpV.startsWith("${") && tmpV.endsWith("}")) {
+                        String tmpK = tmpV.substring(2, tmpV.length() - 1);
+                        tmpV = _props.getProperty(tmpK);
+                        _props.put(k, tmpV);
+                    }
+                }
+            });
         }
         return _props;
+    }
+
+    public <T> T toBean(Class<T> clz) {
+        return ClassWrap.get(clz).newBy(toProps());
     }
 }
