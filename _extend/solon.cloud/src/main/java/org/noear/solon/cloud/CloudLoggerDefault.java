@@ -168,9 +168,4 @@ public class CloudLoggerDefault implements CloudLogger{
     public void error(String tag1, String tag2, String tag3, String tag4, String summary, Object content) {
 
     }
-
-    @Override
-    public void write(Level level, String tag1, Object content) {
-
-    }
 }

@@ -106,17 +106,4 @@ public interface CloudLogger {
     void error(String tag1, String tag2, String tag3, String summary, Object content);
 
     void error(String tag1, String tag2, String tag3, String tag4, String summary, Object content);
-
-
-    void write(Level level, Object content);
-
-    void write(Level level, String summary, Object content);
-
-    void write(Level level, String tag1, String summary, Object content);
-
-    void write(Level level, String tag1, String tag2, String summary, Object content);
-
-    void write(Level level, String tag1, String tag2, String tag3, String summary, Object content);
-
-    void write(Level level, String tag1, String tag2, String tag3, String tag4, String summary, Object content);
 }

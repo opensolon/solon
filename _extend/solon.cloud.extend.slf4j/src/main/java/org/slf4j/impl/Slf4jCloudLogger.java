@@ -1,8 +1,8 @@
 package org.slf4j.impl;
 
-import org.noear.solon.cloud.model.Level;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
+import org.slf4j.event.Level;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 /**
@@ -23,7 +23,7 @@ public class Slf4jCloudLogger implements Logger {
 
     @Override
     public boolean isTraceEnabled() {
-        return Slf4jCloudLoggerFactory.INSTANCE.getLevel().code <= Level.TRACE.code;
+        return Slf4jCloudLoggerFactory.INSTANCE.getLevel().toInt() <= Level.TRACE.toInt();
     }
 
     @Override
@@ -93,7 +93,7 @@ public class Slf4jCloudLogger implements Logger {
 
     @Override
     public boolean isDebugEnabled() {
-        return Slf4jCloudLoggerFactory.INSTANCE.getLevel().code <= Level.DEBUG.code;
+        return Slf4jCloudLoggerFactory.INSTANCE.getLevel().toInt() <= Level.DEBUG.toInt();
     }
 
     @Override
@@ -163,7 +163,7 @@ public class Slf4jCloudLogger implements Logger {
 
     @Override
     public boolean isInfoEnabled() {
-        return Slf4jCloudLoggerFactory.INSTANCE.getLevel().code <= Level.INFO.code;
+        return Slf4jCloudLoggerFactory.INSTANCE.getLevel().toInt() <= Level.INFO.toInt();
     }
 
     @Override
@@ -233,7 +233,7 @@ public class Slf4jCloudLogger implements Logger {
 
     @Override
     public boolean isWarnEnabled() {
-        return Slf4jCloudLoggerFactory.INSTANCE.getLevel().code <= Level.WARN.code;
+        return Slf4jCloudLoggerFactory.INSTANCE.getLevel().toInt() <= Level.WARN.toInt();
     }
 
     @Override
@@ -303,7 +303,7 @@ public class Slf4jCloudLogger implements Logger {
 
     @Override
     public boolean isErrorEnabled() {
-        return Slf4jCloudLoggerFactory.INSTANCE.getLevel().code <= Level.ERROR.code;
+        return Slf4jCloudLoggerFactory.INSTANCE.getLevel().toInt() <= Level.ERROR.toInt();
     }
 
     @Override
