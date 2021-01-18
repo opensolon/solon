@@ -5,7 +5,8 @@ import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 
 /**
- * @author noear 2021/1/18 created
+ * @author noear
+ * @since 1.2
  */
 public enum Slf4jCloudLoggerFactory implements ILoggerFactory {
     /**

@@ -6,7 +6,8 @@ import org.slf4j.Marker;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 /**
- * @author noear 2021/1/18 created
+ * @author noear
+ * @since 1.2
  */
 public class Slf4jCloudLogger implements Logger{
     private String name;
