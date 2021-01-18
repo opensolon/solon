@@ -72,13 +72,7 @@ public class XPluginImp implements Plugin {
         if (Solon.cfg().isDriftMode()) {
             if (CloudClient.discovery() != null) {
                 if (Utils.isNotEmpty(Solon.cfg().appName())) {
-                    Node node = new Node();
-                    node.service = Solon.cfg().appName();
-                    node.ip = LocalUtils.getLocalAddress();
-                    node.port = Solon.global().port();
-                    node.protocol = "http";
-
-                    CloudClient.discovery().deregister(node);
+                    CloudClient.discovery().deregister(Node.local());
                 }
             }
         }

@@ -60,13 +60,12 @@ public class CloudClient {
         if (Utils.isNotEmpty(Solon.cfg().appName())) {
             Node node = new Node();
             node.service = Solon.cfg().appName();
-            node.port = Solon.global().port();
             node.protocol = "http";
 
             if (Utils.isEmpty(hostname)) {
-                node.ip = LocalUtils.getLocalAddress();
+                node.address = LocalUtils.getLocalAddress() + ":" + Solon.global().port();
             } else {
-                node.ip = hostname;
+                node.address = hostname + ":" + Solon.global().port();
             }
 
             CloudClient.discovery().register(node);

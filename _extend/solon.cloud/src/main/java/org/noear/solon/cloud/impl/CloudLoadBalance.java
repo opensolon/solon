@@ -55,9 +55,9 @@ public class CloudLoadBalance implements LoadBalance {
                 Node node = discovery.cluster.get(index++ % count);
 
                 if (Utils.isEmpty(node.protocol)) {
-                    return "http://" + node.ip + ":" + node.port;
+                    return "http://" + node.address;
                 } else {
-                    return node.protocol + "://" + node.ip + ":" + node.port;
+                    return node.protocol + "://" + node.address;
                 }
             }
         }

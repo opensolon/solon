@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.model;
 
+import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.cloud.utils.LocalUtils;
 
@@ -44,6 +45,8 @@ public class Node implements Serializable {
             local = new Node();
             local.address = LocalUtils.getLocalAddress() + ":"+Solon.global().port();
             local.service = Solon.cfg().appName();
+            local.protocol = "http";
+            local.meta = ONode.stringify(Solon.cfg().argx());
         }
 
         return local;
