@@ -38,13 +38,13 @@ public class XPluginImp implements Plugin {
             CloudManager.register(anno, handler);
 
             if (CloudClient.config() != null) {
-                Config config = CloudClient.config().get(anno.group(), anno.key());
+                Config config = CloudClient.config().get(anno.group(), anno.value());
                 if (config != null) {
                     handler.handler(config);
                 }
 
                 //关注配置
-                CloudClient.config().attention(anno.group(), anno.key(), handler);
+                CloudClient.config().attention(anno.group(), anno.value(), handler);
             }
         });
 
@@ -54,7 +54,7 @@ public class XPluginImp implements Plugin {
 
                 if (CloudClient.event() != null) {
                     //关注事件
-                    CloudClient.event().attention(anno.queue(), anno.topic(), bw.raw());
+                    CloudClient.event().attention(anno.queue(), anno.value(), bw.raw());
                 }
             }
         });

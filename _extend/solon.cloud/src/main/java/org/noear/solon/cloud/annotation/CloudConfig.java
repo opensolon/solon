@@ -1,5 +1,7 @@
 package org.noear.solon.cloud.annotation;
 
+import org.noear.solon.annotation.Note;
+
 import java.lang.annotation.*;
 
 /**
@@ -12,7 +14,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface CloudConfig {
-    String key();
+    @Note("key")
+    String value();
 
     /**
      * 分组 （对某些框架来讲，可能没用处）
