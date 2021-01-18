@@ -4,12 +4,20 @@ package org.noear.solon.cloud;
  * @author noear 2021/1/17 created
  */
 public interface CloudLogger {
-    static CloudLogger get(String name){
-        return CloudClient.log().getLogger(name);
+    static CloudLogger get(String name) {
+        if (CloudClient.log() == null) {
+            return CloudLoggerDefault.instance;
+        } else {
+            return CloudClient.log().getLogger(name);
+        }
     }
 
     static CloudLogger get(String name, Class<?> clz) {
-        return CloudClient.log().getLogger(name, clz);
+        if (CloudClient.log() == null) {
+            return CloudLoggerDefault.instance;
+        } else {
+            return CloudClient.log().getLogger(name, clz);
+        }
     }
 
 
