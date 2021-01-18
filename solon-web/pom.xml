@@ -15,56 +15,10 @@
     <packaging>jar</packaging>
 
     <dependencies>
-        <!-- 内核 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
+            <artifactId>solon-api</artifactId>
         </dependency>
-
-        <!-- Http 启动器 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jlhttp</artifactId>
-        </dependency>
-
-        <!-- 静态文件支持组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.staticfiles</artifactId>
-        </dependency>
-
-        <!-- 提供事务支持 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.data</artifactId>
-        </dependency>
-
-        <!-- 加强的动态代理支持组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.aspect</artifactId>
-        </dependency>
-
-        <!-- 验证扩展组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.validation</artifactId>
-        </dependency>
-
-        <!-- Json序列化支持组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.snack3</artifactId>
-        </dependency>
-
-        <!-- yml配置支持组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.properties.yaml</artifactId>
-        </dependency>
-
-
-        <!-- 相对于 solon-api 多出来的内容： -->
 
         <!-- 本地SessionSate支持组件 -->
         <dependency>

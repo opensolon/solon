@@ -15,79 +15,16 @@
     <packaging>jar</packaging>
 
     <dependencies>
-        <!-- 内核 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
+            <artifactId>solon-rpc</artifactId>
         </dependency>
 
-        <!-- Http 启动器 -->
+        <!-- 注册与发现组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jetty</artifactId>
+            <artifactId>nacos-solon-plugin</artifactId>
         </dependency>
-
-        <!-- 静态文件支持组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.staticfiles</artifactId>
-        </dependency>
-
-        <!-- 提供事务支持 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.data</artifactId>
-        </dependency>
-
-        <!-- 加强的动态代理支持组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.aspect</artifactId>
-        </dependency>
-
-        <!-- 验证扩展组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.validation</artifactId>
-        </dependency>
-
-        <!-- Json序列化支持组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.snack3</artifactId>
-        </dependency>
-
-        <!-- freemarker模板支持组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.view.freemarker</artifactId>
-        </dependency>
-
-        <!-- yml配置支持组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.properties.yaml</artifactId>
-        </dependency>
-
-        <!-- RPC 框架 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>dubbo-solon-plugin</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo-registry-nacos</artifactId>
-            <version>${dubbo.ver}</version>
-        </dependency>
-
-        <!-- nacos 注册框架 -->
-        <dependency>
-            <groupId>com.alibaba.nacos</groupId>
-            <artifactId>nacos-client</artifactId>
-            <version>1.3.1</version>
-        </dependency>
-
     </dependencies>
 
 </project>
