@@ -6,6 +6,7 @@ import org.noear.solon.core.PropsLoader;
 import org.noear.solon.core.wrap.ClassWrap;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -41,17 +42,18 @@ public class Config {
         if (_props == null) {
             _props = Utils.buildProperties(value);
 
-            _props.forEach((k,v)->{
-                if(v instanceof String) {
-                    String tmpV = (String) v;
+            for (Map.Entry<Object, Object> kv : _props.entrySet()) {
+                if (kv.getValue() instanceof String) {
+                    String tmpV = (String) kv.getValue();
                     if (tmpV.startsWith("${") && tmpV.endsWith("}")) {
                         String tmpK = tmpV.substring(2, tmpV.length() - 1);
                         tmpV = _props.getProperty(tmpK);
-                        _props.put(k, tmpV);
+                        _props.put(kv.getKey(), tmpV);
                     }
                 }
-            });
+            }
         }
+
         return _props;
     }
 
