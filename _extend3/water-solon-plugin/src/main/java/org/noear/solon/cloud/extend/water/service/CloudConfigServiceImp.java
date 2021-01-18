@@ -1,5 +1,7 @@
 package org.noear.solon.cloud.extend.water.service;
 
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigService;
@@ -17,6 +19,10 @@ import java.util.Map;
 public class CloudConfigServiceImp implements CloudConfigService {
     @Override
     public Config get(String group, String key) {
+        if(Utils.isEmpty(group)){
+            group = Solon.cfg().appGroup();
+        }
+
         ConfigM cfg = WaterClient.Config.get(group, key);
         return new Config(key, cfg.value);
     }
@@ -24,6 +30,10 @@ public class CloudConfigServiceImp implements CloudConfigService {
     @Override
     public boolean set(String group, String key, String value) {
         try {
+            if(Utils.isEmpty(group)){
+                group = Solon.cfg().appGroup();
+            }
+
             WaterClient.Config.set(group, key, value);
             return true;
         } catch (IOException ex) {
