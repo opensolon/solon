@@ -1,7 +1,5 @@
 package org.noear.solon.cloud;
 
-import org.noear.solon.cloud.model.Level;
-
 /**
  * @author noear 2021/1/18 created
  */

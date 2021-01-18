@@ -1,7 +1,6 @@
 package org.noear.solon.cloud.service;
 
 import org.noear.solon.cloud.CloudLogger;
-import org.noear.solon.cloud.model.Level;
 
 /**
  * 云端日志服务
