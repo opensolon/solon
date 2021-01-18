@@ -23,7 +23,7 @@ public class CloudProps {
     private String DISCOVERY_HEALTH_DETECTOR = "solon.cloud.@@.discovery.healthDetector";
 
     private String EVENT_ENABLE = "solon.cloud.@@.event.enable";
-    private String EVENT_SIGNATURE = "solon.cloud.@@.event.signature";
+    private String EVENT_SEAL = "solon.cloud.@@.event.seal";
 
     public CloudProps(String frame) {
         SERVER = SERVER.replace("@@", frame);
@@ -43,7 +43,7 @@ public class CloudProps {
         DISCOVERY_HEALTH_DETECTOR = DISCOVERY_HEALTH_DETECTOR.replace("@@", frame);
 
         EVENT_ENABLE = EVENT_ENABLE.replace("@@", frame);
-        EVENT_SIGNATURE = EVENT_SIGNATURE.replace("@@", frame);
+        EVENT_SEAL = EVENT_SEAL.replace("@@", frame);
     }
 
 
@@ -112,7 +112,7 @@ public class CloudProps {
     public boolean getEventEnable() {
         return Solon.cfg().getBool(EVENT_ENABLE, true);
     }
-    public String getEventSignature() {
-        return Solon.cfg().get(EVENT_SIGNATURE);
+    public String getEventSeal() {
+        return Solon.cfg().get(EVENT_SEAL);
     }
 }

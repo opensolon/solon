@@ -60,7 +60,7 @@ public class WaterAdapterImp extends WaterAdapter {
 
     @Override
     public String service_secretKey() {
-        return WaterProps.instance.getEventSecretKey();
+        return WaterProps.instance.getEventSeal();
     }
 
 
