@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,11 +10,22 @@ import java.util.List;
  * @author noear
  * @since 1.2
  */
-public class Discovery {
+public class Discovery implements Serializable {
     /**
      * 服务名
      */
     public String service;
+
+    /**
+     * 代理
+     * */
+    public String agent;
+
+    /**
+     * 策略
+     * */
+    public String policy;
+
     /**
      * 集群
      */

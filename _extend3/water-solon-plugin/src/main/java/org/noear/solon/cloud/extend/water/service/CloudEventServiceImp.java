@@ -8,7 +8,8 @@ import org.noear.solon.cloud.service.CloudEventService;
 import org.noear.water.WaterClient;
 
 /**
- * @author noear 2021/1/17 created
+ * @author noear
+ * @since 1.2
  */
 public class CloudEventServiceImp implements CloudEventService {
     @Override

@@ -4,6 +4,7 @@ import org.noear.solon.core.LoadBalance;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 /**
  * 负载均衡工厂
@@ -12,13 +13,13 @@ import java.util.Map;
  * @since 1.2
  */
 public class CloudLoadBalanceFactory implements LoadBalance.Factory {
-    public static final LoadBalance.Factory instance = new CloudLoadBalanceFactory();
+    public static final CloudLoadBalanceFactory instance = new CloudLoadBalanceFactory();
 
-    private Map<String, LoadBalance> cached = new HashMap<>();
+    private Map<String, CloudLoadBalance> cached = new HashMap<>();
 
     @Override
     public LoadBalance create(String service) {
-        LoadBalance tmp = cached.get(service);
+        CloudLoadBalance tmp = cached.get(service);
 
         if (tmp == null) {
             synchronized (service.intern()) {
@@ -33,7 +34,18 @@ public class CloudLoadBalanceFactory implements LoadBalance.Factory {
         return tmp;
     }
 
-    protected LoadBalance createDo(String service){
+    /**
+     * 可以被子类重写
+     */
+    protected CloudLoadBalance createDo(String service) {
         return new CloudLoadBalance(service);
+    }
+
+    public CloudLoadBalance get(String service) {
+        return cached.get(service);
+    }
+
+    public void forEach(BiConsumer<String, CloudLoadBalance> action) {
+        cached.forEach(action);
     }
 }

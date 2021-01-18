@@ -3,6 +3,10 @@ package org.noear.solon.cloud.extend.water.integration;
 import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.impl.CloudLoadBalance;
+import org.noear.solon.cloud.impl.CloudLoadBalanceFactory;
+import org.noear.solon.cloud.model.Discovery;
+import org.noear.solon.cloud.model.Node;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.Context;
 import org.noear.water.AbstractWaterAdapter;
@@ -92,15 +96,16 @@ abstract class WaterAdapterBase extends AbstractWaterAdapter {
         super.cacheUpdateHandler(tag);
         String[] ss = tag.split(":");
         if ("upstream".equals(ss[0])) {
-//            WaterUpstream tmp = WaterUpstream.getOnly(ss[1]);
-//            if (tmp != null) {
-//                try {
-//                    tmp.reload();
-//                } catch (Exception ex) {
-//                    ex.printStackTrace();//最后日志记录到服务端
-//                    logger.error(ss[1], "reload", "", ex);
-//                }
-//            }
+            String service = ss[1];
+            CloudLoadBalance tmp = CloudLoadBalanceFactory.instance.get(service);
+            if (tmp != null) {
+                try {
+                    WaterClient.Registry.discover(service, Node.local().service, Node.local().address);
+                } catch (Exception ex) {
+                    ex.printStackTrace();//最后日志记录到服务端
+                    logger.error(ss[1], "reload", "", ex);
+                }
+            }
         }
     }
 
@@ -112,30 +117,34 @@ abstract class WaterAdapterBase extends AbstractWaterAdapter {
             //用于检查负责的情况
             ONode odata = new ONode().asObject();
 
-//            if ("*".equals(ups)) {
-//                WaterUpstream._map.forEach((k, v) -> {
-//                    ONode n = odata.get(k);
-//
-//                    n.set("service", k);
-//                    ONode nl = n.get("upstream").asArray();
-//                    v._nodes.forEach((s) -> {
-//                        nl.add(s);
-//                    });
-//                });
-//            } else {
-//                WaterUpstream v = WaterUpstream.getOnly(ups);
-//                if (v != null) {
-//                    ONode n = odata.get(ups);
-//
-//                    n.set("service", ups);
-//                    n.set("agent", v.agent());
-//                    n.set("policy", v.policy());
-//                    ONode nl = n.get("upstream").asArray();
-//                    v._nodes.forEach((s) -> {
-//                        nl.add(s);
-//                    });
-//                }
-//            }
+
+            if ("*".equals(ups)) {
+                CloudLoadBalanceFactory.instance.forEach((k, v) -> {
+                    ONode n = odata.get(k);
+
+                    n.set("service", k);
+                    ONode nl = n.get("upstream").asArray();
+                    v.getDiscovery().cluster.forEach((s) -> {
+                        nl.add(s.address);
+                    });
+                });
+            } else {
+                CloudLoadBalance v = CloudLoadBalanceFactory.instance.get(ups);
+                if (v != null) {
+                    Discovery d = v.getDiscovery();
+                    if (d != null) {
+                        ONode n = odata.get(ups);
+
+                        n.set("service", ups);
+                        n.set("agent", d.agent);
+                        n.set("policy", d.policy);
+                        ONode nl = n.get("upstream").asArray();
+                        d.cluster.forEach((s) -> {
+                            nl.add(s.address);
+                        });
+                    }
+                }
+            }
 
             return odata.toJson();
         }

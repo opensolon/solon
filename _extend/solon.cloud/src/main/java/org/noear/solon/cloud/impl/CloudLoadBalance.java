@@ -31,6 +31,14 @@ public class CloudLoadBalance implements LoadBalance {
         }
     }
 
+    public String getService(){
+        return service;
+    }
+
+    public Discovery getDiscovery(){
+        return discovery;
+    }
+
     @Override
     public String getServer() {
         if (discovery == null) {

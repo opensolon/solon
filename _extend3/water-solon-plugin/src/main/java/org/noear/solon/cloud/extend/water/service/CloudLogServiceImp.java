@@ -4,7 +4,8 @@ import org.noear.solon.cloud.CloudLogger;
 import org.noear.solon.cloud.service.CloudLogService;
 
 /**
- * @author noear 2021/1/17 created
+ * @author noear
+ * @since 1.2
  */
 public class CloudLogServiceImp implements CloudLogService {
     @Override

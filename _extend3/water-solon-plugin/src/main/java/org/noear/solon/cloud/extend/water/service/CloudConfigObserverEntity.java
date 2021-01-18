@@ -7,7 +7,8 @@ import org.noear.water.model.ConfigM;
 import org.noear.water.model.ConfigSetM;
 
 /**
- * @author noear 2021/1/17 created
+ * @author noear
+ * @since 1.2
  */
 public class CloudConfigObserverEntity implements ConfigHandler {
     public String group;
