@@ -16,6 +16,12 @@ public @interface NamiClient {
      * 3. name
      * */
     String value() default "";
+
+    /**
+     * 组
+     * */
+    //String group() default "";
+
     /**
      * 添加头信息
      *
