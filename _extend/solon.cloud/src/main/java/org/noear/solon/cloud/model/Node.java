@@ -41,12 +41,15 @@ public class Node implements Serializable {
 
     private static Node local;
     public static Node local(){
-        if(local == null){
+        if(local == null) {
             local = new Node();
-            local.address = LocalUtils.getLocalAddress() + ":"+Solon.global().port();
+            local.address = LocalUtils.getLocalAddress() + ":" + Solon.global().port();
             local.service = Solon.cfg().appName();
             local.protocol = "http";
-            local.meta = ONode.stringify(Solon.cfg().argx());
+
+            ONode tmp = ONode.load(Solon.cfg().argx());
+            tmp.remove("server.port");
+            local.meta = tmp.toJson();
         }
 
         return local;

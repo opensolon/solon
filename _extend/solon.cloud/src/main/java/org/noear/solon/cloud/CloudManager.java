@@ -36,7 +36,6 @@ public class CloudManager {
 
     protected final static Map<CloudConfig, CloudConfigHandler> configHandlerMap = new LinkedHashMap<>();
     protected final static Map<CloudEvent, CloudEventHandler> eventHandlerMap = new LinkedHashMap<>();
-    //protected final static Map<String, CloudEventHandler> eventHandlerMap2 = new LinkedHashMap<>();
 
     /**
      * 登记配置订阅
