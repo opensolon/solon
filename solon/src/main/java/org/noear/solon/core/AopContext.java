@@ -18,6 +18,7 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 /**
@@ -58,14 +59,7 @@ public class AopContext extends BeanContainer {
 
                     //有参数的bean，采用线程池处理；所以需要锁等待
                     //
-                    tryBuildBean(m_an, mWrap, bw, (p1) -> {
-                        Inject tmp = p1.getAnnotation(Inject.class);
-                        if (tmp == null) {
-                            return null;
-                        } else {
-                            return tmp.value();
-                        }
-                    });
+                    tryBuildBean(m_an, mWrap, bw);
                 }
             }
 
@@ -340,9 +334,8 @@ public class AopContext extends BeanContainer {
      * @param anno      bean 注解
      * @param mWrap     方法包装器
      * @param bw        bean 包装器
-     * @param injectVal 参数注入
      */
-    protected void tryBuildBean(Bean anno, MethodWrap mWrap, BeanWrap bw, Function<Parameter, String> injectVal) throws Exception {
+    protected void tryBuildBean(Bean anno, MethodWrap mWrap, BeanWrap bw) throws Exception {
         int size2 = mWrap.getParamWraps().length;
 
         if (size2 == 0) {
@@ -366,7 +359,23 @@ public class AopContext extends BeanContainer {
             //1.1.添加要收集的参数；并为参数注入（注入是异步的；全部完成后，VarGather 会回调）
             for (ParamWrap p1 : mWrap.getParamWraps()) {
                 VarHolder p2 = gather.add(p1.getParameter());
-                beanInject(p2, injectVal.apply(p1.getParameter()));
+                tryParameterInject(p2, p1.getParameter());
+            }
+        }
+    }
+
+    protected void tryParameterInject(VarHolder varH, Parameter p) {
+        Annotation[] annoS = p.getDeclaredAnnotations();
+
+        if (annoS.length == 0) {
+            beanInject(varH, null);
+        } else {
+            for (Annotation anno : annoS) {
+                BeanInjector injector = beanInjectors.get(anno.annotationType());
+                if (injector != null) {
+                    injector.doInject(varH, anno);
+                    break;
+                }
             }
         }
     }
