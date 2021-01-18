@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.2
  */
-@Target({ElementType.TYPE, ElementType.FIELD})
+@Target({ElementType.TYPE, ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface CloudConfig {
