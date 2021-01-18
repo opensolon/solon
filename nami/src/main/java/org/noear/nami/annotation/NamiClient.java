@@ -18,11 +18,6 @@ public @interface NamiClient {
     String value() default "";
 
     /**
-     * 组
-     * */
-    //String group() default "";
-
-    /**
      * 添加头信息
      *
      * 例：{"xxx=xxx","yyy=yyy"}
