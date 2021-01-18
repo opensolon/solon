@@ -29,11 +29,11 @@ public class CloudConfigServiceImp implements CloudConfigService {
 
     @Override
     public boolean set(String group, String key, String value) {
-        try {
-            if(Utils.isEmpty(group)){
-                group = Solon.cfg().appGroup();
-            }
+        if(Utils.isEmpty(group)){
+            group = Solon.cfg().appGroup();
+        }
 
+        try {
             WaterClient.Config.set(group, key, value);
             return true;
         } catch (IOException ex) {
@@ -54,6 +54,10 @@ public class CloudConfigServiceImp implements CloudConfigService {
         if (observerMap.containsKey(observer)) {
             return;
         } else {
+            if(Utils.isEmpty(group)){
+                group = Solon.cfg().appGroup();
+            }
+
             CloudConfigObserverEntity entity = new CloudConfigObserverEntity(group, key, observer);
             observerMap.put(observer, entity);
 

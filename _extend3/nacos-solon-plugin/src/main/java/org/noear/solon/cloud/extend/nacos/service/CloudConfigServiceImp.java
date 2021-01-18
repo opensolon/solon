@@ -4,6 +4,7 @@ import com.alibaba.nacos.api.config.ConfigFactory;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.exception.NacosException;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.model.Config;
@@ -44,7 +45,12 @@ public class CloudConfigServiceImp implements CloudConfigService {
 
     @Override
     public Config get(String group, String key) {
+        if(Utils.isEmpty(group)){
+            group = Solon.cfg().appGroup();
+        }
+
         //String getConfig(String dataId, String group, long timeoutMs)
+
         try {
             group = groupReview(group);
             String value = real.getConfig(key, group, 3000);
@@ -56,7 +62,12 @@ public class CloudConfigServiceImp implements CloudConfigService {
 
     @Override
     public boolean set(String group, String key, String value) {
+        if(Utils.isEmpty(group)){
+            group = Solon.cfg().appGroup();
+        }
+
         //boolean publishConfig(String dataId, String group, String content) throws NacosException
+
         try {
             group = groupReview(group);
             return real.publishConfig(key, group, value);
@@ -67,6 +78,10 @@ public class CloudConfigServiceImp implements CloudConfigService {
 
     @Override
     public boolean remove(String group, String key) {
+        if(Utils.isEmpty(group)){
+            group = Solon.cfg().appGroup();
+        }
+
         //boolean removeConfig(String dataId, String group) throws NacosException
         try {
             group = groupReview(group);
@@ -78,6 +93,10 @@ public class CloudConfigServiceImp implements CloudConfigService {
 
     @Override
     public void attention(String group, String key, CloudConfigHandler observer) {
+        if(Utils.isEmpty(group)){
+            group = Solon.cfg().appGroup();
+        }
+
         try {
             group = groupReview(group);
             real.addListener(key, group, new Listener() {
