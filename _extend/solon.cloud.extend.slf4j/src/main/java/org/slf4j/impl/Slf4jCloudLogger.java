@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.slf4j;
+package org.slf4j.impl;
 
 import org.noear.solon.cloud.model.Level;
 import org.slf4j.Logger;
