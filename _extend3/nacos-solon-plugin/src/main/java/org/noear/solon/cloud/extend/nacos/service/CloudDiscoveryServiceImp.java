@@ -44,8 +44,14 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
 
     @Override
     public void register(Node instance) {
+        String[] ss = instance.address.split(":");
+
+        if (ss.length != 2) {
+            throw new IllegalArgumentException("Instance.address error");
+        }
+
         try {
-            real.registerInstance(instance.service, REGISTER_GROUP, instance.ip, instance.port);
+            real.registerInstance(instance.service, REGISTER_GROUP, ss[0], Integer.parseInt(ss[0]));
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
         }
@@ -53,8 +59,14 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
 
     @Override
     public void deregister(Node instance) {
+        String[] ss = instance.address.split(":");
+
+        if (ss.length != 2) {
+            throw new IllegalArgumentException("Instance.address error");
+        }
+
         try {
-            real.deregisterInstance(instance.service, REGISTER_GROUP, instance.ip, instance.port);
+            real.deregisterInstance(instance.service, REGISTER_GROUP, ss[0], Integer.parseInt(ss[1]));
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
         }
@@ -70,8 +82,7 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
             for (Instance i1 : list) {
                 Node n1 = new Node();
                 n1.service = service;
-                n1.ip = i1.getIp();
-                n1.port = i1.getPort();
+                n1.address = i1.getIp() +":"+ i1.getPort();
                 n1.weight = i1.getWeight();
 
                 discovery.cluster.add(n1);

@@ -65,7 +65,11 @@ public class CloudClient {
             if (Utils.isEmpty(hostname)) {
                 node.address = LocalUtils.getLocalAddress() + ":" + Solon.global().port();
             } else {
-                node.address = hostname + ":" + Solon.global().port();
+                if (hostname.contains(":")) {
+                    node.address = hostname;
+                } else {
+                    node.address = hostname + ":" + Solon.global().port();
+                }
             }
 
             CloudClient.discovery().register(node);
