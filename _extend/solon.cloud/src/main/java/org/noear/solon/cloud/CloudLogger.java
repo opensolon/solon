@@ -24,50 +24,99 @@ public interface CloudLogger {
 
 
     String getName();
+
     void setName(String name);
 
-    default boolean isTraceEnabled(){return true;}
+    default boolean isTraceEnabled() {
+        return true;
+    }
+
     void trace(Object content);
+
     void trace(String summary, Object content);
+
     void trace(String tag1, String summary, Object content);
+
     void trace(String tag1, String tag2, String summary, Object content);
+
     void trace(String tag1, String tag2, String tag3, String summary, Object content);
+
     void trace(String tag1, String tag2, String tag3, String tag4, String summary, Object content);
 
-    default boolean isDebugEnabled(){return true;}
+    default boolean isDebugEnabled() {
+        return true;
+    }
+
     void debug(Object content);
+
     void debug(String summary, Object content);
+
     void debug(String tag1, String summary, Object content);
+
     void debug(String tag1, String tag2, String summary, Object content);
+
     void debug(String tag1, String tag2, String tag3, String summary, Object content);
+
     void debug(String tag1, String tag2, String tag3, String tag4, String summary, Object content);
 
-    default boolean isInfoEnabled(){return true;}
+    default boolean isInfoEnabled() {
+        return true;
+    }
+
     void info(Object content);
+
     void info(String summary, Object content);
+
     void info(String tag1, String summary, Object content);
+
     void info(String tag1, String tag2, String summary, Object content);
+
     void info(String tag1, String tag2, String tag3, String summary, Object content);
+
     void info(String tag1, String tag2, String tag3, String tag4, String summary, Object content);
 
-    default boolean isWarnEnabled(){return true;}
+    default boolean isWarnEnabled() {
+        return true;
+    }
+
     void warn(Object content);
+
     void warn(String summary, Object content);
+
     void warn(String tag1, String summary, Object content);
+
     void warn(String tag1, String tag2, String summary, Object content);
+
     void warn(String tag1, String tag2, String tag3, String summary, Object content);
+
     void warn(String tag1, String tag2, String tag3, String tag4, String summary, Object content);
 
-    default boolean isErrorEnabled(){return true;}
+    default boolean isErrorEnabled() {
+        return true;
+    }
+
     void error(Object content);
+
     void error(String summary, Object content);
+
     void error(String tag1, String summary, Object content);
+
     void error(String tag1, String tag2, String summary, Object content);
+
     void error(String tag1, String tag2, String tag3, String summary, Object content);
+
     void error(String tag1, String tag2, String tag3, String tag4, String summary, Object content);
 
-    /**
-     * for slf4j
-     * */
-    void write(Level level, String tag1, Object content);
+
+    void write(Level level, Object content);
+
+    void write(Level level, String summary, Object content);
+
+    void write(Level level, String tag1, String summary, Object content);
+
+    void write(Level level, String tag1, String tag2, String summary, Object content);
+
+    void write(Level level, String tag1, String tag2, String tag3, String summary, Object content);
+
+    void write(Level level, String tag1, String tag2, String tag3, String tag4, String summary, Object content);
 }

@@ -1,10 +1,13 @@
 package org.noear.solon.cloud;
 
+import org.noear.solon.cloud.model.Level;
+
 /**
  * @author noear 2021/1/18 created
  */
 public class CloudLoggerDefault implements CloudLogger{
     public static final CloudLogger instance = new CloudLoggerDefault();
+
 
     @Override
     public String getName() {
@@ -163,6 +166,11 @@ public class CloudLoggerDefault implements CloudLogger{
 
     @Override
     public void error(String tag1, String tag2, String tag3, String tag4, String summary, Object content) {
+
+    }
+
+    @Override
+    public void write(Level level, String tag1, Object content) {
 
     }
 }
