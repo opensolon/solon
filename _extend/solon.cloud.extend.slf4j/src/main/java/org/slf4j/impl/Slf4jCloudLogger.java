@@ -9,7 +9,7 @@ import org.slf4j.helpers.MessageFormatter;
  * @author noear
  * @since 1.2
  */
-public class Slf4jCloudLogger implements Logger{
+public class Slf4jCloudLogger implements Logger {
     private String name;
 
     public Slf4jCloudLogger(String name) {
@@ -405,6 +405,6 @@ public class Slf4jCloudLogger implements Logger{
     }
 
     private void asyncLog(Level level, String content) {
-        Slf4jCloudLoggerFactory.INSTANCE.write(name, level, content);
+        Slf4jCloudLoggerFactory.INSTANCE.write(level, name, content);
     }
 }

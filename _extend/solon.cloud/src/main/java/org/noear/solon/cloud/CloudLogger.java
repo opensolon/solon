@@ -1,5 +1,7 @@
 package org.noear.solon.cloud;
 
+import org.noear.solon.cloud.model.Level;
+
 /**
  * @author noear 2021/1/17 created
  */
@@ -63,4 +65,9 @@ public interface CloudLogger {
     void error(String tag1, String tag2, String summary, Object content);
     void error(String tag1, String tag2, String tag3, String summary, Object content);
     void error(String tag1, String tag2, String tag3, String tag4, String summary, Object content);
+
+    /**
+     * for slf4j
+     * */
+    void write(Level level, String tag1, Object content);
 }

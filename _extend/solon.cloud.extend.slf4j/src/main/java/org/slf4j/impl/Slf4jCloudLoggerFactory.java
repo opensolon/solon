@@ -22,7 +22,7 @@ public enum Slf4jCloudLoggerFactory implements ILoggerFactory {
 
     /**
      * 书写器
-     * */
+     */
     private volatile Slf4jCloudWriter writer = new Slf4jCloudWriterImp();
 
     Slf4jCloudLoggerFactory() {
@@ -46,11 +46,11 @@ public enum Slf4jCloudLoggerFactory implements ILoggerFactory {
         this.writer = writer;
     }
 
-    public void write(String name, Level level, String content) {
+    public void write(Level level, String tag1, String content) {
         if (writer == null) {
             return;
         }
 
-        writer.write(name, level, content);
+        writer.write(level, tag1, content);
     }
 }

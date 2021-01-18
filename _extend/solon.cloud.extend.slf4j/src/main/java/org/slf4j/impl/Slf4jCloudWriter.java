@@ -8,5 +8,5 @@ import org.noear.solon.cloud.model.Level;
  * @since 1.2
  * */
 public interface Slf4jCloudWriter {
-    void write(String name, Level level, String content);
+    void write(Level level, String name, String content);
 }

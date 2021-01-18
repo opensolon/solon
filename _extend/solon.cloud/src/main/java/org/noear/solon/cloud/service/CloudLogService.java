@@ -13,6 +13,4 @@ public interface CloudLogService {
     CloudLogger getLogger(String name);
 
     CloudLogger getLogger(String name, Class<?> clz);
-
-    void write(String name, Level level, Object content);
 }
