@@ -1,0 +1,2 @@
+org.springframework.context.ApplicationListener=org.noear.solon.extend.springboot.ApplicationStartingSolon
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=org.noear.solon.extend.springboot.AutoConfigurationSolon

@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>springboot-solon-plugin</artifactId>
+    <artifactId>solon-springboot-starter</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

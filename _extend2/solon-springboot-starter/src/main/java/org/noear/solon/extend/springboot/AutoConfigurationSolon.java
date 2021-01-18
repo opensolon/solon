@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 1.2
  */
 @Configuration
-public class ConfigurationSolon  {
+public class AutoConfigurationSolon {
     @Bean
     public BeanPostProcessor beanPostProcessor(){
         return new BeanPostProcessorSolon();

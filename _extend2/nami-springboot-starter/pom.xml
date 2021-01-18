@@ -26,7 +26,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>springboot-solon-plugin</artifactId>
+            <artifactId>solon-springboot-starter</artifactId>
         </dependency>
 
         <dependency>

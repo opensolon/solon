@@ -13,5 +13,5 @@
 | org.noear:mybatis-solon-plugin | mybatis 适配插件|
 | org.noear:mybatis-sqlhelper-solon-plugin | mybatis-sqlhelper 适配插件|
 | org.noear:quartz-solon-plugin | quartz 适配插件|
-| org.noear:springboot-solon-plugin | springboot 适配插件|
+| org.noear:solon-springboot-starter | springboot 适配插件|
 | org.noear:weed3-solon-plugin | weed3 适配插件|

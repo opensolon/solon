@@ -578,7 +578,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>springboot-solon-plugin</artifactId>
+                <artifactId>solon-springboot-starter</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
@@ -989,7 +989,7 @@
         <module>../_extend2/mybatis-sqlhelper-solon-plugin</module>
         <module>../_extend2/quartz-solon-plugin</module>
 
-        <module>../_extend2/springboot-solon-plugin</module>
+        <module>../_extend2/solon-springboot-starter</module>
 
         <module>../_extend2/nami-springboot-starter</module>
 
