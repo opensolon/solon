@@ -1,7 +1,5 @@
 package org.noear.solon.cloud.utils;
 
-import org.noear.solon.Solon;
-
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -10,7 +8,8 @@ import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 /**
- * @author noear 2021/1/16 created
+ * @author noear
+ * @since 1.2
  */
 
 public class LocalUtils {
@@ -40,10 +39,6 @@ public class LocalUtils {
                         lowest = ifc.getIndex();
                     } else if (result != null) {
                         continue;
-                    }
-
-                    if (Solon.cfg().isDebugMode()) {
-                        System.out.println("Testing network interface: " + ifc.getDisplayName());
                     }
 
                     for (Enumeration<InetAddress> addrs = ifc.getInetAddresses(); addrs.hasMoreElements(); ) {
