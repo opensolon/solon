@@ -4,6 +4,7 @@ import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
+import org.apache.http.util.TextUtils;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
@@ -55,7 +56,11 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
         }
 
         try {
-            real.registerInstance(instance.service, group, ss[0], Integer.parseInt(ss[1]));
+            if (Utils.isEmpty(group)) {
+                real.registerInstance(instance.service, ss[0], Integer.parseInt(ss[1]));
+            } else {
+                real.registerInstance(instance.service, group, ss[0], Integer.parseInt(ss[1]));
+            }
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
         }
@@ -74,7 +79,11 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
         }
 
         try {
-            real.deregisterInstance(instance.service, group, ss[0], Integer.parseInt(ss[1]));
+            if (Utils.isEmpty(group)) {
+                real.deregisterInstance(instance.service, ss[0], Integer.parseInt(ss[1]));
+            } else {
+                real.deregisterInstance(instance.service, group, ss[0], Integer.parseInt(ss[1]));
+            }
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
         }
@@ -89,7 +98,13 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
         Discovery discovery = new Discovery(service);
 
         try {
-            List<Instance> list = real.selectInstances(service, group, true);
+            List<Instance> list = null;
+
+            if (Utils.isEmpty(group)) {
+                list = real.selectInstances(service, true);
+            } else {
+                list = real.selectInstances(service, group, true);
+            }
 
             for (Instance i1 : list) {
                 Node n1 = new Node();
@@ -114,10 +129,19 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
 
         String group2 = group;
         try {
-            real.subscribe(service, group, (event) -> {
-                Discovery discovery = find(group2, service);
-                observer.handler(discovery);
-            });
+            if (TextUtils.isEmpty(group)) {
+                real.subscribe(service, (event) -> {
+                    Discovery discovery = find(group2, service);
+                    observer.handler(discovery);
+                });
+
+            } else {
+                real.subscribe(service, group, (event) -> {
+                    Discovery discovery = find(group2, service);
+                    observer.handler(discovery);
+                });
+
+            }
         } catch (NacosException ex) {
             throw new RuntimeException();
         }
