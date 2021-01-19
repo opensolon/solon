@@ -26,11 +26,19 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake shake) {
+        if(conn == null){
+            return;
+        }
+
         ListenerProxy.getGlobal().onOpen(_SocketServerSession.get(conn));
     }
 
     @Override
     public void onClose(WebSocket conn, int i, String s, boolean b) {
+        if(conn == null){
+            return;
+        }
+
         ListenerProxy.getGlobal().onClose(_SocketServerSession.get(conn));
 
         _SocketServerSession.remove(conn);
@@ -38,6 +46,10 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onMessage(WebSocket conn, String data) {
+        if(conn == null){
+            return;
+        }
+
         try {
             Session session = _SocketServerSession.get(conn);
             Message message = Message.wrap(conn.getResourceDescriptor(), null, data);
@@ -50,6 +62,10 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onMessage(WebSocket conn, ByteBuffer data) {
+        if(conn == null){
+            return;
+        }
+
         try {
             Session session = _SocketServerSession.get(conn);
             Message message = null;
@@ -68,6 +84,10 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onError(WebSocket conn, Exception ex) {
+        if(conn == null){
+            return;
+        }
+
         ListenerProxy.getGlobal().onError(_SocketServerSession.get(conn), ex);
     }
 }
