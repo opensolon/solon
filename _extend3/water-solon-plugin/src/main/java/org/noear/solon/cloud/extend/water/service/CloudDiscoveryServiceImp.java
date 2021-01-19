@@ -9,6 +9,7 @@ import org.noear.solon.cloud.service.CloudDiscoveryService;
 import org.noear.water.WaterClient;
 import org.noear.water.model.DiscoverM;
 
+import javax.xml.soap.Node;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +20,12 @@ import java.util.Map;
 public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
     @Override
     public void register(String group, Instance instance) {
-        WaterClient.Registry.register(instance.service, instance.address, instance.meta, Solon.cfg().isDriftMode());
+        String meta = null;
+        if (instance.meta != null) {
+            meta = ONode.stringify(instance.meta);
+        }
+
+        WaterClient.Registry.register(instance.service, instance.address, meta, Solon.cfg().isDriftMode());
     }
 
     @Override
@@ -34,7 +40,7 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
 
     @Override
     public Discovery find(String group, String service) {
-        DiscoverM d1 = WaterClient.Registry.discover(service, Solon.cfg().appName(), Instance.local().address);
+        DiscoverM d1 = WaterClient.Registry.discover(service, Instance.local().service, Instance.local().address);
         return ConvertUtil.from(service, d1);
     }
 
