@@ -1,7 +1,7 @@
 package org.noear.solon.cloud.extend.water.service;
 
 import org.noear.solon.cloud.model.Discovery;
-import org.noear.solon.cloud.model.Node;
+import org.noear.solon.cloud.model.Instance;
 import org.noear.water.model.DiscoverM;
 
 import java.util.ArrayList;
@@ -21,13 +21,12 @@ public class ConvertUtil {
             d2.cluster = new ArrayList<>();
 
             d1.list.forEach((t1) -> {
-                Node node = new Node();
-                node.address = t1.address;
-                node.meta = t1.meta;
-                node.weight = t1.weight;
-                node.protocol = t1.protocol;
+                Instance instance = new Instance();
+                instance.address = t1.address;
+                instance.weight = t1.weight;
+                instance.protocol = t1.protocol;
 
-                d2.cluster.add(node);
+                d2.cluster.add(instance);
             });
 
             return d2;

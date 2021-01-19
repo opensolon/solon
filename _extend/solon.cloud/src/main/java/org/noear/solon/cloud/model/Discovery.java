@@ -29,7 +29,7 @@ public class Discovery implements Serializable {
     /**
      * 集群
      */
-    public List<Node> cluster;
+    public List<Instance> cluster;
 
     public Discovery() {
 

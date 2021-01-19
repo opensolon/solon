@@ -3,9 +3,8 @@ package org.noear.solon.cloud.impl;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.LoadBalance;
-import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.model.Discovery;
-import org.noear.solon.cloud.model.Node;
+import org.noear.solon.cloud.model.Instance;
 
 /**
  * 负载均衡
@@ -67,12 +66,12 @@ public class CloudLoadBalance implements LoadBalance {
                 if (index > indexMax) {
                     index = 0;
                 }
-                Node node = discovery.cluster.get(index++ % count);
+                Instance instance = discovery.cluster.get(index++ % count);
 
-                if (Utils.isEmpty(node.protocol)) {
-                    return "http://" + node.address;
+                if (Utils.isEmpty(instance.protocol)) {
+                    return "http://" + instance.address;
                 } else {
-                    return node.protocol + "://" + node.address;
+                    return instance.protocol + "://" + instance.address;
                 }
             }
         }

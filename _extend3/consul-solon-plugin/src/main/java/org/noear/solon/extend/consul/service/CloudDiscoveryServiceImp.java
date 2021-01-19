@@ -10,7 +10,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
-import org.noear.solon.cloud.model.Node;
+import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
 import org.noear.solon.extend.consul.ConsulProps;
 import org.noear.solon.extend.consul.detector.*;
@@ -49,7 +49,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
     }
 
     @Override
-    public void register(String group, Node instance) {
+    public void register(String group, Instance instance) {
         String[] ss = instance.address.split(":");
         String serviceId = instance.service + "-" + instance.address;
 
@@ -108,7 +108,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
     }
 
     @Override
-    public void deregister(String group, Node instance) {
+    public void deregister(String group, Instance instance) {
         String serviceId = instance.service + "-" + instance.address;
         real.agentServiceDeregister(serviceId);
     }
@@ -143,13 +143,13 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
                 discoveryTmp.put(name, discovery);
             }
 
-            Node node = new Node();
-            node.service = service.getService();
-            node.address = service.getAddress() + ":" + service.getPort();
-            node.tags = service.getTags();
-            node.meta = service.getMeta();
+            Instance instance = new Instance();
+            instance.service = service.getService();
+            instance.address = service.getAddress() + ":" + service.getPort();
+            instance.tags = service.getTags();
+            instance.meta = service.getMeta();
 
-            discovery.cluster.add(node);
+            discovery.cluster.add(instance);
         }
 
         discoveryMap = discoveryTmp;

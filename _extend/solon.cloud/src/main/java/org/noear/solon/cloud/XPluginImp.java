@@ -12,7 +12,7 @@ import org.noear.solon.cloud.annotation.CloudConfig;
 import org.noear.solon.cloud.annotation.CloudEvent;
 import org.noear.solon.cloud.impl.CloudBeanInjector;
 import org.noear.solon.cloud.model.Config;
-import org.noear.solon.cloud.model.Node;
+import org.noear.solon.cloud.model.Instance;
 
 import java.util.Properties;
 
@@ -71,7 +71,7 @@ public class XPluginImp implements Plugin {
         if (Solon.cfg().isDriftMode()) {
             if (CloudClient.discovery() != null) {
                 if (Utils.isNotEmpty(Solon.cfg().appName())) {
-                    CloudClient.discovery().deregister(Solon.cfg().appGroup(), Node.local());
+                    CloudClient.discovery().deregister(Solon.cfg().appGroup(), Instance.local());
                 }
             }
         }

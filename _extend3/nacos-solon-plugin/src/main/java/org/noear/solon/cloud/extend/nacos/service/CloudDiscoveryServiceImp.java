@@ -3,13 +3,12 @@ package org.noear.solon.cloud.extend.nacos.service;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
-import com.alibaba.nacos.api.naming.pojo.Instance;
 import org.apache.http.util.TextUtils;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
-import org.noear.solon.cloud.model.Node;
+import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
 import org.noear.solon.cloud.extend.nacos.NacosProps;
 
@@ -47,7 +46,7 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
      * 注册服务实例
      * */
     @Override
-    public void register(String group, Node instance) {
+    public void register(String group, Instance instance) {
         if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
         }
@@ -73,7 +72,7 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
      * 注销服务实例
      * */
     @Override
-    public void deregister(String group, Node instance) {
+    public void deregister(String group, Instance instance) {
         if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
         }
@@ -107,7 +106,7 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
         Discovery discovery = new Discovery(service);
 
         try {
-            List<Instance> list = null;
+            List<com.alibaba.nacos.api.naming.pojo.Instance> list = null;
 
             if (Utils.isEmpty(group)) {
                 list = real.selectInstances(service, true);
@@ -115,8 +114,8 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
                 list = real.selectInstances(service, group, true);
             }
 
-            for (Instance i1 : list) {
-                Node n1 = new Node();
+            for (com.alibaba.nacos.api.naming.pojo.Instance i1 : list) {
+                Instance n1 = new Instance();
                 n1.service = service;
                 n1.address = i1.getIp() + ":" + i1.getPort();
                 n1.weight = i1.getWeight();

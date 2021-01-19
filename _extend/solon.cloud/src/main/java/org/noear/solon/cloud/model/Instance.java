@@ -1,11 +1,9 @@
 package org.noear.solon.cloud.model;
 
-import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.utils.LocalUtils;
 
-import javax.rmi.CORBA.Util;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +16,7 @@ import java.util.Map;
  * @author noear
  * @since 1.2
  */
-public class Node implements Serializable {
+public class Instance implements Serializable {
     /**
      * 服务名
      */
@@ -50,9 +48,9 @@ public class Node implements Serializable {
     public List<String> tags;
 
 
-    private static Node local;
+    private static Instance local;
 
-    public static Node local() {
+    public static Instance local() {
         if (local == null) {
             local = localNew();
         }
@@ -60,25 +58,25 @@ public class Node implements Serializable {
         return local;
     }
 
-    public static Node localNew() {
-        Node node = new Node();
+    public static Instance localNew() {
+        Instance instance = new Instance();
 
-        node.address = LocalUtils.getLocalAddress() + ":" + Solon.global().port();
-        node.service = Solon.cfg().appName();
-        node.protocol = "http";
+        instance.address = LocalUtils.getLocalAddress() + ":" + Solon.global().port();
+        instance.service = Solon.cfg().appName();
+        instance.protocol = "http";
 
-        node.meta = new HashMap<>(Solon.cfg().argx());
-        node.meta.remove("server.port");
+        instance.meta = new HashMap<>(Solon.cfg().argx());
+        instance.meta.remove("server.port");
 
-        node.tags = new ArrayList<>();
-        node.tags.add("solon");
+        instance.tags = new ArrayList<>();
+        instance.tags.add("solon");
         if (Utils.isNotEmpty(Solon.cfg().appGroup())) {
-            node.tags.add(Solon.cfg().appGroup());
+            instance.tags.add(Solon.cfg().appGroup());
         }
         if (Utils.isNotEmpty(Solon.cfg().appName())) {
-            node.tags.add(Solon.cfg().appName());
+            instance.tags.add(Solon.cfg().appName());
         }
 
-        return node;
+        return instance;
     }
 }

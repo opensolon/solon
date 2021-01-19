@@ -2,7 +2,7 @@ package org.noear.solon.cloud.service;
 
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
-import org.noear.solon.cloud.model.Node;
+import org.noear.solon.cloud.model.Instance;
 
 /**
  * 云端注册与发现服务
@@ -14,12 +14,12 @@ public interface CloudDiscoveryService {
     /**
      * 注册服务实例
      */
-    void register(String group, Node instance);
+    void register(String group, Instance instance);
 
     /**
      * 注销服务实例
      */
-    void deregister(String group, Node instance);
+    void deregister(String group, Instance instance);
 
     /**
      * 查询服务实例列表

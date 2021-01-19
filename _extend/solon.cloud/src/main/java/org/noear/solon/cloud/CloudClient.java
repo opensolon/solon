@@ -3,12 +3,11 @@ package org.noear.solon.cloud;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.model.Config;
-import org.noear.solon.cloud.model.Node;
+import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudConfigService;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
 import org.noear.solon.cloud.service.CloudEventService;
 import org.noear.solon.cloud.service.CloudLogService;
-import org.noear.solon.cloud.utils.LocalUtils;
 
 import java.util.Properties;
 
@@ -60,17 +59,17 @@ public class CloudClient {
         }
 
         if (Utils.isNotEmpty(Solon.cfg().appName())) {
-            Node node = Node.localNew();
+            Instance instance = Instance.localNew();
 
             if (Utils.isNotEmpty(hostname)) {
                 if (hostname.contains(":")) {
-                    node.address = hostname;
+                    instance.address = hostname;
                 } else {
-                    node.address = hostname + ":" + Solon.global().port();
+                    instance.address = hostname + ":" + Solon.global().port();
                 }
             }
 
-            CloudClient.discovery().register(Solon.cfg().appGroup(), node);
+            CloudClient.discovery().register(Solon.cfg().appGroup(), instance);
         }
     }
 

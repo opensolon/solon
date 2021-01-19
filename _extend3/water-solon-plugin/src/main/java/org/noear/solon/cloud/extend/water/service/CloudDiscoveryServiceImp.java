@@ -4,7 +4,7 @@ import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
-import org.noear.solon.cloud.model.Node;
+import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
 import org.noear.water.WaterClient;
 import org.noear.water.model.DiscoverM;
@@ -18,12 +18,12 @@ import java.util.Map;
  */
 public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
     @Override
-    public void register(String group, Node instance) {
+    public void register(String group, Instance instance) {
         WaterClient.Registry.register(instance.service, instance.address, instance.meta, Solon.cfg().isDriftMode());
     }
 
     @Override
-    public void deregister(String group, Node instance) {
+    public void deregister(String group, Instance instance) {
         String meta = null;
         if (instance.meta != null) {
             meta = ONode.stringify(instance.meta);
@@ -34,7 +34,7 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
 
     @Override
     public Discovery find(String group, String service) {
-        DiscoverM d1 = WaterClient.Registry.discover(service, Solon.cfg().appName(), Node.local().address);
+        DiscoverM d1 = WaterClient.Registry.discover(service, Solon.cfg().appName(), Instance.local().address);
         return ConvertUtil.from(service, d1);
     }
 

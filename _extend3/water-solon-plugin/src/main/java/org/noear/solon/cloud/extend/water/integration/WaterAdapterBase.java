@@ -6,7 +6,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.impl.CloudLoadBalance;
 import org.noear.solon.cloud.impl.CloudLoadBalanceFactory;
 import org.noear.solon.cloud.model.Discovery;
-import org.noear.solon.cloud.model.Node;
+import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.Context;
 import org.noear.water.AbstractWaterAdapter;
@@ -100,7 +100,7 @@ abstract class WaterAdapterBase extends AbstractWaterAdapter {
             CloudLoadBalance tmp = CloudLoadBalanceFactory.instance.get(service);
             if (tmp != null) {
                 try {
-                    WaterClient.Registry.discover(service, Node.local().service, Node.local().address);
+                    WaterClient.Registry.discover(service, Instance.local().service, Instance.local().address);
                 } catch (Exception ex) {
                     ex.printStackTrace();//最后日志记录到服务端
                     logger.error(ss[1], "reload", "", ex);
