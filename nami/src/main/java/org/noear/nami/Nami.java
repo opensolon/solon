@@ -274,8 +274,23 @@ public class Nami {
         /**
          * 设置服务端
          */
-        public Builder uri(String uri) {
-            _config.setUri(uri);
+        public Builder url(String url) {
+            _config.setUrl(url);
+            return this;
+        }
+
+        public Builder name(String name) {
+            _config.setName(name);
+            return this;
+        }
+
+        public Builder path(String path) {
+            _config.setPath(path);
+            return this;
+        }
+
+        public Builder group(String group) {
+            _config.setGroup(group);
             return this;
         }
 

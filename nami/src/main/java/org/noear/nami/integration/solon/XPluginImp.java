@@ -26,14 +26,14 @@ public class XPluginImp implements Plugin {
                 return;
             }
 
-            if (Utils.isEmpty(anno.value())) {
+            if (Utils.isEmpty(anno.url()) && Utils.isEmpty(anno.name())) {
                 NamiClient anno2 = varH.getType().getAnnotation(NamiClient.class);
                 if (anno2 != null) {
                     anno = anno2;
                 }
             }
 
-            if (Utils.isEmpty(anno.value()) && anno.upstream().length == 0) {
+            if (Utils.isEmpty(anno.url()) && Utils.isEmpty(anno.name()) && anno.upstream().length==0)  {
                 throw new NamiException("@NamiClient configuration error!");
             }
 

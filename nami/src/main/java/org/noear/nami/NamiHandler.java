@@ -28,9 +28,6 @@ public class NamiHandler implements InvocationHandler {
     private final NamiConfig config;
 
     private final Map<String, String> headers0 = new LinkedHashMap<>();
-    private final String name0; //upstream name
-    private final String path0; //path
-    private final String url0;  //url
     private final Class<?> clz0;
     private final Map<String, Map> pathKeysCached = new ConcurrentHashMap<>();
 
@@ -73,38 +70,6 @@ public class NamiHandler implements InvocationHandler {
 
         //2.配置初始化
         config.init();
-
-        //3.获取 or url
-        String uri = config.getUri();
-
-        if (uri == null && client != null) {
-            //1.优先从 XClient 获取服务地址或名称
-            if (isEmpty(client.value()) == false) {
-                uri = client.value();
-            }
-        }
-
-        //2.如果没有，就报错
-        if (uri == null) {
-            uri = "";
-            //throw new NamiException("NamiClient config is wrong: " + clz.getName());
-        }
-
-        if (uri.contains("://")) {
-            url0 = uri;
-            name0 = null;
-            path0 = null;
-        } else {
-            if (uri.contains(":")) {
-                url0 = null;
-                name0 = uri.split(":")[0];
-                path0 = uri.split(":")[1];
-            } else {
-                url0 = null;
-                name0 = uri;
-                path0 = null;
-            }
-        }
     }
 
 
@@ -112,7 +77,7 @@ public class NamiHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] vals) throws Throwable {
-        if (url0 == null && config.getUpstream() == null) {
+        if (config.getUrl() == null && config.getUpstream() == null) {
             throw new NamiException("NamiClient: Not found upstream: " + clz0.getName());
         }
 
@@ -175,7 +140,7 @@ public class NamiHandler implements InvocationHandler {
 
         //构建 url
         String url = null;
-        if (url0 == null) {
+        if (config.getUrl() == null) {
             url = config.getUpstream().get();
 
             if (url == null) {
@@ -186,21 +151,21 @@ public class NamiHandler implements InvocationHandler {
                 url = "http://";
             }
 
-            if (path0 != null) {
+            if (config.getPath() != null) {
                 int idx = url.indexOf("/", 9);//https://a
                 if (idx > 0) {
                     url = url.substring(0, idx);
                 }
 
-                if (path0.endsWith("/")) {
-                    fun = path0 + fun;
+                if (config.getPath().endsWith("/")) {
+                    fun = config.getPath() + fun;
                 } else {
-                    fun = path0 + "/" + fun;
+                    fun = config.getPath() + "/" + fun;
                 }
             }
 
         } else {
-            url = url0;
+            url = config.getUrl();
         }
 
         if (fun != null && fun.indexOf("{") > 0) {

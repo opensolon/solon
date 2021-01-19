@@ -15,7 +15,28 @@ public @interface NamiClient {
      * 2. name:/x/x/ (name:path)
      * 3. name
      * */
-    String value() default "";
+    //@Deprecated
+    //String value() default "";
+
+    /**
+     * 完整的url地址（url）
+     * */
+    String url() default "";
+
+    /**
+     * 服务组
+     * */
+    String group() default "";
+
+    /**
+     * 服务名（name + path）
+     * */
+    String name() default "";
+
+    /**
+     * 路径（name + path）
+     * */
+    String path() default "";
 
     /**
      * 添加头信息

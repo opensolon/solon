@@ -54,7 +54,10 @@ public class NamiConfig {
     //上游
     private Supplier<String> upstream;
     //服务端
-    private String uri;
+    private String url;
+    private String name;
+    private String path;
+    private String group;
     //过滤器
     private Set<Filter> filters = new LinkedHashSet<>();
     //头信息
@@ -114,14 +117,49 @@ public class NamiConfig {
     /**
      * 获取uri
      * */
-    public String getUri() {
-        return uri;
+    public String getUrl() {
+        return url;
     }
+
     /**
      * 设置uri
      * */
-    protected void setUri(String uri) {
-        this.uri = uri;
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    /**
+     *  获取服务名
+     * */
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     *  获取服务路径
+     * */
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+
+    /**
+     *  获取服务组
+     * */
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 
     /**

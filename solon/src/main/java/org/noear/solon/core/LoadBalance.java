@@ -35,13 +35,17 @@ public interface LoadBalance {
 
     /**
      * 获取节点
-     * */
+     */
     String getServer();
 
     /**
      * 负载器工厂
-     * */
-    interface Factory{
-        LoadBalance create(String service);
+     */
+    interface Factory {
+        default LoadBalance create(String service) {
+            return create(service, null);
+        }
+
+        LoadBalance create(String service, String group);
     }
 }
