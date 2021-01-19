@@ -30,7 +30,6 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
 
     private String healthCheckInterval;
     private String healthCheckPath;
-    private String hostname;
 
     Map<String,Discovery> discoveryMap = new HashMap<>();
     private Map<CloudDiscoveryHandler, CloudDiscoveryObserverEntity> observerMap = new HashMap<>();
@@ -41,7 +40,6 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
 
         healthCheckInterval = ConsulProps.instance.getDiscoveryHealthCheckInterval("10s");
         healthCheckPath = ConsulProps.instance.getDiscoveryHealthCheckPath();
-        hostname = ConsulProps.instance.getDiscoveryHostname();
     }
 
     public String getHealthCheckInterval() {
@@ -66,7 +64,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
             newService.setTags(instance.tags);
         }
 
-        registerLocalCheck(newService);
+        registerLocalCheck(instance, newService);
 
         //
         // 注册服务
@@ -74,7 +72,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
         real.agentServiceRegister(newService, token);
     }
 
-    private void registerLocalCheck(NewService newService){
+    private void registerLocalCheck(Instance instance, NewService newService){
         if (Utils.isNotEmpty(healthCheckInterval)) {
             //1.添加Solon服务，提供检测用
             //
@@ -90,7 +88,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
 
             //2.添加检测器
             //
-            String checkUrl = "http://" + hostname + ":" + Solon.global().port();
+            String checkUrl = "http://" + instance.address;
             if (healthCheckPath.startsWith("/")) {
                 checkUrl = checkUrl + healthCheckPath;
             } else {
