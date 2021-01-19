@@ -4,6 +4,7 @@ import org.noear.nami.Nami;
 import org.noear.nami.NamiException;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.solon.Utils;
+import org.noear.solon.extend.springboot.EnableSolon;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author noear
  * @since 1.2
  */
+@EnableSolon
 @Configuration
 public class AutoConfiguration extends InstantiationAwareBeanPostProcessorAdapter {
     private Map<NamiClient, Object> cached = new ConcurrentHashMap<>();
