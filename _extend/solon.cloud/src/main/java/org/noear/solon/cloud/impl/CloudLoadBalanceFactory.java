@@ -17,35 +17,42 @@ public class CloudLoadBalanceFactory implements LoadBalance.Factory {
 
     private Map<String, CloudLoadBalance> cached = new HashMap<>();
 
-    @Override
-    public LoadBalance create(String service) {
-        CloudLoadBalance tmp = cached.get(service);
-
-        if (tmp == null) {
-            synchronized (service.intern()) {
-                tmp = cached.get(service);
-
-                if (tmp == null) {
-                    tmp = createDo(service);
-                    cached.put(service, tmp);
-                }
-            }
-        }
-        return tmp;
-    }
-
-    /**
-     * 可以被子类重写
-     */
-    protected CloudLoadBalance createDo(String service) {
-        return new CloudLoadBalance(service);
-    }
-
     public CloudLoadBalance get(String service) {
         return cached.get(service);
     }
 
     public void forEach(BiConsumer<String, CloudLoadBalance> action) {
         cached.forEach(action);
+    }
+
+    @Override
+    public LoadBalance create(String service, String group) {
+        if (group == null) {
+            group = "";
+        }
+
+        String cacheKey = group + ":" + service;
+
+        CloudLoadBalance tmp = cached.get(cacheKey);
+
+        if (tmp == null) {
+            synchronized (service.intern()) {
+                tmp = cached.get(cacheKey);
+
+                if (tmp == null) {
+                    tmp = create0(group, service);
+                    cached.put(cacheKey, tmp);
+                }
+            }
+        }
+        return tmp;
+    }
+
+
+    /**
+     * 可以被子类重写
+     */
+    protected CloudLoadBalance create0(String group, String service) {
+        return new CloudLoadBalance(group, service);
     }
 }

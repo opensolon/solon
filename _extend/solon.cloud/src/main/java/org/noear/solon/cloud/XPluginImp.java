@@ -72,7 +72,7 @@ public class XPluginImp implements Plugin {
         if (Solon.cfg().isDriftMode()) {
             if (CloudClient.discovery() != null) {
                 if (Utils.isNotEmpty(Solon.cfg().appName())) {
-                    CloudClient.discovery().deregister(Node.local());
+                    CloudClient.discovery().deregister(Solon.cfg().appGroup(), Node.local());
                 }
             }
         }

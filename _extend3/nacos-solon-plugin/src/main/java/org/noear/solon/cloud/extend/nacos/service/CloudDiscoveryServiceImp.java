@@ -18,7 +18,6 @@ import java.util.Properties;
  * @author noear 2021/1/15 created
  */
 public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
-    static final String REGISTER_GROUP = "SOLON";
     NamingService real;
 
     public CloudDiscoveryServiceImp() {
@@ -43,7 +42,7 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
     }
 
     @Override
-    public void register(Node instance) {
+    public void register(String group, Node instance) {
         String[] ss = instance.address.split(":");
 
         if (ss.length != 2) {
@@ -51,14 +50,14 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
         }
 
         try {
-            real.registerInstance(instance.service, REGISTER_GROUP, ss[0], Integer.parseInt(ss[0]));
+            real.registerInstance(instance.service, group, ss[0], Integer.parseInt(ss[0]));
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
         }
     }
 
     @Override
-    public void deregister(Node instance) {
+    public void deregister(String group, Node instance) {
         String[] ss = instance.address.split(":");
 
         if (ss.length != 2) {
@@ -66,23 +65,23 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
         }
 
         try {
-            real.deregisterInstance(instance.service, REGISTER_GROUP, ss[0], Integer.parseInt(ss[1]));
+            real.deregisterInstance(instance.service, group, ss[0], Integer.parseInt(ss[1]));
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
         }
     }
 
     @Override
-    public Discovery find(String service) {
+    public Discovery find(String group, String service) {
         Discovery discovery = new Discovery(service);
 
         try {
-            List<Instance> list = real.selectInstances(service, REGISTER_GROUP, true);
+            List<Instance> list = real.selectInstances(service, group, true);
 
             for (Instance i1 : list) {
                 Node n1 = new Node();
                 n1.service = service;
-                n1.address = i1.getIp() +":"+ i1.getPort();
+                n1.address = i1.getIp() + ":" + i1.getPort();
                 n1.weight = i1.getWeight();
 
                 discovery.cluster.add(n1);
@@ -95,10 +94,10 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
     }
 
     @Override
-    public void attention(String service, CloudDiscoveryHandler observer) {
+    public void attention(String group, String service, CloudDiscoveryHandler observer) {
         try {
-            real.subscribe(service, (event) -> {
-                Discovery discovery = find(service);
+            real.subscribe(service, group, (event) -> {
+                Discovery discovery = find(group, service);
                 observer.handler(discovery);
             });
         } catch (NacosException ex) {

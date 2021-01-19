@@ -14,20 +14,20 @@ public interface CloudDiscoveryService {
     /**
      * 注册服务实例
      */
-    void register(Node instance);
+    void register(String group, Node instance);
 
     /**
      * 注销服务实例
      */
-    void deregister(Node instance);
+    void deregister(String group, Node instance);
 
     /**
      * 查询服务列表
      */
-    Discovery find(String service);
+    Discovery find(String group, String service);
 
     /**
      * 关注服务列表
      */
-    void attention(String service, CloudDiscoveryHandler observer);
+    void attention(String group, String service, CloudDiscoveryHandler observer);
 }

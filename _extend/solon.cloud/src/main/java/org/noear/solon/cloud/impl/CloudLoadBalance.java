@@ -15,27 +15,42 @@ import org.noear.solon.cloud.model.Node;
  */
 public class CloudLoadBalance implements LoadBalance {
     private String service;
+    private String group;
     private Discovery discovery;
     private int index = 0;
     private static int indexMax = 99999999;
 
-    public CloudLoadBalance(String service) {
+    public CloudLoadBalance(String group, String service) {
         this.service = service;
+        this.group = group;
 
         if (CloudClient.discovery() != null) {
-            this.discovery = CloudClient.discovery().find(service);
+            this.discovery = CloudClient.discovery().find(group, service);
 
-            CloudClient.discovery().attention(service, d1 -> {
+            CloudClient.discovery().attention(group, service, d1 -> {
                 this.discovery = d1;
             });
         }
     }
 
-    public String getService(){
+    /**
+     * 服务组
+     * */
+    public String getGroup(){
+        return group;
+    }
+
+    /**
+     * 服务名
+     * */
+    public String getService() {
         return service;
     }
 
-    public Discovery getDiscovery(){
+    /**
+     * 服务发现数据
+     * */
+    public Discovery getDiscovery() {
         return discovery;
     }
 

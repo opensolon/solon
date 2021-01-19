@@ -72,7 +72,7 @@ public class CloudClient {
                 }
             }
 
-            CloudClient.discovery().register(node);
+            CloudClient.discovery().register(Solon.cfg().appGroup(), node);
         }
     }
 
