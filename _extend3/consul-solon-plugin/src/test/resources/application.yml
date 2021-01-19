@@ -1,3 +1,7 @@
 solon.app:
   name: test-consul-api
   group: test
+
+
+solon.cloud.consul:
+  server: 172.168.0.48:8848   #consul服务地址
