@@ -1,9 +1,8 @@
-package org.noear.solon.extend.consul.detector;
+package org.noear.solon.cloud.extend.consul.detector;
 
 import com.wujiuye.flow.FlowHelper;
 import com.wujiuye.flow.FlowType;
 import com.wujiuye.flow.Flower;
-import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 
 import java.util.HashMap;

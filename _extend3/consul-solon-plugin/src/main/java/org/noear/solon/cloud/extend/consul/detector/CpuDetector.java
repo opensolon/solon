@@ -1,4 +1,4 @@
-package org.noear.solon.extend.consul.detector;
+package org.noear.solon.cloud.extend.consul.detector;
 
 import java.util.*;
 import java.util.regex.Pattern;

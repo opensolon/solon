@@ -1,4 +1,4 @@
-package org.noear.solon.extend.consul;
+package org.noear.solon.cloud.extend.consul;
 
 import org.noear.solon.cloud.CloudProps;
 

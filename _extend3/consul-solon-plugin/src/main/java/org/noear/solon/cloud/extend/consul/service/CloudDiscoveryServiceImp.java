@@ -1,4 +1,4 @@
-package org.noear.solon.extend.consul.service;
+package org.noear.solon.cloud.extend.consul.service;
 
 import com.ecwid.consul.json.GsonFactory;
 import com.ecwid.consul.v1.ConsulClient;
@@ -12,8 +12,8 @@ import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
-import org.noear.solon.extend.consul.ConsulProps;
-import org.noear.solon.extend.consul.detector.*;
+import org.noear.solon.cloud.extend.consul.ConsulProps;
+import org.noear.solon.cloud.extend.consul.detector.*;
 
 import java.util.*;
 

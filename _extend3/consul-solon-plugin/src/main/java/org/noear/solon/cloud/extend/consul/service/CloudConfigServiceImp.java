@@ -1,4 +1,4 @@
-package org.noear.solon.extend.consul.service;
+package org.noear.solon.cloud.extend.consul.service;
 
 import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.kv.model.GetValue;
@@ -6,7 +6,7 @@ import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigService;
 import org.noear.solon.cloud.utils.IntervalUtils;
-import org.noear.solon.extend.consul.ConsulProps;
+import org.noear.solon.cloud.extend.consul.ConsulProps;
 
 import java.util.HashMap;
 import java.util.Map;

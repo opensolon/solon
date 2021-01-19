@@ -1,4 +1,4 @@
-package org.noear.solon.extend.consul;
+package org.noear.solon.cloud.extend.consul;
 
 import com.ecwid.consul.v1.ConsulClient;
 
@@ -8,8 +8,8 @@ import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.utils.IntervalUtils;
 import org.noear.solon.core.*;
-import org.noear.solon.extend.consul.service.CloudConfigServiceImp;
-import org.noear.solon.extend.consul.service.CloudDiscoveryServiceImp;
+import org.noear.solon.cloud.extend.consul.service.CloudConfigServiceImp;
+import org.noear.solon.cloud.extend.consul.service.CloudDiscoveryServiceImp;
 
 import java.util.*;
 

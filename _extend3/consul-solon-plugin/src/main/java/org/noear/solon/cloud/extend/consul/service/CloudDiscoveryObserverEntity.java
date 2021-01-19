@@ -1,4 +1,4 @@
-package org.noear.solon.extend.consul.service;
+package org.noear.solon.cloud.extend.consul.service;
 
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
