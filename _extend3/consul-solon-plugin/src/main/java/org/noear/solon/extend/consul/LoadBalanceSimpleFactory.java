@@ -35,7 +35,7 @@ class LoadBalanceSimpleFactory implements LoadBalance.Factory {
      * 生成负载平衡
      */
     @Override
-    public LoadBalance create(String service) {
+    public LoadBalance create(String group, String service) {
         return new LoadBalanceProxy(service);
     }
 

@@ -18,12 +18,12 @@ import java.util.Map;
  */
 public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
     @Override
-    public void register(Node instance) {
+    public void register(String group, Node instance) {
         WaterClient.Registry.register(instance.service, instance.address, instance.meta, Solon.cfg().isDriftMode());
     }
 
     @Override
-    public void deregister(Node instance) {
+    public void deregister(String group, Node instance) {
         String meta = null;
         if (instance.meta != null) {
             meta = ONode.stringify(instance.meta);
@@ -33,7 +33,7 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
     }
 
     @Override
-    public Discovery find(String service) {
+    public Discovery find(String group, String service) {
         DiscoverM d1 = WaterClient.Registry.discover(service, Solon.cfg().appName(), Node.local().address);
         return ConvertUtil.from(service, d1);
     }
@@ -41,7 +41,7 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
     Map<CloudDiscoveryHandler, CloudDiscoveryObserverEntity> observerMap = new HashMap<>();
 
     @Override
-    public void attention(String service, CloudDiscoveryHandler observer) {
-        observerMap.put(observer, new CloudDiscoveryObserverEntity(service, observer));
+    public void attention(String group, String service, CloudDiscoveryHandler observer) {
+        observerMap.put(observer, new CloudDiscoveryObserverEntity(group, service, observer));
     }
 }

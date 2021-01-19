@@ -8,7 +8,7 @@ import org.noear.solon.annotation.Mapping;
 @Controller
 public class HelloController {
 
-    @NamiClient("test-consul-api:/")
+    @NamiClient(name = "test-consul-api")
     HelloInterface helloInterface;
 
     @Mapping("/hello")

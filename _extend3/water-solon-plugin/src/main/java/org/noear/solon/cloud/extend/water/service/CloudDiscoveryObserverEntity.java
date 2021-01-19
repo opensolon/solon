@@ -10,10 +10,12 @@ import org.noear.water.model.DiscoverM;
  * @since 1.2
  */
 public class CloudDiscoveryObserverEntity implements DiscoverHandler {
+    public String group;
     public String service;
     public CloudDiscoveryHandler handler;
 
-    public CloudDiscoveryObserverEntity(String service, CloudDiscoveryHandler handler) {
+    public CloudDiscoveryObserverEntity(String group, String service, CloudDiscoveryHandler handler) {
+        this.group = group;
         this.service = service;
         this.handler = handler;
     }
