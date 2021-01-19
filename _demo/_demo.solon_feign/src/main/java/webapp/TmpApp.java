@@ -9,7 +9,7 @@ import org.noear.solon.extend.feign.EnableFeignClient;
 public class TmpApp {
     public static void main(String[] args) {
         Solon.start(TmpApp.class, args, (app) -> {
-            Bridge.upstreamFactorySet((name) -> {
+            Bridge.upstreamFactorySet((group, name) -> {
                 if ("user-service".equals(name)) {
                     return () -> "http://127.0.0.1:8080";
                 } else {
