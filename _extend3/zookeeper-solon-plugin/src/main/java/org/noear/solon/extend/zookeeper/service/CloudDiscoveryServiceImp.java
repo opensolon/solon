@@ -11,22 +11,22 @@ import org.noear.solon.cloud.service.CloudDiscoveryService;
 public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
 
     @Override
-    public void register(Node instance) {
+    public void register(String group, Node instance) {
 
     }
 
     @Override
-    public void deregister(Node instance) {
+    public void deregister(String group, Node instance) {
 
     }
 
     @Override
-    public Discovery find(String service) {
+    public Discovery find(String group, String service) {
         return null;
     }
 
     @Override
-    public void attention(String service, CloudDiscoveryHandler observer) {
+    public void attention(String group, String service, CloudDiscoveryHandler observer) {
 
     }
 }

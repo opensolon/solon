@@ -4,6 +4,7 @@ import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
@@ -43,6 +44,10 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
 
     @Override
     public void register(String group, Node instance) {
+        if (Utils.isEmpty(group)) {
+            group = Solon.cfg().appGroup();
+        }
+
         String[] ss = instance.address.split(":");
 
         if (ss.length != 2) {
@@ -58,6 +63,10 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
 
     @Override
     public void deregister(String group, Node instance) {
+        if (Utils.isEmpty(group)) {
+            group = Solon.cfg().appGroup();
+        }
+
         String[] ss = instance.address.split(":");
 
         if (ss.length != 2) {
@@ -73,6 +82,10 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
 
     @Override
     public Discovery find(String group, String service) {
+        if (Utils.isEmpty(group)) {
+            group = Solon.cfg().appGroup();
+        }
+
         Discovery discovery = new Discovery(service);
 
         try {
@@ -95,9 +108,14 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
 
     @Override
     public void attention(String group, String service, CloudDiscoveryHandler observer) {
+        if (Utils.isEmpty(group)) {
+            group = Solon.cfg().appGroup();
+        }
+
+        String group2 = group;
         try {
             real.subscribe(service, group, (event) -> {
-                Discovery discovery = find(group, service);
+                Discovery discovery = find(group2, service);
                 observer.handler(discovery);
             });
         } catch (NacosException ex) {
