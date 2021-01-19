@@ -20,7 +20,7 @@ import webapp.models.UserModel;
 @SolonTest(webapp.TestApp.class)
 public class HttpParam3Test {
     @Test
-    public void nami(){
+    public void nami() {
         ParamService paramService = Nami.builder()
                 .decoder(SnackDecoder.instance)
                 .create(ParamService.class);
@@ -34,8 +34,8 @@ public class HttpParam3Test {
     }
 
 
-    @NamiClient(value = "local:/demo2/param", upstream = "http://localhost:8080")
-    public interface ParamService{
+    @NamiClient(path = "/demo2/param", upstream = {"http://localhost:8080"})
+    public interface ParamService {
         UserModel model(@Body UserModel model);
     }
 }

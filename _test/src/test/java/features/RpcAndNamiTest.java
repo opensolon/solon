@@ -15,11 +15,11 @@ import webapp.demo5_rpc.protocol.UserService5;
 @SolonTest(webapp.TestApp.class)
 public class RpcAndNamiTest {
     //直接指定服务端地址
-    @NamiClient("http://localhost:8080/demo5/user/")
+    @NamiClient(url = "http://localhost:8080/demo5/user/")
     UserService userService;
 
     //使用负载
-    @NamiClient("local:/demo5/user/")
+    @NamiClient(name = "local", path = "/demo5/user/")
     UserService userService2;
 
     @Test
@@ -39,7 +39,7 @@ public class RpcAndNamiTest {
     @Test
     public void test3() {
         UserService userService3 = Nami.builder()
-                .uri("http://localhost:8080/demo5/user/")
+                .url("http://localhost:8080/demo5/user/")
                 .create(UserService.class);
 
         UserModel user = userService3.getUser(23);
@@ -50,7 +50,8 @@ public class RpcAndNamiTest {
     @Test
     public void test3_2() {
         UserService userService3 = Nami.builder()
-                .uri("local:/demo5/user/")
+                .name("local")
+                .path("/demo5/user/")
                 .upstream(() -> "http://localhost:8080")
                 .create(UserService.class);
 
@@ -62,7 +63,7 @@ public class RpcAndNamiTest {
     @Test
     public void test4() {
         UserService4 userService4 = Nami.builder()
-                .uri("http://localhost:8080/demo5/user/")
+                .url("http://localhost:8080/demo5/user/")
                 .create(UserService4.class);
 
         UserModel user = userService4.xxx(23);
@@ -73,7 +74,7 @@ public class RpcAndNamiTest {
     @Test
     public void test5() {
         UserService5 userService5 = Nami.builder()
-                .uri("http://localhost:8080/demo5/")
+                .url("http://localhost:8080/demo5/")
                 .create(UserService5.class);
 
         UserModel user = userService5.xxx(23);

@@ -4,7 +4,7 @@ import org.noear.solon.core.LoadBalance;
 
 public class UserUpstreamFactory implements LoadBalance.Factory {
     @Override
-    public LoadBalance create(String service) {
+    public LoadBalance create(String group, String service) {
         return null;
     }
 }

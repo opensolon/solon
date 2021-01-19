@@ -29,7 +29,7 @@ public class SocketRpcTest {
     @Test
     public void test_rpc_api2() throws Throwable {
         HelloRpcService rpc = Nami.builder()
-                .uri("tcp://localhost:" + (Solon.global().port() + 20000) + "/demoh/rpc")
+                .url("tcp://localhost:" + (Solon.global().port() + 20000) + "/demoh/rpc")
                 .create(HelloRpcService.class);
 
         String rst = rpc.hello("noear");
