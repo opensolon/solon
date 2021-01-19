@@ -41,14 +41,14 @@ public class AutoConfiguration extends InstantiationAwareBeanPostProcessorAdapte
     }
 
     private Object postAnno(NamiClient anno, Field field){
-        if (Utils.isEmpty(anno.url()) && Utils.isEmpty(anno.name())) {
+        if (Utils.isEmpty(anno.url()) && Utils.isEmpty(anno.name()) && Utils.isEmpty(anno.path())) {
             NamiClient anno2 = field.getType().getAnnotation(NamiClient.class);
             if (anno2 != null) {
                 anno = anno2;
             }
         }
 
-        if (Utils.isEmpty(anno.url()) && Utils.isEmpty(anno.name()) && anno.upstream().length==0) {
+        if (Utils.isEmpty(anno.url()) && Utils.isEmpty(anno.name()) && Utils.isEmpty(anno.path()) && anno.upstream().length==0) {
             throw new NamiException("@NamiClient configuration error!");
         }
 
