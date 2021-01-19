@@ -29,9 +29,6 @@ public class NamiHandler implements InvocationHandler {
     private final NamiConfig config;
 
     private final Map<String, String> headers0 = new LinkedHashMap<>();
-    private final String name0; //upstream name
-    private final String path0; //path
-    private final String url0;  //url
     private final Class<?> clz0;
     private final Map<String, Map> pathKeysCached = new ConcurrentHashMap<>();
 
@@ -47,6 +44,8 @@ public class NamiHandler implements InvocationHandler {
         //1.运行配置器
         if (client != null) {
             try {
+                config.setUrl(config.getUrl());
+
                 NamiConfiguration tmp = client.configuration().newInstance();
 
                 if (tmp != null) {
@@ -54,6 +53,22 @@ public class NamiHandler implements InvocationHandler {
                 }
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
+            }
+
+            if(TextUtils.isNotEmpty(client.url())){
+                config.setUrl(client.url());
+            }
+
+            if(TextUtils.isNotEmpty(client.group())){
+                config.setGroup(client.group());
+            }
+
+            if(TextUtils.isNotEmpty(client.name())){
+                config.setName(client.name());
+            }
+
+            if(TextUtils.isNotEmpty(client.path())){
+                config.setPath(client.path());
             }
 
             //>>添加接口header
@@ -74,27 +89,6 @@ public class NamiHandler implements InvocationHandler {
 
         //2.配置初始化
         config.init();
-
-
-        if (TextUtils.isNotEmpty(config.getUrl())) {
-            url0 = config.getUrl();
-            name0 = null;
-            path0 = null;
-        } else {
-            url0 = null;
-
-            if (TextUtils.isNotEmpty(config.getName())) {
-                name0 = config.getName();
-            } else {
-                name0 = null;
-            }
-
-            if (TextUtils.isNotEmpty(config.getPath())) {
-                path0 = config.getPath();
-            } else {
-                path0 = null;
-            }
-        }
     }
 
 
@@ -102,7 +96,7 @@ public class NamiHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] vals) throws Throwable {
-        if (url0 == null && config.getUpstream() == null) {
+        if (TextUtils.isEmpty(config.getUrl()) && config.getUpstream() == null) {
             throw new NamiException("NamiClient: Not found upstream: " + clz0.getName());
         }
 
@@ -165,7 +159,7 @@ public class NamiHandler implements InvocationHandler {
 
         //构建 url
         String url = null;
-        if (url0 == null) {
+        if (TextUtils.isEmpty(config.getUrl())) {
             url = config.getUpstream().get();
 
             if (url == null) {
@@ -176,21 +170,21 @@ public class NamiHandler implements InvocationHandler {
                 url = "http://";
             }
 
-            if (path0 != null) {
+            if (TextUtils.isNotEmpty(config.getPath())) {
                 int idx = url.indexOf("/", 9);//https://a
                 if (idx > 0) {
                     url = url.substring(0, idx);
                 }
 
-                if (path0.endsWith("/")) {
-                    fun = path0 + fun;
+                if (config.getPath().endsWith("/")) {
+                    fun = config.getPath() + fun;
                 } else {
-                    fun = path0 + "/" + fun;
+                    fun = config.getPath() + "/" + fun;
                 }
             }
 
         } else {
-            url = url0;
+            url = config.getUrl();
         }
 
         if (fun != null && fun.indexOf("{") > 0) {
