@@ -9,7 +9,13 @@ import org.noear.solon.cloud.CloudLogger;
  * @since 1.2
  */
 public interface CloudLogService {
+    /**
+     * 获取日志器
+     * */
     CloudLogger getLogger(String name);
 
+    /**
+     * 获取日志器
+     * */
     CloudLogger getLogger(String name, Class<?> clz);
 }

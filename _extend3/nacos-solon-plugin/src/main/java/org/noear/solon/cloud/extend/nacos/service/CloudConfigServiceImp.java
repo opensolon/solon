@@ -43,6 +43,9 @@ public class CloudConfigServiceImp implements CloudConfigService {
         }
     }
 
+    /**
+     * 获取配置
+     * */
     @Override
     public Config get(String group, String key) {
         if(Utils.isEmpty(group)){
@@ -60,6 +63,9 @@ public class CloudConfigServiceImp implements CloudConfigService {
         }
     }
 
+    /**
+     * 设置配置
+     * */
     @Override
     public boolean set(String group, String key, String value) {
         if(Utils.isEmpty(group)){
@@ -76,6 +82,9 @@ public class CloudConfigServiceImp implements CloudConfigService {
         }
     }
 
+    /**
+     * 移除配置
+     * */
     @Override
     public boolean remove(String group, String key) {
         if(Utils.isEmpty(group)){
@@ -91,6 +100,9 @@ public class CloudConfigServiceImp implements CloudConfigService {
         }
     }
 
+    /**
+     * 关注配置
+     * */
     @Override
     public void attention(String group, String key, CloudConfigHandler observer) {
         if(Utils.isEmpty(group)){

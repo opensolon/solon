@@ -1,7 +1,10 @@
 package org.noear.solon.cloud;
 
 /**
- * @author noear 2021/1/18 created
+ * 默认云日志器（当没有服务时，给个空的；不致于出错）
+ *
+ * @author noear
+ * @since 1.2
  */
 public class CloudLoggerDefault implements CloudLogger{
     public static final CloudLogger instance = new CloudLoggerDefault();

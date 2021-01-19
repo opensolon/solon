@@ -13,7 +13,6 @@ import org.noear.solon.cloud.annotation.CloudEvent;
 import org.noear.solon.cloud.impl.CloudBeanInjector;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.model.Node;
-import org.noear.solon.cloud.utils.LocalUtils;
 
 import java.util.Properties;
 

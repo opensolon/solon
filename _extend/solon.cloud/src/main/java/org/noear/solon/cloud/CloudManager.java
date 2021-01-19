@@ -11,7 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * 接口管理器
+ * 云接口管理器
  *
  * @author noear
  * @since 1.2

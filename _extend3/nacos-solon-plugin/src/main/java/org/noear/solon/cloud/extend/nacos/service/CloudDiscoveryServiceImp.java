@@ -43,6 +43,9 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
         }
     }
 
+    /**
+     * 注册服务实例
+     * */
     @Override
     public void register(String group, Node instance) {
         if (Utils.isEmpty(group)) {
@@ -66,6 +69,9 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
         }
     }
 
+    /**
+     * 注销服务实例
+     * */
     @Override
     public void deregister(String group, Node instance) {
         if (Utils.isEmpty(group)) {
@@ -89,6 +95,9 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
         }
     }
 
+    /**
+     * 查询服务实例列表
+     * */
     @Override
     public Discovery find(String group, String service) {
         if (Utils.isEmpty(group)) {
@@ -121,6 +130,9 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
         }
     }
 
+    /**
+     * 关注服务实例列表
+     * */
     @Override
     public void attention(String group, String service, CloudDiscoveryHandler observer) {
         if (Utils.isEmpty(group)) {

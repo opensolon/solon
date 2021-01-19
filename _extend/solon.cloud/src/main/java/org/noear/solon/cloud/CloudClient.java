@@ -13,6 +13,8 @@ import org.noear.solon.cloud.utils.LocalUtils;
 import java.util.Properties;
 
 /**
+ * 云操作客户端
+ *
  * @author noear
  * @since 1.2
  */

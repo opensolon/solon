@@ -1,7 +1,10 @@
 package org.noear.solon.cloud;
 
 /**
- * @author noear 2021/1/17 created
+ * 云日志器
+ *
+ * @author noear
+ * @since 1.2
  */
 public interface CloudLogger {
     static CloudLogger get(String name) {

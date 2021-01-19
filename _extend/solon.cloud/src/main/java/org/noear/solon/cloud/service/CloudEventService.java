@@ -16,7 +16,7 @@ public interface CloudEventService {
     void send(Event event);
 
     /**
-     * 关注事件
+     * 关注事件（相当于订阅）
      */
     void attention(String queue, String topic, CloudEventHandler observer);
 }

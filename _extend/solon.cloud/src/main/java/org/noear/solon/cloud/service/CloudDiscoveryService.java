@@ -22,12 +22,12 @@ public interface CloudDiscoveryService {
     void deregister(String group, Node instance);
 
     /**
-     * 查询服务列表
+     * 查询服务实例列表
      */
     Discovery find(String group, String service);
 
     /**
-     * 关注服务列表
+     * 关注服务实例列表
      */
     void attention(String group, String service, CloudDiscoveryHandler observer);
 }

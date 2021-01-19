@@ -3,7 +3,10 @@ package org.noear.solon.cloud;
 import org.noear.solon.Solon;
 
 /**
- * @author noear 2021/1/15 created
+ * 云服务属性配置
+ *
+ * @author noear
+ * @since 1.2
  */
 public class CloudProps {
     private String SERVER = "solon.cloud.@@.server";

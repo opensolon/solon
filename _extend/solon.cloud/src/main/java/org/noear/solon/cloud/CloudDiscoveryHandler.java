@@ -3,7 +3,10 @@ package org.noear.solon.cloud;
 import org.noear.solon.cloud.model.Discovery;
 
 /**
- * @author noear 2021/1/16 created
+ * 云发现处理
+ *
+ * @author noear
+ * @since 1.2
  */
 public interface CloudDiscoveryHandler {
     void handler(Discovery discovery);
