@@ -19,7 +19,7 @@ public class NamiConfigurationSolon implements NamiConfiguration {
 
         //尝试从负载工厂获取
         if (Bridge.upstreamFactory() != null) {
-            LoadBalance upstream = Bridge.upstreamFactory().create(client.name(), client.group());
+            LoadBalance upstream = Bridge.upstreamFactory().create(client.group(), client.name());
 
             if (upstream != null) {
                 builder.upstream(upstream::getServer);
