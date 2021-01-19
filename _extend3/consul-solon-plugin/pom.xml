@@ -40,10 +40,14 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami</artifactId>
+            <artifactId>nami.channel.http.okhttp</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>nami.coder.snack3</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-api</artifactId>

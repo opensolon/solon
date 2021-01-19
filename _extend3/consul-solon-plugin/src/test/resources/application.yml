@@ -4,4 +4,6 @@ solon.app:
 
 
 solon.cloud.consul:
-  server: 172.168.0.48:8848   #consul服务地址
+  server: 127.0.0.1   #consul服务地址
+  config:
+    loadKey: "test/app"
