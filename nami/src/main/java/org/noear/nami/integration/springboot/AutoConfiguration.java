@@ -25,19 +25,23 @@ public class AutoConfiguration extends InstantiationAwareBeanPostProcessorAdapte
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        Class<?> beanClz = bean.getClass();
+        try {
+            Class<?> beanClz = bean.getClass();
 
-        ReflectionUtils.doWithFields(beanClz, (field -> {
-            NamiClient client = field.getAnnotation(NamiClient.class);
+            ReflectionUtils.doWithFields(beanClz, (field -> {
+                NamiClient client = field.getAnnotation(NamiClient.class);
 
-            if (client != null) {
-                if (field.getType().isInterface()) {
+                if (client != null) {
+                    if (field.getType().isInterface()) {
 
-                    field.setAccessible(true);
-                    field.set(bean, postAnno(client, field));
+                        field.setAccessible(true);
+                        field.set(bean, postAnno(client, field));
+                    }
                 }
-            }
-        }));
+            }));
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
 
         return bean;
     }
