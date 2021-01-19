@@ -48,6 +48,9 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
         return healthCheckInterval;
     }
 
+    /**
+     * 注册服务实例
+     * */
     @Override
     public void register(String group, Instance instance) {
         String[] ss = instance.address.split(":");
@@ -107,22 +110,34 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
         }
     }
 
+    /**
+     * 注销服务实例
+     * */
     @Override
     public void deregister(String group, Instance instance) {
         String serviceId = instance.service + "-" + instance.address;
         real.agentServiceDeregister(serviceId);
     }
 
+    /**
+     * 查询服务实例列表
+     * */
     @Override
     public Discovery find(String group, String service) {
         return discoveryMap.get(service);
     }
 
+    /**
+     * 关注服务实例列表
+     * */
     @Override
     public void attention(String group, String service, CloudDiscoveryHandler observer) {
         observerMap.put(observer, new CloudDiscoveryObserverEntity(group, service, observer));
     }
 
+    /**
+     * 定时任务，刷新服务列表
+     * */
     @Override
     public void run() {
         Map<String,Discovery> discoveryTmp = new HashMap<>();
@@ -154,10 +169,13 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
 
         discoveryMap = discoveryTmp;
 
-        //发制通知
+        //通知观察者
         noticeObservers();
     }
 
+    /**
+     * 通知观察者
+     * */
     private void noticeObservers() {
         for (Map.Entry<CloudDiscoveryHandler, CloudDiscoveryObserverEntity> kv : observerMap.entrySet()) {
             CloudDiscoveryObserverEntity entity = kv.getValue();
@@ -169,7 +187,10 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
     }
 
 
-    public static class HealthDetector {
+    /**
+     * 健康探测器
+     * */
+    static class HealthDetector {
 
         private static final Detector[] allDetectors=new Detector[]{
                 new CpuDetector(),

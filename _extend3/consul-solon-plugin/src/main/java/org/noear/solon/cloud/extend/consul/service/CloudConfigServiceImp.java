@@ -39,6 +39,9 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
         return refreshInterval;
     }
 
+    /**
+     * 获取配置
+     * */
     @Override
     public Config get(String group, String key) {
         GetValue newV = real.getKVValue(key, token).getValue();
