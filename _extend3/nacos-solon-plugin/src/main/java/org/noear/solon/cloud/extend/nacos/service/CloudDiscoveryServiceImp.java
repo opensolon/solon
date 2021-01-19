@@ -55,7 +55,7 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
         }
 
         try {
-            real.registerInstance(instance.service, group, ss[0], Integer.parseInt(ss[0]));
+            real.registerInstance(instance.service, group, ss[0], Integer.parseInt(ss[1]));
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
         }
