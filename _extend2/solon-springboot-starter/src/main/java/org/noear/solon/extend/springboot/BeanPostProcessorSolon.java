@@ -12,12 +12,15 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 public class BeanPostProcessorSolon implements BeanPostProcessor {
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        BeanWrap bw = Aop.wrap(bean.getClass(), bean);
+        if (beanName.startsWith("org.springframework.boot") == false) {
 
-        if(bean.getClass().getSimpleName().equalsIgnoreCase(beanName)) {
-            Aop.context().beanRegister(bw, null, true);
-        }else{
-            Aop.context().beanRegister(bw, beanName, true);
+            BeanWrap bw = Aop.wrap(bean.getClass(), bean);
+
+            if (bean.getClass().getSimpleName().equalsIgnoreCase(beanName)) {
+                Aop.context().beanRegister(bw, null, true);
+            } else {
+                Aop.context().beanRegister(bw, beanName, true);
+            }
         }
 
         return bean;
