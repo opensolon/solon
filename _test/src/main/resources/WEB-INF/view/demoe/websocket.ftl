@@ -8,13 +8,14 @@
 <script type="text/javascript">
     var sock = null;
     //服务器的地址
-    var wsuri = "ws://127.0.0.1:${app_port}/demoe/websocket";
+    var wsuri = "ws://127.0.0.1:8080/demoe/websocket";
     window.onload = function() {
         console.log("onload");
         sock = new WebSocket(wsuri);
         sock.onopen = function() {
             //成功连接到服务器
             alert("connected to " + wsuri);
+            sock.send("1111")
         }
         sock.onclose = function(e) {
             alert("connection closed (" + e.code + ")");
