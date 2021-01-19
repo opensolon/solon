@@ -104,6 +104,7 @@ public class RsSocketSession extends SessionBase {
         }
     }
 
+
     @Override
     public void send(String message) {
         send(Message.wrap(message));

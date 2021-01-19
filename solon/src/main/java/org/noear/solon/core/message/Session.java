@@ -37,6 +37,15 @@ public interface Session {
     String path();
 
     /**
+     * 请求头
+     * */
+    String header(String name);
+    /**
+     * 设置请求头
+     * */
+    void headerSet(String name, String value);
+
+    /**
      * 标识（为特定业务提供帮助）
      * */
     int flag();

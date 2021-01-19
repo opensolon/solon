@@ -2,15 +2,21 @@ package org.noear.solon.socketd;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.*;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 
 public abstract class SessionBase implements Session {
+    //
+    //标志
+    //
     private int _flag = SessionFlag.undefined;
     @Override
     public int flag() {
@@ -20,6 +26,25 @@ public abstract class SessionBase implements Session {
     @Override
     public void flagSet(int flag) {
         _flag = flag;
+    }
+
+    //
+    //请求头
+    //
+    protected NvMap headerMap = new NvMap();
+
+    @Override
+    public String header(String name) {
+        return headerMap.get(name);
+    }
+
+    @Override
+    public void headerSet(String name, String value) {
+        headerMap.put(name, value);
+    }
+
+    public Map<String,String> headerMap() {
+        return Collections.unmodifiableMap(headerMap);
     }
 
     //////////////////////////////////////////

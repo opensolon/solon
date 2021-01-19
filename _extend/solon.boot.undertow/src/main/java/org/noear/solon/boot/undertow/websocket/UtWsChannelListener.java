@@ -1,6 +1,7 @@
 package org.noear.solon.boot.undertow.websocket;
 
 import io.undertow.websockets.core.*;
+import io.undertow.websockets.spi.WebSocketHttpExchange;
 import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
@@ -14,8 +15,15 @@ import java.nio.ByteBuffer;
 
 public class UtWsChannelListener extends AbstractReceiveListener {
 
-    public void onOpen(WebSocketChannel channel) {
-        ListenerProxy.getGlobal().onOpen(_SocketServerSession.get(channel));
+    public void onOpen(WebSocketHttpExchange exchange, WebSocketChannel channel) {
+        Session session = _SocketServerSession.get(channel);
+        exchange.getRequestHeaders().forEach((k, v) -> {
+            if (v.size() > 0) {
+                session.headerSet(k, v.get(0));
+            }
+        });
+
+        ListenerProxy.getGlobal().onOpen(session);
     }
 
 

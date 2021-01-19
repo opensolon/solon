@@ -15,7 +15,15 @@ public class WebSocketListenerImp extends WebSocketAdapter {
     @Override
     public void onWebSocketConnect(org.eclipse.jetty.websocket.api.Session sess) {
         super.onWebSocketConnect(sess);
-        ListenerProxy.getGlobal().onOpen(_SocketServerSession.get(getSession()));
+
+        Session session = _SocketServerSession.get(getSession());
+        sess.getUpgradeRequest().getHeaders().forEach((k, v) -> {
+            if (v.size() > 0) {
+                session.headerSet(k, v.get(0));
+            }
+        });
+
+        ListenerProxy.getGlobal().onOpen(session);
     }
 
     @Override

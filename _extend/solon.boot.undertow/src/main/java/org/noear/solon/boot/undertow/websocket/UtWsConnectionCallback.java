@@ -9,7 +9,7 @@ public class UtWsConnectionCallback implements WebSocketConnectionCallback {
 
     @Override
     public void onConnect(WebSocketHttpExchange exchange, WebSocketChannel channel) {
-        listener.onOpen(channel);
+        listener.onOpen(exchange, channel);
 
         channel.getReceiveSetter().set(listener);
         channel.resumeReceives();

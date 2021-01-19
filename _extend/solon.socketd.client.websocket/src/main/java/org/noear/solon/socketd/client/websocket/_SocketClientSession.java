@@ -84,6 +84,10 @@ public class _SocketClientSession extends SessionBase {
         return _path;
     }
 
+    public void headerSet(String name, String value) {
+        headerMap.put(name, value);
+    }
+
     @Override
     public void send(String message) {
         if (isWebSocketD()) {
