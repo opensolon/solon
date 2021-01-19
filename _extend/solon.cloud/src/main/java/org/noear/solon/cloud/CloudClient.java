@@ -26,7 +26,7 @@ public class CloudClient {
     }
 
     /**
-     * 配置配置
+     * 配置服务，加载默认配置
      */
     public static void configLoad(String group, String key) {
         if (CloudClient.config() == null) {
@@ -37,9 +37,15 @@ public class CloudClient {
             Config config = CloudClient.config().get(group, key);
 
             if (config != null && Utils.isNotEmpty(config.value)) {
-                Properties properties = Utils.buildProperties(config.value);
+                Properties properties = config.toProps();
                 Solon.cfg().loadAdd(properties);
             }
+
+            //关注实时更新
+            CloudClient.config().attention(group, key, (cfg) -> {
+                Properties properties = config.toProps();
+                Solon.cfg().loadAdd(properties);
+            });
         }
     }
 
@@ -51,7 +57,7 @@ public class CloudClient {
     }
 
     /**
-     * 发现服务
+     * 发现服务，推送本地服务（即注册）
      */
     public static void discoveryPush(String hostname) {
         if (CloudClient.discovery() == null) {
