@@ -18,7 +18,11 @@ import org.noear.solon.extend.consul.detector.*;
 import java.util.*;
 
 /**
- * @author noear 2021/1/19 created
+ * 云端注册与发现服务实现
+ *
+ * @author 夜の孤城
+ * @author noear
+ * @since 1.2
  */
 public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscoveryService {
     private ConsulClient real;

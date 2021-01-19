@@ -60,7 +60,7 @@ public class CloudClient {
         }
 
         if (Utils.isNotEmpty(Solon.cfg().appName())) {
-            Node node = new Node();
+            Node node =  Node.localNew();
             node.service = Solon.cfg().appName();
             node.protocol = "http";
 

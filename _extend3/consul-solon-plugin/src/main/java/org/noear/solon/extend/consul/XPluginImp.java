@@ -4,6 +4,7 @@ import com.ecwid.consul.v1.ConsulClient;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.utils.IntervalUtils;
 import org.noear.solon.core.*;
@@ -43,9 +44,6 @@ public class XPluginImp implements Plugin {
 
         initClient();
 
-        //serviceId = app.cfg().appName() + "-" + app.port();
-
-
         //1.登记配置服务
         if (ConsulProps.instance.getConfigEnable()) {
             CloudConfigServiceImp serviceImp = new CloudConfigServiceImp(client);
@@ -67,6 +65,17 @@ public class XPluginImp implements Plugin {
                 long interval = IntervalUtils.getInterval(serviceImp.getHealthCheckInterval());
                 clientTimer.schedule(serviceImp, interval, interval);
             }
+        }
+
+        //3.加载配置
+        if (CloudClient.config() != null) {
+            CloudClient.configLoad(ConsulProps.instance.getConfigLoadGroup(),
+                    ConsulProps.instance.getConfigLoadKey());
+        }
+
+        //4.服务注册
+        if (CloudClient.discovery() != null) {
+            CloudClient.discoveryPush(ConsulProps.instance.getDiscoveryHostname());
         }
     }
 

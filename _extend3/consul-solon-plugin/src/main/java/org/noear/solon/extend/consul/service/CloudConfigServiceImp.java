@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.TimerTask;
 
 /**
+ * 云端配置服务实现
+ *
+ * @author 夜の孤城
  * @author noear
  * @since 1.2
  */

@@ -54,24 +54,31 @@ public class Node implements Serializable {
 
     public static Node local() {
         if (local == null) {
-            local = new Node();
-            local.address = LocalUtils.getLocalAddress() + ":" + Solon.global().port();
-            local.service = Solon.cfg().appName();
-            local.protocol = "http";
-
-            local.meta = new HashMap<>(Solon.cfg().argx());
-            local.meta.remove("server.port");
-
-            local.tags = new ArrayList<>();
-            local.tags.add("solon");
-            if (Utils.isNotEmpty(Solon.cfg().appGroup())) {
-                local.tags.add(Solon.cfg().appGroup());
-            }
-            if (Utils.isNotEmpty(Solon.cfg().appName())) {
-                local.tags.add(Solon.cfg().appName());
-            }
+            local = localNew();
         }
 
         return local;
+    }
+
+    public static Node localNew() {
+        Node node = new Node();
+
+        node.address = LocalUtils.getLocalAddress() + ":" + Solon.global().port();
+        node.service = Solon.cfg().appName();
+        node.protocol = "http";
+
+        node.meta = new HashMap<>(Solon.cfg().argx());
+        node.meta.remove("server.port");
+
+        node.tags = new ArrayList<>();
+        node.tags.add("solon");
+        if (Utils.isNotEmpty(Solon.cfg().appGroup())) {
+            node.tags.add(Solon.cfg().appGroup());
+        }
+        if (Utils.isNotEmpty(Solon.cfg().appName())) {
+            node.tags.add(Solon.cfg().appName());
+        }
+
+        return node;
     }
 }
