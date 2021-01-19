@@ -59,6 +59,7 @@ public class XPluginImp implements Plugin {
             CloudDiscoveryServiceImp serviceImp = new CloudDiscoveryServiceImp(client);
             CloudManager.register(serviceImp);
 
+            //运行一次，拉取服务列表
             serviceImp.run();
 
             if (Utils.isNotEmpty(serviceImp.getHealthCheckInterval())) {
