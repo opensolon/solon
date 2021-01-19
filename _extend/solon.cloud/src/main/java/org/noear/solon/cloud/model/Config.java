@@ -25,6 +25,11 @@ public class Config {
      */
     public String value;
 
+    /**
+     * 版本号
+     * */
+    public long version;
+
 
     public Config() {
 

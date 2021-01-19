@@ -8,7 +8,9 @@ import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 /**
- * @author noear
+ * 本地地址工具（获取本地IP）
+ *
+ * @author 夜の孤城
  * @since 1.2
  */
 

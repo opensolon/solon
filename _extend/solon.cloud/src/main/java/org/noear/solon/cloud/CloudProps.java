@@ -17,6 +17,9 @@ public class CloudProps {
     private String CONFIG_ENABLE = "solon.cloud.@@.config.enable";
     private String CONFIG_LOAD_GROUP = "solon.cloud.@@.config.loadGroup"; //（对某些框架来讲，可能没用处）
     private String CONFIG_LOAD_KEY = "solon.cloud.@@.config.loadKey";
+    private String CONFIG_REFRESH_INTERVAL = "solon.cloud.@@.config.refreshInterval";
+
+
 
     private String DISCOVERY_ENABLE = "solon.cloud.@@.discovery.enable";
     private String DISCOVERY_HOSTNAME = "solon.cloud.@@.discovery.hostname";
@@ -24,6 +27,7 @@ public class CloudProps {
     private String DISCOVERY_HEALTH_CHECK_PATH = "solon.cloud.@@.discovery.healthCheckPath";
     private String DISCOVERY_HEALTH_CHECK_INTERVAL = "solon.cloud.@@.discovery.healthCheckInterval";
     private String DISCOVERY_HEALTH_DETECTOR = "solon.cloud.@@.discovery.healthDetector";
+    private String DISCOVERY_REFRESH_INTERVAL = "solon.cloud.@@.discovery.refreshInterval";
 
     private String EVENT_ENABLE = "solon.cloud.@@.event.enable";
     private String EVENT_SEAL = "solon.cloud.@@.event.seal";
@@ -37,6 +41,7 @@ public class CloudProps {
         CONFIG_ENABLE = CONFIG_ENABLE.replace("@@", frame);
         CONFIG_LOAD_GROUP = CONFIG_LOAD_GROUP.replace("@@", frame);
         CONFIG_LOAD_KEY = CONFIG_LOAD_KEY.replace("@@", frame);
+        CONFIG_REFRESH_INTERVAL = CONFIG_REFRESH_INTERVAL.replace("@@", frame);
 
         DISCOVERY_ENABLE = DISCOVERY_ENABLE.replace("@@", frame);
         DISCOVERY_HOSTNAME = DISCOVERY_HOSTNAME.replace("@@", frame);
@@ -44,6 +49,7 @@ public class CloudProps {
         DISCOVERY_HEALTH_CHECK_PATH = DISCOVERY_HEALTH_CHECK_PATH.replace("@@", frame);
         DISCOVERY_HEALTH_CHECK_INTERVAL = DISCOVERY_HEALTH_CHECK_INTERVAL.replace("@@", frame);
         DISCOVERY_HEALTH_DETECTOR = DISCOVERY_HEALTH_DETECTOR.replace("@@", frame);
+        DISCOVERY_REFRESH_INTERVAL = DISCOVERY_REFRESH_INTERVAL.replace("@@", frame);
 
         EVENT_ENABLE = EVENT_ENABLE.replace("@@", frame);
         EVENT_SEAL = EVENT_SEAL.replace("@@", frame);
@@ -81,6 +87,9 @@ public class CloudProps {
     public String getConfigLoadKey() {
         return Solon.cfg().get(CONFIG_LOAD_KEY);
     }
+    public String getConfigRefreshInterval(String def) {
+        return Solon.cfg().get(CONFIG_REFRESH_INTERVAL, def);//def:10s
+    }
 
 
     //
@@ -101,13 +110,15 @@ public class CloudProps {
         return Solon.cfg().get(DISCOVERY_HEALTH_CHECK_PATH,"/run/check/");
     }
 
-    public String getDiscoveryHealthCheckInterval() {
-        return Solon.cfg().get(DISCOVERY_HEALTH_CHECK_INTERVAL,"5s");
+    public String getDiscoveryHealthCheckInterval(String def) {
+        return Solon.cfg().get(DISCOVERY_HEALTH_CHECK_INTERVAL, def); //def:5s
     }
     public String getDiscoveryHealthDetector() {
         return Solon.cfg().get(DISCOVERY_HEALTH_DETECTOR);
     }
-
+    public String getDiscoveryRefreshInterval(String def) {
+        return Solon.cfg().get(DISCOVERY_REFRESH_INTERVAL, def);//def:10s
+    }
 
     //
     //事件

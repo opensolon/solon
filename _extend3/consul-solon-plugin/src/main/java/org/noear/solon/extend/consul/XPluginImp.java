@@ -4,7 +4,11 @@ import com.ecwid.consul.v1.ConsulClient;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudManager;
+import org.noear.solon.cloud.utils.IntervalUtils;
 import org.noear.solon.core.*;
+import org.noear.solon.extend.consul.service.CloudConfigServiceImp;
+import org.noear.solon.extend.consul.service.CloudDiscoveryServiceImp;
 
 import java.util.*;
 
@@ -17,61 +21,59 @@ import java.util.*;
 public class XPluginImp implements Plugin {
     private Timer clientTimer = new Timer();
     private ConsulClient client;
-    private String serviceId;
+
+    /**
+     * 初始化客户端
+     */
+    private void initClient() {
+        String server = ConsulProps.instance.getServer();
+        String[] ss = server.split(":");
+        if (ss.length == 1) {
+            client = new ConsulClient(ss[0]);
+        } else {
+            client = new ConsulClient(ss[0], Integer.parseInt(ss[1]));
+        }
+    }
 
     @Override
     public void start(SolonApp app) {
-        String host = app.cfg().get(Constants.HOST);
-
-        if (Utils.isEmpty(host)) {
+        if (Utils.isEmpty(ConsulProps.instance.getServer())) {
             return;
         }
 
-        int consulPort=app.cfg().getInt(Constants.PORT,8500);
-        client = new ConsulClient(host,consulPort);
+        initClient();
 
-        serviceId = app.cfg().appName() + "-" + app.port();
+        //serviceId = app.cfg().appName() + "-" + app.port();
 
-        // 1.Discovery::尝试注册服务
-        if (app.cfg().getBool(Constants.DISCOVERY_ENABLE, true)) {
-            new ConsulRegisterTask(client).run();
-        }
 
-        // 2.Config::尝试获取配置
-        if (app.cfg().getBool(Constants.CONFIG_ENABLE, true)) {
-            ConsulConfigTask configTask = new ConsulConfigTask(client);
-            //开始先获取一下配置，避免使用@Inject("${prop.name}")这种配置方式获取的值位null
-            configTask.run();
+        //1.登记配置服务
+        if (ConsulProps.instance.getConfigEnable()) {
+            CloudConfigServiceImp serviceImp = new CloudConfigServiceImp(client);
+            CloudManager.register(serviceImp);
 
-            long interval = Tools.getInterval(app.cfg().get(Constants.CONFIG_INTERVAL, "10s"));
-
-            if (interval > 0) {
-                clientTimer.schedule(configTask, interval, interval);
+            if (serviceImp.getRefreshInterval() > 0) {
+                clientTimer.schedule(serviceImp, serviceImp.getRefreshInterval(), serviceImp.getRefreshInterval());
             }
-
         }
 
-        // 3.Locator::尝试获取负载
-        if (app.cfg().getBool(Constants.LOCATOR_ENABLE, true)) {
-            LoadBalanceSimpleFactory factory = new LoadBalanceSimpleFactory();
-            Bridge.upstreamFactorySet(factory);
+        //2.登记发现服务
+        if (ConsulProps.instance.getDiscoveryEnable()) {
+            CloudDiscoveryServiceImp serviceImp = new CloudDiscoveryServiceImp(client);
+            CloudManager.register(serviceImp);
 
-            long interval = Tools.getInterval(app.cfg().get(Constants.LOCATOR_INTERVAL, "10s"));
+            serviceImp.run();
 
-            ConsulLocatorTask locatorTask = new ConsulLocatorTask(client, factory);
-            locatorTask.run();
-
-            if (interval > 0) {
-                clientTimer.schedule(locatorTask, interval, interval);
+            if (Utils.isNotEmpty(serviceImp.getHealthCheckInterval())) {
+                long interval = IntervalUtils.getInterval(serviceImp.getHealthCheckInterval());
+                clientTimer.schedule(serviceImp, interval, interval);
             }
         }
     }
 
     @Override
     public void stop() throws Throwable {
-        if (client != null) {
-            client.agentServiceDeregister(serviceId);
+        if (clientTimer != null) {
+            clientTimer.cancel();
         }
-        clientTimer.cancel();
     }
 }

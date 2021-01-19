@@ -1,31 +1,211 @@
 package org.noear.solon.extend.consul.service;
 
+import com.ecwid.consul.json.GsonFactory;
+import com.ecwid.consul.v1.ConsulClient;
+import com.ecwid.consul.v1.Response;
+import com.ecwid.consul.v1.agent.model.NewService;
+import com.ecwid.consul.v1.agent.model.Service;
+import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Node;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
+import org.noear.solon.extend.consul.ConsulProps;
+import org.noear.solon.extend.consul.detector.*;
+
+import java.util.*;
 
 /**
  * @author noear 2021/1/19 created
  */
-public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
+public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscoveryService {
+    private ConsulClient real;
+    private String token;
+
+    private String healthCheckInterval;
+    private String healthCheckPath;
+    private String hostname;
+
+    Map<String,Discovery> discoveryMap = new HashMap<>();
+    private Map<CloudDiscoveryHandler, CloudDiscoveryObserverEntity> observerMap = new HashMap<>();
+
+    public CloudDiscoveryServiceImp(ConsulClient client) {
+        this.real = client;
+        this.token = ConsulProps.instance.getToken();
+
+        healthCheckInterval = ConsulProps.instance.getDiscoveryHealthCheckInterval("10s");
+        healthCheckPath = ConsulProps.instance.getDiscoveryHealthCheckPath();
+        hostname = ConsulProps.instance.getDiscoveryHostname();
+    }
+
+    public String getHealthCheckInterval() {
+        return healthCheckInterval;
+    }
+
     @Override
     public void register(String group, Node instance) {
+        String[] ss = instance.address.split(":");
+        String serviceId = instance.service + "-" + instance.address;
 
+        NewService newService = new NewService();
+
+        newService.setId(serviceId);
+        newService.setName(instance.service);
+        newService.setAddress(ss[0]);
+        newService.setPort(Integer.parseInt(ss[1]));
+        if (instance.tags != null) {
+            newService.setTags(instance.tags);
+        }
+
+        registerLocalCheck(newService);
+
+        //
+        // 注册服务
+        //
+        real.agentServiceRegister(newService, token);
+    }
+
+    private void registerLocalCheck(NewService newService){
+        if (Utils.isNotEmpty(healthCheckInterval)) {
+            //1.添加Solon服务，提供检测用
+            //
+            HealthDetector detector=new HealthDetector();
+            detector.startDetect(Solon.global());
+
+            Solon.global().get(healthCheckPath, ctx -> {
+                Map<String,Object> info=new HashMap<>();
+                info.put("status","OK");
+                info.putAll(detector.getInfo());
+                ctx.outputAsJson(GsonFactory.getGson().toJson(info));
+            });
+
+            //2.添加检测器
+            //
+            String checkUrl = "http://" + hostname + ":" + Solon.global().port();
+            if (healthCheckPath.startsWith("/")) {
+                checkUrl = checkUrl + healthCheckPath;
+            } else {
+                checkUrl = checkUrl + "/" + healthCheckPath;
+            }
+
+            //3.添加检测
+            //
+            NewService.Check check = new NewService.Check();
+            check.setInterval(healthCheckInterval);
+            check.setMethod("GET");
+            check.setHttp(checkUrl);
+            check.setDeregisterCriticalServiceAfter("30s");
+            check.setTimeout("60s");
+
+            newService.setCheck(check);
+        }
     }
 
     @Override
     public void deregister(String group, Node instance) {
-
+        String serviceId = instance.service + "-" + instance.address;
+        real.agentServiceDeregister(serviceId);
     }
 
     @Override
     public Discovery find(String group, String service) {
-        return null;
+        return discoveryMap.get(service);
     }
 
     @Override
     public void attention(String group, String service, CloudDiscoveryHandler observer) {
+        observerMap.put(observer, new CloudDiscoveryObserverEntity(group, service, observer));
+    }
 
+    @Override
+    public void run() {
+        Map<String,Discovery> discoveryTmp = new HashMap<>();
+        Response<Map<String, Service>> services = real.getAgentServices();
+
+        for (Map.Entry<String, Service> kv : services.getValue().entrySet()) {
+            Service service = kv.getValue();
+
+            if (Utils.isEmpty(service.getAddress())) {
+                continue;
+            }
+
+            String name = service.getService();
+            Discovery discovery = discoveryTmp.get(name);
+
+            if (discovery == null) {
+                discovery = new Discovery(service.getService());
+                discoveryTmp.put(name, discovery);
+            }
+
+            Node node = new Node();
+            node.service = service.getService();
+            node.address = service.getAddress() + ":" + service.getPort();
+            node.tags = service.getTags();
+            node.meta = service.getMeta();
+
+            discovery.cluster.add(node);
+        }
+
+        discoveryMap = discoveryTmp;
+
+        //发制通知
+        noticeObservers();
+    }
+
+    private void noticeObservers() {
+        for (Map.Entry<CloudDiscoveryHandler, CloudDiscoveryObserverEntity> kv : observerMap.entrySet()) {
+            CloudDiscoveryObserverEntity entity = kv.getValue();
+            Discovery tmp = discoveryMap.get(entity.service);
+            if (tmp != null) {
+                entity.handler(tmp);
+            }
+        }
+    }
+
+
+    public static class HealthDetector {
+
+        private static final Detector[] allDetectors=new Detector[]{
+                new CpuDetector(),
+                new JvmMemoryDetector(),
+                new OsDetector(),
+                new QpsDetector(),
+                new MemoryDetector(),
+                new DiskDetector()
+        };
+        Set<Detector> detectors = new HashSet<>();
+
+        public HealthDetector(){
+
+        }
+
+        public void startDetect(SolonApp app){
+            String detectorNamesStr= ConsulProps.instance.getDiscoveryHealthDetector();
+
+            if(Utils.isEmpty(detectorNamesStr)){
+                return;
+            }
+
+            Set<String> detectorNames=new HashSet<>(Arrays.asList(detectorNamesStr.split(",")));
+
+            for(Detector detector:allDetectors){
+                if(detectorNames.contains(detector.getName())){
+                    detectors.add(detector);
+                    if(detector instanceof QpsDetector){
+                        ((QpsDetector) detector).toDetect(app);
+                    }
+                }
+            }
+        }
+
+        public Map<String,Object> getInfo(){
+            Map<String,Object> info=new HashMap<>();
+            for(Detector detector:detectors){
+                info.put(detector.getName(),detector.getInfo());
+            }
+            return info;
+        }
     }
 }
