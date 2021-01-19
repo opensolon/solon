@@ -28,8 +28,12 @@ public class WsServer extends WebSocketServer {
         if(conn == null){
             return;
         }
+        Session session = _SocketServerSession.get(conn);
+        shake.iterateHttpFields().forEachRemaining(k -> {
+            session.headerSet(k, shake.getFieldValue(k));
+        });
 
-        ListenerProxy.getGlobal().onOpen(_SocketServerSession.get(conn));
+        ListenerProxy.getGlobal().onOpen(session);
     }
 
     @Override

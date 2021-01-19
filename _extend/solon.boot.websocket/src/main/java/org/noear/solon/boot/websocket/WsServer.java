@@ -26,11 +26,16 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake shake) {
-        if(conn == null){
+        if (conn == null) {
             return;
         }
 
-        ListenerProxy.getGlobal().onOpen(_SocketServerSession.get(conn));
+        Session session = _SocketServerSession.get(conn);
+        shake.iterateHttpFields().forEachRemaining(k -> {
+            session.headerSet(k, shake.getFieldValue(k));
+        });
+
+        ListenerProxy.getGlobal().onOpen(session);
     }
 
     @Override
