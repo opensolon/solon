@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * @author noear
  * @since 1.2
  */
+@Configuration
 public class AutoConfigurationSolon {
     @Bean
     public BeanPostProcessor beanPostProcessor(){
