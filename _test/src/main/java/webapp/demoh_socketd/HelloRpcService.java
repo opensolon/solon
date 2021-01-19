@@ -3,7 +3,7 @@ package webapp.demoh_socketd;
 
 import org.noear.nami.annotation.NamiClient;
 
-@NamiClient("localrpc:/demoh/rpc")
+@NamiClient(name = "localrpc", path = "/demoh/rpc")
 public interface HelloRpcService {
     String hello(String name);
 }
