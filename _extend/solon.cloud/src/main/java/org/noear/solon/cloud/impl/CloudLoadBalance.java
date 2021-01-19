@@ -66,6 +66,7 @@ public class CloudLoadBalance implements LoadBalance {
                 if (index > indexMax) {
                     index = 0;
                 }
+
                 Instance instance = discovery.cluster.get(index++ % count);
 
                 if (Utils.isEmpty(instance.protocol)) {
