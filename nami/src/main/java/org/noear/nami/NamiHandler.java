@@ -55,18 +55,22 @@ public class NamiHandler implements InvocationHandler {
                 throw new RuntimeException(ex);
             }
 
+            //>>添加接口url
             if(TextUtils.isNotEmpty(client.url())){
                 config.setUrl(client.url());
             }
 
+            //>>添加接口group
             if(TextUtils.isNotEmpty(client.group())){
                 config.setGroup(client.group());
             }
 
+            //>>添加接口name
             if(TextUtils.isNotEmpty(client.name())){
                 config.setName(client.name());
             }
 
+            //>>添加接口path
             if(TextUtils.isNotEmpty(client.path())){
                 config.setPath(client.path());
             }
