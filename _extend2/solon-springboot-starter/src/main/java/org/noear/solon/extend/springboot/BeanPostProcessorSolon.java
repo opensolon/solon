@@ -14,12 +14,16 @@ public class BeanPostProcessorSolon implements BeanPostProcessor {
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if (beanName.startsWith("org.springframework.boot") == false) {
 
-            BeanWrap bw = Aop.wrap(bean.getClass(), bean);
+            try {
+                BeanWrap bw = Aop.wrap(bean.getClass(), bean);
 
-            if (bean.getClass().getSimpleName().equalsIgnoreCase(beanName)) {
-                Aop.context().beanRegister(bw, null, true);
-            } else {
-                Aop.context().beanRegister(bw, beanName, true);
+                if (bean.getClass().getSimpleName().equalsIgnoreCase(beanName)) {
+                    Aop.context().beanRegister(bw, null, true);
+                } else {
+                    Aop.context().beanRegister(bw, beanName, true);
+                }
+            } catch (Throwable ex) {
+                ex.printStackTrace();
             }
         }
 
