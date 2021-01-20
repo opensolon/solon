@@ -1,3 +1,6 @@
+
+## 一、配置示例：
+
 ```yaml
 solon:
   app:
@@ -7,20 +10,28 @@ solon.cloud.nacos:
   server: "localhost:8500"
   username: nacos
   password: nacos
-  discovery:
-    enable: true
-    hostname: "12.12.12:12"
-    healthCheckInterval: "5s"
-    healthCheckPath: "/run/check/"
-    healthDetector: ""
-  config:
-#    server: "localhost:8500"
-    enable: true
-    load: "test/app"
-#    interval: "5s"
-#    watch: ""
-  locator:
-#    enable: true
-    interval: "5s"
 
 ```
+
+## 二、配置说明
+
+| 配置说 | 说明 | 框架：nacos | 框架：consul |
+| -------- | -------- |  -------- |   -------- | 
+| solon.cloud.@@.server     |      |       |        | 
+| solon.cloud.@@.token     |      |       |        | 
+| solon.cloud.@@.username     |      |       |        | 
+| solon.cloud.@@.password     |      |       |        | 
+| | | |
+| solon.cloud.@@.config.enable     |      |       |        | 
+| solon.cloud.@@.config.loadGroup     |      |       |        | 
+| solon.cloud.@@.config.loadKey     |      |       |        | 
+| solon.cloud.@@.config.refreshInterval     |      |       |        | 
+| | | |
+| solon.cloud.@@.discovery.enable     |      |        |        | 
+| solon.cloud.@@.discovery.hostname     |      |        |        | 
+| solon.cloud.@@.discovery.tags     |      |        |        | 
+| solon.cloud.@@.discovery.healthCheckPath     |      |        |        | 
+| solon.cloud.@@.discovery.healthCheckInterval     |      |        |        | 
+| solon.cloud.@@.discovery.healthDetector     |      |        |        | 
+| solon.cloud.@@.discovery.healthDetector     |      |        |        | 
+| solon.cloud.@@.discovery.refreshInterval     |      |        |        | 
