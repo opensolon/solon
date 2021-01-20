@@ -95,15 +95,16 @@ public class Demo3{
 
 注：原uri，分拆为：url 和 group+name+path（1.2.22版本及之后）
 
-##### @Mapping 注解说明（注在函数上）
+##### @Mapping 注解说明（注在函数上；默认不需要注解）
 
 | 字段 | 说明 | 
 | -------- | -------- | 
-| value     | 映射值（支持两种格式）     | 
+| value     | 映射值（支持种三情况）     | 
 
-映射值的两种格式：
-* method（ 例：`GET` ）
-* method path（ 例：`PUT user/a.0.1` ）
+映射值的三种情况（包括没有注解）：
+* 例1：没有注解：没有参数时执行GET，有参数时执行POST；path为函数名（此为默认）
+* 例2：注解值为：`GET`，执行GET请求，path为函数名
+* 例3：注解值为：`PUT user/a.0.1` ，执行PUT请求，path为user/a.0.1
 
 ##### @Mapping 没有时的说明，即默认
 * 函数名将做为path
@@ -117,3 +118,27 @@ public class Demo3{
 | contentType     | 内容类型     | 
 
 注在参数上，表示以此参数做为内容进行提交
+
+
+## 三、相关组件清单
+
+| 组件 | 说明 | 
+| -------- | -------- | 
+| org.noear:nami     | 内核     | 
+|      |      | 
+| org.noear:nami.channel.http.hutool     |  http通道    | 
+| org.noear:nami.channel.http.okhttp     |  http通道     | 
+| org.noear:nami.channel.socketd.jdksocket     |  socketd通道-基于bio实现    | 
+| org.noear:nami.channel.socketd.netty     | socketd通道-基于nio,netty实现     | 
+| org.noear:nami.channel.socketd.rsocket     | socketd通道-基于rsocket实现     | 
+| org.noear:nami.channel.socketd.smartsocket     | socketd通道-基于aio实现     | 
+| org.noear:nami.channel.socketd.websocket     |  socketd通道-基于websocket实现    | 
+|      |      | 
+| org.noear:nami.coder.fastjson     |  json编码器    | 
+| org.noear:nami.coder.hessian     |  hessian编码器    |
+| org.noear:nami.coder.jackson     |  jackson编码器    |
+| org.noear:nami.coder.protostuff     |  protostuff编码器    |
+| org.noear:nami.coder.snack3     |  json编码器    |
+
+
+使用合，选一个通道+一个编码器使用
