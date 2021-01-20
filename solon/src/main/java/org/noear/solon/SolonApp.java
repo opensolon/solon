@@ -138,21 +138,21 @@ public class SolonApp implements Handler, HandlerSlots {
     }
 
     /**
-     * 根据源加载bean
+     * 根据源扫描bean
      * */
     public void beanScan(Class<?> source){
         Aop.context().beanScan(source);
     }
 
     /**
-     * 根据包加载bean
+     * 根据包扫描bean
      * */
     public void beanScan(String basePackage){
         Aop.context().beanScan(basePackage);
     }
 
     /**
-     * 根据类型构制bean
+     * 根据类型构建bean
      * */
     public BeanWrap beanMake(Class<?> clz){
         return Aop.context().beanMake(clz);
