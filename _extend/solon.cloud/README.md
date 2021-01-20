@@ -15,23 +15,30 @@ solon.cloud.nacos:
 
 ## 二、配置说明
 
-| 配置说 | 说明 | 框架：nacos | 框架：consul |
-| -------- | -------- |  -------- |   -------- | 
-| solon.cloud.@@.server     |      |       |        | 
-| solon.cloud.@@.token     |      |       |        | 
-| solon.cloud.@@.username     |      |       |        | 
-| solon.cloud.@@.password     |      |       |        | 
+注：具体配置时，用框架名替代@@符
+
+| 属性说 | 说明 | 框架可使用情况 | 
+| -------- | -------- |  -------- |  
+| solon.cloud.@@.server     |   服务地址（ip:port）   |    nacos、consul、water  |  
+| solon.cloud.@@.token     |   链接令牌   |    consul   |  
+| solon.cloud.@@.username     |  链接用户名    |  nacos    |  
+| solon.cloud.@@.password     |  链接密码   |    nacos  |     
 | | | |
-| solon.cloud.@@.config.enable     |      |       |        | 
-| solon.cloud.@@.config.loadGroup     |      |       |        | 
-| solon.cloud.@@.config.loadKey     |      |       |        | 
-| solon.cloud.@@.config.refreshInterval     |      |       |        | 
+| solon.cloud.@@.config.enable     |   配置服务启用（默认：true）   |   nacos、consul、water     |   
+| solon.cloud.@@.config.loadGroup     |   需要启动时加载的配置组   |   nacos、water    |    
+| solon.cloud.@@.config.loadKey     |  需要启动时加载的Key    |    nacos、consul、wate   |    
+| solon.cloud.@@.config.refreshInterval     |  配置刷新间隔    |   consul    |     
 | | | |
-| solon.cloud.@@.discovery.enable     |      |        |        | 
-| solon.cloud.@@.discovery.hostname     |      |        |        | 
-| solon.cloud.@@.discovery.tags     |      |        |        | 
-| solon.cloud.@@.discovery.healthCheckPath     |      |        |        | 
-| solon.cloud.@@.discovery.healthCheckInterval     |      |        |        | 
-| solon.cloud.@@.discovery.healthDetector     |      |        |        | 
-| solon.cloud.@@.discovery.healthDetector     |      |        |        | 
-| solon.cloud.@@.discovery.refreshInterval     |      |        |        | 
+| solon.cloud.@@.discovery.enable     |    注册与发现服务启用（默认：true）   |     nacos、consul、water    |      
+| solon.cloud.@@.discovery.hostname     |   服务主机   |    nacos、consul、water    |      
+| solon.cloud.@@.discovery.tags     |  服务标签    |    consul    |  
+| solon.cloud.@@.discovery.healthCheckPath     |  服务健康检查路径    |    consul、water    |     
+| solon.cloud.@@.discovery.healthCheckInterval     |  服务健康检查间隔时间    |    consul    |    
+| solon.cloud.@@.discovery.healthDetector     |   服务健康上报指标   |   consul     |     
+| solon.cloud.@@.discovery.refreshInterval     |   服务发现刷新间隔   |   consul     |      
+| | | |
+| solon.cloud.@@.event.enable | 事件总线服务（默认：true）| water |
+| solon.cloud.@@.event.seal | 事件签名 | water |
+| | | |
+| solon.cloud.@@.log.enable | 日志总线服务（默认：true）| water |
+| solon.cloud.@@.log.default | 日志默认记录器 | water |
