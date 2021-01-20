@@ -42,10 +42,6 @@ public interface LoadBalance {
      * 负载器工厂
      */
     interface Factory {
-        default LoadBalance create(String service) {
-            return create("", service);
-        }
-
         LoadBalance create(String group, String service);
     }
 }

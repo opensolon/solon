@@ -6,8 +6,9 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface FeignClient {
-    String name() default "";
     String url() default "";
+    String group() default "";
+    String name() default "";
     String path() default "";
     Class<? extends FeignConfiguration> configuration() default FeignConfigurationDefault.class;
 }

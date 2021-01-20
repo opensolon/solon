@@ -62,12 +62,12 @@ public class XPluginImp implements Plugin {
         }
     }
 
-    private LoadBalance getUpstream(FeignClient anno){
-        if(Bridge.upstreamFactory() == null){
+    private LoadBalance getUpstream(FeignClient anno) {
+        if (Bridge.upstreamFactory() == null) {
             return null;
         }
 
-        return Bridge.upstreamFactory().create(anno.name());
+        return Bridge.upstreamFactory().create(anno.group(), anno.name());
     }
 
     @Override
