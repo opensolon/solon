@@ -26,7 +26,7 @@ public class CloudLoadBalanceFactory implements LoadBalance.Factory {
     }
 
     @Override
-    public LoadBalance create(String service, String group) {
+    public LoadBalance create(String group, String service) {
         if (group == null) {
             group = "";
         }
