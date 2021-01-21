@@ -233,19 +233,12 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     }
 
     /**
-     * 添加接口（remoting ? 采用@json-type进行渲染）
+     * 添加接口（remoting ? 采用@json进行渲染）
      */
     @Note("添加接口")
     public void add(Class<?> beanClz, boolean remoting) {
         if (beanClz != null) {
             add(Aop.wrapAndPut(beanClz), remoting);
-        }
-    }
-
-    @Note("添加接口")
-    public void add(String expr, Class<?> beanClz, boolean remoting) {
-        if (beanClz != null) {
-            add(expr, Aop.wrapAndPut(beanClz), remoting);
         }
     }
 
@@ -259,21 +252,11 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      */
     @Note("添加接口")
     public void add(BeanWrap beanWp, boolean remoting) {
-        add(null, beanWp, remoting);
-    }
-
-    @Note("添加接口")
-    public void add(String expr, BeanWrap beanWp, boolean remoting) {
         if (beanWp == null) {
             return;
         }
 
-        String mapping2 = mapping;
-        if (Utils.isNotEmpty(expr)) {
-            mapping2 = PathUtil.mergePath(mapping, expr);
-        }
-
-        HandlerLoader uw = new HandlerLoader(beanWp, mapping2, remoting, this, allowActionMapping());
+        HandlerLoader uw = new HandlerLoader(beanWp, mapping, remoting, this, allowActionMapping());
 
         uw.load((path, m, h) -> {
             if (h instanceof Action) {
@@ -287,8 +270,6 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             }
         });
     }
-
-
 
     /**
      * 添加二级路径处理
