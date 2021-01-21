@@ -30,6 +30,7 @@ public class CloudProps {
     private String DISCOVERY_REFRESH_INTERVAL = "solon.cloud.@@.discovery.refreshInterval";
 
     private String EVENT_ENABLE = "solon.cloud.@@.event.enable";
+    private String EVENT_HOSTNAME = "solon.cloud.@@.event.hostname";
     private String EVENT_SEAL = "solon.cloud.@@.event.seal";
 
     public CloudProps(String frame) {

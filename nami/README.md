@@ -93,7 +93,7 @@ public class Demo3{
 | headers     | 添加头信息     | {"head1=a","head2=b"} |
 | configuration     | configuration 配置器     |  |
 
-注：原uri，分拆为：url 和 group+name+path（1.2.23版本及之后）
+注：原uri，分拆为：url 和 group+name+path（1.2.24版本及之后）
 
 ##### @Mapping 注解说明（注在函数上；默认不需要注解）
 

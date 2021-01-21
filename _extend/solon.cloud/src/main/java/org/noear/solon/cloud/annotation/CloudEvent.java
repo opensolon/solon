@@ -21,4 +21,9 @@ public @interface CloudEvent {
      * 队列
      * */
     String queue() default "";
+
+    /**
+     * 订阅级别
+     * */
+    EventLevel level() default EventLevel.cluster;
 }
