@@ -11,6 +11,12 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
  */
 public class BeanPostProcessorSolon implements BeanPostProcessor {
     @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        //兼容1.0.x
+        return bean;
+    }
+
+    @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if (beanName.startsWith("org.springframework.boot") == false) {
 
