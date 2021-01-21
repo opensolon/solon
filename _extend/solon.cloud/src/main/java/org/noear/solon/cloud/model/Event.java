@@ -12,7 +12,7 @@ public class Event {
     /**
      * 事件唯一标识
      * */
-    public String uuid;
+    public String key;
 
     /**
      * 队列

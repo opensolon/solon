@@ -23,7 +23,7 @@ public class CloudEventServiceImp implements CloudEventService {
         }
 
         try {
-            WaterClient.Message.sendMessageAndTags(event.uuid, event.topic, event.content, event.scheduled, event.tags);
+            WaterClient.Message.sendMessageAndTags(event.key, event.topic, event.content, event.scheduled, event.tags);
         } catch (Throwable ex) {
             throw Utils.throwableWrap(ex);
         }
@@ -33,7 +33,7 @@ public class CloudEventServiceImp implements CloudEventService {
     public void attention(String queue, String topic, CloudEventHandler observer) {
         WaterAdapter.global().router().put(topic, (msg) -> {
             Event event = new Event();
-            event.uuid = msg.key;
+            event.key = msg.key;
             event.topic = msg.topic;
             event.content = msg.message;
             event.tags = msg.tags;
