@@ -243,9 +243,9 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     }
 
     @Note("添加接口")
-    public void add(Class<?> beanClz, boolean remoting, String expr) {
+    public void add(String expr, Class<?> beanClz, boolean remoting) {
         if (beanClz != null) {
-            add(Aop.wrapAndPut(beanClz), remoting, expr);
+            add(expr, Aop.wrapAndPut(beanClz), remoting);
         }
     }
 
@@ -259,11 +259,11 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      */
     @Note("添加接口")
     public void add(BeanWrap beanWp, boolean remoting) {
-        add(beanWp, remoting, null);
+        add(null, beanWp, remoting);
     }
 
     @Note("添加接口")
-    public void add(BeanWrap beanWp, boolean remoting, String expr) {
+    public void add(String expr, BeanWrap beanWp, boolean remoting) {
         if (beanWp == null) {
             return;
         }
