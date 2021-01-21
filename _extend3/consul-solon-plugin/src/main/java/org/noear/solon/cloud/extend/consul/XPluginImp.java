@@ -50,7 +50,8 @@ public class XPluginImp implements Plugin {
             CloudManager.register(serviceImp);
 
             if (serviceImp.getRefreshInterval() > 0) {
-                clientTimer.schedule(serviceImp, serviceImp.getRefreshInterval(), serviceImp.getRefreshInterval());
+                long interval = serviceImp.getRefreshInterval();
+                clientTimer.schedule(serviceImp, interval, interval);
             }
         }
 
@@ -62,8 +63,8 @@ public class XPluginImp implements Plugin {
             //运行一次，拉取服务列表
             serviceImp.run();
 
-            if (Utils.isNotEmpty(serviceImp.getHealthCheckInterval())) {
-                long interval = IntervalUtils.getInterval(serviceImp.getHealthCheckInterval());
+            if (serviceImp.getRefreshInterval() > 0) {
+                long interval = serviceImp.getRefreshInterval();
                 clientTimer.schedule(serviceImp, interval, interval);
             }
         }

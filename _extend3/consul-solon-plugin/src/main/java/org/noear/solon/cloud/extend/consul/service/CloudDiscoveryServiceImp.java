@@ -5,6 +5,7 @@ import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.agent.model.NewService;
 import com.ecwid.consul.v1.agent.model.Service;
+import com.sun.javaws.security.AppContextUtil;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
@@ -14,6 +15,7 @@ import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
 import org.noear.solon.cloud.extend.consul.ConsulProps;
 import org.noear.solon.cloud.extend.consul.detector.*;
+import org.noear.solon.cloud.utils.IntervalUtils;
 
 import java.util.*;
 
@@ -28,6 +30,8 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
     private ConsulClient real;
     private String token;
 
+    private long refreshInterval;
+
     private String healthCheckInterval;
     private String healthCheckPath;
 
@@ -38,12 +42,14 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
         this.real = client;
         this.token = ConsulProps.instance.getToken();
 
+        refreshInterval = IntervalUtils.getInterval(ConsulProps.instance.getDiscoveryRefreshInterval("10s"));
+
         healthCheckInterval = ConsulProps.instance.getDiscoveryHealthCheckInterval("10s");
         healthCheckPath = ConsulProps.instance.getDiscoveryHealthCheckPath();
     }
 
-    public String getHealthCheckInterval() {
-        return healthCheckInterval;
+    public long getRefreshInterval() {
+        return refreshInterval;
     }
 
     /**
