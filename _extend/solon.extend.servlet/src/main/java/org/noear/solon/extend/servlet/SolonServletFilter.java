@@ -14,6 +14,11 @@ import java.io.IOException;
  */
 public class SolonServletFilter implements Filter {
     @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        //兼容3.1.0
+    }
+
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         SolonServletContext ctx = new SolonServletContext((HttpServletRequest) request, (HttpServletResponse) response);
         ctx.contentType("text/plain;charset=UTF-8");
@@ -37,5 +42,10 @@ public class SolonServletFilter implements Filter {
         } finally {
             ContextUtil.currentRemove();
         }
+    }
+
+    @Override
+    public void destroy() {
+        //兼容3.1.0
     }
 }
