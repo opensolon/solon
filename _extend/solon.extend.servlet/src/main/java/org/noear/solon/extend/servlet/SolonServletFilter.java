@@ -15,7 +15,7 @@ import java.io.IOException;
 public class SolonServletFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        //兼容3.1.0
+        //兼容 servlet 3.1.0
     }
 
     @Override
@@ -46,6 +46,6 @@ public class SolonServletFilter implements Filter {
 
     @Override
     public void destroy() {
-        //兼容3.1.0
+        //兼容 servlet 3.1.0
     }
 }
