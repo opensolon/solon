@@ -49,7 +49,7 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
 
     public CloudConfigServiceImp() {
         token = ConsulProps.instance.getToken();
-        refreshInterval = IntervalUtils.getInterval(ConsulProps.instance.getConfigRefreshInterval("10s"));
+        refreshInterval = IntervalUtils.getInterval(ConsulProps.instance.getConfigRefreshInterval("5s"));
 
         initClient();
     }

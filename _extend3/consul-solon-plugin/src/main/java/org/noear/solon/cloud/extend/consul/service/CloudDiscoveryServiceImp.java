@@ -54,9 +54,9 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
 
     public CloudDiscoveryServiceImp() {
         token = ConsulProps.instance.getToken();
-        refreshInterval = IntervalUtils.getInterval(ConsulProps.instance.getDiscoveryRefreshInterval("10s"));
+        refreshInterval = IntervalUtils.getInterval(ConsulProps.instance.getDiscoveryRefreshInterval("5s"));
 
-        healthCheckInterval = ConsulProps.instance.getDiscoveryHealthCheckInterval("10s");
+        healthCheckInterval = ConsulProps.instance.getDiscoveryHealthCheckInterval("5s");
         healthCheckPath = ConsulProps.instance.getDiscoveryHealthCheckPath();
 
 
