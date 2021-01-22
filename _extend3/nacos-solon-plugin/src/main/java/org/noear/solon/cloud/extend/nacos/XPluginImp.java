@@ -37,7 +37,7 @@ public class XPluginImp implements Plugin {
 
         //4.服务注册
         if (CloudClient.discovery() != null) {
-            CloudClient.discoveryPush(NacosProps.instance.getDiscoveryHostname());
+            CloudClient.discoveryPush();
         }
     }
 }

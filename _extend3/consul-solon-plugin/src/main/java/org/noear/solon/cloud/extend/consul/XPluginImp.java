@@ -60,7 +60,7 @@ public class XPluginImp implements Plugin {
 
         //4.服务注册
         if (CloudClient.discovery() != null) {
-            CloudClient.discoveryPush(ConsulProps.instance.getDiscoveryHostname());
+            CloudClient.discoveryPush();
         }
     }
 

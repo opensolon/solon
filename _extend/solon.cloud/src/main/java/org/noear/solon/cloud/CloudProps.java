@@ -60,7 +60,6 @@ public class CloudProps {
 
         DISCOVERY_ENABLE = DISCOVERY_ENABLE.replace("@@", frame);
         DISCOVERY_SERVER = DISCOVERY_SERVER.replace("@@", frame);
-        DISCOVERY_HOSTNAME = DISCOVERY_HOSTNAME.replace("@@", frame);
         DISCOVERY_TAGS = DISCOVERY_TAGS.replace("@@", frame);
         DISCOVERY_HEALTH_CHECK_PATH = DISCOVERY_HEALTH_CHECK_PATH.replace("@@", frame);
         DISCOVERY_HEALTH_CHECK_INTERVAL = DISCOVERY_HEALTH_CHECK_INTERVAL.replace("@@", frame);
@@ -143,9 +142,6 @@ public class CloudProps {
         }
     }
 
-    public String getDiscoveryHostname() {
-        return Solon.cfg().get(DISCOVERY_HOSTNAME);
-    }
 
     public String getDiscoveryTags() {
         return Solon.cfg().get(DISCOVERY_TAGS);

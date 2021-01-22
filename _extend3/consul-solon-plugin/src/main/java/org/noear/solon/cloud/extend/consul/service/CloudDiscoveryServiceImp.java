@@ -72,17 +72,17 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
      * */
     @Override
     public void register(String group, Instance instance) {
-        String[] ss = instance.address.split(":");
-        String serviceId = instance.service + "-" + instance.address;
+        String[] ss = instance.address().split(":");
+        String serviceId = instance.service() + "-" + instance.address();
 
         NewService newService = new NewService();
 
         newService.setId(serviceId);
-        newService.setName(instance.service);
+        newService.setName(instance.service());
         newService.setAddress(ss[0]);
         newService.setPort(Integer.parseInt(ss[1]));
-        if (instance.tags != null) {
-            newService.setTags(instance.tags);
+        if (instance.tags() != null) {
+            newService.setTags(instance.tags());
         }
 
         registerLocalCheck(instance, newService);
@@ -114,7 +114,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
 
             //2.添加检测器
             //
-            String checkUrl = "http://" + instance.address;
+            String checkUrl = "http://" + instance.address();
             if (healthCheckPath.startsWith("/")) {
                 checkUrl = checkUrl + healthCheckPath;
             } else {
@@ -139,7 +139,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
      * */
     @Override
     public void deregister(String group, Instance instance) {
-        String serviceId = instance.service + "-" + instance.address;
+        String serviceId = instance.service() + "-" + instance.address();
         real.agentServiceDeregister(serviceId);
     }
 
@@ -182,11 +182,11 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
                 discoveryTmp.put(name, discovery);
             }
 
-            Instance instance = new Instance();
-            instance.service = service.getService();
-            instance.address = service.getAddress() + ":" + service.getPort();
-            instance.tags = service.getTags();
-            instance.meta = service.getMeta();
+            Instance instance = new Instance(service.getService(),
+                    service.getAddress() + ":" + service.getPort(),
+                    null)
+                    .tagsAddAll(service.getTags())
+                    .metaPutAll(service.getMeta());
 
             discovery.instanceAdd(instance);
         }

@@ -113,6 +113,15 @@ public class Instance implements Serializable {
         return this;
     }
 
+    public Instance tagsAddAll(Collection<String> list) {
+        if (tags == null) {
+            tags = new ArrayList<>();
+        }
+
+        tags.addAll(list);
+        return this;
+    }
+
 
     public Instance(String service, String address, String protocol) {
         this.service = service;
