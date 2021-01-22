@@ -46,11 +46,11 @@ public enum Slf4jCloudLoggerFactory implements ILoggerFactory {
         this.writer = writer;
     }
 
-    public void write(Level level, String tag1, String content) {
+    public void write(Level level, String name, String content) {
         if (writer == null) {
             return;
         }
 
-        writer.write(level, tag1, content);
+        writer.write(level, name, content);
     }
 }

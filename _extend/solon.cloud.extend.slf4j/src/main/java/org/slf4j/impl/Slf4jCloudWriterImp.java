@@ -2,6 +2,7 @@ package org.slf4j.impl;
 
 import org.noear.solon.Solon;
 import org.noear.solon.cloud.CloudLogger;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.log.Meta;
 import org.slf4j.event.Level;
 
@@ -16,8 +17,7 @@ public class Slf4jCloudWriterImp implements Slf4jCloudWriter {
         if (logger == null) {
             synchronized (this) {
                 if (logger == null) {
-                    String tmp = Solon.cfg().appGroup() + "_" + Solon.cfg().appName() + "_log";
-                    logger = CloudLogger.get(tmp);
+                    logger = CloudLogger.get(CloudProps.LOG_DEFAULT_LOGGER);
                 }
             }
         }
