@@ -3,7 +3,8 @@ package org.noear.solon.cloud;
 import org.noear.solon.cloud.model.log.Level;
 
 /**
- * @author noear 2021/1/22 created
+ * @author noear
+ * @since 1.2
  */
 public enum CloudLoggerFactory {
     INSTANCE;
@@ -11,7 +12,7 @@ public enum CloudLoggerFactory {
     //
     //日志等级
     //
-    private volatile Level level = Level.WARN;
+    private volatile Level level = Level.TRACE;
 
     public void setLevel(Level level) {
         this.level = level;
