@@ -12,35 +12,81 @@ public class Event {
     /**
      * 事件唯一标识
      * */
-    public String key;
+    private final String key;
 
     /**
      * 队列
      * */
-    public String queue;
+    private final String queue;
 
     /**
      * 主题
      * */
-    public String topic;
+    private final String topic;
     /**
      * 内容
      * */
-    public String content;
+    private final String content;
 
     /**
      * 检索标签
      * */
-    public String tags;
+    private String tags;
 
     /**
      * 预定执行时间（派发时专用）
      * */
-    public Date scheduled;
-
+    private Date scheduled;
 
     /**
      * 已派发次数（接收时专用）
      * */
-    public int times;
+    private int times;
+
+    public Event(String key, String queue, String topic, String content){
+        this.key = key;
+        this.queue = queue;
+        this.topic = topic;
+        this.content = content;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public String getQueue() {
+        return queue;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public Date getScheduled() {
+        return scheduled;
+    }
+
+    public void setScheduled(Date scheduled) {
+        this.scheduled = scheduled;
+    }
+
+    public int getTimes() {
+        return times;
+    }
+
+    public void setTimes(int times) {
+        this.times = times;
+    }
 }
