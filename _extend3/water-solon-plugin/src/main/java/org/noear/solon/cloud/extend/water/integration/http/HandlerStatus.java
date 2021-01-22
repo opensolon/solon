@@ -1,7 +1,7 @@
 package org.noear.solon.cloud.extend.water.integration.http;
 
 import org.noear.snack.ONode;
-import org.noear.solon.cloud.extend.water.integration.WaterAdapter;
+import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.water.WaterClient;
@@ -20,8 +20,8 @@ public class HandlerStatus implements Handler {
 
         if (WaterClient.Whitelist.existsOfMasterIp(ip)) {
             RuntimeStatus rs = RuntimeUtils.getStatus();
-            rs.name = WaterAdapter.global().service_name();
-            rs.address = WaterAdapter.global().localHost();
+            rs.name = Instance.local().service;
+            rs.address = Instance.local().address;
 
             ctx.outputAsJson(ONode.stringify(rs));
         } else {
