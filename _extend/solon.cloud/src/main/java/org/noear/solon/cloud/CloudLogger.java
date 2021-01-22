@@ -1,6 +1,7 @@
 package org.noear.solon.cloud;
 
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.model.log.Meta;
 
 /**
  * 云日志器
@@ -38,37 +39,25 @@ public interface CloudLogger {
 
     void setName(String name);
 
+
+
     default boolean isTraceEnabled() {
         return true;
     }
 
     void trace(Object content);
+    void trace(Meta meta, Object content);
 
-    void trace(String summary, Object content);
 
-    void trace(String tag1, String summary, Object content);
-
-    void trace(String tag1, String tag2, String summary, Object content);
-
-    void trace(String tag1, String tag2, String tag3, String summary, Object content);
-
-    void trace(String tag1, String tag2, String tag3, String tag4, String summary, Object content);
 
     default boolean isDebugEnabled() {
         return true;
     }
 
     void debug(Object content);
+    void debug(Meta meta, Object content);
 
-    void debug(String summary, Object content);
 
-    void debug(String tag1, String summary, Object content);
-
-    void debug(String tag1, String tag2, String summary, Object content);
-
-    void debug(String tag1, String tag2, String tag3, String summary, Object content);
-
-    void debug(String tag1, String tag2, String tag3, String tag4, String summary, Object content);
 
     default boolean isInfoEnabled() {
         return true;
@@ -76,31 +65,17 @@ public interface CloudLogger {
 
     void info(Object content);
 
-    void info(String summary, Object content);
+    void info(Meta meta, Object content);
 
-    void info(String tag1, String summary, Object content);
 
-    void info(String tag1, String tag2, String summary, Object content);
-
-    void info(String tag1, String tag2, String tag3, String summary, Object content);
-
-    void info(String tag1, String tag2, String tag3, String tag4, String summary, Object content);
 
     default boolean isWarnEnabled() {
         return true;
     }
 
     void warn(Object content);
+    void warn(Meta meta, Object content);
 
-    void warn(String summary, Object content);
-
-    void warn(String tag1, String summary, Object content);
-
-    void warn(String tag1, String tag2, String summary, Object content);
-
-    void warn(String tag1, String tag2, String tag3, String summary, Object content);
-
-    void warn(String tag1, String tag2, String tag3, String tag4, String summary, Object content);
 
     default boolean isErrorEnabled() {
         return true;
@@ -108,13 +83,5 @@ public interface CloudLogger {
 
     void error(Object content);
 
-    void error(String summary, Object content);
-
-    void error(String tag1, String summary, Object content);
-
-    void error(String tag1, String tag2, String summary, Object content);
-
-    void error(String tag1, String tag2, String tag3, String summary, Object content);
-
-    void error(String tag1, String tag2, String tag3, String tag4, String summary, Object content);
+    void error(Meta meta, Object content);
 }
