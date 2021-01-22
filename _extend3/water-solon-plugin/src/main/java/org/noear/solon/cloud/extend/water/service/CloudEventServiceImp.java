@@ -23,7 +23,7 @@ public class CloudEventServiceImp implements CloudEventService {
     private Map<String, CloudEventObserverEntity> instanceObserverMap = new HashMap<>();
     private Map<String, CloudEventObserverEntity> clusterObserverMap = new HashMap<>();
 
-    public CloudEventServiceImp(){
+    public CloudEventServiceImp() {
         this.seal = WaterProps.instance.getEventSeal();
     }
 
@@ -46,26 +46,6 @@ public class CloudEventServiceImp implements CloudEventService {
         } catch (Throwable ex) {
             throw Utils.throwableWrap(ex);
         }
-    }
-
-    /**
-     * 尝试接收
-     */
-    public boolean receive(Event event) {
-        boolean isOk = true;
-        CloudEventObserverEntity entity = null;
-
-        entity = instanceObserverMap.get(event.topic);
-        if (entity != null) {
-            isOk = entity.handler.handler(event);
-        }
-
-        entity = clusterObserverMap.get(event.topic);
-        if (entity != null) {
-            isOk = entity.handler.handler(event) || isOk;
-        }
-
-        return isOk;
     }
 
     /**
@@ -121,5 +101,26 @@ public class CloudEventServiceImp implements CloudEventService {
                     false,
                     String.join(",", clusterObserverMap.keySet()));
         }
+    }
+
+
+    /**
+     * 处理接收事件
+     */
+    public boolean onReceive(Event event) throws Throwable {
+        boolean isOk = true;
+        CloudEventObserverEntity entity = null;
+
+        entity = instanceObserverMap.get(event.topic);
+        if (entity != null) {
+            isOk = entity.handler.handler(event);
+        }
+
+        entity = clusterObserverMap.get(event.topic);
+        if (entity != null) {
+            isOk = entity.handler.handler(event) || isOk;
+        }
+
+        return isOk;
     }
 }

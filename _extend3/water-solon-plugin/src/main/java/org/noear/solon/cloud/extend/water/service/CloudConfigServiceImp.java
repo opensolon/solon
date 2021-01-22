@@ -19,7 +19,7 @@ import java.util.Map;
 public class CloudConfigServiceImp implements CloudConfigService {
     @Override
     public Config get(String group, String key) {
-        if(Utils.isEmpty(group)){
+        if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
         }
 
@@ -29,7 +29,7 @@ public class CloudConfigServiceImp implements CloudConfigService {
 
     @Override
     public boolean set(String group, String key, String value) {
-        if(Utils.isEmpty(group)){
+        if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
         }
 
@@ -54,14 +54,26 @@ public class CloudConfigServiceImp implements CloudConfigService {
         if (observerMap.containsKey(observer)) {
             return;
         } else {
-            if(Utils.isEmpty(group)){
+            if (Utils.isEmpty(group)) {
                 group = Solon.cfg().appGroup();
             }
 
             CloudConfigObserverEntity entity = new CloudConfigObserverEntity(group, key, observer);
             observerMap.put(observer, entity);
-
-            WaterClient.Config.subscribe(group, entity);
         }
+    }
+
+    public void onUpdate(String group, String key) {
+        WaterClient.Config.reload(group);
+
+        ConfigM cfg = WaterClient.Config.get(group, key);
+
+        observerMap.forEach((k, v) -> {
+            if (group.equals(v.group)) {
+                if (key.equals(v.key)) {
+                    v.handler(new Config(cfg.key, cfg.value));
+                }
+            }
+        });
     }
 }

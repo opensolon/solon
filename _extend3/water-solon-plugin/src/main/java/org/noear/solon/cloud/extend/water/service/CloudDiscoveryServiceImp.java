@@ -61,4 +61,14 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
     public void attention(String group, String service, CloudDiscoveryHandler observer) {
         observerMap.put(observer, new CloudDiscoveryObserverEntity(group, service, observer));
     }
+
+    public void onUpdate(String group, String service) {
+        Discovery discovery = find(group, service);
+
+        observerMap.forEach((k, v) -> {
+            if (service.equals(v.service)) {
+                v.handler(discovery);
+            }
+        });
+    }
 }

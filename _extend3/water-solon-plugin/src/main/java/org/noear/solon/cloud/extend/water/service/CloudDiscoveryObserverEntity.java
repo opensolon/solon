@@ -9,7 +9,7 @@ import org.noear.water.model.DiscoverM;
  * @author noear
  * @since 1.2
  */
-public class CloudDiscoveryObserverEntity implements DiscoverHandler {
+public class CloudDiscoveryObserverEntity implements CloudDiscoveryHandler {
     public String group;
     public String service;
     public CloudDiscoveryHandler handler;
@@ -21,8 +21,7 @@ public class CloudDiscoveryObserverEntity implements DiscoverHandler {
     }
 
     @Override
-    public void handler(DiscoverM d1) {
-        Discovery d2 = ConvertUtil.from(service, d1);
-        handler.handler(d2);
+    public void handler(Discovery discovery) {
+        handler.handler(discovery);
     }
 }

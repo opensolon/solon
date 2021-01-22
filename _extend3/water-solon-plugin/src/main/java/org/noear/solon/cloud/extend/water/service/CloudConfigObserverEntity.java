@@ -2,15 +2,12 @@ package org.noear.solon.cloud.extend.water.service;
 
 import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.model.Config;
-import org.noear.water.dso.ConfigHandler;
-import org.noear.water.model.ConfigM;
-import org.noear.water.model.ConfigSetM;
 
 /**
  * @author noear
  * @since 1.2
  */
-public class CloudConfigObserverEntity implements ConfigHandler {
+public class CloudConfigObserverEntity implements CloudConfigHandler {
     public String group;
     public String key;
     public CloudConfigHandler handler;
@@ -22,8 +19,7 @@ public class CloudConfigObserverEntity implements ConfigHandler {
     }
 
     @Override
-    public void handler(ConfigSetM cfgSet) {
-        ConfigM cfg = cfgSet.get(key);
-        handler.handler(new Config(key, cfg.value));
+    public void handler(Config config) {
+        handler.handler(config);
     }
 }

@@ -38,6 +38,6 @@ public class HandlerReceive implements Handler, MessageHandler {
         event.content = msg.message;
         event.times = msg.times;
 
-        return eventService.receive(event);
+        return eventService.onReceive(event);
     }
 }

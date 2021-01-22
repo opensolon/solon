@@ -2,12 +2,11 @@ package org.noear.solon.cloud.extend.water.integration.msg;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
+import org.noear.solon.cloud.extend.water.service.CloudDiscoveryServiceImp;
 import org.noear.solon.cloud.impl.CloudLoadBalance;
 import org.noear.solon.cloud.impl.CloudLoadBalanceFactory;
 import org.noear.solon.cloud.model.Event;
-import org.noear.solon.cloud.model.Instance;
 import org.noear.water.WW;
-import org.noear.water.WaterClient;
 import org.noear.water.log.Logger;
 import org.noear.water.log.WaterLogger;
 import org.noear.weed.WeedConfig;
@@ -19,6 +18,11 @@ import org.noear.weed.cache.ICacheServiceEx;
  */
 public class HandlerCacheUpdate implements CloudEventHandler {
     static Logger logger = WaterLogger.get(WW.water_log_upstream, HandlerCacheUpdate.class);
+
+    CloudDiscoveryServiceImp discoveryService;
+    public HandlerCacheUpdate(CloudDiscoveryServiceImp discoveryService){
+        this.discoveryService = discoveryService;
+    }
 
     @Override
     public boolean handler(Event event) {
@@ -44,7 +48,7 @@ public class HandlerCacheUpdate implements CloudEventHandler {
             CloudLoadBalance tmp = CloudLoadBalanceFactory.instance.get(service);
             if (tmp != null) {
                 try {
-                    WaterClient.Registry.discover(service, Instance.local().service, Instance.local().address);
+                    discoveryService.onUpdate(tmp.getGroup(), tmp.getService());
                 } catch (Exception ex) {
                     ex.printStackTrace();//最后日志记录到服务端
                     logger.error(ss[1], "reload", "", ex);
