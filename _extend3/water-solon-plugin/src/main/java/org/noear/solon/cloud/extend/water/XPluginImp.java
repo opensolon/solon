@@ -5,14 +5,16 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.annotation.EventLevel;
-import org.noear.solon.cloud.extend.water.integration.WaterAdapter;
-import org.noear.solon.cloud.extend.water.integration.WaterAdapterImp;
+import org.noear.solon.cloud.extend.water.integration.http.HandlerCheck;
+import org.noear.solon.cloud.extend.water.integration.http.HandlerReceive;
+import org.noear.solon.cloud.extend.water.integration.http.HandlerStatus;
+import org.noear.solon.cloud.extend.water.integration.http.HandlerStop;
 import org.noear.solon.cloud.extend.water.integration.msg.HandlerCacheUpdate;
 import org.noear.solon.cloud.extend.water.integration.msg.HandlerConfigUpdate;
 import org.noear.solon.cloud.extend.water.service.CloudConfigServiceImp;
 import org.noear.solon.cloud.extend.water.service.CloudDiscoveryServiceImp;
 import org.noear.solon.cloud.extend.water.service.CloudEventServiceImp;
-import org.noear.solon.core.Aop;
+import org.noear.solon.cloud.extend.water.service.CloudLogServiceImp;
 import org.noear.solon.core.Plugin;
 import org.noear.water.WW;
 import org.noear.water.WaterAddress;
@@ -24,6 +26,7 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
         if (Utils.isNotEmpty(WaterProps.instance.getServer())) {
+            //1.初始化服务地址
             String server = WaterProps.instance.getServer();
             String configServer = WaterProps.instance.getConfigServer();
             String discoveryServer = WaterProps.instance.getDiscoveryServer();
@@ -49,16 +52,11 @@ public class XPluginImp implements Plugin {
             }
 
 
-            //尝试注册
-            if (app.port() > 0) {
-                if (org.noear.water.WaterProps.service_name() != null) {
-                    app.plug(new WaterAdapterImp());
-                }
-            }
-
+            //2.初始化服务
+            CloudDiscoveryServiceImp discoveryServiceImp = null;
             CloudConfigServiceImp configServiceImp = null;
             CloudEventServiceImp eventServiceImp = null;
-            CloudDiscoveryServiceImp discoveryServiceImp = null;
+            CloudLogServiceImp logServiceImp = null;
 
             if (WaterProps.instance.getConfigEnable()) {
                 configServiceImp = new CloudConfigServiceImp();
@@ -70,28 +68,34 @@ public class XPluginImp implements Plugin {
                 CloudManager.register(discoveryServiceImp);
             }
 
+            if(WaterProps.instance.getLogEnable()){
+                logServiceImp = new CloudLogServiceImp();
+                CloudManager.register(logServiceImp);
+            }
+
             if (WaterProps.instance.getEventEnable()) {
                 eventServiceImp = new CloudEventServiceImp();
                 CloudManager.register(eventServiceImp);
 
                 if (discoveryServiceImp != null) {
+                    //关注缓存更新事件
                     CloudClient.event().attention(EventLevel.instance, "", WW.msg_ucache_topic,
                             new HandlerCacheUpdate(discoveryServiceImp));
                 }
 
                 if (configServiceImp != null) {
+                    //关注配置更新事件
                     CloudClient.event().attention(EventLevel.instance, "", WW.msg_uconfig_topic,
                             new HandlerConfigUpdate(configServiceImp));
                 }
             }
 
 
-            //尝试加载消息订阅提交
-            Aop.context().beanOnloaded(() -> {
-                if (WaterAdapter.global() != null) {
-                    WaterAdapter.global().messageSubscribeHandler();
-                }
-            });
+            //3.注册http监听
+            app.http(WW.path_run_check, new HandlerCheck());
+            app.http(WW.path_run_status, new HandlerStatus());
+            app.http(WW.path_run_stop, new HandlerStop());
+            app.http(WW.path_msg_receiver, new HandlerReceive(eventServiceImp));
         }
 
         if (CloudClient.config() != null) {

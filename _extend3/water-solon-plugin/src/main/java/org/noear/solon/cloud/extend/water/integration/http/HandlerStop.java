@@ -14,12 +14,6 @@ import org.noear.water.utils.IPUtils;
  * @since 1.2
  */
 public class HandlerStop implements Handler {
-    Instance instance;
-
-    public HandlerStop(Instance instance) {
-        this.instance = instance;
-    }
-
     @Override
     public void handle(Context ctx) throws Throwable {
         ctx.output(handle0(ctx));
@@ -37,10 +31,11 @@ public class HandlerStop implements Handler {
     }
 
     public void stateSet(boolean enabled) {
+        Instance instance = Instance.local();
 
         if (Utils.isNotEmpty(instance.address)) {
             String meta = null;
-            if (instance.meta != null) {
+            if (Instance.local().meta != null) {
                 meta = ONode.stringify(instance.meta);
             }
 
