@@ -1,5 +1,7 @@
 package org.slf4j.impl;
 
+import org.noear.solon.cloud.CloudLogger;
+import org.noear.solon.cloud.CloudProps;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.event.Level;
@@ -20,10 +22,6 @@ public enum Slf4jCloudLoggerFactory implements ILoggerFactory {
      */
     private volatile Level level = Level.WARN;
 
-    /**
-     * 书写器
-     */
-    private volatile Slf4jCloudWriter writer = new Slf4jCloudWriterImp();
 
     Slf4jCloudLoggerFactory() {
 
@@ -42,15 +40,34 @@ public enum Slf4jCloudLoggerFactory implements ILoggerFactory {
         return this.level;
     }
 
-    public void setWriter(Slf4jCloudWriter writer) {
-        this.writer = writer;
-    }
+
+    CloudLogger logger;
 
     public void write(Level level, String name, String content) {
-        if (writer == null) {
-            return;
+        if (logger == null) {
+            synchronized (this) {
+                if (logger == null) {
+                    logger = CloudLogger.get(CloudProps.LOG_DEFAULT_LOGGER);
+                }
+            }
         }
 
-        writer.write(level, name, content);
+        switch (level) {
+            case TRACE:
+                logger.trace("slf4j", name, content);
+                break;
+            case DEBUG:
+                logger.debug("slf4j", name, content);
+                break;
+            case WARN:
+                logger.warn("slf4j", name, content);
+                break;
+            case ERROR:
+                logger.error("slf4j", name, content);
+                break;
+            default:
+                logger.info("slf4j", name, content);
+                break;
+        }
     }
 }
