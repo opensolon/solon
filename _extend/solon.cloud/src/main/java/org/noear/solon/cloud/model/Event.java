@@ -34,7 +34,13 @@ public class Event {
     public String tags;
 
     /**
-     * 预定执行时间
+     * 预定执行时间（派发时专用）
      * */
     public Date scheduled;
+
+
+    /**
+     * 已派发次数（接收时专用）
+     * */
+    public int times;
 }

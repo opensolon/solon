@@ -127,8 +127,8 @@ public class CloudProps {
     public boolean getEventEnable() {
         return Solon.cfg().getBool(EVENT_ENABLE, true);
     }
-    public boolean getEventHostname() {
-        return Solon.cfg().getBool(EVENT_HOSTNAME, true);
+    public String getEventHostname() {
+        return Solon.cfg().get(EVENT_HOSTNAME);
     }
     public String getEventSeal() {
         return Solon.cfg().get(EVENT_SEAL);

@@ -57,7 +57,7 @@
 
         <springboot.ver>2.0.4.RELEASE</springboot.ver>
         <nacos.ver>1.4.0</nacos.ver>
-        <water.ver>2.0.10</water.ver>
+        <water.ver>2.0.12</water.ver>
     </properties>
 
 

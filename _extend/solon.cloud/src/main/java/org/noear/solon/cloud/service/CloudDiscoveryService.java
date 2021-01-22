@@ -17,6 +17,11 @@ public interface CloudDiscoveryService {
     void register(String group, Instance instance);
 
     /**
+     * 注册服务实例健康状态
+     */
+    void registerState(String group, Instance instance, boolean health);
+
+    /**
      * 注销服务实例
      */
     void deregister(String group, Instance instance);

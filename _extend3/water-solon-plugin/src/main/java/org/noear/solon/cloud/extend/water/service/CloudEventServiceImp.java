@@ -1,24 +1,43 @@
 package org.noear.solon.cloud.extend.water.service;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
-import org.noear.solon.cloud.extend.water.integration.WaterAdapter;
+import org.noear.solon.cloud.annotation.EventLevel;
+import org.noear.solon.cloud.extend.water.WaterProps;
 import org.noear.solon.cloud.model.Event;
+import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudEventService;
+import org.noear.water.WW;
 import org.noear.water.WaterClient;
+import org.noear.water.utils.EncryptUtils;
+
+import java.util.*;
 
 /**
  * @author noear
  * @since 1.2
  */
 public class CloudEventServiceImp implements CloudEventService {
+    private String seal;
+    private Map<String, CloudEventObserverEntity> instanceObserverMap = new HashMap<>();
+    private Map<String, CloudEventObserverEntity> clusterObserverMap = new HashMap<>();
+
+    public CloudEventServiceImp(){
+        this.seal = WaterProps.instance.getEventSeal();
+    }
+
+    public String getSeal() {
+        return seal;
+    }
+
     @Override
     public void send(Event event) {
-        if(Utils.isEmpty(event.topic)){
+        if (Utils.isEmpty(event.topic)) {
             throw new IllegalArgumentException("Event missing topic");
         }
 
-        if(Utils.isEmpty(event.content)){
+        if (Utils.isEmpty(event.content)) {
             throw new IllegalArgumentException("Event missing content");
         }
 
@@ -29,16 +48,78 @@ public class CloudEventServiceImp implements CloudEventService {
         }
     }
 
-    @Override
-    public void attention(String queue, String topic, CloudEventHandler observer) {
-        WaterAdapter.global().router().put(topic, (msg) -> {
-            Event event = new Event();
-            event.key = msg.key;
-            event.topic = msg.topic;
-            event.content = msg.message;
-            event.tags = msg.tags;
+    /**
+     * 尝试接收
+     */
+    public boolean receive(Event event) {
+        boolean isOk = true;
+        CloudEventObserverEntity entity = null;
 
-            return observer.handler(event);
-        });
+        entity = instanceObserverMap.get(event.topic);
+        if (entity != null) {
+            isOk = entity.handler.handler(event);
+        }
+
+        entity = clusterObserverMap.get(event.topic);
+        if (entity != null) {
+            isOk = entity.handler.handler(event) || isOk;
+        }
+
+        return isOk;
+    }
+
+    /**
+     * 登记关注
+     */
+    @Override
+    public void attention(EventLevel level, String queue, String topic, CloudEventHandler observer) {
+        if (level == EventLevel.instance) {
+            instanceObserverMap.putIfAbsent(topic, new CloudEventObserverEntity(level, queue, topic, observer));
+        } else {
+            clusterObserverMap.putIfAbsent(topic, new CloudEventObserverEntity(level, queue, topic, observer));
+        }
+    }
+
+    /**
+     * 执行订阅
+     */
+    public void subscribe() throws Exception {
+        Instance instance = Instance.local();
+
+        //
+        //subscribeTopic(String subscriber_key, String subscriber_note, String receive_url, String access_key, String alarm_mobile, int receive_way, boolean is_unstable, String... topics)
+        //
+        if (instanceObserverMap.size() > 0) {
+            String instance_receiver_url = "http://" + instance.address + WW.path_msg_receiver;
+            String instance_subscriber_Key = EncryptUtils.md5(instance.service + "_instance_" + instance_receiver_url);
+
+            WaterClient.Message.subscribeTopic(instance_subscriber_Key,
+                    instance.service,
+                    instance_receiver_url,
+                    seal,
+                    "",
+                    1,
+                    Solon.cfg().isDriftMode(),
+                    String.join(",", instanceObserverMap.keySet()));
+        }
+
+        if (clusterObserverMap.size() > 0) {
+            String cluster_hostname = WaterProps.instance.getEventHostname();
+            if (Utils.isEmpty(cluster_hostname)) {
+                cluster_hostname = instance.address;
+            }
+
+            String cluster_receiver_url = "http://" + cluster_hostname + WW.path_msg_receiver;
+            String cluster_subscriber_Key = EncryptUtils.md5(instance.service + "_cluster_" + cluster_receiver_url);
+
+            WaterClient.Message.subscribeTopic(cluster_subscriber_Key,
+                    instance.service,
+                    cluster_receiver_url,
+                    seal,
+                    "",
+                    1,
+                    false,
+                    String.join(",", clusterObserverMap.keySet()));
+        }
     }
 }

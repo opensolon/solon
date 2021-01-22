@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.service;
 
 import org.noear.solon.cloud.CloudEventHandler;
+import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.model.Event;
 
 /**
@@ -18,5 +19,5 @@ public interface CloudEventService {
     /**
      * 关注事件（相当于订阅）
      */
-    void attention(String queue, String topic, CloudEventHandler observer);
+    void attention(EventLevel level, String queue, String topic, CloudEventHandler observer);
 }

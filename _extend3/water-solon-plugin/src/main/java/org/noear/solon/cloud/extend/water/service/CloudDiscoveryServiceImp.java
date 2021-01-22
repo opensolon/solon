@@ -9,11 +9,12 @@ import org.noear.solon.cloud.service.CloudDiscoveryService;
 import org.noear.water.WaterClient;
 import org.noear.water.model.DiscoverM;
 
-import javax.xml.soap.Node;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 注册与发现服务
+ *
  * @author noear
  * @since 1.2
  */
@@ -26,6 +27,16 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
         }
 
         WaterClient.Registry.register(instance.service, instance.address, meta, Solon.cfg().isDriftMode());
+    }
+
+    @Override
+    public void registerState(String group, Instance instance, boolean health) {
+        String meta = null;
+        if (instance.meta != null) {
+            meta = ONode.stringify(instance.meta);
+        }
+
+        WaterClient.Registry.set(instance.service, instance.address, meta, health);
     }
 
     @Override
