@@ -31,12 +31,9 @@ public class HandlerReceive implements Handler, MessageHandler {
 
     @Override
     public boolean handler(MessageM msg) throws Throwable {
-        Event event = new Event();
-        event.key = msg.key;
-        event.tags = msg.tags;
-        event.topic = msg.topic;
-        event.content = msg.message;
-        event.times = msg.times;
+        Event event = new Event(msg.key, "", msg.topic, msg.message);
+        event.setTags(msg.tags);
+        event.setTimes(msg.times);
 
         return eventService.onReceive(event);
     }
