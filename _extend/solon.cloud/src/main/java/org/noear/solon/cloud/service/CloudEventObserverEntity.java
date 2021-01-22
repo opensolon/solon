@@ -1,15 +1,14 @@
-package org.noear.solon.cloud.extend.water.service;
+package org.noear.solon.cloud.service;
 
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.model.Event;
-import org.noear.water.model.MessageM;
-import org.noear.water.utils.ext.Fun1Ex;
 
 /**
- * @author noear 2021/1/22 created
+ * @author noear
+ * @since 1.2
  */
-public class CloudEventObserverEntity implements Fun1Ex<MessageM,Boolean> {
+public class CloudEventObserverEntity implements CloudEventHandler {
     public EventLevel level;
     public String queue;
     public String topic;
@@ -23,13 +22,7 @@ public class CloudEventObserverEntity implements Fun1Ex<MessageM,Boolean> {
     }
 
     @Override
-    public Boolean run(MessageM msg) throws Throwable {
-        Event event = new Event();
-        event.key = msg.key;
-        event.topic = msg.topic;
-        event.content = msg.message;
-        event.tags = msg.tags;
-
+    public boolean handler(Event event) throws Throwable {
         return handler.handler(event);
     }
 }

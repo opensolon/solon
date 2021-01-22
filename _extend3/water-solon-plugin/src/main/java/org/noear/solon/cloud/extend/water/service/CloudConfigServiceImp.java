@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.model.Config;
+import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
 import org.noear.solon.core.event.EventBus;
 import org.noear.water.WaterClient;
@@ -17,10 +18,16 @@ import java.util.Map;
  * @author noear 2021/1/17 created
  */
 public class CloudConfigServiceImp implements CloudConfigService {
+    private final String DEFAULT_GROUP = "DEFAULT_GROUP";
+
     @Override
     public Config get(String group, String key) {
         if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
+
+            if(Utils.isEmpty(group)){
+                group = DEFAULT_GROUP;
+            }
         }
 
         ConfigM cfg = WaterClient.Config.get(group, key);
@@ -31,6 +38,10 @@ public class CloudConfigServiceImp implements CloudConfigService {
     public boolean set(String group, String key, String value) {
         if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
+
+            if(Utils.isEmpty(group)){
+                group = DEFAULT_GROUP;
+            }
         }
 
         try {
@@ -53,17 +64,26 @@ public class CloudConfigServiceImp implements CloudConfigService {
     public void attention(String group, String key, CloudConfigHandler observer) {
         if (observerMap.containsKey(observer)) {
             return;
-        } else {
-            if (Utils.isEmpty(group)) {
-                group = Solon.cfg().appGroup();
-            }
-
-            CloudConfigObserverEntity entity = new CloudConfigObserverEntity(group, key, observer);
-            observerMap.put(observer, entity);
         }
+
+        if (Utils.isEmpty(group)) {
+            group = Solon.cfg().appGroup();
+
+            if (Utils.isEmpty(group)) {
+                group = DEFAULT_GROUP;
+            }
+        }
+
+        CloudConfigObserverEntity entity = new CloudConfigObserverEntity(group, key, observer);
+        observerMap.put(observer, entity);
+
     }
 
     public void onUpdate(String group, String key) {
+        if(Utils.isEmpty(group)){
+            return;
+        }
+
         WaterClient.Config.reload(group);
 
         ConfigM cfg = WaterClient.Config.get(group, key);

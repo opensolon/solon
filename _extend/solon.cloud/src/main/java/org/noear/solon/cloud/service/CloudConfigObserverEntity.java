@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.consul.service;
+package org.noear.solon.cloud.service;
 
 import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.model.Config;

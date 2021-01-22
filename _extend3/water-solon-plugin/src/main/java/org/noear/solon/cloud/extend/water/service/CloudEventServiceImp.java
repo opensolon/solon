@@ -7,6 +7,7 @@ import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.extend.water.WaterProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.model.Instance;
+import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.cloud.service.CloudEventService;
 import org.noear.water.WW;
 import org.noear.water.WaterClient;
@@ -113,12 +114,12 @@ public class CloudEventServiceImp implements CloudEventService {
 
         entity = instanceObserverMap.get(event.topic);
         if (entity != null) {
-            isOk = entity.handler.handler(event);
+            isOk = entity.handler(event);
         }
 
         entity = clusterObserverMap.get(event.topic);
         if (entity != null) {
-            isOk = entity.handler.handler(event) || isOk;
+            isOk = entity.handler(event) || isOk;
         }
 
         return isOk;

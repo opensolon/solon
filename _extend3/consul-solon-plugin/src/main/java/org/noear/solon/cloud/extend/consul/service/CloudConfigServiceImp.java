@@ -6,6 +6,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.model.Config;
+import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
 import org.noear.solon.cloud.utils.IntervalUtils;
 import org.noear.solon.cloud.extend.consul.ConsulProps;
@@ -126,6 +127,10 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
 
     @Override
     public void attention(String group, String key, CloudConfigHandler observer) {
+        if (observerMap.containsKey(observer)) {
+            return;
+        }
+
         if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
 

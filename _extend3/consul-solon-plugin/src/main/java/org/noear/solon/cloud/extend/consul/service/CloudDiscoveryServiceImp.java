@@ -11,6 +11,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
+import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
 import org.noear.solon.cloud.extend.consul.ConsulProps;
 import org.noear.solon.cloud.extend.consul.detector.*;

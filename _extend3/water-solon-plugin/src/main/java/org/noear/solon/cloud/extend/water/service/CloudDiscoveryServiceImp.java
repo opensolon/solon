@@ -5,6 +5,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
+import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
 import org.noear.water.WaterClient;
 import org.noear.water.model.DiscoverM;
