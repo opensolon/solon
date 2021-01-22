@@ -2,6 +2,7 @@ package org.slf4j.impl;
 
 import org.noear.solon.Solon;
 import org.noear.solon.cloud.CloudLogger;
+import org.noear.solon.cloud.model.log.Meta;
 import org.slf4j.event.Level;
 
 /**
@@ -11,7 +12,7 @@ import org.slf4j.event.Level;
 public class Slf4jCloudWriterImp implements Slf4jCloudWriter {
     CloudLogger logger;
 
-    private void init(){
+    private void init() {
         if (logger == null) {
             synchronized (this) {
                 if (logger == null) {
@@ -26,21 +27,23 @@ public class Slf4jCloudWriterImp implements Slf4jCloudWriter {
     public void write(Level level, String name, String content) {
         init();
 
+        Meta meta = new Meta().tag3(name);
+
         switch (level) {
             case TRACE:
-                logger.trace(name, content);
+                logger.trace(meta, content);
                 break;
             case DEBUG:
-                logger.debug(name, content);
+                logger.debug(meta, content);
                 break;
             case WARN:
-                logger.warn(name, content);
+                logger.warn(meta, content);
                 break;
             case ERROR:
-                logger.error(name, content);
+                logger.error(meta, content);
                 break;
             default:
-                logger.info(name, content);
+                logger.info(meta, content);
                 break;
         }
     }
