@@ -43,6 +43,10 @@ public class Event {
      * */
     private int times;
 
+    public Event(String topic, String content) {
+        this("", topic, content);
+    }
+
     public Event(String queue, String topic, String content){
         this.queue = queue;
         this.topic = topic;
