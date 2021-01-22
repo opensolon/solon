@@ -16,9 +16,8 @@ public class ConvertUtil {
             return null;
         } else {
             Discovery d2 = new Discovery(service);
-            d2.agent = d1.url;
-            d2.policy = d1.policy;
-            d2.cluster = new ArrayList<>();
+            d2.setAgent(d1.url);
+            d2.setPolicy(d1.policy);
 
             d1.list.forEach((t1) -> {
                 Instance instance = new Instance();
@@ -26,7 +25,7 @@ public class ConvertUtil {
                 instance.weight = t1.weight;
                 instance.protocol = t1.protocol;
 
-                d2.cluster.add(instance);
+                d2.addInstance(instance);
             });
 
             return d2;
