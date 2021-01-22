@@ -35,7 +35,7 @@ public class HandlerStop implements Handler {
 
         if (Utils.isNotEmpty(instance.address())) {
             String meta = null;
-            if (Instance.local().meta() != null) {
+            if (instance.meta() != null) {
                 meta = ONode.stringify(instance.meta());
             }
 

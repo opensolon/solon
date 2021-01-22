@@ -46,6 +46,11 @@ public class Instance implements Serializable {
         return protocol;
     }
 
+    public Instance protocol(String protocol){
+        this.protocol = protocol;
+        return this;
+    }
+
     /**
      * 权重
      */
