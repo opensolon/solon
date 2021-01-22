@@ -10,6 +10,8 @@ import org.noear.solon.Utils;
  * @since 1.2
  */
 public class CloudProps {
+    public static String LOG_DEFAULT_LOGGER;
+
     private String SERVER = "solon.cloud.@@.server";
     private String TOKEN = "solon.cloud.@@.token";
     private String USERNAME = "solon.cloud.@@.username";

@@ -1,5 +1,7 @@
 package org.noear.solon.cloud;
 
+import org.noear.solon.Utils;
+
 /**
  * 云日志器
  *
@@ -20,6 +22,14 @@ public interface CloudLogger {
             return CloudLoggerDefault.instance;
         } else {
             return CloudClient.log().getLogger(name, clz);
+        }
+    }
+
+    static CloudLogger get(Class<?> clz) {
+        if (CloudClient.log() == null || Utils.isEmpty(CloudProps.LOG_DEFAULT_LOGGER)) {
+            return CloudLoggerDefault.instance;
+        } else {
+            return CloudClient.log().getLogger(CloudProps.LOG_DEFAULT_LOGGER, clz);
         }
     }
 

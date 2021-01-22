@@ -5,6 +5,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.extend.water.integration.http.HandlerCheck;
 import org.noear.solon.cloud.extend.water.integration.http.HandlerReceive;
@@ -39,6 +40,8 @@ public class XPluginImp implements Plugin {
             String logServer = WaterProps.instance.getLogServer();
 
             String logger = WaterProps.instance.getLogLogger();
+
+            CloudProps.LOG_DEFAULT_LOGGER = logger;
 
             //1.1.设置water默认基础配置
             System.setProperty(WW.water_host, server);
