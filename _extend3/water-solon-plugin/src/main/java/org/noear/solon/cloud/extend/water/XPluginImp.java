@@ -15,6 +15,7 @@ import org.noear.solon.cloud.extend.water.service.CloudEventServiceImp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 import org.noear.water.WW;
+import org.noear.water.WaterAddress;
 
 /**
  * @author noear 2021/1/17 created
@@ -23,7 +24,30 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
         if (Utils.isNotEmpty(WaterProps.instance.getServer())) {
-            System.setProperty("water.host", WaterProps.instance.getServer());
+            String server = WaterProps.instance.getServer();
+            String configServer = WaterProps.instance.getConfigServer();
+            String discoveryServer = WaterProps.instance.getDiscoveryServer();
+            String eventServer = WaterProps.instance.getEventServer();
+            String logServer = WaterProps.instance.getLogServer();
+
+            System.setProperty("water.host", server);
+
+            if(server.equals(configServer) == false){
+                WaterAddress.getInstance().setConfigApiUrl(configServer);
+            }
+
+            if(server.equals(discoveryServer) == false){
+                WaterAddress.getInstance().setRegistryApiUrl(discoveryServer);
+            }
+
+            if(server.equals(eventServer) == false){
+                WaterAddress.getInstance().setMessageApiUrl(eventServer);
+            }
+
+            if(server.equals(logServer) == false){
+                WaterAddress.getInstance().setLogApiUrl(logServer);
+            }
+
 
             //尝试注册
             if (app.port() > 0) {
