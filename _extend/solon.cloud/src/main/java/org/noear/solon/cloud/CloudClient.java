@@ -2,6 +2,7 @@ package org.noear.solon.cloud;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.annotation.Note;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudConfigService;
@@ -21,6 +22,7 @@ public class CloudClient {
     /**
      * 配置服务
      */
+    @Note("配置服务")
     public static CloudConfigService config() {
         return CloudManager.configService();
     }
@@ -28,6 +30,7 @@ public class CloudClient {
     /**
      * 配置服务，加载默认配置
      */
+    @Note("配置服务，加载默认配置")
     public static void configLoad(String group, String key) {
         if (CloudClient.config() == null) {
             return;
@@ -52,6 +55,7 @@ public class CloudClient {
     /**
      * 发现服务
      */
+    @Note("发现服务")
     public static CloudDiscoveryService discovery() {
         return CloudManager.discoveryService();
     }
@@ -59,6 +63,7 @@ public class CloudClient {
     /**
      * 发现服务，推送本地服务（即注册）
      */
+    @Note("发现服务，推送本地服务（即注册）")
     public static void discoveryPush(String hostname) {
         if (CloudClient.discovery() == null) {
             return;
@@ -82,6 +87,7 @@ public class CloudClient {
     /**
      * 事件服务
      */
+    @Note("事件服务")
     public static CloudEventService event() {
         return CloudManager.eventService();
     }
@@ -89,6 +95,7 @@ public class CloudClient {
     /**
      * 日志服务
      * */
+    @Note("日志服务")
     public static CloudLogService log(){
         return CloudManager.logService();
     }
