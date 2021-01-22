@@ -48,10 +48,10 @@ public class CloudConfigServiceImp implements CloudConfigService {
 
     /**
      * 获取配置
-     * */
+     */
     @Override
     public Config get(String group, String key) {
-        if(Utils.isEmpty(group)){
+        if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
         }
 
@@ -60,7 +60,7 @@ public class CloudConfigServiceImp implements CloudConfigService {
         try {
             group = groupReview(group);
             String value = real.getConfig(key, group, 3000);
-            return new Config(key, value);
+            return new Config(key, value, 0);
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
         }
@@ -68,10 +68,10 @@ public class CloudConfigServiceImp implements CloudConfigService {
 
     /**
      * 设置配置
-     * */
+     */
     @Override
     public boolean set(String group, String key, String value) {
-        if(Utils.isEmpty(group)){
+        if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
         }
 
@@ -87,10 +87,10 @@ public class CloudConfigServiceImp implements CloudConfigService {
 
     /**
      * 移除配置
-     * */
+     */
     @Override
     public boolean remove(String group, String key) {
-        if(Utils.isEmpty(group)){
+        if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
         }
 
@@ -104,16 +104,17 @@ public class CloudConfigServiceImp implements CloudConfigService {
     }
 
     private Map<CloudConfigHandler, CloudConfigObserverEntity> observerMap = new HashMap<>();
+
     /**
      * 关注配置
-     * */
+     */
     @Override
     public void attention(String group, String key, CloudConfigHandler observer) {
         if (observerMap.containsKey(observer)) {
             return;
         }
 
-        if(Utils.isEmpty(group)){
+        if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
         }
 
@@ -127,7 +128,7 @@ public class CloudConfigServiceImp implements CloudConfigService {
 
                 @Override
                 public void receiveConfigInfo(String value) {
-                    observer.handler(new Config(key, value));
+                    observer.handler(new Config(key, value, 0));
                 }
             });
         } catch (NacosException ex) {
@@ -135,10 +136,10 @@ public class CloudConfigServiceImp implements CloudConfigService {
         }
     }
 
-    private String groupReview(String group){
-        if(Utils.isEmpty(group)){
+    private String groupReview(String group) {
+        if (Utils.isEmpty(group)) {
             return null;
-        }else{
+        } else {
             return group;
         }
     }

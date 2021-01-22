@@ -14,26 +14,60 @@ public class Discovery implements Serializable {
     /**
      * 服务名
      */
-    public String service;
-
-    /**
-     * 代理
-     * */
-    public String agent;
-
-    /**
-     * 策略
-     * */
-    public String policy;
+    private final String service;
 
     /**
      * 集群
      */
-    public List<Instance> cluster;
+    private final List<Instance> cluster;
 
-    public Discovery() {
+    /**
+     * 代理
+     */
+    private String agent;
 
+    /**
+     * 策略
+     */
+    private String policy;
+
+
+    public String getService() {
+        return service;
     }
+
+    public String getAgent() {
+        return agent;
+    }
+
+    public void setAgent(String agent) {
+        this.agent = agent;
+    }
+
+    public String getPolicy() {
+        return policy;
+    }
+
+    public void setPolicy(String policy) {
+        this.policy = policy;
+    }
+
+    public List<Instance> getCluster() {
+        return cluster;
+    }
+
+    public int getClusterSize() {
+        return cluster.size();
+    }
+
+    public void addInstance(Instance instance){
+        cluster.add(instance);
+    }
+
+    public Instance getInstance(int index) {
+        return cluster.get(index % cluster.size());
+    }
+
 
     public Discovery(String service) {
         this.service = service;

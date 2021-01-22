@@ -58,7 +58,8 @@ public class CloudLoadBalance implements LoadBalance {
         if (discovery == null) {
             return null;
         } else {
-            int count = discovery.cluster.size();
+            int count = discovery.getClusterSize();
+
             if (count == 0) {
                 return null;
             } else {
@@ -67,7 +68,7 @@ public class CloudLoadBalance implements LoadBalance {
                     index = 0;
                 }
 
-                Instance instance = discovery.cluster.get(index++ % count);
+                Instance instance = discovery.getInstance(index++ % count);
 
                 if (Utils.isEmpty(instance.protocol)) {
                     return "http://" + instance.address;

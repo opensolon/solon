@@ -79,12 +79,10 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
             Config oldV = configMap.get(cfgKey);
 
             if (oldV == null) {
-                oldV = new Config(key, newV.getDecodedValue());
-                oldV.version = newV.getModifyIndex();
+                oldV = new Config(key, newV.getDecodedValue(), newV.getModifyIndex());
                 configMap.put(cfgKey, oldV);
-            } else if (newV.getModifyIndex() > oldV.version) {
-                oldV.version = newV.getModifyIndex();
-                oldV.value = newV.getDecodedValue();
+            } else if (newV.getModifyIndex() > oldV.getVersion()) {
+                oldV.setValue(newV.getDecodedValue(), newV.getModifyIndex());
             }
 
             return oldV;
@@ -155,13 +153,11 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
                 Config oldV = configMap.get(cfgKey);
 
                 if (oldV == null) {
-                    oldV = new Config(entity.key, newV.getDecodedValue());
-                    oldV.version = newV.getModifyIndex();
+                    oldV = new Config(entity.key, newV.getDecodedValue(), newV.getModifyIndex());
                     configMap.put(cfgKey, oldV);
                     entity.handler(oldV);
-                } else if (newV.getModifyIndex() > oldV.version) {
-                    oldV.value = newV.getDecodedValue();
-                    oldV.version = newV.getModifyIndex();
+                } else if (newV.getModifyIndex() > oldV.getVersion()) {
+                    oldV.setValue(newV.getDecodedValue(), newV.getModifyIndex());
                     entity.handler(oldV);
                 }
             }

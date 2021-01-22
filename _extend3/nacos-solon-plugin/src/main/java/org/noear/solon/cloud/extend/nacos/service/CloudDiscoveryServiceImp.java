@@ -125,7 +125,7 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
                 n1.address = i1.getIp() + ":" + i1.getPort();
                 n1.weight = i1.getWeight();
 
-                discovery.cluster.add(n1);
+                discovery.addInstance(n1);
             }
 
             return discovery;
