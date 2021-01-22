@@ -77,6 +77,11 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
         real.agentServiceRegister(newService, token);
     }
 
+    @Override
+    public void registerState(String group, Instance instance, boolean health) {
+
+    }
+
     private void registerLocalCheck(Instance instance, NewService newService){
         if (Utils.isNotEmpty(healthCheckInterval)) {
             //1.添加Solon服务，提供检测用

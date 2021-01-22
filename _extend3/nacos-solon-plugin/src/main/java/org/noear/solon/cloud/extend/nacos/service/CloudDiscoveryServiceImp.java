@@ -68,6 +68,11 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
         }
     }
 
+    @Override
+    public void registerState(String group, Instance instance, boolean health) {
+
+    }
+
     /**
      * 注销服务实例
      * */

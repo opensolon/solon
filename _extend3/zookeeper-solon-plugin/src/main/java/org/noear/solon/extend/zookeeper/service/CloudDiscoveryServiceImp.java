@@ -16,6 +16,11 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
     }
 
     @Override
+    public void registerState(String group, Instance instance, boolean health) {
+
+    }
+
+    @Override
     public void deregister(String group, Instance instance) {
 
     }
