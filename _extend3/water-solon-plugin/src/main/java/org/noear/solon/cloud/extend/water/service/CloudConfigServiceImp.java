@@ -14,6 +14,7 @@ import org.noear.water.model.ConfigM;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * @author noear 2021/1/17 created
@@ -23,7 +24,9 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
 
     private long refreshInterval;
 
-    public CloudConfigServiceImp(){
+    private Map<String, Config> configMap = new HashMap<>();
+
+    public CloudConfigServiceImp() {
         refreshInterval = IntervalUtils.getInterval(WaterProps.instance.getConfigRefreshInterval("5s"));
     }
 
@@ -42,7 +45,18 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
         }
 
         ConfigM cfg = WaterClient.Config.get(group, key);
-        return new Config(key, cfg.value);
+
+        String cfgKey = group + "/" + key;
+        Config config = configMap.get(cfgKey);
+
+        if (config == null) {
+            config = new Config(key, cfg.value, cfg.lastModified);
+            configMap.put(cfgKey, config);
+        } else if (cfg.lastModified > config.getVersion()) {
+            config.setValue(cfg.value, cfg.lastModified);
+        }
+
+        return config;
     }
 
     @Override
@@ -87,7 +101,6 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
 
         CloudConfigObserverEntity entity = new CloudConfigObserverEntity(group, key, observer);
         observerMap.put(observer, entity);
-
     }
 
     public void onUpdate(String group, String key) {
@@ -96,31 +109,49 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
         }
 
         WaterClient.Config.reload(group);
-
         ConfigM cfg = WaterClient.Config.get(group, key);
 
-        observerMap.forEach((k, v) -> {
-            if (group.equals(v.group) && key.equals(v.key)) {
-                v.handler(new Config(cfg.key, cfg.value));
-            }
+        onUpdateDo(group, key, cfg, (cfg2) -> {
+            observerMap.forEach((k, v) -> {
+                if (group.equals(v.group) && key.equals(v.key)) {
+                    v.handler(cfg2);
+                }
+            });
         });
+    }
+
+    private void onUpdateDo(String group, String key, ConfigM cfg, Consumer<Config> consumer) {
+        String cfgKey = group + "/" + key;
+        Config config = configMap.get(cfgKey);
+
+        if (config == null) {
+            config = new Config(key, cfg.value, cfg.lastModified);
+        } else {
+            if (cfg.lastModified > config.getVersion()) {
+                return;
+            } else {
+                config.setValue(cfg.value, cfg.lastModified);
+            }
+        }
+
+        consumer.accept(config);
     }
 
     @Override
     public void run() {
-        Set<String> loadKeys = new LinkedHashSet<>();
-        for (Map.Entry<CloudConfigHandler, CloudConfigObserverEntity> kv : observerMap.entrySet()) {
-            CloudConfigObserverEntity entity = kv.getValue();
+        Set<String> loadGroups = new LinkedHashSet<>();
 
-            if (loadKeys.contains(entity.group) == false) {
-                loadKeys.add(entity.group);
-                WaterClient.Config.reload(entity.group);
+        observerMap.forEach((k, v) -> {
+            if (loadGroups.contains(v.group) == false) {
+                loadGroups.add(v.group);
+                WaterClient.Config.reload(v.group);
             }
 
-            ConfigM cfg = WaterClient.Config.get(entity.group, entity.key);
-            entity.handler(new Config(cfg.key, cfg.value));
-        }
+            ConfigM cfg = WaterClient.Config.get(v.group, v.key);
 
-        loadKeys.clear();
+            onUpdateDo(v.group, v.key, cfg, cfg2 -> {
+                v.handler(cfg2);
+            });
+        });
     }
 }

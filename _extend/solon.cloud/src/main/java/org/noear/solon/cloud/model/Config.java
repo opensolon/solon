@@ -19,27 +19,41 @@ public class Config {
     /**
      * 配置键
      */
-    public String key;
+    private String key;
     /**
      * 值
      */
-    public String value;
+    private String value;
 
     /**
      * 版本号
      * */
-    public long version;
+    private long version;
 
 
-    public Config() {
-
-    }
-
-    public Config(String key, String value) {
+    public Config(String key, String value, long version) {
         this.key = key;
         this.value = value;
+        this.version = version;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value, long version) {
+        this.value = value;
+        this.version = version;
+        this._props = null;
+    }
+
+    public long getVersion() {
+        return version;
+    }
 
     private Properties _props;
 
