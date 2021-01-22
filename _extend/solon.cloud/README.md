@@ -25,11 +25,13 @@ solon.cloud.nacos:
 | solon.cloud.@@.password     |  链接密码   |    nacos  |     
 | | | |
 | solon.cloud.@@.config.enable     |   配置服务启用（默认：true）   |   nacos、consul、water     |   
+| solon.cloud.@@.config.server     |   服务地址（ip:port）   |   nacos、consul、water     | 
 | solon.cloud.@@.config.loadGroup     |   需要启动时加载的配置组   |   nacos、water    |    
 | solon.cloud.@@.config.loadKey     |  需要启动时加载的Key    |    nacos、consul、wate   |    
 | solon.cloud.@@.config.refreshInterval     |  配置刷新间隔    |   consul    |     
 | | | |
-| solon.cloud.@@.discovery.enable     |    注册与发现服务启用（默认：true）   |     nacos、consul、water    |      
+| solon.cloud.@@.discovery.enable     |    注册与发现服务启用（默认：true）   |     nacos、consul、water    | 
+| solon.cloud.@@.discovery.server     |   服务地址（ip:port）   |   nacos、consul、water     | 
 | solon.cloud.@@.discovery.hostname     |   服务主机   |    nacos、consul、water    |      
 | solon.cloud.@@.discovery.tags     |  服务标签    |    consul    |  
 | solon.cloud.@@.discovery.healthCheckPath     |  服务健康检查路径    |    consul、water    |     
@@ -38,7 +40,9 @@ solon.cloud.nacos:
 | solon.cloud.@@.discovery.refreshInterval     |   服务发现刷新间隔   |   consul     |      
 | | | |
 | solon.cloud.@@.event.enable | 事件总线服务（默认：true）| water |
+| solon.cloud.@@.event.server     |   服务地址（ip:port）   |  water     | 
 | solon.cloud.@@.event.seal | 事件签名 | water |
 | | | |
 | solon.cloud.@@.log.enable | 日志总线服务（默认：true）| water |
-| solon.cloud.@@.log.default | 日志默认记录器 | water |
+| solon.cloud.@@.log.server     |   服务地址（ip:port）   |   water     | 
+| solon.cloud.@@.log.logger | 日志默认记录器 | water |

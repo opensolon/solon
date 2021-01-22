@@ -33,7 +33,7 @@ public class CloudEventServiceImp implements CloudEventService {
     }
 
     @Override
-    public void send(Event event) {
+    public void push(Event event) {
         if (Utils.isEmpty(event.getTopic())) {
             throw new IllegalArgumentException("Event missing topic");
         }

@@ -12,9 +12,9 @@ import org.noear.solon.cloud.model.Event;
  */
 public interface CloudEventService {
     /**
-     * 发送事件
+     * 推送事件
      */
-    void send(Event event);
+    void push(Event event);
 
     /**
      * 关注事件（相当于订阅）
