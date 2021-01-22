@@ -32,39 +32,42 @@ public class Discovery implements Serializable {
     private String policy;
 
 
-    public String getService() {
+    public String service() {
         return service;
     }
 
-    public String getAgent() {
+    public String agent() {
         return agent;
     }
 
-    public void setAgent(String agent) {
+    public Discovery agent(String agent) {
         this.agent = agent;
+        return this;
     }
 
-    public String getPolicy() {
+    public String policy() {
         return policy;
     }
 
-    public void setPolicy(String policy) {
+    public Discovery policy(String policy) {
         this.policy = policy;
+        return this;
     }
 
-    public List<Instance> getCluster() {
+    public List<Instance> cluster() {
         return cluster;
     }
 
-    public int getClusterSize() {
+    public int clusterSize() {
         return cluster.size();
     }
 
-    public void addInstance(Instance instance){
+    public Discovery instanceAdd(Instance instance){
         cluster.add(instance);
+        return this;
     }
 
-    public Instance getInstance(int index) {
+    public Instance instanceGet(int index) {
         return cluster.get(index % cluster.size());
     }
 

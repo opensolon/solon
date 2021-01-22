@@ -35,7 +35,7 @@ public class CloudBeanInjector implements BeanInjector<CloudConfig> {
 
         Config cfg = CloudClient.config().get(anno.group(), anno.value());
 
-        if (cfg == null || cfg.getValue() == null) {
+        if (cfg == null || cfg.value() == null) {
             return null;
         }
 
@@ -46,7 +46,7 @@ public class CloudBeanInjector implements BeanInjector<CloudConfig> {
         if (type.getName().startsWith("java.") || type.isPrimitive()) {
             //如果是java基础类型，则为null（后面统一地 isPrimitive 做处理）
             //
-            return ConvertUtil.to(type, cfg.getValue());
+            return ConvertUtil.to(type, cfg.value());
         } else {
             //尝试转为实体
             //

@@ -53,48 +53,52 @@ public class Event {
         this.content = content;
     }
 
-    public String getQueue() {
+    public String queue() {
         return queue;
     }
 
-    public String getTopic() {
+    public String topic() {
         return topic;
     }
 
-    public String getContent() {
+    public String content() {
         return content;
     }
 
 
-    public String getKey() {
+    public String key() {
         return key;
     }
 
-    public void setKey(String key) {
+    public Event key(String key) {
         this.key = key;
+        return this;
     }
 
-    public String getTags() {
+    public String tags() {
         return tags;
     }
 
-    public void setTags(String tags) {
+    public Event tags(String tags) {
         this.tags = tags;
+        return this;
     }
 
-    public Date getScheduled() {
+    public Date scheduled() {
         return scheduled;
     }
 
-    public void setScheduled(Date scheduled) {
+    public Event scheduled(Date scheduled) {
         this.scheduled = scheduled;
+        return this;
     }
 
-    public int getTimes() {
+    public int times() {
         return times;
     }
 
-    public void setTimes(int times) {
+    public Event times(int times) {
         this.times = times;
+        return this;
     }
 }

@@ -188,7 +188,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
             instance.tags = service.getTags();
             instance.meta = service.getMeta();
 
-            discovery.addInstance(instance);
+            discovery.instanceAdd(instance);
         }
 
         discoveryMap = discoveryTmp;

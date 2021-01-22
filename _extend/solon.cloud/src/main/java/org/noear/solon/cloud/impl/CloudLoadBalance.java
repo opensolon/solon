@@ -58,22 +58,22 @@ public class CloudLoadBalance implements LoadBalance {
         if (discovery == null) {
             return null;
         } else {
-            int count = discovery.getClusterSize();
+            int count = discovery.clusterSize();
 
             if (count == 0) {
-                return discovery.getAgent();
+                return discovery.agent();
             } else {
                 //这里不需要原子性
                 if (index > indexMax) {
                     index = 0;
                 }
 
-                Instance instance = discovery.getInstance(index++ % count);
+                Instance instance = discovery.instanceGet(index++ % count);
 
-                if (Utils.isEmpty(instance.protocol)) {
-                    return "http://" + instance.address;
+                if (Utils.isEmpty(instance.protocol())) {
+                    return "http://" + instance.address();
                 } else {
-                    return instance.protocol + "://" + instance.address;
+                    return instance.protocol() + "://" + instance.address();
                 }
             }
         }

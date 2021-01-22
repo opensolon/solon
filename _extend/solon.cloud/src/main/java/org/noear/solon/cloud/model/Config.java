@@ -37,21 +37,23 @@ public class Config {
         this.version = version;
     }
 
-    public String getKey() {
+    public String key() {
         return key;
     }
 
-    public String getValue() {
+    public String value() {
         return value;
     }
 
-    public void setValue(String value, long version) {
+    public Config value(String value, long version) {
         this.value = value;
         this.version = version;
         this._props = null;
-    }
 
-    public long getVersion() {
+        return this;
+    }
+    
+    public long version() {
         return version;
     }
 

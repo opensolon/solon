@@ -51,7 +51,7 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
             group = Solon.cfg().appGroup();
         }
 
-        String[] ss = instance.address.split(":");
+        String[] ss = instance.address().split(":");
 
         if (ss.length != 2) {
             throw new IllegalArgumentException("Instance.address error");
@@ -59,9 +59,9 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
 
         try {
             if (Utils.isEmpty(group)) {
-                real.registerInstance(instance.service, ss[0], Integer.parseInt(ss[1]));
+                real.registerInstance(instance.service(), ss[0], Integer.parseInt(ss[1]));
             } else {
-                real.registerInstance(instance.service, group, ss[0], Integer.parseInt(ss[1]));
+                real.registerInstance(instance.service(), group, ss[0], Integer.parseInt(ss[1]));
             }
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
@@ -82,7 +82,7 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
             group = Solon.cfg().appGroup();
         }
 
-        String[] ss = instance.address.split(":");
+        String[] ss = instance.address().split(":");
 
         if (ss.length != 2) {
             throw new IllegalArgumentException("Instance.address error");
@@ -90,9 +90,9 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
 
         try {
             if (Utils.isEmpty(group)) {
-                real.deregisterInstance(instance.service, ss[0], Integer.parseInt(ss[1]));
+                real.deregisterInstance(instance.service(), ss[0], Integer.parseInt(ss[1]));
             } else {
-                real.deregisterInstance(instance.service, group, ss[0], Integer.parseInt(ss[1]));
+                real.deregisterInstance(instance.service(), group, ss[0], Integer.parseInt(ss[1]));
             }
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
@@ -120,12 +120,12 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
             }
 
             for (com.alibaba.nacos.api.naming.pojo.Instance i1 : list) {
-                Instance n1 = new Instance();
-                n1.service = service;
-                n1.address = i1.getIp() + ":" + i1.getPort();
-                n1.weight = i1.getWeight();
+                Instance n1 = new Instance(service,
+                        i1.getIp() + ":" + i1.getPort(),
+                        null)
+                        .weight(i1.getWeight()) ;
 
-                discovery.addInstance(n1);
+                discovery.instanceAdd(n1);
             }
 
             return discovery;

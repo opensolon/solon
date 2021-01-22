@@ -4,8 +4,6 @@ import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.water.model.DiscoverM;
 
-import java.util.ArrayList;
-
 /**
  * @author noear
  * @since 1.2
@@ -16,8 +14,8 @@ public class ConvertUtil {
             return null;
         } else {
             Discovery d2 = new Discovery(service);
-            d2.setAgent(d1.url);
-            d2.setPolicy(d1.policy);
+            d2.agent(d1.url);
+            d2.policy(d1.policy);
 
             d1.list.forEach((t1) -> {
                 Instance instance = new Instance();
@@ -25,7 +23,7 @@ public class ConvertUtil {
                 instance.weight = t1.weight;
                 instance.protocol = t1.protocol;
 
-                d2.addInstance(instance);
+                d2.instanceAdd(instance);
             });
 
             return d2;

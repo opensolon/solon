@@ -52,8 +52,8 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
         if (config == null) {
             config = new Config(key, cfg.value, cfg.lastModified);
             configMap.put(cfgKey, config);
-        } else if (cfg.lastModified > config.getVersion()) {
-            config.setValue(cfg.value, cfg.lastModified);
+        } else if (cfg.lastModified > config.version()) {
+            config.value(cfg.value, cfg.lastModified);
         }
 
         return config;
@@ -127,10 +127,10 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
         if (config == null) {
             config = new Config(key, cfg.value, cfg.lastModified);
         } else {
-            if (cfg.lastModified > config.getVersion()) {
+            if (cfg.lastModified > config.version()) {
                 return;
             } else {
-                config.setValue(cfg.value, cfg.lastModified);
+                config.value(cfg.value, cfg.lastModified);
             }
         }
 

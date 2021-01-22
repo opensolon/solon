@@ -39,7 +39,7 @@ public class CloudClient {
         if (Utils.isNotEmpty(key)) {
             Config config = CloudClient.config().get(group, key);
 
-            if (config != null && Utils.isNotEmpty(config.getValue())) {
+            if (config != null && Utils.isNotEmpty(config.value())) {
                 Properties properties = config.toProps();
                 Solon.cfg().loadAdd(properties);
             }
@@ -64,21 +64,13 @@ public class CloudClient {
      * 发现服务，推送本地服务（即注册）
      */
     @Note("发现服务，推送本地服务（即注册）")
-    public static void discoveryPush(String hostname) {
+    public static void discoveryPush() {
         if (CloudClient.discovery() == null) {
             return;
         }
 
         if (Utils.isNotEmpty(Solon.cfg().appName())) {
             Instance instance = Instance.localNew();
-
-            if (Utils.isNotEmpty(hostname)) {
-                if (hostname.contains(":")) {
-                    instance.address = hostname;
-                } else {
-                    instance.address = hostname + ":" + Solon.global().port();
-                }
-            }
 
             CloudClient.discovery().register(Solon.cfg().appGroup(), instance);
         }

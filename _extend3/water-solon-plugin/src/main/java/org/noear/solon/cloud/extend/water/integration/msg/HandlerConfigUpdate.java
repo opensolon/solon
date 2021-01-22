@@ -17,7 +17,7 @@ public class HandlerConfigUpdate implements CloudEventHandler {
 
     @Override
     public boolean handler(Event event) {
-        String[] tag_keys = event.getContent().split(";");
+        String[] tag_keys = event.content().split(";");
 
 
         for (String tagKey : tag_keys) {

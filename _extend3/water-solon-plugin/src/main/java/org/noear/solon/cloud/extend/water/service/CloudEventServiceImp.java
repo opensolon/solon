@@ -34,16 +34,16 @@ public class CloudEventServiceImp implements CloudEventService {
 
     @Override
     public void push(Event event) {
-        if (Utils.isEmpty(event.getTopic())) {
+        if (Utils.isEmpty(event.topic())) {
             throw new IllegalArgumentException("Event missing topic");
         }
 
-        if (Utils.isEmpty(event.getContent())) {
+        if (Utils.isEmpty(event.content())) {
             throw new IllegalArgumentException("Event missing content");
         }
 
         try {
-            WaterClient.Message.sendMessageAndTags(event.getKey(), event.getTopic(), event.getContent(), event.getScheduled(), event.getTags());
+            WaterClient.Message.sendMessageAndTags(event.key(), event.topic(), event.content(), event.scheduled(), event.tags());
         } catch (Throwable ex) {
             throw Utils.throwableWrap(ex);
         }
@@ -112,12 +112,12 @@ public class CloudEventServiceImp implements CloudEventService {
         boolean isOk = true;
         CloudEventObserverEntity entity = null;
 
-        entity = instanceObserverMap.get(event.getTopic());
+        entity = instanceObserverMap.get(event.topic());
         if (entity != null) {
             isOk = entity.handler(event);
         }
 
-        entity = clusterObserverMap.get(event.getTopic());
+        entity = clusterObserverMap.get(event.topic());
         if (entity != null) {
             isOk = entity.handler(event) || isOk;
         }

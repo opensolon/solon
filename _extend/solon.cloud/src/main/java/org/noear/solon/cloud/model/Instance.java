@@ -5,10 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.utils.LocalUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 服务节点模型
@@ -20,32 +17,108 @@ public class Instance implements Serializable {
     /**
      * 服务名
      */
-    public String service;
+    private String service;
+
+    public String service() {
+        return service;
+    }
 
     /**
      * 地址（ip:port）
      */
-    public String address;
+    private String address;
+
+    public String address() {
+        return address;
+    }
+
+    public Instance address(String address) {
+        this.address = address;
+        return this;
+    }
 
     /**
      * 协议（http, ws, tcp...）
      */
-    public String protocol;
+    private String protocol;
+
+    public String protocol() {
+        return protocol;
+    }
 
     /**
      * 权重
      */
-    public double weight = 1.0D;
+    private double weight = 1.0D;
+
+    public double weight() {
+        return weight;
+    }
+
+    public Instance weight(double weight) {
+        this.weight = weight;
+        return this;
+    }
 
     /**
      * 元信息
      */
-    public Map<String, String> meta;
+    private Map<String, String> meta;
+
+    public Map<String, String> meta() {
+        return meta;
+    }
+
+    public Instance metaPut(String name, String value) {
+        if (meta == null) {
+            meta = new LinkedHashMap<>();
+        }
+
+        meta.put(name, value);
+        return this;
+    }
+
+    public Instance metaPutAll(Map<String, String> map) {
+        if (meta == null) {
+            meta = new LinkedHashMap<>();
+        }
+
+        meta.putAll(map);
+        return this;
+    }
+
+    public Instance metaRemove(String name) {
+        if (meta != null) {
+            meta.remove(name);
+        }
+
+        return this;
+    }
 
     /**
      * 标签
      */
-    public List<String> tags;
+    private List<String> tags;
+
+    public List<String> tags() {
+        return tags;
+    }
+
+    public Instance tagsAdd(String tag) {
+        if (tags == null) {
+            tags = new ArrayList<>();
+        }
+
+        tags.add(tag);
+        return this;
+    }
+
+
+    public Instance(String service, String address, String protocol) {
+        this.service = service;
+        this.address = address;
+        this.protocol = protocol;
+    }
 
 
     private static Instance local;
@@ -59,22 +132,21 @@ public class Instance implements Serializable {
     }
 
     public static Instance localNew() {
-        Instance instance = new Instance();
+        Instance instance = new Instance(
+                Solon.cfg().appName(),
+                LocalUtils.getLocalAddress() + ":" + Solon.global().port(),
+                "http");
 
-        instance.address = LocalUtils.getLocalAddress() + ":" + Solon.global().port();
-        instance.service = Solon.cfg().appName();
-        instance.protocol = "http";
+        instance.metaPutAll(Solon.cfg().argx());
+        instance.metaRemove("server.port");
 
-        instance.meta = new HashMap<>(Solon.cfg().argx());
-        instance.meta.remove("server.port");
-
-        instance.tags = new ArrayList<>();
-        instance.tags.add("solon");
+        instance.tagsAdd("solon");
         if (Utils.isNotEmpty(Solon.cfg().appGroup())) {
-            instance.tags.add(Solon.cfg().appGroup());
+            instance.tagsAdd(Solon.cfg().appGroup());
         }
+
         if (Utils.isNotEmpty(Solon.cfg().appName())) {
-            instance.tags.add(Solon.cfg().appName());
+            instance.tagsAdd(Solon.cfg().appName());
         }
 
         return instance;
