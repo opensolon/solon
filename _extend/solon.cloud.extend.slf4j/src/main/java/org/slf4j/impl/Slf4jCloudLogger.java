@@ -5,6 +5,7 @@ import org.slf4j.Marker;
 import org.slf4j.event.Level;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
+
 /**
  * @author noear
  * @since 1.2
