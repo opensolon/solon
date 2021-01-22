@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.extend.water;
 
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
@@ -19,10 +20,14 @@ import org.noear.solon.core.Plugin;
 import org.noear.water.WW;
 import org.noear.water.WaterAddress;
 
+import java.util.Timer;
+
 /**
  * @author noear 2021/1/17 created
  */
 public class XPluginImp implements Plugin {
+    private Timer clientTimer = new Timer();
+
     @Override
     public void start(SolonApp app) {
         if (Utils.isNotEmpty(WaterProps.instance.getServer())) {
@@ -67,6 +72,13 @@ public class XPluginImp implements Plugin {
             if (WaterProps.instance.getConfigEnable()) {
                 configServiceImp = new CloudConfigServiceImp();
                 CloudManager.register(configServiceImp);
+
+                if(Solon.cfg().isFilesMode()){
+                    if (configServiceImp.getRefreshInterval() > 0) {
+                        long interval = configServiceImp.getRefreshInterval();
+                        clientTimer.schedule(configServiceImp, interval, interval);
+                    }
+                }
             }
 
             if (WaterProps.instance.getDiscoveryEnable()) {
@@ -114,6 +126,12 @@ public class XPluginImp implements Plugin {
             //发现提交（即注册服务）
             CloudClient.discoveryPush(WaterProps.instance.getDiscoveryHostname());
         }
+    }
 
+    @Override
+    public void stop() throws Throwable {
+        if (clientTimer != null) {
+            clientTimer.cancel();
+        }
     }
 }
