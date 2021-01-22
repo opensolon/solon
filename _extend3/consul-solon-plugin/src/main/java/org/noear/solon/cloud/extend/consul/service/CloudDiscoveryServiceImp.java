@@ -37,14 +37,29 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
     Map<String,Discovery> discoveryMap = new HashMap<>();
     private Map<CloudDiscoveryHandler, CloudDiscoveryObserverEntity> observerMap = new HashMap<>();
 
-    public CloudDiscoveryServiceImp(ConsulClient client) {
-        this.real = client;
-        this.token = ConsulProps.instance.getToken();
+    /**
+     * 初始化客户端
+     */
+    private void initClient() {
+        String server = ConsulProps.instance.getDiscoveryServer();
+        String[] ss = server.split(":");
 
+        if (ss.length == 1) {
+            real = new ConsulClient(ss[0]);
+        } else {
+            real = new ConsulClient(ss[0], Integer.parseInt(ss[1]));
+        }
+    }
+
+    public CloudDiscoveryServiceImp() {
+        token = ConsulProps.instance.getToken();
         refreshInterval = IntervalUtils.getInterval(ConsulProps.instance.getDiscoveryRefreshInterval("10s"));
 
         healthCheckInterval = ConsulProps.instance.getDiscoveryHealthCheckInterval("10s");
         healthCheckPath = ConsulProps.instance.getDiscoveryHealthCheckPath();
+
+
+        initClient();
     }
 
     public long getRefreshInterval() {

@@ -1,12 +1,10 @@
 package org.noear.solon.cloud.extend.consul;
 
-import com.ecwid.consul.v1.ConsulClient;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
-import org.noear.solon.cloud.utils.IntervalUtils;
 import org.noear.solon.core.*;
 import org.noear.solon.cloud.extend.consul.service.CloudConfigServiceImp;
 import org.noear.solon.cloud.extend.consul.service.CloudDiscoveryServiceImp;
@@ -21,20 +19,7 @@ import java.util.*;
  * */
 public class XPluginImp implements Plugin {
     private Timer clientTimer = new Timer();
-    private ConsulClient client;
 
-    /**
-     * 初始化客户端
-     */
-    private void initClient() {
-        String server = ConsulProps.instance.getServer();
-        String[] ss = server.split(":");
-        if (ss.length == 1) {
-            client = new ConsulClient(ss[0]);
-        } else {
-            client = new ConsulClient(ss[0], Integer.parseInt(ss[1]));
-        }
-    }
 
     @Override
     public void start(SolonApp app) {
@@ -42,11 +27,9 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        initClient();
-
         //1.登记配置服务
         if (ConsulProps.instance.getConfigEnable()) {
-            CloudConfigServiceImp serviceImp = new CloudConfigServiceImp(client);
+            CloudConfigServiceImp serviceImp = new CloudConfigServiceImp();
             CloudManager.register(serviceImp);
 
             if (serviceImp.getRefreshInterval() > 0) {
@@ -57,7 +40,7 @@ public class XPluginImp implements Plugin {
 
         //2.登记发现服务
         if (ConsulProps.instance.getDiscoveryEnable()) {
-            CloudDiscoveryServiceImp serviceImp = new CloudDiscoveryServiceImp(client);
+            CloudDiscoveryServiceImp serviceImp = new CloudDiscoveryServiceImp();
             CloudManager.register(serviceImp);
 
             //运行一次，拉取服务列表

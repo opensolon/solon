@@ -23,7 +23,7 @@ public class CloudConfigServiceImp implements CloudConfigService {
     ConfigService real;
 
     public CloudConfigServiceImp() {
-        String server = NacosProps.instance.getServer();
+        String server = NacosProps.instance.getConfigServer();
         String username = NacosProps.instance.getUsername();
         String password = NacosProps.instance.getPassword();
 

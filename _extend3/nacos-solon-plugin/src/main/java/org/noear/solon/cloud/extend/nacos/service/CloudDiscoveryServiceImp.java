@@ -22,7 +22,7 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
     NamingService real;
 
     public CloudDiscoveryServiceImp() {
-        String server = NacosProps.instance.getServer();
+        String server = NacosProps.instance.getDiscoveryServer();
         String username = NacosProps.instance.getUsername();
         String password = NacosProps.instance.getPassword();
 
