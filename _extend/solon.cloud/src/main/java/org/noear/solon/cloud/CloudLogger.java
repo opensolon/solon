@@ -46,6 +46,8 @@ public interface CloudLogger {
     }
 
     void trace(Object content);
+    void trace(String tag1, Object content);
+    void trace(String tag1, String tag2, Object content);
     void trace(Meta meta, Object content);
 
 
@@ -55,6 +57,8 @@ public interface CloudLogger {
     }
 
     void debug(Object content);
+    void debug(String tag1, Object content);
+    void debug(String tag1, String tag2, Object content);
     void debug(Meta meta, Object content);
 
 
@@ -64,7 +68,8 @@ public interface CloudLogger {
     }
 
     void info(Object content);
-
+    void info(String tag1, Object content);
+    void info(String tag1, String tag2, Object content);
     void info(Meta meta, Object content);
 
 
@@ -74,6 +79,8 @@ public interface CloudLogger {
     }
 
     void warn(Object content);
+    void warn(String tag1, Object content);
+    void warn(String tag1, String tag2, Object content);
     void warn(Meta meta, Object content);
 
 
@@ -82,6 +89,7 @@ public interface CloudLogger {
     }
 
     void error(Object content);
-
+    void error(String tag1, Object content);
+    void error(String tag1, String tag2, Object content);
     void error(Meta meta, Object content);
 }

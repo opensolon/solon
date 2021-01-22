@@ -10,6 +10,7 @@ import org.noear.water.log.WaterLogger;
  */
 public class CloudLoggerImp implements CloudLogger {
     private WaterLogger logger;
+
     public CloudLoggerImp(String name) {
         logger = new WaterLogger(name);
     }
@@ -29,10 +30,19 @@ public class CloudLoggerImp implements CloudLogger {
     }
 
 
-
     @Override
     public void trace(Object content) {
         logger.trace(content);
+    }
+
+    @Override
+    public void trace(String tag1, Object content) {
+        logger.trace(tag1, null, content);
+    }
+
+    @Override
+    public void trace(String tag1, String tag2, Object content) {
+        logger.trace(tag1, tag2, null, content);
     }
 
     @Override
@@ -46,6 +56,16 @@ public class CloudLoggerImp implements CloudLogger {
     }
 
     @Override
+    public void debug(String tag1, Object content) {
+        logger.debug(tag1, null, content);
+    }
+
+    @Override
+    public void debug(String tag1, String tag2, Object content) {
+        logger.debug(tag1, tag2, null, content);
+    }
+
+    @Override
     public void debug(Meta meta, Object content) {
         logger.debug(meta.tag1(), meta.tag2(), meta.tag3(), meta.tag4(), meta.summary(), content);
     }
@@ -53,6 +73,16 @@ public class CloudLoggerImp implements CloudLogger {
     @Override
     public void info(Object content) {
         logger.info(content);
+    }
+
+    @Override
+    public void info(String tag1, Object content) {
+        logger.info(tag1, null, content);
+    }
+
+    @Override
+    public void info(String tag1, String tag2, Object content) {
+        logger.info(tag1, tag2, null, content);
     }
 
     @Override
@@ -66,6 +96,16 @@ public class CloudLoggerImp implements CloudLogger {
     }
 
     @Override
+    public void warn(String tag1, Object content) {
+        logger.warn(tag1, null, content);
+    }
+
+    @Override
+    public void warn(String tag1, String tag2, Object content) {
+        logger.warn(tag1, tag2, null, content);
+    }
+
+    @Override
     public void warn(Meta meta, Object content) {
         logger.warn(meta.tag1(), meta.tag2(), meta.tag3(), meta.tag4(), meta.summary(), content);
     }
@@ -73,6 +113,16 @@ public class CloudLoggerImp implements CloudLogger {
     @Override
     public void error(Object content) {
         logger.error(content);
+    }
+
+    @Override
+    public void error(String tag1, Object content) {
+        logger.error(tag1, null, content);
+    }
+
+    @Override
+    public void error(String tag1, String tag2, Object content) {
+        logger.error(tag1, tag2, null, content);
     }
 
     @Override

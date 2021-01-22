@@ -29,12 +29,32 @@ public class CloudLoggerDefault implements CloudLogger{
     }
 
     @Override
+    public void trace(String tag1, Object content) {
+
+    }
+
+    @Override
+    public void trace(String tag1, String tag2, Object content) {
+
+    }
+
+    @Override
     public void trace(Meta meta, Object content) {
 
     }
 
     @Override
     public void debug(Object content) {
+
+    }
+
+    @Override
+    public void debug(String tag1, Object content) {
+
+    }
+
+    @Override
+    public void debug(String tag1, String tag2, Object content) {
 
     }
 
@@ -49,6 +69,16 @@ public class CloudLoggerDefault implements CloudLogger{
     }
 
     @Override
+    public void info(String tag1, Object content) {
+
+    }
+
+    @Override
+    public void info(String tag1, String tag2, Object content) {
+
+    }
+
+    @Override
     public void info(Meta meta, Object content) {
 
     }
@@ -59,12 +89,32 @@ public class CloudLoggerDefault implements CloudLogger{
     }
 
     @Override
+    public void warn(String tag1, Object content) {
+
+    }
+
+    @Override
+    public void warn(String tag1, String tag2, Object content) {
+
+    }
+
+    @Override
     public void warn(Meta meta, Object content) {
 
     }
 
     @Override
     public void error(Object content) {
+
+    }
+
+    @Override
+    public void error(String tag1, Object content) {
+
+    }
+
+    @Override
+    public void error(String tag1, String tag2, Object content) {
 
     }
 
