@@ -17,9 +17,14 @@ import org.noear.solon.cloud.extend.water.service.CloudConfigServiceImp;
 import org.noear.solon.cloud.extend.water.service.CloudDiscoveryServiceImp;
 import org.noear.solon.cloud.extend.water.service.CloudEventServiceImp;
 import org.noear.solon.cloud.extend.water.service.CloudLogServiceImp;
+import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.handle.Context;
 import org.noear.water.WW;
 import org.noear.water.WaterAddress;
+import org.noear.water.WaterClient;
+import org.noear.water.WaterSetting;
+import org.noear.water.utils.TextUtils;
 
 import java.util.Timer;
 
@@ -65,6 +70,24 @@ public class XPluginImp implements Plugin {
                 WaterAddress.setLogApiUrl(logServer);
             }
 
+            WaterClient.localHostSet(Instance.local().address());
+            WaterClient.localServiceSet(Instance.local().service());
+            WaterSetting.water_trace_id_supplier(()->{
+                Context ctx = Context.current();
+
+                if (ctx == null) {
+                    return "";
+                } else {
+                    String trace_id = ctx.header(WW.http_header_trace);
+
+                    if (TextUtils.isEmpty(trace_id)) {
+                        trace_id = Utils.guid();
+                        ctx.headerMap().put(WW.http_header_trace, trace_id);
+                    }
+
+                    return trace_id;
+                }
+            });
 
             //2.初始化服务
             CloudDiscoveryServiceImp discoveryServiceImp = null;
