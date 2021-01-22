@@ -86,6 +86,9 @@ public class CloudClient {
         return CloudManager.eventService();
     }
 
+    /**
+     * 日志服务
+     * */
     public static CloudLogService log(){
         return CloudManager.logService();
     }
