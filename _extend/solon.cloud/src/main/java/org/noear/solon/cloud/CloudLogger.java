@@ -1,6 +1,7 @@
 package org.noear.solon.cloud;
 
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.model.log.Level;
 import org.noear.solon.cloud.model.log.Meta;
 
 /**
@@ -10,27 +11,22 @@ import org.noear.solon.cloud.model.log.Meta;
  * @since 1.2
  */
 public interface CloudLogger {
+    //
+    //获取日志器
+    //
     static CloudLogger get(String name) {
-        if (CloudClient.log() == null) {
-            return CloudLoggerDefault.instance;
-        } else {
-            return CloudClient.log().getLogger(name);
-        }
-    }
-
-    static CloudLogger get(String name, Class<?> clz) {
-        if (CloudClient.log() == null) {
-            return CloudLoggerDefault.instance;
-        } else {
-            return CloudClient.log().getLogger(name, clz);
-        }
+        return get(name, null);
     }
 
     static CloudLogger get(Class<?> clz) {
-        if (CloudClient.log() == null || Utils.isEmpty(CloudProps.LOG_DEFAULT_LOGGER)) {
+        return get(CloudProps.LOG_DEFAULT_LOGGER, clz);
+    }
+
+    static CloudLogger get(String name, Class<?> clz) {
+        if (CloudClient.log() == null || Utils.isEmpty(name)) {
             return CloudLoggerDefault.instance;
         } else {
-            return CloudClient.log().getLogger(CloudProps.LOG_DEFAULT_LOGGER, clz);
+            return CloudClient.log().getLogger(name, clz);
         }
     }
 
@@ -42,7 +38,7 @@ public interface CloudLogger {
 
 
     default boolean isTraceEnabled() {
-        return true;
+        return CloudLoggerFactory.INSTANCE.getLevel().code <= Level.TRACE.code;
     }
 
     void trace(Object content);
@@ -53,7 +49,7 @@ public interface CloudLogger {
 
 
     default boolean isDebugEnabled() {
-        return true;
+        return CloudLoggerFactory.INSTANCE.getLevel().code <= Level.DEBUG.code;
     }
 
     void debug(Object content);
@@ -64,7 +60,7 @@ public interface CloudLogger {
 
 
     default boolean isInfoEnabled() {
-        return true;
+        return CloudLoggerFactory.INSTANCE.getLevel().code <= Level.INFO.code;
     }
 
     void info(Object content);
@@ -75,7 +71,7 @@ public interface CloudLogger {
 
 
     default boolean isWarnEnabled() {
-        return true;
+        return CloudLoggerFactory.INSTANCE.getLevel().code <= Level.WARN.code;
     }
 
     void warn(Object content);
@@ -85,7 +81,7 @@ public interface CloudLogger {
 
 
     default boolean isErrorEnabled() {
-        return true;
+        return CloudLoggerFactory.INSTANCE.getLevel().code <= Level.ERROR.code;
     }
 
     void error(Object content);
