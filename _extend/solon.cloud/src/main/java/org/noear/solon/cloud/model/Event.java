@@ -10,11 +10,6 @@ import java.util.Date;
  */
 public class Event {
     /**
-     * 事件唯一标识
-     * */
-    private final String key;
-
-    /**
      * 队列
      * */
     private final String queue;
@@ -27,6 +22,11 @@ public class Event {
      * 内容
      * */
     private final String content;
+
+    /**
+     * 事件唯一标识
+     * */
+    private String key;
 
     /**
      * 检索标签
@@ -43,15 +43,10 @@ public class Event {
      * */
     private int times;
 
-    public Event(String key, String queue, String topic, String content){
-        this.key = key;
+    public Event(String queue, String topic, String content){
         this.queue = queue;
         this.topic = topic;
         this.content = content;
-    }
-
-    public String getKey() {
-        return key;
     }
 
     public String getQueue() {
@@ -64,6 +59,15 @@ public class Event {
 
     public String getContent() {
         return content;
+    }
+
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getTags() {
