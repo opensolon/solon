@@ -33,22 +33,24 @@ public class XPluginImp implements Plugin {
             String eventServer = WaterProps.instance.getEventServer();
             String logServer = WaterProps.instance.getLogServer();
 
-            System.setProperty("water.host", server);
+            //1.1.设置water默认基础配置
+            System.setProperty(WW.water_host, server);
+            System.setProperty(WW.water_logger, WaterProps.instance.getLogLogger());
 
             if(server.equals(configServer) == false){
-                WaterAddress.getInstance().setConfigApiUrl(configServer);
+                WaterAddress.setConfigApiUrl(configServer);
             }
 
             if(server.equals(discoveryServer) == false){
-                WaterAddress.getInstance().setRegistryApiUrl(discoveryServer);
+                WaterAddress.setRegistryApiUrl(discoveryServer);
             }
 
             if(server.equals(eventServer) == false){
-                WaterAddress.getInstance().setMessageApiUrl(eventServer);
+                WaterAddress.setMessageApiUrl(eventServer);
             }
 
             if(server.equals(logServer) == false){
-                WaterAddress.getInstance().setLogApiUrl(logServer);
+                WaterAddress.setLogApiUrl(logServer);
             }
 
 

@@ -3,8 +3,6 @@ package org.noear.solon.cloud;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 
-import javax.rmi.CORBA.Util;
-
 /**
  * 云服务属性配置
  *
@@ -44,6 +42,7 @@ public class CloudProps {
     //日志服务相关
     private String LOG_ENABLE = "solon.cloud.@@.log.enable";
     private String LOG_SERVER = "solon.cloud.@@.log.server";
+    private String LOG_LOGGER = "solon.cloud.@@.log.logger";
 
     public CloudProps(String frame) {
         SERVER = SERVER.replace("@@", frame);
@@ -74,6 +73,7 @@ public class CloudProps {
 
         LOG_ENABLE = LOG_ENABLE.replace("@@", frame);
         LOG_SERVER = LOG_SERVER.replace("@@", frame);
+        LOG_LOGGER = LOG_LOGGER.replace("@@", frame);
     }
 
 
@@ -204,5 +204,9 @@ public class CloudProps {
         } else {
             return tmp;
         }
+    }
+
+    public String getLogLogger() {
+        return Solon.cfg().get(LOG_LOGGER);
     }
 }
