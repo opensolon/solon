@@ -36,7 +36,7 @@ public class CloudClient {
         if (Utils.isNotEmpty(key)) {
             Config config = CloudClient.config().get(group, key);
 
-            if (config != null && Utils.isNotEmpty(config.value)) {
+            if (config != null && Utils.isNotEmpty(config.getValue())) {
                 Properties properties = config.toProps();
                 Solon.cfg().loadAdd(properties);
             }
