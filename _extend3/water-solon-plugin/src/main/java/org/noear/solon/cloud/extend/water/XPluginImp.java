@@ -127,7 +127,7 @@ public class XPluginImp implements Plugin {
 
         if (CloudClient.discovery() != null) {
             //发现提交（即注册服务）
-            CloudClient.discoveryPush(WaterProps.instance.getDiscoveryHostname());
+            CloudClient.discoveryPush();
         }
     }
 

@@ -71,11 +71,11 @@ public class CloudEventServiceImp implements CloudEventService {
         //subscribeTopic(String subscriber_key, String subscriber_note, String receive_url, String access_key, String alarm_mobile, int receive_way, boolean is_unstable, String... topics)
         //
         if (instanceObserverMap.size() > 0) {
-            String instance_receiver_url = "http://" + instance.address + WW.path_msg_receiver;
-            String instance_subscriber_Key = EncryptUtils.md5(instance.service + "_instance_" + instance_receiver_url);
+            String instance_receiver_url = "http://" + instance.address() + WW.path_msg_receiver;
+            String instance_subscriber_Key = EncryptUtils.md5(instance.service() + "_instance_" + instance_receiver_url);
 
             WaterClient.Message.subscribeTopic(instance_subscriber_Key,
-                    instance.service,
+                    instance.service(),
                     instance_receiver_url,
                     seal,
                     "",
@@ -87,14 +87,14 @@ public class CloudEventServiceImp implements CloudEventService {
         if (clusterObserverMap.size() > 0) {
             String cluster_hostname = WaterProps.instance.getEventHostname();
             if (Utils.isEmpty(cluster_hostname)) {
-                cluster_hostname = instance.address;
+                cluster_hostname = instance.address();
             }
 
             String cluster_receiver_url = "http://" + cluster_hostname + WW.path_msg_receiver;
-            String cluster_subscriber_Key = EncryptUtils.md5(instance.service + "_cluster_" + cluster_receiver_url);
+            String cluster_subscriber_Key = EncryptUtils.md5(instance.service() + "_cluster_" + cluster_receiver_url);
 
             WaterClient.Message.subscribeTopic(cluster_subscriber_Key,
-                    instance.service,
+                    instance.service(),
                     cluster_receiver_url,
                     seal,
                     "",

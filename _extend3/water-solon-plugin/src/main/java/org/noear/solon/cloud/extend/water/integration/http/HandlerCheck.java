@@ -33,7 +33,7 @@ public class HandlerCheck implements Handler {
                     n.set("service", k);
                     ONode nl = n.get("upstream").asArray();
                     v.getDiscovery().cluster().forEach((s) -> {
-                        nl.add(s.address);
+                        nl.add(s.address());
                     });
                 });
             } else {
@@ -48,7 +48,7 @@ public class HandlerCheck implements Handler {
                         n.set("policy", d.policy());
                         ONode nl = n.get("upstream").asArray();
                         d.cluster().forEach((s) -> {
-                            nl.add(s.address);
+                            nl.add(s.address());
                         });
                     }
                 }

@@ -23,36 +23,38 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
     @Override
     public void register(String group, Instance instance) {
         String meta = null;
-        if (instance.meta != null) {
-            meta = ONode.stringify(instance.meta);
+        if (instance.meta() != null) {
+            meta = ONode.stringify(instance.meta());
         }
 
-        WaterClient.Registry.register(instance.service, instance.address, meta, Solon.cfg().isDriftMode());
+        WaterClient.Registry.register(instance.service(), instance.address(), meta, Solon.cfg().isDriftMode());
     }
 
     @Override
     public void registerState(String group, Instance instance, boolean health) {
         String meta = null;
-        if (instance.meta != null) {
-            meta = ONode.stringify(instance.meta);
+        if (instance.meta() != null) {
+            meta = ONode.stringify(instance.meta());
         }
 
-        WaterClient.Registry.set(instance.service, instance.address, meta, health);
+        WaterClient.Registry.set(instance.service(), instance.address(), meta, health);
     }
 
     @Override
     public void deregister(String group, Instance instance) {
         String meta = null;
-        if (instance.meta != null) {
-            meta = ONode.stringify(instance.meta);
+        if (instance.meta() != null) {
+            meta = ONode.stringify(instance.meta());
         }
 
-        WaterClient.Registry.unregister(instance.service, instance.address, meta);
+        WaterClient.Registry.unregister(instance.service(), instance.address(), meta);
     }
 
     @Override
     public Discovery find(String group, String service) {
-        DiscoverM d1 = WaterClient.Registry.discover(service, Instance.local().service, Instance.local().address);
+        Instance instance = Instance.local();
+
+        DiscoverM d1 = WaterClient.Registry.discover(service, instance.service(), instance.address());
         return ConvertUtil.from(service, d1);
     }
 

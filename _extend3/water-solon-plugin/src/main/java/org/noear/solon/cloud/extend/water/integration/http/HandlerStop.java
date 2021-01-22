@@ -33,13 +33,13 @@ public class HandlerStop implements Handler {
     public void stateSet(boolean enabled) {
         Instance instance = Instance.local();
 
-        if (Utils.isNotEmpty(instance.address)) {
+        if (Utils.isNotEmpty(instance.address())) {
             String meta = null;
-            if (Instance.local().meta != null) {
-                meta = ONode.stringify(instance.meta);
+            if (Instance.local().meta() != null) {
+                meta = ONode.stringify(instance.meta());
             }
 
-            WaterClient.Registry.set(instance.service, instance.address, meta, enabled);
+            WaterClient.Registry.set(instance.service(), instance.address(), meta, enabled);
         }
     }
 }

@@ -18,10 +18,8 @@ public class ConvertUtil {
             d2.policy(d1.policy);
 
             d1.list.forEach((t1) -> {
-                Instance instance = new Instance();
-                instance.address = t1.address;
-                instance.weight = t1.weight;
-                instance.protocol = t1.protocol;
+                Instance instance = new Instance(service, t1.address, t1.protocol)
+                        .weight(t1.weight);
 
                 d2.instanceAdd(instance);
             });

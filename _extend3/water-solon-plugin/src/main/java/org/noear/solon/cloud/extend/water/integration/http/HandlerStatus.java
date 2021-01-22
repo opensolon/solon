@@ -20,8 +20,8 @@ public class HandlerStatus implements Handler {
 
         if (WaterClient.Whitelist.existsOfMasterIp(ip)) {
             RuntimeStatus rs = RuntimeUtils.getStatus();
-            rs.name = Instance.local().service;
-            rs.address = Instance.local().address;
+            rs.name = Instance.local().service();
+            rs.address = Instance.local().address();
 
             ctx.outputAsJson(ONode.stringify(rs));
         } else {
