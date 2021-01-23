@@ -45,6 +45,17 @@ public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
             }
         }
 
+        String summary = null;
+
+        if (clz != null) {
+            if (tags == null) {
+                tags = new TagMarker();
+            }
+
+            tags.tag4(clz.getName());
+            summary = clz.getTypeName();
+        }
+
         if (logger == null) {
             StringBuilder sb = new StringBuilder();
             sb.append("[").append(level.name()).append("]");
@@ -69,9 +80,9 @@ public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
             }
         } else {
             if (tags == null) {
-                logger.append(level1, null, null, null, null, null, content);
+                logger.append(level1, null, null, null, null, summary, content);
             } else {
-                logger.append(level1, tags.tag1(), tags.tag2(), tags.tag3(), null, null, content);
+                logger.append(level1, tags.tag1(), tags.tag2(), tags.tag3(), tags.tag4(), summary, content);
             }
         }
     }
