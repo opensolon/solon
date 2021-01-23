@@ -3,7 +3,6 @@ package org.noear.solon.cloud.extend.water.service;
 import org.noear.mlog.Level;
 import org.noear.mlog.LoggerSimple;
 import org.noear.mlog.Metainfo;
-import org.noear.mlog.utils.BaseMetainfo;
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudLogger;
@@ -37,22 +36,15 @@ public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
     public void write(Level level, Metainfo metainfo, Object content) {
         org.noear.water.log.Level level1 = org.noear.water.log.Level.of(level.code / 10);
 
-        BaseMetainfo tags = null;
-
-        if (metainfo != null) {
-            if (metainfo instanceof BaseMetainfo) {
-                tags = (BaseMetainfo) metainfo;
-            }
-        }
 
         String summary = null;
 
         if (clz != null) {
-            if (tags == null) {
-                tags = new BaseMetainfo();
+            if (metainfo == null) {
+                metainfo = new Metainfo();
             }
 
-            tags.tag4(clz.getSimpleName());
+            metainfo.put("tag3", clz.getSimpleName());
             summary = clz.getTypeName();
         }
 
@@ -70,7 +62,7 @@ public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
             sb.append(new Date());
 
             if (metainfo != null) {
-                sb.append(metainfo.formatAsString());
+                sb.append(metainfo.toString());
             }
 
             sb.append("::");
@@ -87,10 +79,15 @@ public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
                 System.out.println(sb.toString());
             }
         } else {
-            if (tags == null) {
+            if (metainfo == null) {
                 logger.append(level1, null, null, null, null, summary, content);
             } else {
-                logger.append(level1, tags.tag1(), tags.tag2(), tags.tag3(), tags.tag4(), summary, content);
+                logger.append(level1,
+                        metainfo.get("tag0"),
+                        metainfo.get("tag1"),
+                        metainfo.get("tag2"),
+                        metainfo.get("tag3"),
+                        summary, content);
             }
         }
     }

@@ -1,10 +1,14 @@
-package org.noear.mlog.utils;
+package org.noear.solon.cloud.utils;
 
 /**
  * @author noear
  * @since 1.2
  */
 public final class Tags {
+    public static TagMetainfo tag0(String tag0){
+        return new TagMetainfo().tag0(tag0);
+    }
+
     public static TagMetainfo tag1(String tag1){
         return new TagMetainfo().tag1(tag1);
     }
@@ -21,7 +25,4 @@ public final class Tags {
         return new TagMetainfo().tag4(tag4);
     }
 
-    public static TagMetainfo tag5(String tag5){
-        return new TagMetainfo().tag5(tag5);
-    }
 }

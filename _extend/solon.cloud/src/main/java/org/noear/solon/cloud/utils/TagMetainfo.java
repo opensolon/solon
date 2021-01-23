@@ -1,11 +1,21 @@
-package org.noear.mlog.utils;
+package org.noear.solon.cloud.utils;
 
 import org.noear.mlog.Metainfo;
 
 /**
- * @author noear 2021/1/23 created
+ * @author noear
+ * @since 1.2
  */
 public class TagMetainfo extends Metainfo {
+    public String tag0() {
+        return get("tag0");
+    }
+
+    public TagMetainfo tag0(String tag0) {
+        put("tag0", tag0);
+        return this;
+    }
+
     public String tag1() {
         return get("tag1");
     }
@@ -41,15 +51,6 @@ public class TagMetainfo extends Metainfo {
 
     public TagMetainfo tag4(String tag4) {
         put("tag4", tag4);
-        return this;
-    }
-
-    public String tag5() {
-        return get("tag5");
-    }
-
-    public TagMetainfo tag5(String tag5) {
-        put("tag5", tag5);
         return this;
     }
 }
