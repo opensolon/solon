@@ -1,7 +1,6 @@
 package org.noear.mlog;
 
 import org.noear.mlog.utils.LogFormatter;
-import org.noear.solon.Utils;
 
 /**
  * 日志器简化版
@@ -170,7 +169,7 @@ public class LoggerSimple implements Logger {
 
 
     protected void writeDo(Level level, Marker marker, Object content, String format, Object[] args) {
-        if (Utils.isNotEmpty(format)) {
+        if (format != null && format.length() > 0) {
             content = LogFormatter.arrayFormat(format, args);
         }
 

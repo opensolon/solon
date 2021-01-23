@@ -944,7 +944,8 @@
         <module>../_extend/solon.cloud</module>
         <module>../_extend/solon.cloud.extend.slf4j</module>
 
-        <!--        <module>../solonclient</module>-->
+
+        <module>../mlog</module>
         <module>../nami</module>
 
         <module>../_extend/nami.channel.http.okhttp</module>
@@ -962,7 +963,6 @@
         <module>../_extend/nami.coder.protostuff</module>
 
 
-        <module>../_extend/mlog</module>
 
         <module>../_extend/solon-beetl-web</module>
         <module>../_extend/solon-api</module>
