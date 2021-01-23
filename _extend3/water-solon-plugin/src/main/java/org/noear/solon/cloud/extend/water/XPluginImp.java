@@ -18,6 +18,7 @@ import org.noear.solon.cloud.extend.water.service.CloudDiscoveryServiceImp;
 import org.noear.solon.cloud.extend.water.service.CloudEventServiceImp;
 import org.noear.solon.cloud.extend.water.service.CloudLogServiceImp;
 import org.noear.solon.cloud.model.Instance;
+import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.Context;
 import org.noear.water.WW;
@@ -133,6 +134,8 @@ public class XPluginImp implements Plugin {
                     CloudClient.event().attention(EventLevel.instance, "", WW.msg_uconfig_topic,
                             new HandlerConfigUpdate(configServiceImp));
                 }
+
+                Aop.beanOnloaded(eventServiceImp::subscribe);
             }
 
 

@@ -11,8 +11,8 @@ import org.noear.solon.cloud.service.CloudEventService;
  */
 public class CloudEventServiceImp implements CloudEventService {
     @Override
-    public void push(Event event) {
-
+    public boolean push(Event event) {
+        return false;
     }
 
     @Override

@@ -33,7 +33,7 @@ public class CloudEventServiceImp implements CloudEventService {
     }
 
     @Override
-    public void push(Event event) {
+    public boolean push(Event event) {
         if (Utils.isEmpty(event.topic())) {
             throw new IllegalArgumentException("Event missing topic");
         }
@@ -43,7 +43,8 @@ public class CloudEventServiceImp implements CloudEventService {
         }
 
         try {
-            WaterClient.Message.sendMessageAndTags(event.key(), event.topic(), event.content(), event.scheduled(), event.tags());
+            return WaterClient.Message.
+                    sendMessageAndTags(event.key(), event.topic(), event.content(), event.scheduled(), event.tags());
         } catch (Throwable ex) {
             throw Utils.throwableWrap(ex);
         }
@@ -64,7 +65,15 @@ public class CloudEventServiceImp implements CloudEventService {
     /**
      * 执行订阅
      */
-    public void subscribe() throws Exception {
+    public void subscribe() {
+        try {
+            subscribe0();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private void subscribe0() throws Exception {
         Instance instance = Instance.local();
 
         //

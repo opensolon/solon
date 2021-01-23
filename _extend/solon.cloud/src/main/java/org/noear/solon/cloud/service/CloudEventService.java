@@ -14,7 +14,7 @@ public interface CloudEventService {
     /**
      * 推送事件
      */
-    void push(Event event);
+    boolean push(Event event);
 
     /**
      * 关注事件（相当于订阅）
