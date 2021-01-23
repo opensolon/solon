@@ -34,7 +34,7 @@ public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
     }
 
     @Override
-    public void append(Level level, Marker marker, Object content) {
+    public void write(Level level, Marker marker, Object content) {
         org.noear.water.log.Level level1 = org.noear.water.log.Level.of(level.code / 10);
 
         TagMarker tags = null;
