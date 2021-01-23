@@ -29,7 +29,8 @@ import org.noear.water.utils.TextUtils;
 import java.util.Timer;
 
 /**
- * @author noear 2021/1/17 created
+ * @author noear
+ * @since 1.2
  */
 public class XPluginImp implements Plugin {
     private Timer clientTimer = new Timer();
