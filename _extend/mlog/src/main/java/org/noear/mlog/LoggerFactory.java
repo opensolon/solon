@@ -1,8 +1,5 @@
 package org.noear.mlog;
 
-
-import org.noear.solon.Utils;
-
 /**
  * 日志器工厂
  *
@@ -62,8 +59,25 @@ public class LoggerFactory {
 
     static {
         try {
-            ILoggerFactory tmp = Utils.newInstance("org.noear.mlog.impl.ILoggerFactoryImpl");
-            setFactory(tmp);
+            String implName = "org.noear.mlog.impl.ILoggerFactoryImpl";
+            Class<?> implClz = null;
+
+            if (implClz == null) {
+                implClz = ClassLoader.getSystemClassLoader().loadClass(implName);
+            }
+
+            if (implClz == null) {
+                implClz = LoggerFactory.class.getClassLoader().loadClass(implName);
+            }
+
+            if (implClz != null) {
+                ILoggerFactory implObj = (ILoggerFactory) implClz.newInstance();
+
+                if (implObj != null) {
+                    setFactory(implObj);
+                }
+            }
+
         } catch (Throwable ex) {
             System.err.println("[warn] org.noear.mlog.ILoggerFactoryImpl load failed");
         }

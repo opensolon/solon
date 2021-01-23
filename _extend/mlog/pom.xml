@@ -14,12 +14,5 @@
     <artifactId>mlog</artifactId>
     <packaging>jar</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
-        </dependency>
-    </dependencies>
-
 
 </project>
