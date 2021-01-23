@@ -1,5 +1,8 @@
 package org.noear.mlog;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * 添加器简易版
  *
@@ -7,14 +10,25 @@ package org.noear.mlog;
  * @since 1.2
  */
 public class AppenderSimple implements Appender {
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     @Override
-    public void append(Level level, Marker meta, Object content) {
-        StringBuilder sb = new StringBuilder();
+    public void append(Level level, Marker marker, Object content) {
+        String text = null;
 
-        sb.append("[").append(level.name()).append("] ")
-                .append(meta.formatAsString())
-                .append(content);
+        if (marker == null) {
+            text = String.format("%s [%s] :: %s",
+                    sdf.format(new Date()),
+                    level.name(),
+                    content);
+        } else {
+            text = String.format("%s [%s] %s:: %s",
+                    sdf.format(new Date()),
+                    level.name(),
+                    marker.formatAsString(),
+                    content);
+        }
 
-        System.out.println(sb.toString());
+        System.out.println(text);
     }
 }
