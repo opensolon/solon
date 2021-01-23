@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Nami 请求附件
+ * Nami 请求附件（放在Rpc请求的上一行，别太远）
  *
  * @author noear
  * @since 1.2
