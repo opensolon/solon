@@ -32,14 +32,14 @@ public final class NamiAttachment {
     /**
      * 移除当前线程的上下文
      */
-    public static void currentRemove() {
+    protected static void currentRemove() {
         threadLocal.remove();
     }
 
     /**
      * 获取当前线程的上下文
      */
-    public static NamiAttachment currentGet() {
+    protected static NamiAttachment currentGet() {
         return threadLocal.get();
     }
 

@@ -100,9 +100,17 @@ public class NamiHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] vals) throws Throwable {
+        //优先处理附加信息（不然容易OOM）
+        NamiAttachment namiAttachment = NamiAttachment.currentGet();
+        if(namiAttachment != null) {
+            NamiAttachment.currentRemove();
+        }
+
+        //检查upstream
         if (TextUtils.isEmpty(config.getUrl()) && config.getUpstream() == null) {
             throw new NamiException("NamiClient: Not found upstream: " + clz0.getName());
         }
+
 
         MethodWrap methodWrap = MethodWrap.get(method);
 
@@ -160,7 +168,7 @@ public class NamiHandler implements InvocationHandler {
             }
         }
 
-        NamiAttachment namiAttachment = NamiAttachment.currentGet();
+        //处理附加信息
         if(namiAttachment != null){
             headers.putAll(namiAttachment.headers());
             NamiAttachment.currentRemove();
