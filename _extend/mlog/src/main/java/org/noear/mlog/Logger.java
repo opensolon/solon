@@ -1,7 +1,7 @@
 package org.noear.mlog;
 
 /**
- * 云日志器
+ * 日志器
  *
  * @author noear
  * @since 1.2

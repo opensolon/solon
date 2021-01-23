@@ -4,6 +4,8 @@ import org.noear.mlog.utils.LogFormatter;
 import org.noear.solon.Utils;
 
 /**
+ * 日志器简化版
+ *
  * @author noear
  * @since 1.2
  */

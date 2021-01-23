@@ -1,6 +1,8 @@
 package org.noear.mlog;
 
 /**
+ * 添加器
+ *
  * @author noear
  * @since 1.2
  */

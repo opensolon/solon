@@ -1,7 +1,10 @@
 package org.noear.mlog;
 
 /**
- * @author noear 2021/1/22 created
+ * 标识
+ *
+ * @author noear
+ * @since 1.2
  */
 public interface Marker {
     String formatAsString();

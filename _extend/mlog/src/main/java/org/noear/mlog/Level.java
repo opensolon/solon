@@ -1,6 +1,8 @@
 package org.noear.mlog;
 
 /**
+ * 日志等级
+ *
  * @author noear
  * @since 1.2
  */
