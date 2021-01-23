@@ -117,7 +117,6 @@ public final class LogFormatter {
             String oAsString = o.toString();
             sbuf.append(oAsString);
         } catch (Throwable var3) {
-            //Util.report("SLF4J: Failed toString() invocation on an object of type [" + o.getClass().getName() + "]", var3);
             sbuf.append("[FAILED toString()]");
         }
 

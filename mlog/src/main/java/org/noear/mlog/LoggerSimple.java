@@ -39,7 +39,7 @@ public class LoggerSimple implements Logger {
     }
 
     @Override
-    public void trace(String format, Object[] args) {
+    public void trace(String format, Object... args) {
         traceDo(null, null, format, args);
     }
 
@@ -49,7 +49,7 @@ public class LoggerSimple implements Logger {
     }
 
     @Override
-    public void trace(Marker marker, String format, Object[] args) {
+    public void trace(Marker marker, String format, Object... args) {
         traceDo(marker, null, format, args);
     }
 
@@ -66,7 +66,7 @@ public class LoggerSimple implements Logger {
     }
 
     @Override
-    public void debug(String format, Object[] args) {
+    public void debug(String format, Object... args) {
         debugDo(null, null, format, args);
     }
 
@@ -76,7 +76,7 @@ public class LoggerSimple implements Logger {
     }
 
     @Override
-    public void debug(Marker marker, String format, Object[] args) {
+    public void debug(Marker marker, String format, Object... args) {
         debugDo(marker, null, format, args);
     }
 
@@ -93,7 +93,7 @@ public class LoggerSimple implements Logger {
     }
 
     @Override
-    public void info(String format, Object[] args) {
+    public void info(String format, Object... args) {
         infoDo(null, null, format, args);
     }
 
@@ -103,7 +103,7 @@ public class LoggerSimple implements Logger {
     }
 
     @Override
-    public void info(Marker marker, String format, Object[] args) {
+    public void info(Marker marker, String format, Object... args) {
         infoDo(marker, null, format, args);
     }
 
@@ -120,7 +120,7 @@ public class LoggerSimple implements Logger {
     }
 
     @Override
-    public void warn(String format, Object[] args) {
+    public void warn(String format, Object... args) {
         warnDo(null, null, format, args);
     }
 
@@ -130,7 +130,7 @@ public class LoggerSimple implements Logger {
     }
 
     @Override
-    public void warn(Marker marker, String format, Object[] args) {
+    public void warn(Marker marker, String format, Object... args) {
         warnDo(marker, null, format, args);
     }
 
@@ -147,7 +147,7 @@ public class LoggerSimple implements Logger {
     }
 
     @Override
-    public void error(String format, Object[] args) {
+    public void error(String format, Object... args) {
         errorDo(null, null, format, args);
     }
 
@@ -157,7 +157,7 @@ public class LoggerSimple implements Logger {
     }
 
     @Override
-    public void error(Marker marker, String format, Object[] args) {
+    public void error(Marker marker, String format, Object... args) {
         errorDo(marker, null, format, args);
     }
 
@@ -169,8 +169,12 @@ public class LoggerSimple implements Logger {
 
 
     protected void writeDo(Level level, Marker marker, Object content, String format, Object[] args) {
-        if (format != null && format.length() > 0) {
-            content = LogFormatter.arrayFormat(format, args);
+        if (format != null) {
+            if (args != null && args.length > 0) {
+                content = LogFormatter.arrayFormat(format, args).getMessage();
+            } else {
+                content = format;
+            }
         }
 
         append(level, marker, content);
