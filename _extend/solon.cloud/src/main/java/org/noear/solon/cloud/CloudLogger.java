@@ -31,6 +31,7 @@ public interface CloudLogger {
     }
 
 
+
     String getName();
 
     void setName(String name);
@@ -38,54 +39,54 @@ public interface CloudLogger {
 
 
     default boolean isTraceEnabled() {
-        return CloudLoggerFactory.INSTANCE.getLevel().code <= Level.TRACE.code;
+        return CloudLoggerFactory.getLevel().code <= Level.TRACE.code;
     }
 
     void trace(Object content);
-    void trace(String tag1, Object content);
-    void trace(String tag1, String tag2, Object content);
+    void trace(String format, Object[] args);
     void trace(Meta meta, Object content);
+    void trace(Meta meta, String format, Object[] args);
 
 
 
     default boolean isDebugEnabled() {
-        return CloudLoggerFactory.INSTANCE.getLevel().code <= Level.DEBUG.code;
+        return CloudLoggerFactory.getLevel().code <= Level.DEBUG.code;
     }
 
     void debug(Object content);
-    void debug(String tag1, Object content);
-    void debug(String tag1, String tag2, Object content);
+    void debug(String format, Object[] args);
     void debug(Meta meta, Object content);
+    void debug(Meta meta, String format, Object[] args);
 
 
 
     default boolean isInfoEnabled() {
-        return CloudLoggerFactory.INSTANCE.getLevel().code <= Level.INFO.code;
+        return CloudLoggerFactory.getLevel().code <= Level.INFO.code;
     }
 
     void info(Object content);
-    void info(String tag1, Object content);
-    void info(String tag1, String tag2, Object content);
+    void info(String format, Object[] args);
     void info(Meta meta, Object content);
+    void info(Meta meta, String format, Object[] args);
 
 
 
     default boolean isWarnEnabled() {
-        return CloudLoggerFactory.INSTANCE.getLevel().code <= Level.WARN.code;
+        return CloudLoggerFactory.getLevel().code <= Level.WARN.code;
     }
 
     void warn(Object content);
-    void warn(String tag1, Object content);
-    void warn(String tag1, String tag2, Object content);
+    void warn(String format, Object[] args);
     void warn(Meta meta, Object content);
+    void warn(Meta meta, String format, Object[] args);
 
 
     default boolean isErrorEnabled() {
-        return CloudLoggerFactory.INSTANCE.getLevel().code <= Level.ERROR.code;
+        return CloudLoggerFactory.getLevel().code <= Level.ERROR.code;
     }
 
     void error(Object content);
-    void error(String tag1, Object content);
-    void error(String tag1, String tag2, Object content);
+    void error(String format, Object[] args);
     void error(Meta meta, Object content);
+    void error(Meta meta, String format, Object[] args);
 }

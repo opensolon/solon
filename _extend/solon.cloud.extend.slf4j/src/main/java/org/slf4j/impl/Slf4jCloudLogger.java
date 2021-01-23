@@ -30,35 +30,35 @@ public class Slf4jCloudLogger implements Logger {
     @Override
     public void trace(String s) {
         if (isTraceEnabled()) {
-            asyncLog(Level.TRACE, s);
+            append(Level.TRACE, s);
         }
     }
 
     @Override
     public void trace(String s, Object o) {
         if (isTraceEnabled()) {
-            asyncLog(Level.TRACE, s, o);
+            append(Level.TRACE, s, o);
         }
     }
 
     @Override
     public void trace(String s, Object o, Object o1) {
         if (isTraceEnabled()) {
-            asyncLog(Level.TRACE, s, o, o1);
+            append(Level.TRACE, s, o, o1);
         }
     }
 
     @Override
     public void trace(String s, Object... objects) {
         if (isTraceEnabled()) {
-            asyncLog(Level.TRACE, s, objects);
+            append(Level.TRACE, s, objects);
         }
     }
 
     @Override
     public void trace(String s, Throwable throwable) {
         if (isTraceEnabled()) {
-            asyncLog(Level.TRACE, s, throwable);
+            append(Level.TRACE, s, throwable);
         }
     }
 
@@ -100,35 +100,35 @@ public class Slf4jCloudLogger implements Logger {
     @Override
     public void debug(String s) {
         if (isDebugEnabled()) {
-            asyncLog(Level.DEBUG, s);
+            append(Level.DEBUG, s);
         }
     }
 
     @Override
     public void debug(String s, Object o) {
         if (isDebugEnabled()) {
-            asyncLog(Level.DEBUG, s, o);
+            append(Level.DEBUG, s, o);
         }
     }
 
     @Override
     public void debug(String s, Object o, Object o1) {
         if (isDebugEnabled()) {
-            asyncLog(Level.DEBUG, s, o, o1);
+            append(Level.DEBUG, s, o, o1);
         }
     }
 
     @Override
     public void debug(String s, Object... objects) {
         if (isDebugEnabled()) {
-            asyncLog(Level.DEBUG, s, objects);
+            append(Level.DEBUG, s, objects);
         }
     }
 
     @Override
     public void debug(String s, Throwable throwable) {
         if (isDebugEnabled()) {
-            asyncLog(Level.DEBUG, s, throwable);
+            append(Level.DEBUG, s, throwable);
         }
     }
 
@@ -170,35 +170,35 @@ public class Slf4jCloudLogger implements Logger {
     @Override
     public void info(String s) {
         if (isInfoEnabled()) {
-            asyncLog(Level.INFO, s);
+            append(Level.INFO, s);
         }
     }
 
     @Override
     public void info(String s, Object o) {
         if (isInfoEnabled()) {
-            asyncLog(Level.INFO, s, o);
+            append(Level.INFO, s, o);
         }
     }
 
     @Override
     public void info(String s, Object o, Object o1) {
         if (isInfoEnabled()) {
-            asyncLog(Level.INFO, s, o, o1);
+            append(Level.INFO, s, o, o1);
         }
     }
 
     @Override
     public void info(String s, Object... objects) {
         if (isInfoEnabled()) {
-            asyncLog(Level.INFO, s, objects);
+            append(Level.INFO, s, objects);
         }
     }
 
     @Override
     public void info(String s, Throwable throwable) {
         if (isInfoEnabled()) {
-            asyncLog(Level.INFO, s, throwable);
+            append(Level.INFO, s, throwable);
         }
     }
 
@@ -240,35 +240,35 @@ public class Slf4jCloudLogger implements Logger {
     @Override
     public void warn(String s) {
         if (isWarnEnabled()) {
-            asyncLog(Level.WARN, s);
+            append(Level.WARN, s);
         }
     }
 
     @Override
     public void warn(String s, Object o) {
         if (isWarnEnabled()) {
-            asyncLog(Level.WARN, s, o);
+            append(Level.WARN, s, o);
         }
     }
 
     @Override
     public void warn(String s, Object... objects) {
         if (isWarnEnabled()) {
-            asyncLog(Level.WARN, s, objects);
+            append(Level.WARN, s, objects);
         }
     }
 
     @Override
     public void warn(String s, Object o, Object o1) {
         if (isWarnEnabled()) {
-            asyncLog(Level.WARN, s, o, o1);
+            append(Level.WARN, s, o, o1);
         }
     }
 
     @Override
     public void warn(String s, Throwable throwable) {
         if (isWarnEnabled()) {
-            asyncLog(Level.WARN, s, throwable);
+            append(Level.WARN, s, throwable);
         }
     }
 
@@ -310,35 +310,35 @@ public class Slf4jCloudLogger implements Logger {
     @Override
     public void error(String s) {
         if (isErrorEnabled()) {
-            asyncLog(Level.ERROR, s);
+            append(Level.ERROR, s);
         }
     }
 
     @Override
     public void error(String s, Object o) {
         if (isErrorEnabled()) {
-            asyncLog(Level.ERROR, s, o);
+            append(Level.ERROR, s, o);
         }
     }
 
     @Override
     public void error(String s, Object o, Object o1) {
         if (isErrorEnabled()) {
-            asyncLog(Level.ERROR, s, o, o1);
+            append(Level.ERROR, s, o, o1);
         }
     }
 
     @Override
     public void error(String s, Object... objects) {
         if (isErrorEnabled()) {
-            asyncLog(Level.ERROR, s, objects);
+            append(Level.ERROR, s, objects);
         }
     }
 
     @Override
     public void error(String s, Throwable throwable) {
         if (isErrorEnabled()) {
-            asyncLog(Level.ERROR, s, throwable);
+            append(Level.ERROR, s, throwable);
         }
     }
 
@@ -372,22 +372,22 @@ public class Slf4jCloudLogger implements Logger {
         error(s, throwable);
     }
 
-    private void asyncLog(Level level, String format, Object arg) {
+    private void append(Level level, String format, Object arg) {
         FormattingTuple formatter = MessageFormatter.format(format, arg);
-        asyncLog(level, formatter.getMessage(), formatter.getThrowable());
+        append(level, formatter.getMessage(), formatter.getThrowable());
     }
 
-    private void asyncLog(Level level, String format, Object arg1, Object arg2) {
+    private void append(Level level, String format, Object arg1, Object arg2) {
         FormattingTuple formatter = MessageFormatter.format(format, arg1, arg2);
-        asyncLog(level, formatter.getMessage(), formatter.getThrowable());
+        append(level, formatter.getMessage(), formatter.getThrowable());
     }
 
-    private void asyncLog(Level level, String format, Object[] args) {
+    private void append(Level level, String format, Object[] args) {
         FormattingTuple formatter = MessageFormatter.arrayFormat(format, args);
-        asyncLog(level, formatter.getMessage(), formatter.getThrowable());
+        append(level, formatter.getMessage(), formatter.getThrowable());
     }
 
-    private void asyncLog(Level level, String msg, Throwable err) {
+    private void append(Level level, String msg, Throwable err) {
         if (msg == null && err == null) {
             throw new IllegalArgumentException("both message and error are null");
         }
@@ -402,10 +402,10 @@ public class Slf4jCloudLogger implements Logger {
             }
         }
         msgBuilder.setLength(msgBuilder.length() - 1);
-        asyncLog(level, msgBuilder.toString());
+        append(level, msgBuilder.toString());
     }
 
-    private void asyncLog(Level level, String content) {
+    private void append(Level level, String content) {
         Slf4jCloudLoggerFactory.INSTANCE.write(level, name, content);
     }
 }

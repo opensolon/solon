@@ -6,20 +6,18 @@ import org.noear.solon.cloud.model.log.Level;
  * @author noear
  * @since 1.2
  */
-public enum CloudLoggerFactory {
-    INSTANCE;
-
+public class CloudLoggerFactory {
     //
     //日志等级
     //
-    private volatile Level level = Level.TRACE;
+    private static volatile Level level = Level.TRACE;
 
-    public void setLevel(Level level) {
-        this.level = level;
+    public static void setLevel(Level level) {
+        CloudLoggerFactory.level = level;
     }
 
-    public Level getLevel() {
-        return this.level;
+    public static Level getLevel() {
+        return CloudLoggerFactory.level;
     }
 
 }

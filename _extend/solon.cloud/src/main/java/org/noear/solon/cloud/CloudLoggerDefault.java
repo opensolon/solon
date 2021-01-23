@@ -29,12 +29,7 @@ public class CloudLoggerDefault implements CloudLogger{
     }
 
     @Override
-    public void trace(String tag1, Object content) {
-
-    }
-
-    @Override
-    public void trace(String tag1, String tag2, Object content) {
+    public void trace(String format, Object[] args) {
 
     }
 
@@ -44,17 +39,17 @@ public class CloudLoggerDefault implements CloudLogger{
     }
 
     @Override
+    public void trace(Meta meta, String format, Object[] args) {
+
+    }
+
+    @Override
     public void debug(Object content) {
 
     }
 
     @Override
-    public void debug(String tag1, Object content) {
-
-    }
-
-    @Override
-    public void debug(String tag1, String tag2, Object content) {
+    public void debug(String format, Object[] args) {
 
     }
 
@@ -64,17 +59,17 @@ public class CloudLoggerDefault implements CloudLogger{
     }
 
     @Override
+    public void debug(Meta meta, String format, Object[] args) {
+
+    }
+
+    @Override
     public void info(Object content) {
 
     }
 
     @Override
-    public void info(String tag1, Object content) {
-
-    }
-
-    @Override
-    public void info(String tag1, String tag2, Object content) {
+    public void info(String format, Object[] args) {
 
     }
 
@@ -84,17 +79,17 @@ public class CloudLoggerDefault implements CloudLogger{
     }
 
     @Override
+    public void info(Meta meta, String format, Object[] args) {
+
+    }
+
+    @Override
     public void warn(Object content) {
 
     }
 
     @Override
-    public void warn(String tag1, Object content) {
-
-    }
-
-    @Override
-    public void warn(String tag1, String tag2, Object content) {
+    public void warn(String format, Object[] args) {
 
     }
 
@@ -104,17 +99,17 @@ public class CloudLoggerDefault implements CloudLogger{
     }
 
     @Override
+    public void warn(Meta meta, String format, Object[] args) {
+
+    }
+
+    @Override
     public void error(Object content) {
 
     }
 
     @Override
-    public void error(String tag1, Object content) {
-
-    }
-
-    @Override
-    public void error(String tag1, String tag2, Object content) {
+    public void error(String format, Object[] args) {
 
     }
 
@@ -122,4 +117,11 @@ public class CloudLoggerDefault implements CloudLogger{
     public void error(Meta meta, Object content) {
 
     }
+
+    @Override
+    public void error(Meta meta, String format, Object[] args) {
+
+    }
+
+
 }

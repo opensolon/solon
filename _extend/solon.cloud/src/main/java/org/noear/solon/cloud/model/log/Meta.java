@@ -8,6 +8,7 @@ public class Meta {
     private String tag2;
     private String tag3;
     private String tag4;
+    private String tag5;
     private String summary;
 
     public String tag1() {
@@ -43,6 +44,15 @@ public class Meta {
 
     public Meta tag4(String tag4){
         this.tag4 = tag4;
+        return this;
+    }
+
+    public String tag5() {
+        return tag5;
+    }
+
+    public Meta tag5(String tag5){
+        this.tag5 = tag5;
         return this;
     }
 
