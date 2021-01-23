@@ -52,7 +52,7 @@ public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
                 tags = new TagMarker();
             }
 
-            tags.tag4(clz.getName());
+            tags.tag4(clz.getSimpleName());
             summary = clz.getTypeName();
         }
 
