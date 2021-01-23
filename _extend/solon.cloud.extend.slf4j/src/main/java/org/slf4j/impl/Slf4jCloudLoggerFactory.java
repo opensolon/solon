@@ -1,8 +1,9 @@
 package org.slf4j.impl;
 
+import org.noear.mlog.LoggerFactory;
+import org.noear.mlog.utils.TagMarker;
 import org.noear.solon.cloud.CloudLogger;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.model.log.Meta;
 import org.noear.solon.core.handle.Context;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
@@ -46,36 +47,36 @@ public enum Slf4jCloudLoggerFactory implements ILoggerFactory {
     CloudLogger logger;
 
     public void write(Level level, String name, String content) {
-        if (logger == null) {
-            synchronized (this) {
-                if (logger == null) {
-                    logger = CloudLogger.get(CloudProps.LOG_DEFAULT_LOGGER);
-                }
-            }
-        }
-
-        Context ctx = Context.current();
-        Meta meta = new Meta().tag1("slf4j").tag2(name);
-        if (ctx != null) {
-            meta.tag3(ctx.path());
-        }
-
-        switch (level) {
-            case TRACE:
-                logger.trace(meta, content);
-                break;
-            case DEBUG:
-                logger.debug(meta, content);
-                break;
-            case WARN:
-                logger.warn(meta, content);
-                break;
-            case ERROR:
-                logger.error(meta, content);
-                break;
-            default:
-                logger.info(meta, content);
-                break;
-        }
+//        if (logger == null) {
+//            synchronized (this) {
+//                if (logger == null) {
+//                    logger = LoggerFactory.get(CloudProps.LOG_DEFAULT_LOGGER);
+//                }
+//            }
+//        }
+//
+//        Context ctx = Context.current();
+//        TagMarker marker = new TagMarker().tag1("slf4j").tag2(name);
+//        if (ctx != null) {
+//            marker.tag3(ctx.path());
+//        }
+//
+//        switch (level) {
+//            case TRACE:
+//                logger.trace(marker, content);
+//                break;
+//            case DEBUG:
+//                logger.debug(marker, content);
+//                break;
+//            case WARN:
+//                logger.warn(marker, content);
+//                break;
+//            case ERROR:
+//                logger.error(marker, content);
+//                break;
+//            default:
+//                logger.info(marker, content);
+//                break;
+//        }
     }
 }

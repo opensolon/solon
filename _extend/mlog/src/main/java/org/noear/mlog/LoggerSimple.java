@@ -177,7 +177,7 @@ public class LoggerSimple implements Logger {
         append(level, marker, content);
     }
 
-    public void append(Level level, Marker meta, Object content) {
-        LoggerFactory.getAppender().append(level, meta, content);
+    public void append(Level level, Marker marker, Object content) {
+        LoggerFactory.getAppender().append(level, marker, content);
     }
 }

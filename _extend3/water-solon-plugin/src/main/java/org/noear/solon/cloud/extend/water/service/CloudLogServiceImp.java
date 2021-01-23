@@ -8,12 +8,8 @@ import org.noear.solon.cloud.service.CloudLogService;
  * @since 1.2
  */
 public class CloudLogServiceImp implements CloudLogService {
-    public CloudLogServiceImp(){
-
-    }
-
     @Override
-    public CloudLogger getLogger(String name, Class<?> clz) {
-        return new CloudLoggerImp(name, clz);
+    public CloudLogger getLogger(String name) {
+        return new CloudLoggerImp(name);
     }
 }
