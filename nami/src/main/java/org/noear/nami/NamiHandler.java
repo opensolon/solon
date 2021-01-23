@@ -237,11 +237,6 @@ public class NamiHandler implements InvocationHandler {
                 .getObject(type);
     }
 
-
-    private static boolean isEmpty(String str) {
-        return str == null || str.length() == 0;
-    }
-
     private Map<String, String> buildPathKeys(String path) {
         Map<String, String> pathKeys = pathKeysCached.get(path);
         if (pathKeys == null) {
