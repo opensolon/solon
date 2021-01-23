@@ -10,6 +10,7 @@ import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.model.Event;
@@ -39,6 +40,10 @@ public class CloudEventServiceImp implements CloudEventService, MessageListenerC
     public CloudEventServiceImp(String server) {
         this.server = server;
         this.group = Solon.cfg().appGroup();
+
+        if (Utils.isEmpty(group)) {
+            group = "DEFAULT_GROUP";
+        }
     }
 
     private void initProducer() {

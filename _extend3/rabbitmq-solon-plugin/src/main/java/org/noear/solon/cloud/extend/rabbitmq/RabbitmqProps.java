@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.rocketmq;
+package org.noear.solon.cloud.extend.rabbitmq;
 
 import org.noear.solon.cloud.CloudProps;
 
@@ -6,6 +6,6 @@ import org.noear.solon.cloud.CloudProps;
  * @author noear
  * @since 1.2
  */
-public class RocketmqProps {
+public class RabbitmqProps {
     public static final CloudProps instance = new CloudProps("rocketmq");
 }
