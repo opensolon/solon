@@ -10,7 +10,7 @@ import java.util.Map;
  * @since 1.2
  */
 public final class NamiAttachment {
-    private final Map<String, String> headers = new LinkedHashMap<>();
+    private Map<String, String> headers = new LinkedHashMap<>();
 
     /**
      * 设置头信息
@@ -32,11 +32,11 @@ public final class NamiAttachment {
     /**
      * 移除当前线程的上下文
      */
-    public static void currentRemove() {
+    protected static void currentRemove() {
         threadLocal.remove();
     }
 
-    public static NamiAttachment currentGet() {
+    protected static NamiAttachment currentGet() {
         return threadLocal.get();
     }
 
