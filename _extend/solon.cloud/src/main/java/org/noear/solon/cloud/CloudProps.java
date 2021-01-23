@@ -27,7 +27,6 @@ public class CloudProps {
     //发现服务相关
     private String DISCOVERY_ENABLE = "solon.cloud.@@.discovery.enable";
     private String DISCOVERY_SERVER = "solon.cloud.@@.discovery.server";
-    private String DISCOVERY_HOSTNAME = "solon.cloud.@@.discovery.hostname";
     private String DISCOVERY_TAGS = "solon.cloud.@@.discovery.tags";
     private String DISCOVERY_HEALTH_CHECK_PATH = "solon.cloud.@@.discovery.healthCheckPath";
     private String DISCOVERY_HEALTH_CHECK_INTERVAL = "solon.cloud.@@.discovery.healthCheckInterval";
@@ -38,6 +37,7 @@ public class CloudProps {
     private String EVENT_ENABLE = "solon.cloud.@@.event.enable";
     private String EVENT_SERVER = "solon.cloud.@@.event.server";
     private String EVENT_HOSTNAME = "solon.cloud.@@.event.hostname";
+    private String EVENT_QUEUE = "solon.cloud.@@.event.queue";
     private String EVENT_ALARM = "solon.cloud.@@.event.alarm";
     private String EVENT_SEAL = "solon.cloud.@@.event.seal";
 
@@ -69,6 +69,7 @@ public class CloudProps {
         EVENT_ENABLE = EVENT_ENABLE.replace("@@", frame);
         EVENT_SERVER = EVENT_SERVER.replace("@@", frame);
         EVENT_HOSTNAME = EVENT_HOSTNAME.replace("@@", frame);
+        EVENT_QUEUE = EVENT_QUEUE.replace("@@", frame);
         EVENT_ALARM = EVENT_ALARM.replace("@@", frame);
         EVENT_SEAL = EVENT_SEAL.replace("@@", frame);
 
@@ -182,9 +183,14 @@ public class CloudProps {
     public String getEventHostname() {
         return Solon.cfg().get(EVENT_HOSTNAME);
     }
-
     public String getEventSeal() {
         return Solon.cfg().get(EVENT_SEAL);
+    }
+    public String getEventQueue() {
+        return Solon.cfg().get(EVENT_QUEUE);
+    }
+    public String getEventAlarm() {
+        return Solon.cfg().get(EVENT_ALARM);
     }
 
 

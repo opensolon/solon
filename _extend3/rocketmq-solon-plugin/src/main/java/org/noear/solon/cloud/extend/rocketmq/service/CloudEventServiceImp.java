@@ -35,8 +35,6 @@ public class CloudEventServiceImp implements CloudEventService, MessageListenerC
     DefaultMQProducer producer;
     DefaultMQPushConsumer consumer;
 
-    Map<String, CloudEventObserverEntity> observerMap = new HashMap<>();
-
     public CloudEventServiceImp(String server) {
         this.server = server;
         this.group = Solon.cfg().appGroup();
@@ -124,9 +122,12 @@ public class CloudEventServiceImp implements CloudEventService, MessageListenerC
         }
     }
 
+
+    Map<String, CloudEventObserverEntity> observerMap = new HashMap<>();
+
     @Override
     public void attention(EventLevel level, String queue, String topic, CloudEventHandler observer) {
-        if (observerMap.containsKey(observer)) {
+        if (observerMap.containsKey(topic)) {
             return;
         }
 
