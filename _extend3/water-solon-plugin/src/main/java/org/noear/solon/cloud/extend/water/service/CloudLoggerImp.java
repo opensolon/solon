@@ -56,6 +56,14 @@ public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
             summary = clz.getTypeName();
         }
 
+        if (content instanceof Throwable) {
+            content = Utils.getFullStackTrace((Throwable) content);
+        } else {
+            if ((content instanceof String) == false) {
+                content = ONode.stringify(content);
+            }
+        }
+
         if (logger == null) {
             StringBuilder sb = new StringBuilder();
             sb.append("[").append(level.name()).append("]");
