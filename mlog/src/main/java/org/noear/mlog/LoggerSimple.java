@@ -47,18 +47,18 @@ public class LoggerSimple implements Logger {
     }
 
     @Override
-    public void trace(Marker marker, Object content) {
-        traceDo(marker, content, null, null);
+    public void trace(Metainfo metainfo, Object content) {
+        traceDo(metainfo, content, null, null);
     }
 
     @Override
-    public void trace(Marker marker, String format, Object... args) {
-        traceDo(marker, null, format, args);
+    public void trace(Metainfo metainfo, String format, Object... args) {
+        traceDo(metainfo, null, format, args);
     }
 
-    private void traceDo(Marker marker, Object content, String format, Object[] args) {
+    private void traceDo(Metainfo metainfo, Object content, String format, Object[] args) {
         if (this.isTraceEnabled()) {
-            this.appendDo(Level.TRACE, marker, content, format, args);
+            this.appendDo(Level.TRACE, metainfo, content, format, args);
         }
     }
 
@@ -74,18 +74,18 @@ public class LoggerSimple implements Logger {
     }
 
     @Override
-    public void debug(Marker marker, Object content) {
-        debugDo(marker, content, null, null);
+    public void debug(Metainfo metainfo, Object content) {
+        debugDo(metainfo, content, null, null);
     }
 
     @Override
-    public void debug(Marker marker, String format, Object... args) {
-        debugDo(marker, null, format, args);
+    public void debug(Metainfo metainfo, String format, Object... args) {
+        debugDo(metainfo, null, format, args);
     }
 
-    private void debugDo(Marker marker, Object content, String format, Object[] args) {
+    private void debugDo(Metainfo metainfo, Object content, String format, Object[] args) {
         if (this.isDebugEnabled()) {
-            this.appendDo(Level.DEBUG, marker, content, format, args);
+            this.appendDo(Level.DEBUG, metainfo, content, format, args);
         }
     }
 
@@ -101,18 +101,18 @@ public class LoggerSimple implements Logger {
     }
 
     @Override
-    public void info(Marker marker, Object content) {
-        infoDo(marker, content, null, null);
+    public void info(Metainfo metainfo, Object content) {
+        infoDo(metainfo, content, null, null);
     }
 
     @Override
-    public void info(Marker marker, String format, Object... args) {
-        infoDo(marker, null, format, args);
+    public void info(Metainfo metainfo, String format, Object... args) {
+        infoDo(metainfo, null, format, args);
     }
 
-    private void infoDo(Marker marker, Object content, String format, Object[] args) {
+    private void infoDo(Metainfo metainfo, Object content, String format, Object[] args) {
         if (this.isInfoEnabled()) {
-            this.appendDo(Level.INFO, marker, content, format, args);
+            this.appendDo(Level.INFO, metainfo, content, format, args);
         }
     }
 
@@ -128,18 +128,18 @@ public class LoggerSimple implements Logger {
     }
 
     @Override
-    public void warn(Marker marker, Object content) {
-        warnDo(marker, content, null, null);
+    public void warn(Metainfo metainfo, Object content) {
+        warnDo(metainfo, content, null, null);
     }
 
     @Override
-    public void warn(Marker marker, String format, Object... args) {
-        warnDo(marker, null, format, args);
+    public void warn(Metainfo metainfo, String format, Object... args) {
+        warnDo(metainfo, null, format, args);
     }
 
-    private void warnDo(Marker marker, Object content, String format, Object[] args) {
+    private void warnDo(Metainfo metainfo, Object content, String format, Object[] args) {
         if (this.isWarnEnabled()) {
-            this.appendDo(Level.WARN, marker, content, format, args);
+            this.appendDo(Level.WARN, metainfo, content, format, args);
         }
     }
 
@@ -155,23 +155,23 @@ public class LoggerSimple implements Logger {
     }
 
     @Override
-    public void error(Marker marker, Object content) {
-        errorDo(marker, content, null, null);
+    public void error(Metainfo metainfo, Object content) {
+        errorDo(metainfo, content, null, null);
     }
 
     @Override
-    public void error(Marker marker, String format, Object... args) {
-        errorDo(marker, null, format, args);
+    public void error(Metainfo metainfo, String format, Object... args) {
+        errorDo(metainfo, null, format, args);
     }
 
-    private void errorDo(Marker marker, Object content, String format, Object[] args) {
+    private void errorDo(Metainfo metainfo, Object content, String format, Object[] args) {
         if (this.isErrorEnabled()) {
-            this.appendDo(Level.ERROR, marker, content, format, args);
+            this.appendDo(Level.ERROR, metainfo, content, format, args);
         }
     }
 
 
-    protected void appendDo(Level level, Marker marker, Object content, String format, Object[] args) {
+    protected void appendDo(Level level, Metainfo metainfo, Object content, String format, Object[] args) {
         if (format != null) {
             if (args != null && args.length > 0) {
                 content = LogFormatter.arrayFormat(format, args).getMessage();
@@ -180,15 +180,15 @@ public class LoggerSimple implements Logger {
             }
         }
 
-        write(level, marker, content);
+        write(level, metainfo, content);
     }
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public void write(Level level, Marker marker, Object content) {
+    public void write(Level level, Metainfo metainfo, Object content) {
         String text = null;
 
-        if (marker == null) {
+        if (metainfo == null) {
             text = String.format("%s [%s] :: %s",
                     sdf.format(new Date()),
                     level.name(),
@@ -197,7 +197,7 @@ public class LoggerSimple implements Logger {
             text = String.format("%s [%s] %s:: %s",
                     sdf.format(new Date()),
                     level.name(),
-                    marker.formatAsString(),
+                    metainfo.toString(),
                     content);
         }
 

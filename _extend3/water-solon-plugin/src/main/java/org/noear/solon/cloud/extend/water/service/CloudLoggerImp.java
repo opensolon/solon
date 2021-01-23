@@ -2,8 +2,8 @@ package org.noear.solon.cloud.extend.water.service;
 
 import org.noear.mlog.Level;
 import org.noear.mlog.LoggerSimple;
-import org.noear.mlog.Marker;
-import org.noear.mlog.utils.TagMarker;
+import org.noear.mlog.Metainfo;
+import org.noear.mlog.utils.BaseMetainfo;
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudLogger;
@@ -34,14 +34,14 @@ public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
     }
 
     @Override
-    public void write(Level level, Marker marker, Object content) {
+    public void write(Level level, Metainfo metainfo, Object content) {
         org.noear.water.log.Level level1 = org.noear.water.log.Level.of(level.code / 10);
 
-        TagMarker tags = null;
+        BaseMetainfo tags = null;
 
-        if (marker != null) {
-            if (marker instanceof TagMarker) {
-                tags = (TagMarker) marker;
+        if (metainfo != null) {
+            if (metainfo instanceof BaseMetainfo) {
+                tags = (BaseMetainfo) metainfo;
             }
         }
 
@@ -49,7 +49,7 @@ public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
 
         if (clz != null) {
             if (tags == null) {
-                tags = new TagMarker();
+                tags = new BaseMetainfo();
             }
 
             tags.tag4(clz.getSimpleName());
@@ -69,8 +69,8 @@ public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
             sb.append("[").append(level.name()).append("]");
             sb.append(new Date());
 
-            if (marker != null) {
-                sb.append(marker.formatAsString());
+            if (metainfo != null) {
+                sb.append(metainfo.formatAsString());
             }
 
             sb.append("::");
