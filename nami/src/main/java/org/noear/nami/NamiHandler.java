@@ -160,6 +160,12 @@ public class NamiHandler implements InvocationHandler {
             }
         }
 
+        NamiContext namiContext = NamiContext.currentGet();
+        if(namiContext != null){
+            headers.putAll(namiContext.headers());
+            NamiContext.currentRemove();
+        }
+
 
         //构建 url
         String url = null;
