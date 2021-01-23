@@ -11,7 +11,7 @@ public class AppenderSimple implements Appender {
     public void append(Level level, Marker meta, Object content) {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("[").append(level.name()).append("]")
+        sb.append("[").append(level.name()).append("] ")
                 .append(meta.formatAsString())
                 .append(content);
 
