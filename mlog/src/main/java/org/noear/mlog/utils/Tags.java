@@ -4,7 +4,7 @@ package org.noear.mlog.utils;
  * @author noear
  * @since 1.2
  */
-public class Tags {
+public final class Tags {
     public static TagMarker tag1(String tag1){
         return new TagMarker().tag1(tag1);
     }
