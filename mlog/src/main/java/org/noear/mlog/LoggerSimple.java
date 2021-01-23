@@ -2,6 +2,9 @@ package org.noear.mlog;
 
 import org.noear.mlog.utils.LogFormatter;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * 日志器简化版
  *
@@ -55,7 +58,7 @@ public class LoggerSimple implements Logger {
 
     private void traceDo(Marker marker, Object content, String format, Object[] args) {
         if (this.isTraceEnabled()) {
-            this.writeDo(Level.TRACE, marker, content, format, args);
+            this.appendDo(Level.TRACE, marker, content, format, args);
         }
     }
 
@@ -82,7 +85,7 @@ public class LoggerSimple implements Logger {
 
     private void debugDo(Marker marker, Object content, String format, Object[] args) {
         if (this.isDebugEnabled()) {
-            this.writeDo(Level.DEBUG, marker, content, format, args);
+            this.appendDo(Level.DEBUG, marker, content, format, args);
         }
     }
 
@@ -109,7 +112,7 @@ public class LoggerSimple implements Logger {
 
     private void infoDo(Marker marker, Object content, String format, Object[] args) {
         if (this.isInfoEnabled()) {
-            this.writeDo(Level.INFO, marker, content, format, args);
+            this.appendDo(Level.INFO, marker, content, format, args);
         }
     }
 
@@ -136,7 +139,7 @@ public class LoggerSimple implements Logger {
 
     private void warnDo(Marker marker, Object content, String format, Object[] args) {
         if (this.isWarnEnabled()) {
-            this.writeDo(Level.WARN, marker, content, format, args);
+            this.appendDo(Level.WARN, marker, content, format, args);
         }
     }
 
@@ -163,12 +166,12 @@ public class LoggerSimple implements Logger {
 
     private void errorDo(Marker marker, Object content, String format, Object[] args) {
         if (this.isErrorEnabled()) {
-            this.writeDo(Level.ERROR, marker, content, format, args);
+            this.appendDo(Level.ERROR, marker, content, format, args);
         }
     }
 
 
-    protected void writeDo(Level level, Marker marker, Object content, String format, Object[] args) {
+    protected void appendDo(Level level, Marker marker, Object content, String format, Object[] args) {
         if (format != null) {
             if (args != null && args.length > 0) {
                 content = LogFormatter.arrayFormat(format, args).getMessage();
@@ -177,10 +180,27 @@ public class LoggerSimple implements Logger {
             }
         }
 
-        append(level, marker, content);
+        write(level, marker, content);
     }
 
-    public void append(Level level, Marker marker, Object content) {
-        LoggerFactory.getAppender().append(level, marker, content);
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    public void write(Level level, Marker marker, Object content) {
+        String text = null;
+
+        if (marker == null) {
+            text = String.format("%s [%s] :: %s",
+                    sdf.format(new Date()),
+                    level.name(),
+                    content);
+        } else {
+            text = String.format("%s [%s] %s:: %s",
+                    sdf.format(new Date()),
+                    level.name(),
+                    marker.formatAsString(),
+                    content);
+        }
+
+        System.out.println(text);
     }
 }

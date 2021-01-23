@@ -21,19 +21,6 @@ public class LoggerFactory {
     }
 
     //
-    //书写器
-    //
-    private static Appender appender = new AppenderSimple();
-
-    public static Appender getAppender() {
-        return appender;
-    }
-
-    public static void setAppender(Appender appender) {
-        LoggerFactory.appender = appender;
-    }
-
-    //
     //日志器工厂
     //
     private static ILoggerFactory factory = (name) -> new LoggerSimple(name);
