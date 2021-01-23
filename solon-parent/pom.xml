@@ -369,6 +369,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>mlog-slf4j</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>nami</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -942,10 +948,12 @@
         <!--        <module>../_extend/solon.view.rocker</module>-->
 
         <module>../_extend/solon.cloud</module>
-        <module>../_extend/solon.cloud.extend.slf4j</module>
 
 
         <module>../mlog</module>
+
+        <module>../_extend/mlog-slf4j</module>
+
         <module>../nami</module>
 
         <module>../_extend/nami.channel.http.okhttp</module>

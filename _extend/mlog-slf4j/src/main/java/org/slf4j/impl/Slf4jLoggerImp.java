@@ -1,5 +1,6 @@
 package org.slf4j.impl;
 
+import org.noear.mlog.LoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.slf4j.event.Level;
@@ -10,11 +11,13 @@ import org.slf4j.helpers.MessageFormatter;
  * @author noear
  * @since 1.2
  */
-public class Slf4jCloudLogger implements Logger {
+public class Slf4jLoggerImp implements Logger {
     private String name;
+    private org.noear.mlog.Logger real;
 
-    public Slf4jCloudLogger(String name) {
+    public Slf4jLoggerImp(String name) {
         this.name = name;
+        this.real = LoggerFactory.get(name);
     }
 
     @Override
@@ -24,7 +27,7 @@ public class Slf4jCloudLogger implements Logger {
 
     @Override
     public boolean isTraceEnabled() {
-        return Slf4jCloudLoggerFactory.INSTANCE.getLevel().toInt() <= Level.TRACE.toInt();
+        return Slf4jLoggerFactoryImp.INSTANCE.getLevel().toInt() <= Level.TRACE.toInt();
     }
 
     @Override
@@ -94,7 +97,7 @@ public class Slf4jCloudLogger implements Logger {
 
     @Override
     public boolean isDebugEnabled() {
-        return Slf4jCloudLoggerFactory.INSTANCE.getLevel().toInt() <= Level.DEBUG.toInt();
+        return Slf4jLoggerFactoryImp.INSTANCE.getLevel().toInt() <= Level.DEBUG.toInt();
     }
 
     @Override
@@ -164,7 +167,7 @@ public class Slf4jCloudLogger implements Logger {
 
     @Override
     public boolean isInfoEnabled() {
-        return Slf4jCloudLoggerFactory.INSTANCE.getLevel().toInt() <= Level.INFO.toInt();
+        return Slf4jLoggerFactoryImp.INSTANCE.getLevel().toInt() <= Level.INFO.toInt();
     }
 
     @Override
@@ -234,7 +237,7 @@ public class Slf4jCloudLogger implements Logger {
 
     @Override
     public boolean isWarnEnabled() {
-        return Slf4jCloudLoggerFactory.INSTANCE.getLevel().toInt() <= Level.WARN.toInt();
+        return Slf4jLoggerFactoryImp.INSTANCE.getLevel().toInt() <= Level.WARN.toInt();
     }
 
     @Override
@@ -304,7 +307,7 @@ public class Slf4jCloudLogger implements Logger {
 
     @Override
     public boolean isErrorEnabled() {
-        return Slf4jCloudLoggerFactory.INSTANCE.getLevel().toInt() <= Level.ERROR.toInt();
+        return Slf4jLoggerFactoryImp.INSTANCE.getLevel().toInt() <= Level.ERROR.toInt();
     }
 
     @Override
@@ -406,6 +409,17 @@ public class Slf4jCloudLogger implements Logger {
     }
 
     private void append(Level level, String content) {
-        Slf4jCloudLoggerFactory.INSTANCE.write(level, name, content);
+        switch (level) {
+            case TRACE:
+                real.trace(content);
+            case WARN:
+                real.warn(content);
+            case DEBUG:
+                real.debug(content);
+            case ERROR:
+                real.error(content);
+            default:
+                real.info(content);
+        }
     }
 }
