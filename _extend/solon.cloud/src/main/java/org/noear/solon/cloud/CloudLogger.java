@@ -9,5 +9,11 @@ import org.noear.mlog.Logger;
  * @since 1.2
  */
 public interface CloudLogger extends Logger {
+    static CloudLogger get(String name){
+        return CloudClient.log().getLogger(name);
+    }
 
+    static CloudLogger get(Class<?> clz){
+        return CloudClient.log().getLogger(clz);
+    }
 }
