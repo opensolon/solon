@@ -13,4 +13,8 @@ public interface CloudLogService {
      * 获取日志器
      * */
     CloudLogger getLogger(String name);
+    /**
+     * 获取日志器
+     * */
+    CloudLogger getLogger(Class<?> clz);
 }

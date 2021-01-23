@@ -1,6 +1,6 @@
 package org.noear.solon.cloud;
 
-import org.noear.mlog.LoggerSimple;
+import org.noear.mlog.Logger;
 
 /**
  * 云日志器
@@ -8,13 +8,6 @@ import org.noear.mlog.LoggerSimple;
  * @author noear
  * @since 1.2
  */
-public class CloudLogger extends LoggerSimple {
+public interface CloudLogger extends Logger {
 
-    public CloudLogger(String name) {
-        super(name);
-    }
-
-    public CloudLogger(Class<?> clz) {
-        super(clz);
-    }
 }

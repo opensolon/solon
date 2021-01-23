@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.extend.water.service;
 
 import org.noear.mlog.Level;
+import org.noear.mlog.LoggerSimple;
 import org.noear.mlog.Marker;
 import org.noear.mlog.utils.TagMarker;
 import org.noear.snack.ONode;
@@ -15,7 +16,7 @@ import java.util.Date;
  * @author noear
  * @since 1.2
  */
-public class CloudLoggerImp extends CloudLogger {
+public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
     private WaterLogger logger;
 
     public CloudLoggerImp(String name) {
@@ -35,7 +36,9 @@ public class CloudLoggerImp extends CloudLogger {
     @Override
     public void append(Level level, Marker marker, Object content) {
         org.noear.water.log.Level level1 = org.noear.water.log.Level.of(level.code / 10);
+
         TagMarker tags = null;
+
         if (marker != null) {
             if (marker instanceof TagMarker) {
                 tags = (TagMarker) marker;

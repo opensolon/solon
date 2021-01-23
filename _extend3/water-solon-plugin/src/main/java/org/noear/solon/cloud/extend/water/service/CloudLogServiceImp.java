@@ -12,4 +12,9 @@ public class CloudLogServiceImp implements CloudLogService {
     public CloudLogger getLogger(String name) {
         return new CloudLoggerImp(name);
     }
+
+    @Override
+    public CloudLogger getLogger(Class<?> clz) {
+        return new CloudLoggerImp(clz);
+    }
 }
