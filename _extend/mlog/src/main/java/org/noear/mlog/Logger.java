@@ -14,8 +14,9 @@ public interface Logger {
 
 
     default boolean isTraceEnabled() {
-        return true;
+        return LoggerFactory.getLevel().code <= Level.TRACE.code;
     }
+
 
     void trace(Object content);
     void trace(String format, Object[] args);
@@ -25,7 +26,7 @@ public interface Logger {
 
 
     default boolean isDebugEnabled() {
-        return true;
+        return LoggerFactory.getLevel().code <= Level.DEBUG.code;
     }
 
     void debug(Object content);
@@ -36,7 +37,7 @@ public interface Logger {
 
 
     default boolean isInfoEnabled() {
-        return true;
+        return LoggerFactory.getLevel().code <= Level.INFO.code;
     }
 
     void info(Object content);
@@ -47,7 +48,7 @@ public interface Logger {
 
 
     default boolean isWarnEnabled() {
-        return true;
+        return LoggerFactory.getLevel().code <= Level.WARN.code;
     }
 
     void warn(Object content);
@@ -57,7 +58,7 @@ public interface Logger {
 
 
     default boolean isErrorEnabled() {
-        return true;
+        return LoggerFactory.getLevel().code <= Level.ERROR.code;
     }
 
     void error(Object content);

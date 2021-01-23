@@ -1,8 +1,9 @@
 package org.noear.solon.cloud;
 
-import org.noear.solon.Utils;
-import org.noear.solon.cloud.model.log.Level;
-import org.noear.solon.cloud.model.log.Meta;
+import org.noear.mlog.Level;
+import org.noear.mlog.Logger;
+import org.noear.mlog.LoggerSimple;
+import org.noear.mlog.Marker;
 
 /**
  * 云日志器
@@ -10,83 +11,18 @@ import org.noear.solon.cloud.model.log.Meta;
  * @author noear
  * @since 1.2
  */
-public interface CloudLogger {
-    //
-    //获取日志器
-    //
-    static CloudLogger get(String name) {
-        return get(name, null);
+public class CloudLogger extends LoggerSimple {
+
+    public CloudLogger(String name) {
+        super(name);
     }
 
-    static CloudLogger get(Class<?> clz) {
-        return get(CloudProps.LOG_DEFAULT_LOGGER, clz);
+    public CloudLogger(Class<?> clz) {
+        super(clz);
     }
 
-    static CloudLogger get(String name, Class<?> clz) {
-        if (CloudClient.log() == null || Utils.isEmpty(name)) {
-            return CloudLoggerDefault.instance;
-        } else {
-            return CloudClient.log().getLogger(name, clz);
-        }
+    @Override
+    public void append(Level level, Marker meta, Object content) {
+        super.append(level, meta, content);
     }
-
-
-
-    String getName();
-
-    void setName(String name);
-
-
-
-    default boolean isTraceEnabled() {
-        return CloudLoggerFactory.getLevel().code <= Level.TRACE.code;
-    }
-
-    void trace(Object content);
-    void trace(String format, Object[] args);
-    void trace(Meta meta, Object content);
-    void trace(Meta meta, String format, Object[] args);
-
-
-
-    default boolean isDebugEnabled() {
-        return CloudLoggerFactory.getLevel().code <= Level.DEBUG.code;
-    }
-
-    void debug(Object content);
-    void debug(String format, Object[] args);
-    void debug(Meta meta, Object content);
-    void debug(Meta meta, String format, Object[] args);
-
-
-
-    default boolean isInfoEnabled() {
-        return CloudLoggerFactory.getLevel().code <= Level.INFO.code;
-    }
-
-    void info(Object content);
-    void info(String format, Object[] args);
-    void info(Meta meta, Object content);
-    void info(Meta meta, String format, Object[] args);
-
-
-
-    default boolean isWarnEnabled() {
-        return CloudLoggerFactory.getLevel().code <= Level.WARN.code;
-    }
-
-    void warn(Object content);
-    void warn(String format, Object[] args);
-    void warn(Meta meta, Object content);
-    void warn(Meta meta, String format, Object[] args);
-
-
-    default boolean isErrorEnabled() {
-        return CloudLoggerFactory.getLevel().code <= Level.ERROR.code;
-    }
-
-    void error(Object content);
-    void error(String format, Object[] args);
-    void error(Meta meta, Object content);
-    void error(Meta meta, String format, Object[] args);
 }

@@ -363,6 +363,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>mlog</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>nami</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -955,6 +961,8 @@
         <module>../_extend/nami.coder.jackson</module>
         <module>../_extend/nami.coder.protostuff</module>
 
+
+        <module>../_extend/mlog</module>
 
         <module>../_extend/solon-beetl-web</module>
         <module>../_extend/solon-api</module>

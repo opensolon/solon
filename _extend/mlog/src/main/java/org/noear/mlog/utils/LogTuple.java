@@ -1,19 +1,19 @@
-package org.noear.solon.cloud.utils.log;
+package org.noear.mlog.utils;
 
 /**
  * @author org.slf4j.helpers
  */
-public class FormattingTuple {
-    public static FormattingTuple NULL = new FormattingTuple((String)null);
+public class LogTuple {
+    public static LogTuple NULL = new LogTuple((String)null);
     private String message;
     private Throwable throwable;
     private Object[] argArray;
 
-    public FormattingTuple(String message) {
+    public LogTuple(String message) {
         this(message, (Object[])null, (Throwable)null);
     }
 
-    public FormattingTuple(String message, Object[] argArray, Throwable throwable) {
+    public LogTuple(String message, Object[] argArray, Throwable throwable) {
         this.message = message;
         this.throwable = throwable;
         this.argArray = argArray;

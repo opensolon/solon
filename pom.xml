@@ -36,8 +36,6 @@
 <!--        <module>_demo/_demo.solon_tmp</module>-->
 
 
-        <module>_extend/mlog</module>
-
         <module>_extend2/smartdoc-solon-plugin</module>
 
 

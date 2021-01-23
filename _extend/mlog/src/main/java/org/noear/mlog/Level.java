@@ -5,11 +5,11 @@ package org.noear.mlog;
  * @since 1.2
  */
 public enum Level {
-    TRACE(1),
-    DEBUG(2),
-    INFO(3),
-    WARN(4),
-    ERROR(5);
+    TRACE(10),
+    DEBUG(20),
+    INFO(30),
+    WARN(40),
+    ERROR(50);
 
     public final int code;
 

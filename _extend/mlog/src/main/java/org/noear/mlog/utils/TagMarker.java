@@ -3,7 +3,8 @@ package org.noear.mlog.utils;
 import org.noear.mlog.Marker;
 
 /**
- * @author noear 2021/1/23 created
+ * @author noear
+ * @since 1.2
  */
 public class TagMarker implements Marker {
     private String tag1;
@@ -16,7 +17,7 @@ public class TagMarker implements Marker {
         return tag1;
     }
 
-    public TagMarker tag1(String tag1){
+    public TagMarker tag1(String tag1) {
         this.tag1 = tag1;
         return this;
     }
@@ -25,7 +26,7 @@ public class TagMarker implements Marker {
         return tag2;
     }
 
-    public TagMarker tag2(String tag2){
+    public TagMarker tag2(String tag2) {
         this.tag2 = tag2;
         return this;
     }
@@ -34,7 +35,7 @@ public class TagMarker implements Marker {
         return tag3;
     }
 
-    public TagMarker tag3(String tag3){
+    public TagMarker tag3(String tag3) {
         this.tag3 = tag3;
         return this;
     }
@@ -43,7 +44,7 @@ public class TagMarker implements Marker {
         return tag4;
     }
 
-    public TagMarker tag4(String tag4){
+    public TagMarker tag4(String tag4) {
         this.tag4 = tag4;
         return this;
     }
@@ -52,8 +53,17 @@ public class TagMarker implements Marker {
         return tag5;
     }
 
-    public TagMarker tag5(String tag5){
+    public TagMarker tag5(String tag5) {
         this.tag5 = tag5;
         return this;
+    }
+
+    @Override
+    public String formatAsString() {
+        return "['" + tag1 + "']" +
+                "['" + tag2 + "']" +
+                "['" + tag3 + "']" +
+                "['" + tag4 + "']" +
+                "['" + tag5 + "']";
     }
 }

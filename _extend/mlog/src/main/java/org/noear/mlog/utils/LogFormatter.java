@@ -1,23 +1,23 @@
-package org.noear.solon.cloud.utils.log;
+package org.noear.mlog.utils;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author noear 2021/1/23 created
+ * @author org.slf4j.helpers
  */
 
-public final class MessageFormatter {
+public final class LogFormatter {
     static final char DELIM_START = '{';
     static final char DELIM_STOP = '}';
     static final String DELIM_STR = "{}";
     private static final char ESCAPE_CHAR = '\\';
 
-    public MessageFormatter() {
+    public LogFormatter() {
     }
 
 
-    public static final FormattingTuple arrayFormat(String messagePattern, Object[] argArray) {
+    public static final LogTuple arrayFormat(String messagePattern, Object[] argArray) {
         Throwable throwableCandidate = getThrowableCandidate(argArray);
         Object[] args = argArray;
         if (throwableCandidate != null) {
@@ -27,11 +27,11 @@ public final class MessageFormatter {
         return arrayFormat(messagePattern, args, throwableCandidate);
     }
 
-    public static final FormattingTuple arrayFormat(String messagePattern, Object[] argArray, Throwable throwable) {
+    public static final LogTuple arrayFormat(String messagePattern, Object[] argArray, Throwable throwable) {
         if (messagePattern == null) {
-            return new FormattingTuple((String)null, argArray, throwable);
+            return new LogTuple((String)null, argArray, throwable);
         } else if (argArray == null) {
-            return new FormattingTuple(messagePattern);
+            return new LogTuple(messagePattern);
         } else {
             int i = 0;
             StringBuilder sbuf = new StringBuilder(messagePattern.length() + 50);
@@ -40,11 +40,11 @@ public final class MessageFormatter {
                 int j = messagePattern.indexOf("{}", i);
                 if (j == -1) {
                     if (i == 0) {
-                        return new FormattingTuple(messagePattern, argArray, throwable);
+                        return new LogTuple(messagePattern, argArray, throwable);
                     }
 
                     sbuf.append(messagePattern, i, messagePattern.length());
-                    return new FormattingTuple(sbuf.toString(), argArray, throwable);
+                    return new LogTuple(sbuf.toString(), argArray, throwable);
                 }
 
                 if (isEscapedDelimeter(messagePattern, j)) {
@@ -66,7 +66,7 @@ public final class MessageFormatter {
             }
 
             sbuf.append(messagePattern, i, messagePattern.length());
-            return new FormattingTuple(sbuf.toString(), argArray, throwable);
+            return new LogTuple(sbuf.toString(), argArray, throwable);
         }
     }
 
