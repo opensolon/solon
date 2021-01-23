@@ -4,16 +4,18 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
+ * Nami 请求附件
+ *
  * @author noear
  * @since 1.2
  */
-public final class NamiContext {
+public final class NamiAttachment {
     private final Map<String, String> headers = new LinkedHashMap<>();
 
     /**
      * 设置头信息
      */
-    public NamiContext headerSet(String name, String value) {
+    public NamiAttachment headerSet(String name, String value) {
         headers.put(name, value);
         return this;
     }
@@ -25,7 +27,7 @@ public final class NamiContext {
         return headers;
     }
 
-    private final static ThreadLocal<NamiContext> threadLocal = new ThreadLocal<>();
+    private final static ThreadLocal<NamiAttachment> threadLocal = new ThreadLocal<>();
 
     /**
      * 移除当前线程的上下文
@@ -34,17 +36,17 @@ public final class NamiContext {
         threadLocal.remove();
     }
 
-    public static NamiContext currentGet() {
+    public static NamiAttachment currentGet() {
         return threadLocal.get();
     }
 
     /**
      * 获取当前线程的上下文
      */
-    public static NamiContext current() {
-        NamiContext tmp = threadLocal.get();
+    public static NamiAttachment current() {
+        NamiAttachment tmp = threadLocal.get();
         if (tmp == null) {
-            tmp = new NamiContext();
+            tmp = new NamiAttachment();
             threadLocal.set(tmp);
         }
 

@@ -160,10 +160,10 @@ public class NamiHandler implements InvocationHandler {
             }
         }
 
-        NamiContext namiContext = NamiContext.currentGet();
-        if(namiContext != null){
-            headers.putAll(namiContext.headers());
-            NamiContext.currentRemove();
+        NamiAttachment namiAttachment = NamiAttachment.currentGet();
+        if(namiAttachment != null){
+            headers.putAll(namiAttachment.headers());
+            NamiAttachment.currentRemove();
         }
 
 
