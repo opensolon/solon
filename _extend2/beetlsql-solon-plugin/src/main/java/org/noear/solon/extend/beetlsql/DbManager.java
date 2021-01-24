@@ -5,6 +5,7 @@ import org.beetl.sql.core.SQLManager;
 import org.beetl.sql.core.SQLManagerBuilder;
 import org.beetl.sql.core.db.*;
 import org.beetl.sql.core.nosql.*;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
@@ -61,6 +62,10 @@ class DbManager {
         SQLManagerBuilder builder = SQLManager.newBuilder(cs);
 
         buildStyle(bw, builder);
+
+        if(Solon.cfg().isDebugMode()){
+            builder.addInterDebug();
+        }
 
         //推到事件中心，用于扩展
         EventBus.push(builder);
