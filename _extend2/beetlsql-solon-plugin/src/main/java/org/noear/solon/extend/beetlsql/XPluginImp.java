@@ -59,15 +59,23 @@ public class XPluginImp implements Plugin {
         //
         Aop.context().beanOnloaded(() -> {
             BeanWrap defBw = Aop.context().getWrap(DataSource.class);
-            DbManager.global().dynamicBuild(defBw);
 
-            Aop.wrapAndPut(SQLManager.class, DbManager.global().dynamicGet());
+            if (defBw != null) {
+                DbManager.global().dynamicBuild(defBw);
+
+                if (DbManager.global().dynamicGet() != null) {
+                    Aop.wrapAndPut(SQLManager.class, DbManager.global().dynamicGet());
+                }
+            }
         });
     }
 
     private void create0(Class<?> clz, BeanWrap dsBw) {
         Object raw = DbManager.global().get(dsBw).getMapper(clz);
-        Aop.wrapAndPut(clz, raw);
+
+        if (raw != null) {
+            Aop.wrapAndPut(clz, raw);
+        }
     }
 
     /**

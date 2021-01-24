@@ -51,7 +51,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
                     meta = ONode.stringify(instance.meta());
                 }
 
-                String code_location = Solon.cfg().sourceLocation();
+                String code_location = Solon.cfg().sourceLocation().getPath();
 
                 WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 1, alarmMobile, code_location, Solon.cfg().isDriftMode());
             } catch (Throwable ex) {
@@ -66,7 +66,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
             meta = ONode.stringify(instance.meta());
         }
 
-        String code_location = Solon.cfg().sourceLocation();
+        String code_location = Solon.cfg().sourceLocation().getPath();
 
         if (Solon.cfg().isFilesMode()) {
             //自己主动刷新
