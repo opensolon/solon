@@ -221,7 +221,7 @@ public class SolonApp implements Handler, HandlerSlots {
         _startupTime = System.currentTimeMillis();
         _source = source;
 
-        _prop = new SolonProps().load(args);
+        _prop = new SolonProps().load(source, args);
         _port = _prop.serverPort();
 
         //顺序不能换
