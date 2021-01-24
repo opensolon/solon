@@ -24,9 +24,11 @@ import java.util.TimerTask;
  */
 public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscoveryService {
     String checkPath;
+    String alarmMobile;
     long refreshInterval;
     public CloudDiscoveryServiceImp(){
         checkPath = WaterProps.instance.getDiscoveryHealthCheckPath();
+        alarmMobile = WaterProps.instance.getAlarm();
         refreshInterval = IntervalUtils.getInterval(WaterProps.instance.getDiscoveryRefreshInterval("5s"));
     }
 
@@ -39,6 +41,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
 
     @Override
     public void run() {
+        //主动刷新健康
         if (Solon.cfg().isFilesMode()) {
             Instance instance = Instance.local();
 
@@ -47,7 +50,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
                 meta = ONode.stringify(instance.meta());
             }
 
-            WaterClient.Registry.register(instance.service(), instance.address(), meta, Solon.cfg().isDriftMode());
+            WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 1, alarmMobile, Solon.cfg().isDriftMode());
         }
     }
 
@@ -60,10 +63,10 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
 
         if (Solon.cfg().isFilesMode()) {
             //自己主动刷新
-            WaterClient.Registry.register(instance.service(), instance.address(), meta, Solon.cfg().isDriftMode());
+            WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 1, alarmMobile, Solon.cfg().isDriftMode());
         } else {
             //被动接收检测
-            WaterClient.Registry.register(instance.service(), instance.address(), checkPath, meta, Solon.cfg().isDriftMode());
+            WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 0, alarmMobile, Solon.cfg().isDriftMode());
         }
     }
 

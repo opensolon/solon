@@ -16,6 +16,7 @@ public class CloudProps {
     private String TOKEN = "solon.cloud.@@.token";
     private String USERNAME = "solon.cloud.@@.username";
     private String PASSWORD = "solon.cloud.@@.password";
+    private String ALARM = "solon.cloud.@@.alarm";
 
     //配置服务相关
     private String CONFIG_ENABLE = "solon.cloud.@@.config.enable";
@@ -38,7 +39,6 @@ public class CloudProps {
     private String EVENT_SERVER = "solon.cloud.@@.event.server";
     private String EVENT_HOSTNAME = "solon.cloud.@@.event.hostname";
     private String EVENT_QUEUE = "solon.cloud.@@.event.queue";
-    private String EVENT_ALARM = "solon.cloud.@@.event.alarm";
     private String EVENT_SEAL = "solon.cloud.@@.event.seal";
 
     //日志服务相关
@@ -51,6 +51,7 @@ public class CloudProps {
         TOKEN = TOKEN.replace("@@", frame);
         USERNAME = USERNAME.replace("@@", frame);
         PASSWORD = PASSWORD.replace("@@", frame);
+        ALARM = ALARM.replace("@@", frame);
 
         CONFIG_ENABLE = CONFIG_ENABLE.replace("@@", frame);
         CONFIG_SERVER = CONFIG_SERVER.replace("@@", frame);
@@ -70,7 +71,6 @@ public class CloudProps {
         EVENT_SERVER = EVENT_SERVER.replace("@@", frame);
         EVENT_HOSTNAME = EVENT_HOSTNAME.replace("@@", frame);
         EVENT_QUEUE = EVENT_QUEUE.replace("@@", frame);
-        EVENT_ALARM = EVENT_ALARM.replace("@@", frame);
         EVENT_SEAL = EVENT_SEAL.replace("@@", frame);
 
         LOG_ENABLE = LOG_ENABLE.replace("@@", frame);
@@ -96,6 +96,9 @@ public class CloudProps {
 
     public String getPassword() {
         return Solon.cfg().get(PASSWORD);
+    }
+    public String getAlarm() {
+        return Solon.cfg().get(ALARM);
     }
 
     //
@@ -188,9 +191,6 @@ public class CloudProps {
     }
     public String getEventQueue() {
         return Solon.cfg().get(EVENT_QUEUE);
-    }
-    public String getEventAlarm() {
-        return Solon.cfg().get(EVENT_ALARM);
     }
 
 
