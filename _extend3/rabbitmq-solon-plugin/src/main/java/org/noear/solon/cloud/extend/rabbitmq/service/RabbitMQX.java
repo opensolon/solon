@@ -6,8 +6,6 @@ import com.rabbitmq.client.ConnectionFactory;
 import org.noear.solon.Utils;
 import org.noear.solon.ext.ConsumerEx;
 
-import java.io.IOException;
-
 /**
  * @author noear
  * @since 1.2
