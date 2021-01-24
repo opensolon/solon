@@ -93,7 +93,7 @@ public class CloudEventServiceImp implements CloudEventService {
                     instance_receiver_url,
                     seal,
                     "",
-                    0,
+                    1,
                     Solon.cfg().isDriftMode(),
                     String.join(",", instanceObserverMap.keySet()));
         }
@@ -112,7 +112,7 @@ public class CloudEventServiceImp implements CloudEventService {
                     cluster_receiver_url,
                     seal,
                     "",
-                    0,
+                    1,
                     false,
                     String.join(",", clusterObserverMap.keySet()));
         }
