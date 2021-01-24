@@ -8,12 +8,12 @@ package org.noear.solon.cloud.service;
  */
 public interface CloudTraceService {
     /**
-     * 跟踪ID名
+     * TraceId 头名称
      * */
-    String traceIdName();
+    String HEADER_TRACE_ID_NAME();
 
     /**
-     * 跟踪ID值
+     * 获取跟踪标识
      * */
-    String traceId();
+    String getTraceId();
 }

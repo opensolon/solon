@@ -12,12 +12,12 @@ import org.noear.water.utils.TextUtils;
  */
 public class CloudTraceServiceImp implements CloudTraceService {
     @Override
-    public String traceIdName() {
+    public String HEADER_TRACE_ID_NAME() {
         return WW.http_header_trace;
     }
 
     @Override
-    public String traceId() {
+    public String getTraceId() {
         Context ctx = Context.current();
 
         if (ctx == null) {
