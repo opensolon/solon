@@ -412,14 +412,19 @@ public class Slf4jLoggerImp implements Logger {
         switch (level) {
             case TRACE:
                 real.trace(content);
+                break;
             case WARN:
                 real.warn(content);
+                break;
             case DEBUG:
                 real.debug(content);
+                break;
             case ERROR:
                 real.error(content);
+                break;
             default:
                 real.info(content);
+                break;
         }
     }
 }

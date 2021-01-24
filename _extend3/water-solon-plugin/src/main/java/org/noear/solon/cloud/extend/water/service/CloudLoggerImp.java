@@ -7,7 +7,11 @@ import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudLogger;
 import org.noear.solon.cloud.extend.water.WaterProps;
-import org.noear.water.log.WaterLogger;
+import org.noear.water.WaterClient;
+import org.noear.water.dso.LogPipeline;
+import org.noear.water.log.LogEvent;
+import org.noear.water.utils.Datetime;
+import org.noear.water.utils.TextUtils;
 
 import java.util.Date;
 
@@ -16,28 +20,24 @@ import java.util.Date;
  * @since 1.2
  */
 public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
-    private WaterLogger logger;
 
     public CloudLoggerImp(String name) {
         super(name);
-        logger = new WaterLogger(name);
     }
 
     public CloudLoggerImp(Class<?> clz) {
         super(clz);
-        String name = WaterProps.instance.getLogLogger();
+        this.name = WaterProps.instance.getLogLogger();
 
-        if (Utils.isNotEmpty(name)) {
-            logger = new WaterLogger(name);
+        if (Utils.isEmpty(name)) {
+            System.err.println("[WARN] Solon.cloud no default logger is configured");
         }
     }
 
     @Override
     public void write(Level level, Metainfo metainfo, Object content) {
-        org.noear.water.log.Level level1 = org.noear.water.log.Level.of(level.code / 10);
-
-
-        String summary = null;
+        StringBuilder summary = new StringBuilder();
+        summary.append("[").append(Thread.currentThread().getName()).append("]");
 
         if (clz != null) {
             if (metainfo == null) {
@@ -45,50 +45,88 @@ public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
             }
 
             metainfo.put("tag3", clz.getSimpleName());
-            summary = clz.getTypeName();
+            summary.append("[").append(clz.getTypeName()).append("]");
         }
 
-        if (content instanceof Throwable) {
-            content = Utils.getFullStackTrace((Throwable) content);
-        } else {
-            if ((content instanceof String) == false) {
-                content = ONode.stringify(content);
-            }
-        }
-
-        if (logger == null) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("[").append(level.name()).append("]");
-            sb.append(new Date());
-
-            if (metainfo != null) {
-                sb.append(metainfo.toString());
-            }
-
-            sb.append("::");
-
-            if (content instanceof String) {
-                sb.append(content);
-            } else {
-                sb.append(ONode.loadObj(content));
-            }
-
-            if (level == Level.ERROR) {
-                System.err.println(sb.toString());
-            } else {
-                System.out.println(sb.toString());
-            }
+        if (TextUtils.isEmpty(getName())) {
+            print0(level, metainfo, content);
         } else {
             if (metainfo == null) {
-                logger.append(level1, null, null, null, null, summary, content);
+                write0(level, null, null, null, null, summary.toString(), content);
             } else {
-                logger.append(level1,
+                write0(level,
                         metainfo.get("tag0"),
                         metainfo.get("tag1"),
                         metainfo.get("tag2"),
                         metainfo.get("tag3"),
-                        summary, content);
+                        summary.toString(), content);
             }
+        }
+    }
+
+    private void write0(Level level, String tag, String tag1, String tag2, String tag3, String summary, Object content) {
+        if (TextUtils.isEmpty(getName())) {
+            return;
+        }
+
+        Datetime datetime = Datetime.Now();
+
+        LogEvent log = new LogEvent();
+
+        log.logger = getName();
+        log.level = (level.code / 10);
+        log.tag = tag;
+        log.tag1 = tag1;
+        log.tag2 = tag2;
+        log.tag3 = tag3;
+        log.summary = summary;
+        log.content = content;
+
+        if (clz != null) {
+            if (TextUtils.isEmpty(summary)) {
+                log.summary = clz.getTypeName();
+            }
+
+            if (TextUtils.isEmpty(tag3)) {
+                log.tag3 = clz.getSimpleName();
+            }
+        }
+
+        log.trace_id = WaterClient.waterTraceId();
+        log.from = WaterClient.localServiceHost();
+        log.thread = Thread.currentThread().getName();
+
+        log.log_date = datetime.getDate();
+        log.log_fulltime = datetime.getFulltime();
+
+        LogPipeline.singleton().add(log);
+    }
+
+    private void print0(Level level, Metainfo metainfo, Object content) {
+        StringBuilder buf = new StringBuilder();
+        buf.append("[").append(level.name()).append("]");
+        buf.append(new Date());
+        buf.append("[").append(Thread.currentThread().getName()).append("]");
+        if (clz != null) {
+            buf.append("[").append(clz.getTypeName()).append("]");
+        }
+
+        if (metainfo != null) {
+            buf.append(metainfo.toString());
+        }
+
+        buf.append("::");
+
+        if (content instanceof String) {
+            buf.append(content);
+        } else {
+            buf.append(ONode.loadObj(content));
+        }
+
+        if (level == Level.ERROR) {
+            System.err.println(buf.toString());
+        } else {
+            System.out.println(buf.toString());
         }
     }
 }
