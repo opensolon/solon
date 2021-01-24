@@ -37,8 +37,6 @@
 
         <module>_extend2/smartdoc-solon-plugin</module>
 
-        <module>_extend3/rabbitmq-solon-plugin</module>
-        <module>_extend3/rocketmq-solon-plugin</module>
 
         <module>_extend3/eureka-solon-plugin</module>
         <module>_extend3/zookeeper-solon-plugin</module>
