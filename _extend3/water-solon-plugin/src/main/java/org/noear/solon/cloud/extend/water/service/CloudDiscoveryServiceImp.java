@@ -47,7 +47,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
                 Instance instance = Instance.local();
 
                 String meta = null;
-                if (instance.meta() != null) {
+                if (instance.meta() != null && instance.meta().size() > 0) {
                     meta = ONode.stringify(instance.meta());
                 }
 
@@ -60,7 +60,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
     @Override
     public void register(String group, Instance instance) {
         String meta = null;
-        if (instance.meta() != null) {
+        if (instance.meta() != null && instance.meta().size() > 0) {
             meta = ONode.stringify(instance.meta());
         }
 
