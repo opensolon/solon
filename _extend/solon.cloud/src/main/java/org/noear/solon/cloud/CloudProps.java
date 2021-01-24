@@ -46,6 +46,9 @@ public class CloudProps {
     private String LOG_SERVER = "solon.cloud.@@.log.server";
     private String LOG_LOGGER = "solon.cloud.@@.log.logger";
 
+    //跟踪服务相关
+    private String TRACE_ENABLE = "solon.cloud.@@.trace.enable";
+
     public CloudProps(String frame) {
         SERVER = SERVER.replace("@@", frame);
         TOKEN = TOKEN.replace("@@", frame);
@@ -76,6 +79,8 @@ public class CloudProps {
         LOG_ENABLE = LOG_ENABLE.replace("@@", frame);
         LOG_SERVER = LOG_SERVER.replace("@@", frame);
         LOG_LOGGER = LOG_LOGGER.replace("@@", frame);
+
+        TRACE_ENABLE = TRACE_ENABLE.replace("@@", frame);
     }
 
 
@@ -212,5 +217,14 @@ public class CloudProps {
 
     public String getLogLogger() {
         return Solon.cfg().get(LOG_LOGGER);
+    }
+
+
+
+    //
+    //跟踪服务相关
+    //
+    public boolean getTraceEnable() {
+        return Solon.cfg().getBool(TRACE_ENABLE, true);
     }
 }

@@ -13,10 +13,7 @@ import org.noear.solon.cloud.extend.water.integration.http.HandlerStatus;
 import org.noear.solon.cloud.extend.water.integration.http.HandlerStop;
 import org.noear.solon.cloud.extend.water.integration.msg.HandlerCacheUpdate;
 import org.noear.solon.cloud.extend.water.integration.msg.HandlerConfigUpdate;
-import org.noear.solon.cloud.extend.water.service.CloudConfigServiceImp;
-import org.noear.solon.cloud.extend.water.service.CloudDiscoveryServiceImp;
-import org.noear.solon.cloud.extend.water.service.CloudEventServiceImp;
-import org.noear.solon.cloud.extend.water.service.CloudLogServiceImp;
+import org.noear.solon.cloud.extend.water.service.*;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
@@ -72,30 +69,21 @@ public class XPluginImp implements Plugin {
                 WaterAddress.setLogApiUrl(logServer);
             }
 
-            WaterClient.localHostSet(Instance.local().address());
-            WaterClient.localServiceSet(Instance.local().service());
-            WaterSetting.water_trace_id_supplier(()->{
-                Context ctx = Context.current();
-
-                if (ctx == null) {
-                    return "";
-                } else {
-                    String trace_id = ctx.header(WW.http_header_trace);
-
-                    if (TextUtils.isEmpty(trace_id)) {
-                        trace_id = Utils.guid();
-                        ctx.headerMap().put(WW.http_header_trace, trace_id);
-                    }
-
-                    return trace_id;
-                }
-            });
 
             //2.初始化服务
             CloudDiscoveryServiceImp discoveryServiceImp = null;
             CloudConfigServiceImp configServiceImp = null;
             CloudEventServiceImp eventServiceImp = null;
             CloudLogServiceImp logServiceImp = null;
+            CloudTraceServiceImp traceServiceImp = new CloudTraceServiceImp();
+
+            WaterClient.localHostSet(Instance.local().address());
+            WaterClient.localServiceSet(Instance.local().service());
+            WaterSetting.water_trace_id_supplier(traceServiceImp::traceId);
+
+            if(WaterProps.instance.getTraceEnable()){
+                CloudManager.register(traceServiceImp);
+            }
 
             if (WaterProps.instance.getConfigEnable()) {
                 configServiceImp = new CloudConfigServiceImp();

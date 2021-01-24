@@ -5,10 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.model.Instance;
-import org.noear.solon.cloud.service.CloudConfigService;
-import org.noear.solon.cloud.service.CloudDiscoveryService;
-import org.noear.solon.cloud.service.CloudEventService;
-import org.noear.solon.cloud.service.CloudLogService;
+import org.noear.solon.cloud.service.*;
 
 import java.util.Properties;
 
@@ -91,4 +88,10 @@ public class CloudClient {
     public static CloudLogService log(){
         return CloudManager.logService();
     }
+
+    /**
+     * 跟踪服务
+     * */
+    @Note("链路跟踪服务")
+    public static CloudTraceService trace() { return CloudManager.traceService();}
 }

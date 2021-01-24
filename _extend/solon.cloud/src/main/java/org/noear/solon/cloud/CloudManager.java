@@ -2,10 +2,7 @@ package org.noear.solon.cloud;
 
 import org.noear.solon.cloud.annotation.CloudConfig;
 import org.noear.solon.cloud.annotation.CloudEvent;
-import org.noear.solon.cloud.service.CloudConfigService;
-import org.noear.solon.cloud.service.CloudEventService;
-import org.noear.solon.cloud.service.CloudDiscoveryService;
-import org.noear.solon.cloud.service.CloudLogService;
+import org.noear.solon.cloud.service.*;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,6 +30,11 @@ public class CloudManager {
      * 云端日志服务
      * */
     private static CloudLogService logService;
+
+    /**
+     * 云端跟踪服务（链路）
+     * */
+    private static CloudTraceService traceService;
 
     protected final static Map<CloudConfig, CloudConfigHandler> configHandlerMap = new LinkedHashMap<>();
     protected final static Map<CloudEvent, CloudEventHandler> eventHandlerMap = new LinkedHashMap<>();
@@ -79,6 +81,13 @@ public class CloudManager {
         logService = service;
     }
 
+    /**
+     * 登记云端跟踪服务
+     */
+    public static void register(CloudTraceService service) {
+        traceService = service;
+    }
+
 
     protected static CloudConfigService configService() {
         return configService;
@@ -95,4 +104,6 @@ public class CloudManager {
     protected static CloudLogService logService() {
         return logService;
     }
+
+    protected static CloudTraceService traceService(){ return traceService; }
 }
