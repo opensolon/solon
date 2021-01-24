@@ -43,14 +43,17 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
     public void run() {
         //主动刷新健康
         if (Solon.cfg().isFilesMode()) {
-            Instance instance = Instance.local();
+            try {
+                Instance instance = Instance.local();
 
-            String meta = null;
-            if (instance.meta() != null) {
-                meta = ONode.stringify(instance.meta());
+                String meta = null;
+                if (instance.meta() != null) {
+                    meta = ONode.stringify(instance.meta());
+                }
+
+                WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 1, alarmMobile, Solon.cfg().isDriftMode());
+            } catch (Throwable ex) {
             }
-
-            WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 1, alarmMobile, Solon.cfg().isDriftMode());
         }
     }
 

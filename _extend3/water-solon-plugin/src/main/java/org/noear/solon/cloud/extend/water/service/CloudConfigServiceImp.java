@@ -26,6 +26,7 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
 
     private Map<String, Config> configMap = new HashMap<>();
 
+
     public CloudConfigServiceImp() {
         refreshInterval = IntervalUtils.getInterval(WaterProps.instance.getConfigRefreshInterval("5s"));
     }
@@ -35,6 +36,30 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
      */
     public long getRefreshInterval() {
         return refreshInterval;
+    }
+
+    @Override
+    public void run() {
+        if (Solon.cfg().isFilesMode()) {
+            Set<String> loadGroups = new LinkedHashSet<>();
+
+            try {
+                observerMap.forEach((k, v) -> {
+                    if (loadGroups.contains(v.group) == false) {
+                        loadGroups.add(v.group);
+                        WaterClient.Config.reload(v.group);
+                    }
+
+                    ConfigM cfg = WaterClient.Config.get(v.group, v.key);
+
+                    onUpdateDo(v.group, v.key, cfg, cfg2 -> {
+                        v.handler(cfg2);
+                    });
+                });
+            }catch (Throwable ex){
+
+            }
+        }
     }
 
     @Override
@@ -138,25 +163,5 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
         }
 
         consumer.accept(config);
-    }
-
-    @Override
-    public void run() {
-        if (Solon.cfg().isFilesMode()) {
-            Set<String> loadGroups = new LinkedHashSet<>();
-
-            observerMap.forEach((k, v) -> {
-                if (loadGroups.contains(v.group) == false) {
-                    loadGroups.add(v.group);
-                    WaterClient.Config.reload(v.group);
-                }
-
-                ConfigM cfg = WaterClient.Config.get(v.group, v.key);
-
-                onUpdateDo(v.group, v.key, cfg, cfg2 -> {
-                    v.handler(cfg2);
-                });
-            });
-        }
     }
 }
