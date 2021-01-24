@@ -51,7 +51,9 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
                     meta = ONode.stringify(instance.meta());
                 }
 
-                WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 1, alarmMobile, Solon.cfg().isDriftMode());
+                String code_location = Solon.cfg().sourceLocation();
+
+                WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 1, alarmMobile, code_location, Solon.cfg().isDriftMode());
             } catch (Throwable ex) {
             }
         }
@@ -64,12 +66,14 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
             meta = ONode.stringify(instance.meta());
         }
 
+        String code_location = Solon.cfg().sourceLocation();
+
         if (Solon.cfg().isFilesMode()) {
             //自己主动刷新
-            WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 1, alarmMobile, Solon.cfg().isDriftMode());
+            WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 1, alarmMobile, code_location, Solon.cfg().isDriftMode());
         } else {
             //被动接收检测
-            WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 0, alarmMobile, Solon.cfg().isDriftMode());
+            WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 0, alarmMobile,code_location, Solon.cfg().isDriftMode());
         }
     }
 
