@@ -10,9 +10,9 @@ import java.util.Date;
  */
 public class Event {
     /**
-     * 队列
+     * 组
      * */
-    private final String queue;
+    private final String group;
 
     /**
      * 主题
@@ -47,14 +47,14 @@ public class Event {
         this("", topic, content);
     }
 
-    public Event(String queue, String topic, String content){
-        this.queue = queue;
+    public Event(String group, String topic, String content){
+        this.group = group;
         this.topic = topic;
         this.content = content;
     }
 
-    public String queue() {
-        return queue;
+    public String group() {
+        return group;
     }
 
     public String topic() {
