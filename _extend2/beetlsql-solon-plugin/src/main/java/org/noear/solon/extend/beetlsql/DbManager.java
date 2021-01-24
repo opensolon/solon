@@ -63,7 +63,7 @@ class DbManager {
 
         buildStyle(bw, builder);
 
-        if(Solon.cfg().isDebugMode()){
+        if(Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode()){
             builder.addInterDebug();
         }
 
