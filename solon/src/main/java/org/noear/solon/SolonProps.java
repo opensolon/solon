@@ -29,6 +29,7 @@ import java.util.function.BiConsumer;
 public final class SolonProps extends Props {
     private NvMap args;
     private Class<?> source;
+    private String sourceLocation;
     private List<PluginEntity> plugs = new ArrayList<>();
     private boolean isDebugMode;
     private boolean isDriftMode;
@@ -52,6 +53,7 @@ public final class SolonProps extends Props {
         //1.接收启动参数
         this.args = args;
         this.source = source;
+        this.sourceLocation = source.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         //2.加载文件的配置
         loadAdd(Utils.getResource("application.properties"));
@@ -75,7 +77,7 @@ public final class SolonProps extends Props {
         isDebugMode = argx().getInt("debug") == 1;
         isDriftMode = argx().getInt("drift") == 1;
         isWhiteMode = argx().getInt("white",1) == 1;
-        isFilesMode = (source.getProtectionDomain().getCodeSource().getLocation().getPath().endsWith(".jar") == false);
+        isFilesMode = (sourceLocation.endsWith(".jar") == false);
 
         //4.标识debug模式
         if (isDebugMode()) {
@@ -222,6 +224,14 @@ public final class SolonProps extends Props {
         }
 
         return obj;
+    }
+
+    public Class<?> source(){
+        return source;
+    }
+
+    public String sourceLocation() {
+        return sourceLocation;
     }
 
     /**
