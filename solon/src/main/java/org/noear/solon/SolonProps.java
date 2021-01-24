@@ -73,7 +73,7 @@ public final class SolonProps extends Props {
         isDebugMode = argx().getInt("debug") == 1;
         isDriftMode = argx().getInt("drift") == 1;
         isWhiteMode = argx().getInt("white",1) == 1;
-        isFilesMode = "file".equals(this.getClass().getProtectionDomain().getCodeSource().getLocation().getProtocol());
+        isFilesMode = "file".equals(SolonProps.class.getProtectionDomain().getCodeSource().getLocation().getProtocol());
 
         //4.标识debug模式
         if (isDebugMode()) {
