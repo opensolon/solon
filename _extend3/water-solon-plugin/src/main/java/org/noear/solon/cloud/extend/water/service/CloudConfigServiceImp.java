@@ -30,6 +30,9 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
         refreshInterval = IntervalUtils.getInterval(WaterProps.instance.getConfigRefreshInterval("5s"));
     }
 
+    /**
+     * 配置刷新间隔时间（仅当isFilesMode时有效）
+     */
     public long getRefreshInterval() {
         return refreshInterval;
     }
@@ -139,19 +142,21 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
 
     @Override
     public void run() {
-        Set<String> loadGroups = new LinkedHashSet<>();
+        if (Solon.cfg().isFilesMode()) {
+            Set<String> loadGroups = new LinkedHashSet<>();
 
-        observerMap.forEach((k, v) -> {
-            if (loadGroups.contains(v.group) == false) {
-                loadGroups.add(v.group);
-                WaterClient.Config.reload(v.group);
-            }
+            observerMap.forEach((k, v) -> {
+                if (loadGroups.contains(v.group) == false) {
+                    loadGroups.add(v.group);
+                    WaterClient.Config.reload(v.group);
+                }
 
-            ConfigM cfg = WaterClient.Config.get(v.group, v.key);
+                ConfigM cfg = WaterClient.Config.get(v.group, v.key);
 
-            onUpdateDo(v.group, v.key, cfg, cfg2 -> {
-                v.handler(cfg2);
+                onUpdateDo(v.group, v.key, cfg, cfg2 -> {
+                    v.handler(cfg2);
+                });
             });
-        });
+        }
     }
 }
