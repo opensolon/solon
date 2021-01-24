@@ -33,7 +33,7 @@ public class CloudBeanInjector implements BeanInjector<CloudConfig> {
             return null;
         }
 
-        Config cfg = CloudClient.config().get(anno.group(), anno.value());
+        Config cfg = CloudClient.config().pull(anno.group(), anno.value());
 
         if (cfg == null || cfg.value() == null) {
             return null;

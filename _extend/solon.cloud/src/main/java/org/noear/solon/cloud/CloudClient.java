@@ -34,7 +34,7 @@ public class CloudClient {
         }
 
         if (Utils.isNotEmpty(key)) {
-            Config config = CloudClient.config().get(group, key);
+            Config config = CloudClient.config().pull(group, key);
 
             if (config != null && Utils.isNotEmpty(config.value())) {
                 Properties properties = config.toProps();

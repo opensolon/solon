@@ -11,14 +11,14 @@ import org.noear.solon.cloud.model.Config;
  */
 public interface CloudConfigService {
     /**
-     * 获取配置
+     * 拉取配置
      */
-    Config get(String group, String key);
+    Config pull(String group, String key);
 
     /**
-     * 设置配置
+     * 推送配置
      */
-    boolean set(String group, String key, String value);
+    boolean push(String group, String key, String value);
 
     /**
      * 移除配置

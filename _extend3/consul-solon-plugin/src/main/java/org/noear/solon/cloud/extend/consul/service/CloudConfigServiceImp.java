@@ -62,7 +62,7 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
      * 获取配置
      */
     @Override
-    public Config get(String group, String key) {
+    public Config pull(String group, String key) {
         if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
 
@@ -93,7 +93,7 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
 
 
     @Override
-    public boolean set(String group, String key, String value) {
+    public boolean push(String group, String key, String value) {
         if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
 

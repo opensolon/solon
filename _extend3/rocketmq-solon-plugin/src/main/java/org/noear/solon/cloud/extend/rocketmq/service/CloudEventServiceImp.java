@@ -100,7 +100,7 @@ public class CloudEventServiceImp implements CloudEventService, MessageListenerC
 
 
     @Override
-    public boolean push(Event event) {
+    public boolean publish(Event event) {
         initProducer();
 
         try {

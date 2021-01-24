@@ -38,7 +38,7 @@ public class CloudEventServiceImp implements CloudEventService {
     }
 
     @Override
-    public boolean push(Event event) {
+    public boolean publish(Event event) {
         if (Utils.isEmpty(event.topic())) {
             throw new IllegalArgumentException("Event missing topic");
         }
