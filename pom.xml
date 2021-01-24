@@ -37,6 +37,7 @@
 
         <module>_extend2/smartdoc-solon-plugin</module>
 
+<!--        <module>_extend3/kafka-solon-plugin</module>-->
 
         <module>_extend3/eureka-solon-plugin</module>
         <module>_extend3/zookeeper-solon-plugin</module>

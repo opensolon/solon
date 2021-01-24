@@ -614,12 +614,6 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>kafka-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>solonfox-swagger2</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -1022,7 +1016,6 @@
 
         <module>../_extend3/rabbitmq-solon-plugin</module>
         <module>../_extend3/rocketmq-solon-plugin</module>
-        <module>../_extend3/kafka-solon-plugin</module>
 
 
         <module>../solonfox/solonfox-swagger2</module>
