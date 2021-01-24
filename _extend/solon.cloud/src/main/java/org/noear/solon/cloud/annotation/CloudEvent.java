@@ -20,7 +20,7 @@ public @interface CloudEvent {
     /**
      * 队列
      * */
-    String queue() default "";
+    String group() default "";
 
     /**
      * 订阅级别

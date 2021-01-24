@@ -59,11 +59,11 @@ public class CloudEventServiceImp implements CloudEventService {
      * 登记关注
      */
     @Override
-    public void attention(EventLevel level, String queue, String topic, CloudEventHandler observer) {
+    public void attention(EventLevel level, String group, String topic, CloudEventHandler observer) {
         if (level == EventLevel.instance) {
-            instanceObserverMap.putIfAbsent(topic, new CloudEventObserverEntity(level, queue, topic, observer));
+            instanceObserverMap.putIfAbsent(topic, new CloudEventObserverEntity(level, group, topic, observer));
         } else {
-            clusterObserverMap.putIfAbsent(topic, new CloudEventObserverEntity(level, queue, topic, observer));
+            clusterObserverMap.putIfAbsent(topic, new CloudEventObserverEntity(level, group, topic, observer));
         }
     }
 

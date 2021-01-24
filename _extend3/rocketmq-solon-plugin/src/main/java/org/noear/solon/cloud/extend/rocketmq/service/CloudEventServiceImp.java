@@ -126,12 +126,12 @@ public class CloudEventServiceImp implements CloudEventService, MessageListenerC
     Map<String, CloudEventObserverEntity> observerMap = new HashMap<>();
 
     @Override
-    public void attention(EventLevel level, String queue, String topic, CloudEventHandler observer) {
+    public void attention(EventLevel level, String group, String topic, CloudEventHandler observer) {
         if (observerMap.containsKey(topic)) {
             return;
         }
 
-        observerMap.put(topic, new CloudEventObserverEntity(level, queue, topic, observer));
+        observerMap.put(topic, new CloudEventObserverEntity(level, group, topic, observer));
     }
 
     public void subscribe() {
