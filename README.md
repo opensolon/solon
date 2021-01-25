@@ -59,7 +59,7 @@ public class App{
 
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon-lib | 开发的快速集成包 |
+| org.noear:solon-lib | 快速开发基础集成包 |
 | org.noear:solon-api | solon-lib + http boot；快速开发接口应用 |
 | org.noear:solon-rpc | solon-api + nami client；快速开发RPC应用 |
 | org.noear:solon-web | solon-api + freemarker + sessionstate；快速开发WEB应用 |
