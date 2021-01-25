@@ -59,8 +59,10 @@ public class App{
 
 | 组件 | 说明 |
 | --- | --- |
-| org.noear:solon-rpc | 可进行rpc开发的快速集成包 |
-| org.noear:solon-web | 可进行web开发的快速集成包 |
+| org.noear:solon-lib | 开发的快速集成包 |
+| org.noear:solon-api | solon-lib + http boot；快速开发接口应用 |
+| org.noear:solon-rpc | solon-api + nami client；快速开发RPC应用 |
+| org.noear:solon-web | solon-api + freemarker + sessionstate；快速开发WEB应用 |
 
 ### 附1：与其它框架的异同性
 
@@ -78,7 +80,7 @@ public class App{
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.2.25</version>
+    <version>1.2.26</version>
 </parent>
 
 <dependencies>
