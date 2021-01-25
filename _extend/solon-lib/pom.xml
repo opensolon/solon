@@ -3,6 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
@@ -10,48 +11,44 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <groupId>org.noear</groupId>
-    <artifactId>consul-solon-plugin</artifactId>
+    <artifactId>solon-lib</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
+        <!-- 内核 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.cloud</artifactId>
+            <artifactId>solon</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.ecwid.consul</groupId>
-            <artifactId>consul-api</artifactId>
-            <version>${consul.ver}</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.github.wujiuye/qps-helper -->
-        <dependency>
-            <groupId>com.github.wujiuye</groupId>
-            <artifactId>qps-helper</artifactId>
-            <version>1.1.1-RELEASE</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.8.2</version>
-        </dependency>
-
+        <!-- 提供事务支持 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami.channel.http.okhttp</artifactId>
-            <scope>test</scope>
+            <artifactId>solon.extend.data</artifactId>
         </dependency>
+
+        <!-- 加强的动态代理支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami.coder.snack3</artifactId>
-            <scope>test</scope>
+            <artifactId>solon.extend.aspect</artifactId>
         </dependency>
+
+        <!-- 验证扩展组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-api</artifactId>
-            <scope>test</scope>
+            <artifactId>solon.extend.validation</artifactId>
+        </dependency>
+
+        <!-- Json序列化支持组件 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.serialization.snack3</artifactId>
+        </dependency>
+
+        <!-- yml配置支持组件 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.properties.yaml</artifactId>
         </dependency>
     </dependencies>
 

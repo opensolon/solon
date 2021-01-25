@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.2.26</version>
+        <version>1.2.27</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -15,10 +15,9 @@
     <packaging>jar</packaging>
 
     <dependencies>
-        <!-- 内核 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
+            <artifactId>solon-lib</artifactId>
         </dependency>
 
         <!-- Http 启动器 -->
@@ -31,36 +30,6 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.extend.staticfiles</artifactId>
-        </dependency>
-
-        <!-- 提供事务支持 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.data</artifactId>
-        </dependency>
-
-        <!-- 加强的动态代理支持组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.aspect</artifactId>
-        </dependency>
-
-        <!-- 验证扩展组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.validation</artifactId>
-        </dependency>
-
-        <!-- Json序列化支持组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.snack3</artifactId>
-        </dependency>
-
-        <!-- yml配置支持组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.properties.yaml</artifactId>
         </dependency>
     </dependencies>
 
