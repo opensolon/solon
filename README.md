@@ -62,7 +62,7 @@ public class App{
 | org.noear:solon-lib | 快速开发基础集成包 |
 | org.noear:solon-api | solon-lib + http boot；快速开发接口应用 |
 | org.noear:solon-web | solon-api + freemarker + sessionstate；快速开发WEB应用 |
-| org.noear:solon-rpc | solon-api + nami client；快速开发RPC应用 |
+| org.noear:solon-rpc | solon-api + nami；快速开发RPC应用 |
 | org.noear:solon-cloud | solon-rpc + nacos；快速开发微服务应用 |
 
 ### 附1：与其它框架的异同性
