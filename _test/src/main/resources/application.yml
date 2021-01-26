@@ -11,6 +11,8 @@ demo8.test:
 username: noear
 paasword: 1234
 
+solon.drift: 1
+
 solon.socketd:
   readBufferSize: "512"
   writeBufferSize: "128"

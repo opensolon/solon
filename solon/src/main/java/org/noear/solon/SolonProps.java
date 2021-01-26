@@ -61,7 +61,7 @@ public final class SolonProps extends Props {
 
         //2.2.加载活动配置
         String active = get("solon.profiles.active");
-        if(Utils.isNotEmpty(active)) {
+        if (Utils.isNotEmpty(active)) {
             loadAdd(Utils.getResource("application-" + active + ".properties"));
             loadAdd(Utils.getResource("application-" + active + ".yml"));
         }
@@ -75,14 +75,19 @@ public final class SolonProps extends Props {
         });
 
         isDebugMode = argx().getInt("debug") == 1;
-        isDriftMode = argx().getInt("drift") == 1;
-        isWhiteMode = argx().getInt("white",1) == 1;
+        isWhiteMode = argx().getInt("white", 1) == 1;
         isFilesMode = (sourceLocation.getPath().endsWith(".jar") == false);
 
         //4.标识debug模式
         if (isDebugMode()) {
             System.setProperty("debug", "1");
         }
+
+        String drift = this.args.get("drift");
+        if (Utils.isEmpty(drift)) {
+            drift = get("solon.drift");
+        }
+        isDriftMode = "1".equals(drift);
 
         //5.扩展文件夹
         extend = this.args.get("extend");
