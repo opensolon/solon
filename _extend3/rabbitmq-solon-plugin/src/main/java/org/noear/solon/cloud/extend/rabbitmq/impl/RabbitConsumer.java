@@ -31,7 +31,7 @@ public class RabbitConsumer {
      * 绑定
      */
     public void bind(Map<String, CloudEventObserverEntity> observerMap) throws IOException, TimeoutException {
-        channel = factory.newChannel();
+        channel = factory.getChannel();
         handler = new RabbitConsumeHandler(config, channel, observerMap);
 
         String queueName = RabbitmqProps.instance.getEventQueue();

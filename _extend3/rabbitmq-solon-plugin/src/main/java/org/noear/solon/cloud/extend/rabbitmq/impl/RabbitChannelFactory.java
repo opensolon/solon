@@ -52,11 +52,23 @@ public class RabbitChannelFactory {
         return config;
     }
 
-    public Connection newConnection() throws IOException, TimeoutException {
-        return connectionFactory.newConnection();
+    private Connection connection;
+
+    public Connection getConnection() throws IOException, TimeoutException {
+        if (connection == null) {
+            connection = connectionFactory.newConnection();
+        }
+
+        return connection;
     }
 
-    public Channel newChannel() throws IOException, TimeoutException {
-        return newConnection().createChannel();
+    private Channel channel;
+
+    public Channel getChannel() throws IOException, TimeoutException {
+        if (channel == null) {
+            channel = getConnection().createChannel();
+        }
+
+        return channel;
     }
 }

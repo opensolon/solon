@@ -31,7 +31,7 @@ public class RabbitProducer {
      * 绑定
      */
     public void bind() throws IOException, TimeoutException {
-        channel = factory.newChannel();
+        channel = factory.getChannel();
 
         //
         // 与生产者有关
