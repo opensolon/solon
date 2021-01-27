@@ -34,7 +34,7 @@
 <!--        <module>_demo/_demo.solon_mvc_jsp</module>-->
 <!--        <module>_demo/_demo.solon_tmp</module>-->
 
-        
+
         <module>_extend2/metrics-solon-plugin</module>
         <module>_extend2/smartdoc-solon-plugin</module>
 
