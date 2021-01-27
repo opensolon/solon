@@ -25,5 +25,6 @@ public @interface CloudConfig {
     /**
      * 自动刷新
      * */
+    @Note("非单例不需要使用自动刷新")
     boolean autoRefreshed() default false;
 }
