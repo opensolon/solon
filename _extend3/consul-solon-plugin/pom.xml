@@ -13,6 +13,11 @@
     <groupId>org.noear</groupId>
     <artifactId>consul-solon-plugin</artifactId>
 
+    <properties>
+        <consul.ver>1.4.5</consul.ver>
+    </properties>
+
+
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>

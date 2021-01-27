@@ -1,4 +1,4 @@
-package org.noear.solon.extend.mybatis;
+package org.noear.solon.extend.mybatis.annotation;
 
 import java.lang.annotation.*;
 

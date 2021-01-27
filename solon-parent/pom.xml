@@ -47,17 +47,14 @@
         <swagger.ver>1.5.13</swagger.ver>
 
         <slf4j.ver>1.7.30</slf4j.ver>
-        <consul.ver>1.4.5</consul.ver>
 
         <smartsocket.ver>1.5.4</smartsocket.ver>
         <netty.ver>4.1.48.Final</netty.ver>
         <rsocket.ver>1.1.0</rsocket.ver>
-        <hutool.ver>5.5.6</hutool.ver>
 
         <protostuff.ver>1.7.2</protostuff.ver>
 
         <springboot.ver>2.0.4.RELEASE</springboot.ver>
-        <nacos.ver>1.4.0</nacos.ver>
     </properties>
 
 

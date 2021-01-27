@@ -21,4 +21,9 @@ public @interface CloudConfig {
      * 分组 （对某些框架来讲，可能没用处）
      * */
     String group() default "";
+
+    /**
+     * 自动刷新
+     * */
+    boolean autoRefreshed() default false;
 }

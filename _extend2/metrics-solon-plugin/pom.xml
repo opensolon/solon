@@ -11,25 +11,28 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>nacos-solon-plugin</artifactId>
+    <artifactId>metrics-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
     <properties>
-        <nacos.ver>1.4.0</nacos.ver>
+        <metrics.ver>3.1.2</metrics.ver>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.cloud</artifactId>
+            <artifactId>solon</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.alibaba.nacos</groupId>
-            <artifactId>nacos-client</artifactId>
-            <version>${nacos.ver}</version>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+            <version>${metrics.ver}</version>
         </dependency>
-
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-annotation</artifactId>
+            <version>${metrics.ver}</version>
+        </dependency>
     </dependencies>
-
 </project>
