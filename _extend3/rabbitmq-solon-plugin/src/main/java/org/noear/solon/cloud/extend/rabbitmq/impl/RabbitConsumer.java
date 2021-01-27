@@ -64,6 +64,6 @@ public class RabbitConsumer {
         channel.basicQos(10);
 
         //4.设置消息代理接口
-        channel.basicConsume(queueName, false, handler);
+        channel.basicConsume(queueName, config.consume_autoAck, handler);
     }
 }

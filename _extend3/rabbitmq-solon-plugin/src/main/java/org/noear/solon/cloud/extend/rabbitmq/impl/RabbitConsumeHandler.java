@@ -1,9 +1,6 @@
 package org.noear.solon.cloud.extend.rabbitmq.impl;
 
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.*;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.core.event.EventBus;
@@ -28,7 +25,12 @@ public class RabbitConsumeHandler extends DefaultConsumer {
     @Override
     public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
         try {
-            String topic = (String) properties.getHeaders().get("topic");
+            LongString topic_ls = (LongString) properties.getHeaders().get("topic");
+            if(topic_ls == null){
+                return;
+            }
+
+            String topic = topic_ls.toString();
 
             CloudEventObserverEntity observer = observerMap.get(topic);
             boolean isOk = false;
