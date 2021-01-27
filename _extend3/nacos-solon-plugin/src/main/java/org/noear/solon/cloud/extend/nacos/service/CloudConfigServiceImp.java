@@ -21,7 +21,8 @@ import java.util.concurrent.Executor;
 /**
  * 配置服务适配
  *
- * @author noear 2021/1/15 created
+ * @author noear
+ * @since 1.2
  */
 public class CloudConfigServiceImp implements CloudConfigService {
     ConfigService real;

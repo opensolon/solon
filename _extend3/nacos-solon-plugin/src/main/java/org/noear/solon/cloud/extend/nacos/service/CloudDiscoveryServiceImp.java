@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * @author noear 2021/1/15 created
+ * @author noear
+ * @since 1.2
  */
 public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
     NamingService real;

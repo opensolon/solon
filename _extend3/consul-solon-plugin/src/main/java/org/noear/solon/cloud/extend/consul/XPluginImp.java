@@ -36,6 +36,10 @@ public class XPluginImp implements Plugin {
                 long interval = serviceImp.getRefreshInterval();
                 clientTimer.schedule(serviceImp, interval, interval);
             }
+
+            //1.1.加载配置
+            CloudClient.configLoad(ConsulProps.instance.getConfigLoadGroup(),
+                    ConsulProps.instance.getConfigLoadKey());
         }
 
         //2.登记发现服务
@@ -50,16 +54,8 @@ public class XPluginImp implements Plugin {
                 long interval = serviceImp.getRefreshInterval();
                 clientTimer.schedule(serviceImp, interval, interval);
             }
-        }
 
-        //3.加载配置
-        if (CloudClient.config() != null) {
-            CloudClient.configLoad(ConsulProps.instance.getConfigLoadGroup(),
-                    ConsulProps.instance.getConfigLoadKey());
-        }
-
-        //4.服务注册
-        if (CloudClient.discovery() != null) {
+            //2.1.服务注册
             CloudClient.discoveryPush();
         }
     }

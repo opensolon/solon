@@ -87,24 +87,31 @@ public class XPluginImp implements Plugin {
                 configServiceImp = new CloudConfigServiceImp();
                 CloudManager.register(configServiceImp);
 
-                if(Solon.cfg().isFilesMode()){
+                if (Solon.cfg().isFilesMode()) {
                     if (configServiceImp.getRefreshInterval() > 0) {
                         long interval = configServiceImp.getRefreshInterval();
                         clientTimer.schedule(configServiceImp, interval, interval);
                     }
                 }
+
+                //配置加载
+                CloudClient.configLoad(WaterProps.instance.getConfigLoadGroup(),
+                        WaterProps.instance.getConfigLoadKey());
             }
 
             if (WaterProps.instance.getDiscoveryEnable()) {
                 discoveryServiceImp = new CloudDiscoveryServiceImp();
                 CloudManager.register(discoveryServiceImp);
 
-                if(Solon.cfg().isFilesMode()){
+                if (Solon.cfg().isFilesMode()) {
                     if (discoveryServiceImp.getRefreshInterval() > 0) {
                         long interval = discoveryServiceImp.getRefreshInterval();
                         clientTimer.schedule(discoveryServiceImp, interval, interval);
                     }
                 }
+
+                //发现提交（即注册服务）
+                CloudClient.discoveryPush();
             }
 
             if(WaterProps.instance.getLogEnable()){
@@ -137,17 +144,6 @@ public class XPluginImp implements Plugin {
             app.http(WW.path_run_status, new HandlerStatus());
             app.http(WW.path_run_stop, new HandlerStop());
             app.http(WW.path_msg_receiver, new HandlerReceive(eventServiceImp));
-        }
-
-        if (CloudClient.config() != null) {
-            //配置加载
-            CloudClient.configLoad(WaterProps.instance.getConfigLoadGroup(),
-                    WaterProps.instance.getConfigLoadKey());
-        }
-
-        if (CloudClient.discovery() != null) {
-            //发现提交（即注册服务）
-            CloudClient.discoveryPush();
         }
     }
 

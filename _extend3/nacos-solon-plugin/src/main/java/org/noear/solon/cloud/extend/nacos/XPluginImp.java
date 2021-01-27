@@ -9,7 +9,8 @@ import org.noear.solon.cloud.extend.nacos.service.CloudConfigServiceImp;
 import org.noear.solon.cloud.extend.nacos.service.CloudDiscoveryServiceImp;
 
 /**
- * @author noear 2021/1/9 created
+ * @author noear
+ * @since 1.2
  */
 public class XPluginImp implements Plugin {
     @Override
@@ -21,22 +22,17 @@ public class XPluginImp implements Plugin {
         //1.登记配置服务
         if (NacosProps.instance.getConfigEnable()) {
             CloudManager.register(new CloudConfigServiceImp());
+
+            //1.1.加载配置
+            CloudClient.configLoad(NacosProps.instance.getConfigLoadGroup(),
+                    NacosProps.instance.getConfigLoadKey());
         }
 
         //2.登记发现服务
         if (NacosProps.instance.getDiscoveryEnable()) {
             CloudManager.register(new CloudDiscoveryServiceImp());
-        }
 
-
-        //3.加载配置
-        if (CloudClient.config() != null) {
-            CloudClient.configLoad(NacosProps.instance.getConfigLoadGroup(),
-                    NacosProps.instance.getConfigLoadKey());
-        }
-
-        //4.服务注册
-        if (CloudClient.discovery() != null) {
+            //2.1服务注册
             CloudClient.discoveryPush();
         }
     }
