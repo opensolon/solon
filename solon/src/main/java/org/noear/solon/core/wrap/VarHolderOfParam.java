@@ -31,6 +31,11 @@ public class VarHolderOfParam implements VarHolder {
     }
 
     @Override
+    public boolean isField() {
+        return false;
+    }
+
+    @Override
     public Class<?> getType() {
         return p.getType();
     }

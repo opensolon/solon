@@ -27,6 +27,11 @@ public class VarHolderOfField implements VarHolder {
         return fw.genericType;
     }
 
+    @Override
+    public boolean isField() {
+        return true;
+    }
+
     /**
      * 获取字段类型
      * */

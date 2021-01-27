@@ -21,20 +21,33 @@ public class CloudBeanInjector implements BeanInjector<CloudConfig> {
 
     @Override
     public void doInject(VarHolder varH, CloudConfig anno) {
+        if (CloudClient.config() == null) {
+            return;
+        }
+
         Object val2 = build(varH.getType(), anno);
 
         if (val2 != null) {
             varH.setValue(val2);
         }
+
+        if (varH.isField() && anno.autoRefreshed()) {
+            CloudClient.config().attention(anno.group(), anno.value(), (cfg) -> {
+                Object tmp = build0(varH.getType(), cfg);
+                if (tmp != null) {
+                    varH.setValue(val2);
+                }
+            });
+        }
     }
 
     public Object build(Class<?> type, CloudConfig anno) {
-        if (CloudClient.config() == null) {
-            return null;
-        }
-
         Config cfg = CloudClient.config().pull(anno.group(), anno.value());
 
+        return build0(type, cfg);
+    }
+
+    private Object build0(Class<?> type, Config cfg) {
         if (cfg == null || cfg.value() == null) {
             return null;
         }

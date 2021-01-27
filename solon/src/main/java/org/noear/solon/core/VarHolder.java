@@ -21,6 +21,11 @@ public interface VarHolder {
     ParameterizedType getGenericType();
 
     /**
+     * 是否为字段
+     * */
+    boolean isField();
+
+    /**
      * 类型
      */
     Class<?> getType();
