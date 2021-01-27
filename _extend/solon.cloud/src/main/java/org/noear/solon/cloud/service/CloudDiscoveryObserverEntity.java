@@ -3,6 +3,7 @@ package org.noear.solon.cloud.service;
 
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
+import org.noear.solon.core.event.EventBus;
 
 /**
  * @author noear
@@ -21,6 +22,10 @@ public class CloudDiscoveryObserverEntity implements CloudDiscoveryHandler {
 
     @Override
     public void handler(Discovery discovery) {
-        handler.handler(discovery);
+        try {
+            handler.handler(discovery);
+        } catch (Throwable ex) {
+            EventBus.push(ex);
+        }
     }
 }
