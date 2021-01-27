@@ -53,7 +53,6 @@ public class RabbitChannelFactory {
     }
 
     private Connection connection;
-
     public Connection getConnection() throws IOException, TimeoutException {
         if (connection == null) {
             connection = connectionFactory.newConnection();
@@ -63,7 +62,6 @@ public class RabbitChannelFactory {
     }
 
     private Channel channel;
-
     public Channel getChannel() throws IOException, TimeoutException {
         if (channel == null) {
             channel = getConnection().createChannel();
