@@ -25,17 +25,16 @@ public class CloudBeanInjector implements BeanInjector<CloudConfig> {
             return;
         }
 
-        Object val2 = build(varH.getType(), anno);
-
-        if (val2 != null) {
-            varH.setValue(val2);
+        Object tmp1 = build(varH.getType(), anno);
+        if (tmp1 != null) {
+            varH.setValue(tmp1);
         }
 
         if (varH.isField() && anno.autoRefreshed()) {
             CloudClient.config().attention(anno.group(), anno.value(), (cfg) -> {
-                Object tmp = build0(varH.getType(), cfg);
-                if (tmp != null) {
-                    varH.setValue(val2);
+                Object tmp2 = build0(varH.getType(), cfg);
+                if (tmp2 != null) {
+                    varH.setValue(tmp2);
                 }
             });
         }
@@ -46,6 +45,7 @@ public class CloudBeanInjector implements BeanInjector<CloudConfig> {
 
         return build0(type, cfg);
     }
+
 
     private Object build0(Class<?> type, Config cfg) {
         if (cfg == null || cfg.value() == null) {
