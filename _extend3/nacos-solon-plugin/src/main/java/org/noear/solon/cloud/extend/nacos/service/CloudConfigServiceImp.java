@@ -118,6 +118,8 @@ public class CloudConfigServiceImp implements CloudConfigService {
             group = Solon.cfg().appGroup();
         }
 
+        observerMap.put(observer, new CloudConfigObserverEntity(group, key, observer));
+
         try {
             group = groupReview(group);
             real.addListener(key, group, new Listener() {
