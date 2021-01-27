@@ -173,15 +173,12 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
             }
         }
 
-        for (Map.Entry<CloudConfigHandler, CloudConfigObserverEntity> kv : observerMap.entrySet()) {
-            CloudConfigObserverEntity entity = kv.getValue();
-
-            String cfgKey = entity.group + "/" + entity.key;
-            Config cfg = cfgTmp.get(cfgKey);
-
-            if (cfg != null) {
-                entity.handler(cfg);
-            }
+        for (Config cfg2 : cfgTmp.values()) {
+            observerMap.forEach((k, v) -> {
+                if (cfg2.group().equals(v.group) && cfg2.key().equals(v.key)) {
+                    v.handler(cfg2);
+                }
+            });
         }
     }
 }
