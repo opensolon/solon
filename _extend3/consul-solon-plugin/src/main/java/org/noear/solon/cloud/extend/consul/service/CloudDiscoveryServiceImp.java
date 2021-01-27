@@ -16,6 +16,7 @@ import org.noear.solon.cloud.service.CloudDiscoveryService;
 import org.noear.solon.cloud.extend.consul.ConsulProps;
 import org.noear.solon.cloud.extend.consul.detector.*;
 import org.noear.solon.cloud.utils.IntervalUtils;
+import org.noear.solon.core.event.EventBus;
 
 import java.util.*;
 
@@ -164,6 +165,14 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
      * */
     @Override
     public void run() {
+        try {
+            run0();
+        } catch (Throwable ex) {
+            EventBus.push(ex);
+        }
+    }
+
+    private void run0() {
         Map<String,Discovery> discoveryTmp = new HashMap<>();
         Response<Map<String, Service>> services = real.getAgentServices();
 

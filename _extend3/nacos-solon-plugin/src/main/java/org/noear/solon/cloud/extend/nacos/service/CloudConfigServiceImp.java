@@ -11,6 +11,7 @@ import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
 import org.noear.solon.cloud.extend.nacos.NacosProps;
+import org.noear.solon.core.event.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -118,7 +119,8 @@ public class CloudConfigServiceImp implements CloudConfigService {
             group = Solon.cfg().appGroup();
         }
 
-        observerMap.put(observer, new CloudConfigObserverEntity(group, key, observer));
+        CloudConfigObserverEntity entity = new CloudConfigObserverEntity(group, key, observer);
+        observerMap.put(observer, entity);
 
         try {
             group = groupReview(group);
@@ -130,7 +132,7 @@ public class CloudConfigServiceImp implements CloudConfigService {
 
                 @Override
                 public void receiveConfigInfo(String value) {
-                    observer.handler(new Config(key, value, 0));
+                    entity.handler(new Config(key, value, 0));
                 }
             });
         } catch (NacosException ex) {

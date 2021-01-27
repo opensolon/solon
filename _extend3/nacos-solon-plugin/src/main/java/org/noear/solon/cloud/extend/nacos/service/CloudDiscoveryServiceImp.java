@@ -9,6 +9,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
+import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
 import org.noear.solon.cloud.extend.nacos.NacosProps;
 
@@ -143,18 +144,19 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
             group = Solon.cfg().appGroup();
         }
 
-        String group2 = group;
+        CloudDiscoveryObserverEntity entity = new CloudDiscoveryObserverEntity(group,service, observer);
+
         try {
             if (TextUtils.isEmpty(group)) {
                 real.subscribe(service, (event) -> {
-                    Discovery discovery = find(group2, service);
-                    observer.handler(discovery);
+                    Discovery discovery = find(entity.group, service);
+                    entity.handler(discovery);
                 });
 
             } else {
                 real.subscribe(service, group, (event) -> {
-                    Discovery discovery = find(group2, service);
-                    observer.handler(discovery);
+                    Discovery discovery = find(entity.group, service);
+                    entity.handler(discovery);
                 });
 
             }

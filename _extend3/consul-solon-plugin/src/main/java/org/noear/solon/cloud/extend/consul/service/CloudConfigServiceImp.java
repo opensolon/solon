@@ -10,6 +10,7 @@ import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
 import org.noear.solon.cloud.utils.IntervalUtils;
 import org.noear.solon.cloud.extend.consul.ConsulProps;
+import org.noear.solon.core.event.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -142,6 +143,14 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
 
     @Override
     public void run() {
+        try {
+            run0();
+        } catch (Throwable ex) {
+            EventBus.push(ex);
+        }
+    }
+
+    private void run0(){
         for (Map.Entry<CloudConfigHandler, CloudConfigObserverEntity> kv : observerMap.entrySet()) {
             CloudConfigObserverEntity entity = kv.getValue();
 
