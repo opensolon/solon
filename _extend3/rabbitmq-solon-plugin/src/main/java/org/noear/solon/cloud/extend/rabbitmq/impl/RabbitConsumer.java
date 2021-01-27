@@ -1,9 +1,6 @@
 package org.noear.solon.cloud.extend.rabbitmq.impl;
 
 import com.rabbitmq.client.Channel;
-import org.noear.solon.Solon;
-import org.noear.solon.Utils;
-import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 
 import java.io.IOException;
@@ -16,15 +13,17 @@ import java.util.concurrent.TimeoutException;
  * @since 1.3
  */
 public class RabbitConsumer {
-    private RabbitConfig config;
+    private RabbitConfig cfg;
     private Channel channel;
     private RabbitChannelFactory factory;
     private RabbitConsumeHandler handler;
+    private RabbitProducer producer;
 
-    public RabbitConsumer(RabbitChannelFactory factory) {
-        super();
-        this.config = factory.getConfig();
+
+    public RabbitConsumer(RabbitProducer producer,RabbitChannelFactory factory) {
+        this.cfg = factory.getConfig();
         this.factory = factory;
+        this.producer = producer;
     }
 
     /**
@@ -32,38 +31,59 @@ public class RabbitConsumer {
      */
     public void bind(Map<String, CloudEventObserverEntity> observerMap) throws IOException, TimeoutException {
         channel = factory.getChannel();
-        handler = new RabbitConsumeHandler(config, channel, observerMap);
+        handler = new RabbitConsumeHandler(producer, cfg, channel, observerMap);
 
-        String queueName = RabbitmqProps.instance.getEventQueue();
+        Map<String, Object> args = new HashMap<>();
 
-        if (Utils.isEmpty(queueName)) {
-            queueName = Solon.cfg().appGroup() + "_" + Solon.cfg().appName();
-        }
+        Map<String, Object> args_retry = new HashMap<>();
+        args_retry.put("x-message-ttl", 10000);
+        args_retry.put("x-dead-letter-exchange", cfg.exchangeName);
+        args_retry.put("x-dead-letter-routing-key", cfg.queue_retry);
 
-        Map<String, Object> arguments = new HashMap<>();
 
+        //1.申明同时接收数量
+        channel.basicQos(10);
+
+        //2.申明队列
+        queueDeclareAndBind(cfg.queue_normal, args, observerMap);
+        queueDeclareReady(cfg.queue_ready, args, observerMap);
+        queueDeclareRetry(cfg.queue_retry, args_retry, observerMap);
+        queueDeclareAndBind(cfg.queue_dead, args, observerMap);
+    }
+
+    private void queueDeclareReady(String queueName, Map<String, Object> args, Map<String, CloudEventObserverEntity> observerMap) throws IOException {
         //1.声明队列 (队列名, 是否持久化, 是否排他, 是否自动删除, 队列属性);
         //String queue, boolean durable, boolean exclusive, boolean autoDelete, Map<String, Object> arguments
-        channel.queueDeclare(queueName,
-                config.rabbit_durable,
-                config.consume_exclusive,
-                config.rabbit_autoDelete,
-                arguments);
+        channel.queueDeclare(queueName, cfg.durable, cfg.exclusive, cfg.autoDelete, args);
+
+        channel.queueBind(queueName, cfg.exchangeName, cfg.queue_ready, args);
+    }
+
+    private void queueDeclareAndBind(String queueName, Map<String, Object> args, Map<String, CloudEventObserverEntity> observerMap) throws IOException {
+        //1.声明队列 (队列名, 是否持久化, 是否排他, 是否自动删除, 队列属性);
+        //String queue, boolean durable, boolean exclusive, boolean autoDelete, Map<String, Object> arguments
+        channel.queueDeclare(queueName, cfg.durable, cfg.exclusive, cfg.autoDelete, args);
 
         //2.将队列Binding到交换机上 (队列名, 交换机名, Routing key, 绑定属性);
         //String queue, String exchange, String routingKey, Map<String, Object> arguments
         for (String topic : observerMap.keySet()) {
-            channel.queueBind(queueName,
-                    config.exchangeName,
-                    topic,
-                    arguments);
+            channel.queueBind(queueName, cfg.exchangeName, topic, args);
         }
 
+        //3.设置消息代理接口
+        channel.basicConsume(queueName, handler);
+    }
 
-        //3.申明同时接收数量
-        channel.basicQos(10);
+    private void queueDeclareRetry(String queueName, Map<String, Object> args, Map<String, CloudEventObserverEntity> observerMap) throws IOException {
+        //1.声明队列 (队列名, 是否持久化, 是否排他, 是否自动删除, 队列属性);
+        //String queue, boolean durable, boolean exclusive, boolean autoDelete, Map<String, Object> arguments
+        channel.queueDeclare(queueName, cfg.durable, cfg.exclusive, cfg.autoDelete, args);
 
-        //4.设置消息代理接口
-        channel.basicConsume(queueName, config.consume_autoAck, handler);
+        //2.将队列Binding到交换机上 (队列名, 交换机名, Routing key, 绑定属性);
+        //String queue, String exchange, String routingKey, Map<String, Object> arguments
+        channel.queueBind(queueName, cfg.exchangeName, cfg.queue_retry, args);
+
+        //3.设置消息代理接口
+        channel.basicConsume(queueName, handler);
     }
 }

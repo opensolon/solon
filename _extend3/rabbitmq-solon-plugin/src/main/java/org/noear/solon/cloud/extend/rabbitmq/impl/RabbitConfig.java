@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.extend.rabbitmq.impl;
 
 import com.rabbitmq.client.BuiltinExchangeType;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
 
@@ -27,26 +28,31 @@ public class RabbitConfig {
     /**
      * 是否持久化
      */
-    public boolean rabbit_durable = true;
+    public boolean durable = true;
     /**
      * 是否自动删除
      */
-    public boolean rabbit_autoDelete = false;
+    public boolean autoDelete = false;
     /**
      * 是否为内部
      */
-    public boolean rabbit_internal = false;
+    public boolean internal = false;
 
-    public boolean rabbit_mandatory = false;
+    /**
+     * 标志告诉服务器至少将该消息route到一个队列中，否则将消息返还给生产者
+     * */
+    public boolean mandatory = false;
+
+    /**
+     * 标志告诉服务器如果该消息关联的queue上有消费者，则马上将消息投递给它；
+     * 如果所有queue都没有消费者，直接把消息返还给生产者，不用将消息入队列等待消费者了。
+     * */
+    public boolean immediate = false;
 
     /**
      * 是否排它
      */
-    public boolean consume_exclusive = false;
-    /**
-     * 消息时，是否自动应答
-     */
-    public boolean consume_autoAck = false;
+    public boolean exclusive = false;
 
     /**
      * 服务器地址
@@ -61,10 +67,26 @@ public class RabbitConfig {
      */
     public String password;
 
+    public  String queue_normal;
+    public  String queue_ready;
+    public  String queue_retry;
+    public  String queue_dead;
+
     public RabbitConfig() {
         exchangeName = RabbitmqProps.instance.getEventBroker();
         if (Utils.isEmpty(exchangeName)) {
             exchangeName = "DEFAULT";
         }
+
+        String queueName = RabbitmqProps.instance.getEventQueue();
+
+        if (Utils.isEmpty(queueName)) {
+            queueName = Solon.cfg().appGroup() + "_" + Solon.cfg().appName();
+        }
+
+        queue_normal = queueName + "@normal";
+        queue_ready = queueName + "@ready";
+        queue_retry = queueName + "@retry";
+        queue_dead = queueName + "@dead";
     }
 }

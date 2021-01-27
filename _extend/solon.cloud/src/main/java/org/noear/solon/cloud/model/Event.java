@@ -10,18 +10,13 @@ import java.util.Date;
  */
 public class Event {
     /**
-     * 组
-     * */
-    private final String group;
-
-    /**
      * 主题
      * */
-    private final String topic;
+    private  String topic;
     /**
      * 内容
      * */
-    private final String content;
+    private  String content;
 
     /**
      * 事件唯一标识
@@ -41,20 +36,15 @@ public class Event {
     /**
      * 已派发次数（接收时专用）
      * */
-    private transient int times;
+    private int times;
+
+    public Event(){
+
+    }
 
     public Event(String topic, String content) {
-        this("", topic, content);
-    }
-
-    public Event(String group, String topic, String content){
-        this.group = group;
         this.topic = topic;
         this.content = content;
-    }
-
-    public String group() {
-        return group;
     }
 
     public String topic() {

@@ -34,7 +34,7 @@ public class CloudEventServiceImp implements CloudEventService {
             RabbitChannelFactory factory = new RabbitChannelFactory(config);
 
             producer = new RabbitProducer(factory);
-            consumer = new RabbitConsumer(factory);
+            consumer = new RabbitConsumer(producer, factory);
 
             producer.bind();
         } catch (Exception ex) {
@@ -46,7 +46,8 @@ public class CloudEventServiceImp implements CloudEventService {
     public boolean publish(Event event) {
         // 设置消息属性 发布消息 (exchange:交换机名, Routing key, props:消息属性, body:消息体);
         try {
-            return producer.publish(event);
+            producer.publish(event);
+            return true;
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
