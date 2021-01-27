@@ -20,10 +20,6 @@ public class RabbitChannelFactory {
 
 
     public RabbitChannelFactory(RabbitConfig cfg) {
-        if (config.server.contains(":") == false) {
-            throw new RuntimeException("RabbitX:Properties error the server parameter!");
-        }
-
         config = cfg;
 
         String host = config.server.split(":")[0];
