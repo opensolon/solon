@@ -16,6 +16,7 @@ import java.util.Properties;
  * @since 1.2
  */
 public class Config {
+    private String group;
     /**
      * 配置键
      */
@@ -27,14 +28,19 @@ public class Config {
 
     /**
      * 版本号
-     * */
+     */
     private long version;
 
 
-    public Config(String key, String value, long version) {
+    public Config(String group, String key, String value, long version) {
+        this.group = group;
         this.key = key;
         this.value = value;
         this.version = version;
+    }
+
+    public String group() {
+        return group;
     }
 
     public String key() {
@@ -52,7 +58,7 @@ public class Config {
 
         return this;
     }
-    
+
     public long version() {
         return version;
     }

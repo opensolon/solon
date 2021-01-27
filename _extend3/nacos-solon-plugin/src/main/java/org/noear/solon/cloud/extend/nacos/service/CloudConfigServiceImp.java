@@ -61,7 +61,7 @@ public class CloudConfigServiceImp implements CloudConfigService {
         try {
             group = groupReview(group);
             String value = real.getConfig(key, group, 3000);
-            return new Config(key, value, 0);
+            return new Config(group, key, value, 0);
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
         }
@@ -132,7 +132,7 @@ public class CloudConfigServiceImp implements CloudConfigService {
 
                 @Override
                 public void receiveConfigInfo(String value) {
-                    entity.handler(new Config(key, value, 0));
+                    entity.handler(new Config(entity.group, entity.key, value, 0));
                 }
             });
         } catch (NacosException ex) {

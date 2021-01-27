@@ -67,7 +67,7 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
         if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
 
-            if(Utils.isEmpty(group)){
+            if (Utils.isEmpty(group)) {
                 group = DEFAULT_GROUP;
             }
         }
@@ -80,7 +80,7 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
             Config oldV = configMap.get(cfgKey);
 
             if (oldV == null) {
-                oldV = new Config(key, newV.getDecodedValue(), newV.getModifyIndex());
+                oldV = new Config(group, key, newV.getDecodedValue(), newV.getModifyIndex());
                 configMap.put(cfgKey, oldV);
             } else if (newV.getModifyIndex() > oldV.version()) {
                 oldV.value(newV.getDecodedValue(), newV.getModifyIndex());
@@ -98,7 +98,7 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
         if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
 
-            if(Utils.isEmpty(group)){
+            if (Utils.isEmpty(group)) {
                 group = DEFAULT_GROUP;
             }
         }
@@ -113,7 +113,7 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
         if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
 
-            if(Utils.isEmpty(group)){
+            if (Utils.isEmpty(group)) {
                 group = DEFAULT_GROUP;
             }
         }
@@ -133,7 +133,7 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
         if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
 
-            if(Utils.isEmpty(group)){
+            if (Utils.isEmpty(group)) {
                 group = DEFAULT_GROUP;
             }
         }
@@ -150,7 +150,7 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
         }
     }
 
-    private void run0(){
+    private void run0() {
         for (Map.Entry<CloudConfigHandler, CloudConfigObserverEntity> kv : observerMap.entrySet()) {
             CloudConfigObserverEntity entity = kv.getValue();
 
@@ -162,7 +162,7 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
                 Config oldV = configMap.get(cfgKey);
 
                 if (oldV == null) {
-                    oldV = new Config(entity.key, newV.getDecodedValue(), newV.getModifyIndex());
+                    oldV = new Config(entity.group, entity.key, newV.getDecodedValue(), newV.getModifyIndex());
                     configMap.put(cfgKey, oldV);
                     entity.handler(oldV);
                 } else if (newV.getModifyIndex() > oldV.version()) {
