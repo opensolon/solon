@@ -19,10 +19,10 @@ public class RabbitConfig {
      * 交换器类型
      * <p>
      * Fanout Exchange：给所有队列发
-     * Direct Exchange：只给routingKey相关的队列发
-     * Topic Exchange：只给routingKey相关的队列发，但是支持路由键的模糊匹配（更适合事件总线）
+     * Direct Exchange：只给routingKey相关的队列发（更适合事件总线）
+     * Topic Exchange：只给routingKey相关的队列发，但是支持路由键的模糊匹配
      */
-    public BuiltinExchangeType exchangeType = BuiltinExchangeType.TOPIC;
+    public BuiltinExchangeType exchangeType = BuiltinExchangeType.DIRECT;
 
     /**
      * 是否持久化
