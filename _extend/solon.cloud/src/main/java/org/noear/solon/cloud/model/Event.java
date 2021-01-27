@@ -41,7 +41,7 @@ public class Event {
     /**
      * 已派发次数（接收时专用）
      * */
-    private int times;
+    private transient int times;
 
     public Event(String topic, String content) {
         this("", topic, content);

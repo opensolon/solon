@@ -38,8 +38,12 @@ public class CloudProps {
     private String EVENT_ENABLE = "solon.cloud.@@.event.enable";
     private String EVENT_SERVER = "solon.cloud.@@.event.server";
     private String EVENT_HOSTNAME = "solon.cloud.@@.event.hostname";
+    private String EVENT_BROKER = "solon.cloud.@@.event.broker";
     private String EVENT_QUEUE = "solon.cloud.@@.event.queue";
     private String EVENT_SEAL = "solon.cloud.@@.event.seal";
+
+
+
 
     //日志服务相关
     private String LOG_ENABLE = "solon.cloud.@@.log.enable";
@@ -73,6 +77,7 @@ public class CloudProps {
         EVENT_ENABLE = EVENT_ENABLE.replace("@@", frame);
         EVENT_SERVER = EVENT_SERVER.replace("@@", frame);
         EVENT_HOSTNAME = EVENT_HOSTNAME.replace("@@", frame);
+        EVENT_BROKER = EVENT_BROKER.replace("@@", frame);
         EVENT_QUEUE = EVENT_QUEUE.replace("@@", frame);
         EVENT_SEAL = EVENT_SEAL.replace("@@", frame);
 
@@ -190,6 +195,9 @@ public class CloudProps {
 
     public String getEventHostname() {
         return Solon.cfg().get(EVENT_HOSTNAME);
+    }
+    public String getEventBroker() {
+        return Solon.cfg().get(EVENT_BROKER);
     }
     public String getEventSeal() {
         return Solon.cfg().get(EVENT_SEAL);
