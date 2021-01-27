@@ -9,33 +9,43 @@ import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.core.event.EventBus;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * @author noear
  * @since 1.3
  */
 public class RabbitConsumeHandler extends DefaultConsumer {
-    CloudEventObserverEntity observer;
+    Map<String, CloudEventObserverEntity> observerMap;
     RabbitConfig config;
 
-    public RabbitConsumeHandler(RabbitConfig config, Channel channel, CloudEventObserverEntity observer) {
+    public RabbitConsumeHandler(RabbitConfig config, Channel channel, Map<String, CloudEventObserverEntity> observerMap) {
         super(channel);
         this.config = config;
-        this.observer = observer;
+        this.observerMap = observerMap;
     }
 
     @Override
     public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
         try {
-            Event event = new Event(observer.topic, new String(body));
+            String topic = (String) properties.getHeaders().get("topic");
 
-            observer.handler(event);
+            CloudEventObserverEntity observer = observerMap.get(topic);
+            boolean isOk = false;
 
-            if (config.consume_autoAck == false) {
+            if (observer != null) {
+                Event event = new Event(topic, new String(body));
+
+                //如果
+                isOk = observer.handler(event);
+            }
+
+            if (config.consume_autoAck == false && isOk) {
                 //
                 //手动应签模式
                 //
                 // basicAck(long deliveryTag, boolean multiple)
+
                 getChannel().basicAck(envelope.getDeliveryTag(), false);
             }
 

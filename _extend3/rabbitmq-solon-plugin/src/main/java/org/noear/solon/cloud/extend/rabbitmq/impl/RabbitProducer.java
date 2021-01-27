@@ -8,6 +8,7 @@ import org.noear.solon.cloud.model.Event;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -20,28 +21,16 @@ public class RabbitProducer {
     private RabbitConfig config;
     private Channel channel;
     private RabbitChannelFactory factory;
-    private final AMQP.BasicProperties rabbit_props;
 
     public RabbitProducer(RabbitChannelFactory factory) {
         this.config = factory.getConfig();
         this.factory = factory;
-
-        rabbit_props = new AMQP.BasicProperties().builder()
-                .deliveryMode(2)
-                .contentType("UTF-8")
-                .build();
-
-        try {
-            bind0();
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
-        }
     }
 
     /**
      * 绑定
      */
-    private void bind0() throws IOException, TimeoutException {
+    public void bind() throws IOException, TimeoutException {
         channel = factory.newChannel();
 
         //
@@ -62,10 +51,19 @@ public class RabbitProducer {
     public boolean publish(Event event) throws IOException {
         //String exchange, String routingKey, boolean mandatory, BasicProperties props, byte[] body
 
+        Map<String, Object> headers = new HashMap<>();
+        headers.put("topic", event.topic());
+        headers.put("tags", event.tags());
+
+        AMQP.BasicProperties rabbit_props = new AMQP.BasicProperties().builder()
+                .deliveryMode(2)
+                .contentEncoding("UTF-8")
+                .headers(headers)
+                .build();
+
         if (event.scheduled() != null) {
 
         } else {
-
 
             //
             // 队列名，注意与消费者的关系
