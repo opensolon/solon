@@ -151,6 +151,7 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
     }
 
     private void run0() {
+        Map<String, Config> cfgTmp = new HashMap<>();
         for (Map.Entry<CloudConfigHandler, CloudConfigObserverEntity> kv : observerMap.entrySet()) {
             CloudConfigObserverEntity entity = kv.getValue();
 
@@ -164,11 +165,22 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
                 if (oldV == null) {
                     oldV = new Config(entity.group, entity.key, newV.getDecodedValue(), newV.getModifyIndex());
                     configMap.put(cfgKey, oldV);
-                    entity.handler(oldV);
+                    cfgTmp.put(cfgKey, oldV);
                 } else if (newV.getModifyIndex() > oldV.version()) {
                     oldV.value(newV.getDecodedValue(), newV.getModifyIndex());
-                    entity.handler(oldV);
+                    cfgTmp.put(cfgKey, oldV);
                 }
+            }
+        }
+
+        for (Map.Entry<CloudConfigHandler, CloudConfigObserverEntity> kv : observerMap.entrySet()) {
+            CloudConfigObserverEntity entity = kv.getValue();
+
+            String cfgKey = entity.group + "/" + entity.key;
+            Config cfg = cfgTmp.get(cfgKey);
+
+            if (cfg != null) {
+                entity.handler(cfg);
             }
         }
     }

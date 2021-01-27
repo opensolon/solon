@@ -40,6 +40,14 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
 
     @Override
     public void run() {
+        try {
+            run0();
+        } catch (Throwable ex) {
+            EventBus.push(ex);
+        }
+    }
+
+    private void run0() {
         if (Solon.cfg().isFilesMode()) {
             Set<String> loadGroups = new LinkedHashSet<>();
 
