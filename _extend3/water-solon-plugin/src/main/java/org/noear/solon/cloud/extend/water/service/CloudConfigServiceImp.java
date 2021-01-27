@@ -163,7 +163,7 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
         if (config == null) {
             config = new Config(group, key, cfg.value, cfg.lastModified);
         } else {
-            if (cfg.lastModified > config.version()) {
+            if (config.version() > cfg.lastModified) {
                 return;
             } else {
                 config.value(cfg.value, cfg.lastModified);
