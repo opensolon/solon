@@ -2,6 +2,7 @@ package org.noear.solon.cloud.service;
 
 import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.model.Config;
+import org.noear.solon.core.event.EventBus;
 
 /**
  * @author noear
@@ -20,6 +21,10 @@ public class CloudConfigObserverEntity implements CloudConfigHandler {
 
     @Override
     public void handler(Config config) {
-        handler.handler(config);
+        try {
+            handler.handler(config);
+        } catch (Throwable ex) {
+            EventBus.push(ex);
+        }
     }
 }
