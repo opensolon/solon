@@ -6,7 +6,6 @@ import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.cloud.utils.ExpirationUtils;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.handle.Context;
 
 import java.io.IOException;
 import java.util.Map;
