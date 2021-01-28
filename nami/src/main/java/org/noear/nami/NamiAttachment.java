@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public final class NamiAttachment {
     private Map<String, String> headers = new LinkedHashMap<>();
-    private boolean autoRemove;
+    private boolean autoRemove = true;
 
     /**
      * 设置头信息

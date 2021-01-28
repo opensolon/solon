@@ -54,9 +54,5 @@ public class XPluginImp implements Plugin {
 
             varH.setValue(obj);
         });
-
-        app.after("**", (c) -> {
-            NamiAttachment.currentRemove();
-        });
     }
 }
