@@ -104,8 +104,10 @@ public class CloudEventServiceImp implements CloudEventService, MessageListenerC
         initProducer();
 
         try {
+            String topic = event.topic().replace(".","-");
+
             Message message = new Message(
-                    event.topic(),
+                    topic,
                     event.tags(),
                     event.key(),
                     event.content().getBytes(StandardCharsets.UTF_8));
@@ -130,6 +132,8 @@ public class CloudEventServiceImp implements CloudEventService, MessageListenerC
         if (observerMap.containsKey(topic)) {
             return;
         }
+
+        topic = topic.replace(".", "-");
 
         observerMap.put(topic, new CloudEventObserverEntity(level, group, topic, observer));
     }
