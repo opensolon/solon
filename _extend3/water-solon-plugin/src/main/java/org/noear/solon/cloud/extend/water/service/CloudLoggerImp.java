@@ -27,7 +27,7 @@ public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
 
     public CloudLoggerImp(Class<?> clz) {
         super(clz);
-        this.name = WaterProps.instance.getLogLogger();
+        this.name = WaterProps.instance.getLogDefault();
 
         if (Utils.isEmpty(name)) {
             System.err.println("[WARN] Solon.cloud no default logger is configured");
