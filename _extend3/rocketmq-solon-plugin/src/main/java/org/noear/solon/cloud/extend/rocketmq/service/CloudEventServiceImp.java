@@ -13,6 +13,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
+import org.noear.solon.cloud.extend.rocketmq.impl.MessageUtil;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.cloud.service.CloudEventService;
@@ -104,13 +105,7 @@ public class CloudEventServiceImp implements CloudEventService, MessageListenerC
         initProducer();
 
         try {
-            String topic = event.topic().replace(".","-");
-
-            Message message = new Message(
-                    topic,
-                    event.tags(),
-                    event.key(),
-                    event.content().getBytes(StandardCharsets.UTF_8));
+            Message message = MessageUtil.buildNewMeaage(event);
 
             SendResult send = producer.send(message);
 
