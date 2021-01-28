@@ -51,8 +51,7 @@ public class CloudEventServiceImp implements CloudEventService {
                 event.key(Utils.guid());
             }
 
-            producer.publish(event);
-            return true;
+            return producer.publish(event);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

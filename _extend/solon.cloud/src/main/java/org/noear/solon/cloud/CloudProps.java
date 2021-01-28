@@ -40,8 +40,11 @@ public class CloudProps {
     private String EVENT_HOSTNAME = "solon.cloud.@@.event.hostname";
     private String EVENT_EXCHANGE = "solon.cloud.@@.event.exchange";
     private String EVENT_PREFETCH_COUNT = "solon.cloud.@@.event.prefetchCount";
+    private String EVENT_PUBLISH_TIMEOUT = "solon.cloud.@@.event.publishTimeout";
     private String EVENT_QUEUE = "solon.cloud.@@.event.queue";
     private String EVENT_SEAL = "solon.cloud.@@.event.seal";
+
+
 
 
 
@@ -80,6 +83,7 @@ public class CloudProps {
         EVENT_HOSTNAME = EVENT_HOSTNAME.replace("@@", frame);
         EVENT_EXCHANGE = EVENT_EXCHANGE.replace("@@", frame);
         EVENT_PREFETCH_COUNT = EVENT_PREFETCH_COUNT.replace("@@", frame);
+        EVENT_PUBLISH_TIMEOUT = EVENT_PUBLISH_TIMEOUT.replace("@@", frame);
         EVENT_QUEUE = EVENT_QUEUE.replace("@@", frame);
         EVENT_SEAL = EVENT_SEAL.replace("@@", frame);
 
@@ -203,6 +207,9 @@ public class CloudProps {
     }
     public int getEventPrefetchCount() {
         return Solon.cfg().getInt(EVENT_PREFETCH_COUNT,0);
+    }
+    public int getEventPublishTimeout() {
+        return Solon.cfg().getInt(EVENT_PUBLISH_TIMEOUT,3000);
     }
     public String getEventSeal() {
         return Solon.cfg().get(EVENT_SEAL);

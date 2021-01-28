@@ -4,6 +4,7 @@ import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.common.message.Message;
+import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
 import org.noear.solon.cloud.model.Event;
 
 /**
@@ -12,11 +13,12 @@ import org.noear.solon.cloud.model.Event;
  */
 public class RocketmqProducer {
     RocketmqConfig cfg;
-
+    int timeout;
     DefaultMQProducer producer;
 
-    public RocketmqProducer(RocketmqConfig config){
+    public RocketmqProducer(RocketmqConfig config) {
         cfg = config;
+        timeout = RocketmqProps.instance.getEventPublishTimeout();
     }
 
     private void init(){
@@ -29,10 +31,11 @@ public class RocketmqProducer {
                 return;
             }
 
+
             producer = new DefaultMQProducer(cfg.exchangeName);
             producer.setNamesrvAddr(cfg.server);
             //发送超时时间，默认3000 单位ms
-            producer.setSendMsgTimeout(3000);
+            producer.setSendMsgTimeout(timeout);
             //失败后重试2次
             producer.setRetryTimesWhenSendFailed(2);
 
@@ -41,6 +44,7 @@ public class RocketmqProducer {
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
+
         }
     }
 

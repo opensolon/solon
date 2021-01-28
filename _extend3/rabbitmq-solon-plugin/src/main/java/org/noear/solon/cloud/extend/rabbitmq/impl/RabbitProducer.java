@@ -4,6 +4,7 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import org.noear.snack.ONode;
+import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
 import org.noear.solon.cloud.model.Event;
 
 import java.io.IOException;
@@ -21,6 +22,7 @@ import java.util.concurrent.TimeoutException;
 public class RabbitProducer {
     private RabbitConfig config;
     private Channel channel;
+    private int timeout;
     private RabbitChannelFactory factory;
     private AMQP.BasicProperties eventPropsDefault;
 
@@ -28,6 +30,7 @@ public class RabbitProducer {
         this.config = factory.getConfig();
         this.factory = factory;
         this.eventPropsDefault = newEventProps().build();
+        this.timeout = RabbitmqProps.instance.getEventPublishTimeout();
     }
 
     public AMQP.BasicProperties.Builder newEventProps() {
@@ -50,9 +53,11 @@ public class RabbitProducer {
                 config.durable,
                 config.autoDelete,
                 config.internal, args);
+
+        channel.confirmSelect();
     }
 
-    public void publish(Event event, String topic, long ttl) throws IOException {
+    public boolean publish(Event event, String topic, long ttl) throws Exception {
         byte[] event_data = ONode.stringify(event).getBytes(StandardCharsets.UTF_8);
 
         AMQP.BasicProperties props;
@@ -63,24 +68,25 @@ public class RabbitProducer {
         }
 
         channel.basicPublish(config.exchangeName, topic, config.mandatory, props, event_data);
+        return channel.waitForConfirms(timeout);
     }
 
     /**
      * 发布事件
      */
-    public void publish(Event event) throws IOException {
+    public boolean publish(Event event) throws Exception {
         long ttl = 0;
         if (event.scheduled() != null) {
             ttl = event.scheduled().getTime() - System.currentTimeMillis();
         }
 
         if (ttl > 0) {
-            publish(event, config.queue_ready, 0);
+            return publish(event, config.queue_ready, 0);
         } else {
             if (config.exchangeType == BuiltinExchangeType.FANOUT) {
-                publish(event, "", 0);
+                return publish(event, "", 0);
             } else {
-                publish(event, event.topic(), 0);
+                return publish(event, event.topic(), 0);
             }
         }
     }
