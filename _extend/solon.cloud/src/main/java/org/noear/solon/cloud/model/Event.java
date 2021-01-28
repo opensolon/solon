@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Date;
  * @author noear
  * @since 1.2
  */
-public class Event {
+public class Event implements Serializable {
     /**
      * 主题
      * */
@@ -39,7 +40,7 @@ public class Event {
     private int times;
 
     public Event(){
-
+        //序列化需要
     }
 
     public Event(String topic, String content) {

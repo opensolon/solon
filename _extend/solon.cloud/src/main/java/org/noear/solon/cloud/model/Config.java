@@ -6,6 +6,7 @@ import org.noear.solon.core.PropsLoader;
 import org.noear.solon.core.wrap.ClassWrap;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Properties;
 
@@ -15,7 +16,7 @@ import java.util.Properties;
  * @author noear
  * @since 1.2
  */
-public class Config {
+public class Config implements Serializable {
     private String group;
     /**
      * 配置键
