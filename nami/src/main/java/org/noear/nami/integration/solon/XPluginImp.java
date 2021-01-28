@@ -4,7 +4,7 @@ import org.noear.nami.Nami;
 import org.noear.nami.NamiConfigurationDefault;
 import org.noear.nami.NamiException;
 import org.noear.nami.annotation.NamiClient;
-import org.noear.nami.common.InfoUtil;
+import org.noear.nami.common.InfoUtils;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
@@ -37,7 +37,7 @@ public class XPluginImp implements Plugin {
             if (Utils.isEmpty(anno.url()) && Utils.isEmpty(anno.name()) && anno.upstream().length == 0) {
                 throw new NamiException("@NamiClient configuration error!");
             } else {
-                System.err.println(InfoUtil.build(varH.getType(), anno));
+                System.err.println(InfoUtils.build(varH.getType(), anno));
             }
 
             Object obj = cached.get(anno);

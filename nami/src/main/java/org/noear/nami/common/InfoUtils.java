@@ -6,10 +6,10 @@ import org.noear.solon.Utils;
 /**
  * @author noear 2021/1/28 created
  */
-public class InfoUtil {
+public class InfoUtils {
     public static String build(Class<?> type, NamiClient anno) {
         StringBuilder buf = new StringBuilder();
-        buf.append("[Nami] Export Service ")
+        buf.append("[Nami] Bind the service ")
                 .append(type.getTypeName());
 
         if (Utils.isNotEmpty(anno.url())) {
