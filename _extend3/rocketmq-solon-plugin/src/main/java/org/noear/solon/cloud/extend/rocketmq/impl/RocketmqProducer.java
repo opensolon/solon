@@ -21,7 +21,7 @@ public class RocketmqProducer {
         timeout = RocketmqProps.instance.getEventPublishTimeout();
     }
 
-    private void init(){
+    private void init() {
         if (producer != null) {
             return;
         }
@@ -35,7 +35,9 @@ public class RocketmqProducer {
             producer = new DefaultMQProducer(cfg.exchangeName);
             producer.setNamesrvAddr(cfg.server);
             //发送超时时间，默认3000 单位ms
-            producer.setSendMsgTimeout(timeout);
+            if (timeout > 0) {
+                producer.setSendMsgTimeout(timeout);
+            }
             //失败后重试2次
             producer.setRetryTimesWhenSendFailed(2);
 
@@ -44,7 +46,6 @@ public class RocketmqProducer {
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
-
         }
     }
 
