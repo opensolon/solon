@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.extend.rabbitmq.impl;
 
 import com.rabbitmq.client.Channel;
+import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 
 import java.io.IOException;
@@ -33,8 +34,13 @@ public class RabbitConsumer {
         channel = factory.getChannel();
         handler = new RabbitConsumeHandler(producer, cfg, channel, observerMap);
 
+        int prefetchCount = RabbitmqProps.instance.getEventPrefetchCount();
+        if (prefetchCount < 1) {
+            prefetchCount = 10;
+        }
+
         //1.申明同时接收数量
-        channel.basicQos(10);
+        channel.basicQos(prefetchCount);
 
         //2.申明队列
         queueDeclareNormal(observerMap);

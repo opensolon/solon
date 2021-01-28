@@ -39,8 +39,11 @@ public class CloudProps {
     private String EVENT_SERVER = "solon.cloud.@@.event.server";
     private String EVENT_HOSTNAME = "solon.cloud.@@.event.hostname";
     private String EVENT_BROKER = "solon.cloud.@@.event.broker";
+    private String EVENT_PREFETCH_COUNT = "solon.cloud.@@.event.prefetchCount";
     private String EVENT_QUEUE = "solon.cloud.@@.event.queue";
     private String EVENT_SEAL = "solon.cloud.@@.event.seal";
+
+
 
 
     //日志服务相关
@@ -76,6 +79,7 @@ public class CloudProps {
         EVENT_SERVER = EVENT_SERVER.replace("@@", frame);
         EVENT_HOSTNAME = EVENT_HOSTNAME.replace("@@", frame);
         EVENT_BROKER = EVENT_BROKER.replace("@@", frame);
+        EVENT_PREFETCH_COUNT = EVENT_PREFETCH_COUNT.replace("@@", frame);
         EVENT_QUEUE = EVENT_QUEUE.replace("@@", frame);
         EVENT_SEAL = EVENT_SEAL.replace("@@", frame);
 
@@ -196,6 +200,9 @@ public class CloudProps {
     }
     public String getEventBroker() {
         return Solon.cfg().get(EVENT_BROKER);
+    }
+    public int getEventPrefetchCount() {
+        return Solon.cfg().getInt(EVENT_PREFETCH_COUNT,0);
     }
     public String getEventSeal() {
         return Solon.cfg().get(EVENT_SEAL);
