@@ -36,10 +36,12 @@ class HttpUtils {
     }
 
     //@XNote("设置请求头")
-    public HttpUtils headers(Map<String,String> headers){
+    public HttpUtils headers(Map<String,String> headers) {
         if (headers != null) {
             headers.forEach((k, v) -> {
-                _builder.header(k, v);
+                if (v != null) {
+                    _builder.header(k, v);
+                }
             });
         }
 

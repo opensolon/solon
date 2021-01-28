@@ -16,7 +16,10 @@ public final class NamiAttachment {
      * 设置头信息
      */
     public NamiAttachment headerSet(String name, String value) {
-        headers.put(name, value);
+        if (value != null) {
+            headers.put(name, value);
+        }
+
         return this;
     }
 
@@ -32,14 +35,14 @@ public final class NamiAttachment {
     /**
      * 移除当前线程的上下文
      */
-    protected static void currentRemove() {
+    public static void currentRemove() {
         threadLocal.remove();
     }
 
     /**
      * 获取当前线程的上下文
      */
-    protected static NamiAttachment currentGet() {
+    public static NamiAttachment currentGet() {
         return threadLocal.get();
     }
 

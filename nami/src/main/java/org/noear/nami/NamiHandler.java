@@ -102,9 +102,6 @@ public class NamiHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] vals) throws Throwable {
         //优先处理附加信息（不然容易OOM）
         NamiAttachment namiAttachment = NamiAttachment.currentGet();
-        if(namiAttachment != null) {
-            NamiAttachment.currentRemove();
-        }
 
         //检查upstream
         if (TextUtils.isEmpty(config.getUrl()) && config.getUpstream() == null) {
@@ -171,7 +168,6 @@ public class NamiHandler implements InvocationHandler {
         //处理附加信息
         if(namiAttachment != null){
             headers.putAll(namiAttachment.headers());
-            NamiAttachment.currentRemove();
         }
 
 
