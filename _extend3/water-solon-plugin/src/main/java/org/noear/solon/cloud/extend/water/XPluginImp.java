@@ -41,14 +41,14 @@ public class XPluginImp implements Plugin {
             String eventServer = WaterProps.instance.getEventServer();
             String logServer = WaterProps.instance.getLogServer();
 
-            String logger = WaterProps.instance.getLogLogger();
+            String logDefault = WaterProps.instance.getLogDefault();
 
-            CloudProps.LOG_DEFAULT_LOGGER = logger;
+            CloudProps.LOG_DEFAULT_LOGGER = logDefault;
 
             //1.1.设置water默认基础配置
             System.setProperty(WW.water_host, server);
-            if(Utils.isNotEmpty(logger)) {
-                System.setProperty(WW.water_logger, logger);
+            if(Utils.isNotEmpty(logDefault)) {
+                System.setProperty(WW.water_logger, logDefault);
             }
 
             if(server.equals(configServer) == false){
