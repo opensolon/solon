@@ -32,6 +32,7 @@ public class RocketmqConsumerHandler implements MessageListenerConcurrently {
                 Event event = new Event(message.getTopic(), new String(message.getBody()));
                 event.tags(message.getTags());
                 event.key(message.getKeys());
+                event.times(message.getReconsumeTimes());
 
                 isHandled = isHandled && onReceive(event);
             }
