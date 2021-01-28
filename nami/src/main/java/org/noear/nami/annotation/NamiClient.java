@@ -50,6 +50,10 @@ public @interface NamiClient {
      * */
     String[] upstream() default {};
 
+//    int timeout() default 0;
+//
+//    boolean check() default true;
+
     /**
      * 指定配置器
      * */
