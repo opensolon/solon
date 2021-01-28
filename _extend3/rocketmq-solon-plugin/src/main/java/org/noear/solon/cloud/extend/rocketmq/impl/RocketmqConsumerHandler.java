@@ -18,14 +18,14 @@ import java.util.Map;
 public class RocketmqConsumerHandler implements MessageListenerConcurrently {
     Map<String, CloudEventObserverEntity> observerMap;
 
-    public RocketmqConsumerHandler(Map<String, CloudEventObserverEntity> observers){
+    public RocketmqConsumerHandler(Map<String, CloudEventObserverEntity> observers) {
         observerMap = observers;
     }
 
 
     @Override
     public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext consumeConcurrentlyContext) {
-        boolean isOk = true;
+        boolean isHandled = true;
 
         try {
             for (MessageExt message : list) {
@@ -33,13 +33,13 @@ public class RocketmqConsumerHandler implements MessageListenerConcurrently {
                 event.tags(message.getTags());
                 event.key(message.getKeys());
 
-                isOk = isOk && onReceive(event);
+                isHandled = isHandled && onReceive(event);
             }
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
 
-        if (isOk) {
+        if (isHandled) {
             return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
         } else {
             return ConsumeConcurrentlyStatus.RECONSUME_LATER;
@@ -50,14 +50,14 @@ public class RocketmqConsumerHandler implements MessageListenerConcurrently {
      * 处理接收事件
      */
     public boolean onReceive(Event event) throws Throwable {
-        boolean isOk = true;
+        boolean isHandled = true;
         CloudEventObserverEntity entity = null;
 
         entity = observerMap.get(event.topic());
         if (entity != null) {
-            isOk = entity.handler(event);
+            isHandled = entity.handler(event);
         }
 
-        return isOk;
+        return isHandled;
     }
 }
