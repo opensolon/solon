@@ -8,7 +8,7 @@ public class ExpirationUtils {
         int second = 0;
 
         switch (times){
-            case 0:second  = 0;break;//1秒
+            case 0:second  = 0;break;//0秒
             case 1:second  = second+10;break; //10秒
             case 2:second  = second+30;break; //30秒
             case 3:second  = second+60;break; //1分钟
