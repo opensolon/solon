@@ -1,9 +1,9 @@
-package org.noear.solon.cloud.extend.rabbitmq.impl;
+package org.noear.solon.cloud.utils;
 
 /**
  * @author noear 2021/1/28 created
  */
-public class ExpirationUtil {
+public class ExpirationUtils {
     public static long getExpiration(int times){
         int second = 0;
 

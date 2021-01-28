@@ -4,6 +4,7 @@ import com.rabbitmq.client.*;
 import org.noear.snack.ONode;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
+import org.noear.solon.cloud.utils.ExpirationUtils;
 import org.noear.solon.core.event.EventBus;
 
 import java.io.IOException;
@@ -42,7 +43,7 @@ public class RabbitConsumeHandler extends DefaultConsumer {
                 event.times(event.times() + 1);
 
                 try {
-                    producer.publish(event, cfg.queue_ready, ExpirationUtil.getExpiration(event.times()));
+                    producer.publish(event, cfg.queue_ready, ExpirationUtils.getExpiration(event.times()));
                 } catch (Throwable ex) {
                     getChannel().basicNack(envelope.getDeliveryTag(), false, true);
                 }

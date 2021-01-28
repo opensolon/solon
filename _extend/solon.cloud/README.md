@@ -46,3 +46,14 @@ solon.cloud.nacos:
 | solon.cloud.@@.log.enable | 日志总线服务（默认：true）| water |
 | solon.cloud.@@.log.server     |   服务地址（ip:port）   |   water     | 
 | solon.cloud.@@.log.logger | 日志默认记录器 | water |
+
+
+## 三、适配要求
+
+* 日志服务
+
+要求对业务影响极小；例如，消息先进入本地队列，累积后批量提交到服务端
+
+* 事件服务
+
+要求支持定时事件；支持失败后逐级延后重试
