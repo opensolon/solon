@@ -43,12 +43,10 @@ public class CloudProps {
     private String EVENT_SEAL = "solon.cloud.@@.event.seal";
 
 
-
-
     //日志服务相关
     private String LOG_ENABLE = "solon.cloud.@@.log.enable";
     private String LOG_SERVER = "solon.cloud.@@.log.server";
-    private String LOG_LOGGER = "solon.cloud.@@.log.logger";
+    private String LOG_DEFAULT = "solon.cloud.@@.log.default";
 
     //跟踪服务相关
     private String TRACE_ENABLE = "solon.cloud.@@.trace.enable";
@@ -83,7 +81,7 @@ public class CloudProps {
 
         LOG_ENABLE = LOG_ENABLE.replace("@@", frame);
         LOG_SERVER = LOG_SERVER.replace("@@", frame);
-        LOG_LOGGER = LOG_LOGGER.replace("@@", frame);
+        LOG_DEFAULT = LOG_DEFAULT.replace("@@", frame);
 
         TRACE_ENABLE = TRACE_ENABLE.replace("@@", frame);
     }
@@ -223,8 +221,8 @@ public class CloudProps {
         }
     }
 
-    public String getLogLogger() {
-        return Solon.cfg().get(LOG_LOGGER);
+    public String getLogDefault() {
+        return Solon.cfg().get(LOG_DEFAULT);
     }
 
 

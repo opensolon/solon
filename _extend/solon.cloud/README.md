@@ -22,7 +22,8 @@ solon.cloud.nacos:
 | solon.cloud.@@.server     |   服务地址（ip:port）   |    nacos、consul、water  |  
 | solon.cloud.@@.token     |   链接令牌   |    consul   |  
 | solon.cloud.@@.username     |  链接用户名    |  nacos    |  
-| solon.cloud.@@.password     |  链接密码   |    nacos  |     
+| solon.cloud.@@.password     |  链接密码   |    nacos  |    
+| solon.cloud.@@.alarm     |  造警接收号   |    water  |  
 | | | |
 | solon.cloud.@@.config.enable     |   配置服务启用（默认：true）   |   nacos、consul、water     |   
 | solon.cloud.@@.config.server     |   服务地址（ip:port）   |   nacos、consul、water     | 
@@ -32,7 +33,6 @@ solon.cloud.nacos:
 | | | |
 | solon.cloud.@@.discovery.enable     |    注册与发现服务启用（默认：true）   |     nacos、consul、water    | 
 | solon.cloud.@@.discovery.server     |   服务地址（ip:port）   |   nacos、consul、water     | 
-| solon.cloud.@@.discovery.hostname     |   服务主机   |    nacos、consul、water    |      
 | solon.cloud.@@.discovery.tags     |  服务标签    |    consul    |  
 | solon.cloud.@@.discovery.healthCheckPath     |  服务健康检查路径    |    consul、water    |     
 | solon.cloud.@@.discovery.healthCheckInterval     |  服务健康检查间隔时间    |    consul    |    
@@ -41,13 +41,14 @@ solon.cloud.nacos:
 | | | |
 | solon.cloud.@@.event.enable | 事件总线服务（默认：true）| water、rabbitmq |
 | solon.cloud.@@.event.server     |   服务地址（ip:port）   |  water、rabbitmq     | 
-| solon.cloud.@@.event.broker     |   代理管道或交换机   |  rabbitmq     | 
-| solon.cloud.@@.event.hostname     |   接收域   |  water     | 
+| solon.cloud.@@.event.broker     |   指定代理管道或交换机   |  rabbitmq     | 
+| solon.cloud.@@.event.queue     |   指定队列   |  rabbitmq     | 
+| solon.cloud.@@.event.hostname     |   指定接收域   |  water     | 
 | solon.cloud.@@.event.seal | 事件签名 | water |
 | | | |
 | solon.cloud.@@.log.enable | 日志总线服务（默认：true）| water |
 | solon.cloud.@@.log.server     |   服务地址（ip:port）   |   water     | 
-| solon.cloud.@@.log.logger | 日志默认记录器 | water |
+| solon.cloud.@@.log.default | 日志默认记录器 | water |
 
 
 ## 三、适配要求
