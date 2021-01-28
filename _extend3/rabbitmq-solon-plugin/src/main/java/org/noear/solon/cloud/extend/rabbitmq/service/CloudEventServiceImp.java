@@ -38,7 +38,7 @@ public class CloudEventServiceImp implements CloudEventService {
             producer = new RabbitProducer(factory);
             consumer = new RabbitConsumer(producer, factory);
 
-            producer.bind();
+            producer.init();
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -71,7 +71,7 @@ public class CloudEventServiceImp implements CloudEventService {
 
     public void subscribe() {
         try {
-            consumer.bind(observerMap);
+            consumer.init(observerMap);
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }

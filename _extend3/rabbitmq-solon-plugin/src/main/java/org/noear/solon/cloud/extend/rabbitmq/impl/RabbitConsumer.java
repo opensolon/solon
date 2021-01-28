@@ -28,9 +28,9 @@ public class RabbitConsumer {
     }
 
     /**
-     * 绑定
+     * 初始化
      */
-    public void bind(Map<String, CloudEventObserverEntity> observerMap) throws IOException, TimeoutException {
+    public void init(Map<String, CloudEventObserverEntity> observerMap) throws IOException, TimeoutException {
         channel = factory.getChannel();
         handler = new RabbitConsumeHandler(producer, cfg, channel, observerMap);
 

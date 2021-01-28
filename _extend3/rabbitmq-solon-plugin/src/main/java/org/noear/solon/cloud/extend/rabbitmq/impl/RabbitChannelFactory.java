@@ -3,7 +3,9 @@ package org.noear.solon.cloud.extend.rabbitmq.impl;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -24,6 +26,7 @@ public class RabbitChannelFactory {
 
         String host = config.server.split(":")[0];
         int port = Integer.parseInt(config.server.split(":")[1]);
+        String virtualHost = RabbitmqProps.getEventVirtualHost();
 
         connectionFactory = new ConnectionFactory();
 
@@ -31,11 +34,14 @@ public class RabbitChannelFactory {
         connectionFactory.setHost(host);
         connectionFactory.setPort(port);
 
-        if (Utils.isEmpty(config.username) == false) {
+        if (Utils.isNotEmpty(config.username)) {
             connectionFactory.setUsername(config.username);
         }
-        if (Utils.isEmpty(config.password) == false) {
+        if (Utils.isNotEmpty(config.password)) {
             connectionFactory.setPassword(config.password);
+        }
+        if (Utils.isNotEmpty(virtualHost)) {
+            connectionFactory.setVirtualHost(virtualHost);
         }
 
         // 网络异常自动连接恢复

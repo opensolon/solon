@@ -38,9 +38,9 @@ public class RabbitProducer {
     }
 
     /**
-     * 绑定
+     * 初始化
      */
-    public void bind() throws IOException, TimeoutException {
+    public void init() throws IOException, TimeoutException {
         channel = factory.getChannel();
 
         Map<String, Object> args = new HashMap<>();
