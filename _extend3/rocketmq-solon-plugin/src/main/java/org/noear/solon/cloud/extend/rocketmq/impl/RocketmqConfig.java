@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.extend.rocketmq.impl;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
 
@@ -12,6 +13,8 @@ public class RocketmqConfig {
      */
     public String exchangeName;
 
+    public String queueName;
+
     public String server;
 
     public RocketmqConfig() {
@@ -19,6 +22,12 @@ public class RocketmqConfig {
 
         if (Utils.isEmpty(exchangeName)) {
             exchangeName = "DEFAULT";
+        }
+
+        this.queueName = RocketmqProps.instance.getEventQueue();
+
+        if (Utils.isEmpty(queueName)) {
+            queueName = Solon.cfg().appGroup() + "_" + Solon.cfg().appName();
         }
     }
 }

@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.extend.rocketmq.impl;
 
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
+import org.apache.rocketmq.common.protocol.heartbeat.MessageModel;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
@@ -42,6 +43,10 @@ public class RocketmqConsumer {
             //一次最大消费的条数
             consumer.setPullBatchSize(1);
             //无消息时，最大阻塞时间。默认5000 单位ms
+
+            consumer.setConsumerGroup(cfg.queueName);
+            //consumer.setMessageModel(MessageModel.BROADCASTING);
+
             try {
                 //要消费的topic，可使用tag进行简单过滤
                 for (String topic : observerMap.keySet()) {
