@@ -102,6 +102,9 @@ public class NamiHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] vals) throws Throwable {
         //优先处理附加信息（不然容易OOM）
         NamiAttachment namiAttachment = NamiAttachment.currentGet();
+        if (namiAttachment != null && namiAttachment.autoRemove()) {
+            NamiAttachment.currentRemove();
+        }
 
         //检查upstream
         if (TextUtils.isEmpty(config.getUrl()) && config.getUpstream() == null) {
@@ -137,7 +140,7 @@ public class NamiHandler implements InvocationHandler {
         }
 
         //确定body及默认编码
-        if(methodWrap.getBodyName() != null){
+        if (methodWrap.getBodyName() != null) {
             body = args.get(methodWrap.getBodyName());
 
             if (config.getEncoder() == null) {
@@ -152,11 +155,11 @@ public class NamiHandler implements InvocationHandler {
         //处理mapping
         Mapping mapping = methodWrap.getMappingAnno();
         if (mapping != null) {
-            if(methodWrap.getAct() != null){
+            if (methodWrap.getAct() != null) {
                 act = methodWrap.getAct();
             }
 
-            if(methodWrap.getFun() != null){
+            if (methodWrap.getFun() != null) {
                 fun = methodWrap.getFun();
             }
 
@@ -166,7 +169,7 @@ public class NamiHandler implements InvocationHandler {
         }
 
         //处理附加信息
-        if(namiAttachment != null){
+        if (namiAttachment != null) {
             headers.putAll(namiAttachment.headers());
         }
 
