@@ -5,7 +5,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
 
 /**
- * @author noear 2021/1/28 created
+ * @author noear
+ * @since 1.3
  */
 public class RocketmqConfig {
     /**

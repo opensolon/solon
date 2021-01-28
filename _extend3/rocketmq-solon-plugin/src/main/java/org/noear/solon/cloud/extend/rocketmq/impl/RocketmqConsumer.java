@@ -1,9 +1,6 @@
 package org.noear.solon.cloud.extend.rocketmq.impl;
 
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
-import org.apache.rocketmq.common.protocol.heartbeat.MessageModel;
-import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 
 import java.util.Map;

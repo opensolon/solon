@@ -3,7 +3,6 @@ package org.noear.solon.cloud.extend.rabbitmq.impl;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
 

@@ -1,7 +1,5 @@
 package org.noear.solon.cloud.extend.rocketmq.service;
 
-import org.noear.solon.Solon;
-import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqConfig;
