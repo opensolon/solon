@@ -39,8 +39,10 @@ solon.cloud.nacos:
 | solon.cloud.@@.discovery.healthDetector     |   服务健康上报指标   |   consul     |     
 | solon.cloud.@@.discovery.refreshInterval     |   服务发现刷新间隔   |   consul     |      
 | | | |
-| solon.cloud.@@.event.enable | 事件总线服务（默认：true）| water |
-| solon.cloud.@@.event.server     |   服务地址（ip:port）   |  water     | 
+| solon.cloud.@@.event.enable | 事件总线服务（默认：true）| water、rabbitmq |
+| solon.cloud.@@.event.server     |   服务地址（ip:port）   |  water、rabbitmq     | 
+| solon.cloud.@@.event.broker     |   代理管道或交换机   |  rabbitmq     | 
+| solon.cloud.@@.event.hostname     |   接收域   |  water     | 
 | solon.cloud.@@.event.seal | 事件签名 | water |
 | | | |
 | solon.cloud.@@.log.enable | 日志总线服务（默认：true）| water |
