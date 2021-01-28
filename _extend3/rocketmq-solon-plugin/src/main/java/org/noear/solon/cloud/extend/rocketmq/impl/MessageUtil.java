@@ -7,7 +7,8 @@ import org.noear.solon.cloud.model.Event;
 import java.nio.charset.StandardCharsets;
 
 /**
- * @author noear 2021/1/28 created
+ * @author noear
+ * @since 1.3
  */
 public class MessageUtil {
     public static Message buildNewMeaage(Event event) {
