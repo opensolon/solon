@@ -45,7 +45,7 @@ public class CloudEventServiceImp implements CloudEventService {
             return;
         }
 
-        topic = topic.replace(".", "-");
+        topic = topic.replace(".", "_");
 
         observerMap.put(topic, new CloudEventObserverEntity(level, group, topic, observer));
     }

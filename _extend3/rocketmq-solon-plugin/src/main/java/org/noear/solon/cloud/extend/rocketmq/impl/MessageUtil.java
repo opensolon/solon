@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
  */
 public class MessageUtil {
     public static Message buildNewMeaage(Event event) {
-        String topic = event.topic().replace(".", "-");
+        String topic = event.topic().replace(".", "_");
 
         if (Utils.isEmpty(event.key())) {
             event.key(Utils.guid());
