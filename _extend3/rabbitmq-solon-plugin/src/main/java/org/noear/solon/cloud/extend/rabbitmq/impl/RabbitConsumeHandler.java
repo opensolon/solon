@@ -6,6 +6,7 @@ import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.cloud.utils.ExpirationUtils;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.handle.Context;
 
 import java.io.IOException;
 import java.util.Map;
@@ -33,13 +34,13 @@ public class RabbitConsumeHandler extends DefaultConsumer {
             Event event = ONode.deserialize(event_json, Event.class);
 
             CloudEventObserverEntity observer = observerMap.get(event.topic());
-            boolean isOk = true;
+            boolean isHandled = true;
 
             if (observer != null) {
-                isOk = observer.handler(event);
+                isHandled = observer.handler(event);
             }
 
-            if (isOk == false) {
+            if (isHandled == false) {
                 event.times(event.times() + 1);
 
                 try {
@@ -47,10 +48,11 @@ public class RabbitConsumeHandler extends DefaultConsumer {
                 } catch (Throwable ex) {
                     getChannel().basicNack(envelope.getDeliveryTag(), false, true);
                 }
+
+                isHandled = true;
             }
 
-            //不能与上面合并
-            if (isOk) {
+            if (isHandled) {
                 getChannel().basicAck(envelope.getDeliveryTag(), false);
             }
 
