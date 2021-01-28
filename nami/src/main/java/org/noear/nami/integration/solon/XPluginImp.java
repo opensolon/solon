@@ -1,6 +1,7 @@
 package org.noear.nami.integration.solon;
 
 import org.noear.nami.Nami;
+import org.noear.nami.NamiAttachment;
 import org.noear.nami.NamiConfigurationDefault;
 import org.noear.nami.NamiException;
 import org.noear.nami.annotation.NamiClient;
@@ -52,6 +53,10 @@ public class XPluginImp implements Plugin {
             }
 
             varH.setValue(obj);
+        });
+
+        app.after("**", (c) -> {
+            NamiAttachment.currentRemove();
         });
     }
 }
