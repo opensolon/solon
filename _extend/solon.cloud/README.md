@@ -41,7 +41,7 @@ solon.cloud.nacos:
 | | | |
 | solon.cloud.@@.event.enable | 事件总线服务（默认：true）| water、rabbitmq |
 | solon.cloud.@@.event.server     |   服务地址（ip:port）   |  water、rabbitmq     | 
-| solon.cloud.@@.event.broker     |   指定代理管道或交换机   |  rabbitmq     | 
+| solon.cloud.@@.event.exchange     |   交换机或订阅组   |  rabbitmq     | 
 | solon.cloud.@@.event.queue     |   指定队列   |  rabbitmq     | 
 | solon.cloud.@@.event.hostname     |   指定接收域   |  water     | 
 | solon.cloud.@@.event.seal | 事件签名 | water |

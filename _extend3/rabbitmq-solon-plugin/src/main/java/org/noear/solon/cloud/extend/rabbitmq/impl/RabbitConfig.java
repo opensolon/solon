@@ -68,7 +68,7 @@ public class RabbitConfig {
     public String queue_retry;
 
     public RabbitConfig() {
-        exchangeName = RabbitmqProps.instance.getEventBroker();
+        exchangeName = RabbitmqProps.instance.getEventExchange();
         if (Utils.isEmpty(exchangeName)) {
             exchangeName = "DEFAULT";
         }

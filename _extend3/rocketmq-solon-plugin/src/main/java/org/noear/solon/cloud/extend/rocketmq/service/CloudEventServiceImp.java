@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
+import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqConfig;
 import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqConsumer;
 import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqProducer;
 import org.noear.solon.cloud.model.Event;
@@ -18,22 +19,16 @@ import java.util.Map;
  * @since 1.2
  */
 public class CloudEventServiceImp implements CloudEventService {
-    String server;
-    String group;
 
     RocketmqProducer producer;
     RocketmqConsumer consumer;
 
     public CloudEventServiceImp(String server) {
-        this.server = server;
-        this.group = Solon.cfg().appGroup();
+        RocketmqConfig config = new RocketmqConfig();
+        config.server = server;
 
-        if (Utils.isEmpty(group)) {
-            group = "DEFAULT_GROUP";
-        }
-
-        producer = new RocketmqProducer();
-        consumer = new RocketmqConsumer();
+        producer = new RocketmqProducer(config);
+        consumer = new RocketmqConsumer(config);
     }
 
     @Override

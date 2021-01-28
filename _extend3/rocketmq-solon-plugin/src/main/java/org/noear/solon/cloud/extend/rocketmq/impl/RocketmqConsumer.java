@@ -12,21 +12,15 @@ import java.util.Map;
  * @since 1.3
  */
 public class RocketmqConsumer {
-    String server;
-    String group;
+    RocketmqConfig cfg;
 
     DefaultMQPushConsumer consumer;
     RocketmqConsumerHandler handler;
 
     Map<String, CloudEventObserverEntity> observerMap;
 
-    public RocketmqConsumer(){
-        this.server = server;
-        this.group = Solon.cfg().appGroup();
-
-        if (Utils.isEmpty(group)) {
-            group = "DEFAULT_GROUP";
-        }
+    public RocketmqConsumer(RocketmqConfig config){
+        cfg = config;
     }
 
     public void init(Map<String, CloudEventObserverEntity> observers){
@@ -42,9 +36,9 @@ public class RocketmqConsumer {
             observerMap = observers;
             handler = new RocketmqConsumerHandler(observerMap);
 
-            consumer = new DefaultMQPushConsumer(group);
+            consumer = new DefaultMQPushConsumer(cfg.exchangeName);
 
-            consumer.setNamesrvAddr(server);
+            consumer.setNamesrvAddr(cfg.server);
             //一次最大消费的条数
             consumer.setPullBatchSize(1);
             //无消息时，最大阻塞时间。默认5000 单位ms

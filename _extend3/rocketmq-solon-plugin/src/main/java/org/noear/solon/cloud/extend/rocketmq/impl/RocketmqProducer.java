@@ -6,6 +6,7 @@ import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.common.message.Message;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
 import org.noear.solon.cloud.model.Event;
 
 /**
@@ -13,18 +14,12 @@ import org.noear.solon.cloud.model.Event;
  * @since 1.3
  */
 public class RocketmqProducer {
-    String server;
-    String group;
+    RocketmqConfig cfg;
 
     DefaultMQProducer producer;
 
-    public RocketmqProducer(){
-        this.server = server;
-        this.group = Solon.cfg().appGroup();
-
-        if (Utils.isEmpty(group)) {
-            group = "DEFAULT_GROUP";
-        }
+    public RocketmqProducer(RocketmqConfig config){
+        cfg = config;
     }
 
     private void init(){
@@ -37,10 +32,12 @@ public class RocketmqProducer {
                 return;
             }
 
-            producer = new DefaultMQProducer(group);
-            producer.setNamesrvAddr(server);
+            producer = new DefaultMQProducer(cfg.exchangeName);
+            producer.setNamesrvAddr(cfg.server);
             //发送超时时间，默认3000 单位ms
             producer.setSendMsgTimeout(3000);
+            //失败后重试2次
+            producer.setRetryTimesWhenSendFailed(2);
 
             try {
                 producer.start();
