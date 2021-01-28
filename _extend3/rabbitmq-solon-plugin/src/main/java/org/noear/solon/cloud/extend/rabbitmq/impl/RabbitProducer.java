@@ -54,7 +54,9 @@ public class RabbitProducer {
                 config.autoDelete,
                 config.internal, args);
 
-        channel.confirmSelect();
+        if (timeout > 0) {
+            channel.confirmSelect();
+        }
     }
 
     public boolean publish(Event event, String topic, long ttl) throws Exception {
@@ -68,7 +70,12 @@ public class RabbitProducer {
         }
 
         channel.basicPublish(config.exchangeName, topic, config.mandatory, props, event_data);
-        return channel.waitForConfirms(timeout);
+
+        if (timeout > 0) {
+            return channel.waitForConfirms(timeout);
+        } else {
+            return true;
+        }
     }
 
     /**
