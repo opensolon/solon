@@ -20,7 +20,7 @@ public class RabbitConsumer {
     private RabbitProducer producer;
 
 
-    public RabbitConsumer(RabbitProducer producer,RabbitChannelFactory factory) {
+    public RabbitConsumer(RabbitProducer producer, RabbitChannelFactory factory) {
         this.cfg = factory.getConfig();
         this.factory = factory;
         this.producer = producer;
@@ -33,57 +33,54 @@ public class RabbitConsumer {
         channel = factory.getChannel();
         handler = new RabbitConsumeHandler(producer, cfg, channel, observerMap);
 
-        Map<String, Object> args = new HashMap<>();
-
-        Map<String, Object> args_retry = new HashMap<>();
-        args_retry.put("x-message-ttl", 10000);
-        args_retry.put("x-dead-letter-exchange", cfg.exchangeName);
-        args_retry.put("x-dead-letter-routing-key", cfg.queue_retry);
-
-
         //1.申明同时接收数量
         channel.basicQos(10);
 
         //2.申明队列
-        queueDeclareAndBind(cfg.queue_normal, args, observerMap);
-        queueDeclareReady(cfg.queue_ready, args, observerMap);
-        queueDeclareRetry(cfg.queue_retry, args_retry, observerMap);
-        queueDeclareAndBind(cfg.queue_dead, args, observerMap);
+        queueDeclareNormal(observerMap);
+        queueDeclareReady();
+        queueDeclareRetry();
     }
 
-    private void queueDeclareReady(String queueName, Map<String, Object> args, Map<String, CloudEventObserverEntity> observerMap) throws IOException {
-        //1.声明队列 (队列名, 是否持久化, 是否排他, 是否自动删除, 队列属性);
-        //String queue, boolean durable, boolean exclusive, boolean autoDelete, Map<String, Object> arguments
-        channel.queueDeclare(queueName, cfg.durable, cfg.exclusive, cfg.autoDelete, args);
 
-        channel.queueBind(queueName, cfg.exchangeName, cfg.queue_ready, args);
-    }
+    /**
+     * 申明常规队列
+     */
+    private void queueDeclareNormal(Map<String, CloudEventObserverEntity> observerMap) throws IOException {
+        Map<String, Object> args = new HashMap<>();
 
-    private void queueDeclareAndBind(String queueName, Map<String, Object> args, Map<String, CloudEventObserverEntity> observerMap) throws IOException {
-        //1.声明队列 (队列名, 是否持久化, 是否排他, 是否自动删除, 队列属性);
-        //String queue, boolean durable, boolean exclusive, boolean autoDelete, Map<String, Object> arguments
-        channel.queueDeclare(queueName, cfg.durable, cfg.exclusive, cfg.autoDelete, args);
+        channel.queueDeclare(cfg.queue_normal, cfg.durable, cfg.exclusive, cfg.autoDelete, args);
 
-        //2.将队列Binding到交换机上 (队列名, 交换机名, Routing key, 绑定属性);
-        //String queue, String exchange, String routingKey, Map<String, Object> arguments
         for (String topic : observerMap.keySet()) {
-            channel.queueBind(queueName, cfg.exchangeName, topic, args);
+            channel.queueBind(cfg.queue_normal, cfg.exchangeName, topic, args);
         }
 
-        //3.设置消息代理接口
-        channel.basicConsume(queueName, handler);
+        channel.basicConsume(cfg.queue_normal, handler);
     }
 
-    private void queueDeclareRetry(String queueName, Map<String, Object> args, Map<String, CloudEventObserverEntity> observerMap) throws IOException {
-        //1.声明队列 (队列名, 是否持久化, 是否排他, 是否自动删除, 队列属性);
-        //String queue, boolean durable, boolean exclusive, boolean autoDelete, Map<String, Object> arguments
-        channel.queueDeclare(queueName, cfg.durable, cfg.exclusive, cfg.autoDelete, args);
+    /**
+     * 申明定时队列
+     */
+    private void queueDeclareReady() throws IOException {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 10 * 1000);
+        args.put("x-dead-letter-exchange", cfg.exchangeName);
+        args.put("x-dead-letter-routing-key", cfg.queue_retry);
 
-        //2.将队列Binding到交换机上 (队列名, 交换机名, Routing key, 绑定属性);
-        //String queue, String exchange, String routingKey, Map<String, Object> arguments
-        channel.queueBind(queueName, cfg.exchangeName, cfg.queue_retry, args);
+        channel.queueDeclare(cfg.queue_ready, cfg.durable, cfg.exclusive, cfg.autoDelete, args);
+        channel.queueBind(cfg.queue_ready, cfg.exchangeName, cfg.queue_ready, args);
+    }
 
-        //3.设置消息代理接口
-        channel.basicConsume(queueName, handler);
+
+    /**
+     * 申明重试队列（由定时队列自动转入）
+     */
+    private void queueDeclareRetry() throws IOException {
+        Map<String, Object> args = new HashMap<>();
+
+        channel.queueDeclare(cfg.queue_retry, cfg.durable, cfg.exclusive, cfg.autoDelete, args);
+        channel.queueBind(cfg.queue_retry, cfg.exchangeName, cfg.queue_retry, args);
+
+        channel.basicConsume(cfg.queue_retry, handler);
     }
 }

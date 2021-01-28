@@ -18,10 +18,6 @@ public class RabbitConfig {
     public String exchangeName;
     /**
      * 交换器类型
-     * <p>
-     * Fanout Exchange：给所有队列发
-     * Direct Exchange：只给routingKey相关的队列发（更适合事件总线）
-     * Topic Exchange：只给routingKey相关的队列发，但是支持路由键的模糊匹配
      */
     public BuiltinExchangeType exchangeType = BuiltinExchangeType.DIRECT;
 
@@ -40,13 +36,13 @@ public class RabbitConfig {
 
     /**
      * 标志告诉服务器至少将该消息route到一个队列中，否则将消息返还给生产者
-     * */
+     */
     public boolean mandatory = false;
 
     /**
      * 标志告诉服务器如果该消息关联的queue上有消费者，则马上将消息投递给它；
      * 如果所有queue都没有消费者，直接把消息返还给生产者，不用将消息入队列等待消费者了。
-     * */
+     */
     public boolean immediate = false;
 
     /**
@@ -67,10 +63,9 @@ public class RabbitConfig {
      */
     public String password;
 
-    public  String queue_normal;
-    public  String queue_ready;
-    public  String queue_retry;
-    public  String queue_dead;
+    public String queue_normal;
+    public String queue_ready;
+    public String queue_retry;
 
     public RabbitConfig() {
         exchangeName = RabbitmqProps.instance.getEventBroker();
@@ -87,6 +82,5 @@ public class RabbitConfig {
         queue_normal = queueName + "@normal";
         queue_ready = queueName + "@ready";
         queue_retry = queueName + "@retry";
-        queue_dead = queueName + "@dead";
     }
 }

@@ -32,10 +32,9 @@ public class RabbitConsumeHandler extends DefaultConsumer {
             Event event = ONode.deserialize(event_json, Event.class);
 
             CloudEventObserverEntity observer = observerMap.get(event.topic());
-            boolean isOk = false;
+            boolean isOk = true;
 
             if (observer != null) {
-                //如果
                 isOk = observer.handler(event);
             }
 
@@ -43,17 +42,13 @@ public class RabbitConsumeHandler extends DefaultConsumer {
                 event.times(event.times() + 1);
 
                 try {
-                    //
-                    //手动应签模式
-                    //
-                    //long deliveryTag, boolean multiple
-                    producer.publish(event, cfg.queue_ready);
+                    producer.publish(event, cfg.queue_ready, ExpirationUtil.getExpiration(event.times()));
                 } catch (Throwable ex) {
-                    //long deliveryTag, boolean multiple, boolean requeue
                     getChannel().basicNack(envelope.getDeliveryTag(), false, true);
                 }
             }
 
+            //不能与上面合并
             if (isOk) {
                 getChannel().basicAck(envelope.getDeliveryTag(), false);
             }
