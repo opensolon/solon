@@ -46,7 +46,6 @@ public class CloudEventServiceImp implements CloudEventService {
 
     @Override
     public boolean publish(Event event) {
-        // 设置消息属性 发布消息 (exchange:交换机名, Routing key, props:消息属性, body:消息体);
         try {
             if(Utils.isEmpty(event.key())){
                 event.key(Utils.guid());
