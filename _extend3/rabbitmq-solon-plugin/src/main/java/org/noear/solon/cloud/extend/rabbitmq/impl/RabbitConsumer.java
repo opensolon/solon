@@ -63,7 +63,6 @@ public class RabbitConsumer {
      */
     private void queueDeclareReady() throws IOException {
         Map<String, Object> args = new HashMap<>();
-        args.put("x-message-ttl", 10 * 1000);
         args.put("x-dead-letter-exchange", cfg.exchangeName);
         args.put("x-dead-letter-routing-key", cfg.queue_retry);
 
