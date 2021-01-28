@@ -43,12 +43,11 @@ public class RabbitConsumeHandler extends DefaultConsumer {
                 event.times(event.times() + 1);
 
                 try {
-                    producer.publish(event, cfg.queue_ready, ExpirationUtils.getExpiration(event.times()));
+                    isHandled = producer.publish(event, cfg.queue_ready, ExpirationUtils.getExpiration(event.times()));
                 } catch (Throwable ex) {
                     getChannel().basicNack(envelope.getDeliveryTag(), false, true);
+                    isHandled = true;
                 }
-
-                isHandled = true;
             }
 
             if (isHandled) {
