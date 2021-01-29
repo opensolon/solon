@@ -64,7 +64,7 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
                         v.handler(cfg2);
                     });
                 });
-            }catch (Throwable ex){
+            } catch (Throwable ex) {
 
             }
         }
@@ -163,10 +163,10 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
         if (config == null) {
             config = new Config(group, key, cfg.value, cfg.lastModified);
         } else {
-            if ( cfg.lastModified < config.version()) {
-                return;
-            } else {
+            if (config.version() < cfg.lastModified) {
                 config.value(cfg.value, cfg.lastModified);
+            } else {
+                return;
             }
         }
 
