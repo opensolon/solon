@@ -58,26 +58,26 @@ public class CloudLoadBalance implements LoadBalance {
         if (discovery == null) {
             return null;
         } else {
-            int count = discovery.clusterSize();
-
             if(Utils.isNotEmpty(discovery.agent())){
                 return discovery.agent();
-            }
+            }else{
+                int count = discovery.clusterSize();
 
-            if (count == 0) {
-                return null;
-            } else {
-                //这里不需要原子性
-                if (index > indexMax) {
-                    index = 0;
-                }
-
-                Instance instance = discovery.instanceGet(index++ % count);
-
-                if (Utils.isEmpty(instance.protocol())) {
-                    return "http://" + instance.address();
+                if (count == 0) {
+                    return null;
                 } else {
-                    return instance.protocol() + "://" + instance.address();
+                    //这里不需要原子性
+                    if (index > indexMax) {
+                        index = 0;
+                    }
+
+                    Instance instance = discovery.instanceGet(index++ % count);
+
+                    if (Utils.isEmpty(instance.protocol())) {
+                        return "http://" + instance.address();
+                    } else {
+                        return instance.protocol() + "://" + instance.address();
+                    }
                 }
             }
         }
