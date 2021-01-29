@@ -94,4 +94,10 @@ public class CloudClient {
      * */
     @Note("链路跟踪服务")
     public static CloudTraceService trace() { return CloudManager.traceService();}
+
+    /**
+     * 锁服务
+     * */
+    @Note("锁服务")
+    public static CloudLockService lock() { return CloudManager.lockService();}
 }

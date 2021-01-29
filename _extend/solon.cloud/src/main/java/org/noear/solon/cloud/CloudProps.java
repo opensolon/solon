@@ -34,7 +34,7 @@ public class CloudProps {
     private String DISCOVERY_HEALTH_DETECTOR = "solon.cloud.@@.discovery.healthDetector";
     private String DISCOVERY_REFRESH_INTERVAL = "solon.cloud.@@.discovery.refreshInterval";
 
-    //事件服务相关
+    //事件总线服务相关
     private String EVENT_ENABLE = "solon.cloud.@@.event.enable";
     private String EVENT_SERVER = "solon.cloud.@@.event.server";
     private String EVENT_HOSTNAME = "solon.cloud.@@.event.hostname";
@@ -46,16 +46,17 @@ public class CloudProps {
 
 
 
-
-
-
-    //日志服务相关
+    //日志总线服务相关
     private String LOG_ENABLE = "solon.cloud.@@.log.enable";
     private String LOG_SERVER = "solon.cloud.@@.log.server";
     private String LOG_DEFAULT = "solon.cloud.@@.log.default";
 
-    //跟踪服务相关
+    //链路跟踪服务相关
     private String TRACE_ENABLE = "solon.cloud.@@.trace.enable";
+
+
+    //分布式锁服务相关
+    private String LOCK_ENABLE = "solon.cloud.@@.lock.enable";
 
     public CloudProps(String frame) {
         SERVER = SERVER.replace("@@", frame);
@@ -92,6 +93,8 @@ public class CloudProps {
         LOG_DEFAULT = LOG_DEFAULT.replace("@@", frame);
 
         TRACE_ENABLE = TRACE_ENABLE.replace("@@", frame);
+
+        LOCK_ENABLE = LOCK_ENABLE.replace("@@", frame);
     }
 
 
@@ -184,7 +187,7 @@ public class CloudProps {
     }
 
     //
-    //事件服务相关
+    //事件总线服务相关
     //
     public boolean getEventEnable() {
         return Solon.cfg().getBool(EVENT_ENABLE, true);
@@ -220,7 +223,7 @@ public class CloudProps {
 
 
     //
-    //日志服务相关
+    //日志总线服务相关
     //
     public boolean getLogEnable() {
         return Solon.cfg().getBool(LOG_ENABLE, true);
@@ -242,9 +245,16 @@ public class CloudProps {
 
 
     //
-    //跟踪服务相关
+    //链路跟踪服务相关
     //
     public boolean getTraceEnable() {
         return Solon.cfg().getBool(TRACE_ENABLE, true);
+    }
+
+    //
+    //分布式锁服务相关
+    //
+    public boolean getLockEnable() {
+        return Solon.cfg().getBool(LOCK_ENABLE, true);
     }
 }

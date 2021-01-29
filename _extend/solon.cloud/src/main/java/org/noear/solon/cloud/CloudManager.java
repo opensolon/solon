@@ -37,6 +37,11 @@ public class CloudManager {
      */
     private static CloudTraceService traceService;
 
+    /**
+     * 云端锁服务
+     */
+    private static CloudLockService lockService;
+
     protected final static Map<CloudConfig, CloudConfigHandler> configHandlerMap = new LinkedHashMap<>();
     protected final static Map<CloudEvent, CloudEventHandler> eventHandlerMap = new LinkedHashMap<>();
 
@@ -99,6 +104,15 @@ public class CloudManager {
         System.out.println("CloudTraceService registered from the " + service.getClass().getTypeName());
     }
 
+    /**
+     * 登记云端锁服务
+     */
+    public static void register(CloudLockService service) {
+        lockService = service;
+        PrintUtil.green("[Cloud] ");
+        System.out.println("CloudLockService registered from the " + service.getClass().getTypeName());
+    }
+
 
     protected static CloudConfigService configService() {
         if (configService == null) {
@@ -137,6 +151,14 @@ public class CloudManager {
             throw new IllegalStateException("[Cloud] CloudTraceService unregistered");
         } else {
             return traceService;
+        }
+    }
+
+    protected static CloudLockService lockService() {
+        if (lockService == null) {
+            throw new IllegalStateException("[Cloud] CloudLockService unregistered");
+        } else {
+            return lockService;
         }
     }
 }
