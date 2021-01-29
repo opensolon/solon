@@ -12,11 +12,7 @@ import org.noear.solon.cloud.service.CloudLockService;
 public class CloudLockServiceImp implements CloudLockService {
     LockUtils lockUtils;
 
-    public CloudLockServiceImp(String server) {
-        String username = RedisProps.instance.getUsername();
-        String password = RedisProps.instance.getPassword();
-
-        RedisX redisX = new RedisX(server, username, password, 2, 200);
+    public CloudLockServiceImp(RedisX redisX) {
         lockUtils = new LockUtils(redisX);
     }
 
