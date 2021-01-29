@@ -513,5 +513,13 @@ import java.util.function.Function;
             List<Tuple> temp = zsetScan(valPattern, 1);
             return (temp != null && temp.size() > 0);
         }
+
+        public long publish(String channel, String message) {
+            return client.publish(channel, message);
+        }
+
+        public void subscribe(JedisPubSub jedisPubSub, String... channels){
+            client.subscribe(jedisPubSub,channels);
+        }
     }
 }
