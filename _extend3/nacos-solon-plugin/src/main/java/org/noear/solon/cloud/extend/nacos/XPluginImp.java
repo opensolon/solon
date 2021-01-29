@@ -3,6 +3,7 @@ package org.noear.solon.cloud.extend.nacos;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
+import org.noear.solon.cloud.extend.nacos.service.CloudTraceServiceImp;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.extend.nacos.service.CloudConfigServiceImp;
@@ -34,6 +35,11 @@ public class XPluginImp implements Plugin {
 
             //2.1服务注册
             CloudClient.discoveryPush();
+        }
+
+        //3.登记跟跟服务
+        if(NacosProps.instance.getTraceEnable()){
+            CloudManager.register(new CloudTraceServiceImp());
         }
     }
 }

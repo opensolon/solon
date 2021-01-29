@@ -5,6 +5,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
+import org.noear.solon.cloud.extend.consul.service.CloudTraceServiceImp;
 import org.noear.solon.core.*;
 import org.noear.solon.cloud.extend.consul.service.CloudConfigServiceImp;
 import org.noear.solon.cloud.extend.consul.service.CloudDiscoveryServiceImp;
@@ -57,6 +58,12 @@ public class XPluginImp implements Plugin {
 
             //2.1.服务注册
             CloudClient.discoveryPush();
+        }
+
+
+        //3.登记跟跟服务
+        if(ConsulProps.instance.getTraceEnable()){
+            CloudManager.register(new CloudTraceServiceImp());
         }
     }
 
