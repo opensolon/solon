@@ -3,6 +3,7 @@ package org.noear.solon.cloud;
 import org.noear.solon.cloud.annotation.CloudConfig;
 import org.noear.solon.cloud.annotation.CloudEvent;
 import org.noear.solon.cloud.service.*;
+import org.noear.solon.core.util.PrintUtil;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -58,7 +59,8 @@ public class CloudManager {
      */
     public static void register(CloudConfigService service) {
         configService = service;
-        System.out.println("[CLOUD] CloudConfigService registered from the " + service.getClass().getTypeName());
+        PrintUtil.green("[CLOUD] ");
+        System.out.println("CloudConfigService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -66,7 +68,8 @@ public class CloudManager {
      */
     public static void register(CloudDiscoveryService service) {
         discoveryService = service;
-        System.out.println("[CLOUD] CloudDiscoveryService registered from the " + service.getClass().getTypeName());
+        PrintUtil.green("[CLOUD] ");
+        System.out.println("CloudDiscoveryService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -74,7 +77,8 @@ public class CloudManager {
      */
     public static void register(CloudEventService service) {
         eventService = service;
-        System.out.println("[CLOUD] CloudEventService registered from the " + service.getClass().getTypeName());
+        PrintUtil.green("[CLOUD] ");
+        System.out.println("CloudEventService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -82,8 +86,8 @@ public class CloudManager {
      */
     public static void register(CloudLogService service) {
         logService = service;
-
-        System.out.println("[CLOUD] CloudLogService registered from the " + service.getClass().getTypeName());
+        PrintUtil.green("[CLOUD] ");
+        System.out.println("CloudLogService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -91,14 +95,14 @@ public class CloudManager {
      */
     public static void register(CloudTraceService service) {
         traceService = service;
-
-        System.out.println("[CLOUD] CloudTraceService registered from the " + service.getClass().getTypeName());
+        PrintUtil.green("[CLOUD] ");
+        System.out.println("CloudTraceService registered from the " + service.getClass().getTypeName());
     }
 
 
     protected static CloudConfigService configService() {
         if (configService == null) {
-            throw new IllegalStateException("CloudConfigService unregistered");
+            throw new IllegalStateException("[CLOUD] CloudConfigService unregistered");
         } else {
             return configService;
         }
@@ -106,7 +110,7 @@ public class CloudManager {
 
     protected static CloudDiscoveryService discoveryService() {
         if (discoveryService == null) {
-            throw new IllegalStateException("CloudDiscoveryService unregistered");
+            throw new IllegalStateException("[CLOUD] CloudDiscoveryService unregistered");
         } else {
             return discoveryService;
         }
@@ -114,7 +118,7 @@ public class CloudManager {
 
     protected static CloudEventService eventService() {
         if (eventService == null) {
-            throw new IllegalStateException("CloudEventService unregistered");
+            throw new IllegalStateException("[CLOUD] CloudEventService unregistered");
         } else {
             return eventService;
         }
@@ -122,7 +126,7 @@ public class CloudManager {
 
     protected static CloudLogService logService() {
         if (logService == null) {
-            throw new IllegalStateException("CloudLogService unregistered");
+            throw new IllegalStateException("[CLOUD] CloudLogService unregistered");
         } else {
             return logService;
         }
@@ -130,7 +134,7 @@ public class CloudManager {
 
     protected static CloudTraceService traceService() {
         if (traceService == null) {
-            throw new IllegalStateException("CloudTraceService unregistered");
+            throw new IllegalStateException("[CLOUD] CloudTraceService unregistered");
         } else {
             return traceService;
         }
