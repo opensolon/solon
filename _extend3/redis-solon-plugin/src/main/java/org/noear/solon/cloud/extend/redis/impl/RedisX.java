@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.lock.redis.impl;
+package org.noear.solon.cloud.extend.redis.impl;
 
 import org.noear.solon.Utils;
 import redis.clients.jedis.*;

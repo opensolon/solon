@@ -1,8 +1,8 @@
-package org.noear.solon.cloud.extend.lock.redis.service;
+package org.noear.solon.cloud.extend.redis.service;
 
-import org.noear.solon.cloud.extend.lock.redis.RedisProps;
-import org.noear.solon.cloud.extend.lock.redis.impl.LockUtils;
-import org.noear.solon.cloud.extend.lock.redis.impl.RedisX;
+import org.noear.solon.cloud.extend.redis.RedisProps;
+import org.noear.solon.cloud.extend.redis.impl.LockUtils;
+import org.noear.solon.cloud.extend.redis.impl.RedisX;
 import org.noear.solon.cloud.service.CloudLockService;
 
 /**

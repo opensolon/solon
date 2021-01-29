@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.lock.redis;
+package org.noear.solon.cloud.extend.redis;
 
 import org.noear.solon.cloud.CloudProps;
 

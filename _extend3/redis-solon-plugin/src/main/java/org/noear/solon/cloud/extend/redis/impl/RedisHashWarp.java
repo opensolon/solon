@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.lock.redis.impl;
+package org.noear.solon.cloud.extend.redis.impl;
 
 import java.util.Collection;
 import java.util.Map;
