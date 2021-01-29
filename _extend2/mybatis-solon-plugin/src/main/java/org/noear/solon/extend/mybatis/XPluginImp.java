@@ -5,7 +5,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
-import org.noear.solon.extend.mybatis.annotation.Db;
+import org.apache.ibatis.ext.solon.Db;
 
 import javax.sql.DataSource;
 
