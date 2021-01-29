@@ -25,17 +25,8 @@ public class PrintUtil {
         System.out.println(txt);
     }
 
-    private static void println(Object obj) {
-        System.out.println(obj);
-    }
-
     public static void blackln(String txt) {
         System.out.println(ANSI_BLACK + txt);
-        System.out.print(ANSI_RESET);
-    }
-
-    public static void blackln(Object obj) {
-        System.out.println(ANSI_BLACK + obj);
         System.out.print(ANSI_RESET);
     }
 
@@ -44,18 +35,36 @@ public class PrintUtil {
         System.out.print(ANSI_RESET);
     }
 
-    public static void redln(Object txt) {
-        System.out.println(ANSI_RED + txt);
-        System.out.print(ANSI_RESET);
-    }
 
     public static void blueln(String txt) {
         System.out.println(ANSI_BLUE + txt);
         System.out.print(ANSI_RESET);
     }
 
-    public static void blueln(Object txt) {
-        System.out.println(ANSI_BLUE + txt);
+    public static void greenln(String txt) {
+        System.out.println(ANSI_GREEN + txt);
         System.out.print(ANSI_RESET);
     }
+
+    public static void black(String txt) {
+        System.out.print(ANSI_BLACK + txt);
+        System.out.print(ANSI_RESET);
+    }
+
+    public static void red(String txt) {
+        System.out.print(ANSI_RED + txt);
+        System.out.print(ANSI_RESET);
+    }
+
+
+    public static void blue(String txt) {
+        System.out.print(ANSI_BLUE + txt);
+        System.out.print(ANSI_RESET);
+    }
+
+    public static void green(String txt) {
+        System.out.print(ANSI_GREEN + txt);
+        System.out.print(ANSI_RESET);
+    }
+
 }

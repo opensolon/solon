@@ -7,6 +7,7 @@ import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudLogger;
 import org.noear.solon.cloud.extend.water.WaterProps;
+import org.noear.solon.core.util.PrintUtil;
 import org.noear.water.WaterClient;
 import org.noear.water.dso.LogPipeline;
 import org.noear.water.log.LogEvent;
@@ -103,19 +104,35 @@ public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
     }
 
     private void print0(Level level, Metainfo metainfo, Object content) {
-        StringBuilder buf = new StringBuilder();
-        buf.append("[").append(level.name()).append("]");
-        buf.append(new Date());
-        buf.append("[").append(Thread.currentThread().getName()).append("]");
-        if (clz != null) {
-            buf.append("[").append(clz.getTypeName()).append("]");
+        String levelStr = "["+level.name()+"]";
+        switch (level) {
+            case ERROR: {
+                PrintUtil.red(levelStr);
+                break;
+            }
+            case INFO: {
+                PrintUtil.green(levelStr);
+                break;
+            }
+            default: {
+                PrintUtil.black(levelStr);
+                break;
+            }
         }
+
+        StringBuilder buf = new StringBuilder();
+        buf.append(" ").append(new Date().toInstant()).append(" ");
+        buf.append("[").append(Thread.currentThread().getName()).append("]");
 
         if (metainfo != null) {
             buf.append(metainfo.toString());
         }
 
-        buf.append("::");
+        if (clz != null) {
+            buf.append(" ").append(clz.getTypeName());
+        }
+
+        buf.append(" ::");
 
         if (content instanceof String) {
             buf.append(content);
