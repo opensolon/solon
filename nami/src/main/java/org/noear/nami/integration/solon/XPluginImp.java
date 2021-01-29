@@ -38,7 +38,7 @@ public class XPluginImp implements Plugin {
             if (Utils.isEmpty(anno.url()) && Utils.isEmpty(anno.name()) && anno.upstream().length == 0) {
                 throw new NamiException("@NamiClient configuration error!");
             } else {
-                System.err.println(InfoUtils.build(varH.getType(), anno));
+                InfoUtils.print(varH.getType(), anno);
             }
 
             Object obj = cached.get(anno);

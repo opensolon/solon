@@ -59,7 +59,7 @@ public class CloudManager {
      */
     public static void register(CloudConfigService service) {
         configService = service;
-        PrintUtil.green("[CLOUD] ");
+        PrintUtil.green("[Cloud] ");
         System.out.println("CloudConfigService registered from the " + service.getClass().getTypeName());
     }
 
@@ -68,7 +68,7 @@ public class CloudManager {
      */
     public static void register(CloudDiscoveryService service) {
         discoveryService = service;
-        PrintUtil.green("[CLOUD] ");
+        PrintUtil.green("[Cloud] ");
         System.out.println("CloudDiscoveryService registered from the " + service.getClass().getTypeName());
     }
 
@@ -77,7 +77,7 @@ public class CloudManager {
      */
     public static void register(CloudEventService service) {
         eventService = service;
-        PrintUtil.green("[CLOUD] ");
+        PrintUtil.green("[Cloud] ");
         System.out.println("CloudEventService registered from the " + service.getClass().getTypeName());
     }
 
@@ -86,7 +86,7 @@ public class CloudManager {
      */
     public static void register(CloudLogService service) {
         logService = service;
-        PrintUtil.green("[CLOUD] ");
+        PrintUtil.green("[Cloud] ");
         System.out.println("CloudLogService registered from the " + service.getClass().getTypeName());
     }
 
@@ -95,14 +95,14 @@ public class CloudManager {
      */
     public static void register(CloudTraceService service) {
         traceService = service;
-        PrintUtil.green("[CLOUD] ");
+        PrintUtil.green("[Cloud] ");
         System.out.println("CloudTraceService registered from the " + service.getClass().getTypeName());
     }
 
 
     protected static CloudConfigService configService() {
         if (configService == null) {
-            throw new IllegalStateException("[CLOUD] CloudConfigService unregistered");
+            throw new IllegalStateException("[Cloud] CloudConfigService unregistered");
         } else {
             return configService;
         }
@@ -110,7 +110,7 @@ public class CloudManager {
 
     protected static CloudDiscoveryService discoveryService() {
         if (discoveryService == null) {
-            throw new IllegalStateException("[CLOUD] CloudDiscoveryService unregistered");
+            throw new IllegalStateException("[Cloud] CloudDiscoveryService unregistered");
         } else {
             return discoveryService;
         }
@@ -118,7 +118,7 @@ public class CloudManager {
 
     protected static CloudEventService eventService() {
         if (eventService == null) {
-            throw new IllegalStateException("[CLOUD] CloudEventService unregistered");
+            throw new IllegalStateException("[Cloud] CloudEventService unregistered");
         } else {
             return eventService;
         }
@@ -126,7 +126,7 @@ public class CloudManager {
 
     protected static CloudLogService logService() {
         if (logService == null) {
-            throw new IllegalStateException("[CLOUD] CloudLogService unregistered");
+            throw new IllegalStateException("[Cloud] CloudLogService unregistered");
         } else {
             return logService;
         }
@@ -134,7 +134,7 @@ public class CloudManager {
 
     protected static CloudTraceService traceService() {
         if (traceService == null) {
-            throw new IllegalStateException("[CLOUD] CloudTraceService unregistered");
+            throw new IllegalStateException("[Cloud] CloudTraceService unregistered");
         } else {
             return traceService;
         }

@@ -2,14 +2,17 @@ package org.noear.nami.common;
 
 import org.noear.nami.annotation.NamiClient;
 import org.noear.solon.Utils;
+import org.noear.solon.core.util.PrintUtil;
 
 /**
  * @author noear 2021/1/28 created
  */
 public class InfoUtils {
-    public static String build(Class<?> type, NamiClient anno) {
+    public static void print(Class<?> type, NamiClient anno) {
+        PrintUtil.green("[Nami] ");
+
         StringBuilder buf = new StringBuilder();
-        buf.append("[Nami] Bind the service ")
+        buf.append("Bind the service ")
                 .append(type.getTypeName());
 
         if (Utils.isNotEmpty(anno.url())) {
@@ -29,6 +32,6 @@ public class InfoUtils {
             buf.append(")");
         }
 
-        return buf.toString();
+        System.out.println(buf.toString());
     }
 }
