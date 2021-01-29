@@ -3,6 +3,7 @@ package org.noear.solon.cloud.extend.redis.service;
 import org.noear.snack.ONode;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
+import org.noear.solon.cloud.extend.redis.impl.RedisConsumer;
 import org.noear.solon.cloud.extend.redis.impl.RedisX;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
@@ -16,10 +17,10 @@ import java.util.Map;
  * @since 1.3
  */
 public class CloudEventServiceImp implements CloudEventService {
-    static final String channel_main = "channel.main";
 
     RedisX redisX;
-    public CloudEventServiceImp(RedisX redisX){
+
+    public CloudEventServiceImp(RedisX redisX) {
         this.redisX = redisX;
     }
 
@@ -27,11 +28,12 @@ public class CloudEventServiceImp implements CloudEventService {
     public boolean publish(Event event) {
         String event_json = ONode.stringify(event);
 
-        return redisX.open1(us -> us.publish(channel_main, event_json)) > 0;
+        return redisX.open1(us -> us.publish(event.topic(), event_json)) > 0;
     }
 
 
     Map<String, CloudEventObserverEntity> observerMap = new HashMap<>();
+    RedisConsumer redisConsumer = new RedisConsumer();
 
     @Override
     public void attention(EventLevel level, String group, String topic, CloudEventHandler observer) {
@@ -40,5 +42,13 @@ public class CloudEventServiceImp implements CloudEventService {
         }
 
         observerMap.put(topic, new CloudEventObserverEntity(level, group, topic, observer));
+    }
+
+    public void subscribe() {
+        try {
+            redisConsumer.init(redisX, observerMap);
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }
