@@ -60,8 +60,12 @@ public class CloudLoadBalance implements LoadBalance {
         } else {
             int count = discovery.clusterSize();
 
-            if (count == 0) {
+            if(Utils.isNotEmpty(discovery.agent())){
                 return discovery.agent();
+            }
+
+            if (count == 0) {
+                return null;
             } else {
                 //这里不需要原子性
                 if (index > indexMax) {
