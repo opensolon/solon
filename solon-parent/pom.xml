@@ -605,13 +605,19 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>rabbitmq-event-solon-plugin</artifactId>
+                <artifactId>rabbitmq-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>rocketmq-event-solon-plugin</artifactId>
+                <artifactId>rocketmq-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>redis-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
@@ -1029,10 +1035,10 @@
         <module>../_extend3/nacos-solon-plugin</module>
         <module>../_extend3/water-solon-plugin</module>
 
-        <module>../_extend3/rabbitmq-event-solon-plugin</module>
-        <module>../_extend3/rocketmq-event-solon-plugin</module>
+        <module>../_extend3/rabbitmq-solon-plugin</module>
+        <module>../_extend3/rocketmq-solon-plugin</module>
 
-        <module>../_extend3/redis-lock-solon-plugin</module>
+        <module>../_extend3/redis-solon-plugin</module>
 
 
         <module>../solonfox/solonfox-swagger2</module>
