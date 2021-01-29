@@ -39,10 +39,10 @@ solon.cloud.nacos:
 | solon.cloud.@@.discovery.healthDetector     |   服务健康上报指标   |   consul     |     
 | solon.cloud.@@.discovery.refreshInterval     |   服务发现刷新间隔   |   consul     |      
 | | | |
-| solon.cloud.@@.event.enable | 事件总线服务（默认：true）| water、rabbitmq |
-| solon.cloud.@@.event.server     |   服务地址（ip:port）   |  water、rabbitmq     | 
-| solon.cloud.@@.event.exchange     |   交换机或订阅组   |  rabbitmq     | 
-| solon.cloud.@@.event.queue     |   指定队列   |  rabbitmq     | 
+| solon.cloud.@@.event.enable | 事件总线服务（默认：true）| water、rabbitmq、rocketmq |
+| solon.cloud.@@.event.server     |   服务地址（ip:port）   |  water、rabbitmq、rocketmq     | 
+| solon.cloud.@@.event.exchange     |   交换机或关系组   |  rabbitmq、rocketmq     | 
+| solon.cloud.@@.event.queue     |   指定队列   |  rabbitmq、rocketmq     | 
 | solon.cloud.@@.event.hostname     |   指定接收域   |  water     | 
 | solon.cloud.@@.event.seal | 事件签名 | water |
 | | | |
