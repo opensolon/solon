@@ -35,11 +35,6 @@ public class Instance implements Serializable {
         return address;
     }
 
-    public Instance address(String address) {
-        this.address = address;
-        return this;
-    }
-
     /**
      * 协议（http, ws, tcp...）
      */
@@ -52,9 +47,23 @@ public class Instance implements Serializable {
     public Instance protocol(String protocol) {
         if (Utils.isNotEmpty(protocol)) {
             this.protocol = protocol;
+            _uri = null;
         }
 
         return this;
+    }
+
+    private transient String _uri;
+    public String uri() {
+        if (_uri == null) {
+            if (Utils.isEmpty(protocol)) {
+                _uri = "http://" + address;
+            } else {
+                _uri = protocol + "://" + address;
+            }
+        }
+
+        return _uri;
     }
 
     /**

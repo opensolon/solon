@@ -73,11 +73,7 @@ public class CloudLoadBalance implements LoadBalance {
 
                     Instance instance = discovery.instanceGet(index++ % count);
 
-                    if (Utils.isEmpty(instance.protocol())) {
-                        return "http://" + instance.address();
-                    } else {
-                        return instance.protocol() + "://" + instance.address();
-                    }
+                    return instance.uri();
                 }
             }
         }
