@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>org.noear</groupId>
-    <artifactId>rocketmq-event-solon-plugin</artifactId>
+    <artifactId>rocketmq-solon-plugin</artifactId>
 
     <dependencies>
         <dependency>
