@@ -113,9 +113,6 @@ public class XPluginImp implements Plugin {
                         clientTimer.schedule(discoveryServiceImp, interval, interval);
                     }
                 }
-
-                //发现提交（即注册服务）
-                CloudClient.discoveryPush();
             }
 
             if(WaterProps.instance.getLogEnable()){

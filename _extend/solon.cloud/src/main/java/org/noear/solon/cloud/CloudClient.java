@@ -8,6 +8,7 @@ import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.*;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Signal;
+import org.noear.solon.core.util.PrintUtil;
 
 import java.util.Properties;
 
@@ -76,6 +77,8 @@ public class CloudClient {
             for (Signal signal : Solon.global().signals()) {
                 Instance instance = Instance.localNew(signal);
                 CloudClient.discovery().register(Solon.cfg().appGroup(), instance);
+                PrintUtil.green("[Cloud] Service registered: ");
+                System.out.println(instance.service() + "-" + instance.protocol() + "://" + instance.address());
             }
         });
     }

@@ -32,9 +32,6 @@ public class XPluginImp implements Plugin {
         //2.登记发现服务
         if (NacosProps.instance.getDiscoveryEnable()) {
             CloudManager.register(new CloudDiscoveryServiceImp());
-
-            //2.1服务注册
-            CloudClient.discoveryPush();
         }
 
         //3.登记跟跟服务

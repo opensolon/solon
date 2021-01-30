@@ -55,9 +55,6 @@ public class XPluginImp implements Plugin {
                 long interval = serviceImp.getRefreshInterval();
                 clientTimer.schedule(serviceImp, interval, interval);
             }
-
-            //2.1.服务注册
-            CloudClient.discoveryPush();
         }
 
 

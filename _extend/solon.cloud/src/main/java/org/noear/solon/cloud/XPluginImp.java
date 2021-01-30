@@ -61,6 +61,9 @@ public class XPluginImp implements Plugin {
         Aop.context().beanInjectorAdd(CloudConfig.class, CloudBeanInjector.instance);
 
         if (CloudClient.discovery() != null) {
+            //服务注册
+            CloudClient.discoveryPush();
+
             //设置负载工厂
             Bridge.upstreamFactorySet(CloudLoadBalanceFactory.instance);
         }
