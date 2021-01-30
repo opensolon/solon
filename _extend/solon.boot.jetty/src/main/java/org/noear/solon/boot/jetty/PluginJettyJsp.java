@@ -16,6 +16,10 @@ import java.util.Properties;
 
 class PluginJettyJsp extends PluginJetty {
 
+    public PluginJettyJsp(int port) {
+        super(port);
+    }
+
     /**
      * 获取Server Handler
      * */

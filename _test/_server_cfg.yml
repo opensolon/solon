@@ -1,4 +1,5 @@
 server.port: 8080
+server.name: "waterapi"
 
 server.http.port: 8080
 server.socket.port: 28080

@@ -40,6 +40,12 @@ public final class XPluginImp implements Plugin {
     private void start0(SolonApp app) {
         _server = new HTTPServer();
 
+        String _name = app.cfg().get("server.http.name");
+        int _port = app.cfg().getInt("server.http.port", 0);
+        if (_port < 1) {
+            _port = app.port();
+        }
+
         long time_start = System.currentTimeMillis();
 
         JlHttpContextHandler _handler = new JlHttpContextHandler();
@@ -63,14 +69,14 @@ public final class XPluginImp implements Plugin {
         System.out.println("solon.Server:main: JlHttpServer 2.4(jlhttp)");
 
         try {
-            _server.setPort(app.port());
+            _server.setPort(_port);
             _server.start();
 
-            app.signalAdd(new SignalSim(null, app.port(), "http", SignalType.HTTP));
+            app.signalAdd(new SignalSim(_name, _port, "http", SignalType.HTTP));
 
             long time_end = System.currentTimeMillis();
 
-            System.out.println("solon.Connector:main: jlhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
+            System.out.println("solon.Connector:main: jlhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + _port + "}");
             System.out.println("solon.Server:main: jlhttp: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
             ex.printStackTrace();

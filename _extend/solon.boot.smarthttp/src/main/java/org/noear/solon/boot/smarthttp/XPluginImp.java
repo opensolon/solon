@@ -30,6 +30,12 @@ public final class XPluginImp implements Plugin {
 
         XServerProp.init();
 
+        String _name = app.cfg().get("server.http.name");
+        int _port = app.cfg().getInt("server.http.port", 0);
+        if (_port < 1) {
+            _port = app.port();
+        }
+
         long time_start = System.currentTimeMillis();
 
         SmartHttpContextHandler _handler = new SmartHttpContextHandler();
@@ -49,11 +55,11 @@ public final class XPluginImp implements Plugin {
         try {
 
             _server.setThreadNum(Runtime.getRuntime().availableProcessors() + 2)
-                    .setPort(app.port())
+                    .setPort(_port)
                     .start();
 
 
-            app.signalAdd(new SignalSim(null, app.port(), "http", SignalType.HTTP));
+            app.signalAdd(new SignalSim(_name, _port, "http", SignalType.HTTP));
 
             app.before("**", MethodType.ALL, -9, new FormContentFilter());
 
@@ -61,9 +67,9 @@ public final class XPluginImp implements Plugin {
 
             String connectorInfo = "solon.Connector:main: smarthttp: Started ServerConnector@{HTTP/1.1,[http/1.1]";
             if (app.enableWebSocket()) {
-                System.out.println(connectorInfo + "[WebSocket]}{0.0.0.0:" + app.port() + "}");
+                System.out.println(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
             } else {
-                System.out.println(connectorInfo + "}{0.0.0.0:" + app.port() + "}");
+                System.out.println(connectorInfo + "}{0.0.0.0:" + _port + "}");
             }
 
             System.out.println("solon.Server:main: smarthttp: Started @" + (time_end - time_start) + "ms");

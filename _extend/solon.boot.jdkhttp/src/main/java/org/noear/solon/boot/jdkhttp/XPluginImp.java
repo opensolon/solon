@@ -27,12 +27,18 @@ public final class XPluginImp implements Plugin {
 
         XServerProp.init();
 
+        String _name = app.cfg().get("server.http.name");
+        int _port = app.cfg().getInt("server.http.port", 0);
+        if (_port < 1) {
+            _port = app.port();
+        }
+
         long time_start = System.currentTimeMillis();
 
         System.out.println("solon.Server:main: Sun.net.HttpServer(jdkhttp)");
 
         try {
-            _server = HttpServer.create(new InetSocketAddress(app.port()), 0);
+            _server = HttpServer.create(new InetSocketAddress(_port), 0);
 
             HttpContext context = _server.createContext("/", new JdkHttpContextHandler());
             context.getFilters().add(new ParameterFilter());
@@ -40,7 +46,7 @@ public final class XPluginImp implements Plugin {
             _server.setExecutor(Executors.newCachedThreadPool());
             _server.start();
 
-            app.signalAdd(new SignalSim(null, app.port(), "http", SignalType.HTTP));
+            app.signalAdd(new SignalSim(_name, _port, "http", SignalType.HTTP));
 
             long time_end = System.currentTimeMillis();
 

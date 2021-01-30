@@ -35,15 +35,21 @@ public final class XPluginImp implements Plugin {
     }
 
     private void start0(SolonApp app) {
+        String _name = app.cfg().get("server.http.name");
+        int _port = app.cfg().getInt("server.http.port", 0);
+        if (_port < 1) {
+            _port = app.port();
+        }
+
         long time_start = System.currentTimeMillis();
         System.out.println("solon.Server:main: Undertow 2.1.09(undertow)");
 
         Class<?> jspClz = Utils.loadClass("io.undertow.jsp.JspServletBuilder");
 
         if (jspClz == null) {
-            _server = new PluginUndertow();
+            _server = new PluginUndertow(_port);
         } else {
-            _server = new PluginUndertowJsp();
+            _server = new PluginUndertowJsp(_port);
         }
 
         _server.start(app);
@@ -52,13 +58,12 @@ public final class XPluginImp implements Plugin {
 
         String connectorInfo = "solon.Connector:main: undertow: Started ServerConnector@{HTTP/1.1,[http/1.1]";
         if (app.enableWebSocket()) {
-            System.out.println(connectorInfo + "[WebSocket]}{0.0.0.0:" + app.port() + "}");
+            System.out.println(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
         } else {
-            System.out.println(connectorInfo + "}{0.0.0.0:" + app.port() + "}");
+            System.out.println(connectorInfo + "}{0.0.0.0:" + _port + "}");
         }
 
-
-        app.signalAdd(new SignalSim(null, app.port(), "http", SignalType.HTTP));
+        app.signalAdd(new SignalSim(_name, _port, "http", SignalType.HTTP));
 
         System.out.println("solon.Server:main: undertow: Started @" + (time_end - time_start) + "ms");
     }

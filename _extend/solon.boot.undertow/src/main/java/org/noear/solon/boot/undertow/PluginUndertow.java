@@ -21,6 +21,10 @@ import static io.undertow.Handlers.websocket;
  */
 class PluginUndertow extends PluginUndertowBase implements Plugin {
     Undertow _server;
+    int port;
+    public PluginUndertow(int port){
+        this.port = port;
+    }
 
     @Override
     public void start(SolonApp app) {
@@ -50,7 +54,7 @@ class PluginUndertow extends PluginUndertowBase implements Plugin {
         builder.setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE, false);
         builder.setServerOption(UndertowOptions.MAX_ENTITY_SIZE, XServerProp.request_maxRequestSize);
 
-        builder.addHttpListener(app.port(), "0.0.0.0");
+        builder.addHttpListener(port, "0.0.0.0");
 
         if (app.enableWebSocket()) {
             builder.setHandler(websocket(new UtWsConnectionCallback(), httpHandler));

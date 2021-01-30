@@ -38,25 +38,33 @@ public final class XPluginImp implements Plugin {
     private void start0(SolonApp app) {
         Class<?> jspClz = Utils.loadClass("org.eclipse.jetty.jsp.JettyJspServlet");
 
+
+        String _name = app.cfg().get("server.http.name");
+        int _port = app.cfg().getInt("server.http.port", 0);
+        if (_port < 1) {
+            _port = app.port();
+        }
+
+
         if (jspClz == null) {
-            _server = new PluginJetty();
+            _server = new PluginJetty(_port);
         } else {
-            _server = new PluginJettyJsp();
+            _server = new PluginJettyJsp(_port);
         }
 
         long time_start = System.currentTimeMillis();
         System.out.println("solon.Server:main: Jetty 9.4(jetty)");
 
         _server.start(app);
-        app.signalAdd(new SignalSim(null, app.port(), "http", SignalType.HTTP));
+        app.signalAdd(new SignalSim(_name, _port, "http", SignalType.HTTP));
 
         long time_end = System.currentTimeMillis();
 
         String connectorInfo = "solon.Connector:main: jetty: Started ServerConnector@{HTTP/1.1,[http/1.1]";
         if (app.enableWebSocket()) {
-            System.out.println(connectorInfo + "[WebSocket]}{0.0.0.0:" + app.port() + "}");
+            System.out.println(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
         } else {
-            System.out.println(connectorInfo + "}{0.0.0.0:" + app.port() + "}");
+            System.out.println(connectorInfo + "}{0.0.0.0:" + _port + "}");
         }
 
         System.out.println("solon.Server:main: jetty: Started @" + (time_end - time_start) + "ms");

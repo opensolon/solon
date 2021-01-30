@@ -17,6 +17,10 @@ import java.io.IOException;
 
 class PluginJetty extends PluginJettyBase implements Plugin {
     protected Server _server = null;
+    private int port;
+    public PluginJetty(int port){
+        this.port = port;
+    }
 
     @Override
     public void start(SolonApp app) {
@@ -39,7 +43,7 @@ class PluginJetty extends PluginJettyBase implements Plugin {
     protected void setup(SolonApp app) throws Throwable{
         Class<?> wsClz = Utils.loadClass("org.eclipse.jetty.websocket.server.WebSocketHandler");
 
-        _server = new Server(app.port());
+        _server = new Server(port);
 
         //session 支持
         if(Solon.global().enableSessionState()) {
