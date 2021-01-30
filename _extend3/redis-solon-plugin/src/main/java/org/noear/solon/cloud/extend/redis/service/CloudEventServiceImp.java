@@ -16,6 +16,7 @@ import java.util.Map;
  * @author noear
  * @since 1.3
  */
+@Deprecated
 public class CloudEventServiceImp implements CloudEventService {
 
     RedisX redisX;
