@@ -4,10 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.jetty.http.XFormContentFilter;
-import org.noear.solon.core.Aop;
-import org.noear.solon.core.Plugin;
-import org.noear.solon.core.Signal;
-import org.noear.solon.core.SignalType;
+import org.noear.solon.core.*;
 
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebListener;
@@ -51,7 +48,7 @@ public final class XPluginImp implements Plugin {
         System.out.println("solon.Server:main: Jetty 9.4(jetty)");
 
         _server.start(app);
-        app.signalAdd(new Signal(app.port(), "http", SignalType.HTTP));
+        app.signalAdd(new SignalSim(app.port(), "http", SignalType.HTTP));
 
         long time_end = System.currentTimeMillis();
 

@@ -3,6 +3,9 @@ package org.noear.solon.cloud.model;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.utils.LocalUtils;
+import org.noear.solon.core.Signal;
+import org.noear.solon.core.SignalSim;
+import org.noear.solon.core.SignalType;
 
 import java.io.Serializable;
 import java.util.*;
@@ -46,7 +49,7 @@ public class Instance implements Serializable {
         return protocol;
     }
 
-    public Instance protocol(String protocol){
+    public Instance protocol(String protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -139,17 +142,17 @@ public class Instance implements Serializable {
 
     public static Instance local() {
         if (local == null) {
-            local = localNew();
+            local = localNew(new SignalSim(Solon.global().port(), "http", SignalType.HTTP));
         }
 
         return local;
     }
 
-    public static Instance localNew() {
+    public static Instance localNew(Signal signal) {
         Instance instance = new Instance(
                 Solon.cfg().appName(),
-                LocalUtils.getLocalAddress() + ":" + Solon.global().port(),
-                "http");
+                LocalUtils.getLocalAddress() + ":" + signal.port(),
+                signal.protocol());
 
         instance.metaPutAll(Solon.cfg().argx());
         instance.metaRemove("server.port");

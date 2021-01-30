@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.Signal;
+import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.message.Message;
 
@@ -50,7 +51,7 @@ public final class XPluginImp implements Plugin {
             server.start();
 
 
-            app.signalAdd(new Signal(_port, "tcp", SignalType.SOCKET));
+            app.signalAdd(new SignalSim(_port, "tcp", SignalType.SOCKET));
 
             long time_end = System.currentTimeMillis();
 

@@ -6,6 +6,8 @@ import org.noear.solon.annotation.Note;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.*;
+import org.noear.solon.core.Aop;
+import org.noear.solon.core.Signal;
 
 import java.util.Properties;
 
@@ -66,11 +68,16 @@ public class CloudClient {
             return;
         }
 
-        if (Utils.isNotEmpty(Solon.cfg().appName())) {
-            Instance instance = Instance.localNew();
-
-            CloudClient.discovery().register(Solon.cfg().appGroup(), instance);
+        if (Utils.isEmpty(Solon.cfg().appName())) {
+            return;
         }
+
+        Aop.beanOnloaded(() -> {
+            for (Signal signal : Solon.global().signals()) {
+                Instance instance = Instance.localNew(signal);
+                CloudClient.discovery().register(Solon.cfg().appGroup(), instance);
+            }
+        });
     }
 
     /**

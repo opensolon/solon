@@ -4,14 +4,19 @@ package org.noear.solon.core;
  * @author noear
  * @since 1.3
  */
-public class Signal {
-    public final int port;
-    public final String protocol;
-    public final SignalType type;
+public interface Signal {
+    /**
+     * 信号端口
+     * */
+    int port();
 
-    public Signal(int port, String protocol, SignalType type){
-        this.port = port;
-        this.protocol = protocol.toLowerCase();
-        this.type = type;
-    }
+    /**
+     * 信号协议
+     * */
+    String protocol();
+
+    /**
+     * 信号类型
+     * */
+    SignalType type();
 }

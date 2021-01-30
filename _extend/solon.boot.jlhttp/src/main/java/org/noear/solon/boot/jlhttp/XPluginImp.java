@@ -3,11 +3,8 @@ package org.noear.solon.boot.jlhttp;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Aop;
-import org.noear.solon.core.Signal;
-import org.noear.solon.core.SignalType;
+import org.noear.solon.core.*;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.Plugin;
 
 import javax.net.ssl.SSLServerSocketFactory;
 
@@ -69,7 +66,7 @@ public final class XPluginImp implements Plugin {
             _server.setPort(app.port());
             _server.start();
 
-            app.signalAdd(new Signal(app.port(), "http", SignalType.HTTP));
+            app.signalAdd(new SignalSim(app.port(), "http", SignalType.HTTP));
 
             long time_end = System.currentTimeMillis();
 
