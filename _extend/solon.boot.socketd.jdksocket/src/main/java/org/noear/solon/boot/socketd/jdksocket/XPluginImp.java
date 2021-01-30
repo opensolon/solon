@@ -3,6 +3,8 @@ package org.noear.solon.boot.socketd.jdksocket;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.Signal;
+import org.noear.solon.core.SignalType;
 import org.noear.solon.socketd.SessionManager;
 
 public class XPluginImp implements Plugin {
@@ -33,6 +35,9 @@ public class XPluginImp implements Plugin {
         try {
             _server = new BioServer();
             _server.start(_port);
+
+
+            app.signalAdd(new Signal(_port, "tcp", SignalType.SOCKET));
 
             long time_end = System.currentTimeMillis();
 

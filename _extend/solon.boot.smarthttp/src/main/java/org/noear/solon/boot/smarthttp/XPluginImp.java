@@ -6,6 +6,8 @@ import org.noear.solon.boot.smarthttp.http.SmartHttpContextHandler;
 import org.noear.solon.boot.smarthttp.http.FormContentFilter;
 import org.noear.solon.boot.smarthttp.websocket.WebSocketHandleImp;
 import org.noear.solon.boot.smarthttp.websocket._SessionManagerImpl;
+import org.noear.solon.core.Signal;
+import org.noear.solon.core.SignalType;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.socketd.SessionManager;
@@ -48,6 +50,9 @@ public final class XPluginImp implements Plugin {
             _server.setThreadNum(Runtime.getRuntime().availableProcessors() + 2)
                     .setPort(app.port())
                     .start();
+
+
+            app.signalAdd(new Signal(app.port(), "http", SignalType.HTTP));
 
             app.before("**", MethodType.ALL, -9, new FormContentFilter());
 

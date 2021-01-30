@@ -3,6 +3,8 @@ package org.noear.solon.boot.websocket;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.Signal;
+import org.noear.solon.core.SignalType;
 import org.noear.solon.socketd.SessionManager;
 
 public class XPluginImp implements Plugin {
@@ -34,6 +36,9 @@ public class XPluginImp implements Plugin {
             _server = new WsServer(_port);
 
             _server.start();
+
+
+            app.signalAdd(new Signal(_port, "ws", SignalType.WEBSOCKET));
 
             long time_end = System.currentTimeMillis();
 

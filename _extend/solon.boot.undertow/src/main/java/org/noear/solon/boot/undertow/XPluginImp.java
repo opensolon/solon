@@ -5,6 +5,8 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.Signal;
+import org.noear.solon.core.SignalType;
 
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebListener;
@@ -57,6 +59,9 @@ public final class XPluginImp implements Plugin {
         } else {
             System.out.println(connectorInfo + "}{0.0.0.0:" + app.port() + "}");
         }
+
+
+        app.signalAdd(new Signal(app.port(), "http", SignalType.SOCKET));
 
         System.out.println("solon.Server:main: undertow: Started @" + (time_end - time_start) + "ms");
     }

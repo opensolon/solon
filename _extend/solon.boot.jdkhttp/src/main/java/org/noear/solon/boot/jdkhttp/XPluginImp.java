@@ -5,6 +5,8 @@ import com.sun.net.httpserver.HttpServer;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.Signal;
+import org.noear.solon.core.SignalType;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
@@ -36,6 +38,8 @@ public final class XPluginImp implements Plugin {
 
             _server.setExecutor(Executors.newCachedThreadPool());
             _server.start();
+
+            app.signalAdd(new Signal(app.port(), "http", SignalType.HTTP));
 
             long time_end = System.currentTimeMillis();
 

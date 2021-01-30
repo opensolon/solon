@@ -123,6 +123,27 @@ public class SolonApp implements Handler, HandlerSlots {
 
     //////////////////////////////////
 
+    private final Set<Signal> signals = new LinkedHashSet<>();
+
+
+    /**
+     * 添加信号
+     * */
+    public void signalAdd(Signal instance){
+        signals.add(instance);
+    }
+
+    /**
+     * 获取信号记录
+     * */
+    public Collection<Signal> signals(){
+        return Collections.unmodifiableSet(signals);
+    }
+
+
+    //////////////////////////////////
+
+
     /**
      * 共享变量（一般用于插件之间）
      * */

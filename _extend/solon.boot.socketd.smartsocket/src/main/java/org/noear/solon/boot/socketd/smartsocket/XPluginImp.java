@@ -3,6 +3,8 @@ package org.noear.solon.boot.socketd.smartsocket;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.Signal;
+import org.noear.solon.core.SignalType;
 import org.noear.solon.core.message.Message;
 
 import org.noear.solon.socketd.SessionManager;
@@ -46,6 +48,9 @@ public final class XPluginImp implements Plugin {
                 server.setWriteBuffer(SocketProps.writeBufferSize(), 16);
             }
             server.start();
+
+
+            app.signalAdd(new Signal(_port, "tcp", SignalType.SOCKET));
 
             long time_end = System.currentTimeMillis();
 

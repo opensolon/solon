@@ -4,6 +4,8 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.Signal;
+import org.noear.solon.core.SignalType;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.Plugin;
 
@@ -38,7 +40,7 @@ public final class XPluginImp implements Plugin {
         });
     }
 
-    private void start0(SolonApp app){
+    private void start0(SolonApp app) {
         _server = new HTTPServer();
 
         long time_start = System.currentTimeMillis();
@@ -66,6 +68,8 @@ public final class XPluginImp implements Plugin {
         try {
             _server.setPort(app.port());
             _server.start();
+
+            app.signalAdd(new Signal(app.port(), "http", SignalType.HTTP));
 
             long time_end = System.currentTimeMillis();
 
