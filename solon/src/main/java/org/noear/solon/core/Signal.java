@@ -6,6 +6,11 @@ package org.noear.solon.core;
  */
 public interface Signal {
     /**
+     * 信号名
+     * */
+    String name();
+
+    /**
      * 信号端口
      * */
     int port();

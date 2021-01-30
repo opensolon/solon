@@ -66,7 +66,7 @@ public final class XPluginImp implements Plugin {
             _server.setPort(app.port());
             _server.start();
 
-            app.signalAdd(new SignalSim(app.port(), "http", SignalType.HTTP));
+            app.signalAdd(new SignalSim(null, app.port(), "http", SignalType.HTTP));
 
             long time_end = System.currentTimeMillis();
 

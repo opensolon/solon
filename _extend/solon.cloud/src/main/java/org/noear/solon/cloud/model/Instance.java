@@ -146,7 +146,12 @@ public class Instance implements Serializable {
 
 
     public Instance(String service, String address) {
-        this.service = service;
+        if (Utils.isEmpty(service)) {
+            this.service = Solon.cfg().appName();
+        } else {
+            this.service = service;
+        }
+
         this.address = address;
     }
 
@@ -155,7 +160,7 @@ public class Instance implements Serializable {
 
     public static Instance local() {
         if (local == null) {
-            local = localNew(new SignalSim(Solon.global().port(), "http", SignalType.HTTP));
+            local = localNew(new SignalSim(Solon.cfg().appName(), Solon.global().port(), "http", SignalType.HTTP));
         }
 
         return local;
@@ -163,7 +168,7 @@ public class Instance implements Serializable {
 
     public static Instance localNew(Signal signal) {
         Instance n1 = new Instance(
-                Solon.cfg().appName(),
+                signal.name(),
                 LocalUtils.getLocalAddress() + ":" + signal.port());
 
         n1.protocol(signal.protocol());

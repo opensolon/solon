@@ -23,6 +23,8 @@ public class XPluginImp implements Plugin {
 
         SessionManager.register(new _SessionManagerImpl());
 
+
+        String _name = app.cfg().get("server.websocket.name");
         int _port = app.cfg().getInt("server.websocket.port", 0);
         if (_port < 1) {
             _port = 10000 + app.port();
@@ -39,7 +41,7 @@ public class XPluginImp implements Plugin {
             _server.start();
 
 
-            app.signalAdd(new SignalSim(_port, "ws", SignalType.WEBSOCKET));
+            app.signalAdd(new SignalSim(_name, _port, "ws", SignalType.WEBSOCKET));
 
             long time_end = System.currentTimeMillis();
 

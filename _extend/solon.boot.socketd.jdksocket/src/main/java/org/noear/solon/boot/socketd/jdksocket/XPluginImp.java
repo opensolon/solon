@@ -28,6 +28,7 @@ public class XPluginImp implements Plugin {
 
         System.out.println("solon.Server:main: java.net.ServerSocket(jdksocket-socketd)");
 
+        String _name = app.cfg().get("server.socket.name");
         int _port = app.cfg().getInt("server.socket.port", 0);
         if (_port < 1) {
             _port = 20000 + app.port();
@@ -38,7 +39,7 @@ public class XPluginImp implements Plugin {
             _server.start(_port);
 
 
-            app.signalAdd(new SignalSim(_port, "tcp", SignalType.SOCKET));
+            app.signalAdd(new SignalSim(_name, _port, "tcp", SignalType.SOCKET));
 
             long time_end = System.currentTimeMillis();
 

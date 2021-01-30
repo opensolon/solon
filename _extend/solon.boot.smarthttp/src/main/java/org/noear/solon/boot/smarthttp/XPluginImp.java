@@ -53,7 +53,7 @@ public final class XPluginImp implements Plugin {
                     .start();
 
 
-            app.signalAdd(new SignalSim(app.port(), "http", SignalType.HTTP));
+            app.signalAdd(new SignalSim(null, app.port(), "http", SignalType.HTTP));
 
             app.before("**", MethodType.ALL, -9, new FormContentFilter());
 

@@ -4,6 +4,10 @@ server.http.port: 8080
 server.socket.port: 28080
 server.websocket.port: 18080
 
+server.http.name: "waterapi"
+server.socket.name: "waterapi.tcp"
+server.websocket.name: "waterapi.ws"
+
 server.request.maxRequestSize: 2Mb #kb,mb
 
 

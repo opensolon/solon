@@ -48,7 +48,7 @@ public final class XPluginImp implements Plugin {
         System.out.println("solon.Server:main: Jetty 9.4(jetty)");
 
         _server.start(app);
-        app.signalAdd(new SignalSim(app.port(), "http", SignalType.HTTP));
+        app.signalAdd(new SignalSim(null, app.port(), "http", SignalType.HTTP));
 
         long time_end = System.currentTimeMillis();
 
