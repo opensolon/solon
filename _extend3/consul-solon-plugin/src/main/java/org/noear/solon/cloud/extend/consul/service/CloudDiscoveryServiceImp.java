@@ -101,17 +101,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
 
     private void registerLocalCheck(Instance instance, NewService newService){
         if (Utils.isNotEmpty(healthCheckInterval)) {
-            //1.添加Solon服务，提供检测用
-            //
-            HealthDetector detector=new HealthDetector();
-            detector.startDetect(Solon.global());
-
-            Solon.global().get(healthCheckPath, ctx -> {
-                Map<String,Object> info=new HashMap<>();
-                info.put("status","OK");
-                info.putAll(detector.getInfo());
-                ctx.outputAsJson(GsonFactory.getGson().toJson(info));
-            });
+            HealthDetector.start(healthCheckPath);
 
             //2.添加检测器
             //
@@ -219,51 +209,4 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
         }
     }
 
-
-    /**
-     * 健康探测器
-     * */
-    static class HealthDetector {
-
-        private static final Detector[] allDetectors=new Detector[]{
-                new CpuDetector(),
-                new JvmMemoryDetector(),
-                new OsDetector(),
-                new QpsDetector(),
-                new MemoryDetector(),
-                new DiskDetector()
-        };
-        Set<Detector> detectors = new HashSet<>();
-
-        public HealthDetector(){
-
-        }
-
-        public void startDetect(SolonApp app){
-            String detectorNamesStr= ConsulProps.instance.getDiscoveryHealthDetector();
-
-            if(Utils.isEmpty(detectorNamesStr)){
-                return;
-            }
-
-            Set<String> detectorNames=new HashSet<>(Arrays.asList(detectorNamesStr.split(",")));
-
-            for(Detector detector:allDetectors){
-                if(detectorNames.contains(detector.getName())){
-                    detectors.add(detector);
-                    if(detector instanceof QpsDetector){
-                        ((QpsDetector) detector).toDetect(app);
-                    }
-                }
-            }
-        }
-
-        public Map<String,Object> getInfo(){
-            Map<String,Object> info=new HashMap<>();
-            for(Detector detector:detectors){
-                info.put(detector.getName(),detector.getInfo());
-            }
-            return info;
-        }
-    }
 }
