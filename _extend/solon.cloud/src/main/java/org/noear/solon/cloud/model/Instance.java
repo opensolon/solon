@@ -156,6 +156,7 @@ public class Instance implements Serializable {
 
         instance.metaPutAll(Solon.cfg().argx());
         instance.metaRemove("server.port");
+        instance.metaPut("signal.protocol", signal.protocol());
 
         instance.tagsAdd("solon");
         if (Utils.isNotEmpty(Solon.cfg().appGroup())) {
