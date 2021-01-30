@@ -18,7 +18,7 @@ import java.util.*;
  */
 public class Instance implements Serializable {
     /**
-     * 服务名
+     * 服务名；实例化后不能修改
      */
     private String service;
 
@@ -27,7 +27,7 @@ public class Instance implements Serializable {
     }
 
     /**
-     * 地址（ip:port）
+     * 地址；实例化后不能修改（ip:port）
      */
     private String address;
 
@@ -47,7 +47,6 @@ public class Instance implements Serializable {
     public Instance protocol(String protocol) {
         if (Utils.isNotEmpty(protocol)) {
             this.protocol = protocol;
-            _uri = null;
         }
 
         return this;
