@@ -50,7 +50,10 @@ public class Instance implements Serializable {
     }
 
     public Instance protocol(String protocol) {
-        this.protocol = protocol;
+        if (Utils.isNotEmpty(protocol)) {
+            this.protocol = protocol;
+        }
+
         return this;
     }
 
@@ -71,34 +74,36 @@ public class Instance implements Serializable {
     /**
      * 元信息
      */
-    private Map<String, String> meta;
+    private Map<String, String> meta = new HashMap<>();
 
     public Map<String, String> meta() {
         return meta;
     }
 
     public Instance metaPut(String name, String value) {
-        if (meta == null) {
-            meta = new LinkedHashMap<>();
+        if (value != null) {
+            meta.put(name, value);
         }
 
-        meta.put(name, value);
         return this;
     }
 
+    public String metaGet(String name) {
+        return meta.get(name);
+    }
+
     public Instance metaPutAll(Map<String, String> map) {
-        if (meta == null) {
-            meta = new LinkedHashMap<>();
+        if (map != null) {
+            meta.putAll(map);
+
+            protocol(map.get("protocol"));
         }
 
-        meta.putAll(map);
         return this;
     }
 
     public Instance metaRemove(String name) {
-        if (meta != null) {
-            meta.remove(name);
-        }
+        meta.remove(name);
 
         return this;
     }
@@ -131,10 +136,9 @@ public class Instance implements Serializable {
     }
 
 
-    public Instance(String service, String address, String protocol) {
+    public Instance(String service, String address) {
         this.service = service;
         this.address = address;
-        this.protocol = protocol;
     }
 
 
@@ -149,24 +153,25 @@ public class Instance implements Serializable {
     }
 
     public static Instance localNew(Signal signal) {
-        Instance instance = new Instance(
+        Instance n1 = new Instance(
                 Solon.cfg().appName(),
-                LocalUtils.getLocalAddress() + ":" + signal.port(),
-                signal.protocol());
+                LocalUtils.getLocalAddress() + ":" + signal.port());
 
-        instance.metaPutAll(Solon.cfg().argx());
-        instance.metaRemove("server.port");
-        instance.metaPut("signal.protocol", signal.protocol());
+        n1.protocol(signal.protocol());
 
-        instance.tagsAdd("solon");
+        n1.metaPutAll(Solon.cfg().argx());
+        n1.metaRemove("server.port");
+        n1.metaPut("protocol", signal.protocol());
+
+        n1.tagsAdd("solon");
         if (Utils.isNotEmpty(Solon.cfg().appGroup())) {
-            instance.tagsAdd(Solon.cfg().appGroup());
+            n1.tagsAdd(Solon.cfg().appGroup());
         }
 
         if (Utils.isNotEmpty(Solon.cfg().appName())) {
-            instance.tagsAdd(Solon.cfg().appName());
+            n1.tagsAdd(Solon.cfg().appName());
         }
 
-        return instance;
+        return n1;
     }
 }

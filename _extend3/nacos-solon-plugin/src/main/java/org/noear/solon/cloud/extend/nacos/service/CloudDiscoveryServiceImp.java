@@ -136,9 +136,9 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
 
             for (com.alibaba.nacos.api.naming.pojo.Instance i1 : list) {
                 Instance n1 = new Instance(service,
-                        i1.getIp() + ":" + i1.getPort(),
-                        null)
-                        .weight(i1.getWeight()) ;
+                        i1.getIp() + ":" + i1.getPort())
+                        .weight(i1.getWeight())
+                        .metaPutAll(i1.getMetadata());
 
                 discovery.instanceAdd(n1);
             }

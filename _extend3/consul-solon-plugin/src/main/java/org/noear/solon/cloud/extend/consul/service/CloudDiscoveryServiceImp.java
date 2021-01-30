@@ -82,6 +82,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
         newService.setName(instance.service());
         newService.setAddress(ss[0]);
         newService.setPort(Integer.parseInt(ss[1]));
+        newService.setMeta(instance.meta());
         if (instance.tags() != null) {
             newService.setTags(instance.tags());
         }
@@ -193,13 +194,12 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
                 discoveryTmp.put(name, discovery);
             }
 
-            Instance instance = new Instance(service.getService(),
-                    service.getAddress() + ":" + service.getPort(),
-                    null)
+            Instance n1 = new Instance(service.getService(),
+                    service.getAddress() + ":" + service.getPort())
                     .tagsAddAll(service.getTags())
                     .metaPutAll(service.getMeta());
 
-            discovery.instanceAdd(instance);
+            discovery.instanceAdd(n1);
         }
 
         discoveryMap = discoveryTmp;
