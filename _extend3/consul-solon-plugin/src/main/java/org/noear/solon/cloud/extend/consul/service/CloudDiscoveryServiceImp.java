@@ -96,32 +96,44 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
 
     @Override
     public void registerState(String group, Instance instance, boolean health) {
-
+        //不支持主动设定状态
     }
 
-    private void registerLocalCheck(Instance instance, NewService newService){
+    private void registerLocalCheck(Instance instance, NewService newService) {
         if (Utils.isNotEmpty(healthCheckInterval)) {
-            HealthDetector.start(healthCheckPath);
+            if ("http".equals(instance.protocol())) {
 
-            //2.添加检测器
-            //
-            String checkUrl = "http://" + instance.address();
-            if (healthCheckPath.startsWith("/")) {
-                checkUrl = checkUrl + healthCheckPath;
-            } else {
-                checkUrl = checkUrl + "/" + healthCheckPath;
+                //1.添加检测器
+                //
+                HealthDetector.start(healthCheckPath);
+
+                //2.添加检测
+                //
+                String checkUrl = "http://" + instance.address();
+                if (healthCheckPath.startsWith("/")) {
+                    checkUrl = checkUrl + healthCheckPath;
+                } else {
+                    checkUrl = checkUrl + "/" + healthCheckPath;
+                }
+
+                NewService.Check check = new NewService.Check();
+                check.setInterval(healthCheckInterval);
+                check.setMethod("GET");
+                check.setHttp(checkUrl);
+                check.setDeregisterCriticalServiceAfter("30s");
+                check.setTimeout("6s");
+
+                newService.setCheck(check);
             }
 
-            //3.添加检测
-            //
-            NewService.Check check = new NewService.Check();
-            check.setInterval(healthCheckInterval);
-            check.setMethod("GET");
-            check.setHttp(checkUrl);
-            check.setDeregisterCriticalServiceAfter("30s");
-            check.setTimeout("60s");
+            if ("tcp".equals(instance.protocol())) {
+                NewService.Check check = new NewService.Check();
+                check.setInterval(healthCheckInterval);
+                check.setTcp(instance.address());
+                check.setTimeout("6s");
 
-            newService.setCheck(check);
+                newService.setCheck(check);
+            }
         }
     }
 
