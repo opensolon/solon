@@ -126,7 +126,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
                 newService.setCheck(check);
             }
 
-            if ("tcp".equals(instance.protocol())) {
+            if ("tcp".equals(instance.protocol()) || "ws".equals(instance.protocol())) {
                 NewService.Check check = new NewService.Check();
                 check.setInterval(healthCheckInterval);
                 check.setTcp(instance.address());

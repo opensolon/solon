@@ -7,6 +7,7 @@ import org.apache.http.util.TextUtils;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
+import org.noear.solon.cloud.extend.nacos.impl.InstanceWrap;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
@@ -59,11 +60,17 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
             throw new IllegalArgumentException("Instance.address error");
         }
 
+        InstanceWrap iw = new InstanceWrap();
+        iw.setIp(ss[0]);
+        iw.setPort(Integer.parseInt(ss[1]));
+        iw.setClusterName("DEFAULT");
+        iw.setMetadata(instance.meta());
+
         try {
             if (Utils.isEmpty(group)) {
-                real.registerInstance(instance.service(), ss[0], Integer.parseInt(ss[1]));
+                real.registerInstance(instance.service(), iw);
             } else {
-                real.registerInstance(instance.service(), group, ss[0], Integer.parseInt(ss[1]));
+                real.registerInstance(instance.service(), group, iw);
             }
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
@@ -90,11 +97,17 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
             throw new IllegalArgumentException("Instance.address error");
         }
 
+        InstanceWrap iw = new InstanceWrap();
+        iw.setIp(ss[0]);
+        iw.setPort(Integer.parseInt(ss[1]));
+        iw.setClusterName("DEFAULT");
+        iw.setMetadata(instance.meta());
+
         try {
             if (Utils.isEmpty(group)) {
-                real.deregisterInstance(instance.service(), ss[0], Integer.parseInt(ss[1]));
+                real.deregisterInstance(instance.service(), iw);
             } else {
-                real.deregisterInstance(instance.service(), group, ss[0], Integer.parseInt(ss[1]));
+                real.deregisterInstance(instance.service(), group, iw);
             }
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
