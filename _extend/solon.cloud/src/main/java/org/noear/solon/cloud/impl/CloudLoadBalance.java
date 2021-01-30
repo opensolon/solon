@@ -66,7 +66,7 @@ public class CloudLoadBalance implements LoadBalance {
                 if (count == 0) {
                     return null;
                 } else {
-                    //这里不需要原子性
+                    //这里不需要原子性，快就好
                     if (index > indexMax) {
                         index = 0;
                     }
