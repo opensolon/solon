@@ -615,11 +615,6 @@
                 <version>${solon.ver}</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>redis-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -1038,7 +1033,6 @@
         <module>../_extend3/rabbitmq-solon-plugin</module>
         <module>../_extend3/rocketmq-solon-plugin</module>
 
-        <module>../_extend3/redis-solon-plugin</module>
 
 
         <module>../solonfox/solonfox-swagger2</module>

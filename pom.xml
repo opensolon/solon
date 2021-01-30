@@ -40,7 +40,8 @@
 
 <!--        <module>_extend3/kafka-solon-plugin</module>-->
 
-        <module>_extend3/eureka-solon-plugin</module>
-        <module>_extend3/zookeeper-solon-plugin</module>
+<!--        <module>../_extend3/redis-solon-plugin</module>-->
+<!--        <module>_extend3/eureka-solon-plugin</module>-->
+<!--        <module>_extend3/zookeeper-solon-plugin</module>-->
     </modules>
 </project>

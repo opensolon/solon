@@ -6,7 +6,6 @@ import org.noear.solon.annotation.Note;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.*;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.Signal;
 import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.util.PrintUtil;
@@ -106,9 +105,4 @@ public class CloudClient {
     @Note("链路跟踪服务")
     public static CloudTraceService trace() { return CloudManager.traceService();}
 
-    /**
-     * 锁服务
-     * */
-    @Note("锁服务")
-    public static CloudLockService lock() { return CloudManager.lockService();}
 }
