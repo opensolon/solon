@@ -131,7 +131,7 @@ public class Nami {
 
             NamiChannel channel = _config.getChannel();
 
-            if(channel == null) {
+            if (channel == null) {
                 //通过 scheme 获取通道
                 int idx = _url.indexOf("://");
                 if (idx > 0) {
@@ -140,15 +140,19 @@ public class Nami {
                 }
             }
 
-            if(channel == null){
+            if (channel == null) {
                 throw new NamiException("There are no channels available");
             }
 
             //执行通道过滤器
             channel.filter(_config, _action, _url, headers, args);
 
-            if(body == null){
+            if (body == null) {
                 body = args;
+            }
+
+            if(_config.getDebug()) {
+                System.out.println("[Nami] call: " + _url);
             }
 
             _result = channel.call(_config, _method, _action, _url, headers, args, body);
@@ -267,6 +271,11 @@ public class Nami {
          */
         public Builder filterAdd(Filter filter) {
             _config.filterAdd(filter);
+            return this;
+        }
+
+        public Builder debug(boolean debug){
+            _config.setDebug(debug);
             return this;
         }
 

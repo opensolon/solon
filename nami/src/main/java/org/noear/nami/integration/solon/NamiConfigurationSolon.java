@@ -3,6 +3,7 @@ package org.noear.nami.integration.solon;
 import org.noear.nami.Nami;
 import org.noear.nami.NamiConfiguration;
 import org.noear.nami.annotation.NamiClient;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Bridge;
@@ -14,6 +15,9 @@ public class NamiConfigurationSolon implements NamiConfiguration {
         if (Utils.isEmpty(client.name())) {
             return;
         }
+
+        //设置调试模式
+        builder.debug(Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode());
 
         //尝试从负载工厂获取
         if (Bridge.upstreamFactory() != null) {
