@@ -61,7 +61,7 @@ public final class XPluginImp implements Plugin {
         }
 
 
-        app.signalAdd(new Signal(app.port(), "http", SignalType.SOCKET));
+        app.signalAdd(new Signal(app.port(), "http", SignalType.HTTP));
 
         System.out.println("solon.Server:main: undertow: Started @" + (time_end - time_start) + "ms");
     }
