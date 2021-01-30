@@ -55,9 +55,6 @@ public class CloudProps {
     private String TRACE_ENABLE = "solon.cloud.@@.trace.enable";
 
 
-    //分布式锁服务相关
-    private String LOCK_ENABLE = "solon.cloud.@@.lock.enable";
-
     public CloudProps(String frame) {
         SERVER = SERVER.replace("@@", frame);
         TOKEN = TOKEN.replace("@@", frame);
@@ -93,8 +90,6 @@ public class CloudProps {
         LOG_DEFAULT = LOG_DEFAULT.replace("@@", frame);
 
         TRACE_ENABLE = TRACE_ENABLE.replace("@@", frame);
-
-        LOCK_ENABLE = LOCK_ENABLE.replace("@@", frame);
     }
 
 
@@ -251,10 +246,5 @@ public class CloudProps {
         return Solon.cfg().getBool(TRACE_ENABLE, true);
     }
 
-    //
-    //分布式锁服务相关
-    //
-    public boolean getLockEnable() {
-        return Solon.cfg().getBool(LOCK_ENABLE, true);
-    }
+
 }

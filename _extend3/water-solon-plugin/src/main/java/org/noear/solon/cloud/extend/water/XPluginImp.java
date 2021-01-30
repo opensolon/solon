@@ -83,10 +83,6 @@ public class XPluginImp implements Plugin {
                 CloudManager.register(traceServiceImp);
             }
 
-            if(WaterProps.instance.getLockEnable()){
-                CloudManager.register(new CloudLockServiceImp());
-            }
-
             if (WaterProps.instance.getConfigEnable()) {
                 configServiceImp = new CloudConfigServiceImp();
                 CloudManager.register(configServiceImp);
