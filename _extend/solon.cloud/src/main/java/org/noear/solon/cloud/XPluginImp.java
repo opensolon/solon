@@ -78,15 +78,9 @@ public class XPluginImp implements Plugin {
                 for (Signal signal : Solon.global().signals()) {
                     Instance instance = Instance.localNew(signal);
 
-                    if(Solon.cfg().isDriftMode() || Solon.cfg().isFilesMode()){
-                        CloudClient.discovery().deregister(Solon.cfg().appGroup(), instance);
-                        PrintUtil.green("[Cloud] ");
-                        System.out.println("Service deregistered " + instance.service() + "@" + instance.uri());
-                    }else{
-                        CloudClient.discovery().registerState(Solon.cfg().appGroup(), instance, false);
-                        PrintUtil.green("[Cloud] ");
-                        System.out.println("Service registered as unhealthy " + instance.service() + "@" + instance.uri());
-                    }
+                    CloudClient.discovery().deregister(Solon.cfg().appGroup(), instance);
+                    PrintUtil.green("[Cloud] ");
+                    System.out.println("Service deregistered " + instance.service() + "@" + instance.uri());
                 }
             }
         }
