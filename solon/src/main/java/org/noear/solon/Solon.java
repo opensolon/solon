@@ -73,7 +73,7 @@ public class Solon {
         JarClassLoader.bindingThread();
 
         //添加关闭勾子
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> stop(false, STOP_DELAY)));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> stop0(false, STOP_DELAY)));
 
         PrintUtil.blueln("solon.App:: Start loading");
 
@@ -117,32 +117,38 @@ public class Solon {
             return;
         }
 
+        Utils.pools.submit(() -> {
+            stop0(exit, delay);
+        });
+    }
+
+    private static void stop0(boolean exit, long delay) {
+        //1.预停止
+        global.cfg().plugs().forEach(p -> p.prestop());
+        System.err.println("[Stop] prestop completed");
+
+        //2.延时
+        if (delay > 0) {
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException ex) {
+
+            }
+            System.err.println("[Stop] delay completed");
+        }
+
+        //2.设为已停目
         _stopped = true;
 
-        Utils.pools.submit(() -> {
+        //3.停目
+        global.cfg().plugs().forEach(p -> p.stop());
+        global = null;
+        System.err.println("[Stop] stop completed");
 
-            //1.预停止
-            global.cfg().plugs().forEach(p -> p.prestop());
-            System.err.println("[Stop] prestop completed");
-
-            //2.延时
-            if (delay > 0) {
-                Thread.sleep(delay);
-                System.err.println("[Stop] delay completed");
-            }
-
-            //3.停目
-            global.cfg().plugs().forEach(p -> p.stop());
-            global = null;
-            System.err.println("[Stop] stop completed");
-
-            //4.直接退出?
-            if (exit) {
-                System.exit(0);
-            }
-
-            return null;
-        });
+        //4.直接退出?
+        if (exit) {
+            System.exit(0);
+        }
     }
 
     public static boolean stopped(){
