@@ -7,6 +7,8 @@ import org.noear.solon.cloud.impl.CloudLoadBalanceFactory;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.Signal;
+import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.cloud.annotation.CloudConfig;
 import org.noear.solon.cloud.annotation.CloudEvent;
@@ -74,7 +76,12 @@ public class XPluginImp implements Plugin {
         if (Solon.cfg().isDriftMode()) {
             if (CloudClient.discovery() != null) {
                 if (Utils.isNotEmpty(Solon.cfg().appName())) {
-                    CloudClient.discovery().deregister(Solon.cfg().appGroup(), Instance.local());
+                    for (Signal signal : Solon.global().signals()) {
+                        Instance instance = Instance.localNew(signal);
+                        CloudClient.discovery().deregister(Solon.cfg().appGroup(), instance);
+                        PrintUtil.green("[Cloud] ");
+                        System.out.println("Service deregistered " + instance.service() + "@" + instance.uri());
+                    }
                 }
             }
         }
