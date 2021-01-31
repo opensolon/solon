@@ -6,6 +6,8 @@ import org.noear.solon.core.Signal;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.ext.ConsumerEx;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -71,7 +73,7 @@ public class Solon {
         JarClassLoader.bindingThread();
 
         //添加关闭勾子
-        Runtime.getRuntime().addShutdownHook(new Thread(()->stop(false, STOP_DELAY)));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> stop(false, STOP_DELAY)));
 
         PrintUtil.blueln("solon.App:: Start loading");
 
@@ -93,8 +95,12 @@ public class Solon {
         //3.运行
         global.run();
 
-        PrintUtil.blueln("solon.App:: End loading @" + global.elapsedTimes() + "ms");
-
+        RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
+        if (rb == null) {
+            PrintUtil.blueln("solon.App:: End loading @" + global.elapsedTimes() + "ms pid=" + rb.getName());
+        } else {
+            PrintUtil.blueln("solon.App:: End loading @" + global.elapsedTimes() + "ms");
+        }
         return global;
     }
 
