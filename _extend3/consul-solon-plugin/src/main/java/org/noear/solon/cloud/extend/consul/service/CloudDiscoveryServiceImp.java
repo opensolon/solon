@@ -97,7 +97,8 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
 
     @Override
     public void registerState(String group, Instance instance, boolean health) {
-        //不支持主动设定状态
+        String serviceId = instance.service() + "-" + instance.address();
+        real.agentServiceSetMaintenance(serviceId, health);
     }
 
     private void registerLocalCheck(Instance instance, NewService newService) {

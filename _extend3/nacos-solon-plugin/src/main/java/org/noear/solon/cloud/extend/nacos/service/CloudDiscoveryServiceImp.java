@@ -50,6 +50,11 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
      * */
     @Override
     public void register(String group, Instance instance) {
+        registerState(group, instance, true);
+    }
+
+    @Override
+    public void registerState(String group, Instance instance, boolean health) {
         if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
         }
@@ -65,6 +70,8 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
         iw.setPort(Integer.parseInt(ss[1]));
         iw.setClusterName("DEFAULT");
         iw.setMetadata(instance.meta());
+        iw.setHealthy(health);
+        iw.setEphemeral(Solon.cfg().isDriftMode() || Solon.cfg().isFilesMode());
 
         try {
             if (Utils.isEmpty(group)) {
@@ -75,11 +82,6 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
         } catch (NacosException ex) {
             throw new RuntimeException(ex);
         }
-    }
-
-    @Override
-    public void registerState(String group, Instance instance, boolean health) {
-
     }
 
     /**
