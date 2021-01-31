@@ -23,6 +23,8 @@ import java.lang.management.RuntimeMXBean;
  * @since 1.0
  * */
 public class Solon {
+    private static long STOP_DELAY = 10 * 1000;
+
     private static SolonApp global;
 
     /**
@@ -88,6 +90,11 @@ public class Solon {
         //3.运行
         global.run();
 
+        if(global.enableSafeStop()){
+            //添加关闭勾子
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, STOP_DELAY)));
+        }
+
         RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
         if (rb == null) {
             PrintUtil.blueln("solon.App:: End loading @" + global.elapsedTimes() + "ms");
@@ -95,5 +102,41 @@ public class Solon {
             PrintUtil.blueln("solon.App:: End loading @" + global.elapsedTimes() + "ms pid=" + rb.getName());
         }
         return global;
+    }
+    public static void stop() {
+        stop(true, STOP_DELAY);
+    }
+    public static void stop(boolean exit, long delay) {
+        new Thread(() -> stop0(exit, delay)).start();
+    }
+
+    public static void stop0(boolean exit, long delay) {
+        if (Solon.global() == null) {
+            return;
+        }
+
+        //1.预停止
+        Solon.cfg().plugs().forEach(p -> p.prestop());
+        System.err.println("[Security to stop] prestop completed");
+
+        //2.延时
+        if (delay > 0) {
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException ex) {
+
+            }
+            System.err.println("[Security to stop] delay completed");
+        }
+
+        //3.停目
+        Solon.cfg().plugs().forEach(p -> p.stop());
+
+        System.err.println("[Security to stop] stop completed");
+
+        //4.直接退出?
+        if (exit) {
+            System.exit(0);
+        }
     }
 }

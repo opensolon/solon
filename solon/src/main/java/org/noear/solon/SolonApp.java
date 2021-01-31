@@ -596,4 +596,15 @@ public class SolonApp implements Handler, HandlerSlots {
         _enableJarIsolation = enable;
         return this;
     }
+
+    private boolean _enableSafeStop = false;
+    public boolean enableSafeStop() {
+        return _enableCaching;
+    }
+    /**
+     * 启用安全停止
+     * */
+    public void enableSafeStop(boolean enable){
+        _enableSafeStop = enable;
+    }
 }
