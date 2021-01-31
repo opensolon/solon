@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.water.service;
 
 import org.noear.snack.ONode;
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.extend.water.WaterProps;
 import org.noear.solon.cloud.model.Discovery;
@@ -9,6 +10,7 @@ import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
 import org.noear.solon.cloud.utils.IntervalUtils;
+import org.noear.solon.core.Signal;
 import org.noear.solon.core.event.EventBus;
 import org.noear.water.WaterClient;
 import org.noear.water.model.DiscoverM;
@@ -24,7 +26,7 @@ import java.util.TimerTask;
  * @since 1.2
  */
 public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscoveryService {
-    String checkPath;
+    String checkPathDefault;
     String alarmMobile;
     long refreshInterval;
     boolean unstable;
@@ -32,7 +34,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
         unstable = WaterProps.instance.getDiscoveryUnstable()
                 || Solon.cfg().isFilesMode()
                 || Solon.cfg().isDriftMode();
-        checkPath = WaterProps.instance.getDiscoveryHealthCheckPath();
+        checkPathDefault = WaterProps.instance.getDiscoveryHealthCheckPath();
         alarmMobile = WaterProps.instance.getAlarm();
         refreshInterval = IntervalUtils.getInterval(WaterProps.instance.getDiscoveryRefreshInterval("5s"));
     }
@@ -53,21 +55,18 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
         }
     }
 
-    private void run0(){
+    private void run0() {
         //主动刷新健康
         if (Solon.cfg().isFilesMode()) {
-            try {
-                Instance instance = Instance.local();
+            if (Utils.isNotEmpty(Solon.cfg().appName())) {
+                try {
+                    for (Signal signal : Solon.global().signals()) {
+                        Instance instance = Instance.localNew(signal);
+                        register(Solon.cfg().appGroup(), instance);
+                    }
+                } catch (Throwable ex) {
 
-                String meta = null;
-                if (instance.meta() != null && instance.meta().size() > 0) {
-                    meta = ONode.stringify(instance.meta());
                 }
-
-                String code_location = Solon.cfg().sourceLocation().getPath();
-
-                WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 1, alarmMobile, code_location, unstable);
-            } catch (Throwable ex) {
             }
         }
     }
@@ -80,6 +79,12 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
         }
 
         String code_location = Solon.cfg().sourceLocation().getPath();
+        String checkPath;
+        if(instance.protocol().contains("http")){
+            checkPath = checkPathDefault;
+        }else {
+            checkPath = instance.uri();
+        }
 
         if (Solon.cfg().isFilesMode()) {
             //自己主动刷新
