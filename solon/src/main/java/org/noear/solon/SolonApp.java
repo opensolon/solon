@@ -599,7 +599,7 @@ public class SolonApp implements Handler, HandlerSlots {
 
     private boolean _enableSafeStop = false;
     public boolean enableSafeStop() {
-        return _enableCaching;
+        return _enableSafeStop;
     }
     /**
      * 启用安全停止
