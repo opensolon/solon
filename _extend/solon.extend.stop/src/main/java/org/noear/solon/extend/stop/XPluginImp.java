@@ -11,7 +11,7 @@ public class XPluginImp implements Plugin {
         String path = app.cfg().get("solon.stop.path", "/run/stop/");
         String host = app.cfg().get("solon.stop.host", "127.0.0.1");
 
-        long delay = Solon.cfg().getLong("solon.stop.delay", 0);
+        long delay = Solon.cfg().getLong("solon.stop.delay", 10000);
 
 
         if (enabled) {
