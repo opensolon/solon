@@ -90,6 +90,10 @@ public class Solon {
         //3.运行
         global.run();
 
+
+        //4.安全停止
+        STOP_DELAY = Solon.cfg().getLong("solon.stop.delay", 10 *1000);
+
         if(global.enableSafeStop()){
             //添加关闭勾子
             Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, STOP_DELAY)));
