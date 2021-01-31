@@ -32,10 +32,6 @@
             <artifactId>HikariCP</artifactId>
             <version>3.4.5</version>
         </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.cloud</artifactId>
-        </dependency>
 
     </dependencies>
 
