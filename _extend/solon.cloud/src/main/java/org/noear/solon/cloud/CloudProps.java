@@ -29,6 +29,7 @@ public class CloudProps {
     private String DISCOVERY_ENABLE = "solon.cloud.@@.discovery.enable";
     private String DISCOVERY_SERVER = "solon.cloud.@@.discovery.server";
     private String DISCOVERY_TAGS = "solon.cloud.@@.discovery.tags";
+    private String DISCOVERY_UNSTABLE = "solon.cloud.@@.discovery.unstable";
     private String DISCOVERY_HEALTH_CHECK_PATH = "solon.cloud.@@.discovery.healthCheckPath";
     private String DISCOVERY_HEALTH_CHECK_INTERVAL = "solon.cloud.@@.discovery.healthCheckInterval";
     private String DISCOVERY_HEALTH_DETECTOR = "solon.cloud.@@.discovery.healthDetector";
@@ -71,6 +72,7 @@ public class CloudProps {
         DISCOVERY_ENABLE = DISCOVERY_ENABLE.replace("@@", frame);
         DISCOVERY_SERVER = DISCOVERY_SERVER.replace("@@", frame);
         DISCOVERY_TAGS = DISCOVERY_TAGS.replace("@@", frame);
+        DISCOVERY_UNSTABLE = DISCOVERY_UNSTABLE.replace("@@", frame);
         DISCOVERY_HEALTH_CHECK_PATH = DISCOVERY_HEALTH_CHECK_PATH.replace("@@", frame);
         DISCOVERY_HEALTH_CHECK_INTERVAL = DISCOVERY_HEALTH_CHECK_INTERVAL.replace("@@", frame);
         DISCOVERY_HEALTH_DETECTOR = DISCOVERY_HEALTH_DETECTOR.replace("@@", frame);
@@ -163,6 +165,10 @@ public class CloudProps {
 
     public String getDiscoveryTags() {
         return Solon.cfg().get(DISCOVERY_TAGS);
+    }
+
+    public boolean getDiscoveryUnstable() {
+        return Solon.cfg().getBool(DISCOVERY_UNSTABLE, true);
     }
 
     public String getDiscoveryHealthCheckPath() {

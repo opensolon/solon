@@ -23,6 +23,7 @@ import java.util.Properties;
  */
 public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
     NamingService real;
+    boolean unstable;
 
     public CloudDiscoveryServiceImp() {
         String server = NacosProps.instance.getDiscoveryServer();
@@ -37,6 +38,10 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
         if (Utils.isNotEmpty(password)) {
             properties.put("password", password);
         }
+
+        unstable = NacosProps.instance.getDiscoveryUnstable()
+                || Solon.cfg().isFilesMode()
+                || Solon.cfg().isDriftMode();
 
         try {
             real = NamingFactory.createNamingService(properties);
@@ -71,7 +76,7 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
         iw.setClusterName("DEFAULT");
         iw.setMetadata(instance.meta());
         iw.setHealthy(health);
-        iw.setEphemeral(Solon.cfg().isDriftMode() || Solon.cfg().isFilesMode());
+        iw.setEphemeral(unstable);
 
         try {
             if (Utils.isEmpty(group)) {

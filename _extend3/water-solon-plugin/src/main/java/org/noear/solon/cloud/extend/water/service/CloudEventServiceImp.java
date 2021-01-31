@@ -24,11 +24,15 @@ public class CloudEventServiceImp implements CloudEventService {
     private String seal;
     private Map<String, CloudEventObserverEntity> instanceObserverMap = new HashMap<>();
     private Map<String, CloudEventObserverEntity> clusterObserverMap = new HashMap<>();
-
+    private boolean unstable;
     public CloudEventServiceImp() {
+        this.unstable = WaterProps.instance.getDiscoveryUnstable()
+                || Solon.cfg().isFilesMode()
+                || Solon.cfg().isDriftMode();
+
         this.seal = WaterProps.instance.getEventSeal();
 
-        if(Utils.isEmpty(seal)){
+        if (Utils.isEmpty(seal)) {
             seal = DEFAULT_DEAL;
         }
     }
@@ -94,7 +98,7 @@ public class CloudEventServiceImp implements CloudEventService {
                     seal,
                     "",
                     1,
-                    Solon.cfg().isDriftMode(),
+                    unstable,
                     String.join(",", instanceObserverMap.keySet()));
         }
 

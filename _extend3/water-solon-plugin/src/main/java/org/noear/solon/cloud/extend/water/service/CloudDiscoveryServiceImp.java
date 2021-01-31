@@ -27,7 +27,11 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
     String checkPath;
     String alarmMobile;
     long refreshInterval;
+    boolean unstable;
     public CloudDiscoveryServiceImp(){
+        unstable = WaterProps.instance.getDiscoveryUnstable()
+                || Solon.cfg().isFilesMode()
+                || Solon.cfg().isDriftMode();
         checkPath = WaterProps.instance.getDiscoveryHealthCheckPath();
         alarmMobile = WaterProps.instance.getAlarm();
         refreshInterval = IntervalUtils.getInterval(WaterProps.instance.getDiscoveryRefreshInterval("5s"));
@@ -62,7 +66,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
 
                 String code_location = Solon.cfg().sourceLocation().getPath();
 
-                WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 1, alarmMobile, code_location, is_unstable());
+                WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 1, alarmMobile, code_location, unstable);
             } catch (Throwable ex) {
             }
         }
@@ -79,15 +83,11 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
 
         if (Solon.cfg().isFilesMode()) {
             //自己主动刷新
-            WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 1, alarmMobile, code_location, is_unstable());
+            WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 1, alarmMobile, code_location, unstable);
         } else {
             //被动接收检测
-            WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 0, alarmMobile,code_location, is_unstable());
+            WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 0, alarmMobile,code_location, unstable);
         }
-    }
-
-    private boolean is_unstable(){
-        return Solon.cfg().isFilesMode() || Solon.cfg().isDriftMode();
     }
 
     @Override
