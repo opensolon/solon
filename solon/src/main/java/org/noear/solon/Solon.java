@@ -107,7 +107,6 @@ public class Solon {
     /**
      * 停止服务（为web方式停止服务提供支持）
      */
-    private static boolean _stopped;
     public static void stop() {
         stop(true, STOP_DELAY);
     }
@@ -135,9 +134,6 @@ public class Solon {
             System.err.println("[Stop] delay completed");
         }
 
-        //2.设为已停目
-        _stopped = true;
-
         //3.停目
         global.cfg().plugs().forEach(p -> p.stop());
         global = null;
@@ -147,9 +143,5 @@ public class Solon {
         if (exit) {
             System.exit(0);
         }
-    }
-
-    public static boolean stopped(){
-        return _stopped;
     }
 }

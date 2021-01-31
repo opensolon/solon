@@ -449,11 +449,6 @@ public class SolonApp implements Handler, HandlerSlots {
      */
     @Override
     public void handle(Context x) throws Throwable {
-        if(Solon.stopped()){
-            //停止后不再接收请求（避免产生脏数据）
-            return;
-        }
-
         try {
             //设置当前线程上下文
             ContextUtil.currentSet(x);
