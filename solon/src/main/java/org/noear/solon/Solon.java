@@ -113,16 +113,14 @@ public class Solon {
     }
 
     public static void stop(boolean exit, long delay) {
+        new Thread(()->stop0(exit, delay)).start();
+    }
+
+    private static void stop0(boolean exit, long delay) {
         if (global == null) {
             return;
         }
 
-        Utils.pools.submit(() -> {
-            stop0(exit, delay);
-        });
-    }
-
-    private static void stop0(boolean exit, long delay) {
         //1.预停止
         global.cfg().plugs().forEach(p -> p.prestop());
         System.err.println("[Stop] prestop completed");
