@@ -58,6 +58,19 @@ public class PluginEntity {
     }
 
     /**
+     * 预停止
+     */
+    public void prestop() {
+        if (plugin != null) {
+            try {
+                plugin.prestop();
+            } catch (Throwable ex) {
+                //ex.printStackTrace();
+            }
+        }
+    }
+
+    /**
      * 停止
      */
     public void stop() {

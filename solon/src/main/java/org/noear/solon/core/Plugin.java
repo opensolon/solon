@@ -16,6 +16,11 @@ public interface Plugin {
     void start(SolonApp app);
 
     /**
+     * 预停目
+     * */
+    default void prestop() throws Throwable{}
+
+    /**
      * 停止
      * */
     default void stop() throws Throwable{}

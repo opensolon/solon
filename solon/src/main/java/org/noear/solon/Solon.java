@@ -25,6 +25,7 @@ import java.util.Set;
  * @since 1.0
  * */
 public class Solon {
+    private static long STOP_DELAY = 10*1000;
     private static SolonApp global;
 
     /**
@@ -70,7 +71,7 @@ public class Solon {
         JarClassLoader.bindingThread();
 
         //添加关闭勾子
-        Runtime.getRuntime().addShutdownHook(new Thread(()->stop(false, 0)));
+        Runtime.getRuntime().addShutdownHook(new Thread(()->stop(false, STOP_DELAY)));
 
         PrintUtil.blueln("solon.App:: Start loading");
 
@@ -102,7 +103,7 @@ public class Solon {
      */
     private static boolean _stopped;
     public static void stop() {
-        stop(true, 0);
+        stop(true, STOP_DELAY);
     }
 
     public static void stop(boolean exit, long delay) {
@@ -113,16 +114,24 @@ public class Solon {
         _stopped = true;
 
         Utils.pools.submit(() -> {
+
+            //1.预停止
+            global.cfg().plugs().forEach(p -> p.prestop());
+
+            //2.延时
             if (delay > 0) {
                 Thread.sleep(delay);
             }
 
+            //3.停目
             global.cfg().plugs().forEach(p -> p.stop());
             global = null;
 
+            //4.直接退出?
             if (exit) {
                 System.exit(0);
             }
+
             return null;
         });
     }
