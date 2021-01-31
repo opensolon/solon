@@ -2,15 +2,11 @@ package org.noear.solon;
 
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.NvMap;
-import org.noear.solon.core.Signal;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.ext.ConsumerEx;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * 应用管理中心
@@ -27,7 +23,6 @@ import java.util.Set;
  * @since 1.0
  * */
 public class Solon {
-    private static long STOP_DELAY = 10*1000;
     private static SolonApp global;
 
     /**
@@ -72,8 +67,6 @@ public class Solon {
         //绑定类加载器
         JarClassLoader.bindingThread();
 
-        //添加关闭勾子
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> stop0(false, STOP_DELAY)));
 
         PrintUtil.blueln("solon.App:: Start loading");
 
@@ -102,46 +95,5 @@ public class Solon {
             PrintUtil.blueln("solon.App:: End loading @" + global.elapsedTimes() + "ms pid=" + rb.getName());
         }
         return global;
-    }
-
-    /**
-     * 停止服务（为web方式停止服务提供支持）
-     */
-    public static void stop() {
-        stop(true, STOP_DELAY);
-    }
-
-    public static void stop(boolean exit, long delay) {
-        new Thread(()->stop0(exit, delay)).start();
-    }
-
-    private static void stop0(boolean exit, long delay) {
-        if (global == null) {
-            return;
-        }
-
-        //1.预停止
-        global.cfg().plugs().forEach(p -> p.prestop());
-        System.err.println("[Stop] prestop completed");
-
-        //2.延时
-        if (delay > 0) {
-            try {
-                Thread.sleep(delay);
-            } catch (InterruptedException ex) {
-
-            }
-            System.err.println("[Stop] delay completed");
-        }
-
-        //3.停目
-        global.cfg().plugs().forEach(p -> p.stop());
-        global = null;
-        System.err.println("[Stop] stop completed");
-
-        //4.直接退出?
-        if (exit) {
-            System.exit(0);
-        }
     }
 }

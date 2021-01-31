@@ -14,6 +14,10 @@ public class XPluginImp implements Plugin {
         long delay = Solon.cfg().getLong("solon.stop.delay", 10000);
 
 
+        //添加关闭勾子
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> StopUtils.stop0(false, delay)));
+
+        //开启WEB关闭
         if (enabled) {
             app.get(path, (c) -> {
                 long delay2 = c.paramAsLong("delay", delay);
@@ -23,9 +27,9 @@ public class XPluginImp implements Plugin {
                 }
 
                 if ("*".equals(host)) {
-                    Solon.stop(true, delay2);
+                    StopUtils.stop(true, delay2);
                 } else if (host.equals(c.uri().getHost())) {
-                    Solon.stop(true, delay2);
+                    StopUtils.stop(true, delay2);
                 }
             });
         }
