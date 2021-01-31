@@ -123,15 +123,18 @@ public class Solon {
 
             //1.预停止
             global.cfg().plugs().forEach(p -> p.prestop());
+            System.out.println("[Stop] prestop completed");
 
             //2.延时
             if (delay > 0) {
                 Thread.sleep(delay);
+                System.out.println("[Stop] delay completed");
             }
 
             //3.停目
             global.cfg().plugs().forEach(p -> p.stop());
             global = null;
+            System.out.println("[Stop] stop completed");
 
             //4.直接退出?
             if (exit) {
