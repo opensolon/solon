@@ -168,7 +168,7 @@ public class CloudProps {
     }
 
     public boolean getDiscoveryUnstable() {
-        return Solon.cfg().getBool(DISCOVERY_UNSTABLE, true);
+        return Solon.cfg().getBool(DISCOVERY_UNSTABLE, false);
     }
 
     public String getDiscoveryHealthCheckPath() {

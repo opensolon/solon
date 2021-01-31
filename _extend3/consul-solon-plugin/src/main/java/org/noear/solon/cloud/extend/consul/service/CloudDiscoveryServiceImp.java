@@ -35,23 +35,12 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
 
     private String healthCheckInterval;
     private String healthCheckPath;
+    private List<String> tags;
 
     Map<String,Discovery> discoveryMap = new HashMap<>();
     private Map<CloudDiscoveryHandler, CloudDiscoveryObserverEntity> observerMap = new HashMap<>();
 
-    /**
-     * 初始化客户端
-     */
-    private void initClient() {
-        String server = ConsulProps.instance.getDiscoveryServer();
-        String[] ss = server.split(":");
 
-        if (ss.length == 1) {
-            real = new ConsulClient(ss[0]);
-        } else {
-            real = new ConsulClient(ss[0], Integer.parseInt(ss[1]));
-        }
-    }
 
     public CloudDiscoveryServiceImp() {
         token = ConsulProps.instance.getToken();
@@ -60,8 +49,19 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
         healthCheckInterval = ConsulProps.instance.getDiscoveryHealthCheckInterval("5s");
         healthCheckPath = ConsulProps.instance.getDiscoveryHealthCheckPath();
 
+        String tags_str = ConsulProps.instance.getDiscoveryTags();
+        if(Utils.isNotEmpty(tags_str)){
+            tags = Arrays.asList(tags_str.split(","));
+        }
 
-        initClient();
+        String server = ConsulProps.instance.getDiscoveryServer();
+        String[] ss = server.split(":");
+
+        if (ss.length == 1) {
+            real = new ConsulClient(ss[0]);
+        } else {
+            real = new ConsulClient(ss[0], Integer.parseInt(ss[1]));
+        }
     }
 
     public long getRefreshInterval() {
@@ -83,8 +83,17 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
         newService.setAddress(ss[0]);
         newService.setPort(Integer.parseInt(ss[1]));
         newService.setMeta(instance.meta());
+
         if (instance.tags() != null) {
             newService.setTags(instance.tags());
+        }
+
+        if(tags != null) {
+            if (newService.getTags() != null) {
+                newService.getTags().addAll(tags);
+            } else {
+                newService.setTags(tags);
+            }
         }
 
         registerLocalCheck(instance, newService);
