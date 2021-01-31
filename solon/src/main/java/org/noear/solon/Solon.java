@@ -117,7 +117,7 @@ public class Solon {
 
         //1.预停止
         Solon.cfg().plugs().forEach(p -> p.prestop());
-        System.err.println("[Security to stop] prestop completed");
+        System.err.println("[Security to stop] 1 completed (1.prestop 2.delay 3.stop)");
 
         //2.延时
         if (delay > 0) {
@@ -126,13 +126,13 @@ public class Solon {
             } catch (InterruptedException ex) {
 
             }
-            System.err.println("[Security to stop] delay completed");
+            System.err.println("[Security to stop] 2 completed (1.prestop 2.delay 3.stop)");
         }
 
         //3.停目
         Solon.cfg().plugs().forEach(p -> p.stop());
 
-        System.err.println("[Security to stop] stop completed");
+        System.err.println("[Security to stop] 3 completed (1.prestop 2.delay 3.stop)");
 
         //4.直接退出?
         if (exit) {
