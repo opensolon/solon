@@ -73,7 +73,7 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void stop() throws Throwable {
-        if (Solon.cfg().isDriftMode()) {
+        if (Solon.cfg().isDriftMode() || Solon.cfg().isFilesMode()) {
             if (CloudClient.discovery() != null) {
                 if (Utils.isNotEmpty(Solon.cfg().appName())) {
                     for (Signal signal : Solon.global().signals()) {
