@@ -109,6 +109,7 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
         iw.setPort(Integer.parseInt(ss[1]));
         iw.setClusterName("DEFAULT");
         iw.setMetadata(instance.meta());
+        iw.setEphemeral(unstable);
 
         try {
             if (Utils.isEmpty(group)) {
