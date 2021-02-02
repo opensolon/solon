@@ -154,7 +154,7 @@ public class Solon {
         PrintUtil.red("[Security to stop] ");
         System.out.println("3 completed "+hint);
 
-        //4.直接退出?
-        System.exit(0);
+        //4.直接非正常退出
+        System.exit(1);
     }
 }
