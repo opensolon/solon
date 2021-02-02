@@ -80,11 +80,26 @@ public abstract class SessionBase implements Session {
         return sendAndResponse(Message.wrap(message)).bodyAsString();
     }
 
+    @Override
+    public String sendAndResponse(String message, int timeout) {
+        return sendAndResponse(Message.wrap(message), timeout).bodyAsString();
+    }
+
     /**
      * 用于支持双向RPC
      */
     @Override
     public Message sendAndResponse(Message message) {
+        return sendAndResponse(message, ListenerProxy.REQUEST_AND_RESPONSE_TIMEOUT_SECONDS);
+    }
+
+    /**
+     * 用于支持双向RPC
+     *
+     * @param timeout 单位为秒
+     * */
+    @Override
+    public Message sendAndResponse(Message message, int timeout) {
         if (Utils.isEmpty(message.key())) {
             throw new IllegalArgumentException("SendAndResponse message no key");
         }
@@ -98,7 +113,7 @@ public abstract class SessionBase implements Session {
 
         try {
             //等待响应
-            return request.get(ListenerProxy.REQUEST_AND_RESPONSE_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+            return request.get(timeout, TimeUnit.SECONDS);
         } catch (Throwable ex) {
             throw Utils.throwableWrap(ex);
         }

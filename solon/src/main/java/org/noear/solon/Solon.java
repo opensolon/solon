@@ -23,7 +23,7 @@ import java.lang.management.RuntimeMXBean;
  * @since 1.0
  * */
 public class Solon {
-    private static long stopDelay = 10 * 1000;
+    private static int stopDelay = 10;
 
     private static SolonApp global;
 
@@ -92,7 +92,7 @@ public class Solon {
 
 
         //4.安全停止
-        stopDelay = Solon.cfg().getLong("solon.stop.delay", 10 *1000);
+        stopDelay = Solon.cfg().getInt("solon.stop.delay", 10);
 
         if(global.enableSafeStop()){
             //添加关闭勾子
@@ -108,18 +108,21 @@ public class Solon {
         return global;
     }
 
-    public static void stopDelaySet(long delay){
+    /**
+     * 设置安全停止的延时（单位：秒）
+     * */
+    public static void stopDelaySet(int delay){
         stopDelay = delay;
     }
 
     public static void stop() {
         stop( stopDelay);
     }
-    public static void stop(long delay) {
+    public static void stop(int delay) {
         new Thread(() -> stop0( delay)).start();
     }
 
-    private static void stop0(long delay) {
+    private static void stop0(int delay) {
         if (Solon.global() == null) {
             return;
         }
@@ -137,7 +140,7 @@ public class Solon {
         //2.延时
         if (delay > 0) {
             try {
-                Thread.sleep(delay);
+                Thread.sleep(delay * 1000);
             } catch (InterruptedException ex) {
 
             }

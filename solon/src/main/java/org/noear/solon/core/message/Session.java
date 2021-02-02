@@ -74,7 +74,17 @@ public interface Session {
     /**
      * 发送消息并等待响应
      */
+    String sendAndResponse(String message, int timeout);
+
+    /**
+     * 发送消息并等待响应
+     */
     Message sendAndResponse(Message message);
+
+    /**
+     * 发送消息并等待响应
+     */
+    Message sendAndResponse(Message message, int timeout);
 
     /**
      * 发送消息并异步回调
