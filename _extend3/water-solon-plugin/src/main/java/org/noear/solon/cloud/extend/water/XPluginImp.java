@@ -145,7 +145,7 @@ public class XPluginImp implements Plugin {
     }
 
     @Override
-    public void stop() throws Throwable {
+    public void prestop() throws Throwable {
         if (clientTimer != null) {
             clientTimer.cancel();
         }
