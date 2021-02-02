@@ -42,8 +42,6 @@ public class HandlerCacheUpdate implements CloudEventHandler {
      * 更新 upstream
      * */
     public void cacheUpdateHandler0(String tag) {
-        System.err.println("cacheUpdateHandler0:" + tag);
-
         String[] ss = tag.split(":");
         if ("upstream".equals(ss[0])) {
             String service = ss[1];
