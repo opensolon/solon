@@ -116,10 +116,10 @@ public class Solon {
     }
 
     public static void stop() {
-        stop(true, stopDelay);
+        stop(stopDelay);
     }
-    public static void stop(boolean exit, int delay) {
-        new Thread(() -> stop0(exit, delay)).start();
+    public static void stop(int delay) {
+        new Thread(() -> stop0(true, delay)).start();
     }
 
     private static void stop0(boolean exit, int delay) {
