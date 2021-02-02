@@ -30,7 +30,8 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
     String alarmMobile;
     long refreshInterval;
     boolean unstable;
-    public CloudDiscoveryServiceImp(){
+
+    public CloudDiscoveryServiceImp() {
         unstable = WaterProps.instance.getDiscoveryUnstable()
                 || Solon.cfg().isFilesMode()
                 || Solon.cfg().isDriftMode();
@@ -41,7 +42,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
 
     /**
      * 健康检测刷新间隔时间（仅当isFilesMode时有效）
-     * */
+     */
     public long getRefreshInterval() {
         return refreshInterval;
     }
@@ -67,6 +68,14 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
                 } catch (Throwable ex) {
 
                 }
+
+                try {
+                    observerMap.forEach((k, v) -> {
+                        onUpdate(v.group, v.service);
+                    });
+                } catch (Throwable ex) {
+
+                }
             }
         }
     }
@@ -80,9 +89,9 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
 
         String code_location = Solon.cfg().sourceLocation().getPath();
         String checkPath;
-        if(instance.protocol().contains("http")){
+        if (instance.protocol().contains("http")) {
             checkPath = checkPathDefault;
-        }else {
+        } else {
             checkPath = instance.uri();
         }
 
@@ -91,7 +100,7 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
             WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 1, alarmMobile, code_location, unstable);
         } else {
             //被动接收检测
-            WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 0, alarmMobile,code_location, unstable);
+            WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 0, alarmMobile, code_location, unstable);
         }
     }
 
@@ -123,20 +132,24 @@ public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscover
         return ConvertUtil.from(service, d1);
     }
 
+    Map<String, String> serviceMap = new HashMap<>();
     Map<CloudDiscoveryHandler, CloudDiscoveryObserverEntity> observerMap = new HashMap<>();
 
     @Override
     public void attention(String group, String service, CloudDiscoveryHandler observer) {
         observerMap.put(observer, new CloudDiscoveryObserverEntity(group, service, observer));
+        serviceMap.put(service, service);
     }
 
     public void onUpdate(String group, String service) {
-        Discovery discovery = find(group, service);
+        if (serviceMap.containsKey(service)) {
+            Discovery discovery = find(group, service);
 
-        observerMap.forEach((k, v) -> {
-            if (service.equals(v.service)) {
-                v.handler(discovery);
-            }
-        });
+            observerMap.forEach((k, v) -> {
+                if (service.equals(v.service)) {
+                    v.handler(discovery);
+                }
+            });
+        }
     }
 }

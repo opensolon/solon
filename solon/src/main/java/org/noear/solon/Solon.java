@@ -96,7 +96,7 @@ public class Solon {
 
         if(global.enableSafeStop()){
             //添加关闭勾子
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, stopDelay)));
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(stopDelay)));
         }
 
         RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
@@ -113,13 +113,13 @@ public class Solon {
     }
 
     public static void stop() {
-        stop(true, stopDelay);
+        stop( stopDelay);
     }
-    public static void stop(boolean exit, long delay) {
-        new Thread(() -> stop0(exit, delay)).start();
+    public static void stop(long delay) {
+        new Thread(() -> stop0( delay)).start();
     }
 
-    private static void stop0(boolean exit, long delay) {
+    private static void stop0(long delay) {
         if (Solon.global() == null) {
             return;
         }
@@ -152,8 +152,6 @@ public class Solon {
         System.out.println("3 completed "+hint);
 
         //4.直接退出?
-        if (exit) {
-            System.exit(0);
-        }
+        System.exit(0);
     }
 }

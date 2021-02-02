@@ -18,14 +18,14 @@ public class XPluginImp implements Plugin {
             app.get(path, (c) -> {
                 long delay2 = c.paramAsLong("delay", delay);
 
-                if(delay2 < 0){
+                if (delay2 < 0) {
                     delay2 = 0;
                 }
 
                 if ("*".equals(host)) {
-                    Solon.stop(true, delay2);
+                    Solon.stop(delay2);
                 } else if (host.equals(c.uri().getHost())) {
-                    Solon.stop(true, delay2);
+                    Solon.stop(delay2);
                 }
             });
         }

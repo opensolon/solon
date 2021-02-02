@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.extend.water.integration.msg;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudLogger;
@@ -41,17 +42,16 @@ public class HandlerCacheUpdate implements CloudEventHandler {
      * 更新 upstream
      * */
     public void cacheUpdateHandler0(String tag) {
+        System.err.println("cacheUpdateHandler0:" + tag);
+
         String[] ss = tag.split(":");
         if ("upstream".equals(ss[0])) {
             String service = ss[1];
-            CloudLoadBalance tmp = CloudLoadBalanceFactory.instance.get(service);
-            if (tmp != null) {
-                try {
-                    discoveryService.onUpdate(tmp.getGroup(), tmp.getService());
-                } catch (Exception ex) {
-                    ex.printStackTrace();//最后日志记录到服务端
-                    logger.error(ss[1], "reload", "", ex);
-                }
+            try {
+                discoveryService.onUpdate(Solon.cfg().appGroup(), service);
+            } catch (Exception ex) {
+                ex.printStackTrace();//最后日志记录到服务端
+                logger.error(ss[1], "reload", "", ex);
             }
         }
     }

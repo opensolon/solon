@@ -19,14 +19,14 @@ public class HandlerCheck implements Handler {
     }
 
     private String handle0(Context ctx) {
-        String ups = ctx.param("upstream");
+        String service = ctx.param("upstream");
 
-        if (TextUtils.isEmpty(ups) == false) {
+        if (TextUtils.isEmpty(service) == false) {
             //用于检查负责的情况
             ONode odata = new ONode().asObject();
 
 
-            if ("*".equals(ups)) {
+            if ("*".equals(service)) {
                 CloudLoadBalanceFactory.instance.forEach((k, v) -> {
                     ONode n = odata.get(k);
 
@@ -37,13 +37,13 @@ public class HandlerCheck implements Handler {
                     });
                 });
             } else {
-                CloudLoadBalance v = CloudLoadBalanceFactory.instance.get(ups);
+                CloudLoadBalance v = CloudLoadBalanceFactory.instance.get(service);
                 if (v != null) {
                     Discovery d = v.getDiscovery();
                     if (d != null) {
-                        ONode n = odata.get(ups);
+                        ONode n = odata.get(service);
 
-                        n.set("service", ups);
+                        n.set("service", service);
                         n.set("agent", d.agent());
                         n.set("policy", d.policy());
                         ONode nl = n.get("upstream").asArray();
