@@ -77,6 +77,7 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
         iw.setMetadata(instance.meta());
         iw.setHealthy(health);
         iw.setEphemeral(unstable);
+        iw.setWeight(1.0D);
 
         try {
             if (Utils.isEmpty(group)) {
@@ -109,7 +110,9 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
         iw.setPort(Integer.parseInt(ss[1]));
         iw.setClusterName("DEFAULT");
         iw.setMetadata(instance.meta());
+        iw.setHealthy(false);
         iw.setEphemeral(unstable);
+        iw.setWeight(1.0D);
 
         try {
             if (Utils.isEmpty(group)) {
