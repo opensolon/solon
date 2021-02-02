@@ -23,7 +23,7 @@ import java.lang.management.RuntimeMXBean;
  * @since 1.0
  * */
 public class Solon {
-    private static long STOP_DELAY = 10 * 1000;
+    private static long stopDelay = 10 * 1000;
 
     private static SolonApp global;
 
@@ -92,11 +92,11 @@ public class Solon {
 
 
         //4.安全停止
-        STOP_DELAY = Solon.cfg().getLong("solon.stop.delay", 10 *1000);
+        stopDelay = Solon.cfg().getLong("solon.stop.delay", 10 *1000);
 
         if(global.enableSafeStop()){
             //添加关闭勾子
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, STOP_DELAY)));
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, stopDelay)));
         }
 
         RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
@@ -107,14 +107,19 @@ public class Solon {
         }
         return global;
     }
+
+    public static void stopDelaySet(long delay){
+        stopDelay = delay;
+    }
+
     public static void stop() {
-        stop(true, STOP_DELAY);
+        stop(true, stopDelay);
     }
     public static void stop(boolean exit, long delay) {
         new Thread(() -> stop0(exit, delay)).start();
     }
 
-    public static void stop0(boolean exit, long delay) {
+    private static void stop0(boolean exit, long delay) {
         if (Solon.global() == null) {
             return;
         }
