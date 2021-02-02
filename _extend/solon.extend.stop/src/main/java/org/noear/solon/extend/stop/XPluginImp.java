@@ -24,9 +24,9 @@ public class XPluginImp implements Plugin {
                 }
 
                 if ("*".equals(host)) {
-                    Solon.stop(true, delay2);
+                    Solon.stop(delay2);
                 } else if (host.equals(c.uri().getHost())) {
-                    Solon.stop(true, delay2);
+                    Solon.stop(delay2);
                 }
             });
         }
