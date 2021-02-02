@@ -39,9 +39,10 @@ public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
             properties.put("password", password);
         }
 
-        unstable = NacosProps.instance.getDiscoveryUnstable()
-                || Solon.cfg().isFilesMode()
-                || Solon.cfg().isDriftMode();
+        unstable = true;
+//        unstable = NacosProps.instance.getDiscoveryUnstable()
+//                || Solon.cfg().isFilesMode()
+//                || Solon.cfg().isDriftMode();
 
         try {
             real = NamingFactory.createNamingService(properties);
