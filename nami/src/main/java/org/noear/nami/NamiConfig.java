@@ -43,8 +43,10 @@ public class NamiConfig {
         return this;
     }
 
+    //调试模式
     private boolean debug;
-
+    //请求超时设置
+    private int timeout;
     //编码器
     private Encoder encoder;
     //解码器
@@ -73,6 +75,13 @@ public class NamiConfig {
         this.debug = debug;
     }
 
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
 
     /**
      * 获取编码器（可以为Null）

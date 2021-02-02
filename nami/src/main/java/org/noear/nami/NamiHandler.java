@@ -55,6 +55,10 @@ public class NamiHandler implements InvocationHandler {
                 throw new RuntimeException(ex);
             }
 
+            if(client.timeout() > 0) {
+                config.setTimeout(client.timeout());
+            }
+
             //>>添加接口url
             if(TextUtils.isNotEmpty(client.url())){
                 config.setUrl(client.url());

@@ -68,7 +68,7 @@ public class SocketChannel extends SocketChannelFilter implements NamiChannel {
         message = new Message(flag, message_key, url, HeaderUtil.encodeHeaderMap(headers), bytes);
 
         //3.发送消息
-        Message res = sessions.get().sendAndResponse(message);
+        Message res = sessions.get().sendAndResponse(message, cfg.getTimeout());
 
         if (res == null) {
             return null;

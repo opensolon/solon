@@ -90,7 +90,7 @@ public abstract class SessionBase implements Session {
      */
     @Override
     public Message sendAndResponse(Message message) {
-        return sendAndResponse(message, ListenerProxy.REQUEST_AND_RESPONSE_TIMEOUT_SECONDS);
+        return sendAndResponse(message, 0);
     }
 
     /**
@@ -102,6 +102,10 @@ public abstract class SessionBase implements Session {
     public Message sendAndResponse(Message message, int timeout) {
         if (Utils.isEmpty(message.key())) {
             throw new IllegalArgumentException("SendAndResponse message no key");
+        }
+
+        if (timeout < 1) {
+            timeout = ListenerProxy.REQUEST_AND_RESPONSE_TIMEOUT_SECONDS;
         }
 
         //注册请求
