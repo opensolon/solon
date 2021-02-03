@@ -28,6 +28,11 @@ public class CloudManager {
      */
     private static CloudEventService eventService;
     /**
+     * 云端锁服务
+     */
+    private static CloudLockService lockService;
+
+    /**
      * 云端日志服务
      */
     private static CloudLogService logService;
@@ -85,6 +90,15 @@ public class CloudManager {
     /**
      * 登记云端日志服务
      */
+    public static void register(CloudLockService service) {
+        lockService = service;
+        PrintUtil.green("[Cloud] ");
+        System.out.println("CloudLockService registered from the " + service.getClass().getTypeName());
+    }
+
+    /**
+     * 登记云端日志服务
+     */
     public static void register(CloudLogService service) {
         logService = service;
         PrintUtil.green("[Cloud] ");
@@ -111,6 +125,10 @@ public class CloudManager {
 
     protected static CloudEventService eventService() {
         return eventService;
+    }
+
+    protected static CloudLockService lockService() {
+        return lockService;
     }
 
     protected static CloudLogService logService() {

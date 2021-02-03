@@ -92,6 +92,14 @@ public class CloudClient {
     }
 
     /**
+     * 锁服务
+     * */
+    @Note("锁服务")
+    public static CloudLockService lock(){
+        return CloudManager.lockService();
+    }
+
+    /**
      * 日志服务
      * */
     @Note("日志服务")

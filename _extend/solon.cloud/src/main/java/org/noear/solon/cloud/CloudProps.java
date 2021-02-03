@@ -46,6 +46,8 @@ public class CloudProps {
     private String EVENT_SEAL = "solon.cloud.@@.event.seal";
 
 
+    //锁服务相关
+    private String LOCK_ENABLE = "solon.cloud.@@.lock.enable";
 
     //日志总线服务相关
     private String LOG_ENABLE = "solon.cloud.@@.log.enable";
@@ -86,6 +88,8 @@ public class CloudProps {
         EVENT_PUBLISH_TIMEOUT = EVENT_PUBLISH_TIMEOUT.replace("@@", frame);
         EVENT_QUEUE = EVENT_QUEUE.replace("@@", frame);
         EVENT_SEAL = EVENT_SEAL.replace("@@", frame);
+
+        LOCK_ENABLE = LOCK_ENABLE.replace("@@", frame);
 
         LOG_ENABLE = LOG_ENABLE.replace("@@", frame);
         LOG_SERVER = LOG_SERVER.replace("@@", frame);
@@ -220,6 +224,13 @@ public class CloudProps {
     }
     public String getEventQueue() {
         return Solon.cfg().get(EVENT_QUEUE);
+    }
+
+    //
+    //锁服务相关
+    //
+    public boolean getLockEnable() {
+        return Solon.cfg().getBool(LOCK_ENABLE, true);
     }
 
 

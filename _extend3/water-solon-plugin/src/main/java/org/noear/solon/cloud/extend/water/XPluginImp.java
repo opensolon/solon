@@ -47,23 +47,23 @@ public class XPluginImp implements Plugin {
 
             //1.1.设置water默认基础配置
             System.setProperty(WW.water_host, server);
-            if(Utils.isNotEmpty(logDefault)) {
+            if (Utils.isNotEmpty(logDefault)) {
                 System.setProperty(WW.water_logger, logDefault);
             }
 
-            if(server.equals(configServer) == false){
+            if (server.equals(configServer) == false) {
                 WaterAddress.setConfigApiUrl(configServer);
             }
 
-            if(server.equals(discoveryServer) == false){
+            if (server.equals(discoveryServer) == false) {
                 WaterAddress.setRegistryApiUrl(discoveryServer);
             }
 
-            if(server.equals(eventServer) == false){
+            if (server.equals(eventServer) == false) {
                 WaterAddress.setMessageApiUrl(eventServer);
             }
 
-            if(server.equals(logServer) == false){
+            if (server.equals(logServer) == false) {
                 WaterAddress.setLogApiUrl(logServer);
             }
 
@@ -79,7 +79,7 @@ public class XPluginImp implements Plugin {
             WaterClient.localServiceSet(Instance.local().service());
             WaterSetting.water_trace_id_supplier(traceServiceImp::getTraceId);
 
-            if(WaterProps.instance.getTraceEnable()){
+            if (WaterProps.instance.getTraceEnable()) {
                 CloudManager.register(traceServiceImp);
             }
 
@@ -111,7 +111,7 @@ public class XPluginImp implements Plugin {
                 }
             }
 
-            if(WaterProps.instance.getLogEnable()){
+            if (WaterProps.instance.getLogEnable()) {
                 logServiceImp = new CloudLogServiceImp();
                 CloudManager.register(logServiceImp);
             }
@@ -133,6 +133,10 @@ public class XPluginImp implements Plugin {
                 }
 
                 Aop.beanOnloaded(eventServiceImp::subscribe);
+            }
+
+            if (WaterProps.instance.getLockEnable()) {
+                CloudManager.register(new CloudLockServiceImp());
             }
 
 
