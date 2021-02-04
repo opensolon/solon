@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.3.3</version>
+    <version>1.3.4</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -18,7 +18,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.3.3</solon.ver>
+        <solon.ver>1.3.4</solon.ver>
+        <mlog.ver>1.0</mlog.ver>
 
         <snack3.ver>3.1.14</snack3.ver>
         <weed3.ver>3.2.33</weed3.ver>
@@ -361,13 +362,13 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>mlog</artifactId>
-                <version>${solon.ver}</version>
+                <version>${mlog.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>mlog-slf4j</artifactId>
-                <version>${solon.ver}</version>
+                <version>${mlog.ver}</version>
             </dependency>
 
             <dependency>
@@ -974,10 +975,6 @@
 
         <module>../_extend/solon.cloud</module>
 
-
-        <module>../mlog</module>
-
-        <module>../_extend/mlog-slf4j</module>
 
         <module>../nami</module>
 
