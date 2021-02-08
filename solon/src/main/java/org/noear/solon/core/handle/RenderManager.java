@@ -142,6 +142,7 @@ public class RenderManager implements Render {
      */
     @Override
     public void render(Object data, Context ctx) throws Throwable {
+        //如果是模型视图
         if (data instanceof ModelAndView) {
             ModelAndView mv = (ModelAndView) data;
 
@@ -167,6 +168,12 @@ public class RenderManager implements Render {
                 _def.render(mv, ctx);
                 return;
             }
+        }
+
+        //如果是文件
+        if(data instanceof UploadedFile) {
+            ctx.outputAsFile((UploadedFile) data);
+            return;
         }
 
         //@json

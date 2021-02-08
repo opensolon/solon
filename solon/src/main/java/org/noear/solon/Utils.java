@@ -280,20 +280,33 @@ public class Utils {
 
         ByteArrayOutputStream outs = new ByteArrayOutputStream(); //这个不需要关闭
 
-        try {
-            int len = 0;
-            byte[] buf = new byte[512]; //0.5k
-            while ((len = ins.read(buf)) != -1) {
-                outs.write(buf, 0, len);
-            }
 
+        transfer(ins, outs);
+
+        try {
             if (charset == null) {
                 return outs.toString();
             } else {
                 return outs.toString(charset);
             }
-        } catch (Exception ex) {
-            throw throwableWrap(ex);
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public static void transfer(InputStream ins, OutputStream out) {
+        if (ins == null) {
+            return;
+        }
+
+        try {
+            int len = 0;
+            byte[] buf = new byte[512]; //0.5k
+            while ((len = ins.read(buf)) != -1) {
+                out.write(buf, 0, len);
+            }
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
         }
     }
 

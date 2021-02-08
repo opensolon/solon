@@ -380,6 +380,18 @@ public abstract class Context {
         }
     }
 
+    @Note("输出file")
+    public void outputAsFile(UploadedFile file) throws IOException{
+        contentType(file.contentType);
+
+        if (Utils.isNotEmpty(file.name)) {
+            String filename = file.name + "." + file.extension;
+            headerSet("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+        }
+
+        Utils.transfer(file.content, outputStream());
+    }
+
     /**设置HEADER*/
     @Note("设置HEADER")
     public abstract void headerSet(String name, String val);
