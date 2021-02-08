@@ -23,7 +23,7 @@ public class UploadedFile {
     public String contentType;
     /**内容流*/
     public InputStream content;
-    /**文件名*/
+    /**文件名（带扩展名）*/
     public String name;
     /**扩展名*/
     public String extension;

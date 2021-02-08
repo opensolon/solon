@@ -385,8 +385,7 @@ public abstract class Context {
         contentType(file.contentType);
 
         if (Utils.isNotEmpty(file.name)) {
-            String filename = file.name + "." + file.extension;
-            headerSet("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+            headerSet("Content-Disposition", "attachment; filename=\"" + file.name + "\"");
         }
 
         Utils.transfer(file.content, outputStream());
