@@ -49,7 +49,6 @@
 
         <slf4j.ver>1.7.30</slf4j.ver>
 
-        <smartsocket.ver>1.5.4</smartsocket.ver>
         <netty.ver>4.1.48.Final</netty.ver>
         <rsocket.ver>1.1.0</rsocket.ver>
 
