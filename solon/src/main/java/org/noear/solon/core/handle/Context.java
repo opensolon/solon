@@ -7,10 +7,7 @@ import org.noear.solon.core.message.Session;
 import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.nio.charset.Charset;
@@ -381,14 +378,25 @@ public abstract class Context {
     }
 
     @Note("输出file")
-    public void outputAsFile(UploadedFile file) throws IOException{
-        contentType(file.contentType);
+    public void outputAsFile(UploadedFile file) throws IOException {
+        if (Utils.isNotEmpty(file.contentType)) {
+            contentType(file.contentType);
+        }
 
         if (Utils.isNotEmpty(file.name)) {
             headerSet("Content-Disposition", "attachment; filename=\"" + file.name + "\"");
         }
 
         Utils.transfer(file.content, outputStream());
+    }
+
+    @Note("输出file")
+    public void outputAsFile(File file) throws IOException {
+        if (Utils.isNotEmpty(file.getName())) {
+            headerSet("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
+        }
+
+        Utils.transfer(new FileInputStream(file), outputStream());
     }
 
     /**设置HEADER*/

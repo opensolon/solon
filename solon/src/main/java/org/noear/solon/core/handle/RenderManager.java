@@ -3,6 +3,10 @@ package org.noear.solon.core.handle;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.PrintUtil;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FilterInputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -168,6 +172,11 @@ public class RenderManager implements Render {
                 _def.render(mv, ctx);
                 return;
             }
+        }
+
+        if(data instanceof File) {
+            ctx.outputAsFile((File) data);
+            return;
         }
 
         //如果是文件
