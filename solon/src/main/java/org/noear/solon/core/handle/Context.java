@@ -379,24 +379,32 @@ public abstract class Context {
 
     @Note("输出file")
     public void outputAsFile(UploadedFile file) throws IOException {
-        if (Utils.isNotEmpty(file.contentType)) {
-            contentType(file.contentType);
-        }
+        OutputStream out = outputStream();
 
-        if (Utils.isNotEmpty(file.name)) {
-            headerSet("Content-Disposition", "attachment; filename=\"" + file.name + "\"");
-        }
+        if (out != null) {
+            if (Utils.isNotEmpty(file.contentType)) {
+                contentType(file.contentType);
+            }
 
-        Utils.transfer(file.content, outputStream());
+            if (Utils.isNotEmpty(file.name)) {
+                headerSet("Content-Disposition", "attachment; filename=\"" + file.name + "\"");
+            }
+
+            Utils.transfer(file.content, out);
+        }
     }
 
     @Note("输出file")
     public void outputAsFile(File file) throws IOException {
-        if (Utils.isNotEmpty(file.getName())) {
-            headerSet("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
-        }
+        OutputStream out = outputStream();
 
-        Utils.transfer(new FileInputStream(file), outputStream());
+        if(out != null) {
+            if (Utils.isNotEmpty(file.getName())) {
+                headerSet("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
+            }
+
+            Utils.transfer(new FileInputStream(file), out);
+        }
     }
 
     /**设置HEADER*/
