@@ -398,12 +398,14 @@ public abstract class Context {
     public void outputAsFile(File file) throws IOException {
         OutputStream out = outputStream();
 
-        if(out != null) {
+        if (out != null) {
             if (Utils.isNotEmpty(file.getName())) {
                 headerSet("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
             }
 
-            Utils.transfer(new FileInputStream(file), out);
+            try (InputStream ins = new FileInputStream(file)) {
+                Utils.transfer(ins, out);
+            }
         }
     }
 
