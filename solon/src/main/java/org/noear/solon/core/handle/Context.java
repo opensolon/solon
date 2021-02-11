@@ -102,6 +102,26 @@ public abstract class Context {
     /**获取请求的URI路径*/
     @Note("获取请求的URI路径")
     public abstract String path();
+
+    /**
+     * 设置新路径
+     * */
+    public void pathNew(String pathNew){
+        this.pathNew = pathNew;
+    }
+
+    private String pathNew;
+    /**
+     * 获取新路径，不存在则返回原路径
+     * */
+    public String pathNew() {
+        if (pathNew == null) {
+            return path();
+        } else {
+            return pathNew;
+        }
+    }
+
     /**获取请求的URI路径变量,根据路径表达式*/
     @Note("获取请求的URI路径变量,根据路径表达式")
     public NvMap pathMap(String expr) {
