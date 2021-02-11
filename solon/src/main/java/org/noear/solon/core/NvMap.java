@@ -28,6 +28,11 @@ public class NvMap extends LinkedCaseInsensitiveMap<String> {
         putAll(map);
     }
 
+    public NvMap set(String key, String val) {
+        put(key, val);
+        return this;
+    }
+
     public static NvMap from(String[] args) {
         return from(Arrays.asList(args));
     }
