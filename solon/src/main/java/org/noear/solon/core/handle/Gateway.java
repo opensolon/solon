@@ -137,6 +137,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             }
         } catch (Throwable ex) {
             render(ex, c);
+            EventBus.push(ex);
         }
     }
 
