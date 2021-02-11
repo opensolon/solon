@@ -136,6 +136,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
                 handle0(c, m, obj, is_action);
             }
         } catch (Throwable ex) {
+            c.errors = ex;
             c.attrSet("error", ex);
 
             render(ex, c);
@@ -188,7 +189,9 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         } catch (Throwable ex) {
             c.setHandled(true); //停止处理
 
+            c.errors = ex;
             c.attrSet("error", ex);
+
             render(ex, c);
             EventBus.push(ex);
         }

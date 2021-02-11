@@ -527,6 +527,10 @@ public abstract class Context {
     @Note("处理结果")
     public Object result;
 
+    //用于在处理链中透传处理错误
+    @Note("处理错误")
+    public Throwable errors;
+
     @Note("控制器?")
     public Object controller() {
         return attr("controller");
