@@ -313,7 +313,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      * 查找接口
      */
     protected Handler find(Context c) throws Throwable {
-        return findDo(c, c.pathAsUpper());
+        return findDo(c, c.pathNew().toUpperCase());
     }
 
     protected Handler findDo(Context c, String path) throws Throwable {
