@@ -1,6 +1,7 @@
 package org.noear.solon.extend.sessionstate.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.impl.DefaultClaims;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
@@ -90,13 +91,13 @@ public class JwtSessionState implements SessionState {
         return skey;
     }
 
-    private Map<String, Object> sessionMap;
+    private Claims sessionMap;
 
-    public Map<String, Object> sessionMap() {
+    public Claims sessionMap() {
         if (sessionMap == null) {
             synchronized (this) {
                 if (sessionMap == null) {
-                    sessionMap = new LinkedHashMap<>();
+                    sessionMap = new DefaultClaims();
 
                     String token = token_get();
                     if (Utils.isNotEmpty(token)) {
@@ -144,6 +145,9 @@ public class JwtSessionState implements SessionState {
     @Override
     public void sessionPublish() {
         if (sessionMap != null) {
+            sessionMap.setIssuer("Solon");
+            sessionMap.setSubject("Session state");
+            sessionMap.setId(sessionId());
             String token = JwtUtils.buildJwt(sessionMap, _expiry * 1000);
             cookieSet(SESSION_TOKEN, token);
         }

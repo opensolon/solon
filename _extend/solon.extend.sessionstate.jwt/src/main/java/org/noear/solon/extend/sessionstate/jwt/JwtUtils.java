@@ -9,7 +9,6 @@ import org.noear.solon.core.event.EventBus;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.Map;
 
 public class JwtUtils {
     private static String encrypt_str = "DHPjbM5QczZ2cysd4gpDbG/4SnuwzWX3sA1i6AXiAbo=";
@@ -27,7 +26,7 @@ public class JwtUtils {
         return encrypt_key;
     }
 
-    public static String buildJwt(Map<String, Object> claims, long expire) {
+    public static String buildJwt(Claims claims, long expire) {
 
         String token = Jwts.builder()
                 .setClaims(claims)
