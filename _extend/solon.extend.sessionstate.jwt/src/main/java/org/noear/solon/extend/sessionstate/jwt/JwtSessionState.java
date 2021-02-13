@@ -1,14 +1,10 @@
 package org.noear.solon.extend.sessionstate.jwt;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
 
-import java.security.Key;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -18,22 +14,7 @@ import java.util.Map;
  */
 public class JwtSessionState implements SessionState {
     public final static String SESSIONID_KEY = "SOLONID";
-
-    private final static String JWT_TOKEN = "TOKEN";
-
-    private final static String SESSIONID_encrypt = "DHPjbM5QczZ2cysd4gpDbG/4SnuwzWX3sA1i6AXiAbo=";
-    private static Key SESSIONID_encrypt_key = null;
-    private Key encrypt_key(){
-        if(SESSIONID_encrypt_key == null){
-            synchronized (this){
-                if(SESSIONID_encrypt_key == null){
-                    SESSIONID_encrypt_key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(SESSIONID_encrypt));
-                }
-            }
-        }
-
-        return SESSIONID_encrypt_key;
-    }
+    public final static String SESSION_TOKEN = "TOKEN";
 
 
     private JwtSessionState() {
@@ -46,7 +27,7 @@ public class JwtSessionState implements SessionState {
         }
     }
 
-    public static JwtSessionState create(){
+    public static JwtSessionState create() {
         return new JwtSessionState();
     }
 
@@ -60,12 +41,12 @@ public class JwtSessionState implements SessionState {
         return Context.current().cookie(key);
     }
 
-    public  void   cookieSet(String key, String val) {
+    public void cookieSet(String key, String val) {
         Context ctx = Context.current();
 
         if (XServerProp.session_state_domain_auto) {
             if (_domain != null) {
-                if(ctx.uri().getHost().indexOf(_domain) < 0){ //非安全域
+                if (ctx.uri().getHost().indexOf(_domain) < 0) { //非安全域
                     ctx.cookieSet(key, val, null, _expiry);
                     return;
                 }
@@ -74,7 +55,6 @@ public class JwtSessionState implements SessionState {
 
         ctx.cookieSet(key, val, _domain, _expiry);
     }
-
 
 
     //
@@ -102,7 +82,7 @@ public class JwtSessionState implements SessionState {
     private String sessionId_get() {
         String skey = cookieGet(SESSIONID_KEY);
 
-        if(Utils.isEmpty(skey)){
+        if (Utils.isEmpty(skey)) {
             skey = Utils.guid();
             cookieSet(SESSIONID_KEY, skey);
         }
@@ -110,20 +90,17 @@ public class JwtSessionState implements SessionState {
         return skey;
     }
 
-    private Map<String,Object> sessionMap;
-    public Map<String,Object>  sessionMap() {
+    private Map<String, Object> sessionMap;
+
+    public Map<String, Object> sessionMap() {
         if (sessionMap == null) {
             synchronized (this) {
                 if (sessionMap == null) {
                     sessionMap = new LinkedHashMap<>();
 
-                    String jwt = cookieGet(JWT_TOKEN);
-                    if (Utils.isNotEmpty(jwt)) {
-                        Claims claims = Jwts.parserBuilder()
-                                .setSigningKey(encrypt_key())
-                                .build()
-                                .parseClaimsJws(jwt)
-                                .getBody();
+                    String token = token_get();
+                    if (Utils.isNotEmpty(token)) {
+                        Claims claims = JwtUtils.parseJwt(token);
 
                         if (sessionId().equals(claims.getId())) {
                             sessionMap.putAll(claims);
@@ -134,6 +111,10 @@ public class JwtSessionState implements SessionState {
         }
 
         return sessionMap;
+    }
+
+    public String token_get(){
+        return cookieGet(SESSION_TOKEN);
     }
 
     @Override
@@ -163,12 +144,13 @@ public class JwtSessionState implements SessionState {
     @Override
     public void sessionPublish() {
         if (sessionMap != null) {
-            String token = Jwts.builder().setClaims(sessionMap).signWith(encrypt_key()).compact();
-            cookieSet(JWT_TOKEN, token);
+            String token = JwtUtils.buildJwt(sessionMap, _expiry * 1000);
+            cookieSet(SESSION_TOKEN, token);
         }
     }
 
-    public static final int SESSION_STATE_PRIORITY = 1;
+    public static final int SESSION_STATE_PRIORITY = 2;
+
     @Override
     public int priority() {
         return SESSION_STATE_PRIORITY;
