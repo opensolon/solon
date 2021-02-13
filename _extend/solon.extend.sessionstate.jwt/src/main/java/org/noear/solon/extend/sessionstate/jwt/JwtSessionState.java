@@ -6,9 +6,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 /**
  * @author noear
  * @since 1.3
@@ -114,7 +111,7 @@ public class JwtSessionState implements SessionState {
         return sessionMap;
     }
 
-    public String token_get(){
+    public String token_get() {
         return cookieGet(SESSION_TOKEN);
     }
 
@@ -144,7 +141,7 @@ public class JwtSessionState implements SessionState {
 
     @Override
     public void sessionPublish() {
-        if (sessionMap != null) {
+        if (sessionMap != null && Context.current() != null) {
             sessionMap.setIssuer("Solon");
             sessionMap.setSubject("Session state");
             sessionMap.setId(sessionId());
