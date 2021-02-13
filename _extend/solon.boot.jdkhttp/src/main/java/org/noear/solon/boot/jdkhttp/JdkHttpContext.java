@@ -417,6 +417,10 @@ public class JdkHttpContext extends Context {
         if(!_headers_sent) {
             _headers_sent = true;
 
+            if(sessionState() != null){
+                sessionState().sessionPublish();
+            }
+
             if("HEAD".equals(method())){
                 _allows_write = false;
                 _exchange.sendResponseHeaders(_status, -1);

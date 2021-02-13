@@ -11,6 +11,8 @@ package org.noear.solon.core.handle;
 public interface SessionState {
     /** 刷新SESSION状态 */
     default void sessionRefresh(){}
+    /** 发布SESSION状态(类似jwt) */
+    default void sessionPublish(){}
 
     /** 优先级 */
     default int priority(){return 0;}

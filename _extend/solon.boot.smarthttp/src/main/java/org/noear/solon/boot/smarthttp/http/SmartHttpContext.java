@@ -359,10 +359,23 @@ public class SmartHttpContext extends Context {
         if ("HEAD".equals(method())) {
             _response.setContentLength(0);
         }else{
+            sendHeaders();
+
             OutputStream out = _response.getOutputStream();
             _response.setContentLength(_outputStream.size());
             _outputStream.writeTo(out);
             out.close();
+        }
+    }
+
+    private boolean _headers_sent = false;
+    private void sendHeaders() throws IOException{
+        if(!_headers_sent) {
+            _headers_sent = true;
+
+            if(sessionState() != null){
+                sessionState().sessionPublish();
+            }
         }
     }
 }

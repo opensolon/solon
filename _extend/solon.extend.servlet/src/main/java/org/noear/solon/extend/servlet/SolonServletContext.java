@@ -265,13 +265,15 @@ public class SolonServletContext extends Context {
 
     @Override
     public OutputStream outputStream() throws IOException {
+        sendHeaders();
+
         return _response.getOutputStream();
     }
 
     @Override
     public void output(byte[] bytes) {
         try {
-            OutputStream out = _response.getOutputStream();
+            OutputStream out = outputStream();
             out.write(bytes);
         }catch (Throwable ex){
             throw new RuntimeException(ex);
@@ -281,7 +283,7 @@ public class SolonServletContext extends Context {
     @Override
     public void output(InputStream stream)  {
         try {
-            OutputStream out = _response.getOutputStream();
+            OutputStream out = outputStream();
 
             byte[] buff = new byte[100];
             int rc = 0;
@@ -350,5 +352,16 @@ public class SolonServletContext extends Context {
     @Override
     public void flush() throws IOException {
         outputStream().flush();
+    }
+
+    private boolean _headers_sent = false;
+    private void sendHeaders() throws IOException{
+        if(!_headers_sent) {
+            _headers_sent = true;
+
+            if(sessionState() != null){
+                sessionState().sessionPublish();
+            }
+        }
     }
 }

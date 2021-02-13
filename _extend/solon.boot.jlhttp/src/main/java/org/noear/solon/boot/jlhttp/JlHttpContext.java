@@ -421,6 +421,10 @@ public class JlHttpContext extends Context {
                 _allows_write = false;
             }
 
+            if(sessionState() != null){
+                sessionState().sessionPublish();
+            }
+
             //_response.sendHeaders(status()); //不能用这个；
             _response.sendHeaders(status(), -1, -1, null, null, null);
         }

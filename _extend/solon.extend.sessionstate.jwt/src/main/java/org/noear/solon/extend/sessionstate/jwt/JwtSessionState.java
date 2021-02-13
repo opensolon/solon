@@ -125,7 +125,9 @@ public class JwtSessionState implements SessionState {
                                 .parseClaimsJws(jwt)
                                 .getBody();
 
-                        sessionMap.putAll(claims);
+                        if (sessionId().equals(claims.getId())) {
+                            sessionMap.putAll(claims);
+                        }
                     }
                 }
             }
@@ -155,6 +157,14 @@ public class JwtSessionState implements SessionState {
 
         if (Utils.isEmpty(skey) == false) {
             cookieSet(SESSIONID_KEY, skey);
+        }
+    }
+
+    @Override
+    public void sessionPublish() {
+        if (sessionMap != null) {
+            String token = Jwts.builder().setClaims(sessionMap).signWith(encrypt_key()).compact();
+            cookieSet(JWT_TOKEN, token);
         }
     }
 
