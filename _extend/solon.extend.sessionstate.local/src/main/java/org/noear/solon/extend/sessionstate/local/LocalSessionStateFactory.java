@@ -28,7 +28,7 @@ public class LocalSessionStateFactory implements SessionStateFactory {
 
     @Override
     public SessionState create(Context ctx) {
-        return null;
+        return new LocalSessionState(ctx);
     }
 
 }

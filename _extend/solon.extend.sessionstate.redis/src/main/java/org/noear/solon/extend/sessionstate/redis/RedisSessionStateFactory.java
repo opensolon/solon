@@ -49,6 +49,6 @@ public class RedisSessionStateFactory implements SessionStateFactory {
 
     @Override
     public SessionState create(Context ctx) {
-        return null;
+        return new RedisSessionState(ctx);
     }
 }
