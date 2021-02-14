@@ -83,7 +83,6 @@ public class JwtSessionState implements SessionState {
     }
 
     private Claims sessionMap;
-    private boolean sessionChanged;
 
     public Claims sessionMap() {
         if (sessionMap == null) {
@@ -95,7 +94,10 @@ public class JwtSessionState implements SessionState {
                         Claims claims = JwtUtils.parseJwt(token);
 
                         if (sessionId().equals(claims.getId())) {
-                            sessionMap = claims;
+                            if (claims.getExpiration() != null &&
+                                    claims.getExpiration().getTime() > System.currentTimeMillis()) {
+                                sessionMap = claims;
+                            }
                         }
                     }
 
@@ -121,13 +123,11 @@ public class JwtSessionState implements SessionState {
     @Override
     public void sessionSet(String key, Object val) {
         sessionMap().put(key, val);
-        sessionChanged = true;
     }
 
     @Override
     public void sessionClear() {
         sessionMap().clear();
-        sessionChanged = true;
     }
 
     @Override
@@ -145,9 +145,8 @@ public class JwtSessionState implements SessionState {
             String skey = cookieGet(SESSIONID_KEY);
 
             if (Utils.isEmpty(skey) == false) {
-                sessionMap.setIssuer("Solon");
                 sessionMap.setId(skey);
-                String token = JwtUtils.buildJwt(sessionMap, 0);
+                String token = JwtUtils.buildJwt(sessionMap, _expiry * 1000);
                 cookieSet(SESSION_TOKEN, token);
             }
         }
