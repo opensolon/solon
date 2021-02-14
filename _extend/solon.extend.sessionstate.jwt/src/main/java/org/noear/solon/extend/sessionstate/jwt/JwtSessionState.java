@@ -88,18 +88,17 @@ public class JwtSessionState implements SessionState {
         if (sessionMap == null) {
             synchronized (this) {
                 if (sessionMap == null) {
-
                     String token = token_get();
 
                     if (Utils.isNotEmpty(token)) {
-                        sessionMap = JwtUtils.parseJwt(token);
+                        Claims claims = JwtUtils.parseJwt(token);
 
-                        //if (sessionId().equals(claims.getId())) {
-                        //    sessionMap.putAll(claims);
-                        //}
+                        if (sessionId().equals(claims.getId())) {
+                            sessionMap = claims;
+                        }
                     }
 
-                    if(sessionMap == null){
+                    if (sessionMap == null) {
                         sessionMap = new DefaultClaims();
                     }
                 }
