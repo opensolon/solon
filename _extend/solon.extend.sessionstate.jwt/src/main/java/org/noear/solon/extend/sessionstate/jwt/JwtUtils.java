@@ -27,15 +27,17 @@ public class JwtUtils {
     }
 
     public static String buildJwt(Claims claims, long expire) {
-
-        String token = Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expire))
-                .setId(Utils.guid())
-                .signWith(key()).compact();
-
-        return token;
+        if (expire > 0) {
+            return Jwts.builder()
+                    .setClaims(claims)
+                    .setIssuedAt(new Date())
+                    .setExpiration(new Date(System.currentTimeMillis() + expire))
+                    .signWith(key()).compact();
+        } else {
+            return Jwts.builder()
+                    .setClaims(claims)
+                    .signWith(key()).compact();
+        }
     }
 
     public static Claims parseJwt(String token) {
