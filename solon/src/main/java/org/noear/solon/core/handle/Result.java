@@ -12,13 +12,13 @@ import java.io.Serializable;
  * @Controller
  * public class DemoController{
  *     @Mapping("A.0.1")
- *     public XResult api1(){
- *         return XResult.SUCCEED;
+ *     public Result api1(){
+ *         return Result.SUCCEED;
  *     }
  *
  *     @Mapping("A.0.2")
- *     public XResult api2(){
- *         return XResult.succeed(12);
+ *     public Result api2(){
+ *         return Result.succeed(12);
  *     }
  * }
  * </code></pre>
@@ -27,15 +27,18 @@ import java.io.Serializable;
  * @since 1.0
  * */
 public class Result<T> implements Serializable {
-    private static final Result SUCCEED = new XResultReadonly(null);
-    private static final Result FAILURE = new XResultReadonly(0,"");
+    public static int SUCCEED_CODE = 200;
+    public static int FAILURE_CODE = 400;
+
+    private static final Result SUCCEED = new ResultReadonly(SUCCEED_CODE,"");
+    private static final Result FAILURE = new ResultReadonly(FAILURE_CODE,"");
 
     /**
      * 状态码
      * <p>
-     * -x:明确的失败（或正数）
-     * 00:未知失败
-     * 01:成功
+     * 400xxxx:明确的失败
+     * 400:未知失败
+     * 200:成功
      */
     private int code;
 
@@ -78,7 +81,7 @@ public class Result<T> implements Serializable {
     }
 
     public Result(T data) {
-        this.code = 1;
+        this.code = SUCCEED_CODE;
         this.description = "";
         this.data = data;
     }
@@ -135,30 +138,30 @@ public class Result<T> implements Serializable {
 
 
     /**
-     * 只读 XResult
+     * 只读 Result
      * */
-    static class XResultReadonly<T> extends Result<T> {
-        public XResultReadonly(T data) {
+    static class ResultReadonly<T> extends Result<T> {
+        public ResultReadonly(T data) {
             super(data);
         }
 
-        public XResultReadonly(int code, String description) {
+        public ResultReadonly(int code, String description) {
             super(code, description);
         }
 
         @Override
         public void setCode(int code) {
-            throw new RuntimeException("Thes result is readonly!");
+            throw new RuntimeException("This result is readonly!");
         }
 
         @Override
         public void setData(T data) {
-            throw new RuntimeException("Thes result is readonly!");
+            throw new RuntimeException("This result is readonly!");
         }
 
         @Override
         public void setDescription(String description) {
-            throw new RuntimeException("Thes result is readonly!");
+            throw new RuntimeException("This result is readonly!");
         }
     }
 }
