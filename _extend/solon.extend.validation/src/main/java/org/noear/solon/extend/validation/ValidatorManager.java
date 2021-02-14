@@ -162,7 +162,7 @@ public class ValidatorManager implements Handler {
             tmp.setLength(0);
             Result rst = valid.validate(ctx, anno, name, tmp);
 
-            if (rst.getCode() != 1) {
+            if (rst.getCode() != Result.SUCCEED_CODE) {
                 if (this.failureDo(ctx, anno, rst, valid.message(anno))) {
                     return true;
                 }
