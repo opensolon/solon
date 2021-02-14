@@ -139,8 +139,9 @@ public class JwtSessionState implements SessionState {
 
     @Override
     public void sessionPublish() {
-        if (sessionMap != null && ctx != null) {
+        if (sessionMap != null) {
             String skey = cookieGet(SESSIONID_KEY);
+
             if (Utils.isEmpty(skey) == false) {
                 sessionMap.setIssuer("Solon");
                 sessionMap.setId(skey);
