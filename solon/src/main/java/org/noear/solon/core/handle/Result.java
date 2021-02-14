@@ -30,15 +30,13 @@ public class Result<T> implements Serializable {
     public static int SUCCEED_CODE = 200;
     public static int FAILURE_CODE = 400;
 
-    private static final Result SUCCEED = new ResultReadonly(SUCCEED_CODE,"");
-    private static final Result FAILURE = new ResultReadonly(FAILURE_CODE,"");
 
     /**
      * 状态码
-     * <p>
-     * 400xxxx:明确的失败
-     * 400:未知失败
+     *
      * 200:成功
+     * 400:未知失败
+     * 400xxxx:明确的失败
      */
     private int code;
 
@@ -91,12 +89,17 @@ public class Result<T> implements Serializable {
         this.description = description;
     }
 
+    private static ResultReadonly _succeed;
     /**
      * 成功的空结果
      */
     @Note("成功的空结果")
     public static <T> Result<T> succeed() {
-        return SUCCEED;
+        if (_succeed == null) {
+            _succeed = new ResultReadonly(SUCCEED_CODE, "");
+        }
+
+        return _succeed;
     }
 
     /**
@@ -107,12 +110,17 @@ public class Result<T> implements Serializable {
         return new Result<>(data);
     }
 
+    private static ResultReadonly _failure;
     /**
      * 成功的空结果
      */
     @Note("失败的空结果")
     public static <T> Result<T> failure() {
-        return FAILURE;
+        if (_failure == null) {
+            _failure = new ResultReadonly(FAILURE_CODE, "");
+        }
+
+        return _failure;
     }
 
     /**
