@@ -2,30 +2,47 @@ package org.noear.solon.extend.sessionstate.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
-import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 
 import java.security.Key;
 import java.util.Date;
 
+/**
+ * @author noear
+ * @since 1.3
+ */
 public class JwtUtils {
-    private static String encrypt_str = "DHPjbM5QczZ2cysd4gpDbG/4SnuwzWX3sA1i6AXiAbo=";
-    private static Key encrypt_key = null;
+    private static Key signKey = null;
 
     private static Key key() {
-        if (encrypt_key == null) {
-            synchronized (encrypt_str.intern()) {
-                if (encrypt_key == null) {
-                    encrypt_key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(encrypt_str));
+        if (signKey == null) {
+            synchronized (JwtSessionStateFactory.getInstance()) {
+                if (signKey == null) {
+                    String signKey0 = JwtSessionStateFactory.getInstance().signKey();
+                    signKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(signKey0));
                 }
             }
         }
 
-        return encrypt_key;
+        return signKey;
     }
 
+    /**
+     * 生成密钥
+     * */
+    public static String createKey() {
+        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
+        return Encoders.BASE64.encode(key.getEncoded());
+    }
+
+    /**
+     * 构建令牌
+     * */
     public static String buildJwt(Claims claims, long expire) {
         if (expire > 0) {
             return Jwts.builder()
@@ -39,6 +56,9 @@ public class JwtUtils {
         }
     }
 
+    /**
+     * 解析令牌
+     * */
     public static Claims parseJwt(String token) {
         try {
             return Jwts.parserBuilder()
