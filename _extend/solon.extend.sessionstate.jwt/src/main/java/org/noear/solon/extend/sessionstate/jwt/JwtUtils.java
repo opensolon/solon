@@ -30,7 +30,6 @@ public class JwtUtils {
         if (expire > 0) {
             return Jwts.builder()
                     .setClaims(claims)
-                    .setIssuedAt(new Date())
                     .setExpiration(new Date(System.currentTimeMillis() + expire))
                     .signWith(key()).compact();
         } else {
