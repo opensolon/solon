@@ -200,7 +200,7 @@ public class ValidatorManager implements Handler {
                     }
                 }
 
-                ctx.render(Result.failure(400, message));
+                ctx.render(Result.failure(message));
             } catch (Throwable ex) {
                 throw Utils.throwableWrap(ex);
             }

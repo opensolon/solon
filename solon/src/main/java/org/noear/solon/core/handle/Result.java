@@ -141,7 +141,7 @@ public class Result<T> implements Serializable {
 
     @Note("失败的结果")
     public static <T> Result<T> failure(String description) {
-        return new Result<>(0, description);
+        return new Result<>(FAILURE_CODE, description);
     }
 
 
