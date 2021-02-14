@@ -296,34 +296,39 @@ public abstract class Context {
     public abstract NvMap headerMap();
 
     /**SESSION_STATE对象*/
-    private SessionState sessionState = Bridge.sessionState(this);
-    protected void sessionStateInit(SessionState sessionState){
-        if(this.sessionState.replaceable()){
+    private SessionState sessionState;
+    protected void sessionStateInit(SessionState sessionState) {
+        if (sessionState().replaceable()) {
             this.sessionState = sessionState;
         }
     }
-    public SessionState sessionState(){
+    public SessionState sessionState() {
+        if (sessionState == null) {
+            sessionState = Bridge.sessionState(this);
+        }
+
         return sessionState;
     }
 
     /**获取SESSION_ID*/
     @Note("获取SESSION_ID")
     public final String sessionId(){
-        return sessionState.sessionId();
+        return sessionState().sessionId();
     }
     /**获取SESSION状态*/
     @Note("获取SESSION状态")
     public final Object session(String name){
-        return sessionState.sessionGet(name);
+        return sessionState().sessionGet(name);
     }
     /**设置SESSION状态*/
     @Note("设置SESSION状态")
     public final void sessionSet(String name, Object val){
-        sessionState.sessionSet(name,val);
+        sessionState().sessionSet(name,val);
     }
     @Note("清空SESSION状态")
     public final void sessionClear(){
-        sessionState.sessionClear();}
+        sessionState().sessionClear();
+    }
 
     //======================
     /**获取输出对象*/
