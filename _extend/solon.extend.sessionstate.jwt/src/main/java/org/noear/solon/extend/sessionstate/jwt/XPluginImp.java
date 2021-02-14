@@ -16,17 +16,13 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        if (Bridge.sessionState() != null
-                && Bridge.sessionState().priority() >= JwtSessionState.SESSION_STATE_PRIORITY) {
+        if (Bridge.sessionStateFactory().priority() >= JwtSessionStateFactory.SESSION_STATE_PRIORITY) {
             return;
         }
 
         XServerProp.init();
-        JwtSessionState sessionState = JwtSessionState.create();
 
-        if (sessionState != null) {
-            Bridge.sessionStateSet(sessionState);
-        }
+        Bridge.sessionStateFactorySet(JwtSessionStateFactory.getInstance());
 
         System.out.println("solon:: Jwt session state plugin is loaded");
     }

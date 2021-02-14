@@ -17,9 +17,12 @@ public class LocalSessionState implements SessionState {
 
     public final static String SESSIONID_encrypt = "&L8e!@T0";
 
-    private final ScheduledStore _store;
+    //
+    private static int _expiry = 60 * 60 * 2;
+    private static String _domain = null;
+    private static ScheduledStore _store;
 
-    private LocalSessionState() {
+    static {
         if (XServerProp.session_timeout > 0) {
             _expiry = XServerProp.session_timeout;
         }
@@ -29,25 +32,22 @@ public class LocalSessionState implements SessionState {
         }
 
         _store = new ScheduledStore(_expiry);
-
     }
 
-    public static LocalSessionState create(){
-        return new LocalSessionState();
+    private Context ctx;
+
+    protected LocalSessionState(Context ctx) {
+        this.ctx = ctx;
     }
 
     //
     // cookies control
-    //
-    private int _expiry = 60 * 60 * 2;
-    private String _domain = null;
 
     public String cookieGet(String key) {
-        return Context.current().cookie(key);
+        return ctx.cookie(key);
     }
 
     public  void   cookieSet(String key, String val) {
-        Context ctx = Context.current();
 
         if (XServerProp.session_state_domain_auto) {
             if (_domain != null) {
@@ -67,19 +67,13 @@ public class LocalSessionState implements SessionState {
     // session control
     //
 
-
-    @Override
-    public boolean replaceable() {
-        return false;
-    }
-
     @Override
     public String sessionId() {
-        String _sessionId = Context.current().attr("sessionId", null);
+        String _sessionId = ctx.attr("sessionId", null);
 
         if (_sessionId == null) {
             _sessionId = sessionId_get();
-            Context.current().attrSet("sessionId", _sessionId);
+            ctx.attrSet("sessionId", _sessionId);
         }
 
         return _sessionId;
@@ -128,9 +122,10 @@ public class LocalSessionState implements SessionState {
         }
     }
 
-    public static final int SESSION_STATE_PRIORITY = 1;
+
+
     @Override
-    public int priority() {
-        return SESSION_STATE_PRIORITY;
+    public boolean replaceable() {
+        return false;
     }
 }

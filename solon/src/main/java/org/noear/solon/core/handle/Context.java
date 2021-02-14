@@ -296,13 +296,13 @@ public abstract class Context {
     public abstract NvMap headerMap();
 
     /**SESSION_STATE对象*/
-    private SessionState sessionState = Bridge.sessionState();
+    private SessionState sessionState = Bridge.sessionState(this);
     protected void sessionStateInit(SessionState sessionState){
         if(this.sessionState.replaceable()){
             this.sessionState = sessionState;
         }
     }
-    protected SessionState sessionState(){
+    public SessionState sessionState(){
         return sessionState;
     }
 

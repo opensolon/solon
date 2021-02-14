@@ -18,8 +18,10 @@ public class RedisSessionState implements SessionState {
     public final static String SESSIONID_MD5(){return SESSIONID_KEY+"2";}
     public final static String SESSIONID_encrypt = "&L8e!@T0";
 
-    private RedisX redisX;
-    private RedisSessionState(NvMap map){
+    private static int _expiry =  60 * 60 * 2;
+    private static String _domain=null;
+
+    static {
         if (XServerProp.session_timeout > 0) {
             _expiry = XServerProp.session_timeout;
         }
@@ -27,38 +29,24 @@ public class RedisSessionState implements SessionState {
         if (XServerProp.session_state_domain != null) {
             _domain = XServerProp.session_state_domain;
         }
-
-        redisX = new RedisX(
-                map.get("server"),
-                map.get("password"),
-                map.getInt("db"),
-                map.getInt("maxTotaol"));
-
     }
 
-    public static RedisSessionState create(){
-        NvMap map = Solon.cfg().getXmap("server.session.state.redis");
 
-        if(map.size() < 4){
-            System.err.println("Error configuration: solon.session.state.redis");
-            return null;
-        }
-
-        return new RedisSessionState(map);
+    private Context ctx;
+    private RedisX redisX;
+    protected RedisSessionState(Context ctx){
+        this.ctx = ctx;
+        this.redisX = RedisSessionStateFactory.getInstance().getRedisX();
     }
 
     //
     // cookies control
     //
-    private int _expiry =  60 * 60 * 2;
-    private String _domain=null;
 
     public  String cookieGet(String key){
-        return Context.current().cookie(key);
+        return ctx.cookie(key);
     }
     public  void   cookieSet(String key, String val) {
-        Context ctx = Context.current();
-
         if (XServerProp.session_state_domain_auto) {
             if (_domain != null) {
                 if(ctx.uri().getHost().indexOf(_domain) < 0){ //非安全域
@@ -75,19 +63,13 @@ public class RedisSessionState implements SessionState {
     // session control
     //
 
-
-    @Override
-    public boolean replaceable() {
-        return false;
-    }
-
     @Override
     public String sessionId() {
-        String _sessionId = Context.current().attr("sessionId",null);
+        String _sessionId = ctx.attr("sessionId",null);
 
         if(_sessionId == null){
             _sessionId = sessionId_get();
-            Context.current().attrSet("sessionId",_sessionId);
+            ctx.attrSet("sessionId",_sessionId);
         }
 
         return _sessionId;
@@ -178,9 +160,9 @@ public class RedisSessionState implements SessionState {
         }
     }
 
-    public static final int SESSION_STATE_PRIORITY = 2;
+
     @Override
-    public int priority() {
-        return SESSION_STATE_PRIORITY;
+    public boolean replaceable() {
+        return false;
     }
 }

@@ -8,21 +8,17 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        if(Solon.global().enableSessionState() == false){
+        if (Solon.global().enableSessionState() == false) {
             return;
         }
 
-        if (Bridge.sessionState() != null
-                && Bridge.sessionState().priority() >= LocalSessionState.SESSION_STATE_PRIORITY) {
+        if (Bridge.sessionStateFactory().priority() >= LocalSessionStateFactory.SESSION_STATE_PRIORITY) {
             return;
         }
 
         XServerProp.init();
-        LocalSessionState sessionState = LocalSessionState.create();
 
-        if (sessionState != null) {
-            Bridge.sessionStateSet(sessionState);
-        }
+        Bridge.sessionStateFactorySet(LocalSessionStateFactory.getInstance());
 
         System.out.println("solon:: Local session state plugin is loaded");
     }

@@ -14,8 +14,10 @@ public class JwtSessionState implements SessionState {
     public final static String SESSIONID_KEY = "SOLONID";
     public final static String SESSION_TOKEN = "TOKEN";
 
+    private static int _expiry = 60 * 60 * 2;
+    private static String _domain = null;
 
-    private JwtSessionState() {
+    static {
         if (XServerProp.session_timeout > 0) {
             _expiry = XServerProp.session_timeout;
         }
@@ -25,23 +27,21 @@ public class JwtSessionState implements SessionState {
         }
     }
 
-    public static JwtSessionState create() {
-        return new JwtSessionState();
+    private Context ctx;
+
+    protected JwtSessionState(Context ctx) {
+        this.ctx = ctx;
     }
 
     //
     // cookies control
     //
-    private int _expiry = 60 * 60 * 2;
-    private String _domain = null;
 
     public String cookieGet(String key) {
-        return Context.current().cookie(key);
+        return ctx.cookie(key);
     }
 
     public void cookieSet(String key, String val) {
-        Context ctx = Context.current();
-
         if (XServerProp.session_state_domain_auto) {
             if (_domain != null) {
                 if (ctx.uri().getHost().indexOf(_domain) < 0) { //非安全域
@@ -59,19 +59,13 @@ public class JwtSessionState implements SessionState {
     // session control
     //
 
-
-    @Override
-    public boolean replaceable() {
-        return false;
-    }
-
     @Override
     public String sessionId() {
-        String _sessionId = Context.current().attr("sessionId", null);
+        String _sessionId = ctx.attr("sessionId", null);
 
         if (_sessionId == null) {
             _sessionId = sessionId_get();
-            Context.current().attrSet("sessionId", _sessionId);
+            ctx.attrSet("sessionId", _sessionId);
         }
 
         return _sessionId;
@@ -94,15 +88,19 @@ public class JwtSessionState implements SessionState {
         if (sessionMap == null) {
             synchronized (this) {
                 if (sessionMap == null) {
-                    sessionMap = new DefaultClaims();
 
                     String token = token_get();
-                    if (Utils.isNotEmpty(token)) {
-                        Claims claims = JwtUtils.parseJwt(token);
 
-                        if (sessionId().equals(claims.getId())) {
-                            sessionMap.putAll(claims);
-                        }
+                    if (Utils.isNotEmpty(token)) {
+                        sessionMap = JwtUtils.parseJwt(token);
+
+                        //if (sessionId().equals(claims.getId())) {
+                        //    sessionMap.putAll(claims);
+                        //}
+                    }
+
+                    if(sessionMap == null){
+                        sessionMap = new DefaultClaims();
                     }
                 }
             }
@@ -111,7 +109,7 @@ public class JwtSessionState implements SessionState {
         return sessionMap;
     }
 
-    public String token_get() {
+    protected String token_get() {
         return cookieGet(SESSION_TOKEN);
     }
 
@@ -141,19 +139,20 @@ public class JwtSessionState implements SessionState {
 
     @Override
     public void sessionPublish() {
-        if (sessionMap != null && Context.current() != null) {
-            sessionMap.setIssuer("Solon");
-            sessionMap.setSubject("Session state");
-            sessionMap.setId(sessionId());
-            String token = JwtUtils.buildJwt(sessionMap, _expiry * 1000);
-            cookieSet(SESSION_TOKEN, token);
+        if (sessionMap != null && ctx != null) {
+            String skey = cookieGet(SESSIONID_KEY);
+            if (Utils.isEmpty(skey) == false) {
+                sessionMap.setIssuer("Solon");
+                sessionMap.setId(skey);
+                String token = JwtUtils.buildJwt(sessionMap, _expiry * 1000);
+                cookieSet(SESSION_TOKEN, token);
+            }
         }
     }
 
-    public static final int SESSION_STATE_PRIORITY = 2;
 
     @Override
-    public int priority() {
-        return SESSION_STATE_PRIORITY;
+    public boolean replaceable() {
+        return false;
     }
 }

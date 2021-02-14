@@ -6,6 +6,7 @@ import org.noear.solon.core.handle.*;
 import org.noear.solon.core.tran.TranExecutor;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * 内部扩展桥接器
@@ -46,22 +47,26 @@ public class Bridge {
     //
     // SessionState 对接 //与函数同名，_开头
     //
-    private static SessionState _sessionState = new XSessionStateDefault();
+    private static SessionStateFactory _sessionStateFactory = (ctx)->new SessionStateDefault();
     private static boolean sessionStateUpdated;
+
+    public static SessionStateFactory sessionStateFactory(){
+        return _sessionStateFactory;
+    }
 
     /**
      * 设置Session状态管理器
      */
     @Note("设置Session状态管理器")
-    public static void sessionStateSet(SessionState ss) {
-        if (ss != null) {
-            _sessionState = ss;
+    public static void sessionStateFactorySet(SessionStateFactory ssf) {
+        if (ssf != null) {
+            _sessionStateFactory = ssf;
 
             if (sessionStateUpdated == false) {
                 sessionStateUpdated = true;
 
                 Solon.global().before("**", MethodType.HTTP, (c) -> {
-                    _sessionState.sessionRefresh();
+                    c.sessionState().sessionRefresh();
                 });
             }
         }
@@ -71,26 +76,10 @@ public class Bridge {
      * 获取Session状态管理器
      */
     @Note("获取Session状态管理器")
-    public static SessionState sessionState() {
-        return _sessionState;
+    public static SessionState sessionState(Context ctx) {
+        return _sessionStateFactory.create(ctx);
     }
 
-    static class XSessionStateDefault implements SessionState {
-        @Override
-        public String sessionId() {
-            return null;
-        }
-
-        @Override
-        public Object sessionGet(String key) {
-            return null;
-        }
-
-        @Override
-        public void sessionSet(String key, Object val) {
-
-        }
-    }
 
 
     //

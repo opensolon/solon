@@ -8,29 +8,29 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        if(Solon.global().enableSessionState() == false){
+        if (Solon.global().enableSessionState() == false) {
             return;
         }
 
-        if (Bridge.sessionState() != null
-                && Bridge.sessionState().priority() >= RedisSessionState.SESSION_STATE_PRIORITY) {
+        if (Bridge.sessionStateFactory().priority() >= RedisSessionStateFactory.SESSION_STATE_PRIORITY) {
             return;
         }
         /*
-        *
-        * server.session.state.redis:
-        * server:
-        * password:
-        * db: 31
-        * maxTotaol: 200
-        *
-        * */
+         *
+         * server.session.state.redis:
+         * server:
+         * password:
+         * db: 31
+         * maxTotaol: 200
+         *
+         * */
         XServerProp.init();
-        RedisSessionState sessionState = RedisSessionState.create();
 
-        if(sessionState != null){
-            Bridge.sessionStateSet(sessionState);
+        if (RedisSessionStateFactory.getInstance().getRedisX() == null) {
+            return;
         }
+
+        Bridge.sessionStateFactorySet(RedisSessionStateFactory.getInstance());
 
         System.out.println("solon:: Redis session state plugin is loaded");
     }

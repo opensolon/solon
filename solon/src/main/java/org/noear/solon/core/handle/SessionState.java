@@ -14,9 +14,6 @@ public interface SessionState {
     /** 发布SESSION状态(类似jwt) */
     default void sessionPublish(){}
 
-    /** 优先级 */
-    default int priority(){return 0;}
-
     /** 是否可替换 */
     default boolean replaceable(){
         return true;
@@ -34,6 +31,4 @@ public interface SessionState {
 
     /** 清除SESSION状态 */
     default void sessionClear(){}
-
-
 }
