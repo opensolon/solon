@@ -199,14 +199,18 @@
 <!--            <artifactId>solon.view.jsp</artifactId>-->
 <!--        </dependency>-->
 
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.extend.sessionstate.jwt</artifactId>
+        </dependency>
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
 <!--            <artifactId>solon.extend.sessionstate.redis</artifactId>-->
 <!--        </dependency>-->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.sessionstate.local</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.extend.sessionstate.local</artifactId>-->
+<!--        </dependency>-->
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->

@@ -159,7 +159,7 @@ public class JwtSessionState implements SessionState {
     @Override
     public void sessionPublish() {
         if (sessionMap != null) {
-            String skey = cookieGet(SESSIONID_KEY);
+            String skey = sessionId();
 
             if (Utils.isEmpty(skey) == false) {
                 sessionMap.setId(skey);

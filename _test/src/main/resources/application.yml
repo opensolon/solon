@@ -19,19 +19,10 @@ solon.socketd:
   connectTimeout: "60s"
   socketTimeout: "60s"
 
-water:
-  host: http://water.zmapi.cn/
-  adapter:
-    service_name: 1212
-    alarm_mobile: 18658857337
-    msg_subscriber_id: bbb
-    msg_signature_key: xxx
-    cache_service: webapp.dao.CacheUtil.data2
-
 server.session.state.redis:
-  server: redis.dev.zmapi.cn:6379
-  password: AVsVSKd1
-  db: 31
+  server: localhost:6379
+  password: 123456
+  db: 3
   maxTotaol: 200
 
 #特殊信息输出
