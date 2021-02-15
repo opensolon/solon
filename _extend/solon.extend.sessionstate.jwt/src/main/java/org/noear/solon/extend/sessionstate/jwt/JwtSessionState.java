@@ -12,6 +12,12 @@ import org.noear.solon.core.handle.SessionState;
  */
 public class JwtSessionState implements SessionState {
     public final static String SESSIONID_KEY = "SOLONID";
+    public final static String SESSIONID_MD5() {
+        return SESSIONID_KEY + "2";
+    }
+    public final static String SESSIONID_salt = "&L8e!@T0";
+
+
     public final static String SESSION_TOKEN = "TOKEN";
 
     private static int _expiry = 60 * 60 * 2;
@@ -73,12 +79,17 @@ public class JwtSessionState implements SessionState {
 
     private String sessionId_get() {
         String skey = cookieGet(SESSIONID_KEY);
+        String smd5 = cookieGet(SESSIONID_MD5());
 
-        if (Utils.isEmpty(skey)) {
-            skey = Utils.guid();
-            cookieSet(SESSIONID_KEY, skey);
+        if (Utils.isEmpty(skey) == false && Utils.isEmpty(smd5) == false) {
+            if (Utils.md5(skey + SESSIONID_salt).equals(smd5)) {
+                return skey;
+            }
         }
 
+        skey = Utils.guid();
+        cookieSet(SESSIONID_KEY, skey);
+        cookieSet(SESSIONID_MD5(), Utils.md5(skey + SESSIONID_salt));
         return skey;
     }
 
@@ -88,12 +99,13 @@ public class JwtSessionState implements SessionState {
         if (sessionMap == null) {
             synchronized (this) {
                 if (sessionMap == null) {
+                    String sesId = sessionId();
                     String token = token_get();
 
                     if (Utils.isNotEmpty(token)) {
                         Claims claims = JwtUtils.parseJwt(token);
 
-                        if (sessionId().equals(claims.getId())) {
+                        if (sesId.equals(claims.getId())) {
                             if (claims.getExpiration() != null &&
                                     claims.getExpiration().getTime() > System.currentTimeMillis()) {
                                 sessionMap = claims;
@@ -140,6 +152,7 @@ public class JwtSessionState implements SessionState {
 
         if (Utils.isEmpty(skey) == false) {
             cookieSet(SESSIONID_KEY, skey);
+            cookieSet(SESSIONID_MD5(), Utils.md5(skey + SESSIONID_salt));
         }
     }
 

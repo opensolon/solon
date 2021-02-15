@@ -15,7 +15,7 @@ public class LocalSessionState implements SessionState {
         return SESSIONID_KEY + "2";
     }
 
-    public final static String SESSIONID_encrypt = "&L8e!@T0";
+    public final static String SESSIONID_salt = "&L8e!@T0";
 
     //
     private static int _expiry = 60 * 60 * 2;
@@ -84,14 +84,14 @@ public class LocalSessionState implements SessionState {
         String smd5 = cookieGet(SESSIONID_MD5());
 
         if (Utils.isEmpty(skey) == false && Utils.isEmpty(smd5) == false) {
-            if (EncryptUtil.md5(skey + SESSIONID_encrypt).equals(smd5)) {
+            if (Utils.md5(skey + SESSIONID_salt).equals(smd5)) {
                 return skey;
             }
         }
 
-        skey = IDUtil.guid();
+        skey = Utils.guid();
         cookieSet(SESSIONID_KEY, skey);
-        cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_encrypt));
+        cookieSet(SESSIONID_MD5(), Utils.md5(skey + SESSIONID_salt));
         return skey;
     }
 
@@ -116,7 +116,7 @@ public class LocalSessionState implements SessionState {
 
         if (Utils.isEmpty(skey) == false) {
             cookieSet(SESSIONID_KEY, skey);
-            cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_encrypt));
+            cookieSet(SESSIONID_MD5(), Utils.md5(skey + SESSIONID_salt));
 
             _store.delay(sessionId());
         }

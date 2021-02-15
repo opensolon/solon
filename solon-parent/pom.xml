@@ -214,6 +214,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.extend.cors</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.extend.servlet</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -967,6 +972,7 @@
         <module>../_extend/solon.extend.schedule</module>
         <module>../_extend/solon.extend.validation</module>
         <module>../_extend/solon.extend.data</module>
+        <module>../_extend/solon.extend.cors</module>
 
 
         <module>../_extend/solon.extend.jetty.jsp</module>

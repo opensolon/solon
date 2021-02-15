@@ -43,6 +43,7 @@ public class Action extends HandlerAide implements Handler {
     private final String mName;
     //action remoting
     private final boolean mRemoting;
+    private final Mapping mMapping;
 
     //path 分析器
     private PathAnalyzer pathAnalyzer;//路径分析器
@@ -57,6 +58,7 @@ public class Action extends HandlerAide implements Handler {
 
         mWrap = MethodWrap.get(method);
         mRemoting = remoting;
+        mMapping = mapping;
         bRender = render;
 
         if (bRender == null) {
@@ -95,6 +97,13 @@ public class Action extends HandlerAide implements Handler {
      */
     public String name() {
         return mName;
+    }
+
+    /**
+     * 映射（可能为Null）
+     * */
+    public Mapping mapping(){
+        return mMapping;
     }
 
     /**
