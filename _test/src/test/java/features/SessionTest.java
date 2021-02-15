@@ -26,11 +26,17 @@ public class SessionTest extends HttpTestBase {
 
         HttpUtils httpUtils = path("/demob/session/getval");
 
+        StringBuilder sb = new StringBuilder();
         for (String c1 : cookies) {
             String kv = c1.split(";")[0];
             if (kv.contains("=")) {
-                httpUtils.headerAdd("Cookie", kv);
+                sb.append(kv).append(";");
             }
+        }
+
+        if(sb.length() > 0) {
+            System.out.println(sb.toString());
+            httpUtils.header("Cookie", sb.toString());
         }
 
         String html = httpUtils.get();
