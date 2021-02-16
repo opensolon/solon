@@ -318,16 +318,18 @@ public final class SolonProps extends Props {
     public boolean isFilesMode() {
         return isFilesMode;
     }
-
     public void isFilesMode(boolean isFilesMode) {
         this.isFilesMode = isFilesMode;
     }
 
     /**
-     * 是否为 drift mode (of ip)
+     * 是否为漂移模式 (of ip)
      */
     public boolean isDriftMode() {
         return isDriftMode;
+    }
+    public void isDriftMode(boolean isDriftMode){
+        this.isDriftMode = isDriftMode;
     }
 
     /**
@@ -335,5 +337,8 @@ public final class SolonProps extends Props {
      */
     public boolean isWhiteMode() {
         return isWhiteMode;
+    }
+    public void isWhiteMode(boolean isWhiteMode){
+        this.isWhiteMode = isWhiteMode;
     }
 }
