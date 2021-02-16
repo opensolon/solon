@@ -35,10 +35,11 @@ public final class SolonProps extends Props {
     private boolean isDriftMode;
     private boolean isFilesMode;
     private boolean isWhiteMode;
-    private String  extend;
-    private String  extendFilter;
-    private String  appName;
-    private String  appGroup;
+    private String extend;
+    private String extendFilter;
+    private String appName;
+    private String appGroup;
+    private String appTitle;
 
     public SolonProps() {
         super(System.getProperties());
@@ -48,8 +49,8 @@ public final class SolonProps extends Props {
      * 加载配置（用于第一次加载）
      *
      * @param args 启用参数
-     * */
-    public SolonProps load(Class<?> source,NvMap args) {
+     */
+    public SolonProps load(Class<?> source, NvMap args) {
         //1.接收启动参数
         this.args = args;
         this.source = source;
@@ -112,6 +113,11 @@ public final class SolonProps extends Props {
             appGroup = get("solon.app.group");
         }
 
+        appTitle = this.args.get("app.title");
+        if (Utils.isEmpty(appTitle)) {
+            appTitle = get("solon.app.title");
+        }
+
         return this;
     }
 
@@ -119,7 +125,7 @@ public final class SolonProps extends Props {
      * 加载配置（用于扩展加载）
      *
      * @param url 配置地址
-     * */
+     */
     public SolonProps loadAdd(URL url) {
         if (url != null) {
             Properties props = Utils.loadProperties(url);
@@ -160,10 +166,9 @@ public final class SolonProps extends Props {
     }
 
 
-
     /**
      * 插件扫描
-     * */
+     */
     protected void plugsScan(List<ClassLoader> classLoaders) {
         for (ClassLoader classLoader : classLoaders) {
             //3.查找插件配置（如果出错，让它抛出异常）
@@ -189,7 +194,7 @@ public final class SolonProps extends Props {
      * 插件扫描，根据某个资源地址扫描
      *
      * @param url 资源地址
-     * */
+     */
     private void plugsScanMapDo(ClassLoader classLoader, URL url) {
         try {
             Props p = new Props(Utils.loadProperties(url));
@@ -213,7 +218,7 @@ public final class SolonProps extends Props {
 
     /**
      * 添加变更事件
-     * */
+     */
     public void onChange(BiConsumer<String, String> event) {
         _changeEvent.add(event);
     }
@@ -231,7 +236,7 @@ public final class SolonProps extends Props {
         return obj;
     }
 
-    public Class<?> source(){
+    public Class<?> source() {
         return source;
     }
 
@@ -263,36 +268,40 @@ public final class SolonProps extends Props {
 
     /**
      * 扩展文件夹
-     * */
-    public String extend(){
+     */
+    public String extend() {
         return extend;
     }
 
     /**
      * 扩展文件夹过滤（.mysql.;.roperties;）
-     * */
-    public String extendFilter(){
+     */
+    public String extendFilter() {
         return extendFilter;
     }
 
     /**
      * 应用名
-     * */
+     */
     public String appName() {
         return appName;
     }
 
     /**
      * 应用组
-     * */
+     */
     public String appGroup() {
         return appGroup;
     }
 
+    public String appTitle() {
+        return appTitle;
+    }
+
     /**
      * 框架版本号
-     * */
-    public String version(){
+     */
+    public String version() {
         return "1.3.4";
     }
 
@@ -305,24 +314,25 @@ public final class SolonProps extends Props {
 
     /**
      * 是否为文件运行模式
-     * */
-    public boolean isFilesMode(){
+     */
+    public boolean isFilesMode() {
         return isFilesMode;
     }
-    public void isFilesMode(boolean isFilesMode){
+
+    public void isFilesMode(boolean isFilesMode) {
         this.isFilesMode = isFilesMode;
     }
 
     /**
      * 是否为 drift mode (of ip)
-     * */
+     */
     public boolean isDriftMode() {
         return isDriftMode;
     }
 
     /**
      * 是否为白色模式（即白名单模式）
-     * */
+     */
     public boolean isWhiteMode() {
         return isWhiteMode;
     }
