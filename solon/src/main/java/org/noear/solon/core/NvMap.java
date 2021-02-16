@@ -99,4 +99,12 @@ public class NvMap extends LinkedCaseInsensitiveMap<String> {
             return Double.parseDouble(temp);
         }
     }
+
+    public boolean getBool(String key, boolean def) {
+        if(containsKey(key)){
+            return Boolean.parseBoolean(get(key)) ;
+        }else{
+            return def;
+        }
+    }
 }
