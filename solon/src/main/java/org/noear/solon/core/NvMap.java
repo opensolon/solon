@@ -23,9 +23,16 @@ public class NvMap extends LinkedCaseInsensitiveMap<String> {
         super();
     }
 
-    public NvMap(Map<String, String> map) {
+    public NvMap(Map map) {
         super();
-        putAll(map);
+
+        if (map != null) {
+            map.forEach((k, v) -> {
+                if (k != null && v != null) {
+                    put(k.toString(), v.toString());
+                }
+            });
+        }
     }
 
     public NvMap set(String key, String val) {
