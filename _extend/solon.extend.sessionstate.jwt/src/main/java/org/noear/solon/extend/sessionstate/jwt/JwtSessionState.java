@@ -60,7 +60,7 @@ public class JwtSessionState extends SessionStateDefault {
 
     @Override
     public String sessionId() {
-        if (XServerProp.session_state_requestUseHeader) {
+        if (XServerProp.session_jwt_requestUseHeader) {
             return "";
         }
 
@@ -121,7 +121,7 @@ public class JwtSessionState extends SessionStateDefault {
     }
 
     protected String tokenGet() {
-        if (XServerProp.session_state_requestUseHeader) {
+        if (XServerProp.session_jwt_requestUseHeader) {
             return ctx.header(SESSION_TOKEN);
         } else {
             return cookieGet(SESSION_TOKEN);
@@ -129,7 +129,7 @@ public class JwtSessionState extends SessionStateDefault {
     }
 
     protected void tokenSet(String token) {
-        if (XServerProp.session_state_responseUseHeader) {
+        if (XServerProp.session_jwt_responseUseHeader) {
             ctx.headerSet(SESSION_TOKEN, token);
         } else {
             cookieSet(SESSION_TOKEN, token);

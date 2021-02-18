@@ -1,6 +1,5 @@
 package org.noear.solon.extend.sessionstate.jwt;
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
@@ -22,7 +21,7 @@ public class JwtSessionStateFactory implements SessionStateFactory {
     }
 
     private JwtSessionStateFactory() {
-        String signKey0 = XServerProp.session_state_signKey;
+        String signKey0 = XServerProp.session_jwt_signKey;
         if (Utils.isNotEmpty(signKey0)) {
             signKey = signKey0;
         }
