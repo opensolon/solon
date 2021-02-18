@@ -11,8 +11,6 @@ import org.noear.solon.core.handle.SessionStateDefault;
  * @since 1.3
  */
 public class JwtSessionState extends SessionStateDefault {
-    public final static String SESSION_TOKEN = "TOKEN";
-
     private static int _expiry = 60 * 60 * 2;
     private static String _domain = null;
 
@@ -122,17 +120,17 @@ public class JwtSessionState extends SessionStateDefault {
 
     protected String tokenGet() {
         if (XServerProp.session_jwt_requestUseHeader) {
-            return ctx.header(SESSION_TOKEN);
+            return ctx.header(XServerProp.session_jwt_name);
         } else {
-            return cookieGet(SESSION_TOKEN);
+            return cookieGet(XServerProp.session_jwt_name);
         }
     }
 
     protected void tokenSet(String token) {
         if (XServerProp.session_jwt_responseUseHeader) {
-            ctx.headerSet(SESSION_TOKEN, token);
+            ctx.headerSet(XServerProp.session_jwt_name, token);
         } else {
-            cookieSet(SESSION_TOKEN, token);
+            cookieSet(XServerProp.session_jwt_name, token);
         }
     }
 
@@ -153,9 +151,13 @@ public class JwtSessionState extends SessionStateDefault {
 
     @Override
     public void sessionRefresh() {
+        if (XServerProp.session_jwt_requestUseHeader) {
+            return;
+        }
+
         String skey = cookieGet(SESSIONID_KEY);
 
-        if (Utils.isEmpty(skey) == false) {
+        if (Utils.isNotEmpty(skey)) {
             cookieSet(SESSIONID_KEY, skey);
             cookieSet(SESSIONID_MD5(), Utils.md5(skey + SESSIONID_salt));
         }

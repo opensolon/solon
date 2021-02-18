@@ -8,6 +8,7 @@ class XServerProp {
     public static String session_state_domain;
     public static boolean session_state_domain_auto;
 
+    public static String session_jwt_name;
     public static String session_jwt_signKey;
     public static boolean session_jwt_requestUseHeader;
     public static boolean session_jwt_responseUseHeader;
@@ -28,6 +29,7 @@ class XServerProp {
         session_state_domain = Solon.cfg().get("server.session.state.domain");
         session_state_domain_auto = Solon.cfg().getBool("server.session.state.domain.auto", true);
 
+        session_jwt_name = Solon.cfg().get("server.session.state.jwt.name", "TOKEN");
         session_jwt_signKey = Solon.cfg().get("server.session.state.jwt.signKey");
         session_jwt_requestUseHeader = Solon.cfg().getBool("server.session.state.jwt.requestUseHeader", false);
         session_jwt_responseUseHeader = Solon.cfg().getBool("server.session.state.jwt.responseUseHeader", false);
