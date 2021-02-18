@@ -44,35 +44,31 @@ public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
 
     @Override
     public void write(Level level, Metainfo metainfo, Object content) {
-        StringBuilder summary = new StringBuilder();
-        summary.append("[").append(Thread.currentThread().getName()).append("]");
-
         if (clz != null) {
             if (metainfo == null) {
                 metainfo = new Metainfo();
             }
 
             metainfo.put("tag3", clz.getSimpleName());
-            summary.append("[").append(clz.getTypeName()).append("]");
         }
 
         if (TextUtils.isEmpty(getName())) {
             print0(level, metainfo, content);
         } else {
             if (metainfo == null) {
-                write0(level, null, null, null, null, summary.toString(), content);
+                write0(level, null, null, null, null, content);
             } else {
                 write0(level,
                         metainfo.get("tag0"),
                         metainfo.get("tag1"),
                         metainfo.get("tag2"),
                         metainfo.get("tag3"),
-                        summary.toString(), content);
+                        content);
             }
         }
     }
 
-    private void write0(Level level, String tag, String tag1, String tag2, String tag3, String summary, Object content) {
+    private void write0(Level level, String tag, String tag1, String tag2, String tag3, Object content) {
         if (TextUtils.isEmpty(getName())) {
             return;
         }
@@ -87,14 +83,9 @@ public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
         log.tag1 = tag1;
         log.tag2 = tag2;
         log.tag3 = tag3;
-        log.summary = summary;
         log.content = content;
 
         if (clz != null) {
-            if (TextUtils.isEmpty(summary)) {
-                log.summary = clz.getTypeName();
-            }
-
             if (TextUtils.isEmpty(tag3)) {
                 log.tag3 = clz.getSimpleName();
             }
@@ -111,7 +102,7 @@ public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
     }
 
     private void print0(Level level, Metainfo metainfo, Object content) {
-        String levelStr = "["+level.name()+"]";
+        String levelStr = "[" + level.name() + "]";
         switch (level) {
             case ERROR: {
                 PrintUtil.red(levelStr);
