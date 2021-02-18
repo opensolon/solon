@@ -13,7 +13,7 @@ import org.noear.solon.extend.validation.Validator;
 public class LoginedValidator implements Validator<Logined> {
     public static final LoginedValidator instance = new LoginedValidator();
 
-    public static String sessionUserKeyName = "userId";
+    public static String sessionUserKeyName = "user_id";
 
     @Override
     public String message(Logined anno) {
