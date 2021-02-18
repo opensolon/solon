@@ -4,20 +4,13 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.impl.DefaultClaims;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.SessionState;
+import org.noear.solon.core.handle.SessionStateDefault;
 
 /**
  * @author noear
  * @since 1.3
  */
-public class JwtSessionState implements SessionState {
-    public final static String SESSIONID_KEY = "SOLONID";
-    public final static String SESSIONID_MD5() {
-        return SESSIONID_KEY + "2";
-    }
-    public final static String SESSIONID_salt = "&L8e!@T0";
-
-
+public class JwtSessionState extends SessionStateDefault {
     public final static String SESSION_TOKEN = "TOKEN";
 
     private static int _expiry = 60 * 60 * 2;

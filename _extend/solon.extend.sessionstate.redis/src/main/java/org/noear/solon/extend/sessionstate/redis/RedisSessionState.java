@@ -3,21 +3,14 @@ package org.noear.solon.extend.sessionstate.redis;
 import org.noear.snack.ONode;
 import org.noear.snack.core.Constants;
 import org.noear.snack.core.Feature;
-import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.NvMap;
-import org.noear.solon.core.handle.SessionState;
+import org.noear.solon.core.handle.SessionStateDefault;
 
 /**
  * 它会是个单例，不能有上下文数据
  * */
-public class RedisSessionState implements SessionState {
-    public final static String SESSIONID_KEY = "SOLONID";
-    public final static String SESSIONID_MD5(){return SESSIONID_KEY+"2";}
-    public final static String SESSIONID_encrypt = "&L8e!@T0";
-
+public class RedisSessionState extends SessionStateDefault {
     private static int _expiry =  60 * 60 * 2;
     private static String _domain=null;
 
@@ -80,14 +73,14 @@ public class RedisSessionState implements SessionState {
         String smd5 = cookieGet(SESSIONID_MD5());
 
         if(Utils.isEmpty(skey)==false && Utils.isEmpty(smd5)==false) {
-            if (EncryptUtil.md5(skey + SESSIONID_encrypt).equals(smd5)) {
+            if (EncryptUtil.md5(skey + SESSIONID_salt).equals(smd5)) {
                 return skey;
             }
         }
 
         skey = IDUtil.guid();
         cookieSet(SESSIONID_KEY,skey);
-        cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_encrypt));
+        cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_salt));
         return skey;
     }
 
@@ -154,7 +147,7 @@ public class RedisSessionState implements SessionState {
 
         if (Utils.isEmpty(skey) == false) {
             cookieSet(SESSIONID_KEY, skey);
-            cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_encrypt));
+            cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_salt));
 
             redisX.open0((ru)->ru.key(sessionId()).expire(_expiry).delay());
         }

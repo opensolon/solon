@@ -2,22 +2,13 @@ package org.noear.solon.extend.sessionstate.local;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.SessionState;
+import org.noear.solon.core.handle.SessionStateDefault;
 
 
 /**
  * 它会是个单例，不能有上下文数据
  * */
-public class LocalSessionState implements SessionState {
-    public final static String SESSIONID_KEY = "SOLONID";
-
-    public final static String SESSIONID_MD5() {
-        return SESSIONID_KEY + "2";
-    }
-
-    public final static String SESSIONID_salt = "&L8e!@T0";
-
-    //
+public class LocalSessionState extends SessionStateDefault {
     private static int _expiry = 60 * 60 * 2;
     private static String _domain = null;
     private static ScheduledStore _store;
