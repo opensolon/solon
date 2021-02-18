@@ -4,6 +4,7 @@ import org.noear.mlog.Level;
 import org.noear.mlog.LoggerSimple;
 import org.noear.mlog.Metainfo;
 import org.noear.snack.ONode;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudLogger;
 import org.noear.solon.cloud.extend.water.WaterProps;
@@ -28,7 +29,13 @@ public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
 
     public CloudLoggerImp(Class<?> clz) {
         super(clz);
-        this.name = WaterProps.instance.getLogDefault();
+        name = WaterProps.instance.getLogDefault();
+
+        if (Utils.isEmpty(name)) {
+            if (Utils.isNotEmpty(Solon.cfg().appName())) {
+                name = Solon.cfg().appName() + "_log";
+            }
+        }
 
         if (Utils.isEmpty(name)) {
             System.err.println("[WARN] Solon.cloud no default logger is configured");
