@@ -22,10 +22,13 @@ public class JwtSessionStateFactory implements SessionStateFactory {
     }
 
     private JwtSessionStateFactory() {
-        String signKey0 = Solon.cfg().get("server.session.state.signKey");
-        if(Utils.isNotEmpty(signKey0)){
+        String signKey0 = XServerProp.session_state_signKey;
+        if (Utils.isNotEmpty(signKey0)) {
             signKey = signKey0;
         }
+
+        requestUseHeader = XServerProp.session_state_requestUseHeader;
+        responseUseHeader = XServerProp.session_state_responseUseHeader;
     }
 
 
