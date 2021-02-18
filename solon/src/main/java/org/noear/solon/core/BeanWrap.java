@@ -229,7 +229,7 @@ public class BeanWrap {
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {
-            throw new RuntimeException(ex);
+            throw new IllegalArgumentException("Instantiation failure: " + clz.getTypeName(), ex);
         }
     }
 
