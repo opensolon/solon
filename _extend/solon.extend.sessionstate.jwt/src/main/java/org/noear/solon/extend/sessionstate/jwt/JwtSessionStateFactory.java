@@ -46,7 +46,7 @@ public class JwtSessionStateFactory implements SessionStateFactory {
     }
 
 
-    private boolean requestUseHeader;
+    private boolean requestUseHeader = false;
     /**
      * 请求时使用头
      * */
@@ -58,7 +58,7 @@ public class JwtSessionStateFactory implements SessionStateFactory {
         requestUseHeader = use;
     }
 
-    private boolean responseUseHeader;
+    private boolean responseUseHeader = false;
     /**
      * 响应时使用头
      * */

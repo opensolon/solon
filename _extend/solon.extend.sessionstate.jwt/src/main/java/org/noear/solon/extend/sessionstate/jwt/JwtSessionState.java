@@ -93,7 +93,7 @@ public class JwtSessionState extends SessionStateDefault {
             synchronized (this) {
                 if (sessionMap == null) {
                     String sesId = sessionId();
-                    String token = token_get();
+                    String token = tokenGet();
 
                     if (Utils.isNotEmpty(token)) {
                         Claims claims = JwtUtils.parseJwt(token);
@@ -116,11 +116,19 @@ public class JwtSessionState extends SessionStateDefault {
         return sessionMap;
     }
 
-    protected String token_get() {
+    protected String tokenGet() {
         if (JwtSessionStateFactory.getInstance().requestUseHeader()) {
             return ctx.header(SESSION_TOKEN);
         } else {
             return cookieGet(SESSION_TOKEN);
+        }
+    }
+
+    protected void tokenSet(String token){
+        if (JwtSessionStateFactory.getInstance().responseUseHeader()) {
+            ctx.headerSet(SESSION_TOKEN, token);
+        } else {
+            cookieSet(SESSION_TOKEN, token);
         }
     }
 
@@ -158,11 +166,7 @@ public class JwtSessionState extends SessionStateDefault {
                 sessionMap.setId(skey);
                 String token = JwtUtils.buildJwt(sessionMap, _expiry * 1000);
 
-                if (JwtSessionStateFactory.getInstance().responseUseHeader()) {
-                    ctx.headerSet(SESSION_TOKEN, token);
-                } else {
-                    cookieSet(SESSION_TOKEN, token);
-                }
+                tokenSet(token);
             }
         }
     }
