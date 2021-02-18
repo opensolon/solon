@@ -16,53 +16,64 @@ import java.util.Date;
  * @since 1.3
  */
 public class JwtUtils {
-    private static Key signKey = null;
+    private static Key key = null;
 
     private static Key key() {
-        if (signKey == null) {
+        if (key == null) {
             synchronized (JwtSessionStateFactory.getInstance()) {
-                if (signKey == null) {
+                if (key == null) {
                     String signKey0 = JwtSessionStateFactory.getInstance().signKey();
-                    signKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(signKey0));
+                    key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(signKey0));
                 }
             }
         }
 
-        return signKey;
+        return key;
     }
 
     /**
      * 生成密钥
-     * */
+     */
     public static String createKey() {
         Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
         return Encoders.BASE64.encode(key.getEncoded());
     }
 
+    public static String buildJwt(Claims claims, long expire) {
+        return buildJwt(claims, expire, key());
+    }
+
     /**
      * 构建令牌
-     * */
-    public static String buildJwt(Claims claims, long expire) {
+     */
+    public static String buildJwt(Claims claims, long expire, Key signKey) {
         if (expire > 0) {
             return Jwts.builder()
                     .setClaims(claims)
                     .setExpiration(new Date(System.currentTimeMillis() + expire))
-                    .signWith(key()).compact();
+                    .signWith(signKey).compact();
         } else {
             return Jwts.builder()
                     .setClaims(claims)
-                    .signWith(key()).compact();
+                    .signWith(signKey).compact();
         }
     }
 
     /**
      * 解析令牌
-     * */
+     */
     public static Claims parseJwt(String token) {
+        return parseJwt(token, key());
+    }
+
+    /**
+     * 解析令牌
+     */
+    public static Claims parseJwt(String token, Key signKey) {
         try {
             return Jwts.parserBuilder()
-                    .setSigningKey(key())
+                    .setSigningKey(signKey)
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
