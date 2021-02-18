@@ -95,7 +95,7 @@ public class JwtSessionState extends SessionStateDefault {
             synchronized (this) {
                 if (sessionMap == null) {
                     String sesId = sessionId();
-                    String token = tokenGet();
+                    String token = jwtGet();
 
                     if (Utils.isNotEmpty(token)) {
                         Claims claims = JwtUtils.parseJwt(token);
@@ -118,21 +118,6 @@ public class JwtSessionState extends SessionStateDefault {
         return sessionMap;
     }
 
-    protected String tokenGet() {
-        if (XServerProp.session_jwt_requestUseHeader) {
-            return ctx.header(XServerProp.session_jwt_name);
-        } else {
-            return cookieGet(XServerProp.session_jwt_name);
-        }
-    }
-
-    protected void tokenSet(String token) {
-        if (XServerProp.session_jwt_responseUseHeader) {
-            ctx.headerSet(XServerProp.session_jwt_name, token);
-        } else {
-            cookieSet(XServerProp.session_jwt_name, token);
-        }
-    }
 
     @Override
     public Object sessionGet(String key) {
@@ -172,7 +157,7 @@ public class JwtSessionState extends SessionStateDefault {
                 sessionMap.setId(skey);
                 String token = JwtUtils.buildJwt(sessionMap, _expiry * 1000);
 
-                tokenSet(token);
+                jwtSet(token);
             }
         }
     }
@@ -181,5 +166,22 @@ public class JwtSessionState extends SessionStateDefault {
     @Override
     public boolean replaceable() {
         return false;
+    }
+
+
+    protected String jwtGet() {
+        if (XServerProp.session_jwt_requestUseHeader) {
+            return ctx.header(XServerProp.session_jwt_name);
+        } else {
+            return cookieGet(XServerProp.session_jwt_name);
+        }
+    }
+
+    protected void jwtSet(String token) {
+        if (XServerProp.session_jwt_responseUseHeader) {
+            ctx.headerSet(XServerProp.session_jwt_name, token);
+        } else {
+            cookieSet(XServerProp.session_jwt_name, token);
+        }
     }
 }
