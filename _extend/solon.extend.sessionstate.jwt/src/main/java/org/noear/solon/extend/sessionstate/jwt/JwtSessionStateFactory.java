@@ -26,9 +26,6 @@ public class JwtSessionStateFactory implements SessionStateFactory {
         if (Utils.isNotEmpty(signKey0)) {
             signKey = signKey0;
         }
-
-        requestUseHeader = XServerProp.session_state_requestUseHeader;
-        responseUseHeader = XServerProp.session_state_responseUseHeader;
     }
 
 
@@ -46,30 +43,6 @@ public class JwtSessionStateFactory implements SessionStateFactory {
      * */
     public void signKeySet(String key) {
         signKey = key;
-    }
-
-
-    private boolean requestUseHeader = false;
-    /**
-     * 请求时使用头
-     * */
-    public boolean requestUseHeader(){
-        return requestUseHeader;
-    }
-
-    public void requestUseHeaderSet(boolean use){
-        requestUseHeader = use;
-    }
-
-    private boolean responseUseHeader = false;
-    /**
-     * 响应时使用头
-     * */
-    public boolean responseUseHeader(){
-        return responseUseHeader;
-    }
-    public void responseUseHeaderSet(boolean use){
-        responseUseHeader = use;
     }
 
 
