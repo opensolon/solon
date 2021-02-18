@@ -873,6 +873,16 @@
     </profiles>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.noear</groupId>
+                    <artifactId>weed3-maven-plugin</artifactId>
+                    <version>${weed3.ver}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
