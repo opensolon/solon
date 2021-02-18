@@ -101,8 +101,12 @@ public class JwtSessionState extends SessionStateDefault {
                         Claims claims = JwtUtils.parseJwt(token);
 
                         if (XServerProp.session_jwt_requestUseHeader || sesId.equals(claims.getId())) {
-                            if (claims.getExpiration() != null &&
-                                    claims.getExpiration().getTime() > System.currentTimeMillis()) {
+                            if(XServerProp.session_jwt_allowExpire) {
+                                if (claims.getExpiration() != null &&
+                                        claims.getExpiration().getTime() > System.currentTimeMillis()) {
+                                    sessionMap = claims;
+                                }
+                            }else{
                                 sessionMap = claims;
                             }
                         }
