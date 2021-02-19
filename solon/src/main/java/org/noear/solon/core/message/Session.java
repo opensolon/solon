@@ -1,11 +1,13 @@
 package org.noear.solon.core.message;
 
+import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.MethodType;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.Collection;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 /**
@@ -44,6 +46,25 @@ public interface Session {
      * 设置请求头
      * */
     void headerSet(String name, String value);
+
+    /**
+     * 请求头集合
+     * */
+    NvMap headerMap();
+
+    /**
+     * 请求参数
+     * */
+    String param(String name);
+    /**
+     * 设置请求参数
+     * */
+    void paramSet(String name, String value);
+
+    /**
+     * 请求参数集合
+     * */
+    NvMap paramMap();
 
     /**
      * 标识（为特定业务提供帮助）

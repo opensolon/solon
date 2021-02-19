@@ -7,6 +7,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.*;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -31,21 +32,54 @@ public abstract class SessionBase implements Session {
     //
     //请求头
     //
-    protected NvMap headerMap = new NvMap();
-
     @Override
     public String header(String name) {
-        return headerMap.get(name);
+        return headerMap().get(name);
     }
 
     @Override
     public void headerSet(String name, String value) {
-        headerMap.put(name, value);
+        headerMap().put(name, value);
     }
 
-    public Map<String,String> headerMap() {
-        return Collections.unmodifiableMap(headerMap);
+    private NvMap headerMap;
+    public NvMap headerMap() {
+        if(headerMap == null){
+            headerMap = new NvMap();
+        }
+
+        return headerMap;
     }
+
+    //
+    //请求参数
+    //
+    @Override
+    public String param(String name) {
+        return paramMap().get(name);
+    }
+
+    @Override
+    public void paramSet(String name, String value) {
+        paramMap().put(name, value);
+    }
+
+    private NvMap paramMap;
+    public NvMap paramMap() {
+        if (paramMap == null) {
+            paramMap = new NvMap();
+
+            String query = uri().getQuery();
+            String[] ss = query.split("&");
+            for (String kv : ss) {
+                String[] s = kv.split("=");
+                paramMap.put(s[0], s[1]);
+            }
+        }
+
+        return paramMap;
+    }
+
 
     //////////////////////////////////////////
 
