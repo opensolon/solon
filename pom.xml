@@ -37,6 +37,10 @@
         <module>_extend2/metrics-solon-plugin</module>
         <module>_extend2/smartdoc-solon-plugin</module>
 
+<!--        <module>../solonfox/solonfox-swagger2</module>-->
+<!--        <module>../solonfox/solonfox-swagger-ui</module>-->
+<!--        <module>../solonfox/solonfox-swagger-bootstrap-ui</module>-->
+
 <!--        <module>_extend3/kafka-solon-plugin</module>-->
 
 <!--        <module>../_extend3/redis-solon-plugin</module>-->
