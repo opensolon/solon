@@ -43,7 +43,7 @@ solon.cloud.nacos:
 | solon.cloud.@@.event.server     |   服务地址（ip:port）   |  water、rabbitmq、rocketmq     | 
 | solon.cloud.@@.event.exchange     |   交换机或关系组   |  rabbitmq、rocketmq     | 
 | solon.cloud.@@.event.queue     |   指定队列   |  rabbitmq、rocketmq     | 
-| solon.cloud.@@.event.hostname     |   指定接收域   |  water     | 
+| solon.cloud.@@.event.receive     |   指定接收域   |  water     | 
 | solon.cloud.@@.event.seal | 事件签名 | water |
 | | | |
 | solon.cloud.@@.log.enable | 日志总线服务（默认：true）| water |
