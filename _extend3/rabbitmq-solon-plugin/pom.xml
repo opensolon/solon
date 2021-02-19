@@ -10,8 +10,8 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <groupId>org.noear</groupId>
     <artifactId>rabbitmq-solon-plugin</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
