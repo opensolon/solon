@@ -14,6 +14,7 @@ import org.noear.solon.cloud.extend.water.integration.http.HandlerStop;
 import org.noear.solon.cloud.extend.water.integration.msg.HandlerCacheUpdate;
 import org.noear.solon.cloud.extend.water.integration.msg.HandlerConfigUpdate;
 import org.noear.solon.cloud.extend.water.service.*;
+import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
@@ -79,6 +80,8 @@ public class XPluginImp implements Plugin {
             WaterClient.localServiceSet(Instance.local().service());
             WaterSetting.water_trace_id_supplier(traceServiceImp::getTraceId);
 
+
+            //这个要放最上面
             if (WaterProps.instance.getTraceEnable()) {
                 CloudManager.register(traceServiceImp);
             }
@@ -99,6 +102,7 @@ public class XPluginImp implements Plugin {
                         WaterProps.instance.getConfigLoadKey());
             }
 
+
             if (WaterProps.instance.getDiscoveryEnable()) {
                 discoveryServiceImp = new CloudDiscoveryServiceImp();
                 CloudManager.register(discoveryServiceImp);
@@ -117,6 +121,14 @@ public class XPluginImp implements Plugin {
             }
 
             if (WaterProps.instance.getEventEnable()) {
+                String hostname = WaterProps.instance.getEventHostname();
+                if(hostname.startsWith("@")) {
+                    if (CloudClient.config() != null) {
+                        Config cfg = CloudClient.config().pull(Solon.cfg().appGroup(), hostname.substring(1));
+                        WaterProps.instance.setEventHostname(cfg.value());
+                    }
+                }
+
                 eventServiceImp = new CloudEventServiceImp();
                 CloudManager.register(eventServiceImp);
 

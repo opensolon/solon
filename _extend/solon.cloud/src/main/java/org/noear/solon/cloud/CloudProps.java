@@ -210,6 +210,9 @@ public class CloudProps {
     public String getEventHostname() {
         return Solon.cfg().get(EVENT_HOSTNAME);
     }
+    public void setEventHostname(String value) {
+        Solon.cfg().setProperty(EVENT_HOSTNAME, value);
+    }
     public String getEventExchange() {
         return Solon.cfg().get(EVENT_EXCHANGE);
     }
