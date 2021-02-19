@@ -23,7 +23,7 @@
 
         <snack3.ver>3.1.14</snack3.ver>
         <weed3.ver>3.3.1</weed3.ver>
-        <water.ver>2.0.17</water.ver>
+        <water.ver>2.0.18</water.ver>
 
         <fastjson.ver>1.2.75</fastjson.ver>
         <jedis.ver>3.3.0</jedis.ver>
@@ -626,25 +626,6 @@
             </dependency>
 
 
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solonfox-swagger2</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solonfox-swagger-ui</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solonfox-swagger-bootstrap-ui</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
-
-
             <!--            <dependency>-->
             <!--                <groupId>org.noear</groupId>-->
             <!--                <artifactId>mqtt-solon-plugin</artifactId>-->
@@ -1050,13 +1031,6 @@
 
         <module>../_extend3/rabbitmq-solon-plugin</module>
         <module>../_extend3/rocketmq-solon-plugin</module>
-
-
-
-        <module>../solonfox/solonfox-swagger2</module>
-        <module>../solonfox/solonfox-swagger-ui</module>
-        <module>../solonfox/solonfox-swagger-bootstrap-ui</module>
-
 
     </modules>
 
