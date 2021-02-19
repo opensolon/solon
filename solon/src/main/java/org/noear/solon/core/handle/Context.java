@@ -320,6 +320,17 @@ public abstract class Context {
     public final Object session(String name){
         return sessionState().sessionGet(name);
     }
+    /**获取SESSION状态*/
+    @Note("获取SESSION状态")
+    public final <T> T session(String name, T def) {
+        Object tmp = session(name);
+        if (tmp == null) {
+            return def;
+        } else {
+            return (T) tmp;
+        }
+    }
+
     /**设置SESSION状态*/
     @Note("设置SESSION状态")
     public final void sessionSet(String name, Object val){
