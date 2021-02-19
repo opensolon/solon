@@ -103,7 +103,7 @@ public class CloudEventServiceImp implements CloudEventService {
         }
 
         if (clusterObserverMap.size() > 0) {
-            String cluster_hostname = WaterProps.instance.getEventHostname();
+            String cluster_hostname = WaterProps.instance.getEventReceive();
             if (Utils.isEmpty(cluster_hostname)) {
                 cluster_hostname = instance.address();
             }

@@ -121,11 +121,11 @@ public class XPluginImp implements Plugin {
             }
 
             if (WaterProps.instance.getEventEnable()) {
-                String hostname = WaterProps.instance.getEventHostname();
+                String hostname = WaterProps.instance.getEventReceive();
                 if(hostname.startsWith("@")) {
                     if (CloudClient.config() != null) {
                         Config cfg = CloudClient.config().pull(Solon.cfg().appGroup(), hostname.substring(1));
-                        WaterProps.instance.setEventHostname(cfg.value());
+                        WaterProps.instance.setEventReceive(cfg.value());
                     }
                 }
 
