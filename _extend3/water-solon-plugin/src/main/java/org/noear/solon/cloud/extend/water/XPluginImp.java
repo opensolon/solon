@@ -121,10 +121,13 @@ public class XPluginImp implements Plugin {
             }
 
             if (WaterProps.instance.getEventEnable()) {
-                String hostname = WaterProps.instance.getEventReceive();
-                if(hostname.startsWith("@")) {
+                String receive = WaterProps.instance.getEventReceive();
+                if (receive != null && receive.startsWith("@")) {
                     if (CloudClient.config() != null) {
-                        Config cfg = CloudClient.config().pull(Solon.cfg().appGroup(), hostname.substring(1));
+                        Config cfg = CloudClient.config().pull(Solon.cfg().appGroup(), receive.substring(1));
+                        if (cfg == null || Utils.isEmpty(cfg.value())) {
+                            throw new IllegalArgumentException("Configuration " + receive + "does not exist");
+                        }
                         WaterProps.instance.setEventReceive(cfg.value());
                     }
                 }
