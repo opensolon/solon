@@ -5,7 +5,6 @@
 | --- | --- |
 | 外部框架适配:: | 说明 |
 | org.noear:beetlsql-solon-plugin | beetlsql 适配插件 |
-| org.noear:consul-solon-plugin | consul 适配插件 |
 | org.noear:cron4j-solon-plugin | cron4j 适配插件 |
 | org.noear:dubbo-solon-plugin | dubbo 适配插件|
 | org.noear:feign-solon-plugin | feign 适配插件|
