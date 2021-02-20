@@ -9,13 +9,6 @@
       <name>repo1 maven</name>
       <url>https://repo1.maven.org/maven2/</url>
     </mirror>
-
-    <mirror>
-      <id>aliyun-central</id>
-      <mirrorOf>central</mirrorOf>
-      <name>aliyun maven</name>
-      <url>https://maven.aliyun.com/repository/central/</url>
-    </mirror>
   </mirrors>
 
 </settings>
