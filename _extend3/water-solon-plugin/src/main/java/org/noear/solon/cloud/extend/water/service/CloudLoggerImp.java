@@ -65,6 +65,10 @@ public class CloudLoggerImp extends LoggerSimple implements  CloudLogger {
                         metainfo.get("tag3"),
                         content);
             }
+
+            if(Solon.cfg().isFilesMode() ||  Solon.cfg().isDebugMode()){
+                print0(level, metainfo, content);
+            }
         }
     }
 
