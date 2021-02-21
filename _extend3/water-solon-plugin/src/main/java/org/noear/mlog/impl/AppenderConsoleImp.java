@@ -32,7 +32,7 @@ public class AppenderConsoleImp extends AppenderSimple {
                 PrintUtil.red(levelStr);
                 break;
             }
-            case INFO: {
+            case DEBUG: {
                 PrintUtil.blue(levelStr);
                 break;
             }
