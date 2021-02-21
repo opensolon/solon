@@ -10,13 +10,13 @@ import org.noear.solon.cloud.extend.water.WaterProps;
  * @author noear
  * @since 1.2
  */
-public class LoggerImp extends LoggerSimple implements  CloudLogger {
+public class LoggerWaterImp extends LoggerSimple implements  CloudLogger {
 
-    public LoggerImp(String name) {
+    public LoggerWaterImp(String name) {
         super(name);
     }
 
-    public LoggerImp(Class<?> clz) {
+    public LoggerWaterImp(Class<?> clz) {
         super(clz);
         name = WaterProps.instance.getLogDefault();
 

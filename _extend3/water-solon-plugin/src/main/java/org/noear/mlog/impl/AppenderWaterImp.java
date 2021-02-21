@@ -1,10 +1,9 @@
 package org.noear.mlog.impl;
 
-import org.noear.mlog.AppenderSimple;
 import org.noear.mlog.Level;
-import org.noear.mlog.LoggerFactory;
 import org.noear.mlog.Metainfo;
-import org.noear.solon.Solon;
+import org.noear.solon.Utils;
+import org.noear.solon.cloud.impl.CloudAppenderSimple;
 import org.noear.water.WaterClient;
 import org.noear.water.dso.LogPipeline;
 import org.noear.water.log.LogEvent;
@@ -15,20 +14,15 @@ import org.noear.water.utils.TextUtils;
  * @author noear
  * @since 1.3
  */
-public class AppenderWaterImp extends AppenderSimple {
-    public AppenderWaterImp() {
-        String levelStr = Solon.cfg().get("solon.mlog.appender." + getName() + ".level");
-        setLevel(Level.of(levelStr, LoggerFactory.getLevel()));
-    }
-
+public class AppenderWaterImp extends CloudAppenderSimple {
     @Override
     public String getName() {
         return "water";
     }
 
     @Override
-    protected void appendDo(String name, Class<?> clz, Level level, Metainfo metainfo, Object content) {
-        if (TextUtils.isEmpty(getName())) {
+    protected void appendDo(String loggerName, Class<?> clz, Level level, Metainfo metainfo, Object content) {
+        if(Utils.isEmpty(loggerName)){
             return;
         }
 
@@ -36,7 +30,7 @@ public class AppenderWaterImp extends AppenderSimple {
 
         LogEvent log = new LogEvent();
 
-        log.logger = getName();
+        log.logger = loggerName;
         log.level = (level.code / 10);
         log.tag = metainfo.get("tag0");
         log.tag1 = metainfo.get("tag1");

@@ -67,4 +67,9 @@ public class PrintUtil {
         System.out.print(ANSI_RESET);
     }
 
+    public static void yellow(String txt) {
+        System.out.print(ANSI_YELLOW + txt);
+        System.out.print(ANSI_RESET);
+    }
+
 }

@@ -11,12 +11,12 @@ import org.noear.mlog.Logger;
 public class ILoggerFactoryImpl implements ILoggerFactory {
     @Override
     public Logger getLogger(String name) {
-        return new LoggerImp(name);
+        return new LoggerWaterImp(name);
     }
 
     @Override
     public Logger getLogger(Class<?> clz) {
-        return new LoggerImp(clz);
+        return new LoggerWaterImp(clz);
     }
 
     @Override
