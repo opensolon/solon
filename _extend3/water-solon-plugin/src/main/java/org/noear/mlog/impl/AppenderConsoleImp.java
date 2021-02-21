@@ -56,7 +56,7 @@ public class AppenderConsoleImp extends AppenderSimple {
             buf.append(" ").append(name).append("#").append(getName());
         }
 
-        buf.append(" ::");
+        buf.append(" ::\r\n");
 
         if (content instanceof String) {
             buf.append(content);
