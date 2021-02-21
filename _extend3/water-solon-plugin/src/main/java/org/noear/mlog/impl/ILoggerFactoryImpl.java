@@ -1,8 +1,8 @@
 package org.noear.mlog.impl;
 
+import org.noear.mlog.Appender;
 import org.noear.mlog.ILoggerFactory;
 import org.noear.mlog.Logger;
-import org.noear.solon.cloud.extend.water.service.CloudLoggerImp;
 
 /**
  * @author noear
@@ -11,11 +11,16 @@ import org.noear.solon.cloud.extend.water.service.CloudLoggerImp;
 public class ILoggerFactoryImpl implements ILoggerFactory {
     @Override
     public Logger getLogger(String name) {
-        return new CloudLoggerImp(name);
+        return new LoggerImp(name);
     }
 
     @Override
     public Logger getLogger(Class<?> clz) {
-        return new CloudLoggerImp(clz);
+        return new LoggerImp(clz);
+    }
+
+    @Override
+    public Appender getAppender() {
+        return AppenderProxy.getInstance();
     }
 }
