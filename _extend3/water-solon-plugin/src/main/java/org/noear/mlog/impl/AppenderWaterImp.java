@@ -2,6 +2,7 @@ package org.noear.mlog.impl;
 
 import org.noear.mlog.AppenderSimple;
 import org.noear.mlog.Level;
+import org.noear.mlog.LoggerFactory;
 import org.noear.mlog.Metainfo;
 import org.noear.solon.Solon;
 import org.noear.water.WaterClient;
@@ -17,7 +18,7 @@ import org.noear.water.utils.TextUtils;
 public class AppenderWaterImp extends AppenderSimple {
     public AppenderWaterImp() {
         String levelStr = Solon.cfg().get("solon.mlog.appender." + getName() + ".level");
-        setLevel(Level.of(levelStr, Level.INFO));
+        setLevel(Level.of(levelStr, LoggerFactory.getLevel()));
     }
 
     @Override

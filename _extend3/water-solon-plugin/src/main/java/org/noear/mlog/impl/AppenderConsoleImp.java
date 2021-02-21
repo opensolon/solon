@@ -2,6 +2,7 @@ package org.noear.mlog.impl;
 
 import org.noear.mlog.AppenderSimple;
 import org.noear.mlog.Level;
+import org.noear.mlog.LoggerFactory;
 import org.noear.mlog.Metainfo;
 import org.noear.snack.ONode;
 import org.noear.solon.Solon;
@@ -15,7 +16,7 @@ import java.util.Date;
  */
 public class AppenderConsoleImp extends AppenderSimple {
     public AppenderConsoleImp() {
-        String levelStr = Solon.cfg().get("solon.mlog.appender." + getName() + ".level");
+        String levelStr = System.getProperty("mlog.appender." + getName() + ".level");
         setLevel(Level.of(levelStr, Level.TRACE));
     }
 
