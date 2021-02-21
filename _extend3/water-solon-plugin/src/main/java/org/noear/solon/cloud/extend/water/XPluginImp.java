@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
+import org.noear.solon.cloud.CloudLogAppender;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
@@ -73,7 +74,7 @@ public class XPluginImp implements Plugin {
             CloudDiscoveryServiceImp discoveryServiceImp = null;
             CloudConfigServiceImp configServiceImp = null;
             CloudEventServiceImp eventServiceImp = null;
-            CloudLogServiceImp logServiceImp = null;
+            CloudLogAppenderImp logAppenderImp = null;
             CloudTraceServiceImp traceServiceImp = new CloudTraceServiceImp();
 
             WaterClient.localHostSet(Instance.local().address());
@@ -116,8 +117,8 @@ public class XPluginImp implements Plugin {
             }
 
             if (WaterProps.instance.getLogEnable()) {
-                logServiceImp = new CloudLogServiceImp();
-                CloudManager.register(logServiceImp);
+                logAppenderImp = new CloudLogAppenderImp();
+                CloudManager.register(logAppenderImp);
             }
 
             if (WaterProps.instance.getEventEnable()) {

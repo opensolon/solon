@@ -3,6 +3,7 @@ package org.noear.mlog.impl;
 import org.noear.mlog.Appender;
 import org.noear.mlog.ILoggerFactory;
 import org.noear.mlog.Logger;
+import org.noear.solon.cloud.impl.CloudLoggerSimple;
 
 /**
  * @author noear
@@ -11,12 +12,12 @@ import org.noear.mlog.Logger;
 public class ILoggerFactoryImpl implements ILoggerFactory {
     @Override
     public Logger getLogger(String name) {
-        return new LoggerWaterImp(name);
+        return new CloudLoggerSimple(name);
     }
 
     @Override
     public Logger getLogger(Class<?> clz) {
-        return new LoggerWaterImp(clz);
+        return new CloudLoggerSimple(clz);
     }
 
     @Override

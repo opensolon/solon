@@ -1,9 +1,11 @@
-package org.noear.mlog.impl;
+package org.noear.solon.cloud.extend.water.service;
 
 import org.noear.mlog.Level;
 import org.noear.mlog.Metainfo;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.cloud.impl.CloudAppenderSimple;
+import org.noear.solon.cloud.extend.water.WaterProps;
+import org.noear.solon.cloud.impl.CloudLogAppenderSimple;
 import org.noear.water.WaterClient;
 import org.noear.water.dso.LogPipeline;
 import org.noear.water.log.LogEvent;
@@ -14,7 +16,25 @@ import org.noear.water.utils.TextUtils;
  * @author noear
  * @since 1.3
  */
-public class AppenderWaterImp extends CloudAppenderSimple {
+public class CloudLogAppenderImp extends CloudLogAppenderSimple {
+    private String loggerNameDefault;
+
+    public CloudLogAppenderImp(){
+        super();
+
+        loggerNameDefault = WaterProps.instance.getLogDefault();
+
+        if (Utils.isEmpty(loggerNameDefault)) {
+            if (Utils.isNotEmpty(Solon.cfg().appName())) {
+                loggerNameDefault = Solon.cfg().appName() + "_log";
+            }
+        }
+
+        if (Utils.isEmpty(loggerNameDefault)) {
+            System.err.println("[WARN] Solon.cloud no default logger is configured");
+        }
+    }
+
     @Override
     public String getName() {
         return "water";
@@ -22,6 +42,10 @@ public class AppenderWaterImp extends CloudAppenderSimple {
 
     @Override
     protected void appendDo(String loggerName, Class<?> clz, Level level, Metainfo metainfo, Object content) {
+        if(clz != null){
+            loggerName = loggerNameDefault;
+        }
+
         if(Utils.isEmpty(loggerName)){
             return;
         }

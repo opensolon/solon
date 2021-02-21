@@ -1,7 +1,9 @@
 package org.noear.solon.cloud;
 
+import org.noear.mlog.impl.AppenderProxy;
 import org.noear.solon.cloud.annotation.CloudConfig;
 import org.noear.solon.cloud.annotation.CloudEvent;
+import org.noear.solon.cloud.impl.CloudLogServiceImp;
 import org.noear.solon.cloud.service.*;
 import org.noear.solon.core.util.PrintUtil;
 
@@ -35,7 +37,7 @@ public class CloudManager {
     /**
      * 云端日志服务
      */
-    private static CloudLogService logService;
+    private static CloudLogService logService = new CloudLogServiceImp();
 
     /**
      * 云端跟踪服务（链路）
@@ -112,6 +114,12 @@ public class CloudManager {
         traceService = service;
         PrintUtil.green("[Cloud] ");
         System.out.println("CloudTraceService registered from the " + service.getClass().getTypeName());
+    }
+
+    public static void register(CloudLogAppender appender){
+        AppenderProxy.getInstance().add(appender);
+        PrintUtil.green("[Cloud] ");
+        System.out.println("CloudLogAppender added from the " + appender.getClass().getTypeName());
     }
 
 

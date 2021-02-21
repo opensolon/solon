@@ -1,6 +1,5 @@
-package org.noear.solon.cloud.extend.water.service;
+package org.noear.solon.cloud.impl;
 
-import org.noear.mlog.impl.LoggerWaterImp;
 import org.noear.solon.cloud.CloudLogger;
 import org.noear.solon.cloud.service.CloudLogService;
 
@@ -11,11 +10,11 @@ import org.noear.solon.cloud.service.CloudLogService;
 public class CloudLogServiceImp implements CloudLogService {
     @Override
     public CloudLogger getLogger(String name) {
-        return new LoggerWaterImp(name);
+        return new CloudLoggerSimple(name);
     }
 
     @Override
     public CloudLogger getLogger(Class<?> clz) {
-        return new LoggerWaterImp(clz);
+        return new CloudLoggerSimple(clz);
     }
 }
