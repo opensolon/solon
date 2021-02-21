@@ -6,9 +6,7 @@ import org.noear.mlog.Level;
 import org.noear.mlog.Metainfo;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author noear
@@ -19,7 +17,11 @@ public class AppenderProxy extends AppenderSimple {
 
     public static AppenderProxy getInstance() {
         if (instance == null) {
-            instance = new AppenderProxy();
+            synchronized (AppenderProxy.class) {
+                if (instance == null) {
+                    instance = new AppenderProxy();
+                }
+            }
         }
 
         return instance;
