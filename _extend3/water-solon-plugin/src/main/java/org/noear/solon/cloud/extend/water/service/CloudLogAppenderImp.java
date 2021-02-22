@@ -19,7 +19,7 @@ import org.noear.water.utils.TextUtils;
 public class CloudLogAppenderImp extends CloudLogAppenderSimple {
     private String loggerNameDefault;
 
-    public CloudLogAppenderImp(){
+    public CloudLogAppenderImp() {
         super();
 
         loggerNameDefault = WaterProps.instance.getLogDefault();
@@ -42,11 +42,11 @@ public class CloudLogAppenderImp extends CloudLogAppenderSimple {
 
     @Override
     protected void appendDo(String loggerName, Class<?> clz, Level level, Metainfo metainfo, Object content) {
-        if(clz != null){
+        if (clz != null) {
             loggerName = loggerNameDefault;
         }
 
-        if(Utils.isEmpty(loggerName)){
+        if (Utils.isEmpty(loggerName)) {
             return;
         }
 
@@ -56,11 +56,14 @@ public class CloudLogAppenderImp extends CloudLogAppenderSimple {
 
         log.logger = loggerName;
         log.level = (level.code / 10);
-        log.tag = metainfo.get("tag0");
-        log.tag1 = metainfo.get("tag1");
-        log.tag2 = metainfo.get("tag2");
-        log.tag3 = metainfo.get("tag3");
         log.content = content;
+
+        if (metainfo != null) {
+            log.tag = metainfo.get("tag0");
+            log.tag1 = metainfo.get("tag1");
+            log.tag2 = metainfo.get("tag2");
+            log.tag3 = metainfo.get("tag3");
+        }
 
         if (clz != null) {
             if (TextUtils.isEmpty(log.tag3)) {
