@@ -14,6 +14,13 @@ public abstract class CloudLogAppenderSimple extends AppenderSimple implements C
     public CloudLogAppenderSimple() {
         String levelStr = Solon.cfg().get("solon.logging.appender." + getName() + ".level");
         setLevel(Level.of(levelStr, levelDefault()));
+
+        enable = Solon.cfg().getBool("solon.logging.appender." + getName() + ".enable", true);
+    }
+
+    private boolean enable = true;
+    protected boolean enable(){
+        return enable;
     }
 
     protected Level levelDefault() {
