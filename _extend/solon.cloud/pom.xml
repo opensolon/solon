@@ -22,7 +22,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>mlog</artifactId>
+            <artifactId>solon.logging</artifactId>
         </dependency>
 
         <dependency>

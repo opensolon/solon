@@ -5,7 +5,7 @@ import org.noear.mlog.Metainfo;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.extend.water.WaterProps;
-import org.noear.solon.cloud.impl.CloudLogAppenderSimple;
+import org.noear.solon.cloud.service.CloudLogService;
 import org.noear.water.WaterClient;
 import org.noear.water.dso.LogPipeline;
 import org.noear.water.log.LogEvent;
@@ -13,15 +13,12 @@ import org.noear.water.utils.Datetime;
 import org.noear.water.utils.TextUtils;
 
 /**
- * @author noear
- * @since 1.3
+ * @author noear 2021/2/23 created
  */
-public class CloudLogAppenderImp extends CloudLogAppenderSimple {
+public class CloudLogServiceImp implements CloudLogService {
     private String loggerNameDefault;
 
-    public CloudLogAppenderImp() {
-        super();
-
+    public CloudLogServiceImp(){
         loggerNameDefault = WaterProps.instance.getLogDefault();
 
         if (Utils.isEmpty(loggerNameDefault)) {
@@ -36,12 +33,7 @@ public class CloudLogAppenderImp extends CloudLogAppenderSimple {
     }
 
     @Override
-    public String getName() {
-        return "water";
-    }
-
-    @Override
-    protected void appendDo(String loggerName, Class<?> clz, Level level, Metainfo metainfo, Object content) {
+    public void append(String loggerName, Class<?> clz, Level level, Metainfo metainfo, Object content) {
         if (clz != null) {
             loggerName = loggerNameDefault;
         }

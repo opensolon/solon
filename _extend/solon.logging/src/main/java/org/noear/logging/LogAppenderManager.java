@@ -1,9 +1,9 @@
-package org.noear.mlog.impl;
+package org.noear.logging;
 
 import org.noear.mlog.Appender;
-import org.noear.mlog.AppenderSimple;
 import org.noear.mlog.Level;
 import org.noear.mlog.Metainfo;
+import org.noear.solon.core.util.PrintUtil;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -12,14 +12,14 @@ import java.util.Map;
  * @author noear
  * @since 1.3
  */
-public class AppenderProxy extends AppenderSimple {
-    private static AppenderProxy instance;
+public class LogAppenderManager implements Appender {
+    private static LogAppenderManager instance;
 
-    public static AppenderProxy getInstance() {
+    public static LogAppenderManager getInstance() {
         if (instance == null) {
-            synchronized (AppenderProxy.class) {
+            synchronized (LogAppenderManager.class) {
                 if (instance == null) {
-                    instance = new AppenderProxy();
+                    instance = new LogAppenderManager();
                 }
             }
         }
@@ -29,12 +29,15 @@ public class AppenderProxy extends AppenderSimple {
 
     protected Map<String,Appender> appenderMap = new LinkedHashMap<>();
 
-    public void add(Appender appender) {
+    public void register(LogAppender appender) {
         appenderMap.putIfAbsent(appender.getName(), appender);
+
+        PrintUtil.green("[Logging] ");
+        System.out.println("LogAppender register from the " + appender.getClass().getTypeName() + "#" + appender.getName());
     }
 
-    private AppenderProxy() {
-        add(new AppenderConsoleImp());
+    private LogAppenderManager() {
+        register(new LogConsoleAppender());
     }
 
 

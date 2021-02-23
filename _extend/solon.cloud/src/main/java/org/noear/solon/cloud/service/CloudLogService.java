@@ -1,20 +1,11 @@
 package org.noear.solon.cloud.service;
 
-import org.noear.solon.cloud.CloudLogger;
+import org.noear.mlog.Level;
+import org.noear.mlog.Metainfo;
 
 /**
- * 云端日志服务
- *
- * @author noear
- * @since 1.2
+ * @author noear 2021/2/23 created
  */
 public interface CloudLogService {
-    /**
-     * 获取日志器
-     * */
-    CloudLogger getLogger(String name);
-    /**
-     * 获取日志器
-     * */
-    CloudLogger getLogger(Class<?> clz);
+    void append(String loggerName, Class<?> clz, Level level, Metainfo metainfo, Object content);
 }

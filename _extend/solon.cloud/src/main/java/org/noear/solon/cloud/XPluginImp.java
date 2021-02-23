@@ -1,9 +1,11 @@
 package org.noear.solon.cloud;
 
+import org.noear.logging.LogAppenderManager;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.impl.CloudLoadBalanceFactory;
+import org.noear.solon.cloud.impl.CloudLogAppender;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
@@ -68,6 +70,10 @@ public class XPluginImp implements Plugin {
 
             //设置负载工厂
             Bridge.upstreamFactorySet(CloudLoadBalanceFactory.instance);
+        }
+
+        if(CloudClient.log() != null){
+            LogAppenderManager.getInstance().register(new CloudLogAppender());
         }
     }
 
