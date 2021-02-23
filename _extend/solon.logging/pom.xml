@@ -29,7 +29,8 @@
             <groupId>org.noear</groupId>
             <artifactId>solon.extend.properties.yaml</artifactId>
         </dependency>
-    </dependencies>
 
+
+    </dependencies>
 
 </project>
