@@ -1,12 +1,10 @@
 package org.noear.solon.cloud.extend.water.integration.msg;
 
+import org.noear.mlog.Logger;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
-import org.noear.solon.cloud.CloudLogger;
 import org.noear.solon.cloud.extend.water.service.CloudDiscoveryServiceImp;
-import org.noear.solon.cloud.impl.CloudLoadBalance;
-import org.noear.solon.cloud.impl.CloudLoadBalanceFactory;
 import org.noear.solon.cloud.model.Event;
 import org.noear.water.WW;
 import org.noear.weed.WeedConfig;
@@ -17,7 +15,7 @@ import org.noear.weed.cache.ICacheServiceEx;
  * @since 1.2
  */
 public class HandlerCacheUpdate implements CloudEventHandler {
-    static CloudLogger logger = CloudLogger.get(WW.water_log_upstream);
+    static Logger logger = Logger.get(WW.water_log_upstream);
 
     CloudDiscoveryServiceImp discoveryService;
     public HandlerCacheUpdate(CloudDiscoveryServiceImp discoveryService){
