@@ -101,9 +101,9 @@ public class Solon {
 
         RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
         if (rb == null) {
-            PrintUtil.blueln("solon.App:: End loading @" + global.elapsedTimes() + "ms");
+            PrintUtil.blueln("solon.App:: End loading elapsed=" + global.elapsedTimes() + "ms");
         } else {
-            PrintUtil.blueln("solon.App:: End loading @" + global.elapsedTimes() + "ms pid=" + rb.getName());
+            PrintUtil.blueln("solon.App:: End loading elapsed=" + global.elapsedTimes() + "ms pid=" + rb.getName());
         }
         return global;
     }
