@@ -19,6 +19,7 @@
         <java.version>1.8</java.version>
 
         <solon.ver>1.3.8</solon.ver>
+        <nami.ver>1.3.8</nami.ver>
         <mlog.ver>1.0.2</mlog.ver>
 
         <snack3.ver>3.1.14</snack3.ver>
@@ -387,86 +388,86 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami</artifactId>
-                <version>${solon.ver}</version>
+                <version>${nami.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.channel.http.okhttp</artifactId>
-                <version>${solon.ver}</version>
+                <version>${nami.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.channel.http.hutool</artifactId>
-                <version>${solon.ver}</version>
+                <version>${nami.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.channel.socketd</artifactId>
-                <version>${solon.ver}</version>
+                <version>${nami.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.channel.socketd.jdksocket</artifactId>
-                <version>${solon.ver}</version>
+                <version>${nami.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.channel.socketd.netty</artifactId>
-                <version>${solon.ver}</version>
+                <version>${nami.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.channel.socketd.rsocket</artifactId>
-                <version>${solon.ver}</version>
+                <version>${nami.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.channel.socketd.smartsocket</artifactId>
-                <version>${solon.ver}</version>
+                <version>${nami.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.channel.socketd.websocket</artifactId>
-                <version>${solon.ver}</version>
+                <version>${nami.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.coder.fastjson</artifactId>
-                <version>${solon.ver}</version>
+                <version>${nami.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.coder.snack3</artifactId>
-                <version>${solon.ver}</version>
+                <version>${nami.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.coder.jackson</artifactId>
-                <version>${solon.ver}</version>
+                <version>${nami.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.coder.hessian</artifactId>
-                <version>${solon.ver}</version>
+                <version>${nami.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami.coder.protostuff</artifactId>
-                <version>${solon.ver}</version>
+                <version>${nami.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nami-springboot-starter</artifactId>
-                <version>${solon.ver}</version>
+                <version>${nami.ver}</version>
             </dependency>
 
             <dependency>
@@ -1031,25 +1032,6 @@
 
         <module>../_extend/solon.cloud</module>
 
-
-        <module>../nami</module>
-
-        <module>../_extend/nami.channel.http.okhttp</module>
-        <module>../_extend/nami.channel.http.hutool</module>
-        <module>../_extend/nami.channel.socketd</module>
-        <module>../_extend/nami.channel.socketd.jdksocket</module>
-        <module>../_extend/nami.channel.socketd.netty</module>
-        <module>../_extend/nami.channel.socketd.rsocket</module>
-        <module>../_extend/nami.channel.socketd.smartsocket</module>
-        <module>../_extend/nami.channel.socketd.websocket</module>
-        <module>../_extend/nami.coder.fastjson</module>
-        <module>../_extend/nami.coder.snack3</module>
-        <module>../_extend/nami.coder.hessian</module>
-        <module>../_extend/nami.coder.jackson</module>
-        <module>../_extend/nami.coder.protostuff</module>
-
-
-
         <module>../_extend/solon-beetl-web</module>
         <module>../_extend/solon-lib</module>
         <module>../_extend/solon-api</module>
@@ -1074,9 +1056,6 @@
         <module>../_extend2/quartz-solon-plugin</module>
 
         <module>../_extend2/solon-springboot-starter</module>
-
-        <module>../_extend2/nami-springboot-starter</module>
-
 
 
         <module>../_extend3/consul-solon-plugin</module>
