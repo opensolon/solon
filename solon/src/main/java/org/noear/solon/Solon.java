@@ -129,13 +129,11 @@ public class Solon {
 
         String hint = "(1.prestop 2.delay 3.stop)";
 
-        PrintUtil.red("[Security to stop] ");
-        System.out.println("begin..."+hint);
+        PrintUtil.error("Security to stop", "begin..."+hint);
 
         //1.预停止
         Solon.cfg().plugs().forEach(p -> p.prestop());
-        PrintUtil.red("[Security to stop] ");
-        System.out.println("1 completed "+hint);
+        PrintUtil.error("Security to stop", "1 completed "+hint);
 
         //2.延时
         if (delay > 0) {
@@ -144,15 +142,13 @@ public class Solon {
             } catch (InterruptedException ex) {
 
             }
-            PrintUtil.red("[Security to stop] ");
-            System.out.println("2 completed "+hint);
+            PrintUtil.error("Security to stop","2 completed "+hint);
         }
 
         //3.停目
         Solon.cfg().plugs().forEach(p -> p.stop());
 
-        PrintUtil.red("[Security to stop] ");
-        System.out.println("3 completed "+hint);
+        PrintUtil.error("Security to stop", "3 completed "+hint);
 
         //4.直接非正常退出
         if(exit) {

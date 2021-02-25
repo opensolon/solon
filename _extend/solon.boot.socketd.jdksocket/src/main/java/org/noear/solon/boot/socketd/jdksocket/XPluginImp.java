@@ -6,6 +6,7 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.Signal;
 import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
+import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
 
 public class XPluginImp implements Plugin {
@@ -26,7 +27,7 @@ public class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        System.out.println("solon.Server:main: java.net.ServerSocket(jdksocket-socketd)");
+        PrintUtil.info("solon.Server:main: java.net.ServerSocket(jdksocket-socketd)");
 
         String _name = app.cfg().get("server.socket.name");
         int _port = app.cfg().getInt("server.socket.port", 0);
@@ -43,8 +44,8 @@ public class XPluginImp implements Plugin {
 
             long time_end = System.currentTimeMillis();
 
-            System.out.println("solon.Connector:main: jdksocket-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
-            System.out.println("solon.Server:main: jdksocket-socketd: Started @" + (time_end - time_start) + "ms");
+            PrintUtil.info("solon.Connector:main: jdksocket-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
+            PrintUtil.info("solon.Server:main: jdksocket-socketd: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -58,6 +59,6 @@ public class XPluginImp implements Plugin {
 
         _server.stop();
         _server = null;
-        System.out.println("solon.Server:main: jdksocket-socketd: Has Stopped " + solon_boot_ver());
+        PrintUtil.info("solon.Server:main: jdksocket-socketd: Has Stopped " + solon_boot_ver());
     }
 }

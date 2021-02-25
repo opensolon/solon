@@ -4,6 +4,7 @@ package org.noear.solon.boot.socketd.rsocket;
 import io.rsocket.core.RSocketServer;
 import io.rsocket.transport.netty.server.CloseableChannel;
 import io.rsocket.transport.netty.server.TcpServerTransport;
+import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.client.rsocket.RsAcceptor;
 
 import java.io.IOException;
@@ -27,7 +28,7 @@ class RsServer {
                 .bind(TcpServerTransport.create("localhost", port))
                 .block();
 
-        System.out.println("Server started, waiting for customer connection...");
+        PrintUtil.info("Server started, waiting for customer connection...");
 
     }
 

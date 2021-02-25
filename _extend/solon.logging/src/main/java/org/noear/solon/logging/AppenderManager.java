@@ -32,8 +32,7 @@ public class AppenderManager implements Appender {
     public void register(Appender appender) {
         appenderMap.putIfAbsent(appender.getName(), appender);
 
-        PrintUtil.green("[Logging] ");
-        System.out.println("LogAppender registered from the " + appender.getClass().getTypeName() + "#" + appender.getName());
+        PrintUtil.info("Logging","LogAppender registered from the " + appender.getClass().getTypeName() + "#" + appender.getName());
     }
 
     private AppenderManager() {

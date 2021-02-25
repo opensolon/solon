@@ -12,6 +12,7 @@ import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.event.EventListener;
+import org.noear.solon.core.util.PrintUtil;
 
 @Configuration
 public class SqlHelperMybatisAutoConfiguration implements EventListener<org.apache.ibatis.session.Configuration> {
@@ -45,7 +46,7 @@ public class SqlHelperMybatisAutoConfiguration implements EventListener<org.apac
             return;
         }
 
-        System.out.println("Start to customize mybatis configuration with mybatis-sqlhelper-solon-plugin");
+        PrintUtil.info("Start to customize mybatis configuration with mybatis-sqlhelper-solon-plugin");
         configuration.setDefaultScriptingLanguage(CustomScriptLanguageDriver.class);
 
         SqlHelperMybatisPlugin plugin = new SqlHelperMybatisPlugin();
@@ -53,8 +54,8 @@ public class SqlHelperMybatisAutoConfiguration implements EventListener<org.apac
         plugin.setInstrumentorConfig(sqlHelperMybatisProperties.getInstrumentor());
         plugin.init();
 
-        System.out.println(String.format("Add interceptor {} to mybatis configuration", plugin));
-        System.out.println(String.format("The properties of the mybatis plugin [{}] is: {}", Reflects.getFQNClassName(SqlHelperMybatisPlugin.class), sqlHelperMybatisProperties));
+        PrintUtil.info(String.format("Add interceptor {} to mybatis configuration", plugin));
+        PrintUtil.info(String.format("The properties of the mybatis plugin [{}] is: {}", Reflects.getFQNClassName(SqlHelperMybatisPlugin.class), sqlHelperMybatisProperties));
         configuration.addInterceptor(plugin);
     }
 }

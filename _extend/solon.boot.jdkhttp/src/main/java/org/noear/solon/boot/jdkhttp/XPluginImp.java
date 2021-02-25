@@ -8,6 +8,7 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.Signal;
 import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
+import org.noear.solon.core.util.PrintUtil;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
@@ -35,7 +36,7 @@ public final class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        System.out.println("solon.Server:main: Sun.net.HttpServer(jdkhttp)");
+        PrintUtil.info("solon.Server:main: Sun.net.HttpServer(jdkhttp)");
 
         try {
             _server = HttpServer.create(new InetSocketAddress(_port), 0);
@@ -50,8 +51,8 @@ public final class XPluginImp implements Plugin {
 
             long time_end = System.currentTimeMillis();
 
-            System.out.println("solon.Connector:main: jdkhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + _port + "}");
-            System.out.println("solon.Server:main: jdkhttp: Started @" + (time_end - time_start) + "ms");
+            PrintUtil.info("solon.Connector:main: jdkhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + _port + "}");
+            PrintUtil.info("solon.Server:main: jdkhttp: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -65,6 +66,6 @@ public final class XPluginImp implements Plugin {
 
         _server.stop(0);
         _server = null;
-        System.out.println("solon.Server:main: jdkhttp: Has Stopped " + solon_boot_ver());
+        PrintUtil.info("solon.Server:main: jdkhttp: Has Stopped " + solon_boot_ver());
     }
 }

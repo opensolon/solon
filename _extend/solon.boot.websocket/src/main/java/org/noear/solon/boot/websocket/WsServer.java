@@ -7,6 +7,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.ListenerProxy;
 import org.noear.solon.socketd.ProtocolManager;
 
@@ -21,7 +22,7 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onStart() {
-        System.out.println("Solon.Server:Websocket onStart...");
+        PrintUtil.info("Solon.Server:Websocket onStart...");
     }
 
     @Override

@@ -2,6 +2,7 @@ package org.noear.solon.boot.socketd.jdksocket;
 
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.ListenerProxy;
 import org.noear.solon.socketd.client.jdksocket.BioReceiver;
 import org.noear.solon.socketd.client.jdksocket.BioSocketSession;
@@ -29,7 +30,7 @@ class BioServer {
     private void start0(int port) throws IOException {
         server = new ServerSocket(port);
 
-        System.out.println("Server started, waiting for customer connection...");
+        PrintUtil.info("Server started, waiting for customer connection...");
 
         while (true) {
             Socket socket = server.accept();

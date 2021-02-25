@@ -11,6 +11,7 @@ import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
 import org.smartboot.http.HttpBootstrap;
 
@@ -50,7 +51,7 @@ public final class XPluginImp implements Plugin {
             SessionManager.register(new _SessionManagerImpl());
         }
 
-        System.out.println("solon.Server:main: SmartHttpServer 1.0.21(smarthttp)");
+        PrintUtil.info("solon.Server:main: SmartHttpServer 1.0.21(smarthttp)");
 
         try {
 
@@ -67,9 +68,9 @@ public final class XPluginImp implements Plugin {
 
             String connectorInfo = "solon.Connector:main: smarthttp: Started ServerConnector@{HTTP/1.1,[http/1.1]";
             if (app.enableWebSocket()) {
-                System.out.println(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
+                PrintUtil.info(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
             } else {
-                System.out.println(connectorInfo + "}{0.0.0.0:" + _port + "}");
+                PrintUtil.info(connectorInfo + "}{0.0.0.0:" + _port + "}");
             }
 
             System.out.println("solon.Server:main: smarthttp: Started @" + (time_end - time_start) + "ms");

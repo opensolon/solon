@@ -6,6 +6,7 @@ import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.MessageFlag;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.core.util.PrintUtil;
 
 import java.io.IOException;
 import java.util.Map;
@@ -96,7 +97,7 @@ public class ListenerProxy implements Listener {
     private void onMessage0(Session session, Message message) {
         try {
             if (Solon.cfg().isFilesMode() || Solon.cfg().isDebugMode()) {
-                System.out.println("Listener proxy receive: " + message);
+                PrintUtil.info("Listener proxy receive: " + message);
             }
 
             //路由监听模式（起到过滤器作用）

@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.util.PrintUtil;
 
 public class XPluginImp implements Plugin {
     @Override
@@ -20,6 +21,6 @@ public class XPluginImp implements Plugin {
 
         Bridge.sessionStateFactorySet(LocalSessionStateFactory.getInstance());
 
-        System.out.println("solon:: Local session state plugin is loaded");
+        PrintUtil.info("solon:: Local session state plugin is loaded");
     }
 }
