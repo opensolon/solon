@@ -1,5 +1,6 @@
 package webapp;
 
+import org.noear.mlog.Logger;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Import;
@@ -12,6 +13,8 @@ import webapp.demo6_aop.TestImport;
 //@EnableCron4j
 //@EnableQuartz
 public class TestApp   {
+
+    static Logger logger = Logger.get(TestApp.class);
 
     public static void main(String[] args) throws Exception {
 
@@ -53,6 +56,7 @@ public class TestApp   {
 //            }
 //        });
 
+        logger.debug("测试");
 
 
         //socket server

@@ -13,6 +13,11 @@ paasword: 1234
 
 solon.drift: 1
 
+solon.logging.appender:
+  test:
+    class: webapp.demox_mlog.TestAppender
+    level: TRACE
+
 solon.socketd:
   readBufferSize: "512"
   writeBufferSize: "128"

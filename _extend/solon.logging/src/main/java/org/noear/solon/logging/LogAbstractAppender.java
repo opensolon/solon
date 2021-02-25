@@ -38,7 +38,7 @@ public abstract class LogAbstractAppender extends AppenderSimple implements LogA
 
     @Override
     public void append(String loggerName, Class<?> clz, Level level, Metainfo metainfo, Object content) {
-        if (this.level.code > level.code) {
+        if (enable == false || this.level.code > level.code) {
             return;
         }
 
