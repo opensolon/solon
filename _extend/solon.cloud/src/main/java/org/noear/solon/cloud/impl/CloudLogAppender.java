@@ -1,6 +1,6 @@
 package org.noear.solon.cloud.impl;
 
-import org.noear.logging.LogAbstractAppender;
+import org.noear.solon.logging.LogAbstractAppender;
 import org.noear.mlog.Level;
 import org.noear.mlog.Metainfo;
 import org.noear.solon.cloud.CloudClient;

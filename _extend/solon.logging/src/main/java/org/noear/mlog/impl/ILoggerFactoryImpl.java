@@ -1,6 +1,6 @@
 package org.noear.mlog.impl;
 
-import org.noear.logging.AppenderManager;
+import org.noear.solon.logging.AppenderManager;
 import org.noear.mlog.Appender;
 import org.noear.mlog.ILoggerFactory;
 import org.noear.mlog.Logger;

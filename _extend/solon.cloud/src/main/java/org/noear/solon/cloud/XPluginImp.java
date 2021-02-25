@@ -1,6 +1,6 @@
 package org.noear.solon.cloud;
 
-import org.noear.logging.AppenderManager;
+import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
