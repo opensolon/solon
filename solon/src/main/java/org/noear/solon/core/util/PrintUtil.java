@@ -74,11 +74,9 @@ public class PrintUtil {
         System.out.print(ANSI_RESET);
     }
 
-    public static void debug(Object content) {
-        if (Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode()) {
-            blue("[DEBUG] ");
-            System.out.println(content);
-        }
+    public static void debug(String tag, Object content) {
+        blue("[" + tag + "] ");
+        System.out.println(content);
     }
 
     public static void info(Object content) {
@@ -91,12 +89,13 @@ public class PrintUtil {
     }
 
     public static void wran(Object content) {
-        yellow("[WRAN] ");
+        yellow("[INFO] ");
         System.out.println(content);
     }
 
     public static void error(Object content) {
-        error("ERROR", content);
+        red("[INFO] ");
+        System.out.println(content);
     }
 
     public static void error(String tag, Object content) {

@@ -33,6 +33,6 @@ public class XPluginImp implements Plugin {
 
         Bridge.sessionStateFactorySet(RedisSessionStateFactory.getInstance());
 
-        PrintUtil.info("solon:: Redis session state plugin is loaded");
+        PrintUtil.info("Session","solon: Redis session state plugin is loaded");
     }
 }

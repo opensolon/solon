@@ -8,6 +8,7 @@ import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.message.Message;
 
+import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
 import org.noear.solon.socketd.SocketProps;
 import org.noear.solon.socketd.client.smartsocket.AioProtocol;
@@ -32,7 +33,7 @@ public final class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        System.out.println("solon.Server:main: SmartSocket 1.5.4(smartsocket-socketd)");
+        PrintUtil.info("solon.Server:main: SmartSocket 1.5.4(smartsocket-socketd)");
 
 
         String _name = app.cfg().get("server.socket.name");
@@ -57,8 +58,8 @@ public final class XPluginImp implements Plugin {
 
             long time_end = System.currentTimeMillis();
 
-            System.out.println("solon.Connector:main: smartsocket-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
-            System.out.println("solon.Server:main: smartsocket-socketd: Started @" + (time_end - time_start) + "ms");
+            PrintUtil.info("solon.Connector:main: smartsocket-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
+            PrintUtil.info("solon.Server:main: smartsocket-socketd: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -70,7 +71,7 @@ public final class XPluginImp implements Plugin {
             server.shutdown();
             server = null;
 
-            System.out.println("solon.Server:main: smartsocket-socketd: Has Stopped " + solon_boot_ver());
+            PrintUtil.info("solon.Server:main: smartsocket-socketd: Has Stopped " + solon_boot_ver());
         }
     }
 }

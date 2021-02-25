@@ -5,6 +5,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.boot.jetty.http.XFormContentFilter;
 import org.noear.solon.core.*;
+import org.noear.solon.core.util.PrintUtil;
 
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebListener;
@@ -53,7 +54,7 @@ public final class XPluginImp implements Plugin {
         }
 
         long time_start = System.currentTimeMillis();
-        System.out.println("solon.Server:main: Jetty 9.4(jetty)");
+        PrintUtil.info("solon.Server:main: Jetty 9.4(jetty)");
 
         _server.start(app);
         app.signalAdd(new SignalSim(_name, _port, "http", SignalType.HTTP));
@@ -67,7 +68,7 @@ public final class XPluginImp implements Plugin {
             System.out.println(connectorInfo + "}{0.0.0.0:" + _port + "}");
         }
 
-        System.out.println("solon.Server:main: jetty: Started @" + (time_end - time_start) + "ms");
+        PrintUtil.info("solon.Server:main: jetty: Started @" + (time_end - time_start) + "ms");
 
 
         app.before("**", new XFormContentFilter());
@@ -79,7 +80,7 @@ public final class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            System.out.println("solon.Server:main: jetty: Has Stopped " + solon_boot_ver());
+            PrintUtil.info("solon.Server:main: jetty: Has Stopped " + solon_boot_ver());
         }
     }
 }

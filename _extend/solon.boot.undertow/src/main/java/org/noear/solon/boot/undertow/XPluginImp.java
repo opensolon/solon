@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
+import org.noear.solon.core.util.PrintUtil;
 
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebListener;
@@ -42,7 +43,7 @@ public final class XPluginImp implements Plugin {
         }
 
         long time_start = System.currentTimeMillis();
-        System.out.println("solon.Server:main: Undertow 2.1.09(undertow)");
+        PrintUtil.info("solon.Server:main: Undertow 2.1.09(undertow)");
 
         Class<?> jspClz = Utils.loadClass("io.undertow.jsp.JspServletBuilder");
 
@@ -65,7 +66,7 @@ public final class XPluginImp implements Plugin {
 
         app.signalAdd(new SignalSim(_name, _port, "http", SignalType.HTTP));
 
-        System.out.println("solon.Server:main: undertow: Started @" + (time_end - time_start) + "ms");
+        PrintUtil.info("solon.Server:main: undertow: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -74,7 +75,7 @@ public final class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            System.out.println("solon.Server:main: undertow: Has Stopped " + solon_boot_ver());
+            PrintUtil.info("solon.Server:main: undertow: Has Stopped " + solon_boot_ver());
         }
     }
 }

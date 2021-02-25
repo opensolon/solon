@@ -11,6 +11,7 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.Signal;
 import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
+import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
 import org.noear.solon.socketd.client.netty.NioChannelInitializer;
 
@@ -38,7 +39,7 @@ public class XPluginImp implements Plugin {
     private void start0(SolonApp app) {
         long time_start = System.currentTimeMillis();
 
-        System.out.println("solon.Server:main: java.net.ServerSocket(netty-socketd)");
+        PrintUtil.info("solon.Server:main: java.net.ServerSocket(netty-socketd)");
 
         String _name = app.cfg().get("server.socket.name");
         int _port = app.cfg().getInt("server.socket.port", 0);
@@ -64,8 +65,8 @@ public class XPluginImp implements Plugin {
 
             long time_end = System.currentTimeMillis();
 
-            System.out.println("solon.Connector:main: netty-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
-            System.out.println("solon.Server:main: netty-socketd: Started @" + (time_end - time_start) + "ms");
+            PrintUtil.info("solon.Connector:main: netty-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
+            PrintUtil.info("solon.Server:main: netty-socketd: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
 
             bossGroup.shutdownGracefully();
@@ -85,6 +86,6 @@ public class XPluginImp implements Plugin {
         _server.channel().close();
         _server = null;
 
-        System.out.println("solon.Server:main: netty-socketd: Has Stopped " + solon_boot_ver());
+        PrintUtil.info("solon.Server:main: netty-socketd: Has Stopped " + solon_boot_ver());
     }
 }

@@ -57,8 +57,8 @@ public class RenderManager implements Render {
         _lib.put(render.getClass().getSimpleName(), render);
         _lib.put(render.getClass().getName(), render);
 
-        PrintUtil.blueln("solon:: view load:" + render.getClass().getSimpleName());
-        PrintUtil.blueln("solon:: view load:" + render.getClass().getName());
+        PrintUtil.debug("View","solon.view: load:" + render.getClass().getSimpleName());
+        PrintUtil.debug("View","solon.view: load:" + render.getClass().getName());
     }
 
     /**
@@ -71,7 +71,7 @@ public class RenderManager implements Render {
         //suffix=.ftl
         _mapping.put(suffix, render);
 
-        PrintUtil.blueln("solon:: view mapping: " + suffix + "=" + render.getClass().getSimpleName());
+        PrintUtil.debug("View","solon.view: mapping: " + suffix + "=" + render.getClass().getSimpleName());
     }
 
     /**
@@ -83,14 +83,14 @@ public class RenderManager implements Render {
     public static void mapping(String suffix, String clzName) {
         Render render = _lib.get(clzName);
         if (render == null) {
-            PrintUtil.redln("solon:: " + clzName + " not exists!");
+            PrintUtil.wran("solon: " + clzName + " not exists!");
             return;
             //throw new RuntimeException(classSimpleName + " not exists!");
         }
 
         _mapping.put(suffix, render);
 
-        PrintUtil.blueln("solon:: view mapping: " + suffix + "=" + clzName);
+        PrintUtil.debug("View","solon.view: mapping: " + suffix + "=" + clzName);
     }
 
     /**

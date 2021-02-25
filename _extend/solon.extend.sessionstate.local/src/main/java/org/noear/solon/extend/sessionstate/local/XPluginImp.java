@@ -21,6 +21,6 @@ public class XPluginImp implements Plugin {
 
         Bridge.sessionStateFactorySet(LocalSessionStateFactory.getInstance());
 
-        PrintUtil.info("solon:: Local session state plugin is loaded");
+        PrintUtil.info("Session","solon: Local session state plugin is loaded");
     }
 }
