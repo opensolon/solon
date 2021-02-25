@@ -12,14 +12,14 @@ import java.util.Map;
  * @author noear
  * @since 1.3
  */
-public class LogAppenderManager implements Appender {
-    private static LogAppenderManager instance;
+public class AppenderManager implements Appender {
+    private static AppenderManager instance;
 
-    public static LogAppenderManager getInstance() {
+    public static AppenderManager getInstance() {
         if (instance == null) {
-            synchronized (LogAppenderManager.class) {
+            synchronized (AppenderManager.class) {
                 if (instance == null) {
-                    instance = new LogAppenderManager();
+                    instance = new AppenderManager();
                 }
             }
         }
@@ -29,14 +29,14 @@ public class LogAppenderManager implements Appender {
 
     protected Map<String,Appender> appenderMap = new LinkedHashMap<>();
 
-    public void register(LogAppender appender) {
+    public void register(Appender appender) {
         appenderMap.putIfAbsent(appender.getName(), appender);
 
         PrintUtil.green("[Logging] ");
         System.out.println("LogAppender registered from the " + appender.getClass().getTypeName() + "#" + appender.getName());
     }
 
-    private LogAppenderManager() {
+    private AppenderManager() {
         register(new LogConsoleAppender());
     }
 

@@ -1,6 +1,6 @@
 package org.noear.mlog.impl;
 
-import org.noear.logging.LogAppenderManager;
+import org.noear.logging.AppenderManager;
 import org.noear.mlog.Appender;
 import org.noear.mlog.ILoggerFactory;
 import org.noear.mlog.Logger;
@@ -23,6 +23,6 @@ public class ILoggerFactoryImpl implements ILoggerFactory {
 
     @Override
     public Appender getAppender() {
-        return LogAppenderManager.getInstance();
+        return AppenderManager.getInstance();
     }
 }

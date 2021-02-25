@@ -1,6 +1,6 @@
 package org.noear.solon.cloud;
 
-import org.noear.logging.LogAppenderManager;
+import org.noear.logging.AppenderManager;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
@@ -73,7 +73,7 @@ public class XPluginImp implements Plugin {
         }
 
         if(CloudClient.log() != null){
-            LogAppenderManager.getInstance().register(new CloudLogAppender());
+            AppenderManager.getInstance().register(new CloudLogAppender());
         }
     }
 
