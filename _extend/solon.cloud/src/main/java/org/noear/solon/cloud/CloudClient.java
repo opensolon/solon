@@ -77,8 +77,7 @@ public class CloudClient {
             for (Signal signal : Solon.global().signals()) {
                 Instance instance = Instance.localNew(signal);
                 CloudClient.discovery().register(Solon.cfg().appGroup(), instance);
-                PrintUtil.green("[Cloud] ");
-                System.out.println("Service registered " + instance.service() + "@" + instance.uri());
+                PrintUtil.info("Cloud","Service registered " + instance.service() + "@" + instance.uri());
             }
         });
     }

@@ -65,8 +65,7 @@ public class CloudManager {
      */
     public static void register(CloudConfigService service) {
         configService = service;
-        PrintUtil.green("[Cloud] ");
-        System.out.println("CloudConfigService registered from the " + service.getClass().getTypeName());
+        PrintUtil.info("Cloud","CloudConfigService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -74,8 +73,7 @@ public class CloudManager {
      */
     public static void register(CloudDiscoveryService service) {
         discoveryService = service;
-        PrintUtil.green("[Cloud] ");
-        System.out.println("CloudDiscoveryService registered from the " + service.getClass().getTypeName());
+        PrintUtil.info("Cloud","CloudDiscoveryService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -83,8 +81,7 @@ public class CloudManager {
      */
     public static void register(CloudEventService service) {
         eventService = service;
-        PrintUtil.green("[Cloud] ");
-        System.out.println("CloudEventService registered from the " + service.getClass().getTypeName());
+        PrintUtil.info("Cloud","CloudEventService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -92,8 +89,7 @@ public class CloudManager {
      */
     public static void register(CloudLockService service) {
         lockService = service;
-        PrintUtil.green("[Cloud] ");
-        System.out.println("CloudLockService registered from the " + service.getClass().getTypeName());
+        PrintUtil.info("Cloud","CloudLockService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -101,8 +97,7 @@ public class CloudManager {
      */
     public static void register(CloudLogService service) {
         logService = service;
-        PrintUtil.green("[Cloud] ");
-        System.out.println("CloudLogService registered from the " + service.getClass().getTypeName());
+        PrintUtil.info("Cloud","CloudLogService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -110,8 +105,7 @@ public class CloudManager {
      */
     public static void register(CloudTraceService service) {
         traceService = service;
-        PrintUtil.green("[Cloud] ");
-        System.out.println("CloudTraceService registered from the " + service.getClass().getTypeName());
+        PrintUtil.info("Cloud","CloudTraceService registered from the " + service.getClass().getTypeName());
     }
 
     protected static CloudConfigService configService() {

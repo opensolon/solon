@@ -85,8 +85,7 @@ public class XPluginImp implements Plugin {
                     Instance instance = Instance.localNew(signal);
 
                     CloudClient.discovery().deregister(Solon.cfg().appGroup(), instance);
-                    PrintUtil.green("[Cloud] ");
-                    System.out.println("Service deregistered " + instance.service() + "@" + instance.uri());
+                    PrintUtil.info("Cloud","Service deregistered " + instance.service() + "@" + instance.uri());
                 }
             }
         }

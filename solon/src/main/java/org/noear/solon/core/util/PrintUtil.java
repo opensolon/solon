@@ -75,31 +75,31 @@ public class PrintUtil {
     }
 
     public static void debug(String tag, Object content) {
-        blue("[" + tag + "] ");
+        blue("[Solon] [" + tag + "] ");
         System.out.println(content);
     }
 
     public static void info(Object content) {
-        System.out.println("[INFO] " + content);
+        System.out.println("[Solon] " + content);
     }
 
     public static void info(String tag, Object content) {
-        green("[" + tag + "] ");
+        green("[Solon] [" + tag + "] ");
         System.out.println(content);
     }
 
     public static void wran(Object content) {
-        yellow("[INFO] ");
+        yellow("[Solon] ");
         System.out.println(content);
     }
 
     public static void error(Object content) {
-        red("[INFO] ");
+        red("[Solon] ");
         System.out.println(content);
     }
 
     public static void error(String tag, Object content) {
-        red("[" + tag + "] ");
+        red("[Solon] [" + tag + "] ");
         System.out.println(content);
     }
 }
