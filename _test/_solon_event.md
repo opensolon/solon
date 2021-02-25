@@ -5,8 +5,8 @@
 * Throwable
 
 ```java
-@XConfiguration
-public class ServerCustom implements XEventListener<Undertow.Builder>{
+@Configuration
+public class ServerCustom implements EventListener<Undertow.Builder>{
     public void onEvent(Undertow.Builder sc){
         sc.setServerOption(UndertowOptions.ALWAYS_SET_KEEP_ALIVE, false);
     }
