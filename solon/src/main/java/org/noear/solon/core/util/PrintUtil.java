@@ -1,7 +1,5 @@
 package org.noear.solon.core.util;
 
-import org.noear.solon.Solon;
-
 /**
  * 彩色打印小工具
  *
