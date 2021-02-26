@@ -22,15 +22,14 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>mlog</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
             <artifactId>solon.extend.properties.yaml</artifactId>
         </dependency>
 
-
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.ver}</version>
+        </dependency>
     </dependencies>
 
 </project>

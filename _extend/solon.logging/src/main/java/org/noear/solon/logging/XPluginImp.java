@@ -1,9 +1,9 @@
 package org.noear.solon.logging;
 
-import org.noear.mlog.Appender;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.logging.event.Appender;
 
 import java.util.Properties;
 

@@ -1,9 +1,9 @@
 package org.noear.solon.cloud.impl;
 
-import org.noear.mlog.Level;
-import org.noear.mlog.LogEvent;
 import org.noear.solon.logging.LogAbstractAppender;
 import org.noear.solon.cloud.CloudClient;
+import org.noear.solon.logging.event.Level;
+import org.noear.solon.logging.event.LogEvent;
 
 /**
  * @author noear 2021/2/23 created

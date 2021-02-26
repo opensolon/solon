@@ -1,8 +1,8 @@
 package org.noear.solon.logging;
 
-import org.noear.mlog.Appender;
-import org.noear.mlog.LogEvent;
 import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.logging.event.Appender;
+import org.noear.solon.logging.event.LogEvent;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

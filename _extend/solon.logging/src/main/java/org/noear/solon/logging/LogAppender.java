@@ -1,8 +1,7 @@
 package org.noear.solon.logging;
 
-import org.noear.mlog.Appender;
-import org.noear.mlog.Level;
-import org.noear.mlog.LoggerFactory;
+import org.noear.solon.logging.event.Appender;
+import org.noear.solon.logging.event.Level;
 
 /**
  * @author noear

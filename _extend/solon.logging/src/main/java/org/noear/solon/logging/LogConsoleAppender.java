@@ -1,9 +1,9 @@
 package org.noear.solon.logging;
 
-import org.noear.mlog.Level;
-import org.noear.mlog.LogEvent;
 import org.noear.snack.ONode;
 import org.noear.solon.Solon;
+import org.noear.solon.logging.event.Level;
+import org.noear.solon.logging.event.LogEvent;
 
 /**
  * @author noear
