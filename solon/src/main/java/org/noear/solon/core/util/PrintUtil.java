@@ -74,32 +74,42 @@ public class PrintUtil {
         System.out.print(ANSI_RESET);
     }
 
+    public static void debug(Object content) {
+        blue("[INFO] ");
+        System.out.println(content);
+    }
+
     public static void debug(String tag, Object content) {
-        blue("[Solon] [" + tag + "] ");
+        blue("[INFO] [" + tag + "] ");
         System.out.println(content);
     }
 
     public static void info(Object content) {
-        System.out.println("[Solon] " + content);
+        System.out.println("[INFO] " + content);
     }
 
     public static void info(String tag, Object content) {
-        green("[Solon] [" + tag + "] ");
+        green("[INFO] [" + tag + "] ");
         System.out.println(content);
     }
 
     public static void wran(Object content) {
-        yellow("[Solon] ");
+        yellow("[INFO] ");
+        System.out.println(content);
+    }
+
+    public static void wran(String tag, Object content) {
+        yellow("[INFO] [" + tag + "] ");
         System.out.println(content);
     }
 
     public static void error(Object content) {
-        red("[Solon] ");
+        red("[INFO] ");
         System.out.println(content);
     }
 
     public static void error(String tag, Object content) {
-        red("[Solon] [" + tag + "] ");
+        red("[INFO] [" + tag + "] ");
         System.out.println(content);
     }
 }
