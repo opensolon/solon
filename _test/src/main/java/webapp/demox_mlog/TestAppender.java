@@ -1,7 +1,6 @@
 package webapp.demox_mlog;
 
-import org.noear.mlog.Level;
-import org.noear.mlog.Metainfo;
+import org.noear.mlog.LogEvent;
 import org.noear.solon.logging.LogAbstractAppender;
 
 /**
@@ -15,7 +14,7 @@ public class TestAppender extends LogAbstractAppender {
 
 
     @Override
-    protected void appendDo(String loggerName, Class<?> clz, Level level, Metainfo metainfo, Object content) {
-        System.out.println("[Test] " + content);
+    protected void appendDo(LogEvent logEvent) {
+        System.out.println("[Test] " + logEvent.getContent());
     }
 }
