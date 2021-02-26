@@ -79,8 +79,8 @@ public class PrintUtil {
         System.out.println(content);
     }
 
-    public static void debug(String tag, Object content) {
-        blue("[INFO] [" + tag + "] ");
+    public static void debug(String label, Object content) {
+        blue("[" + label + "] ");
         System.out.println(content);
     }
 
@@ -88,8 +88,8 @@ public class PrintUtil {
         System.out.println("[INFO] " + content);
     }
 
-    public static void info(String tag, Object content) {
-        green("[INFO] [" + tag + "] ");
+    public static void info(String label, Object content) {
+        green("[" + label + "] ");
         System.out.println(content);
     }
 
@@ -98,8 +98,8 @@ public class PrintUtil {
         System.out.println(content);
     }
 
-    public static void wran(String tag, Object content) {
-        yellow("[INFO] [" + tag + "] ");
+    public static void wran(String label, Object content) {
+        yellow("[" + label + "] ");
         System.out.println(content);
     }
 
@@ -108,8 +108,8 @@ public class PrintUtil {
         System.out.println(content);
     }
 
-    public static void error(String tag, Object content) {
-        red("[INFO] [" + tag + "] ");
+    public static void error(String label, Object content) {
+        red("[" + label + "] ");
         System.out.println(content);
     }
 }
