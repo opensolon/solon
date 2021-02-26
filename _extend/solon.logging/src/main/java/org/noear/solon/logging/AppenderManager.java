@@ -1,8 +1,7 @@
 package org.noear.solon.logging;
 
 import org.noear.mlog.Appender;
-import org.noear.mlog.Level;
-import org.noear.mlog.Metainfo;
+import org.noear.mlog.LogEvent;
 import org.noear.solon.core.util.PrintUtil;
 
 import java.util.LinkedHashMap;
@@ -46,9 +45,10 @@ public class AppenderManager implements Appender {
     }
 
     @Override
-    public void append(String loggerName, Class<?> clz, Level level, Metainfo metainfo, Object content) {
+    public void append(LogEvent logEvent) {
         for (Appender appender : appenderMap.values()) {
-            appender.append(loggerName, clz, level, metainfo, content);
+            appender.append(logEvent);
         }
     }
+
 }

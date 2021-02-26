@@ -1,7 +1,7 @@
 package org.noear.solon.logging;
 
 import org.noear.mlog.Level;
-import org.noear.mlog.Metainfo;
+import org.noear.mlog.LogEvent;
 import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 
@@ -22,9 +22,9 @@ public class LogConsoleAppender extends LogAbstractAppender {
     }
 
     @Override
-    protected void appendDo(String loggerName, Class<?> clz, Level level, Metainfo metainfo, Object content) {
+    protected void appendDo(LogEvent logEvent) {
         if (Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode()) {
-            super.appendDo(loggerName, clz, level, metainfo, content);
+            super.appendDo(logEvent);
         }
     }
 

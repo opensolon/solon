@@ -2,7 +2,7 @@ package org.noear.solon.logging;
 
 import org.noear.mlog.AppenderSimple;
 import org.noear.mlog.Level;
-import org.noear.mlog.Metainfo;
+import org.noear.mlog.LogEvent;
 import org.noear.solon.Solon;
 
 /**
@@ -37,11 +37,11 @@ public abstract class LogAbstractAppender extends AppenderSimple implements LogA
     }
 
     @Override
-    public void append(String loggerName, Class<?> clz, Level level, Metainfo metainfo, Object content) {
+    public void append(LogEvent logEvent) {
         if (enable == false || this.level.code > level.code) {
             return;
         }
 
-        appendDo(loggerName, clz, level, metainfo, content);
+        appendDo(logEvent);
     }
 }
