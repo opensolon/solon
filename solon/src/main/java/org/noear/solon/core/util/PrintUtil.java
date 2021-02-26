@@ -27,24 +27,29 @@ public class PrintUtil {
         System.out.println(txt);
     }
 
-    public static void blackln(String txt) {
+    public static void blackln(Object txt) {
         System.out.println(ANSI_BLACK + txt);
         System.out.print(ANSI_RESET);
     }
 
-    public static void redln(String txt) {
+    public static void redln(Object txt) {
         System.out.println(ANSI_RED + txt);
         System.out.print(ANSI_RESET);
     }
 
 
-    public static void blueln(String txt) {
+    public static void blueln(Object txt) {
         System.out.println(ANSI_BLUE + txt);
         System.out.print(ANSI_RESET);
     }
 
-    public static void greenln(String txt) {
+    public static void greenln(Object txt) {
         System.out.println(ANSI_GREEN + txt);
+        System.out.print(ANSI_RESET);
+    }
+
+    public static void yellowln(Object txt) {
+        System.out.println(ANSI_YELLOW + txt);
         System.out.print(ANSI_RESET);
     }
 
@@ -75,13 +80,13 @@ public class PrintUtil {
     }
 
     public static void debug(Object content) {
-        blue("[INFO] ");
-        System.out.println(content);
+        System.out.print("[INFO] ");
+        blueln(content);
     }
 
     public static void debug(String label, Object content) {
-        blue("[INFO] [" + label + "] ");
-        System.out.println(content);
+        System.out.print("[INFO] ");
+        blueln("[" + label + "] " + content);
     }
 
     public static void info(Object content) {
@@ -89,27 +94,27 @@ public class PrintUtil {
     }
 
     public static void info(String label, Object content) {
-        green("[INFO] [" + label + "] ");
-        System.out.println(content);
+        System.out.print("[INFO] ");
+        greenln("[" + label + "] " + content);
     }
 
     public static void wran(Object content) {
-        yellow("[INFO] ");
-        System.out.println(content);
+        System.out.print("[INFO] ");
+        yellowln(content);
     }
 
     public static void wran(String label, Object content) {
-        yellow("[INFO] [" + label + "] ");
-        System.out.println(content);
+        System.out.print("[INFO] ");
+        yellowln("[" + label + "] " + content);
     }
 
     public static void error(Object content) {
-        red("[INFO] ");
-        System.out.println(content);
+        System.out.print("[INFO] ");
+        redln(content);
     }
 
     public static void error(String label, Object content) {
-        red("[INFO] [" + label + "] ");
-        System.out.println(content);
+        System.out.print("[INFO] ");
+        redln("[" + label + "] " + content);
     }
 }
