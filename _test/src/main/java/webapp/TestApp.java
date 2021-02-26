@@ -1,24 +1,25 @@
 package webapp;
 
-import org.noear.mlog.Logger;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.MethodType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import webapp.demo6_aop.TestImport;
 
 @Import(value = TestImport.class)
 //@EnableSwagger2
 //@EnableCron4j
 //@EnableQuartz
-public class TestApp   {
+public class TestApp {
 
-    static Logger logger = Logger.get(TestApp.class);
+    static Logger logger = LoggerFactory.getLogger(TestApp.class);
 
     public static void main(String[] args) throws Exception {
 
-        EventBus.subscribe(Throwable.class,(event)->{
+        EventBus.subscribe(Throwable.class, (event) -> {
             event.printStackTrace();
         });
 
@@ -83,6 +84,5 @@ public class TestApp   {
         app.after("/user/**", MethodType.HTTP, c -> {
             //可对 c.result 进行处理 //并输出
         });
-
     }
 }
