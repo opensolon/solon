@@ -1,14 +1,12 @@
 package org.noear.solon.cloud.extend.water.service;
 
-import org.noear.mlog.Level;
-import org.noear.mlog.Metainfo;
+import org.noear.mlog.LogEvent;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.extend.water.WaterProps;
 import org.noear.solon.cloud.service.CloudLogService;
 import org.noear.water.WaterClient;
 import org.noear.water.dso.LogPipeline;
-import org.noear.water.log.LogEvent;
 import org.noear.water.utils.Datetime;
 import org.noear.water.utils.TextUtils;
 
@@ -18,7 +16,7 @@ import org.noear.water.utils.TextUtils;
 public class CloudLogServiceImp implements CloudLogService {
     private String loggerNameDefault;
 
-    public CloudLogServiceImp(){
+    public CloudLogServiceImp() {
         loggerNameDefault = WaterProps.instance.getLogDefault();
 
         if (Utils.isEmpty(loggerNameDefault)) {
@@ -33,8 +31,9 @@ public class CloudLogServiceImp implements CloudLogService {
     }
 
     @Override
-    public void append(String loggerName, Class<?> clz, Level level, Metainfo metainfo, Object content) {
-        if (clz != null) {
+    public void append(LogEvent logEvent) {
+        String loggerName = logEvent.getLoggerName();
+        if (logEvent.getInitClass() != null) {
             loggerName = loggerNameDefault;
         }
 
@@ -44,22 +43,22 @@ public class CloudLogServiceImp implements CloudLogService {
 
         Datetime datetime = Datetime.Now();
 
-        LogEvent log = new LogEvent();
+        org.noear.water.log.LogEvent log = new org.noear.water.log.LogEvent();
 
         log.logger = loggerName;
-        log.level = (level.code / 10);
-        log.content = content;
+        log.level = (logEvent.getLevel().code / 10);
+        log.content = logEvent.getContent();
 
-        if (metainfo != null) {
-            log.tag = metainfo.get("tag0");
-            log.tag1 = metainfo.get("tag1");
-            log.tag2 = metainfo.get("tag2");
-            log.tag3 = metainfo.get("tag3");
+        if (logEvent.getMetainfo() != null) {
+            log.tag = logEvent.getMetainfo().get("tag0");
+            log.tag1 = logEvent.getMetainfo().get("tag1");
+            log.tag2 = logEvent.getMetainfo().get("tag2");
+            log.tag3 = logEvent.getMetainfo().get("tag3");
         }
 
-        if (clz != null) {
+        if (logEvent.getInitClass() != null) {
             if (TextUtils.isEmpty(log.tag3)) {
-                log.tag3 = clz.getSimpleName();
+                log.tag3 = logEvent.getInitClass().getSimpleName();
             }
         }
 
