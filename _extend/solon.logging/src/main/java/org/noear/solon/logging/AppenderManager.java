@@ -50,5 +50,4 @@ public class AppenderManager implements Appender {
             appender.append(logEvent);
         }
     }
-
 }

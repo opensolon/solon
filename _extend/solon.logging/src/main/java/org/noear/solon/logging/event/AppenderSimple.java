@@ -1,7 +1,7 @@
 package org.noear.solon.logging.event;
 
 import org.noear.solon.core.util.PrintUtil;
-import org.noear.solon.logging.LoggerOptions;
+import org.noear.solon.logging.LogOptions;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -20,7 +20,7 @@ public class AppenderSimple implements Appender {
 
     @Override
     public void append(LogEvent logEvent) {
-        if (LoggerOptions.getLevel().code > logEvent.getLevel().code) {
+        if (LogOptions.getLevel().code > logEvent.getLevel().code) {
             return;
         }
 

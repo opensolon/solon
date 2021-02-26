@@ -15,6 +15,6 @@ public interface LogAppender extends Appender {
     boolean getEnable();
 
     default Level getDefaultLevel() {
-        return LoggerOptions.getLevel();
+        return LogOptions.getLevel();
     }
 }
