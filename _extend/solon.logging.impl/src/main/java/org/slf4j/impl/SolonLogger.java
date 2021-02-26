@@ -2,7 +2,7 @@ package org.slf4j.impl;
 
 import org.noear.solon.Utils;
 import org.noear.solon.logging.AppenderManager;
-import org.noear.solon.logging.LoggerFactory;
+import org.noear.solon.logging.LoggerOptions;
 import org.noear.solon.logging.event.Level;
 import org.noear.solon.logging.event.LogEvent;
 import org.slf4j.Logger;
@@ -34,7 +34,7 @@ public class SolonLogger implements Logger {
 
     @Override
     public boolean isTraceEnabled() {
-        return LoggerFactory.getLevel().code <= Level.TRACE.code;
+        return LoggerOptions.getLevel().code <= Level.TRACE.code;
     }
 
     @Override
@@ -94,7 +94,7 @@ public class SolonLogger implements Logger {
 
     @Override
     public boolean isDebugEnabled() {
-        return LoggerFactory.getLevel().code <= Level.DEBUG.code;
+        return LoggerOptions.getLevel().code <= Level.DEBUG.code;
     }
 
     @Override
@@ -154,7 +154,7 @@ public class SolonLogger implements Logger {
 
     @Override
     public boolean isInfoEnabled() {
-        return LoggerFactory.getLevel().code <= Level.INFO.code;
+        return LoggerOptions.getLevel().code <= Level.INFO.code;
     }
 
     @Override
@@ -214,7 +214,7 @@ public class SolonLogger implements Logger {
 
     @Override
     public boolean isWarnEnabled() {
-        return LoggerFactory.getLevel().code <= Level.WARN.code;
+        return LoggerOptions.getLevel().code <= Level.WARN.code;
     }
 
     @Override
@@ -274,7 +274,7 @@ public class SolonLogger implements Logger {
 
     @Override
     public boolean isErrorEnabled() {
-        return LoggerFactory.getLevel().code <= Level.ERROR.code;
+        return LoggerOptions.getLevel().code <= Level.ERROR.code;
     }
 
     @Override
