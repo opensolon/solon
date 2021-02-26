@@ -70,7 +70,7 @@ public class Solon {
         JarClassLoader.bindingThread();
 
 
-        PrintUtil.error("solon.app: Start loading");
+        PrintUtil.info("App","solon.app: Start loading");
 
         //1.创建应用
         global = new SolonApp(source, argx);
@@ -101,9 +101,9 @@ public class Solon {
 
         RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
         if (rb == null) {
-            PrintUtil.error("solon.app: End loading elapsed=" + global.elapsedTimes() + "ms");
+            PrintUtil.info("App","solon.app: End loading elapsed=" + global.elapsedTimes() + "ms");
         } else {
-            PrintUtil.error("solon.app: End loading elapsed=" + global.elapsedTimes() + "ms pid=" + rb.getName());
+            PrintUtil.info("App","solon.app: End loading elapsed=" + global.elapsedTimes() + "ms pid=" + rb.getName());
         }
         return global;
     }
@@ -129,11 +129,11 @@ public class Solon {
 
         String hint = "(1.prestop 2.delay 3.stop)";
 
-        PrintUtil.error("Security to stop", "begin..."+hint);
+        PrintUtil.info("App","Security to stop: begin..."+hint);
 
         //1.预停止
         Solon.cfg().plugs().forEach(p -> p.prestop());
-        PrintUtil.error("Security to stop", "1 completed "+hint);
+        PrintUtil.info("App","Security to stop: 1 completed "+hint);
 
         //2.延时
         if (delay > 0) {
@@ -142,13 +142,13 @@ public class Solon {
             } catch (InterruptedException ex) {
 
             }
-            PrintUtil.error("Security to stop","2 completed "+hint);
+            PrintUtil.info("App","Security to stop: 2 completed "+hint);
         }
 
         //3.停目
         Solon.cfg().plugs().forEach(p -> p.stop());
 
-        PrintUtil.error("Security to stop", "3 completed "+hint);
+        PrintUtil.info("App","Security to stop: 3 completed "+hint);
 
         //4.直接非正常退出
         if(exit) {
