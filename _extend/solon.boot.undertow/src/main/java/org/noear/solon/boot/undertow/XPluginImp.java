@@ -43,7 +43,7 @@ public final class XPluginImp implements Plugin {
         }
 
         long time_start = System.currentTimeMillis();
-        PrintUtil.info("solon.Server:main: Undertow 2.1.09(undertow)");
+        PrintUtil.info("solon.server:main: Undertow 2.1.09(undertow)");
 
         Class<?> jspClz = Utils.loadClass("io.undertow.jsp.JspServletBuilder");
 
@@ -57,7 +57,7 @@ public final class XPluginImp implements Plugin {
 
         long time_end = System.currentTimeMillis();
 
-        String connectorInfo = "solon.Connector:main: undertow: Started ServerConnector@{HTTP/1.1,[http/1.1]";
+        String connectorInfo = "solon.connector:main: undertow: Started ServerConnector@{HTTP/1.1,[http/1.1]";
         if (app.enableWebSocket()) {
             System.out.println(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
         } else {
@@ -66,7 +66,7 @@ public final class XPluginImp implements Plugin {
 
         app.signalAdd(new SignalSim(_name, _port, "http", SignalType.HTTP));
 
-        PrintUtil.info("solon.Server:main: undertow: Started @" + (time_end - time_start) + "ms");
+        PrintUtil.info("solon.server:main: undertow: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -75,7 +75,7 @@ public final class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            PrintUtil.info("solon.Server:main: undertow: Has Stopped " + solon_boot_ver());
+            PrintUtil.info("solon.server:main: undertow: Has Stopped " + solon_boot_ver());
         }
     }
 }

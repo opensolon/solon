@@ -54,21 +54,21 @@ public final class XPluginImp implements Plugin {
         }
 
         long time_start = System.currentTimeMillis();
-        PrintUtil.info("solon.Server:main: Jetty 9.4(jetty)");
+        PrintUtil.info("solon.server:main: Jetty 9.4(jetty)");
 
         _server.start(app);
         app.signalAdd(new SignalSim(_name, _port, "http", SignalType.HTTP));
 
         long time_end = System.currentTimeMillis();
 
-        String connectorInfo = "solon.Connector:main: jetty: Started ServerConnector@{HTTP/1.1,[http/1.1]";
+        String connectorInfo = "solon.connector:main: jetty: Started ServerConnector@{HTTP/1.1,[http/1.1]";
         if (app.enableWebSocket()) {
             System.out.println(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
         } else {
             System.out.println(connectorInfo + "}{0.0.0.0:" + _port + "}");
         }
 
-        PrintUtil.info("solon.Server:main: jetty: Started @" + (time_end - time_start) + "ms");
+        PrintUtil.info("solon.server:main: jetty: Started @" + (time_end - time_start) + "ms");
 
 
         app.before("**", new XFormContentFilter());
@@ -80,7 +80,7 @@ public final class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            PrintUtil.info("solon.Server:main: jetty: Has Stopped " + solon_boot_ver());
+            PrintUtil.info("solon.server:main: jetty: Has Stopped " + solon_boot_ver());
         }
     }
 }

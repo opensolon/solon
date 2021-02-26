@@ -67,7 +67,7 @@ public final class XPluginImp implements Plugin {
                 MethodType.DELETE.name,
                 MethodType.PATCH.name);
 
-        PrintUtil.info("solon.Server:main: JlHttpServer 2.4(jlhttp)");
+        PrintUtil.info("solon.server:main: JlHttpServer 2.4(jlhttp)");
 
         try {
             _server.setPort(_port);
@@ -77,8 +77,8 @@ public final class XPluginImp implements Plugin {
 
             long time_end = System.currentTimeMillis();
 
-            PrintUtil.info("solon.Connector:main: jlhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + _port + "}");
-            PrintUtil.info("solon.Server:main: jlhttp: Started @" + (time_end - time_start) + "ms");
+            PrintUtil.info("solon.connector:main: jlhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + _port + "}");
+            PrintUtil.info("solon.server:main: jlhttp: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -90,7 +90,7 @@ public final class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            PrintUtil.info("solon.Server:main: jlhttp: Has Stopped " + solon_boot_ver());
+            PrintUtil.info("solon.server:main: jlhttp: Has Stopped " + solon_boot_ver());
         }
     }
 }

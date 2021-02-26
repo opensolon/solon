@@ -21,7 +21,7 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onStart() {
-        PrintUtil.info("Solon.Server:Websocket onStart...");
+        PrintUtil.info("Solon.server:Websocket onStart...");
     }
 
     @Override

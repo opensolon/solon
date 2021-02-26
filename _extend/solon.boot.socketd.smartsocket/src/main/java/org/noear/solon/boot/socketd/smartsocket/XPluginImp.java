@@ -33,7 +33,7 @@ public final class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        PrintUtil.info("solon.Server:main: SmartSocket 1.5.4(smartsocket-socketd)");
+        PrintUtil.info("solon.server:main: SmartSocket 1.5.4(smartsocket-socketd)");
 
 
         String _name = app.cfg().get("server.socket.name");
@@ -58,8 +58,8 @@ public final class XPluginImp implements Plugin {
 
             long time_end = System.currentTimeMillis();
 
-            PrintUtil.info("solon.Connector:main: smartsocket-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
-            PrintUtil.info("solon.Server:main: smartsocket-socketd: Started @" + (time_end - time_start) + "ms");
+            PrintUtil.info("solon.connector:main: smartsocket-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
+            PrintUtil.info("solon.server:main: smartsocket-socketd: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -71,7 +71,7 @@ public final class XPluginImp implements Plugin {
             server.shutdown();
             server = null;
 
-            PrintUtil.info("solon.Server:main: smartsocket-socketd: Has Stopped " + solon_boot_ver());
+            PrintUtil.info("solon.server:main: smartsocket-socketd: Has Stopped " + solon_boot_ver());
         }
     }
 }

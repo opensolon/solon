@@ -32,7 +32,7 @@ public class XPluginImp implements Plugin {
         long time_start = System.currentTimeMillis();
 
         try {
-            PrintUtil.info("solon.Server:main: Reactornetty 0.9(reactor-netty)");
+            PrintUtil.info("solon.server:main: Reactornetty 0.9(reactor-netty)");
 
             RnHttpHandler handler = new RnHttpHandler();
 
@@ -53,8 +53,8 @@ public class XPluginImp implements Plugin {
 
             long time_end = System.currentTimeMillis();
 
-            PrintUtil.info("solon.Connector:main: reactor-netty: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
-            PrintUtil.info("solon.Server:main: reactor-netty: Started @" + (time_end - time_start) + "ms");
+            PrintUtil.info("solon.connector:main: reactor-netty: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
+            PrintUtil.info("solon.server:main: reactor-netty: Started @" + (time_end - time_start) + "ms");
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -66,7 +66,7 @@ public class XPluginImp implements Plugin {
             _server.dispose();
             _server = null;
 
-            PrintUtil.info("solon.Server:main: reactor-netty: Has Stopped " + solon_boot_ver());
+            PrintUtil.info("solon.server:main: reactor-netty: Has Stopped " + solon_boot_ver());
         }
     }
 }
