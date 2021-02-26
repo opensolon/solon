@@ -1,4 +1,4 @@
-package webapp.demox_mlog;
+package webapp.demox_log;
 
 import org.noear.solon.logging.LogAbstractAppender;
 import org.noear.solon.logging.event.LogEvent;
