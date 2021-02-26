@@ -10,7 +10,7 @@ public class LogOptions {
     //
     //默认日志等级
     //
-    private static volatile Level level = Level.WARN;
+    private static volatile Level level = Level.INFO;
 
     public static void setLevel(Level level) {
         LogOptions.level = level;
