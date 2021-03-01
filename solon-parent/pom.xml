@@ -20,7 +20,6 @@
 
         <solon.ver>1.3.10</solon.ver>
         <nami.ver>1.3.9</nami.ver>
-        <mlog.ver>1.0.3</mlog.ver>
 
         <snack3.ver>3.1.14</snack3.ver>
         <weed3.ver>3.3.3</weed3.ver>
@@ -378,17 +377,7 @@
             <!--                <version>${solon.ver}</version>-->
             <!--            </dependency>-->
 
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>mlog</artifactId>
-                <version>${mlog.ver}</version>
-            </dependency>
 
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>mlog-slf4j</artifactId>
-                <version>${mlog.ver}</version>
-            </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
