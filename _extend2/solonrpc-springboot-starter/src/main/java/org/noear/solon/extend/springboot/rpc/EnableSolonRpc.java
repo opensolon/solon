@@ -8,8 +8,9 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.3
  */
-@Import({org.noear.nami.integration.springboot.AutoConfiguration.class,
-        org.noear.solon.cloud.integration.springboot.AutoConfiguration.class})
+@Import({org.noear.solon.extend.springboot.AutoConfigurationSolon.class,
+        org.noear.nami.integration.springboot.AutoConfiguration.class,
+        org.noear.solon.cloud.integration.springboot.AutoConfigurationCloud.class})
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

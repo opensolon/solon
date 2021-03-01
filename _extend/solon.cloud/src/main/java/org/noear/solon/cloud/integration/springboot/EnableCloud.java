@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.3
  */
-@Import(AutoConfiguration.class)
+@Import(AutoConfigurationCloud.class)
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

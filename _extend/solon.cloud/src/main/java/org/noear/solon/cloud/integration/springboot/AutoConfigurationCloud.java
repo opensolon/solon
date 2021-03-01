@@ -12,7 +12,7 @@ import org.springframework.util.ReflectionUtils;
  * @since 1.2
  */
 @Configuration
-public class AutoConfiguration extends InstantiationAwareBeanPostProcessorAdapter {
+public class AutoConfigurationCloud extends InstantiationAwareBeanPostProcessorAdapter {
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
