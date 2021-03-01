@@ -1,4 +1,4 @@
-package org.noear.nami.integration.springboot;
+package org.noear.solon.extend.springboot.rpc;
 
 import org.springframework.context.annotation.Import;
 
@@ -14,5 +14,5 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface EnableNamiServer {
+public @interface EnableSolonRpc {
 }
