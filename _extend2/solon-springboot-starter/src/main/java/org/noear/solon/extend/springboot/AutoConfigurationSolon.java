@@ -1,8 +1,10 @@
 package org.noear.solon.extend.springboot;
 
 import org.noear.solon.Solon;
+import org.noear.solon.core.Signal;
 import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.extend.servlet.SolonServletFilter;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -17,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AutoConfigurationSolon {
     @Bean
-    public BeanPostProcessor beanPostProcessor(){
+    public BeanPostProcessor beanPostProcessor() {
         return new BeanPostProcessorSolon();
     }
 
@@ -25,7 +27,9 @@ public class AutoConfigurationSolon {
     @ConditionalOnWebApplication
     public FilterRegistrationBean servletRegistrationBean() {
         //如果是WEB，注册一个信号
-        Solon.global().signalAdd(new SignalSim(Solon.cfg().appName(), Solon.global().port(), "http", SignalType.HTTP));
+        Signal signal = new SignalSim(Solon.cfg().appName(), Solon.global().port(), "http", SignalType.HTTP);
+        EventBus.push(signal);
+
 
         //添加过滤器注册
         FilterRegistrationBean registration = new FilterRegistrationBean<>();
