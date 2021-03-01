@@ -15,18 +15,26 @@ import org.springframework.util.ReflectionUtils;
 public class AutoConfigurationCloud extends InstantiationAwareBeanPostProcessorAdapter {
 
     @Override
+    public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
+        //兼容1.0.x
+        return null;
+    }
+
+    @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        Class<?> beanClz = bean.getClass();
+        if (beanName.startsWith("org.springframework") == false) {
+            Class<?> beanClz = bean.getClass();
 
-        ReflectionUtils.doWithFields(beanClz, (field -> {
-            CloudConfig anno = field.getAnnotation(CloudConfig.class);
+            ReflectionUtils.doWithFields(beanClz, (field -> {
+                CloudConfig anno = field.getAnnotation(CloudConfig.class);
 
-            if (anno != null) {
-                Object val = CloudBeanInjector.instance.build(field.getType(), anno);
-                field.setAccessible(true);
-                field.set(bean, val);
-            }
-        }));
+                if (anno != null) {
+                    Object val = CloudBeanInjector.instance.build(field.getType(), anno);
+                    field.setAccessible(true);
+                    field.set(bean, val);
+                }
+            }));
+        }
 
         return bean;
     }

@@ -18,7 +18,7 @@ public class BeanPostProcessorSolon implements BeanPostProcessor {
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        if (beanName.startsWith("org.springframework.boot") == false) {
+        if (beanName.startsWith("org.springframework") == false) {
 
             try {
                 BeanWrap bw = Aop.wrap(bean.getClass(), bean);
