@@ -24,6 +24,9 @@ import java.lang.annotation.*;
 @Documented
 public @interface Mapping {
     String value() default "";
+    /**
+     * 请求方式
+     * */
     MethodType[] method() default {MethodType.HTTP};
     /**
      * 指定处理请求的提交内容类型（主要考虑与Swagger的描述兼容）
