@@ -5,7 +5,8 @@ import org.springframework.context.annotation.Import;
 import java.lang.annotation.*;
 
 /**
- * @author noear 2021/3/1 created
+ * @author noear
+ * @since 1.3
  */
 @Import({org.noear.nami.integration.springboot.AutoConfiguration.class,
         org.noear.solon.cloud.integration.springboot.AutoConfiguration.class})

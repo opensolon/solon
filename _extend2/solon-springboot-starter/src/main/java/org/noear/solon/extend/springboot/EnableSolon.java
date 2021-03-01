@@ -5,7 +5,8 @@ import org.springframework.context.annotation.Import;
 import java.lang.annotation.*;
 
 /**
- * @author noear 2021/1/19 created
+ * @author noear
+ * @since 1.2
  */
 @Import(AutoConfigurationSolon.class)
 @Target({ElementType.TYPE})
