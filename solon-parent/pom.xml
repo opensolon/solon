@@ -602,6 +602,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solonrpc-springboot-starter</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>nacos-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -1051,6 +1057,7 @@
         <module>../_extend2/quartz-solon-plugin</module>
 
         <module>../_extend2/solon-springboot-starter</module>
+        <module>../_extend2/solonrpc-springboot-starter</module>
 
 
         <module>../_extend3/consul-solon-plugin</module>
