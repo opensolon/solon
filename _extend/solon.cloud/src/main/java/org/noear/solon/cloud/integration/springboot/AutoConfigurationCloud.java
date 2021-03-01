@@ -7,6 +7,8 @@ import org.springframework.beans.factory.config.InstantiationAwareBeanPostProces
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Modifier;
+
 /**
  * @author noear
  * @since 1.2
@@ -26,6 +28,11 @@ public class AutoConfigurationCloud extends InstantiationAwareBeanPostProcessorA
             Class<?> beanClz = bean.getClass();
 
             ReflectionUtils.doWithFields(beanClz, (field -> {
+                if (Modifier.isFinal(field.getModifiers())
+                        || Modifier.isStatic(field.getModifiers())) {
+                    return;
+                }
+
                 CloudConfig anno = field.getAnnotation(CloudConfig.class);
 
                 if (anno != null) {
