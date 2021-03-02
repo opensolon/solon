@@ -31,7 +31,7 @@
 
         <servlet.ver>4.0.1</servlet.ver>
 
-        <beetl.ver>3.2.1.RELEASE</beetl.ver>
+        <beetl.ver>3.2.2.RELEASE</beetl.ver>
         <enjoy.ver>4.8</enjoy.ver>
 
         <jetty.ver>9.4.31.v20200723</jetty.ver>
@@ -484,7 +484,7 @@
 
             <dependency>
                 <groupId>org.noear.solon</groupId>
-                <artifactId>beetl-web</artifactId>
+                <artifactId>solon-beetl-web</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 

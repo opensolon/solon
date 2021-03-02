@@ -11,8 +11,8 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <groupId>org.noear.solon</groupId>
-    <artifactId>beetl-web</artifactId>
+    <groupId>org.noear</groupId>
+    <artifactId>solon-beetl-web</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
