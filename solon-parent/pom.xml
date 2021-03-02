@@ -19,7 +19,6 @@
         <java.version>1.8</java.version>
 
         <solon.ver>1.3.10</solon.ver>
-        <solon.plugin.ver>1.3.10</solon.plugin.ver>
         <nami.ver>1.3.10</nami.ver>
 
         <snack3.ver>3.1.14</snack3.ver>
@@ -537,105 +536,105 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>consul-solon-plugin</artifactId>
-                <version>${solon.plugin.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>beetlsql-solon-plugin</artifactId>
-                <version>${solon.plugin.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>weed3-solon-plugin</artifactId>
-                <version>${solon.plugin.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>mybatis-solon-plugin</artifactId>
-                <version>${solon.plugin.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>mybatis-sqlhelper-solon-plugin</artifactId>
-                <version>${solon.plugin.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>cron4j-solon-plugin</artifactId>
-                <version>${solon.plugin.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>quartz-solon-plugin</artifactId>
-                <version>${solon.plugin.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>dubbo-solon-plugin</artifactId>
-                <version>${solon.plugin.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>feign-solon-plugin</artifactId>
-                <version>${solon.plugin.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>hasor-solon-plugin</artifactId>
-                <version>${solon.plugin.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-springboot-starter</artifactId>
-                <version>${solon.plugin.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solonrpc-springboot-starter</artifactId>
-                <version>${solon.plugin.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nacos-solon-plugin</artifactId>
-                <version>${solon.plugin.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>water-solon-plugin</artifactId>
-                <version>${solon.plugin.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>rabbitmq-solon-plugin</artifactId>
-                <version>${solon.plugin.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>rocketmq-solon-plugin</artifactId>
-                <version>${solon.plugin.ver}</version>
+                <version>${solon.ver}</version>
             </dependency>
 
 
             <!--            <dependency>-->
             <!--                <groupId>org.noear</groupId>-->
             <!--                <artifactId>mqtt-solon-plugin</artifactId>-->
-            <!--                <version>${solon.plugin.ver}</version>-->
+            <!--                <version>${solon.ver}</version>-->
             <!--            </dependency>-->
 
 

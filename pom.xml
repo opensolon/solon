@@ -20,6 +20,7 @@
 
     <modules>
         <module>solon-parent</module>
+        <module>solon-plugin-parent</module>
 
         <module>_test</module>
 
