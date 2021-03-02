@@ -1,6 +1,5 @@
 package org.noear.solon.extend.mybatis_sqlhelper;
 
-import com.jn.langx.util.reflect.Reflects;
 import com.jn.sqlhelper.dialect.instrument.SQLInstrumentorConfig;
 import com.jn.sqlhelper.mybatis.MybatisUtils;
 import com.jn.sqlhelper.mybatis.SqlHelperMybatisProperties;
@@ -55,7 +54,7 @@ public class SqlHelperMybatisAutoConfiguration implements EventListener<org.apac
         plugin.init();
 
         PrintUtil.info(String.format("Add interceptor {} to mybatis configuration", plugin));
-        PrintUtil.info(String.format("The properties of the mybatis plugin [{}] is: {}", Reflects.getFQNClassName(SqlHelperMybatisPlugin.class), sqlHelperMybatisProperties));
+        PrintUtil.info(String.format("The properties of the mybatis plugin [{}] is: {}", SqlHelperMybatisPlugin.class.getName(), sqlHelperMybatisProperties));
         configuration.addInterceptor(plugin);
     }
 }
