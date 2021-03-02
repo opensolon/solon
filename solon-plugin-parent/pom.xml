@@ -10,8 +10,8 @@
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
-    <description>Java project for solon-plugin</description>
-    <url>https://github.com/noear/solon-plugin</url>
+    <description>Java project for solon</description>
+    <url>https://github.com/noear/solon</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -36,9 +36,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:git@github.com:noear/solon-plugin.git</connection>
-        <developerConnection>scm:git:git@github.com:noear/solon-plugin.git</developerConnection>
-        <url>https://github.com/noear/solon-plugin</url>
+        <connection>scm:git:git@github.com:noear/solon.git</connection>
+        <developerConnection>scm:git:git@github.com:noear/solon.git</developerConnection>
+        <url>https://github.com/noear/solon</url>
     </scm>
 
 
