@@ -10,7 +10,7 @@ public class PrintUtil {
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_BLACK = "\u001B[30m";
     private static final String ANSI_RED = "\u001B[31m";
-    private static final String ANSI_GREEN = "\u001B[38;5;28m";
+    private static final String ANSI_GREEN = "\u001B[32m";
     private static final String ANSI_YELLOW = "\u001B[33m";
     private static final String ANSI_BLUE = "\u001B[34m";
     private static final String ANSI_PURPLE = "\u001B[35m";
@@ -84,7 +84,7 @@ public class PrintUtil {
 
     public static void debug(String label, Object content) {
         System.out.print("[INFO] ");
-        blueln("[" + label + "] " + content);
+        blueln(label + ": " + content);
     }
 
     public static void info(Object content) {
@@ -93,7 +93,7 @@ public class PrintUtil {
 
     public static void info(String label, Object content) {
         System.out.print("[INFO] ");
-        greenln("[" + label + "] " + content);
+        greenln(label + ": " + content);
     }
 
     public static void wran(Object content) {
@@ -103,7 +103,7 @@ public class PrintUtil {
 
     public static void wran(String label, Object content) {
         System.out.print("[INFO] ");
-        yellowln("[" + label + "] " + content);
+        yellowln(label + ": " + content);
     }
 
     public static void error(Object content) {
@@ -113,6 +113,6 @@ public class PrintUtil {
 
     public static void error(String label, Object content) {
         System.out.print("[INFO] ");
-        redln("[" + label + "] " + content);
+        redln(label + ": " + content);
     }
 }
