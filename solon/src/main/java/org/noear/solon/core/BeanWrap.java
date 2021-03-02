@@ -1,6 +1,7 @@
 package org.noear.solon.core;
 
 import org.noear.solon.annotation.Init;
+import org.noear.solon.annotation.Remoting;
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.wrap.ClassWrap;
 
@@ -55,6 +56,7 @@ public class BeanWrap {
         Singleton ano = clz.getAnnotation(Singleton.class);
         singleton = (ano == null || ano.value()); //默认为单例
         annotations = clz.getAnnotations();
+        remoting = clz.getAnnotation(Remoting.class) != null;
 
         tryBuildInit();
 

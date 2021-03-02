@@ -88,21 +88,12 @@ public class AopContext extends BeanContainer {
             addBeanShape(clz, bw);
 
             //设置remoting状态
-            bw.remotingSet(anno.remoting());
+            if(anno.remoting()) {
+                bw.remotingSet(anno.remoting());
+            }
 
             //注册到容器
             beanRegister(bw, anno.value(), anno.typed());
-
-            //如果是remoting状态，转到 Solon 路由器
-            if (bw.remoting()) {
-                HandlerLoader bww = new HandlerLoader(bw);
-                if (bww.mapping() != null) {
-                    //
-                    //如果没有xmapping，则不进行web注册
-                    //
-                    bww.load(Solon.global());
-                }
-            }
         });
 
         //注册 @Controller 构建器
