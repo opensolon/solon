@@ -43,14 +43,16 @@
             <artifactId>nami.channel.socketd</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solonfox-swagger2</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solonfox-swagger-ui</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solondoc-swagger2</artifactId>
+            <version>${solondoc.ver}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solondoc-swagger-ui</artifactId>
+            <version>${solondoc.ver}</version>
+        </dependency>
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
 <!--            <artifactId>solonfox-swagger-bootstrap-ui</artifactId>-->

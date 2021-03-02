@@ -5,12 +5,13 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.MethodType;
+import org.noear.solondoc.swagger2.EnableSwagger2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import webapp.demo6_aop.TestImport;
 
 @Import(value = TestImport.class)
-//@EnableSwagger2
+@EnableSwagger2
 //@EnableCron4j
 //@EnableQuartz
 public class TestApp {
@@ -36,7 +37,7 @@ public class TestApp {
          * http://t1_jetty.test.noear.org
          *
          * */
-        SolonApp app = Solon.start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true).enableSafeStop(true));
+        SolonApp app = Solon.start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
 
 //        app.ws("/demoe/websocket",(session,message)->{
 //            System.out.println(session.resourceDescriptor());
