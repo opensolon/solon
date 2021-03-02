@@ -93,7 +93,7 @@ public class PrintUtil {
 
     public static void info(String label, Object content) {
         System.out.print("[INFO] ");
-        greenln(label + ": " + content);
+        blueln(label + ": " + content);
     }
 
     public static void wran(Object content) {
