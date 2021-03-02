@@ -10,7 +10,7 @@ import org.noear.solon.annotation.Configuration;
  * @author noear 2021/3/2 created
  */
 @Configuration
-public class ApiConfig {
+public class SwaggerConfig {
     @Bean
     public Info buildInfo(){
         Info info = new Info();
