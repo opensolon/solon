@@ -78,13 +78,13 @@ public class PrintUtil {
     }
 
     public static void debug(Object content) {
-        System.out.print("[INFO] ");
-        blueln(content);
+        blue("[INFO] ");
+        System.out.print(content);
     }
 
     public static void debug(String label, Object content) {
-        System.out.print("[INFO] ");
-        blueln(label + ": " + content);
+        blue("[INFO] ");
+        System.out.print(label + ": " + content);
     }
 
     public static void info(Object content) {
@@ -92,27 +92,27 @@ public class PrintUtil {
     }
 
     public static void info(String label, Object content) {
-        System.out.print("[INFO] ");
-        blueln(label + ": " + content);
+        green("[INFO] ");
+        System.out.print(label + ": " + content);
     }
 
     public static void wran(Object content) {
-        System.out.print("[INFO] ");
-        yellowln(content);
+        yellow("[INFO] ");
+        System.out.print(content);
     }
 
     public static void wran(String label, Object content) {
-        System.out.print("[INFO] ");
-        yellowln(label + ": " + content);
+        yellow("[INFO] ");
+        System.out.print(label + ": " + content);
     }
 
     public static void error(Object content) {
-        System.out.print("[INFO] ");
-        redln(content);
+        red("[INFO] ");
+        System.out.print(content);
     }
 
     public static void error(String label, Object content) {
-        System.out.print("[INFO] ");
-        redln(label + ": " + content);
+        red("[INFO] ");
+        System.out.print(label + ": " + content);
     }
 }
