@@ -1,5 +1,6 @@
 package webapp;
 
+import io.swagger.annotations.Info;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Import;

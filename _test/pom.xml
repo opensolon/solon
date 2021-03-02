@@ -53,10 +53,11 @@
             <artifactId>solondoc-swagger-ui</artifactId>
             <version>${solondoc.ver}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solonfox-swagger-bootstrap-ui</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solondoc-swagger-bootstrap-ui</artifactId>
+            <version>${solondoc.ver}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
