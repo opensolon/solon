@@ -14,7 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import java.util.*;
 
 /**
- * @author noear 2020/12/28 created
+ * @author noear
  * @since 1.2
  */
 public class SolonServletInstaller {

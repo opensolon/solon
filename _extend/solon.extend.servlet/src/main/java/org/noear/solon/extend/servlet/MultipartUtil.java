@@ -10,6 +10,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author noear
+ * @since 1.2
+ * */
 class MultipartUtil {
 
     public static void buildParamsAndFiles(SolonServletContext context) throws IOException, ServletException{

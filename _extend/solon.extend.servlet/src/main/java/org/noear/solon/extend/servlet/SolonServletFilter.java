@@ -10,8 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @author noear 2020/12/28 created
- */
+ * @author noear
+ * @since 1.2
+ * */
 public class SolonServletFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -21,7 +22,7 @@ public class SolonServletFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         SolonServletContext ctx = new SolonServletContext((HttpServletRequest) request, (HttpServletResponse) response);
-        ctx.contentType("text/plain;charset=UTF-8");
+        //ctx.contentType("text/plain;charset=UTF-8");
 
 
         try {
