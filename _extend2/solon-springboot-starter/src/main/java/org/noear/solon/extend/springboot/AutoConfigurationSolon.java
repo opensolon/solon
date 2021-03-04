@@ -5,7 +5,6 @@ import org.noear.solon.core.Signal;
 import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.extend.servlet.SolonServletFilter;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -33,7 +32,7 @@ public class AutoConfigurationSolon {
 
         //添加过滤器注册
         FilterRegistrationBean registration = new FilterRegistrationBean<>();
-        registration.setFilter(new SolonServletFilter());
+        registration.setFilter(new ServletFilterSolon());
         return registration;
     }
 }

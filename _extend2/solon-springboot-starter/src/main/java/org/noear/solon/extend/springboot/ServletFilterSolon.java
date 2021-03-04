@@ -1,8 +1,9 @@
-package org.noear.solon.extend.servlet;
+package org.noear.solon.extend.springboot;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.ContextUtil;
+import org.noear.solon.extend.servlet.SolonServletContext;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +14,7 @@ import java.io.IOException;
  * @author noear
  * @since 1.2
  * */
-public class SolonServletFilter implements Filter {
+public class ServletFilterSolon implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         //兼容 servlet 3.1.0
