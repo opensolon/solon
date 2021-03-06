@@ -5,7 +5,7 @@ import org.noear.solon.annotation.Note;
 import java.lang.annotation.*;
 
 /**
- * 消息订阅
+ * 云端事件订阅
  *
  * @author noear
  * @since 1.2

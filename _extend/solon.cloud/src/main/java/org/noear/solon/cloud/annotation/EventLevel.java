@@ -1,7 +1,10 @@
 package org.noear.solon.cloud.annotation;
 
 /**
- * @author noear 2021/1/21 created
+ * 云端事件级别
+ *
+ * @author noear
+ * @since 1.2
  */
 public enum EventLevel {
     /**
