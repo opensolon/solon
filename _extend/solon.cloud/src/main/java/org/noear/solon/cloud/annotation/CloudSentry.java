@@ -5,7 +5,7 @@ import org.noear.solon.annotation.Note;
 import java.lang.annotation.*;
 
 /**
- * 云端哨岗资源
+ * 云端哨岗
  *
  * @author noear
  * @since 1.3
