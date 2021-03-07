@@ -110,6 +110,18 @@ public abstract class Gateway extends HandlerAide implements Handler, Render, Fi
         c.render(obj);
     }
 
+
+    /**
+     * 添加过滤器（按先进后出策略执行）
+     *
+     * @param filter 过滤器
+     * */
+    public void filter(Filter filter) {
+        FilterChainNode tmp = new FilterChainNode(filter);
+        tmp.next = filterChain;
+        filterChain = tmp;
+    }
+
     /**
      * for Handler
      */
@@ -121,17 +133,6 @@ public abstract class Gateway extends HandlerAide implements Handler, Render, Fi
     @Override
     public void doFilter(Context c, FilterChain chain) throws Throwable {
         handleDo(c);
-    }
-
-    /**
-     * 添加过滤器（按先进后出策略执行）
-     *
-     * @param filter 过滤器
-     * */
-    public void filter(Filter filter) {
-        FilterChainNode tmp = new FilterChainNode(filter);
-        tmp.next = filterChain;
-        filterChain = tmp;
     }
 
     protected void handleDo(Context c) throws Throwable {

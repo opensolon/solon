@@ -466,9 +466,7 @@ public class SolonApp implements Handler, HandlerSlots, Filter {
         try {
             //设置当前线程上下文
             ContextUtil.currentSet(x);
-
             _filterChain.doFilter(x);
-
         } catch (Throwable ex) {
             EventBus.push(ex);
             throw ex;
