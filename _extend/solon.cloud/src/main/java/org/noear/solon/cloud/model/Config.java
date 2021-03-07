@@ -1,6 +1,5 @@
 package org.noear.solon.cloud.model;
 
-
 import org.noear.solon.Utils;
 import org.noear.solon.core.wrap.ClassWrap;
 
