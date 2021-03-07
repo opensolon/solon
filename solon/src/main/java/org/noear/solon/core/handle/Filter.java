@@ -12,5 +12,5 @@ public interface Filter {
      *
      * @param ctx 上下文
      * */
-    void doFilter(Context ctx, FilterChain chain);
+    void doFilter(Context ctx, FilterChain chain) throws Throwable;
 }

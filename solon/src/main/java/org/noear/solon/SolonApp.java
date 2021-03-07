@@ -32,7 +32,7 @@ import java.util.function.Consumer;
  * @author noear
  * @since 1.0
  * */
-public class SolonApp implements Handler, HandlerSlots {
+public class SolonApp implements Handler, HandlerSlots, Filter {
     /**
      * 初始化（不能合在构建函数里）
      * */
@@ -237,6 +237,7 @@ public class SolonApp implements Handler, HandlerSlots {
     private final SolonProps _prop; //属性配置
     private final Class<?> _source; //应用加载源
     private final long _startupTime;
+    private final FilterChainNode _filterChain;
 
     protected SolonApp(Class<?> source, NvMap args) {
         _startupTime = System.currentTimeMillis();
@@ -247,6 +248,7 @@ public class SolonApp implements Handler, HandlerSlots {
 
         //顺序不能换
         _router = new Router();
+        _filterChain = new FilterChainNode(this);
 
         _handler = new RouterHandler(_router);
 
@@ -291,6 +293,10 @@ public class SolonApp implements Handler, HandlerSlots {
     // 以下为web handler 有关
     //
     //////////////////////////////////////////////
+
+    public void filter(Filter filter){
+        _filterChain.next = new FilterChainNode(filter);
+    }
 
     /**
      * 前置监听
@@ -452,7 +458,9 @@ public class SolonApp implements Handler, HandlerSlots {
         try {
             //设置当前线程上下文
             ContextUtil.currentSet(x);
-            _handler.handle(x);
+
+            _filterChain.doFilter(x);
+
         } catch (Throwable ex) {
             EventBus.push(ex);
             throw ex;
@@ -460,6 +468,11 @@ public class SolonApp implements Handler, HandlerSlots {
             //移除当前线程上下文
             ContextUtil.currentRemove();
         }
+    }
+
+    @Override
+    public void doFilter(Context ctx, FilterChain chain) throws Throwable{
+        _handler.handle(ctx);
     }
 
     /*

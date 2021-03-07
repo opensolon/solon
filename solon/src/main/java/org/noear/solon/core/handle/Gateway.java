@@ -37,11 +37,12 @@ import java.util.function.Predicate;
  * @author noear
  * @since 1.0
  * */
-public abstract class Gateway extends HandlerAide implements Handler, Render {
+public abstract class Gateway extends HandlerAide implements Handler, Render, Filter {
     private Handler mainDef;
     private final Map<String, Handler> main = new HashMap<>();
     private final String mapping;
     private Mapping mappingAnno;
+    private final FilterChainNode filterChain;
 
     public Gateway() {
         super();
@@ -54,6 +55,8 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
         //默认为404错误输出
         mainDef = (c) -> c.statusSet(404);
+
+        filterChain = new FilterChainNode(this);
 
         register();
     }
@@ -112,6 +115,19 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      */
     @Override
     public void handle(Context c) throws Throwable {
+        filterChain.doFilter(c);
+    }
+
+    @Override
+    public void doFilter(Context c, FilterChain chain) throws Throwable {
+        handleDo(c);
+    }
+
+    public void filter(Filter filter){
+        filterChain.next = new FilterChainNode(filter);
+    }
+
+    protected void handleDo(Context c) throws Throwable {
         //预处理（应对需要预处理的场景）
         try {
             handlePre(c);
@@ -196,6 +212,8 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             EventBus.push(ex);
         }
     }
+
+
 
 
     /**
