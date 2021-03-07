@@ -7,7 +7,7 @@ package org.noear.solon.core.handle;
  * @since 1.3
  * */
 public class FilterChainNode implements FilterChain {
-    static final FilterChainNode EMPTY = new FilterChainNodeEmpty();
+    static final FilterChainNode nextDef = new FilterChainNodeEmpty();
 
     public Filter filter;
     public FilterChainNode next;
@@ -18,8 +18,7 @@ public class FilterChainNode implements FilterChain {
 
     public FilterChainNode(Filter filter) {
         this.filter = filter;
-        //将下一节点默认置为空
-        this.next = EMPTY;
+        this.next = nextDef;
     }
 
     @Override
@@ -29,7 +28,7 @@ public class FilterChainNode implements FilterChain {
 
     /**
      * 定义个空节点
-     * */
+     */
     static class FilterChainNodeEmpty extends FilterChainNode {
         @Override
         public void doFilter(Context ctx) throws Throwable {

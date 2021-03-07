@@ -3,6 +3,7 @@ package org.noear.solon.core.wrap;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.InterceptorChain;
+import org.noear.solon.core.handle.InterceptorChainNode;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -63,11 +64,11 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
         }
 
         if (arounds.size() > 0) {
-            //排序
+            //排序（顺排）
             arounds.sort(Comparator.comparing(x -> x.index));
 
             //生成调用链
-            InterceptorChain.Entity node = arounds.get(0);
+            InterceptorChainNode node = arounds.get(0);
             for (int i = 1, len = arounds.size(); i < len; i++) {
                 node.next = arounds.get(i);
                 node = arounds.get(i);
@@ -93,7 +94,7 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
 
     private void doAroundAdd(Around a) {
         if (a != null) {
-            arounds.add(new InterceptorChain.Entity(this, a.index(), Aop.get(a.value())));
+            arounds.add(new InterceptorChainNode(this, a.index(), Aop.get(a.value())));
         }
     }
 
@@ -106,7 +107,7 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
     //函数注解
     private final Annotation[] annotations;
     //函数包围列表（扩展切点）
-    private final List<InterceptorChain.Entity> arounds;
+    private final List<InterceptorChainNode> arounds;
     //函数调用链
     private final InterceptorChain invokeChain;
 
