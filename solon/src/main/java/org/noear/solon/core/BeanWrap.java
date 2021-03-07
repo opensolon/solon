@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Bean 包装
  *
- * Bean 构建过程：Constructor(构造方法) -> @XInject(依赖注入) -> @XInit(初始化，相当于 PostConstruct)
+ * Bean 构建过程：Constructor(构造方法) -> @Inject(依赖注入) -> @Init(初始化，相当于 PostConstruct)
  *
  * @author noear
  * @since 1.0

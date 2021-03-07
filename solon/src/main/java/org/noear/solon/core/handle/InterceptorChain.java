@@ -5,7 +5,7 @@ import org.noear.solon.core.wrap.MethodHolder;
 import org.noear.solon.core.wrap.MethodWrap;
 
 /**
- * 方法拦截调用链（用于支持 @XAround ）
+ * 方法拦截调用链（用于支持 @Around ）
  *
  * @author noear
  * @since 1.0

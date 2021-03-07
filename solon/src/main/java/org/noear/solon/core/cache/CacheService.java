@@ -1,7 +1,7 @@
 package org.noear.solon.core.cache;
 
 /**
- * 缓存服务接口（用于支持@XCache相关注解）
+ * 缓存服务接口（用于支持@Cache相关注解）
  *
  * @author noear
  * @since 1.0

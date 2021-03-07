@@ -44,7 +44,7 @@ public class ActionExecutorDefault implements ActionExecutor {
             Class<?> pt = p.getType();
 
             if (Context.class.isAssignableFrom(pt)) {
-                //如果是 XContext 类型，直接加入参数
+                //如果是 Context 类型，直接加入参数
                 //
                 args.add(ctx);
             } else if (UploadedFile.class == pt) {

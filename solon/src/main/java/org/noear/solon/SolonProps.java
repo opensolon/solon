@@ -14,7 +14,7 @@ import java.util.function.BiConsumer;
  *
  * <pre><code>
  * //
- * // 手动获取配置模式（容器自动模式可用: @XInject("${water.logger}")）
+ * // 手动获取配置模式（容器自动模式可用: @Inject("${water.logger}")）
  * //
  * Solon.cfg()
  * Solon.cfg().isDebugMode()

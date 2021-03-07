@@ -2,12 +2,12 @@ package org.noear.solon.core.handle;
 
 
 /**
- * 方法拦截器（通过 @XAround 随载）
+ * 方法拦截器（通过 @Around 随载）
  *
  * <pre><code>
  * @Controller
  * public class DemoController{
- *     @Around(TranInterceptor.class)  //@XTran 注解即通过 @XAround 实现
+ *     @Around(TranInterceptor.class)  //@Tran 注解即通过 @Around 实现
  *     @Mapping("/demo/*")
  *     public String hello(){
  *         return "heollo world;";

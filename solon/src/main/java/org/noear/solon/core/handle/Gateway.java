@@ -108,7 +108,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     }
 
     /**
-     * for XHandler
+     * for Handler
      */
     @Override
     public void handle(Context c) throws Throwable {

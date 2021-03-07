@@ -10,7 +10,7 @@ package org.noear.solon.core.event;
  * });
  *
  * //demo2: 自动添加Listener
- * @XConfiguration
+ * @Configuration
  * public class ThrowableListener implements XEventListener<Throwable>{
  *     public void onEvent(Throwable err){
  *        ...

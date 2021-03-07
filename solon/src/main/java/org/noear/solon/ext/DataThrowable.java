@@ -21,9 +21,9 @@ import java.io.Serializable;
  *     }
  * }
  *
- * @XBean
+ * @Bean
  * public class DemoService{
- *     @XInject
+ *     @Inject
  *     UserMapper userMapper;
  *
  *     public UserModel getUser(int userId){

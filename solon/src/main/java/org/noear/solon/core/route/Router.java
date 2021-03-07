@@ -60,21 +60,21 @@ public class Router {
     }
 
     /**
-     * 添加路由关系 for XHandler
+     * 添加路由关系 for Handler
      */
     public void add(String path, Handler handler) {
         add(path, Endpoint.main, MethodType.HTTP, handler);
     }
 
     /**
-     * 添加路由关系 for XHandler
+     * 添加路由关系 for Handler
      */
     public void add(String path, Endpoint endpoint, MethodType method, Handler handler) {
         add(path, endpoint, method, 0, handler);
     }
 
     /**
-     * 添加路由关系 for XHandler
+     * 添加路由关系 for Handler
      */
     public void add(String path, Endpoint endpoint, MethodType method, int index, Handler handler) {
         routesH[endpoint.code].add(new RouteTable.Route(path, method, index, handler));
