@@ -10,12 +10,8 @@ public class FilterChainNode implements FilterChain {
     static final FilterChain nextDef = (c) -> {
     };
 
-    private Filter filter;
+    private final Filter filter;
     public FilterChain next;
-
-    private FilterChainNode() {
-
-    }
 
     public FilterChainNode(Filter filter) {
         this.filter = filter;
