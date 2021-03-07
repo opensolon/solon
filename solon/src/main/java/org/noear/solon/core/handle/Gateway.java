@@ -42,7 +42,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render, Fi
     private final Map<String, Handler> main = new HashMap<>();
     private final String mapping;
     private Mapping mappingAnno;
-    private final FilterChainNode filterChain;
+    private FilterChainNode filterChain;
 
     public Gateway() {
         super();
@@ -123,8 +123,15 @@ public abstract class Gateway extends HandlerAide implements Handler, Render, Fi
         handleDo(c);
     }
 
-    public void filter(Filter filter){
-        filterChain.next = new FilterChainNode(filter);
+    /**
+     * 添加过滤器（按先进后出策略执行）
+     *
+     * @param filter 过滤器
+     * */
+    public void filter(Filter filter) {
+        FilterChainNode tmp = new FilterChainNode(filter);
+        tmp.next = filterChain;
+        filterChain = tmp;
     }
 
     protected void handleDo(Context c) throws Throwable {

@@ -296,7 +296,7 @@ public class SolonApp implements Handler, HandlerSlots, Filter {
     //////////////////////////////////////////////
 
     /**
-     * 添加过滤器（策略：先进后出）
+     * 添加过滤器（按先进后出策略执行）
      *
      * @param filter 过滤器
      * */
