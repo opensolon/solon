@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
+import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.HandlerLoader;
 import org.noear.solon.core.message.Listener;
@@ -140,8 +141,13 @@ public class AopContext extends BeanContainer {
             Mapping mapping = clz.getAnnotation(Mapping.class);
             if (mapping != null) {
                 Handler handler = bw.raw();
-                Solon.global().add(mapping,handler);
+                Solon.global().add(mapping, handler);
             }
+        }
+
+        //Filter
+        if (Filter.class.isAssignableFrom(clz)) {
+            Solon.global().filter(bw.raw());
         }
     }
 
