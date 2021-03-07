@@ -35,6 +35,7 @@ package org.noear.solon.core.handle;
  * @author noear
  * @since 1.0
  * */
+@FunctionalInterface
 public interface Interceptor {
     /**
      * 拦截

@@ -6,6 +6,7 @@ package org.noear.solon.core.handle;
  * @author noear
  * @since 1.3
  * */
+@FunctionalInterface
 public interface Filter {
     /**
      * 过滤
