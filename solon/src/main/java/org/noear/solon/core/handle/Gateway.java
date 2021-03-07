@@ -137,8 +137,6 @@ public abstract class Gateway extends HandlerAide implements Handler, Render, Fi
     protected void handleDo(Context c) throws Throwable {
         //预处理（应对需要预处理的场景）
         try {
-            handlePre(c);
-
             Handler m = find(c);
             Object obj = null;
 
@@ -165,10 +163,6 @@ public abstract class Gateway extends HandlerAide implements Handler, Render, Fi
             render(ex, c);
             EventBus.push(ex);
         }
-    }
-
-    protected void handlePre(Context c) throws Throwable {
-        //应对需要预处理的场景，比如需要提前解码的处理
     }
 
     private void handle0(Context c, Handler m, Object obj, Boolean is_action) throws Throwable {
