@@ -25,7 +25,7 @@
 
         <snack3.ver>3.1.14</snack3.ver>
         <weed3.ver>3.3.3</weed3.ver>
-        <water.ver>2.0.19</water.ver>
+        <water.ver>2.0.20</water.ver>
 
         <fastjson.ver>1.2.75</fastjson.ver>
         <jedis.ver>3.3.0</jedis.ver>
