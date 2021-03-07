@@ -130,7 +130,6 @@ public abstract class Gateway extends HandlerAide implements Handler, Render, Fi
             filterChain.doFilter(c);
         } catch (Throwable ex) {
             c.errors = ex;
-            c.attrSet("error", ex);
 
             render(ex, c);
             EventBus.push(ex);
@@ -202,7 +201,6 @@ public abstract class Gateway extends HandlerAide implements Handler, Render, Fi
             c.setHandled(true); //停止处理
 
             c.errors = ex;
-            c.attrSet("error", ex);
 
             render(ex, c);
             EventBus.push(ex);

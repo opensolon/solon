@@ -162,7 +162,6 @@ public class Action extends HandlerAide implements Handler {
         } catch (Throwable ex) {
             ex = Utils.throwableUnwrap(ex);
             x.errors = ex;
-            x.attrSet("error", ex);
 
             renderDo(ex, x);
             EventBus.push(ex);
@@ -247,7 +246,6 @@ public class Action extends HandlerAide implements Handler {
                 renderDo(ex, c);
             } else {
                 c.errors = ex;
-                c.attrSet("error", ex);
 
                 renderDo(ex, c);
                 EventBus.push(ex);
