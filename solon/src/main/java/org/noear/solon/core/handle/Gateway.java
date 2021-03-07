@@ -48,7 +48,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render, Fi
         super();
         mappingAnno = this.getClass().getAnnotation(Mapping.class);
         if (mappingAnno == null) {
-            throw new RuntimeException("No XMapping!");
+            throw new RuntimeException("No Mapping!");
         }
 
         mapping = mappingAnno.value();
@@ -110,7 +110,6 @@ public abstract class Gateway extends HandlerAide implements Handler, Render, Fi
         c.render(obj);
     }
 
-
     /**
      * 添加过滤器（按先进后出策略执行）
      *
@@ -127,42 +126,37 @@ public abstract class Gateway extends HandlerAide implements Handler, Render, Fi
      */
     @Override
     public void handle(Context c) throws Throwable {
-        filterChain.doFilter(c);
-    }
-
-    @Override
-    public void doFilter(Context c, FilterChain chain) throws Throwable {
-        handleDo(c);
-    }
-
-    protected void handleDo(Context c) throws Throwable {
-        //预处理（应对需要预处理的场景）
         try {
-            Handler m = find(c);
-            Object obj = null;
-
-            //m 不可能为 null；有 _def 打底
-            if (m != null) {
-                Boolean is_action = m instanceof Action;
-                //预加载控制器，确保所有的处理者可以都可以获取控制器
-                if (is_action) {
-                    if (allowReadyController()) {
-                        //提前准备控制器?（通过拦截器产生的参数，需要懒加载）
-                        obj = ((Action) m).bean().get();
-                        c.attrSet("controller", obj);
-                    }
-
-                    c.attrSet("action", m);
-                }
-
-                handle0(c, m, obj, is_action);
-            }
+            filterChain.doFilter(c);
         } catch (Throwable ex) {
             c.errors = ex;
             c.attrSet("error", ex);
 
             render(ex, c);
             EventBus.push(ex);
+        }
+    }
+
+    @Override
+    public void doFilter(Context c, FilterChain chain) throws Throwable {
+        Handler m = find(c);
+        Object obj = null;
+
+        //m 不可能为 null；有 _def 打底
+        if (m != null) {
+            Boolean is_action = m instanceof Action;
+            //预加载控制器，确保所有的处理者可以都可以获取控制器
+            if (is_action) {
+                if (allowReadyController()) {
+                    //提前准备控制器?（通过拦截器产生的参数，需要懒加载）
+                    obj = ((Action) m).bean().get();
+                    c.attrSet("controller", obj);
+                }
+
+                c.attrSet("action", m);
+            }
+
+            handle0(c, m, obj, is_action);
         }
     }
 
