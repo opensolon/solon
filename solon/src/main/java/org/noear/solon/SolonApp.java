@@ -237,7 +237,8 @@ public class SolonApp implements Handler, HandlerSlots, Filter {
     private final SolonProps _prop; //属性配置
     private final Class<?> _source; //应用加载源
     private final long _startupTime;
-    private final FilterChainNode _filterChain;
+
+    private FilterChainNode _filterChain;
 
     protected SolonApp(Class<?> source, NvMap args) {
         _startupTime = System.currentTimeMillis();
@@ -294,8 +295,15 @@ public class SolonApp implements Handler, HandlerSlots, Filter {
     //
     //////////////////////////////////////////////
 
-    public void filter(Filter filter){
-        _filterChain.next = new FilterChainNode(filter);
+    /**
+     * 添加过滤器（策略：先进后出）
+     *
+     * @param filter 过滤器
+     * */
+    public void filter(Filter filter) {
+        FilterChainNode tmp = new FilterChainNode(filter);
+        tmp.next = _filterChain;
+        _filterChain = tmp;
     }
 
     /**

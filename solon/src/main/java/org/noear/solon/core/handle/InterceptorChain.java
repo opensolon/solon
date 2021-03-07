@@ -13,39 +13,39 @@ import org.noear.solon.core.wrap.MethodWrap;
 public interface InterceptorChain {
     /**
      * 方法容器
-     * */
+     */
     MethodHolder method();
 
     /**
      * 拦截传递
      *
      * @param target 目标对象
-     * @param args 参数
-     * */
+     * @param args   参数
+     */
     Object doIntercept(Object target, Object[] args) throws Throwable;
 
 
     class Entity implements InterceptorChain {
-        private final Interceptor handler;
+        private final Interceptor interceptor;
         private final MethodWrap methodWrap;
 
         public final int index;
         public InterceptorChain next;
 
-        public Entity(MethodWrap m, int i, Interceptor h) {
+        public Entity(MethodWrap m, int i, Interceptor p) {
             index = i;
-            handler = h;
+            interceptor = p;
             methodWrap = m;
         }
 
         @Override
-        public MethodHolder method(){
+        public MethodHolder method() {
             return methodWrap;
         }
 
         @Override
         public Object doIntercept(Object target, Object[] args) throws Throwable {
-            return handler.doIntercept(target, args, next);
+            return interceptor.doIntercept(target, args, next);
         }
     }
 }
