@@ -1,18 +1,15 @@
 package webapp;
 
-import io.swagger.annotations.Info;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solondoc.swagger2.EnableSwagger2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import webapp.demo6_aop.TestImport;
 
 @Import(value = TestImport.class)
-@EnableSwagger2
 //@EnableCron4j
 //@EnableQuartz
 public class TestApp {
