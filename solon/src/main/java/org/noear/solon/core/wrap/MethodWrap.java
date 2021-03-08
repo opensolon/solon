@@ -67,7 +67,7 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
             //排序（顺排）
             arounds.sort(Comparator.comparing(x -> x.index));
 
-            //生成调用链
+            //生成调用链(先入先出)
             InterceptorChainNode node = arounds.get(0);
             for (int i = 1, len = arounds.size(); i < len; i++) {
                 node.next = arounds.get(i);
