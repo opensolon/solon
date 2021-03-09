@@ -27,6 +27,7 @@ solon.app.group: "water"
 solon.extend: "ext"
 solon.extend.solation: true
 
+
 # 配置切换
 solon.profiles.active: dev
 
@@ -59,7 +60,11 @@ solon.socketd:
   socketTimeout: "60s"
 
 
-solon.mime.xxx: "application/xxx"
+solon.mime.json: "application/json"
+
+solon.staticfiles:
+  enabled: true
+  maxAge: 6000
 
 #定时任务配置（支持：cron4j-solon-plugin）
 solon.cron4j.job1:

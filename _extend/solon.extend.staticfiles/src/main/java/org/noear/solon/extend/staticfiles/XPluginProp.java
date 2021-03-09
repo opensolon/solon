@@ -7,8 +7,8 @@ import org.noear.solon.Solon;
  * @since 1.3
  */
 class XPluginProp {
-    static final String PROP_ENABLED = "org.noear.solon.extend.staticfiles.enabled";
-    static final String PROP_MAX_AGE = "org.noear.solon.extend.staticfiles.maxAge";
+    static final String PROP_ENABLED = "solon.staticfiles.enabled";
+    static final String PROP_MAX_AGE = "solon.staticfiles.maxAge";
 
     static final String RES_LOCATION = "/static/";
 
