@@ -5,7 +5,7 @@
 
 # Solon rpc for java
 
-一个微型的Java RPC开发框架。
+一个微型的Java开发框架，可做为Springboot的轻量化替代方案。
 
 支持jdk8+；主框架0.1mb；组合不同的插件应对不同需求；方便定制；快速开发。
 
