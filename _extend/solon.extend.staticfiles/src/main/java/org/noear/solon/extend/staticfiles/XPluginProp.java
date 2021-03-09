@@ -29,7 +29,7 @@ class XPluginProp {
             if (Solon.cfg().isDebugMode()) {
                 maxAge = 0;
             } else {
-                maxAge = Solon.cfg().getInt(PROP_MAX_AGE, 6000);//100m
+                maxAge = Solon.cfg().getInt(PROP_MAX_AGE, 600);//10m
             }
         }
 
