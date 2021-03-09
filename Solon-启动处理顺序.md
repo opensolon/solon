@@ -1,4 +1,3 @@
-
 ## Solon 启动处理顺序
 
 * 1.实例化 Solon.global() 并加载配置
