@@ -19,9 +19,7 @@
         <java.version>1.8</java.version>
 
         <solon.ver>1.3.11</solon.ver>
-        <nami.ver>1.3.10</nami.ver>
-
-        <solondoc.ver>1.0</solondoc.ver>
+        <nami.ver>1.3.11</nami.ver>
 
         <snack3.ver>3.1.14</snack3.ver>
         <weed3.ver>3.3.3</weed3.ver>
@@ -37,11 +35,13 @@
         <enjoy.ver>4.8</enjoy.ver>
 
         <jetty.ver>9.4.31.v20200723</jetty.ver>
+        <undertow.ver>2.1.0.Final</undertow.ver>
+
         <jackson.ver>2.10.5</jackson.ver>
         <hessian.ver>4.0.63</hessian.ver>
+        <protostuff.ver>1.7.2</protostuff.ver>
 
         <junit.ver>4.13.1</junit.ver>
-        <undertow.ver>2.1.0.Final</undertow.ver>
 
         <mybatis.ver>3.5.3</mybatis.ver>
         <feign.ver>8.18.0</feign.ver>
@@ -51,8 +51,6 @@
 
         <netty.ver>4.1.48.Final</netty.ver>
         <rsocket.ver>1.1.0</rsocket.ver>
-
-        <protostuff.ver>1.7.2</protostuff.ver>
 
         <springboot.ver>2.0.4.RELEASE</springboot.ver>
     </properties>
