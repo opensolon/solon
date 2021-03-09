@@ -19,14 +19,18 @@ class XPluginProp {
         return Solon.cfg().getBool(PROP_ENABLED, true);
     }
 
-    static int maxAge = 0;
+    static int maxAge = -1;
 
     /**
      * 客户端缓存秒数
      */
     public static int maxAge() {
-        if (maxAge < 1) {
-            maxAge = Solon.cfg().getInt(PROP_MAX_AGE, 6000);
+        if (maxAge < 0) {
+            if (Solon.cfg().isDebugMode()) {
+                maxAge = 0;
+            } else {
+                maxAge = Solon.cfg().getInt(PROP_MAX_AGE, 6000);
+            }
         }
 
         return maxAge;

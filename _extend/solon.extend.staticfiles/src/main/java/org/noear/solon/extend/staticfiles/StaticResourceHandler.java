@@ -49,7 +49,7 @@ public class StaticResourceHandler implements Handler {
             String modified_since = context.header("If-Modified-Since");
             String modified_now = modified_time.toString();
 
-            if (modified_since != null) {
+            if (modified_since != null && XPluginProp.maxAge() > 0) {
                 if (modified_since.equals(modified_now)) {
                     context.headerSet(CACHE_CONTROL, "max-age=" + XPluginProp.maxAge());//单位秒
                     context.headerSet(LAST_MODIFIED, modified_now);
@@ -64,8 +64,11 @@ public class StaticResourceHandler implements Handler {
                 String mime = staticFiles.get(suffix);
 
                 if (mime != null) {
-                    context.headerSet(CACHE_CONTROL, "max-age=" + XPluginProp.maxAge());//单位秒
-                    context.headerSet(LAST_MODIFIED, modified_time.toString());
+                    if (XPluginProp.maxAge() > 0) {
+                        context.headerSet(CACHE_CONTROL, "max-age=" + XPluginProp.maxAge());//单位秒
+                        context.headerSet(LAST_MODIFIED, modified_time.toString());
+                    }
+
                     context.contentType(mime);
                 }
             }
