@@ -2,7 +2,7 @@ package org.noear.solon.extend.sessionstate.jwt;
 
 import org.noear.solon.Solon;
 
-class XServerProp {
+class XPluginProp {
     public static int request_maxRequestSize = 1024 * 1024 * 2;//默认2mb
     public static int session_timeout = 0;
     public static String session_state_domain;

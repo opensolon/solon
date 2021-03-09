@@ -1,12 +1,9 @@
 package org.noear.solon.extend.staticfiles;
 
-import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.MethodType;
 
-import java.io.File;
-import java.net.URI;
 import java.net.URL;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -54,7 +51,7 @@ public class StaticResourceHandler implements Handler {
 
             if (modified_since != null) {
                 if (modified_since.equals(modified_now)) {
-                    context.headerSet(CACHE_CONTROL, "max-age=6000");//单位秒
+                    context.headerSet(CACHE_CONTROL, "max-age=" + XPluginProp.maxAge());//单位秒
                     context.headerSet(LAST_MODIFIED, modified_now);
                     context.statusSet(304);
                     return;
@@ -67,7 +64,7 @@ public class StaticResourceHandler implements Handler {
                 String mime = staticFiles.get(suffix);
 
                 if (mime != null) {
-                    context.headerSet(CACHE_CONTROL, "max-age=6000");
+                    context.headerSet(CACHE_CONTROL, "max-age=" + XPluginProp.maxAge());//单位秒
                     context.headerSet(LAST_MODIFIED, modified_time.toString());
                     context.contentType(mime);
                 }

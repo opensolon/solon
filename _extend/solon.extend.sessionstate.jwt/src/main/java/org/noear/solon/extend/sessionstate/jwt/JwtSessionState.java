@@ -15,12 +15,12 @@ public class JwtSessionState extends SessionStateDefault {
     private static String _domain = null;
 
     static {
-        if (XServerProp.session_timeout > 0) {
-            _expiry = XServerProp.session_timeout;
+        if (XPluginProp.session_timeout > 0) {
+            _expiry = XPluginProp.session_timeout;
         }
 
-        if (XServerProp.session_state_domain != null) {
-            _domain = XServerProp.session_state_domain;
+        if (XPluginProp.session_state_domain != null) {
+            _domain = XPluginProp.session_state_domain;
         }
     }
 
@@ -39,7 +39,7 @@ public class JwtSessionState extends SessionStateDefault {
     }
 
     public void cookieSet(String key, String val) {
-        if (XServerProp.session_state_domain_auto) {
+        if (XPluginProp.session_state_domain_auto) {
             if (_domain != null) {
                 if (ctx.uri().getHost().indexOf(_domain) < 0) { //非安全域
                     ctx.cookieSet(key, val, null, _expiry);
@@ -58,7 +58,7 @@ public class JwtSessionState extends SessionStateDefault {
 
     @Override
     public String sessionId() {
-        if (XServerProp.session_jwt_requestUseHeader) {
+        if (XPluginProp.session_jwt_requestUseHeader) {
             return "";
         }
 
@@ -100,8 +100,8 @@ public class JwtSessionState extends SessionStateDefault {
                     if (Utils.isNotEmpty(token)) {
                         Claims claims = JwtUtils.parseJwt(token);
 
-                        if (XServerProp.session_jwt_requestUseHeader || sesId.equals(claims.getId())) {
-                            if(XServerProp.session_jwt_allowExpire) {
+                        if (XPluginProp.session_jwt_requestUseHeader || sesId.equals(claims.getId())) {
+                            if(XPluginProp.session_jwt_allowExpire) {
                                 if (claims.getExpiration() != null &&
                                         claims.getExpiration().getTime() > System.currentTimeMillis()) {
                                     sessionMap = claims;
@@ -140,7 +140,7 @@ public class JwtSessionState extends SessionStateDefault {
 
     @Override
     public void sessionRefresh() {
-        if (XServerProp.session_jwt_requestUseHeader) {
+        if (XPluginProp.session_jwt_requestUseHeader) {
             return;
         }
 
@@ -174,18 +174,18 @@ public class JwtSessionState extends SessionStateDefault {
 
 
     protected String jwtGet() {
-        if (XServerProp.session_jwt_requestUseHeader) {
-            return ctx.header(XServerProp.session_jwt_name);
+        if (XPluginProp.session_jwt_requestUseHeader) {
+            return ctx.header(XPluginProp.session_jwt_name);
         } else {
-            return cookieGet(XServerProp.session_jwt_name);
+            return cookieGet(XPluginProp.session_jwt_name);
         }
     }
 
     protected void jwtSet(String token) {
-        if (XServerProp.session_jwt_responseUseHeader) {
-            ctx.headerSet(XServerProp.session_jwt_name, token);
+        if (XPluginProp.session_jwt_responseUseHeader) {
+            ctx.headerSet(XPluginProp.session_jwt_name, token);
         } else {
-            cookieSet(XServerProp.session_jwt_name, token);
+            cookieSet(XPluginProp.session_jwt_name, token);
         }
     }
 }
