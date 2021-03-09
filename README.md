@@ -3,7 +3,7 @@
 
 ` QQ交流群：22200020 ` 
 
-# Solon rpc for java
+# Solon for java
 
 一个微型的Java开发框架，可做为Springboot的轻量化替代方案。
 
