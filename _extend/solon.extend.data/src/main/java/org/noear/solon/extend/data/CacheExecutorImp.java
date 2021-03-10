@@ -9,8 +9,8 @@ import org.noear.solon.core.cache.CacheService;
 import org.noear.solon.ext.SupplierEx;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,13 +30,20 @@ public class CacheExecutorImp {
             return callable.get();
         }
 
-        Map<String, Object> parMap = new HashMap<>();
+        Map<String, Object> parMap = buildParams(params,values);
         Object result = null;
 
         CacheService cs = CacheLib.cacheServiceGet(anno.service());
 
-        //0.构建缓存key
-        String key = buildKey(method, params, values, parMap);
+        //0.构建缓存key（如果有注解的key，优先用）
+        String key = anno.key();
+        if (Utils.isEmpty(key)) {
+            //没有注解key，生成一个key
+            key = buildKey(method, parMap);
+        }else {
+            //格式化key
+            key = formatTagsOrKey(key, parMap);
+        }
 
         //1.从缓存获取
         //
@@ -53,7 +60,7 @@ public class CacheExecutorImp {
                 cs.store(key, result, anno.seconds());
 
                 if (Utils.isNotEmpty(anno.tags())) {
-                    String tags = formatTags(anno.tags(), parMap);
+                    String tags = formatTagsOrKey(anno.tags(), parMap);
                     CacheTags ct = new CacheTags(cs);
 
                     //4.添加缓存标签
@@ -71,23 +78,32 @@ public class CacheExecutorImp {
      * 清除缓存
      */
     public void cacheRemove(CacheRemove anno, Method method, ParamWrap[] params, Object[] values) {
-        if (anno == null || Utils.isEmpty(anno.tags())) {
+        if (anno == null) {
             return;
         }
 
         CacheService cs = CacheLib.cacheServiceGet(anno.service());
-        Map<String, Object> parMap = new HashMap<>();
-        for (int i = 0, len = params.length; i < len; i++) {
-            parMap.put(params[i].getName(), values[i]);
+        Map<String, Object> parMap = buildParams(params, values);
+
+
+        //按 tags 清除缓存
+        if (Utils.isNotEmpty(anno.tags())) {
+            String tags = formatTagsOrKey(anno.tags(), parMap);
+            CacheTags ct = new CacheTags(cs);
+
+            for (String tag : tags.split(",")) {
+                ct.remove(tag);
+            }
         }
 
+        //按 keys 清除缓存
+        if (Utils.isNotEmpty(anno.keys())) {
+            String keys = formatTagsOrKey(anno.keys(), parMap);
 
-        String tags = formatTags(anno.tags(), parMap);
-        CacheTags ct = new CacheTags(cs);
-
-        //清除缓存
-        for (String tag : tags.split(",")) {
-            ct.remove(tag);
+            //清除缓存
+            for (String key : keys.split(",")) {
+                cs.remove(key);
+            }
         }
     }
 
@@ -95,60 +111,73 @@ public class CacheExecutorImp {
      * 更新缓存
      */
     public void cachePut(CachePut anno, Method method, ParamWrap[] params, Object[] values, Object newValue) {
-        if (anno == null || Utils.isEmpty(anno.tags())) {
+        if (anno == null) {
             return;
         }
 
         CacheService cs = CacheLib.cacheServiceGet(anno.service());
-        Map<String, Object> parMap = new HashMap<>();
+        Map<String, Object> parMap = buildParams(params, values);
+
+        //按 tags 更新缓存
+        if (Utils.isNotEmpty(anno.tags())) {
+            String tags = formatTagsOrKey(anno.tags(), parMap);
+            CacheTags ct = new CacheTags(cs);
+
+            for (String tag : tags.split(",")) {
+                ct.update(tag, newValue, anno.seconds());
+            }
+        }
+
+        //按 key 更新缓存
+        if (Utils.isNotEmpty(anno.key())) {
+            String key = formatTagsOrKey(anno.key(), parMap);
+            cs.store(key, newValue, anno.seconds());
+        }
+    }
+
+    protected Map<String, Object> buildParams(ParamWrap[] params, Object[] values) {
+        Map<String, Object> parMap = new LinkedHashMap<>();
+
         for (int i = 0, len = params.length; i < len; i++) {
             parMap.put(params[i].getName(), values[i]);
         }
 
-
-        String tags = formatTags(anno.tags(), parMap);
-        CacheTags ct = new CacheTags(cs);
-
-        //清除缓存
-        for (String tag : tags.split(",")) {
-            ct.update(tag, newValue, anno.seconds());
-        }
+        return parMap;
     }
 
 
-    protected String buildKey(Method method, ParamWrap[] params, Object[] values, Map<String, Object> parMap) {
+    protected String buildKey(Method method, Map<String, Object> parMap) {
         StringBuilder keyB = new StringBuilder();
 
         keyB.append(method.getDeclaringClass().getName()).append(":");
         keyB.append(method.getName()).append(":");
 
-        for (int i = 0, len = params.length; i < len; i++) {
-            keyB.append(params[i].getName()).append("_").append(values[i]);
-            parMap.put(params[i].getName(), values[i]);
-        }
+        parMap.forEach((k, v) -> {
+            keyB.append(k).append("_").append(v);
+        });
 
         return keyB.toString();
     }
 
-    protected String formatTags(String tags, Map map) {
-        if (tags.indexOf("$") < 0) {
-            return tags;
+    protected String formatTagsOrKey(String str, Map map) {
+        if (str.indexOf("$") < 0) {
+            return str;
         }
 
-        String tags2 = tags;
+        String str2 = str;
 
         Pattern pattern = Pattern.compile("\\$\\{(\\w+)\\}");
-        Matcher m = pattern.matcher(tags);
+        Matcher m = pattern.matcher(str);
         while (m.find()) {
             String mark = m.group(0);
             String name = m.group(1);
             if (map.containsKey(name)) {
                 String val = String.valueOf(map.get(name));
 
-                tags2 = tags2.replace(mark, val);
+                str2 = str2.replace(mark, val);
             }
         }
 
-        return tags2;
+        return str2;
     }
 }
