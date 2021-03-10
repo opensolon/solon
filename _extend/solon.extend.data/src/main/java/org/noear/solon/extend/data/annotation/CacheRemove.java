@@ -28,5 +28,5 @@ public @interface CacheRemove {
      * 例：user_${user_id} ，user_id 为参数
      * */
     @Note("清除缓存标签，多个以逗号隔开")
-    String tags();
+    String tags() default "";
 }
