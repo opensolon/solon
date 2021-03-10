@@ -34,11 +34,11 @@ public class ValidatorManager implements Handler {
         }
     }
 
-    public static void setNoRepeatLock(NoRepeatLock lock){
+    public static void setNoRepeatLock(NoRepeatLock lock) {
         NoRepeatLockImp.globalSet(lock);
     }
 
-    public static void setWhitelistChecker(WhitelistChecker checker){
+    public static void setWhitelistChecker(WhitelistChecker checker) {
         WhitelistCheckerImp.globalSet(checker);
     }
 
@@ -65,6 +65,16 @@ public class ValidatorManager implements Handler {
         if (handler != null) {
             this.failureHandler = handler;
         }
+    }
+
+    private boolean _enableRender = true;
+
+    public boolean enableRender() {
+        return _enableRender;
+    }
+
+    public void enableRender(boolean enableRender) {
+        _enableRender = enableRender;
     }
 
     protected void initialize() {
@@ -96,7 +106,7 @@ public class ValidatorManager implements Handler {
 
     /**
      * 清除所有验证器
-     * */
+     */
     @Note("清除所有验证器")
     public void clear() {
         validMap.clear();
@@ -104,15 +114,15 @@ public class ValidatorManager implements Handler {
 
     /**
      * 移除某个类型的验证器
-     * */
+     */
     @Note("移除某个类型的验证器")
-    public <T extends Annotation> void remove(Class<T> type){
+    public <T extends Annotation> void remove(Class<T> type) {
         validMap.remove(type);
     }
 
     /**
      * 注册验证器
-     * */
+     */
     @Note("注册验证器")
     public <T extends Annotation> void register(Class<T> type, Validator<T> validator) {
         validMap.put(type, validator);
@@ -152,7 +162,7 @@ public class ValidatorManager implements Handler {
         }
     }
 
-    protected boolean validateDo(Context ctx, Annotation anno, String name, StringBuilder tmp){
+    protected boolean validateDo(Context ctx, Annotation anno, String name, StringBuilder tmp) {
         if (ctx.getHandled()) {
             return true;
         }
@@ -173,8 +183,8 @@ public class ValidatorManager implements Handler {
         return false;
     }
 
-    protected boolean failureDo(Context ctx, Annotation ano, Result result, String message){
-        return failureHandler.onFailure(ctx,ano,result,message);
+    protected boolean failureDo(Context ctx, Annotation ano, Result result, String message) {
+        return failureHandler.onFailure(ctx, ano, result, message);
     }
 
     static class ValidatorFailureHandlerImp implements ValidatorFailureHandler {
@@ -182,28 +192,36 @@ public class ValidatorManager implements Handler {
         @Override
         public boolean onFailure(Context ctx, Annotation ano, Result rst, String message) {
             ctx.setHandled(true);
-            ctx.statusSet(400);
-            try {
-                if (Utils.isEmpty(message)) {
-                    if(Utils.isEmpty(rst.getDescription())){
-                        message = new StringBuilder(100)
-                                .append("@")
-                                .append(ano.annotationType().getSimpleName())
-                                .append(" verification failed")
-                                .toString();
-                    }else{
-                        message = new StringBuilder(100)
-                                .append("@")
-                                .append(ano.annotationType().getSimpleName())
-                                .append(" verification failed: ")
-                                .append(rst.getDescription())
-                                .toString();
-                    }
-                }
 
-                ctx.render(Result.failure(message));
-            } catch (Throwable ex) {
-                throw Utils.throwableWrap(ex);
+            if (rst.getCode() > 400 && rst.getCode() < 500) {
+                ctx.statusSet(rst.getCode());
+            } else {
+                ctx.statusSet(400);
+            }
+
+            if (ValidatorManager.global().enableRender()) {
+                try {
+                    if (Utils.isEmpty(message)) {
+                        if (Utils.isEmpty(rst.getDescription())) {
+                            message = new StringBuilder(100)
+                                    .append("@")
+                                    .append(ano.annotationType().getSimpleName())
+                                    .append(" verification failed")
+                                    .toString();
+                        } else {
+                            message = new StringBuilder(100)
+                                    .append("@")
+                                    .append(ano.annotationType().getSimpleName())
+                                    .append(" verification failed: ")
+                                    .append(rst.getDescription())
+                                    .toString();
+                        }
+                    }
+
+                    ctx.render(Result.failure(message));
+                } catch (Throwable ex) {
+                    throw Utils.throwableWrap(ex);
+                }
             }
 
             return true;
