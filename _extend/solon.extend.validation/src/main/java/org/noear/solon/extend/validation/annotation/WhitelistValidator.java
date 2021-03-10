@@ -22,7 +22,7 @@ public class WhitelistValidator implements Validator<Whitelist> {
         if (WhitelistCheckerImp.global().check(anno, ctx)) {
             return Result.succeed();
         } else {
-            return Result.failure();
+            return Result.failure(403);
         }
     }
 }
