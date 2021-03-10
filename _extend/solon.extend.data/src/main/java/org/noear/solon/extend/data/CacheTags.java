@@ -9,10 +9,10 @@ import java.util.List;
  * 缓存标签管理器
  * */
 public class CacheTags {
-    private CacheService _Cache;
+    private CacheService _cache;
 
     public CacheTags(CacheService caching) {
-        _Cache = caching;
+        _cache = caching;
     }
 
     /**
@@ -40,9 +40,9 @@ public class CacheTags {
         List<String> keys = $get(tagKey(tag));
 
         for (String cacheKey : keys)
-            _Cache.remove(cacheKey);
+            _cache.remove(cacheKey);
 
-        _Cache.remove(tagKey(tag));
+        _cache.remove(tagKey(tag));
 
         return this;
     }
@@ -54,17 +54,17 @@ public class CacheTags {
         List<String> keys = $get(tagKey(tag));
 
         for (String key : keys) {
-            Object temp = _Cache.get(key);
+            Object temp = _cache.get(key);
             if (temp != null) {
                 //如果之前有缓存，则：
                 //
                 if (newValue == null) {
                     //如果值为null，则删除
-                    _Cache.remove(key);
+                    _cache.remove(key);
                 } else {
                     //类型一样才更新 //避免引起莫名的错
                     if (newValue.getClass() == temp.getClass()) {
-                        _Cache.store(key, newValue, seconds);
+                        _cache.store(key, newValue, seconds);
                     }
                 }
             }
@@ -72,7 +72,7 @@ public class CacheTags {
     }
 
     protected List<String> $get(String tagKey) {
-        Object temp = _Cache.get(tagKey);
+        Object temp = _cache.get(tagKey);
 
         if (temp == null)
             return new ArrayList<>();
@@ -81,7 +81,7 @@ public class CacheTags {
     }
 
     protected void $set(String tagKey, List<String> value) {
-        _Cache.store(tagKey, value, 0);
+        _cache.store(tagKey, value, 0);
     }
 
     protected String tagKey(String tag) {
