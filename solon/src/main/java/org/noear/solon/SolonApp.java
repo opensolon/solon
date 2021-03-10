@@ -32,7 +32,7 @@ import java.util.function.Consumer;
  * @author noear
  * @since 1.0
  * */
-public class SolonApp implements Handler, HandlerSlots, Filter {
+public class SolonApp implements Handler, HandlerSlots {
     /**
      * 初始化（不能合在构建函数里）
      * */
@@ -249,7 +249,7 @@ public class SolonApp implements Handler, HandlerSlots, Filter {
 
         //顺序不能换
         _router = new Router();
-        _filterChain = new FilterChainNode(this);
+        _filterChain = new FilterChainNode(this::doFilter);
 
         _handler = new RouterHandler(_router);
 
@@ -476,8 +476,7 @@ public class SolonApp implements Handler, HandlerSlots, Filter {
         }
     }
 
-    @Override
-    public void doFilter(Context ctx, FilterChain chain) throws Throwable{
+    protected void doFilter(Context ctx, FilterChain chain) throws Throwable{
         _handler.handle(ctx);
     }
 

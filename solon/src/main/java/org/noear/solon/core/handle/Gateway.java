@@ -37,7 +37,7 @@ import java.util.function.Predicate;
  * @author noear
  * @since 1.0
  * */
-public abstract class Gateway extends HandlerAide implements Handler, Render, Filter {
+public abstract class Gateway extends HandlerAide implements Handler, Render {
     private Handler mainDef;
     private final Map<String, Handler> main = new HashMap<>();
     private final String mapping;
@@ -56,7 +56,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render, Fi
         //默认为404错误输出
         mainDef = (c) -> c.statusSet(404);
 
-        filterChain = new FilterChainNode(this);
+        filterChain = new FilterChainNode(this::doFilter);
 
         register();
     }
@@ -136,8 +136,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render, Fi
         }
     }
 
-    @Override
-    public void doFilter(Context c, FilterChain chain) throws Throwable {
+    protected void doFilter(Context c, FilterChain chain) throws Throwable {
         Handler m = find(c);
         Object obj = null;
 
