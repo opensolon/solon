@@ -21,7 +21,7 @@ public class JwtSessionStateFactory implements SessionStateFactory {
     }
 
     private JwtSessionStateFactory() {
-        String signKey0 = XServerProp.session_jwt_signKey;
+        String signKey0 = XPluginProp.session_jwt_signKey;
         if (Utils.isNotEmpty(signKey0)) {
             signKey = signKey0;
         }

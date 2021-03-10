@@ -1,5 +1,6 @@
 package org.noear.solon.extend.staticfiles;
 
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.HandlerLink;
@@ -16,11 +17,14 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        if ("0".equals(app.cfg().get("org.noear.solon.extend.staticfiles.enabled"))) {
+        if (XPluginProp.enabled() == false) {
             return;
         }
 
-        if (Utils.getResource("/static/") != null) {
+        //加载一个配置
+        XPluginProp.maxAge();
+
+        if (Utils.getResource(XPluginProp.RES_LOCATION) != null) {
             //1.加载自定义的mime
             //
             NvMap mimeTypes = app.cfg().getXmap("solon.mime");
@@ -28,7 +32,7 @@ public class XPluginImp implements Plugin {
                 StaticFiles.instance().putIfAbsent("." + k, v);
             });
 
-            StaticMappings.instance().add("/", "/static/");
+            StaticMappings.instance().add("/", XPluginProp.RES_LOCATION);
 
             //2.切换代理（让静态文件优先）
             HandlerLink link = new HandlerLink();
