@@ -6,7 +6,7 @@ import org.noear.solon.core.cache.CacheService;
 /**
  * 锁的默认实现
  *
- * 只适合地锁；分布式环境需要把锁实现换掉
+ * 只适合本地锁；分布式环境需要把锁实现换掉
  * @author noear
  * @since 1.0
  * */
