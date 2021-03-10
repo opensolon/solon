@@ -186,45 +186,4 @@ public class ValidatorManager implements Handler {
     protected boolean failureDo(Context ctx, Annotation ano, Result result, String message) {
         return failureHandler.onFailure(ctx, ano, result, message);
     }
-
-    static class ValidatorFailureHandlerImp implements ValidatorFailureHandler {
-
-        @Override
-        public boolean onFailure(Context ctx, Annotation ano, Result rst, String message) {
-            ctx.setHandled(true);
-
-            if (rst.getCode() > 400 && rst.getCode() < 500) {
-                ctx.statusSet(rst.getCode());
-            } else {
-                ctx.statusSet(400);
-            }
-
-            if (ValidatorManager.global().enableRender()) {
-                try {
-                    if (Utils.isEmpty(message)) {
-                        if (Utils.isEmpty(rst.getDescription())) {
-                            message = new StringBuilder(100)
-                                    .append("@")
-                                    .append(ano.annotationType().getSimpleName())
-                                    .append(" verification failed")
-                                    .toString();
-                        } else {
-                            message = new StringBuilder(100)
-                                    .append("@")
-                                    .append(ano.annotationType().getSimpleName())
-                                    .append(" verification failed: ")
-                                    .append(rst.getDescription())
-                                    .toString();
-                        }
-                    }
-
-                    ctx.render(Result.failure(message));
-                } catch (Throwable ex) {
-                    throw Utils.throwableWrap(ex);
-                }
-            }
-
-            return true;
-        }
-    }
 }
