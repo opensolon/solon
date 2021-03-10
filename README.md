@@ -74,6 +74,7 @@ public class App{
 * 项目内的：[_test](./_test/) 和 [_demo](./_demo/)
 * 更多示例：[solon_demo](https://gitee.com/noear/solon_demo)、[solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo)、[solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo)
 * 更多文章：[https://www.cnblogs.com/noear/](https://www.cnblogs.com/noear/)
+* 架构笔记：[《Spring Boot 轻量替代框架 Solon 的架构笔记》](https://my.oschina.net/noear/blog/4980834)
 
 ### 附3：快速入门示例
 * Web 示例（mvc）
