@@ -96,14 +96,10 @@ public class CacheExecutorImp {
             }
         }
 
-        //按 keys 清除缓存
-        if (Utils.isNotEmpty(anno.keys())) {
-            String keys = formatTagsOrKey(anno.keys(), parMap);
-
-            //清除缓存
-            for (String key : keys.split(",")) {
-                cs.remove(key);
-            }
+        //按 key 清除缓存
+        if (Utils.isNotEmpty(anno.key())) {
+            String key = formatTagsOrKey(anno.key(), parMap);
+            cs.remove(key);
         }
     }
 
