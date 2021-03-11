@@ -1,5 +1,4 @@
 server.port: 8080
-server.name: "waterapi"
 
 server.http.port: 8080
 server.socket.port: 28080
@@ -60,7 +59,8 @@ solon.socketd:
   socketTimeout: "60s"
 
 
-solon.mime.json: "application/json"
+solon.mime:
+  json: "application/json"
 
 solon.staticfiles:
   enabled: true

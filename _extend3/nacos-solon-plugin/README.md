@@ -1,6 +1,6 @@
 ```yaml
 solon.app:
-  name: "solon-consul-test"
+  name: "solon-nacos-test"
 
 solon.cloud.nacos:
   server: "localhost:8500"
