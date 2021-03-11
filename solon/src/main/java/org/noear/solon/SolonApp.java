@@ -239,6 +239,7 @@ public class SolonApp implements Handler, HandlerSlots {
     private final long _startupTime;
 
     private FilterChainNode _filterChain;
+    protected boolean stopped = false;
 
     protected SolonApp(Class<?> source, NvMap args) {
         _startupTime = System.currentTimeMillis();
@@ -485,7 +486,11 @@ public class SolonApp implements Handler, HandlerSlots {
     * */
     public void tryHandle(Context x) {
         try {
-            handle(x);
+            if (stopped) {
+                x.statusSet(403);
+            } else {
+                handle(x);
+            }
         } catch (Throwable ex) {
             ex = Utils.throwableUnwrap(ex);
 

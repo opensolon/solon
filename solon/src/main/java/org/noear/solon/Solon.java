@@ -137,12 +137,23 @@ public class Solon {
 
         //2.延时
         if (delay > 0) {
-            try {
-                Thread.sleep(delay * 1000);
-            } catch (InterruptedException ex) {
+            int delay1 = (int) (delay * 0.2);
+            int delay2 = delay - delay1;
 
+            //一段暂停
+            if (delay1 > 0) {
+                sleep0(delay1);
             }
-            PrintUtil.info("App","Security to stop: 2 completed "+hint);
+
+            Solon.global().stopped = true;
+
+            //二段暂停
+            if (delay2 > 0) {
+                sleep0(delay2);
+            }
+
+
+            PrintUtil.info("App", "Security to stop: 2 completed " + hint);
         }
 
         //3.停目
@@ -153,6 +164,14 @@ public class Solon {
         //4.直接非正常退出
         if(exit) {
             System.exit(1);
+        }
+    }
+
+    private static void sleep0(int seconds){
+        try {
+            Thread.sleep(seconds * 1000);
+        } catch (InterruptedException ex) {
+
         }
     }
 }
