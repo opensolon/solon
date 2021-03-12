@@ -17,7 +17,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-
     </properties>
 
 
@@ -233,8 +232,6 @@
         <module>../_nami/nami.coder.protostuff</module>
 
         <module>../_nami/nami-springboot-starter</module>
-
-
     </modules>
 
 </project>
