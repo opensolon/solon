@@ -324,6 +324,13 @@ public class Utils {
     }
 
     /**
+     * 根据本地资源url加载配置集
+     * */
+    public static Properties loadProperties(String url) {
+        return loadProperties(getResource(url));
+    }
+
+    /**
      * 根据txt加载配置集
      * */
     public static Properties buildProperties(String txt) {
