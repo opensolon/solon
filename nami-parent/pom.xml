@@ -5,18 +5,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.noear</groupId>
-    <artifactId>solon-plugin-parent</artifactId>
+    <artifactId>nami-parent</artifactId>
     <version>1.3.14</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
-    <description>Java project for solon</description>
-    <url>https://github.com/noear/solon</url>
+    <description>Java project for nami</description>
+    <url>https://github.com/noear/nami</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+
     </properties>
 
 
@@ -36,11 +37,10 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:git@github.com:noear/solon.git</connection>
-        <developerConnection>scm:git:git@github.com:noear/solon.git</developerConnection>
-        <url>https://github.com/noear/solon</url>
+        <connection>scm:git:git@github.com:noear/nami.git</connection>
+        <developerConnection>scm:git:git@github.com:noear/nami.git</developerConnection>
+        <url>https://github.com/noear/nami</url>
     </scm>
-
 
 
     <profiles>
@@ -214,29 +214,27 @@
         </plugins>
     </build>
 
+
     <modules>
-        <module>../_plugin/beetlsql-solon-plugin</module>
-        <module>../_plugin/cron4j-solon-plugin</module>
-        <module>../_plugin/dubbo-solon-plugin</module>
-        <module>../_plugin/feign-solon-plugin</module>
-        <module>../_plugin/graphql-solon-plugin</module>
-        <module>../_plugin/hasor-solon-plugin</module>
-        <!--        <module>_extend2/mqtt-solon-plugin</module>-->
-        <module>../_plugin/weed3-solon-plugin</module>
-        <module>../_plugin/mybatis-solon-plugin</module>
-        <module>../_plugin/mybatis-sqlhelper-solon-plugin</module>
-        <module>../_plugin/quartz-solon-plugin</module>
+        <module>../_nami/nami</module>
 
-        <module>../_plugin/solon-springboot-starter</module>
-        <module>../_plugin/solonrpc-springboot-starter</module>
+        <module>../_nami/nami.channel.http.okhttp</module>
+        <module>../_nami/nami.channel.http.hutool</module>
+        <module>../_nami/nami.channel.socketd</module>
+        <module>../_nami/nami.channel.socketd.jdksocket</module>
+        <module>../_nami/nami.channel.socketd.netty</module>
+        <module>../_nami/nami.channel.socketd.rsocket</module>
+        <module>../_nami/nami.channel.socketd.smartsocket</module>
+        <module>../_nami/nami.channel.socketd.websocket</module>
+        <module>../_nami/nami.coder.fastjson</module>
+        <module>../_nami/nami.coder.snack3</module>
+        <module>../_nami/nami.coder.hessian</module>
+        <module>../_nami/nami.coder.jackson</module>
+        <module>../_nami/nami.coder.protostuff</module>
+
+        <module>../_nami/nami-springboot-starter</module>
 
 
-        <module>../_plugin_cloud/consul-solon-plugin</module>
-        <module>../_plugin_cloud/nacos-solon-plugin</module>
-        <module>../_plugin_cloud/water-solon-plugin</module>
-
-        <module>../_plugin_cloud/rabbitmq-solon-plugin</module>
-        <module>../_plugin_cloud/rocketmq-solon-plugin</module>
     </modules>
 
 </project>
