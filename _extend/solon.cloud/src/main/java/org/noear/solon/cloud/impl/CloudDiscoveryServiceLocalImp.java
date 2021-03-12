@@ -27,7 +27,7 @@ public class CloudDiscoveryServiceLocalImp implements CloudDiscoveryService {
                 if (k instanceof String && v instanceof String) {
                     String key = ((String) k).split("\\[")[0];
                     URI val = URI.create((String) v);
-                    instanceList.add(new Instance(key, val.getHost()).protocol(val.getScheme()));
+                    instanceList.add(new Instance(key, val.getAuthority()).protocol(val.getScheme()));
                 }
             });
         }
