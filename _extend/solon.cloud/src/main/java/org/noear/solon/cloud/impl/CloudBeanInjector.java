@@ -11,7 +11,7 @@ import org.noear.solon.cloud.model.Config;
 import java.util.Properties;
 
 /**
- * 配置注入
+ * 配置注入器
  *
  * @author noear
  * @since 1.2

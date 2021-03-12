@@ -7,11 +7,15 @@ import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
 import org.noear.solon.core.Props;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author noear 2021/3/12 created
+ * 本地配置服务
+ *
+ * @author noear
+ * @since 1.3
  */
 public class CloudDiscoveryServiceLocalImp implements CloudDiscoveryService {
     List<Instance> instanceList = new ArrayList<>();
@@ -22,8 +26,8 @@ public class CloudDiscoveryServiceLocalImp implements CloudDiscoveryService {
             props.forEach((k, v) -> {
                 if (k instanceof String && v instanceof String) {
                     String key = ((String) k).split("\\[")[0];
-                    String val = (String) v;
-                    instanceList.add(new Instance(key, val));
+                    URI val = URI.create((String) v);
+                    instanceList.add(new Instance(key, val.getHost()).protocol(val.getScheme()));
                 }
             });
         }
@@ -41,7 +45,7 @@ public class CloudDiscoveryServiceLocalImp implements CloudDiscoveryService {
 
     @Override
     public void deregister(String group, Instance instance) {
-        instanceList.remove(instance);
+
     }
 
     @Override
