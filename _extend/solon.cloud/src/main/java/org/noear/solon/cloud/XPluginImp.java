@@ -1,5 +1,6 @@
 package org.noear.solon.cloud;
 
+import org.noear.solon.cloud.impl.CloudDiscoveryServiceLocalImp;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
@@ -63,6 +64,12 @@ public class XPluginImp implements Plugin {
         });
 
         Aop.context().beanInjectorAdd(CloudConfig.class, CloudBeanInjector.instance);
+
+
+        if(CloudClient.discovery() == null){
+            //如果没有发现服力，注册本地发现服务
+            CloudManager.register(new CloudDiscoveryServiceLocalImp());
+        }
 
         if (CloudClient.discovery() != null) {
             //服务注册
