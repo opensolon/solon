@@ -85,7 +85,7 @@ public class Bridge {
     //
     // UpstreamFactory 对接
     //
-    private static LoadBalance.Factory _upstreamFactory = null;
+    private static LoadBalance.Factory _upstreamFactory = (g,s)->null;
 
     /**
      * 获取负载工厂
