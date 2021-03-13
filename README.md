@@ -10,12 +10,12 @@
 支持jdk8+；主框架0.1mb；组合不同的插件应对不同需求；方便定制；快速开发。
 
 * 更快、更小、更自由
-* 支持注解与手动两种控制模式，自由切换
+* 支持注解与手动两种模式，按需自由操控
 * 自带IOC & AOP容器，支持PRC、REST API、MVC开发
-* 采用Handler + Context 架构；强调插件式扩展
-* 统一Http、WebSocket、Socket三种信号的开发体验
+* 集合 Handler + Context 和 Listener + Message 两种架构模式；强调插件式扩展；适应不同的应用场景
+* 统一 Http、WebSocket、Socket 三种信号的开发体验
 * 插件可扩展可切换：启动插件，扩展插件，序列化插件，数据插件，会话状态插件，视图插件(可共存) 等...
-* 使用感觉与Springboot近似，迁移成本低
+* 使用感觉与 Spring Boot 近似，迁移成本低
 
 
 ### Hello world：
