@@ -1,6 +1,5 @@
 package org.noear.solon.extend.staticfiles;
 
-import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.HandlerLink;
@@ -17,7 +16,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        if (XPluginProp.enabled() == false) {
+        if (XPluginProp.enable() == false) {
             return;
         }
 

@@ -254,7 +254,7 @@ public class SolonApp implements Handler, HandlerSlots {
 
         _handler = new RouterHandler(_router);
 
-        enableJarIsolation(_prop.getBool("solon.extend.solation", false));
+        enableJarIsolation(_prop.getBool("solon.extend.isolation", false));
     }
 
     protected long elapsedTimes(){

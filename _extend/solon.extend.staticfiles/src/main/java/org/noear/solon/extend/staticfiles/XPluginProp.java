@@ -7,7 +7,7 @@ import org.noear.solon.Solon;
  * @since 1.3
  */
 class XPluginProp {
-    static final String PROP_ENABLED = "solon.staticfiles.enabled";
+    static final String PROP_ENABLE = "solon.staticfiles.enable";
     static final String PROP_MAX_AGE = "solon.staticfiles.maxAge";
 
     static final String RES_LOCATION = "/static/";
@@ -15,8 +15,8 @@ class XPluginProp {
     /**
      * 是否启用
      */
-    public static boolean enabled() {
-        return Solon.cfg().getBool(PROP_ENABLED, true);
+    public static boolean enable() {
+        return Solon.cfg().getBool(PROP_ENABLE, true);
     }
 
     static int maxAge = -1;
