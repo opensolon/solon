@@ -1,17 +1,17 @@
-
-## 一、配置示例：
+### 一、配置示例：
 
 ```yaml
 solon:
   app:
     name: "solon-consul-test"
+    group: "test"
 
 solon.cloud.consul:
   server: "localhost"
 
 ```
 
-## 二、配置说明
+### 二、配置说明
 
 注：具体配置时，用框架名替代@@符
 
@@ -54,7 +54,7 @@ solon.cloud.consul:
 
 
 
-## 三、适配要求
+### 三、适配要求
 
 #### （一）日志服务适配要求
 
@@ -64,7 +64,7 @@ solon.cloud.consul:
 #### （二）事件服务适配要求
 
 * 支持定时事件
-* 只要订阅了主题，各服务组都能收到  
+* 只要订阅了主题，各服务组都能收到
 * 当前处理失败后逐级延后重试，直到最终成功；但不影响别的服务组
 
 延后间隔如下（可通过ExpirationUtils生成ttl）：
@@ -82,3 +82,17 @@ solon.cloud.consul:
 | 8 | 30分钟 |
 | 9 | 1小时 |
 | n.. | 2小时 |
+
+### 四、本地发布服务的配置补充
+
+本地发布服务配置，仅在云端发布服务被禁时才生效（一般用于本地测试或调试；也可用于k8s之类的服务名固定的场景）
+
+```yaml
+solon.cloud.local:
+  discovery:
+    service:
+      helloapi:  #服务名
+        - "http://localhost:8081"  #服务地址
+      userservice: #服务名
+        - "http://userservice" #服务地址
+```

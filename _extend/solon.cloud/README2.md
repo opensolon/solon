@@ -4,6 +4,6 @@ solon.cloud.local:
     service:
       helloapi: 
         - "http://localhost:8081"
--     userapi:
-        - "http://userservice"
+      userapi:
+        - "http://userapi"
 ```
