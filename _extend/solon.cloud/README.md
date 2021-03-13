@@ -6,10 +6,8 @@ solon:
   app:
     name: "solon-consul-test"
 
-solon.cloud.nacos:
-  server: "localhost:8500"
-  username: nacos
-  password: nacos
+solon.cloud.consul:
+  server: "localhost"
 
 ```
 

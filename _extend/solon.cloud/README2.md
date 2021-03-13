@@ -2,6 +2,8 @@
 solon.cloud.local:
   discovery:
     service:
-      demoapi: 
+      helloapi: 
         - "http://localhost:8081"
+-     userapi:
+        - "http://userservice"
 ```
