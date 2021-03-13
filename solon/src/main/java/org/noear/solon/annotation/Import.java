@@ -23,7 +23,7 @@ import java.lang.annotation.*;
  *     }
  * }
  *
- * //::XImport 注解在应用上的执行顺位：XPlugin -> XImport -> Scan bean
+ * //::Import 注解在应用上的执行顺位：Plugin -> Import -> Scan bean
  * </code></pre>
  *
  * @author noear
