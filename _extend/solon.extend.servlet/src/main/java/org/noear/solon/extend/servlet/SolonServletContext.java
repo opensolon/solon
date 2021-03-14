@@ -355,6 +355,11 @@ public class SolonServletContext extends Context {
         outputStream().flush();
     }
 
+    @Override
+    protected void commit() throws IOException {
+        sendHeaders();
+    }
+
     private boolean _headers_sent = false;
     private void sendHeaders() throws IOException{
         if(!_headers_sent) {
