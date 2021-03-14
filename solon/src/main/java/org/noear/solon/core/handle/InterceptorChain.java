@@ -16,7 +16,7 @@ public interface InterceptorChain {
     MethodHolder method();
 
     /**
-     * 拦截传递
+     * 拦截传递（target、args 是动态的，所以用参数传递；其它部分可以固化）
      *
      * @param target 目标对象
      * @param args   参数
