@@ -38,6 +38,11 @@ public class CloudManager {
     private static CloudLogService logService;
 
     /**
+     * 云端哨岗服务
+     */
+    private static CloudBreakerService breakerService;
+
+    /**
      * 云端跟踪服务（链路）
      */
     private static CloudTraceService traceService;
@@ -60,8 +65,17 @@ public class CloudManager {
         eventHandlerMap.put(anno, handler);
     }
 
+
     /**
-     * 登记云端配置服务
+     * 登记断路器服务
+     */
+    public static void register(CloudBreakerService service) {
+        breakerService = service;
+        PrintUtil.info("Cloud","CloudBreakerService registered from the " + service.getClass().getTypeName());
+    }
+
+    /**
+     * 登记配置服务
      */
     public static void register(CloudConfigService service) {
         configService = service;
@@ -69,7 +83,7 @@ public class CloudManager {
     }
 
     /**
-     * 登记云端注册服务
+     * 登记注册与发现服务
      */
     public static void register(CloudDiscoveryService service) {
         discoveryService = service;
@@ -77,7 +91,7 @@ public class CloudManager {
     }
 
     /**
-     * 登记云端事件服务
+     * 登记事件服务
      */
     public static void register(CloudEventService service) {
         eventService = service;
@@ -85,7 +99,7 @@ public class CloudManager {
     }
 
     /**
-     * 登记云端日志服务
+     * 登记锁服务
      */
     public static void register(CloudLockService service) {
         lockService = service;
@@ -93,19 +107,25 @@ public class CloudManager {
     }
 
     /**
-     * 登记云端日志服务
+     * 登记日志服务
      */
     public static void register(CloudLogService service) {
         logService = service;
         PrintUtil.info("Cloud","CloudLogService registered from the " + service.getClass().getTypeName());
     }
 
+
+
     /**
-     * 登记云端跟踪服务
+     * 登记链路跟踪服务
      */
     public static void register(CloudTraceService service) {
         traceService = service;
         PrintUtil.info("Cloud","CloudTraceService registered from the " + service.getClass().getTypeName());
+    }
+
+    protected static CloudBreakerService breakerService() {
+        return breakerService;
     }
 
     protected static CloudConfigService configService() {
@@ -127,6 +147,7 @@ public class CloudManager {
     protected static CloudLogService logService() {
         return logService;
     }
+
 
     protected static CloudTraceService traceService() {
         return traceService;

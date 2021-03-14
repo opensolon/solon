@@ -1,7 +1,7 @@
 package org.noear.solon.cloud.service;
 
 /**
- * 云端跟踪服务（链路）
+ * 云端链路跟踪服务
  *
  * @author noear
  * @since 1.2

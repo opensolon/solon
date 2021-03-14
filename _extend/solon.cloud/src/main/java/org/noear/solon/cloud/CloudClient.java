@@ -19,6 +19,16 @@ import java.util.Properties;
  * @since 1.2
  */
 public class CloudClient {
+
+    /**
+     * 断路器服务
+     * */
+    @Note("断路器服务")
+    public static CloudBreakerService breaker(){
+        return CloudManager.breakerService();
+    }
+
+
     /**
      * 配置服务
      */

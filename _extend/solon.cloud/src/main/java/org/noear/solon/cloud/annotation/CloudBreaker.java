@@ -5,7 +5,7 @@ import org.noear.solon.annotation.Note;
 import java.lang.annotation.*;
 
 /**
- * 云端哨岗
+ * 云端断路器申明
  *
  * @author noear
  * @since 1.3
@@ -13,7 +13,7 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface CloudSentry {
+public @interface CloudBreaker {
     @Note("name")
     String value();
 }
