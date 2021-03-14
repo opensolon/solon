@@ -1,12 +1,10 @@
 package org.noear.solon.cloud;
 
-import org.noear.solon.cloud.impl.CloudDiscoveryServiceLocalImp;
+import org.noear.solon.cloud.impl.*;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.cloud.impl.CloudLoadBalanceFactory;
-import org.noear.solon.cloud.impl.CloudLogAppender;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
@@ -15,7 +13,6 @@ import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.cloud.annotation.CloudConfig;
 import org.noear.solon.cloud.annotation.CloudEvent;
-import org.noear.solon.cloud.impl.CloudBeanInjector;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.model.Instance;
 
@@ -65,6 +62,12 @@ public class XPluginImp implements Plugin {
 
         Aop.context().beanInjectorAdd(CloudConfig.class, CloudBeanInjector.instance);
 
+
+
+        if(CloudClient.breaker() == null) {
+            //如果没有断路器服力，注册本地断路器服务
+            CloudManager.register(new CloudBreakerServiceLocalImp());
+        }
 
         if(CloudClient.discovery() == null){
             //如果没有发现服力，注册本地发现服务

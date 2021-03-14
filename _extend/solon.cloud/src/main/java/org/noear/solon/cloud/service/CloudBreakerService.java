@@ -10,9 +10,9 @@ import org.noear.solon.cloud.model.Entry;
  */
 public interface CloudBreakerService {
     /**
-     * 进入
+     * 获取入口
      *
      * @param breakerName 断路器名称
      */
-    Entry entry(String breakerName);
+    Entry entry(String breakerName) throws Exception;
 }
