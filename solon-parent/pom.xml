@@ -1032,8 +1032,6 @@
 
         <module>../_extend/solon.cloud</module>
 
-        <module>../_extend/solon.uapi</module>
-
         <module>../_extend/solon-beetl-web</module>
         <module>../_extend/solon-lib</module>
         <module>../_extend/solon-api</module>
