@@ -50,7 +50,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>guava-solon-plugin</artifactId>
+            <artifactId>sentinel-solon-plugin</artifactId>
         </dependency>
 
         <dependency>
