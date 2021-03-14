@@ -37,10 +37,10 @@ public class TestApp {
          * */
         SolonApp app = Solon.start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
 
-        app.filter((ctx, chain)->{
-            System.out.println("我是过滤器!!!path="+ctx.path());
-            chain.doFilter(ctx);
-        });
+//        app.filter((ctx, chain)->{
+//            System.out.println("我是过滤器!!!path="+ctx.path());
+//            chain.doFilter(ctx);
+//        });
 
 //        app.ws("/demoe/websocket",(session,message)->{
 //            System.out.println(session.resourceDescriptor());

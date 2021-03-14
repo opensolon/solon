@@ -16,11 +16,11 @@ import java.util.concurrent.CountDownLatch;
  * @author noear 2021/3/14 created
  */
 @Slf4j
-@RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(webapp.TestApp.class)
+//@RunWith(SolonJUnit4ClassRunner.class)
+//@SolonTest(webapp.TestApp.class)
 public class BreakerTest extends HttpTestBase {
 
-    @Test
+//    @Test
     public void test() throws Exception {
         CountDownLatch downLatch = new CountDownLatch(5);
 
@@ -40,7 +40,7 @@ public class BreakerTest extends HttpTestBase {
         downLatch.await();
     }
 
-    @Test
+//    @Test
     public void test2() throws Exception{
         BreakerServiceDemo serviceDemo = Aop.get(BreakerServiceDemo.class);
         CountDownLatch downLatch = new CountDownLatch(105);

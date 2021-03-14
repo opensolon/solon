@@ -1,6 +1,6 @@
 package webapp.demox_log_breaker;
 
-import org.noear.solon.cloud.annotation.CloudBreaker;
+//import org.noear.solon.cloud.annotation.CloudBreaker;
 import org.noear.solon.extend.aspect.annotation.Service;
 
 /**
@@ -8,7 +8,7 @@ import org.noear.solon.extend.aspect.annotation.Service;
  */
 @Service
 public class BreakerServiceDemo {
-    @CloudBreaker("test")
+//    @CloudBreaker("test")
     public String test() throws Exception{
         return "OK";
     }

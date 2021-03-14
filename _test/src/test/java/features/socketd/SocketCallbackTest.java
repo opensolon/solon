@@ -13,6 +13,7 @@ import org.noear.solon.test.SolonTest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
@@ -47,6 +48,6 @@ public class SocketCallbackTest {
             check.complete("name=noear".equals(rst_str));
         });
 
-        assert check.get();
+        assert check.get(2, TimeUnit.SECONDS);
     }
 }

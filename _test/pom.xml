@@ -48,15 +48,15 @@
             <artifactId>solon.logging.impl</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>guava-solon-plugin</artifactId>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>sentinel-solon-plugin</artifactId>
+            <artifactId>guava-solon-plugin</artifactId>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>sentinel-solon-plugin</artifactId>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.noear</groupId>

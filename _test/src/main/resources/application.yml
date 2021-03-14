@@ -16,6 +16,16 @@ solon.drift: 1
 solon.cloud.local:
   breaker:
     test: 1
+  discovery:
+    service:
+      local:
+        - "http://localhost:8080"
+      demo:
+        - "http://localhost:8080"
+      localrpc:
+        - "tcp://localhost:28080"
+
+
 
 solon.logging.appender:
   test:
