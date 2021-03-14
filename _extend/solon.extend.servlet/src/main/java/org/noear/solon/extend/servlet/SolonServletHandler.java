@@ -16,7 +16,7 @@ import java.io.IOException;
  * */
 public class SolonServletHandler extends HttpServlet {
 
-    protected void preHandle(Context ctx){
+    protected void preHandle(Context ctx) {
 
     }
 
@@ -27,19 +27,10 @@ public class SolonServletHandler extends HttpServlet {
 
         preHandle(ctx);
 
-        try {
-            Solon.global().handle(ctx);
+        Solon.global().tryHandle(ctx);
 
-            if (ctx.getHandled() == false || ctx.status() == 404) {
-                response.setStatus(404);
-            }
-        } catch (Throwable ex) {
-            EventBus.push(ex);
-            response.setStatus(500);
-
-            if (Solon.cfg().isDebugMode()) {
-                ex.printStackTrace(response.getWriter());
-            }
+        if (ctx.getHandled() == false || ctx.status() == 404) {
+            response.setStatus(404);
         }
     }
 }

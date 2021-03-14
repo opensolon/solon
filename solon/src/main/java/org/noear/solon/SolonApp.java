@@ -32,7 +32,7 @@ import java.util.function.Consumer;
  * @author noear
  * @since 1.0
  * */
-public class SolonApp implements Handler, HandlerSlots {
+public class SolonApp implements HandlerSlots {
     /**
      * 初始化（不能合在构建函数里）
      * */
@@ -462,8 +462,7 @@ public class SolonApp implements Handler, HandlerSlots {
     /**
      * 统一代理入口
      */
-    @Override
-    public void handle(Context x) throws Throwable {
+    protected void doHandle(Context x) throws Throwable {
         try {
             //设置当前线程上下文
             ContextUtil.currentSet(x);
@@ -489,14 +488,17 @@ public class SolonApp implements Handler, HandlerSlots {
             if (stopped) {
                 x.statusSet(403);
             } else {
-                handle(x);
+                doHandle(x);
             }
         } catch (Throwable ex) {
             ex = Utils.throwableUnwrap(ex);
 
             x.statusSet(500);
             x.setHandled(true);
-            x.output(Utils.getFullStackTrace(ex));
+
+            if (Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode()) {
+                x.output(Utils.getFullStackTrace(ex));
+            }
         }
     }
 

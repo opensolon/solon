@@ -25,20 +25,11 @@ public class ServletFilterSolon implements Filter {
         SolonServletContext ctx = new SolonServletContext((HttpServletRequest) request, (HttpServletResponse) response);
         //ctx.contentType("text/plain;charset=UTF-8");
 
+        Solon.global().tryHandle(ctx);
 
-        try {
-            Solon.global().handle(ctx);
-
-            if (ctx.getHandled() == false) {
-                ContextUtil.currentSet(ctx);
-                filterChain.doFilter(request, response);
-            }
-
-        } catch (Throwable ex) {
-            EventBus.push(ex);
-            ctx.statusSet(500);
-        } finally {
-            ContextUtil.currentRemove();
+        if (ctx.getHandled() == false) {
+            ContextUtil.currentSet(ctx);
+            filterChain.doFilter(request, response);
         }
     }
 

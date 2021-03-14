@@ -46,15 +46,10 @@ public class UtHttpHandler implements HttpHandler {
             context.headerSet("solon.boot", XPluginImp.solon_boot_ver());
         }
 
-        try {
-            Solon.global().handle(context);
+        Solon.global().tryHandle(context);
 
-            if (context.getHandled() == false || context.status() == 404) {
-                response.setStatus(404);
-            }
-        } catch (Throwable ex) {
-            EventBus.push(ex);
-            response.setStatus(500);
+        if (context.getHandled() == false || context.status() == 404) {
+            response.setStatus(404);
         }
     }
 }
