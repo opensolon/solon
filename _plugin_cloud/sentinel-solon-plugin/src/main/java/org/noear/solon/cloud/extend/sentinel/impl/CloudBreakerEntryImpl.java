@@ -18,7 +18,7 @@ import java.util.List;
 public class CloudBreakerEntryImpl implements BreakerEntry {
    String breakerName;
 
-    public CloudBreakerEntryImpl(String breakerName, int permitsPerSecond) {
+    public CloudBreakerEntryImpl(String breakerName, int permits) {
         this.breakerName = breakerName;
 
         List<FlowRule> ruleList = new ArrayList<>();
@@ -27,13 +27,13 @@ public class CloudBreakerEntryImpl implements BreakerEntry {
         rule = new FlowRule();
         rule.setResource(breakerName);
         rule.setGrade(RuleConstant.FLOW_GRADE_QPS); //qps
-        rule.setCount(permitsPerSecond);
+        rule.setCount(permits);
         ruleList.add(rule);
 
         rule = new FlowRule();
         rule.setResource(breakerName);
         rule.setGrade(RuleConstant.FLOW_GRADE_THREAD); //并发数
-        rule.setCount(permitsPerSecond);
+        rule.setCount(permits);
         ruleList.add(rule);
 
         FlowRuleManager.loadRules(ruleList);

@@ -45,8 +45,13 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.cloud</artifactId>
+            <artifactId>solon.logging.impl</artifactId>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>guava-solon-plugin</artifactId>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.noear</groupId>
@@ -135,16 +140,16 @@
 <!--        </dependency>-->
 
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jlhttp</artifactId>
-        </dependency>
-
-
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.smarthttp</artifactId>-->
+<!--            <artifactId>solon.boot.jlhttp</artifactId>-->
 <!--        </dependency>-->
+
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.smarthttp</artifactId>
+        </dependency>
 
 
 <!--        <dependency>-->
