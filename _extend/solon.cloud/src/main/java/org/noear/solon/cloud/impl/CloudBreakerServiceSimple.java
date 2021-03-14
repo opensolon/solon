@@ -18,22 +18,27 @@ import java.util.Map;
  * @author noear
  * @since 1.3
  */
-public class CloudBreakerServiceLocalImp implements CloudBreakerService {
+public class CloudBreakerServiceSimple implements CloudBreakerService {
     Map<String, Entry> breakers = new HashMap<>();
 
-    public CloudBreakerServiceLocalImp() {
+    public CloudBreakerServiceSimple() {
         Props props = Solon.cfg().getProp("solon.cloud.local.breaker");
+
         if (props.size() > 0) {
             for (Object k : props.keySet()) {
                 if (k instanceof String) {
                     String key = (String) k;
                     int val = props.getInt(key, 0);
                     if (val > 0) {
-                        breakers.put(key, new CloudEntryLocalImp(val));
+                        breakers.put(key, create(key, val));
                     }
                 }
             }
         }
+    }
+
+    protected Entry create(String name, int value){
+        return new CloudBreakerEntryLocalImpl(value);
     }
 
     @Override

@@ -230,8 +230,10 @@
         <module>../_plugin/solon-springboot-starter</module>
         <module>../_plugin/solonrpc-springboot-starter</module>
 
+        <!-- //////////////////////////////////////////////////// -->
 
         <module>../_plugin_cloud/consul-solon-plugin</module>
+        <module>../_plugin_cloud/guava-solon-plugin</module>
         <module>../_plugin_cloud/nacos-solon-plugin</module>
         <module>../_plugin_cloud/water-solon-plugin</module>
 

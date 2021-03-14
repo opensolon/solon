@@ -13,6 +13,10 @@ paasword: 1234
 
 solon.drift: 1
 
+solon.cloud.local:
+  breaker:
+    test: 1
+
 solon.logging.appender:
   test:
     class: webapp.demox_mlog.TestAppender

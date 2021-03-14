@@ -66,12 +66,12 @@ public class XPluginImp implements Plugin {
 
         if(CloudClient.breaker() == null) {
             //如果没有断路器服力，注册本地断路器服务
-            CloudManager.register(new CloudBreakerServiceLocalImp());
+            CloudManager.register(new CloudBreakerServiceSimple());
         }
 
         if(CloudClient.discovery() == null){
             //如果没有发现服力，注册本地发现服务
-            CloudManager.register(new CloudDiscoveryServiceLocalImp());
+            CloudManager.register(new CloudDiscoveryServiceLocalImpl());
         }
 
         if (CloudClient.discovery() != null) {

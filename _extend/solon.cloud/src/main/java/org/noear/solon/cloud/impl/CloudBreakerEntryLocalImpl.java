@@ -10,10 +10,10 @@ import java.util.concurrent.Semaphore;
  * @author noear
  * @since 1.3
  */
-public class CloudEntryLocalImp implements Entry {
+public class CloudBreakerEntryLocalImpl implements Entry {
     private Semaphore semaphore;
 
-    public CloudEntryLocalImp(int total) {
+    public CloudBreakerEntryLocalImpl(int total) {
         semaphore = new Semaphore(total);
     }
 

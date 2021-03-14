@@ -17,10 +17,10 @@ import java.util.List;
  * @author noear
  * @since 1.3
  */
-public class CloudDiscoveryServiceLocalImp implements CloudDiscoveryService {
+public class CloudDiscoveryServiceLocalImpl implements CloudDiscoveryService {
     List<Instance> instanceList = new ArrayList<>();
 
-    public CloudDiscoveryServiceLocalImp() {
+    public CloudDiscoveryServiceLocalImpl() {
         Props props = Solon.cfg().getProp("solon.cloud.local.discovery.service");
         if (props.size() > 0) {
             props.forEach((k, v) -> {

@@ -45,7 +45,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.logging.impl</artifactId>
+            <artifactId>solon.cloud</artifactId>
         </dependency>
 
         <dependency>
