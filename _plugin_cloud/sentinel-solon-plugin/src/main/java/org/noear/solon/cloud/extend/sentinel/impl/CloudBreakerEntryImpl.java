@@ -17,9 +17,10 @@ import java.util.List;
  */
 public class CloudBreakerEntryImpl implements BreakerEntry {
    String breakerName;
-   int permitsPerSecond;
 
     public CloudBreakerEntryImpl(String breakerName, int permitsPerSecond) {
+        this.breakerName = breakerName;
+
         List<FlowRule> rules = new ArrayList<>();
         FlowRule rule = null;
 
@@ -36,8 +37,6 @@ public class CloudBreakerEntryImpl implements BreakerEntry {
         rules.add(rule);
 
         FlowRuleManager.loadRules(rules);
-
-
     }
 
     @Override
