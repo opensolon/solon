@@ -18,12 +18,12 @@ public interface Entry extends AutoCloseable {
      *
      * @param count 数量
      */
-    void enter(int count) throws Exception;
+    void enter(int count) throws InterruptedException;
 
     /**
      * 进入
      */
-    default void enter() throws Exception {
+    default void enter() throws InterruptedException {
         enter(1);
     }
 
