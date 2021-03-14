@@ -18,7 +18,7 @@ public class CloudEntryLocalImp implements Entry {
     }
 
     @Override
-    public void enter(int count) throws Exception {
+    public void enter(int count) throws InterruptedException {
         semaphore.acquire(count);
     }
 
