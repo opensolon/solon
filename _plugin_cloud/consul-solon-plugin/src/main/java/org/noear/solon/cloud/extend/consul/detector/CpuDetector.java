@@ -24,9 +24,9 @@ public class CpuDetector extends AbstractDetector {
             } else {
                 readCpuRatioForLinux(info);
             }
-        } catch (Exception e) {
-            EventBus.push(e);
-            info.put("err","Get CPU Info Failed: " + e.getMessage() + "");
+        } catch (Exception ex) {
+            EventBus.push(ex);
+            info.put("err","Get CPU Info Failed: " + ex.getMessage() + "");
 
         }
         return info;

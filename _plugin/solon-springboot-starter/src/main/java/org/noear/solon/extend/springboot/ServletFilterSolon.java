@@ -37,10 +37,6 @@ public class ServletFilterSolon implements Filter {
         } catch (Throwable ex) {
             EventBus.push(ex);
             ctx.statusSet(500);
-
-            if (Solon.cfg().isDebugMode()) {
-                ex.printStackTrace(response.getWriter());
-            }
         } finally {
             ContextUtil.currentRemove();
         }

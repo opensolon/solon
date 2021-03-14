@@ -41,8 +41,8 @@ public class JdkHttpContextHandler implements HttpHandler {
                 context.commit();
             }
 
-        } catch (Throwable err) {
-            EventBus.push(err);
+        } catch (Throwable ex) {
+            EventBus.push(ex);
         }
     }
 }

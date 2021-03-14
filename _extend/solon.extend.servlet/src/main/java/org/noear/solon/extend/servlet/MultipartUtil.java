@@ -39,12 +39,8 @@ class MultipartUtil {
 
             UploadedFile f = new UploadedFile();
             f.contentType = part.getContentType();
-            try {
-                f.content = part.getInputStream(); //可以转成 ByteArrayInputStream
-            } catch (Exception ex) {
-                EventBus.push(ex);
-            }
-
+            f.content = part.getInputStream(); //可以转成 ByteArrayInputStream
+            
             f.name = part.getSubmittedFileName();
             int idx = f.name.lastIndexOf(".");
 

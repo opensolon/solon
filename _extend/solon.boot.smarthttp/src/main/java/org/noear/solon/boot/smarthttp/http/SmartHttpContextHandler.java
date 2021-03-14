@@ -1,7 +1,6 @@
 package org.noear.solon.boot.smarthttp.http;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.boot.smarthttp.XPluginImp;
 import org.noear.solon.boot.smarthttp.XServerProp;
 import org.noear.solon.core.event.EventBus;
@@ -47,8 +46,5 @@ public class SmartHttpContextHandler extends HttpHandle {
             EventBus.push(ex);
             response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-//        finally {
-//            response.close(); //性能非常差
-//        }
     }
 }

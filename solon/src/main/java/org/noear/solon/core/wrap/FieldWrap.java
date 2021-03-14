@@ -111,7 +111,7 @@ public class FieldWrap {
                 return setFun;
             }
         } catch (NoSuchMethodException ex) {
-
+            //正常情况，不用管
         } catch (Throwable ex) {
             EventBus.push(ex);
         }

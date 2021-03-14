@@ -59,8 +59,8 @@ public class ResourceScaner {
                     doScanByJar(jar, path, filter, urls);
                 }
             }
-        } catch (IOException e) {
-            EventBus.push(e);
+        } catch (IOException ex) {
+            EventBus.push(ex);
         }
 
         return urls;

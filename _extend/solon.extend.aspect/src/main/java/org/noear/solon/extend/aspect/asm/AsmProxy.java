@@ -640,8 +640,8 @@ public class AsmProxy {
             OutputStream out = new FileOutputStream(file);
             out.write(bytes);
             out.close();
-        } catch (Exception e) {
-            EventBus.push(e);
+        } catch (Exception ex) {
+            EventBus.push(ex);
         }
     }
 
@@ -657,8 +657,8 @@ public class AsmProxy {
             Class<?> clazz = (Class<?>) defineClassMethod.invoke(classLoader,
                     new Object[]{null, bytes, 0, bytes.length});
             return clazz;
-        } catch (Exception e) {
-            EventBus.push(e);
+        } catch (Exception ex) {
+            EventBus.push(ex);
         }
         return null;
     }

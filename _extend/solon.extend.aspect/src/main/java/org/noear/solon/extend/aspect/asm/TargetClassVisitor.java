@@ -95,8 +95,8 @@ public class TargetClassVisitor extends ClassVisitor {
                 }
                 return beans;
             }
-        }catch (Exception e) {
-            EventBus.push(e);
+        }catch (Exception ex) {
+            EventBus.push(ex);
         }
         return null;
     }

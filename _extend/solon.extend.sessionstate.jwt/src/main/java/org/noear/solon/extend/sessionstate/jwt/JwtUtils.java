@@ -79,8 +79,8 @@ public class JwtUtils {
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-        } catch (Exception e) {
-            EventBus.push(e);
+        } catch (Exception ex) {
+            EventBus.push(ex);
         }
 
         return null;

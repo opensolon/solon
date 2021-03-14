@@ -62,6 +62,7 @@ public class WebSocketHandleImp extends WebSocketDefaultHandle {
 
     @Override
     public void onError(Throwable error) {
+        EventBus.push(error);
 //        if (listener != null) {
 //            listener.onError(_SocketSession.get(request,response), error);
 //        }

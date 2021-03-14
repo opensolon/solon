@@ -55,10 +55,6 @@ public class UtHttpHandler implements HttpHandler {
         } catch (Throwable ex) {
             EventBus.push(ex);
             response.setStatus(500);
-
-            if (Solon.cfg().isDebugMode()) {
-                ex.printStackTrace(response.getWriter());
-            }
         }
     }
 }

@@ -60,9 +60,9 @@ public class DiskDetector extends AbstractDetector {
                     totals+=total;
                     totalUsed+=used;
                 }
-            } catch (Exception e) {
-                EventBus.push(e);
-                info.put("error","Get Disk Failed:"+e.getMessage());
+            } catch (Exception ex) {
+                EventBus.push(ex);
+                info.put("error", "Get Disk Failed:" + ex.getMessage());
             }
 
         }
