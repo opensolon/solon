@@ -21,22 +21,22 @@ public class CloudBreakerEntryImpl implements BreakerEntry {
     public CloudBreakerEntryImpl(String breakerName, int permitsPerSecond) {
         this.breakerName = breakerName;
 
-        List<FlowRule> rules = new ArrayList<>();
+        List<FlowRule> ruleList = new ArrayList<>();
         FlowRule rule = null;
 
         rule = new FlowRule();
         rule.setResource(breakerName);
         rule.setGrade(RuleConstant.FLOW_GRADE_QPS); //qps
         rule.setCount(permitsPerSecond);
-        rules.add(rule);
+        ruleList.add(rule);
 
         rule = new FlowRule();
         rule.setResource(breakerName);
         rule.setGrade(RuleConstant.FLOW_GRADE_THREAD); //并发数
         rule.setCount(permitsPerSecond);
-        rules.add(rule);
+        ruleList.add(rule);
 
-        FlowRuleManager.loadRules(rules);
+        FlowRuleManager.loadRules(ruleList);
     }
 
     @Override
