@@ -1,5 +1,7 @@
 package org.noear.solon.cloud.extend.consul.detector;
 
+import org.noear.solon.core.event.EventBus;
+
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -23,7 +25,7 @@ public class CpuDetector extends AbstractDetector {
                 readCpuRatioForLinux(info);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            EventBus.push(e);
             info.put("err","Get CPU Info Failed: " + e.getMessage() + "");
 
         }

@@ -2,6 +2,7 @@ package org.noear.solon.boot.jlhttp;
 
 import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 
@@ -122,7 +123,7 @@ public class JlHttpContext extends Context {
         try {
             return _request.getBody().available();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
             return 0;
         }
     }
@@ -170,7 +171,7 @@ public class JlHttpContext extends Context {
                 return temp;
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
 
             return def;
         }
@@ -186,7 +187,7 @@ public class JlHttpContext extends Context {
             try {
                 _paramMap.putAll(_request.getParams());
             } catch (Exception ex) {
-                ex.printStackTrace();
+                EventBus.push(ex);
             }
         }
 
@@ -211,7 +212,7 @@ public class JlHttpContext extends Context {
                     list.add(kv[1]);
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+                EventBus.push(ex);
                 return null;
             }
         }

@@ -15,7 +15,7 @@ public class FooterTag extends TagSupport {
             pageContext.getOut().write(sb.toString());
         }
         catch (Exception e){
-            e.printStackTrace();
+            EventBus.push(ex);
         }
 
         return super.doStartTag();

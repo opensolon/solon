@@ -1,6 +1,7 @@
 package org.noear.solon.extend.aspect.asm;
 
 
+import org.noear.solon.core.event.EventBus;
 import org.objectweb.asm.*;
 
 import java.io.File;
@@ -640,7 +641,7 @@ public class AsmProxy {
             out.write(bytes);
             out.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            EventBus.push(e);
         }
     }
 
@@ -657,7 +658,7 @@ public class AsmProxy {
                     new Object[]{null, bytes, 0, bytes.length});
             return clazz;
         } catch (Exception e) {
-            e.printStackTrace();
+            EventBus.push(e);
         }
         return null;
     }

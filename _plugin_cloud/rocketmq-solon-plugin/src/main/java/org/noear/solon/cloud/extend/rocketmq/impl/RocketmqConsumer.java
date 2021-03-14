@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.rocketmq.impl;
 
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
+import org.noear.solon.core.event.EventBus;
 
 import java.util.Map;
 
@@ -53,7 +54,6 @@ public class RocketmqConsumer {
                 consumer.registerMessageListener(handler);
                 consumer.start();
             } catch (Exception ex) {
-                ex.printStackTrace();
                 throw new RuntimeException(ex);
             }
         }

@@ -47,7 +47,6 @@ public class HandlerCacheUpdate implements CloudEventHandler {
             try {
                 discoveryService.onUpdate(Solon.cfg().appGroup(), service);
             } catch (Exception ex) {
-                ex.printStackTrace();//最后日志记录到服务端
                 logger.error(ss[1], "reload", "", ex);
             }
         }

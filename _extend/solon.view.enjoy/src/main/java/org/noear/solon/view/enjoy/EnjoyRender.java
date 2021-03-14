@@ -8,6 +8,7 @@ import com.jfinal.template.source.FileSourceFactory;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Context;
@@ -81,7 +82,7 @@ public class EnjoyRender implements Render {
                 forRelease();
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
         }
     }
 
@@ -90,7 +91,7 @@ public class EnjoyRender implements Render {
             engine.setBaseTemplatePath(_baseUri);
             engine.setSourceFactory(new ClassPathSourceFactory());
         } catch (Exception ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
         }
     }
 
@@ -98,7 +99,7 @@ public class EnjoyRender implements Render {
         try {
             engine.addDirective(name, clz);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
         }
     }
 
@@ -106,7 +107,7 @@ public class EnjoyRender implements Render {
         try {
             engine.addSharedObject(name, value);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
         }
     }
 

@@ -1,5 +1,7 @@
 package org.noear.solon.extend.schedule;
 
+import org.noear.solon.core.event.EventBus;
+
 /**
  * 任务运行工具
  * */
@@ -44,7 +46,7 @@ public class JobRunner implements IJobRunner {
                 }
 
             } catch (Throwable ex) {
-                ex.printStackTrace();
+                EventBus.push(ex);
 
                 try {
                     Thread.sleep(1000);

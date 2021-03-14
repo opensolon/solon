@@ -9,6 +9,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Context;
@@ -88,7 +89,7 @@ public class BeetlRender implements Render {
                 forRelease();
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
         }
     }
 
@@ -97,7 +98,7 @@ public class BeetlRender implements Render {
             ClasspathResourceLoader loader = new ClasspathResourceLoader(JarClassLoader.global(), _baseUri);
             gt = new GroupTemplate(loader, cfg);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
         }
 
     }
@@ -106,7 +107,7 @@ public class BeetlRender implements Render {
         try {
             gt.registerTag(name, tag);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
         }
     }
 
@@ -114,7 +115,7 @@ public class BeetlRender implements Render {
         try {
             gt.getSharedVars().put(name, value);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
         }
     }
 

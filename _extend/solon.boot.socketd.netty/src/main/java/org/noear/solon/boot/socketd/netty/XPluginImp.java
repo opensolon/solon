@@ -11,6 +11,7 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.Signal;
 import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
 import org.noear.solon.socketd.client.netty.NioChannelInitializer;
@@ -72,7 +73,7 @@ public class XPluginImp implements Plugin {
             bossGroup.shutdownGracefully();
             wokerGroup.shutdownGracefully();
 
-            ex.printStackTrace();
+            EventBus.push(ex);
         }
     }
 

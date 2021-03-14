@@ -5,6 +5,7 @@ import org.noear.nami.NamiException;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.common.InfoUtils;
 import org.noear.solon.Utils;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.extend.springboot.EnableSolon;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter;
@@ -53,7 +54,7 @@ public class AutoConfigurationNami extends InstantiationAwareBeanPostProcessorAd
                     }
                 }));
             } catch (Throwable ex) {
-                ex.printStackTrace();
+                EventBus.push(ex);
             }
         }
 

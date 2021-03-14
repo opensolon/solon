@@ -16,11 +16,6 @@ import java.util.concurrent.CountDownLatch;
 @SolonTest(webapp.TestApp.class)
 public class BreakerTest extends HttpTestBase {
 
-    @Override
-    public boolean enablePrint() {
-        return false;
-    }
-
     @Test
     public void test() throws Exception {
         CountDownLatch downLatch = new CountDownLatch(5);

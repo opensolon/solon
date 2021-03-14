@@ -2,6 +2,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.PrintUtil;
 
 import java.io.File;
@@ -86,7 +87,7 @@ public class ExtendLoader {
 
             return true;
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
             return false;
         }
     }
@@ -96,7 +97,7 @@ public class ExtendLoader {
             JarClassLoader.global().addJar(file);
             return true;
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
             return false;
         }
     }
@@ -109,7 +110,7 @@ public class ExtendLoader {
             JarClassLoader.global().removeJar(file);
             return true;
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
             return false;
         }
     }
@@ -184,7 +185,7 @@ public class ExtendLoader {
                     return;
                 }
             } catch (Throwable ex) {
-                ex.printStackTrace();
+                EventBus.push(ex);
             }
         }
     }

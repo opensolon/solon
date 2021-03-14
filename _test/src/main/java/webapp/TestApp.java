@@ -19,7 +19,7 @@ public class TestApp {
     public static void main(String[] args) throws Exception {
 
         EventBus.subscribe(Throwable.class, (event) -> {
-            event.printStackTrace();
+            //event.printStackTrace();
         });
 
         /**

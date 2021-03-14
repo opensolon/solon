@@ -7,6 +7,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.core.handle.Context;
@@ -91,7 +92,7 @@ public class VelocityRender implements Render {
                 forRelease();
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
         }
     }
 

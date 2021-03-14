@@ -1,5 +1,7 @@
 package org.noear.solon.cloud.extend.consul.detector;
 
+import org.noear.solon.core.event.EventBus;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
@@ -59,7 +61,7 @@ public class DiskDetector extends AbstractDetector {
                     totalUsed+=used;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                EventBus.push(e);
                 info.put("error","Get Disk Failed:"+e.getMessage());
             }
 

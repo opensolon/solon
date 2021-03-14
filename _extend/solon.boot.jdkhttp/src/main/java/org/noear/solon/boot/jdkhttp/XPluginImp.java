@@ -8,6 +8,7 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.Signal;
 import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.PrintUtil;
 
 import java.net.InetSocketAddress;
@@ -54,7 +55,7 @@ public final class XPluginImp implements Plugin {
             PrintUtil.info("solon.connector:main: jdkhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + _port + "}");
             PrintUtil.info("solon.server:main: jdkhttp: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
         }
     }
 

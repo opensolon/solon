@@ -38,7 +38,6 @@ public class NioServerProcessor extends SimpleChannelInboundHandler<Message> {
         Session session = NioSocketSession.get(ctx.channel());
         ListenerProxy.getGlobal().onError(session, cause);
 
-        //cause.printStackTrace();
         ctx.close();
     }
 }

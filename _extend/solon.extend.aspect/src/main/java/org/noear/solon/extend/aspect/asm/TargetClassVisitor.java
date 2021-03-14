@@ -1,5 +1,6 @@
 package org.noear.solon.extend.aspect.asm;
 
+import org.noear.solon.core.event.EventBus;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -95,7 +96,7 @@ public class TargetClassVisitor extends ClassVisitor {
                 return beans;
             }
         }catch (Exception e) {
-            e.printStackTrace();
+            EventBus.push(e);
         }
         return null;
     }

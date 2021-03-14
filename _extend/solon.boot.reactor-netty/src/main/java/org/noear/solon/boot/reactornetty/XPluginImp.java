@@ -3,6 +3,7 @@ package org.noear.solon.boot.reactornetty;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.PrintUtil;
 import reactor.netty.DisposableServer;
 import reactor.netty.http.HttpProtocol;
@@ -56,7 +57,7 @@ public class XPluginImp implements Plugin {
             PrintUtil.info("solon.connector:main: reactor-netty: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
             PrintUtil.info("solon.server:main: reactor-netty: Started @" + (time_end - time_start) + "ms");
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
         }
     }
 

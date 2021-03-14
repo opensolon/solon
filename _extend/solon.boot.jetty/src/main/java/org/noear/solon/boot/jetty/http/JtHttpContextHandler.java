@@ -29,10 +29,6 @@ public class JtHttpContextHandler extends AbstractHandler {
             EventBus.push(ex);
 
             response.setStatus(500);
-
-            if (Solon.cfg().isDebugMode()) {
-                ex.printStackTrace();
-            }
         }
     }
 

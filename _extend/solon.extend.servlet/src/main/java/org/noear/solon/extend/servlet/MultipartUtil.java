@@ -1,5 +1,6 @@
 package org.noear.solon.extend.servlet;
 
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.UploadedFile;
 
 import javax.servlet.MultipartConfigElement;
@@ -41,7 +42,7 @@ class MultipartUtil {
             try {
                 f.content = part.getInputStream(); //可以转成 ByteArrayInputStream
             } catch (Exception ex) {
-                ex.printStackTrace();
+                EventBus.push(ex);
             }
 
             f.name = part.getSubmittedFileName();

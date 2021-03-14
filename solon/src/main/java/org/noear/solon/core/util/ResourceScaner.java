@@ -3,6 +3,7 @@ package org.noear.solon.core.util;
 import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
 import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.core.event.EventBus;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,7 +60,7 @@ public class ResourceScaner {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            EventBus.push(e);
         }
 
         return urls;

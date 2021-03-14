@@ -2,6 +2,7 @@ package org.noear.solon.boot.smarthttp.http;
 
 import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 import org.smartboot.http.HttpRequest;
@@ -97,7 +98,7 @@ public class SmartHttpContext extends Context {
         try {
             return _request.getContentLength();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
             return 0;
         }
     }
@@ -140,7 +141,7 @@ public class SmartHttpContext extends Context {
                 return temp;
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
 
             return def;
         }
@@ -158,7 +159,7 @@ public class SmartHttpContext extends Context {
                     _paramMap.put(entry.getKey(), entry.getValue()[0]);
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+                EventBus.push(ex);
             }
         }
 

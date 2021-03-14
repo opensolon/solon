@@ -19,6 +19,8 @@ package org.noear.solon.boot.jlhttp;/*
  *  For additional info see http://www.freeutils.net/source/jlhttp/
  */
 
+import org.noear.solon.core.event.EventBus;
+
 import javax.net.ServerSocketFactory;
 import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
@@ -1466,7 +1468,7 @@ public class HTTPServer {
                 try {
                     originalUri = new URI(baseURL.getProtocol(),null, baseURL.getHost(),baseURL.getPort(), uri.getPath(), uri.getQuery(), uri.getFragment());
                 }catch (Exception ex) {
-                    ex.printStackTrace();
+                    EventBus.push(ex);
                 }
 
                 return baseURL;

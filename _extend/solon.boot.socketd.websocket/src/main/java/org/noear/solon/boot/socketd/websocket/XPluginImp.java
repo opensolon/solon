@@ -6,6 +6,7 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.core.Signal;
 import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
 
@@ -49,7 +50,7 @@ public class XPluginImp implements Plugin {
             PrintUtil.info("solon.connector:main: websocketd: Started ServerConnector@{HTTP/1.1,[WebSocket]}{0.0.0.0:" + _port + "}");
             PrintUtil.info("solon.server:main: websocketd: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
         }
     }
 

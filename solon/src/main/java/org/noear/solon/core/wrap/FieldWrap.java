@@ -1,6 +1,7 @@
 package org.noear.solon.core.wrap;
 
 import org.noear.solon.core.VarHolder;
+import org.noear.solon.core.event.EventBus;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -112,7 +113,7 @@ public class FieldWrap {
         } catch (NoSuchMethodException ex) {
 
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
         }
         return null;
     }

@@ -2,6 +2,7 @@ package org.noear.solon.extend.springboot;
 
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.event.EventBus;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
@@ -29,7 +30,7 @@ public class BeanPostProcessorSolon implements BeanPostProcessor {
                     Aop.context().beanRegister(bw, beanName, true);
                 }
             } catch (Throwable ex) {
-                ex.printStackTrace();
+                EventBus.push(ex);
             }
         }
 

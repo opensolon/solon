@@ -3,6 +3,7 @@ package org.noear.solon.view.thymeleaf;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Render;
@@ -55,7 +56,7 @@ public class ThymeleafRender implements Render {
             });
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
         }
 
         Solon.global().onSharedAdd((k, v) -> {
@@ -92,7 +93,7 @@ public class ThymeleafRender implements Render {
                 forRelease();
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
         }
     }
 

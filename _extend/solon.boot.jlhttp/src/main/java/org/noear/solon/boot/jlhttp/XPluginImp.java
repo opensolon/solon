@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.util.PrintUtil;
 
@@ -80,7 +81,7 @@ public final class XPluginImp implements Plugin {
             PrintUtil.info("solon.connector:main: jlhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + _port + "}");
             PrintUtil.info("solon.server:main: jlhttp: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
-            ex.printStackTrace();
+            EventBus.push(ex);
         }
     }
 
