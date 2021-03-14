@@ -19,7 +19,7 @@ public class CloudBreakerEntryLocalImpl implements Entry {
 
     @Override
     public void enter(int count) throws InterruptedException {
-        semaphore.acquire(count);
+        semaphore.acquireUninterruptibly(count);
     }
 
     @Override
