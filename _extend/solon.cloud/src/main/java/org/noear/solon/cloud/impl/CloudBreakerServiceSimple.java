@@ -1,7 +1,8 @@
 package org.noear.solon.cloud.impl;
 
 import org.noear.solon.Solon;
-import org.noear.solon.cloud.model.Entry;
+import org.noear.solon.cloud.model.BreakerException;
+import org.noear.solon.cloud.model.BreakerEntry;
 import org.noear.solon.cloud.service.CloudBreakerService;
 import org.noear.solon.core.Props;
 
@@ -18,8 +19,8 @@ import java.util.Map;
  * @author noear
  * @since 1.3
  */
-public class CloudBreakerServiceSimple implements CloudBreakerService {
-    Map<String, Entry> breakers = new HashMap<>();
+public abstract class CloudBreakerServiceSimple implements CloudBreakerService {
+    Map<String, BreakerEntry> breakers = new HashMap<>();
 
     public CloudBreakerServiceSimple() {
         Props props = Solon.cfg().getProp("solon.cloud.local.breaker");
@@ -37,20 +38,16 @@ public class CloudBreakerServiceSimple implements CloudBreakerService {
         }
     }
 
-    protected Entry create(String name, int value){
-        return new CloudBreakerEntryLocalImpl(value);
-    }
+    protected abstract BreakerEntry create(String name, int value);
 
     @Override
-    public Entry entry(String breakerName) throws Exception {
-        Entry tmp = breakers.get(breakerName);
+    public AutoCloseable entry(String breakerName) throws BreakerException {
+        BreakerEntry tmp = breakers.get(breakerName);
 
         if (tmp == null) {
             throw new IllegalArgumentException("Missing breaker configuration: " + breakerName);
         } else {
-            tmp.enter();
+            return tmp.enter();
         }
-
-        return tmp;
     }
 }

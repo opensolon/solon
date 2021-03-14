@@ -62,13 +62,6 @@ public class XPluginImp implements Plugin {
 
         Aop.context().beanInjectorAdd(CloudConfig.class, CloudBeanInjector.instance);
 
-
-
-        if(CloudClient.breaker() == null) {
-            //如果没有断路器服力，注册本地断路器服务
-            CloudManager.register(new CloudBreakerServiceSimple());
-        }
-
         if(CloudClient.discovery() == null){
             //如果没有发现服力，注册本地发现服务
             CloudManager.register(new CloudDiscoveryServiceLocalImpl());

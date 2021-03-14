@@ -233,12 +233,14 @@
         <!-- //////////////////////////////////////////////////// -->
 
         <module>../_plugin_cloud/consul-solon-plugin</module>
-        <module>../_plugin_cloud/guava-solon-plugin</module>
         <module>../_plugin_cloud/nacos-solon-plugin</module>
         <module>../_plugin_cloud/water-solon-plugin</module>
 
         <module>../_plugin_cloud/rabbitmq-solon-plugin</module>
         <module>../_plugin_cloud/rocketmq-solon-plugin</module>
+
+        <module>../_plugin_cloud/guava-solon-plugin</module>
+        <module>../_plugin_cloud/sentinel-solon-plugin</module>
     </modules>
 
 </project>

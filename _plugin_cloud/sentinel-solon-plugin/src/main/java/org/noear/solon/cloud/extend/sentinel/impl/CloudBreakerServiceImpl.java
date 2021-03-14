@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.guava.impl;
+package org.noear.solon.cloud.extend.sentinel.impl;
 
 import org.noear.solon.cloud.impl.CloudBreakerServiceSimple;
 import org.noear.solon.cloud.model.BreakerEntry;
@@ -10,6 +10,6 @@ import org.noear.solon.cloud.model.BreakerEntry;
 public class CloudBreakerServiceImpl extends CloudBreakerServiceSimple {
     @Override
     protected BreakerEntry create(String name, int value) {
-        return new CloudBreakerEntryImpl(value);
+        return new CloudBreakerEntryImpl(name, value);
     }
 }

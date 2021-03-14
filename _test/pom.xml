@@ -50,6 +50,11 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>guava-solon-plugin</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon.extend.staticfiles</artifactId>
         </dependency>
 

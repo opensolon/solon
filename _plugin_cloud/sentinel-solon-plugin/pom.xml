@@ -10,7 +10,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>guava-solon-plugin</artifactId>
+    <artifactId>sentinel-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -20,9 +20,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>30.1-jre</version>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-core</artifactId>
+            <version>1.8.1</version>
         </dependency>
     </dependencies>
 

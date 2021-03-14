@@ -1,6 +1,6 @@
 package org.noear.solon.cloud.service;
 
-import org.noear.solon.cloud.model.Entry;
+import org.noear.solon.cloud.model.BreakerException;
 
 /**
  * 云端断路器服务
@@ -14,5 +14,5 @@ public interface CloudBreakerService {
      *
      * @param breakerName 断路器名称
      */
-    Entry entry(String breakerName) throws Exception;
+    AutoCloseable entry(String breakerName) throws BreakerException;
 }
