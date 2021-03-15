@@ -19,10 +19,10 @@ import java.util.Map;
  * @author noear
  * @since 1.3
  */
-public abstract class CloudBreakerServiceSimple implements CloudBreakerService {
+public abstract class CloudBreakerServiceLocalImpl implements CloudBreakerService {
     Map<String, BreakerEntry> breakers = new HashMap<>();
 
-    public CloudBreakerServiceSimple() {
+    public CloudBreakerServiceLocalImpl() {
         Props props = Solon.cfg().getProp("solon.cloud.local.breaker");
 
         if (props.size() > 0) {
