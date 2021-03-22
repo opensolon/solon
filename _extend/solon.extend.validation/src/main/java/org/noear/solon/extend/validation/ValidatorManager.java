@@ -1,6 +1,5 @@
 package org.noear.solon.extend.validation;
 
-import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
@@ -16,7 +15,7 @@ import java.util.Map;
 /**
  * 验证管理器
  *
- * 只支持XController 和 XAction
+ * 只支持 Controller 和 Action
  *
  * @author noear
  * @since 1.0
