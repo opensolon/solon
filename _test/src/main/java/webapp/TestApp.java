@@ -3,6 +3,8 @@ package webapp;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Import;
+import org.noear.solon.cloud.CloudClient;
+import org.noear.solon.cloud.model.BreakerException;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.MethodType;
 import org.slf4j.Logger;
@@ -36,6 +38,17 @@ public class TestApp {
          *
          * */
         SolonApp app = Solon.start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
+
+
+Solon.global().filter((ctx, chain) -> {
+    if("/demox/test".equals(ctx.path())) {
+        try (AutoCloseable entry = CloudClient.breaker().entry("test")) {
+            chain.doFilter(ctx);
+        }catch (BreakerException ex){
+            ctx.statusSet(403);
+        }
+    }
+});
 
 //        app.filter((ctx, chain)->{
 //            System.out.println("我是过滤器!!!path="+ctx.path());

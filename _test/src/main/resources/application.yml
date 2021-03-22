@@ -48,7 +48,7 @@ server.session.state.redis:
 solon.output.meta: 1
 
 solon.stop:
-  enabled: true
+  enable: true
   path: /demox/_stop
   host: localhost
 

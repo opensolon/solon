@@ -2,6 +2,7 @@ package webapp.demox_log_breaker;
 
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.cloud.annotation.CloudBreaker;
 //import org.noear.solon.cloud.annotation.CloudBreaker;
 
 /**
@@ -9,7 +10,7 @@ import org.noear.solon.annotation.Mapping;
  */
 @Controller
 public class BreakerDemo {
-//    @CloudBreaker("test")
+    @CloudBreaker("test")
     @Mapping("/demox/test")
     public String test() throws Exception{
         return "OK";

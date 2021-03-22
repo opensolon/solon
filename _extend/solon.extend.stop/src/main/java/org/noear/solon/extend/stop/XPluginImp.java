@@ -7,7 +7,7 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        boolean enabled = app.cfg().getBool("solon.stop.enabled", false);
+        boolean enable = app.cfg().getBool("solon.stop.enable", false);
         String path = app.cfg().get("solon.stop.path", "/run/stop/");
         String host = app.cfg().get("solon.stop.host", "127.0.0.1");
 
@@ -15,7 +15,7 @@ public class XPluginImp implements Plugin {
         int delay = Solon.cfg().getInt("solon.stop.delay", 10);
 
         //开启WEB关闭
-        if (enabled) {
+        if (enable) {
             app.get(path, (c) -> {
                 int delay2 = c.paramAsInt("delay", delay);
 
