@@ -32,7 +32,7 @@ public class JacksonActionExecutor extends ActionExecutorDefault {
 
     @Override
     protected Object changeBody(Context ctx) throws Exception {
-        return mapper_type.readTree(ctx.body());
+        return mapper_type.readTree(ctx.bodyNew());
     }
 
     @Override

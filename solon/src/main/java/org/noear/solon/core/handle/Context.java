@@ -163,6 +163,7 @@ public abstract class Context {
         return accept;
     }
 
+
     private String body;
     /**获取RAW内容*/
     @Note("获取RAW内容")
@@ -179,6 +180,19 @@ public abstract class Context {
         }
 
         return body;
+    }
+
+    private String bodyNew;
+    public String bodyNew() throws IOException{
+        if(bodyNew == null){
+            return body();
+        }else{
+            return bodyNew;
+        }
+    }
+
+    public void bodyNew(String bodyNew){
+        this.bodyNew = bodyNew;
     }
 
     /**获取RAW内容为byte[]*/

@@ -21,7 +21,7 @@ public class SnackJsonActionExecutor extends ActionExecutorDefault {
 
     @Override
     protected Object changeBody(Context ctx) throws Exception {
-        return ONode.loadStr(ctx.body());
+        return ONode.loadStr(ctx.bodyNew());
     }
 
     @Override

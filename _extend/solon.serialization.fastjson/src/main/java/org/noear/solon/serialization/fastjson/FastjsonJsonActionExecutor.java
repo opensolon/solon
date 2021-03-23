@@ -21,7 +21,7 @@ public class FastjsonJsonActionExecutor extends ActionExecutorDefault {
 
     @Override
     protected Object changeBody(Context ctx) throws Exception {
-        return JSON.parse(ctx.body());
+        return JSON.parse(ctx.bodyNew());
     }
 
     @Override

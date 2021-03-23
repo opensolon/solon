@@ -6,7 +6,6 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
 
 import java.io.ByteArrayInputStream;
-import java.lang.reflect.Parameter;
 import java.util.Map;
 
 public class HessianActionExecutor extends ActionExecutorDefault {
