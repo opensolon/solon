@@ -123,7 +123,7 @@ public class Result<T> implements Serializable {
 
     @Note("成功的结果")
     public static Result succeed(String description) {
-        return new Result<>(SUCCEED_CODE, description);
+        return new Result(SUCCEED_CODE, description);
     }
 
 
