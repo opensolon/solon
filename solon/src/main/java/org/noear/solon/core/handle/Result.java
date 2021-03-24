@@ -89,6 +89,12 @@ public class Result<T> implements Serializable {
         this.description = description;
     }
 
+    public Result(int code, String description, T data) {
+        this.code = code;
+        this.description = description;
+        this.data = data;
+    }
+
     private static ResultReadonly _succeed;
     /**
      * 成功的空结果
@@ -109,6 +115,17 @@ public class Result<T> implements Serializable {
     public static <T> Result<T> succeed(T data) {
         return new Result<>(data);
     }
+
+    @Note("成功的结果")
+    public static <T> Result<T> succeed(T data, String description) {
+        return new Result<>(SUCCEED_CODE, description, data);
+    }
+
+    @Note("成功的结果")
+    public static Result succeed(String description) {
+        return new Result<>(SUCCEED_CODE, description);
+    }
+
 
     private static ResultReadonly _failure;
     /**
