@@ -24,7 +24,7 @@ public abstract class LogAbstractAppender extends AppenderSimple implements LogA
         meta.put("level", getLevel().name());
         meta.put("enable", enable);
 
-        PrintUtil.info("Logging", getName() + "" + meta.toString());
+        PrintUtil.info("Logging", getName() + " " + meta.toString());
     }
 
     private boolean enable = true;
