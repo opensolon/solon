@@ -121,6 +121,11 @@ public class Result<T> implements Serializable {
         return new Result<>(SUCCEED_CODE, description, data);
     }
 
+    @Note("成功的结果")
+    public static <T> Result<T> succeed(T data, int code) {
+        return new Result<>(code, "", data);
+    }
+
     private static ResultReadonly _failure;
     /**
      * 成功的空结果
