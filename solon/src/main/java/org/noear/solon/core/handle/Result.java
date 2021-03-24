@@ -121,12 +121,6 @@ public class Result<T> implements Serializable {
         return new Result<>(SUCCEED_CODE, description, data);
     }
 
-    @Note("成功的结果")
-    public static Result succeed(String description) {
-        return new Result(SUCCEED_CODE, description);
-    }
-
-
     private static ResultReadonly _failure;
     /**
      * 成功的空结果
