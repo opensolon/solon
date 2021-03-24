@@ -61,7 +61,9 @@ public class StaticMappings extends ArrayList<StaticLocation> {
                     if (file.exists()) {
                         rst = uri.toURL();
                     }
-                } else {
+                }
+
+                if (rst == null) {
                     rst = Utils.getResource(m.location + path);
                 }
 
