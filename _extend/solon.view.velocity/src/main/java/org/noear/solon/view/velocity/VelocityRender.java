@@ -4,8 +4,8 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.ModelAndView;
@@ -32,7 +32,8 @@ public class VelocityRender implements Render {
         return _global;
     }
 
-    private VelocityEngine velocity = new VelocityEngine();
+    private VelocityEngine engine;
+    private VelocityEngine engine_debug;
     private Map<String, Object> _sharedVariable = new HashMap<>();
 
     private String _baseUri = "/WEB-INF/view/";
@@ -49,28 +50,44 @@ public class VelocityRender implements Render {
 
         if (Solon.cfg().isDebugMode()) {
             forDebug();
+            forRelease();
         } else {
             forRelease();
         }
 
-        velocity.setProperty(Velocity.ENCODING_DEFAULT, getEncoding());
-        velocity.setProperty(Velocity.INPUT_ENCODING, getEncoding());
-
-        Solon.cfg().forEach((k, v) -> {
-            String key = k.toString();
-            if (key.startsWith("veloci")) {
-                velocity.setProperty(key, v);
-            }
-        });
-
-        velocity.init();
+        engineInit(engine);
+        engineInit(engine_debug);
 
         Solon.global().onSharedAdd((k, v) -> {
             setSharedVariable(k, v);
         });
     }
 
+    private void engineInit(VelocityEngine ve) {
+        if(ve == null){
+            return;
+        }
+
+        ve.setProperty(Velocity.ENCODING_DEFAULT, getEncoding());
+        ve.setProperty(Velocity.INPUT_ENCODING, getEncoding());
+
+        Solon.cfg().forEach((k, v) -> {
+            String key = k.toString();
+            if (key.startsWith("velocity")) {
+                ve.setProperty(key, v);
+            }
+        });
+
+        ve.init();
+    }
+
     private void forDebug() {
+        if (engine_debug != null) {
+            return;
+        }
+
+        engine_debug = new VelocityEngine();
+
         String dirroot = Utils.getResource("/").toString().replace("target/classes/", "");
         File dir = null;
 
@@ -85,7 +102,7 @@ public class VelocityRender implements Render {
 
         try {
             if (dir != null && dir.exists()) {
-                velocity.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, dir.getAbsolutePath() + File.separatorChar);
+                engine_debug.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, dir.getAbsolutePath() + File.separatorChar);
             } else {
                 //如果没有找到文件，则使用发行模式
                 //
@@ -97,14 +114,24 @@ public class VelocityRender implements Render {
     }
 
     private void forRelease() {
+        if (engine != null) {
+            return;
+        }
+
+        engine = new VelocityEngine();
+
         String root_path = Utils.getResource(_baseUri).getPath();
 
-        velocity.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, true);
-        velocity.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, root_path);
+        engine.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, true);
+        engine.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, root_path);
     }
 
     public void loadDirective(Object obj) {
-        velocity.loadDirective(obj.getClass().getName());
+        engine.loadDirective(obj.getClass().getName());
+
+        if(engine_debug != null){
+            engine_debug.loadDirective(obj.getClass().getName());
+        }
     }
 
     public void setSharedVariable(String key, Object obj) {
@@ -156,7 +183,19 @@ public class VelocityRender implements Render {
         String view = mv.view();
 
         //取得velocity的模版
-        Template t = velocity.getTemplate(view, getEncoding());
+        Template template = null;
+
+        if (engine_debug != null) {
+            try {
+                template = engine_debug.getTemplate(view, getEncoding());
+            } catch (ResourceNotFoundException ex) {
+                //忽略此异常
+            }
+        }
+
+        if (template == null) {
+            template = engine.getTemplate(view, getEncoding());
+        }
 
         // 取得velocity的上下文context
         VelocityContext vc = new VelocityContext(mv.model());
@@ -165,7 +204,7 @@ public class VelocityRender implements Render {
         // 输出流
         PrintWriter writer = new PrintWriter(outputStream.get());
         // 转换输出
-        t.merge(vc, writer);
+        template.merge(vc, writer);
         writer.flush();
     }
 }

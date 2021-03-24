@@ -35,6 +35,7 @@ public class BeetlRender implements Render {
 
     Configuration cfg = null;
     GroupTemplate gt = null;
+    GroupTemplate gt_debug = null;
 
     private String _baseUri = "/WEB-INF/view/";
 
@@ -58,6 +59,7 @@ public class BeetlRender implements Render {
 
         if (Solon.cfg().isDebugMode()) {
             forDebug();
+            forRelease();
         } else {
             forRelease();
         }
@@ -68,6 +70,10 @@ public class BeetlRender implements Render {
     }
 
     private void forDebug() {
+        if (gt_debug != null) {
+            return;
+        }
+
         //添加调试模式
         String dirroot = Utils.getResource("/").toString().replace("target/classes/", "");
         File dir = null;
@@ -84,7 +90,7 @@ public class BeetlRender implements Render {
         try {
             if (dir != null && dir.exists()) {
                 FileResourceLoader loader = new FileResourceLoader(dir.getAbsolutePath(), "utf-8");
-                gt = new GroupTemplate(loader, cfg);
+                gt_debug = new GroupTemplate(loader, cfg);
             } else {
                 forRelease();
             }
@@ -94,6 +100,10 @@ public class BeetlRender implements Render {
     }
 
     private void forRelease() {
+        if (gt != null) {
+            return;
+        }
+
         try {
             ClasspathResourceLoader loader = new ClasspathResourceLoader(JarClassLoader.global(), _baseUri);
             gt = new GroupTemplate(loader, cfg);
@@ -106,6 +116,10 @@ public class BeetlRender implements Render {
     public void registerTag(String name, Class<?> tag) {
         try {
             gt.registerTag(name, tag);
+
+            if (gt_debug != null) {
+                gt_debug.registerTag(name, tag);
+            }
         } catch (Exception ex) {
             EventBus.push(ex);
         }
@@ -114,6 +128,10 @@ public class BeetlRender implements Render {
     public void setSharedVariable(String name, Object value) {
         try {
             gt.getSharedVars().put(name, value);
+
+            if (gt_debug != null) {
+                gt_debug.getSharedVars().put(name, value);
+            }
         } catch (Exception ex) {
             EventBus.push(ex);
         }
@@ -157,7 +175,19 @@ public class BeetlRender implements Render {
             ctx.headerSet("solon.view", "BeetlRender");
         }
 
-        Template template = gt.getTemplate(mv.view());
+        Template template = null;
+
+        if (gt_debug != null) {
+            if (gt_debug.hasTemplate(mv.view())) {
+                template = gt_debug.getTemplate(mv.view());
+            }
+        }
+
+        if (template == null) {
+            template = gt.getTemplate(mv.view());
+        }
+
+
         template.binding(mv.model());
         template.renderTo(outputStream.get());
     }

@@ -33,7 +33,8 @@ public class EnjoyRender implements Render {
     }
 
 
-    Engine engine = Engine.use();
+    Engine engine = null;
+    Engine engine_debug = null;
 
     private String _baseUri = "/WEB-INF/view/";
 
@@ -50,6 +51,7 @@ public class EnjoyRender implements Render {
 
         if (Solon.cfg().isDebugMode()) {
             forDebug();
+            forRelease();
         } else {
             forRelease();
         }
@@ -60,6 +62,12 @@ public class EnjoyRender implements Render {
     }
 
     private void forDebug() {
+        if(engine_debug != null){
+            return;
+        }
+
+        engine_debug = Engine.use();
+
         //添加调试模式
         String dirroot = Utils.getResource("/").toString().replace("target/classes/", "");
         File dir = null;
@@ -75,9 +83,9 @@ public class EnjoyRender implements Render {
 
         try {
             if (dir != null && dir.exists()) {
-                engine.setDevMode(true);
-                engine.setBaseTemplatePath(dir.getPath());
-                engine.setSourceFactory(new FileSourceFactory());
+                engine_debug.setDevMode(true);
+                engine_debug.setBaseTemplatePath(dir.getPath());
+                engine_debug.setSourceFactory(new FileSourceFactory());
             } else {
                 forRelease();
             }
@@ -87,6 +95,12 @@ public class EnjoyRender implements Render {
     }
 
     private void forRelease() {
+        if(engine != null){
+            return;
+        }
+
+        engine = Engine.use();
+
         try {
             engine.setBaseTemplatePath(_baseUri);
             engine.setSourceFactory(new ClassPathSourceFactory());
@@ -98,6 +112,10 @@ public class EnjoyRender implements Render {
     public void addDirective(String name, Class<? extends Directive> clz) {
         try {
             engine.addDirective(name, clz);
+
+            if(engine_debug != null){
+                engine_debug.addDirective(name, clz);
+            }
         } catch (Exception ex) {
             EventBus.push(ex);
         }
@@ -106,6 +124,10 @@ public class EnjoyRender implements Render {
     public void setSharedVariable(String name, Object value) {
         try {
             engine.addSharedObject(name, value);
+
+            if(engine_debug != null){
+                engine_debug.addSharedObject(name, value);
+            }
         } catch (Exception ex) {
             EventBus.push(ex);
         }
@@ -149,7 +171,17 @@ public class EnjoyRender implements Render {
             ctx.headerSet("solon.view", "EnjoyRender");
         }
 
-        Template template = engine.getTemplate(mv.view());
+        Template template = null;
+
+        if(engine_debug != null) {
+            if (engine_debug.getEngineConfig().getDirective(mv.view()) != null) {
+                template = engine_debug.getTemplate(mv.view());
+            }
+        }
+
+        if(template == null) {
+            template = engine.getTemplate(mv.view());
+        }
 
         PrintWriter writer = new PrintWriter(outputStream.get());
         template.render(mv.model(), writer);

@@ -2,6 +2,7 @@ package org.noear.solon.view.freemarker;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import freemarker.template.TemplateNotFoundException;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
@@ -30,7 +31,8 @@ public class FreemarkerRender implements Render {
     }
 
 
-    Configuration cfg = new Configuration(Configuration.VERSION_2_3_28);
+    Configuration cfg;
+    Configuration cfg_debug;
 
     private String _baseUri = "/WEB-INF/view/";
 
@@ -46,12 +48,10 @@ public class FreemarkerRender implements Render {
 
         if (Solon.cfg().isDebugMode()) {
             forDebug();
+            forRelease();
         } else {
             forRelease();
         }
-
-        cfg.setNumberFormat("#");
-        cfg.setDefaultEncoding("utf-8");
 
         Solon.global().onSharedAdd((k, v) -> {
             setSharedVariable(k, v);
@@ -60,6 +60,14 @@ public class FreemarkerRender implements Render {
 
     //尝试 调试模式 进行实始化
     private void forDebug() {
+        if (cfg_debug != null) {
+            return;
+        }
+
+        cfg_debug = new Configuration(Configuration.VERSION_2_3_28);
+        cfg_debug.setNumberFormat("#");
+        cfg_debug.setDefaultEncoding("utf-8");
+
         String dirroot = Utils.getResource("/").toString().replace("target/classes/", "");
         File dir = null;
 
@@ -74,7 +82,7 @@ public class FreemarkerRender implements Render {
 
         try {
             if (dir != null && dir.exists()) {
-                cfg.setDirectoryForTemplateLoading(dir);
+                cfg_debug.setDirectoryForTemplateLoading(dir);
             } else {
                 //如果没有找到文件，则使用发行模式
                 //
@@ -87,6 +95,14 @@ public class FreemarkerRender implements Render {
 
     //使用 发布模式 进行实始化
     private void forRelease() {
+        if (cfg != null) {
+            return;
+        }
+
+        cfg = new Configuration(Configuration.VERSION_2_3_28);
+        cfg.setNumberFormat("#");
+        cfg.setDefaultEncoding("utf-8");
+
         try {
             cfg.setClassLoaderForTemplateLoading(JarClassLoader.global(), _baseUri);
         } catch (Exception ex) {
@@ -99,6 +115,10 @@ public class FreemarkerRender implements Render {
     public void setSharedVariable(String name, Object value) {
         try {
             cfg.setSharedVariable(name, value);
+
+            if (cfg_debug != null) {
+                cfg_debug.setSharedVariable(name, value);
+            }
         } catch (Exception ex) {
             EventBus.push(ex);
         }
@@ -144,7 +164,19 @@ public class FreemarkerRender implements Render {
 
         PrintWriter writer = new PrintWriter(outputStream.get());
 
-        Template template = cfg.getTemplate(mv.view(), "utf-8");
+        Template template = null;
+
+        if (cfg_debug != null) {
+            try {
+                template = cfg_debug.getTemplate(mv.view(), "utf-8");
+            } catch (TemplateNotFoundException ex) {
+                //跳过
+            }
+        }
+
+        if (template == null) {
+            template = cfg.getTemplate(mv.view(), "utf-8");
+        }
 
         template.process(mv.model(), writer);
     }
