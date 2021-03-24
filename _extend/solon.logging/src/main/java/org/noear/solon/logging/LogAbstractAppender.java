@@ -48,7 +48,7 @@ public abstract class LogAbstractAppender extends AppenderSimple implements LogA
 
     @Override
     public void append(LogEvent logEvent) {
-        if (enable == false || this.level.code >= logEvent.getLevel().code) {
+        if (enable == false || this.level.code <= logEvent.getLevel().code) {
             return;
         }
 
