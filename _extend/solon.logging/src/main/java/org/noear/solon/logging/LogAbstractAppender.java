@@ -1,9 +1,13 @@
 package org.noear.solon.logging;
 
 import org.noear.solon.Solon;
+import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.logging.event.AppenderSimple;
 import org.noear.solon.logging.event.Level;
 import org.noear.solon.logging.event.LogEvent;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author noear
@@ -15,6 +19,12 @@ public abstract class LogAbstractAppender extends AppenderSimple implements LogA
         setLevel(Level.of(levelStr, getDefaultLevel()));
 
         enable = Solon.cfg().getBool("solon.logging.appender." + getName() + ".enable", true);
+
+        Map<String, Object> meta = new LinkedHashMap();
+        meta.put("level", getLevel().name());
+        meta.put("enable", enable);
+
+        PrintUtil.info("Logging", getName() + "" + meta.toString());
     }
 
     private boolean enable = true;
