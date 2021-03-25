@@ -23,9 +23,7 @@ public class LogConsoleAppender extends LogAbstractAppender {
 
     @Override
     protected void appendDo(LogEvent logEvent) {
-        if (Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode()) {
-            super.appendDo(logEvent);
-        }
+        super.appendDo(logEvent);
     }
 
     @Override
