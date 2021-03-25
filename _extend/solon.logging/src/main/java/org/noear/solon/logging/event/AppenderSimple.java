@@ -34,7 +34,7 @@ public class AppenderSimple implements Appender {
         StringBuilder buf = new StringBuilder();
         buf.append("[").append(logEvent.getLevel().name()).append("] ");
         buf.append(dateTime.toString()).append(" ");
-        buf.append("[*").append(Thread.currentThread().getName()).append("]");
+        buf.append("[-").append(Thread.currentThread().getName()).append("]");
 
         if (logEvent.getMetainfo() != null) {
             logEvent.getMetainfo().forEach((k, v) -> {

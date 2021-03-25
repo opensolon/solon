@@ -60,11 +60,12 @@ public class CloudLogServiceImp implements CloudLogService {
             if (TextUtils.isEmpty(log.tag3)) {
                 log.tag3 = logEvent.getInitClass().getSimpleName();
             }
+            log.class_name = logEvent.getInitClass().getCanonicalName();
         }
 
         log.trace_id = WaterClient.waterTraceId();
         log.from = WaterClient.localServiceHost();
-        log.thread = Thread.currentThread().getName();
+        log.thread_name = Thread.currentThread().getName();
 
         log.log_date = datetime.getDate();
         log.log_fulltime = datetime.getFulltime();
