@@ -39,6 +39,8 @@ public class XPluginImp implements Plugin {
             }
 
             //1.1.加载配置
+            CloudClient.configLoad(ConsulProps.instance.getConfigLoad());
+
             CloudClient.configLoad(ConsulProps.instance.getConfigLoadGroup(),
                     ConsulProps.instance.getConfigLoadKey());
         }

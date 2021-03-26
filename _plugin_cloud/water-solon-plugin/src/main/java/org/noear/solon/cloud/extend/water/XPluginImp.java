@@ -97,8 +97,11 @@ public class XPluginImp implements Plugin {
                 }
 
                 //配置加载
+                CloudClient.configLoad(WaterProps.instance.getConfigLoad());
+
                 CloudClient.configLoad(WaterProps.instance.getConfigLoadGroup(),
                         WaterProps.instance.getConfigLoadKey());
+
             }
 
 

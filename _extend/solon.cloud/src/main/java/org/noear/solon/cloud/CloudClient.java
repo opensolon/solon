@@ -61,6 +61,24 @@ public class CloudClient {
             });
         }
     }
+    @Note("配置服务，加载默认配置。g::k,k")
+    public static void configLoad(String groupKeySet) {
+        if (CloudClient.config() == null) {
+            return;
+        }
+
+        if (Utils.isNotEmpty(groupKeySet)) {
+            String[] gkAry = groupKeySet.split(",");
+            for (String gkStr : gkAry) {
+                String[] gk = gkStr.split("::");
+                if (gk.length == 2) {
+                    configLoad(gk[0], gk[1]);
+                } else {
+                    configLoad(Solon.cfg().appGroup(), gk[0]);
+                }
+            }
+        }
+    }
 
     /**
      * 发现服务

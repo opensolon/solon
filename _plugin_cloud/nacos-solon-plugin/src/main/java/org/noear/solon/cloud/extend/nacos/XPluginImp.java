@@ -25,6 +25,8 @@ public class XPluginImp implements Plugin {
             CloudManager.register(new CloudConfigServiceImp());
 
             //1.1.加载配置
+            CloudClient.configLoad(NacosProps.instance.getConfigLoad());
+
             CloudClient.configLoad(NacosProps.instance.getConfigLoadGroup(),
                     NacosProps.instance.getConfigLoadKey());
         }

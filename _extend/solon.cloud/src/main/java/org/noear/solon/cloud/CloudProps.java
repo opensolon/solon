@@ -21,6 +21,7 @@ public class CloudProps {
     //配置服务相关
     private String CONFIG_ENABLE = "solon.cloud.@@.config.enable";
     private String CONFIG_SERVER = "solon.cloud.@@.config.server";
+    private String CONFIG_LOAD = "solon.cloud.@@.config.load"; //（对某些框架来讲，可能没用处）
     private String CONFIG_LOAD_GROUP = "solon.cloud.@@.config.loadGroup"; //（对某些框架来讲，可能没用处）
     private String CONFIG_LOAD_KEY = "solon.cloud.@@.config.loadKey";
     private String CONFIG_REFRESH_INTERVAL = "solon.cloud.@@.config.refreshInterval";
@@ -67,6 +68,7 @@ public class CloudProps {
 
         CONFIG_ENABLE = CONFIG_ENABLE.replace("@@", frame);
         CONFIG_SERVER = CONFIG_SERVER.replace("@@", frame);
+        CONFIG_LOAD = CONFIG_LOAD.replace("@@", frame);
         CONFIG_LOAD_GROUP = CONFIG_LOAD_GROUP.replace("@@", frame);
         CONFIG_LOAD_KEY = CONFIG_LOAD_KEY.replace("@@", frame);
         CONFIG_REFRESH_INTERVAL = CONFIG_REFRESH_INTERVAL.replace("@@", frame);
@@ -137,10 +139,16 @@ public class CloudProps {
         }
     }
 
+    public String getConfigLoad() {
+        return Solon.cfg().get(CONFIG_LOAD);
+    }
+
+    @Deprecated
     public String getConfigLoadGroup() {
         return Solon.cfg().get(CONFIG_LOAD_GROUP);
     }
 
+    @Deprecated
     public String getConfigLoadKey() {
         return Solon.cfg().get(CONFIG_LOAD_KEY);
     }
