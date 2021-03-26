@@ -25,8 +25,7 @@ solon.cloud.consul:
 | | | |
 | solon.cloud.@@.config.enable     |   配置服务启用（默认：true）   |   nacos、consul、water     |   
 | solon.cloud.@@.config.server     |   服务地址（ip:port）   |   nacos、consul、water     | 
-| solon.cloud.@@.config.loadGroup     |   需要启动时加载的配置组   |   nacos、water    |    
-| solon.cloud.@@.config.loadKey     |  需要启动时加载的Key    |    nacos、consul、wate   |    
+| solon.cloud.@@.config.load     |  需要启动时加载的配置    |    nacos、consul、wate   |    
 | solon.cloud.@@.config.refreshInterval     |  配置刷新间隔    |   consul    |     
 | | | |
 | solon.cloud.@@.discovery.enable     |    注册与发现服务启用（默认：true）   |     nacos、consul、water    | 
