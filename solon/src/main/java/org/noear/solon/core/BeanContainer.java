@@ -276,7 +276,7 @@ public abstract class BeanContainer {
             }
 
         } else if (name.startsWith("${")) {
-            //配置 ${xxx}
+            //配置 ${xxx} or ${xxx:def},只适合单值
             name = name.substring(2, name.length() - 1);
 
             if (Properties.class == varH.getType()) {
@@ -289,7 +289,18 @@ public abstract class BeanContainer {
                 varH.setValue(val);
             } else {
                 //2.然后尝试获取配置
+                String def = null;
+                if(name.contains(":")) {
+                    def = name.split(":")[1];
+                    name = name.split(":")[0];
+                }
+
                 String val = Solon.cfg().get(name);
+
+                if(val == null){
+                    val = def;
+                }
+
                 if (val == null) {
                     Class<?> pt = varH.getType();
 
