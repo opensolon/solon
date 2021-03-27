@@ -171,6 +171,9 @@ Solon.cfg().getProp("xxx.datasource"); //=>Properties
 public class Config{
     @Inject("${app_key}")
     String app_key;
+
+    @Inject("${app_title:Solon}")
+    String app_title;
 }
 ```
 
