@@ -38,7 +38,12 @@ public class CloudManager {
     private static CloudLogService logService;
 
     /**
-     * 云端哨岗服务
+     * 云端名单服务
+     */
+    private static CloudListService listService;
+
+    /**
+     * 云端断路器服务
      */
     private static CloudBreakerService breakerService;
 
@@ -71,7 +76,7 @@ public class CloudManager {
      */
     public static void register(CloudBreakerService service) {
         breakerService = service;
-        PrintUtil.info("Cloud","CloudBreakerService registered from the " + service.getClass().getTypeName());
+        PrintUtil.info("Cloud", "CloudBreakerService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -79,7 +84,7 @@ public class CloudManager {
      */
     public static void register(CloudConfigService service) {
         configService = service;
-        PrintUtil.info("Cloud","CloudConfigService registered from the " + service.getClass().getTypeName());
+        PrintUtil.info("Cloud", "CloudConfigService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -87,7 +92,7 @@ public class CloudManager {
      */
     public static void register(CloudDiscoveryService service) {
         discoveryService = service;
-        PrintUtil.info("Cloud","CloudDiscoveryService registered from the " + service.getClass().getTypeName());
+        PrintUtil.info("Cloud", "CloudDiscoveryService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -95,7 +100,7 @@ public class CloudManager {
      */
     public static void register(CloudEventService service) {
         eventService = service;
-        PrintUtil.info("Cloud","CloudEventService registered from the " + service.getClass().getTypeName());
+        PrintUtil.info("Cloud", "CloudEventService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -103,7 +108,7 @@ public class CloudManager {
      */
     public static void register(CloudLockService service) {
         lockService = service;
-        PrintUtil.info("Cloud","CloudLockService registered from the " + service.getClass().getTypeName());
+        PrintUtil.info("Cloud", "CloudLockService registered from the " + service.getClass().getTypeName());
     }
 
     /**
@@ -111,9 +116,16 @@ public class CloudManager {
      */
     public static void register(CloudLogService service) {
         logService = service;
-        PrintUtil.info("Cloud","CloudLogService registered from the " + service.getClass().getTypeName());
+        PrintUtil.info("Cloud", "CloudLogService registered from the " + service.getClass().getTypeName());
     }
 
+    /**
+     * 登记列表服务
+     */
+    public static void register(CloudListService service) {
+        listService = service;
+        PrintUtil.info("Cloud", "CloudListService registered from the " + service.getClass().getTypeName());
+    }
 
 
     /**
@@ -121,7 +133,7 @@ public class CloudManager {
      */
     public static void register(CloudTraceService service) {
         traceService = service;
-        PrintUtil.info("Cloud","CloudTraceService registered from the " + service.getClass().getTypeName());
+        PrintUtil.info("Cloud", "CloudTraceService registered from the " + service.getClass().getTypeName());
     }
 
     protected static CloudBreakerService breakerService() {
@@ -148,6 +160,9 @@ public class CloudManager {
         return logService;
     }
 
+    protected static CloudListService listService() {
+        return listService;
+    }
 
     protected static CloudTraceService traceService() {
         return traceService;

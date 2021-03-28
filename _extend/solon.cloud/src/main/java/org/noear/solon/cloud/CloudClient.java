@@ -146,4 +146,12 @@ public class CloudClient {
     @Note("链路跟踪服务")
     public static CloudTraceService trace() { return CloudManager.traceService();}
 
+    /**
+     * 名单服务
+     * */
+    @Note("名单服务")
+    public static CloudListService list(){
+        return CloudManager.listService();
+    }
+
 }
