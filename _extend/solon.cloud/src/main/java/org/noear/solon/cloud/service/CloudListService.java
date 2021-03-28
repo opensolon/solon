@@ -1,7 +1,7 @@
 package org.noear.solon.cloud.service;
 
 /**
- * 云端名单服务
+ * 云端名单服务（安全名单，非法名单，黑名单，白名单）
  *
  * @author noear
  * @since 1.3
