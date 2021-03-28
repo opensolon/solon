@@ -68,38 +68,19 @@ public class JtExecutorAdapter implements IJtExecutorAdapter, IJtConfigAdapter {
         }
     }
 
-    Map<String, AFileModel> fileCached = new LinkedHashMap<>();
+    JtResouceLoader forDebug = new JtResouceLoaderFile();
+    JtResouceLoader forRelease = new JtResouceLoaderClass();
 
     @Override
     public AFileModel fileGet(String path) throws Exception {
-        AFileModel file = fileCached.get(path);
+        AFileModel file = null;
+
+        if (Solon.cfg().isDebugMode()) {
+            file = forDebug.fileGet(path);
+        }
 
         if (file == null) {
-            synchronized (path.intern()) {
-                file = fileCached.get(path);
-
-                if (file == null) {
-                    file = new AFileModel();
-
-                    file.content = Utils.getResourceAsString("luffy/" + path, "utf-8");
-                    if (file.content != null) {
-                        //如果有找到文件内容，则完善信息
-                        //
-                        File file1 = new File(path);
-                        String fileName = file1.getName();
-
-                        file.path = path;
-                        file.tag = "luffy";
-
-                        if (fileName.indexOf('.') > 0) {
-                            String suffix = fileName.substring(fileName.indexOf('.') + 1);
-                            file.edit_mode = JtMapping.getActuator(suffix);
-                        } else {
-                            file.edit_mode = JtMapping.getActuator("");
-                        }
-                    }
-                }
-            }
+            forRelease.fileGet(path);
         }
 
         return file;
