@@ -20,7 +20,6 @@ public class LuffyHandler implements Handler {
     }
 
     private void do_handle(String path, Context ctx, boolean debug) throws Exception {
-        String name = null;
 
         AFileModel file = JtRun.fileGet(path);
 
@@ -51,9 +50,9 @@ public class LuffyHandler implements Handler {
         }
 
         ctx.attrSet("file", file);
-        ctx.attrSet("file_tag", file.tag);
 
 
+        String name = path.replace("/", "__");
         ExecutorFactory.exec(name, file, ctx);
     }
 }
