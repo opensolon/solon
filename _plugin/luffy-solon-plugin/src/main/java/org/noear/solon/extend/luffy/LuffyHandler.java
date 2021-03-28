@@ -9,7 +9,8 @@ import org.noear.solon.core.handle.Handler;
 import org.noear.solon.extend.luffy.impl.JtRun;
 
 /**
- * @author noear 2021/3/28 created
+ * @author noear
+ * @since 1.3
  */
 public class LuffyHandler implements Handler {
 
