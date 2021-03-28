@@ -3,6 +3,7 @@ package org.noear.solon.extend.luffy;
 import org.noear.luffy.executor.ExecutorFactory;
 import org.noear.luffy.model.AFileModel;
 import org.noear.luffy.utils.TextUtils;
+import org.noear.solon.Solon;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.extend.luffy.impl.JtRun;
@@ -16,7 +17,12 @@ public class LuffyHandler implements Handler {
     public void handle(Context ctx) throws Exception {
         String path = ctx.path();
 
-        do_handle(path, ctx, false);
+        if (Solon.cfg().isDebugMode()) {
+            String name = path.replace("/", "__");
+            ExecutorFactory.del(name);
+        }
+
+        do_handle(path, ctx, Solon.cfg().isDebugMode());
     }
 
     private void do_handle(String path, Context ctx, boolean debug) throws Exception {
