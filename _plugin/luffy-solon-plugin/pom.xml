@@ -53,6 +53,12 @@
             <artifactId>solon.logging</artifactId>
             <version>${solon.ver}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>weed3-solon-plugin</artifactId>
+            <version>${solon.ver}</version>
+        </dependency>
     </dependencies>
 
 </project>
