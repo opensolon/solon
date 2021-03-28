@@ -15,6 +15,15 @@ public class JtMapping {
     static {
         fileMapping.put("", "javascript");
         fileMapping.put("js", "javascript");
+        fileMapping.put("btl","beetl");
+        fileMapping.put("enj","enjoy");
+        fileMapping.put("ftl","freemarker");
+        fileMapping.put("thy","thymeleaf");
+        fileMapping.put("vm","velocity");
+        fileMapping.put("groovy", "groovy");
+        fileMapping.put("lua", "lua");
+        fileMapping.put("py","python");
+        fileMapping.put("rb","ruby");
     }
 
     public static void addMaping(String suffix, String actuator) {

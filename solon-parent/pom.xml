@@ -23,6 +23,7 @@
         <snack3.ver>3.1.14</snack3.ver>
         <weed3.ver>3.3.4</weed3.ver>
         <water.ver>2.0.23</water.ver>
+        <luffy.ver>1.0.2</luffy.ver>
 
         <fastjson.ver>1.2.75</fastjson.ver>
         <jedis.ver>3.3.0</jedis.ver>

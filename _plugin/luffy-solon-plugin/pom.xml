@@ -14,11 +14,6 @@
     <artifactId>luffy-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <luffy.ver>1.0.2</luffy.ver>
-    </properties>
-
-
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
@@ -36,11 +31,6 @@
             <version>${luffy.ver}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>luffy.executor.s.javascript</artifactId>
-            <version>${luffy.ver}</version>
-        </dependency>
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.logging</artifactId>
