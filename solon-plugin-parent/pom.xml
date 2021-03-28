@@ -220,6 +220,8 @@
         <module>../_plugin/feign-solon-plugin</module>
         <module>../_plugin/graphql-solon-plugin</module>
         <module>../_plugin/hasor-solon-plugin</module>
+        <module>../_plugin/luffy-solon-plugin</module>
+
         <!--        <module>_extend2/mqtt-solon-plugin</module>-->
         <module>../_plugin/weed3-solon-plugin</module>
         <module>../_plugin/mybatis-solon-plugin</module>
