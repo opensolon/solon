@@ -168,6 +168,12 @@ public class JwtSessionState extends SessionStateDefault {
 
                 jwtSet(token);
             }
+        } else {
+            String token = jwtGet();
+
+            if (Utils.isNotEmpty(token)) {
+                jwtSet(token);
+            }
         }
     }
 
