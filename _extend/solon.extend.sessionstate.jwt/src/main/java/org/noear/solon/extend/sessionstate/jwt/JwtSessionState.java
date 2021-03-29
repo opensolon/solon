@@ -162,7 +162,7 @@ public class JwtSessionState extends SessionStateDefault {
         if (sessionMap != null) {
             String skey = sessionId();
 
-            if (Utils.isEmpty(skey) == false) {
+            if (XPluginProp.session_jwt_requestUseHeader || Utils.isNotEmpty(skey)) {
                 sessionMap.setId(skey);
                 String token = JwtUtils.buildJwt(sessionMap, _expiry * 1000);
 
