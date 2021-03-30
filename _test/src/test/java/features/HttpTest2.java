@@ -24,4 +24,9 @@ public class HttpTest2 extends HttpTestBase {
     public void test2() throws IOException {
         assert path("/demo1/run3/*?@=1").get().equals("@=1");
     }
+
+    @Test
+    public void test3() throws IOException {
+        assert path("/demo2/servlet/hello?name=noear").get().equals("Ok");
+    }
 }

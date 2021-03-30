@@ -47,6 +47,10 @@ public class ActionExecutorDefault implements ActionExecutor {
                 //如果是 Context 类型，直接加入参数
                 //
                 args.add(ctx);
+            } else if (pt.getTypeName().equals("javax.servlet.http.HttpServletRequest")) {
+                args.add(ctx.request());
+            } else if (pt.getTypeName().equals("javax.servlet.http.HttpServletResponse")) {
+                args.add(ctx.response());
             } else if (UploadedFile.class == pt) {
                 //如果是文件
                 //
