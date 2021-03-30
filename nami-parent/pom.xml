@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>nami-parent</artifactId>
-    <version>1.3.18-m4</version>
+    <version>1.3.18-m5</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
