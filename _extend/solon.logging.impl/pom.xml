@@ -19,6 +19,13 @@
             <groupId>org.noear</groupId>
             <artifactId>solon.logging</artifactId>
         </dependency>
+
+<dependency>
+    <groupId>org.noear</groupId>
+    <artifactId>solon.logging.impl</artifactId>
+    <version>${solon.ver}</version>
+    <scope>provided</scope>
+</dependency>
     </dependencies>
 
 </project>
