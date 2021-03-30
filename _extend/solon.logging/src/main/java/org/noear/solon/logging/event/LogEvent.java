@@ -38,7 +38,12 @@ public class LogEvent {
      */
     private String threadName;
 
-    public LogEvent(String loggerName, Class<?> initClass, Level level, Map<String, String> metainfo, Object content, long timeStamp, String threadName) {
+    /**
+     * 异常
+     * */
+    private Throwable throwable;
+
+    public LogEvent(String loggerName, Class<?> initClass, Level level, Map<String, String> metainfo, Object content, long timeStamp, String threadName, Throwable throwable) {
         this.loggerName = loggerName;
         this.initClass = initClass;
         this.level = level;
@@ -46,6 +51,7 @@ public class LogEvent {
         this.content = content;
         this.timeStamp = timeStamp;
         this.threadName = threadName;
+        this.throwable = throwable;
     }
 
     public String getLoggerName() {
@@ -75,5 +81,9 @@ public class LogEvent {
 
     public String getThreadName() {
         return threadName;
+    }
+
+    public Throwable getThrowable() {
+        return throwable;
     }
 }

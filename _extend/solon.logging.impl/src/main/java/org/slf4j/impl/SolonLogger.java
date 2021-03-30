@@ -109,7 +109,7 @@ public class SolonLogger implements Logger {
 
     @Override
     public void debug(String s, Object o, Object o1) {
-        appendDo(Level.DEBUG, null, s, new Object[]{o,o1}, null);
+        appendDo(Level.DEBUG, null, s, new Object[]{o, o1}, null);
     }
 
     @Override
@@ -345,7 +345,7 @@ public class SolonLogger implements Logger {
 
         LogEvent logEvent = new LogEvent(getName(), initClass, level, metainfo, content,
                 System.currentTimeMillis(),
-                Thread.currentThread().getName());
+                Thread.currentThread().getName(), throwable);
 
         AppenderManager.getInstance().append(logEvent);
     }
