@@ -154,24 +154,29 @@ public class JwtSessionState extends SessionStateDefault {
 
     @Override
     public void sessionPublish() {
+        String token = sessionToken();
+
+        if (Utils.isNotEmpty(token)) {
+            jwtSet(token);
+        }
+    }
+
+    @Override
+    public String sessionToken() {
+        String token = null;
         if (sessionMap != null) {
             String skey = sessionId();
 
             if (XPluginProp.session_jwt_requestUseHeader || Utils.isNotEmpty(skey)) {
                 sessionMap.setId(skey);
-                String token = JwtUtils.buildJwt(sessionMap, _expiry * 1000);
-
-                jwtSet(token);
+                token = JwtUtils.buildJwt(sessionMap, _expiry * 1000);
             }
         } else {
-            String token = jwtGet();
-
-            if (Utils.isNotEmpty(token)) {
-                jwtSet(token);
-            }
+            token = jwtGet();
         }
-    }
 
+        return token;
+    }
 
     @Override
     public boolean replaceable() {

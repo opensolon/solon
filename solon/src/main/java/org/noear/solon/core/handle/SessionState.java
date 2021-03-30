@@ -9,26 +9,48 @@ package org.noear.solon.core.handle;
  * @since 1.0
  * */
 public interface SessionState {
-    /** 刷新SESSION状态 */
-    default void sessionRefresh(){}
-    /** 发布SESSION状态(类似jwt) */
-    default void sessionPublish(){}
+    /**
+     * 刷新SESSION状态
+     */
+    default void sessionRefresh() {
+    }
 
-    /** 是否可替换 */
-    default boolean replaceable(){
+    /**
+     * 发布SESSION状态(类似jwt)
+     */
+    default void sessionPublish() {
+    }
+
+    /**
+     * 是否可替换
+     */
+    default boolean replaceable() {
         return true;
     }
 
 
-    /** 获取SESSION_ID */
+    /**
+     * 获取SESSION_ID
+     */
     String sessionId();
 
-    /** 获取SESSION状态 */
+    /**
+     * 获取SESSION状态
+     */
     Object sessionGet(String key);
 
-    /** 设置SESSION状态 */
+    /**
+     * 设置SESSION状态
+     */
     void sessionSet(String key, Object val);
 
-    /** 清除SESSION状态 */
-    default void sessionClear(){}
+    /**
+     * 清除SESSION状态
+     */
+    default void sessionClear() {
+    }
+
+    default String sessionToken() {
+        return null;
+    }
 }
