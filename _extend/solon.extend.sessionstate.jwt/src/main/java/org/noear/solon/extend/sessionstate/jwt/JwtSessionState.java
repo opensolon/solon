@@ -99,19 +99,19 @@ public class JwtSessionState extends SessionStateDefault {
                     String token = jwtGet();
 
                     if (Utils.isNotEmpty(token)) {
-                        if(token.startsWith(TOKEN_HEADER)) {
+                        if (token.startsWith(TOKEN_HEADER)) {
                             token = token.substring(TOKEN_HEADER.length() + 1);
                         }
 
                         Claims claims = JwtUtils.parseJwt(token);
 
                         if (XPluginProp.session_jwt_requestUseHeader || sesId.equals(claims.getId())) {
-                            if(XPluginProp.session_jwt_allowExpire) {
+                            if (XPluginProp.session_jwt_allowExpire) {
                                 if (claims.getExpiration() != null &&
                                         claims.getExpiration().getTime() > System.currentTimeMillis()) {
                                     sessionMap = claims;
                                 }
-                            }else{
+                            } else {
                                 sessionMap = claims;
                             }
                         }
@@ -198,5 +198,7 @@ public class JwtSessionState extends SessionStateDefault {
         } else {
             cookieSet(XPluginProp.session_jwt_name, token);
         }
+
+        ctx.attrSet(XPluginProp.session_jwt_name, token);
     }
 }
