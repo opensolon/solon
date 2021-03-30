@@ -22,7 +22,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jlhttp</artifactId>
+            <artifactId>solon.boot.undertow</artifactId>
         </dependency>
 
     </dependencies>
