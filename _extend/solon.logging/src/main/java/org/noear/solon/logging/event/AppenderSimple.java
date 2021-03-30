@@ -63,6 +63,10 @@ public class AppenderSimple implements Appender {
                 PrintUtil.blue(buf.toString());
                 break;
             }
+            case TRACE:{
+                PrintUtil.purple(buf.toString());
+                break;
+            }
             default: {
                 PrintUtil.black(buf.toString());
                 break;

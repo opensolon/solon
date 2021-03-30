@@ -67,6 +67,11 @@ public class PrintUtil {
         System.out.print(ANSI_RESET);
     }
 
+    public static void purple(String txt) {
+        System.out.print(ANSI_PURPLE + txt);
+        System.out.print(ANSI_RESET);
+    }
+
     public static void green(String txt) {
         System.out.print(ANSI_GREEN + txt);
         System.out.print(ANSI_RESET);
