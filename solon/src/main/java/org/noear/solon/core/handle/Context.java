@@ -496,11 +496,11 @@ public abstract class Context {
     public abstract void statusSet(int status);
 
 
-    private Map<String,Object> attrMap = null;
+    private NdMap attrMap = null;
     @Note("获取自定义特性并转为Map")
     public Map<String,Object> attrMap(){//改为懒加载
         if(attrMap == null){
-            attrMap = new HashMap<>();
+            attrMap = new NdMap();
         }
 
         return attrMap;
