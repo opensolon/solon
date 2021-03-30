@@ -70,9 +70,6 @@ public class AppenderSimple implements Appender {
         }
 
         appendContentDo(logEvent.getContent());
-        if (logEvent.getThrowable() != null) {
-            logEvent.getThrowable().printStackTrace();
-        }
     }
 
     protected void appendContentDo(Object content) {

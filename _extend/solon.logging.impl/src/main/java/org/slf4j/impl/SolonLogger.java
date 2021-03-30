@@ -10,6 +10,9 @@ import org.slf4j.MDC;
 import org.slf4j.Marker;
 import org.slf4j.helpers.MessageFormatter;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -336,6 +339,16 @@ public class SolonLogger implements Logger {
         Map<String, String> metainfo = MDC.getCopyOfContextMap();
 
         if (format != null) {
+            if (throwable != null) {
+                if (args == null || args.length == 0) {
+                    args = new Object[]{Utils.throwableToString(throwable)};
+                } else {
+                    List<Object> list = Arrays.asList(args);
+                    list.add(Utils.throwableToString(throwable));
+                    args = list.toArray();
+                }
+            }
+
             if (args != null && args.length > 0) {
                 content = MessageFormatter.arrayFormat(format, args, throwable).getMessage();
             } else {

@@ -61,6 +61,16 @@ public class Utils {
     }
 
     /**
+     * 获取异常打印信息
+     * */
+    public static String throwableToString(Throwable ex){
+        StringWriter sw = new StringWriter();
+        ex.printStackTrace(new PrintWriter(sw));
+
+        return sw.toString();
+    }
+
+    /**
      * 包装异常
      * */
     public static RuntimeException throwableWrap(Throwable ex){
