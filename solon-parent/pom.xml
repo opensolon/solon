@@ -922,12 +922,12 @@
                     <id>nexus-internal</id>
                     <name>releases</name>
                     <layout>default</layout>
-                    <url>http://internal.meven:8081/repository/maven-snapshots/</url>
+                    <url>http://maven.digital.js/repository/maven-snapshots/</url>
                 </snapshotRepository>
                 <repository>
                     <id>nexus-internal</id>
                     <name>snapshots</name>
-                    <url>http://internal.meven:8081/repository/maven-releases/</url>
+                    <url>http://maven.digital.js/repository/maven-releases/</url>
                 </repository>
             </distributionManagement>
         </profile>
