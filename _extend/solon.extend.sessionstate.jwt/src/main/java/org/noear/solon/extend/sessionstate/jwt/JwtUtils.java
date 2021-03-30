@@ -1,11 +1,14 @@
 package org.noear.solon.extend.sessionstate.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 
 import java.security.Key;
@@ -16,6 +19,7 @@ import java.util.Date;
  * @since 1.3
  */
 public class JwtUtils {
+    private static String TOKEN_HEADER = "Bearer";
     private static Key key = null;
 
     private static Key key() {
@@ -48,18 +52,23 @@ public class JwtUtils {
      * 构建令牌
      */
     public static String buildJwt(Claims claims, long expire, Key signKey) {
+        JwtBuilder builder;
         if (expire > 0) {
-            return Jwts.builder()
+            builder = Jwts.builder()
                     .setClaims(claims)
                     .setIssuedAt(new Date())
-                    .setExpiration(new Date(System.currentTimeMillis() + expire))
-                    .signWith(signKey).compact();
+                    .setExpiration(new Date(System.currentTimeMillis() + expire));
         } else {
-            return Jwts.builder()
+            builder = Jwts.builder()
                     .setClaims(claims)
-                    .setIssuedAt(new Date())
-                    .signWith(signKey).compact();
+                    .setIssuedAt(new Date());
         }
+
+        if (Utils.isNotEmpty(Solon.cfg().appName())) {
+            builder.setIssuer(Solon.cfg().appName());
+        }
+
+        return builder.signWith(signKey).compact();
     }
 
     /**
@@ -73,6 +82,10 @@ public class JwtUtils {
      * 解析令牌
      */
     public static Claims parseJwt(String token, Key signKey) {
+        if (token.startsWith(TOKEN_HEADER)) {
+            token = token.substring(TOKEN_HEADER.length() + 1);
+        }
+
         try {
             return Jwts.parserBuilder()
                     .setSigningKey(signKey)

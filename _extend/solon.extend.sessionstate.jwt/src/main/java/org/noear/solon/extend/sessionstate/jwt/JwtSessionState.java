@@ -11,7 +11,6 @@ import org.noear.solon.core.handle.SessionStateDefault;
  * @since 1.3
  */
 public class JwtSessionState extends SessionStateDefault {
-    private static String TOKEN_HEADER = "Bearer";
     private static int _expiry = 60 * 60 * 2;
     private static String _domain = null;
 
@@ -99,10 +98,6 @@ public class JwtSessionState extends SessionStateDefault {
                     String token = jwtGet();
 
                     if (Utils.isNotEmpty(token)) {
-                        if (token.startsWith(TOKEN_HEADER)) {
-                            token = token.substring(TOKEN_HEADER.length() + 1);
-                        }
-
                         Claims claims = JwtUtils.parseJwt(token);
 
                         if (XPluginProp.session_jwt_requestUseHeader || sesId.equals(claims.getId())) {
