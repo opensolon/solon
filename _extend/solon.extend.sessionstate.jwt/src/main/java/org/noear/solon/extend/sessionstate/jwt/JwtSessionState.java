@@ -199,6 +199,6 @@ public class JwtSessionState extends SessionStateDefault {
             cookieSet(XPluginProp.session_jwt_name, token);
         }
 
-        ctx.attrSet(XPluginProp.session_jwt_name, token);
+        ctx.attrSet("JWT-Token", token);
     }
 }
