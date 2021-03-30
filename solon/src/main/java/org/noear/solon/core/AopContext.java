@@ -74,7 +74,7 @@ public class AopContext extends BeanContainer {
                 }
             }
 
-            //注册到容器 //XConfiguration 不进入二次注册
+            //注册到容器 //Configuration 不进入二次注册
             //beanRegister(bw,bw.name(),bw.typed());
         });
 
