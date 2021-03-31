@@ -51,6 +51,6 @@ public interface SessionState {
     }
 
     default String sessionToken() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 }
