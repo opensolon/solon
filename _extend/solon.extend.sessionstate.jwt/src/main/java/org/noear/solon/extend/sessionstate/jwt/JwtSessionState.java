@@ -90,7 +90,7 @@ public class JwtSessionState extends SessionStateDefault {
 
     private Claims sessionMap;
 
-    public Claims sessionMap() {
+    protected Claims sessionMap() {
         if (sessionMap == null) {
             synchronized (this) {
                 if (sessionMap == null) {
@@ -115,6 +115,8 @@ public class JwtSessionState extends SessionStateDefault {
                     if (sessionMap == null) {
                         sessionMap = new DefaultClaims();
                     }
+
+                    sessionToken = null;
                 }
             }
         }
@@ -131,11 +133,13 @@ public class JwtSessionState extends SessionStateDefault {
     @Override
     public void sessionSet(String key, Object val) {
         sessionMap().put(key, val);
+        sessionToken = null;
     }
 
     @Override
     public void sessionClear() {
         sessionMap().clear();
+        sessionToken = null;
     }
 
     @Override
@@ -161,21 +165,23 @@ public class JwtSessionState extends SessionStateDefault {
         }
     }
 
+    private String sessionToken;
     @Override
     public String sessionToken() {
-        String token = null;
-        if (sessionMap != null) {
-            String skey = sessionId();
+        if (sessionToken == null) {
+            if (sessionMap != null) {
+                String skey = sessionId();
 
-            if (XPluginProp.session_jwt_requestUseHeader || Utils.isNotEmpty(skey)) {
-                sessionMap.setId(skey);
-                token = JwtUtils.buildJwt(sessionMap, _expiry * 1000);
+                if (XPluginProp.session_jwt_requestUseHeader || Utils.isNotEmpty(skey)) {
+                    sessionMap.setId(skey);
+                    sessionToken = JwtUtils.buildJwt(sessionMap, _expiry * 1000);
+                }
+            } else {
+                sessionToken = jwtGet();
             }
-        } else {
-            token = jwtGet();
         }
 
-        return token;
+        return sessionToken;
     }
 
     @Override

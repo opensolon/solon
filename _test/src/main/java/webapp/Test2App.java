@@ -13,6 +13,7 @@ public class Test2App {
 
         HelloRpcService rpc = SocketD.create("tcp://localhost:"+_port, HelloRpcService.class);
 
+
         while (true) {
             try {
                 Thread.sleep(100);
