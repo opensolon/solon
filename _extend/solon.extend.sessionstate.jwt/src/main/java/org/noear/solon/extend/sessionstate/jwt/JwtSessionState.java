@@ -100,14 +100,16 @@ public class JwtSessionState extends SessionStateDefault {
                     if (Utils.isNotEmpty(token)) {
                         Claims claims = JwtUtils.parseJwt(token);
 
-                        if (XPluginProp.session_jwt_requestUseHeader || sesId.equals(claims.getId())) {
-                            if (XPluginProp.session_jwt_allowExpire) {
-                                if (claims.getExpiration() != null &&
-                                        claims.getExpiration().getTime() > System.currentTimeMillis()) {
+                        if(claims != null) {
+                            if (XPluginProp.session_jwt_requestUseHeader || sesId.equals(claims.getId())) {
+                                if (XPluginProp.session_jwt_allowExpire) {
+                                    if (claims.getExpiration() != null &&
+                                            claims.getExpiration().getTime() > System.currentTimeMillis()) {
+                                        sessionMap = claims;
+                                    }
+                                } else {
                                     sessionMap = claims;
                                 }
-                            } else {
-                                sessionMap = claims;
                             }
                         }
                     }
