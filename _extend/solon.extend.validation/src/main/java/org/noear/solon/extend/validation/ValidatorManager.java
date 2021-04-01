@@ -37,8 +37,16 @@ public class ValidatorManager implements Handler {
         NoRepeatLockImp.globalSet(lock);
     }
 
+    public static void setLoginedChecker(LoginedChecker checker) {
+        LoginedValidator.setChecker(checker);
+    }
+
     public static void setWhitelistChecker(WhitelistChecker checker) {
-        WhitelistCheckerImp.globalSet(checker);
+        WhitelistValidator.setChecker(checker);
+    }
+
+    public static void setNotBlacklistChecker(NotBlacklistChecker checker) {
+        NotBlacklistValidator.setChecker(checker);
     }
 
 
@@ -101,6 +109,8 @@ public class ValidatorManager implements Handler {
         register(Length.class, LengthValidator.instance);
         register(Whitelist.class, WhitelistValidator.instance);
         register(Logined.class, LoginedValidator.instance);
+
+        register(NotBlacklist.class, NotBlacklistValidator.instance);
     }
 
     /**

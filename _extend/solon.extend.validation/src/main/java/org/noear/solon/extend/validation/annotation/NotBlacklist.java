@@ -8,15 +8,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 白名单注解
+ * 黑名单注解
  *
  * @author noear
- * @since 1.0
+ * @since 1.3
  * */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Whitelist {
-    @Note("whitelist name")
+public @interface NotBlacklist {
+    @Note("blacklist name")
     String value() default "";
 
     String message() default "";

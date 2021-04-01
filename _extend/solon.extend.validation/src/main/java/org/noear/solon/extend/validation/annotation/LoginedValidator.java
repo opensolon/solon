@@ -13,6 +13,14 @@ import org.noear.solon.extend.validation.Validator;
 public class LoginedValidator implements Validator<Logined> {
     public static final LoginedValidator instance = new LoginedValidator();
 
+    private static LoginedChecker checker = new LoginedCheckerImp();
+
+    public static void setChecker(LoginedChecker checker) {
+        if (checker != null) {
+            LoginedValidator.checker = checker;
+        }
+    }
+
     public static String sessionUserKeyName = "user_id";
 
     @Override
@@ -27,24 +35,10 @@ public class LoginedValidator implements Validator<Logined> {
             userKeyName = LoginedValidator.sessionUserKeyName;
         }
 
-        Object userKey = ctx.session(userKeyName);
-
-        if (userKey == null) {
+        if(checker.check(anno, ctx, userKeyName)){
+            return Result.succeed();
+        }else{
             return Result.failure();
         }
-
-        if (userKey instanceof Number) {
-            if (((Number) userKey).longValue() < 1) {
-                return Result.failure();
-            }
-        }
-
-        if (userKey instanceof String) {
-            if (((String) userKey).length() < 1) {
-                return Result.failure();
-            }
-        }
-
-        return Result.succeed();
     }
 }
