@@ -1,7 +1,7 @@
 package org.noear.solon.extend.springboot;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ContextUtil;
 import org.noear.solon.extend.servlet.SolonServletContext;
 
@@ -22,13 +22,19 @@ public class ServletFilterSolon implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        SolonServletContext ctx = new SolonServletContext((HttpServletRequest) request, (HttpServletResponse) response);
-        //ctx.contentType("text/plain;charset=UTF-8");
+        if (request instanceof HttpServletRequest) {
+            Context ctx = new SolonServletContext((HttpServletRequest) request, (HttpServletResponse) response);
+            Solon.global().tryHandle(ctx);
 
-        Solon.global().tryHandle(ctx);
-
-        if (ctx.getHandled() == false) {
-            ContextUtil.currentSet(ctx);
+            if (ctx.getHandled() == false) {
+                ContextUtil.currentSet(ctx);
+                try {
+                    filterChain.doFilter(request, response);
+                } finally {
+                    ContextUtil.currentRemove();
+                }
+            }
+        } else {
             filterChain.doFilter(request, response);
         }
     }
