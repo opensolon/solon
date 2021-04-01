@@ -1,10 +1,11 @@
 package org.noear.solon.extend.validation.annotation;
 
-import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 
 /**
- * @author noear 2021/4/1 created
+ *
+ * @author noear
+ * @since 1.3
  */
 public class LoginedCheckerImp implements LoginedChecker{
     @Override
