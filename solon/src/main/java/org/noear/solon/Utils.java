@@ -193,7 +193,7 @@ public class Utils {
      */
     public static Class<?> loadClass(String className) {
         try {
-            return loadClass(JarClassLoader.global(), className); //Class.forName(className);
+            return loadClass(null, className); //Class.forName(className);
         } catch (Throwable ex) {
             return null;
         }
@@ -204,7 +204,11 @@ public class Utils {
      */
     public static Class<?> loadClass(ClassLoader classLoader, String className) {
         try {
-            return classLoader.loadClass(className); //Class.forName(className);
+            if (classLoader == null) {
+                return Class.forName(className);
+            } else {
+                return classLoader.loadClass(className);
+            }
         } catch (Throwable ex) {
             return null;
         }
