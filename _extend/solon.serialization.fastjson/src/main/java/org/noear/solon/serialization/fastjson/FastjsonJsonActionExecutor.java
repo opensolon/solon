@@ -44,7 +44,11 @@ public class FastjsonJsonActionExecutor extends ActionExecutorDefault {
                 //
                 return super.changeValue(ctx, p, pi, pt, bodyObj);
             } else {
-                return tmp.toJavaObject(pt);
+                if (pt.isPrimitive() || pt.getTypeName().startsWith("java.lang.")) {
+                    return super.changeValue(ctx, p, pi, pt, bodyObj);
+                } else {
+                    return tmp.toJavaObject(pt);
+                }
             }
         }
 
