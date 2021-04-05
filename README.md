@@ -82,7 +82,7 @@ public class App{
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.3.19</version>
+    <version>1.3.20</version>
 </parent>
 
 <dependencies>
