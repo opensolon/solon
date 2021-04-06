@@ -8,6 +8,7 @@ import org.noear.solon.logging.event.LogEvent;
 import org.noear.water.WaterClient;
 import org.noear.water.dso.LogPipeline;
 import org.noear.water.utils.Datetime;
+import org.noear.water.utils.LogHelper;
 import org.noear.water.utils.TextUtils;
 
 /**
@@ -47,7 +48,7 @@ public class CloudLogServiceImp implements CloudLogService {
 
         log.logger = loggerName;
         log.level = (logEvent.getLevel().code / 10);
-        log.content = logEvent.getContent();
+        log.content = LogHelper.contentAsString(logEvent.getContent());
 
         if (logEvent.getMetainfo() != null) {
             log.tag = logEvent.getMetainfo().get("tag0");
