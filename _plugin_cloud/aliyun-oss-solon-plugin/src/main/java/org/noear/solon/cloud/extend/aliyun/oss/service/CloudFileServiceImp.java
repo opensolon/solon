@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.aliyun.oss.service;
 
 import org.noear.solon.cloud.extend.aliyun.oss.OssProps;
 import org.noear.solon.cloud.service.CloudFileService;
+import org.noear.solon.core.handle.Result;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -12,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 云端文件服务
+ * 云端文件服务（aliyun oss）
  *
  * @author noear
  * @since 1.3
@@ -62,7 +63,7 @@ public class CloudFileServiceImp implements CloudFileService {
     }
 
     @Override
-    public String putString(String key, String content) throws Exception {
+    public Result putString(String key, String content) throws Exception {
         String date = Datetime.Now().toGmtString();
 
         String objPath = "/" + bucket + key;
@@ -72,15 +73,17 @@ public class CloudFileServiceImp implements CloudFileService {
         String Signature = (hmacSha1(buildSignData("PUT", date, objPath, contentType), secretKey));
         String Authorization = "OSS " + accessKey + ":" + Signature;
 
-        return HttpUtils.http(url)
+        String tmp = HttpUtils.http(url)
                 .header("Date", date)
                 .header("Authorization", Authorization)
                 .bodyTxt(content, contentType)
                 .put();
+
+        return Result.succeed(tmp);
     }
 
     @Override
-    public String putFile(String key, File file) throws Exception {
+    public Result putFile(String key, File file) throws Exception {
         String date = Datetime.Now().toGmtString();
 
         String objPath = "/" + bucket + key;
@@ -90,11 +93,13 @@ public class CloudFileServiceImp implements CloudFileService {
         String Signature = (hmacSha1(buildSignData("PUT", date, objPath, contentType), secretKey));
         String Authorization = "OSS " + accessKey + ":" + Signature;
 
-        return HttpUtils.http(url)
+        String tmp = HttpUtils.http(url)
                 .header("Date", date)
                 .header("Authorization", Authorization)
                 .bodyRaw(new FileInputStream(file), contentType)
                 .put();
+
+        return Result.succeed(tmp);
     }
 
     private String buildUrl(String key) {

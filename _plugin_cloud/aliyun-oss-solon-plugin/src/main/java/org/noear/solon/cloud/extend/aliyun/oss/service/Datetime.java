@@ -13,34 +13,20 @@ import java.util.TimeZone;
  * @since 1.3
  */
 
-class Datetime implements Serializable,Cloneable,Comparable<Datetime> {
+class Datetime implements Serializable,Cloneable {
     private Date _datetime;
     private Calendar _calendar = null;
 
     public Datetime(Date date){
-        setFulltime(date);
-    }
-
-
-    ////@XNote("设置完整时间")
-    public Datetime setFulltime(Date date){
         _datetime = date;
         _calendar = Calendar.getInstance();
         _calendar.setTime(date);
-
-        return this;
     }
+
     //当前时间
     ////@XNote("当前时间")
     public static Datetime Now(){
         return new Datetime(new Date());
-    }
-
-
-    //获取计时周期数（相对于：1970.01.01 00:00:00 GMT）
-    //@XNote("获取计时周期数（相对于：1970.01.01 00:00:00 GMT）")
-    public long getTicks(){
-        return _datetime.getTime();
     }
 
 
@@ -80,13 +66,5 @@ class Datetime implements Serializable,Cloneable,Comparable<Datetime> {
         }
 
         return df.format(_datetime);
-    }
-
-
-    @Override
-    public int compareTo(Datetime anotherDatetime) {
-        long thisTime = getTicks();
-        long anotherTime = anotherDatetime.getTicks();
-        return (thisTime<anotherTime ? -1 : (thisTime==anotherTime ? 0 : 1));
     }
 }

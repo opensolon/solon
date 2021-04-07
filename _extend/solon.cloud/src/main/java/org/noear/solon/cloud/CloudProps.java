@@ -63,6 +63,7 @@ public class CloudProps {
     private String FILE_ENABLE = "solon.cloud.@@.file.enable";
     private String FILE_BUCKET = "solon.cloud.@@.file.bucket";
     private String FILE_ENDPOINT = "solon.cloud.@@.file.endpoint";
+    private String FILE_REGION_ID = "solon.cloud.@@.file.regionId";
     private String FILE_ACCESS_KEY = "solon.cloud.@@.file.accessKey";
     private String FILE_SECRET_KEY = "solon.cloud.@@.file.secretKey";
 
@@ -108,8 +109,9 @@ public class CloudProps {
         TRACE_ENABLE = TRACE_ENABLE.replace("@@", frame);
 
         FILE_ENABLE = FILE_ENABLE.replace("@@", frame);
-        FILE_BUCKET = FILE_BUCKET.replace("@@", frame);
         FILE_ENDPOINT = FILE_ENDPOINT.replace("@@", frame);
+        FILE_REGION_ID = FILE_REGION_ID.replace("@@", frame);
+        FILE_BUCKET = FILE_BUCKET.replace("@@", frame);
         FILE_ACCESS_KEY = FILE_ACCESS_KEY.replace("@@", frame);
         FILE_SECRET_KEY = FILE_SECRET_KEY.replace("@@", frame);
     }
@@ -302,12 +304,16 @@ public class CloudProps {
         return Solon.cfg().getBool(FILE_ENABLE, true);
     }
 
-    public String getFileBucket() {
-        return Solon.cfg().get(FILE_BUCKET);
-    }
-
     public String getFileEndpoint() {
         return Solon.cfg().get(FILE_ENDPOINT);
+    }
+
+    public String getFileRegionId() {
+        return Solon.cfg().get(FILE_REGION_ID);
+    }
+
+    public String getFileBucket() {
+        return Solon.cfg().get(FILE_BUCKET);
     }
 
     public String getFileAccessKey() {
