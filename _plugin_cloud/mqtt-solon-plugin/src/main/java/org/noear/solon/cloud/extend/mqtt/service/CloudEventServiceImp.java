@@ -54,8 +54,8 @@ public class CloudEventServiceImp implements CloudEventService {
         }
 
         options.setCleanSession(false);
-        options.setConnectionTimeout(100); //超时时长
-        options.setKeepAliveInterval(20); //心跳时长
+        options.setConnectionTimeout(1000); //超时时长
+        options.setKeepAliveInterval(100); //心跳时长
         options.setServerURIs(new String[]{MqttProps.instance.getEventServer()});
 
         client.setCallback(clientCallback);
