@@ -70,7 +70,7 @@ public class CloudFileServiceOssImp implements CloudFileService {
 
         String date = Datetime.Now().toGmtString();
 
-        String objPath = "/" + bucket + key;
+        String objPath = "/" + bucket + "/" + key;
         String url = buildUrl(bucket, key);
 
         String Signature = (hmacSha1(buildSignData("GET", date, objPath, null), secretKey));
@@ -99,7 +99,7 @@ public class CloudFileServiceOssImp implements CloudFileService {
 
         String date = Datetime.Now().toGmtString();
 
-        String objPath = "/" + bucket + key;
+        String objPath = "/" + bucket + "/" + key;
         String url = buildUrl(bucket, key);
         String contentType = "text/plain; charset=utf-8";
 
@@ -127,7 +127,7 @@ public class CloudFileServiceOssImp implements CloudFileService {
 
         String date = Datetime.Now().toGmtString();
 
-        String objPath = "/" + bucket + key;
+        String objPath = "/" + bucket + "/" + key;
         String url = buildUrl(bucket, key);
         String contentType = "text/plain; charset=utf-8";
 

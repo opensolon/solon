@@ -46,6 +46,6 @@ public interface CloudFileService {
      * 推入文件
      */
     default Result putFile(String key, File file) throws CloudFileException {
-        return putFile(key, file);
+        return putFile(null, key, file);
     }
 }

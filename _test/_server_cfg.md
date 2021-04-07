@@ -49,7 +49,7 @@ solon.extend: "ext"
 #应用扩展加载，隔离模式
 solon.extend.isolation: true
 
-#应用配置文件活动选择
+#应用配置文件活动选择 # application-dev.properties 或 application-dev.yml
 solon.profiles.active: dev
 
 #应用元信息输出开启（输出每个插件的信息）

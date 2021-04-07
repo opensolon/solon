@@ -50,6 +50,15 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>aliyun-oss-solon-plugin</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>aws-s3-solon-plugin</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>guava-solon-plugin</artifactId>
         </dependency>
 
