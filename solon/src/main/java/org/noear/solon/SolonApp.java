@@ -65,8 +65,8 @@ public class SolonApp implements HandlerSlots {
      * 运行应用
      * */
     protected void run() {
-        //event::1.0.推送Plugin load start事件
-        EventBus.push(PluginLoadStartEvent.instance);
+        //event::0.x.推送App init end事件
+        EventBus.push(AppInitEndEvent.instance);
 
         //1.1.尝试启动插件（顺序不能乱） //不能用forEach，以免当中有插进来
         List<PluginEntity> plugs = cfg().plugs();

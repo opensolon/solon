@@ -1,9 +1,7 @@
 package org.noear.solon.core.event;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.core.AopContext;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,8 +9,8 @@ import java.util.Set;
 /**
  * 监听器（内部类，外部不要使用）
  *
- * @see AopContext#beanLoaded()
- * @see SolonApp#onEvent(Class, EventListener)
+ * @see org.noear.solon.core.AopContext#beanLoaded()
+ * @see org.noear.solon.SolonApp#onEvent(Class, EventListener)
  * */
 public final class EventBus {
     //异常订阅者
