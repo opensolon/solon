@@ -13,15 +13,6 @@ paasword: 1234
 
 solon.drift: 1
 
-solon.cloud.aws.s3:
-  file:
-    bucket: img.gs77.cc
-    endpoint: oss-cn-hangzhou.aliyuncs.com
-    regionId: ap-northeast-1
-    accessKey: AKIA5VLKLCQENJOVJIBB
-    secretKey: 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
-
-
 solon.cloud.local:
   breaker:
     test: 1

@@ -14,7 +14,10 @@ import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.handle.Result;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.Properties;
 
 /**
@@ -72,7 +75,7 @@ public class CloudFileServiceS3Imp implements CloudFileService {
 
     @Override
     public String getString(String bucket, String key) throws CloudFileException {
-        if(Utils.isEmpty(bucket)){
+        if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;
         }
 
@@ -89,7 +92,7 @@ public class CloudFileServiceS3Imp implements CloudFileService {
 
     @Override
     public Result putString(String bucket, String key, String content) throws CloudFileException {
-        if(Utils.isEmpty(bucket)){
+        if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;
         }
 
@@ -97,7 +100,7 @@ public class CloudFileServiceS3Imp implements CloudFileService {
             InputStream stream = new StringInputStream(content);
 
             ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentType("text/plain");
+            metadata.setContentType("text/plain; charset=utf-8");
 
             PutObjectRequest request = new PutObjectRequest(bucket, key, stream, metadata)
                     .withAccessControlList(acls);
@@ -112,12 +115,26 @@ public class CloudFileServiceS3Imp implements CloudFileService {
 
     @Override
     public Result putFile(String bucket, String key, File file) throws CloudFileException {
-        if(Utils.isEmpty(bucket)){
+        if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;
         }
 
+        String contentType = null;
         try {
-            PutObjectRequest request = new PutObjectRequest(bucket, key, file)
+            contentType = Files.probeContentType(file.toPath());
+        } catch (IOException ex) {
+
+        }
+
+        if (contentType == null) {
+            contentType = "text/plain; charset=utf-8";
+        }
+
+        try {
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType(contentType);
+
+            PutObjectRequest request = new PutObjectRequest(bucket, key, new FileInputStream(file), metadata)
                     .withAccessControlList(acls);
 
             PutObjectResult tmp = client.putObject(request);

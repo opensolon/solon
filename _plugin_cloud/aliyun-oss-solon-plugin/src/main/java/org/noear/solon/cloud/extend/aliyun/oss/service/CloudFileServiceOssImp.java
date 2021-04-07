@@ -10,6 +10,8 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -129,7 +131,17 @@ public class CloudFileServiceOssImp implements CloudFileService {
 
         String objPath = "/" + bucket + "/" + key;
         String url = buildUrl(bucket, key);
-        String contentType = "text/plain; charset=utf-8";
+
+        String contentType = null;
+        try {
+            contentType = Files.probeContentType(file.toPath());
+        } catch (IOException ex) {
+
+        }
+
+        if(contentType == null){
+            contentType = "text/plain; charset=utf-8";
+        }
 
         String Signature = (hmacSha1(buildSignData("PUT", date, objPath, contentType), secretKey));
         String Authorization = "OSS " + accessKey + ":" + Signature;
