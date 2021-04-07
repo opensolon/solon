@@ -27,15 +27,15 @@ public class CloudFileServiceImp implements CloudFileService {
     protected String ALGORITHM = "HmacSHA1";
 
     public CloudFileServiceImp(){
-        this.endpoint = OssProps.instance.getFileEndpoint();
         this.bucket = OssProps.instance.getFileBucket();
+        this.endpoint = OssProps.instance.getFileEndpoint();
         this.accessKey = OssProps.instance.getFileAccessKey();
         this.secretKey = OssProps.instance.getFileSecretKey();
     }
 
     public CloudFileServiceImp(String endpoint, String bucket, String accessKey, String secretKey) {
-        this.endpoint = endpoint;
         this.bucket = bucket;
+        this.endpoint = endpoint;
         this.accessKey = accessKey;
         this.secretKey = secretKey;
     }
