@@ -6,7 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * @author noear 2021/4/7 created
+ * @author noear
+ * @since 1.3
  */
 
 public class Datetime implements Serializable,Cloneable,Comparable<Datetime> {
