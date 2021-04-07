@@ -14,17 +14,38 @@ import java.io.File;
 public interface CloudFileService {
     /**
      * 获取字符串
-     * */
-    String getString(String key) throws CloudFileException;
+     */
+    String getString(String bucket, String key) throws CloudFileException;
+
+    /**
+     * 获取字符串
+     */
+    default String getString(String key) throws CloudFileException {
+        return getString(null, key);
+    }
 
     /**
      * 推入字符串
-     * */
-    Result putString(String key, String content) throws CloudFileException;
-    
+     */
+    Result putString(String bucket, String key, String content) throws CloudFileException;
+
+    /**
+     * 推入字符串
+     */
+    default Result putString(String key, String content) throws CloudFileException {
+        return putString(null, key, content);
+    }
+
 
     /**
      * 推入文件
-     * */
-    Result putFile(String key, File file) throws CloudFileException;
+     */
+    Result putFile(String bucket, String key, File file) throws CloudFileException;
+
+    /**
+     * 推入文件
+     */
+    default Result putFile(String key, File file) throws CloudFileException {
+        return putFile(key, file);
+    }
 }

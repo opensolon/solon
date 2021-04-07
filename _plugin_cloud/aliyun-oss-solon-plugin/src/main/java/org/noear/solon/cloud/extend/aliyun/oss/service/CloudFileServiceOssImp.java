@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.extend.aliyun.oss.service;
 
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.extend.aliyun.oss.OssProps;
 import org.noear.solon.cloud.service.CloudFileService;
@@ -21,7 +22,7 @@ import java.util.Properties;
  * @since 1.3
  */
 public class CloudFileServiceOssImp implements CloudFileService {
-    protected final String bucket;
+    protected final String bucketDef;
     protected final String accessKey;
     protected final String secretKey;
     protected final String endpoint;
@@ -53,20 +54,24 @@ public class CloudFileServiceOssImp implements CloudFileService {
 
     public CloudFileServiceOssImp(String endpoint, String regionId, String bucket, String accessKey, String secretKey) {
         this.endpoint = endpoint;
-        this.regionId =regionId;
+        this.regionId = regionId;
 
-        this.bucket = bucket;
+        this.bucketDef = bucket;
 
         this.accessKey = accessKey;
         this.secretKey = secretKey;
     }
 
     @Override
-    public String getString(String key) throws CloudFileException {
+    public String getString(String bucket, String key) throws CloudFileException {
+        if (Utils.isEmpty(bucket)) {
+            bucket = bucketDef;
+        }
+
         String date = Datetime.Now().toGmtString();
 
         String objPath = "/" + bucket + key;
-        String url = buildUrl(key);
+        String url = buildUrl(bucket, key);
 
         String Signature = (hmacSha1(buildSignData("GET", date, objPath, null), secretKey));
 
@@ -87,11 +92,15 @@ public class CloudFileServiceOssImp implements CloudFileService {
     }
 
     @Override
-    public Result putString(String key, String content) throws CloudFileException {
+    public Result putString(String bucket, String key, String content) throws CloudFileException {
+        if (Utils.isEmpty(bucket)) {
+            bucket = bucketDef;
+        }
+
         String date = Datetime.Now().toGmtString();
 
         String objPath = "/" + bucket + key;
-        String url = buildUrl(key);
+        String url = buildUrl(bucket, key);
         String contentType = "text/plain; charset=utf-8";
 
         String Signature = (hmacSha1(buildSignData("PUT", date, objPath, contentType), secretKey));
@@ -111,11 +120,15 @@ public class CloudFileServiceOssImp implements CloudFileService {
     }
 
     @Override
-    public Result putFile(String key, File file) throws CloudFileException {
+    public Result putFile(String bucket, String key, File file) throws CloudFileException {
+        if (Utils.isEmpty(bucket)) {
+            bucket = bucketDef;
+        }
+
         String date = Datetime.Now().toGmtString();
 
         String objPath = "/" + bucket + key;
-        String url = buildUrl(key);
+        String url = buildUrl(bucket, key);
         String contentType = "text/plain; charset=utf-8";
 
         String Signature = (hmacSha1(buildSignData("PUT", date, objPath, contentType), secretKey));
@@ -134,7 +147,7 @@ public class CloudFileServiceOssImp implements CloudFileService {
         }
     }
 
-    private String buildUrl(String key) {
+    private String buildUrl(String bucket, String key) {
         if (endpoint.startsWith(bucket)) {
             return "http://" + endpoint + "/" + key;
         } else {

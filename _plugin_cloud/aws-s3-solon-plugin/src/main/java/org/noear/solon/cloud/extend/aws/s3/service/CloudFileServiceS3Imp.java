@@ -24,7 +24,7 @@ import java.util.Properties;
  * @since 1.3
  */
 public class CloudFileServiceS3Imp implements CloudFileService {
-    protected final String bucket;
+    protected final String bucketDef;
     protected final String accessKey;
     protected final String secretKey;
     protected final String endpoint;
@@ -57,7 +57,7 @@ public class CloudFileServiceS3Imp implements CloudFileService {
         this.endpoint = endpoint;
         this.regionId = regionId;
 
-        this.bucket = bucket;
+        this.bucketDef = bucket;
 
         this.accessKey = accessKey;
         this.secretKey = secretKey;
@@ -71,7 +71,11 @@ public class CloudFileServiceS3Imp implements CloudFileService {
     }
 
     @Override
-    public String getString(String key) throws CloudFileException {
+    public String getString(String bucket, String key) throws CloudFileException {
+        if(Utils.isEmpty(bucket)){
+            bucket = bucketDef;
+        }
+
         try {
             GetObjectRequest request = new GetObjectRequest(bucket, key);
 
@@ -84,7 +88,11 @@ public class CloudFileServiceS3Imp implements CloudFileService {
     }
 
     @Override
-    public Result putString(String key, String content) throws CloudFileException {
+    public Result putString(String bucket, String key, String content) throws CloudFileException {
+        if(Utils.isEmpty(bucket)){
+            bucket = bucketDef;
+        }
+
         try {
             InputStream stream = new StringInputStream(content);
 
@@ -103,7 +111,11 @@ public class CloudFileServiceS3Imp implements CloudFileService {
     }
 
     @Override
-    public Result putFile(String key, File file) throws CloudFileException {
+    public Result putFile(String bucket, String key, File file) throws CloudFileException {
+        if(Utils.isEmpty(bucket)){
+            bucket = bucketDef;
+        }
+
         try {
             PutObjectRequest request = new PutObjectRequest(bucket, key, file)
                     .withAccessControlList(acls);
