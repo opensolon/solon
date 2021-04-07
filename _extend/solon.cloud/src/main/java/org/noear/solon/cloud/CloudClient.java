@@ -154,4 +154,12 @@ public class CloudClient {
         return CloudManager.listService();
     }
 
+    /**
+     * 名单服务
+     * */
+    @Note("文件服务")
+    public static CloudFileService file(){
+        return CloudManager.fileService();
+    }
+
 }
