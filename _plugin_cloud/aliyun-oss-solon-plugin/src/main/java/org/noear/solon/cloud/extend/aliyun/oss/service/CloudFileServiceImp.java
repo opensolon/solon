@@ -45,7 +45,7 @@ public class CloudFileServiceImp implements CloudFileService {
         String date = Datetime.Now().toGmtString();
 
         String objPath = "/" + bucket + key;
-        String url = "https://" + bucket + "." + endpoint + "/";
+        String url = buildUrl(key);
 
         String Signature = (hmacSha1(buildSignData("GET", date, objPath, null), secretKey));
 
@@ -55,7 +55,7 @@ public class CloudFileServiceImp implements CloudFileService {
         head.put("Date", date);
         head.put("Authorization", Authorization);
 
-        return HttpUtils.http(url + key)
+        return HttpUtils.http(url)
                 .header("Date", date)
                 .header("Authorization", Authorization)
                 .get();
@@ -66,13 +66,13 @@ public class CloudFileServiceImp implements CloudFileService {
         String date = Datetime.Now().toGmtString();
 
         String objPath = "/" + bucket + key;
-        String url = "http://" + bucket + "." + endpoint + "/";
+        String url = buildUrl(key);
         String contentType = "text/plain; charset=utf-8";
 
         String Signature = (hmacSha1(buildSignData("PUT", date, objPath, contentType), secretKey));
         String Authorization = "OSS " + accessKey + ":" + Signature;
 
-        return HttpUtils.http(url + key)
+        return HttpUtils.http(url)
                 .header("Date", date)
                 .header("Authorization", Authorization)
                 .bodyTxt(content, contentType)
@@ -84,21 +84,26 @@ public class CloudFileServiceImp implements CloudFileService {
         String date = Datetime.Now().toGmtString();
 
         String objPath = "/" + bucket + key;
-        String url = "http://" + bucket + "." + endpoint + "/";
+        String url = buildUrl(key);
         String contentType = "text/plain; charset=utf-8";
 
         String Signature = (hmacSha1(buildSignData("PUT", date, objPath, contentType), secretKey));
         String Authorization = "OSS " + accessKey + ":" + Signature;
 
-
-        return HttpUtils.http(url + key)
+        return HttpUtils.http(url)
                 .header("Date", date)
                 .header("Authorization", Authorization)
                 .bodyRaw(new FileInputStream(file), contentType)
                 .put();
     }
 
-
+    private String buildUrl(String key) {
+        if (endpoint.startsWith(bucket)) {
+            return "http://" + endpoint + "/" + key;
+        } else {
+            return "http://" + bucket + "." + endpoint + "/" + key;
+        }
+    }
 
     private String hmacSha1(String data, String key) {
         try {
