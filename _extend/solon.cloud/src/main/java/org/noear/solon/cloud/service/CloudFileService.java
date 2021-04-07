@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.service;
 
+import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.core.handle.Result;
 
 import java.io.File;
@@ -14,16 +15,16 @@ public interface CloudFileService {
     /**
      * 获取字符串
      * */
-    String getString(String key) throws Exception;
+    String getString(String key) throws CloudFileException;
 
     /**
      * 推入字符串
      * */
-    Result putString(String key, String content) throws Exception;
+    Result putString(String key, String content) throws CloudFileException;
     
 
     /**
      * 推入文件
      * */
-    Result putFile(String key, File file) throws Exception;
+    Result putFile(String key, File file) throws CloudFileException;
 }

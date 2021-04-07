@@ -1,7 +1,5 @@
 package org.noear.solon.cloud.extend.aws.s3.service;
 
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -9,12 +7,13 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.StringInputStream;
+import org.noear.solon.Utils;
+import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.extend.aws.s3.S3Props;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.handle.Result;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 
 /**
@@ -59,32 +58,48 @@ public class CloudFileServiceImp implements CloudFileService {
     }
 
     @Override
-    public String getString(String key) throws Exception {
-        return null;
+    public String getString(String key) throws CloudFileException {
+        try {
+            GetObjectRequest request = new GetObjectRequest(bucket, key);
+
+            S3Object tmp = client.getObject(request);
+
+            return Utils.getString(tmp.getObjectContent(), "UTF-8");
+        } catch (Exception ex) {
+            throw new CloudFileException(ex);
+        }
     }
 
     @Override
-    public Result putString(String key, String content) throws Exception {
-        InputStream stream = new StringInputStream(content);
+    public Result putString(String key, String content) throws CloudFileException {
+        try {
+            InputStream stream = new StringInputStream(content);
 
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentType("text/plain");
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType("text/plain");
 
-        PutObjectRequest request = new PutObjectRequest(bucket, key, stream, metadata)
-                .withAccessControlList(acls);
+            PutObjectRequest request = new PutObjectRequest(bucket, key, stream, metadata)
+                    .withAccessControlList(acls);
 
-        PutObjectResult tmp = client.putObject(request);
+            PutObjectResult tmp = client.putObject(request);
 
-        return Result.succeed(tmp);
+            return Result.succeed(tmp);
+        } catch (Exception ex) {
+            throw new CloudFileException(ex);
+        }
     }
 
     @Override
-    public Result putFile(String key, File file) throws Exception {
-        PutObjectRequest request = new PutObjectRequest(bucket, key, file)
-                .withAccessControlList(acls);
+    public Result putFile(String key, File file) throws CloudFileException {
+        try {
+            PutObjectRequest request = new PutObjectRequest(bucket, key, file)
+                    .withAccessControlList(acls);
 
-        PutObjectResult tmp = client.putObject(request);
+            PutObjectResult tmp = client.putObject(request);
 
-        return Result.succeed(tmp);
+            return Result.succeed(tmp);
+        } catch (Exception ex) {
+            throw new CloudFileException(ex);
+        }
     }
 }

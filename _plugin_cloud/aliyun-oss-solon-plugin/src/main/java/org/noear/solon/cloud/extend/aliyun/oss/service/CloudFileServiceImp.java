@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.extend.aliyun.oss.service;
 
+import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.extend.aliyun.oss.OssProps;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.handle.Result;
@@ -27,7 +28,7 @@ public class CloudFileServiceImp implements CloudFileService {
     protected String CHARSET_UTF8 = "utf8";
     protected String ALGORITHM = "HmacSHA1";
 
-    public CloudFileServiceImp(){
+    public CloudFileServiceImp() {
         this.bucket = OssProps.instance.getFileBucket();
         this.endpoint = OssProps.instance.getFileEndpoint();
         this.accessKey = OssProps.instance.getFileAccessKey();
@@ -42,7 +43,7 @@ public class CloudFileServiceImp implements CloudFileService {
     }
 
     @Override
-    public String getString(String key) throws Exception {
+    public String getString(String key) throws CloudFileException {
         String date = Datetime.Now().toGmtString();
 
         String objPath = "/" + bucket + key;
@@ -56,14 +57,18 @@ public class CloudFileServiceImp implements CloudFileService {
         head.put("Date", date);
         head.put("Authorization", Authorization);
 
-        return HttpUtils.http(url)
-                .header("Date", date)
-                .header("Authorization", Authorization)
-                .get();
+        try {
+            return HttpUtils.http(url)
+                    .header("Date", date)
+                    .header("Authorization", Authorization)
+                    .get();
+        } catch (Exception ex) {
+            throw new CloudFileException(ex);
+        }
     }
 
     @Override
-    public Result putString(String key, String content) throws Exception {
+    public Result putString(String key, String content) throws CloudFileException {
         String date = Datetime.Now().toGmtString();
 
         String objPath = "/" + bucket + key;
@@ -73,17 +78,21 @@ public class CloudFileServiceImp implements CloudFileService {
         String Signature = (hmacSha1(buildSignData("PUT", date, objPath, contentType), secretKey));
         String Authorization = "OSS " + accessKey + ":" + Signature;
 
-        String tmp = HttpUtils.http(url)
-                .header("Date", date)
-                .header("Authorization", Authorization)
-                .bodyTxt(content, contentType)
-                .put();
+        try {
+            String tmp = HttpUtils.http(url)
+                    .header("Date", date)
+                    .header("Authorization", Authorization)
+                    .bodyTxt(content, contentType)
+                    .put();
 
-        return Result.succeed(tmp);
+            return Result.succeed(tmp);
+        } catch (Exception ex) {
+            throw new CloudFileException(ex);
+        }
     }
 
     @Override
-    public Result putFile(String key, File file) throws Exception {
+    public Result putFile(String key, File file) throws CloudFileException {
         String date = Datetime.Now().toGmtString();
 
         String objPath = "/" + bucket + key;
@@ -93,13 +102,17 @@ public class CloudFileServiceImp implements CloudFileService {
         String Signature = (hmacSha1(buildSignData("PUT", date, objPath, contentType), secretKey));
         String Authorization = "OSS " + accessKey + ":" + Signature;
 
-        String tmp = HttpUtils.http(url)
-                .header("Date", date)
-                .header("Authorization", Authorization)
-                .bodyRaw(new FileInputStream(file), contentType)
-                .put();
+        try {
+            String tmp = HttpUtils.http(url)
+                    .header("Date", date)
+                    .header("Authorization", Authorization)
+                    .bodyRaw(new FileInputStream(file), contentType)
+                    .put();
 
-        return Result.succeed(tmp);
+            return Result.succeed(tmp);
+        } catch (Exception ex) {
+            throw new CloudFileException(ex);
+        }
     }
 
     private String buildUrl(String key) {
