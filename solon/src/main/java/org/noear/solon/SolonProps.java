@@ -35,6 +35,7 @@ public final class SolonProps extends Props {
     private boolean isDriftMode;
     private boolean isFilesMode;
     private boolean isWhiteMode;
+    private boolean isSetupMode;
     private String extend;
     private String extendFilter;
     private String appName;
@@ -76,6 +77,7 @@ public final class SolonProps extends Props {
         });
 
         isDebugMode = argx().getInt("debug") == 1;
+        isSetupMode = argx().getInt("setup") == 1;
         isWhiteMode = argx().getInt("white", 1) == 1;
         isFilesMode = (sourceLocation.getPath().endsWith(".jar") == false);
 
@@ -302,7 +304,7 @@ public final class SolonProps extends Props {
      * 框架版本号
      */
     public String version() {
-        return "1.3.20-m2";
+        return "1.3.20-m3";
     }
 
     /**
@@ -313,7 +315,12 @@ public final class SolonProps extends Props {
     }
 
     /**
-     * 是否为文件运行模式
+     * 是否为 setup model
+     * */
+    public boolean isSetupMode(){ return isSetupMode; }
+
+    /**
+     * 是否为 files model (文件运行模式)
      */
     public boolean isFilesMode() {
         return isFilesMode;
@@ -323,7 +330,7 @@ public final class SolonProps extends Props {
     }
 
     /**
-     * 是否为漂移模式 (of ip)
+     * 是否为 drift model (IP漂移模式，如k8s环境)
      */
     public boolean isDriftMode() {
         return isDriftMode;
@@ -333,7 +340,7 @@ public final class SolonProps extends Props {
     }
 
     /**
-     * 是否为白色模式（即白名单模式）
+     * 是否为 while model（即白名单模式）
      */
     public boolean isWhiteMode() {
         return isWhiteMode;
