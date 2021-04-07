@@ -59,6 +59,14 @@ public class CloudProps {
     private String TRACE_ENABLE = "solon.cloud.@@.trace.enable";
 
 
+    //文件服务相关
+    private String FILE_ENABLE = "solon.cloud.@@.file.enable";
+    private String FILE_BUCKET = "solon.cloud.@@.file.bucket";
+    private String FILE_ENDPOINT = "solon.cloud.@@.file.endpoint";
+    private String FILE_ACCESS_KEY = "solon.cloud.@@.file.accessKey";
+    private String FILE_SECRET_KEY = "solon.cloud.@@.file.secretKey";
+
+
     public CloudProps(String frame) {
         SERVER = SERVER.replace("@@", frame);
         TOKEN = TOKEN.replace("@@", frame);
@@ -98,6 +106,12 @@ public class CloudProps {
         LOG_DEFAULT = LOG_DEFAULT.replace("@@", frame);
 
         TRACE_ENABLE = TRACE_ENABLE.replace("@@", frame);
+
+        FILE_ENABLE = FILE_ENABLE.replace("@@", frame);
+        FILE_BUCKET = FILE_BUCKET.replace("@@", frame);
+        FILE_ENDPOINT = FILE_ENDPOINT.replace("@@", frame);
+        FILE_ACCESS_KEY = FILE_ACCESS_KEY.replace("@@", frame);
+        FILE_SECRET_KEY = FILE_SECRET_KEY.replace("@@", frame);
     }
 
 
@@ -119,6 +133,7 @@ public class CloudProps {
     public String getPassword() {
         return Solon.cfg().get(PASSWORD);
     }
+
     public String getAlarm() {
         return Solon.cfg().get(ALARM);
     }
@@ -218,21 +233,27 @@ public class CloudProps {
     public String getEventReceive() {
         return Solon.cfg().get(EVENT_RECEIVE);
     }
+
     public void setEventReceive(String value) {
         Solon.cfg().setProperty(EVENT_RECEIVE, value);
     }
+
     public String getEventExchange() {
         return Solon.cfg().get(EVENT_EXCHANGE);
     }
+
     public int getEventPrefetchCount() {
-        return Solon.cfg().getInt(EVENT_PREFETCH_COUNT,0);
+        return Solon.cfg().getInt(EVENT_PREFETCH_COUNT, 0);
     }
+
     public int getEventPublishTimeout() {
-        return Solon.cfg().getInt(EVENT_PUBLISH_TIMEOUT,0);
+        return Solon.cfg().getInt(EVENT_PUBLISH_TIMEOUT, 0);
     }
+
     public String getEventSeal() {
         return Solon.cfg().get(EVENT_SEAL);
     }
+
     public String getEventQueue() {
         return Solon.cfg().get(EVENT_QUEUE);
     }
@@ -266,7 +287,6 @@ public class CloudProps {
     }
 
 
-
     //
     //链路跟踪服务相关
     //
@@ -275,4 +295,26 @@ public class CloudProps {
     }
 
 
+    //
+    //文件服务相关
+    //
+    public boolean getFileEnable() {
+        return Solon.cfg().getBool(FILE_ENABLE, true);
+    }
+
+    public String getFileBucket() {
+        return Solon.cfg().get(FILE_BUCKET);
+    }
+
+    public String getFileEndpoint() {
+        return Solon.cfg().get(FILE_ENDPOINT);
+    }
+
+    public String getFileAccessKey() {
+        return Solon.cfg().get(FILE_ACCESS_KEY);
+    }
+
+    public String getFileSecretKey() {
+        return Solon.cfg().get(FILE_SECRET_KEY);
+    }
 }
