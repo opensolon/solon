@@ -12,6 +12,7 @@ import java.io.FileInputStream;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * 云端文件服务（aliyun oss）
@@ -19,25 +20,43 @@ import java.util.Map;
  * @author noear
  * @since 1.3
  */
-public class CloudFileServiceImp implements CloudFileService {
+public class CloudFileServiceOssImp implements CloudFileService {
     protected final String bucket;
     protected final String accessKey;
     protected final String secretKey;
     protected final String endpoint;
+    protected final String regionId;
 
     protected String CHARSET_UTF8 = "utf8";
     protected String ALGORITHM = "HmacSHA1";
 
-    public CloudFileServiceImp() {
-        this.bucket = OssProps.instance.getFileBucket();
-        this.endpoint = OssProps.instance.getFileEndpoint();
-        this.accessKey = OssProps.instance.getFileAccessKey();
-        this.secretKey = OssProps.instance.getFileSecretKey();
+    public CloudFileServiceOssImp() {
+        this(
+                OssProps.instance.getFileEndpoint(),
+                OssProps.instance.getFileRegionId(),
+                OssProps.instance.getFileBucket(),
+                OssProps.instance.getFileAccessKey(),
+                OssProps.instance.getFileSecretKey()
+        );
     }
 
-    public CloudFileServiceImp(String endpoint, String bucket, String accessKey, String secretKey) {
-        this.bucket = bucket;
+    public CloudFileServiceOssImp(Properties pops) {
+        this(
+                pops.getProperty("endpoint"),
+                pops.getProperty("regionId"),
+                pops.getProperty("bucket"),
+                pops.getProperty("accessKey"),
+                pops.getProperty("secretKey")
+        );
+    }
+
+
+    public CloudFileServiceOssImp(String endpoint, String regionId, String bucket, String accessKey, String secretKey) {
         this.endpoint = endpoint;
+        this.regionId =regionId;
+
+        this.bucket = bucket;
+
         this.accessKey = accessKey;
         this.secretKey = secretKey;
     }

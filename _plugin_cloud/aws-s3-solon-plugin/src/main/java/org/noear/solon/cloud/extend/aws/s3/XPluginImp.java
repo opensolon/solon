@@ -3,7 +3,7 @@ package org.noear.solon.cloud.extend.aws.s3;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
-import org.noear.solon.cloud.extend.aws.s3.service.CloudFileServiceImp;
+import org.noear.solon.cloud.extend.aws.s3.service.CloudFileServiceS3Imp;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -17,7 +17,7 @@ public class XPluginImp implements Plugin {
         }
 
         if (S3Props.instance.getFileEnable()) {
-            CloudManager.register(new CloudFileServiceImp());
+            CloudManager.register(new CloudFileServiceS3Imp());
         }
     }
 }

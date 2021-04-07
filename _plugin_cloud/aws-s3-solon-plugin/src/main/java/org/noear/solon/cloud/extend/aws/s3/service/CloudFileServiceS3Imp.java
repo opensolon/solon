@@ -15,6 +15,7 @@ import org.noear.solon.core.handle.Result;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Properties;
 
 /**
  * 云端文件服务（aws s3）
@@ -22,7 +23,7 @@ import java.io.InputStream;
  * @author noear
  * @since 1.3
  */
-public class CloudFileServiceImp implements CloudFileService {
+public class CloudFileServiceS3Imp implements CloudFileService {
     protected final String bucket;
     protected final String accessKey;
     protected final String secretKey;
@@ -32,15 +33,27 @@ public class CloudFileServiceImp implements CloudFileService {
     protected final AmazonS3 client;
     protected final AccessControlList acls = new AccessControlList();
 
-    public CloudFileServiceImp() {
-        this(S3Props.instance.getFileEndpoint(),
+    public CloudFileServiceS3Imp() {
+        this(
+                S3Props.instance.getFileEndpoint(),
                 S3Props.instance.getFileRegionId(),
                 S3Props.instance.getFileBucket(),
                 S3Props.instance.getFileAccessKey(),
-                S3Props.instance.getFileSecretKey());
+                S3Props.instance.getFileSecretKey()
+        );
     }
 
-    public CloudFileServiceImp(String endpoint, String regionId, String bucket, String accessKey, String secretKey) {
+    public CloudFileServiceS3Imp(Properties pops) {
+        this(
+                pops.getProperty("endpoint"),
+                pops.getProperty("regionId"),
+                pops.getProperty("bucket"),
+                pops.getProperty("accessKey"),
+                pops.getProperty("secretKey")
+        );
+    }
+
+    public CloudFileServiceS3Imp(String endpoint, String regionId, String bucket, String accessKey, String secretKey) {
         this.endpoint = endpoint;
         this.regionId = regionId;
 
