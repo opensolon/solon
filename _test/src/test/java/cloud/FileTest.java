@@ -19,6 +19,11 @@ import java.io.File;
 public class FileTest {
     @Test
     public void test() {
+        if(CloudClient.file() == null){
+            System.err.println("This file service is not available");
+            return;
+        }
+
         String key = "test/" + Utils.guid();
         String val = "Hello world!";
 
@@ -33,6 +38,11 @@ public class FileTest {
 
     @Test
     public void test2() {
+        if(CloudClient.file() == null){
+            System.err.println("This file service is not available");
+            return;
+        }
+
         String key = "test/" + Utils.guid() + ".yml";
         File val = new File(Utils.getResource("user.yml").getFile());
 
