@@ -73,9 +73,13 @@ public class CloudEventServiceImp implements CloudEventService {
 
         try {
             MqttDeliveryToken token = mqttTopic.publish(message);
-            token.waitForCompletion(1000 * 30);
 
-            return token.isComplete();
+            if (event.qos() > 0) {
+                token.waitForCompletion(1000 * 30);
+                return token.isComplete();
+            } else {
+                return true;
+            }
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
