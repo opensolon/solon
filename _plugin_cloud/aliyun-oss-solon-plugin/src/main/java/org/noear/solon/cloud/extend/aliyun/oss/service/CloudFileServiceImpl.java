@@ -1,8 +1,6 @@
 package org.noear.solon.cloud.extend.aliyun.oss.service;
 
 import org.noear.solon.cloud.extend.aliyun.oss.OssProps;
-import org.noear.solon.cloud.extend.aliyun.oss.utils.Datetime;
-import org.noear.solon.cloud.extend.aliyun.oss.utils.HttpUtils;
 import org.noear.solon.cloud.service.CloudFileService;
 
 import javax.crypto.Mac;
@@ -47,7 +45,7 @@ public class CloudFileServiceImpl implements CloudFileService {
         String date = Datetime.Now().toGmtString();
 
         String objPath = "/" + bucket + key;
-        String url = "http://" + bucket + "." + endpoint + "/";
+        String url = "https://" + bucket + "." + endpoint + "/";
 
         String Signature = (hmacSha1(buildSignData("GET", date, objPath, null), secretKey));
 

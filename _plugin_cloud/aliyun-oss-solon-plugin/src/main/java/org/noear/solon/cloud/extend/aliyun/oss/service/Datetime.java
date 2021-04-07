@@ -1,16 +1,19 @@
-package org.noear.solon.cloud.extend.aliyun.oss.utils;
+package org.noear.solon.cloud.extend.aliyun.oss.service;
 
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * @author noear
  * @since 1.3
  */
 
-public class Datetime implements Serializable,Cloneable,Comparable<Datetime> {
+class Datetime implements Serializable,Cloneable,Comparable<Datetime> {
     private Date _datetime;
     private Calendar _calendar = null;
 

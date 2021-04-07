@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.aliyun.oss.utils;
+package org.noear.solon.cloud.extend.aliyun.oss.service;
 
 import okhttp3.*;
 import okhttp3.internal.Util;
@@ -15,7 +15,7 @@ import java.util.function.Supplier;
  * @author noear
  * @since 1.3
  */
-public class HttpUtils {
+class HttpUtils {
     private final static Supplier<Dispatcher> okhttp_dispatcher = () -> {
         Dispatcher temp = new Dispatcher();
         temp.setMaxRequests(20000);
@@ -117,11 +117,6 @@ public class HttpUtils {
         return exec2("GET");
     }
 
-    //@XNote("发起POST请求，返回字符串（RESTAPI.create 在服务端新建一项资源）")
-    public String post() throws IOException {
-        return exec2("POST");
-    }
-
     //@XNote("发起PUT请求，返回字符串（RESTAPI.update 客户端提供改变后的完整资源）")
     public String put() throws IOException {
         return exec2("PUT");
@@ -159,16 +154,6 @@ public class HttpUtils {
             } finally {
                 Util.closeQuietly(source);
             }
-        }
-    }
-
-    public static class KeyValue {
-        String key;
-        String value;
-
-        public KeyValue(String key, String value) {
-            this.key = key;
-            this.value = value;
         }
     }
 }
