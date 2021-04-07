@@ -65,7 +65,7 @@ public class CloudEventServiceImp implements CloudEventService {
     @Override
     public boolean publish(Event event) {
         MqttMessage message = new MqttMessage();
-        message.setQos(1);
+        message.setQos(event.qos());
         message.setRetained(true);
         message.setPayload(event.content().getBytes());
 

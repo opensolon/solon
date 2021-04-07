@@ -39,6 +39,11 @@ public class Event implements Serializable {
      * */
     private int times;
 
+    /**
+     * 质量：0 只发一次；1 最少发一次；2 发一次并且不重复；
+     * */
+    private int qos = 1;
+
     public Event(){
         //序列化需要
     }
@@ -90,6 +95,12 @@ public class Event implements Serializable {
 
     public Event times(int times) {
         this.times = times;
+        return this;
+    }
+
+    public int qos(){return qos;}
+    public Event qos(int qos) {
+        this.qos = qos;
         return this;
     }
 }
