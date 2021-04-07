@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>mqtt-solon-plugin</artifactId>
+    <artifactId>zookeeper-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
 
@@ -22,9 +22,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.eclipse.paho</groupId>
-            <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
-            <version>1.2.5</version>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>3.7.0</version>
         </dependency>
     </dependencies>
 
