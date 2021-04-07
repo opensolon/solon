@@ -3,7 +3,7 @@ package org.noear.solon.cloud.extend.aliyun.oss;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
-import org.noear.solon.cloud.extend.aliyun.oss.service.CloudFileServiceImpl;
+import org.noear.solon.cloud.extend.aliyun.oss.service.CloudFileServiceImp;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -17,7 +17,7 @@ public class XPluginImp implements Plugin {
         }
 
         if (OssProps.instance.getFileEnable()) {
-            CloudManager.register(new CloudFileServiceImpl());
+            CloudManager.register(new CloudFileServiceImp());
         }
     }
 }

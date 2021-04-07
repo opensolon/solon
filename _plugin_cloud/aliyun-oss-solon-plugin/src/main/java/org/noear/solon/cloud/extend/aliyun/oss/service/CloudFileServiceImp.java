@@ -17,7 +17,7 @@ import java.util.Map;
  * @author noear
  * @since 1.3
  */
-public class CloudFileServiceImpl implements CloudFileService {
+public class CloudFileServiceImp implements CloudFileService {
     protected final String bucket;
     protected final String accessKey;
     protected final String secretKey;
@@ -26,14 +26,14 @@ public class CloudFileServiceImpl implements CloudFileService {
     protected String CHARSET_UTF8 = "utf8";
     protected String ALGORITHM = "HmacSHA1";
 
-    public CloudFileServiceImpl(){
+    public CloudFileServiceImp(){
         this.endpoint = OssProps.instance.getFileEndpoint();
         this.bucket = OssProps.instance.getFileBucket();
         this.accessKey = OssProps.instance.getFileAccessKey();
         this.secretKey = OssProps.instance.getFileSecretKey();
     }
 
-    public CloudFileServiceImpl(String endpoint, String bucket, String accessKey, String secretKey) {
+    public CloudFileServiceImp(String endpoint, String bucket, String accessKey, String secretKey) {
         this.endpoint = endpoint;
         this.bucket = bucket;
         this.accessKey = accessKey;
