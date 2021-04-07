@@ -10,8 +10,8 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.file.Files;
+import java.net.FileNameMap;
+import java.net.URLConnection;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +24,8 @@ import java.util.Properties;
  * @since 1.3
  */
 public class CloudFileServiceOssImp implements CloudFileService {
+    static FileNameMap contentTypeMap = URLConnection.getFileNameMap();
+
     protected final String bucketDef;
     protected final String accessKey;
     protected final String secretKey;
@@ -132,14 +134,9 @@ public class CloudFileServiceOssImp implements CloudFileService {
         String objPath = "/" + bucket + "/" + key;
         String url = buildUrl(bucket, key);
 
-        String contentType = null;
-        try {
-            contentType = Files.probeContentType(file.toPath());
-        } catch (IOException ex) {
+        String contentType = contentTypeMap.getContentTypeFor(file.getName());
 
-        }
-
-        if(contentType == null){
+        if (contentType == null) {
             contentType = "text/plain; charset=utf-8";
         }
 

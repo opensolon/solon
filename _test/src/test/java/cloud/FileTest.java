@@ -43,8 +43,8 @@ public class FileTest {
             return;
         }
 
-        String key = "test/" + Utils.guid() + ".yml";
-        File val = new File(Utils.getResource("user.yml").getFile());
+        String key = "test/" + Utils.guid() + ".png";
+        File val = new File(Utils.getResource("test.png").getFile());
 
         Result result = CloudClient.file().putFile(key, val);
         System.out.println(ONode.stringify(result));
