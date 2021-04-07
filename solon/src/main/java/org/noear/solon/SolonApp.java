@@ -1,6 +1,6 @@
 package org.noear.solon;
 
-import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.event.*;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.Router;
@@ -8,9 +8,6 @@ import org.noear.solon.core.route.RouterHandler;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.*;
-import org.noear.solon.core.event.AppLoadEndEvent;
-import org.noear.solon.core.event.BeanLoadEndEvent;
-import org.noear.solon.core.event.PluginLoadEndEvent;
 import org.noear.solon.core.message.Listener;
 
 import java.lang.annotation.Annotation;
@@ -68,6 +65,9 @@ public class SolonApp implements HandlerSlots {
      * 运行应用
      * */
     protected void run() {
+        //event::1.0.推送Plugin load start事件
+        EventBus.push(PluginLoadStartEvent.instance);
+
         //1.1.尝试启动插件（顺序不能乱） //不能用forEach，以免当中有插进来
         List<PluginEntity> plugs = cfg().plugs();
         for (int i = 0, len = plugs.size(); i < len; i++) {
@@ -287,6 +287,16 @@ public class SolonApp implements HandlerSlots {
     public void plug(Plugin plugin) {
         PluginEntity p = new PluginEntity(plugin);
         p.start();
+        cfg().plugs().add(p);
+    }
+
+    /**
+     * 添加插件（只有执行前添加才有效）
+     * @param priority 优先级（越大越优化）
+     * @param plugin 插件
+     * */
+    public void pluginAdd(int priority, Plugin plugin) {
+        PluginEntity p = new PluginEntity(plugin, priority);
         cfg().plugs().add(p);
     }
 

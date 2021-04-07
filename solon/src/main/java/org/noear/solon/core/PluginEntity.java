@@ -35,6 +35,10 @@ public class PluginEntity {
     public PluginEntity(Plugin plugin) {
         this.plugin = plugin;
     }
+    public PluginEntity(Plugin plugin, int priority) {
+        this.plugin = plugin;
+        this.priority = priority;
+    }
 
 
     /**
