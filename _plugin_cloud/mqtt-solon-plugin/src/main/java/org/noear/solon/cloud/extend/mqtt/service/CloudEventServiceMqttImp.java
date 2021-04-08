@@ -8,19 +8,19 @@ import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.extend.mqtt.MqttProps;
 import org.noear.solon.cloud.model.Event;
-import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.cloud.service.CloudEventService;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author noear
  * @since 1.3
  */
-public class CloudEventServiceImp implements CloudEventService {
+public class CloudEventServiceMqttImp implements CloudEventService {
     private final String server;
     private final String username;
     private final String password;
@@ -32,26 +32,28 @@ public class CloudEventServiceImp implements CloudEventService {
     //
     // 1833(MQTT的默认端口号)
     //
-    public CloudEventServiceImp(String server) {
+    public CloudEventServiceMqttImp(String server) {
         this.server = server;
         this.username = MqttProps.instance.getUsername();
         this.password = MqttProps.instance.getPassword();
         this.clientId = Solon.cfg().appName() + "-" + Utils.guid();
 
-        try {
-            connect();
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+        connect();
     }
 
-    private synchronized void connect() throws MqttException {
+    public CloudEventServiceMqttImp(Properties props) {
+        this.server = props.getProperty("server");
+        this.username = props.getProperty("username");
+        this.password = props.getProperty("password");
+        this.clientId = Solon.cfg().appName() + "-" + Utils.guid();
+
+        connect();
+    }
+
+    private synchronized void connect() {
         if (client != null) {
             return;
         }
-
-        client = new MqttClient(server, clientId, new MemoryPersistence());
-        clientCallback = new MqttCallbackImp(client);
 
         MqttConnectOptions options = new MqttConnectOptions();
 
@@ -68,13 +70,20 @@ public class CloudEventServiceImp implements CloudEventService {
         options.setCleanSession(false);
         options.setConnectionTimeout(1000); //超时时长
         options.setKeepAliveInterval(100); //心跳时长
-        options.setServerURIs(new String[]{MqttProps.instance.getEventServer()});
+        options.setServerURIs(new String[]{server});
 
         //设置死信
         options.setWill("client.close", clientId.getBytes(StandardCharsets.UTF_8), 1, false);
 
-        client.setCallback(clientCallback);
-        client.connect(options);
+        try {
+            client = new MqttClient(server, clientId, new MemoryPersistence());
+            clientCallback = new MqttCallbackImp(client);
+
+            client.setCallback(clientCallback);
+            client.connect(options);
+        } catch (MqttException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override

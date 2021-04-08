@@ -3,7 +3,7 @@ package org.noear.solon.cloud.extend.mqtt;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
-import org.noear.solon.cloud.extend.mqtt.service.CloudEventServiceImp;
+import org.noear.solon.cloud.extend.mqtt.service.CloudEventServiceMqttImp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 
@@ -19,7 +19,7 @@ public class XPluginImp implements Plugin {
 
         if (Utils.isNotEmpty(server)) {
             if (MqttProps.instance.getEventEnable()) {
-                CloudEventServiceImp eventServiceImp = new CloudEventServiceImp(server);
+                CloudEventServiceMqttImp eventServiceImp = new CloudEventServiceMqttImp(server);
                 CloudManager.register(eventServiceImp);
 
                 Aop.beanOnloaded(eventServiceImp::subscribe);
