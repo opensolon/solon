@@ -71,7 +71,7 @@ public class CloudEventServiceImp implements CloudEventService {
         options.setServerURIs(new String[]{MqttProps.instance.getEventServer()});
 
         //设置死信
-        options.setWill("client.close", "close".getBytes(StandardCharsets.UTF_8), 1, false);
+        options.setWill("client.close", clientId.getBytes(StandardCharsets.UTF_8), 1, false);
 
         client.setCallback(clientCallback);
         client.connect(options);
