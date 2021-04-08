@@ -35,7 +35,7 @@ public class CloudEventServiceImp implements CloudEventService {
         this.server = server;
         this.username = MqttProps.instance.getUsername();
         this.password = MqttProps.instance.getPassword();
-        this.clientId = Solon.cfg().appName() + "-" + Instance.local().address();
+        this.clientId = Solon.cfg().appName() + "-" + Utils.guid();
 
         try {
             connect();
