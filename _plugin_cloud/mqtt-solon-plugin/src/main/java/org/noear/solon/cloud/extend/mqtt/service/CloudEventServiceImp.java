@@ -33,6 +33,12 @@ public class CloudEventServiceImp implements CloudEventService {
         this.server = server;
         this.username = MqttProps.instance.getUsername();
         this.password = MqttProps.instance.getPassword();
+
+        try{
+            connect();
+        }catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
     }
 
     private synchronized void connect() throws MqttException {
