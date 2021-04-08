@@ -40,9 +40,14 @@ public class Event implements Serializable {
     private int times;
 
     /**
-     * 质量：0 只发一次；1 最少发一次；2 发一次并且不重复；
+     * 质量：0 只发一次；1 最少发一次；2 发一次并且不重复；（兼容mqtt）
      * */
     private int qos = 1;
+
+    /**
+     * 是否保留最后一条（兼容mqtt）
+     * */
+    private boolean retained = false;
 
     public Event(){
         //序列化需要
@@ -101,6 +106,12 @@ public class Event implements Serializable {
     public int qos(){return qos;}
     public Event qos(int qos) {
         this.qos = qos;
+        return this;
+    }
+
+    public boolean retained(){return retained;}
+    public Event retained(boolean retained){
+        this.retained = retained;
         return this;
     }
 }

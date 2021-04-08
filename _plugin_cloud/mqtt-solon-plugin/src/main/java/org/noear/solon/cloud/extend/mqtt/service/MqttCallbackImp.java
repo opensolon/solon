@@ -26,9 +26,13 @@ class MqttCallbackImp implements MqttCallback {
     public void subscribe(Map<String, CloudEventObserverEntity> observerMap) throws MqttException {
         this.observerMap = observerMap;
 
-        String[] topics = observerMap.keySet().toArray(new String[0]);
-        int[] qos = {1};
-        client.subscribe(topics, qos);
+        String[] topicAry = observerMap.keySet().toArray(new String[0]);
+        int[] topicQos = new int[topicAry.length];
+        for (int i = 0, len = topicQos.length; i < len; i++) {
+            topicQos[i] = 1;
+        }
+
+        client.subscribe(topicAry, topicQos);
     }
 
     //在断开连接时调用
