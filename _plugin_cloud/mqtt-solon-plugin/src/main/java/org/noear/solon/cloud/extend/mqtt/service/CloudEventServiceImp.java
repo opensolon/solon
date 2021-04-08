@@ -8,6 +8,7 @@ import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.extend.mqtt.MqttProps;
 import org.noear.solon.cloud.model.Event;
+import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.cloud.service.CloudEventService;
 
@@ -34,7 +35,7 @@ public class CloudEventServiceImp implements CloudEventService {
         this.server = server;
         this.username = MqttProps.instance.getUsername();
         this.password = MqttProps.instance.getPassword();
-        this.clientId = Solon.cfg().appName() + "-" + Utils.guid();
+        this.clientId = Solon.cfg().appName() + "-" + Instance.local().address();
 
         try {
             connect();
