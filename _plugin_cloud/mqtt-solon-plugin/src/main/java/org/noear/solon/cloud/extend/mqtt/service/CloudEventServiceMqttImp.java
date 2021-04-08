@@ -34,9 +34,9 @@ public class CloudEventServiceMqttImp implements CloudEventService {
     private final String server;
     private final String username;
     private final String password;
-    private final String clientId;
 
     private MqttClient client;
+    private String clientId;
     private MqttCallbackImp clientCallback;
 
     //
@@ -46,7 +46,6 @@ public class CloudEventServiceMqttImp implements CloudEventService {
         this.server = MqttProps.instance.getEventServer();
         this.username = MqttProps.instance.getUsername();
         this.password = MqttProps.instance.getPassword();
-        this.clientId = Solon.cfg().appName() + "-" + Utils.guid();
 
         connect();
     }
@@ -55,7 +54,6 @@ public class CloudEventServiceMqttImp implements CloudEventService {
         this.server = props.getProperty("server");
         this.username = props.getProperty("username");
         this.password = props.getProperty("password");
-        this.clientId = Solon.cfg().appName() + "-" + Utils.guid();
 
         connect();
     }
@@ -63,6 +61,11 @@ public class CloudEventServiceMqttImp implements CloudEventService {
     private synchronized void connect() {
         if (client != null) {
             return;
+        }
+
+        clientId = MqttProps.clientId();
+        if(Utils.isEmpty(clientId)) {
+            clientId = Solon.cfg().appName() + "-" + Utils.guid();
         }
 
         MqttConnectOptions options = new MqttConnectOptions();
