@@ -123,11 +123,23 @@ public class CloudFileServiceS3Imp implements CloudFileService {
 
     @Override
     public Result putFile(String bucket, String key, File file) throws CloudFileException {
+        String contentType = contentTypeMap.getContentTypeFor(file.getName());
+        InputStream inputStream = null;
+
+        try {
+            inputStream = new FileInputStream(file);
+        } catch (Exception ex) {
+            throw new CloudFileException(ex);
+        }
+
+        return putFile(bucket, key, inputStream, contentType);
+    }
+
+    @Override
+    public Result putFile(String bucket, String key, InputStream inputStream, String contentType) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;
         }
-
-        String contentType = contentTypeMap.getContentTypeFor(file.getName());
 
         if (contentType == null) {
             contentType = "text/plain; charset=utf-8";
@@ -137,7 +149,7 @@ public class CloudFileServiceS3Imp implements CloudFileService {
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(contentType);
 
-            PutObjectRequest request = new PutObjectRequest(bucket, key, new FileInputStream(file), metadata)
+            PutObjectRequest request = new PutObjectRequest(bucket, key, inputStream, metadata)
                     .withAccessControlList(acls);
 
             PutObjectResult tmp = client.putObject(request);
