@@ -47,7 +47,10 @@ class MqttCallbackImp implements MqttCallback {
         CloudEventObserverEntity observer = observerMap.get(topic);
 
         try {
-            Event event = new Event(topic, new String(message.getPayload())).qos(message.getQos());
+            Event event = new Event(topic, new String(message.getPayload()))
+                    .qos(message.getQos())
+                    .retained(message.isRetained());
+
             observer.handler(event);
         } catch (Throwable ex) {
             log.error("{}", ex);
