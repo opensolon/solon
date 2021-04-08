@@ -6,16 +6,15 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
-import com.amazonaws.util.StringInputStream;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.extend.aws.s3.S3Props;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.handle.Result;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.net.FileNameMap;
-import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 /**
@@ -26,6 +25,7 @@ import java.util.Properties;
  */
 public class CloudFileServiceS3Imp implements CloudFileService {
     private static CloudFileServiceS3Imp instance;
+
     public static synchronized CloudFileServiceS3Imp getInstance() {
         if (instance == null) {
             instance = new CloudFileServiceS3Imp();
@@ -33,9 +33,6 @@ public class CloudFileServiceS3Imp implements CloudFileService {
 
         return instance;
     }
-
-
-    static final FileNameMap contentTypeMap = URLConnection.getFileNameMap();
 
     protected final String bucketDef;
     protected final String accessKey;
@@ -97,43 +94,30 @@ public class CloudFileServiceS3Imp implements CloudFileService {
     }
 
     @Override
-    public Result putText(String bucket, String key, String content) throws CloudFileException {
-        if (Utils.isEmpty(bucket)) {
-            bucket = bucketDef;
-        }
-
+    public Result putText(String bucket, String key, String text) throws CloudFileException {
         try {
-            InputStream stream = new StringInputStream(content);
-
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentType("text/plain; charset=utf-8");
-
-            PutObjectRequest request = new PutObjectRequest(bucket, key, stream, metadata)
-                    .withAccessControlList(acls);
-
-            PutObjectResult tmp = client.putObject(request);
-
-            return Result.succeed(tmp);
-        } catch (Exception ex) {
-            throw new CloudFileException(ex);
+            InputStream stream = new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8));
+            return putStream(bucket, key, stream, null);
+        } catch (CloudFileException ex) {
+            throw ex;
         }
     }
 
     @Override
-    public Result putStream(String bucket, String key, InputStream inputStream, String contentType) throws CloudFileException {
+    public Result putStream(String bucket, String key, InputStream stream, String streamMime) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;
         }
 
-        if (contentType == null) {
-            contentType = "text/plain; charset=utf-8";
+        if (streamMime == null) {
+            streamMime = "text/plain; charset=utf-8";
         }
 
         try {
             ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentType(contentType);
+            metadata.setContentType(streamMime);
 
-            PutObjectRequest request = new PutObjectRequest(bucket, key, inputStream, metadata)
+            PutObjectRequest request = new PutObjectRequest(bucket, key, stream, metadata)
                     .withAccessControlList(acls);
 
             PutObjectResult tmp = client.putObject(request);

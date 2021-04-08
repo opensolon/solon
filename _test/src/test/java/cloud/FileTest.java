@@ -67,7 +67,7 @@ public class FileTest {
         byte[] image_btys = Base64.getDecoder().decode(image_base64);
         InputStream image_stream = new ByteArrayInputStream(image_btys);
 
-        Result result = CloudClient.file().putFile(key, image_stream, "image/jpeg");
+        Result result = CloudClient.file().putStream(key, image_stream, "image/jpeg");
         System.out.println(ONode.stringify(result));
         assert result.getCode() == Result.SUCCEED_CODE;
     }
