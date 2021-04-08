@@ -94,16 +94,6 @@ public class CloudFileServiceS3Imp implements CloudFileService {
     }
 
     @Override
-    public Result putText(String bucket, String key, String text) throws CloudFileException {
-        try {
-            InputStream stream = new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8));
-            return putStream(bucket, key, stream, null);
-        } catch (CloudFileException ex) {
-            throw ex;
-        }
-    }
-
-    @Override
     public Result putStream(String bucket, String key, InputStream stream, String streamMime) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;
