@@ -649,6 +649,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>mqtt-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>guava-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -658,14 +664,6 @@
                 <artifactId>sentinel-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
-
-
-            <!--            <dependency>-->
-            <!--                <groupId>org.noear</groupId>-->
-            <!--                <artifactId>mqtt-solon-plugin</artifactId>-->
-            <!--                <version>${solon.ver}</version>-->
-            <!--            </dependency>-->
-
 
 
             <!-- //////////// servlet ////////////  -->
