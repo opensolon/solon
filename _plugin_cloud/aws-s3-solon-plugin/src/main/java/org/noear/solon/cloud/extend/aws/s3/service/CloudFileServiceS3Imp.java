@@ -13,8 +13,6 @@ import org.noear.solon.cloud.extend.aws.s3.S3Props;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.handle.Result;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.FileNameMap;
 import java.net.URLConnection;
@@ -122,21 +120,7 @@ public class CloudFileServiceS3Imp implements CloudFileService {
     }
 
     @Override
-    public Result putFile(String bucket, String key, File file) throws CloudFileException {
-        String contentType = contentTypeMap.getContentTypeFor(file.getName());
-        InputStream inputStream = null;
-
-        try {
-            inputStream = new FileInputStream(file);
-        } catch (Exception ex) {
-            throw new CloudFileException(ex);
-        }
-
-        return putFile(bucket, key, inputStream, contentType);
-    }
-
-    @Override
-    public Result putFile(String bucket, String key, InputStream inputStream, String contentType) throws CloudFileException {
+    public Result putStream(String bucket, String key, InputStream inputStream, String contentType) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;
         }

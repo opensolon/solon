@@ -8,11 +8,7 @@ import org.noear.solon.core.handle.Result;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.FileNameMap;
-import java.net.URLConnection;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,9 +29,6 @@ public class CloudFileServiceOssImp implements CloudFileService {
 
         return instance;
     }
-
-
-    static final FileNameMap contentTypeMap = URLConnection.getFileNameMap();
 
     protected final String bucketDef;
     protected final String accessKey;
@@ -130,22 +123,9 @@ public class CloudFileServiceOssImp implements CloudFileService {
         }
     }
 
-    @Override
-    public Result putFile(String bucket, String key, File file) throws CloudFileException {
-        String contentType = contentTypeMap.getContentTypeFor(file.getName());
-        InputStream inputStream = null;
-
-        try {
-            inputStream = new FileInputStream(file);
-        } catch (Exception ex) {
-            throw new CloudFileException(ex);
-        }
-
-        return putFile(bucket, key, inputStream, contentType);
-    }
 
     @Override
-    public Result putFile(String bucket, String key, InputStream inputStream, String contentType) throws CloudFileException {
+    public Result putStream(String bucket, String key, InputStream inputStream, String contentType) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;
         }
