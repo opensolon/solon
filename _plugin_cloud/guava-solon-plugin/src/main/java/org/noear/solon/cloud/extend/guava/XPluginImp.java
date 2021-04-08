@@ -12,6 +12,6 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        CloudManager.register(new CloudBreakerServiceImpl());
+        CloudManager.register(CloudBreakerServiceImpl.getInstance());
     }
 }

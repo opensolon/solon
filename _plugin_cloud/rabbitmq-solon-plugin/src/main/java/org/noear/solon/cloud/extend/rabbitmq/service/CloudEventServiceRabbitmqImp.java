@@ -21,15 +21,24 @@ import java.util.Map;
  * @since 1.2
  */
 public class CloudEventServiceRabbitmqImp implements CloudEventService {
+    private static CloudEventServiceRabbitmqImp instance;
+    public static synchronized CloudEventServiceRabbitmqImp getInstance() {
+        if (instance == null) {
+            instance = new CloudEventServiceRabbitmqImp();
+        }
+
+        return instance;
+    }
+
 
     RabbitProducer producer;
     RabbitConsumer consumer;
 
-    public CloudEventServiceRabbitmqImp(String server) {
+    private CloudEventServiceRabbitmqImp() {
 
         try {
             RabbitConfig config = new RabbitConfig();
-            config.server = server;
+            config.server = RabbitmqProps.instance.getEventServer();
             config.username = RabbitmqProps.instance.getUsername();
             config.password = RabbitmqProps.instance.getPassword();
 

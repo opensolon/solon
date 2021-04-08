@@ -17,7 +17,7 @@ public class XPluginImp implements Plugin {
         }
 
         if (S3Props.instance.getFileEnable()) {
-            CloudManager.register(new CloudFileServiceS3Imp());
+            CloudManager.register(CloudFileServiceS3Imp.getInstance());
         }
     }
 }

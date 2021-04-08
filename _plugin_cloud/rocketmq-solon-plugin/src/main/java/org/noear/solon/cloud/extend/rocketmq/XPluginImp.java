@@ -18,7 +18,7 @@ public class XPluginImp implements Plugin {
 
         if (Utils.isNotEmpty(server)) {
             if (RocketmqProps.instance.getEventEnable()) {
-                CloudEventServiceRocketmqImp eventServiceImp = new CloudEventServiceRocketmqImp(server);
+                CloudEventServiceRocketmqImp eventServiceImp = CloudEventServiceRocketmqImp.getInstance();
                 CloudManager.register(eventServiceImp);
 
                 Aop.beanOnloaded(eventServiceImp::subscribe);

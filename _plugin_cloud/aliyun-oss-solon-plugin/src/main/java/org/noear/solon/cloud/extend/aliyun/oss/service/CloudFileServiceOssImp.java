@@ -24,7 +24,17 @@ import java.util.Properties;
  * @since 1.3
  */
 public class CloudFileServiceOssImp implements CloudFileService {
-    static FileNameMap contentTypeMap = URLConnection.getFileNameMap();
+    private static CloudFileServiceOssImp instance;
+    public static synchronized CloudFileServiceOssImp getInstance() {
+        if (instance == null) {
+            instance = new CloudFileServiceOssImp();
+        }
+
+        return instance;
+    }
+
+
+    static final FileNameMap contentTypeMap = URLConnection.getFileNameMap();
 
     protected final String bucketDef;
     protected final String accessKey;
@@ -35,7 +45,7 @@ public class CloudFileServiceOssImp implements CloudFileService {
     protected String CHARSET_UTF8 = "utf8";
     protected String ALGORITHM = "HmacSHA1";
 
-    public CloudFileServiceOssImp() {
+    private CloudFileServiceOssImp() {
         this(
                 OssProps.instance.getFileEndpoint(),
                 OssProps.instance.getFileRegionId(),

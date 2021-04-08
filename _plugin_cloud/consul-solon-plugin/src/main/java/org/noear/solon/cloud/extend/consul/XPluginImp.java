@@ -30,7 +30,7 @@ public class XPluginImp implements Plugin {
 
         //1.登记配置服务
         if (ConsulProps.instance.getConfigEnable()) {
-            CloudConfigServiceConsulImp serviceImp = new CloudConfigServiceConsulImp();
+            CloudConfigServiceConsulImp serviceImp = CloudConfigServiceConsulImp.getInstance();
             CloudManager.register(serviceImp);
 
             if (serviceImp.getRefreshInterval() > 0) {

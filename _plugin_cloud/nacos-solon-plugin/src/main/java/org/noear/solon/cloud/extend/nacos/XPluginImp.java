@@ -22,7 +22,7 @@ public class XPluginImp implements Plugin {
 
         //1.登记配置服务
         if (NacosProps.instance.getConfigEnable()) {
-            CloudManager.register(new CloudConfigServiceNacosImp());
+            CloudManager.register( CloudConfigServiceNacosImp.getInstance());
 
             //1.1.加载配置
             CloudClient.configLoad(NacosProps.instance.getConfigLoad());

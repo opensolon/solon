@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.rocketmq.service;
 
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
+import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
 import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqConfig;
 import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqConsumer;
 import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqProducer;
@@ -17,13 +18,22 @@ import java.util.Map;
  * @since 1.2
  */
 public class CloudEventServiceRocketmqImp implements CloudEventService {
+    private static CloudEventServiceRocketmqImp instance;
+    public static synchronized CloudEventServiceRocketmqImp getInstance() {
+        if (instance == null) {
+            instance = new CloudEventServiceRocketmqImp();
+        }
+
+        return instance;
+    }
+
 
     RocketmqProducer producer;
     RocketmqConsumer consumer;
 
-    public CloudEventServiceRocketmqImp(String server) {
+    private CloudEventServiceRocketmqImp() {
         RocketmqConfig config = new RocketmqConfig();
-        config.server = server;
+        config.server = RocketmqProps.instance.getEventServer();
 
         producer = new RocketmqProducer(config);
         consumer = new RocketmqConsumer(config);

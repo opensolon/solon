@@ -86,7 +86,7 @@ public class XPluginImp implements Plugin {
             }
 
             if (WaterProps.instance.getConfigEnable()) {
-                configServiceImp = new CloudConfigServiceWaterImp();
+                configServiceImp = CloudConfigServiceWaterImp.getInstance();
                 CloudManager.register(configServiceImp);
 
                 if (Solon.cfg().isFilesMode()) {

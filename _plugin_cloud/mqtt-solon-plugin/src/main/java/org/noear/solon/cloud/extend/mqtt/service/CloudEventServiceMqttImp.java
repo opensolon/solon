@@ -21,6 +21,16 @@ import java.util.Properties;
  * @since 1.3
  */
 public class CloudEventServiceMqttImp implements CloudEventService {
+    private static CloudEventServiceMqttImp instance;
+    public static synchronized CloudEventServiceMqttImp getInstance() {
+        if (instance == null) {
+            instance = new CloudEventServiceMqttImp();
+        }
+
+        return instance;
+    }
+
+
     private final String server;
     private final String username;
     private final String password;
@@ -32,8 +42,8 @@ public class CloudEventServiceMqttImp implements CloudEventService {
     //
     // 1833(MQTT的默认端口号)
     //
-    public CloudEventServiceMqttImp(String server) {
-        this.server = server;
+    private CloudEventServiceMqttImp() {
+        this.server = MqttProps.instance.getEventServer();
         this.username = MqttProps.instance.getUsername();
         this.password = MqttProps.instance.getPassword();
         this.clientId = Solon.cfg().appName() + "-" + Utils.guid();

@@ -20,6 +20,16 @@ import java.util.function.Consumer;
  * @author noear 2021/1/17 created
  */
 public class CloudConfigServiceWaterImp extends TimerTask implements CloudConfigService {
+    private static CloudConfigServiceWaterImp instance;
+    public static synchronized CloudConfigServiceWaterImp getInstance() {
+        if (instance == null) {
+            instance = new CloudConfigServiceWaterImp();
+        }
+
+        return instance;
+    }
+
+
     private final String DEFAULT_GROUP = "DEFAULT_GROUP";
 
     private long refreshInterval;
@@ -27,7 +37,7 @@ public class CloudConfigServiceWaterImp extends TimerTask implements CloudConfig
     private Map<String, Config> configMap = new HashMap<>();
 
 
-    public CloudConfigServiceWaterImp() {
+    private CloudConfigServiceWaterImp() {
         refreshInterval = IntervalUtils.getInterval(WaterProps.instance.getConfigRefreshInterval("5s"));
     }
 

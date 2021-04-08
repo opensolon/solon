@@ -27,7 +27,17 @@ import java.util.Properties;
  * @since 1.3
  */
 public class CloudFileServiceS3Imp implements CloudFileService {
-    static FileNameMap contentTypeMap = URLConnection.getFileNameMap();
+    private static CloudFileServiceS3Imp instance;
+    public static synchronized CloudFileServiceS3Imp getInstance() {
+        if (instance == null) {
+            instance = new CloudFileServiceS3Imp();
+        }
+
+        return instance;
+    }
+
+
+    static final FileNameMap contentTypeMap = URLConnection.getFileNameMap();
 
     protected final String bucketDef;
     protected final String accessKey;
@@ -38,7 +48,7 @@ public class CloudFileServiceS3Imp implements CloudFileService {
     protected final AmazonS3 client;
     protected final AccessControlList acls = new AccessControlList();
 
-    public CloudFileServiceS3Imp() {
+    private CloudFileServiceS3Imp() {
         this(
                 S3Props.instance.getFileEndpoint(),
                 S3Props.instance.getFileRegionId(),
