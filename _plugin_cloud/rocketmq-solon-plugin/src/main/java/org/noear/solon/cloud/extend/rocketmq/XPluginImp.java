@@ -3,7 +3,7 @@ package org.noear.solon.cloud.extend.rocketmq;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
-import org.noear.solon.cloud.extend.rocketmq.service.CloudEventServiceImp;
+import org.noear.solon.cloud.extend.rocketmq.service.CloudEventServiceRocketmqImp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 
@@ -18,7 +18,7 @@ public class XPluginImp implements Plugin {
 
         if (Utils.isNotEmpty(server)) {
             if (RocketmqProps.instance.getEventEnable()) {
-                CloudEventServiceImp eventServiceImp = new CloudEventServiceImp(server);
+                CloudEventServiceRocketmqImp eventServiceImp = new CloudEventServiceRocketmqImp(server);
                 CloudManager.register(eventServiceImp);
 
                 Aop.beanOnloaded(eventServiceImp::subscribe);

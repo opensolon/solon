@@ -20,12 +20,12 @@ import java.util.Map;
  * @author noear
  * @since 1.2
  */
-public class CloudEventServiceImp implements CloudEventService {
+public class CloudEventServiceRabbitmqImp implements CloudEventService {
 
     RabbitProducer producer;
     RabbitConsumer consumer;
 
-    public CloudEventServiceImp(String server) {
+    public CloudEventServiceRabbitmqImp(String server) {
 
         try {
             RabbitConfig config = new RabbitConfig();

@@ -21,11 +21,11 @@ import java.util.Properties;
  * @author noear
  * @since 1.2
  */
-public class CloudDiscoveryServiceImp implements CloudDiscoveryService {
+public class CloudDiscoveryServiceNacosImp implements CloudDiscoveryService {
     NamingService real;
     boolean unstable;
 
-    public CloudDiscoveryServiceImp() {
+    public CloudDiscoveryServiceNacosImp() {
         String server = NacosProps.instance.getDiscoveryServer();
         String username = NacosProps.instance.getUsername();
         String password = NacosProps.instance.getPassword();

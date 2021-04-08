@@ -7,7 +7,7 @@ import org.noear.water.WaterClient;
  * @author noear
  * @since 1.3
  */
-public class CloudListServiceImp implements CloudListService {
+public class CloudListServiceWaterImp implements CloudListService {
     @Override
     public boolean inList(String name, String type, String value) {
         return WaterClient.Whitelist.exists(name, type, value);

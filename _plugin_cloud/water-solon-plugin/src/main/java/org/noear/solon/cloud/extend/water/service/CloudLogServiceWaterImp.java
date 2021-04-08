@@ -14,10 +14,10 @@ import org.noear.water.utils.TextUtils;
 /**
  * @author noear 2021/2/23 created
  */
-public class CloudLogServiceImp implements CloudLogService {
+public class CloudLogServiceWaterImp implements CloudLogService {
     private String loggerNameDefault;
 
-    public CloudLogServiceImp() {
+    public CloudLogServiceWaterImp() {
         loggerNameDefault = WaterProps.instance.getLogDefault();
 
         if (Utils.isEmpty(loggerNameDefault)) {

@@ -1,7 +1,7 @@
 package org.noear.solon.cloud.extend.water.integration.msg;
 
 import org.noear.solon.cloud.CloudEventHandler;
-import org.noear.solon.cloud.extend.water.service.CloudConfigServiceImp;
+import org.noear.solon.cloud.extend.water.service.CloudConfigServiceWaterImp;
 import org.noear.solon.cloud.model.Event;
 
 /**
@@ -9,9 +9,9 @@ import org.noear.solon.cloud.model.Event;
  * @since 1.2
  */
 public class HandlerConfigUpdate implements CloudEventHandler {
-    private CloudConfigServiceImp configService;
+    private CloudConfigServiceWaterImp configService;
 
-    public HandlerConfigUpdate(CloudConfigServiceImp configService) {
+    public HandlerConfigUpdate(CloudConfigServiceWaterImp configService) {
         this.configService = configService;
     }
 

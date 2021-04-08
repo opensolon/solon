@@ -19,13 +19,13 @@ import java.util.*;
  * @author noear
  * @since 1.2
  */
-public class CloudEventServiceImp implements CloudEventService {
+public class CloudEventServiceWaterImp implements CloudEventService {
     private final String DEFAULT_DEAL = "Pckb6BpGzDE6RUIy";
     private String seal;
     private Map<String, CloudEventObserverEntity> instanceObserverMap = new HashMap<>();
     private Map<String, CloudEventObserverEntity> clusterObserverMap = new HashMap<>();
     private boolean unstable;
-    public CloudEventServiceImp() {
+    public CloudEventServiceWaterImp() {
         this.unstable = WaterProps.instance.getDiscoveryUnstable()
                 || Solon.cfg().isFilesMode()
                 || Solon.cfg().isDriftMode();

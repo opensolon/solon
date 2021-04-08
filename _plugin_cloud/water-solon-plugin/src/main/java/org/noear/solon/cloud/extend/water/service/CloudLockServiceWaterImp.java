@@ -6,7 +6,7 @@ import org.noear.water.utils.LockUtils;
 /**
  * @author noear 2021/2/3 created
  */
-public class CloudLockServiceImp implements CloudLockService {
+public class CloudLockServiceWaterImp implements CloudLockService {
 
 
     @Override

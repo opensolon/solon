@@ -5,10 +5,10 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
-import org.noear.solon.cloud.extend.consul.service.CloudTraceServiceImp;
+import org.noear.solon.cloud.extend.consul.service.CloudTraceServiceConsulImp;
 import org.noear.solon.core.*;
-import org.noear.solon.cloud.extend.consul.service.CloudConfigServiceImp;
-import org.noear.solon.cloud.extend.consul.service.CloudDiscoveryServiceImp;
+import org.noear.solon.cloud.extend.consul.service.CloudConfigServiceConsulImp;
+import org.noear.solon.cloud.extend.consul.service.CloudDiscoveryServiceConsulImp;
 
 import java.util.*;
 
@@ -30,7 +30,7 @@ public class XPluginImp implements Plugin {
 
         //1.登记配置服务
         if (ConsulProps.instance.getConfigEnable()) {
-            CloudConfigServiceImp serviceImp = new CloudConfigServiceImp();
+            CloudConfigServiceConsulImp serviceImp = new CloudConfigServiceConsulImp();
             CloudManager.register(serviceImp);
 
             if (serviceImp.getRefreshInterval() > 0) {
@@ -47,7 +47,7 @@ public class XPluginImp implements Plugin {
 
         //2.登记发现服务
         if (ConsulProps.instance.getDiscoveryEnable()) {
-            CloudDiscoveryServiceImp serviceImp = new CloudDiscoveryServiceImp();
+            CloudDiscoveryServiceConsulImp serviceImp = new CloudDiscoveryServiceConsulImp();
             CloudManager.register(serviceImp);
 
             //运行一次，拉取服务列表
@@ -62,7 +62,7 @@ public class XPluginImp implements Plugin {
 
         //3.登记跟跟服务
         if(ConsulProps.instance.getTraceEnable()){
-            CloudManager.register(new CloudTraceServiceImp());
+            CloudManager.register(new CloudTraceServiceConsulImp());
         }
     }
 

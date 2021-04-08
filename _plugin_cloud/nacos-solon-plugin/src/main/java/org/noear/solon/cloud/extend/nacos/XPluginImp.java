@@ -3,11 +3,11 @@ package org.noear.solon.cloud.extend.nacos;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
-import org.noear.solon.cloud.extend.nacos.service.CloudTraceServiceImp;
+import org.noear.solon.cloud.extend.nacos.service.CloudTraceServiceNacosImp;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.cloud.CloudManager;
-import org.noear.solon.cloud.extend.nacos.service.CloudConfigServiceImp;
-import org.noear.solon.cloud.extend.nacos.service.CloudDiscoveryServiceImp;
+import org.noear.solon.cloud.extend.nacos.service.CloudConfigServiceNacosImp;
+import org.noear.solon.cloud.extend.nacos.service.CloudDiscoveryServiceNacosImp;
 
 /**
  * @author noear
@@ -22,7 +22,7 @@ public class XPluginImp implements Plugin {
 
         //1.登记配置服务
         if (NacosProps.instance.getConfigEnable()) {
-            CloudManager.register(new CloudConfigServiceImp());
+            CloudManager.register(new CloudConfigServiceNacosImp());
 
             //1.1.加载配置
             CloudClient.configLoad(NacosProps.instance.getConfigLoad());
@@ -33,12 +33,12 @@ public class XPluginImp implements Plugin {
 
         //2.登记发现服务
         if (NacosProps.instance.getDiscoveryEnable()) {
-            CloudManager.register(new CloudDiscoveryServiceImp());
+            CloudManager.register(new CloudDiscoveryServiceNacosImp());
         }
 
         //3.登记跟跟服务
         if(NacosProps.instance.getTraceEnable()){
-            CloudManager.register(new CloudTraceServiceImp());
+            CloudManager.register(new CloudTraceServiceNacosImp());
         }
     }
 }

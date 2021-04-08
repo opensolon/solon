@@ -1,6 +1,6 @@
 package org.noear.solon.cloud.extend.water.integration.http;
 
-import org.noear.solon.cloud.extend.water.service.CloudEventServiceImp;
+import org.noear.solon.cloud.extend.water.service.CloudEventServiceWaterImp;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
@@ -13,9 +13,9 @@ import org.noear.water.model.MessageM;
  * @since 1.2
  */
 public class HandlerReceive implements Handler, MessageHandler {
-    CloudEventServiceImp eventService;
+    CloudEventServiceWaterImp eventService;
 
-    public HandlerReceive(CloudEventServiceImp eventService) {
+    public HandlerReceive(CloudEventServiceWaterImp eventService) {
         this.eventService = eventService;
     }
 

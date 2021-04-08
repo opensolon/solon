@@ -70,10 +70,10 @@ public class XPluginImp implements Plugin {
 
 
             //2.初始化服务
-            CloudDiscoveryServiceImp discoveryServiceImp = null;
-            CloudConfigServiceImp configServiceImp = null;
-            CloudEventServiceImp eventServiceImp = null;
-            CloudTraceServiceImp traceServiceImp = new CloudTraceServiceImp();
+            CloudDiscoveryServiceWaterImp discoveryServiceImp = null;
+            CloudConfigServiceWaterImp configServiceImp = null;
+            CloudEventServiceWaterImp eventServiceImp = null;
+            CloudTraceServiceWaterImp traceServiceImp = new CloudTraceServiceWaterImp();
 
             WaterClient.localHostSet(Instance.local().address());
             WaterClient.localServiceSet(Instance.local().service());
@@ -86,7 +86,7 @@ public class XPluginImp implements Plugin {
             }
 
             if (WaterProps.instance.getConfigEnable()) {
-                configServiceImp = new CloudConfigServiceImp();
+                configServiceImp = new CloudConfigServiceWaterImp();
                 CloudManager.register(configServiceImp);
 
                 if (Solon.cfg().isFilesMode()) {
@@ -106,7 +106,7 @@ public class XPluginImp implements Plugin {
 
 
             if (WaterProps.instance.getDiscoveryEnable()) {
-                discoveryServiceImp = new CloudDiscoveryServiceImp();
+                discoveryServiceImp = new CloudDiscoveryServiceWaterImp();
                 CloudManager.register(discoveryServiceImp);
 
                 if (Solon.cfg().isFilesMode()) {
@@ -118,7 +118,7 @@ public class XPluginImp implements Plugin {
             }
 
             if (WaterProps.instance.getLogEnable()) {
-                CloudManager.register(new CloudLogServiceImp());
+                CloudManager.register(new CloudLogServiceWaterImp());
             }
 
             if (WaterProps.instance.getEventEnable()) {
@@ -133,7 +133,7 @@ public class XPluginImp implements Plugin {
                     }
                 }
 
-                eventServiceImp = new CloudEventServiceImp();
+                eventServiceImp = new CloudEventServiceWaterImp();
                 CloudManager.register(eventServiceImp);
 
                 if (discoveryServiceImp != null) {
@@ -152,7 +152,7 @@ public class XPluginImp implements Plugin {
             }
 
             if (WaterProps.instance.getLockEnable()) {
-                CloudManager.register(new CloudLockServiceImp());
+                CloudManager.register(new CloudLockServiceWaterImp());
             }
 
 

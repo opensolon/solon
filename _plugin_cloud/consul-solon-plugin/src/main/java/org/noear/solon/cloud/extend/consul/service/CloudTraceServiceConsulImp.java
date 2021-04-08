@@ -7,7 +7,7 @@ import org.noear.solon.core.handle.Context;
 /**
  * @author noear 2021/1/29 created
  */
-public class CloudTraceServiceImp implements CloudTraceService {
+public class CloudTraceServiceConsulImp implements CloudTraceService {
     static final String http_header_trace = "Solon-Trace-Id";
 
     @Override

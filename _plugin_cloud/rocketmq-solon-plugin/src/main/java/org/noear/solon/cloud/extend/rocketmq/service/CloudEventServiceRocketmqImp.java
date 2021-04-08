@@ -16,12 +16,12 @@ import java.util.Map;
  * @author noear
  * @since 1.2
  */
-public class CloudEventServiceImp implements CloudEventService {
+public class CloudEventServiceRocketmqImp implements CloudEventService {
 
     RocketmqProducer producer;
     RocketmqConsumer consumer;
 
-    public CloudEventServiceImp(String server) {
+    public CloudEventServiceRocketmqImp(String server) {
         RocketmqConfig config = new RocketmqConfig();
         config.server = server;
 

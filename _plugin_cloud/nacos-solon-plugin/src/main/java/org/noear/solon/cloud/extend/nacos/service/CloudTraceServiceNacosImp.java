@@ -1,19 +1,18 @@
-package org.noear.solon.cloud.extend.water.service;
+package org.noear.solon.cloud.extend.nacos.service;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.service.CloudTraceService;
 import org.noear.solon.core.handle.Context;
-import org.noear.water.WW;
-import org.noear.water.utils.TextUtils;
 
 /**
- * @author noear
- * @since 1.2
+ * @author noear 2021/1/29 created
  */
-public class CloudTraceServiceImp implements CloudTraceService {
+public class CloudTraceServiceNacosImp implements CloudTraceService {
+    static final String http_header_trace = "Solon-Trace-Id";
+
     @Override
     public String HEADER_TRACE_ID_NAME() {
-        return WW.http_header_trace;
+        return http_header_trace;
     }
 
     @Override
@@ -23,14 +22,15 @@ public class CloudTraceServiceImp implements CloudTraceService {
         if (ctx == null) {
             return "";
         } else {
-            String trace_id = ctx.header(WW.http_header_trace);
+            String trace_id = ctx.header(http_header_trace);
 
-            if (TextUtils.isEmpty(trace_id)) {
+            if (Utils.isEmpty(trace_id)) {
                 trace_id = Utils.guid();
-                ctx.headerMap().put(WW.http_header_trace, trace_id);
+                ctx.headerMap().put(http_header_trace, trace_id);
             }
 
             return trace_id;
         }
     }
 }
+

@@ -3,7 +3,7 @@ package org.noear.solon.cloud.extend.rabbitmq;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
-import org.noear.solon.cloud.extend.rabbitmq.service.CloudEventServiceImp;
+import org.noear.solon.cloud.extend.rabbitmq.service.CloudEventServiceRabbitmqImp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 
@@ -18,7 +18,7 @@ public class XPluginImp implements Plugin {
 
         if (Utils.isNotEmpty(server)) {
             if (RabbitmqProps.instance.getEventEnable()) {
-                CloudEventServiceImp eventServiceImp = new CloudEventServiceImp(server);
+                CloudEventServiceRabbitmqImp eventServiceImp = new CloudEventServiceRabbitmqImp(server);
                 CloudManager.register(eventServiceImp);
 
                 Aop.beanOnloaded(eventServiceImp::subscribe);

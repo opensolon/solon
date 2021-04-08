@@ -25,13 +25,13 @@ import java.util.TimerTask;
  * @author noear
  * @since 1.2
  */
-public class CloudDiscoveryServiceImp extends TimerTask implements CloudDiscoveryService {
+public class CloudDiscoveryServiceWaterImp extends TimerTask implements CloudDiscoveryService {
     String checkPathDefault;
     String alarmMobile;
     long refreshInterval;
     boolean unstable;
 
-    public CloudDiscoveryServiceImp() {
+    public CloudDiscoveryServiceWaterImp() {
         unstable = WaterProps.instance.getDiscoveryUnstable()
                 || Solon.cfg().isFilesMode()
                 || Solon.cfg().isDriftMode();

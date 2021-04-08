@@ -23,7 +23,7 @@ import java.util.TimerTask;
  * @author noear
  * @since 1.2
  */
-public class CloudConfigServiceImp extends TimerTask implements CloudConfigService {
+public class CloudConfigServiceConsulImp extends TimerTask implements CloudConfigService {
     private final String DEFAULT_GROUP = "DEFAULT_GROUP";
 
     private ConsulClient real;
@@ -48,7 +48,7 @@ public class CloudConfigServiceImp extends TimerTask implements CloudConfigServi
         }
     }
 
-    public CloudConfigServiceImp() {
+    public CloudConfigServiceConsulImp() {
         token = ConsulProps.instance.getToken();
         refreshInterval = IntervalUtils.getInterval(ConsulProps.instance.getConfigRefreshInterval("5s"));
 

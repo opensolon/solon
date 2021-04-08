@@ -3,7 +3,7 @@ package org.noear.solon.cloud.extend.water.integration.msg;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
-import org.noear.solon.cloud.extend.water.service.CloudDiscoveryServiceImp;
+import org.noear.solon.cloud.extend.water.service.CloudDiscoveryServiceWaterImp;
 import org.noear.solon.cloud.model.Event;
 import org.noear.water.WW;
 import org.noear.weed.WeedConfig;
@@ -18,8 +18,8 @@ import org.slf4j.LoggerFactory;
 public class HandlerCacheUpdate implements CloudEventHandler {
     static Logger logger = LoggerFactory.getLogger(WW.water_log_upstream);
 
-    CloudDiscoveryServiceImp discoveryService;
-    public HandlerCacheUpdate(CloudDiscoveryServiceImp discoveryService){
+    CloudDiscoveryServiceWaterImp discoveryService;
+    public HandlerCacheUpdate(CloudDiscoveryServiceWaterImp discoveryService){
         this.discoveryService = discoveryService;
     }
 

@@ -24,10 +24,10 @@ import java.util.concurrent.Executor;
  * @author noear
  * @since 1.2
  */
-public class CloudConfigServiceImp implements CloudConfigService {
+public class CloudConfigServiceNacosImp implements CloudConfigService {
     ConfigService real;
 
-    public CloudConfigServiceImp() {
+    public CloudConfigServiceNacosImp() {
         String server = NacosProps.instance.getConfigServer();
         String username = NacosProps.instance.getUsername();
         String password = NacosProps.instance.getPassword();
