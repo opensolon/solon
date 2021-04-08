@@ -11,6 +11,7 @@ import org.noear.solon.test.SolonTest;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Base64;
 
@@ -40,7 +41,7 @@ public class FileTest {
     }
 
     @Test
-    public void test2() {
+    public void test2() throws Exception{
         if (CloudClient.file() == null) {
             System.err.println("This file service is not available");
             return;
@@ -48,8 +49,9 @@ public class FileTest {
 
         String key = "test/" + Utils.guid() + ".png";
         File val = new File(Utils.getResource("test.png").getFile());
+        String valMime = Utils.mime(val);
 
-        Result result = CloudClient.file().putFile(key, val);
+        Result result = CloudClient.file().putStream(key, new FileInputStream(val), valMime);
         System.out.println(ONode.stringify(result));
         assert result.getCode() == Result.SUCCEED_CODE;
     }

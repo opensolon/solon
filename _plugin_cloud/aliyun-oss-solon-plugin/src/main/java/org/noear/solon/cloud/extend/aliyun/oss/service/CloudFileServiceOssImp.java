@@ -8,10 +8,8 @@ import org.noear.solon.core.handle.Result;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -69,31 +67,32 @@ public class CloudFileServiceOssImp implements CloudFileService {
         this.secretKey = secretKey;
     }
 
+
     @Override
-    public String getText(String bucket, String key) throws CloudFileException {
+    public InputStream getStream(String bucket, String key) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;
         }
 
-        String date = Datetime.Now().toGmtString();
-
-        String objPath = "/" + bucket + "/" + key;
-        String url = buildUrl(bucket, key);
-
-        String Signature = (hmacSha1(buildSignData("GET", date, objPath, null), secretKey));
-
-        String Authorization = "OSS " + accessKey + ":" + Signature;
-
-        Map<String, String> head = new HashMap<String, String>();
-        head.put("Date", date);
-        head.put("Authorization", Authorization);
-
         try {
+            String date = Datetime.Now().toGmtString();
+
+            String objPath = "/" + bucket + "/" + key;
+            String url = buildUrl(bucket, key);
+
+            String Signature = (hmacSha1(buildSignData("GET", date, objPath, null), secretKey));
+
+            String Authorization = "OSS " + accessKey + ":" + Signature;
+
+            Map<String, String> head = new HashMap<String, String>();
+            head.put("Date", date);
+            head.put("Authorization", Authorization);
+
             return HttpUtils.http(url)
                     .header("Date", date)
                     .header("Authorization", Authorization)
-                    .get();
-        } catch (Exception ex) {
+                    .exec("GET").body().byteStream();
+        } catch (IOException ex) {
             throw new CloudFileException(ex);
         }
     }
@@ -104,19 +103,20 @@ public class CloudFileServiceOssImp implements CloudFileService {
             bucket = bucketDef;
         }
 
-        String date = Datetime.Now().toGmtString();
-
-        String objPath = "/" + bucket + "/" + key;
-        String url = buildUrl(bucket, key);
-
-        if (streamMime == null) {
-            streamMime = "text/plain; charset=utf-8";
-        }
-
-        String Signature = (hmacSha1(buildSignData("PUT", date, objPath, streamMime), secretKey));
-        String Authorization = "OSS " + accessKey + ":" + Signature;
-
         try {
+            String date = Datetime.Now().toGmtString();
+
+            String objPath = "/" + bucket + "/" + key;
+            String url = buildUrl(bucket, key);
+
+            if (streamMime == null) {
+                streamMime = "text/plain; charset=utf-8";
+            }
+
+            String Signature = (hmacSha1(buildSignData("PUT", date, objPath, streamMime), secretKey));
+            String Authorization = "OSS " + accessKey + ":" + Signature;
+
+
             String tmp = HttpUtils.http(url)
                     .header("Date", date)
                     .header("Authorization", Authorization)

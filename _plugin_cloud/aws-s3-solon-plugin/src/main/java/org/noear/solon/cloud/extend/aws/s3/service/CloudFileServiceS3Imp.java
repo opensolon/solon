@@ -12,9 +12,7 @@ import org.noear.solon.cloud.extend.aws.s3.S3Props;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.handle.Result;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 /**
@@ -77,7 +75,7 @@ public class CloudFileServiceS3Imp implements CloudFileService {
     }
 
     @Override
-    public String getText(String bucket, String key) throws CloudFileException {
+    public InputStream getStream(String bucket, String key) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;
         }
@@ -85,9 +83,7 @@ public class CloudFileServiceS3Imp implements CloudFileService {
         try {
             GetObjectRequest request = new GetObjectRequest(bucket, key);
 
-            S3Object tmp = client.getObject(request);
-
-            return Utils.getString(tmp.getObjectContent(), "UTF-8");
+            return client.getObject(request).getObjectContent();
         } catch (Exception ex) {
             throw new CloudFileException(ex);
         }

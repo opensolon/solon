@@ -6,7 +6,9 @@ import org.noear.solon.core.*;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
+import java.net.FileNameMap;
 import java.net.URL;
+import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -22,10 +24,15 @@ import java.util.function.Function;
  * */
 @Note("内部专用工具（外部项目不建议使用，随时可能会变动）")
 public class Utils {
+    public static final FileNameMap mimeMap = URLConnection.getFileNameMap();
     public static final ExecutorService pools = Executors.newCachedThreadPool();
     public static final ScheduledExecutorService scheduled = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
 
     private static final char[] HEX_DIGITS = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+
+    public static String mime(File file){
+        return mimeMap.getContentTypeFor(file.getName());
+    }
 
     /**
      * 生成UGID
