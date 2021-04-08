@@ -12,6 +12,7 @@ import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.cloud.service.CloudEventService;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,7 +57,7 @@ public class CloudEventServiceImp implements CloudEventService {
 
         if (Utils.isNotEmpty(username)) {
             options.setUserName(username);
-        }else{
+        } else {
             options.setUserName(Solon.cfg().appName());
         }
 
@@ -68,6 +69,9 @@ public class CloudEventServiceImp implements CloudEventService {
         options.setConnectionTimeout(1000); //超时时长
         options.setKeepAliveInterval(100); //心跳时长
         options.setServerURIs(new String[]{MqttProps.instance.getEventServer()});
+
+        //设置死信
+        options.setWill("client.close", "close".getBytes(StandardCharsets.UTF_8), 1, false);
 
         client.setCallback(clientCallback);
         client.connect(options);
