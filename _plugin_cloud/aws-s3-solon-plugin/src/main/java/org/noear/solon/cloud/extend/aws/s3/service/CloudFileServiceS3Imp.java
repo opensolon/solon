@@ -42,7 +42,6 @@ public class CloudFileServiceS3Imp implements CloudFileService {
     protected final String bucketDef;
     protected final String accessKey;
     protected final String secretKey;
-    protected final String endpoint;
     protected final String regionId;
 
     protected final AmazonS3 client;
@@ -50,7 +49,6 @@ public class CloudFileServiceS3Imp implements CloudFileService {
 
     private CloudFileServiceS3Imp() {
         this(
-                S3Props.instance.getFileEndpoint(),
                 S3Props.instance.getFileRegionId(),
                 S3Props.instance.getFileBucket(),
                 S3Props.instance.getFileAccessKey(),
@@ -60,7 +58,6 @@ public class CloudFileServiceS3Imp implements CloudFileService {
 
     public CloudFileServiceS3Imp(Properties pops) {
         this(
-                pops.getProperty("endpoint"),
                 pops.getProperty("regionId"),
                 pops.getProperty("bucket"),
                 pops.getProperty("accessKey"),
@@ -68,8 +65,7 @@ public class CloudFileServiceS3Imp implements CloudFileService {
         );
     }
 
-    public CloudFileServiceS3Imp(String endpoint, String regionId, String bucket, String accessKey, String secretKey) {
-        this.endpoint = endpoint;
+    public CloudFileServiceS3Imp(String regionId, String bucket, String accessKey, String secretKey) {
         this.regionId = regionId;
 
         this.bucketDef = bucket;

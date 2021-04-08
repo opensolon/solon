@@ -40,7 +40,6 @@ public class CloudFileServiceOssImp implements CloudFileService {
     protected final String accessKey;
     protected final String secretKey;
     protected final String endpoint;
-    protected final String regionId;
 
     protected String CHARSET_UTF8 = "utf8";
     protected String ALGORITHM = "HmacSHA1";
@@ -48,7 +47,6 @@ public class CloudFileServiceOssImp implements CloudFileService {
     private CloudFileServiceOssImp() {
         this(
                 OssProps.instance.getFileEndpoint(),
-                OssProps.instance.getFileRegionId(),
                 OssProps.instance.getFileBucket(),
                 OssProps.instance.getFileAccessKey(),
                 OssProps.instance.getFileSecretKey()
@@ -58,7 +56,6 @@ public class CloudFileServiceOssImp implements CloudFileService {
     public CloudFileServiceOssImp(Properties pops) {
         this(
                 pops.getProperty("endpoint"),
-                pops.getProperty("regionId"),
                 pops.getProperty("bucket"),
                 pops.getProperty("accessKey"),
                 pops.getProperty("secretKey")
@@ -66,9 +63,8 @@ public class CloudFileServiceOssImp implements CloudFileService {
     }
 
 
-    public CloudFileServiceOssImp(String endpoint, String regionId, String bucket, String accessKey, String secretKey) {
+    public CloudFileServiceOssImp(String endpoint, String bucket, String accessKey, String secretKey) {
         this.endpoint = endpoint;
-        this.regionId = regionId;
 
         this.bucketDef = bucket;
 
