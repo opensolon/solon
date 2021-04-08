@@ -2,7 +2,6 @@ package org.noear.solon.cloud.service;
 
 import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.core.handle.UploadedFile;
 
 import java.io.File;
 import java.io.InputStream;
@@ -15,27 +14,27 @@ import java.io.InputStream;
  */
 public interface CloudFileService {
     /**
-     * 获取字符串
+     * 获取文本
      */
-    String getString(String bucket, String key) throws CloudFileException;
+    String getText(String bucket, String key) throws CloudFileException;
 
     /**
-     * 获取字符串
+     * 获取文本
      */
-    default String getString(String key) throws CloudFileException {
-        return getString(null, key);
+    default String getText(String key) throws CloudFileException {
+        return getText(null, key);
     }
 
     /**
-     * 推入字符串
+     * 推入文本
      */
-    Result putString(String bucket, String key, String content) throws CloudFileException;
+    Result putText(String bucket, String key, String content) throws CloudFileException;
 
     /**
-     * 推入字符串
+     * 推入文本
      */
-    default Result putString(String key, String content) throws CloudFileException {
-        return putString(null, key, content);
+    default Result putText(String key, String content) throws CloudFileException {
+        return putText(null, key, content);
     }
 
 

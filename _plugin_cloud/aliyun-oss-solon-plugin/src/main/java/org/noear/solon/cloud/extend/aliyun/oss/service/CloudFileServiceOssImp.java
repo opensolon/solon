@@ -74,7 +74,7 @@ public class CloudFileServiceOssImp implements CloudFileService {
     }
 
     @Override
-    public String getString(String bucket, String key) throws CloudFileException {
+    public String getText(String bucket, String key) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;
         }
@@ -103,7 +103,7 @@ public class CloudFileServiceOssImp implements CloudFileService {
     }
 
     @Override
-    public Result putString(String bucket, String key, String content) throws CloudFileException {
+    public Result putText(String bucket, String key, String content) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;
         }

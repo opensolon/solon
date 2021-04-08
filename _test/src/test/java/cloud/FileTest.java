@@ -30,12 +30,12 @@ public class FileTest {
         String key = "test/" + Utils.guid();
         String val = "Hello world!";
 
-        Result result = CloudClient.file().putString(key, val);
+        Result result = CloudClient.file().putText(key, val);
         System.out.println(ONode.stringify(result));
         assert result.getCode() == Result.SUCCEED_CODE;
 
 
-        String tmp = CloudClient.file().getString(key);
+        String tmp = CloudClient.file().getText(key);
         assert val.equals(tmp);
     }
 
