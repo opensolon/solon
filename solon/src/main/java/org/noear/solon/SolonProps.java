@@ -189,11 +189,7 @@ public final class SolonProps extends Props {
                     .forEach(url -> plugsScanMapDo(classLoader, url));
         }
 
-        if (plugs.size() > 0) {
-            //进行优先级顺排（数值要倒排）
-            //
-            plugs.sort(Comparator.comparingInt(PluginEntity::getPriority).reversed());
-        }
+        plugsSort();
     }
 
     /**
@@ -262,6 +258,17 @@ public final class SolonProps extends Props {
      */
     public List<PluginEntity> plugs() {
         return plugs;
+    }
+
+    /**
+     * 插件排序
+     * */
+    public void plugsSort(){
+        if (plugs.size() > 0) {
+            //进行优先级顺排（数值要倒排）
+            //
+            plugs.sort(Comparator.comparingInt(PluginEntity::getPriority).reversed());
+        }
     }
 
 

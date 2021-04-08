@@ -298,6 +298,7 @@ public class SolonApp implements HandlerSlots {
     public void pluginAdd(int priority, Plugin plugin) {
         PluginEntity p = new PluginEntity(plugin, priority);
         cfg().plugs().add(p);
+        cfg().plugsSort();
     }
 
     ///////////////////////////////////////////////
