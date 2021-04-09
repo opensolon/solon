@@ -27,7 +27,10 @@ public class SolonServletFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         if (request instanceof HttpServletRequest) {
-            Context ctx = new SolonServletContext((HttpServletRequest) request, (HttpServletResponse) response);
+            //
+            // 临时对接，parseMultipart=false 免得对数据有影响
+            //
+            Context ctx = new SolonServletContext((HttpServletRequest) request, (HttpServletResponse) response, false);
 
             try {
                 ContextUtil.currentSet(ctx);

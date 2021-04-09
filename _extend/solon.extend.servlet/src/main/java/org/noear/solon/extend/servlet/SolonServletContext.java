@@ -24,13 +24,17 @@ import java.util.*;
 public class SolonServletContext extends Context {
     private HttpServletRequest _request;
     private HttpServletResponse _response;
-    protected Map<String,List<UploadedFile>> _fileMap;
+    protected Map<String, List<UploadedFile>> _fileMap;
 
     public SolonServletContext(HttpServletRequest request, HttpServletResponse response) {
+        this(request, response, true);
+    }
+
+    public SolonServletContext(HttpServletRequest request, HttpServletResponse response, boolean parseMultipart) {
         _request = request;
         _response = response;
 
-        if(sessionState().replaceable() && Solon.global().enableSessionState()){
+        if (sessionState().replaceable() && Solon.global().enableSessionState()) {
             sessionStateInit(new SessionState() {
                 @Override
                 public String sessionId() {
@@ -44,20 +48,18 @@ public class SolonServletContext extends Context {
 
                 @Override
                 public void sessionSet(String key, Object val) {
-                    _request.getSession().setAttribute(key,val);
+                    _request.getSession().setAttribute(key, val);
                 }
             });
         }
 
 
         //文件上传需要
-        if (isMultipart()) {
+        if (parseMultipart && isMultipart()) {
             try {
-                _fileMap = new HashMap<>();
-
                 MultipartUtil.buildParamsAndFiles(this);
             } catch (Throwable ex) {
-               throw new RuntimeException(ex);
+                throw new RuntimeException(ex);
             }
         }
     }
@@ -68,9 +70,10 @@ public class SolonServletContext extends Context {
     }
 
     private String _ip;
+
     @Override
     public String ip() {
-        if(_ip == null) {
+        if (_ip == null) {
             _ip = header("X-Forwarded-For");
 
             if (_ip == null) {
@@ -93,12 +96,13 @@ public class SolonServletContext extends Context {
 
     @Override
     public URI uri() {
-        if(_uri == null) {
+        if (_uri == null) {
             _uri = URI.create(url());
         }
 
         return _uri;
     }
+
     private URI _uri;
 
     @Override
@@ -107,9 +111,10 @@ public class SolonServletContext extends Context {
     }
 
     private String _url;
+
     @Override
     public String url() {
-        if(_url == null) {
+        if (_url == null) {
             _url = _request.getRequestURL().toString();
         }
 
@@ -138,8 +143,8 @@ public class SolonServletContext extends Context {
     }
 
     @Override
-    public String[] paramValues(String key){
-        return  _request.getParameterValues(key);
+    public String[] paramValues(String key) {
+        return _request.getParameterValues(key);
     }
 
     @Override
@@ -153,15 +158,16 @@ public class SolonServletContext extends Context {
     public String param(String key, String def) {
         String temp = paramMap().get(key); //因为会添加参数，所以必须用这个
 
-        if(Utils.isEmpty(temp)){
+        if (Utils.isEmpty(temp)) {
             return def;
-        }else{
+        } else {
             return temp;
         }
     }
 
 
     private NvMap _paramMap;
+
     @Override
     public NvMap paramMap() {
         if (_paramMap == null) {
@@ -180,6 +186,7 @@ public class SolonServletContext extends Context {
     }
 
     private Map<String, List<String>> _paramsMap;
+
     @Override
     public Map<String, List<String>> paramsMap() {
         if (_paramsMap == null) {
@@ -194,17 +201,17 @@ public class SolonServletContext extends Context {
     }
 
     @Override
-    public List<UploadedFile> files(String key) throws Exception{
-         if (isMultipartFormData()){
-             List<UploadedFile> temp = _fileMap.get(key);
-             if(temp == null){
-                 return new ArrayList<>();
-             }else{
-                 return temp;
-             }
-         }  else {
-             return new ArrayList<>();
-         }
+    public List<UploadedFile> files(String key) throws Exception {
+        if (_fileMap != null && isMultipartFormData()) {
+            List<UploadedFile> temp = _fileMap.get(key);
+            if (temp == null) {
+                return new ArrayList<>();
+            } else {
+                return temp;
+            }
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     private NvMap _cookieMap;
@@ -228,7 +235,7 @@ public class SolonServletContext extends Context {
 
     @Override
     public NvMap headerMap() {
-        if(_headerMap == null) {
+        if (_headerMap == null) {
             _headerMap = new NvMap();
             Enumeration<String> headers = _request.getHeaderNames();
 
@@ -241,8 +248,8 @@ public class SolonServletContext extends Context {
 
         return _headerMap;
     }
-    private NvMap _headerMap;
 
+    private NvMap _headerMap;
 
 
     //====================================
@@ -276,13 +283,13 @@ public class SolonServletContext extends Context {
         try {
             OutputStream out = outputStream();
             out.write(bytes);
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
 
     @Override
-    public void output(InputStream stream)  {
+    public void output(InputStream stream) {
         try {
             OutputStream out = outputStream();
 
@@ -291,30 +298,30 @@ public class SolonServletContext extends Context {
             while ((rc = stream.read(buff, 0, 100)) > 0) {
                 out.write(buff, 0, rc);
             }
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
 
     @Override
     public void headerSet(String key, String val) {
-        _response.setHeader(key,val);
+        _response.setHeader(key, val);
     }
 
     @Override
     public void headerAdd(String key, String val) {
-        _response.addHeader(key,val);
+        _response.addHeader(key, val);
     }
 
     @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
-        Cookie c = new Cookie(key,val);
+        Cookie c = new Cookie(key, val);
 
         if (Utils.isNotEmpty(path)) {
             c.setPath(path);
         }
 
-        if(maxAge > 0) {
+        if (maxAge > 0) {
             c.setMaxAge(maxAge);
         }
 
@@ -329,13 +336,13 @@ public class SolonServletContext extends Context {
     public void redirect(String url) {
         try {
             _response.sendRedirect(url);
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
 
     @Override
-    public void redirect(String url, int code)  {
+    public void redirect(String url, int code) {
         statusSet(code);
         _response.setHeader("Location", url);
     }
@@ -361,11 +368,12 @@ public class SolonServletContext extends Context {
     }
 
     private boolean _headers_sent = false;
-    private void sendHeaders() throws IOException{
-        if(!_headers_sent) {
+
+    private void sendHeaders() throws IOException {
+        if (!_headers_sent) {
             _headers_sent = true;
 
-            if(sessionState() != null){
+            if (sessionState() != null) {
                 sessionState().sessionPublish();
             }
         }

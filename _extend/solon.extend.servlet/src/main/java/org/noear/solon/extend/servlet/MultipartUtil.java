@@ -8,8 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author noear
@@ -17,14 +16,18 @@ import java.util.List;
  * */
 class MultipartUtil {
 
-    public static void buildParamsAndFiles(SolonServletContext context) throws IOException, ServletException{
+    public static void buildParamsAndFiles(SolonServletContext context) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) context.request();
 
         request.setAttribute("org.eclipse.jetty.multipartConfig",
                 new MultipartConfigElement(System.getProperty("java.io.tmpdir")));
 
-        for(Part part : request.getParts()){
-            if(isFile(part)){
+        if (context._fileMap == null) {
+            context._fileMap = new HashMap<>();
+        }
+
+        for (Part part : request.getParts()) {
+            if (isFile(part)) {
                 doBuildFiles(context, part);
             }
         }
