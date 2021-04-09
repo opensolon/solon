@@ -19,6 +19,7 @@ public class SolonServletFilter implements Filter {
     public static Handler onFilterStart;
     public static Handler onFilterError;
     public static Handler onFilterEnd;
+    public static boolean isParseMultipart = false;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -31,7 +32,7 @@ public class SolonServletFilter implements Filter {
             //
             // 临时对接，parseMultipart=false 免得对数据有影响
             //
-            Context ctx = new SolonServletContext((HttpServletRequest) request, (HttpServletResponse) response, false);
+            Context ctx = new SolonServletContext((HttpServletRequest) request, (HttpServletResponse) response, isParseMultipart);
 
             try {
                 ContextUtil.currentSet(ctx);
