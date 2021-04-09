@@ -17,6 +17,7 @@ import java.io.IOException;
  * */
 public class SolonServletFilter implements Filter {
     public static Handler onFilterStart;
+    public static Handler onFilterError;
     public static Handler onFilterEnd;
 
     @Override
@@ -45,10 +46,14 @@ public class SolonServletFilter implements Filter {
                 if (ctx.getHandled() == false) {
                     filterChain.doFilter(request, response);
                 }
+            } catch (Throwable err) {
+                ctx.errors = err;
+                doFilterError(ctx);
 
+                throw err;
+            } finally {
                 //过滤结束
                 doFilterEnd(ctx);
-            } finally {
                 ContextUtil.currentRemove();
             }
 
@@ -57,7 +62,7 @@ public class SolonServletFilter implements Filter {
         }
     }
 
-    public void doFilterStart(Context ctx) {
+    protected void doFilterStart(Context ctx) {
         if (onFilterStart != null) {
             try {
                 onFilterStart.handle(ctx);
@@ -67,7 +72,17 @@ public class SolonServletFilter implements Filter {
         }
     }
 
-    public void doFilterEnd(Context ctx) {
+    protected void doFilterError(Context ctx) {
+        if (onFilterError != null) {
+            try {
+                onFilterError.handle(ctx);
+            } catch (Throwable ex) {
+                EventBus.push(ex);
+            }
+        }
+    }
+
+    protected void doFilterEnd(Context ctx) {
         if (onFilterEnd != null) {
             try {
                 onFilterEnd.handle(ctx);
