@@ -6,8 +6,8 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.ListenerProxy;
 import org.noear.solon.socketd.ProtocolManager;
-import org.smartboot.http.WebSocketRequest;
-import org.smartboot.http.WebSocketResponse;
+import org.smartboot.http.server.WebSocketRequest;
+import org.smartboot.http.server.WebSocketResponse;
 import org.smartboot.http.server.handle.WebSocketDefaultHandle;
 
 import java.nio.ByteBuffer;

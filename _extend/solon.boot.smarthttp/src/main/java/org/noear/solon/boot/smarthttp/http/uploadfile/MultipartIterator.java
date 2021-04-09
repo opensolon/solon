@@ -1,6 +1,6 @@
 package org.noear.solon.boot.smarthttp.http.uploadfile;
 
-import org.smartboot.http.HttpRequest;
+import org.smartboot.http.server.HttpRequest;
 
 import java.io.IOException;
 import java.io.InputStream;

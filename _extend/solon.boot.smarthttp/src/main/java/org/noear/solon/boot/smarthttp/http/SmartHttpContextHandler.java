@@ -4,14 +4,14 @@ import org.noear.solon.Solon;
 import org.noear.solon.boot.smarthttp.XPluginImp;
 import org.noear.solon.boot.smarthttp.XServerProp;
 import org.noear.solon.core.event.EventBus;
-import org.smartboot.http.HttpRequest;
-import org.smartboot.http.HttpResponse;
-import org.smartboot.http.enums.HttpStatus;
-import org.smartboot.http.server.handle.HttpHandle;
+import org.smartboot.http.common.enums.HttpStatus;
+import org.smartboot.http.server.HttpRequest;
+import org.smartboot.http.server.HttpResponse;
+import org.smartboot.http.server.HttpServerHandle;
 
 import java.io.IOException;
 
-public class SmartHttpContextHandler extends HttpHandle {
+public class SmartHttpContextHandler extends HttpServerHandle {
 
 
     @Override

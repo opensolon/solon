@@ -14,7 +14,7 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
-import org.smartboot.http.HttpBootstrap;
+import org.smartboot.http.server.HttpBootstrap;
 
 public final class XPluginImp implements Plugin {
 

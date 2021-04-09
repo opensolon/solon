@@ -5,10 +5,10 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
-import org.smartboot.http.HttpRequest;
-import org.smartboot.http.HttpResponse;
-import org.smartboot.http.enums.HttpStatus;
-import org.smartboot.http.server.Cookie;
+import org.smartboot.http.common.Cookie;
+import org.smartboot.http.common.enums.HttpStatus;
+import org.smartboot.http.server.HttpRequest;
+import org.smartboot.http.server.HttpResponse;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

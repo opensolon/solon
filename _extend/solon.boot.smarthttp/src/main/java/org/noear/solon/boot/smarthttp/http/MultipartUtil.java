@@ -3,7 +3,7 @@ package org.noear.solon.boot.smarthttp.http;
 
 import org.noear.solon.boot.smarthttp.http.uploadfile.MultipartIterator;
 import org.noear.solon.core.handle.UploadedFile;
-import org.smartboot.http.HttpRequest;
+import org.smartboot.http.server.HttpRequest;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

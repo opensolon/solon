@@ -3,7 +3,7 @@ package org.noear.solon.boot.smarthttp.websocket;
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.SessionManager;
-import org.smartboot.http.WebSocketRequest;
+import org.smartboot.http.server.WebSocketRequest;
 
 import java.util.Collection;
 import java.util.Collections;

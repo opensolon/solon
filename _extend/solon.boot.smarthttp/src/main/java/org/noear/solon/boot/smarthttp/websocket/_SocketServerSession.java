@@ -7,9 +7,9 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.ProtocolManager;
 import org.noear.solon.socketd.SessionBase;
-import org.smartboot.http.WebSocketRequest;
-import org.smartboot.http.WebSocketResponse;
-import org.smartboot.http.server.WebSocketRequestImpl;
+import org.smartboot.http.server.WebSocketRequest;
+import org.smartboot.http.server.WebSocketResponse;
+import org.smartboot.http.server.impl.WebSocketRequestImpl;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
