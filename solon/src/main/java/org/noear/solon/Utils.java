@@ -30,8 +30,8 @@ public class Utils {
 
     private static final char[] HEX_DIGITS = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
-    public static String mime(File file){
-        return mimeMap.getContentTypeFor(file.getName());
+    public static String mime(String fileName){
+        return mimeMap.getContentTypeFor(fileName);
     }
 
     /**

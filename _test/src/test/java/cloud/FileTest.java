@@ -49,7 +49,7 @@ public class FileTest {
 
         String key = "test/" + Utils.guid() + ".png";
         File val = new File(Utils.getResource("test.png").getFile());
-        String valMime = Utils.mime(val);
+        String valMime = Utils.mime(val.getName());
 
         Result result = CloudClient.file().putStream(key, new FileInputStream(val), valMime);
         System.out.println(ONode.stringify(result));
