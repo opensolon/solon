@@ -40,11 +40,14 @@ public class SolonServletFilter implements Filter {
                 //过滤开始
                 doFilterStart(ctx);
 
+                //Solon处理(可能是空处理)
                 Solon.global().tryHandle(ctx);
 
+                //重新设置当前上下文（上面会清掉）
                 ContextUtil.currentSet(ctx);
 
                 if (ctx.getHandled() == false) {
+                    //如果未处理，则传递过滤链
                     filterChain.doFilter(request, response);
                 }
             } catch (Throwable err) {
