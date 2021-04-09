@@ -103,15 +103,15 @@ public class CloudFileServiceOssImp implements CloudFileService {
             bucket = bucketDef;
         }
 
+        if (streamMime == null) {
+            streamMime = "text/plain; charset=utf-8";
+        }
+
         try {
             String date = Datetime.Now().toGmtString();
 
             String objPath = "/" + bucket + "/" + key;
             String url = buildUrl(bucket, key);
-
-            if (streamMime == null) {
-                streamMime = "text/plain; charset=utf-8";
-            }
 
             String Signature = (hmacSha1(buildSignData("PUT", date, objPath, streamMime), secretKey));
             String Authorization = "OSS " + accessKey + ":" + Signature;

@@ -57,6 +57,7 @@ public class FileTest {
     }
 
 
+    @Test
     public void test3_demo() {
         if (CloudClient.file() == null) {
             System.err.println("This file service is not available");
