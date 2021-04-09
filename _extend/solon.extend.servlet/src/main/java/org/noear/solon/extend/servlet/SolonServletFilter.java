@@ -29,22 +29,26 @@ public class SolonServletFilter implements Filter {
         if (request instanceof HttpServletRequest) {
             Context ctx = new SolonServletContext((HttpServletRequest) request, (HttpServletResponse) response);
 
-            //过滤开始
-            doFilterStart(ctx);
-
-            Solon.global().tryHandle(ctx);
-
-            if (ctx.getHandled() == false) {
+            try {
                 ContextUtil.currentSet(ctx);
-                try {
+
+                //过滤开始
+                doFilterStart(ctx);
+
+                Solon.global().tryHandle(ctx);
+
+                ContextUtil.currentSet(ctx);
+
+                if (ctx.getHandled() == false) {
                     filterChain.doFilter(request, response);
-                } finally {
-                    ContextUtil.currentRemove();
                 }
+
+                //过滤结束
+                doFilterEnd(ctx);
+            } finally {
+                ContextUtil.currentRemove();
             }
 
-            //过滤结束
-            doFilterEnd(ctx);
         } else {
             filterChain.doFilter(request, response);
         }
