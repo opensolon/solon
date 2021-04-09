@@ -2,9 +2,9 @@ package org.noear.solon.extend.staticfiles;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.core.handle.HandlerLink;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.handle.HandlerPipeline;
 
 public class XPluginImp implements Plugin {
     @Override
@@ -34,11 +34,10 @@ public class XPluginImp implements Plugin {
             StaticMappings.instance().add("/", XPluginProp.RES_LOCATION);
 
             //2.切换代理（让静态文件优先）
-            HandlerLink link = new HandlerLink();
-            link.node = new StaticResourceHandler();
-            link.nextNode = app.handlerGet();
+            HandlerPipeline pipeline = new HandlerPipeline();
+            pipeline.next(new StaticResourceHandler()).next(app.handlerGet());
 
-            app.handlerSet(link);
+            app.handlerSet(pipeline);
         }
     }
 }
