@@ -67,29 +67,21 @@ public class SolonServletFilter implements Filter {
     }
 
     protected void doFilterStart(Context ctx) {
-        if (onFilterStart != null) {
-            try {
-                onFilterStart.handle(ctx);
-            } catch (Throwable ex) {
-                EventBus.push(ex);
-            }
-        }
+        doHandler(onFilterStart, ctx);
     }
 
     protected void doFilterError(Context ctx) {
-        if (onFilterError != null) {
-            try {
-                onFilterError.handle(ctx);
-            } catch (Throwable ex) {
-                EventBus.push(ex);
-            }
-        }
+        doHandler(onFilterError, ctx);
     }
 
     protected void doFilterEnd(Context ctx) {
-        if (onFilterEnd != null) {
+        doHandler(onFilterEnd, ctx);
+    }
+
+    protected void doHandler(Handler h, Context ctx){
+        if (h != null) {
             try {
-                onFilterEnd.handle(ctx);
+                h.handle(ctx);
             } catch (Throwable ex) {
                 EventBus.push(ex);
             }
