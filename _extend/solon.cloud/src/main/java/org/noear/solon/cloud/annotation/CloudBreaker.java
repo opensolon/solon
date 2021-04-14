@@ -13,7 +13,7 @@ import java.lang.annotation.*;
  * @since 1.3
  */
 @Around(CloudBreakerInterceptor.class)
-@Target({ElementType.METHOD})
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface CloudBreaker {
