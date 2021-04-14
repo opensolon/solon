@@ -7,7 +7,8 @@ import org.noear.solon.core.handle.Handler;
 import org.noear.solon.extend.cors.annotation.CrossOrigin;
 
 /**
- * @author noear 2021/2/15 created
+ * @author noear
+ * @since 1.3
  */
 public class CrossOriginInterceptor implements Handler {
     @Override
@@ -39,8 +40,5 @@ public class CrossOriginInterceptor implements Handler {
 
         ctx.headerSet("Access-Control-Allow-Origin", origins);
         ctx.headerSet("Access-Control-Max-Age", String.valueOf(anno.maxAge()));
-        //ctx.headerSet("Access-Control-Allow-Headers","");
-        //ctx.headerSet("Access-Control-Allow-Methods",action.mapping().method());
-        //ctx.headerSet("Access-Control-Allow-Credentials","false");
     }
 }
