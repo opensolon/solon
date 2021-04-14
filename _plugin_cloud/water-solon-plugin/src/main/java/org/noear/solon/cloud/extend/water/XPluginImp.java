@@ -127,7 +127,7 @@ public class XPluginImp implements Plugin {
                     if (CloudClient.config() != null) {
                         Config cfg = CloudClient.config().pull(Solon.cfg().appGroup(), receive.substring(1));
                         if (cfg == null || Utils.isEmpty(cfg.value())) {
-                            throw new IllegalArgumentException("Configuration " + receive + "does not exist");
+                            throw new IllegalArgumentException("Configuration " + receive + " does not exist");
                         }
                         WaterProps.instance.setEventReceive(cfg.value());
                     }
