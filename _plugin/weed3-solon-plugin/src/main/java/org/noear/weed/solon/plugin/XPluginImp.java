@@ -24,12 +24,5 @@ public class XPluginImp implements Plugin {
 
         // 加载xml sql
         XmlSqlLoader.tryLoad();
-
-        // 添加debug
-        if (app.cfg().isDebugMode() || app.cfg().isFilesMode()) {
-            WeedConfig.onException((cmd, err) -> {
-                System.out.println(cmd.text + "\n" + ONode.stringify(cmd.paramMap()));
-            });
-        }
     }
 }

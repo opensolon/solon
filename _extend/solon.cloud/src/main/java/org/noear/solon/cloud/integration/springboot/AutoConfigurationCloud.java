@@ -2,6 +2,7 @@ package org.noear.solon.cloud.integration.springboot;
 
 import org.noear.solon.cloud.annotation.CloudConfig;
 import org.noear.solon.cloud.impl.CloudBeanInjector;
+import org.noear.solon.extend.springboot.EnableSolon;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import java.lang.reflect.Modifier;
  * @author noear
  * @since 1.2
  */
+@EnableSolon
 @Configuration
 public class AutoConfigurationCloud extends InstantiationAwareBeanPostProcessorAdapter {
 

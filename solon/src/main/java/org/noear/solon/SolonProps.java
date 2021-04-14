@@ -83,7 +83,10 @@ public final class SolonProps extends Props {
         isDebugMode = argx().getInt("debug") == 1;
         isSetupMode = argx().getInt("setup") == 1;
         isWhiteMode = argx().getInt("white", 1) == 1;
-        isFilesMode = (sourceLocation.getPath().endsWith(".jar") == false);
+        isFilesMode = (sourceLocation.getPath().endsWith(".jar") == false
+                        && sourceLocation.getPath().contains(".jar!/") == false
+                        && sourceLocation.getPath().endsWith(".zip") == false
+                        && sourceLocation.getPath().contains(".zip!/") == false);
 
         //4.标识debug模式
         if (isDebugMode()) {
@@ -315,7 +318,7 @@ public final class SolonProps extends Props {
      * 框架版本号
      */
     public String version() {
-        return "1.3.20";
+        return "1.3.21-m2";
     }
 
     /**
