@@ -51,7 +51,7 @@ public class JwtUtils {
     /**
      * 构建令牌
      */
-    public static String buildJwt(Claims claims, long expire, Key signKey) {
+    public static String buildJwt(Claims claims, long expire, Key secret) {
         JwtBuilder builder;
         if (expire > 0) {
             builder = Jwts.builder()
@@ -68,7 +68,7 @@ public class JwtUtils {
             builder.setIssuer(Solon.cfg().appName());
         }
 
-        return builder.signWith(signKey).compact();
+        return builder.signWith(secret).compact();
     }
 
     /**

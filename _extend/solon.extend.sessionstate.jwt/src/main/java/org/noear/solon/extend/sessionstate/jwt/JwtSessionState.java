@@ -11,6 +11,9 @@ import org.noear.solon.core.handle.SessionStateDefault;
  * @since 1.3
  */
 public class JwtSessionState extends SessionStateDefault {
+    /**
+     * 单位：秒
+     * */
     private static int _expiry = 60 * 60 * 2;
     private static String _domain = null;
 

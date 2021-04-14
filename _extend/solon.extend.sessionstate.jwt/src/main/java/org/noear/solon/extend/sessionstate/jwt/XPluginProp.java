@@ -9,7 +9,7 @@ class XPluginProp {
     public static boolean session_state_domain_auto;
 
     public static String session_jwt_name;
-    public static String session_jwt_signKey;
+    public static String session_jwt_secret;
     public static boolean session_jwt_allowExpire;
     public static boolean session_jwt_requestUseHeader;
     public static boolean session_jwt_responseUseHeader;
@@ -31,7 +31,7 @@ class XPluginProp {
         session_state_domain_auto = Solon.cfg().getBool("server.session.state.domain.auto", true);
 
         session_jwt_name = Solon.cfg().get("server.session.state.jwt.name", "TOKEN");
-        session_jwt_signKey = Solon.cfg().get("server.session.state.jwt.signKey");
+        session_jwt_secret = Solon.cfg().get("server.session.state.jwt.secret");
         session_jwt_allowExpire = Solon.cfg().getBool("server.session.state.jwt.allowExpire", true);
         session_jwt_requestUseHeader = Solon.cfg().getBool("server.session.state.jwt.requestUseHeader", false);
         session_jwt_responseUseHeader = Solon.cfg().getBool("server.session.state.jwt.responseUseHeader", false);
