@@ -15,5 +15,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CrossOrigin {
     String origins() default "*";
-    int maxAge() default 0;
+    /**
+     * 默认：10分钟检测一次
+     * */
+    int maxAge() default 3600;
 }
