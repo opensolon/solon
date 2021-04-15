@@ -1,6 +1,7 @@
 package org.noear.solon.extend.cors.annotation;
 
 import org.noear.solon.annotation.Before;
+import org.noear.solon.annotation.Note;
 import org.noear.solon.extend.cors.CrossOriginInterceptor;
 
 import java.lang.annotation.*;
@@ -14,6 +15,7 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CrossOrigin {
+    @Note("支持配置模式： ${xxx}")
     String origins() default "*";
     /**
      * 默认：10分钟检测一次
