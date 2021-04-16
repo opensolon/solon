@@ -20,7 +20,7 @@ public interface IJob {
 
 
     /**
-     * 任务名称，可能由xbean确定
+     * 任务名称，可能由bean确定
      */
     default String getName() {
         return null;

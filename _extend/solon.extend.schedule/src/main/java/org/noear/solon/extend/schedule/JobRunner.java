@@ -17,18 +17,18 @@ public class JobRunner implements IJobRunner {
             System.out.print("schedule run::" + job.getName() + " - " + tag + "\r\n");
 
             new Thread(() -> {
-                doRun(job);
-            }).start();
+                runDo(job);
+            }, "job-" + job.getName()).start();
         }
     }
 
-    protected void doRun(JobEntity jobEntity) {
-        if (jobEntity.getJob().getDelay() > 0) {
-            //处理延迟
-            try {
+    protected void runDo(JobEntity jobEntity) {
+        try {
+            if (jobEntity.getJob().getDelay() > 0) {
+                //处理延迟
                 Thread.sleep(jobEntity.getJob().getDelay());
-            } catch (Exception ee) {
             }
+        } catch (Throwable ee) {
         }
 
         while (true) {
@@ -42,15 +42,14 @@ public class JobRunner implements IJobRunner {
                 }
 
                 if (time_end - time_start < jobEntity.getJob().getInterval()) {
-                    Thread.sleep(jobEntity.getJob().getInterval());//0.5s
+                    Thread.sleep(jobEntity.getJob().getInterval());
                 }
 
             } catch (Throwable ex) {
-                EventBus.push(ex);
-
                 try {
+                    EventBus.push(ex);
                     Thread.sleep(1000);
-                } catch (Exception ee) {
+                } catch (Throwable ee) {
                 }
             }
         }
