@@ -56,6 +56,6 @@ public class HeaderTest extends HttpTestBase {
 
         List<String> tmp = res.headers("Set-Cookie");
 
-        assert tmp.size() == 2;
+        assert tmp.size() >= 2;
     }
 }
