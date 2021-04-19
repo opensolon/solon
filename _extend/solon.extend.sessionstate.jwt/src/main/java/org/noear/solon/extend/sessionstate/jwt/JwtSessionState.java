@@ -177,11 +177,15 @@ public class JwtSessionState extends SessionStateDefault {
             Claims tmp = sessionMap();
 
             if (tmp != null) {
-                String skey = sessionId();
+                if (tmp.size() == 0) {
+                    sessionToken = "";
+                } else {
+                    String skey = sessionId();
 
-                if (XPluginProp.session_jwt_requestUseHeader || Utils.isNotEmpty(skey)) {
-                    tmp.setId(skey);
-                    sessionToken = JwtUtils.buildJwt(tmp, _expiry * 1000);
+                    if (XPluginProp.session_jwt_requestUseHeader || Utils.isNotEmpty(skey)) {
+                        tmp.setId(skey);
+                        sessionToken = JwtUtils.buildJwt(tmp, _expiry * 1000);
+                    }
                 }
             }
         }
