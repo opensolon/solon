@@ -1,5 +1,6 @@
 package org.noear.solon.cloud;
 
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.annotation.CloudConfig;
 import org.noear.solon.cloud.annotation.CloudEvent;
 import org.noear.solon.cloud.impl.CloudEventManager;
@@ -106,7 +107,11 @@ public class CloudManager {
      */
     public static void register(String channel, CloudEventService service) {
         eventServiceManager.register(channel, service);
-        PrintUtil.info("Cloud", "CloudEventService registered from the " + service.getClass().getTypeName() + " as &" + channel);
+        if(Utils.isEmpty(channel)) {
+            PrintUtil.info("Cloud", "CloudEventService registered from the " + service.getClass().getTypeName());
+        }else{
+            PrintUtil.info("Cloud", "CloudEventService registered from the " + service.getClass().getTypeName() + " as &" + channel);
+        }
     }
 
     /**
