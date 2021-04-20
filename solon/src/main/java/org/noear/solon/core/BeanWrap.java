@@ -23,6 +23,8 @@ public class BeanWrap {
     private Class<?> clz;
     // bean clz init method
     private Method clzInit;
+    // bean clz init method delay
+    private boolean clzInitDelay;
     // bean raw（初始实例）
     private Object raw;
     // 是否为单例
@@ -196,13 +198,23 @@ public class BeanWrap {
 
         //b.调用初始化函数
         if (clzInit != null) {
-            try {
-                clzInit.invoke(bean);
-            } catch (RuntimeException ex) {
-                throw ex;
-            } catch (ReflectiveOperationException ex) {
-                throw new RuntimeException(ex);
+            if (clzInitDelay) {
+                Aop.beanOnloaded(() -> {
+                    initInvokeDo(bean);
+                });
+            } else {
+                initInvokeDo(bean);
             }
+        }
+    }
+
+    protected void initInvokeDo(Object bean) {
+        try {
+            clzInit.invoke(bean);
+        } catch (RuntimeException ex) {
+            throw ex;
+        } catch (ReflectiveOperationException ex) {
+            throw new RuntimeException(ex);
         }
     }
 
@@ -249,10 +261,12 @@ public class BeanWrap {
 
         //查找初始化函数
         for (Method m : clzWrap.getMethods()) {
-            if (m.getAnnotation(Init.class) != null) {
+            Init initAnno = m.getAnnotation(Init.class);
+            if (initAnno != null) {
                 if (m.getParameters().length == 0) {
                     //只接收没有参数的
                     clzInit = m;
+                    clzInitDelay = initAnno.delay();
                 }
                 break;
             }

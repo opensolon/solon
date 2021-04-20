@@ -37,5 +37,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(METHOD)
 @Documented
 public @interface Init {
-
+    /**
+     * 延时执行
+     * */
+    boolean delay() default true;
 }
