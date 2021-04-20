@@ -55,7 +55,7 @@ public class XPluginImp implements Plugin {
 
                 if (CloudClient.event() != null) {
                     //关注事件
-                    CloudClient.event().attention(anno.level(), anno.group(), anno.value(), bw.raw());
+                    CloudClient.event().attention(anno.level(), anno.channel(), anno.group(), anno.value(), bw.raw());
                 }
             }
         });

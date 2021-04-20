@@ -134,17 +134,17 @@ public class XPluginImp implements Plugin {
                 }
 
                 eventServiceImp = new CloudEventServiceWaterImp();
-                CloudManager.register(eventServiceImp);
+                CloudManager.register(WaterProps.instance.getEventChannel(), eventServiceImp);
 
                 if (discoveryServiceImp != null) {
                     //关注缓存更新事件
-                    CloudClient.event().attention(EventLevel.instance, "", WW.msg_ucache_topic,
+                    eventServiceImp.attention(EventLevel.instance, "","", WW.msg_ucache_topic,
                             new HandlerCacheUpdate(discoveryServiceImp));
                 }
 
                 if (configServiceImp != null) {
                     //关注配置更新事件
-                    CloudClient.event().attention(EventLevel.instance, "", WW.msg_uconfig_topic,
+                    eventServiceImp.attention(EventLevel.instance, "","", WW.msg_uconfig_topic,
                             new HandlerConfigUpdate(configServiceImp));
                 }
 

@@ -45,6 +45,7 @@ public class CloudProps {
     private String EVENT_PUBLISH_TIMEOUT = "solon.cloud.@@.event.publishTimeout";
     private String EVENT_QUEUE = "solon.cloud.@@.event.queue";
     private String EVENT_SEAL = "solon.cloud.@@.event.seal";
+    private String EVENT_CHANNEL = "solon.cloud.@@.event.channel";
 
 
     //锁服务相关
@@ -99,6 +100,7 @@ public class CloudProps {
         EVENT_PUBLISH_TIMEOUT = EVENT_PUBLISH_TIMEOUT.replace("@@", frame);
         EVENT_QUEUE = EVENT_QUEUE.replace("@@", frame);
         EVENT_SEAL = EVENT_SEAL.replace("@@", frame);
+        EVENT_CHANNEL= EVENT_CHANNEL.replace("@@", frame);
 
         LOCK_ENABLE = LOCK_ENABLE.replace("@@", frame);
 
@@ -258,6 +260,10 @@ public class CloudProps {
 
     public String getEventQueue() {
         return Solon.cfg().get(EVENT_QUEUE);
+    }
+
+    public String getEventChannel() {
+        return Solon.cfg().get(EVENT_CHANNEL);
     }
 
     //

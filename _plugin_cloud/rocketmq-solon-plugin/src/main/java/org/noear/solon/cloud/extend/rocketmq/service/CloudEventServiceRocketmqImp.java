@@ -48,7 +48,7 @@ public class CloudEventServiceRocketmqImp implements CloudEventService {
     Map<String, CloudEventObserverEntity> observerMap = new HashMap<>();
 
     @Override
-    public void attention(EventLevel level, String group, String topic, CloudEventHandler observer) {
+    public void attention(EventLevel level, String channel, String group, String topic, CloudEventHandler observer) {
         if (observerMap.containsKey(topic)) {
             return;
         }

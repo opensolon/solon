@@ -2,6 +2,7 @@ package org.noear.solon.cloud;
 
 import org.noear.solon.cloud.annotation.CloudConfig;
 import org.noear.solon.cloud.annotation.CloudEvent;
+import org.noear.solon.cloud.impl.CloudEventManager;
 import org.noear.solon.cloud.service.*;
 import org.noear.solon.core.util.PrintUtil;
 
@@ -24,9 +25,9 @@ public class CloudManager {
      */
     private static CloudConfigService configService;
     /**
-     * 云端事件服务
+     * 云端事件服务管理
      */
-    private static CloudEventService eventService;
+    private static CloudEventManager eventServiceManager = new CloudEventManager();
     /**
      * 云端锁服务
      */
@@ -103,9 +104,9 @@ public class CloudManager {
     /**
      * 登记事件服务
      */
-    public static void register(CloudEventService service) {
-        eventService = service;
-        PrintUtil.info("Cloud", "CloudEventService registered from the " + service.getClass().getTypeName());
+    public static void register(String channel, CloudEventService service) {
+        eventServiceManager.register(channel, service);
+        PrintUtil.info("Cloud", "CloudEventService registered from the " + service.getClass().getTypeName() + " as &" + channel);
     }
 
     /**
@@ -162,7 +163,7 @@ public class CloudManager {
     }
 
     protected static CloudEventService eventService() {
-        return eventService;
+        return eventServiceManager;
     }
 
     protected static CloudLockService lockService() {

@@ -63,7 +63,7 @@ public class CloudEventServiceWaterImp implements CloudEventService {
      * 登记关注
      */
     @Override
-    public void attention(EventLevel level, String group, String topic, CloudEventHandler observer) {
+    public void attention(EventLevel level, String channel, String group, String topic, CloudEventHandler observer) {
         if (level == EventLevel.instance) {
             instanceObserverMap.putIfAbsent(topic, new CloudEventObserverEntity(level, group, topic, observer));
         } else {

@@ -19,5 +19,5 @@ public interface CloudEventService {
     /**
      * 关注事件（相当于订阅）
      */
-    void attention(EventLevel level, String group, String topic, CloudEventHandler observer);
+    void attention(EventLevel level, String channel, String group, String topic, CloudEventHandler observer);
 }
