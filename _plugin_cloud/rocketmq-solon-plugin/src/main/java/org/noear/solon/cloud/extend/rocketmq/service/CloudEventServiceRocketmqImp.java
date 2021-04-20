@@ -19,6 +19,7 @@ import java.util.Map;
  */
 public class CloudEventServiceRocketmqImp implements CloudEventService {
     private static CloudEventServiceRocketmqImp instance;
+
     public static synchronized CloudEventServiceRocketmqImp getInstance() {
         if (instance == null) {
             instance = new CloudEventServiceRocketmqImp();
@@ -59,6 +60,8 @@ public class CloudEventServiceRocketmqImp implements CloudEventService {
     }
 
     public void subscribe() {
-        consumer.init(observerMap);
+        if (observerMap.size() > 0) {
+            consumer.init(observerMap);
+        }
     }
 }

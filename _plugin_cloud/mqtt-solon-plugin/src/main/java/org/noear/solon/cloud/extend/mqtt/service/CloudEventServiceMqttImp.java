@@ -22,6 +22,7 @@ import java.util.Properties;
  */
 public class CloudEventServiceMqttImp implements CloudEventService {
     private static CloudEventServiceMqttImp instance;
+
     public static synchronized CloudEventServiceMqttImp getInstance() {
         if (instance == null) {
             instance = new CloudEventServiceMqttImp();
@@ -64,7 +65,7 @@ public class CloudEventServiceMqttImp implements CloudEventService {
         }
 
         clientId = MqttProps.clientId();
-        if(Utils.isEmpty(clientId)) {
+        if (Utils.isEmpty(clientId)) {
             clientId = Solon.cfg().appName() + "-" + Utils.guid();
         }
 
@@ -135,7 +136,9 @@ public class CloudEventServiceMqttImp implements CloudEventService {
 
     public void subscribe() {
         try {
-            clientCallback.subscribe(observerMap);
+            if (observerMap.size() > 0) {
+                clientCallback.subscribe(observerMap);
+            }
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }

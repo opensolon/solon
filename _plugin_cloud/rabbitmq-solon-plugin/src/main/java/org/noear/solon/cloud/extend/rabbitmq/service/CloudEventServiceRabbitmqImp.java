@@ -79,7 +79,9 @@ public class CloudEventServiceRabbitmqImp implements CloudEventService {
 
     public void subscribe() {
         try {
-            consumer.init(observerMap);
+            if(observerMap.size() > 0) {
+                consumer.init(observerMap);
+            }
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
