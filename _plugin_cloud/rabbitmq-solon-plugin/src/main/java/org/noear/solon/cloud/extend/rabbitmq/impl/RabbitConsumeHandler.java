@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.rabbitmq.impl;
 
 import com.rabbitmq.client.*;
 import org.noear.snack.ONode;
+import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.cloud.utils.ExpirationUtils;
@@ -18,12 +19,14 @@ public class RabbitConsumeHandler extends DefaultConsumer {
     Map<String, CloudEventObserverEntity> observerMap;
     RabbitConfig cfg;
     RabbitProducer producer;
+    String eventChannelName;
 
     public RabbitConsumeHandler(RabbitProducer producer, RabbitConfig config, Channel channel, Map<String, CloudEventObserverEntity> observerMap) {
         super(channel);
         this.cfg = config;
         this.producer = producer;
         this.observerMap = observerMap;
+        this.eventChannelName = RabbitmqProps.instance.getEventChannel();
     }
 
     @Override
@@ -31,6 +34,7 @@ public class RabbitConsumeHandler extends DefaultConsumer {
         try {
             String event_json = new String(body);
             Event event = ONode.deserialize(event_json, Event.class);
+            event.channel(eventChannelName);
 
             CloudEventObserverEntity observer = observerMap.get(event.topic());
             boolean isHandled = true;

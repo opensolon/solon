@@ -4,6 +4,7 @@ import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.common.message.MessageExt;
+import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.core.event.EventBus;
@@ -17,9 +18,11 @@ import java.util.Map;
  */
 public class RocketmqConsumerHandler implements MessageListenerConcurrently {
     Map<String, CloudEventObserverEntity> observerMap;
+    String eventChannelName;
 
     public RocketmqConsumerHandler(Map<String, CloudEventObserverEntity> observers) {
         observerMap = observers;
+        eventChannelName = RocketmqProps.instance.getEventChannel();
     }
 
 
@@ -33,6 +36,7 @@ public class RocketmqConsumerHandler implements MessageListenerConcurrently {
                 event.tags(message.getTags());
                 event.key(message.getKeys());
                 event.times(message.getReconsumeTimes());
+                event.channel(eventChannelName);
 
                 isHandled = isHandled && onReceive(event);
             }

@@ -25,10 +25,14 @@ public class CloudEventServiceWaterImp implements CloudEventService {
     private Map<String, CloudEventObserverEntity> instanceObserverMap = new HashMap<>();
     private Map<String, CloudEventObserverEntity> clusterObserverMap = new HashMap<>();
     private boolean unstable;
+    private String eventChannelName;
+
     public CloudEventServiceWaterImp() {
         this.unstable = WaterProps.instance.getDiscoveryUnstable()
                 || Solon.cfg().isFilesMode()
                 || Solon.cfg().isDriftMode();
+
+        this.eventChannelName = WaterProps.instance.getEventChannel();
 
         this.seal = WaterProps.instance.getEventSeal();
 
@@ -129,6 +133,8 @@ public class CloudEventServiceWaterImp implements CloudEventService {
     public boolean onReceive(Event event) throws Throwable {
         boolean isOk = true;
         CloudEventObserverEntity entity = null;
+
+        event.channel(eventChannelName);
 
         entity = instanceObserverMap.get(event.topic());
         if (entity != null) {

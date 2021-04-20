@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.extend.mqtt.service;
 
 import org.eclipse.paho.client.mqttv3.*;
+import org.noear.solon.cloud.extend.mqtt.MqttProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.slf4j.Logger;
@@ -16,9 +17,11 @@ class MqttCallbackImp implements MqttCallback {
     static Logger log = LoggerFactory.getLogger(MqttCallbackImp.class);
 
     final MqttClient client;
+    final String eventChannelName;
 
     public MqttCallbackImp(MqttClient client) {
         this.client = client;
+        this.eventChannelName = MqttProps.instance.getEventChannel();
     }
 
     Map<String, CloudEventObserverEntity> observerMap;
@@ -49,7 +52,8 @@ class MqttCallbackImp implements MqttCallback {
         try {
             Event event = new Event(topic, new String(message.getPayload()))
                     .qos(message.getQos())
-                    .retained(message.isRetained());
+                    .retained(message.isRetained())
+                    .channel(eventChannelName);
 
             observer.handler(event);
         } catch (Throwable ex) {
