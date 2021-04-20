@@ -30,6 +30,11 @@ public class Event implements Serializable {
     private String tags;
 
     /**
+     * 通道：用于同时支持多个消息队列框架，区分通道
+     * */
+    private String channel;
+
+    /**
      * 预定执行时间（派发时专用）
      * */
     private Date scheduled;
@@ -112,6 +117,14 @@ public class Event implements Serializable {
     public boolean retained(){return retained;}
     public Event retained(boolean retained){
         this.retained = retained;
+        return this;
+    }
+
+    public String channel(){
+        return channel;
+    }
+    public Event channel(String channel){
+        this.channel =channel;
         return this;
     }
 }

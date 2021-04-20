@@ -26,4 +26,9 @@ public @interface CloudEvent {
      * 订阅级别
      * */
     EventLevel level() default EventLevel.cluster;
+
+    /**
+     * 通道：用于同时支持多个消息框架
+     * */
+    String channel() default "";
 }
