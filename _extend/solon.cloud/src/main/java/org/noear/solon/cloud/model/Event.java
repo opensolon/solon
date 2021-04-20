@@ -45,7 +45,7 @@ public class Event implements Serializable {
     private int qos = 1;
 
     /**
-     * 是否保留最后一条（兼容mqtt）
+     * 保留：是否保留最后一条（兼容mqtt）
      * */
     private boolean retained = false;
 
