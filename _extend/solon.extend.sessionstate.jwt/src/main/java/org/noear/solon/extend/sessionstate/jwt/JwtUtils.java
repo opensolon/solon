@@ -1,9 +1,6 @@
 package org.noear.solon.extend.sessionstate.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
@@ -92,6 +89,8 @@ public class JwtUtils {
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
+        } catch (ExpiredJwtException ex) {
+
         } catch (Exception ex) {
             EventBus.push(ex);
         }
