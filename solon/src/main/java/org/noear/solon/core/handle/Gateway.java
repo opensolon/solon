@@ -250,6 +250,18 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     }
 
     /**
+     * 添加接口
+     */
+    @Note("添加接口")
+    public void add(String path, Class<?> beanClz) {
+        if (beanClz != null) {
+            BeanWrap bw = Aop.wrapAndPut(beanClz);
+
+            add(path, bw, bw.remoting());
+        }
+    }
+
+    /**
      * 添加接口（remoting ? 采用@json进行渲染）
      */
     @Note("添加接口")
@@ -259,9 +271,24 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         }
     }
 
+    /**
+     * 添加接口（remoting ? 采用@json进行渲染）
+     */
+    @Note("添加接口")
+    public void add(String path, Class<?> beanClz, boolean remoting) {
+        if (beanClz != null) {
+            add(path, Aop.wrapAndPut(beanClz), remoting);
+        }
+    }
+
     @Note("添加接口")
     public void add(BeanWrap beanWp) {
         add(beanWp, beanWp.remoting());
+    }
+
+    @Note("添加接口")
+    public void add(String path, BeanWrap beanWp) {
+        add(path, beanWp, beanWp.remoting());
     }
 
     /**
@@ -269,20 +296,29 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      */
     @Note("添加接口")
     public void add(BeanWrap beanWp, boolean remoting) {
+        add(null, beanWp, remoting);
+    }
+
+    @Note("添加接口")
+    public void add(String path, BeanWrap beanWp, boolean remoting) {
         if (beanWp == null) {
             return;
         }
 
         HandlerLoader uw = new HandlerLoader(beanWp, mapping, remoting, this, allowActionMapping());
 
-        uw.load((path, m, h) -> {
+        uw.load((p1, m, h) -> {
             if (h instanceof Action) {
                 Action h2 = (Action) h;
 
                 if (Utils.isEmpty(h2.name())) {
                     mainDef = h2;
                 } else {
-                    add(h2.name(), h2);
+                    if (path == null) {
+                        add(h2.name(), h2);
+                    } else {
+                        add(PathUtil.mergePath(path, h2.name()), h2);
+                    }
                 }
             }
         });
