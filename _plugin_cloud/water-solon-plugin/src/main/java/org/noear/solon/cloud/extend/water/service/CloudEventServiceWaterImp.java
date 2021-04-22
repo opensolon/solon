@@ -143,7 +143,7 @@ public class CloudEventServiceWaterImp implements CloudEventService {
 
         entity = clusterObserverMap.get(event.topic());
         if (entity != null) {
-            isOk = entity.handler(event) || isOk;
+            isOk = entity.handler(event) && isOk; //两个都成功，才是成功
         }
 
         return isOk;
