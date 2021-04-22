@@ -78,6 +78,14 @@ public class Result<T> implements Serializable {
         return data;
     }
 
+    /**
+     * 此方法仅用于序列化与反序列化
+     * */
+    public Result(){
+        this.code = SUCCEED_CODE;
+        this.description = "";
+    }
+
     public Result(T data) {
         this.code = SUCCEED_CODE;
         this.description = "";
