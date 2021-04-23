@@ -186,7 +186,7 @@ public class JwtSessionState extends SessionStateDefault {
 
                     if (XPluginProp.session_jwt_responseUseHeader || Utils.isNotEmpty(skey)) {
                         tmp.setId(skey);
-                        sessionToken = JwtUtils.buildJwt(tmp, _expiry * 1000);
+                        sessionToken = JwtUtils.buildJwt(tmp, _expiry * 1000L);
                     }
                 }
             }
