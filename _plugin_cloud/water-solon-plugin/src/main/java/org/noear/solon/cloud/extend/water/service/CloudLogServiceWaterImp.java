@@ -42,10 +42,15 @@ public class CloudLogServiceWaterImp implements CloudLogService {
             return;
         }
 
+        if (loggerName.contains(".")) {
+            loggerName = loggerNameDefault;
+        }
+
         Datetime datetime = Datetime.Now();
 
         org.noear.water.log.LogEvent log = new org.noear.water.log.LogEvent();
 
+        log.group = Solon.cfg().appGroup();
         log.logger = loggerName;
         log.level = (logEvent.getLevel().code / 10);
         log.content = LogHelper.contentAsString(logEvent.getContent());
