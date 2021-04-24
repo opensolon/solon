@@ -1,9 +1,12 @@
 package org.noear.solon.cloud.extend.rocketmq.impl;
 
+import org.apache.rocketmq.client.exception.MQBrokerException;
+import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.common.message.Message;
+import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
 import org.noear.solon.cloud.model.Event;
 
@@ -21,7 +24,7 @@ public class RocketmqProducer {
         timeout = RocketmqProps.instance.getEventPublishTimeout();
     }
 
-    private void init() {
+    private void init() throws MQClientException {
         if (producer != null) {
             return;
         }
@@ -40,30 +43,21 @@ public class RocketmqProducer {
             }
             //失败后重试2次
             producer.setRetryTimesWhenSendFailed(2);
-
-            try {
-                producer.start();
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
+            producer.start();
         }
     }
 
-    public boolean publish(Event event) {
+    public boolean publish(Event event) throws MQClientException, RemotingException, MQBrokerException, InterruptedException{
         init();
 
-        try {
-            Message message = MessageUtil.buildNewMeaage(event);
+        Message message = MessageUtil.buildNewMeaage(event);
 
-            SendResult send = producer.send(message);
+        SendResult send = producer.send(message);
 
-            if (send.getSendStatus().equals(SendStatus.SEND_OK)) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+        if (send.getSendStatus().equals(SendStatus.SEND_OK)) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

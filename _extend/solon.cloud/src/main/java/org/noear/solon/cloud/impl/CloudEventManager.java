@@ -3,6 +3,7 @@ package org.noear.solon.cloud.impl;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
+import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventService;
 
@@ -47,7 +48,7 @@ public class CloudEventManager implements CloudEventService {
     }
 
     @Override
-    public boolean publish(Event event) {
+    public boolean publish(Event event) throws CloudEventException {
         return getOrThrow(event.channel()).publish(event);
     }
 

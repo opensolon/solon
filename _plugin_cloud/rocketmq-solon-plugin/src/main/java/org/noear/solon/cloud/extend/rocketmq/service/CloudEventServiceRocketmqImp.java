@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.rocketmq.service;
 
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
+import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
 import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqConfig;
 import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqConsumer;
@@ -41,8 +42,12 @@ public class CloudEventServiceRocketmqImp implements CloudEventService {
     }
 
     @Override
-    public boolean publish(Event event) {
-        return producer.publish(event);
+    public boolean publish(Event event) throws CloudEventException {
+        try {
+            return producer.publish(event);
+        }catch (Throwable ex){
+            throw new CloudEventException(ex);
+        }
     }
 
 

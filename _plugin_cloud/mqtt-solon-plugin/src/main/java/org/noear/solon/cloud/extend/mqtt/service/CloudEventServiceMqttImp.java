@@ -6,6 +6,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
+import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.mqtt.MqttProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
@@ -101,7 +102,7 @@ public class CloudEventServiceMqttImp implements CloudEventService {
     }
 
     @Override
-    public boolean publish(Event event) {
+    public boolean publish(Event event) throws CloudEventException{
         MqttMessage message = new MqttMessage();
         message.setQos(event.qos());
         message.setRetained(event.retained());
@@ -112,14 +113,14 @@ public class CloudEventServiceMqttImp implements CloudEventService {
         try {
             MqttDeliveryToken token = mqttTopic.publish(message);
 
-            if (event.qos() > 0) {
+            if (event.qos() > 0 && event.qos() > 0) {
                 token.waitForCompletion(1000 * 30);
                 return token.isComplete();
             } else {
                 return true;
             }
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+        } catch (Throwable ex) {
+            throw new CloudEventException(ex);
         }
     }
 

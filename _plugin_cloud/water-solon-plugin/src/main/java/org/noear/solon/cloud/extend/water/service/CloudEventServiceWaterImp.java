@@ -4,6 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
+import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.water.WaterProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.model.Instance;
@@ -46,7 +47,7 @@ public class CloudEventServiceWaterImp implements CloudEventService {
     }
 
     @Override
-    public boolean publish(Event event) {
+    public boolean publish(Event event) throws CloudEventException {
         if (Utils.isEmpty(event.topic())) {
             throw new IllegalArgumentException("Event missing topic");
         }
@@ -59,7 +60,7 @@ public class CloudEventServiceWaterImp implements CloudEventService {
             return WaterClient.Message.
                     sendMessageAndTags(event.key(), event.topic(), event.content(), event.scheduled(), event.tags());
         } catch (Throwable ex) {
-            throw Utils.throwableWrap(ex);
+            throw new CloudEventException(ex);
         }
     }
 

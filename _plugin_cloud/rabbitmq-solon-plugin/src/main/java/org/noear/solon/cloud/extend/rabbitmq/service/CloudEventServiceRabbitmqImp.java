@@ -3,6 +3,7 @@ package org.noear.solon.cloud.extend.rabbitmq.service;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
+import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
 import org.noear.solon.cloud.extend.rabbitmq.impl.RabbitChannelFactory;
 import org.noear.solon.cloud.extend.rabbitmq.impl.RabbitConfig;
@@ -54,15 +55,15 @@ public class CloudEventServiceRabbitmqImp implements CloudEventService {
     }
 
     @Override
-    public boolean publish(Event event) {
+    public boolean publish(Event event) throws CloudEventException{
         try {
             if(Utils.isEmpty(event.key())){
                 event.key(Utils.guid());
             }
 
             return producer.publish(event);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+        } catch (Throwable ex) {
+            throw new CloudEventException(ex);
         }
     }
 

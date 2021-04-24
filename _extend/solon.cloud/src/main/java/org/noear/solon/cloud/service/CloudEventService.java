@@ -2,6 +2,7 @@ package org.noear.solon.cloud.service;
 
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
+import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.model.Event;
 
 /**
@@ -14,7 +15,7 @@ public interface CloudEventService {
     /**
      * 发布事件
      */
-    boolean publish(Event event);
+    boolean publish(Event event) throws CloudEventException;
 
     /**
      * 关注事件（相当于订阅）
