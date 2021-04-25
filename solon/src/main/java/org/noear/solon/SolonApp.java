@@ -226,12 +226,17 @@ public class SolonApp implements HandlerSlots {
 
 
 
-    private final Router _router; //与函数同名，_开头
+    private Router _router; //与函数同名，_开头
     /**
      * 路由器
      */
     public Router router() {
         return _router;
+    }
+    public void routerSet(Router router) {
+        if (router != null) {
+            _router = router;
+        }
     }
 
     private final int _port; //端口
@@ -461,7 +466,7 @@ public class SolonApp implements HandlerSlots {
      */
     private Handler _handler = null;
 
-    public Handler handlerGet() {
+    public Handler handler() {
         return _handler;
     }
 
