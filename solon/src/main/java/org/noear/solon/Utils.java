@@ -122,20 +122,12 @@ public class Utils {
                 return true;
             }
 
-            if (th.getCause() != null) {
-                th = th.getCause();
-            } else {
-                break;
-            }
-        }
-
-        while (true) {
-            if (clz.isAssignableFrom(th.getClass())) {
-                return true;
-            }
-
             if (th instanceof InvocationTargetException) {
                 th = ((InvocationTargetException) th).getTargetException();
+            } else if (th instanceof UndeclaredThrowableException) {
+                th = ((UndeclaredThrowableException) th).getUndeclaredThrowable();
+            } else if (th.getCause() != null) {
+                th = th.getCause();
             } else {
                 break;
             }
