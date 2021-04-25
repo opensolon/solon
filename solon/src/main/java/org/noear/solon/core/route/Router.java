@@ -62,7 +62,7 @@ public interface Router {
 
 
 
-    RoutingTable<Handler> getAll(Endpoint endpoint);
+    List<Routing<Handler>> getAll(Endpoint endpoint);
 
 
 

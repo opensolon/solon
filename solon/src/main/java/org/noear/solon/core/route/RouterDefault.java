@@ -37,7 +37,7 @@ public class RouterDefault implements Router{
     }
 
     @Override
-    public RoutingTable<Handler> getAll(Endpoint endpoint){
+    public List<Routing<Handler>> getAll(Endpoint endpoint){
         return routesH[endpoint.code];
     }
 
