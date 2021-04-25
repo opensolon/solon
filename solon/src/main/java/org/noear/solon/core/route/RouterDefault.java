@@ -14,18 +14,18 @@ import java.util.List;
  */
 public class RouterDefault implements Router{
     //for handler
-    private final RouteTable<Handler>[] routesH;
+    private final RoutingTable<Handler>[] routesH;
     //for listener
-    private final RouteTable<Listener> routesL;
+    private final RoutingTable<Listener> routesL;
 
     public RouterDefault() {
-        routesH = new RouteTable[3];
+        routesH = new RoutingTable[3];
 
-        routesH[0] = new RouteTable<>();//before:0
-        routesH[1] = new RouteTable<>();//main
-        routesH[2] = new RouteTable<>();//after:2
+        routesH[0] = new RoutingTable<>();//before:0
+        routesH[1] = new RoutingTable<>();//main
+        routesH[2] = new RoutingTable<>();//after:2
 
-        routesL = new RouteTable<>();
+        routesL = new RoutingTable<>();
     }
 
     /**
@@ -46,7 +46,7 @@ public class RouterDefault implements Router{
      * 添加路由关系 for Handler
      */
     public void add(String path, Endpoint endpoint, MethodType method, int index, Handler handler) {
-        routesH[endpoint.code].add(new RouteTable.Route(path, method, index, handler));
+        routesH[endpoint.code].add(new RoutingDefault<>(path, method, index, handler));
     }
 
     /**
@@ -60,11 +60,17 @@ public class RouterDefault implements Router{
         add(path, method, 0, listener);
     }
 
+
+    @Override
+    public List<Routing<Handler>> getItems(Endpoint endpoint){
+        return routesH[endpoint.code];
+    }
+
     /**
      * 添加路由关系 for XListener
      */
     public void add(String path, MethodType method, int index, Listener listener) {
-        routesL.add(new RouteTable.Route(path, method, index, listener));
+        routesL.add(new RoutingDefault<>(path, method, index, listener));
     }
 
     /**

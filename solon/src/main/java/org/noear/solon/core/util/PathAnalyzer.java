@@ -1,7 +1,7 @@
 package org.noear.solon.core.util;
 
 import org.noear.solon.core.handle.Action;
-import org.noear.solon.core.route.RouteTable;
+import org.noear.solon.core.route.RoutingTable;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 /**
  * 路径分析器，用于路由器和路径变量分析
  *
- * @see RouteTable.Route
+ * @see RoutingTable.Route
  * @see Action
  * @author noear
  * @since 1.0

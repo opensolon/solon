@@ -77,6 +77,8 @@ public interface Router {
     void add(String path, MethodType method, int index, Listener listener);
 
 
+    List<Routing<Handler>> getItems(Endpoint endpoint);
+
     /**
      * 区配一个目标（根据上上文）
      */
