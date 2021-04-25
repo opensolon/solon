@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 /**
  * 路径分析器，用于路由器和路径变量分析
  *
- * @see RoutingTable.Route
+ * @see org.noear.solon.core.route.RoutingDefault
  * @see Action
  * @author noear
  * @since 1.0

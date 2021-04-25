@@ -10,13 +10,15 @@ import org.noear.solon.core.util.PathAnalyzer;
  */
 public class RoutingDefault<T> implements Routing<T> {
     public RoutingDefault(String path, MethodType method, int index, T target) {
-        _pr = new PathAnalyzer(path);
+        this.rule = new PathAnalyzer(path);
 
         this.method = method;
         this.path = path;
         this.index = index;
         this.target = target;
     }
+
+    private final PathAnalyzer rule; //path rule 规则
 
     private final int index; //顺序
     private final String path; //path
@@ -43,12 +45,10 @@ public class RoutingDefault<T> implements Routing<T> {
         return method;
     }
 
-    private final PathAnalyzer _pr; //path rule 规则
-
-
     /**
      * 是否匹配
      */
+    @Override
     public boolean matches(MethodType method2, String path2) {
         if (MethodType.ALL == method) {
             return matches0(path2);
@@ -75,6 +75,6 @@ public class RoutingDefault<T> implements Routing<T> {
         }
 
         //3.正则检测
-        return _pr.matches(path2);
+        return rule.matches(path2);
     }
 }
