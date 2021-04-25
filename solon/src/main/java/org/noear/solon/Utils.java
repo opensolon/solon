@@ -6,6 +6,7 @@ import org.noear.solon.core.*;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.net.FileNameMap;
 import java.net.URL;
 import java.net.URLConnection;
@@ -95,20 +96,16 @@ public class Utils {
         Throwable th = ex;
 
         while (true) {
-            if (th instanceof RuntimeException) {
-                if (th.getCause() != null) {
+            if (th instanceof InvocationTargetException) {
+                th = ((InvocationTargetException) th).getTargetException();
+            } else if (th instanceof UndeclaredThrowableException) {
+                th = ((UndeclaredThrowableException) th).getUndeclaredThrowable();
+            } else if (th.getClass() == RuntimeException.class) {
+                if (th.getMessage() == null && th.getCause() != null) {
                     th = th.getCause();
                 } else {
                     break;
                 }
-            } else {
-                break;
-            }
-        }
-
-        while (true) {
-            if (th instanceof InvocationTargetException) {
-                th = ((InvocationTargetException) th).getTargetException();
             } else {
                 break;
             }

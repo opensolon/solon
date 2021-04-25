@@ -344,6 +344,7 @@ public class SolonLogger implements Logger {
                 for (int i = 0, len = args.length; i < len; i++) {
                     if (args[i] instanceof Throwable) {
                         throwable = (Throwable) args[i];
+                        throwable = Utils.throwableUnwrap(throwable);
                         args[i] = Utils.throwableToString(throwable);
                         break;
                     }

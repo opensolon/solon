@@ -28,10 +28,12 @@ public class LogConsoleAppender extends LogAbstractAppender {
 
     @Override
     protected void appendContentDo(Object content) {
-        if (content instanceof String) {
-            System.out.println(content);
-        } else {
-            System.out.println(ONode.stringify(content));
+        synchronized (System.out) {
+            if (content instanceof String) {
+                System.out.println(content);
+            } else {
+                System.out.println(ONode.stringify(content));
+            }
         }
     }
 }
