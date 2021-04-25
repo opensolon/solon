@@ -466,7 +466,7 @@ public class SolonApp implements HandlerSlots {
      */
     private Handler _handler = null;
 
-    public Handler handler() {
+    public Handler handlerGet() {
         return _handler;
     }
 

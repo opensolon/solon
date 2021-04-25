@@ -35,7 +35,7 @@ public class XPluginImp implements Plugin {
 
             //2.切换代理（让静态文件优先）
             HandlerPipeline pipeline = new HandlerPipeline();
-            pipeline.next(new StaticResourceHandler()).next(app.handler());
+            pipeline.next(new StaticResourceHandler()).next(app.handlerGet());
 
             app.handlerSet(pipeline);
         }
