@@ -7,6 +7,7 @@ import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Session;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,7 +39,7 @@ public class RouterDefault implements Router{
 
     @Override
     public List<Routing<Handler>> getAll(Endpoint endpoint){
-        return routesH[endpoint.code];
+        return Collections.unmodifiableList(routesH[endpoint.code]);
     }
 
 
