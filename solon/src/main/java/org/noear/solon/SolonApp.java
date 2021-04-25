@@ -4,6 +4,7 @@ import org.noear.solon.core.event.*;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.Router;
+import org.noear.solon.core.route.RouterDefault;
 import org.noear.solon.core.route.RouterHandler;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.Aop;
@@ -249,7 +250,7 @@ public class SolonApp implements HandlerSlots {
         _port = _prop.serverPort();
 
         //顺序不能换
-        _router = new Router();
+        _router = new RouterDefault();
         _filterChain = new FilterChainNode(this::doFilter);
 
         _handler = new RouterHandler(_router);
