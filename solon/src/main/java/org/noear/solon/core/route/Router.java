@@ -60,39 +60,52 @@ public interface Router {
      */
     void add(String path, Endpoint endpoint, MethodType method, int index, Handler handler);
 
+
+
+    List<Routing<Handler>> getAll(Endpoint endpoint);
+
+
+
+
     /**
-     * 添加路由关系 for XListener
+     * 区配一个目标（根据上上文）
+     */
+    Handler matchOne(Context ctx, Endpoint endpoint);
+
+    /**
+     * 区配多个目标（根据上上文）
+     */
+    List<Handler> matchAll(Context ctx, Endpoint endpoint);
+
+
+    /////////////////// for Listener ///////////////////
+
+
+    /**
+     * 添加路由关系 for Listener
      */
     default void add(String path, Listener listener) {
         add(path, MethodType.ALL, listener);
     }
 
+
+    /**
+     * 添加路由关系 for Listener
+     */
     default void add(String path, MethodType method, Listener listener) {
         add(path, method, 0, listener);
     }
 
     /**
-     * 添加路由关系 for XListener
+     * 添加路由关系 for Listener
      */
     void add(String path, MethodType method, int index, Listener listener);
-
-
-    List<Routing<Handler>> getItems(Endpoint endpoint);
-
-    /**
-     * 区配一个目标（根据上上文）
-     */
-    Handler matchOne(Context context, Endpoint endpoint);
-
-    /**
-     * 区配多个目标（根据上上文）
-     */
-    List<Handler> matchAll(Context context, Endpoint endpoint);
 
     /**
      * 区配一个目标（根据上上文）
      */
     Listener matchOne(Session session);
+
 
 
     /**
