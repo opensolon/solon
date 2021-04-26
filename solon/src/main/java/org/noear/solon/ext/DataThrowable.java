@@ -41,12 +41,19 @@ import java.io.Serializable;
  * @since 1.0
  * */
 public class DataThrowable extends RuntimeException implements Serializable {
+    public DataThrowable() {
+        super();
+    }
 
-    public DataThrowable(String message){
+    public DataThrowable(Throwable cause) {
+        super(cause);
+    }
+
+    public DataThrowable(String message) {
         super(message);
     }
 
-    public DataThrowable(String message, Throwable cause){
+    public DataThrowable(String message, Throwable cause) {
         super(message, cause);
     }
 }
