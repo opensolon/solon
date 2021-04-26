@@ -41,11 +41,11 @@ public abstract class CloudBreakerServiceLocalImpl implements CloudBreakerServic
                 }
             }
 
-            //增加配置变化
+            //增加配置变化监听
             //
             Solon.cfg().onChange((key, val) -> {
                 if (key.startsWith(CONFIG_PREFIX)) {
-                    String name = key.substring(CONFIG_PREFIX.length());
+                    String name = key.substring(CONFIG_PREFIX.length() + 1);
                     BreakerEntrySim tmp = breakers.get(name);
                     if (tmp != null) {
                         tmp.reset(Integer.parseInt(val));
