@@ -1,18 +1,23 @@
 package org.noear.solon.cloud.extend.guava.impl;
 
 import com.google.common.util.concurrent.RateLimiter;
+import org.noear.solon.cloud.model.BreakerEntrySim;
 import org.noear.solon.cloud.model.BreakerException;
-import org.noear.solon.cloud.model.BreakerEntry;
 
 /**
  * @author noear
  * @since 1.3
  */
-public class CloudBreakerEntryImpl implements BreakerEntry {
+public class CloudBreakerEntryImpl extends BreakerEntrySim {
     RateLimiter limiter;
+    int thresholdValue;
 
     public CloudBreakerEntryImpl(int permitsPerSecond) {
-        limiter = RateLimiter.create(permitsPerSecond);
+        this.thresholdValue = permitsPerSecond;
+    }
+
+    private void loadLimiter(){
+        limiter = RateLimiter.create(thresholdValue);
     }
 
     @Override
@@ -21,6 +26,13 @@ public class CloudBreakerEntryImpl implements BreakerEntry {
             return this;
         } else {
             throw new BreakerException();
+        }
+    }
+
+    @Override
+    public void reset(int value) {
+        if(thresholdValue != value){
+            loadLimiter();
         }
     }
 }

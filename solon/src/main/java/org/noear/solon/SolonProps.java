@@ -166,8 +166,8 @@ public final class SolonProps extends Props {
                     }
                 }
 
-                put(kv.getKey(), v1);
                 System.getProperties().put(kv.getKey(), v1);
+                put(kv.getKey(), v1);
             }
         }
 
@@ -318,7 +318,7 @@ public final class SolonProps extends Props {
      * 框架版本号
      */
     public String version() {
-        return "1.3.27-m4";
+        return "1.3.27-m5";
     }
 
     /**

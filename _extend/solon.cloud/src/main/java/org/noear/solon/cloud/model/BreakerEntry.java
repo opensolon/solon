@@ -19,7 +19,6 @@ public interface BreakerEntry extends AutoCloseable {
      */
     AutoCloseable enter() throws BreakerException;
 
-
     /**
      * 自动关闭
      */

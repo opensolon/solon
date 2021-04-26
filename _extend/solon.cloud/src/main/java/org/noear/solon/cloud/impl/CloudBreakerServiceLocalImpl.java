@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.impl;
 
 import org.noear.solon.Solon;
+import org.noear.solon.cloud.model.BreakerEntrySim;
 import org.noear.solon.cloud.model.BreakerException;
 import org.noear.solon.cloud.model.BreakerEntry;
 import org.noear.solon.cloud.service.CloudBreakerService;
@@ -20,12 +21,16 @@ import java.util.Map;
  * @since 1.3
  */
 public abstract class CloudBreakerServiceLocalImpl implements CloudBreakerService {
-    Map<String, BreakerEntry> breakers = new HashMap<>();
+    static final String CONFIG_PREFIX = "solon.cloud.local.breaker";
+
+    Map<String, BreakerEntrySim> breakers = new HashMap<>();
 
     public CloudBreakerServiceLocalImpl() {
-        Props props = Solon.cfg().getProp("solon.cloud.local.breaker");
+        Props props = Solon.cfg().getProp(CONFIG_PREFIX);
 
         if (props.size() > 0) {
+            //初始化
+            //
             for (Object k : props.keySet()) {
                 if (k instanceof String) {
                     String key = (String) k;
@@ -35,10 +40,22 @@ public abstract class CloudBreakerServiceLocalImpl implements CloudBreakerServic
                     }
                 }
             }
+
+            //增加配置变化
+            //
+            Solon.cfg().onChange((key, val) -> {
+                if (key.startsWith(CONFIG_PREFIX)) {
+                    String name = key.substring(CONFIG_PREFIX.length());
+                    BreakerEntrySim tmp = breakers.get(name);
+                    if (tmp != null) {
+                        tmp.reset(Integer.parseInt(val));
+                    }
+                }
+            });
         }
     }
 
-    protected abstract BreakerEntry create(String name, int value);
+    protected abstract BreakerEntrySim create(String name, int value);
 
     @Override
     public AutoCloseable entry(String breakerName) throws BreakerException {

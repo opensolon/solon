@@ -335,23 +335,38 @@ public class SolonLogger implements Logger {
         error(s, throwable);
     }
 
-    private void appendDo(Level level, Object content, String format, Object[] args) {
+    private void appendDo(Level level, String content, String format, Object[] args) {
         Map<String, String> metainfo = MDC.getCopyOfContextMap();
         Throwable throwable = null;
+        String throwableStr = null;
 
         if (format != null) {
             if (args != null && args.length > 0) {
                 for (int i = 0, len = args.length; i < len; i++) {
                     if (args[i] instanceof Throwable) {
-                        throwable = (Throwable) args[i];
-                        throwable = Utils.throwableUnwrap(throwable);
-                        args[i] = Utils.throwableToString(throwable);
+                        throwable = Utils.throwableUnwrap((Throwable) args[i]);
+                        throwableStr = Utils.throwableToString(throwable);
+                        args[i] = throwableStr;
                         break;
                     }
                 }
+
                 content = MessageFormatter.arrayFormat(format, args, null).getMessage();
             } else {
                 content = format;
+            }
+
+            if (throwableStr != null) {
+                //
+                // 可能异常不在格式范围内...
+                //
+                if (Utils.isEmpty(content)) {
+                    content = throwableStr;
+                } else {
+                    if (throwableStr.length() > content.length()) {
+                        content = content + "\n" + throwableStr;
+                    }
+                }
             }
         }
 
