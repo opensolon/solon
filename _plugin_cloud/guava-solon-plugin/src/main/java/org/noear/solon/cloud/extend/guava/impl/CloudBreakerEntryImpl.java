@@ -14,6 +14,7 @@ public class CloudBreakerEntryImpl extends BreakerEntrySim {
 
     public CloudBreakerEntryImpl(int permitsPerSecond) {
         this.thresholdValue = permitsPerSecond;
+        loadLimiter();
     }
 
     private void loadLimiter(){
