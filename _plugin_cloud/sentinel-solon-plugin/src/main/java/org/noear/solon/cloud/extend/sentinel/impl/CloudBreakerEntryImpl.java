@@ -58,6 +58,7 @@ public class CloudBreakerEntryImpl extends BreakerEntrySim {
     public void reset(int value) {
         if(thresholdValue != value){
             thresholdValue = value;
+
             loadRules();
         }
     }

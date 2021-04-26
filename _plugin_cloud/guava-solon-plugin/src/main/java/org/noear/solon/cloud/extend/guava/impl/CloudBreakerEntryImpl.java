@@ -14,10 +14,11 @@ public class CloudBreakerEntryImpl extends BreakerEntrySim {
 
     public CloudBreakerEntryImpl(int permitsPerSecond) {
         this.thresholdValue = permitsPerSecond;
-        loadLimiter();
+
+        loadRules();
     }
 
-    private void loadLimiter(){
+    private void loadRules(){
         limiter = RateLimiter.create(thresholdValue);
     }
 
@@ -33,7 +34,9 @@ public class CloudBreakerEntryImpl extends BreakerEntrySim {
     @Override
     public void reset(int value) {
         if(thresholdValue != value){
-            loadLimiter();
+            thresholdValue = value;
+
+            loadRules();
         }
     }
 }
