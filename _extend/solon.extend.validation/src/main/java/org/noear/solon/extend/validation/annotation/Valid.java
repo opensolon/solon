@@ -6,6 +6,7 @@ import org.noear.solon.extend.validation.ValidateInterceptor;
 import java.lang.annotation.*;
 
 /**
+ * 验证触发器注解（可以把它加在基类上）
  *
  * @author noear
  * @since 1.0
