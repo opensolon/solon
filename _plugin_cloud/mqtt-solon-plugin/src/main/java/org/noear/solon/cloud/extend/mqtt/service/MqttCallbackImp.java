@@ -5,8 +5,6 @@ import org.noear.solon.cloud.extend.mqtt.MqttProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.core.event.EventBus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -15,8 +13,6 @@ import java.util.Map;
  * @since 1.3
  */
 class MqttCallbackImp implements MqttCallback {
-    static Logger log = LoggerFactory.getLogger(MqttCallbackImp.class);
-
     final MqttClient client;
     final String eventChannelName;
 
@@ -42,7 +38,7 @@ class MqttCallbackImp implements MqttCallback {
     //在断开连接时调用
     @Override
     public void connectionLost(Throwable ex) {
-        log.error("{}", ex);
+        EventBus.push(ex);
     }
 
     //已经预订的消息
