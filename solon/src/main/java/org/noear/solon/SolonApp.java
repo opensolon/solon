@@ -226,6 +226,8 @@ public class SolonApp implements HandlerSlots {
 
 
 
+
+    private RouterHandler _routerHandler;
     private Router _router; //与函数同名，_开头
     /**
      * 路由器
@@ -236,6 +238,7 @@ public class SolonApp implements HandlerSlots {
     public void routerSet(Router router) {
         if (router != null) {
             _router = router;
+            _routerHandler.bind(router);
         }
     }
 
@@ -256,9 +259,10 @@ public class SolonApp implements HandlerSlots {
 
         //顺序不能换
         _router = new RouterDefault();
+        _routerHandler = new RouterHandler(_router);
         _filterChain = new FilterChainNode(this::doFilter);
 
-        _handler = new RouterHandler(_router);
+        _handler = _routerHandler;
 
         enableJarIsolation(_prop.getBool("solon.extend.isolation", false));
     }

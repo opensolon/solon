@@ -13,6 +13,13 @@ import org.noear.solon.core.handle.Handler;
 public class RouterHandler implements Handler {
     private Router router;
     public RouterHandler(Router router){
+        bind(router);
+    }
+
+    /**
+     * 绑定路由器
+     * */
+    public void bind(Router router){
         this.router = router;
     }
 
