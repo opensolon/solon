@@ -2,12 +2,14 @@ package org.noear.solon.cloud.extend.rabbitmq.impl;
 
 import com.rabbitmq.client.*;
 import org.noear.snack.ONode;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.cloud.utils.ExpirationUtils;
 import org.noear.solon.core.event.EventBus;
 
+import javax.rmi.CORBA.Util;
 import java.io.IOException;
 import java.util.Map;
 
@@ -60,6 +62,13 @@ public class RabbitConsumeHandler extends DefaultConsumer {
 
         } catch (Throwable ex) {
             EventBus.push(ex);
+
+            //按协议要求，抛到上一级
+            if (ex instanceof IOException) {
+                throw (IOException) ex;
+            } else {
+                throw Utils.throwableWrap(ex);
+            }
         }
     }
 }

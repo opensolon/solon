@@ -1,11 +1,14 @@
 package org.noear.solon.cloud.extend.mqtt.service;
 
 import org.eclipse.paho.client.mqttv3.*;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.extend.mqtt.MqttProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.core.event.EventBus;
 
+import javax.rmi.CORBA.Util;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Map;
 
 /**
@@ -55,6 +58,13 @@ class MqttCallbackImp implements MqttCallback {
             observer.handler(event);
         } catch (Throwable ex) {
             EventBus.push(ex);
+
+            //按接口返回要求，抛到上一级
+            if (ex instanceof Exception) {
+                throw (Exception) ex;
+            } else {
+                throw Utils.throwableWrap(ex);
+            }
         }
     }
 
