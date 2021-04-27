@@ -1,7 +1,9 @@
 package org.noear.solon.cloud.extend.water.integration.http;
 
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.extend.water.service.CloudEventServiceWaterImp;
 import org.noear.solon.cloud.model.Event;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.water.WaterClient;
@@ -25,7 +27,8 @@ public class HandlerReceive implements Handler, MessageHandler {
             String rst = WaterClient.Message.receiveMessage(ctx::param, eventService.getSeal(), this);
             ctx.output(rst);
         } catch (Throwable ex) {
-            ctx.output(ex);
+            ctx.output(Utils.throwableUnwrap(ex));
+            EventBus.push(ex);
         }
     }
 

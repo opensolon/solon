@@ -4,6 +4,7 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.noear.solon.cloud.extend.mqtt.MqttProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
+import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,8 +58,7 @@ class MqttCallbackImp implements MqttCallback {
 
             observer.handler(event);
         } catch (Throwable ex) {
-            log.error("{}", ex);
-            throw new RuntimeException(ex);
+            EventBus.push(ex);
         }
     }
 
