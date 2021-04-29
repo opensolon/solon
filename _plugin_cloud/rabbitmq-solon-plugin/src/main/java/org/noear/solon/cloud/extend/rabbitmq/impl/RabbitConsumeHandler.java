@@ -38,25 +38,20 @@ public class RabbitConsumeHandler extends DefaultConsumer {
             Event event = ONode.deserialize(event_json, Event.class);
             event.channel(eventChannelName);
 
-            CloudEventObserverEntity observer = observerMap.get(event.topic());
-            boolean isHandled = true;
+            boolean isOk = onReceive(event);
 
-            if (observer != null) {
-                isHandled = observer.handler(event);
-            }
-
-            if (isHandled == false) {
+            if (isOk == false) {
                 event.times(event.times() + 1);
 
                 try {
-                    isHandled = producer.publish(event, cfg.queue_ready, ExpirationUtils.getExpiration(event.times()));
+                    isOk = producer.publish(event, cfg.queue_ready, ExpirationUtils.getExpiration(event.times()));
                 } catch (Throwable ex) {
                     getChannel().basicNack(envelope.getDeliveryTag(), false, true);
-                    isHandled = true;
+                    isOk = true;
                 }
             }
 
-            if (isHandled) {
+            if (isOk) {
                 getChannel().basicAck(envelope.getDeliveryTag(), false);
             }
 
@@ -70,5 +65,23 @@ public class RabbitConsumeHandler extends DefaultConsumer {
                 throw Utils.throwableWrap(ex);
             }
         }
+    }
+
+    /**
+     * 处理接收事件
+     */
+    public boolean onReceive(Event event) throws Throwable {
+        boolean isOk = true;
+        CloudEventObserverEntity entity = null;
+
+        entity = observerMap.get(event.topic());
+        if (entity != null) {
+            isOk = entity.handler(event);
+        }else{
+            //只需要记录一下
+            EventBus.push(new RuntimeException("There is no observer for this event topic[" + event.topic() + "]"));
+        }
+
+        return isOk;
     }
 }

@@ -28,7 +28,7 @@ public class RocketmqConsumerHandler implements MessageListenerConcurrently {
 
     @Override
     public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext consumeConcurrentlyContext) {
-        boolean isHandled = true;
+        boolean isOk = true;
 
         try {
             for (MessageExt message : list) {
@@ -38,13 +38,13 @@ public class RocketmqConsumerHandler implements MessageListenerConcurrently {
                 event.times(message.getReconsumeTimes());
                 event.channel(eventChannelName);
 
-                isHandled = isHandled && onReceive(event);
+                isOk = isOk && onReceive(event);
             }
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
 
-        if (isHandled) {
+        if (isOk) {
             return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
         } else {
             return ConsumeConcurrentlyStatus.RECONSUME_LATER;
@@ -55,14 +55,17 @@ public class RocketmqConsumerHandler implements MessageListenerConcurrently {
      * 处理接收事件
      */
     public boolean onReceive(Event event) throws Throwable {
-        boolean isHandled = true;
+        boolean isOk = true;
         CloudEventObserverEntity entity = null;
 
         entity = observerMap.get(event.topic());
         if (entity != null) {
-            isHandled = entity.handler(event);
+            isOk = entity.handler(event);
+        }else{
+            //只需要记录一下
+            EventBus.push(new RuntimeException("There is no observer for this event topic[" + event.topic() + "]"));
         }
 
-        return isHandled;
+        return isOk;
     }
 }

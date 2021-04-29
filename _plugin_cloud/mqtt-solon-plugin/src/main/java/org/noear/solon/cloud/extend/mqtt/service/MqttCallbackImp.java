@@ -49,6 +49,12 @@ class MqttCallbackImp implements MqttCallback {
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         CloudEventObserverEntity observer = observerMap.get(topic);
 
+        if(observer == null) {
+            //只需要记录一下
+            EventBus.push(new RuntimeException("There is no observer for this event topic[" + topic + "]"));
+            return;
+        }
+
         try {
             Event event = new Event(topic, new String(message.getPayload()))
                     .qos(message.getQos())
