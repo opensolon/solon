@@ -8,6 +8,7 @@ import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.cloud.utils.ExpirationUtils;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.ext.WarnThrowable;
 
 import javax.rmi.CORBA.Util;
 import java.io.IOException;
@@ -79,7 +80,7 @@ public class RabbitConsumeHandler extends DefaultConsumer {
             isOk = entity.handler(event);
         }else{
             //只需要记录一下
-            EventBus.push(new RuntimeException("There is no observer for this event topic[" + event.topic() + "]"));
+            EventBus.push(new WarnThrowable(event, "There is no observer for this event topic[" + event.topic() + "]"));
         }
 
         return isOk;

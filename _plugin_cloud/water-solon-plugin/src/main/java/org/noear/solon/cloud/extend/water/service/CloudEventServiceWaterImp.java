@@ -11,6 +11,7 @@ import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.cloud.service.CloudEventService;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.ext.WarnThrowable;
 import org.noear.water.WW;
 import org.noear.water.WaterClient;
 import org.noear.water.utils.EncryptUtils;
@@ -153,7 +154,7 @@ public class CloudEventServiceWaterImp implements CloudEventService {
 
         if(isHandled == false){
             //只需要记录一下
-            EventBus.push(new RuntimeException("There is no observer for this event topic[" + event.topic() + "]"));
+            EventBus.push(new WarnThrowable(event, "There is no observer for this event topic[" + event.topic() + "]"));
         }
 
         return isOk;

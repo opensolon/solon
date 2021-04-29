@@ -6,6 +6,7 @@ import org.noear.solon.cloud.extend.mqtt.MqttProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.ext.WarnThrowable;
 
 import javax.rmi.CORBA.Util;
 import java.lang.reflect.UndeclaredThrowableException;
@@ -47,21 +48,20 @@ class MqttCallbackImp implements MqttCallback {
     //已经预订的消息
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
-        CloudEventObserverEntity observer = observerMap.get(topic);
-
-        if(observer == null) {
-            //只需要记录一下
-            EventBus.push(new RuntimeException("There is no observer for this event topic[" + topic + "]"));
-            return;
-        }
-
         try {
             Event event = new Event(topic, new String(message.getPayload()))
                     .qos(message.getQos())
                     .retained(message.isRetained())
                     .channel(eventChannelName);
 
-            observer.handler(event);
+            CloudEventObserverEntity observer = observerMap.get(topic);
+
+            if (observer != null) {
+                observer.handler(event);
+            } else {
+                //只需要记录一下
+                EventBus.push(new WarnThrowable(event, "There is no observer for this event topic[" + event.topic() + "]"));
+            }
         } catch (Throwable ex) {
             EventBus.push(ex);
 

@@ -8,6 +8,7 @@ import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.ext.WarnThrowable;
 
 import java.util.List;
 import java.util.Map;
@@ -63,7 +64,7 @@ public class RocketmqConsumerHandler implements MessageListenerConcurrently {
             isOk = entity.handler(event);
         }else{
             //只需要记录一下
-            EventBus.push(new RuntimeException("There is no observer for this event topic[" + event.topic() + "]"));
+            EventBus.push(new WarnThrowable(event, "There is no observer for this event topic[" + event.topic() + "]"));
         }
 
         return isOk;
