@@ -22,7 +22,7 @@ public class CloudIdServiceImp implements CloudIdService {
 
     @Override
     public long generate() {
-        return generateId();
+        return generate0();
     }
 
     ////////////////////////////
@@ -100,7 +100,7 @@ public class CloudIdServiceImp implements CloudIdService {
     private final long SEQ_MAX_NUM = ~(-1 << SEQ_LEN);
 
 
-    public synchronized long generateId() {
+    protected synchronized long generate0() {
         long now = System.currentTimeMillis();
 
         //如果当前时间小于上一次ID生成的时间戳，说明系统时钟回退过这个时候应当抛出异常
