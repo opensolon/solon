@@ -97,10 +97,10 @@ public class CloudDiscoveryServiceWaterImp extends TimerTask implements CloudDis
 
         if (Solon.cfg().isFilesMode()) {
             //自己主动刷新
-            WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 1, alarmMobile, code_location, unstable);
+            WaterClient.Registry.register(Solon.cfg().appGroup(), instance.service(), instance.address(), meta, checkPath, 1, alarmMobile, code_location, unstable);
         } else {
             //被动接收检测
-            WaterClient.Registry.register(instance.service(), instance.address(), meta, checkPath, 0, alarmMobile, code_location, unstable);
+            WaterClient.Registry.register(Solon.cfg().appGroup(), instance.service(), instance.address(), meta, checkPath, 0, alarmMobile, code_location, unstable);
         }
     }
 

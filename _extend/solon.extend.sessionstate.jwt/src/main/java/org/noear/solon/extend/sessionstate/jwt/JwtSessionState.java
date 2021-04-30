@@ -100,7 +100,7 @@ public class JwtSessionState extends SessionStateDefault {
                     String sesId = sessionId();
                     String token = jwtGet();
 
-                    if (Utils.isNotEmpty(token)) {
+                    if (Utils.isNotEmpty(token) && token.contains(".")) {
                         Claims claims = JwtUtils.parseJwt(token);
 
                         if(claims != null) {
@@ -186,6 +186,7 @@ public class JwtSessionState extends SessionStateDefault {
 
                     if (XPluginProp.session_jwt_responseUseHeader || Utils.isNotEmpty(skey)) {
                         tmp.setId(skey);
+
                         if (XPluginProp.session_jwt_allowExpire) {
                             sessionToken = JwtUtils.buildJwt(tmp, _expiry * 1000L);
                         } else {
