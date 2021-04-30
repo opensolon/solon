@@ -159,7 +159,7 @@ public class CloudIdServiceImp implements CloudIdService {
     }
 
     /**
-     * 根据 host name 取余，发生异常就获取 0到31之间的随机数
+     * 根据 block 取余，发生异常就获取 0到31之间的随机数
      */
     protected int getDataId() {
         return getHostId(block, DATA_MAX_NUM);
