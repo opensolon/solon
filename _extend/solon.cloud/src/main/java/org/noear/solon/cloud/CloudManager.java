@@ -59,6 +59,12 @@ public class CloudManager {
      */
     private static CloudTraceService traceService;
 
+    /**
+     * 云端ID生成工厂
+     * */
+    private static CloudIdServiceFactory idServiceFactory;
+    private static CloudIdService idServiceDef;
+
 
     protected final static Map<CloudConfig, CloudConfigHandler> configHandlerMap = new LinkedHashMap<>();
     protected final static Map<CloudEvent, CloudEventHandler> eventHandlerMap = new LinkedHashMap<>();
@@ -155,6 +161,15 @@ public class CloudManager {
         PrintUtil.info("Cloud", "CloudTraceService registered from the " + service.getClass().getTypeName());
     }
 
+    /**
+     * 登记ID生成工厂
+     */
+    public static void register(CloudIdServiceFactory factory) {
+        idServiceFactory = factory;
+        idServiceDef = factory.create();
+        PrintUtil.info("Cloud", "CloudIdServiceFactory registered from the " + factory.getClass().getTypeName());
+    }
+
     protected static CloudBreakerService breakerService() {
         return breakerService;
     }
@@ -189,7 +204,14 @@ public class CloudManager {
 
     protected static CloudTraceService traceService() {
         return traceService;
+    }
 
+    protected static CloudIdServiceFactory idServiceFactory(){
+        return idServiceFactory;
+    }
+
+    protected static CloudIdService idServiceDef(){
+        return idServiceDef;
     }
 
 }

@@ -23,7 +23,6 @@ import java.util.Properties;
  */
 public class CloudFileServiceS3Imp implements CloudFileService {
     private static CloudFileServiceS3Imp instance;
-
     public static synchronized CloudFileServiceS3Imp getInstance() {
         if (instance == null) {
             instance = new CloudFileServiceS3Imp();

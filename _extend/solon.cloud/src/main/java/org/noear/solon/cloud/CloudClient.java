@@ -162,4 +162,13 @@ public class CloudClient {
         return CloudManager.fileService();
     }
 
+    @Note("ID服务")
+    public static CloudIdService idService(String group, String service){
+        return CloudManager.idServiceFactory().create(group, service);
+    }
+
+    @Note("ID服务")
+    public static CloudIdService id(){
+        return CloudManager.idServiceDef();
+    }
 }

@@ -2,6 +2,7 @@ package org.noear.solon.cloud;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.yaml.snakeyaml.events.Event;
 
 /**
  * 云服务属性配置
@@ -68,6 +69,9 @@ public class CloudProps {
     private String FILE_ACCESS_KEY = "solon.cloud.@@.file.accessKey";
     private String FILE_SECRET_KEY = "solon.cloud.@@.file.secretKey";
 
+    //ID服务相关
+    private String ID_ENABLE = "solon.cloud.@@.id.enable";
+
 
     public CloudProps(String frame) {
         SERVER = SERVER.replace("@@", frame);
@@ -100,7 +104,7 @@ public class CloudProps {
         EVENT_PUBLISH_TIMEOUT = EVENT_PUBLISH_TIMEOUT.replace("@@", frame);
         EVENT_QUEUE = EVENT_QUEUE.replace("@@", frame);
         EVENT_SEAL = EVENT_SEAL.replace("@@", frame);
-        EVENT_CHANNEL= EVENT_CHANNEL.replace("@@", frame);
+        EVENT_CHANNEL = EVENT_CHANNEL.replace("@@", frame);
 
         LOCK_ENABLE = LOCK_ENABLE.replace("@@", frame);
 
@@ -116,6 +120,8 @@ public class CloudProps {
         FILE_BUCKET = FILE_BUCKET.replace("@@", frame);
         FILE_ACCESS_KEY = FILE_ACCESS_KEY.replace("@@", frame);
         FILE_SECRET_KEY = FILE_SECRET_KEY.replace("@@", frame);
+
+        ID_ENABLE = ID_ENABLE.replace("@@", frame);
     }
 
 
@@ -329,4 +335,13 @@ public class CloudProps {
     public String getFileSecretKey() {
         return Solon.cfg().get(FILE_SECRET_KEY);
     }
+
+
+    //
+    //锁服务相关
+    //
+    public boolean getIdEnable() {
+        return Solon.cfg().getBool(ID_ENABLE, true);
+    }
+
 }
