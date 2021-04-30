@@ -524,18 +524,18 @@ public class SolonApp implements HandlerSlots {
     }
 
     /**
-     * 订阅异常事件
-     * */
-    public SolonApp onError(EventListener<Throwable> handler) {
-        return onEvent(Throwable.class, handler);
-    }
-
-    /**
      * 订阅事件
      * */
     public <T> SolonApp onEvent(Class<T> type, EventListener<T> handler) {
         EventBus.subscribe(type, handler);
         return this;
+    }
+
+    /**
+     * 订阅异常事件
+     * */
+    public SolonApp onError(EventListener<Throwable> handler) {
+        return onEvent(Throwable.class, handler);
     }
 
     /**

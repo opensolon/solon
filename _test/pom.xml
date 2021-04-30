@@ -28,6 +28,11 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>snowflake-id-solon-plugin</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>nami</artifactId>
         </dependency>
         <dependency>

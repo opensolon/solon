@@ -2,6 +2,7 @@ package webapp;
 
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
+import org.noear.solon.SolonBuilder;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.model.BreakerException;
@@ -10,6 +11,8 @@ import org.noear.solon.core.handle.MethodType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import webapp.demo6_aop.TestImport;
+
+import javax.security.sasl.SaslServer;
 
 @Import(value = TestImport.class)
 //@EnableCron4j
@@ -37,8 +40,26 @@ public class TestApp {
          * http://t1_jetty.test.noear.org
          *
          * */
-        SolonApp app = Solon.start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
 
+        //简化方式
+        //SolonApp app = Solon.start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
+
+
+        //构建方式
+        SolonApp app = new SolonBuilder().onError(e->{
+            e.printStackTrace();
+        }).onAppInitEnd(e->{
+            System.out.println("1.初始化完成");
+        }).onPluginLoadEnd(e->{
+            System.out.println("2.插件加载完成了");
+        }).onBeanLoadEnd(e->{
+            System.out.println("3.Bean扫描并加载完成");
+        }).onAppLoadEnd(e->{
+            System.out.println("4.应用全加载完成了");
+        }).start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
+
+
+        System.out.println("生在ID = " + CloudClient.id().generate());
 
 //        app.filter((ctx, chain)->{
 //            System.out.println("我是过滤器!!!path="+ctx.path());
