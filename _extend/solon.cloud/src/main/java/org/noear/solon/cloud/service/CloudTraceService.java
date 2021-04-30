@@ -16,4 +16,20 @@ public interface CloudTraceService {
      * 获取跟踪标识
      */
     String getTraceId();
+
+//    /**
+//     * 记录舜间值
+//     * */
+//    void logGauge(String group, String name, long val);
+//
+//    /**
+//     * 记录累积值
+//     * */
+//    void logCount(String group, String name, long add);
+//
+//    /**
+//     * 记录平均值
+//     * */
+//    void logMeter(String group, String name, long ref);
+
 }
