@@ -18,6 +18,11 @@ public interface CloudTraceService {
     String getTraceId();
 
 //    /**
+//     * 记录节点关系
+//     * */
+//    void logLine(String from, String to);
+//
+//    /**
 //     * 记录舜间值
 //     * */
 //    void logGauge(String group, String name, long val);
