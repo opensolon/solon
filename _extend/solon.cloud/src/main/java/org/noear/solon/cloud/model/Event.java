@@ -47,12 +47,12 @@ public class Event implements Serializable {
     /**
      * 质量：0 只发一次；1 最少发一次；2 发一次并且不重复；（兼容mqtt）
      * */
-    private int qos = 1;
+    private transient int qos = 1;
 
     /**
      * 保留：是否保留最后一条（兼容mqtt）
      * */
-    private boolean retained = false;
+    private transient boolean retained = false;
 
     public Event(){
         //序列化需要
