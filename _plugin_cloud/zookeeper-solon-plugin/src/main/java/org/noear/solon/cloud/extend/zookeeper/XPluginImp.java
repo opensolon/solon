@@ -22,7 +22,8 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        client = new ZkClient(ZkProps.instance.getDiscoveryServer(), 3000);
+        String sessionTimeout = ZkProps.instance.getDiscoveryHealthCheckInterval("3000");
+        client = new ZkClient(ZkProps.instance.getDiscoveryServer(), Integer.parseInt(sessionTimeout));
 
         //1.登记配置服务
         if (ZkProps.instance.getConfigEnable()) {

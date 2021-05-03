@@ -1,5 +1,6 @@
 package org.slf4j.impl;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.ext.WarnThrowable;
 import org.noear.solon.logging.AppenderManager;
@@ -23,12 +24,16 @@ import java.util.Map;
 public class SolonLogger implements Logger {
     private String name;
     private Class<?> initClass;
+    private Level level;
 
     public SolonLogger(String name) {
         this.name = name;
         if (name.contains(".")) {
             initClass = Utils.loadClass(name);
         }
+
+        String levelStr = Solon.cfg().get("solon.logging.logger." + name + ".level");
+        level = Level.of(levelStr, Level.TRACE);
     }
 
     @Override
@@ -38,7 +43,7 @@ public class SolonLogger implements Logger {
 
     @Override
     public boolean isTraceEnabled() {
-        return LogOptions.getLevel().code <= Level.TRACE.code;
+        return level.code <= Level.TRACE.code;
     }
 
     @Override
@@ -98,7 +103,7 @@ public class SolonLogger implements Logger {
 
     @Override
     public boolean isDebugEnabled() {
-        return LogOptions.getLevel().code <= Level.DEBUG.code;
+        return level.code <= Level.DEBUG.code;
     }
 
     @Override
@@ -158,7 +163,7 @@ public class SolonLogger implements Logger {
 
     @Override
     public boolean isInfoEnabled() {
-        return LogOptions.getLevel().code <= Level.INFO.code;
+        return level.code <= Level.INFO.code;
     }
 
     @Override
@@ -218,7 +223,7 @@ public class SolonLogger implements Logger {
 
     @Override
     public boolean isWarnEnabled() {
-        return LogOptions.getLevel().code <= Level.WARN.code;
+        return level.code <= Level.WARN.code;
     }
 
     @Override
@@ -278,7 +283,7 @@ public class SolonLogger implements Logger {
 
     @Override
     public boolean isErrorEnabled() {
-        return LogOptions.getLevel().code <= Level.ERROR.code;
+        return level.code <= Level.ERROR.code;
     }
 
     @Override
@@ -337,6 +342,10 @@ public class SolonLogger implements Logger {
     }
 
     private void appendDo(Level level, String content, String format, Object[] args) {
+        if(level.code < this.level.code){
+            return;
+        }
+
         Map<String, String> metainfo = MDC.getCopyOfContextMap();
         Throwable throwable = null;
         String throwableStr = null;
