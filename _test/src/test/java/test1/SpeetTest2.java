@@ -1,7 +1,9 @@
 package test1;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.noear.solon.extend.staticfiles.StaticFiles;
+import org.noear.solon.test.SolonJUnit4ClassRunner;
 
 import java.util.Map;
 import java.util.regex.Pattern;

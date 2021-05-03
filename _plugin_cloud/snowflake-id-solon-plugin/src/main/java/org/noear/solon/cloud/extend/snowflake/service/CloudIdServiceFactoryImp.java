@@ -26,7 +26,6 @@ public class CloudIdServiceFactoryImp implements CloudIdServiceFactory {
     @Override
     public CloudIdService create(String group, String service) {
         String block = group + "::" + service;
-
         CloudIdService tmp = cached.get(block);
 
         if (tmp == null) {
