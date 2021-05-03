@@ -24,6 +24,9 @@ public class CloudDiscoveryServiceZkImp implements CloudDiscoveryService {
         this.client = client;
         this.client.connectServer();
 
+        this.client.createNode("/solon");
+        this.client.createNode(PATH_ROOT);
+
         /**
          * reg
          * /solon/register/{group}/{name}/ip = meta;
@@ -42,6 +45,11 @@ public class CloudDiscoveryServiceZkImp implements CloudDiscoveryService {
     @Override
     public void registerState(String group, Instance instance, boolean health) {
         if (health) {
+            client.createNode(
+                    String.format("%s/%s", PATH_ROOT, group));
+
+            client.createNode(
+                    String.format("%s/%s/%s", PATH_ROOT, group, instance.service()));
 
             String info = ONode.stringify(instance);
             client.createNode(

@@ -22,6 +22,9 @@ public class CloudConfigServiceZkImp implements CloudConfigService {
     public CloudConfigServiceZkImp(ZkClient client) {
         this.client = client;
         this.client.connectServer();
+
+        this.client.createNode("/solon");
+        this.client.createNode(PATH_ROOT);
     }
 
     @Override
@@ -41,6 +44,9 @@ public class CloudConfigServiceZkImp implements CloudConfigService {
         if (Utils.isEmpty(group)) {
             group = Solon.cfg().appGroup();
         }
+
+        client.createNode(
+                String.format("%s/%s", PATH_ROOT, group));
 
         client.setNodeData(
                 String.format("%s/%s/%s", PATH_ROOT, group, key),

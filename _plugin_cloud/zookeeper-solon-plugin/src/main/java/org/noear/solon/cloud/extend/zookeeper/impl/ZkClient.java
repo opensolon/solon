@@ -52,11 +52,17 @@ public class ZkClient {
     /**
      * 创建节点
      */
+    public void createNode(String path) {
+        createNode(path, "");
+    }
+
     public void createNode(String path, String data) {
         try {
-            real.create(path, data.getBytes(),
-                    ZooDefs.Ids.OPEN_ACL_UNSAFE,
-                    CreateMode.EPHEMERAL_SEQUENTIAL);
+            if(real.exists(path, null) == null) {
+                real.create(path, data.getBytes(),
+                        ZooDefs.Ids.OPEN_ACL_UNSAFE,
+                        CreateMode.PERSISTENT);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -91,11 +97,13 @@ public class ZkClient {
     /**
      * 获取节点数据
      */
-    public String getNodeData(String path)  {
+    public String getNodeData(String path) {
         try {
             byte[] bytes = real.getData(path, false, null);
             return new String(bytes);
-        }catch (Exception e){
+        } catch (KeeperException.NoNodeException e) {
+            return null;
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -103,13 +111,16 @@ public class ZkClient {
     /**
      * 监视节点数据
      * */
-    public void watchNodeData(String path, Watcher watcher)  {
+    public void watchNodeData(String path, Watcher watcher) {
         try {
             real.getData(path, event -> {
-                if (event.getType() == Watcher.Event.EventType.NodeDataChanged) {
+                if (event.getType() == Watcher.Event.EventType.NodeCreated ||
+                        event.getType() == Watcher.Event.EventType.NodeDataChanged) {
                     watcher.process(event);
                 }
             }, null);
+        } catch (KeeperException.NoNodeException e) {
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
