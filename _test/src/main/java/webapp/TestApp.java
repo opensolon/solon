@@ -22,11 +22,6 @@ public class TestApp {
     static Logger logger = LoggerFactory.getLogger(TestApp.class);
 
     public static void main(String[] args) throws Exception {
-
-        EventBus.subscribe(Throwable.class, (event) -> {
-            //event.printStackTrace();
-        });
-
         /**
          *
          * http://t5_undertow.test.noear.org
