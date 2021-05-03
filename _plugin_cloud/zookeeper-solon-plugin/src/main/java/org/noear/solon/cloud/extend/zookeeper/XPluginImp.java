@@ -4,7 +4,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
-import org.noear.solon.cloud.extend.zookeeper.impl.ZooKeeperWrap;
+import org.noear.solon.cloud.extend.zookeeper.impl.ZkClient;
 import org.noear.solon.cloud.extend.zookeeper.service.CloudConfigServiceZkImp;
 import org.noear.solon.cloud.extend.zookeeper.service.CloudDiscoveryServiceZkImp;
 import org.noear.solon.core.Plugin;
@@ -14,7 +14,7 @@ import org.noear.solon.core.Plugin;
  * @since 1.3
  */
 public class XPluginImp implements Plugin {
-    ZooKeeperWrap client;
+    ZkClient client;
 
     @Override
     public void start(SolonApp app) {
@@ -22,7 +22,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        client = new ZooKeeperWrap(ZkProps.instance.getDiscoveryServer(), 5000);
+        client = new ZkClient(ZkProps.instance.getDiscoveryServer(), 3000);
 
         //1.登记配置服务
         if (ZkProps.instance.getConfigEnable()) {

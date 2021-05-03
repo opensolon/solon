@@ -4,7 +4,7 @@ import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
-import org.noear.solon.cloud.extend.zookeeper.impl.ZooKeeperWrap;
+import org.noear.solon.cloud.extend.zookeeper.impl.ZkClient;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
@@ -18,11 +18,11 @@ import java.util.Map;
  */
 public class CloudDiscoveryServiceZkImp implements CloudDiscoveryService {
     private static final String PATH_ROOT = "/solon/register";
-    private ZooKeeperWrap zooKeeper;
+    private ZkClient client;
 
-    public CloudDiscoveryServiceZkImp(ZooKeeperWrap zkw) {
-        zooKeeper = zkw;
-        zooKeeper.connectServer();
+    public CloudDiscoveryServiceZkImp(ZkClient client) {
+        this.client = client;
+        this.client.connectServer();
 
         /**
          * reg
@@ -42,14 +42,12 @@ public class CloudDiscoveryServiceZkImp implements CloudDiscoveryService {
     @Override
     public void registerState(String group, Instance instance, boolean health) {
         if (health) {
-            try {
-                String info = ONode.stringify(instance);
-                zooKeeper.createNode(
-                        String.format("%s/%s/%s/%s", PATH_ROOT, group, instance.service(), instance.address()),
-                        info);
-            }catch (Exception e){
-                throw new RuntimeException(e);
-            }
+
+            String info = ONode.stringify(instance);
+            client.createNode(
+                    String.format("%s/%s/%s/%s", PATH_ROOT, group, instance.service(), instance.address()),
+                    info);
+
         } else {
             deregister(group, instance);
         }
@@ -57,12 +55,8 @@ public class CloudDiscoveryServiceZkImp implements CloudDiscoveryService {
 
     @Override
     public void deregister(String group, Instance instance) {
-        try {
-            zooKeeper.removeNode(
-                    String.format("%s/%s/%s/%s", PATH_ROOT, group, instance.service(), instance.address()));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        client.removeNode(
+                String.format("%s/%s/%s/%s", PATH_ROOT, group, instance.service(), instance.address()));
     }
 
     @Override
@@ -73,19 +67,15 @@ public class CloudDiscoveryServiceZkImp implements CloudDiscoveryService {
 
         Discovery discovery = new Discovery(service);
 
-        try {
-            Map<String, String> nodeData = zooKeeper.findChildrenNode(
-                    String.format("%s/%s/%s", PATH_ROOT, group, service));
+        Map<String, String> nodeData = client.findChildrenNode(
+                String.format("%s/%s/%s", PATH_ROOT, group, service));
 
-            nodeData.forEach((k, v) -> {
-                Instance instance = ONode.deserialize(v, Instance.class);
-                discovery.instanceAdd(instance);
-            });
+        nodeData.forEach((k, v) -> {
+            Instance instance = ONode.deserialize(v, Instance.class);
+            discovery.instanceAdd(instance);
+        });
 
-            return discovery;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return discovery;
     }
 
     @Override
@@ -96,13 +86,10 @@ public class CloudDiscoveryServiceZkImp implements CloudDiscoveryService {
 
         CloudDiscoveryObserverEntity entity = new CloudDiscoveryObserverEntity(group, service, observer);
 
-        try {
-            zooKeeper.watchChildrenNode(String.format("%s/%s/%s", PATH_ROOT, group, service), (event) -> {
-                Discovery discovery = find(entity.group, service);
-                entity.handler(discovery);
-            });
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        client.watchChildrenNode(String.format("%s/%s/%s", PATH_ROOT, group, service), (event) -> {
+            Discovery discovery = find(entity.group, service);
+            entity.handler(discovery);
+        });
+
     }
 }

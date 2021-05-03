@@ -3,7 +3,7 @@ package org.noear.solon.cloud.extend.zookeeper.service;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
-import org.noear.solon.cloud.extend.zookeeper.impl.ZooKeeperWrap;
+import org.noear.solon.cloud.extend.zookeeper.impl.ZkClient;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
@@ -17,11 +17,11 @@ import java.util.Map;
  */
 public class CloudConfigServiceZkImp implements CloudConfigService {
     private static final String PATH_ROOT = "/solon/config";
-    private ZooKeeperWrap zooKeeper;
+    private ZkClient client;
 
-    public CloudConfigServiceZkImp(ZooKeeperWrap zkw) {
-        zooKeeper = zkw;
-        zooKeeper.connectServer();
+    public CloudConfigServiceZkImp(ZkClient client) {
+        this.client = client;
+        this.client.connectServer();
     }
 
     @Override
@@ -30,14 +30,10 @@ public class CloudConfigServiceZkImp implements CloudConfigService {
             group = Solon.cfg().appGroup();
         }
 
-        try {
-            String value = zooKeeper.getNodeData(
-                    String.format("%s/%s/%s", PATH_ROOT, group, key));
+        String value = client.getNodeData(
+                String.format("%s/%s/%s", PATH_ROOT, group, key));
 
-            return new Config(group, key, value, 0);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return new Config(group, key, value, 0);
     }
 
     @Override
@@ -46,15 +42,11 @@ public class CloudConfigServiceZkImp implements CloudConfigService {
             group = Solon.cfg().appGroup();
         }
 
-        try {
-            zooKeeper.setNodeData(
-                    String.format("%s/%s/%s", PATH_ROOT, group, key),
-                    value);
+        client.setNodeData(
+                String.format("%s/%s/%s", PATH_ROOT, group, key),
+                value);
 
-            return true;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return true;
     }
 
     @Override
@@ -63,12 +55,8 @@ public class CloudConfigServiceZkImp implements CloudConfigService {
             group = Solon.cfg().appGroup();
         }
 
-        try {
-            zooKeeper.removeNode(String.format("%s/%s/%s", PATH_ROOT, group, key));
-            return true;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        client.removeNode(String.format("%s/%s/%s", PATH_ROOT, group, key));
+        return true;
     }
 
     private Map<CloudConfigHandler, CloudConfigObserverEntity> observerMap = new HashMap<>();
@@ -86,13 +74,8 @@ public class CloudConfigServiceZkImp implements CloudConfigService {
         CloudConfigObserverEntity entity = new CloudConfigObserverEntity(group, key, observer);
         observerMap.put(observer, entity);
 
-        try {
-            zooKeeper.watchNodeData(String.format("%s/%s/%s", PATH_ROOT, group, key), event -> {
-                entity.handler(pull(entity.group, entity.key));
-            });
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-
+        client.watchNodeData(String.format("%s/%s/%s", PATH_ROOT, group, key), event -> {
+            entity.handler(pull(entity.group, entity.key));
+        });
     }
 }
