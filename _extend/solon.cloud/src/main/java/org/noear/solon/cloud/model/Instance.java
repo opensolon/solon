@@ -145,6 +145,12 @@ public class Instance implements Serializable {
     }
 
 
+    /**
+     * 用于序列化
+     * */
+    public Instance(){
+
+    }
     public Instance(String service, String address) {
         if (Utils.isEmpty(service)) {
             this.service = Solon.cfg().appName();

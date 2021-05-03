@@ -51,31 +51,33 @@ public class NamiHandler implements InvocationHandler {
                 if (tmp != null) {
                     tmp.config(client, new Nami.Builder(config));
                 }
+            } catch (RuntimeException ex) {
+                throw ex;
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
 
-            if(client.timeout() > 0) {
+            if (client.timeout() > 0) {
                 config.setTimeout(client.timeout());
             }
 
             //>>添加接口url
-            if(TextUtils.isNotEmpty(client.url())){
+            if (TextUtils.isNotEmpty(client.url())) {
                 config.setUrl(client.url());
             }
 
             //>>添加接口group
-            if(TextUtils.isNotEmpty(client.group())){
+            if (TextUtils.isNotEmpty(client.group())) {
                 config.setGroup(client.group());
             }
 
             //>>添加接口name
-            if(TextUtils.isNotEmpty(client.name())){
+            if (TextUtils.isNotEmpty(client.name())) {
                 config.setName(client.name());
             }
 
             //>>添加接口path
-            if(TextUtils.isNotEmpty(client.path())){
+            if (TextUtils.isNotEmpty(client.path())) {
                 config.setPath(client.path());
             }
 
