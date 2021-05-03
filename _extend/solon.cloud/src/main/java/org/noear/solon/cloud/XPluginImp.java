@@ -78,6 +78,10 @@ public class XPluginImp implements Plugin {
         if(CloudClient.log() != null){
             AppenderManager.getInstance().register(new CloudLogAppender());
         }
+
+        if(CloudClient.trace() == null){
+            CloudManager.register(new CloudTraceServiceImpl());
+        }
     }
 
     @Override

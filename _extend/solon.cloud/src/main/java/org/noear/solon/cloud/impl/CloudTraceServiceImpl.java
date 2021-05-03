@@ -1,14 +1,14 @@
-package org.noear.solon.cloud.extend.nacos.service;
+package org.noear.solon.cloud.impl;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.service.CloudTraceService;
 import org.noear.solon.core.handle.Context;
 
 /**
- * @author noear 2021/1/29 created
+ * @author noear 2021/5/3 created
  */
-public class CloudTraceServiceNacosImp implements CloudTraceService {
-    static final String http_header_trace = "Solon-Trace-Id";
+public class CloudTraceServiceImpl implements CloudTraceService {
+    static final String http_header_trace = "X-Trace-Id";
 
     @Override
     public String HEADER_TRACE_ID_NAME() {
@@ -33,4 +33,3 @@ public class CloudTraceServiceNacosImp implements CloudTraceService {
         }
     }
 }
-

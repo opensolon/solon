@@ -45,27 +45,27 @@ public class ZooKeeperWrap {
 
     /**
      * 创建节点
-     * */
-    public void createNode(String path, String data) throws Exception{
+     */
+    public void createNode(String path, String data) throws Exception {
         real.create(path, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
     }
 
     /**
      * 移徐节点
-     * */
-    public void removeNode(String path) throws Exception{
+     */
+    public void removeNode(String path) throws Exception {
         real.delete(path, -1);
     }
 
     /**
      * 获取节点数据
-     * */
-    public String  getNodeData(String path) throws Exception {
+     */
+    public String getNodeData(String path) throws Exception {
         byte[] bytes = real.getData(path, false, null);
         return new String(bytes);
     }
 
-    public void  watchNodeData(String path, Watcher watcher) throws Exception {
+    public void watchNodeData(String path, Watcher watcher) throws Exception {
         real.getData(path, event -> {
             if (event.getType() == Watcher.Event.EventType.NodeDataChanged) {
                 watcher.process(event);
@@ -75,7 +75,7 @@ public class ZooKeeperWrap {
 
     /**
      * 查找节点
-     * */
+     */
     public Map<String, String> findChildrenNode(String parentPath) throws Exception {
         //获取子节点列表
         List<String> nodeList = real.getChildren(parentPath, null);
@@ -92,7 +92,7 @@ public class ZooKeeperWrap {
 
     /**
      * 监视节点
-     * */
+     */
     public void watchChildrenNode(String parentPath, Watcher watcher) throws Exception {
         //获取子节点列表
         real.getChildren(parentPath, event -> {
@@ -101,5 +101,9 @@ public class ZooKeeperWrap {
                 watcher.process(event);
             }
         });
+    }
+
+    public void close() throws InterruptedException {
+        real.close();
     }
 }

@@ -70,7 +70,7 @@ public class Solon {
         JarClassLoader.bindingThread();
 
 
-        PrintUtil.info("App","Start loading");
+        PrintUtil.info("App", "Start loading");
 
         //1.创建应用
         global = new SolonApp(source, argx);
@@ -94,16 +94,18 @@ public class Solon {
         //4.安全停止
         stopDelay = Solon.cfg().getInt("solon.stop.delay", 10);
 
-        if(global.enableSafeStop()){
+        if (global.enableSafeStop()) {
             //添加关闭勾子
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0( false, stopDelay)));
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, stopDelay)));
+        } else {
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, 0)));
         }
 
         RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
         if (rb == null) {
-            PrintUtil.info("App","End loading elapsed=" + global.elapsedTimes() + "ms");
+            PrintUtil.info("App", "End loading elapsed=" + global.elapsedTimes() + "ms");
         } else {
-            PrintUtil.info("App","End loading elapsed=" + global.elapsedTimes() + "ms pid=" + rb.getName());
+            PrintUtil.info("App", "End loading elapsed=" + global.elapsedTimes() + "ms pid=" + rb.getName());
         }
         return global;
     }
