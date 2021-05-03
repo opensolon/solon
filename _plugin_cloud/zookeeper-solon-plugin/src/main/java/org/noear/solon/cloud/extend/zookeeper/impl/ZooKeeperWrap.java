@@ -39,7 +39,6 @@ public class ZooKeeperWrap {
                         latch.countDown();
                         break;
                     case Expired:
-                    case Disconnected:
                         connectServer0();
                         break;
                 }
