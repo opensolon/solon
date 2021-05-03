@@ -47,7 +47,7 @@ public class CloudConfigServiceZkImp implements CloudConfigService {
         }
 
         try {
-            zooKeeper.createNode(
+            zooKeeper.setNodeData(
                     String.format("%s/%s/%s", PATH_ROOT, group, key),
                     value);
 

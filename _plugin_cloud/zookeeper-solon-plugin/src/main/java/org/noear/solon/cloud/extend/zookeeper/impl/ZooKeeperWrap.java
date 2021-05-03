@@ -57,6 +57,14 @@ public class ZooKeeperWrap {
         real.delete(path, -1);
     }
 
+    public void setNodeData(String path, String data) throws Exception {
+        if (real.exists(path, false) == null) {
+            createNode(path, data);
+        } else {
+            real.setData(path, data.getBytes(), 1);
+        }
+    }
+
     /**
      * 获取节点数据
      */
