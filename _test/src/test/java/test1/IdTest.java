@@ -13,13 +13,22 @@ import org.noear.solon.test.SolonJUnit4ClassRunner;
 public class IdTest {
     @Test
     public void time1(){
+        //1420041600000
         DateTime dateTime = DateTime.of("2015-01-01 00:00:00","yyyy-MM-dd HH:mm:ss");
         System.out.println(dateTime.getTime());
     }
 
     @Test
     public void time2(){
+        //1577808000000
         DateTime dateTime = DateTime.of("2020-01-01 00:00:00","yyyy-MM-dd HH:mm:ss");
+        System.out.println(dateTime.getTime());
+    }
+
+    @Test
+    public void time3(){
+        //1893427200000
+        DateTime dateTime = DateTime.of("2030-01-01 00:00:00","yyyy-MM-dd HH:mm:ss");
         System.out.println(dateTime.getTime());
     }
 
