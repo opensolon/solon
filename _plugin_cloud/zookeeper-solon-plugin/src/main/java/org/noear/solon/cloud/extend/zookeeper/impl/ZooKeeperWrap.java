@@ -28,13 +28,20 @@ public class ZooKeeperWrap {
             return;
         }
 
+        connectServer0();
+    }
+
+    private void connectServer0(){
         try {
-            real = new ZooKeeper(server, sessionTimeout, new Watcher() {
-                @Override
-                public void process(WatchedEvent event) {
-                    if (event.getState() == Event.KeeperState.SyncConnected) {
+            real = new ZooKeeper(server, sessionTimeout, event->{
+                switch (event.getState()){
+                    case SyncConnected:
                         latch.countDown();
-                    }
+                        break;
+                    case Expired:
+                    case Disconnected:
+                        connectServer0();
+                        break;
                 }
             });
             latch.await();
