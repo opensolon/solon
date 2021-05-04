@@ -53,15 +53,15 @@ public class ZkClient {
      * 创建节点
      */
     public void createNode(String path) {
-        createNode(path, "");
+        createNode(path, "", true);
     }
 
-    public void createNode(String path, String data) {
+    public void createNode(String path, String data, boolean isPersistent) {
         try {
-            if(real.exists(path, null) == null) {
+            if (real.exists(path, null) == null) {
                 real.create(path, data.getBytes(),
                         ZooDefs.Ids.OPEN_ACL_UNSAFE,
-                        CreateMode.PERSISTENT);
+                        (isPersistent ? CreateMode.PERSISTENT : CreateMode.EPHEMERAL));
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -85,7 +85,7 @@ public class ZkClient {
     public void setNodeData(String path, String data) {
         try {
             if (real.exists(path, false) == null) {
-                createNode(path, data);
+                createNode(path, data, true);
             } else {
                 real.setData(path, data.getBytes(), -1);
             }

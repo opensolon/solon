@@ -54,7 +54,7 @@ public class CloudDiscoveryServiceZkImp implements CloudDiscoveryService {
             String info = ONode.stringify(instance);
             client.createNode(
                     String.format("%s/%s/%s/%s", PATH_ROOT, group, instance.service(), instance.address()),
-                    info);
+                    info, false);
 
         } else {
             deregister(group, instance);

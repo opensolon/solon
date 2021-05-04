@@ -22,6 +22,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
+        //默认3秒
         String sessionTimeout = ZkProps.instance.getDiscoveryHealthCheckInterval("3000");
         client = new ZkClient(ZkProps.instance.getDiscoveryServer(), Integer.parseInt(sessionTimeout));
 
