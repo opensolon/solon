@@ -3,6 +3,7 @@ package org.noear.solon.cloud.extend.zookeeper.impl;
 import org.apache.zookeeper.*;
 import org.noear.solon.Utils;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +32,10 @@ public class ZkClient {
         connectServer0();
     }
 
-    private void connectServer0(){
+    private void connectServer0() {
         try {
-            real = new ZooKeeper(server, sessionTimeout, event->{
-                switch (event.getState()){
+            real = new ZooKeeper(server, sessionTimeout, event -> {
+                switch (event.getState()) {
                     case SyncConnected:
                         latch.countDown();
                         break;
@@ -81,7 +82,7 @@ public class ZkClient {
 
     /**
      * 设置节点数据
-     * */
+     */
     public void setNodeData(String path, String data) {
         try {
             if (real.exists(path, false) == null) {
@@ -110,7 +111,7 @@ public class ZkClient {
 
     /**
      * 监视节点数据
-     * */
+     */
     public void watchNodeData(String path, Watcher watcher) {
         try {
             real.getData(path, event -> {
@@ -129,18 +130,18 @@ public class ZkClient {
     /**
      * 查找子节点
      */
-    public Map<String, String> findChildrenNode(String parentPath) {
+    public List<String> findChildrenNode(String parentPath) {
         try {
             List<String> nodeList = real.getChildren(parentPath, null);
 
-            Map<String, String> nodeListData = new LinkedHashMap<>();
+            List<String> nodeDataList = new ArrayList<>();
 
             for (String node : nodeList) {
                 String nodeData = getNodeData(parentPath + "/" + node);
-                nodeListData.put(node, nodeData);
+                nodeDataList.add(nodeData);
             }
 
-            return nodeListData;
+            return nodeDataList;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -149,22 +150,24 @@ public class ZkClient {
     /**
      * 监视子节点
      */
-    public void watchChildrenNode(String parentPath, Watcher watcher)  {
+    public void watchChildrenNode(String parentPath, Watcher watcher) {
         try {
             real.getChildren(parentPath, event -> {
                 if (event.getType() == Watcher.Event.EventType.NodeChildrenChanged) {
                     watcher.process(event);
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     /**
      * 关闭
-     * */
+     */
     public void close() throws InterruptedException {
-        real.close();
+        if (real != null) {
+            real.close();
+        }
     }
 }

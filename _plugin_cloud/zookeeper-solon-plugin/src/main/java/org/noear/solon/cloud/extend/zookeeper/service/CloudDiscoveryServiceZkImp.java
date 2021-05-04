@@ -10,6 +10,7 @@ import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -75,13 +76,13 @@ public class CloudDiscoveryServiceZkImp implements CloudDiscoveryService {
 
         Discovery discovery = new Discovery(service);
 
-        Map<String, String> nodeData = client.findChildrenNode(
+        List<String> nodeDataList = client.findChildrenNode(
                 String.format("%s/%s/%s", PATH_ROOT, group, service));
 
-        nodeData.forEach((k, v) -> {
+        for (String v : nodeDataList) {
             Instance instance = ONode.deserialize(v, Instance.class);
             discovery.instanceAdd(instance);
-        });
+        }
 
         return discovery;
     }
