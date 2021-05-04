@@ -22,7 +22,7 @@ import java.util.concurrent.TimeoutException;
 public class RabbitProducer {
     private RabbitConfig config;
     private Channel channel;
-    private int timeout;
+    private long timeout;
     private RabbitChannelFactory factory;
     private AMQP.BasicProperties eventPropsDefault;
 

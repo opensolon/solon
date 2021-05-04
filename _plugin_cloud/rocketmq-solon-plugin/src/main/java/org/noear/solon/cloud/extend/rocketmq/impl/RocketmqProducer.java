@@ -16,7 +16,7 @@ import org.noear.solon.cloud.model.Event;
  */
 public class RocketmqProducer {
     RocketmqConfig cfg;
-    int timeout;
+    long timeout;
     DefaultMQProducer producer;
 
     public RocketmqProducer(RocketmqConfig config) {
@@ -39,7 +39,7 @@ public class RocketmqProducer {
             producer.setNamesrvAddr(cfg.server);
             //发送超时时间，默认3000 单位ms
             if (timeout > 0) {
-                producer.setSendMsgTimeout(timeout);
+                producer.setSendMsgTimeout((int)timeout);
             }
             //失败后重试2次
             producer.setRetryTimesWhenSendFailed(2);

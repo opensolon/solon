@@ -258,8 +258,8 @@ public class CloudProps {
         return Solon.cfg().getInt(EVENT_PREFETCH_COUNT, 0);
     }
 
-    public int getEventPublishTimeout() {
-        return Solon.cfg().getInt(EVENT_PUBLISH_TIMEOUT, 0);
+    public long getEventPublishTimeout() {
+        return Solon.cfg().getLong(EVENT_PUBLISH_TIMEOUT, 0L);
     }
 
     public String getEventSeal() {
