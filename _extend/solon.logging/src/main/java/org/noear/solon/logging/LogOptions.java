@@ -1,6 +1,6 @@
 package org.noear.solon.logging;
 
-import org.noear.solon.SolonApp;
+import org.noear.solon.Solon;
 import org.noear.solon.logging.event.Level;
 import org.noear.solon.logging.model.LoggerLevelEntity;
 
@@ -14,7 +14,7 @@ public class LogOptions {
     //
     //默认日志等级
     //
-    private static volatile Level level = Level.INFO;
+    private static volatile Level level = Level.TRACE;
 
     public static void setLevel(Level level) {
         LogOptions.level = level;
@@ -26,7 +26,7 @@ public class LogOptions {
 
 
     private static volatile Map<String, LoggerLevelEntity> loggerLevelMap = new LinkedHashMap<>();
-
+    private static volatile boolean loggerLevelMapLoaded = false;
     public static void addLoggerLevel(String loggerExpr, Level level) {
         if (loggerExpr.endsWith(".*")) {
             loggerExpr = loggerExpr.substring(0, loggerExpr.length() - 1);
@@ -38,6 +38,8 @@ public class LogOptions {
     }
 
     public static Level getLoggerLevel(String logger) {
+        loadLoggerConfig();
+
         for (LoggerLevelEntity l : loggerLevelMap.values()) {
             if (logger.startsWith(l.getLoggerExpr())) {
                 return l.getLevel();
@@ -45,5 +47,32 @@ public class LogOptions {
         }
 
         return getLevel();
+    }
+
+    private static void loadLoggerConfig() {
+        if(loggerLevelMapLoaded){
+            return;
+        }
+
+        if(Solon.global() == null){
+            return;
+        }
+
+        loggerLevelMapLoaded = true;
+
+        Properties props = Solon.cfg().getProp("solon.logging.logger");
+
+        if (props.size() > 0) {
+            props.forEach((k, v) -> {
+                String key = (String) k;
+                String val = (String) v;
+
+                if (key.endsWith(".level")) {
+                    String loggerExpr = key.substring(0, key.length() - 6);
+
+                    LogOptions.addLoggerLevel(loggerExpr, Level.of(val, Level.INFO));
+                }
+            });
+        }
     }
 }

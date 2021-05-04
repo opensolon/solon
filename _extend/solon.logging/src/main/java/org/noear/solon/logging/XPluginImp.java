@@ -17,7 +17,6 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
         loadAppenderConfig(app);
-        loadLoggerConfig(app);
     }
 
     private void loadAppenderConfig(SolonApp app) {
@@ -33,23 +32,6 @@ public class XPluginImp implements Plugin {
                     if (appender != null) {
                         AppenderManager.getInstance().register(appender);
                     }
-                }
-            });
-        }
-    }
-
-    private void loadLoggerConfig(SolonApp app) {
-        Properties props = app.cfg().getProp("solon.logging.logger");
-
-        if (props.size() > 0) {
-            props.forEach((k, v) -> {
-                String key = (String) k;
-                String val = (String) v;
-
-                if (key.endsWith(".level")) {
-                    String loggerExpr = key.substring(0, key.length() - 6);
-
-                    LogOptions.addLoggerLevel(loggerExpr, Level.of(val, Level.INFO));
                 }
             });
         }

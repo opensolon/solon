@@ -28,6 +28,9 @@ public class AppenderManager implements Appender {
 
     protected Map<String,Appender> appenderMap = new LinkedHashMap<>();
 
+    /**
+     * 注册时，append 可能会出异常
+     * */
     public void register(Appender appender) {
         appenderMap.putIfAbsent(appender.getName(), appender);
 
@@ -44,6 +47,9 @@ public class AppenderManager implements Appender {
         return "proxy";
     }
 
+    /**
+     * 添加时，register 可能会出异常
+     * */
     @Override
     public void append(LogEvent logEvent) {
         for (Appender appender : appenderMap.values()) {
