@@ -71,6 +71,7 @@ public class CloudProps {
 
     //ID服务相关
     private String ID_ENABLE = "solon.cloud.@@.id.enable";
+    private String ID_START = "solon.cloud.@@.id.start";
 
 
     public CloudProps(String frame) {
@@ -122,6 +123,7 @@ public class CloudProps {
         FILE_SECRET_KEY = FILE_SECRET_KEY.replace("@@", frame);
 
         ID_ENABLE = ID_ENABLE.replace("@@", frame);
+        ID_START = ID_START.replace("@@", frame);
     }
 
 
@@ -338,10 +340,12 @@ public class CloudProps {
 
 
     //
-    //锁服务相关
+    //ID服务相关
     //
     public boolean getIdEnable() {
         return Solon.cfg().getBool(ID_ENABLE, true);
     }
-
+    public long getIdStart() {
+        return Solon.cfg().getLong(ID_START, 0L);
+    }
 }

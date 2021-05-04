@@ -11,23 +11,37 @@ import java.util.Random;
  * @since 1.3
  */
 public class SnowflakeId {
+    //起始时间 2020-01-01 00:00:00
+    private static final long START_TIME_DEF = 1577808000000L;
     private String dataBlock;
 
     public SnowflakeId() {
         this.dataBlock = Solon.cfg().appGroup() + "::" + Solon.cfg().appName();
 
+        START_TIME = START_TIME_DEF;
+
         DATA_ID = getDataId();
         WORK_ID = getWorkId();
     }
 
-    public SnowflakeId(String dataBlock) {
+    public SnowflakeId(String dataBlock, long startTime) {
         this.dataBlock = dataBlock;
+
+        if(startTime > 0) {
+            START_TIME = startTime;
+        }else{
+            START_TIME = START_TIME_DEF;
+        }
 
         DATA_ID = getDataId();
         WORK_ID = getWorkId();
     }
 
     public SnowflakeId(long dataId, long workId) {
+        this(dataId, workId, START_TIME_DEF);
+    }
+
+    public SnowflakeId(long dataId, long workId, long startTime) {
         if (dataId > DATA_MAX_NUM || dataId < 0) {
             throw new IllegalArgumentException("dataId can't be greater than DATA_MAX_NUM or less than 0");
         }
@@ -35,6 +49,12 @@ public class SnowflakeId {
             throw new IllegalArgumentException("workId can't be greater than WORK_MAX_NUM or less than 0");
         }
 
+        //默认起始时间 2020-01-01 00:00:00
+        if(startTime > 0) {
+            START_TIME = startTime;
+        }else{
+            START_TIME = START_TIME_DEF;
+        }
 
         DATA_ID = dataId;
         WORK_ID = workId;
@@ -62,7 +82,7 @@ public class SnowflakeId {
     /**
      * 定义起始时间 2020-01-01 00:00:00
      */
-    private final long START_TIME = 1577808000000L;
+    private final long START_TIME;
     /**
      * 上次生成ID的时间截
      */
