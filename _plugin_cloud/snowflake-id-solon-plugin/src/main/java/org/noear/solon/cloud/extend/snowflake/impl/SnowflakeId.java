@@ -18,7 +18,7 @@ public class SnowflakeId {
     private String dataBlock;
 
     public SnowflakeId() {
-        this.dataBlock = Solon.cfg().appGroup() + "::" + Solon.cfg().appName();
+        this.dataBlock = Solon.cfg().appGroup() + "_" + Solon.cfg().appName();
 
         startTime = START_TIME_DEF;
 

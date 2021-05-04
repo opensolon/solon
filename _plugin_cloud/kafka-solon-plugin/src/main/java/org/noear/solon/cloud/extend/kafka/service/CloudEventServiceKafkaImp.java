@@ -80,7 +80,7 @@ public class CloudEventServiceKafkaImp implements CloudEventService {
         Properties props = new Properties();
 
         props.put("bootstrap.servers", server);
-        props.put("group.id", Solon.cfg().appGroup() + "::" + Solon.cfg().appName());
+        props.put("group.id", Solon.cfg().appGroup() + "_" + Solon.cfg().appName());
         props.put("enable.auto.commit", "true");
         props.put("auto.commit.interval.ms", "1000");
         props.put("session.timeout.ms", "30000");
