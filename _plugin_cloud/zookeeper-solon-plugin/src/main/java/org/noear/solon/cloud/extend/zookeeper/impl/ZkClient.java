@@ -87,7 +87,7 @@ public class ZkClient {
             if (real.exists(path, false) == null) {
                 createNode(path, data);
             } else {
-                real.setData(path, data.getBytes(), 1);
+                real.setData(path, data.getBytes(), -1);
             }
         } catch (Exception e) {
             throw Utils.throwableWrap(e);

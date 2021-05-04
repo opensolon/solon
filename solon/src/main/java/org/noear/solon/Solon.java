@@ -129,16 +129,19 @@ public class Solon {
             return;
         }
 
-        String hint = "(1.prestop 2.delay 3.stop)";
 
-        PrintUtil.info("App","Security to stop: begin..."+hint);
-
-        //1.预停止
-        Solon.cfg().plugs().forEach(p -> p.prestop());
-        PrintUtil.info("App","Security to stop: 1 completed "+hint);
-
-        //2.延时
         if (delay > 0) {
+
+            String hint = "(1.prestop 2.delay 3.stop)";
+
+            PrintUtil.info("App", "Security to stop: begin..." + hint);
+
+            //1.预停止
+            Solon.cfg().plugs().forEach(p -> p.prestop());
+            PrintUtil.info("App", "Security to stop: 1 completed " + hint);
+
+
+            //2.延时标停
             int delay1 = (int) (delay * 0.2);
             int delay2 = delay - delay1;
 
@@ -154,17 +157,24 @@ public class Solon {
                 sleep0(delay2);
             }
 
-
             PrintUtil.info("App", "Security to stop: 2 completed " + hint);
+
+            //3.停止
+            Solon.cfg().plugs().forEach(p -> p.stop());
+            PrintUtil.info("App", "Security to stop: 3 completed " + hint);
+        } else {
+            //1.预停止
+            Solon.cfg().plugs().forEach(p -> p.prestop());
+
+            //2.标停
+            Solon.global().stopped = true;
+            //3.停止
+            Solon.cfg().plugs().forEach(p -> p.stop());
         }
 
-        //3.停目
-        Solon.cfg().plugs().forEach(p -> p.stop());
-
-        PrintUtil.info("App","Security to stop: 3 completed "+hint);
 
         //4.直接非正常退出
-        if(exit) {
+        if (exit) {
             System.exit(1);
         }
     }
