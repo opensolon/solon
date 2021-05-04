@@ -24,7 +24,7 @@ import java.util.Map;
 public class SolonLogger implements Logger {
     private String name;
     private Class<?> initClass;
-    private Level level;
+    private Level level = Level.TRACE;
 
     public SolonLogger(String name) {
         this.name = name;
@@ -32,8 +32,10 @@ public class SolonLogger implements Logger {
             initClass = Utils.loadClass(name);
         }
 
-        String levelStr = Solon.cfg().get("solon.logging.logger." + name + ".level");
-        level = Level.of(levelStr, Level.TRACE);
+        if (Solon.global() != null) {
+            String levelStr = Solon.cfg().get("solon.logging.logger." + name + ".level");
+            level = Level.of(levelStr, Level.TRACE);
+        }
     }
 
     @Override
