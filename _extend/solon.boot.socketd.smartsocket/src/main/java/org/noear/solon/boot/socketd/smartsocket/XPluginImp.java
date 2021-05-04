@@ -16,7 +16,7 @@ import org.noear.solon.socketd.client.smartsocket.AioProtocol;
 import org.smartboot.socket.transport.AioQuickServer;
 
 public final class XPluginImp implements Plugin {
-    private AioQuickServer<Message> server = null;
+    private AioQuickServer server = null;
 
     public static String solon_boot_ver() {
         return "smartsocket-socketd 1.5.4/" + Solon.cfg().version();
@@ -44,7 +44,7 @@ public final class XPluginImp implements Plugin {
         }
 
         try {
-            server = new AioQuickServer<>(_port, AioProtocol.instance, new AioServerProcessor());
+            server = new AioQuickServer(_port, AioProtocol.instance, new AioServerProcessor());
             server.setBannerEnabled(false);
             if (SocketProps.readBufferSize() > 0) {
                 server.setReadBufferSize(SocketProps.readBufferSize());
