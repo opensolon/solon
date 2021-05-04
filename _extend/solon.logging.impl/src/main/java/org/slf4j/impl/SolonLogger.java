@@ -12,9 +12,6 @@ import org.slf4j.MDC;
 import org.slf4j.Marker;
 import org.slf4j.helpers.MessageFormatter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,8 +30,7 @@ public class SolonLogger implements Logger {
         }
 
         if (Solon.global() != null) {
-            String levelStr = Solon.cfg().get("solon.logging.logger." + name + ".level");
-            level = Level.of(levelStr, Level.TRACE);
+            level = LogOptions.getLoggerLevel(name);
         }
     }
 
