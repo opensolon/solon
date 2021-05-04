@@ -18,6 +18,7 @@ import org.noear.solon.cloud.service.CloudEventService;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.ext.WarnThrowable;
 
+import java.io.EOFException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +32,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class CloudEventServiceKafkaImp implements CloudEventService {
     private static CloudEventServiceKafkaImp instance;
+
     public static synchronized CloudEventServiceKafkaImp getInstance() {
         if (instance == null) {
             instance = new CloudEventServiceKafkaImp();
@@ -38,7 +40,6 @@ public class CloudEventServiceKafkaImp implements CloudEventService {
 
         return instance;
     }
-
 
 
     private KafkaProducer<String, String> producer;
@@ -83,7 +84,7 @@ public class CloudEventServiceKafkaImp implements CloudEventService {
         props.put("enable.auto.commit", "true");
         props.put("auto.commit.interval.ms", "1000");
         props.put("session.timeout.ms", "30000");
-        props.put("max.poll.records", 1000);
+        props.put("max.poll.records", 100);
         props.put("auto.offset.reset", "earliest");
         props.put("key.deserializer", StringDeserializer.class.getName());
         props.put("value.deserializer", StringDeserializer.class.getName());
@@ -96,7 +97,7 @@ public class CloudEventServiceKafkaImp implements CloudEventService {
     public boolean publish(Event event) throws CloudEventException {
         initProducer();
 
-        if(Utils.isEmpty(event.key())){
+        if (Utils.isEmpty(event.key())) {
             event.key(Utils.guid());
         }
 
@@ -127,14 +128,16 @@ public class CloudEventServiceKafkaImp implements CloudEventService {
         try {
             initConsumer();
 
+            //订阅
             if (observerMap.size() > 0) {
                 consumer.subscribe(observerMap.keySet());
             }
+
+            //开始拉取
+            new Thread(this::subscribePull).start();
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
-
-        new Thread(this::subscribePull).start();
     }
 
     private void subscribePull() {
@@ -143,6 +146,12 @@ public class CloudEventServiceKafkaImp implements CloudEventService {
 
             try {
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
+
+                if (records.isEmpty()) {
+                    Thread.sleep(100);
+                    continue;
+                }
+
                 for (ConsumerRecord<String, String> record : records) {
                     Event event = new Event(record.topic(), record.value())
                             .key(record.key())
@@ -154,6 +163,8 @@ public class CloudEventServiceKafkaImp implements CloudEventService {
                 if (isOk) {
                     consumer.commitAsync();
                 }
+            } catch (EOFException e) {
+                break;
             } catch (Throwable e) {
                 EventBus.push(e);
             }
@@ -170,7 +181,7 @@ public class CloudEventServiceKafkaImp implements CloudEventService {
         entity = observerMap.get(event.topic());
         if (entity != null) {
             isOk = entity.handler(event);
-        }else{
+        } else {
             //只需要记录一下
             EventBus.push(new WarnThrowable(event, "There is no observer for this event topic[" + event.topic() + "]"));
         }

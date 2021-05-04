@@ -11,6 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
+    <!-- zookeeper-solon-plugin，暂为体验版 -->
     <artifactId>zookeeper-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
