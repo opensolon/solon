@@ -1,5 +1,6 @@
 package org.noear.solon.socketd.client.smartsocket;
 
+import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.ConnectorBase;
 import org.noear.solon.socketd.SocketProps;
@@ -22,7 +23,7 @@ class AioConnector extends ConnectorBase<AioSession> {
 
     @Override
     public AioSession open(Session session) throws IOException {
-        AioQuickClient client = new AioQuickClient<>(uri().getHost(), uri().getPort(), AioProtocol.instance, new AioClientProcessor(session));
+        AioQuickClient client = new AioQuickClient(uri().getHost(), uri().getPort(), AioProtocol.instance, new AioClientProcessor(session));
         if (SocketProps.readBufferSize() > 0) {
             client.setReadBufferSize(SocketProps.readBufferSize());
         }

@@ -6,7 +6,6 @@ import org.noear.solon.boot.smarthttp.http.SmartHttpContextHandler;
 import org.noear.solon.boot.smarthttp.http.FormContentFilter;
 import org.noear.solon.boot.smarthttp.websocket.WebSocketHandleImp;
 import org.noear.solon.boot.smarthttp.websocket._SessionManagerImpl;
-import org.noear.solon.core.Signal;
 import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.event.EventBus;
@@ -43,7 +42,10 @@ public final class XPluginImp implements Plugin {
         SmartHttpContextHandler _handler = new SmartHttpContextHandler();
 
         _server = new HttpBootstrap();
-        _server.setBannerEnabled(false);
+        _server.configuration()
+                .bannerEnabled(false)
+                .threadNum(Runtime.getRuntime().availableProcessors() + 2);
+
         _server.pipeline().next(_handler);
 
         if (app.enableWebSocket()) {
@@ -56,10 +58,7 @@ public final class XPluginImp implements Plugin {
 
         try {
 
-            _server.setThreadNum(Runtime.getRuntime().availableProcessors() + 2)
-                    .setPort(_port)
-                    .start();
-
+            _server.setPort(_port).start();
 
             app.signalAdd(new SignalSim(_name, _port, "http", SignalType.HTTP));
 
