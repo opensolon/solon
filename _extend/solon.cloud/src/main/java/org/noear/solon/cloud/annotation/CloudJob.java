@@ -12,6 +12,12 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface CloudJob {
-    @Note("name")
-    String value() default "";
+    /**
+     * 名称
+     * */
+    String name();
+    /**
+     * 描述
+     * */
+    String description() default "";
 }
