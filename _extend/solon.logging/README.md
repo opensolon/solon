@@ -10,12 +10,12 @@ solon.logging.appender:
     level: INFO
     enable: true
   file:
-    class: org.xx.xx.LogFileAppender
+    class: org.xxx.xxx.LogFileAppender
     level: INFO
 
 solon.logging.logger:
-  "xxx.xxx.xxx.*":
+  "org.xxx.xxx.*":
     level: INFO
-  "xxx.xxx.xxx.yyy":
+  "org.xxx.xxx.yyy":
     level: INFO
 ```
