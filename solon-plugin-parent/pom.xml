@@ -225,6 +225,8 @@
         <module>../_plugin/weed3-solon-plugin</module>
         <module>../_plugin/mybatis-solon-plugin</module>
         <module>../_plugin/mybatis-sqlhelper-solon-plugin</module>
+        <module>../_plugin/mybatisplus-solon-plugin</module>
+
         <module>../_plugin/quartz-solon-plugin</module>
 
         <module>../_plugin/solon-springboot-starter</module>
