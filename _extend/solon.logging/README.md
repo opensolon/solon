@@ -4,7 +4,11 @@
 ```yaml
 solon.logging.appender:
   console:
+    level: TRACE
+    enable: true
+  cloud:
     level: INFO
+    enable: true
   file:
     class: org.noear.solon.logging.LogFileAppender
     level: INFO
