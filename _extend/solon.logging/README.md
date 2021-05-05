@@ -10,7 +10,7 @@ solon.logging.appender:
     level: INFO
     enable: true
   file:
-    class: org.noear.solon.logging.LogFileAppender
+    class: org.xx.xx.LogFileAppender
     level: INFO
 
 solon.logging.logger:
