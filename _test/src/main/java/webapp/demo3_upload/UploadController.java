@@ -15,7 +15,7 @@ public class UploadController {
     @Mapping("f1")
     public String test_f1(Context context, UploadedFile file) throws Exception {
         if (file != null) {
-            return "成功：" + file.name();
+            return "成功：" + file.name;
         }
 
         return "失败：" + context.path();
