@@ -251,6 +251,8 @@
 
         <module>../_plugin_cloud/kafka-solon-plugin</module>
         <module>../_plugin_cloud/zookeeper-solon-plugin</module>
+
+        <module>../_plugin_cloud/semaphore-solon-plugin</module>
     </modules>
 
 </project>
