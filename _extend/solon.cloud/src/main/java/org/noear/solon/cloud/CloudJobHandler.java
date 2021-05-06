@@ -5,5 +5,5 @@ package org.noear.solon.cloud;
  * @since 1.3
  */
 public interface CloudJobHandler {
-    void exec() throws Throwable;
+    boolean handler() throws Throwable;
 }
