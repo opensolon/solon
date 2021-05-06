@@ -5,7 +5,8 @@ import org.apache.shiro.web.servlet.ShiroFilter;
 import javax.servlet.annotation.WebFilter;
 
 /**
- * @author noear 2021/5/6 created
+ * @author noear
+ * @since 1.3
  */
 @WebFilter("/*")
 public class ShiroFilterImpl extends ShiroFilter {

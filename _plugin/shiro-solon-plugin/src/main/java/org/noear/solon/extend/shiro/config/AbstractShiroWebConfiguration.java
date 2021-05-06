@@ -17,7 +17,8 @@ import org.apache.shiro.web.session.mgt.ServletContainerSessionManager;
 import org.noear.solon.annotation.Inject;
 
 /**
- * @author noear 2021/5/6 created
+ * @author noear
+ * @since 1.3
  */
 public class AbstractShiroWebConfiguration extends AbstractShiroConfiguration{
     @Inject("${shiro.sessionManager.sessionIdCookieEnabled:true}")
@@ -48,7 +49,7 @@ public class AbstractShiroWebConfiguration extends AbstractShiroConfiguration{
     protected String rememberMeCookiePath;
     @Inject("${shiro.rememberMeManager.cookie.secure:false}")
     protected boolean rememberMeCookieSecure;
-
+    @Inject("${shiro.rememberMeManager.cookie.sameSite}")
     protected Cookie.SameSiteOptions rememberMeSameSite = Cookie.SameSiteOptions.LAX;
 
     public AbstractShiroWebConfiguration() {
@@ -114,12 +115,12 @@ public class AbstractShiroWebConfiguration extends AbstractShiroConfiguration{
         return securityManager;
     }
 
-//    protected ShiroFilterChainDefinition shiroFilterChainDefinition() {
-//        DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
-//        chainDefinition.addPathDefinition("/**", "authc");
-//        return chainDefinition;
-//    }
-//
+    protected ShiroFilterChainDefinition shiroFilterChainDefinition() {
+        ShiroFilterChainDefinitionDefault chainDefinition = new ShiroFilterChainDefinitionDefault();
+        chainDefinition.addPathDefinition("/**", "authc");
+        return chainDefinition;
+    }
+
 //    protected ShiroUrlPathHelper shiroUrlPathHelper() {
 //        return new ShiroUrlPathHelper();
 //    }

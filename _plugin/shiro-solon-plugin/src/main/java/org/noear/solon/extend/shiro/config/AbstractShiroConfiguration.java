@@ -11,6 +11,7 @@ import org.apache.shiro.authz.permission.RolePermissionResolver;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.config.Ini;
 import org.apache.shiro.event.EventBus;
+import org.apache.shiro.event.support.DefaultEventBus;
 import org.apache.shiro.mgt.*;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.realm.text.IniRealm;
@@ -22,20 +23,19 @@ import org.apache.shiro.session.mgt.eis.MemorySessionDAO;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.noear.solon.annotation.Inject;
 
-import java.util.List;
-
 /**
- * @author noear 2021/5/6 created
+ * @author noear
+ * @since 1.3
  */
 public class AbstractShiroConfiguration {
-    @Inject
+    @Inject(required = false)
     protected CacheManager cacheManager;
-    @Inject
+    @Inject(required = false)
     protected RolePermissionResolver rolePermissionResolver;
-    @Inject
+    @Inject(required = false)
     protected PermissionResolver permissionResolver;
     @Inject
-    protected EventBus eventBus;
+    protected EventBus eventBus = new DefaultEventBus();
 
     @Inject("${shiro.sessionManager.deleteInvalidSessions:true}")
     protected boolean sessionManagerDeleteInvalidSessions;
@@ -43,11 +43,11 @@ public class AbstractShiroConfiguration {
     public AbstractShiroConfiguration() {
     }
 
-    protected SessionsSecurityManager securityManager(List<Realm> realms) {
+    protected SessionsSecurityManager securityManager(ShiroRealmDefinition realmDefinition) {
         SessionsSecurityManager securityManager = this.createSecurityManager();
         securityManager.setAuthenticator(this.authenticator());
         securityManager.setAuthorizer(this.authorizer());
-        securityManager.setRealms(realms);
+        securityManager.setRealms(realmDefinition.getRealmList());
         securityManager.setSessionManager(this.sessionManager());
         securityManager.setEventBus(this.eventBus);
         if (this.cacheManager != null) {

@@ -4,7 +4,6 @@ import org.apache.shiro.authc.Authenticator;
 import org.apache.shiro.authc.pam.AuthenticationStrategy;
 import org.apache.shiro.authz.Authorizer;
 import org.apache.shiro.mgt.*;
-import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.SessionFactory;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
@@ -12,10 +11,9 @@ import org.apache.shiro.web.servlet.Cookie;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 
-import java.util.List;
-
 /**
- * @author noear 2021/5/6 created
+ * @author noear
+ * @since 1.3
  */
 @Configuration
 public class ShiroWebConfiguration extends AbstractShiroWebConfiguration{
@@ -83,14 +81,14 @@ public class ShiroWebConfiguration extends AbstractShiroWebConfiguration{
     }
 
     @Bean
-    protected SessionsSecurityManager securityManager(List<Realm> realms) {
-        return super.securityManager(realms);
+    protected SessionsSecurityManager securityManager(ShiroRealmDefinition realmDefinition) {
+        return super.securityManager(realmDefinition);
     }
 
-//    @Bean
-//    protected ShiroFilterChainDefinition shiroFilterChainDefinition() {
-//        return super.shiroFilterChainDefinition();
-//    }
+    @Bean
+    protected ShiroFilterChainDefinition shiroFilterChainDefinition() {
+        return super.shiroFilterChainDefinition();
+    }
 //
 //    @Bean
 //    protected ShiroUrlPathHelper shiroUrlPathHelper() {

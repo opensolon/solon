@@ -13,6 +13,8 @@ import org.noear.solon.extend.shiro.impl.ShiroFilterImpl;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
+        app.beanScan(XPluginImp.class);
+
         Aop.wrapAndPut(EnvironmentLoaderListenerImpl.class);
         Aop.wrapAndPut(ShiroFilterImpl.class);
     }
