@@ -429,15 +429,15 @@ public abstract class Context {
 
     @Note("输出file")
     public void outputAsFile(UploadedFile file) throws IOException {
-        if (Utils.isNotEmpty(file.contentType())) {
-            contentType(file.contentType());
+        if (Utils.isNotEmpty(file.contentType)) {
+            contentType(file.contentType);
         }
 
-        if (Utils.isNotEmpty(file.name())) {
-            headerSet("Content-Disposition", "attachment; filename=\"" + file.name() + "\"");
+        if (Utils.isNotEmpty(file.name)) {
+            headerSet("Content-Disposition", "attachment; filename=\"" + file.name + "\"");
         }
 
-        Utils.transfer(file.content(), outputStream());
+        Utils.transfer(file.content, outputStream());
     }
 
     @Note("输出file")

@@ -22,12 +22,26 @@ import java.io.*;
  * @update noear 20210506 添加字段访问控制
  * */
 public class UploadedFile {
-
-    private String contentType;
-    private long contentSize;
-    private InputStream content;
-    private String name;
-    private String extension;
+    /**
+     * 内容类型
+     */
+    public final String contentType;
+    /**
+     * 内容大小
+     */
+    public final long contentSize;
+    /**
+     * 内容流
+     */
+    public final InputStream content;
+    /**
+     * 文件名（带扩展名）
+     */
+    public final String name;
+    /**
+     * 扩展名
+     */
+    public final String extension;
 
     public UploadedFile(String contentType, long contentSize, InputStream content, String name, String extension) {
         this.contentType = contentType;
@@ -35,41 +49,6 @@ public class UploadedFile {
         this.content = content;
         this.name = name;
         this.extension = extension;
-    }
-
-    /**
-     * 内容类型
-     */
-    public String contentType() {
-        return contentType;
-    }
-
-    /**
-     * 内容大小
-     */
-    public long contentSize() {
-        return contentSize;
-    }
-
-    /**
-     * 内容流
-     */
-    public InputStream content() {
-        return content;
-    }
-
-    /**
-     * 文件名（带扩展名）
-     */
-    public String name() {
-        return name;
-    }
-
-    /**
-     * 扩展名
-     */
-    public String extension() {
-        return extension;
     }
 
     /**

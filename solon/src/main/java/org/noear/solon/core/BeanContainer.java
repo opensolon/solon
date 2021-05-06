@@ -277,7 +277,7 @@ public abstract class BeanContainer {
 
         } else if (name.startsWith("${")) {
             //配置 ${xxx} or ${xxx:def},只适合单值
-            name = name.substring(2, name.length() - 1);
+            name = name.substring(2, name.length() - 1).trim();
 
             if (Properties.class == varH.getType()) {
                 //如果是 Properties
@@ -291,8 +291,8 @@ public abstract class BeanContainer {
                 //2.然后尝试获取配置
                 String def = null;
                 if(name.contains(":")) {
-                    def = name.split(":")[1];
-                    name = name.split(":")[0];
+                    def = name.split(":")[1].trim();
+                    name = name.split(":")[0].trim();
                 }
 
                 String val = Solon.cfg().get(name);
@@ -305,14 +305,15 @@ public abstract class BeanContainer {
                     Class<?> pt = varH.getType();
 
                     if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive()) {
-                        //如果是java基础类型，则为null（后面统一地 isPrimitive 做处理）
-                        //
-                        varH.setValue(null); //暂时不支持数组注入
+                        //如果是java基础类型，则不注入配置值
                     } else {
                         //尝试转为实体
                         Properties val0 = Solon.cfg().getProp(name);
-                        Object val2 = ClassWrap.get(pt).newBy(val0);
-                        varH.setValue(val2);
+                        if (val0.size() > 0) {
+                            //如果找到配置了
+                            Object val2 = ClassWrap.get(pt).newBy(val0);
+                            varH.setValue(val2);
+                        }
                     }
                 } else {
                     Object val2 = ConvertUtil.to(varH.getType(), val);
