@@ -22,26 +22,26 @@ import java.io.InputStream;
 public class UploadedFile {
     /**
      * 内容类型
-     * */
+     */
     private String contentType;
     /**
      * 内容在小
-     * */
+     */
     private long contentSize;
     /**
      * 内容流
-     * */
+     */
     private InputStream content;
     /**
      * 文件名（带扩展名）
-     * */
+     */
     private String name;
     /**
      * 扩展名
-     * */
+     */
     private String extension;
 
-    public UploadedFile(String contentType, long contentSize, InputStream content, String name, String extension){
+    public UploadedFile(String contentType, long contentSize, InputStream content, String name, String extension) {
         this.contentType = contentType;
         this.contentSize = contentSize;
         this.content = content;
@@ -49,24 +49,27 @@ public class UploadedFile {
         this.extension = extension;
     }
 
-    public String contentType(){
+    public String contentType() {
         return contentType;
     }
 
-    public long contentSize(){
+    public long contentSize() {
         return contentSize;
     }
 
-    public InputStream content(){
+    public InputStream content() {
         return content;
     }
 
-    public String name(){
+    public String name() {
         return name;
     }
 
-    public String extension(){
+    public String extension() {
         return extension;
     }
 
+    public boolean isEmpty() {
+        return contentSize == 0L;
+    }
 }
