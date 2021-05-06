@@ -214,6 +214,8 @@
     </build>
 
     <modules>
+        <module>../_plugin/solon-springboot-starter</module>
+
         <module>../_plugin/beetlsql-solon-plugin</module>
         <module>../_plugin/cron4j-solon-plugin</module>
         <module>../_plugin/dubbo-solon-plugin</module>
@@ -229,7 +231,7 @@
 
         <module>../_plugin/quartz-solon-plugin</module>
 
-        <module>../_plugin/solon-springboot-starter</module>
+        <module>../_plugin/shiro-solon-plugin</module>
 
         <!-- //////////////////////////////////////////////////// -->
         <module>../_plugin_cloud/aliyun-oss-solon-plugin</module>
