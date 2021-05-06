@@ -1,6 +1,8 @@
 package org.noear.solon.core.handle;
 
-import java.io.InputStream;
+import org.noear.solon.Utils;
+
+import java.io.*;
 
 /**
  * 通用上传文件模型（例：通过http上传的文件）
@@ -20,25 +22,11 @@ import java.io.InputStream;
  * @update noear 20210506 添加字段访问控制
  * */
 public class UploadedFile {
-    /**
-     * 内容类型
-     */
+
     private String contentType;
-    /**
-     * 内容在小
-     */
     private long contentSize;
-    /**
-     * 内容流
-     */
     private InputStream content;
-    /**
-     * 文件名（带扩展名）
-     */
     private String name;
-    /**
-     * 扩展名
-     */
     private String extension;
 
     public UploadedFile(String contentType, long contentSize, InputStream content, String name, String extension) {
@@ -49,27 +37,63 @@ public class UploadedFile {
         this.extension = extension;
     }
 
+    /**
+     * 内容类型
+     */
     public String contentType() {
         return contentType;
     }
 
+    /**
+     * 内容大小
+     */
     public long contentSize() {
         return contentSize;
     }
 
+    /**
+     * 内容流
+     */
     public InputStream content() {
         return content;
     }
 
+    /**
+     * 文件名（带扩展名）
+     */
     public String name() {
         return name;
     }
 
+    /**
+     * 扩展名
+     */
     public String extension() {
         return extension;
     }
 
+    /**
+     * 是否为空
+     * */
     public boolean isEmpty() {
         return contentSize == 0L;
+    }
+
+    /**
+     * 将内容流迁移到..
+     *
+     * @param file 文件
+     * */
+    public void transferTo(File file) throws IOException {
+        Utils.transfer(content, new FileOutputStream(file));
+    }
+
+    /**
+     * 将内容流迁移到..
+     *
+     * @param stream 输出流
+     * */
+    public void transferTo(OutputStream stream) throws IOException {
+        Utils.transfer(content, stream);
     }
 }
