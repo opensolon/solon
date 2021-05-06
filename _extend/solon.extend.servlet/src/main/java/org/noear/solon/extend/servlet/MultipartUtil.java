@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -33,25 +34,26 @@ class MultipartUtil {
         }
     }
 
-    private static void doBuildFiles(SolonServletContext context, Part part) throws IOException{
+    private static void doBuildFiles(SolonServletContext context, Part part) throws IOException {
         List<UploadedFile> list = context._fileMap.get(part.getName());
-        if(list == null){
+        if (list == null) {
             list = new ArrayList<>();
             context._fileMap.put(part.getName(), list);
 
 
-            UploadedFile f = new UploadedFile();
-            f.contentType = part.getContentType();
-            f.content = part.getInputStream(); //可以转成 ByteArrayInputStream
-            
-            f.name = part.getSubmittedFileName();
-            int idx = f.name.lastIndexOf(".");
+            String contentType = part.getContentType();
+            long contentSize = part.getSize();
+            InputStream content = part.getInputStream(); //可以转成 ByteArrayInputStream
+
+            String name = part.getSubmittedFileName();
+            String extension = null;
+            int idx = name.lastIndexOf(".");
 
             if (idx > 0) {
-                f.extension = f.name.substring(idx + 1);
+                extension = name.substring(idx + 1);
             }
 
-            list.add(f);
+            list.add(new UploadedFile(contentType, contentSize, content, name, extension));
         }
     }
 

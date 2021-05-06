@@ -17,14 +17,56 @@ import java.io.InputStream;
  *
  * @author noear
  * @since 1.0
+ * @update noear 20210506 添加字段访问控制
  * */
 public class UploadedFile {
-    /**内容类型*/
-    public String contentType;
-    /**内容流*/
-    public InputStream content;
-    /**文件名（带扩展名）*/
-    public String name;
-    /**扩展名*/
-    public String extension;
+    /**
+     * 内容类型
+     * */
+    private String contentType;
+    /**
+     * 内容在小
+     * */
+    private long contentSize;
+    /**
+     * 内容流
+     * */
+    private InputStream content;
+    /**
+     * 文件名（带扩展名）
+     * */
+    private String name;
+    /**
+     * 扩展名
+     * */
+    private String extension;
+
+    public UploadedFile(String contentType, long contentSize, InputStream content, String name, String extension){
+        this.contentType = contentType;
+        this.contentSize = contentSize;
+        this.content = content;
+        this.name = name;
+        this.extension = extension;
+    }
+
+    public String contentType(){
+        return contentType;
+    }
+
+    public long contentSize(){
+        return contentSize;
+    }
+
+    public InputStream content(){
+        return content;
+    }
+
+    public String name(){
+        return name;
+    }
+
+    public String extension(){
+        return extension;
+    }
+
 }

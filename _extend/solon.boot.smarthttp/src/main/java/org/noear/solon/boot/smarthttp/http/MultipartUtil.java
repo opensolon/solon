@@ -32,17 +32,17 @@ class MultipartUtil {
             list = new ArrayList<>();
             context._fileMap.put(part.getName(), list);
 
-            UploadedFile f = new UploadedFile();
-            f.contentType = part.getHeaders().get("Content-Type");
-            f.content = read(part.getBody());
-            f.name = part.getFilename();
-            int idx = f.name.lastIndexOf(".");
+            String contentType = part.getHeaders().get("Content-Type");
+            ByteArrayInputStream content = read(part.getBody());
+            String name = part.getFilename();
+            String extension = null;
+            int idx = name.lastIndexOf(".");
 
             if (idx > 0) {
-                f.extension = f.name.substring(idx + 1);
+                extension = name.substring(idx + 1);
             }
 
-            list.add(f);
+            list.add(new UploadedFile(contentType, content.available(), content, name, extension));
         }
     }
 

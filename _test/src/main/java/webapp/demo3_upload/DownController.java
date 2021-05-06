@@ -17,10 +17,8 @@ import java.nio.charset.StandardCharsets;
 public class DownController {
     @Mapping("f1")
     public UploadedFile down() {
-        UploadedFile file = new UploadedFile();
-        file.contentType = "text/json";
-        file.name = "test.json";
-        file.content = new ByteArrayInputStream("{code:1}".getBytes(StandardCharsets.UTF_8));
+        ByteArrayInputStream stream = new ByteArrayInputStream("{code:1}".getBytes(StandardCharsets.UTF_8));
+        UploadedFile file = new UploadedFile("text/json", stream.available(), stream, "test.json", "json");
 
         return file;
     }

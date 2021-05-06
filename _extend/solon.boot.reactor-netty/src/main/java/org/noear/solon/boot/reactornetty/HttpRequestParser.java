@@ -77,16 +77,16 @@ class HttpRequestParser {
                         fileMap.put(p1.getName(), tmp);
                     }
 
-                    UploadedFile file = new UploadedFile();
-                    file.name = f1.getFilename();
-                    file.contentType = f1.getContentType();
-                    file.content = new FileInputStream(f1.getFile());
-                    int idx = file.name.lastIndexOf(".");
+                    String contentType = f1.getContentType();
+                    FileInputStream content = new FileInputStream(f1.getFile());
+                    String name = f1.getFilename();
+                    String extension = null;
+                    int idx = name.lastIndexOf(".");
                     if(idx>0){
-                        file.extension = file.name.substring(idx+1);
+                        extension = name.substring(idx+1);
                     }
 
-                    tmp.add(file);
+                    tmp.add(new UploadedFile(contentType, content.available(), content, name, extension));
                 }
             }
         }
