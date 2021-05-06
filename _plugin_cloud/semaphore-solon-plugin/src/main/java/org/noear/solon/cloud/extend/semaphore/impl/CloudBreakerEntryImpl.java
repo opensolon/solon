@@ -17,7 +17,7 @@ public class CloudBreakerEntryImpl extends BreakerEntrySim {
     public CloudBreakerEntryImpl(String breakerName, int permits) {
         this.breakerName = breakerName;
         this.thresholdValue = permits;
-        limiter = new Semaphore(permits);
+        this.limiter = new Semaphore(permits);
     }
 
     @Override
