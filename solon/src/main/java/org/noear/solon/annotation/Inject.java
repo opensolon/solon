@@ -48,4 +48,5 @@ import java.lang.annotation.*;
 @Documented
 public @interface Inject {
     String value() default "";
+    boolean required() default true;
 }
