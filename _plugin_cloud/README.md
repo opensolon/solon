@@ -16,6 +16,7 @@
 | | |
 | org.noear:guava-solon-plugin | guava 适配插件（支持Solon cloud 融断服务）|
 | org.noear:sentinel-solon-plugin | sentinel 适配插件（支持Solon cloud 融断服务）|
+| org.noear:semaphore-solon-plugin | semaphore 适配插件（支持Solon cloud 融断服务）|
 | | |
 | org.noear:aliyun-oss-solon-plugin | aliyun-oss 适配插件（支持Solon cloud 分布式文件服务）|
 | org.noear:aws-s3-solon-plugin | aws-s3 适配插件（支持Solon cloud 分布式文件服务）|
