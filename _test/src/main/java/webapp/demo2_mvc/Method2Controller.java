@@ -1,8 +1,6 @@
 package webapp.demo2_mvc;
 
-import org.noear.solon.annotation.Controller;
-import org.noear.solon.annotation.Mapping;
-import org.noear.solon.annotation.method.*;
+import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;
 
 @Mapping("/demo2/method2")

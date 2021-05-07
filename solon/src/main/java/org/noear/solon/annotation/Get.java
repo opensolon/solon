@@ -1,4 +1,4 @@
-package org.noear.solon.annotation.method;
+package org.noear.solon.annotation;
 
 import java.lang.annotation.*;
 
