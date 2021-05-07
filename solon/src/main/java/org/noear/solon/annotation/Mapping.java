@@ -41,6 +41,12 @@ public @interface Mapping {
      * 顺序位（before 或 after =true 时有效）
      * */
     int index() default 0;
+    /**
+     * 是否前置
+     * */
     boolean before() default false;
+    /**
+     * 是否后置
+     * */
     boolean after() default false;
 }

@@ -1,7 +1,7 @@
 package org.noear.solon.core.handle;
 
-import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
+import org.noear.solon.annotation.restful.*;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.util.PathUtil;
@@ -9,6 +9,10 @@ import org.noear.solon.ext.ConsumerEx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * 通用处理接口加载器（根据bean加载）
@@ -20,8 +24,8 @@ public class HandlerLoader extends HandlerAide {
     protected BeanWrap bw;
     protected Render bRender;
     protected Mapping bMapping;
-    protected String   bPath;
-    protected boolean  bRemoting;
+    protected String bPath;
+    protected boolean bRemoting;
 
     protected boolean allowMapping;
 
@@ -114,27 +118,36 @@ public class HandlerLoader extends HandlerAide {
 
         loadControllerAide();
 
-        MethodType[] m_method;
+        List<MethodType> m_method = new ArrayList<>();
         Mapping m_map;
         int m_index = 0;
 
         //只支持public函数为XAction
         for (Method method : bw.clz().getDeclaredMethods()) {
             m_map = method.getAnnotation(Mapping.class);
-
             m_index = 0;
 
             //构建path and method
             if (m_map != null) {
                 m_path = m_map.value();
-                m_method = m_map.method();
+
+                findMethodTypes(m_method, t -> method.getAnnotation(t) != null);
+                if (m_method.size() == 0) {
+                    //如果没有找到，则用Mapping上自带的
+                    m_method.addAll(Arrays.asList(m_map.method()));
+                }
                 m_index = m_map.index();
             } else {
                 m_path = method.getName();
+
+                //如果没有找到，则用Mapping上自带的；或默认
                 if (bMapping == null) {
-                    m_method = new MethodType[]{MethodType.HTTP};
+                    m_method.add(MethodType.HTTP);
                 } else {
-                    m_method = bMapping.method();
+                    findMethodTypes(m_method, t -> bw.clz().getAnnotation(t) != null);
+                    if (m_method.size() == 0) {
+                        m_method.addAll(Arrays.asList(bMapping.method()));
+                    }
                 }
             }
 
@@ -149,7 +162,7 @@ public class HandlerLoader extends HandlerAide {
                 for (MethodType m1 : m_method) {
                     if (m_map == null) {
                         slots.add(newPath, m1, action);
-                    }else{
+                    } else {
                         if ((m_map.after() || m_map.before())) {
                             if (m_map.after()) {
                                 slots.after(newPath, m1, m_index, action);
@@ -207,7 +220,7 @@ public class HandlerLoader extends HandlerAide {
      */
     protected Action createAction(BeanWrap bw, Method method, Mapping mp, String path, boolean remoting) {
         if (allowMapping) {
-            return new Action(bw, this,  method, mp, path, remoting, bRender);
+            return new Action(bw, this, method, mp, path, remoting, bRender);
         } else {
             return new Action(bw, this, method, null, path, remoting, bRender);
         }
@@ -227,6 +240,28 @@ public class HandlerLoader extends HandlerAide {
                     throw new RuntimeException(ex);
                 }
             }
+        }
+    }
+
+    private static void findMethodTypes(List<MethodType> list, Predicate<Class> checker) {
+        if (checker.test(Delete.class)) {
+            list.add(MethodType.DELETE);
+        }
+
+        if (checker.test(Get.class)) {
+            list.add(MethodType.GET);
+        }
+
+        if (checker.test(Patch.class)) {
+            list.add(MethodType.PATCH);
+        }
+
+        if (checker.test(Post.class)) {
+            list.add(MethodType.POST);
+        }
+
+        if (checker.test(Put.class)) {
+            list.add(MethodType.PUT);
         }
     }
 }
