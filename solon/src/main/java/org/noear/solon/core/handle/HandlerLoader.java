@@ -1,7 +1,7 @@
 package org.noear.solon.core.handle;
 
 import org.noear.solon.annotation.*;
-import org.noear.solon.annotation.restful.*;
+import org.noear.solon.annotation.method.*;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.util.PathUtil;

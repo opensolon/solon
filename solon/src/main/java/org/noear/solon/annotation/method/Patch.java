@@ -1,4 +1,4 @@
-package org.noear.solon.annotation.restful;
+package org.noear.solon.annotation.method;
 
 import java.lang.annotation.*;
 
@@ -9,5 +9,5 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Delete{
+public @interface Patch {
 }
