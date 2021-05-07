@@ -1065,6 +1065,7 @@
         <module>../_extend/solon.extend.validation</module>
         <module>../_extend/solon.extend.data</module>
         <module>../_extend/solon.extend.cors</module>
+        <module>../_extend/solon.extend.security</module>
 
 
         <module>../_extend/solon.extend.jetty.jsp</module>
