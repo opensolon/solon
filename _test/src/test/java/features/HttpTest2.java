@@ -2,6 +2,7 @@ package features;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.noear.solon.Utils;
 import org.noear.solon.test.HttpTestBase;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
@@ -27,6 +28,8 @@ public class HttpTest2 extends HttpTestBase {
 
     @Test
     public void test3() throws IOException {
-        assert path("/demo2/servlet/hello?name=noear").get().equals("Ok");
+        if (Utils.loadClass("javax.servlet.http.HttpServletRequest") != null) {
+            assert path("/demo2/servlet/hello?name=noear").get().equals("Ok");
+        }
     }
 }
