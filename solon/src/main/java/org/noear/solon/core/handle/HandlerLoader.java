@@ -118,7 +118,7 @@ public class HandlerLoader extends HandlerAide {
 
         loadControllerAide();
 
-        List<MethodType> m_method = new ArrayList<>();
+        List<MethodType> m_method;
         Mapping m_map;
         int m_index = 0;
 
@@ -126,6 +126,7 @@ public class HandlerLoader extends HandlerAide {
         for (Method method : bw.clz().getDeclaredMethods()) {
             m_map = method.getAnnotation(Mapping.class);
             m_index = 0;
+            m_method = new ArrayList<>();
 
             //构建path and method
             if (m_map != null) {
@@ -262,6 +263,10 @@ public class HandlerLoader extends HandlerAide {
 
         if (checker.test(Put.class)) {
             list.add(MethodType.PUT);
+        }
+
+        if (checker.test(Head.class)) {
+            list.add(MethodType.HEAD);
         }
     }
 }
