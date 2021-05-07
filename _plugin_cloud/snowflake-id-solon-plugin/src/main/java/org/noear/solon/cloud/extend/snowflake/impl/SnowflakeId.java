@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.extend.snowflake.impl;
 
 import org.noear.solon.Solon;
+import org.noear.solon.cloud.model.Instance;
 
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
@@ -13,7 +14,7 @@ import java.util.Random;
 public class SnowflakeId {
     /**
      * 默认起始时间 2020-01-01 00:00:00
-     * */
+     */
     private static final long START_TIME_DEF = 1577808000000L;
     private String dataBlock;
 
@@ -29,9 +30,9 @@ public class SnowflakeId {
     public SnowflakeId(String dataBlock, long startTime) {
         this.dataBlock = dataBlock;
 
-        if(startTime > 0) {
+        if (startTime > 0) {
             this.startTime = startTime;
-        }else{
+        } else {
             this.startTime = START_TIME_DEF;
         }
 
@@ -52,9 +53,9 @@ public class SnowflakeId {
         }
 
         //默认起始时间 2020-01-01 00:00:00
-        if(startTime > 0) {
+        if (startTime > 0) {
             this.startTime = startTime;
-        }else{
+        } else {
             this.startTime = START_TIME_DEF;
         }
 
@@ -189,8 +190,9 @@ public class SnowflakeId {
      */
     protected int getWorkId() {
         try {
-            return getHostId(Inet4Address.getLocalHost().getHostAddress(), workMaxNum);
-        } catch (UnknownHostException e) {
+            //ip:port
+            return getHostId(Instance.local().address(), workMaxNum);
+        } catch (Exception e) {
             return new Random().nextInt(workRandom);
         }
     }
@@ -199,6 +201,10 @@ public class SnowflakeId {
      * 根据 data block 取余，发生异常就获取 0到31之间的随机数
      */
     protected int getDataId() {
-        return getHostId(dataBlock, dataMaxNum);
+        try {
+            return getHostId(dataBlock, dataMaxNum);
+        } catch (Exception e) {
+            return new Random().nextInt(dataRandom);
+        }
     }
 }
