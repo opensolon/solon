@@ -69,7 +69,7 @@ class HttpRequestParser {
                 if(p1.getHttpDataType() == InterfaceHttpData.HttpDataType.FileUpload){
                     //文件
                     //
-                    FileUpload f1 = (FileUpload) p1;
+                    FileUpload f0 = (FileUpload) p1;
 
                     List<UploadedFile> tmp = fileMap.get(p1.getName());
                     if(tmp == null){
@@ -77,16 +77,18 @@ class HttpRequestParser {
                         fileMap.put(p1.getName(), tmp);
                     }
 
-                    String contentType = f1.getContentType();
-                    FileInputStream content = new FileInputStream(f1.getFile());
-                    String name = f1.getFilename();
-                    String extension = null;
-                    int idx = name.lastIndexOf(".");
+                    UploadedFile f1 = new UploadedFile();
+                    f1.contentType = f0.getContentType();
+                    f1.content = new FileInputStream(f0.getFile());
+                    f1.contentSize = f1.content.available();
+                    f1.name = f0.getFilename();
+
+                    int idx = f1.name.lastIndexOf(".");
                     if(idx>0){
-                        extension = name.substring(idx+1);
+                        f1.extension = f1.name.substring(idx+1);
                     }
 
-                    tmp.add(new UploadedFile(contentType, content.available(), content, name, extension));
+                    tmp.add(f1);
                 }
             }
         }

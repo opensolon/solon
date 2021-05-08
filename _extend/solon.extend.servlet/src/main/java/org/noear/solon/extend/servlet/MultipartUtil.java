@@ -40,20 +40,18 @@ class MultipartUtil {
             list = new ArrayList<>();
             context._fileMap.put(part.getName(), list);
 
+            UploadedFile f1 = new UploadedFile();
+            f1.contentType = part.getContentType();
+            f1.contentSize = part.getSize();
+            f1.content = part.getInputStream(); //可以转成 ByteArrayInputStream
 
-            String contentType = part.getContentType();
-            long contentSize = part.getSize();
-            InputStream content = part.getInputStream(); //可以转成 ByteArrayInputStream
-
-            String name = part.getSubmittedFileName();
-            String extension = null;
-            int idx = name.lastIndexOf(".");
-
+            f1.name = part.getSubmittedFileName();
+            int idx = f1.name.lastIndexOf(".");
             if (idx > 0) {
-                extension = name.substring(idx + 1);
+                f1.extension = f1.name.substring(idx + 1);
             }
 
-            list.add(new UploadedFile(contentType, contentSize, content, name, extension));
+            list.add(f1);
         }
     }
 

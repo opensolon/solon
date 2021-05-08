@@ -23,25 +23,29 @@ import java.io.*;
  * */
 public class UploadedFile {
     /**
-     * 内容类型
+     * 内容类型（有些地方会动态构建，所以不能只读）
      */
-    public final String contentType;
+    public String contentType;
     /**
      * 内容大小
      */
-    public final long contentSize;
+    public long contentSize;
     /**
      * 内容流
      */
-    public final InputStream content;
+    public InputStream content;
     /**
      * 文件名（带扩展名）
      */
-    public final String name;
+    public String name;
     /**
      * 扩展名
      */
-    public final String extension;
+    public String extension;
+
+    public UploadedFile(){
+
+    }
 
     public UploadedFile(String contentType, long contentSize, InputStream content, String name, String extension) {
         this.contentType = contentType;
