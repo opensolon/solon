@@ -2,6 +2,8 @@ package org.noear.solon.core.handle;
 
 import org.noear.solon.annotation.Mapping;
 
+import java.util.List;
+
 /**
  * 通用处理接口接收槽
  *
@@ -22,8 +24,8 @@ public interface HandlerSlots {
      * */
     void add(String expr, MethodType method, Handler handler);
 
-    default void add(Mapping mapping, Handler handler){
-        for (MethodType m1 : mapping.method()) {
+    default void add(Mapping mapping, List<MethodType> methodTypes, Handler handler){
+        for (MethodType m1 : methodTypes) {
             if (mapping.after() || mapping.before()) {
                 if (mapping.after()) {
                     after(mapping.value(), m1, mapping.index(), handler);

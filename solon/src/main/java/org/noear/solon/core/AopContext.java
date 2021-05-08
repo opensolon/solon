@@ -5,9 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
-import org.noear.solon.core.handle.Filter;
-import org.noear.solon.core.handle.Handler;
-import org.noear.solon.core.handle.HandlerLoader;
+import org.noear.solon.core.handle.*;
 import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.wrap.*;
 import org.noear.solon.ext.BiConsumerEx;
@@ -141,7 +139,11 @@ public class AopContext extends BeanContainer {
             Mapping mapping = clz.getAnnotation(Mapping.class);
             if (mapping != null) {
                 Handler handler = bw.raw();
-                Solon.global().add(mapping, handler);
+                List<MethodType> v0 = MethodTypeUtil.findAndFill(new ArrayList<>(), t -> bw.annotationGet(t) != null);
+                if (v0.size() == 0) {
+                    v0 = Arrays.asList(mapping.method());
+                }
+                Solon.global().add(mapping, v0, handler);
             }
         }
 

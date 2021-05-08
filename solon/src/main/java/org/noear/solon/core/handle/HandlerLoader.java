@@ -101,7 +101,12 @@ public class HandlerLoader extends HandlerAide {
         }
 
         Handler handler = bw.raw();
-        slots.add(bMapping, handler);
+        List<MethodType> v0 = MethodTypeUtil.findAndFill(new ArrayList<>(), t -> bw.annotationGet(t) != null);
+        if (v0.size() == 0) {
+            v0 = Arrays.asList(bMapping.method());
+        }
+
+        slots.add(bMapping, v0, handler);
     }
 
 
@@ -127,26 +132,32 @@ public class HandlerLoader extends HandlerAide {
             m_index = 0;
             m_method = new ArrayList<>();
 
+            //获取 action 的methodTypes
+            MethodTypeUtil.findAndFill(m_method, t -> method.getAnnotation(t) != null);
+
             //构建path and method
             if (m_map != null) {
                 m_path = m_map.value();
 
-                findMethodTypes(m_method, t -> method.getAnnotation(t) != null);
                 if (m_method.size() == 0) {
                     //如果没有找到，则用Mapping上自带的
-                    m_method.addAll(Arrays.asList(m_map.method()));
+                    m_method = Arrays.asList(m_map.method());
                 }
                 m_index = m_map.index();
             } else {
                 m_path = method.getName();
 
-                //如果没有找到，则用Mapping上自带的；或默认
-                if (bMapping == null) {
-                    m_method.add(MethodType.HTTP);
-                } else {
-                    findMethodTypes(m_method, t -> bw.clz().getAnnotation(t) != null);
-                    if (m_method.size() == 0) {
-                        m_method.addAll(Arrays.asList(bMapping.method()));
+                if (m_method.size() == 0) {
+                    //获取 controller 的methodTypes
+                    MethodTypeUtil.findAndFill(m_method, t -> bw.clz().getAnnotation(t) != null);
+                }
+
+                if (m_method.size() == 0) {
+                    //如果没有找到，则用Mapping上自带的；或默认
+                    if (bMapping == null) {
+                        m_method.add(MethodType.HTTP);
+                    } else {
+                        m_method = Arrays.asList(bMapping.method());
                     }
                 }
             }
@@ -240,32 +251,6 @@ public class HandlerLoader extends HandlerAide {
                     throw new RuntimeException(ex);
                 }
             }
-        }
-    }
-
-    private static void findMethodTypes(List<MethodType> list, Predicate<Class> checker) {
-        if (checker.test(Delete.class)) {
-            list.add(MethodType.DELETE);
-        }
-
-        if (checker.test(Get.class)) {
-            list.add(MethodType.GET);
-        }
-
-        if (checker.test(Patch.class)) {
-            list.add(MethodType.PATCH);
-        }
-
-        if (checker.test(Post.class)) {
-            list.add(MethodType.POST);
-        }
-
-        if (checker.test(Put.class)) {
-            list.add(MethodType.PUT);
-        }
-
-        if (checker.test(Head.class)) {
-            list.add(MethodType.HEAD);
         }
     }
 }
