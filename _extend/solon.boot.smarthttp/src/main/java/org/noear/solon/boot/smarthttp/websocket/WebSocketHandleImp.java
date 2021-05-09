@@ -15,7 +15,7 @@ import java.nio.ByteBuffer;
 public class WebSocketHandleImp extends WebSocketDefaultHandle {
 
     @Override
-    public void onHandShark(WebSocketRequest request, WebSocketResponse response) {
+    public void onHandShake(WebSocketRequest request, WebSocketResponse response) {
         ListenerProxy.getGlobal().onOpen(_SocketServerSession.get(request, response));
     }
 

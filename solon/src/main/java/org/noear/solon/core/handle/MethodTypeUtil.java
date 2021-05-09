@@ -35,6 +35,18 @@ public class MethodTypeUtil {
             list.add(MethodType.HEAD);
         }
 
+        if (checker.test(Http.class)) {
+            list.add(MethodType.HTTP);
+        }
+
+        if (checker.test(Socket.class)) {
+            list.add(MethodType.SOCKET);
+        }
+
+        if (checker.test(WebSocket.class)) {
+            list.add(MethodType.WEBSOCKET);
+        }
+
         return list;
     }
 }

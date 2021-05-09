@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-plugin-parent</artifactId>
-    <version>1.3.34</version>
+    <version>1.3.35</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -231,7 +231,9 @@
 
         <module>../_plugin/quartz-solon-plugin</module>
 
-        <module>../_plugin/shiro-solon-plugin</module>
+<!--        <module>../_plugin/shiro-solon-plugin</module>-->
+
+        <module>../_plugin/sureness-solon-plugin</module>
 
         <!-- //////////////////////////////////////////////////// -->
         <module>../_plugin_cloud/aliyun-oss-solon-plugin</module>
