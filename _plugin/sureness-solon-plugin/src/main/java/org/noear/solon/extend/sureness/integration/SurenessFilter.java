@@ -9,6 +9,7 @@ import org.noear.solon.annotation.Component;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
+import org.noear.solon.core.handle.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,7 +75,6 @@ public class SurenessFilter implements Filter {
         if (headers != null) {
             headers.forEach(ctx::headerAdd);
         }
-
-        ctx.render(Collections.singletonMap("message", message));
+        ctx.render(Result.failure(message));
     }
 }
