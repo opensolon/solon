@@ -1,9 +1,8 @@
 
 ### 插件
 
-| 插件 | 说明 |
+| Solon Cloud 插件 | 说明 |
 | --- | --- |
-| 外部框架适配:: | 说明 |
 | org.noear:consul-solon-plugin | consul 适配插件（支持Solon cloud 配置服务、注册与发现服务） |
 | org.noear:nacos-solon-plugin | nacos 适配插件（支持Solon cloud 配置服务、注册与发现服务） |
 | org.noear:zookeeper-solon-plugin | zookeeper 适配插件（支持Solon cloud 配置服务、注册与发现服务） |
