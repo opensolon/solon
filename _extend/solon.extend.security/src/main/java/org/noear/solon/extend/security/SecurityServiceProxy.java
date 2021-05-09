@@ -1,6 +1,7 @@
 package org.noear.solon.extend.security;
 
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.extend.security.annotation.Logical;
 
 /**
@@ -9,8 +10,9 @@ import org.noear.solon.extend.security.annotation.Logical;
  */
 public class SecurityServiceProxy implements SecurityService {
     private static SecurityService instance;
+
     public static SecurityService getInstance() {
-        if(instance == null){
+        if (instance == null) {
             instance = new SecurityServiceProxy();
         }
         return instance;
@@ -41,8 +43,8 @@ public class SecurityServiceProxy implements SecurityService {
     }
 
     @Override
-    public boolean verifyPath(String path) {
-        return real.verifyPath(path);
+    public boolean verifyPath(String path, MethodType methodType) {
+        return real.verifyPath(path, methodType);
     }
 
     @Override

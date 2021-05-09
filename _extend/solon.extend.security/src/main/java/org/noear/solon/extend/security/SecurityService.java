@@ -1,5 +1,6 @@
 package org.noear.solon.extend.security;
 
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.extend.security.annotation.Logical;
 
 /**
@@ -25,7 +26,7 @@ public interface SecurityService {
     /**
      * 验证路径（一般使用路径验证）
      * */
-    boolean verifyPath(String path);
+    boolean verifyPath(String path, MethodType methodType);
 
     /**
      * 验证权限（有特殊情况用权限验证）
