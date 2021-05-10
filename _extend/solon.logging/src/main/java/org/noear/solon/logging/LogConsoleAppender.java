@@ -10,9 +10,9 @@ import org.noear.solon.logging.event.LogEvent;
  * @since 1.3
  */
 public class LogConsoleAppender extends LogAbstractAppender {
-
-    public LogConsoleAppender(){
-        super("console");
+    public LogConsoleAppender() {
+        setName("console");
+        start();
     }
 
     @Override

@@ -9,10 +9,9 @@ import org.noear.solon.logging.event.LogEvent;
  * @since 1.3
  */
 public class LogFileAppender extends LogAbstractAppender {
-
-    @Override
-    public String getName() {
-        return "file";
+    public LogFileAppender() {
+        setName("file");
+        start();
     }
 
     @Override
