@@ -1,28 +1,18 @@
 package org.noear.solon.logging;
 
 import org.noear.snack.ONode;
-import org.noear.solon.Solon;
 import org.noear.solon.logging.event.Level;
-import org.noear.solon.logging.event.LogEvent;
 
 /**
+ * console appender
+ *
  * @author noear
  * @since 1.3
  */
-public class LogConsoleAppender extends LogAbstractAppender {
-    public LogConsoleAppender() {
-        setName("console");
-        start();
-    }
-
+public class LogConsoleAppender extends AppenderSimple {
     @Override
     public Level getDefaultLevel() {
         return Level.TRACE;
-    }
-
-    @Override
-    protected void appendDo(LogEvent logEvent) {
-        super.appendDo(logEvent);
     }
 
     @Override

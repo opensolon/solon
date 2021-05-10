@@ -1,7 +1,9 @@
-package org.noear.solon.logging.event;
+package org.noear.solon.logging;
 
 import org.noear.solon.core.util.PrintUtil;
-import org.noear.solon.logging.LogOptions;
+import org.noear.solon.logging.event.Appender;
+import org.noear.solon.logging.event.Level;
+import org.noear.solon.logging.event.LogEvent;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -12,24 +14,8 @@ import java.util.Date;
  * @since 1.3
  */
 public class AppenderSimple implements Appender {
-    protected static Appender instance = new AppenderSimple();
-
-    @Override
-    public String getName() {
-        return "simple";
-    }
-
     @Override
     public void append(LogEvent logEvent) {
-        if (LogOptions.getLevel().code > logEvent.getLevel().code) {
-            return;
-        }
-
-        appendDo(logEvent);
-    }
-
-    protected void appendDo(LogEvent logEvent) {
-
         LocalDateTime dateTime = LocalDateTime.ofInstant(new Date(logEvent.getTimeStamp()).toInstant(), ZoneId.systemDefault());
 
         StringBuilder buf = new StringBuilder();
@@ -44,9 +30,9 @@ public class AppenderSimple implements Appender {
         }
 
         if (logEvent.getInitClass() != null) {
-            buf.append(" ").append(logEvent.getInitClass().getTypeName()).append("#").append(getName());
+            buf.append(" ").append(logEvent.getInitClass().getTypeName());
         } else {
-            buf.append(" ").append(logEvent.getLoggerName()).append("#").append(getName());
+            buf.append(" ").append(logEvent.getLoggerName());
         }
 
         buf.append(":\r\n");

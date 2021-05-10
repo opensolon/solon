@@ -29,8 +29,16 @@ public class XPluginImp implements Plugin {
 
                 if (key.endsWith(".class")) {
                     Appender appender = Utils.newInstance(val);
+
                     if (appender != null) {
-                        AppenderManager.getInstance().register(appender);
+                        String name = key.substring(0, key.length() - 6);
+                        int idx = name.lastIndexOf(".");
+
+                        if (idx > 0) {
+                            name = name.substring(idx);
+
+                            AppenderManager.getInstance().register(name, appender);
+                        }
                     }
                 }
             });

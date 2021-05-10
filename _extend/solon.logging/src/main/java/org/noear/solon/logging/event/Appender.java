@@ -1,5 +1,7 @@
 package org.noear.solon.logging.event;
 
+import org.noear.solon.logging.LogOptions;
+
 /**
  * 日志添加器
  *
@@ -7,7 +9,9 @@ package org.noear.solon.logging.event;
  * @since 1.0
  */
 public interface Appender {
-    String getName();
+    default Level getDefaultLevel() {
+        return LogOptions.getLevel();
+    }
 
     void append(LogEvent logEvent);
 }

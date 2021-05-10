@@ -62,7 +62,7 @@ public class XPluginImp implements Plugin {
 
         Aop.context().beanInjectorAdd(CloudConfig.class, CloudBeanInjector.instance);
 
-        if(CloudClient.discovery() == null){
+        if (CloudClient.discovery() == null) {
             //如果没有发现服力，注册本地发现服务
             CloudManager.register(new CloudDiscoveryServiceLocalImpl());
         }
@@ -75,11 +75,11 @@ public class XPluginImp implements Plugin {
             Bridge.upstreamFactorySet(CloudLoadBalanceFactory.instance);
         }
 
-        if(CloudClient.log() != null){
-            AppenderManager.getInstance().register(new CloudLogAppender());
+        if (CloudClient.log() != null) {
+            AppenderManager.getInstance().register("cloud", new CloudLogAppender());
         }
 
-        if(CloudClient.trace() == null){
+        if (CloudClient.trace() == null) {
             CloudManager.register(new CloudTraceServiceImpl());
         }
     }

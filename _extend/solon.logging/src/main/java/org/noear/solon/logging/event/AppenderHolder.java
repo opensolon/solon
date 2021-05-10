@@ -1,10 +1,7 @@
-package org.noear.solon.logging;
+package org.noear.solon.logging.event;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.util.PrintUtil;
-import org.noear.solon.logging.event.AppenderSimple;
-import org.noear.solon.logging.event.Level;
-import org.noear.solon.logging.event.LogEvent;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,15 +10,18 @@ import java.util.Map;
  * @author noear
  * @since 1.3
  */
-public abstract class LogAbstractAppender extends AppenderSimple implements LogAppender {
+public class AppenderHolder {
+    Appender real;
 
-    @Override
-    public void start() {
+    public AppenderHolder(String name, Appender real) {
+        this.real = real;
+        this.name = name;
+
         if (Solon.global() != null) {
             String levelStr = Solon.cfg().get("solon.logging.appender." + getName() + ".level");
 
             //设置级别
-            setLevel(Level.of(levelStr, getDefaultLevel()));
+            setLevel(Level.of(levelStr, real.getDefaultLevel()));
 
             //是否启用
             enable = Solon.cfg().getBool("solon.logging.appender." + getName() + ".enable", true);
@@ -33,46 +33,33 @@ public abstract class LogAbstractAppender extends AppenderSimple implements LogA
             //打印无信息
             PrintUtil.info("Logging", getName() + " " + meta.toString());
         } else {
-            setLevel(getDefaultLevel());
+            setLevel(real.getDefaultLevel());
         }
     }
 
     private String name;
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
     private boolean enable = true;
-
-    @Override
     public boolean getEnable() {
         return enable;
     }
 
     private Level level;
-
-    @Override
     public Level getLevel() {
         return level;
     }
-
-    @Override
     public void setLevel(Level level) {
         this.level = level;
     }
 
-    @Override
     public void append(LogEvent logEvent) {
         if (enable == false || this.level.code > logEvent.getLevel().code) {
             return;
         }
 
-        appendDo(logEvent);
+        real.append(logEvent);
     }
 }

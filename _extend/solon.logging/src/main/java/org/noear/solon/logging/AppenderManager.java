@@ -2,6 +2,7 @@ package org.noear.solon.logging;
 
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.logging.event.Appender;
+import org.noear.solon.logging.event.AppenderHolder;
 import org.noear.solon.logging.event.LogEvent;
 
 import java.util.LinkedHashMap;
@@ -26,37 +27,27 @@ public class AppenderManager implements Appender {
         return instance;
     }
 
-    protected Map<String,Appender> appenderMap = new LinkedHashMap<>();
+    protected Map<String, AppenderHolder> appenderMap = new LinkedHashMap<>();
 
     /**
      * 注册时，append 可能会出异常
-     * */
-    public void register(Appender appender) {
-        register(appender.getName(), appender);
-    }
-
+     */
     public void register(String name, Appender appender) {
-        appenderMap.putIfAbsent(name, appender);
+        appenderMap.putIfAbsent(name, new AppenderHolder(name, appender));
 
-        PrintUtil.info("Logging", "LogAppender registered from the " + appender.getClass().getTypeName() + "#" + appender.getName());
+        PrintUtil.info("Logging", "LogAppender registered from the " + appender.getClass().getTypeName() + "#" + name);
     }
 
     private AppenderManager() {
-        register(new LogConsoleAppender());
-    }
-
-
-    @Override
-    public String getName() {
-        return "proxy";
+        register("console", new LogConsoleAppender());
     }
 
     /**
      * 添加时，register 可能会出异常
-     * */
+     */
     @Override
     public void append(LogEvent logEvent) {
-        for (Appender appender : appenderMap.values()) {
+        for (AppenderHolder appender : appenderMap.values()) {
             appender.append(logEvent);
         }
     }
