@@ -33,6 +33,11 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>solon.extend.javax.validation</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>nami</artifactId>
         </dependency>
         <dependency>
@@ -317,7 +322,8 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.14.4</version>
+            <version>1.18.20</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
