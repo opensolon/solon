@@ -35,7 +35,7 @@ public class AppenderSimple implements Appender {
             buf.append(" ").append(logEvent.getLoggerName());
         }
 
-        buf.append(":\r\n");
+        buf.append(": ");
 
         appendTitleDo(buf.toString(), logEvent.getLevel());
         appendContentDo(logEvent.getContent());
@@ -44,23 +44,23 @@ public class AppenderSimple implements Appender {
     protected void appendTitleDo(String title, Level level) {
         switch (level) {
             case ERROR: {
-                PrintUtil.red(title);
+                PrintUtil.redln(title);
                 break;
             }
             case WARN: {
-                PrintUtil.yellow(title);
+                PrintUtil.yellowln(title);
                 break;
             }
             case DEBUG: {
-                PrintUtil.blue(title);
+                PrintUtil.blueln(title);
                 break;
             }
             case TRACE: {
-                PrintUtil.purple(title);
+                PrintUtil.purpleln(title);
                 break;
             }
             default: {
-                PrintUtil.black(title);
+                PrintUtil.blackln(title);
                 break;
             }
         }

@@ -46,6 +46,11 @@ public class PrintUtil {
         System.out.print(ANSI_RESET);
     }
 
+    public static void purpleln(String txt) {
+        System.out.println(ANSI_PURPLE + txt);
+        System.out.print(ANSI_RESET);
+    }
+
     public static void yellowln(Object txt) {
         System.out.println(ANSI_YELLOW + txt);
         System.out.print(ANSI_RESET);

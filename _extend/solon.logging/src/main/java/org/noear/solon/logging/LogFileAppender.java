@@ -16,6 +16,11 @@ public class LogFileAppender extends AppenderSimple {
     }
 
     @Override
+    protected void appendTitleDo(String title, Level level) {
+        super.appendTitleDo(title, level);
+    }
+
+    @Override
     protected void appendContentDo(Object content) {
         synchronized (System.out) {
             if (content instanceof String) {
