@@ -14,14 +14,14 @@ import java.io.PrintStream;
  * @author noear
  * @since 1.3
  */
-public class LogPrintAppender extends AppenderSimple {
+public class LogPrintStreamAppender extends AppenderSimple {
     protected PrintStream out;
 
-    public LogPrintAppender() {
+    public LogPrintStreamAppender() {
         out = System.out;
     }
 
-    public LogPrintAppender(PrintStream stream) {
+    public LogPrintStreamAppender(PrintStream stream) {
         out = stream;
     }
 
