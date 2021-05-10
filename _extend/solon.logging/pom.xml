@@ -30,6 +30,13 @@
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.ver}</version>
         </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>
