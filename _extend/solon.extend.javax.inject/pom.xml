@@ -10,16 +10,22 @@
         <version>1.3.36</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
-
-    <artifactId>solon.extend.schedule</artifactId>
+    
+    <artifactId>solon.extend.javax.inject</artifactId>
     <packaging>jar</packaging>
-
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
+        </dependency>
     </dependencies>
+
 
 </project>
