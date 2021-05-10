@@ -29,7 +29,7 @@ solon.cloud.local:
 
 solon.logging.appender:
   test:
-    class: webapp.demox_mlog.TestAppender
+    class: webapp.demox_log_breaker.TestAppender
     level: TRACE
 
 solon.socketd:
