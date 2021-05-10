@@ -20,6 +20,9 @@ class AppenderHolder {
         this.real = real;
         this.name = name;
 
+        real.setName(name);
+        real.start();
+
         if (Solon.global() != null) {
             String levelStr = Solon.cfg().get("solon.logging.appender." + getName() + ".level");
 

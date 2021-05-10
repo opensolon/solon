@@ -1,7 +1,7 @@
 package org.noear.solon.cloud.impl;
 
 import org.noear.solon.cloud.CloudClient;
-import org.noear.solon.logging.event.Appender;
+import org.noear.solon.logging.event.AppenderBase;
 import org.noear.solon.logging.event.Level;
 import org.noear.solon.logging.event.LogEvent;
 
@@ -10,7 +10,7 @@ import org.noear.solon.logging.event.LogEvent;
  *
  * @author noear 2021/2/23 created
  */
-public class CloudLogAppender implements Appender {
+public class CloudLogAppender extends AppenderBase {
     @Override
     public Level getDefaultLevel() {
         return Level.INFO;

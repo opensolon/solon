@@ -1,6 +1,6 @@
 package org.noear.solon.logging.appender;
 
-import org.noear.solon.logging.event.Appender;
+import org.noear.solon.logging.event.AppenderBase;
 import org.noear.solon.logging.event.Level;
 import org.noear.solon.logging.event.LogEvent;
 
@@ -12,7 +12,7 @@ import java.util.Date;
  * @author noear
  * @since 1.3
  */
-public class AppenderSimple implements Appender {
+public class AppenderSimple extends AppenderBase {
     @Override
     public void append(LogEvent logEvent) {
         LocalDateTime dateTime = LocalDateTime.ofInstant(new Date(logEvent.getTimeStamp()).toInstant(), ZoneId.systemDefault());
@@ -34,6 +34,7 @@ public class AppenderSimple implements Appender {
             buf.append(" ").append(logEvent.getLoggerName());
         }
 
+        buf.append("#").append(getName());
         buf.append(": ");
 
         appendDo(logEvent.getLevel(), buf.toString(), logEvent.getContent());

@@ -12,7 +12,7 @@ import java.util.Map;
  * @author noear
  * @since 1.3
  */
-public class AppenderManager implements Appender {
+public class AppenderManager {
     private static AppenderManager instance;
 
     public static AppenderManager getInstance() {
@@ -45,7 +45,6 @@ public class AppenderManager implements Appender {
     /**
      * 添加时，register 可能会出异常
      */
-    @Override
     public void append(LogEvent logEvent) {
         for (AppenderHolder appender : appenderMap.values()) {
             appender.append(logEvent);
