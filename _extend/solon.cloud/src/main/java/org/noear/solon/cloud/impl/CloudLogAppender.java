@@ -9,9 +9,8 @@ import org.noear.solon.logging.event.LogEvent;
  * @author noear 2021/2/23 created
  */
 public class CloudLogAppender extends LogAbstractAppender {
-    @Override
-    public String getName() {
-        return "cloud";
+    public CloudLogAppender(){
+        super("cloud");
     }
 
     @Override

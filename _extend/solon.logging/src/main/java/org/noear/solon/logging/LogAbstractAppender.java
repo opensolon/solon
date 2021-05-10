@@ -14,7 +14,9 @@ import java.util.Map;
  * @since 1.3
  */
 public abstract class LogAbstractAppender extends AppenderSimple implements LogAppender {
-    public LogAbstractAppender() {
+    public LogAbstractAppender(String name) {
+        this.name = name;
+
         if (Solon.global() != null) {
             String levelStr = Solon.cfg().get("solon.logging.appender." + getName() + ".level");
 
@@ -33,6 +35,12 @@ public abstract class LogAbstractAppender extends AppenderSimple implements LogA
         } else {
             setLevel(getDefaultLevel());
         }
+    }
+
+    private String name;
+    @Override
+    public String getName() {
+        return name;
     }
 
     private boolean enable = true;

@@ -11,9 +11,8 @@ import org.noear.solon.logging.event.LogEvent;
  */
 public class LogConsoleAppender extends LogAbstractAppender {
 
-    @Override
-    public String getName() {
-        return "console";
+    public LogConsoleAppender(){
+        super("console");
     }
 
     @Override
