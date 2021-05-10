@@ -15,16 +15,24 @@ import java.util.Map;
  */
 public abstract class LogAbstractAppender extends AppenderSimple implements LogAppender {
     public LogAbstractAppender() {
-        String levelStr = Solon.cfg().get("solon.logging.appender." + getName() + ".level");
-        setLevel(Level.of(levelStr, getDefaultLevel()));
+        if (Solon.global() != null) {
+            String levelStr = Solon.cfg().get("solon.logging.appender." + getName() + ".level");
 
-        enable = Solon.cfg().getBool("solon.logging.appender." + getName() + ".enable", true);
+            //设置级别
+            setLevel(Level.of(levelStr, getDefaultLevel()));
 
-        Map<String, Object> meta = new LinkedHashMap();
-        meta.put("level", getLevel().name());
-        meta.put("enable", enable);
+            //是否启用
+            enable = Solon.cfg().getBool("solon.logging.appender." + getName() + ".enable", true);
 
-        PrintUtil.info("Logging", getName() + " " + meta.toString());
+            Map<String, Object> meta = new LinkedHashMap();
+            meta.put("level", getLevel().name());
+            meta.put("enable", enable);
+
+            //打印无信息
+            PrintUtil.info("Logging", getName() + " " + meta.toString());
+        } else {
+            setLevel(getDefaultLevel());
+        }
     }
 
     private boolean enable = true;

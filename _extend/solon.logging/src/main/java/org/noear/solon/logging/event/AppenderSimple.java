@@ -8,7 +8,8 @@ import java.time.ZoneId;
 import java.util.Date;
 
 /**
- * @author noear 2021/2/21 created
+ * @author noear
+ * @since 1.3
  */
 public class AppenderSimple implements Appender {
     protected static Appender instance = new AppenderSimple();
@@ -50,30 +51,33 @@ public class AppenderSimple implements Appender {
 
         buf.append(":\r\n");
 
-        switch (logEvent.getLevel()) {
+        appendTitleDo(buf.toString(), logEvent.getLevel());
+        appendContentDo(logEvent.getContent());
+    }
+
+    protected void appendTitleDo(String title, Level level) {
+        switch (level) {
             case ERROR: {
-                PrintUtil.red(buf.toString());
+                PrintUtil.red(title);
                 break;
             }
             case WARN: {
-                PrintUtil.yellow(buf.toString());
+                PrintUtil.yellow(title);
                 break;
             }
             case DEBUG: {
-                PrintUtil.blue(buf.toString());
+                PrintUtil.blue(title);
                 break;
             }
-            case TRACE:{
-                PrintUtil.purple(buf.toString());
+            case TRACE: {
+                PrintUtil.purple(title);
                 break;
             }
             default: {
-                PrintUtil.black(buf.toString());
+                PrintUtil.black(title);
                 break;
             }
         }
-
-        appendContentDo(logEvent.getContent());
     }
 
     protected void appendContentDo(Object content) {
