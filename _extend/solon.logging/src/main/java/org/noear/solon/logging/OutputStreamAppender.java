@@ -5,6 +5,7 @@ import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.logging.event.Level;
 import org.noear.solon.logging.event.LogEvent;
 
+import java.io.OutputStream;
 import java.io.PrintStream;
 
 
@@ -14,25 +15,20 @@ import java.io.PrintStream;
  * @author noear
  * @since 1.3
  */
-public class LogPrintStreamAppender extends AppenderSimple {
+public abstract class OutputStreamAppender extends AppenderSimple {
     protected PrintStream out;
 
-    public LogPrintStreamAppender() {
-        out = System.out;
-    }
-
-    public LogPrintStreamAppender(PrintStream stream) {
-        out = stream;
-    }
-
-    @Override
-    public Level getDefaultLevel() {
-        return Level.TRACE;
+    public OutputStreamAppender(OutputStream stream) {
+        if (stream instanceof PrintStream) {
+            out = (PrintStream) stream;
+        } else {
+            out = new PrintStream(stream, true);
+        }
     }
 
     @Override
     public void append(LogEvent logEvent) {
-        if(out == null){
+        if (out == null) {
             return;
         }
 
@@ -45,11 +41,21 @@ public class LogPrintStreamAppender extends AppenderSimple {
             //print title
             //
             switch (level) {
-                case ERROR: redln(title); break;
-                case WARN: yellowln(title); break;
-                case DEBUG:  blueln(title); break;
-                case TRACE: purpleln(title); break;
-                default:blackln(title); break;
+                case ERROR:
+                    redln(title);
+                    break;
+                case WARN:
+                    yellowln(title);
+                    break;
+                case DEBUG:
+                    blueln(title);
+                    break;
+                case TRACE:
+                    purpleln(title);
+                    break;
+                default:
+                    blackln(title);
+                    break;
             }
 
             //print content
