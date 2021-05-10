@@ -32,9 +32,13 @@ public class AppenderManager implements Appender {
      * 注册时，append 可能会出异常
      * */
     public void register(Appender appender) {
-        appenderMap.putIfAbsent(appender.getName(), appender);
+        register(appender.getName(), appender);
+    }
 
-        PrintUtil.info("Logging","LogAppender registered from the " + appender.getClass().getTypeName() + "#" + appender.getName());
+    public void register(String name, Appender appender) {
+        appenderMap.putIfAbsent(name, appender);
+
+        PrintUtil.info("Logging", "LogAppender registered from the " + appender.getClass().getTypeName() + "#" + appender.getName());
     }
 
     private AppenderManager() {
