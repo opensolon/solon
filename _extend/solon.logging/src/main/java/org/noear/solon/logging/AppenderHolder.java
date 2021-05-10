@@ -1,7 +1,10 @@
-package org.noear.solon.logging.event;
+package org.noear.solon.logging;
 
 import org.noear.solon.Solon;
 import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.logging.event.Appender;
+import org.noear.solon.logging.event.Level;
+import org.noear.solon.logging.event.LogEvent;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -10,7 +13,7 @@ import java.util.Map;
  * @author noear
  * @since 1.3
  */
-public class AppenderHolder {
+class AppenderHolder {
     Appender real;
 
     public AppenderHolder(String name, Appender real) {
