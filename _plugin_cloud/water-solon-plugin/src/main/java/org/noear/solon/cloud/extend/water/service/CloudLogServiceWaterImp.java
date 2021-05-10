@@ -67,6 +67,10 @@ public class CloudLogServiceWaterImp implements CloudLogService {
                 log.tag3 = logEvent.getInitClass().getSimpleName();
             }
             log.class_name = logEvent.getInitClass().getCanonicalName();
+        }else{
+            if(logEvent.getLoggerName().contains(".")){
+                log.class_name = logEvent.getLoggerName();
+            }
         }
 
         log.trace_id = WaterClient.waterTraceId();
