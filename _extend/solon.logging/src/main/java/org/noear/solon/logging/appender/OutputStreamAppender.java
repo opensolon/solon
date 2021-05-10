@@ -1,4 +1,4 @@
-package org.noear.solon.logging;
+package org.noear.solon.logging.appender;
 
 import org.noear.snack.ONode;
 import org.noear.solon.core.util.PrintUtil;

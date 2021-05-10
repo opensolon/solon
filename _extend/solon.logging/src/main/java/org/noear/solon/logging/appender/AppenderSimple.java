@@ -1,4 +1,4 @@
-package org.noear.solon.logging;
+package org.noear.solon.logging.appender;
 
 import org.noear.solon.logging.event.Appender;
 import org.noear.solon.logging.event.Level;

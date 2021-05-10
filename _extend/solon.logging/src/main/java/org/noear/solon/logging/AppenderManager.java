@@ -1,6 +1,7 @@
 package org.noear.solon.logging;
 
 import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.logging.appender.ConsoleAppender;
 import org.noear.solon.logging.event.Appender;
 import org.noear.solon.logging.event.LogEvent;
 
