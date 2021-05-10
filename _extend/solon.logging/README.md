@@ -14,8 +14,9 @@ solon.logging.appender:
     level: INFO
 
 solon.logging.logger:
-  "org.xxx.xxx.*":
-    level: INFO
-  "org.xxx.xxx.yyy":
-    level: INFO
+  "org.apache.zookeeper.*":
+    level: "WARN"
+  "org.eclipse.jetty.*":
+    level: "WARN"
+
 ```
