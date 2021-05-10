@@ -1,6 +1,5 @@
 package org.noear.solon.logging;
 
-import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.logging.event.Appender;
 import org.noear.solon.logging.event.Level;
 import org.noear.solon.logging.event.LogEvent;
@@ -37,36 +36,11 @@ public class AppenderSimple implements Appender {
 
         buf.append(": ");
 
-        appendTitleDo(buf.toString(), logEvent.getLevel());
-        appendContentDo(logEvent.getContent());
+        appendDo(logEvent.getLevel(), buf.toString(), logEvent.getContent());
     }
 
-    protected void appendTitleDo(String title, Level level) {
-        switch (level) {
-            case ERROR: {
-                PrintUtil.redln(title);
-                break;
-            }
-            case WARN: {
-                PrintUtil.yellowln(title);
-                break;
-            }
-            case DEBUG: {
-                PrintUtil.blueln(title);
-                break;
-            }
-            case TRACE: {
-                PrintUtil.purpleln(title);
-                break;
-            }
-            default: {
-                PrintUtil.blackln(title);
-                break;
-            }
-        }
-    }
-
-    protected void appendContentDo(Object content) {
+    protected void appendDo(Level level, String title, Object content) {
+        System.out.println(title);
         System.out.println(content);
     }
 }

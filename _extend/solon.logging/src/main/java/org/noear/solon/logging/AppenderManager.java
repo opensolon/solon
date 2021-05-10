@@ -38,7 +38,7 @@ public class AppenderManager implements Appender {
     }
 
     private AppenderManager() {
-        register("console", new LogConsoleAppender());
+        register("console", new LogPrintAppender());
     }
 
     /**
