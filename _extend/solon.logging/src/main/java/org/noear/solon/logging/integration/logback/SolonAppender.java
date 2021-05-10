@@ -38,7 +38,6 @@ public class SolonAppender extends AppenderBase<ILoggingEvent> {
 
         LogEvent event = new LogEvent(
                 e.getLoggerName(),
-                null,
                 level,
                 e.getMDCPropertyMap(),
                 e.getFormattedMessage(),

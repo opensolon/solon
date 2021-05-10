@@ -28,11 +28,7 @@ public class AppenderSimple extends AppenderBase {
             });
         }
 
-        if (logEvent.getInitClass() != null) {
-            buf.append(" ").append(logEvent.getInitClass().getTypeName());
-        } else {
-            buf.append(" ").append(logEvent.getLoggerName());
-        }
+        buf.append(" ").append(logEvent.getLoggerName());
 
         buf.append("#").append(getName());
         buf.append(": ");

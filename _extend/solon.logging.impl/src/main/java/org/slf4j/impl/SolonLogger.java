@@ -20,14 +20,10 @@ import java.util.Map;
  */
 public class SolonLogger implements Logger {
     private String name;
-    private Class<?> initClass;
     private Level level = Level.TRACE;
 
     public SolonLogger(String name) {
         this.name = name;
-        if (name.contains(".")) {
-            initClass = Utils.loadClass(name);
-        }
 
         if (Solon.global() != null) {
             level = LogOptions.getLoggerLevel(name);
@@ -383,7 +379,7 @@ public class SolonLogger implements Logger {
             }
         }
 
-        LogEvent logEvent = new LogEvent(getName(), initClass, level, metainfo, content,
+        LogEvent logEvent = new LogEvent(getName(), level, metainfo, content,
                 System.currentTimeMillis(),
                 Thread.currentThread().getName(), throwable);
 

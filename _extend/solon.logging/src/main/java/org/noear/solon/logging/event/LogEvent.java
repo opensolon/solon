@@ -16,7 +16,7 @@ public class LogEvent {
     /**
      * 初始化类
      */
-    private Class<?> initClass;
+    //private Class<?> initClass;
     /**
      * 级别
      */
@@ -43,9 +43,8 @@ public class LogEvent {
      * */
     private Throwable throwable;
 
-    public LogEvent(String loggerName, Class<?> initClass, Level level, Map<String, String> metainfo, Object content, long timeStamp, String threadName, Throwable throwable) {
+    public LogEvent(String loggerName, Level level, Map<String, String> metainfo, Object content, long timeStamp, String threadName, Throwable throwable) {
         this.loggerName = loggerName;
-        this.initClass = initClass;
         this.level = level;
         this.metainfo = metainfo;
         this.content = content;
@@ -56,10 +55,6 @@ public class LogEvent {
 
     public String getLoggerName() {
         return loggerName;
-    }
-
-    public Class<?> getInitClass() {
-        return initClass;
     }
 
     public Level getLevel() {
