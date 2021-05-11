@@ -8,7 +8,6 @@ import org.noear.solon.core.handle.Result;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.ext.DataThrowable;
 import org.noear.solon.extend.validation.annotation.Validated;
-import org.noear.solon.extend.validation.exception.ValidationException;
 
 /**
  * @author noear

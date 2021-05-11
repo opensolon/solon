@@ -1,4 +1,4 @@
-package org.noear.solon.extend.validation.exception;
+package org.noear.solon.extend.validation;
 
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.core.handle.Resultable;

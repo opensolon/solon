@@ -1,7 +1,7 @@
 package org.noear.solon.extend.jsr303;
 
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.extend.jsr303.utils.ValidationUtils;
+import org.noear.solon.extend.jsr303.utils.BeanValidationUtils;
 import org.noear.solon.extend.validation.BeanValidator;
 
 /**
@@ -11,6 +11,6 @@ import org.noear.solon.extend.validation.BeanValidator;
 public class BeanValidatorImpl implements BeanValidator {
     @Override
     public Result validate(Object object, Class<?>... groups) {
-        return ValidationUtils.validate(object, groups);
+        return BeanValidationUtils.validate(object, groups);
     }
 }

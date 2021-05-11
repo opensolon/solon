@@ -7,7 +7,6 @@ import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.extend.validation.annotation.*;
-import org.noear.solon.extend.validation.exception.ValidationException;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;

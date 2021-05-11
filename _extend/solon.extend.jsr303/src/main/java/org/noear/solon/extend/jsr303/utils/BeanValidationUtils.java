@@ -15,7 +15,7 @@ import java.util.Set;
  * @author noear
  * @since 1.3
  */
-public class ValidationUtils {
+public class BeanValidationUtils {
     /**
      * 验证器
      */
