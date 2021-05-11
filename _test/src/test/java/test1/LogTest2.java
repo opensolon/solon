@@ -14,6 +14,6 @@ import org.noear.solon.test.SolonJUnit4ClassRunner;
 public class LogTest2 {
     @Test
     public void test(){
-        log.info("test");
+        log.trace("test");
     }
 }

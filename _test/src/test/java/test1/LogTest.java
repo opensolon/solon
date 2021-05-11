@@ -10,6 +10,6 @@ import org.junit.Test;
 public class LogTest {
     @Test
     public void test(){
-        log.info("test");
+        log.trace("test");
     }
 }

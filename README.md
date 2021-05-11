@@ -69,7 +69,7 @@ public class App{
 
 #### [《Solon 特性简集，相较于 Springboot 有什么区别？》](https://my.oschina.net/noear/blog/4863844)
 
-#### [《Solon Cloud 分布式服务开发套件清单与快速概览，感觉受与 Spring Cloud 的不同》](https://my.oschina.net/noear/blog/5039169)
+#### [《Solon Cloud 分布式服务开发套件清单，感觉受与 Spring Cloud 的不同》](https://my.oschina.net/noear/blog/5039169)
 
 
 ### 附2：示例与文章
