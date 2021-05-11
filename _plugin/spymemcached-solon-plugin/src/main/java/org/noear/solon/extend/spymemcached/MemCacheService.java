@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.memcached;
+package org.noear.solon.extend.spymemcached;
 
 import net.spy.memcached.AddrUtil;
 import net.spy.memcached.ConnectionFactoryBuilder;
@@ -11,17 +11,17 @@ import org.noear.solon.core.cache.CacheService;
 
 import java.util.Properties;
 
-public class MemcachedService implements CacheService {
+public class MemCacheService implements CacheService {
     private String _cacheKeyHead;
     private int _defaultSeconds;
 
     private MemcachedClient _cache = null;
 
-    public MemcachedService(Properties prop) {
+    public MemCacheService(Properties prop) {
         this(prop, prop.getProperty("keyHeader"), 0);
     }
 
-    public MemcachedService(Properties prop, String keyHeader, int defSeconds) {
+    public MemCacheService(Properties prop, String keyHeader, int defSeconds) {
         String defSeconds_str = prop.getProperty("defSeconds");
         String server = prop.getProperty("server");
         String user = prop.getProperty("user");
@@ -34,7 +34,7 @@ public class MemcachedService implements CacheService {
         init0(keyHeader, defSeconds, server, user, password);
     }
 
-    public MemcachedService(String keyHeader, int defSeconds, String server, String user, String password) {
+    public MemCacheService(String keyHeader, int defSeconds, String server, String user, String password) {
         init0(keyHeader, defSeconds, server, user, password);
     }
 
