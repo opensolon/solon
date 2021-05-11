@@ -44,6 +44,7 @@ public class ValidatorFailureHandlerImp implements ValidatorFailureHandler {
                     }
                 }
 
+                ctx.setRendered(true);
                 ctx.render(Result.failure(rst.getCode(), message));
             } catch (Throwable ex) {
                 throw Utils.throwableWrap(ex);
