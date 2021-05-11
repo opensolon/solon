@@ -195,11 +195,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         } catch (DataThrowable ex) {
             c.setHandled(true); //停止处理
 
-            if (ex instanceof Resultable) {
-                render(((Resultable) ex).getResult(), c);
-            } else {
-                render(ex, c);
-            }
+            render(ex, c);
         } catch (Throwable ex) {
             c.setHandled(true); //停止处理
 

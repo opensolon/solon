@@ -37,7 +37,7 @@ public class BeanValidateInterceptor implements Interceptor {
                                 .failureDo(Context.current(), v1, r1, r1.getDescription())) {
                             throw new DataThrowable();
                         } else {
-                            throw new ValidationException(r1);
+                            throw new IllegalArgumentException(r1.getDescription());
                         }
                     }
                 }
