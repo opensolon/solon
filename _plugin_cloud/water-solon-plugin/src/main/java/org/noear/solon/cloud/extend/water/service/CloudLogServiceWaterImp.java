@@ -9,10 +9,10 @@ import org.noear.water.WaterClient;
 import org.noear.water.dso.LogPipeline;
 import org.noear.water.utils.Datetime;
 import org.noear.water.utils.LogHelper;
-import org.noear.water.utils.TextUtils;
 
 /**
- * @author noear 2021/2/23 created
+ * @author noear
+ * @since 1.3
  */
 public class CloudLogServiceWaterImp implements CloudLogService {
     private String loggerNameDefault;
@@ -34,9 +34,6 @@ public class CloudLogServiceWaterImp implements CloudLogService {
     @Override
     public void append(LogEvent logEvent) {
         String loggerName = logEvent.getLoggerName();
-        if (logEvent.getInitClass() != null) {
-            loggerName = loggerNameDefault;
-        }
 
         if (Utils.isEmpty(loggerName)) {
             return;
@@ -62,15 +59,8 @@ public class CloudLogServiceWaterImp implements CloudLogService {
             log.tag3 = logEvent.getMetainfo().get("tag3");
         }
 
-        if (logEvent.getInitClass() != null) {
-            if (TextUtils.isEmpty(log.tag3)) {
-                log.tag3 = logEvent.getInitClass().getSimpleName();
-            }
-            log.class_name = logEvent.getInitClass().getCanonicalName();
-        }else{
-            if(logEvent.getLoggerName().contains(".")){
-                log.class_name = logEvent.getLoggerName();
-            }
+        if(logEvent.getLoggerName().contains(".")){
+            log.class_name = logEvent.getLoggerName();
         }
 
         log.trace_id = WaterClient.waterTraceId();
