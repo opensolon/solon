@@ -36,5 +36,7 @@ public class XPluginImp implements Plugin {
                 }
             });
         }
+
+        LogOptions.loggerLevelMapInit();
     }
 }

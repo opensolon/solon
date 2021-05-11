@@ -27,6 +27,7 @@ public class LogOptions {
 
     private static volatile Map<String, LoggerLevelEntity> loggerLevelMap = new LinkedHashMap<>();
     private static volatile boolean loggerLevelMapInited = false;
+
     public static void addLoggerLevel(String loggerExpr, Level level) {
         if (loggerExpr.endsWith(".*")) {
             loggerExpr = loggerExpr.substring(0, loggerExpr.length() - 1);
@@ -38,7 +39,9 @@ public class LogOptions {
     }
 
     public static Level getLoggerLevel(String logger) {
-        loggerLevelMapInit();
+        if (loggerLevelMapInited == false) {
+            loggerLevelMapInit();
+        }
 
         for (LoggerLevelEntity l : loggerLevelMap.values()) {
             if (logger.startsWith(l.getLoggerExpr())) {
@@ -49,12 +52,12 @@ public class LogOptions {
         return getLevel();
     }
 
-    private static synchronized void loggerLevelMapInit() {
-        if(loggerLevelMapInited){
+    protected static synchronized void loggerLevelMapInit() {
+        if (loggerLevelMapInited) {
             return;
         }
 
-        if(Solon.global() == null){
+        if (Solon.global() == null) {
             return;
         }
 
