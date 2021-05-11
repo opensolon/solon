@@ -96,4 +96,9 @@ public class ValidController {
                        @Length(min = 2, max = 5, message = "测试") String val2) {
         return "OK";
     }
+
+    @Mapping("bean")
+    public String bean(@Validated ValidModel model) {
+        return "OK";
+    }
 }

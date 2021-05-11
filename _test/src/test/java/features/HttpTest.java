@@ -335,6 +335,12 @@ public class HttpTest extends _TestBase {
         assert get("/demo2/valid/size").equals("OK")== false;
     }
 
+    @Test
+    public void test2v_bean() throws IOException {
+        assert get("/demo2/valid/bean?mobile=x&password=x").equals("OK");
+        assert get("/demo2/valid/bean?password=x").equals("OK") == false;
+    }
+
 
 
     @Test
