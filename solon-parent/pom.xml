@@ -237,11 +237,13 @@
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.jsr330</artifactId>
                 <version>${solon.ver}</version>
+                <!-- javax.inject impl -->
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.jsr303</artifactId>
                 <version>${solon.ver}</version>
+                <!-- javax.validation impl -->
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
