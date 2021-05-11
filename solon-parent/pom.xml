@@ -235,12 +235,12 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.extend.javax.inject</artifactId>
+                <artifactId>solon.extend.jsr330</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.extend.javax.validation</artifactId>
+                <artifactId>solon.extend.jsr303</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
             <dependency>
@@ -1071,8 +1071,8 @@
 
         <module>../_extend/solon.extend.properties.yaml</module>
         <module>../_extend/solon.extend.stop</module>
-        <module>../_extend/solon.extend.javax.inject</module>
-        <module>../_extend/solon.extend.javax.validation</module>
+        <module>../_extend/solon.extend.jsr330</module>
+        <module>../_extend/solon.extend.jsr303</module>
         <module>../_extend/solon.extend.schedule</module>
         <module>../_extend/solon.extend.validation</module>
         <module>../_extend/solon.extend.data</module>

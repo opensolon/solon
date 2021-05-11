@@ -3,6 +3,8 @@ package org.noear.solon.extend.jsr303;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import org.hibernate.validator.HibernateValidator;
+
 import java.util.Set;
 
 /**
@@ -16,7 +18,12 @@ public class ValidationUtils {
     private static Validator validator;
 
     static {
-        validator = Validation.buildDefaultValidatorFactory().getValidator();
+        //validator = Validation.buildDefaultValidatorFactory().getValidator();
+        validator = Validation.byProvider(HibernateValidator.class)
+                .configure()
+                .failFast(true)
+                .buildValidatorFactory()
+                .getValidator();
     }
 
     /**
