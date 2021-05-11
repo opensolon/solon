@@ -7,6 +7,7 @@ import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.extend.validation.annotation.*;
+import org.noear.solon.extend.validation.exception.ValidationException;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
@@ -193,6 +194,10 @@ public class ValidatorManager implements Handler {
     }
 
     protected boolean failureDo(Context ctx, Annotation ano, Result result, String message) {
+        if (ctx == null) {
+            return false;
+        }
+
         return failureHandler.onFailure(ctx, ano, result, message);
     }
 }

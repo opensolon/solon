@@ -1,10 +1,12 @@
 package org.noear.solon.extend.validation;
 
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Interceptor;
 import org.noear.solon.core.handle.InterceptorChain;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.core.wrap.ParamWrap;
+import org.noear.solon.ext.DataThrowable;
 import org.noear.solon.extend.validation.annotation.Validated;
 import org.noear.solon.extend.validation.exception.ValidationException;
 
@@ -31,8 +33,13 @@ public class BeanValidateInterceptor implements Interceptor {
                 if (v1 != null) {
                     Result r1 = validator.validate(args[i], v1.value());
 
-                    if(r1.getCode() == Result.FAILURE_CODE){
-                        throw new ValidationException(r1);
+                    if (r1.getCode() == Result.FAILURE_CODE) {
+                        if (ValidatorManager.global()
+                                .failureDo(Context.current(), v1, r1, r1.getDescription())) {
+                            throw new DataThrowable();
+                        } else {
+                            throw new ValidationException(r1);
+                        }
                     }
                 }
             }
