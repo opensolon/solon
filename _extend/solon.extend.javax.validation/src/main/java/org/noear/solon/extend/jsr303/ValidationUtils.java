@@ -35,6 +35,5 @@ public class ValidationUtils {
             // 抛出自定义异常
             throw new RuntimeException(violation.getMessage());
         }
-
     }
 }
