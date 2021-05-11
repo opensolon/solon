@@ -235,6 +235,8 @@
 
         <module>../_plugin/sureness-solon-plugin</module>
 
+        <module>../_plugin/memcached-solon-plugin</module>
+
         <!-- //////////////////////////////////////////////////// -->
         <module>../_plugin_cloud/aliyun-oss-solon-plugin</module>
         <module>../_plugin_cloud/aws-s3-solon-plugin</module>
@@ -257,7 +259,6 @@
         <module>../_plugin_cloud/zookeeper-solon-plugin</module>
 
         <module>../_plugin_cloud/semaphore-solon-plugin</module>
-        <module>../_plugin_cloud/memcached-solon-plugin</module>
     </modules>
 
 </project>
