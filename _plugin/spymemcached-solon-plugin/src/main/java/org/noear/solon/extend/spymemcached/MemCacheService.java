@@ -9,6 +9,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.cache.CacheService;
 
+import java.io.IOException;
 import java.util.Properties;
 
 public class MemCacheService implements CacheService {
@@ -46,41 +47,38 @@ public class MemCacheService implements CacheService {
             _defaultSeconds = 60;
         }
 
-        if(Utils.isEmpty(_cacheKeyHead)){
+        if (Utils.isEmpty(_cacheKeyHead)) {
             _cacheKeyHead = Solon.cfg().appName();
         }
 
-        try {
-            if (Utils.isEmpty(user) || Utils.isEmpty(password)) {
+        ConnectionFactoryBuilder builder = new ConnectionFactoryBuilder();
+        builder.setProtocol(ConnectionFactoryBuilder.Protocol.BINARY);
 
-                _cache = new MemcachedClient(new ConnectionFactoryBuilder()
-                        .setProtocol(ConnectionFactoryBuilder.Protocol.BINARY).build(),
-                        AddrUtil.getAddresses(server));
-            }else{
+        try {
+            if (Utils.isNotEmpty(user) && Utils.isNotEmpty(password)) {
                 AuthDescriptor ad = new AuthDescriptor(new String[]{"PLAIN"},
                         new PlainCallbackHandler(user, password));
 
-                _cache = new MemcachedClient(new ConnectionFactoryBuilder()
-                        .setProtocol(ConnectionFactoryBuilder.Protocol.BINARY)
-                        .setAuthDescriptor(ad).build(),
-                        AddrUtil.getAddresses(server));
+                builder.setAuthDescriptor(ad);
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+
+            _cache = new MemcachedClient(builder.build(), AddrUtil.getAddresses(server));
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
         }
     }
 
     @Override
     public void store(String key, Object obj, int seconds) {
         if (_cache != null) {
-            if(seconds == 0){
+            if (seconds == 0) {
                 seconds = _defaultSeconds;
             }
 
             String newKey = newKey(key);
             try {
                 _cache.set(newKey, seconds, obj);
-            }catch (Exception ex) {
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
