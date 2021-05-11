@@ -693,6 +693,12 @@
                 <version>${solon.ver}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>spymemcached-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
 <!--            <dependency>-->
 <!--                <groupId>org.noear</groupId>-->
 <!--                <artifactId>shiro-solon-plugin</artifactId>-->
