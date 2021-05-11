@@ -69,10 +69,12 @@ public class App{
 
 #### [《Solon 特性简集，相较于 Springboot 有什么区别？》](https://my.oschina.net/noear/blog/4863844)
 
+#### [《Solon Cloud 分布式服务开发套件清单与快速概览，感觉受与 Spring Cloud 的不同》](https://my.oschina.net/noear/blog/5039169)
+
 
 ### 附2：示例与文章
 * 项目内的：[_test](./_test/) 和 [_demo](./_demo/)
-* 更多示例：[solon_demo](https://gitee.com/noear/solon_demo)、[solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo)、[solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo)、[solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo)
+* 更多示例：[solon_demo](https://gitee.com/noear/solon_demo) 、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo)
 * 更多文章：[https://www.cnblogs.com/noear/](https://www.cnblogs.com/noear/)
 * 架构笔记：[《Spring Boot 轻量替代框架 Solon 的架构笔记》](https://my.oschina.net/noear/blog/4980834)
 
