@@ -1,6 +1,5 @@
 package org.noear.solon.extend.jsr303;
 
-import org.noear.solon.annotation.Component;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.extend.jsr303.utils.ValidationUtils;
 import org.noear.solon.extend.validation.BeanValidator;
