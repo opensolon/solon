@@ -257,6 +257,7 @@
         <module>../_plugin_cloud/zookeeper-solon-plugin</module>
 
         <module>../_plugin_cloud/semaphore-solon-plugin</module>
+        <module>../_plugin_cloud/memcached-solon-plugin</module>
     </modules>
 
 </project>
