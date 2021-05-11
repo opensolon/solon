@@ -1,8 +1,8 @@
 package validation.demo1;
 
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 
 /**
  * @author noear 2021/5/11 created
