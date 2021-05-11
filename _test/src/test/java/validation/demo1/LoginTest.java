@@ -3,7 +3,7 @@ package validation.demo1;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.extend.jsr303.ValidationUtils;
+import org.noear.solon.extend.jsr303.utils.ValidationUtils;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 
 /**

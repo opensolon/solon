@@ -1,4 +1,4 @@
-package org.noear.solon.extend.jsr303;
+package org.noear.solon.extend.jsr303.utils;
 
 
 import javax.validation.ConstraintViolation;

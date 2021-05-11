@@ -243,7 +243,11 @@ public class Action extends HandlerAide implements Handler {
             ex = Utils.throwableUnwrap(ex);
 
             if (ex instanceof DataThrowable) {
-                renderDo(ex, c);
+                if (ex instanceof Resultable) {
+                    renderDo(((Resultable) ex).getResult(), c);
+                } else {
+                    renderDo(ex, c);
+                }
             } else {
                 c.errors = ex;
 

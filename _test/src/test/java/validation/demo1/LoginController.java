@@ -4,21 +4,22 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.extend.jsr303.ValidationUtils;
+import org.noear.solon.extend.validation.annotation.Valid;
+import org.noear.solon.extend.validation.annotation.Validated;
 
 /**
  * @author noear 2021/5/11 created
  */
+@Valid
 @Mapping("/api")
 @Controller
 public class LoginController {
 
     @Mapping("login")
-    public Result login(LoginForm loginForm) {
+    public Result login(@Validated LoginForm loginForm) {
         System.out.println("已进入login" + loginForm);
 
-        ValidationUtils.validate(loginForm);
-
+        //ValidationUtils.validate(loginForm);
 
         return Result.succeed();
     }

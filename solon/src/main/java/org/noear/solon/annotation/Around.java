@@ -20,14 +20,14 @@ import java.lang.annotation.*;
  * //
  * // 注解传导示例：（用于简化使用）
  * //
- * @Around(value = TranInterceptor.class, index = -7)
+ * @Around(value = TranInterceptor.class, index = 7)
  * @Target({ElementType.METHOD})
  * @Retention(RetentionPolicy.RUNTIME)
  * public @interface Tran {
  *     ....
  * }
  *
- * @Around(value = CacheInterceptor.class, index = -8)
+ * @Around(value = CacheInterceptor.class, index = 8)
  * @Target({ElementType.METHOD})
  * @Retention(RetentionPolicy.RUNTIME)
  * public @interface Cache {
