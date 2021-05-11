@@ -41,7 +41,7 @@ public class SecondCacheService implements CacheService {
 
     @Override
     public void remove(String key) {
-        cache1.remove(key);
         cache2.remove(key);
+        cache1.remove(key);
     }
 }
