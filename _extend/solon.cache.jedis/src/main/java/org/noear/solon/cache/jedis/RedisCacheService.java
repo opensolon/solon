@@ -6,6 +6,7 @@ import org.noear.solon.core.cache.CacheService;
 import org.noear.solon.core.event.EventBus;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Properties;
 
 /**
@@ -76,7 +77,7 @@ public class RedisCacheService implements CacheService {
             String newKey = newKey(key);
             try {
                 byte[] tmp = SerializationUtils.serialize(obj);
-                String val = new String(tmp);
+                String val = Base64.getEncoder().encodeToString(tmp);
 
                 if(seconds > 0) {
                     _cache.open0((ru) -> ru.key(newKey).expire(seconds).set(val));
@@ -100,7 +101,7 @@ public class RedisCacheService implements CacheService {
             }
 
             try {
-                byte[] bytes = val.getBytes(StandardCharsets.UTF_8);
+                byte[] bytes = Base64.getDecoder().decode(val);
                 return SerializationUtils.deserialize(bytes);
             } catch (Exception ex) {
                 EventBus.push(ex);
