@@ -9,16 +9,29 @@ import java.util.function.Function;
 class RedisX {
     private JedisPool _jedisPool;
 
-    public RedisX(String server, String password, int db, int maxTotaol) {
+    public RedisX(String server, String password, int db, int maxTotaol, long maxWaitMillis) {
         JedisPoolConfig config = new JedisPoolConfig();
+
+        if (db < 0) {
+            db = 0;
+        }
+
+        if (maxTotaol < 20) {
+            maxTotaol = 200;
+        }
 
         int maxIdle = maxTotaol / 5;
         if (maxIdle < 10) {
             maxIdle = 10;
         }
 
+        if(maxWaitMillis < 3000){
+            maxWaitMillis = 3000;
+        }
+
         config.setMaxTotal(maxTotaol);
         config.setMaxIdle(maxIdle);
+        config.setMaxWaitMillis(maxWaitMillis);
         config.setTestOnBorrow(false);
         config.setTestOnReturn(false);
 

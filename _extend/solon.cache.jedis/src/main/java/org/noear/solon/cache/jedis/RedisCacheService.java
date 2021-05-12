@@ -26,6 +26,7 @@ public class RedisCacheService implements CacheService {
         String password = prop.getProperty("password");
         String db_str = prop.getProperty("db");
         String maxTotaol_str = prop.getProperty("maxTotaol");
+        String maxWaitMillis_str = prop.getProperty("maxWaitMillis");
 
         if (defSeconds == 0) {
             if(Utils.isEmpty(defSeconds_str) == false){
@@ -33,28 +34,20 @@ public class RedisCacheService implements CacheService {
             }
         }
 
-        int db = 1;
+        int db = 0;
         int maxTotaol = 200;
+        long maxWaitMillis = 3000;
 
-        if (Utils.isEmpty(db_str) == false) {
+        if (Utils.isNotEmpty(db_str)) {
             db = Integer.parseInt(db_str);
         }
 
-        if (Utils.isEmpty(maxTotaol_str) == false) {
+        if (Utils.isNotEmpty(maxTotaol_str)) {
             maxTotaol = Integer.parseInt(maxTotaol_str);
         }
 
-
-        init0(keyHeader, defSeconds, server, password, db, maxTotaol);
-    }
-
-    protected void init0(String keyHeader, int defSeconds, String server, String password, int db, int maxTotaol) {
-        if (db < 1) {
-            db = 1;
-        }
-
-        if (maxTotaol < 10) {
-            maxTotaol = 10;
+        if (Utils.isNotEmpty(maxWaitMillis_str)) {
+            maxWaitMillis = Integer.parseInt(maxWaitMillis_str);
         }
 
         _cacheKeyHead = keyHeader;
@@ -64,7 +57,7 @@ public class RedisCacheService implements CacheService {
             _defaultSeconds = 30;
         }
 
-        _cache = new RedisX(server, password, db, maxTotaol);
+        _cache = new RedisX(server, password, db, maxTotaol, maxWaitMillis);
     }
 
     @Override

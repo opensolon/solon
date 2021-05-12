@@ -34,10 +34,7 @@ public class MemCacheService implements CacheService {
             }
         }
 
-        init0(keyHeader, defSeconds, server, user, password);
-    }
 
-    protected void init0(String keyHeader, int defSeconds, String server, String user, String password) {
         _cacheKeyHead = keyHeader;
         _defaultSeconds = defSeconds;
 
