@@ -66,6 +66,10 @@ public class MemCacheService implements CacheService {
 
     @Override
     public void store(String key, Object obj, int seconds) {
+        if(obj == null){
+            return;
+        }
+
         if (_cache != null) {
             String newKey = newKey(key);
             try {
