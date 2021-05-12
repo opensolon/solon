@@ -26,11 +26,6 @@
             <artifactId>jedis</artifactId>
             <version>${jedis.ver}</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>snack3</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

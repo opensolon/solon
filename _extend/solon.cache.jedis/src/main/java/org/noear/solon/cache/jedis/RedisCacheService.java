@@ -1,11 +1,11 @@
 package org.noear.solon.cache.jedis;
 
-import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.cache.CacheService;
 import org.noear.solon.core.event.EventBus;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 /**
@@ -71,7 +71,8 @@ public class RedisCacheService implements CacheService {
         if (_cache != null) {
             String newKey = newKey(key);
             try {
-                String val = ONode.serialize(obj);
+                byte[] tmp = SerializationUtils.serialize(obj);
+                String val = new String(tmp);
 
                 if(seconds > 0) {
                     _cache.open0((ru) -> ru.key(newKey).expire(seconds).set(val));
@@ -90,7 +91,8 @@ public class RedisCacheService implements CacheService {
             String newKey = newKey(key);
             String val = _cache.open1((ru) -> ru.key(newKey).get());
             try {
-                return ONode.deserialize(val);
+                byte[] bytes = val.getBytes(StandardCharsets.UTF_8);
+                return SerializationUtils.deserialize(bytes);
             } catch (Exception ex) {
                 EventBus.push(ex);
                 return null;
