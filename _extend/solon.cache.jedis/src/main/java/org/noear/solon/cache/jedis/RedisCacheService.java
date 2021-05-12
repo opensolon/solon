@@ -94,6 +94,11 @@ public class RedisCacheService implements CacheService {
         if (_cache != null) {
             String newKey = newKey(key);
             String val = _cache.open1((ru) -> ru.key(newKey).get());
+
+            if(val == null){
+                return null;
+            }
+
             try {
                 byte[] bytes = val.getBytes(StandardCharsets.UTF_8);
                 return SerializationUtils.deserialize(bytes);
