@@ -21,8 +21,8 @@ class RedisX {
         }
 
         int maxIdle = maxTotaol / 5;
-        if (maxIdle < 10) {
-            maxIdle = 10;
+        if (maxIdle < 5) {
+            maxIdle = 5;
         }
 
         if(maxWaitMillis < 3000){
