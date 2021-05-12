@@ -187,6 +187,14 @@ public class HttpTest extends _TestBase {
     }
 
     @Test
+    public void test2j_2() throws IOException{
+        String json = "{\"id\":1,\"name\":\"xxx\",\"sex\":2,\"date\":\"2019-11-11T11:11:11\",\"aaa\":[1,2]}";
+
+        assert  path("/demo2/param/model").bodyTxt(json,"application/json")
+                .post().equals("{\"id\":1,\"name\":\"xxx\",\"sex\":2,\"date\":1573441871000,\"aaa\":[1,2]}");
+    }
+
+    @Test
     public void test2k() throws IOException{
         assert  get("/demo2/param/date?date=2018-11-11&date2=2019-11-11T11:11:11").equals("Sun Nov 11 00:00:00 CST 2018 # Mon Nov 11 11:11:11 CST 2019");
     }
