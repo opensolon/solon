@@ -1,8 +1,10 @@
 package org.noear.solon.cache.jedis;
 
 import org.noear.snack.ONode;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.cache.CacheService;
+import org.noear.solon.core.event.EventBus;
 
 import java.util.Properties;
 
@@ -57,6 +59,10 @@ public class RedisCacheService implements CacheService {
             _defaultSeconds = 30;
         }
 
+        if (Utils.isEmpty(_cacheKeyHead)) {
+            _cacheKeyHead = Solon.cfg().appName();
+        }
+
         _cache = new RedisX(server, password, db, maxTotaol, maxWaitMillis);
     }
 
@@ -73,8 +79,7 @@ public class RedisCacheService implements CacheService {
                     _cache.open0((ru) -> ru.key(newKey).expire(_defaultSeconds).set(val));
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
-                throw new RuntimeException(ex);
+                EventBus.push(ex);
             }
         }
     }
@@ -87,8 +92,8 @@ public class RedisCacheService implements CacheService {
             try {
                 return ONode.deserialize(val);
             } catch (Exception ex) {
-                ex.printStackTrace();
-                throw new RuntimeException(ex);
+                EventBus.push(ex);
+                return null;
             }
         } else {
             return null;

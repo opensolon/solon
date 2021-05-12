@@ -8,6 +8,7 @@ import net.spy.memcached.auth.PlainCallbackHandler;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.cache.CacheService;
+import org.noear.solon.core.event.EventBus;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -74,7 +75,7 @@ public class MemCacheService implements CacheService {
                     _cache.set(newKey, _defaultSeconds, obj);
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+                EventBus.push(ex);
             }
         }
     }
@@ -86,7 +87,7 @@ public class MemCacheService implements CacheService {
             try {
                 return _cache.get(newKey);
             } catch (Exception ex) {
-                ex.printStackTrace();
+                EventBus.push(ex);
                 return null;
             }
         } else {
