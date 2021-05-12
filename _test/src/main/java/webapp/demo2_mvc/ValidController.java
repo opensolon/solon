@@ -74,11 +74,6 @@ public class ValidController {
         return "OK";
     }
 
-    @NotZero({"val1", "val2"})
-    @Mapping("nzero")
-    public String nzero(String val1, String val2) {
-        return "OK";
-    }
 
     @Null({"val1", "val2"})
     @Mapping("null")
@@ -91,12 +86,22 @@ public class ValidController {
         return "OK";
     }
 
+
+    //这是基于 context 的验证体系
+    @NotZero({"val1", "val2"})
+    @Mapping("nzero")
+    public String nzero(int val1, int val2) {
+        return "OK";
+    }
+
+    //这也是基于 context 的验证体系
     @Mapping("size")
     public String size(@Length(min = 2, max = 5, message = "测试") String val1,
                        @Length(min = 2, max = 5, message = "测试") String val2) {
         return "OK";
     }
 
+    //这是基于 bean 的验证体系
     @Mapping("bean")
     public String bean(@Validated ValidModel model) {
         return "OK";
