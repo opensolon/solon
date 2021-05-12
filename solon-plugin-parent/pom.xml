@@ -234,7 +234,6 @@
         <module>../_plugin/shiro-solon-plugin</module>
 
         <module>../_plugin/sureness-solon-plugin</module>
-        <module>../_plugin/spymemcached-solon-plugin</module>
 
 
         <!-- //////////////////////////////////////////////////// -->
