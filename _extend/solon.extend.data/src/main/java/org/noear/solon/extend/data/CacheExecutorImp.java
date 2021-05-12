@@ -30,7 +30,7 @@ public class CacheExecutorImp {
             return callable.get();
         }
 
-        Map<String, Object> parMap = buildParams(params,values);
+        Map<String, Object> parMap = buildParams(params, values);
         Object result = null;
 
         CacheService cs = CacheLib.cacheServiceGet(anno.service());
@@ -40,38 +40,43 @@ public class CacheExecutorImp {
         if (Utils.isEmpty(key)) {
             //没有注解key，生成一个key
             key = buildKey(method, parMap);
-        }else {
+        } else {
             //格式化key
             key = formatTagsOrKey(key, parMap);
         }
 
-        //1.从缓存获取
-        //
-        result = cs.get(key);
+        String keyLock = key + ":lock";
 
-        if (result == null) {
-            //2.执行调用，并返回
+        synchronized (keyLock.intern()) {
+
+            //1.从缓存获取
             //
-            result = callable.get();
+            result = cs.get(key);
 
-            if (result != null) {
-                //3.不为null，则进行缓存
+            if (result == null) {
+                //2.执行调用，并返回
                 //
-                cs.store(key, result, anno.seconds());
+                result = callable.get();
 
-                if (Utils.isNotEmpty(anno.tags())) {
-                    String tags = formatTagsOrKey(anno.tags(), parMap);
-                    CacheTags ct = new CacheTags(cs);
+                if (result != null) {
+                    //3.不为null，则进行缓存
+                    //
+                    cs.store(key, result, anno.seconds());
 
-                    //4.添加缓存标签
-                    for (String tag : tags.split(",")) {
-                        ct.add(tag, key);
+                    if (Utils.isNotEmpty(anno.tags())) {
+                        String tags = formatTagsOrKey(anno.tags(), parMap);
+                        CacheTags ct = new CacheTags(cs);
+
+                        //4.添加缓存标签
+                        for (String tag : tags.split(",")) {
+                            ct.add(tag, key);
+                        }
                     }
                 }
             }
-        }
 
-        return result;
+            return result;
+        }
     }
 
     /**
