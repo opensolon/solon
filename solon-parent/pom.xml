@@ -78,6 +78,17 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.cache.jedis</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.cache.spymemcached</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -1036,6 +1047,9 @@
         <module>../_extend/solon.socketd.client.rsocket</module>
         <module>../_extend/solon.socketd.client.smartsocket</module>
         <module>../_extend/solon.socketd.client.websocket</module>
+
+        <module>../_extend/solon.cache.jedis</module>
+        <module>../_extend/solon.cache.spymemcached</module>
 
         <!--        <module>../_extend/solon.boot.jdkudp</module>-->
 
