@@ -4,6 +4,9 @@ import org.noear.solon.core.cache.CacheService;
 
 /**
  * 二级缓存
+ *
+ * @author noear
+ * @since 1.2
  * */
 public class SecondCacheService implements CacheService {
     private CacheService cache1;
