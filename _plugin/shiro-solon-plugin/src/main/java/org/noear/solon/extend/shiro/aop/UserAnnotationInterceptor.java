@@ -1,6 +1,7 @@
 package org.noear.solon.extend.shiro.aop;
 
 import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.apache.shiro.authz.aop.UserAnnotationHandler;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
@@ -14,7 +15,7 @@ import java.lang.annotation.Annotation;
  * @author tomsun28
  * @date 2021/5/12 23:20
  */
-public class UserAnnotationInterceptor implements Validator {
+public class UserAnnotationInterceptor implements Validator<RequiresUser> {
 
     private static final Logger logger = LoggerFactory.getLogger(UserAnnotationInterceptor.class);
     private final UserAnnotationHandler handler = new UserAnnotationHandler();
@@ -22,7 +23,7 @@ public class UserAnnotationInterceptor implements Validator {
     public static final UserAnnotationInterceptor instance = new UserAnnotationInterceptor();
 
     @Override
-    public Result validate(Context ctx, Annotation annotation, String name, StringBuilder tmp) {
+    public Result validate(Context ctx, RequiresUser annotation, String name, StringBuilder tmp) {
         try {
             handler.assertAuthorized(annotation);
         } catch (AuthorizationException e) {
