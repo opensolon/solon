@@ -13,7 +13,7 @@ import org.noear.solon.extend.validation.ValidatorManager;
  * @author noear
  * @since 1.3
  */
-public class SurenessPluginImp implements Plugin {
+public class ShiroPluginImp implements Plugin {
 
     @SuppressWarnings("unchecked")
     @Override
@@ -24,7 +24,7 @@ public class SurenessPluginImp implements Plugin {
         ValidatorManager.global().register(RequiresGuest.class, GuestAnnotationInterceptor.instance);
         ValidatorManager.global().register(RequiresAuthentication.class, AuthenticateAnnotationInterceptor.instance);
 
-        app.beanScan(SurenessPluginImp.class);
+        app.beanScan(ShiroPluginImp.class);
 
         Aop.wrapAndPut(SecurityManager.class, new ShiroConfiguration().securityManager());
     }
