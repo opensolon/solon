@@ -9,6 +9,9 @@ import org.noear.solon.annotation.Configuration;
  */
 @Configuration
 public class Config {
+    //
+    //不知道，是此处加；；；还是在shiro.ini 配置??
+    //
     @Bean
     public AuthorizingRealm realm(){
         return new AuthorizingRealmImpl();
