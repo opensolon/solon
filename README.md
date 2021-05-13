@@ -65,18 +65,21 @@ public class App{
 | org.noear:solon-rpc | solon-api + nami；快速开发RPC应用 |
 | org.noear:solon-cloud | solon-rpc + consul；快速开发微服务应用 |
 
-### 附1：与其它框架的异同性
+### 附1：快速了解Solon的材料：
 
 #### [《Solon 特性简集，相较于 Springboot 有什么区别？》](https://my.oschina.net/noear/blog/4863844)
 
 #### [《Solon Cloud 分布式服务开发套件清单，感觉受与 Spring Cloud 的不同》](https://my.oschina.net/noear/blog/5039169)
+
+#### [《Solon 的想法与架构笔记》](https://my.oschina.net/noear/blog/4980834)
+
+### [《Solon 框架入门》](https://my.oschina.net/noear/blog/4784513)
 
 
 ### 附2：示例与文章
 * 项目内的：[_test](./_test/) 和 [_demo](./_demo/)
 * 更多示例：[solon_demo](https://gitee.com/noear/solon_demo) 、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo)
 * 更多文章：[https://www.cnblogs.com/noear/](https://www.cnblogs.com/noear/)
-* 架构笔记：[《Spring Boot 轻量替代框架 Solon 的架构笔记》](https://my.oschina.net/noear/blog/4980834)
 
 ### 附3：快速入门示例
 * Web 示例（mvc）
