@@ -6,6 +6,7 @@ import org.noear.solon.cloud.model.BreakerException;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Interceptor;
 import org.noear.solon.core.handle.InterceptorChain;
+import org.noear.solon.core.handle.Invocation;
 import org.noear.solon.ext.DataThrowable;
 
 /**
@@ -14,8 +15,8 @@ import org.noear.solon.ext.DataThrowable;
  */
 public class CloudBreakerInterceptor implements Interceptor {
     @Override
-    public Object doIntercept(Object target, Object[] args, InterceptorChain chain) throws Throwable {
-        CloudBreaker breaker = chain.method().getAnnotation(CloudBreaker.class);
+    public Object doIntercept(Invocation inv) throws Throwable {
+        CloudBreaker breaker = inv.method().getAnnotation(CloudBreaker.class);
 
         if (CloudClient.breaker() == null) {
             throw new IllegalArgumentException("Missing CloudBreakerService component");
@@ -23,7 +24,7 @@ public class CloudBreakerInterceptor implements Interceptor {
 
         if (breaker != null) {
             try (AutoCloseable entry = CloudClient.breaker().entry(breaker.value())) {
-                return chain.doIntercept(target, args);
+                return inv.invoke();
             } catch (BreakerException ex) {
                 Context ctx = Context.current();
                 if (ctx != null) {
@@ -35,7 +36,7 @@ public class CloudBreakerInterceptor implements Interceptor {
                 }
             }
         } else {
-            return chain.doIntercept(target, args);
+            return inv.invoke();
         }
     }
 }
