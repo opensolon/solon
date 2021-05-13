@@ -4,6 +4,7 @@ import org.noear.solon.annotation.*;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.InterceptorChain;
 import org.noear.solon.core.handle.InterceptorChainNode;
+import org.noear.solon.core.handle.Invocation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -46,7 +47,7 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
         arounds = new ArrayList<>();
 
         //scan cless @Around
-        for(Annotation anno : entityClz.getAnnotations()){
+        for (Annotation anno : entityClz.getAnnotations()) {
             if (anno instanceof Around) {
                 doAroundAdd((Around) anno);
             } else {
@@ -94,7 +95,7 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
 
     private void doAroundAdd(Around a) {
         if (a != null) {
-            arounds.add(new InterceptorChainNode(this, a.index(), Aop.get(a.value())));
+            arounds.add(new InterceptorChainNode(a.index(), Aop.get(a.value())));
         }
     }
 
@@ -142,30 +143,23 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
 
     /**
      * 获取函数所有注解
-     * */
+     */
     public Annotation[] getAnnotations() {
         return annotations;
     }
 
     /**
      * 获取函数某种注解
-     * */
+     */
     public <T extends Annotation> T getAnnotation(Class<T> type) {
         return method.getAnnotation(type);
     }
 
 
-
     //::XInterceptorChain
     @Override
-    public MethodHolder method() {
-        return this;
-    }
-
-    //::XInterceptorChain
-    @Override
-    public Object doIntercept(Object obj, Object[] args) throws Exception {
-        return method.invoke(obj, args);
+    public Object doIntercept(Invocation inv) throws Exception {
+        return invoke(inv.target(), inv.args());
     }
 
     /**
@@ -179,6 +173,7 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
      * 执行切面
      */
     public Object invokeByAspect(Object obj, Object[] args) throws Throwable {
-        return invokeChain.doIntercept(obj, args);
+        Invocation inv = new Invocation(obj, args, this);
+        return invokeChain.doIntercept(inv);
     }
 }

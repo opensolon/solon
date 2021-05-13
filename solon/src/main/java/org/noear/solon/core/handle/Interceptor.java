@@ -40,9 +40,7 @@ public interface Interceptor {
     /**
      * 拦截
      *
-     * @param target 目标对象
-     * @param args 参数
-     * @param chain 拦截链
+     * @param inv 调用者
      * */
-    Object doIntercept(Object target, Object[] args, InterceptorChain chain) throws Throwable;
+    Object doIntercept(Invocation inv) throws Throwable;
 }

@@ -11,7 +11,6 @@ import org.noear.solon.core.wrap.MethodWrap;
  * */
 public class InterceptorChainNode implements InterceptorChain{
     private final Interceptor interceptor;
-    private final MethodWrap methodWrap;
 
     /**
      * 顺排序位（排完后，按先进后出策略执行）
@@ -19,19 +18,14 @@ public class InterceptorChainNode implements InterceptorChain{
     public final int index;
     public InterceptorChain next;
 
-    public InterceptorChainNode(MethodWrap m, int i, Interceptor p) {
+    public InterceptorChainNode(int i, Interceptor p) {
         index = i;
         interceptor = p;
-        methodWrap = m;
     }
 
     @Override
-    public MethodHolder method() {
-        return methodWrap;
-    }
-
-    @Override
-    public Object doIntercept(Object target, Object[] args) throws Throwable {
-        return interceptor.doIntercept(target, args, next);
+    public Object doIntercept(Invocation inv) throws Throwable {
+        inv.next = next;
+        return interceptor.doIntercept(inv);
     }
 }

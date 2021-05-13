@@ -11,15 +11,9 @@ import org.noear.solon.core.wrap.MethodHolder;
  * */
 public interface InterceptorChain {
     /**
-     * 方法容器
-     */
-    MethodHolder method();
-
-    /**
      * 拦截传递（target、args 是动态的，所以用参数传递；其它部分可以固化）
      *
-     * @param target 目标对象
-     * @param args   参数
+     * @param inv 调用者
      */
-    Object doIntercept(Object target, Object[] args) throws Throwable;
+    Object doIntercept(Invocation inv) throws Throwable;
 }

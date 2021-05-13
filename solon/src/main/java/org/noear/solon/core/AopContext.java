@@ -335,7 +335,7 @@ public class AopContext extends BeanContainer {
 
         if (size2 == 0) {
             //0.没有参数
-            Object raw = mWrap.doIntercept(bw.raw(), new Object[]{});
+            Object raw = mWrap.invoke(bw.raw(), new Object[]{});
             tryBuildBean0(mWrap, anno, raw);
         } else {
             //1.构建参数
@@ -344,7 +344,7 @@ public class AopContext extends BeanContainer {
                     //
                     //变量收集完成后，会回调此处
                     //
-                    Object raw = mWrap.doIntercept(bw.raw(), args2);
+                    Object raw = mWrap.invoke(bw.raw(), args2);
                     tryBuildBean0(mWrap, anno, raw);
                 } catch (Throwable ex) {
                     EventBus.push(ex);
