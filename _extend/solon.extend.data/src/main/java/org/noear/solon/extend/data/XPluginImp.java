@@ -6,9 +6,11 @@ import org.noear.solon.core.cache.CacheService;
 import org.noear.solon.extend.data.annotation.Cache;
 import org.noear.solon.extend.data.annotation.CachePut;
 import org.noear.solon.extend.data.annotation.CacheRemove;
+import org.noear.solon.extend.data.annotation.Tran;
 import org.noear.solon.extend.data.around.CacheInterceptor;
 import org.noear.solon.extend.data.around.CachePutInterceptor;
 import org.noear.solon.extend.data.around.CacheRemoveInterceptor;
+import org.noear.solon.extend.data.around.TranInterceptor;
 
 public class XPluginImp implements Plugin {
     @Override
@@ -32,5 +34,6 @@ public class XPluginImp implements Plugin {
         Aop.context().beanInterceptorAdd(CachePut.class, 10, new CachePutInterceptor());
         Aop.context().beanInterceptorAdd(CacheRemove.class, 10, new CacheRemoveInterceptor());
         Aop.context().beanInterceptorAdd(Cache.class, 11, new CacheInterceptor());
+        Aop.context().beanInterceptorAdd(Tran.class, 20, new TranInterceptor());
     }
 }

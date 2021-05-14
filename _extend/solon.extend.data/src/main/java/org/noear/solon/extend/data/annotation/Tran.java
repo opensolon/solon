@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
  * @author noear
  * @since 1.0
  * */
-@Around(value = TranInterceptor.class, index = 20)
+//@Around(value = TranInterceptor.class, index = 20)
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Tran {
