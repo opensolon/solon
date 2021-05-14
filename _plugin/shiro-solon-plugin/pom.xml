@@ -29,6 +29,12 @@
             <artifactId>shiro-core</artifactId>
             <version>${shiro.ver}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-api</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>
