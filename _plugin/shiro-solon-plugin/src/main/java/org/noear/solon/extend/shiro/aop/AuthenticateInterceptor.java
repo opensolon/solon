@@ -11,12 +11,11 @@ import org.slf4j.LoggerFactory;
  * @author tomsun28
  * @date 2021/5/12 23:20
  */
-public class AuthenticateAnnotationInterceptor extends AbstractInterceptor<RequiresAuthentication> {
+public class AuthenticateInterceptor extends AbstractInterceptor<RequiresAuthentication> {
+    private static final Logger log = LoggerFactory.getLogger(AuthenticateInterceptor.class);
+    public static final AuthenticateInterceptor instance = new AuthenticateInterceptor();
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthenticateAnnotationInterceptor.class);
     private final AuthenticatedAnnotationHandler handler = new AuthenticatedAnnotationHandler();
-
-    public static final AuthenticateAnnotationInterceptor instance = new AuthenticateAnnotationInterceptor();
 
     @Override
     public Class<RequiresAuthentication> type() {
@@ -28,10 +27,10 @@ public class AuthenticateAnnotationInterceptor extends AbstractInterceptor<Requi
         try {
             handler.assertAuthorized(annotation);
         } catch (UnauthenticatedException e) {
-            logger.warn(e.getMessage());
+            log.warn(e.getMessage());
             return Result.failure(401, e.getMessage());
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
             return Result.failure(e.getMessage());
         }
         return Result.succeed();

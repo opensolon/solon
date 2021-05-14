@@ -9,8 +9,8 @@ import org.noear.solon.extend.shiro.aop.*;
 import org.noear.solon.extend.shiro.config.ShiroConfiguration;
 
 /**
- * @author noear
- * @since 1.3
+ * @author tomsun28
+ * @since 2021/5/12 23:20
  */
 public class ShiroPluginImp implements Plugin {
 
@@ -19,11 +19,11 @@ public class ShiroPluginImp implements Plugin {
     public void start(SolonApp app) {
         //换了种方式，注册AOP环绕处理，获得一级拦截权限（之前的方案，需要类上有：@Valid 注解；借助它的拦截，获得二级执行权限有）
         //
-        Aop.context().beanAroundAdd(RequiresPermissions.class, PermissionAnnotationInterceptor.instance);
-        Aop.context().beanAroundAdd(RequiresRoles.class, RoleAnnotationInterceptor.instance);
-        Aop.context().beanAroundAdd(RequiresUser.class, UserAnnotationInterceptor.instance);
-        Aop.context().beanAroundAdd(RequiresGuest.class, GuestAnnotationInterceptor.instance);
-        Aop.context().beanAroundAdd(RequiresAuthentication.class, AuthenticateAnnotationInterceptor.instance);
+        Aop.context().beanAroundAdd(RequiresPermissions.class, PermissionInterceptor.instance);
+        Aop.context().beanAroundAdd(RequiresRoles.class, RoleInterceptor.instance);
+        Aop.context().beanAroundAdd(RequiresUser.class, UserInterceptor.instance);
+        Aop.context().beanAroundAdd(RequiresGuest.class, GuestInterceptor.instance);
+        Aop.context().beanAroundAdd(RequiresAuthentication.class, AuthenticateInterceptor.instance);
 
         //这个不需要，因为这个插件里，没有注解类
         //

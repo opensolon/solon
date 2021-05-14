@@ -11,12 +11,11 @@ import org.slf4j.LoggerFactory;
  * @author tomsun28
  * @date 2021/5/12 23:20
  */
-public class PermissionAnnotationInterceptor extends AbstractInterceptor<RequiresPermissions> {
+public class PermissionInterceptor extends AbstractInterceptor<RequiresPermissions> {
+    private static final Logger log = LoggerFactory.getLogger(PermissionInterceptor.class);
+    public static final PermissionInterceptor instance = new PermissionInterceptor();
 
-    private static final Logger logger = LoggerFactory.getLogger(PermissionAnnotationInterceptor.class);
     private final PermissionAnnotationHandler handler = new PermissionAnnotationHandler();
-
-    public static final PermissionAnnotationInterceptor instance = new PermissionAnnotationInterceptor();
 
     @Override
     public Class<RequiresPermissions> type() {
@@ -28,10 +27,10 @@ public class PermissionAnnotationInterceptor extends AbstractInterceptor<Require
         try {
             handler.assertAuthorized(annotation);
         } catch (AuthorizationException e) {
-            logger.warn(e.getMessage());
+            log.warn(e.getMessage());
             return Result.failure(403, e.getMessage());
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
             return Result.failure(e.getMessage());
         }
         return Result.succeed();

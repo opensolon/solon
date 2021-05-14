@@ -4,16 +4,28 @@ import org.apache.shiro.config.Ini;
 import org.apache.shiro.mgt.*;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.realm.text.IniRealm;
+import org.noear.solon.Utils;
+
+import java.net.URL;
 
 
 /**
- * @author noear
- * @since 1.3
+ * @author tomsun28
+ * @since 2021/5/12 23:20
  */
 public class ShiroConfiguration {
 
     public SessionsSecurityManager securityManager() {
-        return new DefaultSecurityManager(iniRealmFromLocation());
+        URL url = Utils.getResource("shiro.ini");
+
+        if (url == null) {
+            //
+            //如果没有配置文件，则直接
+            //
+            return new DefaultSecurityManager();
+        } else {
+            return new DefaultSecurityManager(iniRealmFromLocation());
+        }
     }
 
     protected Realm iniRealmFromLocation() {

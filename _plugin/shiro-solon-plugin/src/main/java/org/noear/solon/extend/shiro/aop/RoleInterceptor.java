@@ -11,12 +11,11 @@ import org.slf4j.LoggerFactory;
  * @author tomsun28
  * @date 2021/5/12 23:20
  */
-public class RoleAnnotationInterceptor extends AbstractInterceptor<RequiresRoles> {
+public class RoleInterceptor extends AbstractInterceptor<RequiresRoles> {
+    private static final Logger log = LoggerFactory.getLogger(RoleInterceptor.class);
+    public static final RoleInterceptor instance = new RoleInterceptor();
 
-    private static final Logger logger = LoggerFactory.getLogger(RoleAnnotationInterceptor.class);
     private final RoleAnnotationHandler roleAnnotationHandler = new RoleAnnotationHandler();
-
-    public static final RoleAnnotationInterceptor instance = new RoleAnnotationInterceptor();
 
     @Override
     public Class<RequiresRoles> type() {
@@ -28,10 +27,10 @@ public class RoleAnnotationInterceptor extends AbstractInterceptor<RequiresRoles
         try {
             roleAnnotationHandler.assertAuthorized(annotation);
         } catch (AuthorizationException e) {
-            logger.warn(e.getMessage());
+            log.warn(e.getMessage());
             return Result.failure(403, e.getMessage());
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
             return Result.failure(e.getMessage());
         }
         return Result.succeed();

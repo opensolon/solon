@@ -11,12 +11,11 @@ import org.slf4j.LoggerFactory;
  * @author tomsun28
  * @date 2021/5/12 23:20
  */
-public class GuestAnnotationInterceptor extends AbstractInterceptor<RequiresGuest> {
+public class GuestInterceptor extends AbstractInterceptor<RequiresGuest> {
+    private static final Logger log = LoggerFactory.getLogger(GuestInterceptor.class);
+    public static final GuestInterceptor instance = new GuestInterceptor();
 
-    private static final Logger logger = LoggerFactory.getLogger(GuestAnnotationInterceptor.class);
     private final GuestAnnotationHandler handler = new GuestAnnotationHandler();
-
-    public static final GuestAnnotationInterceptor instance = new GuestAnnotationInterceptor();
 
     @Override
     public Class<RequiresGuest> type() {
@@ -28,10 +27,10 @@ public class GuestAnnotationInterceptor extends AbstractInterceptor<RequiresGues
         try {
             handler.assertAuthorized(annotation);
         } catch (AuthorizationException e) {
-            logger.warn(e.getMessage());
+            log.warn(e.getMessage());
             return Result.failure(403, e.getMessage());
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
             return Result.failure(e.getMessage());
         }
         return Result.succeed();
