@@ -17,19 +17,22 @@ package org.noear.solon.core.aspect;
  * //
  * // 注解传导示例：（用于简化使用）
  * //
- * @Around(value = TranInterceptor.class, index = -7)
+ * @Around(value = TranInterceptor.class, index = 20)
  * @Target({ElementType.METHOD})
  * @Retention(RetentionPolicy.RUNTIME)
- * public @interface XTran {
+ * public @interface Tran {
  *     ....
  * }
  *
- * @Around(value = CacheInterceptor.class, index = -8)
+ * @Around(value = CacheInterceptor.class, index = 10)
  * @Target({ElementType.METHOD})
  * @Retention(RetentionPolicy.RUNTIME)
- * public @interface XCache {
+ * public @interface Cache {
  *     ...
  * }
+ *
+ * //或者直接注册
+ * Aop.context().beanInterceptorAdd(Cache.class, 11, new CacheInterceptor());
  * </code></pre>
  *
  * @author noear
