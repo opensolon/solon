@@ -42,7 +42,7 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Around {
+public @interface Around { //intercept
     /**
      * 调用处理程序
      * */
