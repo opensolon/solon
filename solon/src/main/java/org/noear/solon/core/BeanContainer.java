@@ -4,9 +4,9 @@ package org.noear.solon.core;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
+import org.noear.solon.core.aspect.Interceptor;
+import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.handle.HandlerLoader;
-import org.noear.solon.core.handle.Interceptor;
-import org.noear.solon.core.handle.InterceptorEntity;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.util.ConvertUtil;
 

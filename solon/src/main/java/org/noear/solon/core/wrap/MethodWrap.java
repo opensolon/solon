@@ -2,10 +2,9 @@ package org.noear.solon.core.wrap;
 
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.handle.InterceptorChain;
-import org.noear.solon.core.handle.InterceptorChainNode;
-import org.noear.solon.core.handle.InterceptorEntity;
-import org.noear.solon.core.handle.Invocation;
+import org.noear.solon.core.aspect.Interceptor;
+import org.noear.solon.core.aspect.InterceptorEntity;
+import org.noear.solon.core.aspect.Invocation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -20,7 +19,7 @@ import java.util.*;
  * @author noear
  * @since 1.0
  * */
-public class MethodWrap implements InterceptorChain, MethodHolder {
+public class MethodWrap implements Interceptor, MethodHolder {
     private static Map<Method, MethodWrap> cached = new HashMap<>();
 
     public static MethodWrap get(Method method) {
@@ -78,20 +77,9 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
         if (arounds.size() > 0) {
             //排序（顺排）
             arounds.sort(Comparator.comparing(x -> x.index));
-
-            //生成调用链(先入先出)
-            InterceptorChainNode node = arounds.get(0);
-            for (int i = 1, len = arounds.size(); i < len; i++) {
-                node.next = arounds.get(i);
-                node = arounds.get(i);
-            }
-            node.next = this;
-
-            //设定根节点
-            invokeChain = arounds.get(0);
-        } else {
-            invokeChain = this;
         }
+
+        arounds.add(new InterceptorEntity(0, this));
     }
 
     private ParamWrap[] paramsWrap(Parameter[] pAry) {
@@ -106,13 +94,13 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
 
     private void doAroundAdd(Around a) {
         if (a != null) {
-            arounds.add(new InterceptorChainNode(a.index(), Aop.get(a.value())));
+            arounds.add(new InterceptorEntity(a.index(), Aop.get(a.value())));
         }
     }
 
     private void doAroundAdd(InterceptorEntity i) {
         if (i != null) {
-            arounds.add(new InterceptorChainNode(i.index, i.interceptor));
+            arounds.add(i);
         }
     }
 
@@ -125,9 +113,7 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
     //函数注解
     private final Annotation[] annotations;
     //函数包围列表（扩展切点）
-    private final List<InterceptorChainNode> arounds;
-    //函数调用链
-    private final InterceptorChain invokeChain;
+    private final List<InterceptorEntity> arounds;
 
 
     /**
@@ -190,7 +176,7 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
      * 执行切面
      */
     public Object invokeByAspect(Object obj, Object[] args) throws Throwable {
-        Invocation inv = new Invocation(obj, args, this);
-        return invokeChain.doIntercept(inv);
+        Invocation inv = new Invocation(obj, args, this, arounds);
+        return inv.invoke();
     }
 }

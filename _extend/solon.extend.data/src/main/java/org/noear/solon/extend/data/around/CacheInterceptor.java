@@ -1,9 +1,8 @@
 package org.noear.solon.extend.data.around;
 
-import org.noear.solon.core.handle.Invocation;
+import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.extend.data.annotation.Cache;
-import org.noear.solon.core.handle.InterceptorChain;
-import org.noear.solon.core.handle.Interceptor;
+import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.extend.data.CacheExecutorImp;
 
 public class CacheInterceptor implements Interceptor {

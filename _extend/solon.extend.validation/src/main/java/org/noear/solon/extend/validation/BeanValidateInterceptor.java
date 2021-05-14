@@ -1,6 +1,8 @@
 package org.noear.solon.extend.validation;
 
 import org.noear.solon.core.Aop;
+import org.noear.solon.core.aspect.Interceptor;
+import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.ext.DataThrowable;

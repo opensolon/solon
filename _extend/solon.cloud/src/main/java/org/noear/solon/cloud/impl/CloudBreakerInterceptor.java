@@ -4,9 +4,8 @@ import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.annotation.CloudBreaker;
 import org.noear.solon.cloud.model.BreakerException;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.Interceptor;
-import org.noear.solon.core.handle.InterceptorChain;
-import org.noear.solon.core.handle.Invocation;
+import org.noear.solon.core.aspect.Interceptor;
+import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.ext.DataThrowable;
 
 /**
