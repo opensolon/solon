@@ -32,7 +32,7 @@ public class RoleAnnotationInterceptor extends AbstractInterceptor<RequiresRoles
             return Result.failure(403);
         } catch (Exception e) {
             logger.error(e.getMessage());
-            return Result.failure();
+            return Result.failure(e.getMessage());
         }
         return Result.succeed();
     }

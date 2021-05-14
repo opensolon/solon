@@ -32,7 +32,7 @@ public class AuthenticateAnnotationInterceptor extends AbstractInterceptor<Requi
             return Result.failure(401);
         } catch (Exception e) {
             logger.error(e.getMessage());
-            return Result.failure();
+            return Result.failure(e.getMessage());
         }
         return Result.succeed();
     }
