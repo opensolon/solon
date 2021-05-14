@@ -41,6 +41,24 @@ import java.io.Serializable;
  * @since 1.0
  * */
 public class DataThrowable extends RuntimeException implements Serializable {
+    private Object data;
+
+    /**
+     * 数据获取
+     * */
+    public Object data(){
+        return data;
+    }
+
+    /**
+     * 数据设定
+     * */
+    public DataThrowable data(Object data){
+        this.data = data;
+        return this;
+    }
+
+
     public DataThrowable() {
         super();
     }

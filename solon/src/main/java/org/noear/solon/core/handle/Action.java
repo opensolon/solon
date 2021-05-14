@@ -237,18 +237,24 @@ public class Action extends HandlerAide implements Handler {
     protected void handleDo(Context c, RunnableEx runnable) throws Throwable {
         try {
             runnable.run();
-        } catch (Throwable ex) {
+        } catch (Throwable e) {
             c.setHandled(true); //停止处理
 
-            ex = Utils.throwableUnwrap(ex);
+            e = Utils.throwableUnwrap(e);
 
-            if (ex instanceof DataThrowable) {
-                renderDo(ex, c);
+            if (e instanceof DataThrowable) {
+                DataThrowable ex = (DataThrowable)e;
+
+                if (ex.data() == null) {
+                    renderDo(ex, c);
+                } else {
+                    renderDo(ex.data(), c);
+                }
             } else {
-                c.errors = ex;
+                c.errors = e;
 
-                renderDo(ex, c);
-                EventBus.push(ex);
+                renderDo(e, c);
+                EventBus.push(e);
             }
         }
     }

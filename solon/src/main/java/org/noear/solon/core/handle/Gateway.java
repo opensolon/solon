@@ -192,17 +192,25 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     protected void handleDo(Context c, RunnableEx runnable) throws Throwable {
         try {
             runnable.run();
-        } catch (DataThrowable ex) {
+        } catch (Throwable e) {
             c.setHandled(true); //停止处理
 
-            render(ex, c);
-        } catch (Throwable ex) {
-            c.setHandled(true); //停止处理
+            e = Utils.throwableUnwrap(e);
 
-            c.errors = ex;
+            if (e instanceof DataThrowable) {
+                DataThrowable ex = (DataThrowable) e;
 
-            render(ex, c);
-            EventBus.push(ex);
+                if (ex.data() == null) {
+                    render(ex, c);
+                } else {
+                    render(ex.data(), c);
+                }
+            } else {
+                c.errors = e;
+
+                render(e, c);
+                EventBus.push(e);
+            }
         }
     }
 

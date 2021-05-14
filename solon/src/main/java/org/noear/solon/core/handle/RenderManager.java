@@ -2,11 +2,9 @@ package org.noear.solon.core.handle;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.ext.DataThrowable;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FilterInputStream;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -146,6 +144,10 @@ public class RenderManager implements Render {
      */
     @Override
     public void render(Object data, Context ctx) throws Throwable {
+        if(data instanceof DataThrowable){
+            return;
+        }
+
         //如果是模型视图
         if (data instanceof ModelAndView) {
             ModelAndView mv = (ModelAndView) data;
