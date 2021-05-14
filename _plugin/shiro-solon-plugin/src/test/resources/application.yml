@@ -1,0 +1,5 @@
+
+
+solon.logging.logger:
+  "org.apache.shiro.*":
+    level: INFO
