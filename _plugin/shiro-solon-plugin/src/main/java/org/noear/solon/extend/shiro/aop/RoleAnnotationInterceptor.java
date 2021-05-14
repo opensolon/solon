@@ -3,19 +3,15 @@ package org.noear.solon.extend.shiro.aop;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.authz.aop.RoleAnnotationHandler;
-import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.extend.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.annotation.Annotation;
 
 /**
  * @author tomsun28
  * @date 2021/5/12 23:20
  */
-public class RoleAnnotationInterceptor implements Validator<RequiresRoles> {
+public class RoleAnnotationInterceptor extends AbstractInterceptor<RequiresRoles> {
 
     private static final Logger logger = LoggerFactory.getLogger(RoleAnnotationInterceptor.class);
     private final RoleAnnotationHandler roleAnnotationHandler = new RoleAnnotationHandler();
@@ -23,7 +19,12 @@ public class RoleAnnotationInterceptor implements Validator<RequiresRoles> {
     public static final RoleAnnotationInterceptor instance = new RoleAnnotationInterceptor();
 
     @Override
-    public Result validate(Context ctx, RequiresRoles annotation, String name, StringBuilder tmp) {
+    public Class<RequiresRoles> type() {
+        return RequiresRoles.class;
+    }
+
+    @Override
+    public Result validate(RequiresRoles annotation) {
         try {
             roleAnnotationHandler.assertAuthorized(annotation);
         } catch (AuthorizationException e) {

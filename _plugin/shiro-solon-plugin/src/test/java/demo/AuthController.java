@@ -8,7 +8,6 @@ import org.noear.solon.extend.validation.annotation.Valid;
 /**
  * @author noear 2021/5/6 created
  */
-@Valid
 @Controller
 public class AuthController {
     @RequiresAuthentication

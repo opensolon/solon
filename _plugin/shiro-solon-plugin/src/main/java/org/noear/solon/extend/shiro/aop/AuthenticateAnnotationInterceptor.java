@@ -3,19 +3,15 @@ package org.noear.solon.extend.shiro.aop;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.aop.AuthenticatedAnnotationHandler;
-import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.extend.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.annotation.Annotation;
 
 /**
  * @author tomsun28
  * @date 2021/5/12 23:20
  */
-public class AuthenticateAnnotationInterceptor implements Validator<RequiresAuthentication> {
+public class AuthenticateAnnotationInterceptor extends AbstractInterceptor<RequiresAuthentication> {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthenticateAnnotationInterceptor.class);
     private final AuthenticatedAnnotationHandler handler = new AuthenticatedAnnotationHandler();
@@ -23,7 +19,12 @@ public class AuthenticateAnnotationInterceptor implements Validator<RequiresAuth
     public static final AuthenticateAnnotationInterceptor instance = new AuthenticateAnnotationInterceptor();
 
     @Override
-    public Result validate(Context ctx, RequiresAuthentication annotation, String name, StringBuilder tmp) {
+    public Class<RequiresAuthentication> type() {
+        return RequiresAuthentication.class;
+    }
+
+    @Override
+    public Result validate( RequiresAuthentication annotation) {
         try {
             handler.assertAuthorized(annotation);
         } catch (UnauthenticatedException e) {
