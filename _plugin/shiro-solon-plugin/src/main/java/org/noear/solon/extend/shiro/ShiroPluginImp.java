@@ -27,10 +27,10 @@ public class ShiroPluginImp implements Plugin {
         //
         //app.beanScan(ShiroPluginImp.class);
 
-        //把SecurityManager注入到solon bean 容器，可能还没法用；shiro框架，不会自动去拿；得找个地方，把它与shiro框架对接上
+        //把SecurityManager注入到solon bean 容器，可能还没法用；shiro框架，不会自动去拿；把它与shiro框架对接上
         //
-        SecurityUtils.setSecurityManager(new ShiroConfiguration().securityManager());
-
         //Aop.wrapAndPut(SecurityManager.class, new ShiroConfiguration().securityManager());
+
+        SecurityUtils.setSecurityManager(new ShiroConfiguration().securityManager());
     }
 }
