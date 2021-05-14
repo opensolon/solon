@@ -31,6 +31,7 @@ public class ShiroPluginImp implements Plugin {
         //
         //Aop.wrapAndPut(SecurityManager.class, new ShiroConfiguration().securityManager());
 
-        SecurityUtils.setSecurityManager(new ShiroConfiguration().securityManager());
+        //相对于 beanScan，beanMake 是处理单类的
+        app.beanMake(ShiroConfiguration.class);
     }
 }
