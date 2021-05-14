@@ -91,10 +91,16 @@ public abstract class BeanContainer {
         beanInterceptors.put(anno, new InterceptorEntity(index, interceptor));
     }
 
+    /**
+     * 添加环绕处理
+     * */
     public <T extends Annotation> void beanAroundAdd(Class<T> anno, Interceptor interceptor) {
         beanAroundAdd(anno, interceptor, 0);
     }
 
+    /**
+     * 获取环绕处理
+     * */
     public <T extends Annotation> InterceptorEntity beanAroundGet(Class<T> anno){
         return beanInterceptors.get(anno);
     }

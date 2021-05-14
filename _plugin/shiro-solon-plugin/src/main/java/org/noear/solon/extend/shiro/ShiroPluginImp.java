@@ -17,7 +17,7 @@ public class ShiroPluginImp implements Plugin {
     @SuppressWarnings("unchecked")
     @Override
     public void start(SolonApp app) {
-        //换了种方式，通过拦截器获得一级拦截权限（之前的方案，需要类上有：@Valid 注解；借助它的拦截，获得二级执行权限有）
+        //换了种方式，注册AOP环绕处理，获得一级拦截权限（之前的方案，需要类上有：@Valid 注解；借助它的拦截，获得二级执行权限有）
         //
         Aop.context().beanAroundAdd(RequiresPermissions.class, PermissionAnnotationInterceptor.instance);
         Aop.context().beanAroundAdd(RequiresRoles.class, RoleAnnotationInterceptor.instance);
