@@ -29,7 +29,7 @@ public class AuthenticateAnnotationInterceptor extends AbstractInterceptor<Requi
             handler.assertAuthorized(annotation);
         } catch (UnauthenticatedException e) {
             logger.warn(e.getMessage());
-            return Result.failure(401);
+            return Result.failure(401, e.getMessage());
         } catch (Exception e) {
             logger.error(e.getMessage());
             return Result.failure(e.getMessage());

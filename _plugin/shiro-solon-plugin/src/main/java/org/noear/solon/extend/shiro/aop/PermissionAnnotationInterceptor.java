@@ -29,7 +29,7 @@ public class PermissionAnnotationInterceptor extends AbstractInterceptor<Require
             handler.assertAuthorized(annotation);
         } catch (AuthorizationException e) {
             logger.warn(e.getMessage());
-            return Result.failure(403);
+            return Result.failure(403, e.getMessage());
         } catch (Exception e) {
             logger.error(e.getMessage());
             return Result.failure(e.getMessage());
