@@ -35,8 +35,6 @@ public class Invocation {
     }
 
     public Object invoke() throws Throwable {
-        Object tmp = interceptors.get(interceptorIndex).interceptor.doIntercept(this);
-        interceptorIndex++;
-        return tmp;
+        return interceptors.get(interceptorIndex++).doIntercept(this);
     }
 }
