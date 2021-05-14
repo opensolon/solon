@@ -51,7 +51,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
             if (anno instanceof Around) {
                 doAroundAdd((Around) anno);
             } else {
-                InterceptorEntity ie = Aop.context().beanInterceptorGet(anno.annotationType());
+                InterceptorEntity ie = Aop.context().beanAroundGet(anno.annotationType());
                 if (ie != null) {
                     doAroundAdd(ie);
                 } else {
@@ -65,7 +65,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
             if (anno instanceof Around) {
                 doAroundAdd((Around) anno);
             } else {
-                InterceptorEntity ie = Aop.context().beanInterceptorGet(anno.annotationType());
+                InterceptorEntity ie = Aop.context().beanAroundGet(anno.annotationType());
                 if (ie != null) {
                     doAroundAdd(ie);
                 } else {

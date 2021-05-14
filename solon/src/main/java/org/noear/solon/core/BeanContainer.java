@@ -83,19 +83,19 @@ public abstract class BeanContainer {
     }
 
     /**
-     * 添加拦截器
+     * 添加环绕处理
      *
-     * @param index 执行顺序（）
+     * @param index 执行顺序
      * */
-    public <T extends Annotation> void beanInterceptorAdd(Class<T> anno, Interceptor interceptor, int index) {
+    public <T extends Annotation> void beanAroundAdd(Class<T> anno, Interceptor interceptor, int index) {
         beanInterceptors.put(anno, new InterceptorEntity(index, interceptor));
     }
 
-    public <T extends Annotation> void beanInterceptorAdd(Class<T> anno, Interceptor interceptor) {
-        beanInterceptorAdd(anno, interceptor, 0);
+    public <T extends Annotation> void beanAroundAdd(Class<T> anno, Interceptor interceptor) {
+        beanAroundAdd(anno, interceptor, 0);
     }
 
-    public <T extends Annotation> InterceptorEntity beanInterceptorGet(Class<T> anno){
+    public <T extends Annotation> InterceptorEntity beanAroundGet(Class<T> anno){
         return beanInterceptors.get(anno);
     }
 

@@ -31,9 +31,9 @@ public class XPluginImp implements Plugin {
             }
         });
 
-        Aop.context().beanInterceptorAdd(CachePut.class, new CachePutInterceptor(), 110);
-        Aop.context().beanInterceptorAdd(CacheRemove.class, new CacheRemoveInterceptor(), 110);
-        Aop.context().beanInterceptorAdd(Cache.class, new CacheInterceptor(), 111);
-        Aop.context().beanInterceptorAdd(Tran.class, new TranInterceptor(), 120);
+        Aop.context().beanAroundAdd(CachePut.class, new CachePutInterceptor(), 110);
+        Aop.context().beanAroundAdd(CacheRemove.class, new CacheRemoveInterceptor(), 110);
+        Aop.context().beanAroundAdd(Cache.class, new CacheInterceptor(), 111);
+        Aop.context().beanAroundAdd(Tran.class, new TranInterceptor(), 120);
     }
 }

@@ -19,11 +19,11 @@ public class ShiroPluginImp implements Plugin {
     public void start(SolonApp app) {
         //换了种方式，通过拦截器获得一级拦截权限（之前的方案，需要类上有：@Valid 注解；借助它的拦截，获得二级执行权限有）
         //
-        Aop.context().beanInterceptorAdd(RequiresPermissions.class, PermissionAnnotationInterceptor.instance);
-        Aop.context().beanInterceptorAdd(RequiresRoles.class, RoleAnnotationInterceptor.instance);
-        Aop.context().beanInterceptorAdd(RequiresUser.class, UserAnnotationInterceptor.instance);
-        Aop.context().beanInterceptorAdd(RequiresGuest.class, GuestAnnotationInterceptor.instance);
-        Aop.context().beanInterceptorAdd(RequiresAuthentication.class, AuthenticateAnnotationInterceptor.instance);
+        Aop.context().beanAroundAdd(RequiresPermissions.class, PermissionAnnotationInterceptor.instance);
+        Aop.context().beanAroundAdd(RequiresRoles.class, RoleAnnotationInterceptor.instance);
+        Aop.context().beanAroundAdd(RequiresUser.class, UserAnnotationInterceptor.instance);
+        Aop.context().beanAroundAdd(RequiresGuest.class, GuestAnnotationInterceptor.instance);
+        Aop.context().beanAroundAdd(RequiresAuthentication.class, AuthenticateAnnotationInterceptor.instance);
 
         //这个不需要，因为这个插件里，没有注解类
         //
