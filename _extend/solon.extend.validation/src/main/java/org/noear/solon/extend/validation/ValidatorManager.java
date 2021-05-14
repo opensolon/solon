@@ -192,7 +192,7 @@ public class ValidatorManager implements Handler {
         return false;
     }
 
-    protected boolean failureDo(Context ctx, Annotation ano, Result result, String message) {
+    public boolean failureDo(Context ctx, Annotation ano, Result result, String message) {
         if (ctx == null) {
             return false;
         }

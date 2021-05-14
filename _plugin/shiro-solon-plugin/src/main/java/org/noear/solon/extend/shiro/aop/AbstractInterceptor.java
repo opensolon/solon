@@ -6,6 +6,7 @@ import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.ext.DataThrowable;
+import org.noear.solon.extend.validation.ValidatorManager;
 
 import java.lang.annotation.Annotation;
 
@@ -22,18 +23,10 @@ public abstract class AbstractInterceptor<T extends Annotation> implements Inter
             Result result = validate(anno);
 
             if (result.getCode() != Result.SUCCEED_CODE) {
-                //获取上下文对象
-                Context ctx = Context.current();
-
-                if (ctx != null) {
-                    if (result.getCode() > Result.FAILURE_CODE) {
-                        ctx.statusSet(result.getCode());
-                    } else {
-                        ctx.result = result;
-                    }
-                    //此异常，可中止处理
+                if(ValidatorManager.global()
+                        .failureDo(Context.current(), anno, result, result.getDescription())){
                     throw new DataThrowable();
-                } else {
+                }else{
                     throw new AuthorizationException(result.getDescription());
                 }
             }
