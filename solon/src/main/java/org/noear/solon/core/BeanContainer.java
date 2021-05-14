@@ -5,6 +5,8 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.handle.HandlerLoader;
+import org.noear.solon.core.handle.Interceptor;
+import org.noear.solon.core.handle.InterceptorEntity;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.util.ConvertUtil;
 
@@ -50,7 +52,10 @@ public abstract class BeanContainer {
      * bean 注入器
      */
     protected final Map<Class<?>, BeanInjector<?>> beanInjectors = new HashMap<>();
-
+    /**
+     * bean 拦截器
+     * */
+    protected final Map<Class<?>, InterceptorEntity> beanInterceptors = new HashMap<>();
 
 
     /**
@@ -71,8 +76,24 @@ public abstract class BeanContainer {
     }
 
     public void beanInjectorsCopy(BeanContainer container){
+        //用于跨容器复制
         container.beanInjectors.forEach((k,v)->{
             beanInjectors.putIfAbsent(k,v);
+        });
+    }
+
+    public <T extends Annotation> void beanInterceptorAdd(Class<T> anno, int index, Interceptor interceptor) {
+        beanInterceptors.put(anno, new InterceptorEntity(index, interceptor));
+    }
+
+    public <T extends Annotation> InterceptorEntity beanInterceptorGet(Class<T> anno){
+        return beanInterceptors.get(anno);
+    }
+
+    public void beanInterceptorsCopy(BeanContainer container) {
+        //用于跨容器复制
+        container.beanInterceptors.forEach((k, v) -> {
+            beanInterceptors.putIfAbsent(k, v);
         });
     }
 

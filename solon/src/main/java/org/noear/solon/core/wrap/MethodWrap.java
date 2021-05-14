@@ -4,6 +4,7 @@ import org.noear.solon.annotation.*;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.InterceptorChain;
 import org.noear.solon.core.handle.InterceptorChainNode;
+import org.noear.solon.core.handle.InterceptorEntity;
 import org.noear.solon.core.handle.Invocation;
 
 import java.lang.annotation.Annotation;
@@ -51,7 +52,12 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
             if (anno instanceof Around) {
                 doAroundAdd((Around) anno);
             } else {
-                doAroundAdd(anno.annotationType().getAnnotation(Around.class));
+                InterceptorEntity ie = Aop.context().beanInterceptorGet(anno.annotationType());
+                if (ie != null) {
+                    doAroundAdd(ie);
+                } else {
+                    doAroundAdd(anno.annotationType().getAnnotation(Around.class));
+                }
             }
         }
 
@@ -60,7 +66,12 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
             if (anno instanceof Around) {
                 doAroundAdd((Around) anno);
             } else {
-                doAroundAdd(anno.annotationType().getAnnotation(Around.class));
+                InterceptorEntity ie = Aop.context().beanInterceptorGet(anno.annotationType());
+                if (ie != null) {
+                    doAroundAdd(ie);
+                } else {
+                    doAroundAdd(anno.annotationType().getAnnotation(Around.class));
+                }
             }
         }
 
@@ -96,6 +107,12 @@ public class MethodWrap implements InterceptorChain, MethodHolder {
     private void doAroundAdd(Around a) {
         if (a != null) {
             arounds.add(new InterceptorChainNode(a.index(), Aop.get(a.value())));
+        }
+    }
+
+    private void doAroundAdd(InterceptorEntity i) {
+        if (i != null) {
+            arounds.add(new InterceptorChainNode(i.index, i.interceptor));
         }
     }
 
