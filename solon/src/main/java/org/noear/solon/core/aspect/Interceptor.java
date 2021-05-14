@@ -2,7 +2,7 @@ package org.noear.solon.core.aspect;
 
 
 /**
- * 方法拦截器（通过 @Around 随载）
+ * 方法拦截器（通过 @Around 承载，或直接注册）
  *
  * <pre><code>
  * @Controller
@@ -17,14 +17,14 @@ package org.noear.solon.core.aspect;
  * //
  * // 注解传导示例：（用于简化使用）
  * //
- * @Around(value = TranInterceptor.class, index = 20)
+ * @Around(value = TranInterceptor.class, index = 120)
  * @Target({ElementType.METHOD})
  * @Retention(RetentionPolicy.RUNTIME)
  * public @interface Tran {
  *     ....
  * }
  *
- * @Around(value = CacheInterceptor.class, index = 10)
+ * @Around(value = CacheInterceptor.class, index = 110)
  * @Target({ElementType.METHOD})
  * @Retention(RetentionPolicy.RUNTIME)
  * public @interface Cache {
@@ -32,7 +32,7 @@ package org.noear.solon.core.aspect;
  * }
  *
  * //或者直接注册
- * Aop.context().beanInterceptorAdd(Cache.class, 11, new CacheInterceptor());
+ * Aop.context().beanInterceptorAdd(Cache.class, 111, new CacheInterceptor());
  * </code></pre>
  *
  * @author noear
