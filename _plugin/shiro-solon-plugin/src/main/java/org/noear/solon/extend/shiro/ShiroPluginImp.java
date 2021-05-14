@@ -23,7 +23,7 @@ public class ShiroPluginImp implements Plugin {
         Aop.context().beanAroundAdd(RequiresGuest.class, GuestInterceptor.instance);
         Aop.context().beanAroundAdd(RequiresAuthentication.class, AuthenticateInterceptor.instance);
 
-        //这个不需要，因为这个插件里，没有注解类
+        //这个不需要，因为这个插件里，没有大片的类要扫描
         //
         //app.beanScan(ShiroPluginImp.class);
 
