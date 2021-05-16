@@ -6,6 +6,7 @@ package org.noear.solon.core.handle;
  * @author noear
  * @since 1.0
  * */
+@FunctionalInterface
 public interface Handler {
     void handle(Context context) throws Throwable;
 }
