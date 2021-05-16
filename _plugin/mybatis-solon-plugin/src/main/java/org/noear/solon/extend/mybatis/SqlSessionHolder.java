@@ -103,7 +103,7 @@ public class SqlSessionHolder implements SqlSession {
 
     @Override
     public int insert(String s, Object o) {
-        return real.insert(s, 0);
+        return real.insert(s, o);
     }
 
     @Override
