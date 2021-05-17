@@ -5,7 +5,6 @@ import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.water.WaterClient;
-import org.noear.water.utils.IPUtils;
 import org.noear.water.utils.RuntimeStatus;
 import org.noear.water.utils.RuntimeUtils;
 
@@ -16,7 +15,7 @@ import org.noear.water.utils.RuntimeUtils;
 public class HandlerStatus implements Handler {
     @Override
     public void handle(Context ctx) throws Throwable {
-        String ip = IPUtils.getIP(ctx);
+        String ip = ctx.realIp();
 
         if (WaterClient.Whitelist.existsOfMasterIp(ip)) {
             RuntimeStatus rs = RuntimeUtils.getStatus();
