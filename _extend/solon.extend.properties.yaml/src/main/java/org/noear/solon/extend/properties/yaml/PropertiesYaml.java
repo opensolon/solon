@@ -16,7 +16,7 @@ public class PropertiesYaml extends Properties {
         Object tmp = yaml.load(inputStream);
 
         String prefix = "";
-        do_load(prefix, tmp);
+        load0(prefix, tmp);
     }
 
     public synchronized void loadYml(Reader reader) throws IOException {
@@ -25,14 +25,14 @@ public class PropertiesYaml extends Properties {
         Object tmp = yaml.load(reader);
 
         String prefix = "";
-        do_load(prefix, tmp);
+        load0(prefix, tmp);
     }
 
-    private void do_load(String prefix, Object tmp) {
+    private void load0(String prefix, Object tmp) {
         if (tmp instanceof Map) {
             ((Map<String, Object>) tmp).forEach((k, v) -> {
                 String prefix2 = prefix + "." + k;
-                do_load(prefix2, v);
+                load0(prefix2, v);
             });
             return;
         }
@@ -43,16 +43,16 @@ public class PropertiesYaml extends Properties {
             int index = 0;
             for (Object v : ((List) tmp)) {
                 String prefix2 = prefix + "[" + index + "]";
-                do_load(prefix2, v);
+                load0(prefix2, v);
                 index++;
             }
             return;
         }
 
-        do_put(prefix, String.valueOf(tmp));
+        put0(prefix, String.valueOf(tmp));
     }
 
-    private void do_put(String key, Object val){
+    private void put0(String key, Object val){
         if (key.startsWith(".")) {
             put(key.substring(1), val);
         } else {
