@@ -13,6 +13,10 @@ import org.noear.solon.core.event.EventBus;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * @author noear
+ * @since 1.3
+ */
 public class MemCacheService implements CacheService {
     private String _cacheKeyHead;
     private int _defaultSeconds;

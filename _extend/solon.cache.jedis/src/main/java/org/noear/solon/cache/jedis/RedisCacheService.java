@@ -5,7 +5,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.cache.CacheService;
 import org.noear.solon.core.event.EventBus;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Properties;
 
@@ -29,17 +28,15 @@ public class RedisCacheService implements CacheService {
         String password = prop.getProperty("password");
         String db_str = prop.getProperty("db");
         String maxTotaol_str = prop.getProperty("maxTotaol");
-        String maxWaitMillis_str = prop.getProperty("maxWaitMillis");
 
         if (defSeconds == 0) {
-            if(Utils.isEmpty(defSeconds_str) == false){
+            if (Utils.isEmpty(defSeconds_str) == false) {
                 defSeconds = Integer.parseInt(defSeconds_str);
             }
         }
 
         int db = 0;
         int maxTotaol = 200;
-        long maxWaitMillis = 3000;
 
         if (Utils.isNotEmpty(db_str)) {
             db = Integer.parseInt(db_str);
@@ -47,10 +44,6 @@ public class RedisCacheService implements CacheService {
 
         if (Utils.isNotEmpty(maxTotaol_str)) {
             maxTotaol = Integer.parseInt(maxTotaol_str);
-        }
-
-        if (Utils.isNotEmpty(maxWaitMillis_str)) {
-            maxWaitMillis = Integer.parseInt(maxWaitMillis_str);
         }
 
         _cacheKeyHead = keyHeader;
@@ -64,7 +57,7 @@ public class RedisCacheService implements CacheService {
             _cacheKeyHead = Solon.cfg().appName();
         }
 
-        _cache = new RedisX(server, password, db, maxTotaol, maxWaitMillis);
+        _cache = new RedisX(prop, server, password, db, maxTotaol);
     }
 
     @Override

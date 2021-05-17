@@ -1,15 +1,17 @@
 package org.noear.solon.cache.jedis;
 
+import org.noear.solon.Utils;
 import redis.clients.jedis.*;
 
 import java.util.List;
+import java.util.Properties;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 class RedisX {
     private JedisPool _jedisPool;
 
-    public RedisX(String server, String password, int db, int maxTotaol, long maxWaitMillis) {
+    protected RedisX(Properties prop, String server, String password, int db, int maxTotaol) {
         JedisPoolConfig config = new JedisPoolConfig();
 
         if (db < 0) {
@@ -25,15 +27,12 @@ class RedisX {
             maxIdle = 5;
         }
 
-        if(maxWaitMillis < 3000){
-            maxWaitMillis = 3000;
-        }
-
         config.setMaxTotal(maxTotaol);
         config.setMaxIdle(maxIdle);
-        config.setMaxWaitMillis(maxWaitMillis);
         config.setTestOnBorrow(false);
         config.setTestOnReturn(false);
+
+        Utils.injectProperties(config, prop);
 
         String[] ss = server.split(":");
 
