@@ -5,8 +5,6 @@ import org.noear.solon.core.handle.ActionExecutorDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
 
-import java.lang.reflect.Parameter;
-
 public class SnackJsonActionExecutor extends ActionExecutorDefault {
     private static final String label = "/json";
 
