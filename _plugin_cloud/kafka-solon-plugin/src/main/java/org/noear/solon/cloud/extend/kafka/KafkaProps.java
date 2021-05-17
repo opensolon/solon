@@ -1,6 +1,5 @@
 package org.noear.solon.cloud.extend.kafka;
 
-import org.noear.solon.Solon;
 import org.noear.solon.cloud.CloudProps;
 
 /**

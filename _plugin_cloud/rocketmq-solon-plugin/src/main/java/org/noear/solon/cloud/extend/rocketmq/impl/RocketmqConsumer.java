@@ -1,9 +1,12 @@
 package org.noear.solon.cloud.extend.rocketmq.impl;
 
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
+import org.noear.solon.Utils;
+import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author noear
@@ -45,6 +48,12 @@ public class RocketmqConsumer {
 
             consumer.setConsumerGroup(cfg.queueName);
             //consumer.setMessageModel(MessageModel.BROADCASTING);
+
+            //绑定定制属性
+            Properties props = RocketmqProps.instance.getEventConsumerProps();
+            if(props.size() > 0) {
+                Utils.injectProperties(consumer, props);
+            }
 
             try {
                 //要消费的topic，可使用tag进行简单过滤

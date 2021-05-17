@@ -7,8 +7,11 @@ import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.exception.RemotingException;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
 import org.noear.solon.cloud.model.Event;
+
+import java.util.Properties;
 
 /**
  * @author noear
@@ -43,6 +46,13 @@ public class RocketmqProducer {
             }
             //失败后重试2次
             producer.setRetryTimesWhenSendFailed(2);
+
+            //绑定定制属性
+            Properties props = RocketmqProps.instance.getEventProducerProps();
+            if(props.size() > 0) {
+                Utils.injectProperties(producer, props);
+            }
+
             producer.start();
         }
     }

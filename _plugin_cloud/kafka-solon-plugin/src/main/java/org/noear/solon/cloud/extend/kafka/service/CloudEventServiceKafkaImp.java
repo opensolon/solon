@@ -60,16 +60,24 @@ public class CloudEventServiceKafkaImp implements CloudEventService {
             return;
         }
 
-        Properties props = new Properties();
+        Properties config = new Properties();
 
-        props.put("bootstrap.servers", server);
-        props.put("acks", "all");
-        props.put("retries", 0);
-        props.put("batch.size", 16384);
-        props.put("key.serializer", StringSerializer.class.getName());
-        props.put("value.serializer", StringSerializer.class.getName());
+        config.put("bootstrap.servers", server);
+        config.put("acks", "all");
+        config.put("retries", 0);
+        config.put("batch.size", 16384);
+        config.put("key.serializer", StringSerializer.class.getName());
+        config.put("value.serializer", StringSerializer.class.getName());
 
-        producer = new KafkaProducer<String, String>(props);
+        //绑定定制属性
+        Properties props = KafkaProps.instance.getEventProducerProps();
+        if (props.size() > 0) {
+            props.forEach((k, v) -> {
+                config.put(k, v);
+            });
+        }
+
+        producer = new KafkaProducer<String, String>(config);
     }
 
     private synchronized void initConsumer() {
@@ -77,19 +85,27 @@ public class CloudEventServiceKafkaImp implements CloudEventService {
             return;
         }
 
-        Properties props = new Properties();
+        Properties config = new Properties();
 
-        props.put("bootstrap.servers", server);
-        props.put("group.id", Solon.cfg().appGroup() + "_" + Solon.cfg().appName());
-        props.put("enable.auto.commit", "true");
-        props.put("auto.commit.interval.ms", "1000");
-        props.put("session.timeout.ms", "30000");
-        props.put("max.poll.records", 100);
-        props.put("auto.offset.reset", "earliest");
-        props.put("key.deserializer", StringDeserializer.class.getName());
-        props.put("value.deserializer", StringDeserializer.class.getName());
+        config.put("bootstrap.servers", server);
+        config.put("group.id", Solon.cfg().appGroup() + "_" + Solon.cfg().appName());
+        config.put("enable.auto.commit", "true");
+        config.put("auto.commit.interval.ms", "1000");
+        config.put("session.timeout.ms", "30000");
+        config.put("max.poll.records", 100);
+        config.put("auto.offset.reset", "earliest");
+        config.put("key.deserializer", StringDeserializer.class.getName());
+        config.put("value.deserializer", StringDeserializer.class.getName());
 
-        consumer = new KafkaConsumer<String, String>(props);
+        //绑定定制属性
+        Properties props = KafkaProps.instance.getEventConsumerProps();
+        if (props.size() > 0) {
+            props.forEach((k, v) -> {
+                config.put(k, v);
+            });
+        }
+
+        consumer = new KafkaConsumer<String, String>(config);
     }
 
 

@@ -4,6 +4,8 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.yaml.snakeyaml.events.Event;
 
+import java.util.Properties;
+
 /**
  * 云服务属性配置
  *
@@ -47,6 +49,8 @@ public class CloudProps {
     private String EVENT_QUEUE = "solon.cloud.@@.event.queue";
     private String EVENT_SEAL = "solon.cloud.@@.event.seal";
     private String EVENT_CHANNEL = "solon.cloud.@@.event.channel";
+    private String EVENT_CONSUMER = "solon.cloud.@@.event.consumer";
+    private String EVENT_PRODUCER = "solon.cloud.@@.event.producer";
 
 
     //锁服务相关
@@ -73,8 +77,11 @@ public class CloudProps {
     private String ID_ENABLE = "solon.cloud.@@.id.enable";
     private String ID_START = "solon.cloud.@@.id.start";
 
+    private final String frame;
 
     public CloudProps(String frame) {
+        this.frame = frame;
+
         SERVER = SERVER.replace("@@", frame);
         TOKEN = TOKEN.replace("@@", frame);
         USERNAME = USERNAME.replace("@@", frame);
@@ -106,6 +113,8 @@ public class CloudProps {
         EVENT_QUEUE = EVENT_QUEUE.replace("@@", frame);
         EVENT_SEAL = EVENT_SEAL.replace("@@", frame);
         EVENT_CHANNEL = EVENT_CHANNEL.replace("@@", frame);
+        EVENT_CONSUMER = EVENT_CONSUMER.replace("@@",frame);
+        EVENT_PRODUCER = EVENT_PRODUCER.replace("@@",frame);
 
         LOCK_ENABLE = LOCK_ENABLE.replace("@@", frame);
 
@@ -272,6 +281,14 @@ public class CloudProps {
 
     public String getEventChannel() {
         return Solon.cfg().get(EVENT_CHANNEL);
+    }
+
+    public Properties getEventConsumerProps(){
+        return Solon.cfg().getProp(EVENT_CONSUMER);
+    }
+
+    public Properties getEventProducerProps(){
+        return Solon.cfg().getProp(EVENT_PRODUCER);
     }
 
     //
