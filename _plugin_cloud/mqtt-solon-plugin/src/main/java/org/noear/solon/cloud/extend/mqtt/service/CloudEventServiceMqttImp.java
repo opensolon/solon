@@ -87,6 +87,12 @@ public class CloudEventServiceMqttImp implements CloudEventService {
         options.setKeepAliveInterval(100); //心跳时长
         options.setServerURIs(new String[]{server});
 
+        //绑定定制属性
+        Properties props = MqttProps.instance.getEventProducerProps();
+        if(props.size() > 0){
+            Utils.injectProperties(options, props);
+        }
+
         //设置死信
         options.setWill("client.close", clientId.getBytes(StandardCharsets.UTF_8), 1, false);
 
