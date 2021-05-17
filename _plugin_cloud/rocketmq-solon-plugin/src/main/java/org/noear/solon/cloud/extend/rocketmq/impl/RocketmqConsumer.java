@@ -38,7 +38,9 @@ public class RocketmqConsumer {
 
             consumer.setNamesrvAddr(cfg.server);
             //一次最大消费的条数
-            consumer.setPullBatchSize(1);
+            consumer.setConsumeMessageBatchMaxSize(1); //1是默认值
+            //一次最大拉取的条数
+            consumer.setPullBatchSize(32); //32是默认值
             //无消息时，最大阻塞时间。默认5000 单位ms
 
             consumer.setConsumerGroup(cfg.queueName);
