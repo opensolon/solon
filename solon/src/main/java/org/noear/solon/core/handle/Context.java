@@ -3,7 +3,7 @@ package org.noear.solon.core.handle;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.*;
-import org.noear.solon.core.message.Session;
+import org.noear.solon.core.util.IpUtil;
 import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 
@@ -13,7 +13,6 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,6 +58,11 @@ public abstract class Context {
     /**获取远程IP*/
     @Note("获取远程IP")
     public abstract String ip();
+    @Note("获取真实远程IP")
+    public String realIp(){
+        return IpUtil.getIp(this);
+    }
+
     /**是否为分段上传*/
     @Note("是否为分段内容")
     public boolean isMultipart() {

@@ -6,8 +6,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
+import org.noear.solon.core.util.IpUtil;
 import org.noear.water.WaterClient;
-import org.noear.water.utils.IPUtils;
 
 /**
  * @author noear
@@ -20,7 +20,8 @@ public class HandlerStop implements Handler {
     }
 
     private String handle0(Context ctx) throws Throwable {
-        String ip = IPUtils.getIP(ctx);
+        String ip = ctx.realIp();
+
         if (WaterClient.Whitelist.existsOfMasterIp(ip)) {
             stateSet(false);
             Solon.stop();
