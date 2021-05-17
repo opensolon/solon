@@ -7,15 +7,15 @@ import org.noear.weed.cache.ICacheServiceEx;
  * @author noear
  * @since 1.3
  */
-public class CacheWarp implements ICacheServiceEx, CacheService {
-    public static CacheWarp warp(ICacheServiceEx cache){
-        return new CacheWarp(cache);
+public class CacheWrap implements ICacheServiceEx, CacheService {
+    public static CacheWrap wrap(ICacheServiceEx cache){
+        return new CacheWrap(cache);
     }
 
 
     ICacheServiceEx real;
 
-    public CacheWarp(ICacheServiceEx real) {
+    public CacheWrap(ICacheServiceEx real) {
         this.real = real;
     }
 

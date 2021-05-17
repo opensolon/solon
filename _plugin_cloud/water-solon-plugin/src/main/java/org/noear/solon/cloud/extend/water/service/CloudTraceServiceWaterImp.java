@@ -17,6 +17,11 @@ public class CloudTraceServiceWaterImp implements CloudTraceService {
     }
 
     @Override
+    public String HEADER_FROM_ID_NAME() {
+        return WW.http_header_from;
+    }
+
+    @Override
     public String getTraceId() {
         Context ctx = Context.current();
 
@@ -31,6 +36,22 @@ public class CloudTraceServiceWaterImp implements CloudTraceService {
             }
 
             return trace_id;
+        }
+    }
+
+    @Override
+    public String getFromId() {
+        Context ctx = Context.current();
+
+        if (ctx == null) {
+            return "";
+        } else {
+            String from_id = ctx.header(HEADER_FROM_ID_NAME());
+            if (Utils.isEmpty(from_id)) {
+                from_id = ctx.realIp();
+            }
+
+            return from_id;
         }
     }
 }
