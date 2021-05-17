@@ -1,6 +1,5 @@
 package org.noear.weed.solon.plugin;
 
-import org.noear.snack.ONode;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.*;
 import org.noear.weed.WeedConfig;
