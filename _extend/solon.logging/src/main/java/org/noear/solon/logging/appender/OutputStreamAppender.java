@@ -54,7 +54,7 @@ public abstract class OutputStreamAppender extends AppenderSimple {
                     purpleln(title);
                     break;
                 default:
-                    blackln(title);
+                    out.println(title);
                     break;
             }
 
@@ -66,11 +66,6 @@ public abstract class OutputStreamAppender extends AppenderSimple {
                 out.println(ONode.stringify(content));
             }
         }
-    }
-
-    protected void blackln(Object txt) {
-        out.println(PrintUtil.ANSI_BLACK + txt);
-        out.print(PrintUtil.ANSI_RESET);
     }
 
     protected void redln(Object txt) {
