@@ -63,11 +63,11 @@ public class CloudEventServiceKafkaImp implements CloudEventService {
         Properties config = new Properties();
 
         config.put("bootstrap.servers", server);
-        config.put("acks", "all");
-        config.put("retries", 0);
-        config.put("batch.size", 16384);
         config.put("key.serializer", StringSerializer.class.getName());
         config.put("value.serializer", StringSerializer.class.getName());
+        config.put("acks", "all");
+        config.put("retries", 0);
+        config.put("batch.size", 16384); //默认是16384Bytes，即16kB
 
         //绑定定制属性
         Properties props = KafkaProps.instance.getEventProducerProps();
@@ -77,7 +77,7 @@ public class CloudEventServiceKafkaImp implements CloudEventService {
             });
         }
 
-        producer = new KafkaProducer<String, String>(config);
+        producer = new KafkaProducer<>(config);
     }
 
     private synchronized void initConsumer() {
@@ -88,14 +88,14 @@ public class CloudEventServiceKafkaImp implements CloudEventService {
         Properties config = new Properties();
 
         config.put("bootstrap.servers", server);
+        config.put("key.deserializer", StringDeserializer.class.getName());
+        config.put("value.deserializer", StringDeserializer.class.getName());
         config.put("group.id", Solon.cfg().appGroup() + "_" + Solon.cfg().appName());
         config.put("enable.auto.commit", "true");
         config.put("auto.commit.interval.ms", "1000");
         config.put("session.timeout.ms", "30000");
         config.put("max.poll.records", 100);
         config.put("auto.offset.reset", "earliest");
-        config.put("key.deserializer", StringDeserializer.class.getName());
-        config.put("value.deserializer", StringDeserializer.class.getName());
 
         //绑定定制属性
         Properties props = KafkaProps.instance.getEventConsumerProps();
@@ -105,7 +105,7 @@ public class CloudEventServiceKafkaImp implements CloudEventService {
             });
         }
 
-        consumer = new KafkaConsumer<String, String>(config);
+        consumer = new KafkaConsumer<>(config);
     }
 
 
