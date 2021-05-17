@@ -3,6 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
@@ -10,14 +11,16 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>semaphore-solon-plugin</artifactId>
+    <artifactId>fastdfs-solon-plugin</artifactId>
     <packaging>jar</packaging>
+
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.cloud</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>
