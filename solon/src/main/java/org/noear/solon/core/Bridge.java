@@ -6,7 +6,6 @@ import org.noear.solon.core.handle.*;
 import org.noear.solon.core.tran.TranExecutor;
 
 import java.util.*;
-import java.util.function.Supplier;
 
 /**
  * 内部扩展桥接器
@@ -107,7 +106,7 @@ public class Bridge {
 
 
     //
-    // XActionExecutor 对接
+    // ActionExecutor 对接
     //
 
     /**
@@ -157,7 +156,7 @@ public class Bridge {
 
 
     //
-    // XRender 对接
+    // Render 对接
     //
 
     /**
@@ -200,7 +199,7 @@ public class Bridge {
 
 
     //
-    // XTranExecutor 对接
+    // TranExecutor 对接
     //
     private static TranExecutor _tranExecutor = () -> false;
 
