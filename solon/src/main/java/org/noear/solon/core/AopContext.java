@@ -97,7 +97,8 @@ public class AopContext extends BeanContainer {
         beanBuilderAdd(Remoting.class, (clz, bw, anno) -> {
             //设置remoting状态
             bw.remotingSet(true);
-            new HandlerLoader(bw).load(Solon.global());
+            //注册到容器
+            beanRegister(bw, "", false);
         });
 
         //注册 @Controller 构建器
