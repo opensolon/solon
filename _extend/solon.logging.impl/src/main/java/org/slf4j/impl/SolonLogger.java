@@ -2,6 +2,7 @@ package org.slf4j.impl;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.core.Aop;
 import org.noear.solon.ext.WarnThrowable;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.logging.LogOptions;
@@ -27,6 +28,10 @@ public class SolonLogger implements Logger {
 
         if (Solon.global() != null) {
             level = LogOptions.getLoggerLevel(name);
+        } else {
+            Aop.beanOnloaded(() -> {
+                level = LogOptions.getLoggerLevel(name);
+            });
         }
     }
 
