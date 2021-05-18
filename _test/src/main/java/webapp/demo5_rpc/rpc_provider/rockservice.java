@@ -1,8 +1,8 @@
 package webapp.demo5_rpc.rpc_provider;
 
 import org.noear.solon.annotation.Before;
-import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Remoting;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.MethodType;
 import webapp.demo5_rpc.rockapi;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Before({SocketChannelAdapter.class})
 @Mapping(value = "/demo5/test", method = {MethodType.HTTP, MethodType.SOCKET})
-@Component(remoting = true)
+@Remoting
 public class rockservice implements rockapi {
 
     @Override

@@ -1,7 +1,7 @@
 package webapp.demo2_mvc;
 
-import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Remoting;
 import org.noear.solon.core.handle.Context;
 
 import java.time.LocalDate;
@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Mapping("/demo2/rpc/")
-@Component(remoting = true)
+@Remoting
 public class JsonRpcController {
 
     public Object json(Context ctx){
