@@ -1,7 +1,7 @@
 package webapp.demof_schedule;
 
 
-import org.noear.solon.extend.cron4j.Cron4j;
+import org.noear.solon.extend.cron4.Cron4j;
 
 import java.util.Date;
 
