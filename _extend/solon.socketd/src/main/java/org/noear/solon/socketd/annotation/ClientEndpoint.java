@@ -26,6 +26,12 @@ public @interface ClientEndpoint {
     String handshakeHeader() default "";
 
     /**
+     * 自动重链
+     * */
+    @Note("自动重链")
+    boolean autoReconnect() default true;
+
+    /**
      * 心跳频率（单位：秒）
      */
     @Note("心跳频率（单位：秒）")
