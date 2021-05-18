@@ -50,16 +50,25 @@ public class BioConnector extends ConnectorBase<Socket> {
     void startReceive(Session session, Socket socket) {
         Utils.pools.submit(() -> {
             while (true) {
-                Message message = BioReceiver.receive(socket);
-
-                if (message != null) {
-                    try {
-                        ListenerProxy.getGlobal().onMessage(session, message);
-                    } catch (Throwable ex) {
-                        EventBus.push(ex);
-                    }
-                } else {
+                if (socket.isClosed()) {
+                    ListenerProxy.getGlobal().onClose(session);
                     break;
+                }
+
+                try {
+                    Message message = BioReceiver.receive(socket);
+
+                    if (message != null) {
+                        Utils.pools.execute(() -> {
+                            try {
+                                ListenerProxy.getGlobal().onMessage(session, message);
+                            } catch (Throwable ex) {
+                                ListenerProxy.getGlobal().onError(session, ex);
+                            }
+                        });
+                    }
+                } catch (Exception ex) {
+                    ListenerProxy.getGlobal().onError(session, ex);
                 }
             }
         });

@@ -46,16 +46,20 @@ class BioServer {
                         break;
                     }
 
-                    Message message = BioReceiver.receive(socket);
+                    try {
+                        Message message = BioReceiver.receive(socket);
 
-                    if (message != null) {
-                        pool.execute(() -> {
-                            try {
-                                ListenerProxy.getGlobal().onMessage(session, message);
-                            } catch (Throwable ex) {
-                                ListenerProxy.getGlobal().onError(session, ex);
-                            }
-                        });
+                        if (message != null) {
+                            pool.execute(() -> {
+                                try {
+                                    ListenerProxy.getGlobal().onMessage(session, message);
+                                } catch (Throwable ex) {
+                                    ListenerProxy.getGlobal().onError(session, ex);
+                                }
+                            });
+                        }
+                    } catch (Throwable ex) {
+                        ListenerProxy.getGlobal().onError(session, ex);
                     }
                 }
             });
