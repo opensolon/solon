@@ -86,9 +86,6 @@ public class AopContext extends BeanContainer {
             //添加bean形态处理
             addBeanShape(clz, bw);
 
-            //设置remoting状态
-            bw.remotingSet(anno.remoting());
-
             //注册到容器
             beanRegister(bw, anno.value(), anno.typed());
         });
