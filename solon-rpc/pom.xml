@@ -20,6 +20,10 @@
             <artifactId>solon-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.serialization.hession</artifactId>
+        </dependency>
 
         <!-- rpc client -->
         <dependency>
@@ -30,6 +34,11 @@
             <groupId>org.noear</groupId>
             <artifactId>nami.coder.snack3</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>nami.coder.hessian</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

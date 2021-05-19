@@ -35,7 +35,7 @@ public class FastjsonDecoder implements Decoder {
             }
 
             if(str.contains("\"@type\"")){
-                returnVal = JSON.parseObject(str, Throwable.class);
+                returnVal = JSON.parseObject(str);
             }else {
                 returnVal = JSON.parseObject(str, type);
             }
