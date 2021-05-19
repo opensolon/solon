@@ -12,9 +12,7 @@ import java.util.Map;
 
 public class FastjsonDecoder implements Decoder {
     static {
-        ParserConfig config = ParserConfig.getGlobalInstance();
-        config.setAutoTypeSupport(true);
-        config.setSafeMode(false);
+        ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
     }
 
     public static final FastjsonDecoder instance = new FastjsonDecoder();
@@ -34,7 +32,12 @@ public class FastjsonDecoder implements Decoder {
             if (str == null) {
                 return (T) str;
             }
-            returnVal = JSONObject.parseObject(str, type);
+
+            if(str.contains("\"@type\":")) {
+                returnVal = JSONObject.parseObject(str);
+            }else{
+                returnVal = JSONObject.parseObject(str, type);
+            }
 
         } catch (Throwable ex) {
             returnVal = ex;
