@@ -10,30 +10,51 @@ public interface CloudListService {
     /**
      * 在名单中
      *
-     * @param name 名称
+     * @param names 名称
      * @param type 检测类型
      * @param value 值
      */
-    boolean inList(String name, String type, String value);
+    boolean inList(String names, String type, String value);
 
     /**
      * 在IP名单中
      * */
-    default boolean inListOfIp(String name, String ip) {
-        return inList(name, "ip", ip);
+    default boolean inListOfIp(String names, String ip) {
+        return inList(names, "ip", ip);
+    }
+
+    /**
+     * 在IP名单中
+     * */
+    default boolean inListOfServerIp(String ip) {
+        return inList("server", "ip", ip);
+    }
+
+    /**
+     * 在IP名单中
+     * */
+    default boolean inListOfClientIp(String ip) {
+        return inList("client", "ip", ip);
+    }
+
+    /**
+     * 在IP名单中
+     * */
+    default boolean inListOfClientAndServerIp(String ip){
+        return inList("client,server","ip",ip);
     }
 
     /**
      * 在手机名单中
      * */
-    default boolean inListOfMobile(String name, String mobile) {
-        return inList(name, "mobile", mobile);
+    default boolean inListOfMobile(String names, String mobile) {
+        return inList(names, "mobile", mobile);
     }
 
     /**
      * 在域名单中
      * */
-    default boolean inListOfDomain(String name, String domain) {
-        return inList(name, "domain", domain);
+    default boolean inListOfDomain(String names, String domain) {
+        return inList(names, "domain", domain);
     }
 }
