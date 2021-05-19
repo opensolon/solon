@@ -295,16 +295,17 @@ String rst = rpc.hello("noear");
 * 2.加载扩展文件夹
 * 3.扫描插件并排序
 * 4.运行 initialize 函数
-* 5.推送 AppInitEndEvent 事件
+* 5.推送 AppInitEndEvent [事件]
 * 6.运行插件
-* 7.推送 PluginLoadEndEvent 事件
+* 7.推送 PluginLoadEndEvent [事件]
 * 8.导入java bean(@Import)
 * 9.扫描并加载java bean
-* a.推送 BeanLoadEndEvent 事件
+* a.推送 BeanLoadEndEvent [事件]
 * b.加载渲染印映关系
 * c.执行bean加完成事件
-* d.推送 AppLoadEndEvent 事件
+* d.推送 AppLoadEndEvent [事件]
 * e.结束
+
 
 ### 附6：Helloworld 的单机并发数 [《helloworld_wrk_test》](https://gitee.com/noear/helloworld_wrk_test)
 
