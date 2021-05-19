@@ -12,7 +12,9 @@ import java.util.Map;
 
 public class FastjsonDecoder implements Decoder {
     static {
-        ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
+        ParserConfig config = ParserConfig.getGlobalInstance();
+        config.setAutoTypeSupport(true);
+        config.setSafeMode(false);
     }
 
     public static final FastjsonDecoder instance = new FastjsonDecoder();
