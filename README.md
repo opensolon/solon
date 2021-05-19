@@ -282,6 +282,25 @@ HelloRpcService rpc = SocketD.create("tcp://localhost:"+_port, HelloRpcService.c
 String rst = rpc.hello("noear");
 ```
 
+* Solon cloud 配置服务使用
+```java
+@Controller
+public class DemoController {
+    public static void main(String[] args){
+        Solon.start(DemoController.class,args);
+    }
+    
+    //注入模式
+    @CloudConfig(value = "user.name", autoRefreshed = true)
+    String userName;
+    
+    @Mapping("/")
+    public void run() {
+        CloudClient.config().get
+    }
+}
+```
+
 
 ### 附4：插件开发说明
 * 新建一个 maven 项目
