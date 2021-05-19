@@ -1046,6 +1046,7 @@
         <module>../_extend/solon.socketd.client.netty</module>
         <module>../_extend/solon.socketd.client.rsocket</module>
         <module>../_extend/solon.socketd.client.smartsocket</module>
+        <module>../_extend/solon.socketd.client.tio-websocket</module>
         <module>../_extend/solon.socketd.client.websocket</module>
 
         <module>../_extend/solon.cache.jedis</module>

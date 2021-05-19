@@ -155,6 +155,10 @@ public class XPluginImp implements Plugin {
                 CloudManager.register(new CloudLockServiceWaterImp());
             }
 
+            if(WaterProps.instance.getListEnable()){
+                CloudManager.register(new CloudListServiceWaterImp());
+            }
+
 
             //3.注册http监听
             app.http(WW.path_run_check, new HandlerCheck());

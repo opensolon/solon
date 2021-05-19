@@ -77,6 +77,9 @@ public class CloudProps {
     private String ID_ENABLE = "solon.cloud.@@.id.enable";
     private String ID_START = "solon.cloud.@@.id.start";
 
+    //名单服务相关
+    private String LIST_ENABLE = "solon.cloud.@@.list.enable";
+
     private final String frame;
 
     public CloudProps(String frame) {
@@ -133,6 +136,8 @@ public class CloudProps {
 
         ID_ENABLE = ID_ENABLE.replace("@@", frame);
         ID_START = ID_START.replace("@@", frame);
+
+        LIST_ENABLE = LIST_ENABLE.replace("@@", frame);
     }
 
 
@@ -364,5 +369,12 @@ public class CloudProps {
     }
     public long getIdStart() {
         return Solon.cfg().getLong(ID_START, 0L);
+    }
+
+    //
+    //LIST服务相关
+    //
+    public boolean getListEnable() {
+        return Solon.cfg().getBool(LIST_ENABLE, true);
     }
 }
