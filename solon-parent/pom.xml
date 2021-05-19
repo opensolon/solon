@@ -25,7 +25,7 @@
         <water.ver>2.1.0</water.ver>
         <luffy.ver>1.0.6</luffy.ver>
 
-        <fastjson.ver>1.2.76</fastjson.ver>
+        <fastjson.ver>1.2.75</fastjson.ver>
         <jedis.ver>3.6.0</jedis.ver>
         <okhttp.ver>3.14.8</okhttp.ver>
         <hutool.ver>5.5.6</hutool.ver>
