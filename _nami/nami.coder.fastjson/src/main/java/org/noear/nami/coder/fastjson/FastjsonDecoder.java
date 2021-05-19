@@ -1,7 +1,6 @@
 package org.noear.nami.coder.fastjson;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.ParserConfig;
 import org.noear.nami.NamiConfig;
 import org.noear.nami.Decoder;
@@ -34,7 +33,7 @@ public class FastjsonDecoder implements Decoder {
                 return (T) str;
             }
 
-            if(str.contains("\"@type\"")){
+            if(str.contains("\"@type\"") && str.contains("Exception")){
                 returnVal = JSON.parseObject(str);
             }else {
                 returnVal = JSON.parseObject(str, type);
