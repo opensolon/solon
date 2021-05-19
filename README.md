@@ -145,7 +145,7 @@ public interface DemoService{
 
 // - server : 实现协议
 @Mapping("/demo/*")
-@Component(remoting = true)
+@Remoting
 public class DemoServiceImp implements DemoService{
     public void setName(int user_id, String name){
         
@@ -262,7 +262,7 @@ ext/ext.markdown.jar    #MD格式支持扩展包
 ```java 
 //server
 @Mapping(value = "/demoh/rpc", method = MethodType.SOCKET)
-@Component(remoting = true)
+@Remoting
 public class HelloRpcServiceImpl implements HelloRpcService {
     public String hello(String name) {
         //此处，可以根据 client session 创建一个连接 client 的 rpc service
