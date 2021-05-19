@@ -296,9 +296,26 @@ public class DemoController {
     
     @Mapping("/")
     public void run() {
-        CloudClient.config().get
+        //手动获取模式
+        userName = CloudClient.config().pull("user.name").value();
     }
 }
+```
+
+* Solon cloud 事件总线使用
+```java
+//事件订阅
+@CloudEvent("hello.demo")
+public class DemoEvent implements CloudEventHandler {
+    @Override
+    public boolean handler(Event event) throws Throwable {
+        //返回成功
+        return true;
+    }
+}
+
+//事件产生
+CloudClient.event().publish(new Event("hello.demo", msg));
 ```
 
 
