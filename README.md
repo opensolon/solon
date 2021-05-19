@@ -304,7 +304,7 @@ public class DemoController {
 
 * Solon cloud 事件总线使用
 ```java
-//事件订阅
+//事件订阅与消费
 @CloudEvent("hello.demo")
 public class DemoEvent implements CloudEventHandler {
     @Override
