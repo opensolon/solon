@@ -115,7 +115,7 @@ public class NamiCoderTest {
         assert usr_obj instanceof UserModel;
         assert ((UserModel) usr_obj).id == 1;
 
-        //bean list
+        //bean list //不支持
         Result usr_rst_ary = new Result(200, json_usr_ary.getBytes(StandardCharsets.UTF_8));
         Object usr_obj_ary = JacksonDecoder.instance.decode(usr_rst_ary, List.class);
 
@@ -153,6 +153,14 @@ public class NamiCoderTest {
         assert usr_obj instanceof UserModel;
         assert ((UserModel) usr_obj).id == 1;
 
+        //bean list
+        List<UserModel> usr_ary = ONode.deserialize(json_usr_ary);
+        Result usr_rst_ary = new Result(200, HessianEncoder.instance.encode(usr_ary));
+        Object usr_obj_ary = HessianDecoder.instance.decode(usr_rst_ary, List.class);
+
+        assert usr_obj_ary instanceof List;
+        assert ((List<?>) usr_obj_ary).size()==1;
+
 
         //null
         usr_rst = new Result(200, HessianEncoder.instance.encode(null));
@@ -174,7 +182,6 @@ public class NamiCoderTest {
             System.out.println("test_protostuff::ok");
         }
 
-
         //bean
         UserModel usr = ONode.deserialize(json_usr, UserModel.class);
 
@@ -183,6 +190,14 @@ public class NamiCoderTest {
 
         assert usr_obj instanceof UserModel;
         assert ((UserModel) usr_obj).id == 1;
+
+        //bean list
+        List<UserModel> usr_ary = ONode.deserialize(json_usr_ary);
+        Result usr_rst_ary = new Result(200, ProtostuffEncoder.instance.encode(usr_ary));
+        Object usr_obj_ary = ProtostuffDeoder.instance.decode(usr_rst_ary, List.class);
+
+        assert usr_obj_ary instanceof List;
+        assert ((List<?>) usr_obj_ary).size()==1;
 
 
         //null
