@@ -3,12 +3,15 @@ package features;
 import model.UserModel;
 import org.junit.Test;
 import org.noear.nami.coder.fastjson.FastjsonDecoder;
+import org.noear.nami.coder.fastjson.FastjsonEncoder;
 import org.noear.nami.coder.hession.HessianDecoder;
 import org.noear.nami.coder.hession.HessianEncoder;
 import org.noear.nami.coder.jackson.JacksonDecoder;
+import org.noear.nami.coder.jackson.JacksonEncoder;
 import org.noear.nami.coder.protostuff.ProtostuffDeoder;
 import org.noear.nami.coder.protostuff.ProtostuffEncoder;
 import org.noear.nami.coder.snack3.SnackDecoder;
+import org.noear.nami.coder.snack3.SnackEncoder;
 import org.noear.nami.common.Result;
 import org.noear.snack.ONode;
 
@@ -23,6 +26,7 @@ public class NamiCoderTest {
 
     @Test
     public void test_snack3() {
+        //err
         Result err_rst = new Result(200, json_err.getBytes(StandardCharsets.UTF_8));
         try {
             SnackDecoder.instance.decode(err_rst, UserModel.class);
@@ -31,16 +35,23 @@ public class NamiCoderTest {
             System.out.println("test_snack3::ok");
         }
 
-
+        //bean
         Result usr_rst = new Result(200, json_usr.getBytes(StandardCharsets.UTF_8));
         Object usr_obj = SnackDecoder.instance.decode(usr_rst, UserModel.class);
 
         assert usr_obj instanceof UserModel;
         assert ((UserModel) usr_obj).id == 1;
+
+        //null
+        usr_rst = new Result(200, SnackEncoder.instance.encode(null));
+        usr_obj = SnackDecoder.instance.decode(usr_rst, UserModel.class);
+
+        assert usr_obj == null;
     }
 
     @Test
     public void test_fastjson() {
+        //err
         Result err_rst = new Result(200, json_err.getBytes(StandardCharsets.UTF_8));
         try {
             FastjsonDecoder.instance.decode(err_rst, UserModel.class);
@@ -49,16 +60,24 @@ public class NamiCoderTest {
             System.out.println("test_fastjson::ok");
         }
 
-
+        //bean
         Result usr_rst = new Result(200, json_usr.getBytes(StandardCharsets.UTF_8));
         Object usr_obj = FastjsonDecoder.instance.decode(usr_rst, UserModel.class);
 
         assert usr_obj instanceof UserModel;
         assert ((UserModel) usr_obj).id == 1;
+
+
+        //null
+        usr_rst = new Result(200, FastjsonEncoder.instance.encode(null));
+        usr_obj = FastjsonDecoder.instance.decode(usr_rst, UserModel.class);
+
+        assert usr_obj == null;
     }
 
     @Test
     public void test_jackjson() {
+        //err
         Result err_rst = new Result(200, json_err.getBytes(StandardCharsets.UTF_8));
         try {
             JacksonDecoder.instance.decode(err_rst, UserModel.class);
@@ -67,12 +86,19 @@ public class NamiCoderTest {
             System.out.println("test_jackjson::ok");
         }
 
-
+        //bean
         Result usr_rst = new Result(200, json_usr.getBytes(StandardCharsets.UTF_8));
         Object usr_obj = JacksonDecoder.instance.decode(usr_rst, UserModel.class);
 
         assert usr_obj instanceof UserModel;
         assert ((UserModel) usr_obj).id == 1;
+
+
+        //null
+        usr_rst = new Result(200, JacksonEncoder.instance.encode(null));
+        usr_obj = JacksonDecoder.instance.decode(usr_rst, UserModel.class);
+
+        assert usr_obj == null;
     }
 
     @Test
