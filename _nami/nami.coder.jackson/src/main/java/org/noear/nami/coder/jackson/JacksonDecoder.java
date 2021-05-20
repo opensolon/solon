@@ -47,7 +47,12 @@ public class JacksonDecoder implements Decoder {
             if (str == null) {
                 return (T) str;
             }
-            returnVal = mapper_type.readValue(str, new TypeReferenceImp(type));
+
+            if (str.contains("\"@type\"") && str.contains("Exception")) {
+                returnVal = mapper_type.readValue(str, RuntimeException.class);
+            }else {
+                returnVal = mapper_type.readValue(str, new TypeReferenceImp(type));
+            }
 
         } catch (Throwable ex) {
             returnVal = ex;
