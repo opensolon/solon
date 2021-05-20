@@ -30,6 +30,7 @@ public class NamiCoderTest {
         Result err_rst = new Result(200, json_err.getBytes(StandardCharsets.UTF_8));
         try {
             SnackDecoder.instance.decode(err_rst, UserModel.class);
+            assert false;
         } catch (Throwable e) {
             assert e instanceof IllegalArgumentException;
             System.out.println("test_snack3::ok");
@@ -55,6 +56,7 @@ public class NamiCoderTest {
         Result err_rst = new Result(200, json_err.getBytes(StandardCharsets.UTF_8));
         try {
             FastjsonDecoder.instance.decode(err_rst, UserModel.class);
+            assert false;
         } catch (Throwable e) {
             assert e instanceof IllegalArgumentException;
             System.out.println("test_fastjson::ok");
@@ -81,6 +83,7 @@ public class NamiCoderTest {
         Result err_rst = new Result(200, json_err.getBytes(StandardCharsets.UTF_8));
         try {
             JacksonDecoder.instance.decode(err_rst, UserModel.class);
+            assert false;
         } catch (Throwable e) {
             assert e instanceof IllegalArgumentException;
             System.out.println("test_jackjson::ok");
@@ -108,6 +111,7 @@ public class NamiCoderTest {
         Result err_rst = new Result(200, HessianEncoder.instance.encode(err));
         try {
             HessianDecoder.instance.decode(err_rst, UserModel.class);
+            assert false;
         } catch (Throwable e) {
             assert e instanceof IllegalArgumentException;
             System.out.println("test_hessian::ok");
@@ -138,6 +142,7 @@ public class NamiCoderTest {
         Result err_rst = new Result(200, ProtostuffEncoder.instance.encode(err));
         try {
             ProtostuffDeoder.instance.decode(err_rst, UserModel.class);
+            assert false;
         } catch (Throwable e) {
             assert e instanceof IllegalArgumentException;
             System.out.println("test_protostuff::ok");
