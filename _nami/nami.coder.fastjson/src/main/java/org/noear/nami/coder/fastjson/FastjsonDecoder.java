@@ -33,9 +33,9 @@ public class FastjsonDecoder implements Decoder {
                 return (T) str;
             }
 
-            if(str.contains("\"@type\"") && str.contains("Exception")){
-                returnVal = JSON.parseObject(str);
-            }else {
+            if (str.contains("\"@type\"") && str.contains("Exception")) {
+                returnVal = JSON.parseObject(str, Throwable.class);
+            } else {
                 returnVal = JSON.parseObject(str, type);
             }
         } catch (Throwable ex) {
