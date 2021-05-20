@@ -1,6 +1,8 @@
 package org.noear.solon.serialization.snack3;
 
 import org.noear.snack.ONode;
+import org.noear.snack.core.Constants;
+import org.noear.snack.core.Feature;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Render;
 
@@ -23,7 +25,12 @@ public class SnackRender implements Render {
             //
             txt = ONode.serialize(obj);
         } else if (ctx.accept().indexOf("/json") > 0) {
-            txt = ONode.stringify(obj);
+            txt = ONode.stringify(obj,
+                    Feature.OrderedField,
+                    Feature.WriteDateUseTicks,
+                    Feature.BrowserCompatible,
+                    Feature.StringNullAsEmpty,
+                    Feature.QuoteFieldNames);
         } else {
             //非序列化处理
             //
