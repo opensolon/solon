@@ -116,12 +116,12 @@ public class NamiCoderTest {
         assert ((UserModel) usr_obj).id == 1;
 
         //bean list //不支持
-        List<UserModel> usr_ary = ONode.deserialize(json_usr_ary);
-        Result usr_rst_ary = new Result(200, JacksonEncoder.instance.encode(usr_ary));
-        Object usr_obj_ary = JacksonDecoder.instance.decode(usr_rst_ary, List.class);
-
-        assert usr_obj_ary instanceof List;
-        assert ((List<?>) usr_obj_ary).size()==1;
+//        List<UserModel> usr_ary = ONode.deserialize(json_usr_ary);
+//        Result usr_rst_ary = new Result(200, JacksonEncoder.instance.encode(usr_ary));
+//        Object usr_obj_ary = JacksonDecoder.instance.decode(usr_rst_ary, List.class);
+//
+//        assert usr_obj_ary instanceof List;
+//        assert ((List<?>) usr_obj_ary).size()==1;
 
 
         //null

@@ -12,14 +12,10 @@ import org.noear.nami.common.Constants;
 public class JacksonEncoder implements Encoder {
     public static final JacksonEncoder instance = new JacksonEncoder();
 
-
     ObjectMapper mapper = new ObjectMapper();
 
     public JacksonEncoder() {
         mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        mapper.activateDefaultTypingAsProperty(
-                mapper.getPolymorphicTypeValidator(),
-                ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE, "@type");
     }
 
     @Override
