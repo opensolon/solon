@@ -22,8 +22,25 @@ public class ProtostuffDeoder implements Decoder {
     }
 
     @Override
-    public <T> T decode(Result rst, Type clz) {
-        return ProtostuffUtil.deserialize(rst.body());
+    public <T> T decode(Result rst, Type type) {
+        Object returnVal = null;
+        try {
+            if (Void.TYPE != type) {
+                returnVal = ProtostuffUtil.deserialize(rst.body());
+            }
+        } catch (Throwable ex) {
+            returnVal = ex;
+        }
+
+        if (returnVal != null && returnVal instanceof Throwable) {
+            if (returnVal instanceof RuntimeException) {
+                throw (RuntimeException) returnVal;
+            } else {
+                throw new RuntimeException((Throwable) returnVal);
+            }
+        } else {
+            return (T) returnVal;
+        }
     }
 
     @Override

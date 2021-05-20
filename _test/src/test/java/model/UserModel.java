@@ -3,10 +3,11 @@ package model;
 import lombok.Data;
 import org.noear.solon.annotation.Param;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class UserModel {
+public class UserModel implements Serializable {
     public int id;
     public String name;
     public int sex;

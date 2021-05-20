@@ -51,7 +51,15 @@
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>nami.coder.jackson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>nami.coder.hessian</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>nami.coder.protostuff</artifactId>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>

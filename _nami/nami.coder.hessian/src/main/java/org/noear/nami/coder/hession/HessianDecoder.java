@@ -23,16 +23,23 @@ public class HessianDecoder implements Decoder {
     public <T> T decode(Result rst, Type type) {
         Hessian2Input hi = new Hessian2Input(new ByteArrayInputStream(rst.body()));
 
+        Object returnVal = null;
         try {
-            if (Void.TYPE == type) {
-                return null;
-            } else {
-                return (T) hi.readObject();
+            if (Void.TYPE != type) {
+                returnVal = hi.readObject();
             }
-        } catch (RuntimeException ex) {
-            throw ex;
         } catch (Throwable ex) {
-            throw new RuntimeException(ex);
+            returnVal = ex;
+        }
+
+        if (returnVal != null && returnVal instanceof Throwable) {
+            if (returnVal instanceof RuntimeException) {
+                throw (RuntimeException) returnVal;
+            } else {
+                throw new RuntimeException((Throwable) returnVal);
+            }
+        } else {
+            return (T) returnVal;
         }
     }
 

@@ -3,8 +3,14 @@ package features;
 import model.UserModel;
 import org.junit.Test;
 import org.noear.nami.coder.fastjson.FastjsonDecoder;
+import org.noear.nami.coder.hession.HessianDecoder;
+import org.noear.nami.coder.hession.HessianEncoder;
+import org.noear.nami.coder.jackson.JacksonDecoder;
+import org.noear.nami.coder.protostuff.ProtostuffDeoder;
+import org.noear.nami.coder.protostuff.ProtostuffEncoder;
 import org.noear.nami.coder.snack3.SnackDecoder;
 import org.noear.nami.common.Result;
+import org.noear.snack.ONode;
 
 import java.nio.charset.StandardCharsets;
 
@@ -16,12 +22,13 @@ public class NamiCoderTest {
     String json_usr = "{\"id\":1,\"name\":\"noear\",\"sex\":1}";
 
     @Test
-    public void test1() {
+    public void test_snack3() {
         Result err_rst = new Result(200, json_err.getBytes(StandardCharsets.UTF_8));
         try {
             SnackDecoder.instance.decode(err_rst, UserModel.class);
         }catch (Throwable e){
             assert e instanceof IllegalArgumentException;
+            System.out.println("test_snack3::ok");
         }
 
 
@@ -29,15 +36,17 @@ public class NamiCoderTest {
         Object usr_obj = SnackDecoder.instance.decode(usr_rst, UserModel.class);
 
         assert usr_obj instanceof UserModel;
+        assert ((UserModel) usr_obj).id == 1;
     }
 
     @Test
-    public void test2() {
+    public void test_fastjson() {
         Result err_rst = new Result(200, json_err.getBytes(StandardCharsets.UTF_8));
         try {
             FastjsonDecoder.instance.decode(err_rst, UserModel.class);
         }catch (Throwable e){
             assert e instanceof IllegalArgumentException;
+            System.out.println("test_fastjson::ok");
         }
 
 
@@ -45,5 +54,66 @@ public class NamiCoderTest {
         Object usr_obj = FastjsonDecoder.instance.decode(usr_rst, UserModel.class);
 
         assert usr_obj instanceof UserModel;
+        assert ((UserModel) usr_obj).id == 1;
+    }
+
+    @Test
+    public void test_jackjson() {
+        Result err_rst = new Result(200, json_err.getBytes(StandardCharsets.UTF_8));
+        try {
+            JacksonDecoder.instance.decode(err_rst, UserModel.class);
+        }catch (Throwable e){
+            assert e instanceof IllegalArgumentException;
+            System.out.println("test_jackjson::ok");
+        }
+
+
+        Result usr_rst = new Result(200, json_usr.getBytes(StandardCharsets.UTF_8));
+        Object usr_obj = JacksonDecoder.instance.decode(usr_rst, UserModel.class);
+
+        assert usr_obj instanceof UserModel;
+        assert ((UserModel) usr_obj).id == 1;
+    }
+
+    @Test
+    public void test_hessian() {
+        IllegalArgumentException err = ONode.deserialize(json_err);
+        Result err_rst = new Result(200, HessianEncoder.instance.encode(err));
+        try {
+            HessianDecoder.instance.decode(err_rst, UserModel.class);
+        }catch (Throwable e){
+            assert e instanceof IllegalArgumentException;
+            System.out.println("test_hessian::ok");
+        }
+
+
+        UserModel usr = ONode.deserialize(json_usr, UserModel.class);
+
+        Result usr_rst = new Result(200, HessianEncoder.instance.encode(usr));
+        Object usr_obj = HessianDecoder.instance.decode(usr_rst, UserModel.class);
+
+        assert usr_obj instanceof UserModel;
+        assert ((UserModel) usr_obj).id == 1;
+    }
+
+    @Test
+    public void test_protostuff() {
+        IllegalArgumentException err = ONode.deserialize(json_err);
+        Result err_rst = new Result(200, ProtostuffEncoder.instance.encode(err));
+        try {
+            ProtostuffDeoder.instance.decode(err_rst, UserModel.class);
+        }catch (Throwable e){
+            assert e instanceof IllegalArgumentException;
+            System.out.println("test_protostuff::ok");
+        }
+
+
+        UserModel usr = ONode.deserialize(json_usr, UserModel.class);
+
+        Result usr_rst = new Result(200, ProtostuffEncoder.instance.encode(usr));
+        Object usr_obj = ProtostuffDeoder.instance.decode(usr_rst, UserModel.class);
+
+        assert usr_obj instanceof UserModel;
+        assert ((UserModel) usr_obj).id == 1;
     }
 }

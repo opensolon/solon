@@ -53,7 +53,7 @@ public class JacksonDecoder implements Decoder {
             returnVal = ex;
         }
 
-        if (returnVal != null && Throwable.class.isAssignableFrom(returnVal.getClass())) {
+        if (returnVal != null && returnVal instanceof Throwable) {
             if (returnVal instanceof RuntimeException) {
                 throw (RuntimeException) returnVal;
             } else {
