@@ -80,12 +80,13 @@ public class NamiCoderTest {
     @Test
     public void test_jackjson() {
         //err
-        Result err_rst = new Result(200, json_err.getBytes(StandardCharsets.UTF_8));
+        IllegalArgumentException err = ONode.deserialize(json_err);
+        Result err_rst = new Result(200, JacksonEncoder.instance.encode(err));
         try {
             JacksonDecoder.instance.decode(err_rst, UserModel.class);
             assert false;
         } catch (Throwable e) {
-            assert e instanceof IllegalArgumentException;
+            assert e instanceof RuntimeException;
             System.out.println("test_jackjson::ok");
         }
 
