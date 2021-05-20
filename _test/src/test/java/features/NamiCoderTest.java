@@ -26,7 +26,7 @@ public class NamiCoderTest {
         Result err_rst = new Result(200, json_err.getBytes(StandardCharsets.UTF_8));
         try {
             SnackDecoder.instance.decode(err_rst, UserModel.class);
-        }catch (Throwable e){
+        } catch (Throwable e) {
             assert e instanceof IllegalArgumentException;
             System.out.println("test_snack3::ok");
         }
@@ -44,7 +44,7 @@ public class NamiCoderTest {
         Result err_rst = new Result(200, json_err.getBytes(StandardCharsets.UTF_8));
         try {
             FastjsonDecoder.instance.decode(err_rst, UserModel.class);
-        }catch (Throwable e){
+        } catch (Throwable e) {
             assert e instanceof IllegalArgumentException;
             System.out.println("test_fastjson::ok");
         }
@@ -62,7 +62,7 @@ public class NamiCoderTest {
         Result err_rst = new Result(200, json_err.getBytes(StandardCharsets.UTF_8));
         try {
             JacksonDecoder.instance.decode(err_rst, UserModel.class);
-        }catch (Throwable e){
+        } catch (Throwable e) {
             assert e instanceof IllegalArgumentException;
             System.out.println("test_jackjson::ok");
         }
@@ -77,16 +77,18 @@ public class NamiCoderTest {
 
     @Test
     public void test_hessian() {
+        //err
         IllegalArgumentException err = ONode.deserialize(json_err);
         Result err_rst = new Result(200, HessianEncoder.instance.encode(err));
         try {
             HessianDecoder.instance.decode(err_rst, UserModel.class);
-        }catch (Throwable e){
+        } catch (Throwable e) {
             assert e instanceof IllegalArgumentException;
             System.out.println("test_hessian::ok");
         }
 
 
+        //bean
         UserModel usr = ONode.deserialize(json_usr, UserModel.class);
 
         Result usr_rst = new Result(200, HessianEncoder.instance.encode(usr));
@@ -94,20 +96,29 @@ public class NamiCoderTest {
 
         assert usr_obj instanceof UserModel;
         assert ((UserModel) usr_obj).id == 1;
+
+
+        //null
+        usr_rst = new Result(200, HessianEncoder.instance.encode(null));
+        usr_obj = HessianDecoder.instance.decode(usr_rst, UserModel.class);
+
+        assert usr_obj == null;
     }
 
     @Test
     public void test_protostuff() {
+        //err
         IllegalArgumentException err = ONode.deserialize(json_err);
         Result err_rst = new Result(200, ProtostuffEncoder.instance.encode(err));
         try {
             ProtostuffDeoder.instance.decode(err_rst, UserModel.class);
-        }catch (Throwable e){
+        } catch (Throwable e) {
             assert e instanceof IllegalArgumentException;
             System.out.println("test_protostuff::ok");
         }
 
 
+        //bean
         UserModel usr = ONode.deserialize(json_usr, UserModel.class);
 
         Result usr_rst = new Result(200, ProtostuffEncoder.instance.encode(usr));
@@ -115,5 +126,12 @@ public class NamiCoderTest {
 
         assert usr_obj instanceof UserModel;
         assert ((UserModel) usr_obj).id == 1;
+
+
+        //null
+        usr_rst = new Result(200, ProtostuffEncoder.instance.encode(null));
+        usr_obj = ProtostuffDeoder.instance.decode(usr_rst, UserModel.class);
+
+        assert usr_obj == null;
     }
 }

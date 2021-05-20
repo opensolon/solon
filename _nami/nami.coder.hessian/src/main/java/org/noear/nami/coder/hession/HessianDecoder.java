@@ -25,9 +25,11 @@ public class HessianDecoder implements Decoder {
 
         Object returnVal = null;
         try {
-            if (Void.TYPE != type) {
-                returnVal = hi.readObject();
+            if (rst.body().length == 0) {
+                return null;
             }
+
+            returnVal = hi.readObject();
         } catch (Throwable ex) {
             returnVal = ex;
         }

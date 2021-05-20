@@ -25,9 +25,12 @@ public class ProtostuffDeoder implements Decoder {
     public <T> T decode(Result rst, Type type) {
         Object returnVal = null;
         try {
-            if (Void.TYPE != type) {
-                returnVal = ProtostuffUtil.deserialize(rst.body());
+            if (rst.body().length == 0) {
+                return null;
             }
+
+            returnVal = ProtostuffUtil.deserialize(rst.body());
+
         } catch (Throwable ex) {
             returnVal = ex;
         }
