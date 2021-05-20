@@ -36,6 +36,7 @@
             <artifactId>solon.extend.jsr303</artifactId>
         </dependency>
 
+
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>nami</artifactId>
@@ -46,11 +47,25 @@
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami.channel.http.hutool</artifactId>
+            <artifactId>nami.coder.fastjson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>nami.coder.hessian</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>nami.channel.http.okhttp</artifactId>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>nami.channel.socketd</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>${hutool.ver}</version>
         </dependency>
 
         <dependency>
