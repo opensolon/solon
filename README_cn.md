@@ -52,6 +52,7 @@ public class App implements HelloService{
         Solon.start(App.class,args);
     }
 
+    @Override
     public String hello(){
         return "Hello world!";
     }
