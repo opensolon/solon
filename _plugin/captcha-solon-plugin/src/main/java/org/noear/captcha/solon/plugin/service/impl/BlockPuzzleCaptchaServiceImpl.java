@@ -1,6 +1,5 @@
 package org.noear.captcha.solon.plugin.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import org.noear.captcha.solon.plugin.model.common.RepCodeEnum;
 import org.noear.captcha.solon.plugin.model.common.ResponseModel;
 import org.noear.captcha.solon.plugin.model.common.StaticVariable;
@@ -9,6 +8,7 @@ import org.noear.captcha.solon.plugin.util.CacheUtil;
 import org.noear.captcha.solon.plugin.util.ImageUtils;
 import org.noear.captcha.solon.plugin.util.RandomUtils;
 import org.noear.captcha.solon.plugin.util.StringUtils;
+import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import sun.misc.BASE64Encoder;
@@ -74,10 +74,10 @@ public class BlockPuzzleCaptchaServiceImpl extends AbstractCaptchaservice {
         Point point1 = null;
         String pointJson = null;
         try {
-            point = JSONObject.parseObject(s, Point.class);
+            point = ONode.deserialize(s, Point.class);
             //aes解密
             pointJson = decrypt(captchaVO.getPointJson(), aesKey);
-            point1 = JSONObject.parseObject(pointJson, Point.class);
+            point1 = ONode.deserialize(pointJson, Point.class);
         } catch (Exception e) {
             return ResponseModel.errorMsg(e.getMessage());
         }
@@ -148,7 +148,7 @@ public class BlockPuzzleCaptchaServiceImpl extends AbstractCaptchaservice {
 
             //将坐标信息存入redis中
             String codeKey = String.format(REDIS_CAPTCHA_KEY, dataVO.getToken());
-            CacheUtil.set(codeKey, JSONObject.toJSONString(point), EXPIRESIN_SECONDS);
+            CacheUtil.set(codeKey, ONode.stringify(point), EXPIRESIN_SECONDS);
 
             return dataVO;
         } catch (Exception e){

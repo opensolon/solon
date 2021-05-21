@@ -1,7 +1,7 @@
 package org.noear.captcha.solon.plugin.model.common;
 
-import com.alibaba.fastjson.JSONObject;
 import org.noear.captcha.solon.plugin.util.StringUtils;
+import org.noear.snack.ONode;
 
 import java.io.Serializable;
 
@@ -68,7 +68,7 @@ public class ResponseModel implements Serializable {
     }
 
     public String toJsonString() {
-        return JSONObject.toJSONString(this);
+        return ONode.stringify(this);
     }
 
     public boolean isError(){

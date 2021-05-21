@@ -1,7 +1,6 @@
 package org.noear.captcha.solon.plugin.service.impl;
 
 
-import com.alibaba.fastjson.JSONObject;
 import org.noear.captcha.solon.plugin.model.common.RepCodeEnum;
 import org.noear.captcha.solon.plugin.model.common.ResponseModel;
 import org.noear.captcha.solon.plugin.model.common.StaticVariable;
@@ -10,7 +9,7 @@ import org.noear.captcha.solon.plugin.util.CacheUtil;
 import org.noear.captcha.solon.plugin.util.ImageUtils;
 import org.noear.captcha.solon.plugin.util.RandomUtils;
 import org.noear.captcha.solon.plugin.util.StringUtils;
-import org.noear.solon.Solon;
+import org.noear.snack.ONode;
 import org.noear.solon.annotation.Component;
 
 import java.awt.*;
@@ -77,10 +76,10 @@ public class ClickWordCaptchaServiceImpl extends AbstractCaptchaservice {
          * ]
          */
         try {
-            point = JSONObject.parseArray(s, Point.class);
+            point = ONode.deserialize(s, new ArrayList<Point>(){}.getClass());
             //aes解密
             pointJson = decrypt(captchaVO.getPointJson(), aesKey);
-            point1 = JSONObject.parseArray(pointJson, Point.class);
+            point1 = ONode.deserialize(pointJson, new ArrayList<Point>(){}.getClass());
         } catch (Exception e) {
             return ResponseModel.errorMsg(e.getMessage());
         }
@@ -164,7 +163,7 @@ public class ClickWordCaptchaServiceImpl extends AbstractCaptchaservice {
         dataVO.setToken(RandomUtils.getUUID());
         //将坐标信息存入redis中
         String codeKey = String.format(REDIS_CAPTCHA_KEY, dataVO.getToken());
-        CacheUtil.set(codeKey, JSONObject.toJSONString(pointList), EXPIRESIN_SECONDS);
+        CacheUtil.set(codeKey, ONode.stringify(pointList), EXPIRESIN_SECONDS);
         return dataVO;
     }
 

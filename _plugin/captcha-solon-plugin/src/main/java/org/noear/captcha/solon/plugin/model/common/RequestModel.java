@@ -1,10 +1,10 @@
 package org.noear.captcha.solon.plugin.model.common;
 
-import com.alibaba.fastjson.JSONObject;
 import org.noear.captcha.solon.plugin.util.StringUtils;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ww
@@ -20,7 +20,7 @@ public class RequestModel implements Serializable {
     private String requestString;
 
     /** {"password":"123456","userName":"admin"} */
-    private JSONObject reqData;
+    private Map<String,Object> reqData;
 
     private String token;
 
@@ -136,11 +136,11 @@ public class RequestModel implements Serializable {
         this.requestString = requestString;
     }
 
-    public JSONObject getReqData() {
+    public Map<String,Object> getReqData() {
         return reqData;
     }
 
-    public void setReqData(JSONObject reqData) {
+    public void setReqData(Map<String,Object> reqData) {
         this.reqData = reqData;
     }
 
