@@ -14,18 +14,10 @@
     <artifactId>captcha-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
-
-
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.extend.properties.yaml</artifactId>
-        </dependency>
-        <!-- 工具包 -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>4.5.4</version>
         </dependency>
     </dependencies>
 </project>

@@ -288,10 +288,8 @@ public class Utils {
             return null;
         }
 
-        ByteArrayOutputStream outs = new ByteArrayOutputStream(); //这个不需要关闭
-
         try {
-            transfer(ins, outs);
+            ByteArrayOutputStream outs = transfer(ins, new ByteArrayOutputStream());
 
             if (charset == null) {
                 return outs.toString();
@@ -303,9 +301,9 @@ public class Utils {
         }
     }
 
-    public static void transfer(InputStream ins, OutputStream out) throws IOException{
+    public static <T extends OutputStream>  T transfer(InputStream ins, T out) throws IOException {
         if (ins == null || out == null) {
-            return;
+            return null;
         }
 
         int len = 0;
@@ -313,6 +311,8 @@ public class Utils {
         while ((len = ins.read(buf)) != -1) {
             out.write(buf, 0, len);
         }
+
+        return out;
     }
 
 

@@ -1,6 +1,5 @@
 package org.noear.captcha.solon.plugin.util;
 
-import cn.hutool.core.io.IoUtil;
 import org.noear.solon.Utils;
 import org.noear.solon.core.util.ResourceScaner;
 import sun.misc.BASE64Decoder;
@@ -92,7 +91,7 @@ public class ImageUtils {
                 URL resourceObj = Utils.getResource(m);
                 try {
                     InputStream stream = resourceObj.openStream();
-                    byte[] bytes = IoUtil.readBytes(stream);
+                    byte[] bytes = Utils.transfer(stream, new ByteArrayOutputStream()).toByteArray();
                     String encode = new BASE64Encoder().encode(bytes);
                     String[] split = m.split("/");
                     String name = split[split.length-1];
