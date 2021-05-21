@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
  * @author noear
  * @since 1.4
  */
+@FunctionalInterface
 public interface BeanExtractor<T extends Annotation> {
     /**
      * 提取
