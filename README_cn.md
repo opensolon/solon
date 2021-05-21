@@ -40,8 +40,20 @@ public class App{
     }
   
     @Mapping("/")
-    public Object home(Context c){
+    public String hello(Context c){
         return "Hello world!";  
+    }
+}
+
+//Remoting 模式：(rpc)
+@Remoting
+public class App implements HelloService{
+    public static void main(String[] args){
+        Solon.start(App.class,args);
+    }
+
+    public String hello(){
+        return "Hello world!";
     }
 }
 ```
