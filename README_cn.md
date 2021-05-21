@@ -139,7 +139,7 @@ public class DemoController{
 }
 ```
 
-* Rpc 示例
+* Remoting 示例（rpc）
 
 ```java
 // - interface : 定义协议
