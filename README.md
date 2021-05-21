@@ -32,13 +32,14 @@ public class App{
     }
 }
 
-//Controller mode：
+//Controller mode：：(mvc or rest)
 @Controller
 public class App{
     public static void main(String[] args){
         Solon.start(App.class,args);
     }
   
+    @Get
     @Mapping("/")
     public Object hello(Context c){
         return "Hello world!";  
