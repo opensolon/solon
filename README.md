@@ -40,7 +40,7 @@ public class App{
     }
   
     @Mapping("/")
-    public Object home(Context c){
+    public Object hello(Context c){
         return "Hello world!";  
     }
 }
