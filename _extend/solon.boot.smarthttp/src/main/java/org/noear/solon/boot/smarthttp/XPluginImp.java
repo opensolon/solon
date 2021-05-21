@@ -54,7 +54,7 @@ public final class XPluginImp implements Plugin {
             SessionManager.register(new _SessionManagerImpl());
         }
 
-        PrintUtil.info("solon.server:main: SmartHttpServer 1.0.21(smarthttp)");
+        PrintUtil.info("solon.server:main: SmartHttpServer 1.1.4(smarthttp)");
 
         try {
 
