@@ -1,29 +1,29 @@
 
 [![Maven Central](https://img.shields.io/maven-central/v/org.noear/solon.svg)](https://mvnrepository.com/search?q=g:org.noear%20AND%20solon)
 
-` QQ交流群：22200020 ` 
+` QQ交流群：22200020 `
 
 # Solon for java
 
-一个插件式的 Java 微型开发框架。
+A plug-in Java micro-development framework。
 
-支持jdk8+；主框架0.1mb；组合不同的插件应对不同需求；方便定制；快速开发。
+Support jdk8 +; Core frame 0.1Mb; Combining different plug-ins to meet different needs; Convenient customization; Rapid development of。
 
-* 克制、简洁、开放
-* 更快、更小、更自由
-* Http、WebSocket、Socket 三种信号统一的开发体验（俗称：三源合一）
-* 支持注解与手动两种模式，按需自由操控
-* Not Servelt，可以适配任何基础通讯框架（所以：最小0.2m运行rpc架构）
-* 自建 IOC & AOP容器，支持REST API、MVC、Job、Remoting、MicoService等开发
-* 集合 Handler + Context 和 Listener + Message 两种架构模式；强调插件式扩展；适应不同的应用场景
-* 插件可扩展可切换：启动插件，扩展插件，序列化插件，数据插件，会话状态插件，视图插件(可共存) 等...
-* 使用感觉与 Spring Boot 近似，迁移成本低
+* Restrained, concise and open
+* Faster, smaller, freer
+* Unified development experience of HTTP, WebSocket and Socket signals (commonly known as three sources in one)
+* Support annotation and manual two modes, free control as needed
+* Not Servlets, which can be adapted to any underlying communication framework (so: RPC architecture runs at minimum 0.2Mb)
+* Self-built IOC & AOP container, support REST API, MVC, Job, Remoting, MicoService and other development
+* Set Handler + Context and Listener + Message architecture patterns; Emphasis on plug-in extension; Adapt to different application scenarios
+* Plug-ins are extensible and switchable: startup plug-in, extension plug-in, serialization plug-in, data plug-in, session state plug-in, view plug-in (coexist), etc.
+* The use of Spring Boot feels similar to the migration cost is low
 
 
 ### Hello world：
 
 ```java
-//Handler 模式：
+//Handler mode：
 public class App{
     public static void main(String[] args){
         SolonApp app = Solon.start(App.class,args);
@@ -32,7 +32,7 @@ public class App{
     }
 }
 
-//Controller 模式：
+//Controller mode：
 @Controller
 public class App{
     public static void main(String[] args){
@@ -47,27 +47,27 @@ public class App{
 ```
 
 
-### 主框架及快速集成开发包：
+### Main framework and rapid integration development package：
 
-###### 主框架
+###### Main frame
 
-| 组件 | 说明 |
+| component | description |
 | --- | --- |
-| org.noear:solon-parent | 框架版本管理 |
-| org.noear:solon | 主框架 |
-| org.noear:nami | 伴生框架（做为solon rpc 的客户端）；由 Fairy 更名而来 |
+| org.noear:solon-parent | Framework versioning |
+| org.noear:solon | Main frame |
+| org.noear:nami | Companion Framework (as a client to Solon Remoting) |
 
-###### 快速集成开发包
+###### Rapid integration of development kits
 
-| 组件 | 说明 |
+| component | description |
 | --- | --- |
-| org.noear:solon-lib | 快速开发基础集成包 |
-| org.noear:solon-api | solon-lib + http boot；快速开发接口应用 |
-| org.noear:solon-web | solon-api + freemarker + sessionstate；快速开发WEB应用 |
-| org.noear:solon-rpc | solon-api + nami；快速开发RPC应用 |
-| org.noear:solon-cloud | solon-rpc + consul；快速开发微服务应用 |
+| org.noear:solon-lib | Rapid development of basic integration packages |
+| org.noear:solon-api | solon-lib + http boot；Rapid development of interface applications |
+| org.noear:solon-web | solon-api + freemarker + sessionstate；Rapid development of WEB applications |
+| org.noear:solon-rpc | solon-api + nami；Rapid development of remoting applications |
+| org.noear:solon-cloud | solon-rpc + consul；Rapid development of microservice applications |
 
-### 附1：快速了解Solon的材料：
+### Attachment 1: A quick understanding of Solon's materials：
 
 #### [《Solon 特性简集，相较于 Springboot 有什么区别？》](https://my.oschina.net/noear/blog/4863844)
 
@@ -80,12 +80,12 @@ public class App{
 #### [《Solon 框架入门》](https://my.oschina.net/noear/blog/4784513)
 
 
-### 附2：示例与文章
+### Attachment 2: Examples and articles
 * 项目内的：[_test](./_test/) 和 [_demo](./_demo/)
 * 更多示例：[solon_demo](https://gitee.com/noear/solon_demo) 、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo)
 * 更多文章：[https://www.cnblogs.com/noear/](https://www.cnblogs.com/noear/)
 
-### 附3：快速入门示例
+### Attachment 3: Quick Start Examples
 * Web 示例（mvc）
 ```xml
 <parent>
@@ -255,7 +255,7 @@ public class HelloTask implements Runnable {
 }
 ```
 
-* 体外扩展加载 jar 
+* 体外扩展加载 jar
 ```
 demoApp.jar             #主程序
 ext/                    #扩展目录
