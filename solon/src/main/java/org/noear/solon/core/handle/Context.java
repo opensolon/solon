@@ -179,7 +179,7 @@ public abstract class Context {
     public String body(String charset) throws IOException {
         if (body == null) {
             try (InputStream ins = bodyAsStream()) {
-                body = Utils.getString(ins,charset);
+                body = Utils.transferToString(ins,charset);
             }
         }
 

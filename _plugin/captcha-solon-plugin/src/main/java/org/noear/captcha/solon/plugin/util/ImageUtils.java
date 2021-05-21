@@ -91,7 +91,7 @@ public class ImageUtils {
                 URL resourceObj = Utils.getResource(m);
                 try {
                     InputStream stream = resourceObj.openStream();
-                    byte[] bytes = Utils.transfer(stream, new ByteArrayOutputStream()).toByteArray();
+                    byte[] bytes = Utils.transferToBytes(stream);
                     String encode = new BASE64Encoder().encode(bytes);
                     String[] split = m.split("/");
                     String name = split[split.length-1];

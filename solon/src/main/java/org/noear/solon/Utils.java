@@ -274,7 +274,7 @@ public class Utils {
         URL url = getResource(classLoader, name);
         if (url != null) {
             try {
-                return getString(url.openStream(), charset);
+                return transferToString(url.openStream(), charset);
             } catch (Exception ex) {
                 throw throwableWrap(ex);
             }
@@ -283,22 +283,26 @@ public class Utils {
         }
     }
 
-    public static String getString(InputStream ins, String charset) {
+    public static String transferToString(InputStream ins, String charset) throws IOException {
         if (ins == null) {
             return null;
         }
 
-        try {
-            ByteArrayOutputStream outs = transfer(ins, new ByteArrayOutputStream());
+        ByteArrayOutputStream outs = transfer(ins, new ByteArrayOutputStream());
 
-            if (charset == null) {
-                return outs.toString();
-            } else {
-                return outs.toString(charset);
-            }
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
+        if (charset == null) {
+            return outs.toString();
+        } else {
+            return outs.toString(charset);
         }
+    }
+
+    public static byte[] transferToBytes(InputStream ins) throws IOException {
+        if (ins == null) {
+            return null;
+        }
+
+        return transfer(ins, new ByteArrayOutputStream()).toByteArray();
     }
 
     public static <T extends OutputStream>  T transfer(InputStream ins, T out) throws IOException {

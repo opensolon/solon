@@ -5,8 +5,6 @@ import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.core.handle.Result;
 
 import java.io.*;
-import java.net.FileNameMap;
-import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -20,7 +18,7 @@ public interface CloudFileService {
      * 获取文本
      */
     default String getText(String bucket, String key) throws CloudFileException {
-        return Utils.getString(getStream(bucket, key), "UTF-8");
+        return Utils.transferToString(getStream(bucket, key), "UTF-8");
     }
 
     /**

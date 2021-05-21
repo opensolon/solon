@@ -42,7 +42,7 @@ public abstract class AbstractDetector implements Detector{
                 lnr.close();
                 isr.close();
             } else {
-                text = Utils.getString(is,"utf-8");
+                text = Utils.transferToString(is,"utf-8");
             }
         } finally {
             if (is != null) {
