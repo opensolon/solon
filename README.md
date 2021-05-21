@@ -69,24 +69,24 @@ public class App{
 
 ### Attachment 1: A quick understanding of Solon's materials：
 
-#### [《Solon 特性简集，相较于 Springboot 有什么区别？》](https://my.oschina.net/noear/blog/4863844)
+#### [《What is the difference between Solon and SpringBoot?》](https://my.oschina.net/noear/blog/4863844)
 
-#### [《Solon Cloud 分布式服务开发套件清单，感觉受与 Spring Cloud 的不同》](https://my.oschina.net/noear/blog/5039169)
+#### [《Solon Cloud distributed service development suite manifest, feel different from Spring Cloud》](https://my.oschina.net/noear/blog/5039169)
 
-#### [《Solon 的想法与架构笔记》](https://my.oschina.net/noear/blog/4980834)
+#### [《Solon's ideas and architecture notes》](https://my.oschina.net/noear/blog/4980834)
 
-#### [《Solon 生态插件清单》](https://my.oschina.net/noear/blog/5053423)
+#### [《Solon Ecological Plugins List》](https://my.oschina.net/noear/blog/5053423)
 
-#### [《Solon 框架入门》](https://my.oschina.net/noear/blog/4784513)
+#### [《Introduction to the Solon framework》](https://my.oschina.net/noear/blog/4784513)
 
 
 ### Attachment 2: Examples and articles
-* 项目内的：[_test](./_test/) 和 [_demo](./_demo/)
-* 更多示例：[solon_demo](https://gitee.com/noear/solon_demo) 、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo)
-* 更多文章：[https://www.cnblogs.com/noear/](https://www.cnblogs.com/noear/)
+* Within the project：[_test](./_test/) 和 [_demo](./_demo/)
+* More examples：[solon_demo](https://gitee.com/noear/solon_demo) 、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo)
+* More articles：[https://www.cnblogs.com/noear/](https://www.cnblogs.com/noear/)
 
 ### Attachment 3: Quick Start Examples
-* Web 示例（mvc）
+* Web example（mvc）
 ```xml
 <parent>
     <groupId>org.noear</groupId>
@@ -139,7 +139,7 @@ public class DemoController{
 }
 ```
 
-* Rpc 示例
+* Remoting example（rpc）
 
 ```java
 // - interface : 定义协议
@@ -168,7 +168,7 @@ client.setName(1,'');
 
 ```
 
-* 获取应用配置
+* Get the application configuration
 ```java
 //非注入模式
 Solon.cfg().get("app_key"); //=>String
@@ -186,7 +186,7 @@ public class Config{
 }
 ```
 
-* 事务与缓存控制（+验证）
+* Transaction and cache control (+ validation)
 ```java
 @Valid
 @Controller
@@ -210,7 +210,7 @@ public class DemoController{
 }
 ```
 
-* 文件上传与输出
+* File upload and output
 ```java
 @Controller
 public class DemoController{
@@ -229,7 +229,7 @@ public class DemoController{
 }
 ```
 
-* Servlet 注解支持
+* Servlet annotations are still supported
 ```java
 @WebFilter("/hello/*")
 public class HelloFilter implements Filter {
