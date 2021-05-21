@@ -288,7 +288,7 @@ public class Utils {
             return null;
         }
 
-        ByteArrayOutputStream outs = transfer(ins, new ByteArrayOutputStream());
+        ByteArrayOutputStream outs = transferTo(ins, new ByteArrayOutputStream());
 
         if (charset == null) {
             return outs.toString();
@@ -302,10 +302,10 @@ public class Utils {
             return null;
         }
 
-        return transfer(ins, new ByteArrayOutputStream()).toByteArray();
+        return transferTo(ins, new ByteArrayOutputStream()).toByteArray();
     }
 
-    public static <T extends OutputStream>  T transfer(InputStream ins, T out) throws IOException {
+    public static <T extends OutputStream>  T transferTo(InputStream ins, T out) throws IOException {
         if (ins == null || out == null) {
             return null;
         }

@@ -441,7 +441,7 @@ public abstract class Context {
             headerSet("Content-Disposition", "attachment; filename=\"" + file.name + "\"");
         }
 
-        Utils.transfer(file.content, outputStream());
+        Utils.transferTo(file.content, outputStream());
     }
 
     @Note("输出file")
@@ -451,7 +451,7 @@ public abstract class Context {
         }
 
         try (InputStream ins = new FileInputStream(file)) {
-            Utils.transfer(ins, outputStream());
+            Utils.transferTo(ins, outputStream());
         }
     }
 

@@ -68,7 +68,7 @@ public class UploadedFile {
      * @param file 文件
      * */
     public void transferTo(File file) throws IOException {
-        Utils.transfer(content, new FileOutputStream(file));
+        Utils.transferTo(content, new FileOutputStream(file));
     }
 
     /**
@@ -77,6 +77,6 @@ public class UploadedFile {
      * @param stream 输出流
      * */
     public void transferTo(OutputStream stream) throws IOException {
-        Utils.transfer(content, stream);
+        Utils.transferTo(content, stream);
     }
 }
