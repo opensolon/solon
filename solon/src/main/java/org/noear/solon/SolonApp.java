@@ -331,6 +331,10 @@ public class SolonApp implements HandlerSlots {
     /**
      * 前置监听
      */
+    public void before(Handler handler) {
+        before("**", MethodType.ALL, handler);
+    }
+
     public void before(String expr,  Handler handler) {
         before(expr, MethodType.ALL, handler);
     }
@@ -346,6 +350,10 @@ public class SolonApp implements HandlerSlots {
     /**
      * 重置监听
      */
+    public void after(Handler handler) {
+        after("**", MethodType.ALL, handler);
+    }
+
     public void after(String expr, Handler handler) {
         after(expr, MethodType.ALL, handler);
     }
