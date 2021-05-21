@@ -32,13 +32,14 @@ public class App{
     }
 }
 
-//Controller 模式：
+//Controller 模式：(mvc or rest)
 @Controller
 public class App{
     public static void main(String[] args){
         Solon.start(App.class,args);
     }
   
+    @Get
     @Mapping("/")
     public String hello(Context c){
         return "Hello world!";  
