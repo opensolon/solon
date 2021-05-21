@@ -177,7 +177,7 @@ public class DemoServiceImp implements DemoService{
 //@NamiClient("http://127.0.0.1:8080/demo/") 
 //DemoService client;
 
-//构建模式
+//手动模式
 DemoService client = Nami.builder().url("http://127.0.0.1:8080/demo/").create(DemoService.class); 
 client.setName(1,'');
 
@@ -186,7 +186,7 @@ client.setName(1,'');
 
 * 获取应用配置
 ```java
-//非注入模式
+//手动模式
 Solon.cfg().get("app_key"); //=>String
 Solon.cfg().getInt("app_id",0); //=>int
 Solon.cfg().getProp("xxx.datasource"); //=>Properties
@@ -314,7 +314,7 @@ public class DemoController {
     
     @Mapping("/")
     public void run() {
-        //手动获取模式
+        //手动模式
         userName = CloudClient.config().pull("user.name").value();
     }
 }
