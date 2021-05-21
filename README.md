@@ -257,9 +257,9 @@ public class HelloTask implements Runnable {
 
 * External extensions load the JAR
 ```
-demoApp.jar             #主程序
-ext/                    #扩展目录
-ext/ext.markdown.jar    #MD格式支持扩展包
+demoApp.jar             #The main program
+ext/                    #Extensions directory
+ext/ext.markdown.jar    #The MD format supports extension packs
 ```
 
 * Single-linked bidirectional RPC (after the server on the client chain, form a bidirectional RPC)
