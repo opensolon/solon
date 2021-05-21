@@ -53,33 +53,43 @@ public abstract class BeanContainer {
      */
     protected final Map<Class<?>, BeanInjector<?>> beanInjectors = new HashMap<>();
     /**
+     * bean 提取器
+     */
+    protected final Map<Class<?>, BeanExtractor<?>> beanExtractors = new HashMap<>();
+    /**
      * bean 拦截器
      * */
     protected final Map<Class<?>, InterceptorEntity> beanInterceptors = new HashMap<>();
 
-
-    /**
-     * 添加 bean builder, injector
-     */
-    public <T extends Annotation> void beanBuilderAdd(Class<T> anno, BeanBuilder<T> creater) {
-        beanBuilders.put(anno, creater);
-    }
-
-    public void beanBuildersCopy(BeanContainer container){
+    public void containerCopy(BeanContainer container){
         container.beanBuilders.forEach((k,v)->{
             beanBuilders.putIfAbsent(k,v);
         });
+
+        //用于跨容器复制
+        container.beanInjectors.forEach((k,v)->{
+            beanInjectors.putIfAbsent(k,v);
+        });
+
+        //用于跨容器复制
+        container.beanInterceptors.forEach((k, v) -> {
+            beanInterceptors.putIfAbsent(k, v);
+        });
+    }
+
+    /**
+     * 添加 bean builder, injector, extractor
+     */
+    public <T extends Annotation> void beanBuilderAdd(Class<T> anno, BeanBuilder<T> creater) {
+        beanBuilders.put(anno, creater);
     }
 
     public <T extends Annotation> void beanInjectorAdd(Class<T> anno, BeanInjector<T> injector) {
         beanInjectors.put(anno, injector);
     }
 
-    public void beanInjectorsCopy(BeanContainer container){
-        //用于跨容器复制
-        container.beanInjectors.forEach((k,v)->{
-            beanInjectors.putIfAbsent(k,v);
-        });
+    public <T extends Annotation> void beanExtractorAdd(Class<T> anno, BeanExtractor<T> extractor) {
+        beanExtractors.put(anno, extractor);
     }
 
     /**
@@ -105,12 +115,6 @@ public abstract class BeanContainer {
         return beanInterceptors.get(anno);
     }
 
-    public void beanInterceptorsCopy(BeanContainer container) {
-        //用于跨容器复制
-        container.beanInterceptors.forEach((k, v) -> {
-            beanInterceptors.putIfAbsent(k, v);
-        });
-    }
 
     //////////////////////////
     //

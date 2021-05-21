@@ -88,6 +88,9 @@ public class AopContext extends BeanContainer {
 
             //注册到容器
             beanRegister(bw, anno.value(), anno.typed());
+
+            //尝试提取函数
+            tryExtract(bw);
         });
 
         //注册 @Remoting 构建器
@@ -171,6 +174,7 @@ public class AopContext extends BeanContainer {
             }
         }
     }
+
 
     //::注入
 
@@ -279,6 +283,28 @@ public class AopContext extends BeanContainer {
     ////////////////////////////////////////////////////
     //
     //
+
+
+    /**
+     * 尝试为bean提取函数
+     * */
+    protected void tryExtract(BeanWrap bw) {
+        if (bw == null) {
+            return;
+        }
+
+        ClassWrap clzWrap = ClassWrap.get(bw.clz());
+
+        for (Method m : clzWrap.getMethods()) {
+            for (Annotation a : m.getAnnotations()) {
+                BeanExtractor be = beanExtractors.get(a.annotationType());
+
+                if (be != null) {
+                    be.doExtract(bw, m, a);
+                }
+            }
+        }
+    }
 
     /**
      * 尝试为bean注入
