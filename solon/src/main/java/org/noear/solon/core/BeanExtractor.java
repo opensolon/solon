@@ -4,7 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
- * Bean 提取器（函数）
+ * Bean 提取器（提取函数，此类用于扩展AopContext，为其添加提取器）
  *
  * @author noear
  * @since 1.4
