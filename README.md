@@ -44,6 +44,18 @@ public class App{
         return "Hello world!";  
     }
 }
+
+//Remoting mode：(rpc)
+@Remoting
+public class App implements HelloService{
+    public static void main(String[] args){
+        Solon.start(App.class,args);
+    }
+
+    public String hello(){
+        return "Hello world!";
+    }
+}
 ```
 
 
