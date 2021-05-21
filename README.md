@@ -32,7 +32,7 @@ public class App{
     }
 }
 
-//Controller mode：：(mvc or rest)
+//Controller mode：：(mvc or rest-api)
 @Controller
 public class App{
     public static void main(String[] args){
@@ -47,6 +47,7 @@ public class App{
 }
 
 //Remoting mode：(rpc)
+@Socket
 @Remoting
 public class App implements HelloService{
     public static void main(String[] args){
