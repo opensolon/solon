@@ -64,9 +64,7 @@ public class JtResouceLoaderFile implements JtResouceLoader {
 
             if (file.exists()) {
                 try {
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    Utils.transfer(new FileInputStream(file), outputStream);
-                    return outputStream.toString();
+                    return Utils.transferToString(new FileInputStream(file), "UTF-8");
                 } catch (IOException ex) {
                     EventBus.push(ex);
                     return null;
