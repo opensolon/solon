@@ -16,6 +16,7 @@ import org.noear.nami.common.Result;
 import org.noear.snack.ONode;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,6 +60,57 @@ public class NamiCoderTest_jackjson {
         //null
         usr_rst = new Result(200, JacksonEncoder.instance.encode(null));
         usr_obj = JacksonDecoder.instance.decode(usr_rst, UserModel.class);
+
+        assert usr_obj == null;
+    }
+
+
+    @Test
+    public void test_jackjson_err() {
+        //err
+        IllegalArgumentException err = ONode.deserialize(json_err);
+        Result err_rst = new Result(200, JacksonEncoder.instance.encode(err));
+        try {
+            JacksonDecoder.instance.decode(err_rst, UserModel.class);
+            assert false;
+        } catch (Throwable e) {
+            assert e instanceof RuntimeException;
+            System.out.println("test_jackjson::ok");
+        }
+    }
+
+    @Test
+    public void test_jackjson_bean() {
+
+        //bean
+        Result usr_rst = new Result(200, json_usr.getBytes(StandardCharsets.UTF_8));
+        Object usr_obj = JacksonDecoder.instance.decode(usr_rst, UserModel.class);
+
+        assert usr_obj instanceof UserModel;
+        assert ((UserModel) usr_obj).id == 1;
+    }
+
+//    @Test
+//    public void test_jackjson_bean_list() {
+//        //bean list //不支持
+//        List<UserModel> usr_ary = ONode.deserialize(json_usr_ary);
+//
+//        byte[] usr_bytes = JacksonEncoder.instance.encode(usr_ary);
+//        System.out.println(new String(usr_bytes));
+//
+//
+//        Result usr_rst_ary = new Result(200, usr_bytes);
+//        Object usr_obj_ary = JacksonDecoder.instance.decode(usr_rst_ary, new ArrayList<UserModel>(){}.getClass());
+//
+//        assert usr_obj_ary instanceof List;
+//        assert ((List<?>) usr_obj_ary).size() == 1;
+//    }
+
+    @Test
+    public void test_jackjson_null() {
+        //null
+        Result usr_rst = new Result(200, JacksonEncoder.instance.encode(null));
+        Object usr_obj = JacksonDecoder.instance.decode(usr_rst, UserModel.class);
 
         assert usr_obj == null;
     }
