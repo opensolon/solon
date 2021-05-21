@@ -18,7 +18,11 @@ public interface CloudFileService {
      * 获取文本
      */
     default String getText(String bucket, String key) throws CloudFileException {
-        return Utils.transferToString(getStream(bucket, key), "UTF-8");
+        try {
+            return Utils.transferToString(getStream(bucket, key), "UTF-8");
+        }catch (IOException e){
+            throw new CloudFileException(e);
+        }
     }
 
     /**
