@@ -5,6 +5,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.handle.RenderManager;
 
 @SuppressWarnings("unchecked")
 public class XPluginImp implements Plugin {
@@ -32,7 +33,7 @@ public class XPluginImp implements Plugin {
             });
         });
 
-        Bridge.renderRegister(render);
-        Bridge.renderMapping(".shtm",render);
+        RenderManager.register(render);
+        RenderManager.mapping(".shtm",render);
     }
 }
