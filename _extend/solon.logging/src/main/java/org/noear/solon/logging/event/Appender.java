@@ -1,6 +1,5 @@
 package org.noear.solon.logging.event;
 
-import org.noear.solon.core.Lifecycle;
 import org.noear.solon.logging.LogOptions;
 
 /**
@@ -9,10 +8,12 @@ import org.noear.solon.logging.LogOptions;
  * @author noear
  * @since 1.0
  */
-public interface Appender extends Lifecycle {
+public interface Appender{
     default Level getDefaultLevel() {
         return LogOptions.getLevel();
     }
+
+    default void start(){}
 
     String getName();
     void setName(String name);
