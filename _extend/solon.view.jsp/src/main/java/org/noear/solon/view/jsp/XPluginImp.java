@@ -2,8 +2,8 @@ package org.noear.solon.view.jsp;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.handle.RenderManager;
 import org.noear.solon.core.util.PrintUtil;
 
 public class XPluginImp implements Plugin {
@@ -20,7 +20,7 @@ public class XPluginImp implements Plugin {
 
         JspRender render = JspRender.global();
 
-        Bridge.renderRegister(render);
-        Bridge.renderMapping(".jsp", render);
+        RenderManager.register(render);
+        RenderManager.mapping(".jsp", render);
     }
 }

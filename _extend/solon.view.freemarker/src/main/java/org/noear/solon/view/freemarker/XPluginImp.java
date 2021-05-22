@@ -3,10 +3,8 @@ package org.noear.solon.view.freemarker;
 import freemarker.template.TemplateDirectiveModel;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
-
-import javax.sql.DataSource;
+import org.noear.solon.core.handle.RenderManager;
 
 public class XPluginImp implements Plugin {
     public static boolean output_meta = false;
@@ -34,7 +32,7 @@ public class XPluginImp implements Plugin {
             });
         });
 
-        Bridge.renderRegister(render);
-        Bridge.renderMapping(".ftl", render);
+        RenderManager.register(render);
+        RenderManager.mapping(".ftl", render);
     }
 }

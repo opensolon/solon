@@ -4,6 +4,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.handle.RenderManager;
 import org.thymeleaf.processor.element.IElementTagProcessor;
 
 public class XPluginImp implements Plugin {
@@ -31,7 +32,7 @@ public class XPluginImp implements Plugin {
             });
         });
 
-        Bridge.renderRegister(render);
-        Bridge.renderMapping(".html",render);
+        RenderManager.register(render);
+        RenderManager.mapping(".html",render);
     }
 }

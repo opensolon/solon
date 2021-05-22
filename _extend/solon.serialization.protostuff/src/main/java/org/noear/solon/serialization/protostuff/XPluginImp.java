@@ -3,6 +3,7 @@ package org.noear.solon.serialization.protostuff;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.handle.RenderManager;
 
 /**
  * @author noear
@@ -16,7 +17,7 @@ public class XPluginImp implements Plugin {
 
         ProtostuffRender render = new ProtostuffRender();
 
-        Bridge.renderMapping("@protobuf",render);
+        RenderManager.mapping("@protobuf",render);
         Bridge.actionExecutorAdd(new ProtostuffActionExecutor());
     }
 }
