@@ -433,6 +433,10 @@ public class AopContext extends BeanContainer {
             m_bw.tagSet(anno.tag());
             m_bw.typedSet(anno.typed());
 
+            //添加bean形态处理
+            addBeanShape(m_bw.clz(), m_bw);
+
+            //注册到容器
             beanRegister(m_bw, anno.value(), anno.typed());
 
             //@Bean 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
