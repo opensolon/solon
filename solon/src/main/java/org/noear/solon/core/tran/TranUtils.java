@@ -1,6 +1,7 @@
 package org.noear.solon.core.tran;
 
 import org.noear.solon.annotation.Note;
+import org.noear.solon.core.Aop;
 import org.noear.solon.core.Bridge;
 
 import javax.sql.DataSource;
@@ -14,12 +15,17 @@ import java.sql.SQLException;
  * @since 1.0
  * */
 public class TranUtils {
+    private static TranExecutor executor = ()->false;
+    static {
+        Aop.getAsyn(TranExecutor.class, bw -> executor = bw.raw());
+    }
+
     /**
      * 是否在事务中
      */
     @Note("是否在事务中")
     public static boolean inTrans() {
-        return Bridge.tranExecutor().inTrans();
+        return executor.inTrans();
     }
 
     /**
@@ -27,7 +33,7 @@ public class TranUtils {
      */
     @Note("是否在事务中且只读")
     public static boolean inTransAndReadOnly() {
-        return Bridge.tranExecutor().inTransAndReadOnly();
+        return executor.inTransAndReadOnly();
     }
 
     /**
@@ -35,6 +41,6 @@ public class TranUtils {
      */
     @Note("获取链接")
     public static Connection getConnection(DataSource ds) throws SQLException {
-        return Bridge.tranExecutor().getConnection(ds);
+        return executor.getConnection(ds);
     }
 }

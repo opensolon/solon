@@ -3,6 +3,7 @@ package org.noear.solon.extend.data;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.*;
 import org.noear.solon.core.cache.CacheService;
+import org.noear.solon.core.tran.TranExecutor;
 import org.noear.solon.extend.data.annotation.Cache;
 import org.noear.solon.extend.data.annotation.CachePut;
 import org.noear.solon.extend.data.annotation.CacheRemove;
@@ -16,7 +17,7 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
         if (app.enableTransaction()) {
-            Bridge.tranExecutorSet(TranExecutorImp.global);
+            Aop.wrapAndPut(TranExecutor.class, TranExecutorImp.global);
         }
 
         if (app.enableCaching()) {

@@ -196,29 +196,4 @@ public class Bridge {
             RenderManager.mapping(suffix, className);
         }
     }
-
-
-    //
-    // TranExecutor 对接
-    //
-    private static TranExecutor _tranExecutor = () -> false;
-
-    /**
-     * 获取事务执行器
-     */
-    @Note("获取事务执行器")
-    public static TranExecutor tranExecutor() {
-        return _tranExecutor;
-    }
-
-    /**
-     * 设置事务执行器
-     */
-    @Note("设置事务执行器")
-    public static void tranExecutorSet(TranExecutor te) {
-        if (te != null) {
-            _tranExecutor = te;
-        }
-    }
-
 }
