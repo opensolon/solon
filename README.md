@@ -9,8 +9,9 @@ A plug-in Java micro development framework。
 
 Support jdk8 +; Core frame 0.1Mb; Combining different plug-ins to meet different needs; Convenient customization; Rapid development of。
 
+Faster, smaller, freer！
+
 * Restrained, concise and open
-* Faster, smaller, freer
 * Unified development experience of HTTP, WebSocket and Socket signals (commonly known as three sources in one)
 * Support annotation and manual two modes, free control as needed
 * Not Servlets, which can be adapted to any underlying communication framework (so: RPC architecture runs at minimum 0.2Mb)
