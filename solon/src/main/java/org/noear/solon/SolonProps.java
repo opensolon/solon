@@ -1,5 +1,6 @@
 package org.noear.solon;
 
+import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.PluginEntity;
 import org.noear.solon.core.Props;
@@ -181,16 +182,14 @@ public final class SolonProps extends Props {
     protected void plugsScan(List<ClassLoader> classLoaders) {
         for (ClassLoader classLoader : classLoaders) {
             //3.查找插件配置（如果出错，让它抛出异常）
-            ResourceScaner.scan(classLoader, "solonplugin", n -> n.endsWith(".properties") || n.endsWith(".yml"))
-                    .stream()
-                    .map(k -> Utils.getResource(classLoader, k))
-                    .forEach(url -> plugsScanMapDo(classLoader, url));
-
             ResourceScaner.scan(classLoader, "META-INF/solon", n -> n.endsWith(".properties") || n.endsWith(".yml"))
                     .stream()
                     .map(k -> Utils.getResource(classLoader, k))
                     .forEach(url -> plugsScanMapDo(classLoader, url));
         }
+
+        //扫描主配置
+        plugsScanLoadDo(JarClassLoader.global(), this);
 
         plugsSort();
     }
@@ -201,21 +200,24 @@ public final class SolonProps extends Props {
      * @param url 资源地址
      */
     private void plugsScanMapDo(ClassLoader classLoader, URL url) {
-        try {
-            Props p = new Props(Utils.loadProperties(url));
+        Props p = new Props(Utils.loadProperties(url));
+        plugsScanLoadDo(classLoader, p);
+    }
 
-            String clzName = p.get("solon.plugin");
+    private void plugsScanLoadDo(ClassLoader classLoader, Props p) {
+        String pluginStr = p.get("solon.plugin");
 
-            if (Utils.isEmpty(clzName) == false) {
-                PluginEntity ent = new PluginEntity(classLoader, clzName);
-                ent.priority = p.getInt("solon.plugin.priority", 0);
+        if (Utils.isNotEmpty(pluginStr)) {
+            int priority = p.getInt("solon.plugin.priority", 0);
+            String[] plugins = pluginStr.trim().split(",");
 
-                plugs.add(ent);
+            for (String clzName : plugins) {
+                if (clzName.length() > 0) {
+                    PluginEntity ent = new PluginEntity(classLoader, clzName.trim());
+                    ent.priority = priority;
+                    plugs.add(ent);
+                }
             }
-        } catch (RuntimeException ex) {
-            throw ex;
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
         }
     }
 
