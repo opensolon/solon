@@ -5,9 +5,11 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.SolonBuilder;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.cloud.CloudClient;
+import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.MethodType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import webapp.demo6_aop.ExTest;
 import webapp.demo6_aop.TestImport;
 
 @Import(value = TestImport.class)
@@ -40,6 +42,10 @@ public class TestApp {
         SolonApp app = new SolonBuilder().onError(e->{
             e.printStackTrace();
         }).onAppInitEnd(e->{
+            Aop.context().beanExtractorAdd(ExTest.class, (bw,m,anno)->{
+                Solon.global().sharedAdd("ex_test_m", m);
+            });
+
             System.out.println("1.初始化完成");
         }).onPluginLoadEnd(e->{
             System.out.println("2.插件加载完成了");

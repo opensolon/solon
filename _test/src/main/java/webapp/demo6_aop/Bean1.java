@@ -12,4 +12,9 @@ public class Bean1 {
     public String name(){
         return "bean1";
     }
+
+    @ExTest
+    public void test(){
+
+    }
 }
