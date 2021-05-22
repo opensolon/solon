@@ -186,6 +186,10 @@ public class AopContext extends BeanContainer {
             return;
         }
 
+        if (beanExtractors.size() == 0) {
+            return;
+        }
+
         ClassWrap clzWrap = ClassWrap.get(bw.clz());
 
         for (Method m : clzWrap.getMethods()) {
