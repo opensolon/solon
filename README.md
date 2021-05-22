@@ -5,9 +5,7 @@
 
 # Solon for java
 
-A plug-in Java micro development framework。
-
-#### Faster, smaller, freer！
+A plug-in Java micro development framework。**Faster, smaller, freer！**
 
 Support jdk8 +; Core frame 0.1Mb; Combining different plug-ins to meet different needs; Convenient customization; Rapid development of。
 
