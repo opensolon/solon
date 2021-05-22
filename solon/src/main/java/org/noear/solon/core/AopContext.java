@@ -177,7 +177,6 @@ public class AopContext extends BeanContainer {
 
     //::提取
 
-
     /**
      * 为一个对象提取函数
      * */
