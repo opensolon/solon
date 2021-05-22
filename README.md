@@ -7,9 +7,10 @@
 
 A plug-in Java micro development framework。
 
+#### Faster, smaller, freer！
+
 Support jdk8 +; Core frame 0.1Mb; Combining different plug-ins to meet different needs; Convenient customization; Rapid development of。
 
-#### Faster, smaller, freer！
 
 * Restrained, concise and open
 * Unified development experience of HTTP, WebSocket and Socket signals (commonly known as three sources in one)
