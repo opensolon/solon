@@ -11,7 +11,6 @@ import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
 import org.noear.solon.cloud.extend.nacos.NacosProps;
-import org.noear.solon.core.event.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
