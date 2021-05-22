@@ -153,47 +153,4 @@ public class Bridge {
             _actionExecutors.add(e);
         }
     }
-
-
-    //
-    // Render 对接
-    //
-
-    /**
-     * 注册渲染器
-     *
-     * @param render 渲染器
-     */
-    @Note("注册渲染器")
-    public static void renderRegister(Render render) {
-        if (render != null) {
-            RenderManager.register(render);
-        }
-    }
-
-    /**
-     * 印射渲染关系
-     *
-     * @param suffix 文件后缀名
-     * @param render 渲染器
-     */
-    @Note("印射渲染关系")
-    public static void renderMapping(String suffix, Render render) {
-        if (suffix != null && render != null) {
-            RenderManager.mapping(suffix, render);
-        }
-    }
-
-    /**
-     * 印射渲染关系
-     *
-     * @param suffix    文件后缀名
-     * @param className 渲染器类名
-     */
-    @Note("印射渲染关系")
-    public static void renderMapping(String suffix, String className) {
-        if (suffix != null && className != null) {
-            RenderManager.mapping(suffix, className);
-        }
-    }
 }

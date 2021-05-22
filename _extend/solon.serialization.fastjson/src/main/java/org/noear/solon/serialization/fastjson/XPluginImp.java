@@ -3,6 +3,7 @@ package org.noear.solon.serialization.fastjson;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.handle.RenderManager;
 
 public class XPluginImp implements Plugin {
     public static boolean output_meta = false;
@@ -12,8 +13,8 @@ public class XPluginImp implements Plugin {
         output_meta = app.cfg().getInt("solon.output.meta", 0) > 0;
 
         //XRenderManager.register(render);
-        Bridge.renderMapping("@json", new FastjsonRender(false));
-        Bridge.renderMapping("@type_json", new FastjsonRender(true));
+        RenderManager.mapping("@json", new FastjsonRender(false));
+        RenderManager.mapping("@type_json", new FastjsonRender(true));
 
         //支持Json内容类型执行
         Bridge.actionExecutorAdd(new FastjsonJsonActionExecutor());

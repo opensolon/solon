@@ -51,6 +51,10 @@ public class RenderManager implements Render {
      * @param render 渲染器
      */
     public static void register(Render render) {
+        if(render == null){
+            return;
+        }
+
         _def = render;
         _lib.put(render.getClass().getSimpleName(), render);
         _lib.put(render.getClass().getName(), render);
@@ -66,6 +70,10 @@ public class RenderManager implements Render {
      * @param render 渲染器
      */
     public static void mapping(String suffix, Render render) {
+        if (suffix == null || render == null) {
+            return;
+        }
+
         //suffix=.ftl
         _mapping.put(suffix, render);
 
@@ -79,6 +87,10 @@ public class RenderManager implements Render {
      * @param clzName  渲染器类名
      */
     public static void mapping(String suffix, String clzName) {
+        if (suffix == null || clzName == null) {
+            return;
+        }
+
         Render render = _lib.get(clzName);
         if (render == null) {
             PrintUtil.wran("solon: " + clzName + " not exists!");

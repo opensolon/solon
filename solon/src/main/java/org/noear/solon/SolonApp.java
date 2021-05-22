@@ -94,7 +94,7 @@ public class SolonApp implements HandlerSlots {
         //3.加载渲染关系
         NvMap map = cfg().getXmap("solon.view.mapping");
         map.forEach((k, v) -> {
-            Bridge.renderMapping("." + k, v);
+            RenderManager.mapping("." + k, v);
         });
 
         //3.1.标识上下文加载完成
