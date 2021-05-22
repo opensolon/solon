@@ -90,7 +90,7 @@ public class AopContext extends BeanContainer {
             beanRegister(bw, anno.value(), anno.typed());
 
             //尝试提取函数
-            tryExtract(bw);
+            beanExtract(bw);
         });
 
         //注册 @Remoting 构建器
@@ -170,6 +170,30 @@ public class AopContext extends BeanContainer {
                     Class<?> et = (Class<?>) pt.getActualTypeArguments()[0];
                     EventBus.subscribe(et, bw.raw());
                     return;
+                }
+            }
+        }
+    }
+
+    //::提取
+
+
+    /**
+     * 为一个对象提取函数
+     * */
+    public void beanExtract(BeanWrap bw) {
+        if (bw == null) {
+            return;
+        }
+
+        ClassWrap clzWrap = ClassWrap.get(bw.clz());
+
+        for (Method m : clzWrap.getMethods()) {
+            for (Annotation a : m.getAnnotations()) {
+                BeanExtractor be = beanExtractors.get(a.annotationType());
+
+                if (be != null) {
+                    be.doExtract(bw, m, a);
                 }
             }
         }
@@ -283,28 +307,6 @@ public class AopContext extends BeanContainer {
     ////////////////////////////////////////////////////
     //
     //
-
-
-    /**
-     * 尝试为bean提取函数
-     * */
-    protected void tryExtract(BeanWrap bw) {
-        if (bw == null) {
-            return;
-        }
-
-        ClassWrap clzWrap = ClassWrap.get(bw.clz());
-
-        for (Method m : clzWrap.getMethods()) {
-            for (Annotation a : m.getAnnotations()) {
-                BeanExtractor be = beanExtractors.get(a.annotationType());
-
-                if (be != null) {
-                    be.doExtract(bw, m, a);
-                }
-            }
-        }
-    }
 
     /**
      * 尝试为bean注入
