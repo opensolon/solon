@@ -33,7 +33,7 @@
         <servlet.ver>4.0.1</servlet.ver>
 
         <jetty.ver>9.4.38.v20210224</jetty.ver>
-        <undertow.ver>2.1.0.Final</undertow.ver>
+        <undertow.ver>2.2.7.Final</undertow.ver>
 
         <jackson.ver>2.10.5</jackson.ver>
         <hessian.ver>4.0.63</hessian.ver>
@@ -804,7 +804,7 @@
             <dependency>
                 <groupId>io.undertow.jastow</groupId>
                 <artifactId>jastow</artifactId>
-                <version>${undertow.ver}</version>
+                <version>2.1.0.Final</version>
             </dependency>
 
             <dependency>
