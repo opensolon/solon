@@ -11,11 +11,11 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.view.enjoy</artifactId>
+    <artifactId>activerecord-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
-    <dependencies>
 
+    <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
@@ -23,10 +23,8 @@
 
         <dependency>
             <groupId>com.jfinal</groupId>
-            <artifactId>enjoy</artifactId>
+            <artifactId>activerecord</artifactId>
             <version>4.9.11</version>
         </dependency>
-
     </dependencies>
-
 </project>

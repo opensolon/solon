@@ -173,6 +173,11 @@ public class HttpUtils {
         return this;
     }
 
+    //@XNote("设置BODY txt及内容类型")
+    public HttpUtils bodyJson(String txt) {
+        return bodyTxt(txt, "application/json");
+    }
+
     //@XNote("设置BODY raw")
     public HttpUtils bodyRaw(byte[] bytes) {
         return bodyRaw(bytes, null);

@@ -4,6 +4,8 @@ import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.extend.validation.annotation.*;
 
+import java.util.List;
+
 @Valid
 @Mapping("/demo2/valid")
 @Controller
@@ -104,6 +106,18 @@ public class ValidController {
     //这是基于 bean 的验证体系
     @Mapping("bean")
     public String bean(@Validated ValidModel model) {
+        return "OK";
+    }
+
+    //这是基于 bean 的验证体系（下面这种写法不行）
+    @Mapping("beanlist")
+    public String beanlist(@Validated List<ValidModel> model) {
+        return "OK";
+    }
+
+    //这是基于 bean 的验证体系
+    @Mapping("beanlist")
+    public String beanlist(@Validated ValidViewModel model) {
         return "OK";
     }
 }

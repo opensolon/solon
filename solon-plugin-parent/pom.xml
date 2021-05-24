@@ -236,6 +236,8 @@
 
         <module>../_plugin/captcha-solon-plugin</module>
 
+        <module>../_plugin/activerecord-solon-plugin</module>
+
 
         <!-- //////////////////////////////////////////////////// -->
         <module>../_plugin_cloud/aliyun-oss-solon-plugin</module>
