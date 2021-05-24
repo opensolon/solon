@@ -109,11 +109,6 @@ public class ValidController {
         return "OK";
     }
 
-    //这是基于 bean 的验证体系（下面这种写法不行）
-    @Mapping("beanlist")
-    public String beanlist(@Validated List<ValidModel> model) {
-        return "OK";
-    }
 
     //这是基于 bean 的验证体系
     @Mapping("beanlist")
