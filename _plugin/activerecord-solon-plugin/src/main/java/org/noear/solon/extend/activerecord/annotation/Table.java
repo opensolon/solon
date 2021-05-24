@@ -10,6 +10,13 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Table {
-    String value(); //别名
+    /**
+     * 表达
+     * */
+    String name();
+    /**
+     * 主键
+     * */
+    String primaryKey() default "id";
 }
 

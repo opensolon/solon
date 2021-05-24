@@ -5,16 +5,13 @@ import com.jfinal.plugin.activerecord.IDataSourceProvider;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.template.source.ClassPathSourceFactory;
 import org.noear.solon.SolonApp;
-import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ResourceScaner;
-import org.noear.solon.extend.activerecord.annotation.PrimaryKey;
 import org.noear.solon.extend.activerecord.annotation.Table;
 
 import javax.sql.DataSource;
-import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -23,7 +20,7 @@ import java.util.Map;
  * @since 1.4
  */
 public class XPluginImp implements Plugin {
-    Map<String, Class<? extends Model<?>>> tableMap = new LinkedHashMap<>();
+    Map<Table, Class<? extends Model<?>>> tableMap = new LinkedHashMap<>();
 
     @Override
     public void start(SolonApp app) {
@@ -34,18 +31,7 @@ public class XPluginImp implements Plugin {
 
         Aop.context().beanBuilderAdd(Table.class, (clz, wrap, anno) -> {
             if (wrap.raw() instanceof Model) {
-                String pk = "id";
-                for (Field fd : clz.getDeclaredFields()) {
-                    if (fd.getAnnotation(PrimaryKey.class) != null) {
-                        pk = fd.getName();
-                    }
-                }
-
-                if (Utils.isEmpty(anno.value())) {
-                    tableMap.put(clz.getSimpleName() + ":" + pk, (Class<? extends Model<?>>) clz);
-                } else {
-                    tableMap.put(anno.value() + ":" + pk, (Class<? extends Model<?>>) clz);
-                }
+                tableMap.put(anno, (Class<? extends Model<?>>) clz);
             }
         });
     }
@@ -67,9 +53,8 @@ public class XPluginImp implements Plugin {
                     arp.addSqlTemplate(url);
                 });
 
-        tableMap.forEach((key, clz) -> {
-            String[] ss = key.split(":");
-            arp.addMapping(ss[0], ss[1], clz);
+        tableMap.forEach((anno, clz) -> {
+            arp.addMapping(anno.name(), anno.primaryKey(), clz);
         });
 
         EventBus.push(arp);
