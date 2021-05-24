@@ -1,58 +1,42 @@
 package org.noear.solon.extend.activerecord;
 
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
-import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Record;
-import com.jfinal.plugin.druid.DruidPlugin;
+import com.jfinal.plugin.activerecord.IDataSourceProvider;
 import org.noear.solon.SolonApp;
+import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.ResourceScaner;
+
+import javax.sql.DataSource;
 
 /**
- * @author noear 2021/5/24 created
+ * @author noear
+ * @since 1.4
  */
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-
+        Aop.getAsyn(DataSource.class, bw->{
+            initActiveRecord(bw.raw());
+        });
     }
 
-    static String jdbcUrl = "jdbc:mysql://localhost/jfinal_demo?useSSL=false&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull";
-    static String user = "root";
-    static String password = "yourpassword";
+    private void initActiveRecord(DataSource ds) {
+        IDataSourceProvider dsp = new DataSourceProviderWrap(ds);
 
-    public static DruidPlugin createDruidPlugin() {
-        DruidPlugin druidPlugin = new DruidPlugin(jdbcUrl, user, password);
-        return druidPlugin;
-    }
-
-    public static void initActiveRecordPlugin() {
-        DruidPlugin druidPlugin = createDruidPlugin();
-
-        ActiveRecordPlugin arp = new ActiveRecordPlugin(druidPlugin);
+        ActiveRecordPlugin arp = new ActiveRecordPlugin(dsp);
         arp.setDevMode(true);
         arp.setShowSql(true);
 
-        // 添加 sql 模板文件，实际开发时将 sql 文件放在 src/main/resources 下
-        arp.addSqlTemplate("com/jfinal/plugin/activerecord/test.sql");
+        ResourceScaner.scan("activerecord", n -> n.endsWith(".sql"))
+                .forEach(url -> {
+                    arp.addSqlTemplate(url);
+                });
 
-        // 所有映射在生成的 _MappingKit.java 中自动化搞定
-        _MappingKit.mapping(arp);
+        EventBus.push(arp);
 
-        // 先启动 druidPlugin，后启动 arp
-        druidPlugin.start();
+        // 启动 arp
         arp.start();
-    }
-
-    public static void main(String[] args) {
-        initActiveRecordPlugin();
-
-        // 使用 Model
-        Blog dao = new Blog().dao();
-        Blog blog = dao.template("findBlog", 1).findFirst();
-        System.out.println(blog.getTitle());
-
-        // 使用 Db + Record 模式
-        Record record = Db.template("findBlog", 1).findFirst();
-        System.out.println(record.getStr("title"));
     }
 }
