@@ -58,11 +58,11 @@ public class XPluginImp implements Plugin {
                     arp.addSqlTemplate(url);
                 });
 
-        EventBus.push(arp);
-
         tableMap.forEach((key, clz) -> {
             arp.addMapping(key, clz);
         });
+
+        EventBus.push(arp);
 
         // 启动 arp
         arp.start();
