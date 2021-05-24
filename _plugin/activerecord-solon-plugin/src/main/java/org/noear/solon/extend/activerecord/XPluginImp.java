@@ -26,8 +26,6 @@ public class XPluginImp implements Plugin {
         IDataSourceProvider dsp = new DataSourceProviderWrap(ds);
 
         ActiveRecordPlugin arp = new ActiveRecordPlugin(dsp);
-        arp.setDevMode(true);
-        arp.setShowSql(true);
 
         ResourceScaner.scan("activerecord", n -> n.endsWith(".sql"))
                 .forEach(url -> {
