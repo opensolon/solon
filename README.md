@@ -80,6 +80,7 @@ public class App implements HelloService{
 | org.noear:solon-lib | Rapid development of basic integration packages |
 | org.noear:solon-api | solon-lib + http boot；Rapid development of interface applications |
 | org.noear:solon-web | solon-api + freemarker + sessionstate；Rapid development of WEB applications |
+| org.noear:solon-beetl-web | solon-api + beetl + beetlsql + sessionstate；Rapid development of WEB applications |
 | org.noear:solon-rpc | solon-api + nami；Rapid development of remoting applications |
 | org.noear:solon-cloud | solon-rpc + consul；Rapid development of microservice applications |
 
