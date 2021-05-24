@@ -10,9 +10,11 @@ import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ResourceScaner;
+import org.noear.solon.extend.activerecord.annotation.PrimaryKey;
 import org.noear.solon.extend.activerecord.annotation.Table;
 
 import javax.sql.DataSource;
+import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -32,10 +34,17 @@ public class XPluginImp implements Plugin {
 
         Aop.context().beanBuilderAdd(Table.class, (clz, wrap, anno) -> {
             if (wrap.raw() instanceof Model) {
+                String pk = "id";
+                for (Field fd : clz.getDeclaredFields()) {
+                    if (fd.getAnnotation(PrimaryKey.class) != null) {
+                        pk = fd.getName();
+                    }
+                }
+
                 if (Utils.isEmpty(anno.value())) {
-                    tableMap.put(clz.getSimpleName(), (Class<? extends Model<?>>) clz);
+                    tableMap.put(clz.getSimpleName() + ":" + pk, (Class<? extends Model<?>>) clz);
                 } else {
-                    tableMap.put(anno.value(), (Class<? extends Model<?>>) clz);
+                    tableMap.put(anno.value() + ":" + pk, (Class<? extends Model<?>>) clz);
                 }
             }
         });
@@ -59,7 +68,8 @@ public class XPluginImp implements Plugin {
                 });
 
         tableMap.forEach((key, clz) -> {
-            arp.addMapping(key, clz);
+            String[] ss = key.split(":");
+            arp.addMapping(ss[0], ss[1], clz);
         });
 
         EventBus.push(arp);
