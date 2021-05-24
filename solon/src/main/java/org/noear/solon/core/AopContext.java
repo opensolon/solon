@@ -383,7 +383,7 @@ public class AopContext extends BeanContainer {
                     Object raw = mWrap.invoke(bw.raw(), args2);
                     tryBuildBean0(mWrap, anno, raw);
                 } catch (Throwable ex) {
-                    EventBus.push(ex);
+                    throw Utils.throwableWrap(ex);
                 }
             });
 
