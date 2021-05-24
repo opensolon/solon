@@ -72,7 +72,7 @@ public class App implements HelloService{
 | org.noear:solon | 主框架 |
 | org.noear:nami | 伴生框架（做为solon remoting 的客户端）|
 
-###### 快速集成开发包
+###### 快速集成开发包及相互关系
 
 | 组件 | 说明 |
 | --- | --- |
