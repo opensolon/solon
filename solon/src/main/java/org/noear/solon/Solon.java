@@ -66,6 +66,11 @@ public class Solon {
             return global;
         }
 
+        //确定PID
+        RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
+        String pid = rb.getName().split("@")[0];
+        System.setProperty("PID", pid);
+
         //绑定类加载器
         JarClassLoader.bindingThread();
 
@@ -101,12 +106,9 @@ public class Solon {
             Runtime.getRuntime().addShutdownHook(new Thread(() -> Solon.stop0(false, 0)));
         }
 
-        RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
-        if (rb == null) {
-            PrintUtil.info("App", "End loading elapsed=" + global.elapsedTimes() + "ms");
-        } else {
-            PrintUtil.info("App", "End loading elapsed=" + global.elapsedTimes() + "ms pid=" + rb.getName());
-        }
+        //启动完成
+        PrintUtil.info("App", "End loading elapsed=" + global.elapsedTimes() + "ms pid=" + pid);
+
         return global;
     }
 

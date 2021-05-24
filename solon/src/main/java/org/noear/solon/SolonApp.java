@@ -12,6 +12,7 @@ import org.noear.solon.core.*;
 import org.noear.solon.core.message.Listener;
 
 import java.lang.annotation.Annotation;
+import java.lang.management.ManagementFactory;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -35,7 +36,6 @@ public class SolonApp implements HandlerSlots {
      * 初始化（不能合在构建函数里）
      * */
     protected void init() {
-
         List<ClassLoader> loaderList;
 
         //1.尝试加载扩展文件夹
