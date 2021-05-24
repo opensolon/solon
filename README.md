@@ -73,7 +73,7 @@ public class App implements HelloService{
 | org.noear:solon | Main frame |
 | org.noear:nami | Companion Framework (as a client to Solon Remoting) |
 
-###### Rapid integration of development kits
+###### Rapid integration of development packages and relationships
 
 | component or plugin | description |
 | --- | --- |
