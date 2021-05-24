@@ -10,7 +10,6 @@ import org.noear.solon.annotation.Singleton;
 /**
  * @author noear 2021/3/30 created
  */
-@Singleton(false)
 @Mapping("/demo2/servlet")
 @Controller
 public class ServletController {
