@@ -11,13 +11,19 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>mybatisplus-solon-plugin</artifactId>
+    <artifactId>mybatis-plus-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus</artifactId>
+            <version>3.4.3</version>
         </dependency>
     </dependencies>
 </project>

@@ -225,19 +225,17 @@
         <module>../_plugin/luffy-solon-plugin</module>
 
         <module>../_plugin/weed3-solon-plugin</module>
+<!--        <module>../_plugin/mybatis-plus-solon-plugin</module>-->
         <module>../_plugin/mybatis-solon-plugin</module>
         <module>../_plugin/mybatis-sqlhelper-solon-plugin</module>
+        <module>../_plugin/activerecord-solon-plugin</module>
 
         <module>../_plugin/quartz-solon-plugin</module>
 
         <module>../_plugin/shiro-solon-plugin</module>
-
         <module>../_plugin/sureness-solon-plugin</module>
 
         <module>../_plugin/captcha-solon-plugin</module>
-
-        <module>../_plugin/activerecord-solon-plugin</module>
-
 
         <!-- //////////////////////////////////////////////////// -->
         <module>../_plugin_cloud/aliyun-oss-solon-plugin</module>
