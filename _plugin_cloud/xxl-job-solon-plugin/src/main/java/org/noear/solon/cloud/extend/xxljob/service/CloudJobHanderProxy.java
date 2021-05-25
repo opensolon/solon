@@ -10,10 +10,10 @@ import org.noear.solon.core.handle.Handler;
  * @author noear
  * @since 1.4
  */
-class CloudJobHanderWrap extends IJobHandler {
+class CloudJobHanderProxy extends IJobHandler {
     Handler real;
 
-    public CloudJobHanderWrap(Handler handler) {
+    public CloudJobHanderProxy(Handler handler) {
         real = handler;
     }
 

@@ -13,7 +13,7 @@ public class CloudJobServiceImpl implements CloudJobService {
 
     @Override
     public boolean register(String name, Handler handler) {
-        XxlJobExecutor.registJobHandler(name, new CloudJobHanderWrap(handler));
+        XxlJobExecutor.registJobHandler(name, new CloudJobHanderProxy(handler));
         return true;
     }
 }
