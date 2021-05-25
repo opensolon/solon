@@ -1,7 +1,6 @@
 package org.noear.solon.cloud.extend.xxljob.impl;
 
 import com.xxl.job.core.executor.XxlJobExecutor;
-import com.xxl.job.core.handler.impl.MethodJobHandler;
 import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.cloud.extend.xxljob.service.CloudJobServiceImpl;
 import org.noear.solon.core.BeanExtractor;
@@ -16,7 +15,7 @@ import java.lang.reflect.Method;
 public class CloudJobExtractor implements BeanExtractor<CloudJob> {
     @Override
     public void doExtract(BeanWrap bw, Method method, CloudJob anno) {
-        String name = anno.name();
+        String name = anno.value();
 
         if (name.trim().length() == 0) {
             throw new RuntimeException("xxl-job method-jobhandler name invalid, for[" + bw.clz() + "#" + method.getName() + "] .");

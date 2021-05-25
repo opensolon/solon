@@ -13,7 +13,7 @@ public @interface CloudJob {
     /**
      * 名称
      * */
-    String name();
+    String value();
     /**
      * 描述
      * */
