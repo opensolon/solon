@@ -52,6 +52,10 @@ public class Action extends HandlerAide implements Handler {
     //path key 表达式
     private static Pattern pathKeyExpr = Pattern.compile("\\{([^\\\\}]+)\\}");
 
+    public Action(BeanWrap bWrap, Method method) {
+        this(bWrap, null, method, null, null, false, null);
+    }
+
     public Action(BeanWrap bWrap, HandlerAide bAide, Method method, Mapping mapping, String path, boolean remoting, Render render) {
         this.bWrap = bWrap;
         this.bAide = bAide;
@@ -180,8 +184,10 @@ public class Action extends HandlerAide implements Handler {
         //前置处理（最多一次渲染）
         if (mIsMain) {
             handleDo(x, () -> {
-                for (Handler h : bAide.befores) {
-                    h.handle(x);
+                if (bAide != null) {
+                    for (Handler h : bAide.befores) {
+                        h.handle(x);
+                    }
                 }
 
                 for (Handler h : befores) {
@@ -224,8 +230,10 @@ public class Action extends HandlerAide implements Handler {
 
         //后置处理
         if (mIsMain) {
-            for (Handler h : bAide.afters) {
-                h.handle(x);
+            if (bAide != null) {
+                for (Handler h : bAide.afters) {
+                    h.handle(x);
+                }
             }
 
             for (Handler h : afters) {

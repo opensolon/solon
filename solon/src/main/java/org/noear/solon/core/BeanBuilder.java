@@ -31,5 +31,5 @@ public interface BeanBuilder<T extends Annotation> {
     /**
      * 构建
      * */
-    void doBuild(Class<?> clz, BeanWrap wrap, T anno) throws Exception;
+    void doBuild(Class<?> clz, BeanWrap bw, T anno) throws Exception;
 }

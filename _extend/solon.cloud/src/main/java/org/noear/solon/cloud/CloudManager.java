@@ -60,6 +60,11 @@ public class CloudManager {
     private static CloudTraceService traceService;
 
     /**
+     * 云端任务服务
+     */
+    private static CloudJobService jobService;
+
+    /**
      * 云端ID生成工厂
      * */
     private static CloudIdServiceFactory idServiceFactory;
@@ -162,6 +167,14 @@ public class CloudManager {
     }
 
     /**
+     * 登记任务服务
+     */
+    public static void register(CloudJobService service) {
+        jobService = service;
+        PrintUtil.info("Cloud", "CloudJobService registered from the " + service.getClass().getTypeName());
+    }
+
+    /**
      * 登记ID生成工厂
      */
     public static void register(CloudIdServiceFactory factory) {
@@ -212,6 +225,10 @@ public class CloudManager {
 
     protected static CloudIdService idServiceDef(){
         return idServiceDef;
+    }
+
+    protected static CloudJobService jobService(){
+        return jobService;
     }
 
 }

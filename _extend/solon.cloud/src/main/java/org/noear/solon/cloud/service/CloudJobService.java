@@ -1,6 +1,6 @@
 package org.noear.solon.cloud.service;
 
-import org.noear.solon.cloud.CloudJobHandler;
+import org.noear.solon.core.handle.Handler;
 
 /**
  * @author noear
@@ -10,5 +10,5 @@ public interface CloudJobService {
     /**
      * 注册任务
      */
-    boolean register(String job, CloudJobHandler handler);
+    boolean register(String name, Handler handler);
 }

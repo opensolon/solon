@@ -171,4 +171,9 @@ public class CloudClient {
     public static CloudIdService id(){
         return CloudManager.idServiceDef();
     }
+
+    @Note("Job服务")
+    public static CloudJobService job(){
+        return CloudManager.jobService();
+    }
 }
