@@ -24,18 +24,8 @@ public class DataSourceProxy implements DataSource {
     @Override
     public Connection getConnection() throws SQLException {
         if (TranUtils.inTrans()) {
-            Connection con = TranUtils.getConnection(ds);
-
-            if (DbKit.getConfig() != null) {
-                DbKit.getConfig().setThreadLocalConnection(con);
-            }
-
-            return con;
+            return TranUtils.getConnection(ds);
         } else {
-            if (DbKit.getConfig() != null) {
-                DbKit.getConfig().setThreadLocalConnection(null);
-            }
-
             return ds.getConnection();
         }
     }
