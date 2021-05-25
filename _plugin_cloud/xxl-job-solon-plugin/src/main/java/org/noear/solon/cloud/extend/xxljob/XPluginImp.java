@@ -16,6 +16,8 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
+
+
         //add extractor for bean method
         Aop.context().beanExtractorAdd(XxlJob.class, new ExtractorOfXxlJobMethod());
         Aop.context().beanExtractorAdd(CloudJob.class, new ExtractorOfCloudJob());
@@ -24,9 +26,7 @@ public class XPluginImp implements Plugin {
 
         Aop.beanOnloaded(() -> {
             try {
-                //
                 XxlJobExecutor executor = Aop.get(XxlJobExecutor.class);
-
                 executor.start();
             } catch (Exception e) {
                 throw new RuntimeException(e);

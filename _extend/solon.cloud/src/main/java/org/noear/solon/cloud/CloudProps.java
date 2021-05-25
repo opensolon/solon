@@ -2,7 +2,6 @@ package org.noear.solon.cloud;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.yaml.snakeyaml.events.Event;
 
 import java.util.Properties;
 
@@ -80,6 +79,10 @@ public class CloudProps {
     //名单服务相关
     private String LIST_ENABLE = "solon.cloud.@@.list.enable";
 
+    //任务服务相关
+    private String JOB_ENABLE = "solon.cloud.@@.job.enable";
+    private String JOB_SERVER = "solon.cloud.@@.job.server";
+
     private final String frame;
 
     public CloudProps(String frame) {
@@ -138,6 +141,9 @@ public class CloudProps {
         ID_START = ID_START.replace("@@", frame);
 
         LIST_ENABLE = LIST_ENABLE.replace("@@", frame);
+
+        JOB_ENABLE = JOB_ENABLE.replace("@@", frame);
+        JOB_SERVER = JOB_SERVER.replace("@@", frame);
     }
 
 
@@ -376,5 +382,20 @@ public class CloudProps {
     //
     public boolean getListEnable() {
         return Solon.cfg().getBool(LIST_ENABLE, true);
+    }
+
+    //
+    //JOB服务相关
+    //
+    public boolean getJobEnable() {
+        return Solon.cfg().getBool(JOB_ENABLE, true);
+    }
+    public String getJobServer() {
+        String tmp = Solon.cfg().get(JOB_SERVER);
+        if (Utils.isEmpty(tmp)) {
+            return getServer();
+        } else {
+            return tmp;
+        }
     }
 }

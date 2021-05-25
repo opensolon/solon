@@ -48,6 +48,10 @@ public class AutoConfigXxlJob {
     public XxlJobExecutor xxlJobExecutor() {
         logger.info(">>>>>>>>>>> xxl-job config init.");
 
+        if(Utils.isEmpty(adminAddresses)){
+            adminAddresses = XxljobProps.instance.getJobServer();
+        }
+
         if(Utils.isEmpty(appname)){
             appname = Solon.cfg().appName();
         }
@@ -68,8 +72,12 @@ public class AutoConfigXxlJob {
             logPath = "/data/logs/xxl-job/jobhandler";
         }
 
-        if(Utils.isEmpty(accessToken)){
-            accessToken = "wVTggb2KMjK705Jp";
+        if(Utils.isEmpty(accessToken)) {
+            accessToken = XxljobProps.instance.getPassword();
+
+            if (Utils.isEmpty(accessToken)) {
+                accessToken = "wVTggb2KMjK705Jp";
+            }
         }
 
 
