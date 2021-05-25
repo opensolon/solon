@@ -7,6 +7,7 @@ import java.util.Map;
  */
 public class MenuNode {
     String name;
+    String displayName;
     String url;
     String target;
     String icon;

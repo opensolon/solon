@@ -2,6 +2,7 @@ package org.noear.solon.extend.security;
 
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.extend.security.annotation.Logical;
+import org.noear.solon.extend.security.model.UserModel;
 
 /**
  * @author noear
@@ -17,6 +18,11 @@ public interface SecurityService {
      * 用领牌登录
      * */
     boolean login(String token);
+
+    /**
+     * 登录后加载模型（可用于自动登录）
+     * */
+    void loginLoad(UserModel user);
 
     /**
      * 验证登录状态
