@@ -262,7 +262,7 @@
 
         <module>../_plugin_cloud/semaphore-solon-plugin</module>
 
-        <module>../_plugin_cloud/xxljob-solon-plugin</module>
+        <module>../_plugin_cloud/xxl-job-solon-plugin</module>
     </modules>
 
 </project>
