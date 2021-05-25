@@ -32,7 +32,7 @@ public interface AuthService {
     /**
      * 验证路径（一般使用路径验证）
      * */
-    boolean verifyPath(String path, MethodType methodType);
+    boolean verifyPath(String path, String method);
 
     /**
      * 验证权限（有特殊情况用权限验证）

@@ -15,7 +15,7 @@ import java.lang.annotation.Annotation;
 public class ValidatorFailureHandlerImp implements ValidatorFailureHandler {
 
     @Override
-    public boolean onFailure(Context ctx, Annotation ano, Result rst, String message) {
+    public boolean onFailure(Context ctx, Annotation anno, Result rst, String message) {
         ctx.setHandled(true);
 
         if (rst.getCode() > 400 && rst.getCode() < 500) {
@@ -31,13 +31,13 @@ public class ValidatorFailureHandlerImp implements ValidatorFailureHandler {
                     if (Utils.isEmpty(rst.getDescription())) {
                         message = new StringBuilder(100)
                                 .append("@")
-                                .append(ano.annotationType().getSimpleName())
+                                .append(anno.annotationType().getSimpleName())
                                 .append(" verification failed")
                                 .toString();
                     } else {
                         message = new StringBuilder(100)
                                 .append("@")
-                                .append(ano.annotationType().getSimpleName())
+                                .append(anno.annotationType().getSimpleName())
                                 .append(" verification failed: ")
                                 .append(rst.getDescription())
                                 .toString();
