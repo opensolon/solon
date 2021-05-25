@@ -6,6 +6,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.cloud.model.Instance;
+import org.noear.solon.cloud.utils.LocalUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,6 +52,11 @@ public class XxlJobAutoConfig {
         if(Utils.isEmpty(appname)){
             appname = Solon.cfg().appName();
         }
+
+        if(Utils.isEmpty(ip)){
+            ip = LocalUtils.getLocalAddress();
+        }
+
 
         XxlJobExecutor executor = new XxlJobExecutor();
 
