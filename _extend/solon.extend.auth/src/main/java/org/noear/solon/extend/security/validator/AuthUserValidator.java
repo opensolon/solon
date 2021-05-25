@@ -2,7 +2,7 @@ package org.noear.solon.extend.security.validator;
 
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.extend.security.AuthProviderProxy;
+import org.noear.solon.extend.security.AuthServiceProxy;
 import org.noear.solon.extend.security.annotation.AuthUser;
 import org.noear.solon.extend.validation.Validator;
 
@@ -21,7 +21,7 @@ public class AuthUserValidator implements Validator<AuthUser> {
 
     @Override
     public Result validate(Context ctx, AuthUser anno, String name, StringBuilder tmp) {
-        if (AuthProviderProxy.getInstance().verifyLogined()) {
+        if (AuthServiceProxy.getInstance().verifyLogined()) {
             return Result.succeed();
         } else {
             return Result.failure();

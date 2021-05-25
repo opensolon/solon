@@ -9,20 +9,20 @@ import org.noear.solon.extend.security.model.UserModel;
  * @author noear
  * @since 1.3
  */
-public class AuthProviderProxy implements AuthProvider {
-    private static AuthProvider instance;
+public class AuthServiceProxy implements AuthService {
+    private static AuthService instance;
 
-    public static AuthProvider getInstance() {
+    public static AuthService getInstance() {
         if (instance == null) {
-            instance = new AuthProviderProxy();
+            instance = new AuthServiceProxy();
         }
         return instance;
     }
 
-    private AuthProvider real;
+    private AuthService real;
 
-    private AuthProviderProxy() {
-        Aop.getAsyn(AuthProvider.class, bw -> {
+    private AuthServiceProxy() {
+        Aop.getAsyn(AuthService.class, bw -> {
             real = bw.raw();
         });
     }
