@@ -17,20 +17,20 @@ import java.sql.Statement;
  * @author noear
  * @since 1.4
  */
-class ConfigSolon extends Config {
-    public ConfigSolon(String name, DataSource dataSource, int transactionLevel) {
+class ConfigImpl extends Config {
+    public ConfigImpl(String name, DataSource dataSource, int transactionLevel) {
         super(name, dataSource, transactionLevel);
     }
 
-    public ConfigSolon(String name, DataSource dataSource, Dialect dialect, boolean showSql, boolean devMode, int transactionLevel, IContainerFactory containerFactory, ICache cache) {
+    public ConfigImpl(String name, DataSource dataSource, Dialect dialect, boolean showSql, boolean devMode, int transactionLevel, IContainerFactory containerFactory, ICache cache) {
         super(name, dataSource, dialect, showSql, devMode, transactionLevel, containerFactory, cache);
     }
 
-    public ConfigSolon(String name, DataSource dataSource) {
+    public ConfigImpl(String name, DataSource dataSource) {
         super(name, dataSource);
     }
 
-    public ConfigSolon(String name, DataSource dataSource, Dialect dialect) {
+    public ConfigImpl(String name, DataSource dataSource, Dialect dialect) {
         super(name, dataSource, dialect);
     }
 
