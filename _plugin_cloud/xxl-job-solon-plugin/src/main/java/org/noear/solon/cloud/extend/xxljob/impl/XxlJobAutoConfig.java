@@ -1,6 +1,8 @@
 package org.noear.solon.cloud.extend.xxljob.impl;
 
 import com.xxl.job.core.executor.XxlJobExecutor;
+import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
@@ -44,6 +46,10 @@ public class XxlJobAutoConfig {
     @Bean
     public XxlJobExecutor xxlJobExecutor() {
         logger.info(">>>>>>>>>>> xxl-job config init.");
+
+        if(Utils.isEmpty(appname)){
+            appname = Solon.cfg().appName();
+        }
 
         XxlJobExecutor executor = new XxlJobExecutor();
 
