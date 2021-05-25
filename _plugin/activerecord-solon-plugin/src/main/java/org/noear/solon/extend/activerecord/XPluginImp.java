@@ -43,7 +43,11 @@ public class XPluginImp implements Plugin {
 
         //IDataSourceProvider dsp = new DataSourceProviderWrap(ds);
 
-        ConfigImpl cfg  = new ConfigImpl(DbKit.MAIN_CONFIG_NAME, ds, DbKit.DEFAULT_TRANSACTION_LEVEL);
+        ConfigImpl cfg  = new ConfigImpl(
+                DbKit.MAIN_CONFIG_NAME,
+                new DataSourceProxy(ds),
+                DbKit.DEFAULT_TRANSACTION_LEVEL);
+
         ActiveRecordPlugin arp = new ActiveRecordPlugin(cfg);
 
 //        arp.getEngine().setBaseTemplatePath("/activerecord/");
