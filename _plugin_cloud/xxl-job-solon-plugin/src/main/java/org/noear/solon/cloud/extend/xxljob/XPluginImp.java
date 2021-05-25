@@ -16,7 +16,9 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-
+        if (XxljobProps.instance.getJobEnable() == false) {
+            return;
+        }
 
         //add extractor for bean method
         Aop.context().beanExtractorAdd(XxlJob.class, new ExtractorOfXxlJobMethod());
