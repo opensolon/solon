@@ -7,11 +7,11 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.4.4</version>
+        <version>1.4.5</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
     
-    <artifactId>solon.extend.security</artifactId>
+    <artifactId>solon.extend.auth</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

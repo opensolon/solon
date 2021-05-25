@@ -8,7 +8,7 @@ import org.noear.solon.extend.security.model.UserModel;
  * @author noear
  * @since 1.3
  */
-public interface SecurityService {
+public interface AuthProvider {
     /**
      * 用账号密码登录
      * */

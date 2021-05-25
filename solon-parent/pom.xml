@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.4.4</version>
+    <version>1.4.5</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -18,7 +18,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.4.4</solon.ver>
+        <solon.ver>1.4.5</solon.ver>
 
         <snack3.ver>3.1.17</snack3.ver>
         <weed3.ver>3.3.10</weed3.ver>
@@ -222,6 +222,11 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.cors</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.extend.auth</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
             <dependency>
@@ -1105,7 +1110,7 @@
         <module>../_extend/solon.extend.validation</module>
         <module>../_extend/solon.extend.data</module>
         <module>../_extend/solon.extend.cors</module>
-        <module>../_extend/solon.extend.security</module>
+        <module>../_extend/solon.extend.auth</module>
 
 
         <module>../_extend/solon.extend.jetty.jsp</module>
