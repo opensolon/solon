@@ -35,19 +35,13 @@
         <dependency>
             <groupId>com.github.fangjinuo.sqlhelper</groupId>
             <artifactId>sqlhelper-mybatis</artifactId>
-            <version>3.5.1</version>
+            <version>3.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.github.fangjinuo.sqlhelper</groupId>
             <artifactId>sqlhelper-jsqlparser</artifactId>
-            <version>3.5.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.fangjinuo.langx</groupId>
-            <artifactId>langx-java8</artifactId>
-            <version>3.5.1</version>
+            <version>3.1.0</version>
         </dependency>
 
     </dependencies>
