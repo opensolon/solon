@@ -3,6 +3,7 @@ package org.noear.solon.extend.security;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.extend.security.annotation.Logical;
+import org.noear.solon.extend.security.model.UserModel;
 
 /**
  * @author noear
@@ -35,6 +36,11 @@ public class SecurityServiceProxy implements SecurityService {
     @Override
     public boolean login(String token) {
         return real.login(token);
+    }
+
+    @Override
+    public void loginLoad(UserModel user) {
+        real.loginLoad(user);
     }
 
     @Override

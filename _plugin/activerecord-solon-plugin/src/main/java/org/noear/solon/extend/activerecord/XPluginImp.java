@@ -1,6 +1,7 @@
 package org.noear.solon.extend.activerecord;
 
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
+import com.jfinal.plugin.activerecord.DbKit;
 import com.jfinal.plugin.activerecord.IDataSourceProvider;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.template.source.ClassPathSourceFactory;
@@ -41,9 +42,10 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        IDataSourceProvider dsp = new DataSourceProviderWrap(ds);
+        //IDataSourceProvider dsp = new DataSourceProviderWrap(ds);
 
-        ActiveRecordPlugin arp = new ActiveRecordPlugin(dsp);
+        ConfigSolon cfg  = new ConfigSolon(DbKit.MAIN_CONFIG_NAME, ds, DbKit.DEFAULT_TRANSACTION_LEVEL);
+        ActiveRecordPlugin arp = new ActiveRecordPlugin(cfg);
 
 //        arp.getEngine().setBaseTemplatePath("/activerecord/");
         arp.getEngine().setSourceFactory(new ClassPathSourceFactory());
