@@ -99,6 +99,9 @@ public abstract class DbTran extends DbTranNode implements TranNode {
             try {
                 if (kv.getValue().isClosed() == false) {
                     kv.getValue().close();
+                    //
+                    // close 后，链接池会对 autoCommit,readOnly 状态进行还原
+                    //
                 }
             } catch (Throwable ex) {
                 EventBus.push(ex);
