@@ -74,10 +74,6 @@ public class AutoConfigXxlJob {
 
         if(Utils.isEmpty(accessToken)) {
             accessToken = XxljobProps.instance.getPassword();
-
-            if (Utils.isEmpty(accessToken)) {
-                accessToken = "wVTggb2KMjK705Jp";
-            }
         }
 
 
