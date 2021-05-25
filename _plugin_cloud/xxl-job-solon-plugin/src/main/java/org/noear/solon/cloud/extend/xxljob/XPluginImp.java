@@ -8,6 +8,7 @@ import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.cloud.extend.xxljob.service.CloudJobServiceImpl;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.handle.Handler;
 
 /**
  * @author noear
@@ -23,6 +24,11 @@ public class XPluginImp implements Plugin {
         //add extractor for bean method
         Aop.context().beanExtractorAdd(XxlJob.class, new ExtractorOfXxlJobMethod());
         Aop.context().beanExtractorAdd(CloudJob.class, new ExtractorOfCloudJob());
+        Aop.context().beanBuilderAdd(CloudJob.class, (clz, bw, anno) -> {
+            if (Handler.class.isAssignableFrom(clz)) {
+                CloudJobServiceImpl.instance.register(anno.value(), bw.raw());
+            }
+        });
 
         Aop.context().beanMake(AutoConfigXxlJob.class);
 
