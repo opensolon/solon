@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.xxljob.impl;
+package org.noear.solon.cloud.extend.xxljob.service;
 
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.handler.IJobHandler;
@@ -11,7 +11,7 @@ import org.noear.solon.core.handle.Handler;
  * @author noear
  * @since 1.4
  */
-public class CloudJobHanderWrap extends IJobHandler {
+class CloudJobHanderWrap extends IJobHandler {
     Handler real;
 
     public CloudJobHanderWrap(Handler handler) {

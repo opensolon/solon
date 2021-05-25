@@ -1,7 +1,6 @@
 package org.noear.solon.cloud.extend.xxljob.service;
 
 import com.xxl.job.core.executor.XxlJobExecutor;
-import org.noear.solon.cloud.extend.xxljob.impl.CloudJobHanderWrap;
 import org.noear.solon.cloud.service.CloudJobService;
 import org.noear.solon.core.handle.Handler;
 

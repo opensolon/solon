@@ -5,9 +5,6 @@ import com.xxl.job.core.handler.annotation.XxlJob;
 import org.noear.solon.SolonApp;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.annotation.CloudJob;
-import org.noear.solon.cloud.extend.xxljob.impl.CloudJobExtractor;
-import org.noear.solon.cloud.extend.xxljob.impl.XxlJobAutoConfig;
-import org.noear.solon.cloud.extend.xxljob.impl.XxlJobMethodExtractor;
 import org.noear.solon.cloud.extend.xxljob.service.CloudJobServiceImpl;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
@@ -20,10 +17,10 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
         //add extractor for bean method
-        Aop.context().beanExtractorAdd(XxlJob.class, new XxlJobMethodExtractor());
-        Aop.context().beanExtractorAdd(CloudJob.class, new CloudJobExtractor());
+        Aop.context().beanExtractorAdd(XxlJob.class, new ExtractorOfXxlJobMethod());
+        Aop.context().beanExtractorAdd(CloudJob.class, new ExtractorOfCloudJob());
 
-        Aop.context().beanMake(XxlJobAutoConfig.class);
+        Aop.context().beanMake(AutoConfigXxlJob.class);
 
         Aop.beanOnloaded(() -> {
             try {

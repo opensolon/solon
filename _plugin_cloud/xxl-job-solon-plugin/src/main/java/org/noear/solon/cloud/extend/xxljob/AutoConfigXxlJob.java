@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.xxljob.impl;
+package org.noear.solon.cloud.extend.xxljob;
 
 import com.xxl.job.core.executor.XxlJobExecutor;
 import org.noear.solon.Solon;
@@ -6,7 +6,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.utils.LocalUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +17,8 @@ import org.slf4j.LoggerFactory;
  * @since 1.4
  */
 @Configuration
-public class XxlJobAutoConfig {
-    private static final Logger logger = LoggerFactory.getLogger(XxlJobAutoConfig.class);
+public class AutoConfigXxlJob {
+    private static final Logger logger = LoggerFactory.getLogger(AutoConfigXxlJob.class);
 
     @Inject("${xxl.job.admin.addresses}")
     private String adminAddresses;
@@ -55,6 +54,22 @@ public class XxlJobAutoConfig {
 
         if(Utils.isEmpty(ip)){
             ip = LocalUtils.getLocalAddress();
+        }
+
+        if(port < 1000){
+            port = 9999;
+        }
+
+        if(logRetentionDays < 1){
+            logRetentionDays = 30;
+        }
+
+        if(Utils.isEmpty(logPath)){
+            logPath = "/data/logs/xxl-job/jobhandler";
+        }
+
+        if(Utils.isEmpty(accessToken)){
+            accessToken = "wVTggb2KMjK705Jp";
         }
 
 

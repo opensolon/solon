@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.xxljob.impl;
+package org.noear.solon.cloud.extend.xxljob;
 
 import com.xxl.job.core.executor.XxlJobExecutor;
 import com.xxl.job.core.handler.annotation.XxlJob;
@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
  * @author noear
  * @since 1.4
  */
-public class XxlJobMethodExtractor implements BeanExtractor<XxlJob> {
+class ExtractorOfXxlJobMethod implements BeanExtractor<XxlJob> {
     @Override
     public void doExtract(BeanWrap bw, Method method, XxlJob anno) {
         String name = anno.value();

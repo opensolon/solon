@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.xxljob.impl;
+package org.noear.solon.cloud.extend.xxljob;
 
 import com.xxl.job.core.executor.XxlJobExecutor;
 import org.noear.solon.cloud.annotation.CloudJob;
@@ -10,9 +10,10 @@ import org.noear.solon.core.handle.Action;
 import java.lang.reflect.Method;
 
 /**
- * @author noear 2021/5/25 created
+ * @author noear
+ * @since 1.4
  */
-public class CloudJobExtractor implements BeanExtractor<CloudJob> {
+class ExtractorOfCloudJob implements BeanExtractor<CloudJob> {
     @Override
     public void doExtract(BeanWrap bw, Method method, CloudJob anno) {
         String name = anno.value();
