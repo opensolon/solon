@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.xxljob;
+package org.noear.solon.cloud.extend.water;
 
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.annotation.CloudJob;

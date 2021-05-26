@@ -60,6 +60,8 @@ public class Action extends HandlerAide implements Handler {
         this.bWrap = bWrap;
         this.bAide = bAide;
 
+        method.setAccessible(true);
+
         mWrap = MethodWrap.get(method);
         mRemoting = remoting;
         mMapping = mapping;

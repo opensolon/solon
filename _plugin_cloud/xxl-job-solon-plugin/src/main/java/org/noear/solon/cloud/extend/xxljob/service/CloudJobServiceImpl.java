@@ -16,4 +16,10 @@ public class CloudJobServiceImpl implements CloudJobService {
         XxlJobExecutor.registJobHandler(name, new CloudJobHanderProxy(handler));
         return true;
     }
+
+    @Override
+    public boolean isRegistered(String name) {
+        return XxlJobExecutor.loadJobHandler(name) != null;
+    }
+
 }

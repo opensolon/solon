@@ -4,6 +4,7 @@ import com.xxl.job.core.executor.XxlJobExecutor;
 import com.xxl.job.core.handler.IJobHandler;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import org.noear.solon.SolonApp;
+import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.cloud.extend.xxljob.service.CloudJobServiceImpl;
@@ -22,13 +23,16 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        //add extractor for bean method
-        Aop.context().beanExtractorAdd(XxlJob.class, new ExtractorOfXxlJobMethod());
+        //注册Job服务
+        CloudManager.register(CloudJobServiceImpl.instance);
+
+        //注册提取器
         Aop.context().beanExtractorAdd(CloudJob.class, new ExtractorOfCloudJob());
+        Aop.context().beanExtractorAdd(XxlJob.class, new ExtractorOfXxlJobMethod());
 
         Aop.context().beanBuilderAdd(CloudJob.class, (clz, bw, anno) -> {
             if (Handler.class.isAssignableFrom(clz)) {
-                CloudJobServiceImpl.instance.register(anno.value(), bw.raw());
+                CloudClient.job().register(anno.value(), bw.raw());
             } else if (IJobHandler.class.isAssignableFrom(clz)) {
                 XxlJobExecutor.registJobHandler(anno.value(), bw.raw());
             }
@@ -45,7 +49,5 @@ public class XPluginImp implements Plugin {
             }
         });
 
-        //登记Job服务
-        CloudManager.register(CloudJobServiceImpl.instance);
     }
 }

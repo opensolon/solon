@@ -11,4 +11,9 @@ public interface CloudJobService {
      * 注册任务
      */
     boolean register(String name, Handler handler);
+
+    /**
+     * 是否已注册
+     * */
+    boolean isRegistered(String name);
 }

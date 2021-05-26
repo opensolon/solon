@@ -6,6 +6,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
+import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.extend.water.integration.http.HandlerCheck;
 import org.noear.solon.cloud.extend.water.integration.http.HandlerReceive;
@@ -18,6 +19,7 @@ import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.handle.Handler;
 import org.noear.water.WW;
 import org.noear.water.WaterAddress;
 import org.noear.water.WaterClient;
@@ -138,13 +140,13 @@ public class XPluginImp implements Plugin {
 
                 if (discoveryServiceImp != null) {
                     //关注缓存更新事件
-                    eventServiceImp.attention(EventLevel.instance, "","", WW.msg_ucache_topic,
+                    eventServiceImp.attention(EventLevel.instance, "", "", WW.msg_ucache_topic,
                             new HandlerCacheUpdate(discoveryServiceImp));
                 }
 
                 if (configServiceImp != null) {
                     //关注配置更新事件
-                    eventServiceImp.attention(EventLevel.instance, "","", WW.msg_uconfig_topic,
+                    eventServiceImp.attention(EventLevel.instance, "", "", WW.msg_uconfig_topic,
                             new HandlerConfigUpdate(configServiceImp));
                 }
 
@@ -155,8 +157,20 @@ public class XPluginImp implements Plugin {
                 CloudManager.register(new CloudLockServiceWaterImp());
             }
 
-            if(WaterProps.instance.getListEnable()){
+            if (WaterProps.instance.getListEnable()) {
                 CloudManager.register(new CloudListServiceWaterImp());
+            }
+
+            if (WaterProps.instance.getJobEnable()) {
+                CloudManager.register(CloudJobServiceWaterImp.instance);
+
+                Aop.context().beanExtractorAdd(CloudJob.class, new ExtractorOfCloudJob());
+
+                Aop.context().beanBuilderAdd(CloudJob.class, (clz, bw, anno) -> {
+                    if (Handler.class.isAssignableFrom(clz)) {
+                        CloudClient.job().register(anno.value(), bw.raw());
+                    }
+                });
             }
 
 
