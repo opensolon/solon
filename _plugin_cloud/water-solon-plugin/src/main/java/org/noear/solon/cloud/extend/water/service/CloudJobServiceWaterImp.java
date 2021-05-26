@@ -25,6 +25,10 @@ public class CloudJobServiceWaterImp implements CloudJobService {
     }
 
     public void push() {
+        if(jobMap.size() == 0){
+            return;
+        }
+
         Map<String, String> jobs = new LinkedHashMap<>();
         jobMap.forEach((k, v) -> {
             jobs.put(v.getName(), v.getDescription());
