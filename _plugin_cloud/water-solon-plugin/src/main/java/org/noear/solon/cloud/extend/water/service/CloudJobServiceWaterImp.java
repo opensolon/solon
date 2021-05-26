@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.water.service;
 
 import org.noear.solon.cloud.service.CloudJobService;
 import org.noear.solon.core.handle.Handler;
+import org.noear.solon.logging.utils.TagsMDC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +25,9 @@ public class CloudJobServiceWaterImp implements CloudJobService {
     @Override
     public boolean register(String name, Handler handler) {
         jobMap.put(name, handler);
+        TagsMDC.tag0("CloudJob");
         log.warn("CloudJob registered name:{}, handler:{}", name, handler.getClass());
+        TagsMDC.tag0("");
         return true;
     }
 
