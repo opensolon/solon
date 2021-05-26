@@ -4,6 +4,7 @@ import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.executor.ErrorContext;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.mapping.Environment;
+import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -57,6 +58,12 @@ class SqlFactoryAdapter {
         TransactionFactory tf = new JdbcTransactionFactory();
         Environment environment = new Environment(environment_id, tf, dataSource);
         config = new Configuration(environment);
+
+        if(XPluginImp.pluginList.size() > 0) {
+            for (Interceptor i : XPluginImp.pluginList) {
+                config.addInterceptor(i);
+            }
+        }
 
         //分发事件，推给扩展处理
         EventBus.push(config);
