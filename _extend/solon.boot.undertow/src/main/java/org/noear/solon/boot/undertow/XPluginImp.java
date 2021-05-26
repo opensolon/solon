@@ -43,7 +43,7 @@ public final class XPluginImp implements Plugin {
         }
 
         long time_start = System.currentTimeMillis();
-        PrintUtil.info("solon.server:main: Undertow 2.1.09(undertow)");
+        PrintUtil.info("Server:main: Undertow 2.1.09(undertow)");
 
         Class<?> jspClz = Utils.loadClass("io.undertow.jsp.JspServletBuilder");
 
@@ -66,7 +66,7 @@ public final class XPluginImp implements Plugin {
 
         app.signalAdd(new SignalSim(_name, _port, "http", SignalType.HTTP));
 
-        PrintUtil.info("solon.server:main: undertow: Started @" + (time_end - time_start) + "ms");
+        PrintUtil.info("Server:main: undertow: Started @" + (time_end - time_start) + "ms");
     }
 
     @Override
@@ -75,7 +75,7 @@ public final class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            PrintUtil.info("solon.server:main: undertow: Has Stopped " + solon_boot_ver());
+            PrintUtil.info("Server:main: undertow: Has Stopped " + solon_boot_ver());
         }
     }
 }

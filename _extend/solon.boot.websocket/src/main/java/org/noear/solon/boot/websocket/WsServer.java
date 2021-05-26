@@ -22,7 +22,7 @@ public class WsServer extends WebSocketServer {
 
     @Override
     public void onStart() {
-        PrintUtil.info("solon.server:Websocket onStart...");
+        PrintUtil.info("Server:Websocket onStart...");
     }
 
     @Override

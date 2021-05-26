@@ -54,7 +54,7 @@ public final class XPluginImp implements Plugin {
         }
 
         long time_start = System.currentTimeMillis();
-        PrintUtil.info("solon.server:main: Jetty 9.4(jetty)");
+        PrintUtil.info("Server:main: Jetty 9.4(jetty)");
 
         _server.start(app);
         app.signalAdd(new SignalSim(_name, _port, "http", SignalType.HTTP));
@@ -68,7 +68,7 @@ public final class XPluginImp implements Plugin {
             System.out.println(connectorInfo + "}{0.0.0.0:" + _port + "}");
         }
 
-        PrintUtil.info("solon.server:main: jetty: Started @" + (time_end - time_start) + "ms");
+        PrintUtil.info("Server:main: jetty: Started @" + (time_end - time_start) + "ms");
 
 
         app.before("**", new XFormContentFilter());
@@ -80,7 +80,7 @@ public final class XPluginImp implements Plugin {
             _server.stop();
             _server = null;
 
-            PrintUtil.info("solon.server:main: jetty: Has Stopped " + solon_boot_ver());
+            PrintUtil.info("Server:main: jetty: Has Stopped " + solon_boot_ver());
         }
     }
 }

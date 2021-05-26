@@ -54,7 +54,7 @@ public final class XPluginImp implements Plugin {
             SessionManager.register(new _SessionManagerImpl());
         }
 
-        PrintUtil.info("solon.server:main: SmartHttpServer 1.1.4(smarthttp)");
+        PrintUtil.info("Server:main: SmartHttpServer 1.1.4(smarthttp)");
 
         try {
 
@@ -73,7 +73,7 @@ public final class XPluginImp implements Plugin {
                 PrintUtil.info(connectorInfo + "}{0.0.0.0:" + _port + "}");
             }
 
-            PrintUtil.info("solon.server:main: smarthttp: Started @" + (time_end - time_start) + "ms");
+            PrintUtil.info("Server:main: smarthttp: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
             EventBus.push(ex);
         }
@@ -85,7 +85,7 @@ public final class XPluginImp implements Plugin {
             _server.shutdown();
             _server = null;
 
-            PrintUtil.info("solon.server:main: smarthttp: Has Stopped " + solon_boot_ver());
+            PrintUtil.info("Server:main: smarthttp: Has Stopped " + solon_boot_ver());
         }
     }
 }

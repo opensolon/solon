@@ -59,8 +59,8 @@ public class RenderManager implements Render {
         _lib.put(render.getClass().getSimpleName(), render);
         _lib.put(render.getClass().getName(), render);
 
-        PrintUtil.info("solon.view: load:" + render.getClass().getSimpleName());
-        PrintUtil.info("solon.view: load:" + render.getClass().getName());
+        PrintUtil.info("View: load:" + render.getClass().getSimpleName());
+        PrintUtil.info("View: load:" + render.getClass().getName());
     }
 
     /**
@@ -77,7 +77,7 @@ public class RenderManager implements Render {
         //suffix=.ftl
         _mapping.put(suffix, render);
 
-        PrintUtil.info("solon.view: mapping: " + suffix + "=" + render.getClass().getSimpleName());
+        PrintUtil.info("View: mapping: " + suffix + "=" + render.getClass().getSimpleName());
     }
 
     /**
@@ -100,7 +100,7 @@ public class RenderManager implements Render {
 
         _mapping.put(suffix, render);
 
-        PrintUtil.info("solon.view: mapping: " + suffix + "=" + clzName);
+        PrintUtil.info("View: mapping: " + suffix + "=" + clzName);
     }
 
     /**

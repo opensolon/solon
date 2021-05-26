@@ -37,7 +37,7 @@ public final class XPluginImp implements Plugin {
 
         long time_start = System.currentTimeMillis();
 
-        PrintUtil.info("solon.server:main: Sun.net.HttpServer(jdkhttp)");
+        PrintUtil.info("Server:main: Sun.net.HttpServer(jdkhttp)");
 
         try {
             _server = HttpServer.create(new InetSocketAddress(_port), 0);
@@ -52,8 +52,8 @@ public final class XPluginImp implements Plugin {
 
             long time_end = System.currentTimeMillis();
 
-            PrintUtil.info("solon.connector:main: jdkhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + _port + "}");
-            PrintUtil.info("solon.server:main: jdkhttp: Started @" + (time_end - time_start) + "ms");
+            PrintUtil.info("Connector:main: jdkhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + _port + "}");
+            PrintUtil.info("Server:main: jdkhttp: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
             EventBus.push(ex);
         }
@@ -67,6 +67,6 @@ public final class XPluginImp implements Plugin {
 
         _server.stop(0);
         _server = null;
-        PrintUtil.info("solon.server:main: jdkhttp: Has Stopped " + solon_boot_ver());
+        PrintUtil.info("Server:main: jdkhttp: Has Stopped " + solon_boot_ver());
     }
 }
