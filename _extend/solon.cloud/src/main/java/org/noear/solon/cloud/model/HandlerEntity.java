@@ -6,7 +6,7 @@ import org.noear.solon.core.handle.Handler;
  * @author noear
  * @since 1.4
  */
-public class HandlerEntity{
+public class HandlerEntity {
     private String name;
     private String description;
     private Handler handler;
