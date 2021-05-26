@@ -8,10 +8,7 @@ import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.cloud.annotation.EventLevel;
-import org.noear.solon.cloud.extend.water.integration.http.HandlerCheck;
-import org.noear.solon.cloud.extend.water.integration.http.HandlerReceive;
-import org.noear.solon.cloud.extend.water.integration.http.HandlerStatus;
-import org.noear.solon.cloud.extend.water.integration.http.HandlerStop;
+import org.noear.solon.cloud.extend.water.integration.http.*;
 import org.noear.solon.cloud.extend.water.integration.msg.HandlerCacheUpdate;
 import org.noear.solon.cloud.extend.water.integration.msg.HandlerConfigUpdate;
 import org.noear.solon.cloud.extend.water.service.*;
@@ -175,6 +172,9 @@ public class XPluginImp implements Plugin {
 
 
             //3.注册http监听
+            if (WaterProps.instance.getJobEnable()) {
+                app.http(WW.path_run_job, new HandlerJob());
+            }
             app.http(WW.path_run_check, new HandlerCheck());
             app.http(WW.path_run_status, new HandlerStatus());
             app.http(WW.path_run_stop, new HandlerStop());

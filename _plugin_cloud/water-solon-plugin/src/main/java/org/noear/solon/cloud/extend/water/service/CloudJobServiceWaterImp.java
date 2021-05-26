@@ -10,10 +10,13 @@ import java.util.Map;
  * @author noear
  */
 public class CloudJobServiceWaterImp implements CloudJobService {
-    public static final CloudJobService instance = new CloudJobServiceWaterImp();
+    public static final CloudJobServiceWaterImp instance = new CloudJobServiceWaterImp();
 
     public Map<String, Handler> jobMap = new LinkedHashMap<>();
 
+    public Handler get(String name) {
+        return jobMap.get(name);
+    }
 
     @Override
     public boolean register(String name, Handler handler) {
