@@ -59,6 +59,7 @@ class SqlFactoryAdapter {
         Environment environment = new Environment(environment_id, tf, dataSource);
         config = new Configuration(environment);
 
+        //加载插件
         if(XPluginImp.pluginList.size() > 0) {
             for (Interceptor i : XPluginImp.pluginList) {
                 config.addInterceptor(i);
