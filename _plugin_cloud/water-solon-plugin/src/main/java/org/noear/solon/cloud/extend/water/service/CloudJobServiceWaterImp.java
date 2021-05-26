@@ -41,7 +41,7 @@ public class CloudJobServiceWaterImp implements CloudJobService {
     public boolean register(String name, String description, Handler handler) {
         jobMap.put(name, new HandlerEntity(name, description, handler));
         TagsMDC.tag0("CloudJob");
-        PrintUtil.warn("CloudJob", " registered name:" + name + ", handler:" + handler.getClass());
+        PrintUtil.warn("CloudJob", "Handler registered name:" + name + ", class:" + handler.getClass());
         TagsMDC.tag0("");
         return true;
     }
