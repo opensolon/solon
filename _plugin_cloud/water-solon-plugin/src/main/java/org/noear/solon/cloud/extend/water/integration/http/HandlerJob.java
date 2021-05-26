@@ -35,6 +35,7 @@ public class HandlerJob implements Handler {
                 ctx.output("OK");
             } catch (Throwable ex) {
                 EventBus.push(ex);
+                ctx.statusSet(500);
                 ctx.output(Utils.throwableUnwrap(ex));
             }
         }
