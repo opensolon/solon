@@ -5,6 +5,7 @@ import com.jfinal.plugin.activerecord.DbKit;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.template.source.ClassPathSourceFactory;
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
@@ -24,44 +25,52 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(SolonApp app) {
-        Aop.beanOnloaded(() -> {
-            DataSource ds = Aop.get(DataSource.class);
-            initActiveRecord(ds);
-        });
-
         Aop.context().beanBuilderAdd(Table.class, (clz, wrap, anno) -> {
             if (wrap.raw() instanceof Model) {
                 tableMap.put(anno, (Class<? extends Model<?>>) clz);
             }
         });
+
+        Aop.beanOnloaded(() -> {
+            Aop.beanForeach(bw -> {
+                if (bw.raw() instanceof DataSource) {
+                    initActiveRecord(bw.raw(), bw.name());
+                }
+            });
+        });
     }
 
-    private void initActiveRecord(DataSource ds) {
+    private void initActiveRecord(DataSource ds, String name) {
         if (ds == null) {
             return;
         }
 
-        //IDataSourceProvider dsp = new DataSourceProviderWrap(ds);
+        if (Utils.isEmpty(name)) {
+            name = DbKit.MAIN_CONFIG_NAME;
+        }
 
-        ConfigImpl cfg  = new ConfigImpl(
-                DbKit.MAIN_CONFIG_NAME,
+        //构建配置
+        ConfigImpl cfg = new ConfigImpl(
+                name,
                 new DataSourceProxy(ds),
                 DbKit.DEFAULT_TRANSACTION_LEVEL);
 
+        //构建arp
         ActiveRecordPlugin arp = new ActiveRecordPlugin(cfg);
 
-//        arp.getEngine().setBaseTemplatePath("/activerecord/");
         arp.getEngine().setSourceFactory(new ClassPathSourceFactory());
 
-        ResourceScaner.scan("activerecord", n -> n.endsWith(".sql"))
+        ResourceScaner.scan("sql", n -> n.endsWith(".sql"))
                 .forEach(url -> {
                     arp.addSqlTemplate(url);
                 });
 
+        //添加表印射
         tableMap.forEach((anno, clz) -> {
             arp.addMapping(anno.name(), anno.primaryKey(), clz);
         });
 
+        //发布事件，以便扩展
         EventBus.push(arp);
 
         // 启动 arp
