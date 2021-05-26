@@ -1,6 +1,5 @@
 package org.noear.solon.cloud.extend.water.service;
 
-import com.oracle.tools.packager.Log;
 import org.noear.solon.cloud.service.CloudJobService;
 import org.noear.solon.core.handle.Handler;
 import org.slf4j.Logger;
@@ -25,7 +24,7 @@ public class CloudJobServiceWaterImp implements CloudJobService {
     @Override
     public boolean register(String name, Handler handler) {
         jobMap.put(name, handler);
-        log.info("CloudJob register success, name:{}, handler:{}", name, handler.getClass());
+        log.trace("CloudJob register success, name:{}, handler:{}", name, handler.getClass());
         return true;
     }
 
