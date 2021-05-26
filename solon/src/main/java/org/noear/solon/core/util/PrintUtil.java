@@ -69,12 +69,12 @@ public class PrintUtil {
         greenln(label + ": " + content);
     }
 
-    public static void wran(Object content) {
+    public static void warn(Object content) {
         System.out.print("[INFO] ");
         yellowln(content);
     }
 
-    public static void wran(String label, Object content) {
+    public static void warn(String label, Object content) {
         System.out.print("[INFO] ");
         yellowln(label + ": " + content);
     }

@@ -93,7 +93,7 @@ public class RenderManager implements Render {
 
         Render render = _lib.get(clzName);
         if (render == null) {
-            PrintUtil.wran("solon: " + clzName + " not exists!");
+            PrintUtil.warn("solon: " + clzName + " not exists!");
             return;
             //throw new RuntimeException(classSimpleName + " not exists!");
         }

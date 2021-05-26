@@ -14,7 +14,7 @@ public class XPluginImp implements Plugin {
         output_meta = app.cfg().getInt("solon.output.meta", 0) > 0;
 
         if (Utils.loadClass("javax.servlet.ServletResponse") == null) {
-            PrintUtil.wran("solon: javax.servlet.ServletResponse not exists! JspRender failed to load.");
+            PrintUtil.warn("solon: javax.servlet.ServletResponse not exists! JspRender failed to load.");
             return;
         }
 
