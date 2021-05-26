@@ -66,7 +66,7 @@ public class XPluginImp implements Plugin {
 
             long time_end = System.currentTimeMillis();
 
-            PrintUtil.info("solon.connector:main: netty-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
+            PrintUtil.info("Connector:main: netty-socketd: Started ServerConnector@{[Socket]}{0.0.0.0:" + _port + "}");
             PrintUtil.info("Server:main: netty-socketd: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
 

@@ -51,41 +51,41 @@ public class PrintUtil {
 
 
     public static void debug(Object content) {
-        System.out.print("[INFO] ");
+        System.out.print("[Solon] ");
         blueln(content);
     }
 
     public static void debug(String label, Object content) {
-        System.out.print("[INFO] ");
+        System.out.print("[Solon] ");
         blueln(label + ": " + content);
     }
 
     public static void info(Object content) {
-        System.out.println("[INFO] " + content);
+        System.out.println("[Solon] " + content);
     }
 
     public static void info(String label, Object content) {
-        System.out.print("[INFO] ");
+        System.out.print("[Solon] ");
         greenln(label + ": " + content);
     }
 
     public static void warn(Object content) {
-        System.out.print("[INFO] ");
+        System.out.print("[Solon] ");
         yellowln(content);
     }
 
     public static void warn(String label, Object content) {
-        System.out.print("[INFO] ");
+        System.out.print("[Solon] ");
         yellowln(label + ": " + content);
     }
 
     public static void error(Object content) {
-        System.out.print("[INFO] ");
+        System.out.print("[Solon] ");
         redln(content);
     }
 
     public static void error(String label, Object content) {
-        System.out.print("[INFO] ");
+        System.out.print("[Solon] ");
         redln(label + ": " + content);
     }
 }

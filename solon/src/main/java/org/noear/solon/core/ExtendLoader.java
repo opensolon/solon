@@ -62,7 +62,7 @@ public class ExtendLoader {
                 path = extend;
 
                 //打印
-                PrintUtil.blueln("solon.extend: " + path);
+                PrintUtil.blueln("Extend: " + path);
 
                 //加载扩展内容
                 instance.loadFile(loaders, new File(path), filter);
