@@ -503,6 +503,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.noear.solon</groupId>
+                <artifactId>solon-enjoy-web</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon-web</artifactId>
                 <version>${solon.ver}</version>
@@ -1129,6 +1135,7 @@
         <module>../_extend/solon.cloud</module>
 
         <module>../_extend/solon-beetl-web</module>
+        <module>../_extend/solon-enjoy-web</module>
         <module>../_extend/solon-lib</module>
         <module>../_extend/solon-api</module>
 

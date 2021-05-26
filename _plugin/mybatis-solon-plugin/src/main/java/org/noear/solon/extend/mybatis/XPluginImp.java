@@ -78,16 +78,13 @@ public class XPluginImp implements Plugin {
 
                 if(name != null){
                     props = props.getProp(name);
-                    Class<?> clz = Utils.loadClass(props.get("class"));
-                    if(clz == null){
+                    Interceptor plugin = Utils.newInstance(props.get("class"));
+                    if(plugin == null){
                         throw new IllegalArgumentException("Mybatis.plugin["+name+"].class load failed");
                     }
-
-                    if(Interceptor.class.isAssignableFrom(clz) == false){
-                        throw new IllegalArgumentException("Mybatis.plugin["+name+"].class not is interceptor");
-                    }
                     props.remove("class");
-                    Interceptor plugin = ClassWrap.get(clz).newBy(props);
+
+                    plugin.setProperties(props);
                     pluginList.add(plugin);
                 }
             }
