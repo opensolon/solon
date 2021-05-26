@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.water;
+package org.noear.solon.cloud.impl;
 
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.annotation.CloudJob;
@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
  * @author noear
  * @since 1.4
  */
-class ExtractorOfCloudJob implements BeanExtractor<CloudJob> {
+public class CloudJobExtractor implements BeanExtractor<CloudJob> {
     @Override
     public void doExtract(BeanWrap bw, Method method, CloudJob anno) {
         String name = anno.value();

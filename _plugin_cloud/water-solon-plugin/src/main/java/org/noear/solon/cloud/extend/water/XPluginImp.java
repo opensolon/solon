@@ -12,11 +12,12 @@ import org.noear.solon.cloud.extend.water.integration.http.*;
 import org.noear.solon.cloud.extend.water.integration.msg.HandlerCacheUpdate;
 import org.noear.solon.cloud.extend.water.integration.msg.HandlerConfigUpdate;
 import org.noear.solon.cloud.extend.water.service.*;
+import org.noear.solon.cloud.impl.CloudJobBuilder;
+import org.noear.solon.cloud.impl.CloudJobExtractor;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.handle.Handler;
 import org.noear.water.WW;
 import org.noear.water.WaterAddress;
 import org.noear.water.WaterClient;
@@ -161,13 +162,8 @@ public class XPluginImp implements Plugin {
             if (WaterProps.instance.getJobEnable()) {
                 CloudManager.register(CloudJobServiceWaterImp.instance);
 
-                Aop.context().beanExtractorAdd(CloudJob.class, new ExtractorOfCloudJob());
-
-                Aop.context().beanBuilderAdd(CloudJob.class, (clz, bw, anno) -> {
-                    if (Handler.class.isAssignableFrom(clz)) {
-                        CloudClient.job().register(anno.value(), bw.raw());
-                    }
-                });
+                Aop.context().beanExtractorAdd(CloudJob.class, new CloudJobExtractor());
+                Aop.context().beanBuilderAdd(CloudJob.class,new CloudJobBuilder());
             }
 
 
