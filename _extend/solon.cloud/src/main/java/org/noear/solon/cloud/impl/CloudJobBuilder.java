@@ -14,7 +14,7 @@ public class CloudJobBuilder implements BeanBuilder<CloudJob> {
     @Override
     public void doBuild(Class<?> clz, BeanWrap bw, CloudJob anno) throws Exception {
         if (Handler.class.isAssignableFrom(clz)) {
-            CloudClient.job().register(anno.value(), bw.raw());
+            CloudClient.job().register(anno.value(), anno.description(), bw.raw());
         }
     }
 }
