@@ -69,7 +69,7 @@ public class AutoConfigXxlJob {
         }
 
         if(Utils.isEmpty(logPath)){
-            logPath = "/data/logs/xxl-job/jobhandler";
+            logPath = "/data/applogs/xxl-job/jobhandler";
         }
 
         if(Utils.isEmpty(accessToken)) {
