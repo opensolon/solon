@@ -17,8 +17,8 @@ import org.slf4j.LoggerFactory;
  * @since 1.4
  */
 @Configuration
-public class AutoConfigXxlJob {
-    private static final Logger logger = LoggerFactory.getLogger(AutoConfigXxlJob.class);
+public class XxlJobAutoConfig {
+    private static final Logger logger = LoggerFactory.getLogger(XxlJobAutoConfig.class);
 
     @Inject("${xxl.job.admin.addresses}")
     private String adminAddresses;

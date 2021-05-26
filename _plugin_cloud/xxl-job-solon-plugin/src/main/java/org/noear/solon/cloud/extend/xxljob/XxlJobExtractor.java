@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
  * @author noear
  * @since 1.4
  */
-class ExtractorOfXxlJobMethod implements BeanExtractor<XxlJob> {
+class XxlJobExtractor implements BeanExtractor<XxlJob> {
     @Override
     public void doExtract(BeanWrap bw, Method method, XxlJob anno) {
         String name = anno.value();
