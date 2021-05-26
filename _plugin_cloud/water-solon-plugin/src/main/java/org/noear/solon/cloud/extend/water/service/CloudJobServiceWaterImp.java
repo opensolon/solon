@@ -24,7 +24,7 @@ public class CloudJobServiceWaterImp implements CloudJobService {
     @Override
     public boolean register(String name, Handler handler) {
         jobMap.put(name, handler);
-        log.trace("CloudJob register success, name:{}, handler:{}", name, handler.getClass());
+        log.info("CloudJob registered name:{}, handler:{}", name, handler.getClass());
         return true;
     }
 
