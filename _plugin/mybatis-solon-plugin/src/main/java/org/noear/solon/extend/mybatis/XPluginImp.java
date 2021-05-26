@@ -64,6 +64,7 @@ public class XPluginImp implements Plugin {
             if(props.size() == 0){
                 break;
             }else{
+                index++;
                 String name = null;
                 for(Map.Entry kv : props.entrySet()){
                     if(kv.getKey() instanceof String) {
