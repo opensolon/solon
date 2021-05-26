@@ -28,7 +28,11 @@ public class HandlerJob implements Handler {
 
         if (handler == null) {
             ctx.statusSet(400);
-            ctx.output("CloudJob[" + name + "] no exists");
+            if (Utils.isEmpty(name)) {
+                ctx.output("CloudJob need the name parameter");
+            } else {
+                ctx.output("CloudJob[" + name + "] no exists");
+            }
         } else {
             try {
                 handler.handle(ctx);
