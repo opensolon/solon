@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 需要特定权限
+ * 需要特定权限（需要用户按需使用）
  *
  * @author noear
  * @since 1.3
