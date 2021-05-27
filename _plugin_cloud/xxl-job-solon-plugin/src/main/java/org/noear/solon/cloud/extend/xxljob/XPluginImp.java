@@ -26,9 +26,9 @@ public class XPluginImp implements Plugin {
         CloudManager.register(CloudJobServiceImpl.instance);
 
         //注册构建器和提取器
-        Aop.context().beanBuilderAdd(CloudJob.class,new CloudJobBuilder());
-        Aop.context().beanExtractorAdd(CloudJob.class, new CloudJobExtractor());
         Aop.context().beanExtractorAdd(XxlJob.class, new XxlJobExtractor());
+        Aop.context().beanExtractorAdd(CloudJob.class, new CloudJobExtractor());
+        Aop.context().beanBuilderAdd(CloudJob.class,new CloudJobBuilder());
 
         //构建自动配置
         Aop.context().beanMake(XxlJobAutoConfig.class);
