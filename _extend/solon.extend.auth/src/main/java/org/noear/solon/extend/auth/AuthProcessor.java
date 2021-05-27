@@ -4,12 +4,12 @@ import org.noear.solon.extend.auth.annotation.Logical;
 import org.noear.solon.extend.auth.model.Subject;
 
 /**
- * 认证服务（需要用户对接）
+ * 认证处理器（需要用户对接）
  *
  * @author noear
  * @since 1.3
  */
-public interface AuthService {
+public interface AuthProcessor {
     /**
      * 用账号密码登录
      */

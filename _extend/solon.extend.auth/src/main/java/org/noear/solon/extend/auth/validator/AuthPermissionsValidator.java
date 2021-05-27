@@ -2,7 +2,7 @@ package org.noear.solon.extend.auth.validator;
 
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.extend.auth.AuthServiceProxy;
+import org.noear.solon.extend.auth.AuthProcessorProxy;
 import org.noear.solon.extend.auth.annotation.AuthPermissions;
 import org.noear.solon.extend.validation.Validator;
 
@@ -21,7 +21,7 @@ public class AuthPermissionsValidator implements Validator<AuthPermissions> {
 
     @Override
     public Result validate(Context ctx, AuthPermissions anno, String name, StringBuilder tmp) {
-        if (AuthServiceProxy.getInstance().verifyPermissions(anno.value(), anno.logical())) {
+        if (AuthProcessorProxy.getInstance().verifyPermissions(anno.value(), anno.logical())) {
             return Result.succeed();
         } else {
             return Result.failure();

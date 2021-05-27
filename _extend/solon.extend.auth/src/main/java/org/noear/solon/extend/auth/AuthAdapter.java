@@ -3,17 +3,17 @@ package org.noear.solon.extend.auth;
 import java.util.function.Predicate;
 
 /**
- * 认证配置（需要用户对接）
+ * 认证适配器（需要用户对接）
  *
  * @author noear
  * @since 1.4
  */
-public class AuthConfig {
-    private static AuthConfig instance;
+public class AuthAdapter {
+    private static AuthAdapter instance;
 
-    public static AuthConfig getInstance() {
+    public static AuthAdapter getInstance() {
         if (instance == null) {
-            instance = new AuthConfig();
+            instance = new AuthAdapter();
         }
         return instance;
     }
@@ -32,7 +32,7 @@ public class AuthConfig {
     /**
      * 登录Url
      */
-    public AuthConfig loginUrl(String url) {
+    public AuthAdapter loginUrl(String url) {
         loginUrl = url;
         return this;
     }
@@ -45,7 +45,7 @@ public class AuthConfig {
     /**
      * 登录处理Url
      */
-    public AuthConfig loginProcessingUrl(String url) {
+    public AuthAdapter loginProcessingUrl(String url) {
         loginProcessingUrl = url;
         return this;
     }
@@ -57,7 +57,7 @@ public class AuthConfig {
     /**
      * 用户名参数名
      */
-    public AuthConfig usernameParam(String name) {
+    public AuthAdapter usernameParam(String name) {
         usernameParam = name;
         return this;
     }
@@ -69,7 +69,7 @@ public class AuthConfig {
     /**
      * 密码参数名
      */
-    public AuthConfig passwordParam(String name) {
+    public AuthAdapter passwordParam(String name) {
         passwordParam = name;
         return this;
     }
@@ -81,7 +81,7 @@ public class AuthConfig {
     /**
      * 退出Url
      */
-    public AuthConfig logoutUrl(String url) {
+    public AuthAdapter logoutUrl(String url) {
         logoutUrl = url;
         return this;
     }
@@ -93,7 +93,7 @@ public class AuthConfig {
     /**
      * 验证Url匹配
      */
-    public AuthConfig verifyUrlMatchers(Predicate<String> tester) {
+    public AuthAdapter verifyUrlMatchers(Predicate<String> tester) {
         verifyUrlMatchers = tester;
         return this;
     }

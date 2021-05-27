@@ -11,11 +11,11 @@ import org.noear.solon.extend.validation.ValidatorManager;
  * @since 1.4
  */
 public class AuthInterceptor implements Handler {
-    AuthConfig authConfig;
+    AuthAdapter authAdapter;
 
     public AuthInterceptor() {
-        Aop.getAsyn(AuthConfig.class, bw -> {
-            authConfig = bw.raw();
+        Aop.getAsyn(AuthAdapter.class, bw -> {
+            authAdapter = bw.raw();
         });
     }
 
@@ -25,19 +25,19 @@ public class AuthInterceptor implements Handler {
         String path = ctx.pathNew();
 
         //需要验证
-        if (path.equals(authConfig.loginUrl()) ||
-                path.equals(authConfig.loginProcessingUrl()) ||
-                path.equals(authConfig.logoutUrl())) {
+        if (path.equals(authAdapter.loginUrl()) ||
+                path.equals(authAdapter.loginProcessingUrl()) ||
+                path.equals(authAdapter.logoutUrl())) {
             return;
         }
 
         //不需要验证
-        if (authConfig.verifyUrlMatchers().test(path) == false) {
+        if (authAdapter.verifyUrlMatchers().test(path) == false) {
             return;
         }
 
         //验证通过
-        if (AuthServiceProxy.getInstance().verifyUrl(path, ctx.method())) {
+        if (AuthProcessorProxy.getInstance().verifyUrl(path, ctx.method())) {
             return;
         }
 

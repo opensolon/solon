@@ -5,23 +5,25 @@ import org.noear.solon.extend.auth.annotation.Logical;
 import org.noear.solon.extend.auth.model.Subject;
 
 /**
+ * 认证处理器代理
+ *
  * @author noear
  * @since 1.3
  */
-public class AuthServiceProxy implements AuthService {
-    private static AuthService instance;
+public class AuthProcessorProxy implements AuthProcessor {
+    private static AuthProcessor instance;
 
-    public static AuthService getInstance() {
+    public static AuthProcessor getInstance() {
         if (instance == null) {
-            instance = new AuthServiceProxy();
+            instance = new AuthProcessorProxy();
         }
         return instance;
     }
 
-    private AuthService real;
+    private AuthProcessor real;
 
-    private AuthServiceProxy() {
-        Aop.getAsyn(AuthService.class, bw -> {
+    private AuthProcessorProxy() {
+        Aop.getAsyn(AuthProcessor.class, bw -> {
             real = bw.raw();
         });
     }
