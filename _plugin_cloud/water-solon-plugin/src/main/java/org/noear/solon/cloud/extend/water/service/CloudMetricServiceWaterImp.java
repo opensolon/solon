@@ -1,13 +1,10 @@
 package org.noear.solon.cloud.extend.water.service;
 
-import org.noear.solon.Solon;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudMetricService;
 import org.noear.water.WaterClient;
 import org.noear.water.track.TrackBuffer;
-
-import java.util.Map;
 
 /**
  * @author noear
@@ -15,29 +12,24 @@ import java.util.Map;
  */
 public class CloudMetricServiceWaterImp implements CloudMetricService {
     @Override
-    public void addCount(String group, String name, int count) {
-        TrackBuffer.singleton().appendCount(Solon.cfg().appName(), group, name, count);
+    public void addCount(String group, String category, String item, long num) {
+        TrackBuffer.singleton().appendCount(group, category, item, num);
     }
 
     @Override
-    public void addMeter(String group, String name, long interval, boolean isolated) {
+    public void addMeter(String group, String category, String item, long num, boolean isolated) {
         if (isolated) {
-            WaterClient.Track.track(Solon.cfg().appName(), group, name, interval);
+            WaterClient.Track.track(group, category, item, num);
         } else {
-            Instance node = Instance.local();
-            String fromId = CloudClient.trace().getFromId();
+            String _node = Instance.local().address();
+            String _from = CloudClient.trace().getFromId();
 
-            WaterClient.Track.track(node.service(), group, name, interval, node.address(), fromId);
+            WaterClient.Track.track(group, category, item, num, _node, _from);
         }
     }
 
     @Override
-    public void addGauge(String group, String name, Object value) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void addLog(String group, String name, Map<String, Object> data) {
+    public void addGauge(String group, String category, String item, Object val) {
         throw new UnsupportedOperationException();
     }
 }
