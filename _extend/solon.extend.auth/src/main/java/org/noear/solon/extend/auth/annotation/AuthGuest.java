@@ -1,4 +1,4 @@
-package org.noear.solon.extend.security.annotation;
+package org.noear.solon.extend.auth.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,12 +1,12 @@
-package org.noear.solon.extend.security;
+package org.noear.solon.extend.auth;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.extend.security.annotation.*;
-import org.noear.solon.extend.security.validator.AuthGuestValidator;
-import org.noear.solon.extend.security.validator.AuthPermissionsValidator;
-import org.noear.solon.extend.security.validator.AuthRolesValidator;
-import org.noear.solon.extend.security.validator.AuthUserValidator;
+import org.noear.solon.extend.auth.annotation.*;
+import org.noear.solon.extend.auth.validator.AuthGuestValidator;
+import org.noear.solon.extend.auth.validator.AuthPermissionsValidator;
+import org.noear.solon.extend.auth.validator.AuthRolesValidator;
+import org.noear.solon.extend.auth.validator.AuthUserValidator;
 import org.noear.solon.extend.validation.ValidatorManager;
 
 /**

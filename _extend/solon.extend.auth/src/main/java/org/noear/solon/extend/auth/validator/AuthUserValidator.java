@@ -1,9 +1,9 @@
-package org.noear.solon.extend.security.validator;
+package org.noear.solon.extend.auth.validator;
 
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.extend.security.AuthServiceProxy;
-import org.noear.solon.extend.security.annotation.AuthUser;
+import org.noear.solon.extend.auth.AuthServiceProxy;
+import org.noear.solon.extend.auth.annotation.AuthUser;
 import org.noear.solon.extend.validation.Validator;
 
 /**

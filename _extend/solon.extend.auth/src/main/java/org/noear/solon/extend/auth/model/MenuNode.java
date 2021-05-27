@@ -1,4 +1,4 @@
-package org.noear.solon.extend.security.model;
+package org.noear.solon.extend.auth.model;
 
 import java.util.Map;
 

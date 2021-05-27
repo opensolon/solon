@@ -1,4 +1,4 @@
-package org.noear.solon.extend.security;
+package org.noear.solon.extend.auth;
 
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;

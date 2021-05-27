@@ -1,8 +1,7 @@
-package org.noear.solon.extend.security;
+package org.noear.solon.extend.auth;
 
-import org.noear.solon.core.handle.Context;
-import org.noear.solon.extend.security.annotation.Logical;
-import org.noear.solon.extend.security.model.UserModel;
+import org.noear.solon.extend.auth.annotation.Logical;
+import org.noear.solon.extend.auth.model.UserModel;
 
 /**
  * @author noear
