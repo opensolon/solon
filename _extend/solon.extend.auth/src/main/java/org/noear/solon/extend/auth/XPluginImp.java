@@ -3,10 +3,8 @@ package org.noear.solon.extend.auth;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.extend.auth.annotation.*;
-import org.noear.solon.extend.auth.validator.AuthGuestValidator;
 import org.noear.solon.extend.auth.validator.AuthPermissionsValidator;
 import org.noear.solon.extend.auth.validator.AuthRolesValidator;
-import org.noear.solon.extend.auth.validator.AuthUserValidator;
 import org.noear.solon.extend.validation.ValidatorManager;
 
 /**
@@ -16,9 +14,11 @@ import org.noear.solon.extend.validation.ValidatorManager;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        ValidatorManager.global().register(AuthGuest.class, AuthGuestValidator.instance);
+        //添加前置拦截器
+        app.before(new AuthInterceptor());
+
+        //添加注解验证器
         ValidatorManager.global().register(AuthPermissions.class, AuthPermissionsValidator.instance);
         ValidatorManager.global().register(AuthRoles.class, AuthRolesValidator.instance);
-        ValidatorManager.global().register(AuthUser.class, AuthUserValidator.instance);
     }
 }

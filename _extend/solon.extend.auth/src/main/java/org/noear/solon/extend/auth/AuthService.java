@@ -4,6 +4,8 @@ import org.noear.solon.extend.auth.annotation.Logical;
 import org.noear.solon.extend.auth.model.Subject;
 
 /**
+ * 认证服务（需要用户对接）
+ *
  * @author noear
  * @since 1.3
  */
@@ -26,15 +28,15 @@ public interface AuthService {
     /**
      * 验证路径（一般使用路径验证）
      */
-    boolean verifyPath(String path, String method);
+    boolean verifyUrl(String url, String method);
 
     /**
-     * 验证权限（有特殊情况用权限验证）
+     * 验证特定权限（有特殊情况用权限验证）
      */
     boolean verifyPermissions(String[] permissions, Logical logical);
 
     /**
-     * 验证角色（有特殊情况用角色验证）
+     * 验证特定角色（有特殊情况用角色验证）
      */
     boolean verifyRoles(String[] roles, Logical logical);
 }

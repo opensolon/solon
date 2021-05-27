@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 需要角色
+ * 需要特定角色
  *
  * @author noear
  * @since 1.3

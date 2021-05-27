@@ -43,8 +43,8 @@ public class AuthServiceProxy implements AuthService {
     }
 
     @Override
-    public boolean verifyPath(String path, String method) {
-        return real.verifyPath(path, method);
+    public boolean verifyUrl(String url, String method) {
+        return real.verifyUrl(url, method);
     }
 
     @Override

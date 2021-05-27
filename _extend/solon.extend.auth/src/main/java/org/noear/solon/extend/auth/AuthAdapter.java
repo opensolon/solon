@@ -1,46 +1,100 @@
 package org.noear.solon.extend.auth;
 
+import java.util.function.Predicate;
+
 /**
- * @author noear 2021/5/27 created
+ * 认证适配器（需要用户对接）
+ *
+ * @author noear
+ * @since 1.4
  */
 public class AuthAdapter {
+    private static AuthAdapter instance;
+
+    public static AuthAdapter getInstance() {
+        if (instance == null) {
+            instance = new AuthAdapter();
+        }
+        return instance;
+    }
+
     private String loginUrl;
     private String loginProcessingUrl;
-    private String usernameParameter;
-    private String passwordParameter;
+    private String usernameParam;
+    private String passwordParam;
     private String logoutUrl;
-    private String excludeMatchers;
+    private Predicate<String> verifyUrlMatchers = (url) -> true;
 
-    public AuthAdapter loginUrl(String url){
+    public String loginUrl() {
+        return loginUrl;
+    }
+
+    /**
+     * 登录Url
+     */
+    public AuthAdapter loginUrl(String url) {
         loginUrl = url;
         return this;
     }
 
-    public AuthAdapter loginProcessingUrl(String url){
+
+    public String loginProcessingUrl() {
+        return loginProcessingUrl;
+    }
+
+    /**
+     * 登录处理Url
+     */
+    public AuthAdapter loginProcessingUrl(String url) {
         loginProcessingUrl = url;
         return this;
     }
 
-    public AuthAdapter usernameParameter(String name){
-        usernameParameter = name;
+    public String usernameParam() {
+        return usernameParam;
+    }
+
+    /**
+     * 用户名参数名
+     */
+    public AuthAdapter usernameParam(String name) {
+        usernameParam = name;
         return this;
     }
 
-    public AuthAdapter passwordParameter(String name){
-        passwordParameter = name;
+    public String passwordParam() {
+        return passwordParam;
+    }
+
+    /**
+     * 密码参数名
+     */
+    public AuthAdapter passwordParam(String name) {
+        passwordParam = name;
         return this;
     }
 
-    public AuthAdapter logoutUrl(String url){
+    public String logoutUrl() {
+        return logoutUrl;
+    }
+
+    /**
+     * 退出Url
+     */
+    public AuthAdapter logoutUrl(String url) {
         logoutUrl = url;
         return this;
     }
 
-    public AuthAdapter excludeMatchers(String expr){
-        excludeMatchers = expr;
-        return this;
+    public Predicate<String> verifyUrlMatchers() {
+        return verifyUrlMatchers;
     }
 
-
-
+    /**
+     * 验证Url匹配
+     */
+    public AuthAdapter verifyUrlMatchers(Predicate<String> tester) {
+        verifyUrlMatchers = tester;
+        return this;
+    }
 }
