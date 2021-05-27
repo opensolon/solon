@@ -65,7 +65,7 @@ public class JwtUtils {
             builder.setIssuer(Solon.cfg().appName());
         }
 
-        return TOKEN_HEADER + builder.signWith(secret).compact();
+        return builder.signWith(secret).compact();
     }
 
     /**
