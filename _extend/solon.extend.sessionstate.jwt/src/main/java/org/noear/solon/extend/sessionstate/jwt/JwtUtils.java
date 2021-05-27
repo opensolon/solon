@@ -16,7 +16,7 @@ import java.util.Date;
  * @since 1.3
  */
 public class JwtUtils {
-    private static String TOKEN_HEADER = "Bearer";
+    private static String TOKEN_HEADER = "Bearer ";
     private static Key key = null;
 
     private static Key key() {
@@ -80,7 +80,7 @@ public class JwtUtils {
      */
     public static Claims parseJwt(String token, Key signKey) {
         if (token.startsWith(TOKEN_HEADER)) {
-            token = token.substring(TOKEN_HEADER.length() + 1);
+            token = token.substring(TOKEN_HEADER.length()).trim();
         }
 
         try {
