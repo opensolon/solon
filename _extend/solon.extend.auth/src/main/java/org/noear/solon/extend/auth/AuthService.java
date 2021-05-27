@@ -1,7 +1,7 @@
 package org.noear.solon.extend.auth;
 
 import org.noear.solon.extend.auth.annotation.Logical;
-import org.noear.solon.extend.auth.model.UserModel;
+import org.noear.solon.extend.auth.model.Subject;
 
 /**
  * @author noear
@@ -14,14 +14,9 @@ public interface AuthService {
     boolean login(String username, String password);
 
     /**
-     * 用领牌登录
-     */
-    boolean login(String token);
-
-    /**
      * 登录后加载模型（可用于自动登录）
      */
-    void loginLoad(UserModel user);
+    void loginLoad(Subject subject);
 
     /**
      * 验证登录状态

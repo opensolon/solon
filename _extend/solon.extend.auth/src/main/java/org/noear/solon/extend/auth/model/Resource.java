@@ -6,7 +6,7 @@ import java.util.Map;
  * @author noear
  * @since 1.4
  */
-public class MenuNode {
+public class Resource {
     /**
      * 名字（代号）
      * */

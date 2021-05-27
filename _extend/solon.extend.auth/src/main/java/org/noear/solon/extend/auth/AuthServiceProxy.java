@@ -2,7 +2,7 @@ package org.noear.solon.extend.auth;
 
 import org.noear.solon.core.Aop;
 import org.noear.solon.extend.auth.annotation.Logical;
-import org.noear.solon.extend.auth.model.UserModel;
+import org.noear.solon.extend.auth.model.Subject;
 
 /**
  * @author noear
@@ -33,12 +33,7 @@ public class AuthServiceProxy implements AuthService {
     }
 
     @Override
-    public boolean login(String token) {
-        return real.login(token);
-    }
-
-    @Override
-    public void loginLoad(UserModel user) {
+    public void loginLoad(Subject user) {
         real.loginLoad(user);
     }
 
