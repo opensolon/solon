@@ -63,6 +63,9 @@ public class CloudProps {
     //链路跟踪服务相关
     private String TRACE_ENABLE = "solon.cloud.@@.trace.enable";
 
+    //度量服务相关
+    private String METRIC_ENABLE = "solon.cloud.@@.metric.enable";
+
 
     //文件服务相关
     private String FILE_ENABLE = "solon.cloud.@@.file.enable";
@@ -129,6 +132,8 @@ public class CloudProps {
         LOG_DEFAULT = LOG_DEFAULT.replace("@@", frame);
 
         TRACE_ENABLE = TRACE_ENABLE.replace("@@", frame);
+
+        METRIC_ENABLE = METRIC_ENABLE.replace("@@", frame);
 
         FILE_ENABLE = FILE_ENABLE.replace("@@", frame);
         FILE_ENDPOINT = FILE_ENDPOINT.replace("@@", frame);
@@ -336,6 +341,13 @@ public class CloudProps {
     //
     public boolean getTraceEnable() {
         return Solon.cfg().getBool(TRACE_ENABLE, true);
+    }
+
+    //
+    //度量服务相关
+    //
+    public boolean getMetricEnable() {
+        return Solon.cfg().getBool(METRIC_ENABLE, true);
     }
 
 

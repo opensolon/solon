@@ -6,8 +6,6 @@ import org.noear.solon.cloud.annotation.CloudEvent;
 import org.noear.solon.cloud.impl.CloudEventManager;
 import org.noear.solon.cloud.service.*;
 import org.noear.solon.core.util.PrintUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -60,6 +58,11 @@ public class CloudManager {
      * 云端跟踪服务（链路）
      */
     private static CloudTraceService traceService;
+
+    /**
+     * 云端度量服务（监控）
+     * */
+    private static CloudMetricService metricService;
 
     /**
      * 云端任务服务
@@ -169,6 +172,14 @@ public class CloudManager {
     }
 
     /**
+     * 登记度量服务
+     */
+    public static void register(CloudMetricService service) {
+        metricService = service;
+        PrintUtil.info("Cloud", "CloudMetricService registered from the " + service.getClass().getTypeName());
+    }
+
+    /**
      * 登记任务服务
      */
     public static void register(CloudJobService service) {
@@ -220,6 +231,8 @@ public class CloudManager {
     protected static CloudTraceService traceService() {
         return traceService;
     }
+
+    protected static CloudMetricService metricService(){return metricService;}
 
     protected static CloudIdServiceFactory idServiceFactory(){
         return idServiceFactory;
