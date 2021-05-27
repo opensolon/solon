@@ -21,7 +21,7 @@ public interface CloudMetricService {
     }
 
     /**
-     * 添加度量（均值）
+     * 添加度量（平均值、最大值、最小值）
      *
      * @param group 组
      * @param category 类别
