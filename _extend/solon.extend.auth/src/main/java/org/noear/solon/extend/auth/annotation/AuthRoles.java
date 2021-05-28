@@ -14,7 +14,16 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AuthRoles {
+    /**
+     * 角色
+     * */
     String[] value();
-    Logical logical() default Logical.AND;
+    /**
+     * 逻辑关系
+     * */
+    Logical logical() default Logical.OR;
+    /**
+     * 提示消息
+     * */
     String message() default "";
 }
