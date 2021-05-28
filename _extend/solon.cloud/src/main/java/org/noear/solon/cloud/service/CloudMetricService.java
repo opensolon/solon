@@ -34,7 +34,7 @@ public interface CloudMetricService {
     }
 
     /**
-     * 添加计量（舜值）
+     * 添加指标（瞬值）
      *
      * @param group 组
      * @param category 类别
@@ -45,14 +45,4 @@ public interface CloudMetricService {
     default void addGauge(String category, String item, Object val) {
         addGauge(Solon.cfg().appName(), category, item, val);
     }
-
-    /**
-     * 添加记录（不能做日志）//或许不适合
-     *
-     * @param group 组
-     * @param category 类别
-     * @param item 项目
-     * @param val 值
-     */
-    //void addLog(String group, String category, String item, Map<String, Object> val);
 }
