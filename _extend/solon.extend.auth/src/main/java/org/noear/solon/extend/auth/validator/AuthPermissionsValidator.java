@@ -32,7 +32,7 @@ public class AuthPermissionsValidator implements Validator<AuthPermissions> {
         if (authAdapter.authProcessor().verifyPermissions(anno.value(), anno.logical())) {
             return Result.succeed();
         } else {
-            return Result.failure();
+            return Result.failure(401);
         }
     }
 }
