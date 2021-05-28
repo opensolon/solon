@@ -48,5 +48,13 @@ import java.lang.annotation.*;
 @Documented
 public @interface Inject {
     String value() default "";
+    /**
+     * 必需要
+     * */
     boolean required() default true;
+    /**
+     * 自动刷新
+     * */
+    @Note("非单例不需要使用自动刷新")
+    boolean autoRefreshed() default false;
 }
