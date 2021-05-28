@@ -46,7 +46,7 @@ public class AuthInterceptor implements Handler {
             return;
         }
 
-        String path = ctx.pathNew();
+        String path = ctx.pathNew().toLowerCase();
 
         //需要验证
         if (path.equals(authAdapter.loginUrl()) ||
@@ -66,7 +66,7 @@ public class AuthInterceptor implements Handler {
         }
 
         //验证失败的
-        Result result = Result.failure(401, "Unauthorized");
+        Result result = Result.failure(403, "Forbidden");
         ValidatorManager.global().failureDo(ctx, null, result, result.getDescription());
     }
 }
