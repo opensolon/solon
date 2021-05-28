@@ -5,6 +5,7 @@ import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.Result;
 
 import java.util.function.BiConsumer;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -35,7 +36,7 @@ public class AuthAdapter {
     private String logoutUrl;
     private BiConsumer<Context, Result> authOnFailure = (ctx, rst) -> {
     };
-    private Predicate<String> authUrlMatchers = (url) -> true;
+    private BiPredicate<Context, String> authUrlMatchers = (ctx, url) -> true;
     private AuthProcessor authProcessor;
 
     public String loginUrl() {
@@ -108,14 +109,14 @@ public class AuthAdapter {
         return this;
     }
 
-    public Predicate<String> authUrlMatchers() {
+    public BiPredicate<Context, String> authUrlMatchers() {
         return authUrlMatchers;
     }
 
     /**
      * 认证Url匹配
      */
-    public AuthAdapter authUrlMatchers(Predicate<String> tester) {
+    public AuthAdapter authUrlMatchers(BiPredicate<Context, String> tester) {
         authUrlMatchers = tester;
         return this;
     }
