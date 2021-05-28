@@ -55,6 +55,6 @@ public @interface Inject {
     /**
      * 自动刷新
      * */
-    @Note("非单例不需要使用自动刷新")
+    @Note("单例才有自动刷新的必要")
     boolean autoRefreshed() default false;
 }
