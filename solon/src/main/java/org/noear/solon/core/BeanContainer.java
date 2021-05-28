@@ -291,6 +291,10 @@ public abstract class BeanContainer {
      * @param name 名字（bean name || config ${name}）
      */
     public void beanInject(VarHolder varH, String name) {
+        beanInject(varH, name, false);
+    }
+
+    protected void beanInject(VarHolder varH, String name, boolean autoRefreshed) {
         if (Utils.isEmpty(name)) {
             //如果没有name,使用类型进行获取 bean
             getWrapAsyn(varH.getType(), (bw) -> {
@@ -324,54 +328,66 @@ public abstract class BeanContainer {
 
         } else if (name.startsWith("${")) {
             //配置 ${xxx} or ${xxx:def},只适合单值
-            name = name.substring(2, name.length() - 1).trim();
+            String name2 = name.substring(2, name.length() - 1).trim();
 
-            if (Properties.class == varH.getType()) {
-                //如果是 Properties
-                Properties val = Solon.cfg().getProp(name);
-                varH.setValue(val);
-            } else if (Map.class == varH.getType()) {
-                //如果是 Map
-                Map val = Solon.cfg().getXmap(name);
-                varH.setValue(val);
-            } else {
-                //2.然后尝试获取配置
-                String def = null;
-                if(name.contains(":")) {
-                    def = name.split(":")[1].trim();
-                    name = name.split(":")[0].trim();
-                }
+            beanInjectConfig(varH, name2);
 
-                String val = Solon.cfg().get(name);
-
-                if(val == null){
-                    val = def;
-                }
-
-                if (val == null) {
-                    Class<?> pt = varH.getType();
-
-                    if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive()) {
-                        //如果是java基础类型，则不注入配置值
-                    } else {
-                        //尝试转为实体
-                        Properties val0 = Solon.cfg().getProp(name);
-                        if (val0.size() > 0) {
-                            //如果找到配置了
-                            Object val2 = ClassWrap.get(pt).newBy(val0);
-                            varH.setValue(val2);
-                        }
+            if (autoRefreshed) {
+                Solon.cfg().onChange((key, val) -> {
+                    if(key.startsWith(name2)){
+                        beanInjectConfig(varH, name2);
                     }
-                } else {
-                    Object val2 = ConvertUtil.to(varH.getType(), val);
-                    varH.setValue(val2);
-                }
+                });
             }
         } else {
             //使用name, 获取BEAN
             getWrapAsyn(name, (bw) -> {
                 varH.setValue(bw.get());
             });
+        }
+    }
+
+    private void beanInjectConfig(VarHolder varH, String name){
+        if (Properties.class == varH.getType()) {
+            //如果是 Properties
+            Properties val = Solon.cfg().getProp(name);
+            varH.setValue(val);
+        } else if (Map.class == varH.getType()) {
+            //如果是 Map
+            Map val = Solon.cfg().getXmap(name);
+            varH.setValue(val);
+        } else {
+            //2.然后尝试获取配置
+            String def = null;
+            if(name.contains(":")) {
+                def = name.split(":")[1].trim();
+                name = name.split(":")[0].trim();
+            }
+
+            String val = Solon.cfg().get(name);
+
+            if(val == null){
+                val = def;
+            }
+
+            if (val == null) {
+                Class<?> pt = varH.getType();
+
+                if (pt.getName().startsWith("java.") || pt.isArray() || pt.isPrimitive()) {
+                    //如果是java基础类型，则不注入配置值
+                } else {
+                    //尝试转为实体
+                    Properties val0 = Solon.cfg().getProp(name);
+                    if (val0.size() > 0) {
+                        //如果找到配置了
+                        Object val2 = ClassWrap.get(pt).newBy(val0);
+                        varH.setValue(val2);
+                    }
+                }
+            } else {
+                Object val2 = ConvertUtil.to(varH.getType(), val);
+                varH.setValue(val2);
+            }
         }
     }
 

@@ -108,7 +108,7 @@ public class AopContext extends BeanContainer {
 
         //注册 @Inject 构建器
         beanInjectorAdd(Inject.class, ((fwT, anno) -> {
-            beanInject(fwT, anno.value());
+            beanInject(fwT, anno.value(), anno.autoRefreshed());
         }));
 
         //注册 @ServerEndpoint 构建器

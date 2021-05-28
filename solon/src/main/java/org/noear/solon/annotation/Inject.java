@@ -49,7 +49,7 @@ import java.lang.annotation.*;
 public @interface Inject {
     String value() default "";
     /**
-     * 必需要
+     * 必需要（暂时没用）
      * */
     boolean required() default true;
     /**
