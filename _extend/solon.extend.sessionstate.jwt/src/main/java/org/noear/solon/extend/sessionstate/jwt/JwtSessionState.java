@@ -54,6 +54,19 @@ public class JwtSessionState extends SessionStateDefault {
         ctx.cookieSet(key, val, _domain, _expiry);
     }
 
+    public void cookieRemove(String key) {
+        if (XPluginProp.session_state_domain_auto) {
+            if (_domain != null) {
+                if (ctx.uri().getHost().indexOf(_domain) < 0) { //非安全域
+                    ctx.cookieSet(key, "", null, 0);
+                    return;
+                }
+            }
+        }
+
+        ctx.cookieSet(key, "", _domain, 0);
+    }
+
 
     //
     // session control
@@ -220,7 +233,11 @@ public class JwtSessionState extends SessionStateDefault {
         if (XPluginProp.session_jwt_responseUseHeader) {
             ctx.headerSet(XPluginProp.session_jwt_name, token);
         } else {
-            cookieSet(XPluginProp.session_jwt_name, token);
+            if (token.length() == 0) {
+                cookieRemove(XPluginProp.session_jwt_name);
+            } else {
+                cookieSet(XPluginProp.session_jwt_name, token);
+            }
         }
 
         ctx.attrSet(XPluginProp.session_jwt_name, token);
