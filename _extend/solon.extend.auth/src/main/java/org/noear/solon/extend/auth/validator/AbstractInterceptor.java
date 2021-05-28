@@ -28,9 +28,9 @@ public abstract class AbstractInterceptor<T extends Annotation> implements Inter
                 //
                 Context ctx = Context.current();
                 if (ctx != null) {
+                    AuthAdapter.global().authOnFailure().accept(ctx, result);
                     ctx.setHandled(true);
                     ctx.setRendered(true);
-                    AuthAdapter.global().authOnFailure().accept(ctx, result);
                     throw new DataThrowable();
                 } else {
                     throw new AuthException(result.getDescription());
