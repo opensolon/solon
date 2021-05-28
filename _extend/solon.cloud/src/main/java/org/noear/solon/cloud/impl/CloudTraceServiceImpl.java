@@ -9,17 +9,14 @@ import org.noear.solon.core.handle.Context;
  * @since 1.3
  */
 public class CloudTraceServiceImpl implements CloudTraceService {
-    static final String http_header_trace = "X-Trace-Id";
-    static final String http_header_from = "X-From-Id";
-
     @Override
     public String HEADER_TRACE_ID_NAME() {
-        return http_header_trace;
+        return "X-Trace-Id";
     }
 
     @Override
     public String HEADER_FROM_ID_NAME() {
-        return http_header_from;
+        return "X-From-Id";
     }
 
     @Override
@@ -50,6 +47,7 @@ public class CloudTraceServiceImpl implements CloudTraceService {
             String from_id = ctx.header(HEADER_FROM_ID_NAME());
             if (Utils.isEmpty(from_id)) {
                 from_id = ctx.realIp();
+                ctx.headerMap().put(HEADER_FROM_ID_NAME(), from_id);
             }
 
             return from_id;
