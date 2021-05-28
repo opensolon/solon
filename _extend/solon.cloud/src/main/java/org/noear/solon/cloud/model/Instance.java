@@ -27,22 +27,6 @@ public class Instance implements Serializable {
         return service;
     }
 
-    private String serviceAndAddress;
-    /**
-     * 服务名与地址；实例化后不能修改(service@ip:port)
-     * */
-    public String serviceAndAddress() {
-        if (service == null || address == null) {
-            return null;
-        }
-
-        if (serviceAndAddress == null) {
-            serviceAndAddress = service + "@" + address;
-        }
-
-        return serviceAndAddress;
-    }
-
 
     private String address;
 
