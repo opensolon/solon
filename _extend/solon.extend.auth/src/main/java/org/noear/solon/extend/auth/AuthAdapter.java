@@ -1,5 +1,10 @@
 package org.noear.solon.extend.auth;
 
+import org.noear.solon.core.handle.Handler;
+import org.noear.solon.core.handle.Result;
+
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -9,11 +14,24 @@ import java.util.function.Predicate;
  * @since 1.4
  */
 public class AuthAdapter {
+    private static AuthAdapter global = new AuthAdapter();
+    public static AuthAdapter global() {
+        return global;
+    }
+
+    public static void globalSet(AuthAdapter global) {
+        if (global != null) {
+            AuthAdapter.global = global;
+        }
+    }
+
+
     private String loginUrl;
     private String loginProcessingUrl;
     private String usernameParam;
     private String passwordParam;
     private String logoutUrl;
+    private Consumer<Result> authOnFailure = (rst)-> {};
     private Predicate<String> authUrlMatchers = (url) -> true;
     private AuthProcessor authProcessor;
 
@@ -78,6 +96,15 @@ public class AuthAdapter {
         return this;
     }
 
+    public Consumer<Result> authOnFailure(){
+        return authOnFailure;
+    }
+
+    public AuthAdapter authOnFailure(Consumer<Result> handler){
+        authOnFailure = handler;
+        return this;
+    }
+
     public Predicate<String> authUrlMatchers(){
         return authUrlMatchers;
     }
@@ -103,6 +130,4 @@ public class AuthAdapter {
         authProcessor = processor;
         return this;
     }
-
-
 }

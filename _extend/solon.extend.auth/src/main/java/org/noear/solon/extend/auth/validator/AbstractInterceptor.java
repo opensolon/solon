@@ -5,8 +5,8 @@ import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.ext.DataThrowable;
+import org.noear.solon.extend.auth.AuthAdapter;
 import org.noear.solon.extend.auth.AuthException;
-import org.noear.solon.extend.validation.ValidatorManager;
 
 import java.lang.annotation.Annotation;
 
@@ -26,10 +26,12 @@ public abstract class AbstractInterceptor<T extends Annotation> implements Inter
                 //
                 //借用验证管理器的代码，由它统一处理异常；也方便用户后续统一定制
                 //
-                if(ValidatorManager.global()
-                        .failureDo(Context.current(), anno, result, result.getDescription())){
+                Context ctx = Context.current();
+                if (ctx != null) {
+                    ctx.setHandled(true);
+                    AuthAdapter.global().authOnFailure().accept(result);
                     throw new DataThrowable();
-                }else{
+                } else {
                     throw new AuthException(result.getDescription());
                 }
             }
