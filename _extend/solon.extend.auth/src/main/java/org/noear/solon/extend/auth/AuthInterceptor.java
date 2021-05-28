@@ -45,7 +45,7 @@ public class AuthInterceptor implements Handler {
         //验证地址权限
         if (AuthAdapter.global().authProcessor().verifyUrl(path, ctx.method()) == false) {
             //验证失败的
-            Result result = Result.failure(403, "Forbidden");
+            Result result = Result.failure(403, "Sorry, no permission!");
             ValidatorManager.global().failureDo(ctx, null, result, result.getDescription());
         }
     }
