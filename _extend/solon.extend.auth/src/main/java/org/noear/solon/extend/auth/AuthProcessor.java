@@ -1,7 +1,6 @@
 package org.noear.solon.extend.auth;
 
 import org.noear.solon.extend.auth.annotation.Logical;
-import org.noear.solon.extend.auth.model.Subject;
 
 /**
  * 认证处理器（需要用户对接）
@@ -10,15 +9,6 @@ import org.noear.solon.extend.auth.model.Subject;
  * @since 1.3
  */
 public interface AuthProcessor {
-    /**
-     * 用账号密码登录
-     */
-    Subject login(String username, String password);
-
-    /**
-     * 登录后加载模型（可用于自动登录）
-     */
-    void loginLoad(Subject subject);
 
     /**
      * 验证登录状态
