@@ -20,17 +20,17 @@ public class AuthInterceptor implements Handler {
             return;
         }
 
-        String path = ctx.pathNew().toLowerCase();
+        String url = ctx.pathNew().toLowerCase();
 
         //不需要验证
-        if (path.equals(AuthAdapter.global().loginUrl()) ||
-                path.equals(AuthAdapter.global().loginProcessingUrl()) ||
-                path.equals(AuthAdapter.global().logoutUrl())) {
+        if (url.equals(AuthAdapter.global().loginUrl()) ||
+                url.equals(AuthAdapter.global().loginProcessingUrl()) ||
+                url.equals(AuthAdapter.global().logoutUrl())) {
             return;
         }
 
         //不需要验证
-        if (AuthAdapter.global().authUrlMatchers().test(path) == false) {
+        if (AuthAdapter.global().authUrlMatchers().test(ctx, url) == false) {
             return;
         }
 
@@ -43,7 +43,7 @@ public class AuthInterceptor implements Handler {
         }
 
         //验证地址权限
-        if (AuthAdapter.global().authProcessor().verifyUrl(path, ctx.method()) == false) {
+        if (AuthAdapter.global().authProcessor().verifyUrl(url, ctx.method()) == false) {
             //验证失败的
             Result result = Result.failure(403, "Sorry, no permission!");
             ValidatorManager.global().failureDo(ctx, null, result, result.getDescription());
