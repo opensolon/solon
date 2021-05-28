@@ -13,7 +13,7 @@ import org.noear.solon.core.handle.SessionStateDefault;
 public class JwtSessionState extends SessionStateDefault {
     /**
      * 单位：秒
-     */
+     * */
     private static int _expiry = 60 * 60 * 2;
     private static String _domain = null;
 
@@ -52,19 +52,6 @@ public class JwtSessionState extends SessionStateDefault {
         }
 
         ctx.cookieSet(key, val, _domain, _expiry);
-    }
-
-    public void cookieRemove(String key) {
-        if (XPluginProp.session_state_domain_auto) {
-            if (_domain != null) {
-                if (ctx.uri().getHost().indexOf(_domain) < 0) { //非安全域
-                    ctx.cookieSet(key, "", null, 0);
-                    return;
-                }
-            }
-        }
-
-        ctx.cookieSet(key, "", _domain, 0);
     }
 
 
@@ -116,7 +103,7 @@ public class JwtSessionState extends SessionStateDefault {
                     if (Utils.isNotEmpty(token) && token.contains(".")) {
                         Claims claims = JwtUtils.parseJwt(token);
 
-                        if (claims != null) {
+                        if(claims != null) {
                             if (XPluginProp.session_jwt_requestUseHeader || sesId.equals(claims.getId())) {
                                 if (XPluginProp.session_jwt_allowExpire) {
                                     if (claims.getExpiration() != null &&
@@ -177,11 +164,13 @@ public class JwtSessionState extends SessionStateDefault {
     @Override
     public void sessionPublish() {
         String token = sessionToken();
-        jwtSet(token);
+
+        if (Utils.isNotEmpty(token)) {
+            jwtSet(token);
+        }
     }
 
     private String sessionToken;
-
     @Override
     public String sessionToken() {
         if (sessionToken == null) {
@@ -226,18 +215,10 @@ public class JwtSessionState extends SessionStateDefault {
     }
 
     protected void jwtSet(String token) {
-        if (token == null) {
-            token = "";
-        }
-
         if (XPluginProp.session_jwt_responseUseHeader) {
             ctx.headerSet(XPluginProp.session_jwt_name, token);
         } else {
-            if (token.length() == 0) {
-                cookieRemove(XPluginProp.session_jwt_name);
-            } else {
-                cookieSet(XPluginProp.session_jwt_name, token);
-            }
+            cookieSet(XPluginProp.session_jwt_name, token);
         }
 
         ctx.attrSet(XPluginProp.session_jwt_name, token);
