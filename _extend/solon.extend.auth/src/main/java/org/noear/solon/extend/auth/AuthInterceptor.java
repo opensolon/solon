@@ -48,7 +48,7 @@ public class AuthInterceptor implements Handler {
 
         String path = ctx.pathNew().toLowerCase();
 
-        //需要验证
+        //不需要验证
         if (path.equals(authAdapter.loginUrl()) ||
                 path.equals(authAdapter.loginProcessingUrl()) ||
                 path.equals(authAdapter.logoutUrl())) {
@@ -60,13 +60,19 @@ public class AuthInterceptor implements Handler {
             return;
         }
 
-        //验证通过
-        if (authAdapter.authProcessor().verifyUrl(path, ctx.method())) {
+        //验证登录情况
+        if (authAdapter.authProcessor().verifyLogined() == false) {
+            //未登录的，跳到登录页
+            ctx.redirect(authAdapter.loginUrl());
+            ctx.setHandled(true);
             return;
         }
 
-        //验证失败的
-        Result result = Result.failure(403, "Forbidden");
-        ValidatorManager.global().failureDo(ctx, null, result, result.getDescription());
+        //验证地址权限
+        if (authAdapter.authProcessor().verifyUrl(path, ctx.method()) == false) {
+            //验证失败的
+            Result result = Result.failure(403, "Forbidden");
+            ValidatorManager.global().failureDo(ctx, null, result, result.getDescription());
+        }
     }
 }
