@@ -28,9 +28,9 @@ public interface CloudMetricService {
      * @param item 项目
      * @param num 数值
      */
-    void addMeter(String group, String category, String item, long num, boolean isolated);
-    default void addMeter(String category, String item, long num, boolean isolated) {
-        addMeter(Solon.cfg().appName(), category, item, num, isolated);
+    void addMeter(String group, String category, String item, long num);
+    default void addMeter(String category, String item, long num) {
+        addMeter(Solon.cfg().appName(), category, item, num);
     }
 
     /**

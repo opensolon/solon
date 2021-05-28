@@ -9,21 +9,13 @@ import java.util.function.Predicate;
  * @since 1.4
  */
 public class AuthAdapter {
-    private static AuthAdapter instance;
-
-    public static AuthAdapter getInstance() {
-        if (instance == null) {
-            instance = new AuthAdapter();
-        }
-        return instance;
-    }
-
     private String loginUrl;
     private String loginProcessingUrl;
     private String usernameParam;
     private String passwordParam;
     private String logoutUrl;
-    private Predicate<String> verifyUrlMatchers = (url) -> true;
+    private Predicate<String> authUrlMatchers = (url) -> true;
+    private AuthProcessor authProcessor;
 
     public String loginUrl() {
         return loginUrl;
@@ -86,15 +78,31 @@ public class AuthAdapter {
         return this;
     }
 
-    public Predicate<String> verifyUrlMatchers() {
-        return verifyUrlMatchers;
+    public Predicate<String> authUrlMatchers(){
+        return authUrlMatchers;
     }
 
     /**
-     * 验证Url匹配
-     */
-    public AuthAdapter verifyUrlMatchers(Predicate<String> tester) {
-        verifyUrlMatchers = tester;
+     * 认证Url匹配
+     * */
+    public AuthAdapter  authUrlMatchers(Predicate<String> tester){
+        authUrlMatchers = tester;
         return this;
     }
+
+
+    public AuthProcessor authProcessor(){
+        return authProcessor;
+    }
+
+
+    /**
+     * 认证处理器匹配
+     */
+    public AuthAdapter authProcessor(AuthProcessor processor) {
+        authProcessor = processor;
+        return this;
+    }
+
+
 }

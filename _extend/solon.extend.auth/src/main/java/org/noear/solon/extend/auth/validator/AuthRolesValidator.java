@@ -1,8 +1,9 @@
 package org.noear.solon.extend.auth.validator;
 
+import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.extend.auth.AuthProcessorProxy;
+import org.noear.solon.extend.auth.AuthAdapter;
 import org.noear.solon.extend.auth.annotation.AuthRoles;
 import org.noear.solon.extend.validation.Validator;
 
@@ -13,6 +14,13 @@ import org.noear.solon.extend.validation.Validator;
 public class AuthRolesValidator implements Validator<AuthRoles> {
     public static final AuthRolesValidator instance = new AuthRolesValidator();
 
+    AuthAdapter authAdapter;
+
+    public AuthRolesValidator() {
+        Aop.getAsyn(AuthAdapter.class, bw -> {
+            authAdapter = bw.raw();
+        });
+    }
 
     @Override
     public String message(AuthRoles anno) {
@@ -21,7 +29,7 @@ public class AuthRolesValidator implements Validator<AuthRoles> {
 
     @Override
     public Result validate(Context ctx, AuthRoles anno, String name, StringBuilder tmp) {
-        if (AuthProcessorProxy.getInstance().verifyRoles(anno.value(), anno.logical())) {
+        if (authAdapter.authProcessor().verifyRoles(anno.value(), anno.logical())) {
             return Result.succeed();
         } else {
             return Result.failure();

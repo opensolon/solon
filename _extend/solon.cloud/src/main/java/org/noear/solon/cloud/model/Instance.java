@@ -17,29 +17,48 @@ import java.util.*;
  * @since 1.2
  */
 public class Instance implements Serializable {
+
+    private String service;
+
     /**
      * 服务名；实例化后不能修改
      */
-    private String service;
-
     public String service() {
         return service;
     }
 
+    private String serviceAndAddress;
+    /**
+     * 服务名与地址；实例化后不能修改(service@ip:port)
+     * */
+    public String serviceAndAddress() {
+        if (service == null || address == null) {
+            return null;
+        }
+
+        if (serviceAndAddress == null) {
+            serviceAndAddress = service + "@" + address;
+        }
+
+        return serviceAndAddress;
+    }
+
+
+    private String address;
+
     /**
      * 地址；实例化后不能修改（ip:port）
      */
-    private String address;
-
     public String address() {
         return address;
     }
 
+
+    private String protocol;
+
     /**
      * 协议（http, ws, tcp...）
      */
-    private String protocol;
-
     public String protocol() {
         return protocol;
     }
