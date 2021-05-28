@@ -13,7 +13,7 @@ public interface AuthProcessor {
     /**
      * 用账号密码登录
      */
-    boolean login(String username, String password);
+    Subject login(String username, String password);
 
     /**
      * 登录后加载模型（可用于自动登录）
