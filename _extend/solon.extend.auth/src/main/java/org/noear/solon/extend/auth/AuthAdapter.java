@@ -1,5 +1,6 @@
 package org.noear.solon.extend.auth;
 
+import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.Result;
 
@@ -15,6 +16,7 @@ import java.util.function.Predicate;
  */
 public class AuthAdapter {
     private static AuthAdapter global = new AuthAdapter();
+
     public static AuthAdapter global() {
         return global;
     }
@@ -31,7 +33,8 @@ public class AuthAdapter {
     private String usernameParam;
     private String passwordParam;
     private String logoutUrl;
-    private Consumer<Result> authOnFailure = (rst)-> {};
+    private BiConsumer<Context, Result> authOnFailure = (ctx, rst) -> {
+    };
     private Predicate<String> authUrlMatchers = (url) -> true;
     private AuthProcessor authProcessor;
 
@@ -96,29 +99,29 @@ public class AuthAdapter {
         return this;
     }
 
-    public Consumer<Result> authOnFailure(){
+    public BiConsumer<Context, Result> authOnFailure() {
         return authOnFailure;
     }
 
-    public AuthAdapter authOnFailure(Consumer<Result> handler){
+    public AuthAdapter authOnFailure(BiConsumer<Context, Result> handler) {
         authOnFailure = handler;
         return this;
     }
 
-    public Predicate<String> authUrlMatchers(){
+    public Predicate<String> authUrlMatchers() {
         return authUrlMatchers;
     }
 
     /**
      * 认证Url匹配
-     * */
-    public AuthAdapter  authUrlMatchers(Predicate<String> tester){
+     */
+    public AuthAdapter authUrlMatchers(Predicate<String> tester) {
         authUrlMatchers = tester;
         return this;
     }
 
 
-    public AuthProcessor authProcessor(){
+    public AuthProcessor authProcessor() {
         return authProcessor;
     }
 
