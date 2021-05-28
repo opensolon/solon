@@ -332,7 +332,7 @@ public abstract class BeanContainer {
 
             beanInjectConfig(varH, name2);
 
-            if (autoRefreshed) {
+            if (autoRefreshed && varH.isField()) {
                 Solon.cfg().onChange((key, val) -> {
                     if(key.startsWith(name2)){
                         beanInjectConfig(varH, name2);
