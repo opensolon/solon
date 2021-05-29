@@ -9,12 +9,16 @@ import org.noear.solon.core.handle.*;
  * @author noear
  * @since 1.4
  */
-public class AuthInterceptorDefault implements AuthInterceptor {
+public class AuthInterceptorLogined implements AuthInterceptor {
 
     @Override
     public void handle(Context ctx) throws Throwable {
+        test(ctx);
+    }
+
+    public boolean test(Context ctx) throws Throwable {
         if (AuthAdapter.global().authProcessor() == null) {
-            return;
+            return true;
         }
 
         String url = ctx.pathNew().toLowerCase();
@@ -23,12 +27,12 @@ public class AuthInterceptorDefault implements AuthInterceptor {
         if (url.equals(AuthAdapter.global().loginUrl()) ||
                 url.equals(AuthAdapter.global().loginProcessingUrl()) ||
                 url.equals(AuthAdapter.global().logoutUrl())) {
-            return;
+            return true;
         }
 
         //不需要验证
         if (AuthAdapter.global().authUrlMatchers().test(ctx, url) == false) {
-            return;
+            return true;
         }
 
         //验证登录情况
@@ -36,14 +40,9 @@ public class AuthInterceptorDefault implements AuthInterceptor {
             //未登录的，跳到登录页
             ctx.redirect(AuthAdapter.global().loginUrl());
             ctx.setHandled(true);
-            return;
+            return true;
         }
 
-        //验证地址权限
-        if (AuthAdapter.global().authProcessor().verifyUrl(url, ctx.method()) == false) {
-            //验证失败的
-            Result result = Result.failure(403, "Sorry, no permission!");
-            AuthAdapter.global().authOnFailure().accept(ctx, result);
-        }
+        return false;
     }
 }
