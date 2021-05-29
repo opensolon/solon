@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory;
  * @author noear
  * @since 1.3
  */
-public class LoginedInterceptor extends AbstractInterceptor<AuthLogined> {
-    private static final Logger log = LoggerFactory.getLogger(LoginedInterceptor.class);
-    public static final LoginedInterceptor instance = new LoginedInterceptor();
+public class LoginedValidator extends AbstractValidator<AuthLogined> {
+    private static final Logger log = LoggerFactory.getLogger(LoginedValidator.class);
+    public static final LoginedValidator instance = new LoginedValidator();
 
 
     @Override

@@ -6,9 +6,9 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.extend.auth.annotation.AuthLogined;
 import org.noear.solon.extend.auth.annotation.AuthPermissions;
 import org.noear.solon.extend.auth.annotation.AuthRoles;
-import org.noear.solon.extend.auth.validator.LoginedInterceptor;
-import org.noear.solon.extend.auth.validator.PermissionsInterceptor;
-import org.noear.solon.extend.auth.validator.RolesInterceptor;
+import org.noear.solon.extend.auth.validator.LoginedValidator;
+import org.noear.solon.extend.auth.validator.PermissionsValidator;
+import org.noear.solon.extend.auth.validator.RolesValidator;
 
 /**
  * @author noear
@@ -17,8 +17,8 @@ import org.noear.solon.extend.auth.validator.RolesInterceptor;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        Aop.context().beanAroundAdd(AuthPermissions.class, PermissionsInterceptor.instance);
-        Aop.context().beanAroundAdd(AuthRoles.class, RolesInterceptor.instance);
-        Aop.context().beanAroundAdd(AuthLogined.class, LoginedInterceptor.instance);
+        Aop.context().beanAroundAdd(AuthPermissions.class, PermissionsValidator.instance);
+        Aop.context().beanAroundAdd(AuthRoles.class, RolesValidator.instance);
+        Aop.context().beanAroundAdd(AuthLogined.class, LoginedValidator.instance);
     }
 }

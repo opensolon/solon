@@ -14,7 +14,7 @@ import java.lang.annotation.Annotation;
  * @author noear
  * @since 1.3
  */
-public abstract class AbstractInterceptor<T extends Annotation> implements Interceptor {
+public abstract class AbstractValidator<T extends Annotation> implements Interceptor {
 
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {

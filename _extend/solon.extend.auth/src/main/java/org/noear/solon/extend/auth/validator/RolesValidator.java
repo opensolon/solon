@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory;
  * @author noear
  * @since 1.3
  */
-public class RolesInterceptor extends AbstractInterceptor<AuthRoles> {
-    private static final Logger log = LoggerFactory.getLogger(RolesInterceptor.class);
-    public static final RolesInterceptor instance = new RolesInterceptor();
+public class RolesValidator extends AbstractValidator<AuthRoles> {
+    private static final Logger log = LoggerFactory.getLogger(RolesValidator.class);
+    public static final RolesValidator instance = new RolesValidator();
 
 
     @Override

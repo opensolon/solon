@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory;
  * @author noear
  * @since 1.3
  */
-public class PermissionsInterceptor extends AbstractInterceptor<AuthPermissions> {
-    private static final Logger log = LoggerFactory.getLogger(PermissionsInterceptor.class);
-    public static final PermissionsInterceptor instance = new PermissionsInterceptor();
+public class PermissionsValidator extends AbstractValidator<AuthPermissions> {
+    private static final Logger log = LoggerFactory.getLogger(PermissionsValidator.class);
+    public static final PermissionsValidator instance = new PermissionsValidator();
 
     @Override
     public Class<AuthPermissions> type() {

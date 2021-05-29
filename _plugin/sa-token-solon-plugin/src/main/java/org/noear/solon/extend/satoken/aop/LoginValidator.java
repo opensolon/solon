@@ -1,13 +1,13 @@
-package org.noear.solon.extend.satoken.validator;
+package org.noear.solon.extend.satoken.aop;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.extend.auth.validator.AbstractInterceptor;
+import org.noear.solon.extend.auth.validator.AbstractValidator;
 
 /**
  * @author noear 2021/5/30 created
  */
-public class LoginInterceptor extends AbstractInterceptor<SaCheckLogin> {
+public class LoginValidator extends AbstractValidator<SaCheckLogin> {
     @Override
     public Class<SaCheckLogin> type() {
         return SaCheckLogin.class;
