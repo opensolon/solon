@@ -16,7 +16,7 @@ public class AuthInterceptorLogined implements AuthInterceptor {
         test(ctx);
     }
 
-    public boolean test(Context ctx) throws Throwable {
+    protected boolean test(Context ctx) throws Throwable {
         if (AuthUtil.adapter().authProcessor() == null) {
             return true;
         }
