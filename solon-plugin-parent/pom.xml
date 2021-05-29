@@ -234,6 +234,7 @@
 
         <module>../_plugin/shiro-solon-plugin</module>
         <module>../_plugin/sureness-solon-plugin</module>
+        <module>../_plugin/sa-token-solon-plugin</module>
 
         <module>../_plugin/captcha-solon-plugin</module>
 
