@@ -21,17 +21,17 @@ public class AuthInterceptorLogined implements AuthInterceptor {
             return true;
         }
 
-        String url = ctx.pathNew().toLowerCase();
+        String path = ctx.pathNew().toLowerCase();
 
         //不需要验证
-        if (url.equals(AuthUtil.adapter().loginUrl()) ||
-                url.equals(AuthUtil.adapter().loginProcessingUrl()) ||
-                url.equals(AuthUtil.adapter().logoutUrl())) {
+        if (path.equals(AuthUtil.adapter().loginUrl()) ||
+                path.equals(AuthUtil.adapter().loginProcessingUrl()) ||
+                path.equals(AuthUtil.adapter().logoutUrl())) {
             return true;
         }
 
         //不需要验证
-        if (AuthUtil.adapter().authPathMatchers().test(ctx, url) == false) {
+        if (AuthUtil.adapter().authPathMatchers().test(ctx, path) == false) {
             return true;
         }
 
