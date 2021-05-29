@@ -1,7 +1,7 @@
 package org.noear.solon.extend.auth.validator;
 
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.extend.auth.AuthAdapter;
+import org.noear.solon.extend.auth.AuthUtil;
 import org.noear.solon.extend.auth.annotation.AuthPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ public class PermissionsInterceptor extends AbstractInterceptor<AuthPermissions>
     @Override
     public Result validate(AuthPermissions anno) {
         try {
-            if (AuthAdapter.global().authProcessor().verifyPermissions(anno.value(), anno.logical())) {
+            if (AuthUtil.adapter().authProcessor().verifyPermissions(anno.value(), anno.logical())) {
                 return Result.succeed();
             } else {
                 return Result.failure(401);

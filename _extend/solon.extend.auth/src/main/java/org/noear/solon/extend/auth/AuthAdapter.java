@@ -14,19 +14,6 @@ import java.util.function.BiPredicate;
  * @since 1.4
  */
 public class AuthAdapter {
-    private static AuthAdapter global = new AuthAdapter();
-
-    public static AuthAdapter global() {
-        return global;
-    }
-
-    public static void globalSet(AuthAdapter global) {
-        if (global != null) {
-            AuthAdapter.global = global;
-        }
-    }
-
-
     private String loginUrl;
     private String loginProcessingUrl;
     private String usernameParam;

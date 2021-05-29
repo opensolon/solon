@@ -5,8 +5,8 @@ import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.ext.DataThrowable;
-import org.noear.solon.extend.auth.AuthAdapter;
 import org.noear.solon.extend.auth.AuthException;
+import org.noear.solon.extend.auth.AuthUtil;
 
 import java.lang.annotation.Annotation;
 
@@ -25,7 +25,7 @@ public abstract class AbstractInterceptor<T extends Annotation> implements Inter
             if (result.getCode() != Result.SUCCEED_CODE) {
                 Context ctx = Context.current();
                 if (ctx != null) {
-                    AuthAdapter.global().authOnFailure().accept(ctx, result);
+                    AuthUtil.adapter().authOnFailure().accept(ctx, result);
                     ctx.setHandled(true);
                     ctx.setRendered(true);
                     throw new DataThrowable();

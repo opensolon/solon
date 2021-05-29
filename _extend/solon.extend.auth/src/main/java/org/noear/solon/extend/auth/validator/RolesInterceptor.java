@@ -1,7 +1,7 @@
 package org.noear.solon.extend.auth.validator;
 
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.extend.auth.AuthAdapter;
+import org.noear.solon.extend.auth.AuthUtil;
 import org.noear.solon.extend.auth.annotation.AuthRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +23,7 @@ public class RolesInterceptor extends AbstractInterceptor<AuthRoles> {
     @Override
     public Result validate(AuthRoles anno) {
         try {
-            if (AuthAdapter.global().authProcessor().verifyRoles(anno.value(), anno.logical())) {
+            if (AuthUtil.adapter().authProcessor().verifyRoles(anno.value(), anno.logical())) {
                 return Result.succeed();
             } else {
                 return Result.failure(401);
