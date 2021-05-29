@@ -21,7 +21,7 @@ public class AuthAdapter {
     private String logoutUrl;
     private BiConsumer<Context, Result> authOnFailure = (ctx, rst) -> {
     };
-    private BiPredicate<Context, String> authUrlMatchers = (ctx, url) -> true;
+    private BiPredicate<Context, String> authPathMatchers = (ctx, url) -> true;
     private AuthProcessor authProcessor;
 
     public String loginUrl() {
@@ -94,15 +94,15 @@ public class AuthAdapter {
         return this;
     }
 
-    public BiPredicate<Context, String> authUrlMatchers() {
-        return authUrlMatchers;
+    public BiPredicate<Context, String> authPathMatchers() {
+        return authPathMatchers;
     }
 
     /**
      * 认证Url匹配
      */
-    public AuthAdapter authUrlMatchers(BiPredicate<Context, String> tester) {
-        authUrlMatchers = tester;
+    public AuthAdapter authPathMatchers(BiPredicate<Context, String> matchers) {
+        authPathMatchers = matchers;
         return this;
     }
 

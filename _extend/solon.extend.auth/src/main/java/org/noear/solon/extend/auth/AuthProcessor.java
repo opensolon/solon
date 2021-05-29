@@ -18,7 +18,7 @@ public interface AuthProcessor {
     /**
      * 验证路径（一般使用路径验证）
      */
-    boolean verifyUrl(String url, String method);
+    boolean verifyPath(String path, String method);
 
     /**
      * 验证特定权限（有特殊情况用权限验证）

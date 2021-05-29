@@ -31,7 +31,7 @@ public class AuthInterceptorLogined implements AuthInterceptor {
         }
 
         //不需要验证
-        if (AuthUtil.adapter().authUrlMatchers().test(ctx, url) == false) {
+        if (AuthUtil.adapter().authPathMatchers().test(ctx, url) == false) {
             return true;
         }
 
