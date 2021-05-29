@@ -1,13 +1,11 @@
 package org.noear.solon.extend.auth;
 
+import org.noear.solon.Solon;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.Result;
 
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 /**
  * 认证适配器（需要用户对接）
@@ -121,6 +119,14 @@ public class AuthAdapter {
         return this;
     }
 
+    /**
+     * 认证拦截器
+     * */
+    public AuthAdapter authInterceptor(AuthInterceptor interceptor) {
+        Solon.global().before(interceptor);
+        return this;
+    }
+
 
     public AuthProcessor authProcessor() {
         return authProcessor;
@@ -128,7 +134,7 @@ public class AuthAdapter {
 
 
     /**
-     * 认证处理器匹配
+     * 认证处理器
      */
     public AuthAdapter authProcessor(AuthProcessor processor) {
         authProcessor = processor;

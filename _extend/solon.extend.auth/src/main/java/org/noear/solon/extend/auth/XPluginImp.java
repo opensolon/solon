@@ -15,9 +15,6 @@ import org.noear.solon.extend.auth.validator.RolesInterceptor;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        //添加前置拦截器
-        app.before(Aop.get(AuthInterceptor.class));
-
         Aop.context().beanAroundAdd(AuthPermissions.class, PermissionsInterceptor.instance);
         Aop.context().beanAroundAdd(AuthRoles.class, RolesInterceptor.instance);
     }
