@@ -7,9 +7,10 @@ import org.noear.solon.core.Aop;
  * @since 1.4
  */
 public class AuthUtil {
-    private static AuthAdapter adapter;
+    private static AuthAdapter adapter = new AuthAdapter();
 
     static {
+        //如果容器里有，优先用容器的
         Aop.getAsyn(AuthAdapter.class, bw -> {
             adapter = bw.raw();
         });

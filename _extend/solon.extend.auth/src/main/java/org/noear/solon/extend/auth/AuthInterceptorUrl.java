@@ -21,10 +21,10 @@ public class AuthInterceptorUrl extends AuthInterceptorLogined {
         String url = ctx.pathNew().toLowerCase();
 
         //验证地址权限
-        if (AuthAdapter.global().authProcessor().verifyUrl(url, ctx.method()) == false) {
+        if (AuthUtil.adapter().authProcessor().verifyUrl(url, ctx.method()) == false) {
             //验证失败的
             Result result = Result.failure(403, "Sorry, no permission!");
-            AuthAdapter.global().authOnFailure().accept(ctx, result);
+            AuthUtil.adapter().authOnFailure().accept(ctx, result);
         }
     }
 }
