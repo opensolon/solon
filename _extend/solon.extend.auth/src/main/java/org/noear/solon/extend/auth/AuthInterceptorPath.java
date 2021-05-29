@@ -10,7 +10,7 @@ import org.noear.solon.core.handle.Result;
  * @author noear
  * @since 1.4
  */
-public class AuthInterceptorUrl extends AuthInterceptorLogined {
+public class AuthInterceptorPath extends AuthInterceptorLogined {
 
     @Override
     public void handle(Context ctx) throws Throwable {
