@@ -1,8 +1,9 @@
 package org.noear.solon.core.util;
 
 import org.noear.solon.core.handle.Action;
-import org.noear.solon.core.route.RoutingTable;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,10 +16,27 @@ import java.util.regex.Pattern;
  * @since 1.0
  * */
 public class PathAnalyzer {
+    private static Map<String,PathAnalyzer> cached = new LinkedHashMap<>();
+    public static PathAnalyzer get(String expr) {
+        PathAnalyzer pa = cached.get(expr);
+        if (pa == null) {
+            synchronized (expr.intern()) {
+                pa = cached.get(expr);
+                if (pa == null) {
+                    pa = new PathAnalyzer(expr);
+                    cached.put(expr, pa);
+                }
+            }
+        }
+
+        return pa;
+    }
+
+
     private Pattern pattern;
 
-    public PathAnalyzer(String path){
-        pattern = Pattern.compile(expCompile(path), Pattern.CASE_INSENSITIVE);
+    public PathAnalyzer(String expr){
+        pattern = Pattern.compile(exprCompile(expr), Pattern.CASE_INSENSITIVE);
     }
 
     /**
@@ -38,9 +56,9 @@ public class PathAnalyzer {
     /**
      * 将路径表达式编译为正则表达式
      * */
-    private static String expCompile(String path) {
+    private static String exprCompile(String expr) {
         //替换特殊符号
-        String p = path;
+        String p = expr;
 
         p = p.replace(".", "\\.");
         p = p.replace("$", "\\$");
