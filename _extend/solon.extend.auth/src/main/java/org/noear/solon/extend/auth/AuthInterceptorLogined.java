@@ -21,7 +21,7 @@ public class AuthInterceptorLogined implements AuthInterceptor {
     protected boolean test(Context ctx, String path) throws Throwable {
 
         //不需要验证
-        if (path.equals(AuthUtil.loginUrl())) {
+        if (path.equals(AuthUtil.adapter().loginUrl())) {
             return true;
         }
 
@@ -33,11 +33,11 @@ public class AuthInterceptorLogined implements AuthInterceptor {
         //验证登录情况
         if (AuthUtil.adapter().authProcessor().verifyLogined() == false) {
             //未登录的，跳到登录页
-            if (AuthUtil.loginUrl() == null) {
+            if (AuthUtil.adapter().loginUrl() == null) {
                 ctx.statusSet(401);
                 ctx.setHandled(true);
             } else {
-                ctx.redirect(AuthUtil.loginUrl());
+                ctx.redirect(AuthUtil.adapter().loginUrl());
                 ctx.setHandled(true);
             }
             return true;
