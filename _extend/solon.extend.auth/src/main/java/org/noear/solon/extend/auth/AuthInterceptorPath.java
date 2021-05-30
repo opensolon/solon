@@ -3,7 +3,6 @@ package org.noear.solon.extend.auth;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 
-
 /**
  * 认证拦截器
  *
@@ -14,11 +13,11 @@ public class AuthInterceptorPath extends AuthInterceptorLogined {
 
     @Override
     public void handle(Context ctx) throws Throwable {
-        if (test(ctx)) {
+        String path = ctx.pathNew().toLowerCase();
+
+        if (test(ctx, path)) {
             return;
         }
-
-        String path = ctx.pathNew().toLowerCase();
 
         //验证地址权限
         if (AuthUtil.adapter().authProcessor().verifyPath(path, ctx.method()) == false) {

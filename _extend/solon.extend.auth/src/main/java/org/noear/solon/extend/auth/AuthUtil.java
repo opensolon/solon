@@ -22,6 +22,14 @@ public class AuthUtil {
     }
 
     /**
+     * 登录地址
+     * */
+    public static String loginUrl(){
+        return adapter().loginUrl();
+    }
+
+
+    /**
      * 验证是否已登录
      * */
     public static boolean verifyLogined(){

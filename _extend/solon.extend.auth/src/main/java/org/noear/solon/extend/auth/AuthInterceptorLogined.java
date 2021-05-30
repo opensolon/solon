@@ -13,18 +13,15 @@ public class AuthInterceptorLogined implements AuthInterceptor {
 
     @Override
     public void handle(Context ctx) throws Throwable {
-        test(ctx);
-    }
-
-    protected boolean test(Context ctx) throws Throwable {
-        if (AuthUtil.adapter().authProcessor() == null) {
-            return true;
-        }
-
         String path = ctx.pathNew().toLowerCase();
 
+        test(ctx, path);
+    }
+
+    protected boolean test(Context ctx, String path) throws Throwable {
+
         //不需要验证
-        if (path.equals(AuthUtil.adapter().loginUrl())) {
+        if (path.equals(AuthUtil.loginUrl())) {
             return true;
         }
 
@@ -36,8 +33,13 @@ public class AuthInterceptorLogined implements AuthInterceptor {
         //验证登录情况
         if (AuthUtil.adapter().authProcessor().verifyLogined() == false) {
             //未登录的，跳到登录页
-            ctx.redirect(AuthUtil.adapter().loginUrl());
-            ctx.setHandled(true);
+            if (AuthUtil.loginUrl() == null) {
+                ctx.statusSet(401);
+                ctx.setHandled(true);
+            } else {
+                ctx.redirect(AuthUtil.loginUrl());
+                ctx.setHandled(true);
+            }
             return true;
         }
 
