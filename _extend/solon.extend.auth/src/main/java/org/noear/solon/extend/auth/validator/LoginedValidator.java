@@ -26,7 +26,7 @@ public class LoginedValidator extends AbstractValidator<AuthLogined> {
             if (AuthUtil.adapter().authProcessor().verifyLogined()) {
                 return Result.succeed();
             } else {
-                return Result.failure(401);
+                return Result.failure(401,"Unauthorized");
             }
         } catch (Exception e) {
             log.error(e.getMessage());

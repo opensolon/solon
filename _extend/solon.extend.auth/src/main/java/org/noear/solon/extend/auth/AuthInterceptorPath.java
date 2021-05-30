@@ -23,7 +23,7 @@ public class AuthInterceptorPath extends AuthInterceptorLogined {
         //验证地址权限
         if (AuthUtil.adapter().authProcessor().verifyPath(path, ctx.method()) == false) {
             //验证失败的
-            Result result = Result.failure(403, "Sorry, no permission!");
+            Result result = Result.failure(403, "Forbidden");
             AuthUtil.adapter().authOnFailure().accept(ctx, result);
         }
     }

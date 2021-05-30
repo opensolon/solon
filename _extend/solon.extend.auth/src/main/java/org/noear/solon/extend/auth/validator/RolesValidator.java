@@ -26,7 +26,7 @@ public class RolesValidator extends AbstractValidator<AuthRoles> {
             if (AuthUtil.adapter().authProcessor().verifyRoles(anno.value(), anno.logical())) {
                 return Result.succeed();
             } else {
-                return Result.failure(401);
+                return Result.failure(403, "Forbidden");
             }
         } catch (Exception e) {
             log.error(e.getMessage());
