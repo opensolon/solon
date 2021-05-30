@@ -128,14 +128,18 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     public void handle(Context c) throws Throwable {
         try {
             filterChain.doFilter(c);
-        } catch (Throwable ex) {
-            c.errors = ex;
+        } catch (Throwable e) {
+            c.errors = e;
 
             //1.推送事件（先于渲染，可做自定义渲染）
-            EventBus.push(ex);
+            EventBus.push(e);
 
             //2.渲染
-            render(ex, c);
+            if (c.result == null) {
+                render(e, c);
+            } else {
+                render(c.result, c);
+            }
         }
     }
 
@@ -215,7 +219,11 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
                 EventBus.push(e);
 
                 //2.渲染
-                render(e, c);
+                if (c.result == null) {
+                    render(e, c);
+                } else {
+                    render(c.result, c);
+                }
             }
         }
     }

@@ -149,8 +149,8 @@ public class Action extends HandlerAide implements Handler {
     /**
      * 调用
      */
-    public void invoke(Context x, Object obj) throws Throwable {
-        x.remotingSet(mRemoting);
+    public void invoke(Context c, Object obj) throws Throwable {
+        c.remotingSet(mRemoting);
 
         try {
             //预加载控制器，确保所有的处理者可以都可以获取控制器
@@ -160,25 +160,29 @@ public class Action extends HandlerAide implements Handler {
 
             if (mIsMain) {
                 //传递控制器实例
-                x.attrSet("controller", obj);
-                x.attrSet("action", this);
+                c.attrSet("controller", obj);
+                c.attrSet("action", this);
             }
 
-            invoke0(x, obj);
-        } catch (Throwable ex) {
-            ex = Utils.throwableUnwrap(ex);
-            x.errors = ex;
+            invoke0(c, obj);
+        } catch (Throwable e) {
+            e = Utils.throwableUnwrap(e);
+            c.errors = e;
 
             //1.推送事件（先于渲染，可做自定义渲染）
-            EventBus.push(ex);
+            EventBus.push(e);
 
             //2.渲染
-            renderDo(ex, x);
+            if (c.result == null) {
+                renderDo(e, c);
+            } else {
+                renderDo(c.result, c);
+            }
         }
     }
 
 
-    protected void invoke0(Context x, Object obj) throws Throwable {
+    protected void invoke0(Context c, Object obj) throws Throwable {
 
         /**
          * 1.确保所有处理者，能拿到控制器
@@ -188,47 +192,47 @@ public class Action extends HandlerAide implements Handler {
 
         //前置处理（最多一次渲染）
         if (mIsMain) {
-            handleDo(x, () -> {
+            handleDo(c, () -> {
                 if (bAide != null) {
                     for (Handler h : bAide.befores) {
-                        h.handle(x);
+                        h.handle(c);
                     }
                 }
 
                 for (Handler h : befores) {
-                    h.handle(x);
+                    h.handle(c);
                 }
             });
         }
 
 
         //主体处理（最多一次渲染）
-        if (x.getHandled() == false) {
-            handleDo(x, () -> {
+        if (c.getHandled() == false) {
+            handleDo(c, () -> {
                 //获取path var
                 if (pathAnalyzer != null) {
-                    Matcher pm = pathAnalyzer.matcher(x.path());
+                    Matcher pm = pathAnalyzer.matcher(c.path());
                     if (pm.find()) {
                         for (int i = 0, len = pathKeys.size(); i < len; i++) {
-                            x.paramSet(pathKeys.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
+                            c.paramSet(pathKeys.get(i), pm.group(i + 1));//不采用group name,可解决_的问题
                         }
                     }
                 }
 
-                Object tmp = callDo(x, obj, mWrap);
+                Object tmp = callDo(c, obj, mWrap);
 
                 //如果是主处理（不支持非主控的返回值；有可能是拦截器）
                 if (mIsMain) {
 
                     //记录返回值（后续不一定会再记录）
-                    x.result = tmp;
+                    c.result = tmp;
 
                     //设定输出产品（放在这个位置正好）
                     if (Utils.isEmpty(mProduces) == false) {
-                        x.contentType(mProduces);
+                        c.contentType(mProduces);
                     }
 
-                    renderDo(tmp, x);
+                    renderDo(tmp, c);
                 }
             });
         }
@@ -237,12 +241,12 @@ public class Action extends HandlerAide implements Handler {
         if (mIsMain) {
             if (bAide != null) {
                 for (Handler h : bAide.afters) {
-                    h.handle(x);
+                    h.handle(c);
                 }
             }
 
             for (Handler h : afters) {
-                h.handle(x);
+                h.handle(c);
             }
         }
     }
@@ -270,7 +274,11 @@ public class Action extends HandlerAide implements Handler {
                 EventBus.push(e);
 
                 //2.渲染
-                renderDo(e, c);
+                if (c.result == null) {
+                    renderDo(e, c);
+                } else {
+                    renderDo(c.result, c);
+                }
             }
         }
     }
@@ -298,7 +306,7 @@ public class Action extends HandlerAide implements Handler {
     /**
      * 执行渲染（便于重写）
      */
-    protected void renderDo(Object result, Context x) throws Throwable {
+    protected void renderDo(Object obj, Context x) throws Throwable {
         //
         //可以通过before关掉render
         //
@@ -306,7 +314,7 @@ public class Action extends HandlerAide implements Handler {
             return;
         }
 
-        x.result = result;
+        x.result = obj;
 
         if (bRender == null) {
             //
@@ -314,23 +322,23 @@ public class Action extends HandlerAide implements Handler {
             //
             x.setRendered(true);
 
-            if (result instanceof Throwable) {
+            if (obj instanceof Throwable) {
                 if (x.remoting()) {
-                    x.render(result);
+                    x.render(obj);
                 } else {
                     if (x.status() < 400) {
                         x.statusSet(500);
                     }
 
                     if (Solon.cfg().isDebugMode()) {
-                        x.output(Utils.getFullStackTrace(((Throwable) result)));
+                        x.output(Utils.getFullStackTrace(((Throwable) obj)));
                     }
                 }
             } else {
-                x.render(result);
+                x.render(obj);
             }
         } else {
-            bRender.render(result, x);
+            bRender.render(obj, x);
         }
     }
 }
