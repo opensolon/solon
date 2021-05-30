@@ -15,10 +15,6 @@ import java.util.function.BiPredicate;
  */
 public class AuthAdapter {
     private String loginUrl;
-    private String loginProcessingUrl;
-    private String usernameParam;
-    private String passwordParam;
-    private String logoutUrl;
     private BiConsumer<Context, Result> authOnFailure = (ctx, rst) -> {
     };
     private BiPredicate<Context, String> authPathMatchers = (ctx, url) -> true;
@@ -36,59 +32,13 @@ public class AuthAdapter {
         return this;
     }
 
-
-    public String loginProcessingUrl() {
-        return loginProcessingUrl;
-    }
-
-    /**
-     * 登录处理Url
-     */
-    public AuthAdapter loginProcessingUrl(String url) {
-        loginProcessingUrl = url;
-        return this;
-    }
-
-    public String usernameParam() {
-        return usernameParam;
-    }
-
-    /**
-     * 用户名参数名
-     */
-    public AuthAdapter usernameParam(String name) {
-        usernameParam = name;
-        return this;
-    }
-
-    public String passwordParam() {
-        return passwordParam;
-    }
-
-    /**
-     * 密码参数名
-     */
-    public AuthAdapter passwordParam(String name) {
-        passwordParam = name;
-        return this;
-    }
-
-    public String logoutUrl() {
-        return logoutUrl;
-    }
-
-    /**
-     * 退出Url
-     */
-    public AuthAdapter logoutUrl(String url) {
-        logoutUrl = url;
-        return this;
-    }
-
     public BiConsumer<Context, Result> authOnFailure() {
         return authOnFailure;
     }
 
+    /**
+     * 验证出错处理
+     * */
     public AuthAdapter authOnFailure(BiConsumer<Context, Result> handler) {
         authOnFailure = handler;
         return this;

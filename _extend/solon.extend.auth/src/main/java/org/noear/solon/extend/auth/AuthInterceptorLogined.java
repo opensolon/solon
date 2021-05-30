@@ -24,9 +24,7 @@ public class AuthInterceptorLogined implements AuthInterceptor {
         String path = ctx.pathNew().toLowerCase();
 
         //不需要验证
-        if (path.equals(AuthUtil.adapter().loginUrl()) ||
-                path.equals(AuthUtil.adapter().loginProcessingUrl()) ||
-                path.equals(AuthUtil.adapter().logoutUrl())) {
+        if (path.equals(AuthUtil.adapter().loginUrl())) {
             return true;
         }
 
