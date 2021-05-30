@@ -348,9 +348,9 @@ public class AopContext extends BeanContainer {
         if (annS.length > 0) {
             try {
                 for (Annotation a : annS) {
-                    BeanBuilder creator = beanBuilders.get(a.annotationType());
-                    if (creator != null) {
-                        consumer.accept(creator, a);
+                    BeanBuilder builder = beanBuilders.get(a.annotationType());
+                    if (builder != null) {
+                        consumer.accept(builder, a);
                     }
                 }
             } catch (Throwable ex) {
