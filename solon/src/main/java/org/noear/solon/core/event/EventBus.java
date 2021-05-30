@@ -43,7 +43,7 @@ public final class EventBus {
             //异常分发
             push1(sThrow, event);
 
-            if (Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode()) {
+            if (Solon.cfg().isDebugMode()) {
                 ((Throwable) event).printStackTrace();
             }
         } else {
