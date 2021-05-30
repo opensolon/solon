@@ -544,6 +544,7 @@ public abstract class Context {
     @Note("渲染数据")
     public final void render(Object obj) throws Throwable {
         //ModelAndView or Data
+        setRendered(true);
         RenderManager.global.render(obj, this);
     }
 
