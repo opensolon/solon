@@ -1,13 +1,13 @@
-package org.noear.solon.extend.satoken.integration;
+package cn.dev33.satoken.solon.integration;
 
 import cn.dev33.satoken.context.SaTokenContext;
 import cn.dev33.satoken.context.model.SaRequest;
 import cn.dev33.satoken.context.model.SaResponse;
 import cn.dev33.satoken.context.model.SaStorage;
 import org.noear.solon.core.util.PathAnalyzer;
-import org.noear.solon.extend.satoken.model.SaRequestForSolon;
-import org.noear.solon.extend.satoken.model.SaResponseForSolon;
-import org.noear.solon.extend.satoken.model.SaStorageForSolon;
+import cn.dev33.satoken.solon.model.SaRequestForSolon;
+import cn.dev33.satoken.solon.model.SaResponseForSolon;
+import cn.dev33.satoken.solon.model.SaStorageForSolon;
 
 /**
  * @author noear

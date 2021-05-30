@@ -1,4 +1,4 @@
-package org.noear.solon.extend.satoken.aop;
+package cn.dev33.satoken.solon.integration;
 
 import cn.dev33.satoken.SaManager;
 import org.noear.solon.core.aspect.Interceptor;
@@ -8,8 +8,8 @@ import org.noear.solon.core.aspect.Invocation;
  * @author noear
  * @since 1.4
  */
-public class SaCheckAspect implements Interceptor {
-    public static final SaCheckAspect instance = new SaCheckAspect();
+public class SaCheckAspectForSolon implements Interceptor {
+    public static final SaCheckAspectForSolon instance = new SaCheckAspectForSolon();
 
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {

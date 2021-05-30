@@ -1,4 +1,4 @@
-package org.noear.solon.extend.satoken.model;
+package cn.dev33.satoken.solon.model;
 
 import cn.dev33.satoken.context.model.SaRequest;
 import org.noear.solon.core.handle.Context;

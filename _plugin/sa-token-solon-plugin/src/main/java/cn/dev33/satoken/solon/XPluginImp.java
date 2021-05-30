@@ -1,4 +1,4 @@
-package org.noear.solon.extend.satoken;
+package cn.dev33.satoken.solon;
 
 import cn.dev33.satoken.SaManager;
 import cn.dev33.satoken.action.SaTokenAction;
@@ -13,8 +13,8 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.extend.satoken.aop.SaCheckAspect;
-import org.noear.solon.extend.satoken.integration.SaTokenContextForSolon;
+import cn.dev33.satoken.solon.integration.SaCheckAspectForSolon;
+import cn.dev33.satoken.solon.integration.SaTokenContextForSolon;
 
 /**
  * @author noear
@@ -23,9 +23,9 @@ import org.noear.solon.extend.satoken.integration.SaTokenContextForSolon;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        Aop.context().beanAroundAdd(SaCheckPermission.class, SaCheckAspect.instance);
-        Aop.context().beanAroundAdd(SaCheckRole.class, SaCheckAspect.instance);
-        Aop.context().beanAroundAdd(SaCheckLogin.class, SaCheckAspect.instance);
+        Aop.context().beanAroundAdd(SaCheckPermission.class, SaCheckAspectForSolon.instance);
+        Aop.context().beanAroundAdd(SaCheckRole.class, SaCheckAspectForSolon.instance);
+        Aop.context().beanAroundAdd(SaCheckLogin.class, SaCheckAspectForSolon.instance);
 
         //集成初始化
 
