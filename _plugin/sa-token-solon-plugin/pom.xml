@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.auth</artifactId>
+            <artifactId>solon</artifactId>
         </dependency>
 
         <dependency>
@@ -25,12 +25,5 @@
             <artifactId>sa-token-core</artifactId>
             <version>1.19.0</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 </project>
