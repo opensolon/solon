@@ -39,7 +39,7 @@ public class TestApp {
 
 
         //构建方式
-        SolonApp app = new SolonBuilder().onException(e->{
+        SolonApp app = new SolonBuilder().onError(e->{
             e.printStackTrace();
         }).onAppInitEnd(e->{
             System.out.println("1.初始化完成");
