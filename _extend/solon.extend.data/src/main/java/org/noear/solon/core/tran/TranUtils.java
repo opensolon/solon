@@ -2,7 +2,6 @@ package org.noear.solon.core.tran;
 
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.Bridge;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

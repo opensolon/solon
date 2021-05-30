@@ -3,7 +3,6 @@ package org.noear.solon.core;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.handle.*;
-import org.noear.solon.core.tran.TranExecutor;
 
 import java.util.*;
 
