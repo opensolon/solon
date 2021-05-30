@@ -306,39 +306,39 @@ public class Action extends HandlerAide implements Handler {
     /**
      * 执行渲染（便于重写）
      */
-    protected void renderDo(Object obj, Context x) throws Throwable {
+    protected void renderDo(Object obj, Context c) throws Throwable {
         //
         //可以通过before关掉render
         //
-        if (x.getRendered()) {
+        if (c.getRendered()) {
             return;
         }
 
-        x.result = obj;
+        c.result = obj;
 
         if (bRender == null) {
             //
             //最多一次渲染
             //
-            x.setRendered(true);
+            c.setRendered(true);
 
             if (obj instanceof Throwable) {
-                if (x.remoting()) {
-                    x.render(obj);
+                if (c.remoting()) {
+                    c.render(obj);
                 } else {
-                    if (x.status() < 400) {
-                        x.statusSet(500);
+                    if (c.status() < 400) {
+                        c.statusSet(500);
                     }
 
                     if (Solon.cfg().isDebugMode()) {
-                        x.output(Utils.getFullStackTrace(((Throwable) obj)));
+                        c.output(Utils.getFullStackTrace(((Throwable) obj)));
                     }
                 }
             } else {
-                x.render(obj);
+                c.render(obj);
             }
         } else {
-            bRender.render(obj, x);
+            bRender.render(obj, c);
         }
     }
 }
