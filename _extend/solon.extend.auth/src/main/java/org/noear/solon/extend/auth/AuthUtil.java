@@ -39,27 +39,35 @@ public class AuthUtil {
      * 验证是否有权限授权
      * */
     public static boolean verifyPermissions(String... permissions) {
-        return adapter().authProcessor().verifyPermissions(permissions, Logical.OR);
+        return verifyPermissions(permissions, Logical.OR);
     }
 
     /**
      * 验证是否有权限授权(同时满足多个权限)
      * */
     public static boolean verifyPermissionsAnd(String... permissions) {
-        return adapter().authProcessor().verifyPermissions(permissions, Logical.AND);
+        return verifyPermissions(permissions, Logical.AND);
+    }
+
+    public static boolean verifyPermissions(String[] permissions, Logical logical) {
+        return adapter().authProcessor().verifyPermissions(permissions, logical);
     }
 
     /**
      * 验证是否有角色授权
      * */
     public static boolean verifyRoles(String... roles) {
-        return adapter().authProcessor().verifyRoles(roles, Logical.OR);
+        return verifyRoles(roles, Logical.OR);
     }
 
     /**
      * 验证是否有角色授权(同时满足多个角色)
      * */
     public static boolean verifyRolesAnd(String... roles) {
-        return adapter().authProcessor().verifyRoles(roles, Logical.AND);
+        return verifyRoles(roles, Logical.AND);
+    }
+
+    public static boolean verifyRoles(String[] roles, Logical logical) {
+        return adapter().authProcessor().verifyRoles(roles, logical);
     }
 }

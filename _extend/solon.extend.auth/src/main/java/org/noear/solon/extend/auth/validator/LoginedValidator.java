@@ -23,7 +23,7 @@ public class LoginedValidator extends AbstractValidator<AuthLogined> {
     @Override
     public Result validate(AuthLogined anno) {
         try {
-            if (AuthUtil.adapter().authProcessor().verifyLogined()) {
+            if (AuthUtil.verifyLogined()) {
                 return Result.succeed();
             } else {
                 return Result.failure(401,"Unauthorized");

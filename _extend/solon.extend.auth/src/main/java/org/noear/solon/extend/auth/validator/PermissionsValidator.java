@@ -22,7 +22,7 @@ public class PermissionsValidator extends AbstractValidator<AuthPermissions> {
     @Override
     public Result validate(AuthPermissions anno) {
         try {
-            if (AuthUtil.adapter().authProcessor().verifyPermissions(anno.value(), anno.logical())) {
+            if (AuthUtil.verifyPermissions(anno.value(), anno.logical())) {
                 return Result.succeed();
             } else {
                 return Result.failure(403, "Forbidden");

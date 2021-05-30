@@ -23,7 +23,7 @@ public class RolesValidator extends AbstractValidator<AuthRoles> {
     @Override
     public Result validate(AuthRoles anno) {
         try {
-            if (AuthUtil.adapter().authProcessor().verifyRoles(anno.value(), anno.logical())) {
+            if (AuthUtil.verifyRoles(anno.value(), anno.logical())) {
                 return Result.succeed();
             } else {
                 return Result.failure(403, "Forbidden");
