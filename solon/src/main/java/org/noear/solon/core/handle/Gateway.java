@@ -131,8 +131,11 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         } catch (Throwable ex) {
             c.errors = ex;
 
-            render(ex, c);
+            //1.推送事件（先于渲染，可做自定义渲染）
             EventBus.push(ex);
+
+            //2.渲染
+            render(ex, c);
         }
     }
 
@@ -208,8 +211,11 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             } else {
                 c.errors = e;
 
-                render(e, c);
+                //1.推送事件（先于渲染，可做自定义渲染）
                 EventBus.push(e);
+
+                //2.渲染
+                render(e, c);
             }
         }
     }
