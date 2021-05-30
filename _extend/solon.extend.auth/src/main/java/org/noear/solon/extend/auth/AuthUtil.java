@@ -21,23 +21,45 @@ public class AuthUtil {
         return adapter;
     }
 
-    public boolean hasPath(String path, String method) {
+    /**
+     * 验证是否已登录
+     * */
+    public static boolean verifyLogined(){
+        return adapter().authProcessor().verifyLogined();
+    }
+
+    /**
+     * 验证是否有路径授权
+     * */
+    public static boolean verifyPath(String path, String method) {
         return adapter().authProcessor().verifyPath(path, method);
     }
 
-    public boolean hasPermissionsOr(String... permissions) {
+    /**
+     * 验证是否有权限授权
+     * */
+    public static boolean verifyPermissions(String... permissions) {
         return adapter().authProcessor().verifyPermissions(permissions, Logical.OR);
     }
 
-    public boolean hasPermissionsAnd(String... permissions) {
+    /**
+     * 验证是否有权限授权(同时满足多个权限)
+     * */
+    public static boolean verifyPermissionsAnd(String... permissions) {
         return adapter().authProcessor().verifyPermissions(permissions, Logical.AND);
     }
 
-    public boolean hasRolesOr(String... roles) {
+    /**
+     * 验证是否有角色授权
+     * */
+    public static boolean verifyRoles(String... roles) {
         return adapter().authProcessor().verifyRoles(roles, Logical.OR);
     }
 
-    public boolean hasRolesAnd(String... roles) {
+    /**
+     * 验证是否有角色授权(同时满足多个角色)
+     * */
+    public static boolean verifyRolesAnd(String... roles) {
         return adapter().authProcessor().verifyRoles(roles, Logical.AND);
     }
 }
