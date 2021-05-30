@@ -12,7 +12,6 @@ import org.noear.solon.core.*;
 import org.noear.solon.core.message.Listener;
 
 import java.lang.annotation.Annotation;
-import java.lang.management.ManagementFactory;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
