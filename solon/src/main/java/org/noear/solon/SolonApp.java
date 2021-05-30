@@ -538,10 +538,15 @@ public class SolonApp implements HandlerSlots {
         return this;
     }
 
+    @Deprecated
+    public SolonApp onError(EventListener<Throwable> handler) {
+        return onException(handler);
+    }
+
     /**
      * 订阅异常事件
      * */
-    public SolonApp onError(EventListener<Throwable> handler) {
+    public SolonApp onException(EventListener<Throwable> handler) {
         return onEvent(Throwable.class, handler);
     }
 

@@ -21,7 +21,7 @@ public class SolonBuilder {
     /**
      * 订阅异常事件
      */
-    public SolonBuilder onError(EventListener<Throwable> handler) {
+    public SolonBuilder onException(EventListener<Throwable> handler) {
         return onEvent(Throwable.class, handler);
     }
 
