@@ -169,8 +169,11 @@ public class Action extends HandlerAide implements Handler {
             ex = Utils.throwableUnwrap(ex);
             x.errors = ex;
 
-            renderDo(ex, x);
+            //1.推送事件（先于渲染，可做自定义渲染）
             EventBus.push(ex);
+
+            //2.渲染
+            renderDo(ex, x);
         }
     }
 
@@ -263,8 +266,11 @@ public class Action extends HandlerAide implements Handler {
             } else {
                 c.errors = e;
 
-                renderDo(e, c);
+                //1.推送事件（先于渲染，可做自定义渲染）
                 EventBus.push(e);
+
+                //2.渲染
+                renderDo(e, c);
             }
         }
     }
