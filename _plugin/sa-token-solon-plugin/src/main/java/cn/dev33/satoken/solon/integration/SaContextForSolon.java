@@ -4,16 +4,16 @@ import cn.dev33.satoken.context.SaTokenContext;
 import cn.dev33.satoken.context.model.SaRequest;
 import cn.dev33.satoken.context.model.SaResponse;
 import cn.dev33.satoken.context.model.SaStorage;
-import org.noear.solon.core.util.PathAnalyzer;
 import cn.dev33.satoken.solon.model.SaRequestForSolon;
 import cn.dev33.satoken.solon.model.SaResponseForSolon;
 import cn.dev33.satoken.solon.model.SaStorageForSolon;
+import org.noear.solon.core.util.PathAnalyzer;
 
 /**
  * @author noear
  * @since 1.4
  */
-public class SaTokenContextForSolon implements SaTokenContext {
+public class SaContextForSolon implements SaTokenContext {
     /**
      * 获取当前请求的Request对象
      */

@@ -8,13 +8,13 @@ import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.dev33.satoken.config.SaTokenConfig;
 import cn.dev33.satoken.dao.SaTokenDao;
 import cn.dev33.satoken.listener.SaTokenListener;
+import cn.dev33.satoken.solon.integration.SaContextForSolon;
+import cn.dev33.satoken.solon.integration.SaTokenMethodInterceptor;
 import cn.dev33.satoken.stp.StpInterface;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
-import cn.dev33.satoken.solon.integration.SaCheckAspectForSolon;
-import cn.dev33.satoken.solon.integration.SaTokenContextForSolon;
 
 /**
  * @author noear
@@ -23,9 +23,9 @@ import cn.dev33.satoken.solon.integration.SaTokenContextForSolon;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        Aop.context().beanAroundAdd(SaCheckPermission.class, SaCheckAspectForSolon.instance);
-        Aop.context().beanAroundAdd(SaCheckRole.class, SaCheckAspectForSolon.instance);
-        Aop.context().beanAroundAdd(SaCheckLogin.class, SaCheckAspectForSolon.instance);
+        Aop.context().beanAroundAdd(SaCheckPermission.class, SaTokenMethodInterceptor.instance);
+        Aop.context().beanAroundAdd(SaCheckRole.class, SaTokenMethodInterceptor.instance);
+        Aop.context().beanAroundAdd(SaCheckLogin.class, SaTokenMethodInterceptor.instance);
 
         //集成初始化
 
@@ -35,7 +35,7 @@ public class XPluginImp implements Plugin {
 
 
         //注入容器交互Bean
-        SaManager.setSaTokenContext(new SaTokenContextForSolon());
+        SaManager.setSaTokenContext(new SaContextForSolon());
 
         //注入侦听器Bean
         Aop.getAsyn(SaTokenListener.class, bw->{

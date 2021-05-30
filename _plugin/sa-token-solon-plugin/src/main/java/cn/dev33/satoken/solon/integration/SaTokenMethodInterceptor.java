@@ -8,8 +8,8 @@ import org.noear.solon.core.aspect.Invocation;
  * @author noear
  * @since 1.4
  */
-public class SaCheckAspectForSolon implements Interceptor {
-    public static final SaCheckAspectForSolon instance = new SaCheckAspectForSolon();
+public class SaTokenMethodInterceptor implements Interceptor {
+    public static final SaTokenMethodInterceptor instance = new SaTokenMethodInterceptor();
 
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
