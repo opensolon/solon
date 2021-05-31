@@ -66,6 +66,7 @@ public final class SolonProps extends Props {
         String env = args.get("env");
 
         if(Utils.isEmpty(env)){
+            //兼容旧版本
             env = args.get("active");
         }
 
