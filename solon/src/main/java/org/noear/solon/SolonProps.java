@@ -63,14 +63,19 @@ public final class SolonProps extends Props {
         loadAdd(Utils.getResource("application.yml"));
 
         //2.2.加载活动配置
-        String active = args.get("active");
-        if(Utils.isEmpty(active)){
-            active = get("solon.profiles.active");
+        String env = args.get("env");
+
+        if(Utils.isEmpty(env)){
+            env = args.get("active");
         }
 
-        if (Utils.isNotEmpty(active)) {
-            loadAdd(Utils.getResource("application-" + active + ".properties"));
-            loadAdd(Utils.getResource("application-" + active + ".yml"));
+        if(Utils.isEmpty(env)){
+            env = get("solon.profiles.active");
+        }
+
+        if (Utils.isNotEmpty(env)) {
+            loadAdd(Utils.getResource("application-" + env + ".properties"));
+            loadAdd(Utils.getResource("application-" + env + ".yml"));
         }
 
         //3.同步启动参数
