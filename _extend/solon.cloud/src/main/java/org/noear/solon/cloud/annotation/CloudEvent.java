@@ -14,11 +14,14 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface CloudEvent {
+    /**
+     * 主题，支持配置模式：${xxx}
+     * */
     @Note("topic")
     String value();
 
     /**
-     * 队列
+     * 队列，支持配置模式：${xxx}
      * */
     String group() default "";
 

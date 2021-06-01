@@ -18,7 +18,7 @@ public @interface CloudConfig {
     String value();
 
     /**
-     * 分组 （对某些框架来讲，可能没用处）
+     * 分组 （对某些框架来讲，可能没用处），支持配置模式：${xxx}
      * */
     String group() default "";
 

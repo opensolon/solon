@@ -16,8 +16,8 @@ import java.util.Properties;
  * @author noear
  * @since 1.2
  */
-public class CloudBeanInjector implements BeanInjector<CloudConfig> {
-    public static final CloudBeanInjector instance = new CloudBeanInjector();
+public class CloudConfigBeanInjector implements BeanInjector<CloudConfig> {
+    public static final CloudConfigBeanInjector instance = new CloudConfigBeanInjector();
 
     @Override
     public void doInject(VarHolder varH, CloudConfig anno) {

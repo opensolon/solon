@@ -13,6 +13,8 @@ import org.noear.solon.ext.DataThrowable;
  * @since 1.3
  */
 public class CloudBreakerInterceptor implements Interceptor {
+    public static final CloudBreakerInterceptor instance = new CloudBreakerInterceptor();
+
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
         CloudBreaker breaker = inv.method().getAnnotation(CloudBreaker.class);

@@ -35,6 +35,19 @@ public class Props extends Properties {
     }
 
     /**
+     *
+     * @param expr 兼容 ${key} or key
+     * */
+    public String getByExpr(String expr) {
+        String name = expr;
+        if (name.startsWith("${") && name.endsWith("}")) {
+            name = expr.substring(2, name.length() - 1);
+        }
+
+        return get(name);
+    }
+
+    /**
      * 获取某项配置（如果没有，输出默认值）
      *
      * @param def 默认值

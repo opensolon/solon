@@ -12,11 +12,13 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.3
  */
-@Around(CloudBreakerInterceptor.class)
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface CloudBreaker {
+    /**
+     * 名称，支持配置模式：${xxx}
+     * */
     @Note("name")
     String value();
 }

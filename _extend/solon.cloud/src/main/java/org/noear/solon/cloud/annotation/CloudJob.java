@@ -1,5 +1,7 @@
 package org.noear.solon.cloud.annotation;
 
+import org.noear.solon.annotation.Note;
+
 import java.lang.annotation.*;
 
 /**
@@ -11,8 +13,9 @@ import java.lang.annotation.*;
 @Documented
 public @interface CloudJob {
     /**
-     * 名称
+     * 名称, 支持配置模式：${xxx}
      * */
+    @Note("name")
     String value();
     /**
      * 描述

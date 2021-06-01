@@ -1,5 +1,6 @@
 package org.noear.solon.cloud;
 
+import org.noear.solon.cloud.annotation.CloudBreaker;
 import org.noear.solon.cloud.impl.*;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.Solon;
@@ -25,42 +26,11 @@ import java.util.Properties;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        Aop.context().beanBuilderAdd(CloudConfig.class, (clz, bw, anno) -> {
-            CloudConfigHandler handler;
-            if (bw.raw() instanceof CloudConfigHandler) {
-                handler = bw.raw();
-            } else {
-                handler = (Config cfg) -> {
-                    Properties val0 = cfg.toProps();
-                    ClassWrap.get(clz).fill(bw.raw(), val0::getProperty);
-                };
-            }
+        Aop.context().beanInjectorAdd(CloudConfig.class, CloudConfigBeanInjector.instance);
+        Aop.context().beanBuilderAdd(CloudConfig.class, CloudConfigBeanBuilder.instance);
+        Aop.context().beanBuilderAdd(CloudEvent.class, CloudEventBeanBuilder.instance);
+        Aop.context().beanAroundAdd(CloudBreaker.class, CloudBreakerInterceptor.instance);
 
-            CloudManager.register(anno, handler);
-
-            if (CloudClient.config() != null) {
-                Config config = CloudClient.config().pull(anno.group(), anno.value());
-                if (config != null) {
-                    handler.handler(config);
-                }
-
-                //关注配置
-                CloudClient.config().attention(anno.group(), anno.value(), handler);
-            }
-        });
-
-        Aop.context().beanBuilderAdd(CloudEvent.class, (clz, bw, anno) -> {
-            if (bw.raw() instanceof CloudEventHandler) {
-                CloudManager.register(anno, bw.raw());
-
-                if (CloudClient.event() != null) {
-                    //关注事件
-                    CloudClient.event().attention(anno.level(), anno.channel(), anno.group(), anno.value(), bw.raw());
-                }
-            }
-        });
-
-        Aop.context().beanInjectorAdd(CloudConfig.class, CloudBeanInjector.instance);
 
         if (CloudClient.discovery() == null) {
             //如果没有发现服力，注册本地发现服务
