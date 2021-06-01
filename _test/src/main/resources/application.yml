@@ -15,6 +15,8 @@ demo8.test:
 username: noear
 paasword: 1234
 
+testname: xxx
+
 solon.drift: 1
 
 solon.cloud.local:
@@ -35,6 +37,10 @@ solon.logging.appender:
   test:
     class: webapp.demox_log_breaker.TestAppender
     level: TRACE
+
+solon.logging.logger:
+  "org.apache.*":
+    level: INFO
 
 solon.socketd:
   readBufferSize: "512"

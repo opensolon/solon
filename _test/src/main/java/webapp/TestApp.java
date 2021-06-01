@@ -52,6 +52,9 @@ public class TestApp {
         }).start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
 
 
+        System.out.println("testname : " + Solon.cfg().get("testname"));
+
+
         System.out.println("生在ID = " + CloudClient.id().generate());
 
 //        app.filter((ctx, chain)->{
