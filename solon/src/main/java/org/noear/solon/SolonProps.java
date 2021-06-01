@@ -59,8 +59,8 @@ public final class SolonProps extends Props {
         this.sourceLocation = source.getProtectionDomain().getCodeSource().getLocation();
 
         //2.加载文件的配置
-        loadAdd(Utils.getResource("application.properties"));
-        loadAdd(Utils.getResource("application.yml"));
+        loadInit(Utils.getResource("application.properties"));
+        loadInit(Utils.getResource("application.yml"));
 
         //2.2.加载活动配置
         String env = args.get("env");
@@ -75,8 +75,8 @@ public final class SolonProps extends Props {
         }
 
         if (Utils.isNotEmpty(env)) {
-            loadAdd(Utils.getResource("application-" + env + ".properties"));
-            loadAdd(Utils.getResource("application-" + env + ".yml"));
+            loadInit(Utils.getResource("application-" + env + ".properties"));
+            loadInit(Utils.getResource("application-" + env + ".yml"));
         }
 
         //3.同步启动参数
@@ -124,11 +124,13 @@ public final class SolonProps extends Props {
             appName = get("solon.app.name");
         }
 
+        //6.1.应用组
         appGroup = this.args.get("app.group");
         if (Utils.isEmpty(appGroup)) {
             appGroup = get("solon.app.group");
         }
 
+        //6.1.应用标准
         appTitle = this.args.get("app.title");
         if (Utils.isEmpty(appTitle)) {
             appTitle = get("solon.app.title");
@@ -151,10 +153,16 @@ public final class SolonProps extends Props {
         return this;
     }
 
+    /**
+     * 加载配置（用于扩展加载）
+     * */
     public SolonProps loadAdd(String url) {
         return loadAdd(Utils.getResource(url));
     }
 
+    /**
+     * 加载配置（用于扩展加载）
+     * */
     public SolonProps loadAdd(Properties props) {
         if (props != null) {
             for (Map.Entry<Object, Object> kv : props.entrySet()) {
@@ -179,6 +187,26 @@ public final class SolonProps extends Props {
         }
 
         return this;
+    }
+
+    /**
+     * 加载初始化配置
+     *
+     * 1.优先使用 system properties；可以在启动时修改配置
+     * 2.之后同时更新 system properties 和 solon cfg
+     * */
+    protected void loadInit(URL url) {
+        if (url != null) {
+            Properties props = Utils.loadProperties(url);
+
+            for (Map.Entry kv : System.getProperties().entrySet()) {
+                if (props.containsKey(kv.getKey())) {
+                    props.put(kv.getKey(), kv.getValue());
+                }
+            }
+
+            loadAdd(props);
+        }
     }
 
 
