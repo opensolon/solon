@@ -339,6 +339,32 @@ CloudClient.event().publish(new Event("hello.demo", msg));
 ```
 
 
+* Solon cloud distributed job usage
+```java
+//Annotation mode - Handler style
+@CloudJob("JobHandlerDemo1")
+public class JobHandlerDemo1 implements Handler {
+    @Override
+    public void handle(Context ctx) throws Throwable {
+        //任务处理
+    }
+}
+
+//Annotation mode - Method style
+@Component
+public class JobBeanDemo2 {
+    @CloudJob("JobBeanDemo2")
+    public void test(){
+        //任务处理
+    }
+}
+
+//Manual mode
+CloudClient.job().register("JobHandlerDemo3","",c->{
+    //任务处理 
+});
+```
+
 ### Attachment 4: Plug-in development instructions
 * Create a new Maven project
 * Create a new java file: /{package name}/XPluginImp.java (implements XPlugin)
