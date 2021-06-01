@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.impl;
 
+import org.noear.solon.Solon;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.core.BeanBuilder;
@@ -20,7 +21,14 @@ public class CloudJobBuilder implements BeanBuilder<CloudJob> {
         }
 
         if (Handler.class.isAssignableFrom(clz)) {
-            CloudClient.job().register(anno.value(), anno.description(), bw.raw());
+            String name = anno.value();
+
+            //支持${xxx}配置
+            if (name.startsWith("${")) {
+                name = Solon.cfg().getByExpr(name);
+            }
+
+            CloudClient.job().register(name, anno.description(), bw.raw());
         }
     }
 }

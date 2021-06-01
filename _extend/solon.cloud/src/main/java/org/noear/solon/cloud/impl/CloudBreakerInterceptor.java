@@ -22,10 +22,10 @@ public class CloudBreakerInterceptor implements Interceptor {
             throw new IllegalArgumentException("Missing CloudBreakerService component");
         }
 
-        CloudBreaker breaker = inv.method().getAnnotation(CloudBreaker.class);
+        CloudBreaker anno = inv.method().getAnnotation(CloudBreaker.class);
 
-        if (breaker != null) {
-            String name = breaker.value();
+        if (anno != null) {
+            String name = anno.value();
 
             //支持${xxx}配置
             if(name.startsWith("${")){

@@ -47,6 +47,18 @@ public class Props extends Properties {
         return get(name);
     }
 
+    public String getByParse(String expr) {
+        int start = expr.indexOf("${");
+        if (start < 0) {
+            return expr;
+        } else {
+            int end = expr.indexOf("}");
+            String name = expr.substring(start + 2, end);
+            String value = get(name);
+            return expr.substring(0, start) + value + expr.substring(end + 1);
+        }
+    }
+
     /**
      * 获取某项配置（如果没有，输出默认值）
      *
