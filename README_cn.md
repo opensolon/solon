@@ -348,15 +348,6 @@ public class JobHandlerDemo1 implements Handler {
     }
 }
 
-//注解模式 - Method 风格
-@Component
-public class JobBeanDemo2 {
-    @CloudJob("JobBeanDemo2")
-    public void test(){
-        //任务处理
-    }
-}
-
 //手动模式
 CloudClient.job().register("JobHandlerDemo3","",c->{
     //任务处理 

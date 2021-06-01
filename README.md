@@ -350,15 +350,6 @@ public class JobHandlerDemo1 implements Handler {
     }
 }
 
-//Annotation mode - Method style
-@Component
-public class JobBeanDemo2 {
-    @CloudJob("JobBeanDemo2")
-    public void test(){
-        //任务处理
-    }
-}
-
 //Manual mode
 CloudClient.job().register("JobHandlerDemo3","",c->{
     //任务处理 
