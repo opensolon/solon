@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.impl;
 
+import org.noear.solon.Solon;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.core.BeanExtractor;
@@ -21,7 +22,8 @@ public class CloudJobExtractor implements BeanExtractor<CloudJob> {
             throw new IllegalArgumentException("Missing CloudJobService component");
         }
 
-        String name = anno.value();
+        //支持${xxx}配置
+        String name = Solon.cfg().getByParse(anno.value());
 
         if (name.trim().length() == 0) {
             throw new RuntimeException("CloudJob name invalid, for[" + bw.clz() + "#" + method.getName() + "] .");

@@ -14,11 +14,14 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface CloudConfig {
-    @Note("key")
+    /**
+     * 名称，支持${xxx}配置
+     * */
+    @Note("name")
     String value();
 
     /**
-     * 分组 （对某些框架来讲，可能没用处），支持配置模式：${xxx}
+     * 分组 （对某些框架来讲，可能没用处），支持${xxx}配置
      * */
     String group() default "";
 

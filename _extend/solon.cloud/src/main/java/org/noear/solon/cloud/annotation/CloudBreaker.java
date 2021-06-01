@@ -17,7 +17,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface CloudBreaker {
     /**
-     * 名称，支持配置模式：${xxx}
+     * 名称，支持${xxx}配置
      * */
     @Note("name")
     String value();

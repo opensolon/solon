@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.impl;
 
+import org.noear.solon.Solon;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.BeanInjector;
 import org.noear.solon.core.VarHolder;
@@ -25,13 +26,18 @@ public class CloudConfigBeanInjector implements BeanInjector<CloudConfig> {
             throw new IllegalArgumentException("Missing CloudConfigService component");
         }
 
-        Object tmp1 = build(varH.getType(), anno);
+        //支持${xxx}配置
+        String name = Solon.cfg().getByParse(anno.value());
+        //支持${xxx}配置
+        String group = Solon.cfg().getByParse(anno.group());
+
+        Object tmp1 = build(varH.getType(), group, name);
         if (tmp1 != null) {
             varH.setValue(tmp1);
         }
 
         if (varH.isField() && anno.autoRefreshed()) {
-            CloudClient.config().attention(anno.group(), anno.value(), (cfg) -> {
+            CloudClient.config().attention(group, name, (cfg) -> {
                 Object tmp2 = build0(varH.getType(), cfg);
                 if (tmp2 != null) {
                     varH.setValue(tmp2);
@@ -40,8 +46,8 @@ public class CloudConfigBeanInjector implements BeanInjector<CloudConfig> {
         }
     }
 
-    public Object build(Class<?> type, CloudConfig anno) {
-        Config cfg = CloudClient.config().pull(anno.group(), anno.value());
+    public Object build(Class<?> type, String group, String name) {
+        Config cfg = CloudClient.config().pull(group, name);
 
         return build0(type, cfg);
     }

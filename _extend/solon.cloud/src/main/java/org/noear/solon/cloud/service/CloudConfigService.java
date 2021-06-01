@@ -14,33 +14,33 @@ public interface CloudConfigService {
     /**
      * 拉取配置
      */
-    Config pull(String group, String key);
+    Config pull(String group, String name);
 
-    default Config pull(String key){
-        return pull(Solon.cfg().appGroup(), key);
+    default Config pull(String name){
+        return pull(Solon.cfg().appGroup(), name);
     }
 
     /**
      * 推送配置
      */
-    boolean push(String group, String key, String value);
+    boolean push(String group, String name, String value);
 
-    default boolean push(String key, String value) {
-        return push(Solon.cfg().appGroup(), key, value);
+    default boolean push(String name, String value) {
+        return push(Solon.cfg().appGroup(), name, value);
     }
 
 
     /**
      * 移除配置
      */
-    boolean remove(String group, String key);
+    boolean remove(String group, String name);
 
-    default boolean remove(String key){
-        return remove(Solon.cfg().appGroup(), key);
+    default boolean remove(String name){
+        return remove(Solon.cfg().appGroup(), name);
     }
 
     /**
      * 关注配置
      */
-    void attention(String group, String key, CloudConfigHandler observer);
+    void attention(String group, String name, CloudConfigHandler observer);
 }
