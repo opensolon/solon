@@ -13,8 +13,14 @@ import java.lang.reflect.Method;
  * @since 1.4
  */
 public class CloudJobExtractor implements BeanExtractor<CloudJob> {
+    public static final CloudJobExtractor instance = new CloudJobExtractor();
+
     @Override
     public void doExtract(BeanWrap bw, Method method, CloudJob anno) {
+        if (CloudClient.job() == null) {
+            throw new IllegalArgumentException("Missing CloudJobService component");
+        }
+
         String name = anno.value();
 
         if (name.trim().length() == 0) {

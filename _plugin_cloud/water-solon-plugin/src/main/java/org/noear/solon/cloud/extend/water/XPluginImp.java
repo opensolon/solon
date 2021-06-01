@@ -167,9 +167,6 @@ public class XPluginImp implements Plugin {
             if (WaterProps.instance.getJobEnable()) {
                 CloudManager.register(CloudJobServiceWaterImp.instance);
 
-                Aop.context().beanExtractorAdd(CloudJob.class, new CloudJobExtractor());
-                Aop.context().beanBuilderAdd(CloudJob.class, new CloudJobBuilder());
-
                 Aop.beanOnloaded(() -> {
                     CloudJobServiceWaterImp.instance.push();
                 });

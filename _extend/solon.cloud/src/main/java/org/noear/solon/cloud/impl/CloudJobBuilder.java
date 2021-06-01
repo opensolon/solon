@@ -11,8 +11,14 @@ import org.noear.solon.core.handle.Handler;
  * @since 1.4
  */
 public class CloudJobBuilder implements BeanBuilder<CloudJob> {
+    public static final CloudJobBuilder instance = new CloudJobBuilder();
+
     @Override
     public void doBuild(Class<?> clz, BeanWrap bw, CloudJob anno) throws Exception {
+        if (CloudClient.job() == null) {
+            throw new IllegalArgumentException("Missing CloudJobService component");
+        }
+
         if (Handler.class.isAssignableFrom(clz)) {
             CloudClient.job().register(anno.value(), anno.description(), bw.raw());
         }

@@ -20,6 +20,10 @@ public class CloudConfigBeanBuilder implements BeanBuilder<CloudConfig> {
 
     @Override
     public void doBuild(Class<?> clz, BeanWrap bw, CloudConfig anno) throws Exception {
+        if (CloudClient.config() == null) {
+            throw new IllegalArgumentException("Missing CloudConfigService component");
+        }
+
         CloudConfigHandler handler;
         if (bw.raw() instanceof CloudConfigHandler) {
             handler = bw.raw();

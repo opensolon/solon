@@ -22,7 +22,7 @@ public class CloudConfigBeanInjector implements BeanInjector<CloudConfig> {
     @Override
     public void doInject(VarHolder varH, CloudConfig anno) {
         if (CloudClient.config() == null) {
-            return;
+            throw new IllegalArgumentException("Missing CloudConfigService component");
         }
 
         Object tmp1 = build(varH.getType(), anno);

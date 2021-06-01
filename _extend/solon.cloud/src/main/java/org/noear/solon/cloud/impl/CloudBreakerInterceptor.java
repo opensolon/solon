@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.impl;
 
+import org.noear.solon.Solon;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.annotation.CloudBreaker;
 import org.noear.solon.cloud.model.BreakerException;
@@ -17,14 +18,21 @@ public class CloudBreakerInterceptor implements Interceptor {
 
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
-        CloudBreaker breaker = inv.method().getAnnotation(CloudBreaker.class);
-
         if (CloudClient.breaker() == null) {
             throw new IllegalArgumentException("Missing CloudBreakerService component");
         }
 
+        CloudBreaker breaker = inv.method().getAnnotation(CloudBreaker.class);
+
         if (breaker != null) {
-            try (AutoCloseable entry = CloudClient.breaker().entry(breaker.value())) {
+            String name = breaker.value();
+
+            //支持${xxx}配置
+            if(name.startsWith("${")){
+                name = Solon.cfg().getByExpr(name);
+            }
+
+            try (AutoCloseable entry = CloudClient.breaker().entry(name)) {
                 return inv.invoke();
             } catch (BreakerException ex) {
                 Context ctx = Context.current();

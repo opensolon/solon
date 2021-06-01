@@ -1,6 +1,7 @@
 package org.noear.solon.cloud;
 
 import org.noear.solon.cloud.annotation.CloudBreaker;
+import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.cloud.impl.*;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.Solon;
@@ -28,8 +29,13 @@ public class XPluginImp implements Plugin {
     public void start(SolonApp app) {
         Aop.context().beanInjectorAdd(CloudConfig.class, CloudConfigBeanInjector.instance);
         Aop.context().beanBuilderAdd(CloudConfig.class, CloudConfigBeanBuilder.instance);
+
         Aop.context().beanBuilderAdd(CloudEvent.class, CloudEventBeanBuilder.instance);
+
         Aop.context().beanAroundAdd(CloudBreaker.class, CloudBreakerInterceptor.instance);
+
+        Aop.context().beanExtractorAdd(CloudJob.class, CloudJobExtractor.instance);
+        Aop.context().beanBuilderAdd(CloudJob.class, CloudJobBuilder.instance);
 
 
         if (CloudClient.discovery() == null) {
@@ -62,7 +68,7 @@ public class XPluginImp implements Plugin {
                     Instance instance = Instance.localNew(signal);
 
                     CloudClient.discovery().deregister(Solon.cfg().appGroup(), instance);
-                    PrintUtil.info("Cloud","Service deregistered " + instance.service() + "@" + instance.uri());
+                    PrintUtil.info("Cloud", "Service deregistered " + instance.service() + "@" + instance.uri());
                 }
             }
         }
