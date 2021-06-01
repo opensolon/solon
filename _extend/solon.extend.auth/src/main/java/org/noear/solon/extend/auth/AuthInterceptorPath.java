@@ -24,6 +24,8 @@ public class AuthInterceptorPath extends AuthInterceptorLogined {
             //验证失败的
             Result result = Result.failure(403, "Forbidden");
             AuthUtil.adapter().authOnFailure().accept(ctx, result);
+            ctx.setHandled(true);
+            ctx.setRendered(true);
         }
     }
 }

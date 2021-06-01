@@ -3,8 +3,8 @@ package org.noear.solon.extend.auth;
 import org.noear.solon.Solon;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
+import org.noear.solon.ext.BiConsumerEx;
 
-import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 
 /**
@@ -15,7 +15,7 @@ import java.util.function.BiPredicate;
  */
 public class AuthAdapter {
     private String loginUrl;
-    private BiConsumer<Context, Result> authOnFailure = (ctx, rst) -> {
+    private BiConsumerEx<Context, Result> authOnFailure = (ctx, rst) -> {
     };
     private BiPredicate<Context, String> authPathMatchers = (ctx, url) -> true;
     private AuthProcessor authProcessor;
@@ -32,14 +32,14 @@ public class AuthAdapter {
         return this;
     }
 
-    public BiConsumer<Context, Result> authOnFailure() {
+    public BiConsumerEx<Context, Result> authOnFailure() {
         return authOnFailure;
     }
 
     /**
      * 验证出错处理
      * */
-    public AuthAdapter authOnFailure(BiConsumer<Context, Result> handler) {
+    public AuthAdapter authOnFailure(BiConsumerEx<Context, Result> handler) {
         authOnFailure = handler;
         return this;
     }
@@ -49,7 +49,7 @@ public class AuthAdapter {
     }
 
     /**
-     * 认证Url匹配
+     * 认证path匹配
      */
     public AuthAdapter authPathMatchers(BiPredicate<Context, String> matchers) {
         authPathMatchers = matchers;
@@ -57,9 +57,9 @@ public class AuthAdapter {
     }
 
     /**
-     * 认证拦截器
+     * 认证path拦截器
      * */
-    public AuthAdapter authInterceptor(AuthInterceptor interceptor) {
+    public AuthAdapter authPathInterceptor(AuthInterceptor interceptor) {
         Solon.global().before(interceptor);
         return this;
     }
