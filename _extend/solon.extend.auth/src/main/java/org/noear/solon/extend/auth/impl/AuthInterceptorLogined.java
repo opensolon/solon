@@ -1,6 +1,8 @@
-package org.noear.solon.extend.auth;
+package org.noear.solon.extend.auth.impl;
 
 import org.noear.solon.core.handle.*;
+import org.noear.solon.extend.auth.AuthInterceptor;
+import org.noear.solon.extend.auth.AuthUtil;
 
 
 /**

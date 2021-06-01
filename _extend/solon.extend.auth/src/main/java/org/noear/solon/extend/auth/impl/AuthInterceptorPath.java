@@ -1,7 +1,8 @@
-package org.noear.solon.extend.auth;
+package org.noear.solon.extend.auth.impl;
 
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
+import org.noear.solon.extend.auth.AuthUtil;
 
 /**
  * 认证拦截器
