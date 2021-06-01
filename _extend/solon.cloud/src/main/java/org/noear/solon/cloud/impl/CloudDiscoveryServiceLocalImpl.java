@@ -22,6 +22,7 @@ public class CloudDiscoveryServiceLocalImpl implements CloudDiscoveryService {
 
     public CloudDiscoveryServiceLocalImpl() {
         Props props = Solon.cfg().getProp("solon.cloud.local.discovery.service");
+
         if (props.size() > 0) {
             props.forEach((k, v) -> {
                 if (k instanceof String && v instanceof String) {

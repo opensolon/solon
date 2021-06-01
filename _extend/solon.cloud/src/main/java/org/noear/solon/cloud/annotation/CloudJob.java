@@ -18,7 +18,7 @@ public @interface CloudJob {
     @Note("name")
     String value();
     /**
-     * 描述
+     * 描述, 支持${xxx}配置
      * */
     String description() default "";
 }

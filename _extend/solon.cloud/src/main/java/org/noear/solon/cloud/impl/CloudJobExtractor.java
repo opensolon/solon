@@ -24,6 +24,8 @@ public class CloudJobExtractor implements BeanExtractor<CloudJob> {
 
         //支持${xxx}配置
         String name = Solon.cfg().getByParse(anno.value());
+        //支持${xxx}配置
+        String description = Solon.cfg().getByParse(anno.description());
 
         if (name.trim().length() == 0) {
             throw new RuntimeException("CloudJob name invalid, for[" + bw.clz() + "#" + method.getName() + "] .");
@@ -34,6 +36,6 @@ public class CloudJobExtractor implements BeanExtractor<CloudJob> {
 
         Action action = new Action(bw, method);
 
-        CloudClient.job().register(name, anno.description(), action);
+        CloudClient.job().register(name, description, action);
     }
 }

@@ -23,8 +23,10 @@ public class CloudJobBuilder implements BeanBuilder<CloudJob> {
         if (Handler.class.isAssignableFrom(clz)) {
             //支持${xxx}配置
             String name = Solon.cfg().getByParse(anno.value());
+            //支持${xxx}配置
+            String description = Solon.cfg().getByParse(anno.description());
 
-            CloudClient.job().register(name, anno.description(), bw.raw());
+            CloudClient.job().register(name, description, bw.raw());
         }
     }
 }

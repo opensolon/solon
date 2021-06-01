@@ -21,7 +21,7 @@ public @interface CloudEvent {
     String value();
 
     /**
-     * 队列，支持${xxx}配置
+     * 分组，支持${xxx}配置
      * */
     String group() default "";
 
