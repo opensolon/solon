@@ -25,7 +25,6 @@ public class AuthInterceptorPath extends AuthInterceptorLogined {
             Result result = Result.failure(403, "Forbidden");
             AuthUtil.adapter().authOnFailure().accept(ctx, result);
             ctx.setHandled(true);
-            ctx.setRendered(true);
         }
     }
 }
