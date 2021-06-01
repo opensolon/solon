@@ -8,6 +8,6 @@ import org.noear.solon.core.handle.Context;
  * @author noear
  * @since 1.4
  */
-public interface PathMatcher {
+public interface PathMatchers {
     boolean matches(Context ctx, String path);
 }

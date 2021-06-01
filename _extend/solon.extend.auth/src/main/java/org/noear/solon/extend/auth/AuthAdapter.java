@@ -5,8 +5,6 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.ext.BiConsumerEx;
 
-import java.util.function.BiPredicate;
-
 /**
  * 认证适配器（需要用户对接）
  *
@@ -17,7 +15,7 @@ public class AuthAdapter {
     private String loginUrl;
     private BiConsumerEx<Context, Result> authOnFailure = (ctx, rst) -> {
     };
-    private BiPredicate<Context, String> authPathMatchers = (ctx, url) -> true;
+    private PathMatchers authPathMatchers = (ctx, url) -> true;
     private AuthProcessor authProcessor;
 
     public String loginUrl() {
@@ -44,14 +42,14 @@ public class AuthAdapter {
         return this;
     }
 
-    public BiPredicate<Context, String> authPathMatchers() {
+    public PathMatchers authPathMatchers() {
         return authPathMatchers;
     }
 
     /**
      * 认证path匹配
      */
-    public AuthAdapter authPathMatchers(BiPredicate<Context, String> matchers) {
+    public AuthAdapter authPathMatchers(PathMatchers matchers) {
         authPathMatchers = matchers;
         return this;
     }

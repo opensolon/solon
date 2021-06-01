@@ -2,7 +2,7 @@ package org.noear.solon.extend.auth.impl;
 
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.util.PathAnalyzer;
-import org.noear.solon.extend.auth.PathMatcher;
+import org.noear.solon.extend.auth.PathMatchers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  * @author noear
  * @since 1.4
  */
-public class PathMatcherPattern implements PathMatcher {
+public class PathMatchersPattern implements PathMatchers {
     /**
      * 拦截路由
      */
@@ -24,12 +24,12 @@ public class PathMatcherPattern implements PathMatcher {
      */
     private List<PathAnalyzer> excludeList = new ArrayList<>();
 
-    public PathMatcherPattern addInclude(String pattern) {
+    public PathMatchersPattern addInclude(String pattern) {
         includeList.add(PathAnalyzer.get(pattern));
         return this;
     }
 
-    public PathMatcherPattern addExclude(String pattern) {
+    public PathMatchersPattern addExclude(String pattern) {
         excludeList.add(PathAnalyzer.get(pattern));
         return this;
     }
