@@ -337,6 +337,32 @@ public class DemoEvent implements CloudEventHandler {
 CloudClient.event().publish(new Event("hello.demo", msg));
 ```
 
+* Solon cloud 分布式任务使用
+```java
+//注解模式 - Hander 风格
+@CloudJob("JobHandlerDemo1")
+public class JobHandlerDemo1 implements Handler {
+    @Override
+    public void handle(Context ctx) throws Throwable {
+        //任务处理
+    }
+}
+
+//注解模式 - Method 风格
+@Component
+public class JobBeanDemo2 {
+    @CloudJob("JobBeanDemo2")
+    public void test(){
+        //任务处理
+    }
+}
+
+//手动模式
+CloudClient.job().register("JobHandlerDemo3","",c->{
+    //任务处理 
+});
+```
+
 
 ### 附4：插件开发说明
 * 新建一个 maven 项目
