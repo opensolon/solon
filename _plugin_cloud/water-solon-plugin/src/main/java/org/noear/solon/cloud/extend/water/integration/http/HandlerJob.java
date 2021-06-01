@@ -39,9 +39,10 @@ public class HandlerJob implements Handler {
                 entity.getHandler().handle(ctx);
                 ctx.output("OK");
             } catch (Throwable ex) {
+                ex = Utils.throwableUnwrap(ex);
                 EventBus.push(ex);
                 ctx.statusSet(500);
-                ctx.output(Utils.throwableUnwrap(ex));
+                ctx.output(ex);
             }
         }
     }
