@@ -42,5 +42,5 @@ public abstract class AbstractValidator<T extends Annotation> implements Interce
 
     public abstract Class<T> type();
 
-    public abstract Result validate(T anno);
+    public abstract Result validate(T anno) throws Exception;
 }
