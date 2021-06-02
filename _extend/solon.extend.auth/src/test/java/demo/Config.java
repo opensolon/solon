@@ -13,13 +13,13 @@ public class Config {
     public AuthAdapter adapter(){
         return new AuthAdapter()
                 .loginUrl("/login") //设定登录地址，未登录时自动跳转
-                .authRuleAdd(b->b.include("").exclude("").verifyIp())
-                .authRuleAdd(b->b.include("").exclude("").verifyLogined())
-                .authRuleAdd(b->b.include("").exclude("").verifyPath())
-                .authRuleAdd(b->b.include("").exclude("").verifyPermissions(""))
-                .authRuleAdd(b->b.include("").exclude("").verifyPermissionsAnd(""))
-                .authRuleAdd(b->b.include("").exclude("").verifyRoles(""))
-                .authRuleAdd(b->b.include("").exclude("").verifyRolesAnd(""))
+                .authRulesAdd(b->b.include("").exclude("").verifyIp())
+                .authRulesAdd(b->b.include("").exclude("").verifyLogined())
+                .authRulesAdd(b->b.include("").exclude("").verifyPath())
+                .authRulesAdd(b->b.include("").exclude("").verifyPermissions(""))
+                .authRulesAdd(b->b.include("").exclude("").verifyPermissionsAnd(""))
+                .authRulesAdd(b->b.include("").exclude("").verifyRoles(""))
+                .authRulesAdd(b->b.include("").exclude("").verifyRolesAnd(""))
                 .authProcessor(null) //设定认证处理器
                 .authOnFailure((ctx, rst) -> { //设定验证失败代理
                     ctx.render(rst);

@@ -21,7 +21,7 @@ public class AuthAdapter {
     private AuthProcessor authProcessor;
     private BiConsumerEx<Context, Result> authOnFailure = (ctx, rst) -> ctx.render(rst);
 
-    //=================
+    //=================//=================//=================
 
     public String loginUrl() {
         return loginUrl;
@@ -35,23 +35,23 @@ public class AuthAdapter {
         return this;
     }
 
-    //=================
+    //=================//=================//=================
 
 
     /**
      * 添加授权规则
      * */
-    public synchronized AuthAdapter authRuleAdd(Consumer<AuthRule> custom) {
+    public synchronized AuthAdapter authRulesAdd(Consumer<AuthRule> custom) {
         AuthRuleImpl rule = new AuthRuleImpl();
         custom.accept(rule);
 
-        return authRuleAdd(rule);
+        return authRulesAdd(rule);
     }
 
     /**
      * 添加授权规则
      * */
-    public synchronized AuthAdapter authRuleAdd(AuthRule rule) {
+    public synchronized AuthAdapter authRulesAdd(AuthRule rule) {
         if (authRuleHandler == null) {
             authRuleHandler = new AuthRuleHandler();
             Solon.global().before(authRuleHandler);
@@ -65,18 +65,12 @@ public class AuthAdapter {
     /**
      * 添加授权规则
      * */
-    public synchronized AuthAdapter authRuleAdd(Collection<AuthRule> rules) {
-        if (authRuleHandler == null) {
-            authRuleHandler = new AuthRuleHandler();
-            Solon.global().before(authRuleHandler);
-        }
-
-        authRuleHandler.rules().addAll(rules);
-
+    public AuthAdapter authRulesAdd(Collection<AuthRule> rules) {
+        rules.forEach(r -> authRulesAdd(r));
         return this;
     }
 
-    //=================
+    //=================//=================//=================
 
     /**
      * 添加授权规则
@@ -94,7 +88,7 @@ public class AuthAdapter {
         return this;
     }
 
-    //=================
+    //=================//=================//=================
 
     public BiConsumerEx<Context, Result> authOnFailure() {
         return authOnFailure;
