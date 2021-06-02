@@ -19,8 +19,9 @@ public class AuthAdapter {
     private String loginUrl;
     private AuthRuleHandler authRuleHandler;
     private AuthProcessor authProcessor;
-    private BiConsumerEx<Context, Result> authOnFailure = (ctx, rst) -> {
-    };
+    private BiConsumerEx<Context, Result> authOnFailure = (ctx, rst) -> ctx.render(rst);
+
+    //=================
 
     public String loginUrl() {
         return loginUrl;
@@ -33,6 +34,8 @@ public class AuthAdapter {
         loginUrl = url;
         return this;
     }
+
+    //=================
 
 
     /**
@@ -73,6 +76,8 @@ public class AuthAdapter {
         return this;
     }
 
+    //=================
+
     /**
      * 添加授权规则
      * */
@@ -89,6 +94,7 @@ public class AuthAdapter {
         return this;
     }
 
+    //=================
 
     public BiConsumerEx<Context, Result> authOnFailure() {
         return authOnFailure;
