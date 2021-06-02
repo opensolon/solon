@@ -20,17 +20,17 @@ public abstract class AbstractValidator<T extends Annotation> implements Interce
     public Object doIntercept(Invocation inv) throws Throwable {
         T anno = inv.method().getAnnotation(type());
         if (anno != null) {
-            Result result = validate(anno);
+            Result rst = validate(anno);
 
-            if (result.getCode() != Result.SUCCEED_CODE) {
+            if (rst.getCode() != Result.SUCCEED_CODE) {
                 Context ctx = Context.current();
                 if (ctx != null) {
-                    AuthUtil.adapter().failure().accept(ctx, result);
+                    AuthUtil.adapter().failure().onFailure(ctx, rst);
                     ctx.setHandled(true);
                     ctx.setRendered(true);
                     throw new DataThrowable();
                 } else {
-                    throw new AuthException(result.getDescription());
+                    throw new AuthException(rst.getDescription());
                 }
             }
         }
