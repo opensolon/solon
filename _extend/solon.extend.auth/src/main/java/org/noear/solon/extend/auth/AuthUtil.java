@@ -26,8 +26,8 @@ public class AuthUtil {
     /**
      * 验证是否有Ip授权
      * */
-    public static boolean verifyIp(){
-        return adapter().processor().verifyIp();
+    public static boolean verifyIp(String ip){
+        return adapter().processor().verifyIp(ip);
     }
 
     /**

@@ -13,7 +13,7 @@ public interface AuthProcessor {
     /**
      * 验证IP
      * */
-    boolean verifyIp();
+    boolean verifyIp(String ip);
 
     /**
      * 验证登录状态

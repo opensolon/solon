@@ -135,9 +135,10 @@ public class AuthRuleImpl implements AuthRule {
         //
         if (verifyIp) {
             //验证登录情况
-            if (AuthUtil.verifyIp() == false) {
+            String ip = ctx.realIp();
+            if (AuthUtil.verifyIp(ip) == false) {
                 //验证失败的
-                failureDo(ctx, Result.failure(403, ctx.realIp() + ", is unauthorized"));
+                failureDo(ctx, Result.failure(403, ip + ", is unauthorized"));
                 return;
             }
         }
