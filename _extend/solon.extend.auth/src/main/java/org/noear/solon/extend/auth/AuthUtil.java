@@ -10,6 +10,12 @@ import org.noear.solon.extend.auth.annotation.Logical;
  * @since 1.4
  */
 public class AuthUtil {
+    public static String MESSAGE_OF_IP = " , this ip unauthorized";
+    public static String MESSAGE_OF_LOGINED = "Unauthorized";
+    public static String MESSAGE_OF_PATH = "Forbidden";
+    public static String MESSAGE_OF_PERMISSIONS = "No permission granted";
+    public static String MESSAGE_OF_ROLES = "No role granted";
+
     private static AuthAdapter adapter = new AuthAdapter();
 
     static {

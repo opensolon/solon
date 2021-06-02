@@ -25,7 +25,7 @@ public class PermissionsValidator extends AbstractValidator<AuthPermissions> {
             if (AuthUtil.verifyPermissions(anno.value(), anno.logical())) {
                 return Result.succeed();
             } else {
-                return Result.failure(403, "Forbidden");
+                return Result.failure(403, AuthUtil.MESSAGE_OF_PERMISSIONS);
             }
         } catch (Exception e) {
             log.error(e.getMessage());

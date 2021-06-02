@@ -138,7 +138,7 @@ public class AuthRuleImpl implements AuthRule {
             String ip = ctx.realIp();
             if (AuthUtil.verifyIp(ip) == false) {
                 //验证失败的
-                failureDo(ctx, Result.failure(403, ip + ", is unauthorized"));
+                failureDo(ctx, Result.failure(403, ip + AuthUtil.MESSAGE_OF_IP));
                 return;
             }
         }
@@ -151,7 +151,7 @@ public class AuthRuleImpl implements AuthRule {
             if (AuthUtil.verifyLogined() == false) {
                 //未登录的，跳到登录页
                 if (AuthUtil.adapter().loginUrl() == null) {
-                    failureDo(ctx, Result.failure(401, "Unauthorized"));
+                    failureDo(ctx, Result.failure(401, AuthUtil.MESSAGE_OF_LOGINED));
                 } else {
                     ctx.redirect(AuthUtil.adapter().loginUrl());
                     ctx.setHandled(true);
@@ -167,7 +167,7 @@ public class AuthRuleImpl implements AuthRule {
             //验证路径与方式权限
             if (AuthUtil.verifyPath(path, ctx.method()) == false) {
                 //验证失败的
-                failureDo(ctx, Result.failure(403, "Forbidden"));
+                failureDo(ctx, Result.failure(403, AuthUtil.MESSAGE_OF_PATH));
                 return;
             }
         }
@@ -185,7 +185,7 @@ public class AuthRuleImpl implements AuthRule {
 
             if (isOk == false) {
                 //验证失败的
-                failureDo(ctx, Result.failure(403, "No permission granted"));
+                failureDo(ctx, Result.failure(403, AuthUtil.MESSAGE_OF_PERMISSIONS));
                 return;
             }
         }
@@ -203,7 +203,7 @@ public class AuthRuleImpl implements AuthRule {
 
             if (isOk == false) {
                 //验证失败的
-                failureDo(ctx, Result.failure(403, "No role granted"));
+                failureDo(ctx, Result.failure(403, AuthUtil.MESSAGE_OF_ROLES));
                 return;
             }
         }
