@@ -40,9 +40,9 @@ public class AuthAdapter {
      * 添加一个授权规则
      * */
     @Note("添加一个授权规则")
-    public synchronized AuthAdapter addRule(Consumer<AuthRule> custom) {
+    public synchronized AuthAdapter addRule(Consumer<AuthRule> builder) {
         AuthRuleImpl rule = new AuthRuleImpl();
-        custom.accept(rule);
+        builder.accept(rule);
 
         addRuleDo(rule);
 
