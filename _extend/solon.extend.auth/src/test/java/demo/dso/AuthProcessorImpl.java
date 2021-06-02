@@ -8,7 +8,7 @@ import org.noear.solon.extend.auth.annotation.Logical;
  */
 public class AuthProcessorImpl implements AuthProcessor {
     @Override
-    public boolean verifyIp() {
+    public boolean verifyIp(String ip) {
         return false;
     }
 
