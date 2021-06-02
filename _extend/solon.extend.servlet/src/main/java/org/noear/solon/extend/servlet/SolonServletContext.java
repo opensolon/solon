@@ -365,7 +365,6 @@ public class SolonServletContext extends Context {
     @Override
     protected void commit() throws IOException {
         sendHeaders();
-        _response.flushBuffer();
     }
 
     private boolean _headers_sent = false;
