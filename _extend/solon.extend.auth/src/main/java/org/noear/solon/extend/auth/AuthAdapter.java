@@ -6,6 +6,7 @@ import org.noear.solon.core.handle.Result;
 import org.noear.solon.ext.BiConsumerEx;
 import org.noear.solon.extend.auth.impl.AuthRuleImpl;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -38,19 +39,43 @@ public class AuthAdapter {
      * 添加授权规则
      * */
     public synchronized AuthAdapter authRuleAdd(Consumer<AuthRule> custom) {
+        AuthRuleImpl rule = new AuthRuleImpl();
+        custom.accept(rule);
+
+        return authRuleAdd(rule);
+    }
+
+    /**
+     * 添加授权规则
+     * */
+    public synchronized AuthAdapter authRuleAdd(AuthRule rule) {
         if (authRuleHandler == null) {
             authRuleHandler = new AuthRuleHandler();
             Solon.global().before(authRuleHandler);
         }
 
-        AuthRuleImpl authRule = new AuthRuleImpl();
-        authRuleHandler.rules().add(authRule);
-        custom.accept(authRule);
+        authRuleHandler.rules().add(rule);
 
         return this;
     }
 
+    /**
+     * 添加授权规则
+     * */
+    public synchronized AuthAdapter authRuleAdd(List<AuthRule> rules) {
+        if (authRuleHandler == null) {
+            authRuleHandler = new AuthRuleHandler();
+            Solon.global().before(authRuleHandler);
+        }
 
+        authRuleHandler.rules().addAll(rules);
+
+        return this;
+    }
+
+    /**
+     * 添加授权规则
+     * */
     public AuthProcessor authProcessor() {
         return authProcessor;
     }
