@@ -23,5 +23,5 @@ public interface AuthRule extends Handler {
     AuthRule verifyRoles(String... roles);
     AuthRule verifyRolesAnd(String... roles);
 
-    AuthRule onFailure(BiConsumerEx<Context, Result> handler);
+    AuthRule failure(BiConsumerEx<Context, Result> handler);
 }

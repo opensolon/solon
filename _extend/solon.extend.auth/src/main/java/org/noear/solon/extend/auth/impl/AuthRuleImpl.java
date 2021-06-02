@@ -32,7 +32,7 @@ public class AuthRuleImpl implements AuthRule {
     private boolean verifyPermissionsAnd;
     private String[] verifyRoles;
     private boolean verifyRolesAnd;
-    private BiConsumerEx<Context, Result> onFailureHandler;
+    private BiConsumerEx<Context, Result> failureHandler;
 
     @Override
     public AuthRule include(String pattern) {
@@ -98,8 +98,8 @@ public class AuthRuleImpl implements AuthRule {
     }
 
     @Override
-    public AuthRule onFailure(BiConsumerEx<Context, Result> handler) {
-        onFailureHandler = handler;
+    public AuthRule failure(BiConsumerEx<Context, Result> handler) {
+        failureHandler = handler;
         return this;
     }
 
@@ -210,10 +210,10 @@ public class AuthRuleImpl implements AuthRule {
 
     private void failureDo(Context c, Result r) throws Throwable {
         c.setHandled(true);
-        if (onFailureHandler == null) {
-            onFailureHandler.accept(c, r);
+        if (failureHandler == null) {
+            failureHandler.accept(c, r);
         } else {
-            AuthUtil.adapter().onFailure().accept(c, r);
+            AuthUtil.adapter().failure().accept(c, r);
         }
     }
 }

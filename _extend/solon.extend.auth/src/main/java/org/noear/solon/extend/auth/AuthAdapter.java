@@ -19,7 +19,7 @@ public class AuthAdapter {
     private String loginUrl;
     private AuthRuleHandler authRuleHandler;
     private AuthProcessor authProcessor;
-    private BiConsumerEx<Context, Result> authOnFailure = (ctx, rst) -> ctx.render(rst);
+    private BiConsumerEx<Context, Result> authFailure = (ctx, rst) -> ctx.render(rst);
 
     //=================//=================//=================
 
@@ -90,15 +90,15 @@ public class AuthAdapter {
 
     //=================//=================//=================
 
-    public BiConsumerEx<Context, Result> onFailure() {
-        return authOnFailure;
+    public BiConsumerEx<Context, Result> failure() {
+        return authFailure;
     }
 
     /**
      * 验证出错处理
      * */
-    public AuthAdapter onFailure(BiConsumerEx<Context, Result> handler) {
-        authOnFailure = handler;
+    public AuthAdapter failure(BiConsumerEx<Context, Result> handler) {
+        authFailure = handler;
         return this;
     }
 

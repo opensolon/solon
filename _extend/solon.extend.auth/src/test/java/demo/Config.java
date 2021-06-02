@@ -21,7 +21,7 @@ public class Config {
                 .addRule(b->b.include("").exclude("").verifyRoles(""))
                 .addRule(b->b.include("").exclude("").verifyRolesAnd(""))
                 .processor(null) //设定认证处理器
-                .onFailure((ctx, rst) -> { //设定验证失败代理
+                .failure((ctx, rst) -> { //设定验证失败代理
                     ctx.render(rst);
                 });
     }
