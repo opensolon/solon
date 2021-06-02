@@ -240,7 +240,7 @@ public class SolonServletContext extends Context {
             Enumeration<String> headers = _request.getHeaderNames();
 
             while (headers.hasMoreElements()) {
-                String key = (String) headers.nextElement();
+                String key = headers.nextElement();
                 String value = _request.getHeader(key);
                 _headerMap.put(key, value);
             }
