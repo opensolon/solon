@@ -27,21 +27,21 @@ public class AuthUtil {
      * 验证是否有Ip授权
      * */
     public static boolean verifyIp(){
-        return adapter().authProcessor().verifyIp();
+        return adapter().processor().verifyIp();
     }
 
     /**
      * 验证是否已登录
      * */
     public static boolean verifyLogined(){
-        return adapter().authProcessor().verifyLogined();
+        return adapter().processor().verifyLogined();
     }
 
     /**
      * 验证是否有路径授权
      * */
     public static boolean verifyPath(String path, String method) {
-        return adapter().authProcessor().verifyPath(path, method);
+        return adapter().processor().verifyPath(path, method);
     }
 
     /**
@@ -59,7 +59,7 @@ public class AuthUtil {
     }
 
     public static boolean verifyPermissions(String[] permissions, Logical logical) {
-        return adapter().authProcessor().verifyPermissions(permissions, logical);
+        return adapter().processor().verifyPermissions(permissions, logical);
     }
 
     /**
@@ -77,6 +77,6 @@ public class AuthUtil {
     }
 
     public static boolean verifyRoles(String[] roles, Logical logical) {
-        return adapter().authProcessor().verifyRoles(roles, logical);
+        return adapter().processor().verifyRoles(roles, logical);
     }
 }

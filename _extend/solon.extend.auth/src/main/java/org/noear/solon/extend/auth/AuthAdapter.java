@@ -41,17 +41,17 @@ public class AuthAdapter {
     /**
      * 添加授权规则
      * */
-    public synchronized AuthAdapter authRulesAdd(Consumer<AuthRule> custom) {
+    public synchronized AuthAdapter addRule(Consumer<AuthRule> custom) {
         AuthRuleImpl rule = new AuthRuleImpl();
         custom.accept(rule);
 
-        return authRulesAdd(rule);
+        return addRule(rule);
     }
 
     /**
      * 添加授权规则
      * */
-    public synchronized AuthAdapter authRulesAdd(AuthRule rule) {
+    public synchronized AuthAdapter addRule(AuthRule rule) {
         if (authRuleHandler == null) {
             authRuleHandler = new AuthRuleHandler();
             Solon.global().before(authRuleHandler);
@@ -65,8 +65,8 @@ public class AuthAdapter {
     /**
      * 添加授权规则
      * */
-    public AuthAdapter authRulesAdd(Collection<AuthRule> rules) {
-        rules.forEach(r -> authRulesAdd(r));
+    public AuthAdapter addRule(Collection<AuthRule> rules) {
+        rules.forEach(r -> addRule(r));
         return this;
     }
 
@@ -75,7 +75,7 @@ public class AuthAdapter {
     /**
      * 添加授权规则
      * */
-    public AuthProcessor authProcessor() {
+    public AuthProcessor processor() {
         return authProcessor;
     }
 
@@ -83,21 +83,21 @@ public class AuthAdapter {
     /**
      * 认证处理器
      */
-    public AuthAdapter authProcessor(AuthProcessor processor) {
+    public AuthAdapter processor(AuthProcessor processor) {
         authProcessor = processor;
         return this;
     }
 
     //=================//=================//=================
 
-    public BiConsumerEx<Context, Result> authOnFailure() {
+    public BiConsumerEx<Context, Result> onFailure() {
         return authOnFailure;
     }
 
     /**
      * 验证出错处理
      * */
-    public AuthAdapter authOnFailure(BiConsumerEx<Context, Result> handler) {
+    public AuthAdapter onFailure(BiConsumerEx<Context, Result> handler) {
         authOnFailure = handler;
         return this;
     }

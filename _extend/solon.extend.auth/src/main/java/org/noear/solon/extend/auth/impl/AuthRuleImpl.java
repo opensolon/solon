@@ -213,7 +213,7 @@ public class AuthRuleImpl implements AuthRule {
         if (onFailureHandler == null) {
             onFailureHandler.accept(c, r);
         } else {
-            AuthUtil.adapter().authOnFailure().accept(c, r);
+            AuthUtil.adapter().onFailure().accept(c, r);
         }
     }
 }

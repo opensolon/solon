@@ -25,7 +25,7 @@ public abstract class AbstractValidator<T extends Annotation> implements Interce
             if (result.getCode() != Result.SUCCEED_CODE) {
                 Context ctx = Context.current();
                 if (ctx != null) {
-                    AuthUtil.adapter().authOnFailure().accept(ctx, result);
+                    AuthUtil.adapter().onFailure().accept(ctx, result);
                     ctx.setHandled(true);
                     ctx.setRendered(true);
                     throw new DataThrowable();
