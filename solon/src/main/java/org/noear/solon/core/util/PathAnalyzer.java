@@ -35,7 +35,7 @@ public class PathAnalyzer {
 
     private Pattern pattern;
 
-    public PathAnalyzer(String expr){
+    private PathAnalyzer(String expr){
         pattern = Pattern.compile(exprCompile(expr), Pattern.CASE_INSENSITIVE);
     }
 

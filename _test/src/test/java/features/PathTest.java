@@ -24,14 +24,14 @@ public class PathTest {
 
     @Test
     public void test3(){
-        PathAnalyzer pathAnalyzer = new PathAnalyzer("/demo2/intercept/**");
+        PathAnalyzer pathAnalyzer =  PathAnalyzer.get("/demo2/intercept/**");
 
         assert pathAnalyzer.matches("/demo2/intercept/");
     }
 
     @Test
     public void test4(){
-        PathAnalyzer pathAnalyzer = new PathAnalyzer("/demo2/intercept/*");
+        PathAnalyzer pathAnalyzer =  PathAnalyzer.get("/demo2/intercept/*");
 
         assert pathAnalyzer.matches("/demo2/intercept/");
     }

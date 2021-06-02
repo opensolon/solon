@@ -4,6 +4,8 @@ import org.noear.solon.core.Aop;
 import org.noear.solon.extend.auth.annotation.Logical;
 
 /**
+ * 提供手动授权控制支持
+ *
  * @author noear
  * @since 1.4
  */
@@ -19,6 +21,13 @@ public class AuthUtil {
 
     public static AuthAdapter adapter() {
         return adapter;
+    }
+
+    /**
+     * 验证是否有Ip授权
+     * */
+    public static boolean verifyIp(){
+        return adapter().authProcessor().verifyIp();
     }
 
     /**

@@ -4,6 +4,9 @@ import org.noear.solon.Solon;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.ext.BiConsumerEx;
+import org.noear.solon.extend.auth.impl.AuthRuleImpl;
+
+import java.util.function.Consumer;
 
 /**
  * 认证适配器（需要用户对接）
@@ -13,10 +16,10 @@ import org.noear.solon.ext.BiConsumerEx;
  */
 public class AuthAdapter {
     private String loginUrl;
+    private AuthRuleHandler authRuleHandler;
+    private AuthProcessor authProcessor;
     private BiConsumerEx<Context, Result> authOnFailure = (ctx, rst) -> {
     };
-    private PathMatchers authPathMatchers = (ctx, url) -> true;
-    private AuthProcessor authProcessor;
 
     public String loginUrl() {
         return loginUrl;
@@ -30,35 +33,20 @@ public class AuthAdapter {
         return this;
     }
 
-    public BiConsumerEx<Context, Result> authOnFailure() {
-        return authOnFailure;
-    }
 
     /**
-     * 验证出错处理
+     * 添加授权规则
      * */
-    public AuthAdapter authOnFailure(BiConsumerEx<Context, Result> handler) {
-        authOnFailure = handler;
-        return this;
-    }
+    public synchronized AuthAdapter authRuleAdd(Consumer<AuthRule> custom) {
+        if (authRuleHandler == null) {
+            authRuleHandler = new AuthRuleHandler();
+            Solon.global().before(authRuleHandler);
+        }
 
-    public PathMatchers authPathMatchers() {
-        return authPathMatchers;
-    }
+        AuthRuleImpl authRule = new AuthRuleImpl();
+        authRuleHandler.rules().add(authRule);
+        custom.accept(authRule);
 
-    /**
-     * 认证path匹配
-     */
-    public AuthAdapter authPathMatchers(PathMatchers matchers) {
-        authPathMatchers = matchers;
-        return this;
-    }
-
-    /**
-     * 认证path拦截器
-     * */
-    public AuthAdapter authPathInterceptor(AuthInterceptor interceptor) {
-        Solon.global().before(interceptor);
         return this;
     }
 
@@ -75,4 +63,18 @@ public class AuthAdapter {
         authProcessor = processor;
         return this;
     }
+
+
+    public BiConsumerEx<Context, Result> authOnFailure() {
+        return authOnFailure;
+    }
+
+    /**
+     * 验证出错处理
+     * */
+    public AuthAdapter authOnFailure(BiConsumerEx<Context, Result> handler) {
+        authOnFailure = handler;
+        return this;
+    }
+
 }

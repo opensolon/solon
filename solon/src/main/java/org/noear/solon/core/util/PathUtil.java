@@ -87,7 +87,7 @@ public class PathUtil {
             }
 
             if (_pks.size() > 0) {
-                PathAnalyzer _pr = new PathAnalyzer(expr);
+                PathAnalyzer _pr = PathAnalyzer.get(expr);
 
                 pm = _pr.matcher(path2);
                 if (pm.find()) {

@@ -11,6 +11,11 @@ import org.noear.solon.extend.auth.annotation.Logical;
 public interface AuthProcessor {
 
     /**
+     * 验证IP
+     * */
+    boolean verifyIp();
+
+    /**
      * 验证登录状态
      */
     boolean verifyLogined();

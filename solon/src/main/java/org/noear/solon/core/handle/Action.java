@@ -93,7 +93,7 @@ public class Action extends HandlerAide implements Handler {
             }
 
             if (pathKeys.size() > 0) {
-                pathAnalyzer = new PathAnalyzer(path);
+                pathAnalyzer = PathAnalyzer.get(path);
             }
         }
     }
