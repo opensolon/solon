@@ -1,6 +1,7 @@
 package org.noear.solon.extend.auth;
 
 import org.noear.solon.Solon;
+import org.noear.solon.annotation.Note;
 import org.noear.solon.extend.auth.impl.AuthRuleImpl;
 
 import java.util.Collection;
@@ -36,41 +37,43 @@ public class AuthAdapter {
 
 
     /**
-     * 添加授权规则
+     * 添加一个授权规则
      * */
+    @Note("添加一个授权规则")
     public synchronized AuthAdapter addRule(Consumer<AuthRule> custom) {
         AuthRuleImpl rule = new AuthRuleImpl();
         custom.accept(rule);
 
-        return addRule(rule);
+        addRuleDo(rule);
+
+        return this;
     }
+
+    /**
+     * 添加一批授权规则
+     * */
+    public AuthAdapter addRules(Collection<AuthRule> rules) {
+        rules.forEach(r -> addRuleDo(r));
+        return this;
+    }
+
 
     /**
      * 添加授权规则
      * */
-    public synchronized AuthAdapter addRule(AuthRule rule) {
+    private synchronized void addRuleDo(AuthRule rule) {
         if (authRuleHandler == null) {
             authRuleHandler = new AuthRuleHandler();
             Solon.global().before(authRuleHandler);
         }
 
         authRuleHandler.rules().add(rule);
-
-        return this;
-    }
-
-    /**
-     * 添加授权规则
-     * */
-    public AuthAdapter addRule(Collection<AuthRule> rules) {
-        rules.forEach(r -> addRule(r));
-        return this;
     }
 
     //=================//=================//=================
 
     /**
-     * 添加授权规则
+     * 获取认证处理器
      * */
     public AuthProcessor processor() {
         return authProcessor;
@@ -78,8 +81,9 @@ public class AuthAdapter {
 
 
     /**
-     * 认证处理器
+     * 设定认证处理器
      */
+    @Note("设定认证处理器")
     public AuthAdapter processor(AuthProcessor processor) {
         authProcessor = processor;
         return this;
@@ -87,16 +91,19 @@ public class AuthAdapter {
 
     //=================//=================//=================
 
+    /**
+     * 获取默认的验证出错处理
+     * */
     public AuthFailureHandler failure() {
         return authFailure;
     }
 
     /**
-     * 验证出错处理
+     * 设定默认的验证出错处理
      * */
+    @Note("设定默认的验证出错处理")
     public AuthAdapter failure(AuthFailureHandler handler) {
         authFailure = handler;
         return this;
     }
-
 }
