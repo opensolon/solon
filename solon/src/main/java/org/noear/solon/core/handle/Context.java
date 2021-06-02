@@ -58,9 +58,14 @@ public abstract class Context {
     /**获取远程IP*/
     @Note("获取远程IP")
     public abstract String ip();
+    private String realIp;
     @Note("获取客户端真实IP")
     public String realIp(){
-        return IpUtil.getIp(this);
+        if(realIp == null) {
+            realIp = IpUtil.getIp(this);
+        }
+
+        return realIp;
     }
 
     /**是否为分段上传*/
