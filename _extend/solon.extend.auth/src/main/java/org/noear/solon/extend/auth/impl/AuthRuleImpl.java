@@ -3,7 +3,7 @@ package org.noear.solon.extend.auth.impl;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.core.util.PathAnalyzer;
-import org.noear.solon.ext.BiConsumerEx;
+import org.noear.solon.extend.auth.AuthFailureHandler;
 import org.noear.solon.extend.auth.AuthRule;
 import org.noear.solon.extend.auth.AuthUtil;
 
@@ -32,7 +32,7 @@ public class AuthRuleImpl implements AuthRule {
     private boolean verifyPermissionsAnd;
     private String[] verifyRoles;
     private boolean verifyRolesAnd;
-    private BiConsumerEx<Context, Result> failureHandler;
+    private AuthFailureHandler failureHandler;
 
     @Override
     public AuthRule include(String pattern) {
@@ -98,7 +98,7 @@ public class AuthRuleImpl implements AuthRule {
     }
 
     @Override
-    public AuthRule failure(BiConsumerEx<Context, Result> handler) {
+    public AuthRule failure(AuthFailureHandler handler) {
         failureHandler = handler;
         return this;
     }
@@ -211,9 +211,9 @@ public class AuthRuleImpl implements AuthRule {
     private void failureDo(Context c, Result r) throws Throwable {
         c.setHandled(true);
         if (failureHandler == null) {
-            failureHandler.accept(c, r);
+            failureHandler.onFailure(c, r);
         } else {
-            AuthUtil.adapter().failure().accept(c, r);
+            AuthUtil.adapter().failure().onFailure(c, r);
         }
     }
 }

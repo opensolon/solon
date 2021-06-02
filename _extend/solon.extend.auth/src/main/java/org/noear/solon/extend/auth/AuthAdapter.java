@@ -1,9 +1,6 @@
 package org.noear.solon.extend.auth;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.Result;
-import org.noear.solon.ext.BiConsumerEx;
 import org.noear.solon.extend.auth.impl.AuthRuleImpl;
 
 import java.util.Collection;
@@ -19,7 +16,7 @@ public class AuthAdapter {
     private String loginUrl;
     private AuthRuleHandler authRuleHandler;
     private AuthProcessor authProcessor;
-    private BiConsumerEx<Context, Result> authFailure = (ctx, rst) -> ctx.render(rst);
+    private AuthFailureHandler authFailure = (ctx, rst) -> ctx.render(rst);
 
     //=================//=================//=================
 
@@ -90,14 +87,14 @@ public class AuthAdapter {
 
     //=================//=================//=================
 
-    public BiConsumerEx<Context, Result> failure() {
+    public AuthFailureHandler failure() {
         return authFailure;
     }
 
     /**
      * 验证出错处理
      * */
-    public AuthAdapter failure(BiConsumerEx<Context, Result> handler) {
+    public AuthAdapter failure(AuthFailureHandler handler) {
         authFailure = handler;
         return this;
     }
