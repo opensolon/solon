@@ -65,6 +65,7 @@ public final class SolonProps extends Props {
         //2.2.加载活动配置
         String env = args.get("env");
 
+        //@Deprecated
         if(Utils.isEmpty(env)){
             //兼容旧版本
             env = args.get("active");
