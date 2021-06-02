@@ -9,6 +9,10 @@ solon:
 solon.cloud.consul:
   server: "localhost"
 
+
+#云原生
+solon.native: false
+
 ```
 
 ### 二、配置说明
