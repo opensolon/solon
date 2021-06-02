@@ -3,7 +3,7 @@ package org.noear.solon.extend.auth;
 import org.noear.solon.extend.auth.annotation.Logical;
 
 /**
- * 认证处理器（需要用户对接）
+ * 认证处理器（由用户对接）
  *
  * @author noear
  * @since 1.3

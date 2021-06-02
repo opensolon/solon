@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.function.Consumer;
 
 /**
- * 认证适配器（需要用户对接）
+ * 认证适配器（由用户对接）
  *
  * @author noear
  * @since 1.4
