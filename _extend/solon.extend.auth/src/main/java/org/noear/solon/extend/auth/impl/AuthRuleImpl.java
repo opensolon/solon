@@ -119,7 +119,12 @@ public class AuthRuleImpl implements AuthRule {
         }
 
         //3.无匹配
-        return false;
+        if (excludeList.size() > 0) {
+            //如果有排除，又没排除掉；则需要处理
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
