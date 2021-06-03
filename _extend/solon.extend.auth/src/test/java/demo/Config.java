@@ -1,5 +1,6 @@
 package demo;
 
+import demo.dso.AuthProcessorImpl;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.extend.auth.AuthAdapter;
@@ -13,15 +14,10 @@ public class Config {
     public AuthAdapter adapter() {
         return new AuthAdapter()
                 .loginUrl("/login") //设定登录地址，未登录时自动跳转
-                .addRule(b -> b.include("").exclude("").verifyIp().failure((c, r) -> c.output("你的ip不是白名单")))
-                .addRule(b -> b.include("").exclude("").verifyLogined())
-                .addRule(b -> b.include("").exclude("").verifyPath())
-                .addRule(b -> b.include("").exclude("").verifyPermissions(""))
-                .addRule(b -> b.include("").exclude("").verifyPermissionsAnd(""))
-                .addRule(b -> b.include("").exclude("").verifyRoles(""))
-                .addRule(b -> b.include("").exclude("").verifyRolesAnd(""))
-                .processor(null) //设定认证处理器
-                .failure((ctx, rst) -> { //设定验证失败代理
+                .addRule(r -> r.include("**").verifyIp().failure((c, t) -> c.output("你的IP不在白名单"))) //添加规则
+                .addRule(b -> b.exclude("/login**").exclude("/run/**").verifyPath()) //添加规则
+                .processor(new AuthProcessorImpl()) //设定认证处理器
+                .failure((ctx, rst) -> { //设定默认的验证失败处理
                     ctx.render(rst);
                 });
     }
