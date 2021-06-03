@@ -22,8 +22,4 @@ public @interface AuthRoles {
      * 逻辑关系
      * */
     Logical logical() default Logical.OR;
-    /**
-     * 提示消息
-     * */
-    String message() default "";
 }
