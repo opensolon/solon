@@ -10,11 +10,11 @@ import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.cloud.service.CloudEventService;
-import org.noear.solon.core.event.EventBus;
-import org.noear.solon.ext.WarnThrowable;
 import org.noear.water.WW;
 import org.noear.water.WaterClient;
 import org.noear.water.utils.EncryptUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -23,6 +23,8 @@ import java.util.*;
  * @since 1.2
  */
 public class CloudEventServiceWaterImp implements CloudEventService {
+    static Logger log = LoggerFactory.getLogger(CloudEventServiceWaterImp.class);
+
     private final String DEFAULT_DEAL = "Pckb6BpGzDE6RUIy";
     private String seal;
     private Map<String, CloudEventObserverEntity> instanceObserverMap = new HashMap<>();
@@ -154,7 +156,7 @@ public class CloudEventServiceWaterImp implements CloudEventService {
 
         if(isHandled == false){
             //只需要记录一下
-            EventBus.push(new WarnThrowable(event, "There is no observer for this event topic[" + event.topic() + "]"));
+            log.warn("There is no observer for this event topic[{}]",event.topic());
         }
 
         return isOk;

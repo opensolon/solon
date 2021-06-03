@@ -8,7 +8,8 @@ import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.ext.WarnThrowable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,8 @@ import java.util.Map;
  * @since 1.3
  */
 public class RocketmqConsumerHandler implements MessageListenerConcurrently {
+    static Logger log = LoggerFactory.getLogger(RocketmqConsumerHandler.class);
+
     Map<String, CloudEventObserverEntity> observerMap;
     String eventChannelName;
 
@@ -64,7 +67,7 @@ public class RocketmqConsumerHandler implements MessageListenerConcurrently {
             isOk = entity.handler(event);
         }else{
             //只需要记录一下
-            EventBus.push(new WarnThrowable(event, "There is no observer for this event topic[" + event.topic() + "]"));
+            log.warn("There is no observer for this event topic[{}]", event.topic());
         }
 
         return isOk;

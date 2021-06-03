@@ -3,7 +3,6 @@ package org.slf4j.impl;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
-import org.noear.solon.ext.WarnThrowable;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.logging.LogOptions;
 import org.noear.solon.logging.event.Level;
@@ -22,6 +21,7 @@ import java.util.Map;
 public class SolonLogger implements Logger {
     private String name;
     private Level level = Level.TRACE;
+
 
     public SolonLogger(String name) {
         this.name = name;
@@ -356,11 +356,6 @@ public class SolonLogger implements Logger {
                         throwable = Utils.throwableUnwrap((Throwable) args[i]);
                         throwableStr = Utils.throwableToString(throwable);
                         args[i] = throwableStr;
-
-                        if (throwable instanceof WarnThrowable) {
-                            level = Level.WARN;
-                        }
-
                         break;
                     }
                 }

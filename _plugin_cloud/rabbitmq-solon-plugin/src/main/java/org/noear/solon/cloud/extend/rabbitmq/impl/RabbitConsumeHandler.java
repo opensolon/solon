@@ -8,9 +8,9 @@ import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.cloud.utils.ExpirationUtils;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.ext.WarnThrowable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.rmi.CORBA.Util;
 import java.io.IOException;
 import java.util.Map;
 
@@ -19,6 +19,8 @@ import java.util.Map;
  * @since 1.3
  */
 public class RabbitConsumeHandler extends DefaultConsumer {
+    static Logger log = LoggerFactory.getLogger(RabbitConsumeHandler.class);
+
     Map<String, CloudEventObserverEntity> observerMap;
     RabbitConfig cfg;
     RabbitProducer producer;
@@ -78,9 +80,9 @@ public class RabbitConsumeHandler extends DefaultConsumer {
         entity = observerMap.get(event.topic());
         if (entity != null) {
             isOk = entity.handler(event);
-        }else{
+        } else {
             //只需要记录一下
-            EventBus.push(new WarnThrowable(event, "There is no observer for this event topic[" + event.topic() + "]"));
+            log.warn("There is no observer for this event topic[{}]", event.topic());
         }
 
         return isOk;

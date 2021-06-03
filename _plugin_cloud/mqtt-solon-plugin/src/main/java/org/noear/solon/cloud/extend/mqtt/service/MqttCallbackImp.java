@@ -6,10 +6,9 @@ import org.noear.solon.cloud.extend.mqtt.MqttProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.ext.WarnThrowable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.rmi.CORBA.Util;
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Map;
 
 /**
@@ -17,6 +16,8 @@ import java.util.Map;
  * @since 1.3
  */
 class MqttCallbackImp implements MqttCallback {
+    static Logger log = LoggerFactory.getLogger(MqttCallbackImp.class);
+
     final MqttClient client;
     final String eventChannelName;
 
@@ -60,7 +61,7 @@ class MqttCallbackImp implements MqttCallback {
                 observer.handler(event);
             } else {
                 //只需要记录一下
-                EventBus.push(new WarnThrowable(event, "There is no observer for this event topic[" + event.topic() + "]"));
+                log.warn("There is no observer for this event topic[{}]", event.topic());
             }
         } catch (Throwable ex) {
             EventBus.push(ex);

@@ -16,7 +16,8 @@ import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.cloud.service.CloudEventService;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.ext.WarnThrowable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.EOFException;
 import java.time.Duration;
@@ -31,6 +32,8 @@ import java.util.concurrent.TimeUnit;
  * @since 1.3
  */
 public class CloudEventServiceKafkaImp implements CloudEventService {
+    static Logger log = LoggerFactory.getLogger(CloudEventServiceKafkaImp.class);
+
     private static CloudEventServiceKafkaImp instance;
 
     public static synchronized CloudEventServiceKafkaImp getInstance() {
@@ -199,7 +202,7 @@ public class CloudEventServiceKafkaImp implements CloudEventService {
             isOk = entity.handler(event);
         } else {
             //只需要记录一下
-            EventBus.push(new WarnThrowable(event, "There is no observer for this event topic[" + event.topic() + "]"));
+            log.warn("There is no observer for this event topic[{}]", event.topic());
         }
 
         return isOk;
