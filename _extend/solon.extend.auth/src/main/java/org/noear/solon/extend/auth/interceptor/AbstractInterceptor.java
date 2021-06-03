@@ -27,6 +27,7 @@ public abstract class AbstractInterceptor<T extends Annotation> implements Inter
 
                 if (ctx != null) {
                     ctx.setHandled(true);
+                    ctx.setRendered(true);
                     AuthUtil.adapter().failure().onFailure(ctx, rst);
                     throw new DataThrowable();
                 } else {

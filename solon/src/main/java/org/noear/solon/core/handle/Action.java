@@ -314,16 +314,15 @@ public class Action extends HandlerAide implements Handler {
             return;
         }
 
-        if(obj instanceof DataThrowable){
-            return;
-        }
-
         c.result = obj;
 
         if (bRender == null) {
-            //
+            //没有代理时，跳过 DataThrowable
+            if(obj instanceof DataThrowable){
+                return;
+            }
+
             //最多一次渲染
-            //
             c.setRendered(true);
 
             if (obj instanceof Throwable) {
