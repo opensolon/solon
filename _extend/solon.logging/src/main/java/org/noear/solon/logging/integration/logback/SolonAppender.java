@@ -1,6 +1,7 @@
 package org.noear.solon.logging.integration.logback;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.classic.spi.IThrowableProxy;
 import ch.qos.logback.core.AppenderBase;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.logging.event.Level;
@@ -35,6 +36,8 @@ public class SolonAppender extends AppenderBase<ILoggingEvent> {
                 level = Level.ERROR;
                 break;
         }
+
+        //IThrowableProxy tmp = e.getThrowableProxy();
 
         LogEvent event = new LogEvent(
                 e.getLoggerName(),
