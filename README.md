@@ -48,6 +48,7 @@ public class App{
 
 //Remoting mode：(rpc)
 @Mapping("/")
+@Http
 @Socket
 @Remoting
 public class App implements HelloService{
