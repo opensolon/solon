@@ -1,10 +1,9 @@
-package org.noear.solon.extend.auth.solution;
+package demo.solution;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 
 import java.util.Base64;
-import java.util.Locale;
 
 /**
  * Authorization: Basic MTIzOjEyMw==

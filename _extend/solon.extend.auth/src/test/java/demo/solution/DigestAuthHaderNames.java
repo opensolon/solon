@@ -1,4 +1,4 @@
-package org.noear.solon.extend.auth.solution;
+package demo.solution;
 
 /**
  * @author noear

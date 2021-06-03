@@ -1,4 +1,4 @@
-package org.noear.solon.extend.auth.solution;
+package demo.solution;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;

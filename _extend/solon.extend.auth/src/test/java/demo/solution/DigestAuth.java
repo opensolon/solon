@@ -1,9 +1,7 @@
-package org.noear.solon.extend.auth.solution;
+package demo.solution;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
-
-import java.util.Base64;
 
 /**
  * @author noear 2021/5/27 created
