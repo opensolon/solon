@@ -42,7 +42,9 @@ import java.io.Serializable;
  * */
 public class DataThrowable extends RuntimeException implements Serializable {
 
-
+    /**
+     * 附带数据
+     * */
     private Object data;
 
     /**
