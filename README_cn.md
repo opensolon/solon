@@ -46,8 +46,9 @@ public class App{
 }
 
 //Remoting 模式：(rpc)
-@Mapping("/")
+@Http
 @Socket
+@Mapping("/")
 @Remoting
 public class App implements HelloService{
     public static void main(String[] args){
