@@ -102,6 +102,10 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             return;
         }
 
+        if(obj instanceof DataThrowable){
+            return;
+        }
+
         //最多一次渲染
         c.setRendered(true);
 

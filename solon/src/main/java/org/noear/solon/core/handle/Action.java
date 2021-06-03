@@ -314,6 +314,10 @@ public class Action extends HandlerAide implements Handler {
             return;
         }
 
+        if(obj instanceof DataThrowable){
+            return;
+        }
+
         c.result = obj;
 
         if (bRender == null) {
