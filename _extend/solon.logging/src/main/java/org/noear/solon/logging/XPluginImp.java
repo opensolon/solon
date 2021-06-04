@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.logging.event.Appender;
 import org.noear.solon.logging.event.Level;
+import org.slf4j.MDC;
 
 import java.util.Properties;
 
@@ -16,6 +17,11 @@ import java.util.Properties;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
+        app.filter((ctx, chain) -> {
+            chain.doFilter(ctx);
+            MDC.clear();
+        });
+
         loadAppenderConfig(app);
     }
 
