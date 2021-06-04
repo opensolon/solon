@@ -41,6 +41,9 @@ public final class NamiContext {
     }
 
     public static void clear() {
-        getContextMap0().clear();
+        Map<String, String> tmp = threadLocal.get();
+        if (tmp != null) {
+            tmp.clear();
+        }
     }
 }
