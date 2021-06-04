@@ -1,6 +1,7 @@
 package webapp.demo5_rpc;
 
 import org.noear.nami.Nami;
+import org.noear.nami.NamiContext;
 import org.noear.solon.socketd.SocketD;
 import org.noear.nami.coder.snack3.SnackDecoder;
 import org.noear.solon.Solon;
@@ -18,6 +19,8 @@ public class rpctest implements Handler {
     @Override
     public void handle(Context ctx) throws Throwable {
         Map<String, Object> map = new HashMap<>();
+
+        NamiContext.put("user_name","noear");
 
         map.put("HttpChannel", httpOf());
         map.put("SocketChannel", socketOf());

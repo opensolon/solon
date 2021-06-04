@@ -18,7 +18,11 @@ public class rockservice implements rockapi {
 
     @Override
     public Object test1(Integer a) {
-        return Context.current().method() + "::test1=" + a;
+        Context ctx = Context.current();
+
+        System.out.println("=============NameContext.Header: user_name: " + ctx.header("user_name"));
+
+        return ctx.method() + "::test1=" + a;
     }
 
     @Override

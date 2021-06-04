@@ -369,11 +369,6 @@ public class HttpTest extends _TestBase {
     }
 
     @Test
-    public void test51() throws IOException{
-        assert get("/demo5/rpctest/").equals("{\"SocketChannel\":\"SOCKET::test1=12\",\"HttpChannel\":\"POST::test1=12\"}");
-    }
-
-    @Test
     public void test61() throws IOException{
         assert  get("/demo6/aop").equals("{\"rockapi12\":\"我是：Rockservice1\",\"rockapi11\":\"我是：Rockservice1\",\"rockapi2\":\"我是：Rockservice2\",\"rockapi132\":\"我是：Rockservice3\"}");
     }

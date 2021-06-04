@@ -7,6 +7,7 @@ public class demo5_consume {
     public static void main(String[] args){
         rockapi client =  Nami.builder().create(rockapi.class);
 
+
         Object val = client.test1(12);
         if(val == null){
             return;
