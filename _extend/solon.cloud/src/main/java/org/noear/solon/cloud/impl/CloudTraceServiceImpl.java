@@ -11,12 +11,12 @@ import org.noear.solon.core.handle.Context;
 public class CloudTraceServiceImpl implements CloudTraceService {
     @Override
     public String HEADER_TRACE_ID_NAME() {
-        return "X-Trace-Id";
+        return "X-Solon-Trace-Id";
     }
 
     @Override
     public String HEADER_FROM_ID_NAME() {
-        return "X-From-Id";
+        return "X-Solon-From-Id";
     }
 
     @Override
