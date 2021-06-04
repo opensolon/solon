@@ -17,7 +17,7 @@ public class CloudLoadBalance implements LoadBalance {
     private String group;
     private Discovery discovery;
     private int index = 0;
-    private static int indexMax = 99999999;
+    private static final int indexMax = 99999999;
 
     public CloudLoadBalance(String group, String service) {
         this.service = service;
