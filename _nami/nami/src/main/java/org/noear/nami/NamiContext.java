@@ -11,13 +11,13 @@ import java.util.Map;
  * @since 1.4
  */
 public final class NamiContext {
-    private final static ThreadLocal<Map<String, String>> threadLocal = new InheritableThreadLocal<>();
+    private final static ThreadLocal<Map<String, String>> threadMap = new InheritableThreadLocal<>();
 
     private final static Map<String, String> getContextMap0() {
-        Map<String, String> tmp = threadLocal.get();
+        Map<String, String> tmp = threadMap.get();
         if (tmp == null) {
             tmp = new LinkedHashMap<>();
-            threadLocal.set(tmp);
+            threadMap.set(tmp);
         }
 
         return tmp;
@@ -41,9 +41,6 @@ public final class NamiContext {
     }
 
     public static void clear() {
-        Map<String, String> tmp = threadLocal.get();
-        if (tmp != null) {
-            tmp.clear();
-        }
+        threadMap.set(null);
     }
 }
