@@ -24,14 +24,6 @@ public class XPluginImp implements Plugin {
             NamiConfigurationDefault.proxy = new NamiConfigurationSolon();
         }
 
-        app.filter((ctx, chain) -> {
-            try {
-                chain.doFilter(ctx);
-            } finally {
-                NamiContext.clear();
-            }
-        });
-
         Aop.context().beanInjectorAdd(NamiClient.class, (varH, anno) -> {
             if (varH.getType().isInterface() == false) {
                 return;
