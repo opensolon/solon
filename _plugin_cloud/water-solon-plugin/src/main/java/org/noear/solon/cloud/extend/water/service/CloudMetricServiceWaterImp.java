@@ -1,6 +1,5 @@
 package org.noear.solon.cloud.extend.water.service;
 
-import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudMetricService;
 import org.noear.water.WW;
 import org.noear.water.WaterClient;
