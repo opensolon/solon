@@ -1,8 +1,6 @@
 package org.noear.nami.integration.solon;
 
-import org.noear.nami.Nami;
-import org.noear.nami.NamiConfigurationDefault;
-import org.noear.nami.NamiException;
+import org.noear.nami.*;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.common.InfoUtils;
 import org.noear.solon.SolonApp;
@@ -25,6 +23,11 @@ public class XPluginImp implements Plugin {
         if (NamiConfigurationDefault.proxy == null) {
             NamiConfigurationDefault.proxy = new NamiConfigurationSolon();
         }
+
+        app.filter((ctx, chain) -> {
+            chain.doFilter(ctx);
+            NamiContext.clear();
+        });
 
         Aop.context().beanInjectorAdd(NamiClient.class, (varH, anno) -> {
             if (varH.getType().isInterface() == false) {
