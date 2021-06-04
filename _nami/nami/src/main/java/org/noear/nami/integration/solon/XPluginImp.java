@@ -25,8 +25,11 @@ public class XPluginImp implements Plugin {
         }
 
         app.filter((ctx, chain) -> {
-            chain.doFilter(ctx);
-            NamiContext.clear();
+            try {
+                chain.doFilter(ctx);
+            } finally {
+                NamiContext.clear();
+            }
         });
 
         Aop.context().beanInjectorAdd(NamiClient.class, (varH, anno) -> {

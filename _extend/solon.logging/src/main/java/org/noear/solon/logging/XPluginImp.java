@@ -18,8 +18,11 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
         app.filter((ctx, chain) -> {
-            chain.doFilter(ctx);
-            MDC.clear();
+            try {
+                chain.doFilter(ctx);
+            } finally {
+                MDC.clear();
+            }
         });
 
         loadAppenderConfig(app);
