@@ -8,6 +8,7 @@ import org.noear.solon.socketd.ConnectorBase;
 import org.noear.solon.socketd.ListenerProxy;
 import org.noear.solon.socketd.SocketProps;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
@@ -42,8 +43,8 @@ public class BioConnector extends ConnectorBase<Socket> {
             startReceive(session, socket);
 
             return socket;
-        } catch (Exception ex) {
-            throw Utils.throwableWrap(ex);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
         }
     }
 

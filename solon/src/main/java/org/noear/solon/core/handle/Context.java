@@ -404,12 +404,8 @@ public abstract class Context {
     @Note("输出内容:字符串")
     public void output(String str) {
         if (str != null) {
-            try {
-                attrSet("output", str);
-                output(str.getBytes(charset));
-            } catch (Throwable ex) {
-                throw Utils.throwableWrap(ex);
-            }
+            attrSet("output", str);
+            output(str.getBytes(charset));
         }
     }
     @Note("输出内容:异常对象")

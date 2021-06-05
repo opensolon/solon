@@ -47,7 +47,12 @@ public class ValidatorFailureHandlerImp implements ValidatorFailureHandler {
                 ctx.setRendered(true);
                 ctx.render(Result.failure(rst.getCode(), message));
             } catch (Throwable ex) {
-                throw Utils.throwableWrap(ex);
+                ex = Utils.throwableUnwrap(ex);
+                if (ex instanceof RuntimeException) {
+                    throw (RuntimeException) ex;
+                } else {
+                    throw new RuntimeException(ex);
+                }
             }
         }
 

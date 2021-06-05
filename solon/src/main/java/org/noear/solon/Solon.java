@@ -88,7 +88,12 @@ public class Solon {
             try {
                 initialize.accept(global);
             } catch (Throwable ex) {
-                throw Utils.throwableWrap(ex);
+                ex = Utils.throwableUnwrap(ex);
+                if (ex instanceof RuntimeException) {
+                    throw (RuntimeException) ex;
+                } else {
+                    throw new RuntimeException(ex);
+                }
             }
         }
 

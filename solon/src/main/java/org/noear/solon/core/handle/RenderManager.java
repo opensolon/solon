@@ -109,8 +109,13 @@ public class RenderManager implements Render {
     public static String renderAndReturn(ModelAndView modelAndView) {
         try {
             return global.renderAndReturn(modelAndView, Context.current());
-        } catch (Throwable e) {
-            throw Utils.throwableWrap(e);
+        } catch (Throwable ex) {
+            ex = Utils.throwableUnwrap(ex);
+            if (ex instanceof RuntimeException) {
+                throw (RuntimeException) ex;
+            } else {
+                throw new RuntimeException(ex);
+            }
         }
     }
 

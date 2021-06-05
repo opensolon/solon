@@ -14,17 +14,17 @@ public final class JobManager {
     static Scheduler _server = null;
     static Map<String, JobEntity> jobMap = new HashMap<>();
 
-    protected static void init() throws Exception {
+    protected static void init() throws SchedulerException {
         SchedulerFactory schedulerFactory = new StdSchedulerFactory();
 
         _server = schedulerFactory.getScheduler();
     }
 
-    protected static void start() throws Exception {
+    protected static void start() throws SchedulerException {
         _server.start();
     }
 
-    protected static void stop() throws Exception {
+    protected static void stop() throws SchedulerException {
 
         if (_server != null) {
             _server.shutdown();

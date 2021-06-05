@@ -72,8 +72,8 @@ public class JarClassLoader extends URLClassLoader {
     public void addJar(File file) {
         try {
             addJar(file.toURI().toURL(), true);
-        } catch (Exception ex) {
-            throw Utils.throwableWrap(ex);
+        } catch (MalformedURLException ex) {
+            throw new RuntimeException(ex);
         }
     }
 
@@ -121,8 +121,8 @@ public class JarClassLoader extends URLClassLoader {
     public void removeJar(File file) {
         try {
             removeJar(file.toURI().toURL());
-        } catch (Exception ex) {
-            throw Utils.throwableWrap(ex);
+        } catch (MalformedURLException ex) {
+            throw new RuntimeException(ex);
         }
     }
 

@@ -59,13 +59,16 @@ public class RabbitConsumeHandler extends DefaultConsumer {
             }
 
         } catch (Throwable ex) {
+            ex = Utils.throwableUnwrap(ex);
+
             EventBus.push(ex);
 
-            //按协议要求，抛到上一级
-            if (ex instanceof IOException) {
+            if (ex instanceof RuntimeException) {
+                throw (RuntimeException) ex;
+            } else if (ex instanceof IOException) {
                 throw (IOException) ex;
             } else {
-                throw Utils.throwableWrap(ex);
+                throw new RuntimeException(ex);
             }
         }
     }

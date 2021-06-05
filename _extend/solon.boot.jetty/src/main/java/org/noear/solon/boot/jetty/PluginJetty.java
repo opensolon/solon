@@ -27,8 +27,8 @@ class PluginJetty extends PluginJettyBase implements Plugin {
         try {
             setup(app);
             _server.start();
-        } catch (Throwable ex) {
-            throw Utils.throwableWrap(ex);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
     }
 
@@ -40,7 +40,7 @@ class PluginJetty extends PluginJettyBase implements Plugin {
         }
     }
 
-    protected void setup(SolonApp app) throws Throwable{
+    protected void setup(SolonApp app) throws IOException{
         Class<?> wsClz = Utils.loadClass("org.eclipse.jetty.websocket.server.WebSocketHandler");
 
         _server = new Server(port);

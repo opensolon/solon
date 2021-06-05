@@ -3,6 +3,7 @@ package org.noear.solon.cloud.extend.zookeeper.impl;
 import org.apache.zookeeper.*;
 import org.noear.solon.Utils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -45,8 +46,10 @@ public class ZkClient {
                 }
             });
             latch.await();
-        } catch (Exception e) {
-            throw Utils.throwableWrap(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -90,8 +93,10 @@ public class ZkClient {
             } else {
                 real.setData(path, data.getBytes(), -1);
             }
-        } catch (Exception e) {
-            throw Utils.throwableWrap(e);
+        } catch (KeeperException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 

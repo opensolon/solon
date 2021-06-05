@@ -81,13 +81,16 @@ public class Utils {
     /**
      * 包装异常
      * */
-    public static RuntimeException throwableWrap(Throwable ex){
-        if(ex instanceof RuntimeException){
-            return  (RuntimeException)ex;
-        }else {
-            return new RuntimeException(ex);
-        }
-    }
+//    @Deprecated
+//    public static RuntimeException throwableWrap(Throwable ex) {
+//        if (ex instanceof RuntimeException) {
+//            return (RuntimeException) ex;
+//        } else if (ex instanceof Error) {
+//            throw (Error) ex;
+//        } else {
+//            return new RuntimeException(ex);
+//        }
+//    }
 
     /**
      * 解包异常
@@ -266,18 +269,14 @@ public class Utils {
      * @param name 资源名称
      * @param charset 编码
      * */
-    public static String getResourceAsString(String name, String charset) {
+    public static String getResourceAsString(String name, String charset) throws IOException{
         return getResourceAsString(JarClassLoader.global(), name, charset);
     }
 
-    public static String getResourceAsString(ClassLoader classLoader, String name, String charset) {
+    public static String getResourceAsString(ClassLoader classLoader, String name, String charset) throws IOException {
         URL url = getResource(classLoader, name);
         if (url != null) {
-            try {
-                return transferToString(url.openStream(), charset);
-            } catch (Exception ex) {
-                throw throwableWrap(ex);
-            }
+            return transferToString(url.openStream(), charset);
         } else {
             return null;
         }

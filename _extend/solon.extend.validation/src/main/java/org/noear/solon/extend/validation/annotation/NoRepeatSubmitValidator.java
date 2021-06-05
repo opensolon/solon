@@ -5,6 +5,8 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.extend.validation.Validator;
 
+import java.io.IOException;
+
 /**
  *
  * @author noear
@@ -28,8 +30,8 @@ public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
                     try {
                         tmp.append("body:");
                         tmp.append(ctx.body()).append(";");
-                    } catch (Exception ex) {
-                        throw Utils.throwableWrap(ex);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
                     }
                     break;
                 }

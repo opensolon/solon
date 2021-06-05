@@ -152,8 +152,8 @@ public abstract class SessionBase implements Session {
         try {
             //等待响应
             return request.get(timeout, TimeUnit.SECONDS);
-        } catch (Throwable ex) {
-            throw Utils.throwableWrap(ex);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
     }
 

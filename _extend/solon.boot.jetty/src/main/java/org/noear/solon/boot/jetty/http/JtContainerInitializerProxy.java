@@ -21,8 +21,8 @@ public class JtContainerInitializerProxy extends AbstractLifeCycle.AbstractLifeC
     public void lifeCycleStarting(LifeCycle event) {
         try {
             initializer.startup(new HashSet<Class<?>>(), sc);
-        } catch (Exception ex) {
-            throw Utils.throwableWrap(ex);
+        } catch (ServletException ex) {
+            throw new RuntimeException(ex);
         }
     }
 }

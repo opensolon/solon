@@ -4,6 +4,7 @@ import org.noear.luffy.model.AFileModel;
 import org.noear.solon.Utils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -50,7 +51,7 @@ public class JtResouceLoaderClass implements JtResouceLoader {
         return file;
     }
 
-    protected String fileContentGet(String path) {
+    protected String fileContentGet(String path) throws IOException {
         return Utils.getResourceAsString("luffy/" + path, "utf-8");
     }
 }

@@ -64,13 +64,14 @@ class MqttCallbackImp implements MqttCallback {
                 log.warn("There is no observer for this event topic[{}]", event.topic());
             }
         } catch (Throwable ex) {
+            ex = Utils.throwableUnwrap(ex);
+
             EventBus.push(ex);
 
-            //按接口返回要求，抛到上一级
             if (ex instanceof Exception) {
                 throw (Exception) ex;
             } else {
-                throw Utils.throwableWrap(ex);
+                throw new RuntimeException(ex);
             }
         }
     }
