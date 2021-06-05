@@ -951,12 +951,12 @@
             <distributionManagement>
                 <snapshotRepository>
                     <id>oss</id>
-                    <name>releases</name>
+                    <name>snapshots</name>
                     <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
                 </snapshotRepository>
                 <repository>
                     <id>oss</id>
-                    <name>snapshots</name>
+                    <name>releases</name>
                     <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
                 </repository>
             </distributionManagement>
@@ -1005,13 +1005,12 @@
             <distributionManagement>
                 <snapshotRepository>
                     <id>nexus-internal</id>
-                    <name>releases</name>
-                    <layout>default</layout>
+                    <name>snapshots</name>
                     <url>http://maven.digital.js/repository/maven-snapshots/</url>
                 </snapshotRepository>
                 <repository>
                     <id>nexus-internal</id>
-                    <name>snapshots</name>
+                    <name>releases</name>
                     <url>http://maven.digital.js/repository/maven-releases/</url>
                 </repository>
             </distributionManagement>
