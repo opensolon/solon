@@ -81,16 +81,16 @@ public class Utils {
     /**
      * 包装异常
      * */
-//    @Deprecated
-//    public static RuntimeException throwableWrap(Throwable ex) {
-//        if (ex instanceof RuntimeException) {
-//            return (RuntimeException) ex;
-//        } else if (ex instanceof Error) {
-//            throw (Error) ex;
-//        } else {
-//            return new RuntimeException(ex);
-//        }
-//    }
+    @Deprecated
+    public static RuntimeException throwableWrap(Throwable ex) {
+        if (ex instanceof RuntimeException) {
+            return (RuntimeException) ex;
+        } else if (ex instanceof Error) {
+            throw (Error) ex;
+        } else {
+            return new RuntimeException(ex);
+        }
+    }
 
     /**
      * 解包异常
