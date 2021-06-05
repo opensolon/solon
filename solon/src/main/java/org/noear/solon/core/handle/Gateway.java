@@ -94,7 +94,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
 
     /**
-     * for XRender （用于接管 BeanWebWrap 和 XAction 的渲染）
+     * for Render （用于接管 BeanWebWrap 和 Action 的渲染）
      */
     @Override
     public void render(Object obj, Context c) throws Throwable {
