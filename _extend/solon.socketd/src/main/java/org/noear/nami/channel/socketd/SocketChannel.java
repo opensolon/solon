@@ -11,7 +11,6 @@ import org.noear.solon.core.message.MessageFlag;
 import org.noear.solon.socketd.annotation.Handshake;
 import org.noear.solon.socketd.util.HeaderUtil;
 
-import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.function.Supplier;
 
