@@ -16,4 +16,9 @@ public interface Encoder {
      * 序列化
      * */
     byte[] encode(Object obj);
+
+    /**
+     * 预处理
+     * */
+    void pretreatment(NamiContext ctx);
 }

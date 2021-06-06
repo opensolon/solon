@@ -1,6 +1,7 @@
 package org.noear.nami.coder.protostuff;
 
 import org.noear.nami.Encoder;
+import org.noear.nami.NamiContext;
 import org.noear.nami.common.Constants;
 
 /**
@@ -18,5 +19,10 @@ public class ProtostuffEncoder implements Encoder {
     @Override
     public byte[] encode(Object obj) {
         return ProtostuffUtil.serialize(obj);
+    }
+
+    @Override
+    public void pretreatment(NamiContext ctx) {
+
     }
 }

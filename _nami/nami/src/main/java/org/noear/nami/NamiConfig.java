@@ -62,7 +62,7 @@ public class NamiConfig {
     private String path;
     private String group;
     //过滤器
-    private Set<Filter> filters = new LinkedHashSet<>();
+    private Set<Interceptor> interceptors = new LinkedHashSet<>();
     //头信息
     private Map<String,String> headers = new LinkedHashMap<>();
 
@@ -198,16 +198,17 @@ public class NamiConfig {
     }
 
     /**
-     * 获取过滤器
+     * 获取拦截器
      * */
-    public Set<Filter> getFilters() {
-        return filters;
+    public Set<Interceptor> getInterceptors() {
+        return interceptors;
     }
+
     /**
-     * 添加过滤器
+     * 添加拦截器
      * */
-    protected void filterAdd(Filter filter) {
-        filters.add(filter);
+    protected void interceptorAdd(Interceptor interceptor) {
+        interceptors.add(interceptor);
     }
 
 }

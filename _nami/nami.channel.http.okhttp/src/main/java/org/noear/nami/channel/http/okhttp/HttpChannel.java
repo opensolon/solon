@@ -6,9 +6,6 @@ import org.noear.nami.*;
 import org.noear.nami.common.Constants;
 import org.noear.nami.common.Result;
 
-import java.lang.reflect.Method;
-import java.util.Map;
-
 /**
  * Http 通道
  * */
@@ -16,14 +13,14 @@ public class HttpChannel implements NamiChannel {
     public static final HttpChannel instance = new HttpChannel();
 
     @Override
-    public Result call(NamiConfig cfg, Method method, String action, String url, Map<String, String> headers, Map<String, Object> args, Object body) throws Throwable {
+    public Result call(NamiContext ctx) throws Throwable {
         //0.检测method
-        boolean is_get = Constants.METHOD_GET.equals(action);
+        boolean is_get = Constants.METHOD_GET.equals(ctx.action);
 
         //0.尝试重构url
-        if (is_get && args.size() > 0) {
-            StringBuilder sb = new StringBuilder(url).append("?");
-            args.forEach((k, v) -> {
+        if (is_get && ctx.args.size() > 0) {
+            StringBuilder sb = new StringBuilder(ctx.url).append("?");
+            ctx.args.forEach((k, v) -> {
                 if (v != null) {
                     sb.append(k).append("=")
                             .append(HttpUtils.urlEncode(v.toString()))
@@ -31,43 +28,43 @@ public class HttpChannel implements NamiChannel {
                 }
             });
 
-            url = sb.substring(0, sb.length() - 1);
+            ctx.url = sb.substring(0, sb.length() - 1);
         }
 
-        if (cfg.getDecoder() == null) {
+        if (ctx.config.getDecoder() == null) {
             throw new IllegalArgumentException("There is no suitable decoder");
         }
 
         //0.尝试解码器的过滤
-        cfg.getDecoder().filter(cfg, action, url, headers, args);
+        ctx.config.getDecoder().pretreatment(ctx);
 
         //0.开始构建http
-        HttpUtils http = HttpUtils.http(url).headers(headers);
+        HttpUtils http = HttpUtils.http(ctx.url).headers(ctx.headers);
         Response response = null;
-        Encoder encoder = cfg.getEncoder();
+        Encoder encoder = ctx.config.getEncoder();
 
         //1.执行并返回
-        if (is_get || args.size() == 0) {
+        if (is_get || ctx.args.size() == 0) {
             response = http.exec(Constants.METHOD_GET);
         } else {
             if (encoder == null) {
-                String ct0 = headers.getOrDefault(Constants.HEADER_CONTENT_TYPE, "");
+                String ct0 = ctx.headers.getOrDefault(Constants.HEADER_CONTENT_TYPE, "");
 
                 if (ct0.length() == 0) {
-                    response = http.data(args).exec(action);
+                    response = http.data(ctx.args).exec(ctx.action);
                 } else {
                     encoder = NamiManager.getEncoder(ct0);
                 }
             } else {
-                encoder = cfg.getEncoder();
+                encoder = ctx.config.getEncoder();
             }
         }
 
         if (response == null && encoder != null) {
-            byte[] bytes = encoder.encode(body);
+            byte[] bytes = encoder.encode(ctx.body);
 
             if (bytes != null) {
-                response = http.bodyRaw(bytes, encoder.enctype()).exec(action);
+                response = http.bodyRaw(bytes, encoder.enctype()).exec(ctx.action);
             }
         }
 
@@ -93,23 +90,23 @@ public class HttpChannel implements NamiChannel {
         return result;
     }
 
-    @Override
-    public void filter(NamiConfig cfg, String method, String url, Map<String, String> headers, Map<String, Object> args) {
-        if (cfg.getDecoder() == null) {
-            String at = cfg.getHeader(Constants.HEADER_ACCEPT);
+
+    private void pretreatment(NamiContext ctx) {
+        if (ctx.config.getDecoder() == null) {
+            String at = ctx.config.getHeader(Constants.HEADER_ACCEPT);
 
             if (at == null) {
                 at = Constants.CONTENT_TYPE_JSON;
             }
 
-            cfg.setDecoder(NamiManager.getDecoder(at));
+            ctx.config.setDecoder(NamiManager.getDecoder(at));
         }
 
-        if (cfg.getEncoder() == null) {
-            String ct = cfg.getHeader(Constants.HEADER_CONTENT_TYPE);
+        if (ctx.config.getEncoder() == null) {
+            String ct = ctx.config.getHeader(Constants.HEADER_CONTENT_TYPE);
 
             if (ct != null) {
-                cfg.setEncoder(NamiManager.getEncoder(ct));
+                ctx.config.setEncoder(NamiManager.getEncoder(ct));
             }
         }
     }

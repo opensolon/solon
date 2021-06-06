@@ -10,7 +10,7 @@ import java.lang.reflect.Type;
  * @author noear
  * @since 1.2
  * */
-public interface Decoder extends Filter {
+public interface Decoder {
     /**
      * 编码
      * */
@@ -20,4 +20,9 @@ public interface Decoder extends Filter {
      * 反序列化
      * */
     <T> T decode(Result rst, Type clz);
+
+    /**
+     * 预处理
+     * */
+    void pretreatment(NamiContext ctx);
 }

@@ -1,6 +1,7 @@
 package org.noear.nami.coder.snack3;
 
 import org.noear.nami.Encoder;
+import org.noear.nami.NamiContext;
 import org.noear.nami.common.Constants;
 import org.noear.snack.ONode;
 
@@ -17,5 +18,10 @@ public class SnackTypeEncoder implements Encoder {
     @Override
     public byte[] encode(Object obj) {
         return ONode.serialize(obj).getBytes(StandardCharsets.UTF_8);
+    }
+
+    @Override
+    public void pretreatment(NamiContext ctx) {
+
     }
 }

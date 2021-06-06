@@ -1,46 +1,25 @@
 package org.noear.nami;
 
-import java.util.Collections;
+import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Nami 请求上下文
- *
- * @author noear
- * @since 1.4
+ * @author noear 2021/6/6 created
  */
-public final class NamiContext {
-    private final static ThreadLocal<Map<String, String>> threadMap = new InheritableThreadLocal<>();
+public class NamiContext {
+    public final NamiConfig config;
+    public final Method method;
+    public final String action;
 
-    private final static Map<String, String> getContextMap0() {
-        Map<String, String> tmp = threadMap.get();
-        if (tmp == null) {
-            tmp = new LinkedHashMap<>();
-            threadMap.set(tmp);
-        }
+    public Map<String, String> headers = new LinkedHashMap<>();
+    public Map<String, Object> args = new LinkedHashMap<>();
+    public Object body;
+    public String url;
 
-        return tmp;
-    }
-
-
-    public static Map<String, String> getContextMap() {
-        return Collections.unmodifiableMap(getContextMap0());
-    }
-
-    public static void put(String name, String value) {
-        getContextMap0().put(name, value);
-    }
-
-    public static String get(String name) {
-        return getContextMap0().get(name);
-    }
-
-    public static void remove(String name) {
-        getContextMap0().remove(name);
-    }
-
-    public static void clear() {
-        threadMap.set(null);
+    public NamiContext(NamiConfig config, Method method, String action) {
+        this.config = config;
+        this.method = method;
+        this.action = action;
     }
 }

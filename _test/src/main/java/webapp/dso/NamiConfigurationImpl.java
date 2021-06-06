@@ -1,6 +1,5 @@
 package webapp.dso;
 
-import org.noear.nami.Filter;
 import org.noear.nami.Nami;
 import org.noear.nami.NamiConfig;
 import org.noear.nami.NamiConfiguration;

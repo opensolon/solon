@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.noear.nami.Encoder;
+import org.noear.nami.NamiContext;
 import org.noear.nami.common.Constants;
 
 /**
@@ -38,5 +39,10 @@ public class JacksonTypeEncoder implements Encoder {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    @Override
+    public void pretreatment(NamiContext ctx) {
+
     }
 }

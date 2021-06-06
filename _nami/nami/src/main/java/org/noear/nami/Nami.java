@@ -3,12 +3,10 @@ package org.noear.nami;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.common.Constants;
 import org.noear.nami.common.Result;
-import org.noear.solon.core.util.PrintUtil;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -18,7 +16,7 @@ import java.util.function.Supplier;
  * @author noear
  * @since 1.0
  * */
-public class Nami {
+public class Nami{
     /**
      * 默认的序列化器（涉及第三方框架引用，不做定义）
      */
@@ -118,45 +116,20 @@ public class Nami {
 
     public Nami call(Map<String, String> headers, Map args, Object body) {
         try {
-            if (headers == null) {
-                headers = new HashMap<>();
+            Invocation invocation  = new Invocation(_config, _method,_action, this::doIntercept);
+            if (headers != null) {
+                invocation.headers.putAll(headers);
             }
 
-            if (args == null) {
-                args = new HashMap<>();
+            if (args != null) {
+                invocation.args.putAll(args);
             }
 
-            for (Filter filter : _config.getFilters()) {
-                filter.filter(_config, _action, _url, headers, args);
+            if(body != null) {
+                invocation.body = body;
             }
 
-            NamiChannel channel = _config.getChannel();
-
-            if (channel == null) {
-                //通过 scheme 获取通道
-                int idx = _url.indexOf("://");
-                if (idx > 0) {
-                    String scheme = _url.substring(0, idx);
-                    channel = NamiManager.getChannel(scheme);
-                }
-            }
-
-            if (channel == null) {
-                throw new NamiException("There are no channels available");
-            }
-
-            //执行通道过滤器
-            channel.filter(_config, _action, _url, headers, args);
-
-            if (body == null) {
-                body = args;
-            }
-
-            if (_config.getDebug()) {
-                System.out.println("[Nami] call: " + _url);
-            }
-
-            _result = channel.call(_config, _method, _action, _url, headers, args, body);
+            _result = invocation.invoke();
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {
@@ -164,6 +137,36 @@ public class Nami {
         }
 
         return this;
+    }
+
+
+    private Result doIntercept(Invocation inv) throws Throwable {
+        NamiChannel channel = _config.getChannel();
+
+        if (channel == null) {
+            //通过 scheme 获取通道
+            int idx = _url.indexOf("://");
+            if (idx > 0) {
+                String scheme = _url.substring(0, idx);
+                channel = NamiManager.getChannel(scheme);
+            }
+        }
+
+        if (channel == null) {
+            throw new NamiException("There are no channels available");
+        }
+
+        if (inv.body == null) {
+            inv.body = inv.args;
+        }
+
+        if (_config.getDebug()) {
+            System.out.println("[Nami] call: " + _url);
+        }
+
+        inv.url = _url;
+
+        return channel.call(inv);
     }
 
     private Result _result;
@@ -268,10 +271,10 @@ public class Nami {
         }
 
         /**
-         * 添加过滤器
+         * 添加拦截器
          */
-        public Builder filterAdd(Filter filter) {
-            _config.filterAdd(filter);
+        public Builder interceptorAdd(Interceptor interceptor) {
+            _config.interceptorAdd(interceptor);
             return this;
         }
 

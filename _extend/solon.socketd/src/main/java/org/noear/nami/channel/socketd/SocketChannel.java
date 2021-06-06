@@ -15,45 +15,42 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class SocketChannel extends SocketChannelFilter implements NamiChannel {
+public class SocketChannel extends SocketChannelBase implements NamiChannel {
     public Supplier<Session> sessions;
 
     public SocketChannel(Supplier<Session> sessions) {
         this.sessions = sessions;
     }
 
-    //public SocketChannel handshake();
-
     @Override
-    public Result call(NamiConfig cfg, Method method, String action, String url, Map<String, String> headers, Map<String, Object> args, Object body) throws Throwable {
-
-        if(cfg.getDecoder() == null){
+    public Result call(NamiContext ctx) throws Throwable {
+        if(ctx.config.getDecoder() == null){
             throw new IllegalArgumentException("There is no suitable decoder");
         }
 
         //0.尝试解码器的过滤
-        cfg.getDecoder().filter(cfg, action, url, headers, args);
+        ctx.config.getDecoder().pretreatment(ctx);
 
         Message message = null;
         String message_key = Message.guid();
         int flag = MessageFlag.message;
 
-        if (method != null) {
+        if (ctx.method != null) {
             //是否为握手
             //
-            Handshake h = method.getAnnotation(Handshake.class);
+            Handshake h = ctx.method.getAnnotation(Handshake.class);
             if (h != null) {
                 flag = MessageFlag.handshake;
 
                 if (Utils.isNotEmpty(h.handshakeHeader())) {
                     Map<String, String> headerMap = HeaderUtil.decodeHeaderMap(h.handshakeHeader());
-                    headers.putAll(headerMap);
+                    ctx.headers.putAll(headerMap);
                 }
             }
         }
 
         //1.确定编码器
-        Encoder encoder = cfg.getEncoder();
+        Encoder encoder = ctx.config.getEncoder();
         if(encoder == null){
             encoder = NamiManager.getEncoder(Constants.CONTENT_TYPE_JSON);
         }
@@ -63,12 +60,12 @@ public class SocketChannel extends SocketChannelFilter implements NamiChannel {
         }
 
         //2.构建消息
-        headers.put(Constants.HEADER_CONTENT_TYPE, encoder.enctype());
-        byte[] bytes = encoder.encode(body);
-        message = new Message(flag, message_key, url, HeaderUtil.encodeHeaderMap(headers), bytes);
+        ctx.headers.put(Constants.HEADER_CONTENT_TYPE, encoder.enctype());
+        byte[] bytes = encoder.encode(ctx.body);
+        message = new Message(flag, message_key, ctx.url, HeaderUtil.encodeHeaderMap(ctx.headers), bytes);
 
         //3.发送消息
-        Message res = sessions.get().sendAndResponse(message, cfg.getTimeout());
+        Message res = sessions.get().sendAndResponse(message, ctx.config.getTimeout());
 
         if (res == null) {
             return null;
