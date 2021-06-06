@@ -18,16 +18,6 @@
     <name>${project.artifactId}</name>
     <description>java project for solon demo</description>
 
-    <!--
-     多模板引擎共存时，模板文件后缀默认对应关系：
-     beetl:       .htm
-     enjoy:       .shtm
-     freemaerker: .ftl
-     jsp:         .jsp
-     thyemeleaf:  .html
-     velocity:    .vm
-     -->
-
 
     <dependencies>
         <dependency>
@@ -74,8 +64,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.14.4</version>
-            <scope>provided</scope>
+            <version>1.18.12</version>
         </dependency>
 
         <dependency>

@@ -5,15 +5,16 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * @author noear 2021/6/6 created
+ * @author noear
+ * @since 1.4
  */
 public class NamiContext {
     public final NamiConfig config;
     public final Method method;
     public final String action;
 
-    public Map<String, String> headers = new LinkedHashMap<>();
-    public Map<String, Object> args = new LinkedHashMap<>();
+    public final Map<String, String> headers = new LinkedHashMap<>();
+    public final Map<String, Object> args = new LinkedHashMap<>();
     public Object body;
     public String url;
 

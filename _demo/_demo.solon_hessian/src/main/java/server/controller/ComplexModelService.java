@@ -1,17 +1,16 @@
 package server.controller;
 
-import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Remoting;
 import org.noear.solon.core.handle.MethodType;
 import server.dso.IComplexModelService;
 import server.model.ComplexModel;
-import server.model.Point;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Mapping(value = "/ComplexModelService/",method = {MethodType.ALL})
-@Component(remoting = true)
+@Remoting
 public class ComplexModelService implements IComplexModelService {
     private Map<Integer,ComplexModel> models = new HashMap<Integer, ComplexModel>();
 
