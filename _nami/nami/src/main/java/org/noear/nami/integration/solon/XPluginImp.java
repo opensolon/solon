@@ -7,17 +7,16 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
-import org.noear.solon.core.event.EventBus;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author noear
  * @since 1.2
  * */
 public class XPluginImp implements Plugin {
-    private Map<NamiClient, Object> cached = new ConcurrentHashMap<>();
+    private Map<NamiClient, Object> cached = new LinkedHashMap<>();
 
     @Override
     public void start(SolonApp app) {

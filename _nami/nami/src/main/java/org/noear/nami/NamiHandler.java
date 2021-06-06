@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,10 +26,13 @@ public class NamiHandler implements InvocationHandler {
     private static Pattern pathKeyExpr = Pattern.compile("\\{([^\\\\}]+)\\}");
 
     private final NamiConfig config;
+    private final NamiClient client;
 
     private final Map<String, String> headers0 = new LinkedHashMap<>();
     private final Class<?> clz0;
-    private final Map<String, Map> pathKeysCached = new ConcurrentHashMap<>();
+    private final Map<String, Map> pathKeysCached = new LinkedHashMap<>();
+    private boolean inited = false;
+    private String initLock = "";
 
     /**
      * @param config 配置
@@ -38,67 +40,82 @@ public class NamiHandler implements InvocationHandler {
      */
     public NamiHandler(Class<?> clz, NamiConfig config, NamiClient client) {
         this.config = config;
+        this.client = client;
 
         this.clz0 = clz;
+    }
 
-        //1.运行配置器
-        if (client != null) {
-            try {
+    private void init() throws Throwable {
+        if (inited) {
+            return;
+        }
+
+        synchronized (initLock) {
+            if (inited) {
+                return;
+            } else {
+                inited = true;
+            }
+
+            //1.运行配置器
+            if (client != null) {
                 config.setUrl(config.getUrl());
 
-                NamiConfiguration tmp = NamiManager.getConfigurator(client.configuration());
+                //尝试添加全局拦截器
+                for (NamiInterceptor mi : NamiManager.getInterceptorSet()) {
+                    config.interceptorAdd(mi);
+                }
 
+                //尝试配置器配置
+                NamiConfiguration tmp = NamiManager.getConfigurator(client.configuration());
                 if (tmp != null) {
                     tmp.config(client, new Nami.Builder(config));
                 }
-            } catch (RuntimeException ex) {
-                throw ex;
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
 
-            if (client.timeout() > 0) {
-                config.setTimeout(client.timeout());
-            }
+                //尝试设置超时
+                if (client.timeout() > 0) {
+                    config.setTimeout(client.timeout());
+                }
 
-            //>>添加接口url
-            if (TextUtils.isNotEmpty(client.url())) {
-                config.setUrl(client.url());
-            }
+                //>>添加接口url
+                if (TextUtils.isNotEmpty(client.url())) {
+                    config.setUrl(client.url());
+                }
 
-            //>>添加接口group
-            if (TextUtils.isNotEmpty(client.group())) {
-                config.setGroup(client.group());
-            }
+                //>>添加接口group
+                if (TextUtils.isNotEmpty(client.group())) {
+                    config.setGroup(client.group());
+                }
 
-            //>>添加接口name
-            if (TextUtils.isNotEmpty(client.name())) {
-                config.setName(client.name());
-            }
+                //>>添加接口name
+                if (TextUtils.isNotEmpty(client.name())) {
+                    config.setName(client.name());
+                }
 
-            //>>添加接口path
-            if (TextUtils.isNotEmpty(client.path())) {
-                config.setPath(client.path());
-            }
+                //>>添加接口path
+                if (TextUtils.isNotEmpty(client.path())) {
+                    config.setPath(client.path());
+                }
 
-            //>>添加接口header
-            if (client.headers().length > 0) {
-                for (String h : client.headers()) {
-                    String[] ss = h.split("=");
-                    if (ss.length == 2) {
-                        headers0.put(ss[0].trim(), ss[1].trim());
+                //>>添加接口header
+                if (client.headers().length > 0) {
+                    for (String h : client.headers()) {
+                        String[] ss = h.split("=");
+                        if (ss.length == 2) {
+                            headers0.put(ss[0].trim(), ss[1].trim());
+                        }
                     }
+                }
+
+                //>>添加upstream
+                if (client.upstream().length > 0) {
+                    config.setUpstream(new UpstreamFixed(Arrays.asList(client.upstream())));
                 }
             }
 
-            //>>添加upstream
-            if (client.upstream().length > 0) {
-                config.setUpstream(new UpstreamFixed(Arrays.asList(client.upstream())));
-            }
+            //2.配置初始化
+            config.init();
         }
-
-        //2.配置初始化
-        config.init();
     }
 
 
@@ -106,7 +123,8 @@ public class NamiHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] vals) throws Throwable {
-        //优先处理附加信息（不然容易OOM）
+        //尝试初始化
+        init();
 
 
         //检查upstream

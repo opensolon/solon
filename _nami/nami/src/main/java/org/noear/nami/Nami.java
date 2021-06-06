@@ -116,7 +116,7 @@ public class Nami{
 
     public Nami call(Map<String, String> headers, Map args, Object body) {
         try {
-            NamiInvocation invocation  = new NamiInvocation(_config, _method,_action, this::doIntercept);
+            NamiInvocation invocation  = new NamiInvocation(_config, _method,_action, this::callDo);
             if (headers != null) {
                 invocation.headers.putAll(headers);
             }
@@ -140,7 +140,7 @@ public class Nami{
     }
 
 
-    private Result doIntercept(NamiInvocation inv) throws Throwable {
+    private Result callDo(NamiInvocation inv) throws Throwable {
         NamiChannel channel = _config.getChannel();
 
         if (channel == null) {

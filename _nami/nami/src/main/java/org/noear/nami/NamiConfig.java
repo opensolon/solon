@@ -15,8 +15,6 @@ public class NamiConfig {
     public NamiConfig() {
         encoder = Nami.defaultEncoder;
         decoder = Nami.defaultDecoder;
-
-        interceptors.addAll(NamiManager.interceptorSet);
     }
 
     /**
