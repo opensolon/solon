@@ -3,7 +3,7 @@ package org.noear.nami.channel.http.hutool;
 import cn.hutool.http.HttpResponse;
 import org.noear.nami.*;
 import org.noear.nami.common.Constants;
-import org.noear.nami.Result;
+import org.noear.nami.common.Result;
 
 import java.nio.charset.Charset;
 
@@ -14,7 +14,7 @@ public class HttpChannel implements NamiChannel {
     public static final HttpChannel instance = new HttpChannel();
 
     @Override
-    public Result call(Context ctx) throws Throwable {
+    public Result call(NamiContext ctx) throws Throwable {
         pretreatment(ctx);
 
         //0.检测method
@@ -44,7 +44,7 @@ public class HttpChannel implements NamiChannel {
         //0.开始构建http
         HttpUtils http = HttpUtils.http(ctx.url).headers(ctx.headers);
         HttpResponse response = null;
-        Encoder encoder = ctx.config.getEncoder();
+        NamiEncoder encoder = ctx.config.getEncoder();
 
         //1.执行并返回
         if (is_get || ctx.args.size() == 0) {
@@ -95,7 +95,7 @@ public class HttpChannel implements NamiChannel {
         return result;
     }
 
-    private void pretreatment(Context ctx) {
+    private void pretreatment(NamiContext ctx) {
         if (ctx.config.getDecoder() == null) {
             String at = ctx.config.getHeader(Constants.HEADER_ACCEPT);
 

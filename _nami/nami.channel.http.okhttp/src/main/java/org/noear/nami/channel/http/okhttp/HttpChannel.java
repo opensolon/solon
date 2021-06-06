@@ -4,7 +4,7 @@ import okhttp3.MediaType;
 import okhttp3.Response;
 import org.noear.nami.*;
 import org.noear.nami.common.Constants;
-import org.noear.nami.Result;
+import org.noear.nami.common.Result;
 
 /**
  * Http 通道
@@ -13,7 +13,7 @@ public class HttpChannel implements NamiChannel {
     public static final HttpChannel instance = new HttpChannel();
 
     @Override
-    public Result call(Context ctx) throws Throwable {
+    public Result call(NamiContext ctx) throws Throwable {
         //0.检测method
         boolean is_get = Constants.METHOD_GET.equals(ctx.action);
 
@@ -41,7 +41,7 @@ public class HttpChannel implements NamiChannel {
         //0.开始构建http
         HttpUtils http = HttpUtils.http(ctx.url).headers(ctx.headers);
         Response response = null;
-        Encoder encoder = ctx.config.getEncoder();
+        NamiEncoder encoder = ctx.config.getEncoder();
 
         //1.执行并返回
         if (is_get || ctx.args.size() == 0) {
@@ -91,7 +91,7 @@ public class HttpChannel implements NamiChannel {
     }
 
 
-    private void pretreatment(Context ctx) {
+    private void pretreatment(NamiContext ctx) {
         if (ctx.config.getDecoder() == null) {
             String at = ctx.config.getHeader(Constants.HEADER_ACCEPT);
 

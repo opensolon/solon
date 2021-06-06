@@ -6,7 +6,7 @@ package org.noear.nami;
  * @author noear
  * @since 1.2
  * */
-public interface Encoder {
+public interface NamiEncoder {
     /**
      * 编码
      * */
@@ -20,5 +20,5 @@ public interface Encoder {
     /**
      * 预处理
      * */
-    void pretreatment(Context ctx);
+    void pretreatment(NamiContext ctx);
 }

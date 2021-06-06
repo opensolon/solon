@@ -1,5 +1,7 @@
 package org.noear.nami;
 
+import org.noear.nami.common.Result;
+
 /**
  * Nami 执行通道
  *
@@ -7,5 +9,5 @@ package org.noear.nami;
  * @since 1.0
  * */
 public interface NamiChannel{
-    Result call(Context ctx) throws Throwable;
+    Result call(NamiContext ctx) throws Throwable;
 }

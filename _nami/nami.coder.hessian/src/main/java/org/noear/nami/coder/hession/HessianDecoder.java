@@ -1,15 +1,15 @@
 package org.noear.nami.coder.hession;
 
 import com.caucho.hessian.io.Hessian2Input;
-import org.noear.nami.Decoder;
-import org.noear.nami.Context;
-import org.noear.nami.Result;
+import org.noear.nami.NamiDecoder;
+import org.noear.nami.NamiContext;
+import org.noear.nami.common.Result;
 import org.noear.nami.common.Constants;
 
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Type;
 
-public class HessianDecoder implements Decoder {
+public class HessianDecoder implements NamiDecoder {
     public static final HessianDecoder instance = new HessianDecoder();
 
     @Override
@@ -45,7 +45,7 @@ public class HessianDecoder implements Decoder {
     }
 
     @Override
-    public void pretreatment(Context ctx) {
+    public void pretreatment(NamiContext ctx) {
         ctx.headers.put(Constants.HEADER_SERIALIZATION, Constants.AT_HESSION);
         ctx.headers.put(Constants.HEADER_ACCEPT, Constants.CONTENT_TYPE_HESSIAN);
     }

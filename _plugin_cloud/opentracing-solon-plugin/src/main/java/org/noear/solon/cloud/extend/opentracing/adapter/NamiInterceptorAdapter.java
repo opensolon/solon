@@ -6,16 +6,16 @@ import io.opentracing.Tracer;
 import io.opentracing.propagation.Format;
 import io.opentracing.propagation.TextMapAdapter;
 import io.opentracing.tag.Tags;
-import org.noear.nami.Interceptor;
-import org.noear.nami.Invocation;
-import org.noear.nami.Result;
+import org.noear.nami.NamiInterceptor;
+import org.noear.nami.NamiInvocation;
+import org.noear.nami.common.Result;
 import org.noear.solon.core.Aop;
 
 /**
  * @author noear
  * @since 1.4
  */
-public class NamiInterceptorAdapter implements Interceptor {
+public class NamiInterceptorAdapter implements NamiInterceptor {
     private Tracer tracer;
 
     public NamiInterceptorAdapter() {
@@ -25,7 +25,7 @@ public class NamiInterceptorAdapter implements Interceptor {
     }
 
     @Override
-    public Result doIntercept(Invocation inv) throws Throwable {
+    public Result doIntercept(NamiInvocation inv) throws Throwable {
         if (inv.method == null || tracer == null) {
             return inv.invoke();
         } else {
@@ -39,7 +39,7 @@ public class NamiInterceptorAdapter implements Interceptor {
         }
     }
 
-    public Span buildSpan(Invocation inv) {
+    public Span buildSpan(NamiInvocation inv) {
         //实例化构建器
         Tracer.SpanBuilder spanBuilder = tracer.buildSpan(inv.method.getName());
 

@@ -1,4 +1,4 @@
-package org.noear.nami;
+package org.noear.nami.common;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -16,24 +16,24 @@ import java.util.Map;
 public class Result {
     /**
      * 状态码
-     * */
+     */
     private int code;
     /**
      * 头信息
-     * */
-    private List<Map.Entry<String,String>> headers;
+     */
+    private List<Map.Entry<String, String>> headers;
     /**
      * 编码
-     * */
+     */
     private Charset charset;
     /**
      * 返回体
-     * */
+     */
     private byte[] body;
     /**
      * 返回体的字符串形式
-     * */
-    private String body_string;
+     */
+    private String bodyString;
 
     public Result() {
         headers = new ArrayList<>();
@@ -45,7 +45,7 @@ public class Result {
         this.body = body;
     }
 
-    public Result(int code,  byte[] body) {
+    public Result(int code, byte[] body) {
         this();
         this.code = code;
         this.charset = StandardCharsets.UTF_8;
@@ -58,11 +58,11 @@ public class Result {
 
 
     public void headerAdd(String name, String value) {
-        headers.add(new AbstractMap.SimpleEntry<>(name,value));
+        headers.add(new AbstractMap.SimpleEntry<>(name, value));
     }
 
-    public String headerGet(String name){
-        if(name != null) {
+    public String headerGet(String name) {
+        if (name != null) {
             for (Map.Entry<String, String> kv : headers) {
                 if (name.equals(kv.getKey())) {
                     return kv.getValue();
@@ -73,7 +73,7 @@ public class Result {
         return null;
     }
 
-    public void charsetSet(Charset charset){
+    public void charsetSet(Charset charset) {
         this.charset = charset;
     }
 
@@ -83,41 +83,41 @@ public class Result {
 
     /**
      * 头信息
-     * */
-    public Iterable<Map.Entry<String, String>> headers(){
+     */
+    public Iterable<Map.Entry<String, String>> headers() {
         return headers;
     }
 
     /**
      * 状态码
-     * */
+     */
     public int code() {
         return code;
     }
 
     /**
      * 字符集
-     * */
+     */
     public Charset charset() {
         return charset;
     }
 
     /**
      * 返回体
-     * */
+     */
     public byte[] body() {
         return body;
     }
 
     /**
      * 返回体字符形式
-     * */
+     */
     public String bodyAsString() {
-        if (body_string == null) {
+        if (bodyString == null) {
             if (charset == null) {
-                body_string = new String(body);
+                bodyString = new String(body);
             } else {
-                body_string = new String(body, charset);
+                bodyString = new String(body, charset);
             }
 
             //清掉body
@@ -125,9 +125,9 @@ public class Result {
         }
 
         if (code >= 400) {
-            throw new RuntimeException(code + "错误：" + body_string);
+            throw new RuntimeException(code + "错误：" + bodyString);
         } else {
-            return body_string;
+            return bodyString;
         }
     }
 }

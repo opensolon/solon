@@ -1,9 +1,9 @@
 package org.noear.nami.coder.protostuff;
 
-import org.noear.nami.Decoder;
-import org.noear.nami.Context;
+import org.noear.nami.NamiDecoder;
+import org.noear.nami.NamiContext;
 import org.noear.nami.common.Constants;
-import org.noear.nami.Result;
+import org.noear.nami.common.Result;
 
 import java.lang.reflect.Type;
 
@@ -11,7 +11,7 @@ import java.lang.reflect.Type;
  * @author noear
  * @since 1.2
  */
-public class ProtostuffDeoder implements Decoder {
+public class ProtostuffDeoder implements NamiDecoder {
     public static final ProtostuffDeoder instance = new ProtostuffDeoder();
 
 
@@ -46,7 +46,7 @@ public class ProtostuffDeoder implements Decoder {
     }
 
     @Override
-    public void pretreatment(Context ctx) {
+    public void pretreatment(NamiContext ctx) {
         ctx.headers.put(Constants.HEADER_SERIALIZATION, Constants.AT_PROTOBUF);
         ctx.headers.put(Constants.HEADER_ACCEPT, Constants.CONTENT_TYPE_PROTOBUF);
     }

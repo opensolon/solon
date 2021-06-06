@@ -12,37 +12,37 @@ import java.util.Set;
  * @since 1.2
  */
 public class NamiManager {
-    static final Map<String, Decoder> decoderMap = new HashMap<>();
-    static final Map<String, Encoder> encoderMap = new HashMap<>();
+    static final Map<String, NamiDecoder> decoderMap = new HashMap<>();
+    static final Map<String, NamiEncoder> encoderMap = new HashMap<>();
     static final Map<String, NamiChannel> channelMap = new HashMap<>();
     static final Map<Class<?>, NamiConfiguration> configuratorMap = new HashMap<>();
-    static final Set<Interceptor> interceptorSet = new LinkedHashSet<>();
+    static final Set<NamiInterceptor> interceptorSet = new LinkedHashSet<>();
 
     /**
      * 登记解码器
      */
-    public static void reg(Decoder decoder) {
+    public static void reg(NamiDecoder decoder) {
         decoderMap.put(decoder.enctype(), decoder);
     }
 
     /**
      * 登记解码器
      * */
-    public static void regIfAbsent(Decoder decoder) {
+    public static void regIfAbsent(NamiDecoder decoder) {
         decoderMap.putIfAbsent(decoder.enctype(), decoder);
     }
 
     /**
      * 登记编码器
      */
-    public static void reg(Encoder encoder) {
+    public static void reg(NamiEncoder encoder) {
         encoderMap.put(encoder.enctype(), encoder);
     }
 
     /**
      * 登记编码器
      */
-    public static void regIfAbsent(Encoder encoder) {
+    public static void regIfAbsent(NamiEncoder encoder) {
         encoderMap.putIfAbsent(encoder.enctype(), encoder);
     }
 
@@ -50,7 +50,7 @@ public class NamiManager {
     /**
      * 登记拦截器
      */
-    public static void reg(Interceptor interceptor) {
+    public static void reg(NamiInterceptor interceptor) {
         interceptorSet.add(interceptor);
     }
 
@@ -69,15 +69,15 @@ public class NamiManager {
         channelMap.putIfAbsent(scheme, namiChannel);
     }
 
-    public static Decoder getDecoder(String enctype) {
+    public static NamiDecoder getDecoder(String enctype) {
         return decoderMap.get(enctype);
     }
 
-    public static Encoder getEncoder(String enctype) {
+    public static NamiEncoder getEncoder(String enctype) {
         return encoderMap.get(enctype);
     }
 
-    public static Set<Interceptor> getInterceptorSet() {
+    public static Set<NamiInterceptor> getInterceptorSet() {
         return interceptorSet;
     }
 

@@ -10,7 +10,7 @@ import java.util.Map;
  * @author noear
  * @since 1.4
  */
-public class Context {
+public class NamiContext {
     /**
      * 配置
      * */
@@ -43,7 +43,7 @@ public class Context {
     public String url;
 
 
-    public Context(NamiConfig config, Method method, String action) {
+    public NamiContext(NamiConfig config, Method method, String action) {
         this.config = config;
         this.method = method;
         this.action = action;

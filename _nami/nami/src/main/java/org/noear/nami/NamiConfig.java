@@ -49,9 +49,9 @@ public class NamiConfig {
     //请求超时设置
     private int timeout;
     //编码器
-    private Encoder encoder;
+    private NamiEncoder encoder;
     //解码器
-    private Decoder decoder;
+    private NamiDecoder decoder;
 
     private NamiChannel channel;
 
@@ -63,7 +63,7 @@ public class NamiConfig {
     private String path;
     private String group;
     //过滤器
-    private Set<Interceptor> interceptors = new LinkedHashSet<>();
+    private Set<NamiInterceptor> interceptors = new LinkedHashSet<>();
     //头信息
     private Map<String,String> headers = new LinkedHashMap<>();
 
@@ -87,13 +87,13 @@ public class NamiConfig {
     /**
      * 获取编码器（可以为Null）
      * */
-    public Encoder getEncoder() {
+    public NamiEncoder getEncoder() {
         return encoder;
     }
     /**
      * 设置编码器
      * */
-    public void setEncoder(Encoder encoder) {
+    public void setEncoder(NamiEncoder encoder) {
         if (encoder != null) {
             this.encoder = encoder;
         }
@@ -102,13 +102,13 @@ public class NamiConfig {
     /**
      * 获取解码器
      * */
-    public Decoder getDecoder() {
+    public NamiDecoder getDecoder() {
         return decoder;
     }
     /**
      * 设置解码器
      * */
-    public void setDecoder(Decoder decoder) {
+    public void setDecoder(NamiDecoder decoder) {
         if (decoder != null) {
             this.decoder = decoder;
         }
@@ -201,14 +201,14 @@ public class NamiConfig {
     /**
      * 获取拦截器
      * */
-    public Set<Interceptor> getInterceptors() {
+    public Set<NamiInterceptor> getInterceptors() {
         return interceptors;
     }
 
     /**
      * 添加拦截器
      * */
-    protected void interceptorAdd(Interceptor interceptor) {
+    protected void interceptorAdd(NamiInterceptor interceptor) {
         interceptors.add(interceptor);
     }
 

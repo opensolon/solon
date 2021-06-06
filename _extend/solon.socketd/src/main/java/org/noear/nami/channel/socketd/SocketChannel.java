@@ -3,7 +3,7 @@ package org.noear.nami.channel.socketd;
 
 import org.noear.nami.*;
 import org.noear.nami.common.Constants;
-import org.noear.nami.Result;
+import org.noear.nami.common.Result;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
@@ -22,7 +22,7 @@ public class SocketChannel extends SocketChannelBase implements NamiChannel {
     }
 
     @Override
-    public Result call(Context ctx) throws Throwable {
+    public Result call(NamiContext ctx) throws Throwable {
         if(ctx.config.getDecoder() == null){
             throw new IllegalArgumentException("There is no suitable decoder");
         }
@@ -49,7 +49,7 @@ public class SocketChannel extends SocketChannelBase implements NamiChannel {
         }
 
         //1.确定编码器
-        Encoder encoder = ctx.config.getEncoder();
+        NamiEncoder encoder = ctx.config.getEncoder();
         if(encoder == null){
             encoder = NamiManager.getEncoder(Constants.CONTENT_TYPE_JSON);
         }

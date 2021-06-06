@@ -1,7 +1,7 @@
 package org.noear.solon.socketd;
 
-import org.noear.nami.Decoder;
-import org.noear.nami.Encoder;
+import org.noear.nami.NamiDecoder;
+import org.noear.nami.NamiEncoder;
 import org.noear.nami.Nami;
 import org.noear.nami.common.Constants;
 import org.noear.nami.channel.socketd.SocketChannel;
@@ -86,11 +86,11 @@ public class SocketD {
         return create(sessions, null, null, service);
     }
 
-    public static <T> T create(Session session, Encoder encoder, Decoder decoder, Class<T> service) {
+    public static <T> T create(Session session, NamiEncoder encoder, NamiDecoder decoder, Class<T> service) {
         return create(() -> session, encoder, decoder, service);
     }
 
-    public static <T> T create(Supplier<Session> sessions, Encoder encoder, Decoder decoder, Class<T> service) {
+    public static <T> T create(Supplier<Session> sessions, NamiEncoder encoder, NamiDecoder decoder, Class<T> service) {
         URI uri = sessions.get().uri();
         if (uri == null) {
             uri = URI.create("tcp://socketd");

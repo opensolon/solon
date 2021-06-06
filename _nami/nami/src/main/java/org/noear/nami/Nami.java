@@ -2,6 +2,7 @@ package org.noear.nami;
 
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.common.Constants;
+import org.noear.nami.common.Result;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -19,12 +20,12 @@ public class Nami{
     /**
      * 默认的序列化器（涉及第三方框架引用，不做定义）
      */
-    public static Encoder defaultEncoder;
+    public static NamiEncoder defaultEncoder;
 
     /**
      * 默认的反序列化器（涉及第三方框架引用，不做定义）
      */
-    public static Decoder defaultDecoder;
+    public static NamiDecoder defaultDecoder;
 
 
     private String _url;
@@ -115,7 +116,7 @@ public class Nami{
 
     public Nami call(Map<String, String> headers, Map args, Object body) {
         try {
-            Invocation invocation  = new Invocation(_config, _method,_action, this::doIntercept);
+            NamiInvocation invocation  = new NamiInvocation(_config, _method,_action, this::doIntercept);
             if (headers != null) {
                 invocation.headers.putAll(headers);
             }
@@ -139,7 +140,7 @@ public class Nami{
     }
 
 
-    private Result doIntercept(Invocation inv) throws Throwable {
+    private Result doIntercept(NamiInvocation inv) throws Throwable {
         NamiChannel channel = _config.getChannel();
 
         if (channel == null) {
@@ -196,7 +197,7 @@ public class Nami{
         if (Void.TYPE.equals(returnType)) {
             return null;
         } else {
-            Decoder decoder = _config.getDecoder();
+            NamiDecoder decoder = _config.getDecoder();
 
             if (decoder == null) {
                 decoder = NamiManager.getDecoder(Constants.CONTENT_TYPE_JSON);
@@ -240,7 +241,7 @@ public class Nami{
         /**
          * 设置序列化器
          */
-        public Builder encoder(Encoder encoder) {
+        public Builder encoder(NamiEncoder encoder) {
             _config.setEncoder(encoder);
             return this;
         }
@@ -248,7 +249,7 @@ public class Nami{
         /**
          * 设置反序列器
          */
-        public Builder decoder(Decoder decoder) {
+        public Builder decoder(NamiDecoder decoder) {
             _config.setDecoder(decoder);
             return this;
         }
@@ -272,7 +273,7 @@ public class Nami{
         /**
          * 添加拦截器
          */
-        public Builder interceptorAdd(Interceptor interceptor) {
+        public Builder interceptorAdd(NamiInterceptor interceptor) {
             _config.interceptorAdd(interceptor);
             return this;
         }

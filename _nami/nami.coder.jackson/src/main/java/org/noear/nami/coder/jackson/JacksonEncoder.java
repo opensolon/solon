@@ -2,15 +2,15 @@ package org.noear.nami.coder.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.noear.nami.Encoder;
-import org.noear.nami.Context;
+import org.noear.nami.NamiEncoder;
+import org.noear.nami.NamiContext;
 import org.noear.nami.common.Constants;
 
 /**
  * @author noear
  * @since 1.2
  */
-public class JacksonEncoder implements Encoder {
+public class JacksonEncoder implements NamiEncoder {
     public static final JacksonEncoder instance = new JacksonEncoder();
 
     ObjectMapper mapper = new ObjectMapper();
@@ -34,7 +34,7 @@ public class JacksonEncoder implements Encoder {
     }
 
     @Override
-    public void pretreatment(Context ctx) {
+    public void pretreatment(NamiContext ctx) {
 
     }
 }

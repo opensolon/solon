@@ -4,7 +4,7 @@ import model.UserModel;
 import org.junit.Test;
 import org.noear.nami.coder.snack3.SnackDecoder;
 import org.noear.nami.coder.snack3.SnackEncoder;
-import org.noear.nami.Result;
+import org.noear.nami.common.Result;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;

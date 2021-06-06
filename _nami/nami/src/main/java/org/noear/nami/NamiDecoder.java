@@ -1,5 +1,7 @@
 package org.noear.nami;
 
+import org.noear.nami.common.Result;
+
 import java.lang.reflect.Type;
 
 /**
@@ -8,7 +10,7 @@ import java.lang.reflect.Type;
  * @author noear
  * @since 1.2
  * */
-public interface Decoder {
+public interface NamiDecoder {
     /**
      * 编码
      * */
@@ -22,5 +24,5 @@ public interface Decoder {
     /**
      * 预处理
      * */
-    void pretreatment(Context ctx);
+    void pretreatment(NamiContext ctx);
 }

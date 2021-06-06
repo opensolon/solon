@@ -4,7 +4,7 @@ import model.UserModel;
 import org.junit.Test;
 import org.noear.nami.coder.jackson.JacksonDecoder;
 import org.noear.nami.coder.jackson.JacksonEncoder;
-import org.noear.nami.Result;
+import org.noear.nami.common.Result;
 import org.noear.snack.ONode;
 
 import java.nio.charset.StandardCharsets;
