@@ -153,6 +153,7 @@ public class Utils {
         return !isEmpty(s);
     }
 
+
     /**
      * 检查字符串是否为空白
      */
@@ -168,6 +169,10 @@ public class Utils {
 
             return true;
         }
+    }
+
+    public static boolean isNotBlank(String s){
+        return !isBlank(s);
     }
 
     public static boolean isWhitespace(int c) {
