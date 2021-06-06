@@ -1,7 +1,9 @@
 package org.noear.nami;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Nami - 扩展管理器
@@ -14,6 +16,7 @@ public class NamiManager {
     static final Map<String, Encoder> encoderMap = new HashMap<>();
     static final Map<String, NamiChannel> channelMap = new HashMap<>();
     static final Map<Class<?>, NamiConfiguration> configuratorMap = new HashMap<>();
+    static final Set<Interceptor> interceptorSet = new LinkedHashSet<>();
 
     /**
      * 登记解码器
@@ -22,6 +25,9 @@ public class NamiManager {
         decoderMap.put(decoder.enctype(), decoder);
     }
 
+    /**
+     * 登记解码器
+     * */
     public static void regIfAbsent(Decoder decoder) {
         decoderMap.putIfAbsent(decoder.enctype(), decoder);
     }
@@ -38,6 +44,14 @@ public class NamiManager {
      */
     public static void regIfAbsent(Encoder encoder) {
         encoderMap.putIfAbsent(encoder.enctype(), encoder);
+    }
+
+
+    /**
+     * 登记拦截器
+     */
+    public static void reg(Interceptor interceptor) {
+        interceptorSet.add(interceptor);
     }
 
 
@@ -63,6 +77,9 @@ public class NamiManager {
         return encoderMap.get(enctype);
     }
 
+    public static Set<Interceptor> getInterceptorSet() {
+        return interceptorSet;
+    }
 
     public static NamiChannel getChannel(String scheme) {
         return channelMap.get(scheme);

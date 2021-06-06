@@ -91,6 +91,11 @@ public class AopContext extends BeanContainer {
 
             //尝试提取函数
             beanExtract(bw);
+
+            //单例，进行事件通知
+            if (bw.singleton()) {
+                EventBus.push(bw.raw());
+            }
         });
 
         //注册 @Remoting 构建器

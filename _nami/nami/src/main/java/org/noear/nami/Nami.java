@@ -41,7 +41,6 @@ public class Nami{
      */
     protected Nami(NamiConfig config) {
         _config = config;
-        config.init();
     }
 
     /**

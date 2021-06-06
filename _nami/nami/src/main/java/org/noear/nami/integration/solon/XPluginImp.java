@@ -7,6 +7,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.event.EventBus;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

@@ -1,13 +1,16 @@
 package org.noear.nami.integration.solon;
 
+import org.noear.nami.Interceptor;
 import org.noear.nami.Nami;
 import org.noear.nami.NamiConfiguration;
+import org.noear.nami.NamiManager;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.LoadBalance;
+import org.noear.solon.core.event.EventBus;
 
 /**
  * @author noear
@@ -24,6 +27,11 @@ public final class NamiConfigurationSolon implements NamiConfiguration {
         Aop.getAsyn(NamiConfiguration.class, (bw) -> {
             custom = bw.raw();
         });
+
+        //订阅拦截器
+        EventBus.subscribe(Interceptor.class, e -> {
+            NamiManager.reg(e);
+        });
     }
 
     @Override
@@ -36,7 +44,7 @@ public final class NamiConfigurationSolon implements NamiConfiguration {
         builder.debug(Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode());
 
         //尝试自定义
-        if(custom != null){
+        if (custom != null) {
             custom.config(client, builder);
         }
 

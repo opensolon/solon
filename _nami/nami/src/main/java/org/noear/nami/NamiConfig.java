@@ -13,7 +13,7 @@ import java.util.function.Supplier;
  * */
 public class NamiConfig {
 
-    public NamiConfig() {
+    protected NamiConfig() {
         encoder = Nami.defaultEncoder;
         decoder = Nami.defaultDecoder;
     }
@@ -39,6 +39,8 @@ public class NamiConfig {
                 encoder = NamiManager.getEncoder(ct);
             }
         }
+
+        interceptors.addAll(NamiManager.interceptorSet);
 
         return this;
     }
