@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.extend.opentracing;
 
 import org.noear.solon.SolonApp;
+import org.noear.solon.cloud.extend.opentracing.annotation.EnableOpentracing;
 import org.noear.solon.cloud.extend.opentracing.filter.FilterAdapter;
 import org.noear.solon.core.Plugin;
 

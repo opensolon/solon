@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.opentracing;
+package org.noear.solon.cloud.extend.opentracing.annotation;
 
 import org.noear.solon.annotation.Import;
 
