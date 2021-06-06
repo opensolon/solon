@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * 上下文
+ * Nami - 请求上下文
  *
  * @author noear
  * @since 1.4

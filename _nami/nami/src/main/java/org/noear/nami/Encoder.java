@@ -1,7 +1,7 @@
 package org.noear.nami;
 
 /**
- * 编码器
+ * Nami - 编码器
  *
  * @author noear
  * @since 1.2

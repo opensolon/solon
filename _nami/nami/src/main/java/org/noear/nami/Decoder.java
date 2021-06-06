@@ -5,7 +5,7 @@ import org.noear.nami.common.Result;
 import java.lang.reflect.Type;
 
 /**
- * 解码器
+ * Nami - 解码器
  *
  * @author noear
  * @since 1.2

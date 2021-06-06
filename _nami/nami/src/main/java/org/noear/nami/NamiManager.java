@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Nami 扩展管理器
+ * Nami - 扩展管理器
  *
  * @author noear
  * @since 1.2

@@ -3,7 +3,8 @@ package org.noear.nami;
 import org.noear.nami.common.Result;
 
 /**
- * Nami 拦截器
+ * Nami - 拦截器
+ *
  * @author noear
  * @since 1.4
  */

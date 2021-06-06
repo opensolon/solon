@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Nami - 调用者
+ *
  * @author noear
  * @since 1.4
  */
@@ -23,6 +25,9 @@ public class Invocation extends Context {
         this.index = 0;
     }
 
+    /**
+     * 调用
+     * */
     public Result invoke() throws Throwable {
         return interceptors.get(index++).doIntercept(this);
     }
