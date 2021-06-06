@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.zipkin.filter;
+package org.noear.solon.cloud.extend.opentracing.filter;
 
 import io.opentracing.Scope;
 import io.opentracing.Span;
