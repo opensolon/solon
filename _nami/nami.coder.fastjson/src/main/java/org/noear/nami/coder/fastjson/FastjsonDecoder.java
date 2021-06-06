@@ -2,14 +2,12 @@ package org.noear.nami.coder.fastjson;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.ParserConfig;
-import org.noear.nami.NamiConfig;
 import org.noear.nami.Decoder;
-import org.noear.nami.NamiContext;
+import org.noear.nami.Context;
 import org.noear.nami.common.Result;
 import org.noear.nami.common.Constants;
 
 import java.lang.reflect.Type;
-import java.util.Map;
 
 public class FastjsonDecoder implements Decoder {
     static {
@@ -55,7 +53,7 @@ public class FastjsonDecoder implements Decoder {
     }
 
     @Override
-    public void pretreatment(NamiContext ctx) {
+    public void pretreatment(Context ctx) {
         ctx.headers.put(Constants.HEADER_SERIALIZATION, Constants.AT_TYPE_JSON);
         ctx.headers.put(Constants.HEADER_ACCEPT, Constants.CONTENT_TYPE_JSON);
     }

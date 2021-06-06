@@ -10,7 +10,7 @@ import java.util.List;
  * @author noear
  * @since 1.4
  */
-public class Invocation extends NamiContext {
+public class Invocation extends Context {
     Interceptor actuator;
     List<Interceptor> interceptors = new ArrayList<>();
     int index;

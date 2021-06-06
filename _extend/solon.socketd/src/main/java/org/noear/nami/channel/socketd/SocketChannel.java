@@ -22,7 +22,7 @@ public class SocketChannel extends SocketChannelBase implements NamiChannel {
     }
 
     @Override
-    public Result call(NamiContext ctx) throws Throwable {
+    public Result call(Context ctx) throws Throwable {
         if(ctx.config.getDecoder() == null){
             throw new IllegalArgumentException("There is no suitable decoder");
         }

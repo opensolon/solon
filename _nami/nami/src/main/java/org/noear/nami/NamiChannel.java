@@ -9,5 +9,5 @@ import org.noear.nami.common.Result;
  * @since 1.0
  * */
 public interface NamiChannel{
-    Result call(NamiContext ctx) throws Throwable;
+    Result call(Context ctx) throws Throwable;
 }

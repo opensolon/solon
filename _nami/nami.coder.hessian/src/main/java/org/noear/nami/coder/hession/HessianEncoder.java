@@ -2,7 +2,7 @@ package org.noear.nami.coder.hession;
 
 import com.caucho.hessian.io.Hessian2Output;
 import org.noear.nami.Encoder;
-import org.noear.nami.NamiContext;
+import org.noear.nami.Context;
 import org.noear.nami.common.Constants;
 
 import java.io.ByteArrayOutputStream;
@@ -33,7 +33,7 @@ public class HessianEncoder implements Encoder {
     }
 
     @Override
-    public void pretreatment(NamiContext ctx) {
+    public void pretreatment(Context ctx) {
 
     }
 }

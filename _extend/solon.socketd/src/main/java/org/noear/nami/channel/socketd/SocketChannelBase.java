@@ -1,6 +1,6 @@
 package org.noear.nami.channel.socketd;
 
-import org.noear.nami.NamiContext;
+import org.noear.nami.Context;
 import org.noear.nami.NamiManager;
 import org.noear.nami.common.Constants;
 
@@ -9,7 +9,7 @@ import org.noear.nami.common.Constants;
  * @author noear 2021/1/3 created
  */
 public class SocketChannelBase  {
-    protected void pretreatment(NamiContext ctx) {
+    protected void pretreatment(Context ctx) {
         if (ctx.config.getDecoder() == null) {
             String at = ctx.config.getHeader(Constants.HEADER_ACCEPT);
 
