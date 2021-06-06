@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * @author noear 2021/1/1 created
  */
-public class SocketClientChannel implements NamiChannel {
+public class SocketClientChannel extends SocketChannelBase implements NamiChannel {
     public static final SocketClientChannel instance = new SocketClientChannel();
 
     Map<String, SocketChannel> channelMap = new HashMap<>();
@@ -41,11 +41,11 @@ public class SocketClientChannel implements NamiChannel {
 
     @Override
     public Result call(NamiContext ctx) throws Throwable {
+        pretreatment(ctx);
+
         URI uri = URI.create(ctx.url);
         SocketChannel channel = get(uri);
 
         return channel.call(ctx);
     }
-
-
 }
