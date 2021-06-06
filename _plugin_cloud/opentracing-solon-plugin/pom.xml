@@ -25,6 +25,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>nami</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>io.opentracing</groupId>
             <artifactId>opentracing-api</artifactId>
             <version>${opentracing.ver}</version>

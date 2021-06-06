@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.opentracing.filter;
+package org.noear.solon.cloud.extend.opentracing.adapter;
 
 import io.opentracing.Scope;
 import io.opentracing.Span;
@@ -16,10 +16,10 @@ import org.noear.solon.core.handle.FilterChain;
  * @author noear
  * @since 1.4
  */
-public class FilterAdapter implements Filter {
+public class SolonFilterAdapter implements Filter {
     private Tracer tracer;
 
-    public FilterAdapter() {
+    public SolonFilterAdapter() {
         Aop.getAsyn(Tracer.class, bw -> {
             tracer = bw.raw();
         });
