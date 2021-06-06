@@ -1,7 +1,5 @@
 package org.noear.nami;
 
-import org.noear.nami.common.Result;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;

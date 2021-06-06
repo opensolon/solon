@@ -1,4 +1,4 @@
-package org.noear.nami.common;
+package org.noear.nami;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

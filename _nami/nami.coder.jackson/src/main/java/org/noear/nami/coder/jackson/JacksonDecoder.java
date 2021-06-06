@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.noear.nami.Decoder;
 import org.noear.nami.Context;
 import org.noear.nami.common.Constants;
-import org.noear.nami.common.Result;
+import org.noear.nami.Result;
 
 import java.lang.reflect.Type;
 

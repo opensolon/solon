@@ -2,20 +2,11 @@ package features.nami_coder;
 
 import model.UserModel;
 import org.junit.Test;
-import org.noear.nami.coder.fastjson.FastjsonDecoder;
-import org.noear.nami.coder.fastjson.FastjsonEncoder;
 import org.noear.nami.coder.hession.HessianDecoder;
 import org.noear.nami.coder.hession.HessianEncoder;
-import org.noear.nami.coder.jackson.JacksonDecoder;
-import org.noear.nami.coder.jackson.JacksonEncoder;
-import org.noear.nami.coder.protostuff.ProtostuffDeoder;
-import org.noear.nami.coder.protostuff.ProtostuffEncoder;
-import org.noear.nami.coder.snack3.SnackDecoder;
-import org.noear.nami.coder.snack3.SnackEncoder;
-import org.noear.nami.common.Result;
+import org.noear.nami.Result;
 import org.noear.snack.ONode;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**

@@ -3,7 +3,7 @@ package org.noear.nami.channel.http.hutool;
 import cn.hutool.http.HttpResponse;
 import org.noear.nami.*;
 import org.noear.nami.common.Constants;
-import org.noear.nami.common.Result;
+import org.noear.nami.Result;
 
 import java.nio.charset.Charset;
 

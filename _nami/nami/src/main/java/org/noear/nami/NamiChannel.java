@@ -1,7 +1,5 @@
 package org.noear.nami;
 
-import org.noear.nami.common.Result;
-
 /**
  * Nami 执行通道
  *

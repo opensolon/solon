@@ -3,7 +3,7 @@ package org.noear.nami.channel.socketd;
 
 import org.noear.nami.*;
 import org.noear.nami.common.Constants;
-import org.noear.nami.common.Result;
+import org.noear.nami.Result;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;

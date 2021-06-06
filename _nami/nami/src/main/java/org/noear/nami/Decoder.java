@@ -1,7 +1,5 @@
 package org.noear.nami;
 
-import org.noear.nami.common.Result;
-
 import java.lang.reflect.Type;
 
 /**

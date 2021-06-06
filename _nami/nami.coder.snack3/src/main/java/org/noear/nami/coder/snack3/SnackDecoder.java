@@ -2,7 +2,7 @@ package org.noear.nami.coder.snack3;
 
 import org.noear.nami.Decoder;
 import org.noear.nami.Context;
-import org.noear.nami.common.Result;
+import org.noear.nami.Result;
 import org.noear.nami.common.Constants;
 import org.noear.snack.ONode;
 

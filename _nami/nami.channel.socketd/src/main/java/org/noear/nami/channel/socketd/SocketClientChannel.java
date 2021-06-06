@@ -2,7 +2,7 @@ package org.noear.nami.channel.socketd;
 
 import org.noear.nami.NamiChannel;
 import org.noear.nami.Context;
-import org.noear.nami.common.Result;
+import org.noear.nami.Result;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.SessionFlag;
 import org.noear.solon.socketd.SocketD;

@@ -4,7 +4,7 @@ import okhttp3.MediaType;
 import okhttp3.Response;
 import org.noear.nami.*;
 import org.noear.nami.common.Constants;
-import org.noear.nami.common.Result;
+import org.noear.nami.Result;
 
 /**
  * Http 通道
