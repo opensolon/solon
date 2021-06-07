@@ -1,6 +1,6 @@
 package org.noear.nami.integration.solon;
 
-import org.noear.nami.NamiInterceptor;
+import org.noear.nami.NamiFilter;
 import org.noear.nami.Nami;
 import org.noear.nami.NamiConfiguration;
 import org.noear.nami.NamiManager;
@@ -29,7 +29,7 @@ public final class NamiConfigurationSolon implements NamiConfiguration {
         });
 
         //订阅拦截器
-        EventBus.subscribe(NamiInterceptor.class, it -> {
+        EventBus.subscribe(NamiFilter.class, it -> {
             NamiManager.reg(it);
         });
     }

@@ -8,11 +8,11 @@ import org.noear.nami.common.Result;
  * @author noear
  * @since 1.4
  */
-public interface NamiInterceptor {
+public interface NamiFilter {
     /**
      * 拦截
      *
      * @param inv 调用者
      * */
-    Result doIntercept(NamiInvocation inv) throws Throwable;
+    Result doFilter(NamiInvocation inv) throws Throwable;
 }

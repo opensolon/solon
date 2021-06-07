@@ -7,14 +7,13 @@ import io.opentracing.propagation.Format;
 import io.opentracing.propagation.TextMapAdapter;
 import io.opentracing.tag.Tags;
 import org.noear.nami.NamiContext;
-import org.noear.nami.NamiInterceptor;
+import org.noear.nami.NamiFilter;
 import org.noear.nami.NamiInvocation;
 import org.noear.nami.common.Result;
 import org.noear.nami.common.TextUtils;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 
-import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -22,17 +21,17 @@ import java.util.Map;
  * @author noear
  * @since 1.4
  */
-public class NamiInterceptorAdapter implements NamiInterceptor {
+public class NamiFilterAdapter implements NamiFilter {
     private Tracer tracer;
 
-    public NamiInterceptorAdapter() {
+    public NamiFilterAdapter() {
         Aop.getAsyn(Tracer.class, bw -> {
             tracer = bw.raw();
         });
     }
 
     @Override
-    public Result doIntercept(NamiInvocation inv) throws Throwable {
+    public Result doFilter(NamiInvocation inv) throws Throwable {
         if (tracer == null) {
             return inv.invoke();
         } else {

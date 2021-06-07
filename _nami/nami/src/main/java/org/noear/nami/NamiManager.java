@@ -19,7 +19,7 @@ public class NamiManager {
     /**
      * 全局拦截器
      * */
-    static final Set<NamiInterceptor> interceptorSet = new LinkedHashSet<>();
+    static final Set<NamiFilter> filterSet = new LinkedHashSet<>();
 
     /**
      * 登记解码器
@@ -53,8 +53,8 @@ public class NamiManager {
     /**
      * 登记拦截器
      */
-    public static void reg(NamiInterceptor interceptor) {
-        interceptorSet.add(interceptor);
+    public static void reg(NamiFilter interceptor) {
+        filterSet.add(interceptor);
     }
 
 
@@ -80,8 +80,8 @@ public class NamiManager {
         return encoderMap.get(enctype);
     }
 
-    public static Set<NamiInterceptor> getInterceptorSet() {
-        return interceptorSet;
+    public static Set<NamiFilter> getFilters() {
+        return filterSet;
     }
 
     public static NamiChannel getChannel(String scheme) {

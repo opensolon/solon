@@ -61,7 +61,7 @@ public class NamiConfig {
     private String path;
     private String group;
     //过滤器
-    private Set<NamiInterceptor> interceptors = new LinkedHashSet<>();
+    private Set<NamiFilter> filters = new LinkedHashSet<>();
     //头信息
     private Map<String,String> headers = new LinkedHashMap<>();
 
@@ -199,15 +199,15 @@ public class NamiConfig {
     /**
      * 获取拦截器
      * */
-    public Set<NamiInterceptor> getInterceptors() {
-        return interceptors;
+    public Set<NamiFilter> getFilters() {
+        return filters;
     }
 
     /**
      * 添加拦截器
      * */
-    protected void interceptorAdd(NamiInterceptor interceptor) {
-        interceptors.add(interceptor);
+    protected void filterAdd(NamiFilter filter) {
+        filters.add(filter);
     }
 
 }

@@ -55,8 +55,8 @@ public class NamiHandler implements InvocationHandler {
         //1.运行配置器
         if (client != null) {
             //尝试添加全局拦截器
-            for (NamiInterceptor mi : NamiManager.getInterceptorSet()) {
-                config.interceptorAdd(mi);
+            for (NamiFilter mi : NamiManager.getFilters()) {
+                config.filterAdd(mi);
             }
 
             //尝试配置器配置

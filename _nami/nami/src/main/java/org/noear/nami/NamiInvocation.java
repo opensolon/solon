@@ -13,15 +13,15 @@ import java.util.List;
  * @since 1.4
  */
 public class NamiInvocation extends NamiContext {
-    NamiInterceptor actuator;
-    List<NamiInterceptor> interceptors = new ArrayList<>();
+    NamiFilter actuator;
+    List<NamiFilter> filters = new ArrayList<>();
     int index;
 
-    public NamiInvocation(NamiConfig config, Method method, String action, String url, NamiInterceptor actuator) {
+    public NamiInvocation(NamiConfig config, Method method, String action, String url, NamiFilter actuator) {
         super(config, method, action, url);
         this.actuator = actuator;
-        this.interceptors.addAll(config.getInterceptors());
-        this.interceptors.add(actuator);
+        this.filters.addAll(config.getFilters());
+        this.filters.add(actuator);
         this.index = 0;
     }
 
@@ -29,6 +29,6 @@ public class NamiInvocation extends NamiContext {
      * 调用
      * */
     public Result invoke() throws Throwable {
-        return interceptors.get(index++).doIntercept(this);
+        return filters.get(index++).doFilter(this);
     }
 }

@@ -2,7 +2,7 @@ package org.noear.solon.cloud.extend.opentracing;
 
 import org.noear.nami.NamiManager;
 import org.noear.solon.SolonApp;
-import org.noear.solon.cloud.extend.opentracing.adapter.NamiInterceptorAdapter;
+import org.noear.solon.cloud.extend.opentracing.adapter.NamiFilterAdapter;
 import org.noear.solon.cloud.extend.opentracing.adapter.SolonErrorAdapter;
 import org.noear.solon.cloud.extend.opentracing.annotation.EnableOpentracing;
 import org.noear.solon.cloud.extend.opentracing.adapter.SolonFilterAdapter;
@@ -21,7 +21,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        NamiManager.reg(new NamiInterceptorAdapter());
+        NamiManager.reg(new NamiFilterAdapter());
 
         app.filter(new SolonFilterAdapter());
         app.onError(new SolonErrorAdapter());
