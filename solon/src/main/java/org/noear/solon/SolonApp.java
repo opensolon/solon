@@ -246,7 +246,7 @@ public class SolonApp implements HandlerSlots {
     private final Class<?> _source; //应用加载源
     private final long _startupTime;
 
-    private FilterChainNode _filterChain;
+    private List<FilterEntity> _filterList = new ArrayList<>();
     protected boolean stopped = false;
 
     protected SolonApp(Class<?> source, NvMap args) {
@@ -259,7 +259,7 @@ public class SolonApp implements HandlerSlots {
         //顺序不能换
         _router = new RouterDefault();
         _routerHandler = new RouterHandler(_router);
-        _filterChain = new FilterChainNode(this::doFilter);
+        _filterList.add(new FilterEntity(Integer.MAX_VALUE, this::doFilter));
 
         _handler = _routerHandler;
 
@@ -322,9 +322,12 @@ public class SolonApp implements HandlerSlots {
      * @param filter 过滤器
      * */
     public void filter(Filter filter) {
-        FilterChainNode tmp = new FilterChainNode(filter);
-        tmp.next = _filterChain;
-        _filterChain = tmp;
+        filter(0, filter);
+    }
+
+    public void filter(int index, Filter filter) {
+        _filterList.add(new FilterEntity(index, filter));
+        _filterList.sort(Comparator.comparingInt(f -> f.index));
     }
 
     /**
@@ -494,7 +497,7 @@ public class SolonApp implements HandlerSlots {
         try {
             //设置当前线程上下文
             ContextUtil.currentSet(x);
-            _filterChain.doFilter(x);
+            new FilterChainNode(_filterList).doFilter(x);
         } catch (Throwable ex) {
             EventBus.push(ex);
             throw ex;

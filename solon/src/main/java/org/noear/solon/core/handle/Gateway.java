@@ -9,8 +9,7 @@ import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.ext.RunnableEx;
 import org.noear.solon.ext.DataThrowable;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 
 
@@ -42,7 +41,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     private final Map<String, Handler> main = new HashMap<>();
     private final String mapping;
     private Mapping mappingAnno;
-    private FilterChainNode filterChain;
+    private List<FilterEntity> filterList = new ArrayList<>();
 
     public Gateway() {
         super();
@@ -56,7 +55,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         //默认为404错误输出
         mainDef = (c) -> c.statusSet(404);
 
-        filterChain = new FilterChainNode(this::doFilter);
+        filterList.add(new FilterEntity(Integer.MAX_VALUE, this::doFilter));
 
         register();
     }
@@ -120,9 +119,12 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      * @param filter 过滤器
      * */
     public void filter(Filter filter) {
-        FilterChainNode tmp = new FilterChainNode(filter);
-        tmp.next = filterChain;
-        filterChain = tmp;
+        filter(0, filter);
+    }
+
+    public void filter(int index,Filter filter) {
+        filterList.add(new FilterEntity(index, filter));
+        filterList.sort(Comparator.comparingInt(f -> f.index));
     }
 
     /**
@@ -131,7 +133,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
     @Override
     public void handle(Context c) throws Throwable {
         try {
-            filterChain.doFilter(c);
+            new FilterChainNode(filterList).doFilter(c);
         } catch (Throwable e) {
             c.errors = e;
 

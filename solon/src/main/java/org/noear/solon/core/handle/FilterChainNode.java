@@ -1,5 +1,7 @@
 package org.noear.solon.core.handle;
 
+import java.util.List;
+
 /**
  * 过滤器调用链实现
  *
@@ -7,19 +9,16 @@ package org.noear.solon.core.handle;
  * @since 1.3
  * */
 public class FilterChainNode implements FilterChain {
-    static final FilterChain nextDef = (c) -> {
-    };
+    private final List<FilterEntity> filterList;
+    private int index;
 
-    private final Filter filter;
-    public FilterChain next;
-
-    public FilterChainNode(Filter filter) {
-        this.filter = filter;
-        this.next = nextDef;
+    public FilterChainNode(List<FilterEntity> filterList) {
+        this.filterList = filterList;
+        this.index = 0;
     }
 
     @Override
     public void doFilter(Context ctx) throws Throwable {
-        filter.doFilter(ctx, next);
+        filterList.get(index++).filter.doFilter(ctx, this);
     }
 }
