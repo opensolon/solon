@@ -22,6 +22,11 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>nami</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon.logging</artifactId>
         </dependency>
 
@@ -30,6 +35,5 @@
             <artifactId>solon.logging.impl</artifactId>
         </dependency>
     </dependencies>
-
 
 </project>

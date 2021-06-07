@@ -1,5 +1,6 @@
 package org.noear.solon.cloud;
 
+import org.noear.nami.NamiManager;
 import org.noear.solon.cloud.annotation.CloudBreaker;
 import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.cloud.impl.*;
@@ -12,13 +13,10 @@ import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.Signal;
 import org.noear.solon.core.util.PrintUtil;
-import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.cloud.annotation.CloudConfig;
 import org.noear.solon.cloud.annotation.CloudEvent;
-import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.model.Instance;
 
-import java.util.Properties;
 
 /**
  * @author noear
@@ -58,6 +56,13 @@ public class XPluginImp implements Plugin {
         if (CloudClient.trace() == null) {
             CloudManager.register(new CloudTraceServiceImpl());
         }
+
+        String serviceAndAddress = Instance.local().service() + "@" + Instance.local().address();
+        NamiManager.reg(inv -> {
+            inv.headers.put(CloudClient.trace().HEADER_TRACE_ID_NAME(), CloudClient.trace().getTraceId());
+            inv.headers.put(CloudClient.trace().HEADER_FROM_ID_NAME(), serviceAndAddress);
+            return inv.invoke();
+        });
     }
 
     @Override
