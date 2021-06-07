@@ -31,8 +31,6 @@ public class NamiHandler implements InvocationHandler {
     private final Map<String, String> headers0 = new LinkedHashMap<>();
     private final Class<?> clz0;
     private final Map<String, Map> pathKeysCached = new LinkedHashMap<>();
-    private boolean inited = false;
-    private String initLock = "";
 
     /**
      * @param config 配置
@@ -43,79 +41,73 @@ public class NamiHandler implements InvocationHandler {
         this.client = client;
 
         this.clz0 = clz;
+
+        try {
+            init();
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void init() throws Throwable {
-        if (inited) {
-            return;
-        }
-
-        synchronized (initLock) {
-            if (inited) {
-                return;
-            } else {
-                inited = true;
+    private void init() throws Exception{
+        //1.运行配置器
+        if (client != null) {
+            //尝试添加全局拦截器
+            for (NamiInterceptor mi : NamiManager.getInterceptorSet()) {
+                config.interceptorAdd(mi);
             }
 
-            //1.运行配置器
-            if (client != null) {
-                config.setUrl(config.getUrl());
+            //尝试配置器配置
+            NamiConfiguration tmp = NamiManager.getConfigurator(client.configuration());
+            if (tmp != null) {
+                tmp.config(client, new Nami.Builder(config));
+            }
 
-                //尝试添加全局拦截器
-                for (NamiInterceptor mi : NamiManager.getInterceptorSet()) {
-                    config.interceptorAdd(mi);
-                }
+            //尝试设置超时
+            if (client.timeout() > 0) {
+                config.setTimeout(client.timeout());
+            }
 
-                //尝试配置器配置
-                NamiConfiguration tmp = NamiManager.getConfigurator(client.configuration());
-                if (tmp != null) {
-                    tmp.config(client, new Nami.Builder(config));
-                }
+            //>>添加接口url
+            if (TextUtils.isNotEmpty(client.url())) {
+                config.setUrl(client.url());
+            }
 
-                //尝试设置超时
-                if (client.timeout() > 0) {
-                    config.setTimeout(client.timeout());
-                }
+            //>>添加接口group
+            if (TextUtils.isNotEmpty(client.group())) {
+                config.setGroup(client.group());
+            }
 
-                //>>添加接口url
-                if (TextUtils.isNotEmpty(client.url())) {
-                    config.setUrl(client.url());
-                }
+            //>>添加接口name
+            if (TextUtils.isNotEmpty(client.name())) {
+                config.setName(client.name());
+            }
 
-                //>>添加接口group
-                if (TextUtils.isNotEmpty(client.group())) {
-                    config.setGroup(client.group());
-                }
+            //>>添加接口path
+            if (TextUtils.isNotEmpty(client.path())) {
+                config.setPath(client.path());
+            }
 
-                //>>添加接口name
-                if (TextUtils.isNotEmpty(client.name())) {
-                    config.setName(client.name());
-                }
-
-                //>>添加接口path
-                if (TextUtils.isNotEmpty(client.path())) {
-                    config.setPath(client.path());
-                }
-
-                //>>添加接口header
-                if (client.headers().length > 0) {
-                    for (String h : client.headers()) {
-                        String[] ss = h.split("=");
-                        if (ss.length == 2) {
-                            headers0.put(ss[0].trim(), ss[1].trim());
-                        }
+            //>>添加接口header
+            if (client.headers().length > 0) {
+                for (String h : client.headers()) {
+                    String[] ss = h.split("=");
+                    if (ss.length == 2) {
+                        headers0.put(ss[0].trim(), ss[1].trim());
                     }
                 }
-
-                //>>添加upstream
-                if (client.upstream().length > 0) {
-                    config.setUpstream(new UpstreamFixed(Arrays.asList(client.upstream())));
-                }
             }
 
-            //2.配置初始化
-            config.init();
+            //>>添加upstream
+            if (client.upstream().length > 0) {
+                config.setUpstream(new UpstreamFixed(Arrays.asList(client.upstream())));
+            }
         }
+
+        //2.配置初始化
+        config.init();
     }
 
 
@@ -123,9 +115,6 @@ public class NamiHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] vals) throws Throwable {
-        //尝试初始化
-        init();
-
 
         //检查upstream
         if (TextUtils.isEmpty(config.getUrl()) && config.getUpstream() == null) {
@@ -206,7 +195,7 @@ public class NamiHandler implements InvocationHandler {
             }
 
             if (url.indexOf("://") < 0) {
-                url = "http://";
+                url = "http://" + url;
             }
 
             if (TextUtils.isNotEmpty(config.getPath())) {

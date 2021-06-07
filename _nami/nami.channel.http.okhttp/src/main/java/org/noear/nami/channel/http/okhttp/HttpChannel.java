@@ -18,6 +18,7 @@ public class HttpChannel implements NamiChannel {
 
         //0.检测method
         boolean is_get = Constants.METHOD_GET.equals(ctx.action);
+        String url = ctx.url;
 
         //0.尝试重构url
         if (is_get && ctx.args.size() > 0) {
@@ -30,7 +31,7 @@ public class HttpChannel implements NamiChannel {
                 }
             });
 
-            ctx.url = sb.substring(0, sb.length() - 1);
+            url = sb.substring(0, sb.length() - 1);
         }
 
         if (ctx.config.getDecoder() == null) {
@@ -41,7 +42,7 @@ public class HttpChannel implements NamiChannel {
         ctx.config.getDecoder().pretreatment(ctx);
 
         //0.开始构建http
-        HttpUtils http = HttpUtils.http(ctx.url).headers(ctx.headers);
+        HttpUtils http = HttpUtils.http(url).headers(ctx.headers);
         Response response = null;
         NamiEncoder encoder = ctx.config.getEncoder();
 

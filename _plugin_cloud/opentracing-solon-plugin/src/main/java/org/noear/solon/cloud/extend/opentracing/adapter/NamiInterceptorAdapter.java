@@ -56,7 +56,7 @@ public class NamiInterceptorAdapter implements NamiInterceptor {
             spanName.append("/").append(":");
         }
 
-        spanName.append(inv.method.getName()).append(":").append("(").append(URI.create(inv.url).getHost()).append(")");
+        spanName.append(inv.method.getName()).append(":").append("(").append(URI.create(inv.url).getAuthority()).append(")");
 
 
         //实例化构建器

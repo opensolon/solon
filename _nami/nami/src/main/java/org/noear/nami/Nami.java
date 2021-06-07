@@ -116,7 +116,7 @@ public class Nami{
 
     public Nami call(Map<String, String> headers, Map args, Object body) {
         try {
-            NamiInvocation invocation  = new NamiInvocation(_config, _method,_action, this::callDo);
+            NamiInvocation invocation = new NamiInvocation(_config, _method, _action, _url, this::callDo);
             if (headers != null) {
                 invocation.headers.putAll(headers);
             }
@@ -125,7 +125,7 @@ public class Nami{
                 invocation.args.putAll(args);
             }
 
-            if(body != null) {
+            if (body != null) {
                 invocation.body = body;
             }
 
@@ -145,9 +145,9 @@ public class Nami{
 
         if (channel == null) {
             //通过 scheme 获取通道
-            int idx = _url.indexOf("://");
+            int idx = inv.url.indexOf("://");
             if (idx > 0) {
-                String scheme = _url.substring(0, idx);
+                String scheme = inv.url.substring(0, idx);
                 channel = NamiManager.getChannel(scheme);
             }
         }
@@ -161,10 +161,8 @@ public class Nami{
         }
 
         if (_config.getDebug()) {
-            System.out.println("[Nami] call: " + _url);
+            System.out.println("[Nami] call: " + inv.url);
         }
-
-        inv.url = _url;
 
         return channel.call(inv);
     }

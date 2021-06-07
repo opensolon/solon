@@ -21,7 +21,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.cloud</artifactId>
+            <artifactId>solon</artifactId>
         </dependency>
 
         <dependency>
@@ -50,7 +50,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jlhttp</artifactId>
+            <artifactId>solon-rpc</artifactId>
             <scope>test</scope>
         </dependency>
 

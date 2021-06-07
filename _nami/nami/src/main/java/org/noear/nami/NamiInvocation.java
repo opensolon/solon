@@ -17,8 +17,8 @@ public class NamiInvocation extends NamiContext {
     List<NamiInterceptor> interceptors = new ArrayList<>();
     int index;
 
-    public NamiInvocation(NamiConfig config, Method method, String action, NamiInterceptor actuator) {
-        super(config, method, action);
+    public NamiInvocation(NamiConfig config, Method method, String action, String url, NamiInterceptor actuator) {
+        super(config, method, action, url);
         this.actuator = actuator;
         this.interceptors.addAll(config.getInterceptors());
         this.interceptors.add(actuator);
