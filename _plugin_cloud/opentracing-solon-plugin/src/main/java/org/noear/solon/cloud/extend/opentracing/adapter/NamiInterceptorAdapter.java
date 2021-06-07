@@ -47,12 +47,12 @@ public class NamiInterceptorAdapter implements NamiInterceptor {
         //构建 Span Name
         StringBuilder spanName = new StringBuilder();
 
+        spanName.append("Nami::");
         if (TextUtils.isEmpty(ctx.config.getName())) {
             spanName.append(ctx.url);
         } else {
-            spanName.append(ctx.config.getName()).append(":");
-            spanName.append(ctx.uri.getPath()).append(":");
-            spanName.append("(").append(ctx.uri.getAuthority()).append(")");
+            spanName.append(ctx.config.getName()).append("::");
+            spanName.append(ctx.url);
         }
 
 

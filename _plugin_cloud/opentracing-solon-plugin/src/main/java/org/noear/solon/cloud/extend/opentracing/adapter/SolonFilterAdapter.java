@@ -9,6 +9,7 @@ import io.opentracing.propagation.TextMapAdapter;
 import io.opentracing.tag.Tags;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
@@ -33,6 +34,7 @@ public class SolonFilterAdapter implements Filter {
             chain.doFilter(ctx);
         } else {
             Span span = buildSpan(ctx);
+            ctx.attrSet("opentracing_span", span);
 
             try (Scope scope = tracer.activateSpan(span)) {
                 chain.doFilter(ctx);
@@ -47,6 +49,8 @@ public class SolonFilterAdapter implements Filter {
 
     public Span buildSpan(Context ctx) {
         //实例化构建器
+        StringBuilder spanName  = new StringBuilder();
+        spanName.append(ctx.path()).append('(').append(Instance.local().address()).append(')');
         Tracer.SpanBuilder spanBuilder = tracer.buildSpan(ctx.path());
 
         //添加标志

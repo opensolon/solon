@@ -3,6 +3,9 @@ solon.app:
   name: demoapp
   group: demo
 
+solon.cloud.local:
+  discovery:
+    service:
 
 
 io:
