@@ -103,7 +103,7 @@ public class MessageProtocolBase implements MessageProtocol {
             }
 
             //resourceDescriptor
-            String resourceDescriptor = decodeString(buffer, sb, 256);
+            String resourceDescriptor = decodeString(buffer, sb, 512);
             if (resourceDescriptor == null) {
                 return null;
             }
@@ -137,7 +137,6 @@ public class MessageProtocolBase implements MessageProtocol {
                 sb.put(c);
             }
 
-            //url 太长了
             if (maxLen > 0 && maxLen < sb.position()) {
                 return null;
             }
