@@ -1,5 +1,6 @@
 package org.noear.solon.core.wrap;
 
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.aspect.Interceptor;
@@ -7,6 +8,7 @@ import org.noear.solon.core.aspect.InterceptorEntity;
 import org.noear.solon.core.aspect.Invocation;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
@@ -169,7 +171,16 @@ public class MethodWrap implements Interceptor, MethodHolder {
      * 执行
      */
     public Object invoke(Object obj, Object[] args) throws Exception {
-        return method.invoke(obj, args);
+        try {
+            return method.invoke(obj, args);
+        } catch (InvocationTargetException e) {
+            Throwable ex = e.getTargetException();
+            if (ex instanceof Error) {
+                throw (Error) ex;
+            } else {
+                throw (Exception) ex;
+            }
+        }
     }
 
     /**

@@ -43,8 +43,14 @@
 
         <dependency>
             <groupId>io.jaegertracing</groupId>
-            <artifactId>jaeger-core</artifactId>
+            <artifactId>jaeger-client</artifactId>
             <version>1.6.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.jlhttp</artifactId>
             <scope>test</scope>
         </dependency>
 

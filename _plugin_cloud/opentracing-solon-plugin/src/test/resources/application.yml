@@ -1,0 +1,12 @@
+
+solon.app:
+  name: demoapp
+  group: demo
+
+
+
+io:
+  opentracing:
+    trace:
+      host: 172.168.0.166
+      port: 6831

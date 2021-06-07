@@ -6,8 +6,12 @@ import io.jaegertracing.internal.metrics.NoopMetricsFactory;
 import io.jaegertracing.internal.reporters.CompositeReporter;
 import io.jaegertracing.internal.reporters.InMemoryReporter;
 import io.jaegertracing.internal.reporters.LoggingReporter;
+import io.jaegertracing.internal.reporters.RemoteReporter;
 import io.jaegertracing.internal.samplers.ConstSampler;
+import io.jaegertracing.thrift.internal.senders.HttpSender;
+import io.jaegertracing.thrift.internal.senders.UdpSender;
 import io.opentracing.Tracer;
+import org.apache.thrift.transport.TTransportException;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
@@ -25,9 +29,10 @@ public class Config {
     private Integer AGENT_PORT;
 
     @Bean
-    public Tracer tracer() {
+    public Tracer tracer() throws TTransportException {
+
         final CompositeReporter compositeReporter = new CompositeReporter(
-                new InMemoryReporter(),
+                new RemoteReporter.Builder().withSender(new UdpSender(AGENT_HOST, AGENT_PORT, 0)).withFlushInterval(10).build(),
                 new LoggingReporter()
         );
 
