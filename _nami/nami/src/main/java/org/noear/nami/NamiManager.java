@@ -16,6 +16,9 @@ public class NamiManager {
     static final Map<String, NamiEncoder> encoderMap = new HashMap<>();
     static final Map<String, NamiChannel> channelMap = new HashMap<>();
     static final Map<Class<?>, NamiConfiguration> configuratorMap = new HashMap<>();
+    /**
+     * 全局拦截器
+     * */
     static final Set<NamiInterceptor> interceptorSet = new LinkedHashSet<>();
 
     /**
