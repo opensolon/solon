@@ -271,8 +271,8 @@ public class Nami{
         /**
          * 添加拦截器
          */
-        public Builder interceptorAdd(NamiFilter interceptor) {
-            _config.filterAdd(interceptor);
+        public Builder filterAdd(NamiFilter filter) {
+            _config.filterAdd(filter);
             return this;
         }
 

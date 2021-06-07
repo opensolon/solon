@@ -53,8 +53,8 @@ public class NamiManager {
     /**
      * 登记拦截器
      */
-    public static void reg(NamiFilter interceptor) {
-        filterSet.add(interceptor);
+    public static void reg(NamiFilter filter) {
+        filterSet.add(filter);
     }
 
 
