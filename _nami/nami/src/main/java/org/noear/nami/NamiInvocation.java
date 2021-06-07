@@ -13,13 +13,11 @@ import java.util.List;
  * @since 1.4
  */
 public class NamiInvocation extends NamiContext {
-    NamiFilter actuator;
-    List<NamiFilter> filters = new ArrayList<>();
-    int index;
+    private List<NamiFilter> filters = new ArrayList<>();
+    private int index;
 
     public NamiInvocation(NamiConfig config, Method method, String action, String url, NamiFilter actuator) {
         super(config, method, action, url);
-        this.actuator = actuator;
         this.filters.addAll(config.getFilters());
         this.filters.add(actuator);
         this.index = 0;
