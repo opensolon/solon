@@ -9,6 +9,7 @@ import io.opentracing.tag.Tags;
 import org.noear.nami.NamiInterceptor;
 import org.noear.nami.NamiInvocation;
 import org.noear.nami.common.Result;
+import org.noear.nami.common.TextUtils;
 import org.noear.solon.core.Aop;
 
 /**
@@ -40,8 +41,22 @@ public class NamiInterceptorAdapter implements NamiInterceptor {
     }
 
     public Span buildSpan(NamiInvocation inv) {
+        StringBuilder spanName = new StringBuilder();
+
+        if (TextUtils.isNotEmpty(inv.config.getName())) {
+            spanName.append(inv.config.getName()).append(":");
+        }
+
+        if (TextUtils.isNotEmpty(inv.config.getPath())) {
+            spanName.append(inv.config.getPath()).append(":");
+        } else {
+            spanName.append("/").append(":");
+        }
+
+        spanName.append(inv.method.getName());
+
         //实例化构建器
-        Tracer.SpanBuilder spanBuilder = tracer.buildSpan(inv.method.getName());
+        Tracer.SpanBuilder spanBuilder = tracer.buildSpan(spanName.toString());
 
         //添加标志
         spanBuilder.withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_SERVER);

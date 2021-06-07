@@ -14,6 +14,8 @@ public class HttpChannel implements NamiChannel {
 
     @Override
     public Result call(NamiContext ctx) throws Throwable {
+        pretreatment(ctx);
+
         //0.检测method
         boolean is_get = Constants.METHOD_GET.equals(ctx.action);
 

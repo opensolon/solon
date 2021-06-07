@@ -3,7 +3,7 @@ package org.noear.solon.socketd;
 import java.net.URI;
 
 /**
- * @author noear 2020/12/14 created
+ * @author noear
  * @since 1.2
  */
 public abstract class ConnectorBase<T> implements Connector<T> {

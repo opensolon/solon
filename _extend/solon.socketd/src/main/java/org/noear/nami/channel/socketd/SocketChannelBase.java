@@ -6,7 +6,8 @@ import org.noear.nami.common.Constants;
 
 
 /**
- * @author noear 2021/1/3 created
+ * @author noear
+ * @since 1.2
  */
 public class SocketChannelBase  {
     protected void pretreatment(NamiContext ctx) {

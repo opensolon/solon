@@ -14,6 +14,10 @@ import org.noear.solon.socketd.util.HeaderUtil;
 import java.util.Map;
 import java.util.function.Supplier;
 
+/**
+ * @author noear
+ * @since 1.2
+ */
 public class SocketChannel extends SocketChannelBase implements NamiChannel {
     public Supplier<Session> sessions;
 
