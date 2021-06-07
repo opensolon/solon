@@ -59,10 +59,12 @@ public class SolonFilterAdapter implements Filter {
             spanBuilder = spanBuilder.asChildOf(extract);
         }
 
+        Span span = spanBuilder.start();
+
         //尝试注入
-        tracer.inject(spanBuilder.start().context(), Format.Builtin.HTTP_HEADERS, new TextMapAdapter(ctx.headerMap()));
+        tracer.inject(span.context(), Format.Builtin.HTTP_HEADERS, new TextMapAdapter(ctx.headerMap()));
 
         //开始
-        return spanBuilder.start();
+        return span;
     }
 }

@@ -6,6 +6,7 @@ import io.opentracing.Tracer;
 import io.opentracing.propagation.Format;
 import io.opentracing.propagation.TextMapAdapter;
 import io.opentracing.tag.Tags;
+import org.noear.nami.NamiContext;
 import org.noear.nami.NamiInterceptor;
 import org.noear.nami.NamiInvocation;
 import org.noear.nami.common.Result;
@@ -29,7 +30,7 @@ public class NamiInterceptorAdapter implements NamiInterceptor {
 
     @Override
     public Result doIntercept(NamiInvocation inv) throws Throwable {
-        if (inv.method == null || tracer == null) {
+        if (tracer == null) {
             return inv.invoke();
         } else {
             Span span = buildSpan(inv);
@@ -42,21 +43,17 @@ public class NamiInterceptorAdapter implements NamiInterceptor {
         }
     }
 
-    public Span buildSpan(NamiInvocation inv) {
+    public Span buildSpan(NamiContext ctx) {
         //构建 Span Name
         StringBuilder spanName = new StringBuilder();
 
-        if (TextUtils.isNotEmpty(inv.config.getName())) {
-            spanName.append(inv.config.getName()).append(":");
-        }
-
-        if (TextUtils.isNotEmpty(inv.config.getPath())) {
-            spanName.append(inv.config.getPath()).append(":");
+        if (TextUtils.isEmpty(ctx.config.getName())) {
+            spanName.append(ctx.url);
         } else {
-            spanName.append("/").append(":");
+            spanName.append(ctx.config.getName()).append(":");
+            spanName.append(ctx.uri.getPath()).append(":");
+            spanName.append("(").append(ctx.uri.getAuthority()).append(")");
         }
-
-        spanName.append(inv.method.getName()).append(":").append("(").append(URI.create(inv.url).getAuthority()).append(")");
 
 
         //实例化构建器
@@ -65,10 +62,12 @@ public class NamiInterceptorAdapter implements NamiInterceptor {
         //添加标志
         spanBuilder.withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_CLIENT);
 
+        Span span = spanBuilder.start();
+
         //尝试注入
-        tracer.inject(spanBuilder.start().context(), Format.Builtin.HTTP_HEADERS, new TextMapAdapter(inv.headers));
+        tracer.inject(span.context(), Format.Builtin.HTTP_HEADERS, new TextMapAdapter(ctx.headers));
 
         //开始
-        return spanBuilder.start();
+        return span;
     }
 }
