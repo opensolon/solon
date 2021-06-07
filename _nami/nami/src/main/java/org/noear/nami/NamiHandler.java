@@ -62,7 +62,7 @@ public class NamiHandler implements InvocationHandler {
             //尝试配置器配置
             NamiConfiguration tmp = NamiManager.getConfigurator(client.configuration());
             if (tmp != null) {
-                tmp.config(client, new Nami.Builder(config));
+                tmp.config(client, new NamiBuilder(config));
             }
 
             //尝试设置超时

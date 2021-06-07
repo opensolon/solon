@@ -1,9 +1,6 @@
 package org.noear.nami.integration.solon;
 
-import org.noear.nami.Filter;
-import org.noear.nami.Nami;
-import org.noear.nami.NamiConfiguration;
-import org.noear.nami.NamiManager;
+import org.noear.nami.*;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
@@ -35,7 +32,7 @@ public final class NamiConfigurationSolon implements NamiConfiguration {
     }
 
     @Override
-    public void config(NamiClient client, Nami.Builder builder) {
+    public void config(NamiClient client, NamiBuilder builder) {
         if (Utils.isEmpty(client.name())) {
             return;
         }

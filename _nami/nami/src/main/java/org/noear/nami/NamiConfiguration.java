@@ -13,5 +13,5 @@ public interface NamiConfiguration {
     /**
      * 配置客户端
      * */
-    void config(NamiClient client, Nami.Builder builder);
+    void config(NamiClient client, NamiBuilder builder);
 }
