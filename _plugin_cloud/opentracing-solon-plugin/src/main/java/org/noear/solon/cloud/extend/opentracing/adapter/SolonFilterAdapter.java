@@ -7,6 +7,7 @@ import io.opentracing.Tracer;
 import io.opentracing.propagation.Format;
 import io.opentracing.propagation.TextMapAdapter;
 import io.opentracing.tag.Tags;
+import org.noear.solon.Solon;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
@@ -41,8 +42,11 @@ public class SolonFilterAdapter implements Filter {
     }
 
     public Span buildSpan(Context ctx) {
+        StringBuilder spanName = new StringBuilder();
+        spanName.append(Solon.cfg().appName()).append(":").append(ctx.path());
+
         //实例化构建器
-        Tracer.SpanBuilder spanBuilder = tracer.buildSpan(ctx.path());
+        Tracer.SpanBuilder spanBuilder = tracer.buildSpan(spanName.toString());
 
         //添加标志
         spanBuilder.withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_SERVER);
