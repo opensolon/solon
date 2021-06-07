@@ -22,5 +22,5 @@ public interface Decoder {
     /**
      * 预处理
      * */
-    void pretreatment(NamiContext ctx);
+    void pretreatment(Context ctx);
 }

@@ -26,7 +26,7 @@ public class SocketChannel extends SocketChannelBase implements Channel {
     }
 
     @Override
-    public Result call(NamiContext ctx) throws Throwable {
+    public Result call(Context ctx) throws Throwable {
         pretreatment(ctx);
 
         if(ctx.config.getDecoder() == null){

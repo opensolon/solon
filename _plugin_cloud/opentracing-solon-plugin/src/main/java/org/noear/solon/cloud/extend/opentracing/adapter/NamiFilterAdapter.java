@@ -6,7 +6,7 @@ import io.opentracing.Tracer;
 import io.opentracing.propagation.Format;
 import io.opentracing.propagation.TextMapAdapter;
 import io.opentracing.tag.Tags;
-import org.noear.nami.NamiContext;
+import org.noear.nami.Context;
 import org.noear.nami.Filter;
 import org.noear.nami.Invocation;
 import org.noear.nami.Result;
@@ -52,7 +52,7 @@ public class NamiFilterAdapter implements Filter {
         }
     }
 
-    public Span buildSpan(NamiContext ctx) {
+    public Span buildSpan(Context ctx) {
         //构建 Span Name
         StringBuilder spanName = new StringBuilder();
 

@@ -1,7 +1,7 @@
 package org.noear.nami.channel.socketd;
 
 import org.noear.nami.Channel;
-import org.noear.nami.NamiContext;
+import org.noear.nami.Context;
 import org.noear.nami.Result;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.SessionFlag;
@@ -40,7 +40,7 @@ public class SocketClientChannel extends SocketChannelBase implements Channel {
     }
 
     @Override
-    public Result call(NamiContext ctx) throws Throwable {
+    public Result call(Context ctx) throws Throwable {
         pretreatment(ctx);
 
         URI uri = URI.create(ctx.url);

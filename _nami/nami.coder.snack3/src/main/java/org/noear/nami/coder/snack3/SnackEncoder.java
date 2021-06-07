@@ -1,7 +1,7 @@
 package org.noear.nami.coder.snack3;
 
 import org.noear.nami.Encoder;
-import org.noear.nami.NamiContext;
+import org.noear.nami.Context;
 import org.noear.nami.common.Constants;
 import org.noear.snack.ONode;
 
@@ -21,7 +21,7 @@ public class SnackEncoder implements Encoder {
     }
 
     @Override
-    public void pretreatment(NamiContext ctx) {
+    public void pretreatment(Context ctx) {
 
     }
 }

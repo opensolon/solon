@@ -7,5 +7,5 @@ package org.noear.nami;
  * @since 1.0
  * */
 public interface Channel {
-    Result call(NamiContext ctx) throws Throwable;
+    Result call(Context ctx) throws Throwable;
 }

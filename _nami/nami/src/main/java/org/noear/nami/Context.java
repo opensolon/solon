@@ -11,7 +11,7 @@ import java.util.Map;
  * @author noear
  * @since 1.4
  */
-public class NamiContext {
+public class Context {
     /**
      * 配置
      */
@@ -49,7 +49,7 @@ public class NamiContext {
     public Object body;
 
 
-    public NamiContext(Config config, Method method, String action, String url) {
+    public Context(Config config, Method method, String action, String url) {
         this.config = config;
         this.method = method;
         this.action = action;

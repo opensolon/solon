@@ -13,7 +13,7 @@ public class HttpChannel implements Channel {
     public static final HttpChannel instance = new HttpChannel();
 
     @Override
-    public Result call(NamiContext ctx) throws Throwable {
+    public Result call(Context ctx) throws Throwable {
         pretreatment(ctx);
 
         //0.检测method
@@ -94,7 +94,7 @@ public class HttpChannel implements Channel {
     }
 
 
-    private void pretreatment(NamiContext ctx) {
+    private void pretreatment(Context ctx) {
         if (ctx.config.getDecoder() == null) {
             String at = ctx.config.getHeader(Constants.HEADER_ACCEPT);
 

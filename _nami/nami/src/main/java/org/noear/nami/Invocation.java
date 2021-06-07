@@ -10,7 +10,7 @@ import java.util.List;
  * @author noear
  * @since 1.4
  */
-public class Invocation extends NamiContext {
+public class Invocation extends Context {
     private List<Filter> filters = new ArrayList<>();
     private int index;
 
