@@ -6,6 +6,8 @@ solon.app:
 solon.cloud.local:
   discovery:
     service:
+      hellorpc:
+        - http://localhost:8080
 
 
 io:

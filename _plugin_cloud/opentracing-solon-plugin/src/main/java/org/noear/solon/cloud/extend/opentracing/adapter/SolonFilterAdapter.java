@@ -15,6 +15,9 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * @author noear
  * @since 1.4
@@ -34,9 +37,11 @@ public class SolonFilterAdapter implements Filter {
             chain.doFilter(ctx);
         } else {
             Span span = buildSpan(ctx);
-            ctx.attrSet("opentracing_span", span);
-
             try (Scope scope = tracer.activateSpan(span)) {
+                Map<String, Object> logMap = new LinkedHashMap<>();
+                logMap.put("params", ctx.paramMap());
+                span.log(logMap);
+
                 chain.doFilter(ctx);
             } catch (Throwable e) {
                 span.log(Utils.throwableToString(e));

@@ -11,9 +11,12 @@ import org.noear.nami.NamiInterceptor;
 import org.noear.nami.NamiInvocation;
 import org.noear.nami.common.Result;
 import org.noear.nami.common.TextUtils;
+import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 
 import java.net.URI;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author noear
@@ -36,7 +39,14 @@ public class NamiInterceptorAdapter implements NamiInterceptor {
             Span span = buildSpan(inv);
 
             try (Scope scope = tracer.activateSpan(span)) {
+                Map<String, Object> logMap = new LinkedHashMap<>();
+                logMap.put("args", inv.args);
+                span.log(logMap);
+
                 return inv.invoke();
+            } catch (Throwable e) {
+                span.log(Utils.throwableToString(e));
+                throw e;
             } finally {
                 span.finish();
             }
