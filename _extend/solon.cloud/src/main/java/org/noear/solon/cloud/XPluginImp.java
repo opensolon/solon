@@ -57,6 +57,7 @@ public class XPluginImp implements Plugin {
             CloudManager.register(new CloudTraceServiceImpl());
         }
 
+        //为Nami添加跟踪标识
         String serviceAndAddress = Instance.local().service() + "@" + Instance.local().address();
         NamiManager.reg(inv -> {
             inv.headers.put(CloudClient.trace().HEADER_TRACE_ID_NAME(), CloudClient.trace().getTraceId());
