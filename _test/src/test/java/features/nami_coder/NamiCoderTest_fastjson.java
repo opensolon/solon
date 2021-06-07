@@ -4,7 +4,7 @@ import model.UserModel;
 import org.junit.Test;
 import org.noear.nami.coder.fastjson.FastjsonDecoder;
 import org.noear.nami.coder.fastjson.FastjsonEncoder;
-import org.noear.nami.common.Result;
+import org.noear.nami.Result;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;

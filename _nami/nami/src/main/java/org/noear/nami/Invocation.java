@@ -1,7 +1,5 @@
 package org.noear.nami;
 
-import org.noear.nami.common.Result;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +10,11 @@ import java.util.List;
  * @author noear
  * @since 1.4
  */
-public class NamiInvocation extends NamiContext {
-    private List<NamiFilter> filters = new ArrayList<>();
+public class Invocation extends NamiContext {
+    private List<Filter> filters = new ArrayList<>();
     private int index;
 
-    public NamiInvocation(NamiConfig config, Method method, String action, String url, NamiFilter actuator) {
+    public Invocation(Config config, Method method, String action, String url, Filter actuator) {
         super(config, method, action, url);
         this.filters.addAll(config.getFilters());
         this.filters.add(actuator);

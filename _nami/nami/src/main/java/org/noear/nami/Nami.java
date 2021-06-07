@@ -2,7 +2,6 @@ package org.noear.nami;
 
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.common.Constants;
-import org.noear.nami.common.Result;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -20,27 +19,27 @@ public class Nami{
     /**
      * 默认的序列化器（涉及第三方框架引用，不做定义）
      */
-    public static NamiEncoder defaultEncoder;
+    public static Encoder defaultEncoder;
 
     /**
      * 默认的反序列化器（涉及第三方框架引用，不做定义）
      */
-    public static NamiDecoder defaultDecoder;
+    public static Decoder defaultDecoder;
 
 
     private String _url;
     private String _action = "POST";
     private Method _method;
-    private final NamiConfig _config;
+    private final Config _config;
 
     public Nami() {
-        _config = new NamiConfig().init();
+        _config = new Config().init();
     }
 
     /**
      * 给Builder使用
      */
-    protected Nami(NamiConfig config) {
+    protected Nami(Config config) {
         _config = config;
         _config.init();
     }
@@ -116,7 +115,7 @@ public class Nami{
 
     public Nami call(Map<String, String> headers, Map args, Object body) {
         try {
-            NamiInvocation invocation = new NamiInvocation(_config, _method, _action, _url, this::callDo);
+            Invocation invocation = new Invocation(_config, _method, _action, _url, this::callDo);
             if (headers != null) {
                 invocation.headers.putAll(headers);
             }
@@ -140,8 +139,8 @@ public class Nami{
     }
 
 
-    private Result callDo(NamiInvocation inv) throws Throwable {
-        NamiChannel channel = _config.getChannel();
+    private Result callDo(Invocation inv) throws Throwable {
+        Channel channel = _config.getChannel();
 
         if (channel == null) {
             //通过 scheme 获取通道
@@ -195,7 +194,7 @@ public class Nami{
         if (Void.TYPE.equals(returnType)) {
             return null;
         } else {
-            NamiDecoder decoder = _config.getDecoder();
+            Decoder decoder = _config.getDecoder();
 
             if (decoder == null) {
                 decoder = NamiManager.getDecoder(Constants.CONTENT_TYPE_JSON);
@@ -218,13 +217,13 @@ public class Nami{
     }
 
     public static class Builder {
-        private final NamiConfig _config;
+        private final Config _config;
 
         protected Builder() {
-            _config = new NamiConfig();
+            _config = new Config();
         }
 
-        protected Builder(NamiConfig config) {
+        protected Builder(Config config) {
             _config = config;
         }
 
@@ -239,7 +238,7 @@ public class Nami{
         /**
          * 设置序列化器
          */
-        public Builder encoder(NamiEncoder encoder) {
+        public Builder encoder(Encoder encoder) {
             _config.setEncoder(encoder);
             return this;
         }
@@ -247,7 +246,7 @@ public class Nami{
         /**
          * 设置反序列器
          */
-        public Builder decoder(NamiDecoder decoder) {
+        public Builder decoder(Decoder decoder) {
             _config.setDecoder(decoder);
             return this;
         }
@@ -263,7 +262,7 @@ public class Nami{
         /**
          * 设置反序列器
          */
-        public Builder channel(NamiChannel channel) {
+        public Builder channel(Channel channel) {
             _config.setChannel(channel);
             return this;
         }
@@ -271,7 +270,7 @@ public class Nami{
         /**
          * 添加拦截器
          */
-        public Builder filterAdd(NamiFilter filter) {
+        public Builder filterAdd(Filter filter) {
             _config.filterAdd(filter);
             return this;
         }

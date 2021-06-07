@@ -1,6 +1,6 @@
 package org.noear.nami.coder.protostuff;
 
-import org.noear.nami.NamiEncoder;
+import org.noear.nami.Encoder;
 import org.noear.nami.NamiContext;
 import org.noear.nami.common.Constants;
 
@@ -8,7 +8,7 @@ import org.noear.nami.common.Constants;
  * @author noear
  * @since 1.2
  */
-public class ProtostuffEncoder implements NamiEncoder {
+public class ProtostuffEncoder implements Encoder {
     public static final ProtostuffEncoder instance = new ProtostuffEncoder();
 
     @Override

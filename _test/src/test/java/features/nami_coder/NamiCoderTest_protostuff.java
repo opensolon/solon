@@ -4,7 +4,7 @@ import model.UserModel;
 import org.junit.Test;
 import org.noear.nami.coder.protostuff.ProtostuffDeoder;
 import org.noear.nami.coder.protostuff.ProtostuffEncoder;
-import org.noear.nami.common.Result;
+import org.noear.nami.Result;
 import org.noear.snack.ONode;
 
 import java.util.List;

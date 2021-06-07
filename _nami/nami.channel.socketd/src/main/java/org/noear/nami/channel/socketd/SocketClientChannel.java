@@ -1,8 +1,8 @@
 package org.noear.nami.channel.socketd;
 
-import org.noear.nami.NamiChannel;
+import org.noear.nami.Channel;
 import org.noear.nami.NamiContext;
-import org.noear.nami.common.Result;
+import org.noear.nami.Result;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.SessionFlag;
 import org.noear.solon.socketd.SocketD;
@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * @author noear 2021/1/1 created
  */
-public class SocketClientChannel extends SocketChannelBase implements NamiChannel {
+public class SocketClientChannel extends SocketChannelBase implements Channel {
     public static final SocketClientChannel instance = new SocketClientChannel();
 
     Map<String, SocketChannel> channelMap = new HashMap<>();

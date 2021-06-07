@@ -3,7 +3,7 @@ package org.noear.nami.channel.socketd;
 
 import org.noear.nami.*;
 import org.noear.nami.common.Constants;
-import org.noear.nami.common.Result;
+import org.noear.nami.Result;
 import org.noear.solon.Utils;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
@@ -18,7 +18,7 @@ import java.util.function.Supplier;
  * @author noear
  * @since 1.2
  */
-public class SocketChannel extends SocketChannelBase implements NamiChannel {
+public class SocketChannel extends SocketChannelBase implements Channel {
     public Supplier<Session> sessions;
 
     public SocketChannel(Supplier<Session> sessions) {
@@ -55,7 +55,7 @@ public class SocketChannel extends SocketChannelBase implements NamiChannel {
         }
 
         //1.确定编码器
-        NamiEncoder encoder = ctx.config.getEncoder();
+        Encoder encoder = ctx.config.getEncoder();
         if(encoder == null){
             encoder = NamiManager.getEncoder(Constants.CONTENT_TYPE_JSON);
         }

@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 public class NamiHandler implements InvocationHandler {
     private static Pattern pathKeyExpr = Pattern.compile("\\{([^\\\\}]+)\\}");
 
-    private final NamiConfig config;
+    private final Config config;
     private final NamiClient client;
 
     private final Map<String, String> headers0 = new LinkedHashMap<>();
@@ -36,7 +36,7 @@ public class NamiHandler implements InvocationHandler {
      * @param config 配置
      * @param client 客户端注解
      */
-    public NamiHandler(Class<?> clz, NamiConfig config, NamiClient client) {
+    public NamiHandler(Class<?> clz, Config config, NamiClient client) {
         this.config = config;
         this.client = client;
 
@@ -55,7 +55,7 @@ public class NamiHandler implements InvocationHandler {
         //1.运行配置器
         if (client != null) {
             //尝试添加全局拦截器
-            for (NamiFilter mi : NamiManager.getFilters()) {
+            for (Filter mi : NamiManager.getFilters()) {
                 config.filterAdd(mi);
             }
 

@@ -7,9 +7,9 @@ import io.opentracing.propagation.Format;
 import io.opentracing.propagation.TextMapAdapter;
 import io.opentracing.tag.Tags;
 import org.noear.nami.NamiContext;
-import org.noear.nami.NamiFilter;
-import org.noear.nami.NamiInvocation;
-import org.noear.nami.common.Result;
+import org.noear.nami.Filter;
+import org.noear.nami.Invocation;
+import org.noear.nami.Result;
 import org.noear.nami.common.TextUtils;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
@@ -21,7 +21,7 @@ import java.util.Map;
  * @author noear
  * @since 1.4
  */
-public class NamiFilterAdapter implements NamiFilter {
+public class NamiFilterAdapter implements Filter {
     private Tracer tracer;
 
     public NamiFilterAdapter() {
@@ -31,7 +31,7 @@ public class NamiFilterAdapter implements NamiFilter {
     }
 
     @Override
-    public Result doFilter(NamiInvocation inv) throws Throwable {
+    public Result doFilter(Invocation inv) throws Throwable {
         if (tracer == null) {
             return inv.invoke();
         } else {

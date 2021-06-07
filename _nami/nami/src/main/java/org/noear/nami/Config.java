@@ -11,8 +11,8 @@ import java.util.function.Supplier;
  * @author noear
  * @since 1.0
  * */
-public class NamiConfig {
-    public NamiConfig() {
+public class Config {
+    public Config() {
         encoder = Nami.defaultEncoder;
         decoder = Nami.defaultDecoder;
     }
@@ -20,7 +20,7 @@ public class NamiConfig {
     /**
      * 尝试初始化进行补缺
      * */
-    protected NamiConfig init() {
+    protected Config init() {
         if (decoder == null) {
             String at = headers.get(Constants.HEADER_ACCEPT);
             if (at != null) {
@@ -47,11 +47,11 @@ public class NamiConfig {
     //请求超时设置
     private int timeout;
     //编码器
-    private NamiEncoder encoder;
+    private Encoder encoder;
     //解码器
-    private NamiDecoder decoder;
+    private Decoder decoder;
 
-    private NamiChannel channel;
+    private Channel channel;
 
     //上游
     private Supplier<String> upstream;
@@ -61,7 +61,7 @@ public class NamiConfig {
     private String path;
     private String group;
     //过滤器
-    private Set<NamiFilter> filters = new LinkedHashSet<>();
+    private Set<Filter> filters = new LinkedHashSet<>();
     //头信息
     private Map<String,String> headers = new LinkedHashMap<>();
 
@@ -85,13 +85,13 @@ public class NamiConfig {
     /**
      * 获取编码器（可以为Null）
      * */
-    public NamiEncoder getEncoder() {
+    public Encoder getEncoder() {
         return encoder;
     }
     /**
      * 设置编码器
      * */
-    public void setEncoder(NamiEncoder encoder) {
+    public void setEncoder(Encoder encoder) {
         if (encoder != null) {
             this.encoder = encoder;
         }
@@ -100,23 +100,23 @@ public class NamiConfig {
     /**
      * 获取解码器
      * */
-    public NamiDecoder getDecoder() {
+    public Decoder getDecoder() {
         return decoder;
     }
     /**
      * 设置解码器
      * */
-    public void setDecoder(NamiDecoder decoder) {
+    public void setDecoder(Decoder decoder) {
         if (decoder != null) {
             this.decoder = decoder;
         }
     }
 
-    public NamiChannel getChannel() {
+    public Channel getChannel() {
         return channel;
     }
 
-    public void setChannel(NamiChannel channel) {
+    public void setChannel(Channel channel) {
         this.channel = channel;
     }
 
@@ -199,14 +199,14 @@ public class NamiConfig {
     /**
      * 获取拦截器
      * */
-    public Set<NamiFilter> getFilters() {
+    public Set<Filter> getFilters() {
         return filters;
     }
 
     /**
      * 添加拦截器
      * */
-    protected void filterAdd(NamiFilter filter) {
+    protected void filterAdd(Filter filter) {
         filters.add(filter);
     }
 

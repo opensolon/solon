@@ -5,10 +5,10 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.noear.nami.NamiDecoder;
+import org.noear.nami.Decoder;
 import org.noear.nami.NamiContext;
 import org.noear.nami.common.Constants;
-import org.noear.nami.common.Result;
+import org.noear.nami.Result;
 
 import java.lang.reflect.Type;
 
@@ -16,7 +16,7 @@ import java.lang.reflect.Type;
  * @author noear
  * @since 1.2
  */
-public class JacksonDecoder implements NamiDecoder {
+public class JacksonDecoder implements Decoder {
     public static final JacksonDecoder instance = new JacksonDecoder();
 
 

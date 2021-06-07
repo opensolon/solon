@@ -1,14 +1,14 @@
 package org.noear.nami.coder.snack3;
 
-import org.noear.nami.NamiDecoder;
+import org.noear.nami.Decoder;
 import org.noear.nami.NamiContext;
-import org.noear.nami.common.Result;
+import org.noear.nami.Result;
 import org.noear.nami.common.Constants;
 import org.noear.snack.ONode;
 
 import java.lang.reflect.Type;
 
-public class SnackDecoder implements NamiDecoder {
+public class SnackDecoder implements Decoder {
     public static final SnackDecoder instance = new SnackDecoder();
 
     @Override

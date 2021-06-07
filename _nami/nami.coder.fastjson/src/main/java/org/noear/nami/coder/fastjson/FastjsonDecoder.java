@@ -2,14 +2,14 @@ package org.noear.nami.coder.fastjson;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.ParserConfig;
-import org.noear.nami.NamiDecoder;
+import org.noear.nami.Decoder;
 import org.noear.nami.NamiContext;
-import org.noear.nami.common.Result;
+import org.noear.nami.Result;
 import org.noear.nami.common.Constants;
 
 import java.lang.reflect.Type;
 
-public class FastjsonDecoder implements NamiDecoder {
+public class FastjsonDecoder implements Decoder {
     static {
         ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
     }

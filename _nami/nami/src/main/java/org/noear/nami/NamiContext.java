@@ -15,7 +15,7 @@ public class NamiContext {
     /**
      * 配置
      */
-    public final NamiConfig config;
+    public final Config config;
     /**
      * 函数
      */
@@ -49,7 +49,7 @@ public class NamiContext {
     public Object body;
 
 
-    public NamiContext(NamiConfig config, Method method, String action, String url) {
+    public NamiContext(Config config, Method method, String action, String url) {
         this.config = config;
         this.method = method;
         this.action = action;

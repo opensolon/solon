@@ -4,12 +4,12 @@ import okhttp3.MediaType;
 import okhttp3.Response;
 import org.noear.nami.*;
 import org.noear.nami.common.Constants;
-import org.noear.nami.common.Result;
+import org.noear.nami.Result;
 
 /**
  * Http 通道
  * */
-public class HttpChannel implements NamiChannel {
+public class HttpChannel implements Channel {
     public static final HttpChannel instance = new HttpChannel();
 
     @Override
@@ -44,7 +44,7 @@ public class HttpChannel implements NamiChannel {
         //0.开始构建http
         HttpUtils http = HttpUtils.http(url).headers(ctx.headers);
         Response response = null;
-        NamiEncoder encoder = ctx.config.getEncoder();
+        Encoder encoder = ctx.config.getEncoder();
 
         //1.执行并返回
         if (is_get || ctx.args.size() == 0) {

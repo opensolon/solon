@@ -1,13 +1,13 @@
 package org.noear.nami.coder.snack3;
 
-import org.noear.nami.NamiEncoder;
+import org.noear.nami.Encoder;
 import org.noear.nami.NamiContext;
 import org.noear.nami.common.Constants;
 import org.noear.snack.ONode;
 
 import java.nio.charset.StandardCharsets;
 
-public class SnackEncoder implements NamiEncoder {
+public class SnackEncoder implements Encoder {
     public static final SnackEncoder instance = new SnackEncoder();
 
     @Override

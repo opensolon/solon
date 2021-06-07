@@ -1,13 +1,5 @@
 package webapp.dso;
 
-import org.noear.nami.Nami;
-import org.noear.nami.NamiConfig;
-import org.noear.nami.NamiConfiguration;
-import org.noear.nami.annotation.NamiClient;
-import org.noear.solon.annotation.Component;
-
-import java.util.Map;
-
 /**
  * @author noear 2021/4/27 created
  */

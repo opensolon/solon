@@ -1,25 +1,21 @@
 package org.noear.nami;
 
-import org.noear.nami.common.Result;
-
-import java.lang.reflect.Type;
-
 /**
- * Nami - 解码器
+ * Nami - 编码器
  *
  * @author noear
  * @since 1.2
  * */
-public interface NamiDecoder {
+public interface Encoder {
     /**
      * 编码
      * */
     String enctype();
 
     /**
-     * 反序列化
+     * 序列化
      * */
-    <T> T decode(Result rst, Type clz);
+    byte[] encode(Object obj);
 
     /**
      * 预处理
