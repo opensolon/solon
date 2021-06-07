@@ -190,7 +190,7 @@ public class NamiHandler implements InvocationHandler {
         }
 
         //处理附加信息
-        Map<String,String> contextMap = NamiAttachment.getMap();
+        Map<String,String> contextMap = NamiAttachment.getData();
         if (contextMap.size() > 0) {
             headers.putAll(contextMap);
         }

@@ -24,7 +24,7 @@ public final class NamiAttachment {
     }
 
 
-    public static Map<String, String> getMap() {
+    public static Map<String, String> getData() {
         return Collections.unmodifiableMap(getContextMap0());
     }
 
