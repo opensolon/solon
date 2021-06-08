@@ -248,7 +248,7 @@ public class CloudProps {
     }
 
     public String getDiscoveryRefreshInterval(String def) {
-        return Solon.cfg().get(DISCOVERY_REFRESH_INTERVAL, def);//def:10s
+        return Solon.cfg().get(DISCOVERY_REFRESH_INTERVAL, def);//def:5s
     }
 
     //
