@@ -12,18 +12,17 @@ import org.noear.solon.core.Plugin;
  * @since 1.3
  */
 public class XPluginImp implements Plugin {
-
     @Override
     public void start(SolonApp app) {
-        String server = MqttProps.instance.getEventServer();
+        if (Utils.isEmpty(MqttProps.instance.getEventServer())) {
+            return;
+        }
 
-        if (Utils.isNotEmpty(server)) {
-            if (MqttProps.instance.getEventEnable()) {
-                CloudEventServiceMqttImp eventServiceImp = CloudEventServiceMqttImp.getInstance();
-                CloudManager.register(MqttProps.instance.getEventChannel(), eventServiceImp);
+        if (MqttProps.instance.getEventEnable()) {
+            CloudEventServiceMqttImp eventServiceImp = CloudEventServiceMqttImp.getInstance();
+            CloudManager.register(MqttProps.instance.getEventChannel(), eventServiceImp);
 
-                Aop.beanOnloaded(eventServiceImp::subscribe);
-            }
+            Aop.beanOnloaded(eventServiceImp::subscribe);
         }
     }
 }

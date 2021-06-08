@@ -14,15 +14,15 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        String server = KafkaProps.instance.getEventServer();
+        if (Utils.isEmpty(KafkaProps.instance.getEventServer())) {
+            return;
+        }
 
-        if (Utils.isNotEmpty(server)) {
-            if (KafkaProps.instance.getEventEnable()) {
-                CloudEventServiceKafkaImp eventServiceImp = CloudEventServiceKafkaImp.getInstance();
-                CloudManager.register(KafkaProps.instance.getEventChannel(), eventServiceImp);
+        if (KafkaProps.instance.getEventEnable()) {
+            CloudEventServiceKafkaImp eventServiceImp = CloudEventServiceKafkaImp.getInstance();
+            CloudManager.register(KafkaProps.instance.getEventChannel(), eventServiceImp);
 
-                Aop.beanOnloaded(eventServiceImp::subscribe);
-            }
+            Aop.beanOnloaded(eventServiceImp::subscribe);
         }
     }
 }
