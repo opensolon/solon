@@ -1,5 +1,5 @@
 
-#### 完整配置
+#### 配置示例
 
 ```yaml
 solon.cloud.aliyun.oss:
