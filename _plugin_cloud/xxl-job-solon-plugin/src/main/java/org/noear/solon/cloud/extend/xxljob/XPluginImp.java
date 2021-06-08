@@ -16,31 +16,28 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        if (XxljobProps.instance.getJobEnable() == false) {
-            return;
-        }
-
         if (Utils.isEmpty(XxljobProps.instance.getServer())) {
             return;
         }
 
-        //注册Job服务
-        CloudManager.register(CloudJobServiceImpl.instance);
+        if (XxljobProps.instance.getJobEnable()) {
+            //注册Job服务
+            CloudManager.register(CloudJobServiceImpl.instance);
 
-        //注册构建器和提取器
-        Aop.context().beanExtractorAdd(XxlJob.class, new XxlJobExtractor());
+            //注册构建器和提取器
+            Aop.context().beanExtractorAdd(XxlJob.class, new XxlJobExtractor());
 
-        //构建自动配置
-        Aop.context().beanMake(XxlJobAutoConfig.class);
+            //构建自动配置
+            Aop.context().beanMake(XxlJobAutoConfig.class);
 
-        Aop.beanOnloaded(() -> {
-            try {
-                XxlJobExecutor executor = Aop.get(XxlJobExecutor.class);
-                executor.start();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-
+            Aop.beanOnloaded(() -> {
+                try {
+                    XxlJobExecutor executor = Aop.get(XxlJobExecutor.class);
+                    executor.start();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
     }
 }

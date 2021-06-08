@@ -21,13 +21,11 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        if (OpentracingProps.instance.getTraceEnable() == false) {
-            return;
+        if (OpentracingProps.instance.getTraceEnable()) {
+            NamiManager.reg(new NamiFilterAdapter());
+
+            app.filter(new SolonFilterAdapter());
+            app.onError(new SolonErrorAdapter());
         }
-
-        NamiManager.reg(new NamiFilterAdapter());
-
-        app.filter(new SolonFilterAdapter());
-        app.onError(new SolonErrorAdapter());
     }
 }

@@ -14,15 +14,15 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        String server = RabbitmqProps.instance.getEventServer();
+        if (Utils.isEmpty(RabbitmqProps.instance.getEventServer())) {
+            return;
+        }
 
-        if (Utils.isNotEmpty(server)) {
-            if (RabbitmqProps.instance.getEventEnable()) {
-                CloudEventServiceRabbitmqImp eventServiceImp = CloudEventServiceRabbitmqImp.getInstance();
-                CloudManager.register(RabbitmqProps.instance.getEventChannel(), eventServiceImp);
+        if (RabbitmqProps.instance.getEventEnable()) {
+            CloudEventServiceRabbitmqImp eventServiceImp = CloudEventServiceRabbitmqImp.getInstance();
+            CloudManager.register(RabbitmqProps.instance.getEventChannel(), eventServiceImp);
 
-                Aop.beanOnloaded(eventServiceImp::subscribe);
-            }
+            Aop.beanOnloaded(eventServiceImp::subscribe);
         }
     }
 }

@@ -180,6 +180,7 @@ public class XPluginImp implements Plugin {
         if (WaterProps.instance.getJobEnable()) {
             app.http(WW.path_run_job, new HandlerJob());
         }
+
         app.http(WW.path_run_check, new HandlerCheck());
         app.http(WW.path_run_status, new HandlerStatus());
         app.http(WW.path_run_stop, new HandlerStop());
