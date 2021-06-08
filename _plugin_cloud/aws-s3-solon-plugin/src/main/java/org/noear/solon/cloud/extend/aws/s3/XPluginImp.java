@@ -7,7 +7,8 @@ import org.noear.solon.cloud.extend.aws.s3.service.CloudFileServiceS3Imp;
 import org.noear.solon.core.Plugin;
 
 /**
- * @author noear 2021/4/7 created
+ * @author noear
+ * @since 1.3
  */
 public class XPluginImp implements Plugin {
     @Override
