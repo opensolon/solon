@@ -24,10 +24,10 @@ public class CloudLoadBalance implements LoadBalance {
         this.group = group;
 
         if (CloudClient.discovery() != null) {
-            this.discovery = CloudClient.discovery().find(group, service);
+            discovery = CloudClient.discovery().find(group, service);
 
             CloudClient.discovery().attention(group, service, d1 -> {
-                this.discovery = d1;
+                discovery = d1;
             });
         }
     }
