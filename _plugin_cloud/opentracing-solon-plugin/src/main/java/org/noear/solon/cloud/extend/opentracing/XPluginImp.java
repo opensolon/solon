@@ -21,6 +21,10 @@ public class XPluginImp implements Plugin {
             return;
         }
 
+        if (OpentracingProps.instance.getTraceEnable() == false) {
+            return;
+        }
+
         NamiManager.reg(new NamiFilterAdapter());
 
         app.filter(new SolonFilterAdapter());

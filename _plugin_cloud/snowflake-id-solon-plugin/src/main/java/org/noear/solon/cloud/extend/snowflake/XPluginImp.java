@@ -12,7 +12,7 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        if (SnowflakeProps.instance.getFileEnable()) {
+        if (SnowflakeProps.instance.getIdEnable()) {
             CloudManager.register(CloudIdServiceFactoryImp.getInstance());
         }
     }

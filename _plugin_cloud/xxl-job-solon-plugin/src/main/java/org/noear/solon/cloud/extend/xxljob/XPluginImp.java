@@ -3,11 +3,9 @@ package org.noear.solon.cloud.extend.xxljob;
 import com.xxl.job.core.executor.XxlJobExecutor;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
-import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.cloud.extend.xxljob.service.CloudJobServiceImpl;
-import org.noear.solon.cloud.impl.CloudJobBuilder;
-import org.noear.solon.cloud.impl.CloudJobExtractor;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 
@@ -19,6 +17,10 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
         if (XxljobProps.instance.getJobEnable() == false) {
+            return;
+        }
+
+        if (Utils.isEmpty(XxljobProps.instance.getServer())) {
             return;
         }
 
