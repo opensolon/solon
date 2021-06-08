@@ -13,12 +13,14 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
+        if (OssProps.instance.getFileEnable() == false) {
+            return;
+        }
+
         if (Utils.isEmpty(OssProps.instance.getFileAccessKey())) {
             return;
         }
 
-        if (OssProps.instance.getFileEnable()) {
-            CloudManager.register(CloudFileServiceOssImp.getInstance());
-        }
+        CloudManager.register(CloudFileServiceOssImp.getInstance());
     }
 }
