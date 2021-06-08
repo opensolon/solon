@@ -7,7 +7,7 @@ solon.app:
   name: helloapp    #发现服务使用的应用名
 
 solon.cloud.water:
-  server: localhost      #服务地址
+  server: water      #服务地址
   config:
     load: "helloapp.yml"
 

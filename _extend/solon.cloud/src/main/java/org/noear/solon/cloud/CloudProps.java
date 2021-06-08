@@ -50,6 +50,7 @@ public class CloudProps {
     private String EVENT_CHANNEL = "solon.cloud.@@.event.channel";
     private String EVENT_CONSUMER = "solon.cloud.@@.event.consumer";
     private String EVENT_PRODUCER = "solon.cloud.@@.event.producer";
+    private String EVENT_CLIENT = "solon.cloud.@@.event.client";
 
 
     //锁服务相关
@@ -124,6 +125,7 @@ public class CloudProps {
         EVENT_CHANNEL = EVENT_CHANNEL.replace("@@", frame);
         EVENT_CONSUMER = EVENT_CONSUMER.replace("@@",frame);
         EVENT_PRODUCER = EVENT_PRODUCER.replace("@@",frame);
+        EVENT_CLIENT = EVENT_CLIENT.replace("@@",frame);
 
         LOCK_ENABLE = LOCK_ENABLE.replace("@@", frame);
 
@@ -305,6 +307,10 @@ public class CloudProps {
 
     public Properties getEventProducerProps(){
         return Solon.cfg().getProp(EVENT_PRODUCER);
+    }
+
+    public Properties getEventClientProps(){
+        return Solon.cfg().getProp(EVENT_CLIENT);
     }
 
     //

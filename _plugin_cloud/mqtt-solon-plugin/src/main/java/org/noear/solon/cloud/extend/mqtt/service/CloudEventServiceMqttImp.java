@@ -88,7 +88,7 @@ public class CloudEventServiceMqttImp implements CloudEventService {
         options.setServerURIs(new String[]{server});
 
         //绑定定制属性
-        Properties props = MqttProps.instance.getEventProducerProps();
+        Properties props = MqttProps.instance.getEventClientProps();
         if(props.size() > 0){
             Utils.injectProperties(options, props);
         }
