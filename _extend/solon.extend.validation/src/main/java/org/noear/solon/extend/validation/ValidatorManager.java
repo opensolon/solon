@@ -1,5 +1,6 @@
 package org.noear.solon.extend.validation;
 
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
@@ -197,6 +198,15 @@ public class ValidatorManager implements Handler {
             return false;
         }
 
-        return failureHandler.onFailure(ctx, ano, result, message);
+        try {
+            return failureHandler.onFailure(ctx, ano, result, message);
+        } catch (Throwable ex) {
+            ex = Utils.throwableUnwrap(ex);
+            if (ex instanceof RuntimeException) {
+                throw (RuntimeException) ex;
+            } else {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 }

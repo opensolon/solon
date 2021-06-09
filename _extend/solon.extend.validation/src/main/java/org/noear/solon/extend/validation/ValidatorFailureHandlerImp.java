@@ -15,7 +15,7 @@ import java.lang.annotation.Annotation;
 public class ValidatorFailureHandlerImp implements ValidatorFailureHandler {
 
     @Override
-    public boolean onFailure(Context ctx, Annotation anno, Result rst, String message) {
+    public boolean onFailure(Context ctx, Annotation anno, Result rst, String message) throws Throwable {
         ctx.setHandled(true);
 
         if (rst.getCode() > 400 && rst.getCode() < 500) {
@@ -26,34 +26,27 @@ public class ValidatorFailureHandlerImp implements ValidatorFailureHandler {
 
         if (ValidatorManager.global().enableRender()
                 && ctx.getRendered() == false) {
-            try {
-                if (Utils.isEmpty(message)) {
-                    if (Utils.isEmpty(rst.getDescription())) {
-                        message = new StringBuilder(100)
-                                .append("@")
-                                .append(anno.annotationType().getSimpleName())
-                                .append(" verification failed")
-                                .toString();
-                    } else {
-                        message = new StringBuilder(100)
-                                .append("@")
-                                .append(anno.annotationType().getSimpleName())
-                                .append(" verification failed: ")
-                                .append(rst.getDescription())
-                                .toString();
-                    }
-                }
 
-                ctx.setRendered(true);
-                ctx.render(Result.failure(rst.getCode(), message));
-            } catch (Throwable ex) {
-                ex = Utils.throwableUnwrap(ex);
-                if (ex instanceof RuntimeException) {
-                    throw (RuntimeException) ex;
+            if (Utils.isEmpty(message)) {
+                if (Utils.isEmpty(rst.getDescription())) {
+                    message = new StringBuilder(100)
+                            .append("@")
+                            .append(anno.annotationType().getSimpleName())
+                            .append(" verification failed")
+                            .toString();
                 } else {
-                    throw new RuntimeException(ex);
+                    message = new StringBuilder(100)
+                            .append("@")
+                            .append(anno.annotationType().getSimpleName())
+                            .append(" verification failed: ")
+                            .append(rst.getDescription())
+                            .toString();
                 }
             }
+
+            ctx.setRendered(true);
+            ctx.render(Result.failure(rst.getCode(), message));
+
         }
 
         return true;

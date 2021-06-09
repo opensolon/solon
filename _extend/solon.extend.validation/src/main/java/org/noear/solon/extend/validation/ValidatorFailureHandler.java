@@ -17,5 +17,5 @@ public interface ValidatorFailureHandler {
      * @return 是否停止后续检查器
      */
     @Note("@return 是否停止后续检查器")
-    boolean onFailure(Context ctx, Annotation ano, Result result, String message);
+    boolean onFailure(Context ctx, Annotation ano, Result result, String message) throws Throwable;
 }
