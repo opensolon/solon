@@ -42,8 +42,6 @@ public class Config {
         return this;
     }
 
-    //调试模式
-    private boolean debug;
     //请求超时设置
     private int timeout;
     //编码器
@@ -64,15 +62,6 @@ public class Config {
     private Set<Filter> filters = new LinkedHashSet<>();
     //头信息
     private Map<String,String> headers = new LinkedHashMap<>();
-
-
-    public boolean getDebug(){
-        return debug;
-    }
-
-    public void setDebug(boolean debug){
-        this.debug = debug;
-    }
 
     public int getTimeout() {
         return timeout;

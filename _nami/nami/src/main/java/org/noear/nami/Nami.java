@@ -160,9 +160,7 @@ public class Nami{
             inv.body = inv.args;
         }
 
-        if (_config.getDebug()) {
-            log.trace("[Nami] call: " + inv.url);
-        }
+        log.trace("Nami call: " + inv.url);
 
         return channel.call(inv);
     }
