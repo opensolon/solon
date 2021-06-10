@@ -37,9 +37,6 @@ public final class NamiConfigurationSolon implements NamiConfiguration {
             return;
         }
 
-        //设置调试模式
-        builder.debug(Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode());
-
         //尝试自定义
         if (custom != null) {
             custom.config(client, builder);

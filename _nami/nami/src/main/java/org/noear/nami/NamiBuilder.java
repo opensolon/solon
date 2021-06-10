@@ -69,11 +69,6 @@ public class NamiBuilder {
         return this;
     }
 
-    public NamiBuilder debug(boolean debug){
-        _config.setDebug(debug);
-        return this;
-    }
-
 
     /**
      * 设置服务端
