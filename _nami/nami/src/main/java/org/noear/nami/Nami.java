@@ -1,6 +1,8 @@
 package org.noear.nami;
 
 import org.noear.nami.common.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -13,6 +15,8 @@ import java.util.Map;
  * @since 1.0
  * */
 public class Nami{
+    static final Logger log = LoggerFactory.getLogger(Nami.class);
+
     /**
      * 默认的序列化器（涉及第三方框架引用，不做定义）
      */
@@ -157,7 +161,7 @@ public class Nami{
         }
 
         if (_config.getDebug()) {
-            System.out.println("[Nami] call: " + inv.url);
+            log.trace("[Nami] call: " + inv.url);
         }
 
         return channel.call(inv);
