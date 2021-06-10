@@ -59,7 +59,9 @@ public final class SolonProps extends Props {
         this.sourceLocation = source.getProtectionDomain().getCodeSource().getLocation();
 
         //2.加载文件的配置
+        //@Deprecated
         loadInit(Utils.getResource("application.properties"));
+        //@Deprecated
         loadInit(Utils.getResource("application.yml"));
         loadInit(Utils.getResource("app.properties"));
         loadInit(Utils.getResource("app.yml"));
@@ -78,7 +80,9 @@ public final class SolonProps extends Props {
         }
 
         if (Utils.isNotEmpty(env)) {
+            //@Deprecated
             loadInit(Utils.getResource("application-" + env + ".properties"));
+            //@Deprecated
             loadInit(Utils.getResource("application-" + env + ".yml"));
             loadInit(Utils.getResource("app-" + env + ".properties"));
             loadInit(Utils.getResource("app-" + env + ".yml"));
