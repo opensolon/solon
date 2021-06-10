@@ -27,7 +27,7 @@ public @interface Mapping {
     /**
      * 请求方式
      * */
-    MethodType[] method() default {MethodType.HTTP};
+    MethodType[] method() default {MethodType.ALL};
     /**
      * 指定处理请求的提交内容类型（主要考虑与Swagger的描述兼容）
      * */
