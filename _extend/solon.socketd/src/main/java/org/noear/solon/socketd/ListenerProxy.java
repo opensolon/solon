@@ -100,7 +100,7 @@ public class ListenerProxy implements Listener {
     private void onMessage0(Session session, Message message) {
         try {
             if (Solon.cfg().isFilesMode() || Solon.cfg().isDebugMode()) {
-                log.trace("Listener proxy receive: {}" + message);
+                log.trace("Listener proxy receive: {}", message);
             }
 
             //路由监听模式（起到过滤器作用）

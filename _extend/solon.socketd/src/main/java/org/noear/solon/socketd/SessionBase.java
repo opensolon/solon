@@ -110,7 +110,7 @@ public abstract class SessionBase implements Session {
     @Override
     public void send(Message message) {
         if (Solon.cfg().isFilesMode() || Solon.cfg().isDebugMode()) {
-            log.trace("Session send: " + message);
+            log.trace("Session send: {}", message);
         }
     }
 
