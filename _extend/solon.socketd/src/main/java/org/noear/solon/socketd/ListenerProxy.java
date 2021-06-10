@@ -12,10 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * SocketD 监听者代理
@@ -27,7 +24,7 @@ public class ListenerProxy implements Listener {
     static final Logger log = LoggerFactory.getLogger(ListenerProxy.class);
 
     //消息处理线程池
-    static final ExecutorService executors = Executors.newCachedThreadPool();
+    static final ExecutorService executors = Executors.newCachedThreadPool(r->new Thread(r,"SocketD"));
 
     //全局实例维护
     private static Listener global = new ListenerProxy();
