@@ -12,6 +12,7 @@ import org.noear.solon.boot.jetty.websocket._SessionManagerImpl;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.socketd.SessionManager;
+import sun.util.resources.cldr.so.CalendarData_so_ET;
 
 import java.io.IOException;
 
