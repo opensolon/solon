@@ -94,7 +94,7 @@ public class MessageProtocolBase implements MessageProtocol {
             return new Message(flag, null, null, null, body);
         } else {
             //1.解码key and resourceDescriptor
-            ByteBuffer sb = ByteBuffer.allocate(Math.min(1024, buffer.limit()));
+            ByteBuffer sb = ByteBuffer.allocate(Math.min(2048, buffer.limit()));
 
             //key
             String key = decodeString(buffer, sb, 256);
