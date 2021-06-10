@@ -61,6 +61,8 @@ public final class SolonProps extends Props {
         //2.加载文件的配置
         loadInit(Utils.getResource("application.properties"));
         loadInit(Utils.getResource("application.yml"));
+        loadInit(Utils.getResource("app.properties"));
+        loadInit(Utils.getResource("app.yml"));
 
         //2.2.加载活动配置
         String env = args.get("env");
@@ -78,6 +80,8 @@ public final class SolonProps extends Props {
         if (Utils.isNotEmpty(env)) {
             loadInit(Utils.getResource("application-" + env + ".properties"));
             loadInit(Utils.getResource("application-" + env + ".yml"));
+            loadInit(Utils.getResource("app-" + env + ".properties"));
+            loadInit(Utils.getResource("app-" + env + ".yml"));
         }
 
         //3.同步启动参数
