@@ -39,10 +39,6 @@ public class SolonFilterAdapter implements Filter {
         } else {
             Span span = buildSpan(ctx);
             try (Scope scope = tracer.activateSpan(span)) {
-                Map<String, Object> logMap = new LinkedHashMap<>();
-                logMap.put("params", ctx.paramMap());
-                span.log(logMap);
-
                 chain.doFilter(ctx);
             } catch (Throwable e) {
                 span.log(Utils.throwableToString(e));
