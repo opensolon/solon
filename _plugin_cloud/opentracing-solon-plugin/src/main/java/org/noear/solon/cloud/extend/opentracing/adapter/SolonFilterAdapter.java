@@ -10,6 +10,7 @@ import io.opentracing.tag.Tags;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.model.Instance;
+import org.noear.solon.cloud.utils.LocalUtils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
@@ -53,9 +54,15 @@ public class SolonFilterAdapter implements Filter {
     }
 
     public Span buildSpan(Context ctx) {
+        int port = ctx.uri().getPort();
+        if (port < 1) {
+            port = Solon.cfg().serverPort();
+        }
+        String ip = LocalUtils.getLocalAddress();
+
         //实例化构建器
         StringBuilder spanName = new StringBuilder();
-        spanName.append(ctx.path()).append(" (").append(ctx.uri().getScheme()).append(" ").append(Instance.local().address()).append(')');
+        spanName.append(ctx.path()).append(" (").append(ctx.uri().getScheme()).append(" ").append(ip).append(":").append(port).append(')');
         Tracer.SpanBuilder spanBuilder = tracer.buildSpan(spanName.toString());
 
         //添加标志
