@@ -5,6 +5,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,6 +17,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 
 public abstract class SessionBase implements Session {
+
+    static final Logger log = LoggerFactory.getLogger(SessionBase.class);
+
     //
     //标志
     //
@@ -105,7 +110,7 @@ public abstract class SessionBase implements Session {
     @Override
     public void send(Message message) {
         if (Solon.cfg().isFilesMode() || Solon.cfg().isDebugMode()) {
-            System.out.println("Session send: " + message);
+            log.trace("Session send: " + message);
         }
     }
 

@@ -7,6 +7,8 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.MessageFlag;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.core.util.PrintUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Map;
@@ -22,6 +24,7 @@ import java.util.concurrent.Executors;
  * @since 1.0
  * */
 public class ListenerProxy implements Listener {
+    static final Logger log = LoggerFactory.getLogger(ListenerProxy.class);
 
     //消息处理线程池
     static final ExecutorService executors = Executors.newCachedThreadPool();
@@ -97,7 +100,7 @@ public class ListenerProxy implements Listener {
     private void onMessage0(Session session, Message message) {
         try {
             if (Solon.cfg().isFilesMode() || Solon.cfg().isDebugMode()) {
-                PrintUtil.info("Listener proxy receive: " + message);
+                log.trace("Listener proxy receive: {}" + message);
             }
 
             //路由监听模式（起到过滤器作用）
