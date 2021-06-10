@@ -6,6 +6,7 @@ import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.MessageFlag;
 import org.noear.solon.core.message.Session;
+import org.noear.solon.core.util.PrefixThreadFactory;
 import org.noear.solon.core.util.PrintUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,7 @@ public class ListenerProxy implements Listener {
     static final Logger log = LoggerFactory.getLogger(ListenerProxy.class);
 
     //消息处理线程池
-    static final ExecutorService executors = Executors.newCachedThreadPool(r->new Thread(r,"SocketD"));
+    static final ExecutorService executors = Executors.newCachedThreadPool(new PrefixThreadFactory("socketd-receive-"));
 
     //全局实例维护
     private static Listener global = new ListenerProxy();
