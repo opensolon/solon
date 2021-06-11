@@ -150,7 +150,7 @@ public class ValidatorManager {
     }
 
 
-    public static void onFailure(ValidatorFailureHandler handler) {
+    public static void failure(ValidatorFailureHandler handler) {
         if (handler != null) {
             failureHandler = handler;
         }
