@@ -35,4 +35,20 @@ public class HasRoleTag extends Directive {
             stat.exec(env, scope, writer);
         }
     }
+
+    /**
+     * 从 #xxx 指令参数中获取角色名称数组
+     */
+    private String[] getNamesArray(Scope scope) {
+        Object[] values = exprList.evalExprList(scope);
+        String[] ret = new String[values.length];
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] instanceof String) {
+                ret[i] = (String) values[i];
+            } else {
+                throw new IllegalArgumentException("Name can only be strings");
+            }
+        }
+        return ret;
+    }
 }
