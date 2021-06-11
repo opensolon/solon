@@ -14,6 +14,12 @@ import org.noear.solon.validation.annotation.WhitelistChecker;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
+
+        //ValidatorFailureHandler
+        Aop.getAsyn(ValidatorFailureHandler.class, (bw) -> {
+            ValidatorManager.onFailure(bw.raw());
+        });
+
         //LoginedChecker
         Aop.getAsyn(LoginedChecker.class, (bw) -> {
             ValidatorManager.setLoginedChecker(bw.raw());

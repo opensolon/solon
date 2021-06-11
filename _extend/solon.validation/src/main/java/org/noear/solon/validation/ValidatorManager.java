@@ -2,7 +2,6 @@ package org.noear.solon.validation;
 
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
@@ -47,10 +46,6 @@ public class ValidatorManager {
         failureHandler = new ValidatorFailureHandlerImp();
 
         initialize();
-
-        Aop.getAsyn(ValidatorFailureHandler.class, (bw) -> {
-            failureHandler = bw.raw();
-        });
     }
 
     private static void initialize() {
