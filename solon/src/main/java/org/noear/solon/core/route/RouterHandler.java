@@ -66,6 +66,7 @@ public class RouterHandler implements Handler {
 
         if (handler != null) {
             handler.handle(ctx);
+            //须设定表示处理过
             ctx.setHandled(true);
             return ctx.status() != 404;
         } else {

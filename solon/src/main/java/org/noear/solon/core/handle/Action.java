@@ -206,8 +206,8 @@ public class Action extends HandlerAide implements Handler {
         }
 
 
-        //主体处理（最多一次渲染）
-        if (c.getHandled() == false) {
+        //主体处理（最多一次渲染）//非主体处理 或 未处理
+        if (mIsMain == false || c.getHandled() == false) {
             handleDo(c, () -> {
                 //获取path var
                 if (pathAnalyzer != null) {
