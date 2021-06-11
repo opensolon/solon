@@ -2,10 +2,13 @@ package org.noear.solon.view.enjoy;
 
 import com.jfinal.template.Directive;
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.RenderManager;
+import org.noear.solon.view.enjoy.tags.HasPermissionTag;
+import org.noear.solon.view.enjoy.tags.HasRoleTag;
 
 @SuppressWarnings("unchecked")
 public class XPluginImp implements Plugin {
@@ -35,5 +38,10 @@ public class XPluginImp implements Plugin {
 
         RenderManager.register(render);
         RenderManager.mapping(".shtm",render);
+
+        if (Utils.loadClass("org.noear.solon.extend.auth.AuthUtil") != null) {
+            app.beanMake(HasPermissionTag.class);
+            app.beanMake(HasRoleTag.class);
+        }
     }
 }

@@ -4,11 +4,9 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.extend.auth.AuthUtil;
 import org.noear.solon.extend.auth.annotation.Logical;
-import org.noear.solon.extend.auth.tags.TagAttrs;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
-import java.io.IOException;
 
 /**
  * @author noear

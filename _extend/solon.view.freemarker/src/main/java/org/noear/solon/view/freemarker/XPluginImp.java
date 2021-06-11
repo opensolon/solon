@@ -39,7 +39,6 @@ public class XPluginImp implements Plugin {
         RenderManager.register(render);
         RenderManager.mapping(".ftl", render);
 
-
         if (Utils.loadClass("org.noear.solon.extend.auth.AuthUtil") != null) {
             app.beanMake(HasPermissionTag.class);
             app.beanMake(HasRoleTag.class);
