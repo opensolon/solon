@@ -369,13 +369,6 @@ public class SolonApp implements HandlerSlots {
     }
 
     /**
-     * 默放监听（处理404这种情况）
-     */
-    public void def(Handler handler){
-        _routerHandler.bind(handler);
-    }
-
-    /**
      * 主体监听
      */
     @Override
