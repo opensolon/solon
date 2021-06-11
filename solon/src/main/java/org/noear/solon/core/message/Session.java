@@ -210,8 +210,4 @@ public interface Session {
      * 发送握手并等待响应
      */
     Message sendHandshakeAndResponse(Message message);
-
-    default Signal signal() {
-        return null;
-    }
 }

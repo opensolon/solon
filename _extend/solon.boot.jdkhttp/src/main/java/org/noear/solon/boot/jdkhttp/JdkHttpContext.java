@@ -434,9 +434,4 @@ public class JdkHttpContext extends Context {
             }
         }
     }
-
-    @Override
-    public Signal signal() {
-        return XPluginImp.signal();
-    }
 }

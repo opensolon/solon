@@ -1,7 +1,6 @@
 package org.noear.solon.socketd.client.jdksocket;
 
 import org.noear.solon.Utils;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.socketd.ConnectorBase;

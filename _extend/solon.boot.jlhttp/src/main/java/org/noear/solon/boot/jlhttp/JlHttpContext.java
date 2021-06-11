@@ -431,9 +431,4 @@ public class JlHttpContext extends Context {
             _response.sendHeaders(status(), -1, -1, null, null, null);
         }
     }
-
-    @Override
-    public Signal signal() {
-        return XPluginImp.signal();
-    }
 }

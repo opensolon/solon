@@ -769,8 +769,4 @@ public abstract class Context {
     public Action action() {
         return attr("action");
     }
-
-    public Signal signal() {
-        return attr("signal");
-    }
 }

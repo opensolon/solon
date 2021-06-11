@@ -1,9 +1,7 @@
 package org.noear.solon.boot.smarthttp.http;
 
-import org.noear.solon.boot.smarthttp.XPluginImp;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Signal;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
@@ -381,10 +379,5 @@ public class SmartHttpContext extends Context {
                 sessionState().sessionPublish();
             }
         }
-    }
-
-    @Override
-    public Signal signal() {
-        return XPluginImp.signal();
     }
 }
