@@ -3,7 +3,7 @@ package org.noear.solon.data.around;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.data.annotation.CachePut;
 import org.noear.solon.core.aspect.Interceptor;
-import org.noear.solon.data.CacheExecutorImp;
+import org.noear.solon.data.cache.CacheExecutorImp;
 
 public class CachePutInterceptor implements Interceptor {
 

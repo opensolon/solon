@@ -1,7 +1,7 @@
 package org.noear.solon.data.tranImp;
 
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.data.TranNode;
+import org.noear.solon.data.tran.TranNode;
 
 import java.util.ArrayList;
 import java.util.List;

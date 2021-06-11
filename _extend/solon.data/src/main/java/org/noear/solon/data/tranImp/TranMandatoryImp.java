@@ -1,8 +1,8 @@
 package org.noear.solon.data.tranImp;
 
 import org.noear.solon.ext.RunnableEx;
-import org.noear.solon.data.TranNode;
-import org.noear.solon.data.TranManager;
+import org.noear.solon.data.tran.TranNode;
+import org.noear.solon.data.tran.TranManager;
 
 /**
  * 支持当前事务，如果没有事务则报错（不需要入栈）

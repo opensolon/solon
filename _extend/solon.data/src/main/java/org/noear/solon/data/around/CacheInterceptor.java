@@ -1,7 +1,7 @@
 package org.noear.solon.data.around;
 
 import org.noear.solon.core.aspect.Invocation;
-import org.noear.solon.data.CacheExecutorImp;
+import org.noear.solon.data.cache.CacheExecutorImp;
 import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.core.aspect.Interceptor;
 

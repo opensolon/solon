@@ -4,8 +4,8 @@ import org.noear.solon.Utils;
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.ext.RunnableEx;
-import org.noear.solon.data.TranNode;
-import org.noear.solon.data.TranManager;
+import org.noear.solon.data.tran.TranNode;
+import org.noear.solon.data.tran.TranManager;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

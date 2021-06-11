@@ -2,8 +2,8 @@ package org.noear.solon.data.tranImp;
 
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.ext.RunnableEx;
-import org.noear.solon.data.TranNode;
-import org.noear.solon.data.TranManager;
+import org.noear.solon.data.tran.TranNode;
+import org.noear.solon.data.tran.TranManager;
 
 public class TranDbNewImp extends DbTran implements TranNode {
 

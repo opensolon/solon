@@ -2,7 +2,10 @@ package org.noear.solon.data;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.*;
+import org.noear.solon.data.cache.CacheEventListener;
+import org.noear.solon.data.cache.CacheLib;
 import org.noear.solon.data.cache.CacheService;
+import org.noear.solon.data.cache.CacheServiceDefault;
 import org.noear.solon.data.tran.TranExecutor;
 import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.data.annotation.CachePut;
@@ -12,6 +15,7 @@ import org.noear.solon.data.around.CacheInterceptor;
 import org.noear.solon.data.around.CachePutInterceptor;
 import org.noear.solon.data.around.CacheRemoveInterceptor;
 import org.noear.solon.data.around.TranInterceptor;
+import org.noear.solon.data.tran.TranExecutorImp;
 
 public class XPluginImp implements Plugin {
     @Override

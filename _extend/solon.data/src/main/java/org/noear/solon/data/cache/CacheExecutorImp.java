@@ -1,11 +1,10 @@
-package org.noear.solon.data;
+package org.noear.solon.data.cache;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.data.annotation.CachePut;
 import org.noear.solon.data.annotation.CacheRemove;
-import org.noear.solon.data.cache.CacheService;
 import org.noear.solon.ext.SupplierEx;
 
 import java.lang.reflect.Method;

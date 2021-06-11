@@ -1,4 +1,4 @@
-package org.noear.solon.data;
+package org.noear.solon.data.tran;
 
 import org.noear.solon.data.annotation.Tran;
 

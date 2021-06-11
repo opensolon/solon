@@ -1,4 +1,4 @@
-package org.noear.solon.data;
+package org.noear.solon.data.cache;
 
 import org.noear.solon.data.cache.CacheService;
 

@@ -1,11 +1,10 @@
-package org.noear.solon.data;
+package org.noear.solon.data.cache;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.event.EventListener;
-import org.noear.solon.data.cache.CacheService;
 
-class CacheEventListener implements EventListener<BeanWrap> {
+public class CacheEventListener implements EventListener<BeanWrap> {
     @Override
     public void onEvent(BeanWrap bw) {
         if (bw.raw() instanceof CacheService) {

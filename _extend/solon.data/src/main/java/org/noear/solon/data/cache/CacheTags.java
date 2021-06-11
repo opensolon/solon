@@ -1,6 +1,4 @@
-package org.noear.solon.data;
-
-import org.noear.solon.data.cache.CacheService;
+package org.noear.solon.data.cache;
 
 import java.util.ArrayList;
 import java.util.List;

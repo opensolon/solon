@@ -1,9 +1,7 @@
-package org.noear.solon.data;
+package org.noear.solon.data.tran;
 
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.data.tranImp.*;
-import org.noear.solon.data.tran.TranExecutor;
-import org.noear.solon.data.tran.TranPolicy;
 import org.noear.solon.ext.RunnableEx;
 
 import javax.sql.DataSource;
