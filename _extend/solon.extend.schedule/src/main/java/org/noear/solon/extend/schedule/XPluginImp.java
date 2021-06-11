@@ -1,6 +1,5 @@
 package org.noear.solon.extend.schedule;
 
-
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
