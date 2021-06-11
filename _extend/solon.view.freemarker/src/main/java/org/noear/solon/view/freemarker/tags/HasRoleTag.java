@@ -7,9 +7,9 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Component;
-import org.noear.solon.extend.auth.AuthUtil;
-import org.noear.solon.extend.auth.annotation.Logical;
-import org.noear.solon.extend.auth.tags.TagAttrs;
+import org.noear.solon.auth.AuthUtil;
+import org.noear.solon.auth.annotation.Logical;
+import org.noear.solon.auth.tags.TagAttrs;
 
 import java.io.IOException;
 import java.util.Map;

@@ -6,9 +6,9 @@ import com.jfinal.template.io.Writer;
 import com.jfinal.template.stat.Scope;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Component;
-import org.noear.solon.extend.auth.AuthUtil;
-import org.noear.solon.extend.auth.annotation.Logical;
-import org.noear.solon.extend.auth.tags.TagAttrs;
+import org.noear.solon.auth.AuthUtil;
+import org.noear.solon.auth.annotation.Logical;
+import org.noear.solon.auth.tags.TagAttrs;
 
 /**
  * @author noear

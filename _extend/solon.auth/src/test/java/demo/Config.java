@@ -3,7 +3,7 @@ package demo;
 import demo.dso.AuthProcessorImpl;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
-import org.noear.solon.extend.auth.AuthAdapter;
+import org.noear.solon.auth.AuthAdapter;
 
 /**
  * @author noear 2021/6/2 created

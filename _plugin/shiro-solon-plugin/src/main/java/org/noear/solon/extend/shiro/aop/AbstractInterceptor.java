@@ -6,7 +6,7 @@ import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.ext.DataThrowable;
-import org.noear.solon.extend.validation.ValidatorManager;
+import org.noear.solon.validation.ValidatorManager;
 
 import java.lang.annotation.Annotation;
 

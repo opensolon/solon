@@ -1,7 +1,7 @@
 package test1;
 
 import org.junit.Test;
-import org.noear.solon.extend.validation.StringUtils;
+import org.noear.solon.validation.StringUtils;
 
 public class UtilsTest {
     @Test

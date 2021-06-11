@@ -1,7 +1,7 @@
 package demo.dso;
 
-import org.noear.solon.extend.auth.AuthProcessor;
-import org.noear.solon.extend.auth.annotation.Logical;
+import org.noear.solon.auth.AuthProcessor;
+import org.noear.solon.auth.annotation.Logical;
 
 /**
  * @author noear

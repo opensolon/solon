@@ -2,8 +2,8 @@ package org.noear.solon.view.jsp.tags;
 
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Component;
-import org.noear.solon.extend.auth.AuthUtil;
-import org.noear.solon.extend.auth.annotation.Logical;
+import org.noear.solon.auth.AuthUtil;
+import org.noear.solon.auth.annotation.Logical;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;

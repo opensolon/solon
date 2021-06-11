@@ -8,8 +8,8 @@ import org.apache.velocity.runtime.directive.Directive;
 import org.apache.velocity.runtime.parser.node.Node;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Component;
-import org.noear.solon.extend.auth.AuthUtil;
-import org.noear.solon.extend.auth.annotation.Logical;
+import org.noear.solon.auth.AuthUtil;
+import org.noear.solon.auth.annotation.Logical;
 
 import java.io.IOException;
 import java.io.Writer;

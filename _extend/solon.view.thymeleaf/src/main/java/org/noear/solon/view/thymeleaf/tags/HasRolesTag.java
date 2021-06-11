@@ -1,9 +1,9 @@
 package org.noear.solon.view.thymeleaf.tags;
 
 import org.noear.solon.Utils;
-import org.noear.solon.extend.auth.AuthUtil;
-import org.noear.solon.extend.auth.annotation.Logical;
-import org.noear.solon.extend.auth.tags.TagAttrs;
+import org.noear.solon.auth.AuthUtil;
+import org.noear.solon.auth.annotation.Logical;
+import org.noear.solon.auth.tags.TagAttrs;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.*;
