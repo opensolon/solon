@@ -5,11 +5,9 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.SolonBuilder;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.cloud.CloudClient;
-import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.MethodType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import webapp.demo6_aop.ExTest;
 import webapp.demo6_aop.TestImport;
 
 @Import(value = TestImport.class)
@@ -39,17 +37,21 @@ public class TestApp {
 
 
         //构建方式
-        SolonApp app = new SolonBuilder().onError(e->{
+        SolonApp app = new SolonBuilder().onError(e -> {
             e.printStackTrace();
-        }).onAppInitEnd(e->{
+        }).onAppInitEnd(e -> {
             System.out.println("1.初始化完成");
-        }).onPluginLoadEnd(e->{
+        }).onPluginLoadEnd(e -> {
             System.out.println("2.插件加载完成了");
-        }).onBeanLoadEnd(e->{
+        }).onBeanLoadEnd(e -> {
             System.out.println("3.Bean扫描并加载完成");
-        }).onAppLoadEnd(e->{
+        }).onAppLoadEnd(e -> {
             System.out.println("4.应用全加载完成了");
         }).start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
+
+        app.def(c -> {
+            System.out.println("我是默处处理！");
+        });
 
 
         System.out.println("testname : " + Solon.cfg().get("testname"));

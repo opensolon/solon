@@ -17,9 +17,13 @@ import org.noear.solon.socketd.SessionManager;
 import org.smartboot.http.server.HttpBootstrap;
 
 public final class XPluginImp implements Plugin {
-    protected static Signal _signal;
+    protected static Signal _signal_http;
 
     HttpBootstrap _server = null;
+
+    public static Signal signalHttp(){
+        return _signal_http;
+    }
 
     public static String solon_boot_ver() {
         return "smart http 1.1.4/" + Solon.cfg().version();
@@ -63,9 +67,9 @@ public final class XPluginImp implements Plugin {
             _server.setPort(_port);
             _server.start();
 
-            _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
+            _signal_http = new SignalSim(_name, _port, "http", SignalType.HTTP);
 
-            app.signalAdd(_signal);
+            app.signalAdd(_signal_http);
 
             app.before("**", MethodType.ALL, -9, new FormContentFilter());
 

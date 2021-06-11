@@ -1,7 +1,6 @@
 package org.noear.solon.extend.servlet;
 
 import org.noear.solon.Solon;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 
 import javax.servlet.ServletException;

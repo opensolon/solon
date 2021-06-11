@@ -3,6 +3,7 @@ package org.noear.solon.boot.jdkhttp;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import org.noear.solon.Utils;
+import org.noear.solon.core.Signal;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
@@ -19,6 +20,7 @@ public class JdkHttpContext extends Context {
     private HttpExchange _exchange;
     private Map<String, Object> _parameters;
     protected Map<String, List<UploadedFile>> _fileMap;
+
 
     public JdkHttpContext(HttpExchange exchange) {
         _exchange = exchange;
@@ -66,9 +68,10 @@ public class JdkHttpContext extends Context {
     }
 
     private URI _uri;
+
     @Override
     public URI uri() {
-        if(_uri == null) {
+        if (_uri == null) {
             _uri = URI.create(url());
         }
 
@@ -88,7 +91,7 @@ public class JdkHttpContext extends Context {
             _url = _exchange.getRequestURI().toString();
 
             if (_url != null) {
-                if(_url.startsWith("/")) {
+                if (_url.startsWith("/")) {
                     String host = header("Host");
 
                     if (host == null) {
@@ -148,7 +151,7 @@ public class JdkHttpContext extends Context {
     @Override
     public String[] paramValues(String key) {
         List<String> list = paramsMap().get(key);
-        if(list == null){
+        if (list == null) {
             return null;
         }
 
@@ -198,14 +201,15 @@ public class JdkHttpContext extends Context {
     }
 
     private Map<String, List<String>> _paramsMap;
+
     @Override
     public Map<String, List<String>> paramsMap() {
-        if(_paramsMap == null){
+        if (_paramsMap == null) {
             _paramsMap = new LinkedHashMap<>();
 
             _parameters.forEach((k, v) -> {
                 if (v instanceof List) {
-                    _paramsMap.put(k, (List<String>)v);
+                    _paramsMap.put(k, (List<String>) v);
                 } else {
                     List<String> list = new ArrayList<>();
                     list.add((String) v);
@@ -292,11 +296,11 @@ public class JdkHttpContext extends Context {
     }
 
     @Override
-    public void output(byte[] bytes){
+    public void output(byte[] bytes) {
         try {
             OutputStream out = outputStream();
 
-            if(!_allows_write){
+            if (!_allows_write) {
                 return;
             }
 
@@ -311,7 +315,7 @@ public class JdkHttpContext extends Context {
         try {
             OutputStream out = outputStream();
 
-            if(!_allows_write){
+            if (!_allows_write) {
                 return;
             }
 
@@ -331,7 +335,7 @@ public class JdkHttpContext extends Context {
 
         if (_allows_write) {
             return _exchange.getResponseBody();
-        }else{
+        } else {
             return new ByteArrayOutputStream();
         }
     }
@@ -343,7 +347,7 @@ public class JdkHttpContext extends Context {
 
     @Override
     public void headerAdd(String key, String val) {
-        _exchange.getResponseHeaders().add(key,val);
+        _exchange.getResponseHeaders().add(key, val);
     }
 
     @Override
@@ -397,7 +401,7 @@ public class JdkHttpContext extends Context {
     public void flush() throws IOException {
         sendHeaders();
 
-        if(_allows_write) {
+        if (_allows_write) {
             outputStream().flush();
         }
     }
@@ -406,27 +410,33 @@ public class JdkHttpContext extends Context {
     protected void commit() throws IOException {
         sendHeaders();
 
-        if(!_allows_write){
+        if (!_allows_write) {
             outputStream().close();
         }
     }
 
     private boolean _allows_write = true;
     private boolean _headers_sent = false;
-    private void sendHeaders() throws IOException{
-        if(!_headers_sent) {
+
+    private void sendHeaders() throws IOException {
+        if (!_headers_sent) {
             _headers_sent = true;
 
-            if(sessionState() != null){
+            if (sessionState() != null) {
                 sessionState().sessionPublish();
             }
 
-            if("HEAD".equals(method())){
+            if ("HEAD".equals(method())) {
                 _allows_write = false;
                 _exchange.sendResponseHeaders(_status, -1);
-            }else {
+            } else {
                 _exchange.sendResponseHeaders(_status, 0);
             }
         }
+    }
+
+    @Override
+    public Signal signal() {
+        return XPluginImp._signal;
     }
 }

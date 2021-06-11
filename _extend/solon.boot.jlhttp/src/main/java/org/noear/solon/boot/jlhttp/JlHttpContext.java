@@ -2,6 +2,7 @@ package org.noear.solon.boot.jlhttp;
 
 import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
+import org.noear.solon.core.Signal;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
@@ -429,5 +430,10 @@ public class JlHttpContext extends Context {
             //_response.sendHeaders(status()); //不能用这个；
             _response.sendHeaders(status(), -1, -1, null, null, null);
         }
+    }
+
+    @Override
+    public Signal signal() {
+        return XPluginImp._signal;
     }
 }

@@ -1,7 +1,9 @@
 package org.noear.solon.boot.smarthttp.http;
 
+import org.noear.solon.boot.smarthttp.XPluginImp;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
+import org.noear.solon.core.Signal;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
@@ -303,7 +305,7 @@ public class SmartHttpContext extends Context {
 
     @Override
     public void cookieSet(String key, String val, String domain, String path, int maxAge) {
-        Cookie cookie = new Cookie(key,val);
+        Cookie cookie = new Cookie(key, val);
 
         if (Utils.isNotEmpty(path)) {
             cookie.setPath(path);
@@ -361,7 +363,7 @@ public class SmartHttpContext extends Context {
 
         if ("HEAD".equals(method())) {
             _response.setContentLength(0);
-        }else{
+        } else {
             OutputStream out = _response.getOutputStream();
             _response.setContentLength(_outputStream.size());
             _outputStream.writeTo(out);
@@ -370,13 +372,19 @@ public class SmartHttpContext extends Context {
     }
 
     private boolean _headers_sent = false;
-    private void sendHeaders() throws IOException{
-        if(!_headers_sent) {
+
+    private void sendHeaders() throws IOException {
+        if (!_headers_sent) {
             _headers_sent = true;
 
-            if(sessionState() != null){
+            if (sessionState() != null) {
                 sessionState().sessionPublish();
             }
         }
+    }
+
+    @Override
+    public Signal signal() {
+        return XPluginImp.signalHttp();
     }
 }
