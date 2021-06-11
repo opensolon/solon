@@ -5,6 +5,7 @@ import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.extend.auth.AuthUtil;
 import org.noear.solon.extend.auth.annotation.Logical;
@@ -21,12 +22,12 @@ import java.util.Map;
 public class HasRoleTag implements TemplateDirectiveModel {
     @Override
     public void execute(Environment env, Map map, TemplateModel[] templateModels, TemplateDirectiveBody body) throws TemplateException, IOException {
-        if (body == null) {
-            return;
-        }
-
         String nameStr = (String) map.get(TagAttrs.ATTR_name);
         String logicalStr = (String) map.get(TagAttrs.ATTR_logical);
+
+        if (Utils.isEmpty(nameStr)) {
+            return;
+        }
 
         String[] names = nameStr.split(",");
 
