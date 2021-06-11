@@ -1,7 +1,6 @@
 package org.noear.solon.extend.activerecord;
 
-import com.jfinal.plugin.activerecord.DbKit;
-import org.noear.solon.core.tran.TranUtils;
+import org.noear.solon.data.tran.TranUtils;
 
 import javax.sql.DataSource;
 import java.io.PrintWriter;

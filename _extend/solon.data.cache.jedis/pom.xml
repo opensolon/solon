@@ -11,20 +11,20 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.cache.spymemcached</artifactId>
+    <artifactId>solon.data.cache.jedis</artifactId>
     <packaging>jar</packaging>
 
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
+            <artifactId>solon.data</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>net.spy</groupId>
-            <artifactId>spymemcached</artifactId>
-            <version>2.12.3</version>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${jedis.ver}</version>
         </dependency>
     </dependencies>
 

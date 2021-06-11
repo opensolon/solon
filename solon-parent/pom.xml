@@ -81,13 +81,13 @@
         <dependencies>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.cache.jedis</artifactId>
+                <artifactId>solon.data.cache.jedis</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.cache.spymemcached</artifactId>
+                <artifactId>solon.data.cache.spymemcached</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
@@ -727,12 +727,6 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>spymemcached-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>xxl-job-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -1086,8 +1080,8 @@
         <module>../_extend/solon.socketd.client.smartsocket</module>
         <module>../_extend/solon.socketd.client.websocket</module>
 
-        <module>../_extend/solon.cache.jedis</module>
-        <module>../_extend/solon.cache.spymemcached</module>
+        <module>../_extend/solon.data.cache.jedis</module>
+        <module>../_extend/solon.data.cache.spymemcached</module>
 
         <!--        <module>../_extend/solon.boot.jdkudp</module>-->
 

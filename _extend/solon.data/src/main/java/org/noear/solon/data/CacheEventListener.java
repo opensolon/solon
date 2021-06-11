@@ -2,8 +2,8 @@ package org.noear.solon.data;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.cache.CacheService;
 import org.noear.solon.core.event.EventListener;
+import org.noear.solon.data.cache.CacheService;
 
 class CacheEventListener implements EventListener<BeanWrap> {
     @Override

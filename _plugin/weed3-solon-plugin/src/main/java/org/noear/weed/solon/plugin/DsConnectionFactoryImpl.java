@@ -1,6 +1,6 @@
 package org.noear.weed.solon.plugin;
 
-import org.noear.solon.core.tran.TranUtils;
+import org.noear.solon.data.tran.TranUtils;
 import org.noear.weed.DbConnectionFactory;
 
 import javax.sql.DataSource;

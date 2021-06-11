@@ -1,7 +1,7 @@
 package org.noear.solon.data;
 
 import org.noear.solon.annotation.Note;
-import org.noear.solon.core.cache.CacheService;
+import org.noear.solon.data.cache.CacheService;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class CacheLib {
     //
-    // XCacheExecutor 对接
+    // CacheExecutor 对接
     //
     private static Map<String, CacheService> cacheServiceMap = new HashMap<>();
 

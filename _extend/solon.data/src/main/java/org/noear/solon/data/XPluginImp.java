@@ -2,8 +2,8 @@ package org.noear.solon.data;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.*;
-import org.noear.solon.core.cache.CacheService;
-import org.noear.solon.core.tran.TranExecutor;
+import org.noear.solon.data.cache.CacheService;
+import org.noear.solon.data.tran.TranExecutor;
 import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.data.annotation.CachePut;
 import org.noear.solon.data.annotation.CacheRemove;

@@ -11,7 +11,6 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
