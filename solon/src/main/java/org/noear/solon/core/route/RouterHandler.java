@@ -62,13 +62,12 @@ public class RouterHandler implements Handler {
      * 唯一处理（用于主处理）
      * */
     protected boolean handleOne(Context ctx, Endpoint endpoint) throws Throwable {
-        Handler handler = router.matchOne(ctx, endpoint);
+        Handler h = router.matchOne(ctx, endpoint);
 
-        if (handler != null) {
-            handler.handle(ctx);
-            //须设定表示处理过
-            ctx.setHandled(true);
-            return ctx.status() != 404;
+        if (h != null) {
+            h.handle(ctx);
+            ctx.setHandled(ctx.status() != 404);
+            return ctx.getHandled();
         } else {
             return false;
         }
@@ -78,8 +77,8 @@ public class RouterHandler implements Handler {
      * 多项目处理（用于拦截器）
      * */
     protected void handleMultiple(Context ctx, Endpoint endpoint) throws Throwable {
-        for(Handler handler: router.matchAll(ctx,endpoint)){
-            handler.handle(ctx);
+        for(Handler h: router.matchAll(ctx,endpoint)){
+            h.handle(ctx);
         }
     }
 }
