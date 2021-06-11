@@ -24,7 +24,7 @@
         <module>solon-plugin-parent</module>
 
         <module>_test</module>
-        
+
 <!--        <module>_demo/_demo.solon_db_mybatis_fastjson</module>-->
 <!--        <module>_demo/_demo.solon_db_weed_snack</module>-->
 <!--        <module>_demo/_demo.solon_feign</module>-->
