@@ -40,7 +40,7 @@ public class RouterHandler implements Handler {
         if (ctx.getHandled() == false) {
             //（仅支持唯一代理）
             _handled = handleOne(ctx, Endpoint.main);
-            //设定处理状态，便于 after 获取状态
+            //（设定处理状态，便于 after 获取状态）
             ctx.setHandled(_handled);
         }
 
