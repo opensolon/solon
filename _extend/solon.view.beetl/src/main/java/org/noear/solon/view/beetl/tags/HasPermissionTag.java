@@ -29,7 +29,7 @@ public class HasPermissionTag extends Tag {
         }
 
         if (AuthUtil.verifyPermissions(names, Logical.of(logicalStr))) {
-            doBodyRender();
+            this.doBodyRender();
         }
     }
 }

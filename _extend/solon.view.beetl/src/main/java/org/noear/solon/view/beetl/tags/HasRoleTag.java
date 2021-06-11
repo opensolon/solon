@@ -29,7 +29,7 @@ public class HasRoleTag extends Tag {
         }
 
         if (AuthUtil.verifyRoles(names, Logical.of(logicalStr))) {
-            doBodyRender();
+            this.doBodyRender();
         }
 
     }
