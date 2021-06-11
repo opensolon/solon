@@ -1,4 +1,4 @@
-package org.noear.solon.core.cache;
+package org.noear.solon.data.cache;
 
 /**
  * 缓存服务接口（用于支持@Cache相关注解）

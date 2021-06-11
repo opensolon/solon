@@ -1,4 +1,4 @@
-package org.noear.solon.core.tran;
+package org.noear.solon.data.tran;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
