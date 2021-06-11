@@ -5,7 +5,7 @@ import com.jfinal.plugin.activerecord.Config;
 import com.jfinal.plugin.activerecord.IContainerFactory;
 import com.jfinal.plugin.activerecord.cache.ICache;
 import com.jfinal.plugin.activerecord.dialect.Dialect;
-import org.noear.solon.core.tran.TranUtils;
+import org.noear.solon.data.tran.TranUtils;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
