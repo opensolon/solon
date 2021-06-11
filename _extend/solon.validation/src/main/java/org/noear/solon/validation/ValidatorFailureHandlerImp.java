@@ -24,8 +24,7 @@ public class ValidatorFailureHandlerImp implements ValidatorFailureHandler {
             ctx.statusSet(400);
         }
 
-        if (ValidatorManager.global().enableRender()
-                && ctx.getRendered() == false) {
+        if (ctx.getRendered() == false) {
 
             if (Utils.isEmpty(message)) {
                 if (Utils.isEmpty(rst.getDescription())) {
