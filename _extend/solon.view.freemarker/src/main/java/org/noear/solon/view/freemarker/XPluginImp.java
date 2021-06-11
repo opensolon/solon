@@ -2,9 +2,12 @@ package org.noear.solon.view.freemarker;
 
 import freemarker.template.TemplateDirectiveModel;
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.RenderManager;
+import org.noear.solon.view.freemarker.tags.HasPermissionTag;
+import org.noear.solon.view.freemarker.tags.HasRoleTag;
 
 public class XPluginImp implements Plugin {
     public static boolean output_meta = false;
@@ -19,18 +22,23 @@ public class XPluginImp implements Plugin {
             Aop.beanForeach((k, v) -> {
                 if (k.startsWith("view:") || k.startsWith("ftl:")) {
                     //java view widget
-                    if(TemplateDirectiveModel.class.isAssignableFrom(v.clz())) {
+                    if (TemplateDirectiveModel.class.isAssignableFrom(v.clz())) {
                         render.setSharedVariable(k.split(":")[1], v.raw());
                     }
                 }
 
-                if(k.startsWith("share:")){
+                if (k.startsWith("share:")) {
                     //java share object
                     render.setSharedVariable(k.split(":")[1], v.raw());
                     return;
                 }
             });
         });
+
+        if (Utils.loadClass("org.noear.solon.extend.auth.AuthUtil") != null) {
+            app.beanMake(HasPermissionTag.class);
+            app.beanMake(HasRoleTag.class);
+        }
 
         RenderManager.register(render);
         RenderManager.mapping(".ftl", render);
