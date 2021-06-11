@@ -9,7 +9,6 @@ import org.noear.solon.core.Signal;
 import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.util.PrefixThreadFactory;
 import org.noear.solon.core.util.PrintUtil;
 
 import java.net.InetSocketAddress;
@@ -51,7 +50,7 @@ public final class XPluginImp implements Plugin {
             HttpContext context = _server.createContext("/", new JdkHttpContextHandler());
             context.getFilters().add(new ParameterFilter());
 
-            _server.setExecutor(Executors.newCachedThreadPool(new PrefixThreadFactory("jdkhttp-thread-")));
+            _server.setExecutor(Executors.newCachedThreadPool());
             _server.start();
 
             _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);

@@ -6,7 +6,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.MethodType;
-import org.noear.solon.core.util.PrefixThreadFactory;
 import org.noear.solon.core.util.PrintUtil;
 
 import javax.net.ssl.SSLServerSocketFactory;
@@ -78,7 +77,7 @@ public final class XPluginImp implements Plugin {
         PrintUtil.info("Server:main: JlHttpServer 2.4(jlhttp)");
 
         try {
-            _server.setExecutor(Executors.newCachedThreadPool(new PrefixThreadFactory("jlkhttp-thread-")));
+            _server.setExecutor(Executors.newCachedThreadPool());
             _server.setPort(_port);
             _server.start();
 
