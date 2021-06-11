@@ -32,8 +32,7 @@ public class BeanValidateInterceptor implements Interceptor {
                     Result r1 = validator.validate(inv.args()[i], v1.value());
 
                     if (r1.getCode() == Result.FAILURE_CODE) {
-                        if (ValidatorManager.global()
-                                .failureDo(Context.current(), v1, r1, r1.getDescription())) {
+                        if (ValidatorManager.failureDo(Context.current(), v1, r1, r1.getDescription())) {
                             throw new DataThrowable();
                         } else {
                             throw new IllegalArgumentException(r1.getDescription());

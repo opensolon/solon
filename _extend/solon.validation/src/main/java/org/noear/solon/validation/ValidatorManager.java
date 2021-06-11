@@ -5,7 +5,6 @@ import org.noear.solon.annotation.Note;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.validation.annotation.*;
@@ -22,18 +21,7 @@ import java.util.Map;
  * @author noear
  * @since 1.0
  * */
-public class ValidatorManager implements Handler {
-    private static ValidatorManager global = new ValidatorManager();
-
-    public static ValidatorManager global() {
-        return global;
-    }
-
-    public static void globalSet(ValidatorManager global) {
-        if (global != null) {
-            ValidatorManager.global = global;
-        }
-    }
+public class ValidatorManager {
 
     public static void setNoRepeatLock(NoRepeatLock lock) {
         NoRepeatLockImp.globalSet(lock);
@@ -52,45 +40,20 @@ public class ValidatorManager implements Handler {
     }
 
 
-    protected final Map<Class<? extends Annotation>, Validator> validMap = new HashMap<>();
-    protected ValidatorFailureHandler failureHandler;
+    private static final Map<Class<? extends Annotation>, Validator> validMap = new HashMap<>();
+    private static ValidatorFailureHandler failureHandler;
 
-    public ValidatorManager() {
+    static {
         failureHandler = new ValidatorFailureHandlerImp();
+
         initialize();
 
-        Aop.getAsyn(ValidatorFailureHandler.class, bw -> {
+        Aop.getAsyn(ValidatorFailureHandler.class, (bw) -> {
             failureHandler = bw.raw();
         });
     }
 
-    public ValidatorManager(ValidatorFailureHandler handler) {
-        if (handler == null) {
-            this.failureHandler = new ValidatorFailureHandlerImp();
-        } else {
-            this.failureHandler = handler;
-        }
-
-        initialize();
-    }
-
-    public void onFailure(ValidatorFailureHandler handler) {
-        if (handler != null) {
-            this.failureHandler = handler;
-        }
-    }
-
-    private boolean _enableRender = true;
-
-    public boolean enableRender() {
-        return _enableRender;
-    }
-
-    public void enableRender(boolean enableRender) {
-        _enableRender = enableRender;
-    }
-
-    protected void initialize() {
+    private static void initialize() {
         register(Date.class, DateValidator.instance);
 
         register(DecimalMax.class, DecimalMaxValidator.instance);
@@ -123,7 +86,7 @@ public class ValidatorManager implements Handler {
      * 清除所有验证器
      */
     @Note("清除所有验证器")
-    public void clear() {
+    public static void clear() {
         validMap.clear();
     }
 
@@ -131,7 +94,7 @@ public class ValidatorManager implements Handler {
      * 移除某个类型的验证器
      */
     @Note("移除某个类型的验证器")
-    public <T extends Annotation> void remove(Class<T> type) {
+    public static <T extends Annotation> void remove(Class<T> type) {
         validMap.remove(type);
     }
 
@@ -139,21 +102,14 @@ public class ValidatorManager implements Handler {
      * 注册验证器
      */
     @Note("注册验证器")
-    public <T extends Annotation> void register(Class<T> type, Validator<T> validator) {
+    public static <T extends Annotation> void register(Class<T> type, Validator<T> validator) {
         validMap.put(type, validator);
     }
 
-
-    @Override
-    public void handle(Context ctx) throws Throwable {
-        Action action = ctx.action();
-
-        if (action != null) {
-            validate(ctx, action);
-        }
-    }
-
-    protected void validate(Context ctx, Action action) throws Throwable {
+    /**
+     * 验证
+     * */
+    public static void validate(Context ctx, Action action) throws Throwable {
         StringBuilder tmp = new StringBuilder();
 
         for (Annotation anno : action.bean().annotations()) {
@@ -177,7 +133,7 @@ public class ValidatorManager implements Handler {
         }
     }
 
-    protected boolean validateDo(Context ctx, Annotation anno, String name, StringBuilder tmp) {
+    private static boolean validateDo(Context ctx, Annotation anno, String name, StringBuilder tmp) {
         if (ctx.getHandled()) {
             return true;
         }
@@ -189,7 +145,7 @@ public class ValidatorManager implements Handler {
             Result rst = valid.validate(ctx, anno, name, tmp);
 
             if (rst.getCode() != Result.SUCCEED_CODE) {
-                if (this.failureDo(ctx, anno, rst, valid.message(anno))) {
+                if (failureDo(ctx, anno, rst, valid.message(anno))) {
                     return true;
                 }
             }
@@ -198,7 +154,15 @@ public class ValidatorManager implements Handler {
         return false;
     }
 
-    public boolean failureDo(Context ctx, Annotation ano, Result result, String message) {
+
+    public static void onFailure(ValidatorFailureHandler handler) {
+        if (handler != null) {
+            failureHandler = handler;
+        }
+    }
+
+
+    public static boolean failureDo(Context ctx, Annotation ano, Result result, String message) {
         if (ctx == null) {
             return false;
         }

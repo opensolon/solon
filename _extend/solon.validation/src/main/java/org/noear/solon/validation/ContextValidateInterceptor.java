@@ -1,5 +1,6 @@
 package org.noear.solon.validation;
 
+import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 
@@ -12,8 +13,10 @@ public class ContextValidateInterceptor implements Handler {
 
     @Override
     public void handle(Context ctx) throws Throwable {
-        if (ValidatorManager.global() != null) {
-            ValidatorManager.global().handle(ctx);
+        Action action = ctx.action();
+
+        if (action != null) {
+            ValidatorManager.validate(ctx, action);
         }
     }
 }
