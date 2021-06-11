@@ -1,4 +1,4 @@
-package org.noear.solon.validation;
+package org.noear.solon.validation.util;
 
 /**
  *
