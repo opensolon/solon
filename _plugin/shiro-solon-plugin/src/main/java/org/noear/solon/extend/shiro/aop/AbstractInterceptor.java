@@ -26,8 +26,7 @@ public abstract class AbstractInterceptor<T extends Annotation> implements Inter
                 //
                 //借用验证管理器的代码，由它统一处理异常；也方便用户后续统一定制
                 //
-                if(ValidatorManager.global()
-                        .failureDo(Context.current(), anno, result, result.getDescription())){
+                if(ValidatorManager.failureDo(Context.current(), anno, result, result.getDescription())){
                     throw new DataThrowable();
                 }else{
                     throw new AuthorizationException(result.getDescription());
