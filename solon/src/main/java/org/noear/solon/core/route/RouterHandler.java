@@ -25,48 +25,50 @@ public class RouterHandler implements Handler {
 
 
     @Override
-    public void handle(Context context) throws Throwable {
+    public void handle(Context ctx) throws Throwable {
         //可能上级链已完成处理
-        if (context.getHandled()) {
+        if (ctx.getHandled()) {
             return;
         }
 
         boolean _handled = false;
 
         //前置处理（支持多代理）
-        handleMultiple(context, Endpoint.before);
+        handleMultiple(ctx, Endpoint.before);
 
         //主体处理
-        if (context.getHandled() == false) {
+        if (ctx.getHandled() == false) {
             //（仅支持唯一代理）
-            _handled = handleOne(context, Endpoint.main);
+            _handled = handleOne(ctx, Endpoint.main);
         }
 
         //后置处理（支持多代理）
-        handleMultiple(context, Endpoint.after); //前后不能反 （后置处理由内部进行状态控制）
+        handleMultiple(ctx, Endpoint.after); //前后不能反 （后置处理由内部进行状态控制）
 
         //汇总状态
         if (_handled) {
-            if (context.status() < 1) {
-                context.statusSet(200);
+            if (ctx.status() < 1) {
+                ctx.statusSet(200);
             }
-            context.setHandled(true);
+            ctx.setHandled(true);
         }
 
-        if (context.status() < 1) {
-            context.statusSet(404);
+        if (ctx.status() < 1) {
+            ctx.statusSet(404);
         }
     }
 
     /**
      * 唯一处理（用于主处理）
      * */
-    protected boolean handleOne(Context context, Endpoint endpoint) throws Throwable {
-        Handler handler = router.matchOne(context, endpoint);
+    protected boolean handleOne(Context ctx, Endpoint endpoint) throws Throwable {
+        Handler handler = router.matchOne(ctx, endpoint);
 
         if (handler != null) {
-            handler.handle(context);
-            return context.status() != 404;
+            handler.handle(ctx);
+            //这个必须加
+            ctx.setHandled(true);
+            return ctx.status() != 404;
         } else {
             return false;
         }
@@ -75,9 +77,9 @@ public class RouterHandler implements Handler {
     /**
      * 多项目处理（用于拦截器）
      * */
-    protected void handleMultiple(Context context, Endpoint endpoint) throws Throwable {
-        for(Handler handler: router.matchAll(context,endpoint)){
-            handler.handle(context);
+    protected void handleMultiple(Context ctx, Endpoint endpoint) throws Throwable {
+        for(Handler handler: router.matchAll(ctx,endpoint)){
+            handler.handle(ctx);
         }
     }
 }
