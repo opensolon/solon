@@ -40,6 +40,8 @@ public class RouterHandler implements Handler {
         if (ctx.getHandled() == false) {
             //（仅支持唯一代理）
             _handled = handleOne(ctx, Endpoint.main);
+            //设定处理状态，便于 after 获取状态
+            ctx.setHandled(_handled);
         }
 
         //后置处理（支持多代理）
@@ -50,7 +52,6 @@ public class RouterHandler implements Handler {
             if (ctx.status() < 1) {
                 ctx.statusSet(200);
             }
-            ctx.setHandled(true);
         }
 
         if (ctx.status() < 1) {
@@ -66,8 +67,7 @@ public class RouterHandler implements Handler {
 
         if (h != null) {
             h.handle(ctx);
-            ctx.setHandled(ctx.status() != 404);
-            return ctx.getHandled();
+            return ctx.status() != 404;
         } else {
             return false;
         }
