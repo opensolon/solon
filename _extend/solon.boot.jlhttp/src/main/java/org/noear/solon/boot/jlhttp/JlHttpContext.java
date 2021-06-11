@@ -434,6 +434,6 @@ public class JlHttpContext extends Context {
 
     @Override
     public Signal signal() {
-        return XPluginImp._signal;
+        return XPluginImp.signal();
     }
 }

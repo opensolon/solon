@@ -17,7 +17,10 @@ import org.noear.solon.socketd.SessionManager;
 import org.noear.solon.socketd.client.netty.NioChannelInitializer;
 
 public class XPluginImp implements Plugin {
-    protected static Signal _signal;
+    private static Signal _signal;
+    public static Signal signal(){
+        return _signal;
+    }
 
     ChannelFuture _server;
 

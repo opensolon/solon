@@ -2,6 +2,7 @@ package org.noear.solon.boot.socketd.websocket;
 
 import org.java_websocket.WebSocket;
 import org.noear.solon.Utils;
+import org.noear.solon.core.Signal;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
@@ -158,5 +159,10 @@ public class _SocketServerSession extends SessionBase {
     @Override
     public int hashCode() {
         return Objects.hash(real);
+    }
+
+    @Override
+    public Signal signal() {
+        return XPluginImp.signal();
     }
 }

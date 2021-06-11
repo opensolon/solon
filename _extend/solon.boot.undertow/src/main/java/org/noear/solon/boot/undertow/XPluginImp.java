@@ -11,14 +11,12 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
 public final class XPluginImp implements Plugin {
-    private static Signal _signal_http;
-
-    private Plugin _server = null;
-
-    public static Signal signalHttp(){
-        return _signal_http;
+    private static Signal _signal;
+    public static Signal signal(){
+        return _signal;
     }
 
+    private Plugin _server = null;
     public static String solon_boot_ver(){
         return "undertow 2.1/" + Solon.cfg().version();
     }
@@ -60,9 +58,9 @@ public final class XPluginImp implements Plugin {
 
         _server.start(app);
 
-        _signal_http = new SignalSim(_name, _port, "http", SignalType.HTTP);
+        _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
 
-        app.signalAdd(_signal_http);
+        app.signalAdd(_signal);
 
         long time_end = System.currentTimeMillis();
 

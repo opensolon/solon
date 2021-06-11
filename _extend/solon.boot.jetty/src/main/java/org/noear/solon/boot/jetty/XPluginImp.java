@@ -12,13 +12,13 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
 public final class XPluginImp implements Plugin {
-    protected static Signal _signal_http;
+    private static Signal _signal;
+    public static Signal signal(){
+        return _signal;
+    }
 
     private PluginJetty _server = null;
 
-    public static Signal signalHttp(){
-        return _signal_http;
-    }
 
     public static String solon_boot_ver(){
         return "jetty 9.4/" + Solon.cfg().version();
@@ -63,9 +63,9 @@ public final class XPluginImp implements Plugin {
         PrintUtil.info("Server:main: Jetty 9.4(jetty)");
 
         _server.start(app);
-        _signal_http = new SignalSim(_name, _port, "http", SignalType.HTTP);
+        _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
 
-        app.signalAdd(_signal_http);
+        app.signalAdd(_signal);
 
         long time_end = System.currentTimeMillis();
 

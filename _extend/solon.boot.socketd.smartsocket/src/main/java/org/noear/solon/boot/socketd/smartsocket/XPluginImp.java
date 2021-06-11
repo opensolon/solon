@@ -15,7 +15,10 @@ import org.noear.solon.socketd.client.smartsocket.AioProtocol;
 import org.smartboot.socket.transport.AioQuickServer;
 
 public final class XPluginImp implements Plugin {
-    protected static Signal _signal;
+    private static Signal _signal;
+    public static Signal signal(){
+        return _signal;
+    }
 
     private AioQuickServer _server = null;
 

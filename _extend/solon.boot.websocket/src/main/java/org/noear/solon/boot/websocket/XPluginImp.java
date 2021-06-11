@@ -11,7 +11,10 @@ import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
 
 public class XPluginImp implements Plugin {
-    protected static Signal _signal;
+    private static Signal _signal;
+    public static Signal signal(){
+        return _signal;
+    }
 
     private WsServer _server = null;
 

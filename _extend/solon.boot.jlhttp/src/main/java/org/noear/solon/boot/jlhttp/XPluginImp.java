@@ -13,7 +13,10 @@ import javax.net.ssl.SSLServerSocketFactory;
 import java.util.concurrent.Executors;
 
 public final class XPluginImp implements Plugin {
-    protected static Signal _signal;
+    private static Signal _signal;
+    public static Signal signal(){
+        return _signal;
+    }
 
     private HTTPServer _server = null;
 

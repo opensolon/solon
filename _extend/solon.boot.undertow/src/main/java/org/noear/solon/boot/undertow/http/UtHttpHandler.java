@@ -40,6 +40,8 @@ public class UtHttpHandler implements HttpHandler {
 
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         SolonServletContext context = new SolonServletContext(request, response);
+        context.attrSet("signal", XPluginImp.signal());
+
         context.contentType("text/plain;charset=UTF-8");
 
         if (XServerProp.output_meta) {

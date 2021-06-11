@@ -385,6 +385,6 @@ public class SmartHttpContext extends Context {
 
     @Override
     public Signal signal() {
-        return XPluginImp.signalHttp();
+        return XPluginImp.signal();
     }
 }

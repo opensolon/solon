@@ -1,6 +1,7 @@
 package org.noear.solon.core.message;
 
 import org.noear.solon.core.NvMap;
+import org.noear.solon.core.Signal;
 import org.noear.solon.core.handle.MethodType;
 
 import java.io.IOException;
@@ -31,8 +32,9 @@ public interface Session {
 
     /**
      * URI（socket 可能为null）
-     * */
+     */
     URI uri();
+
     /**
      * 路径（socket 可能为null）
      */
@@ -40,40 +42,42 @@ public interface Session {
 
     /**
      * 请求头
-     * */
+     */
     String header(String name);
+
     /**
      * 设置请求头
-     * */
+     */
     void headerSet(String name, String value);
 
     /**
      * 请求头集合
-     * */
+     */
     NvMap headerMap();
 
     /**
      * 请求参数
-     * */
+     */
     String param(String name);
+
     /**
      * 设置请求参数
-     * */
+     */
     void paramSet(String name, String value);
 
     /**
      * 请求参数集合
-     * */
+     */
     NvMap paramMap();
 
     /**
      * 标识（为特定业务提供帮助）
-     * */
+     */
     int flag();
 
     /**
      * 标识设置
-     * */
+     */
     void flagSet(int flag);
 
 
@@ -206,4 +210,8 @@ public interface Session {
      * 发送握手并等待响应
      */
     Message sendHandshakeAndResponse(Message message);
+
+    default Signal signal() {
+        return null;
+    }
 }
