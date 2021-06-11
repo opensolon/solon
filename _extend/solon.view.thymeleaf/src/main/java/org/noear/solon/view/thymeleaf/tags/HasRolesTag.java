@@ -1,39 +1,41 @@
 package org.noear.solon.view.thymeleaf.tags;
 
+import org.noear.solon.Utils;
+import org.noear.solon.extend.auth.AuthUtil;
+import org.noear.solon.extend.auth.annotation.Logical;
+import org.noear.solon.extend.auth.tags.TagAttrs;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IProcessableElementTag;
-import org.thymeleaf.processor.element.IElementTagProcessor;
-import org.thymeleaf.processor.element.IElementTagStructureHandler;
-import org.thymeleaf.processor.element.MatchingAttributeName;
-import org.thymeleaf.processor.element.MatchingElementName;
+import org.thymeleaf.processor.element.*;
 import org.thymeleaf.templatemode.TemplateMode;
 
 /**
- * @author noear 2021/6/11 created
+ * @author noear
+ * @since 1.4
  */
-public class HasRolesTag implements IElementTagProcessor {
-    @Override
-    public void process(ITemplateContext iTemplateContext, IProcessableElementTag iProcessableElementTag, IElementTagStructureHandler iElementTagStructureHandler) {
+public class HasRolesTag extends AbstractElementTagProcessor {
 
+    public HasRolesTag(TemplateMode templateMode, String dialectPrefix, String elementName, boolean prefixElementName, String attributeName, boolean prefixAttributeName, int precedence) {
+        super(templateMode, dialectPrefix, elementName, prefixElementName, attributeName, prefixAttributeName, precedence);
     }
 
     @Override
-    public MatchingElementName getMatchingElementName() {
-        return null;
-    }
+    protected void doProcess(ITemplateContext context, IProcessableElementTag tag, IElementTagStructureHandler structureHandler) {
+        String nameStr = tag.getAttributeValue(TagAttrs.ATTR_name);
+        String logicalStr = tag.getAttributeValue(TagAttrs.ATTR_logical);
 
-    @Override
-    public MatchingAttributeName getMatchingAttributeName() {
-        return null;
-    }
+        if (Utils.isEmpty(nameStr)) {
+            return;
+        }
 
-    @Override
-    public TemplateMode getTemplateMode() {
-        return null;
-    }
+        String[] names = nameStr.split(",");
 
-    @Override
-    public int getPrecedence() {
-        return 0;
+        if (names.length == 0) {
+            return;
+        }
+
+        if (AuthUtil.verifyRoles(names, Logical.of(logicalStr))) {
+            structureHandler.setInliner(context.getInliner());
+        }
     }
 }
