@@ -3,6 +3,7 @@ package org.noear.solon.boot.socketd.smartsocket;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.Signal;
 import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.event.EventBus;
@@ -14,7 +15,9 @@ import org.noear.solon.socketd.client.smartsocket.AioProtocol;
 import org.smartboot.socket.transport.AioQuickServer;
 
 public final class XPluginImp implements Plugin {
-    private AioQuickServer server = null;
+    protected static Signal _signal;
+
+    private AioQuickServer _server = null;
 
     public static String solon_boot_ver() {
         return "smartsocket-socketd 1.5.4/" + Solon.cfg().version();
@@ -42,18 +45,18 @@ public final class XPluginImp implements Plugin {
         }
 
         try {
-            server = new AioQuickServer(_port, AioProtocol.instance, new AioServerProcessor());
-            server.setBannerEnabled(false);
+            _server = new AioQuickServer(_port, AioProtocol.instance, new AioServerProcessor());
+            _server.setBannerEnabled(false);
             if (SocketProps.readBufferSize() > 0) {
-                server.setReadBufferSize(SocketProps.readBufferSize());
+                _server.setReadBufferSize(SocketProps.readBufferSize());
             }
             if (SocketProps.writeBufferSize() > 0) {
-                server.setWriteBuffer(SocketProps.writeBufferSize(), 16);
+                _server.setWriteBuffer(SocketProps.writeBufferSize(), 16);
             }
-            server.start();
+            _server.start();
 
-
-            app.signalAdd(new SignalSim(_name, _port, "tcp", SignalType.SOCKET));
+            _signal = new SignalSim(_name, _port, "tcp", SignalType.SOCKET);
+            app.signalAdd(_signal);
 
             long time_end = System.currentTimeMillis();
 
@@ -66,9 +69,9 @@ public final class XPluginImp implements Plugin {
 
     @Override
     public void stop() throws Throwable {
-        if (server != null) {
-            server.shutdown();
-            server = null;
+        if (_server != null) {
+            _server.shutdown();
+            _server = null;
 
             PrintUtil.info("Server:main: smartsocket-socketd: Has Stopped " + solon_boot_ver());
         }

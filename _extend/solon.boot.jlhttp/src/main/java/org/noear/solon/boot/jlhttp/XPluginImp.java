@@ -13,6 +13,8 @@ import javax.net.ssl.SSLServerSocketFactory;
 import java.util.concurrent.Executors;
 
 public final class XPluginImp implements Plugin {
+    protected static Signal _signal;
+
     private HTTPServer _server = null;
 
     public static String solon_boot_ver(){
@@ -77,7 +79,9 @@ public final class XPluginImp implements Plugin {
             _server.setPort(_port);
             _server.start();
 
-            app.signalAdd(new SignalSim(_name, _port, "http", SignalType.HTTP));
+            _signal= new SignalSim(_name, _port, "http", SignalType.HTTP);
+
+            app.signalAdd(_signal);
 
             long time_end = System.currentTimeMillis();
 

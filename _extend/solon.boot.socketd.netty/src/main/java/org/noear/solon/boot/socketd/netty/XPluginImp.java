@@ -17,6 +17,8 @@ import org.noear.solon.socketd.SessionManager;
 import org.noear.solon.socketd.client.netty.NioChannelInitializer;
 
 public class XPluginImp implements Plugin {
+    protected static Signal _signal;
+
     ChannelFuture _server;
 
     public static String solon_boot_ver() {
@@ -61,8 +63,8 @@ public class XPluginImp implements Plugin {
 
             _server = bootstrap.bind(_port).sync();
 
-
-            app.signalAdd(new SignalSim(_name, _port, "tcp", SignalType.SOCKET));
+            _signal = new SignalSim(_name, _port, "tcp", SignalType.SOCKET);
+            app.signalAdd(_signal);
 
             long time_end = System.currentTimeMillis();
 

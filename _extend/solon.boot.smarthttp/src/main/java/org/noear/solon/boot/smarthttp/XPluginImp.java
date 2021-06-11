@@ -6,6 +6,7 @@ import org.noear.solon.boot.smarthttp.http.SmartHttpContextHandler;
 import org.noear.solon.boot.smarthttp.http.FormContentFilter;
 import org.noear.solon.boot.smarthttp.websocket.WebSocketHandleImp;
 import org.noear.solon.boot.smarthttp.websocket._SessionManagerImpl;
+import org.noear.solon.core.Signal;
 import org.noear.solon.core.SignalSim;
 import org.noear.solon.core.SignalType;
 import org.noear.solon.core.event.EventBus;
@@ -16,6 +17,7 @@ import org.noear.solon.socketd.SessionManager;
 import org.smartboot.http.server.HttpBootstrap;
 
 public final class XPluginImp implements Plugin {
+    protected static Signal _signal;
 
     HttpBootstrap _server = null;
 
@@ -58,9 +60,12 @@ public final class XPluginImp implements Plugin {
 
         try {
 
-            _server.setPort(_port).start();
+            _server.setPort(_port);
+            _server.start();
 
-            app.signalAdd(new SignalSim(_name, _port, "http", SignalType.HTTP));
+            _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
+
+            app.signalAdd(_signal);
 
             app.before("**", MethodType.ALL, -9, new FormContentFilter());
 

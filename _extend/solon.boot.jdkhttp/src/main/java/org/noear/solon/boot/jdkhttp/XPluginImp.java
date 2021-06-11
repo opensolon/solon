@@ -16,6 +16,8 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
 public final class XPluginImp implements Plugin {
+    protected static Signal _signal;
+
     private HttpServer _server = null;
 
     public static String solon_boot_ver(){
@@ -49,7 +51,8 @@ public final class XPluginImp implements Plugin {
             _server.setExecutor(Executors.newCachedThreadPool(new PrefixThreadFactory("jdkhttp-thread-")));
             _server.start();
 
-            app.signalAdd(new SignalSim(_name, _port, "http", SignalType.HTTP));
+            _signal = new SignalSim(_name, _port, "http", SignalType.HTTP);
+            app.signalAdd(_signal);
 
             long time_end = System.currentTimeMillis();
 

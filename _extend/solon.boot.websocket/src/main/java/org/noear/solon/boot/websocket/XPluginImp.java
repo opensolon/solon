@@ -11,6 +11,8 @@ import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.socketd.SessionManager;
 
 public class XPluginImp implements Plugin {
+    protected static Signal _signal;
+
     private WsServer _server = null;
 
     public static String solon_boot_ver() {
@@ -42,8 +44,9 @@ public class XPluginImp implements Plugin {
 
             _server.start();
 
+            _signal = new SignalSim(_name, _port, "ws", SignalType.WEBSOCKET);
 
-            app.signalAdd(new SignalSim(_name, _port, "ws", SignalType.WEBSOCKET));
+            app.signalAdd(_signal);
 
             long time_end = System.currentTimeMillis();
 
