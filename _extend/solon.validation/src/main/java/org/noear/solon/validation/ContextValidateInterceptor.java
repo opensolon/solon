@@ -13,10 +13,10 @@ public class ContextValidateInterceptor implements Handler {
 
     @Override
     public void handle(Context ctx) throws Throwable {
-        Action action = ctx.action();
+        Action a = ctx.action();
 
-        if (action != null) {
-            ValidatorManager.validate(ctx, action);
+        if (a != null) {
+            ValidatorManager.validate(ctx, a);
         }
     }
 }
