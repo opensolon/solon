@@ -350,7 +350,7 @@ public class SolonApp implements HandlerSlots {
     }
 
     /**
-     * 重置监听
+     * 后置监听
      */
     public void after(Handler handler) {
         after("**", MethodType.ALL, handler);
@@ -368,6 +368,9 @@ public class SolonApp implements HandlerSlots {
         _router.add(expr, Endpoint.after, method, index, handler);
     }
 
+    /**
+     * 默放监听（处理404这种情况）
+     */
     public void def(Handler handler){
         _routerHandler.bind(handler);
     }
