@@ -12,6 +12,7 @@ import org.noear.solon.core.handle.Handler;
  * */
 public class RouterHandler implements Handler {
     private Router router;
+    private Handler def;
     public RouterHandler(Router router){
         bind(router);
     }
@@ -21,6 +22,10 @@ public class RouterHandler implements Handler {
      * */
     public void bind(Router router){
         this.router = router;
+    }
+
+    public void bind(Handler def){
+        this.def = def;
     }
 
 
@@ -66,11 +71,14 @@ public class RouterHandler implements Handler {
 
         if (handler != null) {
             handler.handle(ctx);
-            //这个必须加
-            ctx.setHandled(true);
             return ctx.status() != 404;
         } else {
-            return false;
+            if (def == null) {
+                return false;
+            } else {
+                def.handle(ctx);
+                return ctx.status() != 404;
+            }
         }
     }
 

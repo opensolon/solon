@@ -368,6 +368,10 @@ public class SolonApp implements HandlerSlots {
         _router.add(expr, Endpoint.after, method, index, handler);
     }
 
+    public void def(Handler handler){
+        _routerHandler.bind(handler);
+    }
+
     /**
      * 主体监听
      */
