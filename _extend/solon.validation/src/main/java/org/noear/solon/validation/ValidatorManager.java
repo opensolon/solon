@@ -22,20 +22,20 @@ import java.util.Map;
  * */
 public class ValidatorManager {
 
-    public static void setNoRepeatLock(NoRepeatLock lock) {
-        NoRepeatLockImp.globalSet(lock);
+    public static void setNoRepeatSubmitChecker(NoRepeatSubmitChecker lock) {
+        NoRepeatSubmitValidator.instance.setChecker(lock);
     }
 
     public static void setLoginedChecker(LoginedChecker checker) {
-        LoginedValidator.setChecker(checker);
+        LoginedValidator.instance.setChecker(checker);
     }
 
     public static void setWhitelistChecker(WhitelistChecker checker) {
-        WhitelistValidator.setChecker(checker);
+        WhitelistValidator.instance.setChecker(checker);
     }
 
     public static void setNotBlacklistChecker(NotBlacklistChecker checker) {
-        NotBlacklistValidator.setChecker(checker);
+        NotBlacklistValidator.instance.setChecker(checker);
     }
 
 

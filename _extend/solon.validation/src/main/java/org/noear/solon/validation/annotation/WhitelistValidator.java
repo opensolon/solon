@@ -12,11 +12,11 @@ import org.noear.solon.validation.Validator;
 public class WhitelistValidator implements Validator<Whitelist> {
     public static final WhitelistValidator instance = new WhitelistValidator();
 
-    private static WhitelistChecker checker = (anno, ctx) -> false;
+    private WhitelistChecker checker = (anno, ctx) -> false;
 
-    public static void setChecker(WhitelistChecker checker) {
+    public void setChecker(WhitelistChecker checker) {
         if (checker != null) {
-            WhitelistValidator.checker = checker;
+            this.checker = checker;
         }
     }
 

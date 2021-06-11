@@ -7,7 +7,7 @@ package org.noear.solon.validation.annotation;
  * @since 1.0
  * */
 @FunctionalInterface
-public interface NoRepeatLock {
-    boolean tryLock(String key, int seconds);
+public interface NoRepeatSubmitChecker {
+    boolean check(String key, int seconds);
 }
 

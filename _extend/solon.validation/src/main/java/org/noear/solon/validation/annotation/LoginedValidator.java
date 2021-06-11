@@ -13,11 +13,11 @@ import org.noear.solon.validation.Validator;
 public class LoginedValidator implements Validator<Logined> {
     public static final LoginedValidator instance = new LoginedValidator();
 
-    private static LoginedChecker checker = new LoginedCheckerImp();
+    private  LoginedChecker checker = new LoginedCheckerImp();
 
-    public static void setChecker(LoginedChecker checker) {
+    public  void setChecker(LoginedChecker checker) {
         if (checker != null) {
-            LoginedValidator.checker = checker;
+            this.checker = checker;
         }
     }
 

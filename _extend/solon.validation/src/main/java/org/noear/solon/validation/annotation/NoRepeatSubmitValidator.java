@@ -15,6 +15,14 @@ import java.io.IOException;
 public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
     public static final NoRepeatSubmitValidator instance = new NoRepeatSubmitValidator();
 
+    private NoRepeatSubmitChecker checker;
+
+    public void setChecker(NoRepeatSubmitChecker checker) {
+        if (checker != null) {
+            this.checker = checker;
+        }
+    }
+
     @Override
     public String message(NoRepeatSubmit anno) {
         return anno.message();
@@ -22,6 +30,10 @@ public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
 
     @Override
     public Result validate(Context ctx, NoRepeatSubmit anno, String name, StringBuilder tmp) {
+        if(checker == null){
+            throw new IllegalArgumentException("Missing NoRepeatSubmitChecker Setting");
+        }
+
         tmp.append(ctx.path()).append("::");
 
         for (HttpPart part : anno.value()) {
@@ -52,7 +64,7 @@ public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
             }
         }
 
-        if (NoRepeatLockImp.global().tryLock(Utils.md5(tmp.toString()), anno.seconds())) {
+        if (checker.check(Utils.md5(tmp.toString()), anno.seconds())) {
             return Result.succeed();
         } else {
             return Result.failure();

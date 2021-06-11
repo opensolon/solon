@@ -11,11 +11,11 @@ import org.noear.solon.validation.Validator;
  * */
 public class NotBlacklistValidator implements Validator<NotBlacklist> {
     public static final NotBlacklistValidator instance = new NotBlacklistValidator();
-    private static NotBlacklistChecker checker = (anno, ctx) -> false;
+    private NotBlacklistChecker checker = (anno, ctx) -> false;
 
-    public static void setChecker(NotBlacklistChecker checker) {
+    public void setChecker(NotBlacklistChecker checker) {
         if (checker != null) {
-            NotBlacklistValidator.checker = checker;
+            this.checker = checker;
         }
     }
 

@@ -4,6 +4,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.validation.annotation.LoginedChecker;
+import org.noear.solon.validation.annotation.NoRepeatSubmitChecker;
 import org.noear.solon.validation.annotation.NotBlacklistChecker;
 import org.noear.solon.validation.annotation.WhitelistChecker;
 
@@ -18,6 +19,11 @@ public class XPluginImp implements Plugin {
         //ValidatorFailureHandler
         Aop.getAsyn(ValidatorFailureHandler.class, (bw) -> {
             ValidatorManager.onFailure(bw.raw());
+        });
+
+        //NoRepeatSubmitChecker
+        Aop.getAsyn(NoRepeatSubmitChecker.class, (bw) -> {
+            ValidatorManager.setNoRepeatSubmitChecker(bw.raw());
         });
 
         //LoginedChecker
