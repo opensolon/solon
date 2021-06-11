@@ -2,10 +2,13 @@ package org.noear.solon.view.beetl;
 
 import org.beetl.core.tag.Tag;
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.RenderManager;
+import org.noear.solon.view.beetl.tags.HasPermissionTag;
+import org.noear.solon.view.beetl.tags.HasRoleTag;
 
 public class XPluginImp implements Plugin {
     public static boolean output_meta = false;
@@ -35,5 +38,10 @@ public class XPluginImp implements Plugin {
         RenderManager.register(render);
         RenderManager.mapping(".htm",render);
         RenderManager.mapping(".btl",render);
+
+        if (Utils.loadClass("org.noear.solon.extend.auth.AuthUtil") != null) {
+            app.beanMake(HasPermissionTag.class);
+            app.beanMake(HasRoleTag.class);
+        }
     }
 }
