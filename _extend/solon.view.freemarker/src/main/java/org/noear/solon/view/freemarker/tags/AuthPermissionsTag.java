@@ -9,6 +9,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.annotation.Logical;
 import org.noear.solon.auth.tags.Constants;
+import org.noear.solon.core.NvMap;
 
 import java.io.IOException;
 import java.util.Map;
@@ -20,8 +21,10 @@ import java.util.Map;
 public class AuthPermissionsTag implements TemplateDirectiveModel {
     @Override
     public void execute(Environment env, Map map, TemplateModel[] templateModels, TemplateDirectiveBody body) throws TemplateException, IOException {
-        String nameStr = (String) map.get(Constants.ATTR_name);
-        String logicalStr = (String) map.get(Constants.ATTR_logical);
+        NvMap mapExt = new NvMap(map);
+
+        String nameStr = mapExt.get(Constants.ATTR_name);
+        String logicalStr = mapExt.get(Constants.ATTR_logical);
 
         if (Utils.isEmpty(nameStr)) {
             return;
