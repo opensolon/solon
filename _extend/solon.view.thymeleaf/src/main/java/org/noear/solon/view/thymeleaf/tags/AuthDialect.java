@@ -9,7 +9,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * @author noear 2021/6/12 created
+ * @author noear
+ * @since 1.5
  */
 public class AuthDialect extends AbstractProcessorDialect {
 
