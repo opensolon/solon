@@ -11,5 +11,8 @@ public interface Constants {
     static String TAG_authPermissions = "authPermissions";
     static String TAG_authRoles = "authRoles";
 
+    static String TAG_permissions = "permissions";
+    static String TAG_roles = "roles";
+
     static String PREFIX =  "auth";
 }

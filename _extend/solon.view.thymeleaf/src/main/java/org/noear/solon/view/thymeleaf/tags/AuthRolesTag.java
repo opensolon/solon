@@ -15,8 +15,8 @@ import org.thymeleaf.templatemode.TemplateMode;
  */
 public class AuthRolesTag extends AbstractElementTagProcessor {
 
-    public AuthRolesTag(TemplateMode templateMode, String dialectPrefix, String elementName, boolean prefixElementName, String attributeName, boolean prefixAttributeName, int precedence) {
-        super(templateMode, dialectPrefix, elementName, prefixElementName, attributeName, prefixAttributeName, precedence);
+    public AuthRolesTag() {
+        super(TemplateMode.HTML, "auth", Constants.TAG_roles, true, null, false, 100);
     }
 
     @Override

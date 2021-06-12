@@ -38,9 +38,9 @@ public class XPluginImp implements Plugin {
         RenderManager.register(render);
         RenderManager.mapping(".html",render);
 
-//        if (Utils.loadClass("org.noear.solon.auth.AuthUtil") != null) {
-//            render.putDirective(Constants.TAG_authPermissions, AuthPermissionsTag.class);
-//            render.putDirective(Constants.TAG_authRoles, AuthRolesTag.class);
-//        }
+        if (Utils.loadClass("org.noear.solon.auth.AuthUtil") != null) {
+            render.putDirective(Constants.TAG_authPermissions, new AuthPermissionsTag());
+            render.putDirective(Constants.TAG_authRoles, new AuthRolesTag());
+        }
     }
 }

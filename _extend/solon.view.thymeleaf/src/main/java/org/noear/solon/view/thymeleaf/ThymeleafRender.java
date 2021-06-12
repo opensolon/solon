@@ -9,6 +9,8 @@ import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.ext.SupplierEx;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.processor.AbstractProcessor;
+import org.thymeleaf.processor.element.IElementTagProcessor;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
@@ -114,7 +116,7 @@ public class ThymeleafRender implements Render {
     /**
      * 添加共享指令（自定义标签）
      * */
-    public void putDirective(String name, Object obj) {
+    public <T extends IElementTagProcessor> void putDirective(String name, T obj) {
         putVariable(name, obj);
     }
 
