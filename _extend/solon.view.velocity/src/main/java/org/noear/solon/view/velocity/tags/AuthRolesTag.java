@@ -40,7 +40,7 @@ public class AuthRolesTag extends Directive {
     public boolean render(InternalContextAdapter context, Writer writer, Node node) throws IOException, ResourceNotFoundException, ParseErrorException, MethodInvocationException {
         int attrNum = node.jjtGetNumChildren();
 
-        if (attrNum < 1) {
+        if (attrNum == 0) {
             return true;
         }
 
