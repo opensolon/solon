@@ -23,7 +23,7 @@ public class XPluginImp implements Plugin {
             Aop.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
                     if (Tag.class.isAssignableFrom(v.clz())) {
-                        render.putDirective(k.split(":")[1], v.clz());
+                        render.putDirective(k.split(":")[1], (Class<? extends Tag>) v.clz());
                     }
                     return;
                 }

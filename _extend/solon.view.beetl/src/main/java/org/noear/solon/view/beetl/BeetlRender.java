@@ -5,6 +5,7 @@ import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.resource.ClasspathResourceLoader;
 import org.beetl.core.resource.FileResourceLoader;
+import org.beetl.core.tag.Tag;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.JarClassLoader;
@@ -115,7 +116,7 @@ public class BeetlRender implements Render {
     /**
      * 添加共享指令（自定义标签）
      * */
-    public void putDirective(String name, Class<?> clz) {
+    public void putDirective(String name, Class<? extends Tag> clz) {
         try {
             gt.registerTag(name, clz);
 

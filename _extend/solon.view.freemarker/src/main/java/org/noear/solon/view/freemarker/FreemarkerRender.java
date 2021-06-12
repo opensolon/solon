@@ -2,6 +2,7 @@ package org.noear.solon.view.freemarker;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateNotFoundException;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
@@ -114,7 +115,7 @@ public class FreemarkerRender implements Render {
     /**
      * 添加共享指令（自定义标签）
      * */
-    public void putDirective(String name, Object obj) {
+    public <T extends TemplateDirectiveModel> void putDirective(String name, T obj) {
         putVariable(name, obj);
     }
 
