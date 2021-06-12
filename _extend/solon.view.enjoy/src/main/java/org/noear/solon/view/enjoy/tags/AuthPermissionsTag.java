@@ -16,8 +16,17 @@ import org.noear.solon.auth.tags.Constants;
 public class AuthPermissionsTag extends Directive {
     @Override
     public void exec(Env env, Scope scope, Writer writer) {
-        String nameStr = (String) scope.get(Constants.ATTR_name);
-        String logicalStr = (String) scope.get(Constants.ATTR_logical);
+        String[] attrs = getAttrArray(scope);
+
+        if(attrs.length == 0){
+            return;
+        }
+
+        String nameStr = attrs[0];
+        String logicalStr = null;
+        if(attrs.length > 1){
+            logicalStr = attrs[1];
+        }
 
         if (Utils.isEmpty(nameStr)) {
             return;
@@ -42,7 +51,7 @@ public class AuthPermissionsTag extends Directive {
     /**
      * 从 #xxx 指令参数中获取角色名称数组
      */
-    private String[] getNamesArray(Scope scope) {
+    private String[] getAttrArray(Scope scope) {
         Object[] values = exprList.evalExprList(scope);
         String[] ret = new String[values.length];
         for (int i = 0; i < values.length; i++) {
