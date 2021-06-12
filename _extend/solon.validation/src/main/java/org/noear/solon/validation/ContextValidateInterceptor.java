@@ -16,7 +16,7 @@ public class ContextValidateInterceptor implements Handler {
         Action a = ctx.action();
 
         if (a != null) {
-            ValidatorManager.validate(ctx, a);
+            ValidatorManager.validateDo(ctx, a);
         }
     }
 }

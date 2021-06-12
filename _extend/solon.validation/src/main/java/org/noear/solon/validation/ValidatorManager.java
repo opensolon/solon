@@ -22,8 +22,8 @@ import java.util.Map;
  * */
 public class ValidatorManager {
 
-    public static void setNoRepeatSubmitChecker(NoRepeatSubmitChecker lock) {
-        NoRepeatSubmitValidator.instance.setChecker(lock);
+    public static void setNoRepeatSubmitChecker(NoRepeatSubmitChecker checker) {
+        NoRepeatSubmitValidator.instance.setChecker(checker);
     }
 
     public static void setLoginedChecker(LoginedChecker checker) {
@@ -40,11 +40,9 @@ public class ValidatorManager {
 
 
     private static final Map<Class<? extends Annotation>, Validator> validMap = new HashMap<>();
-    private static ValidatorFailureHandler failureHandler;
+    private static ValidatorFailureHandler failureHandler = new ValidatorFailureHandlerImp();
 
     static {
-        failureHandler = new ValidatorFailureHandlerImp();
-
         initialize();
     }
 
@@ -102,33 +100,34 @@ public class ValidatorManager {
     }
 
     /**
-     * 验证
+     * 执行验证处理
      * */
-    public static void validate(Context ctx, Action action) throws Throwable {
+    @Note("执行验证处理")
+    public static void validateDo(Context ctx, Action action) throws Throwable {
         StringBuilder tmp = new StringBuilder();
 
         for (Annotation anno : action.bean().annotations()) {
-            if (validateDo(ctx, anno, null, tmp)) {
+            if (validateDo0(ctx, anno, null, tmp)) {
                 return;
             }
         }
 
         for (Annotation anno : action.method().getAnnotations()) {
-            if (validateDo(ctx, anno, null, tmp)) {
+            if (validateDo0(ctx, anno, null, tmp)) {
                 return;
             }
         }
 
         for (ParamWrap para : action.method().getParamWraps()) {
             for (Annotation anno : para.getParameter().getAnnotations()) {
-                if (validateDo(ctx, anno, para.getName(), tmp)) {
+                if (validateDo0(ctx, anno, para.getName(), tmp)) {
                     return;
                 }
             }
         }
     }
 
-    private static boolean validateDo(Context ctx, Annotation anno, String name, StringBuilder tmp) {
+    private static boolean validateDo0(Context ctx, Annotation anno, String name, StringBuilder tmp) {
         if (ctx.getHandled()) {
             return true;
         }
@@ -150,6 +149,9 @@ public class ValidatorManager {
     }
 
 
+    /**
+     * 设定错误处理
+     * */
     public static void failure(ValidatorFailureHandler handler) {
         if (handler != null) {
             failureHandler = handler;
@@ -157,6 +159,10 @@ public class ValidatorManager {
     }
 
 
+    /**
+     * 执行错误处理
+     * */
+    @Note("执行错误处理")
     public static boolean failureDo(Context ctx, Annotation ano, Result result, String message) {
         if (ctx == null) {
             return false;
