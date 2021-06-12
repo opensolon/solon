@@ -34,8 +34,8 @@ public class AuthRolesTag extends AbstractElementTagProcessor {
             return;
         }
 
-        if (AuthUtil.verifyRoles(names, Logical.of(logicalStr))) {
-            structureHandler.setInliner(context.getInliner());
+        if (AuthUtil.verifyRoles(names, Logical.of(logicalStr)) == false) {
+            structureHandler.setBody("", false);
         }
     }
 }

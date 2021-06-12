@@ -34,8 +34,8 @@ public class AuthPermissionsTag extends AbstractElementTagProcessor {
             return;
         }
 
-        if (AuthUtil.verifyPermissions(names, Logical.of(logicalStr))) {
-            structureHandler.setInliner(context.getInliner());
+        if (AuthUtil.verifyPermissions(names, Logical.of(logicalStr)) == false) {
+            structureHandler.setBody("", false);
         }
     }
 }
