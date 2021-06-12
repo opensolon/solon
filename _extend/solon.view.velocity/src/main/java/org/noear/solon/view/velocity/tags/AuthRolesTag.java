@@ -49,7 +49,7 @@ public class AuthRolesTag extends Directive {
         for (int i = 0; i < attrNum; i++) {
             Node n1 = node.jjtGetChild(i);
             if (n1 instanceof ASTStringLiteral) {
-                attrList.add((String) node.value(context));
+                attrList.add((String) n1.value(context));
                 continue;
             }
 
