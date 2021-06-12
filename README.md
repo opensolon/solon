@@ -123,7 +123,7 @@ public class App implements HelloService{
 ```
 ```
 //Resource path specification (no configuration)
-resources/application.properties（or application.yml） #Configuration files for the application
+resources/app.properties（or app.yml） #Configuration files for the application
 resources/static/ #Is the static file root target
 resources/WEB-INF/view/ #The root target of the view file (supports coexistence of multiple views)
 
