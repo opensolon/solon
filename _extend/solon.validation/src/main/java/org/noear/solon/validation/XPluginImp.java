@@ -18,7 +18,7 @@ public class XPluginImp implements Plugin {
 
         //ValidatorFailureHandler
         Aop.getAsyn(ValidatorFailureHandler.class, (bw) -> {
-            ValidatorManager.failure(bw.raw());
+            ValidatorManager.setFailureHandler(bw.raw());
         });
 
         //NoRepeatSubmitChecker

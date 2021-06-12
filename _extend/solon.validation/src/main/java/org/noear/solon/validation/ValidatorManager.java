@@ -22,20 +22,41 @@ import java.util.Map;
  * */
 public class ValidatorManager {
 
+    /**
+     * 设定非重复提交检测器
+     * */
     public static void setNoRepeatSubmitChecker(NoRepeatSubmitChecker checker) {
         NoRepeatSubmitValidator.instance.setChecker(checker);
     }
 
+    /**
+     * 设定已登录状态检测器
+     * */
     public static void setLoginedChecker(LoginedChecker checker) {
         LoginedValidator.instance.setChecker(checker);
     }
 
+    /**
+     * 设定白名单检测器
+     * */
     public static void setWhitelistChecker(WhitelistChecker checker) {
         WhitelistValidator.instance.setChecker(checker);
     }
 
+    /**
+     * 设定非黑名单检测器
+     * */
     public static void setNotBlacklistChecker(NotBlacklistChecker checker) {
         NotBlacklistValidator.instance.setChecker(checker);
+    }
+
+    /**
+     * 设定错误处理
+     * */
+    public static void setFailureHandler(ValidatorFailureHandler handler) {
+        if (handler != null) {
+            failureHandler = handler;
+        }
     }
 
 
@@ -148,15 +169,6 @@ public class ValidatorManager {
         return false;
     }
 
-
-    /**
-     * 设定错误处理
-     * */
-    public static void failure(ValidatorFailureHandler handler) {
-        if (handler != null) {
-            failureHandler = handler;
-        }
-    }
 
 
     /**
