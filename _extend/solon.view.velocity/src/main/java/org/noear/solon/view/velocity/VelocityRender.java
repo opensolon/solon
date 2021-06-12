@@ -131,7 +131,7 @@ public class VelocityRender implements Render {
     /**
      * 添加共享指令（自定义标签）
      * */
-    public <T extends Directive> void putDirective(String name, T obj) {
+    public <T extends Directive> void putDirective(T obj) {
         engine.addDirective(obj);
 
         if (engine_debug != null) {
