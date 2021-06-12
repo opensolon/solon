@@ -34,6 +34,12 @@ public class AuthRolesTag extends Directive {
         }
     }
 
+
+    @Override
+    public boolean hasEnd() {
+        return true;
+    }
+
     /**
      * 从 #xxx 指令参数中获取角色名称数组
      */
