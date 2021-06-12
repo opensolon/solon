@@ -8,18 +8,17 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.extend.auth.AuthUtil;
 import org.noear.solon.extend.auth.annotation.Logical;
-import org.noear.solon.extend.auth.tags.TagAttrs;
+import org.noear.solon.extend.auth.tags.Constants;
 
 /**
  * @author noear
  * @since 1.4
  */
-@Component("view:hasPermission")
 public class HasPermissionTag extends Directive {
     @Override
     public void exec(Env env, Scope scope, Writer writer) {
-        String nameStr = (String) scope.get(TagAttrs.ATTR_name);
-        String logicalStr = (String) scope.get(TagAttrs.ATTR_logical);
+        String nameStr = (String) scope.get(Constants.ATTR_name);
+        String logicalStr = (String) scope.get(Constants.ATTR_logical);
 
         if (Utils.isEmpty(nameStr)) {
             return;

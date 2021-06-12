@@ -1,7 +1,6 @@
 package org.noear.solon.view.jsp.tags;
 
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.Component;
 import org.noear.solon.extend.auth.AuthUtil;
 import org.noear.solon.extend.auth.annotation.Logical;
 
@@ -12,7 +11,6 @@ import javax.servlet.jsp.tagext.TagSupport;
  * @author noear
  * @since 1.4
  */
-@Component("view:hasRole")
 public class HasRolesTag extends TagSupport {
     @Override
     public int doStartTag() throws JspException {

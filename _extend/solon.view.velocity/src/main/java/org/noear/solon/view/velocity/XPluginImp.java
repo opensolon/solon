@@ -2,12 +2,9 @@ package org.noear.solon.view.velocity;
 
 import org.apache.velocity.runtime.directive.Directive;
 import org.noear.solon.SolonApp;
-import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.RenderManager;
-import org.noear.solon.view.velocity.tags.HasPermissionTag;
-import org.noear.solon.view.velocity.tags.HasRoleTag;
 
 public class XPluginImp implements Plugin {
     public static boolean output_meta = false;
@@ -37,9 +34,9 @@ public class XPluginImp implements Plugin {
         RenderManager.register(render);
         RenderManager.mapping(".vm",render);
 
-        if (Utils.loadClass("org.noear.solon.extend.auth.AuthUtil") != null) {
-            app.beanMake(HasPermissionTag.class);
-            app.beanMake(HasRoleTag.class);
-        }
+//        if (Utils.loadClass("org.noear.solon.extend.auth.AuthUtil") != null) {
+//            app.beanMake(HasPermissionTag.class);
+//            app.beanMake(HasRoleTag.class);
+//        }
     }
 }

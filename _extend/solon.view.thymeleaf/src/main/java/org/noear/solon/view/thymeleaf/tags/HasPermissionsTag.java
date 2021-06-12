@@ -3,7 +3,7 @@ package org.noear.solon.view.thymeleaf.tags;
 import org.noear.solon.Utils;
 import org.noear.solon.extend.auth.AuthUtil;
 import org.noear.solon.extend.auth.annotation.Logical;
-import org.noear.solon.extend.auth.tags.TagAttrs;
+import org.noear.solon.extend.auth.tags.Constants;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.*;
@@ -21,8 +21,8 @@ public class HasPermissionsTag extends AbstractElementTagProcessor {
 
     @Override
     protected void doProcess(ITemplateContext context, IProcessableElementTag tag, IElementTagStructureHandler structureHandler) {
-        String nameStr = tag.getAttributeValue(TagAttrs.ATTR_name);
-        String logicalStr = tag.getAttributeValue(TagAttrs.ATTR_logical);
+        String nameStr = tag.getAttributeValue(Constants.ATTR_name);
+        String logicalStr = tag.getAttributeValue(Constants.ATTR_logical);
 
         if (Utils.isEmpty(nameStr)) {
             return;
