@@ -6,7 +6,6 @@ import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.Component;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.annotation.Logical;
 import org.noear.solon.auth.tags.Constants;
@@ -18,7 +17,7 @@ import java.util.Map;
  * @author noear
  * @since 1.4
  */
-public class HasRoleTag implements TemplateDirectiveModel {
+public class AuthPermissionsTag implements TemplateDirectiveModel {
     @Override
     public void execute(Environment env, Map map, TemplateModel[] templateModels, TemplateDirectiveBody body) throws TemplateException, IOException {
         String nameStr = (String) map.get(Constants.ATTR_name);
@@ -34,7 +33,7 @@ public class HasRoleTag implements TemplateDirectiveModel {
             return;
         }
 
-        if (AuthUtil.verifyRoles(names, Logical.of(logicalStr))) {
+        if (AuthUtil.verifyPermissions(names, Logical.of(logicalStr))) {
             body.render(env.getOut());
         }
     }

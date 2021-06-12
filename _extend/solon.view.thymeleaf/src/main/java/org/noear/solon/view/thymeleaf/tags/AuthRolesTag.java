@@ -13,9 +13,9 @@ import org.thymeleaf.templatemode.TemplateMode;
  * @author noear
  * @since 1.4
  */
-public class HasRoleTag extends AbstractElementTagProcessor {
+public class AuthRolesTag extends AbstractElementTagProcessor {
 
-    public HasRoleTag(TemplateMode templateMode, String dialectPrefix, String elementName, boolean prefixElementName, String attributeName, boolean prefixAttributeName, int precedence) {
+    public AuthRolesTag(TemplateMode templateMode, String dialectPrefix, String elementName, boolean prefixElementName, String attributeName, boolean prefixAttributeName, int precedence) {
         super(templateMode, dialectPrefix, elementName, prefixElementName, attributeName, prefixAttributeName, precedence);
     }
 

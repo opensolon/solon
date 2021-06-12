@@ -6,8 +6,8 @@ import org.noear.solon.auth.tags.Constants;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.RenderManager;
-import org.noear.solon.view.thymeleaf.tags.HasPermissionTag;
-import org.noear.solon.view.thymeleaf.tags.HasRoleTag;
+import org.noear.solon.view.thymeleaf.tags.AuthPermissionsTag;
+import org.noear.solon.view.thymeleaf.tags.AuthRolesTag;
 import org.thymeleaf.processor.element.IElementTagProcessor;
 
 public class XPluginImp implements Plugin {
@@ -38,9 +38,9 @@ public class XPluginImp implements Plugin {
         RenderManager.register(render);
         RenderManager.mapping(".html",render);
 
-        if (Utils.loadClass("org.noear.solon.auth.AuthUtil") != null) {
-            render.putDirective(Constants.TAG_hasPermission, HasPermissionTag.class);
-            render.putDirective(Constants.TAG_hasRole, HasRoleTag.class);
-        }
+//        if (Utils.loadClass("org.noear.solon.auth.AuthUtil") != null) {
+//            render.putDirective(Constants.TAG_authPermissions, AuthPermissionsTag.class);
+//            render.putDirective(Constants.TAG_authRoles, AuthRolesTag.class);
+//        }
     }
 }

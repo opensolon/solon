@@ -13,7 +13,7 @@ import org.noear.solon.auth.tags.Constants;
  * @author noear
  * @since 1.4
  */
-public class HasPermissionTag extends Directive {
+public class AuthPermissionsTag extends Directive {
     @Override
     public void exec(Env env, Scope scope, Writer writer) {
         String nameStr = (String) scope.get(Constants.ATTR_name);

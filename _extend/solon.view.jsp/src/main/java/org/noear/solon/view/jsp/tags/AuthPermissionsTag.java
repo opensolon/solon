@@ -11,7 +11,7 @@ import javax.servlet.jsp.tagext.TagSupport;
  * @author noear
  * @since 1.4
  */
-public class HasPermissionTag extends TagSupport {
+public class AuthPermissionsTag extends TagSupport {
     @Override
     public int doStartTag() throws JspException {
         String nameStr = name;

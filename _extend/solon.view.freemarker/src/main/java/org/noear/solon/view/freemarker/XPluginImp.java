@@ -7,8 +7,8 @@ import org.noear.solon.auth.tags.Constants;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.RenderManager;
-import org.noear.solon.view.freemarker.tags.HasPermissionTag;
-import org.noear.solon.view.freemarker.tags.HasRoleTag;
+import org.noear.solon.view.freemarker.tags.AuthPermissionsTag;
+import org.noear.solon.view.freemarker.tags.AuthRolesTag;
 
 public class XPluginImp implements Plugin {
     public static boolean output_meta = false;
@@ -41,8 +41,8 @@ public class XPluginImp implements Plugin {
         RenderManager.mapping(".ftl", render);
 
         if (Utils.loadClass("org.noear.solon.auth.AuthUtil") != null) {
-            render.putDirective(Constants.TAG_hasPermission, HasPermissionTag.class);
-            render.putDirective(Constants.TAG_hasRole, HasRoleTag.class);
+            render.putDirective(Constants.TAG_authPermissions, new AuthPermissionsTag());
+            render.putDirective(Constants.TAG_authRoles, new AuthRolesTag());
         }
     }
 }

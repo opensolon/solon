@@ -10,7 +10,7 @@ import org.noear.solon.auth.tags.Constants;
  * @author noear
  * @since 1.4
  */
-public class HasRoleTag extends Tag {
+public class AuthPermissionsTag extends Tag {
     @Override
     public void render() {
         String nameStr = (String) getHtmlAttribute(Constants.ATTR_name);
@@ -26,9 +26,8 @@ public class HasRoleTag extends Tag {
             return;
         }
 
-        if (AuthUtil.verifyRoles(names, Logical.of(logicalStr))) {
+        if (AuthUtil.verifyPermissions(names, Logical.of(logicalStr))) {
             this.doBodyRender();
         }
-
     }
 }

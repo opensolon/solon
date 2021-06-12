@@ -8,8 +8,8 @@ public interface Constants {
     static String ATTR_name = "name";
     static String ATTR_logical = "logical";
 
-    static String TAG_hasPermission = "hasPermission";
-    static String TAG_hasRole = "hasRole";
+    static String TAG_authPermissions = "authPermissions";
+    static String TAG_authRoles = "authRoles";
 
     static String PREFIX =  "auth";
 }

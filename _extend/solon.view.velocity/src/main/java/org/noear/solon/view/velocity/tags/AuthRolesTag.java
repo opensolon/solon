@@ -7,21 +7,23 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.directive.Directive;
 import org.apache.velocity.runtime.parser.node.Node;
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.Component;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.annotation.Logical;
+import org.noear.solon.auth.tags.Constants;
 
 import java.io.IOException;
 import java.io.Writer;
 
 /**
+ * 授权给角色
+ *
  * @author noear
  * @since 1.4
  */
-public class HasPermissionTag extends Directive {
+public class AuthRolesTag extends Directive {
     @Override
     public String getName() {
-        return "hasPermission";
+        return Constants.TAG_authRoles;
     }
 
     @Override
@@ -54,7 +56,7 @@ public class HasPermissionTag extends Directive {
             return false;
         }
 
-        if (AuthUtil.verifyPermissions(names, Logical.of(logicalStr))) {
+        if (AuthUtil.verifyRoles(names, Logical.of(logicalStr))) {
             return true;
         } else {
             return false;
