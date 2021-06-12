@@ -2,8 +2,8 @@ package org.noear.solon.cache.jedis;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.cache.CacheService;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.data.cache.CacheService;
 
 import java.util.Base64;
 import java.util.Properties;

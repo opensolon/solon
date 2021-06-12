@@ -5,8 +5,8 @@ import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.resource.ClasspathResourceLoader;
 import org.beetl.core.resource.FileResourceLoader;
+import org.beetl.core.tag.Tag;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.event.EventBus;
@@ -65,7 +65,7 @@ public class BeetlRender implements Render {
         }
 
         Solon.global().onSharedAdd((k, v) -> {
-            setSharedVariable(k, v);
+            putVariable(k, v);
         });
     }
 
@@ -113,19 +113,25 @@ public class BeetlRender implements Render {
 
     }
 
-    public void registerTag(String name, Class<?> tag) {
+    /**
+     * 添加共享指令（自定义标签）
+     * */
+    public void putDirective(String name, Class<? extends Tag> clz) {
         try {
-            gt.registerTag(name, tag);
+            gt.registerTag(name, clz);
 
             if (gt_debug != null) {
-                gt_debug.registerTag(name, tag);
+                gt_debug.registerTag(name, clz);
             }
         } catch (Exception ex) {
             EventBus.push(ex);
         }
     }
 
-    public void setSharedVariable(String name, Object value) {
+    /**
+     * 添加共享变量
+     * */
+    public void putVariable(String name, Object value) {
         try {
             gt.getSharedVars().put(name, value);
 

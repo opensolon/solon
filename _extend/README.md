@@ -1,14 +1,4 @@
 
-### Nami 插件
-| Nami 插件（Solon rpc client） | 说明 |
-| --- | --- |
-| nami插件:: | 说明 |
-| nami.coder.fastjson | 对`fastjson`的编解码适配 |
-| nami.coder.hessian | 对`hessian`的编解码适配 |
-| nami.coder.snack3 | 对`snack3`的编解码适配 |
-| nami.channel.http.okhttp | 对`okhttp`的通道适配 |
-| nami.channel.socketd | 对`socketd`的通道适配（适配后，可使用org.noear:solon.sockted.client.* 做为客户端） |
-
 ### Solon 插件
 
 | Solon 插件 | 说明 |
@@ -16,10 +6,20 @@
 | boot插件:: | 说明 |
 | org.noear:solon.boot.jlhttp* | boot插件,对`jlhttp`适配,提供`http`服务（不自带session state） |
 | org.noear:solon.boot.jetty* | boot插件,对`jetty`适配,提供`http`服务（网友@khb提供） |
-| org.noear:solon.extend.jetty.jsp | 扩展插件,为`jetty`添加`jsp`支持（不建议使用jsp）（网友@khb提供） |
+| org.noear:solon.boot.jetty.add.jsp | 扩展插件,为`jetty`添加`jsp`支持（不建议使用jsp）（网友@khb提供） |
+| org.noear:solon.boot.jetty.add.websocket | 扩展插件,为`jetty`添加`websocket`支持（不建议使用jsp）（网友@khb提供） |
 | org.noear:solon.boot.undertow* | boot插件,对`undertow`适配,提供`http`服务（网友@tyk提供） |
+| org.noear:solon.boot.undertow.add.jsp | 扩展插件,为`undertow`添加`jsp`支持（不建议使用jsp）（网友@tyk提供） |
 | org.noear:solon.boot.websocket | boot插件,对`java-websocket`适配，提供`websocket`服务 |
-| org.noear:solon.extend.undertow.jsp | 扩展插件,为`undertow`添加`jsp`支持（不建议使用jsp）（网友@tyk提供） |
+| | |
+| 数据操作支持插件:: | 说明 |
+| org.noear:solon.data | 扩展插件,添加事件（@Tran）、缓存的定义及注解（@Cache）支持 |
+| | |
+| 验证支持插件:: | 说明 |
+| org.noear:solon.validation | 扩展插件,添加验证（@Valid）支持 |
+| | |
+| Cloud插件:: | 说明 |
+| org.noear:solon.cloud | 扩展插件, 添加Solon Cloud 的接口定义及配置规范 |
 | | |
 | 静态文件支持插件:: | 说明 |
 | org.noear:solon.extend.staticfiles | 扩展插件,添加静态文件支持（监视 resources/static 文件夹） |
@@ -27,27 +27,12 @@
 | 切面支持插件:: | 说明 |
 | org.noear:solon.extend.aspect | 扩展插件,添加Dao、Service注解支持；进而支持事务和缓存注解 |
 | | |
-| 数据操作支持插件:: | 说明 |
-| org.noear:solon.extend.data | 扩展插件,实现事务和缓存的注解支持 |
-| | |
-| 验证支持插件:: | 说明 |
-| org.noear:solon.extend.validation | 扩展插件,实现验证的注解支持 |
-| | |
 | Yaml配置支持插件:: | 说明 |
 | org.noear:solon.extend.properties.yaml | 扩展插件,添加yml配置文件支持 |
 | | |
-| Data插件:: | 说明 |
-| org.noear:solon.extend.data | 扩展插件,添加事件（@Tran）、缓存（@Cache）支持 |
-| | |
-| Cloud插件:: | 说明 |
-| org.noear:solon.cloud | 扩展插件, 添加Solon Cloud 的接口定义及配置规范 |
-| | |
-| Validation插件:: | 说明 |
-| org.noear:solon.extend.validation | 扩展插件,添加验证（@Valid）支持 |
-| | |
 | Cache插件:: | 说明 |
 | org.noear:solon.cache.spymemcached | 扩展插件,完成memcached的缓存服务适配 |
-| org.noear:solon.solon.cache.jedis | 扩展插件,完成redis的缓存服务适配 |
+| org.noear:solon.cache.jedis | 扩展插件,完成redis的缓存服务适配 |
 | | |
 | jsr插件:: | 说明 |
 | org.noear:solon.extend.jsr303 | 扩展插件,完成jsr303 bean 验证支持 |

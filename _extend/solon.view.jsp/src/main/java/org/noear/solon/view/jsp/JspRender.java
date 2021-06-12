@@ -1,7 +1,6 @@
 package org.noear.solon.view.jsp;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Context;
@@ -52,8 +51,6 @@ public class JspRender implements Render {
         if(XPluginImp.output_meta){
             ctx.headerSet("solon.view","JspRender");
         }
-
-
 
 
         HttpServletResponse response = (HttpServletResponse)ctx.response();

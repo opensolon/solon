@@ -2,7 +2,7 @@ package org.noear.solon.extend.jsr303;
 
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.extend.jsr303.utils.BeanValidationUtils;
-import org.noear.solon.extend.validation.BeanValidator;
+import org.noear.solon.validation.BeanValidator;
 
 /**
  * @author noear

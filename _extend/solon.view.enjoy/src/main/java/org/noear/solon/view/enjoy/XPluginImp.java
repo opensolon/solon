@@ -2,9 +2,13 @@ package org.noear.solon.view.enjoy;
 
 import com.jfinal.template.Directive;
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
+import org.noear.solon.auth.tags.Constants;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.RenderManager;
+import org.noear.solon.view.enjoy.tags.AuthPermissionsTag;
+import org.noear.solon.view.enjoy.tags.AuthRolesTag;
 
 @SuppressWarnings("unchecked")
 public class XPluginImp implements Plugin {
@@ -20,13 +24,13 @@ public class XPluginImp implements Plugin {
             Aop.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
                     if(Directive.class.isAssignableFrom(v.clz())){
-                        render.addDirective(k.split(":")[1], (Class<? extends Directive>)v.clz());
+                        render.putDirective(k.split(":")[1], (Class<? extends Directive>)v.clz());
                     }
                     return;
                 }
 
                 if(k.startsWith("share:")){ //java share object
-                    render.setSharedVariable(k.split(":")[1], v.raw());
+                    render.putVariable(k.split(":")[1], v.raw());
                     return;
                 }
             });
@@ -35,9 +39,9 @@ public class XPluginImp implements Plugin {
         RenderManager.register(render);
         RenderManager.mapping(".shtm",render);
 
-//        if (Utils.loadClass("org.noear.solon.extend.auth.AuthUtil") != null) {
-//            app.beanMake(HasPermissionTag.class);
-//            app.beanMake(HasRoleTag.class);
-//        }
+        if (Utils.loadClass("org.noear.solon.auth.AuthUtil") != null) {
+            render.putDirective(Constants.TAG_authPermissions, AuthPermissionsTag.class);
+            render.putDirective(Constants.TAG_authRoles, AuthRolesTag.class);
+        }
     }
 }

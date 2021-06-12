@@ -1,6 +1,6 @@
 package org.noear.weed.solon.plugin;
 
-import org.noear.solon.core.cache.CacheService;
+import org.noear.solon.data.cache.CacheService;
 import org.noear.weed.cache.ICacheServiceEx;
 
 /**

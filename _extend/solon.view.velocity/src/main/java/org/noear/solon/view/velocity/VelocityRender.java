@@ -5,6 +5,8 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.ResourceNotFoundException;
+import org.apache.velocity.runtime.RuntimeInstance;
+import org.apache.velocity.runtime.directive.Directive;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
@@ -32,8 +34,8 @@ public class VelocityRender implements Render {
         return _global;
     }
 
-    private VelocityEngine engine;
-    private VelocityEngine engine_debug;
+    private RuntimeInstance engine;
+    private RuntimeInstance engine_debug;
     private Map<String, Object> _sharedVariable = new HashMap<>();
 
     private String _baseUri = "/WEB-INF/view/";
@@ -59,11 +61,11 @@ public class VelocityRender implements Render {
         engineInit(engine_debug);
 
         Solon.global().onSharedAdd((k, v) -> {
-            setSharedVariable(k, v);
+            putVariable(k, v);
         });
     }
 
-    private void engineInit(VelocityEngine ve) {
+    private void engineInit(RuntimeInstance ve) {
         if(ve == null){
             return;
         }
@@ -86,7 +88,7 @@ public class VelocityRender implements Render {
             return;
         }
 
-        engine_debug = new VelocityEngine();
+        engine_debug = new RuntimeInstance();
 
         String dirroot = Utils.getResource("/").toString().replace("target/classes/", "");
         File dir = null;
@@ -118,7 +120,7 @@ public class VelocityRender implements Render {
             return;
         }
 
-        engine = new VelocityEngine();
+        engine = new RuntimeInstance();
 
         String root_path = Utils.getResource(_baseUri).getPath();
 
@@ -126,15 +128,21 @@ public class VelocityRender implements Render {
         engine.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, root_path);
     }
 
-    public void loadDirective(Object obj) {
-        engine.loadDirective(obj.getClass().getName());
+    /**
+     * 添加共享指令（自定义标签）
+     * */
+    public <T extends Directive> void putDirective(T obj) {
+        engine.addDirective(obj);
 
-        if(engine_debug != null){
-            engine_debug.loadDirective(obj.getClass().getName());
+        if (engine_debug != null) {
+            engine_debug.addDirective(obj);
         }
     }
 
-    public void setSharedVariable(String key, Object obj) {
+    /**
+     * 添加共享变量
+     * */
+    public void putVariable(String key, Object obj) {
         _sharedVariable.put(key, obj);
     }
 

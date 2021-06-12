@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.4.14</version>
+    <version>1.5.0</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -18,12 +18,12 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.4.14</solon.ver>
+        <solon.ver>1.5.0</solon.ver>
 
         <snack3.ver>3.1.17</snack3.ver>
         <weed3.ver>3.3.15</weed3.ver>
-        <water.ver>2.1.6</water.ver>
-        <luffy.ver>1.0.8</luffy.ver>
+        <water.ver>2.2.0</water.ver>
+        <luffy.ver>1.1.0</luffy.ver>
 
         <fastjson.ver>1.2.75</fastjson.ver>
         <jedis.ver>3.6.0</jedis.ver>
@@ -156,22 +156,43 @@
                 <artifactId>solon.boot.jetty</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.boot.jetty.add.jsp</artifactId>
+                <version>${solon.ver}</version>
+                <type>jar</type>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.boot.jetty.add.websocket</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.undertow</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.boot.undertow.add.jsp</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.smarthttp</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.websocket</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
-
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -212,22 +233,22 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.extend.validation</artifactId>
+                <artifactId>solon.validation</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.extend.data</artifactId>
+                <artifactId>solon.data</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.auth</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.cors</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.extend.auth</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
             <dependency>
@@ -285,24 +306,6 @@
             </dependency>
 
 
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.extend.jetty.jsp</artifactId>
-                <version>${solon.ver}</version>
-                <type>jar</type>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.extend.jetty.websocket</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
-                <artifactId>solon.extend.undertow.jsp</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -724,12 +727,6 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>spymemcached-solon-plugin</artifactId>
-                <version>${solon.ver}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.noear</groupId>
                 <artifactId>xxl-job-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -1125,15 +1122,16 @@
         <module>../_extend/solon.extend.jsr330</module>
         <module>../_extend/solon.extend.jsr303</module>
         <module>../_extend/solon.extend.schedule</module>
-        <module>../_extend/solon.extend.validation</module>
-        <module>../_extend/solon.extend.data</module>
         <module>../_extend/solon.extend.cors</module>
-        <module>../_extend/solon.extend.auth</module>
+
+        <module>../_extend/solon.validation</module>
+        <module>../_extend/solon.data</module>
+        <module>../_extend/solon.auth</module>
 
 
-        <module>../_extend/solon.extend.jetty.jsp</module>
-        <module>../_extend/solon.extend.jetty.websocket</module>
-        <module>../_extend/solon.extend.undertow.jsp</module>
+        <module>../_extend/solon.boot.jetty.add.jsp</module>
+        <module>../_extend/solon.boot.jetty.add.websocket</module>
+        <module>../_extend/solon.boot.undertow.add.jsp</module>
 
         <module>../_extend/solon.logging</module>
         <module>../_extend/solon.logging.impl</module>

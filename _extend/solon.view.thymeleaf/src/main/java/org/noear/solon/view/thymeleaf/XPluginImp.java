@@ -1,11 +1,14 @@
 package org.noear.solon.view.thymeleaf;
 
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.RenderManager;
-import org.thymeleaf.processor.element.IElementTagProcessor;
+import org.noear.solon.view.thymeleaf.tags.AuthDialect;
+import org.noear.solon.view.thymeleaf.tags.AuthPermissionsTag;
+import org.noear.solon.view.thymeleaf.tags.AuthRolesTag;
+import org.thymeleaf.dialect.IDialect;
 
 public class XPluginImp implements Plugin {
     public static boolean output_meta = false;
@@ -19,20 +22,27 @@ public class XPluginImp implements Plugin {
         Aop.beanOnloaded(() -> {
             Aop.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
-                    if(IElementTagProcessor.class.isAssignableFrom(v.clz())) {
-                        render.setSharedVariable(k.split(":")[1], v.raw());
+                    if (IDialect.class.isAssignableFrom(v.clz())) {
+                        render.putDirective(v.raw());
                     }
                     return;
                 }
 
-                if(k.startsWith("share:")){ //java share object
-                    render.setSharedVariable(k.split(":")[1], v.raw());
+                if (k.startsWith("share:")) { //java share object
+                    render.putVariable(k.split(":")[1], v.raw());
                     return;
                 }
             });
         });
 
         RenderManager.register(render);
-        RenderManager.mapping(".html",render);
+        RenderManager.mapping(".html", render);
+
+        if (Utils.loadClass("org.noear.solon.auth.AuthUtil") != null) {
+            AuthDialect authDialect = new AuthDialect();
+            authDialect.addProcessor(new AuthPermissionsTag(authDialect.getPrefix()));
+            authDialect.addProcessor(new AuthRolesTag(authDialect.getPrefix()));
+            render.putDirective(authDialect);
+        }
     }
 }

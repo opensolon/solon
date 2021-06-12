@@ -4,8 +4,8 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.extend.validation.annotation.Valid;
-import org.noear.solon.extend.validation.annotation.Validated;
+import org.noear.solon.validation.annotation.Valid;
+import org.noear.solon.validation.annotation.Validated;
 
 /**
  * @author noear 2021/5/11 created

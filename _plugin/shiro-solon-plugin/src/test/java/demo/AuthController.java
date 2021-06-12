@@ -3,7 +3,6 @@ package demo;
 import org.apache.shiro.authz.annotation.*;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.extend.validation.annotation.Valid;
 
 /**
  * @author noear 2021/5/6 created

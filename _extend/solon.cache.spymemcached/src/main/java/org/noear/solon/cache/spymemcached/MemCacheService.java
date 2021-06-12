@@ -7,8 +7,8 @@ import net.spy.memcached.auth.AuthDescriptor;
 import net.spy.memcached.auth.PlainCallbackHandler;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
-import org.noear.solon.core.cache.CacheService;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.data.cache.CacheService;
 
 import java.io.IOException;
 import java.util.Properties;

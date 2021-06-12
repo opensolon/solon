@@ -3,7 +3,7 @@ package org.noear.solon.extend.mybatis;
 import org.apache.ibatis.reflection.ExceptionUtil;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.noear.solon.core.tran.TranUtils;
+import org.noear.solon.data.tran.TranUtils;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

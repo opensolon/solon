@@ -2,9 +2,7 @@ package webapp.demo2_mvc;
 
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.extend.validation.annotation.*;
-
-import java.util.List;
+import org.noear.solon.validation.annotation.*;
 
 @Valid
 @Mapping("/demo2/valid")

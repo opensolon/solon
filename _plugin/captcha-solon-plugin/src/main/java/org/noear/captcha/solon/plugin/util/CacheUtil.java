@@ -1,11 +1,7 @@
 package org.noear.captcha.solon.plugin.util;
 
-
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.cache.CacheService;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import org.noear.solon.data.cache.CacheService;
 
 public final class CacheUtil {
     private static CacheService cacheService;

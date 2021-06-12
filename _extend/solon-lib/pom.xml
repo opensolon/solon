@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.4.14</version>
+        <version>1.5.0</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -24,7 +24,7 @@
         <!-- 提供事务支持 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.data</artifactId>
+            <artifactId>solon.data</artifactId>
         </dependency>
 
         <!-- 加强的动态代理支持组件 -->
@@ -36,7 +36,7 @@
         <!-- 验证扩展组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.validation</artifactId>
+            <artifactId>solon.validation</artifactId>
         </dependency>
 
         <!-- Json序列化支持组件 -->
