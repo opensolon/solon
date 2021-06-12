@@ -5,6 +5,8 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.ResourceNotFoundException;
+import org.apache.velocity.runtime.RuntimeInstance;
+import org.apache.velocity.runtime.directive.Directive;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
@@ -32,8 +34,8 @@ public class VelocityRender implements Render {
         return _global;
     }
 
-    private VelocityEngine engine;
-    private VelocityEngine engine_debug;
+    private RuntimeInstance engine;
+    private RuntimeInstance engine_debug;
     private Map<String, Object> _sharedVariable = new HashMap<>();
 
     private String _baseUri = "/WEB-INF/view/";
@@ -63,7 +65,7 @@ public class VelocityRender implements Render {
         });
     }
 
-    private void engineInit(VelocityEngine ve) {
+    private void engineInit(RuntimeInstance ve) {
         if(ve == null){
             return;
         }
@@ -86,7 +88,7 @@ public class VelocityRender implements Render {
             return;
         }
 
-        engine_debug = new VelocityEngine();
+        engine_debug = new RuntimeInstance();
 
         String dirroot = Utils.getResource("/").toString().replace("target/classes/", "");
         File dir = null;
@@ -118,7 +120,7 @@ public class VelocityRender implements Render {
             return;
         }
 
-        engine = new VelocityEngine();
+        engine = new RuntimeInstance();
 
         String root_path = Utils.getResource(_baseUri).getPath();
 
@@ -129,11 +131,11 @@ public class VelocityRender implements Render {
     /**
      * 添加共享指令（自定义标签）
      * */
-    public void putDirective(String name, Class<?> clz) {
-        engine.loadDirective(clz.getName());
+    public <T extends Directive> void putDirective(String name, T obj) {
+        engine.addDirective(obj);
 
         if (engine_debug != null) {
-            engine_debug.loadDirective(clz.getName());
+            engine_debug.addDirective(obj);
         }
     }
 

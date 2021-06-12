@@ -23,7 +23,7 @@ public class XPluginImp implements Plugin {
             Aop.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
                     if (v.raw() instanceof Directive) {
-                        render.putDirective(v.name(), v.clz());
+                        render.putDirective(v.name(), v.raw());
                     }
                     return;
                 }
@@ -39,8 +39,8 @@ public class XPluginImp implements Plugin {
         RenderManager.mapping(".vm", render);
 
         if (Utils.loadClass("org.noear.solon.auth.AuthUtil") != null) {
-            render.putDirective(Constants.TAG_authPermissions, AuthPermissionsTag.class);
-            render.putDirective(Constants.TAG_authRoles, AuthRolesTag.class);
+            render.putDirective(Constants.TAG_authPermissions, new AuthPermissionsTag());
+            render.putDirective(Constants.TAG_authRoles, new AuthRolesTag());
         }
     }
 }
