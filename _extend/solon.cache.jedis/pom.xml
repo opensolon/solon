@@ -11,7 +11,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.data.cache.jedis</artifactId>
+    <artifactId>solon.cache.jedis</artifactId>
     <packaging>jar</packaging>
 
 
