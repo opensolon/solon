@@ -1,7 +1,6 @@
 package org.noear.solon.auth;
 
 import org.noear.solon.auth.annotation.Logical;
-import org.noear.solon.core.handle.Context;
 
 import java.util.List;
 
@@ -27,13 +26,7 @@ public abstract class AuthProcessorBase implements AuthProcessor {
 
     @Override
     public boolean verifyPermissions(String[] permissions, Logical logical) {
-        Context ctx = Context.current();
-
-        List<String> list = ctx.session("permissions", null);
-        if (list == null) {
-            list = getPermissions();
-            ctx.sessionSet("permissions", list);
-        }
+        List<String> list = getPermissions();
 
         if (list.size() == 0) {
             return false;
@@ -60,13 +53,7 @@ public abstract class AuthProcessorBase implements AuthProcessor {
 
     @Override
     public boolean verifyRoles(String[] roles, Logical logical) {
-        Context ctx = Context.current();
-
-        List<String> list = ctx.session("roles", null);
-        if (list == null) {
-            list = getRoles();
-            ctx.sessionSet("roles", list);
-        }
+        List<String> list = getRoles();
 
         if (list.size() == 0) {
             return false;
