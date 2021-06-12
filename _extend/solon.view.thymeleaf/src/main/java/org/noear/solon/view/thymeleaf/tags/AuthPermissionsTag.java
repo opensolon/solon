@@ -15,8 +15,8 @@ import org.thymeleaf.templatemode.TemplateMode;
  */
 public class AuthPermissionsTag extends AbstractElementTagProcessor {
 
-    public AuthPermissionsTag() {
-        super(TemplateMode.HTML, "auth", Constants.TAG_permissions, true, null, false, 100);
+    public AuthPermissionsTag(String dialectPrefix) {
+        super(TemplateMode.HTML, dialectPrefix, Constants.TAG_permissions, true, null, false, 100);
     }
 
     @Override
