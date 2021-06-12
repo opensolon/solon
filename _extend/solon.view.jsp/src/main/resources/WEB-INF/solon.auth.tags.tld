@@ -4,7 +4,7 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
 http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd" version="2.0">
 
-    <description>自定义标签库</description>
+    <description>Solon auth tags</description>
     <tlib-version>1.1</tlib-version>
     <short-name>auth</short-name>
     <uri>http://solon.noear.org/jsp/jstl/auth</uri>
