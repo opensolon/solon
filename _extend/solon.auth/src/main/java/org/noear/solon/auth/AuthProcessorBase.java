@@ -78,7 +78,7 @@ public abstract class AuthProcessorBase implements AuthProcessor {
         }
     }
 
-    abstract List<String> getPermissions();
+    protected abstract List<String> getPermissions();
 
-    abstract List<String> getRoles();
+    protected abstract List<String> getRoles();
 }
