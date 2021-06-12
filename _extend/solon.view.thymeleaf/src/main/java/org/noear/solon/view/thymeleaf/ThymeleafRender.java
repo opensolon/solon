@@ -8,6 +8,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.ext.SupplierEx;
+import org.noear.solon.view.thymeleaf.tags.AuthDialect;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.processor.AbstractProcessor;
 import org.thymeleaf.processor.element.IElementTagProcessor;
@@ -88,6 +89,7 @@ public class ThymeleafRender implements Render {
                 _loader.setCharacterEncoding("utf-8");
                 _loader.setCacheTTLMs(Long.valueOf(3600000L));
 
+                _engine.addDialect(AuthDialect.global());
                 _engine.setTemplateResolver(_loader);
             } else {
                 //如果没有找到文件，则使用发行模式
@@ -108,6 +110,7 @@ public class ThymeleafRender implements Render {
         _loader.setCharacterEncoding("utf-8");
         _loader.setCacheTTLMs(Long.valueOf(3600000L));
 
+        _engine.addDialect(AuthDialect.global());
         _engine.setTemplateResolver(_loader);
     }
 
