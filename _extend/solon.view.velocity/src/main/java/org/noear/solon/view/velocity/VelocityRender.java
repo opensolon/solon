@@ -59,7 +59,7 @@ public class VelocityRender implements Render {
         engineInit(engine_debug);
 
         Solon.global().onSharedAdd((k, v) -> {
-            setSharedVariable(k, v);
+            putVariable(k, v);
         });
     }
 
@@ -126,15 +126,21 @@ public class VelocityRender implements Render {
         engine.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, root_path);
     }
 
-    public void loadDirective(Object obj) {
-        engine.loadDirective(obj.getClass().getName());
+    /**
+     * 添加共享指令（自定义标签）
+     * */
+    public void putDirective(String name, Class<?> clz) {
+        engine.loadDirective(clz.getName());
 
-        if(engine_debug != null){
-            engine_debug.loadDirective(obj.getClass().getName());
+        if (engine_debug != null) {
+            engine_debug.loadDirective(clz.getName());
         }
     }
 
-    public void setSharedVariable(String key, Object obj) {
+    /**
+     * 添加共享变量
+     * */
+    public void putVariable(String key, Object obj) {
         _sharedVariable.put(key, obj);
     }
 

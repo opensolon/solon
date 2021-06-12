@@ -18,7 +18,6 @@ import java.io.Writer;
  * @author noear
  * @since 1.4
  */
-@Component("view:hasPermission")
 public class HasPermissionTag extends Directive {
     @Override
     public String getName() {

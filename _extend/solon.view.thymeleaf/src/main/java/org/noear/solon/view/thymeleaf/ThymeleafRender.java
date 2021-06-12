@@ -52,7 +52,7 @@ public class ThymeleafRender implements Render {
 
         try {
             Solon.global().shared().forEach((k, v) -> {
-                setSharedVariable(k, v);
+                putVariable(k, v);
             });
 
         } catch (Exception ex) {
@@ -60,7 +60,7 @@ public class ThymeleafRender implements Render {
         }
 
         Solon.global().onSharedAdd((k, v) -> {
-            setSharedVariable(k, v);
+            putVariable(k, v);
         });
     }
 
@@ -110,7 +110,18 @@ public class ThymeleafRender implements Render {
     }
 
 
-    public void setSharedVariable(String name, Object obj) {
+
+    /**
+     * 添加共享指令（自定义标签）
+     * */
+    public void putDirective(String name, Object obj) {
+        putVariable(name, obj);
+    }
+
+    /**
+     * 添加共享变量
+     * */
+    public void putVariable(String name, Object obj) {
         _sharedVariable.put(name, obj);
     }
 

@@ -6,7 +6,6 @@ import com.jfinal.template.Template;
 import com.jfinal.template.source.ClassPathSourceFactory;
 import com.jfinal.template.source.FileSourceFactory;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Render;
@@ -57,7 +56,7 @@ public class EnjoyRender implements Render {
         }
 
         Solon.global().onSharedAdd((k, v) -> {
-            setSharedVariable(k, v);
+            putVariable(k, v);
         });
     }
 
@@ -109,7 +108,10 @@ public class EnjoyRender implements Render {
         }
     }
 
-    public void addDirective(String name, Class<? extends Directive> clz) {
+    /**
+     * 添加共享指令（自定义标签）
+     * */
+    public void putDirective(String name, Class<? extends Directive> clz) {
         try {
             engine.addDirective(name, clz);
 
@@ -121,7 +123,10 @@ public class EnjoyRender implements Render {
         }
     }
 
-    public void setSharedVariable(String name, Object value) {
+    /**
+     * 添加共享变量
+     * */
+    public void putVariable(String name, Object value) {
         try {
             engine.addSharedObject(name, value);
 

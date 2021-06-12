@@ -3,6 +3,7 @@ package org.noear.solon.view.freemarker;
 import freemarker.template.TemplateDirectiveModel;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
+import org.noear.solon.auth.tags.Constants;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.RenderManager;
@@ -23,13 +24,13 @@ public class XPluginImp implements Plugin {
                 if (k.startsWith("view:") || k.startsWith("ftl:")) {
                     //java view widget
                     if (TemplateDirectiveModel.class.isAssignableFrom(v.clz())) {
-                        render.setSharedVariable(k.split(":")[1], v.raw());
+                        render.putDirective(k.split(":")[1], v.raw());
                     }
                 }
 
                 if (k.startsWith("share:")) {
                     //java share object
-                    render.setSharedVariable(k.split(":")[1], v.raw());
+                    render.putVariable(k.split(":")[1], v.raw());
                     return;
                 }
             });
@@ -39,9 +40,9 @@ public class XPluginImp implements Plugin {
         RenderManager.register(render);
         RenderManager.mapping(".ftl", render);
 
-        if (Utils.loadClass("org.noear.solon.extend.auth.AuthUtil") != null) {
-            app.beanMake(HasPermissionTag.class);
-            app.beanMake(HasRoleTag.class);
+        if (Utils.loadClass("org.noear.solon.auth.AuthUtil") != null) {
+            render.putDirective(Constants.TAG_hasPermission, HasPermissionTag.class);
+            render.putDirective(Constants.TAG_hasRole, HasRoleTag.class);
         }
     }
 }

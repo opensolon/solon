@@ -7,7 +7,6 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.directive.Directive;
 import org.apache.velocity.runtime.parser.node.Node;
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.Component;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.annotation.Logical;
 
@@ -18,7 +17,6 @@ import java.io.Writer;
  * @author noear
  * @since 1.4
  */
-@Component("view:hasRole")
 public class HasRoleTag extends Directive {
     @Override
     public String getName() {

@@ -1,10 +1,13 @@
 package org.noear.solon.view.thymeleaf;
 
 import org.noear.solon.SolonApp;
+import org.noear.solon.Utils;
+import org.noear.solon.auth.tags.Constants;
 import org.noear.solon.core.Aop;
-import org.noear.solon.core.Bridge;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.RenderManager;
+import org.noear.solon.view.thymeleaf.tags.HasPermissionTag;
+import org.noear.solon.view.thymeleaf.tags.HasRoleTag;
 import org.thymeleaf.processor.element.IElementTagProcessor;
 
 public class XPluginImp implements Plugin {
@@ -20,13 +23,13 @@ public class XPluginImp implements Plugin {
             Aop.beanForeach((k, v) -> {
                 if (k.startsWith("view:")) { //java view widget
                     if(IElementTagProcessor.class.isAssignableFrom(v.clz())) {
-                        render.setSharedVariable(k.split(":")[1], v.raw());
+                        render.putDirective(k.split(":")[1], v.raw());
                     }
                     return;
                 }
 
                 if(k.startsWith("share:")){ //java share object
-                    render.setSharedVariable(k.split(":")[1], v.raw());
+                    render.putVariable(k.split(":")[1], v.raw());
                     return;
                 }
             });
@@ -34,5 +37,10 @@ public class XPluginImp implements Plugin {
 
         RenderManager.register(render);
         RenderManager.mapping(".html",render);
+
+        if (Utils.loadClass("org.noear.solon.auth.AuthUtil") != null) {
+            render.putDirective(Constants.TAG_hasPermission, HasPermissionTag.class);
+            render.putDirective(Constants.TAG_hasRole, HasRoleTag.class);
+        }
     }
 }

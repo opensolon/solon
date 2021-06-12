@@ -5,21 +5,19 @@ import com.jfinal.template.Env;
 import com.jfinal.template.io.Writer;
 import com.jfinal.template.stat.Scope;
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.Component;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.annotation.Logical;
-import org.noear.solon.auth.tags.TagAttrs;
+import org.noear.solon.auth.tags.Constants;
 
 /**
  * @author noear
  * @since 1.4
  */
-@Component("view:hasRole")
 public class HasRoleTag extends Directive {
     @Override
     public void exec(Env env, Scope scope, Writer writer) {
-        String nameStr = (String) scope.get(TagAttrs.ATTR_name);
-        String logicalStr = (String) scope.get(TagAttrs.ATTR_logical);
+        String nameStr = (String) scope.get(Constants.ATTR_name);
+        String logicalStr = (String) scope.get(Constants.ATTR_logical);
 
         if (Utils.isEmpty(nameStr)) {
             return;

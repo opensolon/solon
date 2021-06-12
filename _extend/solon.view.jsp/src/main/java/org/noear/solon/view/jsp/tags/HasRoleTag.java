@@ -1,7 +1,6 @@
 package org.noear.solon.view.jsp.tags;
 
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.Component;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.annotation.Logical;
 
@@ -12,8 +11,7 @@ import javax.servlet.jsp.tagext.TagSupport;
  * @author noear
  * @since 1.4
  */
-@Component("view:hasPermission")
-public class HasPermissionsTag extends TagSupport {
+public class HasRoleTag extends TagSupport {
     @Override
     public int doStartTag() throws JspException {
         String nameStr = name;
@@ -30,13 +28,12 @@ public class HasPermissionsTag extends TagSupport {
         }
 
 
-        if (AuthUtil.verifyPermissions(names, Logical.of(logicalStr))) {
+        if (AuthUtil.verifyRoles(names, Logical.of(logicalStr))) {
             return TagSupport.EVAL_BODY_INCLUDE;
         } else {
             return super.doStartTag();
         }
     }
-
 
     String name;
     String logical;

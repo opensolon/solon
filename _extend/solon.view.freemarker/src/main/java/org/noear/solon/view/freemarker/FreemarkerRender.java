@@ -4,7 +4,6 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateNotFoundException;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
@@ -54,7 +53,7 @@ public class FreemarkerRender implements Render {
         }
 
         Solon.global().onSharedAdd((k, v) -> {
-            setSharedVariable(k, v);
+            putVariable(k, v);
         });
     }
 
@@ -112,7 +111,17 @@ public class FreemarkerRender implements Render {
         cfg.setCacheStorage(new freemarker.cache.MruCacheStorage(0, Integer.MAX_VALUE));
     }
 
-    public void setSharedVariable(String name, Object value) {
+    /**
+     * 添加共享指令（自定义标签）
+     * */
+    public void putDirective(String name, Object obj) {
+        putVariable(name, obj);
+    }
+
+    /**
+     * 添加共享变量
+     * */
+    public void putVariable(String name, Object value) {
         try {
             cfg.setSharedVariable(name, value);
 
