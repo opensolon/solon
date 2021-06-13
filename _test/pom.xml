@@ -48,10 +48,6 @@
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>nami.coder.json.hutool</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
             <artifactId>nami.coder.snack3</artifactId>
         </dependency>
         <dependency>
@@ -275,10 +271,6 @@
             <artifactId>solon.serialization.snack3</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.serialization.json.hutool</artifactId>-->
-<!--        </dependency>-->
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->

@@ -229,7 +229,6 @@
         <module>../_nami/nami.coder.hessian</module>
         <module>../_nami/nami.coder.jackson</module>
         <module>../_nami/nami.coder.protostuff</module>
-        <module>../_nami/nami.coder.json.hutool</module>
     </modules>
 
 </project>

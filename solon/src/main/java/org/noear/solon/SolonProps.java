@@ -190,8 +190,10 @@ public final class SolonProps extends Props {
                     }
                 }
 
-                System.getProperties().put(kv.getKey(), v1);
-                put(kv.getKey(), v1);
+                if (v1 != null) {
+                    System.getProperties().put(kv.getKey(), v1);
+                    put(kv.getKey(), v1);
+                }
             }
         }
 
