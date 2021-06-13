@@ -340,6 +340,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.serialization.json.hutool</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.serialization.hession</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
@@ -1096,6 +1101,7 @@
         <module>../_extend/solon.serialization.snack3</module>
         <module>../_extend/solon.serialization.avro</module>
         <module>../_extend/solon.serialization.protostuff</module>
+        <module>../_extend/solon.serialization.json.hutool</module>
         <!--        <module>../_extend/solon.serialization.jsoniter</module>-->
         <!--        <module>../_extend/solon.serialization.xstream</module>-->
 
