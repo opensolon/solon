@@ -20,7 +20,7 @@
 
         <solon.ver>1.5.0</solon.ver>
 
-        <snack3.ver>3.1.17</snack3.ver>
+        <snack3.ver>3.1.18</snack3.ver>
         <weed3.ver>3.3.15</weed3.ver>
         <water.ver>2.2.0</water.ver>
         <luffy.ver>1.1.0</luffy.ver>
@@ -397,14 +397,6 @@
                 <artifactId>solon.cloud</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
-
-
-            <!--            <dependency>-->
-            <!--                <groupId>org.noear</groupId>-->
-            <!--                <artifactId>solonclient</artifactId>-->
-            <!--                <version>${solon.ver}</version>-->
-            <!--            </dependency>-->
-
 
 
             <dependency>
