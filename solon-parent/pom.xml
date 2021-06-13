@@ -470,6 +470,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>nami.coder.json.hutool</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>nami.coder.jackson</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
