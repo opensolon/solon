@@ -8,6 +8,7 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,7 +22,6 @@ import java.util.Date;
  * @since 1.0
  * */
 public class ConvertUtil {
-    private static final SimpleDateFormat DATE_DEF_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     /**
      * 转换 context 的值
@@ -32,7 +32,7 @@ public class ConvertUtil {
      * @param val 值
      * @param ctx 通用上下文
      * */
-    public static Object to(AnnotatedElement element, Class<?> type, String key, String val, Context ctx) throws ClassCastException{
+    public static Object to(AnnotatedElement element, Class<?> type, String key, String val, Context ctx) throws ClassCastException {
         if (String.class == (type)) {
             return val;
         }
@@ -49,19 +49,14 @@ public class ConvertUtil {
 
         if (Date.class == (type) && element != null) {
             Param xd = element.getAnnotation(Param.class);
-            SimpleDateFormat format = null;
-
-            if (xd != null && Utils.isEmpty(xd.format()) == false) {
-                format = new SimpleDateFormat(xd.format());
-            } else {
-                format = DATE_DEF_FORMAT;
-            }
 
             try {
-                return format.parse(val);
-            } catch (RuntimeException ex) {
-                throw ex;
-            } catch (Throwable ex) {
+                if (xd != null && Utils.isEmpty(xd.format()) == false) {
+                    return new SimpleDateFormat(xd.format()).parse(val);
+                } else {
+                    return DateUtil.parse(val);
+                }
+            } catch (ParseException ex) {
                 throw new RuntimeException(ex);
             }
         }
@@ -147,7 +142,7 @@ public class ConvertUtil {
 
         if (Date.class == (type)) {
             try {
-                return DATE_DEF_FORMAT.parse(val);
+                return DateUtil.parse(val);
             } catch (RuntimeException ex) {
                 throw ex;
             } catch (Throwable ex) {

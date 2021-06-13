@@ -1,14 +1,11 @@
 package features;
 
-import features.nami.GitHub;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.nami.Nami;
 import org.noear.nami.annotation.Body;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.coder.snack3.SnackDecoder;
-import org.noear.solon.annotation.Mapping;
-import org.noear.solon.core.handle.Context;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.models.UserModel;
