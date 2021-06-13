@@ -273,6 +273,11 @@
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.serialization.fastjson</artifactId>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
 <!--            <artifactId>solon.serialization.avro</artifactId>-->
 <!--        </dependency>-->
 

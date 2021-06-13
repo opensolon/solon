@@ -6,6 +6,7 @@ import org.noear.snack.ONode;
 import org.noear.solon.test.HttpTestBase;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+import webapp.utils.Datetime;
 
 import java.io.IOException;
 
@@ -25,7 +26,7 @@ public class HttpParam4Test extends HttpTestBase {
         ONode oNode2 = ONode.loadStr(json2);
 
         assert oNode2.get("id").getInt() == 1;
-        assert oNode2.get("date").getLong() > 1000;
+        assert new Datetime(oNode2.get("date").getDate() ).getYear() > 2000;
     }
 
     @Test
@@ -38,7 +39,7 @@ public class HttpParam4Test extends HttpTestBase {
         ONode oNode2 = ONode.loadStr(json2);
 
         assert oNode2.get("id").getInt() == 1;
-        assert oNode2.get("date").getLong() > 1000;
+        assert new Datetime(oNode2.get("date").getDate() ).getYear() > 2000;
     }
 
     @Test
@@ -53,6 +54,6 @@ public class HttpParam4Test extends HttpTestBase {
         ONode oNode2 = ONode.loadStr(json2);
 
         assert oNode2.get("id").getInt() == 1;
-        assert oNode2.get("date").getLong() > 1000;
+        assert new Datetime(oNode2.get("date").getDate() ).getYear() > 2000;
     }
 }
