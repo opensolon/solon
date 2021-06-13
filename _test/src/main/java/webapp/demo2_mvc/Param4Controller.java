@@ -16,7 +16,7 @@ import java.io.IOException;
 @Controller
 public class Param4Controller {
 
-    @Mapping("josn")
+    @Mapping("json")
     public UserModel test_json(UserModel user) throws IOException {
         return user;
     }
