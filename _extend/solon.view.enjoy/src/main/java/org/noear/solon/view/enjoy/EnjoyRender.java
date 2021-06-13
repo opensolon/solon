@@ -65,7 +65,7 @@ public class EnjoyRender implements Render {
             return;
         }
 
-        engine_debug = Engine.use();
+        engine_debug = Engine.create("debug");
 
         //添加调试模式
         String dirroot = Utils.getResource("/").toString().replace("target/classes/", "");
