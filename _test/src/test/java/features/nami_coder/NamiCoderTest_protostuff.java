@@ -19,7 +19,7 @@ public class NamiCoderTest_protostuff {
 
 
     @Test
-    public void test_protostuff() {
+    public void test_protostuff_err() {
         //err
         IllegalArgumentException err = ONode.deserialize(json_err);
         Result err_rst = new Result(200, ProtostuffEncoder.instance.encode(err));
@@ -30,7 +30,10 @@ public class NamiCoderTest_protostuff {
             assert e instanceof IllegalArgumentException;
             System.out.println("test_protostuff::ok");
         }
+    }
 
+    @Test
+    public void test_protostuff_bean() {
         //bean
         UserModel usr = ONode.deserialize(json_usr, UserModel.class);
 

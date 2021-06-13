@@ -18,7 +18,7 @@ public class NamiCoderTest_snack3 {
     String json_usr_ary = "[{\"@type\":\"model.UserModel\",\"id\":1,\"name\":\"noear\",\"sex\":1}]";
 
     @Test
-    public void test_snack3() {
+    public void test_snack3_err() {
         //err
         Result err_rst = new Result(200, json_err.getBytes(StandardCharsets.UTF_8));
         try {
@@ -28,6 +28,10 @@ public class NamiCoderTest_snack3 {
             assert e instanceof IllegalArgumentException;
             System.out.println("test_snack3::ok");
         }
+    }
+
+    @Test
+    public void test_snack3_bean() {
 
         //bean
         Result usr_rst = new Result(200, json_usr.getBytes(StandardCharsets.UTF_8));

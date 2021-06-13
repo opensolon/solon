@@ -18,7 +18,7 @@ public class NamiCoderTest_fastjson {
     String json_usr_ary = "[{\"@type\":\"model.UserModel\",\"id\":1,\"name\":\"noear\",\"sex\":1}]";
 
     @Test
-    public void test_fastjson() {
+    public void test_fastjson_err() {
         //err
         Result err_rst = new Result(200, json_err.getBytes(StandardCharsets.UTF_8));
         try {
@@ -28,7 +28,10 @@ public class NamiCoderTest_fastjson {
             assert e instanceof IllegalArgumentException;
             System.out.println("test_fastjson::ok");
         }
+    }
 
+    @Test
+    public void test_fastjson_bean() {
         //bean
         Result usr_rst = new Result(200, json_usr.getBytes(StandardCharsets.UTF_8));
         Object usr_obj = FastjsonDecoder.instance.decode(usr_rst, UserModel.class);

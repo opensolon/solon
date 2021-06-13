@@ -31,7 +31,7 @@ public class HutoolJsonDecoder implements Decoder {
                 return (T) str;
             }
 
-            if (str.contains("\"stackTrace\":[{")) {
+            if (str.contains("\"stackTrace\":[")) {
                 returnVal = JSONUtil.toBean(str, Throwable.class);
             } else {
                 returnVal = JSONUtil.toBean(str, type, false);
