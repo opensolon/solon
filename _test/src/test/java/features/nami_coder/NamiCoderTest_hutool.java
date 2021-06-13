@@ -19,43 +19,43 @@ public class NamiCoderTest_hutool {
     String json_usr = "{\"id\":1,\"name\":\"noear\",\"sex\":1}";
     String json_usr_ary = "[{\"@type\":\"model.UserModel\",\"id\":1,\"name\":\"noear\",\"sex\":1}]";
 
-    @Test
-    public void test_hutool_err() {
-        //err
-        IllegalArgumentException err = ONode.deserialize(json_err);
-        Result err_rst = new Result(200, HutoolJsonEncoder.instance.encode(err));
-        try {
-            HutoolJsonDecoder.instance.decode(err_rst, UserModel.class);
-            assert false;
-        } catch (Throwable e) {
-            assert e instanceof IllegalArgumentException;
-            System.out.println("test_hutool::ok");
-        }
-    }
-
-    @Test
-    public void test_hutool_bean() {
-        //bean
-        Result usr_rst = new Result(200, json_usr.getBytes(StandardCharsets.UTF_8));
-        Object usr_obj = HutoolJsonDecoder.instance.decode(usr_rst, UserModel.class);
-
-        assert usr_obj instanceof UserModel;
-        assert ((UserModel) usr_obj).id == 1;
-
-
-        //bean list
-        Result usr_rst_ary = new Result(200, json_usr_ary.getBytes(StandardCharsets.UTF_8));
-        Object usr_obj_ary = HutoolJsonDecoder.instance.decode(usr_rst_ary, List.class);
-
-        assert usr_obj_ary instanceof List;
-        assert ((List<?>) usr_obj_ary).size()==1;
-
-
-        //null
-        usr_rst = new Result(200, HutoolJsonEncoder.instance.encode(null));
-        usr_obj = HutoolJsonDecoder.instance.decode(usr_rst, UserModel.class);
-
-        assert usr_obj == null;
-    }
+//    @Test
+//    public void test_hutool_err() {
+//        //err
+//        IllegalArgumentException err = ONode.deserialize(json_err);
+//        Result err_rst = new Result(200, HutoolJsonEncoder.instance.encode(err));
+//        try {
+//            HutoolJsonDecoder.instance.decode(err_rst, UserModel.class);
+//            assert false;
+//        } catch (Throwable e) {
+//            assert e instanceof IllegalArgumentException;
+//            System.out.println("test_hutool::ok");
+//        }
+//    }
+//
+//    @Test
+//    public void test_hutool_bean() {
+//        //bean
+//        Result usr_rst = new Result(200, json_usr.getBytes(StandardCharsets.UTF_8));
+//        Object usr_obj = HutoolJsonDecoder.instance.decode(usr_rst, UserModel.class);
+//
+//        assert usr_obj instanceof UserModel;
+//        assert ((UserModel) usr_obj).id == 1;
+//
+//
+//        //bean list
+//        Result usr_rst_ary = new Result(200, json_usr_ary.getBytes(StandardCharsets.UTF_8));
+//        Object usr_obj_ary = HutoolJsonDecoder.instance.decode(usr_rst_ary, List.class);
+//
+//        assert usr_obj_ary instanceof List;
+//        assert ((List<?>) usr_obj_ary).size()==1;
+//
+//
+//        //null
+//        usr_rst = new Result(200, HutoolJsonEncoder.instance.encode(null));
+//        usr_obj = HutoolJsonDecoder.instance.decode(usr_rst, UserModel.class);
+//
+//        assert usr_obj == null;
+//    }
 
 }
