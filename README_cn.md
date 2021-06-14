@@ -38,6 +38,7 @@ public class App{
         Solon.start(App.class,args);
     }
   
+    //限定 get 方法类型
     @Get
     @Mapping("/")
     public String hello(Context c){
