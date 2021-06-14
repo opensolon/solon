@@ -12,7 +12,6 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.event.EventBus;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
