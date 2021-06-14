@@ -38,7 +38,8 @@ public class App{
     public static void main(String[] args){
         Solon.start(App.class,args);
     }
-  
+
+    //limit get method
     @Get
     @Mapping("/")
     public Object hello(Context c){
