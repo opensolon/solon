@@ -19,8 +19,6 @@ public class LoginController {
     public Result login(@Validated LoginForm loginForm) {
         System.out.println("已进入login" + loginForm);
 
-        //ValidationUtils.validate(loginForm);
-
         return Result.succeed();
     }
 
