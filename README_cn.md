@@ -38,11 +38,11 @@ public class App{
         Solon.start(App.class,args);
     }
   
-    //限定 get 方法类型
-    @Get
+    //限定 put 方法类型
+    @Put
     @Mapping("/")
-    public String hello(Context c){
-        return "Hello world!";  
+    public String hello(String name){
+        return "Hello " + name;
     }
 }
 
