@@ -19,6 +19,21 @@ public class NumericValidator implements Validator<Numeric> {
     }
 
     @Override
+    public Result validateOfEntity(Numeric anno, String name, Object val0, StringBuilder tmp) {
+        if (val0 instanceof String == false) {
+            return Result.failure(name);
+        }
+
+        String val = (String) val0;
+
+        if (StringUtils.isNumber(val) == false) {
+            return Result.failure(name);
+        } else {
+            return Result.succeed();
+        }
+    }
+
+    @Override
     public Result validateOfContext(Context ctx, Numeric anno, String name, StringBuilder tmp) {
         if (name == null) {
             //来自函数

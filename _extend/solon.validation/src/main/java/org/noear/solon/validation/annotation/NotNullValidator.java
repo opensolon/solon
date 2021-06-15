@@ -1,5 +1,6 @@
 package org.noear.solon.validation.annotation;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.validation.Validator;
@@ -15,6 +16,15 @@ public class NotNullValidator implements Validator<NotNull> {
     @Override
     public String message(NotNull anno) {
         return anno.message();
+    }
+
+    @Override
+    public Result validateOfEntity(NotNull anno, String name, Object val, StringBuilder tmp) {
+        if (val == null) {
+            return Result.failure(name);
+        } else {
+            return Result.succeed();
+        }
     }
 
     @Override

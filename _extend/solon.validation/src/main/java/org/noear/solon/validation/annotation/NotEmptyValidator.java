@@ -19,6 +19,21 @@ public class NotEmptyValidator implements Validator<NotEmpty> {
     }
 
     @Override
+    public Result validateOfEntity(NotEmpty anno, String name, Object val0, StringBuilder tmp) {
+        if (val0 instanceof String == false) {
+            return Result.failure(name);
+        }
+
+        String val = (String) val0;
+
+        if (Utils.isEmpty(val)) {
+            return Result.failure(name);
+        } else {
+            return Result.succeed();
+        }
+    }
+
+    @Override
     public Result validateOfContext(Context ctx, NotEmpty anno, String name, StringBuilder tmp) {
         if (name == null) {
             //来自函数

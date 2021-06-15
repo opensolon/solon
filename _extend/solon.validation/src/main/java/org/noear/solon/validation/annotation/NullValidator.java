@@ -18,6 +18,15 @@ public class NullValidator implements Validator<Null> {
     }
 
     @Override
+    public Result validateOfEntity(Null anno, String name, Object val, StringBuilder tmp) {
+        if (val != null) {
+            return Result.failure(name);
+        } else {
+            return Result.succeed();
+        }
+    }
+
+    @Override
     public Result validateOfContext(Context ctx, Null anno, String name, StringBuilder tmp) {
         if (name == null) {
             //来自函数

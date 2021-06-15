@@ -1,5 +1,6 @@
 package org.noear.solon.validation.annotation;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.validation.util.StringUtils;
@@ -16,6 +17,21 @@ public class NotZeroValidator implements Validator<NotZero> {
     @Override
     public String message(NotZero anno) {
         return anno.message();
+    }
+
+    @Override
+    public Result validateOfEntity(NotZero anno, String name, Object val0, StringBuilder tmp) {
+        if (val0 instanceof Number == false) {
+            return Result.failure(name);
+        }
+
+        Number val = (Number) val0;
+
+        if (val == null || val.longValue() == 0) {
+            return Result.failure(name);
+        } else {
+            return Result.succeed();
+        }
     }
 
     @Override

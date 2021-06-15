@@ -19,7 +19,7 @@ public class LengthValidator implements Validator<Length> {
 
     @Override
     public Result validateOfEntity(Length anno, String name, Object val0, StringBuilder tmp) {
-        if (val0 == null || (val0 instanceof String) == false) {
+        if (val0 instanceof String == false) {
             return Result.failure(name);
         }
 

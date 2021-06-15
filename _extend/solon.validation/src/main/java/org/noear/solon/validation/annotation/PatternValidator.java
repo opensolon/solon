@@ -23,7 +23,32 @@ public class PatternValidator implements Validator<Pattern> {
     }
 
     @Override
+    public Result validateOfEntity(Pattern anno, String name, Object val0, StringBuilder tmp) {
+        if (val0 instanceof String == false) {
+            return Result.failure(name);
+        }
+
+        String val = (String) val0;
+
+        if (val == null || verify(anno, val) == false) {
+            return Result.failure(name);
+        } else {
+            return Result.succeed();
+        }
+    }
+
+    @Override
     public Result validateOfContext(Context ctx, Pattern anno, String name, StringBuilder tmp) {
+        String val = ctx.param(name);
+
+        if (val == null || verify(anno, val) == false) {
+            return Result.failure(name);
+        } else {
+            return Result.succeed();
+        }
+    }
+
+    private boolean verify(Pattern anno, String val) {
         java.util.regex.Pattern pt = cached.get(anno.value());
 
         if (pt == null) {
@@ -31,15 +56,6 @@ public class PatternValidator implements Validator<Pattern> {
             cached.putIfAbsent(anno.value(), pt);
         }
 
-        String val = ctx.param(name);
-        if (val == null || pt.matcher(val).find() == false) {
-            tmp.append(',').append(name);
-        }
-
-        if (tmp.length() > 1) {
-            return Result.failure(tmp.substring(1));
-        } else {
-            return Result.succeed();
-        }
+        return pt.matcher(val).find();
     }
 }

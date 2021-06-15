@@ -19,6 +19,21 @@ public class NotBlankValidator implements Validator<NotBlank> {
     }
 
     @Override
+    public Result validateOfEntity(NotBlank anno, String name, Object val0, StringBuilder tmp) {
+        if (val0 instanceof String == false) {
+            return Result.failure(name);
+        }
+
+        String val = (String) val0;
+
+        if (Utils.isBlank(val)) {
+            return Result.failure(name);
+        } else {
+            return Result.succeed();
+        }
+    }
+
+    @Override
     public Result validateOfContext(Context ctx, NotBlank anno, String name, StringBuilder tmp) {
         if (name == null) {
             //来自函数

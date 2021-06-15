@@ -19,6 +19,21 @@ public class MinValidator implements Validator<Min> {
     }
 
     @Override
+    public Result validateOfEntity(Min anno, String name, Object val0, StringBuilder tmp) {
+        if (val0 instanceof Number == false) {
+            return Result.failure(name);
+        }
+
+        Number val = (Number) val0;
+
+        if (val == null || val.longValue() < anno.value()) {
+            return Result.failure(name);
+        } else {
+            return Result.succeed();
+        }
+    }
+
+    @Override
     public Result validateOfContext(Context ctx, Min anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
 

@@ -19,8 +19,18 @@ public class MaxValidator implements Validator<Max> {
     }
 
     @Override
-    public Result validateOfEntity(Max anno, String name, Object val, StringBuilder tmp) {
-        return Validator.super.validateOfEntity(anno, name, val, tmp);
+    public Result validateOfEntity(Max anno, String name, Object val0, StringBuilder tmp) {
+        if (val0 instanceof Number == false) {
+            return Result.failure(name);
+        }
+
+        Number val = (Number) val0;
+
+        if (val == null || val.longValue() > anno.value()) {
+            return Result.failure(name);
+        } else {
+            return Result.succeed();
+        }
     }
 
     @Override
