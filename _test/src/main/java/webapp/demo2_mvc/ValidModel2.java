@@ -4,6 +4,8 @@ import lombok.Data;
 import org.noear.solon.validation.annotation.*;
 import webapp.demo5_rpc.rpc_gateway.Interceptor;
 
+import java.util.List;
+
 
 /**
  * @author noear 2021/5/11 created
@@ -42,10 +44,8 @@ public class ValidModel2 {
     private String field15;
     @NotZero
     private Integer field16;
-    @Length(min = 10, max = 20)
+    @Length(min = 10)
     private String field17;
-    private String field18;
-    private String field19;
-    private String field20;
-    private String field21;
+    @Size(min = 1)
+    private List<String> field18;
 }
