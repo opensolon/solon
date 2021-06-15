@@ -5,6 +5,7 @@ import okhttp3.internal.Util;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Source;
+import org.noear.solon.core.LoadBalance;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -33,6 +34,11 @@ public class HttpUtils {
             .readTimeout(60 * 5, TimeUnit.SECONDS)
             .dispatcher(okhttp_dispatcher.get())
             .build();
+
+    public static HttpUtils http(String service, String path) {
+        String url = LoadBalance.get(service).getServer() + path;
+        return http(url);
+    }
 
     public static HttpUtils http(String url) {
         return new HttpUtils(url);
