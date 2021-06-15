@@ -19,6 +19,10 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
+/**
+ * @author noear
+ * @since 1.5
+ * */
 public class HttpUtils {
     private final static Supplier<Dispatcher> okhttp_dispatcher = () -> {
         Dispatcher temp = new Dispatcher();
