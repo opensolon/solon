@@ -36,9 +36,9 @@ public class BeanValidateInterceptor implements Interceptor {
                     Result r1 = validator.validate(inv.args()[i], v1.value());
 
                     if (r1.getCode() == Result.FAILURE_CODE) {
-                        Annotation anno = (Annotation) r1.getData();
-                        if (anno == null) {
-                            anno = v1;
+                        Annotation anno = v1;
+                        if (r1.getData() instanceof Annotation) {
+                            anno = (Annotation) r1.getData();
                         }
 
                         if (ValidatorManager.failureDo(Context.current(), anno, r1, r1.getDescription())) {
