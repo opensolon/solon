@@ -13,6 +13,7 @@ import org.noear.solon.validation.annotation.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -93,6 +94,8 @@ public class ValidatorManager {
 
         register(Pattern.class, PatternValidator.instance);
         register(Length.class, LengthValidator.instance);
+        register(Size.class, SizeValidator.instance);
+
         register(Whitelist.class, WhitelistValidator.instance);
         register(Logined.class, LoginedValidator.instance);
 
@@ -161,14 +164,43 @@ public class ValidatorManager {
 
         try {
             for (Map.Entry<String, FieldWrap> kv : cw.getFieldAllWraps().entrySet()) {
+                Field field = kv.getValue().field;
+
                 for (Annotation anno : kv.getValue().annoS) {
                     Validator valid = validMap.get(anno.annotationType());
 
                     if (valid != null) {
                         tmp.setLength(0);
-                        Field field = kv.getValue().field;
-                        field.setAccessible(true);
                         Result rst = valid.validateOfEntity(anno, field.getName(), field.get(obj), tmp);
+
+                        if (rst.getCode() != Result.SUCCEED_CODE) {
+                            return rst;
+                        }
+                    }
+                }
+
+                if (field.getAnnotation(Validated.class) != null) {
+                    Object val = field.get(obj);
+
+                    if(val == null){
+                        continue;
+                    }
+
+                    if (val instanceof Iterable) {
+                        Iterator iterator = ((Iterable)val).iterator();
+                        while (iterator.hasNext()){
+                            Object val2 = iterator.next();
+
+                            if(val2 != null){
+                                Result rst = validateOfEntity(val2);
+
+                                if (rst.getCode() != Result.SUCCEED_CODE) {
+                                    return rst;
+                                }
+                            }
+                        }
+                    } else {
+                        Result rst = validateOfEntity(val);
 
                         if (rst.getCode() != Result.SUCCEED_CODE) {
                             return rst;

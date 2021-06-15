@@ -25,7 +25,7 @@ public class LengthValidator implements Validator<Length> {
 
         String val = (String) val0;
 
-        if (val == null || val.length() < anno.min() || val.length() > anno.max()) {
+        if (val == null || (anno.min() > 0 && val.length() < anno.min()) || (anno.max() > 0 && val.length() > anno.max())) {
             return Result.failure(name);
         } else {
             return Result.succeed();
@@ -36,7 +36,7 @@ public class LengthValidator implements Validator<Length> {
     public Result validateOfContext(Context ctx, Length anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
 
-        if (val == null || val.length() < anno.min() || val.length() > anno.max()) {
+        if (val == null || (anno.min() > 0 && val.length() < anno.min()) || (anno.max() > 0 && val.length() > anno.max())) {
             return Result.failure(name);
         } else {
             return Result.succeed();
