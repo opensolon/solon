@@ -62,7 +62,7 @@ public class HttpUtils {
     private MultipartBody.Builder _part_builer;
     private Request.Builder _builder;
 
-    private ConsumerEx3<Boolean, Response, Exception> _callback;
+    private HttpCallback<Boolean, Response, Exception> _callback;
     private boolean _callAsync;
 
     public HttpUtils(String url) {
@@ -362,13 +362,13 @@ public class HttpUtils {
         postAsync(null);
     }
 
-    public void postAsync(ConsumerEx3<Boolean, Response, Exception> callback) throws IOException {
+    public void postAsync(HttpCallback<Boolean, Response, Exception> callback) throws IOException {
         _callback = callback;
         _callAsync = true;
         exec("POST");
     }
 
-    public void headAsync(ConsumerEx3<Boolean, Response, Exception> callback) throws IOException {
+    public void headAsync(HttpCallback<Boolean, Response, Exception> callback) throws IOException {
         _callback = callback;
         _callAsync = true;
         exec("HEAD");
