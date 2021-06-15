@@ -11,8 +11,6 @@ import org.noear.solon.core.LoadBalance;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,7 +62,7 @@ public class HttpUtils {
     private MultipartBody.Builder _part_builer;
     private Request.Builder _builder;
 
-    private Act3Ex<Boolean, Response, Exception> _callback;
+    private ConsumerEx3<Boolean, Response, Exception> _callback;
     private boolean _callAsync;
 
     public HttpUtils(String url) {
@@ -235,9 +233,9 @@ public class HttpUtils {
             }
 
             if (resp != null) {
-                _callback.run(resp.isSuccessful(), resp, err);
+                _callback.accept(resp.isSuccessful(), resp, err);
             } else {
-                _callback.run(false, null, err);
+                _callback.accept(false, null, err);
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -364,13 +362,13 @@ public class HttpUtils {
         postAsync(null);
     }
 
-    public void postAsync(Act3Ex<Boolean, Response, Exception> callback) throws IOException {
+    public void postAsync(ConsumerEx3<Boolean, Response, Exception> callback) throws IOException {
         _callback = callback;
         _callAsync = true;
         exec("POST");
     }
 
-    public void headAsync(Act3Ex<Boolean, Response, Exception> callback) throws IOException {
+    public void headAsync(ConsumerEx3<Boolean, Response, Exception> callback) throws IOException {
         _callback = callback;
         _callAsync = true;
         exec("HEAD");
@@ -468,38 +466,5 @@ public class HttpUtils {
             this.key = key;
             this.value = value;
         }
-    }
-
-    //
-    // static fun
-    //
-
-    public static String getString(String url) throws IOException{
-        return HttpUtils.http(url).get();
-    }
-
-    public static String postString(String url, Map data) throws Exception {
-        return HttpUtils.http(url).data(data).post();
-    }
-
-    public static String urlEncode(String url) {
-        try {
-            return URLEncoder.encode(url, "UTF-8");
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    public static String urlDecode(String url) {
-        try {
-            return URLDecoder.decode(url, "UTF-8");
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    @FunctionalInterface
-    public static interface Act3Ex<T1,T2,T3> {
-        void run(T1 t1, T2 t2, T3 t3) throws Exception;
     }
 }
