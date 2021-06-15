@@ -154,6 +154,29 @@ public class ValidatorManager {
         }
     }
 
+
+    private static boolean validateOfContext0(Context ctx, Annotation anno, String name, StringBuilder tmp) {
+        if (ctx.getHandled()) {
+            return true;
+        }
+
+        Validator valid = validMap.get(anno.annotationType());
+
+        if (valid != null) {
+            tmp.setLength(0);
+            Result rst = valid.validateOfContext(ctx, anno, name, tmp);
+
+            if (rst.getCode() != Result.SUCCEED_CODE) {
+                if (failureDo(ctx, anno, rst, valid.message(anno))) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
     /**
      * 执行实体的验证处理
      * */
@@ -174,6 +197,7 @@ public class ValidatorManager {
                         Result rst = valid.validateOfEntity(anno, field.getName(), field.get(obj), tmp);
 
                         if (rst.getCode() != Result.SUCCEED_CODE) {
+                            rst.setData(anno);
                             return rst;
                         }
                     }
@@ -213,27 +237,6 @@ public class ValidatorManager {
         }
 
         return Result.succeed();
-    }
-
-    private static boolean validateOfContext0(Context ctx, Annotation anno, String name, StringBuilder tmp) {
-        if (ctx.getHandled()) {
-            return true;
-        }
-
-        Validator valid = validMap.get(anno.annotationType());
-
-        if (valid != null) {
-            tmp.setLength(0);
-            Result rst = valid.validateOfContext(ctx, anno, name, tmp);
-
-            if (rst.getCode() != Result.SUCCEED_CODE) {
-                if (failureDo(ctx, anno, rst, valid.message(anno))) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
 

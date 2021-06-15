@@ -8,6 +8,8 @@ import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.ext.DataThrowable;
 import org.noear.solon.validation.annotation.Validated;
 
+import java.lang.annotation.Annotation;
+
 /**
  * @author noear
  * @since 1.3
@@ -16,7 +18,6 @@ public class BeanValidateInterceptor implements Interceptor {
     private BeanValidator validator;
 
     public BeanValidateInterceptor() {
-        //默认内置
         validator = new BeanValidatorImpl();
 
         Aop.getAsyn(BeanValidator.class, bw -> {
@@ -35,7 +36,12 @@ public class BeanValidateInterceptor implements Interceptor {
                     Result r1 = validator.validate(inv.args()[i], v1.value());
 
                     if (r1.getCode() == Result.FAILURE_CODE) {
-                        if (ValidatorManager.failureDo(Context.current(), v1, r1, r1.getDescription())) {
+                        Annotation anno = (Annotation) r1.getData();
+                        if (anno == null) {
+                            anno = v1;
+                        }
+
+                        if (ValidatorManager.failureDo(Context.current(), anno, r1, r1.getDescription())) {
                             throw new DataThrowable();
                         } else {
                             throw new IllegalArgumentException(r1.getDescription());
