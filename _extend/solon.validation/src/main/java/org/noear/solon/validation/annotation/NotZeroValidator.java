@@ -19,7 +19,7 @@ public class NotZeroValidator implements Validator<NotZero> {
     }
 
     @Override
-    public Result validate(Context ctx, NotZero anno, String name, StringBuilder tmp) {
+    public Result validateOfContext(Context ctx, NotZero anno, String name, StringBuilder tmp) {
         if (name == null) {
             //来自函数
             for (String key : anno.value()) {

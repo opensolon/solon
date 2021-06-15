@@ -19,7 +19,7 @@ public class NotEmptyValidator implements Validator<NotEmpty> {
     }
 
     @Override
-    public Result validate(Context ctx, NotEmpty anno, String name, StringBuilder tmp) {
+    public Result validateOfContext(Context ctx, NotEmpty anno, String name, StringBuilder tmp) {
         if (name == null) {
             //来自函数
             for (String key : anno.value()) {

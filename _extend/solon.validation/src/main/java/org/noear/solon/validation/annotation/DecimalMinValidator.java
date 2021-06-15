@@ -19,7 +19,7 @@ public class DecimalMinValidator implements Validator<DecimalMin> {
     }
 
     @Override
-    public Result validate(Context ctx, DecimalMin anno, String name, StringBuilder tmp) {
+    public Result validateOfContext(Context ctx, DecimalMin anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
 
         if (StringUtils.isNumber(val) == false || Double.parseDouble(val) < anno.value()) {

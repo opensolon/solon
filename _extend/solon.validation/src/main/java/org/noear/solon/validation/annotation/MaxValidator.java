@@ -19,7 +19,7 @@ public class MaxValidator implements Validator<Max> {
     }
 
     @Override
-    public Result validate(Context ctx, Max anno, String name, StringBuilder tmp) {
+    public Result validateOfContext(Context ctx, Max anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
 
         if (StringUtils.isInteger(val) == false || Long.parseLong(val) > anno.value()) {

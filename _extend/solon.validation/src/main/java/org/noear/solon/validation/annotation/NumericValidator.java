@@ -19,7 +19,7 @@ public class NumericValidator implements Validator<Numeric> {
     }
 
     @Override
-    public Result validate(Context ctx, Numeric anno, String name, StringBuilder tmp) {
+    public Result validateOfContext(Context ctx, Numeric anno, String name, StringBuilder tmp) {
         if (name == null) {
             //来自函数
             for (String key : anno.value()) {

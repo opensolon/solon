@@ -27,7 +27,7 @@ public class EmailValidator implements Validator<Email> {
     }
 
     @Override
-    public Result validate(Context ctx, Email anno, String name, StringBuilder tmp) {
+    public Result validateOfContext(Context ctx, Email anno, String name, StringBuilder tmp) {
         java.util.regex.Pattern pt = cached.get(anno.value());
 
         if (pt == null) {

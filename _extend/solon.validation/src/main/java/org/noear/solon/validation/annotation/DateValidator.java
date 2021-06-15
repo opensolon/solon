@@ -22,7 +22,7 @@ public class DateValidator implements Validator<Date> {
     }
 
     @Override
-    public Result validate(Context ctx, Date anno, String name, StringBuilder tmp) {
+    public Result validateOfContext(Context ctx, Date anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
         if (val == null || tryParse(anno, val) == false) {
             tmp.append(',').append(name);

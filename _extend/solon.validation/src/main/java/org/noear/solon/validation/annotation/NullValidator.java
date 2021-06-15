@@ -18,7 +18,7 @@ public class NullValidator implements Validator<Null> {
     }
 
     @Override
-    public Result validate(Context ctx, Null anno, String name, StringBuilder tmp) {
+    public Result validateOfContext(Context ctx, Null anno, String name, StringBuilder tmp) {
         if (name == null) {
             //来自函数
             for (String key : anno.value()) {

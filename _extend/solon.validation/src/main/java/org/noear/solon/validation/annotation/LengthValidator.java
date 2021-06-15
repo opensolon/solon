@@ -18,7 +18,7 @@ public class LengthValidator implements Validator<Length> {
     }
 
     @Override
-    public Result validate(Context ctx, Length anno, String name, StringBuilder tmp) {
+    public Result validateOfContext(Context ctx, Length anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
 
         if (val == null || val.length() < anno.min() || val.length() > anno.max()) {

@@ -25,7 +25,7 @@ public class NotBlacklistValidator implements Validator<NotBlacklist> {
     }
 
     @Override
-    public Result validate(Context ctx, NotBlacklist anno, String name, StringBuilder tmp) {
+    public Result validateOfContext(Context ctx, NotBlacklist anno, String name, StringBuilder tmp) {
         if (checker.check(anno, ctx)) {
             return Result.succeed();
         } else {

@@ -19,7 +19,7 @@ public class NotBlankValidator implements Validator<NotBlank> {
     }
 
     @Override
-    public Result validate(Context ctx, NotBlank anno, String name, StringBuilder tmp) {
+    public Result validateOfContext(Context ctx, NotBlank anno, String name, StringBuilder tmp) {
         if (name == null) {
             //来自函数
             for (String key : anno.value()) {

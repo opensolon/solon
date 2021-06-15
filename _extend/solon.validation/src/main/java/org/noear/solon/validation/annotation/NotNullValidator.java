@@ -18,7 +18,7 @@ public class NotNullValidator implements Validator<NotNull> {
     }
 
     @Override
-    public Result validate(Context ctx, NotNull anno, String name, StringBuilder tmp) {
+    public Result validateOfContext(Context ctx, NotNull anno, String name, StringBuilder tmp) {
         if(name == null) {
             //来自函数
             for (String key : anno.value()) {

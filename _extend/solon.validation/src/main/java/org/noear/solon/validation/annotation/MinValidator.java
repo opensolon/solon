@@ -19,7 +19,7 @@ public class MinValidator implements Validator<Min> {
     }
 
     @Override
-    public Result validate(Context ctx, Min anno, String name, StringBuilder tmp) {
+    public Result validateOfContext(Context ctx, Min anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
 
         if (StringUtils.isInteger(val) == false || Long.parseLong(val) < anno.value()) {

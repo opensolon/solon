@@ -157,7 +157,7 @@ public class ValidatorManager {
 
         if (valid != null) {
             tmp.setLength(0);
-            Result rst = valid.validate(ctx, anno, name, tmp);
+            Result rst = valid.validateOfContext(ctx, anno, name, tmp);
 
             if (rst.getCode() != Result.SUCCEED_CODE) {
                 if (failureDo(ctx, anno, rst, valid.message(anno))) {

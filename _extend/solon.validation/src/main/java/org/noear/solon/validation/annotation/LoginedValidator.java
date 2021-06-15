@@ -29,7 +29,7 @@ public class LoginedValidator implements Validator<Logined> {
     }
 
     @Override
-    public Result validate(Context ctx, Logined anno, String name, StringBuilder tmp) {
+    public Result validateOfContext(Context ctx, Logined anno, String name, StringBuilder tmp) {
         String userKeyName = anno.value();
         if(Utils.isEmpty(userKeyName)){
             userKeyName = LoginedValidator.sessionUserKeyName;

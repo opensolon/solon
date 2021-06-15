@@ -23,7 +23,7 @@ public class PatternValidator implements Validator<Pattern> {
     }
 
     @Override
-    public Result validate(Context ctx, Pattern anno, String name, StringBuilder tmp) {
+    public Result validateOfContext(Context ctx, Pattern anno, String name, StringBuilder tmp) {
         java.util.regex.Pattern pt = cached.get(anno.value());
 
         if (pt == null) {

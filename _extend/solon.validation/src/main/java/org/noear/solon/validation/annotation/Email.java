@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * @author noear
  * @since 1.0
  * */
-@Target({ElementType.PARAMETER})
+@Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Email {
     @Note("正则表达式")

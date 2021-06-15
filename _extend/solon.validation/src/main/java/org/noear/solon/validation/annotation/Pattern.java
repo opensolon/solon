@@ -10,7 +10,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.0
  * */
-@Target({ElementType.PARAMETER})
+@Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Pattern {
     @Note("正则表达式")

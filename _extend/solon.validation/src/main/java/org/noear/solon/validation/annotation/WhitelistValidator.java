@@ -26,7 +26,7 @@ public class WhitelistValidator implements Validator<Whitelist> {
     }
 
     @Override
-    public Result validate(Context ctx, Whitelist anno, String name, StringBuilder tmp) {
+    public Result validateOfContext(Context ctx, Whitelist anno, String name, StringBuilder tmp) {
         if (checker.check(anno, ctx)) {
             return Result.succeed();
         } else {

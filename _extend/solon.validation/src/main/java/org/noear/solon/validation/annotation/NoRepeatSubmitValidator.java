@@ -29,7 +29,7 @@ public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
     }
 
     @Override
-    public Result validate(Context ctx, NoRepeatSubmit anno, String name, StringBuilder tmp) {
+    public Result validateOfContext(Context ctx, NoRepeatSubmit anno, String name, StringBuilder tmp) {
         if(checker == null){
             throw new IllegalArgumentException("Missing NoRepeatSubmitChecker Setting");
         }
