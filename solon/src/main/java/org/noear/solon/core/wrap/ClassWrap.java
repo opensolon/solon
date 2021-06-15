@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -54,7 +55,7 @@ public class ClassWrap {
         methods = clz.getDeclaredMethods();
 
         //所有字段的包装（自己的 + 父类的）
-        fieldAllWrapsMap = new ConcurrentHashMap<>();
+        fieldAllWrapsMap = new LinkedHashMap<>();
         doScanAllFields(clz, fieldAllWrapsMap::containsKey, fieldAllWrapsMap::put);
 
         fieldWraps = new ArrayList<>();

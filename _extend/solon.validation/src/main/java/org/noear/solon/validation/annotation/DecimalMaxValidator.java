@@ -4,6 +4,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.validation.util.StringUtils;
 import org.noear.solon.validation.Validator;
+import sun.dc.DuctusRenderingEngine;
 
 /**
  *
@@ -20,7 +21,7 @@ public class DecimalMaxValidator implements Validator<DecimalMax> {
 
     @Override
     public Result validateOfEntity(Class<?> clz, DecimalMax anno, String name, Object val0, StringBuilder tmp) {
-        if (val0 instanceof String == false) {
+        if (val0 instanceof Double == false) {
             return Result.failure(clz.getSimpleName() + "." + name);
         }
 

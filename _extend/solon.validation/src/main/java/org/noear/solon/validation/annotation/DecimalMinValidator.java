@@ -20,7 +20,7 @@ public class DecimalMinValidator implements Validator<DecimalMin> {
 
     @Override
     public Result validateOfEntity(Class<?> clz, DecimalMin anno, String name, Object val0, StringBuilder tmp) {
-        if (val0 instanceof String == false) {
+        if (val0 instanceof Double == false) {
             return Result.failure(clz.getSimpleName() + "." + name);
         }
 

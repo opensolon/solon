@@ -44,7 +44,7 @@ public class ValidModel2 {
     private String field15;
     @NotZero
     private Integer field16;
-    @Length(min = 10)
+    @Length(min = 3)
     private String field17;
     @Size(min = 1)
     private List<String> field18;
