@@ -21,12 +21,4 @@ public interface CacheService {
      * 移除
      */
     void remove(String key);
-
-
-    /**
-     * 缓存标签管理器
-     * */
-    default CacheTags tags(){
-        return new CacheTags(this);
-    }
 }
