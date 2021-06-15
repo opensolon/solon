@@ -35,14 +35,7 @@ public class BeanValidationUtils {
      * @param object 被校验的对象
      * @param groups 被校验的组
      */
-    public static Result validate(Object object, Class<?>... groups) {
-        Set<ConstraintViolation<Object>> violationSet = validator.validate(object, groups);
-
-        if (violationSet.isEmpty()) {
-            return Result.succeed();
-        } else {
-            ConstraintViolation<Object> violation = violationSet.iterator().next();
-            return Result.failure(violation.getMessage());
-        }
+    public static Set<ConstraintViolation<Object>> validate(Object object, Class<?>... groups) {
+        return validator.validate(object, groups);
     }
 }
