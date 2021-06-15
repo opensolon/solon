@@ -197,7 +197,7 @@ public class ValidatorManager {
                         Result rst = valid.validateOfEntity(anno, field.getName(), field.get(obj), tmp);
 
                         if (rst.getCode() != Result.SUCCEED_CODE) {
-                            rst.setData(anno);
+                            rst.setData(new BeanValidateInfo(anno, valid.message(anno)));
                             return rst;
                         }
                     }
