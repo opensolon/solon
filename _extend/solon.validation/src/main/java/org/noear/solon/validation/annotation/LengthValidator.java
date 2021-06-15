@@ -18,15 +18,15 @@ public class LengthValidator implements Validator<Length> {
     }
 
     @Override
-    public Result validateOfEntity(Length anno, String name, Object val0, StringBuilder tmp) {
+    public Result validateOfEntity(Class<?> clz, Length anno, String name, Object val0, StringBuilder tmp) {
         if (val0 instanceof String == false) {
-            return Result.failure(name);
+            return Result.failure(clz.getSimpleName() + "." + name);
         }
 
         String val = (String) val0;
 
         if (val == null || (anno.min() > 0 && val.length() < anno.min()) || (anno.max() > 0 && val.length() > anno.max())) {
-            return Result.failure(name);
+            return Result.failure(clz.getSimpleName() + "." + name);
         } else {
             return Result.succeed();
         }

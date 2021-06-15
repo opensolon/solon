@@ -22,15 +22,15 @@ public class DateValidator implements Validator<Date> {
     }
 
     @Override
-    public Result validateOfEntity(Date anno, String name, Object val0, StringBuilder tmp) {
+    public Result validateOfEntity(Class<?> clz, Date anno, String name, Object val0, StringBuilder tmp) {
         if (val0 instanceof String == false) {
-            return Result.failure(name);
+            return Result.failure(clz.getSimpleName() + "." + name);
         }
 
         String val = (String) val0;
 
         if (val == null || verify(anno, val) == false) {
-            return Result.failure(name);
+            return Result.failure(clz.getSimpleName() + "." + name);
         } else {
             return Result.succeed();
         }

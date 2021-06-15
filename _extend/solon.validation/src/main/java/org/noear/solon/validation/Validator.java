@@ -19,7 +19,7 @@ public interface Validator<T extends Annotation> {
     /**
      * 验证实体
      */
-    default Result validateOfEntity(T anno, String name, Object val, StringBuilder tmp) {
+    default Result validateOfEntity(Class<?> clz, T anno, String name, Object val, StringBuilder tmp) {
         return Result.failure();
     }
 

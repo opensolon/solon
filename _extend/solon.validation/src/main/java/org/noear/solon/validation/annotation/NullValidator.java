@@ -18,9 +18,9 @@ public class NullValidator implements Validator<Null> {
     }
 
     @Override
-    public Result validateOfEntity(Null anno, String name, Object val, StringBuilder tmp) {
+    public Result validateOfEntity(Class<?> clz, Null anno, String name, Object val, StringBuilder tmp) {
         if (val != null) {
-            return Result.failure(name);
+            return Result.failure(clz.getSimpleName() + "." + name);
         } else {
             return Result.succeed();
         }

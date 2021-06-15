@@ -27,15 +27,15 @@ public class EmailValidator implements Validator<Email> {
     }
 
     @Override
-    public Result validateOfEntity(Email anno, String name, Object val0, StringBuilder tmp) {
+    public Result validateOfEntity(Class<?> clz, Email anno, String name, Object val0, StringBuilder tmp) {
         if (val0 instanceof String == false) {
-            return Result.failure(name);
+            return Result.failure(clz.getSimpleName() + "." + name);
         }
 
         String val = (String) val0;
 
         if (val == null || verify(anno, val) == false) {
-            return Result.failure(name);
+            return Result.failure(clz.getSimpleName() + "." + name);
         } else {
             return Result.succeed();
         }

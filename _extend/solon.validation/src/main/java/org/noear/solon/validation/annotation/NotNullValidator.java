@@ -19,9 +19,9 @@ public class NotNullValidator implements Validator<NotNull> {
     }
 
     @Override
-    public Result validateOfEntity(NotNull anno, String name, Object val, StringBuilder tmp) {
+    public Result validateOfEntity(Class<?> clz, NotNull anno, String name, Object val, StringBuilder tmp) {
         if (val == null) {
-            return Result.failure(name);
+            return Result.failure(clz.getSimpleName() + "." + name);
         } else {
             return Result.succeed();
         }
