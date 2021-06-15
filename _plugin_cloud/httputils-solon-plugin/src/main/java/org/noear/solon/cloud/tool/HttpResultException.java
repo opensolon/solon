@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.utils;
+package org.noear.solon.cloud.tool;
 
 /**
  * @author noear 2021/5/26 created
