@@ -22,20 +22,32 @@ public class DateValidator implements Validator<Date> {
     }
 
     @Override
-    public Result validateOfContext(Context ctx, Date anno, String name, StringBuilder tmp) {
-        String val = ctx.param(name);
-        if (val == null || tryParse(anno, val) == false) {
-            tmp.append(',').append(name);
+    public Result validateOfEntity(Date anno, String name, Object val0, StringBuilder tmp) {
+        if (val0 instanceof String == false) {
+            return Result.failure(name);
         }
 
-        if (tmp.length() > 1) {
-            return Result.failure(tmp.substring(1));
+        String val = (String) val0;
+
+        if (val == null || verify(anno, val) == false) {
+            return Result.failure(name);
         } else {
             return Result.succeed();
         }
     }
 
-    private boolean tryParse(Date anno, String val) {
+    @Override
+    public Result validateOfContext(Context ctx, Date anno, String name, StringBuilder tmp) {
+        String val = ctx.param(name);
+
+        if (val == null || verify(anno, val) == false) {
+            return Result.failure(name);
+        } else {
+            return Result.succeed();
+        }
+    }
+
+    private boolean verify(Date anno, String val) {
         try {
             if (Utils.isEmpty(anno.value())) {
                 DateTimeFormatter.ISO_LOCAL_DATE_TIME.parse(val);

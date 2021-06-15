@@ -19,15 +19,26 @@ public class DecimalMinValidator implements Validator<DecimalMin> {
     }
 
     @Override
+    public Result validateOfEntity(DecimalMin anno, String name, Object val0, StringBuilder tmp) {
+        if (val0 instanceof String == false) {
+            return Result.failure(name);
+        }
+
+        Double val = (Double) val0;
+
+        if (val == null || val < anno.value()) {
+            return Result.failure(name);
+        } else {
+            return Result.succeed();
+        }
+    }
+
+    @Override
     public Result validateOfContext(Context ctx, DecimalMin anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
 
         if (StringUtils.isNumber(val) == false || Double.parseDouble(val) < anno.value()) {
-            tmp.append(',').append(name);
-        }
-
-        if (tmp.length() > 1) {
-            return Result.failure(tmp.substring(1));
+            return Result.failure(name);
         } else {
             return Result.succeed();
         }

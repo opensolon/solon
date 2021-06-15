@@ -19,6 +19,11 @@ public class MaxValidator implements Validator<Max> {
     }
 
     @Override
+    public Result validateOfEntity(Max anno, String name, Object val, StringBuilder tmp) {
+        return Validator.super.validateOfEntity(anno, name, val, tmp);
+    }
+
+    @Override
     public Result validateOfContext(Context ctx, Max anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
 

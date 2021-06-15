@@ -5,10 +5,13 @@ import org.noear.solon.annotation.Note;
 import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
+import org.noear.solon.core.wrap.ClassWrap;
+import org.noear.solon.core.wrap.FieldWrap;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.validation.annotation.*;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -121,34 +124,66 @@ public class ValidatorManager {
     }
 
     /**
-     * 执行验证处理
+     * 执行上下文的验证处理
      * */
-    @Note("执行验证处理")
-    public static void validateDo(Context ctx, Action action) throws Throwable {
+    @Note("执行上下文的验证处理")
+    public static void validateOfContext(Context ctx, Action action) throws Throwable {
         StringBuilder tmp = new StringBuilder();
 
         for (Annotation anno : action.bean().annotations()) {
-            if (validateDo0(ctx, anno, null, tmp)) {
+            if (validateOfContext0(ctx, anno, null, tmp)) {
                 return;
             }
         }
 
         for (Annotation anno : action.method().getAnnotations()) {
-            if (validateDo0(ctx, anno, null, tmp)) {
+            if (validateOfContext0(ctx, anno, null, tmp)) {
                 return;
             }
         }
 
         for (ParamWrap para : action.method().getParamWraps()) {
             for (Annotation anno : para.getParameter().getAnnotations()) {
-                if (validateDo0(ctx, anno, para.getName(), tmp)) {
+                if (validateOfContext0(ctx, anno, para.getName(), tmp)) {
                     return;
                 }
             }
         }
     }
 
-    private static boolean validateDo0(Context ctx, Annotation anno, String name, StringBuilder tmp) {
+    /**
+     * 执行实体的验证处理
+     * */
+    @Note("执行上下文的验证处理")
+    public static Result validateOfEntity(Object obj) {
+        ClassWrap cw = ClassWrap.get(obj.getClass());
+        StringBuilder tmp = new StringBuilder();
+
+        try {
+            for (Map.Entry<String, FieldWrap> kv : cw.getFieldAllWraps().entrySet()) {
+                for (Annotation anno : kv.getValue().annoS) {
+                    Validator valid = validMap.get(anno.annotationType());
+
+                    if (valid != null) {
+                        tmp.setLength(0);
+                        Field field = kv.getValue().field;
+                        field.setAccessible(true);
+                        Result rst = valid.validateOfEntity(anno, field.getName(), field.get(obj), tmp);
+
+                        if (rst.getCode() != Result.SUCCEED_CODE) {
+                            return rst;
+                        }
+                    }
+                }
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Result.succeed();
+    }
+
+    private static boolean validateOfContext0(Context ctx, Annotation anno, String name, StringBuilder tmp) {
         if (ctx.getHandled()) {
             return true;
         }

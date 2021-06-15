@@ -4,7 +4,6 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 
 /**
  *
@@ -19,14 +18,14 @@ public interface Validator<T extends Annotation> {
 
     /**
      * 验证实体
-     * */
-    default Result validateOfEntity(Object obj, T anno, Field field) {
+     */
+    default Result validateOfEntity(T anno, String name, Object val, StringBuilder tmp) {
         return Result.failure();
     }
 
 
     /**
      * 验证上下文
-     * */
+     */
     Result validateOfContext(Context ctx, T anno, String name, StringBuilder tmp);
 }

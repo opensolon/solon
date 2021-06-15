@@ -17,8 +17,8 @@ public class EmailValidator implements Validator<Email> {
 
     public static final EmailValidator instance = new EmailValidator();
 
-    public EmailValidator(){
-        cached.putIfAbsent("",java.util.regex.Pattern.compile("^[a-z]([a-z0-9]*[-_]?[a-z0-9]+)*@([a-z0-9]*[-_]?[a-z0-9]+)+[\\.][a-z]{2,3}([\\.][a-z]{2})?$"));
+    public EmailValidator() {
+        cached.putIfAbsent("", java.util.regex.Pattern.compile("^[a-z]([a-z0-9]*[-_]?[a-z0-9]+)*@([a-z0-9]*[-_]?[a-z0-9]+)+[\\.][a-z]{2,3}([\\.][a-z]{2})?$"));
     }
 
     @Override
@@ -27,27 +27,43 @@ public class EmailValidator implements Validator<Email> {
     }
 
     @Override
+    public Result validateOfEntity(Email anno, String name, Object val0, StringBuilder tmp) {
+        if (val0 instanceof String == false) {
+            return Result.failure(name);
+        }
+
+        String val = (String) val0;
+
+        if (val == null || verify(anno, val) == false) {
+            return Result.failure(name);
+        } else {
+            return Result.succeed();
+        }
+    }
+
+    @Override
     public Result validateOfContext(Context ctx, Email anno, String name, StringBuilder tmp) {
+        String val = ctx.param(name);
+
+        if (val == null || verify(anno, val) == false) {
+            return Result.failure(name);
+        } else {
+            return Result.succeed();
+        }
+    }
+
+    private boolean verify(Email anno, String val) {
         java.util.regex.Pattern pt = cached.get(anno.value());
 
         if (pt == null) {
-            if(anno.value().contains("@") == false){
-                throw new RuntimeException("@Email value must have an @ sign");
+            if (anno.value().contains("@") == false) {
+                throw new IllegalArgumentException("@Email value must have an @ sign");
             }
 
             pt = java.util.regex.Pattern.compile(anno.value());
             cached.putIfAbsent(anno.value(), pt);
         }
 
-        String val = ctx.param(name);
-        if (val == null || pt.matcher(val).find() == false) {
-            tmp.append(',').append(name);
-        }
-
-        if (tmp.length() > 1) {
-            return Result.failure(tmp.substring(1));
-        } else {
-            return Result.succeed();
-        }
+        return pt.matcher(val).find();
     }
 }
