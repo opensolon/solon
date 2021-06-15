@@ -16,6 +16,9 @@ public class BeanValidateInterceptor implements Interceptor {
     private BeanValidator validator;
 
     public BeanValidateInterceptor() {
+        //默认内置
+        validator = new BeanValidatorImpl();
+
         Aop.getAsyn(BeanValidator.class, bw -> {
             validator = bw.get();
         });

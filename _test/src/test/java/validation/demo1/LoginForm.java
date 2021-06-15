@@ -1,7 +1,7 @@
 package validation.demo1;
 
-import javax.validation.constraints.NotBlank;
 import lombok.Data;
+import org.noear.solon.validation.annotation.NotBlank;
 
 
 /**

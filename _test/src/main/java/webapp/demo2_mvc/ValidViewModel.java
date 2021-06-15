@@ -1,9 +1,8 @@
 package webapp.demo2_mvc;
 
 import lombok.Data;
+import org.noear.solon.validation.annotation.Validated;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -11,6 +10,6 @@ import java.util.List;
  */
 @Data
 public class ValidViewModel {
-    @Valid
+    @Validated
     List<ValidModel> list;
 }
