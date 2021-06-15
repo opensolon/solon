@@ -28,35 +28,35 @@ public class ValidatorManager {
 
     /**
      * 设定非重复提交检测器
-     * */
+     */
     public static void setNoRepeatSubmitChecker(NoRepeatSubmitChecker checker) {
         NoRepeatSubmitValidator.instance.setChecker(checker);
     }
 
     /**
      * 设定已登录状态检测器
-     * */
+     */
     public static void setLoginedChecker(LoginedChecker checker) {
         LoginedValidator.instance.setChecker(checker);
     }
 
     /**
      * 设定白名单检测器
-     * */
+     */
     public static void setWhitelistChecker(WhitelistChecker checker) {
         WhitelistValidator.instance.setChecker(checker);
     }
 
     /**
      * 设定非黑名单检测器
-     * */
+     */
     public static void setNotBlacklistChecker(NotBlacklistChecker checker) {
         NotBlacklistValidator.instance.setChecker(checker);
     }
 
     /**
      * 设定错误处理
-     * */
+     */
     public static void setFailureHandler(ValidatorFailureHandler handler) {
         if (handler != null) {
             failureHandler = handler;
@@ -128,7 +128,7 @@ public class ValidatorManager {
 
     /**
      * 执行上下文的验证处理
-     * */
+     */
     @Note("执行上下文的验证处理")
     public static void validateOfContext(Context ctx, Action action) throws Throwable {
         StringBuilder tmp = new StringBuilder();
@@ -179,7 +179,7 @@ public class ValidatorManager {
 
     /**
      * 执行实体的验证处理
-     * */
+     */
     @Note("执行上下文的验证处理")
     public static Result validateOfEntity(Object obj) {
         ClassWrap cw = ClassWrap.get(obj.getClass());
@@ -194,7 +194,7 @@ public class ValidatorManager {
 
                     if (valid != null) {
                         tmp.setLength(0);
-                        Result rst = valid.validateOfEntity(anno, field.getName(), field.get(obj), tmp);
+                        Result rst = valid.validateOfEntity(cw.clz(), anno, field.getName(), field.get(obj), tmp);
 
                         if (rst.getCode() != Result.SUCCEED_CODE) {
                             rst.setData(new BeanValidateInfo(anno, valid.message(anno)));
@@ -206,16 +206,16 @@ public class ValidatorManager {
                 if (field.getAnnotation(Validated.class) != null) {
                     Object val = field.get(obj);
 
-                    if(val == null){
+                    if (val == null) {
                         continue;
                     }
 
                     if (val instanceof Iterable) {
-                        Iterator iterator = ((Iterable)val).iterator();
-                        while (iterator.hasNext()){
+                        Iterator iterator = ((Iterable) val).iterator();
+                        while (iterator.hasNext()) {
                             Object val2 = iterator.next();
 
-                            if(val2 != null){
+                            if (val2 != null) {
                                 Result rst = validateOfEntity(val2);
 
                                 if (rst.getCode() != Result.SUCCEED_CODE) {
@@ -240,10 +240,9 @@ public class ValidatorManager {
     }
 
 
-
     /**
      * 执行错误处理
-     * */
+     */
     @Note("执行错误处理")
     public static boolean failureDo(Context ctx, Annotation ano, Result result, String message) {
         if (ctx == null) {
