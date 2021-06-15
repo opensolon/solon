@@ -18,9 +18,8 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.cloud</artifactId>
+            <artifactId>solon</artifactId>
         </dependency>
-
 
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>

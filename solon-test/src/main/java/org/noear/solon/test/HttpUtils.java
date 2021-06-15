@@ -53,7 +53,7 @@ public class HttpUtils {
     private MultipartBody.Builder _part_builer;
     private Request.Builder _builder;
 
-    private ConsumerEx3<Boolean, Response, Exception> _callback;
+    private HttpCallback<Boolean, Response, Exception> _callback;
     private boolean _callAsync;
     private String _url;
     private boolean _enablePrintln = false;
@@ -232,9 +232,9 @@ public class HttpUtils {
             }
 
             if (resp != null) {
-                _callback.accept(resp.isSuccessful(), resp, err);
+                _callback.callback(resp.isSuccessful(), resp, err);
             } else {
-                _callback.accept(false, null, err);
+                _callback.callback(false, null, err);
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -363,13 +363,13 @@ public class HttpUtils {
         postAsync(null);
     }
 
-    public void postAsync(ConsumerEx3<Boolean, Response, Exception> callback) throws IOException {
+    public void postAsync(HttpCallback<Boolean, Response, Exception> callback) throws IOException {
         _callback = callback;
         _callAsync = true;
         exec("POST");
     }
 
-    public void headAsync(ConsumerEx3<Boolean, Response, Exception> callback) throws IOException {
+    public void headAsync(HttpCallback<Boolean, Response, Exception> callback) throws IOException {
         _callback = callback;
         _callAsync = true;
         exec("HEAD");
@@ -466,34 +466,6 @@ public class HttpUtils {
         public KeyValue(String key, String value) {
             this.key = key;
             this.value = value;
-        }
-    }
-
-    //
-    // static fun
-    //
-
-    public static String getString(String url) throws IOException{
-        return HttpUtils.http(url).get();
-    }
-
-    public static String postString(String url, Map data) throws Exception {
-        return HttpUtils.http(url).data(data).post();
-    }
-
-    public static String urlEncode(String url) {
-        try {
-            return URLEncoder.encode(url, "UTF-8");
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    public static String urlDecode(String url) {
-        try {
-            return URLDecoder.decode(url, "UTF-8");
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
         }
     }
 }
