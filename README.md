@@ -39,11 +39,11 @@ public class App{
         Solon.start(App.class,args);
     }
 
-    //limit get method
-    @Get
+    //limit put method
+    @Put
     @Mapping("/")
-    public Object hello(Context c){
-        return "Hello world!";  
+    public Object hello(String name){
+        return "Hello " + name;  
     }
 }
 
