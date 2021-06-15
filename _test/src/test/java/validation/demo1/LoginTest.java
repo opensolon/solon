@@ -3,8 +3,8 @@ package validation.demo1;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.extend.jsr303.utils.BeanValidationUtils;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
+import org.noear.solon.validation.ValidatorManager;
 
 /**
  * @author noear 2021/5/11 created
@@ -18,7 +18,7 @@ public class LoginTest {
 
         System.out.println("已进入login" + loginForm);
 
-        Result result  = BeanValidationUtils.validate(loginForm);
+        Result result  = ValidatorManager.validateOfEntity(loginForm);
 
         assert result.getCode() == Result.FAILURE_CODE;
     }
@@ -31,7 +31,7 @@ public class LoginTest {
 
         System.out.println("已进入login" + loginForm);
 
-        Result result  = BeanValidationUtils.validate(loginForm);
+        Result result  = ValidatorManager.validateOfEntity(loginForm);
 
         assert result.getCode() == Result.SUCCEED_CODE;
     }
