@@ -237,9 +237,9 @@ public class HttpUtils {
             }
 
             if (resp != null) {
-                _callback.accept(resp.isSuccessful(), resp, err);
+                _callback.callback(resp.isSuccessful(), resp, err);
             } else {
-                _callback.accept(false, null, err);
+                _callback.callback(false, null, err);
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
