@@ -18,10 +18,10 @@ import java.util.Properties;
  * @since 1.3
  */
 public class MemCacheService implements CacheService {
-    private String _cacheKeyHead;
-    private int _defaultSeconds;
+    protected String _cacheKeyHead;
+    protected int _defaultSeconds;
 
-    private MemcachedClient _cache = null;
+    protected final MemcachedClient _cache;
 
     public MemCacheService(Properties prop) {
         this(prop, prop.getProperty("keyHeader"), 0);

@@ -13,10 +13,9 @@ import java.util.Properties;
  * @since 1.3
  */
 public class RedisCacheService implements CacheService {
-    private String _cacheKeyHead;
-    private int _defaultSeconds;
-
-    private RedisX _cache = null;
+    protected String _cacheKeyHead;
+    protected int _defaultSeconds;
+    protected final RedisX _cache;
 
     public RedisCacheService(Properties prop) {
         this(prop, prop.getProperty("keyHeader"), 0);

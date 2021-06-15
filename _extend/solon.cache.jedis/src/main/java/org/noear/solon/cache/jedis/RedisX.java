@@ -82,7 +82,7 @@ class RedisX {
 
         private Jedis client;
         private String _key;
-        private int _seconds;
+        private long _seconds;
 
         public RedisUsing key(String key){
             _key = key;
@@ -138,7 +138,7 @@ class RedisX {
             }
 
             if(_seconds<0){
-                client.expire(_key, -1); //马上消失
+                client.expire(_key, -1L); //马上消失
             }
         }
 
