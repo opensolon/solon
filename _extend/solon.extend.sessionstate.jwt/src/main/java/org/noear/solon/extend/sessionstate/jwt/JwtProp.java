@@ -12,6 +12,7 @@ class JwtProp {
     public static String session_jwt_secret;
     public static boolean session_jwt_allowExpire;
     public static boolean session_jwt_allowPublish;
+
     public static boolean session_jwt_requestUseHeader;
     public static boolean session_jwt_responseUseHeader;
 
@@ -31,7 +32,7 @@ class JwtProp {
         session_state_domain = Solon.cfg().get("server.session.state.domain");
         session_state_domain_auto = Solon.cfg().getBool("server.session.state.domain.auto", true);
 
-        session_jwt_name = Solon.cfg().get("server.session.state.jwt.name", "Token");
+        session_jwt_name = Solon.cfg().get("server.session.state.jwt.name", "TOKEN");
         session_jwt_secret = Solon.cfg().get("server.session.state.jwt.secret");
         session_jwt_allowExpire = Solon.cfg().getBool("server.session.state.jwt.allowExpire", true);
         session_jwt_allowPublish = Solon.cfg().getBool("server.session.state.jwt.allowPublish", true);
