@@ -97,7 +97,9 @@ public class App implements HelloService{
 
 #### [《Solon Ecological Plugins List》](https://my.oschina.net/noear/blog/5053423)
 
-#### [《Introduction to the Solon framework》](https://my.oschina.net/noear/blog/4784513)
+#### [《Solon Framework Introduction Series》](https://my.oschina.net/noear/blog/4784513)
+
+#### [《Solon AOP Features Development Series》](https://my.oschina.net/noear/blog/5061001)
 
 
 ### Attachment 2: Examples and articles
