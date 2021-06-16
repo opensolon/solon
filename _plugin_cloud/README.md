@@ -23,3 +23,4 @@
 | org.noear:snowflake-id-solon-plugin | snowflake 算法适配插件（支持Solon cloud 分布式ID服务）|
 | | |
 | org.noear:xxl-job-solon-plugin | xxl-job 适配插件（支持Solon cloud 分布式任务服务） |
+| org.noear:httputils-solon-plugin | 结合 Solon Cloud 注册与发现服务的 Http 工具类 |
