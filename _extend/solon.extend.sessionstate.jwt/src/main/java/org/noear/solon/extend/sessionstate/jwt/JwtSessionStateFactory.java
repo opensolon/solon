@@ -21,7 +21,7 @@ public class JwtSessionStateFactory implements SessionStateFactory {
     }
 
     private JwtSessionStateFactory() {
-        String signKey0 = JwtProp.session_jwt_secret;
+        String signKey0 = SessionProp.session_jwt_secret;
         if (Utils.isNotEmpty(signKey0)) {
             signKey = signKey0;
         }

@@ -2,7 +2,7 @@ package org.noear.solon.extend.sessionstate.jwt;
 
 import org.noear.solon.Solon;
 
-class JwtProp {
+class SessionProp {
     public static int session_timeout = 0;
     public static String session_state_domain;
     public static boolean session_state_domain_auto;

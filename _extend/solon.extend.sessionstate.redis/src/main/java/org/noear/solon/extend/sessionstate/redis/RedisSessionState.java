@@ -15,12 +15,12 @@ public class RedisSessionState extends SessionStateDefault {
     private static String _domain=null;
 
     static {
-        if (XServerProp.session_timeout > 0) {
-            _expiry = XServerProp.session_timeout;
+        if (SessionProp.session_timeout > 0) {
+            _expiry = SessionProp.session_timeout;
         }
 
-        if (XServerProp.session_state_domain != null) {
-            _domain = XServerProp.session_state_domain;
+        if (SessionProp.session_state_domain != null) {
+            _domain = SessionProp.session_state_domain;
         }
     }
 
@@ -40,7 +40,7 @@ public class RedisSessionState extends SessionStateDefault {
         return ctx.cookie(key);
     }
     public  void   cookieSet(String key, String val) {
-        if (XServerProp.session_state_domain_auto) {
+        if (SessionProp.session_state_domain_auto) {
             if (_domain != null) {
                 if(ctx.uri().getHost().indexOf(_domain) < 0){ //非安全域
                     ctx.cookieSet(key, val, null, _expiry);

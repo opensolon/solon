@@ -25,7 +25,7 @@ public class XPluginImp implements Plugin {
          * maxTotaol: 200
          *
          * */
-        XServerProp.init();
+        SessionProp.init();
 
         if (RedisSessionStateFactory.getInstance().getRedisX() == null) {
             return;

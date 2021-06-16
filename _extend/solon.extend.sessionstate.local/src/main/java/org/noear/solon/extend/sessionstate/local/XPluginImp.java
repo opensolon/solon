@@ -17,7 +17,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        XServerProp.init();
+        SessionProp.init();
 
         Bridge.sessionStateFactorySet(LocalSessionStateFactory.getInstance());
 
