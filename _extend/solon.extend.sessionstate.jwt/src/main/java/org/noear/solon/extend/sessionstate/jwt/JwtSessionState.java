@@ -61,7 +61,7 @@ public class JwtSessionState extends SessionStateDefault {
 
     @Override
     public String sessionId() {
-        if (JwtProp.session_jwt_requestUseHeader) {
+        if (JwtProp.session_jwt_allowUseHeader) {
             return "";
         }
 
@@ -104,7 +104,7 @@ public class JwtSessionState extends SessionStateDefault {
                         Claims claims = JwtUtils.parseJwt(token);
 
                         if(claims != null) {
-                            if (JwtProp.session_jwt_requestUseHeader || sesId.equals(claims.getId())) {
+                            if (JwtProp.session_jwt_allowUseHeader || sesId.equals(claims.getId())) {
                                 if (JwtProp.session_jwt_allowExpire) {
                                     if (claims.getExpiration() != null &&
                                             claims.getExpiration().getTime() > System.currentTimeMillis()) {
@@ -149,7 +149,7 @@ public class JwtSessionState extends SessionStateDefault {
 
     @Override
     public void sessionRefresh() {
-        if (JwtProp.session_jwt_requestUseHeader) {
+        if (JwtProp.session_jwt_allowUseHeader) {
             return;
         }
 
@@ -179,14 +179,14 @@ public class JwtSessionState extends SessionStateDefault {
             Claims tmp = sessionMap();
 
             if (tmp != null) {
-                if (JwtProp.session_jwt_responseUseHeader && tmp.size() == 0) {
+                if (JwtProp.session_jwt_allowUseHeader && tmp.size() == 0) {
                     sessionToken = "";
                 }
 
                 if (sessionToken == null) {
                     String skey = sessionId();
 
-                    if (JwtProp.session_jwt_responseUseHeader || Utils.isNotEmpty(skey)) {
+                    if (JwtProp.session_jwt_allowUseHeader || Utils.isNotEmpty(skey)) {
                         tmp.setId(skey);
 
                         if (JwtProp.session_jwt_allowExpire) {
@@ -209,7 +209,7 @@ public class JwtSessionState extends SessionStateDefault {
 
 
     protected String jwtGet() {
-        if (JwtProp.session_jwt_requestUseHeader) {
+        if (JwtProp.session_jwt_allowUseHeader) {
             return ctx.header(JwtProp.session_jwt_name);
         } else {
             return cookieGet(JwtProp.session_jwt_name);
@@ -217,7 +217,7 @@ public class JwtSessionState extends SessionStateDefault {
     }
 
     protected void jwtSet(String token) {
-        if (JwtProp.session_jwt_responseUseHeader) {
+        if (JwtProp.session_jwt_allowUseHeader) {
             ctx.headerSet(JwtProp.session_jwt_name, token);
         } else {
             cookieSet(JwtProp.session_jwt_name, token);

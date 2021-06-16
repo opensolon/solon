@@ -12,9 +12,8 @@ class JwtProp {
     public static String session_jwt_secret;
     public static boolean session_jwt_allowExpire;
     public static boolean session_jwt_allowPublish;
+    public static boolean session_jwt_allowUseHeader;
 
-    public static boolean session_jwt_requestUseHeader;
-    public static boolean session_jwt_responseUseHeader;
 
     public static void init() {
         String tmp = Solon.cfg().get("server.request.maxRequestSize", "").trim().toLowerCase();//k数
@@ -36,8 +35,14 @@ class JwtProp {
         session_jwt_secret = Solon.cfg().get("server.session.state.jwt.secret");
         session_jwt_allowExpire = Solon.cfg().getBool("server.session.state.jwt.allowExpire", true);
         session_jwt_allowPublish = Solon.cfg().getBool("server.session.state.jwt.allowPublish", true);
+        session_jwt_allowUseHeader = Solon.cfg().getBool("server.session.state.jwt.allowUseHeader", false);
 
-        session_jwt_requestUseHeader = Solon.cfg().getBool("server.session.state.jwt.requestUseHeader", false);
-        session_jwt_responseUseHeader = Solon.cfg().getBool("server.session.state.jwt.responseUseHeader", false);
+        //兼容旧版本
+        boolean requestUseHeader = Solon.cfg().getBool("server.session.state.jwt.requestUseHeader", false);
+        boolean responseUseHeader = Solon.cfg().getBool("server.session.state.jwt.responseUseHeader", false);
+
+        if (requestUseHeader || responseUseHeader) {
+            session_jwt_allowUseHeader = true;
+        }
     }
 }
