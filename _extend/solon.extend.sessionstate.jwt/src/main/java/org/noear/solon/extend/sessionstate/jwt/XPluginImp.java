@@ -21,7 +21,7 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        XPluginProp.init();
+        JwtProp.init();
 
         Bridge.sessionStateFactorySet(JwtSessionStateFactory.getInstance());
 
