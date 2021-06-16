@@ -94,7 +94,9 @@ public class App implements HelloService{
 
 #### [《Solon 生态插件清单》](https://my.oschina.net/noear/blog/5053423)
 
-#### [《Solon 框架入门》](https://my.oschina.net/noear/blog/4784513)
+#### [《Solon 框架入门系列》](https://my.oschina.net/noear/blog/4784513)
+
+#### [《Solon Aop 特色开发系列》](https://my.oschina.net/noear/blog/5061001)
 
 
 ### 附2：示例与文章
