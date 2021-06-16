@@ -109,6 +109,8 @@ class DbManager {
                     tmp = build(bw);
 
                     cached.put(bw.name(), tmp);
+
+                    EventBus.push(tmp);
                 }
             }
         }
