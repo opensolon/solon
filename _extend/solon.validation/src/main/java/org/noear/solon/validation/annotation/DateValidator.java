@@ -21,6 +21,9 @@ public class DateValidator implements Validator<Date> {
         return anno.message();
     }
 
+    /**
+     * 校验实体的字段
+     * */
     @Override
     public Result validateOfEntity(Class<?> clz, Date anno, String name, Object val0, StringBuilder tmp) {
         if (val0 instanceof String == false) {
@@ -36,6 +39,9 @@ public class DateValidator implements Validator<Date> {
         }
     }
 
+    /**
+     * 校验上下文的参数
+     * */
     @Override
     public Result validateOfContext(Context ctx, Date anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
