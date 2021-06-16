@@ -10,7 +10,7 @@ class SessionProp {
     public static String session_jwt_name;
     public static String session_jwt_secret;
     public static boolean session_jwt_allowExpire;
-    public static boolean session_jwt_allowOutput;
+    public static boolean session_jwt_allowIssue;
     public static boolean session_jwt_allowUseHeader;
 
 
@@ -22,7 +22,7 @@ class SessionProp {
         session_jwt_name = Solon.cfg().get("server.session.state.jwt.name", "TOKEN");
         session_jwt_secret = Solon.cfg().get("server.session.state.jwt.secret");
         session_jwt_allowExpire = Solon.cfg().getBool("server.session.state.jwt.allowExpire", true);
-        session_jwt_allowOutput = Solon.cfg().getBool("server.session.state.jwt.allowOutput", true);
+        session_jwt_allowIssue = Solon.cfg().getBool("server.session.state.jwt.allowIssue", true);
         session_jwt_allowUseHeader = Solon.cfg().getBool("server.session.state.jwt.allowUseHeader", false);
 
         //兼容旧版本（以后会被弃用）
