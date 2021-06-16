@@ -109,9 +109,6 @@ class DbManager {
                     tmp = build(bw);
 
                     cached.put(bw.name(), tmp);
-
-                    //通过事件总线扩展
-                    EventBus.push(tmp);
                 }
             }
         }
