@@ -1,6 +1,7 @@
 package org.noear.solon.extend.activerecord;
 
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
+import com.jfinal.plugin.activerecord.Config;
 import com.jfinal.plugin.activerecord.DbKit;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.template.source.ClassPathSourceFactory;
@@ -50,7 +51,7 @@ public class XPluginImp implements Plugin {
         }
 
         //构建配置
-        ConfigImpl cfg = new ConfigImpl(
+        Config cfg = new ConfigImpl(
                 name,
                 new DataSourceProxy(ds),
                 DbKit.DEFAULT_TRANSACTION_LEVEL);
