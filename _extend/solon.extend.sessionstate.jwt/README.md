@@ -3,7 +3,7 @@
 
 ```yml
 server.session:
-  timeout: 300 #s
+  timeout: 7200 #单位秒；（可不配，默认：7200）
   state:
     jwt:
       name: TOKEN #变量名；（可不配，默认：TOKEN）
