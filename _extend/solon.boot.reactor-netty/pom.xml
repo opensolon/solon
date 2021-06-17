@@ -21,8 +21,8 @@
         </dependency>
         <dependency>
             <groupId>io.projectreactor.netty</groupId>
-            <artifactId>reactor-netty</artifactId>
-            <version>1.0.2</version>
+            <artifactId>reactor-netty-http</artifactId>
+            <version>1.0.7</version>
         </dependency>
     </dependencies>
 

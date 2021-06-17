@@ -43,7 +43,6 @@ public class XPluginImp implements Plugin {
             _server = HttpServer.create()
                     .compress(true)
                     .protocol(HttpProtocol.HTTP11)
-                    .host("localhost")
                     .port(app.port())
                     .handle(handler)
                     .bindNow();
