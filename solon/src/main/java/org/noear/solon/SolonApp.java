@@ -123,21 +123,28 @@ public class SolonApp implements HandlerSlots {
 
     //////////////////////////////////
 
-    private final Set<Signal> signals = new LinkedHashSet<>();
+    private final Map<Integer,Signal> signals = new LinkedHashMap<>();
 
 
     /**
      * 添加信号
      * */
-    public void signalAdd(Signal instance){
-        signals.add(instance);
+    public void signalAdd(Signal instance) {
+        signals.putIfAbsent(instance.port(), instance);
+    }
+
+    /**
+     * 获取信号
+     * */
+    public Signal signalGet(int port) {
+        return signals.get(port);
     }
 
     /**
      * 获取信号记录
      * */
-    public Collection<Signal> signals(){
-        return Collections.unmodifiableSet(signals);
+    public Collection<Signal> signals() {
+        return Collections.unmodifiableCollection(signals.values());
     }
 
 
