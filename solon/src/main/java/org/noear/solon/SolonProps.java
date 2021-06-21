@@ -66,17 +66,14 @@ public final class SolonProps extends Props {
         loadInit(Utils.getResource("app.properties"));
         loadInit(Utils.getResource("app.yml"));
 
+        //加载环境solon的变量
+        loadEnv("solon.");
+
         //2.2.加载活动配置
-        String env = args.get("env");
+        String env = getArg("env");
 
-        //@Deprecated
-        if(Utils.isEmpty(env)){
-            //兼容旧版本
-            env = args.get("active");
-        }
-
-        if(Utils.isEmpty(env)){
-            env = get("solon.profiles.active");
+        if (Utils.isEmpty(env)) {
+            env = getArg("profiles.active");
         }
 
         if (Utils.isNotEmpty(env)) {
@@ -96,56 +93,45 @@ public final class SolonProps extends Props {
             }
         });
 
-        isDebugMode = argx().getInt("debug") == 1;
-        isSetupMode = argx().getInt("setup") == 1;
-        isWhiteMode = argx().getInt("white", 1) == 1;
+
         isFilesMode = (sourceLocation.getPath().endsWith(".jar") == false
-                        && sourceLocation.getPath().contains(".jar!/") == false
-                        && sourceLocation.getPath().endsWith(".zip") == false
-                        && sourceLocation.getPath().contains(".zip!/") == false);
+                && sourceLocation.getPath().contains(".jar!/") == false
+                && sourceLocation.getPath().endsWith(".zip") == false
+                && sourceLocation.getPath().contains(".zip!/") == false);
+
+        isDebugMode = "1".equals(getArg("debug")); //调试模式
+        isSetupMode = "1".equals(getArg("setup")); //安装模式
+        isWhiteMode = "1".equals(getArg("white", "1")); //安全模式（即白名单模式）
+        isDriftMode = "1".equals(getArg("drift")); //漂移模式（即ip会变,如pod部署）
 
         //4.标识debug模式
         if (isDebugMode()) {
             System.setProperty("debug", "1");
         }
 
-        String drift = this.args.get("drift");
-        if (Utils.isEmpty(drift)) {
-            drift = get("solon.drift");
-        }
-        isDriftMode = "1".equals(drift);
 
         //5.扩展文件夹
-        extend = this.args.get("extend");
-        if (Utils.isEmpty(extend)) {
-            extend = get("solon.extend");
-        }
+        extend = getArg("extend");
+        extendFilter = getArg("extend.filter");//5.1.扩展文件夹过滤器
 
-        //5.1.扩展文件夹过滤器
-        extendFilter = this.args.get("extend.filter");
-        if (Utils.isEmpty(extendFilter)) {
-            extendFilter = get("solon.extend.filter");
-        }
-
-        //6.应用名
-        appName = this.args.get("app.name");
-        if (Utils.isEmpty(appName)) {
-            appName = get("solon.app.name");
-        }
-
-        //6.1.应用组
-        appGroup = this.args.get("app.group");
-        if (Utils.isEmpty(appGroup)) {
-            appGroup = get("solon.app.group");
-        }
-
-        //6.1.应用标准
-        appTitle = this.args.get("app.title");
-        if (Utils.isEmpty(appTitle)) {
-            appTitle = get("solon.app.title");
-        }
+        //6.应用相关
+        appName = getArg("app.name");  //6.应用名
+        appGroup = getArg("app.group"); //6.1.应用组
+        appTitle = getArg("app.title"); //6.1.应用标题
 
         return this;
+    }
+
+    private String getArg(String name) {
+        return getArg(name, null);
+    }
+    private String getArg(String name, String def) {
+        String tmp = args.getOrDefault(name, def);
+        if (Utils.isEmpty(tmp)) {
+            tmp = get("solon." + name);
+        }
+
+        return tmp;
     }
 
     /**
@@ -380,7 +366,7 @@ public final class SolonProps extends Props {
      * 框架版本号
      */
     public String version() {
-        return "1.5.5";
+        return "1.5.6";
     }
 
     /**
