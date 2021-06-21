@@ -5,6 +5,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.SolonBuilder;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.cloud.CloudClient;
+import org.noear.solon.cloud.tool.PreheatUtils;
 import org.noear.solon.core.handle.MethodType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,6 +83,9 @@ public class TestApp {
 //                //session.send("X我收到了::" + message.toString());
 //            }
 //        });
+
+        //预热测试
+        PreheatUtils.preheat("/demo1/run0/");
 
         logger.debug("测试");
 
