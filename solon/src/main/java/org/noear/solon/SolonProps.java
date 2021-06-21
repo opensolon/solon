@@ -149,6 +149,21 @@ public final class SolonProps extends Props {
     }
 
     /**
+     * 加载环境变量
+     *
+     * @param keyStarts key 的开始字符
+     * */
+    public SolonProps loadEnv(String keyStarts) {
+        System.getenv().forEach((k, v) -> {
+            if (k.startsWith(keyStarts)) {
+                putIfAbsent(k, v);
+            }
+        });
+
+        return this;
+    }
+
+    /**
      * 加载配置（用于扩展加载）
      *
      * @param url 配置地址
