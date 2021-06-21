@@ -5,8 +5,10 @@ import okhttp3.internal.Util;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Source;
+import org.noear.solon.Solon;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.LoadBalance;
+import org.noear.solon.ext.ConsumerEx;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -55,6 +57,26 @@ public class HttpUtils {
     public static HttpUtils http(String service, String path) {
         String url = LoadBalance.get(service).getServer() + path;
         return http(url);
+    }
+
+    /**
+     * 预热本地地址
+     * */
+    public static void preheat(String path) {
+        preheat(path, h -> h.get());
+    }
+
+    /**
+     * 预热本地地址
+     * */
+    public static void preheat(String path, ConsumerEx<HttpUtils> exec) {
+        try {
+            HttpUtils http = http("http://localhost:" + Solon.global().port() + path);
+            exec.accept(http);
+            System.out.println(path + " : preheat succeeded");
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 
     private Charset _charset;
