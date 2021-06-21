@@ -69,10 +69,10 @@ public class HttpUtils {
     /**
      * 预热本地地址
      * */
-    public static void preheat(String path, ConsumerEx<HttpUtils> exec) {
+    public static void preheat(String path, ConsumerEx<HttpUtils> handling) {
         try {
             HttpUtils http = http("http://localhost:" + Solon.global().port() + path);
-            exec.accept(http);
+            handling.accept(http);
             System.out.println(path + " : preheat succeeded");
         } catch (Throwable e) {
             e.printStackTrace();
