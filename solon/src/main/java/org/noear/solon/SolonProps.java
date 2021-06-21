@@ -66,7 +66,7 @@ public final class SolonProps extends Props {
         loadInit(Utils.getResource("app.properties"));
         loadInit(Utils.getResource("app.yml"));
 
-        //加载环境solon的变量
+        //支持弹性容器设置的环境变量
         loadEnv("solon.");
 
         //2.2.加载活动配置
