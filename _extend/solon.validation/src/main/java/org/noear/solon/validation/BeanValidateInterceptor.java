@@ -30,6 +30,9 @@ public class BeanValidateInterceptor implements Interceptor {
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
         if (validator != null) {
+            //
+            //如果有验证器的实现，尝试验证
+            //
             for (int i = 0, len = inv.args().length; i < len; i++) {
                 ParamWrap pw = inv.method().getParamWraps()[i];
                 Validated v1 = pw.getParameter().getAnnotation(Validated.class);
