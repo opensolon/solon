@@ -65,7 +65,7 @@ public class ValidatorManager {
 
 
     private static final Map<Class<? extends Annotation>, Validator> validMap = new HashMap<>();
-    private static ValidatorFailureHandler failureHandler = new ValidatorFailureHandlerImp();
+    private static ValidatorFailureHandler failureHandler = new ValidatorFailureHandlerDefault();
 
     static {
         initialize();

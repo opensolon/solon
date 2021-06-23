@@ -12,7 +12,7 @@ import java.lang.annotation.Annotation;
  * @author noear
  * @since 1.3
  * */
-public class ValidatorFailureHandlerImp implements ValidatorFailureHandler {
+class ValidatorFailureHandlerDefault implements ValidatorFailureHandler {
 
     @Override
     public boolean onFailure(Context ctx, Annotation anno, Result rst, String msg) throws Throwable {
@@ -43,7 +43,6 @@ public class ValidatorFailureHandlerImp implements ValidatorFailureHandler {
                 }
             }
 
-            ctx.setRendered(true);
             ctx.render(Result.failure(rst.getCode(), msg));
 
         }
