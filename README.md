@@ -352,7 +352,7 @@ CloudClient.job().register("JobHandlerDemo3","",c->{
 ```
 
 
-### Solon 框架详解：
+### Solon 框架详解
 
 * [《Solon 框架详解（一）- 快速入门》](https://my.oschina.net/noear/blog/4784513)
 * [《Solon 框架详解（二）- Solon的核心》](https://my.oschina.net/noear/blog/4784515)
@@ -366,7 +366,7 @@ CloudClient.job().register("JobHandlerDemo3","",c->{
 * [《Solon 框架详解（十）- Solon 的常用配置》](https://my.oschina.net/noear/blog/4836129)
 * [《Solon 框架详解（十一）- Solon Cloud 的配置说明》](https://my.oschina.net/noear/blog/4984839)
 
-### Solon Aop 特色开发：
+### Solon Aop 特色开发
 
 * [《Solon Aop 特色开发（1）注入或手动获取配置》](https://my.oschina.net/noear/blog/5061001)
 * [《Solon Aop 特色开发（2）注入或手动获取Bean》](https://my.oschina.net/noear/blog/5061010)
