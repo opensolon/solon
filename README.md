@@ -351,26 +351,26 @@ CloudClient.job().register("JobHandlerDemo3","",c->{
 
 ### Solon 框架详解
 
-##### [《Solon 框架详解（一）- 快速入门》](https://my.oschina.net/noear/blog/4784513)
-##### [《Solon 框架详解（二）- Solon的核心》](https://my.oschina.net/noear/blog/4784515)
-##### [《Solon 框架详解（三）- Solon的web与data开发》](https://my.oschina.net/noear/blog/4784516)
-##### [《Solon 框架详解（四）- Solon的事务传播》](https://my.oschina.net/noear/blog/4836118)
-##### [《Solon 框架详解（五）- Solon扩展机制之Solon Plugin》](https://my.oschina.net/noear/blog/4836120)
-##### [《Solon 框架详解（六）- Solon的校验框架使用、定制与扩展》](https://my.oschina.net/noear/blog/4836121)
-##### [《Solon 框架详解（七）- Solon Ioc 的注解对比Spring及JSR330》](https://my.oschina.net/noear/blog/4836122)
-##### [《Solon 框架详解（八）- Solon的缓存框架使用和定制》](https://my.oschina.net/noear/blog/4836123)
-##### [《Solon 框架详解（九）- 渲染控制之定制统一的接口输出》](https://my.oschina.net/noear/blog/4836128)
-##### [《Solon 框架详解（十）- Solon 的常用配置》](https://my.oschina.net/noear/blog/4836129)
-##### [《Solon 框架详解（十一）- Solon Cloud 的配置说明》](https://my.oschina.net/noear/blog/4984839)
+* [《Solon 框架详解（一）- 快速入门》](https://my.oschina.net/noear/blog/4784513)
+* [《Solon 框架详解（二）- Solon的核心》](https://my.oschina.net/noear/blog/4784515)
+* [《Solon 框架详解（三）- Solon的web与data开发》](https://my.oschina.net/noear/blog/4784516)
+* [《Solon 框架详解（四）- Solon的事务传播》](https://my.oschina.net/noear/blog/4836118)
+* [《Solon 框架详解（五）- Solon扩展机制之Solon Plugin》](https://my.oschina.net/noear/blog/4836120)
+* [《Solon 框架详解（六）- Solon的校验框架使用、定制与扩展》](https://my.oschina.net/noear/blog/4836121)
+* [《Solon 框架详解（七）- Solon Ioc 的注解对比Spring及JSR330》](https://my.oschina.net/noear/blog/4836122)
+* [《Solon 框架详解（八）- Solon的缓存框架使用和定制》](https://my.oschina.net/noear/blog/4836123)
+* [《Solon 框架详解（九）- 渲染控制之定制统一的接口输出》](https://my.oschina.net/noear/blog/4836128)
+* [《Solon 框架详解（十）- Solon 的常用配置》](https://my.oschina.net/noear/blog/4836129)
+* [《Solon 框架详解（十一）- Solon Cloud 的配置说明》](https://my.oschina.net/noear/blog/4984839)
 
 ### Solon Aop 特色开发
 
-##### [《Solon Aop 特色开发（1）注入或手动获取配置》](https://my.oschina.net/noear/blog/5061001)
-##### [《Solon Aop 特色开发（2）注入或手动获取Bean》](https://my.oschina.net/noear/blog/5061010)
-##### [《Solon Aop 特色开发（3）构建一个Bean的三种方式》](https://my.oschina.net/noear/blog/5061018)
-##### [《Solon Aop 特色开发（4）Bean 扫描的三种方式》](https://my.oschina.net/noear/blog/5061037)
-##### [《Solon Aop 特色开发（5）切面与环绕拦截》](https://my.oschina.net/noear/blog/5061038)
-##### [《Solon Aop 特色开发（6）新鲜货提取器，提取Bean的函数进行定制开发》](https://my.oschina.net/noear/blog/5061047)
+* [《Solon Aop 特色开发（1）注入或手动获取配置》](https://my.oschina.net/noear/blog/5061001)
+* [《Solon Aop 特色开发（2）注入或手动获取Bean》](https://my.oschina.net/noear/blog/5061010)
+* [《Solon Aop 特色开发（3）构建一个Bean的三种方式》](https://my.oschina.net/noear/blog/5061018)
+* [《Solon Aop 特色开发（4）Bean 扫描的三种方式》](https://my.oschina.net/noear/blog/5061037)
+* [《Solon Aop 特色开发（5）切面与环绕拦截》](https://my.oschina.net/noear/blog/5061038)
+* [《Solon Aop 特色开发（6）新鲜货提取器，提取Bean的函数进行定制开发》](https://my.oschina.net/noear/blog/5061047)
 
 ### 插件开发说明
 * 新建一个 maven 项目
