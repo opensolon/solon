@@ -18,7 +18,7 @@ public interface Validator<T extends Annotation> {
     }
 
     /**
-     * 验证实体
+     * 验证实体字段
      *
      * @param clz 实体类
      * @param anno 验证注解
@@ -33,7 +33,7 @@ public interface Validator<T extends Annotation> {
 
 
     /**
-     * 验证上下文
+     * 验证上下文参数
      *
      * @param ctx 上下文
      * @param anno 验证注解
