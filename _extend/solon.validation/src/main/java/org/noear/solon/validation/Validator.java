@@ -19,6 +19,13 @@ public interface Validator<T extends Annotation> {
 
     /**
      * 验证实体
+     *
+     * @param clz 实体类
+     * @param anno 验证注解
+     * @param name 字段名
+     * @param val 字段值
+     * @param tmp 临时字符构建器（用于构建message；起到复用之效）
+     * @return  验证结果
      */
     default Result validateOfEntity(Class<?> clz, T anno, String name, Object val, StringBuilder tmp) {
         return Result.failure();
@@ -27,6 +34,12 @@ public interface Validator<T extends Annotation> {
 
     /**
      * 验证上下文
+     *
+     * @param ctx 上下文
+     * @param anno 验证注解
+     * @param name 参数名
+     * @param tmp 临时字符构建器（用于构建message；起到复用之效）
+     * @return 验证结果
      */
     Result validateOfContext(Context ctx, T anno, String name, StringBuilder tmp);
 }
