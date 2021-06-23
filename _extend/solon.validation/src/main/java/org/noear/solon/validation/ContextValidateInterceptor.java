@@ -5,6 +5,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 
 /**
+ * 上下文验证拦截器
  *
  * @author noear
  * @since 1.0

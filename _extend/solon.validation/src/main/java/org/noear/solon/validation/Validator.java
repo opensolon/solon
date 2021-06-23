@@ -6,6 +6,7 @@ import org.noear.solon.core.handle.Result;
 import java.lang.annotation.Annotation;
 
 /**
+ * 验证器（对验证注解的支持）
  *
  * @author noear
  * @since 1.0

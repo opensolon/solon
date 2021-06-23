@@ -7,7 +7,7 @@ import org.noear.solon.core.handle.Result;
 import java.lang.annotation.Annotation;
 
 /**
- * 失败处理者默认实现
+ * 验证失败处理默认实现
  *
  * @author noear
  * @since 1.3

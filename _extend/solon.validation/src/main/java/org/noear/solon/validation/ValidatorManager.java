@@ -71,6 +71,9 @@ public class ValidatorManager {
         initialize();
     }
 
+    /**
+     * 初始化（验证器注册）
+     * */
     private static void initialize() {
         register(Date.class, DateValidator.instance);
 
@@ -180,7 +183,7 @@ public class ValidatorManager {
     /**
      * 执行实体的验证处理
      */
-    @Note("执行上下文的验证处理")
+    @Note("执行实体的验证处理")
     public static Result validateOfEntity(Object obj) {
         ClassWrap cw = ClassWrap.get(obj.getClass());
         StringBuilder tmp = new StringBuilder();

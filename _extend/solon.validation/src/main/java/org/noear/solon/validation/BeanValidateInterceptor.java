@@ -11,6 +11,8 @@ import org.noear.solon.validation.annotation.Validated;
 import java.lang.annotation.Annotation;
 
 /**
+ * 实体验证拦截器
+ *
  * @author noear
  * @since 1.3
  */
@@ -18,7 +20,7 @@ public class BeanValidateInterceptor implements Interceptor {
     private BeanValidator validator;
 
     public BeanValidateInterceptor() {
-        validator = new BeanValidatorImpl();
+        validator = new BeanValidatorDefault();
 
         Aop.getAsyn(BeanValidator.class, bw -> {
             validator = bw.get();
