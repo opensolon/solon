@@ -84,7 +84,7 @@ public class App implements HelloService{
 | org.noear:solon-rpc | solon-api + nami；快速开发RPC应用 |
 | org.noear:solon-cloud | solon-rpc + consul；快速开发微服务应用 |
 
-### 附1：快速了解Solon的材料：
+### 快速了解Solon的材料：
 
 #### [《Solon 特性简集，相较于 Springboot 有什么区别？》](https://my.oschina.net/noear/blog/4863844)
 
@@ -94,17 +94,17 @@ public class App implements HelloService{
 
 #### [《Solon 生态插件清单》](https://my.oschina.net/noear/blog/5053423)
 
-#### [《Solon 框架入门系列》](https://my.oschina.net/noear/blog/4784513)
+#### [《Solon 框架详解系列》](https://my.oschina.net/noear/blog/4784513)
 
 #### [《Solon Aop 特色开发系列》](https://my.oschina.net/noear/blog/5061001)
 
 
-### 附2：示例与文章
+### 丰富的示例与文章
 * 项目内的：[_test](./_test/) 和 [_demo](./_demo/)
 * 更多示例：[solon_demo](https://gitee.com/noear/solon_demo) 、 [solon_api_demo](https://gitee.com/noear/solon_api_demo)  、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo)
 * 更多文章：[https://www.cnblogs.com/noear/](https://www.cnblogs.com/noear/)
 
-### 附3：快速入门示例
+### 快速入门示例
 * Web 示例（mvc）
 ```xml
 <parent>
@@ -357,13 +357,13 @@ CloudClient.job().register("JobHandlerDemo3","",c->{
 ```
 
 
-### 附4：插件开发说明
+### 插件开发说明
 * 新建一个 maven 项目
 * 新建一个 java/{包名}/XPluginImp.java （implements XPlugin）
 * 新建一个 resources/META-INF/solon/{包名.properties}
 *    添加配置：solon.plugin={包名}.XPluginImp
 
-### 附5：启动顺序参考
+### 启动顺序参考
 
 * 1.实例化 Solon.global() 并加载配置
 * 2.加载扩展文件夹
@@ -381,7 +381,7 @@ CloudClient.job().register("JobHandlerDemo3","",c->{
 * e.结束
 
 
-### 附6：Helloworld 的单机并发数 [《helloworld_wrk_test》](https://gitee.com/noear/helloworld_wrk_test)
+### Helloworld 的单机并发数 [《helloworld_wrk_test》](https://gitee.com/noear/helloworld_wrk_test)
 
 > * 机器：2017 macbook pro 13, i7, 16g, MacOS 10.15, jdk11
 > * 测试：wrk -t10 -c200 -d30s --latency "http://127.0.0.1:8080/"
