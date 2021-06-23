@@ -6,7 +6,10 @@ import org.noear.solon.core.event.*;
 import org.noear.solon.ext.ConsumerEx;
 
 /**
- * @author noear 2021/4/30 created
+ * SolonApp 构建器
+ *
+ * @author noear
+ * @since 1.4
  */
 public class SolonBuilder {
 
