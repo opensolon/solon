@@ -46,7 +46,7 @@ public class Solon {
      * 启动应用（全局只启动一个），执行序列
      *
      * <p>
-     * 1.加载配置（约定：application.properties    为应用配置文件）
+     * 1.加载配置（约定：app.properties 、app.yml   为应用配置文件）
      * 2.加载自发现插件（约定：/META-INF/solon/*.properties 为插件配置文件）
      * 3.加载注解Bean（约定：@Bean,@Controller,@Interceptor 为bean）
      * 4.执行Bean加载事件（采用：注册事件的方式进行安需通知）
