@@ -87,7 +87,7 @@ public class App implements HelloService{
 | org.noear:solon-rpc | solon-api + nami；Rapid development of remoting applications |
 | org.noear:solon-cloud | solon-rpc + consul；Rapid development of microservice applications |
 
-### Attachment 1: A quick understanding of Solon's materials：
+### A quick understanding of Solon's materials：
 
 #### [《What is the difference between Solon and SpringBoot?》](https://my.oschina.net/noear/blog/4863844)
 
@@ -97,17 +97,17 @@ public class App implements HelloService{
 
 #### [《Solon Ecological Plugins List》](https://my.oschina.net/noear/blog/5053423)
 
-#### [《Solon Framework Introduction Series》](https://my.oschina.net/noear/blog/4784513)
+#### [《Solon Framework Detail Series》](https://my.oschina.net/noear/blog/4784513)
 
 #### [《Solon AOP Features Development Series》](https://my.oschina.net/noear/blog/5061001)
 
 
-### Attachment 2: Examples and articles
+### Examples and articles
 * Within the project：[_test](./_test/) 和 [_demo](./_demo/)
 * More examples：[solon_demo](https://gitee.com/noear/solon_demo) 、 [solon_api_demo](https://gitee.com/noear/solon_api_demo) 、 [solon_rpc_demo](https://gitee.com/noear/solon_rpc_demo) 、 [solon_socketd_demo](https://gitee.com/noear/solon_socketd_demo) 、 [solon_cloud_demo](https://gitee.com/noear/solon_cloud_demo)
 * More articles：[https://www.cnblogs.com/noear/](https://www.cnblogs.com/noear/)
 
-### Attachment 3: Quick Start Examples
+### Quick Start Examples
 * Web example（mvc）
 ```xml
 <parent>
@@ -360,13 +360,13 @@ CloudClient.job().register("JobHandlerDemo3","",c->{
 });
 ```
 
-### Attachment 4: Plug-in development instructions
+### Plug-in development instructions
 * Create a new Maven project
 * Create a new java file: /{package name}/XPluginImp.java (implements XPlugin)
 * Create a new properties file: /META-INF/solon/{package.properties}
 *    Add configuration: solon.plugin={package name}.XPluginImp
 
-### Attachment 5: Start sequence reference
+### Start sequence reference
 
 * 1. Instantiate solon.global () and load the configuration
 * 2. Load the extension folder
@@ -383,7 +383,7 @@ CloudClient.job().register("JobHandlerDemo3","",c->{
 * d. Push PloadendEvent [event]
 * e in the end
 
-### Attachment 6: The number of concurrency per machine of HelloWorld [《helloworld_wrk_test》](https://github.com/noear/helloworld_wrk_test)
+### The number of concurrency per machine of HelloWorld [《helloworld_wrk_test》](https://github.com/noear/helloworld_wrk_test)
 
 > * The machine：2017 macbook pro 13, i7, 16g, MacOS 10.15, jdk11
 > * Test：wrk -t10 -c200 -d30s --latency "http://127.0.0.1:8080/"
