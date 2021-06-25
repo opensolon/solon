@@ -32,7 +32,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Quartz {
-    @Note("或cron：支持7位（秒，分，时，天，月，周，年）； 或简配： ms，s，m，h，d（例：100ms，2s，1m，1h，1d）")
+    @Note("或cron：支持7位（秒，分，时，日期ofM，月，星期ofW，年）； 或简配： s，m，h，d")
     String cron7x();
     boolean enable() default true;
     String name() default "";

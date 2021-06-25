@@ -30,7 +30,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Cron4j {
-    @Note("或cron：支持5位（分，时，天，月，周）；或简配：ms，s，m，h，d（例：100ms，2s，1m，1h，1d)")
+    @Note("或cron：支持5位（分，时，日期ofM，月，星期ofW）；或简配：s，m，h，d")
     String cron5x();
     boolean enable() default true;
     String name() default "";

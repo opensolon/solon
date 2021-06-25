@@ -25,6 +25,6 @@ public @interface CloudJob {
     /**
      * 时间表达式
      * */
-    @Note("或cron：支持7位（秒，分，时，日期ofM，月，星期ofW，年）； 或简配：s，m，h，d，M")
+    @Note("或cron：支持7位（秒，分，时，日期ofM，月，星期ofW，年）； 或简配：s，m，h，d")
     String cron7x();
 }
