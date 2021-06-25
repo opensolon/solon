@@ -16,7 +16,7 @@ import java.lang.annotation.*;
  *     }
  * }
  *
- * @Cron4j(cron5x = "200ms")
+ * @Cron4j(cron5x = "15m")
  * public class Cron4jRun1 implements Runnable {
  *     @Override
  *     public void run() {

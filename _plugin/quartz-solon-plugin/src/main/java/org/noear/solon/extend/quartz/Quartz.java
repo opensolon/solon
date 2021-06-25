@@ -16,7 +16,7 @@ import java.lang.annotation.*;
  *     }
  * }
  *
- * @Quartz(cron7x = "200ms")
+ * @Quartz(cron7x = "15s")
  * public class QuartzRun1 implements Runnable {
  *     @Override
  *     public void run() {
