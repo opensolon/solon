@@ -5,6 +5,8 @@ import org.noear.solon.annotation.Note;
 import java.lang.annotation.*;
 
 /**
+ * 云端任务
+ *
  * @author noear
  * @since 1.3
  */

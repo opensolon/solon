@@ -36,6 +36,6 @@ public class CloudJobExtractor implements BeanExtractor<CloudJob> {
 
         Action action = new Action(bw, method);
 
-        CloudClient.job().register(name, description, action);
+        CloudClient.job().register(name, anno.cron7x(), description, action);
     }
 }

@@ -7,9 +7,12 @@ import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.logging.utils.TagsMDC;
 import org.noear.water.WaterClient;
+import org.noear.water.model.JobM;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,13 +28,13 @@ public class CloudJobServiceWaterImp implements CloudJobService {
     }
 
     public void push() {
-        if(jobMap.size() == 0){
+        if (jobMap.size() == 0) {
             return;
         }
 
-        Map<String, String> jobs = new LinkedHashMap<>();
+        List<JobM> jobs = new ArrayList<>();
         jobMap.forEach((k, v) -> {
-            jobs.put(v.getName(), v.getDescription());
+            jobs.add(new JobM(v.getName(), v.getCron7x(), v.getDescription()));
         });
 
         try {
@@ -42,8 +45,8 @@ public class CloudJobServiceWaterImp implements CloudJobService {
     }
 
     @Override
-    public boolean register(String name, String description, Handler handler) {
-        jobMap.put(name, new HandlerEntity(name, description, handler));
+    public boolean register(String name, String cron7x, String description, Handler handler) {
+        jobMap.put(name, new HandlerEntity(name, cron7x, description, handler));
         TagsMDC.tag0("CloudJob");
         PrintUtil.warn("CloudJob", "Handler registered name:" + name + ", class:" + handler.getClass().getName());
         TagsMDC.tag0("");

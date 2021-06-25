@@ -12,7 +12,7 @@ public class CloudJobServiceImpl implements CloudJobService {
     public static final CloudJobService instance = new CloudJobServiceImpl();
 
     @Override
-    public boolean register(String name, String description, Handler handler) {
+    public boolean register(String name, String cron7x, String description, Handler handler) {
         XxlJobExecutor.registJobHandler(name, new CloudJobHanderProxy(handler));
         return true;
     }

@@ -10,7 +10,7 @@ public interface CloudJobService {
     /**
      * 注册任务
      */
-    boolean register(String name, String description, Handler handler);
+    boolean register(String name, String cron7x, String description, Handler handler);
 
     /**
      * 是否已注册
