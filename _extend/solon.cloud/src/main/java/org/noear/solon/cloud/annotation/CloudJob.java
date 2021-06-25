@@ -21,4 +21,10 @@ public @interface CloudJob {
      * 描述, 支持${xxx}配置
      * */
     String description() default "";
+
+    /**
+     * 时间表达式
+     * */
+    @Note("或cron：支持7位（秒，分，时，日期ofM，月，星期ofW，年）； 或简配：s，m，h，d，M")
+    String cron7x();
 }
