@@ -27,7 +27,7 @@
 
         <fastjson.ver>1.2.75</fastjson.ver>
         <jedis.ver>3.6.0</jedis.ver>
-        <okhttp.ver>3.14.8</okhttp.ver>
+        <okhttp.ver>3.14.9</okhttp.ver>
         <hutool.ver>5.5.6</hutool.ver>
 
         <servlet.ver>4.0.1</servlet.ver>
