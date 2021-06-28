@@ -21,9 +21,10 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Component {
-    @Note("name")
+    @Alias("name")
     String value() default ""; //as bean.name
 
+    @Alias("value")
     String name() default "";
 
     @Note("标签，用于快速查找")

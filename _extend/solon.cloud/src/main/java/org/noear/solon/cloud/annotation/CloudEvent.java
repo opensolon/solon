@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.annotation;
 
+import org.noear.solon.annotation.Alias;
 import org.noear.solon.annotation.Note;
 
 import java.lang.annotation.*;
@@ -17,12 +18,13 @@ public @interface CloudEvent {
     /**
      * 主题，支持${xxx}配置
      * */
-    @Note("topic")
+    @Alias("topic")
     String value() default "";
 
     /**
      * 主题，支持${xxx}配置
      * */
+    @Alias("value")
     String topic() default "";
 
     /**

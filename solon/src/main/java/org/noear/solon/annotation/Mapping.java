@@ -23,12 +23,13 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Mapping {
-    @Note("path")
+    @Alias("path")
     String value() default "";
 
     /**
      * 路径
      * */
+    @Alias("value")
     String path() default "";
 
     /**

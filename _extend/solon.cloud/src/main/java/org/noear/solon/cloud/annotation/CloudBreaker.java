@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.annotation;
 
+import org.noear.solon.annotation.Alias;
 import org.noear.solon.annotation.Around;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.cloud.impl.CloudBreakerInterceptor;
@@ -19,10 +20,11 @@ public @interface CloudBreaker {
     /**
      * 名称，支持${xxx}配置
      * */
-    @Note("name")
+    @Alias("name")
     String value() default "";
     /**
      * 名称，支持${xxx}配置
      * */
+    @Alias("value")
     String name() default "";
 }
