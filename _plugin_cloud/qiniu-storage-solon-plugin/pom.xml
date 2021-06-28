@@ -10,7 +10,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>qiniu-solon-plugin</artifactId>
+    <artifactId>qiniu-storage-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
 

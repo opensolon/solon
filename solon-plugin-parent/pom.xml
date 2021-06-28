@@ -263,7 +263,7 @@
         <module>../_plugin_cloud/opentracing-solon-plugin</module>
 
         <module>../_plugin_cloud/httputils-solon-plugin</module>
-        <module>../_plugin_cloud/qiniu-solon-plugin</module>
+        <module>../_plugin_cloud/qiniu-storage-solon-plugin</module>
     </modules>
 
 </project>

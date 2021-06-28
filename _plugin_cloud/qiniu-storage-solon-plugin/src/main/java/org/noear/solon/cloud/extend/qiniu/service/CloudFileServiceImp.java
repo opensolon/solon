@@ -13,12 +13,14 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.extend.qiniu.QiniuProps;
 import org.noear.solon.cloud.service.CloudFileService;
+import org.noear.solon.cloud.tool.HttpUtils;
 import org.noear.solon.core.handle.Result;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * @author noear 2021/6/26 created
+ * @author noear
  */
 public class CloudFileServiceImp implements CloudFileService {
     protected final String bucketDef;
@@ -49,7 +51,15 @@ public class CloudFileServiceImp implements CloudFileService {
             bucket = bucketDef;
         }
 
-        throw new UnsupportedOperationException();
+        String baseUrl = buildUrl(key);
+        String downUrl = auth.privateDownloadUrl(baseUrl);
+
+        try {
+            okhttp3.Response response = HttpUtils.http(downUrl).exec("GET");
+            return response.body().byteStream();
+        } catch (IOException e) {
+            throw new CloudFileException(e);
+        }
     }
 
     @Override
@@ -77,5 +87,9 @@ public class CloudFileServiceImp implements CloudFileService {
             }
         }
         return null;
+    }
+
+    private String buildUrl(String key) {
+        return "https://" + endpoint + "/" + key;
     }
 }
