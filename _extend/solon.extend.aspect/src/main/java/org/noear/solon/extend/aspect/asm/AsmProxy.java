@@ -33,7 +33,7 @@ public class AsmProxy {
     /**
      * 缓存已经生成的代理类的Class，key值根据 classLoader 和 targetClass 共同决定
      */
-    private static void saveProxyClassCache(ClassLoader classLoader, Class<?> targetClass, Class<?> proxyClass) {
+    private static void saveProxyClassCache(ClassLoaderProxy classLoader, Class<?> targetClass, Class<?> proxyClass) {
         String key = classLoader.toString() + "_" + targetClass.getName();
         proxyClassCache.put(key, proxyClass);
     }
@@ -41,7 +41,7 @@ public class AsmProxy {
     /**
      * 从缓存中取得代理类的Class，如果没有则返回 null
      */
-    private static Class<?> getProxyClassCache(ClassLoader classLoader, Class<?> targetClass) {
+    private static Class<?> getProxyClassCache(ClassLoaderProxy classLoader, Class<?> targetClass) {
         String key = classLoader.toString() + "_" + targetClass.getName();
         return proxyClassCache.get(key);
     }
@@ -56,14 +56,16 @@ public class AsmProxy {
      * @param targetParam       被代理对象的某一个构造器的参数，用于实例化构造器
      * @return
      */
-    public static Object newProxyInstance(ClassLoader classLoader,
-                                          InvocationHandler invocationHandler,
+    public static Object newProxyInstance(InvocationHandler invocationHandler,
                                           Class<?> targetClass,
                                           Constructor<?> targetConstructor,
                                           Object... targetParam) {
-        if (classLoader == null || targetClass == null || invocationHandler == null) {
+        if (targetClass == null || invocationHandler == null) {
             throw new IllegalArgumentException("argument is null");
         }
+
+        ClassLoaderProxy classLoader = ClassLoaderProxy.global();
+
         try {
             // 查看是否有缓存
             Class<?> proxyClass = getProxyClassCache(classLoader, targetClass);
@@ -114,7 +116,7 @@ public class AsmProxy {
 //            File outputFile = new File("/Users/jm/Downloads/Demo/" + newClassInnerName + ".class");
 //            save2File(outputFile, bytes);
             // 从指定ClassLoader加载Class
-            proxyClass = ClassLoaderAsmUtils.transfer2Class(classLoader, bytes);
+            proxyClass = classLoader.transfer2Class(bytes);
             // 缓存
             saveProxyClassCache(classLoader, targetClass, proxyClass);
             // 实例化代理对象

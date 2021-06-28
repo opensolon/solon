@@ -21,7 +21,7 @@ public class BeanInvocationHandler implements InvocationHandler {
             Object[] constructorParam = new Object[]{};
 
             this.bean = bean;
-            this.proxy = AsmProxy.newProxyInstance(clazz.getClassLoader(), this, clazz, constructor, constructorParam);
+            this.proxy = AsmProxy.newProxyInstance(this, clazz, constructor, constructorParam);
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Throwable ex) {
