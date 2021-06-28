@@ -1,8 +1,6 @@
 package org.noear.captcha.solon.plugin.util;
 
 import org.noear.captcha.solon.plugin.model.common.StaticVariable;
-import org.noear.solon.Solon;
-import sun.misc.BASE64Decoder;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
