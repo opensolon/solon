@@ -31,58 +31,70 @@ public class AuthUtil {
 
     /**
      * 验证是否有Ip授权
-     * */
-    public static boolean verifyIp(String ip){
+     */
+    public static boolean verifyIp(String ip) {
         return adapter().processor().verifyIp(ip);
     }
 
     /**
      * 验证是否已登录
-     * */
-    public static boolean verifyLogined(){
+     */
+    public static boolean verifyLogined() {
         return adapter().processor().verifyLogined();
     }
 
     /**
      * 验证是否有路径授权
-     * */
+     */
     public static boolean verifyPath(String path, String method) {
-        return adapter().processor().verifyPath(path, method);
+        if (verifyLogined()) {
+            return adapter().processor().verifyPath(path, method);
+        } else {
+            return false;
+        }
     }
 
     /**
      * 验证是否有权限授权
-     * */
+     */
     public static boolean verifyPermissions(String... permissions) {
         return verifyPermissions(permissions, Logical.OR);
     }
 
     /**
      * 验证是否有权限授权(同时满足多个权限)
-     * */
+     */
     public static boolean verifyPermissionsAnd(String... permissions) {
         return verifyPermissions(permissions, Logical.AND);
     }
 
     public static boolean verifyPermissions(String[] permissions, Logical logical) {
-        return adapter().processor().verifyPermissions(permissions, logical);
+        if (verifyLogined()) {
+            return adapter().processor().verifyPermissions(permissions, logical);
+        } else {
+            return false;
+        }
     }
 
     /**
      * 验证是否有角色授权
-     * */
+     */
     public static boolean verifyRoles(String... roles) {
         return verifyRoles(roles, Logical.OR);
     }
 
     /**
      * 验证是否有角色授权(同时满足多个角色)
-     * */
+     */
     public static boolean verifyRolesAnd(String... roles) {
         return verifyRoles(roles, Logical.AND);
     }
 
     public static boolean verifyRoles(String[] roles, Logical logical) {
-        return adapter().processor().verifyRoles(roles, logical);
+        if (verifyLogined()) {
+            return adapter().processor().verifyRoles(roles, logical);
+        } else {
+            return false;
+        }
     }
 }
