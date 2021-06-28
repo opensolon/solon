@@ -7,11 +7,29 @@ class SessionProp {
     public static String session_state_domain;
     public static boolean session_state_domain_auto;
 
+    /**
+     * 变量名
+     * */
     public static String session_jwt_name;
+    /**
+     * 密钥
+     * */
     public static String session_jwt_secret;
+    /**
+     * 前缀
+     * */
     public static String session_jwt_prefix;
+    /**
+     * 充许超时
+     * */
     public static boolean session_jwt_allowExpire;
+    /**
+     * 充许自动发布
+     * */
     public static boolean session_jwt_allowAutoIssue;
+    /**
+     * 充许使用头承载
+     * */
     public static boolean session_jwt_allowUseHeader;
 
 
