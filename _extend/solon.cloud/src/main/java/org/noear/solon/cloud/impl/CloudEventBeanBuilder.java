@@ -27,15 +27,15 @@ public class CloudEventBeanBuilder implements BeanBuilder<CloudEvent> {
 
             if (CloudClient.event() != null) {
                 //支持${xxx}配置
-                String name = Solon.cfg().getByParse(anno.value());
-                if (Utils.isEmpty(name)) {
-                    name = Solon.cfg().getByParse(anno.name());
+                String topic = Solon.cfg().getByParse(anno.value());
+                if (Utils.isEmpty(topic)) {
+                    topic = Solon.cfg().getByParse(anno.topic());
                 }
                 //支持${xxx}配置
                 String group = Solon.cfg().getByParse(anno.group());
 
                 //关注事件
-                CloudClient.event().attention(anno.level(), anno.channel(), group, name, bw.raw());
+                CloudClient.event().attention(anno.level(), anno.channel(), group, topic, bw.raw());
             }
         }
     }
