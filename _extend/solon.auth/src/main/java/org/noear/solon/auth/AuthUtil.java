@@ -47,6 +47,7 @@ public class AuthUtil {
      * 验证是否有路径授权
      */
     public static boolean verifyPath(String path, String method) {
+        //先验证是否有登录
         if (verifyLogined()) {
             return adapter().processor().verifyPath(path, method);
         } else {
@@ -68,7 +69,11 @@ public class AuthUtil {
         return verifyPermissions(permissions, Logical.AND);
     }
 
+    /**
+     * 验证是否有权限授权
+     */
     public static boolean verifyPermissions(String[] permissions, Logical logical) {
+        //先验证是否有登录
         if (verifyLogined()) {
             return adapter().processor().verifyPermissions(permissions, logical);
         } else {
@@ -90,7 +95,11 @@ public class AuthUtil {
         return verifyRoles(roles, Logical.AND);
     }
 
+    /**
+     * 验证是否有角色授权
+     */
     public static boolean verifyRoles(String[] roles, Logical logical) {
+        //先验证是否有登录
         if (verifyLogined()) {
             return adapter().processor().verifyRoles(roles, logical);
         } else {
