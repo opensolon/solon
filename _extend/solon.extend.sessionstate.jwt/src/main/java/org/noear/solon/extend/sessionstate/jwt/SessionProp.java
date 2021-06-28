@@ -24,11 +24,11 @@ class SessionProp {
      * */
     public static boolean session_jwt_allowExpire;
     /**
-     * 充许自动发布
+     * 充许自动发布（即输出到header或cookie）
      * */
     public static boolean session_jwt_allowAutoIssue;
     /**
-     * 充许使用头承载
+     * 充许使用header承载
      * */
     public static boolean session_jwt_allowUseHeader;
 
