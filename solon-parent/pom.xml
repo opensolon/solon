@@ -641,6 +641,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>qiniu-storage-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>nacos-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
