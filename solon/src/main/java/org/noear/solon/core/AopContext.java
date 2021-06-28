@@ -122,7 +122,7 @@ public class AopContext extends BeanContainer {
         beanBuilderAdd(ServerEndpoint.class, (clz, wrap, anno) -> {
             if (Listener.class.isAssignableFrom(clz)) {
                 Listener l = wrap.raw();
-                Solon.global().router().add(anno.value(), anno.method(), l);
+                Solon.global().router().add(Utils.annoAlias(anno.value(), anno.path()), anno.method(), l);
             }
         });
     }

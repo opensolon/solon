@@ -30,10 +30,11 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface ServerEndpoint {
-    /**
-     * 资源描述
-     */
+    @Alias("path")
     String value() default "";
+
+    @Alias("value")
+    String path() default "";
 
     /**
      * 方法
