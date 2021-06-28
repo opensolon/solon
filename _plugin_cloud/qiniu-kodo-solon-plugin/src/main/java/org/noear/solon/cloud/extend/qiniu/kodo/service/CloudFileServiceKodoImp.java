@@ -5,10 +5,8 @@ import com.qiniu.http.Response;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
-import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
-import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.extend.qiniu.kodo.KodoProps;
@@ -24,6 +22,7 @@ import java.io.InputStream;
  */
 public class CloudFileServiceKodoImp implements CloudFileService {
     private static CloudFileServiceKodoImp instance;
+
     public static synchronized CloudFileServiceKodoImp getInstance() {
         if (instance == null) {
             instance = new CloudFileServiceKodoImp();
@@ -81,25 +80,18 @@ public class CloudFileServiceKodoImp implements CloudFileService {
         String uploadToken = auth.uploadToken(bucket);
 
         try {
-            StringMap stringMap = new StringMap();
-            Response response = uploadManager.put(stream, key, uploadToken, stringMap, streamMime);
-            //解析上传成功的结果
-            DefaultPutRet putRet = ONode.deserialize(response.bodyString(), DefaultPutRet.class);
-            System.out.println(putRet.key);
-            System.out.println(putRet.hash);
-        } catch (QiniuException ex) {
-            Response r = ex.response;
-            System.err.println(r.toString());
-            try {
-                System.err.println(r.bodyString());
-            } catch (QiniuException ex2) {
-                //ignore
-            }
+            Response resp = uploadManager.put(stream, key, uploadToken, new StringMap(), streamMime);
+            return Result.succeed(resp.bodyString());
+        } catch (QiniuException e) {
+            throw new CloudFileException(e);
         }
-        return null;
     }
 
     private String buildUrl(String key) {
-        return "https://" + endpoint + "/" + key;
+        if (endpoint.contains("://")) {
+            return endpoint + "/" + key;
+        } else {
+            return "https://" + endpoint + "/" + key;
+        }
     }
 }
