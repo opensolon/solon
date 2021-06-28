@@ -107,9 +107,7 @@ public class AsmProxy {
             addStaticInitBlock(writer, targetClassName, newClassInnerName, methodsMap, declaredMethodsMap);
             // 生成二进制数据
             byte[] bytes = writer.toByteArray();
-            // 保存到文件，用于debug调试
-//            File outputFile = new File("/Users/jm/Downloads/Demo/" + newClassInnerName + ".class");
-//            save2File(outputFile, bytes);
+
             // 从指定ClassLoader加载Class
             proxyClass = classLoader.transfer2Class(bytes);
             // 缓存
@@ -250,48 +248,6 @@ public class AsmProxy {
         methodVisitor.visitEnd();
     }
 
-    /**
-     * 添加调用 invocationHandler 的 invoke 方法
-     */
-//    private static void addInvokeMethod(ClassWriter writer, String owner) throws Exception {
-//        MethodVisitor methodVisitor = writer.visitMethod(Opcodes.ACC_PRIVATE | Opcodes.ACC_VARARGS,
-//                METHOD_INVOKE, METHOD_INVOKE_DESC, null, null);
-//        methodVisitor.visitCode();
-//        // 异常处理
-//        Label label0 = new Label();
-//        Label label1 = new Label();
-//        Label label2 = new Label();
-//        methodVisitor.visitTryCatchBlock(label0, label1, label2, Type.getInternalName(Throwable.class));
-//        methodVisitor.visitLabel(label0);
-//        // 取到 invocationHandler 字段并入栈
-//        methodVisitor.visitVarInsn(Opcodes.ALOAD, 0);
-//        methodVisitor.visitFieldInsn(Opcodes.GETFIELD, owner, FIELD_INVOCATIONHANDLER,
-//                Type.getDescriptor(InvocationHandler.class));
-//        // 将三个参数对应的局部变量表位置入栈
-//        methodVisitor.visitVarInsn(Opcodes.ALOAD, 1);
-//        methodVisitor.visitVarInsn(Opcodes.ALOAD, 2);
-//        methodVisitor.visitVarInsn(Opcodes.ALOAD, 3);
-//        String handlerName = Type.getInternalName(InvocationHandler.class);
-//        String handlerMethodName = "invoke";
-//        String handlerDesc = "(Ljava/lang/Object;Ljava/lang/reflect/Method;[Ljava/lang/Object;)Ljava/lang/Object;";
-//        // 调用 invocationHandler.invoke 方法
-//        methodVisitor.visitMethodInsn(Opcodes.INVOKEINTERFACE, handlerName, handlerMethodName, handlerDesc, true);
-//        // 正常返回
-//        methodVisitor.visitLabel(label1);
-//        methodVisitor.visitInsn(Opcodes.ARETURN);
-//        // 异常处理
-//        methodVisitor.visitLabel(label2);
-//        methodVisitor.visitFrame(Opcodes.F_SAME1, 0, null, 1,
-//                new Object[]{Type.getInternalName(Throwable.class)});
-//        methodVisitor.visitVarInsn(Opcodes.ASTORE, 4);
-//        methodVisitor.visitVarInsn(Opcodes.ALOAD, 4);
-//        methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(Throwable.class),
-//                "printStackTrace", "()V", false);
-//        methodVisitor.visitInsn(Opcodes.ACONST_NULL);
-//        methodVisitor.visitInsn(Opcodes.ARETURN);
-//        methodVisitor.visitMaxs(4, 5);
-//        methodVisitor.visitEnd();
-//    }
 
     /**
      * 添加继承的方法或目标类本身的方法
