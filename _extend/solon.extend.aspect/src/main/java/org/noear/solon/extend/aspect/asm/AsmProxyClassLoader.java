@@ -6,13 +6,13 @@ import org.noear.solon.core.JarClassLoader;
  * @author noear
  * @since 1.5
  */
-public class ClassLoaderProxy extends ClassLoader {
-    private static ClassLoaderProxy global = new ClassLoaderProxy();
-    public static ClassLoaderProxy global() {
+public class AsmProxyClassLoader extends ClassLoader {
+    private static AsmProxyClassLoader global = new AsmProxyClassLoader();
+    public static AsmProxyClassLoader global() {
         return global;
     }
 
-    public ClassLoaderProxy() {
+    public AsmProxyClassLoader() {
         super(JarClassLoader.global());
     }
 
