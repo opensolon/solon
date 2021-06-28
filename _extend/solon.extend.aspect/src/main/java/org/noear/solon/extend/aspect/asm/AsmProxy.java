@@ -114,7 +114,7 @@ public class AsmProxy {
 //            File outputFile = new File("/Users/jm/Downloads/Demo/" + newClassInnerName + ".class");
 //            save2File(outputFile, bytes);
             // 从指定ClassLoader加载Class
-            proxyClass = transfer2Class(classLoader, bytes);
+            proxyClass = ClassLoaderAsmUtils.transfer2Class(classLoader, bytes);
             // 缓存
             saveProxyClassCache(classLoader, targetClass, proxyClass);
             // 实例化代理对象
@@ -643,23 +643,5 @@ public class AsmProxy {
         } catch (Exception ex) {
             EventBus.push(ex);
         }
-    }
-
-    /**
-     * 将字节数组转换为 Class
-     */
-    private static Class<?> transfer2Class(ClassLoader classLoader, byte[] bytes) {
-        try {
-            Class cl = Class.forName("java.lang.ClassLoader");
-            Method defineClassMethod = cl.getDeclaredMethod("defineClass",
-                    new Class[]{String.class, byte[].class, int.class, int.class});
-            defineClassMethod.setAccessible(true);
-            Class<?> clazz = (Class<?>) defineClassMethod.invoke(classLoader,
-                    new Object[]{null, bytes, 0, bytes.length});
-            return clazz;
-        } catch (Exception ex) {
-            EventBus.push(ex);
-        }
-        return null;
     }
 }
