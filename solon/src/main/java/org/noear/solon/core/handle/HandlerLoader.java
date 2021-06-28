@@ -12,7 +12,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * 通用处理接口加载器（根据bean加载）
@@ -35,7 +34,7 @@ public class HandlerLoader extends HandlerAide {
         if (bMapping == null) {
             initDo(wrap, null, wrap.remoting(), null, true);
         } else {
-            String bPath = Utils.annoName(bMapping.value(), bMapping.path());
+            String bPath = Utils.annoAlias(bMapping.value(), bMapping.path());
             initDo(wrap, bPath, wrap.remoting(), null, true);
         }
     }
@@ -139,7 +138,7 @@ public class HandlerLoader extends HandlerAide {
 
             //构建path and method
             if (m_map != null) {
-                m_path = Utils.annoName(m_map.value(), m_map.path());
+                m_path = Utils.annoAlias(m_map.value(), m_map.path());
 
                 if (m_method.size() == 0) {
                     //如果没有找到，则用Mapping上自带的

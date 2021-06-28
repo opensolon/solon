@@ -12,7 +12,6 @@ import org.noear.solon.ext.RunnableEx;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -80,7 +79,7 @@ public class Action extends HandlerAide implements Handler {
         } else {
             mProduces = mapping.produces();
             mConsumes = mapping.consumes();
-            mName = Utils.annoName(mapping.value(), mapping.path());
+            mName = Utils.annoAlias(mapping.value(), mapping.path());
             mIsMain = !(mapping.after() || mapping.before());
         }
 

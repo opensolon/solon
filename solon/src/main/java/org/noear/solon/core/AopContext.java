@@ -78,7 +78,7 @@ public class AopContext extends BeanContainer {
 
         //注册 @Component 构建器
         beanBuilderAdd(Component.class, (clz, bw, anno) -> {
-            String beanName = Utils.annoName(anno.value(), anno.name());
+            String beanName = Utils.annoAlias(anno.value(), anno.name());
 
             bw.nameSet(beanName);
             bw.tagSet(anno.tag());
@@ -446,7 +446,7 @@ public class AopContext extends BeanContainer {
                 m_bw.attrsSet(anno.attrs());
             }
 
-            String beanName = Utils.annoName(anno.value(), anno.name());
+            String beanName = Utils.annoAlias(anno.value(), anno.name());
             m_bw.nameSet(beanName);
             m_bw.tagSet(anno.tag());
             m_bw.typedSet(anno.typed());

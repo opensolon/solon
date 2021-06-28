@@ -36,9 +36,9 @@ public class Utils {
     }
 
     /**
-     * 获取注解名
+     * 获取注解别名
      * */
-    public static String annoName(String v1, String v2) {
+    public static String annoAlias(String v1, String v2) {
         if (isEmpty(v1)) {
             return v2;
         } else {

@@ -26,7 +26,7 @@ public interface HandlerSlots {
     void add(String expr, MethodType method, Handler handler);
 
     default void add(Mapping mapping, List<MethodType> methodTypes, Handler handler){
-        String path = Utils.annoName(mapping.value(), mapping.path());
+        String path = Utils.annoAlias(mapping.value(), mapping.path());
 
         for (MethodType m1 : methodTypes) {
             if (mapping.after() || mapping.before()) {
