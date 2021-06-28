@@ -4,6 +4,7 @@ import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.handle.UploadedFile;
 
 @Singleton(false)
@@ -12,7 +13,7 @@ import org.noear.solon.core.handle.UploadedFile;
 public class UploadController {
 
     //支持上传文件参数（file 变量名，与表单变量名保持一至）
-    @Mapping("f1")
+    @Mapping(path = "f1", method = MethodType.POST)
     public String test_f1(Context context, UploadedFile file) throws Exception {
         if (file != null) {
             return "成功：" + file.name;

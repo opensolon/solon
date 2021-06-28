@@ -9,7 +9,7 @@ import org.noear.solon.core.handle.Context;
  */
 @Controller
 public class InterceptController {
-    @Mapping(value = "/demo2/intercept/**",before = true)
+    @Mapping(path = "/demo2/intercept/**",before = true)
     public void bef(Context ctx) throws Exception{
         ctx.output("intercept");
     }

@@ -21,7 +21,7 @@ public class MethodDemoController {
      */
 
     //经典写法
-    @Mapping(value = "demo10", method = MethodType.POST)
+    @Mapping(path = "demo10", method = MethodType.POST)
     public String demo10(String name) {
         return name;
     }

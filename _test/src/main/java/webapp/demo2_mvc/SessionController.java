@@ -4,7 +4,7 @@ import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Context;
 
-@Mapping("/demo2/session")
+@Mapping(path = "/demo2/session")
 @Controller
 public class SessionController {
     @Mapping("id")
