@@ -26,14 +26,14 @@ import java.util.function.Supplier;
  * @since 1.5
  * */
 public class HttpUtils {
-    protected final static Supplier<Dispatcher> httpClientDefaultDispatcher = () -> {
+    private final static Supplier<Dispatcher> httpClientDefaultDispatcher = () -> {
         Dispatcher temp = new Dispatcher();
         temp.setMaxRequests(20000);
         temp.setMaxRequestsPerHost(10000);
         return temp;
     };
 
-    protected final static OkHttpClient httpClientDefault = new OkHttpClient.Builder()
+    private final static OkHttpClient httpClientDefault = new OkHttpClient.Builder()
             .connectTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(5, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
