@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.impl;
 
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.annotation.CloudBreaker;
 import org.noear.solon.cloud.model.BreakerException;
@@ -27,6 +28,9 @@ public class CloudBreakerInterceptor implements Interceptor {
         if (anno != null) {
             //支持${xxx}配置
             String name = Solon.cfg().getByParse(anno.value());
+            if(Utils.isEmpty(name)){
+                name = Solon.cfg().getByParse(anno.name());
+            }
 
             try (AutoCloseable entry = CloudClient.breaker().entry(name)) {
                 return inv.invoke();

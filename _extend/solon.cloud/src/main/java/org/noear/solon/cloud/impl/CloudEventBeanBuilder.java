@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.impl;
 
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudManager;
@@ -26,12 +27,15 @@ public class CloudEventBeanBuilder implements BeanBuilder<CloudEvent> {
 
             if (CloudClient.event() != null) {
                 //支持${xxx}配置
-                String topic = Solon.cfg().getByParse(anno.value());
+                String name = Solon.cfg().getByParse(anno.value());
+                if (Utils.isEmpty(name)) {
+                    name = Solon.cfg().getByParse(anno.name());
+                }
                 //支持${xxx}配置
                 String group = Solon.cfg().getByParse(anno.group());
 
                 //关注事件
-                CloudClient.event().attention(anno.level(), anno.channel(), group, topic, bw.raw());
+                CloudClient.event().attention(anno.level(), anno.channel(), group, name, bw.raw());
             }
         }
     }

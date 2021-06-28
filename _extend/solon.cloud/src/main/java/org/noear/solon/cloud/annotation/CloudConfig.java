@@ -18,7 +18,12 @@ public @interface CloudConfig {
      * 名称，支持${xxx}配置
      * */
     @Note("name")
-    String value();
+    String value() default "";
+
+    /**
+     * 名称，支持${xxx}配置
+     * */
+    String name() default "";
 
     /**
      * 分组 （对某些框架来讲，可能没用处），支持${xxx}配置

@@ -48,6 +48,10 @@ public class Props extends Properties {
     }
 
     public String getByParse(String expr) {
+        if(Utils.isEmpty(expr)){
+            return expr;
+        }
+
         int start = expr.indexOf("${");
         if (start < 0) {
             return expr;

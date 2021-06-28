@@ -15,10 +15,16 @@ import java.lang.annotation.*;
 @Documented
 public @interface CloudJob {
     /**
-     * 名称, 支持${xxx}配置
+     * 名称，支持${xxx}配置
      * */
     @Note("name")
-    String value();
+    String value() default "";
+
+    /**
+     * 名称，支持${xxx}配置
+     * */
+    String name() default "";
+
 
     /**
      * 时间表达式（具体由适配框架支持）

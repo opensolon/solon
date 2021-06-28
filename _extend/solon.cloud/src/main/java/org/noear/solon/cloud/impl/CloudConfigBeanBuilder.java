@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.impl;
 
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudConfigHandler;
 import org.noear.solon.cloud.CloudManager;
@@ -40,6 +41,9 @@ public class CloudConfigBeanBuilder implements BeanBuilder<CloudConfig> {
         if (CloudClient.config() != null) {
             //支持${xxx}配置
             String name = Solon.cfg().getByParse(anno.value());
+            if(Utils.isEmpty(name)){
+                name = Solon.cfg().getByParse(anno.name());
+            }
             //支持${xxx}配置
             String group = Solon.cfg().getByParse(anno.group());
 

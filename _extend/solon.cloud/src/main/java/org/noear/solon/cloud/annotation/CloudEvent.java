@@ -15,10 +15,15 @@ import java.lang.annotation.*;
 @Documented
 public @interface CloudEvent {
     /**
-     * 主题，支持${xxx}配置
+     * 名称，支持${xxx}配置
      * */
-    @Note("topic")
-    String value();
+    @Note("name")
+    String value() default "";
+
+    /**
+     * 名称，支持${xxx}配置
+     * */
+    String name() default "";
 
     /**
      * 分组，支持${xxx}配置

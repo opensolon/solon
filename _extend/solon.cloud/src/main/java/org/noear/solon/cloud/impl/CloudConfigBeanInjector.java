@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.impl;
 
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.BeanInjector;
 import org.noear.solon.core.VarHolder;
@@ -28,6 +29,9 @@ public class CloudConfigBeanInjector implements BeanInjector<CloudConfig> {
 
         //支持${xxx}配置
         String name = Solon.cfg().getByParse(anno.value());
+        if(Utils.isEmpty(name)){
+            name = Solon.cfg().getByParse(anno.name());
+        }
         //支持${xxx}配置
         String group = Solon.cfg().getByParse(anno.group());
 

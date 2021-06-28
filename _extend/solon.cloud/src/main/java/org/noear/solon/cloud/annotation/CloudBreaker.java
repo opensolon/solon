@@ -20,5 +20,9 @@ public @interface CloudBreaker {
      * 名称，支持${xxx}配置
      * */
     @Note("name")
-    String value();
+    String value() default "";
+    /**
+     * 名称，支持${xxx}配置
+     * */
+    String name() default "";
 }
