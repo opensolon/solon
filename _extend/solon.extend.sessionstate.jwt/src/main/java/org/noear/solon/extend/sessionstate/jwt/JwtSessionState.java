@@ -163,7 +163,7 @@ public class JwtSessionState extends SessionStateDefault {
 
     @Override
     public void sessionPublish() {
-        if (SessionProp.session_jwt_allowIssue) {
+        if (SessionProp.session_jwt_allowAutoIssue) {
             String token = sessionToken();
 
             if (Utils.isNotEmpty(token)) {

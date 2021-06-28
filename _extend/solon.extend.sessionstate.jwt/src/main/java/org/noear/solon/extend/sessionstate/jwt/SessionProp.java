@@ -11,7 +11,7 @@ class SessionProp {
     public static String session_jwt_secret;
     public static String session_jwt_prefix;
     public static boolean session_jwt_allowExpire;
-    public static boolean session_jwt_allowIssue;
+    public static boolean session_jwt_allowAutoIssue;
     public static boolean session_jwt_allowUseHeader;
 
 
@@ -25,11 +25,17 @@ class SessionProp {
         session_jwt_prefix = Solon.cfg().get("server.session.state.jwt.prefix", "").trim();
 
         session_jwt_allowExpire = Solon.cfg().getBool("server.session.state.jwt.allowExpire", true);
-        session_jwt_allowIssue = Solon.cfg().getBool("server.session.state.jwt.allowIssue", true);
         session_jwt_allowUseHeader = Solon.cfg().getBool("server.session.state.jwt.allowUseHeader", false);
 
         //兼容旧版本（以后会被弃用）
+        boolean issue1 = Solon.cfg().getBool("server.session.state.jwt.allowIssue", true);
+
+        boolean issue2 = Solon.cfg().getBool("server.session.state.jwt.allowAutoIssue", true);
+        session_jwt_allowAutoIssue = (issue1 && issue2);
+
+        //兼容旧版本（以后会被弃用）
         boolean requestUseHeader = Solon.cfg().getBool("server.session.state.jwt.requestUseHeader", false);
+        //兼容旧版本（以后会被弃用）
         boolean responseUseHeader = Solon.cfg().getBool("server.session.state.jwt.responseUseHeader", false);
 
         if (requestUseHeader || responseUseHeader) {
