@@ -26,14 +26,14 @@ import java.util.function.Supplier;
  * @since 1.5
  * */
 public class HttpUtils {
-    private final static Supplier<Dispatcher> okhttp_dispatcher = () -> {
+    protected final static Supplier<Dispatcher> okhttp_dispatcher = () -> {
         Dispatcher temp = new Dispatcher();
         temp.setMaxRequests(20000);
         temp.setMaxRequestsPerHost(10000);
         return temp;
     };
 
-    private final static OkHttpClient httpClient = new OkHttpClient.Builder()
+    protected final static OkHttpClient httpClientDefault = new OkHttpClient.Builder()
             .connectTimeout(60 * 5, TimeUnit.SECONDS)
             .writeTimeout(60 * 5, TimeUnit.SECONDS)
             .readTimeout(60 * 5, TimeUnit.SECONDS)
@@ -44,21 +44,31 @@ public class HttpUtils {
      * 构建一个 Http 请求工具
      * */
     public static HttpUtils http(String url) {
-        HttpUtils tmp = new HttpUtils(url);
+        return http(url, httpClientDefault);
+    }
+
+    public static HttpUtils http(String url, OkHttpClient client) {
+        HttpUtils tmp = new HttpUtils(client, url);
         tmp.header(CloudClient.trace().HEADER_TRACE_ID_NAME(), CloudClient.trace().getTraceId());
         tmp.header(CloudClient.trace().HEADER_FROM_ID_NAME(), CloudClient.trace().getFromId());
 
         return tmp;
     }
 
+
     /**
      * 构建一个 Http 请求工具
      * */
     public static HttpUtils http(String service, String path) {
-        String url = LoadBalance.get(service).getServer() + path;
-        return http(url);
+        return http(service, path, httpClientDefault);
     }
 
+    public static HttpUtils http(String service, String path, OkHttpClient client) {
+        String url = LoadBalance.get(service).getServer() + path;
+        return http(url, client);
+    }
+
+    private final OkHttpClient _httpClient;
     private Charset _charset;
     private Map<String, String> _cookies;
     private RequestBody _body;
@@ -66,12 +76,18 @@ public class HttpUtils {
     private boolean _multipart = false;
 
     private MultipartBody.Builder _part_builer;
-    private Request.Builder _builder;
+    private final Request.Builder _builder;
 
     private HttpCallback<Boolean, Response, Exception> _callback;
     private boolean _callAsync;
 
-    public HttpUtils(String url) {
+    public HttpUtils(OkHttpClient client, String url) {
+        if (client == null) {
+            _httpClient = httpClientDefault;
+        } else {
+            _httpClient = client;
+        }
+
         _builder = new Request.Builder().url(url);
     }
 
@@ -313,7 +329,7 @@ public class HttpUtils {
         }
 
         if (_callAsync) {
-            httpClient.newCall(_builder.build()).enqueue(new Callback() {
+            _httpClient.newCall(_builder.build()).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
@@ -330,7 +346,7 @@ public class HttpUtils {
 
             return null;
         } else {
-            Call call = httpClient.newCall(_builder.build());
+            Call call = _httpClient.newCall(_builder.build());
             return call.execute();
         }
     }
