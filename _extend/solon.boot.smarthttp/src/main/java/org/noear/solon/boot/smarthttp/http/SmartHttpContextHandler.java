@@ -7,15 +7,14 @@ import org.noear.solon.core.event.EventBus;
 import org.smartboot.http.common.enums.HttpStatus;
 import org.smartboot.http.server.HttpRequest;
 import org.smartboot.http.server.HttpResponse;
-import org.smartboot.http.server.HttpServerHandle;
+import org.smartboot.http.server.HttpServerHandler;
 
 import java.io.IOException;
 
-public class SmartHttpContextHandler extends HttpServerHandle {
-
+public class SmartHttpContextHandler extends HttpServerHandler {
 
     @Override
-    public void doHandle(HttpRequest request, HttpResponse response) throws IOException {
+    public void handle(HttpRequest request, HttpResponse response) throws IOException {
         /*
          *
          * jlhttp 流程

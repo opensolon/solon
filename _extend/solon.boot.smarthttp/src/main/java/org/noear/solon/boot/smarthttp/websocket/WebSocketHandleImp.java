@@ -8,11 +8,11 @@ import org.noear.solon.socketd.ListenerProxy;
 import org.noear.solon.socketd.ProtocolManager;
 import org.smartboot.http.server.WebSocketRequest;
 import org.smartboot.http.server.WebSocketResponse;
-import org.smartboot.http.server.handle.WebSocketDefaultHandle;
+import org.smartboot.http.server.handler.WebSocketDefaultHandler;
 
 import java.nio.ByteBuffer;
 
-public class WebSocketHandleImp extends WebSocketDefaultHandle {
+public class WebSocketHandleImp extends WebSocketDefaultHandler {
 
     @Override
     public void onHandShake(WebSocketRequest request, WebSocketResponse response) {
