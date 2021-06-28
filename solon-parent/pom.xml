@@ -641,7 +641,7 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>qiniu-storage-solon-plugin</artifactId>
+                <artifactId>qiniu-kodo-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
