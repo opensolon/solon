@@ -9,6 +9,7 @@ class SessionProp {
 
     public static String session_jwt_name;
     public static String session_jwt_secret;
+    public static String session_jwt_prefix;
     public static boolean session_jwt_allowExpire;
     public static boolean session_jwt_allowIssue;
     public static boolean session_jwt_allowUseHeader;
@@ -21,6 +22,8 @@ class SessionProp {
 
         session_jwt_name = Solon.cfg().get("server.session.state.jwt.name", "TOKEN");
         session_jwt_secret = Solon.cfg().get("server.session.state.jwt.secret");
+        session_jwt_prefix = Solon.cfg().get("server.session.state.jwt.prefix", "").trim();
+
         session_jwt_allowExpire = Solon.cfg().getBool("server.session.state.jwt.allowExpire", true);
         session_jwt_allowIssue = Solon.cfg().getBool("server.session.state.jwt.allowIssue", true);
         session_jwt_allowUseHeader = Solon.cfg().getBool("server.session.state.jwt.allowUseHeader", false);
