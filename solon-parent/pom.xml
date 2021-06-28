@@ -26,7 +26,7 @@
         <luffy.ver>1.1.2</luffy.ver>
 
         <fastjson.ver>1.2.75</fastjson.ver>
-        <jedis.ver>3.6.0</jedis.ver>
+        <jedis.ver>3.6.1</jedis.ver>
         <okhttp.ver>3.14.9</okhttp.ver>
         <hutool.ver>5.5.6</hutool.ver>
 
@@ -36,12 +36,12 @@
         <undertow.ver>2.2.7.Final</undertow.ver>
 
         <jackson.ver>2.10.5</jackson.ver>
-        <hessian.ver>4.0.63</hessian.ver>
-        <protostuff.ver>1.7.2</protostuff.ver>
+        <hessian.ver>4.0.65</hessian.ver>
+        <protostuff.ver>1.7.4</protostuff.ver>
 
         <junit.ver>4.13.1</junit.ver>
 
-        <mybatis.ver>3.5.3</mybatis.ver>
+        <mybatis.ver>3.5.7</mybatis.ver>
         <feign.ver>8.18.0</feign.ver>
         <dubbo.ver>2.7.5</dubbo.ver>
 
