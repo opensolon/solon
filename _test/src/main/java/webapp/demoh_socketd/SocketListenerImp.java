@@ -7,7 +7,7 @@ import org.noear.solon.core.message.Message;
 import org.noear.solon.core.message.Session;
 import org.noear.solon.annotation.ServerEndpoint;
 
-@ServerEndpoint(value = "**")
+@ServerEndpoint(path = "**")
 public class SocketListenerImp implements Listener {
     @Override
     public void onMessage(Session session, Message message) {
