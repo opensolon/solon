@@ -40,10 +40,7 @@ public class CloudConfigBeanBuilder implements BeanBuilder<CloudConfig> {
 
         if (CloudClient.config() != null) {
             //支持${xxx}配置
-            String name = Solon.cfg().getByParse(anno.value());
-            if(Utils.isEmpty(name)){
-                name = Solon.cfg().getByParse(anno.name());
-            }
+            String name = Solon.cfg().getByParse(Utils.annoAlias(anno.value(), anno.name()));
             //支持${xxx}配置
             String group = Solon.cfg().getByParse(anno.group());
 
