@@ -23,7 +23,7 @@
         <dependency>
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
-            <version>9.2</version>
+            <version>${asm.ver}</version>
         </dependency>
     </dependencies>
 

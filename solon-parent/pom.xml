@@ -30,6 +30,8 @@
         <okhttp.ver>3.14.9</okhttp.ver>
         <hutool.ver>5.5.6</hutool.ver>
 
+        <asm.ver>9.2</asm.ver>
+
         <servlet.ver>4.0.1</servlet.ver>
 
         <jetty.ver>9.4.38.v20210224</jetty.ver>
