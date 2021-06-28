@@ -46,10 +46,10 @@ class SessionProp {
         session_jwt_allowUseHeader = Solon.cfg().getBool("server.session.state.jwt.allowUseHeader", false);
 
         //兼容旧版本（以后会被弃用）
-        boolean issue1 = Solon.cfg().getBool("server.session.state.jwt.allowIssue", true);
+        boolean issueOld = Solon.cfg().getBool("server.session.state.jwt.allowIssue", true);
 
-        boolean issue2 = Solon.cfg().getBool("server.session.state.jwt.allowAutoIssue", true);
-        session_jwt_allowAutoIssue = (issue1 && issue2);
+        boolean issueNew = Solon.cfg().getBool("server.session.state.jwt.allowAutoIssue", true);
+        session_jwt_allowAutoIssue = (issueOld && issueNew);
 
         //兼容旧版本（以后会被弃用）
         boolean requestUseHeader = Solon.cfg().getBool("server.session.state.jwt.requestUseHeader", false);
