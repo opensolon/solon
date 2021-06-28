@@ -78,7 +78,9 @@ public class AopContext extends BeanContainer {
 
         //注册 @Component 构建器
         beanBuilderAdd(Component.class, (clz, bw, anno) -> {
-            bw.nameSet(anno.value());
+            String beanName = Utils.annoName(anno.value(), anno.name());
+
+            bw.nameSet(beanName);
             bw.tagSet(anno.tag());
             bw.attrsSet(anno.attrs());
             bw.typedSet(anno.typed());
@@ -87,7 +89,7 @@ public class AopContext extends BeanContainer {
             addBeanShape(clz, bw);
 
             //注册到容器
-            beanRegister(bw, anno.value(), anno.typed());
+            beanRegister(bw, beanName, anno.typed());
 
             //尝试提取函数
             beanExtract(bw);
@@ -444,7 +446,8 @@ public class AopContext extends BeanContainer {
                 m_bw.attrsSet(anno.attrs());
             }
 
-            m_bw.nameSet(anno.value());
+            String beanName = Utils.annoName(anno.value(), anno.name());
+            m_bw.nameSet(beanName);
             m_bw.tagSet(anno.tag());
             m_bw.typedSet(anno.typed());
 
@@ -452,7 +455,7 @@ public class AopContext extends BeanContainer {
             addBeanShape(m_bw.clz(), m_bw);
 
             //注册到容器
-            beanRegister(m_bw, anno.value(), anno.typed());
+            beanRegister(m_bw, beanName, anno.typed());
 
             //@Bean 动态产生的 beanWrap（含 name,tag,attrs），进行事件通知
             EventBus.push(m_bw);

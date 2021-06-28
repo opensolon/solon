@@ -1,5 +1,6 @@
 package org.noear.solon.core.handle;
 
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.Mapping;
 
 import java.util.List;
@@ -25,15 +26,17 @@ public interface HandlerSlots {
     void add(String expr, MethodType method, Handler handler);
 
     default void add(Mapping mapping, List<MethodType> methodTypes, Handler handler){
+        String path = Utils.annoName(mapping.value(), mapping.path());
+
         for (MethodType m1 : methodTypes) {
             if (mapping.after() || mapping.before()) {
                 if (mapping.after()) {
-                    after(mapping.value(), m1, mapping.index(), handler);
+                    after(path, m1, mapping.index(), handler);
                 } else {
-                    before(mapping.value(), m1, mapping.index(), handler);
+                    before(path, m1, mapping.index(), handler);
                 }
             } else {
-                add(mapping.value(), m1, handler);
+                add(path, m1, handler);
             }
         }
     };

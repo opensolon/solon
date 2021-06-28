@@ -23,8 +23,10 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Bean {
-    @Note("注册名称")
+    @Note("name")
     String value() default ""; //as bean.name
+
+    String name() default "";
 
     @Note("标签，用于快速查找")
     String tag() default "";

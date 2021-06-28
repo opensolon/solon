@@ -1,5 +1,6 @@
 package org.noear.solon.core.handle;
 
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
@@ -34,7 +35,8 @@ public class HandlerLoader extends HandlerAide {
         if (bMapping == null) {
             initDo(wrap, null, wrap.remoting(), null, true);
         } else {
-            initDo(wrap, bMapping.value(), wrap.remoting(), null, true);
+            String bPath = Utils.annoName(bMapping.value(), bMapping.path());
+            initDo(wrap, bPath, wrap.remoting(), null, true);
         }
     }
 
@@ -137,7 +139,7 @@ public class HandlerLoader extends HandlerAide {
 
             //构建path and method
             if (m_map != null) {
-                m_path = m_map.value();
+                m_path = Utils.annoName(m_map.value(), m_map.path());
 
                 if (m_method.size() == 0) {
                     //如果没有找到，则用Mapping上自带的

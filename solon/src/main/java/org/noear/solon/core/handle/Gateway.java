@@ -50,7 +50,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             throw new RuntimeException("No Mapping!");
         }
 
-        mapping = mappingAnno.value();
+        mapping = Utils.annoName(mappingAnno.value(), mappingAnno.path());
 
         //默认为404错误输出
         mainDef = (c) -> c.statusSet(404);

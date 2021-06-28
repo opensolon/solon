@@ -80,7 +80,7 @@ public class Action extends HandlerAide implements Handler {
         } else {
             mProduces = mapping.produces();
             mConsumes = mapping.consumes();
-            mName = mapping.value();
+            mName = Utils.annoName(mapping.value(), mapping.path());
             mIsMain = !(mapping.after() || mapping.before());
         }
 
