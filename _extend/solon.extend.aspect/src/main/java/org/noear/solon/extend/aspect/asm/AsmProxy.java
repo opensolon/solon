@@ -1,12 +1,8 @@
 package org.noear.solon.extend.aspect.asm;
 
 
-import org.noear.solon.core.event.EventBus;
 import org.objectweb.asm.*;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -49,7 +45,6 @@ public class AsmProxy {
     /**
      * 返回一个动态创建的代理类，此类继承自 targetClass
      *
-     * @param classLoader       从哪一个ClassLoader加载Class
      * @param invocationHandler 代理类中每一个方法调用时的回调接口
      * @param targetClass       被代理对象
      * @param targetConstructor 被代理对象的某一个构造器，用于决定代理对象实例化时采用哪一个构造器
@@ -632,18 +627,5 @@ public class AsmProxy {
             e.printStackTrace();
         }
         return false;
-    }
-
-    private static void save2File(File file, byte[] bytes) {
-        try {
-            if (!file.getParentFile().exists()) {
-                file.getParentFile().mkdirs();
-            }
-            OutputStream out = new FileOutputStream(file);
-            out.write(bytes);
-            out.close();
-        } catch (Exception ex) {
-            EventBus.push(ex);
-        }
     }
 }
