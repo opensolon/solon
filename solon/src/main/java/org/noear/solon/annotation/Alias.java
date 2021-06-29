@@ -6,7 +6,7 @@ import java.lang.annotation.*;
  * 别名
  *
  * @author noear
- * @since 1.0
+ * @since 1.5
  * */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
