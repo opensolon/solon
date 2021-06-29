@@ -3,7 +3,7 @@ package org.noear.solon.annotation;
 import java.lang.annotation.*;
 
 /**
- * 注释
+ * 别名
  *
  * @author noear
  * @since 1.0
