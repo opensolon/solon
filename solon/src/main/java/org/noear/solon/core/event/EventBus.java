@@ -20,7 +20,10 @@ public final class EventBus {
 
     /**
      * 异步推送事件
+     *
+     * @param event 事件（可以是任何对象）
      */
+    @Deprecated
     public static void pushAsyn(Object event) {
         if (event != null) {
             Utils.pools.submit(() -> {
@@ -31,6 +34,8 @@ public final class EventBus {
 
     /**
      * 推送事件
+     *
+     * @param event 事件（可以是任何对象）
      */
     public static void push(Object event) {
         if (event != null) {
@@ -56,7 +61,7 @@ public final class EventBus {
         for (HH h1 : hhs) {
             if (h1.t.isInstance(event)) {
                 try {
-                    h1.h.onEvent(event);
+                    h1.l.onEvent(event);
                 } catch (Throwable ex) {
                     ex.printStackTrace();
                 }
@@ -66,12 +71,15 @@ public final class EventBus {
 
     /**
      * 订阅事件
+     *
+     * @param eventType 事件类型
+     * @param listener 事件监听者
      */
-    public static <T> void subscribe(Class<T> eventType, EventListener<T> handler) {
+    public static <T> void subscribe(Class<T> eventType, EventListener<T> listener) {
         if (Throwable.class.isAssignableFrom(eventType)) {
-            sThrow.add(new HH(eventType, handler));
+            sThrow.add(new HH(eventType, listener));
         } else {
-            sOther.add(new HH(eventType, handler));
+            sOther.add(new HH(eventType, listener));
         }
     }
 
@@ -80,11 +88,11 @@ public final class EventBus {
      */
     static class HH {
         protected Class<?> t;
-        protected EventListener h;
+        protected EventListener l;
 
-        public HH(Class<?> type, EventListener handler) {
+        public HH(Class<?> type, EventListener listener) {
             this.t = type;
-            this.h = handler;
+            this.l = listener;
         }
     }
 }

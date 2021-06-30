@@ -1,6 +1,8 @@
 package org.noear.solon.core.aspect;
 
 /**
+ * 拦截实体
+ *
  * @author noear
  * @since 1.3
  */
@@ -16,6 +18,9 @@ public class InterceptorEntity implements Interceptor{
         this.real = real;
     }
 
+    /**
+     * 拦截
+     * */
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
         return real.doIntercept(inv);

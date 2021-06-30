@@ -5,6 +5,8 @@ import org.noear.solon.core.wrap.MethodHolder;
 import java.util.List;
 
 /**
+ * 调用者
+ *
  * @author noear
  * @since 1.3
  */
@@ -22,18 +24,30 @@ public class Invocation {
         this.interceptors = interceptors;
     }
 
+    /**
+     * 目标对象
+     * */
     public Object target() {
         return target;
     }
 
+    /**
+     * 参数
+     * */
     public Object[] args() {
         return args;
     }
 
+    /**
+     * 函数
+     * */
     public MethodHolder method() {
         return method;
     }
 
+    /**
+     * 调用
+     * */
     public Object invoke() throws Throwable {
         return interceptors.get(interceptorIndex++).doIntercept(this);
     }
