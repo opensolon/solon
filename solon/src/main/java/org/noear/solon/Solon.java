@@ -71,7 +71,7 @@ public class Solon {
         String pid = rb.getName().split("@")[0];
         System.setProperty("PID", pid);
 
-        //绑定类加载器
+        //绑定类加载器（即替换当前线程[即主线程]的类加载器）
         JarClassLoader.bindingThread();
 
 
