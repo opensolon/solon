@@ -11,7 +11,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author noear 2021/4/26 created
+ * @author noear
+ * @since 1.3
  */
 public class RouterDefault implements Router{
     //for handler
@@ -31,12 +32,24 @@ public class RouterDefault implements Router{
 
     /**
      * 添加路由关系 for Handler
+     *
+     * @param path 路径
+     * @param endpoint 处理点
+     * @param method 方法
+     * @param index 顺序位
+     * @param handler 处理接口
      */
     @Override
     public void add(String path, Endpoint endpoint, MethodType method, int index, Handler handler) {
         routesH[endpoint.code].add(new RoutingDefault<>(path, method, index, handler));
     }
 
+    /**
+     * 获取某个处理点的所有路由记录
+     *
+     * @param endpoint 处理点
+     * @return 处理点的所有路由记录
+     * */
     @Override
     public List<Routing<Handler>> getAll(Endpoint endpoint){
         return Collections.unmodifiableList(routesH[endpoint.code]);
@@ -45,7 +58,11 @@ public class RouterDefault implements Router{
 
 
     /**
-     * 区配一个目标（根据上上文）
+     * 区配一个处理（根据上下文）
+     *
+     * @param ctx 上下文
+     * @param endpoint 处理点
+     * @return 一个匹配的处理
      */
     @Override
     public Handler matchOne(Context ctx, Endpoint endpoint) {
@@ -56,7 +73,11 @@ public class RouterDefault implements Router{
     }
 
     /**
-     * 区配多个目标（根据上上文）
+     * 区配多个处理（根据上下文）
+     *
+     * @param ctx 上下文
+     * @param endpoint 处理点
+     * @return 一批匹配的处理
      */
     @Override
     public List<Handler> matchAll(Context ctx, Endpoint endpoint) {
@@ -70,7 +91,12 @@ public class RouterDefault implements Router{
 
 
     /**
-     * 添加路由关系 for XListener
+     * 添加路由关系 for Listener
+     *
+     * @param path 路径
+     * @param method 方法
+     * @param index 顺序位
+     * @param listener 监听接口
      */
     @Override
     public void add(String path, MethodType method, int index, Listener listener) {
@@ -78,7 +104,10 @@ public class RouterDefault implements Router{
     }
 
     /**
-     * 区配一个目标（根据上上文）
+     * 区配一个目标（根据上下文）
+     *
+     * @param session 会话对象
+     * @return 首个匹配监听
      */
     @Override
     public Listener matchOne(Session session) {

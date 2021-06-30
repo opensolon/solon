@@ -19,7 +19,11 @@ public class RoutingTable<T> extends ArrayList<Routing<T>> {
     }
 
     /**
-     * 区配一个目标（根据上上文）
+     * 区配一个目标
+     *
+     * @param path 路径
+     * @param method 方法
+     * @return 一个区配的目标
      */
     public T matchOne(String path, MethodType method) {
         for (Routing<T> l : this) {
@@ -32,7 +36,11 @@ public class RoutingTable<T> extends ArrayList<Routing<T>> {
     }
 
     /**
-     * 区配多个目标（根据上上文）
+     * 区配多个目标
+     *
+     * @param path 路径
+     * @param method 方法
+     * @return 一批区配的目标
      */
     public List<T> matchAll(String path, MethodType method) {
         return this.stream()
