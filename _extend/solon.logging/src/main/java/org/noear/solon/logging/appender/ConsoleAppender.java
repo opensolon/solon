@@ -9,13 +9,9 @@ import org.noear.solon.logging.event.Level;
  */
 public class ConsoleAppender extends OutputStreamAppender {
     public ConsoleAppender() {
-        super(System.out);
-    }
-
-    @Override
-    public boolean getEnable() {
-
-        return Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode();
+        if (System.console() != null) {
+            init(System.out);
+        }
     }
 
     @Override

@@ -16,10 +16,6 @@ public abstract class AppenderBase implements Appender{
         this.name = name;
     }
 
-    public boolean getEnable(){
-        return true;
-    }
-
     @Override
     public void start() {
 

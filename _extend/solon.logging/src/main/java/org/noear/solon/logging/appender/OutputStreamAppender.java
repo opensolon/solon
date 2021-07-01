@@ -16,13 +16,15 @@ import java.io.PrintStream;
  * @since 1.3
  */
 public abstract class OutputStreamAppender extends AppenderSimple {
-    protected PrintStream out;
+    protected PrintStream out = null;
 
-    public OutputStreamAppender(OutputStream stream) {
-        if (stream instanceof PrintStream) {
-            out = (PrintStream) stream;
-        } else {
-            out = new PrintStream(stream, true);
+    protected void init(OutputStream stream){
+        if (stream != null) {
+            if (stream instanceof PrintStream) {
+                out = (PrintStream) stream;
+            } else {
+                out = new PrintStream(stream, true);
+            }
         }
     }
 
