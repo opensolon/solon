@@ -15,6 +15,10 @@ import java.util.Date;
 public class AppenderSimple extends AppenderBase {
     @Override
     public void append(LogEvent logEvent) {
+        if (getEnable() == false) {
+            return;
+        }
+
         LocalDateTime dateTime = LocalDateTime.ofInstant(new Date(logEvent.getTimeStamp()).toInstant(), ZoneId.systemDefault());
 
         StringBuilder buf = new StringBuilder();
