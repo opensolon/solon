@@ -14,6 +14,7 @@ public class ConsoleAppender extends OutputStreamAppender {
 
     @Override
     public boolean getEnable() {
+
         return Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode();
     }
 

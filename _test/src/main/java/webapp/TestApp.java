@@ -50,11 +50,6 @@ public class TestApp {
             System.out.println("4.应用全加载完成了");
         }).start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
 
-//        app.def(c -> {
-//            System.out.println("我是默处处理！");
-//        });
-
-
         System.out.println("testname : " + Solon.cfg().get("testname"));
 
 
