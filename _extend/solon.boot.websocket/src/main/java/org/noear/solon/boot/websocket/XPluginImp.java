@@ -19,7 +19,7 @@ public class XPluginImp implements Plugin {
     private WsServer _server = null;
 
     public static String solon_boot_ver() {
-        return "org.java_websocket 1.5.8/" + Solon.cfg().version();
+        return "org.java_websocket 1.5.9/" + Solon.cfg().version();
     }
 
     @Override
@@ -40,7 +40,7 @@ public class XPluginImp implements Plugin {
         long time_start = System.currentTimeMillis();
 
 
-        PrintUtil.info("Server:main: org.java_websocket 1.5.8(websocket)");
+        PrintUtil.info("Server:main: org.java_websocket 1.5.9(websocket)");
 
         try {
             _server = new WsServer(_port);
