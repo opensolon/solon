@@ -19,17 +19,24 @@ public abstract class OutputStreamAppender extends AppenderSimple {
     protected PrintStream out = null;
 
     protected void setStream(OutputStream stream) {
-        if (out != null) {
-            out.flush();
-            out.close();
+        if (stream == null) {
+            return;
         }
 
-        if (stream != null) {
-            if (stream instanceof PrintStream) {
-                out = (PrintStream) stream;
-            } else {
-                out = new PrintStream(stream, true);
-            }
+        //1.保存旧的打印器
+        PrintStream outOld = out;
+
+        //2.换为新的打印器
+        if (stream instanceof PrintStream) {
+            out = (PrintStream) stream;
+        } else {
+            out = new PrintStream(stream, true);
+        }
+
+        //3.关注旧的打印器
+        if (outOld != null) {
+            outOld.flush();
+            outOld.close();
         }
     }
 
