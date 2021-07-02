@@ -31,7 +31,7 @@ public @interface CloudJob {
     /**
      * 时间表达式（具体由适配框架支持）
      * */
-    @Note("或cron：支持7位（秒，分，时，日期ofM，月，星期ofW，年）； 或简配：s，m，h，d")
+    @Note("或cron：支持7段及时区（秒，分，时，日期ofM，月，星期ofW，年）； 或简配：s，m，h，d")
     String cron7x() default "";
 
     /**
