@@ -1,5 +1,6 @@
 package org.noear.solon.logging.appender;
 
+import org.noear.solon.Solon;
 import org.noear.solon.logging.event.Level;
 
 /**
@@ -8,8 +9,8 @@ import org.noear.solon.logging.event.Level;
  */
 public class ConsoleAppender extends OutputStreamAppender {
     public ConsoleAppender() {
-        if (System.console() != null) {
-            init(System.out);
+        if (Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode()) {
+            setStream(System.out);
         }
     }
 

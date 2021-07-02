@@ -18,7 +18,12 @@ import java.io.PrintStream;
 public abstract class OutputStreamAppender extends AppenderSimple {
     protected PrintStream out = null;
 
-    protected void init(OutputStream stream){
+    protected void setStream(OutputStream stream) {
+        if (out != null) {
+            out.flush();
+            out.close();
+        }
+
         if (stream != null) {
             if (stream instanceof PrintStream) {
                 out = (PrintStream) stream;
