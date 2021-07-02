@@ -3,15 +3,17 @@ package org.noear.solon.test;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
+    static Set<Class<?>> appCached = new HashSet<>();
     public SolonJUnit4ClassRunner(Class<?> klass) throws InitializationError {
         super(klass);
 
@@ -20,6 +22,12 @@ public class SolonJUnit4ClassRunner extends BlockJUnit4ClassRunner {
 
 
         if (anno != null) {
+
+            if(appCached.contains(anno.getClass())){
+                return;
+            }else {
+                appCached.add(anno.getClass());
+            }
 
             try {
                 Method main = getMain(anno);
