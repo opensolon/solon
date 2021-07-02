@@ -338,7 +338,7 @@ public final class SolonProps extends Props {
     }
 
     /**
-     * 扩展文件夹过滤（.mysql.;.roperties;）
+     * 扩展文件夹过滤（.mysql.,.roperties,）
      */
     public String extendFilter() {
         return extendFilter;
