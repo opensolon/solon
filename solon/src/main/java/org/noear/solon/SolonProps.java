@@ -31,7 +31,7 @@ public final class SolonProps extends Props {
     private NvMap args;
     private Class<?> source;
     private URL sourceLocation;
-    private List<PluginEntity> plugs = new ArrayList<>();
+    private final List<PluginEntity> plugs = new ArrayList<>();
     private boolean isDebugMode;
     private boolean isDriftMode;
     private boolean isFilesMode;
@@ -87,7 +87,7 @@ public final class SolonProps extends Props {
 
         //3.同步启动参数
         this.args.forEach((k, v) -> {
-            if (k.indexOf(".") >= 0) {
+            if (k.contains(".")) {
                 this.setProperty(k, v);
                 System.setProperty(k, v);
             }
