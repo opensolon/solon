@@ -13,8 +13,17 @@ import java.util.Date;
  * @since 1.3
  */
 public class AppenderSimple extends AppenderBase {
+
+    protected boolean getEnable(){
+        return true;
+    }
+
     @Override
     public void append(LogEvent logEvent) {
+        if(getEnable() == false){
+            return;
+        }
+
         LocalDateTime dateTime = LocalDateTime.ofInstant(new Date(logEvent.getTimeStamp()).toInstant(), ZoneId.systemDefault());
 
         StringBuilder buf = new StringBuilder();
