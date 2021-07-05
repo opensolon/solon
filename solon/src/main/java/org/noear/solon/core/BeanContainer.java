@@ -87,8 +87,8 @@ public abstract class BeanContainer {
     /**
      * 添加 bean builder, injector, extractor
      */
-    public <T extends Annotation> void beanBuilderAdd(Class<T> anno, BeanBuilder<T> creater) {
-        beanBuilders.put(anno, creater);
+    public <T extends Annotation> void beanBuilderAdd(Class<T> anno, BeanBuilder<T> builder) {
+        beanBuilders.put(anno, builder);
     }
 
     public <T extends Annotation> void beanInjectorAdd(Class<T> anno, BeanInjector<T> injector) {

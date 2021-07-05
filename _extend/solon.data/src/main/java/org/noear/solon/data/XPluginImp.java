@@ -2,15 +2,14 @@ package org.noear.solon.data;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.*;
+import org.noear.solon.data.annotation.*;
 import org.noear.solon.data.cache.CacheEventListener;
 import org.noear.solon.data.cache.CacheLib;
 import org.noear.solon.data.cache.CacheService;
 import org.noear.solon.data.cache.CacheServiceDefault;
+import org.noear.solon.data.ds.DsBeanBuilderProxy;
+import org.noear.solon.data.ds.DsBeanInjectorProxy;
 import org.noear.solon.data.tran.TranExecutor;
-import org.noear.solon.data.annotation.Cache;
-import org.noear.solon.data.annotation.CachePut;
-import org.noear.solon.data.annotation.CacheRemove;
-import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.data.around.CacheInterceptor;
 import org.noear.solon.data.around.CachePutInterceptor;
 import org.noear.solon.data.around.CacheRemoveInterceptor;
@@ -35,6 +34,9 @@ public class XPluginImp implements Plugin {
                 Aop.wrapAndPut(CacheService.class, CacheServiceDefault.instance);
             }
         });
+
+        Aop.context().beanBuilderAdd(Ds.class, new DsBeanBuilderProxy());
+        Aop.context().beanInjectorAdd(Ds.class, new DsBeanInjectorProxy());
 
         Aop.context().beanAroundAdd(CachePut.class, new CachePutInterceptor(), 110);
         Aop.context().beanAroundAdd(CacheRemove.class, new CacheRemoveInterceptor(), 110);

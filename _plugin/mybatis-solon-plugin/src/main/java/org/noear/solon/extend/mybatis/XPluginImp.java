@@ -8,7 +8,6 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.apache.ibatis.ext.solon.Db;
-import org.noear.solon.core.wrap.ClassWrap;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
