@@ -23,8 +23,9 @@ import java.lang.management.RuntimeMXBean;
  * @since 1.0
  * */
 public class Solon {
+    //默认停止延时
     private static int stopDelay = 10;
-
+    //全局实例
     private static SolonApp global;
 
     /**
@@ -43,24 +44,35 @@ public class Solon {
 
 
     /**
-     * 启动应用（全局只启动一个），执行序列
+     * 启动应用（全局只启动一个）
      *
-     * <p>
-     * 1.加载配置（约定：app.properties 、app.yml   为应用配置文件）
-     * 2.加载自发现插件（约定：/META-INF/solon/*.properties 为插件配置文件）
-     * 3.加载注解Bean（约定：@Bean,@Controller,@Interceptor 为bean）
-     * 4.执行Bean加载事件（采用：注册事件的方式进行安需通知）
+     * @param source 主应用包（用于定制Bean所在包）
+     * @param args 启动参数
      */
     public static SolonApp start(Class<?> source, String[] args) {
         return start(source, args, null);
     }
 
+    /**
+     * 启动应用（全局只启动一个）
+     *
+     * @param source 主应用包（用于定制Bean所在包）
+     * @param args 启动参数
+     * @param initialize 实始化函数
+     * */
     public static SolonApp start(Class<?> source, String[] args, ConsumerEx<SolonApp> initialize) {
         //1.初始化应用，加载配置
         NvMap argx = NvMap.from(args);
         return start(source, argx, initialize);
     }
 
+    /**
+     * 启动应用（全局只启动一个）
+     *
+     * @param source 主应用包（用于定制Bean所在包）
+     * @param argx 启动参数
+     * @param initialize 实始化函数
+     * */
     public static SolonApp start(Class<?> source, NvMap argx, ConsumerEx<SolonApp> initialize) {
         if (global != null) {
             return global;
@@ -77,10 +89,10 @@ public class Solon {
 
         PrintUtil.info("App", "Start loading");
 
-        //1.创建应用
+        //1.创建全局应用
         global = new SolonApp(source, argx);
 
-        //2.1.内部初始化（顺序不能乱!）
+        //2.1.内部初始化（如配置等，顺序不能乱）
         global.init();
 
         //2.2.自定义初始化
@@ -97,11 +109,11 @@ public class Solon {
             }
         }
 
-        //3.运行
+        //3.运行应用（运行插件、扫描Bean等）
         global.run();
 
 
-        //4.安全停止
+        //4.初始化安全停止
         stopDelay = Solon.cfg().getInt("solon.stop.delay", 10);
 
         if (global.enableSafeStop()) {
@@ -118,15 +130,26 @@ public class Solon {
     }
 
     /**
-     * 设置安全停止的延时（单位：秒）
+     * 设置停止延时时间（单位：秒）
+     *
+     * @param delay 延迟时间（单位：秒）
      * */
     public static void stopDelaySet(int delay){
         stopDelay = delay;
     }
 
+    /**
+     * 停止应用
+     * */
     public static void stop() {
         stop(stopDelay);
     }
+
+    /**
+     * 停止应用
+     *
+     * @param delay 延迟时间（单位：秒）
+     * */
     public static void stop(int delay) {
         new Thread(() -> stop0(true, delay)).start();
     }
