@@ -302,6 +302,9 @@ public final class SolonProps extends Props {
         _changeEvent.add(event);
     }
 
+    /**
+     * 设置应用属性
+     * */
     @Override
     public synchronized Object put(Object key, Object value) {
         Object obj = super.put(key, value);
@@ -315,10 +318,16 @@ public final class SolonProps extends Props {
         return obj;
     }
 
+    /**
+     * 应用源
+     * */
     public Class<?> source() {
         return source;
     }
 
+    /**
+     * 应用源位置
+     * */
     public URL sourceLocation() {
         return sourceLocation;
     }
@@ -338,7 +347,7 @@ public final class SolonProps extends Props {
     }
 
     /**
-     * 插件排序
+     * 对插件列表排序
      * */
     public void plugsSort(){
         if (plugs.size() > 0) {
@@ -384,6 +393,9 @@ public final class SolonProps extends Props {
         return appGroup;
     }
 
+    /**
+     * 应用标题
+     * */
     public String appTitle() {
         return appTitle;
     }
@@ -396,43 +408,52 @@ public final class SolonProps extends Props {
     }
 
     /**
-     * 是否为 debug mode
+     * 是否为调试模式
      */
     public boolean isDebugMode() {
         return isDebugMode;
     }
 
     /**
-     * 是否为 setup model
+     * 是否为安装模式
      * */
     public boolean isSetupMode(){ return isSetupMode; }
 
     /**
-     * 是否为 files model (文件运行模式)
+     * 是否为文件运行模式（否则为包执行模式）
      */
     public boolean isFilesMode() {
         return isFilesMode;
     }
+    /**
+     * 设置文件运行模式
+     * */
     public void isFilesMode(boolean isFilesMode) {
         this.isFilesMode = isFilesMode;
     }
 
     /**
-     * 是否为 drift model (IP漂移模式，如k8s环境)
+     * 是否为漂移模式
      */
     public boolean isDriftMode() {
         return isDriftMode;
     }
+    /**
+     * 设置漂移模式
+     * */
     public void isDriftMode(boolean isDriftMode){
         this.isDriftMode = isDriftMode;
     }
 
     /**
-     * 是否为 while model（即白名单模式）
+     * 是否为白名单模式
      */
     public boolean isWhiteMode() {
         return isWhiteMode;
     }
+    /**
+     * 设置白名单模式
+     * */
     public void isWhiteMode(boolean isWhiteMode){
         this.isWhiteMode = isWhiteMode;
     }
