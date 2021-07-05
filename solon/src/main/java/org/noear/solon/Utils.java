@@ -31,12 +31,20 @@ public class Utils {
 
     private static final char[] HEX_DIGITS = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
+    /**
+     * 获取MIME
+     *
+     * @param fileName 文件名
+     * */
     public static String mime(String fileName){
         return mimeMap.getContentTypeFor(fileName);
     }
 
     /**
      * 获取注解别名
+     *
+     * @param v1 值1
+     * @param v2 值2
      * */
     public static String annoAlias(String v1, String v2) {
         if (isEmpty(v1)) {
@@ -55,6 +63,8 @@ public class Utils {
 
     /**
      * 生成MD5
+     *
+     * @param str 字符串
      * */
     public static String md5(String str) {
         try {
@@ -81,6 +91,8 @@ public class Utils {
 
     /**
      * 获取异常打印信息
+     *
+     * @param ex 异常
      * */
     public static String throwableToString(Throwable ex){
         StringWriter sw = new StringWriter();
@@ -91,6 +103,8 @@ public class Utils {
 
     /**
      * 包装异常
+     *
+     * @param ex 异常
      * */
     @Deprecated
     public static RuntimeException throwableWrap(Throwable ex) {
@@ -105,6 +119,8 @@ public class Utils {
 
     /**
      * 解包异常
+     *
+     * @param ex 异常
      * */
     public static Throwable throwableUnwrap(Throwable ex) {
         Throwable th = ex;
@@ -128,6 +144,12 @@ public class Utils {
         return th;
     }
 
+    /**
+     * 异常栈里是否存在某类异常
+     *
+     * @param ex 异常栈
+     * @param clz 要检测的异常类
+     * */
     public static boolean throwableHas(Throwable ex, Class<? extends Throwable> clz) {
         Throwable th = ex;
 
@@ -152,6 +174,8 @@ public class Utils {
 
     /**
      * 检查字符串是否为空
+     *
+     * @param s 字符串
      */
     public static boolean isEmpty(String s) {
         return s == null || s.length() == 0;
@@ -159,6 +183,8 @@ public class Utils {
 
     /**
      * 检查字符串是否为非空
+     *
+     * @param s 字符串
      */
     public static boolean isNotEmpty(String s) {
         return !isEmpty(s);
@@ -167,6 +193,8 @@ public class Utils {
 
     /**
      * 检查字符串是否为空白
+     *
+     * @param s 字符串
      */
     public static boolean isBlank(String s) {
         if (isEmpty(s)) {
@@ -182,10 +210,20 @@ public class Utils {
         }
     }
 
+    /**
+     * 检查字符串是否不为空白
+     *
+     * @param s 字符串
+     */
     public static boolean isNotBlank(String s){
         return !isBlank(s);
     }
 
+    /**
+     * 检查是否为空白字符
+     *
+     * @param c 字符
+     */
     public static boolean isWhitespace(int c) {
         return c == 32 || c == 9 || c == 10 || c == 12 || c == 13;
     }
@@ -205,6 +243,8 @@ public class Utils {
 
     /**
      * 根据字符串加载为一个类
+     *
+     * @param className 类名称
      */
     public static Class<?> loadClass(String className) {
         try {
@@ -216,6 +256,9 @@ public class Utils {
 
     /**
      * 根据字符串加载为一个类
+     *
+     * @param classLoader 类加载器
+     * @param className 类名称
      */
     public static Class<?> loadClass(ClassLoader classLoader, String className) {
         try {
@@ -230,14 +273,19 @@ public class Utils {
     }
 
     /**
-     * 根据字段串加载为一个对象
+     * 根据类名实例化一个对象
+     *
+     * @param className 类名称
      */
     public static <T> T newInstance(String className) {
         return newInstance(JarClassLoader.global(), className);
     }
 
     /**
-     * 根据字段串加载为一个对象
+     * 根据类名实例化一个对象
+     *
+     * @param classLoader 类加载器
+     * @param className 类名称
      */
     public static <T> T newInstance(ClassLoader classLoader,String className) {
         try {
@@ -259,11 +307,17 @@ public class Utils {
      * @param name 资源名称
      */
     public static Enumeration<URL> getResources(String name) throws IOException {
-        return getResources(JarClassLoader.global(), name); //XUtil.class.getClassLoader().getResources(name);
+        return getResources(JarClassLoader.global(), name);
     }
 
+    /**
+     * 获取资源URL集
+     *
+     * @param classLoader 类加载器
+     * @param name 资源名称
+     */
     public static Enumeration<URL> getResources(ClassLoader classLoader, String name) throws IOException {
-        return classLoader.getResources(name); //XUtil.class.getClassLoader().getResources(name);
+        return classLoader.getResources(name);
     }
 
     /**
@@ -275,6 +329,12 @@ public class Utils {
         return getResource(JarClassLoader.global(), name); //XUtil.class.getResource(name);
     }
 
+    /**
+     * 获取资源URL
+     *
+     * @param classLoader 类加载器
+     * @param name 资源名称
+     */
     public static URL getResource(ClassLoader classLoader, String name) {
         return classLoader.getResource(name); //XUtil.class.getResource(name);
     }
@@ -289,6 +349,13 @@ public class Utils {
         return getResourceAsString(JarClassLoader.global(), name, charset);
     }
 
+    /**
+     * 获取资源并转为String
+     *
+     * @param classLoader 类加载器
+     * @param name 资源名称
+     * @param charset 编码
+     * */
     public static String getResourceAsString(ClassLoader classLoader, String name, String charset) throws IOException {
         URL url = getResource(classLoader, name);
         if (url != null) {
@@ -298,6 +365,12 @@ public class Utils {
         }
     }
 
+    /**
+     * 将输入流转换为字符串
+     *
+     * @param ins 输入流
+     * @param charset 字符集
+     * */
     public static String transferToString(InputStream ins, String charset) throws IOException {
         if (ins == null) {
             return null;
@@ -312,6 +385,11 @@ public class Utils {
         }
     }
 
+    /**
+     * 将输入流转换为byte数组
+     *
+     * @param ins 输入流
+     * */
     public static byte[] transferToBytes(InputStream ins) throws IOException {
         if (ins == null) {
             return null;
@@ -320,6 +398,12 @@ public class Utils {
         return transferTo(ins, new ByteArrayOutputStream()).toByteArray();
     }
 
+    /**
+     * 将输入流转换为输出流
+     *
+     * @param ins 输入流
+     * @param out 输出流
+     * */
     public static <T extends OutputStream>  T transferTo(InputStream ins, T out) throws IOException {
         if (ins == null || out == null) {
             return null;
@@ -337,6 +421,8 @@ public class Utils {
 
     /**
      * 根据url加载配置集
+     *
+     * @param url 资源地址
      * */
     public static Properties loadProperties(URL url) {
         if(url == null){
@@ -354,6 +440,8 @@ public class Utils {
 
     /**
      * 根据本地资源url加载配置集
+     *
+     * @param url 资源地址
      * */
     public static Properties loadProperties(String url) {
         return loadProperties(getResource(url));
@@ -361,6 +449,8 @@ public class Utils {
 
     /**
      * 根据txt加载配置集
+     *
+     * @param txt 资源内容
      * */
     public static Properties buildProperties(String txt) {
         try {
@@ -374,14 +464,19 @@ public class Utils {
 
     /**
      * 注入属性
+     *
+     * @param obj 对象
+     * @param propS 属性集
      * */
-    public static <T> T injectProperties(T bean, Properties propS) {
-        ClassWrap.get(bean.getClass()).fill(bean, propS::getProperty);
-        return bean;
+    public static <T> T injectProperties(T obj, Properties propS) {
+        ClassWrap.get(obj.getClass()).fill(obj, propS::getProperty);
+        return obj;
     }
 
     /**
      * 获取异常的完整内容
+     *
+     * @param ex 异常
      */
     public static String getFullStackTrace(Throwable ex) {
         StringWriter sw = new StringWriter();
