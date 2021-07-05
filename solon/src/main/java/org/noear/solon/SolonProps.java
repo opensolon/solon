@@ -55,10 +55,12 @@ public final class SolonProps extends Props {
     public SolonProps load(Class<?> source, NvMap args) {
         //1.接收启动参数
         this.args = args;
+        //1.1.应用源
         this.source = source;
+        //1.2.应用源位置
         this.sourceLocation = source.getProtectionDomain().getCodeSource().getLocation();
 
-        //2.加载文件的配置
+        //2.加载文件配置
         //@Deprecated
         loadInit(Utils.getResource("application.properties"));
         //@Deprecated
@@ -66,10 +68,10 @@ public final class SolonProps extends Props {
         loadInit(Utils.getResource("app.properties"));
         loadInit(Utils.getResource("app.yml"));
 
-        //支持弹性容器设置的环境变量
+        //2.1.加载环境变量（支持弹性容器设置的环境变量）
         loadEnv("solon.");
 
-        //2.2.加载活动配置
+        //2.2.加载环境配置(例：env=pro 或 env=debug)
         String env = getArg("env");
 
         if (Utils.isEmpty(env)) {
@@ -93,28 +95,34 @@ public final class SolonProps extends Props {
             }
         });
 
+        //4.初始化模式状态
 
+        //是否为文件模式
         isFilesMode = (sourceLocation.getPath().endsWith(".jar") == false
                 && sourceLocation.getPath().contains(".jar!/") == false
                 && sourceLocation.getPath().endsWith(".zip") == false
                 && sourceLocation.getPath().contains(".zip!/") == false);
 
+        //是否为调试模式
         isDebugMode = "1".equals(getArg("debug")); //调试模式
+        //是否为调试模式
         isSetupMode = "1".equals(getArg("setup")); //安装模式
+        //是否为白名单模式
         isWhiteMode = "1".equals(getArg("white", "1")); //安全模式（即白名单模式）
+        //是否为漂移模式
         isDriftMode = "1".equals(getArg("drift")); //漂移模式（即ip会变,如pod部署）
 
-        //4.标识debug模式
+        //标识debug模式
         if (isDebugMode()) {
             System.setProperty("debug", "1");
         }
 
 
-        //5.扩展文件夹
+        //5.确定扩展文件夹
         extend = getArg("extend");
         extendFilter = getArg("extend.filter");//5.1.扩展文件夹过滤器
 
-        //6.应用相关
+        //6.应用基础信息
         appName = getArg("app.name");  //6.应用名
         appGroup = getArg("app.group"); //6.1.应用组
         appTitle = getArg("app.title"); //6.1.应用标题
@@ -122,12 +130,26 @@ public final class SolonProps extends Props {
         return this;
     }
 
+    /**
+     * 获取启动参数
+     *
+     * @param name 参数名
+     * */
     private String getArg(String name) {
         return getArg(name, null);
     }
+
+    /**
+     * 获取启动参数
+     *
+     * @param name 参数名
+     * @param def 默认值
+     * */
     private String getArg(String name, String def) {
+        //尝试去启动参数取
         String tmp = args.getOrDefault(name, def);
         if (Utils.isEmpty(tmp)) {
+            //如果为空，尝试从属性配置取
             tmp = get("solon." + name);
         }
 
@@ -165,6 +187,8 @@ public final class SolonProps extends Props {
 
     /**
      * 加载配置（用于扩展加载）
+     *
+     * @param url 配置地址
      * */
     public SolonProps loadAdd(String url) {
         return loadAdd(Utils.getResource(url));
@@ -172,6 +196,8 @@ public final class SolonProps extends Props {
 
     /**
      * 加载配置（用于扩展加载）
+     *
+     * @param props 配置地址
      * */
     public SolonProps loadAdd(Properties props) {
         if (props != null) {
