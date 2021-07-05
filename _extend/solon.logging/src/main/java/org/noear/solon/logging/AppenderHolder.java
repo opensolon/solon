@@ -83,7 +83,7 @@ class AppenderHolder {
      * 添加日志
      * */
     public void append(LogEvent logEvent) {
-        if (getEnable() == false || getLevel().code > logEvent.getLevel().code) {
+        if (enable == false || this.level.code > logEvent.getLevel().code) {
             return;
         }
 
