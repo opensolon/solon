@@ -10,6 +10,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
+ * 添加器持有者（用于支持配置）
+ *
  * @author noear
  * @since 1.3
  */
@@ -44,23 +46,42 @@ class AppenderHolder {
     }
 
     private String name;
+
+    /**
+     * 获取名称
+     * */
     public String getName() {
         return name;
     }
 
     private boolean enable = true;
+
+    /**
+     * 获取启用状态
+     * */
     public boolean getEnable() {
         return enable;
     }
 
     private Level level;
+
+    /**
+     * 获取级别
+     * */
     public Level getLevel() {
         return level;
     }
+
+    /**
+     * 设置级别
+     * */
     public void setLevel(Level level) {
         this.level = level;
     }
 
+    /**
+     * 添加日志
+     * */
     public void append(LogEvent logEvent) {
         if (enable == false || this.level.code > logEvent.getLevel().code) {
             return;

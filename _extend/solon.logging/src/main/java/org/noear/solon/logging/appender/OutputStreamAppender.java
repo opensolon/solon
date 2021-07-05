@@ -10,7 +10,7 @@ import java.io.PrintStream;
 
 
 /**
- * console appender
+ * 输出流添加器实现类
  *
  * @author noear
  * @since 1.3

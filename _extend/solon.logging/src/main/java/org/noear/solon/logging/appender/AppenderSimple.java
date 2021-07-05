@@ -9,6 +9,8 @@ import java.time.ZoneId;
 import java.util.Date;
 
 /**
+ * 简单添加器实现类
+ *
  * @author noear
  * @since 1.3
  */
