@@ -6,6 +6,7 @@ import org.noear.solon.i18n.I18nUtils;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author noear 2021/7/7 created
@@ -27,9 +28,16 @@ public class MessageTest {
         System.out.println(Locale.JAPAN + "::" + text);
 
 
-
         text = I18nUtils.getMessage(Locale.US, "login.title");
         assert "login-us".equals(text);
         System.out.println(Locale.US + "::" + text);
+    }
+
+    @Test
+    public void test2() {
+        Map map = I18nUtils.getMessagesAsMap(null);
+        assert map.size() == 2;
+
+        System.out.println(map);
     }
 }

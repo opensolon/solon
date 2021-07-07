@@ -1,5 +1,6 @@
 
 
 ```yml
-solon.
+solon.i18n.message:
+  base: message
 ```
