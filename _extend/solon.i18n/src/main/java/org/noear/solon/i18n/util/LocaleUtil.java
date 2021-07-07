@@ -1,4 +1,4 @@
-package org.noear.solon.core.util;
+package org.noear.solon.i18n.util;
 
 import java.util.Locale;
 

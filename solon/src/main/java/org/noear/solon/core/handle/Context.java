@@ -4,7 +4,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.IpUtil;
-import org.noear.solon.core.util.LocaleUtil;
 import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 
@@ -35,17 +34,8 @@ public abstract class Context {
 
     private Locale locale;
 
-
     @Note("获取地区")
     public Locale getLocale() {
-        if (locale == null) {
-            String lang = header("Accept-Language");
-            if (Utils.isEmpty(lang)) {
-                locale = Locale.getDefault();
-            } else {
-                locale = LocaleUtil.toLocale(lang);
-            }
-        }
         return locale;
     }
 

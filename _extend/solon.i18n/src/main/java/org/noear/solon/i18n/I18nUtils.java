@@ -1,6 +1,8 @@
 package org.noear.solon.i18n;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.i18n.util.LocaleUtil;
 
 import java.util.*;
 
@@ -18,6 +20,15 @@ public class I18nUtils {
     }
 
     public static I18nBundle get(String bundleName, Context ctx) {
+        if (ctx.getLocale() == null) {
+            String lang = ctx.header("Accept-Language");
+            if (Utils.isEmpty(lang)) {
+                ctx.setLocale(Locale.getDefault());
+            } else {
+                ctx.setLocale(LocaleUtil.toLocale(lang));
+            }
+        }
+
         return get(bundleName, ctx.getLocale());
     }
 }
