@@ -2,7 +2,6 @@ package org.noear.solon.i18n;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.i18n.util.LocaleUtil;
 
 import java.util.Locale;
 
@@ -13,10 +12,18 @@ import java.util.Locale;
 public class LocaleResolverOfHeader implements LocaleResolver {
     private String headerName = "Accept-Language";
 
+    /**
+     * 设置header name
+     * */
     public void setHeaderName(String headerName) {
         this.headerName = headerName;
     }
 
+    /**
+     * 获取地区
+     *
+     * @param ctx 上下文
+     * */
     @Override
     public Locale getLocale(Context ctx) {
         if (ctx.getLocale() == null) {
@@ -32,6 +39,12 @@ public class LocaleResolverOfHeader implements LocaleResolver {
         return ctx.getLocale();
     }
 
+    /**
+     * 设置地区
+     *
+     * @param ctx 上下文
+     * @param locale 地区
+     * */
     @Override
     public void setLocale(Context ctx, Locale locale) {
         ctx.headerSet(headerName, locale.getLanguage());

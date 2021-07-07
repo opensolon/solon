@@ -2,7 +2,6 @@ package org.noear.solon.i18n;
 
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.i18n.util.LocaleUtil;
 
 import java.util.Locale;
 
@@ -13,10 +12,18 @@ import java.util.Locale;
 public class LocaleResolverOfSession implements LocaleResolver {
     private String attrName = "SOLON.LOCALE";
 
+    /**
+     * 设置会话属性名
+     * */
     public void setAttrName(String attrName) {
         this.attrName = attrName;
     }
 
+    /**
+     * 获取地区
+     *
+     * @param ctx 上下文
+     * */
     @Override
     public Locale getLocale(Context ctx) {
         if (ctx.getLocale() == null) {
@@ -32,6 +39,12 @@ public class LocaleResolverOfSession implements LocaleResolver {
         return ctx.getLocale();
     }
 
+    /**
+     * 设置地区
+     *
+     * @param ctx 上下文
+     * @param locale 地区
+     * */
     @Override
     public void setLocale(Context ctx, Locale locale) {
         ctx.sessionSet(attrName, locale.getLanguage());
