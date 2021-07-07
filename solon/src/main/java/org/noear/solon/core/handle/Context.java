@@ -4,6 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.IpUtil;
+import org.noear.solon.core.util.LocaleUtil;
 import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 
@@ -32,6 +33,26 @@ public abstract class Context {
         return ContextUtil.current();
     }
 
+    private Locale locale;
+
+
+    @Note("获取地区")
+    public Locale getLocale() {
+        if (locale == null) {
+            String lang = header("Accept-Language");
+            if (Utils.isEmpty(lang)) {
+                locale = Locale.getDefault();
+            } else {
+                locale = LocaleUtil.toLocale(lang);
+            }
+        }
+        return locale;
+    }
+
+    @Note("设置地区")
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
 
     /**
      * 是否已处理（用于控制处理链）
@@ -761,23 +782,6 @@ public abstract class Context {
     @Note("处理错误")
     public Throwable errors;
 
-    //区域信息
-    @Note("区域信息")
-    private Locale locale;
-
-    public Locale getLocale() {
-        if(locale == null){
-            String lang = header("Accept-Language");
-            if(Utils.isNotEmpty(lang)){
-                locale = new Locale(lang);
-            }
-        }
-        return locale;
-    }
-
-    public void setLocale(Locale locale) {
-        this.locale = locale;
-    }
 
     @Note("控制器?")
     public Object controller() {
