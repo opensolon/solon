@@ -1,5 +1,6 @@
 package org.noear.solon.i18n;
 
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -48,7 +49,7 @@ public class I18nBundleLocal implements I18nBundle {
      */
     @Override
     public String get(String key) {
-        return bundle.getString(key);
+        return new String(bundle.getString(key).getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
     }
 
     /**
