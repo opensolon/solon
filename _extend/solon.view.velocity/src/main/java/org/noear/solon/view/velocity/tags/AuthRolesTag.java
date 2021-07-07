@@ -11,7 +11,7 @@ import org.apache.velocity.runtime.parser.node.Node;
 import org.noear.solon.Utils;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.annotation.Logical;
-import org.noear.solon.auth.tags.Constants;
+import org.noear.solon.auth.tags.AuthConstants;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -28,7 +28,7 @@ import java.util.List;
 public class AuthRolesTag extends Directive {
     @Override
     public String getName() {
-        return Constants.TAG_authRoles;
+        return AuthConstants.TAG_authRoles;
     }
 
     @Override

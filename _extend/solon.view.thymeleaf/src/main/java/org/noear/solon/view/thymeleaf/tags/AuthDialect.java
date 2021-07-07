@@ -1,6 +1,6 @@
 package org.noear.solon.view.thymeleaf.tags;
 
-import org.noear.solon.auth.tags.Constants;
+import org.noear.solon.auth.tags.AuthConstants;
 import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
 import org.thymeleaf.standard.StandardDialect;
@@ -15,7 +15,7 @@ import java.util.Set;
 public class AuthDialect extends AbstractProcessorDialect {
 
     public AuthDialect() {
-        super("AuthDialect", Constants.PREFIX, StandardDialect.PROCESSOR_PRECEDENCE);
+        super("AuthDialect", AuthConstants.PREFIX, StandardDialect.PROCESSOR_PRECEDENCE);
     }
 
     Set<IProcessor> processorSet = new LinkedHashSet<>();

@@ -8,7 +8,7 @@ import freemarker.template.TemplateModel;
 import org.noear.solon.Utils;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.annotation.Logical;
-import org.noear.solon.auth.tags.Constants;
+import org.noear.solon.auth.tags.AuthConstants;
 import org.noear.solon.core.NvMap;
 
 import java.io.IOException;
@@ -23,8 +23,8 @@ public class AuthPermissionsTag implements TemplateDirectiveModel {
     public void execute(Environment env, Map map, TemplateModel[] templateModels, TemplateDirectiveBody body) throws TemplateException, IOException {
         NvMap mapExt = new NvMap(map);
 
-        String nameStr = mapExt.get(Constants.ATTR_name);
-        String logicalStr = mapExt.get(Constants.ATTR_logical);
+        String nameStr = mapExt.get(AuthConstants.ATTR_name);
+        String logicalStr = mapExt.get(AuthConstants.ATTR_logical);
 
         if (Utils.isEmpty(nameStr)) {
             return;

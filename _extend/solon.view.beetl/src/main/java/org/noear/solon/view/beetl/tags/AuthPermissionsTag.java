@@ -4,7 +4,7 @@ import org.beetl.core.tag.Tag;
 import org.noear.solon.Utils;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.annotation.Logical;
-import org.noear.solon.auth.tags.Constants;
+import org.noear.solon.auth.tags.AuthConstants;
 
 /**
  * @author noear
@@ -13,8 +13,8 @@ import org.noear.solon.auth.tags.Constants;
 public class AuthPermissionsTag extends Tag {
     @Override
     public void render() {
-        String nameStr = (String) getHtmlAttribute(Constants.ATTR_name);
-        String logicalStr = (String) getHtmlAttribute(Constants.ATTR_logical);
+        String nameStr = (String) getHtmlAttribute(AuthConstants.ATTR_name);
+        String logicalStr = (String) getHtmlAttribute(AuthConstants.ATTR_logical);
 
         if (Utils.isEmpty(nameStr)) {
             return;

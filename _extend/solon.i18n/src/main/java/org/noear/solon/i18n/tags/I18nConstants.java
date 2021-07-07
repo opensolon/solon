@@ -4,7 +4,7 @@ package org.noear.solon.i18n.tags;
  * @author noear
  * @since 1.5
  */
-public interface Constants {
+public interface I18nConstants {
     static String ATTR_code = "code";
     static String ATTR_args = "args";
 

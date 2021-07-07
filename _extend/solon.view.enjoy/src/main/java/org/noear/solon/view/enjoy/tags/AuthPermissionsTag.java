@@ -7,7 +7,6 @@ import com.jfinal.template.stat.Scope;
 import org.noear.solon.Utils;
 import org.noear.solon.auth.AuthUtil;
 import org.noear.solon.auth.annotation.Logical;
-import org.noear.solon.auth.tags.Constants;
 
 /**
  * @author noear
