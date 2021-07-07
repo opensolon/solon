@@ -15,7 +15,7 @@ public class I18nUtils {
     private static I18nBundleFactory bundleFactory = new I18nBundleFactoryLocal();
     private static LocaleResolver localeResolver = new LocaleResolverOfHeader();
 
-    private static final String MESSAGE_BUNDLE = "messages";
+    private static final String MESSAGE_BUNDLE = "i18n.message";
     private static final Map<Locale, I18nBundle> MESSAGE_MAP = new HashMap<>();
 
     static {
@@ -59,6 +59,10 @@ public class I18nUtils {
      * 获取国际化消息
      * */
     public static String getMessage(Locale locale, String key, Object[] args) {
+        if(locale == null){
+            locale = Locale.getDefault();
+        }
+
         I18nBundle bundle = MESSAGE_MAP.get(locale);
         if (bundle == null) {
             bundle = getBundle(MESSAGE_BUNDLE, locale);
