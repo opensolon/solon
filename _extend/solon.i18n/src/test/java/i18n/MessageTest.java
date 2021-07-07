@@ -35,7 +35,7 @@ public class MessageTest {
 
     @Test
     public void test2() {
-        Map map = I18nUtils.getMessagesAsMap(null);
+        Map map = I18nUtils.getMessageBundle(null).toMap();
         assert map.size() == 2;
 
         System.out.println(map);
