@@ -1140,6 +1140,8 @@
         <module>../_extend/solon.boot.jetty.add.websocket</module>
         <module>../_extend/solon.boot.undertow.add.jsp</module>
 
+        <module>../_extend/solon.i18n</module>
+
         <module>../_extend/solon.logging</module>
         <module>../_extend/solon.logging.impl</module>
 
