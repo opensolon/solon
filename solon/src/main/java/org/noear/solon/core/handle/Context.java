@@ -14,6 +14,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -759,6 +760,10 @@ public abstract class Context {
     //用于在处理链中透传处理错误
     @Note("处理错误")
     public Throwable errors;
+
+    //区域信息
+    @Note("区域信息")
+    public Locale locale = Locale.getDefault();
 
     @Note("控制器?")
     public Object controller() {

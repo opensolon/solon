@@ -1,5 +1,7 @@
 package org.noear.solon.i18n;
 
+import org.noear.solon.core.handle.Context;
+
 import java.util.*;
 
 /**
@@ -8,23 +10,12 @@ import java.util.*;
  */
 public class I18nUtils {
     private static I18nBundleFactory bundleFactory = new I18nBundleFactoryLocal();
-    private static Map<String, I18nBundle> bundleCached = new HashMap<>();
 
     public static I18nBundle get(String bundleName, Locale locale) {
-        String key = bundleName + locale.toString();
+        return bundleFactory.create(bundleName, locale);
+    }
 
-        I18nBundle bundle = bundleCached.get(key);
-        if (bundle == null) {
-            synchronized (key.intern()) {
-                bundle = bundleCached.get(key);
-
-                if (bundle == null) {
-                    bundle = bundleFactory.create(bundleName, locale);
-                    bundleCached.put(key, bundle);
-                }
-            }
-        }
-
-        return bundle;
+    public static I18nBundle get(String bundleName, Context ctx) {
+        return get(bundleName, ctx.locale);
     }
 }
