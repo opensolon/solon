@@ -18,6 +18,6 @@ public class I18nUtils {
     }
 
     public static I18nBundle get(String bundleName, Context ctx) {
-        return get(bundleName, ctx.locale);
+        return get(bundleName, ctx.getLocale());
     }
 }
