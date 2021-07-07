@@ -763,7 +763,21 @@ public abstract class Context {
 
     //区域信息
     @Note("区域信息")
-    public Locale locale = Locale.getDefault();
+    private Locale locale;
+
+    public Locale getLocale() {
+        if(locale == null){
+            String lang = header("Accept-Language");
+            if(Utils.isNotEmpty(lang)){
+                locale = new Locale(lang);
+            }
+        }
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
 
     @Note("控制器?")
     public Object controller() {

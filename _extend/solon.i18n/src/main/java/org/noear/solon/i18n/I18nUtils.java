@@ -5,6 +5,8 @@ import org.noear.solon.core.handle.Context;
 import java.util.*;
 
 /**
+ * 国际化工具
+ *
  * @author noear
  * @since 1.5
  */
