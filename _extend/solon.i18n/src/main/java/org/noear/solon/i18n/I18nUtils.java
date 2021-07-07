@@ -15,8 +15,8 @@ public class I18nUtils {
     private static I18nBundleFactory bundleFactory = new I18nBundleFactoryLocal();
     private static LocaleResolver localeResolver = new LocaleResolverOfHeader();
 
-    private static final String MESSAGE_BUNDLE = "i18n.message";
-    private static final Map<Locale, I18nBundle> MESSAGE_MAP = new HashMap<>();
+    private static final String messageBundleName  = "i18n.message";
+    private static final Map<Locale, I18nBundle> messageBundleCached = new HashMap<>();
 
     static {
         Aop.getAsyn(I18nBundleFactory.class, bw -> {
@@ -48,22 +48,6 @@ public class I18nUtils {
         return getBundle(bundleName, locale);
     }
 
-    /**
-     * 获取国际化消息
-     */
-    public static Map<String, String> getMessagesAsMap(Locale locale) {
-        if (locale == null) {
-            locale = Locale.getDefault();
-        }
-
-        I18nBundle bundle = MESSAGE_MAP.get(locale);
-        if (bundle == null) {
-            bundle = getBundle(MESSAGE_BUNDLE, locale);
-            MESSAGE_MAP.put(locale, bundle);
-        }
-
-        return bundle.toMap();
-    }
 
     /**
      * 获取国际化消息
@@ -76,20 +60,26 @@ public class I18nUtils {
      * 获取国际化消息
      */
     public static String getMessage(Locale locale, String key, Object[] args) {
-        if (locale == null) {
-            locale = Locale.getDefault();
-        }
-
-        I18nBundle bundle = MESSAGE_MAP.get(locale);
-        if (bundle == null) {
-            bundle = getBundle(MESSAGE_BUNDLE, locale);
-            MESSAGE_MAP.put(locale, bundle);
-        }
+        I18nBundle bundle = getMessageBundle(locale);
 
         if (args == null || args.length == 0) {
             return bundle.get(key);
         } else {
             return bundle.getAndFormat(key, args);
         }
+    }
+
+    public static I18nBundle getMessageBundle(Locale locale){
+        if (locale == null) {
+            locale = Locale.getDefault();
+        }
+
+        I18nBundle bundle = messageBundleCached.get(locale);
+        if (bundle == null) {
+            bundle = getBundle(messageBundleName, locale);
+            messageBundleCached.put(locale, bundle);
+        }
+
+        return bundle;
     }
 }
