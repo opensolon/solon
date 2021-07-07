@@ -10,17 +10,17 @@ import java.util.Locale;
  * @author noear
  * @since 1.5
  */
-public class LocaleResolverOfSession implements LocaleResolver{
-    private String sessionName = "SOLON.LOCALE";
+public class LocaleResolverOfSession implements LocaleResolver {
+    private String attrName = "SOLON.LOCALE";
 
-    public void setSessionName(String sessionName) {
-        this.sessionName = sessionName;
+    public void setAttrName(String attrName) {
+        this.attrName = attrName;
     }
 
     @Override
     public Locale getLocale(Context ctx) {
         if (ctx.getLocale() == null) {
-            String lang = ctx.session(sessionName,"");
+            String lang = ctx.session(attrName, "");
 
             if (Utils.isEmpty(lang)) {
                 ctx.setLocale(Locale.getDefault());
@@ -34,7 +34,7 @@ public class LocaleResolverOfSession implements LocaleResolver{
 
     @Override
     public void setLocale(Context ctx, Locale locale) {
-        ctx.sessionSet(sessionName, locale.getLanguage());
+        ctx.sessionSet(attrName, locale.getLanguage());
         ctx.setLocale(locale);
     }
 }
