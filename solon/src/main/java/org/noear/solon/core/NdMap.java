@@ -22,4 +22,11 @@ public class NdMap extends LinkedCaseInsensitiveMap<Object> {
     public NdMap() {
         super();
     }
+
+    public NdMap(Map map) {
+        super();
+        map.forEach((k, v) -> {
+            put(k.toString(), v);
+        });
+    }
 }

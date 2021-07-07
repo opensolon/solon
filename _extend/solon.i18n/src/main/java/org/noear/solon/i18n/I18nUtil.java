@@ -11,7 +11,7 @@ import java.util.*;
  * @author noear
  * @since 1.5
  */
-public class I18nUtils {
+public class I18nUtil {
     private static I18nBundleFactory bundleFactory = new I18nBundleFactoryLocal();
     private static LocaleResolver localeResolver = new LocaleResolverOfHeader();
 
@@ -51,6 +51,21 @@ public class I18nUtils {
 
     /**
      * 获取国际化消息
+     *
+     * @param ctx 上下文
+     * @param key 键
+     */
+    public static String getMessage(Context ctx, String key) {
+        Locale locale = ctx.getLocale();
+        if (locale == null) {
+            locale = localeResolver.getLocale(ctx);
+        }
+
+        return getMessage(locale, key, null);
+    }
+
+    /**
+     * 获取国际化消息
      */
     public static String getMessage(Locale locale, String key) {
         return getMessage(locale, key, null);
@@ -58,6 +73,26 @@ public class I18nUtils {
 
     /**
      * 获取国际化消息
+     *
+     * @param ctx 上下文
+     * @param key 键
+     * @param args 格式化参数
+     */
+    public static String getMessage(Context ctx, String key,  Object[] args) {
+        Locale locale = ctx.getLocale();
+        if (locale == null) {
+            locale = localeResolver.getLocale(ctx);
+        }
+
+        return getMessage(locale, key, args);
+    }
+
+    /**
+     * 获取国际化消息
+     *
+     * @param locale 地区
+     * @param key 键
+     * @param args 格式化参数
      */
     public static String getMessage(Locale locale, String key, Object[] args) {
         I18nBundle bundle = getMessageBundle(locale);
@@ -69,6 +104,11 @@ public class I18nUtils {
         }
     }
 
+    /**
+     * 获取国际化消息块
+     *
+     * @param locale 地区
+     */
     public static I18nBundle getMessageBundle(Locale locale){
         if (locale == null) {
             locale = Locale.getDefault();

@@ -32,7 +32,7 @@ public class LocaleResolverOfSession implements LocaleResolver {
             if (Utils.isEmpty(lang)) {
                 ctx.setLocale(Locale.getDefault());
             } else {
-                ctx.setLocale(LocaleUtils.toLocale(lang));
+                ctx.setLocale(LocaleUtil.toLocale(lang));
             }
         }
 
