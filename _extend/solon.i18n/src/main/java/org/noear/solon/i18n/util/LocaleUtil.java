@@ -5,11 +5,11 @@ import java.util.Locale;
 /**
  * 地区转换工具
  *
- * <code>
- *     LocaleUtils.toLocale("zh") == new Locale("zh", "")
- *     LocaleUtils.toLocale("zh-Hant") == new Locale("zh", "Hant")
- *     LocaleUtils.toLocale("zh-Hant-TW") == new Locale("zh", "Hant", "TW")
- * </code>
+ * <pre><code>
+ * LocaleUtils.toLocale("zh") == new Locale("zh", "")
+ * LocaleUtils.toLocale("zh-Hant") == new Locale("zh", "Hant")
+ * LocaleUtils.toLocale("zh-Hant-TW") == new Locale("zh", "Hant", "TW")
+ * </code></pre>
  *
  * @author noear
  * @since 1.5
