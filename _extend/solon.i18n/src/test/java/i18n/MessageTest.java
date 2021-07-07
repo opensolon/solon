@@ -16,5 +16,20 @@ public class MessageTest {
     public void test() {
         String text = I18nUtils.getMessage(Locale.getDefault(), "login.title");
         System.out.println(Locale.getDefault() + "::" + text);
+
+
+        text = I18nUtils.getMessage(Locale.ENGLISH, "login.title");
+        assert "login".equals(text);
+        System.out.println(Locale.ENGLISH + "::" + text);
+
+        text = I18nUtils.getMessage(Locale.JAPAN, "login.title");
+        assert "登录".equals(text);
+        System.out.println(Locale.JAPAN + "::" + text);
+
+
+
+        text = I18nUtils.getMessage(Locale.US, "login.title");
+        assert "login-us".equals(text);
+        System.out.println(Locale.US + "::" + text);
     }
 }
