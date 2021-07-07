@@ -31,14 +31,14 @@ public class I18nUtils {
 
     /**
      * 获取国际化包
-     * */
+     */
     public static I18nBundle getBundle(String bundleName, Locale locale) {
         return bundleFactory.create(bundleName, locale);
     }
 
     /**
      * 获取国际化包
-     * */
+     */
     public static I18nBundle getBundle(String bundleName, Context ctx) {
         Locale locale = ctx.getLocale();
         if (locale == null) {
@@ -50,16 +50,33 @@ public class I18nUtils {
 
     /**
      * 获取国际化消息
-     * */
+     */
+    public static Map<String, String> getMessagesAsMap(Locale locale) {
+        if (locale == null) {
+            locale = Locale.getDefault();
+        }
+
+        I18nBundle bundle = MESSAGE_MAP.get(locale);
+        if (bundle == null) {
+            bundle = getBundle(MESSAGE_BUNDLE, locale);
+            MESSAGE_MAP.put(locale, bundle);
+        }
+
+        return bundle.toMap();
+    }
+
+    /**
+     * 获取国际化消息
+     */
     public static String getMessage(Locale locale, String key) {
         return getMessage(locale, key, null);
     }
 
     /**
      * 获取国际化消息
-     * */
+     */
     public static String getMessage(Locale locale, String key, Object[] args) {
-        if(locale == null){
+        if (locale == null) {
             locale = Locale.getDefault();
         }
 
