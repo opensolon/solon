@@ -32,7 +32,7 @@ public class LocaleResolverOfCookie implements LocaleResolver{
             if (Utils.isEmpty(lang)) {
                 ctx.setLocale(Locale.getDefault());
             } else {
-                ctx.setLocale(LocaleUtil.toLocale(lang));
+                ctx.setLocale(LocaleUtils.toLocale(lang));
             }
         }
 

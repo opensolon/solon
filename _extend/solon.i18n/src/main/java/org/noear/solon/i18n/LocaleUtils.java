@@ -14,7 +14,7 @@ import java.util.Locale;
  * @author noear
  * @since 1.5
  */
-public class LocaleUtil {
+public class LocaleUtils {
     /**
      * 将字符串转换成地区
      *
