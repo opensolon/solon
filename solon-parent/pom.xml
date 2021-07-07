@@ -307,6 +307,11 @@
                 <version>${solon.ver}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.i18n</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
 
 
             <dependency>
