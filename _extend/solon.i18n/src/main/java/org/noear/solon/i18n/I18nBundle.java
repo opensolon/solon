@@ -18,15 +18,15 @@ public interface I18nBundle {
     /**
      * 获取国际化内容
      *
-     * @param name 名称
+     * @param key 键
      */
-    String get(String name);
+    String get(String key);
 
     /**
      * 获取国际化内容
      *
-     * @param name 名称
+     * @param key 键
      * @param args 参数
      */
-    String getAndFormat(String name, Object... args);
+    String getAndFormat(String key, Object... args);
 }

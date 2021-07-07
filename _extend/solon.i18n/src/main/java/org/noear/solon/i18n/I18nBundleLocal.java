@@ -44,22 +44,22 @@ public class I18nBundleLocal implements I18nBundle {
     /**
      * 获取国际化内容
      *
-     * @param name 名称
+     * @param key 键
      */
     @Override
-    public String get(String name) {
-        return bundle.getString(name);
+    public String get(String key) {
+        return bundle.getString(key);
     }
 
     /**
      * 获取国际化内容
      *
-     * @param name 名称
+     * @param key  键
      * @param args 参数
      */
     @Override
-    public String getAndFormat(String name, Object... args) {
-        String tml = get(name);
+    public String getAndFormat(String key, Object... args) {
+        String tml = get(key);
 
         MessageFormat mf = new MessageFormat(tml);
         if (locale != null) {
