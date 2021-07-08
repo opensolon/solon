@@ -3,6 +3,6 @@
     <title>#(title)</title>
 </head>
 <body>
-enjoy::#(msg)；i18n::#(i18n.get("login.title"))
+enjoy::#(msg)；i18n::#(i18n["login.title"])
 </body>
 </html>

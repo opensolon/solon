@@ -10,10 +10,11 @@ import org.noear.solon.i18n.annotation.I18n;
 /**
  * 实现简单的 mvc 效果
  * */
-@I18n
+
 @Controller
 public class FreemarkerView {
 
+    @I18n
     @Mapping("/demo9/view/ftl")
     public ModelAndView view() {
         ModelAndView model = new ModelAndView("freemarker.ftl");

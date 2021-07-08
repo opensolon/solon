@@ -7,7 +7,7 @@
     <title>${title}</title>
 </head>
 <body>
-jsp::${msg}；i18n::${i18n.get("login.title")}
+jsp::${msg}；i18n::${i18n["login.title"]}
 
 <ct:footer />
 </body>
