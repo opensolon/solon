@@ -8,7 +8,6 @@ import org.noear.solon.i18n.annotation.I18n;
 import java.time.LocalDate;
 import java.util.Date;
 
-@I18n
 @Controller
 public class ViewController {
     @Mapping("/demo2/view")
