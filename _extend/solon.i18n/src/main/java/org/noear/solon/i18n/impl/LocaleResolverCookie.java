@@ -7,19 +7,19 @@ import org.noear.solon.i18n.LocaleResolver;
 import java.util.Locale;
 
 /**
- * 地区解析器，基于 session state 处理
+ * 地区解析器，基于 cookie 处理
  *
  * @author noear
  * @since 1.5
  */
-public class SessionLocaleResolver implements LocaleResolver {
-    private String attrName = "SOLON.LOCALE";
+public class LocaleResolverCookie implements LocaleResolver {
+    private String cookieName = "SOLON.LOCALE";
 
     /**
-     * 设置会话属性名
+     * 设置cookie name
      * */
-    public void setAttrName(String attrName) {
-        this.attrName = attrName;
+    public void setCookieName(String cookieName) {
+        this.cookieName = cookieName;
     }
 
     /**
@@ -30,7 +30,7 @@ public class SessionLocaleResolver implements LocaleResolver {
     @Override
     public Locale getLocale(Context ctx) {
         if (ctx.getLocale() == null) {
-            String lang = ctx.session(attrName, "");
+            String lang = ctx.cookie(cookieName);
 
             if (Utils.isEmpty(lang)) {
                 ctx.setLocale(Locale.getDefault());
@@ -50,7 +50,7 @@ public class SessionLocaleResolver implements LocaleResolver {
      * */
     @Override
     public void setLocale(Context ctx, Locale locale) {
-        ctx.sessionSet(attrName, locale.getLanguage());
+        ctx.cookieSet(cookieName, locale.getLanguage());
         ctx.setLocale(locale);
     }
 }
