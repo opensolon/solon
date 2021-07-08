@@ -1,7 +1,10 @@
 package org.noear.solon.cloud.model;
 
 /**
- * @author noear 2021/4/26 created
+ * 断路器入口模型
+ *
+ * @author noear
+ * @since 1.2
  */
 public abstract class BreakerEntrySim implements BreakerEntry{
     /**

@@ -94,7 +94,7 @@ public class CloudConfigServiceConsulImp extends TimerTask implements CloudConfi
                 oldV = new Config(group, key, newV.getDecodedValue(), newV.getModifyIndex());
                 configMap.put(cfgKey, oldV);
             } else if (newV.getModifyIndex() > oldV.version()) {
-                oldV.value(newV.getDecodedValue(), newV.getModifyIndex());
+                oldV.updateValue(newV.getDecodedValue(), newV.getModifyIndex());
             }
 
             return oldV;
@@ -178,7 +178,7 @@ public class CloudConfigServiceConsulImp extends TimerTask implements CloudConfi
                     configMap.put(cfgKey, oldV);
                     cfgTmp.put(cfgKey, oldV);
                 } else if (newV.getModifyIndex() > oldV.version()) {
-                    oldV.value(newV.getDecodedValue(), newV.getModifyIndex());
+                    oldV.updateValue(newV.getDecodedValue(), newV.getModifyIndex());
                     cfgTmp.put(cfgKey, oldV);
                 }
             }

@@ -99,7 +99,7 @@ public class CloudConfigServiceWaterImp extends TimerTask implements CloudConfig
             config = new Config(group, key, cfg.value, cfg.lastModified);
             configMap.put(cfgKey, config);
         } else if (cfg.lastModified > config.version()) {
-            config.value(cfg.value, cfg.lastModified);
+            config.updateValue(cfg.value, cfg.lastModified);
         }
 
         return config;
@@ -174,7 +174,7 @@ public class CloudConfigServiceWaterImp extends TimerTask implements CloudConfig
             config = new Config(group, key, cfg.value, cfg.lastModified);
         } else {
             if (config.version() < cfg.lastModified) {
-                config.value(cfg.value, cfg.lastModified);
+                config.updateValue(cfg.value, cfg.lastModified);
             } else {
                 return;
             }

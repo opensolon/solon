@@ -15,20 +15,9 @@ import java.util.Properties;
  */
 public class Config implements Serializable {
     private String group;
-    /**
-     * 配置键
-     */
     private String key;
-    /**
-     * 值
-     */
     private String value;
-
-    /**
-     * 版本号
-     */
     private long version;
-
 
     public Config(String group, String key, String value, long version) {
         this.group = group;
@@ -37,19 +26,11 @@ public class Config implements Serializable {
         this.version = version;
     }
 
-    public String group() {
-        return group;
-    }
 
-    public String key() {
-        return key;
-    }
-
-    public String value() {
-        return value;
-    }
-
-    public Config value(String value, long version) {
+    /**
+     * 更新的值与版本号
+     * */
+    public Config updateValue(String value, long version) {
         this.value = value;
         this.version = version;
         this._props = null;
@@ -57,12 +38,39 @@ public class Config implements Serializable {
         return this;
     }
 
+    /**
+     * 获取分组
+     * */
+    public String group() {
+        return group;
+    }
+
+    /**
+     * 获取配置键
+     * */
+    public String key() {
+        return key;
+    }
+
+    /**
+     * 获取值
+     * */
+    public String value() {
+        return value;
+    }
+
+    /**
+     * 获取版本号
+     * */
     public long version() {
         return version;
     }
 
     private Properties _props;
 
+    /**
+     * 转换为属性格式
+     * */
     public Properties toProps() {
         if (_props == null) {
             _props = Utils.buildProperties(value);
@@ -82,6 +90,9 @@ public class Config implements Serializable {
         return _props;
     }
 
+    /**
+     * 转换为Bean
+     * */
     public <T> T toBean(Class<T> clz) {
         return ClassWrap.get(clz).newBy(toProps());
     }
