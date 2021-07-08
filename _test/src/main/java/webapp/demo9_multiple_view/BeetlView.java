@@ -6,10 +6,9 @@ import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.i18n.annotation.I18n;
 
-@I18n
 @Singleton(false)
 @Controller
-public class BeetlView {
+public class BeetlView extends ViewBase{
     @Mapping("/demo9/view/beetl")
     public ModelAndView view(){
         ModelAndView model = new ModelAndView("beetl.htm");

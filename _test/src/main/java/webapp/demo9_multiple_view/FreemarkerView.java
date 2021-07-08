@@ -12,9 +12,8 @@ import org.noear.solon.i18n.annotation.I18n;
  * */
 
 @Controller
-public class FreemarkerView {
+public class FreemarkerView extends ViewBase{
 
-    @I18n
     @Mapping("/demo9/view/ftl")
     public ModelAndView view() {
         ModelAndView model = new ModelAndView("freemarker.ftl");
