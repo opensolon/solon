@@ -5,6 +5,7 @@ import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.i18n.I18nBundle;
 import org.noear.solon.i18n.I18nUtil;
 import org.noear.solon.i18n.annotation.I18n;
 
@@ -23,7 +24,7 @@ public final class I18nInterceptor implements Interceptor {
             Context ctx = Context.current();
             I18n anno = inv.method().getAnnotation(I18n.class);
 
-            if(anno == null){
+            if (anno == null) {
                 anno = inv.target().getClass().getAnnotation(I18n.class);
             }
 
@@ -31,11 +32,14 @@ public final class I18nInterceptor implements Interceptor {
                 ModelAndView mv = (ModelAndView) rst;
 
                 String bundleName = Utils.annoAlias(anno.value(), anno.bundle());
+                I18nBundle bundle;
                 if (Utils.isEmpty(bundleName)) {
-                    mv.put("i18n", I18nUtil.getMessageBundle(ctx));
+                    bundle = I18nUtil.getMessageBundle(ctx);
                 } else {
-                    mv.put("i18n", I18nUtil.getBundle(bundleName, ctx));
+                    bundle = I18nUtil.getBundle(bundleName, ctx);
                 }
+
+                mv.put("i18n", bundle.toMap());
             }
         }
 
