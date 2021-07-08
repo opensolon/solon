@@ -16,10 +16,16 @@ public class LogOptions {
     //
     private static volatile Level level = Level.TRACE;
 
+    /**
+     * 设置默认日志等级
+     * */
     public static void setLevel(Level level) {
         LogOptions.level = level;
     }
 
+    /**
+     * 获取默认日志等级
+     * */
     public static Level getLevel() {
         return LogOptions.level;
     }
@@ -28,6 +34,12 @@ public class LogOptions {
     private static volatile Map<String, LoggerLevelEntity> loggerLevelMap = new LinkedHashMap<>();
     private static volatile boolean loggerLevelMapInited = false;
 
+    /**
+     * 添加记录器等级设定
+     *
+     * @param loggerExpr 记录器表达式
+     * @param level 等级
+     * */
     public static void addLoggerLevel(String loggerExpr, Level level) {
         if (loggerExpr.endsWith(".*")) {
             loggerExpr = loggerExpr.substring(0, loggerExpr.length() - 1);
@@ -38,6 +50,11 @@ public class LogOptions {
         }
     }
 
+    /**
+     * 获取记录器等级设定
+     *
+     * @param logger 记录器名称
+     * */
     public static Level getLoggerLevel(String logger) {
         if (loggerLevelMapInited == false) {
             loggerLevelMapInit();
@@ -56,6 +73,9 @@ public class LogOptions {
         return getLevel();
     }
 
+    /**
+     * 初始化记录器默认等级
+     * */
     private static synchronized void loggerLevelMapInit() {
         if (loggerLevelMapInited) {
             return;

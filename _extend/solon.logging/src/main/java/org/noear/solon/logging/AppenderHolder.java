@@ -15,7 +15,7 @@ import java.util.Map;
  * @author noear
  * @since 1.3
  */
-class AppenderHolder {
+public final class AppenderHolder {
     Appender real;
 
     public AppenderHolder(String name, Appender real) {

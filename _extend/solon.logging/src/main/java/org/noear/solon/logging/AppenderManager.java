@@ -9,6 +9,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
+ * 添加器管理员
+ *
  * @author noear
  * @since 1.3
  */
@@ -29,6 +31,11 @@ public class AppenderManager {
 
     protected Map<String, AppenderHolder> appenderMap = new LinkedHashMap<>();
 
+
+    private AppenderManager() {
+        register("console", new ConsoleAppender());
+    }
+
     /**
      * 注册时，append 可能会出异常
      */
@@ -36,10 +43,6 @@ public class AppenderManager {
         appenderMap.putIfAbsent(name, new AppenderHolder(name, appender));
 
         PrintUtil.info("Logging", "LogAppender registered from the " + appender.getClass().getTypeName() + "#" + name);
-    }
-
-    private AppenderManager() {
-        register("console", new ConsoleAppender());
     }
 
     /**
