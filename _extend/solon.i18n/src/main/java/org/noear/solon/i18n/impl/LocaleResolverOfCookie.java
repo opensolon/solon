@@ -3,7 +3,6 @@ package org.noear.solon.i18n.impl;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.i18n.LocaleResolver;
-import org.noear.solon.i18n.LocaleUtil;
 
 import java.util.Locale;
 
