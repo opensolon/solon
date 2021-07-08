@@ -5,6 +5,8 @@ import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.model.Event;
 
 /**
+ * 云端事件观察者实体
+ *
  * @author noear
  * @since 1.2
  */

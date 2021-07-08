@@ -16,6 +16,9 @@ import java.nio.charset.StandardCharsets;
 public interface CloudFileService {
     /**
      * 获取文本
+     *
+     * @param bucket 存储桶
+     * @param key 存储键
      */
     default String getText(String bucket, String key) throws CloudFileException {
         try {
@@ -27,6 +30,8 @@ public interface CloudFileService {
 
     /**
      * 获取文本
+     *
+     * @param key 存储键
      */
     default String getText(String key) throws CloudFileException {
         return getText(null, key);
@@ -34,6 +39,10 @@ public interface CloudFileService {
 
     /**
      * 推入文本
+     *
+     * @param bucket 存储桶
+     * @param key 存储键
+     * @param text 文本
      */
     default Result putText(String bucket, String key, String text) throws CloudFileException{
         InputStream stream = new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8));
@@ -42,30 +51,47 @@ public interface CloudFileService {
 
     /**
      * 推入文本
+     *
+     * @param key 存储键
+     * @param text 文本
      */
     default Result putText(String key, String text) throws CloudFileException {
         return putText(null, key, text);
     }
 
     /**
-     * 获取文本
+     * 获取流
+     *
+     * @param bucket 存储桶
+     * @param key 存储键
      */
     InputStream getStream(String bucket, String key) throws CloudFileException;
 
     /**
-     * 获取文本
+     * 获取流
+     *
+     * @param key 存储键
      */
     default InputStream getStream(String key) throws CloudFileException {
         return getStream(null, key);
     }
 
     /**
-     * 推入文件
+     * 推入流
+     *
+     * @param bucket 存储桶
+     * @param key 存储键
+     * @param stream 流
+     * @param streamMime 流媒体类型
      */
     Result putStream(String bucket, String key, InputStream stream, String streamMime) throws CloudFileException;
 
     /**
-     * 推入文件
+     * 推入流
+     *
+     * @param key 存储键
+     * @param stream 流
+     * @param streamMime 流媒体类型
      */
     default Result putStream(String key, InputStream stream, String streamMime) throws CloudFileException {
         return putStream(null, key, stream, streamMime);
