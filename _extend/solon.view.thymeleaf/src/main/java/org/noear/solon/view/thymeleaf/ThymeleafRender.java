@@ -114,10 +114,9 @@ public class ThymeleafRender implements Render {
     }
 
 
-
     /**
      * 添加共享指令（自定义标签）
-     * */
+     */
     public <T extends IDialect> void putDirective(T obj) {
         try {
             _engine.addDialect(obj);
@@ -128,7 +127,7 @@ public class ThymeleafRender implements Render {
 
     /**
      * 添加共享变量
-     * */
+     */
     public void putVariable(String name, Object obj) {
         _sharedVariable.put(name, obj);
     }
@@ -174,6 +173,10 @@ public class ThymeleafRender implements Render {
         org.thymeleaf.context.Context context = new org.thymeleaf.context.Context();
         context.setVariables(_sharedVariable);
         context.setVariables(mv);
+
+        if (ctx.getLocale() != null) {
+            context.setLocale(ctx.getLocale());
+        }
 
 
         PrintWriter writer = new PrintWriter(outputStream.get());
