@@ -1,11 +1,12 @@
 package org.noear.solon.cloud.service;
 
-
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.core.event.EventBus;
 
 /**
+ * 云端发现观察者实体
+ *
  * @author noear
  * @since 1.2
  */

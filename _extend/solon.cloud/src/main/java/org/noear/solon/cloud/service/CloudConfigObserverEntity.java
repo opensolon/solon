@@ -5,6 +5,8 @@ import org.noear.solon.cloud.model.Config;
 import org.noear.solon.core.event.EventBus;
 
 /**
+ * 云端配置观察者实现
+ *
  * @author noear
  * @since 1.2
  */
