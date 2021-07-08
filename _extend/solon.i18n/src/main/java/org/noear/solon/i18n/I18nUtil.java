@@ -82,40 +82,40 @@ public class I18nUtil {
     /**
      * 获取国际化消息
      */
-    public static String getMessage(Locale locale, String key) {
-        return getMessage(locale, key, null);
+    public static String getMessage(Locale locale, String code) {
+        return getMessage(locale, code, null);
     }
 
     /**
      * 获取国际化消息
      *
      * @param ctx  上下文
-     * @param key  键
+     * @param code 代码
      * @param args 格式化参数
      */
-    public static String getMessage(Context ctx, String key, Object[] args) {
+    public static String getMessage(Context ctx, String code, Object[] args) {
         Locale locale = ctx.getLocale();
         if (locale == null) {
             locale = localeResolver.getLocale(ctx);
         }
 
-        return getMessage(locale, key, args);
+        return getMessage(locale, code, args);
     }
 
     /**
      * 获取国际化消息
      *
      * @param locale 地区
-     * @param key    键
+     * @param code   代码
      * @param args   格式化参数
      */
-    public static String getMessage(Locale locale, String key, Object[] args) {
+    public static String getMessage(Locale locale, String code, Object[] args) {
         I18nBundle bundle = getMessageBundle(locale);
 
         if (args == null || args.length == 0) {
-            return bundle.get(key);
+            return bundle.get(code);
         } else {
-            return bundle.getAndFormat(key, args);
+            return bundle.getAndFormat(code, args);
         }
     }
 

@@ -45,22 +45,22 @@ public class I18nBundleLocal implements I18nBundle {
     /**
      * 获取国际化内容
      *
-     * @param key 键
+     * @param code 代码
      */
     @Override
-    public String get(String key) {
-        return new String(bundle.getString(key).getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+    public String get(String code) {
+        return new String(bundle.getString(code).getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
     }
 
     /**
      * 获取国际化内容
      *
-     * @param key  键
+     * @param code 代码
      * @param args 参数
      */
     @Override
-    public String getAndFormat(String key, Object... args) {
-        String tml = get(key);
+    public String getAndFormat(String code, Object... args) {
+        String tml = get(code);
 
         MessageFormat mf = new MessageFormat(tml);
         if (locale != null) {
