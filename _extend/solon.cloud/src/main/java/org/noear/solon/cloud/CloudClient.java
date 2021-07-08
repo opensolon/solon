@@ -21,26 +21,26 @@ import java.util.Properties;
 public class CloudClient {
 
     /**
-     * 断路器服务
+     * 获取 云端断路器服务
      * */
-    @Note("断路器服务")
+    @Note("云端断路器服务")
     public static CloudBreakerService breaker(){
         return CloudManager.breakerService();
     }
 
 
     /**
-     * 配置服务
+     * 获取 云端配置服务
      */
-    @Note("配置服务")
+    @Note("云端配置服务")
     public static CloudConfigService config() {
         return CloudManager.configService();
     }
 
     /**
-     * 配置服务，加载默认配置
+     * 云端配置服务，加载默认配置
      */
-    @Note("配置服务，加载默认配置")
+    @Note("云端配置服务，加载默认配置")
     public static void configLoad(String group, String key) {
         if (CloudClient.config() == null) {
             return;
@@ -61,7 +61,11 @@ public class CloudClient {
             });
         }
     }
-    @Note("配置服务，加载默认配置。g::k,k")
+
+    /**
+     * 云端配置服务，加载默认配置
+     * */
+    @Note("云端配置服务，加载默认配置。g::k,k")
     public static void configLoad(String groupKeySet) {
         if (CloudClient.config() == null) {
             return;
@@ -81,17 +85,17 @@ public class CloudClient {
     }
 
     /**
-     * 发现服务
+     * 获取 云端发现服务
      */
-    @Note("发现服务")
+    @Note("云端发现服务")
     public static CloudDiscoveryService discovery() {
         return CloudManager.discoveryService();
     }
 
     /**
-     * 发现服务，推送本地服务（即注册）
+     * 云端发现服务，推送本地服务（即注册）
      */
-    @Note("发现服务，推送本地服务（即注册）")
+    @Note("云端发现服务，推送本地服务（即注册）")
     public static void discoveryPush() {
         if (CloudClient.discovery() == null) {
             return;
@@ -117,68 +121,77 @@ public class CloudClient {
     }
 
     /**
-     * 事件服务
+     * 获取 云端事件服务
      */
-    @Note("事件服务")
+    @Note("云端事件服务")
     public static CloudEventService event() {
         return CloudManager.eventService();
     }
 
     /**
-     * 锁服务
+     * 获取 云端锁服务
      * */
-    @Note("锁服务")
+    @Note("云端锁服务")
     public static CloudLockService lock(){
         return CloudManager.lockService();
     }
 
     /**
-     * 日志服务
+     * 获取 云端日志服务
      * */
-    @Note("日志服务")
+    @Note("云端日志服务")
     public static CloudLogService log(){
         return CloudManager.logService();
     }
 
     /**
-     * 跟踪服务
+     * 获取 云端链路跟踪服务
      * */
-    @Note("链路跟踪服务")
+    @Note("云端链路跟踪服务")
     public static CloudTraceService trace() { return CloudManager.traceService();}
 
     /**
-     * 跟踪服务
+     * 获取 云端度量服务
      * */
-    @Note("度量服务")
+    @Note("云端度量服务")
     public static CloudMetricService metric() { return CloudManager.metricService();}
 
     /**
-     * 名单服务
+     * 获取 云端名单服务
      * */
-    @Note("名单服务")
+    @Note("云端名单服务")
     public static CloudListService list(){
         return CloudManager.listService();
     }
 
     /**
-     * 名单服务
+     * 获取 云端文件服务
      * */
-    @Note("文件服务")
+    @Note("云端文件服务")
     public static CloudFileService file(){
         return CloudManager.fileService();
     }
 
-    @Note("ID服务")
+    /**
+     * 获取 云端ID服务
+     * */
+    @Note("云端ID服务")
     public static CloudIdService idService(String group, String service){
         return CloudManager.idServiceFactory().create(group, service);
     }
 
-    @Note("ID服务")
+    /**
+     * 获取 云端ID服务
+     * */
+    @Note("云端ID服务")
     public static CloudIdService id(){
         return CloudManager.idServiceDef();
     }
 
-    @Note("Job服务")
+    /**
+     * 获取 云端Job服务
+     * */
+    @Note("云端Job服务")
     public static CloudJobService job(){
         return CloudManager.jobService();
     }

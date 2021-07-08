@@ -6,7 +6,7 @@ import org.noear.solon.Utils;
 import java.util.Properties;
 
 /**
- * 云服务属性配置
+ * 云服务属性模板
  *
  * @author noear
  * @since 1.2
