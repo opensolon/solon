@@ -13,9 +13,18 @@ import java.util.List;
  * @since 1.0
  * */
 public abstract class DbTranNode implements TranNode {
+    /**
+     * 父节点
+     * */
     protected DbTranNode parent;
+    /**
+     * 孩子节点
+     * */
     protected List<DbTranNode> children = new ArrayList<>();
 
+    /**
+     * 添加孩子节点
+     * */
     @Override
     public void add(TranNode slave) {
         if (slave instanceof DbTranNode) {
@@ -26,12 +35,18 @@ public abstract class DbTranNode implements TranNode {
         }
     }
 
+    /**
+     * 提交
+     * */
     public void commit() throws Throwable {
         for (DbTranNode n1 : children) {
             n1.commit();
         }
     }
 
+    /**
+     * 回滚
+     * */
     public void rollback() throws Throwable {
         //确保每个子处事，都有机会回滚
         //
@@ -44,6 +59,9 @@ public abstract class DbTranNode implements TranNode {
         }
     }
 
+    /**
+     * 关闭
+     * */
     public void close() throws Throwable {
         //确保每个子处事，都有机会关闭
         //
