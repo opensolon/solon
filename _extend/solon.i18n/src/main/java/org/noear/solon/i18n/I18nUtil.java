@@ -2,6 +2,8 @@ package org.noear.solon.i18n;
 
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.i18n.impl.I18nBundleFactoryLocal;
+import org.noear.solon.i18n.impl.LocaleResolverOfHeader;
 
 import java.util.*;
 

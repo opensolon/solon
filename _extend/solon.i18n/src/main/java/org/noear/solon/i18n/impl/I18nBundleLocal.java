@@ -1,4 +1,6 @@
-package org.noear.solon.i18n;
+package org.noear.solon.i18n.impl;
+
+import org.noear.solon.i18n.I18nBundle;
 
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
