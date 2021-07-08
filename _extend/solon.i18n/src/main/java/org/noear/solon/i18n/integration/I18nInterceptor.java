@@ -39,7 +39,7 @@ public final class I18nInterceptor implements Interceptor {
                     bundle = I18nUtil.getBundle(bundleName, ctx);
                 }
 
-                mv.put("i18n", bundle.toMap());
+                mv.put("i18n", bundle);
             }
         }
 

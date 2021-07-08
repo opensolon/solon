@@ -3,6 +3,6 @@
     <title th:text="${title}"></title>
 </head>
 <body>
-thymeleaf::<span th:text="${msg}"></span>；i18n::<span th:text='${i18n["login.title"]}'></span>
+thymeleaf::<span th:text="${msg}"></span>；i18n::<span th:text='${i18n.get("login.title")}'></span>
 </body>
 </html>
