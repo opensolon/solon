@@ -10,7 +10,6 @@ import org.noear.solon.annotation.*;
  * @author noear
  * @since 1.0
  * */
-//@Around(value = CacheInterceptor.class, index = 111)
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Cache {

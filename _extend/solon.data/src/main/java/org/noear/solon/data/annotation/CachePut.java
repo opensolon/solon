@@ -9,7 +9,6 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.0
  * */
-//@Around(value = CachePutInterceptor.class, index = 110)
 @Inherited //要可继承
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
