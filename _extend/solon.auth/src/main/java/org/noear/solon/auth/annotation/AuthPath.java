@@ -6,6 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 认证路径注解
+ *
  * @author noear
  * @since 1.3
  */

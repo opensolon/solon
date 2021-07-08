@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 需要特定权限（需要用户按需使用）
+ * 认证特定权限（需要用户按需使用）
  *
  * @author noear
  * @since 1.3
@@ -19,7 +19,7 @@ public @interface AuthPermissions {
      * */
     String[] value();
     /**
-     * 逻辑关系
+     * 认证的逻辑关系
      * */
     Logical logical() default Logical.OR;
 }

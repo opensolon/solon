@@ -1,6 +1,8 @@
 package org.noear.solon.auth.tags;
 
 /**
+ * 自定义标签的常量配置
+ *
  * @author noear
  * @since 1.4
  */
