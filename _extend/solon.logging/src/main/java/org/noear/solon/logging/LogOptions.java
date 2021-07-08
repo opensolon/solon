@@ -43,6 +43,10 @@ public class LogOptions {
             loggerLevelMapInit();
         }
 
+        if(logger == null){
+            return Level.INFO;
+        }
+
         for (LoggerLevelEntity l : loggerLevelMap.values()) {
             if (logger.startsWith(l.getLoggerExpr())) {
                 return l.getLevel();
@@ -52,7 +56,7 @@ public class LogOptions {
         return getLevel();
     }
 
-    protected static synchronized void loggerLevelMapInit() {
+    private static synchronized void loggerLevelMapInit() {
         if (loggerLevelMapInited) {
             return;
         }

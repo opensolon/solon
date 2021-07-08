@@ -1,6 +1,8 @@
-package org.noear.solon.cloud;
+package org.noear.solon.cloud.integration;
 
 import org.noear.nami.NamiManager;
+import org.noear.solon.cloud.CloudClient;
+import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.annotation.CloudBreaker;
 import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.cloud.impl.*;

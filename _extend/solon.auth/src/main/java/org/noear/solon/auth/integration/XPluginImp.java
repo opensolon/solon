@@ -1,4 +1,4 @@
-package org.noear.solon.auth;
+package org.noear.solon.auth.integration;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.auth.annotation.*;

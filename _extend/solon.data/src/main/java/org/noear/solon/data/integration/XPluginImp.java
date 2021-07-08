@@ -1,4 +1,4 @@
-package org.noear.solon.data;
+package org.noear.solon.data.integration;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.*;

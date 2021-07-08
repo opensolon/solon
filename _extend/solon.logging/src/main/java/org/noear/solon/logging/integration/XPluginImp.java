@@ -1,8 +1,10 @@
-package org.noear.solon.logging;
+package org.noear.solon.logging.integration;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.logging.AppenderManager;
+import org.noear.solon.logging.LogOptions;
 import org.noear.solon.logging.event.Appender;
 
 import java.util.Properties;
@@ -36,6 +38,7 @@ public class XPluginImp implements Plugin {
             });
         }
 
-        LogOptions.loggerLevelMapInit();
+        //init
+        LogOptions.getLoggerLevel(null);
     }
 }
