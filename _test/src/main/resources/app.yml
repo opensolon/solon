@@ -41,6 +41,8 @@ solon.logging.appender:
 solon.logging.logger:
   "org.apache.*":
     level: INFO
+  "org.eclipse.*":
+    level: INFO
 
 solon.socketd:
   readBufferSize: "512"

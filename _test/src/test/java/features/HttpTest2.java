@@ -26,10 +26,10 @@ public class HttpTest2 extends HttpTestBase {
         assert path("/demo1/run3/*?@=1").get().equals("@=1");
     }
 
-    @Test
-    public void test3() throws IOException {
-        if (Utils.loadClass("javax.servlet.http.HttpServletRequest") != null) {
-            assert path("/demo2/servlet/hello?name=noear").get().equals("Ok");
-        }
-    }
+//    @Test
+//    public void test3() throws IOException {
+//        if (Utils.loadClass("javax.servlet.http.HttpServletRequest") != null) {
+//            assert path("/demo2/servlet/hello?name=noear").get().equals("Ok");
+//        }
+//    }
 }

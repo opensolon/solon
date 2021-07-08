@@ -3,6 +3,6 @@
     <title>${title}</title>
 </head>
 <body>
-ftl::${msg}；i18n::${i18n.get("login.title")}
+ftl::${msg}；i18n::${i18n["login.title"]}
 </body>
 </html>
