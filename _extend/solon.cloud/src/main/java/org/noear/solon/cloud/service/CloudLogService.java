@@ -10,5 +10,10 @@ import org.noear.solon.logging.event.LogEvent;
  * @since 1.2
  */
 public interface CloudLogService {
+    /**
+     * 添加
+     *
+     * @param logEvent 日志事件
+     * */
     void append(LogEvent logEvent);
 }

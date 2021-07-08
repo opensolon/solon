@@ -157,9 +157,9 @@ public class CloudClient {
     public static CloudMetricService metric() { return CloudManager.metricService();}
 
     /**
-     * 获取 云端名单服务
+     * 获取 云端名单列表服务
      * */
-    @Note("云端名单服务")
+    @Note("云端名单列表服务")
     public static CloudListService list(){
         return CloudManager.listService();
     }

@@ -3,6 +3,8 @@ package org.noear.solon.cloud.service;
 import org.noear.solon.Solon;
 
 /**
+ * 云端度量服务
+ *
  * @author noear
  * @since 1.4
  */

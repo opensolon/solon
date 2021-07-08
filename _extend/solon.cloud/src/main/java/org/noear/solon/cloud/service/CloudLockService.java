@@ -16,6 +16,7 @@ public interface CloudLockService {
      * @param key     锁键
      * @param seconds 锁定时间（过期失效）
      * @param holder  持有人
+     * @return 是否成功
      */
     boolean lock(String group, String key, int seconds, String holder);
 
@@ -25,6 +26,7 @@ public interface CloudLockService {
      * @param key     锁键
      * @param seconds 锁定时间（过期失效）
      * @param holder  持有人
+     * @return 是否成功
      */
     default boolean lock(String key, int seconds, String holder) {
         return lock(Solon.cfg().appName(), key, seconds, holder);
@@ -36,6 +38,7 @@ public interface CloudLockService {
      * @param group   锁分组
      * @param key     锁键
      * @param seconds 锁定时间（过期失效）
+     * @return 是否成功
      */
     default boolean lock(String group, String key, int seconds) {
         return lock(group, key, seconds, null);
@@ -46,6 +49,7 @@ public interface CloudLockService {
      *
      * @param key     锁键
      * @param seconds 锁定时间（过期失效）
+     * @return 是否成功
      */
     default boolean lock(String key, int seconds) {
         return lock(Solon.cfg().appName(), key, seconds);
