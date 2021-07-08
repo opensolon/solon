@@ -45,6 +45,9 @@ public class AuthUtil {
 
     /**
      * 验证是否有路径授权
+     *
+     * @param path 路径
+     * @param method 请求方式
      */
     public static boolean verifyPath(String path, String method) {
         //先验证是否有登录
@@ -57,6 +60,8 @@ public class AuthUtil {
 
     /**
      * 验证是否有权限授权
+     *
+     * @param permissions 权限
      */
     public static boolean verifyPermissions(String... permissions) {
         return verifyPermissions(permissions, Logical.OR);
@@ -64,6 +69,8 @@ public class AuthUtil {
 
     /**
      * 验证是否有权限授权(同时满足多个权限)
+     *
+     * @param permissions 权限
      */
     public static boolean verifyPermissionsAnd(String... permissions) {
         return verifyPermissions(permissions, Logical.AND);
@@ -71,6 +78,9 @@ public class AuthUtil {
 
     /**
      * 验证是否有权限授权
+     *
+     * @param permissions 权限
+     * @param logical 验证的逻辑关系
      */
     public static boolean verifyPermissions(String[] permissions, Logical logical) {
         //先验证是否有登录
@@ -83,6 +93,8 @@ public class AuthUtil {
 
     /**
      * 验证是否有角色授权
+     *
+     * @param roles 角色
      */
     public static boolean verifyRoles(String... roles) {
         return verifyRoles(roles, Logical.OR);
@@ -90,6 +102,8 @@ public class AuthUtil {
 
     /**
      * 验证是否有角色授权(同时满足多个角色)
+     *
+     * @param roles 角色
      */
     public static boolean verifyRolesAnd(String... roles) {
         return verifyRoles(roles, Logical.AND);
@@ -97,6 +111,9 @@ public class AuthUtil {
 
     /**
      * 验证是否有角色授权
+     *
+     * @param roles 角色
+     * @param logical 验证的逻辑关系
      */
     public static boolean verifyRoles(String[] roles, Logical logical) {
         //先验证是否有登录
