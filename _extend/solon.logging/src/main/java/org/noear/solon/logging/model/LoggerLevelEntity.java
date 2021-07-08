@@ -5,17 +5,26 @@ import org.noear.solon.logging.event.Level;
 import java.util.Objects;
 
 /**
+ * 记录器级别实例
+ *
  * @author noear
  * @since 1.3
+ * @see org.noear.solon.logging.LogOptions
  */
 public class LoggerLevelEntity {
     private final String loggerExpr;
     private final Level level;
 
+    /**
+     * 获取级别
+     * */
     public Level getLevel() {
         return level;
     }
 
+    /**
+     * 获取记录器表达式
+     * */
     public String getLoggerExpr() {
         return loggerExpr;
     }

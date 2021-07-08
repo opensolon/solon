@@ -9,38 +9,13 @@ import java.util.Map;
  * @since 1.0
  */
 public class LogEvent {
-    /**
-     * 日志器名称
-     */
-    private String loggerName;
-    /**
-     * 初始化类
-     */
-    //private Class<?> initClass;
-    /**
-     * 级别
-     */
-    private Level level;
-    /**
-     * 原信息
-     */
-    private Map<String, String> metainfo;
-    /**
-     * 内容
-     */
-    private Object content;
-    /**
-     * 时间戳
-     */
-    private long timeStamp;
-    /**
-     * 线程名
-     */
-    private String threadName;
 
-    /**
-     * 异常
-     * */
+    private String loggerName;
+    private Level level;
+    private Map<String, String> metainfo;
+    private Object content;
+    private long timeStamp;
+    private String threadName;
     private Throwable throwable;
 
     public LogEvent(String loggerName, Level level, Map<String, String> metainfo, Object content, long timeStamp, String threadName, Throwable throwable) {
@@ -53,31 +28,51 @@ public class LogEvent {
         this.throwable = throwable;
     }
 
+    /**
+     * 获取日志器名称
+     */
     public String getLoggerName() {
         return loggerName;
     }
 
+    /**
+     * 获取级别
+     */
     public Level getLevel() {
         return level;
     }
 
+    /**
+     * 获取元信息
+     */
     public Map<String, String> getMetainfo() {
         return metainfo;
     }
 
-
+    /**
+     * 获取内容
+     */
     public Object getContent() {
         return content;
     }
 
+    /**
+     * 获取时间戳
+     */
     public long getTimeStamp() {
         return timeStamp;
     }
 
+    /**
+     * 获取线程名
+     */
     public String getThreadName() {
         return threadName;
     }
 
+    /**
+     * 异常
+     * */
     public Throwable getThrowable() {
         return throwable;
     }

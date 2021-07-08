@@ -16,13 +16,21 @@ import java.util.Date;
  */
 public class AppenderSimple extends AppenderBase {
 
-    protected boolean getEnable(){
+    /**
+     * 是否允许添加
+     * */
+    protected boolean allowAppend(){
         return true;
     }
 
+    /**
+     * 添加日志事件
+     *
+     * @param logEvent 日志事件
+     * */
     @Override
     public void append(LogEvent logEvent) {
-        if(getEnable() == false){
+        if(allowAppend() == false){
             return;
         }
 

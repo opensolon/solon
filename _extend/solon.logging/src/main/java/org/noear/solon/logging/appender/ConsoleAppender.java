@@ -14,11 +14,17 @@ public class ConsoleAppender extends OutputStreamAppender {
         setStream(System.out);
     }
 
+    /**
+     * 是否允许添加
+     * */
     @Override
-    protected boolean getEnable() {
+    protected boolean allowAppend() {
         return Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode();
     }
 
+    /**
+     * 获取默认级别
+     * */
     @Override
     public Level getDefaultLevel() {
         return Level.TRACE;

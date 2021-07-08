@@ -22,7 +22,9 @@ public final class AppenderHolder {
         this.real = real;
         this.name = name;
 
+        //设置名称
         real.setName(name);
+        //开始生命周期
         real.start();
 
         if (Solon.global() != null) {
