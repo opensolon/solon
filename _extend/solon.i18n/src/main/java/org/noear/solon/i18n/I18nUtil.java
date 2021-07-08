@@ -122,6 +122,15 @@ public class I18nUtil {
     /**
      * 获取国际化消息块
      *
+     * @param ctx 上下文
+     */
+    public static I18nBundle getMessageBundle(Context ctx) {
+        return getBundle(messageBundleName, ctx);
+    }
+
+    /**
+     * 获取国际化消息块
+     *
      * @param locale 地区
      */
     public static I18nBundle getMessageBundle(Locale locale) {
