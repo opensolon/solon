@@ -42,6 +42,8 @@
         </dependency>
 
 
+
+
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>nami</artifactId>
@@ -79,6 +81,12 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
             <version>${hutool.ver}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.i18n</artifactId>
         </dependency>
 
         <dependency>
