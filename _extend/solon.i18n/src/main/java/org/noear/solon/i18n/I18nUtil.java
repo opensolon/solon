@@ -13,10 +13,10 @@ import java.util.*;
  */
 public class I18nUtil {
     private static I18nBundleFactory bundleFactory = new I18nBundleFactoryLocal();
+    private static final Map<String, I18nBundle> bundleCached = new HashMap<>();
     private static LocaleResolver localeResolver = new LocaleResolverOfHeader();
 
-    private static final String messageBundleName  = "i18n.message";
-    private static final Map<Locale, I18nBundle> messageBundleCached = new HashMap<>();
+    private static final String messageBundleName = "i18n.message";
 
     static {
         Aop.getAsyn(I18nBundleFactory.class, bw -> {
@@ -33,7 +33,22 @@ public class I18nUtil {
      * 获取国际化包
      */
     public static I18nBundle getBundle(String bundleName, Locale locale) {
-        return bundleFactory.create(bundleName, locale);
+        String cacheKey = bundleName + "#" + locale.hashCode();
+
+        I18nBundle bundle = bundleCached.get(cacheKey);
+
+        if (bundle == null) {
+            synchronized (cacheKey.intern()) {
+                bundle = bundleCached.get(cacheKey);
+
+                if (bundle == null) {
+                    bundle = bundleFactory.create(bundleName, locale);
+                    bundleCached.put(cacheKey, bundle);
+                }
+            }
+        }
+
+        return bundle;
     }
 
     /**
@@ -74,11 +89,11 @@ public class I18nUtil {
     /**
      * 获取国际化消息
      *
-     * @param ctx 上下文
-     * @param key 键
+     * @param ctx  上下文
+     * @param key  键
      * @param args 格式化参数
      */
-    public static String getMessage(Context ctx, String key,  Object[] args) {
+    public static String getMessage(Context ctx, String key, Object[] args) {
         Locale locale = ctx.getLocale();
         if (locale == null) {
             locale = localeResolver.getLocale(ctx);
@@ -91,8 +106,8 @@ public class I18nUtil {
      * 获取国际化消息
      *
      * @param locale 地区
-     * @param key 键
-     * @param args 格式化参数
+     * @param key    键
+     * @param args   格式化参数
      */
     public static String getMessage(Locale locale, String key, Object[] args) {
         I18nBundle bundle = getMessageBundle(locale);
@@ -109,17 +124,7 @@ public class I18nUtil {
      *
      * @param locale 地区
      */
-    public static I18nBundle getMessageBundle(Locale locale){
-        if (locale == null) {
-            locale = Locale.getDefault();
-        }
-
-        I18nBundle bundle = messageBundleCached.get(locale);
-        if (bundle == null) {
-            bundle = getBundle(messageBundleName, locale);
-            messageBundleCached.put(locale, bundle);
-        }
-
-        return bundle;
+    public static I18nBundle getMessageBundle(Locale locale) {
+        return getBundle(messageBundleName, locale);
     }
 }
