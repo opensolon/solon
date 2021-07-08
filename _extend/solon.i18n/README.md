@@ -1,5 +1,14 @@
 
 
+```
+//默认国际化消息配置（此为约定，不能改）
+resources/i18n/message.properties
+resources/i18n/message_en.properties
+resources/i18n/message_zh_CN.properties
+
+
+```
+
 beetl::
 ```html
 <div>
