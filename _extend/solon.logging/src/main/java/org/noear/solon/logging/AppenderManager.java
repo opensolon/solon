@@ -17,6 +17,9 @@ import java.util.Map;
 public class AppenderManager {
     private static AppenderManager instance;
 
+    /**
+     * 获取单例
+     * */
     public static AppenderManager getInstance() {
         if (instance == null) {
             synchronized (AppenderManager.class) {
@@ -37,7 +40,10 @@ public class AppenderManager {
     }
 
     /**
-     * 注册时，append 可能会出异常
+     * 注册添加器
+     *
+     * @param name 名称
+     * @param appender 添加器
      */
     public void register(String name, Appender appender) {
         appenderMap.putIfAbsent(name, new AppenderHolder(name, appender));
@@ -46,7 +52,9 @@ public class AppenderManager {
     }
 
     /**
-     * 添加时，register 可能会出异常
+     * 添加日志事件（接收日志事件的入口）
+     *
+     * @param logEvent 日志事件
      */
     public void append(LogEvent logEvent) {
         for (AppenderHolder appender : appenderMap.values()) {

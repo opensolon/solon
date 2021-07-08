@@ -7,13 +7,12 @@ import org.noear.solon.logging.model.LoggerLevelEntity;
 import java.util.*;
 
 /**
+ * 日志选项
+ *
  * @author noear
  * @since 1.3
  */
 public class LogOptions {
-    //
-    //默认日志等级
-    //
     private static volatile Level level = Level.TRACE;
 
     /**
