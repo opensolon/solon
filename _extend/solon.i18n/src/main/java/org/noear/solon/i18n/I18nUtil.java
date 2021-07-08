@@ -16,7 +16,7 @@ public class I18nUtil {
     private static final Map<String, I18nBundle> bundleCached = new HashMap<>();
     private static LocaleResolver localeResolver = new LocaleResolverOfHeader();
 
-    private static final String messageBundleName = "i18n.message";
+    private static final String messageBundleName = "i18n.messages";
 
     static {
         Aop.getAsyn(I18nBundleFactory.class, bw -> {
