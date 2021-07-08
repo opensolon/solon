@@ -120,19 +120,6 @@ public class I18nUtil {
     }
 
     /**
-     * 获取国际化消息块（根据当前上下文获取）
-     */
-    public static I18nBundle getMessageBundle() {
-        Context ctx = Context.current();
-
-        if (ctx == null) {
-            return null;
-        } else {
-            return getBundle(messageBundleName, ctx);
-        }
-    }
-
-    /**
      * 获取国际化消息块
      *
      * @param ctx 上下文
