@@ -24,6 +24,11 @@ public class LocaleUtil {
         if (str == null) {
             return null;
         }
+
+        if(str.indexOf('-') > 0) {
+            str = str.replace("-", "_");
+        }
+
         int len = str.length();
         if (len != 2 && len != 5 && len < 7) {
             throw new IllegalArgumentException("Invalid locale format: " + str);

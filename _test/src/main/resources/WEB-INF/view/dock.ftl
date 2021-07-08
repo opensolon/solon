@@ -3,7 +3,6 @@
     <title>${title}</title>
 </head>
 <body>
-ftl::
-${msg}
+ftl::${msg}
 </body>
 </html>

@@ -3,10 +3,12 @@ package webapp.demo2_mvc;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.core.handle.ModelAndView;
+import org.noear.solon.i18n.annotation.I18n;
 
 import java.time.LocalDate;
 import java.util.Date;
 
+@I18n
 @Controller
 public class ViewController {
     @Mapping("/demo2/view")

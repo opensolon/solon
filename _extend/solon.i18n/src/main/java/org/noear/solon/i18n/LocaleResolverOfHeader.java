@@ -28,6 +28,9 @@ public class LocaleResolverOfHeader implements LocaleResolver {
     public Locale getLocale(Context ctx) {
         if (ctx.getLocale() == null) {
             String lang = ctx.header(headerName);
+            if(lang.contains(",")){
+                lang = lang.split(",")[0];
+            }
 
             if (Utils.isEmpty(lang)) {
                 ctx.setLocale(Locale.getDefault());

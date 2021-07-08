@@ -5,10 +5,12 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
+import org.noear.solon.i18n.annotation.I18n;
 
 /**
  * 实现简单的 mvc 效果
  * */
+@I18n
 @Mapping("/demo1/view/*")
 @Controller
 public class ViewHandler implements Handler {

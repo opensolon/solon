@@ -5,16 +5,18 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
+import org.noear.solon.i18n.annotation.I18n;
 
-@Mapping("/demo9/view/enjoy")
+@I18n
 @Controller
-public class EnjoyView implements Handler {
-    @Override
-    public void handle(Context ctx) throws Throwable {
-        ModelAndView model = new ModelAndView("enjoy.shtm");
-        model.put("title","dock");
-        model.put("msg","你好 world! in XController");
+public class EnjoyView {
 
-        ctx.render(model);
+    @Mapping("/demo9/view/enjoy")
+    public ModelAndView view() {
+        ModelAndView model = new ModelAndView("enjoy.shtm");
+        model.put("title", "dock");
+        model.put("msg", "你好 world! in XController");
+
+        return model;
     }
 }

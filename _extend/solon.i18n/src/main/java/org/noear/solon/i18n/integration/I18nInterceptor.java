@@ -23,6 +23,10 @@ public final class I18nInterceptor implements Interceptor {
             Context ctx = Context.current();
             I18n anno = inv.method().getAnnotation(I18n.class);
 
+            if(anno == null){
+                anno = inv.target().getClass().getAnnotation(I18n.class);
+            }
+
             if (anno != null && ctx != null) {
                 ModelAndView mv = (ModelAndView) rst;
 
