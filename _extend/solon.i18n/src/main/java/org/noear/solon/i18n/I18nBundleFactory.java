@@ -3,7 +3,7 @@ package org.noear.solon.i18n;
 import java.util.Locale;
 
 /**
- * 国际化包工厂
+ * 国际化内容包工厂
  *
  * @author noear
  * @since 1.5

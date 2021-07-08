@@ -14,10 +14,23 @@ import java.util.*;
  * @since 1.5
  */
 public class I18nUtil {
+    /**
+     * 国际化内容包工厂
+     * */
     private static I18nBundleFactory bundleFactory = new I18nBundleFactoryLocal();
+    /**
+     * 国际化内容包缓存
+     * */
     private static final Map<String, I18nBundle> bundleCached = new HashMap<>();
+
+    /**
+     * 地区解析器
+     * */
     private static LocaleResolver localeResolver = new LocaleResolverOfHeader();
 
+    /**
+     * 消息国际化内容包名
+     * */
     private static final String messageBundleName = "i18n.messages";
 
     static {
@@ -32,7 +45,7 @@ public class I18nUtil {
 
 
     /**
-     * 获取国际化包
+     * 获取国际化内容包
      */
     public static I18nBundle getBundle(String bundleName, Locale locale) {
         String cacheKey = bundleName + "#" + locale.hashCode();
@@ -54,7 +67,7 @@ public class I18nUtil {
     }
 
     /**
-     * 获取国际化包
+     * 获取国际化内容包
      */
     public static I18nBundle getBundle(String bundleName, Context ctx) {
         Locale locale = ctx.getLocale();
@@ -122,7 +135,7 @@ public class I18nUtil {
     }
 
     /**
-     * 获取国际化消息块
+     * 获取国际化消息包
      *
      * @param ctx 上下文
      */
@@ -131,7 +144,7 @@ public class I18nUtil {
     }
 
     /**
-     * 获取国际化消息块
+     * 获取国际化消息包
      *
      * @param locale 地区
      */

@@ -3,7 +3,7 @@ package org.noear.solon.i18n;
 import java.util.Map;
 
 /**
- * 国际化包
+ * 国际化内容包
  *
  * @author noear
  * @since 1.5
@@ -23,7 +23,7 @@ public interface I18nBundle {
     String get(String code);
 
     /**
-     * 获取国际化内容
+     * 获取国际化内容并格式化
      *
      * @param code 代码
      * @param args 参数
