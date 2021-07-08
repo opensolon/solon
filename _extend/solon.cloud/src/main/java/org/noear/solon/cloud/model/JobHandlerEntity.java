@@ -3,7 +3,7 @@ package org.noear.solon.cloud.model;
 import org.noear.solon.core.handle.Handler;
 
 /**
- * 处理实现
+ * 任务处理实体
  *
  * @author noear
  * @since 1.4
