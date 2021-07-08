@@ -10,6 +10,8 @@ import org.noear.solon.i18n.I18nUtil;
 import org.noear.solon.i18n.annotation.I18n;
 
 /**
+ * 国际化方法拦截器
+ *
  * @author noear
  * @since 1.8
  */
@@ -33,6 +35,7 @@ public final class I18nInterceptor implements Interceptor {
 
                 String bundleName = Utils.annoAlias(anno.value(), anno.bundle());
                 I18nBundle bundle;
+
                 if (Utils.isEmpty(bundleName)) {
                     bundle = I18nUtil.getMessageBundle(ctx);
                 } else {
