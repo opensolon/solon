@@ -21,12 +21,15 @@ public class AuthAdapter {
 
     //=================//=================//=================
 
+    /**
+     * 获取登录Url
+     * */
     public String loginUrl() {
         return loginUrl;
     }
 
     /**
-     * 登录Url
+     * 设置登录Url
      */
     public AuthAdapter loginUrl(String url) {
         loginUrl = url;
@@ -38,6 +41,8 @@ public class AuthAdapter {
 
     /**
      * 添加一个授权规则
+     *
+     * @param builder 规则构建器
      * */
     @Note("添加一个授权规则")
     public synchronized AuthAdapter addRule(Consumer<AuthRule> builder) {
@@ -50,7 +55,9 @@ public class AuthAdapter {
     }
 
     /**
-     * 添加一批授权规则
+     * 添加一批授权规则（构建规则）
+     *
+     * @param rules 规则集合
      * */
     public AuthAdapter addRules(Collection<AuthRule> rules) {
         rules.forEach(r -> addRuleDo(r));
@@ -60,6 +67,8 @@ public class AuthAdapter {
 
     /**
      * 添加授权规则
+     *
+     * @param rule 规则
      * */
     private synchronized void addRuleDo(AuthRule rule) {
         if (authRuleHandler == null) {
@@ -82,6 +91,8 @@ public class AuthAdapter {
 
     /**
      * 设定认证处理器
+     *
+     * @param processor 认证处理器
      */
     @Note("设定认证处理器")
     public AuthAdapter processor(AuthProcessor processor) {
