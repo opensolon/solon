@@ -12,7 +12,7 @@ import java.util.Locale;
  * @author noear
  * @since 1.5
  */
-public class LocaleResolverOfHeader implements LocaleResolver {
+public class HeaderLocaleResolver implements LocaleResolver {
     private String headerName = "Accept-Language";
 
     /**
