@@ -7,7 +7,7 @@ import java.text.MessageFormat;
 import java.util.*;
 
 /**
- * 国际化包，本地实现
+ * 国际化内容包，本地实现
  *
  * @author noear
  * @since 1.5
@@ -47,22 +47,22 @@ public class I18nBundleLocal implements I18nBundle {
     /**
      * 获取国际化内容
      *
-     * @param code 代码
+     * @param name 配置名
      */
     @Override
-    public String get(String code) {
-        return new String(bundle.getString(code).getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+    public String get(String name) {
+        return new String(bundle.getString(name).getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
     }
 
     /**
      * 获取国际化内容
      *
-     * @param code 代码
+     * @param name 配置名
      * @param args 参数
      */
     @Override
-    public String getAndFormat(String code, Object... args) {
-        String tml = get(code);
+    public String getAndFormat(String name, Object... args) {
+        String tml = get(name);
 
         MessageFormat mf = new MessageFormat(tml);
         if (locale != null) {

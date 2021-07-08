@@ -6,7 +6,7 @@ import org.noear.solon.i18n.I18nBundleFactory;
 import java.util.Locale;
 
 /**
- * 国际化包工厂，本地实现
+ * 国际化内容包工厂，本地实现
  *
  * @author noear
  * @since 1.5

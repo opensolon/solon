@@ -7,6 +7,8 @@ import org.noear.solon.i18n.LocaleResolver;
 import java.util.Locale;
 
 /**
+ * 地区解析器，基于 session state 处理
+ *
  * @author noear
  * @since 1.5
  */

@@ -11,6 +11,9 @@ import java.util.Locale;
 public interface I18nBundleFactory {
     /**
      * 创建国际化包
+     *
+     * @param bundleName 包名
+     * @param locale 地区
      * */
     I18nBundle create(String bundleName, Locale locale);
 }
