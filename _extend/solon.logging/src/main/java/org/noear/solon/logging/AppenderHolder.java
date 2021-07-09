@@ -91,4 +91,11 @@ public final class AppenderHolder {
 
         real.append(logEvent);
     }
+
+    /**
+     * 停止生命周期
+     * */
+    public void stop(){
+        real.stop();
+    }
 }

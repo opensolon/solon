@@ -61,4 +61,13 @@ public class AppenderManager {
             appender.append(logEvent);
         }
     }
+
+    /**
+     * 停止生命周期
+     * */
+    public void stop(){
+        for (AppenderHolder appender : appenderMap.values()) {
+            appender.stop();
+        }
+    }
 }

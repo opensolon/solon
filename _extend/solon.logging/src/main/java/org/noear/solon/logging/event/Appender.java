@@ -24,6 +24,11 @@ public interface Appender{
     default void start(){}
 
     /**
+     * 停止生命周期
+     * */
+    default void stop(){}
+
+    /**
      * 获取名称
      * */
     String getName();

@@ -39,4 +39,12 @@ public abstract class AppenderBase implements Appender{
     public void start() {
 
     }
+
+    /**
+     * 停止生命周期
+     * */
+    @Override
+    public void stop() {
+        Appender.super.stop();
+    }
 }

@@ -41,4 +41,9 @@ public class XPluginImp implements Plugin {
         //init
         LogOptions.getLoggerLevel(null);
     }
+
+    @Override
+    public void stop() throws Throwable {
+        AppenderManager.getInstance().stop();
+    }
 }
