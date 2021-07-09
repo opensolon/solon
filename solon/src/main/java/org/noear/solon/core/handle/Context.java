@@ -824,32 +824,38 @@ public abstract class Context {
     /**
      * 渲染数据（不能重写，避免死循环）
      */
-    @Note("渲染数据")
     public final void render(Object obj) throws Throwable {
         //ModelAndView or Data
         setRendered(true);
         RenderManager.global.render(obj, this);
     }
 
-    @Note("渲染数据")
+    /**
+     * 渲染数据
+     * */
     public final void render(String view, Map<String, ?> data) throws Throwable {
         render(new ModelAndView(view, data));
     }
 
-    @Note("渲染数据并返回")
+    /**
+     * 渲染数据并返回
+     * */
     public final String renderAndReturn(ModelAndView modelAndView) throws Throwable {
         return RenderManager.global.renderAndReturn(modelAndView, this);
     }
 
     private boolean _remoting;
 
+    /**
+     * 是否为远程调用
+     * */
     @Note("是否为远程调用")
     public boolean remoting() {
         return _remoting;
     }
 
-    public void remotingSet(boolean remote) {
-        _remoting = remote;
+    public void remotingSet(boolean remoting) {
+        _remoting = remoting;
     }
 
     @Note("冲刷")
@@ -865,20 +871,30 @@ public abstract class Context {
     public void close() throws IOException {
     }
 
-    //用于在处理链中透传处理结果
+    /**
+     * 用于在处理链中透传处理结果
+     * */
     @Note("处理结果")
     public Object result;
 
-    //用于在处理链中透传处理错误
+    /**
+     * 用于在处理链中透传处理错误
+     * */
     @Note("处理错误")
     public Throwable errors;
 
 
+    /**
+     * 获取当前控制器
+     * */
     @Note("控制器?")
     public Object controller() {
         return attr("controller");
     }
 
+    /**
+     * 获取当前动作
+     * */
     @Note("动作?")
     public Action action() {
         return attr("action");
