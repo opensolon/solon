@@ -175,6 +175,8 @@ public class Aop {
 
     /**
      * 遍历有name的bean包装
+     *
+     * @param action 执行动作
      */
     public static void beanForeach(BiConsumer<String, BeanWrap> action) {
         ac.beanForeach(action);
@@ -182,6 +184,8 @@ public class Aop {
 
     /**
      * 遍历没有name的bean包装
+     *
+     * @param action 执行动作
      */
     public static void beanForeach(Consumer<BeanWrap> action) {
         ac.beanForeach(action);
@@ -189,6 +193,8 @@ public class Aop {
 
     /**
      * 查找Bean
+     *
+     * @param filter 过滤
      */
     public static List<BeanWrap> beanFind(BiPredicate<String, BeanWrap> filter) {
         return ac.beanFind(filter);
@@ -196,6 +202,8 @@ public class Aop {
 
     /**
      * 查找Bean
+     *
+     * @param filter 过滤
      */
     public static List<BeanWrap> beanFind(Predicate<BeanWrap> filter) {
         return ac.beanFind(filter);

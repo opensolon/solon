@@ -30,6 +30,9 @@ import java.lang.annotation.Annotation;
 public interface BeanBuilder<T extends Annotation> {
     /**
      * 构建
+     *
+     * @param clz 类
+     * @param anno 注解
      * */
     void doBuild(Class<?> clz, BeanWrap bw, T anno) throws Exception;
 }
