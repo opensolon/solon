@@ -13,6 +13,7 @@ import java.util.*;
  */
 public class I18nBundleLocal implements I18nBundle {
     Properties bundle;
+    String bundleName;
     Locale locale;
     Map<String, String> map;
 
@@ -21,12 +22,14 @@ public class I18nBundleLocal implements I18nBundle {
             locale = Locale.getDefault();
         }
 
-        bundleName = bundleName.replace(".", "/");
-
         this.locale = locale;
-        this.bundle = Utils.loadProperties(bundleName + "_" + locale.toString() + ".properties");
+        this.bundleName = bundleName;
+
+        String bundleName2 = bundleName.replace(".", "/");
+
+        this.bundle = Utils.loadProperties(bundleName2 + "_" + locale.toString() + ".properties");
         if (this.bundle == null) {
-            this.bundle = Utils.loadProperties(bundleName + ".properties");
+            this.bundle = Utils.loadProperties(bundleName2 + ".properties");
         }
     }
 
@@ -59,6 +62,16 @@ public class I18nBundleLocal implements I18nBundle {
      */
     @Override
     public String get(String key) {
-        return bundle.getProperty(key);
+        String tmp = bundle.getProperty(key);
+
+        if (tmp == null) {
+            throw new MissingResourceException("Can't find resource for bundle "
+                    + bundleName
+                    + ", key " + key,
+                    this.getClass().getName(),
+                    key);
+        }
+
+        return tmp;
     }
 }

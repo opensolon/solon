@@ -7,6 +7,7 @@ import org.noear.solon.test.SolonJUnit4ClassRunner;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.MissingResourceException;
 
 /**
  * @author noear 2021/7/7 created
@@ -39,5 +40,18 @@ public class MessageTest {
         assert map.size() == 2;
 
         System.out.println(map);
+    }
+
+    @Test
+    public void test3() {
+        try{
+            I18nUtil.getMessage(Locale.US, "err.text");
+        }catch (Throwable e){
+            assert e instanceof MissingResourceException;
+            e.printStackTrace();
+            return;
+        }
+
+        assert false;
     }
 }
