@@ -7,8 +7,8 @@ import java.util.Locale;
  *
  * <pre><code>
  * LocaleUtil.toLocale("zh") == new Locale("zh", "")
- * LocaleUtil.toLocale("zh-Hant") == new Locale("zh", "Hant")
- * LocaleUtil.toLocale("zh-Hant-TW") == new Locale("zh", "Hant", "TW")
+ * LocaleUtil.toLocale("zh_Hant") == new Locale("zh", "Hant")
+ * LocaleUtil.toLocale("zh_Hant_TW") == new Locale("zh", "Hant", "TW")
  * </code></pre>
  *
  * @author noear
