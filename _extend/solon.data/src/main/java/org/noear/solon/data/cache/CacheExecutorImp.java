@@ -126,9 +126,9 @@ public class CacheExecutorImp {
      * @param method 函数
      * @param params 参数
      * @param values 参数值
-     * @param newCacheValue 新的缓存值
+     * @param newValue 新的值
      */
-    public void cachePut(CachePut anno, Method method, ParamWrap[] params, Object[] values, Object newCacheValue) {
+    public void cachePut(CachePut anno, Method method, ParamWrap[] params, Object[] values, Object newValue) {
         if (anno == null) {
             return;
         }
@@ -142,14 +142,14 @@ public class CacheExecutorImp {
             CacheTags ct = new CacheTags(cs);
 
             for (String tag : tags.split(",")) {
-                ct.update(tag, newCacheValue, anno.seconds());
+                ct.update(tag, newValue, anno.seconds());
             }
         }
 
         //按 key 更新缓存
         if (Utils.isNotEmpty(anno.key())) {
             String key = formatTagsOrKey(anno.key(), parMap);
-            cs.store(key, newCacheValue, anno.seconds());
+            cs.store(key, newValue, anno.seconds());
         }
     }
 

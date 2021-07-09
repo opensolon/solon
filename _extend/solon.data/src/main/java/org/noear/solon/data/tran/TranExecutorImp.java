@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.Stack;
 
 /**
- * 事务执行器
+ * 事务执行器实现
  *
  * 基于 节点 与 栈管理
  * */
@@ -23,17 +23,28 @@ public class TranExecutorImp implements TranExecutor {
 
     protected ThreadLocal<Stack<TranEntity>> local = new ThreadLocal<>();
 
+    /**
+     * 是否在事务中
+     */
     @Override
     public boolean inTrans() {
         return TranManager.current() != null;
     }
 
+    /**
+     * 是否在事务中且只读
+     */
     @Override
     public boolean inTransAndReadOnly() {
         DbTran tran = TranManager.current();
         return tran != null && tran.getMeta().readOnly();
     }
 
+    /**
+     * 获取链接
+     *
+     * @param ds 数据源
+     */
     @Override
     public Connection getConnection(DataSource ds) throws SQLException {
         DbTran tran = TranManager.current();
@@ -49,31 +60,36 @@ public class TranExecutorImp implements TranExecutor {
     protected TranNode tranNever = new TranNeverImp();
     protected TranNode tranMandatory = new TranMandatoryImp();
 
-    //@Override
-    public void execute(Tran meta, RunnableEx runnable) throws Throwable {
+    /**
+     * 执行事务
+     *
+     * @param meta 事务注解
+     * @param executor 真实执行器
+     * */
+    public void execute(Tran meta, RunnableEx executor) throws Throwable {
         if (meta == null) {
             //
             //如果没有注解或工厂，直接运行
             //
-            runnable.run();
+            executor.run();
             return;
         }
 
         switch (meta.policy()) {
             case supports: {
-                runnable.run();
+                executor.run();
                 return;
             }
             case not_supported: {
-                tranNot.apply(runnable);
+                tranNot.apply(executor);
                 return;
             }
             case never: {
-                tranNever.apply(runnable);
+                tranNever.apply(executor);
                 return;
             }
             case mandatory: {
-                tranMandatory.apply(runnable);
+                tranMandatory.apply(executor);
                 return;
             }
         }
@@ -82,16 +98,20 @@ public class TranExecutorImp implements TranExecutor {
 
         //根事务不存在
         if (stack == null) {
-            forRoot(stack, meta, runnable);
+            forRoot(stack, meta, executor);
         } else {
-            forNotRoot(stack, meta, runnable);
+            forNotRoot(stack, meta, executor);
         }
     }
 
     /**
      * 执行根节点的事务
+     *
+     * @param stack 事务栈
+     * @param meta 事务注解
+     * @param executor 真实执行器
      */
-    protected void forRoot(Stack<TranEntity> stack, Tran meta, RunnableEx runnable) throws Throwable {
+    protected void forRoot(Stack<TranEntity> stack, Tran meta, RunnableEx executor) throws Throwable {
         //::必须 或新建 或嵌套  //::入栈
         //
         TranNode tran = create(meta);
@@ -99,7 +119,7 @@ public class TranExecutorImp implements TranExecutor {
 
         try {
             local.set(stack);
-            applyDo(stack, tran, meta, runnable);
+            applyDo(stack, tran, meta, executor);
         } finally {
             local.remove();
         }
@@ -107,19 +127,23 @@ public class TranExecutorImp implements TranExecutor {
 
     /**
      * 执行非根节点的事务
+     *
+     * @param stack 事务栈
+     * @param meta 事务注解
+     * @param executor 真实执行器
      */
-    protected void forNotRoot(Stack<TranEntity> stack, Tran meta, RunnableEx runnable) throws Throwable {
+    protected void forNotRoot(Stack<TranEntity> stack, Tran meta, RunnableEx executor) throws Throwable {
         switch (meta.policy()) {
             case required: {
                 //::支持当前事务
-                runnable.run();
+                executor.run();
                 return;
             }
 
             case requires_new: {
                 //::新起一个独立事务    //::入栈
                 TranNode tran = create(meta);
-                applyDo(stack, tran, meta, runnable);
+                applyDo(stack, tran, meta, executor);
                 return;
             }
 
@@ -130,21 +154,29 @@ public class TranExecutorImp implements TranExecutor {
                 //::加入上个事务***
                 stack.peek().tran.add(tran);
 
-                applyDo(stack, tran, meta, runnable);
+                applyDo(stack, tran, meta, executor);
                 return;
             }
         }
     }
 
 
-    protected void applyDo(Stack<TranEntity> stack, TranNode tran, Tran meta, RunnableEx runnable) throws Throwable {
+    /**
+     * 应用事务
+     *
+     * @param stack 事务栈
+     * @param tran 事务节点
+     * @param meta 事务注解
+     * @param executor 真实执行器
+     * */
+    protected void applyDo(Stack<TranEntity> stack, TranNode tran, Tran meta, RunnableEx executor) throws Throwable {
         if (meta.policy().code <= TranPolicy.nested.code) {
             //required || requires_new || nested ，需要入栈
             //
             try {
                 //入栈
                 stack.push(new TranEntity(tran, meta));
-                tran.apply(runnable);
+                tran.apply(executor);
             } finally {
                 //出栈
                 stack.pop();
@@ -152,12 +184,14 @@ public class TranExecutorImp implements TranExecutor {
         } else {
             //不需要入栈
             //
-            tran.apply(runnable);
+            tran.apply(executor);
         }
     }
 
     /**
      * 创建一个事务节点
+     *
+     * @param meta 事务注解
      */
     protected TranNode create(Tran meta) {
         if (meta.policy() == TranPolicy.not_supported) {

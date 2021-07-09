@@ -13,6 +13,8 @@ public final class TranManager {
 
     /**
      * 设置当前事务
+     *
+     * @param tran 事务
      * */
     public static void currentSet(DbTran tran) {
         _tl_tran.set(tran);

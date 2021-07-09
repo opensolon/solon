@@ -5,6 +5,12 @@ import org.noear.solon.ext.RunnableEx;
 import org.noear.solon.data.tran.TranNode;
 import org.noear.solon.data.tran.TranManager;
 
+/**
+ * 数据新事务实现。新建一个事务，同时将当前事务挂起（需要入栈）
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public class TranDbNewImp extends DbTran implements TranNode {
 
     public TranDbNewImp(Tran meta) {

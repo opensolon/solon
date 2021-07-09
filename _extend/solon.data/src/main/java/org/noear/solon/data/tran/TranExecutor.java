@@ -25,6 +25,8 @@ public interface TranExecutor {
 
     /**
      * 获取链接
+     *
+     * @param ds 数据源
      */
     default Connection getConnection(DataSource ds) throws SQLException {
         return ds.getConnection();

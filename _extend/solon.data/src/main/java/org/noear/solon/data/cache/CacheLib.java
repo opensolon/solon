@@ -7,6 +7,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 缓存服务库管理
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public class CacheLib {
     //
     // CacheExecutor 对接

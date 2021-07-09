@@ -3,6 +3,12 @@ package org.noear.solon.data.cache;
 import java.util.Map;
 import java.util.concurrent.*;
 
+/**
+ * 默认缓存服务
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public class CacheServiceDefault implements CacheService {
     public static CacheService instance = new CacheServiceDefault();
 
@@ -21,6 +27,13 @@ public class CacheServiceDefault implements CacheService {
         _defaultSeconds = defSeconds;
     }
 
+    /**
+     * 保存
+     *
+     * @param key 缓存键
+     * @param obj 对象
+     * @param seconds 秒数
+     */
     @Override
     public void store(String key, Object obj, int seconds) {
         if(seconds == 0){
@@ -48,6 +61,11 @@ public class CacheServiceDefault implements CacheService {
         }
     }
 
+    /**
+     * 获取
+     *
+     * @param key 缓存键
+     */
     @Override
     public Object get(String key) {
         Entity ent = _data.get(key);
@@ -55,6 +73,11 @@ public class CacheServiceDefault implements CacheService {
         return ent == null ? null : ent.value;
     }
 
+    /**
+     * 移除
+     *
+     * @param key 缓存键
+     */
     @Override
     public void remove(String key) {
         synchronized (key.intern()) {
@@ -66,6 +89,9 @@ public class CacheServiceDefault implements CacheService {
         }
     }
 
+    /**
+     * 表空
+     * */
     public void clear() {
         for (Entity ent : _data.values()) {
             ent.futureDel();

@@ -7,7 +7,7 @@ import org.noear.solon.ext.RunnableEx;
  * */
 public interface TranNode {
     /**
-     * 添加从事务
+     * 添加孩子事务
      */
     default void add(TranNode slave) {
     }

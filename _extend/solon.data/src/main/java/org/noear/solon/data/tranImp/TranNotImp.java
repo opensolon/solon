@@ -6,6 +6,9 @@ import org.noear.solon.data.tran.TranNode;
 
 /**
  * 以无事务的方式执行，如果当前有事务则将其挂起（不需要入栈）
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class TranNotImp implements TranNode {
     public TranNotImp() {

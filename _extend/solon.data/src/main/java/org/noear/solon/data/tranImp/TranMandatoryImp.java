@@ -6,6 +6,9 @@ import org.noear.solon.data.tran.TranManager;
 
 /**
  * 支持当前事务，如果没有事务则报错（不需要入栈）
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class TranMandatoryImp implements TranNode {
     public TranMandatoryImp() {
