@@ -78,7 +78,7 @@ resources/i18n/messages_zh_CN.properties
 2. 定制控制器基类，并添加@I18n注解
 
 ```java
-//此处使用默认的国际化内容包（即："i18n.messages"）。也可换成其它，如：@I18n("i18n.string")
+//此处使用默认的国际化内容包（即："i18n.messages"）。也可换成其它，如：@I18n("i18n.strings")
 @I18n
 public class ControllerBase{
     
