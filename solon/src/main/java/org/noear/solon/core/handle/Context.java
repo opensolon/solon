@@ -779,10 +779,10 @@ public abstract class Context {
         return attrMap;
     }
 
+
     /**
-     * 获取自定义特性
+     * 获取上下文特性
      */
-    @Note("获取自定义特性")
     public <T> T attr(String name, T def) {
         Object val = attrMap().get(name);
 
@@ -793,6 +793,9 @@ public abstract class Context {
         return (T) val;
     }
 
+    /**
+     * 获取上下文特性
+     */
     public <T> T attr(String name) {
         return (T) attrMap().get(name);
     }
@@ -800,12 +803,13 @@ public abstract class Context {
     /**
      * 设置上下文特性
      */
-    @Note("设置自定义特性")
     public void attrSet(String name, Object val) {
         attrMap().put(name, val);
     }
 
-    @Note("设置自定义特性")
+    /**
+     * 设置上下文特性
+     */
     public void attrSet(Map<String, Object> map) {
         attrMap().putAll(map);
     }
@@ -813,7 +817,6 @@ public abstract class Context {
     /**
      * 清除上下文特性
      */
-    @Note("清空自定义特性")
     public void attrClear() {
         attrMap().clear();
     }
