@@ -26,7 +26,20 @@ resources/i18n/login_en.properties
 resources/i18n/login_zh_CN.properties
 ```
 
-### 三、使用国际化配置
+### 三、配置 LocaleResolver bean
+
+```java
+@Configuration
+public class Config {
+    @Bean
+    public LocaleResolver localeResolver() {
+        //或者自己定义一个
+        return new LocaleResolverHeader();
+    }
+}
+```
+
+### 四、使用国际化配置
 
 #### （一）基于工具接口在代码里使用
 
