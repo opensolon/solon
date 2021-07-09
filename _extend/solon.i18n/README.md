@@ -75,7 +75,6 @@ public class LoginController {
         return new ModelAndView("login.ftl");
     }
 }
-
 ```
 
 

@@ -54,6 +54,6 @@ public class I18nBundleLocal implements I18nBundle {
      */
     @Override
     public String get(String key) {
-        return new String(bundle.getString(key).getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+        return bundle.getString(key);
     }
 }
