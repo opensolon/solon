@@ -50,10 +50,10 @@ public class LocalI18nBundle implements I18nBundle {
     /**
      * 获取国际化内容
      *
-     * @param name 配置名
+     * @param key 配置键
      */
     @Override
-    public String get(String name) {
-        return new String(bundle.getString(name).getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+    public String get(String key) {
+        return new String(bundle.getString(key).getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
     }
 }

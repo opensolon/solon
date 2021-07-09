@@ -25,18 +25,18 @@ public interface I18nBundle {
     /**
      * 获取国际化内容
      *
-     * @param name 配置名
+     * @param key 配置键
      */
-    String get(String name);
+    String get(String key);
 
     /**
      * 获取国际化内容并格式化
      *
-     * @param name 配置名
+     * @param key 配置键
      * @param args 参数
      */
-    default String getAndFormat(String name, Object... args) {
-        String tml = get(name);
+    default String getAndFormat(String key, Object... args) {
+        String tml = get(key);
 
         MessageFormat mf = new MessageFormat(tml);
         if (locale() != null) {
