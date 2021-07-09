@@ -6,7 +6,7 @@ import org.noear.solon.core.message.Session;
 import java.util.Collection;
 
 /**
- * 为服务端提供统一的管理接口
+ * SocketD 会话管理者。为服务端提供统一的管理接口
  *
  * @author noear
  * @since 1.2

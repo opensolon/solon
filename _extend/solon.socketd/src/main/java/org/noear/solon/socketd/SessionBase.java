@@ -1,6 +1,5 @@
 package org.noear.solon.socketd;
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.event.EventBus;
@@ -8,14 +7,17 @@ import org.noear.solon.core.message.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 
+/**
+ * SocketD 会话基类
+ *
+ * @author noear
+ * @since 1.2
+ * */
 public abstract class SessionBase implements Session {
 
     static final Logger log = LoggerFactory.getLogger(SessionBase.class);

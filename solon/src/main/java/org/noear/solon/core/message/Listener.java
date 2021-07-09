@@ -26,14 +26,26 @@ import java.io.IOException;
  * */
 @FunctionalInterface
 public interface Listener {
+    /**
+     * 打开会话时
+     * */
     default void onOpen(Session session) {
     }
 
+    /**
+     * 收到消息时
+     * */
     void onMessage(Session session, Message message) throws IOException;
 
+    /**
+     * 关闭会话时
+     * */
     default void onClose(Session session) {
     }
 
+    /**
+     * 出错时
+     * */
     default void onError(Session session, Throwable error) {
     }
 }

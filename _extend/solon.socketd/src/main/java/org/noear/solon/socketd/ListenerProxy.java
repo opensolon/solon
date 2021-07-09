@@ -22,16 +22,26 @@ import java.util.concurrent.*;
 public class ListenerProxy implements Listener {
     static final Logger log = LoggerFactory.getLogger(ListenerProxy.class);
 
-    //消息处理线程池
+    /**
+     * 消息处理线程池
+     * */
     static final ExecutorService executors = Executors.newCachedThreadPool();
 
-    //全局实例维护
-    private static Listener global = new ListenerProxy();
+    /**
+     * 全局对象
+     * */
+    static Listener global = new ListenerProxy();
 
+    /**
+     * 获取全局对象
+     * */
     public static Listener getGlobal() {
         return global;
     }
 
+    /**
+     * 设置全局对象
+     * */
     public static void setGlobal(Listener global) {
         ListenerProxy.global = global;
     }
@@ -40,21 +50,33 @@ public class ListenerProxy implements Listener {
     }
 
 
+    /**
+     * 请求并响应的默认超时时间（单位：秒）
+     * */
     public static int REQUEST_AND_RESPONSE_TIMEOUT_SECONDS = 30;
 
-    //
-    // 内部使用
-    //
+    /**
+     * 请求暂存处
+     * */
     private static Map<String, CompletableFuture<Message>> requests = new ConcurrentHashMap<>();
 
+    /**
+     * 注册请求
+     *
+     * @param message 请求消息
+     * @param future 回调
+     * */
     protected static void regRequest(Message message, CompletableFuture<Message> future) {
         requests.putIfAbsent(message.key(), future);
     }
 
 
     //
-    // XListener 实现
+    // Listener 实现
     //
+    /**
+     * 打开会话时
+     * */
     @Override
     public void onOpen(Session session) {
         executors.submit(() -> {
@@ -79,6 +101,9 @@ public class ListenerProxy implements Listener {
         }
     }
 
+    /**
+     * 收到消息时
+     * */
     @Override
     public void onMessage(Session session, Message message) throws IOException {
         if (message == null) {
@@ -137,6 +162,9 @@ public class ListenerProxy implements Listener {
         }
     }
 
+    /**
+     * 关闭会话时
+     * */
     @Override
     public void onClose(Session session) {
         executors.submit(() -> {
@@ -161,6 +189,9 @@ public class ListenerProxy implements Listener {
         }
     }
 
+    /**
+     * 出错时
+     * */
     @Override
     public void onError(Session session, Throwable error) {
         executors.submit(() -> {

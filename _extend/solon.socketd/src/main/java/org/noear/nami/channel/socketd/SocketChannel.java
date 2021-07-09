@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
+ * Socket 通道
+ *
  * @author noear
  * @since 1.2
  */
@@ -25,6 +27,12 @@ public class SocketChannel extends SocketChannelBase implements Channel {
         this.sessions = sessions;
     }
 
+    /**
+     * 调用
+     *
+     * @param ctx 上下文
+     * @return 调用结果
+     * */
     @Override
     public Result call(Context ctx) throws Throwable {
         pretreatment(ctx);

@@ -1,9 +1,9 @@
 package org.noear.solon.socketd;
 
 /**
- * 会话标志（用于业务特定控制）
+ * SocketD 会话标志（用于业务特定控制）
  *
- * @author noear 2021/1/2 created
+ * @author noear
  * @since 1.2
  */
 public class SessionFlag {

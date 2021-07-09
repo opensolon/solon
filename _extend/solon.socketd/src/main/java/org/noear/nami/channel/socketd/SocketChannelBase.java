@@ -4,12 +4,18 @@ import org.noear.nami.Context;
 import org.noear.nami.NamiManager;
 import org.noear.nami.common.Constants;
 
-
 /**
+ * Socket 通道基类
+ *
  * @author noear
  * @since 1.2
  */
 public class SocketChannelBase  {
+    /**
+     * 预处理
+     *
+     * @param ctx 上下文
+     * */
     protected void pretreatment(Context ctx) {
         if (ctx.config.getDecoder() == null) {
             String at = ctx.config.getHeader(Constants.HEADER_ACCEPT);
