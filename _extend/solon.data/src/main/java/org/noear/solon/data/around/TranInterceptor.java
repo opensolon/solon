@@ -6,6 +6,12 @@ import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.data.tran.TranExecutorImp;
 import org.noear.solon.data.util.ValHolder;
 
+/**
+ * 事务拦截器
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public class TranInterceptor implements Interceptor {
     @Override
     public Object doIntercept(Invocation inv) throws Throwable{

@@ -15,20 +15,28 @@ import java.util.regex.Pattern;
 
 /**
  * 缓存执行器
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class CacheExecutorImp {
     public static final CacheExecutorImp global = new CacheExecutorImp();
 
     /**
      * 添加缓存
+     *
+     * @param anno 注解
+     * @param method 函数
+     * @param params 参数
+     * @param values 参数值
+     * @param executor 真实执行者
      */
-    //@Override
-    public Object cache(Cache anno, Method method, ParamWrap[] params, Object[] values, SupplierEx callable) throws Throwable {
+    public Object cache(Cache anno, Method method, ParamWrap[] params, Object[] values, SupplierEx executor) throws Throwable {
         if (anno == null) {
-            return callable.get();
+            return executor.get();
         }
 
-        Map<String, Object> parMap = buildParams(params, values);
+        Map<String, Object> parMap = buildParamsMap(params, values);
         Object result = null;
 
         CacheService cs = CacheLib.cacheServiceGet(anno.service());
@@ -37,7 +45,7 @@ public class CacheExecutorImp {
         String key = anno.key();
         if (Utils.isEmpty(key)) {
             //没有注解key，生成一个key
-            key = buildKey(method, parMap);
+            key = buildCacheKey(method, parMap);
         } else {
             //格式化key
             key = formatTagsOrKey(key, parMap);
@@ -54,7 +62,7 @@ public class CacheExecutorImp {
             if (result == null) {
                 //2.执行调用，并返回
                 //
-                result = callable.get();
+                result = executor.get();
 
                 if (result != null) {
                     //3.不为null，则进行缓存
@@ -78,7 +86,12 @@ public class CacheExecutorImp {
     }
 
     /**
-     * 清除缓存
+     * 清除移除
+     *
+     * @param anno 注解
+     * @param method 函数
+     * @param params 参数
+     * @param values 参数值
      */
     public void cacheRemove(CacheRemove anno, Method method, ParamWrap[] params, Object[] values) {
         if (anno == null) {
@@ -86,7 +99,7 @@ public class CacheExecutorImp {
         }
 
         CacheService cs = CacheLib.cacheServiceGet(anno.service());
-        Map<String, Object> parMap = buildParams(params, values);
+        Map<String, Object> parMap = buildParamsMap(params, values);
 
 
         //按 tags 清除缓存
@@ -107,15 +120,21 @@ public class CacheExecutorImp {
     }
 
     /**
-     * 更新缓存
+     * 缓存更新
+     *
+     * @param anno 注解
+     * @param method 函数
+     * @param params 参数
+     * @param values 参数值
+     * @param newCacheValue 新的缓存值
      */
-    public void cachePut(CachePut anno, Method method, ParamWrap[] params, Object[] values, Object newValue) {
+    public void cachePut(CachePut anno, Method method, ParamWrap[] params, Object[] values, Object newCacheValue) {
         if (anno == null) {
             return;
         }
 
         CacheService cs = CacheLib.cacheServiceGet(anno.service());
-        Map<String, Object> parMap = buildParams(params, values);
+        Map<String, Object> parMap = buildParamsMap(params, values);
 
         //按 tags 更新缓存
         if (Utils.isNotEmpty(anno.tags())) {
@@ -123,18 +142,21 @@ public class CacheExecutorImp {
             CacheTags ct = new CacheTags(cs);
 
             for (String tag : tags.split(",")) {
-                ct.update(tag, newValue, anno.seconds());
+                ct.update(tag, newCacheValue, anno.seconds());
             }
         }
 
         //按 key 更新缓存
         if (Utils.isNotEmpty(anno.key())) {
             String key = formatTagsOrKey(anno.key(), parMap);
-            cs.store(key, newValue, anno.seconds());
+            cs.store(key, newCacheValue, anno.seconds());
         }
     }
 
-    protected Map<String, Object> buildParams(ParamWrap[] params, Object[] values) {
+    /**
+     * 构建参数为Map
+     * */
+    protected Map<String, Object> buildParamsMap(ParamWrap[] params, Object[] values) {
         Map<String, Object> parMap = new LinkedHashMap<>();
 
         for (int i = 0, len = params.length; i < len; i++) {
@@ -145,7 +167,10 @@ public class CacheExecutorImp {
     }
 
 
-    protected String buildKey(Method method, Map<String, Object> parMap) {
+    /**
+     * 构建缓存Key
+     * */
+    protected String buildCacheKey(Method method, Map<String, Object> parMap) {
         StringBuilder keyB = new StringBuilder();
 
         keyB.append(method.getDeclaringClass().getName()).append(":");

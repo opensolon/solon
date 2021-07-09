@@ -4,7 +4,13 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.event.EventListener;
 
-public class CacheEventListener implements EventListener<BeanWrap> {
+/**
+ * 缓存服务事件监控器
+ *
+ * @author noear
+ * @since 1.0
+ * */
+public class CacheServiceEventListener implements EventListener<BeanWrap> {
     @Override
     public void onEvent(BeanWrap bw) {
         if (bw.raw() instanceof CacheService) {
