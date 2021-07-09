@@ -1,8 +1,8 @@
 package org.noear.solon.i18n.impl;
 
+import org.noear.solon.Utils;
 import org.noear.solon.i18n.I18nBundle;
 
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -12,18 +12,22 @@ import java.util.*;
  * @since 1.5
  */
 public class I18nBundleLocal implements I18nBundle {
-    ResourceBundle bundle;
+    Properties bundle;
     Locale locale;
     Map<String, String> map;
 
     public I18nBundleLocal(String bundleName, Locale locale) {
         if (locale == null) {
-            this.bundle = ResourceBundle.getBundle(bundleName);
-        } else {
-            this.bundle = ResourceBundle.getBundle(bundleName, locale);
+            locale = Locale.getDefault();
         }
 
+        bundleName = bundleName.replace(".", "/");
+
         this.locale = locale;
+        this.bundle = Utils.loadProperties(bundleName + "_" + locale.toString() + ".properties");
+        if (this.bundle == null) {
+            this.bundle = Utils.loadProperties(bundleName + ".properties");
+        }
     }
 
     /**
@@ -34,7 +38,8 @@ public class I18nBundleLocal implements I18nBundle {
         if (map == null) {
             map = new LinkedHashMap<>();
 
-            for (String key : bundle.keySet()) {
+            for (Object k : bundle.keySet()) {
+                String key = (String) k;
                 map.put(key, get(key));
             }
         }
@@ -54,6 +59,6 @@ public class I18nBundleLocal implements I18nBundle {
      */
     @Override
     public String get(String key) {
-        return bundle.getString(key);
+        return bundle.getProperty(key);
     }
 }
