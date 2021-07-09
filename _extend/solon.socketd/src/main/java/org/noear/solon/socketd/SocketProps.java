@@ -3,6 +3,8 @@ package org.noear.solon.socketd;
 import org.noear.solon.Solon;
 
 /**
+ * Socket 配置属性
+ *
  * @author noear
  * @since 1.2
  * */
@@ -14,19 +16,31 @@ public class SocketProps {
     private static int socketTimeout = 0;
 
 
+    /**
+     * 读缓冲大小
+     * */
     public static int readBufferSize() {
         return readBufferSize;
     }
 
+    /**
+     * 写缓冲大小
+     * */
     public static int writeBufferSize() {
         return writeBufferSize;
     }
 
 
+    /**
+     * 链接超时
+     * */
     public static int connectTimeout() {
         return connectTimeout;
     }
 
+    /**
+     * Socket超时
+     * */
     public static int socketTimeout() {
         return socketTimeout;
     }
@@ -41,6 +55,9 @@ public class SocketProps {
     }
 
 
+    /**
+     * 加载缓存大小
+     * */
     private static int loadBufferSize(String cfgKey) {
         String tmp = Solon.cfg().get(cfgKey, "").toLowerCase();
 
@@ -61,6 +78,9 @@ public class SocketProps {
         return 0;
     }
 
+    /**
+     * 加载超时
+     * */
     private static int loadTimeout(String cfgKey) {
         String tmp = Solon.cfg().get(cfgKey, "").toLowerCase();
 
