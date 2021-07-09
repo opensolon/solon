@@ -5,7 +5,7 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.event.EventListener;
 
 /**
- * 缓存服务事件监控器
+ * 缓存服务事件监控器。监听BeanWrap，获得CacheService bean
  *
  * @author noear
  * @since 1.0
