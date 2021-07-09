@@ -1,5 +1,5 @@
 
-## 国际化插件使用说明
+## Solon 国际化插件使用说明
 
 ### 一、引入插件包
 
@@ -12,7 +12,7 @@
 </dependencies>
 ```
 
-### 二、配置国际化消息包
+### 二、配置国际化内容包
 
 ```
 //默认国际化消息包配置（此为约定，不能改）
@@ -20,7 +20,7 @@ resources/i18n/messages.properties
 resources/i18n/messages_en.properties
 resources/i18n/messages_zh_CN.properties
 
-//其它国际包内容包，例：
+//或其它国际包内容包，例：
 resources/i18n/login.properties
 resources/i18n/login_en.properties
 resources/i18n/login_zh_CN.properties
@@ -28,7 +28,7 @@ resources/i18n/login_zh_CN.properties
 
 ### 三、使用国际化配置
 
-* 1.基于工具接口在代码里使用
+#### （一）基于工具接口在代码里使用
 
 ```java
 @Controller
@@ -41,15 +41,17 @@ public class DemoController {
 ```
 
 
-* 2.基于@I18n注解在模板里使用，每个控制器独用一个国际化内容包（分开比较清爽）
+#### （二）基于@I18n注解在模板里使用，不同控制器使用不同的国际化内容包
 
-添加国际化配置
+1. 添加国际化配置
 
 ```
 resources/i18n/login.properties
 resources/i18n/login_en.properties
 resources/i18n/login_zh_CN.properties
 ```
+
+2. 使用注解注入
 
 ```java
 @I18n("i18n.login")
@@ -64,15 +66,28 @@ public class LoginController {
 ```
 
 
-* 3.基于@I18n注解在模板里使用，所有控制器使用统一的国际化内容包
+#### （三）基于@I18n注解在模板里使用，所有控制器使用统一的国际化内容包
+
+1. 添加国际化配置
+```
+resources/i18n/messages.properties
+resources/i18n/messages_en.properties
+resources/i18n/messages_zh_CN.properties
+```
+
+2. 定制控制器基类，并添加@I18n注解
 
 ```java
-//此处使用默认的国际化内容包（i18n.messages）。也可换成 @I18n("i18n.test")
+//此处使用默认的国际化内容包（即："i18n.messages"）。也可换成其它，如：@I18n("i18n.string")
 @I18n
 public class ControllerBase{
     
 }
+```
 
+3. 基于控制器基类，扩展其它控制器
+
+```java
 @Controller
 public class LoginController extends ControllerBase{
     @Mapping("/login/")
@@ -90,7 +105,7 @@ public class UserController extends ControllerBase{
 }
 ```
 
-* 4.在各模板里的使用代码
+#### （四）在各模板里的使用方式
 
 beetl::
 ```html
