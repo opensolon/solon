@@ -1,7 +1,7 @@
 package org.noear.solon.core.aspect;
 
 /**
- * 拦截实体
+ * 拦截实体。存放拦截器和顺序位
  *
  * @author noear
  * @since 1.3

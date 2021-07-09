@@ -17,11 +17,24 @@ import java.util.Map;
  * @since 1.0
  * */
 public class ActionExecutorDefault implements ActionExecutor {
+    /**
+     * 是否匹配
+     *
+     * @param ctx 上下文
+     * @param ct 内容类型
+     * */
     @Override
     public boolean matched(Context ctx, String ct) {
         return true;
     }
 
+    /**
+     * 执行
+     *
+     * @param ctx 上下文
+     * @param obj 控制器
+     * @param mWrap 函数包装器
+     * */
     @Override
     public Object execute(Context ctx, Object obj, MethodWrap mWrap) throws Throwable {
         List<Object> args = buildArgs(ctx, mWrap.getParamWraps());

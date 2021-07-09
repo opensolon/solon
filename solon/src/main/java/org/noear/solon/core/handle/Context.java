@@ -27,19 +27,22 @@ public abstract class Context {
     /**
      * 获取当前线程的上下文
      */
-    @Note("获取当前线程的上下文")
     public static Context current() {
         return ContextUtil.current();
     }
 
     private Locale locale;
 
-    @Note("获取地区")
+    /**
+     * 获取地区
+     * */
     public Locale getLocale() {
         return locale;
     }
 
-    @Note("设置地区")
+    /**
+     * 设置地区
+     * */
     public void setLocale(Locale locale) {
         this.locale = locale;
     }
@@ -49,11 +52,17 @@ public abstract class Context {
      */
     private boolean handled;
 
+    /**
+     * 设置处理状态
+     * */
     @Note("设置处理状态")
     public void setHandled(boolean handled) {
         this.handled = handled;
     }
 
+    /**
+     * 获取处理状态
+     * */
     @Note("获取处理状态")
     public boolean getHandled() {
         return handled;
@@ -64,11 +73,17 @@ public abstract class Context {
      */
     private boolean rendered;
 
+    /**
+     * 设置渲染状态
+     * */
     @Note("设置渲染状态")
     public void setRendered(boolean rendered) {
         this.rendered = rendered;
     }
 
+    /**
+     * 获取渲染状态
+     * */
     @Note("获取渲染状态")
     public boolean getRendered() {
         return rendered;
@@ -88,6 +103,9 @@ public abstract class Context {
 
     private String realIp;
 
+    /**
+     * 获取客户端真实IP
+     * */
     @Note("获取客户端真实IP")
     public String realIp() {
         if (realIp == null) {
@@ -98,9 +116,8 @@ public abstract class Context {
     }
 
     /**
-     * 是否为分段上传
+     * 是否为分段内容
      */
-    @Note("是否为分段内容")
     public boolean isMultipart() {
         String temp = contentType();
         if (temp == null) {
@@ -110,7 +127,9 @@ public abstract class Context {
         }
     }
 
-    @Note("是否为分段表单数据")
+    /**
+     * 是否为分段表单数据
+     * */
     public boolean isMultipartFormData() {
         String temp = contentType();
         if (temp == null) {
@@ -123,7 +142,7 @@ public abstract class Context {
     /**
      * 获取请求方法
      */
-    @Note("获取请求方法")
+    @Note("获取请求方式")
     public abstract String method();
 
     /**
@@ -132,12 +151,11 @@ public abstract class Context {
     @Note("获取请求协议")
     public abstract String protocol();
 
-    /**
-     * 获取请求协议并大写
-     */
     private String protocolAsUpper;
 
-    @Note("获取请求协议并大写")
+    /**
+     * 获取请求协议并大写
+     * */
     public String protocolAsUpper() {
         if (protocolAsUpper == null) {
             protocolAsUpper = protocol().toUpperCase();
@@ -149,13 +167,11 @@ public abstract class Context {
     /**
      * 获取请求的URI
      */
-    @Note("获取请求的URI")
     public abstract URI uri();
 
     /**
      * 获取请求的URI路径
      */
-    @Note("获取请求的URI路径")
     public abstract String path();
 
     /**
@@ -181,17 +197,15 @@ public abstract class Context {
     /**
      * 获取请求的URI路径变量,根据路径表达式
      */
-    @Note("获取请求的URI路径变量,根据路径表达式")
     public NvMap pathMap(String expr) {
         return PathUtil.pathVarMap(path(), expr);
     }
 
-    /**
-     * 获取请求的URI路径并大写
-     */
     private String pathAsUpper;
 
-    @Note("获取请求的URI路径并大写")
+    /**
+     * 获取请求的URI路径并大写
+     * */
     public String pathAsUpper() {
         if (pathAsUpper == null) {
             pathAsUpper = path().toUpperCase();
@@ -203,7 +217,6 @@ public abstract class Context {
     /**
      * 获取请求的UA
      */
-    @Note("获取请求的UA")
     public String userAgent() {
         return header("User-Agent");
     }
@@ -211,26 +224,28 @@ public abstract class Context {
     /**
      * 获取请求的URL字符串
      */
-    @Note("获取请求的URL字符串")
     public abstract String url();
 
     /**
      * 获取内容长度
      */
-    @Note("获取内容长度")
     public abstract long contentLength();
 
     /**
      * 获取内容类型
      */
-    @Note("获取内容类型")
     public abstract String contentType();
 
-    @Note("获取查询字符串")
+    /**
+     * 获取查询字符串
+     * */
     public abstract String queryString();
 
     private String accept;
 
+    /**
+     * 获取 Accept 头信息
+     * */
     public String accept() {
         if (accept == null) {
             accept = header("Accept", "");
@@ -243,14 +258,15 @@ public abstract class Context {
     private String body;
 
     /**
-     * 获取RAW内容
+     * 获取body内容
      */
-    @Note("获取RAW内容")
     public String body() throws IOException {
         return body(null);
     }
 
-    @Note("获取RAW内容")
+    /**
+     * 获取body内容
+     * */
     public String body(String charset) throws IOException {
         if (body == null) {
             try (InputStream ins = bodyAsStream()) {
@@ -263,6 +279,9 @@ public abstract class Context {
 
     private String bodyNew;
 
+    /**
+     * 获取新的body
+     * */
     public String bodyNew() throws IOException {
         if (bodyNew == null) {
             return body();
@@ -271,14 +290,16 @@ public abstract class Context {
         }
     }
 
+    /**
+     * 设置新的body
+     * */
     public void bodyNew(String bodyNew) {
         this.bodyNew = bodyNew;
     }
 
     /**
-     * 获取RAW内容为byte[]
+     * 获取body内容为byte[]
      */
-    @Note("获取RAW内容为byte[]")
     public byte[] bodyAsBytes() throws IOException {
         try (InputStream ins = bodyAsStream()) {
             if (ins == null) {
@@ -298,59 +319,77 @@ public abstract class Context {
     }
 
     /**
-     * 获取RAW内容为Stream
+     * 获取body内容为Stream
      */
-    @Note("获取RAW内容为Stream")
     public abstract InputStream bodyAsStream() throws IOException;
 
     /**
-     * 获取参数
+     * 获取参数数组
      */
-    @Note("获取参数数组")
     public abstract String[] paramValues(String name);
 
-    @Note("获取参数")
+    /**
+     * 获取参数
+     * */
     public abstract String param(String name);
 
-    @Note("获取参数")
+    /**
+     * 获取参数
+     * */
     public abstract String param(String name, String def);
 
-    @Note("获取参数并转为int")
+    /**
+     * 获取参数并转为int
+     * */
     public int paramAsInt(String name) {
         return paramAsInt(name, 0);
     }
 
-    @Note("获取参数并转为int")
+    /**
+     * 获取参数并转为int
+     * */
     public int paramAsInt(String name, int def) {
         return Integer.parseInt(param(name, String.valueOf(def)));
     }
 
-    @Note("获取参数并转为long")
+    /**
+     * 获取参数并转为long
+     * */
     public long paramAsLong(String name) {
         return paramAsLong(name, 0);
     }
 
-    @Note("获取参数并转为long")
+    /**
+     * 获取参数并转为long
+     * */
     public long paramAsLong(String name, long def) {
         return Long.parseLong(param(name, String.valueOf(def)));
     }
 
-    @Note("获取参数并转为double")
+    /**
+     * 获取参数并转为double
+     * */
     public double paramAsDouble(String name) {
         return paramAsDouble(name, 0);
     }
 
-    @Note("获取参数并转为double")
+    /**
+     * 获取参数并转为double
+     * */
     public double paramAsDouble(String name, double def) {
         return Double.parseDouble(param(name, String.valueOf(def)));
     }
 
-    @Note("获取参数并转为BigDecimal")
+    /**
+     * 获取参数并转为BigDecimal
+     * */
     public BigDecimal paramAsDecimal(String name) {
         return paramAsDecimal(name, BigDecimal.ZERO);
     }
 
-    @Note("获取参数并转为BigDecimal")
+    /**
+     * 获取参数并转为BigDecimal
+     * */
     public BigDecimal paramAsDecimal(String name, BigDecimal def) {
         String tmp = param(name);
         if (Utils.isEmpty(tmp)) {
@@ -360,24 +399,35 @@ public abstract class Context {
         }
     }
 
-    @Note("获取参数并转为Bean")
+    /**
+     * 获取参数并转为Bean
+     * */
     public <T> T paramAsBean(Class<T> type) {
         //不如参数注入的强；不支持 body 转换;
         return ClassWrap.get(type).newBy(this::param, this);
     }
 
-    @Note("获取所有参数并转为map")
+    /**
+     * 获取所有参数并转为map
+     * */
     public abstract NvMap paramMap();
 
-    @Note("设置参数")
+    /**
+     * 设置参数
+     * */
     public void paramSet(String name, String val) {
         paramMap().put(name, val);
         paramsAdd(name, val);
     }
 
-    @Note("获取所有参数并转为Map")
+    /**
+     * 获取所有参数并转为Map
+     * */
     public abstract Map<String, List<String>> paramsMap();
 
+    /**
+     * 添加参数
+     * */
     public void paramsAdd(String name, String val) {
         if (paramsMap() != null) {
             List<String> ary = paramsMap().get(name);
@@ -390,59 +440,83 @@ public abstract class Context {
     }
 
     /**
-     * 获取文件
+     * 获取上传文件
+     *
+     * @param name 文件名
      */
-    @Note("获取上传文件")
     public abstract List<UploadedFile> files(String name) throws Exception;
 
-    @Note("获取上传文件")
+    /**
+     * 获取上传文件
+     *
+     * @param name 文件名
+     */
     public UploadedFile file(String name) throws Exception {
         return Utils.firstOrNull(files(name));
     }
 
     /**
-     * 获取COOKIE
+     * 获取 cookie
+     *
+     * @param name cookie名
      */
-    @Note("获取COOKIE")
     public String cookie(String name) {
         return cookieMap().get(name);
     }
 
-    @Note("获取COOKIE")
+    /**
+     * 获取 cookie
+     *
+     * @param name cookie名
+     * @param def 默认值
+     */
     public String cookie(String name, String def) {
         return cookieMap().getOrDefault(name, def);
     }
 
-    @Note("获取所有COOKIE并转为map")
+    /**
+     * 获取 cookieMap
+     */
     public abstract NvMap cookieMap();
 
     /**
-     * 获取HEADER
+     * 获取 header
+     *
+     * @param name header名
      */
-    @Note("获取HEADER")
     public String header(String name) {
         return headerMap().get(name);
     }
 
-    @Note("获取HEADER")
+    /**
+     * 获取 header
+     *
+     * @param name header名
+     * @param def 默认值
+     */
     public String header(String name, String def) {
         return headerMap().getOrDefault(name, def);
     }
 
-    @Note("获取所有HEADER并转为map")
+    /**
+     * 获取 headerMap
+     */
     public abstract NvMap headerMap();
 
-    /**
-     * SESSION_STATE对象
-     */
     private SessionState sessionState;
 
+    /**
+     * 初始化 sessionState 对象
+     * */
     protected void sessionStateInit(SessionState sessionState) {
         if (sessionState().replaceable()) {
             this.sessionState = sessionState;
         }
     }
 
+    /**
+     * 获取 sessionState
+     * */
     public SessionState sessionState() {
         if (sessionState == null) {
             sessionState = Bridge.sessionState(this);
@@ -452,25 +526,26 @@ public abstract class Context {
     }
 
     /**
-     * 获取SESSION_ID
+     * 获取 sessionId
      */
-    @Note("获取SESSION_ID")
     public final String sessionId() {
         return sessionState().sessionId();
     }
 
     /**
-     * 获取SESSION状态
+     * 获取 session 状态
+     *
+     * @param name 状态名
      */
-    @Note("获取SESSION状态")
     public final Object session(String name) {
         return sessionState().sessionGet(name);
     }
 
     /**
-     * 获取SESSION状态
+     * 获取 session 状态
+     *
+     * @param name 状态名
      */
-    @Note("获取SESSION状态")
     public final <T> T session(String name, T def) {
         Object tmp = session(name);
         if (tmp == null) {
@@ -481,14 +556,18 @@ public abstract class Context {
     }
 
     /**
-     * 设置SESSION状态
+     * 设置 session 状态
+     *
+     * @param name 状态名
+     * @param val 值
      */
-    @Note("设置SESSION状态")
     public final void sessionSet(String name, Object val) {
         sessionState().sessionSet(name, val);
     }
 
-    @Note("清空SESSION状态")
+    /**
+     * 清空 session 状态
+     * */
     public final void sessionClear() {
         sessionState().sessionClear();
     }
@@ -496,15 +575,13 @@ public abstract class Context {
     //======================
 
     /**
-     * 获取输出对象
+     * 获取响应对象
      */
-    @Note("获取输出对象")
     public abstract Object response();
 
     /**
      * 设置字符集
      */
-    @Note("设置字符集")
     public void charset(String charset) {
         this.charset = Charset.forName(charset);
     }
@@ -514,7 +591,6 @@ public abstract class Context {
     /**
      * 设置内容类型
      */
-    @Note("设置内容类型")
     public void contentType(String contentType) {
         contentTypeDoSet(contentType);
 
@@ -524,7 +600,9 @@ public abstract class Context {
         }
     }
 
-    @Note("获取设置的内容类型")
+    /**
+     * 获取设置的新内容类型
+     * */
     public String contentTypeNew() {
         return contentTypeNew;
     }
@@ -535,18 +613,23 @@ public abstract class Context {
 
 
     /**
-     * 输出内容
+     * 输出 字节数组
      */
-    @Note("输出内容:字节数组")
     public abstract void output(byte[] bytes);
 
-    @Note("输出内容:stream")
+    /**
+     * 输出 流对象
+     */
     public abstract void output(InputStream stream);
 
-    @Note("获取输出流")
+    /**
+     * 获取输出流
+     */
     public abstract OutputStream outputStream() throws IOException;
 
-    @Note("输出内容:字符串")
+    /**
+     * 输出 字符串
+     */
     public void output(String str) {
         if (str != null) {
             attrSet("output", str);
@@ -554,18 +637,24 @@ public abstract class Context {
         }
     }
 
-    @Note("输出内容:异常对象")
+    /**
+     * 输出 异常对象
+     */
     public void output(Throwable ex) {
         output(Utils.getFullStackTrace(ex));
     }
 
-    @Note("输出json")
+    /**
+     * 输出为json文本
+     */
     public void outputAsJson(String json) {
         contentType("application/json;charset=utf-8");
         output(json);
     }
 
-    @Note("输出html")
+    /**
+     * 输出为html文本
+     */
     public void outputAsHtml(String html) {
         contentType("text/html;charset=utf-8");
         if (html.startsWith("<") == false) {
@@ -581,7 +670,9 @@ public abstract class Context {
         }
     }
 
-    @Note("输出file")
+    /**
+     * 输出为文件
+     */
     public void outputAsFile(UploadedFile file) throws IOException {
         if (Utils.isNotEmpty(file.contentType)) {
             contentType(file.contentType);
@@ -594,7 +685,9 @@ public abstract class Context {
         Utils.transferTo(file.content, outputStream());
     }
 
-    @Note("输出file")
+    /**
+     * 输出为文件
+     */
     public void outputAsFile(File file) throws IOException {
         if (Utils.isNotEmpty(file.getName())) {
             headerSet("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
@@ -606,39 +699,44 @@ public abstract class Context {
     }
 
     /**
-     * 设置HEADER
+     * 设置 header
      */
-    @Note("设置HEADER")
     public abstract void headerSet(String name, String val);
 
-    @Note("添加HEADER")
+    /**
+     * 添加 header
+     */
     public abstract void headerAdd(String name, String val);
 
     /**
-     * 设置COOKIE
-     */
-    @Note("设置COOKIE")
+     * 设置 cookie
+     * */
     public void cookieSet(String name, String val) {
         cookieSet(name, val, null, -1);
     }
 
-    @Note("设置COOKIE")
+    /**
+     * 设置 cookie
+     * */
     public void cookieSet(String name, String val, int maxAge) {
         cookieSet(name, val, null, maxAge);
     }
 
-    @Note("设置COOKIE")
+    /**
+     * 设置 cookie
+     * */
     public void cookieSet(String name, String val, String domain, int maxAge) {
         cookieSet(name, val, domain, "/", maxAge);
     }
 
-    @Note("设置COOKIE")
+    /**
+     * 设置 cookie
+     * */
     public abstract void cookieSet(String name, String val, String domain, String path, int maxAge);
 
     /**
-     * 移徐COOKIE
+     * 移徐 cookie
      */
-    @Note("移徐COOKIE")
     public void cookieRemove(String name) {
         cookieSet(name, "", 0);
     }
@@ -735,7 +833,7 @@ public abstract class Context {
         render(new ModelAndView(view, data));
     }
 
-    @Note("渲染数据")
+    @Note("渲染数据并返回")
     public final String renderAndReturn(ModelAndView modelAndView) throws Throwable {
         return RenderManager.global.renderAndReturn(modelAndView, this);
     }

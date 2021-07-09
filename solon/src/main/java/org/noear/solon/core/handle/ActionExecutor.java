@@ -3,7 +3,7 @@ package org.noear.solon.core.handle;
 import org.noear.solon.core.wrap.MethodWrap;
 
 /**
- * 动作执行器
+ * 动作执行器。用于支持多种消息体执行
  *
  * @see Action#callDo(Context, Object, MethodWrap)
  * @author noear

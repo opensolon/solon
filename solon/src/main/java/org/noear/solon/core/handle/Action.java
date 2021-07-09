@@ -125,10 +125,16 @@ public class Action extends HandlerAide implements Handler {
         return bWrap;
     }
 
+    /**
+     * 生产者
+     * */
     public String produces() {
         return mProduces;
     }
 
+    /**
+     * 消息费
+     * */
     public String consumes() {
         return mConsumes;
     }
@@ -181,6 +187,9 @@ public class Action extends HandlerAide implements Handler {
     }
 
 
+    /**
+     * 执行内部调用
+     * */
     protected void invoke0(Context c, Object obj) throws Throwable {
 
         /**
@@ -250,6 +259,9 @@ public class Action extends HandlerAide implements Handler {
         }
     }
 
+    /**
+     * 执行内部处理
+     * */
     protected void handleDo(Context c, RunnableEx runnable) throws Throwable {
         try {
             runnable.run();
