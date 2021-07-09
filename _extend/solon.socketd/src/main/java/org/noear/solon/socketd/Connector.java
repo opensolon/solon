@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.URI;
 
 /**
- * SocketD 链接器
+ * 链接器
  *
  * @author noear
  * @since 1.2
@@ -18,7 +18,7 @@ public interface Connector<T> {
     URI uri();
 
     /**
-     * 是否自动连接
+     * 是否自动重连
      * */
     boolean autoReconnect();
 

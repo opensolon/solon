@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.concurrent.*;
 
 /**
- * SocketD 监听者代理
+ * 监听者代理
  *
  * @author noear
  * @since 1.0

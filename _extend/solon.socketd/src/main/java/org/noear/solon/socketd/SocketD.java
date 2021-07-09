@@ -14,50 +14,78 @@ import java.net.URI;
 import java.util.function.Supplier;
 
 /**
+ * SocketD
  *
  * @author noear
  * @since 1.2
  * */
 public class SocketD {
-    //
-    // protocol
-    //
+    // protocol //
+
+    /**
+     * 设置消息协议
+     *
+     * @param protocol 协议
+     * */
     public static void setProtocol(MessageProtocol protocol) {
         ProtocolManager.setProtocol(protocol);
     }
 
-    //
-    // session client
-    //
-    @Note("ServerUri 以：ws:// 或 wss:// 或 tcp:// 开头")
+    // session client //
+
+    /**
+     * 创建会话
+     *
+     * @param connector 链接器
+     * */
     public static Session createSession(Connector connector) {
         return SessionFactoryManager.create(connector);
     }
 
+    /**
+     * 创建会话
+     *
+     * @param serverUri 服务端地址
+     * @param autoReconnect 是否自动重连
+     * */
     @Note("ServerUri 以：ws:// 或 wss:// 或 tcp:// 开头")
     public static Session createSession(URI serverUri, boolean autoReconnect) {
         return SessionFactoryManager.create(serverUri, autoReconnect);
     }
 
+    /**
+     * 创建会话
+     *
+     * @param serverUri 服务端地址
+     * */
     @Note("ServerUri 以：ws:// 或 wss:// 或 tcp:// 开头")
     public static Session createSession(URI serverUri) {
         return createSession(serverUri, true);
     }
 
+    /**
+     * 创建会话
+     *
+     * @param serverUri 服务端地址
+     * @param autoReconnect 是否自动重连
+     * */
     @Note("ServerUri 以：ws:// 或 wss:// 或 tcp:// 开头")
     public static Session createSession(String serverUri, boolean autoReconnect) {
         return createSession(URI.create(serverUri), autoReconnect);
     }
 
+    /**
+     * 创建会话
+     *
+     * @param serverUri 服务端地址
+     * */
     @Note("ServerUri 以：ws:// 或 wss:// 或 tcp:// 开头")
     public static Session createSession(String serverUri) {
         return createSession(serverUri, true);
     }
 
 
-    //
-    // rpc client
-    //
+    // rpc client //
 
     public static <T> T create(URI serverUri, Class<T> service) {
         Session session = createSession(serverUri, true);

@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 
 /**
- * SocketD 会话基类
+ * 会话基类
  *
  * @author noear
  * @since 1.2
@@ -25,7 +25,7 @@ public abstract class SessionBase implements Session {
     //
     //标志
     //
-    private int _flag = SessionFlag.undefined;
+    private int _flag = SessionFlag.unknown;
     @Override
     public int flag() {
         return _flag;

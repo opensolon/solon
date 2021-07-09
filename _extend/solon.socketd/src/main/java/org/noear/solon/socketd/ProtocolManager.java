@@ -8,7 +8,7 @@ import org.noear.solon.socketd.protocol.MessageProtocolBase;
 import java.nio.ByteBuffer;
 
 /**
- * SocketD 消息协议管理者
+ * 消息协议管理者
  *
  * @author noear
  * @since 1.2

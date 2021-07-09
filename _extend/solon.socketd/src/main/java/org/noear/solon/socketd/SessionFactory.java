@@ -5,7 +5,7 @@ import org.noear.solon.core.message.Session;
 import java.net.URI;
 
 /**
- * SocketD 会话工厂。为客户端提供统一的会话创建界面
+ * 会话工厂。为客户端提供统一的会话创建界面
  *
  * @author noear
  * @since 1.2
@@ -32,7 +32,7 @@ public interface SessionFactory {
      * 创建会话
      *
      * @param uri 链接地址
-     * @param autoReconnect 是否自动链接
+     * @param autoReconnect 是否自动重连
      * */
     Session createSession(URI uri, boolean autoReconnect);
 }

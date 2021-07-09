@@ -3,7 +3,7 @@ package org.noear.solon.socketd;
 import java.net.URI;
 
 /**
- * SocketD 链接器基类
+ * 链接器基类
  *
  * @author noear
  * @since 1.2
@@ -26,7 +26,7 @@ public abstract class ConnectorBase<T> implements Connector<T> {
     }
 
     /**
-     * 是否自动连接
+     * 是否自动重连
      * */
     @Override
     public boolean autoReconnect() {

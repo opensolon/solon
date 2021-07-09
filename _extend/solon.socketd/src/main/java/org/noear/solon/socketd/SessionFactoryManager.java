@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * SocketD 会话工厂管理者
+ * 会话工厂管理者
  *
  * @author noear
  * @since 1.2
