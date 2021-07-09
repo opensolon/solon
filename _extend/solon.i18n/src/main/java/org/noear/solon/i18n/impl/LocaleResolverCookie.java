@@ -13,7 +13,7 @@ import java.util.Locale;
  * @author noear
  * @since 1.5
  */
-public class CookieLocaleResolver implements LocaleResolver {
+public class LocaleResolverCookie implements LocaleResolver {
     private String cookieName = "SOLON.LOCALE";
 
     /**

@@ -11,9 +11,9 @@ import java.util.Locale;
  * @author noear
  * @since 1.5
  */
-public class LocalI18nBundleFactory implements I18nBundleFactory {
+public class I18nBundleFactoryLocal implements I18nBundleFactory {
     @Override
     public I18nBundle create(String bundleName, Locale locale) {
-        return new LocalI18nBundle(bundleName, locale);
+        return new I18nBundleLocal(bundleName, locale);
     }
 }

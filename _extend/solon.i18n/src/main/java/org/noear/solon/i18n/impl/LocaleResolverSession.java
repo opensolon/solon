@@ -8,19 +8,19 @@ import org.noear.solon.i18n.LocaleUtil;
 import java.util.Locale;
 
 /**
- * 地区解析器，基于 header 处理
+ * 地区解析器，基于 session state 处理
  *
  * @author noear
  * @since 1.5
  */
-public class HeaderLocaleResolver implements LocaleResolver {
-    private String headerName = "Accept-Language";
+public class LocaleResolverSession implements LocaleResolver {
+    private String attrName = "SOLON.LOCALE";
 
     /**
-     * 设置header name
+     * 设置会话属性名
      * */
-    public void setHeaderName(String headerName) {
-        this.headerName = headerName;
+    public void setAttrName(String attrName) {
+        this.attrName = attrName;
     }
 
     /**
@@ -31,15 +31,11 @@ public class HeaderLocaleResolver implements LocaleResolver {
     @Override
     public Locale getLocale(Context ctx) {
         if (ctx.getLocale() == null) {
-            String lang = ctx.header(headerName);
+            String lang = ctx.session(attrName, "");
 
             if (Utils.isEmpty(lang)) {
                 ctx.setLocale(Locale.getDefault());
             } else {
-                if(lang.contains(",")){
-                    lang = lang.split(",")[0];
-                }
-
                 ctx.setLocale(LocaleUtil.toLocale(lang));
             }
         }
@@ -55,7 +51,7 @@ public class HeaderLocaleResolver implements LocaleResolver {
      * */
     @Override
     public void setLocale(Context ctx, Locale locale) {
-        ctx.headerSet(headerName, locale.getLanguage());
+        ctx.sessionSet(attrName, locale.getLanguage());
         ctx.setLocale(locale);
     }
 }

@@ -11,12 +11,12 @@ import java.util.*;
  * @author noear
  * @since 1.5
  */
-public class LocalI18nBundle implements I18nBundle {
+public class I18nBundleLocal implements I18nBundle {
     ResourceBundle bundle;
     Locale locale;
     Map<String, String> map;
 
-    public LocalI18nBundle(String bundleName, Locale locale) {
+    public I18nBundleLocal(String bundleName, Locale locale) {
         if (locale == null) {
             this.bundle = ResourceBundle.getBundle(bundleName);
         } else {
