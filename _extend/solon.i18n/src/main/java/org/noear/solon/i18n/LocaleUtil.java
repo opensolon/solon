@@ -1,4 +1,4 @@
-package org.noear.solon.i18n.impl;
+package org.noear.solon.i18n;
 
 import java.util.Locale;
 
@@ -6,9 +6,9 @@ import java.util.Locale;
  * 地区转换工具
  *
  * <pre><code>
- * LocaleUtils.toLocale("zh") == new Locale("zh", "")
- * LocaleUtils.toLocale("zh-Hant") == new Locale("zh", "Hant")
- * LocaleUtils.toLocale("zh-Hant-TW") == new Locale("zh", "Hant", "TW")
+ * LocaleUtil.toLocale("zh") == new Locale("zh", "")
+ * LocaleUtil.toLocale("zh-Hant") == new Locale("zh", "Hant")
+ * LocaleUtil.toLocale("zh-Hant-TW") == new Locale("zh", "Hant", "TW")
  * </code></pre>
  *
  * @author noear

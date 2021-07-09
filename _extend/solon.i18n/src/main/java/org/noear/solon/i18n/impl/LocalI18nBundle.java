@@ -3,7 +3,6 @@ package org.noear.solon.i18n.impl;
 import org.noear.solon.i18n.I18nBundle;
 
 import java.nio.charset.StandardCharsets;
-import java.text.MessageFormat;
 import java.util.*;
 
 /**
@@ -12,12 +11,12 @@ import java.util.*;
  * @author noear
  * @since 1.5
  */
-public class I18nBundleLocal implements I18nBundle {
+public class LocalI18nBundle implements I18nBundle {
     ResourceBundle bundle;
     Locale locale;
     Map<String, String> map;
 
-    public I18nBundleLocal(String bundleName, Locale locale) {
+    public LocalI18nBundle(String bundleName, Locale locale) {
         if (locale == null) {
             this.bundle = ResourceBundle.getBundle(bundleName);
         } else {

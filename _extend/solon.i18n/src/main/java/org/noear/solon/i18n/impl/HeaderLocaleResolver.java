@@ -3,23 +3,24 @@ package org.noear.solon.i18n.impl;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.i18n.LocaleResolver;
+import org.noear.solon.i18n.LocaleUtil;
 
 import java.util.Locale;
 
 /**
- * 地区解析器，基于 cookie 处理
+ * 地区解析器，基于 header 处理
  *
  * @author noear
  * @since 1.5
  */
-public class LocaleResolverCookie implements LocaleResolver {
-    private String cookieName = "SOLON.LOCALE";
+public class HeaderLocaleResolver implements LocaleResolver {
+    private String headerName = "Accept-Language";
 
     /**
-     * 设置cookie name
+     * 设置header name
      * */
-    public void setCookieName(String cookieName) {
-        this.cookieName = cookieName;
+    public void setHeaderName(String headerName) {
+        this.headerName = headerName;
     }
 
     /**
@@ -30,11 +31,15 @@ public class LocaleResolverCookie implements LocaleResolver {
     @Override
     public Locale getLocale(Context ctx) {
         if (ctx.getLocale() == null) {
-            String lang = ctx.cookie(cookieName);
+            String lang = ctx.header(headerName);
 
             if (Utils.isEmpty(lang)) {
                 ctx.setLocale(Locale.getDefault());
             } else {
+                if(lang.contains(",")){
+                    lang = lang.split(",")[0];
+                }
+
                 ctx.setLocale(LocaleUtil.toLocale(lang));
             }
         }
@@ -50,7 +55,7 @@ public class LocaleResolverCookie implements LocaleResolver {
      * */
     @Override
     public void setLocale(Context ctx, Locale locale) {
-        ctx.cookieSet(cookieName, locale.getLanguage());
+        ctx.headerSet(headerName, locale.getLanguage());
         ctx.setLocale(locale);
     }
 }

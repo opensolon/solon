@@ -3,6 +3,7 @@ package org.noear.solon.i18n.impl;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.i18n.LocaleResolver;
+import org.noear.solon.i18n.LocaleUtil;
 
 import java.util.Locale;
 
@@ -12,7 +13,7 @@ import java.util.Locale;
  * @author noear
  * @since 1.5
  */
-public class LocaleResolverSession implements LocaleResolver {
+public class SessionLocaleResolver implements LocaleResolver {
     private String attrName = "SOLON.LOCALE";
 
     /**

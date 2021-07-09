@@ -2,8 +2,8 @@ package org.noear.solon.i18n;
 
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.i18n.impl.I18nBundleFactoryLocal;
-import org.noear.solon.i18n.impl.LocaleResolverHeader;
+import org.noear.solon.i18n.impl.LocalI18nBundleFactory;
+import org.noear.solon.i18n.impl.HeaderLocaleResolver;
 
 import java.util.*;
 
@@ -17,7 +17,7 @@ public class I18nUtil {
     /**
      * 国际化内容包工厂
      * */
-    private static I18nBundleFactory bundleFactory = new I18nBundleFactoryLocal();
+    private static I18nBundleFactory bundleFactory = new LocalI18nBundleFactory();
     /**
      * 国际化内容包缓存
      * */
@@ -26,7 +26,7 @@ public class I18nUtil {
     /**
      * 地区解析器
      * */
-    private static LocaleResolver localeResolver = new LocaleResolverHeader();
+    private static LocaleResolver localeResolver = new HeaderLocaleResolver();
 
     /**
      * 消息国际化内容包名
