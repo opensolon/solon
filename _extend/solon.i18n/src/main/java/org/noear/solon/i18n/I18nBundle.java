@@ -1,5 +1,7 @@
 package org.noear.solon.i18n;
 
+import java.text.MessageFormat;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -16,6 +18,11 @@ public interface I18nBundle {
     Map<String, String> toMap();
 
     /**
+     * 当前地区
+     * */
+    Locale locale();
+
+    /**
      * 获取国际化内容
      *
      * @param name 配置名
@@ -28,5 +35,14 @@ public interface I18nBundle {
      * @param name 配置名
      * @param args 参数
      */
-    String getAndFormat(String name, Object... args);
+    default String getAndFormat(String name, Object... args) {
+        String tml = get(name);
+
+        MessageFormat mf = new MessageFormat(tml);
+        if (locale() != null) {
+            mf.setLocale(locale());
+        }
+
+        return mf.format(args);
+    }
 }

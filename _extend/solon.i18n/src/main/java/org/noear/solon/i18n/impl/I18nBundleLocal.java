@@ -43,6 +43,10 @@ public class I18nBundleLocal implements I18nBundle {
         return map;
     }
 
+    @Override
+    public Locale locale() {
+        return locale;
+    }
 
     /**
      * 获取国际化内容
@@ -52,23 +56,5 @@ public class I18nBundleLocal implements I18nBundle {
     @Override
     public String get(String name) {
         return new String(bundle.getString(name).getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
-    }
-
-    /**
-     * 获取国际化内容
-     *
-     * @param name 配置名
-     * @param args 参数
-     */
-    @Override
-    public String getAndFormat(String name, Object... args) {
-        String tml = get(name);
-
-        MessageFormat mf = new MessageFormat(tml);
-        if (locale != null) {
-            mf.setLocale(locale);
-        }
-
-        return mf.format(args);
     }
 }
