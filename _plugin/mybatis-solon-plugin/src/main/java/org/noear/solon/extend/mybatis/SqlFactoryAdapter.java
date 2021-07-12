@@ -28,6 +28,9 @@ import java.util.Properties;
  *
  * 1.提供 mapperScan 能力
  * 2.生成 factory 的能力
+ *
+ * @author noear
+ * @since 1.1
  * */
 class SqlFactoryAdapter {
     protected Configuration config;
@@ -38,12 +41,15 @@ class SqlFactoryAdapter {
     protected static int environmentIndex = 0;
 
     /**
-     * 使用默认的 typeAliases 和 mappers 配置
+     * 构建Sql工厂适配器，使用默认的 typeAliases 和 mappers 配置
      */
     public SqlFactoryAdapter(BeanWrap dsWrap) {
         this(dsWrap, Solon.cfg().getProp("mybatis"));
     }
 
+    /**
+     * 构建Sql工厂适配器，使用属性配置
+     * */
     public SqlFactoryAdapter(BeanWrap dsWrap, Properties props) {
         this.dsWrap = dsWrap;
 
@@ -83,11 +89,11 @@ class SqlFactoryAdapter {
                             //type class
                             Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
                             if (clz != null) {
-                                cfg().getTypeAliasRegistry().registerAlias(clz);
+                                getConfig().getTypeAliasRegistry().registerAlias(clz);
                             }
                         } else {
                             //package
-                            cfg().getTypeAliasRegistry().registerAliases(val);
+                            getConfig().getTypeAliasRegistry().registerAliases(val);
                         }
                     }
                 }
@@ -108,12 +114,12 @@ class SqlFactoryAdapter {
                             //mapper class
                             Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
                             if (clz != null) {
-                                cfg().addMapper(clz);
+                                getConfig().addMapper(clz);
                                 mappers.add(val);
                             }
                         } else {
                             //package
-                            cfg().addMappers(val);
+                            getConfig().addMappers(val);
                             mappers.add(val);
                         }
                     }
@@ -137,17 +143,23 @@ class SqlFactoryAdapter {
             /**
              * mapper映射文件都是通过XMLMapperBuilder解析
              */
-            XMLMapperBuilder mapperParser = new XMLMapperBuilder(stream, cfg(), val, cfg().getSqlFragments());
+            XMLMapperBuilder mapperParser = new XMLMapperBuilder(stream, getConfig(), val, getConfig().getSqlFragments());
             mapperParser.parse();
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
     }
 
-    public Configuration cfg() {
+    /**
+     *
+     * 获取配置器*/
+    public Configuration getConfig() {
         return config;
     }
 
+    /**
+     * 获取会话工厂
+     * */
     public SqlSessionFactory getFactory() {
         if (factory == null) {
             factory = new SqlSessionFactoryBuilder().build(config);
@@ -156,7 +168,7 @@ class SqlFactoryAdapter {
         return factory;
     }
 
-    public SqlFactoryAdapter mapperScan(SqlSessionHolder proxy) {
+    public SqlFactoryAdapter mapperScan(SqlSessionProxy proxy) {
         for (String val : mappers) {
             mapperScan0(proxy, val);
         }
@@ -169,12 +181,12 @@ class SqlFactoryAdapter {
      * <p>
      * 扫描 basePackages 里的类，并生成 mapper 实例注册到bean中心
      */
-    public SqlFactoryAdapter mapperScan(SqlSessionHolder proxy, String basePackages) {
+    public SqlFactoryAdapter mapperScan(SqlSessionProxy proxy, String basePackages) {
         mapperScan0(proxy, basePackages);
         return this;
     }
 
-    private void mapperScan0(SqlSessionHolder proxy, String val) {
+    private void mapperScan0(SqlSessionProxy proxy, String val) {
         if (val.endsWith(".xml")) {
 
         } else if (val.endsWith(".class")) {
@@ -186,7 +198,7 @@ class SqlFactoryAdapter {
         }
     }
 
-    private void mapperScanDo(SqlSessionHolder proxy, String dir) {
+    private void mapperScanDo(SqlSessionProxy proxy, String dir) {
         ResourceScaner.scan(dir, n -> n.endsWith(".class"))
                 .stream()
                 .map(name -> {
@@ -198,7 +210,7 @@ class SqlFactoryAdapter {
                 });
     }
 
-    private void mapperBindDo(SqlSessionHolder proxy, Class<?> clz) {
+    private void mapperBindDo(SqlSessionProxy proxy, Class<?> clz) {
         if (clz != null && clz.isInterface()) {
             Object mapper = proxy.getMapper(clz);
 

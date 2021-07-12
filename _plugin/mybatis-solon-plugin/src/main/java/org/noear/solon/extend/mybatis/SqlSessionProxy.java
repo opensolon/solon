@@ -9,15 +9,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 对SqlSession的包装
+ * 会话静态代理（限制手动执行事处动作。进而让 SqlSessionInterceptor 控制事务）
  *
- * 目的：禁止进行手动执行事处动作
+ * @author noear
+ * @since 1.1
  * */
-public class SqlSessionHolder implements SqlSession {
+public class SqlSessionProxy implements SqlSession {
     private final SqlSession real;
     private final SqlSessionFactory factory;
 
-    public SqlSessionHolder(SqlSessionFactory factory, SqlSession session) {
+    public SqlSessionProxy(SqlSessionFactory factory, SqlSession session) {
         this.factory = factory;
         this.real = session;
     }

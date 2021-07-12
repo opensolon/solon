@@ -10,24 +10,39 @@ import java.lang.reflect.Proxy;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-class DbManager {
-    private static DbManager _global = new DbManager();
+/**
+ * 会话管理器
+ *
+ * @author noear
+ * @since 1.1
+ * */
+class SqlSessionManager {
+    private static SqlSessionManager _global = new SqlSessionManager();
 
-    public static DbManager global() {
+    /**
+     * 全局对象
+     */
+    public static SqlSessionManager global() {
         return _global;
     }
 
 
-    private Map<String, SqlSessionHolder> dbMap = new ConcurrentHashMap<>();
+    /**
+     * 缓存会话代理
+     */
+    private Map<String, SqlSessionProxy> dbMap = new ConcurrentHashMap<>();
 
-    public SqlSessionHolder get(BeanWrap bw) {
-        SqlSessionHolder db = dbMap.get(bw.name());
+    /**
+     * 获取会话代理
+     */
+    public SqlSessionProxy get(BeanWrap bw) {
+        SqlSessionProxy db = dbMap.get(bw.name());
 
         if (db == null) {
             synchronized (bw.name().intern()) {
                 db = dbMap.get(bw.name());
                 if (db == null) {
-                    db = buildSqlSessionFactory(bw);
+                    db = buildSqlSessionProxy(bw);
 
                     dbMap.putIfAbsent(bw.name(), db);
 
@@ -42,11 +57,19 @@ class DbManager {
         return db;
     }
 
+    /**
+     * 注册数据源，并生成会话代理
+     *
+     * @param bw 数据源的BW
+     */
     public void reg(BeanWrap bw) {
         get(bw);
     }
 
-    private SqlSessionHolder buildSqlSessionFactory(BeanWrap bw) {
+    /**
+     * 构建会话代理
+     */
+    private SqlSessionProxy buildSqlSessionProxy(BeanWrap bw) {
         SqlFactoryAdapter adapter;
 
         if (Utils.isEmpty(bw.name())) {
@@ -56,7 +79,7 @@ class DbManager {
         }
 
         SqlSessionFactory factory = adapter.getFactory();
-        SqlSessionHolder holder = new SqlSessionHolder(factory, buildSqlSessionProxy(factory));
+        SqlSessionProxy holder = new SqlSessionProxy(factory, createSqlSessionDynamicProxy(factory));
 
         adapter.mapperScan(holder);
 
@@ -64,9 +87,9 @@ class DbManager {
     }
 
     /**
-     * 获取会话代理
+     * 创建会话动态代理，实现拦截
      */
-    private SqlSession buildSqlSessionProxy(SqlSessionFactory factory) {
+    private SqlSession createSqlSessionDynamicProxy(SqlSessionFactory factory) {
         return (SqlSession) Proxy.newProxyInstance(
                 factory.getClass().getClassLoader(),
                 new Class[]{SqlSession.class},

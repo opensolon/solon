@@ -8,6 +8,12 @@ import org.noear.solon.data.tran.TranUtils;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
+/**
+ * 会话拦截器（实现事务控制）
+ *
+ * @author noear
+ * @since 1.1
+ * */
 public class SqlSessionInterceptor implements InvocationHandler {
     private SqlSessionFactory factory;
 
