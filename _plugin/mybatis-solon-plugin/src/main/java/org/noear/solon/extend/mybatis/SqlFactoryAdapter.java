@@ -67,10 +67,11 @@ class SqlFactoryAdapter {
             }
         }
 
-        init0(config, props);
-
         //分发事件，推给扩展处理
         EventBus.push(config);
+
+        //初始化（顺骗子不能乱）
+        init0(config, props);
     }
 
     private void init0(Configuration config,Properties props){

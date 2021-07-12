@@ -2,7 +2,6 @@ package org.noear.solon.extend.mybatis_sqlhelper;
 
 import com.jn.sqlhelper.dialect.instrument.SQLInstrumentorConfig;
 import com.jn.sqlhelper.mybatis.MybatisUtils;
-import com.jn.sqlhelper.mybatis.SqlHelperMybatisProperties;
 import com.jn.sqlhelper.mybatis.plugins.CustomScriptLanguageDriver;
 import com.jn.sqlhelper.mybatis.plugins.SqlHelperMybatisPlugin;
 import com.jn.sqlhelper.mybatis.plugins.pagination.PaginationConfig;
@@ -22,26 +21,20 @@ import org.noear.solon.core.util.PrintUtil;
 @org.noear.solon.annotation.Configuration
 public class SqlHelperConfiguration implements EventListener<Configuration> {
 
-    private SqlHelperMybatisProperties sqlHelperMybatisProperties;
+    @Inject("${sqlhelper.mybatis.instrumentor}")
+    SQLInstrumentorConfig sqlInstrumentConfig;
+
+    @Inject("${sqlhelper.mybatis.pagination}")
+    PaginationConfig paginationPluginConfig;
 
     @Bean
     public DatabaseIdProvider databaseIdProvider() {
         return MybatisUtils.vendorDatabaseIdProvider();
     }
 
-    @Bean
-    public void sqlHelperMybatisProperties(
-            @Inject("${sqlhelper.mybatis.instrumentor}") SQLInstrumentorConfig sqlInstrumentConfig,
-            @Inject("${sqlhelper.mybatis.pagination}") PaginationConfig paginationPluginConfig) {
-        sqlHelperMybatisProperties = new SqlHelperMybatisProperties();
-        sqlHelperMybatisProperties.setInstrumentor(sqlInstrumentConfig);
-        sqlHelperMybatisProperties.setPagination(paginationPluginConfig);
-    }
-
-
     @Override
     public void onEvent(Configuration configuration) {
-        if(sqlHelperMybatisProperties == null){
+        if(sqlInstrumentConfig == null || paginationPluginConfig == null){
             return;
         }
 
@@ -49,12 +42,11 @@ public class SqlHelperConfiguration implements EventListener<Configuration> {
         configuration.setDefaultScriptingLanguage(CustomScriptLanguageDriver.class);
 
         SqlHelperMybatisPlugin plugin = new SqlHelperMybatisPlugin();
-        plugin.setPaginationConfig(sqlHelperMybatisProperties.getPagination());
-        plugin.setInstrumentorConfig(sqlHelperMybatisProperties.getInstrumentor());
+        plugin.setPaginationConfig(paginationPluginConfig);
+        plugin.setInstrumentorConfig(sqlInstrumentConfig);
         plugin.init();
 
-        PrintUtil.info(String.format("Add interceptor {} to mybatis configuration", plugin));
-        PrintUtil.info(String.format("The properties of the mybatis plugin [{}] is: {}", SqlHelperMybatisPlugin.class.getName(), sqlHelperMybatisProperties));
+        PrintUtil.info(String.format("Add interceptor {0} to mybatis configuration", plugin));
         configuration.addInterceptor(plugin);
     }
 }
