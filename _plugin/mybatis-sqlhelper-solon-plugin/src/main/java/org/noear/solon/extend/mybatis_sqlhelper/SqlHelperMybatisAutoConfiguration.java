@@ -7,14 +7,15 @@ import com.jn.sqlhelper.mybatis.plugins.CustomScriptLanguageDriver;
 import com.jn.sqlhelper.mybatis.plugins.SqlHelperMybatisPlugin;
 import com.jn.sqlhelper.mybatis.plugins.pagination.PaginationConfig;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
+import org.apache.ibatis.session.Configuration;
 import org.noear.solon.annotation.Bean;
-import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.util.PrintUtil;
 
-@Configuration
-public class SqlHelperMybatisAutoConfiguration implements EventListener<org.apache.ibatis.session.Configuration> {
+@Component
+public class SqlHelperMybatisAutoConfiguration implements EventListener<Configuration> {
 
     @Bean
     public DatabaseIdProvider databaseIdProvider() {
@@ -40,7 +41,7 @@ public class SqlHelperMybatisAutoConfiguration implements EventListener<org.apac
     }
 
     @Override
-    public void onEvent(org.apache.ibatis.session.Configuration configuration) {
+    public void onEvent(Configuration configuration) {
         if(sqlHelperMybatisProperties == null){
             return;
         }
