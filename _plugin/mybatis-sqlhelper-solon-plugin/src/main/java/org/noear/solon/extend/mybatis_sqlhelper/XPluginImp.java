@@ -7,6 +7,6 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
         //马上加载
-        app.beanMake(SqlHelperMybatisAutoConfiguration.class);
+        app.beanMake(SqlHelperMybatisConfiguration.class);
     }
 }

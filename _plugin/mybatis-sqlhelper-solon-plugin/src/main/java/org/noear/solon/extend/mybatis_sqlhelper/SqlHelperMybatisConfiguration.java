@@ -15,7 +15,7 @@ import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.util.PrintUtil;
 
 @Component
-public class SqlHelperMybatisAutoConfiguration implements EventListener<Configuration> {
+public class SqlHelperMybatisConfiguration implements EventListener<Configuration> {
 
     @Bean
     public DatabaseIdProvider databaseIdProvider() {
