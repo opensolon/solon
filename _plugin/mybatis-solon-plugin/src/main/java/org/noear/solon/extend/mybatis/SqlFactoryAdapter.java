@@ -54,10 +54,10 @@ class SqlFactoryAdapter {
         this.dsWrap = dsWrap;
 
         DataSource dataSource = dsWrap.raw();
-        String environmentId = "configuration-" + dsWrap.name();
+        String configId = "mybatis-configuration-" + dsWrap.name();
 
         TransactionFactory tf = new JdbcTransactionFactory();
-        Environment environment = new Environment(environmentId, tf, dataSource);
+        Environment environment = new Environment(configId, tf, dataSource);
         config = new Configuration(environment);
 
         //加载插件
