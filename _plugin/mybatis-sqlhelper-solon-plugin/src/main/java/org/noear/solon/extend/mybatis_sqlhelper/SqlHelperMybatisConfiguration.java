@@ -13,6 +13,12 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.util.PrintUtil;
 
+/**
+ * SqlHelper 分布插件配置器
+ *
+ * @author noear
+ * @since 1.1
+ * */
 @org.noear.solon.annotation.Configuration
 public class SqlHelperMybatisConfiguration implements EventListener<Configuration> {
 
