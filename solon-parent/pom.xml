@@ -1084,18 +1084,6 @@
         <module>../_extend/solon.boot.websocket</module>
 
 
-        <module>../_extend/solon.boot.socketd.jdksocket</module>
-        <module>../_extend/solon.boot.socketd.netty</module>
-        <module>../_extend/solon.boot.socketd.smartsocket</module>
-        <module>../_extend/solon.boot.socketd.rsocket</module>
-        <module>../_extend/solon.boot.socketd.websocket</module>
-
-        <module>../_extend/solon.socketd</module>
-        <module>../_extend/solon.socketd.client.jdksocket</module>
-        <module>../_extend/solon.socketd.client.netty</module>
-        <module>../_extend/solon.socketd.client.rsocket</module>
-        <module>../_extend/solon.socketd.client.smartsocket</module>
-        <module>../_extend/solon.socketd.client.websocket</module>
 
         <module>../_extend/solon.cache.jedis</module>
         <module>../_extend/solon.cache.spymemcached</module>
