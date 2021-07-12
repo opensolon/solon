@@ -22,7 +22,6 @@ public class SqlHelperMybatisConfiguration implements EventListener<Configuratio
         return MybatisUtils.vendorDatabaseIdProvider();
     }
 
-
     @Bean
     public SqlHelperMybatisProperties sqlHelperMybatisProperties(
             @Inject("${sqlhelper.mybatis.instrumentor}") SQLInstrumentorConfig sqlInstrumentConfig,
