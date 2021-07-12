@@ -9,13 +9,14 @@ import com.jn.sqlhelper.mybatis.plugins.pagination.PaginationConfig;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.session.Configuration;
 import org.noear.solon.annotation.Bean;
-import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.util.PrintUtil;
 
-@Component
+@org.noear.solon.annotation.Configuration
 public class SqlHelperMybatisConfiguration implements EventListener<Configuration> {
+
+    private SqlHelperMybatisProperties sqlHelperMybatisProperties;
 
     @Bean
     public DatabaseIdProvider databaseIdProvider() {
@@ -23,21 +24,16 @@ public class SqlHelperMybatisConfiguration implements EventListener<Configuratio
     }
 
     @Bean
-    public SqlHelperMybatisProperties sqlHelperMybatisProperties(
+    public void sqlHelperMybatisProperties(
             @Inject("${sqlhelper.mybatis.instrumentor}") SQLInstrumentorConfig sqlInstrumentConfig,
             @Inject("${sqlhelper.mybatis.pagination}") PaginationConfig paginationPluginConfig) {
         SqlHelperMybatisProperties p = new SqlHelperMybatisProperties();
         p.setInstrumentor(sqlInstrumentConfig);
         p.setPagination(paginationPluginConfig);
-        return p;
+
+        sqlHelperMybatisProperties = p;
     }
 
-    private SqlHelperMybatisProperties sqlHelperMybatisProperties;
-
-    @Bean
-    public void setSqlHelperMybatisProperties(SqlHelperMybatisProperties sqlHelperMybatisProperties) {
-        this.sqlHelperMybatisProperties = sqlHelperMybatisProperties;
-    }
 
     @Override
     public void onEvent(Configuration configuration) {
