@@ -6,7 +6,6 @@ import org.noear.solon.core.*;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        //马上加载
-        app.beanMake(SqlHelperMybatisConfiguration.class);
+        app.beanMake(SqlHelperConfiguration.class);
     }
 }

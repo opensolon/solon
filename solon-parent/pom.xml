@@ -53,7 +53,6 @@
         <rsocket.ver>1.1.0</rsocket.ver>
 
         <springboot.ver>2.0.4.RELEASE</springboot.ver>
-        <mybatis.ver>3.5.7</mybatis.ver>
     </properties>
 
 
@@ -590,6 +589,13 @@
                 <artifactId>mybatis-sqlhelper-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>mybatis-pagehelper-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>org.noear</groupId>
