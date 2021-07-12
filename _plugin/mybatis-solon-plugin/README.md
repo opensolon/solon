@@ -2,6 +2,7 @@
 配置示例::
 
 ```yaml
+# 配置数据源
 mybatis.db1:
     typeAliases:
         - "webapp.model"    #支持包名
@@ -9,6 +10,13 @@ mybatis.db1:
         - "webapp.dso.db1"            #或支持包名
         - "webapp/dso/db1/mapp.xml"   #或支持mapper xml
         - "webapp/dso/db1/mapp.class" #或支持mapper class (以 class 结尾)
+
+# 配置插件
+mybatis.plugin:
+    - pagehelper:
+        class: com.github.pagehelper.PageHelper
+        dialect: mysql
+        rowBoundsWithCount: true
 ```
 
 注入示例：
