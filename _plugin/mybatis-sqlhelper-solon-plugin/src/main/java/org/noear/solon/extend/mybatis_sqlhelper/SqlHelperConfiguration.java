@@ -33,11 +33,9 @@ public class SqlHelperConfiguration implements EventListener<Configuration> {
     public void sqlHelperMybatisProperties(
             @Inject("${sqlhelper.mybatis.instrumentor}") SQLInstrumentorConfig sqlInstrumentConfig,
             @Inject("${sqlhelper.mybatis.pagination}") PaginationConfig paginationPluginConfig) {
-        SqlHelperMybatisProperties p = new SqlHelperMybatisProperties();
-        p.setInstrumentor(sqlInstrumentConfig);
-        p.setPagination(paginationPluginConfig);
-
-        sqlHelperMybatisProperties = p;
+        sqlHelperMybatisProperties = new SqlHelperMybatisProperties();
+        sqlHelperMybatisProperties.setInstrumentor(sqlInstrumentConfig);
+        sqlHelperMybatisProperties.setPagination(paginationPluginConfig);
     }
 
 
