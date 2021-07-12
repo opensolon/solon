@@ -54,18 +54,14 @@ class SqlFactoryAdapter {
         this.dsWrap = dsWrap;
 
         DataSource dataSource = dsWrap.raw();
-
-        String environment_id = props.getProperty("environment");
-        if (Utils.isEmpty(environment_id)) {
-            environment_id = "solon-" + (environmentIndex++);
-        }
+        String environmentId = "configuration-" + dsWrap.name();
 
         TransactionFactory tf = new JdbcTransactionFactory();
-        Environment environment = new Environment(environment_id, tf, dataSource);
+        Environment environment = new Environment(environmentId, tf, dataSource);
         config = new Configuration(environment);
 
         //加载插件
-        if(XPluginImp.pluginList.size() > 0) {
+        if (XPluginImp.pluginList.size() > 0) {
             for (Interceptor i : XPluginImp.pluginList) {
                 config.addInterceptor(i);
             }

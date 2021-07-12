@@ -171,6 +171,9 @@ public abstract class BeanContainer {
     public void putWrap(String name, BeanWrap wrap) {
         if (Utils.isEmpty(name) == false && wrap.raw() != null) {
             if (beans.containsKey(name) == false) {
+                //补一下 name
+                wrap.nameSet(name);
+
                 beans.put(name, wrap);
                 beanNotice(name, wrap);
             }
