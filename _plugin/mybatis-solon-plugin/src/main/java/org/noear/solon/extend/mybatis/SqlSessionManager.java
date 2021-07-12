@@ -79,11 +79,11 @@ class SqlSessionManager {
         }
 
         SqlSessionFactory factory = adapter.getFactory();
-        SqlSessionProxy holder = new SqlSessionProxy(factory, createSqlSessionDynamicProxy(factory));
+        SqlSessionProxy proxy = new SqlSessionProxy(factory, createSqlSessionDynamicProxy(factory));
 
-        adapter.mapperScan(holder);
+        adapter.mapperScan(proxy);
 
-        return holder;
+        return proxy;
     }
 
     /**

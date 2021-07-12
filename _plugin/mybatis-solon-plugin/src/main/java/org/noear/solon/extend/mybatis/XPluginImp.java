@@ -91,27 +91,27 @@ public class XPluginImp implements Plugin {
     }
 
     private void create0(Class<?> clz, BeanWrap dsBw) {
-        SqlSessionProxy holder = SqlSessionManager.global().get(dsBw);
+        SqlSessionProxy proxy = SqlSessionManager.global().get(dsBw);
 
-        Object raw = holder.getMapper(clz);
+        Object raw = proxy.getMapper(clz);
         Aop.wrapAndPut(clz,raw);
     }
 
     private void inject0(VarHolder varH, BeanWrap dsBw) {
-        SqlSessionProxy holder = SqlSessionManager.global().get(dsBw);
+        SqlSessionProxy proxy = SqlSessionManager.global().get(dsBw);
 
         if (SqlSession.class.isAssignableFrom(varH.getType())) {
-            varH.setValue(holder);
+            varH.setValue(proxy);
             return;
         }
 
         if (SqlSessionFactory.class.isAssignableFrom(varH.getType())) {
-            varH.setValue(holder.getFactory());
+            varH.setValue(proxy.getFactory());
             return;
         }
 
         if (varH.getType().isInterface()) {
-            Object mapper = holder.getMapper(varH.getType());
+            Object mapper = proxy.getMapper(varH.getType());
 
             varH.setValue(mapper);
             return;
