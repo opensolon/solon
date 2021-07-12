@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="webapp.dso.mapper.AppxMapper">
+    <select id="appx_get" resultType="AppxModel">
+        select * from appx limit 1;
+    </select>
+
+    <select id="appx_get_page" resultType="AppxModel">
+        select * from appx
+    </select>
+
+    <select id="appx_get2" resultType="AppxModel">
+        select * from appx where app_id=#{app_id} limit 1;
+    </select>
+
+    <insert id="appx_add">
+        insert into test (v1) values (1024);
+    </insert>
+
+    <insert id="appx_add2">
+        insert into test (v1) values (#{v1});
+    </insert>
+
+</mapper>
