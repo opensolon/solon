@@ -67,10 +67,10 @@ class SqlFactoryAdapter {
             }
         }
 
-        //分发事件，推给扩展处理
+        //1.分发事件，推给扩展处理
         EventBus.push(config);
 
-        //初始化（顺骗子不能乱）
+        //2.初始化（顺序不能乱）
         init0(config, props);
     }
 
