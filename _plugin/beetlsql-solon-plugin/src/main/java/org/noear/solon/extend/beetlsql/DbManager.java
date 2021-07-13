@@ -9,6 +9,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.ValHolder;
 import org.noear.solon.core.event.EventBus;
 
 import javax.sql.DataSource;
@@ -49,12 +50,18 @@ class DbManager {
             DataSource[] slaves = new DataSource[slaveAry.length];
 
             for (int i = 0, len = slaveAry.length; i < len; i++) {
-                //todo::此处不能用同步，有些源可能还没构建好
-                slaves[i] = Aop.get(slaveAry[i]);
+                ValHolder<Integer> valHolder = new ValHolder<>(i);
 
-                if (slaves[i] == null) {
-                    throw new RuntimeException("DbManager: This data source does not exist: " + slaveAry[i]);
-                }
+                Aop.getAsyn(slaveAry[i], dsBw -> {
+                    slaves[valHolder.value] = dsBw.raw();
+                });
+
+//                //todo::此处不能用同步，有些源可能还没构建好 //不过异常，没法检查了
+//                slaves[i] = Aop.get(slaveAry[i]);
+//
+//                if (slaves[i] == null) {
+//                    throw new RuntimeException("DbManager: This data source does not exist: " + slaveAry[i]);
+//                }
             }
 
             cs = new DbConnectionSource(master, slaves);
