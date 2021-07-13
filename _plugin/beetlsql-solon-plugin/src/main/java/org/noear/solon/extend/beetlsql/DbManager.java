@@ -22,6 +22,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 2020-09-01
  * */
 class DbManager {
+    private static final String ATTR_dialect = "dialect";
+    private static final String ATTR_slaves  = "slaves";
+
     private static DbManager _global = new DbManager();
 
     public static DbManager global() {
@@ -39,13 +42,14 @@ class DbManager {
         DbConnectionSource cs = null;
         DataSource master = bw.raw();
 
-        String slaves_str = bw.attrGet("slaves");
+        String slaves_str = bw.attrGet(ATTR_slaves);
 
         if (Utils.isNotEmpty(slaves_str)) {
             String[] slaveAry = slaves_str.split(",");
             DataSource[] slaves = new DataSource[slaveAry.length];
 
             for (int i = 0, len = slaveAry.length; i < len; i++) {
+                //todo::此处不能用同步，有些源可能还没构建好
                 slaves[i] = Aop.get(slaveAry[i]);
 
                 if (slaves[i] == null) {
@@ -59,10 +63,13 @@ class DbManager {
         }
 
         SQLManagerBuilder builder = SQLManager.newBuilder(cs);
+        //as bean name
+        String dataSourceId = "ds-" + (bw.name() == null ? "" : bw.name());
+        builder.setName(dataSourceId);
 
         buildStyle(bw, builder);
 
-        if(Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode()){
+        if (Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode()) {
             builder.addInterDebug();
         }
 
@@ -124,7 +131,7 @@ class DbManager {
     }
 
     private void buildStyle(BeanWrap bw, SQLManagerBuilder builder) {
-        String dialect = bw.attrGet("dialect");
+        String dialect = bw.attrGet(ATTR_dialect);
 
         if (Utils.isNotEmpty(dialect)) {
             DBStyle style = null;
