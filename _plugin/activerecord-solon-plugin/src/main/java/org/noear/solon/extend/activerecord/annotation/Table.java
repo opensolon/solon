@@ -3,6 +3,8 @@ package org.noear.solon.extend.activerecord.annotation;
 import java.lang.annotation.*;
 
 /**
+ * 表注解
+ *
  * @author noear
  * @since 1.4
  */

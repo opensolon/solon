@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
+ * 配置实现（实现与Solon事务对接）
+ *
  * @author noear
  * @since 1.4
  */

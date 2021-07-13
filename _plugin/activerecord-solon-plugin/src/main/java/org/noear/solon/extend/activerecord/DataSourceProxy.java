@@ -10,6 +10,8 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
 
 /**
+ * 数据源代理（实现与Solon事务对接）
+ *
  * @author noear
  * @since 1.4
  */
