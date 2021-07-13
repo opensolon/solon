@@ -76,10 +76,6 @@ class DbManager {
 
         buildStyle(bw, builder);
 
-        if (Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode()) {
-            builder.addInterDebug();
-        }
-
         //推到事件中心，用于扩展
         EventBus.push(builder);
 
