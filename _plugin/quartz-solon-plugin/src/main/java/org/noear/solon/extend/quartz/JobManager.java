@@ -33,7 +33,7 @@ public final class JobManager {
         }
     }
 
-    protected static void doAddBean(String name, String cronx, boolean enable, BeanWrap bw) throws Exception {
+    protected static void register(String name, String cronx, boolean enable, BeanWrap bw) throws Exception {
         if (enable == false) {
             return;
         }
@@ -43,7 +43,7 @@ public final class JobManager {
         }
     }
 
-    public static JobEntity getJob(String jobID) {
+    protected static JobEntity getJob(String jobID) {
         if (Utils.isEmpty(jobID)) {
             return null;
         } else {
@@ -54,7 +54,7 @@ public final class JobManager {
     /**
      *
      */
-    public static void addJob(JobEntity jobEntity) throws Exception {
+    protected static void addJob(JobEntity jobEntity) throws Exception {
         jobMap.putIfAbsent(jobEntity.jobID, jobEntity);
 
         if (jobEntity.cronx.indexOf(" ") < 0) {
