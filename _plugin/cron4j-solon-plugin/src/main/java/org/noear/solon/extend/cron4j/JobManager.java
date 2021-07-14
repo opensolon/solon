@@ -21,6 +21,16 @@ public final class JobManager {
     }
 
     protected static void start() {
+        if (_server.isStarted()) {
+            return;
+        }
+
+        //初始化job
+        for (JobEntity jobEntity : jobMap.values()) {
+            initJob(jobEntity);
+        }
+
+        //启动服务
         _server.start();
     }
 
@@ -37,7 +47,7 @@ public final class JobManager {
         }
     }
 
-    protected static void doAddBean(String name, String cronx, boolean enable, BeanWrap bw){
+    protected static void register(String name, String cronx, boolean enable, BeanWrap bw){
         if (enable == false) {
             return;
         }
@@ -49,16 +59,15 @@ public final class JobManager {
         }
 
         if (Runnable.class.isAssignableFrom(bw.clz()) || Task.class.isAssignableFrom(bw.clz())) {
-            JobManager.addJob(new JobEntity(name, cronx, enable, bw));
+            JobEntity jobEntity = new JobEntity(name, cronx, enable, bw);
+            jobMap.putIfAbsent(jobEntity.beanWrap.clz(), jobEntity);
         }
     }
 
     /**
      *
      * */
-    public static void addJob(JobEntity jobEntity) {
-        jobMap.putIfAbsent(jobEntity.beanWrap.clz(), jobEntity);
-
+    protected static void initJob(JobEntity jobEntity) {
         if (jobEntity.cronx.indexOf(" ") < 0) {
             if (jobEntity.cronx.endsWith("ms")) {
                 long period = Long.parseLong(jobEntity.cronx.substring(0, jobEntity.cronx.length() - 2));

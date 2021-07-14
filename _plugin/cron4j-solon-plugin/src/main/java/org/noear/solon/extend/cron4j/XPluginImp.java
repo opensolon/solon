@@ -5,13 +5,14 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.core.event.AppLoadEndEvent;
 
 import java.util.Properties;
 
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        if(app.source().getAnnotation(EnableCron4j.class) == null){
+        if (app.source().getAnnotation(EnableCron4j.class) == null) {
             return;
         }
 
@@ -39,10 +40,11 @@ public class XPluginImp implements Plugin {
                 }
             }
 
-            JobManager.doAddBean(name, cronx, enable, bw);
+            JobManager.register(name, cronx, enable, bw);
         });
 
-        Aop.context().beanOnloaded(() -> {
+        //应用加载完后，再启动任务
+        app.onEvent(AppLoadEndEvent.class, e -> {
             JobManager.start();
         });
     }
