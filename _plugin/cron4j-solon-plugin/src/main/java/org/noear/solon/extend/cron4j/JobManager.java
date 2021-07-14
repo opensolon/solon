@@ -17,7 +17,7 @@ public final class JobManager {
 
     protected static void init() {
         _server = new Scheduler();
-        _taskScheduler = new ScheduledThreadPoolExecutor(1);
+        _taskScheduler = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors() + 1);
     }
 
     protected static void start() {
