@@ -4,7 +4,10 @@ import org.noear.solon.core.event.EventBus;
 
 
 /**
- * 任务运行器
+ * 任务运行器默认实现
+ *
+ * @author noear
+ * @since 1.0
  * */
 public class JobRunner implements IJobRunner {
     /**
