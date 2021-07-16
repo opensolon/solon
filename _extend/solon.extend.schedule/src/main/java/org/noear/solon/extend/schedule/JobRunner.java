@@ -12,12 +12,12 @@ import org.noear.solon.core.event.EventBus;
 public class JobRunner implements IJobRunner {
     /**
      * 全局运行实例（可以修改替换）
-     * */
+     */
     public static IJobRunner global = new JobRunner();
 
     /**
      * 是否允许
-     * */
+     */
     public boolean allow(JobEntity jobEntity) {
         return true;
     }
@@ -26,8 +26,8 @@ public class JobRunner implements IJobRunner {
      * 运行
      *
      * @param jobEntity 任务实体
-     * @param tag 标签
-     * */
+     * @param tag       标签
+     */
     public void run(JobEntity jobEntity, int tag) {
         if (allow(jobEntity)) {
             System.out.print("schedule run::" + jobEntity.getName() + " - " + tag + "\r\n");
@@ -54,14 +54,15 @@ public class JobRunner implements IJobRunner {
                 jobEntity.getJob().exec();
                 long time_end = System.currentTimeMillis();
 
+                //如果间隔为0，则终止任务
                 if (jobEntity.getJob().getInterval() == 0) {
                     return;
                 }
 
+                //如果离下次执行还有时间，则休眠一段时间
                 if (time_end - time_start < jobEntity.getJob().getInterval()) {
                     Thread.sleep(jobEntity.getJob().getInterval());
                 }
-
             } catch (Throwable ex) {
                 try {
                     EventBus.push(ex);
