@@ -1,5 +1,11 @@
 package org.noear.solon.extend.schedule;
 
+/**
+ * 任务
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public interface IJob {
     /**
      * 间格时间（单位：毫秒）

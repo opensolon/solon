@@ -1,6 +1,12 @@
 package org.noear.solon.extend.schedule;
 
 
+/**
+ * 任务实体
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public class JobEntity {
     private String name;
     private IJob job;
