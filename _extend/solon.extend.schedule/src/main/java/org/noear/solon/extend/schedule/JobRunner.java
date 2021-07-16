@@ -2,8 +2,6 @@ package org.noear.solon.extend.schedule;
 
 import org.noear.solon.core.event.EventBus;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * 任务运行器
@@ -13,10 +11,6 @@ public class JobRunner implements IJobRunner {
      * 全局运行实例（可以修改替换）
      * */
     public static IJobRunner global = new JobRunner();
-
-
-    private ExecutorService executorService = Executors.newCachedThreadPool();
-
 
     /**
      * 是否允许
@@ -35,10 +29,10 @@ public class JobRunner implements IJobRunner {
         if (allow(jobEntity)) {
             System.out.print("schedule run::" + jobEntity.getName() + " - " + tag + "\r\n");
 
-            executorService.submit(() -> {
-                Thread.currentThread().setName("job-" + jobEntity.getName());
+            //注：不需要线程池
+            new Thread(() -> {
                 runDo(jobEntity);
-            });
+            }, "job-" + jobEntity.getName()).start();
         }
     }
 
