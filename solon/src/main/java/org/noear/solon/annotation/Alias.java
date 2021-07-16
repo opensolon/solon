@@ -9,8 +9,9 @@ import java.lang.annotation.*;
  * @since 1.5
  * */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Documented
 public @interface Alias {
-    String value();
+    String value() default "";
+    Class<? extends Annotation> base() default Annotation.class;
 }

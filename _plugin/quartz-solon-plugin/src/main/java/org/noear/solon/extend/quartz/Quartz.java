@@ -1,5 +1,7 @@
 package org.noear.solon.extend.quartz;
 
+import org.noear.solon.annotation.Alias;
+import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Note;
 
 import java.lang.annotation.*;
@@ -28,6 +30,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.1
  * */
+@Alias(base = Component.class)
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
