@@ -28,6 +28,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.0
  * */
+@Alias(anno = Component.class)
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

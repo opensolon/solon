@@ -13,5 +13,5 @@ import java.lang.annotation.*;
 @Documented
 public @interface Alias {
     String value() default "";
-    Class<? extends Annotation> base() default Annotation.class;
+    Class<? extends Annotation> anno() default Annotation.class;
 }

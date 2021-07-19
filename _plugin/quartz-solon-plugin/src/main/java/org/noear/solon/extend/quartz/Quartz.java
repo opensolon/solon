@@ -30,7 +30,7 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.1
  * */
-@Alias(base = Component.class)
+@Alias(anno = Component.class)
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

@@ -28,7 +28,7 @@ import java.lang.annotation.*;
  * </code></pre>
  *
  * */
-@Alias(base = Component.class)
+@Alias(anno = Component.class)
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
