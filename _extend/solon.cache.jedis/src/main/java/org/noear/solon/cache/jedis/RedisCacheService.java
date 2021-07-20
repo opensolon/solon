@@ -57,8 +57,8 @@ public class RedisCacheService implements CacheService {
         _cacheKeyHead = keyHeader;
         _defaultSeconds = defSeconds;
 
-        if (_defaultSeconds < 3) {
-            _defaultSeconds = 30;
+        if (_defaultSeconds < 1) {
+            _defaultSeconds = 10;
         }
 
         if (Utils.isEmpty(_cacheKeyHead)) {
