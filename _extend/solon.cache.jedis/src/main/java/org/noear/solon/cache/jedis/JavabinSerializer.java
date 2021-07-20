@@ -6,7 +6,8 @@ import org.noear.solon.data.cache.Serializer;
 import java.util.Base64;
 
 /**
- * @author noear 2021/6/15 created
+ * @author noear
+ * @since 1.5
  */
 public class JavabinSerializer implements Serializer<String> {
     public static final JavabinSerializer instance = new JavabinSerializer();
