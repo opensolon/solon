@@ -4,8 +4,8 @@ import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.data.cache.CacheService;
+import org.noear.solon.data.cache.Serializer;
 
-import java.util.Base64;
 import java.util.Properties;
 
 /**
@@ -16,6 +16,15 @@ public class RedisCacheService implements CacheService {
     protected String _cacheKeyHead;
     protected int _defaultSeconds;
     protected final RedisX _cache;
+    private Serializer<String> _serializer = null;
+
+    public RedisCacheService serializer(Serializer<String> serializer) {
+        if(serializer != null) {
+            this._serializer = serializer;
+        }
+
+        return this;
+    }
 
     public RedisCacheService(Properties prop) {
         this(prop, prop.getProperty("keyHeader"), 0);
@@ -57,6 +66,7 @@ public class RedisCacheService implements CacheService {
         }
 
         _cache = new RedisX(prop, server, password, db, maxTotaol);
+        _serializer = JavabinSerializer.instance;
     }
 
     @Override
@@ -68,8 +78,7 @@ public class RedisCacheService implements CacheService {
         if (_cache != null) {
             String newKey = newKey(key);
             try {
-                byte[] tmp = SerializationUtils.serialize(obj);
-                String val = Base64.getEncoder().encodeToString(tmp);
+                String val = _serializer.serialize(obj);
 
                 if(seconds > 0) {
                     _cache.open0((ru) -> ru.key(newKey).expire(seconds).set(val));
@@ -93,8 +102,7 @@ public class RedisCacheService implements CacheService {
             }
 
             try {
-                byte[] bytes = Base64.getDecoder().decode(val);
-                return SerializationUtils.deserialize(bytes);
+                return _serializer.deserialize(val);
             } catch (Exception ex) {
                 EventBus.push(ex);
                 return null;
