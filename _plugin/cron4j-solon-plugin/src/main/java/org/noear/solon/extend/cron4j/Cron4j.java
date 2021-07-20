@@ -1,7 +1,5 @@
 package org.noear.solon.extend.cron4j;
 
-import org.noear.solon.annotation.Alias;
-import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Note;
 
 import java.lang.annotation.*;
@@ -28,7 +26,6 @@ import java.lang.annotation.*;
  * </code></pre>
  *
  * */
-@Alias(anno = Component.class)
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

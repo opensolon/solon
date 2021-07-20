@@ -1,13 +1,10 @@
 package org.noear.solon.socketd.annotation;
 
-import org.noear.solon.annotation.Alias;
-import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.handle.MethodType;
 
 import java.lang.annotation.*;
 
-@Alias(anno = Component.class)
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
