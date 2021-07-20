@@ -25,6 +25,10 @@ public class JavabinSerializer implements Serializer<String> {
 
     @Override
     public Object deserialize(String dta) throws Exception {
+        if(dta == null){
+            return null;
+        }
+
         byte[] bytes = Base64.getDecoder().decode(dta);
         return SerializationUtils.deserialize(bytes);
     }
