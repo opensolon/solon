@@ -44,7 +44,7 @@ public class MemCacheService implements CacheService {
         _defaultSeconds = defSeconds;
 
         if (_defaultSeconds < 1) {
-            _defaultSeconds = 10;
+            _defaultSeconds = 30;
         }
 
         if (Utils.isEmpty(_cacheKeyHead)) {
