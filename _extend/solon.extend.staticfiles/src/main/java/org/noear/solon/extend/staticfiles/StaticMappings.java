@@ -35,12 +35,15 @@ public class StaticMappings extends ArrayList<StaticLocation> {
 
 
         if (Solon.cfg().isDebugMode()) {
-            String dirroot = Utils.getResource("/")
-                    .toString()
-                    .replace("target/classes/", "");
+            URL rooturi = Utils.getResource("/");
 
-            if (dirroot.startsWith("file:")) {
-                mapping.locationDebug = dirroot + "src/main/resources" + location;
+            if (rooturi != null) {
+                String rootdir = rooturi.toString()
+                        .replace("target/classes/", "");
+
+                if (rootdir.startsWith("file:")) {
+                    mapping.locationDebug = rootdir + "src/main/resources" + location;
+                }
             }
         }
 
