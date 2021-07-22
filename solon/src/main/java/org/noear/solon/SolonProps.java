@@ -147,13 +147,17 @@ public final class SolonProps extends Props {
      * */
     private String getArg(String name, String def) {
         //尝试去启动参数取
-        String tmp = args.getOrDefault(name, def);
+        String tmp = args.get(name);
         if (Utils.isEmpty(tmp)) {
             //如果为空，尝试从属性配置取
             tmp = get("solon." + name);
         }
 
-        return tmp;
+        if (Utils.isEmpty(tmp)) {
+            return def;
+        } else {
+            return tmp;
+        }
     }
 
     /**
