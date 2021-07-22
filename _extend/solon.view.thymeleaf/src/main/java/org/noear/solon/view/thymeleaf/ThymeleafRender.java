@@ -8,17 +8,15 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.ext.SupplierEx;
-import org.noear.solon.view.thymeleaf.tags.AuthDialect;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.dialect.IDialect;
-import org.thymeleaf.processor.AbstractProcessor;
-import org.thymeleaf.processor.element.IElementTagProcessor;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
 
 import java.io.*;
 import java.net.URI;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +32,7 @@ public class ThymeleafRender implements Render {
     }
 
 
-    private TemplateEngine _engine = new TemplateEngine();
+    private TemplateEngine engine = new TemplateEngine();
 
     private Map<String, Object> _sharedVariable = new HashMap<>();
 
@@ -47,12 +45,8 @@ public class ThymeleafRender implements Render {
             _baseUri = baseUri;
         }
 
-        if (Solon.cfg().isDebugMode()) {
-            forDebug();
-        } else {
-            forRelease();
-        }
-
+        forDebug();
+        forRelease();
 
         try {
             Solon.global().shared().forEach((k, v) -> {
@@ -69,14 +63,24 @@ public class ThymeleafRender implements Render {
     }
 
     private void forDebug() {
-        String dirroot = Utils.getResource("/").toString().replace("target/classes/", "");
+        if(Solon.cfg().isDebugMode() == false) {
+            return;
+        }
+
+        //添加调试模式
+        URL rooturi = Utils.getResource("/");
+        if (rooturi == null) {
+            return;
+        }
+
+        String rootdir = rooturi.toString().replace("target/classes/", "");
         File dir = null;
 
-        if (dirroot.startsWith("file:")) {
-            String dir_str = dirroot + "src/main/resources" + _baseUri;
+        if (rootdir.startsWith("file:")) {
+            String dir_str = rootdir + "src/main/resources" + _baseUri;
             dir = new File(URI.create(dir_str));
             if (!dir.exists()) {
-                dir_str = dirroot + "src/main/webapp" + _baseUri;
+                dir_str = rootdir + "src/main/webapp" + _baseUri;
                 dir = new File(URI.create(dir_str));
             }
         }
@@ -90,11 +94,7 @@ public class ThymeleafRender implements Render {
                 _loader.setCharacterEncoding("utf-8");
                 _loader.setCacheTTLMs(Long.valueOf(3600000L));
 
-                _engine.setTemplateResolver(_loader);
-            } else {
-                //如果没有找到文件，则使用发行模式
-                //
-                forRelease();
+                engine.addTemplateResolver(_loader);
             }
         } catch (Exception ex) {
             EventBus.push(ex);
@@ -110,7 +110,7 @@ public class ThymeleafRender implements Render {
         _loader.setCharacterEncoding("utf-8");
         _loader.setCacheTTLMs(Long.valueOf(3600000L));
 
-        _engine.setTemplateResolver(_loader);
+        engine.addTemplateResolver(_loader);
     }
 
 
@@ -119,7 +119,7 @@ public class ThymeleafRender implements Render {
      */
     public <T extends IDialect> void putDirective(T obj) {
         try {
-            _engine.addDialect(obj);
+            engine.addDialect(obj);
         } catch (Exception ex) {
             EventBus.push(ex);
         }
@@ -180,7 +180,9 @@ public class ThymeleafRender implements Render {
 
 
         PrintWriter writer = new PrintWriter(outputStream.get());
-        _engine.process(mv.view(), context, writer);
+
+        engine.process(mv.view(), context, writer);
+
         writer.flush();
     }
 }

@@ -19,6 +19,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStream;
 import java.net.URI;
+import java.net.URL;
 
 public class BeetlRender implements Render {
 
@@ -56,13 +57,8 @@ public class BeetlRender implements Render {
             _baseUri = baseUri;
         }
 
-
-        if (Solon.cfg().isDebugMode()) {
-            forDebug();
-            forRelease();
-        } else {
-            forRelease();
-        }
+        forDebug();
+        forRelease();
 
         Solon.global().onSharedAdd((k, v) -> {
             putVariable(k, v);
@@ -70,19 +66,28 @@ public class BeetlRender implements Render {
     }
 
     private void forDebug() {
+        if(Solon.cfg().isDebugMode() == false) {
+            return;
+        }
+
         if (gt_debug != null) {
             return;
         }
 
         //添加调试模式
-        String dirroot = Utils.getResource("/").toString().replace("target/classes/", "");
+        URL rooturi = Utils.getResource("/");
+        if (rooturi == null) {
+            return;
+        }
+
+        String rootdir = rooturi.toString().replace("target/classes/", "");
         File dir = null;
 
-        if (dirroot.startsWith("file:")) {
-            String dir_str = dirroot + "src/main/resources" + _baseUri;
+        if (rootdir.startsWith("file:")) {
+            String dir_str = rootdir + "src/main/resources" + _baseUri;
             dir = new File(URI.create(dir_str));
             if (!dir.exists()) {
-                dir_str = dirroot + "src/main/webapp" + _baseUri;
+                dir_str = rootdir + "src/main/webapp" + _baseUri;
                 dir = new File(URI.create(dir_str));
             }
         }
@@ -91,8 +96,6 @@ public class BeetlRender implements Render {
             if (dir != null && dir.exists()) {
                 FileResourceLoader loader = new FileResourceLoader(dir.getAbsolutePath(), "utf-8");
                 gt_debug = new GroupTemplate(loader, cfg);
-            } else {
-                forRelease();
             }
         } catch (Exception ex) {
             EventBus.push(ex);

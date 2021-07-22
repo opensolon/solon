@@ -19,13 +19,13 @@ public class JtResouceLoaderFile implements JtResouceLoader {
     private File _baseDir;
 
     public JtResouceLoaderFile() {
-        String dirroot = Utils.getResource("/").toString().replace("target/classes/", "");
+        String rootdir = Utils.getResource("/").toString().replace("target/classes/", "");
 
-        if (dirroot.startsWith("file:")) {
-            String dir_str = dirroot + "src/main/resources" + _baseUri;
+        if (rootdir.startsWith("file:")) {
+            String dir_str = rootdir + "src/main/resources" + _baseUri;
             _baseDir = new File(URI.create(dir_str));
             if (!_baseDir.exists()) {
-                dir_str = dirroot + "src/main/webapp" + _baseUri;
+                dir_str = rootdir + "src/main/webapp" + _baseUri;
                 _baseDir = new File(URI.create(dir_str));
             }
         }

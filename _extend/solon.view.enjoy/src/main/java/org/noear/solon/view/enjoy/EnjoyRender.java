@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URI;
+import java.net.URL;
 
 public class EnjoyRender implements Render {
 
@@ -47,13 +48,8 @@ public class EnjoyRender implements Render {
             _baseUri = baseUri;
         }
 
-
-        if (Solon.cfg().isDebugMode()) {
-            forDebug();
-            forRelease();
-        } else {
-            forRelease();
-        }
+        forDebug();
+        forRelease();
 
         Solon.global().onSharedAdd((k, v) -> {
             putVariable(k, v);
@@ -61,21 +57,31 @@ public class EnjoyRender implements Render {
     }
 
     private void forDebug() {
+        if(Solon.cfg().isDebugMode() == false) {
+            return;
+        }
+
         if(engine_debug != null){
+            return;
+        }
+
+        //添加调试模式
+        URL rooturi = Utils.getResource("/");
+        if(rooturi == null){
             return;
         }
 
         engine_debug = Engine.create("debug");
 
-        //添加调试模式
-        String dirroot = Utils.getResource("/").toString().replace("target/classes/", "");
+
+        String rootdir = rooturi.toString().replace("target/classes/", "");
         File dir = null;
 
-        if (dirroot.startsWith("file:")) {
-            String dir_str = dirroot + "src/main/resources" + _baseUri;
+        if (rootdir.startsWith("file:")) {
+            String dir_str = rootdir + "src/main/resources" + _baseUri;
             dir = new File(URI.create(dir_str));
             if (!dir.exists()) {
-                dir_str = dirroot + "src/main/webapp" + _baseUri;
+                dir_str = rootdir + "src/main/webapp" + _baseUri;
                 dir = new File(URI.create(dir_str));
             }
         }
@@ -85,8 +91,6 @@ public class EnjoyRender implements Render {
                 engine_debug.setDevMode(true);
                 engine_debug.setBaseTemplatePath(dir.getPath());
                 engine_debug.setSourceFactory(new FileSourceFactory());
-            } else {
-                forRelease();
             }
         } catch (Exception ex) {
             EventBus.push(ex);
