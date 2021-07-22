@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.extend.water.integration.http;
 
 import org.noear.snack.ONode;
+import org.noear.solon.Solon;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
@@ -17,7 +18,7 @@ public class HandlerStatus implements Handler {
     public void handle(Context ctx) throws Throwable {
         String ip = ctx.realIp();
 
-        if (WaterClient.Whitelist.existsOfMasterIp(ip)) {
+        if (authMasterIp(ip)) {
             RuntimeStatus rs = RuntimeUtils.getStatus();
             rs.name = Instance.local().service();
             rs.address = Instance.local().address();
@@ -25,6 +26,14 @@ public class HandlerStatus implements Handler {
             ctx.outputAsJson(ONode.stringify(rs));
         } else {
             ctx.output((ip + ",not is whitelist!"));
+        }
+    }
+
+    private boolean authMasterIp(String ip) {
+        if (Solon.cfg().isDriftMode()) {
+            return true;
+        } else {
+            return WaterClient.Whitelist.existsOfMasterIp(ip);
         }
     }
 }

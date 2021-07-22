@@ -22,7 +22,7 @@ public class HandlerStop implements Handler {
     private String handle0(Context ctx) throws Throwable {
         String ip = ctx.realIp();
 
-        if (WaterClient.Whitelist.existsOfMasterIp(ip)) {
+        if (authMasterIp(ip)) {
             stateSet(false);
             Solon.stop();
             return "OK";
@@ -41,6 +41,14 @@ public class HandlerStop implements Handler {
             }
 
             WaterClient.Registry.set(instance.service(), instance.address(), meta, enabled);
+        }
+    }
+
+    private boolean authMasterIp(String ip) {
+        if (Solon.cfg().isDriftMode()) {
+            return true;
+        } else {
+            return WaterClient.Whitelist.existsOfMasterIp(ip);
         }
     }
 }
