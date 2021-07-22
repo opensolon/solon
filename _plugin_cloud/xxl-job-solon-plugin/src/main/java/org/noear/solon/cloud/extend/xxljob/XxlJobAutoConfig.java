@@ -49,7 +49,7 @@ public class XxlJobAutoConfig {
         logger.info(">>>>>>>>>>> xxl-job config init.");
 
         if(Utils.isEmpty(adminAddresses)){
-            adminAddresses = XxljobProps.instance.getJobServer();
+            adminAddresses = XxlJobProps.instance.getJobServer();
         }
 
         if(Utils.isEmpty(appname)){
@@ -73,7 +73,7 @@ public class XxlJobAutoConfig {
         }
 
         if(Utils.isEmpty(accessToken)) {
-            accessToken = XxljobProps.instance.getPassword();
+            accessToken = XxlJobProps.instance.getPassword();
         }
 
 

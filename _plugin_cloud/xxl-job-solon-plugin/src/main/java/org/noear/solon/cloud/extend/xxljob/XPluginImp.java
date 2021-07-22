@@ -16,11 +16,11 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        if (Utils.isEmpty(XxljobProps.instance.getServer())) {
+        if (Utils.isEmpty(XxlJobProps.instance.getServer())) {
             return;
         }
 
-        if (XxljobProps.instance.getJobEnable()) {
+        if (XxlJobProps.instance.getJobEnable()) {
             //注册Job服务
             CloudManager.register(CloudJobServiceImpl.instance);
 
