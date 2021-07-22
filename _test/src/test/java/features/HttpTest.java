@@ -266,14 +266,8 @@ public class HttpTest extends _TestBase {
     public void test84() throws IOException{
         assert ONode.loadStr(get("/demo8/user")).get("name").getString().equals("noear");
     }
-    @Test
-    public void test91() throws IOException{
-        assert  get("/demo9/view/beetl").indexOf("beetl::") > 0;
-    }
-    @Test
-    public void test92() throws IOException{
-        assert  get("/demo9/view/ftl").indexOf("ftl::") > 0;
-    }
+
+
     @Test
     public void testa1() throws IOException{
         assert  get("/demoa/trigger").equals(
