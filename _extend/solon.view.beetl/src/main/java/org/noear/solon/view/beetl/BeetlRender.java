@@ -35,8 +35,8 @@ public class BeetlRender implements Render {
 
 
     Configuration cfg = null;
-    GroupTemplate gt = null;
-    GroupTemplate gt_debug = null;
+    GroupTemplate provider = null;
+    GroupTemplate provider_debug = null;
 
     private String _baseUri = "/WEB-INF/view/";
 
@@ -70,7 +70,7 @@ public class BeetlRender implements Render {
             return;
         }
 
-        if (gt_debug != null) {
+        if (provider_debug != null) {
             return;
         }
 
@@ -95,7 +95,7 @@ public class BeetlRender implements Render {
         try {
             if (dir != null && dir.exists()) {
                 FileResourceLoader loader = new FileResourceLoader(dir.getAbsolutePath(), "utf-8");
-                gt_debug = new GroupTemplate(loader, cfg);
+                provider_debug = new GroupTemplate(loader, cfg);
             }
         } catch (Exception ex) {
             EventBus.push(ex);
@@ -103,13 +103,13 @@ public class BeetlRender implements Render {
     }
 
     private void forRelease() {
-        if (gt != null) {
+        if (provider != null) {
             return;
         }
 
         try {
             ClasspathResourceLoader loader = new ClasspathResourceLoader(JarClassLoader.global(), _baseUri);
-            gt = new GroupTemplate(loader, cfg);
+            provider = new GroupTemplate(loader, cfg);
         } catch (Exception ex) {
             EventBus.push(ex);
         }
@@ -121,10 +121,10 @@ public class BeetlRender implements Render {
      * */
     public void putDirective(String name, Class<? extends Tag> clz) {
         try {
-            gt.registerTag(name, clz);
+            provider.registerTag(name, clz);
 
-            if (gt_debug != null) {
-                gt_debug.registerTag(name, clz);
+            if (provider_debug != null) {
+                provider_debug.registerTag(name, clz);
             }
         } catch (Exception ex) {
             EventBus.push(ex);
@@ -136,10 +136,10 @@ public class BeetlRender implements Render {
      * */
     public void putVariable(String name, Object value) {
         try {
-            gt.getSharedVars().put(name, value);
+            provider.getSharedVars().put(name, value);
 
-            if (gt_debug != null) {
-                gt_debug.getSharedVars().put(name, value);
+            if (provider_debug != null) {
+                provider_debug.getSharedVars().put(name, value);
             }
         } catch (Exception ex) {
             EventBus.push(ex);
@@ -186,14 +186,14 @@ public class BeetlRender implements Render {
 
         Template template = null;
 
-        if (gt_debug != null) {
-            if (gt_debug.hasTemplate(mv.view())) {
-                template = gt_debug.getTemplate(mv.view());
+        if (provider_debug != null) {
+            if (provider_debug.hasTemplate(mv.view())) {
+                template = provider_debug.getTemplate(mv.view());
             }
         }
 
         if (template == null) {
-            template = gt.getTemplate(mv.view());
+            template = provider.getTemplate(mv.view());
         }
 
 

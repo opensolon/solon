@@ -23,10 +23,10 @@ public class LuffyHandler implements Handler {
             ExecutorFactory.del(name);
         }
 
-        do_handle(path, ctx, Solon.cfg().isDebugMode());
+        handleDo(path, ctx, Solon.cfg().isDebugMode());
     }
 
-    private void do_handle(String path, Context ctx, boolean debug) throws Exception {
+    private void handleDo(String path, Context ctx, boolean debug) throws Exception {
 
         AFileModel file = JtRun.fileGet(path);
 
@@ -49,7 +49,7 @@ public class LuffyHandler implements Handler {
         //如果有跳转，则跳转
         if (TextUtils.isEmpty(file.link_to) == false) {
             if (file.link_to.startsWith("@")) {
-                do_handle(file.link_to.substring(1), ctx, debug);
+                handleDo(file.link_to.substring(1), ctx, debug);
             } else {
                 ctx.redirect(file.link_to);
             }

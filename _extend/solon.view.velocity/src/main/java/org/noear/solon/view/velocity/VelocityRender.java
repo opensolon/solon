@@ -3,7 +3,6 @@ package org.noear.solon.view.velocity;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
-import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeInstance;
 import org.apache.velocity.runtime.directive.Directive;
@@ -35,8 +34,8 @@ public class VelocityRender implements Render {
         return _global;
     }
 
-    private RuntimeInstance engine;
-    private RuntimeInstance engine_debug;
+    private RuntimeInstance provider;
+    private RuntimeInstance provider_debug;
     private Map<String, Object> _sharedVariable = new HashMap<>();
 
     private String _baseUri = "/WEB-INF/view/";
@@ -58,8 +57,8 @@ public class VelocityRender implements Render {
             forRelease();
         }
 
-        engineInit(engine);
-        engineInit(engine_debug);
+        engineInit(provider);
+        engineInit(provider_debug);
 
         Solon.global().onSharedAdd((k, v) -> {
             putVariable(k, v);
@@ -85,7 +84,7 @@ public class VelocityRender implements Render {
     }
 
     private void forDebug() {
-        if (engine_debug != null) {
+        if (provider_debug != null) {
             return;
         }
 
@@ -95,7 +94,7 @@ public class VelocityRender implements Render {
             return;
         }
 
-        engine_debug = new RuntimeInstance();
+        provider_debug = new RuntimeInstance();
 
         String rootdir = rooturi.toString().replace("target/classes/", "");
         File dir = null;
@@ -111,7 +110,7 @@ public class VelocityRender implements Render {
 
         try {
             if (dir != null && dir.exists()) {
-                engine_debug.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, dir.getAbsolutePath() + File.separatorChar);
+                provider_debug.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, dir.getAbsolutePath() + File.separatorChar);
             } else {
                 //如果没有找到文件，则使用发行模式
                 //
@@ -123,26 +122,26 @@ public class VelocityRender implements Render {
     }
 
     private void forRelease() {
-        if (engine != null) {
+        if (provider != null) {
             return;
         }
 
-        engine = new RuntimeInstance();
+        provider = new RuntimeInstance();
 
         String root_path = Utils.getResource(_baseUri).getPath();
 
-        engine.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, true);
-        engine.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, root_path);
+        provider.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, true);
+        provider.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, root_path);
     }
 
     /**
      * 添加共享指令（自定义标签）
      * */
     public <T extends Directive> void putDirective(T obj) {
-        engine.addDirective(obj);
+        provider.addDirective(obj);
 
-        if (engine_debug != null) {
-            engine_debug.addDirective(obj);
+        if (provider_debug != null) {
+            provider_debug.addDirective(obj);
         }
     }
 
@@ -200,16 +199,16 @@ public class VelocityRender implements Render {
         //取得velocity的模版
         Template template = null;
 
-        if (engine_debug != null) {
+        if (provider_debug != null) {
             try {
-                template = engine_debug.getTemplate(view, getEncoding());
+                template = provider_debug.getTemplate(view, getEncoding());
             } catch (ResourceNotFoundException ex) {
                 //忽略此异常
             }
         }
 
         if (template == null) {
-            template = engine.getTemplate(view, getEncoding());
+            template = provider.getTemplate(view, getEncoding());
         }
 
         // 取得velocity的上下文context

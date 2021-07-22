@@ -1,17 +1,11 @@
 package org.noear.solon.boot.jlhttp;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.core.event.EventBus;
 
 import java.io.IOException;
 
 public class JlHttpContextHandler implements HTTPServer.ContextHandler {
-    protected boolean debug;
-
-    public JlHttpContextHandler() {
-        this.debug = Solon.cfg().isDebugMode();
-    }
 
     @Override
     public int serve(HTTPServer.Request request, HTTPServer.Response response) throws IOException {

@@ -32,8 +32,8 @@ public class FreemarkerRender implements Render {
     }
 
 
-    Configuration cfg;
-    Configuration cfg_debug;
+    Configuration provider;
+    Configuration provider_debug;
 
     private String _baseUri = "/WEB-INF/view/";
 
@@ -60,7 +60,7 @@ public class FreemarkerRender implements Render {
             return;
         }
 
-        if (cfg_debug != null) {
+        if (provider_debug != null) {
             return;
         }
 
@@ -70,9 +70,9 @@ public class FreemarkerRender implements Render {
             return;
         }
 
-        cfg_debug = new Configuration(Configuration.VERSION_2_3_28);
-        cfg_debug.setNumberFormat("#");
-        cfg_debug.setDefaultEncoding("utf-8");
+        provider_debug = new Configuration(Configuration.VERSION_2_3_28);
+        provider_debug.setNumberFormat("#");
+        provider_debug.setDefaultEncoding("utf-8");
 
         String rootdir = rooturi.toString().replace("target/classes/", "");
         File dir = null;
@@ -88,7 +88,7 @@ public class FreemarkerRender implements Render {
 
         try {
             if (dir != null && dir.exists()) {
-                cfg_debug.setDirectoryForTemplateLoading(dir);
+                provider_debug.setDirectoryForTemplateLoading(dir);
             }
         } catch (Exception ex) {
             EventBus.push(ex);
@@ -97,21 +97,21 @@ public class FreemarkerRender implements Render {
 
     //使用 发布模式 进行实始化
     private void forRelease() {
-        if (cfg != null) {
+        if (provider != null) {
             return;
         }
 
-        cfg = new Configuration(Configuration.VERSION_2_3_28);
-        cfg.setNumberFormat("#");
-        cfg.setDefaultEncoding("utf-8");
+        provider = new Configuration(Configuration.VERSION_2_3_28);
+        provider.setNumberFormat("#");
+        provider.setDefaultEncoding("utf-8");
 
         try {
-            cfg.setClassLoaderForTemplateLoading(JarClassLoader.global(), _baseUri);
+            provider.setClassLoaderForTemplateLoading(JarClassLoader.global(), _baseUri);
         } catch (Exception ex) {
             EventBus.push(ex);
         }
 
-        cfg.setCacheStorage(new freemarker.cache.MruCacheStorage(0, Integer.MAX_VALUE));
+        provider.setCacheStorage(new freemarker.cache.MruCacheStorage(0, Integer.MAX_VALUE));
     }
 
     /**
@@ -126,10 +126,10 @@ public class FreemarkerRender implements Render {
      * */
     public void putVariable(String name, Object value) {
         try {
-            cfg.setSharedVariable(name, value);
+            provider.setSharedVariable(name, value);
 
-            if (cfg_debug != null) {
-                cfg_debug.setSharedVariable(name, value);
+            if (provider_debug != null) {
+                provider_debug.setSharedVariable(name, value);
             }
         } catch (Exception ex) {
             EventBus.push(ex);
@@ -178,16 +178,16 @@ public class FreemarkerRender implements Render {
 
         Template template = null;
 
-        if (cfg_debug != null) {
+        if (provider_debug != null) {
             try {
-                template = cfg_debug.getTemplate(mv.view(), "utf-8");
+                template = provider_debug.getTemplate(mv.view(), "utf-8");
             } catch (TemplateNotFoundException ex) {
                 //跳过
             }
         }
 
         if (template == null) {
-            template = cfg.getTemplate(mv.view(), "utf-8");
+            template = provider.getTemplate(mv.view(), "utf-8");
         }
 
         template.process(mv.model(), writer);

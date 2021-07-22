@@ -42,8 +42,7 @@ abstract class PluginUndertowBase {
         }
         String resURL = rootURL.toString();
 
-        boolean isDebug = Solon.cfg().isDebugMode();
-        if (isDebug && (resURL.startsWith("jar:") == false)) {
+        if (Solon.cfg().isDebugMode() && (resURL.startsWith("jar:") == false)) {
             int endIndex = resURL.indexOf("target");
             return resURL.substring(0, endIndex) + "src/main/resources/";
         }

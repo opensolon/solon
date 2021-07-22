@@ -32,7 +32,7 @@ public class ThymeleafRender implements Render {
     }
 
 
-    private TemplateEngine engine = new TemplateEngine();
+    private TemplateEngine provider = new TemplateEngine();
 
     private Map<String, Object> _sharedVariable = new HashMap<>();
 
@@ -94,7 +94,7 @@ public class ThymeleafRender implements Render {
                 _loader.setCharacterEncoding("utf-8");
                 _loader.setCacheTTLMs(Long.valueOf(3600000L));
 
-                engine.addTemplateResolver(_loader);
+                provider.addTemplateResolver(_loader);
             }
         } catch (Exception ex) {
             EventBus.push(ex);
@@ -110,7 +110,7 @@ public class ThymeleafRender implements Render {
         _loader.setCharacterEncoding("utf-8");
         _loader.setCacheTTLMs(Long.valueOf(3600000L));
 
-        engine.addTemplateResolver(_loader);
+        provider.addTemplateResolver(_loader);
     }
 
 
@@ -119,7 +119,7 @@ public class ThymeleafRender implements Render {
      */
     public <T extends IDialect> void putDirective(T obj) {
         try {
-            engine.addDialect(obj);
+            provider.addDialect(obj);
         } catch (Exception ex) {
             EventBus.push(ex);
         }
@@ -181,7 +181,7 @@ public class ThymeleafRender implements Render {
 
         PrintWriter writer = new PrintWriter(outputStream.get());
 
-        engine.process(mv.view(), context, writer);
+        provider.process(mv.view(), context, writer);
 
         writer.flush();
     }

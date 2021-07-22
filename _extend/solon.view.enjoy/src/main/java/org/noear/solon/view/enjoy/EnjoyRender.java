@@ -33,8 +33,8 @@ public class EnjoyRender implements Render {
     }
 
 
-    Engine engine = null;
-    Engine engine_debug = null;
+    Engine provider = null;
+    Engine provider_debug = null;
 
     private String _baseUri = "/WEB-INF/view/";
 
@@ -61,7 +61,7 @@ public class EnjoyRender implements Render {
             return;
         }
 
-        if(engine_debug != null){
+        if(provider_debug != null){
             return;
         }
 
@@ -71,7 +71,7 @@ public class EnjoyRender implements Render {
             return;
         }
 
-        engine_debug = Engine.create("debug");
+        provider_debug = Engine.create("debug");
 
 
         String rootdir = rooturi.toString().replace("target/classes/", "");
@@ -88,9 +88,9 @@ public class EnjoyRender implements Render {
 
         try {
             if (dir != null && dir.exists()) {
-                engine_debug.setDevMode(true);
-                engine_debug.setBaseTemplatePath(dir.getPath());
-                engine_debug.setSourceFactory(new FileSourceFactory());
+                provider_debug.setDevMode(true);
+                provider_debug.setBaseTemplatePath(dir.getPath());
+                provider_debug.setSourceFactory(new FileSourceFactory());
             }
         } catch (Exception ex) {
             EventBus.push(ex);
@@ -98,15 +98,15 @@ public class EnjoyRender implements Render {
     }
 
     private void forRelease() {
-        if(engine != null){
+        if(provider != null){
             return;
         }
 
-        engine = Engine.use();
+        provider = Engine.use();
 
         try {
-            engine.setBaseTemplatePath(_baseUri);
-            engine.setSourceFactory(new ClassPathSourceFactory());
+            provider.setBaseTemplatePath(_baseUri);
+            provider.setSourceFactory(new ClassPathSourceFactory());
         } catch (Exception ex) {
             EventBus.push(ex);
         }
@@ -117,10 +117,10 @@ public class EnjoyRender implements Render {
      * */
     public void putDirective(String name, Class<? extends Directive> clz) {
         try {
-            engine.addDirective(name, clz);
+            provider.addDirective(name, clz);
 
-            if(engine_debug != null){
-                engine_debug.addDirective(name, clz);
+            if(provider_debug != null){
+                provider_debug.addDirective(name, clz);
             }
         } catch (Exception ex) {
             EventBus.push(ex);
@@ -132,10 +132,10 @@ public class EnjoyRender implements Render {
      * */
     public void putVariable(String name, Object value) {
         try {
-            engine.addSharedObject(name, value);
+            provider.addSharedObject(name, value);
 
-            if(engine_debug != null){
-                engine_debug.addSharedObject(name, value);
+            if(provider_debug != null){
+                provider_debug.addSharedObject(name, value);
             }
         } catch (Exception ex) {
             EventBus.push(ex);
@@ -182,14 +182,14 @@ public class EnjoyRender implements Render {
 
         Template template = null;
 
-        if(engine_debug != null) {
-            if (engine_debug.getEngineConfig().getDirective(mv.view()) != null) {
-                template = engine_debug.getTemplate(mv.view());
+        if(provider_debug != null) {
+            if (provider_debug.getEngineConfig().getDirective(mv.view()) != null) {
+                template = provider_debug.getTemplate(mv.view());
             }
         }
 
         if(template == null) {
-            template = engine.getTemplate(mv.view());
+            template = provider.getTemplate(mv.view());
         }
 
         PrintWriter writer = new PrintWriter(outputStream.get());
