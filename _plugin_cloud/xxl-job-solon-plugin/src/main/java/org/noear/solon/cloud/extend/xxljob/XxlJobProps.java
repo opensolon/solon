@@ -3,7 +3,8 @@ package org.noear.solon.cloud.extend.xxljob;
 import org.noear.solon.cloud.CloudProps;
 
 /**
- * @author noear 2021/5/25 created
+ * @author noear
+ * @since 1.4
  */
 public class XxlJobProps {
     public static final CloudProps instance = new CloudProps("xxljob");
