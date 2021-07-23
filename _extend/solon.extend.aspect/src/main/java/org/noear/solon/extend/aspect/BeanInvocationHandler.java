@@ -7,6 +7,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
+/**
+ * Bean 调用处理
+ *
+ * @author noear
+ * @since 1.5
+ * */
 public class BeanInvocationHandler implements InvocationHandler {
     private Object bean;
     private Object proxy;
