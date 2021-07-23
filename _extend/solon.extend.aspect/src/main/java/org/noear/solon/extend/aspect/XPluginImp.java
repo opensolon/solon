@@ -5,6 +5,7 @@ import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.extend.aspect.annotation.Dao;
+import org.noear.solon.extend.aspect.annotation.Repository;
 import org.noear.solon.extend.aspect.annotation.Service;
 
 public class XPluginImp implements Plugin {
@@ -15,6 +16,10 @@ public class XPluginImp implements Plugin {
         });
 
         Aop.context().beanBuilderAdd(Service.class, (clz, bw, anno) -> {
+            proxyRegister(bw);
+        });
+
+        Aop.context().beanBuilderAdd(Repository.class, (clz, bw, anno) -> {
             proxyRegister(bw);
         });
     }
