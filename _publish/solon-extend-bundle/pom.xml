@@ -228,6 +228,7 @@
         <module>../../_extend/solon.extend.jsr303</module>
         <module>../../_extend/solon.extend.schedule</module>
         <module>../../_extend/solon.extend.cors</module>
+        <module>../../_extend/solon.extend.hotpatch</module>
     </modules>
 
 </project>
