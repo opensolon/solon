@@ -19,10 +19,12 @@
     </properties>
 
     <modules>
-        <module>nami-parent</module>
-        <module>socketd-parent</module>
         <module>solon-parent</module>
-        <module>solon-plugin-parent</module>
+        <module>_publish/nami-bundle</module>
+        <module>_publish/socketd-bundle</module>
+        <module>_publish/solon-plugin-bundle</module>
+        <module>_publish/solon-render-bundle</module>
+        <module>_publish/solon-extend-bundle</module>
 
         <module>_test</module>
 

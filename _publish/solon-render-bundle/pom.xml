@@ -5,20 +5,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.noear</groupId>
-    <artifactId>nami-parent</artifactId>
+    <artifactId>solon-render-bundle</artifactId>
     <version>1.5.16</version>
     <packaging>pom</packaging>
 
+
     <name>${project.artifactId}</name>
-    <description>Java project for nami</description>
-    <url>https://github.com/noear/nami</url>
+    <description>Java project for solon</description>
+    <url>https://github.com/noear/solon</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
     </properties>
-
 
     <licenses>
         <license>
@@ -36,9 +36,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:git@github.com:noear/nami.git</connection>
-        <developerConnection>scm:git:git@github.com:noear/nami.git</developerConnection>
-        <url>https://github.com/noear/nami</url>
+        <connection>scm:git:git@github.com:noear/solon.git</connection>
+        <developerConnection>scm:git:git@github.com:noear/solon.git</developerConnection>
+        <url>https://github.com/noear/solon</url>
     </scm>
 
 
@@ -212,24 +212,29 @@
         </plugins>
     </build>
 
-
     <modules>
-        <module>../_nami/nami</module>
 
-        <module>../_nami/nami.channel.http.okhttp</module>
-        <module>../_nami/nami.channel.http.hutool</module>
-        <module>../_nami/nami.channel.socketd</module>
-        <module>../_nami/nami.channel.socketd.jdksocket</module>
-        <module>../_nami/nami.channel.socketd.netty</module>
-        <module>../_nami/nami.channel.socketd.rsocket</module>
-        <module>../_nami/nami.channel.socketd.smartsocket</module>
-        <module>../_nami/nami.channel.socketd.websocket</module>
-        <module>../_nami/nami.coder.fastjson</module>
-        <module>../_nami/nami.coder.hessian</module>
-        <module>../_nami/nami.coder.jackson</module>
-        <module>../_nami/nami.coder.protostuff</module>
-        <module>../_nami/nami.coder.snack3</module>
-        <module>../_nami/nami.coder.thrift</module>
+        <module>../../_extend/solon.serialization.hession</module>
+        <!--        <module>../../_extend/solon.serialization.thrift</module>-->
+
+        <module>../../_extend/solon.serialization.fastjson</module>
+        <module>../../_extend/solon.serialization.jackson</module>
+        <module>../../_extend/solon.serialization.gson</module>
+        <module>../../_extend/solon.serialization.snack3</module>
+        <module>../../_extend/solon.serialization.thrift</module>
+        <module>../../_extend/solon.serialization.avro</module>
+        <module>../../_extend/solon.serialization.protostuff</module>
+        <!--        <module>../../_extend/solon.serialization.jsoniter</module>-->
+        <!--        <module>../../_extend/solon.serialization.xstream</module>-->
+
+        <module>../../_extend/solon.view.freemarker</module>
+        <module>../../_extend/solon.view.jsp</module>
+        <module>../../_extend/solon.view.velocity</module>
+        <module>../../_extend/solon.view.thymeleaf</module>
+
+        <module>../../_extend/solon.view.enjoy</module>
+        <module>../../_extend/solon.view.beetl</module>
+        <!--        <module>../../solon.view.rocker</module>-->
     </modules>
 
 </project>

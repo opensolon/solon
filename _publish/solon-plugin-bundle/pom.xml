@@ -5,10 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.noear</groupId>
-    <artifactId>socketd-parent</artifactId>
+    <artifactId>solon-plugin-bundle</artifactId>
     <version>1.5.16</version>
     <packaging>pom</packaging>
-
 
     <name>${project.artifactId}</name>
     <description>Java project for solon</description>
@@ -213,19 +212,59 @@
     </build>
 
     <modules>
-        <module>../_extend/solon.socketd</module>
+        <module>../../_plugin/solon-springboot-starter</module>
 
-        <module>../_extend/solon.boot.socketd.jdksocket</module>
-        <module>../_extend/solon.boot.socketd.netty</module>
-        <module>../_extend/solon.boot.socketd.smartsocket</module>
-        <module>../_extend/solon.boot.socketd.rsocket</module>
-        <module>../_extend/solon.boot.socketd.websocket</module>
+        <module>../../_plugin/beetlsql-solon-plugin</module>
+        <module>../../_plugin/cron4j-solon-plugin</module>
+        <module>../../_plugin/dubbo-solon-plugin</module>
+        <module>../../_plugin/feign-solon-plugin</module>
+        <module>../../_plugin/graphql-solon-plugin</module>
+        <module>../../_plugin/hasor-solon-plugin</module>
+        <module>../../_plugin/luffy-solon-plugin</module>
 
-        <module>../_extend/solon.socketd.client.jdksocket</module>
-        <module>../_extend/solon.socketd.client.netty</module>
-        <module>../_extend/solon.socketd.client.rsocket</module>
-        <module>../_extend/solon.socketd.client.smartsocket</module>
-        <module>../_extend/solon.socketd.client.websocket</module>
+        <module>../../_plugin/weed3-solon-plugin</module>
+<!--        <module>../_plugin/mybatis-plus-solon-plugin</module>-->
+        <module>../../_plugin/mybatis-solon-plugin</module>
+        <module>../../_plugin/mybatis-sqlhelper-solon-plugin</module>
+        <module>../../_plugin/mybatis-pagehelper-solon-plugin</module>
+        <module>../../_plugin/activerecord-solon-plugin</module>
+
+        <module>../../_plugin/quartz-solon-plugin</module>
+
+        <module>../../_plugin/shiro-solon-plugin</module>
+        <module>../../_plugin/sureness-solon-plugin</module>
+        <module>../../_plugin/sa-token-solon-plugin</module>
+
+<!--        <module>../_plugin/captcha-solon-plugin</module>-->
+
+        <!-- //////////////////////////////////////////////////// -->
+        <module>../../_plugin_cloud/aliyun-oss-solon-plugin</module>
+        <module>../../_plugin_cloud/aws-s3-solon-plugin</module>
+        <module>../../_plugin_cloud/qiniu-kodo-solon-plugin</module>
+
+        <module>../../_plugin_cloud/consul-solon-plugin</module>
+        <module>../../_plugin_cloud/nacos-solon-plugin</module>
+        <module>../../_plugin_cloud/water-solon-plugin</module>
+
+        <module>../../_plugin_cloud/rabbitmq-solon-plugin</module>
+        <module>../../_plugin_cloud/rocketmq-solon-plugin</module>
+
+        <module>../../_plugin_cloud/guava-solon-plugin</module>
+        <module>../../_plugin_cloud/sentinel-solon-plugin</module>
+
+        <module>../../_plugin_cloud/mqtt-solon-plugin</module>
+
+        <module>../../_plugin_cloud/snowflake-id-solon-plugin</module>
+
+        <module>../../_plugin_cloud/kafka-solon-plugin</module>
+        <module>../../_plugin_cloud/zookeeper-solon-plugin</module>
+
+        <module>../../_plugin_cloud/semaphore-solon-plugin</module>
+
+        <module>../../_plugin_cloud/xxl-job-solon-plugin</module>
+        <module>../../_plugin_cloud/opentracing-solon-plugin</module>
+
+        <module>../../_plugin_cloud/httputils-solon-plugin</module>
     </modules>
 
 </project>
