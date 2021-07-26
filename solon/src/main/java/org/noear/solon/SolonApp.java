@@ -556,35 +556,49 @@ public class SolonApp implements HandlerSlots {
         return onEvent(Throwable.class, handler);
     }
 
-    /**
-     * 启用Http信号接入
-     * */
+
     private boolean _enableHttp = true; //与函数同名，_开头
+
+    /**
+     * 是否已启用 Http 信号接入
+     * */
     public boolean enableHttp(){
         return _enableHttp;
     }
+
+    /**
+     * 启用 Http 信号接入
+     * */
     public SolonApp enableHttp(boolean enable){
         _enableHttp = enable;
         return this;
     }
-    /**
-     * 启用WebSocket信号接入
-     * */
+
     private boolean _enableWebSocket = false;
     public boolean enableWebSocket(){
         return _enableWebSocket;
     }
+
+    /**
+     * 启用 WebSocket 信号接入
+     * */
     public SolonApp enableWebSocket(boolean enable){
         _enableWebSocket = enable;
         return this;
     }
-    /**
-     * 启用WebSocket as socketd 信号接入
-     * */
+
     private boolean _enableWebSocketD = false;
+
+    /**
+     * 是否已启用 WebSocket as SockteD 信号接入
+     * */
     public boolean enableWebSocketD(){
         return _enableWebSocketD;
     }
+
+    /**
+     * 启用 WebSocket as SockteD 信号接入
+     * */
     public SolonApp enableWebSocketD(boolean enable) {
         _enableWebSocketD = enable;
         if (enable) {
@@ -592,76 +606,113 @@ public class SolonApp implements HandlerSlots {
         }
         return this;
     }
-    /**
-     * 启用Socket as sockted 信号接入
-     * */
+
     private boolean _enableSocketD = false;
+
+    /**
+     * 是否已启用 Socket as SockteD 信号接入
+     * */
     public boolean enableSocketD(){
         return _enableSocketD;
     }
+
+    /**
+     * 启用 Socket as SockteD 信号接入
+     * */
     public SolonApp enableSocketD(boolean enable){
         _enableSocketD = enable;
         return this;
     }
-    /**
-     * 启用事务
-     * */
+
     private boolean _enableTransaction = true;
+    /**
+     * 是否已启用事务
+     * */
     public boolean enableTransaction(){
         return _enableTransaction;
     }
+    /**
+     * 启用事务
+     * */
     public SolonApp enableTransaction(boolean enable){
         _enableTransaction = enable;
         return this;
     }
-    /**
-     * 启用缓存
-     * */
+
     private boolean _enableCaching = true;
+
+    /**
+     * 是否已启用缓存
+     * */
     public boolean enableCaching(){
         return _enableCaching;
     }
+
+    /**
+     * 启用缓存
+     * */
     public SolonApp enableCaching(boolean enable){
         _enableCaching = enable;
         return this;
     }
-    /**
-     * 启用静态文件
-     * */
+
     private boolean _enableStaticfiles = true;
+
+    /**
+     * 是否已启用静态文件服务
+     * */
     public boolean enableStaticfiles(){
         return _enableStaticfiles;
     }
+
+    /**
+     * 启用静态文件服务
+     * */
     public SolonApp enableStaticfiles(boolean enable){
         _enableStaticfiles = enable;
         return this;
     }
 
-    /**
-     * 启用会话状态
-     * */
+
     private boolean _enableSessionState = true;
+
+    /**
+     * 是否已启用会话状态
+     * */
     public boolean enableSessionState(){
         return _enableSessionState;
     }
+
+    /**
+     * 启用会话状态
+     * */
     public SolonApp enableSessionState(boolean enable){
         _enableSessionState = enable;
         return this;
     }
 
-    /**
-     * 启用扩展Jar隔离
-     * */
+
     private boolean _enableJarIsolation = false;
+
+    /**
+     * 是否已启用扩展Jar隔离
+     * */
     public boolean enableJarIsolation(){
         return _enableJarIsolation;
     }
+
+    /**
+     * 启用扩展Jar隔离
+     * */
     private SolonApp enableJarIsolation(boolean enable){
         _enableJarIsolation = enable;
         return this;
     }
 
     private boolean _enableSafeStop = false;
+    /**
+     * 是否已启用安全停止
+     * */
     public boolean enableSafeStop() {
         return _enableSafeStop;
     }
