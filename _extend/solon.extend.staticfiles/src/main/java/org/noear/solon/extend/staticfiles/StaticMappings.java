@@ -25,14 +25,20 @@ public class StaticMappings extends ArrayList<StaticLocation> {
 
 
     public StaticMappings add(String start, String location) {
-        StaticLocation mapping = new StaticLocation();
-        mapping.start = start;
+
+        // 去掉头尾的 "/"
+
         if (location.endsWith("/")) {
-            mapping.location = location.substring(0, location.length() - 1);
-        } else {
-            mapping.location = location;
+            location = location.substring(0, location.length() - 1);
         }
 
+        if(location.startsWith("/")){
+            location = location.substring(1);
+        }
+
+        StaticLocation mapping = new StaticLocation();
+        mapping.start = start;
+        mapping.location = location;
 
         if (Solon.cfg().isDebugMode()) {
             URL rooturi = Utils.getResource("/");
@@ -42,7 +48,7 @@ public class StaticMappings extends ArrayList<StaticLocation> {
                         .replace("target/classes/", "");
 
                 if (rootdir.startsWith("file:")) {
-                    mapping.locationDebug = rootdir + "src/main/resources" + location;
+                    mapping.locationDebug = rootdir + "src/main/resources/" + location;
                 }
             }
         }
