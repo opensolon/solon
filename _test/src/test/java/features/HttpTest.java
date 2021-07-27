@@ -19,6 +19,11 @@ public class HttpTest extends _TestBase {
     public String username;
 
     @Test
+    public void test0() throws IOException{
+        assert getStatus("/debug.htm") == 200;
+    }
+
+    @Test
     public void test11() throws IOException{
        assert  get("/demo1/run0/?str=").equals("不是null(ok)");
 
