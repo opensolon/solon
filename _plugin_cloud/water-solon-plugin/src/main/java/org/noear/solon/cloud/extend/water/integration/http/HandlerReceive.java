@@ -36,11 +36,19 @@ public class HandlerReceive implements Handler, MessageHandler {
 
     @Override
     public boolean handler(MessageM msg) throws Throwable {
-        Event event = new Event(msg.topic, msg.message);
+        Event event = null;
+        if (msg.topic.contains("::")) {
+            String[] groupAndTopic = msg.topic.split("::");
+            event = new Event(groupAndTopic[1], msg.message);
+            event.group(groupAndTopic[0]);
+        } else {
+            event = new Event(msg.topic, msg.message);
+        }
+
         event.key(msg.key);
         event.tags(msg.tags);
         event.times(msg.times);
 
-        return eventService.onReceive(event);
+        return eventService.onReceive(msg.topic, event);
     }
 }

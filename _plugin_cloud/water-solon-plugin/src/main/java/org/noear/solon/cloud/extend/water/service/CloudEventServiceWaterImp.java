@@ -61,10 +61,17 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
             throw new IllegalArgumentException("Event missing content");
         }
 
+        //new topic
+        String topicNew;
+        if (Utils.isEmpty(event.group())) {
+            topicNew = event.topic();
+        } else {
+            topicNew = event.group() + "::" + event.topic();
+        }
 
         try {
             return WaterClient.Message.
-                    sendMessageAndTags(event.key(), event.topic(), event.content(), event.scheduled(), event.tags());
+                    sendMessageAndTags(event.key(), topicNew, event.content(), event.scheduled(), event.tags());
         } catch (Throwable ex) {
             throw new CloudEventException(ex);
         }
@@ -78,7 +85,15 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
         if (level == EventLevel.instance) {
             instanceObserverMap.putIfAbsent(topic, new CloudEventObserverEntity(level, group, topic, observer));
         } else {
-            clusterObserverMap.putIfAbsent(topic, new CloudEventObserverEntity(level, group, topic, observer));
+            //new topic
+            String topicNew;
+            if (Utils.isEmpty(group)) {
+                topicNew = topic;
+            } else {
+                topicNew = group + "::" + topic;
+            }
+
+            clusterObserverMap.putIfAbsent(topicNew, new CloudEventObserverEntity(level, group, topic, observer));
         }
     }
 
@@ -137,20 +152,20 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
     /**
      * 处理接收事件
      */
-    public boolean onReceive(Event event) throws Throwable {
+    public boolean onReceive(String topicNew, Event event) throws Throwable {
         boolean isOk = true;
         boolean isHandled = false;
         CloudEventObserverEntity entity = null;
 
         event.channel(eventChannelName);
 
-        entity = instanceObserverMap.get(event.topic());
+        entity = instanceObserverMap.get(topicNew);
         if (entity != null) {
             isHandled = true;
             isOk = entity.handler(event);
         }
 
-        entity = clusterObserverMap.get(event.topic());
+        entity = clusterObserverMap.get(topicNew);
         if (entity != null) {
             isHandled = true;
             isOk = entity.handler(event) && isOk; //两个都成功，才是成功
