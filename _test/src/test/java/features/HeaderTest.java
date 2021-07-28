@@ -21,7 +21,7 @@ public class HeaderTest extends HttpTestBase {
         assert path("/demo1/run0/?str=").get().equals("不是null(ok)");
 
         Map<String, String> map = new LinkedHashMap<>();
-        map.put("address", "192.168.199.123:9373");
+        map.put("address", "192.168.1.1:9373");
         map.put("service", "wateradmin");
         map.put("meta", "");
         map.put("check_type", "0");
@@ -30,14 +30,14 @@ public class HeaderTest extends HttpTestBase {
 
         assert path("/demo2/header/")
                 .header("Water-Trace-Id", "")
-                .header("Water-From", "wateradmin@192.168.199.123:9373")
+                .header("Water-From", "wateradmin@192.168.1.1:9373")
                 .data(map).post().equals("");
     }
 
     @Test
     public void test2() throws Exception {
         Map<String, String> map = new LinkedHashMap<>();
-        map.put("address", "192.168.199.123:9373");
+        map.put("address", "192.168.1.1:9373");
         map.put("service", "wateradmin");
         map.put("meta", "");
         map.put("check_type", "0");
@@ -46,7 +46,7 @@ public class HeaderTest extends HttpTestBase {
 
         assert path("/demo2/header/")
                 .header("Water-Trace-Id", "a")
-                .header("Water-From", "wateradmin@192.168.199.123:9373")
+                .header("Water-From", "wateradmin@192.168.1.1:9373")
                 .data(map).post().equals("a");
     }
 
