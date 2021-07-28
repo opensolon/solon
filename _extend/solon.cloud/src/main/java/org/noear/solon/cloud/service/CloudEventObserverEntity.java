@@ -12,13 +12,13 @@ import org.noear.solon.cloud.model.Event;
  */
 public class CloudEventObserverEntity implements CloudEventHandler {
     public EventLevel level;
-    public String queue;
+    public String group;
     public String topic;
     public CloudEventHandler handler;
 
-    public CloudEventObserverEntity(EventLevel level, String queue, String topic, CloudEventHandler handler) {
+    public CloudEventObserverEntity(EventLevel level, String group, String topic, CloudEventHandler handler) {
         this.level = level;
-        this.queue = queue;
+        this.group = group;
         this.topic = topic;
         this.handler = handler;
     }

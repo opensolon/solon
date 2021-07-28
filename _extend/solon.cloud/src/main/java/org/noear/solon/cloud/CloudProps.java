@@ -45,9 +45,9 @@ public class CloudProps {
     private String EVENT_EXCHANGE = "solon.cloud.@@.event.exchange";
     private String EVENT_PREFETCH_COUNT = "solon.cloud.@@.event.prefetchCount";
     private String EVENT_PUBLISH_TIMEOUT = "solon.cloud.@@.event.publishTimeout";
-    private String EVENT_QUEUE = "solon.cloud.@@.event.queue";
+    private String EVENT_QUEUE = "solon.cloud.@@.event.queue"; //队列
     private String EVENT_SEAL = "solon.cloud.@@.event.seal";
-    private String EVENT_CHANNEL = "solon.cloud.@@.event.channel";
+    private String EVENT_CHANNEL = "solon.cloud.@@.event.channel"; //通道
     private String EVENT_CONSUMER = "solon.cloud.@@.event.consumer";
     private String EVENT_PRODUCER = "solon.cloud.@@.event.producer";
     private String EVENT_CLIENT = "solon.cloud.@@.event.client";
