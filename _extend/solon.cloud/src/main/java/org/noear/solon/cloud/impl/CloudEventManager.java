@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 事件服务管理器及代理（用以支持多通道）
+ *
  * @author noear
  * @since 1.3
  */
