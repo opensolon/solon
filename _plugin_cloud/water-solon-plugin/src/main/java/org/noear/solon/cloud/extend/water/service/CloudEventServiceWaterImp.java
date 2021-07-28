@@ -61,17 +61,10 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
             throw new IllegalArgumentException("Event missing content");
         }
 
-        //组合topic
-        String topicNew;
-        if (Utils.isEmpty(event.group())) {
-            topicNew = event.topic();
-        } else {
-            topicNew = event.group() + "::" + event.topic();
-        }
 
         try {
             return WaterClient.Message.
-                    sendMessageAndTags(event.key(), topicNew, event.content(), event.scheduled(), event.tags());
+                    sendMessageAndTags(event.key(), event.topic(), event.content(), event.scheduled(), event.tags());
         } catch (Throwable ex) {
             throw new CloudEventException(ex);
         }
@@ -85,15 +78,7 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
         if (level == EventLevel.instance) {
             instanceObserverMap.putIfAbsent(topic, new CloudEventObserverEntity(level, group, topic, observer));
         } else {
-            String topicNew;
-
-            if (Utils.isEmpty(group)) {
-                topicNew = topic;
-            } else {
-                topicNew = group + "::" + topic;
-            }
-
-            clusterObserverMap.putIfAbsent(topicNew, new CloudEventObserverEntity(level, group, topic, observer));
+            clusterObserverMap.putIfAbsent(topic, new CloudEventObserverEntity(level, group, topic, observer));
         }
     }
 
