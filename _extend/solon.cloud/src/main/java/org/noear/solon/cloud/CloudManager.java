@@ -121,12 +121,12 @@ public class CloudManager {
     /**
      * 登记事件服务
      */
-    public static void register(String channel, CloudEventService service) {
-        eventServiceManager.register(channel, service);
-        if(Utils.isEmpty(channel)) {
+    public static void register(CloudEventServicePlus service) {
+        eventServiceManager.register(service);
+        if(Utils.isEmpty(service.getChannel())) {
             PrintUtil.info("Cloud", "CloudEventService registered from the " + service.getClass().getTypeName());
         }else{
-            PrintUtil.info("Cloud", "CloudEventService registered from the " + service.getClass().getTypeName() + " as &" + channel);
+            PrintUtil.info("Cloud", "CloudEventService registered from the " + service.getClass().getTypeName() + " as &" + service.getChannel());
         }
     }
 

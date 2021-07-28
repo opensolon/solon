@@ -6,6 +6,7 @@ import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventService;
+import org.noear.solon.cloud.service.CloudEventServicePlus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,17 +16,27 @@ import java.util.Map;
  * @since 1.3
  */
 public class CloudEventManager implements CloudEventService {
-    Map<String, CloudEventService> route = new HashMap<>();
+    Map<String, CloudEventServicePlus> route = new HashMap<>();
 
-    public void register(String channel, CloudEventService service) {
-        if (channel == null) {
+    /**
+     * 注册事件服务
+     *
+     * @param service 事件服务
+     * */
+    public void register(CloudEventServicePlus service) {
+        if (service.getChannel() == null) {
             route.put("", service);
         } else {
-            route.put(channel, service);
+            route.put(service.getChannel(), service);
         }
     }
 
-    public CloudEventService get(String channel) {
+    /**
+     * 获取事件服务
+     *
+     * @param channel 通道
+     * */
+    public CloudEventServicePlus get(String channel) {
         if (channel == null) {
             channel = "";
         }
@@ -33,8 +44,13 @@ public class CloudEventManager implements CloudEventService {
         return route.get(channel);
     }
 
-    protected CloudEventService getOrThrow(String channel) {
-        CloudEventService tmp = get(channel);
+    /**
+     * 获取事件服务，如果没有则异常
+     *
+     * @param channel 通道
+     * */
+    public CloudEventServicePlus getOrThrow(String channel) {
+        CloudEventServicePlus tmp = get(channel);
 
         if (tmp == null) {
             if (Utils.isEmpty(channel)) {
@@ -47,13 +63,39 @@ public class CloudEventManager implements CloudEventService {
         return tmp;
     }
 
+    /**
+     * 发布事件
+     *
+     * @param event 事件
+     * */
     @Override
     public boolean publish(Event event) throws CloudEventException {
-        return getOrThrow(event.channel()).publish(event);
+        CloudEventServicePlus tmp = getOrThrow(event.channel());
+
+        if (Utils.isEmpty(event.group())) {
+            event.group(tmp.getGroup());
+        }
+
+        return tmp.publish(event);
     }
 
+    /**
+     * 关注事件
+     *
+     * @param level 级别
+     * @param channel 通道
+     * @param group 分组
+     * @param topic 主题
+     * @param observer 观察者
+     * */
     @Override
     public void attention(EventLevel level, String channel, String group, String topic, CloudEventHandler observer) {
-        getOrThrow(channel).attention(level, channel, group, topic, observer);
+        CloudEventServicePlus tmp = getOrThrow(channel);
+
+        if (Utils.isEmpty(group)) {
+            group = tmp.getGroup();
+        }
+
+        tmp.attention(level, channel, group, topic, observer);
     }
 }

@@ -11,6 +11,7 @@ import org.noear.solon.cloud.extend.mqtt.MqttProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.cloud.service.CloudEventService;
+import org.noear.solon.cloud.service.CloudEventServicePlus;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ import java.util.Properties;
  * @author noear
  * @since 1.3
  */
-public class CloudEventServiceMqttImp implements CloudEventService {
+public class CloudEventServiceMqttImp implements CloudEventServicePlus {
     private static CloudEventServiceMqttImp instance;
 
     public static synchronized CloudEventServiceMqttImp getInstance() {
@@ -149,5 +150,25 @@ public class CloudEventServiceMqttImp implements CloudEventService {
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    private String channel;
+    private String group;
+
+    @Override
+    public String getChannel() {
+        if (channel == null) {
+            channel = MqttProps.instance.getEventChannel();
+        }
+        return channel;
+    }
+
+    @Override
+    public String getGroup() {
+        if (group == null) {
+            group = MqttProps.instance.getEventGroup();
+        }
+
+        return group;
     }
 }

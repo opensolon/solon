@@ -142,7 +142,7 @@ public class XPluginImp implements Plugin {
             }
 
             eventServiceImp = new CloudEventServiceWaterImp();
-            CloudManager.register(WaterProps.instance.getEventChannel(), eventServiceImp);
+            CloudManager.register(eventServiceImp);
 
             if (discoveryServiceImp != null) {
                 //关注缓存更新事件

@@ -10,6 +10,7 @@ import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqProducer;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.cloud.service.CloudEventService;
+import org.noear.solon.cloud.service.CloudEventServicePlus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +19,7 @@ import java.util.Map;
  * @author noear
  * @since 1.2
  */
-public class CloudEventServiceRocketmqImp implements CloudEventService {
+public class CloudEventServiceRocketmqImp implements CloudEventServicePlus {
     private static CloudEventServiceRocketmqImp instance;
 
     public static synchronized CloudEventServiceRocketmqImp getInstance() {
@@ -68,5 +69,25 @@ public class CloudEventServiceRocketmqImp implements CloudEventService {
         if (observerMap.size() > 0) {
             consumer.init(observerMap);
         }
+    }
+
+    private String channel;
+    private String group;
+
+    @Override
+    public String getChannel() {
+        if (channel == null) {
+            channel = RocketmqProps.instance.getEventChannel();
+        }
+        return channel;
+    }
+
+    @Override
+    public String getGroup() {
+        if (group == null) {
+            group = RocketmqProps.instance.getEventGroup();
+        }
+
+        return group;
     }
 }

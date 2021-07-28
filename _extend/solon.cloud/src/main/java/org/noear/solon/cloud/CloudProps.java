@@ -300,11 +300,11 @@ public class CloudProps {
     }
 
     public String getEventChannel() {
-        return Solon.cfg().get(EVENT_CHANNEL);
+        return Solon.cfg().get(EVENT_CHANNEL, "");
     }
 
     public String getEventGroup() {
-        return Solon.cfg().get(EVENT_GROUP);
+        return Solon.cfg().get(EVENT_GROUP, "");
     }
 
     public Properties getEventConsumerProps(){

@@ -12,6 +12,7 @@ import org.noear.solon.cloud.extend.rabbitmq.impl.RabbitProducer;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.cloud.service.CloudEventService;
+import org.noear.solon.cloud.service.CloudEventServicePlus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +22,7 @@ import java.util.Map;
  * @author noear
  * @since 1.2
  */
-public class CloudEventServiceRabbitmqImp implements CloudEventService {
+public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
     private static CloudEventServiceRabbitmqImp instance;
     public static synchronized CloudEventServiceRabbitmqImp getInstance() {
         if (instance == null) {
@@ -86,5 +87,26 @@ public class CloudEventServiceRabbitmqImp implements CloudEventService {
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+
+    private String channel;
+    private String group;
+
+    @Override
+    public String getChannel() {
+        if (channel == null) {
+            channel = RabbitmqProps.instance.getEventChannel();
+        }
+        return channel;
+    }
+
+    @Override
+    public String getGroup() {
+        if (group == null) {
+            group = RabbitmqProps.instance.getEventGroup();
+        }
+
+        return group;
     }
 }

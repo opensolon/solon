@@ -15,6 +15,7 @@ import org.noear.solon.cloud.extend.kafka.KafkaProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.cloud.service.CloudEventService;
+import org.noear.solon.cloud.service.CloudEventServicePlus;
 import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,7 @@ import java.util.concurrent.TimeUnit;
  * @author noear
  * @since 1.3
  */
-public class CloudEventServiceKafkaImp implements CloudEventService {
+public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
     static Logger log = LoggerFactory.getLogger(CloudEventServiceKafkaImp.class);
 
     private static CloudEventServiceKafkaImp instance;
@@ -206,5 +207,25 @@ public class CloudEventServiceKafkaImp implements CloudEventService {
         }
 
         return isOk;
+    }
+
+    private String channel;
+    private String group;
+
+    @Override
+    public String getChannel() {
+        if (channel == null) {
+            channel = KafkaProps.instance.getEventChannel();
+        }
+        return channel;
+    }
+
+    @Override
+    public String getGroup() {
+        if (group == null) {
+            group = KafkaProps.instance.getEventGroup();
+        }
+
+        return group;
     }
 }

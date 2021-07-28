@@ -10,6 +10,7 @@ import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.cloud.service.CloudEventService;
+import org.noear.solon.cloud.service.CloudEventServicePlus;
 import org.noear.water.WW;
 import org.noear.water.WaterClient;
 import org.noear.water.utils.EncryptUtils;
@@ -22,7 +23,7 @@ import java.util.*;
  * @author noear
  * @since 1.2
  */
-public class CloudEventServiceWaterImp implements CloudEventService {
+public class CloudEventServiceWaterImp implements CloudEventServicePlus {
     static Logger log = LoggerFactory.getLogger(CloudEventServiceWaterImp.class);
 
     private final String DEFAULT_DEAL = "Pckb6BpGzDE6RUIy";
@@ -60,7 +61,7 @@ public class CloudEventServiceWaterImp implements CloudEventService {
             throw new IllegalArgumentException("Event missing content");
         }
 
-        //组合group
+        //组合topic
         String topicNew;
         if (Utils.isEmpty(event.group())) {
             topicNew = event.topic();
@@ -81,16 +82,17 @@ public class CloudEventServiceWaterImp implements CloudEventService {
      */
     @Override
     public void attention(EventLevel level, String channel, String group, String topic, CloudEventHandler observer) {
-        String topicNew;
-        if (Utils.isEmpty(group)) {
-            topicNew = topic;
-        } else {
-            topicNew = group + "::" + topic;
-        }
-
         if (level == EventLevel.instance) {
-            instanceObserverMap.putIfAbsent(topicNew, new CloudEventObserverEntity(level, group, topic, observer));
+            instanceObserverMap.putIfAbsent(topic, new CloudEventObserverEntity(level, group, topic, observer));
         } else {
+            String topicNew;
+
+            if (Utils.isEmpty(group)) {
+                topicNew = topic;
+            } else {
+                topicNew = group + "::" + topic;
+            }
+
             clusterObserverMap.putIfAbsent(topicNew, new CloudEventObserverEntity(level, group, topic, observer));
         }
     }
@@ -175,5 +177,26 @@ public class CloudEventServiceWaterImp implements CloudEventService {
         }
 
         return isOk;
+    }
+
+
+    private String channel;
+    private String group;
+
+    @Override
+    public String getChannel() {
+        if (channel == null) {
+            channel = WaterProps.instance.getEventChannel();
+        }
+        return channel;
+    }
+
+    @Override
+    public String getGroup() {
+        if (group == null) {
+            group = WaterProps.instance.getEventGroup();
+        }
+
+        return group;
     }
 }
