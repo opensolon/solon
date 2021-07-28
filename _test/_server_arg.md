@@ -39,3 +39,4 @@ docker run -e JAVA_OPTS='-Dsolon.debug=1 -Dsolon.env=pro'
 | app.group     | solon.app.group     | 应用分组(用字母或数字-)     | --app.group=demo      |
 | app.title     | solon.app.title     | 应用标题或显示名           | --app.title=演示项目    |
 
+#### 注：其它属性配置都可通过 系统属性设置 或  docker 环境变量设置实现
