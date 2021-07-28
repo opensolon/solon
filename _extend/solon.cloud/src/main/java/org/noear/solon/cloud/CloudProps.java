@@ -42,12 +42,13 @@ public class CloudProps {
     private String EVENT_ENABLE = "solon.cloud.@@.event.enable";
     private String EVENT_SERVER = "solon.cloud.@@.event.server";
     private String EVENT_RECEIVE = "solon.cloud.@@.event.receive";
-    private String EVENT_EXCHANGE = "solon.cloud.@@.event.exchange";
+    private String EVENT_EXCHANGE = "solon.cloud.@@.event.exchange"; //交换机
     private String EVENT_PREFETCH_COUNT = "solon.cloud.@@.event.prefetchCount";
     private String EVENT_PUBLISH_TIMEOUT = "solon.cloud.@@.event.publishTimeout";
     private String EVENT_QUEUE = "solon.cloud.@@.event.queue"; //队列
     private String EVENT_SEAL = "solon.cloud.@@.event.seal";
     private String EVENT_CHANNEL = "solon.cloud.@@.event.channel"; //通道
+    private String EVENT_GROUP = "solon.cloud.@@.event.group"; //虚拟分组
     private String EVENT_CONSUMER = "solon.cloud.@@.event.consumer";
     private String EVENT_PRODUCER = "solon.cloud.@@.event.producer";
     private String EVENT_CLIENT = "solon.cloud.@@.event.client";
@@ -123,6 +124,7 @@ public class CloudProps {
         EVENT_QUEUE = EVENT_QUEUE.replace("@@", frame);
         EVENT_SEAL = EVENT_SEAL.replace("@@", frame);
         EVENT_CHANNEL = EVENT_CHANNEL.replace("@@", frame);
+        EVENT_GROUP = EVENT_GROUP.replace("@@", frame);
         EVENT_CONSUMER = EVENT_CONSUMER.replace("@@",frame);
         EVENT_PRODUCER = EVENT_PRODUCER.replace("@@",frame);
         EVENT_CLIENT = EVENT_CLIENT.replace("@@",frame);
@@ -299,6 +301,10 @@ public class CloudProps {
 
     public String getEventChannel() {
         return Solon.cfg().get(EVENT_CHANNEL);
+    }
+
+    public String getEventGroup() {
+        return Solon.cfg().get(EVENT_GROUP);
     }
 
     public Properties getEventConsumerProps(){
