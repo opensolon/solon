@@ -12,6 +12,9 @@
 | org.noear:solon.boot.undertow.add.jsp | 扩展插件,为`undertow`添加`jsp`支持（不建议使用jsp）（网友@tyk提供） |
 | org.noear:solon.boot.websocket | boot插件,对`java-websocket`适配，提供`websocket`服务 |
 | | |
+| 认证插件:: | 说明 |
+| org.noear:solon.auth | 扩展插件,添加认证规范化支持 |
+| | |
 | 数据操作支持插件:: | 说明 |
 | org.noear:solon.data | 扩展插件,添加事件（@Tran）、缓存的定义及注解（@Cache）支持 |
 | | |
@@ -45,6 +48,9 @@
 | org.noear:solon.extend.sessionstate.jwt | 扩展插件,分布式`session`（基于`jwt`构建） |
 | org.noear:solon.extend.sessionstate.local | 扩展插件,本地`session` |
 | org.noear:solon.extend.sessionstate.redis | 扩展插件,分布式`session`（其于`redis`构建） |
+| | |
+| 国际化插件:: | 说明 |
+| org.noear:solon.i18n | 扩展插件,添加国际化便利支持 |
 | | |
 | 日志插件:: | 说明 |
 | org.noear:solon.logging | 扩展插件,添加日志支持 |
