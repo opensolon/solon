@@ -8,6 +8,7 @@ import org.noear.solon.core.handle.Context;
  * @since 1.4
  */
 public class SaStorageForSolon implements SaStorage {
+
     Context ctx;
 
     public SaStorageForSolon() {
@@ -34,3 +35,4 @@ public class SaStorageForSolon implements SaStorage {
         ctx.attrMap().remove(key);
     }
 }
+

@@ -9,6 +9,7 @@ import org.noear.solon.core.handle.Context;
  * @since 1.4
  */
 public class SaResponseForSolon implements SaResponse {
+
     Context ctx;
 
     public SaResponseForSolon() {
@@ -39,4 +40,11 @@ public class SaResponseForSolon implements SaResponse {
         ctx.headerSet(name, value);
         return this;
     }
+
+    @Override
+    public Object redirect(String url) {
+        ctx.redirect(url);
+        return null;
+    }
 }
+

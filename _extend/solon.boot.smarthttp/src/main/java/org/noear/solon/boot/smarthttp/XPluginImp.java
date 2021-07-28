@@ -51,10 +51,10 @@ public final class XPluginImp implements Plugin {
                 .bannerEnabled(false)
                 .threadNum(Runtime.getRuntime().availableProcessors() + 2);
 
-        _server.pipeline().next(_handler);
+        _server.httpHandler(_handler);
 
         if (app.enableWebSocket()) {
-            _server.wsPipeline().next(new WebSocketHandleImp());
+            _server.webSocketHandler(new WebSocketHandleImp());
 
             SessionManager.register(new _SessionManagerImpl());
         }

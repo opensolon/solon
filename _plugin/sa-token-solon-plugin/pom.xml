@@ -23,7 +23,7 @@
         <dependency>
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-core</artifactId>
-            <version>1.19.0</version>
+            <version>1.24.0</version>
         </dependency>
     </dependencies>
 </project>

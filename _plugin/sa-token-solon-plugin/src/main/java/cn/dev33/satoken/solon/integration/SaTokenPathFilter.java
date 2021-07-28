@@ -1,10 +1,12 @@
 package cn.dev33.satoken.solon.integration;
 
 
+import cn.dev33.satoken.exception.BackResultException;
 import cn.dev33.satoken.exception.SaTokenException;
+import cn.dev33.satoken.exception.StopMatchException;
 import cn.dev33.satoken.filter.SaFilterAuthStrategy;
 import cn.dev33.satoken.filter.SaFilterErrorStrategy;
-import cn.dev33.satoken.router.SaRouterUtil;
+import cn.dev33.satoken.router.SaRouter;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
@@ -18,6 +20,7 @@ import java.util.List;
  * @since 1.4
  */
 public class SaTokenPathFilter implements Filter {
+
     // ------------------------ 设置此过滤器 拦截 & 放行 的路由
 
     /**
@@ -141,19 +144,20 @@ public class SaTokenPathFilter implements Filter {
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
         try {
             // 执行全局过滤器
-            SaRouterUtil.match(includeList, excludeList, () -> {
+            SaRouter.match(includeList, excludeList, () -> {
                 beforeAuth.run(null);
                 auth.run(null);
             });
 
+        } catch (StopMatchException e) {
+
         } catch (Throwable e) {
             // 1. 获取异常处理策略结果
-            Object result = error.run(e);
-            String resultString = String.valueOf(result);
+            String result = (e instanceof BackResultException) ? e.getMessage() : String.valueOf(error.run(e));
 
             // 2. 写入输出流
             ctx.contentType("text/plain; charset=utf-8");
-            ctx.output(resultString);
+            ctx.output(result);
             return;
         }
 
@@ -161,3 +165,4 @@ public class SaTokenPathFilter implements Filter {
         chain.doFilter(ctx);
     }
 }
+

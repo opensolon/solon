@@ -8,7 +8,9 @@ import org.noear.solon.core.handle.Context;
  * @since 1.4
  */
 public class SaRequestForSolon implements SaRequest {
+
     Context ctx;
+
     public SaRequestForSolon(){
         ctx = Context.current();
     }
@@ -19,7 +21,7 @@ public class SaRequestForSolon implements SaRequest {
     }
 
     @Override
-    public String getParameter(String s) {
+    public String getParam(String s) {
         return ctx.param(s);
     }
 
@@ -36,6 +38,11 @@ public class SaRequestForSolon implements SaRequest {
     @Override
     public String getRequestPath() {
         return ctx.pathNew();
+    }
+
+    @Override
+    public String getUrl() {
+        return ctx.url();
     }
 
     @Override
