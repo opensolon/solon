@@ -75,6 +75,7 @@ public final class SolonProps extends Props {
         String env = getArg("env");
 
         if (Utils.isEmpty(env)) {
+            //@Deprecated
             env = getArg("profiles.active");
         }
 
