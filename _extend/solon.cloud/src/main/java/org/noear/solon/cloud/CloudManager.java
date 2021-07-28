@@ -4,6 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.annotation.CloudConfig;
 import org.noear.solon.cloud.annotation.CloudEvent;
 import org.noear.solon.cloud.impl.CloudEventManager;
+import org.noear.solon.cloud.impl.CloudEventManagerImpl;
 import org.noear.solon.cloud.service.*;
 import org.noear.solon.core.util.PrintUtil;
 
@@ -28,7 +29,7 @@ public class CloudManager {
     /**
      * 云端事件服务管理
      */
-    private static CloudEventManager eventServiceManager = new CloudEventManager();
+    private static CloudEventManager eventServiceManager = new CloudEventManagerImpl();
     /**
      * 云端锁服务
      */
