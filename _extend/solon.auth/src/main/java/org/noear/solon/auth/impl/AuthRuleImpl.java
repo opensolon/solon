@@ -211,7 +211,7 @@ public class AuthRuleImpl implements AuthRule {
 
     private void failureDo(Context c, Result r) throws Throwable {
         c.setHandled(true);
-        if (failureHandler == null) {
+        if (failureHandler != null) {
             failureHandler.onFailure(c, r);
         } else {
             AuthUtil.adapter().failure().onFailure(c, r);
