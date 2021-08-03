@@ -31,6 +31,31 @@ import java.util.function.Consumer;
  * @since 1.0
  * */
 public class SolonApp implements HandlerSlots {
+    private final int _port; //端口
+    private final SolonProps _prop; //属性配置
+    private final Class<?> _source; //应用加载源
+    private final long _startupTime;
+
+    private List<FilterEntity> _filterList = new ArrayList<>();
+    protected boolean stopped = false;
+
+    protected SolonApp(Class<?> source, NvMap args) {
+        _startupTime = System.currentTimeMillis();
+        _source = source;
+
+        _prop = new SolonProps().load(source, args);
+        _port = _prop.serverPort();
+
+        //顺序不能换
+        _router = new RouterDefault();
+        _routerHandler = new RouterHandler(_router);
+        _filterList.add(new FilterEntity(Integer.MAX_VALUE, this::doFilter));
+
+        _handler = _routerHandler;
+
+        enableJarIsolation(_prop.getBool("solon.extend.isolation", false));
+    }
+
     /**
      * 初始化（不能合在构建函数里）
      * */
@@ -248,30 +273,7 @@ public class SolonApp implements HandlerSlots {
         }
     }
 
-    private final int _port; //端口
-    private final SolonProps _prop; //属性配置
-    private final Class<?> _source; //应用加载源
-    private final long _startupTime;
 
-    private List<FilterEntity> _filterList = new ArrayList<>();
-    protected boolean stopped = false;
-
-    protected SolonApp(Class<?> source, NvMap args) {
-        _startupTime = System.currentTimeMillis();
-        _source = source;
-
-        _prop = new SolonProps().load(source, args);
-        _port = _prop.serverPort();
-
-        //顺序不能换
-        _router = new RouterDefault();
-        _routerHandler = new RouterHandler(_router);
-        _filterList.add(new FilterEntity(Integer.MAX_VALUE, this::doFilter));
-
-        _handler = _routerHandler;
-
-        enableJarIsolation(_prop.getBool("solon.extend.isolation", false));
-    }
 
     protected long elapsedTimes(){
         return System.currentTimeMillis() - _startupTime;
