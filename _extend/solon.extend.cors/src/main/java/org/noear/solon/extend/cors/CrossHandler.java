@@ -5,6 +5,8 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 
 /**
+ * 跨域处理
+ *
  * @author noear
  * @since 1.3
  */
