@@ -32,8 +32,9 @@ solon.cloud.local:
         - "tcp://localhost:28080"
 
 
-
 solon.logging.appender:
+  console:
+    enable: true
   test:
     class: webapp.demox_log_breaker.TestAppender
     level: TRACE
