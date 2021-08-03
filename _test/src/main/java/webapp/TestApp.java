@@ -7,6 +7,7 @@ import org.noear.solon.annotation.Import;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.tool.PreheatUtils;
 import org.noear.solon.core.handle.MethodType;
+import org.noear.solon.extend.cors.CrossHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import webapp.demo6_aop.TestImport;
@@ -109,5 +110,14 @@ public class TestApp {
         app.after("/user/**", MethodType.HTTP, c -> {
             //可对 c.result 进行处理 //并输出
         });
+
+        app.after(c -> {
+            if (c.getHandled() == false || c.status() == 404) {
+                //处理404问题
+            }
+        });
+
+        //全局添加跨域处理
+        app.before(new CrossHandler().allowOrigin("*"));
     }
 }
