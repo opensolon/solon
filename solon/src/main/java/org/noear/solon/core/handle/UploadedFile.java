@@ -35,11 +35,11 @@ public class UploadedFile {
      */
     public InputStream content;
     /**
-     * 文件名（带扩展名）
+     * 文件名（带扩展名，例：demo.jpg）
      */
     public String name;
     /**
-     * 扩展名
+     * 扩展名（例：jpg）
      */
     public String extension;
 
@@ -68,7 +68,9 @@ public class UploadedFile {
      * @param file 文件
      * */
     public void transferTo(File file) throws IOException {
-        Utils.transferTo(content, new FileOutputStream(file));
+        try (FileOutputStream stream = new FileOutputStream(file)) {
+            Utils.transferTo(content, stream);
+        }
     }
 
     /**

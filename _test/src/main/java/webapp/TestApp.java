@@ -100,6 +100,8 @@ public class TestApp {
     }
 
     void test1() {
+        System.setProperty("file.encoding","utf-8");
+
         //控制渲染的示例 //即拦截执行结果的机制
         //
         SolonApp app = Solon.start(TestApp.class, null);
