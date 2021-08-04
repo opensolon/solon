@@ -2,7 +2,10 @@
 #### 一、服务端基本属性
 
   ```yaml
-#服务端口（默认为8080）
+#应用文件编码
+file.encoding: utf-8
+
+#应用主端口（默认为8080）
 server.port: 8080
 
 #服务的 http 信号端口（默认为 ${server.port}）
@@ -27,12 +30,13 @@ server.session.timeout: 3600
 #设定会话状态的cookie域（默认为当前域名）
 server.session.state.domain: noear.org
 
-# 当使用 sesstionstate.redis 的配置
+#当使用 sesstionstate.redis 的配置
 server.session.state.redis.server: redis.dev.zmapi.cn:6379
 server.session.state.redis.password: AVsVSKd1
 server.session.state.redis.db: 31
 server.session.state.redis.maxTotaol: 200
-  ```
+
+```
 
   #### 二、应用基本属性
 
