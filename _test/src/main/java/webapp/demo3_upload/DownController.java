@@ -3,7 +3,7 @@ package webapp.demo3_upload;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.core.handle.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -16,9 +16,9 @@ import java.nio.charset.StandardCharsets;
 @Controller
 public class DownController {
     @Mapping("f1")
-    public UploadedFile down() {
+    public MultipartFile down() {
         ByteArrayInputStream stream = new ByteArrayInputStream("{code:1}".getBytes(StandardCharsets.UTF_8));
-        UploadedFile file = new UploadedFile("text/json", stream.available(), stream, "test.json", "json");
+        MultipartFile file = new MultipartFile("text/json", stream.available(), stream, "test.json", "json");
 
         return file;
     }

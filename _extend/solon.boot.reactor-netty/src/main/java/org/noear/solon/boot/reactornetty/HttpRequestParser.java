@@ -5,7 +5,7 @@ import io.netty.handler.codec.http.multipart.Attribute;
 import io.netty.handler.codec.http.multipart.FileUpload;
 import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
 import io.netty.handler.codec.http.multipart.InterfaceHttpData;
-import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.core.handle.MultipartFile;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ class HttpRequestParser {
     private final DefaultFullHttpRequest _request;
 
     protected final Map<String, List<String>> parmMap = new HashMap<>();
-    protected final Map<String, List<UploadedFile>> fileMap = new HashMap<>();
+    protected final Map<String, List<MultipartFile>> fileMap = new HashMap<>();
 
     public HttpRequestParser(DefaultFullHttpRequest req) {
         _request = req;
@@ -71,13 +71,13 @@ class HttpRequestParser {
                     //
                     FileUpload f0 = (FileUpload) p1;
 
-                    List<UploadedFile> tmp = fileMap.get(p1.getName());
+                    List<MultipartFile> tmp = fileMap.get(p1.getName());
                     if(tmp == null){
                         tmp = new ArrayList<>();
                         fileMap.put(p1.getName(), tmp);
                     }
 
-                    UploadedFile f1 = new UploadedFile();
+                    MultipartFile f1 = new MultipartFile();
                     f1.contentType = f0.getContentType();
                     f1.content = new FileInputStream(f0.getFile());
                     f1.contentSize = f1.content.available();

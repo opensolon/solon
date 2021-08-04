@@ -7,7 +7,7 @@ import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
 import io.netty.handler.codec.http.cookie.Cookie;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.core.handle.MultipartFile;
 import org.noear.solon.core.NvMap;
 import reactor.netty.http.server.HttpServerRequest;
 import reactor.netty.http.server.HttpServerResponse;
@@ -165,7 +165,7 @@ public class RnHttpContext extends Context {
     }
 
     @Override
-    public List<UploadedFile> files(String key) throws Exception {
+    public List<MultipartFile> files(String key) throws Exception {
         return _request_parse.fileMap.get(key);
     }
 

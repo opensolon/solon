@@ -10,6 +10,7 @@ import org.noear.solon.core.wrap.ClassWrap;
 import java.io.*;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -444,14 +445,14 @@ public abstract class Context {
      *
      * @param name 文件名
      */
-    public abstract List<UploadedFile> files(String name) throws Exception;
+    public abstract List<MultipartFile> files(String name) throws Exception;
 
     /**
      * 获取上传文件
      *
      * @param name 文件名
      */
-    public UploadedFile file(String name) throws Exception {
+    public MultipartFile file(String name) throws Exception {
         return Utils.firstOrNull(files(name));
     }
 
@@ -673,13 +674,14 @@ public abstract class Context {
     /**
      * 输出为文件
      */
-    public void outputAsFile(UploadedFile file) throws IOException {
+    public void outputAsFile(MultipartFile file) throws IOException {
         if (Utils.isNotEmpty(file.contentType)) {
             contentType(file.contentType);
         }
 
         if (Utils.isNotEmpty(file.name)) {
-            headerSet("Content-Disposition", "attachment; filename=\"" + file.name + "\"");
+            String fileName = URLEncoder.encode(file.name,"utf-8");
+            headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
         }
 
         Utils.transferTo(file.content, outputStream());
@@ -690,7 +692,8 @@ public abstract class Context {
      */
     public void outputAsFile(File file) throws IOException {
         if (Utils.isNotEmpty(file.getName())) {
-            headerSet("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
+            String fileName = URLEncoder.encode(file.getName(),"utf-8");
+            headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
         }
 
         try (InputStream ins = new FileInputStream(file)) {

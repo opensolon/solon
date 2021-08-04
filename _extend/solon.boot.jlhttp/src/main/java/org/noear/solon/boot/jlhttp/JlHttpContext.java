@@ -2,10 +2,9 @@ package org.noear.solon.boot.jlhttp;
 
 import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
-import org.noear.solon.core.Signal;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.core.handle.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -17,7 +16,7 @@ import java.util.*;
 public class JlHttpContext extends Context {
     private HTTPServer.Request _request;
     private HTTPServer.Response _response;
-    protected Map<String, List<UploadedFile>> _fileMap;
+    protected Map<String, List<MultipartFile>> _fileMap;
 
     public JlHttpContext(HTTPServer.Request request, HTTPServer.Response response) {
         _request = request;
@@ -222,9 +221,9 @@ public class JlHttpContext extends Context {
     }
 
     @Override
-    public List<UploadedFile> files(String key) throws Exception {
+    public List<MultipartFile> files(String key) throws Exception {
         if (isMultipartFormData()) {
-            List<UploadedFile> temp = _fileMap.get(key);
+            List<MultipartFile> temp = _fileMap.get(key);
             if (temp == null) {
                 return new ArrayList<>();
             } else {

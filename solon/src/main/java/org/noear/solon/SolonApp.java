@@ -16,6 +16,7 @@ import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+
 /**
  * 应用管理中心
  *
@@ -42,6 +43,12 @@ public class SolonApp implements HandlerSlots {
     protected SolonApp(Class<?> source, NvMap args) {
         _startupTime = System.currentTimeMillis();
         _source = source;
+
+
+        //初始化文件编码
+        if (Utils.isEmpty(System.getProperty(SolonProps.FILE_ENCODING))) {
+            System.setProperty(SolonProps.FILE_ENCODING, SolonProps.FILE_ENCODING_DEF);
+        }
 
         _prop = new SolonProps().load(source, args);
         _port = _prop.serverPort();

@@ -86,7 +86,6 @@ public class Solon {
         //绑定类加载器（即替换当前线程[即主线程]的类加载器）
         JarClassLoader.bindingThread();
 
-
         PrintUtil.info("App", "Start loading");
 
         //1.创建全局应用
