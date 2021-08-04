@@ -1,5 +1,6 @@
 package org.noear.solon.core.handle;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.*;
@@ -680,7 +681,7 @@ public abstract class Context {
         }
 
         if (Utils.isNotEmpty(file.name)) {
-            String fileName = URLEncoder.encode(file.name,"utf-8");
+            String fileName = URLEncoder.encode(file.name,Solon.cfg().fileEncoding());
             headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
         }
 
@@ -692,7 +693,7 @@ public abstract class Context {
      */
     public void outputAsFile(File file) throws IOException {
         if (Utils.isNotEmpty(file.getName())) {
-            String fileName = URLEncoder.encode(file.getName(),"utf-8");
+            String fileName = URLEncoder.encode(file.getName(), Solon.cfg().fileEncoding());
             headerSet("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
         }
 
