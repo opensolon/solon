@@ -32,7 +32,6 @@ import java.util.function.Consumer;
  * @since 1.0
  * */
 public class SolonApp implements HandlerSlots {
-    private final int _port; //端口
     private final SolonProps _prop; //属性配置
     private final Class<?> _source; //应用加载源
     private final long _startupTime;
@@ -50,8 +49,8 @@ public class SolonApp implements HandlerSlots {
             System.setProperty(SolonProps.FILE_ENCODING, SolonProps.FILE_ENCODING_DEF);
         }
 
+        //初始化配置
         _prop = new SolonProps().load(source, args);
-        _port = _prop.serverPort();
 
         //顺序不能换
         _router = new RouterDefault();
@@ -295,7 +294,7 @@ public class SolonApp implements HandlerSlots {
      * 获取端口
      */
     public int port() {
-        return _port;
+        return _prop.serverPort();
     }
 
     /**

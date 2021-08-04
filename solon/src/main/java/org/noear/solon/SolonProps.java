@@ -46,6 +46,7 @@ public final class SolonProps extends Props {
     private String appGroup;
     private String appTitle;
 
+
     public SolonProps() {
         super(System.getProperties());
     }
@@ -367,11 +368,28 @@ public final class SolonProps extends Props {
     }
 
 
+    private int serverPort;
     /**
-     * 获取服务端口(默认:8080)
+     * 获取应用主端口(默认:8080)
      */
     public int serverPort() {
-        return getInt("server.port", 8080);
+        if (serverPort == 0) {
+            serverPort = getInt("server.port", 8080);
+        }
+
+        return serverPort;
+    }
+
+    private String fileEncoding;
+    /**
+     * 获取应用文件编码
+     * */
+    public String fileEncoding() {
+        if (fileEncoding == null) {
+            fileEncoding = get(FILE_ENCODING, FILE_ENCODING_DEF);
+        }
+
+        return fileEncoding;
     }
 
     /**
@@ -409,10 +427,6 @@ public final class SolonProps extends Props {
         return appTitle;
     }
 
-
-    public String fileEncoding(){
-        return System.setProperty(FILE_ENCODING, FILE_ENCODING_DEF);
-    }
 
     /**
      * 框架版本号
