@@ -5,7 +5,7 @@ import org.noear.solon.annotation.Param;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Singleton;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.MultipartFile;
+import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.handle.MethodType;
 import webapp.models.UserModel;
 
@@ -64,7 +64,7 @@ public class ParamController {
 
     //支持上传文件参数
     @Mapping("file")
-    public String test_g(Context ctx, String title, MultipartFile file, String label) throws Exception{
+    public String test_g(Context ctx, String title, UploadedFile file, String label) throws Exception{
         return ctx.path();
     }
 

@@ -2,7 +2,7 @@ package org.noear.solon.boot.smarthttp.http;
 
 
 import org.noear.solon.boot.smarthttp.http.uploadfile.MultipartIterator;
-import org.noear.solon.core.handle.MultipartFile;
+import org.noear.solon.core.handle.UploadedFile;
 import org.smartboot.http.server.HttpRequest;
 
 import java.io.ByteArrayInputStream;
@@ -27,12 +27,12 @@ class MultipartUtil {
     }
 
     private static void doBuildFiles(SmartHttpContext context, MultipartIterator.Part part) throws IOException{
-        List<MultipartFile> list = context._fileMap.get(part.getName());
+        List<UploadedFile> list = context._fileMap.get(part.getName());
         if(list == null){
             list = new ArrayList<>();
             context._fileMap.put(part.getName(), list);
 
-            MultipartFile f1 = new MultipartFile();
+            UploadedFile f1 = new UploadedFile();
             f1.contentType = part.getHeaders().get("Content-Type");
             f1.content = read(part.getBody());
             f1.contentSize = f1.content.available();

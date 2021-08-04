@@ -5,7 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
-import org.noear.solon.core.handle.MultipartFile;
+import org.noear.solon.core.handle.UploadedFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +24,7 @@ import java.util.*;
 public class SolonServletContext extends Context {
     private HttpServletRequest _request;
     private HttpServletResponse _response;
-    protected Map<String, List<MultipartFile>> _fileMap;
+    protected Map<String, List<UploadedFile>> _fileMap;
 
     public SolonServletContext(HttpServletRequest request, HttpServletResponse response) {
         this(request, response, true);
@@ -201,9 +201,9 @@ public class SolonServletContext extends Context {
     }
 
     @Override
-    public List<MultipartFile> files(String key) throws Exception {
+    public List<UploadedFile> files(String key) throws Exception {
         if (_fileMap != null && isMultipartFormData()) {
-            List<MultipartFile> temp = _fileMap.get(key);
+            List<UploadedFile> temp = _fileMap.get(key);
             if (temp == null) {
                 return new ArrayList<>();
             } else {

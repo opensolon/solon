@@ -64,7 +64,7 @@ public class ActionExecutorDefault implements ActionExecutor {
                 args.add(ctx.request());
             } else if (pt.getTypeName().equals("javax.servlet.http.HttpServletResponse")) {
                 args.add(ctx.response());
-            } else if (MultipartFile.class == pt) {
+            } else if (UploadedFile.class == pt) {
                 //如果是文件
                 //
                 args.add(ctx.file(p.getName()));
@@ -136,7 +136,7 @@ public class ActionExecutorDefault implements ActionExecutor {
             //
             // 没有从 ctx.param 直接找到值
             //
-            if (MultipartFile.class == pt) {
+            if (UploadedFile.class == pt) {
                 //1.如果是 UploadedFile 类型
                 tv = ctx.file(pn);
             } else {

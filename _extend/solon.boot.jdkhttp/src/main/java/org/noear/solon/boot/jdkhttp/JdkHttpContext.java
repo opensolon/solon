@@ -5,7 +5,7 @@ import com.sun.net.httpserver.HttpExchange;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.MultipartFile;
+import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.core.NvMap;
 
 import java.io.ByteArrayOutputStream;
@@ -18,7 +18,7 @@ import java.util.*;
 public class JdkHttpContext extends Context {
     private HttpExchange _exchange;
     private Map<String, Object> _parameters;
-    protected Map<String, List<MultipartFile>> _fileMap;
+    protected Map<String, List<UploadedFile>> _fileMap;
 
 
     public JdkHttpContext(HttpExchange exchange) {
@@ -221,9 +221,9 @@ public class JdkHttpContext extends Context {
     }
 
     @Override
-    public List<MultipartFile> files(String key) throws Exception {
+    public List<UploadedFile> files(String key) throws Exception {
         if (isMultipartFormData()) {
-            List<MultipartFile> temp = _fileMap.get(key);
+            List<UploadedFile> temp = _fileMap.get(key);
             if (temp == null) {
                 return new ArrayList<>();
             } else {

@@ -446,14 +446,14 @@ public abstract class Context {
      *
      * @param name 文件名
      */
-    public abstract List<MultipartFile> files(String name) throws Exception;
+    public abstract List<UploadedFile> files(String name) throws Exception;
 
     /**
      * 获取上传文件
      *
      * @param name 文件名
      */
-    public MultipartFile file(String name) throws Exception {
+    public UploadedFile file(String name) throws Exception {
         return Utils.firstOrNull(files(name));
     }
 
@@ -675,7 +675,7 @@ public abstract class Context {
     /**
      * 输出为文件
      */
-    public void outputAsFile(MultipartFile file) throws IOException {
+    public void outputAsFile(UploadedFile file) throws IOException {
         if (Utils.isNotEmpty(file.contentType)) {
             contentType(file.contentType);
         }

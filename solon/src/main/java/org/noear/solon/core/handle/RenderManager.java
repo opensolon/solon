@@ -199,8 +199,8 @@ public class RenderManager implements Render {
         }
 
         //如果是文件
-        if(data instanceof MultipartFile) {
-            ctx.outputAsFile((MultipartFile) data);
+        if(data instanceof UploadedFile) {
+            ctx.outputAsFile((UploadedFile) data);
             return;
         }
 

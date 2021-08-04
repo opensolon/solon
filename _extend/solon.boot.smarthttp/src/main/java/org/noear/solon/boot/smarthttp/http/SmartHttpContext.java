@@ -4,7 +4,7 @@ import org.noear.solon.core.NvMap;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.MultipartFile;
+import org.noear.solon.core.handle.UploadedFile;
 import org.smartboot.http.common.Cookie;
 import org.smartboot.http.common.enums.HttpStatus;
 import org.smartboot.http.server.HttpRequest;
@@ -20,7 +20,7 @@ import java.util.*;
 public class SmartHttpContext extends Context {
     private HttpRequest _request;
     private HttpResponse _response;
-    protected Map<String, List<MultipartFile>> _fileMap;
+    protected Map<String, List<UploadedFile>> _fileMap;
 
     public SmartHttpContext(HttpRequest request, HttpResponse response) {
         _request = request;
@@ -183,9 +183,9 @@ public class SmartHttpContext extends Context {
 
 
     @Override
-    public List<MultipartFile> files(String key) throws Exception {
+    public List<UploadedFile> files(String key) throws Exception {
         if (isMultipartFormData()) {
-            List<MultipartFile> temp = _fileMap.get(key);
+            List<UploadedFile> temp = _fileMap.get(key);
             if (temp == null) {
                 return new ArrayList<>();
             } else {

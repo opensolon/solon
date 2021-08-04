@@ -1,6 +1,6 @@
 package org.noear.solon.extend.servlet;
 
-import org.noear.solon.core.handle.MultipartFile;
+import org.noear.solon.core.handle.UploadedFile;
 
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
@@ -33,12 +33,12 @@ class MultipartUtil {
     }
 
     private static void doBuildFiles(SolonServletContext context, Part part) throws IOException {
-        List<MultipartFile> list = context._fileMap.get(part.getName());
+        List<UploadedFile> list = context._fileMap.get(part.getName());
         if (list == null) {
             list = new ArrayList<>();
             context._fileMap.put(part.getName(), list);
 
-            MultipartFile f1 = new MultipartFile();
+            UploadedFile f1 = new UploadedFile();
             f1.contentType = part.getContentType();
             f1.contentSize = part.getSize();
             f1.content = part.getInputStream(); //可以转成 ByteArrayInputStream

@@ -136,7 +136,7 @@ public class ContextEmpty extends Context {
     }
 
     @Override
-    public List<MultipartFile> files(String key) throws Exception {
+    public List<UploadedFile> files(String key) throws Exception {
         return null;
     }
 
