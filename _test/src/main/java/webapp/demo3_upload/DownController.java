@@ -18,7 +18,7 @@ public class DownController {
     @Mapping("f1")
     public UploadedFile down() {
         ByteArrayInputStream stream = new ByteArrayInputStream("{code:1}".getBytes(StandardCharsets.UTF_8));
-        UploadedFile file = new UploadedFile("text/json", stream.available(), stream, "test.json", "json");
+        UploadedFile file = new UploadedFile("text/json", stream, "没有耳多 test.json");
 
         return file;
     }

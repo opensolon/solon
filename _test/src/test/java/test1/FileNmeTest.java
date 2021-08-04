@@ -13,5 +13,6 @@ public class FileNmeTest {
         String fileName = URLEncoder.encode("没有耳多 aaa.jar","utf-8");
 
         System.out.println(fileName);
+        System.out.println(URLEncoder.encode(fileName,"utf-8"));
     }
 }
