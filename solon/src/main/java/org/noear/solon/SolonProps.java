@@ -28,8 +28,8 @@ import java.util.function.BiConsumer;
  * @since 1.0
  * */
 public final class SolonProps extends Props {
-    protected static final String FILE_ENCODING = "file.encoding";
-    protected static final String FILE_ENCODING_DEF = "utf-8";
+    private static final String FILE_ENCODING = "file.encoding";
+    private static final String FILE_ENCODING_DEF = "utf-8";
 
     private NvMap args;
     private Class<?> source;

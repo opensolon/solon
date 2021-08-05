@@ -43,12 +43,6 @@ public class SolonApp implements HandlerSlots {
         _startupTime = System.currentTimeMillis();
         _source = source;
 
-
-        //初始化文件编码
-        if (Utils.isEmpty(System.getProperty(SolonProps.FILE_ENCODING))) {
-            System.setProperty(SolonProps.FILE_ENCODING, SolonProps.FILE_ENCODING_DEF);
-        }
-
         //初始化配置
         _prop = new SolonProps().load(source, args);
 

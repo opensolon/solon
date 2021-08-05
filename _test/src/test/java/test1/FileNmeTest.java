@@ -15,4 +15,10 @@ public class FileNmeTest {
         System.out.println(fileName);
         System.out.println(URLEncoder.encode(fileName,"utf-8"));
     }
+
+    @Test
+    public void test1(){
+        System.out.println(System.getenv("file.encoding"));
+        System.out.println(System.getProperty("file.encoding"));
+    }
 }
