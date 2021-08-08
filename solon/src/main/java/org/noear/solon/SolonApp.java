@@ -528,7 +528,7 @@ public class SolonApp implements HandlerSlots {
 
             //如果未渲染，尝试渲染
             if (x.getRendered() == false) {
-                if (Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode()) {
+                if (Solon.cfg().isDebugMode()) {
                     x.output(Utils.getFullStackTrace(ex));
                 }
             }
