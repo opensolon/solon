@@ -499,17 +499,39 @@ public class SolonApp implements HandlerSlots {
         }
     }
 
+
+
     /**
-     * 统一代理入口
-     */
-    protected void doHandle(Context x) throws Throwable {
+     * 统一代理入口(异常时，自动500处理)
+     * */
+    public void tryHandle(Context x) {
         try {
             //设置当前线程上下文
             ContextUtil.currentSet(x);
-            new FilterChainNode(_filterList).doFilter(x);
+
+            if (stopped) {
+                x.statusSet(403);
+            } else {
+                new FilterChainNode(_filterList).doFilter(x);
+            }
         } catch (Throwable ex) {
+            ex = Utils.throwableUnwrap(ex);
+
+            //推送事件
             EventBus.push(ex);
-            throw ex;
+
+            //如果未处理，尝试处理
+            if (x.getHandled() == false) {
+                x.statusSet(500);
+                x.setHandled(true);
+            }
+
+            //如果未渲染，尝试渲染
+            if (x.getRendered() == false) {
+                if (Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode()) {
+                    x.output(Utils.getFullStackTrace(ex));
+                }
+            }
         } finally {
             //移除当前线程上下文
             ContextUtil.currentRemove();
@@ -518,28 +540,6 @@ public class SolonApp implements HandlerSlots {
 
     protected void doFilter(Context ctx, FilterChain chain) throws Throwable{
         _handler.handle(ctx);
-    }
-
-    /*
-    * 异常时，自动500处理
-    * */
-    public void tryHandle(Context x) {
-        try {
-            if (stopped) {
-                x.statusSet(403);
-            } else {
-                doHandle(x);
-            }
-        } catch (Throwable ex) {
-            ex = Utils.throwableUnwrap(ex);
-
-            x.statusSet(500);
-            x.setHandled(true);
-
-            if (Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode()) {
-                x.output(Utils.getFullStackTrace(ex));
-            }
-        }
     }
 
     /**
