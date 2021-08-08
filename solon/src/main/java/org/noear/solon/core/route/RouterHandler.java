@@ -48,14 +48,12 @@ public class RouterHandler implements Handler {
         handleMultiple(ctx, Endpoint.after); //前后不能反 （后置处理由内部进行状态控制）
 
         //汇总状态
-        if (_handled) {
-            if (ctx.status() < 1) {
-                ctx.statusSet(200);
-            }
-        }
-
         if (ctx.status() < 1) {
-            ctx.statusSet(404);
+            if (_handled) {
+                ctx.statusSet(200);
+            } else {
+                ctx.statusSet(404);
+            }
         }
     }
 
