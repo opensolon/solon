@@ -47,10 +47,6 @@ public final class EventBus {
         if (event instanceof Throwable) {
             //异常分发
             push1(sThrow, event);
-
-            if (Solon.cfg().isDebugMode()) {
-                ((Throwable) event).printStackTrace();
-            }
         } else {
             //其它事件分发
             push1(sOther, event);
