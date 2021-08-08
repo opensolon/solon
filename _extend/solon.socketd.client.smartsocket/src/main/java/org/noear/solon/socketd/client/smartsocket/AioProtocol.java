@@ -19,6 +19,7 @@ public class AioProtocol implements Protocol<Message> {
     @Override
     public Message decode(ByteBuffer buffer, AioSession session) {
         FixedLengthFrameDecoder decoder = session.getAttachment();
+
         if(decoder == null){
             if (buffer.remaining() < Integer.BYTES) {
                 return null;
