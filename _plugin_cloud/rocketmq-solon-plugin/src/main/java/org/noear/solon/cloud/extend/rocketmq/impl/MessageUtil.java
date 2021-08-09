@@ -11,15 +11,15 @@ import java.nio.charset.StandardCharsets;
  * @since 1.3
  */
 class MessageUtil {
-    public static Message buildNewMeaage(Event event) {
-        String topic = event.topic().replace(".", "_");
+    public static Message buildNewMeaage(Event event, String topic) {
+        String topicNew = topic.replace(".", "_");
 
         if (Utils.isEmpty(event.key())) {
             event.key(Utils.guid());
         }
 
         Message message = new Message(
-                topic,
+                topicNew,
                 event.tags(),
                 event.key(),
                 event.content().getBytes(StandardCharsets.UTF_8));

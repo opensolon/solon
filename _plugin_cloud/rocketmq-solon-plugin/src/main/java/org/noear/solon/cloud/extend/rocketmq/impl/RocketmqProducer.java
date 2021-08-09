@@ -63,10 +63,10 @@ public class RocketmqProducer {
         }
     }
 
-    public boolean publish(Event event) throws MQClientException, RemotingException, MQBrokerException, InterruptedException{
+    public boolean publish(Event event, String topic) throws MQClientException, RemotingException, MQBrokerException, InterruptedException{
         init();
 
-        Message message = MessageUtil.buildNewMeaage(event);
+        Message message = MessageUtil.buildNewMeaage(event, topic);
 
         SendResult send = producer.send(message);
 

@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.extend.rocketmq.service;
 
+import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
@@ -9,7 +10,6 @@ import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqConsumer;
 import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqProducer;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
-import org.noear.solon.cloud.service.CloudEventService;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 
 import java.util.HashMap;
@@ -43,8 +43,26 @@ public class CloudEventServiceRocketmqImp implements CloudEventServicePlus {
 
     @Override
     public boolean publish(Event event) throws CloudEventException {
+        if (Utils.isEmpty(event.topic())) {
+            throw new IllegalArgumentException("Event missing topic");
+        }
+
+        if (Utils.isEmpty(event.content())) {
+            throw new IllegalArgumentException("Event missing content");
+        }
+
+        //new topic
+        String topicNew;
+        if (Utils.isEmpty(event.group())) {
+            topicNew = event.topic();
+        } else {
+            topicNew = event.group() + "::" + event.topic();
+        }
+
+        topicNew = topicNew.replace(".", "_");
+
         try {
-            return producer.publish(event);
+            return producer.publish(event, topicNew);
         }catch (Throwable ex){
             throw new CloudEventException(ex);
         }
@@ -61,7 +79,19 @@ public class CloudEventServiceRocketmqImp implements CloudEventServicePlus {
 
         topic = topic.replace(".", "_");
 
-        observerMap.put(topic, new CloudEventObserverEntity(level, group, topic, observer));
+        //new topic
+        String topicNew;
+        if (Utils.isEmpty(group)) {
+            topicNew = topic;
+        } else {
+            topicNew = group + "::" + topic;
+        }
+
+        if (observerMap.containsKey(topicNew)) {
+            return;
+        }
+
+        observerMap.put(topicNew, new CloudEventObserverEntity(level, group, topic, observer));
     }
 
     public void subscribe() {
