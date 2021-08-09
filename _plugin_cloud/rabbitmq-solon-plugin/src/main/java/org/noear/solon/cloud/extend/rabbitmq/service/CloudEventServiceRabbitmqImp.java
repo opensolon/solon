@@ -11,7 +11,6 @@ import org.noear.solon.cloud.extend.rabbitmq.impl.RabbitConsumer;
 import org.noear.solon.cloud.extend.rabbitmq.impl.RabbitProducer;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
-import org.noear.solon.cloud.service.CloudEventService;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 
 import java.util.HashMap;
@@ -57,6 +56,14 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
 
     @Override
     public boolean publish(Event event) throws CloudEventException{
+        if (Utils.isEmpty(event.topic())) {
+            throw new IllegalArgumentException("Event missing topic");
+        }
+
+        if (Utils.isEmpty(event.content())) {
+            throw new IllegalArgumentException("Event missing content");
+        }
+
         try {
             if(Utils.isEmpty(event.key())){
                 event.key(Utils.guid());
