@@ -24,36 +24,36 @@ public class StaticResourceHandler implements Handler {
 
 
     @Override
-    public void handle(Context context) throws Exception {
-        if (context.getHandled()) {
+    public void handle(Context ctx) throws Exception {
+        if (ctx.getHandled()) {
             return;
         }
 
-        if (MethodType.GET.name.equals(context.method()) == false) {
+        if (MethodType.GET.name.equals(ctx.method()) == false) {
             return;
         }
 
-        if (_rule.matcher(context.path()).find() == false) {
+        if (_rule.matcher(ctx.path()).find() == false) {
             return;
         }
 
-        String path = context.path();
+        String path = ctx.path();
 
         URL uri = staticMappings.find(path);
 
         if (uri == null) {
             return;
         } else {
-            context.setHandled(true);
+            ctx.setHandled(true);
 
-            String modified_since = context.header("If-Modified-Since");
+            String modified_since = ctx.header("If-Modified-Since");
             String modified_now = modified_time.toString();
 
             if (modified_since != null && XPluginProp.maxAge() > 0) {
                 if (modified_since.equals(modified_now)) {
-                    context.headerSet(CACHE_CONTROL, "max-age=" + XPluginProp.maxAge());//单位秒
-                    context.headerSet(LAST_MODIFIED, modified_now);
-                    context.statusSet(304);
+                    ctx.headerSet(CACHE_CONTROL, "max-age=" + XPluginProp.maxAge());//单位秒
+                    ctx.headerSet(LAST_MODIFIED, modified_now);
+                    ctx.statusSet(304);
                     return;
                 }
             }
@@ -65,16 +65,16 @@ public class StaticResourceHandler implements Handler {
 
                 if (mime != null) {
                     if (XPluginProp.maxAge() > 0) {
-                        context.headerSet(CACHE_CONTROL, "max-age=" + XPluginProp.maxAge());//单位秒
-                        context.headerSet(LAST_MODIFIED, modified_time.toString());
+                        ctx.headerSet(CACHE_CONTROL, "max-age=" + XPluginProp.maxAge());//单位秒
+                        ctx.headerSet(LAST_MODIFIED, modified_time.toString());
                     }
 
-                    context.contentType(mime);
+                    ctx.contentType(mime);
                 }
             }
 
-            context.statusSet(200);
-            context.output(uri.openStream());
+            ctx.statusSet(200);
+            ctx.output(uri.openStream());
         }
     }
 
