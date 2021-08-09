@@ -12,11 +12,11 @@ import org.noear.solon.core.handle.Handler;
 @Controller
 public class Run0Handler implements Handler {
     @Override
-    public void handle(Context cxt) throws Exception {
-        if(cxt.param("str") == null) {
-            cxt.output("是null");
+    public void handle(Context ctx) throws Exception {
+        if(ctx.param("str") == null) {
+            ctx.output("是null");
         }else{
-            cxt.output("不是null(ok)");
+            ctx.output("不是null(ok)");
         }
     }
 }
