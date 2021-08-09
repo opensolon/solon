@@ -13,12 +13,19 @@ import java.net.URL;
  * @since 1.5
  */
 public class FileStaticRepository implements StaticRepository {
-    String dir;
-
     /**
      * @param dir 例：/user/
      * */
     public FileStaticRepository(String dir) {
+        setDir(dir);
+    }
+
+    String dir;
+    protected void setDir(String dir) {
+        if(dir == null){
+            return;
+        }
+
         if (dir.endsWith("/")) {
             dir = dir.substring(0, dir.length() - 1);
         }

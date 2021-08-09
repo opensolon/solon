@@ -10,6 +10,7 @@ import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.extend.cors.CrossHandler;
 import org.noear.solon.extend.staticfiles.StaticMappings;
+import org.noear.solon.extend.staticfiles.repository.ExtendStaticRepository;
 import org.noear.solon.extend.staticfiles.repository.FileStaticRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +55,7 @@ public class TestApp {
             System.out.println("4.应用全加载完成了");
         }).start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
 
-        StaticMappings.add("/", new FileStaticRepository(ExtendLoader.path()));
+        StaticMappings.add("/", new ExtendStaticRepository());
 
         //extend: /Users/noear/WORK/work_github/noear/solon/_test/target/app_ext/
         //System.out.println("extend: " + ExtendLoader.path()+"static");
