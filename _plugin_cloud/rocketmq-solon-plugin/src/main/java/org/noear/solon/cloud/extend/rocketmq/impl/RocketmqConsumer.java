@@ -43,6 +43,9 @@ public class RocketmqConsumer {
             consumer.setNamesrvAddr(cfg.server);
             //消费组
             consumer.setConsumerGroup(cfg.consumerGroup);
+            if(Utils.isNotEmpty(cfg.namespace)) {
+                consumer.setNamespace(cfg.namespace);
+            }
 
             //一次最大消费的条数
             consumer.setConsumeMessageBatchMaxSize(1); //1是默认值

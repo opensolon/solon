@@ -43,6 +43,10 @@ public class RocketmqProducer {
             producer.setNamesrvAddr(cfg.server);
             //生产组
             producer.setProducerGroup(cfg.producerGroup);
+            //命名空间
+            if(Utils.isNotEmpty(cfg.namespace)) {
+                producer.setNamespace(cfg.namespace);
+            }
 
             //发送超时时间，默认3000 单位ms
             if (timeout > 0) {

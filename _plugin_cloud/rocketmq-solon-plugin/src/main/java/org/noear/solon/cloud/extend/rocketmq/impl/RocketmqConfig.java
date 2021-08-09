@@ -12,25 +12,27 @@ public class RocketmqConfig {
     /**
      * 生产组
      */
-    public String producerGroup;
+    protected String producerGroup;
 
     /**
      * 消费组
      */
-    public String consumerGroup;
+    protected String consumerGroup;
 
-    public String server;
+    protected String server;
+
+    protected String namespace;
 
     public RocketmqConfig() {
         server = RocketmqProps.instance.getEventServer();
 
+        namespace = RocketmqProps.namespace();
         producerGroup = RocketmqProps.producerGroup();
+        consumerGroup = RocketmqProps.consumerGroup();
 
         if (Utils.isEmpty(producerGroup)) {
             producerGroup = "DEFAULT";
         }
-
-        consumerGroup = RocketmqProps.consumerGroup();
 
         if (Utils.isEmpty(consumerGroup)) {
             consumerGroup = Solon.cfg().appGroup() + "_" + Solon.cfg().appName();
