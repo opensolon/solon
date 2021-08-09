@@ -22,13 +22,15 @@ public class RocketmqConfig {
     public String server;
 
     public RocketmqConfig() {
-        producerGroup = RocketmqProps.instance.getEventExchange();
+        server = RocketmqProps.instance.getEventServer();
+
+        producerGroup = RocketmqProps.producerGroup();
 
         if (Utils.isEmpty(producerGroup)) {
             producerGroup = "DEFAULT";
         }
 
-        consumerGroup = RocketmqProps.instance.getEventQueue();
+        consumerGroup = RocketmqProps.consumerGroup();
 
         if (Utils.isEmpty(consumerGroup)) {
             consumerGroup = Solon.cfg().appGroup() + "_" + Solon.cfg().appName();

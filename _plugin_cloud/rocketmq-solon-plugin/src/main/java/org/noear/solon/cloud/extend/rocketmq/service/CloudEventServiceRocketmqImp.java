@@ -36,7 +36,6 @@ public class CloudEventServiceRocketmqImp implements CloudEventServicePlus {
 
     private CloudEventServiceRocketmqImp() {
         RocketmqConfig config = new RocketmqConfig();
-        config.server = RocketmqProps.instance.getEventServer();
 
         producer = new RocketmqProducer(config);
         consumer = new RocketmqConsumer(config);
