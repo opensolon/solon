@@ -32,6 +32,10 @@ public class ClassPathStaticRepository implements StaticRepository {
      * @param location 位置
      * */
     protected void setLocation(String location) {
+        if(location == null){
+            return;
+        }
+
         // 去掉头尾的 "/"
         if (location.endsWith("/")) {
             location = location.substring(0, location.length() - 1);

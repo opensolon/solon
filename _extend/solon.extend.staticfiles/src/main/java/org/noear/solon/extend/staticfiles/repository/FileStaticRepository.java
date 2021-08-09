@@ -13,6 +13,8 @@ import java.net.URL;
  * @since 1.5
  */
 public class FileStaticRepository implements StaticRepository {
+    String location;
+
     /**
      * 构建函数
      *
@@ -21,8 +23,6 @@ public class FileStaticRepository implements StaticRepository {
     public FileStaticRepository(String location) {
         setLocation(location);
     }
-
-    String location;
 
     /**
      * 设置位置
