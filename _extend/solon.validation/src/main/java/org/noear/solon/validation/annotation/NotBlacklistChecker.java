@@ -9,5 +9,9 @@ import org.noear.solon.core.handle.Context;
  * */
 @FunctionalInterface
 public interface NotBlacklistChecker {
+    /**
+     * @param anno 注解
+     * @param ctx 上下文
+     * */
     boolean check(NotBlacklist anno, Context ctx);
 }

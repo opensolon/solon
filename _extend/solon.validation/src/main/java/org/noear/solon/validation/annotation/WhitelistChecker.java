@@ -8,5 +8,9 @@ import org.noear.solon.core.handle.Context;
  * @since 1.0
  * */
 public interface WhitelistChecker {
+    /**
+     * @param anno 注解
+     * @param ctx 上下文
+     * */
     boolean check(Whitelist anno, Context ctx);
 }

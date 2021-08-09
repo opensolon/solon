@@ -30,7 +30,7 @@ public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
 
     @Override
     public Result validateOfContext(Context ctx, NoRepeatSubmit anno, String name, StringBuilder tmp) {
-        if(checker == null){
+        if (checker == null) {
             throw new IllegalArgumentException("Missing NoRepeatSubmitChecker Setting");
         }
 
@@ -64,7 +64,7 @@ public class NoRepeatSubmitValidator implements Validator<NoRepeatSubmit> {
             }
         }
 
-        if (checker.check(Utils.md5(tmp.toString()), anno.seconds())) {
+        if (checker.check(anno, ctx, Utils.md5(tmp.toString()), anno.seconds())) {
             return Result.succeed();
         } else {
             return Result.failure();
