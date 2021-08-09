@@ -7,7 +7,11 @@ package org.noear.solon.extend.staticfiles;
  * @since 1.0
  * */
 public class StaticLocation {
-    public String start;
-    public String location;
-    public String locationDebug;
+    public final String start;
+    public final StaticRepository repository;
+
+    public StaticLocation(String start, StaticRepository repository) {
+        this.start = start;
+        this.repository = repository;
+    }
 }

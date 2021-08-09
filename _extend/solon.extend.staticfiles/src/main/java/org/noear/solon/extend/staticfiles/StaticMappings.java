@@ -1,12 +1,8 @@
 package org.noear.solon.extend.staticfiles;
 
-import org.noear.solon.Solon;
-import org.noear.solon.Utils;
-
-import java.io.File;
-import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 静态文件印射
@@ -14,83 +10,25 @@ import java.util.ArrayList;
  * @author noear
  * @since 1.0
  * */
-public class StaticMappings extends ArrayList<StaticLocation> {
-    private StaticMappings() {
-        super();
+public class StaticMappings {
+    static final List<StaticLocation> locationList = new ArrayList<>();
+
+    /**
+     * 添加印射关系
+     * */
+    public static void add(String start, StaticRepository repository) {
+        locationList.add(new StaticLocation(start, repository));
     }
 
-    private static StaticMappings _instance;
-
-    public static StaticMappings instance() {
-        if (_instance == null) {
-            _instance = new StaticMappings();
-        }
-
-        return _instance;
-    }
-
-
-    public StaticMappings add(String start, String location) {
-
-        // 去掉头尾的 "/"
-        if (location.endsWith("/")) {
-            location = location.substring(0, location.length() - 1);
-        }
-
-        if (location.startsWith("/")) {
-            location = location.substring(1);
-        }
-
-        StaticLocation mapping = new StaticLocation();
-        mapping.start = start;
-        mapping.location = location;
-
-        if (Solon.cfg().isDebugMode()) {
-            URL rooturi = Utils.getResource("/");
-
-            if (rooturi != null) {
-                String rootdir = rooturi.toString()
-                        .replace("target/classes/", "");
-
-                if (rootdir.startsWith("file:")) {
-                    mapping.locationDebug = rootdir + "src/main/resources/" + location;
-                }
-            }
-        }
-
-        this.add(mapping);
-
-        return this;
-    }
-
-    protected URL find(String path) throws Exception {
+    /**
+     * 查询静态资源
+     * */
+    public static URL find(String path) throws Exception {
         URL rst = null;
 
-        for (StaticLocation m : this) {
+        for (StaticLocation m : locationList) {
             if (path.startsWith(m.start)) {
-                if (m.locationDebug != null) {
-                    URI uri = URI.create(m.locationDebug + path);
-                    File file = new File(uri);
-
-                    if (file.exists()) {
-                        rst = uri.toURL();
-                    }
-                }
-
-                if (rst == null) {
-                    if (m.location.startsWith("file://")) {
-                        //如果是文件类型
-                        URI uri = URI.create(m.location + path);
-                        File file = new File(uri);
-
-                        if (file.exists()) {
-                            rst = uri.toURL();
-                        }
-                    } else {
-                        //如果是资源类型
-                        rst = Utils.getResource(m.location + path);
-                    }
-                }
+                rst = m.repository.find(path);
 
                 if (rst != null) {
                     return rst;
@@ -98,6 +36,6 @@ public class StaticMappings extends ArrayList<StaticLocation> {
             }
         }
 
-        return null;
+        return rst;
     }
 }

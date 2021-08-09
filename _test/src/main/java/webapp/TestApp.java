@@ -6,6 +6,7 @@ import org.noear.solon.SolonBuilder;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.tool.PreheatUtils;
+import org.noear.solon.core.ExtendLoader;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.extend.cors.CrossHandler;
 import org.slf4j.Logger;
@@ -50,6 +51,11 @@ public class TestApp {
         }).onAppLoadEnd(e -> {
             System.out.println("4.应用全加载完成了");
         }).start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
+
+
+        //extend: /Users/noear/WORK/work_github/noear/solon/_test/target/app_ext/
+        //System.out.println("extend: " + ExtendLoader.path()+"static");
+        System.out.println("extend: " + ExtendLoader.path());
 
         System.out.println("testname : " + Solon.cfg().get("testname"));
 

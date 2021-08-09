@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.handle.HandlerPipeline;
+import org.noear.solon.extend.staticfiles.repository.ClassPathStaticRepository;
 
 public class XPluginImp implements Plugin {
     @Override
@@ -31,7 +32,7 @@ public class XPluginImp implements Plugin {
                 StaticMimes.instance().putIfAbsent("." + k, v);
             });
 
-            StaticMappings.instance().add("/", XPluginProp.RES_LOCATION);
+            StaticMappings.add("/", new ClassPathStaticRepository(XPluginProp.RES_LOCATION));
 
             //2.切换代理（让静态文件优先）
             HandlerPipeline pipeline = new HandlerPipeline();

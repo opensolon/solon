@@ -18,7 +18,6 @@ public class StaticResourceHandler implements Handler {
     private static final String CACHE_CONTROL = "Cache-Control";
     private static final String LAST_MODIFIED = "Last-Modified";
 
-    private StaticMappings staticMappings = StaticMappings.instance();
     private StaticMimes staticMimes = StaticMimes.instance();
     private Pattern _rule;
 
@@ -46,7 +45,7 @@ public class StaticResourceHandler implements Handler {
 
         String path = ctx.path();
 
-        URL uri = staticMappings.find(path);
+        URL uri = StaticMappings.find(path);
 
         if (uri == null) {
             return;

@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.noear.solon.core.util.PathAnalyzer;
 import org.noear.solon.core.util.PathUtil;
 import org.noear.solon.extend.staticfiles.StaticMappings;
+import org.noear.solon.extend.staticfiles.repository.FileStaticRepository;
 
 public class PathTest {
     @Test
@@ -19,7 +20,7 @@ public class PathTest {
 
     @Test
     public void test2(){
-        StaticMappings.instance().add("/a/","/test/");
+        StaticMappings.add("/a/",new FileStaticRepository("/test/"));
     }
 
     @Test
