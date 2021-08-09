@@ -37,17 +37,18 @@ public class RocketmqConsumer {
             observerMap = observers;
             handler = new RocketmqConsumerHandler(observerMap);
 
-            consumer = new DefaultMQPushConsumer(cfg.exchangeName);
+            consumer = new DefaultMQPushConsumer();
 
+            //服务地址
             consumer.setNamesrvAddr(cfg.server);
+            //消费组
+            consumer.setConsumerGroup(cfg.consumerGroup);
+
             //一次最大消费的条数
             consumer.setConsumeMessageBatchMaxSize(1); //1是默认值
             //一次最大拉取的条数
             consumer.setPullBatchSize(32); //32是默认值
             //无消息时，最大阻塞时间。默认5000 单位ms
-
-            consumer.setConsumerGroup(cfg.queueName);
-            //consumer.setMessageModel(MessageModel.BROADCASTING);
 
             //绑定定制属性
             Properties props = RocketmqProps.instance.getEventConsumerProps();

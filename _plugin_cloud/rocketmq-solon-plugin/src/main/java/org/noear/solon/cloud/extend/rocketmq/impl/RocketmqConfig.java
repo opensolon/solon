@@ -10,25 +10,28 @@ import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
  */
 public class RocketmqConfig {
     /**
-     * 订阅组名
+     * 生产组
      */
-    public String exchangeName;
+    public String producerGroup;
 
-    public String queueName;
+    /**
+     * 消费组
+     */
+    public String consumerGroup;
 
     public String server;
 
     public RocketmqConfig() {
-        this.exchangeName = RocketmqProps.instance.getEventExchange();
+        producerGroup = RocketmqProps.instance.getEventExchange();
 
-        if (Utils.isEmpty(exchangeName)) {
-            exchangeName = "DEFAULT";
+        if (Utils.isEmpty(producerGroup)) {
+            producerGroup = "DEFAULT";
         }
 
-        this.queueName = RocketmqProps.instance.getEventQueue();
+        consumerGroup = RocketmqProps.instance.getEventQueue();
 
-        if (Utils.isEmpty(queueName)) {
-            queueName = Solon.cfg().appGroup() + "_" + Solon.cfg().appName();
+        if (Utils.isEmpty(consumerGroup)) {
+            consumerGroup = Solon.cfg().appGroup() + "_" + Solon.cfg().appName();
         }
     }
 }

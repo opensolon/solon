@@ -38,8 +38,12 @@ public class RocketmqProducer {
             }
 
 
-            producer = new DefaultMQProducer(cfg.exchangeName);
+            producer = new DefaultMQProducer();
+            //服务地址
             producer.setNamesrvAddr(cfg.server);
+            //生产组
+            producer.setProducerGroup(cfg.producerGroup);
+
             //发送超时时间，默认3000 单位ms
             if (timeout > 0) {
                 producer.setSendMsgTimeout((int)timeout);
