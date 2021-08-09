@@ -7,39 +7,47 @@ import java.net.URI;
 import java.net.URL;
 
 /**
- * 文件型静态仓库
+ * 文件型静态仓库（支持位置例：/user/ 或 file:///user/）
  *
  * @author noear
  * @since 1.5
  */
 public class FileStaticRepository implements StaticRepository {
     /**
-     * @param dir 例：/user/
+     * 构建函数
+     *
+     * @param location 位置
      * */
-    public FileStaticRepository(String dir) {
-        setDir(dir);
+    public FileStaticRepository(String location) {
+        setLocation(location);
     }
 
-    String dir;
-    protected void setDir(String dir) {
-        if(dir == null){
+    String location;
+
+    /**
+     * 设置位置
+     *
+     * @param location 位置
+     * */
+    protected void setLocation(String location) {
+        if(location == null){
             return;
         }
 
-        if (dir.endsWith("/")) {
-            dir = dir.substring(0, dir.length() - 1);
+        if (location.endsWith("/")) {
+            location = location.substring(0, location.length() - 1);
         }
 
-        if (dir.startsWith("file://") == false) {
-            dir = "file://" + dir;
+        if (location.startsWith("file://") == false) {
+            location = "file://" + location;
         }
 
-        this.dir = dir;
+        this.location = location;
     }
 
     @Override
     public URL find(String path) throws Exception {
-        URI uri = URI.create(dir + path);
+        URI uri = URI.create(location + path);
         File file = new File(uri);
 
         if (file.exists()) {

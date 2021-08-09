@@ -17,6 +17,6 @@ public class ExtendStaticRepository extends FileStaticRepository {
             throw new RuntimeException("No extension directory exists");
         }
 
-        setDir(path + "static");
+        setLocation(path + "static");
     }
 }

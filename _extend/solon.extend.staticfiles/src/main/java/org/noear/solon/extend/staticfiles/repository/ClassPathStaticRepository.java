@@ -9,7 +9,7 @@ import java.net.URI;
 import java.net.URL;
 
 /**
- * 类路径型静态仓库
+ * 类路径型静态仓库（支持位置例：static 或 /static 或 /static/）
  *
  * @author noear
  * @since 1.5
@@ -18,10 +18,20 @@ public class ClassPathStaticRepository implements StaticRepository {
     String location;
     String locationDebug;
 
+
     /**
-     * @param location 例：static
+     * 构建函数
+     *
+     * @param location 位置
      * */
     public ClassPathStaticRepository(String location) {
+        setLocation(location);
+    }
+
+    /**
+     * @param location 位置
+     * */
+    protected void setLocation(String location) {
         // 去掉头尾的 "/"
         if (location.endsWith("/")) {
             location = location.substring(0, location.length() - 1);
