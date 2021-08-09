@@ -41,7 +41,6 @@ public class CloudProps {
     //事件总线服务相关
     private String EVENT_ENABLE = "solon.cloud.@@.event.enable";
     private String EVENT_SERVER = "solon.cloud.@@.event.server";
-    private String EVENT_RECEIVE = "solon.cloud.@@.event.receive";
     private String EVENT_EXCHANGE = "solon.cloud.@@.event.exchange"; //交换机
     private String EVENT_PREFETCH_COUNT = "solon.cloud.@@.event.prefetchCount";
     private String EVENT_PUBLISH_TIMEOUT = "solon.cloud.@@.event.publishTimeout";
@@ -117,7 +116,6 @@ public class CloudProps {
 
         EVENT_ENABLE = EVENT_ENABLE.replace("@@", frame);
         EVENT_SERVER = EVENT_SERVER.replace("@@", frame);
-        EVENT_RECEIVE = EVENT_RECEIVE.replace("@@", frame);
         EVENT_EXCHANGE = EVENT_EXCHANGE.replace("@@", frame);
         EVENT_PREFETCH_COUNT = EVENT_PREFETCH_COUNT.replace("@@", frame);
         EVENT_PUBLISH_TIMEOUT = EVENT_PUBLISH_TIMEOUT.replace("@@", frame);
@@ -269,14 +267,6 @@ public class CloudProps {
         } else {
             return tmp;
         }
-    }
-
-    public String getEventReceive() {
-        return Solon.cfg().get(EVENT_RECEIVE);
-    }
-
-    public void setEventReceive(String value) {
-        Solon.cfg().setProperty(EVENT_RECEIVE, value);
     }
 
     public String getEventExchange() {

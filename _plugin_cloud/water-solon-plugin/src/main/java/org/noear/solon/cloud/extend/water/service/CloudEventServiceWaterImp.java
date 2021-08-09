@@ -129,7 +129,7 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
         }
 
         if (clusterObserverMap.size() > 0) {
-            String cluster_hostname = WaterProps.instance.getEventReceive();
+            String cluster_hostname = WaterProps.getEventReceive();
             if (Utils.isEmpty(cluster_hostname)) {
                 cluster_hostname = instance.address();
             }
