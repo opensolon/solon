@@ -19,12 +19,10 @@ import java.util.Properties;
  */
 public class RocketmqProducer {
     RocketmqConfig cfg;
-    long timeout;
     DefaultMQProducer producer;
 
     public RocketmqProducer(RocketmqConfig config) {
         cfg = config;
-        timeout = RocketmqProps.instance.getEventPublishTimeout();
     }
 
     private void init() throws MQClientException {
@@ -49,8 +47,8 @@ public class RocketmqProducer {
             }
 
             //发送超时时间，默认3000 单位ms
-            if (timeout > 0) {
-                producer.setSendMsgTimeout((int)timeout);
+            if (cfg.timeout > 0) {
+                producer.setSendMsgTimeout((int) cfg.timeout);
             }
             //失败后重试2次
             producer.setRetryTimesWhenSendFailed(2);

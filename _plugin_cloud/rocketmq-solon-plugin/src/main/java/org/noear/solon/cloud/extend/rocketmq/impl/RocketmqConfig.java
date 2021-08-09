@@ -23,8 +23,12 @@ public class RocketmqConfig {
 
     protected String namespace;
 
+    protected long timeout;
+
     public RocketmqConfig() {
         server = RocketmqProps.instance.getEventServer();
+
+        timeout = RocketmqProps.instance.getEventPublishTimeout();
 
         namespace = RocketmqProps.namespace();
         producerGroup = RocketmqProps.producerGroup();
