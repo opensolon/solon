@@ -80,12 +80,20 @@ public class RabbitConsumeHandler extends DefaultConsumer {
         boolean isOk = true;
         CloudEventObserverEntity entity = null;
 
-        entity = observerMap.get(event.topic());
+        //new topic
+        String topicNew;
+        if (Utils.isEmpty(event.group())) {
+            topicNew = event.topic();
+        } else {
+            topicNew = event.group() + "::" + event.topic();
+        }
+
+        entity = observerMap.get(topicNew);
         if (entity != null) {
             isOk = entity.handler(event);
         } else {
             //只需要记录一下
-            log.warn("There is no observer for this event topic[{}]", event.topic());
+            log.warn("There is no observer for this event topic[{}]", topicNew);
         }
 
         return isOk;

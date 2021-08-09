@@ -62,7 +62,15 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
                 event.key(Utils.guid());
             }
 
-            return producer.publish(event);
+            //new topic
+            String topicNew;
+            if (Utils.isEmpty(event.group())) {
+                topicNew = event.topic();
+            } else {
+                topicNew = event.group() + "::" + event.topic();
+            }
+
+            return producer.publish(event, topicNew);
         } catch (Throwable ex) {
             throw new CloudEventException(ex);
         }
@@ -72,11 +80,19 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
 
     @Override
     public void attention(EventLevel level, String channel , String group, String topic, CloudEventHandler observer) {
-        if (observerMap.containsKey(topic)) {
+        //new topic
+        String topicNew;
+        if (Utils.isEmpty(group)) {
+            topicNew = topic;
+        } else {
+            topicNew = group + "::" + topic;
+        }
+
+        if (observerMap.containsKey(topicNew)) {
             return;
         }
 
-        observerMap.put(topic, new CloudEventObserverEntity(level, group, topic, observer));
+        observerMap.put(topicNew, new CloudEventObserverEntity(level, group, topic, observer));
     }
 
     public void subscribe() {

@@ -81,7 +81,7 @@ public class RabbitProducer {
     /**
      * 发布事件
      */
-    public boolean publish(Event event) throws Exception {
+    public boolean publish(Event event, String topic) throws Exception {
         long ttl = 0;
         if (event.scheduled() != null) {
             ttl = event.scheduled().getTime() - System.currentTimeMillis();
@@ -93,7 +93,7 @@ public class RabbitProducer {
             if (config.exchangeType == BuiltinExchangeType.FANOUT) {
                 return publish(event, "", 0);
             } else {
-                return publish(event, event.topic(), 0);
+                return publish(event, topic, 0);
             }
         }
     }
