@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
  * @author noear
  * @since 1.3
  */
-public class MessageUtil {
+class MessageUtil {
     public static Message buildNewMeaage(Event event) {
         String topic = event.topic().replace(".", "_");
 
