@@ -9,7 +9,6 @@ import org.noear.solon.cloud.extend.water.WaterProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
-import org.noear.solon.cloud.service.CloudEventService;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 import org.noear.water.WW;
 import org.noear.water.WaterClient;
