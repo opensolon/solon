@@ -19,6 +19,14 @@ public class FileStaticRepository implements StaticRepository {
      * @param dir 例：/user/
      * */
     public FileStaticRepository(String dir) {
+        if (dir.endsWith("/")) {
+            dir = dir.substring(0, dir.length() - 1);
+        }
+
+        if (dir.startsWith("file://") == false) {
+            dir = "file://" + dir;
+        }
+
         this.dir = dir;
     }
 
