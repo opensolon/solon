@@ -74,7 +74,7 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
             if (Utils.isEmpty(event.group())) {
                 topicNew = event.topic();
             } else {
-                topicNew = event.group() + "::" + event.topic();
+                topicNew = event.group() + RabbitmqProps.GROUP_SPLIT_MART + event.topic();
             }
 
             return producer.publish(event, topicNew);
@@ -92,7 +92,7 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
         if (Utils.isEmpty(group)) {
             topicNew = topic;
         } else {
-            topicNew = group + "::" + topic;
+            topicNew = group + RabbitmqProps.GROUP_SPLIT_MART + topic;
         }
 
         if (observerMap.containsKey(topicNew)) {

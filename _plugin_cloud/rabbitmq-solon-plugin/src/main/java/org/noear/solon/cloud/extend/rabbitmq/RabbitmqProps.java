@@ -8,6 +8,8 @@ import org.noear.solon.cloud.CloudProps;
  * @since 1.2
  */
 public class RabbitmqProps {
+    public static final String GROUP_SPLIT_MART = "::";
+
     static final String EVENT_VIRTUAL_HOST = "solon.cloud.rabbitmq.event.virtualHost";
     static final String EVENT_EXCHANGE = "solon.cloud.rabbitmq.event.exchange";
     static final String EVENT_QUEUE = "solon.cloud.rabbitmq.event.queue";

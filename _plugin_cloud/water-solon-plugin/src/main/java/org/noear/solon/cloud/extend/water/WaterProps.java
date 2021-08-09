@@ -8,6 +8,7 @@ import org.noear.solon.cloud.CloudProps;
  * @since 1.2
  */
 public class WaterProps {
+    public static final String GROUP_SPLIT_MART = "::";
 
     static final String EVENT_RECEIVE = "solon.cloud.water.event.receive";
     static final String EVENT_SEAL = "solon.cloud.water.event.seal";

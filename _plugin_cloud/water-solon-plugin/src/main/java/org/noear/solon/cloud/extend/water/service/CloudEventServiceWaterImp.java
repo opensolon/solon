@@ -65,7 +65,7 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
         if (Utils.isEmpty(event.group())) {
             topicNew = event.topic();
         } else {
-            topicNew = event.group() + "::" + event.topic();
+            topicNew = event.group() + WaterProps.GROUP_SPLIT_MART + event.topic();
         }
 
         try {
@@ -89,7 +89,7 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
             if (Utils.isEmpty(group)) {
                 topicNew = topic;
             } else {
-                topicNew = group + "::" + topic;
+                topicNew = group + WaterProps.GROUP_SPLIT_MART + topic;
             }
 
             clusterObserverMap.putIfAbsent(topicNew, new CloudEventObserverEntity(level, group, topic, observer));

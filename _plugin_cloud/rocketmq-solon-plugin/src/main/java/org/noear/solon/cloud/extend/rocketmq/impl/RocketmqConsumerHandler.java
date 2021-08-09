@@ -40,9 +40,9 @@ public class RocketmqConsumerHandler implements MessageListenerConcurrently {
                 String topicNew = message.getTopic();
                 String group = null;
                 String topic = null;
-                if(topicNew.contains("::")){
-                    group = topicNew.split("::")[0];
-                    topic = topicNew.split("::")[1];
+                if(topicNew.contains(RocketmqProps.GROUP_SPLIT_MART)){
+                    group = topicNew.split(RocketmqProps.GROUP_SPLIT_MART)[0];
+                    topic = topicNew.split(RocketmqProps.GROUP_SPLIT_MART)[1];
                 }else{
                     topic = topicNew;
                 }

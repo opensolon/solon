@@ -85,7 +85,7 @@ public class RabbitConsumeHandler extends DefaultConsumer {
         if (Utils.isEmpty(event.group())) {
             topicNew = event.topic();
         } else {
-            topicNew = event.group() + "::" + event.topic();
+            topicNew = event.group() + RabbitmqProps.GROUP_SPLIT_MART + event.topic();
         }
 
         entity = observerMap.get(topicNew);

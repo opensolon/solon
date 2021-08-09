@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.extend.water.integration.http;
 
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.extend.water.WaterProps;
 import org.noear.solon.cloud.extend.water.service.CloudEventServiceWaterImp;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.core.event.EventBus;
@@ -37,8 +38,8 @@ public class HandlerReceive implements Handler, MessageHandler {
     @Override
     public boolean handler(MessageM msg) throws Throwable {
         Event event = null;
-        if (msg.topic.contains("::")) {
-            String[] groupAndTopic = msg.topic.split("::");
+        if (msg.topic.contains(WaterProps.GROUP_SPLIT_MART)) {
+            String[] groupAndTopic = msg.topic.split(WaterProps.GROUP_SPLIT_MART);
             event = new Event(groupAndTopic[1], msg.message);
             event.group(groupAndTopic[0]);
         } else {

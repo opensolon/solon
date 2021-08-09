@@ -8,6 +8,8 @@ import org.noear.solon.cloud.CloudProps;
  * @since 1.2
  */
 public class RocketmqProps {
+    public static final String GROUP_SPLIT_MART = "--";
+
     static final String EVENT_CONSUMER_GROUP = "solon.cloud.rocketmq.event.consumerGroup";
     static final String EVENT_PRODUCER_GROUP = "solon.cloud.rocketmq.event.producerGroup";
     static final String EVENT_NAMESPACE = "solon.cloud.rocketmq.event.namespace";
