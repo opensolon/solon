@@ -10,13 +10,13 @@ import java.util.Date;
  * @since 1.2
  */
 public class Event implements Serializable {
+    private String group;
     private String topic;
     private String content;
     private String key;
     private String tags;
     private Date scheduled;
     private int times;
-    private transient String group;
     private transient String channel;
     private transient int qos = 1;
     private transient boolean retained = false;
