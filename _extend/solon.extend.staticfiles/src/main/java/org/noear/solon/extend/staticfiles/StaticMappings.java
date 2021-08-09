@@ -8,6 +8,12 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 
+/**
+ * 静态文件印射
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public class StaticMappings extends ArrayList<StaticLocation> {
     private StaticMappings() {
         super();
@@ -27,12 +33,11 @@ public class StaticMappings extends ArrayList<StaticLocation> {
     public StaticMappings add(String start, String location) {
 
         // 去掉头尾的 "/"
-
         if (location.endsWith("/")) {
             location = location.substring(0, location.length() - 1);
         }
 
-        if(location.startsWith("/")){
+        if (location.startsWith("/")) {
             location = location.substring(1);
         }
 
@@ -73,7 +78,18 @@ public class StaticMappings extends ArrayList<StaticLocation> {
                 }
 
                 if (rst == null) {
-                    rst = Utils.getResource(m.location + path);
+                    if (m.location.startsWith("file://")) {
+                        //如果是文件类型
+                        URI uri = URI.create(m.location + path);
+                        File file = new File(uri);
+
+                        if (file.exists()) {
+                            rst = uri.toURL();
+                        }
+                    } else {
+                        //如果是资源类型
+                        rst = Utils.getResource(m.location + path);
+                    }
                 }
 
                 if (rst != null) {

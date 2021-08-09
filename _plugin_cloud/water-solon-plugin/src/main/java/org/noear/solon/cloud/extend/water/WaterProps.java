@@ -9,10 +9,14 @@ import org.noear.solon.cloud.CloudProps;
  */
 public class WaterProps {
 
-    private static final String EVENT_RECEIVE = "solon.cloud.water.event.receive";
+    static final String EVENT_RECEIVE = "solon.cloud.water.event.receive";
+    static final String EVENT_SEAL = "solon.cloud.water.event.seal";
 
     public static final CloudProps instance = new CloudProps("water");
 
+    public static String getEventSeal() {
+        return Solon.cfg().get(EVENT_SEAL);
+    }
 
     public static String getEventReceive() {
         return Solon.cfg().get(EVENT_RECEIVE);

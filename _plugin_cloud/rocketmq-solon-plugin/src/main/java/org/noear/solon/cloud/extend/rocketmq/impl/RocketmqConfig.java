@@ -30,9 +30,9 @@ public class RocketmqConfig {
 
         timeout = RocketmqProps.instance.getEventPublishTimeout();
 
-        namespace = RocketmqProps.namespace();
-        producerGroup = RocketmqProps.producerGroup();
-        consumerGroup = RocketmqProps.consumerGroup();
+        namespace = RocketmqProps.getEventNamespace();
+        producerGroup = RocketmqProps.getEventProducerGroup();
+        consumerGroup = RocketmqProps.getEventConsumerGroup();
 
         if (Utils.isEmpty(producerGroup)) {
             producerGroup = "DEFAULT";

@@ -28,7 +28,7 @@ public class XPluginImp implements Plugin {
             //
             NvMap mimeTypes = app.cfg().getXmap("solon.mime");
             mimeTypes.forEach((k, v) -> {
-                StaticFiles.instance().putIfAbsent("." + k, v);
+                StaticMimes.instance().putIfAbsent("." + k, v);
             });
 
             StaticMappings.instance().add("/", XPluginProp.RES_LOCATION);

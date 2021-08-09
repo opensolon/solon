@@ -2,8 +2,14 @@ package org.noear.solon.extend.staticfiles;
 
 import java.util.HashMap;
 
-public class StaticFiles extends HashMap<String,String> {
-    private StaticFiles() {
+/**
+ * 静态文件类型申明
+ *
+ * @author noear
+ * @since 1.0
+ * */
+public class StaticMimes extends HashMap<String,String> {
+    private StaticMimes() {
         super();
         put(".txt", "text/plain");
 
@@ -34,11 +40,11 @@ public class StaticFiles extends HashMap<String,String> {
 
     }
 
-    private static StaticFiles _instance;
+    private static StaticMimes _instance;
 
-    public static StaticFiles instance() {
+    public static StaticMimes instance() {
         if (_instance == null) {
-            _instance = new StaticFiles();
+            _instance = new StaticMimes();
         }
 
         return _instance;

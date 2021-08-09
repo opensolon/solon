@@ -8,18 +8,25 @@ import java.net.URL;
 import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * 静态文件资源处理
+ *
+ * @author noear
+ * @since 1.0
+ * */
 public class StaticResourceHandler implements Handler {
     private static final String CACHE_CONTROL = "Cache-Control";
     private static final String LAST_MODIFIED = "Last-Modified";
 
     private StaticMappings staticMappings = StaticMappings.instance();
-    private StaticFiles staticFiles = StaticFiles.instance();
+    private StaticMimes staticMimes = StaticMimes.instance();
     private Pattern _rule;
 
     public StaticResourceHandler() {
-        String expr = "(" + String.join("|", staticFiles.keySet()) + ")$";
+        String expr = "(" + String.join("|", staticMimes.keySet()) + ")$";
 
         _rule = Pattern.compile(expr, Pattern.CASE_INSENSITIVE);
+
     }
 
 
@@ -61,7 +68,7 @@ public class StaticResourceHandler implements Handler {
             int idx = path.lastIndexOf(".");
             if (idx > 0) {
                 String suffix = path.substring(idx);
-                String mime = staticFiles.get(suffix);
+                String mime = staticMimes.get(suffix);
 
                 if (mime != null) {
                     if (XPluginProp.maxAge() > 0) {

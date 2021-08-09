@@ -39,7 +39,7 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
 
         this.eventChannelName = WaterProps.instance.getEventChannel();
 
-        this.seal = WaterProps.instance.getEventSeal();
+        this.seal = WaterProps.getEventSeal();
 
         if (Utils.isEmpty(seal)) {
             seal = DEFAULT_DEAL;

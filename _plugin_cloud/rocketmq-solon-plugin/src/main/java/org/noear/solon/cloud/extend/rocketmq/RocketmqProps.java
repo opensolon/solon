@@ -8,22 +8,30 @@ import org.noear.solon.cloud.CloudProps;
  * @since 1.2
  */
 public class RocketmqProps {
-    private static final String EVENT_CONSUMERGROUP = "solon.cloud.rocketmq.event.consumerGroup";
-    private static final String EVENT_PRODUCERGROUP = "solon.cloud.rocketmq.event.producerGroup";
-    private static final String EVENT_NAMESPACE = "solon.cloud.rocketmq.event.namespace";
+    static final String EVENT_CONSUMER_GROUP = "solon.cloud.rocketmq.event.consumerGroup";
+    static final String EVENT_PRODUCER_GROUP = "solon.cloud.rocketmq.event.producerGroup";
+    static final String EVENT_NAMESPACE = "solon.cloud.rocketmq.event.namespace";
 
     public static final CloudProps instance = new CloudProps("rocketmq");
 
-
-    public static String namespace() {
+    /**
+     * 命名空间
+     * */
+    public static String getEventNamespace() {
         return Solon.cfg().get(EVENT_NAMESPACE);
     }
 
-    public static String consumerGroup() {
-        return Solon.cfg().get(EVENT_CONSUMERGROUP);
+    /**
+     * 消费组
+     * */
+    public static String getEventConsumerGroup() {
+        return Solon.cfg().get(EVENT_CONSUMER_GROUP);
     }
 
-    public static String producerGroup() {
-        return Solon.cfg().get(EVENT_PRODUCERGROUP);
+    /**
+     * 产品组
+     * */
+    public static String getEventProducerGroup() {
+        return Solon.cfg().get(EVENT_PRODUCER_GROUP);
     }
 }

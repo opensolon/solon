@@ -68,12 +68,12 @@ public class RabbitConfig {
     public String queue_retry;
 
     public RabbitConfig() {
-        exchangeName = RabbitmqProps.instance.getEventExchange();
+        exchangeName = RabbitmqProps.getEventExchange();
         if (Utils.isEmpty(exchangeName)) {
             exchangeName = "DEFAULT";
         }
 
-        String queueName = RabbitmqProps.instance.getEventQueue();
+        String queueName = RabbitmqProps.getEventQueue();
 
         if (Utils.isEmpty(queueName)) {
             queueName = Solon.cfg().appGroup() + "_" + Solon.cfg().appName();

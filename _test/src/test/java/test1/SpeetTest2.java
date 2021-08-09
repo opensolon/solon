@@ -1,9 +1,7 @@
 package test1;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.noear.solon.extend.staticfiles.StaticFiles;
-import org.noear.solon.test.SolonJUnit4ClassRunner;
+import org.noear.solon.extend.staticfiles.StaticMimes;
 
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -14,7 +12,7 @@ public class SpeetTest2 {
 
     @Test
     public void test1() {
-        String expr = "(" + String.join("|", StaticFiles.instance().keySet()) + ")$";
+        String expr = "(" + String.join("|", StaticMimes.instance().keySet()) + ")$";
 
         String path1 = "/file.txt";
         String path2 = "/file.eot";
@@ -38,7 +36,7 @@ public class SpeetTest2 {
 
     @Test
     public void test2() {
-        String expr = "(" + String.join("|", StaticFiles.instance().keySet()) + ")$";
+        String expr = "(" + String.join("|", StaticMimes.instance().keySet()) + ")$";
 
         String path1 = "/file.txt";
         String path2 = "/file.eot";
@@ -47,7 +45,7 @@ public class SpeetTest2 {
 
         time_start = System.currentTimeMillis();
         for (int i = 0; i < 100000; i++) {
-            for(Map.Entry<String,String> kv : StaticFiles.instance().entrySet()){
+            for(Map.Entry<String,String> kv : StaticMimes.instance().entrySet()){
                 if(path1.indexOf(kv.getKey()) > 0){
                     break;
                 }
@@ -58,7 +56,7 @@ public class SpeetTest2 {
 
         time_start = System.currentTimeMillis();
         for (int i = 0; i < 100000; i++) {
-            for(Map.Entry<String,String> kv : StaticFiles.instance().entrySet()){
+            for(Map.Entry<String,String> kv : StaticMimes.instance().entrySet()){
                 if(path2.indexOf(kv.getKey()) > 0){
                     break;
                 }
