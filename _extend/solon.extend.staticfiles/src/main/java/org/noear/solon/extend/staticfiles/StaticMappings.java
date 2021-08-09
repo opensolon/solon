@@ -15,19 +15,19 @@ public class StaticMappings {
 
     /**
      * 添加印射关系
-     * */
-    public static void add(String start, StaticRepository repository) {
-        locationList.add(new StaticLocation(start, repository));
+     */
+    public static void add(String pathPrefix, StaticRepository repository) {
+        locationList.add(new StaticLocation(pathPrefix, repository));
     }
 
     /**
      * 查询静态资源
-     * */
+     */
     public static URL find(String path) throws Exception {
         URL rst = null;
 
         for (StaticLocation m : locationList) {
-            if (path.startsWith(m.start)) {
+            if (path.startsWith(m.pathPrefix)) {
                 rst = m.repository.find(path);
 
                 if (rst != null) {

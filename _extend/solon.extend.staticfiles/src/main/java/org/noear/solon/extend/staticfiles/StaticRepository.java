@@ -3,7 +3,7 @@ package org.noear.solon.extend.staticfiles;
 import java.net.URL;
 
 /**
- * 资源工厂
+ * 静态仓库
  *
  * @author noear
  * @since 1.5

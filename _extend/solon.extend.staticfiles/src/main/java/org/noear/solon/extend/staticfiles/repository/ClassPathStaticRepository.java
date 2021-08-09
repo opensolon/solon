@@ -9,6 +9,8 @@ import java.net.URI;
 import java.net.URL;
 
 /**
+ * 类路径型静态仓库
+ *
  * @author noear
  * @since 1.5
  */

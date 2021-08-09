@@ -7,12 +7,17 @@ import java.net.URI;
 import java.net.URL;
 
 /**
+ * 文件型静态仓库
+ *
  * @author noear
  * @since 1.5
  */
 public class FileStaticRepository implements StaticRepository {
     String dir;
 
+    /**
+     * @param dir 例：/user/
+     * */
     public FileStaticRepository(String dir) {
         this.dir = dir;
     }
