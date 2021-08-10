@@ -19,9 +19,13 @@ public class App {
         Solon.start(App.class, args);
 
         //添加静态目录印射
-        StaticMappings.add("/", new ExtendStaticRepository());
+        
+        //添加扩展目录：${solon.extend}/static/
+        StaticMappings.add("/", new ExtendStaticRepository()); 
+        //添加固定目录
         StaticMappings.add("/", new FileStaticRepository("/data/sss/water/water_ext/"));
-        StaticMappings.add("/", new ClassPathStaticRepository("/user/"));
+        //添加资源路径
+        StaticMappings.add("/", new ClassPathStaticRepository("user/"));
     }
 }
 ```
