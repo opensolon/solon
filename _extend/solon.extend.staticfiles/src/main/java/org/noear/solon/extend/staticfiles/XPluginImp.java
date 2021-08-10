@@ -24,7 +24,13 @@ public class XPluginImp implements Plugin {
         //加载一个配置
         XPluginProp.maxAge();
 
-        if (Utils.getResource(XPluginProp.RES_LOCATION) != null) {
+        //尝试添加默认静态资源地址
+        if (Utils.getResource(XPluginProp.RES_STATIC_LOCATION) != null) {
+            StaticMappings.add("/", new ClassPathStaticRepository(XPluginProp.RES_STATIC_LOCATION));
+        }
+
+        //尝试启动静态代理
+        if (StaticMappings.count() > 0) {
             //1.加载自定义的mime
             //
             NvMap mimeTypes = app.cfg().getXmap("solon.mime");
@@ -32,12 +38,10 @@ public class XPluginImp implements Plugin {
                 StaticMimes.instance().putIfAbsent("." + k, v);
             });
 
-            StaticMappings.add("/", new ClassPathStaticRepository(XPluginProp.RES_LOCATION));
 
             //2.切换代理（让静态文件优先）
             HandlerPipeline pipeline = new HandlerPipeline();
             pipeline.next(new StaticResourceHandler()).next(app.handlerGet());
-
             app.handlerSet(pipeline);
         }
     }

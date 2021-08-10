@@ -12,6 +12,13 @@ import java.util.List;
  * */
 public class StaticMappings {
     static final List<StaticLocation> locationList = new ArrayList<>();
+    
+    /**
+     * 印射数量
+     * */
+    public static int count(){
+        return locationList.size();
+    }
 
     /**
      * 添加印射关系
