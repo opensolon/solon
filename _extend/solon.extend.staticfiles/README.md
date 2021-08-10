@@ -8,7 +8,7 @@ solon.staticfiles:
   enabled: true
   maxAge: 6000
 
-solon.extend: "!jt_ext" #!开头，表示如果没有扩展目录则自动创建
+solon.extend: "!jt_ext" #!开头，表示如果没有扩展目录则自动创建 //用于支持 ExtendStaticRepository
 ```
 
 **代码**
