@@ -7,6 +7,8 @@ solon.mime.json: "application/json"
 solon.staticfiles:
   enabled: true
   maxAge: 6000
+
+solon.extend: "!water_ext" #!开头，表示如果没有扩展目录则自动创建
 ```
 
 **代码**
@@ -18,7 +20,7 @@ public class App {
 
         //添加静态目录印射
         StaticMappings.add("/", new ExtendStaticRepository());
-        StaticMappings.add("/", new FileStaticRepository("/data/sss/eater/water_ext/"));
+        StaticMappings.add("/", new FileStaticRepository("/data/sss/water/water_ext/"));
         StaticMappings.add("/", new ClassPathStaticRepository("/user/"));
     }
 }
