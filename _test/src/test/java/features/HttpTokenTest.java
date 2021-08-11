@@ -18,7 +18,7 @@ public class HttpTokenTest extends HttpTestBase {
     @Test
     public void token_err() throws IOException {
         assert path("/demo2/session/token_err")
-                .header("Token","xx.xx.xxxxxxxx")
+                .header("Set-Cookie","Token=xx.xx.xxxxxxxx")
                 .get().equals("ok");
     }
 }

@@ -92,7 +92,7 @@ public class TestApp {
 //        });
 
         //预热测试
-        PreheatUtils.preheat("/demo1/run0/");
+        //PreheatUtils.preheat("/demo1/run0/");
 
         logger.debug("测试");
 

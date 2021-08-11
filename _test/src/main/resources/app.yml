@@ -62,10 +62,6 @@ server.session:
       password: 123456
       db: 3
       maxTotaol: 200
-    jwt:
-      name: TOKEN
-      secret: "E3F9N2kRDQf55pnJPnFoo5+ylKmZQ7AXmWeOVPKbEd8="
-      allowUseHeader: true
 
 #特殊信息输出
 solon.output.meta: 1
