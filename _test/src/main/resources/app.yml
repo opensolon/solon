@@ -53,11 +53,19 @@ solon.socketd:
   connectTimeout: "60s"
   socketTimeout: "60s"
 
-server.session.state.redis:
-  server: localhost:6379
-  password: 123456
-  db: 3
-  maxTotaol: 200
+
+server.session:
+  timeout: 7200 #单位秒；（可不配，默认：7200）
+  state:
+    redis:
+      server: localhost:6379
+      password: 123456
+      db: 3
+      maxTotaol: 200
+    jwt:
+      name: TOKEN
+      secret: "E3F9N2kRDQf55pnJPnFoo5+ylKmZQ7AXmWeOVPKbEd8="
+      allowUseHeader: true
 
 #特殊信息输出
 solon.output.meta: 1

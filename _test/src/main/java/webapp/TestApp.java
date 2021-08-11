@@ -46,6 +46,7 @@ public class TestApp {
         SolonApp app = new SolonBuilder().onError(e -> {
             e.printStackTrace();
         }).onAppInitEnd(e -> {
+            StaticMappings.add("/", new ExtendStaticRepository());
             System.out.println("1.初始化完成");
         }).onPluginLoadEnd(e -> {
             System.out.println("2.插件加载完成了");
@@ -55,7 +56,7 @@ public class TestApp {
             System.out.println("4.应用全加载完成了");
         }).start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
 
-        StaticMappings.add("/", new ExtendStaticRepository());
+
 
         //extend: /Users/noear/WORK/work_github/noear/solon/_test/target/app_ext/
         //System.out.println("extend: " + ExtendLoader.path()+"static");
