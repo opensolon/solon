@@ -97,6 +97,8 @@ public class JwtSessionState extends SessionStateDefault {
         if (sessionMap == null) {
             synchronized (this) {
                 if (sessionMap == null) {
+                    sessionMap = new DefaultClaims(); //先初始化一下，避免异常时进入死循环
+
                     String sesId = sessionId();
                     String token = jwtGet();
 
@@ -115,10 +117,6 @@ public class JwtSessionState extends SessionStateDefault {
                                 }
                             }
                         }
-                    }
-
-                    if (sessionMap == null) {
-                        sessionMap = new DefaultClaims();
                     }
 
                     sessionToken = null;
