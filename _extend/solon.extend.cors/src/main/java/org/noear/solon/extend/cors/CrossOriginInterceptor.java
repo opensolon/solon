@@ -6,39 +6,60 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.extend.cors.annotation.CrossOrigin;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author noear
  * @since 1.3
  */
 public class CrossOriginInterceptor implements Handler {
+    Map<CrossOrigin, CrossHandler> handlerMap = new HashMap<>();
+
     @Override
     public void handle(Context ctx) throws Throwable {
         Action action = ctx.action();
         if (action != null) {
-            CrossOrigin anno;
+            CrossOrigin anno = action.method().getAnnotation(CrossOrigin.class);
+            if (anno == null) {
+                anno = action.bean().annotationGet(CrossOrigin.class);
+            }
 
-            anno = action.method().getAnnotation(CrossOrigin.class);
-            if (anno != null) {
-                handleDo(ctx, anno);
+            if (anno == null) {
                 return;
             }
 
-            anno = action.bean().annotationGet(CrossOrigin.class);
-            if (anno != null) {
-                handleDo(ctx, anno);
-                return;
-            }
+            handleDo(ctx, anno);
         }
     }
 
-    protected void handleDo(Context ctx, CrossOrigin anno) {
-        String origins = anno.origins();
+    protected void handleDo(Context ctx, CrossOrigin anno) throws Throwable {
+        CrossHandler handler = handlerMap.get(anno);
 
-        if (origins.startsWith("${")) {
-            origins = Solon.cfg().get(origins.substring(2, origins.length() - 1));
+        if (handler == null) {
+            synchronized (anno) {
+                handler = handlerMap.get(anno);
+
+                if (handler == null) {
+                    handler = new CrossHandler();
+
+                    String origins = anno.origins();
+
+                    if (origins.startsWith("${")) {
+                        origins = Solon.cfg().get(origins.substring(2, origins.length() - 1));
+                    }
+
+                    handler.maxAge(anno.maxAge());
+                    handler.allowOrigin(origins);
+                    handler.allowCredentials(anno.credentials());
+                    handler.allowMethods("*");
+                    handler.allowHeaders("*");
+
+                    handlerMap.put(anno, handler);
+                }
+            }
         }
 
-        ctx.headerSet("Access-Control-Allow-Origin", origins);
-        ctx.headerSet("Access-Control-Max-Age", String.valueOf(anno.maxAge()));
+        handler.handle(ctx);
     }
 }

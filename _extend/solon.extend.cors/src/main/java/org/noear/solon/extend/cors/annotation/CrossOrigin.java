@@ -17,8 +17,14 @@ import java.lang.annotation.*;
 public @interface CrossOrigin {
     @Note("支持配置模式： ${xxx}")
     String origins() default "*";
+
     /**
-     * 默认：10分钟检测一次
+     * 检测有效时间。默认：10分钟检测一次
      * */
     int maxAge() default 3600;
+
+    /**
+     * 允许认证
+     * */
+    boolean credentials() default false;
 }

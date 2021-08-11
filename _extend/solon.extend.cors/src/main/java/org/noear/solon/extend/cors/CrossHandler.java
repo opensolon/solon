@@ -53,19 +53,53 @@ public class CrossHandler implements Handler {
 
     @Override
     public void handle(Context ctx) throws Throwable {
-        ctx.headerSet("Access-Control-Allow-Origin", allowOrigin);
+        String origin = ctx.header("Origin");
+
+        if (Utils.isEmpty(origin)) {
+            //如果没有 Origin 则不输出 Cross Header
+            return;
+        }
+
+        //设定 max age
         ctx.headerSet("Access-Control-Max-Age", String.valueOf(maxAge));
 
+        //设定 allow headers
         if (Utils.isNotEmpty(allowHeaders)) {
-            ctx.headerSet("Access-Control-Allow-Headers", allowHeaders);
+            if ("*".equals(allowHeaders)) {
+                String requestHeaders = ctx.header("Access-Control-Request-Headers");
+
+                if (Utils.isNotEmpty(requestHeaders)) {
+                    ctx.headerSet("Access-Control-Allow-Headers", requestHeaders);
+                }
+            } else {
+                ctx.headerSet("Access-Control-Allow-Headers", allowHeaders);
+            }
         }
 
+        //设定 allow methods
         if (Utils.isNotEmpty(allowMethods)) {
-            ctx.headerSet("Access-Control-Allow-Methods", allowMethods);
+            if ("*".equals(allowMethods)) {
+                String requestMethod = ctx.header("Access-Control-Request-Method");
+
+                //如果没有请求方式，则使用当前请求方式
+                if (Utils.isEmpty(requestMethod)) {
+                    requestMethod = ctx.method();
+                }
+
+                if (Utils.isNotEmpty(requestMethod)) {
+                    ctx.headerSet("Access-Control-Allow-Methods", requestMethod);
+                }
+            } else {
+                ctx.headerSet("Access-Control-Allow-Methods", allowMethods);
+            }
         }
 
+        //设定 allow origin
         if (allowCredentials) {
-            ctx.headerSet("Access-Control-Allow-Credentials", String.valueOf(allowCredentials));
+            ctx.headerSet("Access-Control-Allow-Credentials", "true");
+            ctx.headerSet("Access-Control-Allow-Origin", origin);
+        } else {
+            ctx.headerSet("Access-Control-Allow-Origin", allowOrigin);
         }
     }
 }
