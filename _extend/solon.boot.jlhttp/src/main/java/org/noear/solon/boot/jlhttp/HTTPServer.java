@@ -1,5 +1,5 @@
-package org.noear.solon.boot.jlhttp;/*
- *  Copyright © 2005-2018 Amichai Rothman
+/*
+ *  Copyright © 2005-2021 Amichai Rothman
  *
  *  This file is part of JLHTTP - the Java Lightweight HTTP Server.
  *
@@ -19,18 +19,11 @@ package org.noear.solon.boot.jlhttp;/*
  *  For additional info see http://www.freeutils.net/source/jlhttp/
  */
 
-import org.noear.solon.core.event.EventBus;
+package org.noear.solon.boot.jlhttp;
 
-import javax.net.ServerSocketFactory;
-import javax.net.ssl.SSLServerSocketFactory;
-import javax.net.ssl.SSLSocket;
 import java.io.*;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.annotation.*;
+import java.lang.reflect.*;
 import java.net.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,6 +31,9 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.GZIPOutputStream;
+import javax.net.ServerSocketFactory;
+import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSocket;
 
 /**
  * The {@code HTTPServer} class implements a light-weight HTTP server.
@@ -484,6 +480,28 @@ public class HTTPServer {
     }
 
     /**
+     * The {@code ResponseOutputStream} encompasses a single response over a connection,
+     * and does not close the underlying stream so that it can be used by subsequent responses.
+     */
+    public static class ResponseOutputStream extends FilterOutputStream {
+
+        /**
+         * Constructs a ResponseOutputStream.
+         *
+         * @param out the underlying output stream
+         */
+        public ResponseOutputStream(OutputStream out) {
+            super(out);
+        }
+
+        @Override
+        public void close() {} // keep underlying connection stream open
+
+        @Override // override the very inefficient default implementation
+        public void write(byte[] b, int off, int len) throws IOException { out.write(b, off, len); }
+    }
+
+    /**
      * The {@code MultipartInputStream} decodes an InputStream whose data has
      * a "multipart/*" content type (see RFC 2046), providing the underlying
      * data of its various parts.
@@ -786,8 +804,6 @@ public class HTTPServer {
      */
     public static class VirtualHost {
 
-        public static final String DEFAULT_HOST_NAME = "~DEFAULT~";
-
         /**
          * The {@code ContextInfo} class holds a single context's information.
          */
@@ -942,7 +958,7 @@ public class HTTPServer {
 
         /**
          * Returns the context handler for the given path.
-         *
+         * <p>
          * If a context is not found for the given path, the search is repeated for
          * its parent path, and so on until a base context is found. If neither the
          * given path nor any of its parents has a context, an empty context is returned.
@@ -975,7 +991,7 @@ public class HTTPServer {
             path = trimRight(path, '/'); // remove trailing slash
             ContextInfo info = new ContextInfo(path);
             ContextInfo existing = contexts.putIfAbsent(path, info);
-            info = (existing != null ? existing : info);
+            info = existing != null ? existing : info;
             info.addHandler(handler, methods);
         }
 
@@ -1147,7 +1163,7 @@ public class HTTPServer {
 
     /**
      * The {@code Headers} class encapsulates a collection of HTTP headers.
-     *
+     * <p>
      * Header names are treated case-insensitively, although this class retains
      * their original case. Header insertion order is maintained as well.
      */
@@ -1326,24 +1342,25 @@ public class HTTPServer {
     public class Request {
 
         protected String method;
-        protected URI originalUri;
         protected URI uri;
         protected URL baseURL; // cached value
         protected String version;
         protected Headers headers;
         protected InputStream body;
+        protected Socket sock;
         protected Map<String, String> params; // cached value
         protected VirtualHost host; // cached value
         protected VirtualHost.ContextInfo context; // cached value
-        protected InetAddress _remote;
 
         /**
          * Constructs a Request from the data in the given input stream.
          *
          * @param in the input stream from which the request is read
+         * @param sock the underlying connected socket
          * @throws IOException if an error occurs
          */
-        public Request(InputStream in) throws IOException {
+        public Request(InputStream in, Socket sock) throws IOException {
+            this.sock = sock;
             readRequestLine(in);
             headers = readHeaders(in);
             // RFC2616#3.6 - if "chunked" is used, it must be the last one
@@ -1365,14 +1382,6 @@ public class HTTPServer {
             }
         }
 
-        public String getRemoteAddr() {
-            if (_remote == null) {
-                return "";
-            } else {
-                return _remote.getHostAddress();
-            }
-        }
-
         /**
          * Returns the request method.
          *
@@ -1386,9 +1395,6 @@ public class HTTPServer {
          * @return the request URI
          */
         public URI getURI() { return uri; }
-
-        //xyj,2018,1220
-        public URI getOriginalUri(){return originalUri;}
 
         /**
          * Returns the request version string.
@@ -1412,6 +1418,13 @@ public class HTTPServer {
         public InputStream getBody() { return body; }
 
         /**
+         * Returns the underlying socket, which can be used to retrieve connection meta-data.
+         *
+         * @return the underlying socket
+         */
+        public Socket getSocket() { return sock; }
+
+        /**
          * Returns the path component of the request URI, after
          * URL decoding has been applied (using the UTF-8 charset).
          *
@@ -1419,10 +1432,6 @@ public class HTTPServer {
          */
         public String getPath() {
             return uri.getPath();
-        }
-
-        public String getQueryString(){
-            return uri.getQuery();
         }
 
         /**
@@ -1434,8 +1443,8 @@ public class HTTPServer {
          */
         public void setPath(String path) {
             try {
-                uri = new URI(uri.getScheme(), uri.getHost(),
-                        trimDuplicates(path, '/'), uri.getQuery(), uri.getFragment());//xyj,20181220,+query
+                uri = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(),
+                    trimDuplicates(path, '/'), uri.getQuery(), uri.getFragment());
                 context = null; // clear cached context so it will be recalculated
             } catch (URISyntaxException use) {
                 throw new IllegalArgumentException("error setting path", use);
@@ -1454,7 +1463,6 @@ public class HTTPServer {
             if (baseURL != null)
                 return baseURL;
             // normalize host header
-
             String host = uri.getHost();
             if (host == null) {
                 host = headers.get("Host");
@@ -1464,14 +1472,7 @@ public class HTTPServer {
             int pos = host.indexOf(':');
             host = pos < 0 ? host : host.substring(0, pos);
             try {
-                baseURL = new URL(secure ? "https" : "http", host, port, "");
-                try {
-                    originalUri = new URI(baseURL.getProtocol(),null, baseURL.getHost(),baseURL.getPort(), uri.getPath(), uri.getQuery(), uri.getFragment());
-                }catch (Exception ex) {
-                    EventBus.push(ex);
-                }
-
-                return baseURL;
+                return baseURL = new URL(secure ? "https" : "http", host, port, "");
             } catch (MalformedURLException mue) {
                 return null;
             }
@@ -1494,26 +1495,23 @@ public class HTTPServer {
          * @throws IOException if an error occurs
          * @see HTTPServer#parseParamsList(String)
          */
-        private List<String[]> _paramsList;//xyj,20190110,添加寄存功能。免得第一次拿没了
+        private List<String[]> _paramsList;
         public List<String[]> getParamsList() throws IOException {
-            if(_paramsList == null){
-                _paramsList = do_getParamsList();
+            if(_paramsList == null) {
+                List<String[]> queryParams = parseParamsList(uri.getRawQuery());
+                List<String[]> bodyParams = Collections.emptyList();
+                String ct = headers.get("Content-Type");
+                if (ct != null && ct.toLowerCase(Locale.US).startsWith("application/x-www-form-urlencoded"))
+                    bodyParams = parseParamsList(readToken(body, -1, "UTF-8", 2097152)); // 2MB limit
+                if (bodyParams.isEmpty())
+                    return queryParams;
+                if (queryParams.isEmpty())
+                    return bodyParams;
+                queryParams.addAll(bodyParams);
+
+                _paramsList = queryParams;
             }
             return _paramsList;
-        }
-
-        private List<String[]> do_getParamsList() throws IOException {
-            List<String[]> queryParams = parseParamsList(uri.getRawQuery());
-            List<String[]> bodyParams = Collections.emptyList();
-            String ct = headers.get("Content-Type");
-            if (ct != null && ct.toLowerCase(Locale.US).startsWith("application/x-www-form-urlencoded"))
-                bodyParams = parseParamsList(readToken(body, -1, "UTF-8", 2097152)); // 2MB limit
-            if (bodyParams.isEmpty())
-                return queryParams;
-            if (queryParams.isEmpty())
-                return bodyParams;
-            queryParams.addAll(bodyParams);
-            return queryParams;
         }
 
         /**
@@ -1611,7 +1609,7 @@ public class HTTPServer {
     public class Response implements Closeable {
 
         protected OutputStream out; // the underlying output stream
-        protected OutputStream[] encoders = new OutputStream[4]; // chained encoder streams
+        protected OutputStream encodedOut; // chained encoder streams
         protected Headers headers;
         protected boolean discardBody;
         protected int state; // nothing sent, headers sent, or closed
@@ -1680,27 +1678,19 @@ public class HTTPServer {
          * @throws IOException if an error occurs
          */
         public OutputStream getBody() throws IOException {
-            if (encoders[0] != null || discardBody)
-                return encoders[0]; // return the existing stream (or null)
+            if (encodedOut != null || discardBody)
+                return encodedOut; // return the existing stream (or null)
             // set up chain of encoding streams according to headers
             List<String> te = Arrays.asList(splitElements(headers.get("Transfer-Encoding"), true));
             List<String> ce = Arrays.asList(splitElements(headers.get("Content-Encoding"), true));
-            int i = encoders.length - 1;
-            encoders[i] = new FilterOutputStream(out) {
-                @Override
-                public void close() {} // keep underlying connection stream open for now
-                @Override // override the very inefficient default implementation
-                public void write(byte[] b, int off, int len) throws IOException { out.write(b, off, len); }
-            };
+            encodedOut = new ResponseOutputStream(out); // leaves underlying stream open when closed
             if (te.contains("chunked"))
-                encoders[--i] = new ChunkedOutputStream(encoders[i + 1]);
+                encodedOut = new ChunkedOutputStream(encodedOut);
             if (ce.contains("gzip") || te.contains("gzip"))
-                encoders[--i] = new GZIPOutputStream(encoders[i + 1], 4096);
+                encodedOut = new GZIPOutputStream(encodedOut, 4096);
             else if (ce.contains("deflate") || te.contains("deflate"))
-                encoders[--i] = new DeflaterOutputStream(encoders[i + 1]);
-            encoders[0] = encoders[i];
-            encoders[i] = null; // prevent duplicate reference
-            return encoders[0]; // returned stream is always first
+                encodedOut = new DeflaterOutputStream(encodedOut);
+            return encodedOut; // return the outer-most stream
         }
 
         /**
@@ -1710,8 +1700,8 @@ public class HTTPServer {
          */
         public void close() throws IOException {
             state = -1; // closed
-            if (encoders[0] != null)
-                encoders[0].close(); // close all chained streams (except the underlying one)
+            if (encodedOut != null)
+                encodedOut.close(); // close all chained streams (except the underlying one)
             out.flush(); // always flush underlying stream (even if getBody was never called)
         }
 
@@ -1730,7 +1720,7 @@ public class HTTPServer {
                 throw new IOException("headers were already sent");
             if (!headers.contains("Date"))
                 headers.add("Date", formatDate(System.currentTimeMillis()));
-            headers.add("Server", "JLHTTP/2.4");
+            headers.add("Server", "JLHTTP/2.6");
             out.write(getBytes("HTTP/1.1 ", Integer.toString(status), " ", statuses[status]));
             out.write(CRLF);
             headers.writeTo(out);
@@ -1760,7 +1750,7 @@ public class HTTPServer {
          * @throws IOException if an error occurs
          */
         public void sendHeaders(int status, long length, long lastModified,
-                                String etag, String contentType, long[] range) throws IOException {
+                String etag, String contentType, long[] range) throws IOException {
             if (range != null) {
                 headers.add("Content-Range", "bytes " + range[0] + "-" +
                     range[1] + "/" + (length >= 0 ? length : "*"));
@@ -1772,13 +1762,7 @@ public class HTTPServer {
             if (ct == null) {
                 ct = contentType != null ? contentType : "application/octet-stream";
                 headers.add("Content-Type", ct);
-            }else {
-                if (contentType != null) { //xyj,20181220
-                    ct = contentType;
-                    headers.replace("Content-Type", ct);
-                }
             }
-
             if (!headers.contains("Content-Length") && !headers.contains("Transfer-Encoding")) {
                 // RFC2616#3.6: transfer encodings are case-insensitive and must not be sent to an HTTP/1.0 client
                 boolean modern = req != null && req.getVersion().endsWith("1.1");
@@ -1861,7 +1845,7 @@ public class HTTPServer {
          * response headers have been sent (and indicate that there is a body).
          *
          * @param body a stream containing the response body
-         * @param length the full length of the response body
+         * @param length the full length of the response body, or -1 for the whole stream
          * @param range the sub-range within the response body that should be
          *        sent, or null if the entire body should be sent
          * @throws IOException if an error occurs
@@ -1923,7 +1907,7 @@ public class HTTPServer {
                                 try {
                                     sock.setSoTimeout(socketTimeout);
                                     sock.setTcpNoDelay(true); // we buffer anyway, so improve latency
-                                    handleConnection(sock, sock.getInputStream(), sock.getOutputStream());
+                                    handleConnection(sock.getInputStream(), sock.getOutputStream(), sock);
                                 } finally {
                                     try {
                                         // RFC7230#6.6 - close socket gracefully
@@ -2020,12 +2004,12 @@ public class HTTPServer {
     /**
      * Returns the virtual host with the given name.
      *
-     * @param name the name of the virtual host to return, or null for
-     *        the default virtual host
+     * @param name the name of the virtual host to return,
+     *        or null for the default virtual host
      * @return the virtual host with the given name, or null if it doesn't exist
      */
     public VirtualHost getVirtualHost(String name) {
-        return hosts.get(name == null ? VirtualHost.DEFAULT_HOST_NAME : name);
+        return hosts.get(name == null ? "" : name);
     }
 
     /**
@@ -2045,7 +2029,7 @@ public class HTTPServer {
      */
     public void addVirtualHost(VirtualHost host) {
         String name = host.getName();
-        hosts.put(name == null ? VirtualHost.DEFAULT_HOST_NAME : name, host);
+        hosts.put(name == null ? "" : name, host);
     }
 
     /**
@@ -2109,9 +2093,10 @@ public class HTTPServer {
      *
      * @param in the stream from which the incoming requests are read
      * @param out the stream into which the outgoing responses are written
+     * @param sock the connected socket
      * @throws IOException if an error occurs
      */
-    protected void handleConnection(Socket socket, InputStream in, OutputStream out) throws IOException {
+    protected void handleConnection(InputStream in, OutputStream out, Socket sock) throws IOException {
         in = new BufferedInputStream(in, 4096);
         out = new BufferedOutputStream(out, 4096);
         Request req;
@@ -2121,8 +2106,7 @@ public class HTTPServer {
             req = null;
             resp = new Response(out);
             try {
-                req = new Request(in);
-                req._remote = socket.getInetAddress();//xyj,201901,add remoteAddr
+                req = new Request(in, sock);
                 handleTransaction(req, resp);
             } catch (Throwable t) { // unhandled errors (not normal error responses like 404)
                 if (req == null) { // error reading request
@@ -2151,7 +2135,7 @@ public class HTTPServer {
 
     /**
      * Handles a single transaction on a connection.
-     *
+     * <p>
      * Subclasses can override this method to perform filtering on the
      * request or response, apply wrappers to them, or further customize
      * the transaction processing in some other way.
@@ -2224,7 +2208,7 @@ public class HTTPServer {
         if (method.equals("GET") || handlers.containsKey(method)) {
             serve(req, resp); // method is handled by context handler (or 404)
         } else if (method.equals("HEAD")) { // default HEAD handler
-            //req.method = "HEAD"; // identical to a GET //保留原有的HEAD
+            req.method = "GET"; // identical to a GET
             resp.setDiscardBody(true); // process normally but discard body
             serve(req, resp);
         } else if (method.equals("TRACE")) { // default TRACE handler
@@ -2316,12 +2300,11 @@ public class HTTPServer {
     /**
      * Adds Content-Type mappings from a standard mime.types file.
      *
-     * @param mimeTypes a mime.types file
+     * @param in a stream containing a mime.types file
      * @throws IOException if an error occurs
      * @throws FileNotFoundException if the file is not found or cannot be read
      */
-    public static void addContentTypes(File mimeTypes) throws IOException {
-        InputStream in = new FileInputStream(mimeTypes);
+    public static void addContentTypes(InputStream in) throws IOException {
         try {
             while (true) {
                 String line = readLine(in).trim(); // throws EOFException when done
@@ -2502,7 +2485,7 @@ public class HTTPServer {
 
     /**
      * Parses a date string in one of the supported {@link #DATE_PATTERNS}.
-     *
+     * <p>
      * Received date header values must be in one of the following formats:
      * Sun, 06 Nov 1994 08:49:37 GMT  ; RFC 822, updated by RFC 1123
      * Sunday, 06-Nov-94 08:49:37 GMT ; RFC 850, obsoleted by RFC 1036
@@ -2590,7 +2573,7 @@ public class HTTPServer {
                 elements.add(element);
             start = end + 1;
         }
-        return elements.toArray(new String[elements.size()]);
+        return elements.toArray(new String[0]);
     }
 
     /**
@@ -2731,12 +2714,12 @@ public class HTTPServer {
         int n = 0;
         for (String s : strings)
             n += s.length();
-        byte[] dest = new byte[n];
+        byte[] b = new byte[n];
         n = 0;
         for (String s : strings)
             for (int i = 0, len = s.length(); i < len; i++)
-                dest[n++] = (byte)s.charAt(i);
-        return dest;
+                b[n++] = (byte)s.charAt(i);
+        return b;
     }
 
     /**
@@ -2770,6 +2753,7 @@ public class HTTPServer {
     /**
      * Reads the token starting at the current stream position and ending at
      * the first occurrence of the given delimiter byte, in the given encoding.
+     * If LF is specified as the delimiter, a CRLF pair is also treated as one.
      *
      * @param in the stream from which the token is read
      * @param delim the byte value which marks the end of the token,
@@ -2783,27 +2767,31 @@ public class HTTPServer {
      *         is reached before the token end is reached
      */
     public static String readToken(InputStream in, int delim,
-                                   String enc, int maxLength) throws IOException {
+            String enc, int maxLength) throws IOException {
         // note: we avoid using a ByteArrayOutputStream here because it
         // suffers the overhead of synchronization for each byte written
-        int buflen = maxLength < 512 ? maxLength : 512; // start with less
-        byte[] buf = new byte[buflen];
-        int count = 0;
-        int c;
-        while ((c = in.read()) != -1 && c != delim) {
-            if (count == buflen) { // expand buffer
+        int b;
+        int len = 0; // buffer length
+        int count = 0; // number of read bytes
+        byte[] buf = null; // optimization - lazy allocation only if necessary
+        while ((b = in.read()) != -1 && b != delim) {
+            if (count == len) { // expand buffer
                 if (count == maxLength)
                     throw new IOException("token too large (" + count + ")");
-                buflen = maxLength < 2 * buflen ? maxLength : 2 * buflen;
-                byte[] expanded = new byte[buflen];
-                System.arraycopy(buf, 0, expanded, 0, count);
+                len = len > 0 ? 2 * len : 256; // start small, double each expansion
+                len = maxLength < len ? maxLength : len;
+                byte[] expanded = new byte[len];
+                if (buf != null)
+                    System.arraycopy(buf, 0, expanded, 0, count);
                 buf = expanded;
             }
-            buf[count++] = (byte)c;
+            buf[count++] = (byte)b;
         }
-        if (c < 0 && delim != -1)
+        if (b < 0 && delim != -1)
             throw new EOFException("unexpected end of stream");
-        return new String(buf, 0, count, enc);
+        if (delim == '\n' && count > 0 && buf[count - 1] == '\r')
+            count--;
+        return count > 0 ? new String(buf, 0, count, enc) : "";
     }
 
     /**
@@ -2818,9 +2806,7 @@ public class HTTPServer {
      * @see #readToken(InputStream, int, String, int)
      */
     public static String readLine(InputStream in) throws IOException {
-        String s = readToken(in, '\n', "UTF-8", 8192);//ISO8859_1//xyj,20181220
-        return s.length() > 0 && s.charAt(s.length() - 1) == '\r'
-            ? s.substring(0, s.length() - 1) : s;
+        return readToken(in, '\n', "ISO8859_1", 8192);
     }
 
     /**
@@ -2840,11 +2826,11 @@ public class HTTPServer {
         String prevLine = "";
         int count = 0;
         while ((line = readLine(in)).length() > 0) {
-            int first;
-            for (first = 0; first < line.length() &&
-                Character.isWhitespace(line.charAt(first)); first++);
-            if (first > 0) // unfold header continuation line
-                line = prevLine + ' ' + line.substring(first);
+            int start; // start of line data (after whitespace)
+            for (start = 0; start < line.length() &&
+                Character.isWhitespace(line.charAt(start)); start++);
+            if (start > 0) // unfold header continuation line
+                line = prevLine + ' ' + line.substring(start);
             int separator = line.indexOf(':');
             if (separator < 0)
                 throw new IOException("invalid header: \"" + line + "\"");
@@ -2852,7 +2838,7 @@ public class HTTPServer {
             String value = line.substring(separator + 1).trim(); // ignore LWS
             Header replaced = headers.replace(name, value);
             // concatenate repeated headers (distinguishing repeated from folded)
-            if (replaced != null && first == 0) {
+            if (replaced != null && start == 0) {
                 value = replaced.getValue() + ", " + value;
                 line = name + ": " + value;
                 headers.replace(name, value);
@@ -2930,10 +2916,10 @@ public class HTTPServer {
 
     /**
      * Serves a context's contents from a file based resource.
-     *
+     * <p>
      * The file is located by stripping the given context prefix from
      * the request's path, and appending the result to the given base directory.
-     *
+     * <p>
      * Missing, forbidden and otherwise invalid files return the appropriate
      * error response. Directories are served as an HTML index page if the
      * virtual host allows one, or a forbidden error otherwise. Files are
@@ -2948,7 +2934,7 @@ public class HTTPServer {
      * @throws IOException if an error occurs
      */
     public static int serveFile(File base, String context,
-                                Request req, Response resp) throws IOException {
+            Request req, Response resp) throws IOException {
         String relativePath = req.getPath().substring(context.length());
         File file = new File(base, relativePath).getCanonicalFile();
         if (!file.exists() || file.isHidden() || file.getName().startsWith(".")) {
@@ -3102,11 +3088,11 @@ public class HTTPServer {
             File dir = new File(args[0]);
             if (!dir.canRead())
                 throw new FileNotFoundException(dir.getAbsolutePath());
-            int port = args.length < 2 ? 80 : Integer.parseInt(args[1]);
+            int port = args.length < 2 ? 80 : (int)parseULong(args[1], 10);
             // set up server
             for (File f : Arrays.asList(new File("/etc/mime.types"), new File(dir, ".mime.types")))
                 if (f.exists())
-                    addContentTypes(f);
+                    addContentTypes(new FileInputStream(f));
             HTTPServer server = new HTTPServer(port);
             if (System.getProperty("javax.net.ssl.keyStore") != null) // enable SSL if configured
                 server.setServerSocketFactory(SSLServerSocketFactory.getDefault());

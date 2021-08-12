@@ -164,6 +164,8 @@ public class HttpTest extends _TestBase {
     @Test
     public void test2e() throws IOException{
         assert  get("/demo2/param/d/*?name=中文").equals("中文");
+
+        assert  path("/demo2/param/d/*").data("name","中文").post().equals("中文");
     }
 
     @Test

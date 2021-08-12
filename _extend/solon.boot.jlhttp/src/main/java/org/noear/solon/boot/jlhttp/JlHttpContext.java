@@ -46,7 +46,7 @@ public class JlHttpContext extends Context {
             _ip = header("X-Forwarded-For");
 
             if (_ip == null) {
-                _ip = _request.getRemoteAddr();
+                _ip = _request.getSocket().getInetAddress().getHostAddress();
             }
         }
 
@@ -135,7 +135,7 @@ public class JlHttpContext extends Context {
 
     @Override
     public String queryString() {
-        return _request.getQueryString();
+        return _request.getURI().getQuery();
     }
 
     @Override
