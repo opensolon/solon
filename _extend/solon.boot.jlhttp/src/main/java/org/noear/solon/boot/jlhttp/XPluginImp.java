@@ -11,6 +11,10 @@ import org.noear.solon.core.util.PrintUtil;
 import javax.net.ssl.SSLServerSocketFactory;
 import java.util.concurrent.Executors;
 
+//
+// jlhttp: https://www.freeutils.net/source/jlhttp/
+//
+
 public final class XPluginImp implements Plugin {
     private static Signal _signal;
     public static Signal signal(){
@@ -62,7 +66,7 @@ public final class XPluginImp implements Plugin {
             _server.setServerSocketFactory(SSLServerSocketFactory.getDefault());
         }
 
-        HTTPServer.VirtualHost host = _server.getVirtualHost((String) null);
+        HTTPServer.VirtualHost host = _server.getVirtualHost(null);
 
         host.setDirectoryIndex(null);
 

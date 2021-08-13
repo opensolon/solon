@@ -32,7 +32,7 @@
 <!--        <module>_demo/_demo.solon_db_weed_snack</module>-->
 <!--        <module>_demo/_demo.solon_feign</module>-->
 <!--        <module>_demo/_demo.solon_gateway</module>-->
-<!--        <module>_demo/_demo.solon_helloworld</module>-->
+        <module>_demo/_demo.solon_helloworld</module>
 <!--        <module>_demo/_demo.solon_hessian</module>-->
 <!--        <module>_demo/_demo.solon_dubbo</module>-->
 <!--        <module>_demo/_demo.solon_mvc</module>-->
