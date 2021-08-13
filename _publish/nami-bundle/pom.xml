@@ -6,7 +6,7 @@
 
     <groupId>org.noear.bundle</groupId>
     <artifactId>nami-bundle</artifactId>
-    <version>1.5.23</version>
+    <version>1.5.24</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>

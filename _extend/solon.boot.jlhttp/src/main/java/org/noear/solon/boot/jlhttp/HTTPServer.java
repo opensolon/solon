@@ -1495,7 +1495,7 @@ public class HTTPServer {
          * @throws IOException if an error occurs
          * @see HTTPServer#parseParamsList(String)
          */
-        private List<String[]> _paramsList;
+        private List<String[]> _paramsList; //noear,20210801
         public List<String[]> getParamsList() throws IOException {
             if(_paramsList == null) {
                 List<String[]> queryParams = parseParamsList(uri.getRawQuery());
@@ -1762,7 +1762,14 @@ public class HTTPServer {
             if (ct == null) {
                 ct = contentType != null ? contentType : "application/octet-stream";
                 headers.add("Content-Type", ct);
+            }else{
+                if (contentType != null) { //noear,20181220
+                    ct = contentType;
+                    headers.replace("Content-Type", ct);
+                }
             }
+
+
             if (!headers.contains("Content-Length") && !headers.contains("Transfer-Encoding")) {
                 // RFC2616#3.6: transfer encodings are case-insensitive and must not be sent to an HTTP/1.0 client
                 boolean modern = req != null && req.getVersion().endsWith("1.1");

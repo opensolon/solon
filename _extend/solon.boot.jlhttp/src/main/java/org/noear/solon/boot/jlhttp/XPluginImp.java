@@ -20,7 +20,7 @@ public final class XPluginImp implements Plugin {
     private HTTPServer _server = null;
 
     public static String solon_boot_ver(){
-        return "jlhttp 2.4/" + Solon.cfg().version();
+        return "jlhttp 2.6/" + Solon.cfg().version();
     }
 
     @Override
@@ -72,7 +72,8 @@ public final class XPluginImp implements Plugin {
                 MethodType.POST.name,
                 MethodType.PUT.name,
                 MethodType.DELETE.name,
-                MethodType.PATCH.name);
+                MethodType.PATCH.name,
+                MethodType.OPTIONS.name);
 
         PrintUtil.info("Server:main: JlHttpServer 2.4(jlhttp)");
 
@@ -107,7 +108,7 @@ public final class XPluginImp implements Plugin {
 
 
 
-/*
+/**
 1389行修改：
 添加：getOriginalUri()；解决getUri()，无法拿到域和端口问题
 
@@ -133,5 +134,8 @@ String ct = headers.get("Content-Type");
                     headers.replace("Content-Type", ct);
                 }
             }
+
+2218行修改：保留HEAD方法,增加 OPTIONS  处理
+protected void handleMethod(Request req, Response resp) throws IOException
 
 * */

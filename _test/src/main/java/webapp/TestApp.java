@@ -42,6 +42,10 @@ public class TestApp {
         //SolonApp app = Solon.start(TestApp.class, args, x -> x.enableSocketD(true).enableWebSocket(true));
 
 
+        if(Solon.global() != null){
+            return;
+        }
+
         //构建方式
         SolonApp app = new SolonBuilder().onError(e -> {
             e.printStackTrace();
