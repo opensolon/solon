@@ -135,7 +135,5 @@ String ct = headers.get("Content-Type");
                 }
             }
 
-2218行修改：保留HEAD方法,增加 OPTIONS  处理
-protected void handleMethod(Request req, Response resp) throws IOException
 
 * */

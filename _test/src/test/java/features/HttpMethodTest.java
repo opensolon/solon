@@ -73,4 +73,12 @@ public class HttpMethodTest extends _TestBase {
 
         assert path("/demo2/method/patch").data(map).patch().equals("中文");
     }
+
+    @Test
+    public void test24_options() throws IOException {
+        Map<String, String> map = new HashMap<>();
+        map.put("name", "中文");
+
+        assert path("/demo2/method/options").data(map).options().equals("中文");
+    }
 }

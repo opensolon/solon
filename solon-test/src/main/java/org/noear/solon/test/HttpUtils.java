@@ -373,20 +373,30 @@ public class HttpUtils {
         exec("HEAD");
     }
 
-    //@XNote("发起PUT请求，返回字符串（RESTAPI.update 客户端提供改变后的完整资源）")
+    //@XNote("发起 PUT 请求，返回字符串（RESTAPI.update 客户端提供改变后的完整资源）")
     public String put() throws IOException {
         return exec2("PUT");
     }
 
-    //@XNote("发起PATCH请求，返回字符串（RESTAPI.update 客户端提供改变的属性）")
+    //@XNote("发起 PATCH 请求，返回字符串（RESTAPI.update 客户端提供改变的属性）")
     public String patch() throws IOException {
         return exec2("PATCH");
     }
 
-    //@XNote("发起DELETE请求，返回字符串（RESTAPI.delete 从服务端删除资源）")
+    //@XNote("发起 DELETE 请求，返回字符串（RESTAPI.delete 从服务端删除资源）")
     public String delete() throws IOException {
         return exec2("DELETE");
     }
+
+    //@XNote("发起 OPTIONS 请求，返回字符串")
+    public String options() throws IOException {
+        return exec2("OPTIONS");
+    }
+
+    public int head() throws IOException {
+        return exec3("HEAD");
+    }
+
 
     private static String getRequestCookieString(Map<String, String> cookies) {
         StringBuilder sb = new StringBuilder();

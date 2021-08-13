@@ -28,6 +28,11 @@ public class MethodController {
         return context.param("name");
     }
 
+    @Mapping(value = "options",method = MethodType.OPTIONS)
+    public String test_options(Context context, String name) {
+        return context.param("name");
+    }
+
     @Mapping(path = "post_get", method = {MethodType.POST, MethodType.GET, MethodType.HEAD})
     public String test_post_get(Context context) {
         return context.path();
