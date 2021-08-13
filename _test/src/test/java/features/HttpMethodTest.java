@@ -28,7 +28,7 @@ public class HttpMethodTest extends _TestBase {
 
     @Test
     public void test23_head() throws IOException {
-        assert path("/demo2/method/post_get").exec3("HEAD") == 200;
+        assert path("/demo2/method/post_get").head() == 200;
     }
 
     @Test
@@ -76,9 +76,6 @@ public class HttpMethodTest extends _TestBase {
 
     @Test
     public void test24_options() throws IOException {
-        Map<String, String> map = new HashMap<>();
-        map.put("name", "中文");
-
-        assert path("/demo2/method/options").data(map).options().equals("中文");
+        assert path("/demo2/method/options?name=中文").options().equals("中文");
     }
 }
