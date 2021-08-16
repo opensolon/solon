@@ -12,7 +12,7 @@ import org.noear.solon.core.handle.FilterChain;
 public class FilterDemo implements Filter {
     @Override
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
-        System.out.println("我是好人过滤器!!!path="+ctx.path());
+        System.out.println("我是好人过滤器!!!path=" + ctx.path() + ", pathNew=" + ctx.pathNew());
         chain.doFilter(ctx);
     }
 }

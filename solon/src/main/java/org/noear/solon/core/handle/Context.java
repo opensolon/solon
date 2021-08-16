@@ -754,6 +754,14 @@ public abstract class Context {
     @Note("跳转地址")
     public abstract void redirect(String url, int code);
 
+    @Note("转发")
+    public void forward(String path){
+        pathNew(path);
+        Solon.global().tryHandle(this);
+        setHandled(true);
+        setRendered(true);
+    }
+
     /**
      * 获取输出状态
      */

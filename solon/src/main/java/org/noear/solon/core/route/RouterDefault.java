@@ -66,10 +66,10 @@ public class RouterDefault implements Router{
      */
     @Override
     public Handler matchOne(Context ctx, Endpoint endpoint) {
-        String path = ctx.path();
+        String pathNew = ctx.pathNew();
         MethodType method = MethodType.valueOf(ctx.method());
 
-        return routesH[endpoint.code].matchOne(path, method);
+        return routesH[endpoint.code].matchOne(pathNew, method);
     }
 
     /**
@@ -81,10 +81,10 @@ public class RouterDefault implements Router{
      */
     @Override
     public List<Handler> matchAll(Context ctx, Endpoint endpoint) {
-        String path = ctx.path();
+        String pathNew = ctx.pathNew();
         MethodType method = MethodType.valueOf(ctx.method());
 
-        return routesH[endpoint.code].matchAll(path, method);
+        return routesH[endpoint.code].matchAll(pathNew, method);
     }
 
     /////////////////// for Listener ///////////////////
