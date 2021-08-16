@@ -755,8 +755,8 @@ public abstract class Context {
     public abstract void redirect(String url, int code);
 
     @Note("转发")
-    public void forward(String path){
-        pathNew(path);
+    public void forward(String pathNew){
+        pathNew(pathNew);
         Solon.global().tryHandle(this);
         setHandled(true);
         setRendered(true);
