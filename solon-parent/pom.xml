@@ -53,6 +53,7 @@
         <rsocket.ver>1.1.0</rsocket.ver>
 
         <springboot.ver>2.0.4.RELEASE</springboot.ver>
+        <spring.ver>5.0.8.RELEASE</spring.ver>
     </properties>
 
 
