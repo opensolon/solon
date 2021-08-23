@@ -212,24 +212,34 @@ public final class SolonProps extends Props {
     public SolonProps loadAdd(Properties props) {
         if (props != null) {
             for (Map.Entry<Object, Object> kv : props.entrySet()) {
+                Object k1 = kv.getKey();
                 Object v1 = kv.getValue();
-                if (v1 instanceof String) {
-                    // db1.url=xxx
-                    // db1.jdbcUrl=${db1.url}
-                    String tmpV = (String) v1;
-                    if (tmpV.startsWith("${") && tmpV.endsWith("}")) {
-                        String tmpK = tmpV.substring(2, tmpV.length() - 1);
-                        tmpV = props.getProperty(tmpK);
-                        if (tmpV == null) {
-                            tmpV = getProperty(tmpK);
-                        }
-                        v1 = tmpV;
-                    }
-                }
 
-                if (v1 != null) {
-                    System.getProperties().put(kv.getKey(), v1);
-                    put(kv.getKey(), v1);
+                if (k1 instanceof String) {
+                    String key = (String) k1;
+
+                    if (Utils.isEmpty(key)) {
+                        continue;
+                    }
+
+                    if (v1 instanceof String) {
+                        // db1.url=xxx
+                        // db1.jdbcUrl=${db1.url}
+                        String tmpV = (String) v1;
+                        if (tmpV.startsWith("${") && tmpV.endsWith("}")) {
+                            String tmpK = tmpV.substring(2, tmpV.length() - 1);
+                            tmpV = props.getProperty(tmpK);
+                            if (tmpV == null) {
+                                tmpV = getProperty(tmpK);
+                            }
+                            v1 = tmpV;
+                        }
+                    }
+
+                    if (v1 != null) {
+                        System.getProperties().put(kv.getKey(), v1);
+                        put(kv.getKey(), v1);
+                    }
                 }
             }
         }
@@ -248,8 +258,16 @@ public final class SolonProps extends Props {
             Properties props = Utils.loadProperties(url);
 
             for (Map.Entry kv : System.getProperties().entrySet()) {
-                if (props.containsKey(kv.getKey())) {
-                    props.put(kv.getKey(), kv.getValue());
+                if (kv.getKey() instanceof String) {
+                    String key = (String) kv.getKey();
+
+                    if (Utils.isEmpty(key)) {
+                        continue;
+                    }
+
+                    if (props.containsKey(key)) {
+                        props.put(key, kv.getValue());
+                    }
                 }
             }
 
