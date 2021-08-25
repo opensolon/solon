@@ -3,10 +3,6 @@ demo6:
     aaa: 121212
     bbb: 12
 
-solon.app:
-  name: testapp
-  group: test
-
 demo8.test:
   url: jdbc:mysql://127.0.0.1/user
   username: root
@@ -16,6 +12,13 @@ username: noear
 paasword: 1234
 
 testname: xxx
+
+
+server.port: 8080
+
+solon.app:
+  name: testapp
+  group: test
 
 solon.drift: 1
 
