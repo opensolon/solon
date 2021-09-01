@@ -42,6 +42,11 @@ public class SolonServletContext extends Context {
                 }
 
                 @Override
+                public String sessionChangeId() {
+                    return _request.changeSessionId();
+                }
+
+                @Override
                 public Object sessionGet(String key) {
                     return _request.getSession().getAttribute(key);
                 }
@@ -57,6 +62,11 @@ public class SolonServletContext extends Context {
                     while (names.hasMoreElements()) {
                         _request.getSession().removeAttribute(names.nextElement());
                     }
+                }
+
+                @Override
+                public void sessionReset() {
+                    _request.getSession().invalidate();
                 }
             });
         }

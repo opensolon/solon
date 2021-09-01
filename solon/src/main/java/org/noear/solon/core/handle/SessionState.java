@@ -35,6 +35,11 @@ public interface SessionState {
     String sessionId();
 
     /**
+     * 变更SESSION_ID
+     */
+    String sessionChangeId();
+
+    /**
      * 获取SESSION状态
      */
     Object sessionGet(String key);
@@ -48,6 +53,11 @@ public interface SessionState {
      * 清除SESSION状态
      */
     void sessionClear();
+
+    /**
+     * 会话重置（清空数据，并变更会话ID）
+     * */
+    void sessionReset();
 
     default String sessionToken() {
         throw new UnsupportedOperationException();

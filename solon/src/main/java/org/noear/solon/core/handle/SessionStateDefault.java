@@ -1,7 +1,10 @@
 package org.noear.solon.core.handle;
 
+import org.noear.solon.Utils;
+
 /**
- * @author noear 2021/2/14 created
+ * @author noear
+ * @since 1.0
  */
 public class SessionStateDefault implements SessionState{
     public final static String SESSIONID_KEY = "SOLONID";
@@ -12,6 +15,11 @@ public class SessionStateDefault implements SessionState{
 
     @Override
     public String sessionId() {
+        return null;
+    }
+
+    @Override
+    public String sessionChangeId() {
         return null;
     }
 
@@ -27,6 +35,11 @@ public class SessionStateDefault implements SessionState{
 
     @Override
     public void sessionClear() {
+
+    }
+
+    @Override
+    public void sessionReset() {
 
     }
 }

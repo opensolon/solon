@@ -61,26 +61,35 @@ public class RedisSessionState extends SessionStateDefault {
         String _sessionId = ctx.attr("sessionId",null);
 
         if(_sessionId == null){
-            _sessionId = sessionId_get();
+            _sessionId = sessionId_get(false);
             ctx.attrSet("sessionId",_sessionId);
         }
 
         return _sessionId;
     }
 
-    private String sessionId_get() {
+    @Override
+    public String sessionChangeId() {
+        ctx.attrSet("sessionId", null);
+        sessionId_get(true);
+        return sessionId();
+    }
+
+    private String sessionId_get(boolean reset) {
         String skey = cookieGet(SESSIONID_KEY);
         String smd5 = cookieGet(SESSIONID_MD5());
 
-        if(Utils.isEmpty(skey)==false && Utils.isEmpty(smd5)==false) {
-            if (EncryptUtil.md5(skey + SESSIONID_salt).equals(smd5)) {
-                return skey;
+        if(reset == false) {
+            if (Utils.isEmpty(skey) == false && Utils.isEmpty(smd5) == false) {
+                if (Utils.md5(skey + SESSIONID_salt).equals(smd5)) {
+                    return skey;
+                }
             }
         }
 
-        skey = IDUtil.guid();
-        cookieSet(SESSIONID_KEY,skey);
-        cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_salt));
+        skey = Utils.guid();
+        cookieSet(SESSIONID_KEY, skey);
+        cookieSet(SESSIONID_MD5(), Utils.md5(skey + SESSIONID_salt));
         return skey;
     }
 
@@ -139,6 +148,12 @@ public class RedisSessionState extends SessionStateDefault {
     @Override
     public void sessionClear() {
         redisX.open0((ru)->ru.key(sessionId()).delete());
+    }
+
+    @Override
+    public void sessionReset() {
+        sessionClear();
+        sessionChangeId();
     }
 
     @Override

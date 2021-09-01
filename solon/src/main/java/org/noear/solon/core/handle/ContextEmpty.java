@@ -27,6 +27,11 @@ public class ContextEmpty extends Context {
             }
 
             @Override
+            public String sessionChangeId() {
+                return null;
+            }
+
+            @Override
             public Object sessionGet(String key) {
                 return sessionMap().get(key);
             }
@@ -38,6 +43,11 @@ public class ContextEmpty extends Context {
 
             @Override
             public void sessionClear() {
+                sessionMap().clear();
+            }
+
+            @Override
+            public void sessionReset() {
                 sessionMap().clear();
             }
         });
