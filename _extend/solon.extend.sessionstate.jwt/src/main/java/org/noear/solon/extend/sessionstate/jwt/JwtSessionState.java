@@ -77,8 +77,8 @@ public class JwtSessionState extends SessionStateDefault {
 
     @Override
     public String sessionChangeId() {
-        ctx.attrSet("sessionId", null);
         sessionId_get(true);
+        ctx.attrSet("sessionId", null);
         return sessionId();
     }
 
