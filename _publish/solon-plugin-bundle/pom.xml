@@ -227,6 +227,9 @@
         <module>../../_plugin/mybatis-solon-plugin</module>
         <module>../../_plugin/mybatis-sqlhelper-solon-plugin</module>
         <module>../../_plugin/mybatis-pagehelper-solon-plugin</module>
+
+        <module>../../_plugin/mybatisplus-solon-plugin</module>
+
         <module>../../_plugin/activerecord-solon-plugin</module>
 
         <module>../../_plugin/quartz-solon-plugin</module>
