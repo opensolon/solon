@@ -1,7 +1,5 @@
 package org.noear.solon.core.handle;
 
-import org.noear.solon.Utils;
-
 /**
  * @author noear
  * @since 1.0
