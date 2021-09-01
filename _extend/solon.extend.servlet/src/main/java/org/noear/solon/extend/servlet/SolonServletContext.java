@@ -50,6 +50,14 @@ public class SolonServletContext extends Context {
                 public void sessionSet(String key, Object val) {
                     _request.getSession().setAttribute(key, val);
                 }
+
+                @Override
+                public void sessionClear() {
+                    Enumeration<String> names = _request.getSession().getAttributeNames();
+                    while (names.hasMoreElements()) {
+                        _request.getSession().removeAttribute(names.nextElement());
+                    }
+                }
             });
         }
 

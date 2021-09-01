@@ -47,8 +47,7 @@ public interface SessionState {
     /**
      * 清除SESSION状态
      */
-    default void sessionClear() {
-    }
+    void sessionClear();
 
     default String sessionToken() {
         throw new UnsupportedOperationException();

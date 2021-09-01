@@ -24,4 +24,9 @@ public class SessionStateDefault implements SessionState{
     public void sessionSet(String key, Object val) {
 
     }
+
+    @Override
+    public void sessionClear() {
+
+    }
 }
