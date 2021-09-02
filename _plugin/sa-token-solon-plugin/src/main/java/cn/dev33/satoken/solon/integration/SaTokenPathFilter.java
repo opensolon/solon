@@ -16,11 +16,10 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author noear
- * @since 1.4
+ * @author noear 2021/5/30 created
  */
 public class SaTokenPathFilter implements Filter {
-
+	
     // ------------------------ 设置此过滤器 拦截 & 放行 的路由
 
     /**
@@ -150,10 +149,10 @@ public class SaTokenPathFilter implements Filter {
             });
 
         } catch (StopMatchException e) {
-
-        } catch (Throwable e) {
-            // 1. 获取异常处理策略结果
-            String result = (e instanceof BackResultException) ? e.getMessage() : String.valueOf(error.run(e));
+			
+		} catch (Throwable e) {
+			// 1. 获取异常处理策略结果 
+			String result = (e instanceof BackResultException) ? e.getMessage() : String.valueOf(error.run(e));
 
             // 2. 写入输出流
             ctx.contentType("text/plain; charset=utf-8");
@@ -165,4 +164,3 @@ public class SaTokenPathFilter implements Filter {
         chain.doFilter(ctx);
     }
 }
-
