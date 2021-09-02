@@ -10,15 +10,14 @@ import com.anji.captcha.util.StringUtils;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
+import org.noear.solon.core.util.ResourceScaner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author noear
@@ -65,9 +64,12 @@ public class AjCaptchaServiceConfiguration {
     }
 
     private static void initializeBaseMap(String jigsaw, String picClick) {
-        Map<String, String> originalMap = getResourcesImagesFile(jigsaw + "/original/*.png");
-        Map<String, String> slidingBlockMap = getResourcesImagesFile(jigsaw + "/slidingBlock/*.png");
-        Map<String, String> picClickMap = getResourcesImagesFile(picClick + "/*.png");
+        jigsaw = jigsaw.substring(10);
+        picClick = picClick.substring(10);
+
+        Map<String, String> originalMap = getResourcesImagesFile(jigsaw + "/original");
+        Map<String, String> slidingBlockMap = getResourcesImagesFile(jigsaw + "/slidingBlock");
+        Map<String, String> picClickMap = getResourcesImagesFile(picClick);
 
         ImageUtils.cacheBootImage(originalMap, slidingBlockMap, picClickMap);
     }
@@ -75,12 +77,13 @@ public class AjCaptchaServiceConfiguration {
     public static Map<String, String> getResourcesImagesFile(String path) {
         Map<String, String> imgMap = new HashMap();
 
-        //todo: 这里可能会有问题
         try {
-            Enumeration<URL> resources = Utils.getResources(path);
+            List<URL> resources = ResourceScaner.scan(path, n -> n.endsWith(".png"))
+                    .stream()
+                    .map(k -> Utils.getResource(k))
+                    .collect(Collectors.toList());
 
-            while (resources.hasMoreElements()){
-                URL resource = resources.nextElement();
+            for (URL resource : resources) {
                 byte[] bytes = FileCopyUtils.copyToByteArray(resource.openStream());
                 String string = Base64Utils.encodeToString(bytes);
                 String filename = new File(resource.getFile()).getName();
