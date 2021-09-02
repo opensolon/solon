@@ -27,11 +27,11 @@ public class ConvertUtil {
      * 转换 context 的值
      *
      * @param element 目标注解元素
-     * @param type 目标类型
-     * @param key 变量名
-     * @param val 值
-     * @param ctx 通用上下文
-     * */
+     * @param type    目标类型
+     * @param key     变量名
+     * @param val     值
+     * @param ctx     通用上下文
+     */
     public static Object to(AnnotatedElement element, Class<?> type, String key, String val, Context ctx) throws ClassCastException {
         if (String.class == (type)) {
             return val;
@@ -123,9 +123,9 @@ public class ConvertUtil {
      * 转换 properties 的值
      *
      * @param type 目标类型
-     * @param val 属性值
-     * */
-    public static Object to(Class<?> type, String val) throws ClassCastException{
+     * @param val  属性值
+     */
+    public static Object to(Class<?> type, String val) throws ClassCastException {
         if (String.class == (type)) {
             return val;
         }
@@ -158,8 +158,8 @@ public class ConvertUtil {
      * 转换 string 值
      *
      * @param type 目标类型
-     * @param val 值
-     * */
+     * @param val  值
+     */
     public static Object tryTo(Class<?> type, String val) {
         if (Short.class == type || type == Short.TYPE) {
             return Short.parseShort(val);
@@ -209,9 +209,21 @@ public class ConvertUtil {
         }
 
         if (type.isEnum()) {
-            return Enum.valueOf((Class<Enum>) type, val);
+            return enumOf((Class<Enum>) type, val);
         }
 
+        return null;
+    }
+
+    /**
+     * 获取枚举
+     * */
+    private static <T extends Enum<T>> T enumOf(Class<T> enumType, String name) {
+        for (T each : enumType.getEnumConstants()) {
+            if (each.name().compareToIgnoreCase(name) == 0) {
+                return each;
+            }
+        }
         return null;
     }
 
@@ -220,9 +232,8 @@ public class ConvertUtil {
      *
      * @param s 源类型
      * @param t 目标类型
-     * */
-    private static boolean is(Class<?> s, Class<?> t){
+     */
+    private static boolean is(Class<?> s, Class<?> t) {
         return s.isAssignableFrom(t);
     }
-
 }
