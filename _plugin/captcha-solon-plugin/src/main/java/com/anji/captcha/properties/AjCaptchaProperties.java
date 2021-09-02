@@ -1,4 +1,4 @@
-package org.noear.solon.extend.captcha.integration;
+package com.anji.captcha.properties;
 
 import com.anji.captcha.model.common.CaptchaTypeEnum;
 import org.noear.solon.annotation.Configuration;

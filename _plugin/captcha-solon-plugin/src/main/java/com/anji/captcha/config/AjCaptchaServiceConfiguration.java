@@ -1,5 +1,6 @@
-package org.noear.solon.extend.captcha.integration;
+package com.anji.captcha.config;
 
+import com.anji.captcha.properties.AjCaptchaProperties;
 import com.anji.captcha.service.CaptchaService;
 import com.anji.captcha.service.impl.CaptchaServiceFactory;
 import com.anji.captcha.util.Base64Utils;
@@ -9,6 +10,8 @@ import com.anji.captcha.util.StringUtils;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.URL;
@@ -23,13 +26,15 @@ import java.util.Properties;
  */
 @Configuration
 public class AjCaptchaServiceConfiguration {
+    private static Logger logger = LoggerFactory.getLogger(AjCaptchaServiceConfiguration.class);
 
     public AjCaptchaServiceConfiguration() {
     }
 
     @Bean
     public CaptchaService captchaService(AjCaptchaProperties prop) {
-        //logger.info("自定义配置项：{}", prop.toString());
+        logger.info("自定义配置项：{}", prop.toString());
+
         Properties config = new Properties();
         config.put("captcha.cacheType", prop.getCacheType().name());
         config.put("captcha.water.mark", prop.getWaterMark());

@@ -1,5 +1,6 @@
-package org.noear.solon.extend.captcha.integration;
+package com.anji.captcha.config;
 
+import com.anji.captcha.properties.AjCaptchaProperties;
 import com.anji.captcha.service.CaptchaCacheService;
 import com.anji.captcha.service.impl.CaptchaServiceFactory;
 import org.noear.solon.annotation.Bean;
