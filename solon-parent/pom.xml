@@ -55,7 +55,7 @@
         <springboot.ver>2.0.4.RELEASE</springboot.ver>
         <spring.ver>5.0.8.RELEASE</spring.ver>
 
-        <hikaricp.ver>5.0.0</hikaricp.ver>
+        <hikaricp.ver>4.0.3</hikaricp.ver>
     </properties>
 
 
