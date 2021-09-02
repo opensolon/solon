@@ -3,6 +3,7 @@ package org.noear.solon.extend.cors;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
+import org.noear.solon.core.handle.MethodType;
 
 /**
  * 跨域处理
@@ -100,6 +101,10 @@ public class CrossHandler implements Handler {
             ctx.headerSet("Access-Control-Allow-Origin", origin);
         } else {
             ctx.headerSet("Access-Control-Allow-Origin", allowOrigin);
+        }
+
+        if (MethodType.OPTIONS.name.equalsIgnoreCase(ctx.method())) {
+            ctx.setHandled(true);
         }
     }
 }
