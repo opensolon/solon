@@ -1,4 +1,4 @@
-package org.noear.solon.extend.mybatis;
+package org.noear.solon.extend.mybatis.integration;
 
 import org.apache.ibatis.reflection.ExceptionUtil;
 import org.apache.ibatis.session.SqlSession;

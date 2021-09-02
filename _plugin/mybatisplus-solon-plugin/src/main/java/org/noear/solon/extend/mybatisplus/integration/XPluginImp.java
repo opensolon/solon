@@ -1,6 +1,6 @@
-package org.noear.solon.extend.mybatisplus;
+package org.noear.solon.extend.mybatisplus.integration;
 
-import org.noear.solon.extend.mybatis.SqlSessionManager;
+import org.noear.solon.extend.mybatis.integration.SqlSessionManager;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
 

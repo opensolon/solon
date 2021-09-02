@@ -1,4 +1,4 @@
-package org.noear.solon.extend.mybatis;
+package org.noear.solon.extend.mybatis.integration;
 
 import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.executor.BatchResult;

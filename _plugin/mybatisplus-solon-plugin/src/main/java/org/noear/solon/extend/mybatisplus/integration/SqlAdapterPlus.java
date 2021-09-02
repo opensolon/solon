@@ -1,4 +1,4 @@
-package org.noear.solon.extend.mybatisplus;
+package org.noear.solon.extend.mybatisplus.integration;
 
 import com.baomidou.mybatisplus.core.MybatisSqlSessionFactoryBuilder;
 import lombok.SneakyThrows;
@@ -15,7 +15,7 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ResourceScaner;
 import org.noear.solon.extend.mybatis.SqlAdapter;
-import org.noear.solon.extend.mybatis.SqlSessionProxy;
+import org.noear.solon.extend.mybatis.integration.SqlSessionProxy;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

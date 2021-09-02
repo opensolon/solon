@@ -2,6 +2,7 @@ package org.noear.solon.extend.mybatis;
 
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.noear.solon.extend.mybatis.integration.SqlSessionProxy;
 
 /**
  * 适配器

@@ -1,10 +1,12 @@
-package org.noear.solon.extend.mybatis;
+package org.noear.solon.extend.mybatis.integration;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
+import org.noear.solon.extend.mybatis.SqlAdapter;
+import org.noear.solon.extend.mybatis.SqlAdapterFactory;
 
 import java.lang.reflect.Proxy;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package org.noear.solon.extend.mybatis;
+package org.noear.solon.extend.mybatis.integration;
 
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.executor.ErrorContext;
@@ -16,6 +16,7 @@ import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ResourceScaner;
+import org.noear.solon.extend.mybatis.SqlAdapter;
 
 import javax.sql.DataSource;
 import java.io.InputStream;

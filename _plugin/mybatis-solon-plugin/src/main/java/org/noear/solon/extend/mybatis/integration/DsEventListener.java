@@ -1,4 +1,4 @@
-package org.noear.solon.extend.mybatis;
+package org.noear.solon.extend.mybatis.integration;
 
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.event.EventListener;

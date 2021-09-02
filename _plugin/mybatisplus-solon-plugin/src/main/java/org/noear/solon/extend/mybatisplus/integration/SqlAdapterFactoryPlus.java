@@ -1,4 +1,4 @@
-package org.noear.solon.extend.mybatisplus;
+package org.noear.solon.extend.mybatisplus.integration;
 
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.extend.mybatis.SqlAdapter;
