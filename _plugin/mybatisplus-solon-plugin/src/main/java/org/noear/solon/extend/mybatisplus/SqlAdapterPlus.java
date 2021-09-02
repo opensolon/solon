@@ -1,4 +1,4 @@
-package org.noear.solon.extend.mybatis;
+package org.noear.solon.extend.mybatisplus;
 
 import com.baomidou.mybatisplus.core.MybatisSqlSessionFactoryBuilder;
 import lombok.SneakyThrows;
@@ -14,6 +14,8 @@ import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ResourceScaner;
+import org.noear.solon.extend.mybatis.SqlAdapter;
+import org.noear.solon.extend.mybatis.SqlSessionProxy;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -40,10 +42,10 @@ import java.util.Properties;
  * 2.生成 factory 的能力
  *
  * @author noear, iYarnFog
- * @since 1.1
+ * @since 1.5
  */
 @Slf4j
-class SqlFactoryAdapter {
+class SqlAdapterPlus implements SqlAdapter {
     protected InputStream configStream;
     protected Environment environment;
     protected Configuration configuration;
@@ -56,14 +58,14 @@ class SqlFactoryAdapter {
     /**
      * 构建Sql工厂适配器，使用默认的 typeAliases 和 mappers 配置
      */
-    public SqlFactoryAdapter(BeanWrap dsWrap) {
+    public SqlAdapterPlus(BeanWrap dsWrap) {
         this(dsWrap, Solon.cfg().getProp("mybatis"));
     }
 
     /**
      * 构建Sql工厂适配器，使用属性配置
      */
-    public SqlFactoryAdapter(BeanWrap dsWrap, Properties props) {
+    public SqlAdapterPlus(BeanWrap dsWrap, Properties props) {
         this.dsWrap = dsWrap;
 
         DataSource dataSource = dsWrap.raw();
@@ -164,7 +166,7 @@ class SqlFactoryAdapter {
         return factory;
     }
 
-    public SqlFactoryAdapter mapperScan(SqlSessionProxy proxy) {
+    public SqlAdapter mapperScan(SqlSessionProxy proxy) {
         for (String val : this.mappers) {
             mapperScan0(proxy, val);
         }
@@ -177,7 +179,7 @@ class SqlFactoryAdapter {
      * <p>
      * 扫描 basePackages 里的类，并生成 mapper 实例注册到bean中心
      */
-    public SqlFactoryAdapter mapperScan(SqlSessionProxy proxy, String basePackages) {
+    public SqlAdapter mapperScan(SqlSessionProxy proxy, String basePackages) {
         mapperScan0(proxy, basePackages);
         return this;
     }

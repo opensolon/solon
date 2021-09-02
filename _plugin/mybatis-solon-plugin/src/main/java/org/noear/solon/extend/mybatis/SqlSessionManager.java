@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author noear
  * @since 1.1
  * */
-class SqlSessionManager {
+public class SqlSessionManager {
     private static SqlSessionManager _global = new SqlSessionManager();
 
     /**
@@ -26,6 +26,14 @@ class SqlSessionManager {
         return _global;
     }
 
+    private SqlAdapterFactory adapterFactory = new SqlAdapterFactoryDefault();
+
+    /**
+     * 设置适配器工厂
+     * */
+    public void setAdapterFactory(SqlAdapterFactory adapterFactory) {
+        this.adapterFactory = adapterFactory;
+    }
 
     /**
      * 缓存会话代理
@@ -70,12 +78,12 @@ class SqlSessionManager {
      * 构建会话代理
      */
     private SqlSessionProxy buildSqlSessionProxy(BeanWrap bw) {
-        SqlFactoryAdapter adapter;
+        SqlAdapter adapter;
 
         if (Utils.isEmpty(bw.name())) {
-            adapter = new SqlFactoryAdapter(bw);
+            adapter = adapterFactory.create(bw);
         } else {
-            adapter = new SqlFactoryAdapter(bw, Solon.cfg().getProp("mybatis." + bw.name()));
+            adapter = adapterFactory.create(bw, Solon.cfg().getProp("mybatis." + bw.name()));
         }
 
         SqlSessionFactory factory = adapter.getFactory();

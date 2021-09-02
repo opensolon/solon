@@ -24,15 +24,10 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * 适配器
- *
- * 1.提供 mapperScan 能力
- * 2.生成 factory 的能力
- *
  * @author noear
- * @since 1.1
- * */
-class SqlFactoryAdapter {
+ * @since 1.5
+ */
+class SqlAdapterDefault implements SqlAdapter {
     protected Configuration config;
     protected SqlSessionFactory factory;
     protected List<String> mappers = new ArrayList<>();
@@ -43,14 +38,14 @@ class SqlFactoryAdapter {
     /**
      * 构建Sql工厂适配器，使用默认的 typeAliases 和 mappers 配置
      */
-    public SqlFactoryAdapter(BeanWrap dsWrap) {
+    public SqlAdapterDefault(BeanWrap dsWrap) {
         this(dsWrap, Solon.cfg().getProp("mybatis"));
     }
 
     /**
      * 构建Sql工厂适配器，使用属性配置
      * */
-    public SqlFactoryAdapter(BeanWrap dsWrap, Properties props) {
+    public SqlAdapterDefault(BeanWrap dsWrap, Properties props) {
         this.dsWrap = dsWrap;
 
         DataSource dataSource = dsWrap.raw();
@@ -165,7 +160,7 @@ class SqlFactoryAdapter {
         return factory;
     }
 
-    public SqlFactoryAdapter mapperScan(SqlSessionProxy proxy) {
+    public SqlAdapter mapperScan(SqlSessionProxy proxy) {
         for (String val : mappers) {
             mapperScan0(proxy, val);
         }
@@ -178,7 +173,7 @@ class SqlFactoryAdapter {
      * <p>
      * 扫描 basePackages 里的类，并生成 mapper 实例注册到bean中心
      */
-    public SqlFactoryAdapter mapperScan(SqlSessionProxy proxy, String basePackages) {
+    public SqlAdapter mapperScan(SqlSessionProxy proxy, String basePackages) {
         mapperScan0(proxy, basePackages);
         return this;
     }
