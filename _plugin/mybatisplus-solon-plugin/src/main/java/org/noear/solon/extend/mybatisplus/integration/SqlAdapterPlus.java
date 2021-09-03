@@ -50,8 +50,6 @@ class SqlAdapterPlus implements SqlAdapter {
     protected List<String> mappers = new ArrayList<>();
     protected BeanWrap dsWrap;
 
-    protected static int environmentIndex = 0;
-
     /**
      * 构建Sql工厂适配器，使用默认的 typeAliases 和 mappers 配置
      */
