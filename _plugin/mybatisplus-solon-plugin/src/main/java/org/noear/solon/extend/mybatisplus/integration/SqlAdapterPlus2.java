@@ -19,7 +19,6 @@ import org.noear.solon.core.util.ResourceScaner;
 import org.noear.solon.extend.mybatis.SqlAdapter;
 import org.noear.solon.extend.mybatis.SqlPlugins;
 import org.noear.solon.extend.mybatis.integration.SqlSessionProxy;
-import org.noear.solon.extend.mybatis.integration.XPluginImp;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
@@ -28,7 +27,12 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * @author noear
+ * 适配器2
+ * <p>
+ * 1.提供 mapperScan 能力
+ * 2.生成 factory 的能力
+ *
+ * @author noear, iYarnFog
  * @since 1.5
  */
 class SqlAdapterPlus2 implements SqlAdapter {
