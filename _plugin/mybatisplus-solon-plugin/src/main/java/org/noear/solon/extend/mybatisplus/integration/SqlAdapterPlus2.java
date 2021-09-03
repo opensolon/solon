@@ -1,5 +1,6 @@
 package org.noear.solon.extend.mybatisplus.integration;
 
+import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.MybatisSqlSessionFactoryBuilder;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.executor.ErrorContext;
@@ -59,9 +60,11 @@ class SqlAdapterPlus2 implements SqlAdapter {
 
         TransactionFactory tf = new JdbcTransactionFactory();
         Environment environment = new Environment(dataSourceId, tf, dataSource);
-        config = new Configuration(environment);
 
-        //加载插件
+        //todo: 此处与mybatis不同
+        config = new MybatisConfiguration(environment);
+
+
         //加载插件
         for (Interceptor i : SqlPlugins.getInterceptors()) {
             config.addInterceptor(i);
@@ -159,6 +162,7 @@ class SqlAdapterPlus2 implements SqlAdapter {
      * */
     public SqlSessionFactory getFactory() {
         if (factory == null) {
+            //todo: 此处与mybatis不同
             factory = new MybatisSqlSessionFactoryBuilder().build(config);
         }
 
