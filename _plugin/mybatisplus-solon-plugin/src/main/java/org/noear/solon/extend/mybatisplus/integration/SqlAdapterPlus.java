@@ -1,8 +1,6 @@
 package org.noear.solon.extend.mybatisplus.integration;
 
 import com.baomidou.mybatisplus.core.MybatisSqlSessionFactoryBuilder;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -44,7 +42,6 @@ import java.util.Properties;
  * @author noear, iYarnFog
  * @since 1.5
  */
-@Slf4j
 class SqlAdapterPlus implements SqlAdapter {
     protected InputStream configStream;
     protected Environment environment;
@@ -85,66 +82,69 @@ class SqlAdapterPlus implements SqlAdapter {
         EventBus.push(this.configuration);
     }
 
-    @SneakyThrows
     private void init0(Properties props) {
-        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = builderFactory.newDocumentBuilder();
-        Document document = builder.newDocument();
+        try {
+            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = builderFactory.newDocumentBuilder();
+            Document document = builder.newDocument();
 //        document.set
-        document.setXmlStandalone(true);
-        Element configuration = document.createElement("configuration");
-        // Solon Start
-        if (props != null) {
-            //支持包名和xml
-            Element typeAliases = document.createElement("typeAliases");
-            Element mappers = document.createElement("mappers");
-            props.forEach((k, v) -> {
-                if (k instanceof String && v instanceof String) {
-                    String key = (String) k;
-                    String val = (String) v;
+            document.setXmlStandalone(true);
+            Element configuration = document.createElement("configuration");
+            // Solon Start
+            if (props != null) {
+                //支持包名和xml
+                Element typeAliases = document.createElement("typeAliases");
+                Element mappers = document.createElement("mappers");
+                props.forEach((k, v) -> {
+                    if (k instanceof String && v instanceof String) {
+                        String key = (String) k;
+                        String val = (String) v;
 
-                    if (key.startsWith("typeAliases[")) {
-                        if (key.endsWith(".xml")) {
-                        } else if (key.endsWith(".class")) {
-                        } else {
+                        if (key.startsWith("typeAliases[")) {
+                            if (key.endsWith(".xml")) {
+                            } else if (key.endsWith(".class")) {
+                            } else {
+                                Element package0 = document.createElement("package");
+                                package0.setAttribute("name", val);
+                                typeAliases.appendChild(package0);
+                            }
+                        }
+                        if (key.startsWith("mappers[")) {
                             Element package0 = document.createElement("package");
-                            package0.setAttribute("name", val);
-                            typeAliases.appendChild(package0);
+                            if (key.endsWith(".xml")) {
+                                package0.setAttribute("resource", val);
+                            } else if (key.endsWith(".class")) {
+                                package0.setAttribute("class", val);
+                            } else {
+                                package0.setAttribute("name", val);
+                            }
+                            mappers.appendChild(package0);
+                            this.mappers.add(val);
                         }
                     }
-                    if (key.startsWith("mappers[")) {
-                        Element package0 = document.createElement("package");
-                        if (key.endsWith(".xml")) {
-                            package0.setAttribute("resource", val);
-                        } else if (key.endsWith(".class")) {
-                            package0.setAttribute("class", val);
-                        } else {
-                            package0.setAttribute("name", val);
-                        }
-                        mappers.appendChild(package0);
-                        this.mappers.add(val);
-                    }
+                });
+                configuration.appendChild(typeAliases);
+                configuration.appendChild(mappers);
+
+                if (this.mappers.size() == 0) {
+                    throw new RuntimeException("Please add the mappers configuration!");
                 }
-            });
-            configuration.appendChild(typeAliases);
-            configuration.appendChild(mappers);
-
-            if (this.mappers.size() == 0) {
-                throw new RuntimeException("Please add the mappers configuration!");
             }
-        }
-        // Solon End
+            // Solon End
 
-        document.appendChild(configuration);
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        // 输出内容是否使用换行
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, "-//mybatis.org//DTD Config 3.0//EN");
-        transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "http://mybatis.org/dtd/mybatis-3-config.dtd");
-        StringWriter writer = new StringWriter();
-        transformer.transform(new DOMSource(document), new StreamResult(writer));
-        this.configStream = new ByteArrayInputStream(writer.toString().getBytes(StandardCharsets.UTF_8));
+            document.appendChild(configuration);
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            // 输出内容是否使用换行
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, "-//mybatis.org//DTD Config 3.0//EN");
+            transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "http://mybatis.org/dtd/mybatis-3-config.dtd");
+            StringWriter writer = new StringWriter();
+            transformer.transform(new DOMSource(document), new StreamResult(writer));
+            this.configStream = new ByteArrayInputStream(writer.toString().getBytes(StandardCharsets.UTF_8));
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
     /**

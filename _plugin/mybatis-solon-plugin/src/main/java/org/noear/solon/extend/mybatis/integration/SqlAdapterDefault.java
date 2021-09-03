@@ -67,10 +67,10 @@ class SqlAdapterDefault implements SqlAdapter {
         EventBus.push(config);
 
         //2.初始化（顺序不能乱）
-        init0(config, props);
+        init0(props);
     }
 
-    private void init0(Configuration config,Properties props){
+    private void init0(Properties props){
         if (props != null) {
             props.forEach((k, v) -> {
                 if (k instanceof String && v instanceof String) {
@@ -138,8 +138,8 @@ class SqlAdapterDefault implements SqlAdapter {
              */
             XMLMapperBuilder mapperParser = new XMLMapperBuilder(stream, getConfig(), val, getConfig().getSqlFragments());
             mapperParser.parse();
-        } catch (Throwable ex) {
-            EventBus.push(ex);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
