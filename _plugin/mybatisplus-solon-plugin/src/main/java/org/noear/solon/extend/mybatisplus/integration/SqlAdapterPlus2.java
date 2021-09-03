@@ -47,7 +47,6 @@ class SqlAdapterPlus2 extends SqlAdapterDefault {
     @Override
     public SqlSessionFactory getFactory() {
         if (factory == null) {
-            //todo: 此处与mybatis不同
             factory = new MybatisSqlSessionFactoryBuilder().build(config);
         }
 
