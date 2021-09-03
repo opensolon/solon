@@ -1,5 +1,6 @@
-package org.noear.solon.extend.mybatis.integration;
+package org.noear.solon.extend.mybatisplus.integration;
 
+import com.baomidou.mybatisplus.core.MybatisSqlSessionFactoryBuilder;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.executor.ErrorContext;
 import org.apache.ibatis.io.Resources;
@@ -7,7 +8,6 @@ import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.noear.solon.Solon;
@@ -18,6 +18,8 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ResourceScaner;
 import org.noear.solon.extend.mybatis.SqlAdapter;
 import org.noear.solon.extend.mybatis.SqlPlugins;
+import org.noear.solon.extend.mybatis.integration.SqlSessionProxy;
+import org.noear.solon.extend.mybatis.integration.XPluginImp;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
@@ -29,7 +31,7 @@ import java.util.Properties;
  * @author noear
  * @since 1.5
  */
-class SqlAdapterDefault implements SqlAdapter {
+class SqlAdapterPlus2 implements SqlAdapter {
     protected Configuration config;
     protected SqlSessionFactory factory;
     protected List<String> mappers = new ArrayList<>();
@@ -38,14 +40,14 @@ class SqlAdapterDefault implements SqlAdapter {
     /**
      * 构建Sql工厂适配器，使用默认的 typeAliases 和 mappers 配置
      */
-    public SqlAdapterDefault(BeanWrap dsWrap) {
+    public SqlAdapterPlus2(BeanWrap dsWrap) {
         this(dsWrap, Solon.cfg().getProp("mybatis"));
     }
 
     /**
      * 构建Sql工厂适配器，使用属性配置
      * */
-    public SqlAdapterDefault(BeanWrap dsWrap, Properties props) {
+    public SqlAdapterPlus2(BeanWrap dsWrap, Properties props) {
         this.dsWrap = dsWrap;
 
         DataSource dataSource = dsWrap.raw();
@@ -55,6 +57,7 @@ class SqlAdapterDefault implements SqlAdapter {
         Environment environment = new Environment(dataSourceId, tf, dataSource);
         config = new Configuration(environment);
 
+        //加载插件
         //加载插件
         for (Interceptor i : SqlPlugins.getInterceptors()) {
             config.addInterceptor(i);
@@ -152,7 +155,7 @@ class SqlAdapterDefault implements SqlAdapter {
      * */
     public SqlSessionFactory getFactory() {
         if (factory == null) {
-            factory = new SqlSessionFactoryBuilder().build(config);
+            factory = new MybatisSqlSessionFactoryBuilder().build(config);
         }
 
         return factory;

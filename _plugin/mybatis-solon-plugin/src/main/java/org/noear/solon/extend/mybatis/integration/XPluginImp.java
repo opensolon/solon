@@ -18,8 +18,6 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
 
-        loadPlugins();
-
         app.onEvent(BeanWrap.class, new DsEventListener());
 
         Aop.context().beanBuilderAdd(Db.class, (clz, wrap, anno) -> {
@@ -55,40 +53,7 @@ public class XPluginImp implements Plugin {
         });
     }
 
-    protected static List<Interceptor> pluginList = new ArrayList<>();
-    private void loadPlugins(){
-        int index = 0;
-        while (true) {
-            Props props = Solon.cfg().getProp("mybatis.plugin["+index+"]");
-            if(props.size() == 0){
-                break;
-            }else{
-                index++;
 
-                String name = null;
-                for(Map.Entry kv : props.entrySet()){
-                    if(kv.getKey() instanceof String) {
-                        String key = (String) kv.getKey();
-                        if (key.endsWith(".class")) {
-                            name = key.split("\\.")[0];
-                        }
-                    }
-                }
-
-                if(name != null){
-                    props = props.getProp(name);
-                    Interceptor plugin = Utils.newInstance(props.get("class"));
-                    if(plugin == null){
-                        throw new IllegalArgumentException("Mybatis.plugin["+name+"].class load failed");
-                    }
-                    props.remove("class");
-
-                    plugin.setProperties(props);
-                    pluginList.add(plugin);
-                }
-            }
-        }
-    }
 
     private void create0(Class<?> clz, BeanWrap dsBw) {
         SqlSessionProxy proxy = SqlSessionManager.global().get(dsBw);
