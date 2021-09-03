@@ -23,7 +23,7 @@
         <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus -->
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus</artifactId>
+            <artifactId>mybatis-plus-core</artifactId>
             <version>3.4.3.2</version>
         </dependency>
         <!-- Mybatis Plus 高版本必须的依赖 -->
