@@ -29,11 +29,12 @@ import java.util.Properties;
  * @author noear
  * @since 1.5
  */
-class SqlAdapterDefault implements SqlAdapter {
+public class SqlAdapterDefault implements SqlAdapter {
+    protected final BeanWrap dsWrap;
+
     protected Configuration config;
     protected SqlSessionFactory factory;
     protected List<String> mappers = new ArrayList<>();
-    protected BeanWrap dsWrap;
 
     /**
      * 构建Sql工厂适配器，使用默认的 typeAliases 和 mappers 配置
@@ -53,7 +54,8 @@ class SqlAdapterDefault implements SqlAdapter {
 
         TransactionFactory tf = new JdbcTransactionFactory();
         Environment environment = new Environment(dataSourceId, tf, dataSource);
-        config = new Configuration(environment);
+
+        initConfiguration(environment);
 
         //加载插件
         for (Interceptor i : SqlPlugins.getInterceptors()) {
@@ -65,6 +67,10 @@ class SqlAdapterDefault implements SqlAdapter {
 
         //2.初始化（顺序不能乱）
         init0(props);
+    }
+
+    protected void initConfiguration(Environment environment){
+        config = new Configuration(environment);
     }
 
     private void init0(Properties props){
