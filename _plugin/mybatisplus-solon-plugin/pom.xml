@@ -20,20 +20,12 @@
             <groupId>org.noear</groupId>
             <artifactId>mybatis-solon-plugin</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus -->
+
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-core</artifactId>
             <version>3.4.3.2</version>
         </dependency>
-        <!-- Mybatis Plus 高版本必须的依赖 -->
-        <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>5.3.9</version>
-        </dependency>
-
 
         <dependency>
             <groupId>org.slf4j</groupId>
