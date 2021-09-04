@@ -768,16 +768,20 @@ public abstract class Context {
     @Note("获取输出状态")
     public abstract int status();
 
-    @Deprecated
-    public void status(int status) {
-        statusSet(status);
-    }
-
     /**
      * 设置输出状态
      */
     @Note("设置输出状态")
-    public abstract void statusSet(int status);
+    public void status(int status){
+        statusDoSet(status);
+    }
+
+    @Deprecated
+    public void statusSet(int status){
+        statusDoSet(status);
+    }
+
+    protected abstract void statusDoSet(int status);
 
 
     private NdMap attrMap = null;

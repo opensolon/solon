@@ -388,7 +388,7 @@ public class JlHttpContext extends Context {
     private int _status = 200;
 
     @Override
-    public void statusSet(int status) {
+    protected void statusDoSet(int status) {
         _status = status; //jlhttp 的 状态，由 上下文代理 负责
     }
 

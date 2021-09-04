@@ -361,7 +361,7 @@ public class SolonServletContext extends Context {
 
     @Override
     public void redirect(String url, int code) {
-        statusSet(code);
+        statusDoSet(code);
         _response.setHeader("Location", url);
     }
 
@@ -371,7 +371,7 @@ public class SolonServletContext extends Context {
     }
 
     @Override
-    public void statusSet(int status) {
+    protected void statusDoSet(int status) {
         _response.setStatus(status);
     }
 

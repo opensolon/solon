@@ -240,7 +240,7 @@ public class ContextEmpty extends Context {
     }
 
     @Override
-    public void statusSet(int status) {
+    protected void statusDoSet(int status) {
         this.status = status;
     }
 

@@ -27,7 +27,7 @@ import java.util.Properties;
 
 /**
  * @author noear
- * @since 1.5
+ * @since 1.1
  */
 public class SqlAdapterDefault implements SqlAdapter {
     protected final BeanWrap dsWrap;

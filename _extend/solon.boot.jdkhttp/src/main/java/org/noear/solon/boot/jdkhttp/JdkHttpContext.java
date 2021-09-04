@@ -378,7 +378,7 @@ public class JdkHttpContext extends Context {
     public void redirect(String url, int code) {
         try {
             headerSet("Location", url);
-            statusSet(code);
+            statusDoSet(code);
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
@@ -392,7 +392,7 @@ public class JdkHttpContext extends Context {
     private int _status = 200;
 
     @Override
-    public void statusSet(int status) {
+    protected void statusDoSet(int status) {
         _status = status;
     }
 
