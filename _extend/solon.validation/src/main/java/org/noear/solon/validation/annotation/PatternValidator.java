@@ -51,7 +51,7 @@ public class PatternValidator implements Validator<Pattern> {
 
     private boolean verify(Pattern anno, String val) {
         if (anno.orEmpty()) {
-            //充许空
+            //如果充许空
             if (Utils.isEmpty(val)) {
                 return true;
             }
