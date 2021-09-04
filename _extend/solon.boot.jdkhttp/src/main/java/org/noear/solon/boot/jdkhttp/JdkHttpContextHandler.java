@@ -37,7 +37,7 @@ public class JdkHttpContextHandler implements HttpHandler {
             if (context.getHandled() && context.status() != 404) {
                 context.commit();
             } else {
-                context.statusSet(404);
+                context.status(404);
                 context.commit();
             }
 

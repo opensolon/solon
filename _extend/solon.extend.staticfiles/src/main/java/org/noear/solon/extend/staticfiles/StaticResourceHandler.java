@@ -59,7 +59,7 @@ public class StaticResourceHandler implements Handler {
                 if (modified_since.equals(modified_now)) {
                     ctx.headerSet(CACHE_CONTROL, "max-age=" + XPluginProp.maxAge());//单位秒
                     ctx.headerSet(LAST_MODIFIED, modified_now);
-                    ctx.statusSet(304);
+                    ctx.status(304);
                     return;
                 }
             }
@@ -79,7 +79,7 @@ public class StaticResourceHandler implements Handler {
                 }
             }
 
-            ctx.statusSet(200);
+            ctx.status(200);
             ctx.output(uri.openStream());
         }
     }

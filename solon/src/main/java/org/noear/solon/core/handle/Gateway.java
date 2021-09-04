@@ -53,7 +53,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         mapping = Utils.annoAlias(mappingAnno.value(), mappingAnno.path());
 
         //默认为404错误输出
-        mainDef = (c) -> c.statusSet(404);
+        mainDef = (c) -> c.status(404);
 
         filterList.add(new FilterEntity(Integer.MAX_VALUE, this::doFilter));
 

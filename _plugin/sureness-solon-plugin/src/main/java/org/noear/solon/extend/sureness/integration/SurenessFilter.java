@@ -71,7 +71,7 @@ public class SurenessFilter implements Filter {
      */
     private void responseWrite(Context ctx, int statusCode,
                                String message, Map<String, String> headers) throws Throwable {
-        ctx.statusSet(statusCode);
+        ctx.status(statusCode);
         if (headers != null) {
             headers.forEach(ctx::headerAdd);
         }

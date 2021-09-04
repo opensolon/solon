@@ -19,7 +19,7 @@ public class CmdController {
             case "A.0.1": ctx.output(cmdService.name(cmd_name));break;
             case "A.0.2": ctx.output(cmdService.name(cmd_name));break;
             case "A.0.3": ctx.output(cmdService.name(cmd_name));break;
-            default:ctx.statusSet(404);break;
+            default:ctx.status(404);break;
         }
     }
 }

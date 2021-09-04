@@ -510,7 +510,7 @@ public class SolonApp implements HandlerSlots {
             ContextUtil.currentSet(x);
 
             if (stopped) {
-                x.statusSet(403);
+                x.status(403);
             } else {
                 new FilterChainNode(_filterList).doFilter(x);
             }
@@ -522,7 +522,7 @@ public class SolonApp implements HandlerSlots {
 
             //如果未处理，尝试处理
             if (x.getHandled() == false) {
-                x.statusSet(500);
+                x.status(500);
                 x.setHandled(true);
             }
 

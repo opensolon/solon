@@ -38,7 +38,7 @@ public class SmartHttpContextHandler extends HttpServerHandler {
             if (context.getHandled() && context.status() != 404) {
                 context.commit();
             } else {
-                context.statusSet(404);
+                context.status(404);
                 context.commit();
             }
         } catch (Throwable ex) {

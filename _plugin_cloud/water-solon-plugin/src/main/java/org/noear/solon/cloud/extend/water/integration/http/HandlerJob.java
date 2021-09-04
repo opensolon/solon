@@ -30,7 +30,7 @@ public class HandlerJob implements Handler {
         JobHandlerEntity entity = CloudJobServiceWaterImp.instance.get(name);
 
         if (entity == null) {
-            ctx.statusSet(400);
+            ctx.status(400);
             if (Utils.isEmpty(name)) {
                 ctx.output("CloudJob need the name parameter");
             } else {
@@ -43,7 +43,7 @@ public class HandlerJob implements Handler {
             } catch (Throwable ex) {
                 ex = Utils.throwableUnwrap(ex);
                 EventBus.push(ex);
-                ctx.statusSet(500);
+                ctx.status(500);
                 ctx.output(ex);
             }
         }

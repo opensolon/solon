@@ -17,7 +17,6 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ResourceScaner;
 import org.noear.solon.extend.mybatis.SqlAdapter;
-import org.noear.solon.extend.mybatis.SqlPlugins;
 
 import javax.sql.DataSource;
 import java.io.InputStream;

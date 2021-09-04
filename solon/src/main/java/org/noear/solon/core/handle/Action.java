@@ -143,7 +143,7 @@ public class Action extends HandlerAide implements Handler {
     public void handle(Context x) throws Throwable {
         if (Utils.isNotEmpty(mConsumes)) {
             if (x.contentType() == null || x.contentType().contains(mConsumes) == false) {
-                x.statusSet(415);
+                x.status(415);
                 return;
             }
         }
@@ -341,7 +341,7 @@ public class Action extends HandlerAide implements Handler {
                     c.render(obj);
                 } else {
                     if (c.status() < 400) {
-                        c.statusSet(500);
+                        c.status(500);
                     }
 
                     if (Solon.cfg().isDebugMode()) {

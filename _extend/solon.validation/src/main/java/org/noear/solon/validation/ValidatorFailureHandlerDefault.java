@@ -19,9 +19,9 @@ class ValidatorFailureHandlerDefault implements ValidatorFailureHandler {
         ctx.setHandled(true);
 
         if (rst.getCode() > 400 && rst.getCode() < 500) {
-            ctx.statusSet(rst.getCode());
+            ctx.status(rst.getCode());
         } else {
-            ctx.statusSet(400);
+            ctx.status(400);
         }
 
         if (ctx.getRendered() == false) {

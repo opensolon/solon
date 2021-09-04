@@ -14,7 +14,7 @@ public class BearerAuth {
         String auth0 = ctx.header("Authorization");
 
         if (Utils.isEmpty(auth0) || auth0.startsWith(TYPE) == false) {
-            ctx.statusSet(401);
+            ctx.status(401);
             ctx.headerSet("WWW-Authenticate", "Bearer realm...");
             return;
         }

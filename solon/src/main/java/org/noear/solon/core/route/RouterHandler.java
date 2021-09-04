@@ -50,9 +50,9 @@ public class RouterHandler implements Handler {
         //汇总状态
         if (ctx.status() < 1) {
             if (_handled) {
-                ctx.statusSet(200);
+                ctx.status(200);
             } else {
-                ctx.statusSet(404);
+                ctx.status(404);
             }
         }
     }

@@ -34,7 +34,7 @@ public class CloudBreakerInterceptor implements Interceptor {
             } catch (BreakerException ex) {
                 Context ctx = Context.current();
                 if (ctx != null) {
-                    ctx.statusSet(429);
+                    ctx.status(429);
                     ctx.setHandled(true);
                     throw new DataThrowable(ex);
                 }else {
