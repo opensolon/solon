@@ -57,13 +57,6 @@ public class PatternValidator implements Validator<Pattern> {
             }
         }
 
-        if (anno.orBlank()) {
-            //充许空白
-            if (Utils.isBlank(val)) {
-                return true;
-            }
-        }
-
         if (val == null) {
             return false;
         }

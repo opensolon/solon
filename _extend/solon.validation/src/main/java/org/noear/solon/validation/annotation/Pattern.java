@@ -1,6 +1,5 @@
 package org.noear.solon.validation.annotation;
 
-
 import org.noear.solon.annotation.Note;
 
 import java.lang.annotation.*;
@@ -15,11 +14,6 @@ import java.lang.annotation.*;
 public @interface Pattern {
     @Note("正则表达式")
     String value();
-
-    /**
-     * 或者可以为空白的
-     * */
-    boolean orBlank() default false;
 
     /**
      * 或者可以为空
