@@ -149,6 +149,7 @@ public class SqlAdapterDefault implements SqlAdapter {
     /**
      *
      * 获取配置器*/
+    @Override
     public Configuration getConfig() {
         return config;
     }
@@ -156,6 +157,7 @@ public class SqlAdapterDefault implements SqlAdapter {
     /**
      * 获取会话工厂
      * */
+    @Override
     public SqlSessionFactory getFactory() {
         if (factory == null) {
             factory = new SqlSessionFactoryBuilder().build(config);
@@ -164,21 +166,15 @@ public class SqlAdapterDefault implements SqlAdapter {
         return factory;
     }
 
+    /**
+     * 替代 @mapperScan
+     */
+    @Override
     public SqlAdapter mapperScan(SqlSessionProxy proxy) {
         for (String val : mappers) {
             mapperScan0(proxy, val);
         }
 
-        return this;
-    }
-
-    /**
-     * 替代 @mapperScan
-     * <p>
-     * 扫描 basePackages 里的类，并生成 mapper 实例注册到bean中心
-     */
-    public SqlAdapter mapperScan(SqlSessionProxy proxy, String basePackages) {
-        mapperScan0(proxy, basePackages);
         return this;
     }
 

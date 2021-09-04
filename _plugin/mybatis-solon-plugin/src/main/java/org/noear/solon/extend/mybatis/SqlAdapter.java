@@ -28,11 +28,4 @@ public interface SqlAdapter {
      * 替代 @mapperScan
      */
      SqlAdapter mapperScan(SqlSessionProxy proxy);
-
-    /**
-     * 替代 @mapperScan
-     * <p>
-     * 扫描 basePackages 里的类，并生成 mapper 实例注册到bean中心
-     */
-     SqlAdapter mapperScan(SqlSessionProxy proxy, String basePackages);
 }
