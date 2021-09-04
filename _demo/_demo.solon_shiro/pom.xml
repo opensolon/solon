@@ -21,12 +21,12 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.boot.undertow</artifactId>
-            <version>1.5.27</version>
+            <version>1.5.28</version>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>shiro-solon-plugin</artifactId>
-            <version>1.5.27</version>
+            <version>1.5.28</version>
         </dependency>
 
     </dependencies>
