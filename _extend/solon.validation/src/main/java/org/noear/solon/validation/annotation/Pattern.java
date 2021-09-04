@@ -16,5 +16,18 @@ public @interface Pattern {
     @Note("正则表达式")
     String value();
 
+    /**
+     * 或者可以为空白的
+     * */
+    boolean orBlank() default false;
+
+    /**
+     * 或者可以为空
+     * */
+    boolean orEmpty() default false;
+
+    /**
+     * 提示消息
+     * */
     String message() default "";
 }

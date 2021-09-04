@@ -1,5 +1,6 @@
 package org.noear.solon.validation.annotation;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.validation.Validator;
@@ -30,7 +31,7 @@ public class PatternValidator implements Validator<Pattern> {
 
         String val = (String) val0;
 
-        if (val == null || verify(anno, val) == false) {
+        if (verify(anno, val) == false) {
             return Result.failure(clz.getSimpleName() + "." + name);
         } else {
             return Result.succeed();
@@ -41,7 +42,7 @@ public class PatternValidator implements Validator<Pattern> {
     public Result validateOfContext(Context ctx, Pattern anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
 
-        if (val == null || verify(anno, val) == false) {
+        if (verify(anno, val) == false) {
             return Result.failure(name);
         } else {
             return Result.succeed();
@@ -49,6 +50,24 @@ public class PatternValidator implements Validator<Pattern> {
     }
 
     private boolean verify(Pattern anno, String val) {
+        if (anno.orEmpty()) {
+            //充许空
+            if (Utils.isEmpty(val)) {
+                return true;
+            }
+        }
+
+        if (anno.orBlank()) {
+            //充许空白
+            if (Utils.isBlank(val)) {
+                return true;
+            }
+        }
+
+        if (val == null) {
+            return false;
+        }
+
         java.util.regex.Pattern pt = cached.get(anno.value());
 
         if (pt == null) {
