@@ -61,4 +61,16 @@ public class HttpValidTest3 extends HttpTestBase {
         data.put("field20","noear@live.cn");
         assert path("/demo2/valid/bean3").data(data).post().contains("field30");
     }
+
+    @Test
+    public void test3() throws IOException {
+        Map<String, String> data = new LinkedHashMap<>();
+        data.put("field10","2020-12-12T12:12:12");
+        data.put("field20","noear@live.cn");
+        data.put("field3","");
+        assert path("/demo2/valid/bean3").data(data).post().contains("field30");
+
+        data.put("field30","333-23333");
+        assert path("/demo2/valid/bean3").data(data).post().contains("OK");
+    }
 }
