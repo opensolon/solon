@@ -12,16 +12,20 @@ import java.util.List;
  */
 @Data
 public class ValidModel2 {
+    @NotEmpty
     @Date
     private String field1;
+    @NotEmpty
     @Date("yyyy-MM-dd")
     private String field2;
     @DecimalMax(10.0)
     private Double field3;
     @DecimalMin(10.0)
     private double field4;
+    @NotEmpty
     @Email
     private String field5;
+    @NotEmpty
     @Email("\\w+\\@live.cn")
     private String field6;
     @Max(10)
@@ -40,6 +44,7 @@ public class ValidModel2 {
     private String field13;
     @Null
     private Double field14;
+    @NotEmpty
     @Pattern("\\d{3}-\\d+")
     private String field15;
     @NotZero
