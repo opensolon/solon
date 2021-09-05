@@ -16,11 +16,6 @@ public @interface Pattern {
     String value();
 
     /**
-     * 或者可以为空
-     * */
-    boolean orEmpty() default false;
-
-    /**
      * 提示消息
      * */
     String message() default "";

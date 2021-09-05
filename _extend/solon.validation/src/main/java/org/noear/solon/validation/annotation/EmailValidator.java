@@ -1,5 +1,6 @@
 package org.noear.solon.validation.annotation;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.validation.Validator;
@@ -34,7 +35,7 @@ public class EmailValidator implements Validator<Email> {
 
         String val = (String) val0;
 
-        if (val == null || verify(anno, val) == false) {
+        if (verify(anno, val) == false) {
             return Result.failure(clz.getSimpleName() + "." + name);
         } else {
             return Result.succeed();
@@ -45,7 +46,7 @@ public class EmailValidator implements Validator<Email> {
     public Result validateOfContext(Context ctx, Email anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
 
-        if (val == null || verify(anno, val) == false) {
+        if (verify(anno, val) == false) {
             return Result.failure(name);
         } else {
             return Result.succeed();
@@ -53,6 +54,11 @@ public class EmailValidator implements Validator<Email> {
     }
 
     private boolean verify(Email anno, String val) {
+        //如果为空，算通过（交由@NotEmpty之类，进一步控制）
+        if (Utils.isEmpty(val)) {
+            return true;
+        }
+
         java.util.regex.Pattern pt = cached.get(anno.value());
 
         if (pt == null) {

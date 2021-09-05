@@ -50,15 +50,9 @@ public class PatternValidator implements Validator<Pattern> {
     }
 
     private boolean verify(Pattern anno, String val) {
-        if (anno.orEmpty()) {
-            //如果充许空
-            if (Utils.isEmpty(val)) {
-                return true;
-            }
-        }
-
-        if (val == null) {
-            return false;
+        //如果为空，算通过（交由@NotEmpty之类，进一步控制）
+        if (Utils.isEmpty(val)) {
+            return true;
         }
 
         java.util.regex.Pattern pt = cached.get(anno.value());

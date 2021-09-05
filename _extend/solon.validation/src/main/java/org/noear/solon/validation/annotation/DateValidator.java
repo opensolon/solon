@@ -32,7 +32,7 @@ public class DateValidator implements Validator<Date> {
 
         String val = (String) val0;
 
-        if (val == null || verify(anno, val) == false) {
+        if (verify(anno, val) == false) {
             return Result.failure(clz.getSimpleName() + "." + name);
         } else {
             return Result.succeed();
@@ -46,7 +46,7 @@ public class DateValidator implements Validator<Date> {
     public Result validateOfContext(Context ctx, Date anno, String name, StringBuilder tmp) {
         String val = ctx.param(name);
 
-        if (val == null || verify(anno, val) == false) {
+        if (verify(anno, val) == false) {
             return Result.failure(name);
         } else {
             return Result.succeed();
@@ -54,6 +54,11 @@ public class DateValidator implements Validator<Date> {
     }
 
     private boolean verify(Date anno, String val) {
+        //如果为空，算通过（交由@NotEmpty之类，进一步控制）
+        if (Utils.isEmpty(val)) {
+            return true;
+        }
+
         try {
             if (Utils.isEmpty(anno.value())) {
                 DateTimeFormatter.ISO_LOCAL_DATE_TIME.parse(val);
