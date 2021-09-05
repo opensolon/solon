@@ -70,6 +70,7 @@ public class HttpValidTest extends _TestBase{
     public void test2v_email3() throws IOException {
         assert get("/demo2/valid/email3?val1=noear@live.cn").equals("OK");
         assert get("/demo2/valid/email3?val1=noe0ar@li-ve.com.cn").equals("OK");
+        assert get("/demo2/valid/email3?val1=9979331@qq.com").equals("OK");
         assert get("/demo2/valid/email3?val1=noearlive.cn").equals("OK") == false;
         assert get("/demo2/valid/email3?val1=").equals("OK") == false;
     }

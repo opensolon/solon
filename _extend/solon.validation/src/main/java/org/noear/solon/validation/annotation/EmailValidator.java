@@ -19,7 +19,7 @@ public class EmailValidator implements Validator<Email> {
     public static final EmailValidator instance = new EmailValidator();
 
     public EmailValidator() {
-        cached.putIfAbsent("", java.util.regex.Pattern.compile("^[a-z]([a-z0-9]*[-_]?[a-z0-9]+)*@([a-z0-9]*[-_]?[a-z0-9]+)+[\\.][a-z]{2,3}([\\.][a-z]{2})?$"));
+        cached.putIfAbsent("", java.util.regex.Pattern.compile("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$"));
     }
 
     @Override
