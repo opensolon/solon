@@ -1,5 +1,8 @@
-<h1 align="center">Ant Design</h1>
+<h1 align="center">Vaptcha for solon</h1>
 
+<div align="center">
+Author noear，iYarnFog
+</div>
 ## ✨ 特性
 
 - 🌈 注解式验证，无侵入性。
@@ -8,11 +11,13 @@
 ## 📦 安装
 
 ```xml
-<parent>
+<dependency>
     <groupId>org.noear</groupId>
     <artifactId>vaptcha-solon-plugin</artifactId>
-    </parent>
+</dependency>
 ```
+
+前端适配教程请参考 [Vaptcha 官网](https://www.vaptcha.com/document/install.html#pc-%E7%BD%91%E9%A1%B5%E9%83%A8%E7%BD%B2)
 
 ## ⚙️ 配置
 
