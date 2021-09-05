@@ -18,6 +18,8 @@ public class HttpValidTest extends _TestBase{
     @Test
     public void test2v_date() throws IOException {
         assert get("/demo2/valid/date?val1=2020-12-12T12:12:12").equals("OK");
+        assert get("/demo2/valid/date?val1=").equals("OK");
+        assert get("/demo2/valid/date").equals("OK");
         assert get("/demo2/valid/date?val1=2020-12-12 12:12:12").equals("OK") == false;
     }
 
@@ -26,6 +28,14 @@ public class HttpValidTest extends _TestBase{
         assert get("/demo2/valid/date2?val1=2020-12-12").equals("OK");
         assert get("/demo2/valid/date2?val1=2020-12-12T12:12:12").equals("OK") == false;
         assert get("/demo2/valid/date2?val1=2020-12-12 12:12").equals("OK") == false;
+    }
+
+    @Test
+    public void test2v_date3() throws IOException {
+        assert get("/demo2/valid/date3?val1=2020-12-12T12:12:12").equals("OK");
+        assert get("/demo2/valid/date3?val1=").equals("OK") == false;
+        assert get("/demo2/valid/date3").equals("OK") == false;
+        assert get("/demo2/valid/date3?val1=2020-12-12 12:12:12").equals("OK") == false;
     }
 
     @Test
@@ -46,6 +56,7 @@ public class HttpValidTest extends _TestBase{
         assert get("/demo2/valid/email?val1=noear@live.cn").equals("OK");
         assert get("/demo2/valid/email?val1=noe0ar@li-ve.com.cn").equals("OK");
         assert get("/demo2/valid/email?val1=noearlive.cn").equals("OK") == false;
+        assert get("/demo2/valid/email?val1=").equals("OK");
     }
 
     @Test
@@ -53,6 +64,14 @@ public class HttpValidTest extends _TestBase{
         assert get("/demo2/valid/email2?val1=noear@live.cn").equals("OK");
         assert get("/demo2/valid/email2?val1=noe0ar@li-ve.com.cn").equals("OK") == false;
         assert get("/demo2/valid/email2?val1=noearlive.cn").equals("OK") == false;
+    }
+
+    @Test
+    public void test2v_email3() throws IOException {
+        assert get("/demo2/valid/email3?val1=noear@live.cn").equals("OK");
+        assert get("/demo2/valid/email3?val1=noe0ar@li-ve.com.cn").equals("OK");
+        assert get("/demo2/valid/email3?val1=noearlive.cn").equals("OK") == false;
+        assert get("/demo2/valid/email3?val1=").equals("OK") == false;
     }
 
     @Test
@@ -119,13 +138,15 @@ public class HttpValidTest extends _TestBase{
     @Test
     public void test2v_patt() throws IOException {
         assert get("/demo2/valid/patt?val1=111-12&val2=222-12").equals("OK");
-        assert get("/demo2/valid/patt?val1=111-12&val2=").equals("OK") == false;
-        assert get("/demo2/valid/patt").equals("OK")== false;
+        assert get("/demo2/valid/patt?val1=111-12&val2=").equals("OK");
+        assert get("/demo2/valid/patt").equals("OK");
     }
 
     @Test
     public void test2v_patt2() throws IOException {
-        assert get("/demo2/valid/patt").equals("OK")== false;
+        assert get("/demo2/valid/patt2?val1=111-12&val2=222-12").equals("OK");
+        assert get("/demo2/valid/patt2?val1=111-12&val2=").equals("OK") == false;
+        assert get("/demo2/valid/patt2").equals("OK")== false;
     }
 
     @Test

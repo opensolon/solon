@@ -18,6 +18,11 @@ public class ValidController {
         return "OK";
     }
 
+    @Mapping("date3")
+    public String date3(@NotEmpty @Date String val1) {
+        return "OK";
+    }
+
     @Mapping("dmax")
     public String dmax(@DecimalMax(10.0) double val1, @DecimalMax(10.0) double val2) {
         return "OK";
@@ -36,6 +41,11 @@ public class ValidController {
 
     @Mapping("email2")
     public String email2(@Email("\\w+\\@live.cn") String val1) {
+        return "OK";
+    }
+
+    @Mapping("email3")
+    public String email3(@NotEmpty @Email String val1) {
         return "OK";
     }
 
@@ -83,6 +93,11 @@ public class ValidController {
 
     @Mapping("patt")
     public String patt(@Pattern("\\d{3}-\\d+") String val1, @Pattern("\\d{3}-\\d+") String val2) {
+        return "OK";
+    }
+
+    @Mapping("patt2")
+    public String patt2(@NotEmpty @Pattern("\\d{3}-\\d+") String val1, @NotEmpty @Pattern("\\d{3}-\\d+") String val2) {
         return "OK";
     }
 
