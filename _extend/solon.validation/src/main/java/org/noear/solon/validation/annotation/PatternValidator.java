@@ -25,7 +25,7 @@ public class PatternValidator implements Validator<Pattern> {
 
     @Override
     public Result validateOfEntity(Class<?> clz, Pattern anno, String name, Object val0, StringBuilder tmp) {
-        if (val0 instanceof String == false) {
+        if (val0 != null && val0 instanceof String == false) {
             return Result.failure(clz.getSimpleName() + "." + name);
         }
 

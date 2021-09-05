@@ -26,7 +26,7 @@ public class DateValidator implements Validator<Date> {
      * */
     @Override
     public Result validateOfEntity(Class<?> clz, Date anno, String name, Object val0, StringBuilder tmp) {
-        if (val0 instanceof String == false) {
+        if (val0 != null && val0 instanceof String == false) {
             return Result.failure(clz.getSimpleName() + "." + name);
         }
 

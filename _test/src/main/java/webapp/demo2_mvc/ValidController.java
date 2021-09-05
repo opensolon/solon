@@ -134,4 +134,10 @@ public class ValidController {
     public String bean2(@Validated ValidModel2 model) {
         return "OK";
     }
+
+    //这是基于 bean 的验证体系
+    @Mapping("bean3")
+    public String bean3(@Validated ValidModel3 model) {
+        return "OK";
+    }
 }

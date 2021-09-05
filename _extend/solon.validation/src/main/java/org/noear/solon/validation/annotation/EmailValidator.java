@@ -29,7 +29,7 @@ public class EmailValidator implements Validator<Email> {
 
     @Override
     public Result validateOfEntity(Class<?> clz, Email anno, String name, Object val0, StringBuilder tmp) {
-        if (val0 instanceof String == false) {
+        if (val0 != null && val0 instanceof String == false) {
             return Result.failure(clz.getSimpleName() + "." + name);
         }
 
