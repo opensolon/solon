@@ -9,6 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * @author iYarnFog
+ * @since 1.5
  */
 @Target({ ElementType.FIELD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)

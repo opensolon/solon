@@ -1,21 +1,24 @@
 package org.noear.solon.extend.vaptcha.http.request.validators;
 
-import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.core.Props;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
+import org.noear.solon.extend.vaptcha.entities.ValidateResult;
 import org.noear.solon.extend.vaptcha.entities.iVaptcha;
 import org.noear.solon.validation.Validator;
 import org.noear.solon.validation.ValidatorManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author iYarnFog
+ * @since 1.5
  */
-@Slf4j
 public class VaptchaValidator implements Validator<Vaptcha> {
+    static Logger log = LoggerFactory.getLogger(VaptchaValidator.class);
 
     private String realIp;
     private final OkHttpClient client = new OkHttpClient();
@@ -52,25 +55,29 @@ public class VaptchaValidator implements Validator<Vaptcha> {
         if (result0.getCode() == Result.FAILURE_CODE) {
             return false;
         }
+
         RequestBody body = new FormBody.Builder()
                 .add("id", props.get("vid"))
                 .add("secretkey", props.get("key"))
                 .add("scene", "3")
                 .add("token", vaptcha.getToken())
-                .add("ip", this.getRealIp(vaptcha.getRealIp()))
+                .add("ip", this.getRealIp(Context.current().realIp()))
                 .build();
+
         Request request = new Request.Builder()
                 .url(vaptcha.getServer())
                 .post(body)
                 .build();
+
         Call call = this.client.newCall(request);
+
         try {
             Response response = call.execute();
             if (response.body() == null) {
                 return false;
             }
-            iVaptcha.ValidateResult result = ONode.deserialize(response.body().string(), iVaptcha.ValidateResult.class);
-            return result.isSuccess();
+            ValidateResult result = ONode.deserialize(response.body().string(), ValidateResult.class);
+            return result.getSuccess();
         } catch (Exception exception) {
             log.error("Something went wrong.", exception);
             return false;
@@ -82,11 +89,14 @@ public class VaptchaValidator implements Validator<Vaptcha> {
             if (this.realIp != null) {
                 return this.realIp;
             }
+
             Request request = new Request.Builder()
                     .url("https://ip.tool.lu/")
                     .get()
                     .build();
+
             Call call = this.client.newCall(request);
+
             try {
                 Response response = call.execute();
                 if (response.body() != null) {

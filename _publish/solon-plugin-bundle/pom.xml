@@ -239,6 +239,7 @@
         <module>../../_plugin/sa-token-solon-plugin</module>
 
         <module>../../_plugin/captcha-solon-plugin</module>
+        <module>../../_plugin/vaptcha-solon-plugin</module>
 
         <!-- //////////////////////////////////////////////////// -->
         <module>../../_plugin_cloud/aliyun-oss-solon-plugin</module>
