@@ -3,6 +3,7 @@ package org.noear.solon.extend.vaptcha.entities;
 
 /**
  * @author iYarnFog
+ * @since 1.5
  */
 public class ValidateResult {
     // 验证结果，1为通过，0为失败
