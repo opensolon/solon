@@ -14,8 +14,6 @@ import org.noear.solon.validation.ValidatorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.rmi.CORBA.Util;
-
 /**
  * @author iYarnFog
  * @since 1.5
