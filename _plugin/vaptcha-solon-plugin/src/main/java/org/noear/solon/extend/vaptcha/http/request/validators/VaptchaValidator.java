@@ -3,6 +3,7 @@ package org.noear.solon.extend.vaptcha.http.request.validators;
 import okhttp3.*;
 import org.noear.snack.ONode;
 import org.noear.solon.Solon;
+import org.noear.solon.Utils;
 import org.noear.solon.core.Props;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
@@ -12,6 +13,8 @@ import org.noear.solon.validation.Validator;
 import org.noear.solon.validation.ValidatorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.rmi.CORBA.Util;
 
 /**
  * @author iYarnFog
@@ -56,12 +59,18 @@ public class VaptchaValidator implements Validator<Vaptcha> {
             return false;
         }
 
+        //处理终端真实IP
+        String realIp = vaptcha.getRealIp();
+        if(Utils.isEmpty(realIp)){
+            realIp = Context.current().realIp();
+        }
+
         RequestBody body = new FormBody.Builder()
                 .add("id", props.get("vid"))
                 .add("secretkey", props.get("key"))
                 .add("scene", "3")
                 .add("token", vaptcha.getToken())
-                .add("ip", this.getRealIp(Context.current().realIp()))
+                .add("ip", this.getRealIp(realIp))
                 .build();
 
         Request request = new Request.Builder()

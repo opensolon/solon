@@ -12,18 +12,27 @@ public class iVaptcha {
     @NotBlank
     String server;
 
+    String realIp; //不直接赋值，由处理的地方控制
+
+    /**
+     * 领牌
+     * */
     public String getToken() {
         return token;
     }
 
+    /**
+     * 服务地址
+     * */
     public String getServer() {
         return server;
     }
 
 
-
-
-    //这个不必要放这里，可以需要的地方直接获取
-    //@NotBlank
-    //String realIp = Context.current().realIp();
+    /**
+     * 用户真实Id
+     * */
+    public String getRealIp() {
+        return realIp;
+    }
 }
