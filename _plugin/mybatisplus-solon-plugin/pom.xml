@@ -42,9 +42,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.7.2</version>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

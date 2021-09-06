@@ -1,16 +1,17 @@
 package org.noear.solon.extend.mybatisplus.integration;
 
-import org.junit.jupiter.api.Test;
+
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Map;
 
-class IGenericTypeResolverImplTest {
+public class IGenericTypeResolverImplTest {
 
     private final IGenericTypeResolverImpl genericTypeResolver = new IGenericTypeResolverImpl();
 
     @Test
-    void resolveTypeArguments() {
+    public void resolveTypeArguments() {
         System.out.println(Arrays.toString(this.genericTypeResolver.resolveTypeArguments(DemoImpl.class, Map.class)));
         System.out.println(Arrays.toString(this.genericTypeResolver.resolveTypeArguments(DemoImpl.class, Demo.class)));
     }
