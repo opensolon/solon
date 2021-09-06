@@ -15,11 +15,11 @@ import java.util.Properties;
 public class SqlAdapterFactoryPlus implements SqlAdapterFactory {
     @Override
     public SqlAdapter create(BeanWrap dsWrap) {
-        return new SqlAdapterPlus2(dsWrap);
+        return new SqlAdapterPlus(dsWrap);
     }
 
     @Override
     public SqlAdapter create(BeanWrap dsWrap, Properties props) {
-        return new SqlAdapterPlus2(dsWrap, props);
+        return new SqlAdapterPlus(dsWrap, props);
     }
 }
