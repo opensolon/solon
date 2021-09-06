@@ -8,12 +8,12 @@ import java.util.Map;
 
 public class IGenericTypeResolverImplTest {
 
-    private final IGenericTypeResolverImpl genericTypeResolver = new IGenericTypeResolverImpl();
+    private final IGenericTypeResolverImpl resolver = new IGenericTypeResolverImpl();
 
     @Test
     public void resolveTypeArguments() {
-        System.out.println(Arrays.toString(this.genericTypeResolver.resolveTypeArguments(DemoImpl.class, Map.class)));
-        System.out.println(Arrays.toString(this.genericTypeResolver.resolveTypeArguments(DemoImpl.class, Demo.class)));
+        System.out.println(Arrays.toString(resolver.resolveTypeArguments(DemoImpl.class, Map.class)));
+        System.out.println(Arrays.toString(resolver.resolveTypeArguments(DemoImpl.class, Demo.class)));
     }
 
     private interface Demo<T> {}
