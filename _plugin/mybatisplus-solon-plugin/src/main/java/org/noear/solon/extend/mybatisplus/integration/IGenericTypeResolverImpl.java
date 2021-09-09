@@ -9,7 +9,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author noear, iYarnFog
+ * 泛型类型分解器
+ *
+ * @author iYarnFog
  * @since 1.5
  */
 public class IGenericTypeResolverImpl implements IGenericTypeResolver {

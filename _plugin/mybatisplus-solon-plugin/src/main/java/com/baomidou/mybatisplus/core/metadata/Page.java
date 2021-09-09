@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
+ * 分页配置器
+ *
  * @author noear
  * @since 1.5
  */

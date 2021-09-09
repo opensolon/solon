@@ -9,7 +9,7 @@ import org.noear.solon.extend.mybatis.integration.SqlAdapterDefault;
 import java.util.Properties;
 
 /**
- * 适配器2
+ * 适配器 for mybatis-plus
  * <p>
  * 1.提供 mapperScan 能力
  * 2.生成 factory 的能力
