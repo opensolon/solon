@@ -41,6 +41,11 @@ public class IGenericTypeResolverImpl implements IGenericTypeResolver {
         return getGenericInterfaces(clazz, new ArrayList<>());
     }
 
+    /**
+     * 获取指定类的所有父类
+     * @param clazz: 要获取的类
+     * @return 所有父类
+     */
     private List<Class<?>> getGenericInterfaces(Class<?> clazz, List<Class<?>> classes) {
         Type[] interfaces = clazz.getGenericInterfaces();
         for (Type type : interfaces) {
