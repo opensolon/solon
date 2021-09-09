@@ -28,6 +28,13 @@
         </dependency>
 
         <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-extension</artifactId>
+            <version>3.4.3.3</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <version>${hikaricp.ver}</version>

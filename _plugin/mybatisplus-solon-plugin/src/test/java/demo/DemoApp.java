@@ -1,6 +1,9 @@
 package demo;
 
+import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import demo.dso.mapper.UserMapper;
 import demo.dso.service.UserService;
 import org.apache.ibatis.session.Configuration;
@@ -15,9 +18,12 @@ import org.noear.solon.core.Aop;
 public class DemoApp {
     public static void main(String[] args) {
         new SolonBuilder()
-                .onEvent(Configuration.class, c -> {
-                    //添加插件
-                    //c.addInterceptor();
+                .onEvent(Configuration.class, e -> {
+                    //添加 mybatis-plug 分页插件
+                    //
+                    MybatisPlusInterceptor plusInterceptor = new MybatisPlusInterceptor();
+                    plusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+                    e.addInterceptor(plusInterceptor);
                 })
                 .start(DemoApp.class, args);
 
