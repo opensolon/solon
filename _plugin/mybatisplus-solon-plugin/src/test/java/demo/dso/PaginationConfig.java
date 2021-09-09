@@ -8,7 +8,7 @@ import org.apache.ibatis.session.Configuration;
 /**
  * @author noear 2021/9/9 created
  */
-public class PageingConfig {
+public class PaginationConfig {
     public static void init(Configuration e){
         //添加 mybatis-plug 分页支持
         //
