@@ -1,14 +1,21 @@
 package demo.controller;
 
+import demo.dso.service.UserService;
+import demo.model.User;
 import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
 
-import java.util.Date;
+import java.util.List;
 
 @Controller
 public class IndexController {
-    @Mapping(path = "/")
-    public String index() {
-        return new Date().toString();
+
+    @Inject
+    UserService userService;
+
+    @Mapping("/")
+    public List<User> index() {
+        return userService.getUserList();
     }
 }
