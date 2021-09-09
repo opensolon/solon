@@ -17,7 +17,7 @@ public class DemoApp {
     public static void main(String[] args) {
         new SolonBuilder()
                 .onEvent(Configuration.class, e -> {
-                    //添加 mybatis-plug 分页插件
+                    //添加 mybatis-plug 分页支持
                     //
                     MybatisPlusInterceptor plusInterceptor = new MybatisPlusInterceptor();
                     plusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
