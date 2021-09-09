@@ -7,6 +7,8 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
+import java.util.Map;
+
 /**
  * @author noear 2021/5/28 created
  */
@@ -16,6 +18,10 @@ public class InjectTest {
     @Inject(value = "${username}", autoRefreshed = true)
     String username;
 
+
+    @Inject
+    Map<String, Object> map;
+
     @Test
     public void xxx() {
         assert "noear".equals(username);
@@ -23,5 +29,8 @@ public class InjectTest {
         Solon.cfg().setProperty("username", "xxx");
 
         assert "xxx".equals(username);
+
+        assert map != null;
+        assert map.get("1").equals(1);
     }
 }
