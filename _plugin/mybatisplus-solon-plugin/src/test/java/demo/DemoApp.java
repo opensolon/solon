@@ -1,10 +1,8 @@
 package demo;
 
 import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import demo.dso.mapper.UserMapper;
 import demo.dso.service.UserService;
 import org.apache.ibatis.session.Configuration;
 import org.noear.solon.SolonBuilder;
