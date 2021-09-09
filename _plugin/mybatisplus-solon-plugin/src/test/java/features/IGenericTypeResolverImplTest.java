@@ -1,9 +1,10 @@
-package org.noear.solon.extend.mybatisplus.integration;
+package features;
 
 
 import com.baomidou.mybatisplus.core.mapper.Mapper;
-import demo.mappers.UserMapper;
+import demo.dso.mapper.UserMapper;
 import org.junit.Test;
+import org.noear.solon.extend.mybatisplus.integration.IGenericTypeResolverImpl;
 
 import java.util.Arrays;
 import java.util.Map;

@@ -1,7 +1,7 @@
-package demo.mappers;
+package demo.dso.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import demo.entities.models.User;
+import demo.model.User;
 
 /**
  * @author 颖

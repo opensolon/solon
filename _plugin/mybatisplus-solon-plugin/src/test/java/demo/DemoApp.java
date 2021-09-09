@@ -1,7 +1,8 @@
 package demo;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import demo.mappers.UserMapper;
+import demo.dso.mapper.UserMapper;
+import demo.dso.service.UserService;
 import org.apache.ibatis.session.Configuration;
 import org.noear.solon.SolonBuilder;
 import org.noear.solon.annotation.Import;
@@ -20,18 +21,9 @@ public class DemoApp {
                 })
                 .start(DemoApp.class, args);
 
-        new Thread(() -> {
-            while (true) {
-                UserMapper userMapper = Aop.get(UserMapper.class);
-                if (userMapper != null) {
-                    System.out.println(userMapper.selectList(new QueryWrapper<>()));
-                    break;
-                } else {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ignore) {}
-                }
-            }
-        });
+
+        //test
+        UserService userService = Aop.get(UserService.class);
+        assert userService.getUserList() != null;
     }
 }
