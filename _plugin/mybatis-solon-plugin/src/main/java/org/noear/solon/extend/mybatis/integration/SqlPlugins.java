@@ -22,6 +22,10 @@ public class SqlPlugins {
         return interceptors;
     }
 
+    public static void addInterceptor(Interceptor interceptor){
+        getInterceptors().add(interceptor);
+    }
+
     private static void tryInit() {
         if (interceptors != null) {
             return;
