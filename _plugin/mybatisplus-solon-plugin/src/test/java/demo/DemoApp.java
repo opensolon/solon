@@ -3,9 +3,11 @@ package demo;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import demo.dso.PageingConfig;
 import demo.dso.service.UserService;
 import org.apache.ibatis.session.Configuration;
 import org.noear.solon.SolonBuilder;
+import org.noear.solon.Utils;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.core.Aop;
 
@@ -22,6 +24,12 @@ public class DemoApp {
                     MybatisPlusInterceptor plusInterceptor = new MybatisPlusInterceptor();
                     plusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
                     e.addInterceptor(plusInterceptor);
+
+
+                    //动态添加 mybatis-plug 分页支持
+//                    if(Utils.loadClass("com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor") != null){
+//                        PageingConfig.init(e);
+//                    }
                 })
                 .start(DemoApp.class, args);
 
