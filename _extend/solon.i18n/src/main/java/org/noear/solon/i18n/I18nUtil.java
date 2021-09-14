@@ -31,7 +31,21 @@ public class I18nUtil {
     /**
      * 消息国际化内容包名
      * */
-    private static final String messageBundleName = "i18n.messages";
+    private static String messageBundleName = "i18n.messages";
+
+    /**
+     * 获取 消息国际化内容包名
+     * */
+    public static String getMessageBundleName() {
+        return messageBundleName;
+    }
+
+    /**
+     * 设置 消息国际化内容包名
+     * */
+    public static void setMessageBundleName(String messageBundleName) {
+        I18nUtil.messageBundleName = messageBundleName;
+    }
 
     static {
         Aop.getAsyn(I18nBundleFactory.class, bw -> {
