@@ -66,7 +66,7 @@ public class SnowflakeId {
     ////////////////////////////
 
     /**
-     * 时间部分所占长度
+     * 时间部分所占长度(用69年)
      */
     private final int timeLen = 41;
     /**
