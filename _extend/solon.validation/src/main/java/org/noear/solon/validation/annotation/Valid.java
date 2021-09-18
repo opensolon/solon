@@ -13,9 +13,9 @@ import java.lang.annotation.*;
  * @author noear
  * @since 1.0
  * */
+@Inherited
 @Before({ContextValidateInterceptor.class})
 @Around(value = BeanValidateInterceptor.class, index = 1)
-@Inherited
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Valid {
