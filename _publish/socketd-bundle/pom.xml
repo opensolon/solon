@@ -6,7 +6,7 @@
 
     <groupId>org.noear.bundle</groupId>
     <artifactId>socketd-bundle</artifactId>
-    <version>1.5.31</version>
+    <version>1.5.32</version>
     <packaging>pom</packaging>
 
 
