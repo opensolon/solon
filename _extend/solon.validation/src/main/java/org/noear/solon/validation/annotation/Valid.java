@@ -8,7 +8,7 @@ import org.noear.solon.validation.ContextValidateInterceptor;
 import java.lang.annotation.*;
 
 /**
- * 验证触发器注解（可以把它加在基类上）
+ * 验证触发器注解（可继承）
  *
  * @author noear
  * @since 1.0

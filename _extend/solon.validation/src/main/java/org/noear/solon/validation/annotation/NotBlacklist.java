@@ -2,17 +2,15 @@ package org.noear.solon.validation.annotation;
 
 import org.noear.solon.annotation.Note;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
- * 黑名单注解
+ * 黑名单注解（可继承）
  *
  * @author noear
  * @since 1.3
  * */
+@Inherited
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NotBlacklist {
