@@ -41,7 +41,14 @@ public class RouterDefault implements Router{
      */
     @Override
     public void add(String path, Endpoint endpoint, MethodType method, int index, Handler handler) {
-        routesH[endpoint.code].add(new RoutingDefault<>(path, method, index, handler));
+        RoutingDefault routing = new RoutingDefault<>(path, method, index, handler);
+
+        if (path.contains("*")) {
+            routesH[endpoint.code].add(routing);
+        } else {
+            //没有*号的，优先
+            routesH[endpoint.code].add(0, routing);
+        }
     }
 
     /**
