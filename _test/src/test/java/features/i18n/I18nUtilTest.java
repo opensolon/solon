@@ -24,7 +24,7 @@ public class I18nUtilTest {
 
     @Test
     public void test1() {
-        I18nBundle bundle = I18nUtil.getMessageBundle(Locale.CHINA);
+        I18nBundle bundle = I18nUtil.getBundle(I18nUtil.getMessageBundleName(), Locale.CHINA);
         assert "登录".equals(bundle.get("login.title"));
     }
 
