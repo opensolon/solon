@@ -18,12 +18,19 @@ public class I18nService {
     }
 
 
+    /**
+     * 获取国际化内容包
+     *
+     * @param locale 地域与语言
+     * */
     public I18nBundle getBundle(Locale locale) {
         return I18nUtil.getBundle(bundleName, locale);
     }
 
     /**
      * 转换为Map数据
+     *
+     * @param locale 地域与语言
      */
     public Map<String, String> toMap(Locale locale) {
         return getBundle(locale).toMap();
@@ -33,6 +40,7 @@ public class I18nService {
     /**
      * 获取国际化内容
      *
+     * @param locale 地域与语言
      * @param key 配置键
      */
     public String get(Locale locale, String key) {
@@ -42,6 +50,7 @@ public class I18nService {
     /**
      * 获取国际化内容并格式化
      *
+     * @param locale 地域与语言
      * @param key  配置键
      * @param args 参数
      */
