@@ -6,7 +6,7 @@ import org.noear.solon.data.annotation.*;
 import org.noear.solon.data.cache.CacheServiceEventListener;
 import org.noear.solon.data.cache.CacheLib;
 import org.noear.solon.data.cache.CacheService;
-import org.noear.solon.data.cache.CacheServiceDefault;
+import org.noear.solon.data.cache.LocalCacheService;
 import org.noear.solon.data.tran.TranExecutor;
 import org.noear.solon.data.around.CacheInterceptor;
 import org.noear.solon.data.around.CachePutInterceptor;
@@ -22,14 +22,14 @@ public class XPluginImp implements Plugin {
         }
 
         if (app.enableCaching()) {
-            CacheLib.cacheServiceAddIfAbsent("", CacheServiceDefault.instance);
+            CacheLib.cacheServiceAddIfAbsent("", LocalCacheService.instance);
 
             app.onEvent(BeanWrap.class, new CacheServiceEventListener());
         }
 
         Aop.context().beanOnloaded(() -> {
             if (Aop.has(CacheService.class) == false) {
-                Aop.wrapAndPut(CacheService.class, CacheServiceDefault.instance);
+                Aop.wrapAndPut(CacheService.class, LocalCacheService.instance);
             }
         });
 

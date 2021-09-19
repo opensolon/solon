@@ -9,8 +9,8 @@ import java.util.concurrent.*;
  * @author noear
  * @since 1.0
  * */
-public class CacheServiceDefault implements CacheService {
-    public static CacheService instance = new CacheServiceDefault();
+public class LocalCacheService implements CacheService {
+    public static CacheService instance = new LocalCacheService();
 
     private int _defaultSeconds;
 
@@ -19,11 +19,11 @@ public class CacheServiceDefault implements CacheService {
     //计划线程池（用于超时处理）
     private static ScheduledExecutorService _exec = Executors.newSingleThreadScheduledExecutor();
 
-    public CacheServiceDefault() {
+    public LocalCacheService() {
         this(300);
     }
 
-    public CacheServiceDefault(int defSeconds) {
+    public LocalCacheService(int defSeconds) {
         _defaultSeconds = defSeconds;
     }
 
