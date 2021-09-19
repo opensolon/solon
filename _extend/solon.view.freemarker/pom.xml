@@ -33,10 +33,6 @@
             <artifactId>freemarker</artifactId>
             <version>2.3.30</version>
         </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.auth</artifactId>
-        </dependency>
 
     </dependencies>
 

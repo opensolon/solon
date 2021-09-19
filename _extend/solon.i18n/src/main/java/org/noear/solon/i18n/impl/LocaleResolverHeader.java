@@ -14,29 +14,43 @@ import java.util.Locale;
  * @since 1.5
  */
 public class LocaleResolverHeader implements LocaleResolver {
-    private String headerName = "Accept-Language";
+    private String headerName1;
+    private static final String headerName2 = "Content-Language";
+    private static final String headerName3 = "Accept-Language";
 
     /**
      * 设置header name
-     * */
+     */
     public void setHeaderName(String headerName) {
-        this.headerName = headerName;
+        this.headerName1 = headerName;
     }
 
     /**
      * 获取地区
      *
      * @param ctx 上下文
-     * */
+     */
     @Override
     public Locale getLocale(Context ctx) {
         if (ctx.getLocale() == null) {
-            String lang = ctx.header(headerName);
+            String lang = null;
+
+            if (Utils.isEmpty(headerName1)) {
+                lang = ctx.header(headerName1);
+            }
+
+            if (Utils.isEmpty(lang)) {
+                lang = ctx.header(headerName2);
+            }
+
+            if (Utils.isEmpty(lang)) {
+                lang = ctx.header(headerName3);
+            }
 
             if (Utils.isEmpty(lang)) {
                 ctx.setLocale(Locale.getDefault());
             } else {
-                if(lang.contains(",")){
+                if (lang.contains(",")) {
                     lang = lang.split(",")[0];
                 }
 
@@ -50,12 +64,14 @@ public class LocaleResolverHeader implements LocaleResolver {
     /**
      * 设置地区
      *
-     * @param ctx 上下文
+     * @param ctx    上下文
      * @param locale 地区
-     * */
+     */
     @Override
     public void setLocale(Context ctx, Locale locale) {
-        ctx.headerSet(headerName, locale.getLanguage());
-        ctx.setLocale(locale);
+        if (Utils.isEmpty(headerName1) == false) {
+            ctx.headerSet(headerName1, locale.getLanguage());
+            ctx.setLocale(locale);
+        }
     }
 }
