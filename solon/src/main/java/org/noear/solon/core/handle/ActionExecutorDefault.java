@@ -7,6 +7,7 @@ import org.noear.solon.core.wrap.ParamWrap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -60,14 +61,18 @@ public class ActionExecutorDefault implements ActionExecutor {
                 //如果是 Context 类型，直接加入参数
                 //
                 args.add(ctx);
+            } else if(Locale.class.isAssignableFrom(pt)){
+                //如果是 Locale 类型，直接加入参数
+                //
+                args.add(ctx.getLocale());
+            } else if (UploadedFile.class == pt) {
+                //如果是 UploadedFile
+                //
+                args.add(ctx.file(p.getName()));
             } else if (pt.getTypeName().equals("javax.servlet.http.HttpServletRequest")) {
                 args.add(ctx.request());
             } else if (pt.getTypeName().equals("javax.servlet.http.HttpServletResponse")) {
                 args.add(ctx.response());
-            } else if (UploadedFile.class == pt) {
-                //如果是文件
-                //
-                args.add(ctx.file(p.getName()));
             } else {
                 Object tv = changeValue(ctx, p, i, pt, bodyObj);
 
