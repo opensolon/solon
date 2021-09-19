@@ -61,7 +61,7 @@ public final class XPluginImp implements Plugin {
             PrintUtil.info("Connector:main: jdkhttp: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + _port + "}");
             PrintUtil.info("Server:main: jdkhttp: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
-            EventBus.push(ex);
+            throw new RuntimeException(ex);
         }
     }
 

@@ -85,7 +85,7 @@ public final class XPluginImp implements Plugin {
 
             PrintUtil.info("Server:main: smarthttp: Started @" + (time_end - time_start) + "ms");
         } catch (Exception ex) {
-            EventBus.push(ex);
+            throw new RuntimeException(ex);
         }
     }
 

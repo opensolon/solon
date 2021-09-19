@@ -56,7 +56,7 @@ public class XPluginImp implements Plugin {
             PrintUtil.info("Connector:main: reactor-netty: Started ServerConnector@{HTTP/1.1,[http/1.1]}{0.0.0.0:" + app.port() + "}");
             PrintUtil.info("Server:main: reactor-netty: Started @" + (time_end - time_start) + "ms");
         } catch (Throwable ex) {
-            EventBus.push(ex);
+            throw new RuntimeException(ex);
         }
     }
 
