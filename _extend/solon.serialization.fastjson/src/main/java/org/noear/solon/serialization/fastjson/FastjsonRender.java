@@ -25,10 +25,6 @@ public class FastjsonRender implements Render {
                     SerializerFeature.BrowserCompatible,
                     SerializerFeature.WriteClassName,
                     SerializerFeature.DisableCircularReferenceDetect);
-        } else if (ctx.accept().indexOf("/json") > 0) {
-            txt = JSON.toJSONString(obj,
-                    SerializerFeature.BrowserCompatible,
-                    SerializerFeature.DisableCircularReferenceDetect);
         } else {
             //非序列化处理
             //

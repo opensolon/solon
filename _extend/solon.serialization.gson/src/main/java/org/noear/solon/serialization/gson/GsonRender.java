@@ -28,8 +28,6 @@ public class GsonRender implements Render {
             //序列化处理
             //
             txt = serialize.toJson(obj, obj.getClass());
-        } else if (ctx.accept().indexOf("/json") > 0) {
-            txt = stringify.toJson(obj);
         } else {
             //非序列化处理
             //

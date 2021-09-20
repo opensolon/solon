@@ -24,13 +24,6 @@ public class SnackRender implements Render {
             //序列化处理
             //
             txt = ONode.serialize(obj);
-        } else if (ctx.accept().indexOf("/json") > 0) {
-            txt = ONode.stringify(obj,
-                    Feature.OrderedField,
-                    Feature.WriteDateUseTicks,
-                    Feature.BrowserCompatible,
-                    Feature.StringNullAsEmpty,
-                    Feature.QuoteFieldNames);
         } else {
             //非序列化处理
             //
@@ -42,7 +35,7 @@ public class SnackRender implements Render {
                 throw (Throwable) obj;
             }
 
-            if (obj instanceof String && ctx.accept().indexOf("/json") < 0) {
+            if (obj instanceof String) {
                 ctx.output((String) obj); //不能做为json输出
                 return;
             }

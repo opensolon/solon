@@ -35,8 +35,6 @@ public class JacksonRender implements Render {
             //序列化处理
             //
             txt = mapper_type.writeValueAsString(obj);
-        } else if (ctx.accept().indexOf("/json") > 0) {
-            txt = mapper.writeValueAsString(obj);
         } else {
             //非序列化处理
             //
@@ -48,7 +46,7 @@ public class JacksonRender implements Render {
                 throw (Throwable) obj;
             }
 
-            if (obj instanceof String && ctx.accept().indexOf("/json") < 0) {
+            if (obj instanceof String) {
                 ctx.output((String) obj); //不能做为json输出
                 return;
             }
