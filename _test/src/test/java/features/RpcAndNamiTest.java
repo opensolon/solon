@@ -4,6 +4,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.nami.Nami;
 import org.noear.nami.annotation.NamiClient;
+import org.noear.nami.coder.hessian.HessianDecoder;
+import org.noear.nami.coder.hessian.HessianEncoder;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.demo5_rpc.protocol.UserModel;
@@ -75,6 +77,19 @@ public class RpcAndNamiTest {
     public void test5() {
         UserService5 userService5 = Nami.builder()
                 .url("http://localhost:8080/demo5/")
+                .create(UserService5.class);
+
+        UserModel user = userService5.xxx(23);
+        System.out.println(user);
+        assert user.getId() == 23;
+    }
+
+    @Test
+    public void test5_hessian() {
+        UserService5 userService5 = Nami.builder()
+                .url("http://localhost:8080/demo5/")
+                .decoder(HessianDecoder.instance)
+                .encoder(HessianEncoder.instance)
                 .create(UserService5.class);
 
         UserModel user = userService5.xxx(23);
