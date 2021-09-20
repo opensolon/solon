@@ -995,60 +995,6 @@
                 </repository>
             </distributionManagement>
         </profile>
-        <profile>
-            <id>internal</id>
-            <build>
-                <plugins>
-                    <!-- Source -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>3.0.1</version>
-                        <configuration>
-                            <attach>true</attach>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <!-- Javadoc -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.10.3</version>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                                <configuration>
-                                    <additionalparam>-Xdoclint:none</additionalparam>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>nexus-internal</id>
-                    <name>snapshots</name>
-                    <url>http://maven.digital.js/repository/maven-snapshots/</url>
-                </snapshotRepository>
-                <repository>
-                    <id>nexus-internal</id>
-                    <name>releases</name>
-                    <url>http://maven.digital.js/repository/maven-releases/</url>
-                </repository>
-            </distributionManagement>
-        </profile>
     </profiles>
 
     <build>
