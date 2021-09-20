@@ -274,6 +274,11 @@
             <artifactId>solon.serialization.snack3</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.serialization.hessian</artifactId>
+        </dependency>
+
 
 <!--        <dependency>-->
 <!--            <groupId>org.noear</groupId>-->

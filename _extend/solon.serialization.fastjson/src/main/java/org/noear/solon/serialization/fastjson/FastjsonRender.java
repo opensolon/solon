@@ -37,13 +37,12 @@ public class FastjsonRender implements Render {
             }
 
             if (obj instanceof String) {
-                ctx.output((String) obj); //不能做为json输出
-                return;
+                txt = (String) obj;
+            } else {
+                txt = JSON.toJSONString(obj,
+                        SerializerFeature.BrowserCompatible,
+                        SerializerFeature.DisableCircularReferenceDetect);
             }
-
-            txt = JSON.toJSONString(obj,
-                    SerializerFeature.BrowserCompatible,
-                    SerializerFeature.DisableCircularReferenceDetect);
         }
 
         if (XPluginImp.output_meta) {
@@ -52,5 +51,11 @@ public class FastjsonRender implements Render {
 
         ctx.attrSet("output", txt);
         ctx.outputAsJson(txt);
+
+        if (obj instanceof String && ctx.accept().contains("/json") == false) {
+            ctx.output(txt);
+        } else {
+            ctx.outputAsJson(txt);
+        }
     }
 }

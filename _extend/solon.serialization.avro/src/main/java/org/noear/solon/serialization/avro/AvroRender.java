@@ -24,18 +24,19 @@ public class AvroRender implements Render {
             throw (Throwable) obj;
         }
 
+        String txt;
+
         if (obj instanceof String) {
-            ctx.output((String) obj); //不能做为json输出
-            return;
+            txt = (String) obj;
+        } else {
+            DatumWriter datumWriter = new SpecificDatumWriter(obj.getClass());
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            BinaryEncoder encoder = EncoderFactory.get().binaryEncoder(out, null);
+
+            datumWriter.write(obj, encoder);
+
+            txt = out.toString();
         }
-
-        DatumWriter datumWriter = new SpecificDatumWriter(obj.getClass());
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        BinaryEncoder encoder = EncoderFactory.get().binaryEncoder(out , null);
-
-        datumWriter.write(obj , encoder);
-
-        String txt = out.toString();
 
 
         if (XPluginImp.output_meta) {
@@ -43,6 +44,11 @@ public class AvroRender implements Render {
         }
 
         ctx.attrSet("output", txt);
-        ctx.outputAsJson(txt);
+
+        if (obj instanceof String && ctx.accept().contains("/json") == false) {
+            ctx.output(txt);
+        } else {
+            ctx.outputAsJson(txt);
+        }
     }
 }

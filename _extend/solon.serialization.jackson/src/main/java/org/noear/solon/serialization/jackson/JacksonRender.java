@@ -47,11 +47,10 @@ public class JacksonRender implements Render {
             }
 
             if (obj instanceof String) {
-                ctx.output((String) obj); //不能做为json输出
-                return;
+                txt = (String) obj;
+            }else {
+                txt = mapper.writeValueAsString(obj);
             }
-
-            txt = mapper.writeValueAsString(obj);
         }
 
         if (XPluginImp.output_meta) {
@@ -59,6 +58,11 @@ public class JacksonRender implements Render {
         }
 
         ctx.attrSet("output", txt);
-        ctx.outputAsJson(txt);
+
+        if (obj instanceof String && ctx.accept().contains("/json") == false) {
+            ctx.output(txt);
+        } else {
+            ctx.outputAsJson(txt);
+        }
     }
 }
