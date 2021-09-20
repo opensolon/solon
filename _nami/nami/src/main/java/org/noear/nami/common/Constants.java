@@ -13,7 +13,7 @@ public class Constants {
 
     public static final String AT_TYPE_JSON = "@type_json";
     public static final String AT_PROTOBUF = "@protobuf";
-    public static final String AT_HESSION = "@hession";
+    public static final String AT_HESSIAN = "@hessian";
 
     public static final String METHOD_GET = "GET";
     public static final String METHOD_POST = "POST";

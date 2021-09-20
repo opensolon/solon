@@ -1,4 +1,4 @@
-package org.noear.nami.coder.hession;
+package org.noear.nami.coder.hessian;
 
 import com.caucho.hessian.io.Hessian2Output;
 import org.noear.nami.Encoder;

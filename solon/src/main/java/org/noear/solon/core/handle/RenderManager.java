@@ -208,7 +208,7 @@ public class RenderManager implements Render {
         //@type_json
         //@xml
         //@protobuf
-        //@hession
+        //@hessian
         //
         Render render = null;
         String mode = ctx.header("X-Serialization");

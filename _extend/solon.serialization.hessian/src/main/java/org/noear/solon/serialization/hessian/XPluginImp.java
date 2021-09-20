@@ -1,4 +1,4 @@
-package org.noear.solon.serialization.hession;
+package org.noear.solon.serialization.hessian;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Bridge;
@@ -12,10 +12,10 @@ public class XPluginImp implements Plugin {
     public void start(SolonApp app) {
         output_meta = app.cfg().getInt("solon.output.meta", 0) > 0;
 
-        HessionRender render = new HessionRender();
+        HessianRender render = new HessianRender();
 
         //XRenderManager.register(render);
-        RenderManager.mapping("@hession",render);
+        RenderManager.mapping("@hessian",render);
         Bridge.actionExecutorAdd(new HessianActionExecutor());
     }
 }

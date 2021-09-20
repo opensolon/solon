@@ -6,7 +6,7 @@
 
     <groupId>org.noear.bundle</groupId>
     <artifactId>solon-render-bundle</artifactId>
-    <version>1.5.34</version>
+    <version>1.5.35</version>
     <packaging>pom</packaging>
 
 
@@ -214,7 +214,7 @@
 
     <modules>
 
-        <module>../../_extend/solon.serialization.hession</module>
+        <module>../../_extend/solon.serialization.hessian</module>
         <!--        <module>../../_extend/solon.serialization.thrift</module>-->
 
         <module>../../_extend/solon.serialization.fastjson</module>

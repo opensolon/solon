@@ -1,4 +1,4 @@
-package org.noear.solon.serialization.hession;
+package org.noear.solon.serialization.hessian;
 
 
 import com.caucho.hessian.io.SerializerFactory;

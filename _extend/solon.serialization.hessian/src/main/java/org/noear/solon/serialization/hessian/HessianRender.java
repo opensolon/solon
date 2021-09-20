@@ -1,4 +1,4 @@
-package org.noear.solon.serialization.hession;
+package org.noear.solon.serialization.hessian;
 
 import com.caucho.hessian.io.Hessian2Output;
 import org.noear.solon.core.handle.ModelAndView;
@@ -11,12 +11,12 @@ import java.util.Map;
 
 //不要要入参，方便后面多视图混用
 //
-public class HessionRender implements Render {
+public class HessianRender implements Render {
 
     @Override
     public void render(Object obj, Context ctx) throws Throwable {
         if (XPluginImp.output_meta) {
-            ctx.headerSet("solon.serialization", "HessionRender");
+            ctx.headerSet("solon.serialization", "HessianRender");
         }
 
         ctx.contentType("application/hessian");

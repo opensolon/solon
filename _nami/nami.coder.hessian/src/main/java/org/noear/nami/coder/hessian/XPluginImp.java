@@ -1,4 +1,4 @@
-package org.noear.nami.coder.hession;
+package org.noear.nami.coder.hessian;
 
 import org.noear.nami.NamiManager;
 import org.noear.solon.SolonApp;

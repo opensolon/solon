@@ -59,7 +59,7 @@
 | 序列化插件:: | 说明 |
 | org.noear:solon.serialization.fastjson* | 序列化插件，对 `fastjson` 适配，提供`json`视图输出 或 序列化输出 |
 | org.noear:solon.serialization.snack3* | 序列化插件，对 `snack3` 适配，提供`json`视图输出 或 序列化输出 |
-| org.noear:solon.serialization.hession* | 序列化插件，对 `hession` 适配，提供 `hession` 序列化输出 |
+| org.noear:solon.serialization.hessian* | 序列化插件，对 `hessian` 适配，提供 `hessian` 序列化输出 |
 | org.noear:solon.serialization.jackson | 序列化插件，对 `jackson` 适配，提供`json`视图输出 或 序列化输出 |
 | org.noear:solon.serialization.protostuff | 序列化插件，对 `protostuff` 适配，提供`protostuff`视图输出 或 序列化输出 |
 | | |

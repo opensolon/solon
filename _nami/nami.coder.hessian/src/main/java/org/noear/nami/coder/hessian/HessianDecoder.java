@@ -1,4 +1,4 @@
-package org.noear.nami.coder.hession;
+package org.noear.nami.coder.hessian;
 
 import com.caucho.hessian.io.Hessian2Input;
 import org.noear.nami.Decoder;
@@ -46,7 +46,7 @@ public class HessianDecoder implements Decoder {
 
     @Override
     public void pretreatment(Context ctx) {
-        ctx.headers.put(Constants.HEADER_SERIALIZATION, Constants.AT_HESSION);
+        ctx.headers.put(Constants.HEADER_SERIALIZATION, Constants.AT_HESSIAN);
         ctx.headers.put(Constants.HEADER_ACCEPT, Constants.CONTENT_TYPE_HESSIAN);
     }
 }

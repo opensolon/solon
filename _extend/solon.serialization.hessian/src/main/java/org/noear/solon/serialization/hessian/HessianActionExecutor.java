@@ -1,4 +1,4 @@
-package org.noear.solon.serialization.hession;
+package org.noear.solon.serialization.hessian;
 
 import com.caucho.hessian.io.Hessian2Input;
 import org.noear.solon.core.handle.ActionExecutorDefault;
