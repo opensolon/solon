@@ -50,7 +50,6 @@ public class FastjsonRender implements Render {
         }
 
         ctx.attrSet("output", txt);
-        ctx.outputAsJson(txt);
 
         if (obj instanceof String && ctx.accept().contains("/json") == false) {
             ctx.output(txt);
