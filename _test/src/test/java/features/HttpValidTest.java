@@ -75,6 +75,23 @@ public class HttpValidTest extends _TestBase{
         assert get("/demo2/valid/email3?val1=").equals("OK") == false;
     }
 
+
+    @Test
+    public void test2v_numeric() throws IOException {
+        assert get("/demo2/valid/numeric?val1=").equals("OK");
+        assert get("/demo2/valid/numeric?val1=1212").equals("OK");
+        assert get("/demo2/valid/numeric?val1=aaa").equals("OK") == false;
+    }
+
+    @Test
+    public void test2v_numeric2() throws IOException {
+        assert get("/demo2/valid/numeric2?val1=").equals("OK") == false;
+        assert get("/demo2/valid/numeric2?val1=1212").equals("OK");
+        assert get("/demo2/valid/numeric2?val1=aaa").equals("OK") == false;
+    }
+
+
+
     @Test
     public void test2v_max() throws IOException {
         assert get("/demo2/valid/max?val1=9&val2=9").equals("OK");

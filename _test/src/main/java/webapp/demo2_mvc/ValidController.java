@@ -38,7 +38,6 @@ public class ValidController {
         return "OK";
     }
 
-
     @Mapping("email2")
     public String email2(@Email("\\w+\\@live.cn") String val1) {
         return "OK";
@@ -46,6 +45,17 @@ public class ValidController {
 
     @Mapping("email3")
     public String email3(@NotEmpty @Email String val1) {
+        return "OK";
+    }
+
+
+    @Mapping("numeric")
+    public String numeric(@Numeric String val1) {
+        return "OK";
+    }
+
+    @Mapping("numeric2")
+    public String numeric2(@NotEmpty @Numeric String val1) {
         return "OK";
     }
 

@@ -1,5 +1,6 @@
 package org.noear.solon.validation.annotation;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.validation.util.StringUtils;
@@ -20,13 +21,13 @@ public class NumericValidator implements Validator<Numeric> {
 
     @Override
     public Result validateOfEntity(Class<?> clz, Numeric anno, String name, Object val0, StringBuilder tmp) {
-        if (val0 instanceof String == false) {
+        if (val0 != null && val0 instanceof String == false) {
             return Result.failure(clz.getSimpleName() + "." + name);
         }
 
         String val = (String) val0;
 
-        if (StringUtils.isNumber(val) == false) {
+        if (verify(anno, val) == false) {
             return Result.failure(clz.getSimpleName() + "." + name);
         } else {
             return Result.succeed();
@@ -40,7 +41,7 @@ public class NumericValidator implements Validator<Numeric> {
             for (String key : anno.value()) {
                 String val = ctx.param(key);
 
-                if (StringUtils.isNumber(val) == false) {
+                if (verify(anno, val) == false) {
                     tmp.append(',').append(key);
                 }
             }
@@ -48,7 +49,7 @@ public class NumericValidator implements Validator<Numeric> {
             //来自参数
             String val = ctx.param(name);
 
-            if (StringUtils.isNumber(val) == false) {
+            if (verify(anno, val) == false) {
                 tmp.append(',').append(name);
             }
         }
@@ -58,5 +59,14 @@ public class NumericValidator implements Validator<Numeric> {
         } else {
             return Result.succeed();
         }
+    }
+
+    private boolean verify(Numeric anno, String val) {
+        //如果为空，算通过（交由@NotEmpty之类，进一步控制）
+        if (Utils.isEmpty(val)) {
+            return true;
+        }
+
+        return StringUtils.isNumber(val);
     }
 }
