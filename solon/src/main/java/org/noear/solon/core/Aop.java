@@ -108,26 +108,16 @@ public class Aop {
     public static <T> T get(Class<?> type) {
         BeanWrap bw = ac.getWrap(type);
         return bw == null ? null : bw.get();
-//        if (type == null) {
-//            return null;
-//        } else {
-//            return wrapAndPut(type).get();
-//        }
-    }
-
-    public static <T> T getOrNew(Class<?> type) {
-        return wrapAndPut(type).get();
     }
 
     /**
-     * 获取bean
+     * 获取bean或生成bean
      *
      * @param type bean type
      */
-//    @Deprecated
-//    public static <T> T getOrNull(Class<?> type) {
-//       return get(type);
-//    }
+    public static <T> T getOrNew(Class<?> type) {
+        return wrapAndPut(type).get();
+    }
 
     /**
      * 异步获取bean
