@@ -96,7 +96,7 @@ public class MethodWrap implements Interceptor, MethodHolder {
 
     private void doAroundAdd(Around a) {
         if (a != null) {
-            arounds.add(new InterceptorEntity(a.index(), Aop.get(a.value())));
+            arounds.add(new InterceptorEntity(a.index(), Aop.getOrNew(a.value())));
         }
     }
 

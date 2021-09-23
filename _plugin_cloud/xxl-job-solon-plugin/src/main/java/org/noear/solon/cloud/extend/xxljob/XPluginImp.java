@@ -32,7 +32,7 @@ public class XPluginImp implements Plugin {
 
             Aop.beanOnloaded(() -> {
                 try {
-                    XxlJobExecutor executor = Aop.get(XxlJobExecutor.class);
+                    XxlJobExecutor executor = Aop.getOrNew(XxlJobExecutor.class);
                     executor.start();
                 } catch (Exception e) {
                     throw new RuntimeException(e);

@@ -25,7 +25,7 @@ public class Demo2 {
 
         public Xxxx() {
             //要求Map的Bean已经存在（时机要安排好）
-            this.map = Aop.getOrNull(Map.class);
+            this.map = Aop.get(Map.class);
         }
     }
 }

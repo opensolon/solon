@@ -50,7 +50,7 @@ public class HasorConfiguration implements EventListener<BeanLoadEndEvent> {
                     buildConfig.addModules(bw.get());
                 });
             }else{
-                buildConfig.addModules(Aop.get(startWith));
+                buildConfig.addModules(Aop.getOrNew(startWith));
             }
         }
 

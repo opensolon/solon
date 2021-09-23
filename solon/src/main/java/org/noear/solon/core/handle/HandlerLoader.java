@@ -194,15 +194,15 @@ public class HandlerLoader extends HandlerAide {
     protected void loadControllerAide() {
         for (Annotation anno : bw.clz().getAnnotations()) {
             if (anno instanceof Before) {
-                addDo(((Before) anno).value(), (b) -> this.before(Aop.get(b)));
+                addDo(((Before) anno).value(), (b) -> this.before(Aop.getOrNew(b)));
             } else if (anno instanceof After) {
-                addDo(((After) anno).value(), (f) -> this.after(Aop.get(f)));
+                addDo(((After) anno).value(), (f) -> this.after(Aop.getOrNew(f)));
             } else {
                 for (Annotation anno2 : anno.annotationType().getAnnotations()) {
                     if (anno2 instanceof Before) {
-                        addDo(((Before) anno2).value(), (b) -> this.before(Aop.get(b)));
+                        addDo(((Before) anno2).value(), (b) -> this.before(Aop.getOrNew(b)));
                     } else if (anno2 instanceof After) {
-                        addDo(((After) anno2).value(), (f) -> this.after(Aop.get(f)));
+                        addDo(((After) anno2).value(), (f) -> this.after(Aop.getOrNew(f)));
                     }
                 }
             }
@@ -212,15 +212,15 @@ public class HandlerLoader extends HandlerAide {
     protected void loadActionAide(Method method, Action action) {
         for (Annotation anno : method.getAnnotations()) {
             if (anno instanceof Before) {
-                addDo(((Before) anno).value(), (b) -> action.before(Aop.get(b)));
+                addDo(((Before) anno).value(), (b) -> action.before(Aop.getOrNew(b)));
             } else if (anno instanceof After) {
-                addDo(((After) anno).value(), (f) -> action.after(Aop.get(f)));
+                addDo(((After) anno).value(), (f) -> action.after(Aop.getOrNew(f)));
             } else {
                 for (Annotation anno2 : anno.annotationType().getAnnotations()) {
                     if (anno2 instanceof Before) {
-                        addDo(((Before) anno2).value(), (b) -> action.before(Aop.get(b)));
+                        addDo(((Before) anno2).value(), (b) -> action.before(Aop.getOrNew(b)));
                     } else if (anno2 instanceof After) {
-                        addDo(((After) anno2).value(), (f) -> action.after(Aop.get(f)));
+                        addDo(((After) anno2).value(), (f) -> action.after(Aop.getOrNew(f)));
                     }
                 }
             }

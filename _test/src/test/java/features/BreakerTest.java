@@ -42,7 +42,7 @@ public class BreakerTest extends HttpTestBase {
 
 //    @Test
     public void test2() throws Exception{
-        BreakerServiceDemo serviceDemo = Aop.get(BreakerServiceDemo.class);
+        BreakerServiceDemo serviceDemo = Aop.getOrNew(BreakerServiceDemo.class);
         CountDownLatch downLatch = new CountDownLatch(105);
 
         for (int i = 0; i < 105; i++) {

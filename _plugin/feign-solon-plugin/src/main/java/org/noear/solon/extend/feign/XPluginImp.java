@@ -29,7 +29,7 @@ public class XPluginImp implements Plugin {
 
     private void getProxy(Class<?> clz, FeignClient anno, Consumer consumer) {
         //获取配置器
-        FeignConfiguration configuration = Aop.get(anno.configuration());
+        FeignConfiguration configuration = Aop.getOrNew(anno.configuration());
 
         //生成构建器
         Feign.Builder builder0 = Feign.builder();

@@ -242,7 +242,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      */
     @Note("添加前置拦截器")
     public <T extends Handler> void before(Class<T> interceptorClz) {
-        super.before(Aop.get(interceptorClz));
+        super.before(Aop.getOrNew(interceptorClz));
     }
 
 
@@ -251,7 +251,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      */
     @Note("添加后置拦截器")
     public <T extends Handler> void after(Class<T> interceptorClz) {
-        super.after(Aop.get(interceptorClz));
+        super.after(Aop.getOrNew(interceptorClz));
     }
 
     @Note("添加接口")

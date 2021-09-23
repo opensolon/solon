@@ -39,7 +39,7 @@ public class TestController extends TestControllerBase{
 
         map.put("rockapi132", rockapi132.test());
 
-        TestModel tmp = Aop.get(TestModel.class);
+        TestModel tmp = Aop.getOrNew(TestModel.class);
         if("12".equals(tmp.name) == false){
             return "出错了";
         }
