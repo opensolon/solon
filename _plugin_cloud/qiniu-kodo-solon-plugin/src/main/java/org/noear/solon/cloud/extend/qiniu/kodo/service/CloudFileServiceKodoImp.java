@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.qiniu.kodo.service;
 
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
+import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
@@ -39,6 +40,7 @@ public class CloudFileServiceKodoImp implements CloudFileService {
 
     protected final Auth auth;
     protected final UploadManager uploadManager;
+    protected final BucketManager bucketManager;
 
     public CloudFileServiceKodoImp() {
         bucketDef = KodoProps.instance.getFileBucket();
@@ -52,6 +54,7 @@ public class CloudFileServiceKodoImp implements CloudFileService {
         Configuration cfg = new Configuration(Region.region0());
         //...其他参数参考类注释
         uploadManager = new UploadManager(cfg);
+        bucketManager = new BucketManager(auth, cfg);
     }
 
     @Override
@@ -84,6 +87,20 @@ public class CloudFileServiceKodoImp implements CloudFileService {
             return Result.succeed(resp.bodyString());
         } catch (QiniuException e) {
             throw new CloudFileException(e);
+        }
+    }
+
+    @Override
+    public Result delete(String bucket, String key) throws CloudFileException {
+        if (Utils.isEmpty(bucket)) {
+            bucket = bucketDef;
+        }
+
+        try {
+            Response resp = bucketManager.delete(bucket, key);
+            return Result.succeed(resp.bodyString());
+        } catch (QiniuException e) {
+            return Result.failure(e.error());
         }
     }
 

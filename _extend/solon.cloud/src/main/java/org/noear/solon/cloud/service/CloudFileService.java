@@ -96,4 +96,21 @@ public interface CloudFileService {
     default Result putStream(String key, InputStream stream, String streamMime) throws CloudFileException {
         return putStream(null, key, stream, streamMime);
     }
+
+    /**
+     * 删除
+     *
+     * @param bucket 存储桶
+     * @param key 存储键
+     * */
+    Result delete(String bucket, String key) throws CloudFileException;
+
+    /**
+     * 删除
+     *
+     * @param key 存储键
+     * */
+    default Result delete(String key){
+        return delete(null, key);
+    }
 }

@@ -130,6 +130,37 @@ public class CloudFileServiceOssImp implements CloudFileService {
         }
     }
 
+    @Override
+    public Result delete(String bucket, String key) throws CloudFileException {
+        if (Utils.isEmpty(bucket)) {
+            bucket = bucketDef;
+        }
+
+        try {
+            String date = Datetime.Now().toGmtString();
+
+            String objPath = "/" + bucket + "/" + key;
+            String url = buildUrl(bucket, key);
+
+            String Signature = (hmacSha1(buildSignData("DELETE", date, objPath, null), secretKey));
+
+            String Authorization = "OSS " + accessKey + ":" + Signature;
+
+            Map<String, String> head = new HashMap<String, String>();
+            head.put("Date", date);
+            head.put("Authorization", Authorization);
+
+            String tmp = HttpUtils.http(url)
+                    .header("Date", date)
+                    .header("Authorization", Authorization)
+                    .delete();
+
+            return Result.succeed(tmp);
+        } catch (IOException ex) {
+            throw new CloudFileException(ex);
+        }
+    }
+
     private String buildUrl(String bucket, String key) {
         if (endpoint.startsWith(bucket)) {
             return "http://" + endpoint + "/" + key;

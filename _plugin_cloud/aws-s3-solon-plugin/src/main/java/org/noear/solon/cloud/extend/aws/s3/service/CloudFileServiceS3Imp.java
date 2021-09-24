@@ -23,6 +23,7 @@ import java.util.Properties;
  */
 public class CloudFileServiceS3Imp implements CloudFileService {
     private static CloudFileServiceS3Imp instance;
+
     public static synchronized CloudFileServiceS3Imp getInstance() {
         if (instance == null) {
             instance = new CloudFileServiceS3Imp();
@@ -111,5 +112,16 @@ public class CloudFileServiceS3Imp implements CloudFileService {
         } catch (Exception ex) {
             throw new CloudFileException(ex);
         }
+    }
+
+    @Override
+    public Result delete(String bucket, String key) throws CloudFileException {
+        if (Utils.isEmpty(bucket)) {
+            bucket = bucketDef;
+        }
+
+        client.deleteObject(bucket, key);
+
+        return Result.succeed();
     }
 }
