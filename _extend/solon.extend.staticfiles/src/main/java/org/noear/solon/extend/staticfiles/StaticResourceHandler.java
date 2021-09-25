@@ -7,6 +7,7 @@ import org.noear.solon.core.handle.MethodType;
 import java.net.URL;
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * 静态文件资源处理
@@ -22,7 +23,11 @@ public class StaticResourceHandler implements Handler {
     private Pattern _rule;
 
     public StaticResourceHandler() {
-        String expr = "(" + String.join("|", staticMimes.keySet()) + ")$";
+        List<String> keys = staticMimes.keySet().stream()
+                .map(s-> s.substring(1))
+                .collect(Collectors.toList());
+
+        String expr = "(\\." + String.join("|\\.", keys) + ")$";
 
         _rule = Pattern.compile(expr, Pattern.CASE_INSENSITIVE);
 
