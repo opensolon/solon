@@ -25,10 +25,10 @@ public class CacheExecutorImp {
     /**
      * 添加缓存
      *
-     * @param anno 注解
-     * @param method 函数
-     * @param params 参数
-     * @param values 参数值
+     * @param anno     注解
+     * @param method   函数
+     * @param params   参数
+     * @param values   参数值
      * @param executor 真实执行者
      */
     public Object cache(Cache anno, Method method, ParamWrap[] params, Object[] values, SupplierEx executor) throws Throwable {
@@ -88,7 +88,7 @@ public class CacheExecutorImp {
     /**
      * 清除移除
      *
-     * @param anno 注解
+     * @param anno   注解
      * @param method 函数
      * @param params 参数
      * @param values 参数值
@@ -122,10 +122,10 @@ public class CacheExecutorImp {
     /**
      * 缓存更新
      *
-     * @param anno 注解
-     * @param method 函数
-     * @param params 参数
-     * @param values 参数值
+     * @param anno     注解
+     * @param method   函数
+     * @param params   参数
+     * @param values   参数值
      * @param newValue 新的值
      */
     public void cachePut(CachePut anno, Method method, ParamWrap[] params, Object[] values, Object newValue) {
@@ -155,7 +155,7 @@ public class CacheExecutorImp {
 
     /**
      * 构建参数为Map
-     * */
+     */
     protected Map<String, Object> buildParamsMap(ParamWrap[] params, Object[] values) {
         Map<String, Object> parMap = new LinkedHashMap<>();
 
@@ -169,7 +169,7 @@ public class CacheExecutorImp {
 
     /**
      * 构建缓存Key
-     * */
+     */
     protected String buildCacheKey(Method method, Map<String, Object> parMap) {
         StringBuilder keyB = new StringBuilder();
 
@@ -199,6 +199,9 @@ public class CacheExecutorImp {
                 String val = String.valueOf(map.get(name));
 
                 str2 = str2.replace(mark, val);
+            } else {
+                //如果缺少参数就出异常，容易发现问题
+                throw new IllegalArgumentException("Missing cache tag parameter: " + name);
             }
         }
 
