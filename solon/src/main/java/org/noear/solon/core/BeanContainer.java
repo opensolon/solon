@@ -356,6 +356,10 @@ public abstract class BeanContainer {
             //如果是 Map
             Map val = Solon.cfg().getXmap(name);
             varH.setValue(val);
+        } else if(List.class == varH.getType()){
+            //如果是 List
+            List ary = Solon.cfg().getList(name);
+            varH.setValue(ary);
         } else {
             //2.然后尝试获取配置
             String def = null;

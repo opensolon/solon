@@ -87,3 +87,10 @@ custom:
     - 12
     - 13
 
+app.dict:
+  name: 张三
+  age: 8
+  codes: {dev: "develop", test: "test"}
+  likes:
+    - 素描
+    - 摄影

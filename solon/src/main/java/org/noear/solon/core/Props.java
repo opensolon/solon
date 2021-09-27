@@ -4,6 +4,8 @@ import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
 import org.noear.solon.core.wrap.ClassWrap;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -35,9 +37,8 @@ public class Props extends Properties {
     }
 
     /**
-     *
      * @param expr 兼容 ${key} or key
-     * */
+     */
     public String getByExpr(String expr) {
         String name = expr;
         if (name.startsWith("${") && name.endsWith("}")) {
@@ -48,7 +49,7 @@ public class Props extends Properties {
     }
 
     public String getByParse(String expr) {
-        if(Utils.isEmpty(expr)){
+        if (Utils.isEmpty(expr)) {
             return expr;
         }
 
@@ -118,12 +119,11 @@ public class Props extends Properties {
     }
 
 
-
     /**
      * 查找 keyStarts 开头的所有配置；并生成一个新的 Bean
      *
      * @param keyStarts key 的开始字符
-     * */
+     */
     public <T> T getBean(String keyStarts, Class<T> type) {
         return ClassWrap.get(type).newBy(getProp(keyStarts));
     }
@@ -132,17 +132,16 @@ public class Props extends Properties {
      * 查找 keyStarts 开头的所有配置；并生成一个新的 配置集
      *
      * @param keyStarts key 的开始字符
-     * */
+     */
     public Props getProp(String keyStarts) {
         Props prop = new Props();
-        doFind(keyStarts, prop::put);
+        doFind(keyStarts + ".", prop::put);
         return prop;
     }
 
     /**
-     *
      * @param expr 兼容 ${key} or key
-     * */
+     */
     public Props getPropByExpr(String expr) {
         String name = expr;
         if (name.startsWith("${") && name.endsWith("}")) {
@@ -156,15 +155,23 @@ public class Props extends Properties {
      * 查找 keyStarts 开头的所有配置；并生成一个新的 Map
      *
      * @param keyStarts key 的开始字符
-     * */
+     */
     public NvMap getXmap(String keyStarts) {
         NvMap map = new NvMap();
-        doFind(keyStarts, map::put);
+        doFind(keyStarts + ".", map::put);
         return map;
     }
 
+    public List<String> getList(String keyStarts) {
+        List<String> ary = new ArrayList<>();
+        doFind(keyStarts + "[", (k, v) -> {
+            ary.add(v);
+        });
+        return ary;
+    }
+
     private void doFind(String keyStarts, BiConsumer<String, String> setFun) {
-        String key2 = keyStarts + ".";
+        String key2 = keyStarts;
         int idx2 = key2.length();
 
         forEach((k, v) -> {
@@ -180,9 +187,9 @@ public class Props extends Properties {
                         StringBuilder sb = new StringBuilder(key.length());
                         sb.append(ss[0]);
                         for (int i = 1; i < ss.length; i++) {
-                            if(ss[i].length()>1) {
+                            if (ss[i].length() > 1) {
                                 sb.append(ss[i].substring(0, 1).toUpperCase()).append(ss[i].substring(1));
-                            }else{
+                            } else {
                                 sb.append(ss[i].toUpperCase());
                             }
                         }
@@ -195,13 +202,18 @@ public class Props extends Properties {
 
     /**
      * 重写 forEach，增加 defaults 的遍历
-     * */
+     */
     @Override
     public synchronized void forEach(BiConsumer<? super Object, ? super Object> action) {
-        if (defaults != null) {
+        if (defaults == null) {
+            super.forEach(action);
+        } else {
             defaults.forEach(action);
+            super.forEach((k, v) -> {
+                if (defaults.containsKey(k) == false) {
+                    action.accept(k, v);
+                }
+            });
         }
-
-        super.forEach(action);
     }
 }
