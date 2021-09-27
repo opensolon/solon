@@ -17,25 +17,28 @@ import org.noear.solon.data.tran.TranExecutorImp;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
+        //添加事务控制支持
         if (app.enableTransaction()) {
             Aop.wrapAndPut(TranExecutor.class, TranExecutorImp.global);
+
+            Aop.context().beanAroundAdd(Tran.class, new TranInterceptor(), 120);
         }
 
+        //添加缓存控制支持
         if (app.enableCaching()) {
             CacheLib.cacheServiceAddIfAbsent("", LocalCacheService.instance);
 
             app.onEvent(BeanWrap.class, new CacheServiceEventListener());
+
+            Aop.context().beanOnloaded(() -> {
+                if (Aop.has(CacheService.class) == false) {
+                    Aop.wrapAndPut(CacheService.class, LocalCacheService.instance);
+                }
+            });
+
+            Aop.context().beanAroundAdd(CachePut.class, new CachePutInterceptor(), 110);
+            Aop.context().beanAroundAdd(CacheRemove.class, new CacheRemoveInterceptor(), 110);
+            Aop.context().beanAroundAdd(Cache.class, new CacheInterceptor(), 111);
         }
-
-        Aop.context().beanOnloaded(() -> {
-            if (Aop.has(CacheService.class) == false) {
-                Aop.wrapAndPut(CacheService.class, LocalCacheService.instance);
-            }
-        });
-
-        Aop.context().beanAroundAdd(CachePut.class, new CachePutInterceptor(), 110);
-        Aop.context().beanAroundAdd(CacheRemove.class, new CacheRemoveInterceptor(), 110);
-        Aop.context().beanAroundAdd(Cache.class, new CacheInterceptor(), 111);
-        Aop.context().beanAroundAdd(Tran.class, new TranInterceptor(), 120);
     }
 }
