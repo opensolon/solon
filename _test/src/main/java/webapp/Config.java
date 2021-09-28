@@ -2,6 +2,8 @@ package webapp;
 
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Init;
+import org.noear.solon.annotation.Inject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,4 +21,9 @@ public class Config {
 
         return map;
     }
+
+//    @Init
+//    public void xxx(){
+//        throw new RuntimeException("xxxxxx");
+//    }
 }

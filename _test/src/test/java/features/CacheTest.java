@@ -10,7 +10,7 @@ import org.noear.solon.test.SolonTest;
 @SolonTest(webapp.TestApp.class)
 public class CacheTest extends HttpTestBase {
     @Test
-    public void test1() throws Exception{
+    public void test1() throws Exception {
         String rst = path("/cache/").get();
 
         Thread.sleep(100);
@@ -27,7 +27,7 @@ public class CacheTest extends HttpTestBase {
     }
 
     @Test
-    public void test2() throws Exception{
+    public void test2() throws Exception {
         String rst = path("/cache/").get();
 
         Thread.sleep(100);
@@ -47,7 +47,7 @@ public class CacheTest extends HttpTestBase {
     }
 
     @Test
-    public void test3() throws Exception{
+    public void test3() throws Exception {
         String rst = path("/cache/").get();
 
         Thread.sleep(100);
@@ -64,5 +64,14 @@ public class CacheTest extends HttpTestBase {
 
         path("/cache/remove").get();
         assert rst.equals(path("/cache/").get()) == false;
+    }
+
+    @Test
+    public void test_error() throws Exception {
+        int code = path("/cache/error").head();
+        System.out.println(code);
+        assert code != 200;
+        int code2 = path("/cache/error").exec3("GET");
+        assert code2 == 500;
     }
 }

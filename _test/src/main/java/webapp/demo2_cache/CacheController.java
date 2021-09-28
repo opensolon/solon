@@ -36,4 +36,11 @@ public class CacheController {
     public String remove(int label) {
         return "清除成功-" + new Date();
     }
+
+
+    @CacheRemove(tags = "test_error_${label}")
+    @Mapping("/cache/error")
+    public Date error() {
+        return new Date();
+    }
 }
