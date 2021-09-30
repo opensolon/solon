@@ -2,8 +2,6 @@ package webapp;
 
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
-import org.noear.solon.annotation.Init;
-import org.noear.solon.annotation.Inject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +19,11 @@ public class Config {
 
         return map;
     }
+
+//    @Bean
+//    public CacheService cache(){
+//        return new LocalCacheService();
+//    }
 
 //    @Init
 //    public void xxx(){
