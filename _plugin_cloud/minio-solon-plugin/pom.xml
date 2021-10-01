@@ -10,7 +10,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>aws-s3-solon-plugin</artifactId>
+    <artifactId>minio-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

@@ -10,7 +10,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>health-solon-plugin</artifactId>
+    <artifactId>healthz-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -24,6 +24,7 @@
             <artifactId>solon-api</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>

@@ -269,6 +269,9 @@
         <module>../../_plugin_cloud/opentracing-solon-plugin</module>
 
         <module>../../_plugin_cloud/httputils-solon-plugin</module>
+
+        <module>../../_plugin_cloud/healthz-solon-plugin</module>
+        <module>../../_plugin_cloud/minio-solon-plugin</module>
     </modules>
 
 </project>
