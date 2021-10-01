@@ -3,6 +3,7 @@
 <div align="center">
 Author noear，iYarnFog
 </div>
+
 ## ✨ 特性
 
 - 🌈 一行代买添加检查点，侵入性极低。
@@ -13,18 +14,14 @@ Author noear，iYarnFog
 ```xml
 <dependency>
     <groupId>org.noear</groupId>
-    <artifactId>healthz-solon-plugin</artifactId>
+    <artifactId>health-checker-solon-plugin</artifactId>
 </dependency>
 ```
 
 ## ⚙️ 配置
 
 ```yaml
-vaptcha:
-  vid: xxx
-  key: xxx
-  # 是否本地调试？本地调试会自动注入真实IP，127.0.0.1这样的无法通过验证
-  local: true
+# No configuration.
 ```
 
 ## 🔨 示例
