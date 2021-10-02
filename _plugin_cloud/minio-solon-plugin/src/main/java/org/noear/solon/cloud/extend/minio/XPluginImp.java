@@ -1,9 +1,9 @@
-package org.noear.solon.cloud.extend.aws.s3;
+package org.noear.solon.cloud.extend.minio;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudManager;
-import org.noear.solon.cloud.extend.aws.s3.service.CloudFileServiceS3Imp;
+import org.noear.solon.cloud.extend.minio.service.CloudFileServiceMinioImp;
 import org.noear.solon.core.Plugin;
 
 /**
@@ -13,12 +13,12 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        if (Utils.isEmpty(S3Props.instance.getFileAccessKey())) {
+        if (Utils.isEmpty(MinioProps.INSTANCE.getFileEndpoint())) {
             return;
         }
 
-        if (S3Props.instance.getFileEnable()) {
-            CloudManager.register(CloudFileServiceS3Imp.getInstance());
+        if (MinioProps.INSTANCE.getFileEnable()) {
+            CloudManager.register(CloudFileServiceMinioImp.getInstance());
         }
     }
 }
