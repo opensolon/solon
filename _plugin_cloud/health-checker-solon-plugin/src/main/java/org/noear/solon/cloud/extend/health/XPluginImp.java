@@ -6,7 +6,7 @@ import org.noear.solon.core.Plugin;
 
 /**
  * @author iYarnFog
- * @since 1.5.40
+ * @since 1.5
  */
 public class XPluginImp implements Plugin {
     @Override

@@ -11,10 +11,10 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * 云端文件服务（aws s3）
+ * 云端文件服务（minio）
  *
- * @author noear
- * @since 1.3
+ * @author iYarnFog
+ * @since 1.5
  */
 public class CloudFileServiceMinioImp implements CloudFileService {
 
@@ -90,11 +90,16 @@ public class CloudFileServiceMinioImp implements CloudFileService {
             bucket = this.bucket;
         }
 
+        if (Utils.isEmpty(streamMime)) {
+            streamMime = "text/plain; charset=utf-8";
+        }
+
         try {
             ObjectWriteResponse response = this.minioClient.putObject(PutObjectArgs.builder()
                     .bucket(bucket)
                     .object(key)
                     .stream(stream, stream.available(), -1)
+                    .contentType(streamMime)
                     .build());
             return Result.succeed(response);
         } catch (Exception exception) {

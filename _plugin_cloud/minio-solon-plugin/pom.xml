@@ -24,12 +24,6 @@
             <artifactId>minio</artifactId>
             <version>8.3.0</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-api</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
 </project>

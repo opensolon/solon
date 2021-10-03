@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * @author iYarnFog
- * @since 1.5.40
+ * @since 1.5
  * @date 2021/10/01 19:37
  */
 public class HealthStatus {

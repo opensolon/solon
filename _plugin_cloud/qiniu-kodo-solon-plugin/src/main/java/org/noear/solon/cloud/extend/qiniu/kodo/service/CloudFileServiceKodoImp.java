@@ -80,6 +80,10 @@ public class CloudFileServiceKodoImp implements CloudFileService {
             bucket = bucketDef;
         }
 
+        if (Utils.isEmpty(streamMime)) {
+            streamMime = "text/plain; charset=utf-8";
+        }
+
         String uploadToken = auth.uploadToken(bucket);
 
         try {

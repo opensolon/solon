@@ -7,13 +7,13 @@ import org.noear.solon.cloud.extend.minio.service.CloudFileServiceMinioImp;
 import org.noear.solon.core.Plugin;
 
 /**
- * @author noear
- * @since 1.3
+ * @author iYarnFog
+ * @since 1.5
  */
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        if (Utils.isEmpty(MinioProps.INSTANCE.getFileEndpoint())) {
+        if (Utils.isEmpty(MinioProps.INSTANCE.getFileAccessKey())) {
             return;
         }
 

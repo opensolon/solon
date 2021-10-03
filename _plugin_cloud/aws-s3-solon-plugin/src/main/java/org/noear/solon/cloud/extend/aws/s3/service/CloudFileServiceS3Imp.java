@@ -95,7 +95,7 @@ public class CloudFileServiceS3Imp implements CloudFileService {
             bucket = bucketDef;
         }
 
-        if (streamMime == null) {
+        if (Utils.isEmpty(streamMime)) {
             streamMime = "text/plain; charset=utf-8";
         }
 
