@@ -6,7 +6,7 @@
 
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.5.40</version>
+    <version>1.5.41</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -18,7 +18,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <solon.ver>1.5.40</solon.ver>
+        <solon.ver>1.5.41</solon.ver>
 
         <snack3.ver>3.1.20</snack3.ver>
         <weed3.ver>3.3.22</weed3.ver>
@@ -669,6 +669,19 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>qiniu-kodo-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>minio-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>health-checker-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
