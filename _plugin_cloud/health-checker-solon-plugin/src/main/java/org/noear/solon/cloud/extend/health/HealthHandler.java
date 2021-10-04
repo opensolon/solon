@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.extend.health;
 
 import org.noear.snack.ONode;
+import org.noear.snack.core.Feature;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 
@@ -35,6 +36,6 @@ public class HealthHandler implements Handler {
                 ctx.status(200);
         }
 
-        ctx.outputAsJson(ONode.stringify(healthStatus));
+        ctx.outputAsJson(ONode.stringify(healthStatus, Feature.EnumUsingName));
     }
 }
