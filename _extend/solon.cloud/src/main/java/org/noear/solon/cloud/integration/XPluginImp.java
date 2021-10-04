@@ -37,11 +37,8 @@ public class XPluginImp implements Plugin {
         Aop.context().beanExtractorAdd(CloudJob.class, CloudJobExtractor.instance);
         Aop.context().beanBuilderAdd(CloudJob.class, CloudJobBuilder.instance);
 
-
-        if (CloudClient.discovery() == null) {
-            //如果没有发现服力，注册本地发现服务
-            CloudManager.register(new CloudDiscoveryServiceLocalImpl());
-        }
+        //尝试注册本地发现服务
+        LocalDiscoveryResolver.register("");
 
         if (CloudClient.discovery() != null) {
             //服务注册
