@@ -11,6 +11,15 @@ import org.noear.solon.core.handle.Handler;
  * @since 1.5
  */
 public class HealthHandler implements Handler {
+    private static final HealthHandler instance = new HealthHandler();
+
+    /**
+     * 获取实例
+     * */
+    public static HealthHandler getInstance() {
+        return instance;
+    }
+
     @Override
     public void handle(Context ctx) throws Throwable {
         HealthStatus healthStatus = HealthChecker.check();

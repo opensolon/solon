@@ -10,6 +10,9 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        app.get("/healthz", new HealthHandler());
+        //
+        // HealthHandler 独立出来，便于其它检测路径的复用
+        //
+        app.get("/healthz", HealthHandler.getInstance());
     }
 }
