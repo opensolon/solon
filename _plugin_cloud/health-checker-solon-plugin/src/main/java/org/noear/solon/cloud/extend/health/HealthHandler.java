@@ -12,6 +12,13 @@ import org.noear.solon.core.handle.Handler;
  * @since 1.5
  */
 public class HealthHandler implements Handler {
+
+    /**
+     * 参考代理路径
+     * */
+    public static final String HANDLER_PATH = "/healthz";
+
+
     private static final HealthHandler instance = new HealthHandler();
 
     /**

@@ -13,6 +13,6 @@ public class XPluginImp implements Plugin {
         //
         // HealthHandler 独立出来，便于其它检测路径的复用
         //
-        app.all("/healthz", HealthHandler.getInstance());
+        app.all(HealthHandler.HANDLER_PATH, HealthHandler.getInstance());
     }
 }
