@@ -33,6 +33,7 @@ public class HealthChecker {
     public static HealthStatus check() {
         HealthStatus healthStatus = new HealthStatus();
 
+        //todo:此处可能会异常？...by noear
         checkPoints.forEach((name, point) -> {
             checkOne(healthStatus, name, point);
         });
