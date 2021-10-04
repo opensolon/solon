@@ -27,6 +27,16 @@ public class DemoTest extends HttpTestBase {
     @Test
     public void test2() throws Exception {
         HealthChecker.addPoint("preflight", Result::succeed);
+        Response resp = path("/healthz").exec("GET");
+        System.out.println(resp.body().string());
+        assert resp.code() == 200;
+
+        assert path("/healthz").head() == 200;
+    }
+
+    @Test
+    public void test3() throws Exception {
+        HealthChecker.addPoint("preflight", Result::succeed);
         HealthChecker.addPoint("test", Result::failure);
 
 
@@ -38,7 +48,7 @@ public class DemoTest extends HttpTestBase {
     }
 
     @Test
-    public void test3() throws Exception {
+    public void test4() throws Exception {
         HealthChecker.addPoint("preflight", Result::succeed);
         HealthChecker.addPoint("test", Result::failure);
         HealthChecker.addPoint("boom", () -> {
