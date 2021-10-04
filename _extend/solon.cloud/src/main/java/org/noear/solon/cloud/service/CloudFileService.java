@@ -22,7 +22,7 @@ public interface CloudFileService {
      */
     default String getText(String bucket, String key) throws CloudFileException {
         try {
-            return Utils.transferToString(getStream(bucket, key), "UTF-8");
+            return Utils.transferToString(get(bucket, key), "UTF-8");
         }catch (IOException e){
             throw new CloudFileException(e);
         }
@@ -46,7 +46,7 @@ public interface CloudFileService {
      */
     default Result putText(String bucket, String key, String text) throws CloudFileException{
         InputStream stream = new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8));
-        return putStream(bucket, key, stream, null);
+        return put(bucket, key, stream, null);
     }
 
     /**
@@ -60,41 +60,41 @@ public interface CloudFileService {
     }
 
     /**
-     * 获取流
+     * 获取
      *
      * @param bucket 存储桶
      * @param key 存储键
      */
-    InputStream getStream(String bucket, String key) throws CloudFileException;
+    InputStream get(String bucket, String key) throws CloudFileException;
 
     /**
-     * 获取流
+     * 获取
      *
      * @param key 存储键
      */
-    default InputStream getStream(String key) throws CloudFileException {
-        return getStream(null, key);
+    default InputStream get(String key) throws CloudFileException {
+        return get(null, key);
     }
 
     /**
-     * 推入流
+     * 推入
      *
      * @param bucket 存储桶
      * @param key 存储键
      * @param stream 流
      * @param streamMime 流媒体类型
      */
-    Result putStream(String bucket, String key, InputStream stream, String streamMime) throws CloudFileException;
+    Result put(String bucket, String key, InputStream stream, String streamMime) throws CloudFileException;
 
     /**
-     * 推入流
+     * 推入
      *
      * @param key 存储键
      * @param stream 流
      * @param streamMime 流媒体类型
      */
-    default Result putStream(String key, InputStream stream, String streamMime) throws CloudFileException {
-        return putStream(null, key, stream, streamMime);
+    default Result put(String key, InputStream stream, String streamMime) throws CloudFileException {
+        return put(null, key, stream, streamMime);
     }
 
     /**

@@ -51,7 +51,7 @@ public class FileTest {
         File val = new File(Utils.getResource("test.png").getFile());
         String valMime = Utils.mime(val.getName());
 
-        Result result = CloudClient.file().putStream(key, new FileInputStream(val), valMime);
+        Result result = CloudClient.file().put(key, new FileInputStream(val), valMime);
         System.out.println(ONode.stringify(result));
         assert result.getCode() == Result.SUCCEED_CODE;
     }
@@ -70,7 +70,7 @@ public class FileTest {
         byte[] image_btys = Base64.getDecoder().decode(image_base64);
         InputStream image_stream = new ByteArrayInputStream(image_btys);
 
-        Result result = CloudClient.file().putStream(key, image_stream, "image/jpeg");
+        Result result = CloudClient.file().put(key, image_stream, "image/jpeg");
         System.out.println(ONode.stringify(result));
         assert result.getCode() == Result.SUCCEED_CODE;
     }

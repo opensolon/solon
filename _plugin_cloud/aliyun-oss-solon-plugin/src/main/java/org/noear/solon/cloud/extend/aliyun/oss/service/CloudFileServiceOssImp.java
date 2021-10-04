@@ -70,7 +70,7 @@ public class CloudFileServiceOssImp implements CloudFileService {
 
 
     @Override
-    public InputStream getStream(String bucket, String key) throws CloudFileException {
+    public InputStream get(String bucket, String key) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;
         }
@@ -99,7 +99,7 @@ public class CloudFileServiceOssImp implements CloudFileService {
     }
 
     @Override
-    public Result putStream(String bucket, String key, InputStream stream, String streamMime) throws CloudFileException {
+    public Result put(String bucket, String key, InputStream stream, String streamMime) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;
         }
