@@ -30,7 +30,7 @@
         <dependency>
             <groupId>com.jfinal</groupId>
             <artifactId>enjoy</artifactId>
-            <version>4.9.11</version>
+            <version>4.9.16</version>
         </dependency>
 
     </dependencies>
