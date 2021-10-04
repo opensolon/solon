@@ -2,7 +2,6 @@ package org.noear.nami.integration.solon;
 
 import org.noear.nami.*;
 import org.noear.nami.annotation.NamiClient;
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Bridge;
@@ -43,19 +42,23 @@ public final class NamiConfigurationSolon implements NamiConfiguration {
         }
 
         //尝试从负载工厂获取
-        if (Bridge.upstreamFactory() != null) {
-            LoadBalance upstream = Bridge.upstreamFactory().create(client.group(), client.name());
+        LoadBalance upstream = getUpstream(client);
+        if (upstream != null) {
+            builder.upstream(upstream::getServer);
+        } else {
+            //尝试从Ioc容器获取
+            Aop.getAsyn(client.name(), (bw) -> {
+                LoadBalance tmp = bw.raw();
+                builder.upstream(tmp::getServer);
+            });
+        }
+    }
 
-            if (upstream != null) {
-                builder.upstream(upstream::getServer);
-                return;
-            }
+    private LoadBalance getUpstream(NamiClient anno) {
+        if (Bridge.upstreamFactory() == null) {
+            return null;
         }
 
-        //尝试从Ioc容器获取
-        Aop.getAsyn(client.name(), (bw) -> {
-            LoadBalance tmp = bw.raw();
-            builder.upstream(tmp::getServer);
-        });
+        return Bridge.upstreamFactory().create(anno.group(), anno.name());
     }
 }
