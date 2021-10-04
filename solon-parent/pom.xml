@@ -44,8 +44,6 @@
         <junit.ver>4.13.1</junit.ver>
 
         <mybatis.ver>3.5.7</mybatis.ver>
-        <feign.ver>8.18.0</feign.ver>
-        <dubbo.ver>2.7.5</dubbo.ver>
 
         <slf4j.ver>1.7.30</slf4j.ver>
 
