@@ -25,28 +25,34 @@ public class HandlerCheck implements Handler {
             //用于检查负责的情况
             ONode odata = new ONode().asObject();
 
-
             if ("*".equals(service)) {
                 CloudLoadBalanceFactory.instance.forEach((k, v) -> {
                     ONode n = odata.get(k);
 
                     n.set("service", k);
                     ONode nl = n.get("upstream").asArray();
-                    v.getDiscovery().cluster().forEach((s) -> {
-                        nl.add(s.uri());
-                    });
-                });
-            } else {
-                CloudLoadBalance v = CloudLoadBalanceFactory.instance.get(service);
-                if (v != null) {
+
                     Discovery d = v.getDiscovery();
                     if (d != null) {
-                        ONode n = odata.get(service);
-
-                        n.set("service", service);
                         n.set("agent", d.agent());
                         n.set("policy", d.policy());
-                        ONode nl = n.get("upstream").asArray();
+                        d.cluster().forEach((s) -> {
+                            nl.add(s.uri());
+                        });
+                    }
+                });
+            } else {
+                CloudLoadBalance v = CloudLoadBalanceFactory.instance.get("",service);
+                if (v != null) {
+                    ONode n = odata.get(service);
+
+                    n.set("service", service);
+                    ONode nl = n.get("upstream").asArray();
+
+                    Discovery d = v.getDiscovery();
+                    if (d != null) {
+                        n.set("agent", d.agent());
+                        n.set("policy", d.policy());
                         d.cluster().forEach((s) -> {
                             nl.add(s.uri());
                         });

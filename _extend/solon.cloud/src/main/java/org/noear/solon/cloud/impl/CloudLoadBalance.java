@@ -13,8 +13,8 @@ import org.noear.solon.cloud.model.Instance;
  * @since 1.2
  */
 public class CloudLoadBalance implements LoadBalance {
-    private String service;
-    private String group;
+    private final String service;
+    private final String group;
     private Discovery discovery;
     private LoadBalance loadBalance;
 
