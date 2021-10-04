@@ -35,7 +35,7 @@ import org.noear.solon.Solon;
 @FunctionalInterface
 public interface LoadBalance {
     static LoadBalance get(String service) {
-        return get(Solon.cfg().appGroup(), service);
+        return get("", service);
     }
 
     static LoadBalance get(String group, String service) {

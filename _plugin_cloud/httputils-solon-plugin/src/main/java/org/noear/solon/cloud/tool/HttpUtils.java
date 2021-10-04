@@ -42,7 +42,7 @@ public class HttpUtils {
 
     /**
      * 构建一个 Http 请求工具
-     * */
+     */
     public static HttpUtils http(String url) {
         return http(url, httpClientDefault);
     }
@@ -58,13 +58,22 @@ public class HttpUtils {
 
     /**
      * 构建一个 Http 请求工具
-     * */
+     */
     public static HttpUtils http(String service, String path) {
         return http(service, path, httpClientDefault);
     }
 
     public static HttpUtils http(String service, String path, OkHttpClient client) {
         String url = LoadBalance.get(service).getServer() + path;
+        return http(url, client);
+    }
+
+    public static HttpUtils http(String group, String service, String path) {
+        return http(group, service, path, httpClientDefault);
+    }
+
+    public static HttpUtils http(String group, String service, String path, OkHttpClient client) {
+        String url = LoadBalance.get(group, service).getServer() + path;
         return http(url, client);
     }
 
@@ -156,7 +165,7 @@ public class HttpUtils {
 
     //@XNote("设置表单数据")
     public HttpUtils data(String key, String value) {
-        if(key == null || value == null){
+        if (key == null || value == null) {
             return this;
         }
 
@@ -168,7 +177,7 @@ public class HttpUtils {
 
     //@XNote("设置表单文件")
     public HttpUtils data(String key, String filename, InputStream inputStream, String contentType) {
-        if(key == null || inputStream == null){
+        if (key == null || inputStream == null) {
             return this;
         }
 
@@ -224,7 +233,7 @@ public class HttpUtils {
 
     //@XNote("设置BODY raw及内容类型")
     public HttpUtils bodyRaw(InputStream raw, String contentType) {
-        if(raw == null){
+        if (raw == null) {
             return this;
         }
 

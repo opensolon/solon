@@ -38,6 +38,11 @@ public class HttpUtils {
         return http(url);
     }
 
+    public static HttpUtils http(String group, String service, String path) {
+        String url = LoadBalance.get(group, service).getServer() + path;
+        return http(url);
+    }
+
     public static HttpUtils http(String url) {
         return new HttpUtils(url);
     }
@@ -61,7 +66,7 @@ public class HttpUtils {
         _url = url;
     }
 
-    public HttpUtils enablePrintln(boolean enable){
+    public HttpUtils enablePrintln(boolean enable) {
         _enablePrintln = enable;
         return this;
     }
@@ -131,7 +136,7 @@ public class HttpUtils {
 
     //@XNote("设置表单数据")
     public HttpUtils data(String key, String value) {
-        if(key == null || value == null){
+        if (key == null || value == null) {
             return this;
         }
 
@@ -143,7 +148,7 @@ public class HttpUtils {
 
     //@XNote("设置表单文件")
     public HttpUtils data(String key, String filename, InputStream inputStream, String contentType) {
-        if(key == null || inputStream == null){
+        if (key == null || inputStream == null) {
             return this;
         }
 
@@ -199,7 +204,7 @@ public class HttpUtils {
 
     //@XNote("设置BODY raw及内容类型")
     public HttpUtils bodyRaw(InputStream raw, String contentType) {
-        if(raw == null){
+        if (raw == null) {
             return this;
         }
 
