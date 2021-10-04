@@ -12,7 +12,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.extend.qiniu.kodo.KodoProps;
 import org.noear.solon.cloud.service.CloudFileService;
-import org.noear.solon.cloud.tool.HttpUtils;
+import org.noear.solon.cloud.utils.http.HttpUtils;
 import org.noear.solon.core.handle.Result;
 
 import java.io.IOException;

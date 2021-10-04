@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.tool;
+package org.noear.solon.cloud.utils.http;
 
 import okhttp3.*;
 import okhttp3.internal.Util;

@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.tool;
+package org.noear.solon.cloud.utils.http;
 
 import org.noear.solon.Solon;
 import org.noear.solon.ext.ConsumerEx;
