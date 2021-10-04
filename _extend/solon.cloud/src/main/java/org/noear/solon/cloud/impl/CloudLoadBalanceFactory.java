@@ -48,6 +48,29 @@ public class CloudLoadBalanceFactory implements LoadBalance.Factory {
         return tmp;
     }
 
+    /**
+     * 注册负载均衡
+     * */
+    public void register(String group, String service, LoadBalance loadBalance) {
+        if (group == null) {
+            group = "";
+        }
+
+        String cacheKey = group + ":" + service;
+
+        CloudLoadBalance tmp = cached.get(cacheKey);
+
+        if (tmp == null) {
+            synchronized (cacheKey.intern()) {
+                tmp = cached.get(cacheKey);
+
+                if (tmp == null) {
+                    tmp = new CloudLoadBalance(group, service, loadBalance);
+                    cached.put(cacheKey, tmp);
+                }
+            }
+        }
+    }
 
     /**
      * 可以被子类重写

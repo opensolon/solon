@@ -16,6 +16,8 @@ public class CloudLoadBalance implements LoadBalance {
     private String service;
     private String group;
     private Discovery discovery;
+    private LoadBalance loadBalance;
+
     private int index = 0;
     private static final int indexMax = 99999999;
 
@@ -32,35 +34,45 @@ public class CloudLoadBalance implements LoadBalance {
         }
     }
 
+    public CloudLoadBalance(String group, String service, LoadBalance loadBalance) {
+        this.service = service;
+        this.group = group;
+        this.loadBalance = loadBalance;
+    }
+
     /**
      * 服务组
-     * */
-    public String getGroup(){
+     */
+    public String getGroup() {
         return group;
     }
 
     /**
      * 服务名
-     * */
+     */
     public String getService() {
         return service;
     }
 
     /**
      * 服务发现数据
-     * */
+     */
     public Discovery getDiscovery() {
         return discovery;
     }
 
     @Override
     public String getServer() {
+        if (loadBalance != null) {
+            return loadBalance.getServer();
+        }
+
         if (discovery == null) {
             return null;
         } else {
-            if(Utils.isNotEmpty(discovery.agent())){
+            if (Utils.isNotEmpty(discovery.agent())) {
                 return discovery.agent();
-            }else{
+            } else {
                 int count = discovery.clusterSize();
 
                 if (count == 0) {
