@@ -20,6 +20,8 @@ public class DemoTest extends HttpTestBase {
         Response resp = path("/healthz").exec("GET");
         System.out.println(resp.body().string());
         assert resp.code() == 200;
+
+        assert path("/healthz").head() == 200;
     }
 
     @Test
@@ -31,6 +33,8 @@ public class DemoTest extends HttpTestBase {
         Response resp = path("/healthz").exec("GET");
         System.out.println(resp.body().string());
         assert resp.code() == 503;
+
+        assert path("/healthz").head() == 503;
     }
 
     @Test
