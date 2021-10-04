@@ -35,6 +35,7 @@ public class CloudFileServiceOssImp implements CloudFileService {
     }
 
     protected final String bucketDef;
+
     protected final String accessKey;
     protected final String secretKey;
     protected final String endpoint;

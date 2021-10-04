@@ -27,9 +27,10 @@ public class CloudFileServiceMinioImp implements CloudFileService {
         return instance;
     }
 
+    protected final String bucketDef;
+
     protected final String endpoint;
     protected final String regionId;
-    protected final String bucket;
     protected final String accessKey;
     protected final String secretKey;
     protected final MinioClient minioClient;
@@ -57,7 +58,9 @@ public class CloudFileServiceMinioImp implements CloudFileService {
     public CloudFileServiceMinioImp(String endpoint, String regionId, String bucket, String accessKey, String secretKey) {
         this.endpoint = endpoint;
         this.regionId = regionId;
-        this.bucket = bucket;
+
+        this.bucketDef = bucket;
+
         this.accessKey = accessKey;
         this.secretKey = secretKey;
 
@@ -71,7 +74,7 @@ public class CloudFileServiceMinioImp implements CloudFileService {
     @Override
     public Media get(String bucket, String key) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
-            bucket = this.bucket;
+            bucket = bucketDef;
         }
 
         try {
@@ -89,7 +92,7 @@ public class CloudFileServiceMinioImp implements CloudFileService {
     @Override
     public Result<?> put(String bucket, String key, Media media) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
-            bucket = this.bucket;
+            bucket = bucketDef;
         }
 
         String streamMime = media.contentType();
@@ -114,7 +117,7 @@ public class CloudFileServiceMinioImp implements CloudFileService {
     @Override
     public Result<?> delete(String bucket, String key) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
-            bucket = this.bucket;
+            bucket = bucketDef;
         }
 
         try {

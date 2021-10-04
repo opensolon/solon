@@ -34,6 +34,7 @@ public class CloudFileServiceS3Imp implements CloudFileService {
     }
 
     protected final String bucketDef;
+
     protected final String accessKey;
     protected final String secretKey;
     protected final String regionId;

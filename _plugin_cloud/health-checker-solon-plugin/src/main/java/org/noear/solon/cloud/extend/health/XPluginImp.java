@@ -11,16 +11,21 @@ import org.noear.solon.core.Plugin;
 public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
-        app.get("/healthz", context -> {
-            HealthStatus healthStatus = HealthChecker.getHealthChecker()
-                    .checkAll();
-            switch (healthStatus.getOutcome()) {
-                case DOWN: context.status(503); break;
-                case ERROR: context.status(500); break;
-                default: context.status(200);
-            }
-            context.output(ONode.stringify(healthStatus));
-        });
+        app.get("/healthz", ctx -> {
+            HealthStatus healthStatus = HealthChecker.check();
 
+            switch (healthStatus.getCode()) {
+                case DOWN:
+                    ctx.status(503);
+                    break;
+                case ERROR:
+                    ctx.status(500);
+                    break;
+                default:
+                    ctx.status(200);
+            }
+
+            ctx.outputAsJson(ONode.stringify(healthStatus));
+        });
     }
 }
