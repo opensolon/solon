@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 本地中断器服务
+ * 本地熔断服务
  *
  * 常用指标：
  * sbc：并发链接数，Simultaneous Browser Connections

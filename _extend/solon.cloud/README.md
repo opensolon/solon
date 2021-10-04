@@ -81,17 +81,3 @@ solon.cloud.consul:
 | 8 | 30分钟 |
 | 9 | 1小时 |
 | n.. | 2小时 |
-
-### 四、本地发布服务的配置补充
-
-本地发布服务配置，仅在云端发布服务被禁时才生效（一般用于本地测试或调试；也可用于k8s之类的服务名固定的场景）
-
-```yaml
-solon.cloud.local:
-  discovery:
-    service:
-      helloapi:  #服务名
-        - "http://localhost:8081"  #服务地址
-      userservice: #服务名
-        - "http://userservice" #服务地址
-```

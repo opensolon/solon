@@ -16,11 +16,13 @@ import java.util.Map;
  * @since 1.3
  */
 public class LocalDiscoveryResolver {
+    static final String CONFIG_PREFIX = "solon.cloud.local.discovery.service";
+
     /**
      * 注册到负载器工厂
      *
      * @param group 服务分组
-     * */
+     */
     public static void register(String group) {
         Map<String, Discovery> discoveryMap = resolve();
 
@@ -41,7 +43,7 @@ public class LocalDiscoveryResolver {
     public static Map<String, Discovery> resolve() {
         Map<String, Discovery> discoveryMap = new LinkedHashMap<>();
 
-        Props props = Solon.cfg().getProp("solon.cloud.local.discovery.service");
+        Props props = Solon.cfg().getProp(CONFIG_PREFIX);
 
         if (props.size() > 0) {
             props.forEach((k, v) -> {
