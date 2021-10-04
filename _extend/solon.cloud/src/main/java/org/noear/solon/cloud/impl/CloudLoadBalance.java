@@ -34,6 +34,12 @@ public class CloudLoadBalance implements LoadBalance {
         }
     }
 
+    public CloudLoadBalance(String group, String service, Discovery discovery) {
+        this.service = service;
+        this.group = group;
+        this.discovery = discovery;
+    }
+
     public CloudLoadBalance(String group, String service, LoadBalance loadBalance) {
         this.service = service;
         this.group = group;

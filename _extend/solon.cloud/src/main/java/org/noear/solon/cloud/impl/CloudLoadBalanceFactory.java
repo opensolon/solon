@@ -68,7 +68,12 @@ public class CloudLoadBalanceFactory implements LoadBalance.Factory {
                 tmp = cached.get(cacheKey);
 
                 if (tmp == null) {
-                    tmp = new CloudLoadBalance(group, service, loadBalance);
+                    if (loadBalance instanceof CloudLoadBalance) {
+                        tmp = (CloudLoadBalance) loadBalance;
+                    } else {
+                        tmp = new CloudLoadBalance(group, service, loadBalance);
+                    }
+
                     cached.put(cacheKey, tmp);
                 }
             }
