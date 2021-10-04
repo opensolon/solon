@@ -25,6 +25,9 @@ public class CloudLoadBalanceFactory implements LoadBalance.Factory {
         cached.forEach(action);
     }
 
+    /**
+     * 创建负载均衡
+     * */
     @Override
     public LoadBalance create(String group, String service) {
         if (group == null) {
