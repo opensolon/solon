@@ -4,10 +4,10 @@ import io.minio.*;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.extend.minio.MinioProps;
+import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.handle.Result;
 
-import java.io.InputStream;
 import java.util.Properties;
 
 /**
@@ -69,27 +69,30 @@ public class CloudFileServiceMinioImp implements CloudFileService {
     }
 
     @Override
-    public InputStream get(String bucket, String key) throws CloudFileException {
+    public Media get(String bucket, String key) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = this.bucket;
         }
 
         try {
-            return minioClient.getObject(GetObjectArgs.builder()
+            GetObjectResponse obj = minioClient.getObject(GetObjectArgs.builder()
                     .bucket(bucket)
                     .object(key)
                     .build());
+
+            return new Media(obj, obj.headers().get("Content-Type"));
         } catch (Exception exception) {
             throw new CloudFileException(exception);
         }
     }
 
     @Override
-    public Result<?> put(String bucket, String key, InputStream stream, String streamMime) throws CloudFileException {
+    public Result<?> put(String bucket, String key, Media media) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = this.bucket;
         }
 
+        String streamMime = media.contentType();
         if (Utils.isEmpty(streamMime)) {
             streamMime = "text/plain; charset=utf-8";
         }
@@ -98,9 +101,10 @@ public class CloudFileServiceMinioImp implements CloudFileService {
             ObjectWriteResponse response = this.minioClient.putObject(PutObjectArgs.builder()
                     .bucket(bucket)
                     .object(key)
-                    .stream(stream, stream.available(), -1)
+                    .stream(media.body(), media.body().available(), -1)
                     .contentType(streamMime)
                     .build());
+
             return Result.succeed(response);
         } catch (Exception exception) {
             throw new CloudFileException(exception);

@@ -9,6 +9,7 @@ import com.amazonaws.services.s3.model.*;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.extend.aws.s3.S3Props;
+import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.handle.Result;
 
@@ -75,7 +76,7 @@ public class CloudFileServiceS3Imp implements CloudFileService {
     }
 
     @Override
-    public InputStream get(String bucket, String key) throws CloudFileException {
+    public Media get(String bucket, String key) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;
         }
@@ -83,18 +84,21 @@ public class CloudFileServiceS3Imp implements CloudFileService {
         try {
             GetObjectRequest request = new GetObjectRequest(bucket, key);
 
-            return client.getObject(request).getObjectContent();
+            S3Object obj = client.getObject(request);
+
+            return new Media(obj.getObjectContent(), obj.getObjectMetadata().getContentType());
         } catch (Exception ex) {
             throw new CloudFileException(ex);
         }
     }
 
     @Override
-    public Result put(String bucket, String key, InputStream stream, String streamMime) throws CloudFileException {
+    public Result put(String bucket, String key, Media media) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;
         }
 
+        String streamMime = media.contentType();
         if (Utils.isEmpty(streamMime)) {
             streamMime = "text/plain; charset=utf-8";
         }
@@ -103,7 +107,7 @@ public class CloudFileServiceS3Imp implements CloudFileService {
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(streamMime);
 
-            PutObjectRequest request = new PutObjectRequest(bucket, key, stream, metadata)
+            PutObjectRequest request = new PutObjectRequest(bucket, key, media.body(), metadata)
                     .withAccessControlList(acls);
 
             PutObjectResult tmp = client.putObject(request);

@@ -1,8 +1,10 @@
 package org.noear.solon.cloud.extend.aliyun.oss.service;
 
+import okhttp3.ResponseBody;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.extend.aliyun.oss.OssProps;
+import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.cloud.utils.http.HttpUtils;
 import org.noear.solon.core.handle.Result;
@@ -70,7 +72,7 @@ public class CloudFileServiceOssImp implements CloudFileService {
 
 
     @Override
-    public InputStream get(String bucket, String key) throws CloudFileException {
+    public Media get(String bucket, String key) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;
         }
@@ -89,21 +91,24 @@ public class CloudFileServiceOssImp implements CloudFileService {
             head.put("Date", date);
             head.put("Authorization", Authorization);
 
-            return HttpUtils.http(url)
+            ResponseBody obj = HttpUtils.http(url)
                     .header("Date", date)
                     .header("Authorization", Authorization)
-                    .exec("GET").body().byteStream();
+                    .exec("GET").body();
+
+            return new Media(obj.byteStream(), obj.contentType().toString());
         } catch (IOException ex) {
             throw new CloudFileException(ex);
         }
     }
 
     @Override
-    public Result put(String bucket, String key, InputStream stream, String streamMime) throws CloudFileException {
+    public Result put(String bucket, String key, Media media) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;
         }
 
+        String streamMime = media.contentType();
         if (Utils.isEmpty(streamMime)) {
             streamMime = "text/plain; charset=utf-8";
         }
@@ -121,7 +126,7 @@ public class CloudFileServiceOssImp implements CloudFileService {
             String tmp = HttpUtils.http(url)
                     .header("Date", date)
                     .header("Authorization", Authorization)
-                    .bodyRaw(stream, streamMime)
+                    .bodyRaw(media.body(), streamMime)
                     .put();
 
             return Result.succeed(tmp);

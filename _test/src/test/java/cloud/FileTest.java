@@ -5,14 +5,13 @@ import org.junit.runner.RunWith;
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
+import org.noear.solon.cloud.model.Media;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.Base64;
 
 /**
@@ -31,12 +30,12 @@ public class FileTest {
         String key = "test/" + Utils.guid();
         String val = "Hello world!";
 
-        Result result = CloudClient.file().putText(key, val);
+        Result result = CloudClient.file().put(key, new Media(val));
         System.out.println(ONode.stringify(result));
         assert result.getCode() == Result.SUCCEED_CODE;
 
 
-        String tmp = CloudClient.file().getText(key);
+        String tmp = CloudClient.file().get(key).bodyAsString();
         assert val.equals(tmp);
     }
 
@@ -51,7 +50,7 @@ public class FileTest {
         File val = new File(Utils.getResource("test.png").getFile());
         String valMime = Utils.mime(val.getName());
 
-        Result result = CloudClient.file().put(key, new FileInputStream(val), valMime);
+        Result result = CloudClient.file().put(key, new Media(new FileInputStream(val), valMime));
         System.out.println(ONode.stringify(result));
         assert result.getCode() == Result.SUCCEED_CODE;
     }
@@ -68,9 +67,8 @@ public class FileTest {
 
         String image_base64 = "";
         byte[] image_btys = Base64.getDecoder().decode(image_base64);
-        InputStream image_stream = new ByteArrayInputStream(image_btys);
 
-        Result result = CloudClient.file().put(key, image_stream, "image/jpeg");
+        Result result = CloudClient.file().put(key, new Media(image_btys, "image/jpeg"));
         System.out.println(ONode.stringify(result));
         assert result.getCode() == Result.SUCCEED_CODE;
     }

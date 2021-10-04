@@ -8,9 +8,11 @@ import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
+import okhttp3.ResponseBody;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.extend.qiniu.kodo.KodoProps;
+import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.cloud.utils.http.HttpUtils;
 import org.noear.solon.core.handle.Result;
@@ -58,7 +60,7 @@ public class CloudFileServiceKodoImp implements CloudFileService {
     }
 
     @Override
-    public InputStream get(String bucket, String key) throws CloudFileException {
+    public Media get(String bucket, String key) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;
         }
@@ -67,19 +69,21 @@ public class CloudFileServiceKodoImp implements CloudFileService {
         String downUrl = auth.privateDownloadUrl(baseUrl);
 
         try {
-            okhttp3.Response response = HttpUtils.http(downUrl).exec("GET");
-            return response.body().byteStream();
+            ResponseBody obj = HttpUtils.http(downUrl).exec("GET").body();
+
+            return new Media(obj.byteStream(), obj.contentType().toString());
         } catch (IOException e) {
             throw new CloudFileException(e);
         }
     }
 
     @Override
-    public Result put(String bucket, String key, InputStream stream, String streamMime) throws CloudFileException {
+    public Result put(String bucket, String key, Media media) throws CloudFileException {
         if (Utils.isEmpty(bucket)) {
             bucket = bucketDef;
         }
 
+        String streamMime = media.contentType();
         if (Utils.isEmpty(streamMime)) {
             streamMime = "text/plain; charset=utf-8";
         }
@@ -87,7 +91,7 @@ public class CloudFileServiceKodoImp implements CloudFileService {
         String uploadToken = auth.uploadToken(bucket);
 
         try {
-            Response resp = uploadManager.put(stream, key, uploadToken, new StringMap(), streamMime);
+            Response resp = uploadManager.put(media.body(), key, uploadToken, new StringMap(), streamMime);
             return Result.succeed(resp.bodyString());
         } catch (QiniuException e) {
             throw new CloudFileException(e);
