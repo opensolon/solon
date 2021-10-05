@@ -270,7 +270,6 @@
 
         <module>../../_plugin_cloud/httputils-solon-plugin</module>
 
-        <module>../../_plugin_cloud/health-checker-solon-plugin</module>
         <module>../../_plugin_cloud/minio-solon-plugin</module>
     </modules>
 

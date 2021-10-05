@@ -24,6 +24,7 @@
             <artifactId>solon.cloud</artifactId>
         </dependency>
 
+
         <dependency>
             <groupId>com.ecwid.consul</groupId>
             <artifactId>consul-api</artifactId>
