@@ -43,7 +43,7 @@ public class RouterDefault implements Router{
     public void add(String path, Endpoint endpoint, MethodType method, int index, Handler handler) {
         RoutingDefault routing = new RoutingDefault<>(path, method, index, handler);
 
-        if (path.contains("*")) {
+        if (path.contains("*") || path.contains("{")) {
             routesH[endpoint.code].add(routing);
         } else {
             //没有*号的，优先
