@@ -24,7 +24,7 @@ public class App {
         Solon.start(App.class, args);
 
         //用http请求自己进行预热
-        PreheatUtils.preheat("/run/check/");
+        PreheatUtils.preheat("/healthz");
 
         //用bean预热
         HelloService service = Aop.get(HelloService.class);
