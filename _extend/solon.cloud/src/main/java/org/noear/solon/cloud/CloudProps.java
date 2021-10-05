@@ -232,9 +232,9 @@ public class CloudProps {
         return Solon.cfg().getBool(DISCOVERY_UNSTABLE, false);
     }
 
-    public String getDiscoveryHealthCheckPath() {
-        return Solon.cfg().get(DISCOVERY_HEALTH_CHECK_PATH, "/run/check/");
-    }
+//    public String getDiscoveryHealthCheckPath() {
+//        return Solon.cfg().get(DISCOVERY_HEALTH_CHECK_PATH, "/run/check/");
+//    }
 
     public String getDiscoveryHealthCheckInterval(String def) {
         return Solon.cfg().get(DISCOVERY_HEALTH_CHECK_INTERVAL, def); //def:5s

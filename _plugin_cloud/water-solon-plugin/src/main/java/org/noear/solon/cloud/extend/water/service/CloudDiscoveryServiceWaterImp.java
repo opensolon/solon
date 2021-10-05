@@ -12,6 +12,7 @@ import org.noear.solon.cloud.service.CloudDiscoveryService;
 import org.noear.solon.cloud.utils.IntervalUtils;
 import org.noear.solon.core.Signal;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.extend.health.HealthHandler;
 import org.noear.water.WaterClient;
 import org.noear.water.model.DiscoverM;
 
@@ -26,7 +27,7 @@ import java.util.TimerTask;
  * @since 1.2
  */
 public class CloudDiscoveryServiceWaterImp extends TimerTask implements CloudDiscoveryService {
-    String checkPathDefault;
+    //String checkPathDefault;
     String alarmMobile;
     long refreshInterval;
     boolean unstable;
@@ -35,7 +36,7 @@ public class CloudDiscoveryServiceWaterImp extends TimerTask implements CloudDis
         unstable = WaterProps.instance.getDiscoveryUnstable()
                 || Solon.cfg().isFilesMode()
                 || Solon.cfg().isDriftMode();
-        checkPathDefault = WaterProps.instance.getDiscoveryHealthCheckPath();
+        //checkPathDefault = WaterProps.instance.getDiscoveryHealthCheckPath();
         alarmMobile = WaterProps.instance.getAlarm();
         refreshInterval = IntervalUtils.getInterval(WaterProps.instance.getDiscoveryRefreshInterval("5s"));
     }
@@ -90,7 +91,7 @@ public class CloudDiscoveryServiceWaterImp extends TimerTask implements CloudDis
         String code_location = Solon.cfg().sourceLocation().getPath();
         String checkPath;
         if (instance.protocol().contains("http")) {
-            checkPath = checkPathDefault;
+            checkPath = HealthHandler.HANDLER_PATH;
         } else {
             checkPath = instance.uri();
         }

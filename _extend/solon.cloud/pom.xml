@@ -22,6 +22,11 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>solon.extend.health</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>nami</artifactId>
         </dependency>
 

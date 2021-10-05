@@ -5,6 +5,8 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.extend.consul.ConsulProps;
+import org.noear.solon.core.handle.Result;
+import org.noear.solon.extend.health.HealthChecker;
 
 import java.util.*;
 
@@ -56,7 +58,7 @@ public class HealthDetector {
     }
 
     static HealthDetector detector;
-    public static void start(String healthCheckPath){
+    public static void start(){
         if(detector != null){
             return;
         }
@@ -66,11 +68,15 @@ public class HealthDetector {
         detector = new HealthDetector();
         detector.startDetect(Solon.global());
 
-        Solon.global().get(healthCheckPath, ctx -> {
-            Map<String, Object> info = new HashMap<>();
-            info.put("status", "OK");
-            info.putAll(detector.getInfo());
-            ctx.outputAsJson(GsonFactory.getGson().toJson(info));
+        HealthChecker.addPoint("consul",()->{
+            return Result.succeed(detector.getInfo());
         });
+
+//        Solon.global().get(healthCheckPath, ctx -> {
+//            Map<String, Object> info = new HashMap<>();
+//            info.put("status", "OK");
+//            info.putAll(detector.getInfo());
+//            ctx.outputAsJson(GsonFactory.getGson().toJson(info));
+//        });
     }
 }

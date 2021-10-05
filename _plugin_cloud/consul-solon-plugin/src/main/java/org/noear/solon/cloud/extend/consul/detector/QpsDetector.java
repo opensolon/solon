@@ -51,10 +51,10 @@ public class QpsDetector extends AbstractDetector{
      * @param solon
      */
     public void toDetect(SolonApp solon){
-        solon.before("/**", ctx->{
+        solon.before("**", ctx->{
             ctx.attrSet("_begin_time",System.currentTimeMillis());
         });
-        solon.after("/**",ctx->{
+        solon.after("**",ctx->{
             Long begin= ctx.attr("_begin_time");
             if(begin!=null){
                 flowHelper.incrSuccess(System.currentTimeMillis()-begin);

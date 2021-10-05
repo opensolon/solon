@@ -415,6 +415,13 @@ public class SolonApp implements HandlerSlots {
     }
 
     /**
+     * 添加HEAD方法的监听
+     */
+    public void head(String path, Handler handler) {
+        add(path, MethodType.HEAD, handler);
+    }
+
+    /**
      * 添加GET方法的监听（REST.select 从服务端获取一或多项资源）
      */
     public void get(String path, Handler handler) {

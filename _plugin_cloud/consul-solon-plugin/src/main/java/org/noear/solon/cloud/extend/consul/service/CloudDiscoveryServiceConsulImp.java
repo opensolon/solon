@@ -1,12 +1,9 @@
 package org.noear.solon.cloud.extend.consul.service;
 
-import com.ecwid.consul.json.GsonFactory;
 import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.agent.model.NewService;
 import com.ecwid.consul.v1.agent.model.Service;
-import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.model.Discovery;
@@ -17,6 +14,7 @@ import org.noear.solon.cloud.extend.consul.ConsulProps;
 import org.noear.solon.cloud.extend.consul.detector.*;
 import org.noear.solon.cloud.utils.IntervalUtils;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.extend.health.HealthHandler;
 
 import java.util.*;
 
@@ -34,7 +32,7 @@ public class CloudDiscoveryServiceConsulImp extends TimerTask implements CloudDi
     private long refreshInterval;
 
     private String healthCheckInterval;
-    private String healthCheckPath;
+//    private String healthCheckPath;
     private List<String> tags;
 
     Map<String,Discovery> discoveryMap = new HashMap<>();
@@ -47,7 +45,7 @@ public class CloudDiscoveryServiceConsulImp extends TimerTask implements CloudDi
         refreshInterval = IntervalUtils.getInterval(ConsulProps.instance.getDiscoveryRefreshInterval("5s"));
 
         healthCheckInterval = ConsulProps.instance.getDiscoveryHealthCheckInterval("5s");
-        healthCheckPath = ConsulProps.instance.getDiscoveryHealthCheckPath();
+//        healthCheckPath = ConsulProps.instance.getDiscoveryHealthCheckPath();
 
         String tags_str = ConsulProps.instance.getDiscoveryTags();
         if(Utils.isNotEmpty(tags_str)){
@@ -116,15 +114,15 @@ public class CloudDiscoveryServiceConsulImp extends TimerTask implements CloudDi
 
                 //1.添加检测器
                 //
-                HealthDetector.start(healthCheckPath);
+                HealthDetector.start();
 
                 //2.添加检测
                 //
                 String checkUrl = "http://" + instance.address();
-                if (healthCheckPath.startsWith("/")) {
-                    checkUrl = checkUrl + healthCheckPath;
+                if (HealthHandler.HANDLER_PATH.startsWith("/")) {
+                    checkUrl = checkUrl + HealthHandler.HANDLER_PATH;
                 } else {
-                    checkUrl = checkUrl + "/" + healthCheckPath;
+                    checkUrl = checkUrl + "/" + HealthHandler.HANDLER_PATH;
                 }
 
                 NewService.Check check = new NewService.Check();
