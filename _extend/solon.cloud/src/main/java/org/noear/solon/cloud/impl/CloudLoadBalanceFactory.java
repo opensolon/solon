@@ -17,6 +17,10 @@ public class CloudLoadBalanceFactory implements LoadBalance.Factory {
 
     private Map<String, CloudLoadBalance> cached = new HashMap<>();
 
+    public CloudLoadBalance get(String service) {
+        return get("", service);
+    }
+
     public CloudLoadBalance get(String group, String service) {
         if (group == null) {
             group = "";
