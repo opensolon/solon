@@ -15,6 +15,6 @@ public class Config {
         // 替换掉默认的json渲染器
         //
         RenderManager.mapping("@json", new FastjsonRender2(false));
-        RenderManager.mapping("@type_json", new FastjsonRender2(true));
+        //RenderManager.mapping("@type_json", new FastjsonRender2(true));
     }
 }
