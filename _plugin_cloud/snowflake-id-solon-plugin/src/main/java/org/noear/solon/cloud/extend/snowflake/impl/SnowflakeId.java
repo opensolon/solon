@@ -1,6 +1,5 @@
 package org.noear.solon.cloud.extend.snowflake.impl;
 
-import org.noear.solon.Solon;
 import org.noear.solon.cloud.model.Instance;
 
 import java.util.Random;
@@ -10,14 +9,8 @@ import java.util.Random;
  * @since 1.3
  */
 public class SnowflakeId {
-    /**
-     * 默认起始时间 2020-01-01 00:00:00（差不多可以用69年）
-     */
+    //默认起始时间 2020-01-01 00:00:00（差不多可以用69年）
     private static final long START_TIME_DEF = 1577808000000L;
-
-    public SnowflakeId() {
-        this(Solon.cfg().appGroup() + "_" + Solon.cfg().appName(), START_TIME_DEF);
-    }
 
     public SnowflakeId(String dataBlock, long startTime) {
         if (startTime > 0) {
@@ -55,79 +48,47 @@ public class SnowflakeId {
 
     ////////////////////////////
 
-    /**
-     * 时间部分所占长度(用69年)
-     */
+    //时间部分所占长度(用69年)
     private final int timeLen = 41;
-    /**
-     * 数据中心id所占长度
-     */
+    //数据中心id所占长度
     private final int dataLen = 5;
-    /**
-     * 机器id所占长度
-     */
+    //机器id所占长度
     private final int workLen = 5;
-    /**
-     * 毫秒内序列所占长度
-     */
+    //毫秒内序列所占长度
     private final int seqLen = 12;
-
-    /**
-     * 定义起始时间 2020-01-01 00:00:00
-     */
+    //定义起始时间
     private final long startTime;
-    /**
-     * 上次生成ID的时间截
-     */
+    //上次生成ID的时间截
     private long lastTimeStamp = -1L;
-    /**
-     * 时间部分向左移动的位数 22
-     */
+    //时间部分向左移动的位数 22
     private final int timeLeftBit = 64 - 1 - timeLen;
 
-    /**
-     * 自动获取数据中心id（可以手动定义 0-31之间的数）
-     */
+    //自动获取数据中心id（可以手动定义 0-31之间的数）
     private final long dataId;
-    /**
-     * 自动机器id（可以手动定义 0-31之间的数）
-     */
+    //自动机器id（可以手动定义 0-31之间的数）
     private final long workId;
-    /**
-     * 数据中心id最大值 31
-     */
+    //数据中心id最大值 31
     private final int dataMaxNum = ~(-1 << dataLen);
-    /**
-     * 机器id最大值 31
-     */
+    //机器id最大值 31
     private final int workMaxNum = ~(-1 << workLen);
-    /**
-     * 随机获取数据中心id的参数 32
-     */
+    //随机获取数据中心id的参数 32
     private final int dataRandom = dataMaxNum + 1;
-    /**
-     * 随机获取机器id的参数 32
-     */
+    //随机获取机器id的参数 32
     private final int workRandom = workMaxNum + 1;
-    /**
-     * 数据中心id左移位数 17
-     */
+    //数据中心id左移位数 17
     private final int dataLeftBit = timeLeftBit - dataLen;
-    /**
-     * 机器id左移位数 12
-     */
+    //机器id左移位数 12
     private final int workLeftBit = dataLeftBit - workLen;
 
-    /**
-     * 上一次的毫秒内序列值
-     */
+    //上一次的毫秒内序列值
     private long seqLastVal = 0L;
-    /**
-     * 毫秒内序列的最大值 4095
-     */
+    //毫秒内序列的最大值 4095
     private final long seqMaxNum = ~(-1 << seqLen);
 
 
+    /**
+     * 获取下一个Id
+     * */
     public synchronized long nextId() {
         long now = System.currentTimeMillis();
 
@@ -163,9 +124,7 @@ public class SnowflakeId {
         return now;
     }
 
-    /**
-     * 根据 host address 取余，发生异常就获取 0到31之间的随机数
-     */
+    //根据 host address 取余，发生异常就获取 0到31之间的随机数
     protected int getWorkId() {
         try {
             //ip:port
@@ -175,9 +134,7 @@ public class SnowflakeId {
         }
     }
 
-    /**
-     * 根据 data block 取余，发生异常就获取 0到31之间的随机数
-     */
+    //根据 data block 取余，发生异常就获取 0到31之间的随机数
     protected int getDataId(String dataBlock) {
         try {
             return getHostId(dataBlock, dataMaxNum);
@@ -186,10 +143,7 @@ public class SnowflakeId {
         }
     }
 
-
-    /**
-     * 获取字符串s的字节数组，然后将数组的元素相加，对（max+1）取余
-     */
+    //获取字符串s的字节数组，然后将数组的元素相加，对（max+1）取余
     private int getHostId(String s, int max) {
         byte[] bytes = s.getBytes();
         int sums = 0;
