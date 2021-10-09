@@ -3,8 +3,6 @@ package org.noear.solon.cloud.extend.snowflake.impl;
 import org.noear.solon.Solon;
 import org.noear.solon.cloud.model.Instance;
 
-import java.net.Inet4Address;
-import java.net.UnknownHostException;
 import java.util.Random;
 
 /**
@@ -13,30 +11,22 @@ import java.util.Random;
  */
 public class SnowflakeId {
     /**
-     * 默认起始时间 2020-01-01 00:00:00
+     * 默认起始时间 2020-01-01 00:00:00（差不多可以用69年）
      */
     private static final long START_TIME_DEF = 1577808000000L;
-    private String dataBlock;
 
     public SnowflakeId() {
-        this.dataBlock = Solon.cfg().appGroup() + "_" + Solon.cfg().appName();
-
-        startTime = START_TIME_DEF;
-
-        dataId = getDataId();
-        workId = getWorkId();
+        this(Solon.cfg().appGroup() + "_" + Solon.cfg().appName(), START_TIME_DEF);
     }
 
     public SnowflakeId(String dataBlock, long startTime) {
-        this.dataBlock = dataBlock;
-
         if (startTime > 0) {
             this.startTime = startTime;
         } else {
             this.startTime = START_TIME_DEF;
         }
 
-        dataId = getDataId();
+        dataId = getDataId(dataBlock);
         workId = getWorkId();
     }
 
@@ -174,18 +164,6 @@ public class SnowflakeId {
     }
 
     /**
-     * 获取字符串s的字节数组，然后将数组的元素相加，对（max+1）取余
-     */
-    private int getHostId(String s, int max) {
-        byte[] bytes = s.getBytes();
-        int sums = 0;
-        for (int b : bytes) {
-            sums += b;
-        }
-        return sums % (max + 1);
-    }
-
-    /**
      * 根据 host address 取余，发生异常就获取 0到31之间的随机数
      */
     protected int getWorkId() {
@@ -200,11 +178,24 @@ public class SnowflakeId {
     /**
      * 根据 data block 取余，发生异常就获取 0到31之间的随机数
      */
-    protected int getDataId() {
+    protected int getDataId(String dataBlock) {
         try {
             return getHostId(dataBlock, dataMaxNum);
         } catch (Exception e) {
             return new Random().nextInt(dataRandom);
         }
+    }
+
+
+    /**
+     * 获取字符串s的字节数组，然后将数组的元素相加，对（max+1）取余
+     */
+    private int getHostId(String s, int max) {
+        byte[] bytes = s.getBytes();
+        int sums = 0;
+        for (int b : bytes) {
+            sums += b;
+        }
+        return sums % (max + 1);
     }
 }
