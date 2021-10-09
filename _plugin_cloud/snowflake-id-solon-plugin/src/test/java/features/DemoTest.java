@@ -12,7 +12,7 @@ public class DemoTest {
         SnowflakeId snowflakeId = new SnowflakeId(1,1);
         IdWorker idWorker = new IdWorker(1,1,1);
 
-        System.out.println(snowflakeId.nextId());
+        //System.out.println(snowflakeId.nextId());
         System.out.println(idWorker.nextId());
     }
 }
