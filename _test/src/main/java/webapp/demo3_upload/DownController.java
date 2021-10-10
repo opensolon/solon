@@ -3,10 +3,12 @@ package webapp.demo3_upload;
 import org.noear.solon.Utils;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
@@ -19,6 +21,7 @@ public class DownController {
     @Mapping("f1")
     public UploadedFile down() {
         InputStream stream = new ByteArrayInputStream("{code:1}".getBytes(StandardCharsets.UTF_8));
+
         UploadedFile file = new UploadedFile("text/json", stream, "没有耳多 test.json");
 
         return file;
@@ -27,7 +30,18 @@ public class DownController {
     @Mapping("f2")
     public File down2() {
         String filePath = Utils.getResource("static/debug.htm").getFile();
+
         File file = new File(filePath);
+
         return file;
+    }
+
+    @Mapping("f3")
+    public void down3(Context ctx) throws IOException {
+        String filePath = Utils.getResource("static/debug.htm").getFile();
+
+        File file = new File(filePath);
+
+        ctx.outputAsFile(file);
     }
 }
