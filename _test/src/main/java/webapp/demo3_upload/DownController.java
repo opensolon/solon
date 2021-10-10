@@ -7,6 +7,7 @@ import org.noear.solon.core.handle.UploadedFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -17,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 public class DownController {
     @Mapping("f1")
     public UploadedFile down() {
-        ByteArrayInputStream stream = new ByteArrayInputStream("{code:1}".getBytes(StandardCharsets.UTF_8));
+        InputStream stream = new ByteArrayInputStream("{code:1}".getBytes(StandardCharsets.UTF_8));
         UploadedFile file = new UploadedFile("text/json", stream, "没有耳多 test.json");
 
         return file;

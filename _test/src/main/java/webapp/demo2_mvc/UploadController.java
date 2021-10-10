@@ -19,10 +19,10 @@ public class UploadController {
 
     //支持上传文件参数
     @Mapping("f2")
-    public String test_f2(Context context) throws Exception{
-        UploadedFile file = context.file("file"); //（file 变量名，与表单变量名保持一至）
+    public String test_f2(Context ctx) throws Exception{
+        UploadedFile file = ctx.file("file"); //（file 变量名，与表单变量名保持一至）
 
-        return context.path();
+        return ctx.path();
     }
 
 }
