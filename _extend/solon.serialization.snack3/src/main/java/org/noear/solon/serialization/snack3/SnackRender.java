@@ -2,7 +2,6 @@ package org.noear.solon.serialization.snack3;
 
 import org.noear.snack.ONode;
 import org.noear.snack.core.Constants;
-import org.noear.snack.core.Feature;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Render;
 
@@ -11,9 +10,11 @@ import org.noear.solon.core.handle.Render;
 public class SnackRender implements Render {
 
     private boolean _typedJson;
+    private Constants _config;
 
-    public SnackRender(boolean typedJson) {
+    protected SnackRender(boolean typedJson, Constants config) {
         _typedJson = typedJson;
+        _config = config;
     }
 
     @Override
@@ -23,7 +24,8 @@ public class SnackRender implements Render {
         if (_typedJson) {
             //序列化处理
             //
-            txt = ONode.serialize(obj);
+            //txt = ONode.serialize(obj);
+            txt = ONode.load(obj, _config).toJson();
         } else {
             //非序列化处理
             //
@@ -38,7 +40,8 @@ public class SnackRender implements Render {
             if (obj instanceof String) {
                 txt = (String) obj;
             } else {
-                txt = ONode.stringify(obj);
+                //txt = ONode.stringify(obj);
+                txt = ONode.load(obj, _config).toJson();
             }
         }
 
