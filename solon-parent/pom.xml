@@ -332,7 +332,11 @@
                 <artifactId>solon.logging.impl</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>solon.serialization</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.serialization.fastjson</artifactId>

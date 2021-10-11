@@ -217,6 +217,8 @@
         <module>../../_extend/solon.serialization.hessian</module>
         <!--        <module>../../_extend/solon.serialization.thrift</module>-->
 
+        <module>../../_extend/solon.serialization</module>
+
         <module>../../_extend/solon.serialization.fastjson</module>
         <module>../../_extend/solon.serialization.jackson</module>
         <module>../../_extend/solon.serialization.gson</module>

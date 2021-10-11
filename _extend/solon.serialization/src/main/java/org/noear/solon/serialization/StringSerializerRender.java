@@ -1,31 +1,41 @@
-package org.noear.solon.serialization.snack3;
+package org.noear.solon.serialization;
 
-import org.noear.snack.ONode;
-import org.noear.snack.core.Constants;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Render;
 
-//不要要入参，方便后面多视图混用
-//
-public class SnackRender implements Render {
+/**
+ * 字符串序列化渲染器
+ *
+ * @author noear
+ * @since 1.5
+ */
+public class StringSerializerRender implements Render {
+    /**
+     * 序列化器
+     */
+    StringSerializer serializer;
 
-    private boolean _typedJson;
-    private Constants _config;
+    /**
+     * 类型化
+     */
+    boolean typed;
 
-    protected SnackRender(boolean typedJson, Constants config) {
-        _typedJson = typedJson;
-        _config = config;
+    public StringSerializerRender(boolean typed, StringSerializer serializer) {
+        this.typed = typed;
+        this.serializer = serializer;
     }
 
+    /**
+     * 渲染
+     */
     @Override
     public void render(Object obj, Context ctx) throws Throwable {
         String txt = null;
 
-        if (_typedJson) {
+        if (typed) {
             //序列化处理
             //
-            //txt = ONode.serialize(obj);
-            txt = ONode.load(obj, _config).toJson();
+            txt = serializer.serialize(obj);
         } else {
             //非序列化处理
             //
@@ -40,17 +50,16 @@ public class SnackRender implements Render {
             if (obj instanceof String) {
                 txt = (String) obj;
             } else {
-                //txt = ONode.stringify(obj);
-                txt = ONode.load(obj, _config).toJson();
+                txt = serializer.serialize(obj);
             }
-        }
-
-        if (XPluginImp.output_meta) {
-            ctx.headerSet("solon.serialization", "SnackRender");
         }
 
         ctx.attrSet("output", txt);
 
+        output(ctx, obj, txt);
+    }
+
+    protected void output(Context ctx, Object obj, String txt) {
         if (obj instanceof String && ctx.accept().contains("/json") == false) {
             ctx.output(txt);
         } else {

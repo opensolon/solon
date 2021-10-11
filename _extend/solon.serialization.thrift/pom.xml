@@ -16,10 +16,9 @@
 
 
     <dependencies>
-
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
+            <artifactId>solon.serialization</artifactId>
         </dependency>
     </dependencies>
 

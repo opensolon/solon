@@ -18,7 +18,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
+            <artifactId>solon.serialization</artifactId>
         </dependency>
 
         <dependency>
@@ -26,6 +26,7 @@
             <artifactId>jackson-core</artifactId>
             <version>${jackson.ver}</version>
         </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>

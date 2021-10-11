@@ -12,8 +12,8 @@ public class XPluginImp implements Plugin {
     public void start(SolonApp app) {
         output_meta = app.cfg().getInt("solon.output.meta", 0) > 0;
 
-        RenderManager.mapping("@json", SnackRenderFactory.instance.create());
-        RenderManager.mapping("@type_json", SnackTypedRenderFactory.instance.create());
+        RenderManager.mapping("@json", SnackRenderFactory.global.create());
+        RenderManager.mapping("@type_json", SnackRenderTypedFactory.global.create());
 
         //支持Json内容类型执行
         Bridge.actionExecutorAdd(new SnackJsonActionExecutor());

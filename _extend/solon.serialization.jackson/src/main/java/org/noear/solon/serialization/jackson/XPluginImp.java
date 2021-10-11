@@ -12,8 +12,8 @@ public class XPluginImp implements Plugin {
     public void start(SolonApp app) {
         output_meta = app.cfg().getInt("solon.output.meta", 0) > 0;
 
-        RenderManager.mapping("@json", new JacksonRender(false));
-        RenderManager.mapping("@type_json", new JacksonRender(true));
+        RenderManager.mapping("@json", JacksonRenderFactory.global.create());
+        RenderManager.mapping("@type_json", JacksonRenderTypedFactory.global.create());
 
         //支持Json内容类型执行
         Bridge.actionExecutorAdd(new JacksonActionExecutor());

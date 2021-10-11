@@ -1,28 +1,31 @@
 package org.noear.solon.serialization.snack3;
 
 import org.noear.snack.core.Constants;
-import org.noear.snack.core.NodeEncoder;
 import org.noear.solon.core.handle.Render;
-import org.noear.solon.core.handle.RenderFactory;
+import org.noear.solon.serialization.RenderFactory;
+import org.noear.solon.serialization.StringSerializerRender;
 
 /**
+ * Json 渲染器工厂
+ *
  * @author noear
  * @since 1.5
  */
-public class SnackRenderFactory implements RenderFactory {
-    public static final SnackRenderFactory instance = new SnackRenderFactory();
+public class SnackRenderFactory extends SnackCustomizer implements RenderFactory {
+    public static final SnackRenderFactory global = new SnackRenderFactory();
 
-    private Constants config = Constants.def();
-
-    /**
-     * 添加编码器
-     * */
-    public <T> void addEncoder(Class<T> clz, NodeEncoder<T> encoder) {
-        config.addEncoder(clz, encoder);
+    private final Constants config;
+    private SnackRenderFactory(){
+        config = Constants.def();
     }
 
     @Override
     public Render create() {
-        return new SnackRender(false, config);
+        return new StringSerializerRender(false, new SnackSerializer(config));
+    }
+
+    @Override
+    protected Constants config() {
+        return config;
     }
 }

@@ -11,20 +11,14 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.serialization.snack3</artifactId>
+    <artifactId>solon.serialization</artifactId>
     <packaging>jar</packaging>
-
 
     <dependencies>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.serialization</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>snack3</artifactId>
+            <artifactId>solon</artifactId>
         </dependency>
     </dependencies>
 
