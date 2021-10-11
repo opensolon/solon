@@ -314,7 +314,7 @@ public class HttpValidTest2 extends HttpTestBase {
         data.put("field17","1xxxx");
 
         ONode node = ONode.load(data);
-        node.get("field18").add("1").add("2");
+        node.getOrNew("field18").add("1").add("2");
 
         assert path("/demo2/valid/bean2").bodyJson(node.toJson()).post().contains("OK");
 
