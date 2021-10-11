@@ -1,7 +1,7 @@
 package org.noear.solon.extend.sessionstate.redis;
 
 import org.noear.snack.ONode;
-import org.noear.snack.core.Constants;
+import org.noear.snack.core.Options;
 import org.noear.snack.core.Feature;
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
@@ -133,7 +133,7 @@ public class RedisSessionState extends SessionStateDefault {
                 tmp.set("d", null);
             }else{
                 tmp.set("t", val.getClass().getSimpleName());
-                tmp.set("d", ONode.loadObj(val, Constants.serialize().sub(Feature.BrowserCompatible)));
+                tmp.set("d", ONode.loadObj(val, Options.serialize().remove(Feature.BrowserCompatible)));
             }
 
         } catch (Exception ex) {

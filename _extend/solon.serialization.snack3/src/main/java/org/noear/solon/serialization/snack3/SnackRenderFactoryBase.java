@@ -1,6 +1,6 @@
 package org.noear.solon.serialization.snack3;
 
-import org.noear.snack.core.Constants;
+import org.noear.snack.core.Options;
 import org.noear.snack.core.NodeEncoder;
 import org.noear.solon.serialization.JsonRenderFactory;
 import org.noear.solon.serialization.JsonLongConverter;
@@ -11,7 +11,7 @@ import org.noear.solon.serialization.JsonStringConverter;
  */
 public abstract class SnackRenderFactoryBase implements JsonRenderFactory {
 
-    protected abstract Constants config();
+    protected abstract Options config();
 
     /**
      * 添加编码器

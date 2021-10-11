@@ -1,7 +1,7 @@
 package org.noear.solon.extend.health;
 
 import org.noear.snack.ONode;
-import org.noear.snack.core.Constants;
+import org.noear.snack.core.Options;
 import org.noear.snack.core.Feature;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
@@ -30,7 +30,7 @@ public class HealthHandler implements Handler {
     }
 
 
-    private static final Constants constants = Constants.def().add(Feature.EnumUsingName);
+    private static final Options options = Options.def().add(Feature.EnumUsingName);
 
     @Override
     public void handle(Context ctx) throws Throwable {
@@ -47,6 +47,6 @@ public class HealthHandler implements Handler {
                 ctx.status(200);
         }
 
-        ctx.outputAsJson(ONode.stringify(healthStatus, constants));
+        ctx.outputAsJson(ONode.stringify(healthStatus, options));
     }
 }

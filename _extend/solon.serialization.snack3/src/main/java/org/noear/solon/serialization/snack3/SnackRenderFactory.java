@@ -1,6 +1,6 @@
 package org.noear.solon.serialization.snack3;
 
-import org.noear.snack.core.Constants;
+import org.noear.snack.core.Options;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.serialization.StringSerializerRender;
 
@@ -13,9 +13,9 @@ import org.noear.solon.serialization.StringSerializerRender;
 public class SnackRenderFactory extends SnackRenderFactoryBase {
     public static final SnackRenderFactory global = new SnackRenderFactory();
 
-    private final Constants config;
+    private final Options config;
     private SnackRenderFactory(){
-        config = Constants.def();
+        config = Options.def();
     }
 
     @Override
@@ -24,7 +24,7 @@ public class SnackRenderFactory extends SnackRenderFactoryBase {
     }
 
     @Override
-    protected Constants config() {
+    protected Options config() {
         return config;
     }
 }
