@@ -24,8 +24,13 @@ public class RpcAndNamiTest {
     UserService userService;
 
     //使用负载
-    @NamiClient(name = "local", path = "/demo5/user/")
+    @NamiClient(name = "local", path = "/demo5/user/", headers = {"Content-Type:application/json"})
     UserService userService2;
+
+
+    //使用负载
+    @NamiClient(name = "local", path = "/demo5/user/", headers = {"Content-Type:application/hessian"})
+    UserService userService3;
 
     @Test
     public void test() {
@@ -50,6 +55,20 @@ public class RpcAndNamiTest {
         userModel.setDate(Datetime.parse("2020-01-01", "yyyy-MM-dd").getFulltime());
 
         UserModel user = userService2.addUser(userModel);
+        System.out.println(user);
+        assert user.getId() == 101;
+        assert new Datetime(user.getDate()).getDate() == 20200101;
+    }
+
+    @Test
+    public void test2_3() throws Exception{
+        UserModel userModel = new UserModel();
+        userModel.setId(101);
+        userModel.setName("noear");
+        userModel.setLabel("k");
+        userModel.setDate(Datetime.parse("2020-01-01", "yyyy-MM-dd").getFulltime());
+
+        UserModel user = userService3.addUser(userModel);
         System.out.println(user);
         assert user.getId() == 101;
         assert new Datetime(user.getDate()).getDate() == 20200101;
