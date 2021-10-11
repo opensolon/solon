@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.noear.solon.serialization.JsonRenderFactory;
-import org.noear.solon.serialization.LongConverter;
-import org.noear.solon.serialization.StringConverter;
+import org.noear.solon.serialization.JsonLongConverter;
+import org.noear.solon.serialization.JsonStringConverter;
 
 import java.io.IOException;
 
@@ -31,7 +31,7 @@ public abstract class JacksonRenderFactoryBase implements JsonRenderFactory {
     }
 
     @Override
-    public <T> void addConvertor(Class<T> clz, LongConverter<T> converter) {
+    public <T> void addConvertor(Class<T> clz, JsonLongConverter<T> converter) {
         addEncoder(clz, new JsonSerializer<T>() {
             @Override
             public void serialize(T source, JsonGenerator gen, SerializerProvider sp) throws IOException {
@@ -41,7 +41,7 @@ public abstract class JacksonRenderFactoryBase implements JsonRenderFactory {
     }
 
     @Override
-    public <T> void addConvertor(Class<T> clz, StringConverter<T> converter) {
+    public <T> void addConvertor(Class<T> clz, JsonStringConverter<T> converter) {
         addEncoder(clz, new JsonSerializer<T>() {
             @Override
             public void serialize(T source, JsonGenerator gen, SerializerProvider sp) throws IOException {

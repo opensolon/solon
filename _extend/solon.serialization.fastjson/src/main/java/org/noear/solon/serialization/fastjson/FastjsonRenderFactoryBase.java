@@ -4,8 +4,8 @@ import com.alibaba.fastjson.serializer.ObjectSerializer;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializeWriter;
 import org.noear.solon.serialization.JsonRenderFactory;
-import org.noear.solon.serialization.LongConverter;
-import org.noear.solon.serialization.StringConverter;
+import org.noear.solon.serialization.JsonLongConverter;
+import org.noear.solon.serialization.JsonStringConverter;
 
 
 
@@ -20,7 +20,7 @@ public abstract class FastjsonRenderFactoryBase implements JsonRenderFactory {
     }
 
     @Override
-    public <T> void addConvertor(Class<T> clz, LongConverter<T> converter) {
+    public <T> void addConvertor(Class<T> clz, JsonLongConverter<T> converter) {
         addEncoder(clz, (ser, obj, fieldName, fieldType, features) -> {
             SerializeWriter out = ser.getWriter();
             out.writeLong(converter.convert((T) obj));
@@ -28,7 +28,7 @@ public abstract class FastjsonRenderFactoryBase implements JsonRenderFactory {
     }
 
     @Override
-    public <T> void addConvertor(Class<T> clz, StringConverter<T> converter) {
+    public <T> void addConvertor(Class<T> clz, JsonStringConverter<T> converter) {
         addEncoder(clz, (ser, obj, fieldName, fieldType, features) -> {
             SerializeWriter out = ser.getWriter();
             out.writeString(converter.convert((T) obj));

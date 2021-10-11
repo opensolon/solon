@@ -12,12 +12,12 @@ public interface JsonRenderFactory {
     /**
      * 添加数据转换器
      * */
-    <T> void addConvertor(Class<T> clz, StringConverter<T> converter);
+    <T> void addConvertor(Class<T> clz, JsonStringConverter<T> converter);
 
     /**
      * 添加数据转换器
      * */
-    <T> void addConvertor(Class<T> clz, LongConverter<T> converter);
+    <T> void addConvertor(Class<T> clz, JsonLongConverter<T> converter);
 
     /**
      * 创建渲染器
