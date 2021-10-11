@@ -6,13 +6,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.noear.solon.core.handle.Render;
-import org.noear.solon.serialization.RenderFactory;
 import org.noear.solon.serialization.StringSerializerRender;
 
 /**
  * @author noear 2021/10/11 created
  */
-public class JacksonRenderTypedFactory extends JacksonCustomizer implements RenderFactory {
+public class JacksonRenderTypedFactory extends JacksonRenderFactoryBase {
     public static final JacksonRenderTypedFactory global = new JacksonRenderTypedFactory();
 
     ObjectMapper config = new ObjectMapper();

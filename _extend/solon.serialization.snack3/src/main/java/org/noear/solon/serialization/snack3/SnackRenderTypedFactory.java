@@ -3,7 +3,6 @@ package org.noear.solon.serialization.snack3;
 import org.noear.snack.core.Constants;
 import org.noear.snack.core.NodeEncoder;
 import org.noear.solon.core.handle.Render;
-import org.noear.solon.serialization.RenderFactory;
 import org.noear.solon.serialization.StringSerializerRender;
 
 /**
@@ -12,7 +11,7 @@ import org.noear.solon.serialization.StringSerializerRender;
  * @author noear
  * @since 1.5
  */
-public class SnackRenderTypedFactory extends SnackCustomizer implements RenderFactory {
+public class SnackRenderTypedFactory extends SnackRenderFactoryBase {
     public static final SnackRenderTypedFactory global = new SnackRenderTypedFactory();
 
 

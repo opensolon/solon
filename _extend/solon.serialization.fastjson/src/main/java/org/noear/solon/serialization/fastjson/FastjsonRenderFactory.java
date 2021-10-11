@@ -3,13 +3,12 @@ package org.noear.solon.serialization.fastjson;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.noear.solon.core.handle.Render;
-import org.noear.solon.serialization.RenderFactory;
 import org.noear.solon.serialization.StringSerializerRender;
 
 /**
  * @author noear 2021/10/11 created
  */
-public class FastjsonRenderFactory extends FastjsonCustomizer implements RenderFactory {
+public class FastjsonRenderFactory extends FastjsonRenderFactoryBase {
     public static final FastjsonRenderFactory global = new FastjsonRenderFactory();
 
     private SerializeConfig config;

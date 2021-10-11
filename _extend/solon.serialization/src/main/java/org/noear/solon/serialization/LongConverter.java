@@ -7,9 +7,9 @@ package org.noear.solon.serialization;
  * @since 1.5
  */
 @FunctionalInterface
-public interface NumberConverter<T> {
+public interface LongConverter<T> {
     /**
      * 转为数字
      * */
-    Number convert(T source);
+    Long convert(T source);
 }

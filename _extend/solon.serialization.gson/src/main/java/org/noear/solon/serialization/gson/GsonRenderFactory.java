@@ -3,7 +3,6 @@ package org.noear.solon.serialization.gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSerializer;
 import org.noear.solon.core.handle.Render;
-import org.noear.solon.serialization.RenderFactory;
 import org.noear.solon.serialization.StringSerializerRender;
 
 /**
@@ -12,7 +11,7 @@ import org.noear.solon.serialization.StringSerializerRender;
  * @author noear
  * @since 1.5
  */
-public class GsonRenderFactory extends GsonCustomizer implements RenderFactory {
+public class GsonRenderFactory extends GsonRenderFactoryBase {
     public static final GsonRenderFactory global = new GsonRenderFactory();
 
     private final GsonBuilder config;
