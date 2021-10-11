@@ -45,7 +45,7 @@ public @interface NamiClient {
     /**
      * 添加头信息
      *
-     * 例：{"xxx=xxx","yyy=yyy"}
+     * 例：{"xxx:xxx","yyy:yyy"}
      * */
     String[] headers() default {};
 

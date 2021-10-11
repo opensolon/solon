@@ -18,4 +18,9 @@ public class UserServiceImp implements UserService {
 
         return model;
     }
+
+    @Override
+    public UserModel addUser(UserModel user) {
+        return user;
+    }
 }

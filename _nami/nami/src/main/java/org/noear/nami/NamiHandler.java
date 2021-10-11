@@ -93,7 +93,12 @@ public class NamiHandler implements InvocationHandler {
             //>>添加接口header
             if (client.headers().length > 0) {
                 for (String h : client.headers()) {
-                    String[] ss = h.split("=");
+                    String[] ss = null;
+                    if (h.contains(":")) {
+                        ss = h.split(":");
+                    } else {
+                        ss = h.split("=");
+                    }
                     if (ss.length == 2) {
                         headers0.put(ss[0].trim(), ss[1].trim());
                     }

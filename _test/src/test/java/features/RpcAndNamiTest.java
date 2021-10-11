@@ -12,6 +12,9 @@ import webapp.demo5_rpc.protocol.UserModel;
 import webapp.demo5_rpc.protocol.UserService;
 import webapp.demo5_rpc.protocol.UserService4;
 import webapp.demo5_rpc.protocol.UserService5;
+import webapp.utils.Datetime;
+
+import java.util.Date;
 
 @RunWith(SolonJUnit4ClassRunner.class)
 @SolonTest(webapp.TestApp.class)
@@ -36,6 +39,20 @@ public class RpcAndNamiTest {
         UserModel user = userService2.getUser(23);
         System.out.println(user);
         assert user.getId() == 23;
+    }
+
+    @Test
+    public void test2_2() throws Exception{
+        UserModel userModel = new UserModel();
+        userModel.setId(101);
+        userModel.setName("noear");
+        userModel.setLabel("k");
+        userModel.setDate(Datetime.parse("2020-01-01", "yyyy-MM-dd").getFulltime());
+
+        UserModel user = userService2.addUser(userModel);
+        System.out.println(user);
+        assert user.getId() == 101;
+        assert new Datetime(user.getDate()).getDate() == 20200101;
     }
 
     @Test
