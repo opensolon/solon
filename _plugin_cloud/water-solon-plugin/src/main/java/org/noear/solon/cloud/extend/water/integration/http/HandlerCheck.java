@@ -27,10 +27,10 @@ public class HandlerCheck implements Handler {
 
             if ("*".equals(service)) {
                 CloudLoadBalanceFactory.instance.forEach((k, v) -> {
-                    ONode n = odata.get(k);
+                    ONode n = odata.getOrNew(k);
 
                     n.set("service", k);
-                    ONode nl = n.get("upstream").asArray();
+                    ONode nl = n.getOrNew("upstream").asArray();
 
                     Discovery d = v.getDiscovery();
                     if (d != null) {
@@ -44,10 +44,10 @@ public class HandlerCheck implements Handler {
             } else {
                 CloudLoadBalance v = CloudLoadBalanceFactory.instance.get("",service);
                 if (v != null) {
-                    ONode n = odata.get(service);
+                    ONode n = odata.getOrNew(service);
 
                     n.set("service", service);
-                    ONode nl = n.get("upstream").asArray();
+                    ONode nl = n.getOrNew("upstream").asArray();
 
                     Discovery d = v.getDiscovery();
                     if (d != null) {
