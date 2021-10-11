@@ -13,8 +13,8 @@ public class XPluginImp implements Plugin {
         output_meta = app.cfg().getInt("solon.output.meta", 0) > 0;
 
         //XRenderManager.register(render);
-        RenderManager.mapping("@json", new FastjsonRender(false));
-        RenderManager.mapping("@type_json", new FastjsonRender(true));
+        RenderManager.mapping("@json", FastjsonRenderFactory.global.create());
+        RenderManager.mapping("@type_json",FastjsonRenderTypedFactory.global.create());
 
         //支持Json内容类型执行
         Bridge.actionExecutorAdd(new FastjsonJsonActionExecutor());
