@@ -1,6 +1,8 @@
 package org.noear.solon.extend.redisx;
 
 import org.noear.solon.Utils;
+import org.noear.solon.extend.redisx.utils.RedisLock;
+import org.noear.solon.extend.redisx.utils.RedisQueue;
 import redis.clients.jedis.*;
 
 import java.util.*;
@@ -116,23 +118,23 @@ import java.util.function.Function;
     }
 
     public void open0(Consumer<RedisSession> using) {
-        RedisSession ru = doOpen();
+        RedisSession session = doOpen();
 
         try {
-            using.accept(ru);
+            using.accept(session);
         } finally {
-            ru.close();
+            session.close();
         }
     }
 
     public <T> T open1(Function<RedisSession, T> using) {
-        RedisSession ru = doOpen();
+        RedisSession session = doOpen();
 
         T temp;
         try {
-            temp = using.apply(ru);
+            temp = using.apply(session);
         } finally {
-            ru.close();
+            session.close();
         }
 
         return temp;

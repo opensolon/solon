@@ -5,7 +5,8 @@ import org.noear.solon.extend.redisx.RedisX;
 import java.util.Properties;
 
 /**
- * @author noear 2021/10/12 created
+ * @author noear
+ * @since 1.5
  */
 public class RedisQueue {
     private final RedisX redisX;
@@ -20,5 +21,17 @@ public class RedisQueue {
 
     public RedisQueue(RedisX redisX) {
         this.redisX = redisX;
+    }
+
+    public void add(String queueName, String item) {
+        redisX.open0(session -> session.key(queueName).expire(-2).listAdd(item));
+    }
+
+    public String poll(String queueName) {
+        return redisX.open1(session -> session.key(queueName).listPop());
+    }
+
+    public String peek(String queueName) {
+        return redisX.open1(session -> session.key(queueName).listPeek());
     }
 }
