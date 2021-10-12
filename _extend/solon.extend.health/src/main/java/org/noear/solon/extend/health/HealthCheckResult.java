@@ -9,28 +9,27 @@ import java.io.Serializable;
  * @since 1.5
  */
 public class HealthCheckResult implements Serializable {
-    private String name;
-    private HealthCode code;
-    private Object data;
+    private HealthStatus status = HealthStatus.UP;
+    private Object details;
 
     /**
-     * 设置检查点名称
+     * 获取状态
      * */
-    public void setName(String name) {
-        this.name = name;
+    public HealthStatus getStatus() {
+        return status;
     }
 
     /**
-     * 设置状态码
+     * 设置状态
      * */
-    public void setCode(HealthCode code) {
-        this.code = code;
+    public void setStatus(HealthStatus status) {
+        this.status = status;
     }
 
     /**
-     * 设置结果数据
+     * 设置详情
      * */
-    public void setData(Object data) {
-        this.data = data;
+    public void setDetails(Object details) {
+        this.details = details;
     }
 }

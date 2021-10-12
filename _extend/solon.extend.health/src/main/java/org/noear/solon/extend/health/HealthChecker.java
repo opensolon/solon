@@ -2,9 +2,9 @@ package org.noear.solon.extend.health;
 
 import org.noear.solon.core.handle.Result;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
 
 /**
  * 健康检查器
@@ -14,67 +14,70 @@ import java.util.function.Supplier;
  * @date 2021/10/01 19:37
  */
 public class HealthChecker {
-    private static final Map<String, Supplier<Result>> checkPoints = new ConcurrentHashMap<>();
+    private static final Map<String, HealthIndicator> indicatorMap = new ConcurrentHashMap<>();
 
 
     /**
-     * 添加健康检查点
+     * 添加指示器
      *
-     * @param name  检查点名称
-     * @param point 检查点处理器
+     * @param name  名称
+     * @param indicator 指示器
      */
-    public static void addPoint(String name, Supplier<Result> point) {
-        checkPoints.put(name, point);
+    public static void addIndicator(String name, HealthIndicator indicator) {
+        indicatorMap.put(name, indicator);
     }
 
     /**
      * 检测
      */
-    public static HealthStatus check() {
-        HealthStatus healthStatus = new HealthStatus();
+    public static HealthCheckResult check() {
+        Map<String, HealthCheckResult> details = new LinkedHashMap<>();
+
+        HealthCheckResult healthResult = new HealthCheckResult();
+        healthResult.setDetails(details);
 
         //todo:此处可能会异常？...by noear
-        checkPoints.forEach((name, point) -> {
-            checkOne(healthStatus, name, point);
+        indicatorMap.forEach((name, indicator) -> {
+            HealthCheckResult checkResult = checkItem(healthResult, indicator);
+            details.put(name, checkResult);
         });
 
-        return healthStatus;
+        return healthResult;
     }
 
     /**
      * 检测一个检测点
      */
-    private static void checkOne(HealthStatus healthStatus, String name, Supplier<Result> point) {
+    private static HealthCheckResult checkItem(HealthCheckResult healthResult, HealthIndicator indicator) {
         HealthCheckResult checkResult = new HealthCheckResult();
-        checkResult.setName(name);
 
         try {
-            Result<?> result = point.get();
+            Result<?> result = indicator.get();
 
             //设置当前检测数据
-            checkResult.setData(result.getData());
+            checkResult.setDetails(result.getData());
 
             if (result.getCode() == Result.SUCCEED_CODE) {
                 //如果当前检测成功
-                checkResult.setCode(HealthCode.UP);
+                checkResult.setStatus(HealthStatus.UP);
             } else {
                 //如果当前检测失败，则设为下线
-                checkResult.setCode(HealthCode.DOWN);
+                checkResult.setStatus(HealthStatus.DOWN);
 
                 //如果健康状态小于下线，则置为下线
-                if (healthStatus.getCode().ordinal() < HealthCode.DOWN.ordinal()) {
-                    healthStatus.setCode(HealthCode.DOWN);
+                if (healthResult.getStatus().ordinal() < HealthStatus.DOWN.ordinal()) {
+                    healthResult.setStatus(HealthStatus.DOWN);
                 }
             }
 
         } catch (Throwable e) {
-            checkResult.setCode(HealthCode.ERROR);
-            checkResult.setData(e.getMessage());
+            checkResult.setStatus(HealthStatus.ERROR);
+            checkResult.setDetails(e.getMessage());
 
-            healthStatus.setCode(HealthCode.ERROR);
+            healthResult.setStatus(HealthStatus.ERROR);
         }
 
         //添加健康状态的详情记录
-        healthStatus.detailsAdd(checkResult);
+        return checkResult;
     }
 }

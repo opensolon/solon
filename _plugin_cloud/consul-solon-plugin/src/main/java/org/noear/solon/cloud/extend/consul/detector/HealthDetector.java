@@ -1,6 +1,5 @@
 package org.noear.solon.cloud.extend.consul.detector;
 
-import com.ecwid.consul.json.GsonFactory;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
@@ -68,7 +67,7 @@ public class HealthDetector {
         detector = new HealthDetector();
         detector.startDetect(Solon.global());
 
-        HealthChecker.addPoint("consul",()->{
+        HealthChecker.addIndicator("consul",()->{
             return Result.succeed(detector.getInfo());
         });
 

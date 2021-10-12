@@ -34,9 +34,9 @@ public class HealthHandler implements Handler {
 
     @Override
     public void handle(Context ctx) throws Throwable {
-        HealthStatus healthStatus = HealthChecker.check();
+        HealthCheckResult result = HealthChecker.check();
 
-        switch (healthStatus.getCode()) {
+        switch (result.getStatus()) {
             case DOWN:
                 ctx.status(503);
                 break;
@@ -47,6 +47,6 @@ public class HealthHandler implements Handler {
                 ctx.status(200);
         }
 
-        ctx.outputAsJson(ONode.stringify(healthStatus, options));
+        ctx.outputAsJson(ONode.stringify(result, options));
     }
 }
