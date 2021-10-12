@@ -1,5 +1,6 @@
 package demo;
 
+import demo.app.DemoApp;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.solon.annotation.Inject;
@@ -124,8 +125,8 @@ public class DemoTest {
         }).start();
 
         //这个函数，会卡死
-//        bus.addListener((topic, message) -> {
-//            System.out.println(topic + " = " + message);
-//        }, "topic:test");
+        bus.subscribe((topic, message) -> {
+            System.out.println(topic + " = " + message);
+        }, "topic:test");
     }
 }

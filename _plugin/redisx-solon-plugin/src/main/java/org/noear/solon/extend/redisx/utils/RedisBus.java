@@ -18,7 +18,10 @@ public class RedisBus {
         this.client = client;
     }
 
-    public void addListener(BiConsumer<String, String> consumer, String... topics) {
+    /**
+     * 订阅
+     * */
+    public void subscribe(BiConsumer<String, String> consumer, String... topics) {
         client.open0(session -> {
             session.subscribe(new JedisPubSub() {
                 @Override
@@ -29,6 +32,9 @@ public class RedisBus {
         });
     }
 
+    /**
+     * 发布
+     * */
     public void publish(String topic, String message) {
         client.open0(session -> {
             session.publish(topic, message);
