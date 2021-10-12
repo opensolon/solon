@@ -5,5 +5,5 @@ solon.app:
 
 test.rd1:
   server: localhost:6379
-  db: 1
   password: 123456
+  db: 1
