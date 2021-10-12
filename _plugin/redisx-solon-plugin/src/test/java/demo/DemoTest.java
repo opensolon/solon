@@ -6,6 +6,7 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.extend.redisx.RedisClient;
 import org.noear.solon.extend.redisx.utils.RedisCache;
 import org.noear.solon.extend.redisx.utils.RedisQueue;
+import org.noear.solon.extend.redisx.utils.RedisTopic;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
@@ -91,8 +92,39 @@ public class DemoTest {
         queue.add("1");
         queue.add("2");
 
-        assert "1".equals(queue.poll());
-        assert "2".equals(queue.poll());
-        assert queue.poll() == null;
+        assert "1".equals(queue.pop());
+        assert "2".equals(queue.pop());
+        assert queue.pop() == null;
+
+        queue.add("3");
+        queue.add("4");
+
+        queue.popAll(item -> {
+            System.out.println("test5_queue: " + item);
+        });
+    }
+
+    @Test
+    public void test6_topic() {
+        //::redisX 快捷功能使用
+
+        //--- topic 锁使用
+        RedisTopic topic = client.getTopic("topic:test");
+
+
+        new Thread(()->{
+            while (true){
+                try {
+                    Thread.sleep(100);
+                    topic.publish("event-" + System.currentTimeMillis());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+        topic.addListener(item -> {
+            System.out.println("test6_topic: " + item);
+        });
     }
 }

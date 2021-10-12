@@ -3,6 +3,7 @@ package org.noear.solon.extend.redisx.utils;
 import org.noear.solon.extend.redisx.RedisClient;
 import redis.clients.jedis.JedisPubSub;
 
+import java.util.Collection;
 import java.util.function.Consumer;
 
 /**
@@ -21,17 +22,27 @@ public class RedisTopic {
     }
 
     public void addListener(Consumer<String> consumer) {
-        client.openSession().subscribe(new JedisPubSub() {
-            @Override
-            public void onMessage(String channel, String message) {
-                consumer.accept(message);
-            }
-        }, topicName);
+        client.open0(session -> {
+            session.subscribe(new JedisPubSub() {
+                @Override
+                public void onMessage(String channel, String message) {
+                    consumer.accept(message);
+                }
+            }, topicName);
+        });
     }
 
     public void publish(String message) {
         client.open0(session -> {
             session.publish(topicName, message);
+        });
+    }
+
+    public void publishAll(Collection<String> messageColl) {
+        client.open0(session -> {
+            for (String message : messageColl) {
+                session.publish(topicName, message);
+            }
         });
     }
 }
