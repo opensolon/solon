@@ -18,6 +18,10 @@ public class RedisId {
         redisX = new RedisX(prop);
     }
 
+    public RedisId(Properties prop, int db) {
+        redisX = new RedisX(prop, db);
+    }
+
     public RedisId(RedisX redisX) {
         this.redisX = redisX;
     }

@@ -21,11 +21,11 @@ public class Config {
 
     @Bean
     public RedisId redisId(@Inject("${test.rd1}") Properties prop) {
-        return new RedisId(new RedisX(prop, 2));
+        return new RedisId(prop, 2);
     }
 
     @Bean
     public RedisLock redisLock(@Inject("${test.rd1}") Properties prop) {
-        return new RedisLock(new RedisX(prop, 3));
+        return new RedisLock(prop, 3);
     }
 }

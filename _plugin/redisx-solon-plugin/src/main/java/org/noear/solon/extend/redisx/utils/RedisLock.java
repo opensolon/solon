@@ -18,6 +18,10 @@ public class RedisLock {
         redisX = new RedisX(prop);
     }
 
+    public RedisLock(Properties prop, int db) {
+        redisX = new RedisX(prop, db);
+    }
+
     public RedisLock(RedisX redisX) {
         this.redisX = redisX;
     }
