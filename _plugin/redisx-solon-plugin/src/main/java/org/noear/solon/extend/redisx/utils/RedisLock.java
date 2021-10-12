@@ -6,7 +6,7 @@ import org.noear.solon.extend.redisx.RedisX;
 import java.util.Properties;
 
 /**
- * Redis 锁
+ * Redis 分布式锁
  *
  * @author noear
  * @since 1.5
