@@ -1,15 +1,15 @@
 package org.noear.solon.extend.redisx.utils;
 
-import org.noear.solon.extend.redisx.RedisX;
+import org.noear.solon.extend.redisx.RedisClient;
 
 /**
  * @author noear
  * @since 1.5
  */
 public class RedisCache {
-    private final RedisX redisX;
+    private final RedisClient redisX;
 
-    public RedisCache(RedisX redisX) {
+    public RedisCache(RedisClient redisX) {
         this.redisX = redisX;
     }
 

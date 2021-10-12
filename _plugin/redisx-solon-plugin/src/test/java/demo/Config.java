@@ -3,9 +3,7 @@ package demo;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.extend.redisx.RedisX;
-
-import java.util.Properties;
+import org.noear.solon.extend.redisx.RedisClient;
 
 /**
  * @author noear 2021/10/12 created
@@ -13,7 +11,7 @@ import java.util.Properties;
 @Controller
 public class Config {
     @Bean
-    public RedisX redisX(@Inject("${test.rd1}") RedisX redisX) {
+    public RedisClient redisX(@Inject("${test.rd1}") RedisClient redisX) {
         return redisX;
     }
 }

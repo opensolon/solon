@@ -1,6 +1,6 @@
 package org.noear.solon.extend.redisx.utils;
 
-import org.noear.solon.extend.redisx.RedisX;
+import org.noear.solon.extend.redisx.RedisClient;
 
 import java.util.function.Consumer;
 
@@ -9,10 +9,10 @@ import java.util.function.Consumer;
  * @since 1.5
  */
 public class RedisTopic {
-    private final RedisX redisX;
+    private final RedisClient redisX;
     private final String topicName;
 
-    public RedisTopic(RedisX redisX, String topicName) {
+    public RedisTopic(RedisClient redisX, String topicName) {
         this.redisX = redisX;
         this.topicName = topicName;
     }

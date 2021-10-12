@@ -1,6 +1,7 @@
 package org.noear.solon.extend.redisx;
 
 import org.noear.solon.Utils;
+import org.noear.solon.extend.redisx.utils.RedisHashMap;
 import redis.clients.jedis.*;
 import redis.clients.jedis.params.SetParams;
 

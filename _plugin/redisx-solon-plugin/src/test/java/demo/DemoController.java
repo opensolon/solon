@@ -3,7 +3,7 @@ package demo;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.extend.redisx.RedisX;
+import org.noear.solon.extend.redisx.RedisClient;
 
 /**
  * @author noear 2021/10/12 created
@@ -12,7 +12,7 @@ import org.noear.solon.extend.redisx.RedisX;
 public class DemoController {
 
     @Inject
-    RedisX redisX;
+    RedisClient redisX;
 
     @Mapping("/demo")
     public void demo() {

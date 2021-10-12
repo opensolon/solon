@@ -1,6 +1,6 @@
 package org.noear.solon.extend.redisx.utils;
 
-import org.noear.solon.extend.redisx.RedisX;
+import org.noear.solon.extend.redisx.RedisClient;
 
 /**
  * Redis 分布式锁
@@ -9,10 +9,10 @@ import org.noear.solon.extend.redisx.RedisX;
  * @since 1.5
  * */
 public class RedisLock {
-    private final RedisX redisX;
+    private final RedisClient redisX;
     private final String lockName;
 
-    public RedisLock(RedisX redisX, String lockName) {
+    public RedisLock(RedisClient redisX, String lockName) {
         this.redisX = redisX;
         this.lockName = lockName;
     }

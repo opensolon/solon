@@ -1,4 +1,4 @@
-package org.noear.solon.extend.redisx;
+package org.noear.solon.extend.redisx.utils;
 
 import java.util.Collection;
 import java.util.Map;

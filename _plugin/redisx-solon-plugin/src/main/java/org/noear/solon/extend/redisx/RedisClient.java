@@ -17,7 +17,7 @@ import java.util.function.Function;
  * @author noear
  * @since 1.5
  */
- public class RedisX {
+ public class RedisClient {
     /**
      * NX: IF_NOT_EXIST（只在键不存在时，才对键进行设置操作）
      * XX: IF_EXIST（只在键已经存在时，才对键进行设置操作）
@@ -27,7 +27,7 @@ import java.util.function.Function;
      */
     private JedisPool _jedisPool;
 
-    public RedisX(Properties prop) {
+    public RedisClient(Properties prop) {
         String db = prop.getProperty("db");
 
         if (Utils.isEmpty(db)) {
@@ -37,19 +37,19 @@ import java.util.function.Function;
         initDo(prop, Integer.parseInt(db), 0);
     }
 
-    public RedisX(Properties prop, int db) {
+    public RedisClient(Properties prop, int db) {
         initDo(prop, db, 0);
     }
 
-    public RedisX(Properties prop, int db, int maxTotaol) {
+    public RedisClient(Properties prop, int db, int maxTotaol) {
         initDo(prop, db, maxTotaol);
     }
 
-    public RedisX(String server, String user, String password, int db, int maxTotaol) {
+    public RedisClient(String server, String user, String password, int db, int maxTotaol) {
         initDo(server, user, password, db, maxTotaol, 0L);
     }
 
-    public RedisX(String server, String user, String password, int db, int maxTotaol, long maxWaitMillis) {
+    public RedisClient(String server, String user, String password, int db, int maxTotaol, long maxWaitMillis) {
         initDo(server, user, password, db, maxTotaol, maxWaitMillis);
     }
 

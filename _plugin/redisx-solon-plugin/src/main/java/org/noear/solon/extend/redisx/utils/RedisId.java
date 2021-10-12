@@ -1,6 +1,6 @@
 package org.noear.solon.extend.redisx.utils;
 
-import org.noear.solon.extend.redisx.RedisX;
+import org.noear.solon.extend.redisx.RedisClient;
 
 /**
  * Redis Id
@@ -9,10 +9,10 @@ import org.noear.solon.extend.redisx.RedisX;
  * @since 1.5
  * */
 public class RedisId {
-    private final RedisX redisX;
+    private final RedisClient redisX;
     private final String idName;
 
-    public RedisId(RedisX redisX, String idName) {
+    public RedisId(RedisClient redisX, String idName) {
         this.redisX = redisX;
         this.idName = idName;
     }
