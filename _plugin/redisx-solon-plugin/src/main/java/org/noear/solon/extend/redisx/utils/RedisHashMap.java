@@ -16,23 +16,23 @@ public class RedisHashMap implements Map<String,String> {
         _map = map;
     }
 
-    public int getInt(String key) {
-        String tmp = get(key);
+    public int getInt(String field) {
+        String tmp = get(field);
         return tmp == null ? 0 : Integer.parseInt(tmp);
     }
 
-    public long getLong(String key) {
-        String tmp = get(key);
+    public long getLong(String field) {
+        String tmp = get(field);
         return tmp == null ? 0L : Long.parseLong(tmp);
     }
 
-    public float getFloat(String key) {
-        String tmp = get(key);
+    public float getFloat(String field) {
+        String tmp = get(field);
         return tmp == null ? 0 : Float.parseFloat(tmp);
     }
 
-    public double getDouble(String key) {
-        String tmp = get(key);
+    public double getDouble(String field) {
+        String tmp = get(field);
         return tmp == null ? 0 : Double.parseDouble(tmp);
     }
 
@@ -47,8 +47,8 @@ public class RedisHashMap implements Map<String,String> {
     }
 
     @Override
-    public boolean containsKey(Object key) {
-        return _map.containsKey(key);
+    public boolean containsKey(Object field) {
+        return _map.containsKey(field);
     }
 
     @Override
@@ -57,18 +57,18 @@ public class RedisHashMap implements Map<String,String> {
     }
 
     @Override
-    public String get(Object key) {
-        return _map.get(key);
+    public String get(Object field) {
+        return _map.get(field);
     }
 
     @Override
-    public String put(String key, String value) {
-        return _map.put(key,value);
+    public String put(String field, String value) {
+        return _map.put(field,value);
     }
 
     @Override
-    public String remove(Object key) {
-        return _map.remove(key);
+    public String remove(Object field) {
+        return _map.remove(field);
     }
 
     @Override
