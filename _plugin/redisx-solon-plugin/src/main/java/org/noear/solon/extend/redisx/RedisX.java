@@ -1,8 +1,10 @@
 package org.noear.solon.extend.redisx;
 
 import org.noear.solon.Utils;
+import org.noear.solon.extend.redisx.utils.RedisId;
 import org.noear.solon.extend.redisx.utils.RedisLock;
 import org.noear.solon.extend.redisx.utils.RedisQueue;
+import org.noear.solon.extend.redisx.utils.RedisTopic;
 import redis.clients.jedis.*;
 
 import java.util.*;
@@ -138,5 +140,22 @@ import java.util.function.Function;
         }
 
         return temp;
+    }
+
+    ////////////////////
+    public RedisLock getLock(String lockName){
+        return new RedisLock(this, lockName);
+    }
+
+    public RedisQueue getQueue(String queueName){
+        return new RedisQueue(this, queueName);
+    }
+
+    public RedisId getId(String idName){
+        return new RedisId(this, idName);
+    }
+
+    public RedisTopic getTopic(String topicName){
+        return new RedisTopic(this, topicName);
     }
 }

@@ -1,9 +1,6 @@
 package org.noear.solon.extend.redisx.utils;
 
-
 import org.noear.solon.extend.redisx.RedisX;
-
-import java.util.Properties;
 
 /**
  * Redis Id
@@ -13,38 +10,27 @@ import java.util.Properties;
  * */
 public class RedisId {
     private final RedisX redisX;
+    private final String idName;
 
-    public RedisId(Properties prop) {
-        redisX = new RedisX(prop);
-    }
-
-    public RedisId(Properties prop, int db) {
-        redisX = new RedisX(prop, db);
-    }
-
-    public RedisId(RedisX redisX) {
+    public RedisId(RedisX redisX, String idName) {
         this.redisX = redisX;
+        this.idName = idName;
     }
 
     /**
-     * 生成一个新Id
-     *
-     * @param group 分组
-     * @param key   关键字
+     * 生成
      */
-    public long newID(String group, String key) {
+    public long generate() {
         //有效时间10年
-        return newID(group, key, 60 * 60 * 24 * 365 * 10);
+        return generate(60 * 60 * 24 * 365 * 10);
     }
 
     /**
-     * 生成一个新Id
+     * 生成
      *
-     * @param group     分组
-     * @param key       关键字
      * @param inSeconds 有效秒数
      */
-    public long newID(String group, String key, int inSeconds) {
-        return redisX.open1((session) -> session.key(group).expire(inSeconds).hashIncr(key, 1l));
+    public long generate(int inSeconds) {
+        return redisX.open1((session) -> session.key(idName).expire(inSeconds).incr(1l));
     }
 }

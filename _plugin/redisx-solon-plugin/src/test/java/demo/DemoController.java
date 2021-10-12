@@ -1,12 +1,9 @@
 package demo;
 
-import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.extend.redisx.RedisX;
-import org.noear.solon.extend.redisx.utils.RedisId;
-import org.noear.solon.extend.redisx.utils.RedisLock;
 
 /**
  * @author noear 2021/10/12 created
@@ -17,15 +14,10 @@ public class DemoController {
     @Inject
     RedisX redisX;
 
-    @Inject
-    RedisId redisId;
-
-    @Inject
-    RedisLock redisLock;
-
     @Mapping("/demo")
     public void demo() {
-        //--- redisX 使用
+        //::redisX 基础接口使用
+
         redisX.open0(session -> {
             session.key("item:1").expire(10).valSet("noear");
         });
@@ -39,13 +31,18 @@ public class DemoController {
                     .hashSet("name", "noear")
                     .hashSet("sex", "1");
         });
+    }
+
+    @Mapping("/demo2")
+    public void demo2() {
+        //::redisX 快捷功能使用
 
         //--- id 使用
-        long user_id = 10000 + redisId.newID(Solon.cfg().appName(), "user:id");
-        long order_id = 1000000 + redisId.newID(Solon.cfg().appName(), "order:id");
+        long user_id = 10000 + redisX.getId("id:user").generate();
+        long order_id = 1000000 + redisX.getId("id:order").generate();
 
         //--- lock 锁使用
-        if (redisLock.tryLock(Solon.cfg().appName(), "user:121212")) {
+        if (redisX.getLock("user:121212").tryLock()) {
             //业务处理
         } else {
             //提示：请不要频繁提交
