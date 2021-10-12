@@ -8,12 +8,12 @@ import org.noear.solon.core.handle.MethodType;
 @Mapping("/demo2/method")
 @Controller
 public class MethodController {
-    @Mapping(path = "post", method = {MethodType.POST})
+    @Mapping(path = "post", method = MethodType.POST)
     public String test_post(Context context) {
         return context.param("name");
     }
 
-    @Mapping(path = "put", method = {MethodType.PUT})
+    @Mapping(path = "put", method =MethodType.PUT)
     public String test_put(Context context, String name) {
         return context.param("name");
     }
