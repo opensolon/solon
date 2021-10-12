@@ -1,17 +1,17 @@
 package demo;
 
 import org.noear.solon.annotation.Bean;
-import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.extend.redisx.RedisClient;
 
 /**
  * @author noear 2021/10/12 created
  */
-@Controller
+@Configuration
 public class Config {
     @Bean
-    public RedisClient redis(@Inject("${test.rd1}") RedisClient client) {
+    public RedisClient redisClient(@Inject("${test.rd1}") RedisClient client) {
         return client;
     }
 }

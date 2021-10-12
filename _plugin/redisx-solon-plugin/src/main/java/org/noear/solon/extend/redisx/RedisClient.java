@@ -1,10 +1,7 @@
 package org.noear.solon.extend.redisx;
 
 import org.noear.solon.Utils;
-import org.noear.solon.extend.redisx.utils.RedisId;
-import org.noear.solon.extend.redisx.utils.RedisLock;
-import org.noear.solon.extend.redisx.utils.RedisQueue;
-import org.noear.solon.extend.redisx.utils.RedisTopic;
+import org.noear.solon.extend.redisx.utils.*;
 import redis.clients.jedis.*;
 
 import java.util.*;
@@ -138,6 +135,10 @@ import java.util.function.Function;
     }
 
     ////////////////////
+
+    public RedisCache getCache(){
+        return new RedisCache(this);
+    }
 
     /**
      * 获取一个锁

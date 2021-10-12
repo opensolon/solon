@@ -4,6 +4,6 @@ solon.app:
   name: demoapi
 
 test.rd1:
-  server: redis.water.io:6379
+  server: localhost:6379
   db: 1
-  password: L8vcQgep
+  password: 123456
