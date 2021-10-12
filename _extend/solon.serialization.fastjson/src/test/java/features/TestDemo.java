@@ -1,8 +1,9 @@
 package features;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.snack.ONode;
 import org.noear.solon.test.HttpTestBase;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
@@ -17,10 +18,11 @@ public class TestDemo extends HttpTestBase {
     @Test
     public void test0() throws Exception{
         String json = path("/").get();
-        ONode oNode = ONode.loadStr(json);
 
-        assert  oNode.get("time1").getString().length() == 16;
-        assert  oNode.get("time2").getString().length() == 10;
-        assert  oNode.get("time3").getLong() > 1000000000;
+        JSONObject oNode = JSON.parseObject(json);
+
+        assert  oNode.getString("time1").length() == 16;
+        assert  oNode.getString("time2").length() == 10;
+        assert  oNode.getLong("time3") > 1000000000;
     }
 }

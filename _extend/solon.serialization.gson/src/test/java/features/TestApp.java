@@ -1,5 +1,6 @@
 package features;
 
+import org.noear.solon.Solon;
 import org.noear.solon.SolonBuilder;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
@@ -21,14 +22,9 @@ import java.util.Map;
 @Controller
 public class TestApp {
     public static void main(String[] args) {
-        new SolonBuilder()
-                .onPluginLoadEnd((e) -> {
-                    //换成特定的渲染器
-                    RenderManager.mapping("@json", GsonRenderFactory.global.create());
-                })
-                .start(TestApp.class, args, app -> {
-                    initMvcJsonCustom();
-                });
+        Solon.start(TestApp.class, args, app->{
+            initMvcJsonCustom();
+        });
     }
 
     /**

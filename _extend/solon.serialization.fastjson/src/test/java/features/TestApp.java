@@ -1,9 +1,8 @@
 package features;
 
-import org.noear.solon.SolonBuilder;
+import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.core.handle.RenderManager;
 import org.noear.solon.serialization.JsonLongConverter;
 import org.noear.solon.serialization.JsonStringConverter;
 import org.noear.solon.serialization.fastjson.FastjsonRenderFactory;
@@ -21,14 +20,9 @@ import java.util.Map;
 @Controller
 public class TestApp {
     public static void main(String[] args) {
-        new SolonBuilder()
-                .onPluginLoadEnd((e) -> {
-                    //换成特定的渲染器
-                    RenderManager.mapping("@json", FastjsonRenderFactory.global.create());
-                })
-                .start(TestApp.class, args, app -> {
-                    initMvcJsonCustom();
-                });
+        Solon.start(TestApp.class, args, app->{
+            initMvcJsonCustom();
+        });
     }
 
     /**

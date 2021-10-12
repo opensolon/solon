@@ -1,11 +1,13 @@
 package features;
 
+import com.google.gson.Gson;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.snack.ONode;
 import org.noear.solon.test.HttpTestBase;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
+
+import java.util.Map;
 
 
 /**
@@ -17,10 +19,11 @@ public class TestDemo extends HttpTestBase {
     @Test
     public void test0() throws Exception{
         String json = path("/").get();
-        ONode oNode = ONode.loadStr(json);
 
-        assert  oNode.get("time1").getString().length() == 16;
-        assert  oNode.get("time2").getString().length() == 10;
-        assert  oNode.get("time3").getLong() > 1000000000;
+        Map oNode = new Gson().fromJson(json, Map.class);
+
+        assert  ((String)oNode.get("time1")).length() == 16;
+        assert  ((String)oNode.get("time2")).length() == 10;
+        assert  ((Number)oNode.get("time3")).longValue() > 1000000000;
     }
 }
