@@ -107,21 +107,15 @@ import java.util.function.Function;
         jedisPool = new JedisPool(config, ss[0], Integer.parseInt(ss[1]), 3000, password, db);
     }
 
-    private RedisSession doOpen() {
-        Jedis jx = jedisPool.getResource();
-        return new RedisSession(jx);
-    }
 
     /**
      * 打开会话，不返回值
      * */
     public void open0(Consumer<RedisSession> using) {
-        RedisSession session = doOpen();
-
-        try {
+        try (RedisSession session = openSession()) {
             using.accept(session);
-        } finally {
-            session.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -129,16 +123,18 @@ import java.util.function.Function;
      * 打开会话，要返回值
      * */
     public <T> T open1(Function<RedisSession, T> using) {
-        RedisSession session = doOpen();
-
-        T temp;
-        try {
-            temp = using.apply(session);
-        } finally {
-            session.close();
+        try (RedisSession session = openSession()) {
+            return using.apply(session);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+    }
 
-        return temp;
+    ////////////////////
+
+    public RedisSession openSession() {
+        Jedis jx = jedisPool.getResource();
+        return new RedisSession(jx);
     }
 
     ////////////////////

@@ -1,4 +1,4 @@
-package org.noear.solon.extend.redisx.utils;
+package org.noear.solon.extend.redisx;
 
 import java.util.Collection;
 import java.util.Map;
@@ -10,9 +10,9 @@ import java.util.Set;
  * @author noear
  * @since 1.5
  * */
-public class RedisHashMap implements Map<String,String> {
+public class RedisHashAll implements Map<String,String> {
     private Map<String,String> _map;
-    public RedisHashMap(Map<String,String> map){
+    public RedisHashAll(Map<String,String> map){
         _map = map;
     }
 

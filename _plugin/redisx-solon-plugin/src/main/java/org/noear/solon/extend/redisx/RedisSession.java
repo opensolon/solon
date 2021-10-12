@@ -1,7 +1,6 @@
 package org.noear.solon.extend.redisx;
 
 import org.noear.solon.Utils;
-import org.noear.solon.extend.redisx.utils.RedisHashMap;
 import redis.clients.jedis.*;
 import redis.clients.jedis.params.SetParams;
 
@@ -16,7 +15,7 @@ import java.util.Set;
  * @author noear
  * @since 1.5
  */
-public class RedisSession {
+public class RedisSession implements AutoCloseable{
     private static final String SET_SUCCEED = "OK";
 
 
@@ -71,7 +70,8 @@ public class RedisSession {
 
     private boolean _close = false;
 
-    public void close() {
+    @Override
+    public void close() throws Exception {
         if (_close) {
             return;
         }
@@ -267,8 +267,8 @@ public class RedisSession {
             return Long.parseLong(temp);
     }
 
-    public RedisHashMap hashGetAll() {
-        return new RedisHashMap(client.hgetAll(_key));
+    public RedisHashAll hashGetAll() {
+        return new RedisHashAll(client.hgetAll(_key));
     }
 
     public long hashLen() {
