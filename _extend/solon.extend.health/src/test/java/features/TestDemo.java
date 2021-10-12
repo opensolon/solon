@@ -3,8 +3,8 @@ package features;
 import okhttp3.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.noear.solon.extend.health.HealthChecker;
 import org.noear.solon.core.handle.Result;
+import org.noear.solon.extend.health.HealthChecker;
 import org.noear.solon.test.HttpTestBase;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
@@ -16,8 +16,8 @@ import java.util.Map;
  * @author noear 2021/10/5 created
  */
 @RunWith(SolonJUnit4ClassRunner.class)
-@SolonTest(DemoApp.class)
-public class DemoTest extends HttpTestBase {
+@SolonTest(TestApp.class)
+public class TestDemo extends HttpTestBase {
     @Test
     public void test1() throws Exception {
         Response resp = path("/healthz").exec("GET");
