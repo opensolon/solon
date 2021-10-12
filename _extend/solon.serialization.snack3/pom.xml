@@ -26,6 +26,18 @@
             <groupId>org.noear</groupId>
             <artifactId>snack3</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>
