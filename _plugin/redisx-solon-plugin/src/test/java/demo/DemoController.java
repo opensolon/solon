@@ -34,7 +34,6 @@ public class DemoController {
             return session.key("item_1").expire(10).val();
         });
 
-
         redisX.open0(session -> {
             session.key("user_1").expire(10)
                     .hashSet("name", "noear")
@@ -49,7 +48,7 @@ public class DemoController {
         if (redisLock.tryLock(Solon.cfg().appName(), "user_121212")) {
             //业务处理
         } else {
-            //请不要频繁提交
+            //提示：请不要频繁提交
         }
     }
 }
