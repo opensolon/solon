@@ -164,7 +164,7 @@ import java.util.function.Function;
     /**
      * 获取一个主题
      * */
-    public RedisTopic getTopic(String topicName){
-        return new RedisTopic(this, topicName);
+    public RedisBus getBus(){
+        return new RedisBus(this);
     }
 }

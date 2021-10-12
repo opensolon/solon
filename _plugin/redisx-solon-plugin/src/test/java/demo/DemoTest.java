@@ -6,7 +6,7 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.extend.redisx.RedisClient;
 import org.noear.solon.extend.redisx.utils.RedisCache;
 import org.noear.solon.extend.redisx.utils.RedisQueue;
-import org.noear.solon.extend.redisx.utils.RedisTopic;
+import org.noear.solon.extend.redisx.utils.RedisBus;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
@@ -109,22 +109,23 @@ public class DemoTest {
         //::redisX 快捷功能使用
 
         //--- topic 锁使用
-        RedisTopic topic = client.getTopic("topic:test");
+        RedisBus bus = client.getBus();
 
 
-        new Thread(()->{
-            while (true){
+        new Thread(() -> {
+            while (true) {
                 try {
                     Thread.sleep(100);
-                    topic.publish("event-" + System.currentTimeMillis());
-                }catch (Exception e){
+                    bus.publish("topic:test", "event-" + System.currentTimeMillis());
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }).start();
 
-        topic.addListener(item -> {
-            System.out.println("test6_topic: " + item);
-        });
+        //这个函数，会卡死
+//        bus.addListener((topic, message) -> {
+//            System.out.println(topic + " = " + message);
+//        }, "topic:test");
     }
 }
