@@ -32,9 +32,9 @@ public class Config {
     @Bean
     public void initHealthCheckPoint() {
         //test...
-        HealthChecker.addPoint("preflight", Result::succeed);
-        HealthChecker.addPoint("test", Result::failure);
-        HealthChecker.addPoint("boom", () -> {
+        HealthChecker.addIndicator("preflight", Result::succeed);
+        HealthChecker.addIndicator("test", Result::failure);
+        HealthChecker.addIndicator("boom", () -> {
             throw new IllegalStateException();
         });
     }
@@ -48,5 +48,5 @@ Response Code:
 503 : At least one procedure has reported a non-healthy state
 500 : One procedure has thrown an error or has not reported a status in time
 Response:
-{"code":"ERROR","details":[{"name":"test","code":"UP"},{"name":"boom","code":"DOWN"},{"name":"preflight","code":"ERROR"}]}
+{"status":"ERROR","details":{"test":{"status":"DOWN"},"boom":{"status":"ERROR"},"preflight":{"status":"UP","details":{"total":987656789,"free":6783,"threshold":7989031}}}}
 ```
