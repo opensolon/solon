@@ -124,7 +124,7 @@ public class DemoTest {
             }
         }).start();
 
-        //这个函数，会卡死
+        //这个函数，会卡死（如果没有订阅者，消息会白发）
         bus.subscribe((topic, message) -> {
             System.out.println(topic + " = " + message);
         }, "topic:test");
