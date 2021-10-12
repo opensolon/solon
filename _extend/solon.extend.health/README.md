@@ -27,15 +27,16 @@ Author noear，iYarnFog
 ## 🔨 示例
 
 ```java
-import org.noear.solon.extend.health.HealthChecker;
-
-import org.noear.solon.core.handle.Result;
-
-public class Test {
-    public Test() {
+@Configuration
+public class Config {
+    @Bean
+    public void initHealthCheckPoint() {
+        //test...
         HealthChecker.addPoint("preflight", Result::succeed);
         HealthChecker.addPoint("test", Result::failure);
-        HealthChecker.addPoint("boom", () -> { throw new IllegalStateException(); });
+        HealthChecker.addPoint("boom", () -> {
+            throw new IllegalStateException();
+        });
     }
 }
 ```
@@ -47,5 +48,5 @@ Response Code:
 503 : At least one procedure has reported a non-healthy state
 500 : One procedure has thrown an error or has not reported a status in time
 Response:
-{"checks":[{"name":"test","status":1},{"name":"boom","status":2},{"name":"preflight","status":0}],"outcome":2}
+{"code":"ERROR","details":[{"name":"test","code":"UP"},{"name":"boom","code":"DOWN"},{"name":"preflight","code":"ERROR"}]}
 ```
