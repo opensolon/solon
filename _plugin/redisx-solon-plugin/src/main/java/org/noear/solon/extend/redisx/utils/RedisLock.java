@@ -9,11 +9,11 @@ import org.noear.solon.extend.redisx.RedisClient;
  * @since 1.5
  * */
 public class RedisLock {
-    private final RedisClient redisX;
+    private final RedisClient client;
     private final String lockName;
 
-    public RedisLock(RedisClient redisX, String lockName) {
-        this.redisX = redisX;
+    public RedisLock(RedisClient client, String lockName) {
+        this.client = client;
         this.lockName = lockName;
     }
 
@@ -24,7 +24,7 @@ public class RedisLock {
      * @param inMaster  锁持有人
      */
     public boolean tryLock(int inSeconds, String inMaster) {
-        return redisX.open1((ru) -> ru.key(lockName).expire(inSeconds).lock(inMaster));
+        return client.open1((ru) -> ru.key(lockName).expire(inSeconds).lock(inMaster));
     }
 
     /**
@@ -47,14 +47,14 @@ public class RedisLock {
      * 检查是否已被锁定
      */
     public boolean isLocked() {
-        return redisX.open1((ru) -> ru.key(lockName).exists());
+        return client.open1((ru) -> ru.key(lockName).exists());
     }
 
     /**
      * 获取锁的值
      */
     public String getValue() {
-        return redisX.open1((ru) -> ru.key(lockName).val());
+        return client.open1((ru) -> ru.key(lockName).val());
     }
 
 
@@ -62,7 +62,7 @@ public class RedisLock {
      * 解锁
      */
     public void unLock(String inMaster) {
-        redisX.open0((ru) -> {
+        client.open0((ru) -> {
             if (inMaster == null || inMaster.equals(ru.key(lockName).val())) {
                 ru.key(lockName).delete();
             }

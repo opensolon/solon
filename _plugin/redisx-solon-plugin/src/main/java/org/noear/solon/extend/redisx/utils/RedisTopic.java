@@ -9,11 +9,11 @@ import java.util.function.Consumer;
  * @since 1.5
  */
 public class RedisTopic {
-    private final RedisClient redisX;
+    private final RedisClient client;
     private final String topicName;
 
-    public RedisTopic(RedisClient redisX, String topicName) {
-        this.redisX = redisX;
+    public RedisTopic(RedisClient client, String topicName) {
+        this.client = client;
         this.topicName = topicName;
     }
 

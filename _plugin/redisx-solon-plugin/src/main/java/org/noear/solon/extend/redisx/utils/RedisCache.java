@@ -7,22 +7,22 @@ import org.noear.solon.extend.redisx.RedisClient;
  * @since 1.5
  */
 public class RedisCache {
-    private final RedisClient redisX;
+    private final RedisClient client;
 
-    public RedisCache(RedisClient redisX) {
-        this.redisX = redisX;
+    public RedisCache(RedisClient client) {
+        this.client = client;
     }
 
 
     public void store(String key, String val, int seconds) {
-        redisX.open0(session -> session.key(key).expire(seconds).valSet(val));
+        client.open0(session -> session.key(key).expire(seconds).valSet(val));
     }
 
     public String get(String key) {
-        return redisX.open1(session -> session.key(key).val());
+        return client.open1(session -> session.key(key).val());
     }
 
     public void remove(String key) {
-        redisX.open0(session -> session.key(key).delete());
+        client.open0(session -> session.key(key).delete());
     }
 }

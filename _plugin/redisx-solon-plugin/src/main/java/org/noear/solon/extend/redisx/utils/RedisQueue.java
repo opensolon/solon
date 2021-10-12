@@ -7,23 +7,23 @@ import org.noear.solon.extend.redisx.RedisClient;
  * @since 1.5
  */
 public class RedisQueue {
-    private final RedisClient redisX;
+    private final RedisClient client;
     private final String queueName;
 
-    public RedisQueue(RedisClient redisX, String queueName) {
-        this.redisX = redisX;
+    public RedisQueue(RedisClient client, String queueName) {
+        this.client = client;
         this.queueName = queueName;
     }
 
     public void add(String item) {
-        redisX.open0(session -> session.key(queueName).expire(-2).listAdd(item));
+        client.open0(session -> session.key(queueName).expire(-2).listAdd(item));
     }
 
     public String poll() {
-        return redisX.open1(session -> session.key(queueName).listPop());
+        return client.open1(session -> session.key(queueName).listPop());
     }
 
     public String peek() {
-        return redisX.open1(session -> session.key(queueName).listPeek());
+        return client.open1(session -> session.key(queueName).listPeek());
     }
 }

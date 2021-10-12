@@ -9,11 +9,11 @@ import org.noear.solon.extend.redisx.RedisClient;
  * @since 1.5
  * */
 public class RedisId {
-    private final RedisClient redisX;
+    private final RedisClient client;
     private final String idName;
 
-    public RedisId(RedisClient redisX, String idName) {
-        this.redisX = redisX;
+    public RedisId(RedisClient client, String idName) {
+        this.client = client;
         this.idName = idName;
     }
 
@@ -31,6 +31,6 @@ public class RedisId {
      * @param inSeconds 有效秒数
      */
     public long generate(int inSeconds) {
-        return redisX.open1((session) -> session.key(idName).expire(inSeconds).incr(1l));
+        return client.open1((session) -> session.key(idName).expire(inSeconds).incr(1l));
     }
 }

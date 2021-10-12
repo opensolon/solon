@@ -12,20 +12,13 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * Redis 会话管理类
+ * Redis 客户端
  *
  * @author noear
  * @since 1.5
  */
  public class RedisClient {
-    /**
-     * NX: IF_NOT_EXIST（只在键不存在时，才对键进行设置操作）
-     * XX: IF_EXIST（只在键已经存在时，才对键进行设置操作）
-     * <p>
-     * EX: SET_WITH_EXPIRE_TIME for second
-     * PX: SET_WITH_EXPIRE_TIME for millisecond
-     */
-    private JedisPool _jedisPool;
+    private JedisPool jedisPool;
 
     public RedisClient(Properties prop) {
         String db = prop.getProperty("db");
@@ -111,14 +104,17 @@ import java.util.function.Function;
             password = null;
         }
 
-        _jedisPool = new JedisPool(config, ss[0], Integer.parseInt(ss[1]), 3000, password, db);
+        jedisPool = new JedisPool(config, ss[0], Integer.parseInt(ss[1]), 3000, password, db);
     }
 
     private RedisSession doOpen() {
-        Jedis jx = _jedisPool.getResource();
+        Jedis jx = jedisPool.getResource();
         return new RedisSession(jx);
     }
 
+    /**
+     * 打开会话，不返回值
+     * */
     public void open0(Consumer<RedisSession> using) {
         RedisSession session = doOpen();
 
@@ -129,6 +125,9 @@ import java.util.function.Function;
         }
     }
 
+    /**
+     * 打开会话，要返回值
+     * */
     public <T> T open1(Function<RedisSession, T> using) {
         RedisSession session = doOpen();
 
@@ -143,18 +142,31 @@ import java.util.function.Function;
     }
 
     ////////////////////
+
+    /**
+     * 获取一个锁
+     * */
     public RedisLock getLock(String lockName){
         return new RedisLock(this, lockName);
     }
 
+    /**
+     * 获取一个队列
+     * */
     public RedisQueue getQueue(String queueName){
         return new RedisQueue(this, queueName);
     }
 
+    /**
+     * 获取一个Id生成器
+     * */
     public RedisId getId(String idName){
         return new RedisId(this, idName);
     }
 
+    /**
+     * 获取一个主题
+     * */
     public RedisTopic getTopic(String topicName){
         return new RedisTopic(this, topicName);
     }

@@ -11,7 +11,7 @@ import org.noear.solon.extend.redisx.RedisClient;
 @Controller
 public class Config {
     @Bean
-    public RedisClient redisX(@Inject("${test.rd1}") RedisClient redisX) {
-        return redisX;
+    public RedisClient redis(@Inject("${test.rd1}") RedisClient client) {
+        return client;
     }
 }
