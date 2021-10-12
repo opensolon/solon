@@ -3,6 +3,8 @@ package org.noear.solon.extend.redisx.utils;
 import org.noear.solon.extend.redisx.RedisClient;
 
 /**
+ * Redis 队列
+ *
  * @author noear
  * @since 1.5
  */

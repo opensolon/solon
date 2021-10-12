@@ -15,7 +15,7 @@ import java.util.Set;
  * @author noear
  * @since 1.5
  */
-public class RedisSession implements AutoCloseable{
+public class RedisSession implements AutoCloseable {
     private static final String SET_SUCCEED = "OK";
 
 
@@ -90,7 +90,7 @@ public class RedisSession implements AutoCloseable{
             client.expire(_key, -1L); //马上消失
         }
 
-        if(_seconds == -2L){
+        if (_seconds == -2L) {
             client.persist(_key); //永久有效
         }
     }
@@ -446,7 +446,7 @@ public class RedisSession implements AutoCloseable{
         return client.publish(channel, message);
     }
 
-    public void subscribe(JedisPubSub jedisPubSub, String... channels){
-        client.subscribe(jedisPubSub,channels);
+    public void subscribe(JedisPubSub jedisPubSub, String... channels) {
+        client.subscribe(jedisPubSub, channels);
     }
 }
