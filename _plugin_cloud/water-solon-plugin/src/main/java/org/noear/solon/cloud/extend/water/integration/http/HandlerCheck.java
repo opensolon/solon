@@ -44,12 +44,12 @@ public class HandlerCheck implements Handler {
                     }
                 });
             } else {
+                ONode n = odata.getOrNew(service);
+                n.set("service", service);
+
                 CloudLoadBalance v = CloudLoadBalanceFactory.instance.get("",service);
+
                 if (v != null) {
-                    ONode n = odata.getOrNew(service);
-
-                    n.set("service", service);
-
                     Discovery d = v.getDiscovery();
                     if (d != null) {
                         n.set("agent", d.agent());
