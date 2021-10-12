@@ -20,11 +20,16 @@ public abstract class JacksonRenderFactoryBase implements JsonRenderFactory {
 
     protected  SimpleModule module;
 
+    protected void registerModule(){
+        if(module != null){
+            config().registerModule(module);
+        }
+    }
+
 
     public <T> void addEncoder(Class<T> clz, JsonSerializer<T> encoder) {
         if (module == null) {
             module = new SimpleModule();
-            config().registerModule(module);
         }
 
         module.addSerializer(clz, encoder);

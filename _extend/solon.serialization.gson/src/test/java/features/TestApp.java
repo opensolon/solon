@@ -6,7 +6,7 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.RenderManager;
 import org.noear.solon.serialization.JsonLongConverter;
 import org.noear.solon.serialization.JsonStringConverter;
-import org.noear.solon.serialization.fastjson.FastjsonRenderFactory;
+import org.noear.solon.serialization.gson.GsonRenderFactory;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,7 +24,7 @@ public class TestApp {
         new SolonBuilder()
                 .onPluginLoadEnd((e) -> {
                     //换成特定的渲染器
-                    RenderManager.mapping("@json", FastjsonRenderFactory.global.create());
+                    RenderManager.mapping("@json", GsonRenderFactory.global.create());
                 })
                 .start(TestApp.class, args, app -> {
                     initMvcJsonCustom();
@@ -36,13 +36,13 @@ public class TestApp {
      * */
     private static void initMvcJsonCustom(){
         //通过转换器，做简单类型的定制
-        FastjsonRenderFactory.global.addConvertor(Date.class,
+        GsonRenderFactory.global.addConvertor(Date.class,
                 (JsonLongConverter<Date>) source -> source.getTime());
 
-        FastjsonRenderFactory.global.addConvertor(LocalDate.class,
+        GsonRenderFactory.global.addConvertor(LocalDate.class,
                 (JsonStringConverter<LocalDate>) source -> source.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-        FastjsonRenderFactory.global.addConvertor(LocalDateTime.class,
+        GsonRenderFactory.global.addConvertor(LocalDateTime.class,
                 (JsonStringConverter<LocalDateTime>) source -> source.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
 
     }

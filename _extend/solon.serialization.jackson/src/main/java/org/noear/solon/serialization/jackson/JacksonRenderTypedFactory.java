@@ -27,6 +27,8 @@ public class JacksonRenderTypedFactory extends JacksonRenderFactoryBase {
 
     @Override
     public Render create() {
+        registerModule();
+
         return new StringSerializerRender(true, new JacksonSerializer(config));
     }
 
