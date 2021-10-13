@@ -24,7 +24,7 @@ public class RedisLock {
      * @param inMaster  锁持有人
      */
     public boolean tryLock(int inSeconds, String inMaster) {
-        return client.open1((ru) -> ru.key(lockName).expire(inSeconds).lock(inMaster));
+        return client.openAndGet((ru) -> ru.key(lockName).expire(inSeconds).lock(inMaster));
     }
 
     /**
@@ -47,14 +47,14 @@ public class RedisLock {
      * 检查是否已被锁定
      */
     public boolean isLocked() {
-        return client.open1((ru) -> ru.key(lockName).exists());
+        return client.openAndGet((ru) -> ru.key(lockName).exists());
     }
 
     /**
      * 获取锁的值
      */
     public String getValue() {
-        return client.open1((ru) -> ru.key(lockName).get());
+        return client.openAndGet((ru) -> ru.key(lockName).get());
     }
 
 
@@ -62,7 +62,7 @@ public class RedisLock {
      * 解锁
      */
     public void unLock(String inMaster) {
-        client.open0((ru) -> {
+        client.open((ru) -> {
             if (inMaster == null || inMaster.equals(ru.key(lockName).get())) {
                 ru.key(lockName).delete();
             }

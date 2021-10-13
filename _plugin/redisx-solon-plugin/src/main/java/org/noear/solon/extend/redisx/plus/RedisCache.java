@@ -15,14 +15,14 @@ public class RedisCache {
 
 
     public void store(String key, String val, int inSeconds) {
-        client.open0(session -> session.key(key).expire(inSeconds).set(val));
+        client.open(session -> session.key(key).expire(inSeconds).set(val));
     }
 
     public String get(String key) {
-        return client.open1(session -> session.key(key).get());
+        return client.openAndGet(session -> session.key(key).get());
     }
 
     public void remove(String key) {
-        client.open0(session -> session.key(key).delete());
+        client.open(session -> session.key(key).delete());
     }
 }

@@ -18,22 +18,22 @@ public class RedisAtomic {
     }
 
     public long get(){
-        return client.open1(session -> session.key(atomicName).getAsLong());
+        return client.openAndGet(session -> session.key(atomicName).getAsLong());
     }
 
     public long increment() {
-        return client.open1(session -> session.key(atomicName).expire(-2).incr());
+        return client.openAndGet(session -> session.key(atomicName).expire(-2).incr());
     }
 
     public long incrementBy(long num) {
-        return client.open1(session -> session.key(atomicName).expire(-2).incr(num));
+        return client.openAndGet(session -> session.key(atomicName).expire(-2).incr(num));
     }
 
     public long decrement() {
-        return client.open1(session -> session.key(atomicName).expire(-2).decr());
+        return client.openAndGet(session -> session.key(atomicName).expire(-2).decr());
     }
 
     public long decrementBy(long num) {
-        return client.open1(session -> session.key(atomicName).expire(-2).incr(-num));
+        return client.openAndGet(session -> session.key(atomicName).expire(-2).incr(-num));
     }
 }

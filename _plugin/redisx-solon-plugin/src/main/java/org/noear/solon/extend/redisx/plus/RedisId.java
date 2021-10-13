@@ -31,6 +31,6 @@ public class RedisId {
      * @param inSeconds 有效秒数
      */
     public long generate(int inSeconds) {
-        return client.open1((session) -> session.key(idName).expire(inSeconds).incr(1l));
+        return client.openAndGet((session) -> session.key(idName).expire(inSeconds).incr(1l));
     }
 }

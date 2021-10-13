@@ -104,11 +104,22 @@ import java.util.function.Function;
         jedisPool = new JedisPool(config, ss[0], Integer.parseInt(ss[1]), 3000, password, db);
     }
 
+    //兼容旧的faas
+    @Deprecated
+    public void open0(Consumer<RedisSession> using) {
+        open(using);
+    }
+
+    @Deprecated
+    public <T> T open1(Function<RedisSession, T> using) {
+        return openAndGet(using);
+    }
+
 
     /**
      * 打开会话，不返回值
      * */
-    public void open0(Consumer<RedisSession> using) {
+    public void open(Consumer<RedisSession> using) {
         try (RedisSession session = openSession()) {
             using.accept(session);
         } catch (Exception e) {
@@ -119,7 +130,7 @@ import java.util.function.Function;
     /**
      * 打开会话，要返回值
      * */
-    public <T> T open1(Function<RedisSession, T> using) {
+    public <T> T openAndGet(Function<RedisSession, T> using) {
         try (RedisSession session = openSession()) {
             return using.apply(session);
         } catch (Exception e) {
@@ -129,13 +140,16 @@ import java.util.function.Function;
 
     ////////////////////
 
-    public RedisSession openSession() {
+    protected RedisSession openSession() {
         Jedis jx = jedisPool.getResource();
         return new RedisSession(jx);
     }
 
     ////////////////////
 
+    /**
+     * 获取一个原子数
+     * */
     public RedisAtomic getAtomic(String atomicName){
         return new RedisAtomic(this, atomicName);
     }

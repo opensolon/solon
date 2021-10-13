@@ -22,7 +22,7 @@ public class RedisBus {
      * 订阅
      * */
     public void subscribe(BiConsumer<String, String> consumer, String... topics) {
-        client.open0(session -> {
+        client.open(session -> {
             session.subscribe(new JedisPubSub() {
                 @Override
                 public void onMessage(String channel, String message) {
@@ -36,7 +36,7 @@ public class RedisBus {
      * 发布
      * */
     public void publish(String topic, String message) {
-        client.open0(session -> {
+        client.open(session -> {
             session.publish(topic, message);
         });
     }

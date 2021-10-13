@@ -23,17 +23,17 @@ public class DemoTest {
     public void test1() {
         //::redisX 基础接口使用
 
-        client.open0(session -> {
+        client.open(session -> {
             session.key("order:1").expire(10).set("hello");
         });
 
-        String item_1 = client.open1(session -> {
+        String item_1 = client.openAndGet(session -> {
             return session.key("order:1").get();
         });
 
         assert item_1 != null;
 
-        client.open0(session -> {
+        client.open(session -> {
             session.key("user:1").expire(10)
                     .hashSet("name", "noear")
                     .hashSet("sex", "1");
