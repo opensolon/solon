@@ -234,8 +234,6 @@
 
         <module>../../_plugin/quartz-solon-plugin</module>
 
-        <module>../../_plugin/redisx-solon-plugin</module>
-
         <module>../../_plugin/shiro-solon-plugin</module>
         <module>../../_plugin/sureness-solon-plugin</module>
         <module>../../_plugin/sa-token-solon-plugin</module>
