@@ -51,7 +51,7 @@ public class RedisSession implements AutoCloseable {
     }
 
     /**
-     * 设置失效时间
+     * 设置超时（一般跟在 key 后面）
      *
      * @param seconds 秒数
      * */

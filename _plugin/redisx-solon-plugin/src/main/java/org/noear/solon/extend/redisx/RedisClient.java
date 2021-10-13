@@ -1,7 +1,7 @@
 package org.noear.solon.extend.redisx;
 
 import org.noear.solon.Utils;
-import org.noear.solon.extend.redisx.utils.*;
+import org.noear.solon.extend.redisx.plus.*;
 import redis.clients.jedis.*;
 
 import java.util.*;

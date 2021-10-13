@@ -1,4 +1,4 @@
-package org.noear.solon.extend.redisx.utils;
+package org.noear.solon.extend.redisx.plus;
 
 import org.noear.solon.extend.redisx.RedisClient;
 

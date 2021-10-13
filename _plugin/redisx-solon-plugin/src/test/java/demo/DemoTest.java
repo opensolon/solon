@@ -4,9 +4,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.extend.redisx.RedisClient;
-import org.noear.solon.extend.redisx.utils.RedisCache;
-import org.noear.solon.extend.redisx.utils.RedisQueue;
-import org.noear.solon.extend.redisx.utils.RedisBus;
+import org.noear.solon.extend.redisx.plus.RedisCache;
+import org.noear.solon.extend.redisx.plus.RedisQueue;
+import org.noear.solon.extend.redisx.plus.RedisBus;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 
