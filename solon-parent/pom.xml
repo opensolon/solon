@@ -26,7 +26,8 @@
         <luffy.ver>1.1.9</luffy.ver>
 
         <fastjson.ver>1.2.75</fastjson.ver>
-        <jedis.ver>3.6.1</jedis.ver>
+        <jedis.ver>3.6.3</jedis.ver>
+        <redisx.ver>1.0</redisx.ver>
         <okhttp.ver>3.14.9</okhttp.ver>
         <hutool.ver>5.5.6</hutool.ver>
 
@@ -546,6 +547,12 @@
                 <groupId>org.noear</groupId>
                 <artifactId>snack3</artifactId>
                 <version>${snack3.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>redisx</artifactId>
+                <version>${redisx.ver}</version>
             </dependency>
 
             <dependency>
