@@ -128,7 +128,7 @@ import java.util.function.Function;
     }
 
     /**
-     * 打开会话，要返回值
+     * 打开会话，并要一个值
      * */
     public <T> T openAndGet(Function<RedisSession, T> using) {
         try (RedisSession session = openSession()) {
@@ -140,7 +140,10 @@ import java.util.function.Function;
 
     ////////////////////
 
-    protected RedisSession openSession() {
+    /**
+     * 打开会话（需要自己关闭）
+     * */
+    public RedisSession openSession() {
         Jedis jx = jedisPool.getResource();
         return new RedisSession(jx);
     }
