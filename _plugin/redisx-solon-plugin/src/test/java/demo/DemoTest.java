@@ -1,6 +1,5 @@
 package demo;
 
-import demo.app.DemoApp;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.noear.solon.annotation.Inject;
@@ -25,11 +24,11 @@ public class DemoTest {
         //::redisX 基础接口使用
 
         client.open0(session -> {
-            session.key("order:1").expire(10).valSet("hello");
+            session.key("order:1").expire(10).set("hello");
         });
 
         String item_1 = client.open1(session -> {
-            return session.key("order:1").val();
+            return session.key("order:1").get();
         });
 
         assert item_1 != null;

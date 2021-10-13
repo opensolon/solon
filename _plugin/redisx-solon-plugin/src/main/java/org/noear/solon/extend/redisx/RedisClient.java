@@ -136,6 +136,21 @@ import java.util.function.Function;
 
     ////////////////////
 
+    public RedisAtomic getAtomic(String atomicName){
+        return new RedisAtomic(this, atomicName);
+    }
+
+
+    /**
+     * 获取一个总线
+     * */
+    public RedisBus getBus(){
+        return new RedisBus(this);
+    }
+
+    /**
+     * 获取一个缓存
+     * */
     public RedisCache getCache(){
         return new RedisCache(this);
     }
@@ -161,10 +176,4 @@ import java.util.function.Function;
         return new RedisId(this, idName);
     }
 
-    /**
-     * 获取一个主题
-     * */
-    public RedisBus getBus(){
-        return new RedisBus(this);
-    }
 }

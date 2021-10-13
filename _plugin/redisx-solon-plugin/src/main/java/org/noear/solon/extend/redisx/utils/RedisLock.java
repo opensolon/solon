@@ -54,7 +54,7 @@ public class RedisLock {
      * 获取锁的值
      */
     public String getValue() {
-        return client.open1((ru) -> ru.key(lockName).val());
+        return client.open1((ru) -> ru.key(lockName).get());
     }
 
 
@@ -63,7 +63,7 @@ public class RedisLock {
      */
     public void unLock(String inMaster) {
         client.open0((ru) -> {
-            if (inMaster == null || inMaster.equals(ru.key(lockName).val())) {
+            if (inMaster == null || inMaster.equals(ru.key(lockName).get())) {
                 ru.key(lockName).delete();
             }
         });

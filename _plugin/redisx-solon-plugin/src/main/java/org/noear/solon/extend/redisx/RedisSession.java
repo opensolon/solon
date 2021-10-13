@@ -16,31 +16,78 @@ import java.util.Set;
  * @since 1.5
  */
 public class RedisSession implements AutoCloseable {
-    private static final String SET_SUCCEED = "OK";
+    private static final String LOCK_SUCCEED = "OK";
 
+    private final Jedis jedis;
 
-    protected RedisSession(Jedis c) {
-        client = c;
+    protected RedisSession(Jedis jedis) {
+        this.jedis = jedis;
     }
 
-    //临时寄存器
-    public Object value;
+    private boolean _close = false;
 
-    private Jedis client;
+    /**
+     * 关闭会话
+     * */
+    @Override
+    public void close() throws Exception {
+        if (_close) {
+            return;
+        }
+
+        jedis.close();
+        _close = true;
+    }
+
     private String _key;
     private long _seconds;
 
+    /**
+     * 主键
+     * */
     public RedisSession key(String key) {
         _key = key;
         return this;
     }
 
+    /**
+     * 设置失效时间
+     *
+     * @param seconds 秒数
+     * */
     public RedisSession expire(int seconds) {
         _seconds = seconds;
         return this;
     }
 
-    //?表示1+, *表示0+ //可实现分页的效果
+    private void expirePush() {
+        if (_seconds > 0) {
+            jedis.expire(_key, _seconds);
+        }
+
+        if (_seconds == -1L) {
+            jedis.expire(_key, -1L); //马上消失
+        }
+
+        if (_seconds == -2L) {
+            jedis.persist(_key); //永久有效
+        }
+    }
+
+
+
+    /**
+     * 尝试延期
+     * */
+    public void delay() {
+        expirePush();
+    }
+
+    /**
+     * 主键扫描
+     *
+     * @param keyPattern 模式（?表示1+, *表示0+）
+     * */
     public List<String> scan(String keyPattern, int count) {
         String cursor = ScanParams.SCAN_POINTER_START;
 
@@ -48,84 +95,73 @@ public class RedisSession implements AutoCloseable {
         p.count(count);
         p.match(keyPattern);
 
-        return client.scan(cursor, p).getResult();
+        return jedis.scan(cursor, p).getResult();
     }
 
+    /**
+     * 主键匹配
+     *
+     * @param keyPattern 模式（?表示1+, *表示0+）
+     * */
     public boolean match(String keyPattern) {
         List<String> temp = scan(keyPattern, 1);
         return (temp != null && temp.size() > 0);
     }
 
+    /**
+     * 主键是否存在
+     * */
     public Boolean exists() {
-        return client.exists(_key);
+        return jedis.exists(_key);
     }
 
+    /**
+     * 主键删除
+     * */
     public Boolean delete() {
-        return client.del(_key) > 0;
+        return jedis.del(_key) > 0;
     }
 
+    /**
+     * 主键重命名
+     * */
     public void rename(String newKey) {
-        client.rename(_key, newKey);
-    }
-
-    private boolean _close = false;
-
-    @Override
-    public void close() throws Exception {
-        if (_close) {
-            return;
-        }
-
-        client.close();
-        _close = true;
-    }
-
-
-    private void reset_expire() {
-        if (_seconds > 0) {
-            client.expire(_key, _seconds);
-        }
-
-        if (_seconds == -1L) {
-            client.expire(_key, -1L); //马上消失
-        }
-
-        if (_seconds == -2L) {
-            client.persist(_key); //永久有效
-        }
-    }
-
-    /* 设置时间进行 */
-    public void delay() {
-        reset_expire();
+        jedis.rename(_key, newKey);
     }
 
 
     //------
     //value::
-    public RedisSession valSet(String val) {
-        client.set(_key, val);
-        reset_expire();
+
+    /**
+     * 设置主键对应的值
+     * */
+    public RedisSession set(String val) {
+        jedis.set(_key, val);
+        expirePush();
 
         return this;
     }
 
-    public String val() {
-        return client.get(_key);
+    /**
+     * 设置主键对应的值
+     * */
+    public RedisSession set(long val) {
+        return set(String.valueOf(val));
     }
 
-
-    public int valAsInt() {
-        String temp = val();
-        if (Utils.isEmpty(temp)) {
-            return 0;
-        } else {
-            return Integer.parseInt(temp);
-        }
+    /**
+     * 获取主键对应的值
+     * */
+    public String get() {
+        return jedis.get(_key);
     }
 
-    public long valAsLong() {
-        String temp = val();
+    /**
+     * 获取主键对应的值，并转为长整型
+     * */
+    public long getAsLong() {
+        String temp = get();
         if (Utils.isEmpty(temp)) {
             return 0L;
         } else {
@@ -133,39 +169,42 @@ public class RedisSession implements AutoCloseable {
         }
     }
 
-    public float valAsFloat() {
-        String temp = val();
-        if (Utils.isEmpty(temp)) {
-            return 0.0F;
-        } else {
-            return Float.parseFloat(temp);
-        }
-    }
 
-    public double valAsDouble() {
-        String temp = val();
-        if (Utils.isEmpty(temp)) {
-            return 0.0D;
-        } else {
-            return Double.parseDouble(temp);
-        }
+    /**
+     * 获取多个主键值
+     * */
+    public List<String> getMore(String... keys) {
+        return jedis.mget(keys);
     }
 
 
-    //获取多个key的值
-    public List<String> valMore(String... keys) {
-        return client.mget(keys);
-    }
-
-
-    //或许不开放为好
+    /**
+     * 主键对应的值，原子增量
+     * */
     public long incr(long num) {
-        long val = client.incrBy(_key, num);
-        reset_expire();
+        long val = jedis.incrBy(_key, num);
+        expirePush();
 
         return val;
     }
 
+    public long incr() {
+        long val = jedis.incr(_key);
+        expirePush();
+
+        return val;
+    }
+
+    public long decr() {
+        long val = jedis.decr(_key);
+        expirePush();
+
+        return val;
+    }
+
+    /**
+     * 主键尝试锁一个值
+     * */
     public boolean lock(String val) {
         /**
          * NX: IF_NOT_EXIST（只在键不存在时，才对键进行设置操作）
@@ -176,11 +215,14 @@ public class RedisSession implements AutoCloseable {
          * */
 
         SetParams options = new SetParams().nx().ex(_seconds);
-        String rst = client.set(_key, val, options); //设置成功，返回 1 。//设置失败，返回 0 。
+        String rst = jedis.set(_key, val, options); //设置成功，返回 1 。//设置失败，返回 0 。
 
-        return SET_SUCCEED.equals(rst);//成功获得锁
+        return LOCK_SUCCEED.equals(rst);//成功获得锁
     }
 
+    /**
+     * 主键尝试锁
+     * */
     public boolean lock() {
         return lock(System.currentTimeMillis() + "");
     }
@@ -190,10 +232,14 @@ public class RedisSession implements AutoCloseable {
     //hash::
 
     public Boolean hashHas(String field) {
-        return client.hexists(_key, field);
+        return jedis.hexists(_key, field);
     }
 
-    //?表示1+, *表示0+ //可实现分页的效果
+    /**
+     * 哈希字段扫描
+     *
+     * @param fieldPattern 字段模式（?表示1+, *表示0+）
+     * */
     public List<Map.Entry<String, String>> hashScan(String fieldPattern, int count) {
         String cursor = ScanParams.SCAN_POINTER_START;
 
@@ -201,35 +247,47 @@ public class RedisSession implements AutoCloseable {
         p.count(count);
         p.match(fieldPattern);
 
-        return client.hscan(_key, cursor, p).getResult();
+        return jedis.hscan(_key, cursor, p).getResult();
     }
 
+    /**
+     * 哈希字段匹配
+     * */
     public boolean hashMatch(String fieldPattern) {
         List<Map.Entry<String, String>> temp = hashScan(fieldPattern, 1);
 
         return (temp != null && temp.size() > 0);
     }
 
+    /**
+     * 哈希字段删除
+     * */
     public long hashDel(String... fields) {
-        return client.hdel(_key, fields);
+        return jedis.hdel(_key, fields);
     }
 
+    /**
+     * 哈希字段设置
+     * */
     public RedisSession hashSet(String field, String val) {
-        client.hset(_key, field, val);
-        reset_expire();
+        jedis.hset(_key, field, val);
+        expirePush();
 
         return this;
     }
 
+    /**
+     * 哈希字段设置
+     * */
     public RedisSession hashSet(String field, long val) {
-        client.hset(_key, field, val + "");
-        reset_expire();
-
-        return this;
+        return hashSet(field, String.valueOf(val));
     }
 
+    /**
+     * 哈希字段批量设置（管道模式操作）
+     * */
     public RedisSession hashSetAll(Map<String, String> map) {
-        Pipeline pip = client.pipelined();
+        Pipeline pip = jedis.pipelined();
 
         map.forEach((k, v) -> {
             pip.hset(_key, k, v);
@@ -237,29 +295,33 @@ public class RedisSession implements AutoCloseable {
 
         pip.sync();
 
-        reset_expire();
+        expirePush();
 
         return this;
     }
 
+    /**
+     * 哈希字段增量操作
+     * */
     public long hashIncr(String field, long num) {
-        long val = client.hincrBy(_key, field, num);
-        reset_expire();
+        long val = jedis.hincrBy(_key, field, num);
+        expirePush();
 
         return val;
     }
 
+    /**
+     * 哈希字段获取
+     * */
     public String hashGet(String field) {
-        return client.hget(_key, field);
+        return jedis.hget(_key, field);
     }
 
-    //获取多个字段的值
-    public List<String> hashGetMore(String... fields) {
-        return client.hmget(_key, fields);
-    }
-
-    public long hashVal(String field) {
-        String temp = client.hget(_key, field);
+    /**
+     * 哈希字段获取并转为长整型
+     * */
+    public long hashGetAsLong(String field) {
+        String temp = hashGet(field);
 
         if (Utils.isEmpty(temp))
             return 0;
@@ -267,117 +329,157 @@ public class RedisSession implements AutoCloseable {
             return Long.parseLong(temp);
     }
 
-    public RedisHashAll hashGetAll() {
-        return new RedisHashAll(client.hgetAll(_key));
+    /**
+     * 哈希字段多个获取
+     * */
+    public List<String> hashGetMore(String... fields) {
+        return jedis.hmget(_key, fields);
     }
 
+    /**
+     * 哈希获取所有字段
+     * */
+    public Map<String, String> hashGetAll() {
+        return jedis.hgetAll(_key);
+    }
+
+    /**
+     * 哈希长度
+     * */
     public long hashLen() {
-        return client.hlen(_key);
+        return jedis.hlen(_key);
     }
 
 
     //------------------
     //list::
 
-    public RedisSession listAdd(String val) {
-        client.lpush(_key, val); //左侧压进
-        reset_expire();
+    /**
+     * 列表添加项
+     * */
+    public RedisSession listAdd(String item) {
+        jedis.lpush(_key, item); //左侧压进
+        expirePush();
 
         return this;
     }
 
     /**
+     * 列表添加项
+     * */
+    public RedisSession listAdd(long item) {
+        return listAdd(String.valueOf(item));
+    }
+
+    /**
+     * 列表删除项
+     *
      * count > 0 : 从表头开始向表尾搜索，移除与 VALUE 相等的元素，数量为 COUNT 。
      * count < 0 : 从表尾开始向表头搜索，移除与 VALUE 相等的元素，数量为 COUNT 的绝对值。
      * count = 0 : 移除表中所有与 VALUE 相等的值。
      */
-    public RedisSession listDel(String val, int count) {
-        client.lrem(_key, count, val); //左侧压进
-        reset_expire();
+    public RedisSession listDel(String item, int count) {
+        jedis.lrem(_key, count, item); //左侧压进
+        expirePush();
 
         return this;
     }
 
-    public RedisSession listDel(String val) {
-        return listDel(val, 0);
+    /**
+     * 列表删除项
+     * */
+    public RedisSession listDel(String item) {
+        return listDel(item, 0);
     }
 
-    public RedisSession listAddRange(Collection<String> vals) {
-        Pipeline pip = client.pipelined();
-        for (String val : vals) {
+    /**
+     * 列表批量添加项
+     * */
+    public RedisSession listAddRange(Collection<String> items) {
+        Pipeline pip = jedis.pipelined();
+        for (String val : items) {
             pip.lpush(_key, val); //左侧压进
         }
         pip.sync();
 
-        reset_expire();
+        expirePush();
 
         return this;
     }
 
+    /**
+     * 列表冒出
+     * */
     public String listPop() {
-        return client.rpop(_key); //右侧推出
+        return jedis.rpop(_key); //右侧推出
     }
 
+    /**
+     * 列表预览
+     * */
     public String listPeek() {
         return listGet(0); //右侧推出
     }
 
     /**
-     * 先进先出（即从right取）
+     * 列表获取项（先进先出，从right 取）
      */
     public String listGet(int index) {
-        return client.lindex(_key, index);
+        return jedis.lindex(_key, index); //从right取
     }
 
     /**
-     * 先进先出（即从right取）
+     * 列表分页获取项（先进先出，从right取）
      */
-    public List<String> listGet(int start, int end) {
-        return client.lrange(_key, start, end);
+    public List<String> listGetRange(int start, int end) {
+        return jedis.lrange(_key, start, end);
     }
 
+    /**
+     * 列表长度
+     * */
     public long listLen() {
-        return client.llen(_key);
+        return jedis.llen(_key);
     }
 
     //------------------
     //Sset::
     public RedisSession setAdd(String val) {
-        client.sadd(_key, val); //左侧压进
-        reset_expire();
+        jedis.sadd(_key, val); //左侧压进
+        expirePush();
 
         return this;
     }
 
     public RedisSession setDel(String val) {
-        client.srem(_key, val); //左侧压进
-        reset_expire();
+        jedis.srem(_key, val); //左侧压进
+        expirePush();
 
         return this;
     }
 
     public RedisSession setAddRange(Collection<String> vals) {
-        Pipeline pip = client.pipelined();
+        Pipeline pip = jedis.pipelined();
         for (String val : vals) {
             pip.sadd(_key, val); //左侧压进
         }
         pip.sync();
 
-        reset_expire();
+        expirePush();
 
         return this;
     }
 
     public long setLen() {
-        return client.scard(this._key);
+        return jedis.scard(this._key);
     }
 
     public String setPop() {
-        return client.spop(_key); //右侧推出
+        return jedis.spop(_key); //右侧推出
     }
 
     public List<String> setGet(int count) {
-        return client.srandmember(_key, count);
+        return jedis.srandmember(_key, count);
     }
 
     public List<String> setScan(String valPattern, int count) {
@@ -387,7 +489,7 @@ public class RedisSession implements AutoCloseable {
         p.count(count);
         p.match(valPattern);
 
-        return client.sscan(_key, cursor, p).getResult();
+        return jedis.sscan(_key, cursor, p).getResult();
     }
 
     public boolean setMatch(String valPattern) {
@@ -398,27 +500,27 @@ public class RedisSession implements AutoCloseable {
     //------------------
     //Sort set::
     public RedisSession zsetAdd(double score, String val) {
-        client.zadd(_key, score, val);
-        reset_expire();
+        jedis.zadd(_key, score, val);
+        expirePush();
 
         return this;
     }
 
     public void zsetDel(String... vals) {
-        client.zrem(_key, vals);
+        jedis.zrem(_key, vals);
     }
 
     public long zsetLen() {
-        return client.zcard(_key);
+        return jedis.zcard(_key);
     }
 
     public Set<String> zsetGet(long start, long end) {
-        return client.zrange(_key, start, end);
+        return jedis.zrange(_key, start, end);
     }
 
 
     public long zsetIdx(String val) {
-        Long tmp = client.zrank(_key, val);
+        Long tmp = jedis.zrank(_key, val);
         if (tmp == null) {
             return -1;
         } else {
@@ -433,7 +535,7 @@ public class RedisSession implements AutoCloseable {
         p.count(count);
         p.match(valPattern);
 
-        return client.zscan(_key, cursor, p).getResult();
+        return jedis.zscan(_key, cursor, p).getResult();
     }
 
     public boolean zsetMatch(String valPattern) {
@@ -441,12 +543,15 @@ public class RedisSession implements AutoCloseable {
         return (temp != null && temp.size() > 0);
     }
 
+    //------------------
+    //message::
+
 
     public long publish(String channel, String message) {
-        return client.publish(channel, message);
+        return jedis.publish(channel, message);
     }
 
     public void subscribe(JedisPubSub jedisPubSub, String... channels) {
-        client.subscribe(jedisPubSub, channels);
+        jedis.subscribe(jedisPubSub, channels);
     }
 }
