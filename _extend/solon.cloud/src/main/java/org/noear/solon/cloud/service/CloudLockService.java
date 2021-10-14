@@ -10,7 +10,7 @@ import org.noear.solon.Solon;
  */
 public interface CloudLockService {
     /**
-     * 锁住
+     * 尝试锁
      *
      * @param group   锁分组
      * @param key     锁键
@@ -18,41 +18,41 @@ public interface CloudLockService {
      * @param holder  持有人
      * @return 是否成功
      */
-    boolean lock(String group, String key, int seconds, String holder);
+    boolean tryLock(String group, String key, int seconds, String holder);
 
     /**
-     * 锁住
+     * 尝试锁
      *
      * @param key     锁键
      * @param seconds 锁定时间（过期失效）
      * @param holder  持有人
      * @return 是否成功
      */
-    default boolean lock(String key, int seconds, String holder) {
-        return lock(Solon.cfg().appName(), key, seconds, holder);
+    default boolean tryLock(String key, int seconds, String holder) {
+        return tryLock(Solon.cfg().appName(), key, seconds, holder);
     }
 
     /**
-     * 锁住
+     * 尝试锁
      *
      * @param group   锁分组
      * @param key     锁键
      * @param seconds 锁定时间（过期失效）
      * @return 是否成功
      */
-    default boolean lock(String group, String key, int seconds) {
-        return lock(group, key, seconds, null);
+    default boolean tryLock(String group, String key, int seconds) {
+        return tryLock(group, key, seconds, null);
     }
 
     /**
-     * 锁住
+     * 尝试锁
      *
      * @param key     锁键
      * @param seconds 锁定时间（过期失效）
      * @return 是否成功
      */
-    default boolean lock(String key, int seconds) {
-        return lock(Solon.cfg().appName(), key, seconds);
+    default boolean tryLock(String key, int seconds) {
+        return tryLock(Solon.cfg().appName(), key, seconds);
     }
 
     /**
@@ -61,7 +61,7 @@ public interface CloudLockService {
      * @param group 锁分组
      * @param key   锁键
      */
-    void unlock(String group, String key, String holder);
+    void unLock(String group, String key, String holder);
 
     /**
      * 解锁
@@ -69,8 +69,8 @@ public interface CloudLockService {
      * @param group 锁分组
      * @param key   锁键
      */
-    default void unlock(String group, String key) {
-        unlock(group, key, null);
+    default void unLock(String group, String key) {
+        unLock(group, key, null);
     }
 
     /**
@@ -78,8 +78,8 @@ public interface CloudLockService {
      *
      * @param key   锁键
      */
-    default void unlock(String key) {
-        unlock(Solon.cfg().appName(), key, null);
+    default void unLock(String key) {
+        unLock(Solon.cfg().appName(), key, null);
     }
 
     /**
@@ -100,19 +100,19 @@ public interface CloudLockService {
     }
 
     /**
-     * 获取锁的持有人
+     * 获取持有人
      *
      * @param group 锁分组
      * @param key   锁键
      */
-    String getLockHolder(String group, String key);
+    String getHolder(String group, String key);
 
     /**
-     * 获取锁的持有人
+     * 获取持有人
      *
      * @param key   锁键
      */
-    default String getLockHolder(String key) {
-        return getLockHolder(Solon.cfg().appName(), key);
+    default String getHolder(String key) {
+        return getHolder(Solon.cfg().appName(), key);
     }
 }

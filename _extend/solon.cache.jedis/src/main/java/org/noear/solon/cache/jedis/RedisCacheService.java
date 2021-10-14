@@ -1,5 +1,6 @@
 package org.noear.solon.cache.jedis;
 
+import org.noear.redisx.RedisClient;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.event.EventBus;
@@ -15,7 +16,7 @@ import java.util.Properties;
 public class RedisCacheService implements CacheService {
     protected String _cacheKeyHead;
     protected int _defaultSeconds;
-    protected final RedisX _cache;
+    protected final RedisClient _cache;
     private Serializer<String> _serializer = null;
 
     public RedisCacheService serializer(Serializer<String> serializer) {
@@ -65,7 +66,7 @@ public class RedisCacheService implements CacheService {
             _cacheKeyHead = Solon.cfg().appName();
         }
 
-        _cache = new RedisX(prop, server, password, db, maxTotaol);
+        _cache = new RedisClient(prop, db, maxTotaol);
         _serializer = JavabinSerializer.instance;
     }
 

@@ -1,5 +1,6 @@
 package org.noear.solon.extend.sessionstate.redis;
 
+import org.noear.redisx.RedisClient;
 import org.noear.snack.ONode;
 import org.noear.snack.core.Options;
 import org.noear.snack.core.Feature;
@@ -26,10 +27,10 @@ public class RedisSessionState extends SessionStateDefault {
 
 
     private Context ctx;
-    private RedisX redisX;
+    private RedisClient client;
     protected RedisSessionState(Context ctx){
         this.ctx = ctx;
-        this.redisX = RedisSessionStateFactory.getInstance().getRedisX();
+        this.client = RedisSessionStateFactory.getInstance().redisClient();
     }
 
     //
@@ -95,7 +96,7 @@ public class RedisSessionState extends SessionStateDefault {
 
     @Override
     public Object sessionGet(String key) {
-        String json = redisX.open1((ru) -> ru.key(sessionId()).expire(_expiry).hashGet(key));
+        String json = client.open1((ru) -> ru.key(sessionId()).expire(_expiry).hashGet(key));
 
         if(json == null){
             return null;
@@ -142,12 +143,12 @@ public class RedisSessionState extends SessionStateDefault {
 
         String json = tmp.toJson();
 
-        redisX.open0((ru) -> ru.key(sessionId()).expire(_expiry).hashSet(key, json));
+        client.open((ru) -> ru.key(sessionId()).expire(_expiry).hashSet(key, json));
     }
 
     @Override
     public void sessionClear() {
-        redisX.open0((ru)->ru.key(sessionId()).delete());
+        client.open((ru)->ru.key(sessionId()).delete());
     }
 
     @Override
@@ -164,7 +165,7 @@ public class RedisSessionState extends SessionStateDefault {
             cookieSet(SESSIONID_KEY, skey);
             cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_salt));
 
-            redisX.open0((ru)->ru.key(sessionId()).expire(_expiry).delay());
+            client.open((ru)->ru.key(sessionId()).expire(_expiry).delay());
         }
     }
 

@@ -10,7 +10,7 @@ public class CloudLockServiceWaterImp implements CloudLockService {
 
 
     @Override
-    public boolean lock(String group, String key, int seconds, String holder) {
+    public boolean tryLock(String group, String key, int seconds, String holder) {
         if (holder == null) {
             holder = "-";
         }
@@ -19,7 +19,7 @@ public class CloudLockServiceWaterImp implements CloudLockService {
     }
 
     @Override
-    public void unlock(String group, String key, String holder) {
+    public void unLock(String group, String key, String holder) {
         LockUtils.unLock(group, key, holder);
     }
 
@@ -29,7 +29,7 @@ public class CloudLockServiceWaterImp implements CloudLockService {
     }
 
     @Override
-    public String getLockHolder(String group, String key) {
+    public String getHolder(String group, String key) {
         return LockUtils.getLockValue(group, key);
     }
 }

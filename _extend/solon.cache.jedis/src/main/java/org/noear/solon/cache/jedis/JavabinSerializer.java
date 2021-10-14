@@ -1,6 +1,7 @@
 package org.noear.solon.cache.jedis;
 
 
+import org.noear.redisx.utils.SerializationUtil;
 import org.noear.solon.data.cache.Serializer;
 
 import java.util.Base64;
@@ -23,7 +24,7 @@ public class JavabinSerializer implements Serializer<String> {
             return null;
         }
 
-        byte[] tmp = SerializationUtils.serialize(obj);
+        byte[] tmp = SerializationUtil.serialize(obj);
         return Base64.getEncoder().encodeToString(tmp);
     }
 
@@ -34,6 +35,6 @@ public class JavabinSerializer implements Serializer<String> {
         }
 
         byte[] bytes = Base64.getDecoder().decode(dta);
-        return SerializationUtils.deserialize(bytes);
+        return SerializationUtil.deserialize(bytes);
     }
 }

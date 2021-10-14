@@ -1,10 +1,12 @@
 package org.noear.solon.extend.sessionstate.redis;
 
+import org.noear.redisx.RedisClient;
 import org.noear.solon.Solon;
-import org.noear.solon.core.NvMap;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.SessionState;
 import org.noear.solon.core.handle.SessionStateFactory;
+
+import java.util.Properties;
 
 /**
  * @author noear 2021/2/14 created
@@ -20,24 +22,20 @@ public class RedisSessionStateFactory implements SessionStateFactory {
     }
 
     private RedisSessionStateFactory() {
-        NvMap map = Solon.cfg().getXmap("server.session.state.redis");
+        Properties prop = Solon.cfg().getProp("server.session.state.redis");
 
-        if (map.size() < 4) {
+        if (prop.size() < 4) {
             System.err.println("Error configuration: solon.session.state.redis");
             return;
         }
 
-        redisX = new RedisX(
-                map.get("server"),
-                map.get("password"),
-                map.getInt("db"),
-                map.getInt("maxTotaol"));
+        redisClient = new RedisClient(prop);
     }
 
-    private RedisX redisX;
+    private RedisClient redisClient;
 
-    protected RedisX getRedisX() {
-        return redisX;
+    protected RedisClient redisClient() {
+        return redisClient;
     }
 
     public static final int SESSION_STATE_PRIORITY = 2;
