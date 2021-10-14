@@ -12,7 +12,6 @@ import org.noear.solon.core.handle.Result;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
