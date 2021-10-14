@@ -4,6 +4,8 @@ import org.noear.solon.cloud.impl.CloudTraceServiceImpl;
 import org.noear.water.WW;
 
 /**
+ * 分布式跟踪服务
+ *
  * @author noear
  * @since 1.2
  */

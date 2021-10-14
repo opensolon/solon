@@ -16,7 +16,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 分布式任务服务
+ *
  * @author noear
+ * @since 1.2
  */
 public class CloudJobServiceWaterImp implements CloudJobService {
     public static final CloudJobServiceWaterImp instance = new CloudJobServiceWaterImp();

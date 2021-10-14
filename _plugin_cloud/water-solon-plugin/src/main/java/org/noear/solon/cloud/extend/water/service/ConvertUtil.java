@@ -9,10 +9,12 @@ import org.noear.water.model.DiscoverM;
 import java.util.Map;
 
 /**
+ * 转换工具
+ *
  * @author noear
  * @since 1.2
  */
-public class ConvertUtil {
+class ConvertUtil {
     public static Discovery from(String service, DiscoverM d1) {
         if (d1 == null) {
             return null;

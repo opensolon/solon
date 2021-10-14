@@ -11,6 +11,8 @@ import org.noear.water.utils.Datetime;
 import org.noear.water.utils.LogHelper;
 
 /**
+ * 分布式日志服务
+ *
  * @author noear
  * @since 1.3
  */

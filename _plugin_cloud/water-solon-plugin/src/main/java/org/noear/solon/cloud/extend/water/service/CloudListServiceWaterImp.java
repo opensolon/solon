@@ -4,6 +4,8 @@ import org.noear.solon.cloud.service.CloudListService;
 import org.noear.water.WaterClient;
 
 /**
+ * 名单服务
+ *
  * @author noear
  * @since 1.3
  */

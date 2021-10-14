@@ -17,7 +17,10 @@ import java.util.*;
 import java.util.function.Consumer;
 
 /**
- * @author noear 2021/1/17 created
+ * 配置服务
+ *
+ * @author noear
+ * @since 1.2
  */
 public class CloudConfigServiceWaterImp extends TimerTask implements CloudConfigService {
     private static CloudConfigServiceWaterImp instance;

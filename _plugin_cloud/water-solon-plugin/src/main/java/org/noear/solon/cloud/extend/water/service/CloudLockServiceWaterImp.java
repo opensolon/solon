@@ -4,7 +4,10 @@ import org.noear.solon.cloud.service.CloudLockService;
 import org.noear.water.utils.LockUtils;
 
 /**
- * @author noear 2021/2/3 created
+ * 分布式锁服务
+ *
+ * @author noear
+ * @since 1.3
  */
 public class CloudLockServiceWaterImp implements CloudLockService {
 

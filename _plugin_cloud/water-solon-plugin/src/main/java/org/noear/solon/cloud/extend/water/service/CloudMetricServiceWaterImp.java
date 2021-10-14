@@ -6,6 +6,8 @@ import org.noear.water.WaterClient;
 import org.noear.water.track.TrackBuffer;
 
 /**
+ * 分布式计数服务
+ *
  * @author noear
  * @since 1.4
  */

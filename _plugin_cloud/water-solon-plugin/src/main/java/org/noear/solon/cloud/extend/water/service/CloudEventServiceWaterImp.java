@@ -19,6 +19,8 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 /**
+ * 事件服务
+ *
  * @author noear
  * @since 1.2
  */
