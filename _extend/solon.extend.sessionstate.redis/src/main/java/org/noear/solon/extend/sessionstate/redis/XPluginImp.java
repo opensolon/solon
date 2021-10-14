@@ -27,7 +27,7 @@ public class XPluginImp implements Plugin {
          * */
         SessionProp.init();
 
-        if (RedisSessionStateFactory.getInstance().getRedisX() == null) {
+        if (RedisSessionStateFactory.getInstance().redisClient() == null) {
             return;
         }
 

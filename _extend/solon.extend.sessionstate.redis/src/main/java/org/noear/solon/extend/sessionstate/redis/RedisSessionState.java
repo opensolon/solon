@@ -27,10 +27,10 @@ public class RedisSessionState extends SessionStateDefault {
 
 
     private Context ctx;
-    private RedisClient client;
+    private RedisClient redisClient;
     protected RedisSessionState(Context ctx){
         this.ctx = ctx;
-        this.client = RedisSessionStateFactory.getInstance().redisClient();
+        this.redisClient = RedisSessionStateFactory.getInstance().redisClient();
     }
 
     //
@@ -96,7 +96,7 @@ public class RedisSessionState extends SessionStateDefault {
 
     @Override
     public Object sessionGet(String key) {
-        String json = client.open1((ru) -> ru.key(sessionId()).expire(_expiry).hashGet(key));
+        String json = redisClient.open1((ru) -> ru.key(sessionId()).expire(_expiry).hashGet(key));
 
         if(json == null){
             return null;
@@ -143,12 +143,12 @@ public class RedisSessionState extends SessionStateDefault {
 
         String json = tmp.toJson();
 
-        client.open((ru) -> ru.key(sessionId()).expire(_expiry).hashSet(key, json));
+        redisClient.open((ru) -> ru.key(sessionId()).expire(_expiry).hashSet(key, json));
     }
 
     @Override
     public void sessionClear() {
-        client.open((ru)->ru.key(sessionId()).delete());
+        redisClient.open((ru)->ru.key(sessionId()).delete());
     }
 
     @Override
@@ -165,7 +165,7 @@ public class RedisSessionState extends SessionStateDefault {
             cookieSet(SESSIONID_KEY, skey);
             cookieSet(SESSIONID_MD5(), EncryptUtil.md5(skey + SESSIONID_salt));
 
-            client.open((ru)->ru.key(sessionId()).expire(_expiry).delay());
+            redisClient.open((ru)->ru.key(sessionId()).expire(_expiry).delay());
         }
     }
 

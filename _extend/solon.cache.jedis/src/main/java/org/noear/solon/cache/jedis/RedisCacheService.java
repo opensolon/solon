@@ -16,7 +16,7 @@ import java.util.Properties;
 public class RedisCacheService implements CacheService {
     protected String _cacheKeyHead;
     protected int _defaultSeconds;
-    protected final RedisClient _cache;
+    protected final RedisClient _redisClient;
     private Serializer<String> _serializer = null;
 
     public RedisCacheService serializer(Serializer<String> serializer) {
@@ -66,7 +66,7 @@ public class RedisCacheService implements CacheService {
             _cacheKeyHead = Solon.cfg().appName();
         }
 
-        _cache = new RedisClient(prop, db, maxTotaol);
+        _redisClient = new RedisClient(prop, db, maxTotaol);
         _serializer = JavabinSerializer.instance;
     }
 
@@ -76,15 +76,15 @@ public class RedisCacheService implements CacheService {
             return;
         }
 
-        if (_cache != null) {
+        if (_redisClient != null) {
             String newKey = newKey(key);
             try {
                 String val = _serializer.serialize(obj);
 
                 if(seconds > 0) {
-                    _cache.open0((ru) -> ru.key(newKey).expire(seconds).set(val));
+                    _redisClient.open0((ru) -> ru.key(newKey).expire(seconds).set(val));
                 }else{
-                    _cache.open0((ru) -> ru.key(newKey).expire(_defaultSeconds).set(val));
+                    _redisClient.open0((ru) -> ru.key(newKey).expire(_defaultSeconds).set(val));
                 }
             } catch (Exception ex) {
                 EventBus.push(ex);
@@ -94,9 +94,9 @@ public class RedisCacheService implements CacheService {
 
     @Override
     public Object get(String key) {
-        if (_cache != null) {
+        if (_redisClient != null) {
             String newKey = newKey(key);
-            String val = _cache.open1((ru) -> ru.key(newKey).get());
+            String val = _redisClient.open1((ru) -> ru.key(newKey).get());
 
             if(val == null){
                 return null;
@@ -115,9 +115,9 @@ public class RedisCacheService implements CacheService {
 
     @Override
     public void remove(String key) {
-        if (_cache != null) {
+        if (_redisClient != null) {
             String newKey = newKey(key);
-            _cache.open0((ru) -> {
+            _redisClient.open0((ru) -> {
                 ru.key(newKey).delete();
             });
         }
