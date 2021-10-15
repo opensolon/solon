@@ -113,11 +113,6 @@ public class AopContext extends BeanContainer {
             new HandlerLoader(bw).load(Solon.global());
         });
 
-        //注册 @Inject 构建器
-        beanInjectorAdd(Inject.class, ((fwT, anno) -> {
-            beanInject(fwT, anno.value(), anno.autoRefreshed());
-        }));
-
         //注册 @ServerEndpoint 构建器
         beanBuilderAdd(ServerEndpoint.class, (clz, wrap, anno) -> {
             if (Listener.class.isAssignableFrom(clz)) {
@@ -125,6 +120,12 @@ public class AopContext extends BeanContainer {
                 Solon.global().router().add(Utils.annoAlias(anno.value(), anno.path()), anno.method(), l);
             }
         });
+
+
+        //注册 @Inject 注入器
+        beanInjectorAdd(Inject.class, ((fwT, anno) -> {
+            beanInject(fwT, anno.value(), anno.autoRefreshed());
+        }));
     }
 
     /**
