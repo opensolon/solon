@@ -65,10 +65,10 @@ public class AopContext extends BeanContainer {
 
             //尝试导入
             for (Annotation a1 : clz.getAnnotations()) {
-                if (anno instanceof Import) {
-                    beanImport((Import) anno);
+                if (a1 instanceof Import) {
+                    beanImport((Import) a1);
                 } else {
-                    beanImport(anno.annotationType().getAnnotation(Import.class));
+                    beanImport(a1.annotationType().getAnnotation(Import.class));
                 }
             }
 
