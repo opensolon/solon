@@ -3,6 +3,7 @@ package org.noear.solon.core;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Note;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.InterceptorEntity;
@@ -344,6 +345,15 @@ public abstract class BeanContainer {
             getWrapAsyn(name, (bw) -> {
                 varH.setValue(bw.get());
             });
+        }
+    }
+
+    protected void beanInjectProperties(Class<?> clz, BeanWrap bw){
+        Inject typeInj = clz.getAnnotation(Inject.class);
+        if (typeInj != null && Utils.isNotEmpty(typeInj.value())) {
+            if (typeInj.value().startsWith("${")) {
+                Utils.injectProperties(bw.raw(), Solon.cfg().getPropByExpr(typeInj.value()));
+            }
         }
     }
 

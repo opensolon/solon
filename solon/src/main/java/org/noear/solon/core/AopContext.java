@@ -41,12 +41,7 @@ public class AopContext extends BeanContainer {
 
         //注册 @Configuration 构建器
         beanBuilderAdd(Configuration.class, (clz, bw, anno) -> {
-            Inject typeInj = clz.getAnnotation(Inject.class);
-            if (typeInj != null && Utils.isNotEmpty(typeInj.value())) {
-                if (typeInj.value().startsWith("${")) {
-                    Utils.injectProperties(bw.raw(), Solon.cfg().getPropByExpr(typeInj.value()));
-                }
-            }
+            beanInjectProperties(clz, bw);
 
             for (Method m : ClassWrap.get(bw.clz()).getMethods()) {
                 Bean m_an = m.getAnnotation(Bean.class);
