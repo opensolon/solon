@@ -151,10 +151,6 @@ public class CloudFileServiceOssImp implements CloudFileService {
 
             String Authorization = "OSS " + accessKey + ":" + Signature;
 
-            Map<String, String> head = new HashMap<String, String>();
-            head.put("Date", date);
-            head.put("Authorization", Authorization);
-
             String tmp = HttpUtils.http(url)
                     .header("Date", date)
                     .header("Authorization", Authorization)
