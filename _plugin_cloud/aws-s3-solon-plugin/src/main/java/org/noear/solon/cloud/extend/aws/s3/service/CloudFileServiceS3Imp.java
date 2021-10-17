@@ -70,7 +70,10 @@ public class CloudFileServiceS3Imp implements CloudFileService {
 
         //初始化client
         AWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
-        client = AmazonS3ClientBuilder.standard().withRegion(regionId).withCredentials(new AWSStaticCredentialsProvider(awsCredentials)).build();
+        client = AmazonS3ClientBuilder.standard()
+                .withRegion(regionId)
+                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
+                .build();
 
         //初始化权限控制
         acls.grantPermission(GroupGrantee.AllUsers, Permission.Read);
