@@ -12,7 +12,7 @@ import org.noear.solon.core.Plugin;
  * @since 1.3
  */
 public class XPluginImp implements Plugin {
-    final String AWS_SDK_TAG = "com.amazonaws.auth.BasicAWSCredentials";
+    final String AWS_SDK_TAG = "com.amazonaws.services.s3.AmazonS3ClientBuilder";
     @Override
     public void start(SolonApp app) {
         if (Utils.isEmpty(S3Props.instance.getFileAccessKey())) {
