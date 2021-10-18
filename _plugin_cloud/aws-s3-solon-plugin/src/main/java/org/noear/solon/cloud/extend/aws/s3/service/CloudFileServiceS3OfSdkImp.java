@@ -13,7 +13,6 @@ import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.handle.Result;
 
-import java.io.InputStream;
 import java.util.Properties;
 
 /**
@@ -22,12 +21,12 @@ import java.util.Properties;
  * @author noear
  * @since 1.3
  */
-public class CloudFileServiceS3Imp implements CloudFileService {
-    private static CloudFileServiceS3Imp instance;
+public class CloudFileServiceS3OfSdkImp implements CloudFileService {
+    private static CloudFileServiceS3OfSdkImp instance;
 
-    public static synchronized CloudFileServiceS3Imp getInstance() {
+    public static synchronized CloudFileServiceS3OfSdkImp getInstance() {
         if (instance == null) {
-            instance = new CloudFileServiceS3Imp();
+            instance = new CloudFileServiceS3OfSdkImp();
         }
 
         return instance;
@@ -42,7 +41,7 @@ public class CloudFileServiceS3Imp implements CloudFileService {
     protected final AmazonS3 client;
     protected final AccessControlList acls = new AccessControlList();
 
-    private CloudFileServiceS3Imp() {
+    private CloudFileServiceS3OfSdkImp() {
         this(
                 S3Props.instance.getFileRegionId(),
                 S3Props.instance.getFileBucket(),
@@ -51,7 +50,7 @@ public class CloudFileServiceS3Imp implements CloudFileService {
         );
     }
 
-    public CloudFileServiceS3Imp(Properties pops) {
+    public CloudFileServiceS3OfSdkImp(Properties pops) {
         this(
                 pops.getProperty("regionId"),
                 pops.getProperty("bucket"),
@@ -60,7 +59,7 @@ public class CloudFileServiceS3Imp implements CloudFileService {
         );
     }
 
-    public CloudFileServiceS3Imp(String regionId, String bucket, String accessKey, String secretKey) {
+    public CloudFileServiceS3OfSdkImp(String regionId, String bucket, String accessKey, String secretKey) {
         this.regionId = regionId;
 
         this.bucketDef = bucket;

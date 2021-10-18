@@ -20,14 +20,20 @@
         </dependency>
 
         <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>httputils-solon-plugin</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
             <version>1.11.993</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-api</artifactId>
+            <artifactId>solon-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
