@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.extend.water.service;
 
+import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.extend.water.WaterProps;
@@ -8,7 +9,6 @@ import org.noear.solon.logging.event.LogEvent;
 import org.noear.water.WaterClient;
 import org.noear.water.dso.LogPipeline;
 import org.noear.water.utils.Datetime;
-import org.noear.water.utils.LogHelper;
 
 /**
  * 分布式日志服务
@@ -52,7 +52,7 @@ public class CloudLogServiceWaterImp implements CloudLogService {
         log.group = Solon.cfg().appGroup();
         log.logger = loggerName;
         log.level = (logEvent.getLevel().code / 10);
-        log.content = LogHelper.contentAsString(logEvent.getContent());
+        log.content = contentAsString(logEvent.getContent());
 
         if (logEvent.getMetainfo() != null) {
             log.tag = logEvent.getMetainfo().get("tag0");
@@ -61,7 +61,7 @@ public class CloudLogServiceWaterImp implements CloudLogService {
             log.tag3 = logEvent.getMetainfo().get("tag3");
         }
 
-        if(logEvent.getLoggerName().contains(".")){
+        if (logEvent.getLoggerName().contains(".")) {
             log.class_name = logEvent.getLoggerName();
         }
 
@@ -73,5 +73,22 @@ public class CloudLogServiceWaterImp implements CloudLogService {
         log.log_fulltime = datetime.getFulltime();
 
         LogPipeline.singleton().add(log);
+    }
+
+    private static String contentAsString(Object content) {
+        if (content != null) {
+            if (content instanceof String) {
+                //处理字符串
+                return (String) content;
+            } else if (content instanceof Throwable) {
+                //处理异常
+                return Utils.throwableToString((Throwable) content);
+            } else {
+                //处理其它对象（进行json）
+                return ONode.load(content).toJson();
+            }
+        }
+
+        return null;
     }
 }
