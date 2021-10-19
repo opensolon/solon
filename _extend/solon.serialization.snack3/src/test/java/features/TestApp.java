@@ -4,7 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.serialization.JsonLongConverter;
-import org.noear.solon.serialization.JsonStringConverter;
+import org.noear.solon.serialization.JsonConverter;
 import org.noear.solon.serialization.snack3.SnackRenderFactory;
 
 import java.time.LocalDate;
@@ -28,16 +28,18 @@ public class TestApp {
     /**
      * 初始化json定制（需要在插件运行前定制）
      * */
-    private static void initMvcJsonCustom(){
+    private static void initMvcJsonCustom() {
         //通过转换器，做简单类型的定制
-        SnackRenderFactory.global.addConvertor(Date.class,
+        SnackRenderFactory factory = SnackRenderFactory.global;
+
+        factory.addConvertor(Date.class,
                 (JsonLongConverter<Date>) source -> source.getTime());
 
-        SnackRenderFactory.global.addConvertor(LocalDate.class,
-                (JsonStringConverter<LocalDate>) source -> source.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        factory.addConvertor(LocalDate.class,
+                (JsonConverter<LocalDate>) source -> source.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-        SnackRenderFactory.global.addConvertor(LocalDateTime.class,
-                (JsonStringConverter<LocalDateTime>) source -> source.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        factory.addConvertor(LocalDateTime.class,
+                (JsonConverter<LocalDateTime>) source -> source.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
 
     }
 

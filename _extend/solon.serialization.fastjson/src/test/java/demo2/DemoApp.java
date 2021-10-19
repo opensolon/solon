@@ -3,7 +3,7 @@ package demo2;
 import com.alibaba.fastjson.serializer.SerializeWriter;
 import org.noear.solon.Solon;
 import org.noear.solon.serialization.JsonLongConverter;
-import org.noear.solon.serialization.JsonStringConverter;
+import org.noear.solon.serialization.JsonConverter;
 import org.noear.solon.serialization.fastjson.FastjsonRenderFactory;
 
 import java.time.LocalDate;
@@ -29,7 +29,7 @@ public class DemoApp {
                 (JsonLongConverter<Date>) source -> source.getTime());
 
         FastjsonRenderFactory.global.addConvertor(LocalDate.class,
-                (JsonStringConverter<LocalDate>) source -> source.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                (JsonConverter<LocalDate>) source -> source.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
         //通过编码器，做复杂类型的原生定制（基于框架原生接口）
         FastjsonRenderFactory.global.addEncoder(Date.class, (ser, obj, o1, type, i) -> {

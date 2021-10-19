@@ -4,7 +4,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.serialization.JsonLongConverter;
-import org.noear.solon.serialization.JsonStringConverter;
+import org.noear.solon.serialization.JsonConverter;
 import org.noear.solon.serialization.fastjson.FastjsonRenderFactory;
 
 import java.time.LocalDate;
@@ -34,10 +34,10 @@ public class TestApp {
                 (JsonLongConverter<Date>) source -> source.getTime());
 
         FastjsonRenderFactory.global.addConvertor(LocalDate.class,
-                (JsonStringConverter<LocalDate>) source -> source.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                (JsonConverter<LocalDate>) source -> source.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
         FastjsonRenderFactory.global.addConvertor(LocalDateTime.class,
-                (JsonStringConverter<LocalDateTime>) source -> source.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+                (JsonConverter<LocalDateTime>) source -> source.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
 
     }
 

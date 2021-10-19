@@ -6,8 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.noear.solon.serialization.JsonRenderFactory;
-import org.noear.solon.serialization.JsonLongConverter;
-import org.noear.solon.serialization.JsonStringConverter;
+import org.noear.solon.serialization.JsonConverter;
 
 import java.io.IOException;
 
@@ -18,10 +17,10 @@ public abstract class JacksonRenderFactoryBase implements JsonRenderFactory {
 
     protected abstract ObjectMapper config();
 
-    protected  SimpleModule module;
+    protected SimpleModule module;
 
-    protected void registerModule(){
-        if(module != null){
+    protected void registerModule() {
+        if (module != null) {
             config().registerModule(module);
         }
     }
@@ -36,21 +35,25 @@ public abstract class JacksonRenderFactoryBase implements JsonRenderFactory {
     }
 
     @Override
-    public <T> void addConvertor(Class<T> clz, JsonLongConverter<T> converter) {
+    public <T> void addConvertor(Class<T> clz, JsonConverter<T> converter) {
         addEncoder(clz, new JsonSerializer<T>() {
             @Override
-            public void serialize(T source, JsonGenerator gen, SerializerProvider sp) throws IOException {
-                gen.writeNumber(converter.convert(source).longValue());
-            }
-        });
-    }
+            public void serialize(T source, JsonGenerator out, SerializerProvider sp) throws IOException {
+                Object val = converter.convert((T) source);
 
-    @Override
-    public <T> void addConvertor(Class<T> clz, JsonStringConverter<T> converter) {
-        addEncoder(clz, new JsonSerializer<T>() {
-            @Override
-            public void serialize(T source, JsonGenerator gen, SerializerProvider sp) throws IOException {
-                gen.writeString(converter.convert(source));
+                if (val == null) {
+                    out.writeNull();
+                } else if (val instanceof String) {
+                    out.writeString((String) val);
+                } else if (val instanceof Number) {
+                    if (val instanceof Integer || val instanceof Long) {
+                        out.writeNumber(((Number) val).longValue());
+                    } else {
+                        out.writeNumber(((Number) val).doubleValue());
+                    }
+                } else {
+                    throw new IllegalArgumentException("The result type of the converter is not supported: " + val.getClass().getName());
+                }
             }
         });
     }

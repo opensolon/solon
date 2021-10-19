@@ -4,9 +4,9 @@ import com.alibaba.fastjson.serializer.ObjectSerializer;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializeWriter;
 import org.noear.solon.serialization.JsonRenderFactory;
-import org.noear.solon.serialization.JsonLongConverter;
-import org.noear.solon.serialization.JsonStringConverter;
+import org.noear.solon.serialization.JsonConverter;
 
+import java.math.BigDecimal;
 
 
 /**
@@ -19,19 +19,27 @@ public abstract class FastjsonRenderFactoryBase implements JsonRenderFactory {
         config().put(clz, encoder);
     }
 
-    @Override
-    public <T> void addConvertor(Class<T> clz, JsonLongConverter<T> converter) {
-        addEncoder(clz, (ser, obj, fieldName, fieldType, features) -> {
-            SerializeWriter out = ser.getWriter();
-            out.writeLong(converter.convert((T) obj));
-        });
-    }
 
     @Override
-    public <T> void addConvertor(Class<T> clz, JsonStringConverter<T> converter) {
+    public <T> void addConvertor(Class<T> clz, JsonConverter<T> converter) {
         addEncoder(clz, (ser, obj, fieldName, fieldType, features) -> {
+            Object val = converter.convert((T) obj);
+
             SerializeWriter out = ser.getWriter();
-            out.writeString(converter.convert((T) obj));
+
+            if (val == null) {
+                out.writeNull();
+            } else if (val instanceof String) {
+                out.writeString((String) val);
+            } else if (val instanceof Number) {
+                if (val instanceof Integer || val instanceof Long) {
+                    out.writeLong(((Number) val).longValue());
+                } else {
+                    out.writeDouble(((Number) val).doubleValue(), false);
+                }
+            } else {
+                throw new IllegalArgumentException("The result type of the converter is not supported: " + val.getClass().getName());
+            }
         });
     }
 }
