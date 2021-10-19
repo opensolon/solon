@@ -27,7 +27,7 @@ import java.util.*;
 public class CloudEventServiceWaterImp implements CloudEventServicePlus {
     static Logger log = LoggerFactory.getLogger(CloudEventServiceWaterImp.class);
 
-    private final String DEFAULT_DEAL = "Pckb6BpGzDE6RUIy";
+    private final String DEFAULT_SEAL = "Pckb6BpGzDE6RUIy";
     private String seal;
     private Map<String, CloudEventObserverEntity> instanceObserverMap = new HashMap<>();
     private Map<String, CloudEventObserverEntity> clusterObserverMap = new HashMap<>();
@@ -44,7 +44,7 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
         this.seal = WaterProps.getEventSeal();
 
         if (Utils.isEmpty(seal)) {
-            seal = DEFAULT_DEAL;
+            seal = DEFAULT_SEAL;
         }
     }
 
