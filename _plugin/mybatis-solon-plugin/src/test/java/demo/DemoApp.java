@@ -16,7 +16,7 @@ public class DemoApp {
                     //c.addInterceptor();
                 })
                 .onPluginLoadEnd(e->{
-                    //重新定义 SqlSessionFactoryBuilder
+                    //重新定义 SqlSessionFactoryBuilder（没有需要，最好别动它...）
                     //Aop.wrapAndPut(SqlSessionFactoryBuilder.class, new SqlSessionFactoryBuilderImpl());
                 })
                 .start(DemoApp.class, args);
