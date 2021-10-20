@@ -34,6 +34,7 @@ public class SqlAdapterDefault implements SqlAdapter {
     protected Configuration config;
     protected SqlSessionFactory factory;
     protected List<String> mappers = new ArrayList<>();
+    protected SqlSessionFactoryBuilder factoryBuilder;
 
     /**
      * 构建Sql工厂适配器，使用默认的 typeAliases 和 mappers 配置
@@ -47,6 +48,7 @@ public class SqlAdapterDefault implements SqlAdapter {
      * */
     public SqlAdapterDefault(BeanWrap dsWrap, Properties props) {
         this.dsWrap = dsWrap;
+        this.factoryBuilder = new SqlSessionFactoryBuilder();
 
         DataSource dataSource = dsWrap.raw();
         String dataSourceId = "ds-" + (dsWrap.name() == null ? "" : dsWrap.name());
@@ -66,6 +68,10 @@ public class SqlAdapterDefault implements SqlAdapter {
 
         //2.初始化（顺序不能乱）
         init0(props);
+
+        Aop.getAsyn(SqlSessionFactoryBuilder.class, bw -> {
+            factoryBuilder = bw.raw();
+        });
     }
 
     protected void initConfiguration(Environment environment){
@@ -159,7 +165,7 @@ public class SqlAdapterDefault implements SqlAdapter {
     @Override
     public SqlSessionFactory getFactory() {
         if (factory == null) {
-            factory = new SqlSessionFactoryBuilder().build(config);
+            factory = factoryBuilder.build(config);
         }
 
         return factory;
