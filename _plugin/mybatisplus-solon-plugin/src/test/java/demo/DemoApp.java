@@ -1,8 +1,10 @@
 package demo;
 
 import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.core.MybatisSqlSessionFactoryBuilder;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import demo.dso.MybatisSqlSessionFactoryBuilderImpl;
 import demo.dso.service.UserService;
 import org.apache.ibatis.session.Configuration;
 import org.noear.solon.SolonBuilder;
@@ -20,6 +22,10 @@ public class DemoApp {
                     MybatisPlusInterceptor plusInterceptor = new MybatisPlusInterceptor();
                     plusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
                     e.addInterceptor(plusInterceptor);
+                })
+                .onPluginLoadEnd(e -> {
+                    //重新定义 SqlSessionFactoryBuilder
+                    //Aop.wrapAndPut(MybatisSqlSessionFactoryBuilder.class, new MybatisSqlSessionFactoryBuilderImpl());
                 })
                 .start(DemoApp.class, args);
 
