@@ -85,7 +85,7 @@ public class SqlAdapterDefault implements SqlAdapter {
                     String key = (String) k;
                     String val = (String) v;
 
-                    if (key.startsWith("typeAliases[")) {
+                    if (key.startsWith("typeAliases[") || key.equals("typeAliases")) {
                         if (key.endsWith(".class")) {
                             //type class
                             Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
@@ -106,7 +106,7 @@ public class SqlAdapterDefault implements SqlAdapter {
                     String key = (String) k;
                     String val = (String) v;
 
-                    if (key.startsWith("mappers[")) {
+                    if (key.startsWith("mappers[") || key.equals("mappers")) {
                         if (val.endsWith(".xml")) {
                             //mapper xml
                             addMappersByXml(val);
