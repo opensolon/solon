@@ -83,18 +83,25 @@ public class SqlAdapterDefault implements SqlAdapter {
             props.forEach((k, v) -> {
                 if (k instanceof String && v instanceof String) {
                     String key = (String) k;
-                    String val = (String) v;
+                    String valStr = (String) v;
 
                     if (key.startsWith("typeAliases[") || key.equals("typeAliases")) {
-                        if (key.endsWith(".class")) {
-                            //type class
-                            Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
-                            if (clz != null) {
-                                getConfig().getTypeAliasRegistry().registerAlias(clz);
+                        for (String val : valStr.split(",")) {
+                            val = val.trim();
+                            if(val.length() == 0){
+                                continue;
                             }
-                        } else {
-                            //package
-                            getConfig().getTypeAliasRegistry().registerAliases(val);
+
+                            if (val.endsWith(".class")) {
+                                //type class
+                                Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
+                                if (clz != null) {
+                                    getConfig().getTypeAliasRegistry().registerAlias(clz);
+                                }
+                            } else {
+                                //package
+                                getConfig().getTypeAliasRegistry().registerAliases(val);
+                            }
                         }
                     }
                 }
@@ -104,24 +111,31 @@ public class SqlAdapterDefault implements SqlAdapter {
             props.forEach((k, v) -> {
                 if (k instanceof String && v instanceof String) {
                     String key = (String) k;
-                    String val = (String) v;
+                    String valStr = (String) v;
 
                     if (key.startsWith("mappers[") || key.equals("mappers")) {
-                        if (val.endsWith(".xml")) {
-                            //mapper xml
-                            addMappersByXml(val);
-                            mappers.add(val);
-                        } else if (val.endsWith(".class")) {
-                            //mapper class
-                            Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
-                            if (clz != null) {
-                                getConfig().addMapper(clz);
+                        for (String val : valStr.split(",")) {
+                            val = val.trim();
+                            if(val.length() == 0){
+                                continue;
+                            }
+
+                            if (val.endsWith(".xml")) {
+                                //mapper xml
+                                addMappersByXml(val);
+                                mappers.add(val);
+                            } else if (val.endsWith(".class")) {
+                                //mapper class
+                                Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
+                                if (clz != null) {
+                                    getConfig().addMapper(clz);
+                                    mappers.add(val);
+                                }
+                            } else {
+                                //package
+                                getConfig().addMappers(val);
                                 mappers.add(val);
                             }
-                        } else {
-                            //package
-                            getConfig().addMappers(val);
-                            mappers.add(val);
                         }
                     }
                 }
