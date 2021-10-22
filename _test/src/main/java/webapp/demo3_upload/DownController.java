@@ -4,7 +4,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.core.handle.DownloadedFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -19,10 +19,10 @@ import java.nio.charset.StandardCharsets;
 @Controller
 public class DownController {
     @Mapping("f1")
-    public UploadedFile down() {
+    public DownloadedFile down() {
         InputStream stream = new ByteArrayInputStream("{code:1}".getBytes(StandardCharsets.UTF_8));
 
-        UploadedFile file = new UploadedFile("text/json", stream, "没有耳多 test.json");
+        DownloadedFile file = new DownloadedFile("text/json", stream, "没有耳多 test.json");
 
         return file;
     }

@@ -675,7 +675,7 @@ public abstract class Context {
     /**
      * 输出为文件
      */
-    public void outputAsFile(UploadedFile file) throws IOException {
+    public void outputAsFile(DownloadedFile file) throws IOException {
         if (Utils.isNotEmpty(file.contentType)) {
             contentType(file.contentType);
         }
