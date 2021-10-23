@@ -7,18 +7,25 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.5.49</version>
+        <version>1.5.50</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.serialization.thrift</artifactId>
+    <groupId>org.noear.hatch</groupId>
+    <artifactId>nami.coder.thrift</artifactId>
     <packaging>jar</packaging>
-
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.serialization</artifactId>
+            <artifactId>solon</artifactId>
+            <version>${solon.ver}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>nami</artifactId>
+            <version>${solon.ver}</version>
         </dependency>
     </dependencies>
 

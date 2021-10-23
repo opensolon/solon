@@ -7,17 +7,23 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.5.49</version>
+        <version>1.5.50</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.boot.jdkhttp</artifactId>
+    <groupId>org.noear.hatch</groupId>
+    <artifactId>solon.boot.reactor-netty</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor.netty</groupId>
+            <artifactId>reactor-netty-http</artifactId>
+            <version>1.0.7</version>
         </dependency>
     </dependencies>
 

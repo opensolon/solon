@@ -6,7 +6,7 @@
 
     <groupId>org.noear.bundle</groupId>
     <artifactId>solon-render-bundle</artifactId>
-    <version>1.5.49</version>
+    <version>1.5.50</version>
     <packaging>pom</packaging>
 
 
@@ -213,21 +213,14 @@
     </build>
 
     <modules>
-
-        <module>../../_extend/solon.serialization.hessian</module>
-        <!--        <module>../../_extend/solon.serialization.thrift</module>-->
-
         <module>../../_extend/solon.serialization</module>
 
         <module>../../_extend/solon.serialization.fastjson</module>
         <module>../../_extend/solon.serialization.jackson</module>
         <module>../../_extend/solon.serialization.gson</module>
         <module>../../_extend/solon.serialization.snack3</module>
-        <module>../../_extend/solon.serialization.thrift</module>
-        <module>../../_extend/solon.serialization.avro</module>
+        <module>../../_extend/solon.serialization.hessian</module>
         <module>../../_extend/solon.serialization.protostuff</module>
-        <!--        <module>../../_extend/solon.serialization.jsoniter</module>-->
-        <!--        <module>../../_extend/solon.serialization.xstream</module>-->
 
         <module>../../_extend/solon.view.freemarker</module>
         <module>../../_extend/solon.view.jsp</module>

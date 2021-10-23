@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.5.49</version>
+        <version>1.5.50</version>
         <relativePath>../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -271,10 +271,6 @@
             <artifactId>solon.serialization.hessian</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.avro</artifactId>
-        </dependency>
 
 
         <dependency>
