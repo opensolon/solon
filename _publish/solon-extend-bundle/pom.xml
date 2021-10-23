@@ -20,6 +20,26 @@
         <java.version>1.8</java.version>
     </properties>
 
+    <modules>
+        <module>../../_extend/solon.extend.aspect</module>
+        <module>../../_extend/solon.extend.staticfiles</module>
+
+        <module>../../_extend/solon.extend.servlet</module>
+
+        <module>../../_extend/solon.extend.sessionstate.redis</module>
+        <module>../../_extend/solon.extend.sessionstate.local</module>
+        <module>../../_extend/solon.extend.sessionstate.jwt</module>
+
+        <module>../../_extend/solon.extend.properties.yaml</module>
+        <module>../../_extend/solon.extend.stop</module>
+        <module>../../_extend/solon.extend.jsr330</module>
+        <module>../../_extend/solon.extend.jsr303</module>
+        <module>../../_extend/solon.extend.schedule</module>
+        <module>../../_extend/solon.extend.cors</module>
+        <module>../../_extend/solon.extend.health</module>
+    </modules>
+
+
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -126,60 +146,6 @@
                 </repository>
             </distributionManagement>
         </profile>
-        <profile>
-            <id>internal</id>
-            <build>
-                <plugins>
-                    <!-- Source -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>3.0.1</version>
-                        <configuration>
-                            <attach>true</attach>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <!-- Javadoc -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.10.3</version>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                                <configuration>
-                                    <additionalparam>-Xdoclint:none</additionalparam>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>nexus-internal</id>
-                    <name>snapshots</name>
-                    <url>http://maven.digital.js/repository/maven-snapshots/</url>
-                </snapshotRepository>
-                <repository>
-                    <id>nexus-internal</id>
-                    <name>releases</name>
-                    <url>http://maven.digital.js/repository/maven-releases/</url>
-                </repository>
-            </distributionManagement>
-        </profile>
     </profiles>
 
     <build>
@@ -211,24 +177,4 @@
 
         </plugins>
     </build>
-
-    <modules>
-        <module>../../_extend/solon.extend.aspect</module>
-        <module>../../_extend/solon.extend.staticfiles</module>
-
-        <module>../../_extend/solon.extend.servlet</module>
-
-        <module>../../_extend/solon.extend.sessionstate.redis</module>
-        <module>../../_extend/solon.extend.sessionstate.local</module>
-        <module>../../_extend/solon.extend.sessionstate.jwt</module>
-
-        <module>../../_extend/solon.extend.properties.yaml</module>
-        <module>../../_extend/solon.extend.stop</module>
-        <module>../../_extend/solon.extend.jsr330</module>
-        <module>../../_extend/solon.extend.jsr303</module>
-        <module>../../_extend/solon.extend.schedule</module>
-        <module>../../_extend/solon.extend.cors</module>
-        <module>../../_extend/solon.extend.health</module>
-    </modules>
-
 </project>

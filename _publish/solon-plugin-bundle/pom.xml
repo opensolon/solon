@@ -19,6 +19,70 @@
         <java.version>1.8</java.version>
     </properties>
 
+
+    <modules>
+        <module>../../_plugin/solon-springboot-starter</module>
+
+        <module>../../_plugin/beetlsql-solon-plugin</module>
+        <module>../../_plugin/cron4j-solon-plugin</module>
+        <module>../../_plugin/dubbo-solon-plugin</module>
+        <module>../../_plugin/feign-solon-plugin</module>
+        <module>../../_plugin/graphql-solon-plugin</module>
+        <module>../../_plugin/hasor-solon-plugin</module>
+        <module>../../_plugin/luffy-solon-plugin</module>
+
+        <module>../../_plugin/weed3-solon-plugin</module>
+
+        <module>../../_plugin/mybatis-solon-plugin</module>
+        <module>../../_plugin/mybatis-sqlhelper-solon-plugin</module>
+        <module>../../_plugin/mybatis-pagehelper-solon-plugin</module>
+
+        <module>../../_plugin/mybatisplus-solon-plugin</module>
+
+        <module>../../_plugin/activerecord-solon-plugin</module>
+
+        <module>../../_plugin/quartz-solon-plugin</module>
+
+        <module>../../_plugin/shiro-solon-plugin</module>
+        <module>../../_plugin/sureness-solon-plugin</module>
+        <module>../../_plugin/sa-token-solon-plugin</module>
+
+        <module>../../_plugin/captcha-solon-plugin</module>
+        <module>../../_plugin/vaptcha-solon-plugin</module>
+
+        <!-- //////////////////////////////////////////////////// -->
+        <module>../../_plugin_cloud/aliyun-oss-solon-plugin</module>
+        <module>../../_plugin_cloud/aws-s3-solon-plugin</module>
+        <module>../../_plugin_cloud/qiniu-kodo-solon-plugin</module>
+
+        <module>../../_plugin_cloud/consul-solon-plugin</module>
+        <module>../../_plugin_cloud/nacos-solon-plugin</module>
+        <module>../../_plugin_cloud/water-solon-plugin</module>
+
+        <module>../../_plugin_cloud/rabbitmq-solon-plugin</module>
+        <module>../../_plugin_cloud/rocketmq-solon-plugin</module>
+
+        <module>../../_plugin_cloud/guava-solon-plugin</module>
+        <module>../../_plugin_cloud/sentinel-solon-plugin</module>
+
+        <module>../../_plugin_cloud/mqtt-solon-plugin</module>
+
+        <module>../../_plugin_cloud/snowflake-id-solon-plugin</module>
+
+        <module>../../_plugin_cloud/kafka-solon-plugin</module>
+        <module>../../_plugin_cloud/zookeeper-solon-plugin</module>
+
+        <module>../../_plugin_cloud/semaphore-solon-plugin</module>
+
+        <module>../../_plugin_cloud/xxl-job-solon-plugin</module>
+        <module>../../_plugin_cloud/opentracing-solon-plugin</module>
+
+        <module>../../_plugin_cloud/httputils-solon-plugin</module>
+
+        <module>../../_plugin_cloud/minio-solon-plugin</module>
+    </modules>
+
+
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -125,60 +189,6 @@
                 </repository>
             </distributionManagement>
         </profile>
-        <profile>
-            <id>internal</id>
-            <build>
-                <plugins>
-                    <!-- Source -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>3.0.1</version>
-                        <configuration>
-                            <attach>true</attach>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <!-- Javadoc -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.10.3</version>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                                <configuration>
-                                    <additionalparam>-Xdoclint:none</additionalparam>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>nexus-internal</id>
-                    <name>snapshots</name>
-                    <url>http://maven.digital.js/repository/maven-snapshots/</url>
-                </snapshotRepository>
-                <repository>
-                    <id>nexus-internal</id>
-                    <name>releases</name>
-                    <url>http://maven.digital.js/repository/maven-releases/</url>
-                </repository>
-            </distributionManagement>
-        </profile>
     </profiles>
 
     <build>
@@ -210,67 +220,4 @@
 
         </plugins>
     </build>
-
-    <modules>
-        <module>../../_plugin/solon-springboot-starter</module>
-
-        <module>../../_plugin/beetlsql-solon-plugin</module>
-        <module>../../_plugin/cron4j-solon-plugin</module>
-        <module>../../_plugin/dubbo-solon-plugin</module>
-        <module>../../_plugin/feign-solon-plugin</module>
-        <module>../../_plugin/graphql-solon-plugin</module>
-        <module>../../_plugin/hasor-solon-plugin</module>
-        <module>../../_plugin/luffy-solon-plugin</module>
-
-        <module>../../_plugin/weed3-solon-plugin</module>
-
-        <module>../../_plugin/mybatis-solon-plugin</module>
-        <module>../../_plugin/mybatis-sqlhelper-solon-plugin</module>
-        <module>../../_plugin/mybatis-pagehelper-solon-plugin</module>
-
-        <module>../../_plugin/mybatisplus-solon-plugin</module>
-
-        <module>../../_plugin/activerecord-solon-plugin</module>
-
-        <module>../../_plugin/quartz-solon-plugin</module>
-
-        <module>../../_plugin/shiro-solon-plugin</module>
-        <module>../../_plugin/sureness-solon-plugin</module>
-        <module>../../_plugin/sa-token-solon-plugin</module>
-
-        <module>../../_plugin/captcha-solon-plugin</module>
-        <module>../../_plugin/vaptcha-solon-plugin</module>
-
-        <!-- //////////////////////////////////////////////////// -->
-        <module>../../_plugin_cloud/aliyun-oss-solon-plugin</module>
-        <module>../../_plugin_cloud/aws-s3-solon-plugin</module>
-        <module>../../_plugin_cloud/qiniu-kodo-solon-plugin</module>
-
-        <module>../../_plugin_cloud/consul-solon-plugin</module>
-        <module>../../_plugin_cloud/nacos-solon-plugin</module>
-        <module>../../_plugin_cloud/water-solon-plugin</module>
-
-        <module>../../_plugin_cloud/rabbitmq-solon-plugin</module>
-        <module>../../_plugin_cloud/rocketmq-solon-plugin</module>
-
-        <module>../../_plugin_cloud/guava-solon-plugin</module>
-        <module>../../_plugin_cloud/sentinel-solon-plugin</module>
-
-        <module>../../_plugin_cloud/mqtt-solon-plugin</module>
-
-        <module>../../_plugin_cloud/snowflake-id-solon-plugin</module>
-
-        <module>../../_plugin_cloud/kafka-solon-plugin</module>
-        <module>../../_plugin_cloud/zookeeper-solon-plugin</module>
-
-        <module>../../_plugin_cloud/semaphore-solon-plugin</module>
-
-        <module>../../_plugin_cloud/xxl-job-solon-plugin</module>
-        <module>../../_plugin_cloud/opentracing-solon-plugin</module>
-
-        <module>../../_plugin_cloud/httputils-solon-plugin</module>
-
-        <module>../../_plugin_cloud/minio-solon-plugin</module>
-    </modules>
-
 </project>

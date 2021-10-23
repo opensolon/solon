@@ -20,6 +20,28 @@
         <java.version>1.8</java.version>
     </properties>
 
+
+    <modules>
+        <module>../../_extend/solon.serialization</module>
+
+        <module>../../_extend/solon.serialization.fastjson</module>
+        <module>../../_extend/solon.serialization.jackson</module>
+        <module>../../_extend/solon.serialization.gson</module>
+        <module>../../_extend/solon.serialization.snack3</module>
+        <module>../../_extend/solon.serialization.hessian</module>
+        <module>../../_extend/solon.serialization.protostuff</module>
+
+        <module>../../_extend/solon.view.freemarker</module>
+        <module>../../_extend/solon.view.jsp</module>
+        <module>../../_extend/solon.view.velocity</module>
+        <module>../../_extend/solon.view.thymeleaf</module>
+
+        <module>../../_extend/solon.view.enjoy</module>
+        <module>../../_extend/solon.view.beetl</module>
+        <!--        <module>../../solon.view.rocker</module>-->
+    </modules>
+
+
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -126,60 +148,6 @@
                 </repository>
             </distributionManagement>
         </profile>
-        <profile>
-            <id>internal</id>
-            <build>
-                <plugins>
-                    <!-- Source -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>3.0.1</version>
-                        <configuration>
-                            <attach>true</attach>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <!-- Javadoc -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.10.3</version>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                                <configuration>
-                                    <additionalparam>-Xdoclint:none</additionalparam>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>nexus-internal</id>
-                    <name>snapshots</name>
-                    <url>http://maven.digital.js/repository/maven-snapshots/</url>
-                </snapshotRepository>
-                <repository>
-                    <id>nexus-internal</id>
-                    <name>releases</name>
-                    <url>http://maven.digital.js/repository/maven-releases/</url>
-                </repository>
-            </distributionManagement>
-        </profile>
     </profiles>
 
     <build>
@@ -211,25 +179,4 @@
 
         </plugins>
     </build>
-
-    <modules>
-        <module>../../_extend/solon.serialization</module>
-
-        <module>../../_extend/solon.serialization.fastjson</module>
-        <module>../../_extend/solon.serialization.jackson</module>
-        <module>../../_extend/solon.serialization.gson</module>
-        <module>../../_extend/solon.serialization.snack3</module>
-        <module>../../_extend/solon.serialization.hessian</module>
-        <module>../../_extend/solon.serialization.protostuff</module>
-
-        <module>../../_extend/solon.view.freemarker</module>
-        <module>../../_extend/solon.view.jsp</module>
-        <module>../../_extend/solon.view.velocity</module>
-        <module>../../_extend/solon.view.thymeleaf</module>
-
-        <module>../../_extend/solon.view.enjoy</module>
-        <module>../../_extend/solon.view.beetl</module>
-        <!--        <module>../../solon.view.rocker</module>-->
-    </modules>
-
 </project>

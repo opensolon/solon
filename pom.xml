@@ -26,6 +26,8 @@
         <module>_publish/solon-render-bundle</module>
         <module>_publish/solon-extend-bundle</module>
 
+        <module>_publish/hatch-bundle</module>
+
         <module>_test</module>
 
 <!--        <module>_demo/_demo.solon_db_mybatis_fastjson</module>-->
