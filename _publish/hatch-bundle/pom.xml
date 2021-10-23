@@ -9,6 +9,11 @@
     <version>1.5.50</version>
     <packaging>pom</packaging>
 
+
+    <name>${project.artifactId}</name>
+    <description>Java project for solon</description>
+    <url>https://github.com/noear/solon</url>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -32,15 +37,6 @@
 <!--        <module>../../_hatch/solon.boot.tomcat</module>-->
     </modules>
 
-    <name>${project.artifactId}</name>
-    <description>Java project for solon</description>
-    <url>https://github.com/noear/solon</url>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
-    </properties>
 
     <licenses>
         <license>
