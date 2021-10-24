@@ -18,6 +18,11 @@ public interface CloudTraceService {
     String HEADER_FROM_ID_NAME();
 
     /**
+     * 设置跟踪标识
+     * */
+    void setTraceId(String traceId);
+
+    /**
      * 获取跟踪标识
      */
     String getTraceId();
