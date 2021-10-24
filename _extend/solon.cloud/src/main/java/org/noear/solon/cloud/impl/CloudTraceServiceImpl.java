@@ -4,8 +4,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.service.CloudTraceService;
 import org.noear.solon.core.handle.Context;
 
-import java.util.Map;
-
 /**
  * @author noear
  * @since 1.3
@@ -24,7 +22,7 @@ public class CloudTraceServiceImpl implements CloudTraceService {
     static final ThreadLocal<String> traceIdLocal = new InheritableThreadLocal<>();
 
     @Override
-    public void setTraceId(String traceId) {
+    public void setLocalTraceId(String traceId) {
         traceIdLocal.set(traceId);
     }
 
@@ -34,7 +32,7 @@ public class CloudTraceServiceImpl implements CloudTraceService {
 
         if (ctx == null) {
             String traceId = traceIdLocal.get();
-            if (traceId == null) {
+            if (Utils.isEmpty(traceId)) {
                 traceId = Utils.guid();
                 traceIdLocal.set(traceId);
             }

@@ -18,9 +18,9 @@ public interface CloudTraceService {
     String HEADER_FROM_ID_NAME();
 
     /**
-     * 设置跟踪标识
+     * 设置当前线程的跟踪标识
      * */
-    void setTraceId(String traceId);
+    void setLocalTraceId(String traceId);
 
     /**
      * 获取跟踪标识
