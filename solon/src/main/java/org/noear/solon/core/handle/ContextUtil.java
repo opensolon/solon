@@ -14,7 +14,7 @@ public class ContextUtil {
 
     public static final String contentTypeDef = "text/plain;charset=UTF-8";
 
-    private final static ThreadLocal<Context> threadLocal = new ThreadLocal<>();
+    private final static ThreadLocal<Context> threadLocal = new InheritableThreadLocal<>();
 
     /**
      * 设置当前线程的上下文
