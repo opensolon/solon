@@ -50,6 +50,8 @@ public class CloudLogServiceWaterImp implements CloudLogService {
         org.noear.water.log.LogEvent log = new org.noear.water.log.LogEvent();
 
         log.group = Solon.cfg().appGroup();
+        log.app_name = Solon.cfg().appName();
+
         log.logger = loggerName;
         log.level = (logEvent.getLevel().code / 10);
         log.content = LogHelper.contentAsString(logEvent.getContent());
@@ -59,15 +61,16 @@ public class CloudLogServiceWaterImp implements CloudLogService {
             log.tag1 = logEvent.getMetainfo().get("tag1");
             log.tag2 = logEvent.getMetainfo().get("tag2");
             log.tag3 = logEvent.getMetainfo().get("tag3");
+            log.tag4 = logEvent.getMetainfo().get("tag4");
         }
 
         if(logEvent.getLoggerName().contains(".")){
             log.class_name = logEvent.getLoggerName();
         }
 
+        log.thread_name = Thread.currentThread().getName();
         log.trace_id = WaterClient.waterTraceId();
         log.from = WaterClient.localServiceHost();
-        log.thread_name = Thread.currentThread().getName();
 
         log.log_date = datetime.getDate();
         log.log_fulltime = datetime.getFulltime();
