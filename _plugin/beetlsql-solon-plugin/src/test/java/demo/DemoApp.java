@@ -15,6 +15,8 @@ public class DemoApp {
                     //c.addIdAutoGen()
                     //c.setDbStyle(MySqlStyle.class);
                     //c.addInterceptor();
-                }).start(DemoApp.class, args);
+                }).start(DemoApp.class, args, x -> {
+                    x.cfg().loadAdd("demo.yml");
+                });
     }
 }
