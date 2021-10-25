@@ -1,11 +1,11 @@
 package org.noear.solon.cloud.integration;
 
-import org.noear.nami.NamiManager;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.annotation.CloudBreaker;
 import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.cloud.impl.*;
+import org.noear.solon.cloud.trace.NamiTraceFilter;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
@@ -56,13 +56,10 @@ public class XPluginImp implements Plugin {
             CloudManager.register(new CloudTraceServiceImpl());
         }
 
-        //为Nami添加跟踪标识
-        String serviceAndAddress = Instance.local().service() + "@" + Instance.local().address();
-        NamiManager.reg(inv -> {
-            inv.headers.put(CloudClient.trace().HEADER_TRACE_ID_NAME(), CloudClient.trace().getTraceId());
-            inv.headers.put(CloudClient.trace().HEADER_FROM_ID_NAME(), serviceAndAddress);
-            return inv.invoke();
-        });
+        //有些场景会排除掉nami
+        if (Utils.loadClass("org.noear.nami.NamiManager") != null) {
+            NamiTraceFilter.register();
+        }
     }
 
     @Override

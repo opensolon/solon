@@ -37,6 +37,17 @@ public class Instance implements Serializable {
         return address;
     }
 
+    /**
+     * 服务和地址(service@ip:port)
+     * */
+    private String serviceAndAddress;
+    public String serviceAndAddress() {
+        if (serviceAndAddress == null) {
+            serviceAndAddress = service() + "@" + address();
+        }
+
+        return serviceAndAddress;
+    }
 
     private String protocol;
 
