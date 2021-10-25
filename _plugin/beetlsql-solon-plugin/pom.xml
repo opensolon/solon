@@ -29,7 +29,7 @@
         <dependency>
             <groupId>com.ibeetl</groupId>
             <artifactId>beetlsql</artifactId>
-            <version>3.10.1-RELEASE</version>
+            <version>3.11.0-RELEASE</version>
         </dependency>
 
         <dependency>
