@@ -15,18 +15,14 @@ public class ConsoleAppender extends OutputStreamAppender {
     }
 
     /**
-     * 是否允许添加
-     * */
-    @Override
-    protected boolean allowAppend() {
-        return Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode();
-    }
-
-    /**
      * 获取默认级别
-     * */
+     */
     @Override
     public Level getDefaultLevel() {
-        return Level.TRACE;
+        if (Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode()) {
+            return Level.TRACE;
+        } else {
+            return Level.INFO;
+        }
     }
 }
