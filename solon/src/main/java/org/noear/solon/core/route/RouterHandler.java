@@ -1,5 +1,6 @@
 package org.noear.solon.core.route;
 
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Endpoint;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
@@ -12,14 +13,15 @@ import org.noear.solon.core.handle.Handler;
  * */
 public class RouterHandler implements Handler {
     private Router router;
-    public RouterHandler(Router router){
+
+    public RouterHandler(Router router) {
         bind(router);
     }
 
     /**
      * 绑定路由器
-     * */
-    public void bind(Router router){
+     */
+    public void bind(Router router) {
         this.router = router;
     }
 
@@ -49,6 +51,7 @@ public class RouterHandler implements Handler {
             _throwabled = true;
             if (ctx.errors == null) {
                 ctx.errors = e;
+                EventBus.push(e);
             }
             throw e;
         } finally {
@@ -70,7 +73,7 @@ public class RouterHandler implements Handler {
 
     /**
      * 唯一处理（用于主处理）
-     * */
+     */
     protected boolean handleOne(Context ctx, Endpoint endpoint) throws Throwable {
         Handler h = router.matchOne(ctx, endpoint);
 
@@ -84,9 +87,9 @@ public class RouterHandler implements Handler {
 
     /**
      * 多项目处理（用于拦截器）
-     * */
+     */
     protected void handleMultiple(Context ctx, Endpoint endpoint) throws Throwable {
-        for(Handler h: router.matchAll(ctx,endpoint)){
+        for (Handler h : router.matchAll(ctx, endpoint)) {
             h.handle(ctx);
         }
     }
