@@ -525,7 +525,9 @@ public class SolonApp implements HandlerSlots {
             ex = Utils.throwableUnwrap(ex);
 
             //推送事件
-            EventBus.push(ex);
+            if (ex.equals(x.errors) == false) {
+                EventBus.push(ex);
+            }
 
             //如果未处理，尝试处理
             if (x.getHandled() == false) {

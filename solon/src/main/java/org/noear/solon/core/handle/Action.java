@@ -8,7 +8,6 @@ import org.noear.solon.ext.DataThrowable;
 import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.util.PathAnalyzer;
 import org.noear.solon.annotation.Mapping;
-import org.noear.solon.ext.RunnableEx;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -106,8 +105,8 @@ public class Action extends HandlerAide implements Handler {
 
     /**
      * 映射（可能为Null）
-     * */
-    public Mapping mapping(){
+     */
+    public Mapping mapping() {
         return mMapping;
     }
 
@@ -127,14 +126,14 @@ public class Action extends HandlerAide implements Handler {
 
     /**
      * 生产者
-     * */
+     */
     public String produces() {
         return mProduces;
     }
 
     /**
      * 消息费
-     * */
+     */
     public String consumes() {
         return mConsumes;
     }
@@ -171,17 +170,30 @@ public class Action extends HandlerAide implements Handler {
 
             invoke0(c, obj);
         } catch (Throwable e) {
+            c.setHandled(true); //停止处理
+
             e = Utils.throwableUnwrap(e);
-            c.errors = e;
 
-            //1.推送事件（先于渲染，可做自定义渲染）
-            EventBus.push(e);
+            if (e instanceof DataThrowable) {
+                DataThrowable ex = (DataThrowable) e;
 
-            //2.渲染
-            if (c.result == null) {
-                renderDo(e, c);
+                if (ex.data() == null) {
+                    renderDo(ex, c);
+                } else {
+                    renderDo(ex.data(), c);
+                }
             } else {
-                renderDo(c.result, c);
+                c.errors = e;
+
+                //1.推送事件（先于渲染，可做自定义渲染）
+                EventBus.push(e);
+
+                //2.渲染
+                if (c.result == null) {
+                    renderDo(e, c);
+                } else {
+                    renderDo(c.result, c);
+                }
             }
         }
     }
@@ -189,7 +201,7 @@ public class Action extends HandlerAide implements Handler {
 
     /**
      * 执行内部调用
-     * */
+     */
     protected void invoke0(Context c, Object obj) throws Throwable {
 
         /**
@@ -198,9 +210,9 @@ public class Action extends HandlerAide implements Handler {
          * 3.确保最多一次渲染
          * */
 
-        //前置处理（最多一次渲染）
-        if (mIsMain) {
-            handleDo(c, () -> {
+        try {
+            //前置处理（最多一次渲染）
+            if (mIsMain) {
                 if (bAide != null) {
                     for (Handler h : bAide.befores) {
                         h.handle(c);
@@ -210,13 +222,12 @@ public class Action extends HandlerAide implements Handler {
                 for (Handler h : befores) {
                     h.handle(c);
                 }
-            });
-        }
+            }
 
 
-        //主体处理（最多一次渲染）//非主体处理 或 未处理
-        if (mIsMain == false || c.getHandled() == false) {
-            handleDo(c, () -> {
+            //主体处理（最多一次渲染）//非主体处理 或 未处理
+            if (mIsMain == false || c.getHandled() == false) {
+
                 //获取path var
                 if (pathAnalyzer != null) {
                     Matcher pm = pathAnalyzer.matcher(c.path());
@@ -242,53 +253,26 @@ public class Action extends HandlerAide implements Handler {
 
                     renderDo(tmp, c);
                 }
-            });
-        }
-
-        //后置处理
-        if (mIsMain) {
-            if (bAide != null) {
-                for (Handler h : bAide.afters) {
-                    h.handle(c);
-                }
             }
-
-            for (Handler h : afters) {
-                h.handle(c);
-            }
-        }
-    }
-
-    /**
-     * 执行内部处理
-     * */
-    protected void handleDo(Context c, RunnableEx runnable) throws Throwable {
-        try {
-            runnable.run();
         } catch (Throwable e) {
-            c.setHandled(true); //停止处理
-
             e = Utils.throwableUnwrap(e);
-
-            if (e instanceof DataThrowable) {
-                DataThrowable ex = (DataThrowable)e;
-
-                if (ex.data() == null) {
-                    renderDo(ex, c);
-                } else {
-                    renderDo(ex.data(), c);
-                }
-            } else {
+            if (e instanceof DataThrowable == false) {
                 c.errors = e;
+                throw e;
+            } else {
+                renderDo(e, c);
+            }
+        } finally {
+            //后置处理
+            if (mIsMain) {
+                if (bAide != null) {
+                    for (Handler h : bAide.afters) {
+                        h.handle(c);
+                    }
+                }
 
-                //1.推送事件（先于渲染，可做自定义渲染）
-                EventBus.push(e);
-
-                //2.渲染
-                if (c.result == null) {
-                    renderDo(e, c);
-                } else {
-                    renderDo(c.result, c);
+                for (Handler h : afters) {
+                    h.handle(c);
                 }
             }
         }
@@ -329,7 +313,7 @@ public class Action extends HandlerAide implements Handler {
 
         if (bRender == null) {
             //没有代理时，跳过 DataThrowable
-            if(obj instanceof DataThrowable){
+            if (obj instanceof DataThrowable) {
                 return;
             }
 

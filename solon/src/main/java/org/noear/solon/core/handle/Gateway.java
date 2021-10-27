@@ -6,7 +6,6 @@ import org.noear.solon.annotation.Note;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.PathUtil;
-import org.noear.solon.ext.RunnableEx;
 import org.noear.solon.ext.DataThrowable;
 
 import java.util.*;
@@ -101,7 +100,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             return;
         }
 
-        if(obj instanceof DataThrowable){
+        if (obj instanceof DataThrowable) {
             return;
         }
 
@@ -117,12 +116,12 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
      * 添加过滤器（按先进后出策略执行）
      *
      * @param filter 过滤器
-     * */
+     */
     public void filter(Filter filter) {
         filter(0, filter);
     }
 
-    public void filter(int index,Filter filter) {
+    public void filter(int index, Filter filter) {
         filterList.add(new FilterEntity(index, filter));
         filterList.sort(Comparator.comparingInt(f -> f.index));
     }
@@ -135,16 +134,30 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
         try {
             new FilterChainNode(filterList).doFilter(c);
         } catch (Throwable e) {
-            c.errors = e;
+            c.setHandled(true); //停止处理
 
-            //1.推送事件（先于渲染，可做自定义渲染）
-            EventBus.push(e);
+            e = Utils.throwableUnwrap(e);
 
-            //2.渲染
-            if (c.result == null) {
-                render(e, c);
+            if (e instanceof DataThrowable) {
+                DataThrowable ex = (DataThrowable) e;
+
+                if (ex.data() == null) {
+                    render(ex, c);
+                } else {
+                    render(ex.data(), c);
+                }
             } else {
-                render(c.result, c);
+                c.errors = e;
+
+                //1.推送事件（先于渲染，可做自定义渲染）
+                EventBus.push(e);
+
+                //2.渲染
+                if (c.result == null) {
+                    render(e, c);
+                } else {
+                    render(c.result, c);
+                }
             }
         }
     }
@@ -177,64 +190,37 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
          * */
 
         //前置处理（最多一次渲染）
-        handleDo(c, () -> {
+        try {
             for (Handler h : befores) {
                 h.handle(c);
             }
-        });
 
-        //主处理（最多一次尝染）
-        if (c.getHandled() == false) {
-            handleDo(c, () -> {
+            //主处理（最多一次尝染）
+            if (c.getHandled() == false) {
                 if (is_action) {
                     ((Action) m).invoke(c, obj);
                 } else {
                     m.handle(c);
                 }
-            });
-        } else {
-            render(c.result, c);
-        }
-
-        //后置处理（确保不受前面的异常影响）
-        for (Handler h : afters) {
-            h.handle(c);
-        }
-    }
-
-    protected void handleDo(Context c, RunnableEx runnable) throws Throwable {
-        try {
-            runnable.run();
-        } catch (Throwable e) {
-            c.setHandled(true); //停止处理
-
-            e = Utils.throwableUnwrap(e);
-
-            if (e instanceof DataThrowable) {
-                DataThrowable ex = (DataThrowable) e;
-
-                if (ex.data() == null) {
-                    render(ex, c);
-                } else {
-                    render(ex.data(), c);
-                }
             } else {
+                render(c.result, c);
+            }
+        } catch (Throwable e) {
+            e = Utils.throwableUnwrap(e);
+            if (e instanceof DataThrowable == false) {
                 c.errors = e;
+                throw e;
+            } else {
+                render(e, c);
+            }
+        } finally {
 
-                //1.推送事件（先于渲染，可做自定义渲染）
-                EventBus.push(e);
-
-                //2.渲染
-                if (c.result == null) {
-                    render(e, c);
-                } else {
-                    render(c.result, c);
-                }
+            //后置处理（确保不受前面的异常影响）
+            for (Handler h : afters) {
+                h.handle(c);
             }
         }
     }
-
-
 
 
     /**
@@ -261,7 +247,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
 
     /**
      * remoting 的 bean 建议一个个添加，并同时添加前缀 path
-     * */
+     */
     @Note("添加接口")
     public void addBeans(Predicate<BeanWrap> where, boolean remoting) {
         Aop.beanOnloaded(() -> {
