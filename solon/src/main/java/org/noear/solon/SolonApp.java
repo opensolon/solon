@@ -686,6 +686,21 @@ public class SolonApp implements HandlerSlots {
         return this;
     }
 
+    private boolean _enableErrorAutoprint = true;
+    /**
+     * 是否已启用异常自动打印
+     * */
+    public boolean enableErrorAutoprint(){
+        return _enableErrorAutoprint;
+    }
+
+    /**
+     * 启用异常自动打印
+     * */
+    public void enableErrorAutoprint(boolean enable){
+        _enableErrorAutoprint = enable;
+    }
+
 
     private boolean _enableSessionState = true;
 

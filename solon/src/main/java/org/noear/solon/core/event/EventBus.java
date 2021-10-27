@@ -45,6 +45,11 @@ public final class EventBus {
 
     private static void push0(Object event) {
         if (event instanceof Throwable) {
+
+            if (Solon.global().enableErrorAutoprint()) {
+                ((Throwable) event).printStackTrace();
+            }
+
             //异常分发
             push1(sThrow, event);
         } else {
