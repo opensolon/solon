@@ -9,7 +9,7 @@ import org.noear.solon.core.handle.Context;
 public class TestApp {
     public static void main(String[] args) {
         Solon.start(TestApp.class, args, app -> {
-//            app.filter((ctx, chain) -> {
+//            app.filter((ctx, chain) -> { //方案1
 //                try {
 //                    chain.doFilter(ctx);
 //                } catch (Exception e) {
@@ -28,6 +28,7 @@ public class TestApp {
                 }
             });
         }).onError(e->{
+            //方案2
             e.printStackTrace();
 
             Context ctx = Context.current();
