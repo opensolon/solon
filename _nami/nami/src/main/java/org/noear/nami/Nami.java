@@ -192,7 +192,7 @@ public class Nami {
         }
 
         if (Void.TYPE.equals(returnType)) {
-            if (_result.body() == null || _result.body().length < 50) {
+            if (_result.body() == null || _result.body().length < 20) {
                 return null;
             }
         }

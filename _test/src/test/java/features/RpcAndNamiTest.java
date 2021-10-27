@@ -6,6 +6,8 @@ import org.noear.nami.Nami;
 import org.noear.nami.annotation.NamiClient;
 import org.noear.nami.coder.hessian.HessianDecoder;
 import org.noear.nami.coder.hessian.HessianEncoder;
+import org.noear.nami.coder.snack3.SnackDecoder;
+import org.noear.nami.coder.snack3.SnackEncoder;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import webapp.demo5_rpc.protocol.UserModel;
@@ -135,8 +137,14 @@ public class RpcAndNamiTest {
 
     @Test
     public void test6_throw() {
+        UserService userService5 = Nami.builder()
+                .url("http://localhost:8080/demo5/user/")
+                .decoder(SnackDecoder.instance)
+                .encoder(SnackEncoder.instance)
+                .create(UserService.class);
+
         try {
-            userService.showError();
+            userService5.showError();
 
             System.out.println("error: 这里应该进不来");
         } catch (RuntimeException e) {
