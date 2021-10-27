@@ -9,13 +9,13 @@ import org.noear.solon.core.handle.Context;
 public class TestApp {
     public static void main(String[] args) {
         Solon.start(TestApp.class, args, app -> {
-            app.enableErrorAutoprint(false);
+            //app.enableErrorAutoprint(false);
 
             app.filter((ctx, chain) -> { //方案1
                 try {
                     chain.doFilter(ctx);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                     ctx.output("我累了...休息下");
                 }
             });
