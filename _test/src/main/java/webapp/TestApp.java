@@ -133,6 +133,6 @@ public class TestApp {
         });
 
         //全局添加跨域处理
-        app.before(new CrossHandler().allowOrigin("*"));
+        app.before(new CrossHandler().allowedOrigins("*"));
     }
 }
