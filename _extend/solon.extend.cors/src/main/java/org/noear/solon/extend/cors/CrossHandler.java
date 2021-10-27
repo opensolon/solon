@@ -106,14 +106,18 @@ public class CrossHandler implements Handler {
         }
 
         //设定 allow origin
-        if (allowCredentials) {
+        if (Utils.isNotEmpty(allowedOrigins)) {
             if ("*".equals(allowedOrigins) || allowedOrigins.contains(origin)) {
                 ctx.headerSet("Access-Control-Allow-Credentials", "true");
                 ctx.headerSet("Access-Control-Allow-Origin", origin);
             }
-        } else {
-            ctx.headerSet("Access-Control-Allow-Origin", allowedOrigins);
         }
+
+
+        if (allowCredentials) {
+            ctx.headerSet("Access-Control-Allow-Credentials", "true");
+        }
+
 
         if (Utils.isNotEmpty(exposedHeaders)) {
             ctx.headerSet("Access-Control-Expose-Headers", exposedHeaders);
