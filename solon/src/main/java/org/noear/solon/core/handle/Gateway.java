@@ -104,11 +104,7 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             return;
         }
 
-        //最多一次渲染
-        c.setRendered(true);
-
         c.result = obj;
-
         c.render(obj);
     }
 

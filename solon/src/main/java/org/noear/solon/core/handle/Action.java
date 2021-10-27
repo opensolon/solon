@@ -323,9 +323,6 @@ public class Action extends HandlerAide implements Handler {
                 return;
             }
 
-            //最多一次渲染
-            c.setRendered(true);
-
             if (obj instanceof Throwable) {
                 if (c.remoting()) {
                     c.render(obj);

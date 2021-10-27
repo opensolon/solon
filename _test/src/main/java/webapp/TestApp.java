@@ -46,7 +46,7 @@ public class TestApp {
 
         //构建方式
         SolonApp app = new SolonBuilder().onError(e -> {
-            e.printStackTrace();
+            //e.printStackTrace();
         }).onAppInitEnd(e -> {
             StaticMappings.add("/", new ExtendStaticRepository());
             System.out.println("1.初始化完成");

@@ -842,7 +842,7 @@ public abstract class Context {
      */
     public final void render(Object obj) throws Throwable {
         //ModelAndView or Data
-        setRendered(true);
+        setRendered(true); //用于后续做最多一次渲染的控制
         RenderManager.global.render(obj, this);
     }
 

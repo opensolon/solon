@@ -531,7 +531,9 @@ public class SolonApp implements HandlerSlots {
 
             //如果未处理，尝试处理
             if (x.getHandled() == false) {
-                x.status(500);
+                if (x.status() < 400) {
+                    x.status(500);
+                }
                 x.setHandled(true);
             }
 
