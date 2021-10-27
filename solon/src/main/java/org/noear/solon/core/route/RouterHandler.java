@@ -32,27 +32,38 @@ public class RouterHandler implements Handler {
         }
 
         boolean _handled = false;
+        boolean _throwabled = false;
 
-        //前置处理（支持多代理）
-        handleMultiple(ctx, Endpoint.before);
+        try {
+            //前置处理（支持多代理）
+            handleMultiple(ctx, Endpoint.before);
 
-        //主体处理
-        if (ctx.getHandled() == false) {
-            //（仅支持唯一代理）
-            _handled = handleOne(ctx, Endpoint.main);
-            //（设定处理状态，便于 after 获取状态）
-            ctx.setHandled(_handled);
-        }
+            //主体处理
+            if (ctx.getHandled() == false) {
+                //（仅支持唯一代理）
+                _handled = handleOne(ctx, Endpoint.main);
+                //（设定处理状态，便于 after 获取状态）
+                ctx.setHandled(_handled);
+            }
+        } catch (Throwable e) {
+            _throwabled = true;
+            if (ctx.errors == null) {
+                ctx.errors = e;
+            }
+            throw e;
+        } finally {
+            //后置处理（支持多代理）
+            handleMultiple(ctx, Endpoint.after); //前后不能反 （后置处理由内部进行状态控制）
 
-        //后置处理（支持多代理）
-        handleMultiple(ctx, Endpoint.after); //前后不能反 （后置处理由内部进行状态控制）
-
-        //汇总状态
-        if (ctx.status() < 1) {
-            if (_handled) {
-                ctx.status(200);
-            } else {
-                ctx.status(404);
+            //汇总状态
+            if (_throwabled == false) {
+                if (ctx.status() < 1) {
+                    if (_handled) {
+                        ctx.status(200);
+                    } else {
+                        ctx.status(404);
+                    }
+                }
             }
         }
     }
