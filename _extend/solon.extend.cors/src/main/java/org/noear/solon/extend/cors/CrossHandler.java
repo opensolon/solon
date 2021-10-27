@@ -16,8 +16,8 @@ public class CrossHandler implements Handler {
 
     protected String allowOrigin = "*";
 
-    protected String allowMethods;
-    protected String allowHeaders;
+    protected String allowMethods = "*";
+    protected String allowHeaders = "*";
     protected boolean allowCredentials;
 
     protected String exposeHeaders;
