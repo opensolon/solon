@@ -6,6 +6,7 @@ import org.noear.solon.SolonBuilder;
 import org.noear.solon.annotation.Import;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.core.ExtendLoader;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.extend.cors.CrossHandler;
 import org.noear.solon.extend.staticfiles.StaticMappings;
@@ -43,6 +44,8 @@ public class TestApp {
         if(Solon.global() != null){
             return;
         }
+
+
 
         //构建方式
         SolonApp app = new SolonBuilder().onError(e -> {
