@@ -32,6 +32,7 @@ public class TestApp {
 
                 //获得接口时长
                 long times = System.currentTimeMillis() - start;
+                System.out.println("用时："+ times);
             });
         });
     }
