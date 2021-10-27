@@ -244,12 +244,14 @@ public class NamiHandler implements InvocationHandler {
 
 
         //执行调用
-        return new Nami(config)
+        Object rst = new Nami(config)
                 .method(method)
                 .action(act)
                 .url(url, fun)
                 .call(headers, args, body)
                 .getObject(type);
+
+        return rst;//调试时，方便看
     }
 
     private Map<String, String> buildPathKeys(String path) {

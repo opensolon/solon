@@ -47,7 +47,7 @@ public class RpcAndNamiTest {
     }
 
     @Test
-    public void test2_2() throws Exception{
+    public void test2_2() throws Exception {
         UserModel userModel = new UserModel();
         userModel.setId(101);
         userModel.setName("noear");
@@ -61,7 +61,7 @@ public class RpcAndNamiTest {
     }
 
     @Test
-    public void test2_3() throws Exception{
+    public void test2_3() throws Exception {
         UserModel userModel = new UserModel();
         userModel.setId(101);
         userModel.setName("noear");
@@ -131,5 +131,31 @@ public class RpcAndNamiTest {
         UserModel user = userService5.xxx(23);
         System.out.println(user);
         assert user.getId() == 23;
+    }
+
+    @Test
+    public void test6_throw() {
+        try {
+            userService.showError();
+
+            System.out.println("error: 这里应该进不来");
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            assert true;
+            return;
+        }
+
+        assert false;
+    }
+
+    @Test
+    public void test6_void() {
+        try {
+            userService.showVoid();
+            assert true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            assert false;
+        }
     }
 }

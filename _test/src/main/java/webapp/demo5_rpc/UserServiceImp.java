@@ -23,4 +23,14 @@ public class UserServiceImp implements UserService {
     public UserModel addUser(UserModel user) {
         return user;
     }
+
+    @Override
+    public void showError() {
+        throw new RuntimeException("我要出错");
+    }
+
+    @Override
+    public void showVoid() {
+
+    }
 }

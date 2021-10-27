@@ -12,4 +12,6 @@ public interface rockapi {
     Object test3();
     UserModel test4();
     List<UserModel> test5();
+
+    Object testerror();
 }

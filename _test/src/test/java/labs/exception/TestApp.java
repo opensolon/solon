@@ -26,6 +26,8 @@ public class TestApp {
                     ctx.output("Hello " + name);
                 }
             });
+        }).onError(e->{
+            e.printStackTrace();
         });
     }
 }

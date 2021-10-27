@@ -1,6 +1,5 @@
 package org.noear.solon.core.handle;
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;

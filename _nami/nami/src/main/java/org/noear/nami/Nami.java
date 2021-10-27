@@ -15,7 +15,7 @@ import java.util.Map;
  * @author noear
  * @since 1.0
  * */
-public class Nami{
+public class Nami {
     static final Logger log = LoggerFactory.getLogger(Nami.class);
 
     /**
@@ -176,9 +176,9 @@ public class Nami{
      * 获取结果（以string形式）
      */
     public String getString() {
-        if(_result == null){
+        if (_result == null) {
             return null;
-        }else {
+        } else {
             return _result.bodyAsString();
         }
     }
@@ -187,21 +187,24 @@ public class Nami{
      * 获取结果（返序列化为object）
      */
     public <T> T getObject(Type returnType) {
-        if(_result == null){
+        if (_result == null) {
             return null;
         }
 
         if (Void.TYPE.equals(returnType)) {
-            return null;
-        } else {
-            Decoder decoder = _config.getDecoder();
-
-            if (decoder == null) {
-                decoder = NamiManager.getDecoder(Constants.CONTENT_TYPE_JSON);
+            if (_result.body() == null || _result.body().length < 50) {
+                return null;
             }
-
-            return decoder.decode(_result, returnType);
         }
+
+
+        Decoder decoder = _config.getDecoder();
+
+        if (decoder == null) {
+            decoder = NamiManager.getDecoder(Constants.CONTENT_TYPE_JSON);
+        }
+
+        return decoder.decode(_result, returnType);
     }
 
     public static NamiBuilder builder() {

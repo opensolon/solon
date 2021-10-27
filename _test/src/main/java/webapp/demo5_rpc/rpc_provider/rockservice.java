@@ -65,4 +65,9 @@ public class rockservice implements rockapi {
 
         return list;
     }
+
+    @Override
+    public Object testerror() {
+        throw new RuntimeException("我出错了");
+    }
 }
