@@ -50,7 +50,7 @@ public class RouterHandler implements Handler {
         } catch (Throwable e) {
             _throwabled = true;
             if (ctx.errors == null) {
-                ctx.errors = e;
+                ctx.errors = e; //如果内部已经做了，就不需要了
                 EventBus.push(e);
             }
             throw e;
