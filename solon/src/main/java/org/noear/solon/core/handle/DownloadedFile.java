@@ -41,6 +41,12 @@ public class DownloadedFile {
         this.name = name;
     }
 
+    public DownloadedFile(String contentType, byte[] content, String name) {
+        this.contentType = contentType;
+        this.content = new ByteArrayInputStream(content);
+        this.name = name;
+    }
+
     /**
      * 将内容流迁移到..
      *
