@@ -256,11 +256,17 @@ public class Action extends HandlerAide implements Handler {
             }
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
-            if (e instanceof DataThrowable == false) {
-                c.errors = e;
-                throw e;
+
+            if (e instanceof DataThrowable) {
+                DataThrowable ex = (DataThrowable)e;
+                if (ex.data() == null) {
+                    renderDo(ex, c);
+                } else {
+                    renderDo(ex.data(), c);
+                }
             } else {
-                renderDo(e, c);
+                c.errors = e; //为 afters，留个参考
+                throw e;
             }
         } finally {
             //后置处理
@@ -324,13 +330,8 @@ public class Action extends HandlerAide implements Handler {
                 if (c.remoting()) {
                     c.render(obj);
                 } else {
-                    if (c.status() < 400) {
-                        c.status(500);
-                    }
-
-                    if (Solon.cfg().isDebugMode()) {
-                        c.output(Utils.getFullStackTrace(((Throwable) obj)));
-                    }
+                    c.setHandled(false); //透传到上传，让Filter 可以统一处理未知异常
+                    throw (Throwable) obj;
                 }
             } else {
                 c.render(obj);

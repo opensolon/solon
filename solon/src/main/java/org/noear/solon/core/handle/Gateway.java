@@ -207,11 +207,16 @@ public abstract class Gateway extends HandlerAide implements Handler, Render {
             }
         } catch (Throwable e) {
             e = Utils.throwableUnwrap(e);
-            if (e instanceof DataThrowable == false) {
-                c.errors = e;
-                throw e;
+            if (e instanceof DataThrowable) {
+                DataThrowable ex = (DataThrowable)e;
+                if (ex.data() == null) {
+                    render(ex, c);
+                } else {
+                    render(ex.data(), c);
+                }
             } else {
-                render(e, c);
+                c.errors = e; //为 afters，留个参考
+                throw e;
             }
         } finally {
 
