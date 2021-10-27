@@ -31,6 +31,9 @@ public class CrossHandler implements Handler {
         return this;
     }
 
+    /**
+     * 原点
+     */
     public CrossHandler allowedOrigins(String allowOrigin) {
         if (allowOrigin != null) {
             this.allowedOrigins = allowOrigin;
@@ -104,8 +107,10 @@ public class CrossHandler implements Handler {
 
         //设定 allow origin
         if (allowCredentials) {
-            ctx.headerSet("Access-Control-Allow-Credentials", "true");
-            ctx.headerSet("Access-Control-Allow-Origin", origin);
+            if ("*".equals(allowedOrigins) || allowedOrigins.contains(origin)) {
+                ctx.headerSet("Access-Control-Allow-Credentials", "true");
+                ctx.headerSet("Access-Control-Allow-Origin", origin);
+            }
         } else {
             ctx.headerSet("Access-Control-Allow-Origin", allowedOrigins);
         }
