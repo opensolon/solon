@@ -1,6 +1,7 @@
 package labs.exception;
 
 import org.noear.solon.Solon;
+import org.noear.solon.core.handle.Context;
 
 /**
  * @author noear 2021/10/27 created
@@ -12,7 +13,7 @@ public class TestApp {
 //                try {
 //                    chain.doFilter(ctx);
 //                } catch (Exception e) {
-//                    e.printStackTrace();
+//                    //e.printStackTrace();
 //                    ctx.output("我累了...休息下");
 //                }
 //            });
@@ -28,6 +29,13 @@ public class TestApp {
             });
         }).onError(e->{
             e.printStackTrace();
+
+            Context ctx = Context.current();
+            if(ctx != null){
+                ctx.setHandled(true);
+                ctx.setRendered(true);
+                ctx.output("我累了...休息下");
+            }
         });
     }
 }
