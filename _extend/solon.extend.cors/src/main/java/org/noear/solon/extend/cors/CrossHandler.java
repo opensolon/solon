@@ -20,6 +20,8 @@ public class CrossHandler implements Handler {
     protected String allowHeaders;
     protected boolean allowCredentials;
 
+    protected String exposeHeaders;
+
 
     public CrossHandler maxAge(int maxAge) {
         if (maxAge >= 0) {
@@ -49,6 +51,11 @@ public class CrossHandler implements Handler {
 
     public CrossHandler allowCredentials(boolean allowCredentials) {
         this.allowCredentials = allowCredentials;
+        return this;
+    }
+
+    public CrossHandler exposeHeaders(String exposeHeaders) {
+        this.exposeHeaders = exposeHeaders;
         return this;
     }
 
@@ -101,6 +108,10 @@ public class CrossHandler implements Handler {
             ctx.headerSet("Access-Control-Allow-Origin", origin);
         } else {
             ctx.headerSet("Access-Control-Allow-Origin", allowOrigin);
+        }
+
+        if (Utils.isNotEmpty(exposeHeaders)) {
+            ctx.headerSet("Access-Control-Expose-Headers", exposeHeaders);
         }
 
         if (MethodType.OPTIONS.name.equalsIgnoreCase(ctx.method())) {
