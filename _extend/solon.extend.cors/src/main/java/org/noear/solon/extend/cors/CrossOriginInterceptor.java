@@ -50,10 +50,10 @@ public class CrossOriginInterceptor implements Handler {
                     }
 
                     handler.maxAge(anno.maxAge());
-                    handler.allowOrigin(origins);
+                    handler.allowedOrigins(origins);
+                    handler.allowedMethods("*");
+                    handler.allowedHeaders("*");
                     handler.allowCredentials(anno.credentials());
-                    handler.allowMethods("*");
-                    handler.allowHeaders("*");
 
                     handlerMap.put(anno, handler);
                 }

@@ -14,13 +14,13 @@ import org.noear.solon.core.handle.MethodType;
 public class CrossHandler implements Handler {
     protected int maxAge = 3600;
 
-    protected String allowOrigin = "*";
+    protected String allowedOrigins = "*";
 
-    protected String allowMethods = "*";
-    protected String allowHeaders = "*";
+    protected String allowedMethods = "*";
+    protected String allowedHeaders = "*";
     protected boolean allowCredentials;
 
-    protected String exposeHeaders;
+    protected String exposedHeaders;
 
 
     public CrossHandler maxAge(int maxAge) {
@@ -31,21 +31,21 @@ public class CrossHandler implements Handler {
         return this;
     }
 
-    public CrossHandler allowOrigin(String allowOrigin) {
+    public CrossHandler allowedOrigins(String allowOrigin) {
         if (allowOrigin != null) {
-            this.allowOrigin = allowOrigin;
+            this.allowedOrigins = allowOrigin;
         }
 
         return this;
     }
 
-    public CrossHandler allowMethods(String allowMethods) {
-        this.allowMethods = allowMethods;
+    public CrossHandler allowedMethods(String allowMethods) {
+        this.allowedMethods = allowMethods;
         return this;
     }
 
-    public CrossHandler allowHeaders(String allowHeaders) {
-        this.allowHeaders = allowHeaders;
+    public CrossHandler allowedHeaders(String allowHeaders) {
+        this.allowedHeaders = allowHeaders;
         return this;
     }
 
@@ -54,8 +54,8 @@ public class CrossHandler implements Handler {
         return this;
     }
 
-    public CrossHandler exposeHeaders(String exposeHeaders) {
-        this.exposeHeaders = exposeHeaders;
+    public CrossHandler exposedHeaders(String exposeHeaders) {
+        this.exposedHeaders = exposeHeaders;
         return this;
     }
 
@@ -72,21 +72,21 @@ public class CrossHandler implements Handler {
         ctx.headerSet("Access-Control-Max-Age", String.valueOf(maxAge));
 
         //设定 allow headers
-        if (Utils.isNotEmpty(allowHeaders)) {
-            if ("*".equals(allowHeaders)) {
+        if (Utils.isNotEmpty(allowedHeaders)) {
+            if ("*".equals(allowedHeaders)) {
                 String requestHeaders = ctx.header("Access-Control-Request-Headers");
 
                 if (Utils.isNotEmpty(requestHeaders)) {
                     ctx.headerSet("Access-Control-Allow-Headers", requestHeaders);
                 }
             } else {
-                ctx.headerSet("Access-Control-Allow-Headers", allowHeaders);
+                ctx.headerSet("Access-Control-Allow-Headers", allowedHeaders);
             }
         }
 
         //设定 allow methods
-        if (Utils.isNotEmpty(allowMethods)) {
-            if ("*".equals(allowMethods)) {
+        if (Utils.isNotEmpty(allowedMethods)) {
+            if ("*".equals(allowedMethods)) {
                 String requestMethod = ctx.header("Access-Control-Request-Method");
 
                 //如果没有请求方式，则使用当前请求方式
@@ -98,7 +98,7 @@ public class CrossHandler implements Handler {
                     ctx.headerSet("Access-Control-Allow-Methods", requestMethod);
                 }
             } else {
-                ctx.headerSet("Access-Control-Allow-Methods", allowMethods);
+                ctx.headerSet("Access-Control-Allow-Methods", allowedMethods);
             }
         }
 
@@ -107,11 +107,11 @@ public class CrossHandler implements Handler {
             ctx.headerSet("Access-Control-Allow-Credentials", "true");
             ctx.headerSet("Access-Control-Allow-Origin", origin);
         } else {
-            ctx.headerSet("Access-Control-Allow-Origin", allowOrigin);
+            ctx.headerSet("Access-Control-Allow-Origin", allowedOrigins);
         }
 
-        if (Utils.isNotEmpty(exposeHeaders)) {
-            ctx.headerSet("Access-Control-Expose-Headers", exposeHeaders);
+        if (Utils.isNotEmpty(exposedHeaders)) {
+            ctx.headerSet("Access-Control-Expose-Headers", exposedHeaders);
         }
 
         if (MethodType.OPTIONS.name.equalsIgnoreCase(ctx.method())) {
