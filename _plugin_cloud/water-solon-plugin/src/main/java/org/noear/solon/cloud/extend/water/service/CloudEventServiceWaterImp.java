@@ -9,7 +9,6 @@ import org.noear.solon.cloud.extend.water.WaterProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
-import org.noear.solon.cloud.service.CloudEventObserverListEntity;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 import org.noear.water.WW;
 import org.noear.water.WaterClient;
@@ -30,8 +29,8 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
 
     private final String DEFAULT_SEAL = "Pckb6BpGzDE6RUIy";
     private String seal;
-    private Map<String, CloudEventHandler> instanceObserverMap = new HashMap<>();
-    private Map<String, CloudEventHandler> clusterObserverMap = new HashMap<>();
+    private Map<String, CloudEventObserverEntity> instanceObserverMap = new HashMap<>();
+    private Map<String, CloudEventObserverEntity> clusterObserverMap = new HashMap<>();
     private boolean unstable;
     private String eventChannelName;
 
@@ -93,12 +92,12 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
         }
 
         if (level == EventLevel.instance) {
-            CloudEventObserverListEntity observerList = (CloudEventObserverListEntity) instanceObserverMap.get(topic);
-            if (observerList == null) {
-                observerList = new CloudEventObserverListEntity(level, group, topic);
-                instanceObserverMap.put(topic, observerList);
+            CloudEventObserverEntity observerEntity = instanceObserverMap.get(topic);
+            if (observerEntity == null) {
+                observerEntity = new CloudEventObserverEntity(level, group, topic);
+                instanceObserverMap.put(topic, observerEntity);
             }
-            observerList.addHandler(observer);
+            observerEntity.addHandler(observer);
         } else {
             clusterObserverMap.putIfAbsent(topicNew, new CloudEventObserverEntity(level, group, topic, observer));
         }
