@@ -3,8 +3,9 @@ package org.noear.solon.core.event;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 监听器（内部类，外部不要使用）
@@ -14,9 +15,9 @@ import java.util.Set;
  * */
 public final class EventBus {
     //异常订阅者
-    private static Set<HH> sThrow = new HashSet<>();
+    private static List<HH> sThrow = new ArrayList<>();
     //其它订阅者
-    private static Set<HH> sOther = new HashSet<>();
+    private static List<HH> sOther = new ArrayList<>();
 
     /**
      * 异步推送事件
@@ -58,7 +59,7 @@ public final class EventBus {
         }
     }
 
-    private static void push1(Set<HH> hhs, Object event) {
+    private static void push1(Collection<HH> hhs, Object event) {
         for (HH h1 : hhs) {
             if (h1.t.isInstance(event)) {
                 try {
@@ -74,7 +75,7 @@ public final class EventBus {
      * 订阅事件
      *
      * @param eventType 事件类型
-     * @param listener 事件监听者
+     * @param listener  事件监听者
      */
     public static <T> void subscribe(Class<T> eventType, EventListener<T> listener) {
         if (Throwable.class.isAssignableFrom(eventType)) {
