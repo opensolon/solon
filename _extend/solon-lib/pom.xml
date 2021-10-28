@@ -48,7 +48,7 @@
         <!-- yml配置支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.extend.yaml</artifactId>
+            <artifactId>solon.extend.properties.yaml</artifactId>
         </dependency>
     </dependencies>
 

@@ -274,7 +274,7 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.extend.yaml</artifactId>
+                <artifactId>solon.extend.properties.yaml</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
             <dependency>

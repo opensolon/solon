@@ -30,7 +30,7 @@
         <module>../../_extend/solon.extend.sessionstate.local</module>
         <module>../../_extend/solon.extend.sessionstate.jwt</module>
 
-        <module>../../_extend/solon.extend.yaml</module>
+        <module>../../_extend/solon.extend.properties.yaml</module>
         <module>../../_extend/solon.extend.stop</module>
         <module>../../_extend/solon.extend.jsr330</module>
         <module>../../_extend/solon.extend.jsr303</module>

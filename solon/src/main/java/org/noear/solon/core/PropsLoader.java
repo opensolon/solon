@@ -15,7 +15,7 @@ import java.util.Properties;
  * 通过 globalSet 可进行重写
  *
  * @see Utils#loadProperties(URL)
- * @see org.noear.solon.extend.yaml.PropertiesLoader
+ * @see org.noear.solon.extend.properties.yaml.PropertiesLoader
  * @author noear
  * @since 1.0
  * */
@@ -34,7 +34,7 @@ public class PropsLoader {
     static {
         //默认的扩展加载器
         //
-        String loader = "org.noear.solon.extend.yaml.PropertiesLoader";
+        String loader = "org.noear.solon.extend.properties.yaml.PropertiesLoader";
 
         PropsLoader tmp = Utils.newInstance(loader);
         if (tmp != null) {

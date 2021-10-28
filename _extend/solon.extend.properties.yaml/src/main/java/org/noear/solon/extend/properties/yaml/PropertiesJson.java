@@ -1,4 +1,4 @@
-package org.noear.solon.extend.yaml;
+package org.noear.solon.extend.properties.yaml;
 
 import org.noear.snack.ONode;
 
