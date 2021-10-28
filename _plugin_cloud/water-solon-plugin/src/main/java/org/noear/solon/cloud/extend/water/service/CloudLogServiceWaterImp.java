@@ -2,10 +2,11 @@ package org.noear.solon.cloud.extend.water.service;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.extend.water.WaterProps;
+import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudLogService;
 import org.noear.solon.logging.event.LogEvent;
-import org.noear.water.WaterClient;
 import org.noear.water.dso.LogPipeline;
 import org.noear.water.model.LogM;
 import org.noear.water.utils.Datetime;
@@ -51,7 +52,7 @@ public class CloudLogServiceWaterImp implements CloudLogService {
         LogM log = new LogM();
 
         log.group = Solon.cfg().appGroup();
-        log.app_name = Solon.cfg().appName();
+        log.service = Solon.cfg().appName();
 
         log.logger = loggerName;
         log.level = (logEvent.getLevel().code / 10);
@@ -65,13 +66,13 @@ public class CloudLogServiceWaterImp implements CloudLogService {
             log.tag4 = logEvent.getMetainfo().get("tag4");
         }
 
-        if(logEvent.getLoggerName().contains(".")){
+        if (logEvent.getLoggerName().contains(".")) {
             log.class_name = logEvent.getLoggerName();
         }
 
         log.thread_name = Thread.currentThread().getName();
-        log.trace_id = WaterClient.waterTraceId();
-        log.from = WaterClient.localServiceHost();
+        log.trace_id = CloudClient.trace().getTraceId(); //WaterClient.waterTraceId();
+        log.from = Instance.local().serviceAndAddress(); //WaterClient.localServiceHost();
 
         log.log_date = datetime.getDate();
         log.log_fulltime = datetime.getFulltime();
