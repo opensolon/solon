@@ -1,4 +1,4 @@
-package org.noear.solon.extend.properties.yaml;
+package org.noear.solon.extend.yaml;
 
 import org.noear.solon.core.PropsLoader;
 import org.noear.solon.core.util.PrintUtil;

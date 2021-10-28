@@ -31,7 +31,7 @@
 | org.noear:solon.extend.aspect | 扩展插件,添加Dao、Service注解支持；进而支持事务和缓存注解 |
 | | |
 | Yaml配置支持插件:: | 说明 |
-| org.noear:solon.extend.properties.yaml | 扩展插件,添加yml配置文件支持 |
+| org.noear:solon.extend.yaml | 扩展插件,添加yml配置文件支持 |
 | | |
 | Cache插件:: | 说明 |
 | org.noear:solon.cache.spymemcached | 扩展插件,完成memcached的缓存服务适配 |
