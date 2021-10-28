@@ -84,6 +84,14 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
      */
     @Override
     public void attention(EventLevel level, String channel, String group, String topic, CloudEventHandler observer) {
+        //new topic
+        String topicNew;
+        if (Utils.isEmpty(group)) {
+            topicNew = topic;
+        } else {
+            topicNew = group + WaterProps.GROUP_SPLIT_MART + topic;
+        }
+
         if (level == EventLevel.instance) {
             CloudEventObserverListEntity observerList = (CloudEventObserverListEntity) instanceObserverMap.get(topic);
             if (observerList == null) {
@@ -92,14 +100,6 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
             }
             observerList.addHandler(observer);
         } else {
-            //new topic
-            String topicNew;
-            if (Utils.isEmpty(group)) {
-                topicNew = topic;
-            } else {
-                topicNew = group + WaterProps.GROUP_SPLIT_MART + topic;
-            }
-
             clusterObserverMap.putIfAbsent(topicNew, new CloudEventObserverEntity(level, group, topic, observer));
         }
     }
