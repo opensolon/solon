@@ -9,6 +9,7 @@ import org.noear.solon.cloud.extend.water.WaterProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
+import org.noear.solon.cloud.service.CloudEventObserverListEntity;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 import org.noear.water.WW;
 import org.noear.water.WaterClient;
@@ -29,8 +30,8 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
 
     private final String DEFAULT_SEAL = "Pckb6BpGzDE6RUIy";
     private String seal;
-    private Map<String, CloudEventObserverEntity> instanceObserverMap = new HashMap<>();
-    private Map<String, CloudEventObserverEntity> clusterObserverMap = new HashMap<>();
+    private Map<String, CloudEventHandler> instanceObserverMap = new HashMap<>();
+    private Map<String, CloudEventHandler> clusterObserverMap = new HashMap<>();
     private boolean unstable;
     private String eventChannelName;
 
@@ -84,7 +85,12 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
     @Override
     public void attention(EventLevel level, String channel, String group, String topic, CloudEventHandler observer) {
         if (level == EventLevel.instance) {
-            instanceObserverMap.putIfAbsent(topic, new CloudEventObserverEntity(level, group, topic, observer));
+            CloudEventObserverListEntity observerList = (CloudEventObserverListEntity) instanceObserverMap.get(topic);
+            if (observerList == null) {
+                observerList = new CloudEventObserverListEntity(level, group, topic);
+                instanceObserverMap.put(topic, observerList);
+            }
+            observerList.addHandler(observer);
         } else {
             //new topic
             String topicNew;
@@ -156,7 +162,7 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
     public boolean onReceive(String topicNew, Event event) throws Throwable {
         boolean isOk = true;
         boolean isHandled = false;
-        CloudEventObserverEntity entity = null;
+        CloudEventHandler entity = null;
 
         event.channel(eventChannelName);
 
