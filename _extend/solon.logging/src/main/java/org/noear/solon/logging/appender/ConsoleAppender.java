@@ -19,10 +19,14 @@ public class ConsoleAppender extends OutputStreamAppender {
      */
     @Override
     public Level getDefaultLevel() {
-        if (Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode()) {
+        if (Solon.global() == null) {
             return Level.TRACE;
         } else {
-            return Level.INFO;
+            if (Solon.cfg().isDebugMode() || Solon.cfg().isFilesMode()) {
+                return Level.TRACE;
+            } else {
+                return Level.INFO;
+            }
         }
     }
 }
