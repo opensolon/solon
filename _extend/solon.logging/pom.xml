@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.5.53</version>
+        <version>1.5.54</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -20,10 +20,6 @@
             <artifactId>solon</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.extend.properties.yaml</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
