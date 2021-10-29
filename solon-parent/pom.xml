@@ -46,8 +46,6 @@
 
         <mybatis.ver>3.5.7</mybatis.ver>
 
-        <dubbo.ver>2.7.5</dubbo.ver>
-
         <slf4j.ver>1.7.30</slf4j.ver>
 
         <netty.ver>4.1.48.Final</netty.ver>
