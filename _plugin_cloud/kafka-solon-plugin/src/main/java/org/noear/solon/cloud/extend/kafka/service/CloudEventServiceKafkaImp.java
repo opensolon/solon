@@ -13,8 +13,7 @@ import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.kafka.KafkaProps;
 import org.noear.solon.cloud.model.Event;
-import org.noear.solon.cloud.service.CloudEventObserverEntity;
-import org.noear.solon.cloud.service.CloudEventService;
+import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
@@ -22,8 +21,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.EOFException;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -133,15 +130,11 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
         return true;
     }
 
-    Map<String, CloudEventObserverEntity> observerMap = new HashMap<>();
+    CloudEventObserverManger observerManger = new CloudEventObserverManger();
 
     @Override
     public void attention(EventLevel level, String channel, String group, String topic, CloudEventHandler observer) {
-        if (observerMap.containsKey(topic)) {
-            return;
-        }
-
-        observerMap.put(topic, new CloudEventObserverEntity(level, group, topic, observer));
+        observerManger.add(topic, level, group, topic, observer);
     }
 
     public void subscribe() {
@@ -149,8 +142,8 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
             initConsumer();
 
             //订阅
-            if (observerMap.size() > 0) {
-                consumer.subscribe(observerMap.keySet());
+            if (observerManger.topicSize() > 0) {
+                consumer.subscribe(observerManger.topicAll());
             }
 
             //开始拉取
@@ -196,11 +189,11 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
      */
     public boolean onReceive(Event event) throws Throwable {
         boolean isOk = true;
-        CloudEventObserverEntity entity = null;
+        CloudEventHandler handler = null;
 
-        entity = observerMap.get(event.topic());
-        if (entity != null) {
-            isOk = entity.handler(event);
+        handler = observerManger.get(event.topic());
+        if (handler != null) {
+            isOk = handler.handler(event);
         } else {
             //只需要记录一下
             log.warn("There is no observer for this event topic[{}]", event.topic());

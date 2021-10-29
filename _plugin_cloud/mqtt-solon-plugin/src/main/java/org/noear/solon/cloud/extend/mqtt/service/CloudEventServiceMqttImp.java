@@ -9,13 +9,10 @@ import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.mqtt.MqttProps;
 import org.noear.solon.cloud.model.Event;
-import org.noear.solon.cloud.service.CloudEventObserverEntity;
-import org.noear.solon.cloud.service.CloudEventService;
+import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -131,20 +128,16 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
         }
     }
 
-    Map<String, CloudEventObserverEntity> observerMap = new HashMap<>();
+    CloudEventObserverManger observerMap = new CloudEventObserverManger();
 
     @Override
     public void attention(EventLevel level, String channel, String group, String topic, CloudEventHandler observer) {
-        if (observerMap.containsKey(topic)) {
-            return;
-        }
-
-        observerMap.put(topic, new CloudEventObserverEntity(level, group, topic, observer));
+        observerMap.add(topic, level, group, topic, observer);
     }
 
     public void subscribe() {
         try {
-            if (observerMap.size() > 0) {
+            if (observerMap.topicSize() > 0) {
                 clientCallback.subscribe(observerMap);
             }
         } catch (Throwable ex) {

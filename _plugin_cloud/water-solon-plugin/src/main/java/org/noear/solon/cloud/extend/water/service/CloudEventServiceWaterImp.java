@@ -8,15 +8,13 @@ import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.water.WaterProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.model.Instance;
-import org.noear.solon.cloud.service.CloudEventObserverEntity;
+import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
 import org.noear.water.WW;
 import org.noear.water.WaterClient;
 import org.noear.water.utils.EncryptUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.*;
 
 /**
  * 事件服务
@@ -77,8 +75,8 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
     }
 
 
-    private Map<String, CloudEventObserverEntity> instanceObserverMap = new HashMap<>();
-    private Map<String, CloudEventObserverEntity> clusterObserverMap = new HashMap<>();
+    private CloudEventObserverManger instanceObserverManger  = new CloudEventObserverManger();
+    private CloudEventObserverManger clusterObserverManger  = new CloudEventObserverManger();
 
     /**
      * 登记关注
@@ -94,14 +92,9 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
         }
 
         if (level == EventLevel.instance) {
-            CloudEventObserverEntity observerEntity = instanceObserverMap.get(topic);
-            if (observerEntity == null) {
-                observerEntity = new CloudEventObserverEntity(level, group, topic);
-                instanceObserverMap.put(topic, observerEntity);
-            }
-            observerEntity.addHandler(observer);
+            instanceObserverManger.add(topicNew, level, group, topic, observer);
         } else {
-            clusterObserverMap.putIfAbsent(topicNew, new CloudEventObserverEntity(level, group, topic, observer));
+            clusterObserverManger.add(topicNew, level, group, topic, observer);
         }
     }
 
@@ -122,7 +115,7 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
         //
         //subscribeTopic(String subscriber_key, String subscriber_note, String receive_url, String access_key, String alarm_mobile, int receive_way, boolean is_unstable, String... topics)
         //
-        if (instanceObserverMap.size() > 0) {
+        if (instanceObserverManger.topicSize() > 0) {
             String instance_receiver_url = "http://" + instance.address() + WW.path_msg_receiver;
             String instance_subscriber_Key = EncryptUtils.md5(instance.service() + "_instance_" + instance_receiver_url);
 
@@ -133,10 +126,10 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
                     "",
                     1,
                     unstable,
-                    String.join(",", instanceObserverMap.keySet()));
+                    String.join(",", instanceObserverManger.topicAll()));
         }
 
-        if (clusterObserverMap.size() > 0) {
+        if (clusterObserverManger.topicSize() > 0) {
             String cluster_hostname = WaterProps.getEventReceive();
             if (Utils.isEmpty(cluster_hostname)) {
                 cluster_hostname = instance.address();
@@ -152,7 +145,7 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
                     "",
                     1,
                     false,
-                    String.join(",", clusterObserverMap.keySet()));
+                    String.join(",", clusterObserverManger.topicAll()));
         }
     }
 
@@ -167,16 +160,16 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
 
         event.channel(eventChannelName);
 
-        entity = instanceObserverMap.get(topicNew);
+        entity = instanceObserverManger.get(topicNew);
         if (entity != null) {
             isHandled = true;
             isOk = entity.handler(event);
         }
 
-        entity = clusterObserverMap.get(topicNew);
+        entity = clusterObserverManger.get(topicNew);
         if (entity != null) {
             isHandled = true;
-            isOk = entity.handler(event) && isOk; //两个都成功，才是成功
+            isOk = isOk && entity.handler(event); //两个都成功，才是成功
         }
 
         if(isHandled == false){

@@ -3,16 +3,16 @@ package org.noear.solon.cloud.extend.rabbitmq.impl;
 import com.rabbitmq.client.*;
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
 import org.noear.solon.cloud.model.Event;
-import org.noear.solon.cloud.service.CloudEventObserverEntity;
+import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.utils.ExpirationUtils;
 import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * @author noear
@@ -21,16 +21,16 @@ import java.util.Map;
 public class RabbitConsumeHandler extends DefaultConsumer {
     static Logger log = LoggerFactory.getLogger(RabbitConsumeHandler.class);
 
-    Map<String, CloudEventObserverEntity> observerMap;
+    CloudEventObserverManger observerManger;
     RabbitConfig cfg;
     RabbitProducer producer;
     String eventChannelName;
 
-    public RabbitConsumeHandler(RabbitProducer producer, RabbitConfig config, Channel channel, Map<String, CloudEventObserverEntity> observerMap) {
+    public RabbitConsumeHandler(RabbitProducer producer, RabbitConfig config, Channel channel, CloudEventObserverManger observerManger) {
         super(channel);
         this.cfg = config;
         this.producer = producer;
-        this.observerMap = observerMap;
+        this.observerManger = observerManger;
         this.eventChannelName = RabbitmqProps.instance.getEventChannel();
     }
 
@@ -78,7 +78,7 @@ public class RabbitConsumeHandler extends DefaultConsumer {
      */
     public boolean onReceive(Event event) throws Throwable {
         boolean isOk = true;
-        CloudEventObserverEntity entity = null;
+        CloudEventHandler handler = null;
 
         //new topic
         String topicNew;
@@ -88,9 +88,9 @@ public class RabbitConsumeHandler extends DefaultConsumer {
             topicNew = event.group() + RabbitmqProps.GROUP_SPLIT_MART + event.topic();
         }
 
-        entity = observerMap.get(topicNew);
-        if (entity != null) {
-            isOk = entity.handler(event);
+        handler = observerManger.get(topicNew);
+        if (handler != null) {
+            isOk = handler.handler(event);
         } else {
             //只需要记录一下
             log.warn("There is no observer for this event topic[{}]", topicNew);

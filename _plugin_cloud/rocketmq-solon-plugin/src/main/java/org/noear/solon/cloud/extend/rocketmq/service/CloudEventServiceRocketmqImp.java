@@ -9,11 +9,8 @@ import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqConfig;
 import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqConsumer;
 import org.noear.solon.cloud.extend.rocketmq.impl.RocketmqProducer;
 import org.noear.solon.cloud.model.Event;
-import org.noear.solon.cloud.service.CloudEventObserverEntity;
+import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author noear
@@ -69,14 +66,10 @@ public class CloudEventServiceRocketmqImp implements CloudEventServicePlus {
     }
 
 
-    Map<String, CloudEventObserverEntity> observerMap = new HashMap<>();
+    CloudEventObserverManger observerManger = new CloudEventObserverManger();
 
     @Override
     public void attention(EventLevel level, String channel, String group, String topic, CloudEventHandler observer) {
-        if (observerMap.containsKey(topic)) {
-            return;
-        }
-
         topic = topic.replace(".", "_");
 
         //new topic
@@ -87,16 +80,12 @@ public class CloudEventServiceRocketmqImp implements CloudEventServicePlus {
             topicNew = group + RocketmqProps.GROUP_SPLIT_MART + topic;
         }
 
-        if (observerMap.containsKey(topicNew)) {
-            return;
-        }
-
-        observerMap.put(topicNew, new CloudEventObserverEntity(level, group, topic, observer));
+        observerManger.add(topicNew, level, group, topic, observer);
     }
 
     public void subscribe() {
-        if (observerMap.size() > 0) {
-            consumer.init(observerMap);
+        if (observerManger.topicSize() > 0) {
+            consumer.init(observerManger);
         }
     }
 

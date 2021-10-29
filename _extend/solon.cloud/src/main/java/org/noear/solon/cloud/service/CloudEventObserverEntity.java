@@ -3,6 +3,8 @@ package org.noear.solon.cloud.service;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.model.Event;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +16,11 @@ import java.util.List;
  * @since 1.2
  */
 public class CloudEventObserverEntity implements CloudEventHandler {
+    static Logger log = LoggerFactory.getLogger(CloudEventObserverEntity.class);
+
     private EventLevel level;
     private String group;
     private String topic;
-    private CloudEventHandler handler;
     private List<CloudEventHandler> handlers;
 
 
@@ -28,29 +31,25 @@ public class CloudEventObserverEntity implements CloudEventHandler {
         this.handlers = new ArrayList<>();
     }
 
-    public CloudEventObserverEntity(EventLevel level, String group, String topic, CloudEventHandler handler) {
-        this.level = level;
-        this.group = group;
-        this.topic = topic;
-        this.handler = handler;
-    }
-
     public void addHandler(CloudEventHandler handler) {
         handlers.add(handler);
     }
 
     @Override
     public boolean handler(Event event) throws Throwable {
-        if (handler == null) {
-            boolean isOk = true;
+        boolean isOk = true;
+        boolean isHandled = false;
 
-            for (CloudEventHandler h1 : handlers) {
-                isOk = isOk && h1.handler(event);
-            }
-
-            return isOk;
-        } else {
-            return handler.handler(event);
+        for (CloudEventHandler h1 : handlers) {
+            isOk = isOk && h1.handler(event); //两个都成功，才是成功
+            isHandled = true;
         }
+
+        if (isHandled == false) {
+            //只需要记录一下
+            log.warn("There is no handler for this event topic[{}]", event.topic());
+        }
+
+        return isOk;
     }
 }

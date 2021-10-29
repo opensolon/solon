@@ -2,14 +2,14 @@ package org.noear.solon.cloud.extend.mqtt.service;
 
 import org.eclipse.paho.client.mqttv3.*;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.extend.mqtt.MqttProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
+import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Map;
 
 /**
  * @author noear
@@ -26,12 +26,12 @@ class MqttCallbackImp implements MqttCallback {
         this.eventChannelName = MqttProps.instance.getEventChannel();
     }
 
-    Map<String, CloudEventObserverEntity> observerMap;
+    CloudEventObserverManger observerManger;
 
-    public void subscribe(Map<String, CloudEventObserverEntity> observerMap) throws MqttException {
-        this.observerMap = observerMap;
+    public void subscribe(CloudEventObserverManger observerManger) throws MqttException {
+        this.observerManger = observerManger;
 
-        String[] topicAry = observerMap.keySet().toArray(new String[0]);
+        String[] topicAry = observerManger.topicAll().toArray(new String[0]);
         int[] topicQos = new int[topicAry.length];
         for (int i = 0, len = topicQos.length; i < len; i++) {
             topicQos[i] = 1;
@@ -55,10 +55,10 @@ class MqttCallbackImp implements MqttCallback {
                     .retained(message.isRetained())
                     .channel(eventChannelName);
 
-            CloudEventObserverEntity observer = observerMap.get(topic);
+            CloudEventHandler handler = observerManger.get(topic);
 
-            if (observer != null) {
-                observer.handler(event);
+            if (handler != null) {
+                handler.handler(event);
             } else {
                 //只需要记录一下
                 log.warn("There is no observer for this event topic[{}]", event.topic());

@@ -10,11 +10,8 @@ import org.noear.solon.cloud.extend.rabbitmq.impl.RabbitConfig;
 import org.noear.solon.cloud.extend.rabbitmq.impl.RabbitConsumer;
 import org.noear.solon.cloud.extend.rabbitmq.impl.RabbitProducer;
 import org.noear.solon.cloud.model.Event;
-import org.noear.solon.cloud.service.CloudEventObserverEntity;
+import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
@@ -83,7 +80,7 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
         }
     }
 
-    Map<String, CloudEventObserverEntity> observerMap = new HashMap<>();
+    CloudEventObserverManger observerManger = new CloudEventObserverManger();
 
     @Override
     public void attention(EventLevel level, String channel , String group, String topic, CloudEventHandler observer) {
@@ -95,17 +92,13 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
             topicNew = group + RabbitmqProps.GROUP_SPLIT_MART + topic;
         }
 
-        if (observerMap.containsKey(topicNew)) {
-            return;
-        }
-
-        observerMap.put(topicNew, new CloudEventObserverEntity(level, group, topic, observer));
+        observerManger.add(topicNew, level, group, topic, observer);
     }
 
     public void subscribe() {
         try {
-            if(observerMap.size() > 0) {
-                consumer.init(observerMap);
+            if(observerManger.topicSize() > 0) {
+                consumer.init(observerManger);
             }
         } catch (Throwable ex) {
             throw new RuntimeException(ex);

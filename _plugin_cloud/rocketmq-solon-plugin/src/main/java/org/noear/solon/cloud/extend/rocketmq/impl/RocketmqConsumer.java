@@ -3,9 +3,8 @@ package org.noear.solon.cloud.extend.rocketmq.impl;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
-import org.noear.solon.cloud.service.CloudEventObserverEntity;
+import org.noear.solon.cloud.service.CloudEventObserverManger;
 
-import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -18,13 +17,11 @@ public class RocketmqConsumer {
     DefaultMQPushConsumer consumer;
     RocketmqConsumerHandler handler;
 
-    Map<String, CloudEventObserverEntity> observerMap;
-
     public RocketmqConsumer(RocketmqConfig config){
         cfg = config;
     }
 
-    public void init(Map<String, CloudEventObserverEntity> observers){
+    public void init(CloudEventObserverManger observerManger){
         if (consumer != null) {
             return;
         }
@@ -34,8 +31,7 @@ public class RocketmqConsumer {
                 return;
             }
 
-            observerMap = observers;
-            handler = new RocketmqConsumerHandler(observerMap);
+            handler = new RocketmqConsumerHandler(observerManger);
 
             consumer = new DefaultMQPushConsumer();
 
@@ -63,7 +59,7 @@ public class RocketmqConsumer {
 
             try {
                 //要消费的topic，可使用tag进行简单过滤
-                for (String topic : observerMap.keySet()) {
+                for (String topic : observerManger.topicAll()) {
                     consumer.subscribe(topic, "*");
                 }
 

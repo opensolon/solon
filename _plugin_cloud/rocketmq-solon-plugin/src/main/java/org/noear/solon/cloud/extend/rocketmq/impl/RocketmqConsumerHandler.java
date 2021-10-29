@@ -5,9 +5,11 @@ import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverEntity;
+import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +24,11 @@ import java.util.Map;
 public class RocketmqConsumerHandler implements MessageListenerConcurrently {
     static Logger log = LoggerFactory.getLogger(RocketmqConsumerHandler.class);
 
-    Map<String, CloudEventObserverEntity> observerMap;
+    CloudEventObserverManger observerManger;
     String eventChannelName;
 
-    public RocketmqConsumerHandler(Map<String, CloudEventObserverEntity> observers) {
-        observerMap = observers;
+    public RocketmqConsumerHandler(CloudEventObserverManger observerManger) {
+        this.observerManger = observerManger;
         eventChannelName = RocketmqProps.instance.getEventChannel();
     }
 
@@ -74,11 +76,11 @@ public class RocketmqConsumerHandler implements MessageListenerConcurrently {
      */
     protected boolean onReceive(Event event, String topicNew) throws Throwable {
         boolean isOk = true;
-        CloudEventObserverEntity entity = null;
+        CloudEventHandler handler = null;
 
-        entity = observerMap.get(topicNew);
-        if (entity != null) {
-            isOk = entity.handler(event);
+        handler = observerManger.get(topicNew);
+        if (handler != null) {
+            isOk = handler.handler(event);
         }else{
             //只需要记录一下
             log.warn("There is no observer for this event topic[{}]", topicNew);

@@ -2,7 +2,7 @@ package org.noear.solon.cloud.extend.rabbitmq.impl;
 
 import com.rabbitmq.client.Channel;
 import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
-import org.noear.solon.cloud.service.CloudEventObserverEntity;
+import org.noear.solon.cloud.service.CloudEventObserverManger;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -30,9 +30,9 @@ public class RabbitConsumer {
     /**
      * 初始化
      */
-    public void init(Map<String, CloudEventObserverEntity> observerMap) throws IOException, TimeoutException {
+    public void init(CloudEventObserverManger observerManger) throws IOException, TimeoutException {
         channel = factory.getChannel();
-        handler = new RabbitConsumeHandler(producer, cfg, channel, observerMap);
+        handler = new RabbitConsumeHandler(producer, cfg, channel, observerManger);
 
         int prefetchCount = RabbitmqProps.instance.getEventPrefetchCount();
         if (prefetchCount < 1) {
@@ -43,7 +43,7 @@ public class RabbitConsumer {
         channel.basicQos(prefetchCount);
 
         //2.申明队列
-        queueDeclareNormal(observerMap);
+        queueDeclareNormal(observerManger);
         queueDeclareReady();
         queueDeclareRetry();
     }
@@ -52,12 +52,12 @@ public class RabbitConsumer {
     /**
      * 申明常规队列
      */
-    private void queueDeclareNormal(Map<String, CloudEventObserverEntity> observerMap) throws IOException {
+    private void queueDeclareNormal(CloudEventObserverManger observerManger) throws IOException {
         Map<String, Object> args = new HashMap<>();
 
         channel.queueDeclare(cfg.queue_normal, cfg.durable, cfg.exclusive, cfg.autoDelete, args);
 
-        for (String topic : observerMap.keySet()) {
+        for (String topic : observerManger.topicAll()) {
             channel.queueBind(cfg.queue_normal, cfg.exchangeName, topic, args);
         }
 
