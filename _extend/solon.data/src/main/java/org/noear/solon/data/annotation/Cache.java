@@ -7,6 +7,8 @@ import org.noear.solon.annotation.*;
 /**
  * 缓存注解器
  *
+ * 注意：针对 Controller、Service、Dao 等所有基于MethodWrap运行的目标，才有效
+ *
  * @author noear
  * @since 1.0
  * */
