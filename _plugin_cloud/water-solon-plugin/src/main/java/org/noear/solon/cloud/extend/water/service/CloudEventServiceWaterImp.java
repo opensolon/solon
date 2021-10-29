@@ -29,8 +29,6 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
 
     private final String DEFAULT_SEAL = "Pckb6BpGzDE6RUIy";
     private String seal;
-    private Map<String, CloudEventObserverEntity> instanceObserverMap = new HashMap<>();
-    private Map<String, CloudEventObserverEntity> clusterObserverMap = new HashMap<>();
     private boolean unstable;
     private String eventChannelName;
 
@@ -77,6 +75,10 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
             throw new CloudEventException(ex);
         }
     }
+
+
+    private Map<String, CloudEventObserverEntity> instanceObserverMap = new HashMap<>();
+    private Map<String, CloudEventObserverEntity> clusterObserverMap = new HashMap<>();
 
     /**
      * 登记关注
