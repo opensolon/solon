@@ -196,10 +196,11 @@
 <!--        </dependency>-->
 
 
-<!--        <dependency>-->
-<!--            <groupId>org.noear</groupId>-->
-<!--            <artifactId>solon.boot.smarthttp</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.noear.hatch</groupId>
+            <artifactId>solon.boot.smarthttp</artifactId>
+            <version>1.5.54</version>
+        </dependency>
 
 
 <!--        <dependency>-->
@@ -224,26 +225,25 @@
 <!--        </dependency>-->
 
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jetty</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.eclipse.jetty</groupId>-->
+<!--            <artifactId>jetty-servlet</artifactId>-->
+<!--        </dependency>-->
+<!--        -->
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.jetty</artifactId>-->
+<!--        </dependency>-->
+<!--        -->
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.jetty.add.websocket</artifactId>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-servlet</artifactId>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jetty.add.websocket</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.jetty.add.jsp</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon.boot.jetty.add.jsp</artifactId>-->
+<!--        </dependency>-->
 
 
         <dependency>
