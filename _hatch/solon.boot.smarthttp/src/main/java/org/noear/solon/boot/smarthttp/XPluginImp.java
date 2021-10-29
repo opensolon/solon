@@ -80,7 +80,7 @@ public final class XPluginImp implements Plugin {
             if (app.enableWebSocket()) {
                 PrintUtil.info(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
             } else {
-                PrintUtil.info(connectorInfo + "}{0.0.0.0:" + _port + "}");
+                PrintUtil.info(connectorInfo + "}{http://localhost:" + _port + "}");
             }
 
             PrintUtil.info("Server:main: smarthttp: Started @" + (time_end - time_start) + "ms");

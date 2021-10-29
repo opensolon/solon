@@ -68,7 +68,7 @@ public final class XPluginImp implements Plugin {
         if (app.enableWebSocket()) {
             System.out.println(connectorInfo + "[WebSocket]}{0.0.0.0:" + _port + "}");
         } else {
-            System.out.println(connectorInfo + "}{0.0.0.0:" + _port + "}");
+            System.out.println(connectorInfo + "}{http://localhost:" + _port + "}");
         }
 
 
