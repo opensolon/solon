@@ -1,8 +1,7 @@
-package org.noear.solon.cloud.service;
+package org.noear.solon.cloud.model;
 
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
-import org.noear.solon.cloud.model.Event;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,13 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 云端事件观察者实体
+ * 云端事件主题观察者（可以添加多个处理，用于二级分发）
  *
  * @author noear
  * @since 1.2
  */
-public class CloudEventObserverEntity implements CloudEventHandler {
-    static Logger log = LoggerFactory.getLogger(CloudEventObserverEntity.class);
+public class EventObserver implements CloudEventHandler {
+    static Logger log = LoggerFactory.getLogger(EventObserver.class);
 
     private EventLevel level;
     private String group;
@@ -24,17 +23,23 @@ public class CloudEventObserverEntity implements CloudEventHandler {
     private List<CloudEventHandler> handlers;
 
 
-    public CloudEventObserverEntity(EventLevel level, String group, String topic) {
+    public EventObserver(EventLevel level, String group, String topic) {
         this.level = level;
         this.group = group;
         this.topic = topic;
         this.handlers = new ArrayList<>();
     }
 
+    /**
+     * 添加云事件处理
+     * */
     public void addHandler(CloudEventHandler handler) {
         handlers.add(handler);
     }
 
+    /**
+     * 处理
+     * */
     @Override
     public boolean handler(Event event) throws Throwable {
         boolean isOk = true;

@@ -10,5 +10,10 @@ import org.noear.solon.cloud.model.Event;
  */
 @FunctionalInterface
 public interface CloudEventHandler {
+    /**
+     * 处理
+     *
+     * @param event 事件
+     * */
     boolean handler(Event event) throws Throwable;
 }

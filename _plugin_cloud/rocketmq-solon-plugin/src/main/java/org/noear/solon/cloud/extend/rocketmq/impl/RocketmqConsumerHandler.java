@@ -8,7 +8,6 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
 import org.noear.solon.cloud.model.Event;
-import org.noear.solon.cloud.service.CloudEventObserverEntity;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.core.event.EventBus;
 import org.slf4j.Logger;

@@ -2,6 +2,7 @@ package org.noear.solon.cloud.service;
 
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.annotation.EventLevel;
+import org.noear.solon.cloud.model.EventObserver;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +13,7 @@ import java.util.Set;
  * @since 1.5
  */
 public class CloudEventObserverManger {
-    private Map<String, CloudEventObserverEntity> observerMap = new HashMap<>();
+    private Map<String, EventObserver> observerMap = new HashMap<>();
 
     /**
      * 主题数量
@@ -39,12 +40,12 @@ public class CloudEventObserverManger {
      * 添加主题事件处理
      */
     public void add(String topic, EventLevel level, String group, String topicRaw, CloudEventHandler observer) {
-        CloudEventObserverEntity observerEntity = observerMap.get(topic);
-        if (observerEntity == null) {
-            observerEntity = new CloudEventObserverEntity(level, group, topicRaw);
-            observerMap.put(topic, observerEntity);
+        EventObserver eventObserver = observerMap.get(topic);
+        if (eventObserver == null) {
+            eventObserver = new EventObserver(level, group, topicRaw);
+            observerMap.put(topic, eventObserver);
         }
 
-        observerEntity.addHandler(observer);
+        eventObserver.addHandler(observer);
     }
 }
