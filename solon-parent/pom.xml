@@ -46,6 +46,8 @@
 
         <mybatis.ver>3.5.7</mybatis.ver>
 
+        <hikaricp.ver>4.0.3</hikaricp.ver>
+
         <slf4j.ver>1.7.30</slf4j.ver>
 
         <netty.ver>4.1.48.Final</netty.ver>
@@ -54,7 +56,7 @@
         <springboot.ver>2.0.4.RELEASE</springboot.ver>
         <spring.ver>5.0.8.RELEASE</spring.ver>
 
-        <hikaricp.ver>4.0.3</hikaricp.ver>
+        <dubbo.ver>2.7.5</dubbo.ver>
     </properties>
 
 

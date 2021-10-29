@@ -14,11 +14,6 @@
     <artifactId>dubbo-solon-plugin</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <dubbo.ver>2.7.5</dubbo.ver>
-    </properties>
-
-
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
