@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.extend.pulsar.service;
 
 import org.noear.solon.cloud.CloudEventHandler;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.pulsar.PulsarProps;
@@ -12,6 +13,13 @@ import org.noear.solon.cloud.service.CloudEventServicePlus;
  * @since 1.5
  */
 public class CloudEventServicePulsarImp implements CloudEventServicePlus {
+
+    private final CloudProps cloudProps;
+
+    public CloudEventServicePulsarImp(CloudProps cloudProps) {
+        this.cloudProps = cloudProps;
+    }
+
     @Override
     public boolean publish(Event event) throws CloudEventException {
         return false;
@@ -28,7 +36,7 @@ public class CloudEventServicePulsarImp implements CloudEventServicePlus {
     @Override
     public String getChannel() {
         if (channel == null) {
-            channel = PulsarProps.instance.getEventChannel();
+            channel = cloudProps.getEventChannel();
         }
         return channel;
     }
@@ -36,7 +44,7 @@ public class CloudEventServicePulsarImp implements CloudEventServicePlus {
     @Override
     public String getGroup() {
         if (group == null) {
-            group = PulsarProps.instance.getEventGroup();
+            group = cloudProps.getEventGroup();
         }
 
         return group;
