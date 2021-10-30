@@ -18,7 +18,7 @@ public class XPluginImp implements Plugin {
         }
 
         if (OssProps.instance.getFileEnable()) {
-            CloudManager.register(CloudFileServiceOssImp.getInstance());
+            CloudManager.register(new CloudFileServiceOssImp(OssProps.instance));
         }
     }
 }

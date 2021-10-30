@@ -4,7 +4,6 @@ import okhttp3.ResponseBody;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.exception.CloudFileException;
-import org.noear.solon.cloud.extend.aliyun.oss.OssProps;
 import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.cloud.utils.http.HttpUtils;
@@ -16,7 +15,6 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * 云端文件服务（aliyun oss）
@@ -25,16 +23,6 @@ import java.util.Properties;
  * @since 1.3
  */
 public class CloudFileServiceOssImp implements CloudFileService {
-    private static CloudFileServiceOssImp instance;
-    public static synchronized CloudFileServiceOssImp getInstance() {
-        if (instance == null) {
-            instance = new CloudFileServiceOssImp();
-        }
-
-        return instance;
-    }
-
-
     private final String bucketDef;
 
     private final String accessKey;
@@ -44,12 +32,6 @@ public class CloudFileServiceOssImp implements CloudFileService {
     protected String CHARSET_UTF8 = "utf8";
     protected String ALGORITHM = "HmacSHA1";
 
-    /**
-     * 限内部使用
-     * */
-    private CloudFileServiceOssImp() {
-        this(OssProps.instance);
-    }
 
     public CloudFileServiceOssImp(CloudProps cloudProps) {
         this(
