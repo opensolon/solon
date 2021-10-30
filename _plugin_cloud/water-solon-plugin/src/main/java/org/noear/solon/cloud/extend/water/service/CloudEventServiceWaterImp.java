@@ -208,14 +208,14 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
 
 
     public  String getEventSeal() {
-        return cloudProps.getProp(WaterProps.PROP_EVENT_SEAL);
+        return cloudProps.getProp(WaterProps.PROP_EVENT_seal);
     }
 
     public  String getEventReceive() {
-        return cloudProps.getProp(WaterProps.PROP_EVENT_RECEIVE);
+        return cloudProps.getProp(WaterProps.PROP_EVENT_receive);
     }
 
     public  void setEventReceive(String value) {
-        cloudProps.setProp(WaterProps.PROP_EVENT_RECEIVE, value);
+        cloudProps.setProp(WaterProps.PROP_EVENT_receive, value);
     }
 }

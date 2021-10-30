@@ -6,14 +6,11 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.CloudManager;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.annotation.CloudJob;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.extend.water.integration.http.*;
 import org.noear.solon.cloud.extend.water.integration.msg.HandlerCacheUpdate;
 import org.noear.solon.cloud.extend.water.integration.msg.HandlerConfigUpdate;
 import org.noear.solon.cloud.extend.water.service.*;
-import org.noear.solon.cloud.impl.CloudJobBuilder;
-import org.noear.solon.cloud.impl.CloudJobExtractor;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.core.Aop;
@@ -199,14 +196,14 @@ public class XPluginImp implements Plugin {
     }
 
     public  String getEventSeal() {
-        return cloudProps.getProp(WaterProps.PROP_EVENT_SEAL);
+        return cloudProps.getProp(WaterProps.PROP_EVENT_seal);
     }
 
     public  String getEventReceive() {
-        return cloudProps.getProp(WaterProps.PROP_EVENT_RECEIVE);
+        return cloudProps.getProp(WaterProps.PROP_EVENT_receive);
     }
 
     public  void setEventReceive(String value) {
-        cloudProps.setProp(WaterProps.PROP_EVENT_RECEIVE, value);
+        cloudProps.setProp(WaterProps.PROP_EVENT_receive, value);
     }
 }

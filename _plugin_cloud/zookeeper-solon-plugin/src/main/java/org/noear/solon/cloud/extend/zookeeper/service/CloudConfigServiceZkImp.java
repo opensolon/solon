@@ -3,11 +3,15 @@ package org.noear.solon.cloud.extend.zookeeper.service;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
+import org.noear.solon.cloud.CloudProps;
+import org.noear.solon.cloud.extend.zookeeper.ZkProps;
 import org.noear.solon.cloud.extend.zookeeper.impl.ZkClient;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,8 +23,12 @@ public class CloudConfigServiceZkImp implements CloudConfigService {
     private static final String PATH_ROOT = "/solon/config";
     private ZkClient client;
 
-    public CloudConfigServiceZkImp(ZkClient client) {
-        this.client = client;
+    public CloudConfigServiceZkImp(CloudProps cloudProps) {
+        //默认3秒
+        String sessionTimeout = cloudProps.getDiscoveryHealthCheckInterval("3000");
+        this.client = new ZkClient(cloudProps.getDiscoveryServer(), Integer.parseInt(sessionTimeout));
+
+
         this.client.connectServer();
 
         this.client.createNode("/solon");
@@ -83,5 +91,14 @@ public class CloudConfigServiceZkImp implements CloudConfigService {
         client.watchNodeData(String.format("%s/%s/%s", PATH_ROOT, group, key), event -> {
             entity.handler(pull(entity.group, entity.key));
         });
+    }
+
+    /**
+     * 关闭
+     */
+    public void close() throws InterruptedException {
+        if (client != null) {
+            client.close();
+        }
     }
 }

@@ -14,7 +14,9 @@ import org.noear.solon.core.Plugin;
  * @since 1.3
  */
 public class XPluginImp implements Plugin {
-    ZkClient client;
+
+    CloudConfigServiceZkImp configServiceZkImp;
+    CloudDiscoveryServiceZkImp discoveryServiceZkImp;
 
     @Override
     public void start(SolonApp app) {
@@ -22,13 +24,10 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        //默认3秒
-        String sessionTimeout = ZkProps.instance.getDiscoveryHealthCheckInterval("3000");
-        client = new ZkClient(ZkProps.instance.getDiscoveryServer(), Integer.parseInt(sessionTimeout));
-
         //1.登记配置服务
         if (ZkProps.instance.getConfigEnable()) {
-            CloudManager.register(new CloudConfigServiceZkImp(client));
+            configServiceZkImp = new CloudConfigServiceZkImp(ZkProps.instance);
+            CloudManager.register(configServiceZkImp);
 
             //1.1.加载配置
             CloudClient.configLoad(ZkProps.instance.getConfigLoad());
@@ -36,15 +35,19 @@ public class XPluginImp implements Plugin {
 
         //2.登记发现服务
         if (ZkProps.instance.getDiscoveryEnable()) {
-            CloudManager.register(new CloudDiscoveryServiceZkImp(client));
+            discoveryServiceZkImp = new CloudDiscoveryServiceZkImp(ZkProps.instance);
+            CloudManager.register(discoveryServiceZkImp);
         }
     }
 
     @Override
     public void stop() throws Throwable {
-        if(client != null){
-            client.close();
-            client = null;
+        if (configServiceZkImp != null) {
+            configServiceZkImp.close();
+        }
+
+        if (discoveryServiceZkImp != null) {
+            discoveryServiceZkImp.close();
         }
     }
 }

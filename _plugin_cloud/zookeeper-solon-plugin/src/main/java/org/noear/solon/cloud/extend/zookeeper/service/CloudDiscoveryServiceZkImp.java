@@ -4,6 +4,7 @@ import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.zookeeper.impl.ZkClient;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
@@ -21,8 +22,12 @@ public class CloudDiscoveryServiceZkImp implements CloudDiscoveryService {
     private static final String PATH_ROOT = "/solon/register";
     private ZkClient client;
 
-    public CloudDiscoveryServiceZkImp(ZkClient client) {
-        this.client = client;
+    public CloudDiscoveryServiceZkImp(CloudProps cloudProps) {
+        //默认3秒
+        String sessionTimeout = cloudProps.getDiscoveryHealthCheckInterval("3000");
+        this.client = new ZkClient(cloudProps.getDiscoveryServer(), Integer.parseInt(sessionTimeout));
+
+
         this.client.connectServer();
 
         this.client.createNode("/solon");
@@ -99,6 +104,14 @@ public class CloudDiscoveryServiceZkImp implements CloudDiscoveryService {
             Discovery discovery = find(entity.group, service);
             entity.handler(discovery);
         });
+    }
 
+    /**
+     * 关闭
+     */
+    public void close() throws InterruptedException {
+        if (client != null) {
+            client.close();
+        }
     }
 }
