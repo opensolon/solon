@@ -83,6 +83,6 @@ public class RabbitChannelFactory {
      * 虚拟主机
      */
     public String getEventVirtualHost() {
-        return cloudProps.getProp("event.virtualHost");
+        return cloudProps.getProp(RabbitmqProps.PROP_EVENT_virtualHost);
     }
 }

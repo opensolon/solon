@@ -51,20 +51,20 @@ public class RocketmqConfig {
      * 命名空间
      */
     public String getEventNamespace() {
-        return cloudProps.getProp("event.namespace");
+        return cloudProps.getProp(RocketmqProps.PROP_EVENT_namespace);
     }
 
     /**
      * 消费组
      */
     public String getEventConsumerGroup() {
-        return cloudProps.getProp("event.consumerGroup");
+        return cloudProps.getProp(RocketmqProps.PROP_EVENT_consumerGroup);
     }
 
     /**
      * 产品组
      */
     public String getEventProducerGroup() {
-        return cloudProps.getProp("event.producerGroup");
+        return cloudProps.getProp(RocketmqProps.PROP_EVENT_producerGroup);
     }
 }

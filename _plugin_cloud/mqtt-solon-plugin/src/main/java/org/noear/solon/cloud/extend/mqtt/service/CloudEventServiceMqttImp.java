@@ -153,6 +153,6 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
     }
 
     public String getEventClientId() {
-        return cloudProps.getProp(MqttProps.PROP_EVENT_CLIENTID);
+        return cloudProps.getProp(MqttProps.PROP_EVENT_clientId);
     }
 }
