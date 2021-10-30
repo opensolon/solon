@@ -66,9 +66,13 @@ public class CloudEventServicePulsarImp implements CloudEventServicePlus {
         try (Producer<byte[]> producer = client.newProducer().topic(topicNew).create()) {
 
             if (event.scheduled() == null) {
-                producer.send(event_data);
+                producer.newMessage()
+                        .key(event.key())
+                        .value(event_data)
+                        .send();
             } else {
                 producer.newMessage()
+                        .key(event.key())
                         .value(event_data)
                         .deliverAt(event.scheduled().getTime())
                         .send();
