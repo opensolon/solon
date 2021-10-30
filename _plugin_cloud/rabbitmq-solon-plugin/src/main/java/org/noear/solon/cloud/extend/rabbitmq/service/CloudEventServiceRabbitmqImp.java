@@ -56,19 +56,19 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
             throw new IllegalArgumentException("Event missing content");
         }
 
+        if (Utils.isEmpty(event.key())) {
+            event.key(Utils.guid());
+        }
+
+        //new topic
+        String topicNew;
+        if (Utils.isEmpty(event.group())) {
+            topicNew = event.topic();
+        } else {
+            topicNew = event.group() + RabbitmqProps.GROUP_SPLIT_MART + event.topic();
+        }
+
         try {
-            if (Utils.isEmpty(event.key())) {
-                event.key(Utils.guid());
-            }
-
-            //new topic
-            String topicNew;
-            if (Utils.isEmpty(event.group())) {
-                topicNew = event.topic();
-            } else {
-                topicNew = event.group() + RabbitmqProps.GROUP_SPLIT_MART + event.topic();
-            }
-
             return producer.publish(event, topicNew);
         } catch (Throwable ex) {
             throw new CloudEventException(ex);
