@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.rocketmq.impl;
 
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
 
 /**
@@ -9,6 +10,7 @@ import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
  * @since 1.3
  */
 public class RocketmqConfig {
+    private CloudProps cloudProps;
     /**
      * 生产组
      */
@@ -25,14 +27,16 @@ public class RocketmqConfig {
 
     protected long timeout;
 
-    public RocketmqConfig() {
-        server = RocketmqProps.instance.getEventServer();
+    public RocketmqConfig(CloudProps cloudProps) {
+        this.cloudProps = cloudProps;
 
-        timeout = RocketmqProps.instance.getEventPublishTimeout();
+        server = cloudProps.getEventServer();
 
-        namespace = RocketmqProps.getEventNamespace();
-        producerGroup = RocketmqProps.getEventProducerGroup();
-        consumerGroup = RocketmqProps.getEventConsumerGroup();
+        timeout = cloudProps.getEventPublishTimeout();
+
+        namespace = getEventNamespace();
+        producerGroup = getEventProducerGroup();
+        consumerGroup = getEventConsumerGroup();
 
         if (Utils.isEmpty(producerGroup)) {
             producerGroup = "DEFAULT";
@@ -41,5 +45,26 @@ public class RocketmqConfig {
         if (Utils.isEmpty(consumerGroup)) {
             consumerGroup = Solon.cfg().appGroup() + "_" + Solon.cfg().appName();
         }
+    }
+
+    /**
+     * 命名空间
+     */
+    public String getEventNamespace() {
+        return cloudProps.getProp("event.namespace");
+    }
+
+    /**
+     * 消费组
+     */
+    public String getEventConsumerGroup() {
+        return cloudProps.getProp("event.consumerGroup");
+    }
+
+    /**
+     * 产品组
+     */
+    public String getEventProducerGroup() {
+        return cloudProps.getProp("event.producerGroup");
     }
 }

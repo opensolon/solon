@@ -2,7 +2,7 @@ package org.noear.solon.cloud.extend.rocketmq.impl;
 
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.noear.solon.Utils;
-import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 
 import java.util.Properties;
@@ -12,16 +12,16 @@ import java.util.Properties;
  * @since 1.3
  */
 public class RocketmqConsumer {
-    RocketmqConfig cfg;
+    private RocketmqConfig cfg;
 
-    DefaultMQPushConsumer consumer;
-    RocketmqConsumerHandler handler;
+    private DefaultMQPushConsumer consumer;
+    private RocketmqConsumerHandler handler;
 
-    public RocketmqConsumer(RocketmqConfig config){
+    public RocketmqConsumer(RocketmqConfig config) {
         cfg = config;
     }
 
-    public void init(CloudEventObserverManger observerManger){
+    public void init(CloudProps cloudProps, CloudEventObserverManger observerManger) {
         if (consumer != null) {
             return;
         }
@@ -40,7 +40,7 @@ public class RocketmqConsumer {
             //消费组
             consumer.setConsumerGroup(cfg.consumerGroup);
             //命名空间
-            if(Utils.isNotEmpty(cfg.namespace)) {
+            if (Utils.isNotEmpty(cfg.namespace)) {
                 consumer.setNamespace(cfg.namespace);
             }
 
@@ -52,8 +52,8 @@ public class RocketmqConsumer {
             //无消息时，最大阻塞时间。默认5000 单位ms
 
             //绑定定制属性
-            Properties props = RocketmqProps.instance.getEventConsumerProps();
-            if(props.size() > 0) {
+            Properties props = cloudProps.getEventConsumerProps();
+            if (props.size() > 0) {
                 Utils.injectProperties(consumer, props);
             }
 

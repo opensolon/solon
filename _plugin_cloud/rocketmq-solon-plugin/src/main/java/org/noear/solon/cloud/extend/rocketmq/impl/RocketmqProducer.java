@@ -8,6 +8,7 @@ import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
 import org.noear.solon.cloud.model.Event;
 
@@ -25,7 +26,7 @@ public class RocketmqProducer {
         cfg = config;
     }
 
-    private void init() throws MQClientException {
+    private void init(CloudProps cloudProps) throws MQClientException {
         if (producer != null) {
             return;
         }
@@ -42,7 +43,7 @@ public class RocketmqProducer {
             //生产组
             producer.setProducerGroup(cfg.producerGroup);
             //命名空间
-            if(Utils.isNotEmpty(cfg.namespace)) {
+            if (Utils.isNotEmpty(cfg.namespace)) {
                 producer.setNamespace(cfg.namespace);
             }
 
@@ -54,8 +55,8 @@ public class RocketmqProducer {
             producer.setRetryTimesWhenSendFailed(2);
 
             //绑定定制属性
-            Properties props = RocketmqProps.instance.getEventProducerProps();
-            if(props.size() > 0) {
+            Properties props = cloudProps.getEventProducerProps();
+            if (props.size() > 0) {
                 Utils.injectProperties(producer, props);
             }
 
@@ -63,8 +64,8 @@ public class RocketmqProducer {
         }
     }
 
-    public boolean publish(Event event, String topic) throws MQClientException, RemotingException, MQBrokerException, InterruptedException{
-        init();
+    public boolean publish(CloudProps cloudProps, Event event, String topic) throws MQClientException, RemotingException, MQBrokerException, InterruptedException {
+        init(cloudProps);
 
         Message message = MessageUtil.buildNewMeaage(event, topic);
 

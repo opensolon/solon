@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.rocketmq.service;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.rocketmq.RocketmqProps;
@@ -17,22 +18,14 @@ import org.noear.solon.cloud.service.CloudEventServicePlus;
  * @since 1.2
  */
 public class CloudEventServiceRocketmqImp implements CloudEventServicePlus {
-    private static CloudEventServiceRocketmqImp instance;
+    private CloudProps cloudProps;
+    private RocketmqProducer producer;
+    private RocketmqConsumer consumer;
 
-    public static synchronized CloudEventServiceRocketmqImp getInstance() {
-        if (instance == null) {
-            instance = new CloudEventServiceRocketmqImp();
-        }
+    public CloudEventServiceRocketmqImp(CloudProps cloudProps) {
+        this.cloudProps = cloudProps;
 
-        return instance;
-    }
-
-
-    RocketmqProducer producer;
-    RocketmqConsumer consumer;
-
-    private CloudEventServiceRocketmqImp() {
-        RocketmqConfig config = new RocketmqConfig();
+        RocketmqConfig config = new RocketmqConfig(cloudProps);
 
         producer = new RocketmqProducer(config);
         consumer = new RocketmqConsumer(config);
@@ -59,8 +52,8 @@ public class CloudEventServiceRocketmqImp implements CloudEventServicePlus {
         topicNew = topicNew.replace(".", "_");
 
         try {
-            return producer.publish(event, topicNew);
-        }catch (Throwable ex){
+            return producer.publish(cloudProps, event, topicNew);
+        } catch (Throwable ex) {
             throw new CloudEventException(ex);
         }
     }
@@ -85,7 +78,7 @@ public class CloudEventServiceRocketmqImp implements CloudEventServicePlus {
 
     public void subscribe() {
         if (observerManger.topicSize() > 0) {
-            consumer.init(observerManger);
+            consumer.init(cloudProps, observerManger);
         }
     }
 
@@ -95,7 +88,7 @@ public class CloudEventServiceRocketmqImp implements CloudEventServicePlus {
     @Override
     public String getChannel() {
         if (channel == null) {
-            channel = RocketmqProps.instance.getEventChannel();
+            channel = cloudProps.getEventChannel();
         }
         return channel;
     }
@@ -103,7 +96,7 @@ public class CloudEventServiceRocketmqImp implements CloudEventServicePlus {
     @Override
     public String getGroup() {
         if (group == null) {
-            group = RocketmqProps.instance.getEventGroup();
+            group = cloudProps.getEventGroup();
         }
 
         return group;
