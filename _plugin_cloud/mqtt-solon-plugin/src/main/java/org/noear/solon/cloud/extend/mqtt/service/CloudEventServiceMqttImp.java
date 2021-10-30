@@ -49,7 +49,7 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
             return;
         }
 
-        clientId = cloudProps.getEventClientId();
+        clientId = getEventClientId();
         if (Utils.isEmpty(clientId)) {
             clientId = Solon.cfg().appName() + "-" + Utils.guid();
         }
@@ -73,7 +73,7 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
 
         //绑定定制属性
         Properties props = cloudProps.getEventClientProps();
-        if(props.size() > 0){
+        if (props.size() > 0) {
             Utils.injectProperties(options, props);
         }
 
@@ -92,7 +92,7 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
     }
 
     @Override
-    public boolean publish(Event event) throws CloudEventException{
+    public boolean publish(Event event) throws CloudEventException {
         MqttMessage message = new MqttMessage();
         message.setQos(event.qos());
         message.setRetained(event.retained());
@@ -149,5 +149,9 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
         }
 
         return group;
+    }
+
+    public String getEventClientId() {
+        return cloudProps.getProp("event.clientId");
     }
 }
