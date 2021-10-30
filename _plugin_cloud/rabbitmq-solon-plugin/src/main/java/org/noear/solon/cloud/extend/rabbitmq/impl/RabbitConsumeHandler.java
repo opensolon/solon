@@ -4,6 +4,7 @@ import com.rabbitmq.client.*;
 import org.noear.snack.ONode;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
@@ -26,12 +27,12 @@ public class RabbitConsumeHandler extends DefaultConsumer {
     RabbitProducer producer;
     String eventChannelName;
 
-    public RabbitConsumeHandler(RabbitProducer producer, RabbitConfig config, Channel channel, CloudEventObserverManger observerManger) {
+    public RabbitConsumeHandler(CloudProps cloudProps, RabbitProducer producer, RabbitConfig config, Channel channel, CloudEventObserverManger observerManger) {
         super(channel);
         this.cfg = config;
         this.producer = producer;
         this.observerManger = observerManger;
-        this.eventChannelName = RabbitmqProps.instance.getEventChannel();
+        this.eventChannelName = cloudProps.getEventChannel();
     }
 
     @Override

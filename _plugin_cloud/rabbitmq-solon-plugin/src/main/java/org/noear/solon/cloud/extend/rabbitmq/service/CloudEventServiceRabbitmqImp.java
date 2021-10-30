@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.rabbitmq.service;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
@@ -19,31 +20,25 @@ import org.noear.solon.cloud.service.CloudEventServicePlus;
  * @since 1.2
  */
 public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
-    private static CloudEventServiceRabbitmqImp instance;
-    public static synchronized CloudEventServiceRabbitmqImp getInstance() {
-        if (instance == null) {
-            instance = new CloudEventServiceRabbitmqImp();
-        }
-
-        return instance;
-    }
 
 
-    RabbitProducer producer;
-    RabbitConsumer consumer;
+    private final CloudProps cloudProps;
+    private RabbitProducer producer;
+    private RabbitConsumer consumer;
 
-    private CloudEventServiceRabbitmqImp() {
+    public CloudEventServiceRabbitmqImp(CloudProps cloudProps) {
+        this.cloudProps = cloudProps;
 
         try {
-            RabbitConfig config = new RabbitConfig();
-            config.server = RabbitmqProps.instance.getEventServer();
-            config.username = RabbitmqProps.instance.getUsername();
-            config.password = RabbitmqProps.instance.getPassword();
+            RabbitConfig config = new RabbitConfig(cloudProps);
+            config.server = cloudProps.getEventServer();
+            config.username = cloudProps.getUsername();
+            config.password = cloudProps.getPassword();
 
-            RabbitChannelFactory factory = new RabbitChannelFactory(config);
+            RabbitChannelFactory factory = new RabbitChannelFactory(cloudProps, config);
 
             producer = new RabbitProducer(factory);
-            consumer = new RabbitConsumer(producer, factory);
+            consumer = new RabbitConsumer(cloudProps, producer, factory);
 
             producer.init();
         } catch (Exception ex) {
@@ -52,7 +47,7 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
     }
 
     @Override
-    public boolean publish(Event event) throws CloudEventException{
+    public boolean publish(Event event) throws CloudEventException {
         if (Utils.isEmpty(event.topic())) {
             throw new IllegalArgumentException("Event missing topic");
         }
@@ -62,7 +57,7 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
         }
 
         try {
-            if(Utils.isEmpty(event.key())){
+            if (Utils.isEmpty(event.key())) {
                 event.key(Utils.guid());
             }
 
@@ -83,7 +78,7 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
     CloudEventObserverManger observerManger = new CloudEventObserverManger();
 
     @Override
-    public void attention(EventLevel level, String channel , String group, String topic, CloudEventHandler observer) {
+    public void attention(EventLevel level, String channel, String group, String topic, CloudEventHandler observer) {
         //new topic
         String topicNew;
         if (Utils.isEmpty(group)) {
@@ -97,7 +92,7 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
 
     public void subscribe() {
         try {
-            if(observerManger.topicSize() > 0) {
+            if (observerManger.topicSize() > 0) {
                 consumer.init(observerManger);
             }
         } catch (Throwable ex) {
@@ -112,7 +107,7 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
     @Override
     public String getChannel() {
         if (channel == null) {
-            channel = RabbitmqProps.instance.getEventChannel();
+            channel = cloudProps.getEventChannel();
         }
         return channel;
     }
@@ -120,7 +115,7 @@ public class CloudEventServiceRabbitmqImp implements CloudEventServicePlus {
     @Override
     public String getGroup() {
         if (group == null) {
-            group = RabbitmqProps.instance.getEventGroup();
+            group = cloudProps.getEventGroup();
         }
 
         return group;

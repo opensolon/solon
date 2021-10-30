@@ -14,6 +14,8 @@ import java.util.Properties;
 public class CloudProps {
     public static String LOG_DEFAULT_LOGGER;
 
+    private String ROOT = "solon.cloud.@@.";
+
     private String SERVER = "solon.cloud.@@.server";
     private String TOKEN = "solon.cloud.@@.token";
     private String USERNAME = "solon.cloud.@@.username";
@@ -91,6 +93,8 @@ public class CloudProps {
     public CloudProps(String frame) {
         this.frame = frame;
 
+        ROOT = ROOT.replace("@@", frame);
+
         SERVER = SERVER.replace("@@", frame);
         TOKEN = TOKEN.replace("@@", frame);
         USERNAME = USERNAME.replace("@@", frame);
@@ -120,9 +124,9 @@ public class CloudProps {
         EVENT_PUBLISH_TIMEOUT = EVENT_PUBLISH_TIMEOUT.replace("@@", frame);
         EVENT_CHANNEL = EVENT_CHANNEL.replace("@@", frame);
         EVENT_GROUP = EVENT_GROUP.replace("@@", frame);
-        EVENT_CONSUMER = EVENT_CONSUMER.replace("@@",frame);
-        EVENT_PRODUCER = EVENT_PRODUCER.replace("@@",frame);
-        EVENT_CLIENT = EVENT_CLIENT.replace("@@",frame);
+        EVENT_CONSUMER = EVENT_CONSUMER.replace("@@", frame);
+        EVENT_PRODUCER = EVENT_PRODUCER.replace("@@", frame);
+        EVENT_CLIENT = EVENT_CLIENT.replace("@@", frame);
 
         LOCK_ENABLE = LOCK_ENABLE.replace("@@", frame);
 
@@ -286,15 +290,15 @@ public class CloudProps {
         return Solon.cfg().get(EVENT_GROUP, "");
     }
 
-    public Properties getEventConsumerProps(){
+    public Properties getEventConsumerProps() {
         return Solon.cfg().getProp(EVENT_CONSUMER);
     }
 
-    public Properties getEventProducerProps(){
+    public Properties getEventProducerProps() {
         return Solon.cfg().getProp(EVENT_PRODUCER);
     }
 
-    public Properties getEventClientProps(){
+    public Properties getEventClientProps() {
         return Solon.cfg().getProp(EVENT_CLIENT);
     }
 
@@ -376,6 +380,7 @@ public class CloudProps {
     public boolean getIdEnable() {
         return Solon.cfg().getBool(ID_ENABLE, true);
     }
+
     public long getIdStart() {
         return Solon.cfg().getLong(ID_START, 0L);
     }
@@ -393,6 +398,7 @@ public class CloudProps {
     public boolean getJobEnable() {
         return Solon.cfg().getBool(JOB_ENABLE, true);
     }
+
     public String getJobServer() {
         String tmp = Solon.cfg().get(JOB_SERVER);
         if (Utils.isEmpty(tmp)) {
@@ -400,5 +406,9 @@ public class CloudProps {
         } else {
             return tmp;
         }
+    }
+
+    public String getProp(String name) {
+        return Solon.cfg().get(ROOT + name); //"solon.cloud.@@.";
     }
 }

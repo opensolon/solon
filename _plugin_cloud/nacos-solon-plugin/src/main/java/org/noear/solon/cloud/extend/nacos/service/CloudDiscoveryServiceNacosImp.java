@@ -7,12 +7,12 @@ import org.apache.http.util.TextUtils;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.nacos.impl.InstanceWrap;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
-import org.noear.solon.cloud.extend.nacos.NacosProps;
 
 import java.util.List;
 import java.util.Properties;
@@ -25,10 +25,10 @@ public class CloudDiscoveryServiceNacosImp implements CloudDiscoveryService {
     NamingService real;
     boolean unstable;
 
-    public CloudDiscoveryServiceNacosImp() {
-        String server = NacosProps.instance.getDiscoveryServer();
-        String username = NacosProps.instance.getUsername();
-        String password = NacosProps.instance.getPassword();
+    public CloudDiscoveryServiceNacosImp(CloudProps cloudProps) {
+        String server = cloudProps.getDiscoveryServer();
+        String username = cloudProps.getUsername();
+        String password = cloudProps.getPassword();
 
         Properties properties = new Properties();
         properties.put("serverAddr", server);

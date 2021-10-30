@@ -19,7 +19,7 @@ public class XPluginImp implements Plugin {
         }
 
         if (RabbitmqProps.instance.getEventEnable()) {
-            CloudEventServiceRabbitmqImp eventServiceImp = CloudEventServiceRabbitmqImp.getInstance();
+            CloudEventServiceRabbitmqImp eventServiceImp = new CloudEventServiceRabbitmqImp(RabbitmqProps.instance);
             CloudManager.register(eventServiceImp);
 
             Aop.beanOnloaded(eventServiceImp::subscribe);

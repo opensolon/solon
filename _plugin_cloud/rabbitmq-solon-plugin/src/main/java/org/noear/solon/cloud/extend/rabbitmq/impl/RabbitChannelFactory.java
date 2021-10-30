@@ -4,6 +4,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
 
 import java.io.IOException;
@@ -20,12 +21,15 @@ public class RabbitChannelFactory {
     RabbitConfig config;
 
 
-    public RabbitChannelFactory(RabbitConfig cfg) {
+    CloudProps cloudProps;
+    public RabbitChannelFactory(CloudProps cloudProps, RabbitConfig cfg) {
+        this.cloudProps = cloudProps;
+
         config = cfg;
 
         String host = config.server.split(":")[0];
         int port = Integer.parseInt(config.server.split(":")[1]);
-        String virtualHost = RabbitmqProps.getEventVirtualHost();
+        String virtualHost = getEventVirtualHost();
 
         connectionFactory = new ConnectionFactory();
 
@@ -73,5 +77,12 @@ public class RabbitChannelFactory {
         }
 
         return channel;
+    }
+
+    /**
+     * 虚拟主机
+     */
+    public String getEventVirtualHost() {
+        return cloudProps.getProp("event.virtualHost");
     }
 }

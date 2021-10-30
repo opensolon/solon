@@ -7,10 +7,10 @@ import com.alibaba.nacos.api.exception.NacosException;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
-import org.noear.solon.cloud.extend.nacos.NacosProps;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,22 +24,14 @@ import java.util.concurrent.Executor;
  * @since 1.2
  */
 public class CloudConfigServiceNacosImp implements CloudConfigService {
-    private static CloudConfigServiceNacosImp instance;
-    public static synchronized CloudConfigServiceNacosImp getInstance() {
-        if (instance == null) {
-            instance = new CloudConfigServiceNacosImp();
-        }
-
-        return instance;
-    }
 
 
     ConfigService real;
 
-    private CloudConfigServiceNacosImp() {
-        String server = NacosProps.instance.getConfigServer();
-        String username = NacosProps.instance.getUsername();
-        String password = NacosProps.instance.getPassword();
+    public CloudConfigServiceNacosImp(CloudProps cloudProps) {
+        String server = cloudProps.getConfigServer();
+        String username = cloudProps.getUsername();
+        String password = cloudProps.getPassword();
 
         Properties properties = new Properties();
         properties.put("serverAddr", server);

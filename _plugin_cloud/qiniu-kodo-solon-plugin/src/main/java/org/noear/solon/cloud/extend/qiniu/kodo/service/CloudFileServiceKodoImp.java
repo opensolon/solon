@@ -10,30 +10,19 @@ import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
 import okhttp3.ResponseBody;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.exception.CloudFileException;
-import org.noear.solon.cloud.extend.qiniu.kodo.KodoProps;
 import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.cloud.utils.http.HttpUtils;
 import org.noear.solon.core.handle.Result;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * @author noear
  */
 public class CloudFileServiceKodoImp implements CloudFileService {
-    private static CloudFileServiceKodoImp instance;
-
-    public static synchronized CloudFileServiceKodoImp getInstance() {
-        if (instance == null) {
-            instance = new CloudFileServiceKodoImp();
-        }
-
-        return instance;
-    }
-
 
     protected final String bucketDef;
     protected final String accessKey;
@@ -44,11 +33,11 @@ public class CloudFileServiceKodoImp implements CloudFileService {
     protected final UploadManager uploadManager;
     protected final BucketManager bucketManager;
 
-    public CloudFileServiceKodoImp() {
-        bucketDef = KodoProps.instance.getFileBucket();
-        accessKey = KodoProps.instance.getFileAccessKey();
-        secretKey = KodoProps.instance.getFileSecretKey();
-        endpoint = KodoProps.instance.getFileEndpoint();
+    public CloudFileServiceKodoImp(CloudProps cloudProps) {
+        bucketDef = cloudProps.getFileBucket();
+        accessKey = cloudProps.getFileAccessKey();
+        secretKey = cloudProps.getFileSecretKey();
+        endpoint = cloudProps.getFileEndpoint();
 
         auth = Auth.create(accessKey, secretKey);
 

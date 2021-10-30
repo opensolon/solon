@@ -1,6 +1,7 @@
 package org.noear.solon.cloud.extend.rabbitmq.impl;
 
 import com.rabbitmq.client.Channel;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 
@@ -14,6 +15,7 @@ import java.util.concurrent.TimeoutException;
  * @since 1.3
  */
 public class RabbitConsumer {
+    private CloudProps cloudProps;
     private RabbitConfig cfg;
     private Channel channel;
     private RabbitChannelFactory factory;
@@ -21,7 +23,8 @@ public class RabbitConsumer {
     private RabbitProducer producer;
 
 
-    public RabbitConsumer(RabbitProducer producer, RabbitChannelFactory factory) {
+    public RabbitConsumer(CloudProps cloudProps, RabbitProducer producer, RabbitChannelFactory factory) {
+        this.cloudProps = cloudProps;
         this.cfg = factory.getConfig();
         this.factory = factory;
         this.producer = producer;
@@ -32,7 +35,7 @@ public class RabbitConsumer {
      */
     public void init(CloudEventObserverManger observerManger) throws IOException, TimeoutException {
         channel = factory.getChannel();
-        handler = new RabbitConsumeHandler(producer, cfg, channel, observerManger);
+        handler = new RabbitConsumeHandler(cloudProps, producer, cfg, channel, observerManger);
 
         int prefetchCount = RabbitmqProps.instance.getEventPrefetchCount();
         if (prefetchCount < 1) {

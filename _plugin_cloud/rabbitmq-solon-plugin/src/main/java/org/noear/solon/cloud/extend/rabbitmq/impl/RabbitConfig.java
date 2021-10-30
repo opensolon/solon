@@ -3,6 +3,7 @@ package org.noear.solon.cloud.extend.rabbitmq.impl;
 import com.rabbitmq.client.BuiltinExchangeType;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.rabbitmq.RabbitmqProps;
 
 /**
@@ -67,13 +68,17 @@ public class RabbitConfig {
     public String queue_ready;
     public String queue_retry;
 
-    public RabbitConfig() {
-        exchangeName = RabbitmqProps.getEventExchange();
+    private final CloudProps cloudProps;
+
+    public RabbitConfig(CloudProps cloudProps) {
+        this.cloudProps = cloudProps;
+
+        exchangeName = getEventExchange();
         if (Utils.isEmpty(exchangeName)) {
             exchangeName = "DEFAULT";
         }
 
-        String queueName = RabbitmqProps.getEventQueue();
+        String queueName = getEventQueue();
 
         if (Utils.isEmpty(queueName)) {
             queueName = Solon.cfg().appGroup() + "_" + Solon.cfg().appName();
@@ -83,4 +88,20 @@ public class RabbitConfig {
         queue_ready = queueName + "@ready";
         queue_retry = queueName + "@retry";
     }
+
+
+    /**
+     * 交换机
+     */
+    public String getEventExchange() {
+        return cloudProps.getProp("event.exchange");
+    }
+
+    /**
+     * 队列
+     */
+    public String getEventQueue() {
+        return cloudProps.getProp("event.queue");
+    }
+
 }

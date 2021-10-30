@@ -18,7 +18,7 @@ public class XPluginImp implements Plugin {
         }
 
         if (KodoProps.instance.getFileEnable()) {
-            CloudManager.register(CloudFileServiceKodoImp.getInstance());
+            CloudManager.register(new CloudFileServiceKodoImp(KodoProps.instance));
         }
     }
 }
