@@ -2,13 +2,11 @@ package org.noear.solon.cloud.extend.minio.service;
 
 import io.minio.*;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.exception.CloudFileException;
-import org.noear.solon.cloud.extend.minio.MinioProps;
 import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.core.handle.Result;
-
-import java.util.Properties;
 
 /**
  * 云端文件服务（minio）
@@ -18,15 +16,6 @@ import java.util.Properties;
  */
 public class CloudFileServiceMinioImp implements CloudFileService {
 
-    private static CloudFileServiceMinioImp instance;
-
-    public static synchronized CloudFileServiceMinioImp getInstance() {
-        if (instance == null) {
-            instance = new CloudFileServiceMinioImp();
-        }
-        return instance;
-    }
-
     protected final String bucketDef;
 
     protected final String endpoint;
@@ -35,23 +24,14 @@ public class CloudFileServiceMinioImp implements CloudFileService {
     protected final String secretKey;
     protected final MinioClient minioClient;
 
-    private CloudFileServiceMinioImp() {
-        this(
-                MinioProps.INSTANCE.getFileEndpoint(),
-                MinioProps.INSTANCE.getFileRegionId(),
-                MinioProps.INSTANCE.getFileBucket(),
-                MinioProps.INSTANCE.getFileAccessKey(),
-                MinioProps.INSTANCE.getFileSecretKey()
-        );
-    }
 
-    public CloudFileServiceMinioImp(Properties properties) {
+    public CloudFileServiceMinioImp(CloudProps cloudProps) {
         this(
-                properties.getProperty("endpoint"),
-                properties.getProperty("regionId"),
-                properties.getProperty("bucket"),
-                properties.getProperty("accessKey"),
-                properties.getProperty("secretKey")
+                cloudProps.getFileEndpoint(),
+                cloudProps.getFileRegionId(),
+                cloudProps.getFileBucket(),
+                cloudProps.getFileAccessKey(),
+                cloudProps.getFileSecretKey()
         );
     }
 

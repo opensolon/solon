@@ -18,7 +18,7 @@ public class XPluginImp implements Plugin {
         }
 
         if (MinioProps.INSTANCE.getFileEnable()) {
-            CloudManager.register(CloudFileServiceMinioImp.getInstance());
+            CloudManager.register(new CloudFileServiceMinioImp(MinioProps.INSTANCE));
         }
     }
 }
