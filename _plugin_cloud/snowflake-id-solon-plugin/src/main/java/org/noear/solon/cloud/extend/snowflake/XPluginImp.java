@@ -13,7 +13,7 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
         if (SnowflakeProps.instance.getIdEnable()) {
-            CloudManager.register(CloudIdServiceFactoryImp.getInstance());
+            CloudManager.register(new CloudIdServiceFactoryImp(SnowflakeProps.instance.getIdStart()));
         }
     }
 }

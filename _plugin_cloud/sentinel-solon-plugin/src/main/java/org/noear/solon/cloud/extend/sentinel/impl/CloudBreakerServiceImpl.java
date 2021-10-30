@@ -1,7 +1,6 @@
 package org.noear.solon.cloud.extend.sentinel.impl;
 
 import org.noear.solon.cloud.impl.CloudBreakerServiceLocalImpl;
-import org.noear.solon.cloud.model.BreakerEntry;
 import org.noear.solon.cloud.model.BreakerEntrySim;
 
 /**

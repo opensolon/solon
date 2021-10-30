@@ -31,7 +31,7 @@ public class RocketmqConsumer {
                 return;
             }
 
-            handler = new RocketmqConsumerHandler(observerManger);
+            handler = new RocketmqConsumerHandler(cloudProps, observerManger);
 
             consumer = new DefaultMQPushConsumer();
 

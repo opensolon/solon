@@ -11,13 +11,10 @@ import java.util.Map;
  * @since 1.3
  */
 public class CloudIdServiceFactoryImp implements CloudIdServiceFactory {
-    public static CloudIdServiceFactory instance;
-    public static synchronized CloudIdServiceFactory getInstance() {
-        if (instance == null) {
-            instance = new CloudIdServiceFactoryImp();
-        }
+    long idStart;
 
-        return instance;
+    public CloudIdServiceFactoryImp(long idStart) {
+        this.idStart = idStart;
     }
 
 
@@ -32,7 +29,7 @@ public class CloudIdServiceFactoryImp implements CloudIdServiceFactory {
             synchronized (block.intern()) {
                 tmp = cached.get(block);
                 if (tmp == null) {
-                    tmp = new CloudIdServiceImp(block);
+                    tmp = new CloudIdServiceImp(block, idStart);
                     cached.put(block, tmp);
                 }
             }
