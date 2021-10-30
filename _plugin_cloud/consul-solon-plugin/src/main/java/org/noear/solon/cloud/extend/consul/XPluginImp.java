@@ -29,7 +29,7 @@ public class XPluginImp implements Plugin {
 
         //1.登记配置服务
         if (ConsulProps.instance.getConfigEnable()) {
-            CloudConfigServiceConsulImp serviceImp = CloudConfigServiceConsulImp.getInstance();
+            CloudConfigServiceConsulImp serviceImp = new CloudConfigServiceConsulImp(ConsulProps.instance);
             CloudManager.register(serviceImp);
 
             if (serviceImp.getRefreshInterval() > 0) {
@@ -46,7 +46,7 @@ public class XPluginImp implements Plugin {
 
         //2.登记发现服务
         if (ConsulProps.instance.getDiscoveryEnable()) {
-            CloudDiscoveryServiceConsulImp serviceImp = new CloudDiscoveryServiceConsulImp();
+            CloudDiscoveryServiceConsulImp serviceImp = new CloudDiscoveryServiceConsulImp(ConsulProps.instance);
             CloudManager.register(serviceImp);
 
             //运行一次，拉取服务列表

@@ -6,6 +6,7 @@ import com.ecwid.consul.v1.agent.model.NewService;
 import com.ecwid.consul.v1.agent.model.Service;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
@@ -26,6 +27,7 @@ import java.util.*;
  * @since 1.2
  */
 public class CloudDiscoveryServiceConsulImp extends TimerTask implements CloudDiscoveryService {
+    private final CloudProps cloudProps;
     private ConsulClient real;
     private String token;
 
@@ -39,20 +41,21 @@ public class CloudDiscoveryServiceConsulImp extends TimerTask implements CloudDi
     private Map<CloudDiscoveryHandler, CloudDiscoveryObserverEntity> observerMap = new HashMap<>();
 
 
+    public CloudDiscoveryServiceConsulImp(CloudProps cloudProps) {
+        this.cloudProps = cloudProps;
 
-    public CloudDiscoveryServiceConsulImp() {
-        token = ConsulProps.instance.getToken();
-        refreshInterval = IntervalUtils.getInterval(ConsulProps.instance.getDiscoveryRefreshInterval("5s"));
+        token = cloudProps.getToken();
+        refreshInterval = IntervalUtils.getInterval(cloudProps.getDiscoveryRefreshInterval("5s"));
 
-        healthCheckInterval = ConsulProps.instance.getDiscoveryHealthCheckInterval("5s");
-//        healthCheckPath = ConsulProps.instance.getDiscoveryHealthCheckPath();
+        healthCheckInterval = cloudProps.getDiscoveryHealthCheckInterval("5s");
+//        healthCheckPath = cloudProps.getDiscoveryHealthCheckPath();
 
-        String tags_str = ConsulProps.instance.getDiscoveryTags();
+        String tags_str = cloudProps.getDiscoveryTags();
         if(Utils.isNotEmpty(tags_str)){
             tags = Arrays.asList(tags_str.split(","));
         }
 
-        String server = ConsulProps.instance.getDiscoveryServer();
+        String server = cloudProps.getDiscoveryServer();
         String[] ss = server.split(":");
 
         if (ss.length == 1) {
@@ -114,7 +117,7 @@ public class CloudDiscoveryServiceConsulImp extends TimerTask implements CloudDi
 
                 //1.添加检测器
                 //
-                HealthDetector.start();
+                HealthDetector.start(cloudProps);
 
                 //2.添加检测
                 //

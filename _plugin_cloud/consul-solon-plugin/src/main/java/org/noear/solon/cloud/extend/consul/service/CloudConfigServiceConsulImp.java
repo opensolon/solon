@@ -5,6 +5,7 @@ import com.ecwid.consul.v1.kv.model.GetValue;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
@@ -24,17 +25,6 @@ import java.util.TimerTask;
  * @since 1.2
  */
 public class CloudConfigServiceConsulImp extends TimerTask implements CloudConfigService {
-    private static CloudConfigServiceConsulImp instance;
-    public static synchronized CloudConfigServiceConsulImp getInstance() {
-        if (instance == null) {
-            instance = new CloudConfigServiceConsulImp();
-        }
-
-        return instance;
-    }
-
-
-
     private final String DEFAULT_GROUP = "DEFAULT_GROUP";
 
     private ConsulClient real;
@@ -48,8 +38,7 @@ public class CloudConfigServiceConsulImp extends TimerTask implements CloudConfi
     /**
      * 初始化客户端
      */
-    private void initClient() {
-        String server = ConsulProps.instance.getConfigServer();
+    private void initClient(String server) {
         String[] ss = server.split(":");
 
         if (ss.length == 1) {
@@ -59,11 +48,11 @@ public class CloudConfigServiceConsulImp extends TimerTask implements CloudConfi
         }
     }
 
-    private CloudConfigServiceConsulImp() {
-        token = ConsulProps.instance.getToken();
-        refreshInterval = IntervalUtils.getInterval(ConsulProps.instance.getConfigRefreshInterval("5s"));
+    public CloudConfigServiceConsulImp(CloudProps cloudProps) {
+        token = cloudProps.getToken();
+        refreshInterval = IntervalUtils.getInterval(cloudProps.getConfigRefreshInterval("5s"));
 
-        initClient();
+        initClient(cloudProps.getConfigServer());
     }
 
     public long getRefreshInterval() {
