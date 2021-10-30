@@ -13,6 +13,7 @@ import org.noear.solon.core.Plugin;
  */
 public class XPluginImp implements Plugin {
     final String AWS_SDK_TAG = "com.amazonaws.services.s3.AmazonS3ClientBuilder";
+
     @Override
     public void start(SolonApp app) {
         if (Utils.isEmpty(S3Props.instance.getFileAccessKey())) {
@@ -21,9 +22,9 @@ public class XPluginImp implements Plugin {
 
         if (S3Props.instance.getFileEnable()) {
             if (Utils.loadClass(AWS_SDK_TAG) == null) {
-                CloudManager.register(CloudFileServiceS3OfHttpImp.getInstance());
+                CloudManager.register(new CloudFileServiceS3OfHttpImp(S3Props.instance));
             } else {
-                CloudManager.register(CloudFileServiceS3OfSdkImp.getInstance());
+                CloudManager.register(new CloudFileServiceS3OfSdkImp(S3Props.instance));
             }
         }
     }

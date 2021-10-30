@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.extend.aws.s3.S3Props;
 import org.noear.solon.cloud.model.Media;
@@ -22,40 +23,22 @@ import java.util.Properties;
  * @since 1.3
  */
 public class CloudFileServiceS3OfSdkImp implements CloudFileService {
-    private static CloudFileServiceS3OfSdkImp instance;
+    private final String bucketDef;
 
-    public static synchronized CloudFileServiceS3OfSdkImp getInstance() {
-        if (instance == null) {
-            instance = new CloudFileServiceS3OfSdkImp();
-        }
+    private final String accessKey;
+    private final String secretKey;
+    private final String regionId;
 
-        return instance;
-    }
+    private final AmazonS3 client;
+    private final AccessControlList acls = new AccessControlList();
 
-    protected final String bucketDef;
 
-    protected final String accessKey;
-    protected final String secretKey;
-    protected final String regionId;
-
-    protected final AmazonS3 client;
-    protected final AccessControlList acls = new AccessControlList();
-
-    private CloudFileServiceS3OfSdkImp() {
+    public CloudFileServiceS3OfSdkImp(CloudProps cloudProps) {
         this(
-                S3Props.instance.getFileRegionId(),
-                S3Props.instance.getFileBucket(),
-                S3Props.instance.getFileAccessKey(),
-                S3Props.instance.getFileSecretKey()
-        );
-    }
-
-    public CloudFileServiceS3OfSdkImp(Properties pops) {
-        this(
-                pops.getProperty("regionId"),
-                pops.getProperty("bucket"),
-                pops.getProperty("accessKey"),
-                pops.getProperty("secretKey")
+                cloudProps.getFileRegionId(),
+                cloudProps.getFileBucket(),
+                cloudProps.getFileAccessKey(),
+                cloudProps.getFileSecretKey()
         );
     }
 

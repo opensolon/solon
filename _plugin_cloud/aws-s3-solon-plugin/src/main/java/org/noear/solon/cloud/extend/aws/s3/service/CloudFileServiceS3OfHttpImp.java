@@ -4,7 +4,6 @@ import okhttp3.ResponseBody;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.exception.CloudFileException;
-import org.noear.solon.cloud.extend.aws.s3.S3Props;
 import org.noear.solon.cloud.model.Media;
 import org.noear.solon.cloud.service.CloudFileService;
 import org.noear.solon.cloud.utils.http.HttpUtils;
@@ -19,16 +18,6 @@ import java.util.Base64;
  * @since 1.5
  */
 public class CloudFileServiceS3OfHttpImp implements CloudFileService {
-    public static CloudFileServiceS3OfHttpImp instance;
-
-    public static synchronized CloudFileServiceS3OfHttpImp getInstance() {
-        if (instance == null) {
-            instance = new CloudFileServiceS3OfHttpImp();
-        }
-
-        return instance;
-    }
-
     final static String CHARSET_UTF8 = "utf8";
     final static String ALGORITHM = "HmacSHA1";
 
@@ -43,13 +32,6 @@ public class CloudFileServiceS3OfHttpImp implements CloudFileService {
     protected final String secretKey;
     protected final String regionId;
 
-
-    /**
-     * 限内部使用
-     * */
-    private CloudFileServiceS3OfHttpImp() {
-        this(S3Props.instance);
-    }
 
     public CloudFileServiceS3OfHttpImp(CloudProps cloudProps) {
         this(
