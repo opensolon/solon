@@ -4,7 +4,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudProps;
-import org.noear.solon.cloud.extend.consul.ConsulProps;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.extend.health.HealthChecker;
 
@@ -71,12 +70,5 @@ public class HealthDetector {
         HealthChecker.addIndicator("consul", () -> {
             return Result.succeed(detector.getInfo());
         });
-
-//        Solon.global().get(healthCheckPath, ctx -> {
-//            Map<String, Object> info = new HashMap<>();
-//            info.put("status", "OK");
-//            info.putAll(detector.getInfo());
-//            ctx.outputAsJson(GsonFactory.getGson().toJson(info));
-//        });
     }
 }

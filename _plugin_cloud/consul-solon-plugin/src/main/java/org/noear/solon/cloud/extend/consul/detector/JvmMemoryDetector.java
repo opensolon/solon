@@ -11,8 +11,9 @@ public class JvmMemoryDetector extends AbstractDetector {
 
     @Override
     public Map<String, Object> getInfo() {
-        Map<String,Object> info=new HashMap();
+        Map<String, Object> info = new HashMap();
         Runtime run = Runtime.getRuntime();
+
         long max = run.maxMemory();
         long total = run.totalMemory();
         long free = run.freeMemory();
@@ -20,11 +21,13 @@ public class JvmMemoryDetector extends AbstractDetector {
         long usable = max - used;
         if (max > 0L) {
             float ratio = (float) used * 100.0F / (float) max;
-            info.put("ratio",ratio);
+            info.put("ratio", ratio);
         }
-        info.put("total",formatByteSize(total));
-        info.put("used",formatByteSize(used));
-        info.put("free",formatByteSize(free));
+
+        info.put("total", formatByteSize(total));
+        info.put("used", formatByteSize(used));
+        info.put("usable", formatByteSize(usable));
+        info.put("free", formatByteSize(free));
         return info;
     }
 }

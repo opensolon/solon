@@ -8,14 +8,17 @@ import org.noear.solon.SolonApp;
 import java.util.HashMap;
 import java.util.Map;
 
-public class QpsDetector extends AbstractDetector{
+public class QpsDetector extends AbstractDetector {
     protected final FlowHelper flowHelper;
-    public QpsDetector(FlowType ...types){
-        this.flowHelper=new FlowHelper(types);
+
+    public QpsDetector(FlowType... types) {
+        this.flowHelper = new FlowHelper(types);
     }
-    public QpsDetector(){
+
+    public QpsDetector() {
         this(FlowType.Second);
     }
+
     @Override
     public String getName() {
         return "qps";
@@ -23,8 +26,8 @@ public class QpsDetector extends AbstractDetector{
 
     @Override
     public Map<String, Object> getInfo() {
-        Map<String,Object> info=new HashMap<>();
-        Flower flower=flowHelper.getFlow(FlowType.Second);
+        Map<String, Object> info = new HashMap<>();
+        Flower flower = flowHelper.getFlow(FlowType.Second);
         /**
          *         System.out.println("总请求数:"+flower.total());
          *         System.out.println("成功请求数:"+flower.totalSuccess());
@@ -35,32 +38,33 @@ public class QpsDetector extends AbstractDetector{
          *         System.out.println("平均请求成功数(每毫秒):"+flower.successAvg());
          *         System.out.println("平均请求异常数(每毫秒):"+flower.exceptionAvg());
          */
-        info.put("total",flower.total());
-        info.put("totalException",flower.totalException());
-        info.put("totalSuccess",flower.totalSuccess());
-        info.put("argRt",flower.avgRt());
-        info.put("maxRt",flower.maxRt());
-        info.put("minRt",flower.minRt());
-        info.put("successAvg",flower.successAvg());
-        info.put("exceptionAvg",flower.exceptionAvg());
+        info.put("total", flower.total());
+        info.put("totalException", flower.totalException());
+        info.put("totalSuccess", flower.totalSuccess());
+        info.put("argRt", flower.avgRt());
+        info.put("maxRt", flower.maxRt());
+        info.put("minRt", flower.minRt());
+        info.put("successAvg", flower.successAvg());
+        info.put("exceptionAvg", flower.exceptionAvg());
         return info;
     }
 
     /**
      * 开始检测
-     * @param solon
+     *
+     * @param app
      */
-    public void toDetect(SolonApp solon){
-        solon.before("**", ctx->{
-            ctx.attrSet("_begin_time",System.currentTimeMillis());
-        });
-        solon.after("**",ctx->{
-            Long begin= ctx.attr("_begin_time");
-            if(begin!=null){
-                flowHelper.incrSuccess(System.currentTimeMillis()-begin);
+    public void toDetect(SolonApp app) {
+        app.filter((ctx, chain) -> {
+            long start = System.currentTimeMillis();
+            try {
+                chain.doFilter(ctx);
+            } finally {
+                flowHelper.incrSuccess(System.currentTimeMillis() - start);
             }
         });
-        solon.onError(e->{
+
+        app.onError(e -> {
             flowHelper.incrException();
         });
     }

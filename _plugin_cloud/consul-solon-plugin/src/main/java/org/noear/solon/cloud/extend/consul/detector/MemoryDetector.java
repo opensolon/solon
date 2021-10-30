@@ -19,8 +19,10 @@ public class MemoryDetector extends AbstractDetector{
         long total = osmxb.getTotalPhysicalMemorySize();
         long free = osmxb.getFreePhysicalMemorySize();
         long used = total - free;
+
         info.put("total",formatByteSize(total));
         info.put("used",formatByteSize(used));
+
         if (total > 0L) {
             float ratio = (float)used * 100.0F / (float)total;
             info.put("ratio",ratio);
