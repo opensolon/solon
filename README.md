@@ -197,7 +197,7 @@ public class Config{
 }
 ```
 
-* 全局过滤器控制
+* 全局过滤器控制(获取异常、响应计时、未处理、状态码等处理)
 
 ```java
 @Slf4j
@@ -210,17 +210,21 @@ public class DemoFilter implements Filter {
         try {
             chain.doFilter(ctx);
 
-            //2.状态404或未处理
-            if (ctx.status() == 404 || ctx.getHandled() == false) {
+            //2.未处理设为404状态
+            if(! ctx.getHandled()){
+                ctx.status(404);
+            }
+            
+            if (ctx.status() == 404) { //3.404状态的定制（也可对别的状态处理）
                 ctx.setHandled(true);
                 ctx.output("没有：（");
             }
         } catch (Throwable e) {
-            //3.异常捕促与控制
+            //4.异常捕促与控制
             log.error(e);
         }
 
-        //4.获得接口响应时长
+        //5.获得接口响应时长
         long times = System.currentTimeMillis() - start;
         System.out.println("用时："+ times);
     }
