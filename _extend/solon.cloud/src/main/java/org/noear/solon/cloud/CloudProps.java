@@ -41,14 +41,15 @@ public class CloudProps {
     //事件总线服务相关
     private String EVENT_ENABLE = "solon.cloud.@@.event.enable";
     private String EVENT_SERVER = "solon.cloud.@@.event.server";
+    private String EVENT_CLIENT_ID = "solon.cloud.@@.event.clientId"; //配置组
     private String EVENT_PREFETCH_COUNT = "solon.cloud.@@.event.prefetchCount";
     private String EVENT_PUBLISH_TIMEOUT = "solon.cloud.@@.event.publishTimeout";
 
     private String EVENT_CHANNEL = "solon.cloud.@@.event.channel"; //通道
     private String EVENT_GROUP = "solon.cloud.@@.event.group"; //虚拟分组
-    private String EVENT_CONSUMER = "solon.cloud.@@.event.consumer";
-    private String EVENT_PRODUCER = "solon.cloud.@@.event.producer";
-    private String EVENT_CLIENT = "solon.cloud.@@.event.client";
+    private String EVENT_CONSUMER = "solon.cloud.@@.event.consumer"; //配置组
+    private String EVENT_PRODUCER = "solon.cloud.@@.event.producer"; //配置组
+    private String EVENT_CLIENT = "solon.cloud.@@.event.client"; //配置组
 
 
     //锁服务相关
@@ -114,6 +115,7 @@ public class CloudProps {
 
         EVENT_ENABLE = EVENT_ENABLE.replace("@@", frame);
         EVENT_SERVER = EVENT_SERVER.replace("@@", frame);
+        EVENT_CLIENT_ID = EVENT_CLIENT_ID.replace("@@", frame);
         EVENT_PREFETCH_COUNT = EVENT_PREFETCH_COUNT.replace("@@", frame);
         EVENT_PUBLISH_TIMEOUT = EVENT_PUBLISH_TIMEOUT.replace("@@", frame);
         EVENT_CHANNEL = EVENT_CHANNEL.replace("@@", frame);
@@ -262,6 +264,10 @@ public class CloudProps {
         } else {
             return tmp;
         }
+    }
+
+    public String getEventClientId() {
+        return Solon.cfg().get(EVENT_CLIENT_ID, "");
     }
 
     public int getEventPrefetchCount() {

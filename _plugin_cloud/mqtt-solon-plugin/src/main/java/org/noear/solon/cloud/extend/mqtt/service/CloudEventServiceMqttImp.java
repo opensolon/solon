@@ -5,9 +5,9 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
-import org.noear.solon.cloud.extend.mqtt.MqttProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
@@ -20,16 +20,7 @@ import java.util.Properties;
  * @since 1.3
  */
 public class CloudEventServiceMqttImp implements CloudEventServicePlus {
-    private static CloudEventServiceMqttImp instance;
-
-    public static synchronized CloudEventServiceMqttImp getInstance() {
-        if (instance == null) {
-            instance = new CloudEventServiceMqttImp();
-        }
-
-        return instance;
-    }
-
+    private final CloudProps cloudProps;
 
     private final String server;
     private final String username;
@@ -42,28 +33,23 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
     //
     // 1833(MQTT的默认端口号)
     //
-    private CloudEventServiceMqttImp() {
-        this.server = MqttProps.instance.getEventServer();
-        this.username = MqttProps.instance.getUsername();
-        this.password = MqttProps.instance.getPassword();
+    public CloudEventServiceMqttImp(CloudProps cloudProps) {
+        this.cloudProps = cloudProps;
+
+        this.server = cloudProps.getEventServer();
+        this.username = cloudProps.getUsername();
+        this.password = cloudProps.getPassword();
 
         connect();
     }
 
-    public CloudEventServiceMqttImp(Properties props) {
-        this.server = props.getProperty("server");
-        this.username = props.getProperty("username");
-        this.password = props.getProperty("password");
-
-        connect();
-    }
 
     private synchronized void connect() {
         if (client != null) {
             return;
         }
 
-        clientId = MqttProps.clientId();
+        clientId = cloudProps.getEventClientId();
         if (Utils.isEmpty(clientId)) {
             clientId = Solon.cfg().appName() + "-" + Utils.guid();
         }
@@ -86,7 +72,7 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
         options.setServerURIs(new String[]{server});
 
         //绑定定制属性
-        Properties props = MqttProps.instance.getEventClientProps();
+        Properties props = cloudProps.getEventClientProps();
         if(props.size() > 0){
             Utils.injectProperties(options, props);
         }
@@ -96,7 +82,7 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
 
         try {
             client = new MqttClient(server, clientId, new MemoryPersistence());
-            clientCallback = new MqttCallbackImp(client);
+            clientCallback = new MqttCallbackImp(client, cloudProps);
 
             client.setCallback(clientCallback);
             client.connect(options);
@@ -151,7 +137,7 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
     @Override
     public String getChannel() {
         if (channel == null) {
-            channel = MqttProps.instance.getEventChannel();
+            channel = cloudProps.getEventChannel();
         }
         return channel;
     }
@@ -159,7 +145,7 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
     @Override
     public String getGroup() {
         if (group == null) {
-            group = MqttProps.instance.getEventGroup();
+            group = cloudProps.getEventGroup();
         }
 
         return group;

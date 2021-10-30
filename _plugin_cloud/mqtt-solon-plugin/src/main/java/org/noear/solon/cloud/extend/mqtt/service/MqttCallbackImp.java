@@ -3,7 +3,7 @@ package org.noear.solon.cloud.extend.mqtt.service;
 import org.eclipse.paho.client.mqttv3.*;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
-import org.noear.solon.cloud.extend.mqtt.MqttProps;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.core.event.EventBus;
@@ -20,9 +20,9 @@ class MqttCallbackImp implements MqttCallback {
     final MqttClient client;
     final String eventChannelName;
 
-    public MqttCallbackImp(MqttClient client) {
+    public MqttCallbackImp(MqttClient client , CloudProps cloudProps) {
         this.client = client;
-        this.eventChannelName = MqttProps.instance.getEventChannel();
+        this.eventChannelName = cloudProps.getEventChannel();
     }
 
     CloudEventObserverManger observerManger;

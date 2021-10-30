@@ -19,7 +19,7 @@ public class XPluginImp implements Plugin {
         }
 
         if (MqttProps.instance.getEventEnable()) {
-            CloudEventServiceMqttImp eventServiceImp = CloudEventServiceMqttImp.getInstance();
+            CloudEventServiceMqttImp eventServiceImp = new CloudEventServiceMqttImp(MqttProps.instance);
             CloudManager.register(eventServiceImp);
 
             Aop.beanOnloaded(eventServiceImp::subscribe);
