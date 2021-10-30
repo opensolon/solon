@@ -123,9 +123,9 @@ resources/WEB-INF/view/ 为视图文件根目标（支持多视图共存）
 启动参数添加：-debug=1
 ```
 ```java
-public class App{
+public class DemoApp{
     public static void main(String[] args){
-        Solon.start(App.class, args);
+        Solon.start(DemoApp.class, args);
     }
 }
 
@@ -200,34 +200,31 @@ public class Config{
 * 全局过滤器控制
 
 ```java
-public class DemoApp {
-    public static void main(String[] args) {
-        Solon.start(DemoApp.class, args, app -> {
-            app.filter((ctx, chain) -> {
-                //1.开始计时（用于计算响应时长）
-                long start = System.currentTimeMillis();
-                try {
-                    chain.doFilter(ctx);
+@Slf4j
+@Component
+public class DemoFilter implements Filter {
+    @Override
+    public void doFilter(Context ctx, FilterChain chain) throws Throwable {
+        //1.开始计时（用于计算响应时长）
+        long start = System.currentTimeMillis();
+        try {
+            chain.doFilter(ctx);
 
-                    //2.状态404或未处理
-                    if (ctx.status() == 404 || ctx.getHandled() == false) {
-                        ctx.setHandled(true);
-                        ctx.output("没有：（");
-                    }
-                } catch (Throwable e) {
-                    //3.异常捕促与控制
-                    e.printStackTrace();
-                    ctx.output("出错了：（");
-                }
+            //2.状态404或未处理
+            if (ctx.status() == 404 || ctx.getHandled() == false) {
+                ctx.setHandled(true);
+                ctx.output("没有：（");
+            }
+        } catch (Throwable e) {
+            //3.异常捕促与控制
+            log.error(e);
+        }
 
-                //4.获得接口响应时长
-                long times = System.currentTimeMillis() - start;
-                System.out.println("用时："+ times);
-            });
-        });
+        //4.获得接口响应时长
+        long times = System.currentTimeMillis() - start;
+        System.out.println("用时："+ times);
     }
 }
-
 ```
 
 * 事务与缓存控制（+验证）
