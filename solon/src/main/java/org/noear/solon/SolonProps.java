@@ -291,6 +291,7 @@ public final class SolonProps extends Props {
         //扫描主配置
         plugsScanLoadDo(JarClassLoader.global(), this);
 
+        //插件排序
         plugsSort();
     }
 
