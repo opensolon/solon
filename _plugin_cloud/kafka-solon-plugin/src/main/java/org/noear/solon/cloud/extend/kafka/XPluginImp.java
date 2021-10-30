@@ -19,7 +19,7 @@ public class XPluginImp implements Plugin {
         }
 
         if (KafkaProps.instance.getEventEnable()) {
-            CloudEventServiceKafkaImp eventServiceImp = CloudEventServiceKafkaImp.getInstance();
+            CloudEventServiceKafkaImp eventServiceImp = new CloudEventServiceKafkaImp(KafkaProps.instance);
             CloudManager.register(eventServiceImp);
 
             Aop.beanOnloaded(eventServiceImp::subscribe);

@@ -12,7 +12,6 @@ import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
-import org.noear.solon.cloud.extend.kafka.KafkaProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
@@ -33,16 +32,6 @@ import java.util.concurrent.TimeUnit;
 public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
     static Logger log = LoggerFactory.getLogger(CloudEventServiceKafkaImp.class);
 
-    private static CloudEventServiceKafkaImp instance;
-
-    public static synchronized CloudEventServiceKafkaImp getInstance() {
-        if (instance == null) {
-            instance = new CloudEventServiceKafkaImp();
-        }
-
-        return instance;
-    }
-
 
     private final CloudProps cloudProps;
     private KafkaProducer<String, String> producer;
@@ -51,14 +40,6 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
     private long timeout;
     private String server;
     String eventChannelName;
-
-    public CloudEventServiceKafkaImp() {
-        this.cloudProps = KafkaProps.instance;
-
-        this.timeout = cloudProps.getEventPublishTimeout();
-        this.server = cloudProps.getEventServer();
-        this.eventChannelName = cloudProps.getEventChannel();
-    }
 
     public CloudEventServiceKafkaImp(CloudProps cloudProps) {
         this.cloudProps = cloudProps;

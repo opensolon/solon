@@ -10,7 +10,6 @@ import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
 import org.noear.solon.cloud.utils.IntervalUtils;
-import org.noear.solon.cloud.extend.consul.ConsulProps;
 import org.noear.solon.core.event.EventBus;
 
 import java.util.HashMap;
