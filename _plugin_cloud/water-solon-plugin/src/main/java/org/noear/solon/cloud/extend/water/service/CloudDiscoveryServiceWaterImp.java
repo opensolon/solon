@@ -4,7 +4,7 @@ import org.noear.snack.ONode;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
-import org.noear.solon.cloud.extend.water.WaterProps;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
@@ -32,13 +32,13 @@ public class CloudDiscoveryServiceWaterImp extends TimerTask implements CloudDis
     long refreshInterval;
     boolean unstable;
 
-    public CloudDiscoveryServiceWaterImp() {
-        unstable = WaterProps.instance.getDiscoveryUnstable()
+    public CloudDiscoveryServiceWaterImp(CloudProps cloudProps) {
+        unstable = cloudProps.getDiscoveryUnstable()
                 || Solon.cfg().isFilesMode()
                 || Solon.cfg().isDriftMode();
         //checkPathDefault = WaterProps.instance.getDiscoveryHealthCheckPath();
-        alarmMobile = WaterProps.instance.getAlarm();
-        refreshInterval = IntervalUtils.getInterval(WaterProps.instance.getDiscoveryRefreshInterval("5s"));
+        alarmMobile =cloudProps.getAlarm();
+        refreshInterval = IntervalUtils.getInterval(cloudProps.getDiscoveryRefreshInterval("5s"));
     }
 
     /**

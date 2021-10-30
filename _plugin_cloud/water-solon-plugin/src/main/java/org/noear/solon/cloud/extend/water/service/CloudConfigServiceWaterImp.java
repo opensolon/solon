@@ -3,7 +3,7 @@ package org.noear.solon.cloud.extend.water.service;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
-import org.noear.solon.cloud.extend.water.WaterProps;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
@@ -23,16 +23,6 @@ import java.util.function.Consumer;
  * @since 1.2
  */
 public class CloudConfigServiceWaterImp extends TimerTask implements CloudConfigService {
-    private static CloudConfigServiceWaterImp instance;
-    public static synchronized CloudConfigServiceWaterImp getInstance() {
-        if (instance == null) {
-            instance = new CloudConfigServiceWaterImp();
-        }
-
-        return instance;
-    }
-
-
     private final String DEFAULT_GROUP = "DEFAULT_GROUP";
 
     private long refreshInterval;
@@ -40,8 +30,8 @@ public class CloudConfigServiceWaterImp extends TimerTask implements CloudConfig
     private Map<String, Config> configMap = new HashMap<>();
 
 
-    private CloudConfigServiceWaterImp() {
-        refreshInterval = IntervalUtils.getInterval(WaterProps.instance.getConfigRefreshInterval("5s"));
+    public CloudConfigServiceWaterImp(CloudProps cloudProps) {
+        refreshInterval = IntervalUtils.getInterval(cloudProps.getConfigRefreshInterval("5s"));
     }
 
     /**

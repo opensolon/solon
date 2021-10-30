@@ -3,6 +3,7 @@ package org.noear.solon.cloud.extend.water.service;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.water.WaterProps;
@@ -25,19 +26,23 @@ import org.slf4j.LoggerFactory;
 public class CloudEventServiceWaterImp implements CloudEventServicePlus {
     static Logger log = LoggerFactory.getLogger(CloudEventServiceWaterImp.class);
 
+    private final CloudProps cloudProps;
+
     private final String DEFAULT_SEAL = "Pckb6BpGzDE6RUIy";
     private String seal;
     private boolean unstable;
     private String eventChannelName;
 
-    public CloudEventServiceWaterImp() {
-        this.unstable = WaterProps.instance.getDiscoveryUnstable()
+    public CloudEventServiceWaterImp(CloudProps cloudProps) {
+        this.cloudProps = cloudProps;
+
+        this.unstable = cloudProps.getDiscoveryUnstable()
                 || Solon.cfg().isFilesMode()
                 || Solon.cfg().isDriftMode();
 
-        this.eventChannelName = WaterProps.instance.getEventChannel();
+        this.eventChannelName = cloudProps.getEventChannel();
 
-        this.seal = WaterProps.getEventSeal();
+        this.seal = getEventSeal();
 
         if (Utils.isEmpty(seal)) {
             seal = DEFAULT_SEAL;
@@ -130,7 +135,7 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
         }
 
         if (clusterObserverManger.topicSize() > 0) {
-            String cluster_hostname = WaterProps.getEventReceive();
+            String cluster_hostname = getEventReceive();
             if (Utils.isEmpty(cluster_hostname)) {
                 cluster_hostname = instance.address();
             }
@@ -187,7 +192,7 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
     @Override
     public String getChannel() {
         if (channel == null) {
-            channel = WaterProps.instance.getEventChannel();
+            channel = cloudProps.getEventChannel();
         }
         return channel;
     }
@@ -195,9 +200,22 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
     @Override
     public String getGroup() {
         if (group == null) {
-            group = WaterProps.instance.getEventGroup();
+            group = cloudProps.getEventGroup();
         }
 
         return group;
+    }
+
+
+    public  String getEventSeal() {
+        return cloudProps.getProp(WaterProps.PROP_EVENT_SEAL);
+    }
+
+    public  String getEventReceive() {
+        return cloudProps.getProp(WaterProps.PROP_EVENT_RECEIVE);
+    }
+
+    public  void setEventReceive(String value) {
+        cloudProps.setProp(WaterProps.PROP_EVENT_RECEIVE, value);
     }
 }

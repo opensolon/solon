@@ -32,20 +32,24 @@ import java.util.Timer;
 public class XPluginImp implements Plugin {
     private Timer clientTimer = new Timer();
 
+    CloudProps cloudProps;
+
     @Override
     public void start(SolonApp app) {
         if (Utils.isEmpty(WaterProps.instance.getServer())) {
             return;
         }
 
-        //1.初始化服务地址
-        String server = WaterProps.instance.getServer();
-        String configServer = WaterProps.instance.getConfigServer();
-        String discoveryServer = WaterProps.instance.getDiscoveryServer();
-        String eventServer = WaterProps.instance.getEventServer();
-        String logServer = WaterProps.instance.getLogServer();
+        cloudProps = WaterProps.instance;
 
-        String logDefault = WaterProps.instance.getLogDefault();
+        //1.初始化服务地址
+        String server = cloudProps.getServer();
+        String configServer = cloudProps.getConfigServer();
+        String discoveryServer = cloudProps.getDiscoveryServer();
+        String eventServer = cloudProps.getEventServer();
+        String logServer = cloudProps.getLogServer();
+
+        String logDefault = cloudProps.getLogDefault();
 
         CloudProps.LOG_DEFAULT_LOGGER = logDefault;
 
@@ -85,16 +89,16 @@ public class XPluginImp implements Plugin {
 
 
         //这个要放最上面
-        if (WaterProps.instance.getTraceEnable()) {
+        if (cloudProps.getTraceEnable()) {
             CloudManager.register(traceServiceImp);
         }
 
-        if (WaterProps.instance.getMetricEnable()) {
+        if (cloudProps.getMetricEnable()) {
             CloudManager.register(metricServiceImp);
         }
 
-        if (WaterProps.instance.getConfigEnable()) {
-            configServiceImp = CloudConfigServiceWaterImp.getInstance();
+        if (cloudProps.getConfigEnable()) {
+            configServiceImp = new CloudConfigServiceWaterImp(cloudProps);
             CloudManager.register(configServiceImp);
 
             if (Solon.cfg().isFilesMode()) {
@@ -105,16 +109,16 @@ public class XPluginImp implements Plugin {
             }
 
             //配置加载
-            CloudClient.configLoad(WaterProps.instance.getConfigLoad());
+            CloudClient.configLoad(cloudProps.getConfigLoad());
 
-            CloudClient.configLoad(WaterProps.instance.getConfigLoadGroup(),
-                    WaterProps.instance.getConfigLoadKey());
+            CloudClient.configLoad(cloudProps.getConfigLoadGroup(),
+                    cloudProps.getConfigLoadKey());
 
         }
 
 
-        if (WaterProps.instance.getDiscoveryEnable()) {
-            discoveryServiceImp = new CloudDiscoveryServiceWaterImp();
+        if (cloudProps.getDiscoveryEnable()) {
+            discoveryServiceImp = new CloudDiscoveryServiceWaterImp(cloudProps);
             CloudManager.register(discoveryServiceImp);
 
             if (Solon.cfg().isFilesMode()) {
@@ -125,23 +129,23 @@ public class XPluginImp implements Plugin {
             }
         }
 
-        if (WaterProps.instance.getLogEnable()) {
-            CloudManager.register(new CloudLogServiceWaterImp());
+        if (cloudProps.getLogEnable()) {
+            CloudManager.register(new CloudLogServiceWaterImp(cloudProps));
         }
 
-        if (WaterProps.instance.getEventEnable()) {
-            String receive = WaterProps.getEventReceive();
+        if (cloudProps.getEventEnable()) {
+            String receive = getEventReceive();
             if (receive != null && receive.startsWith("@")) {
                 if (CloudClient.config() != null) {
                     Config cfg = CloudClient.config().pull(Solon.cfg().appGroup(), receive.substring(1));
                     if (cfg == null || Utils.isEmpty(cfg.value())) {
                         throw new IllegalArgumentException("Configuration " + receive + " does not exist");
                     }
-                    WaterProps.setEventReceive(cfg.value());
+                    setEventReceive(cfg.value());
                 }
             }
 
-            eventServiceImp = new CloudEventServiceWaterImp();
+            eventServiceImp = new CloudEventServiceWaterImp(cloudProps);
             CloudManager.register(eventServiceImp);
 
             if (discoveryServiceImp != null) {
@@ -159,15 +163,15 @@ public class XPluginImp implements Plugin {
             Aop.beanOnloaded(eventServiceImp::subscribe);
         }
 
-        if (WaterProps.instance.getLockEnable()) {
+        if (cloudProps.getLockEnable()) {
             CloudManager.register(new CloudLockServiceWaterImp());
         }
 
-        if (WaterProps.instance.getListEnable()) {
+        if (cloudProps.getListEnable()) {
             CloudManager.register(new CloudListServiceWaterImp());
         }
 
-        if (WaterProps.instance.getJobEnable()) {
+        if (cloudProps.getJobEnable()) {
             CloudManager.register(CloudJobServiceWaterImp.instance);
 
             Aop.beanOnloaded(() -> {
@@ -177,7 +181,7 @@ public class XPluginImp implements Plugin {
 
 
         //3.注册http监听
-        if (WaterProps.instance.getJobEnable()) {
+        if (cloudProps.getJobEnable()) {
             app.http(WW.path_run_job, new HandlerJob());
         }
 
@@ -192,5 +196,17 @@ public class XPluginImp implements Plugin {
         if (clientTimer != null) {
             clientTimer.cancel();
         }
+    }
+
+    public  String getEventSeal() {
+        return cloudProps.getProp(WaterProps.PROP_EVENT_SEAL);
+    }
+
+    public  String getEventReceive() {
+        return cloudProps.getProp(WaterProps.PROP_EVENT_RECEIVE);
+    }
+
+    public  void setEventReceive(String value) {
+        cloudProps.setProp(WaterProps.PROP_EVENT_RECEIVE, value);
     }
 }

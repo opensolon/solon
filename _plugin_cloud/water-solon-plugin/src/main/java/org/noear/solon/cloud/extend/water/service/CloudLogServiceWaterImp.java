@@ -3,6 +3,7 @@ package org.noear.solon.cloud.extend.water.service;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.extend.water.WaterProps;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudLogService;
@@ -21,8 +22,8 @@ import org.noear.water.utils.LogHelper;
 public class CloudLogServiceWaterImp implements CloudLogService {
     private String loggerNameDefault;
 
-    public CloudLogServiceWaterImp() {
-        loggerNameDefault = WaterProps.instance.getLogDefault();
+    public CloudLogServiceWaterImp(CloudProps cloudProps) {
+        loggerNameDefault = cloudProps.getLogDefault();
 
         if (Utils.isEmpty(loggerNameDefault)) {
             if (Utils.isNotEmpty(Solon.cfg().appName())) {
