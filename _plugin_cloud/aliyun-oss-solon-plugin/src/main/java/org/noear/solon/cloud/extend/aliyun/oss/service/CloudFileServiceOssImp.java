@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.aliyun.oss.service;
 
 import okhttp3.ResponseBody;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.extend.aliyun.oss.OssProps;
 import org.noear.solon.cloud.model.Media;
@@ -33,30 +34,29 @@ public class CloudFileServiceOssImp implements CloudFileService {
         return instance;
     }
 
-    protected final String bucketDef;
 
-    protected final String accessKey;
-    protected final String secretKey;
-    protected final String endpoint;
+    private final String bucketDef;
+
+    private final String accessKey;
+    private final String secretKey;
+    private final String endpoint;
 
     protected String CHARSET_UTF8 = "utf8";
     protected String ALGORITHM = "HmacSHA1";
 
+    /**
+     * 限内部使用
+     * */
     private CloudFileServiceOssImp() {
-        this(
-                OssProps.instance.getFileEndpoint(),
-                OssProps.instance.getFileBucket(),
-                OssProps.instance.getFileAccessKey(),
-                OssProps.instance.getFileSecretKey()
-        );
+        this(OssProps.instance);
     }
 
-    public CloudFileServiceOssImp(Properties pops) {
+    public CloudFileServiceOssImp(CloudProps cloudProps) {
         this(
-                pops.getProperty("endpoint"),
-                pops.getProperty("bucket"),
-                pops.getProperty("accessKey"),
-                pops.getProperty("secretKey")
+                cloudProps.getFileEndpoint(),
+                cloudProps.getFileBucket(),
+                cloudProps.getFileAccessKey(),
+                cloudProps.getFileSecretKey()
         );
     }
 

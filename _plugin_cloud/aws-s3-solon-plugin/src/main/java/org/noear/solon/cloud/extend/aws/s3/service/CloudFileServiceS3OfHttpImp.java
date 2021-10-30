@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.aws.s3.service;
 
 import okhttp3.ResponseBody;
 import org.noear.solon.Utils;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.exception.CloudFileException;
 import org.noear.solon.cloud.extend.aws.s3.S3Props;
 import org.noear.solon.cloud.model.Media;
@@ -12,7 +13,6 @@ import org.noear.solon.core.handle.Result;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
-import java.util.Properties;
 
 /**
  * @author noear
@@ -44,21 +44,19 @@ public class CloudFileServiceS3OfHttpImp implements CloudFileService {
     protected final String regionId;
 
 
+    /**
+     * 限内部使用
+     * */
     private CloudFileServiceS3OfHttpImp() {
-        this(
-                S3Props.instance.getFileRegionId(),
-                S3Props.instance.getFileBucket(),
-                S3Props.instance.getFileAccessKey(),
-                S3Props.instance.getFileSecretKey()
-        );
+        this(S3Props.instance);
     }
 
-    public CloudFileServiceS3OfHttpImp(Properties pops) {
+    public CloudFileServiceS3OfHttpImp(CloudProps cloudProps) {
         this(
-                pops.getProperty("regionId"),
-                pops.getProperty("bucket"),
-                pops.getProperty("accessKey"),
-                pops.getProperty("secretKey")
+                cloudProps.getFileRegionId(),
+                cloudProps.getFileBucket(),
+                cloudProps.getFileAccessKey(),
+                cloudProps.getFileSecretKey()
         );
     }
 

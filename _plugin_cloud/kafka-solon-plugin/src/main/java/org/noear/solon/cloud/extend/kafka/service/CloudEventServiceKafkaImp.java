@@ -9,6 +9,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.extend.kafka.KafkaProps;
@@ -43,6 +44,7 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
     }
 
 
+    private final CloudProps cloudProps;
     private KafkaProducer<String, String> producer;
     private KafkaConsumer<String, String> consumer;
 
@@ -51,9 +53,19 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
     String eventChannelName;
 
     public CloudEventServiceKafkaImp() {
-        this.timeout = KafkaProps.instance.getEventPublishTimeout();
-        this.server = KafkaProps.instance.getEventServer();
-        this.eventChannelName = KafkaProps.instance.getEventChannel();
+        this.cloudProps = KafkaProps.instance;
+
+        this.timeout = cloudProps.getEventPublishTimeout();
+        this.server = cloudProps.getEventServer();
+        this.eventChannelName = cloudProps.getEventChannel();
+    }
+
+    public CloudEventServiceKafkaImp(CloudProps cloudProps) {
+        this.cloudProps = cloudProps;
+
+        this.timeout = cloudProps.getEventPublishTimeout();
+        this.server = cloudProps.getEventServer();
+        this.eventChannelName = cloudProps.getEventChannel();
     }
 
     private synchronized void initProducer() {
@@ -71,7 +83,7 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
         config.put("batch.size", 16384); //默认是16384Bytes，即16kB
 
         //绑定定制属性
-        Properties props = KafkaProps.instance.getEventProducerProps();
+        Properties props = cloudProps.getEventProducerProps();
         if (props.size() > 0) {
             props.forEach((k, v) -> {
                 config.put(k, v);
@@ -99,7 +111,7 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
         config.put("auto.offset.reset", "earliest");
 
         //绑定定制属性
-        Properties props = KafkaProps.instance.getEventConsumerProps();
+        Properties props = cloudProps.getEventConsumerProps();
         if (props.size() > 0) {
             props.forEach((k, v) -> {
                 config.put(k, v);
@@ -208,7 +220,7 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
     @Override
     public String getChannel() {
         if (channel == null) {
-            channel = KafkaProps.instance.getEventChannel();
+            channel = cloudProps.getEventChannel();
         }
         return channel;
     }
@@ -216,7 +228,7 @@ public class CloudEventServiceKafkaImp implements CloudEventServicePlus {
     @Override
     public String getGroup() {
         if (group == null) {
-            group = KafkaProps.instance.getEventGroup();
+            group = cloudProps.getEventGroup();
         }
 
         return group;
