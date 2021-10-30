@@ -8,6 +8,7 @@ import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.annotation.EventLevel;
 import org.noear.solon.cloud.exception.CloudEventException;
+import org.noear.solon.cloud.extend.mqtt.MqttProps;
 import org.noear.solon.cloud.model.Event;
 import org.noear.solon.cloud.service.CloudEventObserverManger;
 import org.noear.solon.cloud.service.CloudEventServicePlus;
@@ -152,6 +153,6 @@ public class CloudEventServiceMqttImp implements CloudEventServicePlus {
     }
 
     public String getEventClientId() {
-        return cloudProps.getProp("event.clientId");
+        return cloudProps.getProp(MqttProps.PROP_EVENT_CLIENTID);
     }
 }

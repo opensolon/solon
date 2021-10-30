@@ -7,5 +7,7 @@ import org.noear.solon.cloud.CloudProps;
  * @since 1.2
  */
 public class MqttProps {
+    public static final String PROP_EVENT_CLIENTID = "event.clientId";
+
     public static final CloudProps instance = new CloudProps("mqtt");
 }
