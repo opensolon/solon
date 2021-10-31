@@ -24,6 +24,10 @@ public class StaticMappings {
      * 添加印射关系
      */
     public static void add(String pathPrefix, StaticRepository repository) {
+        if (pathPrefix.startsWith("/") == false) {
+            pathPrefix = "/" + pathPrefix;
+        }
+
         locationList.add(new StaticLocation(pathPrefix, repository));
     }
 

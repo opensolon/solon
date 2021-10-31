@@ -61,7 +61,7 @@ public class TestApp {
         }).onAppLoadEnd(e -> {
             System.out.println("4.应用全加载完成了");
         }).start(TestApp.class, args, x -> {x.enableSocketD(true).enableWebSocket(true);
-            StaticMappings.add("/sa-token",new FileStaticRepository("/Users/noear/Downloads/"));
+            StaticMappings.add("sa-token",new FileStaticRepository("/Users/noear/Downloads/"));
         });
 
 
