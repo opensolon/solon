@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.pulsar.service;
 
 import org.apache.pulsar.client.api.*;
 import org.noear.snack.ONode;
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.CloudProps;
@@ -101,10 +102,18 @@ public class CloudEventServicePulsarImp implements CloudEventServicePlus {
 
     public void subscribe() {
         if (observerManger.topicSize() > 0) {
+            String consumerGroup = getEventConsumerGroup();
+
+            if (Utils.isEmpty(consumerGroup)) {
+                consumerGroup = Solon.cfg().appGroup() + "_" + Solon.cfg().appName();
+            }
+
             try {
                 client.newConsumer()
                         .topics(new ArrayList<>(observerManger.topicAll()))
                         .messageListener(new PulsarMessageListenerImpl(cloudProps, observerManger))
+                        .subscriptionName(consumerGroup)
+                        .subscriptionType(SubscriptionType.Shared)
                         .subscribe();
             } catch (Exception e) {
                 throw new CloudEventException(e);
@@ -130,5 +139,19 @@ public class CloudEventServicePulsarImp implements CloudEventServicePlus {
         }
 
         return group;
+    }
+
+    /**
+     * 消费组
+     */
+    public String getEventConsumerGroup() {
+        return cloudProps.getProp(PulsarProps.PROP_EVENT_consumerGroup);
+    }
+
+    /**
+     * 产品组
+     */
+    public String getEventProducerGroup() {
+        return cloudProps.getProp(PulsarProps.PROP_EVENT_producerGroup);
     }
 }
