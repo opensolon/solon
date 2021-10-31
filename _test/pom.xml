@@ -197,9 +197,8 @@
 
 
         <dependency>
-            <groupId>org.noear.hatch</groupId>
+            <groupId>org.noear</groupId>
             <artifactId>solon.boot.smarthttp</artifactId>
-            <version>1.5.55</version>
         </dependency>
 
 

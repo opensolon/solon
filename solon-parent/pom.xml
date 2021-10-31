@@ -147,7 +147,7 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
-                <artifactId>solon.boot.jdkhttp</artifactId>
+                <artifactId>solon.boot.smarthttp</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
@@ -1046,10 +1046,9 @@
 
         <module>../solon</module>
 
-        <module>../_extend/solon.boot.jetty</module>
         <module>../_extend/solon.boot.jlhttp</module>
-
-<!--        <module>../_extend/solon.boot.smarthttp</module>-->
+        <module>../_extend/solon.boot.smarthttp</module>
+        <module>../_extend/solon.boot.jetty</module>
         <module>../_extend/solon.boot.undertow</module>
 
         <module>../_extend/solon.boot.websocket</module>

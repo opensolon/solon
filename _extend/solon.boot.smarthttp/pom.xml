@@ -11,7 +11,6 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <groupId>org.noear.hatch</groupId>
     <artifactId>solon.boot.smarthttp</artifactId>
     <packaging>jar</packaging>
 
@@ -29,7 +28,7 @@
         <dependency>
             <groupId>org.smartboot.http</groupId>
             <artifactId>smart-http-server</artifactId>
-            <version>1.1.9-SNAPSHOT</version>
+            <version>1.1.9</version>
         </dependency>
 
     </dependencies>

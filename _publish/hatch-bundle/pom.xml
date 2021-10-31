@@ -22,8 +22,6 @@
 
 
     <modules>
-        <module>../../_hatch/solon.boot.smarthttp</module>
-
         <module>../../_hatch/nami.coder.thrift</module>
 
         <module>../../_hatch/solon.serialization.thrift</module>
