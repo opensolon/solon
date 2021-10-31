@@ -38,7 +38,7 @@ public class FileStaticRepository implements StaticRepository {
             location = location.substring(0, location.length() - 1);
         }
 
-        if (location.startsWith("file://") == false) {
+        if (location.startsWith("file:") == false) {
             location = "file://" + location;
         }
 
