@@ -35,11 +35,12 @@ public final class SolonProps extends Props {
     private Class<?> source;
     private URL sourceLocation;
     private final List<PluginEntity> plugs = new ArrayList<>();
-    private boolean isDebugMode;
-    private boolean isDriftMode;
-    private boolean isFilesMode;
-    private boolean isWhiteMode;
-    private boolean isSetupMode;
+    private boolean isDebugMode;//是否为调试模式
+    private boolean isDriftMode;//是否为漂移模式（如k8s环境下,ip会不断变化）
+    private boolean isFilesMode;//是否为文件模式
+    private boolean isWhiteMode;//是否为的名单模式
+    private boolean isSetupMode;//是否为安装蕈式
+    private boolean isAloneMode;//是否为独立蕈式（即独立运行）
     private String extend;
     private String extendFilter;
     private String appName;
@@ -115,7 +116,9 @@ public final class SolonProps extends Props {
         //是否为白名单模式
         isWhiteMode = "1".equals(getArg("white", "1")); //安全模式（即白名单模式）
         //是否为漂移模式
-        isDriftMode = "1".equals(getArg("drift")); //漂移模式（即ip会变,如pod部署）
+        isDriftMode = "1".equals(getArg("drift")); //漂移模式（即ip会变,如k8s部署）
+        //是否为独立模式
+        isAloneMode = "1".equals(getArg("alone")); //独立模式
 
         //标识debug模式
         if (isDebugMode()) {
@@ -451,7 +454,7 @@ public final class SolonProps extends Props {
      * 框架版本号
      */
     public String version() {
-        return "1.5.50";
+        return "1.5.55";
     }
 
     /**
@@ -490,6 +493,20 @@ public final class SolonProps extends Props {
      * */
     public void isDriftMode(boolean isDriftMode){
         this.isDriftMode = isDriftMode;
+    }
+
+    /**
+     * 是否为独立模式
+     * */
+    public boolean isAloneMode() {
+        return isAloneMode;
+    }
+
+    /**
+     * 设置独立模式
+     * */
+    public void isAloneMode(boolean isAloneMode){
+        this.isAloneMode = isAloneMode;
     }
 
     /**
