@@ -673,8 +673,6 @@
             </dependency>
 
 
-
-
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>nacos-solon-plugin</artifactId>
@@ -686,6 +684,8 @@
                 <artifactId>water-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+
+
 
             <dependency>
                 <groupId>org.noear</groupId>
@@ -702,6 +702,12 @@
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>mqtt-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
+                <artifactId>pulsar-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
