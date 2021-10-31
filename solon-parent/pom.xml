@@ -139,23 +139,18 @@
                 <version>${solon.ver}</version>
             </dependency>
 
-
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.jlhttp</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.smarthttp</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
 
-<!--            <dependency>-->
-<!--                <groupId>org.noear</groupId>-->
-<!--                <artifactId>solon.boot.reactor-netty</artifactId>-->
-<!--                <version>${solon.ver}</version>-->
-<!--            </dependency>-->
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.boot.jetty</artifactId>
@@ -186,12 +181,6 @@
                 <artifactId>solon.boot.undertow.add.jsp</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
-
-<!--            <dependency>-->
-<!--                <groupId>org.noear</groupId>-->
-<!--                <artifactId>solon.boot.smarthttp</artifactId>-->
-<!--                <version>${solon.ver}</version>-->
-<!--            </dependency>-->
 
             <dependency>
                 <groupId>org.noear</groupId>
