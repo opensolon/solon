@@ -3,7 +3,7 @@ package org.noear.solon.boot.jetty;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
-import org.noear.solon.boot.jetty.http.XFormContentFilter;
+import org.noear.solon.boot.jetty.http.FormContentFilter;
 import org.noear.solon.core.*;
 import org.noear.solon.core.util.PrintUtil;
 
@@ -79,7 +79,7 @@ public final class XPluginImp implements Plugin {
         PrintUtil.info("Server:main: jetty: Started @" + (time_end - time_start) + "ms");
 
 
-        app.before("**", new XFormContentFilter());
+        app.before(-9, new FormContentFilter());
     }
 
     @Override

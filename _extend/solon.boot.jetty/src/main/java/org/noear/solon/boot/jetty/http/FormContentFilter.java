@@ -1,6 +1,5 @@
 package org.noear.solon.boot.jetty.http;
 
-
 import org.noear.solon.Utils;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
@@ -8,12 +7,12 @@ import org.noear.solon.core.handle.Handler;
 import java.net.URLDecoder;
 
 /**
- * 为jetty DELETE,PATCH进行表单转码
+ * 为 DELETE,PATCH 进行表单转码
  *
  * @author noear
  * @since 1.0
  * */
-public class XFormContentFilter implements Handler {
+public class FormContentFilter implements Handler {
     @Override
     public void handle(Context ctx) throws Throwable {
         String method = ctx.method();

@@ -346,6 +346,10 @@ public class SolonApp implements HandlerSlots {
         before("**", MethodType.ALL, handler);
     }
 
+    public void before(int index,Handler handler) {
+        before("**", MethodType.ALL, index, handler);
+    }
+
     public void before(String expr,  Handler handler) {
         before(expr, MethodType.ALL, handler);
     }

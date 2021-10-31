@@ -72,7 +72,7 @@ public final class XPluginImp implements Plugin {
 
             app.signalAdd(_signal);
 
-            app.before("**", MethodType.ALL, -9, new FormContentFilter());
+            app.before(-9, new FormContentFilter());
 
             long time_end = System.currentTimeMillis();
 
