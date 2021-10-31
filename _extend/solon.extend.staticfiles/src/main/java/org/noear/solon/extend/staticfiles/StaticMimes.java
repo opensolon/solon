@@ -15,6 +15,7 @@ public class StaticMimes extends HashMap<String,String> {
 
         put(".html", "text/html");
         put(".htm", "text/html");
+        put(".xml", "text/xml");
         put(".css", "text/css");
         put(".js", "application/x-javascript");
 
