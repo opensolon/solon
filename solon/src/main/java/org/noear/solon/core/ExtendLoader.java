@@ -31,6 +31,15 @@ public class ExtendLoader {
      * 加载扩展文件夹（或文件）
      *
      * @param extend   扩展配置
+     */
+    public static List<ClassLoader> load(String extend) {
+        return load(extend, false);
+    }
+
+    /**
+     * 加载扩展文件夹（或文件）
+     *
+     * @param extend   扩展配置
      * @param autoMake 是否自动生成
      */
     public static List<ClassLoader> load(String extend, boolean autoMake) {
