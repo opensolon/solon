@@ -40,6 +40,8 @@ public class FileStaticRepository implements StaticRepository {
 
         if (location.startsWith("file:") == false) {
             location = "file://" + location;
+            //mac,linux started=file://
+            //window started=file:/
         }
 
         this.location = location;
