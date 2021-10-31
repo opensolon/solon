@@ -40,7 +40,7 @@ public final class SolonProps extends Props {
     private boolean isFilesMode;//是否为文件模式
     private boolean isWhiteMode;//是否为的名单模式
     private boolean isSetupMode;//是否为安装蕈式
-    private boolean isAloneMode;//是否为独立蕈式（即独立运行）
+    private boolean isAloneMode;//是否为独立蕈式（即独立运行模式）
     private String extend;
     private String extendFilter;
     private String appName;
