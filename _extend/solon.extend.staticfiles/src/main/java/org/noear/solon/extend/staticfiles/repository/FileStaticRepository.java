@@ -30,7 +30,7 @@ public class FileStaticRepository implements StaticRepository {
      * @param location 位置
      * */
     protected void setLocation(String location) {
-        if(location == null){
+        if (location == null) {
             return;
         }
 
@@ -39,7 +39,11 @@ public class FileStaticRepository implements StaticRepository {
         }
 
         if (location.startsWith("file:/") == false) {
-            location = "file:/" + location;
+            if (location.startsWith("/")) {
+                location = "file:" + location;
+            } else {
+                location = "file:/" + location;
+            }
         }
 
         this.location = location;
