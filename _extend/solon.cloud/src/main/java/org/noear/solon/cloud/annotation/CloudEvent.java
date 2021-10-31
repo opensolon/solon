@@ -27,14 +27,14 @@ public @interface CloudEvent {
     String topic() default "";
 
     /**
-     * 分组，支持${xxx}配置
-     * */
-    String group() default "";
-
-    /**
      * 订阅级别
      * */
     EventLevel level() default EventLevel.cluster;
+
+    /**
+     * 分组，支持${xxx}配置
+     * */
+    String group() default "";
 
     /**
      * 通道：用于同时支持多个消息框架
