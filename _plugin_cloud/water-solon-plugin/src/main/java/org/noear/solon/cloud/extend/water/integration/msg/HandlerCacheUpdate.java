@@ -5,6 +5,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.extend.water.service.CloudDiscoveryServiceWaterImp;
 import org.noear.solon.cloud.model.Event;
+import org.noear.solon.logging.utils.TagsMDC;
 import org.noear.water.WW;
 import org.noear.weed.WeedConfig;
 import org.noear.weed.cache.ICacheServiceEx;
@@ -47,7 +48,10 @@ public class HandlerCacheUpdate implements CloudEventHandler {
             try {
                 discoveryService.onUpdate(Solon.cfg().appGroup(), service);
             } catch (Exception ex) {
-                logger.error(ss[1], "reload", "", ex);
+                TagsMDC.tag0(ss[1]);
+                TagsMDC.tag1("reload");
+
+                logger.error("{}", ex);
             }
         }
     }
