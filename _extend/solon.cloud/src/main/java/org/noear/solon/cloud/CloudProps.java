@@ -47,6 +47,7 @@ public class CloudProps {
     private String EVENT_PUBLISH_TIMEOUT = "solon.cloud.@@.event.publishTimeout";
 
     private String EVENT_CHANNEL = "solon.cloud.@@.event.channel"; //通道
+    private String EVENT_BROKER = "solon.cloud.@@.event.broker"; //broker
     private String EVENT_GROUP = "solon.cloud.@@.event.group"; //虚拟分组
     private String EVENT_CONSUMER = "solon.cloud.@@.event.consumer"; //配置组
     private String EVENT_PRODUCER = "solon.cloud.@@.event.producer"; //配置组
@@ -121,6 +122,7 @@ public class CloudProps {
         EVENT_PREFETCH_COUNT = EVENT_PREFETCH_COUNT.replace("@@", frame);
         EVENT_PUBLISH_TIMEOUT = EVENT_PUBLISH_TIMEOUT.replace("@@", frame);
         EVENT_CHANNEL = EVENT_CHANNEL.replace("@@", frame);
+        EVENT_BROKER = EVENT_BROKER.replace("@@", frame);
         EVENT_GROUP = EVENT_GROUP.replace("@@", frame);
         EVENT_CONSUMER = EVENT_CONSUMER.replace("@@", frame);
         EVENT_PRODUCER = EVENT_PRODUCER.replace("@@", frame);
@@ -278,6 +280,10 @@ public class CloudProps {
 
     public String getEventChannel() {
         return Solon.cfg().get(EVENT_CHANNEL, "");
+    }
+
+    public String getEventBroker() {
+        return Solon.cfg().get(EVENT_BROKER, "");
     }
 
     public String getEventGroup() {

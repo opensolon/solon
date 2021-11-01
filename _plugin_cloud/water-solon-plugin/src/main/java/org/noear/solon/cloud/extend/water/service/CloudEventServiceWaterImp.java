@@ -32,6 +32,7 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
     private String seal;
     private boolean unstable;
     private String eventChannelName;
+    private String eventBroker;
 
     public CloudEventServiceWaterImp(CloudProps cloudProps) {
         this.cloudProps = cloudProps;
@@ -41,6 +42,7 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
                 || Solon.cfg().isDriftMode();
 
         this.eventChannelName = cloudProps.getEventChannel();
+        this.eventBroker = cloudProps.getEventBroker();
 
         this.seal = getEventSeal();
 
@@ -73,15 +75,15 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
 
         try {
             return WaterClient.Message.
-                    sendMessageAndTags(event.key(), topicNew, event.content(), event.scheduled(), event.tags());
+                    sendMessageAndTags(eventBroker, event.key(), topicNew, event.content(), event.scheduled(), event.tags());
         } catch (Throwable ex) {
             throw new CloudEventException(ex);
         }
     }
 
 
-    private CloudEventObserverManger instanceObserverManger  = new CloudEventObserverManger();
-    private CloudEventObserverManger clusterObserverManger  = new CloudEventObserverManger();
+    private CloudEventObserverManger instanceObserverManger = new CloudEventObserverManger();
+    private CloudEventObserverManger clusterObserverManger = new CloudEventObserverManger();
 
     /**
      * 登记关注
@@ -124,14 +126,14 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
             String instance_receiver_url = "http://" + instance.address() + WW.path_msg_receiver;
             String instance_subscriber_Key = EncryptUtils.md5(instance.service() + "_instance_" + instance_receiver_url);
 
-            WaterClient.Message.subscribeTopic(instance_subscriber_Key,
+            WaterClient.Message.subscribeTopic(eventBroker, instance_subscriber_Key,
                     instance.service(),
                     instance_receiver_url,
                     seal,
                     "",
                     1,
                     unstable,
-                    String.join(",", instanceObserverManger.topicAll()));
+                    instanceObserverManger.topicAll().toArray(new String[instanceObserverManger.topicAll().size()]));
         }
 
         if (clusterObserverManger.topicSize() > 0) {
@@ -140,17 +142,24 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
                 cluster_hostname = instance.address();
             }
 
-            String cluster_receiver_url = "http://" + cluster_hostname + WW.path_msg_receiver;
+            String cluster_receiver_url;
+            if (cluster_hostname.indexOf("://") > 0) {
+                cluster_receiver_url = cluster_hostname + WW.path_msg_receiver;
+            } else {
+                cluster_receiver_url = "http://" + cluster_hostname + WW.path_msg_receiver;
+            }
+
+
             String cluster_subscriber_Key = EncryptUtils.md5(instance.service() + "_cluster_" + cluster_receiver_url);
 
-            WaterClient.Message.subscribeTopic(cluster_subscriber_Key,
+            WaterClient.Message.subscribeTopic(eventBroker, cluster_subscriber_Key,
                     instance.service(),
                     cluster_receiver_url,
                     seal,
                     "",
                     1,
                     false,
-                    String.join(",", clusterObserverManger.topicAll()));
+                    clusterObserverManger.topicAll().toArray(new String[clusterObserverManger.topicSize()]));
         }
     }
 
@@ -177,9 +186,9 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
             isOk = isOk && entity.handler(event); //两个都成功，才是成功
         }
 
-        if(isHandled == false){
+        if (isHandled == false) {
             //只需要记录一下
-            log.warn("There is no observer for this event topic[{}]",event.topic());
+            log.warn("There is no observer for this event topic[{}]", event.topic());
         }
 
         return isOk;
@@ -207,15 +216,15 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
     }
 
 
-    public  String getEventSeal() {
+    public String getEventSeal() {
         return cloudProps.getProp(WaterProps.PROP_EVENT_seal);
     }
 
-    public  String getEventReceive() {
+    public String getEventReceive() {
         return cloudProps.getProp(WaterProps.PROP_EVENT_receive);
     }
 
-    public  void setEventReceive(String value) {
+    public void setEventReceive(String value) {
         cloudProps.setProp(WaterProps.PROP_EVENT_receive, value);
     }
 }

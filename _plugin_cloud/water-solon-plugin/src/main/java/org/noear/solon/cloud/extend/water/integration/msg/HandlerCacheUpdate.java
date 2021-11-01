@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  * @since 1.2
  */
 public class HandlerCacheUpdate implements CloudEventHandler {
-    static Logger logger = LoggerFactory.getLogger(WW.water_log_upstream);
+    static Logger logger = LoggerFactory.getLogger(WW.logger_water_log_upstream);
 
     CloudDiscoveryServiceWaterImp discoveryService;
     public HandlerCacheUpdate(CloudDiscoveryServiceWaterImp discoveryService){
