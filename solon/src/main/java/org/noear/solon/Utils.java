@@ -343,6 +343,15 @@ public class Utils {
      * 获取资源并转为String
      *
      * @param name 资源名称
+     * */
+    public static String getResourceAsString(String name) throws IOException{
+        return getResourceAsString(JarClassLoader.global(), name, "utf-8");
+    }
+
+    /**
+     * 获取资源并转为String
+     *
+     * @param name 资源名称
      * @param charset 编码
      * */
     public static String getResourceAsString(String name, String charset) throws IOException{
