@@ -1,16 +1,23 @@
 package org.noear.solon.cloud.extend.cloudevent;
 
-import java.util.concurrent.atomic.AtomicReference;
+import org.noear.solon.annotation.Alias;
+import org.noear.solon.cloud.annotation.CloudEvent;
+import org.noear.solon.cloud.annotation.EventLevel;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author 颖
  */
-public interface CloudEventSubscriber<T> {
+@Target({ ElementType.TYPE, ElementType.METHOD })
+@Retention(RetentionPolicy.RUNTIME)
+public @interface CloudEventSubscriber {
 
-    /**
-     * 事件处理主方法
-     * @param event 要处理的事件
-     */
-    void handle(T event);
+    String group() default "";
+
+    String channel() default "";
 
 }

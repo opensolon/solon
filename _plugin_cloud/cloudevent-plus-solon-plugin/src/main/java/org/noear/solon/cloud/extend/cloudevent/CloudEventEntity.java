@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public interface CloudEventEntity {
 
-    AtomicReference<Boolean> SUCCESS = new AtomicReference<>(true);
+    ThreadLocal<Boolean> SUCCESS = new ThreadLocal<>();
 
     /**
      * 判断事件是否执行成功
