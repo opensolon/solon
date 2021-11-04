@@ -23,7 +23,7 @@ import java.util.Set;
 @Service
 public class SqlToyCRUDServiceForSolon extends SqlToyCRUDServiceImpl {
 
-    public void setSqlToyLazyDao() {
+    public SqlToyCRUDServiceForSolon() {
         Aop.getAsyn(SqlToyLazyDao.class, bw -> {
             sqlToyLazyDao = bw.raw();
         });
