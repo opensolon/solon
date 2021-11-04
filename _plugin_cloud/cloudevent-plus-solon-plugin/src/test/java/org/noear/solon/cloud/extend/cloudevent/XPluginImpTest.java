@@ -1,6 +1,5 @@
 package org.noear.solon.cloud.extend.cloudevent;
 
-import org.greenrobot.eventbus.Subscribe;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
@@ -16,7 +15,7 @@ class XPluginImpTest {
 
         private final Random random = new Random();
 
-        @Subscribe
+        @CloudEventSubscriber
         public void onOrderPay(OrderPayEvent event) {
             if (random.nextBoolean()) {
                 event.setSuccess(false);
@@ -26,7 +25,7 @@ class XPluginImpTest {
     }
 
     @Component
-    public static class OrderPayListener implements CloudEventSubscriber<OrderPayEvent> {
+    public static class OrderPayListener implements CloudEventHandler<OrderPayEvent> {
 
         @Override
         public void handle(OrderPayEvent event) {
@@ -37,7 +36,7 @@ class XPluginImpTest {
 
     @Test
     void start() {
-        Solon.start(XPluginImp.class, new String[0]);
+        Solon.start(PluginImp.class, new String[0]);
     }
 
 }
