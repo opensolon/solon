@@ -13,9 +13,9 @@ solon.scan[2]=com/hx/config/Config.class
 ```
 ```yaml
 solon.scan:
-  - META-INF/solon/solon.boot.jlhttp.properties
-  - META-INF/solon/solon.data.properties
-  - com/hx/config/Config.class
+  - "META-INF/solon/solon.boot.jlhttp.properties"
+  - "META-INF/solon/solon.data.properties"
+  - "com/hx/config/Config.class"
 ```
 5、文件清单提取方式： 
 本地运行，找到所有关键字：[Solon] Scan completed: [... , ... ,...]把[]里的内容抓取出来合并到一起即可
