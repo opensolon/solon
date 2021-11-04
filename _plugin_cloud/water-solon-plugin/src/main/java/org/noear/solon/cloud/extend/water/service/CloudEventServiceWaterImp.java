@@ -137,18 +137,19 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
         }
 
         if (clusterObserverManger.topicSize() > 0) {
-            String cluster_hostname = getEventReceive();
-            if (Utils.isEmpty(cluster_hostname)) {
-                cluster_hostname = instance.address();
-            }
 
             String cluster_receiver_url;
-            if (cluster_hostname.indexOf("://") > 0) {
-                cluster_receiver_url = cluster_hostname + WW.path_msg_receiver;
-            } else {
-                cluster_receiver_url = "http://" + cluster_hostname + WW.path_msg_receiver;
-            }
+            String cluster_hostname = getEventReceive();
 
+            if (Utils.isEmpty(cluster_hostname)) {
+                cluster_receiver_url = "@" + Solon.cfg().appName() +WW.path_msg_receiver;
+            } else {
+                if (cluster_hostname.indexOf("://") > 0) {
+                    cluster_receiver_url = cluster_hostname + WW.path_msg_receiver;
+                } else {
+                    cluster_receiver_url = "http://" + cluster_hostname + WW.path_msg_receiver;
+                }
+            }
 
             String cluster_subscriber_Key = EncryptUtils.md5(instance.service() + "_cluster_" + cluster_receiver_url);
 
