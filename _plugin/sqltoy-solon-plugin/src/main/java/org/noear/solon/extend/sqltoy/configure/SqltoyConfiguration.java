@@ -1,13 +1,12 @@
-package org.noear.solon.extend.sqltoy;
+package org.noear.solon.extend.sqltoy.configure;
 
+import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
-import org.noear.solon.core.Aop;
-import org.noear.solon.core.Plugin;
-import org.noear.solon.extend.sqltoy.annotation.Mapper;
-import org.noear.solon.extend.sqltoy.configure.Elastic;
-import org.noear.solon.extend.sqltoy.configure.ElasticConfig;
-import org.noear.solon.extend.sqltoy.configure.SqlToyContextProperties;
-import org.noear.solon.extend.sqltoy.configure.SqltoyConfiguration;
+import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Init;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.extend.sqltoy.SqlToyCRUDServiceForSolon;
 import org.sagacity.sqltoy.SqlToyContext;
 import org.sagacity.sqltoy.config.model.ElasticEndpoint;
 import org.sagacity.sqltoy.dao.SqlToyLazyDao;
@@ -26,58 +25,42 @@ import java.util.List;
 
 import static java.lang.System.err;
 
-/**
- * 去除spring依赖，适配到Solon的Tran,Aop
- * 实现Mapper接口功能
- */
-public class XPluginImp implements Plugin {
-    @Override
-    public void start(SolonApp app) {
-        app.beanScan(SqltoyConfiguration.class);
+@Configuration
+public class SqltoyConfiguration {
 
-        ApplicationContext applicationContext = new ApplicationContext() {
-        };
-        SqlToyContextProperties properties = app.cfg().getBean("sqltoy", SqlToyContextProperties.class);
-        if (app.cfg().isDebugMode()) {
+    private ApplicationContext applicationContext = new ApplicationContext(){};
+
+    @Inject("${sqltoy}")
+    private SqlToyContextProperties properties;
+
+
+    @Init
+    public void init(){
+        SolonApp app= Solon.global();
+        if(app.cfg().isDebugMode()){
             properties.setDebug(true);
         }
-        try {
 
-            SqlToyContext sqlToyContext = sqlToyContext(properties);
-            sqlToyContext.setApplicationContext(applicationContext);
-            sqlToyContext.initialize();
+    }
+    // 增加一个辅助校验,避免不少新用户将spring.sqltoy开头写成sqltoy.开头
+    // @Inject("${sqltoy.sqlResourcesDir:}")
+    private String sqlResourcesDir;
 
-
-            Aop.wrapAndPut(SqlToyContext.class, sqlToyContext);
-
-            SqlToyLazyDaoImpl sqlToyLazyDao = new SqlToyLazyDaoImpl();
-            sqlToyLazyDao.setSqlToyContext(sqlToyContext);
-            Aop.wrapAndPut(SqlToyLazyDao.class, sqlToyLazyDao);
-
-            //SqlToyCRUDService
-            SqlToyCRUDService service = Aop.getOrNew(SqlToyCRUDServiceForSolon.class);
-            Aop.wrapAndPut(SqlToyCRUDService.class, service);
-
-            Aop.context().beanBuilderAdd(Mapper.class, new MapperCreator());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setSqlResourcesDir(String sqlResourcesDir) {
+        this.sqlResourcesDir = sqlResourcesDir;
     }
 
-    @Override
-    public void prestop() throws Throwable {
-        SqlToyContext sqlToyContext = Aop.get(SqlToyContext.class);
-        sqlToyContext.destroy();
-    }
-
-    public SqlToyContext sqlToyContext(SqlToyContextProperties properties) throws Exception {
+    // 构建sqltoy上下文,并指定初始化方法和销毁方法
+   // @Bean(name = "sqlToyContext", initMethod = "initialize", destroyMethod = "destroy")
+   // @ConditionalOnMissingBean
+   @Bean(name = "sqlToyContext")
+   public SqlToyContext sqlToyContext() throws Exception {
         // 用辅助配置来校验是否配置错误
-        if (StringUtil.isBlank(properties.getSqlResourcesDir())) {
+        if (StringUtil.isBlank(properties.getSqlResourcesDir()) && StringUtil.isNotBlank(sqlResourcesDir)) {
             throw new IllegalArgumentException(
-                    "请检查sqltoy配置!\n范例: sqltoy.sqlResourcesDir=classpath:com/sagframe/modules");
+                    "请检查sqltoy配置,是spring.sqltoy作为前缀,而不是sqltoy!\n正确范例: spring.sqltoy.sqlResourcesDir=classpath:com/sagframe/modules");
         }
         SqlToyContext sqlToyContext = new SqlToyContext();
-
         // 当发现有重复sqlId时是否抛出异常，终止程序执行
         sqlToyContext.setBreakWhenSqlRepeat(properties.isBreakWhenSqlRepeat());
         // sql 文件资源路径
@@ -170,8 +153,8 @@ public class XPluginImp implements Plugin {
                 if (unfiyHandler.contains(".")) {
                     handler = (IUnifyFieldsHandler) Class.forName(unfiyHandler).getDeclaredConstructor().newInstance();
                 } // spring bean名称
-                else if (Aop.has(unfiyHandler)) {
-                    handler = Aop.get(unfiyHandler);
+                else if (applicationContext.containsBean(unfiyHandler)) {
+                    handler = (IUnifyFieldsHandler) applicationContext.getBean(unfiyHandler);
                     if (handler == null) {
                         throw new ClassNotFoundException("项目中未定义unifyFieldsHandler=" + unfiyHandler + " 对应的bean!");
                     }
@@ -231,8 +214,9 @@ public class XPluginImp implements Plugin {
         String translateCacheManager = properties.getTranslateCacheManager();
         if (StringUtil.isNotBlank(translateCacheManager)) {
             // 缓存管理器的bean名称
-            if (Aop.has(translateCacheManager)) {
-                sqlToyContext.setTranslateCacheManager(Aop.get(translateCacheManager));
+            if (applicationContext.containsBean(translateCacheManager)) {
+                sqlToyContext.setTranslateCacheManager(
+                        (TranslateCacheManager) applicationContext.getBean(translateCacheManager));
             } // 包名和类名称
             else if (translateCacheManager.contains(".")) {
                 sqlToyContext.setTranslateCacheManager((TranslateCacheManager) Class.forName(translateCacheManager)
@@ -243,8 +227,8 @@ public class XPluginImp implements Plugin {
         // 自定义typeHandler
         String typeHandler = properties.getTypeHandler();
         if (StringUtil.isNotBlank(typeHandler)) {
-            if (Aop.has(typeHandler)) {
-                sqlToyContext.setTypeHandler(Aop.get(typeHandler));
+            if (applicationContext.containsBean(typeHandler)) {
+                sqlToyContext.setTypeHandler((TypeHandler) applicationContext.getBean(typeHandler));
             } // 包名和类名称
             else if (typeHandler.contains(".")) {
                 sqlToyContext.setTypeHandler(
@@ -255,9 +239,9 @@ public class XPluginImp implements Plugin {
         // 自定义数据源选择器
         String dataSourceSelector = properties.getDataSourceSelector();
         if (StringUtil.isNotBlank(dataSourceSelector)) {
-            if (Aop.has(dataSourceSelector)) {
+            if (applicationContext.containsBean(dataSourceSelector)) {
                 sqlToyContext
-                        .setDataSourceSelector(Aop.get(dataSourceSelector));
+                        .setDataSourceSelector((DataSourceSelector) applicationContext.getBean(dataSourceSelector));
             } // 包名和类名称
             else if (dataSourceSelector.contains(".")) {
                 sqlToyContext.setDataSourceSelector(
@@ -268,8 +252,8 @@ public class XPluginImp implements Plugin {
         // 自定义数据库连接获取和释放的接口实现
         String connectionFactory = properties.getConnectionFactory();
         if (StringUtil.isNotBlank(connectionFactory)) {
-            if (Aop.has(connectionFactory)) {
-                sqlToyContext.setConnectionFactory(Aop.get(connectionFactory));
+            if (applicationContext.containsBean(connectionFactory)) {
+                sqlToyContext.setConnectionFactory((ConnectionFactory) applicationContext.getBean(connectionFactory));
             } // 包名和类名称
             else if (connectionFactory.contains(".")) {
                 sqlToyContext.setConnectionFactory(
@@ -278,4 +262,25 @@ public class XPluginImp implements Plugin {
         }
         return sqlToyContext;
     }
+
+    /**
+     *
+     * @return 返回预定义的通用Dao实例
+     */
+    @Bean(name = "sqlToyLazyDao")
+    //@ConditionalOnMissingBean
+    public SqlToyLazyDao sqlToyLazyDao() {
+        return new SqlToyLazyDaoImpl();
+    }
+
+    /**
+     *
+     * @return 返回预定义的通用CRUD service实例
+     */
+    @Bean(name = "sqlToyCRUDService")
+    //@ConditionalOnMissingBean
+    public SqlToyCRUDService sqlToyCRUDService() {
+        return new SqlToyCRUDServiceForSolon();
+    }
+
 }
