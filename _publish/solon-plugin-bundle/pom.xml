@@ -32,6 +32,7 @@
         <module>../../_plugin/luffy-solon-plugin</module>
 
         <module>../../_plugin/weed3-solon-plugin</module>
+        <module>../../_plugin/sqltoy-solon-plugin</module>
 
         <module>../../_plugin/mybatis-solon-plugin</module>
         <module>../../_plugin/mybatis-sqlhelper-solon-plugin</module>
