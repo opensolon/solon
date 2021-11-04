@@ -29,6 +29,9 @@ import static java.lang.System.err;
 /**
  * 去除spring依赖，适配到Solon的Tran,Aop
  * 实现Mapper接口功能
+ *
+ * @author 夜の孤城
+ * @since 1.5
  */
 public class XPluginImp implements Plugin {
     @Override
@@ -37,10 +40,13 @@ public class XPluginImp implements Plugin {
 
         ApplicationContext applicationContext = new ApplicationContext() {
         };
+
         SqlToyContextProperties properties = app.cfg().getBean("sqltoy", SqlToyContextProperties.class);
+
         if (app.cfg().isDebugMode()) {
             properties.setDebug(true);
         }
+
         try {
 
             SqlToyContext sqlToyContext = sqlToyContext(properties);

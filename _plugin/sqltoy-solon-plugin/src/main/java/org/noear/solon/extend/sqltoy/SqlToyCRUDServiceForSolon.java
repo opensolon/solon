@@ -1,6 +1,6 @@
 package org.noear.solon.extend.sqltoy;
 
-import org.noear.solon.annotation.Inject;
+import org.noear.solon.core.Aop;
 import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.extend.aspect.annotation.Service;
 import org.sagacity.sqltoy.dao.SqlToyLazyDao;
@@ -14,12 +14,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+
+/**
+ *
+ * @author 夜の孤城
+ * @since 1.2
+ * */
 @Service
 public class SqlToyCRUDServiceForSolon extends SqlToyCRUDServiceImpl {
 
-    @Inject(required = false)
-    public void setSqlToyLazyDao(SqlToyLazyDao sqlToyLazyDao) {
-        this.sqlToyLazyDao = sqlToyLazyDao;
+    public void setSqlToyLazyDao() {
+        Aop.getAsyn(SqlToyLazyDao.class, bw -> {
+            sqlToyLazyDao = bw.raw();
+        });
     }
 
     /*

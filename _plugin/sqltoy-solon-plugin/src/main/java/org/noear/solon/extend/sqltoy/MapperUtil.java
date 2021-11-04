@@ -17,6 +17,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 
+/**
+ * @author 夜の孤城
+ * @since 1.5
+ * */
 public class MapperUtil {
     private static Map<Class<?>, Object> _proxy_cache = new HashMap<>();
     private static Object _proxy_lock = new Object();

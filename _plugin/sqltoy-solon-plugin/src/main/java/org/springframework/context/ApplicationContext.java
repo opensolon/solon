@@ -8,6 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author 夜の孤城
+ * @since 1.5
+ * */
 public interface ApplicationContext {
     default  <T> Map<String,T> getBeansOfType(Class<T> type){
       List<BeanWrap> bws=  Aop.beanFind(bw-> bw.clz().isAssignableFrom(type));

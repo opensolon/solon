@@ -25,23 +25,28 @@ import java.util.List;
 
 import static java.lang.System.err;
 
+/**
+ * @author 夜の孤城
+ * @since 1.5
+ * */
 @Configuration
 public class SqltoyConfiguration {
 
-    private ApplicationContext applicationContext = new ApplicationContext(){};
+    private ApplicationContext applicationContext = new ApplicationContext() {
+    };
 
     @Inject("${sqltoy}")
     private SqlToyContextProperties properties;
 
 
     @Init
-    public void init(){
-        SolonApp app= Solon.global();
-        if(app.cfg().isDebugMode()){
+    public void init() {
+        SolonApp app = Solon.global();
+        if (app.cfg().isDebugMode()) {
             properties.setDebug(true);
         }
-
     }
+
     // 增加一个辅助校验,避免不少新用户将spring.sqltoy开头写成sqltoy.开头
     // @Inject("${sqltoy.sqlResourcesDir:}")
     private String sqlResourcesDir;
@@ -51,10 +56,10 @@ public class SqltoyConfiguration {
     }
 
     // 构建sqltoy上下文,并指定初始化方法和销毁方法
-   // @Bean(name = "sqlToyContext", initMethod = "initialize", destroyMethod = "destroy")
-   // @ConditionalOnMissingBean
-   @Bean(name = "sqlToyContext")
-   public SqlToyContext sqlToyContext() throws Exception {
+    // @Bean(name = "sqlToyContext", initMethod = "initialize", destroyMethod = "destroy")
+    // @ConditionalOnMissingBean
+    @Bean(name = "sqlToyContext")
+    public SqlToyContext sqlToyContext() throws Exception {
         // 用辅助配置来校验是否配置错误
         if (StringUtil.isBlank(properties.getSqlResourcesDir()) && StringUtil.isNotBlank(sqlResourcesDir)) {
             throw new IllegalArgumentException(
@@ -264,7 +269,6 @@ public class SqltoyConfiguration {
     }
 
     /**
-     *
      * @return 返回预定义的通用Dao实例
      */
     @Bean(name = "sqlToyLazyDao")
@@ -274,7 +278,6 @@ public class SqltoyConfiguration {
     }
 
     /**
-     *
      * @return 返回预定义的通用CRUD service实例
      */
     @Bean(name = "sqlToyCRUDService")

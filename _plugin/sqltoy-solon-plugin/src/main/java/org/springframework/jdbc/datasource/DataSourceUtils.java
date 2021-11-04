@@ -6,9 +6,12 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * @author 夜の孤城
+ * @since 1.5
+ * */
 public class DataSourceUtils {
     public static Connection getConnection(DataSource dataSource) throws SQLException {
-
         return TranUtils.getConnection(dataSource);
     }
 

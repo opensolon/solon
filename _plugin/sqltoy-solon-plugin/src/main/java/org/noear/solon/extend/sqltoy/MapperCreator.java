@@ -11,6 +11,10 @@ import org.sagacity.sqltoy.dao.impl.SqlToyLazyDaoImpl;
 
 import javax.sql.DataSource;
 
+/**
+ * @author 夜の孤城
+ * @since 1.5
+ * */
 class MapperCreator implements BeanBuilder<Mapper> {
     @Override
     public void doBuild(Class<?> clz, BeanWrap bw, Mapper anno) throws Exception {
