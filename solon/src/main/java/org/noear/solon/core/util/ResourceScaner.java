@@ -1,5 +1,6 @@
 package org.noear.solon.core.util;
 
+import org.noear.solon.Solon;
 import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
 import org.noear.solon.core.JarClassLoader;
@@ -57,6 +58,10 @@ public class ResourceScaner {
                     //
                     JarFile jar = ((JarURLConnection) url.openConnection()).getJarFile();
                     doScanByJar(jar, path, filter, urls);
+                } else if("resource".equals(p)) {
+                    if (Solon.cfg() != null) {
+
+                    }
                 }
             }
         } catch (IOException ex) {
