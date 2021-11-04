@@ -59,15 +59,16 @@ public class ResourceScaner {
                     JarFile jar = ((JarURLConnection) url.openConnection()).getJarFile();
                     doScanByJar(jar, path, filter, urls);
                 } else if("resource".equals(p)) {
-                    if (Solon.cfg() != null) {
-
+                    //3.3 找到resource(in graalvm  native image)
+                    if (Solon.cfg()!=null){
+                        doScanByResource( path, filter, urls);
                     }
                 }
             }
         } catch (IOException ex) {
             EventBus.push(ex);
         }
-
+        PrintUtil.info("scan finish:", urls.toString());
         return urls;
     }
 
@@ -131,6 +132,27 @@ public class ResourceScaner {
                 urls.add(n.substring(1));
             }else {
                 urls.add(n);
+            }
+        }
+    }
+
+    /**
+     * graalvm 里的scan  通过预处理，存放到配置文件，key=solon.scanconfig
+     * @param path
+     * @param filter
+     * @param urls
+     */
+    private static void doScanByResource(  String path, Predicate<String> filter, Set<String> urls) {
+        String sc=Solon.cfg().getProperty("solon.scanconfig");
+        if (sc!=null&&!"".equals(sc)){
+            String [] scanpaths=sc.split(",");
+            for (String p:scanpaths){
+                p=p.trim();
+                if ( !p.startsWith(path) || !filter.test(p)) {
+                    // 非指定包路径， 非目标后缀
+                    continue;
+                }
+                urls.add(p);
             }
         }
     }
