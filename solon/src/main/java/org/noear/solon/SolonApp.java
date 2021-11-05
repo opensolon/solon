@@ -61,14 +61,16 @@ public class SolonApp implements HandlerSlots {
      * 初始化等待
      * */
     protected void initAwait() {
-        String depend = cfg().get("solon.start.ping");
-        if (Utils.isNotEmpty(depend)) {
+        String addr = cfg().get("solon.start.ping");
+        if (Utils.isNotEmpty(addr)) {
             try {
                 while (true) {
-                    if (Utils.ping(depend)) {
+                    if (Utils.ping(addr)) {
+                        PrintUtil.info("App", "Start ping succeed: " + addr);
                         break;
                     } else {
-                        PrintUtil.info("App", "Start ping failure: " + depend);
+                        PrintUtil.info("App", "Start ping failure: " + addr);
+                        Thread.sleep(1000);
                     }
                 }
             } catch (Exception e) {
