@@ -178,6 +178,7 @@ public final class SolonProps extends Props {
         System.getenv().forEach((k, v) -> {
             if (k.startsWith(keyStarts)) {
                 setProperty(k, v); //可以替换系统属性 update by: 2021-11-05,noear
+                System.setProperty(k,v);
             }
         });
 
