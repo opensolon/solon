@@ -41,10 +41,10 @@ public class CloudEventSubscribeBeanBuilder implements BeanBuilder<CloudEventSub
                 //支持${xxx}配置
                 String group = Solon.cfg().getByParse(anno2.group());
 
-                CloudEventHandlerProxy hadnler = new CloudEventHandlerProxy(bw.raw(), entityClz);
+                CloudEventHandlerProxy hadnler2 = new CloudEventHandlerProxy(bw.raw(), entityClz);
 
-                CloudManager.register(anno2, hadnler);
-                CloudClient.event().attention(anno2.level(), anno2.channel(), group, topic, bw.raw());
+                CloudManager.register(anno2, hadnler2);
+                CloudClient.event().attention(anno2.level(), anno2.channel(), group, topic, hadnler2);
             }
         }
     }
