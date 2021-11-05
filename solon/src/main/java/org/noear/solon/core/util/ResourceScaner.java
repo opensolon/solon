@@ -70,7 +70,9 @@ public class ResourceScaner {
             EventBus.push(ex);
         }
 
-        PrintUtil.info("Scan completed: ", urls.toString());
+        if (Solon.cfg().isDebugMode()) {
+            PrintUtil.info("Scan completed: ", urls.toString());
+        }
 
         return urls;
     }
