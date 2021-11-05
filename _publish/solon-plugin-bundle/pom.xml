@@ -24,6 +24,9 @@
         <module>../../_plugin/solon-springboot-starter</module>
 
         <module>../../_plugin/beetlsql-solon-plugin</module>
+
+        <module>../../_plugin_cloud/cloudevent-plus-solon-plugin</module>
+
         <module>../../_plugin/cron4j-solon-plugin</module>
         <module>../../_plugin/dubbo-solon-plugin</module>
         <module>../../_plugin/feign-solon-plugin</module>

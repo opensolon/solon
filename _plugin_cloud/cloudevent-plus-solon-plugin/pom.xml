@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>1.5.53</version>
+        <version>1.5.58</version>
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
@@ -18,10 +18,10 @@
             <groupId>org.noear</groupId>
             <artifactId>solon.cloud</artifactId>
         </dependency>
+
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

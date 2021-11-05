@@ -577,6 +577,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>sqltoy-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>luffy-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
