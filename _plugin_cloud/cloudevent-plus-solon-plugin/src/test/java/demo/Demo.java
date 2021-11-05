@@ -15,33 +15,28 @@ public class Demo {
     public class UserCreatedEvent implements CloudEventEntity {
         public long userId;
     }
-
     //代理模式订阅（实体已申明主题相关信息）
     @CloudEventSubscribe
     public class UserCreatedEventHandler implements CloudEventEntityHandler<UserCreatedEvent> {
         @Override
         public boolean handler(UserCreatedEvent event) throws Throwable {
             //业务处理
-
             return false;
         }
     }
-
+    //类函数模式订阅
     @Component
     public class EventSubscriber{
         @CloudEventSubscribe
         public boolean onUserCreatedEvent(UserCreatedEvent event){
             //处理业务
-
             return false;
         }
     }
-
     //发送
     public void publishDemo(){
         UserCreatedEvent event = new UserCreatedEvent();
         event.userId  =1212;
-
         event.publish();
     }
 }
