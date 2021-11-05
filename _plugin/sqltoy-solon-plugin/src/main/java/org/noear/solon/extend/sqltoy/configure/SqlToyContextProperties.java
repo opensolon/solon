@@ -125,9 +125,9 @@ public class SqlToyContextProperties implements Serializable {
     private String dataSourceSelector;
 
     /**
-     * 缓存类型，默认ehcache，可选caffeine
+     * 缓存类型，默认solon，可选ehcache,caffeine
      */
-    private String cacheType = "ehcache";
+    private String cacheType = "solon";
 
     /**
      * 当发现有重复sqlId时是否抛出异常，终止程序执行

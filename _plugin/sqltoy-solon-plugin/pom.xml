@@ -17,6 +17,7 @@
 
     <properties>
         <sqltoy.ver>5.1.14</sqltoy.ver>
+        <caffeine.ver>3.0.4</caffeine.ver>
     </properties>
 
     <dependencies>
@@ -33,7 +34,7 @@
         <dependency>
             <groupId>com.sagframe</groupId>
             <artifactId>sagacity-sqltoy</artifactId>
-            <version>5.1.14</version>
+            <version>${sqltoy.ver}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework</groupId>
@@ -45,7 +46,17 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+<!--        <dependency>-->
+<!--            <groupId>com.sagframe</groupId>-->
+<!--            <artifactId>sagacity-sqltoy-starter</artifactId>-->
+<!--            <version>5.1.14</version>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>${caffeine.ver}</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- test... -->
         <dependency>
             <groupId>com.zaxxer</groupId>
