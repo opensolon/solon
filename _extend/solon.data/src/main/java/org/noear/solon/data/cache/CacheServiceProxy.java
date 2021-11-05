@@ -26,6 +26,9 @@ public class CacheServiceProxy implements CacheService {
         return driverType;
     }
 
+    /**
+     * @param prop 需要有 driverType[local,redis,memcached] 属性申明
+     * */
     public CacheServiceProxy(Properties prop) {
         String driverType = prop.getProperty("driverType");
 
