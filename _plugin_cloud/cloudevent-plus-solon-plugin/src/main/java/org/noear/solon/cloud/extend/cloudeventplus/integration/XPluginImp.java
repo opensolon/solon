@@ -1,5 +1,6 @@
-package org.noear.solon.cloud.extend.cloudeventplus;
+package org.noear.solon.cloud.extend.cloudeventplus.integration;
 
+import org.noear.solon.cloud.extend.cloudeventplus.CloudEventSubscribe;
 import org.noear.solon.cloud.extend.cloudeventplus.impl.CloudEventSubscribeBeanBuilder;
 import org.noear.solon.cloud.extend.cloudeventplus.impl.CloudEventSubscribeBeanExtractor;
 import org.noear.solon.core.Aop;
