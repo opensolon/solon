@@ -33,8 +33,6 @@ public class RedisCacheService implements CacheService {
 
     public RedisCacheService(Properties prop, String keyHeader, int defSeconds) {
         String defSeconds_str = prop.getProperty("defSeconds");
-        String server = prop.getProperty("server");
-        String password = prop.getProperty("password");
         String db_str = prop.getProperty("db");
         String maxTotaol_str = prop.getProperty("maxTotaol");
 

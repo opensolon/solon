@@ -1,10 +1,12 @@
 package org.noear.solon;
 
 import org.noear.solon.annotation.Note;
+import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.*;
 
 import java.io.*;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.net.FileNameMap;
@@ -35,8 +37,8 @@ public class Utils {
      * 获取MIME
      *
      * @param fileName 文件名
-     * */
-    public static String mime(String fileName){
+     */
+    public static String mime(String fileName) {
         return mimeMap.getContentTypeFor(fileName);
     }
 
@@ -45,7 +47,7 @@ public class Utils {
      *
      * @param v1 值1
      * @param v2 值2
-     * */
+     */
     public static String annoAlias(String v1, String v2) {
         if (isEmpty(v1)) {
             return v2;
@@ -65,7 +67,7 @@ public class Utils {
      * 生成MD5
      *
      * @param str 字符串
-     * */
+     */
     public static String md5(String str) {
         try {
             byte[] btInput = str.getBytes("UTF-8");
@@ -93,8 +95,8 @@ public class Utils {
      * 获取异常打印信息
      *
      * @param ex 异常
-     * */
-    public static String throwableToString(Throwable ex){
+     */
+    public static String throwableToString(Throwable ex) {
         StringWriter sw = new StringWriter();
         ex.printStackTrace(new PrintWriter(sw));
 
@@ -105,7 +107,7 @@ public class Utils {
      * 包装异常
      *
      * @param ex 异常
-     * */
+     */
     @Deprecated
     public static RuntimeException throwableWrap(Throwable ex) {
         if (ex instanceof RuntimeException) {
@@ -121,7 +123,7 @@ public class Utils {
      * 解包异常
      *
      * @param ex 异常
-     * */
+     */
     public static Throwable throwableUnwrap(Throwable ex) {
         Throwable th = ex;
 
@@ -147,9 +149,9 @@ public class Utils {
     /**
      * 异常栈里是否存在某类异常
      *
-     * @param ex 异常栈
+     * @param ex  异常栈
      * @param clz 要检测的异常类
-     * */
+     */
     public static boolean throwableHas(Throwable ex, Class<? extends Throwable> clz) {
         Throwable th = ex;
 
@@ -215,7 +217,7 @@ public class Utils {
      *
      * @param s 字符串
      */
-    public static boolean isNotBlank(String s){
+    public static boolean isNotBlank(String s) {
         return !isBlank(s);
     }
 
@@ -227,7 +229,6 @@ public class Utils {
     public static boolean isWhitespace(int c) {
         return c == 32 || c == 9 || c == 10 || c == 12 || c == 13;
     }
-
 
 
     /**
@@ -258,7 +259,7 @@ public class Utils {
      * 根据字符串加载为一个类
      *
      * @param classLoader 类加载器
-     * @param className 类名称
+     * @param className   类名称
      */
     public static Class<?> loadClass(ClassLoader classLoader, String className) {
         try {
@@ -278,26 +279,47 @@ public class Utils {
      * @param className 类名称
      */
     public static <T> T newInstance(String className) {
-        return newInstance(JarClassLoader.global(), className);
+        return newInstance(className, null);
+    }
+
+    public static <T> T newInstance(String className, Properties prop) {
+        return newInstance(JarClassLoader.global(), className, prop);
     }
 
     /**
      * 根据类名实例化一个对象
      *
      * @param classLoader 类加载器
-     * @param className 类名称
+     * @param className   类名称
      */
-    public static <T> T newInstance(ClassLoader classLoader,String className) {
+    public static <T> T newInstance(ClassLoader classLoader, String className) {
+        return newInstance(classLoader, className, null);
+    }
+
+    public static <T> T newInstance(ClassLoader classLoader, String className, Properties prop) {
         try {
             Class<?> clz = loadClass(classLoader, className);
             if (clz == null) {
                 return null;
             } else {
-                return (T)clz.newInstance();
+                return newInstance(clz, prop);
             }
-        } catch (Throwable ex) {
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            EventBus.push(ex);
             return null;
+        }
+    }
+
+    public static <T> T newInstance(Class<?> clz, Properties prop) throws Exception {
+        if (prop == null) {
+            return (T) clz.newInstance();
+        } else {
+            Constructor<?> cos = clz.getConstructor(Properties.class);
+            if (cos == null) {
+                return null;
+            } else {
+                return (T) cos.newInstance(prop);
+            }
         }
     }
 
@@ -314,7 +336,7 @@ public class Utils {
      * 获取资源URL集
      *
      * @param classLoader 类加载器
-     * @param name 资源名称
+     * @param name        资源名称
      */
     public static Enumeration<URL> getResources(ClassLoader classLoader, String name) throws IOException {
         return classLoader.getResources(name);
@@ -333,7 +355,7 @@ public class Utils {
      * 获取资源URL
      *
      * @param classLoader 类加载器
-     * @param name 资源名称
+     * @param name        资源名称
      */
     public static URL getResource(ClassLoader classLoader, String name) {
         return classLoader.getResource(name); //XUtil.class.getResource(name);
@@ -343,18 +365,18 @@ public class Utils {
      * 获取资源并转为String
      *
      * @param name 资源名称
-     * */
-    public static String getResourceAsString(String name) throws IOException{
+     */
+    public static String getResourceAsString(String name) throws IOException {
         return getResourceAsString(JarClassLoader.global(), name, "utf-8");
     }
 
     /**
      * 获取资源并转为String
      *
-     * @param name 资源名称
+     * @param name    资源名称
      * @param charset 编码
-     * */
-    public static String getResourceAsString(String name, String charset) throws IOException{
+     */
+    public static String getResourceAsString(String name, String charset) throws IOException {
         return getResourceAsString(JarClassLoader.global(), name, charset);
     }
 
@@ -362,9 +384,9 @@ public class Utils {
      * 获取资源并转为String
      *
      * @param classLoader 类加载器
-     * @param name 资源名称
-     * @param charset 编码
-     * */
+     * @param name        资源名称
+     * @param charset     编码
+     */
     public static String getResourceAsString(ClassLoader classLoader, String name, String charset) throws IOException {
         URL url = getResource(classLoader, name);
         if (url != null) {
@@ -377,9 +399,9 @@ public class Utils {
     /**
      * 将输入流转换为字符串
      *
-     * @param ins 输入流
+     * @param ins     输入流
      * @param charset 字符集
-     * */
+     */
     public static String transferToString(InputStream ins, String charset) throws IOException {
         if (ins == null) {
             return null;
@@ -398,7 +420,7 @@ public class Utils {
      * 将输入流转换为byte数组
      *
      * @param ins 输入流
-     * */
+     */
     public static byte[] transferToBytes(InputStream ins) throws IOException {
         if (ins == null) {
             return null;
@@ -412,8 +434,8 @@ public class Utils {
      *
      * @param ins 输入流
      * @param out 输出流
-     * */
-    public static <T extends OutputStream>  T transferTo(InputStream ins, T out) throws IOException {
+     */
+    public static <T extends OutputStream> T transferTo(InputStream ins, T out) throws IOException {
         if (ins == null || out == null) {
             return null;
         }
@@ -432,9 +454,9 @@ public class Utils {
      * 根据url加载配置集
      *
      * @param url 资源地址
-     * */
+     */
     public static Properties loadProperties(URL url) {
-        if(url == null){
+        if (url == null) {
             return null;
         }
 
@@ -451,7 +473,7 @@ public class Utils {
      * 根据本地资源url加载配置集
      *
      * @param url 资源地址
-     * */
+     */
     public static Properties loadProperties(String url) {
         return loadProperties(getResource(url));
     }
@@ -460,7 +482,7 @@ public class Utils {
      * 根据txt加载配置集
      *
      * @param txt 资源内容
-     * */
+     */
     public static Properties buildProperties(String txt) {
         try {
             return PropsLoader.global().build(txt);
@@ -474,9 +496,9 @@ public class Utils {
     /**
      * 注入属性
      *
-     * @param obj 对象
+     * @param obj   对象
      * @param propS 属性集
-     * */
+     */
     public static <T> T injectProperties(T obj, Properties propS) {
         ClassWrap.get(obj.getClass()).fill(obj, propS::getProperty);
         return obj;
@@ -494,13 +516,12 @@ public class Utils {
     }
 
 
-
     /**
      * 构建应用扩展目录
      *
-     * @param extend 扩展配置
+     * @param extend   扩展配置
      * @param autoMake 是否自动创建
-     * */
+     */
     public static String buildExt(String extend, boolean autoMake) {
         if (extend == null) {
             return null;
@@ -550,39 +571,39 @@ public class Utils {
 
     /**
      * 将 source:Map 数据，绑定到 target:bean
-     * */
-    public static void bindTo(Map<String,String> source, Object target) {
+     */
+    public static void bindTo(Map<String, String> source, Object target) {
         bindTo((k) -> source.get(k), target);
     }
 
     /**
      * 将 source:Properties 数据，绑定到 target:bean
-     * */
+     */
     public static void bindTo(Properties source, Object target) {
         bindTo((k) -> source.getProperty(k), target);
     }
 
     /**
      * 将 source:((k)->v) 数据，绑定到 target:bean
-     * */
+     */
     public static void bindTo(Function<String, String> source, Object target) {
         if (target == null) {
             return;
         }
 
-        ClassWrap.get(target.getClass()).fill(target,source,null);
+        ClassWrap.get(target.getClass()).fill(target, source, null);
     }
 
     /**
      * 获取当前线程的ClassLoader
-     * */
+     */
     public static ClassLoader getContextClassLoader() {
         return Thread.currentThread().getContextClassLoader();
     }
 
     /**
      * 获取ClassLoader
-     * */
+     */
     public static ClassLoader getClassLoader() {
         ClassLoader classLoader = getContextClassLoader();
         if (classLoader == null) {
