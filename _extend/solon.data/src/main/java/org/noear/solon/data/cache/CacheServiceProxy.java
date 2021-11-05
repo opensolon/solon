@@ -13,20 +13,6 @@ public class CacheServiceProxy implements CacheService {
     private String driverType;
 
     /**
-     * 真实的缓存服务
-     * */
-    public CacheService getReal() {
-        return real;
-    }
-
-    /**
-     * 驱动类型
-     * */
-    public String getDriverType() {
-        return driverType;
-    }
-
-    /**
      * @param prop 需要有 driverType[local,redis,memcached] 属性申明
      * */
     public CacheServiceProxy(Properties prop) {
