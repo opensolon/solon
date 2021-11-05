@@ -34,9 +34,13 @@ public class MemCacheService implements CacheService {
         String password = prop.getProperty("password");
 
         if (defSeconds == 0) {
-            if(Utils.isEmpty(defSeconds_str) == false){
+            if (Utils.isNotEmpty(defSeconds_str)) {
                 defSeconds = Integer.parseInt(defSeconds_str);
             }
+        }
+
+        if(Utils.isEmpty(keyHeader)){
+            keyHeader = Solon.cfg().appName();
         }
 
 

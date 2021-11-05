@@ -34,7 +34,7 @@ public class CacheServiceProxy implements CacheService {
 
         if ("local".equals(driverType)) {
             //本地缓存
-            real = new LocalCacheService();
+            real = new LocalCacheService(prop);
         } else if ("redis".equals(driverType)) {
             //redis缓存
             real = newInstance("org.noear.solon.cache.jedis.RedisCacheService", prop);

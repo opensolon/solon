@@ -37,7 +37,7 @@ public class RedisCacheService implements CacheService {
         String maxTotaol_str = prop.getProperty("maxTotaol");
 
         if (defSeconds == 0) {
-            if (Utils.isEmpty(defSeconds_str) == false) {
+            if (Utils.isNotEmpty(defSeconds_str)) {
                 defSeconds = Integer.parseInt(defSeconds_str);
             }
         }
@@ -51,6 +51,10 @@ public class RedisCacheService implements CacheService {
 
         if (Utils.isNotEmpty(maxTotaol_str)) {
             maxTotaol = Integer.parseInt(maxTotaol_str);
+        }
+
+        if(Utils.isEmpty(keyHeader)){
+            keyHeader = Solon.cfg().appName();
         }
 
         _cacheKeyHead = keyHeader;

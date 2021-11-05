@@ -1,6 +1,9 @@
 package org.noear.solon.data.cache;
 
+import org.noear.solon.Utils;
+
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.*;
 
 /**
@@ -20,11 +23,23 @@ public class LocalCacheService implements CacheService {
     private static ScheduledExecutorService _exec = Executors.newSingleThreadScheduledExecutor();
 
     public LocalCacheService() {
-        this(300);
+        this(30);
     }
 
     public LocalCacheService(int defSeconds) {
         _defaultSeconds = defSeconds;
+    }
+
+    public LocalCacheService(Properties prop) {
+        String defSeconds_str = prop.getProperty("defSeconds");
+
+        if (Utils.isNotEmpty(defSeconds_str)) {
+            _defaultSeconds = Integer.parseInt(defSeconds_str);
+        }
+
+        if (_defaultSeconds < 1) {
+            _defaultSeconds = 30;
+        }
     }
 
     /**
