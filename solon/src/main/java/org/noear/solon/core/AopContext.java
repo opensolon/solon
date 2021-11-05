@@ -7,6 +7,7 @@ import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.handle.*;
 import org.noear.solon.core.message.Listener;
+import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.wrap.*;
 import org.noear.solon.ext.BiConsumerEx;
 import org.noear.solon.core.util.ResourceScaner;
@@ -166,15 +167,9 @@ public class AopContext extends BeanContainer {
 
     //添加事件监听
     private void addEventListener(Class<?> clz, BeanWrap bw) {
-        for (Type t1 : clz.getGenericInterfaces()) {
-            if (t1 instanceof ParameterizedType) {
-                ParameterizedType pt = (ParameterizedType) t1;
-                if (pt.getRawType() == EventListener.class) {
-                    Class<?> et = (Class<?>) pt.getActualTypeArguments()[0];
-                    EventBus.subscribe(et, bw.raw());
-                    return;
-                }
-            }
+        Class<?>[] ets = GenericUtil.resolveTypeArguments(clz, EventListener.class);
+        if (ets != null && ets.length > 0) {
+            EventBus.subscribe(ets[0], bw.raw());
         }
     }
 
