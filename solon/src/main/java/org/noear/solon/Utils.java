@@ -9,9 +9,7 @@ import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
-import java.net.FileNameMap;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
 import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -32,6 +30,31 @@ public class Utils {
     public static final ScheduledExecutorService scheduled = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
 
     private static final char[] HEX_DIGITS = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+
+
+    /**
+     * Ping 一个地址
+     *
+     * @param address （例：192.168.1.1 或 192.168.1.1:8080）
+     */
+    public static boolean ping(String address) throws Exception {
+        if (address.contains(":")) {
+            String host = address.split(":")[0];
+            int port = Integer.parseInt(address.split(":")[1]);
+
+            try (Socket socket = new Socket()) {
+                SocketAddress addr = new InetSocketAddress(host, port);
+                socket.connect(addr, 3000);
+                return true;
+            } catch (IOException e) {
+                return false;
+            }
+        } else {
+            return InetAddress.getByName(address).isReachable(3000);
+        }
+    }
+
+
 
     /**
      * 获取MIME

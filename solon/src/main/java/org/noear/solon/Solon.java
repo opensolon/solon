@@ -5,6 +5,7 @@ import org.noear.solon.core.NvMap;
 import org.noear.solon.core.util.PrintUtil;
 import org.noear.solon.ext.ConsumerEx;
 
+import javax.rmi.CORBA.Util;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 
@@ -90,6 +91,22 @@ public class Solon {
 
         //1.创建全局应用
         global = new SolonApp(source, argx);
+
+        //2.0.尝试待待
+        String addr =  global.cfg().get("solon.start.ping");
+        if(Utils.isNotEmpty(addr)) {
+            try {
+                while (true) {
+                    if (Utils.ping(addr)) {
+                        break;
+                    } else {
+                        PrintUtil.info("App", "Start ping failure: " + addr);
+                    }
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         //2.1.内部初始化（如配置等，顺序不能乱）
         global.init();
