@@ -3,11 +3,13 @@ package org.noear.solon.extend.sqltoy;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.data.cache.CacheService;
 import org.noear.solon.extend.sqltoy.annotation.Mapper;
 import org.noear.solon.extend.sqltoy.configure.Elastic;
 import org.noear.solon.extend.sqltoy.configure.ElasticConfig;
 import org.noear.solon.extend.sqltoy.configure.SqlToyContextProperties;
 import org.noear.solon.extend.sqltoy.configure.SqltoyConfiguration;
+import org.noear.solon.extend.sqltoy.translate.SolonTranslateCacheManager;
 import org.sagacity.sqltoy.SqlToyContext;
 import org.sagacity.sqltoy.config.model.ElasticEndpoint;
 import org.sagacity.sqltoy.dao.SqlToyLazyDao;
@@ -27,7 +29,7 @@ import java.util.List;
 import static java.lang.System.err;
 
 /**
- * 去除spring依赖，适配到Solon的Tran,Aop
+ * 去除spring依赖，适配到Solon的Tran、Aop。TranslateCache默认设置为Solon CacheService
  * 实现Mapper接口功能
  *
  * @author 夜の孤城
@@ -49,10 +51,21 @@ public class XPluginImp implements Plugin {
 
         try {
 
-            SqlToyContext sqlToyContext = sqlToyContext(properties);
+            final SqlToyContext sqlToyContext = sqlToyContext(properties);
             sqlToyContext.setApplicationContext(applicationContext);
-            sqlToyContext.initialize();
 
+            if("solon".equals(properties.getCacheType())||properties.getCacheType()==null){
+                Aop.getAsyn(CacheService.class,bw->{
+                    sqlToyContext.setTranslateCacheManager(new SolonTranslateCacheManager(bw.get()));
+                    try {
+                        sqlToyContext.initialize();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }else{
+                sqlToyContext.initialize();
+            }
 
             Aop.wrapAndPut(SqlToyContext.class, sqlToyContext);
 
