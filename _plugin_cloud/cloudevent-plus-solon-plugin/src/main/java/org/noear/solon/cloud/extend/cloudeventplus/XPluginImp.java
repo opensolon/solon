@@ -1,10 +1,10 @@
 package org.noear.solon.cloud.extend.cloudeventplus;
 
-import org.noear.solon.SolonApp;
 import org.noear.solon.cloud.extend.cloudeventplus.impl.CloudEventSubscribeBeanBuilder;
 import org.noear.solon.cloud.extend.cloudeventplus.impl.CloudEventSubscribeBeanExtractor;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.SolonApp;
 
 /**
  * @author iYarnFog
@@ -15,9 +15,9 @@ public class XPluginImp implements Plugin {
     @Override
     public void start(SolonApp app) {
         Aop.context().beanBuilderAdd(CloudEventSubscribe.class,
-                CloudEventSubscribeBeanBuilder.instance);
+                new CloudEventSubscribeBeanBuilder());
 
         Aop.context().beanExtractorAdd(CloudEventSubscribe.class,
-                CloudEventSubscribeBeanExtractor.instance);
+                new CloudEventSubscribeBeanExtractor());
     }
 }

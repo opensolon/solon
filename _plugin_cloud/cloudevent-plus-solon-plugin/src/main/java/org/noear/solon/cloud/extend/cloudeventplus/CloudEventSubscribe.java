@@ -7,6 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 云端事件订阅
+ *
  * @author 颖
  * @since 1.5
  */

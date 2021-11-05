@@ -3,7 +3,7 @@ package demo;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.cloud.annotation.CloudEvent;
 import org.noear.solon.cloud.extend.cloudeventplus.CloudEventEntity;
-import org.noear.solon.cloud.extend.cloudeventplus.CloudEventEntityHandler;
+import org.noear.solon.cloud.extend.cloudeventplus.CloudEventHandlerPlus;
 import org.noear.solon.cloud.extend.cloudeventplus.CloudEventSubscribe;
 
 /**
@@ -17,7 +17,7 @@ public class Demo {
     }
     //代理模式订阅（实体已申明主题相关信息）
     @CloudEventSubscribe
-    public class UserCreatedEventHandler implements CloudEventEntityHandler<UserCreatedEvent> {
+    public class UserCreatedEventHandler implements CloudEventHandlerPlus<UserCreatedEvent> {
         @Override
         public boolean handler(UserCreatedEvent event) throws Throwable {
             //业务处理

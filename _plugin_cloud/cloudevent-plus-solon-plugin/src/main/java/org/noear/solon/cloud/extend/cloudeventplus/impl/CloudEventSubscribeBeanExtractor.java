@@ -18,7 +18,6 @@ import java.lang.reflect.Parameter;
  * @since 1.5
  */
 public class CloudEventSubscribeBeanExtractor implements BeanExtractor<CloudEventSubscribe> {
-    public static final CloudEventSubscribeBeanExtractor instance = new CloudEventSubscribeBeanExtractor();
 
     @Override
     public void doExtract(BeanWrap bw, Method method, CloudEventSubscribe anno) {

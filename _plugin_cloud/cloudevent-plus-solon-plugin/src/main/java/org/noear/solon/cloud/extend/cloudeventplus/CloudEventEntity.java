@@ -8,7 +8,7 @@ import org.noear.solon.cloud.exception.CloudEventException;
 import org.noear.solon.cloud.model.Event;
 
 /**
- * Cloud event 实体
+ * 云端事件实体
  *
  * <pre><code>
  * //申明事件实体
