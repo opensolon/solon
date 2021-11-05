@@ -10,6 +10,7 @@ import org.noear.solon.annotation.Import;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.*;
 import org.noear.solon.core.message.Listener;
+import org.noear.solon.core.util.PrintUtil;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
@@ -54,6 +55,26 @@ public class SolonApp implements HandlerSlots {
         _handler = _routerHandler;
 
         enableJarIsolation(_prop.getBool("solon.extend.isolation", false));
+    }
+
+    /**
+     * 初始化等待
+     * */
+    protected void initAwait() {
+        String depend = cfg().get("solon.start.ping");
+        if (Utils.isNotEmpty(depend)) {
+            try {
+                while (true) {
+                    if (Utils.ping(depend)) {
+                        break;
+                    } else {
+                        PrintUtil.info("App", "Start ping failure: " + depend);
+                    }
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     /**

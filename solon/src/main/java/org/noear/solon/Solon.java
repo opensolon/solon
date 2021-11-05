@@ -92,21 +92,8 @@ public class Solon {
         //1.创建全局应用
         global = new SolonApp(source, argx);
 
-        //2.0.尝试待待
-        String addr =  global.cfg().get("solon.start.ping");
-        if(Utils.isNotEmpty(addr)) {
-            try {
-                while (true) {
-                    if (Utils.ping(addr)) {
-                        break;
-                    } else {
-                        PrintUtil.info("App", "Start ping failure: " + addr);
-                    }
-                }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
+        //2.0.内部初始化等待（尝试ping等待）
+        global.initAwait();
 
         //2.1.内部初始化（如配置等，顺序不能乱）
         global.init();
