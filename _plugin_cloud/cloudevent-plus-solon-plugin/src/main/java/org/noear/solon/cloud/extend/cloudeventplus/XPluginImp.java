@@ -14,8 +14,10 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(SolonApp app) {
-        Aop.context().beanBuilderAdd(CloudEventSubscribe.class, CloudEventSubscribeBeanBuilder.instance);
+        Aop.context().beanBuilderAdd(CloudEventSubscribe.class,
+                CloudEventSubscribeBeanBuilder.instance);
 
-        Aop.context().beanExtractorAdd(CloudEventSubscribe.class, CloudEventSubscribeBeanExtractor.instance);
+        Aop.context().beanExtractorAdd(CloudEventSubscribe.class,
+                CloudEventSubscribeBeanExtractor.instance);
     }
 }
