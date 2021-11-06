@@ -281,7 +281,7 @@ public class MapperUtil {
                                             } else {
                                                 queryExecutor.resultType(retType);
                                             }
-                                            List result = dao.findTopByQuery(queryExecutor, 1).getRows();
+                                            List result = dao.findByQuery(queryExecutor).getRows();
                                             if (result == null || result.size() == 0) {
                                                 return null;
                                             }
@@ -308,7 +308,7 @@ public class MapperUtil {
                                             } else {
                                                 queryExecutor.resultType(retType);
                                             }
-                                            List result = dao.findTopByQuery(queryExecutor, 1).getRows();
+                                            List result = dao.findByQuery(queryExecutor).getRows();
                                             if (result == null || result.size() == 0) {
                                                 return null;
                                             }
