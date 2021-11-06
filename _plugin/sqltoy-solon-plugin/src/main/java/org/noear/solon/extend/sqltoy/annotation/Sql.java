@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 用于Mapper接口上
  * @author 夜の孤城
  * @since 1.5
  * */

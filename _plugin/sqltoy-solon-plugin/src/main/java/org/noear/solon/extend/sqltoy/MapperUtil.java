@@ -1,11 +1,13 @@
 package org.noear.solon.extend.sqltoy;
 
+import org.noear.solon.extend.sqltoy.annotation.Param;
 import org.noear.solon.extend.sqltoy.annotation.Sql;
 import org.sagacity.sqltoy.config.model.SqlToyConfig;
 import org.sagacity.sqltoy.config.model.SqlType;
 import org.sagacity.sqltoy.dao.SqlToyLazyDao;
 import org.sagacity.sqltoy.model.Page;
 import org.sagacity.sqltoy.model.QueryExecutor;
+import org.sagacity.sqltoy.utils.StringUtil;
 
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
@@ -140,21 +142,37 @@ public class MapperUtil {
                         }
                         Class<?> retType = method.getReturnType();
                         Class[] paramTypes = method.getParameterTypes();
+                        Parameter[] methodParameters = method.getParameters();
                         final String sqlStr = sqlIdOrSql;
                         int _pageIdx = -1;//有没有Page参数
                         int _mapParamIdx = -1;//查询参数是否用Map
                         int _objIdx = -1;
                         int _listIdx = -1;
+                        Map<String,Integer> namedParamIdxMap=new HashMap<>();
                         for (int i = 0; i < paramTypes.length; i++) {
-                            if (Page.class.isAssignableFrom(paramTypes[i])) {
+                            Class paramType=paramTypes[i];
+                            if (Page.class.isAssignableFrom(paramType)) {
                                 _pageIdx = i;
-                            } else if (Map.class.isAssignableFrom(paramTypes[i])) {
+                            } else if (Map.class.isAssignableFrom(paramType)) {
                                 _mapParamIdx = i;
-                            } else if (List.class.isAssignableFrom(paramTypes[i])) {
+                            } else if (List.class.isAssignableFrom(paramType)) {
                                 _listIdx = i;
                             } else {
                                 _objIdx = i;
                             }
+                            Param param= methodParameters[i].getAnnotation(Param.class);
+                            if(param!=null){
+                                String paramName=param.value();
+                                if(StringUtil.isBlank(paramName)){
+                                    paramName=methodParameters[i].getName();
+                                }
+                                namedParamIdxMap.put(paramName,i);
+                            }
+                        }
+                        boolean hasNamedParams=namedParamIdxMap.size()>0;
+                        if(hasNamedParams){
+                            _objIdx=-1;
+                            _mapParamIdx=-1;
                         }
                         switch (sqlType) {
                             case search:
@@ -188,6 +206,11 @@ public class MapperUtil {
                                     } else {
                                         invoker = (arg) -> {
                                             Map<String, Object> queryMap = mapParamIdx > -1 ? (Map<String, Object>) arg[mapParamIdx] : new HashMap<>();
+                                            if(hasNamedParams){
+                                                for(Map.Entry<String,Integer> e:namedParamIdxMap.entrySet()){
+                                                    queryMap.put(e.getKey(),arg[e.getValue()]);
+                                                }
+                                            }
                                             if (queryMap == null) {
                                                 queryMap = new HashMap<>();
                                             }
@@ -208,7 +231,6 @@ public class MapperUtil {
                                     int objIdx = _objIdx;
                                     Class entityType = getGenericType(method);//(Class) method.getGenericReturnType();
                                     boolean primitive = isPrimitive(entityType);
-                                    ;
                                     if (entityType == null || primitive) {
                                         entityType = Map.class;
                                     }
@@ -229,6 +251,11 @@ public class MapperUtil {
                                     } else {
                                         invoker = (arg) -> {
                                             Map<String, Object> queryMap = mapParamIdx > -1 ? (Map<String, Object>) arg[mapParamIdx] : new HashMap<>();
+                                            if(hasNamedParams){
+                                                for(Map.Entry<String,Integer> e:namedParamIdxMap.entrySet()){
+                                                    queryMap.put(e.getKey(),arg[e.getValue()]);
+                                                }
+                                            }
                                             if (queryMap == null) {
                                                 queryMap = new HashMap<>();
                                             }
@@ -248,14 +275,13 @@ public class MapperUtil {
                                             QueryExecutor queryExecutor = queryEntity == null
                                                     ? new QueryExecutor(sqlStr)
                                                     : new QueryExecutor(sqlStr, (Serializable) queryEntity);
-                                            boolean isPrimitive = false;
-                                            if (retType.isPrimitive() || String.class == retType || retType == Date.class) {
-                                                isPrimitive = true;
+                                            boolean isPrimitive = isPrimitive(retType);
+                                            if (isPrimitive) {
                                                 queryExecutor.resultType(Map.class);
                                             } else {
                                                 queryExecutor.resultType(retType);
                                             }
-                                            List result = dao.findTopByQuery(queryExecutor, 1).getRows();
+                                            List result = dao.findByQuery(queryExecutor).getRows();
                                             if (result == null || result.size() == 0) {
                                                 return null;
                                             }
@@ -267,18 +293,22 @@ public class MapperUtil {
 
                                         invoker = (arg) -> {
                                             Map<String, Object> queryMap = mapParamIdx > -1 ? (Map<String, Object>) arg[mapParamIdx] : new HashMap<>();
+                                            if(hasNamedParams){
+                                                for(Map.Entry<String,Integer> e:namedParamIdxMap.entrySet()){
+                                                    queryMap.put(e.getKey(),arg[e.getValue()]);
+                                                }
+                                            }
                                             if (queryMap == null) {
                                                 queryMap = new HashMap<>();
                                             }
                                             QueryExecutor queryExecutor = new QueryExecutor(sqlStr, queryMap);
-                                            boolean isPrimitive = false;
-                                            if (retType.isPrimitive() || String.class == retType || retType == Date.class) {
-                                                isPrimitive = true;
+                                            boolean isPrimitive = isPrimitive(retType);;
+                                            if (isPrimitive) {
                                                 queryExecutor.resultType(Map.class);
                                             } else {
                                                 queryExecutor.resultType(retType);
                                             }
-                                            List result = dao.findTopByQuery(queryExecutor, 1).getRows();
+                                            List result = dao.findByQuery(queryExecutor).getRows();
                                             if (result == null || result.size() == 0) {
                                                 return null;
                                             }
