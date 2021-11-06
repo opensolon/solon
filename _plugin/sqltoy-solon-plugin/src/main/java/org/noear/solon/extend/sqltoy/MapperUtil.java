@@ -275,9 +275,8 @@ public class MapperUtil {
                                             QueryExecutor queryExecutor = queryEntity == null
                                                     ? new QueryExecutor(sqlStr)
                                                     : new QueryExecutor(sqlStr, (Serializable) queryEntity);
-                                            boolean isPrimitive = false;
-                                            if (retType.isPrimitive() || String.class == retType || retType == Date.class) {
-                                                isPrimitive = true;
+                                            boolean isPrimitive = isPrimitive(retType);
+                                            if (isPrimitive) {
                                                 queryExecutor.resultType(Map.class);
                                             } else {
                                                 queryExecutor.resultType(retType);
@@ -303,9 +302,8 @@ public class MapperUtil {
                                                 queryMap = new HashMap<>();
                                             }
                                             QueryExecutor queryExecutor = new QueryExecutor(sqlStr, queryMap);
-                                            boolean isPrimitive = false;
-                                            if (retType.isPrimitive() || String.class == retType || retType == Date.class) {
-                                                isPrimitive = true;
+                                            boolean isPrimitive = isPrimitive(retType);;
+                                            if (isPrimitive) {
                                                 queryExecutor.resultType(Map.class);
                                             } else {
                                                 queryExecutor.resultType(retType);
