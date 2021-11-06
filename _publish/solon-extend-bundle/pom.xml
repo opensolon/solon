@@ -6,7 +6,7 @@
 
     <groupId>org.noear.bundle</groupId>
     <artifactId>solon-extend-bundle</artifactId>
-    <version>1.5.60</version>
+    <version>1.5.61</version>
     <packaging>pom</packaging>
 
 
@@ -21,6 +21,10 @@
     </properties>
 
     <modules>
+        <module>../../_extend/solon.cache</module>
+        <module>../../_extend/solon.cache.jedis</module>
+        <module>../../_extend/solon.cache.spymemcached</module>
+
         <module>../../_extend/solon.extend.aspect</module>
         <module>../../_extend/solon.extend.staticfiles</module>
 
