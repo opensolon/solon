@@ -21,8 +21,8 @@ public class HandlerJob implements Handler {
         String ip = ctx.realIp();
 
         if (Solon.cfg().isWhiteMode()) {
-            if (CloudClient.list().inListOfClientAndServerIp(ip)) {
-                ctx.output(ip + ",not is whitelist!");
+            if (CloudClient.list().inListOfClientAndServerIp(ip) == false) {
+                ctx.output(ip + ", not is whitelist!");
                 return;
             }
         }

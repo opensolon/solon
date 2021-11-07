@@ -25,7 +25,7 @@ public class HandlerStatus implements Handler {
 
             ctx.outputAsJson(ONode.stringify(rs));
         } else {
-            ctx.output((ip + ",not is whitelist!"));
+            ctx.output((ip + ", not is whitelist!"));
         }
     }
 

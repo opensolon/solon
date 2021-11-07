@@ -27,7 +27,7 @@ public class HandlerStop implements Handler {
             Solon.stop();
             return "OK";
         } else {
-            return (ip + ",not is whitelist!");
+            return (ip + ", not is whitelist!");
         }
     }
 
