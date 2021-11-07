@@ -22,7 +22,7 @@ public class HandlerJob implements Handler {
         if (CloudClient.list().inListOfClientAndServerIp(ip)) {
             handleDo(ctx, ctx.param("name"));
         } else {
-            ctx.output((ip + ",not is whitelist!"));
+            ctx.output(ip + ",not is whitelist!");
         }
     }
 

@@ -6,6 +6,7 @@ import org.noear.solon.core.Plugin;
 import org.noear.solon.logging.AppenderManager;
 import org.noear.solon.logging.LogOptions;
 import org.noear.solon.logging.event.Appender;
+import org.slf4j.MDC;
 
 import java.util.Properties;
 
@@ -40,6 +41,10 @@ public class XPluginImp implements Plugin {
 
         //init
         LogOptions.getLoggerLevel(null);
+
+        app.filter(-9, (ctx, chain) -> {
+            MDC.clear();
+        });
     }
 
     @Override
