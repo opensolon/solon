@@ -44,6 +44,7 @@ public class XPluginImp implements Plugin {
 
         app.filter(-9, (ctx, chain) -> {
             MDC.clear();
+            chain.doFilter(ctx);
         });
     }
 
