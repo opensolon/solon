@@ -1,5 +1,6 @@
 package org.noear.solon.cloud.extend.water.integration.http;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.extend.water.service.CloudJobServiceWaterImp;
@@ -19,11 +20,14 @@ public class HandlerJob implements Handler {
     public void handle(Context ctx) throws Throwable {
         String ip = ctx.realIp();
 
-        if (CloudClient.list().inListOfClientAndServerIp(ip)) {
-            handleDo(ctx, ctx.param("name"));
-        } else {
-            ctx.output(ip + ",not is whitelist!");
+        if (Solon.cfg().isWhiteMode()) {
+            if (CloudClient.list().inListOfClientAndServerIp(ip)) {
+                ctx.output(ip + ",not is whitelist!");
+                return;
+            }
         }
+
+        handleDo(ctx, ctx.param("name"));
     }
 
     private void handleDo(Context ctx, String name) {
