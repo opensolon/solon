@@ -23,6 +23,7 @@
         <module>_publish/nami-bundle</module>
         <module>_publish/socketd-bundle</module>
         <module>_publish/solon-plugin-bundle</module>
+        <module>_publish/solon-plugin-cloud-bundle</module>
         <module>_publish/solon-render-bundle</module>
         <module>_publish/solon-extend-bundle</module>
 
