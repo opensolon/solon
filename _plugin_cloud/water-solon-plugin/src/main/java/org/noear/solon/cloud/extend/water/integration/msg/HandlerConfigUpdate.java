@@ -20,7 +20,6 @@ public class HandlerConfigUpdate implements CloudEventHandler {
     public boolean handler(Event event) {
         String[] tag_keys = event.content().split(";");
 
-
         for (String tagKey : tag_keys) {
             String[] ss = tagKey.split(WaterProps.GROUP_SPLIT_MART);
 
