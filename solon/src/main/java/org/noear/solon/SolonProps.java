@@ -261,6 +261,11 @@ public final class SolonProps extends Props {
         if (url != null) {
             Properties props = Utils.loadProperties(url);
 
+            if (props == null) {
+                //说明 url 解析失败了!
+                return;
+            }
+
             for (Map.Entry kv : System.getProperties().entrySet()) {
                 if (kv.getKey() instanceof String) {
                     String key = (String) kv.getKey();
