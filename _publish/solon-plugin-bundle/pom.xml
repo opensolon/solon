@@ -6,7 +6,7 @@
 
     <groupId>org.noear.bundle</groupId>
     <artifactId>solon-plugin-bundle</artifactId>
-    <version>1.5.61</version>
+    <version>1.5.62</version>
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
@@ -34,7 +34,7 @@
 
         <module>../../_plugin/weed3-solon-plugin</module>
 
-<!--        <module>../../_plugin/sqltoy-solon-plugin</module>-->
+        <module>../../_plugin/sqltoy-solon-plugin</module>
 
         <module>../../_plugin/mybatis-solon-plugin</module>
         <module>../../_plugin/mybatis-sqlhelper-solon-plugin</module>
