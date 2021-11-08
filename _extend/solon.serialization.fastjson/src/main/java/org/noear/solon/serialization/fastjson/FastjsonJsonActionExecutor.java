@@ -7,6 +7,8 @@ import org.noear.solon.core.handle.ActionExecutorDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
 
+import java.lang.reflect.ParameterizedType;
+
 public class FastjsonJsonActionExecutor extends ActionExecutorDefault {
     private static final String label = "/json";
 
@@ -54,7 +56,12 @@ public class FastjsonJsonActionExecutor extends ActionExecutorDefault {
 
         if (bodyObj instanceof JSONArray) {
             JSONArray tmp = (JSONArray) bodyObj;
-            return tmp.toJavaList(pt);
+            //List<T> 类型转换
+            ParameterizedType gp= p.getGenericType();
+            if(gp!=null){
+                return tmp.toJavaList((Class) gp.getActualTypeArguments()[0]);
+            }
+            return tmp;
         }
 
         return bodyObj;
