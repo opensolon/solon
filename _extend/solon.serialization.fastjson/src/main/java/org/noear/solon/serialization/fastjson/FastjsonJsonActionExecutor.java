@@ -57,8 +57,8 @@ public class FastjsonJsonActionExecutor extends ActionExecutorDefault {
         if (bodyObj instanceof JSONArray) {
             JSONArray tmp = (JSONArray) bodyObj;
             //List<T> 类型转换
-            ParameterizedType gp= p.getGenericType();
-            if(gp!=null){
+            ParameterizedType gp = p.getGenericType();
+            if (gp != null) {
                 return tmp.toJavaList((Class) gp.getActualTypeArguments()[0]);
             }
             return tmp;

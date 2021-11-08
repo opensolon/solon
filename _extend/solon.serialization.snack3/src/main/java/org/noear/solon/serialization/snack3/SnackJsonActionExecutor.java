@@ -5,6 +5,8 @@ import org.noear.solon.core.handle.ActionExecutorDefault;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.wrap.ParamWrap;
 
+import java.lang.reflect.ParameterizedType;
+
 public class SnackJsonActionExecutor extends ActionExecutorDefault {
     private static final String label = "/json";
 
@@ -51,6 +53,12 @@ public class SnackJsonActionExecutor extends ActionExecutorDefault {
         }
 
         if (tmp.isArray()) {
+            //List<T> 类型转换
+            ParameterizedType gp = p.getGenericType();
+            if (gp != null) {
+                return tmp.toObjectList((Class) gp.getActualTypeArguments()[0]);
+            }
+
             return tmp.toObject(pt);
         }
 
