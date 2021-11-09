@@ -1,7 +1,8 @@
-package org.noear.solon.extend.health;
+package org.noear.solon.extend.health.integration;
 
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
+import org.noear.solon.extend.health.HealthHandler;
 
 /**
  * @author iYarnFog
