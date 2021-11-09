@@ -40,7 +40,7 @@ public class XPluginImp implements Plugin {
         }
 
         for (Detector detector : allDetectors) {
-            if (detectorNames.contains(detector.getName())) {
+            if (detectorNames.contains("*") || detectorNames.contains(detector.getName())) {
                 detector.start();
                 HealthChecker.addIndicator(detector.getName(), detector);
             }
