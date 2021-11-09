@@ -4,7 +4,7 @@ import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.NvMap;
 import org.noear.solon.core.PluginEntity;
 import org.noear.solon.core.Props;
-import org.noear.solon.core.util.ResourceScaner;
+import org.noear.solon.core.util.ScanUtil;
 
 import java.net.URL;
 import java.util.*;
@@ -291,7 +291,7 @@ public final class SolonProps extends Props {
     protected void plugsScan(List<ClassLoader> classLoaders) {
         for (ClassLoader classLoader : classLoaders) {
             //3.查找插件配置（如果出错，让它抛出异常）
-            ResourceScaner.scan(classLoader, "META-INF/solon", n -> n.endsWith(".properties") || n.endsWith(".yml"))
+            ScanUtil.scan(classLoader, "META-INF/solon", n -> n.endsWith(".properties") || n.endsWith(".yml"))
                     .stream()
                     .map(k -> Utils.getResource(classLoader, k))
                     .forEach(url -> plugsScanMapDo(classLoader, url));

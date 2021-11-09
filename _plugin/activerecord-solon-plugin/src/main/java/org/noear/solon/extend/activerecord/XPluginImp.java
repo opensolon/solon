@@ -10,7 +10,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.util.ResourceScaner;
+import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.extend.activerecord.annotation.Table;
 
 import javax.sql.DataSource;
@@ -61,7 +61,7 @@ public class XPluginImp implements Plugin {
 
         arp.getEngine().setSourceFactory(new ClassPathSourceFactory());
 
-        ResourceScaner.scan("sql", n -> n.endsWith(".sql"))
+        ScanUtil.scan("sql", n -> n.endsWith(".sql"))
                 .forEach(url -> {
                     arp.addSqlTemplate(url);
                 });

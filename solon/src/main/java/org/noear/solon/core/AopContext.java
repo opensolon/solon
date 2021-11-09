@@ -10,13 +10,11 @@ import org.noear.solon.core.message.Listener;
 import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.wrap.*;
 import org.noear.solon.ext.BiConsumerEx;
-import org.noear.solon.core.util.ResourceScaner;
+import org.noear.solon.core.util.ScanUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -276,7 +274,7 @@ public class AopContext extends BeanContainer {
         String dir = basePackage.replace('.', '/');
 
         //扫描类文件并处理（采用两段式加载，可以部分bean先处理；剩下的为第二段处理）
-        ResourceScaner.scan(classLoader, dir, n -> n.endsWith(".class"))
+        ScanUtil.scan(classLoader, dir, n -> n.endsWith(".class"))
                 .stream()
                 .sorted(Comparator.comparing(s -> s.length()))
                 .forEach(name -> {

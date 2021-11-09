@@ -1,40 +1,43 @@
-package org.noear.solon.core.util;
+package org.noear.solon.core;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonProps;
 import org.noear.solon.Utils;
-import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.PrintUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Enumeration;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Stream;
 
 /**
- * 资源扫描器（用于扫描插件配置等资源...）
+ * 资源扫描器默认实现
  *
  * @author noear
- * @author 馒头虫/瓢虫
- * @since 1.0
- * */
-public class ResourceScaner {
+ * @since 1.5
+ */
+public class ResourceScannerImpl implements ResourceScanner {
+
     /**
      * 扫描路径下的的资源（path 扫描路径）
      *
-     * @param path   路径
-     * @param filter 过滤条件
+     * @param classLoader 类加载器
+     * @param path        路径
+     * @param filter      过滤条件
      */
-    public static Set<String> scan(String path, Predicate<String> filter) {
-        return scan(JarClassLoader.global(), path, filter);
-    }
-
-    public static Set<String> scan(ClassLoader classLoader, String path, Predicate<String> filter) {
+    @Override
+    public Set<String> scan(ClassLoader classLoader, String path, Predicate<String> filter) {
         Set<String> urls = new LinkedHashSet<>();
 
         if (classLoader == null) {
@@ -61,9 +64,7 @@ public class ResourceScaner {
                     doScanByJar(jar, path, filter, urls);
                 } else if ("resource".equals(p)) {
                     //3.3 找到resource(in graalvm  native image)
-                    if (Solon.cfg() != null) {
-                        doScanByResource(path, filter, urls);
-                    }
+                    doScanByResource(path, filter, urls);
                 }
             }
         } catch (IOException ex) {
@@ -84,7 +85,7 @@ public class ResourceScaner {
      * @param path   路径
      * @param filter 过滤条件
      */
-    private static void doScanByFile(File dir, String path, Predicate<String> filter, Set<String> urls) {
+    protected void doScanByFile(File dir, String path, Predicate<String> filter, Set<String> urls) {
         // 如果不存在或者 也不是目录就直接返回
         if (!dir.exists() || !dir.isDirectory()) {
             return;
@@ -117,7 +118,7 @@ public class ResourceScaner {
      * @param path   路径
      * @param filter 过滤条件
      */
-    private static void doScanByJar(JarFile jar, String path, Predicate<String> filter, Set<String> urls) {
+    protected void doScanByJar(JarFile jar, String path, Predicate<String> filter, Set<String> urls) {
         Enumeration<JarEntry> entry = jar.entries();
 
         while (entry.hasMoreElements()) {
@@ -147,22 +148,23 @@ public class ResourceScaner {
      * @param path   路径
      * @param filter 过滤条件
      */
-    private static void doScanByResource(String path, Predicate<String> filter, Set<String> urls) {
-        String sc = Solon.cfg().get("solon.scan");
+    protected void doScanByResource(String path, Predicate<String> filter, Set<String> urls) {
+        String root = "classes/" + path;
+        String rootReg = "classes[\\\\/]";
 
-        if (sc != null && !"".equals(sc)) {
-            String[] ss = sc.split(",");
-
-            for (String p : ss) {
-                p = p.trim();
-
-                if (!p.startsWith(path) || !filter.test(p)) {
-                    // 非指定包路径， 非目标后缀
-                    continue;
+        try (Stream<Path> paths = Files.walk(Paths.get(root))) {
+            paths.filter(Files::isRegularFile).forEach((Path p) -> {
+                String filepath = p.toString();
+                filepath = filepath.trim().replaceAll(rootReg, "").replaceAll("[\\\\/]", "/");
+                //  非目标后缀 过滤掉
+                if (filter.test(filepath)) {
+                    urls.add(filepath);
                 }
+            });
 
-                urls.add(p);
-            }
+        } catch (IOException e) {
+            EventBus.push(e);
         }
     }
 }
+

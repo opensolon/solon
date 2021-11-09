@@ -15,7 +15,7 @@ import org.noear.solon.Utils;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.util.ResourceScaner;
+import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.extend.mybatis.SqlAdapter;
 
 import javax.sql.DataSource;
@@ -210,7 +210,7 @@ public class SqlAdapterDefault implements SqlAdapter {
     }
 
     private void mapperScanDo(SqlSessionProxy proxy, String dir) {
-        ResourceScaner.scan(dir, n -> n.endsWith(".class"))
+        ScanUtil.scan(dir, n -> n.endsWith(".class"))
                 .stream()
                 .map(name -> {
                     String className = name.substring(0, name.length() - 6);
