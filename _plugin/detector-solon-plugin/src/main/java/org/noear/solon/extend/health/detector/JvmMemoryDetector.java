@@ -1,6 +1,6 @@
 package org.noear.solon.extend.health.detector;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -17,7 +17,8 @@ public class JvmMemoryDetector extends AbstractDetector {
 
     @Override
     public Map<String, Object> getInfo() {
-        Map<String, Object> info = new HashMap();
+        Map<String, Object> info = new LinkedHashMap<>();
+
         Runtime run = Runtime.getRuntime();
 
         long max = run.maxMemory();

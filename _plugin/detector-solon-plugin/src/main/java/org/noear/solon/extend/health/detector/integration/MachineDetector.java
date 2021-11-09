@@ -1,53 +1,63 @@
 package org.noear.solon.extend.health.detector.integration;
 
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
-import org.noear.solon.Utils;
-import org.noear.solon.core.Plugin;
-import org.noear.solon.extend.health.HealthChecker;
 import org.noear.solon.extend.health.detector.*;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
+ * 健康探测器
+ *
  * @author noear
- * @since 1.5
  */
-public class XPluginImp implements Plugin {
+public class MachineDetector implements Detector {
     private static final Detector[] allDetectors = new Detector[]{
             new CpuDetector(),
             new JvmMemoryDetector(),
             new OsDetector(),
             new QpsDetector(),
             new MemoryDetector(),
-            new DiskDetector(),
+            new DiskDetector()
     };
 
+    private Set<Detector> detectors;
+
     @Override
-    public void start(SolonApp app) {
-        String detectorNamesStr = Solon.cfg().get("solon.Health.detector");
-        if (Utils.isEmpty(detectorNamesStr)) {
+    public void start() {
+        if(detectors == null){
             return;
         }
 
+        String detectorNamesStr = Solon.cfg().get("solon.Health.detector");
         Set<String> detectorNames = new HashSet<>(Arrays.asList(detectorNamesStr.split(",")));
 
         if (detectorNames.size() == 0) {
             return;
         }
 
+        detectors = new HashSet<>(detectorNames.size());
+
         for (Detector detector : allDetectors) {
             if (detectorNames.contains("*") || detectorNames.contains(detector.getName())) {
                 detector.start();
-                HealthChecker.addIndicator(detector.getName(), detector);
+                detectors.add(detector);
             }
         }
+    }
 
+    @Override
+    public String getName() {
+        return "machine";
+    }
 
-//        MachineDetector machineDetector = new MachineDetector();
-//        machineDetector.start();
-//        HealthChecker.addIndicator(machineDetector.getName(), machineDetector);
+    @Override
+    public Map<String, Object> getInfo() {
+        Map<String, Object> info = new LinkedHashMap<>();
+
+        for (Detector detector : detectors) {
+            info.put(detector.getName(), detector.getInfo());
+        }
+
+        return info;
     }
 }

@@ -1,6 +1,6 @@
 package org.noear.solon.extend.health.detector;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -20,7 +20,7 @@ public class OsDetector extends AbstractDetector {
 
     @Override
     public Map<String, Object> getInfo() {
-        Map<String, Object> info = new HashMap<>();
+        Map<String, Object> info = new LinkedHashMap<>();
         info.put("name", osName);
         info.put("arch", arch);
         info.put("version", version);

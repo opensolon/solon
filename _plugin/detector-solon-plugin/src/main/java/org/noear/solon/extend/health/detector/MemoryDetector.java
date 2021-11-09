@@ -3,7 +3,7 @@ package org.noear.solon.extend.health.detector;
 import com.sun.management.OperatingSystemMXBean;
 
 import java.lang.management.ManagementFactory;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -20,7 +20,8 @@ public class MemoryDetector extends AbstractDetector {
 
     @Override
     public Map<String, Object> getInfo() {
-        Map<String, Object> info = new HashMap<>();
+        Map<String, Object> info = new LinkedHashMap<>();
+
         OperatingSystemMXBean osmxb = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
 
         long total = osmxb.getTotalPhysicalMemorySize();

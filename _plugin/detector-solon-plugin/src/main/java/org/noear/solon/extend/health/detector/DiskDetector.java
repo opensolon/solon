@@ -4,6 +4,7 @@ import org.noear.solon.core.event.EventBus;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -25,7 +26,9 @@ public class DiskDetector extends AbstractDetector {
 
     @Override
     public Map<String, Object> getInfo() {
-        Map<String, Object> info = new HashMap<>();
+        Map<String, Object> details = new LinkedHashMap<>();
+
+
         long totals = 0;
         long totalUsed = 0;
         if (osName.indexOf("windows") > -1) {//is windows
@@ -44,7 +47,7 @@ public class DiskDetector extends AbstractDetector {
                 disk.put("used", formatByteSize(used));
                 disk.put("ratio", ratio);
 
-                info.put(file.getPath(), disk);
+                details.put(file.getPath(), disk);
             }
         } else {
             try {
@@ -63,20 +66,23 @@ public class DiskDetector extends AbstractDetector {
                     diskInfo.put("free", formatByteSize(free));
                     diskInfo.put("used", formatByteSize(used));
                     diskInfo.put("ratio", ratio);
-                    info.put(disk[5], diskInfo);
+                    details.put(disk[5], diskInfo);
 
                     totals += total;
                     totalUsed += used;
                 }
             } catch (Exception ex) {
                 EventBus.push(ex);
-                info.put("error", "Get Disk Failed:" + ex.getMessage());
+                details.put("error", "Get Disk Failed:" + ex.getMessage());
             }
 
         }
 
+        Map<String, Object> info = new LinkedHashMap<>();
+
         info.put("total", formatByteSize(totals));
         info.put("used", formatByteSize(totalUsed));
+        info.put("details", details);
 
         return info;
     }

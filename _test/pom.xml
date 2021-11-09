@@ -38,6 +38,11 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>detector-solon-plugin</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon.extend.cors</artifactId>
         </dependency>
 

@@ -2,7 +2,7 @@ package org.noear.solon.extend.health.detector;
 
 import org.noear.solon.core.event.EventBus;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -24,7 +24,7 @@ public class CpuDetector extends AbstractDetector {
 
     @Override
     public Map<String, Object> getInfo() {
-        Map<String,Object> info=new HashMap<>();
+        Map<String,Object> info=new LinkedHashMap<>();
         try {
 
             if (osName.indexOf("windows")!=-1) {
@@ -82,6 +82,7 @@ public class CpuDetector extends AbstractDetector {
             detectorInfo.put("ratio",(float)busytime * 100.0F / (float)(busytime + idletime));
         }
     }
+
     private void readCpuRatioForLinux(Map<String,Object> detectorInfo) throws Exception {
        /** String text = this.execute(new String[]{"/bin/sh", "-c", "top -b -n 2 -d 0.1 | grep 'Cpu(s)'"});
         List<String[]> ratios = this.matcher(topPattern, text);
@@ -94,6 +95,4 @@ public class CpuDetector extends AbstractDetector {
        String text=this.execute("/bin/sh","-c","ps -A -o %mem | awk '{s+=$1} END {print s}'");
         detectorInfo.put("ratio",Float.valueOf(text));
     }
-
-
 }

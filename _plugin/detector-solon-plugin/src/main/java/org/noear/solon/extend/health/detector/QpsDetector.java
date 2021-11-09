@@ -5,7 +5,7 @@ import com.wujiuye.flow.FlowType;
 import com.wujiuye.flow.Flower;
 import org.noear.solon.Solon;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -45,7 +45,8 @@ public class QpsDetector extends AbstractDetector {
 
     @Override
     public Map<String, Object> getInfo() {
-        Map<String, Object> info = new HashMap<>();
+        Map<String, Object> info = new LinkedHashMap<>();
+
         Flower flower = flowHelper.getFlow(FlowType.Second);
 
         info.put("total", flower.total()); //总请求数
