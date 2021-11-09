@@ -24,18 +24,15 @@
             <artifactId>solon.cloud</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>detector-solon-plugin</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.ecwid.consul</groupId>
             <artifactId>consul-api</artifactId>
             <version>${consul.ver}</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.github.wujiuye/qps-helper -->
-        <dependency>
-            <groupId>com.github.wujiuye</groupId>
-            <artifactId>qps-helper</artifactId>
-            <version>1.1.1-RELEASE</version>
         </dependency>
 
         <dependency>
@@ -49,11 +46,13 @@
             <artifactId>nami.channel.http.okhttp</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>nami.coder.snack3</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-api</artifactId>

@@ -564,6 +564,12 @@
 
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>detector-solon-plugin</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>consul-solon-plugin</artifactId>
                 <version>${solon.ver}</version>
             </dependency>

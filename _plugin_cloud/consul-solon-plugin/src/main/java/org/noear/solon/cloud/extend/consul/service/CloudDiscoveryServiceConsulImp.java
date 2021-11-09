@@ -11,7 +11,6 @@ import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
 import org.noear.solon.cloud.service.CloudDiscoveryService;
-import org.noear.solon.cloud.extend.consul.detector.*;
 import org.noear.solon.cloud.utils.IntervalUtils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.extend.health.HealthHandler;
@@ -33,7 +32,6 @@ public class CloudDiscoveryServiceConsulImp extends TimerTask implements CloudDi
     private long refreshInterval;
 
     private String healthCheckInterval;
-//    private String healthCheckPath;
     private List<String> tags;
 
     Map<String,Discovery> discoveryMap = new HashMap<>();
@@ -47,7 +45,6 @@ public class CloudDiscoveryServiceConsulImp extends TimerTask implements CloudDi
         refreshInterval = IntervalUtils.getInterval(cloudProps.getDiscoveryRefreshInterval("5s"));
 
         healthCheckInterval = cloudProps.getDiscoveryHealthCheckInterval("5s");
-//        healthCheckPath = cloudProps.getDiscoveryHealthCheckPath();
 
         String tags_str = cloudProps.getDiscoveryTags();
         if(Utils.isNotEmpty(tags_str)){
@@ -113,13 +110,6 @@ public class CloudDiscoveryServiceConsulImp extends TimerTask implements CloudDi
     private void registerLocalCheck(Instance instance, NewService newService) {
         if (Utils.isNotEmpty(healthCheckInterval)) {
             if ("http".equals(instance.protocol())) {
-
-                //1.添加检测器
-                //
-                HealthDetector.start(cloudProps);
-
-                //2.添加检测
-                //
                 String checkUrl = "http://" + instance.address();
                 if (HealthHandler.HANDLER_PATH.startsWith("/")) {
                     checkUrl = checkUrl + HealthHandler.HANDLER_PATH;
