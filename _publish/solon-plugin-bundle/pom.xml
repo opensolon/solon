@@ -23,6 +23,8 @@
     <modules>
         <module>../../_plugin/solon-springboot-starter</module>
 
+        <module>../../_plugin/detector-solon-plugin</module>
+
         <module>../../_plugin/beetlsql-solon-plugin</module>
 
         <module>../../_plugin/cron4j-solon-plugin</module>

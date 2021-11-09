@@ -1,4 +1,4 @@
-package org.noear.solon.cloud.extend.consul.detector;
+package org.noear.solon.extend.health.detector;
 
 import org.noear.solon.Utils;
 
