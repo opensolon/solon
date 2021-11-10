@@ -32,6 +32,7 @@ public class QpsDetector extends AbstractDetector {
                 chain.doFilter(ctx);
             } catch (Throwable e) {
                 flowHelper.incrException();
+                throw e;
             } finally {
                 flowHelper.incrSuccess(System.currentTimeMillis() - start);
             }

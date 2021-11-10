@@ -35,7 +35,7 @@ public class SmartHttpContextHandler extends HttpServerHandler {
 
             Solon.global().tryHandle(context);
 
-            if (context.getHandled() && context.status() != 404) {
+            if (context.getHandled() && context.status() > 0) {
                 context.commit();
             } else {
                 context.status(404);

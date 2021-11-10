@@ -42,7 +42,7 @@ public class JlHttpContextHandler implements HTTPServer.ContextHandler {
 
         Solon.global().tryHandle(context);
 
-        if (context.getHandled() && context.status() != 404) {
+        if (context.getHandled() && context.status() > 0) {
             context.commit();
 
             return 0;
