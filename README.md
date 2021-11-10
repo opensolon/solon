@@ -25,7 +25,7 @@
 目前已适配了一系列的插件用于支持这一标准：[《Solon Cloud 分布式服务开发套件清单，感觉受与 Spring Cloud 的不同》](https://my.oschina.net/noear/blog/5039169)
 
 其中，[Water 项目](https://gitee.com/noear/water) 是一站式支持 Solon Cloud 系列标准的支撑平台。
-功能约等于：consul + rabbitmq + elk + prometheus + aws lambda + xxxl-job 等一些别的功能，并有机结合在一起。一直与 Solon 项目伴生成长。
+功能约等于：consul + rabbitmq + elk + prometheus + aws lambda + quartz 等一些别的功能，并有机结合在一起。一直与 Solon 项目伴生成长。
 
 
 ---
