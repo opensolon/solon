@@ -12,7 +12,7 @@ import org.noear.solon.extend.staticfiles.repository.FileStaticRepository;
  * @author noear
  */
 @Component
-public class InitPlugin implements Plugin {
+public class InitPluginDemo implements Plugin {
     @Override
     public void start(SolonApp app) {
         //添加静态目录印射

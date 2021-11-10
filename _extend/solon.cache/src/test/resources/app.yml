@@ -1,0 +1,7 @@
+
+
+cache1:
+  driverType: "redis" #通过类型配置，自动切换缓存服务
+  server: "localhost:6379"
+  password: "123456"
+  db: 9
