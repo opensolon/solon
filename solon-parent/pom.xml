@@ -213,13 +213,6 @@
                 <artifactId>solon.boot.socketd.websocket</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
-
-            <!--            <dependency>-->
-            <!--                <groupId>org.noear</groupId>-->
-            <!--                <artifactId>solon.boot.jdkudp</artifactId>-->
-            <!--                <version>${solon.ver}</version>-->
-            <!--            </dependency>-->
-
             <dependency>
                 <groupId>org.noear</groupId>
                 <artifactId>solon.extend.aspect</artifactId>
