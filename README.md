@@ -27,6 +27,9 @@
 其中，[Water 项目](https://gitee.com/noear/water) 是一站式支持 Solon Cloud 系列标准的支撑平台。
 功能约等于：consul + rabbitmq + elk + prometheus + aws lambda + xxxl-job 等一些别的功能，并有机结合在一起。一直与 Solon 项目伴生成长。
 
+
+---
+
 ### Hello world：
 
 ```java
