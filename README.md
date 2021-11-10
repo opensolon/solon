@@ -16,13 +16,13 @@
 * 自建 IOC & AOP容器，支持REST API、MVC、Job、Remoting、MicoService等开发
 * 集合 Handler + Context 和 Listener + Message 两种架构模式；强调插件式扩展；适应不同的应用场景
 * 插件可扩展可切换：启动插件，扩展插件，序列化插件，数据插件，会话状态插件，视图插件(可共存) 等...
-* 使用感觉与 Spring Boot 近似，迁移成本低
+* 使用感觉与 Spring Boot 近似，迁移成本低 [《Solon 特性简集，相较于 Springboot 有什么区别？》](https://my.oschina.net/noear/blog/4863844)
 
 
 ## Solon Cloud
 
-Solon Cloud 是一系列的接口标准和配置规范，相当于DDD模式里的防腐层概念。是 Solon 的微服务架构模式开发解决方案。
-目前已适配了一系列的插件用于支持这一标标：[《Solon Cloud 分布式服务开发套件清单，感觉受与 Spring Cloud 的不同》](https://my.oschina.net/noear/blog/5039169)
+是一系列分布式开发的接口标准和配置规范，相当于DDD模式里的防腐层概念。是 Solon 的微服务架构模式开发解决方案。
+目前已适配了一系列的插件用于支持这一标准：[《Solon Cloud 分布式服务开发套件清单，感觉受与 Spring Cloud 的不同》](https://my.oschina.net/noear/blog/5039169)
 
 其中，Water 项目（[https://gitee.com/noear/water](https://gitee.com/noear/water)），是一站式支持 Solon Cloud 系列接口的支撑平台。
 Water 约等于：consul + rabbitmq + elk + prometheus + aws lambda + xxxl-job 等一些别的功能，并有机结合在一起。
@@ -94,8 +94,6 @@ public class App implements HelloService{
 
 ### 快速了解Solon的材料：
 
-##### [《Solon 特性简集，相较于 Springboot 有什么区别？》](https://my.oschina.net/noear/blog/4863844)
-##### [《Solon Cloud 分布式服务开发套件清单，感觉受与 Spring Cloud 的不同》](https://my.oschina.net/noear/blog/5039169)
 ##### [《Solon 的想法与架构笔记》](https://my.oschina.net/noear/blog/4980834)
 ##### [《Solon 生态插件清单》](https://my.oschina.net/noear/blog/5053423)
 
