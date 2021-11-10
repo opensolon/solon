@@ -16,7 +16,7 @@
 * 自建 IOC & AOP容器，支持REST API、MVC、Job、Remoting、MicoService等开发
 * 集合 Handler + Context 和 Listener + Message 两种架构模式；强调插件式扩展；适应不同的应用场景
 * 插件可扩展可切换：启动插件，扩展插件，序列化插件，数据插件，会话状态插件，视图插件(可共存) 等...
-* 使用感觉与 Spring Boot 近似，迁移成本低 [《Solon 特性简集，相较于 Springboot 有什么区别？》](https://my.oschina.net/noear/blog/4863844)
+* 使用感觉与 Spring Boot 近似，迁移成本低： [《Solon 特性简集，相较于 Springboot 有什么区别？》](https://my.oschina.net/noear/blog/4863844)
 
 
 # Solon Cloud
