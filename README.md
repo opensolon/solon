@@ -92,7 +92,7 @@ public class App implements HelloService{
 | org.noear:solon-rpc | solon-api + nami；快速开发RPC应用 |
 | org.noear:solon-cloud | solon-rpc + consul；快速开发微服务应用 |
 
-### 快速了解Solon的材料：
+### 快速了解 Solon 架构的材料：
 
 ##### [《Solon 的想法与架构笔记》](https://my.oschina.net/noear/blog/4980834)
 ##### [《Solon 生态插件清单》](https://my.oschina.net/noear/blog/5053423)
