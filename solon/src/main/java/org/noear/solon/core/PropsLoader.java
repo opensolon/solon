@@ -15,29 +15,29 @@ import java.util.Properties;
  * 通过 globalSet 可进行重写
  *
  * @see Utils#loadProperties(URL)
- * @see org.noear.solon.extend.properties.yaml.PropertiesLoader
  * @author noear
  * @since 1.0
  * */
 public class PropsLoader {
-    private static PropsLoader global = new PropsLoader();
+    private static PropsLoader global;
     public static PropsLoader global() {
         return global;
     }
+
     public static void globalSet(PropsLoader instance) {
         if(instance != null) {
             PropsLoader.global = instance;
         }
     }
 
-
     static {
         //默认的扩展加载器
         //
-        String loader = "org.noear.solon.extend.properties.yaml.PropertiesLoader";
+        PropsLoader tmp = Utils.newInstance("org.noear.solon.extend.impl.PropsLoaderExt");
 
-        PropsLoader tmp = Utils.newInstance(loader);
-        if (tmp != null) {
+        if (tmp == null) {
+            global = new PropsLoader();
+        } else {
             global = tmp;
         }
     }

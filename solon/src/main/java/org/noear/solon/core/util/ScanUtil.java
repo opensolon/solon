@@ -1,8 +1,8 @@
 package org.noear.solon.core.util;
 
+import org.noear.solon.Utils;
 import org.noear.solon.core.JarClassLoader;
 import org.noear.solon.core.ResourceScanner;
-import org.noear.solon.core.ResourceScannerDefault;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -15,7 +15,17 @@ import java.util.function.Predicate;
  * @since 1.0
  * */
 public class ScanUtil {
-    static ResourceScanner scanner = new ResourceScannerDefault();
+    static ResourceScanner scanner;
+
+    static {
+        ResourceScanner ext = Utils.newInstance("org.noear.solon.extend.impl.ResourceScannerExt");
+
+        if (ext == null) {
+            scanner = new ResourceScanner();
+        } else {
+            scanner = ext;
+        }
+    }
 
     /**
      * 设置扫描器

@@ -328,7 +328,6 @@ public class Utils {
                 return newInstance(clz, prop);
             }
         } catch (Exception ex) {
-            EventBus.push(ex);
             return null;
         }
     }

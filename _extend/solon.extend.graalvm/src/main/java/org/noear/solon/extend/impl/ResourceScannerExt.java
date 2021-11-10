@@ -1,6 +1,6 @@
-package org.noear.solon.extend.graalvm;
+package org.noear.solon.extend.impl;
 
-import org.noear.solon.core.ResourceScannerDefault;
+import org.noear.solon.core.ResourceScanner;
 import org.noear.solon.core.event.EventBus;
 
 import java.io.IOException;
@@ -13,12 +13,12 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
- * 原生资源扫描器
+ * 原生资源扫描器（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
  *
  * @author noear
  * @since 1.5
  */
-public class NativeResourceScanner extends ResourceScannerDefault {
+public class ResourceScannerExt extends ResourceScanner {
 
     @Override
     protected void scanDo(URL url, String path, Predicate<String> filter, Set<String> urls) throws IOException {

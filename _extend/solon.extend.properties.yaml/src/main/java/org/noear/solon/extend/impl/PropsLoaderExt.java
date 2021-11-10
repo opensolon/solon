@@ -1,7 +1,9 @@
-package org.noear.solon.extend.properties.yaml;
+package org.noear.solon.extend.impl;
 
 import org.noear.solon.core.PropsLoader;
 import org.noear.solon.core.util.PrintUtil;
+import org.noear.solon.extend.properties.yaml.PropertiesJson;
+import org.noear.solon.extend.properties.yaml.PropertiesYaml;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,10 +11,13 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.Properties;
 
-public class PropertiesLoader extends PropsLoader {
-
-    public static final PropertiesLoader g = new PropertiesLoader();
-
+/**
+ * 属性加载器（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
+ *
+ * @author noear
+ * @since 1.5
+ */
+public class PropsLoaderExt extends PropsLoader {
 
     @Override
     public boolean isSupport(String suffix) {
