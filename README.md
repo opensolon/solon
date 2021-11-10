@@ -3,7 +3,7 @@
 
 ` QQ交流群：22200020 `
 
-# Solon for java
+## Solon
 
 另一个，轻量的 Java 基础开发框架。**更快、更小、更自由！**
 
@@ -18,6 +18,12 @@
 * 插件可扩展可切换：启动插件，扩展插件，序列化插件，数据插件，会话状态插件，视图插件(可共存) 等...
 * 使用感觉与 Spring Boot 近似，迁移成本低
 
+
+## Solon Cloud
+
+Solon Cloud 是一系列的接口标准和配置规范，相当于DDD模式里的防腐层概念。是 Solon 的微服务架构模式开发解决方案。
+
+Water 项目（[https://gitee.com/noear/water](https://gitee.com/noear/water)），是 Solon Cloud 接口标准的支掌平台。
 
 ### Hello world：
 
