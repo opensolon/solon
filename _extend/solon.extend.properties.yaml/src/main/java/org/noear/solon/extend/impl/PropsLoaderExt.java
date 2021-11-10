@@ -12,7 +12,7 @@ import java.net.URL;
 import java.util.Properties;
 
 /**
- * 属性加载器（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
+ * 属性加载器-静态扩展实现（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
  *
  * @author noear
  * @since 1.5

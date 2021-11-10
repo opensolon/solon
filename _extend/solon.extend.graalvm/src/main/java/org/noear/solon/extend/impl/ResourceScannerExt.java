@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 /**
- * 原生资源扫描器（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
+ * 资源扫描器-静态扩展实现（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
  *
  * @author noear
  * @since 1.5
