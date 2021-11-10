@@ -24,6 +24,7 @@
 Solon Cloud 是一系列的接口标准和配置规范，相当于DDD模式里的防腐层概念。是 Solon 的微服务架构模式开发解决方案。
 
 Water 项目（[https://gitee.com/noear/water](https://gitee.com/noear/water)），是 Solon Cloud 接口标准的支掌平台。
+Water 约等于：consul + rabbitmq + elk + prometheus + faas 等，并有机结合在一起。
 
 ### Hello world：
 
