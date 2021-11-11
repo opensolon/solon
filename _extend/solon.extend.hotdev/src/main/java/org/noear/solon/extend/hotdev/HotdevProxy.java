@@ -1,6 +1,8 @@
 package org.noear.solon.extend.hotdev;
 
 import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
+import org.noear.solon.ext.ConsumerEx;
 
 /**
  * 热开发代理，用于操控Solon的启停
@@ -12,8 +14,11 @@ import org.noear.solon.Solon;
  */
 public class HotdevProxy {
 
-    public static void start(String source, String[] args) throws ClassNotFoundException {
-        Solon.start(Class.forName(source), args);
+    /**
+     * 启动服务
+     */
+    public static void start(String source, String[] args, ConsumerEx<SolonApp> initialize) throws ClassNotFoundException {
+        Solon.start(Class.forName(source), args, initialize);
     }
 
     public static void stop() {

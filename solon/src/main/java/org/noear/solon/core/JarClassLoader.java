@@ -30,10 +30,25 @@ public class JarClassLoader extends URLClassLoader {
         }
     }
 
+    /**
+     * 获取全局实例
+     * */
     public static JarClassLoader global() {
         return global;
     }
 
+    /**
+     * 设置全局实例
+     * */
+    public static void globalSet(JarClassLoader instance) {
+        if (instance != null) {
+            global = instance;
+        }
+    }
+
+    /**
+     * 加载 jar 文件
+     * */
     public static JarClassLoader loadJar(URL url) {
         JarClassLoader loader = new JarClassLoader();
         loader.addJar(url);
@@ -41,6 +56,9 @@ public class JarClassLoader extends URLClassLoader {
         return loader;
     }
 
+    /**
+     * 加载文件或目录
+     * */
     public static JarClassLoader loadJar(File fileOrDir) {
         JarClassLoader loader = new JarClassLoader();
         loader.addJar(fileOrDir);
@@ -64,6 +82,14 @@ public class JarClassLoader extends URLClassLoader {
      * */
     public JarClassLoader(ClassLoader parent) {
         super(new URL[]{}, parent);
+    }
+
+    /**
+     * @param urls 资源组
+     * @param parent 父加载器
+     * */
+    public JarClassLoader(URL[] urls ,ClassLoader parent) {
+        super(urls, parent);
     }
 
 

@@ -1,9 +1,12 @@
 package org.noear.solon.extend.hotdev;
 
 
+import org.noear.solon.SolonApp;
+import org.noear.solon.core.JarClassLoader;
+import org.noear.solon.ext.ConsumerEx;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URLClassLoader;
 
 /**
  * 调试模式
@@ -12,29 +15,48 @@ import java.net.URLClassLoader;
  * @since 1.5
  * */
 public class Debugger {
-    private static URLClassLoader baseLoader;
+    private static JarClassLoader baseLoader;
+    private static Class hotdevProxy;
+
     private static String[] _args;
     private static String _source;
-    private static Class helper;
+    private static ConsumerEx<SolonApp> _initialize;
+
 
     static {
-        baseLoader = (URLClassLoader) Thread.currentThread().getContextClassLoader();
+        baseLoader = JarClassLoader.global();
     }
 
+    /**
+     * 启动
+     */
     public static void start(Class source, String[] args) {
+        start(source, args, null);
+    }
+
+    /**
+     * 启动
+     */
+    public static void start(Class source, String[] args, ConsumerEx<SolonApp> initialize) {
+        _initialize = initialize;
         _args = args;
         _source = source.getName();
+
         start0();
+
         new HotdevWatcher(null, () -> restart()).start();
     }
 
     private static void start0() {
-        ClassLoader classLoader = new URLClassLoader(baseLoader.getURLs(), baseLoader.getParent());
+        JarClassLoader classLoader = new JarClassLoader(baseLoader.getURLs(), baseLoader.getParent());
         Thread.currentThread().setContextClassLoader(classLoader);
+        JarClassLoader.globalSet(classLoader);
+
         try {
-            helper = classLoader.loadClass(HotdevProxy.class.getName());
-            Method method = helper.getDeclaredMethod("start", String.class, String[].class);
-            method.invoke(helper, _source, _args);
+            hotdevProxy = classLoader.loadClass(HotdevProxy.class.getName());
+
+            Method method = hotdevProxy.getDeclaredMethod("start", String.class, String[].class);
+            method.invoke(hotdevProxy, _source, _args, _initialize);
 
         } catch (ClassNotFoundException | NoSuchMethodException e) {
             e.printStackTrace();
@@ -45,14 +67,17 @@ public class Debugger {
         }
     }
 
+    /**
+     * 停止
+     */
     private static void stop() {
-        if (helper == null) {
+        if (hotdevProxy == null) {
             return;
         }
 
         try {
-            Method stop = helper.getDeclaredMethod("stop");
-            stop.invoke(helper);
+            Method stop = hotdevProxy.getDeclaredMethod("stop");
+            stop.invoke(hotdevProxy);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
@@ -62,6 +87,9 @@ public class Debugger {
         }
     }
 
+    /**
+     * 重启
+     */
     public static void restart() {
         stop();
         start0();
