@@ -225,6 +225,11 @@
             </dependency>
             <dependency>
                 <groupId>org.noear</groupId>
+                <artifactId>solon.extend.hotdev</artifactId>
+                <version>${solon.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.noear</groupId>
                 <artifactId>solon.validation</artifactId>
                 <version>${solon.ver}</version>
             </dependency>
