@@ -5,7 +5,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * 热开发 - 监视器
+ * 热开发 - 监视器,只监视了文件的修改，没有监视添加和删除
  *
  * @author 夜の孤城
  * @since 1.5
@@ -18,6 +18,11 @@ public class HotdevWatcher extends TimerTask {
     private String classPath;
     private String classPathDbg;
 
+    /**
+     *
+     * @param base 监视指定目录，可以为空,为空时只检测classes下面的内容
+     * @param reloader
+     */
     public HotdevWatcher(File base, Runnable reloader) {
         this.dir = base;
         timer = new Timer();
@@ -50,12 +55,12 @@ public class HotdevWatcher extends TimerTask {
         if (dir != null && check(dir)) {
             needReload = true;
         }
-        if (classPath != null) {
+        if (!needReload&&classPath != null) {
             if (check(new File(classPath))) {
                 needReload = true;
             }
         }
-        if (classPath != null) {
+        if (!needReload&&classPath != null) {
             if (check(new File(classPathDbg))) {
                 needReload = true;
             }

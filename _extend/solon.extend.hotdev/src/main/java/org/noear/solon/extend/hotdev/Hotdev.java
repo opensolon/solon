@@ -1,12 +1,16 @@
 package org.noear.solon.extend.hotdev;
 
 
-import org.noear.solon.SolonApp;
 import org.noear.solon.core.JarClassLoader;
-import org.noear.solon.ext.ConsumerEx;
 
+import java.io.File;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+
 
 /**
  * 热开发模式
@@ -15,48 +19,57 @@ import java.lang.reflect.Method;
  * @since 1.5
  * */
 public class Hotdev {
-    private static JarClassLoader baseLoader;
+    private static ClassLoader parentLoader;
     private static Class hotdevProxy;
 
     private static String[] _args;
     private static String _source;
-    private static ConsumerEx<SolonApp> _initialize;
-
+    private static URL[] classPaths;
 
     static {
-        baseLoader = JarClassLoader.global();
+        initPaths();
     }
 
+    /**
+     * 初始化加载路径
+     */
+    private static void initPaths(){
+        parentLoader=Hotdev.class.getClassLoader().getParent();
+
+        //从classpath中获取加载路径
+        String[] classPathArray = System.getProperty("java.class.path").split(File.pathSeparator);
+        classPaths=new URL[classPathArray.length];
+
+        for(int i=0;i<classPathArray.length;i++){
+            try {
+                classPaths[i]=new File(classPathArray[i]).toURI().toURL();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     /**
      * 启动
      */
     public static void start(Class source, String[] args) {
-        start(source, args, null);
-    }
-
-    /**
-     * 启动
-     */
-    public static void start(Class source, String[] args, ConsumerEx<SolonApp> initialize) {
-        _initialize = initialize;
         _args = args;
         _source = source.getName();
-
         start0();
 
         new HotdevWatcher(null, () -> restart()).start();
     }
 
     private static void start0() {
-        JarClassLoader classLoader = new JarClassLoader(baseLoader.getURLs(), baseLoader.getParent());
+        //新建一个和当前加类加载器同级的加载，用于隔离类资源。
+        // 同时把当前加载器的urls给它，让它可以找到所有的资源
+        JarClassLoader classLoader = new JarClassLoader(classPaths, parentLoader);
+        //切换环境
         Thread.currentThread().setContextClassLoader(classLoader);
-        JarClassLoader.globalSet(classLoader);
 
         try {
             hotdevProxy = classLoader.loadClass(HotdevProxy.class.getName());
-
-            Method method = hotdevProxy.getDeclaredMethod("start", String.class, String[].class, ConsumerEx.class);
-            method.invoke(hotdevProxy, _source, _args, _initialize);
+            Method method = hotdevProxy.getDeclaredMethod("start", String.class, String[].class);
+            method.invoke(hotdevProxy, _source, _args);
 
         } catch (ClassNotFoundException | NoSuchMethodException e) {
             e.printStackTrace();
