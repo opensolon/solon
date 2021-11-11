@@ -17,7 +17,18 @@ import java.util.*;
  * */
 public class JarClassLoader extends URLClassLoader {
 
-    private static JarClassLoader global = new JarClassLoader();
+    private static JarClassLoader global;
+
+    static {
+        JarClassLoader tmp = Utils.newInstance("org.noear.solon.extend.impl.JarClassLoaderEx");
+
+        if (tmp == null) {
+            global = new JarClassLoader();
+        } else {
+            global = tmp;
+        }
+    }
+
     public static JarClassLoader global() {
         return global;
     }
