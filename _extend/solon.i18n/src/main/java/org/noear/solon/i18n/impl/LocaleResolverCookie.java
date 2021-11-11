@@ -34,7 +34,7 @@ public class LocaleResolverCookie implements LocaleResolver {
             String lang = ctx.cookie(cookieName);
 
             if (Utils.isEmpty(lang)) {
-                ctx.setLocale(Locale.getDefault());
+                ctx.setLocale(Solon.cfg().locale());
             } else {
                 ctx.setLocale(LocaleUtil.toLocale(lang));
             }

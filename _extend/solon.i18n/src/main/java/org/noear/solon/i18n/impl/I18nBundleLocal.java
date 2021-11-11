@@ -19,7 +19,7 @@ public class I18nBundleLocal implements I18nBundle {
 
     public I18nBundleLocal(String bundleName, Locale locale) {
         if (locale == null) {
-            locale = Locale.getDefault();
+            locale = Solon.cfg().locale();
         }
 
         this.locale = locale;

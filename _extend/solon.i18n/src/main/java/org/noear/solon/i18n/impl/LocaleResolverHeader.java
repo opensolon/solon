@@ -48,7 +48,7 @@ public class LocaleResolverHeader implements LocaleResolver {
             }
 
             if (Utils.isEmpty(lang)) {
-                ctx.setLocale(Locale.getDefault());
+                ctx.setLocale(Solon.cfg().locale());
             } else {
                 if (lang.contains(",")) {
                     lang = lang.split(",")[0];

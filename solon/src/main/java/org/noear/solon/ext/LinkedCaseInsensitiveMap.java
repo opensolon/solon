@@ -1,5 +1,6 @@
 package org.noear.solon.ext;
 
+import org.noear.solon.Solon;
 import org.noear.solon.core.NvMap;
 
 import java.io.Serializable;
@@ -40,7 +41,7 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
             }
         };
         this._k = new HashMap<>(initialCapacity);
-        this.locale = (locale != null ? locale : Locale.getDefault());
+        this.locale = (locale != null ? locale : Solon.cfg().locale());
     }
 
     /**

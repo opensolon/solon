@@ -2,6 +2,7 @@ package i18n;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.noear.solon.Solon;
 import org.noear.solon.i18n.I18nUtil;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 
@@ -16,8 +17,8 @@ import java.util.MissingResourceException;
 public class MessageTest {
     @Test
     public void test() {
-        String text = I18nUtil.getMessage(Locale.getDefault(), "login.title");
-        System.out.println(Locale.getDefault() + "::" + text);
+        String text = I18nUtil.getMessage(Solon.cfg().locale(), "login.title");
+        System.out.println(Solon.cfg().locale() + "::" + text);
 
 
         text = I18nUtil.getMessage(Locale.ENGLISH, "login.title");
@@ -36,7 +37,7 @@ public class MessageTest {
 
     @Test
     public void test2() {
-        Map map = I18nUtil.getMessageBundle(Locale.getDefault()).toMap();
+        Map map = I18nUtil.getMessageBundle(Solon.cfg().locale()).toMap();
         assert map.size() == 2;
 
         System.out.println(map);

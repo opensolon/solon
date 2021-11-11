@@ -58,7 +58,7 @@ public class DateUtil {
         }
 
         if (ft != null) {
-            DateFormat df = new SimpleDateFormat(ft, Locale.getDefault());
+            DateFormat df = new SimpleDateFormat(ft, Solon.cfg().locale());
             df.setTimeZone(TimeZone.getDefault());
             return df.parse(val);
         } else {

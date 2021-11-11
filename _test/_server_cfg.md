@@ -35,6 +35,7 @@ server.session.state.redis.password: AVsVSKd1
 server.session.state.redis.db: 31
 server.session.state.redis.maxTotaol: 200
 
+
 ```
 
   #### 二、应用基本属性
@@ -46,6 +47,9 @@ solon.app.name: "waterapi"
 solon.app.group: "water"
 #应用标题
 solon.app.title: "WATER"
+
+#应用地区
+solon.locale: "zh_CN"
 
 #应用扩展文件夹
 solon.extend: "ext"

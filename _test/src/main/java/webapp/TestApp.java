@@ -16,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import webapp.demo6_aop.TestImport;
 
+import java.util.Locale;
+
 @Import(value = TestImport.class)
 //@EnableCron4j
 //@EnableQuartz
@@ -47,6 +49,7 @@ public class TestApp {
         }
 
 
+        Locale.setDefault(Locale.SIMPLIFIED_CHINESE);
 
         //构建方式
         SolonApp app = new SolonBuilder().onError(e -> {

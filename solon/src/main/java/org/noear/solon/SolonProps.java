@@ -41,12 +41,15 @@ public final class SolonProps extends Props {
     private boolean isWhiteMode;//是否为的名单模式
     private boolean isSetupMode;//是否为安装蕈式
     private boolean isAloneMode;//是否为独立蕈式（即独立运行模式）
+
+    private Locale locale;
+
     private String extend;
     private String extendFilter;
+
     private String appName;
     private String appGroup;
     private String appTitle;
-
 
     public SolonProps() {
         super(System.getProperties());
@@ -130,7 +133,16 @@ public final class SolonProps extends Props {
         extend = getArg("extend");
         extendFilter = getArg("extend.filter");//5.1.扩展文件夹过滤器
 
-        //6.应用基础信息
+
+        //6.确定地区配置
+        String localeStr = getArg("locale");
+        if (Utils.isNotEmpty(localeStr)) {
+            locale = new Locale(localeStr);
+        } else {
+            locale = Locale.getDefault();
+        }
+
+        //7.应用基础信息
         appName = getArg("app.name");  //6.应用名
         appGroup = getArg("app.group"); //6.1.应用组
         appTitle = getArg("app.title"); //6.1.应用标题
@@ -418,6 +430,13 @@ public final class SolonProps extends Props {
         }
 
         return fileEncoding;
+    }
+
+    /**
+     * 地区
+     * */
+    public Locale locale(){
+        return locale;
     }
 
     /**
