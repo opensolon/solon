@@ -18,6 +18,7 @@ public class ScanUtil {
     static ResourceScanner scanner;
 
     static {
+        //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
         ResourceScanner ext = Utils.newInstance("org.noear.solon.extend.impl.ResourceScannerExt");
 
         if (ext == null) {

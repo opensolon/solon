@@ -20,6 +20,7 @@ public class JarClassLoader extends URLClassLoader {
     private static JarClassLoader global;
 
     static {
+        //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
         JarClassLoader tmp = Utils.newInstance("org.noear.solon.extend.impl.JarClassLoaderEx");
 
         if (tmp == null) {

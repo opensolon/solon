@@ -31,8 +31,7 @@ public class PropsLoader {
     }
 
     static {
-        //默认的扩展加载器
-        //
+        //（静态扩展约定：org.noear.solon.extend.impl.XxxxExt）
         PropsLoader tmp = Utils.newInstance("org.noear.solon.extend.impl.PropsLoaderExt");
 
         if (tmp == null) {
