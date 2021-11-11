@@ -34,7 +34,20 @@ public class I18nBundleLocal implements I18nBundle {
         }
 
         //加载地区配置
-        Properties tmp = Utils.loadProperties(bundleName2 + "_" + locale.toString() + ".properties");
+        Properties tmp = null;
+
+        //尝试加(语言)的配置
+        tmp = Utils.loadProperties(bundleName2 + "_" + locale.getLanguage() + ".properties");
+
+        if (tmp != null) {
+            //如果有，替换掉默认配置
+            tmp.forEach((k, v) -> {
+                bundle.put(k, v);
+            });
+        }
+
+        //尝试(语言_国家)的配置
+        tmp = Utils.loadProperties(bundleName2 + "_" + locale + ".properties");
 
         if (tmp != null) {
             //如果有，替换掉默认配置

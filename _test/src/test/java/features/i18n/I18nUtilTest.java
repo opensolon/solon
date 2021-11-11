@@ -35,4 +35,10 @@ public class I18nUtilTest {
         assert "登录".equals(service.get(Locale.CHINA, "login.title"));
         assert "login-us".equals(service.get(Locale.US, "login.title"));
     }
+
+    @Test
+    public void test3() {
+        assert "xxx".equals(service.get(Locale.CHINA, "login.name"));
+        assert "登录".equals(service.get(Locale.JAPAN, "login.title"));
+    }
 }
