@@ -25,7 +25,6 @@ import java.util.*;
  * @since 1.2
  */
 public class CloudDiscoveryServiceConsulImp extends TimerTask implements CloudDiscoveryService {
-    private final CloudProps cloudProps;
     private ConsulClient real;
     private String token;
 
@@ -39,8 +38,6 @@ public class CloudDiscoveryServiceConsulImp extends TimerTask implements CloudDi
 
 
     public CloudDiscoveryServiceConsulImp(CloudProps cloudProps) {
-        this.cloudProps = cloudProps;
-
         token = cloudProps.getToken();
         refreshInterval = IntervalUtils.getInterval(cloudProps.getDiscoveryRefreshInterval("5s"));
 
