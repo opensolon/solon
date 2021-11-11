@@ -41,7 +41,7 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
             }
         };
         this._k = new HashMap<>(initialCapacity);
-        this.locale = (locale != null ? locale : Solon.cfg().locale());
+        this.locale = (locale != null ? locale : Locale.getDefault());
     }
 
     /**

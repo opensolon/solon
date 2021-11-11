@@ -29,6 +29,13 @@ public class I18nUtil {
     private static LocaleResolver localeResolver = new LocaleResolverHeader();
 
     /**
+     * 获取 地区解析器
+     * */
+    public static LocaleResolver getLocaleResolver() {
+        return localeResolver;
+    }
+
+    /**
      * 消息国际化内容包名
      * */
     private static final String messageBundleName = "i18n.messages";

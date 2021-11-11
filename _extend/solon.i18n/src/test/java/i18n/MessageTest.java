@@ -20,6 +20,9 @@ public class MessageTest {
         String text = I18nUtil.getMessage(Solon.cfg().locale(), "login.title");
         System.out.println(Solon.cfg().locale() + "::" + text);
 
+        text = I18nUtil.getMessage(Solon.cfg().locale(), "login.title");
+        System.out.println(Solon.cfg().locale() + "::" + text);
+
 
         text = I18nUtil.getMessage(Locale.ENGLISH, "login.title");
         assert "login".equals(text);
@@ -45,9 +48,9 @@ public class MessageTest {
 
     @Test
     public void test3() {
-        try{
+        try {
             I18nUtil.getMessage(Locale.US, "err.text");
-        }catch (Throwable e){
+        } catch (Throwable e) {
             assert e instanceof MissingResourceException;
             e.printStackTrace();
             return;

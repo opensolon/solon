@@ -1,11 +1,12 @@
 package org.noear.solon.core.util;
 
 
+import org.noear.solon.Solon;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -58,7 +59,13 @@ public class DateUtil {
         }
 
         if (ft != null) {
-            DateFormat df = new SimpleDateFormat(ft, Solon.cfg().locale());
+            DateFormat df = null;
+            if (Solon.global() == null) {
+                df = new SimpleDateFormat(ft);
+            } else {
+                df = new SimpleDateFormat(ft, Solon.cfg().locale());
+            }
+
             df.setTimeZone(TimeZone.getDefault());
             return df.parse(val);
         } else {

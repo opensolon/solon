@@ -4,12 +4,10 @@ package org.noear.solon.extend.hotdev;
 import org.noear.solon.core.JarClassLoader;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
 
 
 /**
@@ -33,21 +31,22 @@ public class Hotdev {
     /**
      * 初始化加载路径
      */
-    private static void initPaths(){
-        parentLoader=Hotdev.class.getClassLoader().getParent();
+    private static void initPaths() {
+        parentLoader = Hotdev.class.getClassLoader().getParent();
 
         //从classpath中获取加载路径
         String[] classPathArray = System.getProperty("java.class.path").split(File.pathSeparator);
-        classPaths=new URL[classPathArray.length];
+        classPaths = new URL[classPathArray.length];
 
-        for(int i=0;i<classPathArray.length;i++){
+        for (int i = 0; i < classPathArray.length; i++) {
             try {
-                classPaths[i]=new File(classPathArray[i]).toURI().toURL();
+                classPaths[i] = new File(classPathArray[i]).toURI().toURL();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
         }
     }
+
     /**
      * 启动
      */

@@ -1,5 +1,6 @@
 package org.noear.solon.i18n.impl;
 
+import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.i18n.I18nBundle;
 
