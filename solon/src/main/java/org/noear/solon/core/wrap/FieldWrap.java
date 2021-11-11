@@ -20,29 +20,33 @@ import java.lang.reflect.Type;
 public class FieldWrap {
     /**
      * 实体类型
-     * */
+     */
     public final Class<?> entityClz;
     /**
      * 字段
-     * */
+     */
     public final Field field;
     /**
      * 自己申明的注解
-     * */
+     */
     public final Annotation[] annoS;
     /**
      * 字段类型
-     * */
+     */
     public final Class<?> type;
     /**
      * 字段泛型类型（可能为null）
-     * */
+     */
     public final ParameterizedType genericType;
 
     /**
      * 值设置器
-     * */
+     */
     private Method _setter;
+    /**
+     * 值获取器
+     */
+    private Method _getter;
 
     public FieldWrap(Class<?> clz, Field f1) {
         entityClz = clz;
@@ -59,21 +63,33 @@ public class FieldWrap {
 
         field.setAccessible(true);
         _setter = doFindSetter(clz, f1);
+        _getter = dofindGetter(clz, f1);
     }
 
     /**
      * 获取自身的临时对象
-     * */
+     */
     public VarHolder holder(Object obj) {
         return new VarHolderOfField(this, obj);
     }
 
     /**
+     * 获取字段的值
+     */
+    public Object getValue(Object tObj) throws ReflectiveOperationException {
+        if (_getter == null) {
+            return field.get(tObj);
+        } else {
+            return _getter.invoke(tObj);
+        }
+    }
+
+    /**
      * 设置字段的值
-     * */
+     */
     public void setValue(Object tObj, Object val) {
         try {
-            if(val == null){
+            if (val == null) {
                 return;
             }
 
@@ -84,11 +100,12 @@ public class FieldWrap {
             }
         } catch (IllegalArgumentException ex) {
             if (val == null) {
-                throw new IllegalArgumentException(field.getName() + "(" + field.getType().getSimpleName() + ")类型接收失败!", ex);
+                throw new IllegalArgumentException(field.getName() + "(" + field.getType().getSimpleName() + ") Type receive failur!", ex);
             }
+
             throw new IllegalArgumentException(
                     field.getName() + "(" + field.getType().getSimpleName() +
-                            ")类型接收失败：val(" + val.getClass().getSimpleName() + ")", ex);
+                            ") Type receive failure ：val(" + val.getClass().getSimpleName() + ")", ex);
         } catch (RuntimeException ex) {
             throw ex;
         } catch (Exception ex) {
@@ -96,10 +113,29 @@ public class FieldWrap {
         }
     }
 
+    private static Method dofindGetter(Class<?> tCls, Field field) {
+        String fieldName = field.getName();
+        String firstLetter = fieldName.substring(0, 1).toUpperCase();
+        String setMethodName = "get" + firstLetter + fieldName.substring(1);
+
+        try {
+            Method getFun = tCls.getMethod(setMethodName);
+            if (getFun != null) {
+                return getFun;
+            }
+        } catch (NoSuchMethodException ex) {
+
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
+    }
+
 
     /**
      * 查找设置器
-     * */
+     */
     private static Method doFindSetter(Class<?> tCls, Field field) {
         String fieldName = field.getName();
         String firstLetter = fieldName.substring(0, 1).toUpperCase();

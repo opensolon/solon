@@ -79,6 +79,10 @@ public class ClassWrap {
         return Collections.unmodifiableMap(fieldAllWrapsMap);
     }
 
+    public FieldWrap getFieldWrap(String field){
+        return fieldAllWrapsMap.get(field);
+    }
+
     /**
      * 获取申明的Method
      * */

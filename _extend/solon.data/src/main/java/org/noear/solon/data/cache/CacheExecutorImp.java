@@ -1,6 +1,8 @@
 package org.noear.solon.data.cache;
 
 import org.noear.solon.Utils;
+import org.noear.solon.core.wrap.ClassWrap;
+import org.noear.solon.core.wrap.FieldWrap;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.data.annotation.CachePut;
@@ -48,7 +50,7 @@ public class CacheExecutorImp {
             key = buildCacheKey(method, parMap);
         } else {
             //格式化key
-            key = formatTagsOrKey(key, parMap);
+            key = formatTagsOrKey(key, parMap, null);
         }
 
         String keyLock = key + ":lock";
@@ -70,7 +72,7 @@ public class CacheExecutorImp {
                     cs.store(key, result, anno.seconds());
 
                     if (Utils.isNotEmpty(anno.tags())) {
-                        String tags = formatTagsOrKey(anno.tags(), parMap);
+                        String tags = formatTagsOrKey(anno.tags(), parMap, result);
                         CacheTags ct = new CacheTags(cs);
 
                         //4.添加缓存标签
@@ -104,7 +106,7 @@ public class CacheExecutorImp {
 
         //按 tags 清除缓存
         if (Utils.isNotEmpty(anno.tags())) {
-            String tags = formatTagsOrKey(anno.tags(), parMap);
+            String tags = formatTagsOrKey(anno.tags(), parMap, null);
             CacheTags ct = new CacheTags(cs);
 
             for (String tag : tags.split(",")) {
@@ -114,7 +116,7 @@ public class CacheExecutorImp {
 
         //按 key 清除缓存
         if (Utils.isNotEmpty(anno.key())) {
-            String key = formatTagsOrKey(anno.key(), parMap);
+            String key = formatTagsOrKey(anno.key(), parMap, null);
             cs.remove(key);
         }
     }
@@ -138,7 +140,7 @@ public class CacheExecutorImp {
 
         //按 tags 更新缓存
         if (Utils.isNotEmpty(anno.tags())) {
-            String tags = formatTagsOrKey(anno.tags(), parMap);
+            String tags = formatTagsOrKey(anno.tags(), parMap, newValue);
             CacheTags ct = new CacheTags(cs);
 
             for (String tag : tags.split(",")) {
@@ -148,7 +150,7 @@ public class CacheExecutorImp {
 
         //按 key 更新缓存
         if (Utils.isNotEmpty(anno.key())) {
-            String key = formatTagsOrKey(anno.key(), parMap);
+            String key = formatTagsOrKey(anno.key(), parMap, newValue);
             cs.store(key, newValue, anno.seconds());
         }
     }
@@ -183,7 +185,7 @@ public class CacheExecutorImp {
         return keyB.toString();
     }
 
-    protected String formatTagsOrKey(String str, Map map) {
+    protected String formatTagsOrKey(String str, Map map, Object rst) {
         if (str.indexOf("$") < 0) {
             return str;
         }
@@ -195,8 +197,34 @@ public class CacheExecutorImp {
         while (m.find()) {
             String mark = m.group(0);
             String name = m.group(1);
+
             if (map.containsKey(name)) {
+                //说明从输入参数取值
                 String val = String.valueOf(map.get(name));
+
+                str2 = str2.replace(mark, val);
+            } else if (name.startsWith(".")) {
+                //说明要从返回结果取值
+                String val = null;
+                if (rst != null) {
+                    FieldWrap fw = ClassWrap.get(rst.getClass()).getFieldWrap(name.substring(1));
+                    if (fw == null) {
+                        throw new IllegalArgumentException("Missing cache tag parameter (result field): " + name);
+                    }
+
+                    try {
+                        Object val2 = fw.getValue(rst);
+                        if (val2 != null) {
+                            val = val2.toString();
+                        }
+                    } catch (ReflectiveOperationException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+                if (val == null) {
+                    val = "null";
+                }
 
                 str2 = str2.replace(mark, val);
             } else {
