@@ -42,6 +42,7 @@
         <module>../../_extend/solon.extend.cors</module>
         <module>../../_extend/solon.extend.health</module>
         <module>../../_extend/solon.extend.graalvm</module>
+        <module>../../_extend/solon.extend.hotswap</module>
     </modules>
 
 
