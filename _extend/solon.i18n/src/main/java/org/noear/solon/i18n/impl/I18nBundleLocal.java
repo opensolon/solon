@@ -27,9 +27,20 @@ public class I18nBundleLocal implements I18nBundle {
 
         String bundleName2 = bundleName.replace(".", "/");
 
-        this.bundle = Utils.loadProperties(bundleName2 + "_" + locale.toString() + ".properties");
-        if (this.bundle == null) {
-            this.bundle = Utils.loadProperties(bundleName2 + ".properties");
+        //加载默认配置
+        bundle = Utils.loadProperties(bundleName2 + ".properties");
+        if (bundle == null) {
+            bundle = new Properties();
+        }
+
+        //加载地区配置
+        Properties tmp = Utils.loadProperties(bundleName2 + "_" + locale.toString() + ".properties");
+
+        if (tmp != null) {
+            //如果有，替换掉默认配置
+            tmp.forEach((k, v) -> {
+                bundle.put(k, v);
+            });
         }
     }
 
