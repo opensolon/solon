@@ -14,7 +14,7 @@ public class XPluginImp implements Plugin {
     public void start(SolonApp app) {
         Aop.context().beanAroundAdd(I18n.class, I18nInterceptor.instance);
 
-        app.filter((ctx, chain) -> {
+        app.filter(-9, (ctx, chain) -> {
             //尝试自动完成地区解析
             I18nUtil.getLocaleResolver().getLocale(ctx);
             chain.doFilter(ctx);
