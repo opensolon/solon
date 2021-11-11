@@ -10,7 +10,7 @@
         <relativePath>../../solon-parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>solon.extend.hotswap</artifactId>
+    <artifactId>solon.extend.hotdev</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

@@ -1,6 +1,6 @@
 package org.noear.solon.demo;
 
-import org.noear.solon.extend.hotswap.Debugger;
+import org.noear.solon.extend.hotdev.Debugger;
 
 public class Application {
     public static void main(String[] args) {

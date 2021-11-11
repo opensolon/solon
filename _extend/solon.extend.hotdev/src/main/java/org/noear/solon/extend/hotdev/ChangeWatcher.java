@@ -1,4 +1,4 @@
-package org.noear.solon.extend.hotswap;
+package org.noear.solon.extend.hotdev;
 
 import java.io.File;
 import java.util.Timer;

@@ -8,6 +8,6 @@ import org.noear.solon.annotation.Mapping;
 public class TestController {
     @Mapping("sayhello")
     public String sayhello(){
-        return "hello solon world";
+        return "hello solon world1";
     }
 }
