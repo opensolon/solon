@@ -192,7 +192,7 @@ public class CacheExecutorImp {
 
         String str2 = str;
 
-        Pattern pattern = Pattern.compile("\\$\\{(\\w+)\\}");
+        Pattern pattern = Pattern.compile("\\$\\{(\\.?\\w+)\\}");
         Matcher m = pattern.matcher(str);
         while (m.find()) {
             String mark = m.group(0);
