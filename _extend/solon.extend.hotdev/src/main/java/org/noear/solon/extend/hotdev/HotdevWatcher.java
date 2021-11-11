@@ -5,7 +5,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * 热开发监视器
+ * 热开发 - 监视器
  *
  * @author 夜の孤城
  * @since 1.5
