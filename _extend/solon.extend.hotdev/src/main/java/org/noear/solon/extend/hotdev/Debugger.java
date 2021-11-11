@@ -5,6 +5,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLClassLoader;
 
+/**
+ * 调试模式
+ *
+ * @author 夜の孤城
+ * @since 1.5
+ * */
 public class Debugger {
     private static URLClassLoader baseLoader;
     private static String[] _args;
@@ -19,14 +25,14 @@ public class Debugger {
         _args = args;
         _source = source.getName();
         start0();
-        new ChangeWatcher(null, () -> restart()).start();
+        new HotdevWatcher(null, () -> restart()).start();
     }
 
     private static void start0() {
         ClassLoader classLoader = new URLClassLoader(baseLoader.getURLs(), baseLoader.getParent());
         Thread.currentThread().setContextClassLoader(classLoader);
         try {
-            helper = classLoader.loadClass(SolonHelper.class.getName());
+            helper = classLoader.loadClass(HotdevProxy.class.getName());
             Method method = helper.getDeclaredMethod("start", String.class, String[].class);
             method.invoke(helper, _source, _args);
 

@@ -4,7 +4,13 @@ import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ChangeWatcher extends TimerTask {
+/**
+ * 热开发监视器
+ *
+ * @author 夜の孤城
+ * @since 1.5
+ * */
+public class HotdevWatcher extends TimerTask {
     File dir;
     private Timer timer;
     private Runnable reloader;
@@ -12,13 +18,13 @@ public class ChangeWatcher extends TimerTask {
     private String classPath;
     private String classPathDbg;
 
-    public ChangeWatcher(File base, Runnable reloader) {
+    public HotdevWatcher(File base, Runnable reloader) {
         this.dir = base;
         timer = new Timer();
         this.reloader = reloader;
         last_time = System.currentTimeMillis();
         //获取当前的classes path
-        String cp = ChangeWatcher.class.getClassLoader().getResource("./").getPath();
+        String cp = HotdevWatcher.class.getClassLoader().getResource("./").getPath();
 
         if (cp.endsWith("/target/classes/")) {
             classPath = cp;
