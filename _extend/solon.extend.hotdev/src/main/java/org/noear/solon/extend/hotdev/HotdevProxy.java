@@ -5,7 +5,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.ext.ConsumerEx;
 
 /**
- * 热开发代理，用于操控Solon的启停
+ * 热开发启停代理代理（用于操控Solon的启停）
  *
  * 这里其实可以直接用Solon,但是Solon的stop在线程里面，重新启动实例时如果端口还在占用，就会重启失败
  *

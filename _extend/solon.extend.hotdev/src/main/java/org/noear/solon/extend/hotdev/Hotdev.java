@@ -9,12 +9,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * 调试模式
+ * 热开发模式
  *
  * @author 夜の孤城
  * @since 1.5
  * */
-public class Debugger {
+public class Hotdev {
     private static JarClassLoader baseLoader;
     private static Class hotdevProxy;
 
