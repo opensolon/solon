@@ -7,6 +7,6 @@ import org.noear.solon.annotation.Mapping;
 public class TestController {
     @Mapping("/")
     public String hello() {
-        return "hello solon world";
+        return "hello world";
     }
 }

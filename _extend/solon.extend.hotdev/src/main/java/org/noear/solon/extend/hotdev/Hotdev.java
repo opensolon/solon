@@ -55,7 +55,7 @@ public class Hotdev {
         try {
             hotdevProxy = classLoader.loadClass(HotdevProxy.class.getName());
 
-            Method method = hotdevProxy.getDeclaredMethod("start", String.class, String[].class);
+            Method method = hotdevProxy.getDeclaredMethod("start", String.class, String[].class, ConsumerEx.class);
             method.invoke(hotdevProxy, _source, _args, _initialize);
 
         } catch (ClassNotFoundException | NoSuchMethodException e) {
