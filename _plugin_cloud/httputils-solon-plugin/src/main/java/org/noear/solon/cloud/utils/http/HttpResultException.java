@@ -1,7 +1,8 @@
 package org.noear.solon.cloud.utils.http;
 
 /**
- * @author noear 2021/5/26 created
+ * @author noear
+ * @since 1.5
  */
 public class HttpResultException extends RuntimeException {
     public HttpResultException(String message) {
