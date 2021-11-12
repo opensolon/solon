@@ -111,7 +111,7 @@ public class GraalvmUtil {
      * @return
      */
     public static String readFileByLines(URL url) {
-        StringBuilder buf = new StringBuilder();
+        StringBuilder buf = new StringBuilder();//比多次字符串加性能好些
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
             String tempString = null;
