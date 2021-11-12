@@ -366,7 +366,7 @@ public class HttpUtils {
 
         int code = tmp.code();
         String text = tmp.body().string();
-        if (code >= 200 && code <= 300) {
+        if (code >= 200 && code < 400) {
             return text;
         } else {
             throw new HttpResultException("HTTP Error " + code + ": " + text);
