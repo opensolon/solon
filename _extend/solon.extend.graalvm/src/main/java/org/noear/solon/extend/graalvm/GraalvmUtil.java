@@ -108,7 +108,6 @@ public class GraalvmUtil {
      * 以行为单位读取文件
      *
      * @param url 资源地址
-     * @return
      */
     public static String readFileByLines(URL url) {
         StringBuilder buf = new StringBuilder();//比多次字符串加性能好些
