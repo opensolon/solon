@@ -14,7 +14,7 @@ import java.util.function.Predicate;
 
 /**
  * @author 馒头虫/瓢虫
- * @since 1.6
+ * @since 1.5
  */
 public class GraalvmUtil {
 
@@ -29,12 +29,12 @@ public class GraalvmUtil {
      * @param urls   扫描到的路径 作为返回
      */
     public static void scanResource(String path, Predicate<String> filter, Set<String> urls) {
-
         if (!scaned) {
             readNativeResourceConfig();
             readNativeReflectConfig();
             scaned = true;
         }
+
         for (String f : resources) {
             if (f.startsWith(path) && filter.test(f)) {
                 urls.add(f);
@@ -48,23 +48,25 @@ public class GraalvmUtil {
     private static void readNativeReflectConfig() {
         try {
             List<ClassLoader> loaderList = ExtendLoader.load(Solon.cfg().extend(), false);
+
             for (ClassLoader loader : loaderList) {
                 Enumeration<URL> rs = Utils.getResources(loader, "META-INF/native-image/reflect-config.json");
+
                 while (rs.hasMoreElements()) {
-                    InputStream inputStream = rs.nextElement().openStream();
-                    String s = readFileByLines(inputStream);
-                    ONode o = ONode.load(s);
+                    String s = readFileByLines(rs.nextElement());
+                    ONode o = ONode.loadStr(s);
                     o.forEach(on -> {
                         String name = on.get("name").getString().replaceAll("\\.", "/") + ".class";
                         resources.add(name);
                     });
                 }
             }
+
             if (Solon.cfg().isDebugMode()) {
                 PrintUtil.info("load reflect-config completed: ", resources.toString());
             }
         } catch (Exception e) {
-            PrintUtil.yellowln("read reflect-config error :" + e.getLocalizedMessage());
+            PrintUtil.warn("read reflect-config error :" + e.getLocalizedMessage());
             EventBus.push(e);
         }
     }
@@ -75,12 +77,13 @@ public class GraalvmUtil {
     private static void readNativeResourceConfig() {
         try {
             List<ClassLoader> loaderList = ExtendLoader.load(Solon.cfg().extend(), false);
+
             for (ClassLoader loader : loaderList) {
                 Enumeration<URL> rs = Utils.getResources(loader, "META-INF/native-image/resource-config.json");
+
                 while (rs.hasMoreElements()) {
-                    InputStream inputStream = rs.nextElement().openStream();
-                    String s = readFileByLines(inputStream);
-                    ONode o = ONode.load(s);
+                    String s = readFileByLines(rs.nextElement());
+                    ONode o = ONode.loadStr(s);
                     ONode includes = o.select("$.resources.includes");
                     includes.forEach(on -> {
                         String name = on.get("pattern").getString().replaceAll("\\\\\\\\Q", "").replaceAll("\\\\\\\\E", "");
@@ -91,11 +94,12 @@ public class GraalvmUtil {
                     });
                 }
             }
+
             if (Solon.cfg().isDebugMode()) {
                 PrintUtil.info("load resource-config completed: ", resources.toString());
             }
         } catch (Exception e) {
-            PrintUtil.yellowln("read resource-config.json error :" + e.getLocalizedMessage());
+            PrintUtil.warn("read resource-config.json error :" + e.getLocalizedMessage());
             EventBus.push(e);
         }
     }
@@ -103,35 +107,21 @@ public class GraalvmUtil {
     /**
      * 以行为单位读取文件
      *
-     * @param inputStream 输入流
+     * @param url 资源地址
      * @return
      */
-    public static String readFileByLines(InputStream inputStream) {
-        String content = "";
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(inputStream));
-            String tempString = null;
+    public static String readFileByLines(URL url) {
+        StringBuilder buf = new StringBuilder();
 
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
+            String tempString = null;
             while ((tempString = reader.readLine()) != null) {
-                content += tempString + "\r\n";
+                buf.append(tempString).append("\r\n");
             }
-            reader.close();
         } catch (IOException e) {
 
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e1) {
-                }
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-
-                }
-            }
         }
-        return content;
+
+        return buf.toString();
     }
 }
