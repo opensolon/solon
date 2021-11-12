@@ -40,7 +40,7 @@ public class HandlerStop implements Handler {
                 meta = ONode.stringify(instance.meta());
             }
 
-            WaterClient.Registry.set(instance.service(), instance.address(), meta, enabled);
+            WaterClient.Registry.set(Solon.cfg().appGroup(), instance.service(), instance.address(), meta, enabled);
         }
     }
 

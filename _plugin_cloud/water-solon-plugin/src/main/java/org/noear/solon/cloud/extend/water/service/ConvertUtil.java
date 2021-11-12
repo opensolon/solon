@@ -20,7 +20,7 @@ class ConvertUtil {
             return null;
         } else {
             Discovery d2 = new Discovery(service);
-            d2.agent(d1.url);
+            d2.agent(d1.agent);
             d2.policy(d1.policy);
 
             d1.list.forEach((t1) -> {

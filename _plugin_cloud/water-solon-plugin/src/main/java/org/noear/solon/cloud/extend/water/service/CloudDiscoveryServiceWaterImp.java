@@ -112,7 +112,7 @@ public class CloudDiscoveryServiceWaterImp extends TimerTask implements CloudDis
             meta = ONode.stringify(instance.meta());
         }
 
-        WaterClient.Registry.set(instance.service(), instance.address(), meta, health);
+        WaterClient.Registry.set(group, instance.service(), instance.address(), meta, health);
     }
 
     @Override
@@ -122,14 +122,14 @@ public class CloudDiscoveryServiceWaterImp extends TimerTask implements CloudDis
             meta = ONode.stringify(instance.meta());
         }
 
-        WaterClient.Registry.unregister(instance.service(), instance.address(), meta);
+        WaterClient.Registry.unregister(group, instance.service(), instance.address(), meta);
     }
 
     @Override
     public Discovery find(String group, String service) {
         Instance instance = Instance.local();
 
-        DiscoverM d1 = WaterClient.Registry.discover(service, instance.service(), instance.address());
+        DiscoverM d1 = WaterClient.Registry.discover(group, service, instance.service(), instance.address());
         return ConvertUtil.from(service, d1);
     }
 

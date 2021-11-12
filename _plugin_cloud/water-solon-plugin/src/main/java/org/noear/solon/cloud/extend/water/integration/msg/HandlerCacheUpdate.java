@@ -1,6 +1,5 @@
 package org.noear.solon.cloud.extend.water.integration.msg;
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudEventHandler;
 import org.noear.solon.cloud.extend.water.service.CloudDiscoveryServiceWaterImp;
@@ -46,7 +45,7 @@ public class HandlerCacheUpdate implements CloudEventHandler {
         if ("upstream".equals(ss[0])) {
             String service = ss[1];
             try {
-                discoveryService.onUpdate(Solon.cfg().appGroup(), service);
+                discoveryService.onUpdate("", service);
             } catch (Exception ex) {
                 TagsMDC.tag0(ss[1]);
                 TagsMDC.tag1("reload");
