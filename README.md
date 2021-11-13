@@ -112,7 +112,7 @@ public class App implements HelloService{
 <parent>
     <groupId>org.noear</groupId>
     <artifactId>solon-parent</artifactId>
-    <version>1.5.62</version>
+    <version>1.5.67</version>
 </parent>
 
 <dependencies>
@@ -266,7 +266,7 @@ public class DemoController{
 }
 ```
 
-* 文件上传与输出
+* 文件上传与下载
 ```java
 @Controller
 public class DemoController{
@@ -276,25 +276,14 @@ public class DemoController{
     }
 
     @Mapping("/file/down")
-    public void down(Context ctx, String path){
+    public DownloadedFile down(Context ctx, String path){
         URL uri = Utils.getResource(path);
-
-        ctx.contentType("json/text");
-        ctx.output(uri.openStream());
+        
+        return new DownloadedFile("json/text", uri.openStream(), "test.json");
     }
 }
 ```
 
-* Servlet 注解支持
-```java
-@WebFilter("/hello/*")
-public class HelloFilter implements Filter {
-    @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        servletResponse.getWriter().write("Hello，我把你过滤了");
-    }
-}
-```
 
 * Quartz 定时任务
 ```java
@@ -307,6 +296,18 @@ public class HelloTask implements Runnable {
     @Override
     public void run() {
         System.out.println("Hello world");
+    }
+}
+```
+
+
+* Servlet 注解支持
+```java
+@WebFilter("/hello/*")
+public class HelloFilter implements Filter {
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        servletResponse.getWriter().write("Hello，我把你过滤了");
     }
 }
 ```
