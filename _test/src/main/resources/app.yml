@@ -24,6 +24,8 @@ solon.drift: 1
 
 solon.extend: "!app_ext"
 
+solon.locale: "en_US"
+
 solon.cloud.local:
   breaker:
     test: 1
