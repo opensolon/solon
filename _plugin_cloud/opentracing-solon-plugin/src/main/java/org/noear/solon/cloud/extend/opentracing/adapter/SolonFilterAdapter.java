@@ -16,9 +16,6 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 /**
  * @author noear
  * @since 1.4
