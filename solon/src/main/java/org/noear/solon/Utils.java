@@ -265,6 +265,31 @@ public class Utils {
         }
     }
 
+    public static Locale toLocale(String lang) {
+        if (lang == null) {
+            return null;
+        }
+
+        String[] ss = lang.split("_|-");
+
+        if (ss.length >= 3) {
+            if (ss[1].length() > 2) {
+                return new Locale(ss[0], ss[2], ss[1]);
+            } else {
+                return new Locale(ss[0], ss[1], ss[2]);
+            }
+        } else if (ss.length == 2) {
+            if (ss[1].length() > 2) {
+                //zh_Hans
+                return new Locale(ss[0], "", ss[1]);
+            } else {
+                return new Locale(ss[0], ss[1]);
+            }
+        } else {
+            return new Locale(ss[0]);
+        }
+    }
+
     /**
      * 根据字符串加载为一个类
      *
