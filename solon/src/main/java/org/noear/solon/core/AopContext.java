@@ -55,7 +55,7 @@ public class AopContext extends BeanContainer {
             }
 
             //添加bean形态处理
-            addBeanShape(clz, bw);
+            addBeanShape(clz, bw, 0);
 
             //尝试导入
             for (Annotation a1 : clz.getAnnotations()) {
@@ -80,7 +80,7 @@ public class AopContext extends BeanContainer {
             bw.typedSet(anno.typed());
 
             //添加bean形态处理
-            addBeanShape(clz, bw);
+            addBeanShape(clz, bw, anno.index());
 
             //注册到容器
             beanRegister(bw, beanName, anno.typed());
@@ -125,7 +125,7 @@ public class AopContext extends BeanContainer {
     /**
      * 添加bean的不同形态
      * */
-    private void addBeanShape(Class<?> clz, BeanWrap bw) {
+    private void addBeanShape(Class<?> clz, BeanWrap bw, int index) {
         //Plugin
         if (Plugin.class.isAssignableFrom(clz)) {
             //如果是插件，则插入
@@ -159,7 +159,7 @@ public class AopContext extends BeanContainer {
 
         //Filter
         if (Filter.class.isAssignableFrom(clz)) {
-            Solon.global().filter(bw.raw());
+            Solon.global().filter(index, bw.raw());
         }
     }
 
@@ -441,7 +441,7 @@ public class AopContext extends BeanContainer {
             m_bw.typedSet(anno.typed());
 
             //添加bean形态处理
-            addBeanShape(m_bw.clz(), m_bw);
+            addBeanShape(m_bw.clz(), m_bw, anno.index());
 
             //注册到容器
             beanRegister(m_bw, beanName, anno.typed());
