@@ -1,4 +1,4 @@
-package webapp;
+package webapp.dso;
 
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;

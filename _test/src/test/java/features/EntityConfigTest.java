@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
-import webapp.EntityConfig;
+import webapp.dso.EntityConfig;
 
 /**
  * @author noear 2021/9/27 created

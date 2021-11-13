@@ -1,4 +1,4 @@
-package webapp;
+package webapp.dso;
 
 import org.noear.nami.Filter;
 import org.noear.nami.Invocation;
