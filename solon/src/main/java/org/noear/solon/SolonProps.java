@@ -137,7 +137,14 @@ public final class SolonProps extends Props {
         //6.确定地区配置
         String localeStr = getArg("locale");
         if (Utils.isNotEmpty(localeStr)) {
-            locale = new Locale(localeStr);
+            String[] ss = localeStr.split("_|-");
+            if (ss.length == 1) {
+                locale = new Locale(ss[0]);
+            } else if (ss.length == 2) {
+                locale = new Locale(ss[0], ss[1]);
+            } else if (ss.length == 3) {
+                locale = new Locale(ss[0], ss[1], ss[2]);
+            }
         } else {
             locale = Locale.getDefault();
         }
@@ -479,7 +486,7 @@ public final class SolonProps extends Props {
      * 框架版本号
      */
     public String version() {
-        return "1.5.66";
+        return "1.5.67";
     }
 
     /**
