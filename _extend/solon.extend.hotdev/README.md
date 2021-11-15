@@ -10,7 +10,7 @@
 ```java
 public class DemoApp {
     public static void main(String[] args) {
-        Hotdev.start(DemoApp.class,args);
+        Hotdev.start(DemoApp.class, args);
     }
 }
 ```
