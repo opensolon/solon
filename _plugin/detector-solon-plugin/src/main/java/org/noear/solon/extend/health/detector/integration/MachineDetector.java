@@ -28,7 +28,7 @@ public class MachineDetector implements Detector {
             return;
         }
 
-        String detectorNamesStr = Solon.cfg().get("solon.Health.detector");
+        String detectorNamesStr = Solon.cfg().get("solon.health.detector");
         Set<String> detectorNames = new HashSet<>(Arrays.asList(detectorNamesStr.split(",")));
 
         if (detectorNames.size() == 0) {

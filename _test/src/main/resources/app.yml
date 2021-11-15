@@ -39,7 +39,7 @@ solon.cloud.local:
         - "tcp://localhost:28080"
 
 
-solon.Health.detector: "cpu,disk,jvm,memory,os,qps"
+solon.health.detector: "cpu,disk,jvm,memory,os,qps"
 
 
 solon.logging.appender:
