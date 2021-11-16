@@ -4,21 +4,19 @@ import org.noear.solon.data.cache.CacheService;
 import org.noear.solon.data.cache.LocalCacheService;
 
 import java.util.Properties;
+import java.util.function.Supplier;
 
 /**
- * 缓存服务代理，可自动切换服务配置
+ * CacheService 供应者
  *
  * @author noear
  * @since 1.5
  */
-public class CacheServiceProxy implements CacheService {
+public class CacheServiceSupplier implements Supplier<CacheService> {
     private CacheService real;
     private String driverType;
 
-    /**
-     * @param props 需要有 driverType[local,redis,memcached] 属性申明
-     * */
-    public CacheServiceProxy(Properties props) {
+    public CacheServiceSupplier(Properties props) {
         driverType = props.getProperty("driverType");
 
         if ("local".equals(driverType)) {
@@ -35,18 +33,9 @@ public class CacheServiceProxy implements CacheService {
         }
     }
 
-    @Override
-    public void store(String key, Object obj, int seconds) {
-        real.store(key, obj, seconds);
-    }
 
     @Override
-    public Object get(String key) {
-        return real.get(key);
-    }
-
-    @Override
-    public void remove(String key) {
-        real.remove(key);
+    public CacheService get() {
+        return real;
     }
 }

@@ -1,8 +1,9 @@
 package demo;
 
+import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.cache.CacheServiceProxy;
+import org.noear.solon.cache.CacheServiceSupplier;
 import org.noear.solon.data.cache.CacheService;
 
 /**
@@ -10,7 +11,8 @@ import org.noear.solon.data.cache.CacheService;
  */
 @Configuration
 public class DemoConfig {
-    public CacheService cache(@Inject("${cache1}")CacheServiceProxy cache){
-        return cache;
+    @Bean
+    public CacheService cache(@Inject("${cache1}") CacheServiceSupplier supplier) {
+        return supplier.get();
     }
 }
