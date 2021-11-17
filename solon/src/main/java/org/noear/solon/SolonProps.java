@@ -17,6 +17,8 @@ import java.util.function.BiConsumer;
  * //
  * // 手动获取配置模式（容器自动模式可用: @Inject("${water.logger}")）
  * //
+ * // 配置的优先级：命令参数-> 环境配置-> 系统配置-> 应用配置 （越动态的越优化）
+ * //
  * Solon.cfg()
  * Solon.cfg().isDebugMode()
  * Solon.cfg().isDriftMode()
