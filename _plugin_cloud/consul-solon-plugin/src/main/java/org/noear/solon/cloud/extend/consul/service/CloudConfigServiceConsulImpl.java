@@ -1,62 +1,36 @@
 package org.noear.solon.cloud.extend.consul.service;
 
-import com.ecwid.consul.v1.ConsulClient;
-import com.ecwid.consul.v1.kv.model.GetValue;
+import com.orbitz.consul.KeyValueClient;
+import com.orbitz.consul.model.kv.Value;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
-import org.noear.solon.cloud.CloudProps;
+import org.noear.solon.cloud.extend.consul.XPluginImp;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
-import org.noear.solon.cloud.utils.IntervalUtils;
 import org.noear.solon.core.event.EventBus;
 
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TimerTask;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 云端配置服务实现
  *
- * @author 夜の孤城
+ * @author 夜の孤城, iYarnFog
  * @author noear
  * @since 1.2
  */
-public class CloudConfigServiceConsulImp extends TimerTask implements CloudConfigService {
+public class CloudConfigServiceConsulImpl implements Runnable, CloudConfigService {
+
     private final String DEFAULT_GROUP = "DEFAULT_GROUP";
 
-    private ConsulClient real;
-    private String token;
-
-    private long refreshInterval;
-
-    private Map<String, Config> configMap = new HashMap<>();
-    private Map<CloudConfigHandler, CloudConfigObserverEntity> observerMap = new HashMap<>();
-
-    /**
-     * 初始化客户端
-     */
-    private void initClient(String server) {
-        String[] ss = server.split(":");
-
-        if (ss.length == 1) {
-            real = new ConsulClient(ss[0]);
-        } else {
-            real = new ConsulClient(ss[0], Integer.parseInt(ss[1]));
-        }
-    }
-
-    public CloudConfigServiceConsulImp(CloudProps cloudProps) {
-        token = cloudProps.getToken();
-        refreshInterval = IntervalUtils.getInterval(cloudProps.getConfigRefreshInterval("5s"));
-
-        initClient(cloudProps.getConfigServer());
-    }
-
-    public long getRefreshInterval() {
-        return refreshInterval;
-    }
+    private final Map<String, Config> configMap = new ConcurrentHashMap<>();
+    private final Map<CloudConfigHandler, CloudConfigObserverEntity> observerMap = new ConcurrentHashMap<>();
+    private final KeyValueClient kvClient = XPluginImp.getInstance().getClient().keyValueClient();
 
     /**
      * 获取配置
@@ -73,16 +47,17 @@ public class CloudConfigServiceConsulImp extends TimerTask implements CloudConfi
 
         String cfgKey = group + "/" + key;
 
-        GetValue newV = real.getKVValue(cfgKey, token).getValue();
+        Optional<Value> response = this.kvClient.getValue(cfgKey);
 
-        if (newV != null) {
+        if (response.isPresent()) {
+            Value newV = response.get();
             Config oldV = configMap.get(cfgKey);
 
             if (oldV == null) {
-                oldV = new Config(group, key, newV.getDecodedValue(), newV.getModifyIndex());
+                oldV = new Config(group, key, this.decode(newV), newV.getModifyIndex());
                 configMap.put(cfgKey, oldV);
             } else if (newV.getModifyIndex() > oldV.version()) {
-                oldV.updateValue(newV.getDecodedValue(), newV.getModifyIndex());
+                oldV.updateValue(this.decode(newV), newV.getModifyIndex());
             }
 
             return oldV;
@@ -104,7 +79,7 @@ public class CloudConfigServiceConsulImp extends TimerTask implements CloudConfi
 
         String cfgKey = group + "/" + key;
 
-        return real.setKVValue(cfgKey, value).getValue();
+        return this.kvClient.putValue(cfgKey, value);
     }
 
     @Override
@@ -119,7 +94,7 @@ public class CloudConfigServiceConsulImp extends TimerTask implements CloudConfi
 
         String cfgKey = group + "/" + key;
 
-        real.deleteKVValue(cfgKey).getValue();
+        this.kvClient.deleteKey(cfgKey);
         return true;
     }
 
@@ -150,23 +125,24 @@ public class CloudConfigServiceConsulImp extends TimerTask implements CloudConfi
     }
 
     private void run0() {
-        Map<String, Config> cfgTmp = new HashMap<>();
+        Map<String, Config> cfgTmp = new ConcurrentHashMap<>(6);
         for (Map.Entry<CloudConfigHandler, CloudConfigObserverEntity> kv : observerMap.entrySet()) {
             CloudConfigObserverEntity entity = kv.getValue();
 
             String cfgKey = entity.group + "/" + entity.key;
 
-            GetValue newV = real.getKVValue(cfgKey, token).getValue();
+            Optional<Value> response = this.kvClient.getValue(cfgKey);
 
-            if (newV != null) {
+            if (response.isPresent()) {
+                Value newV = response.get();
                 Config oldV = configMap.get(cfgKey);
 
                 if (oldV == null) {
-                    oldV = new Config(entity.group, entity.key, newV.getDecodedValue(), newV.getModifyIndex());
+                    oldV = new Config(entity.group, entity.key, this.decode(newV), newV.getModifyIndex());
                     configMap.put(cfgKey, oldV);
                     cfgTmp.put(cfgKey, oldV);
                 } else if (newV.getModifyIndex() > oldV.version()) {
-                    oldV.updateValue(newV.getDecodedValue(), newV.getModifyIndex());
+                    oldV.updateValue(this.decode(newV), newV.getModifyIndex());
                     cfgTmp.put(cfgKey, oldV);
                 }
             }
@@ -180,4 +156,11 @@ public class CloudConfigServiceConsulImp extends TimerTask implements CloudConfi
             });
         }
     }
+    
+    private String decode(Value source) {
+        return new String(
+                Base64.getDecoder().decode(source.getValue().orElse(""))
+        );
+    }
+    
 }
