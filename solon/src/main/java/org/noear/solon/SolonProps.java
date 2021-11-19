@@ -119,7 +119,7 @@ public final class SolonProps extends Props {
         //是否为调试模式
         isSetupMode = "1".equals(getArg("setup")); //安装模式
         //是否为白名单模式
-        isWhiteMode = "1".equals(getArg("white", "1")); //安全模式（即白名单模式）
+        isWhiteMode = "1".equals(getArg("white")); //安全模式（即白名单模式）//todo:默认不再为1, update by 2021.11.19
         //是否为漂移模式
         isDriftMode = "1".equals(getArg("drift")); //漂移模式（即ip会变,如k8s部署）
         //是否为独立模式
@@ -140,6 +140,7 @@ public final class SolonProps extends Props {
         String localeStr = getArg("locale");
         if (Utils.isNotEmpty(localeStr)) {
             locale = Utils.toLocale(localeStr);
+            Locale.setDefault(locale);
         } else {
             locale = Locale.getDefault();
         }
@@ -481,7 +482,7 @@ public final class SolonProps extends Props {
      * 框架版本号
      */
     public String version() {
-        return "1.5.68";
+        return "1.5.69";
     }
 
     /**
