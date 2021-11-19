@@ -50,33 +50,64 @@ public class CloudDiscoveryServiceWaterImp extends TimerTask implements CloudDis
 
     @Override
     public void run() {
+        //外面5s跑一次
         try {
-            run0();
+            //主动刷新健康
+            if (Solon.cfg().isFilesMode()) {
+                runByFile();
+            }else{
+                runByComp();
+            }
+
         } catch (Throwable ex) {
             EventBus.push(ex);
         }
     }
 
-    private void run0() {
-        //主动刷新健康
-        if (Solon.cfg().isFilesMode()) {
-            if (Utils.isNotEmpty(Solon.cfg().appName())) {
-                try {
-                    for (Signal signal : Solon.global().signals()) {
-                        Instance instance = Instance.localNew(signal);
-                        register(Solon.cfg().appGroup(), instance);
-                    }
-                } catch (Throwable ex) {
-
+    /**
+     * 文件模式运行时
+     * */
+    private void runByFile() {
+        if (Utils.isNotEmpty(Solon.cfg().appName())) {
+            try {
+                for (Signal signal : Solon.global().signals()) {
+                    Instance instance = Instance.localNew(signal);
+                    register(Solon.cfg().appGroup(), instance);
                 }
+            } catch (Throwable ex) {
 
-                try {
-                    observerMap.forEach((k, v) -> {
-                        onUpdate(v.group, v.service);
-                    });
-                } catch (Throwable ex) {
+            }
 
+            try {
+                observerMap.forEach((k, v) -> {
+                    onUpdate(v.group, v.service);
+                });
+            } catch (Throwable ex) {
+
+            }
+        }
+    }
+
+    /**
+     * 用于补尝注册（万一服务端把它删掉了）//60s一次 //外部是5s一次
+     * */
+    int runByCompCount;
+    private void runByComp() {
+        if (Utils.isNotEmpty(Solon.cfg().appName())) {
+            runByCompCount++;
+            if (runByCompCount % 12 > 0) {
+                return;
+            } else {
+                runByCompCount = 0;
+            }
+
+            try {
+                for (Signal signal : Solon.global().signals()) {
+                    Instance instance = Instance.localNew(signal);
+                    register(Solon.cfg().appGroup(), instance);
                 }
+            } catch (Throwable ex) {
+
             }
         }
     }
