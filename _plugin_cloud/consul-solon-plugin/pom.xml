@@ -19,21 +19,23 @@
 
 
     <dependencies>
+
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.cloud</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.orbitz.consul/consul-client -->
         <dependency>
-            <groupId>com.ecwid.consul</groupId>
-            <artifactId>consul-api</artifactId>
-            <version>${consul.ver}</version>
+            <groupId>com.orbitz.consul</groupId>
+            <artifactId>consul-client</artifactId>
+            <version>1.5.3</version>
         </dependency>
 
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.8.2</version>
+            <version>2.8.9</version>
         </dependency>
 
         <dependency>
@@ -53,6 +55,7 @@
             <artifactId>solon-api</artifactId>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
 </project>
