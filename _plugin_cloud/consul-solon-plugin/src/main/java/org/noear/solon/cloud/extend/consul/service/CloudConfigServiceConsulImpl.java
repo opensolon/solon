@@ -1,18 +1,17 @@
 package org.noear.solon.cloud.extend.consul.service;
 
+import com.orbitz.consul.Consul;
 import com.orbitz.consul.KeyValueClient;
 import com.orbitz.consul.model.kv.Value;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudConfigHandler;
-import org.noear.solon.cloud.extend.consul.XPluginImp;
 import org.noear.solon.cloud.model.Config;
 import org.noear.solon.cloud.service.CloudConfigObserverEntity;
 import org.noear.solon.cloud.service.CloudConfigService;
 import org.noear.solon.core.event.EventBus;
 
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 云端配置服务实现
  *
  * @author 夜の孤城, iYarnFog
+ * @author 浅念
  * @author noear
  * @since 1.2
  */
@@ -30,7 +30,11 @@ public class CloudConfigServiceConsulImpl implements Runnable, CloudConfigServic
 
     private final Map<String, Config> configMap = new ConcurrentHashMap<>();
     private final Map<CloudConfigHandler, CloudConfigObserverEntity> observerMap = new ConcurrentHashMap<>();
-    private final KeyValueClient kvClient = XPluginImp.getInstance().getClient().keyValueClient();
+    private final KeyValueClient kvClient;
+
+    public CloudConfigServiceConsulImpl(Consul client) {
+        this.kvClient = client.keyValueClient();
+    }
 
     /**
      * 获取配置
@@ -156,11 +160,10 @@ public class CloudConfigServiceConsulImpl implements Runnable, CloudConfigServic
             });
         }
     }
-    
+
     private String decode(Value source) {
         return new String(
                 Base64.getDecoder().decode(source.getValue().orElse(""))
         );
     }
-    
 }

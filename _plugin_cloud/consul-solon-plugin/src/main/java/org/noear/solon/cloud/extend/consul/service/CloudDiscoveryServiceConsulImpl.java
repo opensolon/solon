@@ -1,15 +1,14 @@
 package org.noear.solon.cloud.extend.consul.service;
 
 import com.orbitz.consul.AgentClient;
-import com.orbitz.consul.HealthClient;
+import com.orbitz.consul.Consul;
 import com.orbitz.consul.NotRegisteredException;
 import com.orbitz.consul.model.agent.ImmutableRegistration;
 import com.orbitz.consul.model.agent.Registration;
 import com.orbitz.consul.model.health.Service;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
-import org.noear.solon.cloud.extend.consul.ConsulProps;
-import org.noear.solon.cloud.extend.consul.XPluginImp;
+import org.noear.solon.cloud.CloudProps;
 import org.noear.solon.cloud.model.Discovery;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.cloud.service.CloudDiscoveryObserverEntity;
@@ -28,6 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 云端注册与发现服务实现
  *
  * @author 夜の孤城
+ * @author 浅念
  * @author noear
  * @since 1.2
  */
@@ -35,24 +35,23 @@ public class CloudDiscoveryServiceConsulImpl implements Runnable, CloudDiscovery
 
     private final String healthCheckInterval;
     private List<String> tags;
-    private Map<String,Discovery> discoveryMap = new ConcurrentHashMap<>();
+    private Map<String, Discovery> discoveryMap = new ConcurrentHashMap<>();
     private final Map<CloudDiscoveryHandler, CloudDiscoveryObserverEntity> observerMap = new ConcurrentHashMap<>();
-    private final AgentClient agentClient = XPluginImp.getInstance().getClient().agentClient();
-    private final HealthClient healthClient = XPluginImp.getInstance().getClient().healthClient();
+    private final AgentClient agentClient;
 
+    public CloudDiscoveryServiceConsulImpl(Consul client, CloudProps cloudProps) {
+        this.agentClient = client.agentClient();
+        this.healthCheckInterval = cloudProps.getDiscoveryHealthCheckInterval("5s");
 
-    public CloudDiscoveryServiceConsulImpl() {
-        this.healthCheckInterval = ConsulProps.instance.getDiscoveryHealthCheckInterval("5s");
-
-        String tags = ConsulProps.instance.getDiscoveryTags();
-        if(Utils.isNotEmpty(tags)){
+        String tags = cloudProps.getDiscoveryTags();
+        if (Utils.isNotEmpty(tags)) {
             this.tags = Arrays.asList(tags.split(","));
         }
     }
 
     /**
      * 注册服务实例
-     * */
+     */
     @Override
     public void register(String group, Instance instance) {
         String[] fqdn = instance.address().split(":");
@@ -61,7 +60,7 @@ public class CloudDiscoveryServiceConsulImpl implements Runnable, CloudDiscovery
         if (instance.tags() != null) {
             tags.addAll(instance.tags());
         }
-        if(this.tags != null) {
+        if (this.tags != null) {
             tags.addAll(this.tags);
         }
 
@@ -121,7 +120,7 @@ public class CloudDiscoveryServiceConsulImpl implements Runnable, CloudDiscovery
 
     /**
      * 注销服务实例
-     * */
+     */
     @Override
     public void deregister(String group, Instance instance) {
         String serviceId = instance.service() + "-" + instance.address();
@@ -130,7 +129,7 @@ public class CloudDiscoveryServiceConsulImpl implements Runnable, CloudDiscovery
 
     /**
      * 查询服务实例列表
-     * */
+     */
     @Override
     public Discovery find(String group, String service) {
         return this.discoveryMap.get(service);
@@ -138,7 +137,7 @@ public class CloudDiscoveryServiceConsulImpl implements Runnable, CloudDiscovery
 
     /**
      * 关注服务实例列表
-     * */
+     */
     @Override
     public void attention(String group, String service, CloudDiscoveryHandler observer) {
         this.observerMap.put(observer, new CloudDiscoveryObserverEntity(group, service, observer));
@@ -146,7 +145,7 @@ public class CloudDiscoveryServiceConsulImpl implements Runnable, CloudDiscovery
 
     /**
      * 定时任务，刷新服务列表
-     * */
+     */
     @Override
     public void run() {
         try {
@@ -157,7 +156,7 @@ public class CloudDiscoveryServiceConsulImpl implements Runnable, CloudDiscovery
     }
 
     private void run0() {
-        Map<String,Discovery> discoveryTmp = new ConcurrentHashMap<>(6);
+        Map<String, Discovery> discoveryTmp = new ConcurrentHashMap<>(6);
         Map<String, Service> services = this.agentClient.getServices();
 
         for (Map.Entry<String, Service> kv : services.entrySet()) {
@@ -191,7 +190,7 @@ public class CloudDiscoveryServiceConsulImpl implements Runnable, CloudDiscovery
 
     /**
      * 通知观察者
-     * */
+     */
     private void notifyObservers() {
         for (Map.Entry<CloudDiscoveryHandler, CloudDiscoveryObserverEntity> kv : observerMap.entrySet()) {
             CloudDiscoveryObserverEntity entity = kv.getValue();
@@ -201,5 +200,4 @@ public class CloudDiscoveryServiceConsulImpl implements Runnable, CloudDiscovery
             }
         }
     }
-
 }

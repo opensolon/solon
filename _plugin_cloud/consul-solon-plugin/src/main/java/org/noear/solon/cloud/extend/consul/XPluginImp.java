@@ -23,14 +23,7 @@ import java.util.concurrent.TimeUnit;
  * @since 1.2
  * */
 public class XPluginImp implements Plugin {
-
-    private static XPluginImp instance;
     private final ScheduledExecutorService executor = new ScheduledThreadPoolExecutor(1);
-    private Consul client;
-
-    public XPluginImp() {
-        instance = this;
-    }
 
     @Override
     public void start(SolonApp app) {
@@ -38,16 +31,19 @@ public class XPluginImp implements Plugin {
             return;
         }
 
-        Consul.Builder builder =  Consul.builder()
-                .withHostAndPort(HostAndPort.fromString(ConsulProps.instance.getServer()));
-        if(ConsulProps.instance.getToken() != null && !ConsulProps.instance.getToken().isEmpty()) {
+        //构建客户端
+        Consul.Builder builder = Consul.builder();
+        builder.withHostAndPort(HostAndPort.fromString(ConsulProps.instance.getServer()));
+
+        if (Utils.isNotEmpty(ConsulProps.instance.getToken())) {
             builder.withAclToken(ConsulProps.instance.getToken());
         }
-        this.client = builder.build();
+
+        Consul client = builder.build();
 
         // 1.登记配置服务
         if (ConsulProps.instance.getConfigEnable()) {
-            CloudConfigServiceConsulImpl serviceImpl = new CloudConfigServiceConsulImpl();
+            CloudConfigServiceConsulImpl serviceImpl = new CloudConfigServiceConsulImpl(client);
             CloudManager.register(serviceImpl);
 
             long interval = IntervalUtils.getInterval(ConsulProps.instance.getConfigRefreshInterval("5s"));
@@ -64,7 +60,7 @@ public class XPluginImp implements Plugin {
 
         // 2.登记发现服务
         if (ConsulProps.instance.getDiscoveryEnable()) {
-            CloudDiscoveryServiceConsulImpl serviceImpl = new CloudDiscoveryServiceConsulImpl();
+            CloudDiscoveryServiceConsulImpl serviceImpl = new CloudDiscoveryServiceConsulImpl(client, ConsulProps.instance);
             CloudManager.register(serviceImpl);
 
             //运行一次，拉取服务列表
@@ -82,13 +78,5 @@ public class XPluginImp implements Plugin {
         if (!this.executor.isShutdown()) {
             this.executor.shutdown();
         }
-    }
-
-    public static XPluginImp getInstance() {
-        return instance;
-    }
-
-    public Consul getClient() {
-        return this.client;
     }
 }
