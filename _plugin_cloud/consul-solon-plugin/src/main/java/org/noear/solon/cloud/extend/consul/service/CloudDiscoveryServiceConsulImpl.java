@@ -27,8 +27,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * 云端注册与发现服务实现
  *
  * @author 夜の孤城
- * @author 浅念
  * @author noear
+ * @author iYarnFog
  * @since 1.2
  */
 public class CloudDiscoveryServiceConsulImpl implements Runnable, CloudDiscoveryService {

@@ -19,9 +19,9 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 云端配置服务实现
  *
- * @author 夜の孤城, iYarnFog
- * @author 浅念
+ * @author 夜の孤城
  * @author noear
+ * @author iYarnFog
  * @since 1.2
  */
 public class CloudConfigServiceConsulImpl implements Runnable, CloudConfigService {
