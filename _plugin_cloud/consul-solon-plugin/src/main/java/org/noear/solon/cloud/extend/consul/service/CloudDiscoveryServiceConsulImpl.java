@@ -1,11 +1,9 @@
 package org.noear.solon.cloud.extend.consul.service;
 
-import com.orbitz.consul.AgentClient;
-import com.orbitz.consul.Consul;
-import com.orbitz.consul.NotRegisteredException;
-import com.orbitz.consul.model.agent.ImmutableRegistration;
-import com.orbitz.consul.model.agent.Registration;
-import com.orbitz.consul.model.health.Service;
+import com.ecwid.consul.v1.ConsulClient;
+import com.ecwid.consul.v1.Response;
+import com.ecwid.consul.v1.agent.model.NewService;
+import com.ecwid.consul.v1.agent.model.Service;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudDiscoveryHandler;
 import org.noear.solon.cloud.CloudProps;
@@ -17,135 +15,154 @@ import org.noear.solon.cloud.utils.IntervalUtils;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.extend.health.HealthHandler;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 
 /**
  * 云端注册与发现服务实现
  *
  * @author 夜の孤城
  * @author noear
- * @author iYarnFog
  * @since 1.2
  */
-public class CloudDiscoveryServiceConsulImpl implements Runnable, CloudDiscoveryService {
+public class CloudDiscoveryServiceConsulImpl extends TimerTask implements CloudDiscoveryService {
+    private ConsulClient real;
+    private String token;
 
-    private final String healthCheckInterval;
+    private long refreshInterval;
+
+    private String healthCheckInterval;
     private List<String> tags;
-    private Map<String, Discovery> discoveryMap = new ConcurrentHashMap<>();
-    private final Map<CloudDiscoveryHandler, CloudDiscoveryObserverEntity> observerMap = new ConcurrentHashMap<>();
-    private final AgentClient agentClient;
 
-    public CloudDiscoveryServiceConsulImpl(Consul client, CloudProps cloudProps) {
-        this.agentClient = client.agentClient();
-        this.healthCheckInterval = cloudProps.getDiscoveryHealthCheckInterval("5s");
+    Map<String,Discovery> discoveryMap = new HashMap<>();
+    private Map<CloudDiscoveryHandler, CloudDiscoveryObserverEntity> observerMap = new HashMap<>();
 
-        String tags = cloudProps.getDiscoveryTags();
-        if (Utils.isNotEmpty(tags)) {
-            this.tags = Arrays.asList(tags.split(","));
+
+    public CloudDiscoveryServiceConsulImpl(CloudProps cloudProps) {
+        token = cloudProps.getToken();
+        refreshInterval = IntervalUtils.getInterval(cloudProps.getDiscoveryRefreshInterval("5s"));
+
+        healthCheckInterval = cloudProps.getDiscoveryHealthCheckInterval("5s");
+
+        String tags_str = cloudProps.getDiscoveryTags();
+        if(Utils.isNotEmpty(tags_str)){
+            tags = Arrays.asList(tags_str.split(","));
         }
+
+        String server = cloudProps.getDiscoveryServer();
+        String[] ss = server.split(":");
+
+        if (ss.length == 1) {
+            real = new ConsulClient(ss[0]);
+        } else {
+            real = new ConsulClient(ss[0], Integer.parseInt(ss[1]));
+        }
+    }
+
+    public long getRefreshInterval() {
+        return refreshInterval;
     }
 
     /**
      * 注册服务实例
-     */
+     * */
     @Override
     public void register(String group, Instance instance) {
-        String[] fqdn = instance.address().split(":");
+        String[] ss = instance.address().split(":");
         String serviceId = instance.service() + "-" + instance.address();
-        List<String> tags = new ArrayList<>();
+
+        NewService newService = new NewService();
+
+        newService.setId(serviceId);
+        newService.setName(instance.service());
+        newService.setAddress(ss[0]);
+        newService.setPort(Integer.parseInt(ss[1]));
+        newService.setMeta(instance.meta());
+
         if (instance.tags() != null) {
-            tags.addAll(instance.tags());
-        }
-        if (this.tags != null) {
-            tags.addAll(this.tags);
+            newService.setTags(instance.tags());
         }
 
-        Registration service = ImmutableRegistration.builder()
-                .id(serviceId)
-                .name(instance.service())
-                .address(fqdn[0])
-                .port(Integer.parseInt(fqdn[1]))
-                .check(this.getCheck(instance))
-                .meta(instance.meta())
-                .tags(tags)
-                .build();
+        if(tags != null) {
+            if (newService.getTags() != null) {
+                newService.getTags().addAll(tags);
+            } else {
+                newService.setTags(tags);
+            }
+        }
+
+        registerLocalCheck(instance, newService);
 
         //
         // 注册服务
         //
-        this.agentClient.register(service);
+        real.agentServiceRegister(newService, token);
     }
 
     @Override
     public void registerState(String group, Instance instance, boolean health) {
         String serviceId = instance.service() + "-" + instance.address();
-        // Check in with Consul (serviceId required only).
-        // Client will prepend "service:" for service level checks.
-        // Note that you need to continually check in before the TTL expires, otherwise your service's state will be marked as "critical".
-        try {
-            this.agentClient.pass(serviceId);
-        } catch (NotRegisteredException exception) {
-            EventBus.push(exception);
-        }
+        real.agentServiceSetMaintenance(serviceId, health);
     }
 
-    private Registration.RegCheck getCheck(Instance instance) {
-        Registration.RegCheck check = Registration.RegCheck.ttl(30);
-
+    private void registerLocalCheck(Instance instance, NewService newService) {
         if (Utils.isNotEmpty(healthCheckInterval)) {
             if ("http".equals(instance.protocol())) {
                 String checkUrl = "http://" + instance.address();
-                checkUrl = checkUrl + HealthHandler.HANDLER_PATH;
-                check = Registration.RegCheck.http(
-                        checkUrl,
-                        IntervalUtils.getInterval(this.healthCheckInterval) / 1000
-                );
+                if (HealthHandler.HANDLER_PATH.startsWith("/")) {
+                    checkUrl = checkUrl + HealthHandler.HANDLER_PATH;
+                } else {
+                    checkUrl = checkUrl + "/" + HealthHandler.HANDLER_PATH;
+                }
+
+                NewService.Check check = new NewService.Check();
+                check.setInterval(healthCheckInterval);
+                check.setMethod("GET");
+                check.setHttp(checkUrl);
+                check.setDeregisterCriticalServiceAfter("30s");
+                check.setTimeout("6s");
+
+                newService.setCheck(check);
             }
 
             if ("tcp".equals(instance.protocol()) || "ws".equals(instance.protocol())) {
-                check = Registration.RegCheck.tcp(
-                        instance.address(),
-                        IntervalUtils.getInterval(this.healthCheckInterval) / 1000
-                );
+                NewService.Check check = new NewService.Check();
+                check.setInterval(healthCheckInterval);
+                check.setTcp(instance.address());
+                check.setTimeout("6s");
+
+                newService.setCheck(check);
             }
         }
-
-        return check;
-
     }
 
     /**
      * 注销服务实例
-     */
+     * */
     @Override
     public void deregister(String group, Instance instance) {
         String serviceId = instance.service() + "-" + instance.address();
-        this.agentClient.deregister(serviceId);
+        real.agentServiceDeregister(serviceId);
     }
 
     /**
      * 查询服务实例列表
-     */
+     * */
     @Override
     public Discovery find(String group, String service) {
-        return this.discoveryMap.get(service);
+        return discoveryMap.get(service);
     }
 
     /**
      * 关注服务实例列表
-     */
+     * */
     @Override
     public void attention(String group, String service, CloudDiscoveryHandler observer) {
-        this.observerMap.put(observer, new CloudDiscoveryObserverEntity(group, service, observer));
+        observerMap.put(observer, new CloudDiscoveryObserverEntity(group, service, observer));
     }
 
     /**
      * 定时任务，刷新服务列表
-     */
+     * */
     @Override
     public void run() {
         try {
@@ -156,10 +173,10 @@ public class CloudDiscoveryServiceConsulImpl implements Runnable, CloudDiscovery
     }
 
     private void run0() {
-        Map<String, Discovery> discoveryTmp = new ConcurrentHashMap<>(6);
-        Map<String, Service> services = this.agentClient.getServices();
+        Map<String,Discovery> discoveryTmp = new HashMap<>();
+        Response<Map<String, Service>> services = real.getAgentServices();
 
-        for (Map.Entry<String, Service> kv : services.entrySet()) {
+        for (Map.Entry<String, Service> kv : services.getValue().entrySet()) {
             Service service = kv.getValue();
 
             if (Utils.isEmpty(service.getAddress())) {
@@ -174,24 +191,24 @@ public class CloudDiscoveryServiceConsulImpl implements Runnable, CloudDiscovery
                 discoveryTmp.put(name, discovery);
             }
 
-            Instance instance = new Instance(service.getService(),
+            Instance n1 = new Instance(service.getService(),
                     service.getAddress() + ":" + service.getPort())
                     .tagsAddAll(service.getTags())
                     .metaPutAll(service.getMeta());
 
-            discovery.instanceAdd(instance);
+            discovery.instanceAdd(n1);
         }
 
-        this.discoveryMap = discoveryTmp;
+        discoveryMap = discoveryTmp;
 
         //通知观察者
-        this.notifyObservers();
+        noticeObservers();
     }
 
     /**
      * 通知观察者
-     */
-    private void notifyObservers() {
+     * */
+    private void noticeObservers() {
         for (Map.Entry<CloudDiscoveryHandler, CloudDiscoveryObserverEntity> kv : observerMap.entrySet()) {
             CloudDiscoveryObserverEntity entity = kv.getValue();
             Discovery tmp = discoveryMap.get(entity.service);
@@ -200,4 +217,5 @@ public class CloudDiscoveryServiceConsulImpl implements Runnable, CloudDiscovery
             }
         }
     }
+
 }
