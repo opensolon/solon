@@ -119,15 +119,13 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
     private void subscribe0() throws Exception {
         Instance instance = Instance.local();
 
-        //
-        //subscribeTopic(String subscriber_key, String subscriber_note, String receive_url, String access_key, String alarm_mobile, int receive_way, boolean is_unstable, String... topics)
-        //
         if (instanceObserverManger.topicSize() > 0) {
             String instance_receiver_url = "http://" + instance.address() + WW.path_msg_receiver;
             String instance_subscriber_Key = EncryptUtils.md5(instance.service() + "_instance_" + instance_receiver_url);
 
             WaterClient.Message.subscribeTopic(eventBroker, instance_subscriber_Key,
                     instance.service(),
+                    Solon.cfg().appGroup(),
                     instance_receiver_url,
                     seal,
                     "",
@@ -155,6 +153,7 @@ public class CloudEventServiceWaterImp implements CloudEventServicePlus {
 
             WaterClient.Message.subscribeTopic(eventBroker, cluster_subscriber_Key,
                     instance.service(),
+                    Solon.cfg().appGroup(),
                     cluster_receiver_url,
                     seal,
                     "",
