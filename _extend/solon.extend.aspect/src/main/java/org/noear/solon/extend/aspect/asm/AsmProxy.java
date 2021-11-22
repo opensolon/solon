@@ -71,9 +71,11 @@ public class AsmProxy {
             }
             // 获取目标类的一些数据
             // ClassReader reader = new ClassReader(targetClass.getName());//某些情况下直接通过类名可能会获取不到数据
-            InputStream resourceStream= classLoader.getResourceAsStream(targetClass.getName().replace('.', '/') + ".class");
-            ClassReader reader = new ClassReader(resourceStream);
-            resourceStream.close();
+            ClassReader reader = null;
+            String resourceName = targetClass.getName().replace('.', '/') + ".class";
+            try(InputStream resourceStream= classLoader.getResourceAsStream(resourceName)) {
+                reader = new ClassReader(resourceStream);
+            }
 
             TargetClassVisitor targetClassVisitor = new TargetClassVisitor();
             reader.accept(targetClassVisitor, ClassReader.SKIP_DEBUG);
