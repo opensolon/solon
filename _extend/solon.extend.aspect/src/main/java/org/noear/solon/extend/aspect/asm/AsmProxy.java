@@ -3,6 +3,7 @@ package org.noear.solon.extend.aspect.asm;
 
 import org.objectweb.asm.*;
 
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -69,7 +70,11 @@ public class AsmProxy {
                 return newInstance(proxyClass, invocationHandler, targetConstructor, targetParam);
             }
             // 获取目标类的一些数据
-            ClassReader reader = new ClassReader(targetClass.getName());
+            // ClassReader reader = new ClassReader(targetClass.getName());//某些情况下直接通过类名可能会获取不到数据
+            InputStream resourceStream= classLoader.getResourceAsStream(targetClass.getName().replace('.', '/') + ".class");
+            ClassReader reader = new ClassReader(resourceStream);
+            resourceStream.close();
+
             TargetClassVisitor targetClassVisitor = new TargetClassVisitor();
             reader.accept(targetClassVisitor, ClassReader.SKIP_DEBUG);
             // 判断是否是FINAL的
