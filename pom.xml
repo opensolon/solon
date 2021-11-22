@@ -20,7 +20,7 @@
 
     <modules>
         <module>solon-parent</module>
-        
+
         <module>_publish/nami-bundle</module>
         <module>_publish/socketd-bundle</module>
         <module>_publish/solon-plugin-bundle</module>
