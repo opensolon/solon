@@ -55,8 +55,6 @@ public class CloudDiscoveryServiceWaterImp extends TimerTask implements CloudDis
             //主动刷新健康
             if (Solon.cfg().isFilesMode()) {
                 runByFile();
-            }else{
-                runByComp();
             }
 
         } catch (Throwable ex) {
@@ -88,29 +86,6 @@ public class CloudDiscoveryServiceWaterImp extends TimerTask implements CloudDis
         }
     }
 
-    /**
-     * 用于补尝注册（万一服务端把它删掉了）//60s一次 //外部是5s一次
-     * */
-    int runByCompCount;
-    private void runByComp() {
-        if (Utils.isNotEmpty(Solon.cfg().appName())) {
-            runByCompCount++;
-            if (runByCompCount % 12 > 0) {
-                return;
-            } else {
-                runByCompCount = 0;
-            }
-
-            try {
-                for (Signal signal : Solon.global().signals()) {
-                    Instance instance = Instance.localNew(signal);
-                    register(Solon.cfg().appGroup(), instance);
-                }
-            } catch (Throwable ex) {
-
-            }
-        }
-    }
 
     @Override
     public void register(String group, Instance instance) {

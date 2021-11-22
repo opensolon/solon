@@ -118,9 +118,11 @@ public class XPluginImp implements Plugin {
             discoveryServiceImp = new CloudDiscoveryServiceWaterImp(cloudProps);
             CloudManager.register(discoveryServiceImp);
 
-            if (discoveryServiceImp.getRefreshInterval() > 0) {
-                long interval = discoveryServiceImp.getRefreshInterval();
-                clientTimer.schedule(discoveryServiceImp, interval, interval);
+            if (Solon.cfg().isFilesMode()) {
+                if (discoveryServiceImp.getRefreshInterval() > 0) {
+                    long interval = discoveryServiceImp.getRefreshInterval();
+                    clientTimer.schedule(discoveryServiceImp, interval, interval);
+                }
             }
         }
 
