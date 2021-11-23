@@ -13,7 +13,7 @@ import java.util.Map;
  */
 @Configuration
 public class Config {
-    @Bean("map1")
+    @Bean(value = "map1", typed = true)
     public Map<String, Object> map() {
         Map<String, Object> map = new HashMap<>();
         map.put("1", 1);
@@ -27,14 +27,4 @@ public class Config {
         Map map = bw.get();
         System.out.println("map::" + map.toString());
     }
-
-//    @Bean
-//    public CacheService cache(){
-//        return new LocalCacheService();
-//    }
-
-//    @Init
-//    public void xxx(){
-//        throw new RuntimeException("xxxxxx");
-//    }
 }
