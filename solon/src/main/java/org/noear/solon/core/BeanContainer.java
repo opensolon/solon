@@ -297,13 +297,15 @@ public abstract class BeanContainer {
 
     protected void beanInject(VarHolder varH, String name, boolean autoRefreshed) {
         if (Utils.isEmpty(name)) {
-            //如果没有name,使用类型进行获取 bean
+            //
+            // @Inject //使用 type, 注入BEAN
+            //
             getWrapAsyn(varH.getType(), (bw) -> {
                 varH.setValue(bw.get());
             });
         } else if (name.startsWith("${classpath:")) {
             //
-            //demo:${classpath:user.yml}
+            // @Inject("${classpath:user.yml}") //注入配置文件
             //
             String url = name.substring(12, name.length() - 1);
             Properties val = Utils.loadProperties(Utils.getResource(url));
@@ -328,7 +330,9 @@ public abstract class BeanContainer {
             }
 
         } else if (name.startsWith("${")) {
-            //配置 ${xxx} or ${xxx:def},只适合单值
+            //
+            // @Inject("${xxx}") //注入配置 ${xxx} or ${xxx:def},只适合单值
+            //
             String name2 = name.substring(2, name.length() - 1).trim();
 
             beanInjectConfig(varH, name2);
@@ -341,9 +345,15 @@ public abstract class BeanContainer {
                 });
             }
         } else {
-            //使用name, 获取BEAN
+            //
+            // @Inject("xxx") //使用 name, 注入BEAN
+            //
             getWrapAsyn(name, (bw) -> {
-                varH.setValue(bw.get());
+                if(BeanWrap.class.isAssignableFrom(varH.getType())){
+                    varH.setValue(bw);
+                }else{
+                    varH.setValue(bw.get());
+                }
             });
         }
     }
