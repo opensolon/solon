@@ -1,4 +1,7 @@
-#### 1.6.0
+#### 1.5.71
+* 插件 solon.extend.aspect ，优化 AsmProxy 关于 class bin 的加载
+
+#### 1.5.70
 * 插件 water-solon-plugin 升级 water 2.4.1
 * 插件 solon.cache 添加 CacheServiceSupplier
 
