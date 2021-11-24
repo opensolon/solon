@@ -10,6 +10,8 @@ import org.noear.water.utils.RuntimeStatus;
 import org.noear.water.utils.RuntimeUtils;
 
 /**
+ * 运行状态获取处理（用ip名单处理安全）
+ *
  * @author noear
  * @since 1.2
  */
@@ -25,7 +27,7 @@ public class HandlerStatus implements Handler {
 
             ctx.outputAsJson(ONode.stringify(rs));
         } else {
-            ctx.output((ip + ", not is whitelist!"));
+            ctx.output((ip + ", not is safelist!"));
         }
     }
 

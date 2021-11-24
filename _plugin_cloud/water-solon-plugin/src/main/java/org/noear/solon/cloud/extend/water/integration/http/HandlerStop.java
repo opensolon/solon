@@ -6,10 +6,11 @@ import org.noear.solon.Utils;
 import org.noear.solon.cloud.model.Instance;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
-import org.noear.solon.core.util.IpUtil;
 import org.noear.water.WaterClient;
 
 /**
+ * 服务停目处理（用强制ip名单处理安全）
+ *
  * @author noear
  * @since 1.2
  */
@@ -27,7 +28,7 @@ public class HandlerStop implements Handler {
             Solon.stop();
             return "OK";
         } else {
-            return (ip + ", not is whitelist!");
+            return (ip + ", not is safelist!");
         }
     }
 
@@ -46,7 +47,7 @@ public class HandlerStop implements Handler {
 
     private boolean authMasterIp(String ip) {
         if (Solon.cfg().isDriftMode()) {
-            return true;
+            return false; //isDriftMode，拒绝停止
         } else {
             return WaterClient.Whitelist.existsOfMasterIp(ip);
         }

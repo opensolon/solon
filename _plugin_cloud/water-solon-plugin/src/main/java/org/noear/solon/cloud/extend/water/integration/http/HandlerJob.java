@@ -20,7 +20,7 @@ public class HandlerJob implements Handler {
         String token = ctx.header("token", "");
 
         //调用任务必须要有server token
-        if (authServerSafe(token)) {
+        if (authServerToken(token)) {
             ctx.status(400);
             ctx.output("Invalid server token!");
             return;
@@ -56,7 +56,7 @@ public class HandlerJob implements Handler {
     /**
      * 验证安全性（基于token）
      */
-    private boolean authServerSafe(String token) {
+    private boolean authServerToken(String token) {
         return CloudClient.list().inListOfServerToken(token);
     }
 }
