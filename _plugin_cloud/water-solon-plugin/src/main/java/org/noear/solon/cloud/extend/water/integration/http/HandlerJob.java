@@ -1,6 +1,5 @@
 package org.noear.solon.cloud.extend.water.integration.http;
 
-import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
 import org.noear.solon.cloud.extend.water.service.CloudJobServiceWaterImp;
@@ -18,13 +17,12 @@ import org.noear.solon.core.handle.Handler;
 public class HandlerJob implements Handler {
     @Override
     public void handle(Context ctx) throws Throwable {
-        String ip = ctx.realIp();
         String token = ctx.header("token", "");
 
-        //订时任务，必须要有令片
-        if (authServerSafe(ip, token)) {
+        //调用任务必须要有server token
+        if (authServerSafe(token)) {
             ctx.status(400);
-            ctx.output("Invalid token!");
+            ctx.output("Invalid server token!");
             return;
         }
 
@@ -55,13 +53,10 @@ public class HandlerJob implements Handler {
         }
     }
 
-    private boolean authServerSafe(String ip, String token) {
-        if (Solon.cfg().isDriftMode()) {
-            return true;
-        } else {
-            return CloudClient.list().inListOfServerToken(token) ||
-                    CloudClient.list().inListOfServerIp(ip);
-
-        }
+    /**
+     * 验证安全性（基于token）
+     */
+    private boolean authServerSafe(String token) {
+        return CloudClient.list().inListOfServerToken(token);
     }
 }
