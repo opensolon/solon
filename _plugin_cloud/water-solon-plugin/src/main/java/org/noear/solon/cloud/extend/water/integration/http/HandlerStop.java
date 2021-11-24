@@ -9,7 +9,7 @@ import org.noear.solon.core.handle.Handler;
 import org.noear.water.WaterClient;
 
 /**
- * 服务停目处理（用强制ip名单处理安全）
+ * 服务停目处理（用强制ip名单处理安全）//超代频
  *
  * @author noear
  * @since 1.2

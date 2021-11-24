@@ -12,7 +12,7 @@ import org.noear.water.dso.MessageHandler;
 import org.noear.water.model.MessageM;
 
 /**
- * 消息接收处理（用签名的形式实现安全）
+ * 消息接收处理（用签名的形式实现安全）//高频
  *
  * @author noear
  * @since 1.2

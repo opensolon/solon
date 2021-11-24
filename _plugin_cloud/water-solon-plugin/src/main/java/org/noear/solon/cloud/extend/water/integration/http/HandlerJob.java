@@ -10,7 +10,7 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 
 /**
- * 任务调度处理（用令牌的形式实现安全）
+ * 任务调度处理（用令牌的形式实现安全）//中频
  *
  * @author noear
  * @since 1.4
