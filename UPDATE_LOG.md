@@ -1,5 +1,6 @@
 #### 1.6.1
 * 增加 @Inject("ds1") BeanWrap bw; 模式
+* 优化 mybatis-solon-plugin 的适配方案
 
 #### 1.5.71
 * 插件 solon.extend.aspect ，优化 AsmProxy 关于 class bin 的加载
