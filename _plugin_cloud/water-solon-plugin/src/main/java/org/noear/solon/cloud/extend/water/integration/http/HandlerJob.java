@@ -21,13 +21,11 @@ public class HandlerJob implements Handler {
 
         //调用任务必须要有server token
         if (authServerToken(token)) {
+            handleDo(ctx, ctx.param("name"));
+        }else{
             ctx.status(400);
             ctx.output("Invalid server token!");
-            return;
         }
-
-
-        handleDo(ctx, ctx.param("name"));
     }
 
     private void handleDo(Context ctx, String name) {
