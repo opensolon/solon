@@ -1,7 +1,8 @@
 package org.noear.solon.extend.mybatisplus.integration;
 
 import com.baomidou.mybatisplus.core.toolkit.reflect.GenericTypeUtils;
-import org.noear.solon.extend.mybatis.integration.SqlSessionManager;
+import org.noear.solon.core.util.GenericUtil;
+import org.noear.solon.extend.mybatis.integration.MybatisAdapterManager;
 import org.noear.solon.SolonApp;
 import org.noear.solon.core.Plugin;
 
@@ -15,8 +16,9 @@ public class XPluginImp implements Plugin {
         //
         // 此插件的 solon.plugin.priority 会大于 mybatis-solon-plugin 的值
         //
-        SqlSessionManager.global().setAdapterFactory(new SqlAdapterFactoryPlus());
-        GenericTypeUtils.setGenericTypeResolver(new IGenericTypeResolverImpl());
+        MybatisAdapterManager.setAdapterFactory(new MybatisAdapterFactoryPlus());
+        GenericTypeUtils.setGenericTypeResolver(((clazz, genericIfc) ->
+                GenericUtil.resolveTypeArguments(clazz, genericIfc)));
 
     }
 }

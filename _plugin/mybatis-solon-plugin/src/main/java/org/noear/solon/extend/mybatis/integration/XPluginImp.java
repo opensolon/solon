@@ -52,14 +52,14 @@ public class XPluginImp implements Plugin {
 
 
     private void create0(Class<?> clz, BeanWrap dsBw) {
-        SqlSession session = MybatisAdapterManager.global().get(dsBw).getFactory().openSession();
+        SqlSession session = MybatisAdapterManager.get(dsBw).getFactory().openSession();
 
         Object raw = session.getMapper(clz);
         Aop.wrapAndPut(clz, raw);
     }
 
     private void inject0(VarHolder varH, BeanWrap dsBw) {
-        MybatisAdapter adapter = MybatisAdapterManager.global().get(dsBw);
+        MybatisAdapter adapter = MybatisAdapterManager.get(dsBw);
         SqlSession session = adapter.getFactory().openSession();
 
         if (SqlSession.class.isAssignableFrom(varH.getType())) {

@@ -16,33 +16,24 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 1.1
  * */
 public class MybatisAdapterManager {
-    private static MybatisAdapterManager _global = new MybatisAdapterManager();
-
-    /**
-     * 全局对象
-     */
-    public static MybatisAdapterManager global() {
-        return _global;
-    }
-
-    private MybatisAdapterFactory adapterFactory = new MybatisAdapterFactoryDefault();
+    private static MybatisAdapterFactory adapterFactory = new MybatisAdapterFactoryDefault();
 
     /**
      * 设置适配器工厂
-     * */
-    public void setAdapterFactory(MybatisAdapterFactory adapterFactory) {
-        this.adapterFactory = adapterFactory;
+     */
+    public static void setAdapterFactory(MybatisAdapterFactory adapterFactory) {
+        MybatisAdapterManager.adapterFactory = adapterFactory;
     }
 
     /**
      * 缓存会话代理
      */
-    private Map<String, MybatisAdapter> dbMap = new ConcurrentHashMap<>();
+    private static Map<String, MybatisAdapter> dbMap = new ConcurrentHashMap<>();
 
     /**
      * 获取会话代理
      */
-    public MybatisAdapter get(BeanWrap bw) {
+    public static MybatisAdapter get(BeanWrap bw) {
         MybatisAdapter db = dbMap.get(bw.name());
 
         if (db == null) {
@@ -69,14 +60,14 @@ public class MybatisAdapterManager {
      *
      * @param bw 数据源的BW
      */
-    public void reg(BeanWrap bw) {
+    public static void reg(BeanWrap bw) {
         get(bw);
     }
 
     /**
      * 构建会话代理
      */
-    private MybatisAdapter buildAdapter(BeanWrap bw) {
+    private static MybatisAdapter buildAdapter(BeanWrap bw) {
         MybatisAdapter adapter;
 
         if (Utils.isEmpty(bw.name())) {

@@ -6,7 +6,7 @@ import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.noear.solon.core.Aop;
 import org.noear.solon.core.BeanWrap;
-import org.noear.solon.extend.mybatis.integration.SqlAdapterDefault;
+import org.noear.solon.extend.mybatis.integration.MybatisAdapterDefault;
 import java.util.Properties;
 
 /**
@@ -18,21 +18,21 @@ import java.util.Properties;
  * @author noear, iYarnFog
  * @since 1.5
  */
-class SqlAdapterPlus extends SqlAdapterDefault {
+class MybatisAdapterPlus extends MybatisAdapterDefault {
 
     MybatisSqlSessionFactoryBuilder factoryBuilderPlus;
 
     /**
      * 构建Sql工厂适配器，使用默认的 typeAliases 和 mappers 配置
      */
-    public SqlAdapterPlus(BeanWrap dsWrap) {
+    public MybatisAdapterPlus(BeanWrap dsWrap) {
         super(dsWrap);
     }
 
     /**
      * 构建Sql工厂适配器，使用属性配置
      */
-    public SqlAdapterPlus(BeanWrap dsWrap, Properties props) {
+    public MybatisAdapterPlus(BeanWrap dsWrap, Properties props) {
         super(dsWrap, props);
 
         this.factoryBuilderPlus = new MybatisSqlSessionFactoryBuilder();
