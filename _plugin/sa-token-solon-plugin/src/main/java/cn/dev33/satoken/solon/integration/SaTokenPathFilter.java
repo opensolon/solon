@@ -15,11 +15,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 /**
  * @author noear 2021/5/30 created
  */
 public class SaTokenPathFilter implements Filter {
-	
+
     // ------------------------ 设置此过滤器 拦截 & 放行 的路由
 
     /**
@@ -143,16 +144,16 @@ public class SaTokenPathFilter implements Filter {
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
         try {
             // 执行全局过滤器
-            SaRouter.match(includeList, excludeList, () -> {
+            SaRouter.match(includeList).notMatch(excludeList).check(r -> {
                 beforeAuth.run(null);
                 auth.run(null);
             });
 
         } catch (StopMatchException e) {
-			
-		} catch (Throwable e) {
-			// 1. 获取异常处理策略结果 
-			String result = (e instanceof BackResultException) ? e.getMessage() : String.valueOf(error.run(e));
+
+        } catch (Throwable e) {
+            // 1. 获取异常处理策略结果
+            String result = (e instanceof BackResultException) ? e.getMessage() : String.valueOf(error.run(e));
 
             // 2. 写入输出流
             ctx.contentType("text/plain; charset=utf-8");

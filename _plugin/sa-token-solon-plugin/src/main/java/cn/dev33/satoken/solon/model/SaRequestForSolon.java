@@ -61,5 +61,4 @@ public class SaRequestForSolon implements SaRequest {
         ctx.forward(path);
         return null;
     }
-
 }

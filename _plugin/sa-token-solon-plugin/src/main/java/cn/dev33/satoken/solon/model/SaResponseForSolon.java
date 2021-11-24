@@ -49,3 +49,4 @@ public class SaResponseForSolon implements SaResponse {
         return null;
     }
 }
+
