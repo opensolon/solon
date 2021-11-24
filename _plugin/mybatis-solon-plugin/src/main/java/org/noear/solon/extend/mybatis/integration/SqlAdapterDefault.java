@@ -6,6 +6,7 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
@@ -17,6 +18,7 @@ import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ScanUtil;
 import org.noear.solon.extend.mybatis.SqlAdapter;
+import org.noear.solon.extend.mybatis.tran.SolonManagedTransactionFactory;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
@@ -45,7 +47,7 @@ public class SqlAdapterDefault implements SqlAdapter {
 
     /**
      * 构建Sql工厂适配器，使用属性配置
-     * */
+     */
     public SqlAdapterDefault(BeanWrap dsWrap, Properties props) {
         this.dsWrap = dsWrap;
         this.factoryBuilder = new SqlSessionFactoryBuilder();
@@ -53,7 +55,7 @@ public class SqlAdapterDefault implements SqlAdapter {
         DataSource dataSource = dsWrap.raw();
         String dataSourceId = "ds-" + (dsWrap.name() == null ? "" : dsWrap.name());
 
-        TransactionFactory tf = new JdbcTransactionFactory();
+        TransactionFactory tf = new SolonManagedTransactionFactory();
         Environment environment = new Environment(dataSourceId, tf, dataSource);
 
         initConfiguration(environment);
@@ -74,11 +76,11 @@ public class SqlAdapterDefault implements SqlAdapter {
         });
     }
 
-    protected void initConfiguration(Environment environment){
+    protected void initConfiguration(Environment environment) {
         config = new Configuration(environment);
     }
 
-    private void init0(Properties props){
+    private void init0(Properties props) {
         if (props != null) {
             props.forEach((k, v) -> {
                 if (k instanceof String && v instanceof String) {
@@ -88,7 +90,7 @@ public class SqlAdapterDefault implements SqlAdapter {
                     if (key.startsWith("typeAliases[") || key.equals("typeAliases")) {
                         for (String val : valStr.split(",")) {
                             val = val.trim();
-                            if(val.length() == 0){
+                            if (val.length() == 0) {
                                 continue;
                             }
 
@@ -116,7 +118,7 @@ public class SqlAdapterDefault implements SqlAdapter {
                     if (key.startsWith("mappers[") || key.equals("mappers")) {
                         for (String val : valStr.split(",")) {
                             val = val.trim();
-                            if(val.length() == 0){
+                            if (val.length() == 0) {
                                 continue;
                             }
 
@@ -166,8 +168,8 @@ public class SqlAdapterDefault implements SqlAdapter {
     }
 
     /**
-     *
-     * 获取配置器*/
+     * 获取配置器
+     */
     @Override
     public Configuration getConfig() {
         return config;
@@ -175,41 +177,53 @@ public class SqlAdapterDefault implements SqlAdapter {
 
     /**
      * 获取会话工厂
-     * */
+     */
     @Override
     public SqlSessionFactory getFactory() {
         if (factory == null) {
-            factory = factoryBuilder.build(config);
+            factory = new SqlSessionFactoryProxy(factoryBuilder.build(config));
         }
 
         return factory;
+    }
+
+    private SqlSession session;
+    @Override
+    public SqlSession getSession() {
+        if (session == null) {
+            session = getFactory().openSession();
+        }
+
+        return session;
     }
 
     /**
      * 替代 @mapperScan
      */
     @Override
-    public SqlAdapter mapperScan(SqlSessionProxy proxy) {
+    public SqlAdapter mapperScan() {
+        SqlSession session = getSession();
+
         for (String val : mappers) {
-            mapperScan0(proxy, val);
+            mapperScan0(session, val);
         }
 
         return this;
     }
 
-    private void mapperScan0(SqlSessionProxy proxy, String val) {
+    private void mapperScan0(SqlSession session, String val) {
         if (val.endsWith(".xml")) {
 
         } else if (val.endsWith(".class")) {
             Class<?> clz = Utils.loadClass(val.substring(0, val.length() - 6));
-            mapperBindDo(proxy, clz);
+            mapperBindDo(session, clz);
         } else {
             String dir = val.replace('.', '/');
-            mapperScanDo(proxy, dir);
+            mapperScanDo(session, dir);
         }
     }
 
-    private void mapperScanDo(SqlSessionProxy proxy, String dir) {
+    private void mapperScanDo(SqlSession session, String dir) {
         ScanUtil.scan(dir, n -> n.endsWith(".class"))
                 .stream()
                 .map(name -> {
@@ -217,15 +231,15 @@ public class SqlAdapterDefault implements SqlAdapter {
                     return Utils.loadClass(className.replace("/", "."));
                 })
                 .forEach((clz) -> {
-                    mapperBindDo(proxy, clz);
+                    mapperBindDo(session, clz);
                 });
     }
 
-    private void mapperBindDo(SqlSessionProxy proxy, Class<?> clz) {
+    private void mapperBindDo(SqlSession session, Class<?> clz) {
         if (clz != null && clz.isInterface()) {
-            Object mapper = proxy.getMapper(clz);
+            Object mapper = session.getMapper(clz);
 
-            Aop.context().putWrap(clz, Aop.wrap(clz,mapper));
+            Aop.context().putWrap(clz, Aop.wrap(clz, mapper));
         }
     }
 }

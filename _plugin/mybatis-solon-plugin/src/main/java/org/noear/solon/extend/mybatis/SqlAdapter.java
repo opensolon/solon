@@ -1,6 +1,7 @@
 package org.noear.solon.extend.mybatis;
 
 import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.noear.solon.extend.mybatis.integration.SqlSessionProxy;
 
@@ -16,16 +17,21 @@ import org.noear.solon.extend.mybatis.integration.SqlSessionProxy;
 public interface SqlAdapter {
     /**
      * 获取配置器
-     * */
-     Configuration getConfig();
+     */
+    Configuration getConfig();
 
     /**
      * 获取会话工厂
-     * */
-     SqlSessionFactory getFactory() ;
+     */
+    SqlSessionFactory getFactory();
+
+    /**
+     * 获取会话
+     */
+    SqlSession getSession();
 
     /**
      * 替代 @mapperScan
      */
-     SqlAdapter mapperScan(SqlSessionProxy proxy);
+    SqlAdapter mapperScan();
 }

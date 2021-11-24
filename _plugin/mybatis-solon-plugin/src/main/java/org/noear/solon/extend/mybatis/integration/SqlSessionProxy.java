@@ -16,15 +16,9 @@ import java.util.Map;
  * */
 public class SqlSessionProxy implements SqlSession {
     private final SqlSession real;
-    private final SqlSessionFactory factory;
 
-    public SqlSessionProxy(SqlSessionFactory factory, SqlSession session) {
-        this.factory = factory;
-        this.real = session;
-    }
-
-    public SqlSessionFactory getFactory() {
-        return factory;
+    public SqlSessionProxy(SqlSession real) {
+        this.real = real;
     }
 
     @Override
@@ -152,6 +146,10 @@ public class SqlSessionProxy implements SqlSession {
     public Connection getConnection() {
         return real.getConnection();
     }
+
+    //
+    //禁目，直接事务操作
+    //
 
     public void commit() {
         throw new UnsupportedOperationException("Manual commit is not allowed over a managed SqlSession");

@@ -1,14 +1,11 @@
 package org.noear.solon.extend.mybatis.integration;
 
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.extend.mybatis.SqlAdapter;
 import org.noear.solon.extend.mybatis.SqlAdapterFactory;
 
-import java.lang.reflect.Proxy;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -40,19 +37,19 @@ public class SqlSessionManager {
     /**
      * 缓存会话代理
      */
-    private Map<String, SqlSessionProxy> dbMap = new ConcurrentHashMap<>();
+    private Map<String, SqlAdapter> dbMap = new ConcurrentHashMap<>();
 
     /**
      * 获取会话代理
      */
-    public SqlSessionProxy get(BeanWrap bw) {
-        SqlSessionProxy db = dbMap.get(bw.name());
+    public SqlAdapter get(BeanWrap bw) {
+        SqlAdapter db = dbMap.get(bw.name());
 
         if (db == null) {
             synchronized (bw.name().intern()) {
                 db = dbMap.get(bw.name());
                 if (db == null) {
-                    db = buildSqlSessionProxy(bw);
+                    db = buildSqlAdapter(bw);
 
                     dbMap.putIfAbsent(bw.name(), db);
 
@@ -79,7 +76,7 @@ public class SqlSessionManager {
     /**
      * 构建会话代理
      */
-    private SqlSessionProxy buildSqlSessionProxy(BeanWrap bw) {
+    private SqlAdapter buildSqlAdapter(BeanWrap bw) {
         SqlAdapter adapter;
 
         if (Utils.isEmpty(bw.name())) {
@@ -88,21 +85,21 @@ public class SqlSessionManager {
             adapter = adapterFactory.create(bw, Solon.cfg().getProp("mybatis." + bw.name()));
         }
 
-        SqlSessionFactory factory = adapter.getFactory();
-        SqlSessionProxy proxy = new SqlSessionProxy(factory, createSqlSessionDynamicProxy(factory));
+        //SqlSession session = adapter.getFactory().openSession();
+        //SqlSessionProxy proxy = new SqlSessionProxy(factory, createSqlSessionDynamicProxy(factory));
 
-        adapter.mapperScan(proxy);
+        adapter.mapperScan();
 
-        return proxy;
+        return adapter;
     }
 
     /**
      * 创建会话动态代理，实现拦截
      */
-    private SqlSession createSqlSessionDynamicProxy(SqlSessionFactory factory) {
-        return (SqlSession) Proxy.newProxyInstance(
-                factory.getClass().getClassLoader(),
-                new Class[]{SqlSession.class},
-                new SqlSessionInterceptor(factory));
-    }
+//    private SqlSession createSqlSessionDynamicProxy(SqlSessionFactory factory) {
+//        return (SqlSession) Proxy.newProxyInstance(
+//                factory.getClass().getClassLoader(),
+//                new Class[]{SqlSession.class},
+//                new SqlSessionInterceptor(factory));
+//    }
 }
