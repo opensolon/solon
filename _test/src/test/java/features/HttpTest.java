@@ -68,7 +68,7 @@ public class HttpTest extends _TestBase {
 
     @Test
     public void test15_run10() throws IOException{
-        assert  get("/demo1/run10/test?a=1").equals("/demo1/run11/a::a=1");
+        assert  get("/demo1/run10/test?a=1").equals("/demo1/run11/a:a=1");
     }
 
     @Test
