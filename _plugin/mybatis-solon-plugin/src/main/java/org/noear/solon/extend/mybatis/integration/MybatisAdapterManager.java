@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 会话管理器
+ * 适配管理器
  *
  * @author noear
  * @since 1.1
@@ -26,12 +26,12 @@ public class MybatisAdapterManager {
     }
 
     /**
-     * 缓存会话代理
+     * 缓存适配器
      */
     private static Map<String, MybatisAdapter> dbMap = new ConcurrentHashMap<>();
 
     /**
-     * 获取会话代理
+     * 获取适配器
      */
     public static MybatisAdapter get(BeanWrap bw) {
         MybatisAdapter db = dbMap.get(bw.name());
@@ -56,16 +56,16 @@ public class MybatisAdapterManager {
     }
 
     /**
-     * 注册数据源，并生成会话代理
+     * 注册数据源，并生成适配器
      *
      * @param bw 数据源的BW
      */
-    public static void reg(BeanWrap bw) {
+    public static void register(BeanWrap bw) {
         get(bw);
     }
 
     /**
-     * 构建会话代理
+     * 构建适配器
      */
     private static MybatisAdapter buildAdapter(BeanWrap bw) {
         MybatisAdapter adapter;
