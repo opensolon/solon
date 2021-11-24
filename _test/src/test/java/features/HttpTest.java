@@ -135,7 +135,7 @@ public class HttpTest extends _TestBase {
 
     @Test
     public void test2c() throws IOException{
-        assert  get("/demo2/mapping/e/{p_q}/{obj}/{id}").equals("/demo2/mapping/e/{p_q}/{obj}/{id}::{p_q}-{obj}-{id}");
+        assert  get("/demo2/mapping/e/{p_q}/{obj}/{id}").equals("/demo2/mapping/e/{p_q}/{obj}/{id}:{p_q}-{obj}-{id}");
     }
 
     @Test
@@ -175,7 +175,7 @@ public class HttpTest extends _TestBase {
 
     @Test
     public void test2f() throws IOException{
-        assert  get("/demo2/param/e/p_q/obj/id").equals("/demo2/param/e/p_q/obj/id::p_q-obj-id");
+        assert  get("/demo2/param/e/p_q/obj/id").equals("/demo2/param/e/p_q/obj/id:p_q-obj-id");
     }
 
     @Test
