@@ -1,9 +1,7 @@
 package demo;
 
 import org.apache.ibatis.session.Configuration;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.noear.solon.SolonBuilder;
-import org.noear.solon.core.Aop;
 
 /**
  * @author noear 2021/7/12 created
