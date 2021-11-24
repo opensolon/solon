@@ -74,7 +74,12 @@ public class CloudClient {
         if (Utils.isNotEmpty(groupKeySet)) {
             String[] gkAry = groupKeySet.split(",");
             for (String gkStr : gkAry) {
-                String[] gk = gkStr.split("::");
+                String[] gk = null;
+                if (gkStr.contains("::")) {
+                    gk = gkStr.split("::"); //将弃用：water::water, by 2021-11-13
+                } else {
+                    gk = gkStr.split(":"); //支持 water:water
+                }
                 if (gk.length == 2) {
                     configLoad(gk[0], gk[1]);
                 } else {

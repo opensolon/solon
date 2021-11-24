@@ -52,11 +52,11 @@ public class NamiFilterAdapter implements Filter {
         //构建 Span Name
         StringBuilder spanName = new StringBuilder();
 
-        spanName.append("Nami::");
+        spanName.append("Nami:");
         if (TextUtils.isEmpty(ctx.config.getName())) {
             spanName.append(ctx.url);
         } else {
-            spanName.append(ctx.config.getName()).append("::");
+            spanName.append(ctx.config.getName()).append(":");
             spanName.append(ctx.url);
         }
 

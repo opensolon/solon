@@ -42,6 +42,6 @@ public class MappingController {
     //支持path var匹配
     @Mapping("e/{p_q}/{obj}/{id}")
     public String test_e(Context context, String p_q, String obj, String id) {
-        return context.path() + "::" + p_q + "-" + obj + "-" + id;
+        return context.path() + ":" + p_q + "-" + obj + "-" + id;
     }
 }

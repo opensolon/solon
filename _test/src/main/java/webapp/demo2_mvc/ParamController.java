@@ -43,7 +43,7 @@ public class ParamController {
     //支持path var
     @Mapping("e/{p_q}/{obj}/{id}")
     public String test_e(Context ctx, String p_q, String obj, String id) {
-        return ctx.path() + "::" + p_q + "-" + obj + "-" + id;
+        return ctx.path() + ":" + p_q + "-" + obj + "-" + id;
     }
 
     //支持字符串数组参数（暂时只支持字符串数据）

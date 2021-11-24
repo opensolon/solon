@@ -20,24 +20,24 @@ public class MessageTest {
     @Test
     public void test() {
         String text = I18nUtil.getMessage(Solon.cfg().locale(), "login.title");
-        System.out.println(Solon.cfg().locale() + "::" + text);
+        System.out.println(Solon.cfg().locale() + ": " + text);
 
         text = I18nUtil.getMessage(Solon.cfg().locale(), "login.title");
-        System.out.println(Solon.cfg().locale() + "::" + text);
+        System.out.println(Solon.cfg().locale() + ": " + text);
 
 
         text = I18nUtil.getMessage(Locale.ENGLISH, "login.title");
         assert "login".equals(text);
-        System.out.println(Locale.ENGLISH + "::" + text);
+        System.out.println(Locale.ENGLISH + ": " + text);
 
         text = I18nUtil.getMessage(Locale.JAPAN, "login.title");
         assert "登录".equals(text);
-        System.out.println(Locale.JAPAN + "::" + text);
+        System.out.println(Locale.JAPAN + ": " + text);
 
 
         text = I18nUtil.getMessage(Locale.US, "login.title");
         assert "login-us".equals(text);
-        System.out.println(Locale.US + "::" + text);
+        System.out.println(Locale.US + ": " + text);
     }
 
     @Test

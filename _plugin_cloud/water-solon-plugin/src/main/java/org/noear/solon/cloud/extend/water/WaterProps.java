@@ -7,7 +7,12 @@ import org.noear.solon.cloud.CloudProps;
  * @since 1.2
  */
 public class WaterProps {
-    public static final String GROUP_SPLIT_MART = "::";
+    public static final String http_header_from = "Water-From";
+    public static final String http_header_trace = "Water-Trace-Id";
+    public static final String http_header_token = "Water-Access-Token";
+
+
+    public static final String GROUP_SPLIT_MART = ":";
 
     public static final String PROP_EVENT_seal = "event.seal";
     public static final String PROP_EVENT_receive = "event.receive";

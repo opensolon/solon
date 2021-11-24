@@ -2,6 +2,7 @@ package org.noear.solon.cloud.extend.water.integration.http;
 
 import org.noear.solon.Utils;
 import org.noear.solon.cloud.CloudClient;
+import org.noear.solon.cloud.extend.water.WaterProps;
 import org.noear.solon.cloud.extend.water.service.CloudJobServiceWaterImp;
 import org.noear.solon.cloud.model.JobHandlerEntity;
 import org.noear.solon.core.event.EventBus;
@@ -17,7 +18,7 @@ import org.noear.solon.core.handle.Handler;
 public class HandlerJob implements Handler {
     @Override
     public void handle(Context ctx) throws Throwable {
-        String token = ctx.header("token", "");
+        String token = ctx.header(WaterProps.http_header_token, "");
 
         //调用任务必须要有server token
         if (authServerToken(token)) {

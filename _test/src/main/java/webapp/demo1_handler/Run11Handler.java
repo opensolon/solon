@@ -13,6 +13,6 @@ import org.noear.solon.core.handle.Handler;
 public class Run11Handler implements Handler {
     @Override
     public void handle(Context cxt) throws Exception {
-        cxt.output(cxt.pathNew() + "::" + cxt.queryString());
+        cxt.output(cxt.pathNew() + ":" + cxt.queryString());
     }
 }
