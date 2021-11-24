@@ -1,11 +1,13 @@
 package org.noear.solon.extend.mybatis.integration;
 
+import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.noear.solon.SolonApp;
 import org.noear.solon.Utils;
 import org.noear.solon.core.*;
 import org.apache.ibatis.ext.solon.Db;
+import org.noear.solon.extend.mybatis.SqlAdapter;
 
 import javax.sql.DataSource;
 
@@ -49,16 +51,16 @@ public class XPluginImp implements Plugin {
     }
 
 
-
     private void create0(Class<?> clz, BeanWrap dsBw) {
-        SqlSession session = SqlSessionManager.global().get(dsBw).getSession();
+        SqlSession session = SqlSessionManager.global().get(dsBw).getFactory().openSession();
 
         Object raw = session.getMapper(clz);
-        Aop.wrapAndPut(clz,raw);
+        Aop.wrapAndPut(clz, raw);
     }
 
     private void inject0(VarHolder varH, BeanWrap dsBw) {
-        SqlSession session = SqlSessionManager.global().get(dsBw).getSession();
+        SqlAdapter adapter = SqlSessionManager.global().get(dsBw);
+        SqlSession session = adapter.getFactory().openSession();
 
         if (SqlSession.class.isAssignableFrom(varH.getType())) {
             varH.setValue(session);
@@ -67,6 +69,12 @@ public class XPluginImp implements Plugin {
 
         if (SqlSessionFactory.class.isAssignableFrom(varH.getType())) {
             varH.setValue(session);
+            return;
+        }
+
+        //新增，@Db("db1") Configuration;
+        if (Configuration.class.isAssignableFrom(varH.getType())) {
+            varH.setValue(adapter.getConfig());
             return;
         }
 
