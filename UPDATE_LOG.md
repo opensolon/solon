@@ -2,6 +2,8 @@
 * 增加 @Inject("ds1") BeanWrap bw; 模式
 * 优化 mybatis-solon-plugin 的适配方案
 * 优化 water-solon-plugin 任务调试的安全机制
+* 升级 sa-token-solon-plugin ，sa-token 到 1.28
+* 升级 beetlsql-solon-plugin ，beetlsql 到 3.12
 
 #### 1.5.71
 * 插件 solon.extend.aspect ，优化 AsmProxy 关于 class bin 的加载
