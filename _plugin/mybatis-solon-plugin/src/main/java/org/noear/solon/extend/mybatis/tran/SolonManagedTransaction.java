@@ -14,21 +14,13 @@ import java.sql.SQLException;
 public class SolonManagedTransaction implements Transaction {
     DataSource dataSource;
     Connection connection;
-
     public SolonManagedTransaction(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public SolonManagedTransaction(Connection connection) {
-        this.connection = connection;
-    }
-
     @Override
     public Connection getConnection() throws SQLException {
-        if (connection == null) {
-            connection = TranUtils.getConnection(dataSource);
-        }
-        return connection;
+        return connection = TranUtils.getConnection(dataSource);
     }
 
     @Override

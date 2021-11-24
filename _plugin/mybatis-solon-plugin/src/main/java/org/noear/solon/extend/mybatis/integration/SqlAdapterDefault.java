@@ -181,7 +181,7 @@ public class SqlAdapterDefault implements SqlAdapter {
     @Override
     public SqlSessionFactory getFactory() {
         if (factory == null) {
-            factory = new SqlSessionFactoryProxy(factoryBuilder.build(config));
+            factory = factoryBuilder.build(config);//new SqlSessionFactoryProxy(factoryBuilder.build(config));
         }
 
         return factory;

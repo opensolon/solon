@@ -20,7 +20,7 @@ public class SolonManagedTransactionFactory implements TransactionFactory {
 
     @Override
     public Transaction newTransaction(Connection connection) {
-        return new SolonManagedTransaction(connection);
+        throw new UnsupportedOperationException("New Solon transactions require a DataSource");
     }
 
     @Override
